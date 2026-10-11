@@ -102,8 +102,7 @@ def capture_column_plane_magnetic_gauge(state, plane_z_mm):
                       or provider.field_support_mm()[0] <= plane_z_mm <= provider.field_support_mm()[1])
         aligned = float(fields(np.array((plane_z_mm,)), state, exclude_mapped_keys=keys)[0][0])
         from temsim.physics.posed_column_fields import capture_posed_column_fields
-        from temsim.simulation_modes import is_ideal
-        posed += tuple(field for field in capture_posed_column_fields(state, include_hexapole=not is_ideal(state))
+        posed += tuple(field for field in capture_posed_column_fields(state)
                        if field.field_support_mm[0] <= plane_z_mm <= field.field_support_mm[1])
     return ColumnPlaneMagneticGauge(plane_z_mm, aligned, posed)
 

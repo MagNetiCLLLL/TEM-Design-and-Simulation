@@ -96,15 +96,9 @@ def _runtime_dependencies(parts, runtime_values):
     return dependencies
 
 
-def _liner_rows(assembly):
-    return [dict(
-        key=segment.key, name=segment.name, mechanical_profile="vacuum_liner",
-        local_start_z_mm=segment.start_z_mm, local_center_z_mm=(segment.start_z_mm + segment.end_z_mm) / 2,
-        local_end_z_mm=segment.end_z_mm, length_mm=segment.end_z_mm - segment.start_z_mm,
-        mechanical_inner_diameter_mm=segment.inner_diameter_mm,
-        mechanical_outer_diameter_mm=segment.outer_diameter_mm,
-        material_class="nonmagnetic_vacuum_liner",
-    ) for segment in getattr(assembly, "vacuum_liner_segments", ())]
+def _liner_rows(assembly, runtime_values=None):
+    from temsim.cad_stage_holder import physical_liner_rows
+    return physical_liner_rows(assembly, runtime_values=runtime_values)
 
 
 def assembly_model_fingerprint(assembly, runtime_values=None) -> str:
@@ -120,7 +114,7 @@ def assembly_model_fingerprint(assembly, runtime_values=None) -> str:
         "documents": documents,
         "placements": [(part.module_key, part.key, part.start_z_mm, part.center_z_mm,
                         part.end_z_mm, part.length_mm, part.parent_key) for part in parts],
-        "liners": _liner_rows(assembly),
+        "liners": _liner_rows(assembly, runtime_values),
         "runtime": _runtime_dependencies(parts, runtime_values),
     }
     encoded = json.dumps(_document_value(payload), sort_keys=True, separators=(",", ":"), allow_nan=False)
@@ -251,7 +245,7 @@ def assembly_model_from_assembly(assembly, *, runtime_values=None, angular_segme
     # These material tubes are resolved assembly members but are synthesized
     # from module geometry, not repeated in each module's parts array.
     active_keys = {part.key for part in parts}
-    for row in _liner_rows(assembly):
+    for row in _liner_rows(assembly, runtime_values):
         if row["key"] in active_keys:
             continue
         try:
@@ -265,7 +259,10 @@ def assembly_model_from_assembly(assembly, *, runtime_values=None, angular_segme
     notes.insert(0, "Configured mechanical positions in global column mm; lens translations and rotations follow "
                     "the same rigid pose as their magnetic fields. Physical children follow their declared parent; "
                     "shared bodies are drawn once under that ownership. Runtime aperture/slit openings and offsets. "
-                    "No insertion mechanism, detector motion or field strength from coil dimensions is inferred.")
+                    "The ordinary holder uses its saved mechanical retraction, independently of sample insertion and crystal tilt. "
+                    "Detector motion and field strength from coil dimensions are not inferred.")
+    notes.append("Component bore boundaries used by the axisymmetric gun solver are not separate tube material. "
+                 "Only configured independent / drift tubes are drawn; internal vacuum seals and electrical insulation are not qualified.")
     if any(supports_energy_filter_part(part.data) for part in parts):
         notes.insert(1, "Energy Filter rigid mount: branch (X,Y,Z) maps to column (-Z,Y,X), translated to the resolved entrance. "
                         "Incoming +X becomes downward column +Z; a configured 90-degree bend exits along column +X. "

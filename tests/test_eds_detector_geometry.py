@@ -15,7 +15,7 @@ from temsim.detector.eds_geometry import (
     load_eds_detector_definition,
 )
 from temsim.gui.diagnostic_tabs import PhysicalLayoutView
-from temsim.module_manifest import validate_document
+from temsim.module_manifest import read_document, validate_document
 from temsim.optics.column import default_state
 from temsim.paths import EDS_DETECTOR_CONFIG_ROOT
 
@@ -35,7 +35,7 @@ UNKNOWN_EDS_DIMENSIONS = {
 
 
 def _column_document(name: str = "C2.toml") -> dict:
-    return tomllib.loads((COLUMN_ROOT / name).read_text(encoding="utf-8"))
+    return read_document(COLUMN_ROOT / name)
 
 
 def _part(document: dict, key: str) -> dict:

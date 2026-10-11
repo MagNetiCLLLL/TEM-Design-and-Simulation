@@ -56,7 +56,7 @@ def test_axial_electric_acceleration_compresses_angle_and_keeps_actual_energy():
 
 
 @pytest.mark.parametrize('mode',['analytical','ideal'])
-def test_electric_cutoff_resume_uses_actual_energy_and_fixed_ideal_reference(mode):
+def test_electric_cutoff_resume_uses_actual_energy_in_each_mode(mode):
     state,plan=fixture(mode=mode,radial=2e7)
     full,_=trace(state,plan,energy=np.array([280000.,310000.]))
     cp=full[-1];row=1;energies=[]
@@ -66,9 +66,8 @@ def test_electric_cutoff_resume_uses_actual_energy_and_fixed_ideal_reference(mod
         initial_kinetic_energy_ev=cp.kinetic_energy_ev[row],energy_output=energies)[-1]
     for name in ('x_m','tx_rad','y_m','ty_rad','flight_time_s','kinetic_energy_ev'):
         np.testing.assert_allclose(getattr(resumed,name)[-1],getattr(cp,name)[-1],rtol=4e-14,atol=1e-24)
-    if mode=='ideal':
-        np.testing.assert_array_equal(cp.x_m[:,0],cp.x_m[:,1])
-        assert cp.flight_time_s[-1,0]>cp.flight_time_s[-1,1]
+    assert not np.allclose(cp.x_m[-1,0],cp.x_m[-1,1],rtol=1e-7,atol=1e-15)
+    assert cp.flight_time_s[-1,0]>cp.flight_time_s[-1,1]
 
 
 @pytest.mark.parametrize('backend',['Numba CPU','CUDA GPU'])
@@ -274,16 +273,18 @@ def test_medium_grid_and_transport_start_with_explicit_actual_energy(monkeypatch
     assert len(captures) == 1
 
 
-def test_proven_constant_electric_fast_path_keeps_fixed_ideal_reference():
+def test_proven_constant_electric_fast_path_keeps_actual_energies_in_ideal():
     state, plan = fixture(gradient=0., mode='ideal')
     plan = replace(plan, magnetic_t=np.full_like(plan.magnetic_t, .02),
                    midpoint_magnetic_t=np.full_like(plan.midpoint_magnetic_t, .02),
                    electric_reference_invariant_ev=270000.)
-    expected, _ = trace(state, plan)
+    energies = np.array([280000., 310000.])
+    expected, _ = trace(state, plan, energy=energies)
     field = plan.electric_field
     proven_constant = SimpleNamespace(is_constant_on_interval=lambda *_args: True,
         potential_rise_v_at_global_positions=field.potential_rise_v_at_global_positions)
-    actual, _ = trace(state, replace(plan, electric_field=proven_constant))
+    actual, _ = trace(state, replace(plan, electric_field=proven_constant), energy=energies)
+    assert not np.allclose(actual[-1].x_m[-1, 0], actual[-1].x_m[-1, 1], rtol=1e-7, atol=1e-15)
     for name in ('x_m', 'tx_rad', 'y_m', 'ty_rad', 'flight_time_s', 'kinetic_energy_ev'):
         np.testing.assert_allclose(getattr(actual[-1], name), getattr(expected[-1], name),
                                    rtol=1e-12, atol=1e-21)

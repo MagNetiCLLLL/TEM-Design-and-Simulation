@@ -58,9 +58,6 @@ def posed_spherical_kicks(state, z0, z1):
     from temsim.optics.lens_focal_length import focal_length_mm
     from temsim.optics.magnetic_lens_aberration import spherical_aberration_mm
     from temsim.physics.lens_field_provider import active_mapped_providers
-    from temsim.simulation_modes import is_ideal
-    if is_ideal(state):
-        return ()
     mapped = {p.lens_key for p in active_mapped_providers(state)}
     result = []
     for lens in state.lenses:

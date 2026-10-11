@@ -195,6 +195,47 @@ def test_copy_real_il_assembly_preserves_independent_shape_and_clears_field_bind
     assert all(p["key"].startswith("copied_lens") for p in target.document["parts"] if p.get("mechanical_part_role") == "custom_mechanical_copy")
 
 
+def test_copy_posed_il_bakes_parent_pose_and_preserves_cad_shape(documents):
+    from temsim.lens_pose import PHYSICAL_POSE_FIELDS
+
+    source, target = documents["recording"], documents["column"]
+    source_key = "intermediate_lens"
+    source.set_physical_pose(source_key, dict(zip(PHYSICAL_POSE_FIELDS, [1.2, -.7, .4, 10, -7, 13])))
+    child_key = next(row["key"] for row in source.document["parts"]
+                     if row.get("parent_key") == source_key and row.get("mechanical_profile") == "magnetic_excitation_coil")
+    cad = {"schema_version": 1, "base": {"kind": "existing"},
+           "transform": {"scale_xy": [1.03, .97], "rotation_deg": [.5, 1., -.75],
+                         "offset_mm": [.2, -.1, .3]},
+           "features": [{"id": "reserved_hole", "kind": "hole", "axis": "z",
+                         "center_mm": [0, 0, 0], "diameter_mm": 1, "depth_mm": 1, "enabled": False}]}
+    source.set_model_3d(child_key, cad)
+    target.set_physical_pose("objective_lens", dict(zip(PHYSICAL_POSE_FIELDS, [-.3, .5, -.2, -8, 11, 6])))
+    before = deepcopy(target.document)
+    source_before = deepcopy(source.document)
+    delta = 4000 - source.part(source_key)["local_center_z_mm"]
+    target.copy_component_from(source, source_key, "posed_copy", 4000, parent_key="objective_lens")
+    copied_rows = [row for row in target.document["parts"] if row.get("copy_provenance", {}).get("source_part_key")]
+    expected = {}
+    for row in copied_rows:
+        assert not set(PHYSICAL_POSE_FIELDS).intersection(row)
+        source_row = source.part(row["copy_provenance"]["source_part_key"])
+        expected[row["key"]] = [mesh.vertices + [0, 0, delta] for mesh in _single(source, source_row["key"])]
+        for vertices, mesh in zip(expected[row["key"]], _single(target, row["key"])):
+            np.testing.assert_allclose(mesh.vertices, vertices, rtol=0, atol=2e-11)
+        if source_row["key"] == child_key:
+            assert row["model_3d"]["transform"]["scale_xy"] == cad["transform"]["scale_xy"]
+            assert row["model_3d"]["features"] == cad["features"]
+    target.undo()
+    assert target.document == before
+    target.redo()
+    target.save()
+    reloaded = PartModelDocument(target.path)
+    for key, meshes in expected.items():
+        for vertices, mesh in zip(meshes, _single(reloaded, key)):
+            np.testing.assert_allclose(mesh.vertices, vertices, rtol=0, atol=2e-11)
+    assert source.document == source_before
+
+
 def test_standalone_objective_split_copy_owns_intervals_and_material_regions(documents):
     source, target = documents["column"], documents["recording"]
     key = "objective_lens_excitation_coil"

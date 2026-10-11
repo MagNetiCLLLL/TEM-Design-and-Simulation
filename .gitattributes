@@ -1,2 +1,7 @@
 # Preserve the original scientific reference CIF bytes.
 configs/reference_samples/*.cif -text
+
+# Archived source pages retain their original bytes and whitespace for SHA checks.
+docs/references/cad-library/**/*.html -text -whitespace
+docs/references/cad-library/**/*.pdf binary
+docs/references/cad-library/**/*.png binary

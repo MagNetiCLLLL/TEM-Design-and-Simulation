@@ -25,11 +25,15 @@ ScanAngleTarget = Literal["mechanical", "canonical"]
 Matrix2 = tuple[tuple[float, float], tuple[float, float]]
 MAX_PIVOT_SAMPLES = 8193
 MAX_POSITION_CANDIDATES = 25
+MAX_PIVOT_REFINEMENTS = 12
 
 
 @dataclass(frozen=True, slots=True)
 class ScanPivotResult:
-    """Full two-axis scan displacement minimum, downstream of the lower coil.
+    """Full two-axis scan displacement minimum downstream of the lower coil.
+
+    For the finite-coil model the interval starts after both complete field
+    supports, not at the lower coil's centre while force is still being applied.
 
     ``response_m_per_raster_factor`` maps dimensionless full-FOV X/Y factors
     to transverse position in metres. A small single matrix entry, determinant
@@ -52,6 +56,12 @@ class ScanPivotResult:
     is_common_pivot: bool
     refined: bool
     refinement_success: bool
+    other_verified_roots_z_mm: tuple[float, ...] = ()
+    refinement_limit_reached: bool = False
+    search_scope: str = (
+        "Finite sampled interval with bounded local refinement; the earliest "
+        "verified common root is selected. This is not proof that every root "
+        "has been found or that no root exists outside the search interval.")
 
     @property
     def kind(self) -> str:
@@ -295,20 +305,43 @@ def _evaluate(state, target, params, response_model="ideal_kick"):
                 if np.isfinite(upper_condition) and upper_condition <= condition_limit else None)
     if response_model == "finite_coil":
         paths = finite.upper[:, :2] @ upper_kick + finite.lower[:, :2] @ lower_kick
+        slopes = (finite.upper[:, 2:] @ upper_kick + finite.lower[:, 2:] @ lower_kick) * 1e-3
+        response_cache = {float(z): (value, slope)
+                          for z, value, slope in zip(grid, paths, slopes)}
 
-        def response_at(z):
-            response = finite_scan_responses(state, state.ac_deflector, (z,),
+        def responses_at(z_values):
+            missing = sorted({float(z) for z in z_values} - response_cache.keys())
+            if missing:
+                response = finite_scan_responses(state, state.ac_deflector, missing,
                 upper_z_mm=upper, lower_z_mm=lower, maximum_step_mm=maximum_step)
-            ru, rl, _ = response.at(z)
-            return ru[:2] @ upper_kick + rl[:2] @ lower_kick
+                for z in missing:
+                    ru, rl, _ = response.at(z)
+                    value = ru @ upper_kick + rl @ lower_kick
+                    response_cache[z] = (value[:2], value[2:] * 1e-3)
+            return [response_cache[float(z)] for z in z_values]
 
+        # A zero while the lower coil is still applying its force is not a
+        # downstream optical pivot. Keep an exact observation at the end of
+        # both registered field supports, even when it is off the coarse grid.
+        pivot_start = max(support[1] for support in finite.coil_support_mm)
+        downstream = grid > pivot_start
+        start_path, start_slope = responses_at((pivot_start,))[0]
+        paths = np.concatenate((start_path[None], paths[downstream]))
+        slopes = np.concatenate((start_slope[None], slopes[downstream]))
+        grid = np.concatenate(((pivot_start,), grid[downstream]))
         launch = None
     else:
         launch = identity_kicks @ upper_kick + lower_basis @ lower_kick
         paths = np.stack([transfers[float(z)].matrix[:2] @ launch for z in grid])
-        response_at = None
+        slopes = np.stack([transfers[float(z)].matrix[2:] @ launch * 1e-3 for z in grid])
+
+        def responses_at(z_values):
+            local = trace_transverse_transfers(
+                state, upper, z_values, maximum_step_mm=maximum_step)
+            values = [local[float(z)].matrix @ launch for z in z_values]
+            return [(value[:2], value[2:] * 1e-3) for value in values]
     pivot = _pivot(state, upper, lower, sample, grid, paths, launch, desired,
-                   maximum_step, pivot_tolerance, response_at=response_at)
+                   maximum_step, pivot_tolerance, slopes, responses_at)
     passed = bool(np.all(peak <= kick_limit))
     return ScanCoilDesignResult(
         **basic, controllable=True, condition_number=condition,
@@ -342,63 +375,122 @@ def _uncontrollable(basic, condition, message):
 
 
 def _pivot(state, upper, lower, sample, grid, paths, launch, desired,
-           maximum_step, tolerance, response_at=None):
+           maximum_step, tolerance, slopes, responses_at):
     half_extents = np.diag(desired)
     normalized_paths = paths / half_extents[None, None, :]
     norms = np.linalg.norm(normalized_paths, axis=(1, 2))
     index = int(np.argmin(norms))
-    best_z, best_response = float(grid[index]), paths[index]
-    refined = False
-    refinement_success = True
+    candidates = [(float(grid[index]), paths[index], False, True)]
+    common_on_grid = np.flatnonzero(
+        np.max(np.linalg.norm(normalized_paths, axis=1), axis=1) <= tolerance)
+    candidates.extend((float(grid[i]), paths[i], False, True) for i in common_on_grid)
     # Minimize all four entries together on each piecewise-linear segment.
     # This only selects a bracket; the reported candidate is traced afresh.
     delta = np.diff(normalized_paths, axis=0)
     denominator = np.sum(delta * delta, axis=(1, 2))
     fractions = np.zeros_like(denominator)
-    usable = denominator > np.finfo(float).tiny
+    response_scale = np.maximum(norms[:-1], norms[1:])
+    usable = denominator > (32. * np.finfo(float).eps * response_scale) ** 2
     fractions[usable] = np.clip(
         -np.sum(normalized_paths[:-1] * delta, axis=(1, 2))[usable] / denominator[usable], 0., 1.)
     interpolated = normalized_paths[:-1] + fractions[:, None, None] * delta
-    segment = int(np.argmin(np.linalg.norm(interpolated, axis=(1, 2))))
-    # A plateau (e.g. a pure drift translation) has no isolated pivot to refine.
-    if usable[segment] and 0. < fractions[segment] < 1.:
+    # An interior minimum of a segment's full matrix response is a bracket,
+    # not a verified pivot. Retain all such brackets up to a bounded budget;
+    # selecting only the global minimum can skip an earlier physical root.
+    scores = np.linalg.norm(interpolated, axis=(1, 2))
+    previous = np.r_[np.inf, scores[:-1]]
+    following = np.r_[scores[1:], np.inf]
+    # A rotating matrix of constant norm can have a shallow chord minimum in
+    # every segment. Only coarse local valleys warrant separate integrations.
+    valleys = ((scores <= previous) & (scores <= following)
+               & ((scores < previous * (1. - 32. * np.finfo(float).eps))
+                  | (scores < following * (1. - 32. * np.finfo(float).eps))))
+    interior = usable & (fractions > 0.) & (fractions < 1.)
+    segments = np.flatnonzero(interior & valleys)
+    if not len(segments) and np.any(interior):
+        # Preserve one closest-approach refinement when no isolated valley is
+        # resolved, without turning a nearly flat response into many roots.
+        choices = np.flatnonzero(interior)
+        segments = np.asarray((choices[np.argmin(scores[choices])],))
+    limit_reached = len(segments) > MAX_PIVOT_REFINEMENTS
+    if limit_reached:
+        closest = int(segments[np.argmin(
+            np.linalg.norm(interpolated[segments], axis=(1, 2)))])
+        segments = np.unique(np.r_[segments[:MAX_PIVOT_REFINEMENTS-1], closest])
+    if len(segments):
+        from scipy.interpolate import CubicHermiteSpline
         from scipy.optimize import minimize_scalar
 
-        if response_at is None:
-            def response_at(z):
-                transfer = trace_transverse_transfers(
-                    state, upper, (float(z),), maximum_step_mm=maximum_step)[float(z)]
-                return transfer.matrix[:2] @ launch
+        # Mechanical slopes are d(position)/dZ; convert them to per-mm above.
+        # This interpolation only proposes candidates. Reported positions and
+        # residuals are always verified by the executed field response below.
+        spline = CubicHermiteSpline(grid, normalized_paths,
+                                    slopes / half_extents[None, None, :])
+        proposed = []
+        for segment in segments:
+            left = float(grid[segment])
+            width = float(grid[segment + 1] - grid[segment])
+            # Local offsets avoid scipy's global-Z relative stopping term.
+            # The squared matrix norm is smooth even at a common root.
+            optimum = minimize_scalar(
+                lambda offset: float(np.sum(spline(left + offset) ** 2)),
+                bounds=(0., width), method="bounded",
+                options={"xatol": 1.0e-9, "maxiter": 32})
+            proposed.append([left + float(optimum.x), left, left + width])
 
-        left = float(grid[segment])
-        width = float(grid[segment + 1] - grid[segment])
+        # Capture all proposed planes in one transport, retaining the exact
+        # affine chief and finite-coil perturbations. A fresh nine-trajectory
+        # solve for every scalar optimiser iteration was needlessly expensive.
+        # If interpolation is insufficient, use the executed local derivative
+        # for a bounded Gauss-Newton correction, still verifying each result.
+        pending = proposed
+        for iteration in range(4):
+            executed = responses_at([item[0] for item in pending])
+            corrections = []
+            for (z, left, right), (value, slope) in zip(pending, executed):
+                normalized = value / half_extents[None, :]
+                derivative = slope / half_extents[None, :]
+                residual = float(np.max(np.linalg.norm(normalized, axis=0)))
+                curvature = float(np.sum(derivative * derivative))
+                correction = (-float(np.sum(normalized * derivative)) / curvature
+                              if curvature > np.finfo(float).tiny else 0.)
+                corrected = float(np.clip(z + correction, left, right))
+                converged = residual <= tolerance or abs(corrected - z) <= 1e-8
+                candidates.append((z, value, True, bool(converged)))
+                if not converged and iteration < 3:
+                    corrections.append([corrected, left, right])
+            if not corrections:
+                break
+            pending = corrections
 
-        def squared_response_norm(offset):
-            value = response_at(left + offset) / half_extents[None, :]
-            return float(np.sum(value * value))
+    def relative_residual(candidate):
+        return float(np.max(np.linalg.norm(candidate[1] / half_extents[None, :], axis=0)))
 
-        # Use local offsets: scipy's relative stopping term at global Z~1600
-        # mm otherwise limits location accuracy to tens of nanometres. The
-        # squared full-matrix norm is smooth even at an actual common root.
-        optimum = minimize_scalar(
-            squared_response_norm, bounds=(0., width), method="bounded",
-            options={"xatol": 1.0e-9, "maxiter": 32})
-        refined = True
-        refinement_success = bool(optimum.success)
-        candidate_z = left + float(optimum.x)
-        response = response_at(candidate_z)
-        if np.linalg.norm(response / half_extents[None, :]) < np.linalg.norm(best_response / half_extents[None, :]):
-            best_z, best_response = candidate_z, response
+    verified = []
+    for candidate in sorted(candidates, key=lambda item: item[0]):
+        if not candidate[3] or relative_residual(candidate) > tolerance:
+            continue
+        # Grid hits and adjacent brackets can describe the same root.
+        if verified and abs(candidate[0] - verified[-1][0]) <= 1.0e-6:
+            if relative_residual(candidate) < relative_residual(verified[-1]):
+                verified[-1] = candidate
+        else:
+            verified.append(candidate)
+    selected = verified[0] if verified else min(
+        candidates, key=lambda item: float(np.linalg.norm(item[1] / half_extents[None, :])))
+    best_z, best_response, refined, refinement_success = selected
     residual = float(np.linalg.norm(best_response))
     relative = float(np.max(np.linalg.norm(best_response / half_extents[None, :], axis=0)))
     return ScanPivotResult(
-        z_mm=best_z, interval_z_mm=(lower, sample),
-        grid_step_mm=float(grid[1] - grid[0]), grid_samples=len(grid),
+        z_mm=best_z, interval_z_mm=(float(grid[0]), sample),
+        grid_step_mm=float(np.max(np.diff(grid))), grid_samples=len(grid),
         response_m_per_raster_factor=_matrix(best_response),
         singular_values_m=_pair(np.linalg.svd(best_response, compute_uv=False)),
         residual_m=residual, relative_residual=relative, relative_tolerance=tolerance,
         is_common_pivot=bool(relative <= tolerance and refinement_success),
         refined=refined, refinement_success=refinement_success,
+        other_verified_roots_z_mm=tuple(item[0] for item in verified[1:]),
+        refinement_limit_reached=limit_reached,
     )
 
 

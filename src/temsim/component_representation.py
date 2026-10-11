@@ -93,6 +93,24 @@ In particular, a detector plane is not virtual merely because it is thin.
 def representation_note(part_data, *, profile=None) -> str:
     role = non_material_role(part_data, profile=profile)
     if role == "control_channel":
+        reference_host = str(part_data.get("optical_reference_host_key", ""))
+        if reference_host and not part_data.get("physical_host_key"):
+            default_owner = "image_corrector" if str(part_data.get("key", "")) in IMAGE_CONTROL_CHANNEL_KEYS else "probe_corrector"
+            owner = str(part_data.get("layout_owner", default_owner)).replace("_", " ")
+            return (
+                f"Control channel in {owner} at the optical reference of {reference_host}. "
+                "Its Z follows that component; the finite field remains active. "
+                "Winding shape and separate housing remain unverified; "
+                "no independent material body is drawn."
+            )
+        declared_host = str(part_data.get("physical_host_key", ""))
+        if declared_host and part_data.get("physical_host_status") == "modelled":
+            return (
+                f"Control channel driving {declared_host}. Geometry and field "
+                "position are read from that winding insert; this channel has "
+                "no independent material body. The insert is a documented "
+                "model reconstruction, not verified OEM winding geometry."
+            )
         host = SHARED_DEFLECTOR_HOSTS.get(str(part_data.get("key", "")))
         if host:
             owner = host.replace("_", " ")

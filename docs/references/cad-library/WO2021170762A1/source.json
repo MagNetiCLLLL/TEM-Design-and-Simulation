@@ -1,0 +1,90 @@
+{
+  "id": "WO2021170762A1",
+  "kind": "patent",
+  "family": "物镜",
+  "url": "https://patents.google.com/patent/WO2021170762A1/en",
+  "figures": "Figs. 2-3; PDF pages 20-21",
+  "component_keys": [
+    "objective_lens",
+    "objective_upper_pole",
+    "objective_lower_pole",
+    "objective_lens_excitation_coil",
+    "objective_lens_yoke"
+  ],
+  "supported_facts": [
+    "提供 TEM 物镜的极靴、绕组、磁轭、样品间隙与支撑结构示例。"
+  ],
+  "unsupported_claims": [
+    "不能把后续可移动极靴实施例当成本项目必需结构。",
+    "未给当前机器的孔径、间距或材料牌号。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:14.865926+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 1775885,
+      "sha256": "3a5f28d3132423dfc5eade4c7fa6b3baf604926551cdf9728ba0c7cd49800a4c",
+      "kind": "original_pdf",
+      "method": "copied_existing_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/11/aa/c0/8a97204bfff5a0/WO2021170762A1.pdf"
+    },
+    {
+      "file": "page-20.png",
+      "bytes": 177480,
+      "sha256": "432c0578271ef4d880b3c7d0004caf4d981b66d0379f55f54b20b1a33924692b",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 20,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-21.png",
+      "bytes": 129373,
+      "sha256": "3adb1c50fdb148857fdcf7fab090cd4fcb956ebe6bbdb886737afd4bf9b66448",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 21,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [
+    "复用项目已保存的原始 PDF；本次归档时间不冒充首次网络获取时间。"
+  ],
+  "title": "Pole piece for a transmission electron microscope",
+  "authors": [
+    "Lewys Jones",
+    "David O'mahony"
+  ],
+  "owner": [
+    "Trinity College Dublin"
+  ],
+  "dates": {
+    "priorityDate": "2020-02-25",
+    "filingDate": "2021-02-25",
+    "publicationDate": "2021-09-02"
+  },
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/11/aa/c0/8a97204bfff5a0/WO2021170762A1.pdf",
+  "cached_source": "outputs\\cad_research_20261011\\sources\\WO2021170762A1.pdf",
+  "pdf_page_count": 31,
+  "pdf_metadata": {
+    "format": "PDF 1.4",
+    "title": "",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "",
+    "producer": "PDF::API2 2.019 [linux]",
+    "creationDate": "",
+    "modDate": "",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    20,
+    21
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

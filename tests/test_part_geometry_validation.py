@@ -176,7 +176,7 @@ def test_objective_split_material_intervals_leave_the_central_gap_empty():
 
 
 def test_legacy_coil_thickness_recipe_remains_enforced():
-    document = tomllib.loads((CONFIG_ROOT / "column" / "C3.toml").read_text(encoding="utf-8"))
+    document = read_document(CONFIG_ROOT / "column" / "C3.toml")
     coil = next(part for part in document["parts"] if part["key"] == "condenser_lens_3_excitation_coil")
     coil["mechanical_inner_diameter_mm"] = 97.0
     with pytest.raises(ValueError, match="radial thickness must follow"):

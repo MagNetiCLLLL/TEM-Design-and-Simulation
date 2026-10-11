@@ -64,9 +64,13 @@ class PartModelEditorPage(QWidget):
         self._calculation_status = "not_calculated"
         self._calculation_detail = "No completed calculation in this window."
         self._audit_dialog = None
+        self._cad_export_dialog = None
+        self._region_models = {}
         self.open_button = QPushButton("Open TOML…")
         self.save_button = QPushButton("Save")
         self.save_copy_button = QPushButton("Save copy…")
+        self.export_step_button = QPushButton("Export STEP…")
+        self.export_step_button.setToolTip("Export this module's current draft as separate optical units and a complete STEP assembly")
         self.undo_button = QPushButton("Undo")
         self.redo_button = QPushButton("Redo")
         self.revert_button = QPushButton("Revert")
@@ -222,7 +226,7 @@ class PartModelEditorPage(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(6, 6, 6, 6)
         file_row = QHBoxLayout()
-        for widget in (self.open_button, self.save_button, self.save_copy_button, self.undo_button,
+        for widget in (self.open_button, self.save_button, self.save_copy_button, self.export_step_button, self.undo_button,
                        self.redo_button, self.revert_button):
             file_row.addWidget(widget)
         file_row.addWidget(self.source_label, 1)
@@ -256,6 +260,7 @@ class PartModelEditorPage(QWidget):
         self.open_button.clicked.connect(self.open_file)
         self.save_button.clicked.connect(self.save)
         self.save_copy_button.clicked.connect(self.save_copy)
+        self.export_step_button.clicked.connect(self.export_step)
         self.undo_button.clicked.connect(self.undo)
         self.redo_button.clicked.connect(self.redo)
         self.revert_button.clicked.connect(self.revert)
@@ -1339,8 +1344,10 @@ class PartModelEditorPage(QWidget):
             model = part_model_from_document(self.session.document, self._selected_key,
                                              aperture_index=self._aperture_index, runtime_values=runtime_values)
             notes = model.notes
+            self._region_models = {mesh.region: mesh for mesh in model.meshes if mesh.key == self._selected_key}
             regions = sorted({mesh.region for mesh in model.meshes if mesh.key == self._selected_key})
         except ValueError as exc:
+            self._region_models = {}
             notes, regions = ("Preview needs valid dimensions: " + str(exc),), ()
         self._loading = True
         try:
@@ -1496,6 +1503,16 @@ class PartModelEditorPage(QWidget):
         if non_material_role(self.session.part(self._selected_key)):
             self.material_current.setText(representation_note(self.session.part(self._selected_key)))
             return
+        if not self._region_material_editing_enabled():
+            mesh = self._region_models.get(self._selected_region)
+            material = mesh.material_class if mesh is not None else "Reconstructed material"
+            description = mesh.description if mesh is not None else ""
+            self.material_current.setText(
+                f"CAD region: {self._selected_region}\nMaterial: {material}\n\n"
+                "Read-only reconstruction for 3D display and STEP. This region is not a separate solver material assignment."
+                + ("\n\n" + description if description else ""))
+            self._update_buttons()
+            return
         try:
             assignment = material_for_region(self.session.part(self._selected_key), self._selected_region)
             current_class = self.session.part(self._selected_key).get("material_class", "").lower()
@@ -1512,9 +1529,10 @@ class PartModelEditorPage(QWidget):
                 material_application_scope(self.session.part(self._selected_key)))
         except ValueError as exc:
             self.material_current.setText(str(exc))
+        self._update_buttons()
 
     def assign_material(self):
-        if not self._material_editing_enabled():
+        if not self._region_material_editing_enabled():
             return
         try:
             self.session.assign_material(self._selected_key, self.material.currentData(), self._selected_region)
@@ -1595,6 +1613,42 @@ class PartModelEditorPage(QWidget):
             self._topology_changed(())
             self._message("Preview: " + str(exc), error=True)
             return False
+
+    def export_step(self):
+        if self.session is None or self._invalid_inputs:
+            return
+        if self._cad_export_dialog is not None and self._cad_export_dialog.busy:
+            self._cad_export_dialog.show()
+            self._cad_export_dialog.raise_()
+            return
+        from datetime import datetime
+        from temsim.gui.cad_export import CadExportDialog, draft_catalog
+        chosen = QFileDialog.getExistingDirectory(self, "Choose a folder for the STEP export")
+        if not chosen:
+            return
+        try:
+            catalog = draft_catalog(self.session.document, source=self.session.path,
+                                    runtime_values=self._model_runtime_values(),
+                                    aperture_indices={self._selected_key: self._aperture_index})
+            # A fresh subfolder preserves any older export in the chosen folder.
+            base = Path(chosen) / ("step-" + datetime.now().strftime("%Y%m%d-%H%M%S"))
+            destination, number = base, 1
+            while destination.exists():
+                destination = base.with_name(base.name + f"-{number}")
+                number += 1
+            dialog = CadExportDialog(catalog, destination, self)
+            self._cad_export_dialog = dialog
+            dialog.completed.connect(self._step_export_completed)
+            dialog.start()
+            dialog.show()
+            self._message("STEP export started in the background from the current draft.")
+        except Exception as exc:
+            self._message(str(exc), error=True)
+        self._update_buttons()
+
+    def _step_export_completed(self, success, message):
+        self._message(message + "\n" + str(self._cad_export_dialog.output_directory), error=not success)
+        self._update_buttons()
 
     def save(self):
         if self.session is None:
@@ -1711,11 +1765,21 @@ class PartModelEditorPage(QWidget):
         return (self.session is not None and self._selected_key is not None
                 and not non_material_role(self.session.part(self._selected_key)))
 
+    def _region_material_editing_enabled(self):
+        if not self._material_editing_enabled():
+            return False
+        from temsim.cad_catalog import is_reconstruction_region
+        from temsim.part_materials import REGIONS
+        return (self._selected_region in REGIONS
+                and not is_reconstruction_region(self.session.part(self._selected_key), self._selected_region))
+
     def _update_buttons(self):
         loaded = self.session is not None
         self.subassembly_button.setEnabled(loaded and bool(self.session.document.get("subassemblies")) and not self._invalid_inputs)
         self.save_button.setEnabled(loaded and self.session.dirty and not self._invalid_inputs)
         self.save_copy_button.setEnabled(loaded and not self._invalid_inputs)
+        running_export = self._cad_export_dialog is not None and self._cad_export_dialog.busy
+        self.export_step_button.setEnabled(loaded and not self._invalid_inputs and not running_export)
         self.revert_button.setEnabled(loaded and (self.session.dirty or bool(self._invalid_inputs)))
         self.undo_button.setEnabled(loaded and (self.session.can_undo or bool(self._invalid_inputs)))
         self.redo_button.setEnabled(loaded and self.session.can_redo and not self._invalid_inputs)
@@ -1723,6 +1787,8 @@ class PartModelEditorPage(QWidget):
         for control in (self.assign_button, self.material, self.region, self.apply_shape_button,
                         self.base_shape, self.add_hole_button, self.add_slot_button):
             control.setEnabled(material)
+        self.assign_button.setEnabled(self._region_material_editing_enabled())
+        self.material.setEnabled(self._region_material_editing_enabled())
         model = self.session.part(self._selected_key).get("model_3d", {}) if material else {}
         self.reset_model_button.setEnabled(material and bool(model))
         self.edit_feature_button.setEnabled(material and self.feature_tree.currentItem() is not None)

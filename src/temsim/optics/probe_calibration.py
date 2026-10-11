@@ -49,7 +49,10 @@ class IncidentProbeModel:
 
         state = self.state
         source = float(state.electron_gun.exit_plane_z_mm)
-        sample = float(state.sample.z_mm)
+        # An incident probe ends at the specimen entrance, not its centre.
+        # Even half a 5 nm specimen matters to a nanometre focus criterion.
+        from temsim.optics.surface_probe_focus import surface_z_mm
+        sample = surface_z_mm(state)
         apertures = tuple(
             float(aperture.z_mm) for aperture in state.apertures
             if aperture.enabled and getattr(aperture, "installed", True)

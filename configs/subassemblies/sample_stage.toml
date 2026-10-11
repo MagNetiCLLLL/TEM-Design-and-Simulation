@@ -1,0 +1,106 @@
+# Reusable side-entry stage and ordinary holder, centred on the sample.
+# X points out of the column; insertion is along -X, retraction along +X.
+format_version = 1
+coordinate_system = "module_local_z_mm"
+
+[module]
+type = "subassembly"
+key = "subassembly:sample_stage"
+name = "Sample stage and side-entry holder"
+
+[ports.entrance]
+interface = "subassembly"
+local_z_mm = -35.0
+
+[ports.exit]
+interface = "subassembly"
+local_z_mm = 35.0
+
+[geometry]
+length_mm = 70.0
+
+[[parts]]
+order = 9000
+key = "sample_stage"
+name = "Sample Stage / Goniometer"
+branch = "common"
+# These axial values retain the original beam-access gap. They do not describe
+# the external flange/body thickness; its explicit transverse solids extend +/-35 mm.
+local_start_z_mm = -2.7
+local_center_z_mm = 0.0
+local_end_z_mm = 2.7
+length_mm = 5.4
+vacuum_inner_diameter_mm = 5.0
+mechanical_profile = "transverse_goniometer"
+mechanical_only = true
+mechanical_part_role = "sample_stage"
+cad_export_unit = true
+material_class = "nonmagnetic_housing"
+transverse_envelope_x_mm = 93.0
+transverse_envelope_y_mm = 70.0
+actual_z_extent_mm = 70.0
+legacy_allocation_x_mm = 650.0
+legacy_allocation_y_mm = 500.0
+holder_insertion_axis = "x"
+holder_insertion_direction = -1
+stage_port_start_x_mm = 87.0
+stage_port_end_x_mm = 180.0
+stage_port_outer_diameter_mm = 12.0
+stage_port_inner_diameter_mm = 9.0
+stage_flange_start_x_mm = 90.0
+stage_flange_end_x_mm = 100.0
+stage_flange_outer_diameter_mm = 70.0
+stage_flange_inner_diameter_mm = 12.0
+stage_body_start_x_mm = 100.0
+stage_body_end_x_mm = 170.0
+stage_body_outer_diameter_mm = 50.0
+stage_body_inner_diameter_mm = 12.0
+housing_side_port_diameter_mm = 12.5
+mechanical_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_geometry_source = "Side-entry holder topology and explicit simulator fit dimensions. External stage dimensions, guide clearance and housing port are engineering choices, not measured Titan/Spectra dimensions. The former 650 x 500 mm allocation is retained only as legacy metadata. The 5.4 mm axial length remains the original beam-access gap, not the external body thickness."
+mechanical_geometry_source_urls = ["https://patents.google.com/patent/WO2025134741A1/en"]
+mechanical_overlap_group = "objective_assembly"
+mechanical_overlap_role = "container"
+mechanical_overlap_reason = "Side-entry goniometer crossing the objective pole gap; explicit shell opening and resolved solid clearances define access."
+parent_key = "objective_lens"
+
+[[parts]]
+order = 9001
+key = "sample_holder"
+name = "Side-entry Sample Holder"
+branch = "common"
+local_start_z_mm = -20.0
+local_center_z_mm = 0.0
+local_end_z_mm = 20.0
+length_mm = 40.0
+vacuum_inner_diameter_mm = 5.0
+axial_vacuum_context_only = true
+mechanical_only = true
+mechanical_profile = "side_entry_sample_holder"
+mechanical_part_role = "sample_holder"
+cad_export_unit = true
+material_class = "nonmagnetic_housing"
+holder_insertion_axis = "x"
+holder_insertion_direction = -1
+holder_shaft_start_x_mm = 18.0
+holder_shaft_end_x_mm = 235.0
+holder_shaft_diameter_mm = 7.0
+holder_handle_start_x_mm = 235.0
+holder_handle_end_x_mm = 315.0
+holder_handle_diameter_mm = 40.0
+holder_tip_start_x_mm = -2.5
+holder_tip_end_x_mm = 18.0
+holder_tip_width_mm = 5.0
+holder_tip_thickness_mm = 1.2
+holder_tip_opening_diameter_mm = 2.4
+holder_tip_seat_diameter_mm = 3.1
+holder_tip_seat_depth_mm = 0.65
+holder_retraction_mm = 0.0
+holder_maximum_retraction_mm = 400.0
+mechanical_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_geometry_source = "WO2025134741A1 paragraph 0036 describes a 7 mm shaft in a specialised retractable-tip holder; this supports a feasible family dimension, not a Titan/Spectra OEM identification. Tip, handle, axial reach and travel are explicit simulator engineering dimensions. The tip is a radius-2.5 mm disk united with a flat 5 x 1.2 mm arm to X=18 mm, with a 2.4 mm Z-axis beam opening and a 3.1 mm diameter, 0.65 mm deep seat from its +Z face. The seat floor is Z=-0.05 mm; no grid thickness or separate grid solid is inferred. Retraction translates this mechanical holder along +X only and does not change sample.inserted or crystal orientation."
+mechanical_geometry_source_urls = ["https://patents.google.com/patent/WO2025134741A1/en"]
+mechanical_overlap_group = "objective_assembly"
+mechanical_overlap_role = "member"
+mechanical_overlap_reason = "Holder sits in the side-entry stage guide; tip passes through the pole gap. Explicit material geometry, not its axial envelope, establishes clearance."
+parent_key = "sample_stage"

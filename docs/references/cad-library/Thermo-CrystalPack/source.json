@@ -1,0 +1,59 @@
+{
+  "id": "Thermo-CrystalPack",
+  "kind": "manufacturer_application_brochure",
+  "title": "CrystalPack Module",
+  "url": "https://documents.thermofisher.com/TFS-Assets/MSD/Application-Notes/crystal-pack-module-application-brochure.pdf",
+  "authors": [
+    "Thermo Fisher Scientific"
+  ],
+  "owner": "Thermo Fisher Scientific",
+  "publication_date": "2017-10",
+  "figures": "PDF p2 Figs.1-2; brochure AN0070-EN-10-2017",
+  "component_keys": [
+    "sample_stage",
+    "sample"
+  ],
+  "supported_facts": [
+    "beta轴通常非eucentric；Compucentricity按特定holder校准后通过其他stage轴补偿。"
+  ],
+  "unsupported_claims": [
+    "不能默认所有双倾杆的两根旋转轴精确通过样品中心。",
+    "无机械外形尺寸。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T01:25:09.927911+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 755095,
+      "sha256": "515af010691c240b540937e6ca8954f0a2166c2a022a9f0cf92013923435c7f5",
+      "kind": "original_pdf",
+      "source_url": "https://documents.thermofisher.com/TFS-Assets/MSD/Application-Notes/crystal-pack-module-application-brochure.pdf",
+      "retrieved_utc": "2026-10-11T01:25:09.927911+00:00"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 194777,
+      "sha256": "da504480b575d10561b9bc1213ade8729c295461c2c3917289b258e998af7e02",
+      "kind": "unmodified_complete_pdf_page_render",
+      "derived_from": "original.pdf",
+      "pdf_page_1based": 2,
+      "render_dpi": 108
+    }
+  ],
+  "archive_status": "original_pdf_saved",
+  "download_receipts": [
+    {
+      "id": "Thermo-CrystalPack",
+      "file": "original.pdf",
+      "source_url": "https://documents.thermofisher.com/TFS-Assets/MSD/Application-Notes/crystal-pack-module-application-brochure.pdf",
+      "final_url": "https://documents.thermofisher.com/TFS-Assets/MSD/Application-Notes/crystal-pack-module-application-brochure.pdf",
+      "status": "saved",
+      "bytes": 755095,
+      "sha256": "515af010691c240b540937e6ca8954f0a2166c2a022a9f0cf92013923435c7f5",
+      "content_type": "application/pdf",
+      "retrieved_utc": "2026-10-11T01:25:09.927911+00:00"
+    }
+  ]
+}

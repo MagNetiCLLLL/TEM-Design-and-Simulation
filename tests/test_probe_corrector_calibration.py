@@ -33,7 +33,16 @@ def calibrated_probe():
     numba.set_num_threads(min(4, previous_threads))
     try:
         state = _preset_state()
-        state.electron_gun.emitter.ray_count = 1000
+        state.simulation_mode = "custom"
+        # Static on-axis correction benchmark: keep installed coils and their
+        # static biases, but do not consume an uncalibrated raster position.
+        state.ac_deflector.scan_enabled = False
+        state.descan_deflector.scan_enabled = False
+        state.ac_deflector.wobble_enabled = False
+        # Validate the shipped 3000-ray sampling budget. The former 1000-ray
+        # budget leaves only ~800 pupil samples for the third-moment check.
+        # This fixed-sampling regression does not claim sampling convergence.
+        state.electron_gun.emitter.ray_count = 3000
         state.acceleration_enabled = True
         state.acceleration_backend = "Numba CPU"
         state.history_step_mm = 0.5
@@ -67,10 +76,9 @@ def test_corrected_finite_source_probe_is_small_focused_and_nearly_round(calibra
     assert 2.0 * statistics.radius_95_m * 1.0e9 < 0.7
     assert statistics.threefold_moment < 0.15
     assert abs(statistics.waist_offset_m) * 1.0e9 < 2.0
-    # The catalog marks these strengths as a stored reference awaiting
-    # recalibration for the current tip solver, not a 24.625 mrad guarantee.
-    assert np.isfinite(statistics.convergence_95_mrad)
-    assert statistics.convergence_95_mrad > 0.0
+    # This is the finite-source, on-axis 30 mrad operating point, not a
+    # coherent-wave resolution claim.
+    assert statistics.convergence_95_mrad == pytest.approx(30.0, rel=0.01)
     assert statistics.surviving_fraction > 0.5
     assert state.hp2_hexapole.enabled and state.hp1_hexapole.enabled
     assert state.hp2_hexapole.strength_m3 > 0.0
@@ -136,12 +144,12 @@ def test_nanoprobe_preset_restores_calibrated_hexapoles_after_channel_edits():
 
     applied = apply_operating_mode_pair(state, "nano_probe", "diffraction")
 
-    assert state.hp2_hexapole.strength_m3 == pytest.approx(626910.5744377297)
+    assert state.hp2_hexapole.strength_m3 == pytest.approx(694323.0354215894)
     assert state.hp2_hexapole.orientation_rad == pytest.approx(0.0)
-    assert state.hp1_hexapole.strength_m3 == pytest.approx(374822.52529434016)
-    assert state.hp1_hexapole.orientation_rad == pytest.approx(-0.04231957336232493)
-    assert next(lens for lens in state.lenses if lens.key == "condenser_lens_3").percent == pytest.approx(21.273622908333973)
-    assert applied.condenser.targets["target_convergence_sem_angle_mrad"] == pytest.approx(25.0)
+    assert state.hp1_hexapole.strength_m3 == pytest.approx(416774.6329835517)
+    assert state.hp1_hexapole.orientation_rad == pytest.approx(-0.041975232520065166)
+    assert next(lens for lens in state.lenses if lens.key == "condenser_lens_3").percent == pytest.approx(46.059815218359184)
+    assert applied.condenser.targets["target_convergence_sem_angle_mrad"] == pytest.approx(30.0)
 
 
 def test_probe_mode_roundtrip_restores_each_modes_own_hexapole_reference():
@@ -203,3 +211,17 @@ def test_hexapole_fit_rejects_invalid_baseline_before_changing_fields(invalid):
     assert state.hp2_hexapole.strength_m3 == 6.0e5
     assert state.hp1_hexapole.strength_m3 == 3.5e5
     assert state.hp1_hexapole.orientation_rad == 0.0
+
+
+def test_hexapole_fit_ideal_still_requires_enabled_hardware_before_tracing():
+    state = _preset_state()
+    state.simulation_mode = "ideal"
+    state.hp2_hexapole.enabled = False
+    before = (state.hp2_hexapole.strength_m3, state.hp1_hexapole.strength_m3)
+
+    def unexpected_trace(**_options):
+        pytest.fail("Disabled HP must not start a calibration")
+
+    with pytest.raises(ValueError, match="Both principal probe hexapoles must be enabled"):
+        fit_probe_hexapoles(SimpleNamespace(state=state, trace=unexpected_trace))
+    assert (state.hp2_hexapole.strength_m3, state.hp1_hexapole.strength_m3) == before

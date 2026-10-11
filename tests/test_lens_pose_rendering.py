@@ -113,8 +113,9 @@ def test_section_projection_uses_same_global_pose_and_leaves_y_out_of_plane():
 
 def test_real_objective_moves_its_magnetic_hardware_not_independent_devices():
     from temsim.lens_pose import effective_part_transform_mm
+    from temsim.module_manifest import read_document
     root = Path(__file__).resolve().parents[1]
-    document = tomllib.loads((root / "configs/instruments/column/C3_ProbeCorrector.toml").read_text())
+    document = read_document(root / "configs/instruments/column/C3_ProbeCorrector.toml")
     rows = {row["key"]: row for row in document["parts"]}
     rows["objective_lens"].update(offset_x_mm=.2, rotation_y_mrad=10.)
     for key in ("sample", "sample_stage", "condenser_stigmator", "ac_deflector",

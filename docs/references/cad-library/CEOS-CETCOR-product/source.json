@@ -1,0 +1,36 @@
+{
+  "id": "CEOS-CETCOR-product",
+  "kind": "manufacturer_product_page",
+  "title": "CETCOR - Cs Korrektor fuer TEM",
+  "authors": [
+    "CEOS GmbH"
+  ],
+  "owner": "CEOS GmbH",
+  "publication_date": null,
+  "url": "https://www.ceos-gmbh.de/de/produkte/temkorrektoren/cetcor",
+  "figures": "Technische Daten",
+  "component_keys": [
+    "image_corrector"
+  ],
+  "supported_facts": [
+    "厂家明示HxBxT=250x396x306 mm，即高/宽/深。",
+    "列Titan、Themis、Spectra等兼容TEM。"
+  ],
+  "unsupported_claims": [
+    "无安装接口参考面，不知外形是否包含外接耦合镜。",
+    "不能将全OL到SAD光程压缩成250mm或当本机精确CAD。"
+  ],
+  "archive_status": "original_html_saved",
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T01:00:38.354798+00:00",
+  "assets": [
+    {
+      "file": "original.html",
+      "bytes": 26418,
+      "sha256": "a509579da82b46d449b88bf3476bd9552866ab2456351da97d90214935a474bd",
+      "kind": "original_html",
+      "source_url": "https://www.ceos-gmbh.de/de/produkte/temkorrektoren/cetcor"
+    }
+  ]
+}

@@ -45,9 +45,11 @@ def test_ac_pure_shift_calibration_cancels_sample_angle(monkeypatch):
     upper_angle = np.array(((2.0, 0.4), (-0.4, 2.0)))
     lower_angle = np.array(((1.5, -0.2), (0.2, 1.5)))
 
-    def phase_response(_state, _component, _observation_z_mm):
+    def phase_response(_state, _component, _observation_z_mm, **_kwargs):
         return (np.vstack((np.zeros((2, 2)), upper_angle)),
-                np.vstack((np.zeros((2, 2)), lower_angle)))
+                np.vstack((np.zeros((2, 2)), lower_angle)), np.zeros(2))
+
+    monkeypatch.setattr(scan_geometry, "canonical_source_basis", lambda *_a, **_kw: np.eye(4))
 
     monkeypatch.setattr(
         scan_geometry,
@@ -93,6 +95,34 @@ def test_paired_response_uses_both_planes_and_cross_axis_coupling(monkeypatch):
         + lower_response @ np.asarray(component.coil_kick_matrices()[1])
     )
     assert actual == pytest.approx(expected)
+
+
+def test_ac_uses_canonical_angle_at_the_same_affine_chief(monkeypatch):
+    ac = create_ac_deflector()
+    state = SimpleNamespace(ac_deflector=ac, sample=SimpleNamespace(z_mm=1600.))
+    g = np.array([[0., -200.], [200., 0.]])
+    basis = np.eye(4)
+    basis[2:, :2] = g
+    chief = np.array([2e-6, -3e-6])
+    seen = []
+    def canonical(_s, _z, *, position_xy_m):
+        seen.append(np.asarray(position_xy_m))
+        return basis
+    monkeypatch.setattr(scan_geometry, "canonical_source_basis", canonical)
+    bu, bl = .1*np.eye(2), .04*np.eye(2)
+    du = np.array([[2., .4], [-.2, 3.]])
+    dl = np.array([[1.5, -.2], [.1, 1.]])
+    phases = np.vstack((bu, du+g@bu)), np.vstack((bl, dl+g@bl)), chief
+    monkeypatch.setattr(scan_geometry, "_coil_phase_responses", lambda *_a, **_k: phases)
+    ratio, residual = scan_geometry.calibrate_ac_pure_shift(state)
+    np.testing.assert_allclose(du+dl@ratio, 0., atol=2e-14)
+    shift = bu+bl@ratio
+    mechanical = phases[0][2:]+phases[1][2:]@ratio
+    np.testing.assert_allclose(mechanical, g@shift, atol=2e-14)
+    assert np.linalg.norm(mechanical) > 1.
+    assert residual < 1e-14
+    assert scan_geometry._ac_angle_residual(state) < 1e-14
+    assert all(np.array_equal(value, chief) for value in seen)
 
 
 @pytest.mark.parametrize(("image", "angular", "kind"), (
@@ -212,7 +242,9 @@ def test_scan_plane_labels_use_canonical_maps_without_changing_mechanical_raster
         recording_planes=(target, entrance_station, centre_station),
     )
     monkeypatch.setattr(scan_geometry, "_ac_angle_residual", lambda _state: 0.0)
+    monkeypatch.setattr(scan_geometry, "canonical_source_basis", lambda *_a, **_kw: np.eye(4))
     paths = {
+        "reference_position": (np.array([0., 200.]), np.zeros((2, 2))),
         "upper": (
             np.array([0.0, 200.0]),
             np.array([np.zeros((2, 2)), np.eye(2)]),
@@ -307,7 +339,9 @@ def test_default_column_shared_descan_hardware_and_optical_cancellation():
     assert np.linalg.norm(combined) < 1.0e-15
 
     geometry = scan_geometry.calculate_scan_geometry(state)
-    assert geometry.sample_mechanical_angle_span_mrad == pytest.approx((0.0, 0.0), abs=1e-9)
+    assert geometry.sample_canonical_angle_span_mrad == pytest.approx((0.0, 0.0), abs=1e-9)
+    assert max(geometry.sample_mechanical_angle_span_mrad) > 1e-6
+    assert geometry.ac_angle_target == "canonical"
     assert geometry.sample_reference_z_mm == pytest.approx(state.sample.z_mm)
     target_x_um, target_y_um = geometry.plane_positions_um[
         calibration.target_key
@@ -366,9 +400,10 @@ def test_pixel_pitch_calibrates_axis_aligned_fov_through_active_optics(
     component.scan_pixel_size_nm = 2.0
     component.set_pure_shift_coupling(-np.eye(2), 0.0)
     response_m_per_rad = np.diag((2.0, 4.0))
+    monkeypatch.setattr(scan_geometry, "canonical_source_basis", lambda *_a, **_kw: np.eye(4))
     monkeypatch.setattr(scan_geometry, "_coil_phase_responses",
-                        lambda *_args: (np.vstack((2*response_m_per_rad, np.eye(2))),
-                                        np.vstack((np.zeros((2,2)), np.eye(2)))))
+                        lambda *_args, **_kw: (np.vstack((2*response_m_per_rad, np.eye(2))),
+                                        np.vstack((np.zeros((2,2)), np.eye(2))), np.zeros(2)))
     state = SimpleNamespace(
         ac_deflector=component,
         sample=SimpleNamespace(z_mm=100.0),

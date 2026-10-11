@@ -199,19 +199,44 @@ def storage_documents(raw, resolved, path):
     checked, _ = _place(resolved, local, owners)
     if checked != resolved:
         raise ValueError("The staged geometry does not satisfy its subassembly placements")
+    definitions_by_owner = {entry["key"]: (entry, source, child)
+                            for entry, source, child in definitions(raw, path)}
+    originals = {part["key"]: part for part in raw.get("parts", ())}
+    for _, _, child in definitions_by_owner.values():
+        originals.update((part["key"], part) for part in child["parts"])
+    # Subtraction of a large module origin can perturb unchanged local
+    # dimensions (e.g. 575.2 - 2.7 -> 572.5 -> -2.700000000000045).
+    # Restore exact source values only when the requested placed value is
+    # exactly the one produced from that source; actual edits are retained.
+    requested = {part["key"]: part for part in resolved["parts"]}
+    for part in local:
+        original = originals.get(part["key"])
+        if original is None:
+            continue
+        placed = translated_component(original, origins.get(owners.get(part["key"]), 0.0))
+        for field, value in original.items():
+            if requested[part["key"]].get(field) == placed.get(field):
+                part[field] = deepcopy(value)
+
+    def stored_order(parts, original_parts):
+        positions = {part["key"]: index for index, part in enumerate(original_parts)}
+        # Preserve each original file's table order, independently of optical
+        # order. New material rows retain their relative resolved order.
+        return sorted(parts, key=lambda part: positions.get(part["key"], len(positions)))
+
     by_owner = {entry["key"]: [] for entry in raw["subassemblies"]}
     root_parts = []
     for part in local:
         owner = owners.get(part["key"])
         (by_owner[owner] if owner else root_parts).append(part)
     root = deepcopy(resolved)
-    root["parts"] = root_parts
+    root["parts"] = stored_order(root_parts, raw.get("parts", ()))
     if not root_parts:
         root.pop("parts")
     outputs = {Path(path).resolve(): root}
-    for entry, source, child in definitions(raw, path):
+    for entry, source, child in definitions_by_owner.values():
         if not by_owner[entry["key"]]:
             raise ValueError("A subassembly cannot be empty")
-        child["parts"] = by_owner[entry["key"]]
+        child["parts"] = stored_order(by_owner[entry["key"]], child["parts"])
         outputs[source] = child
     return outputs

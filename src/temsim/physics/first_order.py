@@ -9,6 +9,11 @@ along +Z.  The position block at a downstream plane is
 ``J_img`` is dimensionless and ``J_diff`` is expressed in m/rad.  Fixed
 deflector offsets are affine terms, so a traced reference ray is subtracted
 from the four basis rays before the Jacobian is assembled.
+
+This nominal optical observer omits explicit Cs and, for aligned analytic
+hexapoles, the nonlinear field. It is not the local derivative of a beam
+displaced through a hexapole by DPH. Calibrated entrance shift/tilt uses
+``beam_steering_calibration`` and its full-field reference-electron response.
 """
 
 from __future__ import annotations

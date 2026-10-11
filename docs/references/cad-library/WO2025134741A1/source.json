@@ -1,0 +1,100 @@
+{
+  "id": "WO2025134741A1",
+  "kind": "patent",
+  "title": "Sample holder tip and sample holder",
+  "url": "https://patents.google.com/patent/WO2025134741A1/en",
+  "figures": "[0036]-[0039] (original Japanese PDF p10, printed p8)",
+  "component_keys": [
+    "sample_stage",
+    "sample"
+  ],
+  "supported_facts": [
+    "[0036]提及FEI（现Thermo Fisher）的细轴，并明确phi 7 mm holder shaft。",
+    "[0037]描述与杆轴垂直的beta倾转机构。"
+  ],
+  "unsupported_claims": [
+    "专利为特殊可收回/加电tip；只支持兼容结构族杆径，不证明普通Titan/Spectra OEM holder全尺寸。",
+    "不能据此增加普通杆不存在的电极、收回驱动或在位附件。"
+  ],
+  "authors": [
+    "裕也 宮崎"
+  ],
+  "owner": [
+    "Mel Build Corp"
+  ],
+  "filing_date": "2024-12-02",
+  "publication_date": "2025-06-26",
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T01:25:09.236709+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 1581444,
+      "sha256": "1545aa97195c9e65c8053c67a9ee7294b67bf7873981eb3bad34205c77f08262",
+      "kind": "original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/93/95/11/ae1989c959c5f5/WO2025134741A1.pdf",
+      "retrieved_utc": "2026-10-11T01:25:09.236709+00:00"
+    },
+    {
+      "file": "original.html",
+      "bytes": 284112,
+      "sha256": "8db15567c283f726874ad2d2e50c6b004713f346e42a8a6431994608f52234cc",
+      "kind": "original_html",
+      "source_url": "https://patents.google.com/patent/WO2025134741A1/en",
+      "retrieved_utc": "2026-10-11T01:25:08.718477+00:00"
+    },
+    {
+      "file": "page-09.png",
+      "bytes": 272291,
+      "sha256": "116baab8a598e017c31f2222d96c7310b5ed072f7dd2ebe8401268af05150fc4",
+      "kind": "unmodified_complete_pdf_page_render",
+      "derived_from": "original.pdf",
+      "pdf_page_1based": 9,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-10.png",
+      "bytes": 275707,
+      "sha256": "d2173bb6f2e8956edb7a34b790b9ff6beeebf0bc2f3490e1397dfe1b252af763",
+      "kind": "unmodified_complete_pdf_page_render",
+      "derived_from": "original.pdf",
+      "pdf_page_1based": 10,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-30.png",
+      "bytes": 116940,
+      "sha256": "103fef21249048f488707d2a130c378ef829672e31450cc4768412017f9dc5cb",
+      "kind": "unmodified_complete_pdf_page_render",
+      "derived_from": "original.pdf",
+      "pdf_page_1based": 30,
+      "render_dpi": 108
+    }
+  ],
+  "archive_status": "original_pdf_saved",
+  "download_receipts": [
+    {
+      "id": "WO2025134741A1",
+      "file": "original.pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/93/95/11/ae1989c959c5f5/WO2025134741A1.pdf",
+      "final_url": "https://patentimages.storage.googleapis.com/93/95/11/ae1989c959c5f5/WO2025134741A1.pdf",
+      "status": "saved",
+      "bytes": 1581444,
+      "sha256": "1545aa97195c9e65c8053c67a9ee7294b67bf7873981eb3bad34205c77f08262",
+      "content_type": "application/pdf",
+      "retrieved_utc": "2026-10-11T01:25:09.236709+00:00"
+    },
+    {
+      "id": "WO2025134741A1",
+      "file": "original.html",
+      "source_url": "https://patents.google.com/patent/WO2025134741A1/en",
+      "final_url": "https://patents.google.com/patent/WO2025134741A1/en",
+      "status": "saved",
+      "bytes": 284112,
+      "sha256": "8db15567c283f726874ad2d2e50c6b004713f346e42a8a6431994608f52234cc",
+      "content_type": "text/html",
+      "retrieved_utc": "2026-10-11T01:25:08.718477+00:00"
+    }
+  ]
+}

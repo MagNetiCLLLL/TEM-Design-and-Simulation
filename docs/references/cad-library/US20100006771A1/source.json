@@ -1,0 +1,110 @@
+{
+  "id": "US20100006771A1",
+  "kind": "patent",
+  "title": "Speciman holder and speciman holder movement device",
+  "url": "https://patents.google.com/patent/US20100006771A1/en",
+  "figures": "Fig. 1 (PDF p2); [0010] (PDF p4); [0097] (PDF p10-11)",
+  "component_keys": [
+    "sample_stage",
+    "sample",
+    "objective_lens"
+  ],
+  "supported_facts": [
+    "常规侧插杆经导向套、气锁密封进入镜柱；Fig.1 标出杆、外部手柄和两个密封圈。",
+    "[0010]/[0097]给出6-10 mm杆/前端直径范围；X沿杆，alpha绕X。"
+  ],
+  "unsupported_claims": [
+    "不是Titan/Spectra制造图，未给杆长、手柄直径或薄tip厚度。",
+    "范围不表示7 mm圆杆可以进入本机5.4 mm极靴间隙。"
+  ],
+  "authors": [
+    "Hiroya Miyazaki"
+  ],
+  "owner": [
+    "Individual"
+  ],
+  "filing_date": "2009-06-25",
+  "publication_date": "2010-01-14",
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T01:25:09.286157+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 1697216,
+      "sha256": "cafb0a90e9a62997691df2021d9258991f5fc4f185845554f8188fadb1d5b8ad",
+      "kind": "original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/6c/c6/2e/422ba34dd4fca2/US20100006771A1.pdf",
+      "retrieved_utc": "2026-10-11T01:25:09.286157+00:00"
+    },
+    {
+      "file": "original.html",
+      "bytes": 278652,
+      "sha256": "703d94fd46fda7f306666f8b66cd368e66f9f1f9b0b6b125e1e617595a113eb2",
+      "kind": "original_html",
+      "source_url": "https://patents.google.com/patent/US20100006771A1/en",
+      "retrieved_utc": "2026-10-11T01:25:08.678179+00:00"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 173291,
+      "sha256": "105a3b835a1472aebbd7d399c99295e2e4430f6c2953d8f8b5d0d41e91064493",
+      "kind": "unmodified_complete_pdf_page_render",
+      "derived_from": "original.pdf",
+      "pdf_page_1based": 2,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 170420,
+      "sha256": "d744673a8f2f161117e0eabb71bd3fc54026a952e978e3305a77ec5239f0e12d",
+      "kind": "unmodified_complete_pdf_page_render",
+      "derived_from": "original.pdf",
+      "pdf_page_1based": 3,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-04.png",
+      "bytes": 474142,
+      "sha256": "e13adb4574924b95a3e45ef225dfa17ec1a69fd1682296ab125bffc3c484a281",
+      "kind": "unmodified_complete_pdf_page_render",
+      "derived_from": "original.pdf",
+      "pdf_page_1based": 4,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-11.png",
+      "bytes": 476357,
+      "sha256": "f29066c7bbb617cb39040f7cdaeaae66eff41b0693dbc02100ea93620780b930",
+      "kind": "unmodified_complete_pdf_page_render",
+      "derived_from": "original.pdf",
+      "pdf_page_1based": 11,
+      "render_dpi": 108
+    }
+  ],
+  "archive_status": "original_pdf_saved",
+  "download_receipts": [
+    {
+      "id": "US20100006771A1",
+      "file": "original.pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/6c/c6/2e/422ba34dd4fca2/US20100006771A1.pdf",
+      "final_url": "https://patentimages.storage.googleapis.com/6c/c6/2e/422ba34dd4fca2/US20100006771A1.pdf",
+      "status": "saved",
+      "bytes": 1697216,
+      "sha256": "cafb0a90e9a62997691df2021d9258991f5fc4f185845554f8188fadb1d5b8ad",
+      "content_type": "application/pdf",
+      "retrieved_utc": "2026-10-11T01:25:09.286157+00:00"
+    },
+    {
+      "id": "US20100006771A1",
+      "file": "original.html",
+      "source_url": "https://patents.google.com/patent/US20100006771A1/en",
+      "final_url": "https://patents.google.com/patent/US20100006771A1/en",
+      "status": "saved",
+      "bytes": 278652,
+      "sha256": "703d94fd46fda7f306666f8b66cd368e66f9f1f9b0b6b125e1e617595a113eb2",
+      "content_type": "text/html",
+      "retrieved_utc": "2026-10-11T01:25:08.678179+00:00"
+    }
+  ]
+}

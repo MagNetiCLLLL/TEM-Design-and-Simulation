@@ -10,7 +10,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 import numpy as np
-from temsim.physics.scan_calibration import held, restore_held, sample_reference_z_mm, capture_record
+from temsim.physics.scan_calibration import (
+    held, restore_held, sample_reference_z_mm, capture_record, ac_angle_target,
+    AUTOMATIC_AC_ANGLE_TARGET,
+)
+from temsim.optics.direct_alignment import canonical_source_basis
 from temsim.optics.shared_deflectors import shared_channel_enabled
 from temsim.physics.first_order import SPECIMEN_CANONICAL_MOMENTUM
 from temsim.physics.finite_scan_response import finite_scan_responses
@@ -92,6 +96,8 @@ class ScanGeometryResult:
     # Peak-to-peak scan-induced mechanical slopes, not absolute beam angle,
     # convergence semi-angle or an independent optical qualification.
     sample_mechanical_angle_span_mrad: tuple[float, float] | None = None
+    sample_canonical_angle_span_mrad: tuple[float, float] | None = None
+    ac_angle_target: str | None = None
 
 
 @dataclass(frozen=True)
@@ -116,23 +122,38 @@ class _CalculatedObservationPlane:
     z_mm: float
 
 
-def _coil_phase_responses(state, component, observation_z_mm):
+def _coil_phase_responses(state, component, observation_z_mm, *, with_reference=False):
     response = finite_scan_responses(state, component, (float(observation_z_mm),))
-    upper, lower, _ = response.at(observation_z_mm)
+    upper, lower, reference = response.at(observation_z_mm)
+    if with_reference:
+        return upper, lower, reference[:2]
     return upper, lower
 
 
+def _angle_rows(state, sample_z_mm, responses, target):
+    upper, lower, reference_xy = responses
+    if target == "mechanical":
+        return upper[2:], lower[2:]
+    g = canonical_source_basis(state, sample_z_mm, position_xy_m=reference_xy)[2:, :2]
+    return upper[2:] - g @ upper[:2], lower[2:] - g @ lower[:2]
+
+
 def calibrate_ac_pure_shift(state, *, _coil_responses=None):
-    """Couple the AC foils so their first-order sample angle cancels."""
+    """Couple finite AC fields for fixed specimen canonical direction.
+
+    Mechanical slope increments remain G @ dr inside the objective field.
+    This first-order condition does not establish a finite probe waist.
+    """
 
     component = state.ac_deflector
     sample_z_mm = sample_reference_z_mm(state)
     if held(state):
         restore_held(state)
         return np.asarray(component.pure_shift_lower_ratio_matrix), _ac_angle_residual(state)
-    upper, lower = (_coil_phase_responses(state, component, sample_z_mm)
-                    if _coil_responses is None else _coil_responses)
-    upper_angle, lower_angle = upper[2:], lower[2:]
+    responses = (_coil_phase_responses(state, component, sample_z_mm, with_reference=True)
+                 if _coil_responses is None else _coil_responses)
+    upper_angle, lower_angle = _angle_rows(
+        state, sample_z_mm, responses, AUTOMATIC_AC_ANGLE_TARGET)
     try:
         condition = float(np.linalg.cond(lower_angle))
         if not np.isfinite(condition) or condition > 1.0e12:
@@ -149,6 +170,7 @@ def calibrate_ac_pure_shift(state, *, _coil_responses=None):
     snapshot = dict(component.__dict__)
     try:
         component.set_pure_shift_coupling(lower_from_upper, residual)
+        object.__setattr__(component, "_pure_shift_angle_target", AUTOMATIC_AC_ANGLE_TARGET)
         component.validate()
     except Exception:
         component.__dict__.clear()
@@ -328,7 +350,8 @@ def _calibrate_ac_scan_scale(state):
         return command, residual
     # Lens excitation and sample Z both move the conjugate planes. Re-solve
     # instead of trusting a component-local flag from an earlier optical state.
-    coil_responses = _coil_phase_responses(state, component, sample_reference_z_mm(state))
+    coil_responses = _coil_phase_responses(
+        state, component, sample_reference_z_mm(state), with_reference=True)
     calibrate_ac_pure_shift(state, _coil_responses=coil_responses)
     upper_map, lower_map = _coil_kick_matrices(component)
     response_m_per_rad = coil_responses[0][:2] @ upper_map + coil_responses[1][:2] @ lower_map
@@ -408,7 +431,7 @@ def recalibrate_descan_only(state) -> DescanCalibrationResult:
     map would otherwise also change that bias and the linearization reference.
     The updated held record is what subsequent particle/wave execution and
     profile loading consume. This operation never switches automatic mode to
-    held or silently retargets AC to the production mechanical-angle condition.
+    held or silently retargets AC to the production canonical-angle condition.
     """
     if not held(state):
         raise ValueError("Descan-only calibration requires a saved held AC calibration")
@@ -515,8 +538,12 @@ def _solve_descan_response_match(
 
 def _ac_angle_residual(state):
     ac = state.ac_deflector
-    upper_phase, lower_phase = _coil_phase_responses(state, ac, sample_reference_z_mm(state))
-    upper, lower = upper_phase[2:], lower_phase[2:]
+    target = ac_angle_target(state)
+    if target == "legacy_unknown":
+        return None
+    z = sample_reference_z_mm(state)
+    phases = _coil_phase_responses(state, ac, z, with_reference=True)
+    upper, lower = _angle_rows(state, z, phases, target)
     u, l = _coil_kick_matrices(ac)
     return float(np.linalg.norm(upper @ u + lower @ l) / max(np.linalg.norm(upper @ u), 1e-30))
 
@@ -555,7 +582,8 @@ def calibrate_scan_system(state, *, force=False, hold=False, observation_stop_z_
         synchronize_scan_raster(state.ac_deflector, descan)
         descan_result = (calibrate_descan_image_plane(state) if consumed(descan) else None)
         if force:
-            capture_record(state, descan_calibrated=descan_result is not None)
+            capture_record(state, descan_calibrated=descan_result is not None,
+                           ac_angle_target=AUTOMATIC_AC_ANGLE_TARGET)
             state.ac_deflector.calibration_mode = "held" if hold else snapshots[0]["calibration_mode"]
         return command, scale_residual, descan_result
     except Exception:
@@ -655,6 +683,7 @@ def _component_paths(
         "lower": (response.z_mm, response.lower[:, :2]),
         "upper_slopes": (response.z_mm, response.upper[:, 2:]),
         "lower_slopes": (response.z_mm, response.lower[:, 2:]),
+        "reference_position": (response.z_mm, response.reference[:, :2]),
     }
 
 
@@ -844,6 +873,12 @@ def calculate_scan_geometry(state, *, observation_stop_z_mm=None, calibration=No
         descan, descan_kicks, descan_paths, sample_z_mm
     )
     angle_span_mrad = np.ptp(sample_slopes_rad.reshape(-1, 2), axis=0) * 1.0e3
+    paths = ac_paths if ac_paths is not None else descan_paths
+    ref_z, ref_xy = paths["reference_position"]
+    chief_xy = [np.interp(sample_z_mm, ref_z, ref_xy[:, axis]) for axis in range(2)]
+    g = canonical_source_basis(state, sample_z_mm, position_xy_m=chief_xy)[2:, :2]
+    sample_canonical_slopes = sample_slopes_rad - np.einsum("ij,...j->...i", g, sample_m)
+    canonical_span_mrad = np.ptp(sample_canonical_slopes.reshape(-1, 2), axis=0) * 1.0e3
     plane_positions_um = {}
     plane_names = {}
     plane_roles = {}
@@ -852,7 +887,8 @@ def calculate_scan_geometry(state, *, observation_stop_z_mm=None, calibration=No
     from temsim.optics.direct_alignment import diffraction_transfers
 
     # Classification always refers to canonical specimen-centre coordinates;
-    # entrance/centre scan calibration still controls the mechanical raster.
+    # The raster remains physical positions; its selected entrance/centre
+    # canonical-angle constraint is captured independently of plane labels.
     plane_transfers = diffraction_transfers(
         state,
         (float(plane.z_mm) for plane in observation_planes
@@ -898,6 +934,8 @@ def calculate_scan_geometry(state, *, observation_stop_z_mm=None, calibration=No
         ),
         calibration_mode=str(ac.calibration_mode),
         sample_mechanical_angle_span_mrad=tuple(float(v) for v in angle_span_mrad),
+        sample_canonical_angle_span_mrad=tuple(float(v) for v in canonical_span_mrad),
+        ac_angle_target=ac_angle_target(state) if ac_enabled else None,
         plane_positions_um=plane_positions_um,
         plane_names=plane_names,
         unavailable_planes=unavailable,

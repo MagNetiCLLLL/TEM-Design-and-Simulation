@@ -233,7 +233,6 @@ def _execute_gun_wave_plan(prepared, *, cancelled=lambda: False, progress_callba
     from temsim.optics.electron_gun.source_policy import require_tip_coherent_source
     require_tip_coherent_source(prepared.working.electron_gun)
     from temsim.physics.core import electron
-    from temsim.simulation_modes import is_ideal
     snapshot, working, emission, plan = prepared.snapshot, prepared.working, prepared.emission, prepared.plan
     stops, wall_radii, endpoints, owners = prepared.stops, prepared.wall_radii, prepared.endpoints, prepared.owners
     stop = float(plan.z_mm[-1])
@@ -245,7 +244,7 @@ def _execute_gun_wave_plan(prepared, *, cancelled=lambda: False, progress_callba
     fields = (plan.magnetic_t, plan.sx_m2, plan.sy_m2)
     midpoints = (plan.midpoint_magnetic_t, plan.midpoint_sx_m2, plan.midpoint_sy_m2)
     modes, records, transport_cache, phase_records = [], [], {}, []
-    energy_count = 1 if is_ideal(working) else len(emission.energies_ev)
+    energy_count = len(emission.energies_ev)
     work_total = energy_count*len(plan.step_m) + emission.record["mode_count"]*len(endpoints)
     work_done = 0
     def progress(label):
@@ -255,9 +254,8 @@ def _execute_gun_wave_plan(prepared, *, cancelled=lambda: False, progress_callba
     for mode_index, mode in enumerate(emission.modes()):
         if cancelled():
             raise InterruptedError("Gun phase propagation cancelled; no partial checkpoint published")
-        # Ideal Optics explicitly neglects chromatic lens focusing, as does the
-        # common particle integrator. The wave still retains its actual energy.
-        energy = float(working.beam_voltage_kv) if is_ideal(working) else mode.energy_kev
+        # The analytical field provider does not change the source energy.
+        energy = mode.energy_kev
         if energy not in transport_cache:
             from types import SimpleNamespace
             q, momentum, _ = electron(SimpleNamespace(beam_voltage_kv=energy))

@@ -1,0 +1,1259 @@
+{
+  "schema": "cad-source-original-toml-map-v1",
+  "captured_on": "2026-10-11",
+  "scope": "Saved original instrument documents materialized read-only; no integrated CAD geometry substituted.",
+  "modules": [
+    {
+      "path": "configs/instruments/gun/FEG.toml",
+      "sha256": "b6d47e87b263f8aa5a31e4e6db6870b19135d460017d12e3745419c761269f3a"
+    },
+    {
+      "path": "configs/instruments/gun/FEG_Mono.toml",
+      "sha256": "203fd443be8ea2246432463ff70833247f19816fc14f40e4b9d16e7a1c793f74"
+    },
+    {
+      "path": "configs/instruments/gun/Thermionic.toml",
+      "sha256": "81d1fe3640ebf4fbeb051792ca944a030058e1e1e8b5a88f8e26dabbb6285283"
+    },
+    {
+      "path": "configs/instruments/beam_blanker/ElectrostaticBeamBlanker.toml",
+      "sha256": "72a244f0ce78a87f426f4b4b2e45997d397bcb3e603fa140d998afcbc3c55e61"
+    },
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "sha256": "96c4d5d8ff83fee591df4e3ef4fd1255cad68aa794a11f27468f1914f6e806d5"
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "sha256": "8ee5eb1a69aa80bc5917947dd7e5fb31ca7c9d655bd7dc5dc2f190ecd402b03b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "sha256": "b7aa1919f09ac9af4a8ef52d994c3a3c6fe1b46ea8edec768f0d5927e3156d61"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "sha256": "36af89b1932348710a2e1920c95a5759f7a1a3b71e3ef40339634efcfa63e243"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "sha256": "7f5015d5116ddd84d1ea90e6b5592068118ba56f344a5800d4f7f65d38627e35"
+    },
+    {
+      "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+      "sha256": "f4f4654e4e07bc9d47d42692280dbb335951c673c91481368f3e79d63752504b"
+    },
+    {
+      "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "sha256": "62f3241a1c6f870d7c8b720284619066769d53482f493d36a7dc3094287822b3"
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "FEI-Titan-training",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "condenser_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "condenser_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "condenser_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "condenser_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "condenser_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "condenser_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "condenser_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "condenser_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "condenser_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "condenser_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "condenser_lens_3",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "condenser_lens_3",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "condenser_lens_3",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "condenser_lens_3",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "mini_condenser",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "mini_condenser",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "mini_condenser",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "mini_condenser",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "mini_condenser",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "JP2967966B2",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "condenser_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "condenser_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "condenser_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "condenser_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "condenser_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "condenser_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "condenser_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "condenser_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "condenser_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "condenser_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "condenser_lens_3",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "condenser_lens_3",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "condenser_lens_3",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "condenser_lens_3",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "adapter_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "adapter_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_tl22_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_tl22_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_tl21_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_tl21_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_tl12_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_tl12_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_ol_post_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_tl11_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_tl12_lens",
+          "mechanical_profile": "integrated_magnetic_lens_channel"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_tl21_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_tl22_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_adapter_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_ol_post_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_tl11_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_tl12_lens",
+          "mechanical_profile": "integrated_magnetic_lens_channel"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_tl21_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_tl22_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_adapter_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "diffraction_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+          "key": "diffraction_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "intermediate_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+          "key": "intermediate_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "projector_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+          "key": "projector_lens_1",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "projector_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+          "key": "projector_lens_2",
+          "mechanical_profile": "magnetic_lens_assembly"
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "legacy-user-photos",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/gun/FEG.toml",
+          "key": "feg_accelerator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/gun/FEG_Mono.toml",
+          "key": "feg_accelerator",
+          "mechanical_profile": null
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [
+        "aperture strip assemblies"
+      ],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "Mueller2006a",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_hp1_hexapole",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_hp1_hexapole",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_hp2_hexapole",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_hp2_hexapole",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_dph1_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_dph1_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_dph2_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_dph2_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_tl22_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_tl22_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_tl21_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_tl21_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_tl12_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_tl12_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "adapter_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "adapter_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "US20090079531A1",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_dph1_coils",
+          "mechanical_profile": "deflector_coil_insert"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_dph1_coils",
+          "mechanical_profile": "deflector_coil_insert"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_dph2_coils",
+          "mechanical_profile": "deflector_coil_insert"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_dph2_coils",
+          "mechanical_profile": "deflector_coil_insert"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_dp11_coils",
+          "mechanical_profile": "deflector_coil_insert"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_dp11_coils",
+          "mechanical_profile": "deflector_coil_insert"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_dp21_coils",
+          "mechanical_profile": "deflector_coil_insert"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_dp21_coils",
+          "mechanical_profile": "deflector_coil_insert"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_dp22_coils",
+          "mechanical_profile": "deflector_coil_insert"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_dp22_coils",
+          "mechanical_profile": "deflector_coil_insert"
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "ac_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "ac_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "ac_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "ac_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "ac_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "beam_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "beam_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "beam_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "beam_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "beam_deflector",
+          "mechanical_profile": null
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "US20240371597A1",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_hp1_hexapole",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_hp1_hexapole",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_hp2_hexapole",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_hp2_hexapole",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_hp1_hexapole",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_hp1_hexapole",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_hp2_hexapole",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_hp2_hexapole",
+          "mechanical_profile": null
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [
+        "physical multipole hosts"
+      ],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "US4306149A",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "mini_condenser",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "mini_condenser",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "mini_condenser",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "mini_condenser",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "mini_condenser",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "ac_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "ac_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "ac_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "ac_deflector",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "ac_deflector",
+          "mechanical_profile": null
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "US5481164A",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "condenser_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "condenser_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "condenser_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "condenser_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "condenser_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "objective_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "objective_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "objective_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "objective_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "objective_stigmator",
+          "mechanical_profile": null
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [
+        "quadrupole normal/skew channels"
+      ],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "US6548816B2",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/gun/FEG.toml",
+          "key": "feg_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/gun/FEG_Mono.toml",
+          "key": "feg_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "condenser_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "condenser_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "condenser_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "condenser_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "condenser_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "objective_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "objective_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "objective_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "objective_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "objective_stigmator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "diffraction_stigmator",
+          "mechanical_profile": "quadrupole_field_channel"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+          "key": "diffraction_stigmator",
+          "mechanical_profile": "quadrupole_field_channel"
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "US6844548B2",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/gun/FEG_Mono.toml",
+          "key": "feg_monochromator_wien",
+          "mechanical_profile": null
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "US8373137B2",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_multipole_01",
+          "mechanical_profile": "energy_filter_multipole_carrier"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_multipole_02",
+          "mechanical_profile": "energy_filter_multipole_carrier"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_multipole_03",
+          "mechanical_profile": "energy_filter_multipole_carrier"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_multipole_04",
+          "mechanical_profile": "energy_filter_multipole_carrier"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_multipole_05",
+          "mechanical_profile": "energy_filter_multipole_carrier"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_multipole_06",
+          "mechanical_profile": "energy_filter_multipole_carrier"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_multipole_07",
+          "mechanical_profile": "energy_filter_multipole_carrier"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_multipole_08",
+          "mechanical_profile": "energy_filter_multipole_carrier"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_multipole_09",
+          "mechanical_profile": "energy_filter_multipole_carrier"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_multipole_10",
+          "mechanical_profile": "energy_filter_multipole_carrier"
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "US8841630B2",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "adapter_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "adapter_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_tl22_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_tl22_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_tl21_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_tl21_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "probe_tl12_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "probe_tl12_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_ol_post_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_tl11_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_tl12_lens",
+          "mechanical_profile": "integrated_magnetic_lens_channel"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_tl21_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_tl22_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "image_adapter_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_ol_post_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_tl11_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_tl12_lens",
+          "mechanical_profile": "integrated_magnetic_lens_channel"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_tl21_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_tl22_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "image_adapter_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "US9548182B2",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/gun/FEG.toml",
+          "key": "feg_extractor",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/gun/FEG_Mono.toml",
+          "key": "feg_extractor",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/gun/FEG.toml",
+          "key": "feg_electrostatic_lens",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/gun/FEG_Mono.toml",
+          "key": "feg_electrostatic_lens",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/gun/FEG.toml",
+          "key": "feg_accelerator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/gun/FEG_Mono.toml",
+          "key": "feg_accelerator",
+          "mechanical_profile": null
+        },
+        {
+          "path": "configs/instruments/gun/Thermionic.toml",
+          "key": "thermionic_accelerator",
+          "mechanical_profile": null
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "US9966219B2",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_tapered_prism",
+          "mechanical_profile": "tapered_sector_prism"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_bias_tube",
+          "mechanical_profile": "electrostatic_bias_tube"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_slit",
+          "mechanical_profile": "xo_energy_slit_assembly"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_shutter",
+          "mechanical_profile": "fast_electrostatic_shutter"
+        },
+        {
+          "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+          "key": "energy_filter_camera_deflector",
+          "mechanical_profile": "electrostatic_camera_deflector"
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    },
+    {
+      "source_id": "WO2021170762A1",
+      "exact_or_glob_matches": [
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "objective_lens",
+          "mechanical_profile": "magnetic_lens_assembly"
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "objective_upper_pole",
+          "mechanical_profile": "magnetic_pole_piece"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "objective_upper_pole",
+          "mechanical_profile": "magnetic_pole_piece"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "objective_upper_pole",
+          "mechanical_profile": "magnetic_pole_piece"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "objective_upper_pole",
+          "mechanical_profile": "magnetic_pole_piece"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "objective_upper_pole",
+          "mechanical_profile": "magnetic_pole_piece"
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "objective_lower_pole",
+          "mechanical_profile": "magnetic_pole_piece"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "objective_lower_pole",
+          "mechanical_profile": "magnetic_pole_piece"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "objective_lower_pole",
+          "mechanical_profile": "magnetic_pole_piece"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "objective_lower_pole",
+          "mechanical_profile": "magnetic_pole_piece"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "objective_lower_pole",
+          "mechanical_profile": "magnetic_pole_piece"
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "objective_lens_excitation_coil",
+          "mechanical_profile": "magnetic_excitation_coil"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "objective_lens_excitation_coil",
+          "mechanical_profile": "magnetic_excitation_coil"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "objective_lens_excitation_coil",
+          "mechanical_profile": "magnetic_excitation_coil"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "objective_lens_excitation_coil",
+          "mechanical_profile": "magnetic_excitation_coil"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "objective_lens_excitation_coil",
+          "mechanical_profile": "magnetic_excitation_coil"
+        },
+        {
+          "path": "configs/instruments/column/C2.toml",
+          "key": "objective_lens_yoke",
+          "mechanical_profile": "magnetic_lens_yoke"
+        },
+        {
+          "path": "configs/instruments/column/C3.toml",
+          "key": "objective_lens_yoke",
+          "mechanical_profile": "magnetic_lens_yoke"
+        },
+        {
+          "path": "configs/instruments/column/C3_ImageCorrector.toml",
+          "key": "objective_lens_yoke",
+          "mechanical_profile": "magnetic_lens_yoke"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+          "key": "objective_lens_yoke",
+          "mechanical_profile": "magnetic_lens_yoke"
+        },
+        {
+          "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+          "key": "objective_lens_yoke",
+          "mechanical_profile": "magnetic_lens_yoke"
+        }
+      ],
+      "family_descriptions_or_unmatched_keys": [],
+      "mapping_limit": "Source association does not establish measured dimensions. Unmatched descriptions name families, not new TOML components."
+    }
+  ]
+}

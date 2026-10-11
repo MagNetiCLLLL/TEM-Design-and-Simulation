@@ -30,6 +30,48 @@ def test_all_column_variants_share_descan_but_keep_scan_after_corrector(variant)
         assert ac["local_start_z_mm"] > parts["probe_tl12_lens"]["local_end_z_mm"]
 
 
+@pytest.mark.parametrize("variant,centres", [
+    ("C2", (455.0, 480.0)),
+    ("C3", (705.0, 730.0)),
+    ("C3_ProbeCorrector", (937.5, 962.5)),
+    ("C3_ImageCorrector", (705.0, 730.0)),
+    ("C3_ProbeCorrector_ImageCorrector", (1029.0, 1054.0)),
+])
+def test_relocated_ac_default_is_scoped_to_calibrated_column(variant, centres):
+    document = module_manifest.read_document(INSTRUMENT_CONFIG_ROOT / "column" / f"{variant}.toml")
+    parts = {part["key"]: part for part in document["parts"]}
+    assert tuple(parts["ac_deflector"]["interaction_centers_local_z_mm"]) == centres
+
+
+def test_ac_can_move_independently_of_downstream_descan():
+    document = module_manifest.read_document(INSTRUMENT_CONFIG_ROOT / "column/C3_ProbeCorrector.toml")
+    original = deepcopy(document)
+    ac = next(part for part in document["parts"] if part["key"] == "ac_deflector")
+    for field in ("local_start_z_mm", "local_center_z_mm", "local_end_z_mm",
+                  "optical_reference_local_z_mm"):
+        ac[field] += 1.0
+    ac["interaction_centers_local_z_mm"] = [value + 1.0 for value in ac["interaction_centers_local_z_mm"]]
+    module_manifest.validate_document(document)
+    assert [part for part in document["parts"] if part["key"] != "ac_deflector"] == [
+        part for part in original["parts"] if part["key"] != "ac_deflector"
+    ]
+
+
+@pytest.mark.parametrize("field,value,error", [
+    ("interaction_centers_local_z_mm", [940.0, 960.0], "interaction centres must match"),
+    ("mechanical_inter_coil_gap_mm", 9.0, "body length must equal"),
+    ("mechanical_coil_length_mm", 14.0, "field thickness must fit"),
+    ("effective_thickness_mm", 16.0, "field thickness must fit"),
+    ("optical_reference_local_z_mm", 951.0, "optical reference must equal"),
+])
+def test_ac_inconsistent_declared_geometry_is_rejected(field, value, error):
+    document = module_manifest.read_document(INSTRUMENT_CONFIG_ROOT / "column/C3_ProbeCorrector.toml")
+    ac = next(part for part in document["parts"] if part["key"] == "ac_deflector")
+    ac[field] = value
+    with pytest.raises(ValueError, match=error):
+        module_manifest.validate_document(document)
+
+
 def test_legacy_channel_geometry_is_replaced_by_edited_host_without_changing_input():
     path = INSTRUMENT_CONFIG_ROOT / "column/C3_ProbeCorrector.toml"
     original = tomllib.loads(path.read_text(encoding="utf-8"))
@@ -52,6 +94,21 @@ def test_legacy_channel_geometry_is_replaced_by_edited_host_without_changing_inp
 @pytest.fixture(scope="module")
 def base_state():
     return default_state()
+
+
+def test_default_runtime_ac_centres_match_manifest_and_clear_neighbours(base_state):
+    assembly = base_state._resolved_assembly
+    ac = base_state.ac_deflector
+    assert (ac.upper_z_mm, ac.lower_z_mm) == (1387.5, 1412.5)
+    assert (ac.upper_surface_z_mm, ac.lower_surface_z_mm) == (1380.0, 1420.0)
+    assert assembly.part("probe_tl12_lens").end_z_mm < ac.upper_surface_z_mm
+    assert ac.lower_surface_z_mm < assembly.part("condenser_stigmator").start_z_mm
+    assert ac.lower_surface_z_mm < assembly.part("mini_condenser").start_z_mm
+    # The calibrated static beam waist lies in the open inter-coil gap.
+    assert ac.upper_z_mm + ac.mechanical_coil_length_mm / 2 < 1400.0007
+    assert ac.lower_z_mm - ac.mechanical_coil_length_mm / 2 > 1400.0007
+    assert (base_state.descan_deflector.upper_z_mm,
+            base_state.descan_deflector.lower_z_mm) == (1774.4, 1799.4)
 
 
 def test_bound_channel_and_deepcopy_follow_live_host_geometry(base_state):

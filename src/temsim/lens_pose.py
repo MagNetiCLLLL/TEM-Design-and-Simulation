@@ -27,14 +27,18 @@ def column_pose_kind(part):
     """
     from temsim.component_keys import PROBE_CORRECTOR_KEYS, IMAGE_CORRECTOR_KEYS
     from temsim.component_representation import non_material_role, SHARED_DEFLECTOR_HOSTS
+    from temsim.optics.field_hardware_binding import COIL_INSERT_ROLE, field_hardware_host_key
     key = str(part.get("key", ""))
     if (key.startswith(("feg_", "gun_", "thermionic_", "energy_filter_"))
             or part.get("branch") in {"gun", "source", "detection", "energy_filter"}
             or part.get("mechanical_part_role") == "custom_mechanical_copy"
             or key in SHARED_DEFLECTOR_HOSTS
+            or field_hardware_host_key(part)
             or key in {"image_sad_plane", "probe_dp12_scan_deflector"}
             or non_material_role(part) == "virtual_reference"):
         return None
+    if part.get("mechanical_part_role") == COIL_INSERT_ROLE:
+        return "hardware"
     profile = part.get("mechanical_profile")
     if (profile == "magnetic_lens_assembly"
             or (profile == "magnetic_lens_housing" and not part.get("parent_key"))):
@@ -82,6 +86,9 @@ def inherits_parent_lens_pose(part):
     inherit the objective pose through that independently mounted device.
     """
     from temsim.component_representation import non_material_role
+    from temsim.optics.field_hardware_binding import COIL_INSERT_ROLE
+    if part.get("mechanical_part_role") == COIL_INSERT_ROLE:
+        return True
     if supports_physical_lens_pose(part) and part.get("mechanical_profile") in _PROFILES:
         return True
     if supports_physical_column_pose(part):
@@ -169,7 +176,9 @@ def effective_part_transform_mm(part, by_key):
     seen = set()
     current = part
     from temsim.component_representation import SHARED_DEFLECTOR_HOSTS
-    host = SHARED_DEFLECTOR_HOSTS.get(str(part.get("key", "")))
+    from temsim.optics.field_hardware_binding import field_hardware_host_key
+    host = (SHARED_DEFLECTOR_HOSTS.get(str(part.get("key", "")))
+            or field_hardware_host_key(part))
     if host:
         current = by_key.get(host)
         if current is None:

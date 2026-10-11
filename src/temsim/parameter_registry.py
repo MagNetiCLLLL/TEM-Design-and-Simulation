@@ -122,7 +122,7 @@ class ParameterDefinition:
         elif self.category == "calibration":
             status = "Saved calibration; consumed in held mode"
         elif self.component in _HEXAPOLE_KEYS:
-            status = "Active in analytical transport when enabled; inactive in ideal mode"
+            status = "Active when enabled, including Ideal Optics; parameterised multipole field"
         return (f"{self.label} | {self.category} | {self.unit or 'dimensionless'}\n{status}\n"
                 f"{self.description}\nSweep: {'eligible through existing validator' if self.sweep_eligible else 'not in the validated sweep pilot'}")
 
@@ -315,7 +315,7 @@ def parameter_definition(component, name, *, lens=False):
                 "Rotation by 120 degrees repeats the pattern; 60 degrees reverses it. "
                 "Correction depends on the paired fields, relay optics and incident beam; more strength need not improve the probe or image. "
                 "Hold energy and relay optics fixed when comparing. The coefficient is not a magnetic gradient in T/m². "
-                "This switch controls this field only, not the relay lenses or apertures. Ideal mode omits nonlinear action.")
+                "This switch controls this field only, not the relay lenses or apertures. Configured nonlinear action remains active, including Ideal Optics, which uses analytical parameterized fields.")
         elif name in {"strength_m2", "enabled"} and component in _QUADRUPOLE_KEYS:
             category, label = "operating", "Quadrupole " + label
             detail = ("Signed effective coefficient in theta_x' = -q*x, theta_y' = +q*y. Positive q focuses X and defocuses Y "

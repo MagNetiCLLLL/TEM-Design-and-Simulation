@@ -1092,7 +1092,8 @@ class ParameterPanel(QWidget):
                             "Source: " + meaning.source_label + ". " + meaning.source_note,
                             meaning.description, interaction,
                         )))
-                    host = shared_deflector_field_owner(field.path[1], field.path[2])
+                    host = (getattr(field, "owner_key", "")
+                            or shared_deflector_field_owner(field.path[1], field.path[2]))
                     if host:
                         tooltip = f"Read-only shared structure. Edit {host} to change this value."
                     label.setToolTip(tooltip)

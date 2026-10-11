@@ -56,7 +56,6 @@ PROBE_CORRECTOR_KEYS = (
     PROBE_TL12_LENS,
     PROBE_DP12_SCAN_DEFLECTOR,
 )
-IMAGE_CORRECTOR_OL_POST_LENS = "image_ol_post_lens"
 IMAGE_CORRECTOR_HPOL_HEXAPOLE = "image_hpol_hexapole"
 IMAGE_CORRECTOR_QPOL_QUADRUPOLE = "image_qpol_quadrupole"
 IMAGE_CORRECTOR_DP11_DEFLECTOR = "image_dp11_deflector"
@@ -82,7 +81,6 @@ IMAGE_CORRECTOR_SAD_PLANE = "image_sad_plane"
 STEM_DIFFRACTION_REFERENCE_PLANE = "stem_diffraction_reference_plane"
 
 IMAGE_CORRECTOR_LENS_KEYS = (
-    IMAGE_CORRECTOR_OL_POST_LENS,
     IMAGE_CORRECTOR_TL11_LENS,
     IMAGE_CORRECTOR_TL12_LENS,
     IMAGE_CORRECTOR_TL21_LENS,
@@ -108,7 +106,6 @@ IMAGE_CORRECTOR_ELEMENT_KEYS = (
 )
 
 IMAGE_CORRECTOR_KEYS = (
-    IMAGE_CORRECTOR_OL_POST_LENS,
     IMAGE_CORRECTOR_HPOL_HEXAPOLE,
     IMAGE_CORRECTOR_QPOL_QUADRUPOLE,
     IMAGE_CORRECTOR_DP11_DEFLECTOR,
@@ -117,8 +114,8 @@ IMAGE_CORRECTOR_KEYS = (
     IMAGE_CORRECTOR_TL12_LENS,
     IMAGE_CORRECTOR_DPH1_DEFLECTOR,
     IMAGE_CORRECTOR_HP1_HEXAPOLE,
-    IMAGE_CORRECTOR_DP21_DEFLECTOR,
     IMAGE_CORRECTOR_TL21_LENS,
+    IMAGE_CORRECTOR_DP21_DEFLECTOR,
     IMAGE_CORRECTOR_DP22_DEFLECTOR,
     IMAGE_CORRECTOR_TL22_LENS,
     IMAGE_CORRECTOR_DPH2_DEFLECTOR,
@@ -282,6 +279,7 @@ FIXED_APERTURE_KEYS = frozenset({
 
 # Retired identifiers are rejected, never translated into active components.
 RETIRED_COMPONENT_KEYS = frozenset({
+    "image_ol_post_lens",  # OL post belongs to Objective, never a second lens.
     "corr_pre_def", "corr_mid_def", "corr_post_def",
     "lorentz", "bsh_btlt", "tem_corrector",
     'ac',
@@ -357,6 +355,13 @@ def require_current_component_key(key, *, expected=None):
     """Validate an identifier without changing its value or physical owner."""
     if not isinstance(key, str) or not key or key.strip() != key:
         raise ValueError("A current component key must be a nonempty string without surrounding whitespace")
+    if key == "image_ol_post_lens":
+        raise ValueError(
+            "This saved setup contains the retired duplicate Image Corrector OL post lens. "
+            "OL post is already part of the Objective assembly. Reassemble the current "
+            "Image Corrector and recalculate; the old optical settings cannot be reused "
+            "as a five-lens CETCOR calibration."
+        )
     if key in RETIRED_COMPONENT_KEYS:
         raise ValueError(f"Retired component key {key!r} is unsupported; use an explicit current component")
     if expected is not None and key != expected:

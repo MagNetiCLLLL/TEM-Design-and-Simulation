@@ -109,7 +109,7 @@ class ScanControlView(QWidget):
             "Scan is available in TEM and STEM with both microprobe and "
             "nanoprobe illumination. AC and Descan expose the same raster and "
             "foil controls. Automatic AC calibration targets zero first-order change in "
-            "mechanical direction at the chosen specimen reference. Held calibration "
+            "canonical direction at the chosen specimen reference, consistent with diffraction optics. Held calibration "
             "preserves saved drives and may produce mechanical-angle changes. "
             "Descan uses the opposite raster command "
             "and the selected physical observation plane. Held calibration does "
@@ -140,8 +140,8 @@ class ScanControlView(QWidget):
         self.calibrate_hold_button.setObjectName("calibrateScanAndHold")
         self.calibrate_hold_button.setToolTip(
             "Recalculate both AC and Descan, then hold the result. AC uses the "
-            "production mechanical-angle constraint at the specimen; this "
-            "replaces any saved canonical-angle or custom AC calibration.")
+            "production canonical-angle constraint at the specimen; this "
+            "replaces the saved AC calibration using the current fields.")
         self.calibrate_descan_button = QPushButton("Calibrate Descan (keep AC)")
         self.calibrate_descan_button.setObjectName("calibrateDescanKeepAc")
         self.calibrate_descan_button.setToolTip(
@@ -429,7 +429,7 @@ class ScanControlView(QWidget):
             "2 x 2 coupling. The raster clock, pixel count, pixel size and FOV "
             "are shared. Active magnetic lenses can rotate and remap both pairs, "
             "so mechanical symmetry alone does not cancel diffraction motion. "
-            "Calibrate and hold recalculates the mechanical-angle AC target. "
+            "Calibrate and hold recalculates the canonical-angle AC target. "
             "To retain an existing held AC constraint while changing downstream optics, "
             "use Calibrate Descan (keep AC). At nonzero specimen magnetic field, holding "
             "mechanical direction is not the same requirement as keeping a canonical "
@@ -2029,7 +2029,7 @@ class ScanControlView(QWidget):
                 " | AC coupling lower <- upper "
                 f"[[{coupling[0, 0]:.5g}, {coupling[0, 1]:.5g}], "
                 f"[{coupling[1, 0]:.5g}, {coupling[1, 1]:.5g}]], "
-                f"mechanical-angle response residual (dimensionless) {residual}"
+                f"{getattr(result, 'ac_angle_target', None) or 'unknown'}-angle response residual (dimensionless) {residual}"
             )
         descan_text = ""
         if result.descan_target_z_mm is not None:
@@ -2053,14 +2053,20 @@ class ScanControlView(QWidget):
         reference_name = getattr(result, "sample_reference_name", None) or "Specimen reference unavailable"
         reference_z = self._finite_readout(getattr(result, "sample_reference_z_mm", None), " mm", digits=12)
         calibration_mode = getattr(result, "calibration_mode", None)
-        calibration_text = {
-            "automatic": "automatic (mechanical-angle target)",
-            "held": "held (constraint provenance unspecified)",
-        }.get(calibration_mode, "unavailable")
+        angle_target = getattr(result, "ac_angle_target", None)
+        target_text = {"canonical": "canonical-angle target",
+                       "mechanical": "mechanical-angle target"}.get(
+                           angle_target, "constraint provenance unspecified")
+        calibration_text = (f"{calibration_mode} ({target_text})"
+                            if calibration_mode in ("automatic", "held") else "unavailable")
         span = getattr(result, "sample_mechanical_angle_span_mrad", None)
         angle_span = ("unavailable" if span is None or np.shape(span) != (2,) else
                       f"X {self._finite_readout(span[0], ' mrad')}, "
                       f"Y {self._finite_readout(span[1], ' mrad')}")
+        canonical_span = getattr(result, "sample_canonical_angle_span_mrad", None)
+        canonical_text = ("unavailable" if canonical_span is None or np.shape(canonical_span) != (2,) else
+                          f"X {self._finite_readout(canonical_span[0], ' mrad')}, "
+                          f"Y {self._finite_readout(canonical_span[1], ' mrad')}")
         if result.pixel_size_nm is None:
             scale_text = "AC pixel scale inactive"
         else:
@@ -2088,7 +2094,7 @@ class ScanControlView(QWidget):
             f"captured calibration: {calibration_text} | "
             f"{reference_name} at Z {reference_z}: position span {sample_span_x:.6g} x "
             f"{sample_span_y:.6g} um | first-order scan-induced mechanical slope span "
-            f"(peak-to-peak): {angle_span} | drift-only pivot: "
+            f"(peak-to-peak): {angle_span} | canonical slope span: {canonical_text} | drift-only pivot: "
             f"AC {ac_pivot}, Descan {descan_pivot}"
             f"{symmetry_text}{coupling_text}{descan_text}"
             + (" | Unavailable scan planes: " + "; ".join(result.unavailable_planes.values())

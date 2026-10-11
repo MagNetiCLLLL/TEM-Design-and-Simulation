@@ -33,6 +33,7 @@ def _resolved_test_drives(state):
     # Deliberately cross-coupled matrices catch a lost off-diagonal entry;
     # setters also change scalar compatibility readbacks.
     state.ac_deflector.set_pure_shift_coupling(((-1.2, .1), (-.2, -1.3)))
+    state.ac_deflector._pure_shift_angle_target = "canonical"
     state.ac_deflector.set_scan_command_matrix_mrad(((.001, .0002), (-.0003, .002)))
     state.descan_deflector.set_image_plane_coupling(((-.7, .3), (.2, -.8)),
         target_key="test_target", target_z_mm=1800.)
@@ -103,6 +104,28 @@ def test_upstream_observation_does_not_require_downstream_held_record():
     with pytest.raises(ValueError, match="No held scan calibration"):
         preparation.prepare_scan_drives(state, snapshot.digest,
             observation_stop_z_mm=state.ac_deflector.upper_z_mm-1.)
+
+
+@pytest.mark.parametrize("unused", ("disabled", "upstream"))
+@pytest.mark.parametrize("record", ("", "{not-json}"))
+def test_unused_held_record_can_be_identified_without_certifying_execution(unused, record):
+    from temsim.physics.scan_calibration import restore_held
+    state = _state()
+    ac = state.ac_deflector
+    ac.calibration_mode = "held"
+    ac.calibration_record_json = record
+    ac.scan_enabled = unused != "disabled"
+    stop = (ac.upper_z_mm-ac.effective_thickness_mm
+            if unused == "upstream" else state.sample.z_mm)
+    preparation.prepare_scan_drives(state, "unused-held", observation_stop_z_mm=stop)
+    identity = preparation.scan_drive_identity(state)
+    assert identity == preparation.scan_drive_identity(state)
+    # Invalid records remain distinct captured inputs, not a shared empty
+    # canonical calibration, and are still rejected if execution consumes one.
+    ac.calibration_record_json = record + " "
+    assert preparation.scan_drive_identity(state) != identity
+    with pytest.raises(ValueError):
+        restore_held(state)
 
 
 def test_posed_coil_leading_support_prepares_before_unposed_boundary(monkeypatch):
@@ -337,3 +360,23 @@ def test_concurrent_preparation_cache_eviction_keeps_private_outputs(monkeypatch
         identities = list(pool.map(work, range(len(states))))
     assert len(set(identities)) == 1
     assert len(preparation._PREPARED) <= preparation._MAXIMUM_PREPARED
+
+
+def test_calibration_model_versions_preparation_and_executed_drive_identity(monkeypatch):
+    import temsim.physics.scan_geometry as geometry
+    calls = []
+    monkeypatch.setattr(geometry, "calibrate_scan_system",
+        lambda state, **_: (calls.append(1), _resolved_test_drives(state)))
+    state = _state()
+    cache = {}
+    preparation.prepare_scan_drives(state, "same-input", session_cache=cache)
+    identity = preparation.scan_drive_identity(state)
+    target = _state()
+    preparation.copy_resolved_scan_drives(state, target)
+    assert target.ac_deflector._pure_shift_angle_target == "canonical"
+    preparation.prepare_scan_drives(target, "same-input", session_cache=cache)
+    assert calls == [1]
+    monkeypatch.setattr(preparation, "SCAN_CALIBRATION_MODEL", "different-algorithm")
+    assert preparation.scan_drive_identity(target) != identity
+    preparation.prepare_scan_drives(target, "same-input", session_cache=cache)
+    assert calls == [1, 1]

@@ -1,0 +1,31 @@
+{
+  "id": "legacy-user-photos",
+  "kind": "unlocated_user_reference",
+  "family": "旧用户照片线索",
+  "title": "2026-08-30 孔径与加速管照片线索",
+  "url": "../../gun-electrode-patents/README.md",
+  "authors": [],
+  "owner": "用户提供；原图权属未重新核验",
+  "publication_date": "2026-08-30 (stored reference date)",
+  "figures": "无可核验原始照片文件或图页编号；专利 Fig. 2 是另一来源，不是用户照片。",
+  "component_keys": [
+    "feg_accelerator",
+    "aperture strip assemblies"
+  ],
+  "supported_facts": [
+    "本地 TOML 中记录了用户曾提供重复环形加速管和单杆孔径条带照片的来源说明。"
+  ],
+  "unsupported_claims": [
+    "原始照片本次未定位，不能称已核验照片像素、比例尺或材料。",
+    "不得拿专利图或生成模型替代原照片。"
+  ],
+  "archive_status": "metadata_pointer_only_original_photo_not_located",
+  "assets": [],
+  "availability_notes": [
+    "线索字段：accelerator_electrode_stack_evidence_source、aperture_mechanism_evidence_source。",
+    "同目录枪区专利截图另有明确 PDF 溯源；它们不是上述用户照片。"
+  ],
+  "archived_on": "2026-10-11",
+  "rights_note": "未复制未知权属或未定位图片。",
+  "assembly_comparison_rule": "仅保存线索；不作为新增部件或定量尺寸的依据。"
+}

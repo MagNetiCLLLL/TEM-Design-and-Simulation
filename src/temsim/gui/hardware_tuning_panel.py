@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
 )
 
 from temsim.gui.input_policy import WheelSafeComboBox, WheelSafeDoubleSpinBox
+from temsim.gui.beam_steering import BeamSteeringControls
 from temsim.hardware_tuning import TUNING_TASKS, resolve_task
 from temsim.hardware_tuning_feedback import (
     baseline_difference, captured_hardware_values, observe_retained_beam, recorded_waists,
@@ -34,7 +35,8 @@ class HardwareTuningPanel(QWidget):
 
     Bindings own labels and parameter identities, never another actuator value.
     The main window routes accepted edits through its existing invalidation and
-    preview policy. No alignment solver or navigation action is called here.
+    preview policy. Reference-plane steering is an explicit background action;
+    selecting tasks or editing raw drives never invokes its solver.
     """
 
     runtime_changed = Signal(str)
@@ -161,6 +163,9 @@ class HardwareTuningPanel(QWidget):
         feedback_layout.addRow(self.feedback_details)
         content_layout.addWidget(self.feedback_toggle)
         content_layout.addWidget(self.feedback)
+        self.steering = BeamSteeringControls()
+        self.steering.runtime_changed.connect(self._steering_applied)
+        content_layout.addWidget(self.steering)
         content_layout.addWidget(_label("Current applied hardware controls"))
         content_layout.addWidget(self._host)
         self.scroll = QScrollArea()
@@ -232,6 +237,7 @@ class HardwareTuningPanel(QWidget):
             self.status.hide()
             self._result_stale.update({key: True for key in self._retained})
         self._state = state
+        self.steering.set_state(state)
         self.refresh_values()
 
     def showEvent(self, event):
@@ -244,6 +250,9 @@ class HardwareTuningPanel(QWidget):
             return
         self.title.setText(task.label)
         self.description.setText(task.description)
+        self.steering.setVisible(task.key in {"beam_tilt", "beam_shift"})
+        if task.key in {"beam_tilt", "beam_shift"}:
+            self.steering.set_kind("tilt" if task.key == "beam_tilt" else "shift")
         self.context.setText(
             "Current settings · "
             f"Illumination: {getattr(self._state, 'illumination_mode', 'unavailable')} · "
@@ -280,6 +289,7 @@ class HardwareTuningPanel(QWidget):
 
     def publish_result(self, result, quality):
         """Accept an already published execution; this method never calculates."""
+        self.steering.publish_result(result)
         self._observations.clear()
         record = (result, str(quality), self._revision)
         captured_state = getattr(result, "state_snapshot", None)
@@ -312,6 +322,8 @@ class HardwareTuningPanel(QWidget):
         self._refresh_feedback()
 
     def clear_results(self):
+        self.steering.publish_result(None)
+        self.steering.invalidate("No retained result. Calculate calibration for the current instrument.")
         self._retained.clear()
         self._captured_controls.clear()
         self._result_stale.clear()
@@ -345,7 +357,16 @@ class HardwareTuningPanel(QWidget):
 
     def set_revision(self, revision):
         self._revision = int(revision)
+        self.steering.set_revision(revision)
         self._refresh_feedback()
+
+    def _steering_applied(self, parameter):
+        self._result_stale.update({key: True for key in self._retained})
+        self.refresh_values(force=True)
+        self.runtime_changed.emit(parameter)
+
+    def shutdown(self):
+        return self.steering.shutdown()
 
     def select_result(self, key):
         index = self.result_selection.findData(key)
@@ -536,5 +557,6 @@ class HardwareTuningPanel(QWidget):
         self.status.setStyleSheet("color: #86efac;")
         self.status.show()
         self._result_stale.update({key: True for key in self._retained})
+        self.steering.invalidate("Hardware changed. Calculate calibration again.")
         self.refresh_values(force=True)
         self.runtime_changed.emit(f"{target.key}.{field.name}")

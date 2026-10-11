@@ -1,0 +1,78 @@
+{
+  "id": "CEOS-Linck-2025",
+  "kind": "workshop_lecture",
+  "title": "How do aberration correctors work?",
+  "authors": [
+    "Martin Linck"
+  ],
+  "owner": "CEOS GmbH",
+  "publication_date": "2025-08-31",
+  "url": "https://www.ceos-gmbh.de/de/grundlagen/Workshop-Beitraege/01_How-do-aberration-correctors-work-pdf.pdf",
+  "figures": "PDF pp22,24,26,29",
+  "component_keys": [
+    "image_tl11_lens",
+    "image_tl12_lens",
+    "image_hp1_hexapole",
+    "image_hp2_hexapole",
+    "image_tl21_lens",
+    "image_tl22_lens",
+    "image_dph1_deflector",
+    "image_dph2_deflector",
+    "image_dp12_deflector",
+    "image_adapter_lens"
+  ],
+  "supported_facts": [
+    "CETCOR成像光路与附加对准通道。",
+    "DP12位于TL11与TL12之间；DPH1/2与对应HP同Z作用。"
+  ],
+  "unsupported_claims": [
+    "无机械毫米尺度。",
+    "同Z符号不能唯一证明实际径向绕组或磁芯宿主。"
+  ],
+  "archive_status": "original_pdf_saved",
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T01:00:38.354798+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 3258741,
+      "sha256": "b485a191e37744ab1c4cbfa679a2b252792389f87bd49c1459eed0b42a2beb4c",
+      "kind": "original_pdf",
+      "source_url": "https://www.ceos-gmbh.de/de/grundlagen/Workshop-Beitraege/01_How-do-aberration-correctors-work-pdf.pdf"
+    },
+    {
+      "file": "page-22.png",
+      "bytes": 276835,
+      "sha256": "d0b8b004ac8ea4bb2807dda56454d0bffb14012a24c1d034a123f816760deceb",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 22,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-24.png",
+      "bytes": 155558,
+      "sha256": "a626b0e43bf8a1b1b9e832b6c9a8c5ac10c6dc91fe5f880273076d5056c2af01",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 24,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-26.png",
+      "bytes": 210511,
+      "sha256": "4c21eb96c6e5a982f3a6b9c47ac51a304c1cd051f03063654a83620f2817dd89",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 26,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-29.png",
+      "bytes": 183299,
+      "sha256": "b072513f665cc5ea9829dcf0f0fe3955db3dc9134051bb2bafe569bd9344d1c9",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 29,
+      "render_dpi": 108
+    }
+  ],
+  "pdf_page_count": 47
+}

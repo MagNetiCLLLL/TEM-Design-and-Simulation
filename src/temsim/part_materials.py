@@ -111,6 +111,9 @@ def configured_region_colour(part, region="body", fallback=(0.55, 0.61, 0.69, 1.
     mesh colour is retained; this helper does not change any material law.
     """
     if region not in REGIONS:
+        from temsim.cad_catalog import is_reconstruction_region
+        if is_reconstruction_region(part_data(part), region):
+            return tuple(fallback)
         # Known Energy Filter patches share their validated body material;
         # display region IDs must not add fictitious solver material domains.
         from temsim.energy_filter_model_3d import energy_filter_material_region

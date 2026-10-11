@@ -5,6 +5,18 @@ import json
 import numpy as np
 from temsim.optics.shared_deflectors import shared_channel_enabled
 
+SCAN_CALIBRATION_MODEL = "finite-coil-canonical-v2"
+AUTOMATIC_AC_ANGLE_TARGET = "canonical"
+AC_ANGLE_TARGETS = frozenset({"canonical", "mechanical", "legacy_unknown"})
+
+
+def ac_angle_target(state):
+    """Describe the accepted angle constraint, without relabelling old drives."""
+    if held(state):
+        return validate_record(state.ac_deflector.calibration_record_json).get(
+            "ac_angle_target", "legacy_unknown")
+    return AUTOMATIC_AC_ANGLE_TARGET
+
 
 def held(state):
     mode = state.ac_deflector.calibration_mode
@@ -52,14 +64,25 @@ def validate_record(text):
     host_key = record.get("descan_physical_host_key")
     if "descan_physical_host_key" in record and (not isinstance(host_key, str) or not host_key.strip()):
         raise ValueError("Held descan calibration must name its physical deflector host")
+    if record.get("ac_angle_target", "legacy_unknown") not in AC_ANGLE_TARGETS:
+        raise ValueError("Invalid held AC angle target")
     return record
 
 
-def capture_record(state, *, descan_calibrated: bool):
+def capture_record(state, *, descan_calibrated: bool, ac_angle_target=None):
     """Capture only the calibration stages executed in the accepted solve."""
     from temsim.instrument_snapshot import capture_instrument_snapshot
     ac, descan = state.ac_deflector, state.descan_deflector
+    if ac_angle_target is None:
+        # Descan-only capture preserves AC provenance. Manually supplied
+        # drives without explicit provenance must not be called canonical.
+        ac_angle_target = (validate_record(ac.calibration_record_json).get(
+            "ac_angle_target", "legacy_unknown") if held(state) else
+            getattr(ac, "_pure_shift_angle_target", "legacy_unknown"))
+    if ac_angle_target not in AC_ANGLE_TARGETS:
+        raise ValueError("Invalid held AC angle target")
     record = dict(version=1, calibrated_snapshot_id=capture_instrument_snapshot(state).digest,
+                  ac_angle_target=ac_angle_target,
                   ac_ratio=ac.pure_shift_lower_ratio_matrix,
                   descan_ratio=descan.image_plane_lower_ratio_matrix,
                   command_mrad=ac.scan_command_matrix_mrad,
@@ -98,6 +121,8 @@ def restore_held(state, *, restore_descan=True):
     snapshots = [dict(c.__dict__) for c in (ac, descan)]
     try:
         ac.set_pure_shift_coupling(record["ac_ratio"])
+        object.__setattr__(ac, "_pure_shift_angle_target", record.get(
+            "ac_angle_target", "legacy_unknown"))
         ac.set_scan_command_matrix_mrad(command)
         ac.validate()
         if restore_descan:

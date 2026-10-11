@@ -1,0 +1,77 @@
+{
+  "id": "US5481164A",
+  "kind": "patent",
+  "family": "同位置 normal/skew 消像散器",
+  "url": "https://patents.google.com/patent/US5481164A/en",
+  "figures": "Figs. 1-2; text explains axial separation is illustrative",
+  "component_keys": [
+    "condenser_stigmator",
+    "objective_stigmator",
+    "quadrupole normal/skew channels"
+  ],
+  "supported_facts": [
+    "两组相对转动 45 度的四极结构可处于同一轴向位置。"
+  ],
+  "unsupported_claims": [
+    "分解图不意味着两件串联透镜。",
+    "不提供 CEOS 的安装位置或尺寸。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:15.289386+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 1104690,
+      "sha256": "de7f353ff301bb4934c86687ac1cf0f24d04b59f78ae2c26c69d823b7cfa344d",
+      "kind": "original_pdf",
+      "method": "downloaded_public_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/bb/e6/90/58b2361b8a366a/US5481164.pdf"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 141070,
+      "sha256": "5e03c73c944dc979ecf53fd1e69a732fd22a0b30283cd00bf615a69c334916ec",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 2,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [],
+  "title": "Variable axis stigmator",
+  "authors": [
+    "Guenther O. Langner",
+    "Paul F. Petric"
+  ],
+  "owner": [
+    "International Business Machines Corp"
+  ],
+  "dates": {
+    "priorityDate": "1992-07-16",
+    "filingDate": "1994-08-26",
+    "publicationDate": "1996-01-02"
+  },
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/bb/e6/90/58b2361b8a366a/US5481164.pdf",
+  "resolved_pdf_url": "https://patentimages.storage.googleapis.com/bb/e6/90/58b2361b8a366a/US5481164.pdf",
+  "pdf_page_count": 11,
+  "pdf_metadata": {
+    "format": "PDF 1.3",
+    "title": "1498411933429851330-05481164",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "",
+    "producer": "ImageMagick 6.9.0-6 Q8 x86_64 2015-02-23 http://www.imagemagick.org",
+    "creationDate": "D:20170625103220",
+    "modDate": "D:20170625103220",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    2
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

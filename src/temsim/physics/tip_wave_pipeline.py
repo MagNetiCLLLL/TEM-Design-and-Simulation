@@ -23,6 +23,7 @@ from temsim.physics.wave_checkpoint_store import ExecutedWaveStore
 from temsim.physics.surface_wave import SurfaceWaveNumerics
 from temsim.physics.radial_gun_wave import RadialGunNumerics
 from temsim.physics.radial_cartesian_handoff import RadialColumnNumerics
+from temsim.physics.column_acceptance_window import AcceptanceWindowNumerics
 
 
 @dataclass(frozen=True)
@@ -43,6 +44,7 @@ class TipWaveRequest:
     surface: SurfaceWaveNumerics = SurfaceWaveNumerics.joint_gun()
     radial_gun: RadialGunNumerics = RadialGunNumerics()
     radial_column: RadialColumnNumerics = RadialColumnNumerics()
+    acceptance_window: AcceptanceWindowNumerics = AcceptanceWindowNumerics()
     observation_z_mm: float | None = None
 
     def validate(self):
@@ -59,6 +61,7 @@ class TipWaveRequest:
         self.surface.validate()
         self.radial_gun.validate()
         self.radial_column.validate()
+        self.acceptance_window.validate()
         self.source.validate(); self.gun.validate(); self.readout.validate(); self.wave_grid.validate()
         self.execution.validate(); self.inelastic.validate()
         if self.tip_time_s is not None and (isinstance(self.tip_time_s, bool) or not math.isfinite(self.tip_time_s)):
@@ -424,8 +427,48 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
         elif use_cache:
             _retain(key, result, request.execution.maximum_ram_cache_bytes)
         return result
-    def column(upstream, stop):
+    def column(upstream, stop, *, allow_acceptance=True):
         nonlocal cache_hit
+        from temsim.physics.wave_mode_support import (
+            MODE_SUPPORT_SCHEMA, incoherent_mode_approximation, select_incoherent_modes,
+        )
+        mode_budget = request.wave_grid.maximum_incoherent_mode_loss_probability
+        if incoherent_mode_approximation(upstream.record) is None:
+            original = upstream
+            upstream = stage("incoherent_mode_support", lambda: select_incoherent_modes(original,
+                maximum_loss_probability=mode_budget),
+                inputs=(original.digest, MODE_SUPPORT_SCHEMA, mode_budget))
+        else:
+            # Includes resumed prefixes and material branches. The budget is
+            # spent once on the complete gun mixture, not once per segment.
+            upstream = select_incoherent_modes(upstream, maximum_loss_probability=mode_budget)
+        if request.acceptance_window.enabled and allow_acceptance:
+            from temsim.physics.column_acceptance_window import (
+                SCHEMA, AcceptanceWindowUnavailable, find_acceptance_span, execute_acceptance_span,
+            )
+            prepared = prepared_columns.pop((float(upstream.plane_z_mm), float(stop)), None)
+            if prepared is None:
+                prepared = _prepare_column(working, upstream.plane_z_mm, stop, request.column_step_mm)
+            span = find_acceptance_span(prepared)
+            if span is not None:
+                if span["start_z_mm"] > upstream.plane_z_mm:
+                    upstream = column(upstream, span["start_z_mm"], allow_acceptance=False)
+                original = upstream
+                try:
+                    upstream = stage("acceptance_conditioned_aperture", lambda: execute_acceptance_span(
+                        working, original, span, numerics=request.acceptance_window,
+                        grid_numerics=request.wave_grid, maximum_step_mm=request.column_step_mm,
+                        cancelled=cancelled, progress_callback=progress_callback),
+                        inputs=(original.digest, SCHEMA, span["identity"], asdict(request.acceptance_window),
+                                request.wave_grid.column_identity(), request.column_step_mm))
+                except AcceptanceWindowUnavailable:
+                    # Eligibility failure never changes the physical fallback.
+                    return column(original, stop, allow_acceptance=False)
+                remember_observation(upstream)  # only AFTER its real receiving aperture
+                if upstream.plane_z_mm == stop:
+                    return upstream
+                return column(upstream, stop, allow_acceptance=False)
+            prepared_columns[(float(upstream.plane_z_mm), float(stop))] = prepared
         if "radial_output_modes" in upstream.record:
             from temsim.physics.round_column_checkpoint import execute_round_prefix
             original = upstream

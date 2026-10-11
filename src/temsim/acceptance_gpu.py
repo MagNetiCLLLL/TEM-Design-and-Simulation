@@ -6,6 +6,9 @@ allows GPU skips. Policy/emulation tests are deliberately not included.
 """
 
 GPU_TEST_FUNCTIONS = {
+    "test_actual_probe_diagnostics.py": (
+        "test_actual_gpu_continuation_matches_cpu_without_replacing_source",
+    ),
     "test_compute_backend.py": (
         "test_auto_cuda_ray_trace_matches_cpu_with_energy_spread",
     ),

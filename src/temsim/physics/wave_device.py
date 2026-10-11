@@ -84,10 +84,62 @@ class WaveDevice:
     fallback_reason: str | None = None
     maximum_working_bytes: int = 0
     pool: object = None
+    uncached_fft_plans: int = 0
+    largest_uncached_fft_plan_bytes: int = 0
 
     def evidence(self):
-        return {"compute_backend": self.backend, "numeric_precision": PRECISION,
-                "fallback_reason": self.fallback_reason}
+        result = {"compute_backend": self.backend, "numeric_precision": PRECISION,
+                  "fallback_reason": self.fallback_reason}
+        if self.uncached_fft_plans:
+            result.update(uncached_fft_plans=self.uncached_fft_plans,
+                          largest_uncached_fft_plan_bytes=self.largest_uncached_fft_plan_bytes)
+        return result
+
+
+@contextmanager
+def _temporary_oversized_fft_plans(cp, session, plan_cache):
+    """A cache quota limits retention, not an already admitted FFT execution.
+
+    CuPy creates a cuFFT plan before inserting it into its LRU. Its insertion
+    raises if that one plan exceeds the cache's retention quota, even though
+    the workspace was successfully allocated under our unchanged pool limit.
+    Let that plan remain local to the FFT call. All allocation, cuFFT and other
+    cache errors still propagate normally. Small plans retain their usual LRU.
+
+    The CuPy hook is process-visible, so only this context's session and actual
+    thread-local cache receive the proxy; unrelated callers see the original.
+    """
+    implementation = cp.fft._fft
+    original_get_cache = implementation.get_plan_cache
+
+    class RetentionCache:
+        def __getattr__(self, name):
+            return getattr(plan_cache, name)
+
+        def __setitem__(self, key, plan):
+            try:
+                plan_cache[key] = plan
+            except RuntimeError as error:
+                if str(error) != "the plan memsize is too large":
+                    raise
+                session.uncached_fft_plans += 1
+                work_area = getattr(plan, "work_area", None)
+                size = int(getattr(getattr(work_area, "mem", None), "size", 0))
+                session.largest_uncached_fft_plan_bytes = max(
+                    session.largest_uncached_fft_plan_bytes, size)
+
+    proxy = RetentionCache()
+
+    def get_cache():
+        cache = original_get_cache()
+        return proxy if _ACTIVE.get() is session and cache is plan_cache else cache
+
+    implementation.get_plan_cache = get_cache
+    try:
+        yield
+    finally:
+        if implementation.get_plan_cache is get_cache:
+            implementation.get_plan_cache = original_get_cache
 
 
 def check_device_memory(required_bytes):
@@ -116,12 +168,31 @@ def device_scope(requested="cpu", *, maximum_working_bytes=24*1024**3,
     The caller owns retry from its original host input if execution (rather
     than admission) exhausts memory. Require GPU is never weakened.
     """
+    requested = normalise_backend(requested)
     active = _ACTIVE.get()
     if active is not None and active.backend == "cupy":
-        check_device_memory(required_bytes)
-        yield active
+        selected, reason = choose_wave_backend(requested, acceleration_enabled=acceleration_enabled,
+                                               work_items=int(work_items))
+        if selected != WAVE_BACKEND_CUPY:
+            # A failed GPU mode retries from its host checkpoint while the
+            # serial segment still owns its reusable GPU pool. Honour that
+            # explicit CPU scope, including its allocation checks.
+            session = WaveDevice(fallback_reason=reason)
+            token = _ACTIVE.set(session)
+            try:
+                yield session
+            finally:
+                _ACTIVE.reset(token)
+            return
+        previous_limit = active.maximum_working_bytes
+        nested_limit = min(previous_limit, int(maximum_working_bytes))
+        active.maximum_working_bytes = nested_limit
+        try:
+            check_device_memory(required_bytes)
+            yield active
+        finally:
+            active.maximum_working_bytes = previous_limit
         return
-    requested = normalise_backend(requested)
     release_device_memory()
     selected, reason = choose_wave_backend(requested, acceleration_enabled=acceleration_enabled,
                                            work_items=int(work_items))
@@ -161,7 +232,7 @@ def device_scope(requested="cpu", *, maximum_working_bytes=24*1024**3,
             yield WaveDevice(fallback_reason=reason)
             return
         try:
-            with cp.cuda.using_allocator(pool.malloc):
+            with cp.cuda.using_allocator(pool.malloc), _temporary_oversized_fft_plans(cp, session, plan_cache):
                 yield session
                 cp.cuda.get_current_stream().synchronize()
         finally:

@@ -261,11 +261,22 @@ def test_dimension_introspection_remains_available_when_draft_geometry_is_invali
     assert any(field.path == ("parts", "objective_lens", "upper_yoke_end_local_z_mm") and field.editable for field in specs)
 
 
-def test_unsupported_mechanism_is_explicit_envelope_but_dimensions_remain_available():
+def test_electrostatic_blanker_has_declared_material_reconstruction_and_editable_dimensions():
     document = _document("beam_blanker/ElectrostaticBeamBlanker.toml")
     model = part_model_from_document(document, "nanopulser_deflector")
-    assert not model.meshes[0].is_exact
-    assert "Envelope" in model.meshes[0].description
+    part = _part(document, "nanopulser_deflector")
+    assert {mesh.region for mesh in model.meshes} == {"electrode_negative", "electrode_positive"}
+    assert {mesh.material_class for mesh in model.meshes} == {"electrode"}
+    for mesh in model.meshes:
+        _assert_mesh(mesh)
+        assert not mesh.is_exact
+        assert "reconstructed" in mesh.description.lower()
+        assert np.ptp(mesh.vertices[:, 2]) == pytest.approx(part["plate_length_mm"])
+        assert np.linalg.norm(mesh.vertices[:, :2], axis=1).max() <= part["mechanical_outer_diameter_mm"] / 2 + 1e-10
+        if mesh.region.startswith("electrode_"):
+            sign = -1 if mesh.region.endswith("negative") else 1
+            assert (sign * mesh.vertices[:, 1]).min() == pytest.approx(part["plate_gap_mm"] / 2)
+            assert np.ptp(mesh.vertices[:, 1]) > 0
     assert model.notes
     assert "plate_gap_mm" in {field.path[-1] for field in model.fields}
 

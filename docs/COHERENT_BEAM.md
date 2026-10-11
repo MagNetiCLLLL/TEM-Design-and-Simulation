@@ -40,7 +40,7 @@ coordinates. For placed fields the conversion from canonical to mechanical
 increments uses the full `e/p * d(Axy)/d(x,y)` matrix at the reference chief
 ray, rather than assuming an axisymmetric Larmor term. These remain local
 first-order maps about that ray, not exact finite-amplitude maps with all
-aberrations. A displaced non-ideal hexapole retains its linear feed-down in
+aberrations. A displaced enabled hexapole, including in Ideal Optics, retains its linear feed-down in
 this local observer. Imported maps without a wave vector potential retain
 their separately labelled historical gauge approximation.
 
@@ -775,12 +775,23 @@ and gun; validation for the shared distributed electromagnetic fields; specimen
 interior observation; standard CIF diffraction and coherence checks; energy
 filter integration last.
 
-## Explicit Si diffraction example
+## Archived Si diffraction example (3 October 2026)
+
+This section preserves a historical wave calculation and its original inputs.
+Its lens table and idealised source values are **not the current application
+defaults**. The 10 October probe-relay recalibration changed the Nanoprobe
+round lenses and hexapoles; its particle/GPU validation is documented in
+[Probe-corrector reference and validation](probe_corrector_reference.md#recalibrated-default-and-reproduction).
+That validation does not establish a new coherent Si result. Reproducing the
+archived wave figure requires the complete archived optical/source state and
+compatible calculation version, not a fresh start with today's preset. The
+historical table below is retained unchanged rather than relabelled as a
+verified wave result for the new optics.
 
 The 3 October 2026 development run uses the user's **Fm-3m monatomic FCC Si**
 CIF, with cell parameter 3.82166108 Å. It is not silently replaced by diamond
 Fd-3m Si. Use [001] along Z, [100] along X, a 10 nm specimen diameter and 5 nm
-thickness, with the stored nanoprobe/diffraction optical settings. Physical
+thickness, with that run's stored nanoprobe/diffraction optical settings. Physical
 recording detectors are explicitly retracted for this nonabsorbing virtual-screen
 example. The complete tip-origin calculation produced resolved periodic peaks at
 **Z = 1605.1939574922505 mm**. This Z belongs to those held optics; changing lens
@@ -793,14 +804,15 @@ settings changes the appropriate observation plane.
 | Energy FWHM and incoherent angular RMS | 0; one spatial/energy mode |
 | Relative wavefront curvature Qxx / Qyy | 624.3690658100246 / 624.369065810008 m⁻¹ |
 
-### Manual GUI entry from a fresh start
+### Historical manual GUI entry
 
-No working-point import, result loading, script or configuration-file edit is
-required. Restart the application to load the new centre/XY-curvature controls.
-All the archived geometry/configuration file hashes were checked against the
-current checkout on 3 October 2026 and match. The default assembly and
-nanoprobe/diffraction preset reproduce the archived lens and aperture settings;
-this equality is specific to that checked configuration, not every future build.
+The following was the manual-entry procedure for the 3 October build, requiring
+no working-point import, result loading, script or configuration-file edit at
+that time. Geometry/configuration hashes matched the checkout used on that
+date. That comparison no longer describes the current catalog: the current
+default assembly and Nanoprobe preset do not restore the archived lens table.
+The source values below are historical demonstration inputs, not recommended
+physical Tip defaults.
 
 1. In **Instrument setup and parameters**, use the cold field-emission gun,
    three-condenser column with probe corrector, no monochromator, no optional
@@ -811,9 +823,9 @@ this equality is specific to that checked configuration, not every future build.
    fields. The prescribed tip current is 10000 nA. The source controls below
    now apply to the instrument Tip; they do not change electrode or lens
    settings. Retained particle results must be recalculated for comparison.
-2. Check lens excitation percentages in the instrument **Optical** tree. These
-   values already match a fresh start with that preset. If necessary enter them
-   in **Live lens control**. Use the existing geometry; do not run transport
+2. Check lens excitation percentages in the instrument **Optical** tree against
+   the historical table below; these no longer match a fresh current preset.
+   They were entered in **Live lens control**. Use the archived geometry; do not run transport
    matching or lens recalibration after entering the values.
 
 | Lens | Excitation (%) | Field direction |
@@ -832,8 +844,8 @@ this equality is specific to that checked configuration, not every future build.
 | Projector P1 | 32.1132572718703 | +Z |
 | Projector P2 | 9.826874422815507 | +Z |
 
-The default gun and column deflectors/stigmators have zero applied strengths;
-scan/descanning raster drives are off. Retain the default probe-corrector
+The archived gun and column deflectors/stigmators have zero applied strengths;
+scan/descanning raster drives are off. Retain the archived probe-corrector
 elements. C2 opening diameter is 100 micrometres, C3 is 4000 micrometres; both
 are inserted. Objective and selected-area apertures are retracted. To match the
 virtual-screen example, select each recording plane in the instrument tree and
@@ -959,3 +971,94 @@ example above, use the specified downstream Z and **Log intensity** to inspect
 weak diffraction peaks. That plane depends on the lens settings, not on a
 universal fixed diffraction position.
 Offscreen screenshots and CPU regressions are not native desktop or GPU evidence.
+
+### Nonlinear-column support sampling
+
+The aligned Cs and hexapole operators still apply their complete polynomial
+phase and require resolved sampling. If a nonlinear operator first fails that
+check, the column may compact negligible wave support before retrying. This
+uses marginal probability bounds, a four-cell quintic C2 window, and a crop on
+the original lattice. Coordinates, cell area and the full complex carrier are
+preserved in the retained core. It does not change the Tip, optical strengths,
+or the physical aperture, and it does not switch off spherical aberration.
+
+`WaveGridNumerics.maximum_support_loss_fraction` bounds the integrated
+probability lost by one window (default `1e-6`). The field is not renormalised
+to restore that probability: checkpoint weights retain the numerical loss.
+`maximum_accumulated_support_l2` bounds accumulated complex-field L2 error
+relative to each mode at column entrance (default `0.02`). Successive support
+errors are added conservatively, including surviving-flux factors; an
+intensity L1 bound is recorded separately. This is a bound on support
+approximation, not on total source, axial, material or wave-grid error.
+After the complete nonlinear phase has been evaluated on a resolved mesh,
+`maximum_spectral_loss_fraction` (default `1e-8`) permits projection onto a
+smaller centred Fourier lattice. The physical period, origin and analytic
+carrier are unchanged, and discarded spectral coefficients are never aliased
+into retained frequencies. A 25 percent frequency margin is retained. The
+discarded Fourier probability gives the exact squared complex L2 error;
+this error joins the same cumulative ledger. This avoids carrying a huge,
+nearly empty bandwidth through the rest of the column.
+
+Setting a loss budget to zero disables that compaction method; setting the
+cumulative L2 budget to zero disables both. Exceeding the cumulative budget
+also retains strict refinement;
+an unresolved physical operator still fails.
+
+The execution receipt separates `support_compactions` and
+`support_approximation` from physical aperture/detector losses. Their history
+survives streamed column checkpoints and frozen-phonon branching. Smaller
+support budgets and an independent finer wave calculation remain necessary
+when qualifying a particular final observable. A successful local Cs check
+does not by itself establish specimen focus or scan stability.
+
+After the gun has executed the unchanged source, mutually incoherent modes
+may be omitted from subsequent column transport within
+`maximum_incoherent_mode_loss_probability` (default `1e-8` per Tip electron,
+zero disables omission). This is one total budget, not a budget for each mode
+or each checkpoint. Remaining weights are unchanged. The sum of omitted
+positive weights bounds the absolute intensity L1 error after passive
+propagation. It is recorded separately from spatial/Fourier support error and
+physical absorption. This approximation does not combine amplitudes of
+independent electrons, alter the Tip distribution, or remove a physical
+aberration from any retained mode.
+
+Sampling refinement now chooses FFT-friendly dimensions covering the actual
+requested scale, with a five percent guard, instead of rounding that scale to
+the next power of two. The complete physical operator checks each new grid.
+If refinement reveals negligible interpolation tails, the failed current
+field can be compacted again under the same cumulative error ledger and must
+pass a fresh sampling check before the operator is applied.
+
+Serial GPU modes within one column segment reuse a bounded device pool and
+FFT-plan cache. Static same-energy transport maps are reused only within that
+prepared segment; driven, arrival-time-dependent fields are rebuilt. These
+optimisations do not change physical operators. Explicit CPU fallback remains
+distinct from Require GPU, and physical or sampling errors do not trigger a
+silent CPU retry.
+
+For a static, centred round segment ending at a physical circular aperture,
+an aperture-conditioned calculation can avoid resolving the phase of a broad
+incident tail that the receiving aperture rejects. It is eligible only for a
+unique non-degenerate stationary branch, sufficiently small residual envelope
+bandwidth, and a checked weak wall-edge interaction. The complete Cs phase and
+the ordinary column fields act on the retained Cartesian field. Three smooth
+guard windows must agree in the unnormalised complex field and current at the
+receiving aperture. The incoming field is refined before the hard aperture is
+applied, and its quadratic carrier is retained analytically.
+
+This method is an explicit numerical approximation: its discarded incident
+norm can be large and is neither physical absorption nor a small global L2
+error. Each actual mode has an angular wall-edge estimate; the mixture uses
+the modes' original weights and a declared accepted-intensity tolerance.
+That estimate is empirical, not a rigorous error bound for the complete
+repeated-wall-mask equation. It remains separate from the bounded support
+and independent-mode omissions described above. Source/optical parameters
+and spherical-aberration strengths do not change.
+
+Only the completed receiving-aperture checkpoint is published. The method
+does not supply observations inside the conditioned interval. Ineligible
+segments retain ordinary propagation, and failed guard/accuracy checks do
+not become successful results. The numerical policy is
+`TipWaveRequest.acceptance_window`; it is not a second source definition or
+a separate GPU selector. Final focus, scan displacement and detector-centroid
+convergence still require validation at the requested physical planes.

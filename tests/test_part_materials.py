@@ -96,7 +96,8 @@ def test_aperture_body_material_persists_as_definition_without_magnetic_domain()
 
 
 def test_existing_split_regions_roundtrip_and_preserve_other_assignments():
-    text = (ROOT / "column" / "C3.toml").read_text(encoding="utf-8")
+    path = ROOT / "column" / "C3.toml"
+    text = materialized_text(path.read_text(encoding="utf-8"), path)
     document = tomllib.loads(text)
     yoke = _part(document, "objective_lens_yoke")
     _set_material(yoke, "femm_pure_iron", "upper")

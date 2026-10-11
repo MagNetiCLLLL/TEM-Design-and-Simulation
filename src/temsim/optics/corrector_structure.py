@@ -8,7 +8,6 @@ from temsim.component_keys import (
     ADAPTER_LENS,
     DC_DEFLECTOR,
     DESCAN_DEFLECTOR,
-    IMAGE_CORRECTOR_OL_POST_LENS,
     IMAGE_CORRECTOR_ELEMENT_KEYS,
     IMAGE_CORRECTOR_LENS_KEYS,
     PROBE_DP22_DEFLECTOR,
@@ -141,7 +140,7 @@ def ensure_corrector_structure(state):
     elements = list(getattr(state, "corrector_elements", ()))
     seen = set()
     separately_owned = {ADAPTER_LENS, PROBE_TL22_LENS, PROBE_TL21_LENS,
-                        PROBE_TL12_LENS, IMAGE_CORRECTOR_OL_POST_LENS,
+                        PROBE_TL12_LENS,
                         "probe_dp12_scan_deflector"}
     for item in elements:
         key = require_current_component_key(item.key)

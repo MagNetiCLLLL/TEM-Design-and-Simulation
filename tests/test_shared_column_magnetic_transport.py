@@ -80,13 +80,13 @@ def test_empty_event_plan_preserves_homogeneous_transfer_query_and_unmatched_act
 
 
 @pytest.mark.parametrize("mode", ["analytical", "ideal"])
-def test_fixed_magnetic_field_uses_particle_momentum_and_keeps_ideal_reference(mode):
+def test_fixed_magnetic_field_uses_actual_particle_momentum_in_each_mode(mode):
     state, event = state_with_coil(mode=mode)
     plan = plan_for(state, event, checkpoints=(10.,))
     energy = np.array([-100000., 0., 100000.])
     result = core.execute_propagation_plan(state, plan, *(np.zeros(3),)*4,
         energy_offset_ev=energy)[-1]
-    p = momentum_profile(state, np.array([0.]), None if mode == "ideal" else energy)[0]
+    p = momentum_profile(state, np.array([0.]), energy)[0]
     expected = event[1]*core.electron(state)[1]/p
     np.testing.assert_allclose(result.tx_rad[-1], np.broadcast_to(expected, (3,)), rtol=2e-15, atol=1e-18)
 

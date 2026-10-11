@@ -25,19 +25,55 @@ def catalog(tmp_path):
     return root
 
 
-def test_migration_keeps_all_instance_ids_and_physical_positions():
+def test_migration_keeps_all_instance_ids_and_physical_positions(catalog):
     from temsim.assembly_catalog import AssemblyCatalog
     from temsim.optics.column import default_state
     from temsim.assembly_structure import build_assembly_structure
-    catalog = AssemblyCatalog()
-    assembly = catalog.apply(default_state(), replace(catalog.default_selection(), recording="Energy Filter"))
+    source_catalog = AssemblyCatalog(catalog)
+    selection = replace(source_catalog.default_selection(), recording="Energy Filter")
+    assembly = source_catalog.apply(default_state(), selection)
     actual = build_assembly_structure(assembly).to_dict()
     previous = json.loads(Path("docs/development/evidence/default-assembly-identity-map-v1.json").read_text())
-    # Display naming was later made manufacturer-neutral. Keep the historical
-    # identity/position receipt immutable and compare every non-name field.
-    for old, new in zip(previous["components"], actual["components"], strict=True):
-        old["name"] = new["name"]
-    assert actual == previous
+    old_rows = {row["key"]: row for row in previous["components"]}
+    new_rows = {row["key"]: row for row in actual["components"]}
+    assert old_rows.keys() <= new_rows.keys()
+    assert new_rows.keys() - old_rows.keys() == {
+        "sample_holder", "probe_dph1_coils", "probe_dph2_coils",
+        "probe_dp11_coils", "probe_dp21_coils", "probe_dp22_coils",
+    }
+    # The historical receipt predates reviewed physical relocations of the gun
+    # DPA, HP alignment deflectors and scan/descan coils. It remains immutable;
+    # it is still authoritative for identities, not the present lens layout.
+    relocated_since_receipt = {
+        "feg_dpa_aperture", "probe_dph1_deflector", "probe_dph2_deflector",
+        "ac_deflector", "descan_deflector",
+    }
+    for key, old in old_rows.items():
+        new = new_rows[key]
+        for field in ("instance_id", "key", "module_key", "legacy_authority"):
+            assert new[field] == old[field], (key, field)
+        if key not in relocated_since_receipt:
+            for field in ("start_z_mm", "center_z_mm", "end_z_mm"):
+                assert new[field] == old[field], (key, field)
+    assert {key:value for key,value in actual.items() if key != "components"} == {
+        key:value for key,value in previous.items() if key != "components"}
+    assert new_rows["sample_holder"]["parent_id"] == new_rows["sample_stage"]["instance_id"]
+    assert new_rows["sample_stage"]["parent_id"] == new_rows["objective_lens"]["instance_id"]
+    assert new_rows["sample_holder"]["center_z_mm"] == new_rows["sample"]["center_z_mm"]
+
+    # Directly test the storage migration using the CURRENT same physical
+    # definitions on both sides. Flatten only this copied catalog, then compare
+    # every identity, parent and coordinate (including the reviewed relocations).
+    for _, relative in assembly.selected_module_paths:
+        path = catalog / relative
+        raw = tomllib.loads(path.read_text(encoding="utf-8"))
+        if raw.get("subassemblies"):
+            flat = module_manifest.read_document(path)
+            flat.pop("subassemblies")
+            path.write_text(tomli_w.dumps(flat), encoding="utf-8")
+    flat_catalog = AssemblyCatalog(catalog)
+    flattened = build_assembly_structure(flat_catalog.apply(default_state(), selection)).to_dict()
+    assert {row["key"]: row for row in flattened["components"]} == new_rows
 
 
 def test_composed_module_has_no_duplicate_physical_storage():
@@ -206,7 +242,10 @@ def test_subassembly_edit_changes_consumed_input_identity(catalog):
     cat.apply(state, replace(cat.default_selection(), recording="Energy Filter"))
     before = _external_inputs(state)
     rows = [row for row in before if row.role == "assembly:subassembly"]
-    assert len(rows) == 3
+    assert {Path(row.path).name for row in rows} == {
+        "projector_stack.toml", "detector_chamber.toml", "energy_filter.toml",
+        "sample_stage.toml",
+    }
     path = catalog.parent / "subassemblies/projector_stack.toml"
     path.write_bytes(path.read_bytes() + b"\n# changed external input\n")
     assert _external_inputs(state) != before

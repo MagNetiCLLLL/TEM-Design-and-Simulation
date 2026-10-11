@@ -62,12 +62,27 @@ is installed automatically. The pivot check tests the complete two-axis
 response (each axis normalized to its own FOV), including local refinement;
 otherwise it reports only closest approach. A scan pivot is not an individual
 probe waist, and neither scan constraint alone verifies detector stationarity.
+Finite-coil searches start after both complete coil-field supports. They report
+the earliest verified common root and any further verified roots in the sampled
+interval. Cubic Hermite interpolation of executed positions and mechanical
+slopes only proposes candidates; batched finite-field propagation supplies the
+reported residuals. Bounded refinement is not an exhaustive root count.
 
-On the default geometry, the legal axial CM centre range is 1521.5–1524.5 mm,
+For the revised C3 + Probe Corrector installation, the AC coil centres are
+1387.5/1412.5 mm and enclose the source waist near 1400 mm. The accepted Nano
+working point has an effective downstream scan pivot near 1572.665 mm; it is
+not the source waist or a field-free cardinal plane of an isolated lens.
+See [the geometry and CUDA scan checks](probe_corrector_reference.md#ac-placement-and-finite-scan-validation)
+for the fixed-FOV evidence and its limits. Coil placement also depends on
+mechanical clearance, finite-field response, drive limits and conditioning;
+a front focal plane alone does not uniquely set two coil centres.
+
+On the earlier AC installation (upper/lower centres 1479/1504 mm), the axial
+CM candidate centre range was 1521.5–1524.5 mm,
 with only about 0.72–0.97% normalized CM/objective field overlap. Five-position
 diagnostics at 10% and 90% put the smallest sampled input-correlation mismatch
 at 1524.5 mm, but neither establishes a qualified dual-mode probe. The narrow
-current analytic CM field has negligible amplitude near the upper-objective
+analytic CM field has negligible amplitude near the upper-objective
 field centre. Matching real integrated-lens behaviour therefore requires a
 mechanically consistent CM cavity/pole geometry and corresponding coupled field
 profile; moving the existing CM into the solid upper pole is not an allowed fix.
@@ -167,7 +182,7 @@ In **Scanning Image > Scanning Parameters > Scan / descan calibration**:
    Screen. Each choice displays the physical component name and current Z in
    millimetres. This is separate from the specimen plane used for probe scanning.
 3. Set the desired raster and current optics; click **Calibrate and hold** to
-   recalculate both pairs using the production mechanical-angle AC constraint.
+   recalculate both pairs using the production canonical-angle AC constraint.
 4. Adjust **AC pivot X/Y** or diffraction-lens excitation. The held ratios stay
    fixed, so residual scan angle and pattern displacement remain observable.
 5. Recalibrate explicitly when wanted, or select **Automatic recalibration** to
@@ -182,7 +197,7 @@ compatibility mode. A physical station is not automatically a conjugate image
 plane: the current transfer determines its image, diffraction or mixed role.
 
 Both pairs use one raster clock. Each pair has two declared axial X/Y dipole
-stations. For the upper/lower AC angular responses `Du`, `Dl`, calibration solves
+stations. For the upper/lower AC canonical angular responses `Du`, `Dl`, calibration solves
 `Dl R = -Du`; physical optics determine `R`. The command matrix maps the requested
 specimen FOV to the actual response. Pivot offsets add to the diagonal of `R`.
 Descan uses the opposite command and matches the AC position response at the
@@ -196,10 +211,11 @@ the residual of the finite-field execution. The CM / scan design page uses the
 finite-coil response. A common scan pivot describes the intersection of scanning
 chief rays and does not establish that each finite probe is focused.
 
-The specimen direction constraint in the production AC calibration remains the
-mechanical incident direction. Inside the objective magnetic field this differs
-from the canonical momentum used to classify conjugate planes. Neither a zero
-mechanical-angle residual nor a canonical pivot, by itself, establishes a fixed
+Automatic AC calibration now holds canonical direction fixed, using the same
+local vector-potential convention as the conjugate-plane and wave calculations.
+For each physical coil response, `D_can = D_mech - G_sample B`. Both axes and
+cross-axis terms enter the solve. Neither a zero canonical-angle residual nor
+a canonical pivot, by itself, establishes a fixed
 pattern at every detector. Descan must use the physical station that needs to
 remain stationary; holding the beam at the selected-area aperture can increase
 its motion on a downstream screen.
@@ -207,14 +223,16 @@ its motion on a downstream screen.
 ### Direction in the objective field
 
 The scan result reports the captured specimen reference (entrance or centre),
-its Z, calibration mode and **mechanical X/Y slope span in mrad**. This is the
+its Z, calibration mode, declared angle target, and both **mechanical and
+canonical X/Y slope spans in mrad**. These are the
 peak-to-peak scan-induced first-order slope over the sampled pixel centres,
 not the convergence semi-angle, an absolute beam tilt, or the angle of the
 weighted mean unit velocity of a finite probe. It reuses the position observer's
 finite-coil response without a second transport solve. A missing historical
-readout is unavailable, not zero. Held drive records do not currently encode
-their original angle constraint, so a held record is not labelled canonical
-or mechanical merely from its mode.
+readout is unavailable, not zero. New held drive records encode their angle
+constraint. Old records without this metadata retain their stored matrices
+and are labelled as having unspecified constraint provenance; their angle
+residual is unavailable rather than silently labelled canonical or zero.
 
 For electrons, `p_mechanical = p_canonical + e A_vector`. In an axial field,
 using the symmetric gauge and the same reference longitudinal momentum `p`,
@@ -243,9 +261,11 @@ Canonical diffraction conjugacy is `A_can = A_mech + B G` approximately zero.
 It is a valid optical coordinate statement, not a claim of mechanically
 parallel scanning at the specimen. The schematic front-focal-plane pivot is
 likewise a centroid constraint; focus of each finite probe remains a separate
-check. The software retains the mechanical-angle automatic AC calibration and
-the existing canonical plane classifier. Neither is silently substituted for
-the other to certify screen stability.
+check. Automatic AC and the plane classifier now use the same canonical
+convention. The actual mechanical slope remains visible. Screen stability
+still requires diffraction conjugacy at that particular screen and a finite
+scan check. Both particle and wave calculations consume the resolved drive;
+versioned cache identities exclude results from the former automatic rule.
 
 Held mode stores the calibration's captured input identity, ratios and reference
 FOV. Changing raster extent scales commands without refitting optics. After a
@@ -271,7 +291,7 @@ To retain an accepted AC calibration while changing downstream optics:
 
 1. Keep **Hold saved calibration** selected. A saved canonical-angle AC pivot
    retains its matrices; **Calibrate and hold** would replace it with a new
-   mechanical-angle AC solution.
+   canonical-angle AC solution for the current optics.
 2. Apply the intended projector settings and select the required physical
    **Descan observation plane**. Receiver insertion remains a separate action.
 3. Enable AC scan, Descan scan and their physical hosts, then click
@@ -349,7 +369,8 @@ beam, so increasing either strength is not guaranteed to improve probe/image siz
 Effective Gaussian FWHM, physical body length and orientation are distinct.
 Changing FWHM at fixed peak coefficient also changes its integral. Toggling one
 field does not remove the installed relay lenses or physical apertures. Ideal
-mode omits nonlinear hexapole action; the parameter description now states this.
+Optics retains nonlinear hexapole action using parameterised fields; only the
+material/pole-piece field solve is omitted.
 
 The Tecnai manual's beam-shift pivot and diffraction-focus discussion (printed
 pages 19 and 52) supports their coupled effect. The implemented response is

@@ -157,7 +157,6 @@ from temsim.component_keys import (
     IMAGE_CORRECTOR_HPOL_HEXAPOLE,
     IMAGE_CORRECTOR_ISH_DEFLECTOR,
     IMAGE_CORRECTOR_KEYS,
-    IMAGE_CORRECTOR_OL_POST_LENS,
     IMAGE_CORRECTOR_QPOL_QUADRUPOLE,
     IMAGE_CORRECTOR_SAD_PLANE,
     IMAGE_CORRECTOR_TL11_LENS,
@@ -804,7 +803,6 @@ _IMAGE_CORRECTOR_SEQUENCE = (
     DESCAN_DEFLECTOR,
     "objective_stigmator",
     IMAGE_DIFFRACTION_DEFLECTOR,
-    IMAGE_CORRECTOR_OL_POST_LENS,
     IMAGE_CORRECTOR_HPOL_HEXAPOLE,
     IMAGE_CORRECTOR_QPOL_QUADRUPOLE,
     IMAGE_CORRECTOR_DP11_DEFLECTOR,
@@ -813,8 +811,8 @@ _IMAGE_CORRECTOR_SEQUENCE = (
     IMAGE_CORRECTOR_TL12_LENS,
     IMAGE_CORRECTOR_DPH1_DEFLECTOR,
     IMAGE_CORRECTOR_HP1_HEXAPOLE,
-    IMAGE_CORRECTOR_DP21_DEFLECTOR,
     IMAGE_CORRECTOR_TL21_LENS,
+    IMAGE_CORRECTOR_DP21_DEFLECTOR,
     IMAGE_CORRECTOR_DP22_DEFLECTOR,
     IMAGE_CORRECTOR_TL22_LENS,
     IMAGE_CORRECTOR_DPH2_DEFLECTOR,
@@ -2186,7 +2184,6 @@ def _base_specs(configuration):
         )
         if (
             component.key in specs
-            and component.key != IMAGE_CORRECTOR_TL12_LENS
             and getattr(component, "interaction_kind", "")
             == "axial_magnetic_field"
         )
@@ -2333,7 +2330,7 @@ def _gap_between(gaps, upstream_key, downstream_key):
     return gaps.get((upstream_key, downstream_key), 5.0)
 
 
-def _place_axis(specs, configuration):
+def _place_axis(specs, configuration, *, non_axial_keys=()):
     tokens = _condition_tokens(configuration)
     upper = [key for key in _UPPER_SEQUENCE if key in specs and _installed(specs[key], tokens)]
     lower_sequence = (
@@ -2344,11 +2341,25 @@ def _place_axis(specs, configuration):
     )
     lower = [key for key in lower_sequence if key in specs and _installed(specs[key], tokens)]
     gaps = _pair_gaps(specs)
-    centers = {"sample": 0.0}
+    # A channel hosted by a declared insert is an optical marker, not another
+    # serial cartridge. Keep the remaining nominal spacings, and still return
+    # every channel for inspection and runtime mapping below.
+    non_axial_keys = frozenset(non_axial_keys)
+    axis_upper = [key for key in upper if key not in non_axial_keys]
+    axis_lower = [key for key in lower if key not in non_axial_keys]
+    for original, sequence in ((upper, axis_upper), (lower, axis_lower)):
+        for a, b in zip(sequence, sequence[1:]):
+            # Only bridge entries removed by the explicit binding. Preserve
+            # legacy optional-component gap rules everywhere else.
+            removed = original[original.index(a)+1:original.index(b)]
+            if removed and all(key in non_axial_keys for key in removed):
+                gaps[a, b] = _nominal_gap(specs[a], specs[b])
+    centers = {key: specs[key].center_z_mm for key in non_axial_keys if key in specs}
+    centers["sample"] = 0.0
 
     downstream_key = "sample"
     downstream = specs[downstream_key]
-    for key in reversed([key for key in upper if key != "sample"]):
+    for key in reversed([key for key in axis_upper if key != "sample"]):
         spec = specs[key]
         gap = _gap_between(gaps, key, downstream_key)
         centers[key] = centers[downstream_key] + downstream.length_mm / 2.0 + gap + spec.length_mm / 2.0
@@ -2357,7 +2368,7 @@ def _place_axis(specs, configuration):
 
     upstream_key = "sample"
     upstream = specs[upstream_key]
-    for key in [key for key in lower if key != "sample"]:
+    for key in [key for key in axis_lower if key != "sample"]:
         spec = specs[key]
         gap = _gap_between(gaps, upstream_key, key)
         centers[key] = centers[upstream_key] - upstream.length_mm / 2.0 - gap - spec.length_mm / 2.0
@@ -2629,6 +2640,7 @@ def _place_axis(specs, configuration):
 
 def _build_optics_layout_metadata(
     configuration: LayoutConfiguration = LayoutConfiguration(),
+    *, assembly=None,
 ) -> LayoutResult:
     """Build a sample-centered mechanical layout for one physical column."""
     specs = _base_specs(configuration)
@@ -2700,8 +2712,13 @@ def _build_optics_layout_metadata(
         ),
     )
 
-    centers, ordered_keys = _place_axis(specs, configuration)
+    from temsim.optics.field_hardware_binding import field_hardware_host_key
+    captured = assembly if assembly is not None else configuration.resolved_assembly
+    non_axial_keys = {part.key for part in getattr(captured, "parts", ())
+                      if field_hardware_host_key(part.data)}
+    centers, ordered_keys = _place_axis(specs, configuration, non_axial_keys=non_axial_keys)
     active_keys = [key for key in ordered_keys if key in centers]
+    axis_keys = [key for key in active_keys if key not in non_axial_keys]
     components = []
     seen = set()
     for key in active_keys:
@@ -2712,9 +2729,9 @@ def _build_optics_layout_metadata(
         length = max(float(spec.length_mm), 0.0)
         start, end = _range(centers[key], length)
         mechanical = MechanicalEnvelope(start, end)
-        index = active_keys.index(key)
-        upstream_key = active_keys[index - 1] if index > 0 else None
-        downstream_key = active_keys[index + 1] if index + 1 < len(active_keys) else None
+        index = axis_keys.index(key) if key in axis_keys else -1
+        upstream_key = axis_keys[index - 1] if index > 0 else None
+        downstream_key = axis_keys[index + 1] if 0 <= index < len(axis_keys) - 1 else None
         upstream_clearance = None
         downstream_clearance = None
         if upstream_key is not None:
@@ -2789,7 +2806,7 @@ def build_optics_layout(
         assembly = configuration.resolved_assembly
     if assembly is None:
         assembly = resolve_module_assembly(configuration)
-    metadata = _build_optics_layout_metadata(configuration)
+    metadata = _build_optics_layout_metadata(configuration, assembly=assembly)
     metadata = _with_projection_chamber_aperture(configuration, metadata, assembly)
     if configuration.nanopulser_installed:
         metadata = _with_nanopulser_components(configuration, metadata, assembly)
@@ -3025,8 +3042,7 @@ def resolve_installed_image_corrector_exit_mechanical_axis(
     by_key = {component.key: component for component in layout}
     axis_order = (
         IMAGE_DIFFRACTION_DEFLECTOR,
-        IMAGE_CORRECTOR_OL_POST_LENS,
-        IMAGE_CORRECTOR_HPOL_HEXAPOLE,
+            IMAGE_CORRECTOR_HPOL_HEXAPOLE,
         IMAGE_CORRECTOR_QPOL_QUADRUPOLE,
         IMAGE_CORRECTOR_DP11_DEFLECTOR,
         IMAGE_CORRECTOR_TL11_LENS,
@@ -3034,8 +3050,8 @@ def resolve_installed_image_corrector_exit_mechanical_axis(
         IMAGE_CORRECTOR_TL12_LENS,
         IMAGE_CORRECTOR_DPH1_DEFLECTOR,
         IMAGE_CORRECTOR_HP1_HEXAPOLE,
-        IMAGE_CORRECTOR_DP21_DEFLECTOR,
         IMAGE_CORRECTOR_TL21_LENS,
+        IMAGE_CORRECTOR_DP21_DEFLECTOR,
         IMAGE_CORRECTOR_DP22_DEFLECTOR,
         IMAGE_CORRECTOR_TL22_LENS,
         IMAGE_CORRECTOR_DPH2_DEFLECTOR,

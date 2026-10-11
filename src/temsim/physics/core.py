@@ -16,7 +16,7 @@ from dataclasses import dataclass
 import hashlib
 from time import perf_counter
 import numpy as np
-from temsim.simulation_modes import is_ideal, mode_key
+from temsim.simulation_modes import mode_key
 
 from temsim.optics.lens_focal_length import focal_length_mm
 from temsim.optics.magnetic_lens_aberration import spherical_aberration_mm
@@ -327,8 +327,6 @@ def hexapole_field_components(z, state, *, exclude_mapped_keys=()):
     z = np.asarray(z, float)
     normal = np.zeros_like(z)
     skew = np.zeros_like(z)
-    if is_ideal(state):
-        return normal, skew
     for component in getattr(state, "corrector_elements", []):
         if getattr(component, "key", None) in exclude_mapped_keys: continue
         if not getattr(component, "enabled", False):
@@ -387,7 +385,7 @@ def spherical_aberration_kick_m3(z_mm, state):
 
     z = np.asarray(z_mm, dtype=float)
     result = np.zeros(z.size, dtype=np.float64)
-    if z.size == 0 or is_ideal(state):
+    if z.size == 0:
         return result
     boundary_tolerance = 32.0 * np.finfo(np.float64).eps * max(1., abs(float(z[0])), abs(float(z[-1])))
     mapped_keys = {provider.lens_key for provider in active_mapped_providers(state)}
@@ -615,8 +613,6 @@ def build_propagation_plan(
         and bool(getattr(aperture, "installed", True))
         and float(z0) <= float(aperture.z_mm) <= float(z1)
     )
-    if is_ideal(state):
-        include_spherical_aberration = include_hexapole = False
     nanopulser = getattr(state, "nanopulser", None)
     if nanopulser is not None and bool(nanopulser.installed):
         nanopulser.validate()
@@ -1040,18 +1036,9 @@ def execute_propagation_plan(
     # Constant-field specialisation retains the original compact magnetic
     # ABI. With E present, the dimensional canonical kernel recomputes p and
     # speed from the conserved potential invariant at every actual RK stage.
-    optical_offsets = None if is_ideal(state) else actual_offsets
-    if (electric_field is None and plan.electric_field is not None and is_ideal(state)
-            and plan.electric_reference_invariant_ev is not None):
-        # Exact constant-potential continuation still belongs to the same
-        # fixed gun-exit reference; starting a new segment cannot reset it.
-        potential = float(np.asarray(plan.electric_field.potential_rise_v_at_global_positions(
-            np.asarray(((0., 0., float(zfull[0])*1e-3),))))[0])
-        optical_energy = float(plan.electric_reference_invariant_ev)+potential
-        if not np.isfinite(optical_energy) or optical_energy <= 0.:
-            raise ValueError("Ideal reference kinetic energy must remain positive and finite")
-        optical_offsets = np.full(arrays[0].size, optical_energy-float(state.beam_voltage_kv)*1000.)
-    momentum_at_start = momentum_profile(state, zfull[:1], optical_offsets)
+    # Analytic field selection never replaces an electron's actual momentum
+    # with the nominal beam energy, including resumed constant-potential runs.
+    momentum_at_start = momentum_profile(state, zfull[:1], actual_offsets)
     if momentum_at_start.ndim == 1:
         inverse_momentum = np.full(
             arrays[0].size, 1.0 / float(momentum_at_start[0]), dtype=np.float64
@@ -1108,7 +1095,7 @@ def execute_propagation_plan(
         from temsim.physics.electrostatic_column_transport import electrostatic_column_rk4
         electric_options = dict(z_mm=zfull, electric_field=electric_field,
             initial_kinetic_energy_ev=actual_initial_energy,
-            optical_reference_invariant_ev=(plan.electric_reference_invariant_ev if is_ideal(state) else None),
+            optical_reference_invariant_ev=None,
             initial_time_s=timing.get("initial_time_s"), policy=policy,
             mapped_fields=plan.mapped_fields, step_operator=medium_transport,
             posed_spherical_kicks=posed_cs,

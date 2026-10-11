@@ -1,0 +1,102 @@
+{
+  "id": "US20080173813A1",
+  "kind": "patent",
+  "title": "Manipulator for rotating and translating a sample holder",
+  "url": "https://patents.google.com/patent/US20080173813A1/en",
+  "figures": "Figs. 1A-2C (PDF p2)",
+  "component_keys": [
+    "sample_stage",
+    "sample"
+  ],
+  "supported_facts": [
+    "FEI共同申请的样品圆载体由两侧夹持件实现平移/转动。"
+  ],
+  "unsupported_claims": [
+    "此处sample holder指被夹持的圆载体，不是普通侧插长杆的完整工程图。",
+    "不用于普通杆的尺寸或内部机构建模。"
+  ],
+  "authors": [
+    "Jeroen Van De Water",
+    "Johannes Van Den Oetelaar",
+    "Raymond Wagner",
+    "Hendrik Nicolaas Slingerland",
+    "Andreas Schmid",
+    "Ivan G. Petrov",
+    "Todor I. Donchev",
+    "Eric A. Olson",
+    "Jan Willem Bruggers",
+    "Adriaan Huibert Dirk Ottevanger",
+    "Thomas Duden"
+  ],
+  "owner": [
+    "FEI Co",
+    "University of California, San Diego",
+    "University of Illinois System"
+  ],
+  "filing_date": "2007-09-26",
+  "publication_date": "2008-07-24",
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T01:25:09.177914+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 859442,
+      "sha256": "59b64b380d44d8795f20f5ab034815bccbe797a548d9818f97ee90a3b3e90095",
+      "kind": "original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/65/ef/ff/da133fd1ff7d83/US20080173813A1.pdf",
+      "retrieved_utc": "2026-10-11T01:25:09.177914+00:00"
+    },
+    {
+      "file": "original.html",
+      "bytes": 316337,
+      "sha256": "71a86d5b8e56566dbc45352a589191bc57eaa77bc668c7e6a3df7484df67cf1f",
+      "kind": "original_html",
+      "source_url": "https://patents.google.com/patent/US20080173813A1/en",
+      "retrieved_utc": "2026-10-11T01:25:08.849820+00:00"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 96131,
+      "sha256": "2c1a0011576a9e499303b05a3aa4c182b0dcb0c0ecca703795f6f65130c15d8c",
+      "kind": "unmodified_complete_pdf_page_render",
+      "derived_from": "original.pdf",
+      "pdf_page_1based": 2,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 106591,
+      "sha256": "5242869a7eb8bf166d353d4a1cf82b2e5390e9a211120e0a11a163cf3b2c47dd",
+      "kind": "unmodified_complete_pdf_page_render",
+      "derived_from": "original.pdf",
+      "pdf_page_1based": 3,
+      "render_dpi": 108
+    }
+  ],
+  "archive_status": "original_pdf_saved",
+  "download_receipts": [
+    {
+      "id": "US20080173813A1",
+      "file": "original.pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/65/ef/ff/da133fd1ff7d83/US20080173813A1.pdf",
+      "final_url": "https://patentimages.storage.googleapis.com/65/ef/ff/da133fd1ff7d83/US20080173813A1.pdf",
+      "status": "saved",
+      "bytes": 859442,
+      "sha256": "59b64b380d44d8795f20f5ab034815bccbe797a548d9818f97ee90a3b3e90095",
+      "content_type": "application/pdf",
+      "retrieved_utc": "2026-10-11T01:25:09.177914+00:00"
+    },
+    {
+      "id": "US20080173813A1",
+      "file": "original.html",
+      "source_url": "https://patents.google.com/patent/US20080173813A1/en",
+      "final_url": "https://patents.google.com/patent/US20080173813A1/en",
+      "status": "saved",
+      "bytes": 316337,
+      "sha256": "71a86d5b8e56566dbc45352a589191bc57eaa77bc668c7e6a3df7484df67cf1f",
+      "content_type": "text/html",
+      "retrieved_utc": "2026-10-11T01:25:08.849820+00:00"
+    }
+  ]
+}

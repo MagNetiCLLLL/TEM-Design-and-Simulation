@@ -1635,7 +1635,7 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
     if not uses_field_maps(state):
         provider = GeometryAwareAnalyticFieldProvider(
             key, native_provider, current, f"selected_{selected_mode}_model",
-            model_status="ideal_paraxial" if selected_mode == "ideal" else "parameterized_analytic",
+            model_status="parameterized_analytic",
             registration=registration,
         )
         diagnostics[key] = {"mode": selected_mode, "model_status": provider.model_status,

@@ -1,0 +1,81 @@
+{
+  "id": "US4306149A",
+  "kind": "patent",
+  "family": "辅助 mini condenser 与物镜",
+  "url": "https://patents.google.com/patent/US4306149A/en",
+  "figures": "Fig. 2 and Figs. 3a-3b; PDF pages 3-4",
+  "component_keys": [
+    "mini_condenser",
+    "objective_lens",
+    "ac_deflector"
+  ],
+  "supported_facts": [
+    "历史 Philips 设计将辅助绕组和非磁性间断结合到上物镜磁路。",
+    "辅助激励方向改变联合透镜作用。"
+  ],
+  "unsupported_claims": [
+    "不是 Titan/Spectra 现役线圈形状或电流标定。",
+    "示意图比例不能决定零件毫米尺寸。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:14.865926+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 574720,
+      "sha256": "5e2c433fb1c4fe25ac70c0a7757f7cba1e6b768c717270f0f98fd62fe1d0b180",
+      "kind": "original_pdf",
+      "method": "copied_existing_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/7e/26/e6/2d0b7e6801a5c5/US4306149.pdf"
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 142860,
+      "sha256": "787ff520d86bd2f77338a60df91662b7cbc82b983ba4e0920474a66b09ea4dfb",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 3,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [
+    "复用项目已保存的原始 PDF；本次归档时间不冒充首次网络获取时间。"
+  ],
+  "title": "Electron microscope (comprising an auxiliary lens)",
+  "authors": [
+    "Jan B. Le Poole",
+    "Karel D. van der Mast",
+    "Christiaan J. Rakels"
+  ],
+  "owner": [
+    "US Philips Corp"
+  ],
+  "dates": {
+    "priorityDate": "1977-05-26",
+    "filingDate": "1978-05-25",
+    "publicationDate": "1981-12-15"
+  },
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/7e/26/e6/2d0b7e6801a5c5/US4306149.pdf",
+  "cached_source": "outputs\\cad_research_20261011\\sources\\US4306149.pdf",
+  "pdf_page_count": 7,
+  "pdf_metadata": {
+    "format": "PDF 1.3",
+    "title": "1498404716733430349-04306149",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "",
+    "producer": "ImageMagick 6.9.0-6 Q8 x86_64 2015-02-23 http://www.imagemagick.org",
+    "creationDate": "D:20170625083200",
+    "modDate": "D:20170625083200",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    3
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

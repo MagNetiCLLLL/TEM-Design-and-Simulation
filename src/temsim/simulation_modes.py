@@ -1,7 +1,8 @@
 """Explicit column-lens fidelity, independent of numerical accuracy and specimen physics.
 
-Ideal uses the existing finite-field paraxial transport at reference energy; it
-does not invent a thin-lens calibration or alter TOML geometry. Mode shelves
+Ideal uses parameterised finite fields with configured aberrations, multipoles
+and actual electron energies; it does not solve material/pole-piece fields or
+alter TOML geometry. Mode shelves
 store model settings and round-lens excitations, never resolved geometry.
 """
 
@@ -19,8 +20,8 @@ class SimulationMode:
 
 
 MODES = (
-    SimulationMode("ideal", "Ideal Optics", "Teaching: finite-length paraxial column lenses at reference energy; no lens aberrations or hexapole terms. Focusing, magnetic rotation and apertures remain."),
-    SimulationMode("analytical", "Analytical Field", "Parameterized column fields with configured aberrations. Saved geometry/map models are retained but not used."),
+    SimulationMode("ideal", "Ideal Optics", "Parameterized finite column fields with configured aberrations, corrector multipoles and actual electron energies. Pole-piece shape and magnetic materials are not used to solve the field. Hardware positions and apertures remain active."),
+    SimulationMode("analytical", "Analytical Field", "Parameterized fields with configured aberrations and correctors; the same field laws as Ideal Optics. Retained for existing profiles. Saved geometry/map recipes are inactive."),
     SimulationMode("linear_geometry", "Linear Geometry Field", "Every enabled column round lens requires an explicit linear FEM recipe. Materials, mesh and geometry must be valid; no analytic fallback."),
     SimulationMode("nonlinear_material", "Nonlinear Material Field", "Static isotropic B-H fields, jointly solved at the complete current vector. Explicit reference materials required; no hysteresis or thermal coupling."),
     SimulationMode("coupled_multiphysics", "Coupled Multiphysics", "Not implemented: requires explicit circuit, thermal and structural coupling.", False),

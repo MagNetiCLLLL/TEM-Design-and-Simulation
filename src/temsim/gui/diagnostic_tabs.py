@@ -1892,8 +1892,60 @@ class PhysicalLayoutView(QWidget):
                 component_key="objective_lens",
             )
 
+    def _add_sample_stage_material_section(self, source_stage) -> None:
+        """Draw the same saved mechanical holder as the 3D/STEP views."""
+        from temsim.part_model_3d import part_model_from_document
+        from temsim.assembly_section import mesh_section
+        document = {"parts": [part.data for part in self._part_by_key.values()
+                              if part.module_key == source_stage.module_key]}
+        shift = float(source_stage.center_z_mm) - float(source_stage.data["local_center_z_mm"])
+        # The old radial shell rectangle cannot show a side port. Replace it
+        # with the actual shared material section, including its saved pose.
+        for item in tuple(self.plot.getPlotItem().items):
+            if (self._selectable_item_keys.get(id(item)) == "objective_lens_housing"
+                    and not isinstance(item, pg.TextItem)):
+                self.plot.removeItem(item)
+                self._selectable_item_keys.pop(id(item), None)
+        for key, items, colour in (("objective_lens_housing", self._sample_stage_items, "#94a3b8"),
+                                   ("sample_stage", self._sample_stage_items, "#94a3b8"),
+                                   ("sample_holder", self._sample_holder_items, "#f59e0b")):
+            if key not in self._part_by_key:
+                continue
+            model = part_model_from_document(document, key, include_children=False, angular_segments=32)
+            for mesh in model.meshes:
+                points = mesh_section(mesh, 0.).segments_mm.reshape(-1, 2)
+                if not len(points):
+                    continue
+                curve = pg.PlotCurveItem(points[:, 0]+shift, points[:, 1], connect="pairs",
+                                         pen=pg.mkPen(colour, width=1.2))
+                curve.setToolTip(f"{model.name} / {mesh.region}\nSaved material X-Z section.\n{mesh.description}")
+                curve.setZValue(48)
+                self.plot.addItem(curve)
+                items.append(curve)
+                _register_selectable_graphics_item(self._selectable_item_keys, curve, key)
+        sample = self._record_by_key.get("sample")
+        if sample is not None:
+            inserted = bool(getattr(getattr(getattr(self._result, "state_snapshot", None), "sample", None), "inserted", True))
+            radius = max(.5*float(sample.outer_diameter_mm), 1.5)
+            z = float(sample.center_z_mm)
+            colour = "#fb7185" if inserted else "#94a3b8"
+            curve = self.plot.plot([z, z], [-radius, radius], pen=pg.mkPen(colour, width=2.))
+            curve.setToolTip("Optical sample plane; sample inserted controls interactions, independently of saved mechanical holder retraction.")
+            self._sample_plane_items.append(curve)
+            _register_selectable_graphics_item(self._selectable_item_keys, curve, "sample")
+            label = pg.TextItem("SAMPLE" if inserted else "SAMPLE INTERACTIONS OFF", color=colour)
+            self.plot.addItem(label)
+            self._sample_plane_labels.append(label)
+            self._register_label_callout(key="sample:specimen", label=label, anchor_z_mm=z,
+                anchor_radius_mm=radius, colour=colour, priority=-4, preferred_side=-1, component_key="sample")
+
     def _add_sample_stage_and_holder_schematic(self) -> None:
         """Show the transverse stage and holder without adding optical parts."""
+
+        source_stage = self._part_by_key.get("sample_stage")
+        if source_stage is not None and "stage_port_start_x_mm" in source_stage.data:
+            self._add_sample_stage_material_section(source_stage)
+            return
 
         stage = self._record_by_key.get("sample_stage")
         sample = self._record_by_key.get("sample")
@@ -3820,36 +3872,24 @@ class PhysicalLayoutView(QWidget):
                     "size": 7,
                 })
 
-        for segment in result.assembly.vacuum_liner_segments:
-            width = segment.end_z_mm - segment.start_z_mm
-            inner = 0.5 * segment.inner_diameter_mm
-            outer = 0.5 * segment.outer_diameter_mm
-            for lower in (-outer, inner):
-                rect = QGraphicsRectItem(
-                    segment.start_z_mm,
-                    lower,
-                    width,
-                    segment.wall_thickness_mm,
-                )
-                rect.setPen(pg.mkPen("#94a3b8", width=0.7))
-                rect.setBrush(pg.mkBrush(148, 163, 184, 150))
-                rect.setToolTip(
-                    f"{segment.name}\nNon-magnetic vacuum liner tube\n"
-                    f"ID {segment.inner_diameter_mm:.6g} mm | "
-                    f"OD {segment.outer_diameter_mm:.6g} mm"
-                    "\nThis is a physical sleeve around the open beam-path "
-                    "bore, not the bore itself."
-                    + (
-                        "\nPhoto-scaled continuous tube; it terminates at "
-                        "the upper Objective pole connector tail. The metal "
-                        "vacuum seal is user-identified as iridium."
-                        if segment.key
-                        == "@vacuum_liner:c1_c2_to_upper_objective"
-                        else ""
-                    )
-                )
-                self.plot.addItem(rect)
-                self._vacuum_liner_items.append(rect)
+        from temsim.cad_stage_holder import physical_liner_rows
+        from temsim.part_model_3d import part_model_from_document
+        from temsim.assembly_section import mesh_section
+        for row in physical_liner_rows(result.assembly, runtime_values=self.assembly_3d._runtime_values):
+            model = part_model_from_document({"parts": [row]}, row["key"], angular_segments=16,
+                                             include_children=False)
+            for mesh in model.meshes:
+                section = mesh_section(mesh, 0.)
+                points = section.segments_mm.reshape(-1, 2)
+                if not len(points):
+                    continue
+                curve = pg.PlotCurveItem(points[:, 0], points[:, 1], connect="pairs",
+                                         pen=pg.mkPen("#94a3b8", width=0.9))
+                curve.setToolTip(f"{row['name']}\nConfigured material tube: shared 3D X-Z section.\n"
+                                 "Component equivalent electric boundaries do not add separate sleeves.\n"
+                                 + mesh.description)
+                self.plot.addItem(curve)
+                self._vacuum_liner_items.append(curve)
         for y in (vacuum_upper, vacuum_lower):
             self.plot.plot(
                 vacuum_z, y,

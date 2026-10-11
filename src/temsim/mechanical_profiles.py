@@ -14,6 +14,9 @@ FIXED_DIFFERENTIAL_PUMPING_APERTURE = (
 )
 VACUUM_LINER = "vacuum_liner"
 VACUUM_BORE = "vacuum_bore"
+DEFLECTOR_COIL_INSERT = "deflector_coil_insert"
+# Saved documents from the first corrector implementation remain readable.
+DEFLECTOR_COIL_PROFILES = frozenset({DEFLECTOR_COIL_INSERT, "corrector_deflector_coils"})
 
 MAGNETIC_LENS_MECHANICAL_PROFILES = frozenset({
     MAGNETIC_LENS_HOUSING,

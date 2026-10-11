@@ -1,0 +1,59 @@
+{
+  "id": "CEOS-Lu-2025",
+  "kind": "workshop_lecture",
+  "title": "Special use of correctors for uncommon experiments: free electron orbital angular momentum and beyond",
+  "authors": [
+    "Peng-Han Lu"
+  ],
+  "owner": "Forschungszentrum Juelich; hosted by CEOS GmbH",
+  "publication_date": "2025-08-31",
+  "url": "https://www.ceos-gmbh.de/de/grundlagen/Workshop-Beitraege/MC2025_CEOS_PL_20250831.pdf",
+  "figures": "PDF p2 CETCOR/CESCOR diagrams; p1 author identification",
+  "component_keys": [
+    "objective_lens",
+    "image_ol_post_lens",
+    "image_tl11_lens",
+    "image_tl12_lens",
+    "image_hp1_hexapole",
+    "image_hp2_hexapole",
+    "image_sad_plane"
+  ],
+  "supported_facts": [
+    "明确区分CETCOR image与CESCOR probe的两个光路。",
+    "OL pre/post在同一个跨样品的物镜符号内；图含sample/BFP以及两族基准光线。"
+  ],
+  "unsupported_claims": [
+    "光路原图引用CEOS residuals页面，不能作为独立尺寸测量。",
+    "示意图不给实际毫米间距、绕组宿主或场强。"
+  ],
+  "archive_status": "original_pdf_saved",
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T01:00:38.354798+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 4555802,
+      "sha256": "267fc35146cdd2a3f4388303df9cb047d6e040a486d589de5e152c50704991a1",
+      "kind": "original_pdf",
+      "source_url": "https://www.ceos-gmbh.de/de/grundlagen/Workshop-Beitraege/MC2025_CEOS_PL_20250831.pdf"
+    },
+    {
+      "file": "page-01.png",
+      "bytes": 114276,
+      "sha256": "ad37d6d63eaf5e74ab6f31306067fb93a46585d68b6c8642b3e0cad71a5995aa",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 1,
+      "render_dpi": 129.6
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 810499,
+      "sha256": "18c1c511d76a3c9ab28fdac918481546c8b966e4f265a5dcc0344e4ce5deb3b7",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 2,
+      "render_dpi": 129.6
+    }
+  ],
+  "pdf_page_count": 13
+}

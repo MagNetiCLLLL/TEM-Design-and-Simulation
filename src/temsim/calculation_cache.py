@@ -571,6 +571,8 @@ def _state_payload(state) -> dict[str, object]:
     # Version every affected product, including states without a catalog.
     # This does not migrate saved profiles or admit historical stage keys.
     payload["_stage_input_schema"] = _STAGE_INPUT_SCHEMA
+    from temsim.physics.scan_calibration import SCAN_CALIBRATION_MODEL
+    payload["_scan_calibration_model"] = SCAN_CALIBRATION_MODEL
     payload["lenses"] = [live_lens_parameters(lens) for lens in state.lenses]
     # Dynamic scan/deflector phase is deliberately not persisted by State,
     # but it is read by ray, wave, scan and detector propagation.

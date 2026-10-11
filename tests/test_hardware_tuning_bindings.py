@@ -60,14 +60,13 @@ def test_uninstalled_corrector_and_third_condenser_are_not_editable(instrument, 
     assert groups[2].target is None and "not installed" in groups[2].notice
 
 
-def test_ideal_mode_locks_only_hexapole_terms_without_switching_mode(instrument, monkeypatch):
+def test_ideal_mode_keeps_corrector_controls_active_without_switching_mode(instrument, monkeypatch):
     state = instrument
     monkeypatch.setattr(state, "simulation_mode", "ideal")
     groups = resolve_task(state, "probe_corrector")
-    locked = [group for group in groups if group.target is None]
-    assert len(locked) == 4
-    assert all(group.binding.component_key.endswith("hexapole") for group in locked)
-    assert all("Ideal Optics" in group.notice for group in locked)
+    hexapoles = [group for group in groups if group.binding.component_key.endswith("hexapole")]
+    assert len(hexapoles) == 4
+    assert all(group.target is not None and group.fields for group in hexapoles)
     assert any(group.target is not None and group.binding.component_key.endswith("quadrupole") for group in groups)
     assert state.simulation_mode == "ideal"
 

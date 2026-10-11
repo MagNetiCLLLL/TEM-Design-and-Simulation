@@ -1,4 +1,5 @@
 import math
+from dataclasses import replace
 
 import numpy as np
 import pytest
@@ -73,7 +74,13 @@ def test_ratio_table_reports_target_ratio_and_per_decade_delta():
 
 
 def test_nanoprobe_seed_requires_the_calibrated_aperture_path():
-    definition = direct_alignment_by_key("nanoprobe_convergence")
+    # Exercise a declared table independently of the current instrument's
+    # calibration. The revised relay deliberately has no stored seed table.
+    definition = replace(direct_alignment_by_key("nanoprobe_convergence"), targets={
+        "precalculation_aperture_diameters_um": [120., 144.],
+        "precalculation_convergence_mrad": [30., 36.],
+        "precalculation_vectors": [[20., 30.], [24., 34.]],
+    })
     lower = np.zeros(2)
     upper = np.full(2, 100.0)
 
@@ -85,10 +92,17 @@ def test_nanoprobe_seed_requires_the_calibrated_aperture_path():
     )
 
     assert matched is not None
-    assert matched == pytest.approx(
-        0.5 * np.asarray((
-            definition.targets["precalculation_vectors"][5],
-            definition.targets["precalculation_vectors"][6],
-        )).sum(axis=0)
-    )
+    assert matched == pytest.approx([22., 32.])
     assert mismatched is None
+
+
+def test_revised_nanoprobe_does_not_reuse_the_old_corrector_seed_table():
+    definition = direct_alignment_by_key("nanoprobe_convergence")
+    assert not any(key.startswith(("precalculation_", "aperture_scaling_"))
+                   for key in definition.targets)
+    # These requests matched the former 0.25 mrad/um table. They must now
+    # fall through to the live candidate search, not its former focus branch.
+    for target_mrad, diameter_um in ((3., 12.), (33., 132.), (60., 240.)):
+        assert interpolated_nanoprobe_seed(
+            definition, target_mrad, diameter_um, np.zeros(2), np.full(2, 100.)
+        ) is None

@@ -16,6 +16,9 @@ The simulator does not currently provide autonomous microscope control.
 
 - Editable microscope geometry and hardware settings, with electron emission,
   extraction, acceleration, lenses, deflectors, stigmators and apertures.
+- [Editable STEP and native 3D component models](docs/CAD_MODELS.md), with
+  [archived construction references](docs/references/cad-library/README.md),
+  separate bulk material bodies and explicit limits for unknown internals.
 - Interactive ray diagrams, transverse beam plots, flight-time colouring,
   magnetic-field views and individually adjustable virtual electron paths.
 - Ray Diagram conjugate-plane searches from a pinned Z, with magnification,

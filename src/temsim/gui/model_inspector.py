@@ -255,10 +255,29 @@ class ModelInspectorPage(QWidget):
     def _load_mode(self):
         if self._state is None:
             return
+        self._update_aberration_mode_availability()
         row = getattr(self._state, f"{self.aberration_system.currentData()}_aberrations")
         self.aberration_mode.setCurrentIndex(max(self.aberration_mode.findData(row.get("mode", "manual")), 0))
         self.fit_angle.setText(str(row.get("fit_semiangle_mrad", 10)))
         self._show_fit_evidence()
+
+    def _update_aberration_mode_availability(self):
+        from temsim.simulation_modes import uses_field_maps
+        available = self._state is not None and uses_field_maps(self._state)
+        item = self.aberration_mode.model().item(self.aberration_mode.findData("field_derived"))
+        item.setEnabled(available)
+        item.setToolTip("" if available else self._field_fit_unavailable_message())
+
+    @staticmethod
+    def _field_fit_unavailable_message():
+        return ("Field-derived aberration fitting requires an active spatial field map. "
+                "Ideal Optics and Analytical Field use parameterized fields. Choose Manual, "
+                "or explicitly select a spatial-field model before requesting a fit.")
+
+    def _validate_aberration_mode(self, mode):
+        from temsim.simulation_modes import uses_field_maps
+        if mode == "field_derived" and not uses_field_maps(self._state):
+            raise ValueError(self._field_fit_unavailable_message())
 
     def _show_fit_evidence(self):
         import json
@@ -347,8 +366,7 @@ class ModelInspectorPage(QWidget):
             if not math.isfinite(angle) or not 0 < angle <= 100:
                 raise ValueError("Fit semi-angle must be in (0, 100] mrad")
             system = self.aberration_system.currentData()
-            from temsim.simulation_modes import promote_custom_mode
-            promote_custom_mode(self._state)
+            self._validate_aberration_mode(self.aberration_mode.currentData())
             options = getattr(self._state, f"{system}_aberrations")
             options.update(mode=self.aberration_mode.currentData(), fit_semiangle_mrad=angle)
             self.changed.emit(f"{system}_aberrations")
@@ -360,12 +378,15 @@ class ModelInspectorPage(QWidget):
         if self._state is None:
             return
         from temsim.gui.aberration_dialog import AberrationSettingsDialog
-        from temsim.simulation_modes import promote_custom_mode
         system = self.aberration_system.currentData()
         dialog = AberrationSettingsDialog(getattr(self._state, f"{system}_aberrations"),
                                          system=system, state_step_mm=self._state.step_mm, parent=self)
         if dialog.exec() == dialog.DialogCode.Accepted:
-            promote_custom_mode(self._state)
+            try:
+                self._validate_aberration_mode(dialog.result_options.get("mode", "manual"))
+            except ValueError as exc:
+                self.error.emit(str(exc))
+                return
             setattr(self._state, f"{system}_aberrations", dialog.result_options)
             getattr(self._state, "_effective_aberration_cache", {}).pop(system, None)
             self._load_mode()
@@ -375,6 +396,7 @@ class ModelInspectorPage(QWidget):
     def refresh(self):
         if self._state is None:
             return
+        self._update_aberration_mode_availability()
         self.validation_page.set_context(self._state, self.lens.currentData())
         rows = []
         from temsim.simulation_modes import mode_key, MODE_BY_KEY
@@ -396,7 +418,7 @@ class ModelInspectorPage(QWidget):
         for lens in self._state.lenses:
             descriptor = self._state.lens_field_map_descriptors.get(lens.key, {})
             if selected_mode in {"ideal", "analytical"}:
-                evidence = "Ideal paraxial field" if selected_mode == "ideal" else "Analytic field profile"
+                evidence = "Parameterized analytic field"
                 detail = "Saved field recipes are retained but inactive in this global model. Pole/material geometry does not solve the field boundary-value problem."
             elif descriptor.get("solver") == "axisymmetric_linear_fem":
                 evidence = "Linear geometry field requested"
@@ -419,8 +441,6 @@ class ModelInspectorPage(QWidget):
         ))
         for system in ("probe", "image"):
             mode = getattr(self._state, f"{system}_aberrations").get("mode", "manual")
-            if selected_mode == "ideal":
-                mode = "disabled; defocus retained"
             rows.append((f"{system.title()} aberrations", "Approximate", mode.replace("_", " ").title(), "Manual and field-derived coefficients are mutually exclusive. Field fits report finite-pupil residuals and unmapped round lenses; first-order focus is not applied twice."))
         diagnostics = self._completed_diagnostics if selected_mode == self._completed_mode else {}
         from temsim.physics.lens_field_provider import lens_geometry_binding, _fingerprint

@@ -114,15 +114,26 @@ def test_actual_scan_coils_use_distinct_energy_dependent_arrival_times():
     c = replace(c, beam=replace(c.beam, modes=modes), plane_z_mm=start)
     epoch = 2e-7
     result = _propagate_column(state, c, stop, maximum_step_mm=.5, tip_time_s=epoch)
+    from temsim.physics.core import electron
+    reference_momentum = electron(state)[1]  # hardware magnetic-integral calibration
     for before, after, record in zip(c.beam.modes, result.beam.modes, result.record["modes"]):
-        _, velocity = _momentum_velocity(before.energy_kev*1000)
+        momentum, velocity = _momentum_velocity(before.energy_kev*1000)
         expected = before.plane.origin_m+(stop-start)*1e-3*before.plane.tilt_rad
+        expected_tilt = before.plane.tilt_rad.copy()
         for index, z in enumerate((scan.upper_z_mm, scan.lower_z_mm)):
             time = epoch+2e-8+(z-start)*1e-3/velocity
-            kick = np.asarray(scan.kick_events(time_s=time)[index][1:])
-            expected += (stop-z)*1e-3*kick
+            kick = np.asarray(scan.kick_events(time_s=time)[index][1:])*reference_momentum/momentum
+            # Integrate the actual uniform finite coil, including the fixture's
+            # deliberately partial first/last supports. The drive is frozen at
+            # centre arrival; its physical magnetic field is shared by energies.
+            thickness = scan.effective_thickness_mm
+            lower, upper = max(start,z-.5*thickness), min(stop,z+.5*thickness)
+            integrated_kick = kick*(upper-lower)/thickness
+            expected += (stop-.5*(lower+upper))*1e-3*integrated_kick
+            expected_tilt += integrated_kick
             assert record["deflector_actions"][index]["arrival_time_s"] == pytest.approx(time, rel=1e-14)
         np.testing.assert_allclose(after.plane.origin_m, expected, rtol=1e-10, atol=1e-18)
+        np.testing.assert_allclose(after.plane.tilt_rad, expected_tilt, rtol=1e-10, atol=1e-18)
     assert result.record["modes"][0]["deflector_actions"][1]["arrival_time_s"] != result.record["modes"][1]["deflector_actions"][1]["arrival_time_s"]
 
 
@@ -225,7 +236,8 @@ def test_timed_segment_cache_reuses_static_prefix_but_not_new_coil_actions(tmp_p
     scan.scan_frame_period_s = 1e-5
     scan.scan_lines = scan.scan_pixels_x = 4
     scan.set_scan_command_matrix_mrad(((.01, 0.), (0., .01)))
-    start, stop = scan.upper_z_mm-2., scan.lower_z_mm+1.
+    half_support = .5*scan.effective_thickness_mm
+    start, stop = scan.upper_z_mm-half_support-2., scan.lower_z_mm+half_support+1.
     original = checkpoint(.4)
     original = replace(original, plane_z_mm=start, beam=replace(original.beam, modes=(replace(original.beam.modes[0],
         axial_reference=AxialWaveReference(2e-8, 1e-22)),)))

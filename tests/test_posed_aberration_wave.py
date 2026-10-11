@@ -49,6 +49,20 @@ def test_zero_inclination_reproduces_existing_quartic_operator_without_phase_fit
     assert receipt["split_steps"] == 0
 
 
+def test_ideal_analytic_fields_retain_configured_posed_spherical_screen():
+    from test_column_wave_transport import _unexcited_posed_column
+    from temsim.physics.posed_aberrations import posed_spherical_kicks
+    state = _unexcited_posed_column(rotation_y_mrad=1.)
+    lens = next(lens for lens in state.lenses if lens.key == "objective_lens")
+    lens.enabled = True
+    actual, = posed_spherical_kicks(state, lens.z_mm-2., lens.z_mm+2.)
+    assert actual.strength_m3 > 0.
+    state.simulation_mode = "analytical"
+    assert posed_spherical_kicks(state, lens.z_mm-2., lens.z_mm+2.) == (actual,)
+    lens.enabled = False
+    assert posed_spherical_kicks(state, lens.z_mm-2., lens.z_mm+2.) == ()
+
+
 def test_zero_strength_is_identity_even_outside_nonzero_screen_inclination_domain():
     wave = packet()
     actual, _ = apply(wave, screen(.2, 0.))

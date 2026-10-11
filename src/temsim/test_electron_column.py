@@ -113,7 +113,7 @@ def trace_instrument_electron(scene, settings, cancelled, progress, interval, us
         if not use_compiled:
             extras += ("Explicit uncompiled CPU reference requested for this diagnostic; the captured instrument compute policy was not changed.",)
         if is_ideal(state):
-            extras += ("Ideal optics retains the production chromatic-free trajectory approximation; reported kinetic energy and flight time use the actual electron energy.",)
+            extras += ("Ideal Optics uses configured analytical column fields and aberrations; trajectory, kinetic energy and flight time use the actual electron energy.",)
         notes = tuple(note for note in output.notes
                       if not note.startswith(("Second-order discrete-gradient", "Time and travelled path")))
         return replace(output, notes=(*notes, *extras))

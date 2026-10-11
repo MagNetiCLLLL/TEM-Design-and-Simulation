@@ -1,0 +1,75 @@
+{
+  "id": "US6844548B2",
+  "kind": "patent",
+  "family": "Wien 过滤器",
+  "url": "https://patents.google.com/patent/US6844548B2/en",
+  "figures": "Fig. 1: transverse XY; Fig. 2: longitudinal XZ; Figs. 3-4: drives",
+  "component_keys": [
+    "feg_monochromator_wien"
+  ],
+  "supported_facts": [
+    "十二极实施例结合电势激励与磁势激励，构成横向交叉电磁场。"
+  ],
+  "unsupported_claims": [
+    "不是项目已有解析场具有十二路独立标定的证据。",
+    "不提供现有模块机械尺寸。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:16.124120+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 1092401,
+      "sha256": "857ee7e34911f04a5ee933058837eb92659588fd3c62bb66f8f3aeec1a490bcd",
+      "kind": "original_pdf",
+      "method": "downloaded_public_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/4e/36/a2/2a1e65f9994578/US6844548.pdf"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 123261,
+      "sha256": "2df0b2edec54326a6396ade4fcea436bdb22a0f6136cc764255fb9517dbda96e",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 2,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [],
+  "title": "Wien filter and electron microscope using same",
+  "authors": [
+    "G. Martinez Lopez",
+    "Katsushige Tsuno"
+  ],
+  "owner": [
+    "Jeol Ltd"
+  ],
+  "dates": {
+    "priorityDate": "2002-02-08",
+    "filingDate": "2003-02-07",
+    "publicationDate": "2005-01-18"
+  },
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/4e/36/a2/2a1e65f9994578/US6844548.pdf",
+  "resolved_pdf_url": "https://patentimages.storage.googleapis.com/4e/36/a2/2a1e65f9994578/US6844548.pdf",
+  "pdf_page_count": 17,
+  "pdf_metadata": {
+    "format": "PDF 1.3",
+    "title": "1498389288654538971-06844548",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "",
+    "producer": "ImageMagick 6.9.0-6 Q8 x86_64 2015-02-23 http://www.imagemagick.org",
+    "creationDate": "D:20170625041501",
+    "modDate": "D:20170625041501",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    2
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

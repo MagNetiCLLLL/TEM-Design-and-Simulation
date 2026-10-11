@@ -1,0 +1,89 @@
+{
+  "id": "US20240371597A1",
+  "kind": "patent",
+  "family": "通用多极磁芯/绕组/磁轭",
+  "url": "https://patents.google.com/patent/US20240371597A1/en",
+  "figures": "Figs. 1-7; winding alternatives Figs. 8-11",
+  "component_keys": [
+    "probe_hp1_hexapole",
+    "probe_hp2_hexapole",
+    "image_hp1_hexapole",
+    "image_hp2_hexapole",
+    "physical multipole hosts"
+  ],
+  "supported_facts": [
+    "给出磁轭、径向磁芯、内侧极靴与绕组的可实现拓扑。",
+    "特定实施例讨论绝缘或隔真空管。"
+  ],
+  "unsupported_claims": [
+    "不能把所有实施例合并为一个实际机器。",
+    "不确定当前设备采用的极面、材料曲线、绕组或内置管。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:15.186885+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 1997835,
+      "sha256": "30fd1a55a66690bad2d9a059a25282b0c2526c0bd002a2d1178e7511436aae37",
+      "kind": "original_pdf",
+      "method": "downloaded_public_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/ec/20/a8/9a2f1b19d65509/US20240371597A1.pdf"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 336345,
+      "sha256": "2ab3b8a2d652e4274a3b1287af19521520f9e5e2a8bc86452e03f003512ccc17",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 2,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 134399,
+      "sha256": "f70bdf46fe00052f1024868414cd3bfb1a34fd0f95d387c060da26665e8cbc9a",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 3,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [],
+  "title": "Multipole element, image error corrector and particle beam system",
+  "authors": [
+    "Dirk Preikszas",
+    "Juergen Pommerenke"
+  ],
+  "owner": [
+    "Carl Zeiss Microscopy GmbH"
+  ],
+  "dates": {
+    "priorityDate": "2023-05-03",
+    "filingDate": "2024-05-03",
+    "publicationDate": "2024-11-07"
+  },
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/ec/20/a8/9a2f1b19d65509/US20240371597A1.pdf",
+  "resolved_pdf_url": "https://patentimages.storage.googleapis.com/ec/20/a8/9a2f1b19d65509/US20240371597A1.pdf",
+  "pdf_page_count": 25,
+  "pdf_metadata": {
+    "format": "PDF 1.1",
+    "title": "US020240371597A120241107",
+    "author": "",
+    "subject": "00250001",
+    "keywords": "",
+    "creator": "",
+    "producer": "libtiff / tiff2pdf - 20170521",
+    "creationDate": "D:20241021181650",
+    "modDate": "D:20241021181650",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    2,
+    3
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

@@ -11,6 +11,7 @@ from threading import Lock
 
 from temsim.immutable_json import json_digest
 from temsim.optics.shared_deflectors import shared_channel_enabled
+from temsim.physics.scan_calibration import SCAN_CALIBRATION_MODEL, ac_angle_target
 
 
 _PREPARED = OrderedDict()
@@ -58,6 +59,16 @@ def copy_resolved_scan_drives(source, target):
 
 def scan_drive_identity(state, *, emission_time_s=None):
     """Identity of actual commands, couplings, timing and physical coil hosts."""
+    # Merely comparing captured drives must not restore a downstream held
+    # calibration. In particular, an upstream observation can legitimately
+    # leave an empty or obsolete held record unused. Keep that raw record in
+    # controls below; execution still validates it through restore_held.
+    try:
+        angle_target = ac_angle_target(state)
+    except (ValueError, TypeError):
+        if state.ac_deflector.calibration_mode != "held":
+            raise
+        angle_target = "legacy_unknown"
     rows = []
     for component in _components(state):
         rows.append(dict(controls=component.to_dict(),
@@ -69,13 +80,19 @@ def scan_drive_identity(state, *, emission_time_s=None):
             scan_command_matrix_mrad=component.scan_command_matrix_mrad))
     epoch = (getattr(state, "simulation_time_s", 0.)
              if emission_time_s is None else emission_time_s)
-    return json_digest({"emission_time_s": float(epoch), "scan_drives": rows})
+    return json_digest({"calibration_model": SCAN_CALIBRATION_MODEL,
+                        "ac_angle_target": angle_target,
+                        "emission_time_s": float(epoch), "scan_drives": rows})
+
+
+def _preparation_identity(request_identity):
+    return json_digest((SCAN_CALIBRATION_MODEL, str(request_identity)))
 
 
 def remember_resolved_scan_drives(state, request_identity, *, active_keys=None):
     """Register verified execution outputs, including a particle-to-wave handoff."""
     active = _active_keys(state) if active_keys is None else frozenset(active_keys)
-    key = (str(request_identity), active)
+    key = (_preparation_identity(request_identity), active)
     values = _resolved_values(state)
     with _PREPARED_LOCK:
         _PREPARED[key] = values
@@ -95,7 +112,7 @@ def prepare_scan_drives(state, request_identity, *, observation_stop_z_mm=None,
     active = _active_keys(state, observation_stop_z_mm)
     if not active:
         return
-    identity = str(request_identity)
+    identity = _preparation_identity(request_identity)
     # A scan/session retains its resolved execution even if other workers
     # evict the bounded global cache between dwell or observation requests.
     if session_cache is not None:

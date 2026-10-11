@@ -18,6 +18,7 @@ from temsim.assembly_catalog import AssemblyCatalog
 from temsim.operating_modes import apply_operating_mode_pair
 from temsim.optics.column import default_state
 from temsim.optics.probe_calibration import IncidentProbeModel, fit_probe_hexapoles
+from temsim.optics.surface_probe_focus import surface_z_mm
 
 
 def focus(model, target_mrad, *, initial=False):
@@ -55,9 +56,9 @@ def focus(model, target_mrad, *, initial=False):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("outputs/probe_calibration"))
-    parser.add_argument("--rays", type=int, default=512)
+    parser.add_argument("--rays", type=int, default=3000)
     parser.add_argument("--step", type=float, default=0.05)
-    parser.add_argument("--target", type=float, default=25.0)
+    parser.add_argument("--target", type=float, default=30.0)
     parser.add_argument("--skip-focus", action="store_true")
     parser.add_argument("--keep-convergence", action="store_true",
                         help="Keep C2 and polish only the nearby C3 focus root")
@@ -69,6 +70,11 @@ def main():
     catalog = AssemblyCatalog()
     catalog.apply(state, catalog.default_selection())
     apply_operating_mode_pair(state, "nano_probe", "diffraction")
+    # Ideal Optics intentionally disables the operators this script fits.
+    state.simulation_mode = "custom"
+    state.ac_deflector.scan_enabled = False
+    state.descan_deflector.scan_enabled = False
+    state.ac_deflector.wobble_enabled = False
     state.electron_gun.emitter.ray_count = args.rays
     state.step_mm = args.step
     state.acceleration_enabled = True
@@ -114,7 +120,7 @@ def main():
     )
     report = {
         "voltage_kv": state.beam_voltage_kv,
-        "sample_z_mm": state.sample.z_mm,
+        "sample_z_mm": surface_z_mm(state),
         "rays": args.rays, "step_mm": args.step,
         "target_convergence_95_mrad": args.target,
         "lenses": {lens.key: lens.percent for lens in state.lenses},
@@ -155,7 +161,7 @@ def main():
                ylim=(-radius_nm, radius_nm), aspect="equal")
         ax.set_title(f"{label}\nRMS radius {stats.radius_rms_m * 1e9:.3f} nm")
         ax.grid(alpha=0.15)
-    fig.suptitle(f"Sample plane Z = {state.sample.z_mm:.3f} mm; geometric incident rays")
+    fig.suptitle(f"Specimen entrance Z = {surface_z_mm(state):.8f} mm; geometric incident rays")
     fig.savefig(args.output / "comparison.png", dpi=160)
     plt.close(fig)
     if not candidate_accepted:

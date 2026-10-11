@@ -220,6 +220,39 @@ _SINGLE_REFERENCES = frozenset({"nested_lens_parent_key", "shared_housing_key", 
 _MULTI_REFERENCES = frozenset({"magnetic_lens_keys", "contained_recording_plane_keys"})
 
 
+def _bake_copied_part_pose(original, copied, source_by_key, target_by_key, delta_z_mm):
+    """Preserve the placed solid while detaching its optical pose controls.
+
+    CAD features and transverse scale stay editable. Only the rigid part of
+    their transform is composed with the source's inherited physical pose.
+    The current target-parent pose is undone so copying translates the actual
+    source solid, including when the destination is a tilted assembly.
+    """
+    import numpy as np
+    from scipy.spatial.transform import Rotation
+    from temsim.lens_pose import effective_part_transform_mm, without_lens_rigid_cad
+
+    model = _plain(without_lens_rigid_cad(original).get("model_3d", {}))
+    transform = model.get("transform", {})
+    cad_rotation = Rotation.from_euler("xyz", transform.get("rotation_deg", [0, 0, 0]), degrees=True).as_matrix()
+    cad_offset = np.asarray(transform.get("offset_mm", [0, 0, 0]), dtype=float)
+    source_rotation, source_offset = effective_part_transform_mm(original, source_by_key)
+    target_rotation, target_offset = effective_part_transform_mm(copied, target_by_key)
+    center = np.array([0.0, 0.0, original["local_center_z_mm"]])
+    delta = np.array([0.0, 0.0, delta_z_mm])
+    rotation = target_rotation.T @ source_rotation @ cad_rotation
+    offset = target_rotation.T @ (source_rotation @ (center + cad_offset)
+                                  + source_offset + delta - target_offset) - (center + delta)
+    if not model and np.array_equal(rotation, np.eye(3)) and not np.any(offset):
+        copied.pop("model_3d", None)
+        return
+    # Rz @ Ry @ Rx is shared by the CAD and physical-placement conventions.
+    model.setdefault("schema_version", 1)
+    model["transform"] = {**transform, "rotation_deg": Rotation.from_matrix(rotation).as_euler("xyz", degrees=True).tolist(),
+                          "offset_mm": offset.tolist()}
+    copied["model_3d"] = model
+
+
 def copied_component_document(document, source, key, new_key, center_z_mm, *, parent_key=None,
                               include_children=True, name=None):
     """Copy a mechanical subtree, never binding to a same-named external owner."""
@@ -263,11 +296,25 @@ def copied_component_document(document, source, key, new_key, center_z_mm, *, pa
     delta = _number(center_z_mm, "Centre") - _number(source_by_key[key]["local_center_z_mm"], "Original centre")
     next_order = max((row["order"] for row in target["parts"]), default=0) + 1
     from temsim.magnetic_geometry import objective_layer_intervals_mm
+    from temsim.lens_pose import PHYSICAL_POSE_FIELDS, supports_physical_lens_pose
 
     for index, old in enumerate(selected):
         original = source_by_key[old]
         row = _plain(original)
+        # Custom mechanical copies own their CAD transform, not field pose
+        # controls. Unsupported devices may use X/Y offsets for their holes;
+        # those intrinsic geometry values must remain intact.
+        pose_fields = PHYSICAL_POSE_FIELDS if supports_physical_lens_pose(original) else PHYSICAL_POSE_FIELDS[2:]
+        for field_name in pose_fields:
+            row.pop(field_name, None)
         row.pop("tip_definition_file", None)  # copies retain resolved geometry, not a live source link
+        for binding in ("physical_host_key", "physical_host_status",
+                        "optical_reference_host_key", "optical_reference_offset_mm",
+                        "optical_relation_status", "optical_relation_source",
+                        "axial_relation_note", "radial_relation_note"):
+            # This operation creates independent mechanical copies only.
+            # Never retain a live field/HP anchor to the original corrector.
+            row.pop(binding, None)
         source_parent = source_by_key.get(original.get("parent_key"), {})
         if (row.get("mechanical_part_role") not in CUSTOM_COMPONENT_ROLES
                 and row.get("mechanical_profile") in {"magnetic_excitation_coil", "magnetic_lens_yoke"}):
@@ -303,5 +350,8 @@ def copied_component_document(document, source, key, new_key, center_z_mm, *, pa
                                   "source_part_key": old,
                                   "physics_note": "Independent mechanical copy; no new optical control or magnetic circuit is created."}
         target["parts"].append(row)
-    validate_component_graph(target)
+    copied_by_key = validate_component_graph(target)
+    for old in selected:
+        _bake_copied_part_pose(source_by_key[old], copied_by_key[names[old]],
+                              source_by_key, copied_by_key, delta)
     return target, new_key

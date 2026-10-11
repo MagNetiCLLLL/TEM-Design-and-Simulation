@@ -61,6 +61,121 @@ def test_invalid_gpu_execution_is_never_silently_retried(monkeypatch):
         column._propagate_column(default_state(), checkpoint(), 2000.1)
 
 
+def _fake_cuda_scopes(monkeypatch):
+    """Observe resource ownership without allocating or impersonating kernels."""
+    from contextlib import nullcontext
+    from temsim.physics.compute_backend import WAVE_BACKEND_NUMPY
+    pools = []
+    class Pool:
+        def __init__(self):
+            self.freed = 0
+            pools.append(self)
+        def set_limit(self, **kwargs): pass
+        def total_bytes(self): return 0
+        def used_bytes(self): return 0
+        def free_all_blocks(self): self.freed += 1
+        def malloc(self, size): pytest.fail("Scope tests must not allocate CUDA arrays")
+    class Plans:
+        size, memory, cleared = 16, 3 << 30, 0
+        def get_size(self): return self.size
+        def get_memsize(self): return self.memory
+        def set_size(self, size): self.size = size
+        def set_memsize(self, memory): self.memory = memory
+        def clear(self): self.cleared += 1
+    plans = Plans()
+    fake = SimpleNamespace(cuda=SimpleNamespace(MemoryPool=Pool,
+        runtime=SimpleNamespace(memGetInfo=lambda: (16 << 30, 24 << 30)),
+        using_allocator=lambda allocator: nullcontext(),
+        get_current_stream=lambda: SimpleNamespace(synchronize=lambda: None)),
+        fft=SimpleNamespace(config=SimpleNamespace(get_plan_cache=lambda: plans),
+                            _fft=SimpleNamespace(get_plan_cache=lambda: plans)))
+    def choose(requested, *, acceleration_enabled=True, **kwargs):
+        if requested in ("CPU", "Numba CPU"):
+            return WAVE_BACKEND_NUMPY, None
+        if not acceleration_enabled:
+            if requested == "Require GPU":
+                raise GPUExecutionError("disabled", "Acceleration disabled")
+            return WAVE_BACKEND_NUMPY, "Acceleration disabled"
+        return WAVE_BACKEND_CUPY, None
+    monkeypatch.setattr(device, "choose_wave_backend", choose)
+    monkeypatch.setattr(device, "cupy_module", lambda: fake)
+    return pools, plans
+
+
+def test_nested_scopes_honour_cpu_override_and_tighten_device_budget(monkeypatch):
+    pools, plans = _fake_cuda_scopes(monkeypatch)
+    with device.device_scope("Require GPU", maximum_working_bytes=2 << 30) as outer:
+        with device.device_scope("CPU") as cpu:
+            assert cpu.backend == "numpy" and device._ACTIVE.get() is cpu
+            device.check_device_memory(10**30)  # No GPU admission during CPU retry.
+        assert device._ACTIVE.get() is outer
+        with device.device_scope("Auto", maximum_working_bytes=1 << 30) as nested:
+            assert nested is outer and nested.maximum_working_bytes == 1 << 30
+        assert outer.maximum_working_bytes == 2 << 30
+        with pytest.raises(GPUExecutionError, match="work needs"):
+            with device.device_scope("Require GPU", maximum_working_bytes=1 << 30,
+                                     required_bytes=(1 << 30)+1):
+                pytest.fail("Nested work must obey its smaller budget")
+        assert outer.maximum_working_bytes == 2 << 30
+        with device.device_scope("Auto", maximum_working_bytes=4 << 30) as nested:
+            assert nested.maximum_working_bytes == 2 << 30
+        with device.device_scope("Prefer GPU", acceleration_enabled=False) as cpu:
+            assert cpu.backend == "numpy" and "disabled" in cpu.fallback_reason
+        with pytest.raises(GPUExecutionError, match="disabled"):
+            with device.device_scope("Require GPU", acceleration_enabled=False):
+                pytest.fail("A parent pool cannot bypass disabled Require GPU")
+    assert device._ACTIVE.get() is None
+    assert len(pools) == 1 and pools[0].freed == 1
+    assert (plans.size, plans.memory, plans.cleared) == (16, 3 << 30, 2)
+
+
+@pytest.mark.parametrize("policy,failure", [("Auto", None), ("Require GPU", None),
+    ("Auto", "out_of_memory"), ("CUDA GPU", "out_of_memory"),
+    ("Require GPU", "out_of_memory"), ("Auto", "invalid_configuration"),
+    ("Require GPU", "cancelled")])
+def test_serial_column_modes_share_pool_and_preserve_failure_policy(monkeypatch, policy, failure):
+    from temsim.physics import column_wave as column
+    from temsim.physics.wave_grid import WaveGridNumerics
+    from test_wave_detector_readout import checkpoint
+    pools, plans = _fake_cuda_scopes(monkeypatch)
+    source = checkpoint(two=True)
+    calls, written = [], []
+    def execute(state, local, stop_z, *, _device, **kwargs):
+        calls.append((_device.backend, id(_device.pool)))
+        assert device._ACTIVE.get() is _device
+        if failure == "cancelled":
+            raise InterruptedError("Cancelled test operator")
+        if failure and _device.backend == "cupy":
+            raise GPUExecutionError(failure, "Test operator failure")
+        return replace(local, plane_z_mm=stop_z, record={"modes": [_device.evidence()]})
+    monkeypatch.setattr(column, "_propagate_column_impl", execute)
+    options = dict(prepared=(SimpleNamespace(step_m=np.array((.01,))), None, None, ()),
+        maximum_step_mm=.01, grid_numerics=WaveGridNumerics(compute_backend=policy),
+        workers=1, shared_bytes=0, tip_time_s=0., cancelled=lambda: False,
+        progress_callback=None, parent_digest=source.digest)
+    writer = SimpleNamespace(append=written.append)
+    fatal = failure in ("invalid_configuration", "cancelled") or (
+        failure == "out_of_memory" and policy == "Require GPU")
+    if fatal:
+        with pytest.raises(InterruptedError if failure == "cancelled" else GPUExecutionError):
+            column._write_column_modes(None, source, 2000.01, writer, **options)
+        assert not written
+    else:
+        records, _ = column._write_column_modes(None, source, 2000.01, writer, **options)
+        assert len(written) == len(records) == 2
+        assert [m.mode_id for m in written] == [m.mode_id for m in source.beam.modes]
+        assert all(m.plane is expected.plane for m, expected in zip(written, source.beam.modes))
+        if failure:
+            assert [backend for backend, _ in calls] == ["cupy", "numpy"]*2
+            assert all(r["compute_backend"] == "numpy" and r["fallback_reason"] for r in records)
+        else:
+            assert [backend for backend, _ in calls] == ["cupy"]*2
+    assert len(pools) == 1 and pools[0].freed == 1
+    assert len({pool for backend, pool in calls if backend == "cupy"}) == 1
+    assert device._ACTIVE.get() is None
+    assert (plans.size, plans.memory, plans.cleared) == (16, 3 << 30, 2)
+
+
 def _cuda():
     cp = pytest.importorskip("cupy", reason="optional real CUDA verification requires CuPy")
     from temsim.physics.compute_backend import cupy_capability
@@ -68,6 +183,75 @@ def _cuda():
     if not status.available:
         pytest.skip(status.detail)
     return cp
+
+
+def test_real_gpu_fft_larger_than_cache_quota_executes_without_raising_memory_budget():
+    cp = _cuda()
+    cache = cp.fft.config.get_plan_cache()
+    original_limits = cache.get_size(), cache.get_memsize()
+    original_getter = cp.fft._fft.get_plan_cache
+    rng = np.random.default_rng(29)
+    values = rng.normal(size=(2, 64, 64))+1j*rng.normal(size=(2, 64, 64))
+    with device.device_scope("Require GPU", maximum_working_bytes=64 << 20) as session:
+        cache.set_memsize(1)  # Real PlanNd workspace is larger than one byte.
+        array = cp.asarray(values)
+        transformed = cp.fft.ifft2(array, axes=(-2, -1))
+        np.testing.assert_allclose(cp.asnumpy(transformed), np.fft.ifft2(values), atol=1e-16, rtol=1e-12)
+        assert session.backend == "cupy" and session.maximum_working_bytes == 64 << 20
+        assert session.pool.get_limit() == 64 << 20
+        assert session.uncached_fft_plans == 1
+        assert session.largest_uncached_fft_plan_bytes > cache.get_memsize() == 1
+        assert cache.get_curr_size() == cache.get_curr_memsize() == 0
+        # Normal plans are still reused once the retention quota can fit them.
+        cache.set_memsize(1 << 20)
+        again = cp.fft.ifft2(array, axes=(-2, -1))
+        assert cache.get_curr_size() == 1
+        workspace_bytes = cache.get_curr_memsize()
+        repeated = cp.fft.ifft2(array, axes=(-2, -1))
+        assert cache.get_curr_size() == 1 and cache.get_curr_memsize() == workspace_bytes
+        np.testing.assert_array_equal(cp.asnumpy(again), cp.asnumpy(repeated))
+        assert session.uncached_fft_plans == 1
+        del array, transformed, again, repeated
+    assert (cache.get_size(), cache.get_memsize()) == original_limits
+    assert cp.fft._fft.get_plan_cache is original_getter
+    assert device._ACTIVE.get() is None and session.pool.used_bytes() == 0
+
+
+def test_fft_retention_proxy_is_context_local_and_does_not_hide_other_failures():
+    from contextvars import Context
+    class Cache:
+        failure = RuntimeError("the plan memsize is too large")
+        def __setitem__(self, key, value):
+            raise self.failure
+    cache = Cache()
+    original_getter = lambda: cache
+    implementation = SimpleNamespace(get_plan_cache=original_getter)
+    cp = SimpleNamespace(fft=SimpleNamespace(_fft=implementation))
+    session = device.WaveDevice(backend="cupy")
+    plan = SimpleNamespace(work_area=SimpleNamespace(mem=SimpleNamespace(size=512)))
+    token = device._ACTIVE.set(session)
+    try:
+        with pytest.raises(InterruptedError):
+            with device._temporary_oversized_fft_plans(cp, session, cache):
+                proxy = implementation.get_plan_cache()
+                assert proxy is not cache
+                assert Context().run(implementation.get_plan_cache) is cache
+                cpu_token = device._ACTIVE.set(device.WaveDevice())
+                try:
+                    assert implementation.get_plan_cache() is cache
+                finally:
+                    device._ACTIVE.reset(cpu_token)
+                proxy["plan"] = plan
+                assert session.uncached_fft_plans == 1
+                assert session.largest_uncached_fft_plan_bytes == 512
+                for failure in (RuntimeError("invalid plan"), MemoryError("allocation failed")):
+                    cache.failure = failure
+                    with pytest.raises(type(failure), match=str(failure)):
+                        proxy["plan"] = plan
+                raise InterruptedError("Cancelled FFT owner")
+        assert implementation.get_plan_cache is original_getter
+    finally:
+        device._ACTIVE.reset(token)
 
 
 @pytest.mark.parametrize("policy", ["Auto", "Require GPU"])
@@ -135,6 +319,50 @@ def test_real_gpu_column_matches_cpu_complex_field_and_host_checkpoint(policy):
               f"probability={arrivals[1].detection_probability:.12g}; emitted=3000; "
               f"detected={arrivals[1].detected_count}; lost={arrivals[1].lost_count}; "
               f"elapsed={perf_counter()-started:.3f}s")
+
+
+def test_real_gpu_segmented_modes_reuse_one_pool_and_match_cpu(tmp_path, monkeypatch):
+    cp = _cuda()
+    from temsim.physics import column_wave as column
+    from temsim.optics.column import default_state
+    from temsim.physics.wave_grid import WaveGridNumerics
+    from temsim.physics.wave_checkpoint_store import ExecutedWaveStore
+    from test_wave_detector_readout import checkpoint
+    state, source = default_state(), checkpoint(two=True)
+    prepared = column._prepare_column(state, 2000., 2000.02, .01)
+    monkeypatch.setattr(column, "numerical_thread_budget", lambda requested=None: 1)
+    original_transports, transport_calls = column._column_transports, []
+    def counted_transports(plan, energy, **kwargs):
+        transport_calls.append(energy)
+        return original_transports(plan, energy, **kwargs)
+    monkeypatch.setattr(column, "_column_transports", counted_transports)
+    arguments = dict(maximum_step_mm=.01, segment_steps=128, _prepared=prepared)
+    cpu, _ = column._propagate_column_segmented(state, source, 2000.02,
+        store=ExecutedWaveStore(tmp_path/"cpu", "serial-two-modes", 1 << 28), **arguments)
+    assert transport_calls == [300.]
+    transport_calls.clear()
+    original_pool, pools = cp.cuda.MemoryPool, []
+    def counted_pool(*args, **kwargs):
+        pool = original_pool(*args, **kwargs)
+        pools.append(pool)
+        return pool
+    monkeypatch.setattr(cp.cuda, "MemoryPool", counted_pool)
+    gpu, _ = column._propagate_column_segmented(state, source, 2000.02,
+        store=ExecutedWaveStore(tmp_path/"gpu", "serial-two-modes", 1 << 28),
+        grid_numerics=WaveGridNumerics(compute_backend="Require GPU"), **arguments)
+    assert len(pools) == 1
+    assert transport_calls == [300.]
+    assert pools[0].used_bytes() == 0
+    assert device._ACTIVE.get() is None
+    assert gpu.record["mode_execution"]["workers"] == 1
+    assert all(row["compute_backend"] == "cupy" for row in gpu.record["modes"])
+    for expected, actual in zip(cpu.beam.modes, gpu.beam.modes):
+        assert isinstance(actual.plane.amplitude, np.ndarray)
+        assert actual.weight_per_reference_electron == pytest.approx(expected.weight_per_reference_electron, abs=1e-12)
+        np.testing.assert_allclose(actual.plane.amplitude, expected.plane.amplitude, atol=2e-12, rtol=2e-10)
+        np.testing.assert_allclose(actual.plane.basis_m, expected.plane.basis_m, atol=1e-18, rtol=2e-10)
+        np.testing.assert_allclose(actual.plane.curvature_m1, expected.plane.curvature_m1, atol=1e-10, rtol=2e-10)
+        assert actual.axial_reference == expected.axial_reference
 
 
 def test_real_gpu_physical_annulus_and_column_aperture_masks():

@@ -1,0 +1,519 @@
+{
+  "schema": "image-corrector-reference-comparison-v1",
+  "captured_utc": "2026-10-11T01:00:38.354798+00:00",
+  "scope": "Original pre-repair TOML local coordinates, not current live global instrument state",
+  "configs": [
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "sha256": "b7aa1919f09ac9af4a8ef52d994c3a3c6fe1b46ea8edec768f0d5927e3156d61",
+      "parts": [
+        {
+          "key": "objective_lens",
+          "local_start_z_mm": 615.0,
+          "local_center_z_mm": 825.2,
+          "local_end_z_mm": 1035.4,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 420.4,
+          "mechanical_outer_diameter_mm": 180.0,
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "sample",
+          "local_start_z_mm": 825.1999500000001,
+          "local_center_z_mm": 825.2,
+          "local_end_z_mm": 825.20005,
+          "parent_key": "sample_stage",
+          "length_mm": 9.99999999749e-05,
+          "mechanical_outer_diameter_mm": 3.0
+        },
+        {
+          "key": "image_diffraction_deflector",
+          "local_start_z_mm": 992.9,
+          "local_center_z_mm": 1012.9,
+          "local_end_z_mm": 1032.9,
+          "parent_key": "objective_lens",
+          "length_mm": 40.0,
+          "mechanical_outer_diameter_mm": 54.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_ol_post_lens",
+          "local_start_z_mm": 1040.4,
+          "local_center_z_mm": 1062.9,
+          "local_end_z_mm": 1085.4,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 45.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "pole_gap_mm": 20,
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_hpol_hexapole",
+          "local_start_z_mm": 1089.9,
+          "local_center_z_mm": 1092.9,
+          "local_end_z_mm": 1095.9,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 6.0,
+          "mechanical_outer_diameter_mm": 80.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_qpol_quadrupole",
+          "local_start_z_mm": 1095.9,
+          "local_center_z_mm": 1098.9,
+          "local_end_z_mm": 1101.9,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 6.0,
+          "mechanical_outer_diameter_mm": 80.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_dp11_deflector",
+          "local_start_z_mm": 1101.9,
+          "local_center_z_mm": 1104.9,
+          "local_end_z_mm": 1107.9,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 6.0,
+          "mechanical_outer_diameter_mm": 80.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_tl11_lens",
+          "local_start_z_mm": 1113.9,
+          "local_center_z_mm": 1136.9,
+          "local_end_z_mm": 1159.9,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 46.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "pole_gap_mm": 20,
+          "field_polarity": -1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_dp12_deflector",
+          "local_start_z_mm": 1165.4,
+          "local_center_z_mm": 1172.9,
+          "local_end_z_mm": 1180.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 15.0,
+          "mechanical_outer_diameter_mm": 75.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_tl12_lens",
+          "local_start_z_mm": 1172.4,
+          "local_center_z_mm": 1172.9,
+          "local_end_z_mm": 1173.4,
+          "mechanical_profile": "integrated_magnetic_lens_channel",
+          "length_mm": 1.0,
+          "mechanical_outer_diameter_mm": 160,
+          "pole_gap_mm": 1,
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_dph1_deflector",
+          "local_start_z_mm": 1187.4,
+          "local_center_z_mm": 1202.4,
+          "local_end_z_mm": 1217.4,
+          "parent_key": "image_hp1_hexapole",
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 30.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "mechanical_clear_bore_diameter_mm": 8.0
+        },
+        {
+          "key": "image_hp1_hexapole",
+          "local_start_z_mm": 1180.4,
+          "local_center_z_mm": 1202.4,
+          "local_end_z_mm": 1224.4,
+          "length_mm": 44.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "mechanical_clear_bore_diameter_mm": 8.0
+        },
+        {
+          "key": "image_dp21_deflector",
+          "local_start_z_mm": 1224.4,
+          "local_center_z_mm": 1231.4,
+          "local_end_z_mm": 1238.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 14.0,
+          "mechanical_outer_diameter_mm": 75.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_tl21_lens",
+          "local_start_z_mm": 1238.4,
+          "local_center_z_mm": 1256.4,
+          "local_end_z_mm": 1274.4,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 36.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "pole_gap_mm": 20,
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_dp22_deflector",
+          "local_start_z_mm": 1274.4,
+          "local_center_z_mm": 1281.4,
+          "local_end_z_mm": 1288.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 14.0,
+          "mechanical_outer_diameter_mm": 75.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_tl22_lens",
+          "local_start_z_mm": 1288.4,
+          "local_center_z_mm": 1306.4,
+          "local_end_z_mm": 1324.4,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 36.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "pole_gap_mm": 20,
+          "field_polarity": -1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_dph2_deflector",
+          "local_start_z_mm": 1331.4,
+          "local_center_z_mm": 1346.4,
+          "local_end_z_mm": 1361.4,
+          "parent_key": "image_hp2_hexapole",
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 30.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "mechanical_clear_bore_diameter_mm": 8.0
+        },
+        {
+          "key": "image_hp2_hexapole",
+          "local_start_z_mm": 1324.4,
+          "local_center_z_mm": 1346.4,
+          "local_end_z_mm": 1368.4,
+          "length_mm": 44.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "mechanical_clear_bore_diameter_mm": 8.0
+        },
+        {
+          "key": "image_adapter_lens",
+          "local_start_z_mm": 1368.4,
+          "local_center_z_mm": 1386.4,
+          "local_end_z_mm": 1404.4,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 36.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "pole_gap_mm": 20,
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_ish_deflector",
+          "local_start_z_mm": 1413.4,
+          "local_center_z_mm": 1420.4,
+          "local_end_z_mm": 1427.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 14.0,
+          "mechanical_outer_diameter_mm": 70.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_dsh_deflector",
+          "local_start_z_mm": 1440.4,
+          "local_center_z_mm": 1444.4,
+          "local_end_z_mm": 1448.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 8.0,
+          "mechanical_outer_diameter_mm": 75.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_dstg_quadrupole",
+          "local_start_z_mm": 1448.4,
+          "local_center_z_mm": 1452.4,
+          "local_end_z_mm": 1456.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 8.0,
+          "mechanical_outer_diameter_mm": 75.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_sad_plane",
+          "local_start_z_mm": 1476.4,
+          "local_center_z_mm": 1476.4,
+          "local_end_z_mm": 1476.4,
+          "length_mm": 0.0
+        }
+      ]
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "sha256": "7f5015d5116ddd84d1ea90e6b5592068118ba56f344a5800d4f7f65d38627e35",
+      "parts": [
+        {
+          "key": "objective_lens",
+          "local_start_z_mm": 939.0,
+          "local_center_z_mm": 1149.2,
+          "local_end_z_mm": 1359.4,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 420.4,
+          "mechanical_outer_diameter_mm": 180.0,
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "sample",
+          "local_start_z_mm": 1149.19995,
+          "local_center_z_mm": 1149.2,
+          "local_end_z_mm": 1149.2000500000001,
+          "parent_key": "sample_stage",
+          "length_mm": 0.000100000000202,
+          "mechanical_outer_diameter_mm": 3.0
+        },
+        {
+          "key": "image_diffraction_deflector",
+          "local_start_z_mm": 1316.9,
+          "local_center_z_mm": 1336.9,
+          "local_end_z_mm": 1356.9,
+          "parent_key": "objective_lens",
+          "length_mm": 40.0,
+          "mechanical_outer_diameter_mm": 54.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_ol_post_lens",
+          "local_start_z_mm": 1364.4,
+          "local_center_z_mm": 1386.9,
+          "local_end_z_mm": 1409.4,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 45.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "pole_gap_mm": 20,
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_hpol_hexapole",
+          "local_start_z_mm": 1413.9,
+          "local_center_z_mm": 1416.9,
+          "local_end_z_mm": 1419.9,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 6.0,
+          "mechanical_outer_diameter_mm": 80.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_qpol_quadrupole",
+          "local_start_z_mm": 1419.9,
+          "local_center_z_mm": 1422.9,
+          "local_end_z_mm": 1425.9,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 6.0,
+          "mechanical_outer_diameter_mm": 80.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_dp11_deflector",
+          "local_start_z_mm": 1425.9,
+          "local_center_z_mm": 1428.9,
+          "local_end_z_mm": 1431.9,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 6.0,
+          "mechanical_outer_diameter_mm": 80.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_tl11_lens",
+          "local_start_z_mm": 1437.9,
+          "local_center_z_mm": 1460.9,
+          "local_end_z_mm": 1483.9,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 46.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "pole_gap_mm": 20,
+          "field_polarity": -1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_dp12_deflector",
+          "local_start_z_mm": 1489.4,
+          "local_center_z_mm": 1496.9,
+          "local_end_z_mm": 1504.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 15.0,
+          "mechanical_outer_diameter_mm": 75.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_tl12_lens",
+          "local_start_z_mm": 1496.4,
+          "local_center_z_mm": 1496.9,
+          "local_end_z_mm": 1497.4,
+          "mechanical_profile": "integrated_magnetic_lens_channel",
+          "length_mm": 1.0,
+          "mechanical_outer_diameter_mm": 160,
+          "pole_gap_mm": 1,
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_dph1_deflector",
+          "local_start_z_mm": 1511.4,
+          "local_center_z_mm": 1526.4,
+          "local_end_z_mm": 1541.4,
+          "parent_key": "image_hp1_hexapole",
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 30.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "mechanical_clear_bore_diameter_mm": 8.0
+        },
+        {
+          "key": "image_hp1_hexapole",
+          "local_start_z_mm": 1504.4,
+          "local_center_z_mm": 1526.4,
+          "local_end_z_mm": 1548.4,
+          "length_mm": 44.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "mechanical_clear_bore_diameter_mm": 8.0
+        },
+        {
+          "key": "image_dp21_deflector",
+          "local_start_z_mm": 1548.4,
+          "local_center_z_mm": 1555.4,
+          "local_end_z_mm": 1562.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 14.0,
+          "mechanical_outer_diameter_mm": 75.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_tl21_lens",
+          "local_start_z_mm": 1562.4,
+          "local_center_z_mm": 1580.4,
+          "local_end_z_mm": 1598.4,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 36.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "pole_gap_mm": 20,
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_dp22_deflector",
+          "local_start_z_mm": 1598.4,
+          "local_center_z_mm": 1605.4,
+          "local_end_z_mm": 1612.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 14.0,
+          "mechanical_outer_diameter_mm": 75.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_tl22_lens",
+          "local_start_z_mm": 1612.4,
+          "local_center_z_mm": 1630.4,
+          "local_end_z_mm": 1648.4,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 36.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "pole_gap_mm": 20,
+          "field_polarity": -1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_dph2_deflector",
+          "local_start_z_mm": 1655.4,
+          "local_center_z_mm": 1670.4,
+          "local_end_z_mm": 1685.4,
+          "parent_key": "image_hp2_hexapole",
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 30.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "mechanical_clear_bore_diameter_mm": 8.0
+        },
+        {
+          "key": "image_hp2_hexapole",
+          "local_start_z_mm": 1648.4,
+          "local_center_z_mm": 1670.4,
+          "local_end_z_mm": 1692.4,
+          "length_mm": 44.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "mechanical_clear_bore_diameter_mm": 8.0
+        },
+        {
+          "key": "image_adapter_lens",
+          "local_start_z_mm": 1692.4,
+          "local_center_z_mm": 1710.4,
+          "local_end_z_mm": 1728.4,
+          "mechanical_profile": "magnetic_lens_assembly",
+          "length_mm": 36.0,
+          "mechanical_outer_diameter_mm": 180.0,
+          "pole_gap_mm": 20,
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption"
+        },
+        {
+          "key": "image_ish_deflector",
+          "local_start_z_mm": 1737.4,
+          "local_center_z_mm": 1744.4,
+          "local_end_z_mm": 1751.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 14.0,
+          "mechanical_outer_diameter_mm": 70.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_dsh_deflector",
+          "local_start_z_mm": 1764.4,
+          "local_center_z_mm": 1768.4,
+          "local_end_z_mm": 1772.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 8.0,
+          "mechanical_outer_diameter_mm": 75.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_dstg_quadrupole",
+          "local_start_z_mm": 1772.4,
+          "local_center_z_mm": 1776.4,
+          "local_end_z_mm": 1780.4,
+          "layout_role": "control_channel",
+          "physical_host_status": "unverified",
+          "length_mm": 8.0,
+          "mechanical_outer_diameter_mm": 75.0,
+          "mechanical_clear_bore_diameter_mm": 20.0
+        },
+        {
+          "key": "image_sad_plane",
+          "local_start_z_mm": 1800.4,
+          "local_center_z_mm": 1800.4,
+          "local_end_z_mm": 1800.4,
+          "length_mm": 0.0
+        }
+      ]
+    }
+  ]
+}

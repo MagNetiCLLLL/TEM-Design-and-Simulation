@@ -1,0 +1,85 @@
+{
+  "id": "FEI-Titan-training",
+  "kind": "manufacturer_training",
+  "family": "Titan mini condenser 与照明系统",
+  "url": "https://emfacility.science.oregonstate.edu/sites/emfacility.science.oregonstate.edu/files/2025-09/Titan%20training%20manual_0.pdf",
+  "title": "Titan Training Material",
+  "authors": [
+    "Dong Tang",
+    "Peter Tiemeijer"
+  ],
+  "owner": "FEI; public university host Oregon State University",
+  "publication_date": null,
+  "date_note": "本次未从原文确认正式出版日期；URL 中 2025-09 仅是托管目录。",
+  "figures": "Module 1 pp. 1, 4; Figs. 1, 5; PDF pages 3, 6",
+  "component_keys": [
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "mini_condenser",
+    "objective_lens"
+  ],
+  "supported_facts": [
+    "厂家教学图说明 C1/C2/C3、mini condenser 与上物镜的光学关系。",
+    "mini condenser 光学开关涉及相反电流方向，不应解释为线圈电流总为零。"
+  ],
+  "unsupported_claims": [
+    "光路图不是制造剖面图，不能按比例量取内部几何。",
+    "本地 PDF 为图像扫描，文本层缺失。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:16.799825+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 11779286,
+      "sha256": "6f818a8554122c77f25b3d4b7bc050dfeba0c191cdc7e903f20f7d4d5cbd2683",
+      "kind": "original_pdf",
+      "method": "copied_existing_original_pdf",
+      "source_url": "https://emfacility.science.oregonstate.edu/sites/emfacility.science.oregonstate.edu/files/2025-09/Titan%20training%20manual_0.pdf"
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 900640,
+      "sha256": "976c5b5e2529cbd1275ab81586ade79da815505f87f5e181c2e2954db27fa07d",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 3,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-06.png",
+      "bytes": 872736,
+      "sha256": "32bbe9a7c989901734d74e263211f6d8fbc7b62298e1bb1c8a944ceca98027e8",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 6,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [
+    "复用项目已保存的原始 PDF；本次归档时间不冒充首次网络获取时间。"
+  ],
+  "primary_pdf_url": "https://emfacility.science.oregonstate.edu/sites/emfacility.science.oregonstate.edu/files/2025-09/Titan%20training%20manual_0.pdf",
+  "cached_source": "outputs\\cad_research_20261011\\sources\\Titan_training_material.pdf",
+  "pdf_page_count": 38,
+  "pdf_metadata": {
+    "format": "PDF 1.4",
+    "title": "",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "RICOH IM C3510",
+    "producer": "RICOH IM C3510",
+    "creationDate": "D:20250919124040-07'00'",
+    "modDate": "D:20250919124040-07'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    3,
+    6
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

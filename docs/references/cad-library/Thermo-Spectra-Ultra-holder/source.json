@@ -1,0 +1,37 @@
+{
+  "id": "Thermo-Spectra-Ultra-holder",
+  "kind": "manufacturer_product_page",
+  "title": "Spectra Ultra S/TEM",
+  "url": "https://www.thermofisher.com/nl/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra-ultra-tem.html/1000",
+  "authors": [
+    "Thermo Fisher Scientific"
+  ],
+  "owner": "Thermo Fisher Scientific",
+  "publication_date": null,
+  "figures": "S-TWIN / Ultra-X product specification",
+  "component_keys": [
+    "sample_stage",
+    "objective_lens"
+  ],
+  "supported_facts": [
+    "官方描述宽间隙物镜与分析双倾holder共同使用，holder会遮挡一部分EDS接收立体角。"
+  ],
+  "unsupported_claims": [
+    "没有holder外包络工程尺寸；不能把EDS性能值反推出侧入口尺寸。"
+  ],
+  "access_note": "Web搜索可读官方产品描述；本次原始HTML下载403，未保存伪造页面。",
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T01:30:02.846632+00:00",
+  "assets": [],
+  "archive_status": "record_only_original_download_unavailable",
+  "download_receipts": [
+    {
+      "id": "Thermo-Spectra-Ultra-holder",
+      "file": "original.html",
+      "url": "https://www.thermofisher.com/nl/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra-ultra-tem.html/1000",
+      "status": "unavailable",
+      "reason": "HTTP Error 403: Forbidden"
+    }
+  ]
+}

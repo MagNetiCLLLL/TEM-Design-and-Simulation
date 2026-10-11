@@ -390,7 +390,7 @@ class Dph2DeflectorDefinition:
     owner: str = "probe_corrector"
     kind: str = "deflector"
     shape_profile: str = "single_deflector_coil"
-    interaction_kind: str = "thin_transverse_kick"
+    interaction_kind: str = "finite_transverse_dipole_field"
 
     @property
     def effective_aperture_radius_mm(self):
@@ -444,7 +444,7 @@ class Dp22DeflectorDefinition:
     owner: str = "probe_corrector"
     kind: str = "deflector"
     shape_profile: str = "single_deflector_coil"
-    interaction_kind: str = "thin_transverse_kick"
+    interaction_kind: str = "finite_transverse_dipole_field"
 
     @property
     def effective_aperture_radius_mm(self):

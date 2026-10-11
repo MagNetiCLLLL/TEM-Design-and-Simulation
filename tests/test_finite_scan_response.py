@@ -130,7 +130,9 @@ def test_production_solve_matches_executed_finite_ac_and_descan(native):
         sample = actual[targets[0]]-baseline[targets[0]]
         expected = desired @ s.ac_deflector.scan_factors(t)
         np.testing.assert_allclose(sample[:2],expected,rtol=2e-6,atol=2e-16)
-        assert np.linalg.norm(sample[2:]) < 2e-12
+        g = canonical_source_basis(s, targets[0], position_xy_m=baseline[targets[0]][:2])[2:, :2]
+        assert np.linalg.norm(sample[2:] - g @ sample[:2]) < 2e-12
+        assert np.linalg.norm(sample[2:]) > 1e-10
         assert np.linalg.norm(actual[targets[1]][:2]-baseline[targets[1]][:2]) < 3e-13
 
 
@@ -183,9 +185,10 @@ def test_scale_failure_rolls_back_coupling_and_flags(monkeypatch):
     ac = create_ac_deflector()
     state = SimpleNamespace(ac_deflector=ac,sample=SimpleNamespace(z_mm=2000.))
     before = dict(ac.__dict__)
-    monkeypatch.setattr(scan,"_coil_phase_responses",lambda *_args:
+    monkeypatch.setattr(scan, "canonical_source_basis", lambda *_a, **_kw: np.eye(4))
+    monkeypatch.setattr(scan,"_coil_phase_responses",lambda *_args, **_kw:
                         (np.vstack((np.zeros((2,2)),2*np.eye(2))),
-                         np.vstack((np.zeros((2,2)),np.eye(2)))))
+                         np.vstack((np.zeros((2,2)),np.eye(2))), np.zeros(2)))
     with pytest.raises(ValueError,match="singular"):
         scan.calibrate_ac_scan_scale(state)
     assert ac.__dict__ == before

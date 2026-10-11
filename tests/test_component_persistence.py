@@ -35,18 +35,20 @@ def _new_part(key="user_bracket"):
 
 @pytest.mark.parametrize("newline", ["\n", "\r\n"])
 def test_append_edit_and_remove_preserve_original_tables_and_comments(newline):
-    source = (INSTRUMENT_CONFIG_ROOT / MODULE).read_text(encoding="utf-8")
+    path = INSTRUMENT_CONFIG_ROOT / MODULE
+    source = path.read_text(encoding="utf-8")
     source = source.replace("\r\n", "\n").replace("\n", newline)
     source += newline + '[user_notes]' + newline + 'text = "retain # text" # rationale' + newline
-    added = module_manifest.stage_manifest_text(source, PartChangeSet(added_parts=(_new_part(),)))
+    added = module_manifest.stage_manifest_text(source, PartChangeSet(added_parts=(_new_part(),)), source_path=path)
     assert added.startswith(source)
     # An unrelated table after the added part must also survive its removal.
     added += '[other_notes]' + newline + 'value = 7' + newline
     updated = module_manifest.stage_manifest_text(
         added, PartChangeSet(fields={("parts", "user_bracket", "name"): "Changed bracket"}),
+        source_path=path,
     )
     assert tomllib.loads(updated)["parts"][-1]["name"] == "Changed bracket"
-    removed = module_manifest.stage_manifest_text(updated, PartChangeSet(removed_keys=("user_bracket",)))
+    removed = module_manifest.stage_manifest_text(updated, PartChangeSet(removed_keys=("user_bracket",)), source_path=path)
     expected = tomllib.loads(source)
     expected["other_notes"] = {"value": 7}
     assert tomllib.loads(removed) == expected
@@ -116,14 +118,15 @@ def test_structural_changes_cannot_update_added_or_removed_fields():
 
 
 def test_remove_part_with_nested_tables_reopened_after_unrelated_table():
-    source = (INSTRUMENT_CONFIG_ROOT / MODULE).read_text(encoding="utf-8")
+    path = INSTRUMENT_CONFIG_ROOT / MODULE
+    source = path.read_text(encoding="utf-8")
     rows = []
     for order, key in enumerate(("user_first", "user_second"), 999):
         part = make_component(key=key, shape="tube", center_z_mm=50)
         part.pop("model_3d")
         part["order"] = order
         rows.append(part)
-    source = module_manifest.stage_manifest_text(source, PartChangeSet(added_parts=tuple(rows)))
+    source = module_manifest.stage_manifest_text(source, PartChangeSet(added_parts=tuple(rows)), source_path=path)
     source += ('\n[user_notes]\ntext = "must stay" # note comment\n'
                '[parts.model_3d] # owned model comment\nschema_version = 1\n'
                'base = { kind = "box", width_mm = 11.0, height_mm = 12.0, length_mm = 10.0 }\n'
@@ -131,7 +134,34 @@ def test_remove_part_with_nested_tables_reopened_after_unrelated_table():
                '[parts.model_3d.transform]\nscale_xy = [1.0, 1.0]\n')
     expected = tomllib.loads(source)
     expected["parts"] = [part for part in expected["parts"] if part["key"] != "user_second"]
-    staged = module_manifest.stage_manifest_text(source, PartChangeSet(removed_keys=("user_second",)))
+    staged = module_manifest.stage_manifest_text(source, PartChangeSet(removed_keys=("user_second",)), source_path=path)
     assert tomllib.loads(staged) == expected
     assert "# owned model comment" in staged
     assert "# note comment" in staged
+
+
+def test_raw_composed_transaction_preserves_links_and_validates_shared_parts(catalog):
+    path = catalog / MODULE
+    original = path.read_bytes()
+    linked = catalog.parent / "subassemblies/sample_stage.toml"
+    original_linked = linked.read_bytes()
+    snapshot = module_manifest.update_manifest_values(
+        {MODULE: {("parts", "condenser_lens_1", "name"): "Edited C1"}}, root=catalog)
+    stored = tomllib.loads(path.read_text(encoding="utf-8"))
+    assert stored["subassemblies"] == tomllib.loads(original.decode("utf-8"))["subassemblies"]
+    assert "sample_stage" not in {part["key"] for part in stored["parts"]}
+    assert linked.read_bytes() == original_linked
+    assert next(part for part in module_manifest.read_document(path)["parts"]
+                if part["key"] == "condenser_lens_1")["name"] == "Edited C1"
+    module_manifest.restore_manifest_texts(snapshot, root=catalog)
+    assert path.read_bytes() == original
+
+    # Resolution is required for the same strict physical validator, not an
+    # excuse to accept a root fragment or to ignore an invalid linked holder.
+    linked.write_bytes(original_linked.replace(b"holder_shaft_diameter_mm = 7.0",
+                                              b"holder_shaft_diameter_mm = 10.0"))
+    assert linked.read_bytes() != original_linked
+    with pytest.raises(ValueError):
+        module_manifest.update_manifest_values(
+            {MODULE: {("parts", "condenser_lens_1", "name"): "Rejected C1"}}, root=catalog)
+    assert path.read_bytes() == original

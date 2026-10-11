@@ -68,9 +68,15 @@ def test_resolved_2d_3d_geometry_agrees_and_outer_resize_does_not_change_ray_tra
             continue
         assert records[key].outer_diameter_mm == 180.0
         assert meshes[key], model.errors
+        maximum_radius = 0.0
         for mesh in meshes[key]:
             radius = np.linalg.norm(mesh.vertices[:, :2], axis=1)
-            assert radius.max() == pytest.approx(90.0, abs=1e-9)
+            # Pole pins and windings live inside the envelope; only the yoke
+            # reaches its exterior. Internal detail must not fill the bore.
+            assert radius.min() >= 4.0 - 1e-6
+            assert radius.max() <= 90.0 + 1e-6
+            maximum_radius = max(maximum_radius, float(radius.max()))
+        assert maximum_radius == pytest.approx(90.0, abs=1e-6)
 
     # Exercise nonzero deflection and hexapole fields. Only the old mechanical
     # exterior is restored below, not a second optical calibration or source.

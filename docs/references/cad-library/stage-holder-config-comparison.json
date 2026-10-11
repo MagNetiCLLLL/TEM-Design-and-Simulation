@@ -1,0 +1,475 @@
+{
+  "schema": "stage-holder-config-snapshot-v1",
+  "captured_utc": "2026-10-11T01:30:02.846632+00:00",
+  "note": "Research-time input snapshot; no production values changed by this archive. Later implementation may add explicitly labelled reconstruction fields.",
+  "configs": [
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "sha256": "24a9a5f3508a98b5baacc31ac079dce28f25ed3a7c962dd4f2ed6c60940bee21",
+      "coordinate_system": "module_local_z_mm",
+      "parts": [
+        {
+          "order": 14,
+          "key": "objective_lens",
+          "name": "Objective Lens Assembly",
+          "branch": "common",
+          "local_start_z_mm": 615.0,
+          "local_center_z_mm": 825.2,
+          "local_end_z_mm": 1035.4,
+          "length_mm": 420.4,
+          "vacuum_inner_diameter_mm": 5.76,
+          "upper_field_reference_local_z_mm": 823.85,
+          "lower_field_reference_local_z_mm": 826.55,
+          "virtual_reference_local_z_mm": 825.2,
+          "mechanical_outer_diameter_mm": 180.0,
+          "upper_yoke_start_local_z_mm": 617.5,
+          "upper_yoke_end_local_z_mm": 772.5,
+          "lower_yoke_start_local_z_mm": 877.9,
+          "lower_yoke_end_local_z_mm": 1032.9,
+          "s_twin_pole_gap_mm": 5.4,
+          "nominal_voltage_kv": 300.0,
+          "nominal_focal_length_mm": 2.8,
+          "spherical_aberration_mm": 1.2,
+          "nominal_back_focal_plane_local_z_mm": 839.4536907227932,
+          "nominal_image_plane_local_z_mm": 981.316738548523,
+          "nominal_excitation_percent": 30.42591940608605,
+          "maximum_excitation_percent": 100.0,
+          "upper_peak_field_t": 0.884453999912932,
+          "lower_peak_field_t": 0.884453999912932,
+          "upper_field_half_width_mm": 24.0,
+          "lower_field_half_width_mm": 24.0,
+          "upper_field_profile_amplitudes": [
+            0.09,
+            0.82,
+            0.09
+          ],
+          "upper_field_profile_offsets": [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          "upper_field_profile_sigmas": [
+            0.9,
+            0.55,
+            0.9
+          ],
+          "lower_field_profile_amplitudes": [
+            0.09,
+            0.82,
+            0.09
+          ],
+          "lower_field_profile_offsets": [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          "lower_field_profile_sigmas": [
+            0.9,
+            0.55,
+            0.9
+          ],
+          "chromatic_aberration_mm": 2.0,
+          "mechanical_overlap_group": "objective_assembly",
+          "mechanical_overlap_role": "container",
+          "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+          "mechanical_profile": "magnetic_lens_assembly",
+          "offset_x_mm": 0.0,
+          "offset_y_mm": 0.0,
+          "offset_z_mm": 0.0,
+          "rotation_x_mrad": 0.0,
+          "rotation_y_mrad": 0.0,
+          "rotation_z_mrad": 0.0,
+          "mechanical_access_geometry_source_urls": [
+            "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/spectra-ultra-ds0361-materials-science-datasheet.pdf",
+            "https://www.thermofisher.com/us/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra/instruments/spectra-200-tem.html"
+          ],
+          "mechanical_access_geometry_source": "Symmetric wide-gap objective reconstruction: public reference designs specify a 5.4 mm pole gap and couple a wide-gap objective to a >4.45 sr EDS array. The 8.0 mm pole-tip OD and 27.5584 mm nose are a non-OEM centre-ray clearance design: the conical surface is parallel to the 32.06 degree user-dataset reference ray and leaves 0.3109 mm radial clearance in the axisymmetric meridional model. This does not establish clearance for the unpublished reference-detector active-face/collimator shape or its complete solid-angle acceptance. Dimensions other than the 5.4 mm anchor are simulator assumptions, not OEM measurements.",
+          "mechanical_access_geometry_status": "engineering_reconstruction_not_oem",
+          "mechanical_coil_axial_inset_mm": 5.0,
+          "mechanical_pole_mounting_geometry_source_urls": [
+            "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+            "https://patents.google.com/patent/US20150021476A1/en"
+          ],
+          "mechanical_pole_mounting_geometry_source": "Public column literature identifies a symmetric objective and dual-coil topology; patent US20150021476A1 supports a precision magnetic insert mounted inside a primary yoke. The 12 mm straight shank, 60 mm shank/coil interface and 36 mm radial winding thickness are non-OEM simulator reconstruction values directed by the supplied cross-section sketch.",
+          "mechanical_pole_mounting_geometry_status": "engineering_reconstruction_not_oem",
+          "mechanical_coil_radial_thickness_mm": 36.0,
+          "mechanical_part_role": "optical_parent",
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption",
+          "field_polarity_source": "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
+        },
+        {
+          "order": 20,
+          "key": "sample",
+          "name": "Sample",
+          "branch": "common",
+          "local_start_z_mm": 825.1999500000001,
+          "local_center_z_mm": 825.2,
+          "local_end_z_mm": 825.20005,
+          "length_mm": 9.99999999749e-05,
+          "vacuum_inner_diameter_mm": 5,
+          "optical_reference_local_z_mm": 825.2,
+          "mechanical_outer_diameter_mm": 3.0,
+          "mechanical_overlap_group": "objective_assembly",
+          "mechanical_overlap_role": "member",
+          "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+          "parent_key": "sample_stage"
+        }
+      ]
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "sha256": "f797d98f0a619eb2d8f3b9582a76b49b322650ea99ea90cb10463ee9d38a8c0c",
+      "coordinate_system": "module_local_z_mm",
+      "parts": [
+        {
+          "order": 14,
+          "key": "objective_lens",
+          "name": "Objective Lens Assembly",
+          "branch": "common",
+          "local_start_z_mm": 615.0,
+          "local_center_z_mm": 825.2,
+          "local_end_z_mm": 1035.4,
+          "length_mm": 420.4,
+          "vacuum_inner_diameter_mm": 5.76,
+          "upper_field_reference_local_z_mm": 823.85,
+          "lower_field_reference_local_z_mm": 826.55,
+          "virtual_reference_local_z_mm": 825.2,
+          "mechanical_outer_diameter_mm": 180.0,
+          "upper_yoke_start_local_z_mm": 617.5,
+          "upper_yoke_end_local_z_mm": 772.5,
+          "lower_yoke_start_local_z_mm": 877.9,
+          "lower_yoke_end_local_z_mm": 1032.9,
+          "s_twin_pole_gap_mm": 5.4,
+          "nominal_voltage_kv": 300.0,
+          "nominal_focal_length_mm": 2.8,
+          "spherical_aberration_mm": 1.2,
+          "nominal_back_focal_plane_local_z_mm": 839.4536907227932,
+          "nominal_image_plane_local_z_mm": 981.316738548523,
+          "nominal_excitation_percent": 30.42591940608605,
+          "maximum_excitation_percent": 100.0,
+          "upper_peak_field_t": 0.884453999912932,
+          "lower_peak_field_t": 0.884453999912932,
+          "upper_field_half_width_mm": 24.0,
+          "lower_field_half_width_mm": 24.0,
+          "upper_field_profile_amplitudes": [
+            0.09,
+            0.82,
+            0.09
+          ],
+          "upper_field_profile_offsets": [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          "upper_field_profile_sigmas": [
+            0.9,
+            0.55,
+            0.9
+          ],
+          "lower_field_profile_amplitudes": [
+            0.09,
+            0.82,
+            0.09
+          ],
+          "lower_field_profile_offsets": [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          "lower_field_profile_sigmas": [
+            0.9,
+            0.55,
+            0.9
+          ],
+          "chromatic_aberration_mm": 2.0,
+          "mechanical_overlap_group": "objective_assembly",
+          "mechanical_overlap_role": "container",
+          "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+          "mechanical_profile": "magnetic_lens_assembly",
+          "offset_x_mm": 0.0,
+          "offset_y_mm": 0.0,
+          "offset_z_mm": 0.0,
+          "rotation_x_mrad": 0.0,
+          "rotation_y_mrad": 0.0,
+          "rotation_z_mrad": 0.0,
+          "mechanical_access_geometry_source_urls": [
+            "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/spectra-ultra-ds0361-materials-science-datasheet.pdf",
+            "https://www.thermofisher.com/us/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra/instruments/spectra-200-tem.html"
+          ],
+          "mechanical_access_geometry_source": "Symmetric wide-gap objective reconstruction: public reference designs specify a 5.4 mm pole gap and couple a wide-gap objective to a >4.45 sr EDS array. The 8.0 mm pole-tip OD and 27.5584 mm nose are a non-OEM centre-ray clearance design: the conical surface is parallel to the 32.06 degree user-dataset reference ray and leaves 0.3109 mm radial clearance in the axisymmetric meridional model. This does not establish clearance for the unpublished reference-detector active-face/collimator shape or its complete solid-angle acceptance. Dimensions other than the 5.4 mm anchor are simulator assumptions, not OEM measurements.",
+          "mechanical_access_geometry_status": "engineering_reconstruction_not_oem",
+          "mechanical_coil_axial_inset_mm": 5.0,
+          "mechanical_pole_mounting_geometry_source_urls": [
+            "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+            "https://patents.google.com/patent/US20150021476A1/en"
+          ],
+          "mechanical_pole_mounting_geometry_source": "Public column literature identifies a symmetric objective and dual-coil topology; patent US20150021476A1 supports a precision magnetic insert mounted inside a primary yoke. The 12 mm straight shank, 60 mm shank/coil interface and 36 mm radial winding thickness are non-OEM simulator reconstruction values directed by the supplied cross-section sketch.",
+          "mechanical_pole_mounting_geometry_status": "engineering_reconstruction_not_oem",
+          "mechanical_coil_radial_thickness_mm": 36.0,
+          "mechanical_part_role": "optical_parent",
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption",
+          "field_polarity_source": "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
+        },
+        {
+          "order": 20,
+          "key": "sample",
+          "name": "Sample",
+          "branch": "common",
+          "local_start_z_mm": 825.1999500000001,
+          "local_center_z_mm": 825.2,
+          "local_end_z_mm": 825.20005,
+          "length_mm": 9.99999999749e-05,
+          "vacuum_inner_diameter_mm": 5,
+          "optical_reference_local_z_mm": 825.2,
+          "mechanical_outer_diameter_mm": 3.0,
+          "mechanical_overlap_group": "objective_assembly",
+          "mechanical_overlap_role": "member",
+          "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+          "parent_key": "sample_stage"
+        }
+      ]
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "sha256": "a7221e3ad5483ed22a78eda961f511c9f23101332b2b927199221b217dc2b715",
+      "coordinate_system": "module_local_z_mm",
+      "parts": [
+        {
+          "order": 32,
+          "key": "objective_lens",
+          "name": "Objective Lens Assembly",
+          "branch": "common",
+          "local_start_z_mm": 939.0,
+          "local_center_z_mm": 1149.2,
+          "local_end_z_mm": 1359.4,
+          "length_mm": 420.4,
+          "vacuum_inner_diameter_mm": 5.76,
+          "upper_field_reference_local_z_mm": 1147.85,
+          "lower_field_reference_local_z_mm": 1150.55,
+          "virtual_reference_local_z_mm": 1149.2,
+          "mechanical_outer_diameter_mm": 180.0,
+          "upper_yoke_start_local_z_mm": 941.5,
+          "upper_yoke_end_local_z_mm": 1096.5,
+          "lower_yoke_start_local_z_mm": 1201.9,
+          "lower_yoke_end_local_z_mm": 1356.9,
+          "s_twin_pole_gap_mm": 5.4,
+          "nominal_voltage_kv": 300.0,
+          "nominal_focal_length_mm": 2.8,
+          "spherical_aberration_mm": 1.2,
+          "nominal_back_focal_plane_local_z_mm": 1163.4536907227932,
+          "nominal_image_plane_local_z_mm": 1305.316738548523,
+          "nominal_excitation_percent": 30.42591940608605,
+          "maximum_excitation_percent": 100.0,
+          "upper_peak_field_t": 0.884453999912932,
+          "lower_peak_field_t": 0.884453999912932,
+          "upper_field_half_width_mm": 24.0,
+          "lower_field_half_width_mm": 24.0,
+          "upper_field_profile_amplitudes": [
+            0.09,
+            0.82,
+            0.09
+          ],
+          "upper_field_profile_offsets": [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          "upper_field_profile_sigmas": [
+            0.9,
+            0.55,
+            0.9
+          ],
+          "lower_field_profile_amplitudes": [
+            0.09,
+            0.82,
+            0.09
+          ],
+          "lower_field_profile_offsets": [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          "lower_field_profile_sigmas": [
+            0.9,
+            0.55,
+            0.9
+          ],
+          "chromatic_aberration_mm": 2.0,
+          "mechanical_overlap_group": "objective_assembly",
+          "mechanical_overlap_role": "container",
+          "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+          "mechanical_profile": "magnetic_lens_assembly",
+          "offset_x_mm": 0.0,
+          "offset_y_mm": 0.0,
+          "offset_z_mm": 0.0,
+          "rotation_x_mrad": 0.0,
+          "rotation_y_mrad": 0.0,
+          "rotation_z_mrad": 0.0,
+          "mechanical_access_geometry_source_urls": [
+            "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/spectra-ultra-ds0361-materials-science-datasheet.pdf",
+            "https://www.thermofisher.com/us/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra/instruments/spectra-200-tem.html"
+          ],
+          "mechanical_access_geometry_source": "Symmetric wide-gap objective reconstruction: public reference designs specify a 5.4 mm pole gap and couple a wide-gap objective to a >4.45 sr EDS array. The 8.0 mm pole-tip OD and 27.5584 mm nose are a non-OEM centre-ray clearance design: the conical surface is parallel to the 32.06 degree user-dataset reference ray and leaves 0.3109 mm radial clearance in the axisymmetric meridional model. This does not establish clearance for the unpublished reference-detector active-face/collimator shape or its complete solid-angle acceptance. Dimensions other than the 5.4 mm anchor are simulator assumptions, not OEM measurements.",
+          "mechanical_access_geometry_status": "engineering_reconstruction_not_oem",
+          "mechanical_coil_axial_inset_mm": 5.0,
+          "mechanical_pole_mounting_geometry_source_urls": [
+            "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+            "https://patents.google.com/patent/US20150021476A1/en"
+          ],
+          "mechanical_pole_mounting_geometry_source": "Public column literature identifies a symmetric objective and dual-coil topology; patent US20150021476A1 supports a precision magnetic insert mounted inside a primary yoke. The 12 mm straight shank, 60 mm shank/coil interface and 36 mm radial winding thickness are non-OEM simulator reconstruction values directed by the supplied cross-section sketch.",
+          "mechanical_pole_mounting_geometry_status": "engineering_reconstruction_not_oem",
+          "mechanical_coil_radial_thickness_mm": 36.0,
+          "mechanical_part_role": "optical_parent",
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption",
+          "field_polarity_source": "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
+        },
+        {
+          "order": 38,
+          "key": "sample",
+          "name": "Sample",
+          "branch": "common",
+          "local_start_z_mm": 1149.19995,
+          "local_center_z_mm": 1149.2,
+          "local_end_z_mm": 1149.2000500000001,
+          "length_mm": 0.000100000000202,
+          "vacuum_inner_diameter_mm": 5,
+          "optical_reference_local_z_mm": 1149.2,
+          "mechanical_outer_diameter_mm": 3.0,
+          "mechanical_overlap_group": "objective_assembly",
+          "mechanical_overlap_role": "member",
+          "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+          "parent_key": "sample_stage"
+        }
+      ]
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "sha256": "06484cfe43c784b5cad889bf6ff963bc35e5fa231339c5bddb9356da2cc249b4",
+      "coordinate_system": "module_local_z_mm",
+      "parts": [
+        {
+          "order": 32,
+          "key": "objective_lens",
+          "name": "Objective Lens Assembly",
+          "branch": "common",
+          "local_start_z_mm": 939.0,
+          "local_center_z_mm": 1149.2,
+          "local_end_z_mm": 1359.4,
+          "length_mm": 420.4,
+          "vacuum_inner_diameter_mm": 5.76,
+          "upper_field_reference_local_z_mm": 1147.85,
+          "lower_field_reference_local_z_mm": 1150.55,
+          "virtual_reference_local_z_mm": 1149.2,
+          "mechanical_outer_diameter_mm": 180.0,
+          "upper_yoke_start_local_z_mm": 941.5,
+          "upper_yoke_end_local_z_mm": 1096.5,
+          "lower_yoke_start_local_z_mm": 1201.9,
+          "lower_yoke_end_local_z_mm": 1356.9,
+          "s_twin_pole_gap_mm": 5.4,
+          "nominal_voltage_kv": 300.0,
+          "nominal_focal_length_mm": 2.8,
+          "spherical_aberration_mm": 1.2,
+          "nominal_back_focal_plane_local_z_mm": 1163.4536907227932,
+          "nominal_image_plane_local_z_mm": 1305.316738548523,
+          "nominal_excitation_percent": 30.42591940608605,
+          "maximum_excitation_percent": 100.0,
+          "upper_peak_field_t": 0.884453999912932,
+          "lower_peak_field_t": 0.884453999912932,
+          "upper_field_half_width_mm": 24.0,
+          "lower_field_half_width_mm": 24.0,
+          "upper_field_profile_amplitudes": [
+            0.09,
+            0.82,
+            0.09
+          ],
+          "upper_field_profile_offsets": [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          "upper_field_profile_sigmas": [
+            0.9,
+            0.55,
+            0.9
+          ],
+          "lower_field_profile_amplitudes": [
+            0.09,
+            0.82,
+            0.09
+          ],
+          "lower_field_profile_offsets": [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          "lower_field_profile_sigmas": [
+            0.9,
+            0.55,
+            0.9
+          ],
+          "chromatic_aberration_mm": 2.0,
+          "mechanical_overlap_group": "objective_assembly",
+          "mechanical_overlap_role": "container",
+          "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+          "mechanical_profile": "magnetic_lens_assembly",
+          "offset_x_mm": 0.0,
+          "offset_y_mm": 0.0,
+          "offset_z_mm": 0.0,
+          "rotation_x_mrad": 0.0,
+          "rotation_y_mrad": 0.0,
+          "rotation_z_mrad": 0.0,
+          "mechanical_access_geometry_source_urls": [
+            "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/spectra-ultra-ds0361-materials-science-datasheet.pdf",
+            "https://www.thermofisher.com/us/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra/instruments/spectra-200-tem.html"
+          ],
+          "mechanical_access_geometry_source": "Symmetric wide-gap objective reconstruction: public reference designs specify a 5.4 mm pole gap and couple a wide-gap objective to a >4.45 sr EDS array. The 8.0 mm pole-tip OD and 27.5584 mm nose are a non-OEM centre-ray clearance design: the conical surface is parallel to the 32.06 degree user-dataset reference ray and leaves 0.3109 mm radial clearance in the axisymmetric meridional model. This does not establish clearance for the unpublished reference-detector active-face/collimator shape or its complete solid-angle acceptance. Dimensions other than the 5.4 mm anchor are simulator assumptions, not OEM measurements.",
+          "mechanical_access_geometry_status": "engineering_reconstruction_not_oem",
+          "mechanical_coil_axial_inset_mm": 5.0,
+          "mechanical_pole_mounting_geometry_source_urls": [
+            "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+            "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+            "https://patents.google.com/patent/US20150021476A1/en"
+          ],
+          "mechanical_pole_mounting_geometry_source": "Public column literature identifies a symmetric objective and dual-coil topology; patent US20150021476A1 supports a precision magnetic insert mounted inside a primary yoke. The 12 mm straight shank, 60 mm shank/coil interface and 36 mm radial winding thickness are non-OEM simulator reconstruction values directed by the supplied cross-section sketch.",
+          "mechanical_pole_mounting_geometry_status": "engineering_reconstruction_not_oem",
+          "mechanical_coil_radial_thickness_mm": 36.0,
+          "mechanical_part_role": "optical_parent",
+          "field_polarity": 1,
+          "field_polarity_status": "provisional_model_assumption",
+          "field_polarity_source": "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
+        },
+        {
+          "order": 38,
+          "key": "sample",
+          "name": "Sample",
+          "branch": "common",
+          "local_start_z_mm": 1149.19995,
+          "local_center_z_mm": 1149.2,
+          "local_end_z_mm": 1149.2000500000001,
+          "length_mm": 0.000100000000202,
+          "vacuum_inner_diameter_mm": 5,
+          "optical_reference_local_z_mm": 1149.2,
+          "mechanical_outer_diameter_mm": 3.0,
+          "mechanical_overlap_group": "objective_assembly",
+          "mechanical_overlap_role": "member",
+          "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+          "parent_key": "sample_stage"
+        }
+      ]
+    }
+  ]
+}

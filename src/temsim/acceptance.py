@@ -129,6 +129,26 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_condenser_objective_design.py", "tests/test_scan_coil_design.py",
                 "tests/test_condenser_scan_design_gui.py", "tests/test_finite_scan_response.py",
                 "tests/test_projector_mode_switch.py")),
+            "field-ui/FU-16": ("Declared corrector winding ownership, geometry and edit persistence", (
+                "tests/test_corrector_deflector_coils.py", "tests/test_corrector_hardware_editing.py")),
+            "field-ui/FU-17": ("Explicit reference-plane steering and captured actual-probe diagnostics", (
+                "tests/test_beam_steering_gui.py", "tests/test_actual_probe_diagnostics.py")),
+            "field-ui/FU-18": ("Analytic CAD construction and native display/export lifecycle", (
+                "tests/test_cad_round_lenses.py", "tests/test_cad_multipoles.py",
+                "tests/test_cad_auxiliary.py", "tests/test_cad_export_gui.py",
+                "tests/test_compare_cad_assembly.py", "tests/test_cad_stage_holder.py",
+                "tests/test_stage_holder_manifest.py", "tests/test_export_resolved_cad_assembly.py",
+                "tests/test_cad_vacuum_tube.py")),
+            "field-ui/FU-19": ("CETCOR component identity and common-coordinate conjugate diagnostics", (
+                "tests/test_image_corrector_topology.py",)),
+        },
+    },
+    "cad-export": {
+        "description": "Optional isolated OpenCascade STEP export and round-trip",
+        "evidence_kind": "analytic-solid-and-step-metadata-round-trip",
+        "criteria": {
+            "cad-export/CAD-01": ("Analytic primitives, editable solids, material labels and placements", (
+                "tests/test_cad_step.py", "tests/test_cad_assembly_validation.py")),
         },
     },
     "lens-geometry": {
@@ -170,6 +190,15 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_result_files_gui.py")),
             "particle-continuation/PC-05": ("Specimen downstream handoff, branch weights and executed flight times", (
                 "tests/test_downstream_transport.py", "tests/test_specimen_time_of_flight.py")),
+            "particle-continuation/PC-06": ("Measured corrector waists, nonlinear source correction and current preset seeds", (
+                "tests/test_corrector_crossover_measurement.py",
+                "tests/test_probe_corrector_calibration.py", "tests/test_direct_alignment_precalibration.py")),
+            "particle-continuation/PC-07": ("Bound corrector finite dipoles and independent response reference", (
+                "tests/test_corrector_deflector_binding.py", "tests/test_corrector_deflector_validation.py")),
+            "particle-continuation/PC-08": ("DPH changes the centered HP response in parameterised optics", (
+                "tests/test_dph_aberration_response.py", "tests/test_corrector_aberration_events.py")),
+            "particle-continuation/PC-09": ("Finite entrance-pair local calibration and verified four-drive commit", (
+                "tests/test_beam_steering_calibration.py",)),
         },
     },
     "performance-observation": {
@@ -211,6 +240,9 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_wave_checkpoint_publication.py",
                 "tests/test_column_wave_electric.py", "tests/test_tip_gun_wave.py",
                 "tests/test_electrostatic_column_transport.py", "tests/test_wave_grid.py", "tests/test_wave_device.py",
+                "tests/test_wave_support.py", "tests/test_column_support_budget.py",
+                "tests/test_column_acceptance_window.py", "tests/test_wave_aperture_edge.py",
+                "tests/test_radial_fftlog.py", "tests/test_radial_column_wave.py",
                 "tests/test_tip_gun_shared_fields.py", "tests/test_canonical_action.py")),
             "coherent-development/CW-06": ("Driven near-tip boundary and gun continuation; not full microscope qualification", (
                 "tests/test_planar_tip_boundary.py", "tests/test_driven_tip_gun.py")),

@@ -1,0 +1,75 @@
+{
+  "id": "US8373137B2",
+  "kind": "patent",
+  "family": "能滤复用多极元件",
+  "url": "https://patents.google.com/patent/US8373137B2/en",
+  "figures": "Fig. 1 and description of twelve-pole elements",
+  "component_keys": [
+    "energy_filter_multipole_*"
+  ],
+  "supported_facts": [
+    "一个多极实体可通过激励组合提供偶极、四极、六极和更高项。"
+  ],
+  "unsupported_claims": [
+    "光学排列不是本项目支架或绕组的尺寸剖面图。",
+    "不确认每个现有能滤元件实际具有十二个磁极。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:16.340088+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 1526183,
+      "sha256": "8bf6fe4ea7890d459516470e669d7395633e0d442fc7ed577c182fa3370089c7",
+      "kind": "original_pdf",
+      "method": "downloaded_public_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/92/36/af/6f791593fe3611/US8373137.pdf"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 197492,
+      "sha256": "67cf8a02bb15620a78ab787c8a841ff53b32c6c2988d1ecf3c49f4ddc81231f3",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 2,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [],
+  "title": "High resolution energy-selecting electron beam apparatus",
+  "authors": [
+    "Ondrej L. Krivanek",
+    "Niklas Dellby"
+  ],
+  "owner": [
+    "Nion Co"
+  ],
+  "dates": {
+    "priorityDate": "2010-09-24",
+    "filingDate": "2010-09-24",
+    "publicationDate": "2013-02-12"
+  },
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/92/36/af/6f791593fe3611/US8373137.pdf",
+  "resolved_pdf_url": "https://patentimages.storage.googleapis.com/92/36/af/6f791593fe3611/US8373137.pdf",
+  "pdf_page_count": 14,
+  "pdf_metadata": {
+    "format": "PDF 1.3",
+    "title": "1499074542688340002-08373137",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "",
+    "producer": "ImageMagick 6.9.0-6 Q8 x86_64 2015-02-23 http://www.imagemagick.org",
+    "creationDate": "D:20170703023552",
+    "modDate": "D:20170703023552",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    2
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

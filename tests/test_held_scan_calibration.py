@@ -161,7 +161,7 @@ def test_ui_has_explicit_calibration_and_target_controls(qtbot, state):
     assert view.descan_target.findData(SELECTED_AREA_APERTURE) >= 0
     assert view.descan_target.findData("legacy_image_reference") == -1
     assert view.calibrate_descan_button.text() == "Calibrate Descan (keep AC)"
-    assert "mechanical-angle" in view.calibrate_hold_button.toolTip()
+    assert "canonical-angle" in view.calibrate_hold_button.toolTip()
     view._calibrate_and_hold()
     assert state.ac_deflector.calibration_mode == "held"
     assert view.scan_calibration_mode.currentData() == "held"
@@ -194,14 +194,16 @@ def test_scan_summary_uses_captured_held_reference_and_mechanical_span(qtbot):
     view.set_state(live)
     view.display_result(_scan_label_result(calibration_mode="held",
         sample_reference_name="Specimen entrance", sample_reference_z_mm=1599.1999975,
+        ac_angle_target="legacy_unknown", ac_angular_residual=None,
         sample_mechanical_angle_span_mrad=(.12, .34)))
     text = view.summary.text()
     assert "held (constraint provenance unspecified)" in text
-    assert "automatic (mechanical-angle target)" not in text
+    assert "automatic (canonical-angle target)" not in text
     assert "Specimen entrance at Z 1599.1999975 mm" in text
     assert "sample-centre span" not in text and "pure-shift" not in text
-    assert "canonical" not in text
-    assert "mechanical-angle response residual (dimensionless) 0.125" in text
+    assert "canonical-angle target" not in text
+    assert "canonical slope span: unavailable" in text
+    assert "legacy_unknown-angle response residual (dimensionless) unavailable" in text
     assert "first-order scan-induced mechanical slope span (peak-to-peak): X 0.12 mrad, Y 0.34 mrad" in text
     help_text = view.summary.toolTip()
     assert "not the absolute beam angle" in help_text and "nonzero magnetic field" in help_text
@@ -217,12 +219,14 @@ def test_scan_summary_marks_automatic_target_and_reports_actual_zero_span(qtbot)
     qtbot.addWidget(view)
     view.display_result(_scan_label_result(calibration_mode="automatic",
         sample_reference_name="Specimen centre", sample_reference_z_mm=1600.,
-        sample_mechanical_angle_span_mrad=(0., 0.), ac_angular_residual=0.))
+        ac_angle_target="canonical", sample_canonical_angle_span_mrad=(0., 0.),
+        sample_mechanical_angle_span_mrad=(.1, .2), ac_angular_residual=0.))
     text = view.summary.text()
-    assert "automatic (mechanical-angle target)" in text
+    assert "automatic (canonical-angle target)" in text
     assert "Specimen centre at Z 1600 mm" in text
     assert "X 0 mrad, Y 0 mrad" in text
-    assert "mechanical-angle response residual (dimensionless) 0" in text
+    assert "canonical-angle response residual (dimensionless) 0" in text
+    assert "(peak-to-peak): X 0.1 mrad, Y 0.2 mrad" in text
     assert "pure-shift" not in text
 
 
@@ -245,7 +249,7 @@ def test_scan_summary_does_not_turn_missing_residuals_into_zero(qtbot, missing):
     assert "captured calibration: unavailable" in text
     assert "Specimen reference unavailable at Z unavailable" in text
     assert "(peak-to-peak): unavailable" in text
-    assert "mechanical-angle response residual (dimensionless) unavailable" in text
+    assert "unknown-angle response residual (dimensionless) unavailable" in text
     assert "response residual unavailable (dimensionless)" in text
     assert "image conjugacy ||J_diff|| unavailable" in text
     assert "residual 0" not in text and "nan" not in text
@@ -341,6 +345,7 @@ def test_cutoff_before_descan_does_not_certify_unexecuted_calibration(state, mon
         state, force=True, hold=True, observation_stop_z_mm=state.sample.z_mm)
     assert descan_result is None
     assert json.loads(state.ac_deflector.calibration_record_json)["descan_calibrated"] is False
+    assert json.loads(state.ac_deflector.calibration_record_json)["ac_angle_target"] == "canonical"
     with pytest.raises(ValueError, match="Descan was not calibrated"):
         restore_held(state)
 
@@ -588,7 +593,7 @@ def test_descan_only_profile_load_consumes_new_finite_screen_calibration(state, 
     kicks = np.linalg.solve(response_matrix, np.vstack((desired, np.zeros((2, 2)))))
     ac.set_pure_shift_coupling(np.linalg.solve(kicks[:2].T, kicks[2:].T).T)
     ac.set_scan_command_matrix_mrad(kicks[:2]*1e3/ac.upper_coil_gain)
-    capture_record(state, descan_calibrated=False)
+    capture_record(state, descan_calibrated=False, ac_angle_target="canonical")
     ac.calibration_mode = "held"
     original_ac = ac.pure_shift_lower_ratio_matrix, ac.scan_command_matrix_mrad
     state.projector_mode = "image"
@@ -627,3 +632,48 @@ def test_descan_only_profile_load_consumes_new_finite_screen_calibration(state, 
     for time_s in (.03, .4):
         loaded.simulation_time_s = time_s
         assert np.linalg.norm(position()-baseline) < 3e-12
+
+
+@pytest.mark.parametrize("target", ("canonical", "mechanical", "legacy_unknown"))
+def test_descan_only_preserves_held_angle_provenance(state, monkeypatch, target):
+    from temsim.physics.scan_calibration import ac_angle_target
+    _hold_custom_ac(state)
+    record = json.loads(state.ac_deflector.calibration_record_json)
+    if target == "legacy_unknown":
+        record.pop("ac_angle_target", None)  # authentic old unlabelled record
+    else:
+        record["ac_angle_target"] = target
+    state.ac_deflector.calibration_record_json = json.dumps(record)
+    _mock_downstream_response(monkeypatch)
+    scan.recalibrate_descan_only(state)
+    assert ac_angle_target(state) == target
+    assert json.loads(state.ac_deflector.calibration_record_json)["ac_angle_target"] == target
+    assert state.ac_deflector._pure_shift_angle_target == target
+
+
+def test_legacy_held_drives_are_not_claimed_canonical(state, monkeypatch):
+    from temsim.physics.scan_calibration import ac_angle_target, validate_record
+    _hold_custom_ac(state)
+    record = json.loads(state.ac_deflector.calibration_record_json)
+    record.pop("ac_angle_target")
+    state.ac_deflector.calibration_record_json = json.dumps(record)
+    restore_held(state, restore_descan=False)
+    assert ac_angle_target(state) == "legacy_unknown"
+    monkeypatch.setattr(scan, "_coil_phase_responses", lambda *_a, **_kw: pytest.fail("Unknown constraint cannot be measured"))
+    assert scan._ac_angle_residual(state) is None
+    record["ac_angle_target"] = "guessed"
+    with pytest.raises(ValueError, match="angle target"):
+        validate_record(json.dumps(record))
+
+
+def test_explicit_mechanical_held_residual_keeps_its_original_basis(state, monkeypatch):
+    _hold_custom_ac(state)
+    record = json.loads(state.ac_deflector.calibration_record_json)
+    record["ac_angle_target"] = "mechanical"
+    record["ac_ratio"] = (-2*np.eye(2)).tolist()
+    state.ac_deflector.calibration_record_json = json.dumps(record)
+    restore_held(state, restore_descan=False)
+    monkeypatch.setattr(scan, "_coil_phase_responses", lambda *_a, **_kw: (
+        np.vstack((np.eye(2), 2*np.eye(2))), np.vstack((np.eye(2), np.eye(2))), np.zeros(2)))
+    monkeypatch.setattr(scan, "canonical_source_basis", lambda *_a, **_kw: pytest.fail("Do not retarget mechanical held drives"))
+    assert scan._ac_angle_residual(state) == pytest.approx(0., abs=1e-15)

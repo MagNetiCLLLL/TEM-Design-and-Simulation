@@ -1,0 +1,43 @@
+{
+  "id": "CEOS-CETCOR-residuals",
+  "kind": "manufacturer_research_page",
+  "title": "Residual aberrations of hexapole-type Cs-correctors",
+  "authors": [
+    "P. Hartel",
+    "H. Mueller",
+    "S. Uhlemann",
+    "M. Haider"
+  ],
+  "owner": "CEOS GmbH",
+  "publication_date": null,
+  "url": "https://www.ceos-gmbh.de/de/produkte/residualsCEXCOR",
+  "figures": "Sections Tuning Residual Aberrations and Experiment: Tuning fifth-order spherical aberration",
+  "component_keys": [
+    "image_tl11_lens",
+    "image_tl12_lens",
+    "image_tl21_lens",
+    "image_tl22_lens",
+    "image_hp1_hexapole",
+    "image_hp2_hexapole"
+  ],
+  "supported_facts": [
+    "中间像在TL21/TL22对称面用于抑制D4。",
+    "TL1中间倍率/HP强度可调C3；C5与离轴彗差有取舍。"
+  ],
+  "unsupported_claims": [
+    "没有本机电流、位置或机械尺寸标定。"
+  ],
+  "archive_status": "original_html_saved",
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T01:00:38.354798+00:00",
+  "assets": [
+    {
+      "file": "original.html",
+      "bytes": 30040,
+      "sha256": "e0258220b346b3260ac0abc7f84de2ddc556059cb71ea2e53af66114ca981144",
+      "kind": "original_html",
+      "source_url": "https://www.ceos-gmbh.de/de/produkte/residualsCEXCOR"
+    }
+  ]
+}

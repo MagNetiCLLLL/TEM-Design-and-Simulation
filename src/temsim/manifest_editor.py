@@ -13,6 +13,7 @@ import tomllib
 from temsim import module_manifest
 from temsim.column.module_assembly import resolve_module_assembly
 from temsim.component_representation import shared_deflector_field_owner
+from temsim.optics.field_hardware_binding import bound_field_owner
 
 
 @dataclass(frozen=True, slots=True)
@@ -22,6 +23,7 @@ class ManifestField:
     value: object
     editable: bool = True
     meaning: object | None = None
+    owner_key: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -169,8 +171,11 @@ class ManifestEditor:
                     label=str(field),
                     value=value,
                     editable=(str(field) not in STRUCTURAL_READ_ONLY_FIELDS
-                              and not shared_deflector_field_owner(target.part_key, field)),
+                              and not shared_deflector_field_owner(target.part_key, field)
+                              and not bound_field_owner(part, field)),
                     meaning=describe_parameter(part, ("parts", target.part_key, str(field)), by_key=by_key),
+                    owner_key=(bound_field_owner(part, field)
+                               or shared_deflector_field_owner(target.part_key, field)),
                 )
                 for field, value in editable_values.items()
             )
@@ -199,9 +204,12 @@ class ManifestEditor:
     def save(self, target: ManifestTarget, updates: dict[tuple[str, ...], object], configuration):
         if not updates:
             return
+        document = module_manifest.read_document(self.root / target.module_path)
+        by_key = {str(part["key"]): part for part in document.get("parts", ())}
         for path in updates:
             if len(path) >= 3 and path[0] == "parts":
-                host = shared_deflector_field_owner(path[1], path[2])
+                host = (shared_deflector_field_owner(path[1], path[2])
+                        or bound_field_owner(by_key.get(path[1], {}), path[2]))
                 if host:
                     raise ValueError(f"{path[1]} uses shared hardware; edit {host} to change its structure")
         from temsim.component_operations import PartChangeSet

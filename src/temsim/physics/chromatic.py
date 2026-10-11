@@ -205,8 +205,8 @@ _UNRESOLVED_FOCAL_LENGTH = object()
 def configured_objective_chromatic_focal_mm(state):
     """Resolve the configured focal length once, or ``None`` when disabled."""
 
-    from temsim.simulation_modes import is_ideal, uses_field_maps
-    if is_ideal(state) or not bool(getattr(state, "chromatic_aberration_enabled", False)):
+    from temsim.simulation_modes import uses_field_maps
+    if not bool(getattr(state, "chromatic_aberration_enabled", False)):
         return None
     recipe = getattr(state, "lens_field_map_descriptors", {}).get("objective_lens", {})
     if uses_field_maps(state) and recipe.get("solver") in {"axisymmetric_linear_fem", "axisymmetric_nonlinear_fem"}:

@@ -148,7 +148,12 @@ def test_ci_runs_every_declared_scope_and_retains_failure_evidence():
 
     jobs = yaml.safe_load((ROOT / ".github/workflows/tem-p0.yml").read_text())["jobs"]
     feature = jobs["feature-acceptance"]
-    assert set(feature["strategy"]["matrix"]["scope"]) == set(ACCEPTANCE_SCOPES) - {"classical"}
+    assert set(feature["strategy"]["matrix"]["scope"]) == set(ACCEPTANCE_SCOPES) - {"classical", "cad-export"}
+    cad_jobs = yaml.safe_load((ROOT / ".github/workflows/cad-export.yml").read_text())["jobs"]
+    cad_steps = cad_jobs["cad-export"]["steps"]
+    assert any("requirements-cad.txt" in step.get("run", "") for step in cad_steps)
+    assert any("test_cad_step.py" in step.get("run", "") for step in cad_steps)
+    assert not any(step.get("continue-on-error") for step in cad_steps)
     assert feature["strategy"]["fail-fast"] is False
     steps = feature["steps"]
     assert any("--scope ${{ matrix.scope }}" in step.get("run", "") for step in steps)

@@ -576,7 +576,7 @@ class State:
     objective_stigmator_symmetry_offset_mm: float = 0.0
     image_diffraction_deflector_upstream_gap_mm: float = 0.0
     image_corrector_upstream_gap_mm: float = 5.0
-    image_corrector_component_offsets_from_ol_post_mm: dict = field(
+    image_corrector_component_offsets_from_tl11_mm: dict = field(
         default_factory=dict,
         repr=False,
     )
@@ -924,16 +924,6 @@ class State:
             )
             self._adapter_lens = cached
         return cached
-
-    @property
-    def image_corrector_ol_post_lens(self):
-        """Return the sole Image Corrector OL-post round lens."""
-        from temsim.component_keys import IMAGE_CORRECTOR_OL_POST_LENS
-
-        return self._probe_lens(
-            IMAGE_CORRECTOR_OL_POST_LENS,
-            "_image_corrector_ol_post_lens",
-        )
 
     @property
     def tl22_lens(self):
@@ -1797,10 +1787,10 @@ class State:
             "image_corrector_upstream_gap_mm":float(
                 self.image_corrector_upstream_gap_mm
             ),
-            "image_corrector_component_offsets_from_ol_post_mm":{
+            "image_corrector_component_offsets_from_tl11_mm":{
                 str(key): float(value)
                 for key, value in (
-                    self.image_corrector_component_offsets_from_ol_post_mm
+                    self.image_corrector_component_offsets_from_tl11_mm
                 ).items()
             },
             "selected_area_aperture_offset_from_sad_mm":float(
@@ -1818,7 +1808,7 @@ class State:
             "objective_stigmator_symmetry_offset_mm",
             "image_diffraction_deflector_upstream_gap_mm",
             "image_corrector_upstream_gap_mm",
-            "image_corrector_component_offsets_from_ol_post_mm",
+            "image_corrector_component_offsets_from_tl11_mm",
             "selected_area_aperture_offset_from_sad_mm",
             "standalone_selected_area_aperture_gap_after_descan_mm",
         ):
@@ -1871,7 +1861,6 @@ class State:
             IMAGE_DIFFRACTION_DEFLECTOR,
             IMAGE_CORRECTOR_ELEMENT_KEYS,
             IMAGE_CORRECTOR_LENS_KEYS,
-            IMAGE_CORRECTOR_OL_POST_LENS,
             MINI_CONDENSER,
             OBJECTIVE_APERTURE,
             OBJECTIVE_LENS,
@@ -2444,10 +2433,10 @@ class State:
             image_corrector_upstream_gap_mm=float(
                 d.get("image_corrector_upstream_gap_mm", 5.0)
             ),
-            image_corrector_component_offsets_from_ol_post_mm={
+            image_corrector_component_offsets_from_tl11_mm={
                 str(key): float(value)
                 for key, value in d.get(
-                    "image_corrector_component_offsets_from_ol_post_mm",
+                    "image_corrector_component_offsets_from_tl11_mm",
                     {},
                 ).items()
             },

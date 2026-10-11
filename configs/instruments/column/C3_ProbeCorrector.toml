@@ -22,6 +22,15 @@ interface = "column_to_project_and_recording_system"
 local_z_mm = 1364.4
 
 [geometry]
+# CEOS lists H x W x D. These are device-envelope references, not lens spacings.
+probe_corrector_reference_product = "CEOS CESCOR"
+probe_corrector_reference_dimensions_hwd_mm = [255.0, 337.0, 255.0]
+probe_corrector_reference_dimensions_source = "https://www.ceos-gmbh.de/de/produkte/stemkorrektoren/cescor"
+probe_corrector_reference_dimensions_status = "published_outer_dimensions; internal and flange boundaries unreported"
+probe_corrector_core_extent_keys = ["probe_hp2_hexapole", "probe_hp1_hexapole"]
+probe_corrector_coupled_optics_extent_keys = ["adapter_lens", "probe_tl12_lens"]
+probe_corrector_with_upstream_alignment_extent_keys = ["beam_deflector", "probe_tl12_lens"]
+probe_corrector_length_comparison_note = "Core HP2-TL22-TL21-HP1, coupled ADL-to-TL1 optics, and upstream alignment have different boundaries. The published 255 mm body height is not a confirmed ADL-to-TL1 or flange spacing. No optical coordinates are scaled from the schematic."
 length_mm = 1364.4
 parts_start_z_mm = 0.0
 parts_end_z_mm = 1359.4
@@ -39,6 +48,13 @@ c1_c2_objective_vacuum_tube_outer_to_objective_pole_ratio = 0.20
 c1_c2_objective_vacuum_tube_seal_material = "iridium_metal_user_identified_unverified"
 c1_c2_objective_vacuum_tube_geometry_status = "engineering_reconstruction_not_oem"
 c1_c2_objective_vacuum_tube_geometry_source = "User-supplied C1/C2 cartridge and Objective pole-piece photographs. The 60.0 mm cartridge ID is approximately 0.66 of its retained 90.75 mm OD; the 19.2 mm tube/Objective connector OD is 0.20 of the retained 96.0 mm Objective pole OD; the tube ID is user-directed at 30% of its OD. The metal vacuum seal was identified by the user as iridium but is not independently verified. Photo-scaled dimensions are engineering reconstruction values, not OEM measurements."
+
+# Material geometry only; the axisymmetric equivalent solver tube above is unchanged.
+mechanical_material_tube_outer_profile_z_od_mm = [[0.0, 19.2], [370.0, 19.2], [380.0, 17.2], [550.0, 17.2], [560.0, 19.2], [1084.5, 19.2]]
+mechanical_material_tube_aperture_slot_keys = ["condenser_aperture_2", "condenser_aperture_3"]
+mechanical_material_tube_aperture_slot_clearance_mm = 0.2
+mechanical_material_tube_status = "engineering_reconstruction_not_oem"
+mechanical_material_tube_source = "Engineering assembly clearance reconstruction, not an OEM measurement: retain the configured 5.76 mm beam ID and 19.2 mm maximum material OD; reduce OD to 17.2 mm over C3 poles with 10 mm axial transitions and 0.4 mm radial clearance in the existing 18 mm bore; provide only the declared strip apertures with side-entry slots following their existing plate geometry and rigid pose, with 0.2 mm clearance per side. These material details do not replace the axisymmetric electric boundary."
 magnetic_lens_external_diameter_mm = 180.0
 magnetic_lens_coil_axial_fraction = 0.9
 magnetic_lens_coil_radial_thickness_base_mm = 6.0
@@ -47,6 +63,18 @@ magnetic_lens_geometry_status = "engineering_reconstruction_not_oem"
 magnetic_lens_geometry_source = "User-directed constant-OD TEM-column reconstruction. The user-directed C1/C2 split is 100/200 mm inside the retained 300 mm cartridge. The provisional C1/C2 field half-widths scale from the preceding 140/160 mm envelopes and the maximum fields conserve B0^2*a, hence the isolated integral of Bz^2, at fixed excitation. Public column literature and magnetic-lens patent US20150021476A1 support topology and relative design only; dimensions and field calibration are simulator engineering assumptions, not OEM measurements."
 magnetic_lens_geometry_source_urls = ["https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf", "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf", "https://patents.google.com/patent/US20150021476A1/en"]
 magnetic_lens_design_peak_fields_t = { condenser_lens_1 = 1.7748239349298847, adapter_lens = 0.12, condenser_lens_2 = 1.3416407864998738, probe_tl22_lens = 0.5301570833333334, probe_tl21_lens = 0.49774598333333336, probe_tl12_lens = 0.55, objective_lens = 0.884453999912932, mini_condenser = 0.45, condenser_lens_3 = 0.38 }
+
+[[subassemblies]]
+key = "sample_stage"
+name = "Sample stage and side-entry holder"
+file = "../../subassemblies/sample_stage.toml"
+
+[subassemblies.placement]
+mode = "anchor"
+reference_part = "sample"
+reference_point = "center"
+offset_mm = 0.0
+local_datum_mm = 0.0
 
 [[parts]]
 order = 1
@@ -179,22 +207,25 @@ field_polarity_source = "Existing coupled-corrector sign convention; physical co
 [[parts]]
 order = 15
 key = "probe_dph2_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked winding insert.
 layout_role = "control_channel"
 layout_owner = "probe_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "probe_dph2_coils"
+axial_relation_note = "Same optical Z as probe_hp2_hexapole; contained axially inside its envelope. DPH is not a separate upstream stage."
+radial_relation_note = "Inside to outside at the common centre: 20 mm vacuum passage; 20.5 mm liner OD; DPH windings ID 22.2 / OD 23.8 mm; HP opening ID 24 mm. Winding and HP dimensions are provisional model allocations."
 
 name = "DPH2 Deflector"
 branch = "illumination"
-local_start_z_mm = 656.4
-local_center_z_mm = 663.65
-local_end_z_mm = 670.9
+local_start_z_mm = 687.25
+local_center_z_mm = 694.5
+local_end_z_mm = 701.75
 length_mm = 14.5
 vacuum_inner_diameter_mm = 20
-mechanical_outer_diameter_mm = 75.0
+mechanical_outer_diameter_mm = 23.8
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 4.0
-optical_reference_local_z_mm = 663.65
+optical_reference_local_z_mm = 694.5
 
 [[parts]]
 order = 16
@@ -268,6 +299,8 @@ length_mm = 18.2
 vacuum_inner_diameter_mm = 20
 mechanical_outer_diameter_mm = 75.0
 mechanical_clear_bore_diameter_mm = 20.0
+# Model insert space outside the unchanged 20 mm vacuum passage; not OEM CAD.
+mechanical_inner_diameter_mm = 24.0
 effective_length_mm = 6.0
 optical_reference_local_z_mm = 694.5
 
@@ -302,10 +335,13 @@ field_polarity_source = "Existing coupled-corrector sign convention; physical co
 [[parts]]
 order = 19
 key = "probe_dp22_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked winding insert.
 layout_role = "control_channel"
 layout_owner = "probe_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "probe_dp22_coils"
+axial_relation_note = "Downstream of TL22; upstream of the central relay region and DP21."
+radial_relation_note = "X/Y winding insert outside the 20 mm vacuum passage and liner; no independent iron housing inferred."
 
 name = "DP22 Deflector"
 branch = "illumination"
@@ -314,7 +350,7 @@ local_center_z_mm = 736.35
 local_end_z_mm = 743.6
 length_mm = 14.5
 vacuum_inner_diameter_mm = 20
-mechanical_outer_diameter_mm = 75.0
+mechanical_outer_diameter_mm = 23.8
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 4.0
 optical_reference_local_z_mm = 736.35
@@ -362,10 +398,13 @@ optical_reference_local_z_mm = 765.35
 [[parts]]
 order = 22
 key = "probe_dp21_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked winding insert.
 layout_role = "control_channel"
 layout_owner = "probe_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "probe_dp21_coils"
+axial_relation_note = "Downstream of the central relay region and DP22; upstream of TL21."
+radial_relation_note = "X/Y winding insert outside the 20 mm vacuum passage and liner; no independent iron housing inferred."
 
 name = "DP21 Deflector"
 branch = "illumination"
@@ -374,7 +413,7 @@ local_center_z_mm = 779.9
 local_end_z_mm = 787.2
 length_mm = 14.6
 vacuum_inner_diameter_mm = 20
-mechanical_outer_diameter_mm = 75.0
+mechanical_outer_diameter_mm = 23.8
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 4.0
 optical_reference_local_z_mm = 779.9
@@ -410,22 +449,25 @@ field_polarity_source = "Existing coupled-corrector sign convention; physical co
 [[parts]]
 order = 24
 key = "probe_dph1_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked winding insert.
 layout_role = "control_channel"
 layout_owner = "probe_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "probe_dph1_coils"
+axial_relation_note = "Same optical Z as probe_hp1_hexapole; contained axially inside its envelope. DPH is not a separate upstream stage."
+radial_relation_note = "Inside to outside at the common centre: 20 mm vacuum passage; 20.5 mm liner OD; DPH windings ID 22.2 / OD 23.8 mm; HP opening ID 24 mm. Winding and HP dimensions are provisional model allocations."
 
 name = "DPH1 Deflector"
 branch = "illumination"
-local_start_z_mm = 812.7
-local_center_z_mm = 819.95
-local_end_z_mm = 827.2
+local_start_z_mm = 843.6
+local_center_z_mm = 850.85
+local_end_z_mm = 858.1
 length_mm = 14.5
 vacuum_inner_diameter_mm = 20
-mechanical_outer_diameter_mm = 75.0
+mechanical_outer_diameter_mm = 23.8
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 4.0
-optical_reference_local_z_mm = 819.95
+optical_reference_local_z_mm = 850.85
 
 [[parts]]
 order = 25
@@ -459,6 +501,8 @@ length_mm = 18.1
 vacuum_inner_diameter_mm = 20
 mechanical_outer_diameter_mm = 75.0
 mechanical_clear_bore_diameter_mm = 20.0
+# Model insert space outside the unchanged 20 mm vacuum passage; not OEM CAD.
+mechanical_inner_diameter_mm = 24.0
 effective_length_mm = 10.0
 optical_reference_local_z_mm = 850.85
 
@@ -505,19 +549,22 @@ optical_reference_local_z_mm = 881.75
 [[parts]]
 order = 29
 key = "probe_dp11_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked winding insert.
 layout_role = "control_channel"
 layout_owner = "probe_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "probe_dp11_coils"
+axial_relation_note = "Downstream of HP1 and the HPol/QPol field markers; upstream of TL1 (stored key probe_tl12_lens)."
+radial_relation_note = "X/Y winding insert outside the 20 mm vacuum passage and liner; no independent iron housing inferred."
 
 name = "DP11 Deflector"
 branch = "illumination"
-local_start_z_mm = 889.0
+local_start_z_mm = 889
 local_center_z_mm = 896.3
 local_end_z_mm = 903.6
 length_mm = 14.6
 vacuum_inner_diameter_mm = 20
-mechanical_outer_diameter_mm = 75.0
+mechanical_outer_diameter_mm = 23.8
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 4.0
 optical_reference_local_z_mm = 896.3
@@ -612,25 +659,6 @@ field_polarity = 1
 field_polarity_status = "provisional_model_assumption"
 field_polarity_source = "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
 [[parts]]
-order = 33
-key = "sample_stage"
-name = "Sample Stage / Goniometer"
-branch = "common"
-local_start_z_mm = 1146.5
-local_center_z_mm = 1149.2
-local_end_z_mm = 1151.9
-length_mm = 5.4
-vacuum_inner_diameter_mm = 5
-mechanical_profile = "transverse_goniometer"
-transverse_envelope_x_mm = 650.0
-transverse_envelope_y_mm = 500.0
-holder_insertion_axis = "x"
-mechanical_overlap_group = "objective_assembly"
-mechanical_overlap_role = "container"
-mechanical_overlap_reason = "Transverse goniometer crossing the Objective pole gap at the sample plane."
-parent_key = "objective_lens"
-
-[[parts]]
 order = 31
 key = "probe_dp12_scan_deflector"
 # Optical/control coordinates below do not define a separate material body.
@@ -704,13 +732,15 @@ drive_clock = "shared_ac_raster"
 field_geometry_status = "ideal_kicks_at_declared_interaction_centres_not_measured_coil_map"
 name = "AC Scan Coil"
 branch = "illumination"
-local_start_z_mm = 1021.5
-local_center_z_mm = 1041.5
-local_end_z_mm = 1061.5
+# Place the finite scan pair around the calibrated TL1-to-CM beam waist.
+# This is a simulator working point, not a measured OEM coil position.
+local_start_z_mm = 930.0
+local_center_z_mm = 950.0
+local_end_z_mm = 970.0
 length_mm = 40.0
 vacuum_inner_diameter_mm = 20
-optical_reference_local_z_mm = 1041.5
-interaction_centers_local_z_mm = [1029.0, 1054.0]
+optical_reference_local_z_mm = 950.0
+interaction_centers_local_z_mm = [937.5, 962.5]
 mechanical_outer_diameter_mm = 54.0
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 15.0
@@ -718,7 +748,7 @@ mechanical_coil_length_mm = 15.0
 mechanical_inter_coil_gap_mm = 10.0
 mechanical_overlap_group = "objective_assembly"
 mechanical_overlap_role = "member"
-mechanical_overlap_reason = "Nested mechanical envelope inside the Objective Lens assembly."
+mechanical_overlap_reason = "Independently mounted scan coils grouped with the Objective assembly; the upstream coil extends beyond its optical parent envelope."
 parent_key = "objective_lens"
 
 [[parts]]
@@ -1860,3 +1890,154 @@ mechanical_overlap_role = "member"
 mechanical_overlap_reason = "Off-axis sample-facing EDS segments occupy azimuthal access inside the Objective assembly; the zero-length row is an aggregate marker and not an axial electron stop."
 parent_key = "objective_lens"
 eds_detector_definition_file = "EDS.toml"
+
+[[parts]]
+order = 83
+key = "probe_dph2_coils"
+name = "DPH2 X/Y steering coils"
+branch = "illumination"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+# Native reconstruction dimensions; not measured OEM windings.
+winding_layer_thickness_mm = 0.32
+winding_angular_span_deg = 120.0
+winding_band_width_mm = 1.16
+local_start_z_mm = 687.25
+local_center_z_mm = 694.5
+local_end_z_mm = 701.75
+length_mm = 14.5
+optical_reference_local_z_mm = 694.5
+effective_thickness_mm = 4.0
+vacuum_inner_diameter_mm = 20.0
+mechanical_clear_bore_diameter_mm = 20.0
+mechanical_inner_diameter_mm = 22.2
+mechanical_outer_diameter_mm = 23.8
+physical_host_status = "modelled"
+geometry_evidence = "engineering_assumption"
+geometry_source = "Generic concentric X/Y winding insert; CEOS US20090079531A1 Figs 5/6,10/11 supports the construction class, not an OEM DPH winding map. Dimensions are model allocations, not manufacturer measurements."
+optical_relation_source = "CEOS Mueller et al. 2006 Fig. 2 and CEOS-hosted MC2025_CEOS_PL_20250831 p.2; DPH is in the corresponding HP field region, DP21/22 flank the transfer doublet."
+parent_key = "probe_hp2_hexapole"
+optical_reference_host_key = "probe_hp2_hexapole"
+optical_reference_offset_mm = 0.0
+optical_relation_status = "schematic_midplane_model"
+
+[[parts]]
+order = 84
+key = "probe_dph1_coils"
+name = "DPH1 X/Y steering coils"
+branch = "illumination"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+# Native reconstruction dimensions; not measured OEM windings.
+winding_layer_thickness_mm = 0.32
+winding_angular_span_deg = 120.0
+winding_band_width_mm = 1.16
+local_start_z_mm = 843.6
+local_center_z_mm = 850.85
+local_end_z_mm = 858.1
+length_mm = 14.5
+optical_reference_local_z_mm = 850.85
+effective_thickness_mm = 4.0
+vacuum_inner_diameter_mm = 20.0
+mechanical_clear_bore_diameter_mm = 20.0
+mechanical_inner_diameter_mm = 22.2
+mechanical_outer_diameter_mm = 23.8
+physical_host_status = "modelled"
+geometry_evidence = "engineering_assumption"
+geometry_source = "Generic concentric X/Y winding insert; CEOS US20090079531A1 Figs 5/6,10/11 supports the construction class, not an OEM DPH winding map. Dimensions are model allocations, not manufacturer measurements."
+optical_relation_source = "CEOS Mueller et al. 2006 Fig. 2 and CEOS-hosted MC2025_CEOS_PL_20250831 p.2; DPH is in the corresponding HP field region, DP21/22 flank the transfer doublet."
+parent_key = "probe_hp1_hexapole"
+optical_reference_host_key = "probe_hp1_hexapole"
+optical_reference_offset_mm = 0.0
+optical_relation_status = "schematic_midplane_model"
+
+[[parts]]
+order = 85
+key = "probe_dp22_coils"
+name = "DP22 X/Y steering coils"
+branch = "illumination"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+# Native reconstruction dimensions; not measured OEM windings.
+winding_layer_thickness_mm = 0.32
+winding_angular_span_deg = 120.0
+winding_band_width_mm = 1.16
+local_start_z_mm = 729.1
+local_center_z_mm = 736.35
+local_end_z_mm = 743.6
+length_mm = 14.5
+optical_reference_local_z_mm = 736.35
+effective_thickness_mm = 4.0
+vacuum_inner_diameter_mm = 20.0
+mechanical_clear_bore_diameter_mm = 20.0
+mechanical_inner_diameter_mm = 22.2
+mechanical_outer_diameter_mm = 23.8
+physical_host_status = "modelled"
+geometry_evidence = "engineering_assumption"
+geometry_source = "Generic concentric X/Y winding insert; CEOS US20090079531A1 Figs 5/6,10/11 supports the construction class, not an OEM DPH winding map. Dimensions are model allocations, not manufacturer measurements."
+optical_relation_source = "CEOS Mueller et al. 2006 Fig. 2 and CEOS-hosted MC2025_CEOS_PL_20250831 p.2; DPH is in the corresponding HP field region, DP21/22 flank the transfer doublet."
+optical_relation_status = "published_order_absolute_z_provisional"
+
+[[parts]]
+order = 86
+key = "probe_dp21_coils"
+name = "DP21 X/Y steering coils"
+branch = "illumination"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+# Native reconstruction dimensions; not measured OEM windings.
+winding_layer_thickness_mm = 0.32
+winding_angular_span_deg = 120.0
+winding_band_width_mm = 1.168
+local_start_z_mm = 772.6
+local_center_z_mm = 779.9
+local_end_z_mm = 787.2
+length_mm = 14.6
+optical_reference_local_z_mm = 779.9
+effective_thickness_mm = 4.0
+vacuum_inner_diameter_mm = 20.0
+mechanical_clear_bore_diameter_mm = 20.0
+mechanical_inner_diameter_mm = 22.2
+mechanical_outer_diameter_mm = 23.8
+physical_host_status = "modelled"
+geometry_evidence = "engineering_assumption"
+geometry_source = "Generic concentric X/Y winding insert; CEOS US20090079531A1 Figs 5/6,10/11 supports the construction class, not an OEM DPH winding map. Dimensions are model allocations, not manufacturer measurements."
+optical_relation_source = "CEOS Mueller et al. 2006 Fig. 2 and CEOS-hosted MC2025_CEOS_PL_20250831 p.2; DPH is in the corresponding HP field region, DP21/22 flank the transfer doublet."
+optical_relation_status = "published_order_absolute_z_provisional"
+
+[[parts]]
+order = 87
+key = "probe_dp11_coils"
+name = "DP11 X/Y steering coils"
+branch = "illumination"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+# Native reconstruction dimensions; not measured OEM windings.
+winding_layer_thickness_mm = 0.32
+winding_angular_span_deg = 120.0
+winding_band_width_mm = 1.168
+local_start_z_mm = 889
+local_center_z_mm = 896.3
+local_end_z_mm = 903.6
+length_mm = 14.6
+optical_reference_local_z_mm = 896.3
+effective_thickness_mm = 4.0
+vacuum_inner_diameter_mm = 20.0
+mechanical_clear_bore_diameter_mm = 20.0
+mechanical_inner_diameter_mm = 22.2
+mechanical_outer_diameter_mm = 23.8
+physical_host_status = "modelled"
+geometry_evidence = "engineering_assumption"
+geometry_source = "Generic concentric X/Y winding insert; CEOS US20090079531A1 Figs 5/6,10/11 supports the construction class, not an OEM DPH winding map. Dimensions are model allocations, not manufacturer measurements."
+optical_relation_source = "CEOS Mueller et al. 2006 Fig. 2 and CEOS-hosted MC2025_CEOS_PL_20250831 p.2; DPH is in the corresponding HP field region, DP21/22 flank the transfer doublet."
+optical_relation_status = "published_order_absolute_z_provisional"

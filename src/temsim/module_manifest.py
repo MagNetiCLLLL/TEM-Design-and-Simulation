@@ -144,6 +144,7 @@ REFERENCE_FREE_PART_KEYS = frozenset({
     "feg_accelerator",
     "thermionic_accelerator",
     "sample_stage",
+    "sample_holder",
     "objective_upper_pole",
     "objective_lower_pole",
     "energy_filter",
@@ -309,7 +310,6 @@ OBJECTIVE_COLUMN_KEYS = (
 )
 
 IMAGE_CORRECTOR_COLUMN_KEYS = (
-    "image_ol_post_lens",
     "image_hpol_hexapole",
     "image_qpol_quadrupole",
     "image_dp11_deflector",
@@ -318,8 +318,8 @@ IMAGE_CORRECTOR_COLUMN_KEYS = (
     "image_tl12_lens",
     "image_dph1_deflector",
     "image_hp1_hexapole",
-    "image_dp21_deflector",
     "image_tl21_lens",
+    "image_dp21_deflector",
     "image_dp22_deflector",
     "image_tl22_lens",
     "image_dph2_deflector",
@@ -343,8 +343,9 @@ class PartGeometry:
 def read_document(path, *, capture_navigation=False):
     from temsim.shared_tip import raw_document, resolve_document
     from temsim.optics.shared_deflectors import resolve_shared_deflector_parts
-    return resolve_shared_deflector_parts(resolve_document(
-        raw_document(path), path, capture_navigation=capture_navigation))
+    from temsim.optics.field_hardware_binding import resolve_field_hardware_parts
+    return resolve_field_hardware_parts(resolve_shared_deflector_parts(resolve_document(
+        raw_document(path), path, capture_navigation=capture_navigation)))
 
 
 def part_data(module_path, key, root=None):
@@ -666,8 +667,14 @@ def _stage_part_structure(text, changes):
     return staged
 
 
-def stage_manifest_text(text, updates, *, validate=True):
-    """Return TOML text with targeted section/part fields replaced."""
+def stage_manifest_text(text, updates, *, validate=True, source_path=None):
+    """Return TOML text with targeted section/part fields replaced.
+
+    For unexpanded files with shared subassemblies, ``source_path`` supplies
+    their resolution context for validation only. The returned text retains
+    its original composition, comments and line endings. Materialized drafts
+    already include all their parts and do not need this argument.
+    """
 
     from temsim.optics.electron_gun.tip_assembly import OPTIONAL_NUMERICAL_FIELDS
     from temsim.lens_pose import PHYSICAL_POSE_FIELDS
@@ -719,17 +726,22 @@ def stage_manifest_text(text, updates, *, validate=True):
             entries[key]["placement"] = placement
         staged = tomli_w.dumps(document)
     if validate:
+        if source_path is not None and document.get("subassemblies"):
+            from temsim.subassemblies import resolve_document
+            document = resolve_document(document, source_path)
         validate_document(document)
     return staged
 
 
 def validate_document(document):
+    from temsim.corrector_model_3d import validate_deflector_coil_part
     from temsim.optics.shared_deflectors import resolve_shared_deflector_parts
+    from temsim.optics.field_hardware_binding import resolve_field_hardware_parts
     from temsim.optics.electron_gun.tip_assembly import validate_tip_part, validate_electrical_defaults
     from temsim.magnetic_circuits import is_custom_mechanical_part
     from temsim.lens_pose import validate_physical_lens_pose
     from temsim.part_model_apertures import validate_optional_plate_thickness
-    document = dict(resolve_shared_deflector_parts(document))
+    document = dict(resolve_field_hardware_parts(resolve_shared_deflector_parts(document)))
     document["parts"] = [
         (
             resolve_eds_detector_part_data(part)
@@ -758,6 +770,7 @@ def validate_document(document):
     validate_electrical_defaults(parts)
     for part in parts:
         validate_tip_part(part)
+        validate_deflector_coil_part(part)
         validate_physical_lens_pose(part)
         validate_optional_plate_thickness(part)
         key = str(part["key"])
@@ -879,6 +892,8 @@ def validate_document(document):
                     f"Interaction planes for {key} must be symmetric "
                     "about its mechanical centre"
                 )
+            if key == "ac_deflector":
+                _validate_ac_coil_geometry(part, interactions)
         elif (
             any(token in key for token in (
                 "lens",
@@ -936,6 +951,7 @@ def validate_document(document):
         _validate_condenser_field_calibrations(
             physical_parts, document["geometry"]
         )
+        _validate_image_corrector_field_calibrations(physical_parts)
         _validate_magnetic_lens_mechanical_parts(
             physical_parts, document["geometry"]
         )
@@ -975,6 +991,29 @@ def validate_document(document):
             # the existing axisymmetric physics consume an arbitrary CAD model.
             part_model_from_document(document, part["key"], include_children=False)
     return document
+
+
+def _validate_ac_coil_geometry(part, interactions):
+    """AC runtime centres are derived from its physical coil length and gap."""
+    names = ("mechanical_coil_length_mm", "mechanical_inter_coil_gap_mm",
+             "effective_thickness_mm", "length_mm", "local_center_z_mm",
+             "optical_reference_local_z_mm")
+    try:
+        coil, gap, thickness, length, center, reference = (
+            float(part[name]) for name in names
+        )
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("ac_deflector: complete numeric coil geometry is required") from exc
+    if (not all(math.isfinite(value) for value in (coil, gap, thickness, length, center, reference))
+            or coil <= 0.0 or gap <= 0.0 or not 0.0 < thickness <= coil):
+        raise ValueError("ac_deflector: coil length and gap must be positive; field thickness must fit one coil")
+    if abs(length - (2.0 * coil + gap)) > 1.0e-9:
+        raise ValueError("ac_deflector: body length must equal coil + gap + coil")
+    if abs(reference - center) > 1.0e-9:
+        raise ValueError("ac_deflector: optical reference must equal the mechanical centre")
+    expected = (center - (coil + gap) / 2.0, center + (coil + gap) / 2.0)
+    if any(abs(actual - wanted) > 1.0e-9 for actual, wanted in zip(interactions, expected)):
+        raise ValueError("ac_deflector: interaction centres must match the physical coil length and gap")
 
 
 def _validate_alignment_structure(parts):
@@ -1335,6 +1374,19 @@ def _validate_projector_field_calibrations(parts):
         _validate_round_lens_field_calibration(
             part, key, PROJECTOR_FIELD_CALIBRATION_FIELDS
         )
+
+
+def _validate_image_corrector_field_calibrations(parts):
+    from temsim.component_keys import IMAGE_CORRECTOR_LENS_KEYS
+    for part in parts:
+        if str(part["key"]) not in IMAGE_CORRECTOR_LENS_KEYS:
+            continue
+        _validate_round_lens_field_calibration(
+            part, str(part["key"]),
+            (*PROJECTOR_FIELD_CALIBRATION_FIELDS, "normalise_field_profile_peak"),
+        )
+        if not isinstance(part["normalise_field_profile_peak"], bool):
+            raise ValueError(f"{part['key']}.normalise_field_profile_peak must be boolean")
 
 
 def _validate_condenser_field_calibrations(parts, geometry):
@@ -2453,6 +2505,104 @@ def _validate_eds_detector_geometry(parts):
         raise ValueError("EDS geometry requires non-empty provenance")
 
 
+def _validate_stage_holder_geometry(by_key):
+    """Check native side-entry dimensions without modifying axial optics.
+
+    Historical modules without this holder keep their previous admission.
+    The stage's axial length remains the beam gap, not its external body size.
+    Full transformed material collision checks belong to the CAD construction.
+    """
+    holder = by_key.get("sample_holder")
+    if holder is None:
+        return
+    stage = by_key["sample_stage"]
+    sample = by_key["sample"]
+    tolerance = 1e-9
+
+    def number(row, name, *, positive=True):
+        value = row.get(name)
+        if (isinstance(value, bool) or not isinstance(value, (int, float))
+                or not math.isfinite(value) or (positive and value <= 0)):
+            raise ValueError(f"{row['key']}.{name} must be a finite "
+                             + ("positive dimension" if positive else "number"))
+        return float(value)
+
+    for row in (stage, holder):
+        if row.get("mechanical_only") is not True:
+            raise ValueError(f"{row['key']} must be mechanical_only")
+        if row.get("holder_insertion_axis") != "x" or row.get("holder_insertion_direction") != -1:
+            raise ValueError("Side-entry holder insertion must follow -X")
+        if row.get("mechanical_geometry_status") not in MECHANICAL_GEOMETRY_STATUSES or not row.get("mechanical_geometry_source"):
+            raise ValueError(f"{row['key']} requires explicit mechanical provenance")
+    if (holder.get("parent_key") != "sample_stage"
+            or holder.get("mechanical_profile") != "side_entry_sample_holder"
+            or holder.get("axial_vacuum_context_only") is not True):
+        raise ValueError("Side-entry holder must belong to the stage and not define an axial vacuum wall")
+    if abs(number(holder, "local_center_z_mm", positive=False)-float(sample["local_center_z_mm"])) > tolerance:
+        raise ValueError("Side-entry holder must be centred on the sample plane")
+    intervals, diameters = {}, {}
+    for name in ("stage_port", "stage_flange", "stage_body"):
+        start, end = (number(stage, name+suffix) for suffix in ("_start_x_mm", "_end_x_mm"))
+        inner, outer = (number(stage, name+suffix) for suffix in ("_inner_diameter_mm", "_outer_diameter_mm"))
+        if not start < end or not inner < outer:
+            raise ValueError(f"{name} requires ordered endpoints and an open material annulus")
+        intervals[name], diameters[name] = (start, end), (inner, outer)
+    port_start, port_end = intervals["stage_port"]
+    for name in ("stage_flange", "stage_body"):
+        start, end = intervals[name]
+        if start < port_start or end > port_end or diameters[name][0] < diameters["stage_port"][1]-tolerance:
+            raise ValueError(f"{name} must surround the port without material overlap")
+    if abs(intervals["stage_flange"][1]-intervals["stage_body"][0]) > tolerance:
+        raise ValueError("Stage flange and body must meet at their declared interface")
+    actual_x = port_end-port_start
+    actual_yz = max(outer for _, outer in diameters.values())
+    for name, expected in (("transverse_envelope_x_mm", actual_x),
+                           ("transverse_envelope_y_mm", actual_yz), ("actual_z_extent_mm", actual_yz)):
+        if abs(number(stage, name)-expected) > tolerance:
+            raise ValueError(f"sample_stage.{name} must match the actual external envelope")
+    if number(stage, "housing_side_port_diameter_mm") <= diameters["stage_port"][1]:
+        raise ValueError("Housing side port must leave clearance around the stage guide")
+    housing = by_key.get("objective_lens_housing")
+    if housing is not None:
+        housing_inner = number(housing, "mechanical_inner_diameter_mm")/2
+        housing_outer = number(housing, "mechanical_outer_diameter_mm")/2
+        if port_start > housing_inner+tolerance or port_end <= housing_outer:
+            raise ValueError("Stage guide must pass through the objective housing wall")
+        if abs(intervals["stage_flange"][0]-housing_outer) > tolerance:
+            raise ValueError("Stage flange must meet the objective housing outer surface")
+
+    shaft_start, shaft_end = (number(holder, "holder_shaft"+suffix) for suffix in ("_start_x_mm", "_end_x_mm"))
+    handle_start, handle_end = (number(holder, "holder_handle"+suffix) for suffix in ("_start_x_mm", "_end_x_mm"))
+    shaft_diameter = number(holder, "holder_shaft_diameter_mm")
+    handle_diameter = number(holder, "holder_handle_diameter_mm")
+    if not shaft_start < port_start < port_end < shaft_end or not handle_start < handle_end:
+        raise ValueError("Holder shaft must span the stage guide and have a downstream handle")
+    if abs(shaft_end-handle_start) > tolerance or handle_diameter <= shaft_diameter:
+        raise ValueError("Holder shaft and handle must meet with a wider handle")
+    if shaft_diameter >= diameters["stage_port"][0]:
+        raise ValueError("Holder shaft must leave positive clearance inside the stage guide")
+    width = number(holder, "holder_tip_width_mm")
+    thickness = number(holder, "holder_tip_thickness_mm")
+    opening = number(holder, "holder_tip_opening_diameter_mm")
+    seat = number(holder, "holder_tip_seat_diameter_mm")
+    depth = number(holder, "holder_tip_seat_depth_mm")
+    specimen_diameter = number(sample, "mechanical_outer_diameter_mm")
+    if not opening < specimen_diameter < seat < width or not depth < thickness:
+        raise ValueError("Holder seat must fit and support the sample above its smaller beam opening")
+    if thickness >= float(stage["length_mm"]):
+        raise ValueError("Holder tip must leave clearance in the objective pole gap")
+    if (abs(number(holder, "holder_tip_start_x_mm", positive=False)+width/2) > tolerance
+            or abs(number(holder, "holder_tip_end_x_mm")-shaft_start) > tolerance):
+        raise ValueError("Holder tip must cover the sample axis and meet the shaft")
+    center = float(holder["local_center_z_mm"])
+    if (abs(float(holder["local_start_z_mm"])-(center-handle_diameter/2)) > tolerance
+            or abs(float(holder["local_end_z_mm"])-(center+handle_diameter/2)) > tolerance):
+        raise ValueError("Holder axial envelope must contain its handle diameter")
+    retraction = number(holder, "holder_retraction_mm", positive=False)
+    if not 0 <= retraction <= number(holder, "holder_maximum_retraction_mm"):
+        raise ValueError("Holder retraction is outside the declared mechanical travel")
+
+
 def _validate_objective_assembly(parts):
     by_key = {str(part["key"]): part for part in parts}
     required = {
@@ -2471,6 +2621,7 @@ def _validate_objective_assembly(parts):
     sample = by_key["sample"]
     aperture = by_key["objective_aperture"]
     lower_pole = by_key["objective_lower_pole"]
+    _validate_stage_holder_geometry(by_key)
     tolerance = 1.0e-9
 
     stage_fields = (
@@ -2695,7 +2846,7 @@ def _expected_column_order(parts):
     if "adapter_lens" in keys:
         expected.extend(PROBE_CORRECTOR_COLUMN_KEYS)
     expected.extend(OBJECTIVE_COLUMN_KEYS)
-    if "image_ol_post_lens" in keys:
+    if "image_tl11_lens" in keys:
         expected.extend(IMAGE_CORRECTOR_COLUMN_KEYS)
     return tuple(expected)
 
@@ -2716,6 +2867,11 @@ def _validate_column_order(parts):
         )
     )
     expected = _expected_column_order(parts)
+    # The side-entry stage remains a beam-passage context but is now stored
+    # with its purely mechanical holder, outside the axial optical order.
+    stage = next((part for part in parts if part["key"] == "sample_stage"), {})
+    if stage.get("mechanical_only") is True:
+        expected = tuple(key for key in expected if key != "sample_stage")
     if actual != expected:
         raise ValueError(
             "Column part order must be C1, C2, C2 Aperture, optional "
@@ -3464,13 +3620,23 @@ def _validate_magnetic_lens_mechanical_parts(parts, geometry):
         lens_start = float(lens["local_start_z_mm"])
         lens_end = float(lens["local_end_z_mm"])
         parent_outer = float(lens["mechanical_outer_diameter_mm"])
+        declared_envelope = (
+            lens.get("mechanical_geometry_status")
+            == "engineering_reconstruction_not_oem"
+            and bool(str(lens.get("mechanical_geometry_source", "")).strip())
+        )
+        if not math.isfinite(parent_outer) or parent_outer <= 0.0:
+            raise ValueError(f"{lens_key} must declare a positive finite outer diameter")
         nested_parent_key = str(lens.get("nested_lens_parent_key", ""))
         if nested_parent_key:
             nested_lenses.append((lens_key, nested_parent_key))
-        elif abs(parent_outer - external_diameter) > tolerance:
+        elif (
+            abs(parent_outer - external_diameter) > tolerance
+            and not declared_envelope
+        ):
             raise ValueError(
                 f"{lens_key} mechanical outer diameter must equal the "
-                "common column diameter"
+                "common column diameter or have explicit per-lens reconstruction provenance"
             )
         radial_ranges = []
         children_by_profile = {}
@@ -3567,11 +3733,11 @@ def _validate_magnetic_lens_mechanical_parts(parts, geometry):
                 )
         else:
             expected_coil_length = axial_fraction * min(
-                lens_end - lens_start, external_diameter
+                lens_end - lens_start, parent_outer
             )
             if (
                 abs(coil_length - expected_coil_length) > tolerance
-                or not longest_pole < coil_length < external_diameter
+                or not longest_pole < coil_length < parent_outer
             ):
                 raise ValueError(
                     f"{coil['key']} axial length must be the configured "
@@ -3804,6 +3970,10 @@ def _validate_shared_lens_housings(parts):
 
 def _validate_c1_c2_cartridge_and_vacuum_tube(parts, geometry):
     """Validate the photo-scaled shared pole cartridge and vacuum tube."""
+
+    from temsim.cad_vacuum_tube import validate_material_tube_geometry
+
+    validate_material_tube_geometry(parts, geometry)
 
     tolerance = 1.0e-9
     by_key = {str(part["key"]): part for part in parts}
@@ -4083,7 +4253,7 @@ def update_manifest_values(updates_by_module, root=None):
         with path.open("r", encoding="utf-8", newline="") as stream:
             original = stream.read()
         originals[relative] = original
-        staged[relative] = stage_manifest_text(original, updates)
+        staged[relative] = stage_manifest_text(original, updates, source_path=path)
     replaced = []
     try:
         for relative, text in staged.items():

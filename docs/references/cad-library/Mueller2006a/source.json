@@ -1,0 +1,91 @@
+{
+  "id": "Mueller2006a",
+  "kind": "article",
+  "family": "CEOS CESCOR 光路与六极实体",
+  "url": "https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf",
+  "title": "Advancing the Hexapole Cs-Corrector for the Scanning Transmission Electron Microscope",
+  "authors": [
+    "Heiko Müller",
+    "Stephan Uhlemann",
+    "Peter Hartel",
+    "Maximilian Haider"
+  ],
+  "owner": "Microscopy Society of America; author copy hosted by CEOS GmbH",
+  "publication_date": "2006",
+  "doi": "10.1017/S1431927606060600",
+  "figures": "Figs. 2-3, journal pp. 443-444; PDF pages 2-3",
+  "component_keys": [
+    "probe_hp1_hexapole",
+    "probe_hp2_hexapole",
+    "probe_dph1_deflector",
+    "probe_dph2_deflector",
+    "probe_tl22_lens",
+    "probe_tl21_lens",
+    "probe_tl12_lens",
+    "adapter_lens"
+  ],
+  "supported_facts": [
+    "论文明确列出校正器中的 DPH/DP/BTlt/BSh 对准功能。",
+    "正文 p443 明确 HP1/HP2 各有六个铁磁极针，极针材料为镍铁合金。",
+    "Fig. 3 是实体正视照片，不是机械剖面图；极靴、线圈和磁轭可见，图注明确内衬管存在但未显示。",
+    "可以确认 CESCOR 主 HP 的六极实体结构族；不能因 TOML 缺 polecount 而把它理解成无内部结构的光筒。"
+  ],
+  "unsupported_claims": [
+    "光路图不给 DPH 的绕组宿主细节。",
+    "文中 8 mm 孔径、30 mm 极长、152 mm 磁轭外径属于其 2006 设计，不是本项目当前尺寸；不得混称一致。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:16.457443+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 2419398,
+      "sha256": "3add9f947c19ec25310ca77958d968dd452121b3f82354fce7b013cc2784de6f",
+      "kind": "original_pdf",
+      "method": "downloaded_public_original_pdf",
+      "source_url": "https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 404054,
+      "sha256": "4b117f3537736b3786efc90535bbe2cc4dd0080c1a3ec43c00765289d3dbfb6a",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 2,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 357595,
+      "sha256": "3d212acbef5bc2af87b4014d6c1241919a93717651786fdf703d27f07c54e07c",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 3,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [],
+  "primary_pdf_url": "https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf",
+  "resolved_pdf_url": "https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf",
+  "pdf_page_count": 14,
+  "pdf_metadata": {
+    "format": "PDF 1.4",
+    "title": "No Job Name",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "XyEnterprise XPP 7.3C.1  Patch #2",
+    "producer": "Acrobat Distiller 5.0.5 (Windows)",
+    "creationDate": "D:20061101154126Z",
+    "modDate": "D:20061101113008-05'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    2,
+    3
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。",
+  "visual_review": "2026-10-11: PDF page 3 Fig.3 visually inspected; real six-pole assembly photograph, not a mechanical cross-section."
+}

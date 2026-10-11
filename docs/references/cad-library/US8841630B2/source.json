@@ -1,0 +1,80 @@
+{
+  "id": "US8841630B2",
+  "kind": "patent",
+  "family": "校正器传输透镜",
+  "url": "https://patents.google.com/patent/US8841630B2/en",
+  "figures": "Fig. 1; Figs. 6-7 are alternative double-gap embodiments",
+  "component_keys": [
+    "adapter_lens",
+    "probe_tl22_lens",
+    "probe_tl21_lens",
+    "probe_tl12_lens",
+    "image_*_lens"
+  ],
+  "supported_facts": [
+    "区分校正器多极场及传输透镜的光学角色。"
+  ],
+  "unsupported_claims": [
+    "双间隙实施例不能自动取代当前单间隙零件。",
+    "不提供当前装配的尺寸和绕组参数。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:14.866930+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 2222009,
+      "sha256": "6f40c7cfd4867f24204b94541c377fc74a57d2fee40a494de93aefef3381f696",
+      "kind": "original_pdf",
+      "method": "copied_existing_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/17/df/d0/ab1d6773ae00be/US8841630.pdf"
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 96069,
+      "sha256": "28db5425fa6ac04a0d096cd8eb1535af3a70961c5149223958f69ef7141b0799",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 3,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [
+    "复用项目已保存的原始 PDF；本次归档时间不冒充首次网络获取时间。"
+  ],
+  "title": "Corrector for axial aberrations of a particle-optical lens",
+  "authors": [
+    "Alexander Henstra"
+  ],
+  "owner": [
+    "FEI Co"
+  ],
+  "dates": {
+    "priorityDate": "2009-11-18",
+    "filingDate": "2010-11-18",
+    "publicationDate": "2014-09-23"
+  },
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/17/df/d0/ab1d6773ae00be/US8841630.pdf",
+  "cached_source": "outputs\\cad_research_20261011\\sources\\US8841630.pdf",
+  "pdf_page_count": 24,
+  "pdf_metadata": {
+    "format": "PDF 1.3",
+    "title": "1499067236373925718-08841630",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "",
+    "producer": "ImageMagick 6.9.0-6 Q8 x86_64 2015-02-23 http://www.imagemagick.org",
+    "creationDate": "D:20170703003410",
+    "modDate": "D:20170703003410",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    3
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

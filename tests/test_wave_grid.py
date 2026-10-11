@@ -90,6 +90,22 @@ def test_posed_lens_phase_budget_is_validated_and_invalidates_column_cache(field
             replace(original, **{field: value}).validate()
 
 
+@pytest.mark.parametrize("field", ["maximum_support_loss_fraction", "maximum_spectral_loss_fraction",
+                                  "maximum_incoherent_mode_loss_probability",
+                                  "maximum_accumulated_support_l2"])
+def test_support_budget_is_numerical_validated_and_part_of_column_identity(field):
+    original = WaveGridNumerics()
+    for value in (0., 1e-7, .01):
+        changed = replace(original, **{field: value})
+        changed.validate()
+        assert changed.column_identity()[field] == value
+        if value != getattr(original, field):
+            assert changed.column_identity() != original.column_identity()
+    for value in (True, -1., np.nan, np.inf, .10001):
+        with pytest.raises(ValueError, match=field):
+            replace(original, **{field: value}).validate()
+
+
 def gaussian(n):
     axis = (np.arange(n)-n//2)*(128/n)*4e-9
     xx, yy = np.meshgrid(axis, axis)
@@ -167,3 +183,73 @@ def test_operator_specific_memory_estimate_respects_existing_budget():
     assert numerics.check((64, 64)) == 256*64*64
     with pytest.raises(ValueError, match="budget exceeded"):
         numerics.check((64, 64), working_bytes_per_pixel=512)
+
+
+def test_refinement_uses_required_resolution_without_power_of_two_overshoot():
+    source = gaussian(128)
+    visited = []
+    def operator(wave):
+        visited.append(wave.amplitude.shape)
+        if wave.amplitude.shape[0] < 263:
+            raise WaveSamplingError("needs slightly more than double resolution", 2.05)
+        return wave
+    # The former power-of-two factor would request 512 and fail this budget,
+    # although the operator requires only 263 cells. It must still be retried.
+    result, rows = apply_resolved_operator(source, operator,
+        numerics=WaveGridNumerics(maximum_pixels=300))
+    assert len(visited) == 2 and visited[0] == (128, 128)
+    assert 263 <= result.amplitude.shape[0] <= 300
+    assert result.amplitude.shape[0] % 2 == 0
+    assert result.probability == pytest.approx(source.probability, abs=2e-14)
+    assert rows[0]["requested_scale"] == 2.05
+
+
+def test_small_required_scale_still_grows_and_rechecks_the_physical_operator():
+    source = gaussian(128)
+    visited = []
+    def operator(wave):
+        visited.append(wave.amplitude.shape)
+        if len(visited) == 1:
+            raise WaveSamplingError("resolution guard", 1.001)
+        return wave
+    result, _ = apply_resolved_operator(source, operator)
+    assert visited == [(128, 128), (160, 160)]
+    assert result.probability == pytest.approx(source.probability, abs=2e-14)
+    assert "fft-friendly" in WaveGridNumerics().column_identity()["refinement_grid_selection"]
+
+
+def test_sampling_preparation_rechecks_changed_input_before_using_resolution_scale():
+    source = gaussian(128)
+    original = source.amplitude.copy()
+    events = []
+    def operator(wave):
+        events.append(("operator", wave.amplitude.shape, wave.curvature_m1 is None))
+        if wave.curvature_m1 is None:
+            raise WaveSamplingError("old representation requires a large grid", 16.)
+        if wave.amplitude.shape[0] < 160:
+            raise WaveSamplingError("prepared representation needs a small refinement", 1.01)
+        return wave
+    def prepare(wave, error):
+        events.append(("prepare", error.required_scale))
+        # Toy preparation deliberately alters the callback's representation;
+        # this test checks retry ordering, not a physical gauge-change claim.
+        return replace(wave, curvature_m1=np.eye(2)) if wave.curvature_m1 is None else wave
+    result, rows = apply_resolved_operator(source, operator, prepare_retry=prepare,
+                                          numerics=WaveGridNumerics(maximum_pixels=256))
+    assert result.amplitude.shape == (160, 160)
+    assert events == [("operator", (128, 128), True), ("prepare", 16.),
+                      ("operator", (128, 128), False), ("prepare", 1.01),
+                      ("operator", (160, 160), False)]
+    assert "physical operator rechecked" in rows[0]["method"]
+    np.testing.assert_array_equal(source.amplitude, original)
+    assert source.curvature_m1 is None
+
+
+def test_disabled_refinement_does_not_call_sampling_preparation():
+    def operator(wave):
+        raise WaveSamplingError("strict unresolved operator", 2.)
+    def prepare(wave, error):
+        raise AssertionError("disabled refinement must not invoke preparation")
+    with pytest.raises(WaveSamplingError, match="strict unresolved"):
+        apply_resolved_operator(gaussian(128), operator, prepare_retry=prepare,
+                                numerics=WaveGridNumerics(automatic_refinement=False))

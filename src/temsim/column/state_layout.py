@@ -54,7 +54,6 @@ from temsim.component_keys import (
     IMAGE_DIFFRACTION_DEFLECTOR,
     IMAGE_CORRECTOR_ELEMENT_KEYS,
     IMAGE_CORRECTOR_LENS_KEYS,
-    IMAGE_CORRECTOR_OL_POST_LENS,
     PROBE_DPH2_DEFLECTOR,
     PROBE_DPH1_DEFLECTOR,
     PROBE_DP11_DEFLECTOR,
@@ -488,6 +487,15 @@ def apply_physical_layout_to_state(
         assembly_root=assembly_root,
         assembly=assembly,
     )
+    if not preserve_operating_parameters:
+        # Explicit installation starts from this column's calibrated default.
+        # Ordinary layout refreshes and restored states retain the one live CM
+        # magnitude, including user edits and Microprobe/Nanoprobe switching.
+        from temsim.operating_modes import load_mini_condenser_default_excitation_percent
+        column_module = dict(state._resolved_assembly.selected_module_paths)["column"]
+        state.mini_condenser.percent = load_mini_condenser_default_excitation_percent(
+            column_module
+        )
     state.corrector_mode = configuration.corrector.value
     state.probe_corrector_installed = configuration.corrector in (
         CorrectorAssembly.PROBE_CORRECTOR,
@@ -783,7 +791,7 @@ def apply_physical_layout_to_state(
     state.condenser_deflector.validate().apply_optical_positions()
     state.beam_deflector.validate().apply_optical_positions()
     state.probe_corrector_system.validate().apply_optical_positions()
-    # Image-corrector optical interactions use the same OL-Post-anchored
+    # Image-corrector optical interactions use the same TL11-anchored
     # coordinates as their mechanical components.
     state.image_corrector_system.validate()
     apply_module_state_offsets(

@@ -39,6 +39,13 @@ c1_c2_objective_vacuum_tube_outer_to_objective_pole_ratio = 0.20
 c1_c2_objective_vacuum_tube_seal_material = "iridium_metal_user_identified_unverified"
 c1_c2_objective_vacuum_tube_geometry_status = "engineering_reconstruction_not_oem"
 c1_c2_objective_vacuum_tube_geometry_source = "User-supplied C1/C2 cartridge and Objective pole-piece photographs. The 60.0 mm cartridge ID is approximately 0.66 of its retained 90.75 mm OD; the 19.2 mm tube/Objective connector OD is 0.20 of the retained 96.0 mm Objective pole OD; the tube ID is user-directed at 30% of its OD. The metal vacuum seal was identified by the user as iridium but is not independently verified. Photo-scaled dimensions are engineering reconstruction values, not OEM measurements."
+
+# Material geometry only; the axisymmetric equivalent solver tube above is unchanged.
+mechanical_material_tube_outer_profile_z_od_mm = [[0.0, 19.2], [510.5, 19.2]]
+mechanical_material_tube_aperture_slot_keys = ["condenser_aperture_2"]
+mechanical_material_tube_aperture_slot_clearance_mm = 0.2
+mechanical_material_tube_status = "engineering_reconstruction_not_oem"
+mechanical_material_tube_source = "Engineering assembly clearance reconstruction, not an OEM measurement: retain the configured 5.76 mm beam ID and 19.2 mm maximum material OD; provide only the declared strip apertures with side-entry slots following their existing plate geometry and rigid pose, with 0.2 mm clearance per side. These material details do not replace the axisymmetric electric boundary."
 magnetic_lens_external_diameter_mm = 180.0
 magnetic_lens_coil_axial_fraction = 0.9
 magnetic_lens_coil_radial_thickness_base_mm = 6.0
@@ -47,6 +54,18 @@ magnetic_lens_geometry_status = "engineering_reconstruction_not_oem"
 magnetic_lens_geometry_source = "User-directed constant-OD TEM-column reconstruction. The user-directed C1/C2 split is 100/200 mm inside the retained 300 mm cartridge. The provisional C1/C2 field half-widths scale from the preceding 140/160 mm envelopes and the maximum fields conserve B0^2*a, hence the isolated integral of Bz^2, at fixed excitation. Public column literature and magnetic-lens patent US20150021476A1 support topology and relative design only; dimensions and field calibration are simulator engineering assumptions, not OEM measurements."
 magnetic_lens_geometry_source_urls = ["https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf", "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf", "https://patents.google.com/patent/US20150021476A1/en"]
 magnetic_lens_design_peak_fields_t = { condenser_lens_1 = 1.7748239349298847, objective_lens = 0.884453999912932, mini_condenser = 0.45, condenser_lens_2 = 1.3416407864998738 }
+
+[[subassemblies]]
+key = "sample_stage"
+name = "Sample stage and side-entry holder"
+file = "../../subassemblies/sample_stage.toml"
+
+[subassemblies.placement]
+mode = "anchor"
+reference_part = "sample"
+reference_point = "center"
+offset_mm = 0.0
+local_datum_mm = 0.0
 
 [[parts]]
 order = 1
@@ -171,25 +190,6 @@ mechanical_part_role = "optical_parent"
 field_polarity = 1
 field_polarity_status = "provisional_model_assumption"
 field_polarity_source = "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
-[[parts]]
-order = 10
-key = "sample_stage"
-name = "Sample Stage / Goniometer"
-branch = "common"
-local_start_z_mm = 572.5
-local_center_z_mm = 575.2
-local_end_z_mm = 577.9
-length_mm = 5.4
-vacuum_inner_diameter_mm = 5
-mechanical_profile = "transverse_goniometer"
-transverse_envelope_x_mm = 650.0
-transverse_envelope_y_mm = 500.0
-holder_insertion_axis = "x"
-mechanical_overlap_group = "objective_assembly"
-mechanical_overlap_role = "container"
-mechanical_overlap_reason = "Transverse goniometer crossing the Objective pole gap at the sample plane."
-parent_key = "objective_lens"
-
 [[parts]]
 order = 11
 key = "condenser_stigmator"

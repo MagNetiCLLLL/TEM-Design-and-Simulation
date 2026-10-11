@@ -235,6 +235,7 @@ def _corrector_trace_ratio(state, system: str) -> tuple[float, float, float, str
     """
 
     from temsim.physics.core import propagate
+    from temsim.physics.instrument_magnetic import active_column_events, events_overlapping_interval
 
     # Corrector calibration is sensitive to coarse axial integration.  A
     # shallow diagnostic copy preserves the user's state while enforcing the
@@ -267,9 +268,13 @@ def _corrector_trace_ratio(state, system: str) -> tuple[float, float, float, str
         radius = 1.0e-4
         inputs = (radius * np.cos(phi), zero, radius * np.sin(phi), zero)
 
-    baseline = propagate(state, z0, z1, *inputs, include_spherical_aberration=False, include_hexapole=False)
-    uncorrected = propagate(state, z0, z1, *inputs, include_spherical_aberration=True, include_hexapole=False)
-    corrected = propagate(state, z0, z1, *inputs, include_spherical_aberration=True, include_hexapole=True)
+    # All three references see the same frozen steering state, including finite
+    # DPH fields overlapping HP; otherwise this diagnostic silently omits their
+    # influence on the nonlinear response. This does not solve scan calibration.
+    events = tuple(events_overlapping_interval(state, active_column_events(state), z0, z1))
+    baseline = propagate(state, z0, z1, *inputs, events=events, include_spherical_aberration=False, include_hexapole=False)
+    uncorrected = propagate(state, z0, z1, *inputs, events=events, include_spherical_aberration=True, include_hexapole=False)
+    corrected = propagate(state, z0, z1, *inputs, events=events, include_spherical_aberration=True, include_hexapole=True)
 
     def error(result):
         return (result[1][-1] - baseline[1][-1]) + 1j * (result[3][-1] - baseline[3][-1])
@@ -346,23 +351,6 @@ def effective_aberration_comparison(state, system: str) -> tuple[EffectiveAberra
     system = str(system).lower()
     if system not in {"probe", "image"}:
         raise ValueError("Aberration system must be 'probe' or 'image'.")
-    from temsim.simulation_modes import is_ideal
-    if is_ideal(state):
-        overrides = getattr(state, f"{system}_aberrations", {}) or {}
-        defocus = (configured_probe_defocus_mm(state) if system == "probe" else
-                   float(overrides.get("c1_mm", _objective_defocus_mm(state))))
-        ideal = EffectiveAberrationSet(
-            "specimen" if system == "probe" else "objective image", "ideal",
-            c1_mm=defocus, status="ideal_model", source="Ideal Optics; configured defocus retained",
-        ).validate()
-        return ideal, ideal, {
-            "c3_residual_ratio": 0.0, "ray_error_rms_before": 0.0, "ray_error_rms_after": 0.0,
-            "source": ideal.source, "diagnostic_scope": "Lens aberrations disabled by model; not a measurement or fit",
-            "coefficient_status": {term: "configured defocus" if term == "C1" else "disabled by Ideal Optics"
-                                   for term, _, _ in SYSTEM_COEFFICIENT_ROWS},
-            "inferred_coefficients": (), "unmeasured_coefficients": (),
-            "unimplemented_terms": UNIMPLEMENTED_TERMS,
-        }
     if hasattr(state, "sync_objective"):
         state.sync_objective()
     signature = _aberration_cache_signature(state, system)
@@ -410,6 +398,8 @@ def effective_aberration_comparison(state, system: str) -> tuple[EffectiveAberra
             coefficient_status[term] = "unmeasured; wave-model default zero"
             unmeasured.append(term)
     result = before, after, {
+        "diagnostic_population": "independent fixed reference ring; not the retained source beam",
+        "inherits_upstream_beam": False,
         "c3_residual_ratio": ratio,
         "ray_error_rms_before": rms_before,
         "ray_error_rms_after": rms_after,
@@ -437,9 +427,6 @@ def active_effective_aberrations(state, system: str) -> EffectiveAberrationSet:
 def prepare_field_aberration_diagnostics(state, previous_state=None) -> None:
     """Populate worker-owned fits once; unchanged snapshots can reuse them."""
     from temsim.physics.lens_field_provider import active_mapped_providers
-    from temsim.simulation_modes import is_ideal
-    if is_ideal(state):
-        return
     systems = tuple(system for system in ("probe", "image")
                     if getattr(state, f"{system}_aberrations", {}).get("mode") == "field_derived")
     if not systems:

@@ -349,6 +349,16 @@ def test_dynamic_simulation_time_is_part_of_calculation_identity():
     assert after["scan_ray_paths"] != before["scan_ray_paths"]
 
 
+def test_scan_calibration_model_versions_persisted_particle_and_wave_products(monkeypatch):
+    from temsim.physics import scan_calibration
+    state = default_state()
+    before = calculation_signatures(state)
+    monkeypatch.setattr(scan_calibration, "SCAN_CALIBRATION_MODEL", "earlier-mechanical-rule")
+    historical = calculation_signatures(state)
+    for key in ("request", "column", "incident", "scan_geometry", "scan_ray_paths", "stem"):
+        assert before[key] != historical[key]
+
+
 def test_scan_response_products_ignore_emitter_sampling_density():
     state = default_state()
     before = calculation_signatures(state)

@@ -5,6 +5,7 @@ requests execute the gun first. Every quadratic field, nonlinear multipole,
 physical kick, aperture and sampled vacuum bore is owned by the shared plan.
 """
 from dataclasses import asdict, dataclass, fields as dataclass_fields, is_dataclass, replace
+from collections.abc import Mapping
 from concurrent.futures import CancelledError, ThreadPoolExecutor, as_completed
 from contextvars import copy_context
 from functools import cached_property
@@ -22,7 +23,7 @@ from temsim.physics.multiplane_wave import propagate_plane_wave, reselect_phase_
 from temsim.physics.multipole_wave import apply_multipole_phase
 from temsim.physics.tip_gun_wave import TipGunCheckpoint
 from temsim.physics.wave_flux import BeamState, WaveMode
-from temsim.physics.wave_grid import WaveGridNumerics, WaveMemoryBudgetError, apply_resolved_operator
+from temsim.physics.wave_grid import WaveGridNumerics, WaveMemoryBudgetError, WaveSamplingError, apply_resolved_operator
 from temsim.physics.wave_device import array_module, device_scope, normalise_backend, to_host
 from temsim.physics.posed_wave_hardware import PosedWaveBore
 from temsim.physics.posed_wave_aperture import PosedWaveAperture
@@ -623,7 +624,8 @@ def _maximum_mode_pixels(checkpoint):
 
 def _propagate_column(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                       grid_numerics=WaveGridNumerics(), retained_bytes=0,
-                      tip_time_s=None, _prepared=None, _combine_linear=True,
+                      tip_time_s=None, _prepared=None, _combine_linear=True, _transport_cache=None,
+                      _before_spherical=None,
                       cancelled=lambda: False, progress_callback=None):
     """Execute a segment with resident device fields and host checkpoints."""
     from temsim.physics.compute_backend import gpu_failure_category, gpu_retry_reason
@@ -632,7 +634,9 @@ def _propagate_column(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
     largest = _maximum_mode_pixels(checkpoint)
     arguments = dict(maximum_step_mm=maximum_step_mm, grid_numerics=grid_numerics,
         retained_bytes=retained_bytes, tip_time_s=tip_time_s, _prepared=prepared,
-        _combine_linear=_combine_linear, cancelled=cancelled, progress_callback=progress_callback)
+        _combine_linear=_combine_linear, _transport_cache=_transport_cache,
+        _before_spherical=_before_spherical,
+        cancelled=cancelled, progress_callback=progress_callback)
     try:
         with device_scope(grid_numerics.compute_backend,
                 acceleration_enabled=grid_numerics.acceleration_enabled,
@@ -655,14 +659,29 @@ def _propagate_column(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         return _propagate_column_impl(state, checkpoint, stop_z_mm, _device=device, **arguments)
 
 
+def _previous_support_error(record, mode_id):
+    """Latest executed per-mode ledger, including across streamed segments."""
+    while isinstance(record, Mapping):
+        ledgers = record.get("support_error_by_mode", {})
+        if mode_id in ledgers:
+            return dict(ledgers[mode_id])
+        for row in record.get("modes", ()):
+            if row.get("mode_id") == mode_id and "support_approximation" in row:
+                return dict(row["support_approximation"])
+        record = record.get("upstream")
+    return None
+
+
 def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                       grid_numerics=WaveGridNumerics(), retained_bytes=0,
-                      tip_time_s=None, _prepared=None, _combine_linear=True, _device,
+                      tip_time_s=None, _prepared=None, _combine_linear=True, _device, _transport_cache=None,
+                      _before_spherical=None,
                       cancelled=lambda: False, progress_callback=None):
     from temsim.optics.electron_gun.tip_coherence import wavelength_m
     plan, radii, stops, owners = (_prepare_column(state, checkpoint.plane_z_mm, stop_z_mm, maximum_step_mm)
                                  if _prepared is None else _prepared)
-    outputs, records, maps = [], [], {}
+    outputs, records = [], []
+    maps = {} if _transport_cache is None else _transport_cache
     electric = _electric_coefficients(plan)
     from temsim.physics.posed_aberrations import kick_indices
     spherical_events = kick_indices(getattr(plan, "posed_spherical_kicks", ()), plan.z_mm,
@@ -710,9 +729,8 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
             from temsim.physics.posed_column_fields import FrozenPosedMultipole, capture_posed_column_fields
             if any(isinstance(field, FrozenPosedMultipole) and field.dynamic
                    for field in getattr(plan, "mapped_fields", ())):
-                from temsim.simulation_modes import is_ideal
                 captured = {field.lens_key: field for field in capture_posed_column_fields(
-                    state, include_hexapole=not is_ideal(state), arrival_time=arrival_time)}
+                    state, arrival_time=arrival_time)}
                 mode_fields = tuple(captured[field.lens_key] if isinstance(field, FrozenPosedMultipole)
                                     else field for field in plan.mapped_fields)
                 if is_dataclass(plan):
@@ -728,6 +746,9 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                 if abs(plan.z_mm[node]-z) > 1e-9:
                     raise ValueError("Dynamic coil is missing from the physical integration grid")
                 kick_x[node] += x; kick_y[node] += y
+        # Serial same-energy HG modes may reuse immutable static paths in
+        # this exact prepared segment. Dynamic arrival-time fields always
+        # rebuild, and the cache holds only the most recent energy.
         if mode.energy_kev not in maps or dynamic_actions:
             maps.clear()  # only one energy's current segment, never all past paths
             maps[mode.energy_kev] = tuple(_column_transports(mode_plan, mode.energy_kev, electric=electric,
@@ -736,16 +757,68 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         residual_records = []
         posed_checks = []
         spherical_actions = []
+        support_events = []
+        support_ledger = _previous_support_error(checkpoint.record, mode.mode_id)
+        if support_ledger is None:
+            support_ledger = {"reference_mode_weight": float(mode.weight_per_reference_electron),
+                              "accumulated_relative_l2_bound": 0., "probability_loss_per_tip_electron": 0.}
+        support_ledger.update(maximum_accumulated_relative_l2=grid_numerics.maximum_accumulated_support_l2,
+            scope="column support windows and Fourier projections; relative to this mode at column entrance; not total discretisation error")
         if _device.backend == "cupy":
             wave = replace(wave, amplitude=_device.xp.asarray(wave.amplitude))
         wavelength = float(wavelength_m(mode.energy_kev*1000))
+        def admit_compaction(original, compact, evidence, z, strengths):
+            if evidence is None:
+                return original
+            reference_weight = support_ledger["reference_mode_weight"]
+            scale = math.sqrt(mode.weight_per_reference_electron*original.probability/reference_weight) if reference_weight > 0 else 0.
+            increment = evidence["relative_l2_error"]*scale
+            cumulative = support_ledger["accumulated_relative_l2_bound"]+increment
+            if cumulative > grid_numerics.maximum_accumulated_support_l2:
+                return original
+            evidence.update(z_mm=float(z), mode_id=mode.mode_id, strengths=strengths,
+                relative_l2_bound_increment=increment, accumulated_relative_l2_bound=cumulative)
+            support_events.append(evidence)
+            support_ledger["accumulated_relative_l2_bound"] = cumulative
+            support_ledger["relative_intensity_l1_bound"] = 2*cumulative+cumulative*cumulative
+            support_ledger["probability_loss_per_tip_electron"] += (
+                evidence["absolute_probability_loss"]*mode.weight_per_reference_electron)
+            return compact
+
+        def compact_spectrum(wave, z, strengths):
+            # A nonlinear phase is first evaluated on its fully resolved mesh.
+            # Afterwards retain its occupied Fourier modes without aliasing;
+            # the measured discarded norm shares the cumulative error ledger.
+            if (max(wave.amplitude.shape) < 512
+                    or grid_numerics.maximum_spectral_loss_fraction == 0
+                    or grid_numerics.maximum_accumulated_support_l2 == 0):
+                return wave
+            from temsim.physics.wave_support import compact_wave_spectrum
+            compact, evidence = compact_wave_spectrum(wave,
+                maximum_loss_fraction=grid_numerics.maximum_spectral_loss_fraction)
+            return admit_compaction(wave, compact, evidence, z, strengths)
+
         def multipole(wave, z, **strengths):
             if not any(strengths.values()):
                 return wave
+            def support_retry(value, error):
+                # Fourier refinement can reveal tiny interpolation tails not
+                # present at coarse cell centres. Reassess the actual current
+                # field, with the same cumulative error budget, before another
+                # potentially enormous global refinement.
+                if (grid_numerics.maximum_support_loss_fraction == 0
+                        or grid_numerics.maximum_accumulated_support_l2 == 0):
+                    return value
+                from temsim.physics.wave_support import compact_wave_support
+                compact, evidence = compact_wave_support(value,
+                    maximum_loss_fraction=grid_numerics.maximum_support_loss_fraction,
+                    wavelength_m=wavelength)
+                return admit_compaction(value, compact, evidence, z, strengths)
             try:
                 result, rows = apply_resolved_operator(wave,
                     lambda value: apply_multipole_phase(value, wavelength, **strengths),
-                    numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled)
+                    numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled,
+                    prepare_retry=support_retry)
             except ValueError as error:
                 raise ValueError(f"Column z={z:.9g} mm, mode {mode.mode_id}, strengths={strengths}: {error}") from error
             for row in rows:
@@ -754,23 +827,53 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
             if rows and progress_callback:
                 progress_callback(index*len(plan.step_m)+i, len(checkpoint.beam.modes)*len(plan.step_m),
                                   f"Column wave refined {rows[0]['from_shape']} -> {rows[-1]['to_shape']} at {z:.9g} mm")
-            return result
+            return compact_spectrum(result, z, strengths)
+        carrier_dirty = True
+        def select_carrier_without_expansion(wave):
+            # An optional gauge must not multiply the physical grid merely
+            # to represent its compensating chirp. Leave the complete field
+            # untouched; a physical sampling failure below may still spend
+            # the full refinement budget on a better chart.
+            try:
+                return reselect_phase_carrier(wave, wavelength,
+                    grid_numerics=replace(grid_numerics, automatic_refinement=False),
+                    retained_bytes=retained_bytes, cancelled=cancelled)
+            except WaveSamplingError as error:
+                return wave, [{"method": "optional phase-carrier expansion deferred until physical sampling requires it",
+                    "from_shape": wave.amplitude.shape, "to_shape": wave.amplitude.shape,
+                    "reason": str(error), "probability": wave.probability}]
+
         def linear(wave, path, z, *, input_z, operator="distributed_linear", selected_gauge=None):
+            nonlocal carrier_dirty
             output_rows = []
             try:
                 if selected_gauge is None:
-                    wave, gauge_rows = reselect_phase_carrier(wave, wavelength,
-                        grid_numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled)
+                    if carrier_dirty:
+                        wave, gauge_rows = select_carrier_without_expansion(wave)
+                    else:
+                        gauge_rows = []
                 else:
                     wave, gauge_rows = selected_gauge
-                result, rows = apply_resolved_operator(wave,
-                    lambda value: propagate_plane_wave(value, path.matrix, path.offset,
+                def transport(value):
+                    return propagate_plane_wave(value, path.matrix, path.offset,
                         wavelength, **path.phase_kwargs(), grid_numerics=grid_numerics,
                         retained_bytes=retained_bytes, cancelled=cancelled,
-                        sampling_records=output_rows),
-                    numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled)
+                        sampling_records=output_rows)
+                try:
+                    result, rows = transport(wave), []
+                except WaveSamplingError:
+                    # Gauge choice is numerical preconditioning only. Reuse
+                    # the analytically transported carrier through linear
+                    # runs, but retry an exact gauge change before the usual
+                    # refinement if that representation becomes undersampled.
+                    wave, retry_rows = reselect_phase_carrier(wave, wavelength,
+                        grid_numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled)
+                    gauge_rows.extend(retry_rows)
+                    result, rows = apply_resolved_operator(wave, transport,
+                        numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled)
             except ValueError as error:
                 raise ValueError(f"Column linear z={z:.9g} mm, mode {mode.mode_id}: {error}") from error
+            carrier_dirty = False
             for row in gauge_rows:
                 row.update(z_mm=float(input_z), input_z_mm=float(input_z), output_z_mm=float(z),
                            mode_id=mode.mode_id, operator="phase_carrier_representation")
@@ -857,10 +960,12 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
             multipole_scale = float(getattr(plan, "reference_momentum_kg_m_s", entrance_p))/entrance_p
             hn, hs = plan.midpoint_hex_normal_m3[i]*dz*multipole_scale/2, plan.midpoint_hex_skew_m3[i]*dz*multipole_scale/2
             wave = multipole(wave, plan.z_mm[i], normal_m2=hn, skew_m2=hs)
+            if hn or hs:
+                carrier_dirty = True
             selected = None
             if _combine_linear and not hn and not hs:
-                selected = reselect_phase_carrier(wave, wavelength,
-                    grid_numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled)
+                selected = (select_carrier_without_expansion(wave)
+                    if carrier_dirty else (wave, []))
                 group_checks = []
                 last, combined = _linear_run(selected[0], wavelength, paths, i, plan, radii, stops, kick_x, kick_y,
                     posed_checks=group_checks,
@@ -884,11 +989,15 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                 if check["magnetic_residual_required"]:
                     wave = checked_wave
                     wave = magnetic_residual(wave, path, float(dz)/2, plan.z_mm[i])
+                    carrier_dirty = True
                     selected = None  # The envelope changed; reselect its carrier normally.
             wave = linear(wave, path, plan.z_mm[i+1], input_z=plan.z_mm[i], selected_gauge=selected)
             if isinstance(path, _PosedColumnPath) and check["magnetic_residual_required"]:
                 wave = magnetic_residual(wave, path, float(dz)/2, plan.z_mm[i+1])
+                carrier_dirty = True
             wave = multipole(wave, plan.z_mm[i+1], normal_m2=hn, skew_m2=hs)
+            if hn or hs:
+                carrier_dirty = True
             j = i+1
             if kick_x[j] or kick_y[j]:
                 kick = CanonicalPath(1e-3)
@@ -896,7 +1005,16 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                 kick.append(np.eye(4), np.array((0., 0., kick_x[j], kick_y[j]))*local_p/entrance_p)
                 wave = linear(wave, kick, plan.z_mm[j], input_z=plan.z_mm[j], operator="physical_impulse")
             local_p, _ = _momentum_velocity(mode.energy_kev*1000+nodes[j]-nodes[0])
+            if plan.cs_kick_m3[j] and _before_spherical is not None:
+                # Only the atomic receiving-aperture executor supplies this
+                # private hook. No conditioned intermediate state is cached.
+                wave = _before_spherical(wave, z_mm=float(plan.z_mm[j]),
+                    wavelength_m=wavelength, spherical_m3=plan.cs_kick_m3[j]*local_p/entrance_p,
+                    mode_id=mode.mode_id)
+                carrier_dirty = True
             wave = multipole(wave, plan.z_mm[j], spherical_m3=plan.cs_kick_m3[j]*local_p/entrance_p)
+            if plan.cs_kick_m3[j]:
+                carrier_dirty = True
             for spherical in spherical_events.get(j, ()):
                 if spherical.strength_m3 == 0:
                     continue
@@ -929,8 +1047,12 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                                    for row in rows)
                 spherical_actions.extend(dict(row, z_mm=float(plan.z_mm[j]),
                                               component=spherical.lens_key) for row in evidence[-1:])
+                carrier_dirty = True
+            unclipped_amplitude = wave.amplitude
             wave, rows = _clip(wave, radii[j], stops.get(j, ()), float(plan.z_mm[j]),
                                mode.weight_per_reference_electron, previous_z_mm=float(plan.z_mm[i]))
+            if wave.amplitude is not unclipped_amplitude:
+                carrier_dirty = True
             losses.extend(rows)
             i += 1
         norm = wave.probability
@@ -955,6 +1077,8 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                         "posed_column_fields": [asdict(field) for field in getattr(mode_plan, "mapped_fields", ())
                                                 if hasattr(field, "component_key")],
                         "output_weight": output.weight_per_reference_electron, "losses": losses,
+                        "support_compactions": support_events,
+                        "support_approximation": support_ledger,
                         "posed_lens_approximation": {"checked_steps": len(posed_checks),
                             "magnetic_phase_error_bound_rad": sum(row["phase_error_bound_rad"] for row in posed_checks),
                             "electric_magnetic_remainder_bound_rad": sum(row["electric_magnetic_remainder_bound_rad"] for row in posed_checks),
@@ -1070,6 +1194,7 @@ def _write_column_modes(state, checkpoint, stop_z_mm, writer, *, prepared, maxim
     worker_bytes = remaining//workers
     local_numerics = replace(grid_numerics, maximum_working_bytes=worker_bytes)
     records = []
+    transport_cache = {} if workers == 1 else None
 
     def report(*args):
         if progress_callback is not None:
@@ -1084,10 +1209,13 @@ def _write_column_modes(state, checkpoint, stop_z_mm, writer, *, prepared, maxim
         if cancelled() or stop.is_set():
             raise InterruptedError("Column mode propagation cancelled")
         mode = checkpoint.beam.modes[index]
+        prior_support = _previous_support_error(checkpoint.record, mode.mode_id)
         local = TipGunCheckpoint(BeamState((mode,), checkpoint.beam.reference_plane), checkpoint.plane_z_mm,
-            checkpoint.reference_current_a, {"executed_parent": parent_digest})
+            checkpoint.reference_current_a, {"executed_parent": parent_digest,
+                "support_error_by_mode": {} if prior_support is None else {mode.mode_id: prior_support}})
         return _propagate_column(state, local, stop_z_mm, maximum_step_mm=maximum_step_mm,
             grid_numerics=local_numerics, tip_time_s=tip_time_s, _prepared=prepared,
+            _transport_cache=transport_cache,
             cancelled=lambda: cancelled() or stop.is_set(), progress_callback=report)
 
     def append(transported):
@@ -1097,10 +1225,19 @@ def _write_column_modes(state, checkpoint, stop_z_mm, writer, *, prepared, maxim
         records.extend(transported.record["modes"])
 
     if workers == 1:
-        for index in range(len(checkpoint.beam.modes)):
-            transported = execute(index)
-            append(transported)
-            del transported
+        # GPU modes are serial. Retain one bounded pool and FFT plan cache
+        # through the segment instead of rebuilding them for every mode.
+        # The inner propagation scope still owns per-mode policy, budget
+        # checks and retry from its unchanged host input.
+        largest = _maximum_mode_pixels(checkpoint)
+        with device_scope(local_numerics.compute_backend,
+                acceleration_enabled=local_numerics.acceleration_enabled,
+                maximum_working_bytes=local_numerics.maximum_device_working_bytes,
+                work_items=largest*len(prepared[0].step_m), required_bytes=256*largest):
+            for index in range(len(checkpoint.beam.modes)):
+                transported = execute(index)
+                append(transported)
+                del transported
         return records, worker_bytes
 
     pool = ThreadPoolExecutor(max_workers=workers, thread_name_prefix="temsim-wave-mode")

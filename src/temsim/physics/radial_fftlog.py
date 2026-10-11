@@ -1,6 +1,6 @@
-"""Cached complex, zero-order FFTLog with explicit float64 CPU/CUDA choice.
+"""Cached complex FFTLog of order mu >= 0 with float64 CPU/CUDA choice.
 
-Uses the Mellin multiplier of J0, with the low-ringing offset supplied by
+Uses the Mellin multiplier of J_mu, with the low-ringing offset supplied by
 the caller. This changes execution resources, not the wave representation,
 physical effects, sampling tests or phase convention. No CUDA fallback is
 silent. The cache stores only numerical transform coefficients, not beams.
@@ -9,6 +9,7 @@ from collections import OrderedDict
 from contextlib import contextmanager
 from contextvars import ContextVar
 import math
+from numbers import Real
 
 import numpy as np
 from scipy.special import loggamma
@@ -40,10 +41,12 @@ def hankel_backend(backend):
 
 
 class Hankel:
-    def __init__(self, count, dln, backend):
+    def __init__(self, count, dln, backend, order=0):
         if type(count) is not int or count < 2 or not math.isfinite(dln) or dln <= 0:
             raise ValueError("FFTLog needs at least two samples and positive finite log spacing")
+        order = _validated_order(order)
         self.count = count
+        self.order = order
         if backend == "cuda":
             import cupy
             self.xp, self.fft = cupy, cupy.fft
@@ -52,11 +55,15 @@ class Hankel:
             self.xp, self.fft = np, scipy.fft
         else:
             raise ValueError("Unknown FFTLog backend")
-        # U(2iy)=2^(2iy) Gamma(1/2+iy)/Gamma(1/2-iy). Retain the
+        # U_mu(2iy)=2^(2iy) Gamma((mu+1)/2+iy)/Gamma((mu+1)/2-iy).
+        # Order is the nonnegative Bessel order, not the signed angular
+        # Fourier index. Angular factors such as (-i)^m and rotations belong
+        # to the physical operator above this unbiased Hankel transform.
+        # Retain the
         # actual offset separately, so changing a transform interval does
         # not require recomputing the Gamma ratio for its same spacing.
         y = np.linspace(0., np.pi*(count//2)/(count*dln), count//2+1)
-        self.phase = self.xp.asarray(2*loggamma(.5+1j*y).imag+2*y*np.log(2.))
+        self.phase = self.xp.asarray(2*loggamma((order+1)*.5+1j*y).imag+2*y*np.log(2.))
         self.y = self.xp.asarray(y)
 
     @property
@@ -78,7 +85,14 @@ class Hankel:
         return result[0]+1j*result[1]
 
 
-def complex_hankel(value, dln, offset, *, inverse=False):
+def _validated_order(order):
+    if isinstance(order, bool) or not isinstance(order, Real) or not math.isfinite(order) or order < 0:
+        raise ValueError("Hankel order must be a finite nonnegative real number")
+    return float(order)
+
+
+def complex_hankel(value, dln, offset, *, inverse=False, order=0):
+    order = _validated_order(order)
     backend = _BACKEND.get()
     kernels = _KERNELS.get()
     if kernels is None:
@@ -93,9 +107,9 @@ def complex_hankel(value, dln, offset, *, inverse=False):
         # allowance. Memory exhaustion must not change physical channels.
         if free < 320*len(value)+64*1024**2:
             raise MemoryError("Insufficient free GPU memory for the full complex radial transform")
-    key = (backend, device, len(value), float(dln))
+    key = (backend, device, len(value), float(dln), order)
     if key not in kernels:
-        kernel = Hankel(len(value), float(dln), backend)
+        kernel = Hankel(len(value), float(dln), backend, order=order)
         while kernels and sum(k.nbytes for k in kernels.values())+kernel.nbytes > _CACHE_BYTES:
             kernels.popitem(last=False)
         kernels[key] = kernel

@@ -44,6 +44,22 @@ def _model(document, key, **kwargs):
     return part_model_from_document(document, key, angular_segments=16, include_children=False, **kwargs)
 
 
+def _assert_closed_material(mesh):
+    assert not mesh.wireframe
+    counts = Counter(tuple(sorted((int(a), int(b)))) for face in mesh.faces
+                     for a, b in zip(face, np.roll(face, -1)))
+    assert set(counts.values()) == {2}
+    triangles = mesh.vertices[mesh.faces] - mesh.vertices.mean(axis=0)
+    volume = np.einsum("ij,ij->i", triangles[:, 0],
+                       np.cross(triangles[:, 1], triangles[:, 2])).sum() / 6
+    assert volume > 0
+
+
+def _faces_with_normal(mesh, direction):
+    return [surface for surface in mesh.surfaces.values()
+            if np.allclose(surface["normal"], direction, rtol=0, atol=1e-9)]
+
+
 def test_mount_is_right_handed_and_90_degree_exit_is_horizontal(document):
     rotation = np.array(FILTER_TO_COLUMN_ROTATION)
     np.testing.assert_array_equal(rotation.T @ rotation, np.eye(3))
@@ -103,22 +119,28 @@ def test_expanded_module_datum_does_not_translate_branch_twice(document):
         np.testing.assert_allclose(a.vertices, b.vertices, rtol=0, atol=1e-10)
 
 
-def test_prism_has_only_gap_boundaries_and_radial_channel_no_yoke(document):
+def test_prism_has_finite_poles_outside_gap_and_radial_channel_guides(document):
     model = _model(document, "energy_filter_tapered_prism")
     assert {mesh.region for mesh in model.meshes} == {
-        "lower_pole_boundary", "upper_pole_boundary", "inner_radial_channel", "outer_radial_channel"}
+        "pole_negative", "pole_positive", "inner_radial_channel", "outer_radial_channel"}
+    inner_faces = []
     for mesh in model.meshes:
-        assert all(item["open_surface"] for item in mesh.surfaces.values())
-        if "pole_boundary" in mesh.region:
-            expected_y = -15. if mesh.region.startswith("lower") else 15.
-            np.testing.assert_array_equal(mesh.vertices[:, 1], expected_y)
-            assert not mesh.wireframe
-            normal = mesh.surfaces[mesh.region]["normal"]
-            np.testing.assert_allclose(normal, (0., -np.sign(expected_y), 0.))
+        if mesh.region.startswith("pole_"):
+            _assert_closed_material(mesh)
+            assert np.ptp(mesh.vertices[:, 1]) > 0
+            assert np.min(np.abs(mesh.vertices[:, 1])) == pytest.approx(15.)
+            assert np.all(mesh.vertices[:, 1] >= 15. - 1e-10) or np.all(mesh.vertices[:, 1] <= -15. + 1e-10)
+            sign = np.sign(mesh.vertices[:, 1].mean())
+            inner_faces.append(sign)
+            assert _faces_with_normal(mesh, (0., -sign, 0.))
+            assert not mesh.is_exact
+            assert "reconstructed" in mesh.description
         else:
             assert mesh.wireframe
+            assert all(item["open_surface"] for item in mesh.surfaces.values())
             radial = np.linalg.norm(mesh.vertices[:, (0, 2)] - (105., -135.), axis=1)
             np.testing.assert_allclose(radial, 105. if mesh.region.startswith("inner") else 165.)
+    assert sorted(inner_faces) == [-1., 1.]
     path = next(edge["vertices"] for mesh in model.meshes for edge in mesh.edges
                 if edge["id"] == "reference_centerline")
     np.testing.assert_allclose(path[0], (0., 0., 0.))
@@ -129,16 +151,23 @@ def test_multipole_uses_housing_length_and_keeps_bore_open(document):
     parts = _parts(document)
     for index in range(1, 11):
         key = f"energy_filter_multipole_{index:02d}"
-        mesh, = _model(document, key).meshes
+        meshes = _model(document, key).meshes
+        assert len(meshes) == 1
+        assert {mesh.material_class for mesh in meshes} == {"unspecified"}
+        assert "not established" in meshes[0].description
         origin, rotation = energy_filter_frame_mm(parts[key], parts)
-        local = (mesh.vertices - origin) @ rotation
+        locals_ = [(mesh.vertices - origin) @ rotation for mesh in meshes]
+        local = np.vstack(locals_)
         assert np.ptp(local[:, 2]) == pytest.approx(22. if index <= 3 else 28.)
-        np.testing.assert_allclose(np.unique(np.round(np.linalg.norm(local[:, :2], axis=1), 9)), (7.5, 35.))
-        counts = Counter(tuple(sorted((int(a), int(b)))) for face in mesh.faces
-                         for a, b in zip(face, np.roll(face, -1)))
-        assert set(counts.values()) == {2}
+        radii = np.linalg.norm(local[:, :2], axis=1)
+        assert radii.min() == pytest.approx(7.5)
+        assert radii.max() == pytest.approx(35.)
+        for mesh in meshes:
+            _assert_closed_material(mesh)
         assert parts[key]["magnetic_support_length_mm"] == 20.
-        axial = [surface for surface in mesh.surfaces.values() if surface["kind"] == "cap"]
+        housing, = [mesh for mesh in meshes if mesh.region == "body"]
+        axial = _faces_with_normal(housing, rotation[:, 2]) + _faces_with_normal(housing, -rotation[:, 2])
+        assert len(axial) == 2
         assert all(("parts", key, "housing_length_mm") in surface["parameter_paths"] for surface in axial)
         assert all(("parts", key, "length_mm") not in surface["parameter_paths"] for surface in axial)
 
@@ -151,10 +180,13 @@ def test_runtime_slit_gap_and_center_move_two_facing_blade_edges_and_cache(docum
     origin, rotation = energy_filter_frame_mm(parts[key], parts)
     for mesh, expected_x, direction in zip(model.meshes, (.002, .038), (1., -1.), strict=True):
         local = (mesh.vertices - origin) @ rotation
-        np.testing.assert_allclose(local[:, 0], expected_x, rtol=0, atol=1e-12)
+        edge_x = local[:, 0].max() if direction > 0 else local[:, 0].min()
+        assert edge_x == pytest.approx(expected_x, abs=1e-12)
+        assert np.ptp(local[:, 0]) > 0
+        _assert_closed_material(mesh)
         assert np.ptp(local[:, 1]) == pytest.approx(12.5)
         assert np.ptp(local[:, 2]) == pytest.approx(1.)
-        surface = mesh.surfaces[mesh.region]
+        surface, = _faces_with_normal(mesh, rotation @ (direction, 0., 0.))
         np.testing.assert_allclose(rotation.T @ surface["normal"], (direction, 0., 0.), atol=1e-12)
         assert ("runtime", key, "gap_m") in surface["parameter_paths"]
     assembly = _assembly(document)
@@ -187,10 +219,26 @@ def test_zebra_active_regions_have_no_package_or_invented_alignment_offset(docum
 
 
 @pytest.mark.parametrize("key", ["energy_filter_shutter", "energy_filter_camera_deflector"])
-def test_unknown_deflection_electrodes_are_guides_not_vacuum_solids(document, key):
+def test_reconstructed_deflection_electrodes_are_finite_outside_vacuum_gap(document, key):
     meshes = _model(document, key).meshes
-    assert len(meshes) == 3 and all(mesh.wireframe for mesh in meshes)
+    assert len(meshes) == 2
     assert all(not mesh.is_exact for mesh in meshes)
+    parts = _parts(document)
+    part = parts[key]
+    origin, rotation = energy_filter_frame_mm(part, parts)
+    gap_half = part["electrode_gap_mm"] / 2
+    signs = []
+    for mesh in meshes:
+        _assert_closed_material(mesh)
+        assert mesh.material_class == "electrode"
+        local = (mesh.vertices - origin) @ rotation
+        sign = np.sign(local[:, 1].mean())
+        signs.append(sign)
+        assert np.min(sign * local[:, 1]) == pytest.approx(gap_half)
+        assert np.ptp(local[:, 1]) > 0
+        assert np.ptp(local[:, 2]) == pytest.approx(part["electrode_length_mm"])
+        assert np.linalg.norm(local[:, :2], axis=1).max() <= part["mechanical_outer_diameter_mm"] / 2
+    assert sorted(signs) == [-1., 1.]
 
 
 def test_geometry_capture_and_mesh_builder_do_not_ensure_state_or_read_files(document, monkeypatch):

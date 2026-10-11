@@ -1,4 +1,4 @@
-"""Reusable mechanics and thin-plane physics for one-plane deflectors."""
+"""One-plane drive commands feeding the common finite-length dipole fields."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ class SinglePlaneDeflectorComponent(TipReferencedPosition):
     EXPECTED_KEY: ClassVar[str | None] = None
     KIND: ClassVar[str] = "deflector"
     SHAPE_PROFILE: ClassVar[str] = "single_deflector_coil"
-    INTERACTION_KIND: ClassVar[str] = "thin_transverse_kick"
+    INTERACTION_KIND: ClassVar[str] = "finite_transverse_dipole_field"
 
     @property
     def kind(self):
@@ -99,6 +99,7 @@ class SinglePlaneDeflectorComponent(TipReferencedPosition):
         return self
 
     def kick_events(self):
+        """Compatibility drive descriptors; propagation resolves finite fields."""
         if not self.enabled:
             return ()
         return ((

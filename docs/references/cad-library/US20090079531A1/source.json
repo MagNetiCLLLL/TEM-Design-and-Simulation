@@ -1,0 +1,109 @@
+{
+  "id": "US20090079531A1",
+  "kind": "patent",
+  "family": "CEOS 多极线圈与 DPH 插入件",
+  "url": "https://patents.google.com/patent/US20090079531A1/en",
+  "figures": "Figs. 5-6, 8-11",
+  "component_keys": [
+    "probe_dph1_coils",
+    "probe_dph2_coils",
+    "probe_dp11_coils",
+    "probe_dp21_coils",
+    "probe_dp22_coils",
+    "ac_deflector",
+    "beam_deflector"
+  ],
+  "supported_facts": [
+    "柔性线圈可构成同心层的正交偶极场。",
+    "示例可安放于透镜通道或凹槽内。"
+  ],
+  "unsupported_claims": [
+    "不证明 CESCOR DPH1/2 的专有绕组完全采用该实施例。",
+    "不证明当前绕组圈数、导体截面、尺寸或所需驱动。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:15.057879+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 1067788,
+      "sha256": "8bcd868cc3831c433efa45c1190e46fb3bf7eb9df745949f6757c4d27e95acf7",
+      "kind": "original_pdf",
+      "method": "downloaded_public_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/74/49/c9/832fda6e59b79d/US20090079531A1.pdf"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 126867,
+      "sha256": "c119b5d5562163e28f1a0b80263708c9ab20fe971fc5ffce8f9fbe513f46aac3",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 2,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 110331,
+      "sha256": "8e59b680563522d896559dd42031b5b4997aaaec3684d69155bbccfde511c5ef",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 3,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-04.png",
+      "bytes": 139809,
+      "sha256": "3fc43454ecf5b179a01f4790b4b97816c183720074b02ada052667c654b86dcf",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 4,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-06.png",
+      "bytes": 212620,
+      "sha256": "9d522341e5571739f80fc387580800a8c6f4899203a1102025345c37a2615f0d",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 6,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [],
+  "title": "Multipole coils",
+  "authors": [
+    "Joachim Zach",
+    "Matthias Kallenbach"
+  ],
+  "owner": [
+    "CEOS Corrected Electron Optical Systems GmbH"
+  ],
+  "dates": {
+    "priorityDate": "2007-09-25",
+    "filingDate": "2008-07-11",
+    "publicationDate": "2009-03-26"
+  },
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/74/49/c9/832fda6e59b79d/US20090079531A1.pdf",
+  "resolved_pdf_url": "https://patentimages.storage.googleapis.com/74/49/c9/832fda6e59b79d/US20090079531A1.pdf",
+  "pdf_page_count": 12,
+  "pdf_metadata": {
+    "format": "PDF 1.3",
+    "title": "1499075804671187429-US20090079531A1",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "",
+    "producer": "ImageMagick 6.9.0-6 Q8 x86_64 2015-02-23 http://www.imagemagick.org",
+    "creationDate": "D:20170703025651",
+    "modDate": "D:20170703025651",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    2,
+    3,
+    4,
+    6
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

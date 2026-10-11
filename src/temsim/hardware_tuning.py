@@ -224,9 +224,6 @@ def resolve_task(state, task: TuningTask | str) -> tuple[ResolvedTuningBinding, 
         elif getattr(target.obj, "KIND", None) == "virtual_layout":
             target = None
             notice = "Unavailable: this is a layout marker with no physical drive."
-        elif getattr(state, "simulation_mode", "custom") == "ideal" and hasattr(target.obj, "strength_m3"):
-            target = None
-            notice = "Inactive in Ideal Optics: hexapole field terms are excluded by this model."
         if target is None:
             groups.append(ResolvedTuningBinding(binding, None, (), notice))
             continue

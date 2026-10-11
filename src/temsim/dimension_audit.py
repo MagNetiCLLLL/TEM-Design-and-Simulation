@@ -18,6 +18,7 @@ import re
 import tomllib
 
 from temsim.parameter_semantics import ParameterSemantics, describe_parameter
+from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
 
 
 @dataclass(frozen=True, slots=True)
@@ -114,7 +115,7 @@ def _path_text(path):
 _DIMENSION_SUFFIX = re.compile(r"_(?:mm|um|nm|m|deg|rad|mrad|px)$")
 _SKIP_CONTAINERS = {"parameter_metadata", "provenance", "evidence", "source", "metadata"}
 _ANNULAR = {"magnetic_excitation_coil", "magnetic_lens_housing", "magnetic_lens_yoke"}
-_BODY_PROFILES = _ANNULAR | {"magnetic_pole_piece", "circular_aperture", "vacuum_liner", "electrostatic_bias_tube"}
+_BODY_PROFILES = _ANNULAR | DEFLECTOR_COIL_PROFILES | {"magnetic_pole_piece", "circular_aperture", "vacuum_liner", "electrostatic_bias_tube"}
 _POLE_STYLES = {"", "embedded_hourglass_bore", "tapered_bore_pole", "objective_vertical_back_inserted_shank_tapered_nose"}
 _OUTER_FIELDS = {"mechanical_outer_diameter_mm", "mechanical_outer_radius_mm", "outer_diameter_mm", "outer_width_mm"}
 _INNER_FIELDS = {"mechanical_inner_diameter_mm", "mechanical_bore_diameter_mm", "mechanical_clear_bore_diameter_mm",
@@ -157,6 +158,14 @@ def _part_issues(part, source):
                         "No physical plate thickness or gun active-length fallback is defined; mechanism length must not substitute for it.")
         return
     profile = part.get("mechanical_profile", "")
+    if profile in DEFLECTOR_COIL_PROFILES:
+        from temsim.corrector_model_3d import validate_deflector_coil_part
+        try:
+            validate_deflector_coil_part(part)
+        except (TypeError, ValueError) as exc:
+            yield issue("invalid_winding_geometry", "mechanical_profile", str(exc))
+        yield issue("reconstructed_winding_geometry", "mechanical_profile",
+                    "Closed winding solids are a generic reconstruction, not verified OEM winding geometry or an excitation calibration.")
     if "pole_root_fillet_radius_range_mm" in part:
         yield issue("unimplemented_geometry_parameter", "pole_root_fillet_radius_range_mm",
                     "The fillet range is reference metadata; the current solid retains sharp shoulders and does not construct a radius from this range.")

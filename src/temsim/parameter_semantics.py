@@ -11,6 +11,7 @@ from dataclasses import dataclass
 import re
 
 from temsim.component_keys import CAMERA, FLUORESCENT_SCREEN, STEM_DETECTOR_KEYS
+from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
 
 
 CATEGORY_LABELS = {
@@ -69,6 +70,9 @@ _FRIENDLY = {
     "vacuum_inner_diameter_mm": "Beam passage (vacuum)",
     "plate_thickness_mm": "Aperture plate thickness",
     "radial_thickness_mm": "Radial thickness",
+    "winding_layer_thickness_mm": "Winding layer radial thickness",
+    "winding_angular_span_deg": "Winding loop angular span",
+    "winding_band_width_mm": "Winding end and side band width",
     "length_mm": "Length", "percent": "Excitation strength",
     "tip_radius_nm": "Apex curvature radius",
     "tip_cone_half_angle_deg": "Tip cone half-angle",
@@ -224,6 +228,15 @@ def _meaning(part, path, by_key):
             return "Display-envelope length", "envelope", "Display allocation only: actual material occupies separate parent-owned or explicit intervals. Edit those interval endpoints to change the solid length."
         if field in {"length_mm", "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm", "magnetic_radial_profile_mm"}:
             return label, "physical", "Dimension of the configured material body; its real inner/outer surfaces remain separate from the vacuum-passage constraint."
+    if profile in DEFLECTOR_COIL_PROFILES:
+        explanations = {
+            "winding_layer_thickness_mm": "Radial material thickness of each of the two winding layers. Their remaining radial gap must be positive.",
+            "winding_angular_span_deg": "Full angular span of each loop about the local axis. Opposite loops must stay separated; the X/Y pairs are rotated by 90 degrees.",
+            "winding_band_width_mm": "Axial end-band width and circumferential side-band width at the layer mean radius. Both must leave an open loop window.",
+        }
+        if field in explanations or field in {"length_mm", "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm"}:
+            return label, "physical", (explanations.get(field, "Dimension of the configured winding material envelope.") +
+                " This changes the reconstructed solid, not the linked analytical field strength; it is not an OEM winding measurement.")
     if profile == "magnetic_pole_piece" and part.get("pole_piece_geometry_style", "") in _POLE_STYLES:
         if field == "pole_root_fillet_radius_range_mm":
             return label, "unknown", "Reference range only. The current pole solid has sharp shoulders; this metadata does not generate a fillet or select a physical fillet radius."
@@ -305,6 +318,9 @@ def _source(part, path, category):
         status, note = part.get("mechanical_geometry_status"), part.get("mechanical_geometry_source")
         if status is not None or note is not None:
             return _source_from_text(status, note, explicit_field=False)
+    if part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES and category == "physical":
+        return "estimated", ("Generic winding reconstruction dimensions; not OEM winding measurements. " +
+                              str(part.get("geometry_source", ""))).strip()
     if part.get("aperture_plate_form") == "perforated_strip" and part.get("aperture_mechanism_evidence_source"):
         return "unspecified", "The aperture evidence identifies a perforated-strip topology, not calibrated dimensions; no field-specific dimension source is declared."
     return "unspecified", "No field-specific dimensional measurement, drawing or estimation source is declared."

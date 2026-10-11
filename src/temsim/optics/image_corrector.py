@@ -23,7 +23,6 @@ from temsim.component_keys import (
     IMAGE_CORRECTOR_ISH_DEFLECTOR,
     IMAGE_CORRECTOR_KEYS,
     IMAGE_CORRECTOR_LENS_KEYS,
-    IMAGE_CORRECTOR_OL_POST_LENS,
     IMAGE_CORRECTOR_QPOL_QUADRUPOLE,
     IMAGE_CORRECTOR_SAD_PLANE,
     IMAGE_CORRECTOR_TL11_LENS,
@@ -146,6 +145,12 @@ def _image_corrector_definition(
     """Combine TOML-owned structure with code-owned field behaviour."""
 
     part = _DEFAULT_IMAGE_CORRECTOR_PARTS[key]
+    if kind == "round_lens":
+        # One native part owns geometry, field profile and default drive.
+        calibration.update(
+            reference_peak_field_t=float(part["maximum_peak_field_t"]),
+            default_excitation_percent=float(part["default_excitation_percent"]),
+        )
     bore_diameter_mm = part.get(
         "bore_diameter_mm",
         part.get("mechanical_clear_bore_diameter_mm"),
@@ -212,14 +217,6 @@ def _image_corrector_definition(
 
 IMAGE_CORRECTOR_COMPONENTS = (
     _image_corrector_definition(
-        IMAGE_CORRECTOR_OL_POST_LENS,
-        "OL post",
-        "round_lens",
-        "magnetic_lens_yoke",
-        reference_peak_field_t=3.0364085833333334,
-        default_excitation_percent=60.0,
-    ),
-    _image_corrector_definition(
         IMAGE_CORRECTOR_HPOL_HEXAPOLE,
         "HPol", "hexapole", "hexapole_body",
     ),
@@ -236,8 +233,6 @@ IMAGE_CORRECTOR_COMPONENTS = (
         "TL11",
         "round_lens",
         "magnetic_lens_yoke",
-        reference_peak_field_t=0.5609032,
-        default_excitation_percent=60.0,
     ),
     _image_corrector_definition(
         IMAGE_CORRECTOR_DP12_DEFLECTOR,
@@ -247,9 +242,7 @@ IMAGE_CORRECTOR_COMPONENTS = (
         IMAGE_CORRECTOR_TL12_LENS,
         "TL12",
         "round_lens",
-        "integrated_magnetic_lens_channel",
-        reference_peak_field_t=0.3299537833333333,
-        default_excitation_percent=60.0,
+        "magnetic_lens_yoke",
     ),
     _image_corrector_definition(
         IMAGE_CORRECTOR_DPH1_DEFLECTOR,
@@ -263,16 +256,14 @@ IMAGE_CORRECTOR_COMPONENTS = (
         default_strength_m3=IMAGE_MAIN_HEXAPOLE_STRENGTH_M3,
     ),
     _image_corrector_definition(
-        IMAGE_CORRECTOR_DP21_DEFLECTOR,
-        "DP21", "deflector", "single_deflector_coil",
-    ),
-    _image_corrector_definition(
         IMAGE_CORRECTOR_TL21_LENS,
         "TL21",
         "round_lens",
         "magnetic_lens_yoke",
-        reference_peak_field_t=2.1599302,
-        default_excitation_percent=60.0,
+    ),
+    _image_corrector_definition(
+        IMAGE_CORRECTOR_DP21_DEFLECTOR,
+        "DP21", "deflector", "single_deflector_coil",
     ),
     _image_corrector_definition(
         IMAGE_CORRECTOR_DP22_DEFLECTOR,
@@ -283,8 +274,6 @@ IMAGE_CORRECTOR_COMPONENTS = (
         "TL22",
         "round_lens",
         "magnetic_lens_yoke",
-        reference_peak_field_t=2.1261313,
-        default_excitation_percent=60.0,
     ),
     _image_corrector_definition(
         IMAGE_CORRECTOR_DPH2_DEFLECTOR,
@@ -306,8 +295,6 @@ IMAGE_CORRECTOR_COMPONENTS = (
         "ADL",
         "round_lens",
         "magnetic_lens_yoke",
-        reference_peak_field_t=0.41919165,
-        default_excitation_percent=60.0,
     ),
     _image_corrector_definition(
         IMAGE_CORRECTOR_ISH_DEFLECTOR,
@@ -340,24 +327,24 @@ IMAGE_CORRECTOR_ROUND_LENSES = tuple(
 )
 
 
-def default_image_corrector_offsets_from_ol_post_mm():
-    """Return fixed internal centre offsets measured from OL Post."""
+def default_image_corrector_offsets_from_tl11_mm():
+    """Return internal offsets from the first independent transfer lens.
 
-    ol_post_center_mm = IMAGE_CORRECTOR_BY_KEY[
-        IMAGE_CORRECTOR_OL_POST_LENS
+    CEOS OL post is the downstream field of the existing Objective assembly,
+    not an additional corrector lens. TL11 owns the relay entrance anchor.
+    """
+
+    tl11_center_mm = IMAGE_CORRECTOR_BY_KEY[
+        IMAGE_CORRECTOR_TL11_LENS
     ].mechanical_center_from_specimen_mm
     return {
         definition.key: (
             float(definition.mechanical_center_from_specimen_mm)
-            - float(ol_post_center_mm)
+            - float(tl11_center_mm)
         )
         for definition in IMAGE_CORRECTOR_COMPONENTS
-        if definition.key != IMAGE_CORRECTOR_OL_POST_LENS
+        if definition.key != IMAGE_CORRECTOR_TL11_LENS
     }
-
-
-class ImageCorrectorOlPostLensComponent(RoundLensComponent):
-    EXPECTED_KEY: ClassVar[str] = IMAGE_CORRECTOR_OL_POST_LENS
 
 
 class ImageCorrectorTl11LensComponent(RoundLensComponent):
@@ -554,7 +541,6 @@ class ImageCorrectorSadPlaneComponent:
 
 
 _ROUND_LENS_TYPES = {
-    IMAGE_CORRECTOR_OL_POST_LENS: ImageCorrectorOlPostLensComponent,
     IMAGE_CORRECTOR_TL11_LENS: ImageCorrectorTl11LensComponent,
     IMAGE_CORRECTOR_TL12_LENS: ImageCorrectorTl12LensComponent,
     IMAGE_CORRECTOR_TL21_LENS: ImageCorrectorTl21LensComponent,
@@ -604,6 +590,7 @@ def _mechanical_center_from_tip(definition):
 
 def _create_round_lens(key):
     definition = IMAGE_CORRECTOR_BY_KEY[key]
+    part = _DEFAULT_IMAGE_CORRECTOR_PARTS[key]
     component_type = _ROUND_LENS_TYPES[key]
     bore = 2.0 * float(definition.effective_aperture_radius_mm)
     mechanical_center_mm = _mechanical_center_from_tip(definition)
@@ -612,20 +599,16 @@ def _create_round_lens(key):
         key=key,
         z_mm=mechanical_center_mm,
         b0_t=definition.reference_peak_field_t,
-        a_mm=max(definition.reference_effective_length_mm / 2.0, 0.5),
+        a_mm=float(part["field_half_width_mm"]),
         percent=definition.default_excitation_percent,
-        max_percent=100.0,
+        max_percent=float(part["maximum_excitation_percent"]),
         colour="#3949ab",
-        gaussian=[
-            Gaussian(0.09, -1.0, 0.90),
-            Gaussian(0.82, 0.0, 0.55),
-            Gaussian(0.09, 1.0, 0.90),
-        ],
+        gaussian=[Gaussian(*map(float, term)) for term in part["field_profile_terms"]],
         enabled=True,
         cs_mm=None,
         cc_mm=None,
         polarity=int(_DEFAULT_IMAGE_CORRECTOR_PARTS[key]["field_polarity"]),
-        normalise_profile_peak=False,
+        normalise_profile_peak=bool(part["normalise_field_profile_peak"]),
         mechanical_center_from_tip_mm=mechanical_center_mm,
         mechanical_length_mm=definition.mechanical_length_mm,
         mechanical_outer_diameter_mm=definition.outer_diameter_mm,
@@ -799,18 +782,6 @@ def image_corrector_component_from_dict(data):
     raise KeyError(f"Unknown Image Corrector component: {key}")
 
 
-def create_image_corrector_ol_post_lens():
-    return create_image_corrector_component(
-        IMAGE_CORRECTOR_OL_POST_LENS
-    )
-
-
-def image_corrector_ol_post_lens_from_dict(data):
-    values = dict(data)
-    values["key"] = IMAGE_CORRECTOR_OL_POST_LENS
-    return image_corrector_component_from_dict(values)
-
-
 class ImageCorrectorSystem:
     """State-backed aggregate matching the ProbeCorrectorSystem pattern."""
 
@@ -825,10 +796,6 @@ class ImageCorrectorSystem:
             for item in self.state.corrector_elements
             if item.key == key
         )
-
-    @property
-    def ol_post_lens(self):
-        return self.component(IMAGE_CORRECTOR_OL_POST_LENS)
 
     @property
     def hpol_hexapole(self):
@@ -948,35 +915,39 @@ class ImageCorrectorSystem:
 
     @property
     def relay_input_plane_z_mm(self):
-        """Objective Lens image plane at the Image Corrector entrance."""
+        """Specimen plane shared with Ray Diagram and Optical Transfer."""
 
-        return float(self.state.objective_image_plane_z_mm)
+        return float(self.state.sample.z_mm)
 
     @property
     def relay_output_plane_z_mm(self):
         return float(self.sad_plane.z_mm)
 
     def relay_transfer_matrix(self):
-        """Full distributed-field transfer from specimen to SAD."""
+        """4x4 laboratory (x, y, theta_x, theta_y) map, specimen to SAD.
 
-        from temsim.physics.core import transfer
+        B is the entire top-right 2x2 block; a single-axis slice would hide
+        magnetic image rotation and can misidentify a conjugate plane.
+        """
 
-        return transfer(
+        from temsim.physics.first_order import trace_transverse_transfer
+
+        return trace_transverse_transfer(
             self.state,
             self.relay_input_plane_z_mm,
             self.relay_output_plane_z_mm,
-        )
+        ).matrix
 
     def main_hexapole_transfer_matrix(self):
-        """Internal relay between the HP1 and HP2 principal planes."""
+        """4x4 laboratory map between the HP1 and HP2 optical references."""
 
-        from temsim.physics.core import transfer
+        from temsim.physics.first_order import trace_transverse_transfer
 
-        return transfer(
+        return trace_transverse_transfer(
             self.state,
             float(self.hp1_hexapole.z_mm),
             float(self.hp2_hexapole.z_mm),
-        )
+        ).matrix
 
     def validate(self):
         if tuple(component.key for component in self.components) != (
@@ -1002,19 +973,31 @@ class ImageCorrectorSystem:
 
 
 def resolve_image_corrector_mechanical_anchors(state):
-    """Resolve the installed Image Corrector as one OL-Post-anchored body.
+    """Resolve the installed Image Corrector as one TL11-anchored body.
 
-    The OL Post upper surface follows the Image/Diff deflector lower surface.
+    The TL11 upper surface follows the Image/Diff deflector lower surface.
     Every remaining corrector component keeps one editable centre offset from
-    OL Post.  The image-corrected Selected Area Aperture is then anchored to
+    TL11.  The image-corrected Selected Area Aperture is then anchored to
     the corrector SAD plane, which is itself part of that rigid internal chain.
     """
 
     system = state.image_corrector_system
-    ol_post = system.ol_post_lens
+    tl11 = system.tl11_lens
     components = system.components
-    offsets = state.image_corrector_component_offsets_from_ol_post_mm
-    for key, value in default_image_corrector_offsets_from_ol_post_mm().items():
+    offsets = state.image_corrector_component_offsets_from_tl11_mm
+    # Explicit optical registration does not invent a physical coil body.
+    # Read the active manifest, including user edits, rather than just the
+    # default centre coincidence. DPH drives retain their own electrical values.
+    assembly = getattr(state, "_resolved_assembly", None)
+    rows = {p.key: p.data for p in getattr(assembly, "parts", ())}
+    bindings = {
+        c.key: (str(row["optical_reference_host_key"]),
+                float(row.get("optical_reference_offset_mm", 0.)))
+        for c in components
+        if (row := rows.get(c.key, _DEFAULT_IMAGE_CORRECTOR_PARTS[c.key])).get(
+            "optical_reference_host_key")
+    }
+    for key, value in default_image_corrector_offsets_from_tl11_mm().items():
         offsets.setdefault(key, value)
 
     image_deflector = state.image_diffraction_deflector
@@ -1025,9 +1008,9 @@ def resolve_image_corrector_mechanical_anchors(state):
     state.image_corrector_upstream_gap_mm = (
         DEFAULT_IMAGE_CORRECTOR_UPSTREAM_GAP_MM
     )
-    current_ol_upper_surface_mm = (
-        float(ol_post.mechanical_center_from_tip_mm)
-        - float(ol_post.mechanical_length_mm) / 2.0
+    current_tl11_upper_surface_mm = (
+        float(tl11.mechanical_center_from_tip_mm)
+        - float(tl11.mechanical_length_mm) / 2.0
     )
     previous = getattr(
         state, "_image_corrector_resolved_positions_mm", None
@@ -1042,14 +1025,14 @@ def resolve_image_corrector_mechanical_anchors(state):
                 )
             )
         )
-        ol_upper_shift_mm = (
-            current_ol_upper_surface_mm
-            - float(previous["ol_post_upper_surface"])
+        tl11_upper_shift_mm = (
+            current_tl11_upper_surface_mm
+            - float(previous["tl11_upper_surface"])
         )
         if abs(image_deflector_surface_shift_mm) <= 1.0e-12:
-            if abs(ol_upper_shift_mm) <= 1.0e-12:
+            if abs(tl11_upper_shift_mm) <= 1.0e-12:
                 for component in components:
-                    if component.key == IMAGE_CORRECTOR_OL_POST_LENS:
+                    if component.key == IMAGE_CORRECTOR_TL11_LENS or component.key in bindings:
                         continue
                     current_center_mm = float(
                         component.mechanical_center_from_tip_mm
@@ -1097,32 +1080,42 @@ def resolve_image_corrector_mechanical_anchors(state):
                         selected_area_shift_mm
                     )
 
-    ol_post_center_mm = (
+    tl11_center_mm = (
         image_deflector_lower_surface_mm
         + float(state.image_corrector_upstream_gap_mm)
-        + float(ol_post.mechanical_length_mm) / 2.0
+        + float(tl11.mechanical_length_mm) / 2.0
     )
-    ol_post.mechanical_center_from_tip_mm = ol_post_center_mm
-    ol_post.optical_reference_from_tip_mm = ol_post_center_mm
-    ol_post.apply_optical_position()
+    tl11.mechanical_center_from_tip_mm = tl11_center_mm
+    tl11.optical_reference_from_tip_mm = tl11_center_mm
+    tl11.apply_optical_position()
 
     resolved = {
         "image_deflector_lower_surface": (
             image_deflector_lower_surface_mm
         ),
-        "ol_post_upper_surface": (
-            ol_post_center_mm - float(ol_post.mechanical_length_mm) / 2.0
+        "tl11_upper_surface": (
+            tl11_center_mm - float(tl11.mechanical_length_mm) / 2.0
         ),
-        IMAGE_CORRECTOR_OL_POST_LENS: ol_post_center_mm,
+        IMAGE_CORRECTOR_TL11_LENS: tl11_center_mm,
     }
     for component in components:
-        if component.key == IMAGE_CORRECTOR_OL_POST_LENS:
+        if component.key == IMAGE_CORRECTOR_TL11_LENS:
             continue
-        center_mm = ol_post_center_mm + float(offsets[component.key])
+        center_mm = tl11_center_mm + float(offsets[component.key])
         component.mechanical_center_from_tip_mm = center_mm
         component.optical_reference_from_tip_mm = center_mm
         component.apply_optical_position()
         resolved[component.key] = center_mm
+
+    by_key = {c.key: c for c in components}
+    for key, (host_key, offset_mm) in bindings.items():
+        host, channel = by_key[host_key], by_key[key]
+        center_mm = float(host.optical_reference_from_tip_mm) + offset_mm
+        channel.mechanical_center_from_tip_mm = center_mm
+        channel.optical_reference_from_tip_mm = center_mm
+        channel.apply_optical_position()
+        offsets[key] = center_mm - tl11_center_mm
+        resolved[key] = center_mm
 
     sad_center_mm = float(
         system.sad_plane.mechanical_center_from_tip_mm

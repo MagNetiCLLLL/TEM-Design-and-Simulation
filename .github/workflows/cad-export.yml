@@ -1,0 +1,32 @@
+name: Analytic CAD STEP export
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  cad-export:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-cad.txt
+      - name: Install isolated CAD dependencies
+        run: |
+          python -m venv environment/cad
+          if ($LASTEXITCODE -ne 0) { throw "CAD environment creation failed" }
+          environment/cad/Scripts/python.exe -m pip install -r requirements-cad.txt
+          if ($LASTEXITCODE -ne 0) { throw "CAD dependencies failed" }
+          environment/cad/Scripts/python.exe -m pip check
+          if ($LASTEXITCODE -ne 0) { throw "CAD dependencies inconsistent" }
+      - name: Verify analytic solids and STEP round-trip
+        run: |
+          environment/cad/Scripts/python.exe -c "import cadquery; print(cadquery.__version__)"
+          if ($LASTEXITCODE -ne 0) { throw "Required CAD backend unavailable" }
+          environment/cad/Scripts/python.exe -m unittest discover -s tests -p test_cad_step.py -v
+          if ($LASTEXITCODE -ne 0) { throw "STEP validation failed" }
+          environment/cad/Scripts/python.exe -m unittest discover -s tests -p test_cad_assembly_validation.py -v
+          if ($LASTEXITCODE -ne 0) { throw "Assembly interference validation failed" }

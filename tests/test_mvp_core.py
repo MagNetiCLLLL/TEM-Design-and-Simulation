@@ -148,14 +148,12 @@ def test_rebased_lens_percentages_preserve_reference_fields():
         ),
     )
     by_key = {lens.key: lens for lens in state.lenses}
-    expected_scales = {
-        "image_ol_post_lens": 1.82184515,
-        "image_tl22_lens": 1.27567878,
-        "image_adapter_lens": 0.25151499,
-    }
-    for key, expected in expected_scales.items():
-        assert by_key[key].scale() == pytest.approx(expected)
-        assert by_key[key].percent == pytest.approx(60.0)
+    assert "image_ol_post_lens" not in by_key
+    for lens in state.image_corrector_system.round_lens_components:
+        part = state._resolved_assembly.part(lens.key).data
+        assert lens.percent == pytest.approx(part["default_excitation_percent"])
+        assert lens.b0_t == pytest.approx(part["maximum_peak_field_t"])
+        assert lens.a_mm == pytest.approx(part["field_half_width_mm"])
 
 
 def test_every_active_part_has_a_confirmed_assembly_anchor():
@@ -316,7 +314,7 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
         / "column"
         / "C3.toml"
     )
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     document["parts"] = [
         part for part in document["parts"]
         if part["key"] != "condenser_lens_3_yoke"
@@ -324,7 +322,7 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
     with pytest.raises(ValueError, match="Missing magnetic-lens mechanical parts"):
         validate_document(document)
 
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
     by_key["condenser_lens_3_yoke"]["mechanical_outer_diameter_mm"] = (
         by_key["condenser_lens_3_housing"][
@@ -334,7 +332,7 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
     with pytest.raises(ValueError, match="radial layers overlap"):
         validate_document(document)
 
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
     by_key["mini_condenser"]["mechanical_outer_diameter_mm"] = 101.0
     by_key["mini_condenser_housing"][
@@ -346,7 +344,7 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
     ):
         validate_document(document)
 
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
     by_key["objective_upper_pole"]["pole_stem_outer_diameter_mm"] = 59.0
     by_key["objective_lower_pole"]["pole_stem_outer_diameter_mm"] = 59.0
@@ -356,7 +354,7 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
     ):
         validate_document(document)
 
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
     by_key["condenser_lens_3_housing"][
         "mechanical_outer_diameter_mm"
@@ -367,7 +365,7 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
     ):
         validate_document(document)
 
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
     by_key["condenser_lens_3_excitation_coil"][
         "mechanical_outer_diameter_mm"
@@ -378,7 +376,7 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
     ):
         validate_document(document)
 
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
     by_key["condenser_lens_3_excitation_coil"][
         "mechanical_inner_diameter_mm"
@@ -392,7 +390,7 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
     ):
         validate_document(document)
 
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
     by_key["condenser_lens_1_lower_pole"][
         "mechanical_outer_diameter_mm"
@@ -412,14 +410,14 @@ def test_c1_c2_objective_vacuum_tube_ratio_and_interface_are_required():
         / "column"
         / "C3.toml"
     )
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     document["geometry"][
         "c1_c2_objective_vacuum_tube_inner_diameter_mm"
     ] = 6.0
     with pytest.raises(ValueError, match="ID must be 30% of its OD"):
         validate_document(document)
 
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
     by_key["objective_upper_pole"][
         "pole_vacuum_connector_outer_diameter_mm"
@@ -430,7 +428,7 @@ def test_c1_c2_objective_vacuum_tube_ratio_and_interface_are_required():
     ):
         validate_document(document)
 
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     document["geometry"][
         "c2_aperture_service_clearance_after_cartridge_mm"
     ] = 4.0
@@ -440,7 +438,7 @@ def test_c1_c2_objective_vacuum_tube_ratio_and_interface_are_required():
     ):
         validate_document(document)
 
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
     by_key["condenser_aperture_2"]["parent_key"] = "condenser_lens_2"
     with pytest.raises(
@@ -495,7 +493,7 @@ def test_objective_split_coil_rejects_nested_accessory_material_overlap():
         / "column"
         / "C3.toml"
     )
-    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
     by_key["ac_deflector"]["mechanical_outer_diameter_mm"] = 61.0
     with pytest.raises(

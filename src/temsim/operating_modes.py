@@ -16,20 +16,33 @@ from temsim.optics.excitation_policy import is_saturated_excitation
 MINI_CONDENSER_MODE_CONTROL_SCHEMA = "signed_equal_magnitude_v1"
 
 
-def load_mini_condenser_default_excitation_percent() -> float:
-    """Read the single startup magnitude; mode changes preserve live magnitude."""
+def load_mini_condenser_default_excitation_percent(column_module: str | None = None) -> float:
+    """Read an installation default, never an independent per-mode live value.
+
+    Column overrides are keyed by resolved module path, not by a display name
+    or the presence of any corrector. An unspecified column uses the historical
+    baseline; operating-mode changes preserve the component's live magnitude.
+    """
     path = OPERATING_MODE_CONFIG_ROOT / "catalog.toml"
     with input_io.open_input(path) as stream:
         control = tomllib.load(stream).get("mini_condenser_control", {})
     if control.get("schema") != MINI_CONDENSER_MODE_CONTROL_SCHEMA:
         raise ValueError(f"{path}: unsupported Mini Condenser control schema")
-    raw = control.get("default_excitation_percent")
-    if isinstance(raw, bool) or not isinstance(raw, (int, float)):
-        raise ValueError(f"{path}: Mini Condenser default magnitude must be numeric")
-    magnitude = float(raw)
-    if not math.isfinite(magnitude) or not 0.0 < magnitude <= 100.0:
-        raise ValueError(f"{path}: Mini Condenser default magnitude must be in (0, 100]")
-    return magnitude
+    overrides = control.get("column_startup_excitation_percent", {})
+    if not isinstance(overrides, dict):
+        raise ValueError(f"{path}: Mini Condenser column startup values must be a table")
+
+    def validated(raw):
+        if isinstance(raw, bool) or not isinstance(raw, (int, float)):
+            raise ValueError(f"{path}: Mini Condenser default magnitude must be numeric")
+        magnitude = float(raw)
+        if not math.isfinite(magnitude) or not 0.0 < magnitude <= 100.0:
+            raise ValueError(f"{path}: Mini Condenser default magnitude must be in (0, 100]")
+        return magnitude
+
+    baseline = validated(control.get("default_excitation_percent"))
+    magnitudes = {key: validated(raw) for key, raw in overrides.items()}
+    return magnitudes.get(column_module, baseline)
 
 
 @dataclass(frozen=True)

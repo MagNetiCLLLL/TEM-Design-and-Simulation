@@ -121,6 +121,55 @@ def test_round_lens_has_full_two_dimensional_front_focal_scan_pivot(analytical):
     assert result.pivot.kind == "common_pivot_candidate"
 
 
+def test_multiple_solenoid_pivots_select_earliest_and_report_later_roots(analytical):
+    analytical.g = -100.
+    result = design.evaluate_scan_coil_design(
+        analytical, target="canonical", pivot_step_mm=1.3)
+    # In a uniform solenoid, the canonical position response is proportional
+    # to cos(g * (z_sample-z)); all three two-axis zeros lie after the coils.
+    roots = sorted(100. - (n + .5) * np.pi / 100. * 1e3 for n in range(3))
+    assert result.pivot.is_common_pivot
+    assert result.pivot.z_mm == pytest.approx(roots[0], abs=1e-5)
+    assert result.pivot.other_verified_roots_z_mm == pytest.approx(roots[1:], abs=1e-5)
+    assert not result.pivot.refinement_limit_reached
+    assert "not proof" in result.pivot.search_scope
+
+
+def test_finite_coil_excludes_a_zero_inside_its_remaining_field_support(analytical, monkeypatch):
+    from temsim.physics.finite_scan_response import FiniteScanResponse
+
+    analytical.g = -100.
+    captured_planes = []
+
+    def finite(state, component, targets, *, upper_z_mm, lower_z_mm, **_kwargs):
+        # Controlled response data isolate the search-domain contract: the
+        # first mathematical zero is 21.46 mm, inside the declared lower
+        # coil's support. It must not be reported as a downstream pivot.
+        z = np.asarray(targets, dtype=float)
+        captured_planes.append(tuple(z))
+        upper = design.trace_transverse_transfers(state, upper_z_mm, targets)
+        lower = design.trace_transverse_transfers(state, lower_z_mm, targets)
+        return FiniteScanResponse(
+            z, np.stack([upper[float(v)].matrix[:, 2:] for v in z]),
+            np.stack([lower[float(v)].matrix[:, 2:] for v in z]),
+            np.zeros((len(z), 4)), 5., ((5., 15.), (15., 30.)), "ac_deflector", 1e-6)
+
+    monkeypatch.setattr(design, "finite_scan_responses", finite)
+    result = design.evaluate_scan_coil_design(
+        analytical, target="canonical", pivot_step_mm=1.3, response_model="finite_coil")
+    assert result.pivot.interval_z_mm == (30., 100.)
+    assert result.pivot.is_common_pivot
+    assert result.pivot.z_mm == pytest.approx(100. - 1.5 * np.pi / 100. * 1e3, abs=1e-5)
+    assert result.pivot.other_verified_roots_z_mm == pytest.approx(
+        (100. - .5 * np.pi / 100. * 1e3,), abs=1e-5)
+    # Both downstream roots are checked in the same executed transport; the
+    # interpolation alone cannot establish either reported physical pivot.
+    assert any(len(planes) == 2 and planes[0] > 30. for planes in captured_planes[1:])
+    assert len(captured_planes) <= 6  # coarse + support boundary + bounded corrections
+    for root in (result.pivot.z_mm, *result.pivot.other_verified_roots_z_mm):
+        assert any(root in planes for planes in captured_planes)
+
+
 def test_astigmatic_two_axis_crossings_are_not_a_common_pivot(analytical):
     analytical.lens_z_mm = 60.
     analytical.focal_mm = (20., 30.)

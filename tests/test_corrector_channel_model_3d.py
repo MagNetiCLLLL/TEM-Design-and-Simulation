@@ -6,6 +6,7 @@ import pytest
 
 from temsim.assembly_model_3d import assembly_model_from_assembly
 from temsim.component_representation import IMAGE_CONTROL_CHANNEL_KEYS
+from temsim.lens_pose import PHYSICAL_POSE_FIELDS, column_pose_kind
 from temsim.part_model_3d import module_model_from_document, part_model_from_document
 
 
@@ -48,8 +49,22 @@ def test_legacy_nonzero_channel_envelopes_remain_inspectable_without_solids(key)
     values = {field.name: field.value for field in part.fields}
     assert values["mechanical_outer_diameter_mm"] == 75.
     assert values["effective_length_mm"] == 2.
-    assert all("not a dimension" in field.reason for field in part.fields)
-    assert all(field.meaning.category_label == "Channel / reference metadata" for field in part.fields)
+    pose_fields = [field for field in part.fields if field.name in PHYSICAL_POSE_FIELDS]
+    stored_fields = [field for field in part.fields if field.name not in PHYSICAL_POSE_FIELDS]
+    assert {field.name for field in stored_fields} == {
+        "length_mm", "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm",
+        "effective_length_mm"}
+    assert all("not a dimension" in field.reason for field in stored_fields)
+    assert all(field.meaning.category_label == "Channel / reference metadata"
+               for field in stored_fields)
+    if column_pose_kind(document["parts"][0]) == "field":
+        assert {field.name for field in pose_fields} == set(PHYSICAL_POSE_FIELDS)
+        assert all(field.editable and field.label.startswith("Field ")
+                   and field.meaning.category == "placement" for field in pose_fields)
+        assert all(field.value == 0.0 for field in pose_fields)
+        assert all(field.path == ("parts", key, field.name) for field in pose_fields)
+    else:
+        assert not pose_fields
     assert document == before
 
 

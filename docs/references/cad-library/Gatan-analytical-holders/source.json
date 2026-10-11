@@ -1,0 +1,54 @@
+{
+  "id": "Gatan-analytical-holders",
+  "kind": "manufacturer_product_page",
+  "title": "Analytical Holders - Models 643, 646, 650, 925",
+  "url": "https://www.gatan.com/products/tem-specimen-holders/analytical-holders",
+  "authors": [
+    "Gatan"
+  ],
+  "owner": "Gatan",
+  "publication_date": null,
+  "figures": "Product description and Model 643/646 table",
+  "component_keys": [
+    "sample_stage",
+    "sample"
+  ],
+  "supported_facts": [
+    "643为单倾、646为双倾的常温分析杆；tip留出电子束及EDS视线，Be cradle用于降低背景。"
+  ],
+  "unsupported_claims": [
+    "网页没有普通杆长、外柄直径和tip厚度工程图。",
+    "Be是该产品cradle材料，不表示全杆或本项目holder均为Be。"
+  ],
+  "access_note": "Web检索可读原文；直接HTML下载429，643/646 datasheet地址返回HTML而不是PDF。保留失败回执，没有伪造原始PDF。",
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T01:30:02.846632+00:00",
+  "assets": [],
+  "archive_status": "record_only_original_download_unavailable",
+  "download_receipts": [
+    {
+      "id": "Gatan-analytical-holders",
+      "file": "original.html",
+      "url": "https://www.gatan.com/products/tem-specimen-holders/analytical-holders",
+      "status": "unavailable",
+      "reason": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "id": "Gatan-analytical-holders",
+      "file": "643-datasheet.pdf",
+      "url": "https://go.gatan.com/643_Datasheet.pdf",
+      "status": "not_pdf",
+      "content_type": "text/html; charset=UTF-8",
+      "final_url": "https://go.gatan.com/643_Datasheet.pdf"
+    },
+    {
+      "id": "Gatan-analytical-holders",
+      "file": "646-datasheet.pdf",
+      "url": "https://go.gatan.com/646_Datasheet.pdf",
+      "status": "not_pdf",
+      "content_type": "text/html; charset=UTF-8",
+      "final_url": "https://go.gatan.com/646_Datasheet.pdf"
+    }
+  ]
+}

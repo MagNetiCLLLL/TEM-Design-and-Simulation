@@ -599,7 +599,6 @@ def _source_field_inputs(source, original_provider, reference):
         component = components[0]
         from temsim.optics.quadrupole import QuadrupoleComponent
         from temsim.optics.hexapole import HexapoleComponent
-        from temsim.simulation_modes import is_ideal
         if isinstance(component, QuadrupoleComponent):
             names = ("enabled", "z_mm", "effective_length_mm", "strength_m2")
             family = "quadrupole"
@@ -612,8 +611,6 @@ def _source_field_inputs(source, original_provider, reference):
             family = "stigmator"
         physical = {**_profile_inputs(component, names), "family": family,
                     "momentum_over_charge": provider.momentum_over_charge}
-        if family == "hexapole":
-            physical["ideal_mode_disables_hexapole"] = is_ideal(provider.state)
         if reference is not None:
             physical.update(reference)
         return "effective_multipole", physical, {}, "Existing near-axis effective multipole at captured reference momentum; no magnetic-material field reconstruction."
@@ -728,7 +725,6 @@ def _extra_sources(state, z_clip, notes):
                                       simulation_mode=getattr(state, "simulation_mode", "custom"))
             from temsim.optics.quadrupole import QuadrupoleComponent
             from temsim.optics.hexapole import HexapoleComponent
-            from temsim.simulation_modes import is_ideal
             # Exact zeros of the configured Gaussian operators do not have a
             # radial approximation error and must not truncate another field.
             known_zero = (
@@ -741,7 +737,7 @@ def _extra_sources(state, z_clip, notes):
             ) or (
                 isinstance(component, HexapoleComponent)
                 and type(component).hexapole_strength_components_m3 is HexapoleComponent.hexapole_strength_components_m3
-                and (component.strength_m3 == 0. or is_ideal(context))
+                and component.strength_m3 == 0.
             )
             from temsim.test_electron_compiled_laws import multipole_is_supported
             known_zero = known_zero and multipole_is_supported(component)

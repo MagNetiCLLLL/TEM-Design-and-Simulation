@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import tomllib
 
 import pytest
 
@@ -108,9 +109,23 @@ def test_actual_catalog_covers_all_modules_parts_and_arrays_without_changing_fil
     paths = sorted((ROOT / "configs" / "instruments").rglob("*.toml"))
     before = {path: path.read_bytes() for path in paths}
     audit = audit_catalog(ROOT)
-    assert (audit.module_count, audit.part_count) == (11, 482)
+    expected = {}
+    for path, data in before.items():
+        document = tomllib.loads(data.decode("utf-8-sig"))
+        rows = list(document.get("parts", ()))
+        # Count raw one-level parts independently of the audit's resolver.
+        for entry in document.get("subassemblies", ()):
+            source = (path.parent / entry["file"]).resolve()
+            child = tomllib.loads(source.read_text(encoding="utf-8-sig"))
+            assert not child.get("subassemblies")
+            rows.extend(child["parts"])
+        if rows:
+            expected[str(path)] = rows
+    assert (audit.module_count, audit.part_count) == (len(expected), sum(map(len, expected.values())))
     assert audit.summary["parameter_count"] > 4000
-    assert len({row.source_file for row in audit.records}) == 11
+    assert {row.source_file for row in audit.records} == set(expected)
+    assert {(row.source_file, row.part_key) for row in audit.records if row.part_key} == {
+        (source, part["key"]) for source, rows in expected.items() for part in rows}
     assert all(Path(row.source_file).is_absolute() for row in audit.records)
     assert all(row.semantics.label and row.semantics.description and row.semantics.source_note for row in audit.records)
     assert not {"measured", "documented"}.intersection(audit.summary["by_source"])
@@ -119,9 +134,23 @@ def test_actual_catalog_covers_all_modules_parts_and_arrays_without_changing_fil
     assert audit.summary["issues_by_code"]["undefined_strip_outline"] == 23
     assert len(json.loads(audit.to_json())["records"]) == len(audit.records)
     markdown = audit.to_markdown()
-    assert "482 component definitions" in markdown and "Evidence gaps by component" in markdown
+    assert f"{sum(map(len, expected.values()))} component definitions" in markdown and "Evidence gaps by component" in markdown
     assert len(markdown.splitlines()) < len(audit.records) // 2  # Grouped report, not repeated thousands of values.
     assert before == {path: path.read_bytes() for path in paths}
+
+
+def test_native_winding_audit_reports_reconstruction_not_undefined_solid():
+    part = _part(mechanical_profile="deflector_coil_insert", local_start_z_mm=0.,
+                 local_end_z_mm=10., winding_layer_thickness_mm=.5,
+                 winding_angular_span_deg=120., winding_band_width_mm=.4)
+    audit = audit_document({"parts": [part]})
+    assert {issue.code for issue in audit.issues} == {"reconstructed_winding_geometry"}
+    fields = {row.path[-1]: row for row in audit.records}
+    for field in ("winding_layer_thickness_mm", "winding_angular_span_deg", "winding_band_width_mm"):
+        assert fields[field].semantics.category == "physical"
+        assert fields[field].semantics.source_kind == "estimated"
+    part["winding_band_width_mm"] = 8.
+    assert "invalid_winding_geometry" in {i.code for i in audit_document({"parts": [part]}).issues}
 
 
 def test_catalog_accepts_project_configs_or_instruments_root():

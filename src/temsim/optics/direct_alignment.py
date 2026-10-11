@@ -49,7 +49,6 @@ from temsim.physics.instrument_magnetic import (
     active_column_events, column_dipole_fields, events_overlapping_interval, gun_paraxial_fields,
 )
 from temsim.physics.recording_stop import tem_projection_reference_plane
-from temsim.simulation_modes import is_ideal
 from temsim.optics.equivalent_image_lenses import (
     equivalent_image_calibrations,
     equivalent_image_transfer_matrix,
@@ -211,7 +210,7 @@ def canonical_source_basis(state, source_z_mm, *, momentum_kg_m_s=None,
     field_options = {"exclude_mapped_keys": excluded} if excluded else {}
     aligned_b = float(fields(np.array((source,)), state, **field_options)[0][0])
     basis = _canonical_source_basis(-E*aligned_b/(2*momentum))
-    posed = (capture_posed_column_fields(state, include_hexapole=not is_ideal(state))
+    posed = (capture_posed_column_fields(state, include_hexapole=True)
              if posed_fields is None else tuple(posed_fields))
     captured = tuple(freeze_vector_provider(provider) for provider in analytic) + tuple(
         field for field in posed if _posed_field_overlaps(field, source, source))
@@ -235,11 +234,6 @@ def _active_column_electric_field(state, source_z_mm, target_z_mm):
 def _column_reference_momentum(state, source_z_mm, electric_field=None):
     """Match the optical momentum used by the complete first-order tracer."""
     kinetic_ev = float(state.beam_voltage_kv)*1000.
-    if electric_field is not None and is_ideal(state):
-        exit_z = float(electric_field.gun_snapshot.exit_plane_z_mm)*1e-3
-        points = np.array(((0.,0.,exit_z),(0.,0.,float(source_z_mm)*1e-3)))
-        potential = electric_field.potential_rise_v_at_global_positions(points)
-        kinetic_ev += float(potential[1]-potential[0])
     return _electron_momentum_kg_m_s(kinetic_ev/1000.)
 
 
@@ -294,7 +288,7 @@ def canonical_transfers(
     electric_field = _active_column_electric_field(state, source, target)
     vector_providers = active_vector_providers(state)
     from temsim.physics.posed_column_fields import capture_posed_column_fields
-    posed_fields = capture_posed_column_fields(state, include_hexapole=not is_ideal(state))
+    posed_fields = capture_posed_column_fields(state, include_hexapole=True)
     relevant_posed = tuple(field for field in posed_fields if _posed_field_overlaps(field, source, target))
 
     def canonical_from_mechanical(requested_targets):
@@ -646,7 +640,7 @@ class _LiveFirstOrderModel:
         self.variable_keys = tuple(variable_keys)
         self._electric_field = _active_column_electric_field(state, source_z_mm, target_z_mm)
         from temsim.physics.posed_column_fields import capture_posed_column_fields
-        posed = capture_posed_column_fields(state, include_hexapole=not is_ideal(state))
+        posed = capture_posed_column_fields(state, include_hexapole=True)
         self._posed_field_options = ({"exclude_mapped_keys": tuple({field.component_key for field in posed})}
                                      if posed else {})
         self.full_field_transfer = bool(active_vector_providers(state) or self._electric_field is not None

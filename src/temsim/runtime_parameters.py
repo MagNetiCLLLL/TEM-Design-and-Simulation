@@ -207,9 +207,10 @@ def is_geometry_owned(name: str) -> bool:
     return any(marker in name for marker in GEOMETRY_MARKERS)
 
 
-def shared_runtime_geometry_owner(key: str, name: str) -> str:
+def shared_runtime_geometry_owner(key: str, name: str, *, obj=None) -> str:
     """Shared channels cannot independently override their installed hardware."""
-    host = SHARED_DEFLECTOR_HOSTS.get(key, "")
+    host = (SHARED_DEFLECTOR_HOSTS.get(key, "")
+            or str(getattr(obj, "_field_hardware_host_key", "")))
     if host and (
         is_geometry_owned(name) or name in TOML_OWNED_FIELDS
         or shared_deflector_field_owner(key, name)
@@ -241,7 +242,7 @@ def editable_parameters(target: RuntimeTarget) -> tuple[RuntimeParameter, ...]:
             or name in INTERNAL_FIELDS
             or name in TOML_OWNED_FIELDS
             or is_geometry_owned(name)
-            or shared_runtime_geometry_owner(target.key, name)
+            or shared_runtime_geometry_owner(target.key, name, obj=target.obj)
             or (target.key == "energy_filter" and name == "enabled")
             or (target.key in FIXED_APERTURE_KEYS and name == "enabled")
             or (target.key == "sample" and (
@@ -275,7 +276,7 @@ def validate_runtime_assignment(
 ) -> object:
     """Type-check and domain-check one profile/runtime assignment."""
 
-    host = shared_runtime_geometry_owner(target.key, name)
+    host = shared_runtime_geometry_owner(target.key, name, obj=target.obj)
     if host:
         raise ValueError(f"{target.key}.{name} belongs to shared hardware; edit {host} instead")
     old_value = getattr(target.obj, name)

@@ -21,7 +21,7 @@ from temsim.optics.probe_corrector import (
     Hp2HexapoleComponent, HpcHexapoleComponent, Hp1HexapoleComponent, HpolHexapoleComponent,
 )
 from temsim.optics.image_corrector import (
-    ImageCorrectorOlPostLensComponent, ImageCorrectorTl11LensComponent, ImageCorrectorTl12LensComponent,
+    ImageCorrectorTl11LensComponent, ImageCorrectorTl12LensComponent,
     ImageCorrectorTl21LensComponent, ImageCorrectorTl22LensComponent, ImageCorrectorAdapterLensComponent,
     ImageCorrectorHpolHexapoleComponent, ImageCorrectorHp1HexapoleComponent, ImageCorrectorHp2HexapoleComponent,
     ImageCorrectorQpolQuadrupoleComponent, ImageCorrectorDstgQuadrupoleComponent,
@@ -51,7 +51,7 @@ _LENSES = {}
 for family, base, concrete in (
     ('condenser', CondenserLensComponent, (CondenserLensComponent,)),
     ('round', RoundLensComponent, (RoundLensComponent, Tl22LensComponent, Tl21LensComponent,
-        Tl12LensComponent, MiniCondenserComponent, ImageCorrectorOlPostLensComponent,
+        Tl12LensComponent, MiniCondenserComponent,
         ImageCorrectorTl11LensComponent, ImageCorrectorTl12LensComponent, ImageCorrectorTl21LensComponent,
         ImageCorrectorTl22LensComponent, ImageCorrectorAdapterLensComponent)),
     ('round', AdapterLensComponent, (AdapterLensComponent,)),

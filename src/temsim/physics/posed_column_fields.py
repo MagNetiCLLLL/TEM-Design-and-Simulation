@@ -190,7 +190,6 @@ def capture_posed_column_fields(state, *, include_hexapole=True, time_s=None, ar
     from temsim.lens_pose import has_lens_pose, lens_pose_registration
     from temsim.physics.core import electron, FIELD_SIGMA_CUTOFF
     from temsim.physics.instrument_magnetic import column_dipole_fields
-    from temsim.simulation_modes import is_ideal
     components = (*getattr(state, "stigmators", ()), *getattr(state, "corrector_elements", ()),
                   *getattr(state, "deflectors", ()))
     by_key = {str(component.key): component for component in components}
@@ -220,7 +219,7 @@ def capture_posed_column_fields(state, *, include_hexapole=True, time_s=None, ar
             terms = ((2, 0, -.5*ratio*strength), (0, 2, .5*ratio*strength))
             width = float(component.effective_length_mm)/2.355
         elif hasattr(component, "hexapole_strength_components_m3"):
-            if not include_hexapole or is_ideal(state):
+            if not include_hexapole:
                 continue
             normal, skew = map(float, component.hexapole_strength_components_m3(np.asarray(z)))
             terms = ((3, 0, -ratio*normal/3), (1, 2, ratio*normal),

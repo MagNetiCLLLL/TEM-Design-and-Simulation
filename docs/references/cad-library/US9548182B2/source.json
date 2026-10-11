@@ -1,0 +1,82 @@
+{
+  "id": "US9548182B2",
+  "kind": "patent",
+  "family": "枪与加速电极",
+  "url": "https://patents.google.com/patent/US9548182B2/en",
+  "figures": "Fig. 2; PDF page 4, sheet 2/6",
+  "component_keys": [
+    "feg_extractor",
+    "feg_electrostatic_lens",
+    "feg_accelerator",
+    "thermionic_accelerator"
+  ],
+  "supported_facts": [
+    "显示加速电极与绝缘件交替的轴向结构。",
+    "区分阴极、阳极、束流真空通道和高压外壳。"
+  ],
+  "unsupported_claims": [
+    "不提供当前枪区所有隐藏轮廓、绝缘材料或电压分配。",
+    "厚度和中心来自本地 TOML，不由专利比例推导。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:15.877024+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 1636607,
+      "sha256": "c20bb8514be98735da36dda9463fb6ad9e212e40f21b147170d2a486cc1023c9",
+      "kind": "original_pdf",
+      "method": "copied_existing_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/13/8f/2a/0e3e6195b4f35a/US9548182.pdf"
+    },
+    {
+      "file": "page-04.png",
+      "bytes": 133158,
+      "sha256": "a07f165d9397cac09c4a40de7aa6c4f307020f09fc734e88763a66ecf7b9c499",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 4,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [
+    "复用项目已保存的原始 PDF；本次归档时间不冒充首次网络获取时间。"
+  ],
+  "title": "Charged particle beam generating apparatus, charged particle beam apparatus, high voltage generating apparatus, and high potential apparatus",
+  "authors": [
+    "Takashi Onishi",
+    "Shunichi Watanabe",
+    "Minoru Kaneda"
+  ],
+  "owner": [
+    "Hitachi High Technologies Corp"
+  ],
+  "dates": {
+    "priorityDate": "2012-06-11",
+    "filingDate": "2013-05-08",
+    "publicationDate": "2017-01-17"
+  },
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/13/8f/2a/0e3e6195b4f35a/US9548182.pdf",
+  "cached_source": "tmp\\planar-patent-reference-20260926\\US9548182B2.pdf",
+  "pdf_page_count": 16,
+  "pdf_metadata": {
+    "format": "PDF 1.1",
+    "title": "US000009548182B220170117",
+    "author": "",
+    "subject": "00160001",
+    "keywords": "",
+    "creator": "",
+    "producer": "libtiff / tiff2pdf - 20100615",
+    "creationDate": "D:20161228114319",
+    "modDate": "D:20161228114319",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    4
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

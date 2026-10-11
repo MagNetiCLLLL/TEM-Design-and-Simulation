@@ -190,10 +190,11 @@ class AssemblyModelPage(QWidget):
         self._editable_keys = set(self._parts)
         self._parts.update({part.key: part for part in self._cell_context.parts()})
         self._editable_keys.update(r.key for r in self._cell_context.layers)
-        for liner in getattr(self._assembly, "vacuum_liner_segments", ()):
-            self._parts.setdefault(liner.key, SimpleNamespace(
-                key=liner.key, name=liner.name,
-                center_z_mm=(liner.start_z_mm + liner.end_z_mm) * 0.5, data={},
+        from temsim.cad_stage_holder import physical_liner_rows
+        for liner in physical_liner_rows(self._assembly):
+            self._parts.setdefault(liner["key"], SimpleNamespace(
+                key=liner["key"], name=liner["name"],
+                center_z_mm=liner["local_center_z_mm"], data={},
             ))
         self._hidden_keys.intersection_update(self._parts)
         with QSignalBlocker(self.tree):

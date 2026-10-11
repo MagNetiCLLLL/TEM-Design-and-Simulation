@@ -14,7 +14,7 @@ from scipy.fft import next_fast_len
 from scipy.ndimage import map_coordinates
 
 from temsim.optics.electron_gun.tip_coherence import wavelength_m
-from temsim.physics.column_wave import _propagate_column
+from temsim.physics.column_wave import _previous_support_error, _propagate_column
 from temsim.physics.multiplane_wave import PlaneWave
 from temsim.physics.tip_gun_wave import TipGunCheckpoint
 from temsim.physics.wave_flux import BeamState, WaveMode
@@ -401,6 +401,10 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
     outputs, records = [], []
     for source_mode in checkpoint.beam.modes:
         base, grid_record = _regrid_refined_mode(source_mode, wave_x, wave_y, refinement_factor, grid_numerics)
+        parent_support = _previous_support_error(checkpoint.record, source_mode.mode_id)
+        if parent_support is None:
+            parent_support = {"reference_mode_weight": source_mode.weight_per_reference_electron,
+                              "accumulated_relative_l2_bound": 0., "probability_loss_per_tip_electron": 0.}
         from types import SimpleNamespace
         energy_state = SimpleNamespace(sample=state.sample, beam_voltage_kv=source_mode.energy_kev)
         distribution = real_inelastic_distribution(energy_state)
@@ -413,9 +417,15 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
                 progress_callback(len(outputs), len(checkpoint.beam.modes)*len(configs), "Finite specimen wave / frozen-phonon branch")
             mode = replace(base, mode_id=base.mode_id+f"/phonon:{config_index}",
                            weight_per_reference_electron=base.weight_per_reference_electron/len(configs))
+            # Splitting into incoherent configurations scales absolute weights,
+            # not the inherited relative error. Keep that same reference through
+            # every slice; do not restart the support budget at a new mode ID.
+            support_ledger = dict(parent_support,
+                reference_mode_weight=parent_support["reference_mode_weight"]/len(configs),
+                probability_loss_per_tip_electron=parent_support["probability_loss_per_tip_electron"]/len(configs))
             initial_weight, current_z, slice_records = mode.weight_per_reference_electron, start, []
             first_events = {key: 0. for key in ("real_plasmon", "real_ionisation", "real_other_inelastic", "effective_absorption")}
-            column_loss = 0.
+            column_loss, support_loss = 0., 0.
             mode, band_loss = _bandlimit_mode(mode, state.sample.wave_bandwidth_fraction, frame=bandwidth_frame, numerics=grid_numerics)
             sigma = interaction_constant_rad_per_v_angstrom(mode.energy_kev)
             for i, dz in enumerate(dzs):
@@ -425,14 +435,19 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
                 mode, lost = _bandlimit_mode(mode, state.sample.wave_bandwidth_fraction, frame=bandwidth_frame, numerics=grid_numerics)
                 band_loss += lost
                 local = TipGunCheckpoint(BeamState((mode,), checkpoint.beam.reference_plane), current_z,
-                    checkpoint.reference_current_a, {"specimen_parent": checkpoint.digest, "configuration": config_index, "slice": i})
+                    checkpoint.reference_current_a, {"specimen_parent": checkpoint.digest, "configuration": config_index, "slice": i,
+                        "support_error_by_mode": {mode.mode_id: support_ledger}})
                 next_z = stop if i == len(dzs)-1 else current_z+float(dz)*1e-7
                 transported = _propagate_column(state, local, next_z, maximum_step_mm=maximum_step_mm,
                     grid_numerics=grid_numerics, tip_time_s=tip_time_s,
                     retained_bytes=resident_wave_bytes(checkpoint.beam)
                         +sum(m.plane.amplitude.nbytes for m in outputs)+sum(p.nbytes for p in configs),
                     cancelled=cancelled)
-                column_loss += mode.weight_per_reference_electron-transported.beam.total_weight
+                previous_support_loss = support_ledger["probability_loss_per_tip_electron"]
+                support_ledger = _previous_support_error(transported.record, mode.mode_id)
+                slice_support_loss = support_ledger["probability_loss_per_tip_electron"]-previous_support_loss
+                support_loss += slice_support_loss
+                column_loss += mode.weight_per_reference_electron-transported.beam.total_weight-slice_support_loss
                 mode, phase_after = _material_phase(transported.beam.modes[0], projected, x, y, sigma, .5,
                     numerics=grid_numerics, cancelled=cancelled)
                 # Zero-loss survival applies only where the finite specimen has
@@ -446,15 +461,17 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
                 band_loss += lost
                 slice_records.append({"slice": i, "z_mm": next_z, "column": transported.record["modes"],
                                       "phase_before": phase_before, "phase_after": phase_after,
+                                      "numerical_support_loss": slice_support_loss,
                                       "inelastic_absorption_removed_weight": channel_record["removed_weight"],
                                       "first_event_ledger": channel_record})
                 current_z = next_z
             outputs.append(mode)
-            accounted = mode.weight_per_reference_electron+band_loss+column_loss+sum(first_events.values())
+            accounted = mode.weight_per_reference_electron+band_loss+column_loss+support_loss+sum(first_events.values())
             if not math.isclose(accounted, initial_weight, rel_tol=1e-10, abs_tol=1e-13):
                 raise ValueError("Specimen wave, physical losses, first events and numerical bandwidth did not conserve probability")
             records.append({"mode_id": mode.mode_id, "input_weight": initial_weight,
                 "output_weight": mode.weight_per_reference_electron, "regrid": grid_record,
+                "support_approximation": support_ledger,
                 "inelastic_material": {"key": distribution.material_key, "model": distribution.model,
                     "energy_kev": distribution.beam_energy_kev, "warnings": distribution.warnings,
                     "zero_loss_removal_rate_per_nm": rate,
@@ -463,9 +480,10 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
                                   "mean_events": c.mean_events, "full_thickness_probability": c.probability,
                                   "inverse_mfp_per_nm": 0. if not math.isfinite(c.mean_free_path_nm) else 1/c.mean_free_path_nm}
                                  for c in distribution.channels]},
-                "slices": slice_records, "numerical_band_loss": band_loss,
+                "slices": slice_records, "numerical_band_loss": band_loss, "numerical_support_loss": support_loss,
                 "probability_balance": {"coherent_zero_loss": mode.weight_per_reference_electron,
                     "column_absorbed": column_loss, "numerical_band_loss": band_loss,
+                    "numerical_support_loss": support_loss,
                     "first_events": first_events, "accounted_weight": accounted,
                     "residual": initial_weight-accounted}})
     return TipGunCheckpoint(BeamState(tuple(outputs), checkpoint.beam.reference_plane), stop, checkpoint.reference_current_a,

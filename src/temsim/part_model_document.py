@@ -11,6 +11,7 @@ import tomllib
 from temsim import module_manifest
 from temsim.manifest_editor import resized_part_axial_coordinates
 from temsim.component_representation import SHARED_DEFLECTOR_HOSTS, shared_deflector_field_owner
+from temsim.optics.field_hardware_binding import bound_field_owner, resolve_field_hardware_parts
 from temsim.component_operations import (
     PartChangeSet, added_component_document, placed_component_document,
     copied_component_document, validate_component_graph, CUSTOM_COMPONENT_ROLES,
@@ -27,7 +28,7 @@ class PartModelDocument:
         from temsim.shared_tip import materialized_text, dependencies
         self._dependency_bytes = dependencies(self.path)
         self._editable_text = materialized_text(self._source_bytes.decode("utf-8-sig"), self.path)
-        self._baseline = tomllib.loads(self._editable_text)
+        self._baseline = resolve_field_hardware_parts(tomllib.loads(self._editable_text))
         if not isinstance(self._baseline.get("parts"), list) or not self._baseline["parts"]:
             raise ValueError("Open an instrument module TOML containing [[parts]] definitions")
         keys = [part.get("key") for part in self._baseline["parts"]]
@@ -74,18 +75,21 @@ class PartModelDocument:
 
     def _commit_part(self, key, candidate):
         from temsim.optics.electron_gun.tip_assembly import complete_tip_updates, validate_tip_part
+        from temsim.corrector_model_3d import validate_deflector_coil_part
         previous = self.part(key)
         updates = {("parts", key, field): value for field, value in candidate.items()
                    if previous.get(field) != value}
         for path, value in complete_tip_updates(self.document, updates).items():
             candidate[path[2]] = value
         validate_tip_part(candidate)
+        validate_deflector_coil_part(candidate)
         for index, part in enumerate(self.document["parts"]):
             if part["key"] == key:
                 updated = deepcopy(self.document)
                 updated["parts"][index] = candidate
                 from temsim.subassemblies import reflow
-                self.document = reflow(self.document, updated, self.path, owners=self._subassembly_owners)
+                candidate_document = reflow(self.document, updated, self.path, owners=self._subassembly_owners)
+                self.document = resolve_field_hardware_parts(candidate_document)
                 self._remember()
                 return
         raise ValueError(f"Unknown part: {key}")
@@ -97,7 +101,7 @@ class PartModelDocument:
         candidate = reflow(self.document, candidate, self.path, owners=self._subassembly_owners)
         validate_component_graph(candidate)
         module_manifest.validate_document(candidate)
-        self.document = candidate
+        self.document = resolve_field_hardware_parts(candidate)
         self._remember()
 
     def place_subassembly(self, key, placement):
@@ -120,6 +124,9 @@ class PartModelDocument:
         """Translate module-local axial coordinates, optionally with children."""
         if key in SHARED_DEFLECTOR_HOSTS:
             raise ValueError(f"{key} uses shared hardware; place {SHARED_DEFLECTOR_HOSTS[key]} instead")
+        host = bound_field_owner(self.part(key), "local_center_z_mm")
+        if host:
+            raise ValueError(f"{key} follows {host}; place its host or edit the coil optical reference offset")
         candidate, keys = placed_component_document(
             self.document, key, center_z_mm, include_children=include_children,
         )
@@ -229,7 +236,8 @@ class PartModelDocument:
         value = self._finite_dimension(value)
         if len(path) < 3 or path[0] != "parts":
             raise ValueError("Only existing part dimensions can be edited")
-        host = shared_deflector_field_owner(path[1], path[2])
+        host = (shared_deflector_field_owner(path[1], path[2])
+                or bound_field_owner(self.part(path[1]), path[2]))
         if host:
             raise ValueError(f"{path[1]} uses shared hardware; edit {host} to change its structure")
         part = deepcopy(self.part(path[1]))
@@ -293,6 +301,9 @@ class PartModelDocument:
         """
         from temsim.part_model_features import validate_model_3d
 
+        host = bound_field_owner(self.part(key), "model_3d")
+        if host:
+            raise ValueError(f"{key} is a control channel; edit {host} to change its structure")
         candidate = deepcopy(self.part(key))
         if configuration is None:
             candidate.pop("model_3d", None)
@@ -382,6 +393,11 @@ class PartModelDocument:
                 continue
             original = originals[part["key"]]
             for field, value in part.items():
+                if bound_field_owner(part, field):
+                    # Persist the authoritative host edit only. Derived
+                    # coordinates are resolved again on load, never competing
+                    # writes to the control channel or its anchored insert.
+                    continue
                 if field not in original or value != original[field]:
                     updates[("parts", part["key"], field)] = deepcopy(value)
             if "material_regions" in original and "material_regions" not in part:
@@ -492,7 +508,7 @@ class PartModelDocument:
         from temsim.shared_tip import materialized_text, dependencies
         self._dependency_bytes = dependencies(path)
         self._editable_text = materialized_text(source.decode("utf-8-sig"), path)
-        self._baseline = tomllib.loads(self._editable_text)
+        self._baseline = resolve_field_hardware_parts(tomllib.loads(self._editable_text))
         self.document = deepcopy(self._baseline)
         from temsim.subassemblies import ownership
         self._subassembly_owners = ownership(self._baseline, self.path)

@@ -214,7 +214,9 @@ def _dimensions(part, by_key=None):
         unit = next((unit for unit in ("mm", "um", "nm", "deg") if name.endswith("_" + unit)), None)
         if unit is None:
             continue
-        if not any(token in name for token in ("diameter", "radius", "length", "width", "height", "thickness", "gap", "inset", "angle", "radial_profile", "material_intervals", "path_center", "path_entrance", "strip_center_pitch")):
+        holder_parameter = (part.get("mechanical_profile") in {"transverse_goniometer", "side_entry_sample_holder"}
+                            and name.startswith(("holder_", "stage_")))
+        if not holder_parameter and not any(token in name for token in ("diameter", "radius", "length", "width", "height", "thickness", "gap", "inset", "angle", "angular_span", "radial_profile", "material_intervals", "path_center", "path_entrance", "strip_center_pitch")):
             continue
         append(value, ("parts", part["key"], name),
                name.removesuffix("_" + unit).replace("_", " ").capitalize(), unit)
@@ -312,6 +314,27 @@ def _pole_section(part, start, end):
 
 
 def _legacy_part_meshes(part, by_key, count, aperture_index=0, runtime=None):
+    from temsim.cad_catalog import native_reconstruction
+    solids = native_reconstruction(part, by_key, runtime=runtime, aperture_index=aperture_index)
+    if solids is not None:
+        from temsim.cad_mesh import meshes_from_solids
+        meshes = meshes_from_solids(solids, count)
+        if part.get("branch_path_only"):
+            from temsim.cad_mesh import annotate_material_faces
+            meshes = tuple(annotate_material_faces(mesh, part, runtime) for mesh in meshes)
+            if part.get("mechanical_profile") == "tapered_sector_prism":
+                from temsim.energy_filter_model_3d import _prism_meshes
+                meshes += tuple(mesh for mesh in _prism_meshes(part, by_key, count) if mesh.wireframe)
+        notes = [spec.note for spec in solids]
+        if part.get("mechanical_profile") == "xo_energy_slit_assembly" and (not runtime or "gap_m" not in runtime):
+            notes.append(f"{part['key']}: no runtime slit gap supplied; blade edges show the configured maximum travel opening.")
+        return meshes, tuple(dict.fromkeys(notes))
+    from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
+    if part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES:
+        from temsim.corrector_model_3d import deflector_coil_meshes
+        channels = sorted(str(key) for key, row in by_key.items()
+                          if row.get("physical_host_key") == part["key"])
+        return deflector_coil_meshes(part, count, drive_key=", ".join(channels))
     from temsim.energy_filter_model_3d import energy_filter_meshes, supports_energy_filter_part
     if supports_energy_filter_part(part):
         return energy_filter_meshes(part, by_key, count, runtime, aperture_index)
@@ -499,6 +522,7 @@ def part_dimension_specs(document, part_key, *, runtime_values=None):
     from temsim.part_model_apertures import operating_dimension_specs
     part = by_key[part_key]
     from temsim.parameter_semantics import describe_parameter
+    from temsim.optics.field_hardware_binding import bound_field_owner
     specs = (_dimensions(part, by_key) + feature_dimension_specs(part)
              + operating_dimension_specs(part, (runtime_values or {}).get(part_key)))
     from temsim.part_model_apertures import has_optional_plate_thickness
@@ -507,7 +531,8 @@ def part_dimension_specs(document, part_key, *, runtime_values=None):
         meaning = describe_parameter(part, path, by_key=by_key)
         specs += (DimensionSpec(path, meaning.label, 0., "mm", reason=meaning.description, meaning=meaning),)
     from temsim.lens_pose import physical_pose_values, supports_physical_lens_pose, inherits_parent_lens_pose, column_pose_kind, PHYSICAL_POSE_FIELDS
-    pose_owner, seen = part, set()
+    host_key = bound_field_owner(part, "rotation_x_mrad")
+    pose_owner, seen = by_key.get(host_key, part), set()
     while pose_owner is not None and not supports_physical_lens_pose(pose_owner):
         if not inherits_parent_lens_pose(pose_owner):
             pose_owner = None
@@ -525,7 +550,7 @@ def part_dimension_specs(document, part_key, *, runtime_values=None):
             specs = tuple(spec for spec in specs if spec.path[2] not in pose_names and not (
                 len(spec.path) > 4 and spec.path[2:4] == ("model_3d", "transform")
                 and spec.path[4] in {"offset_mm", "rotation_deg"}))
-        prefix = "Parent lens: " if pose_owner is not part else ""
+        prefix = "Physical host: " if host_key else ("Parent lens: " if pose_owner is not part else "")
         specs += tuple(DimensionSpec(("parts", pose_owner["key"], name), prefix +
             ("Position " + name[7].upper() + " offset" if name.startswith("offset_")
              else "Rotation about " + name[9].upper()),
@@ -548,10 +573,16 @@ def part_dimension_specs(document, part_key, *, runtime_values=None):
                   "of an independently drawn material body.")
         metadata = []
         for item in specs:
+            if item.path[1] != part_key:
+                # A routed physical host pose is an actual placement control,
+                # not obsolete channel-envelope metadata.
+                metadata.append(item)
+                continue
             if item.path[2] in PHYSICAL_POSE_FIELDS and column_pose_kind(part) == "field":
                 metadata.append(replace(item, label="Field " + item.label))
                 continue
-            host = shared_deflector_field_owner(part_key, item.path[2])
+            host = (shared_deflector_field_owner(part_key, item.path[2])
+                    or bound_field_owner(part, item.path[2]))
             item_reason = reason + (f" Edit {host} to change the shared structure." if host else "")
             label = "Stored " + " / ".join(
                 str(piece).removesuffix("_" + item.unit).replace("_", " ") for piece in item.path[2:])
@@ -561,6 +592,10 @@ def part_dimension_specs(document, part_key, *, runtime_values=None):
                                 category_label="Channel / reference metadata", description=item_reason),
             ))
         specs = tuple(metadata)
+    specs = tuple(replace(item, editable=False,
+                          reason=f"Derived from {owner}; edit its physical geometry or placement. For an anchored insert, its optical reference offset controls the axial relation.")
+                  if (owner := bound_field_owner(by_key.get(item.path[1], part), item.path[2]))
+                  else item for item in specs)
     return specs
 
 

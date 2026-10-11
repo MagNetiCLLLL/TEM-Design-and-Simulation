@@ -136,34 +136,56 @@ def test_ideal_and_analytical_bypass_saved_map_and_return_to_custom_map():
         assert active_mapped_providers(state) == ()
         provider = resolve_runtime_lens_field_provider(state, lens.key, lens)
         assert not isinstance(provider, MappedLensFieldProvider)
+        assert provider.model_status == "parameterized_analytic"
         np.testing.assert_allclose(provider.magnetic_field_t([lens.z_mm]), lens.magnetic_field_t([lens.z_mm]))
     switch_mode(state, "custom")
     assert isinstance(resolve_runtime_lens_field_provider(state, lens.key, lens), MappedLensFieldProvider)
 
 
-def test_ideal_aberrations_keep_defocus_and_do_not_run_field_fit(monkeypatch):
+def test_ideal_keeps_configured_aberrations_hexapoles_and_chromatic_model(monkeypatch):
     from temsim.optics import aberrations, field_aberrations
     from temsim.physics.chromatic import configured_objective_chromatic_focal_mm
     from temsim.physics.core import hexapole_field_components, spherical_aberration_kick_m3
     state = _state()
     switch_mode(state, "ideal")
-    state.probe_aberrations = {"mode": "field_derived", "c1_mm": .002, "c3_mm": 999, "a2_mm": 5}
+    state.probe_aberrations = {"mode": "manual", "c1_mm": .002, "c3_mm": 999, "a2_mm": 5, "cc_mm": 1.7}
+    state.probe_corrector_installed = False  # No unrelated compact-ring fit in this coefficient test.
     state.chromatic_aberration_enabled = True
-    monkeypatch.setattr(field_aberrations, "derive_field_aberrations", lambda *a: pytest.fail("Ideal must not fit"))
+    monkeypatch.setattr(field_aberrations, "derive_field_aberrations", lambda *a: pytest.fail("Manual coefficients must not fit"))
     aberrations.prepare_field_aberration_diagnostics(state)
     coefficients = aberrations.active_effective_aberrations(state, "probe")
     assert coefficients.c1_mm == .002
-    assert coefficients.c3_mm == coefficients.a2_mm == coefficients.cc_mm == 0
-    assert configured_objective_chromatic_focal_mm(state) is None
-    z = np.linspace(0, 3000, 300)
-    assert not np.any(spherical_aberration_kick_m3(z, state))
-    assert not np.any(hexapole_field_components(z, state))
+    assert (coefficients.c3_mm, coefficients.a2_mm, coefficients.cc_mm) == (999, 5, 1.7)
+    assert configured_objective_chromatic_focal_mm(state) > 0
+    z = np.array(sorted({lens.z_mm for lens in state.lenses}
+                        | {part.z_mm for part in state.corrector_elements}))
+    assert np.any(spherical_aberration_kick_m3(z, state))
+    hp = next(part for part in state.corrector_elements if hasattr(part, "hexapole_strength_components_m3"))
+    hp.enabled = True
+    hp.strength_m3 = 123.
+    assert np.linalg.norm(hexapole_field_components(np.array([hp.z_mm]), state)) > 0
     assert state.probe_aberrations["c3_mm"] == 999
 
 
-def test_ideal_propagation_is_linear_and_reference_energy_achromatic():
+def test_ideal_honours_field_derived_diagnostics_and_propagates_fit_errors(monkeypatch):
+    from temsim.optics import aberrations, field_aberrations
+
+    state = _state()
+    switch_mode(state, "ideal")
+    state.probe_aberrations = {"mode": "field_derived"}
+
+    def failed_fit(*_args):
+        raise RuntimeError("explicit field fit failure")
+
+    monkeypatch.setattr(field_aberrations, "derive_field_aberrations", failed_fit)
+    with pytest.raises(RuntimeError, match="explicit field fit failure"):
+        aberrations.prepare_field_aberration_diagnostics(state)
+
+
+def test_ideal_propagation_retains_cs_and_actual_particle_energy():
     from temsim.physics.core import propagate, build_propagation_plan, propagation_plan_common_prefix_nodes
     lens = _state().projector_lens_p1
+    lens.cs_mm = 20.
     state = SimpleNamespace(lenses=[lens], stigmators=[], corrector_elements=[], simulation_mode="ideal",
                             step_mm=.25, history_step_mm=.5, beam_voltage_kv=300,
                             acceleration_enabled=False, acceleration_backend="CPU")
@@ -172,17 +194,18 @@ def test_ideal_propagation_is_linear_and_reference_energy_achromatic():
     zero = np.zeros(3)
     energy = np.array([0., 0., 10000.])
     result = propagate(state, z0, z1, x, zero, zero, zero, energy_offset_ev=energy)
-    for values in result[1:]:
-        np.testing.assert_allclose(values[:, 1], 2*values[:, 0], rtol=1e-12, atol=1e-15)
-        np.testing.assert_allclose(values[:, 2], values[:, 0], rtol=1e-12, atol=1e-15)
+    assert not np.allclose(result[2][:, 1], 2*result[2][:, 0], rtol=1e-7, atol=1e-14)
+    assert not np.allclose(result[1][:, 2], result[1][:, 0], rtol=1e-7, atol=1e-14)
     np.testing.assert_array_equal(energy, [0, 0, 10000])
     ideal_plan = build_propagation_plan(state, z0, z1)
+    assert np.count_nonzero(ideal_plan.cs_kick_m3) == 1
     state.simulation_mode = "analytical"
     analytical_plan = build_propagation_plan(state, z0, z1)
     assert ideal_plan.solver_signature != analytical_plan.solver_signature
     assert propagation_plan_common_prefix_nodes(ideal_plan, analytical_plan) == 0
     real = propagate(state, z0, z1, x, zero, zero, zero, energy_offset_ev=energy)
-    assert not np.allclose(real[1][:, 2], real[1][:, 0], rtol=1e-7, atol=1e-14)
+    for actual, expected in zip(result, real):
+        np.testing.assert_array_equal(actual, expected)
 
 
 def test_profile_stores_model_and_shelves_and_empty_patch_preserves_them(tmp_path):

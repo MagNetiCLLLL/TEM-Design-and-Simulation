@@ -87,16 +87,25 @@ def test_probe_modes_reach_the_sample_angle_with_real_aperture_clipping(
             "probe_tl22_lens", "probe_tl21_lens", "probe_tl12_lens"
         }
     }
-    assert set(transfer_lenses.values()) == {60.0}
+    expected_percent = ({
+        "probe_tl22_lens": 59.93152503582202,
+        "probe_tl21_lens": 59.95527906841963,
+        "probe_tl12_lens": 49.977014835272826,
+    } if mode_key == "nano_probe" else dict.fromkeys(transfer_lenses, 60.0))
+    assert transfer_lenses == pytest.approx(expected_percent)
     transfer_fields = {
         lens.key: lens.scale()
         for lens in state.lenses
         if lens.key in transfer_lenses
     }
-    assert transfer_fields == pytest.approx({
+    original_fields_at_60_percent = {
         "probe_tl22_lens": 0.31809425,
         "probe_tl21_lens": 0.29864759,
         "probe_tl12_lens": 0.33,
+    }
+    assert transfer_fields == pytest.approx({
+        key: value * expected_percent[key] / 60.0
+        for key, value in original_fields_at_60_percent.items()
     })
     if mode_key == "nano_probe":
         assert statistics["rms_radius_nm"] < 2.0

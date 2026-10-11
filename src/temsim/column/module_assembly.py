@@ -869,6 +869,13 @@ def apply_column_manifest_geometry(
         component.apply_manifest_geometry(**geometry)
     _bind_projection_chamber_aperture(state, parts)
     _apply_manifest_runtime_geometry(state, parts, assembly)
+    if not preserve_operating_parameters:
+        from temsim.component_keys import IMAGE_CORRECTOR_LENS_KEYS
+        for lens in state.lenses:
+            if lens.key in IMAGE_CORRECTOR_LENS_KEYS and lens.key in parts:
+                # A newly selected assembly owns its starting working point.
+                # Later geometry refreshes preserve the user's live drive.
+                lens.percent = float(parts[lens.key].data["default_excitation_percent"])
     # Match State.from_dict ordering so detached worker snapshots do not
     # invalidate caches merely by sorting the newly registered stop.
     state.apertures.sort(key=lambda aperture: float(aperture.z_mm))
@@ -1019,6 +1026,10 @@ def _set_single_position(item, reference):
 def _set_manifest_authority(item, part):
     """Attach non-serialised provenance for the active TOML definition."""
 
+    from temsim.optics.field_hardware_binding import field_hardware_host_key
+    # Runtime editors and profiles read the same explicit ownership as the
+    # manifest editor. Empty metadata preserves legacy independent channels.
+    object.__setattr__(item, "_field_hardware_host_key", field_hardware_host_key(part.data))
     if hasattr(item, "name"):
         try:
             object.__setattr__(item, "name", str(part.name))
@@ -1184,9 +1195,11 @@ def _apply_manifest_condenser_field_calibration(item, part):
 
 
 def _apply_manifest_projector_field_calibration(item, part):
-    """Apply TOML-owned non-OEM or measured projector field calibration."""
+    """Apply TOML-owned round-lens field calibration without changing drive."""
 
-    if str(part.key) not in module_manifest.PROJECTOR_LENS_KEYS:
+    from temsim.component_keys import IMAGE_CORRECTOR_LENS_KEYS
+    image_lens = str(part.key) in IMAGE_CORRECTOR_LENS_KEYS
+    if str(part.key) not in module_manifest.PROJECTOR_LENS_KEYS and not image_lens:
         return
     from temsim.optics.model import Gaussian
 
@@ -1219,6 +1232,9 @@ def _apply_manifest_projector_field_calibration(item, part):
         "field_calibration_source",
         str(part.data["field_calibration_source"]),
     )
+    if image_lens:
+        object.__setattr__(item, "normalise_profile_peak",
+                           part.data["normalise_field_profile_peak"])
 
 
 def _apply_detector_orientation_calibration(item, part):

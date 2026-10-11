@@ -115,6 +115,15 @@ class WaveGridNumerics:
     maximum_posed_lens_phase_error_rad_per_m: float = .01
     # Per discrete Cs event, separately from the distributed magnetic bound.
     maximum_spherical_obliquity_phase_error_rad: float = .01
+    # Numerical support compaction only after a nonlinear operator requests
+    # refinement. Zero keeps the original full-domain calculation. Physical
+    # source parameters and optical strengths are never changed.
+    maximum_support_loss_fraction: float = 1e-6
+    maximum_spectral_loss_fraction: float = 1e-8
+    # Absolute per-reference-electron probability across all omitted mutually
+    # incoherent modes, applied once after the executed gun. Not a Tip setting.
+    maximum_incoherent_mode_loss_probability: float = 1e-8
+    maximum_accumulated_support_l2: float = .02
 
     def validate(self):
         if not isinstance(self.automatic_refinement, bool):
@@ -142,6 +151,12 @@ class WaveGridNumerics:
         if (type(self.specimen_quadrature_factor) is not int
                 or not 2 <= self.specimen_quadrature_factor <= 16):
             raise ValueError("Specimen potential quadrature factor must be an integer from 2 to 16")
+        for name in ("maximum_support_loss_fraction", "maximum_spectral_loss_fraction",
+                     "maximum_incoherent_mode_loss_probability",
+                     "maximum_accumulated_support_l2"):
+            value = getattr(self, name)
+            if isinstance(value, bool) or not math.isfinite(value) or not 0 <= value <= .1:
+                raise ValueError(f"{name} must be finite and between zero and 0.1")
         return self
 
     def check(self, shape, *, retained_bytes=0, working_bytes_per_pixel=256):
@@ -166,6 +181,7 @@ class WaveGridNumerics:
         """Consumed column numerics only; specimen quadrature is downstream."""
         self.validate()
         return {"automatic_refinement": self.automatic_refinement,
+                "refinement_grid_selection": "fft-friendly-required-scale-1.05-min-growth-1.25-v1",
                 "posed_lens_model": "main-column-carrier-centred-bounded-electric-residual-v3",
                 "posed_spherical_model": "canonical-first-inclination-cs-v1",
                 "maximum_pixels": self.maximum_pixels,
@@ -173,6 +189,11 @@ class WaveGridNumerics:
                 "compute_backend": self.compute_backend,
                 "acceleration_enabled": self.acceleration_enabled,
                 "maximum_device_working_bytes": self.maximum_device_working_bytes,
+                "support_compaction_model": "c2-window-and-bounded-fourier-projection-v2",
+                "maximum_support_loss_fraction": self.maximum_support_loss_fraction,
+                "maximum_spectral_loss_fraction": self.maximum_spectral_loss_fraction,
+                "maximum_incoherent_mode_loss_probability": self.maximum_incoherent_mode_loss_probability,
+                "maximum_accumulated_support_l2": self.maximum_accumulated_support_l2,
                 "maximum_spherical_obliquity_phase_error_rad": self.maximum_spherical_obliquity_phase_error_rad,
                 "maximum_posed_lens_phase_error_rad_per_m": self.maximum_posed_lens_phase_error_rad_per_m}
 
@@ -200,8 +221,14 @@ def refine_plane_wave(wave, shape, *, numerics=WaveGridNumerics(), retained_byte
 
 
 def apply_resolved_operator(wave, operator, *, numerics=WaveGridNumerics(), retained_bytes=0,
-                            cancelled=lambda: False):
-    """Retry only a typed sampling failure, always from the pre-operator wave."""
+                            cancelled=lambda: False, prepare_retry=None):
+    """Retry only a typed sampling failure, always from the pre-operator wave.
+
+    An optional caller-owned preparation can compact the failed input within
+    its explicit approximation budget. A changed input MUST be checked again
+    by the physical operator before selecting a grid: the old required scale
+    describes the old field. The callback owns its error/loss accounting.
+    """
     numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
     rows = []
     while True:
@@ -212,13 +239,44 @@ def apply_resolved_operator(wave, operator, *, numerics=WaveGridNumerics(), reta
         except WaveSamplingError as error:
             if not numerics.automatic_refinement:
                 raise
+            if prepare_retry is not None:
+                prepared = prepare_retry(wave, error)
+                if prepared is not wave:
+                    numerics.check(prepared.amplitude.shape, retained_bytes=retained_bytes)
+                    previous = wave.amplitude.shape
+                    wave = prepared
+                    rows.append({"from_shape": previous, "to_shape": wave.amplitude.shape,
+                                 "reason": str(error), "probability": wave.probability,
+                                 "method": "caller-budgeted sampling preparation; physical operator rechecked"})
+                    continue
             if not math.isfinite(error.required_scale):
                 raise ValueError("Wave operator requires an unbounded refinement") from error
-            factor = 2**max(1, math.ceil(math.log2(max(1., error.required_scale))))
-            shape = tuple(n*factor for n in wave.amplitude.shape)
+            # A power-of-two *factor* can almost quadruple the needed cell
+            # count, causing an avoidable memory failure. FFT-friendly sizes
+            # need not be powers of two. Keep a modest sampling guard and
+            # retry the unchanged physical operator on every candidate grid.
+            shape = _refinement_shape(wave.amplitude.shape, error.required_scale)
             required = numerics.check(shape, retained_bytes=retained_bytes+wave.amplitude.nbytes)
             previous = wave.amplitude.shape
             wave = refine_plane_wave(wave, shape, numerics=numerics, retained_bytes=retained_bytes)
             rows.append({"from_shape": previous, "to_shape": shape, "reason": str(error),
+                         "requested_scale": error.required_scale,
+                         "grid_selection": "FFT-friendly required scale with 5 percent guard; minimum growth 1.25",
                          "estimated_working_bytes": required, "probability": wave.probability,
                          "method": "unitary complex Fourier embedding; fixed physical period and analytical carriers"})
+
+
+def _refinement_shape(shape, required_scale):
+    """Even smooth FFT dimensions covering the requested resolution increase."""
+    from scipy.fft import next_fast_len
+
+    factor = max(1.25, float(required_scale)*1.05)
+    result = []
+    for count in shape:
+        target = math.ceil(count*factor)
+        target += target % 2
+        target = int(next_fast_len(target))
+        while target % 2:
+            target = int(next_fast_len(target+1))
+        result.append(target)
+    return tuple(result)

@@ -109,8 +109,8 @@ class CondenserScanDesignPanel(QWidget):
         self.cancel_button = QPushButton('Cancel')
         self.cancel_button.setEnabled(False)
         self.angle_target = WheelSafeComboBox()
-        self.angle_target.addItem('Mechanical direction at sample (current scan convention)', 'mechanical')
-        self.angle_target.addItem('Canonical direction at sample (includes vector potential)', 'canonical')
+        self.angle_target.addItem('Canonical direction at sample (automatic scan convention)', 'canonical')
+        self.angle_target.addItem('Mechanical direction at sample (comparison)', 'mechanical')
         self.angle_target.setToolTip('A design constraint only. Mechanical and canonical angles differ inside a magnetic field. Neither alone proves detector stationarity.')
         self.search_ac = QCheckBox('Search AC positions within this candidate interval')
         self.search_ac.setChecked(True)
@@ -305,6 +305,12 @@ class CondenserScanDesignPanel(QWidget):
             pivot = result.pivot
             kind = 'Common scan pivot candidate' if pivot.is_common_pivot else 'Closest approach only; not a common pivot'
             lines.append(f'{kind}: Z {pivot.z_mm:.7g} mm | relative 2-axis residual {pivot.relative_residual:.4g}')
+            others = getattr(pivot, 'other_verified_roots_z_mm', ())
+            if others:
+                lines.append('Other verified scan pivot planes (mm): ' + ', '.join(f'{z:.7g}' for z in others))
+            lines.append(getattr(pivot, 'search_scope', 'Bounded downstream search.'))
+            if getattr(pivot, 'refinement_limit_reached', False):
+                lines.append('Refinement budget reached; additional candidate planes remain unresolved.')
         return lines
 
     @Slot()

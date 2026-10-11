@@ -1,0 +1,86 @@
+{
+  "id": "US6548816B2",
+  "kind": "patent",
+  "family": "消像散器",
+  "url": "https://patents.google.com/patent/US6548816B2/en",
+  "figures": "Fig. 1: eight coils; Fig. 3: twelve coils",
+  "component_keys": [
+    "feg_stigmator",
+    "condenser_stigmator",
+    "objective_stigmator",
+    "diffraction_stigmator"
+  ],
+  "supported_facts": [
+    "不同电流组合可在同一多线圈结构上产生多个场谐波。",
+    "四极作用不等于只有四个实体线圈。"
+  ],
+  "unsupported_claims": [
+    "未确认项目每个消像散器的实际极数和绕组。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:15.237876+00:00",
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 717425,
+      "sha256": "ca5be8fd2c0b9c4b7fd8636c4da0cbf63dc1cca7da27b016f94d8d0c40751afa",
+      "kind": "original_pdf",
+      "method": "downloaded_public_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/1c/63/e0/ab9b6b681c1bbc/US6548816.pdf"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 56198,
+      "sha256": "8150bde533091f2c2e8a43dc438a89c7d16327c2204f817911e8c6f40dda5902",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 2,
+      "render_dpi": 108
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 143743,
+      "sha256": "ed55a30a39931c91c31810d96cca0b13582abb3c7e575b87acb974bad8cd588b",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 3,
+      "render_dpi": 108
+    }
+  ],
+  "availability_notes": [],
+  "title": "Stigmator assembly",
+  "authors": [
+    "Fumio Hosokawa"
+  ],
+  "owner": [
+    "Jeol Ltd"
+  ],
+  "dates": {
+    "priorityDate": "2000-07-25",
+    "filingDate": "2001-07-24",
+    "publicationDate": "2003-04-15"
+  },
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/1c/63/e0/ab9b6b681c1bbc/US6548816.pdf",
+  "resolved_pdf_url": "https://patentimages.storage.googleapis.com/1c/63/e0/ab9b6b681c1bbc/US6548816.pdf",
+  "pdf_page_count": 11,
+  "pdf_metadata": {
+    "format": "PDF 1.3",
+    "title": "1498383465868774101-06548816",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "",
+    "producer": "ImageMagick 6.9.0-6 Q8 x86_64 2015-02-23 http://www.imagemagick.org",
+    "creationDate": "D:20170625023751",
+    "modDate": "D:20170625023751",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    2,
+    3
+  ],
+  "archive_status": "original_pdf_saved",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

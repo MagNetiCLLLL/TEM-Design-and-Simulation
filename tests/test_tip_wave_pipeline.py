@@ -485,6 +485,31 @@ def _prefix_fixture(monkeypatch):
     return state, original, gun_calls, column_calls
 
 
+@pytest.mark.parametrize("policy_change", (
+    {"enabled": False},
+    {"maximum_relative_complex_change": .0025},
+))
+def test_nonsegmented_observation_cache_does_not_bypass_changed_acceptance_policy(monkeypatch, tmp_path, policy_change):
+    """The outer plane cache must not hide changed inner numerical admission."""
+    state, original, gun_calls, calls = _prefix_fixture(monkeypatch)
+    request = _observation_request(tmp_path, original.plane_z_mm+.1, segmented=False)
+    first = simulate_tip_wave(state, request)
+    assert len(calls) == 1
+    calls.clear()
+    changed = replace(request, acceptance_window=replace(request.acceptance_window, **policy_change))
+    second = simulate_tip_wave(state, changed)
+    assert calls == [(original.plane_z_mm, changed.observation_z_mm)]
+    assert gun_calls == ["gun"]  # policy changes do not invalidate the source
+    # A quiet drift needs no acceptance approximation; changed admission must
+    # nevertheless execute, with the same physical complex output.
+    np.testing.assert_array_equal(first.checkpoint.beam.modes[0].plane.amplitude,
+                                  second.checkpoint.beam.modes[0].plane.amplitude)
+    calls.clear()
+    repeated = simulate_tip_wave(state, changed)
+    assert calls == [] and repeated.propagation_cache_hit
+    assert repeated.checkpoint.digest == second.checkpoint.digest
+
+
 @pytest.mark.parametrize("segmented", (False, True))
 def test_virtual_plane_resumes_nearest_completed_post_sample_observation(monkeypatch, tmp_path, segmented):
     """Actual complex drift/control fixture, not an admitted full tip chain."""
@@ -943,9 +968,13 @@ def test_admitted_plan_cannot_cross_a_detector_absorption_boundary(monkeypatch, 
     name = "_propagate_column_segmented" if segmented else "_propagate_column"
     transport = getattr(pipeline, name)
     def split_transport(working, upstream, stop, **options):
-        # The whole preflight span contains this detector. Neither physical
-        # interval may borrow that plan, even though it has the same fields.
-        assert options["_prepared"] is None
+        # The whole preflight span contains this detector. Eligibility may
+        # prepare either exact physical interval, but never lend the whole span.
+        prepared = options["_prepared"]
+        if prepared is not None:
+            assert prepared[0].z_mm[0] == upstream.plane_z_mm
+            assert prepared[0].z_mm[-1] == stop
+            assert not (prepared[0].z_mm[0] < detector.z_mm < prepared[0].z_mm[-1])
         return transport(working, upstream, stop, **options)
     monkeypatch.setattr(pipeline, name, split_transport)
     result = simulate_tip_wave(state, _observation_request(tmp_path, target, segmented=segmented), use_cache=False)
@@ -956,9 +985,12 @@ def test_admitted_plan_cannot_cross_a_detector_absorption_boundary(monkeypatch, 
     actual, expected = result.checkpoint.beam.modes[0], reference.beam.modes[0]
     assert 0 < result.checkpoint.beam.total_weight < original.beam.total_weight
     assert actual.weight_per_reference_electron == pytest.approx(expected.weight_per_reference_electron, rel=1e-12)
-    wavelength = float(wavelength_m(actual.energy_kev*1000.))
-    np.testing.assert_allclose(actual.plane.basis_m, expected.plane.basis_m, rtol=1e-12, atol=1e-18)
-    assert np.linalg.norm(actual.plane.full_amplitude(wavelength)-expected.plane.full_amplitude(wavelength)) < 2e-10
+    # The physical hard edge legitimately fills the residual Nyquist band.
+    # Compare its complete complex representation in an identical carrier,
+    # without asking a material-stage phase-expansion gate to certify this mesh.
+    for field in ("basis_m", "origin_m", "curvature_m1", "tilt_rad"):
+        np.testing.assert_allclose(getattr(actual.plane, field), getattr(expected.plane, field), rtol=1e-12, atol=1e-18)
+    assert np.linalg.norm(actual.plane.amplitude-expected.plane.amplitude) < 2e-10
 
 
 def test_segmented_column_rejects_prepared_plan_with_different_endpoints(monkeypatch, tmp_path):

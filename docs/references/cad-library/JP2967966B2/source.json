@@ -1,0 +1,63 @@
+{
+  "id": "JP2967966B2",
+  "kind": "patent",
+  "family": "普通圆磁透镜",
+  "url": "https://patents.google.com/patent/JP2967966B2/en",
+  "figures": "Figs. 5-8; description [0003]-[0005]",
+  "component_keys": [
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "adapter_lens",
+    "probe_tl22_lens",
+    "probe_tl21_lens",
+    "probe_tl12_lens",
+    "image_*_lens",
+    "diffraction_lens",
+    "intermediate_lens",
+    "projector_lens_1",
+    "projector_lens_2"
+  ],
+  "supported_facts": [
+    "典型圆磁透镜由磁轭、绕组、上下极靴及间隙组成。",
+    "文中区分冷却板、薄电绝缘层及间隔件。"
+  ],
+  "unsupported_claims": [
+    "不是 Titan/Spectra 尺寸图。",
+    "没有足够尺寸依据在所有透镜中新增冷却管、螺钉或开槽。"
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T00:44:14.864926+00:00",
+  "assets": [
+    {
+      "file": "patent-record.html",
+      "bytes": 80854,
+      "sha256": "634bea2228e2357547a6483ae59a25a62bc46f247941850b638e126fa51fca5f",
+      "kind": "patent_record_html",
+      "source_url": "https://patents.google.com/patent/JP2967966B2/en"
+    }
+  ],
+  "availability_notes": [
+    "该公开记录未提供 PDF 下载地址；保留可核对文字记录，未冒充已获得原始图纸。"
+  ],
+  "title": "Electron lens and electron microscope",
+  "authors": [
+    "聰一郎 林",
+    "俊男 小内",
+    "健一 明珍"
+  ],
+  "owner": [
+    "Hitachi Ltd"
+  ],
+  "dates": {
+    "priorityDate": "1993-08-31",
+    "filingDate": "1993-08-31",
+    "publicationDate": "1999-10-25"
+  },
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "primary_pdf_url": null,
+  "archive_status": "record_only_original_pdf_unavailable",
+  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
+  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+}

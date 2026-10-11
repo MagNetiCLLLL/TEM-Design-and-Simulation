@@ -1,7 +1,7 @@
 """Round-column propagation with the complete radial complex field.
 
-FFTLog's logarithmic Hankel transform reduces an exactly axisymmetric wave
-from a square lattice to one radial axis. No Cs term is switched off, and
+FFTLog's logarithmic Hankel transform transports one definite angular Fourier
+channel in round optics on one radial axis. No Cs term is switched off, and
 this is not an incoherent ray envelope. A non-axisymmetric operation ends
 this representation before it is applied by the 2-D column operator.
 """
@@ -24,19 +24,28 @@ class RadialWave:
     radius_m: np.ndarray
     amplitude: np.ndarray  # density amplitude m^-1; curvature is factored
     curvature_m1: float = 0.
+    angular_order: int = 0  # Full field is amplitude(r)*exp(i*m*theta), plus the radial carrier.
+
+    def __post_init__(self):
+        if isinstance(self.angular_order, bool) or not isinstance(self.angular_order, (int, np.integer)):
+            raise ValueError("Radial angular order must be a signed integer")
+        object.__setattr__(self, "angular_order", int(self.angular_order))
 
     @property
     def dln(self):
-        return float(np.log(self.radius_m[1]/self.radius_m[0]))
+        # Neighbouring ratios lose significant relative precision on very
+        # dense grids. Their full represented span contains N-1 intervals,
+        # including grids originally constructed with endpoint=False.
+        return float(np.log(self.radius_m[-1]/self.radius_m[0])/(len(self.radius_m)-1))
 
     @property
     def probability(self):
         return float(2*np.pi*self.dln*np.sum(abs(self.radius_m*self.amplitude)**2))
 
 
-def _complex_fht(value, dln, offset, *, inverse=False):
+def _complex_fht(value, dln, offset, *, inverse=False, order=0):
     from temsim.physics.radial_fftlog import complex_hankel
-    return complex_hankel(value, dln, offset, inverse=inverse)
+    return complex_hankel(value, dln, offset, inverse=inverse, order=order)
 
 
 def _phase_sampling(amplitude, phase, label):
@@ -75,13 +84,15 @@ def _hankel_grid(wave):
     metric = ((np.cumsum(shell) > shell.sum()*1e-10)
               & (np.cumsum(shell[::-1])[::-1] > shell.sum()*1e-10))
     momentum2 = 2*np.pi*wave.dln*np.sum(abs(np.gradient(wave.amplitude, wave.dln)[metric])**2)/probability
+    if wave.angular_order:
+        momentum2 += 2*np.pi*wave.dln*wave.angular_order**2*np.sum(abs(wave.amplitude[metric])**2)/probability
     if min(position2, momentum2) <= 0 or not np.all(np.isfinite((position2, momentum2))):
         raise ValueError("Radial transform needs finite spatial and spectral extents")
     # The quartic phase generates a long physical high-k tail. Centring on
     # its RMS alone wraps that tail into the low-k end of the periodic FFTLog
     # interval. Reserve a wider reciprocal domain; do not filter the tail.
     initial = np.log(wave.radius_m[0]*wave.radius_m[-1]*math.sqrt(momentum2/position2))
-    offset = fhtoffset(wave.dln, 0., initial=float(initial))
+    offset = fhtoffset(wave.dln, abs(wave.angular_order), initial=float(initial))
     return offset, np.exp(offset)/wave.radius_m[::-1]
 
 
@@ -100,7 +111,7 @@ def expand_radial_domain(wave, factor=16., *, maximum_samples=4_194_304):
     radius = wave.radius_m[0]*np.exp((np.arange(count)-extra)*wave.dln)
     amplitude = np.zeros(count, complex)
     amplitude[extra:extra+len(wave.amplitude)] = wave.amplitude
-    return RadialWave(radius, amplitude, wave.curvature_m1)
+    return RadialWave(radius, amplitude, wave.curvature_m1, wave.angular_order)
 
 
 def _check_hankel_edges(value):
@@ -121,7 +132,7 @@ def refine_radial(wave, scale, *, maximum_samples=4_194_304):
     # Fourier interpolation of the log-coordinate flux amplitude. The
     # negative Nyquist component is retained by scipy's periodic resampler.
     value = resample(wave.radius_m*wave.amplitude, count)
-    result = RadialWave(radius, value/radius, wave.curvature_m1)
+    result = RadialWave(radius, value/radius, wave.curvature_m1, wave.angular_order)
     if not math.isclose(old, result.probability, rel_tol=1e-9, abs_tol=1e-14):
         raise ValueError("Radial grid refinement changed represented probability")
     return result
@@ -214,7 +225,7 @@ def _radial_stop(wave, radius_m):
     return replace(wave, amplitude=np.where(wave.radius_m <= radius_m, wave.amplitude, 0j))
 
 
-def round_map(matrix):
+def round_map(matrix, *, with_rotation=False):
     a, b, c, d = matrix[:2, :2], matrix[:2, 2:], matrix[2:, :2], matrix[2:, 2:]
     block = max((a, b, c, d), key=lambda value: np.linalg.norm(value))
     scale = np.linalg.norm(block)/math.sqrt(2)
@@ -227,13 +238,21 @@ def round_map(matrix):
     if any(not np.allclose(value, factor*rotation, rtol=1e-9, atol=1e-13*max(1., abs(factor)))
            for value, factor in zip((a, b, c, d), result)):
         raise ValueError("A non-axisymmetric canonical map requires a 2-D wave")
-    return result
+    return (result, rotation) if with_rotation else result
 
 
 def propagate_radial(wave, matrix, wavelength_m, *, reference_phase_rad, reference_length_m=1e-3):
-    """The same continuous metaplectic lift as the Cartesian column path."""
+    """The Cartesian lift plus exact exp(i*m*theta) channel phases.
+
+    A proper transverse rotation pulls back theta by its signed angle. A
+    negative scaled chart reverses the angle by pi. The direct Collins chart
+    retains its signed angular Fourier factor in addition to the m=0 lift.
+    """
     from temsim.physics.canonical_action import drift_gaussian_phase
-    a, b, c, d = round_map(matrix)
+    (a, b, c, d), rotation = round_map(matrix, with_rotation=True)
+    angular_order = wave.angular_order
+    order = abs(angular_order)
+    rotation_phase = np.exp(-1j*angular_order*math.atan2(rotation[1, 0], rotation[0, 0]))
     k0 = 2*np.pi/wavelength_m
     effective_a = a+b*wave.curvature_m1
     before = wave.probability
@@ -247,12 +266,14 @@ def propagate_radial(wave, matrix, wavelength_m, *, reference_phase_rad, referen
     direct = b != 0 and abs(effective_a) < abs(b)*spectral_to_spatial/k0
     if not direct and abs(effective_a) > 1e-8:
         drift = b/effective_a
-        transformed = _complex_fht(wave.radius_m*wave.amplitude, wave.dln, offset)
+        transformed = _complex_fht(wave.radius_m*wave.amplitude, wave.dln, offset, order=order)
         _check_hankel_edges(transformed)
         phase = -.5*drift/k0*frequency**2
         _phase_sampling(transformed, phase, "Fresnel")
-        outgoing = _complex_fht(transformed*np.exp(1j*phase), wave.dln, offset, inverse=True)
+        outgoing = _complex_fht(transformed*np.exp(1j*phase), wave.dln, offset, inverse=True, order=order)
         amplitude = outgoing/wave.radius_m/abs(effective_a)
+        if angular_order and effective_a < 0:
+            amplitude = amplitude*((-1)**order)
         radius = wave.radius_m*abs(effective_a)
         curvature = (c+d*wave.curvature_m1)/effective_a
         chart = drift_gaussian_phase(np.eye(2)*drift,
@@ -263,13 +284,16 @@ def propagate_radial(wave, matrix, wavelength_m, *, reference_phase_rad, referen
         phase = .5*k0*(a/b+wave.curvature_m1)*wave.radius_m**2
         _phase_sampling(wave.radius_m*wave.amplitude, phase, "Fourier input")
         offset, frequency = _hankel_grid(replace(wave, amplitude=wave.amplitude*np.exp(1j*phase)))
-        transformed = _complex_fht(wave.radius_m*wave.amplitude*np.exp(1j*phase), wave.dln, offset)
+        transformed = _complex_fht(wave.radius_m*wave.amplitude*np.exp(1j*phase), wave.dln, offset, order=order)
         _check_hankel_edges(transformed)
         amplitude = k0/(1j*b)*transformed/frequency
+        if angular_order:
+            amplitude = amplitude*((-1j*np.sign(b))**order)
         radius = abs(b)/k0*frequency
         curvature = d/b
         chart = -math.atan2(b/reference_length_m, a)
-    result = RadialWave(radius, amplitude*np.exp(1j*(reference_phase_rad-chart)), curvature)
+    result = RadialWave(radius, amplitude*np.exp(1j*(reference_phase_rad-chart))*rotation_phase,
+                        curvature, angular_order)
     if not math.isclose(before, result.probability, rel_tol=1e-9, abs_tol=1e-14):
         raise ValueError("Round canonical propagation changed represented current")
     return result
@@ -320,7 +344,6 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
     from temsim.physics.posed_wave_hardware import PosedWaveBore
     from temsim.physics.canonical_action import CanonicalPath
     from temsim.optics.electron_gun.tip_coherence import wavelength_m
-    from temsim.simulation_modes import is_ideal
     plan, radii, stops, owners = _prepare_column(state, checkpoint.plane_z_mm, stop_z_mm, maximum_step_mm)
     if (getattr(plan, "mapped_fields", ()) or any(
             isinstance(item, (PosedWaveBore, _PlacedAperture))
@@ -356,7 +379,7 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         execution = RadialExecution(lambda samples: from_executed_gun(mode, payloads[mode.mode_id], samples),
             initial_samples, maximum_samples, cancelled=cancelled, report=report)
         wave = execution.wave
-        energy = state.beam_voltage_kv if is_ideal(state) else mode.energy_kev
+        energy = mode.energy_kev
         wavelength = float(wavelength_m(mode.energy_kev*1000))
         pending = CanonicalPath(1e-3)
         # Conservative extent of the represented position/frequency grids.

@@ -8,34 +8,47 @@ previous mixed models are not silently replaced.
 
 | Menu choice | Implemented behaviour |
 | --- | --- |
-| Ideal Optics | Existing finite-field paraxial column transport at reference energy. No empirical spherical kicks, hexapole terms, additional Objective Cc kick or higher-order wave-lens coefficients. Configured defocus remains. |
-| Analytical Field | Existing parameterised fields and configured aberration model. Registered spatial maps and geometry recipes are retained but inactive. |
+| Ideal Optics | Parameterised finite column fields, configured spherical/chromatic aberrations and corrector multipoles. Actual particle and wave-mode energies are retained. Pole shape and magnetic materials are not used to solve the field. |
+| Analytical Field | The same parameterised field laws as Ideal Optics; retained for existing profiles. Registered spatial maps and geometry recipes are retained but inactive. |
 | Linear Geometry Field | All enabled column round lenses require explicit linear FEM recipes. Missing recipes or unsupported geometry fail; no automatic analytic fallback. |
 | Nonlinear Material Field | Explicit sourced B-H recipes, jointly solved static axisymmetric fields. No hysteresis or thermal feedback; unsupported/missing inputs fail. |
 | Coupled Multiphysics | Disabled. Circuit/thermal/structural feedback is not implemented. |
 | Custom / Per-lens Models | Existing per-lens analytic, geometry and imported-map configuration, including legacy behaviour and its explicit approximation warnings. |
 
-## Teaching boundaries
+## Model boundaries
 
-Ideal Optics is a finite-length first-order lens model, not a newly calibrated
-thin-lens model or an assertion of zero beam width. It retains focusing, magnetic
-rotation, first-order quadrupole/stigmator controls, physical apertures and
-detector interception. Pole/material geometry is not used to solve a magnetic
-boundary-value problem in either Ideal or Analytical mode.
+Ideal Optics means an idealised, parameterised magnetic-field description. It
+retains finite-length focusing, rotation, dipoles, quadrupoles, HP hexapoles,
+configured lens aberrations, physical apertures and detector interception.
+DPH therefore changes the trajectory inside HP, including the nonlinear effect
+of passing off-axis. It does not mean a perfectly corrected or aberration-free
+instrument. Explicit operator switches used by diagnostic comparisons still
+permit a separate linear reference; these do not define the Ideal menu mode.
 
-Only column optical propagation uses reference-energy focusing in Ideal mode.
-Ray energy values are not overwritten: source, finite-specimen scattering, EDS,
-EELS and local specimen magnetic flights retain their own physical models.
+Pole-piece shape, permeability and B-H saturation do not solve a magnetic
+boundary-value problem in Ideal or Analytical Field. Installed positions,
+lengths, field-profile parameters, alignment and physical obstructions still
+matter. Geometry/material modes select the field provider, not whether
+correctors are active. Both particle and wave propagation retain each state's
+energy instead of silently replacing it with the nominal energy.
+
 The electron-gun calculation and Energy Filter's dedicated dispersive transport
 are not replaced by this column-lens selector. It does not switch TEM/STEM modes,
 enable wave imaging, change sample materials or erase scattering signals.
+Configured manual wave-aberration coefficients remain active in Ideal and
+Analytical Field. The existing Field-derived coefficient fitter requires a
+registered or generated spatial field map; it is unavailable in these two
+parameterised modes. An incompatible saved fit request is reported rather
+than replaced with fabricated fitted coefficients. Editing manual coefficients
+does not switch to Custom or activate an inactive field map. Coefficients not
+fitted or measured stay labelled as such; choosing a model does not establish
+calibrated microscope performance.
 
-The Ideal wave-lens coefficients are explicitly zero except configured defocus.
-They are labelled disabled by model, not fitted or measured. A field-derived
-aberration request saved in another model is not executed while Ideal is active.
-Linear Geometry selects the column field source; the existing Manual versus
-Field-derived wave-aberration choice remains explicit. A geometry field alone
-does not certify the TEM/STEM image's wave-aberration model.
+This definition replaces the earlier aberration-free Ideal mode on 10 October
+2026. Previously saved Ideal inputs now calculate with the new definition;
+previous results remain historical and cannot be reused as new calculations
+across a changed solver identity. No source or lens parameter migration is
+performed. Analytical Field retains its existing key for profile compatibility.
 
 ## Controls and state
 
@@ -81,8 +94,8 @@ means accepting an incompatible field map. The persisted solver identity is
 
 `tests/test_simulation_modes.py` checks selection, invalid-mode rejection, profile
 and State round trips, inactive-shelf identities, map bypass/restoration, actual
-linear FEM routing, coefficient suppression, first-order superposition,
-reference-energy achromatic column propagation, and menu/cache behaviour.
+linear FEM routing, active nonlinear corrector/Cs coefficients, actual-energy
+transport, diagnostic linear references, and menu/cache behaviour.
 Synthetic test inputs are not OEM dimensions, coil ratings or material data.
 These tests do not establish real-microscope accuracy. Nonlinear numerical tests
 and their boundaries are documented separately; multiphysics is not implemented.

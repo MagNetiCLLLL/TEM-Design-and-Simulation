@@ -233,9 +233,10 @@ def test_corrector_multipoles_match_shared_lorentz_field_and_mode(mode):
     expected = SpecimenFieldTransport(state).field_at_global_positions_t(points)
     np.testing.assert_allclose(scene.field_at_global_positions_t(points), expected, rtol=2e-15)
     assert scene.source_categories == ("corrector", "corrector")
-    if mode == "ideal":
-        without_hex = prepare_magnetic_scene(bare_state(corrector_elements=(quad,), simulation_mode=mode))
-        np.testing.assert_array_equal(scene.field_at_global_positions_t(points), without_hex.field_at_global_positions_t(points))
+    without_hex = prepare_magnetic_scene(bare_state(corrector_elements=(quad,), simulation_mode=mode))
+    difference = scene.field_at_global_positions_t(points) - without_hex.field_at_global_positions_t(points)
+    assert np.linalg.norm(difference[:2]) > 0.
+    np.testing.assert_array_equal(difference[2], 0.)  # Hexapole vanishes on its axis.
 
 
 def test_deflector_signed_integrals_use_effective_thickness_and_snapshot_energy():

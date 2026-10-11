@@ -707,6 +707,10 @@ class MainWindow(QMainWindow):
     def _cancel_calculations(self):
         self.live_beam_refresh.cancel()
         self.workspace.coherent_beam.cancel()
+        self.workspace.hardware_tuning.steering.cancel()
+        from temsim.gui.aberration_view import AberrationComparisonView
+        for view in self.findChildren(AberrationComparisonView):
+            view.cancel_actual_diagnostic()
         self.preview_timer.stop()
         self._interactive_preview_pending = False
         self._interactive_preview_generation = None
@@ -3011,6 +3015,9 @@ class MainWindow(QMainWindow):
         experiment_files_done = self.workspace.design_explorer.shutdown()
         selected_plane_done = self.workspace.selected_plane_readout.shutdown()
         conjugate_planes_done = self.workspace.conjugate_planes.shutdown()
+        steering_done = self.workspace.hardware_tuning.shutdown()
+        from temsim.gui.aberration_view import AberrationComparisonView
+        probe_diagnostics_done = all([view.shutdown() for view in self.findChildren(AberrationComparisonView)])
         coherent_done = self.workspace.coherent_beam.shutdown()
         paired_done = self.paired_beams.shutdown()
         settings = QSettings()
@@ -3026,7 +3033,7 @@ class MainWindow(QMainWindow):
         presets_done = self.operating_presets.pool.waitForDone(3_000)
         self.direct_alignments.invalidate_pending()
         alignments_done = self.direct_alignments.pool.waitForDone(3_000)
-        if not all((calculations_done, archives_done, sweeps_done, presets_done, alignments_done, interactive_done, magnetic_done, experiment_files_done, selected_plane_done, conjugate_planes_done, coherent_done, paired_done)):
+        if not all((calculations_done, archives_done, sweeps_done, presets_done, alignments_done, interactive_done, magnetic_done, experiment_files_done, selected_plane_done, conjugate_planes_done, steering_done, probe_diagnostics_done, coherent_done, paired_done)):
             self.status_label.setText("Waiting for owned calculations to reach their cancellation boundary; close again when they finish")
             event.ignore()
             return

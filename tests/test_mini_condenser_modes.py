@@ -17,11 +17,43 @@ from temsim.profile_io import apply_profile_values, read_profile, save_profile
 
 def test_startup_magnitude_has_one_authoritative_configuration():
     configured = load_mini_condenser_default_excitation_percent()
-    assert create_mini_condenser().percent == configured > 0.0
+    assert create_mini_condenser().percent == configured == 10.0
+    state = default_state()
+    assert state.mini_condenser.percent == load_mini_condenser_default_excitation_percent(
+        "column/C3_ProbeCorrector.toml"
+    ) == 43.88646617222637
     for key in ("micro_probe", "nano_probe"):
         mode = mode_by_key(key)
         assert "percent" not in mode.devices["mini_condenser"]
-        assert mode.calibration_status == "retained_not_recomputed_after_signed_cm_mode_control"
+        assert mode.devices["mini_condenser"]["field_polarity"] == (
+            1 if key == "micro_probe" else -1
+        )
+
+
+@pytest.mark.parametrize("column,expected", [
+    ("C2", 10.0),
+    ("C3", 10.0),
+    ("C3 + Probe Corrector", 43.88646617222637),
+    ("C3 + Image Corrector", 10.0),
+    ("C3 + Probe Corrector + Image Corrector", 10.0),
+])
+def test_column_startup_default_and_geometry_reload_preserve_live_cm(column, expected):
+    from temsim.column.state_layout import apply_physical_layout_to_state
+    state = default_state()
+    catalog = AssemblyCatalog()
+    selection = AssemblySelection("FEG", column, "No Energy Filter")
+    catalog.apply(state, selection)
+    assert state.mini_condenser.percent == expected
+
+    state.mini_condenser.signed_excitation_percent = -48.125
+    apply_physical_layout_to_state(state)
+    assert state.mini_condenser.signed_excitation_percent == -48.125
+    catalog.apply(state, selection, preserve_operating_parameters=True)
+    assert state.mini_condenser.signed_excitation_percent == -48.125
+
+    # Only explicit new installation/reset reinstates the column default.
+    catalog.apply(state, selection, preserve_operating_parameters=False)
+    assert state.mini_condenser.percent == expected
 
 
 @pytest.mark.parametrize("magnitude", [10.0, 37.25, 90.0])

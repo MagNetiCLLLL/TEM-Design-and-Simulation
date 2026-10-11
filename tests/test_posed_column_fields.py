@@ -32,9 +32,13 @@ def component_state(native, key, *, angle_mrad=0., offset_mm=0.):
         component.strength_m3, component.orientation_rad = 10000., .2
     else:
         component.kick_x_mrad, component.kick_y_mrad = .02, -.01
+    # A declared corrector channel is placed through its actual coil insert;
+    # legacy channels without a physical host keep their own placement.
+    source_part = native._resolved_assembly.part(key)
+    pose_key = source_part.data.get("physical_host_key", key)
     assembly = replace(native._resolved_assembly, parts=tuple(
         replace(part, data={**part.data, "rotation_y_mrad": angle_mrad, "offset_x_mm": offset_mm})
-        if part.key == key else part for part in native._resolved_assembly.parts))
+        if part.key == pose_key else part for part in native._resolved_assembly.parts))
     state = SimpleNamespace(stigmators=[], corrector_elements=[], deflectors=[], lenses=[],
         _resolved_assembly=assembly, condenser_system=native.condenser_system, sample=native.sample,
         simulation_mode="analytical", beam_voltage_kv=300., step_mm=.05, history_step_mm=.05,
@@ -103,6 +107,19 @@ def test_posed_dipole_field_and_scene_share_registration_without_double_count(na
 
 def test_pose_capture_is_empty_for_minimal_zero_field_state():
     assert capture_posed_column_fields(SimpleNamespace()) == ()
+
+
+def test_ideal_analytic_fields_retain_posed_hp_and_explicit_opt_out(native_state):
+    state, component = component_state(native_state, "probe_hp2_hexapole", angle_mrad=2., offset_mm=.01)
+    reference, = capture_posed_column_fields(state)
+    state.simulation_mode = "ideal"
+    actual, = capture_posed_column_fields(state)
+    assert actual == reference
+    assert any(term[0]+term[1] == 3 and term[2] != 0 for term in actual.polynomial_terms)
+    assert capture_posed_column_fields(state, include_hexapole=False) == ()
+    from temsim.physics.wave_plane_observables import capture_column_plane_magnetic_gauge
+    gauge = capture_column_plane_magnetic_gauge(state, component.z_mm)
+    assert actual in gauge.fields
 
 
 def test_unbound_posed_deflector_override_is_rejected(native_state):
