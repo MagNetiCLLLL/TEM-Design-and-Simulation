@@ -95,6 +95,12 @@ def test_every_shipped_perforated_strip_uses_real_plate_thickness_and_optical_pl
     runtime = {key: {"radius_mm": .05}}
     model = part_model_from_document(document, key, include_children=False, runtime_values=runtime)
     vertices = _vertices(model, key)
+    # Standalone filter meshes use the bent branch frame: its entrance axis
+    # is +X. Measure thickness in the part's own longitudinal CAD coordinate.
+    from temsim.energy_filter_model_3d import energy_filter_component_pose, supports_energy_filter_part
+    if supports_energy_filter_part(part):
+        origin, rotation = energy_filter_component_pose(part, {row["key"]: row for row in document["parts"]})
+        vertices = (vertices - origin) @ rotation + (0., 0., part["local_center_z_mm"])
     thickness = part.get("plate_thickness_mm", part.get("active_length_mm"))
     center = part.get("optical_reference_local_z_mm", part["local_center_z_mm"])
     assert np.ptp(vertices[:, 2]) == pytest.approx(thickness)
@@ -235,13 +241,16 @@ def test_nanopulser_circular_aperture_keeps_its_declared_thickness_and_fixed_bor
 
 @pytest.mark.parametrize("path", ["project_and_recording_system/EnergyFilter.toml",
                                   "project_and_recording_system/NoEnergyFilter.toml"])
-def test_projection_dpa_zero_thickness_reference_plane_is_preserved(path):
+def test_projection_dpa_plate_thickness_and_zero_length_reference_plane_are_preserved(path):
     document = _read(path)
     key = "projection_chamber_dpa_aperture"
     part = _part(document, key)
     assert part["length_mm"] == 0 and part["mechanical_profile"] == "fixed_differential_pumping_aperture"
+    center = part["optical_reference_local_z_mm"]
+    assert part["local_start_z_mm"] == part["local_center_z_mm"] == part["local_end_z_mm"] == center
+    assert part["plate_thickness_mm"] == .2
     model = part_model_from_document(document, key)
     vertices = _vertices(model, key)
-    assert np.ptp(vertices[:, 2]) == 0
-    assert vertices[:, 2] == pytest.approx(part["local_center_z_mm"])
+    assert np.ptp(vertices[:, 2]) == pytest.approx(part["plate_thickness_mm"])
+    assert (vertices[:, 2].min(), vertices[:, 2].max()) == pytest.approx((center - .1, center + .1))
     assert np.linalg.norm(vertices[:, :2], axis=1).min() == pytest.approx(part["mechanical_bore_diameter_mm"] / 2)

@@ -132,6 +132,7 @@ class AxialPropagationPlan:
     electric_field_identity: str | None = None
     electric_reference_invariant_ev: float | None = None
     posed_spherical_kicks: tuple = ()
+    intrinsic_aberration_kicks: tuple = ()
 
 
 def _frozen_array(values, dtype=np.float64):
@@ -562,6 +563,7 @@ def interleaved_rk4_values(nodes, midpoints):
 
 def build_propagation_plan(
     state, z0, z1, events=(), *, include_spherical_aberration=True,
+    include_intrinsic_aberrations=None,
     include_hexapole=True, save_z_mm=(), checkpoint_z_mm=(),
     maximum_step_mm=None, particle_medium=False, medium_energy_ev=None,
     _diagnostic_dipole_fields=None,
@@ -655,7 +657,11 @@ def build_propagation_plan(
     dipoles = [field for field in dipoles if field.key not in posed_coil_keys]
     from temsim.physics.posed_aberrations import posed_spherical_kicks
     posed_cs = posed_spherical_kicks(state, float(z0), float(z1)) if include_spherical_aberration else ()
-    exact_z_mm = [event.z_mm for event in (*image_lens_events, *posed_cs)]
+    from temsim.physics.intrinsic_aberrations import capture_intrinsic_kicks
+    include_intrinsic = (include_spherical_aberration if include_intrinsic_aberrations is None
+                         else bool(include_intrinsic_aberrations))
+    intrinsic = capture_intrinsic_kicks(state, float(z0), float(z1)) if include_intrinsic else ()
+    exact_z_mm = [event.z_mm for event in (*image_lens_events, *posed_cs, *intrinsic)]
     if electric_field is not None:
         electric_z = getattr(electric_field.base_field, "z", ())
         exact_z_mm.extend(float(value)*1e3 for value in electric_z if z0 < float(value)*1e3 < z1)
@@ -809,7 +815,7 @@ def build_propagation_plan(
         bool(getattr(state, "acceleration_enabled", False)),
         str(getattr(state, "acceleration_backend", "Auto")),
         FIELD_SIGMA_CUTOFF,
-        'canonical-rk4-shared-electric-magnetic-energy-v7-posed-cs',
+        'canonical-rk4-shared-electric-magnetic-energy-v8-intrinsic',
         mode_key(state),
         state.vacuum_map.signature() if particle_medium else "optical-map-no-medium",
     ))
@@ -825,6 +831,7 @@ def build_propagation_plan(
     for item in mapped_fields:
         digest.update(item.fingerprint.encode("ascii"))
     digest.update(repr(posed_cs).encode("utf-8"))
+    digest.update(repr(intrinsic).encode("utf-8"))
     for values in (
         zfull, step_m, magnetic, sx, sy, sxy, hex_normal, hex_skew,
         midpoint_magnetic, midpoint_sx, midpoint_sy, midpoint_sxy,
@@ -864,6 +871,7 @@ def build_propagation_plan(
         reference_momentum_kg_m_s=reference_momentum,
         mapped_fields=mapped_fields,
         posed_spherical_kicks=posed_cs,
+        intrinsic_aberration_kicks=intrinsic,
         electric_field=electric_field,
         electric_field_identity=None if electric_field is None else electric_field.numerical_identity,
         electric_reference_invariant_ev=electric_reference,
@@ -914,8 +922,10 @@ def propagation_plan_common_prefix_nodes(previous, current):
         boundary = min(item.field_support_mm[0]
                        for item in (old,new) if item is not None)
         equal &= new_z[:count] < boundary
-    old_cs = {item.lens_key: item for item in previous.posed_spherical_kicks}
-    new_cs = {item.lens_key: item for item in current.posed_spherical_kicks}
+    old_cs = {(type(item).__name__, item.lens_key): item for item in
+              (*previous.posed_spherical_kicks, *previous.intrinsic_aberration_kicks)}
+    new_cs = {(type(item).__name__, item.lens_key): item for item in
+              (*current.posed_spherical_kicks, *current.intrinsic_aberration_kicks)}
     for key in old_cs.keys() | new_cs.keys():
         before, after = old_cs.get(key), new_cs.get(key)
         if before != after:
@@ -981,7 +991,7 @@ def execute_propagation_plan(
         raise ValueError("Propagation-plan start index is out of range")
     zfull = np.asarray(plan.z_mm[start_index:], dtype=np.float64)
     from temsim.physics.posed_aberrations import kick_indices
-    posed_cs = kick_indices(plan.posed_spherical_kicks, zfull,
+    posed_cs = kick_indices((*plan.posed_spherical_kicks, *plan.intrinsic_aberration_kicks), zfull,
                             include_initial=bool(include_initial_plane_kicks))
     step_m = np.ascontiguousarray(plan.step_m[start_index:], np.float64)
     def stages(node_name, midpoint_name):
@@ -1089,9 +1099,50 @@ def execute_propagation_plan(
         f"Column | {backend} | {arrays[0].size:,} electrons | "
         f"Z {zfull[0]:.3f} to {zfull[-1]:.3f} mm | {len(zfull)-1:,} integration steps")
     retried = False
-    if policy == "require_gpu" and (medium_transport is not None or plan.mapped_fields or posed_cs):
+    # Intrinsic screens share the wave polynomial and its derivatives. Keep
+    # aligned column intervals on the compiled CUDA integrator, applying only
+    # the sparse screens with CuPy; native posed fields use the device vector
+    # reference integrator. Imported maps/collision callbacks retain their
+    # existing support boundary rather than silently losing a physical term.
+    intrinsic_device_plan = bool(plan.intrinsic_aberration_kicks)
+    intrinsic_gpu_supported = False
+    intrinsic_completed = False
+    if intrinsic_device_plan:
+        from temsim.physics.particle_gpu_reference import native_gpu_fields_supported
+        from temsim.physics.electrostatic_column_transport import _compiled_electric_data
+        intrinsic_gpu_supported = (
+            medium_transport is None
+            and native_gpu_fields_supported(plan.mapped_fields)
+            and (electric_field is None or _compiled_electric_data(electric_field) is not None))
+        # A last fast interval's residency is not a receipt for the complete
+        # composite execution. Backend provenance below covers the whole run.
+        state._last_ray_device_receipt = None
+    if policy == "require_gpu" and ((medium_transport is not None or plan.mapped_fields or posed_cs)
+                                     and not intrinsic_gpu_supported):
         raise GPUExecutionError("unsupported_stage", "Requested column transport requires the existing CPU vector-field or residual-medium solver")
-    if electric_field is not None:
+    if backend == BACKEND_CUDA and intrinsic_gpu_supported:
+        from temsim.physics.intrinsic_particle_gpu import intrinsic_gpu_transport
+        try:
+            outputs = intrinsic_gpu_transport(inputs, z_mm=zfull,
+                electric_field=electric_field,
+                initial_kinetic_energy_ev=actual_initial_energy,
+                initial_time_s=timing.get("initial_time_s"),
+                inverse_speed=timing.get("inverse_speed"),
+                mapped_fields=plan.mapped_fields, posed_spherical_kicks=posed_cs,
+                defer_nonfinite_until_clipping=defer_nonfinite_until_clipping,
+                cancel_check=lambda: check_tuning_cancelled(state))
+            intrinsic_completed = True
+        except Exception as exc:
+            from temsim.physics.backend_execution import record_backend
+            from temsim.physics.compute_backend import gpu_failure_evidence
+            record_backend("column", getattr(state, "acceleration_backend", "Auto"), BACKEND_CUDA,
+                           outcome="raised", **gpu_failure_evidence(exc, stage="intrinsic_column_transport"))
+            fallback_reason = gpu_retry_reason(exc, policy, stage="intrinsic_column_transport")
+            retried = True
+            backend = BACKEND_CPU
+    if intrinsic_completed:
+        pass
+    elif electric_field is not None:
         from temsim.physics.electrostatic_column_transport import electrostatic_column_rk4
         electric_options = dict(z_mm=zfull, electric_field=electric_field,
             initial_kinetic_energy_ev=actual_initial_energy,
@@ -1112,7 +1163,7 @@ def execute_propagation_plan(
             backend = BACKEND_NUMBA
         try:
             outputs, backend, electric_reason = electrostatic_column_rk4(inputs, backend=backend, **electric_options)
-            fallback_reason = electric_reason or fallback_reason
+            fallback_reason = "; ".join(filter(None, (fallback_reason, electric_reason))) or None
         except Exception as exc:
             if backend != BACKEND_CUDA:
                 raise
@@ -1125,7 +1176,8 @@ def execute_propagation_plan(
         backend, fallback_reason = BACKEND_CPU, "classical residual-medium collisions between optical steps"
     elif plan.mapped_fields or posed_cs:
         from temsim.physics.vector_field_transport import vector_map_rk4
-        backend, fallback_reason = BACKEND_CPU, "positioned magnetic vector-field RK4"
+        backend = BACKEND_CPU
+        fallback_reason = "; ".join(filter(None, (fallback_reason, "positioned magnetic vector-field RK4")))
         outputs = vector_map_rk4(*inputs, z_mm=zfull, mapped_fields=plan.mapped_fields,
                                 posed_spherical_kicks=posed_cs,
                                 defer_nonfinite_until_clipping=defer_nonfinite_until_clipping,
@@ -1164,7 +1216,7 @@ def execute_propagation_plan(
     check_tuning_cancelled(state)
     if workload is not None and not retried:
         STAGE_COSTS.record(workload, backend, perf_counter() - transport_started)
-    if backend == BACKEND_CUDA and electric_field is None:
+    if backend == BACKEND_CUDA and electric_field is None and not intrinsic_device_plan:
         from temsim.physics.ray_device_cache import last_device_receipt
         state._last_ray_device_receipt = last_device_receipt()
     _record_active_backend(state, backend, fallback_reason)
@@ -1195,6 +1247,7 @@ def execute_propagation_plan(
 def propagate(
     state,z0,z1,x,tx,y,ty,events=(),energy_offset_ev=None,
     *,include_spherical_aberration=True,include_hexapole=True,
+    include_intrinsic_aberrations=None,
     save_z_mm=(),include_initial_plane_kicks=True,
     checkpoint_z_mm=(),return_checkpoints=False,maximum_step_mm=None,
     defer_nonfinite_until_clipping=False,
@@ -1209,6 +1262,7 @@ def propagate(
     plan = build_propagation_plan(
         state,z0,z1,events,
         include_spherical_aberration=include_spherical_aberration,
+        include_intrinsic_aberrations=include_intrinsic_aberrations,
         include_hexapole=include_hexapole,
         save_z_mm=save_z_mm,
         checkpoint_z_mm=checkpoint_z_mm,

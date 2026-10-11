@@ -497,6 +497,15 @@ mechanical_overlap_role = "member"
 mechanical_overlap_reason = "Off-axis sample-facing EDS segments occupy azimuthal access inside the Objective assembly; the zero-length row is an aggregate marker and not an axial electron stop."
 parent_key = "objective_lens"
 eds_detector_definition_file = "EDS.toml"
+# Material detail only; angular X-ray acceptance remains in EDS.toml.
+cad_export_unit = true
+detector_material_geometry_status = "engineering_reconstruction_not_oem"
+detector_material_geometry_source = "docs/references/cad-detectors.md"
+mechanical_sensor_thickness_mm = 0.45
+mechanical_support_thickness_mm = 0.30
+mechanical_housing_wall_mm = 0.25
+mechanical_back_wall_mm = 0.50
+
 [[parts]]
 order = 5
 key = "condenser_lens_2_upper_pole"

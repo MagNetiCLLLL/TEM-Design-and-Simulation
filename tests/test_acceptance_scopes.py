@@ -98,10 +98,16 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_magnetic_navigation_link.py", "test_hardware_tuning_gui.py", "test_hardware_tuning_bindings.py",
             "test_beam_steering_gui.py", "test_actual_probe_diagnostics.py",
             "test_cad_round_lenses.py", "test_cad_multipoles.py", "test_cad_auxiliary.py", "test_cad_export_gui.py",
-                "test_compare_cad_assembly.py", "test_image_corrector_topology.py",
+                "test_compare_cad_assembly.py", "test_image_corrector_topology.py", "test_image_corrector_channel_hardware.py",
                 "test_stage_holder_manifest.py", "test_cad_stage_holder.py", "test_export_resolved_cad_assembly.py",
-                "test_cad_vacuum_tube.py",
+                    "test_cad_vacuum_tube.py", "test_cad_detectors.py", "test_cad_editing_contract.py",
+                    "test_cad_optical_binding.py", "test_step_editing.py", "test_step_import_gui.py",
+                    "test_cad_assembly_edit.py", "test_component_datums.py", "test_ray_marker_pose_sync.py",
             "test_magnetic_field_identity.py", "test_electron_failure_gui.py",
+            "test_assembly_optical_visibility.py", "test_assembly_optical_view.py",
+            "test_part_model_view_performance.py", "test_mesh_annotation_performance.py",
+            "test_part_model_gpu_view.py",
+            "test_part_model_view.py", "test_physical_layout_modes.py",
             "test_hardware_tuning_feedback.py", "test_electron_session_gui.py", "test_diagnostic_electron_record.py",
             "test_assembly_selection_state.py", "test_assembly_navigation.py", "test_instrument_configuration.py",
             "test_working_point_restore_gui.py", "test_selected_plane.py", "test_selected_plane_gui.py",
@@ -151,6 +157,7 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_multislice.py", "test_wave_fft.py", "test_tem_flux_contract.py",
             "test_stem_cuda_pipeline.py", "test_gpu_capture_contract.py", "test_execution_migration_contract.py",
             "test_wave_checkpoint_publication.py",
+            "test_plane_wave_storage.py", "test_radial_device_residency.py", "test_wave_read_session.py",
             "test_tip_wave_pipeline.py", "test_column_wave_transport.py", "test_coherent_beam_gui.py", "test_scan_preparation.py",
             "test_column_wave_electric.py", "test_tip_gun_wave.py", "test_tip_gun_shared_fields.py",
             "test_electrostatic_column_transport.py", "test_wave_grid.py",
@@ -163,7 +170,12 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_direct_alignment_pose.py",
             "test_posed_multipole_wave.py", "test_tilted_multipole_column.py",
             "test_posed_wave_aperture.py", "test_tilted_aperture_column.py",
-            "test_posed_aberration_wave.py", "test_tilted_spherical_column.py"},
+                "test_posed_aberration_wave.py", "test_tilted_spherical_column.py",
+                "test_intrinsic_aberration_operator.py", "test_intrinsic_aberration_integration.py",
+                "test_intrinsic_ray_device.py", "test_particle_gpu_reference.py",
+                "test_intrinsic_gpu_segments.py", "test_intrinsic_particle_backend.py",
+                "test_intrinsic_archive_radial.py", "test_intrinsic_legacy_boundaries.py",
+                "test_lens_aberration_editor.py", "test_system_residual_aberrations.py"},
     }
     for scope, expected in required.items():
         assert {Path(path).name for path in scope_test_files(scope)} == expected
@@ -364,3 +376,50 @@ def test_gpu_registry_keeps_cpu_parameters_mandatory_and_matches_existing_tests(
     assert not is_gpu_hardware_test(prefix + "[Numba CPU]")
     assert not is_gpu_hardware_test(prefix + "[CPU]")
     assert not is_gpu_hardware_test("tests/test_stem_cuda_pipeline.py::test_toolbar_require_gpu_does_not_retry_stem_on_cpu")
+
+
+@pytest.mark.parametrize("scope,node,reason", [
+    ("coherent-development", "tests/test_intrinsic_aberration_integration.py::test_full_column_wave_uses_intrinsic_screen_and_resumes_once_on_gpu[True]", "optional real CUDA verification requires CuPy"),
+    ("coherent-development", "tests/test_intrinsic_gpu_segments.py::test_cancel_keeps_input_arrays_unchanged", "No CUDA hardware"),
+    ("coherent-development", "tests/test_particle_gpu_reference.py::test_native_electric_gpu_matches_reference_energy_and_flight_time[True]", "Real CuPy CUDA device is unavailable"),
+    ("coherent-development", "tests/test_radial_fftlog.py::test_explicit_cuda_has_same_complex_field_and_no_implicit_fallback[2]", "No accessible CUDA runtime"),
+    ("coherent-development", "tests/test_wave_device.py::test_real_gpu_segmented_modes_reuse_one_pool_and_match_cpu", "could not import 'cupy': No module named 'cupy'"),
+    ("field-ui", "tests/test_part_model_gpu_view.py::test_real_gpu_keeps_cad_triangles_and_interior_lighting", "Real GPU rendering unavailable: CPU rendering: No OpenGL context is available"),
+    ("field-ui", "tests/test_part_model_gpu_view.py::test_real_gpu_section_invalidates_picking_and_preserves_source_faces", "Real GPU rendering unavailable: CPU rendering: No hardware OpenGL renderer is available: GDI Generic"),
+])
+def test_new_device_tests_report_absence_without_hiding_failures(scope, node, reason):
+    receipt = receipt_for(scope)
+    receipt["collected"].append(node)
+    receipt["cases"][node] = {"setup": "skipped", "teardown": "passed"}
+    receipt["skip_reasons"] = {node: "Skipped: " + reason}
+    assert evaluate(scope, receipt)["exit_code"] == 1
+    report = evaluate(scope, receipt, allow_gpu_skips=True)
+    assert report["exit_code"] == 0
+    assert report["allowed_gpu_skips"] == [node]
+    assert report["gpu_hardware"]["status"] == "NOT_RUN"
+    receipt["cases"][node] = {"setup": "passed", "call": "failed", "teardown": "passed"}
+    assert evaluate(scope, receipt, allow_gpu_skips=True)["exit_code"] == 1
+
+
+@pytest.mark.parametrize("detail", [
+    "CAD OpenGL initialization failed: Shader compile failure",
+    "CAD OpenGL framebuffer is incomplete",
+    "CAD OpenGL context is no longer available",
+    "CAD OpenGL rendering requires the Qt GUI thread",
+    "No hardware OpenGL renderer is available: NVIDIA GeForce RTX 5090",
+])
+def test_graphics_runtime_and_shader_errors_are_not_device_absence(detail):
+    from temsim.acceptance_gpu import is_gpu_unavailable_reason
+    assert not is_gpu_unavailable_reason("Real GPU rendering unavailable: CPU rendering: " + detail)
+
+
+def test_optional_hardware_registration_does_not_exempt_cpu_or_cad_checks():
+    from temsim.acceptance_gpu import is_gpu_hardware_test, is_gpu_unavailable_reason
+    for node in (
+        "tests/test_intrinsic_particle_backend.py::test_only_declared_gpu_resource_failure_can_retry_unchanged_cpu_input[Auto]",
+        "tests/test_particle_gpu_reference.py::test_array_electric_interpolation_matches_scalar_cells_and_boundaries",
+        "tests/test_part_model_gpu_view.py::test_unavailable_gpu_falls_back_once_and_retains_visible_surface_picking",
+        "tests/test_step_editing.py::test_import_edit_save_reopen_export_exact_volume_and_coordinates",
+    ):
+        assert not is_gpu_hardware_test(node)
+    assert not is_gpu_unavailable_reason("Optional isolated CAD environment is not installed")

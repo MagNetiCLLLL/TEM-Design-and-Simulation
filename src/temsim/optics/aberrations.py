@@ -241,6 +241,10 @@ def _corrector_trace_ratio(state, system: str) -> tuple[float, float, float, str
     # shallow diagnostic copy preserves the user's state while enforcing the
     # same converged maximum step used by the corrector regression tests.
     state = copy.copy(state)
+    # This historical compact-ring comparison estimates only a Cs/hexapole
+    # correction ratio. New per-lens terms belong to full-column propagation
+    # and its separate residual fit, never to this scalar Cs estimate.
+    state.lens_intrinsic_aberrations = {}
     state.step_mm = min(float(getattr(state, "step_mm", 0.1)), 0.1)
     state.history_step_mm = state.step_mm
     components = {
@@ -322,6 +326,7 @@ def _aberration_cache_signature(state, system: str) -> str:
             "objective_back_focal_plane_z_mm", "lenses", "corrector_elements",
             "stigmators", "deflectors", "electron_gun", "component_placements",
             "lens_field_map_descriptors", "_lens_field_map_bindings",
+            "lens_intrinsic_aberrations",
             "simulation_mode",
         )
     }
@@ -411,6 +416,8 @@ def effective_aberration_comparison(state, system: str) -> tuple[EffectiveAberra
         "unimplemented_terms": UNIMPLEMENTED_TERMS,
         "diagnostic_scope": (
             "Compact reference ring with nonlinear fields off/on; C3 only. "
+            "Additional per-lens intrinsic terms are excluded from this legacy "
+            "Cs estimate. Use System residual to measure their combined effect. "
             "Other residual coefficients are not fitted from the actual probe."
         ),
     }

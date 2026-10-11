@@ -57,10 +57,15 @@ def validate_model_3d(part):
     if type(model.get("schema_version")) is not int or model["schema_version"] != 1:
         raise ValueError("model_3d.schema_version must be 1")
     base = model.get("base", {"kind": "existing"})
-    _table(base, ("kind", "width_mm", "height_mm", "length_mm"), "model_3d.base")
+    _table(base, ("kind", "width_mm", "height_mm", "length_mm", "asset_json"), "model_3d.base")
     kind = base.get("kind", "existing")
-    if kind not in {"existing", "box", "elliptic_cylinder"}:
-        raise ValueError("Base kind must be existing, box or elliptic_cylinder")
+    if kind not in {"existing", "box", "elliptic_cylinder", "step"}:
+        raise ValueError("Base kind must be existing, box, elliptic_cylinder or imported STEP")
+    if kind == "step":
+        from temsim.step_assets import read_asset
+        read_asset(base.get("asset_json"))
+    elif "asset_json" in base:
+        raise ValueError("Only an imported STEP base can contain an asset")
     if kind == "existing" and set(base) - {"kind"}:
         raise ValueError("An existing base uses the part's dimensions, not separate base dimensions")
     if kind != "existing":
@@ -185,21 +190,20 @@ def annotate_legacy_mesh(mesh, part, by_key=None):
     # Separate real profile segments/planes, rather than highlighting every
     # shoulder with the same normal. Ordered segment IDs survive dimension edits.
     triangles = mesh.vertices[mesh.faces]
+    axial_bands = np.column_stack((triangles[:, :, 2].min(axis=1),
+                                  triangles[:, :, 2].max(axis=1)))
     groups = groups.astype(object)
     for group in tuple(surfaces):
         indices = np.flatnonzero(groups == group)
-        bands = sorted({(float(triangles[index, :, 2].min()), float(triangles[index, :, 2].max()))
-                        for index in indices})
+        bands, owners = np.unique(axial_bands[indices], axis=0, return_inverse=True)
         if len(bands) <= 1:
             continue
         for ordinal, (start, end) in enumerate(bands):
             identity = group + ":segment:" + str(ordinal)
-            selected = [index for index in indices if
-                        (float(triangles[index, :, 2].min()), float(triangles[index, :, 2].max())) == (start, end)]
-            groups[selected] = identity
+            groups[indices[owners == ordinal]] = identity
             surfaces[identity] = {**surfaces[group], "label": surfaces[group]["label"] +
                                   (f" at Z {start:g} mm" if start == end else f" section {ordinal + 1}")}
-    return _decorate(mesh, groups, surfaces)
+    return _decorate(mesh, groups, surfaces, normals=normals)
 
 
 def _legacy_array_specs(part):
@@ -209,11 +213,12 @@ def _legacy_array_specs(part):
         "hole_diameters_mm", "hole_diameters_um"}]
 
 
-def _decorate(mesh, groups, metadata):
+def _decorate(mesh, groups, metadata, *, normals=None):
     groups = np.array(groups, dtype=str)
     if len(groups) != len(mesh.faces):
         raise ValueError("Surface provenance must have one ID per triangle")
-    _, normals = _normal_data(mesh.vertices, mesh.faces)
+    if normals is None:
+        _, normals = _normal_data(mesh.vertices, mesh.faces)
     surfaces = {}
     for group in sorted(set(groups)):
         if group not in metadata:
@@ -230,15 +235,25 @@ def _decorate(mesh, groups, metadata):
 
 
 def _semantic_edges(vertices, faces, groups, surfaces):
-    adjacency = defaultdict(list)
-    for face, group in zip(faces, groups):
-        for a, b in zip(face, np.roll(face, -1)):
-            adjacency[tuple(sorted((int(a), int(b))))].append(str(group))
+    # Sort vertex-pair / surface triples in bulk. Interior tessellation edges
+    # have only one distinct surface owner and need no Python graph objects.
+    # The remaining boundary chains use the original ordering and IDs below.
+    pairs = np.sort(faces[:, ((0, 1), (1, 2), (2, 0))].reshape(-1, 2), axis=1)
+    names, group_indices = np.unique(groups, return_inverse=True)
+    owner = np.repeat(group_indices, 3)
+    order = np.lexsort((owner, pairs[:, 1], pairs[:, 0]))
+    pairs, owner = pairs[order], owner[order]
+    distinct = np.ones(len(pairs), dtype=bool)
+    distinct[1:] = np.any(pairs[1:] != pairs[:-1], axis=1) | (owner[1:] != owner[:-1])
+    pairs, owner = pairs[distinct], owner[distinct]
+    starts = np.flatnonzero(np.r_[True, np.any(pairs[1:] != pairs[:-1], axis=1)])
+    counts = np.diff(np.r_[starts, len(pairs)])
+    shared = counts > 1
+    names = names.tolist()
     boundaries = defaultdict(set)
-    for edge, owners in adjacency.items():
-        distinct = tuple(sorted(set(owners)))
-        if len(distinct) > 1:
-            boundaries[distinct].add(edge)
+    for start, count in zip(starts[shared], counts[shared]):
+        owners = tuple(names[index] for index in owner[start:start + count])
+        boundaries[owners].add(tuple(map(int, pairs[start])))
     records = []
     for pair, segments in sorted(boundaries.items()):
         neighbours = defaultdict(set)
@@ -295,6 +310,9 @@ def _input_solid(mesh, provenance):
                      np.array(mesh.faces[indices], dtype=np.uint64, order="C", copy=True),
                      run_index=np.asarray(np.cumsum([0, *counts]) * 3, dtype=np.uint64),
                      run_original_id=ids)
+    # STEP tessellation preserves per-face vertices and labels. Reconnect
+    # coincident seams before manifold Booleans; never repair an open B-rep.
+    mesh64.merge()
     solid = m.Manifold(mesh64)
     if solid.status() != m.Error.NoError or solid.is_empty() or solid.volume() <= 0:
         raise ValueError(f"{mesh.key}: the existing mesh is not a closed manifold solid ({solid.status()})")
@@ -380,6 +398,9 @@ def apply_model_features(part, legacy_meshes, *, angular_segments=32):
         if not legacy_meshes:
             raise ValueError("This part has no existing solid; choose an explicit box or elliptic cylinder")
         meshes = [replace(mesh, vertices=mesh.vertices - center) for mesh in legacy_meshes]
+    elif base.get("kind") == "step":
+        from temsim.step_assets import imported_meshes
+        meshes = list(imported_meshes(part))
     else:
         m = _manifold_module()
         width, height, length = (float(base[name]) for name in ("width_mm", "height_mm", "length_mm"))
@@ -391,7 +412,8 @@ def apply_model_features(part, legacy_meshes, *, angular_segments=32):
         meshes = [_primitive_mesh(part, solid, base["kind"], paths, "base")]
     features = [(index, feature) for index, feature in enumerate(model.get("features", [])) if feature.get("enabled", True)]
     if features:
-        if any(not mesh.is_exact for mesh in meshes):
+        if any(not mesh.is_exact and not any(info.get("kind") == "cad_material" for info in mesh.surfaces.values())
+               for mesh in meshes):
             raise ValueError("An envelope is not a verified solid; choose an explicit box or elliptic cylinder before cutting")
         provenance = {}
         solids = [_input_solid(mesh, provenance) for mesh in meshes]
@@ -420,8 +442,8 @@ def apply_model_features(part, legacy_meshes, *, angular_segments=32):
                 group, info = provenance[int(identity)]
                 groups[int(start) // 3:int(end) // 3] = group
                 metadata[group] = info
-            mesh = _mesh(vertices, faces, original.key, original.region, original.material_class, True,
-                         "Explicit 3D solid with Boolean holes/slots")
+            mesh = replace(_mesh(vertices, faces, original.key, original.region, original.material_class, original.is_exact,
+                         original.description + "; Boolean holes/slots"), color=original.color)
             converted.append(_decorate(mesh, groups, metadata))
         meshes = converted
     matrix, offset = _transform(part)

@@ -159,16 +159,19 @@ def test_geometry_identity_serializes_pose_and_changes_without_excitation():
     assert bore.identity != _bore(-.025).identity
 
 
-def test_factory_recovers_independent_stationary_tube_and_unexcited_tilted_bores():
+def test_factory_keeps_unexcited_mechanical_bores_stationary_under_optical_tilt():
     from test_column_wave_transport import _unexcited_posed_column
     state = _unexcited_posed_column(rotation_y_mrad=1.)
     stationary, placed = placed_wave_bores(state, 1600., 1625.)
-    assert stationary and placed
-    assert any(bore.key == "objective_lens" for bore in placed)
+    assert stationary and not placed
     assert all(not lens.enabled for lens in state.lenses)
-    # A finite global-Z bound cannot cull a transversely unbounded tilted
-    # shoulder before its finite wave grid is known.
-    assert placed_wave_bores(state, 2000., 2001.)[1] == placed
+    baseline = placed_wave_bores(_unexcited_posed_column(), 1600., 1625.)
+    assert (stationary, placed) == baseline
+    assert any(segment.start_z_mm <= 1620. <= segment.end_z_mm
+               and np.isfinite(segment.inner_diameter_mm) for segment in stationary)
+    # A rotated field frame must not create oblique material constraints far
+    # outside the actual mechanical span either.
+    assert placed_wave_bores(state, 2000., 2001.)[1] == ()
 
 
 def test_real_cuda_bore_mask_matches_ray_contacts_and_cpu():

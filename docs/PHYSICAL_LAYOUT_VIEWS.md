@@ -14,6 +14,93 @@ No high-accuracy calculation is required for 3D or Rotating section. A view chan
 presets, propagate electrons, invalidate physics caches or replace images.
 The assembly page does not display unsaved 3D Parts drafts; Save them first.
 
+## Optical-only 3D display and rendering speed
+
+In **Physical Layout → 3D**, enable **Optical parts only** to retain the existing
+source/electrode, lens pole/coil/yoke, deflector, stigmator, corrector, aperture,
+specimen/cell and detector receiving geometry. Housings, vacuum tubes, supports
+and insulation are hidden. Classification uses declared component roles and
+material-region identities, not names or current strength. It does not remove
+hidden hardware from the calculation or infer fields from a custom CAD body.
+Unknown custom or STEP bodies without functional region labels remain visible
+in the normal assembly view. **Schematic envelopes** continues to control the
+existing approximate optical envelopes; the filter does not create new solids.
+
+The filter preserves the camera and each component's manual visibility. Turning
+it off restores the prior full view, subject to those manual checkboxes. It can
+be combined with **Section** and **Cell only**; **Fit assembly** fits the currently
+visible geometry. A physical geometry edit installs a new detached mesh snapshot.
+
+Static face normals, material colours, section geometry and picking identities
+are retained across camera movements. Visibility changes select from the retained
+mesh pool, rather than copying and validating all meshes again. CAD face/edge
+annotation also uses batch array operations. Geometry, materials, surface/edge
+identities and editable parameter paths are unchanged; no tessellation was
+removed to obtain the improvement.
+
+On 2026-10-11, a warmed 1200×900 viewport with the default 239 meshes / 52,774
+triangles had median redraw times of 67.93 → 27.70 ms at rest and 64.21 → 20.09 ms
+during dragging (20 frames, same process, unprofiled). Six camera/section scenes
+matched the previous renderer pixel-for-pixel, including depth and picking IDs.
+Separately, building the default 16-segment model improved from 1.52 s to
+0.70–0.76 s with all 239 meshes' geometry and semantic metadata identical.
+These are bounded local measurements; first-use compilation and other CAD
+assemblies may have different timings. Actual Qt offscreen interaction tests
+cover visibility, selection, sectioning, geometry refresh and camera retention.
+
+## Automatic GPU CAD rendering
+
+**Physical Layout → 3D** and the **3D Parts** editor automatically use hardware
+OpenGL 4.1 when a working context is available. The viewport heading shows
+**GPU** or **CPU**; its tooltip identifies the GPU or explains the fallback.
+There is no additional backend button. The top-level CPU/GPU calculation control
+continues to govern physics calculations; changing the view does not run them.
+Empty previews defer graphics initialization until a solid is displayed.
+
+The complete existing mesh, surface colours and semantic face IDs are uploaded
+once. Camera changes update uniforms instead of reprojecting every triangle on
+the CPU or uploading the mesh again. GPU dragging retains full viewport
+resolution; it does not use the CPU path's coarse interactive image. Double
+precision positions and camera transforms preserve small CAD parts at large
+column coordinates. Analytic face-plane depth avoids coincident surfaces
+flickering when their triangulations have different diagonals. Parts outside
+the screen are excluded from the depth-range calculation, so zooming into a
+small part is not limited by the depth of offscreen column hardware.
+
+Part, face and edge selection continues to use the original double-precision
+CPU depth/picking rules on demand, with its result cached until the view changes.
+This preserves editable semantic identities, section clipping and hidden-edge
+rejection independently of GPU raster rounding. The pick pass does not replace
+the displayed GPU image. GPU display uses the normal float32 graphics depth
+buffer. If its estimated depth resolution exceeds 5% of a screen pixel in model
+units, that magnified frame temporarily uses the exact CPU renderer. The heading
+and tooltip report this precision fallback; the retained GPU cache resumes
+automatically when the view scale permits. This avoids trading CAD inspection
+accuracy for speed. Rendering is not a geometric-interference or optical solver.
+
+Missing OpenGL support, a software-only GL implementation, initialization errors
+or a lost graphics context trigger the existing CPU renderer automatically.
+Failed initialization is not retried on every gesture. Each CAD context restores
+the previous GL context so sample OpenGL views can coexist, and releases its own
+resources when the view is destroyed.
+
+On 2026-10-11, actual **NVIDIA RTX 5090** rendering was compared with the current
+CPU renderer using 239 meshes / 41,462 triangles, at 1000×850, in native Windows
+Qt. Across 28 warmed frames with rotation and zoom changes, full-resolution
+median frame generation was **24.44 ms CPU → 5.50 ms GPU** (about 4.4× faster).
+During dragging it was **16.24 ms CPU at 343×292 → 5.50 ms GPU at 1000×850**.
+The entire camera sequence performed one geometry upload. These measurements
+include framebuffer readback and creation of the display image, but exclude
+window composition, initial CAD construction and first-use shader compilation.
+They are not a guarantee of monitor FPS or all-model performance.
+
+The comparison frame had identical material coverage; 99.9868% of common
+material pixels differed by at most one colour level. Native GPU checks cover
+fallback, semantic selection, sections, hidden edges, retained uploads and
+small parts at Z=3000 mm, magnified depth precision and automatic GPU resumption.
+Existing CAD view tests also exercise the native GPU;
+Qt offscreen without a GL context uses CPU and explicitly skips GPU-only checks.
+
 ## Components and assembly files
 
 The 3D Parts editor separates a component's shape and ownership from its storage
@@ -47,48 +134,55 @@ material intervals are retained. Arbitrary CAD shapes remain excluded from the
 current axisymmetric field solver. Position previews describe axial envelopes,
 not a complete solid-interference or mechanical-fit analysis.
 
-## Physical magnetic-lens placement
+## Component position and optical tilt
 
-Round magnetic-lens assemblies have physical X/Y/Z offsets in mm and X/Y/Z
-rotation angles in mrad. Rotations are right-handed, applied X then Y then Z
-about the unposed mechanical centre. The same rigid transform places the lens
-magnetic field, its owned poles/coils/housing, and its owned bore or aperture.
-The 3D Parts view previews a draft; Save and apply it before recalculating rays.
-Selecting a physical child exposes its **Parent lens** placement controls.
-The original 2D view projects the posed local X-Z section into global X-Z.
-Use Rotating section to compare cuts in different directions, or 3D to
-inspect the complete posed solid.
+Supported main-column components have X/Y/Z position offsets in mm and X/Y/Z
+optical tilt angles in mrad. Position offsets move the mechanical and optical
+reference positions together. Optical tilt represents an imperfect optical
+action: it rotates the field or effective aperture frame, without rotating the
+CAD poles, coils, housing, or material envelope. Rotations are right-handed,
+applied X then Y then Z about the component's declared centre. The 3D Parts
+view previews the mechanical draft; Save and apply it before recalculating.
+Selecting an owned child exposes its parent component's alignment controls.
+Use Rotating section or 3D to inspect the mechanical solid; use the Ray Diagram
+reference markers to inspect the optical frame.
 
 Ownership follows the lens's mechanical hierarchy. A shared C1/C2 cartridge
-appears once and follows its declared parent, not both optical channels.
-Nested round lenses inherit the containing lens pose. Separately mounted
+appears once and follows its declared parent's translation, not both optical channels.
+Nested round lenses inherit the containing lens's optical frame while their
+mechanical bodies inherit translation only. Separately mounted
 sample/stage, steering and stigmator devices, control channels and virtual
 references do not inherit it: their `parent_key` describes packing or navigation,
 not a rigid mount. Stationary column vacuum tubes remain stationary.
-For posed lenses, clipping retains each declared overlapping part bore and the
+For displaced lenses, clipping retains each declared overlapping part bore and the
 fixed continuous vacuum tube; a wider tube cannot disappear merely because the
 centred layout previously retained only its narrower overlapping lens bore.
 
-Legacy lens CAD offsets and degree-valued rigid rotations are read as physical
-placement and exposed by the editor in mm/mrad, without applying them twice.
+Legacy lens CAD offsets and degree-valued rotations are read as shared position
+offsets and optical tilt respectively, exposed by the existing editor in mm/mrad.
+Optical tilt does not mechanically rotate imported STEP geometry.
 Changing a winding thickness, material shape, CAD scale or Boolean cut does not
 quantitatively change the prescribed magnetic field strength. Individual child
-CAD edits remain shape edits; use the parent lens placement controls to move
-its magnetic axis and complete magnetic assembly together.
+CAD edits remain shape edits; use the parent lens position controls to translate
+its magnetic reference and complete magnetic assembly together. The tilt
+controls affect only optical action. They therefore introduce no new material
+overlap by themselves. Position and shape edits still require a geometry check;
+that check reports collisions rather than automatically repositioning parts.
 
 The existing thin equivalent spherical-aberration kick is attached to that
-same lens frame. It remains an empirical coefficient model, not an aberration
+same optical lens frame. It remains an empirical coefficient model, not an aberration
 fit inferred from the solid. Posed field transport runs on the CPU and does not
 require CUDA; the unchanged centred case retains its existing fast path.
 The analytical path retains its local paraxial law under the rigid transform,
 so an infinitesimal placement does not introduce full-Lorentz higher-order
 terms. Imported spatial field maps retain their existing vector Lorentz law.
-The coherent column-wave solver does not yet support these placed spatial
-fields; use Run high-accuracy once for the particle/ray result.
+Particle and coherent calculations retain their own supported-operator and
+sampling checks; an unchanged CAD envelope is not a guarantee that every tilted
+optical request is supported or numerically resolved.
 
 The TOML entries are `offset_x_mm`, `offset_y_mm`, `offset_z_mm`, and
 `rotation_x_mrad`, `rotation_y_mrad`, `rotation_z_mrad`. Zero preserves the
-nominal placement. For example, `rotation_y_mrad = 1.0` tilts the lens by
+nominal placement. For example, `rotation_y_mrad = 1.0` tilts the optical axis by
 0.001 rad about Y. Field-map placement composes with the map's own registration;
 it does not require solving or reimporting the field shape. An inseparable
 joint nonlinear field can move only as one common rigid frame.
@@ -101,8 +195,7 @@ the nominal column Z axis. At viewing azimuth phi, the displayed transverse
 coordinate is `U = X cos(phi) + Y sin(phi)` and the cut plane is
 `V = -X sin(phi) + Y cos(phi) = 0`. **X-Z** selects 0 degrees and **Y-Z** 90
 degrees; the slider and numeric field select intermediate angles. This angle
-is in degrees and changes only the view, independently of lens installation
-rotations in mrad.
+is in degrees and changes only the view, independently of optical tilt in mrad.
 
 **Follow Ray Diagram** shares the viewing azimuth in both directions. Uncheck
 it for independent comparison. Ray Diagram projects all retained rays; the
@@ -172,7 +265,8 @@ the camera and hidden components.
 
 The new splitter and view tabs participate in existing named layout storage.
 Old `2D section` and `3D model editor` selections migrate to `2D` and `3D Parts`.
-The renderer is software-based and works without an OpenGL context.
+The CAD renderer automatically uses hardware OpenGL, with a software fallback
+that also works without an OpenGL context.
 
 Instrument configuration uses one **Assemble** action: choose installed units,
 then apply them. Geometry and interface validation runs within that action;

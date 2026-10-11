@@ -539,3 +539,13 @@ mechanical_geometry_status = "public_active_area_external_envelope_unknown"
 detector_geometry_source = "DS0510 confirms 2048 spectral pixels, 14 um pitch, five strips and 256x2048 alignment pixels. These determine spectral width and alignment area only. Strip height 0.8 mm and centre pitch 1 mm are provisional simulator dimensions; frame and package dimensions remain unknown."
 detector_geometry_source_urls = ["https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/iliad-ultra-datasheet-ds0510.pdf"]
 strip_height_status = "provisional_non_oem_not_derived_from_spectral_pixel_count"
+
+# Engineering material behind the unchanged receiving plane; not OEM packaging.
+cad_export_unit = true
+detector_material_geometry_status = "engineering_reconstruction_not_oem"
+detector_material_geometry_source = "docs/references/cad-detectors.md"
+mechanical_scintillator_thickness_mm = 0.01
+mechanical_optical_coupling_depth_mm = 1.0
+mechanical_frame_margin_mm = 1.0
+mechanical_housing_depth_mm = 6.0
+mechanical_housing_wall_mm = 0.5

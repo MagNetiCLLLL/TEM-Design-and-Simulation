@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
 from temsim.assembly_model_3d import (
     assembly_model_fingerprint, assembly_model_from_assembly,
 )
+from temsim.assembly_optical_visibility import OPTICAL_VISIBILITY_HELP, optical_mesh_visible
 from temsim.gui.part_model_view import PartModelView
 
 
@@ -42,6 +43,7 @@ class AssemblyModelPage(QWidget):
         self._editable_keys = set()
         self._tree_items = {}
         self._hidden_keys = set()
+        self._optical_mesh_indices = frozenset()
         self._selected_key = None
         self._has_fitted = False
         self.mesh_builds = 0
@@ -56,6 +58,9 @@ class AssemblyModelPage(QWidget):
         self.edit_part = QPushButton("Open in 3D Parts")
         self.edit_part.setEnabled(False)
         self.section = QCheckBox("Section")
+        self.optical_only = QCheckBox("Optical parts only")
+        self.optical_only.setObjectName("assemblyOpticalPartsOnly")
+        self.optical_only.setToolTip(OPTICAL_VISIBILITY_HELP)
         self.cell_only = QCheckBox("Cell only")
         self.cell_only.setEnabled(False)
         self.cell_only.setToolTip("Hide surrounding assembly solids for a close-up of the windows and Sample reference. Display only.")
@@ -101,6 +106,7 @@ class AssemblyModelPage(QWidget):
         actions.addStretch(1)
         options = QHBoxLayout()
         options.addWidget(self.section)
+        options.addWidget(self.optical_only)
         options.addWidget(self.cell_only)
         options.addWidget(self.envelopes)
         options.addStretch(1)
@@ -125,6 +131,7 @@ class AssemblyModelPage(QWidget):
         self.isometric.clicked.connect(self.view.set_column_isometric_view)
         self.section.toggled.connect(lambda checked: self.view.set_section_enabled(checked, keep_positive_y=False))
         self.envelopes.toggled.connect(self._display_meshes)
+        self.optical_only.toggled.connect(self._display_meshes)
         self.cell_only.toggled.connect(self._display_meshes)
         self.edit_part.clicked.connect(self._open_selected_part)
         self.tree.currentItemChanged.connect(self._tree_selected)
@@ -178,6 +185,7 @@ class AssemblyModelPage(QWidget):
             self._parts = {}
             self._editable_keys = set()
             self._tree_items = {}
+            self._optical_mesh_indices = frozenset()
             self.tree.clear()
             self.view.set_meshes((), preserve_view=True)
             self.status.setText(f"Assembly view unavailable: {exc}")
@@ -197,6 +205,13 @@ class AssemblyModelPage(QWidget):
                 center_z_mm=liner["local_center_z_mm"], data={},
             ))
         self._hidden_keys.intersection_update(self._parts)
+        self._optical_mesh_indices = frozenset(
+            index for index, mesh in enumerate(model.meshes)
+            if optical_mesh_visible(mesh, self._parts.get(mesh.key), parts_by_key=self._parts)
+        )
+        # One detached renderer snapshot per changed assembly. Visibility
+        # changes reuse it rather than revalidating/copying every CAD surface.
+        self.view.set_mesh_pool(model.meshes)
         with QSignalBlocker(self.tree):
             self.tree.clear()
             self._tree_items = {}
@@ -227,21 +242,27 @@ class AssemblyModelPage(QWidget):
         has_cell = bool(self._cell_context.layers)
         cell_keys = {part.key for part in self._cell_context.parts()}
         self.cell_only.setEnabled(has_cell)
+        optical_only = self.optical_only.isChecked()
+        optical_keys = {self._model.meshes[index].key for index in self._optical_mesh_indices}
         for key, item in self._tree_items.items():
-            item.setHidden(has_cell and self.cell_only.isChecked() and key not in cell_keys)
-        meshes = tuple(mesh for mesh in self._model.meshes
+            item.setHidden((has_cell and self.cell_only.isChecked() and key not in cell_keys)
+                           or (optical_only and key not in optical_keys))
+        visible_indices = tuple(index for index, mesh in enumerate(self._model.meshes)
                        if mesh.key not in self._hidden_keys
+                       and (not optical_only or index in self._optical_mesh_indices)
                        and (not (has_cell and self.cell_only.isChecked())
                             or mesh.key in cell_keys)
                        and (self.envelopes.isChecked() or mesh.is_exact))
-        self.view.set_meshes(meshes, preserve_view=self._has_fitted)
+        meshes = tuple(self._model.meshes[index] for index in visible_indices)
+        self.view.set_visible_mesh_indices(visible_indices, preserve_view=self._has_fitted)
         self._has_fitted |= bool(meshes)
         self._sync_selection()
         approximation_count = len({mesh.key for mesh in meshes if not mesh.is_exact})
         error_text = f" | {len(self._model.errors)} unavailable" if self._model.errors else ""
         self.status.setText(
             f"Saved assembly | {len({mesh.key for mesh in meshes})} visible parts | "
-            f"{approximation_count} schematic | mm | +Z downstream{error_text}"
+            f"{approximation_count} schematic | "
+            f"{'Optical parts only | ' if optical_only else ''}mm | +Z downstream{error_text}"
         )
         details = ["Configured geometry is not a claim of OEM CAD accuracy.",
                    "Unsaved 3D Parts drafts are excluded. Display changes do not alter calculations.",

@@ -8,7 +8,9 @@ from the separate CAD environment.
 from __future__ import annotations
 
 from dataclasses import asdict, is_dataclass
+import base64
 import hashlib
+from io import BytesIO
 import json
 import math
 from pathlib import Path
@@ -48,7 +50,7 @@ def _shape_metrics(shape):
     solids = shape.Solids()
     if not shape.isValid() or not solids:
         raise ValueError("Analytic B-rep is invalid or contains no solid")
-    volumes = [solid.Volume() for solid in solids]
+    volumes = [shape_volume(solid) for solid in solids]
     if any(not math.isfinite(value) or value <= 0 for value in volumes):
         raise ValueError("Every material solid must have positive finite volume")
     box = shape.BoundingBox()
@@ -58,13 +60,38 @@ def _shape_metrics(shape):
     return dict(valid=True, solid_count=len(solids), volume_mm3=sum(volumes), bounds_mm=bounds)
 
 
-def build_shape(spec):
-    """Build one nested analytic primitive; reject non-rigid transformations."""
+def shape_volume(shape):
+    """Adaptive exact-surface integration, including rational spline spans.
+
+    CQ's default fixed integration can mismeasure an affinely transformed
+    ellipse by almost one percent. Never use the display tessellation here.
+    """
+    if not shape.Solids():
+        return 0.
+    from OCP.BRepGProp import BRepGProp
+    from OCP.GProp import GProp_GProps
+    properties = GProp_GProps()
+    error = BRepGProp.VolumePropertiesGK_s(shape.wrapped, properties, 1e-10, True, True)
+    if error < 0 or not math.isfinite(properties.Mass()):
+        raise RuntimeError("Exact BRep volume integration did not converge")
+    return properties.Mass()
+
+
+def build_shape(spec, *, allow_empty=False):
+    """Build an exact BRep recipe; tessellated meshes are never accepted."""
     cq = _cadquery()
     if not isinstance(spec, dict):
         raise ValueError("Shape specification must be a JSON object")
     kind = spec.get("kind")
-    if kind == "revolve":
+    if kind == "brep":
+        try:
+            data = base64.b64decode(spec["brep_base64"], validate=True)
+        except (ValueError, TypeError) as exc:
+            raise ValueError("BRep source is not valid base64") from exc
+        if not data or hashlib.sha256(data).hexdigest() != spec.get("sha256"):
+            raise ValueError("BRep source SHA256 mismatch")
+        shape = cq.Shape.importBrep(BytesIO(data))
+    elif kind == "revolve":
         section = [_vector(point, 2, "section Z/radius") for point in spec["section_zr_mm"]]
         if len(section) < 3 or any(radius < 0 for _, radius in section):
             raise ValueError("Revolved sections need at least three points and nonnegative radii")
@@ -97,6 +124,20 @@ def build_shape(spec):
             raise ValueError("Box sizes must be positive")
         corner = tuple(c-s/2 for c, s in zip(centre, size))
         shape = cq.Solid.makeBox(*size, cq.Vector(*corner))
+    elif kind in ("cylinder", "elliptic_cylinder"):
+        centre = _vector(spec.get("center_mm", (0., 0., 0.)), 3, "Cylinder centre")
+        length = _number(spec["length_mm"], "Cylinder length")
+        if kind == "cylinder":
+            rx = ry = _number(spec["radius_mm"], "Cylinder radius")
+        else:
+            rx = _number(spec["width_mm"], "Ellipse width") / 2.
+            ry = _number(spec["height_mm"], "Ellipse height") / 2.
+        if min(rx, ry, length) <= 0:
+            raise ValueError("Cylinder dimensions must be positive")
+        # Ellipse axes are diameters in the native feature editor contract.
+        shape = (cq.Solid.makeCylinder(rx, length) if kind == "cylinder" else
+                 cq.Workplane("XY").ellipse(rx, ry).extrude(length).val())
+        shape = shape.translate((centre[0], centre[1], centre[2]-length/2.))
     elif kind == "annular_sector":
         start, end, inner, outer, angle, span = (
             _number(spec[key], key) for key in
@@ -108,16 +149,33 @@ def build_shape(spec):
         shape = cq.Solid.revolve(wire, [], span, (0., 0., 0.), (0., 0., 1.))
         # angle_deg is the sector centre angle, matching the native model.
         shape = shape.rotate((0., 0., 0.), (0., 0., 1.), angle-span/2)
-    elif kind == "difference":
+    elif kind in ("difference", "strict_difference"):
         shape = build_shape(spec["base"])
         tools = [build_shape(item) for item in spec["tools"]]
+        before = shape_volume(shape)
         if tools:
             shape = shape.cut(*tools)
+        if kind == "strict_difference":
+            threshold = max(1e-12, abs(before)*1e-10)
+            if before-shape_volume(shape) <= threshold:
+                raise ValueError("Cut does not remove material from the selected solid")
     elif kind == "union":
         children = [build_shape(item) for item in spec["shapes"]]
         if not children:
             raise ValueError("A union requires at least one material shape")
         shape = children[0].fuse(*children[1:]) if len(children) > 1 else children[0]
+    elif kind == "affine":
+        rows = tuple(_vector(row, 3, "Affine row") for row in spec["matrix"])
+        offset = _vector(spec.get("offset_mm", (0., 0., 0.)), 3, "Affine offset")
+        if len(rows) != 3:
+            raise ValueError("Affine matrix must be 3 by 3")
+        determinant = sum(rows[0][j]*(rows[1][(j+1)%3]*rows[2][(j+2)%3]
+                                    -rows[1][(j+2)%3]*rows[2][(j+1)%3]) for j in range(3))
+        if determinant <= 1e-15:
+            raise ValueError("Affine transform must preserve orientation and nonzero volume")
+        matrix = cq.Matrix([list(row)+[d] for row, d in zip(rows, offset)] + [[0., 0., 0., 1.]])
+        child = build_shape(spec["shape"], allow_empty=allow_empty)
+        shape = child.transformGeometry(matrix) if child.Solids() else child
     elif kind == "transform":
         rows = tuple(_vector(row, 3, "Rotation row") for row in spec["rotation"])
         offset = _vector(spec["offset_mm"], 3, "Rigid offset")
@@ -132,11 +190,77 @@ def build_shape(spec):
         from OCP.gp import gp_Trsf
         transform = gp_Trsf()
         transform.SetValues(*(value for row, d in zip(rows, offset) for value in (*row, d)))
-        shape = build_shape(spec["shape"]).moved(cq.Location(transform))
+        child = build_shape(spec["shape"], allow_empty=allow_empty)
+        shape = child.moved(cq.Location(transform)) if child.Solids() else child
     else:
         raise ValueError(f"Unknown analytic CAD primitive: {kind!r}")
-    _shape_metrics(shape)
+    if not (allow_empty and kind != "strict_difference" and not shape.Solids() and shape.isValid()):
+        _shape_metrics(shape)
     return shape
+
+
+def build_solid_rows(specs):
+    """Validate part-wide cuts before allowing deletion of an individual leaf."""
+    groups, shapes, removed, edits = {}, {}, [], []
+    for row in specs:
+        groups.setdefault(str(row["key"]), []).append(row)
+    for key, rows in groups.items():
+        editing = any("editor_tools" in row.get("parameters", {}) for row in rows)
+        if editing:
+            if any("editor_original_shape" not in row.get("parameters", {}) or
+                   "editor_tools_global" not in row.get("parameters", {}) for row in rows):
+                raise ValueError(f"{key}: incomplete original/tool geometry for exact editing")
+            tools_spec = rows[0]["parameters"]["editor_tools_global"]
+            canonical = lambda value: json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False)
+            if any(canonical(row["parameters"]["editor_tools_global"]) != canonical(tools_spec) for row in rows):
+                raise ValueError(f"{key}: material leaves disagree on cutting tools")
+            current = [build_shape(row["parameters"]["editor_original_shape"]) for row in rows]
+            initial = sum(shape_volume(shape) for shape in current)
+            losses = []
+            for tool_spec in tools_spec:
+                tool = build_shape(tool_spec)
+                before = sum(shape_volume(shape) for shape in current)
+                current = [shape.cut(tool) if shape.Solids() else shape for shape in current]
+                if any(not shape.isValid() for shape in current):
+                    raise ValueError(f"{key}: invalid edited BRep")
+                after = sum(shape_volume(shape) for shape in current)
+                if before-after <= max(1e-12, initial*1e-10):
+                    raise ValueError(f"{key}: cutting tool does not remove material")
+                losses.append(before-after)
+            remaining = sum(shape_volume(shape) for shape in current)
+            if remaining <= max(1e-12, initial*1e-10):
+                raise ValueError(f"{key}: editing removes the entire part")
+            edits.append(dict(key=key, initial_volume_mm3=initial, remaining_volume_mm3=remaining,
+                              removed_volume_per_tool_mm3=losses))
+        for index, row in enumerate(rows):
+            identity = row["key"] + "/" + row["region"]
+            if identity in shapes or identity in removed:
+                raise ValueError("Duplicate solid ID: " + identity)
+            shape = build_shape(row["shape"], allow_empty=editing)
+            if editing:
+                expected = current[index]
+                # Check the final recipe against the independently replayed
+                # global tools, not just a metadata marker permitting deletion.
+                delta = sum(shape_volume(s) for s in shape.cut(expected).Solids()) if shape.Solids() else 0.
+                delta += sum(shape_volume(s) for s in expected.cut(shape).Solids()) if expected.Solids() else 0.
+                if delta > max(1e-10, initial*1e-8):
+                    raise ValueError(f"{identity}: final recipe disagrees with declared edit tools")
+            if not shape.Solids():
+                removed.append(identity)
+            else:
+                shapes[identity] = shape
+    return shapes, dict(removed_leaf_ids=removed, parts=edits)
+
+
+def shape_brep_spec(shape):
+    """Portable exact source, independent of any display tessellation."""
+    _shape_metrics(shape)
+    stream = BytesIO()
+    if not shape.exportBrep(stream):
+        raise RuntimeError("BRep serialization failed")
+    data = stream.getvalue()
+    return dict(kind="brep", brep_base64=base64.b64encode(data).decode("ascii"),
+                sha256=hashlib.sha256(data).hexdigest())
 
 
 def _label(value):
@@ -235,6 +359,7 @@ def _read_step(path):
     reader.SetNameMode(True)
     if reader.ReadFile(str(path)) != IFSelect_RetDone:
         raise RuntimeError("Exported STEP could not be read")
+    reader.ChangeReader().SetSystemLengthUnit(1.)
     doc = TDocStd_Document(TCollection_ExtendedString("XmlXCAF"))
     if not reader.Transfer(doc):
         raise RuntimeError("Exported STEP could not be transferred for validation")
@@ -339,17 +464,17 @@ def export_catalog(catalog, output_directory, *, progress=None, manifest_name="s
             ids = [row["key"]+"/"+row["region"] for row in specs]
             if len(ids) != len(set(ids)):
                 raise ValueError(f"Duplicate solid IDs in {module_key}")
-            shapes = {}
-            for key, spec in zip(ids, specs):
-                try:
-                    shapes[key] = build_shape(spec["shape"])
-                except Exception as exc:
-                    raise ValueError(f"{module_key} / {key}: analytic construction failed: {exc}") from exc
+            shapes, edit_report = build_solid_rows(specs)
+            removed = set(edit_report["removed_leaf_ids"])
+            specs = [spec for spec in specs if spec["key"]+"/"+spec["region"] not in removed]
+            ids = [row["key"]+"/"+row["region"] for row in specs]
             spec_by_id = dict(zip(ids, specs))
             leaf_names = {key: _label(spec["key"]+"__"+spec["region"]) for key, spec in zip(ids, specs)}
             if len(set(leaf_names.values())) != len(ids):
                 raise ValueError("Solid naming collision")
-            units = list(module.get("units", []))
+            units = [dict(unit, solid_ids=[key for key in unit["solid_ids"] if key not in removed])
+                     for unit in module.get("units", [])]
+            units = [unit for unit in units if unit["solid_ids"]]
             assigned = [key for unit in units for key in unit["solid_ids"]]
             if len(assigned) != len(set(assigned)) or not set(assigned).issubset(ids):
                 raise ValueError("Optical units must reference existing solids exactly once")
@@ -373,7 +498,7 @@ def export_catalog(catalog, output_directory, *, progress=None, manifest_name="s
                 emit(child, _filename(module_key)+"__"+_filename(unit_key)+".step", unit_materials)
             emit(root, _filename(module_key)+".step", materials)
             report["modules"].append(dict(key=module_key, name=module.get("name", module_key),
-                solid_count=len(specs), units=units, solids=specs))
+                solid_count=len(specs), units=units, solids=specs, edit_report=edit_report))
         report["status"] = "passed"
     except Exception as exc:
         report["status"] = "failed"

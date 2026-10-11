@@ -410,14 +410,15 @@ def test_optional_carrier_fallback_does_not_admit_an_unresolved_physical_multipo
 
 def test_optional_carrier_memory_budget_keeps_original_grid_and_full_phase_state():
     initial, lam = _sheared_non_gaussian_carrier()
-    numerics = WaveGridNumerics(maximum_pixels=1024, maximum_working_bytes=8*1024**2)
+    numerics = WaveGridNumerics(maximum_pixels=1024, maximum_working_bytes=6*1024**2)
     # The admitted input fits; only the optional compensating chirp's larger
-    # grid exceeds this memory budget. Nothing lowers the physical budget.
+    # FFT-friendly 160-square grid exceeds this memory budget (8 MiB now
+    # admits it). Nothing lowers the physical operator's sampling budget.
     assert numerics.check(initial.amplitude.shape) < numerics.maximum_working_bytes
     result, rows = reselect_phase_carrier(initial, lam, grid_numerics=numerics)
     assert result is initial
     assert rows[0]["from_shape"] == rows[0]["to_shape"] == (128, 128)
-    assert "maximum_working_bytes=8388608" in rows[0]["reason"]
+    assert f"maximum_working_bytes={numerics.maximum_working_bytes}" in rows[0]["reason"]
     assert "not applied" in rows[0]["method"]
 
 

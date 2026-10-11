@@ -19,8 +19,37 @@ class RadialDomainError(ValueError):
     """The Hankel interval wraps a represented field; expand before solving."""
 
 
+def _array_module(value):
+    """Keep CUDA optional and select resources from the actual field array."""
+    if hasattr(value, "__cuda_array_interface__"):
+        import cupy
+        return cupy
+    return np
+
+
+def to_device(wave):
+    """Upload the executed radial field once; no source or grid is rebuilt."""
+    import cupy
+    return replace(wave, radius_m=cupy.asarray(wave.radius_m, dtype=cupy.float64),
+                   amplitude=cupy.asarray(wave.amplitude, dtype=cupy.complex128))
+
+
+def to_host(wave):
+    """Publish the final complete radial mode for the Cartesian handoff."""
+    xp = _array_module(wave.amplitude)
+    if xp is np:
+        return wave
+    return replace(wave, radius_m=xp.asnumpy(wave.radius_m), amplitude=xp.asnumpy(wave.amplitude))
+
+
 @dataclass(frozen=True)
 class RadialWave:
+    """A complete float64/complex128 radial mode, on one execution device.
+
+    Public checkpoint boundaries use NumPy arrays. During a CUDA round
+    prefix the same fields may hold CuPy arrays, without downloading their
+    coefficients for propagation or sampling diagnostics.
+    """
     radius_m: np.ndarray
     amplitude: np.ndarray  # density amplitude m^-1; curvature is factored
     curvature_m1: float = 0.
@@ -36,16 +65,18 @@ class RadialWave:
         # Neighbouring ratios lose significant relative precision on very
         # dense grids. Their full represented span contains N-1 intervals,
         # including grids originally constructed with endpoint=False.
-        return float(np.log(self.radius_m[-1]/self.radius_m[0])/(len(self.radius_m)-1))
+        return float(np.log(float(self.radius_m[-1]/self.radius_m[0]))/(len(self.radius_m)-1))
 
     @property
     def probability(self):
-        return float(2*np.pi*self.dln*np.sum(abs(self.radius_m*self.amplitude)**2))
+        xp = _array_module(self.amplitude)
+        return float(2*np.pi*self.dln*xp.sum(abs(self.radius_m*self.amplitude)**2))
 
 
 def _complex_fht(value, dln, offset, *, inverse=False, order=0):
     from temsim.physics.radial_fftlog import complex_hankel
-    return complex_hankel(value, dln, offset, inverse=inverse, order=order)
+    return complex_hankel(value, dln, offset, inverse=inverse, order=order,
+                          keep_on_device=_array_module(value) is not np)
 
 
 def _phase_sampling(amplitude, phase, label):
@@ -54,14 +85,21 @@ def _phase_sampling(amplitude, phase, label):
     # endpoint. All complex samples are retained, including those tails.
     # Relative point amplitude alone makes harmless FFT roundoff at enormous
     # reciprocal radii demand an unbounded grid.
+    xp = _array_module(amplitude)
     mass = abs(amplitude)**2
     total = mass.sum()
     # Sum each tail from its small end. Subtracting a cumulative sum from
     # one loses the low-probability tail on million-point complex grids.
-    occupied = ((np.cumsum(mass) > total*1e-12)
-                & (np.cumsum(mass[::-1])[::-1] > total*1e-12))
-    increments = abs(np.diff(phase))[occupied[:-1] & occupied[1:]]
-    largest = float(increments.max(initial=0.))
+    occupied = ((xp.cumsum(mass) > total*1e-12)
+                & (xp.cumsum(mass[::-1])[::-1] > total*1e-12))
+    if xp is np:
+        increments = abs(np.diff(phase))[occupied[:-1] & occupied[1:]]
+        largest = float(increments.max(initial=0.))
+    else:
+        # An indexed CUDA array needs a host synchronisation to determine
+        # its length. A zero-filled reduction checks precisely the same
+        # occupied intervals without constructing a variable-length array.
+        largest = float(xp.max(xp.where(occupied[:-1] & occupied[1:], abs(xp.diff(phase)), 0.)))
     if largest > .5*np.pi:
         raise WaveSamplingError(f"Radial {label} phase needs refinement: {largest:.6g} rad per sample",
                                largest/(.5*np.pi))
@@ -74,24 +112,30 @@ def _hankel_grid(wave):
     fitted phase. A reciprocal interval with an arbitrary zero offset can
     wrap a low-k component into the high-k end even for a Gaussian.
     """
+    xp = _array_module(wave.amplitude)
     probability = wave.probability
-    position2 = 2*np.pi*wave.dln*np.sum(abs(wave.radius_m**2*wave.amplitude)**2)/probability
+    position2 = float(2*np.pi*wave.dln*xp.sum(abs(wave.radius_m**2*wave.amplitude)**2)/probability)
     shell = abs(wave.radius_m*wave.amplitude)**2
     # FFTLog is L2 accurate but division by r amplifies roundoff very close
     # to the axis. Do not use that noise to place the numerical reciprocal
     # interval. This mask affects ONLY this arbitrary grid-placement metric;
     # every complex sample is still transformed, propagated and counted.
-    metric = ((np.cumsum(shell) > shell.sum()*1e-10)
-              & (np.cumsum(shell[::-1])[::-1] > shell.sum()*1e-10))
-    momentum2 = 2*np.pi*wave.dln*np.sum(abs(np.gradient(wave.amplitude, wave.dln)[metric])**2)/probability
+    metric = ((xp.cumsum(shell) > shell.sum()*1e-10)
+              & (xp.cumsum(shell[::-1])[::-1] > shell.sum()*1e-10))
+    derivative = xp.gradient(wave.amplitude, wave.dln)
+    derivative_mass = (abs(derivative[metric])**2 if xp is np
+                       else xp.where(metric, abs(derivative)**2, 0.))
+    momentum2 = float(2*np.pi*wave.dln*xp.sum(derivative_mass)/probability)
     if wave.angular_order:
-        momentum2 += 2*np.pi*wave.dln*wave.angular_order**2*np.sum(abs(wave.amplitude[metric])**2)/probability
+        angular_mass = (abs(wave.amplitude[metric])**2 if xp is np
+                        else xp.where(metric, abs(wave.amplitude)**2, 0.))
+        momentum2 += float(2*np.pi*wave.dln*wave.angular_order**2*xp.sum(angular_mass)/probability)
     if min(position2, momentum2) <= 0 or not np.all(np.isfinite((position2, momentum2))):
         raise ValueError("Radial transform needs finite spatial and spectral extents")
     # The quartic phase generates a long physical high-k tail. Centring on
     # its RMS alone wraps that tail into the low-k end of the periodic FFTLog
     # interval. Reserve a wider reciprocal domain; do not filter the tail.
-    initial = np.log(wave.radius_m[0]*wave.radius_m[-1]*math.sqrt(momentum2/position2))
+    initial = np.log(float(wave.radius_m[0]*wave.radius_m[-1])*math.sqrt(momentum2/position2))
     offset = fhtoffset(wave.dln, abs(wave.angular_order), initial=float(initial))
     return offset, np.exp(offset)/wave.radius_m[::-1]
 
@@ -108,8 +152,9 @@ def expand_radial_domain(wave, factor=16., *, maximum_samples=4_194_304):
     count = next_fast_len(len(wave.radius_m)+2*extra)
     if count > maximum_samples:
         raise ValueError(f"Expanded radial domain needs {count} samples, above {maximum_samples}")
-    radius = wave.radius_m[0]*np.exp((np.arange(count)-extra)*wave.dln)
-    amplitude = np.zeros(count, complex)
+    xp = _array_module(wave.amplitude)
+    radius = wave.radius_m[0]*xp.exp((xp.arange(count)-extra)*wave.dln)
+    amplitude = xp.zeros(count, complex)
     amplitude[extra:extra+len(wave.amplitude)] = wave.amplitude
     return RadialWave(radius, amplitude, wave.curvature_m1, wave.angular_order)
 
@@ -119,7 +164,8 @@ def _check_hankel_edges(value):
     # Use probability in a boundary strip rather than one point's amplitude.
     strip = max(1, len(value)//1000)
     mass = abs(value)**2
-    if max(mass[:strip].sum(), mass[-strip:].sum()) > 1e-12*mass.sum():
+    xp = _array_module(value)
+    if bool(xp.maximum(mass[:strip].sum(), mass[-strip:].sum()) > 1e-12*mass.sum()):
         raise RadialDomainError("The reciprocal Hankel interval reaches non-negligible boundary amplitude; expand the input domain")
 
 
@@ -128,10 +174,15 @@ def refine_radial(wave, scale, *, maximum_samples=4_194_304):
     if count > maximum_samples:
         raise ValueError(f"Radial wave needs {count} samples, above its {maximum_samples} budget")
     old = wave.probability
-    radius = wave.radius_m[0]*np.exp(np.arange(count)*wave.dln*len(wave.radius_m)/count)
+    xp = _array_module(wave.amplitude)
+    radius = wave.radius_m[0]*xp.exp(xp.arange(count)*wave.dln*len(wave.radius_m)/count)
     # Fourier interpolation of the log-coordinate flux amplitude. The
     # negative Nyquist component is retained by scipy's periodic resampler.
-    value = resample(wave.radius_m*wave.amplitude, count)
+    if xp is np:
+        value = resample(wave.radius_m*wave.amplitude, count)
+    else:
+        from cupyx.scipy.signal import resample as device_resample
+        value = device_resample(wave.radius_m*wave.amplitude, count)
     result = RadialWave(radius, value/radius, wave.curvature_m1, wave.angular_order)
     if not math.isclose(old, result.probability, rel_tol=1e-9, abs_tol=1e-14):
         raise ValueError("Radial grid refinement changed represented probability")
@@ -222,7 +273,8 @@ class RadialExecution:
 
 
 def _radial_stop(wave, radius_m):
-    return replace(wave, amplitude=np.where(wave.radius_m <= radius_m, wave.amplitude, 0j))
+    xp = _array_module(wave.amplitude)
+    return replace(wave, amplitude=xp.where(wave.radius_m <= radius_m, wave.amplitude, 0j))
 
 
 def round_map(matrix, *, with_rotation=False):
@@ -249,6 +301,7 @@ def propagate_radial(wave, matrix, wavelength_m, *, reference_phase_rad, referen
     retains its signed angular Fourier factor in addition to the m=0 lift.
     """
     from temsim.physics.canonical_action import drift_gaussian_phase
+    xp = _array_module(wave.amplitude)
     (a, b, c, d), rotation = round_map(matrix, with_rotation=True)
     angular_order = wave.angular_order
     order = abs(angular_order)
@@ -262,7 +315,7 @@ def propagate_radial(wave, matrix, wavelength_m, *, reference_phase_rad, referen
     # beyond its input log interval. This is a representation choice, not
     # a replacement beam or an omission of diffraction near a crossover.
     offset, frequency = _hankel_grid(wave)
-    spectral_to_spatial = np.exp(offset)/(wave.radius_m[0]*wave.radius_m[-1])
+    spectral_to_spatial = np.exp(offset)/float(wave.radius_m[0]*wave.radius_m[-1])
     direct = b != 0 and abs(effective_a) < abs(b)*spectral_to_spatial/k0
     if not direct and abs(effective_a) > 1e-8:
         drift = b/effective_a
@@ -270,7 +323,7 @@ def propagate_radial(wave, matrix, wavelength_m, *, reference_phase_rad, referen
         _check_hankel_edges(transformed)
         phase = -.5*drift/k0*frequency**2
         _phase_sampling(transformed, phase, "Fresnel")
-        outgoing = _complex_fht(transformed*np.exp(1j*phase), wave.dln, offset, inverse=True, order=order)
+        outgoing = _complex_fht(transformed*xp.exp(1j*phase), wave.dln, offset, inverse=True, order=order)
         amplitude = outgoing/wave.radius_m/abs(effective_a)
         if angular_order and effective_a < 0:
             amplitude = amplitude*((-1)**order)
@@ -283,8 +336,8 @@ def propagate_radial(wave, matrix, wavelength_m, *, reference_phase_rad, referen
             raise ValueError("Singular radial canonical chart")
         phase = .5*k0*(a/b+wave.curvature_m1)*wave.radius_m**2
         _phase_sampling(wave.radius_m*wave.amplitude, phase, "Fourier input")
-        offset, frequency = _hankel_grid(replace(wave, amplitude=wave.amplitude*np.exp(1j*phase)))
-        transformed = _complex_fht(wave.radius_m*wave.amplitude*np.exp(1j*phase), wave.dln, offset, order=order)
+        offset, frequency = _hankel_grid(replace(wave, amplitude=wave.amplitude*xp.exp(1j*phase)))
+        transformed = _complex_fht(wave.radius_m*wave.amplitude*xp.exp(1j*phase), wave.dln, offset, order=order)
         _check_hankel_edges(transformed)
         amplitude = k0/(1j*b)*transformed/frequency
         if angular_order:
@@ -304,7 +357,8 @@ def radial_cs(wave, wavelength_m, strength_m3):
         return wave
     phase = -(2*np.pi/wavelength_m)*strength_m3*wave.radius_m**4/4
     _phase_sampling(wave.radius_m*wave.amplitude, phase, "spherical aberration")
-    return replace(wave, amplitude=wave.amplitude*np.exp(1j*phase))
+    xp = _array_module(wave.amplitude)
+    return replace(wave, amplitude=wave.amplitude*xp.exp(1j*phase))
 
 
 def from_executed_gun(mode, payload, samples=65536):
@@ -338,13 +392,23 @@ def from_executed_gun(mode, payload, samples=65536):
 
 def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                         initial_samples=65536, maximum_samples=4_194_304,
-                        cancelled=lambda: False, progress_callback=None):
+                        cancelled=lambda: False, progress_callback=None,
+                        device_resident=False):
     """Execute the maximal round prefix; return before the first 2-D effect."""
     from temsim.physics.column_wave import _prepare_column, _column_transports, _PlacedAperture
     from temsim.physics.posed_wave_hardware import PosedWaveBore
     from temsim.physics.canonical_action import CanonicalPath
     from temsim.optics.electron_gun.tip_coherence import wavelength_m
     plan, radii, stops, owners = _prepare_column(state, checkpoint.plane_z_mm, stop_z_mm, maximum_step_mm)
+    if (any(kick.active for kick in getattr(plan, "intrinsic_aberration_kicks", ()))
+            or any(kick.strength_m3 for kick in getattr(plan, "posed_spherical_kicks", ()))):
+        # The radial backend only implements its historical centred C3
+        # action. Preserve the executed 2-D checkpoint for every additional
+        # intrinsic screen, including radial C1/C5, until implemented here.
+        # Returning no radial modes makes execute_round_prefix hand this
+        # exact checkpoint to the full column solver without consuming it.
+        return checkpoint.plane_z_mm, (), {"reason":
+            "Intrinsic/posed aberrations require the two-dimensional column operator"}
     if (getattr(plan, "mapped_fields", ()) or any(
             isinstance(item, (PosedWaveBore, _PlacedAperture))
             for items in stops.values() for item in items)):
@@ -376,7 +440,10 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         def report(before, after, kind):
             if progress_callback:
                 progress_callback(i, end_index, f"Radial {kind}: {before} -> {after}")
-        execution = RadialExecution(lambda samples: from_executed_gun(mode, payloads[mode.mode_id], samples),
+        def load(samples):
+            wave = from_executed_gun(mode, payloads[mode.mode_id], samples)
+            return to_device(wave) if device_resident else wave
+        execution = RadialExecution(load,
             initial_samples, maximum_samples, cancelled=cancelled, report=report)
         wave = execution.wave
         energy = mode.energy_kev
@@ -386,6 +453,7 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         # If this bound reaches a wall, execute and clip at that exact node.
         # Otherwise grouping the known quadratic factors skips no interaction.
         spectral_extent = float(_hankel_grid(wave)[1][-1]) if wave.probability else 0.
+        radial_extent = float(wave.radius_m[-1])
         for i, path in enumerate(_column_transports(plan, energy)):
             if i >= end_index:
                 break
@@ -406,7 +474,7 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                 generator = np.block([[rotation, np.eye(2)], [-np.eye(2)*g*g, rotation]])
                 _linear_factor(pending, generator, float(plan.step_m[i]))
             a, b, _, _ = round_map(pending.matrix)
-            represented_extent = abs(a+b*wave.curvature_m1)*wave.radius_m[-1]+abs(b)*spectral_extent*wavelength/(2*np.pi)
+            represented_extent = abs(a+b*wave.curvature_m1)*radial_extent+abs(b)*spectral_extent*wavelength/(2*np.pi)
             must_execute = (j == end_index or plan.cs_kick_m3[j] != 0 or j in stops
                             or represented_extent >= radii[j]*1e-3)
             if not must_execute:
@@ -425,10 +493,11 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                 wave = execution.apply(lambda w, r=aperture.radius_mm*1e-3: _radial_stop(w, r),
                     metadata={"component": aperture.key, "z_mm": float(plan.z_mm[j])})
             spectral_extent = float(_hankel_grid(wave)[1][-1]) if wave.probability else 0.
+            radial_extent = float(wave.radius_m[-1])
             if progress_callback and i % 64 == 0:
                 progress_callback(index*end_index+i, len(checkpoint.beam.modes)*end_index,
                                   f"Round column wave at {plan.z_mm[j]:.6g} mm")
-        result.append((mode, wave))
+        result.append((mode, to_host(wave)))
         records.append({"mode_id": mode.mode_id, "refinements": execution.refinements, "losses": execution.ledger,
                         "input_fraction": mode.weight_per_reference_electron,
                         "output_fraction": mode.weight_per_reference_electron*wave.probability})
@@ -442,6 +511,7 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
 def round_column_prefix(state, checkpoint, stop_z_mm, *, backend="cpu", **numerics):
     from temsim.physics.radial_fftlog import hankel_backend
     with hankel_backend(backend):
-        z, modes, record = _round_column_prefix(state, checkpoint, stop_z_mm, **numerics)
+        z, modes, record = _round_column_prefix(state, checkpoint, stop_z_mm,
+                                             device_resident=backend == "cuda", **numerics)
     return z, modes, {**record, "radial_fft_backend": backend,
                       "precision": "complex128; unchanged physical phase and sampling checks"}

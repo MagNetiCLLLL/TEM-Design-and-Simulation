@@ -31,19 +31,24 @@ class FrozenLensAberrationKick:
     def apply(self, x, tx, y, ty):
         if self.strength_m3 == 0:
             return x, tx, y, ty
-        points = np.column_stack((x, y, np.full_like(x, self.z_mm*1e-3)))
+        from temsim.physics.wave_device import array_module
+        xp = next((array_module(value) for value in (x, tx, y, ty)
+                   if hasattr(value, "__cuda_array_interface__")), np)
+        x, tx, y, ty = (xp.asarray(value, dtype=xp.float64) for value in (x, tx, y, ty))
+        points = xp.column_stack((x, y, xp.full_like(x, self.z_mm*1e-3)))
         # Matrix algebra deliberately preserves stopped-ray NaNs.
-        rotation = self.registration.rotation_array
-        local = (points-self.registration.origin_array_m) @ rotation
-        direction = np.column_stack((tx, ty, np.ones_like(tx))) @ rotation
+        rotation = xp.asarray(self.registration.rotation_array)
+        origin = xp.asarray(self.registration.origin_array_m)
+        local = (points-origin) @ rotation
+        direction = xp.column_stack((tx, ty, xp.ones_like(tx))) @ rotation
         with np.errstate(divide="ignore", invalid="ignore", over="ignore"):
             direction = direction/direction[:, 2, None]
             plane = local + (self.local_z_m-local[:, 2, None]) * direction
-            radial = self.strength_m3*np.sum(plane[:, :2]**2, axis=1)
+            radial = self.strength_m3*xp.sum(plane[:, :2]**2, axis=1)
             direction[:, :2] -= radial[:, None]*plane[:, :2]
             outgoing = direction @ rotation.T
             outgoing /= outgoing[:, 2, None]
-            global_plane = plane @ rotation.T + self.registration.origin_array_m
+            global_plane = plane @ rotation.T + origin
             global_plane += (self.z_mm*1e-3-global_plane[:, 2, None])*outgoing
         return global_plane[:, 0], outgoing[:, 0], global_plane[:, 1], outgoing[:, 1]
 

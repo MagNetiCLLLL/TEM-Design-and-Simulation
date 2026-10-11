@@ -147,7 +147,7 @@ def test_place_global_converts_to_resolved_local_and_keeps_length(page, qtbot):
     assert page.session.part("custom_part")["local_center_z_mm"] == 150
 
 
-def test_lens_placement_has_mrad_controls_and_keeps_children_together(page, qtbot):
+def test_lens_placement_distinguishes_optical_tilt_from_hardware_translation(page, qtbot):
     key = "intermediate_lens"
     inherited_fields = {tuple(page.dimensions.item(row, 1).data(Qt.ItemDataRole.UserRole)): row
                         for row in range(page.dimensions.rowCount())}
@@ -165,7 +165,8 @@ def test_lens_placement_has_mrad_controls_and_keeps_children_together(page, qtbo
     assert dialog.include_children.isChecked() and not dialog.include_children.isEnabled()
     dialog.pose_values["offset_x_mm"].setText("0.04")
     dialog.pose_values["rotation_y_mrad"].setText("-1.5")
-    assert "rotation XYZ (mrad)" in dialog.summary.text()
+    assert "optical tilt XYZ (mrad)" in dialog.summary.text()
+    assert "mechanical envelopes do not rotate" in dialog.summary.text()
     _confirm(qtbot, page, dialog)
     assert page.session.part(key)["offset_x_mm"] == 0.04
     assert page.session.part(key)["rotation_y_mrad"] == -1.5

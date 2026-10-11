@@ -199,18 +199,31 @@ def test_runtime_slit_gap_and_center_move_two_facing_blade_edges_and_cache(docum
     assert any("maximum travel" in note for note in _model(document, key).notes)
 
 
-def test_zebra_active_regions_have_no_package_or_invented_alignment_offset(document):
+@pytest.mark.parametrize("material_geometry", [False, True], ids=["legacy-guides", "material-and-guides"])
+def test_zebra_material_stays_behind_unchanged_strips_and_alignment_datum(document, material_geometry):
+    from temsim.cad_detectors import EELS_FIELDS, PROVENANCE_FIELDS
     key = "energy_filter_zebra"
     parts = _parts(document)
+    if not material_geometry:
+        for field in (*EELS_FIELDS, *PROVENANCE_FIELDS):
+            parts[key].pop(field, None)
     origin, rotation = energy_filter_frame_mm(parts[key], parts)
     meshes = _model(document, key).meshes
-    assert len(meshes) == 6
-    strips, alignment = meshes[:5], meshes[5]
+    assert len(meshes) == (8 if material_geometry else 6)
+    strips = [mesh for mesh in meshes if mesh.region.startswith("active_strip_")]
+    alignment, = [mesh for mesh in meshes if mesh.region == "alignment_active_area"]
+    assert len(strips) == 5
+    thickness = parts[key]["mechanical_scintillator_thickness_mm"] if material_geometry else 0.
     for index, mesh in enumerate(strips):
         local = (mesh.vertices - origin) @ rotation
-        np.testing.assert_allclose(np.ptp(local, axis=0), (28.672, .8, 0.), atol=1e-12)
+        np.testing.assert_allclose(np.ptp(local, axis=0), (28.672, .8, thickness), atol=1e-12)
+        assert np.min(local[:, 2]) == pytest.approx(0., abs=1e-12)
         assert local[:, 1].mean() == pytest.approx(index - 2.)
         assert not mesh.wireframe
+    if material_geometry:
+        for mesh in meshes:
+            if not mesh.wireframe:
+                _assert_closed_material(mesh)
     assert alignment.wireframe and alignment.region == "alignment_active_area"
     local = (alignment.vertices - origin) @ rotation
     np.testing.assert_allclose(local.mean(axis=0), 0., atol=1e-12)
@@ -300,9 +313,12 @@ def test_part_editor_refresh_dependency_follows_actual_slit_position(document):
     assert PartModelEditorPage._runtime_mesh_dependencies(editor) == before
 
 
-def test_filter_display_regions_share_validated_body_palette_without_new_material_domains(document):
+def test_legacy_filter_guides_share_validated_body_palette_without_new_material_domains(document):
     from temsim.part_materials import configured_region_colour, material_catalog, validated_material_regions
+    from temsim.cad_detectors import EELS_FIELDS, PROVENANCE_FIELDS
     row = _parts(document)["energy_filter_zebra"]
+    for field in (*EELS_FIELDS, *PROVENANCE_FIELDS):
+        row.pop(field, None)
     row["material_regions"] = {"body": next(item for item in material_catalog() if item["material_key"] == "copper")}
     result = assembly_model_from_assembly(_assembly(document), angular_segments=8)
     assert not result.errors
@@ -373,9 +389,14 @@ def test_actual_energy_filter_assembly_has_no_errors_or_missing_branch_material(
     assert len(expected) == 18
     assert expected <= {mesh.key for mesh in model.meshes}
     inlet = assembly.part("energy_filter_entrance_aperture").center_z_mm
-    camera = np.vstack([mesh.vertices for mesh in model.meshes if mesh.key == "energy_filter_zebra"])
-    assert camera[:, 0].mean() == pytest.approx(610.)
-    assert camera[:, 2].mean() == pytest.approx(inlet + 240.)
+    camera = [mesh for mesh in model.meshes if mesh.key == "energy_filter_zebra"]
+    # The optical plane stays fixed; a finite package has its centre behind it.
+    guide, = [mesh for mesh in camera if mesh.region == "alignment_active_area"]
+    assert guide.vertices[:, 0].mean() == pytest.approx(610.)
+    assert guide.vertices[:, 2].mean() == pytest.approx(inlet + 240.)
+    for strip in (mesh for mesh in camera if mesh.region.startswith("active_strip_")):
+        assert strip.vertices[:, 0].min() == pytest.approx(610.)
+        assert strip.vertices[:, 2].mean() == pytest.approx(inlet + 240.)
 
 
 @pytest.mark.parametrize("key", ["energy_filter_entrance_aperture", "energy_filter_tapered_prism", "energy_filter_multipole_04"])

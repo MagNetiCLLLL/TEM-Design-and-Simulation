@@ -141,7 +141,7 @@ class ComponentDialog(QDialog):
         if action == "place" and supports_physical_lens_pose(self.part):
             for field, value in physical_pose_values(self.part).items():
                 unit = "mrad" if field.endswith("_mrad") else "mm"
-                label = ("Rotation " if unit == "mrad" else "Offset ") + field.split("_")[1].upper()
+                label = ("Optical tilt " if unit == "mrad" else "Offset ") + field.split("_")[1].upper()
                 editor = QLineEdit(format(value, ".15g"))
                 editor.setObjectName("component_" + field)
                 editor.setToolTip(physical_pose_description(self.part))
@@ -337,9 +337,10 @@ class ComponentDialog(QDialog):
                 pose = values["physical_pose"]
                 position += ("\nPhysical lens offset XYZ (mm): " + ", ".join(
                     f"{pose['offset_' + axis + '_mm']:.9g}" for axis in "xyz") +
-                    "; rotation XYZ (mrad): " + ", ".join(
+                    "; optical tilt XYZ (mrad): " + ", ".join(
                     f"{pose['rotation_' + axis + '_mrad']:.9g}" for axis in "xyz") +
-                    ". Magnetic field and child hardware follow this placement.")
+                    ". Offsets move the optical model and owned hardware. "
+                    "Optical tilt rotates the field/effective reference only; mechanical envelopes do not rotate.")
             parent = next((part for part in self._target_parts if part["key"] == values["parent_key"]), None)
             if parent is not None:
                 position += (f"\nParent {parent.get('name', parent['key'])}: local Z "

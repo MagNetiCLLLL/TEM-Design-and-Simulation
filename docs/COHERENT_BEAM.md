@@ -1062,3 +1062,13 @@ not become successful results. The numerical policy is
 `TipWaveRequest.acceptance_window`; it is not a second source definition or
 a separate GPU selector. Final focus, scan displacement and detector-centroid
 convergence still require validation at the requested physical planes.
+
+The 2026-10-11 storage/device-residency changes preserve these numerical
+policies and the existing source/optical settings. Fresh internal CUDA outputs
+avoid a redundant copy, round-prefix operators stay on the device until their
+host handoff, and checkpoint grid admission no longer loads complete arrays
+before loading them again for execution. GUI readout shares verified immutable
+snapshots only within one bounded request, and computes paired moments during
+the same intensity pass even when a mode is too large to cache. Subsequent
+requests still verify checksums. Measurements, full-complex parity, and the
+limits of the speed claims are in [the performance report](COHERENT_PERFORMANCE_20261011.md).

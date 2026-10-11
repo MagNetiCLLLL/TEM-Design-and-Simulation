@@ -86,6 +86,37 @@ def test_segmented_column_uses_actual_slotted_propagation_plan(tmp_path, monkeyp
             <= resources["maximum_working_bytes"])
 
 
+def test_streamed_column_checks_each_array_once_before_execution(tmp_path, monkeypatch):
+    from temsim.physics import column_wave as column
+    from temsim.physics import wave_checkpoint_store as storage
+    from test_tip_wave_pipeline import _quiet_prepared_column
+    state = default_state()
+    source = checkpoint(two=True)
+    store = storage.ExecutedWaveStore(tmp_path, "single-read-column", 1 << 25)
+    saved = store.put(store.key("fixed-input"), source)
+    monkeypatch.setattr(column, "_prepare_column", _quiet_prepared_column)
+    hashed = []
+    original_hash = storage._hash_file
+    def checked(path):
+        hashed.append(path)
+        return original_hash(path)
+    monkeypatch.setattr(storage, "_hash_file", checked)
+    result = column._propagate_column(state, saved, 2000.01)
+    assert len(result.beam.modes) == 2
+    for row in saved.beam.modes.rows:
+        path = saved.beam.modes.root / row["arrays"]["amplitude"]["file"]
+        assert hashed.count(path) == 1
+    # The optimization must not skip integrity validation on a later call.
+    path = saved.beam.modes.root / saved.beam.modes.rows[-1]["arrays"]["amplitude"]["file"]
+    with path.open("r+b") as stream:
+        stream.seek(-1, 2)
+        old = stream.read(1)
+        stream.seek(-1, 2)
+        stream.write(bytes((old[0] ^ 1,)))
+    with pytest.raises(ValueError, match="checksum/path changed"):
+        column._propagate_column(state, saved, 2000.01)
+
+
 def _unexcited_posed_column(**pose):
     """Real installed hardware; isolate its mask from magnetic focusing."""
     from types import SimpleNamespace
@@ -136,16 +167,27 @@ def test_unexcited_moved_bore_matches_particle_absorption_and_has_no_old_wall(of
     assert prepared[0].signature != other[0].signature
 
 
-def test_unexcited_tilted_hardware_keeps_its_oblique_wave_mask():
+def test_optical_tilt_preserves_unexcited_stationary_wave_and_ray_walls():
     from temsim.physics.column_wave import _prepare_column
     from temsim.physics.posed_wave_hardware import PosedWaveBore
+    from temsim.physics.column_wall import clip_column_wall
     state = _unexcited_posed_column(rotation_y_mrad=1.)
-    plan, _, stops, _ = _prepare_column(state, 1620., 1620.1, .1)
+    plan, radii, stops, _ = _prepare_column(state, 1620., 1620.1, .1)
     assert not plan.mapped_fields  # Turning B off must not remove the bore.
-    for items in stops.values():
-        assert any(isinstance(item, PosedWaveBore) for item in items)
-    bore = next(item for item in stops[0] if isinstance(item, PosedWaveBore))
-    assert not np.array_equal(bore.registration.rotation_array[2], (0., 0., 1.))
+    assert all(not isinstance(item, PosedWaveBore)
+               for items in stops.values() for item in items)
+    baseline = _prepare_column(_unexcited_posed_column(), 1620., 1620.1, .1)
+    np.testing.assert_array_equal(plan.z_mm, baseline[0].z_mm)
+    np.testing.assert_array_equal(radii, baseline[1])
+    assert stops == baseline[2]
+    assert np.isfinite(radii).all() and np.all(radii > 0)
+    # The same stationary radius used by the wave mask must classify ray
+    # contact identically; optical-axis errors do not move the material wall.
+    radius = float(np.min(radii))
+    x = np.broadcast_to(np.array((.5*radius, 1.5*radius))*1e-3, (len(plan.z_mm), 2))
+    alive, blocked_z, _ = clip_column_wall(state, plan.z_mm, x, np.zeros_like(x))
+    np.testing.assert_array_equal(alive, (True, False))
+    assert np.isnan(blocked_z[0]) and blocked_z[1] == 1620.
 
 
 def test_wave_bore_events_follow_axial_placement_and_preserve_stationary_tube():
@@ -725,7 +767,10 @@ def test_parallel_column_partition_memory_retries_serial_without_changing_comple
     from temsim.physics.wave_checkpoint_store import ExecutedWaveStore
     from temsim.physics.wave_grid import WaveGridNumerics
     source, prepared = _refining_column_modes()
-    numerics = WaveGridNumerics(maximum_pixels=512, maximum_working_bytes=128*1024**2)
+    # The FFT-friendly refinement needs about 50 MiB per mode. A 64 MiB
+    # budget admits its serial execution but not two 32 MiB worker slots.
+    # The former 128 MiB budget now admits both workers and tests no retry.
+    numerics = WaveGridNumerics(maximum_pixels=512, maximum_working_bytes=64*1024**2)
     monkeypatch.setattr(column, "numerical_thread_budget", lambda requested=None: 1)
     reference, _ = column._propagate_column_segmented(default_state(), source, 2000.1,
         store=ExecutedWaveStore(tmp_path/"serial", "refined-column", 1<<28), segment_steps=1,
@@ -738,7 +783,9 @@ def test_parallel_column_partition_memory_retries_serial_without_changing_comple
     _assert_column_complex_result(actual, reference)
     assert actual.record["mode_execution"]["retry_serial_for_memory"]
     assert observed["workers"] == [2] and observed["active"] == 0
-    assert all(m.plane.amplitude.shape == (512, 512) for m in actual.beam.modes)
+    assert all(source.beam.modes[0].plane.amplitude.shape[0]
+               < min(m.plane.amplitude.shape) <= max(m.plane.amplitude.shape)
+               <= numerics.maximum_pixels for m in actual.beam.modes)
     assert len(list((tmp_path/"retry").glob("*.json"))) == 1
     assert len(list((tmp_path/"retry").iterdir())) == 2  # Published index + its complete mode directory.
 

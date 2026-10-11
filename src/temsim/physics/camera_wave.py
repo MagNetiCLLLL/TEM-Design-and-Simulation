@@ -268,6 +268,9 @@ def _project_wave_to_plane(
     recording_plane = recording_plane.validate()
     if not bool(recording_plane.inserted):
         raise ValueError("The selected TEM recording plane is retracted.")
+    from temsim.physics.source_admission import require_legacy_aberration_compatibility
+    require_legacy_aberration_compatibility(state, product="Equivalent camera projection",
+        start_z_mm=state.sample.z_mm, stop_z_mm=recording_plane.z_mm)
     x_m = np.asarray(x_angstrom, dtype=float) * 1.0e-10
     y_m = np.asarray(y_angstrom, dtype=float) * 1.0e-10
     wave = np.asarray(exit_wave, dtype=np.complex128)

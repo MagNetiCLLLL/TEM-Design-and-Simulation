@@ -5,7 +5,6 @@ Cs kick. These functions add no optics or sources. They retain the full cubic
 and quartic phase, including non-quadratic residuals, on an affine wave lattice.
 The stationary column_wave development path executes these at physical nodes.
 """
-from dataclasses import replace
 import math
 
 import numpy as np
@@ -78,7 +77,7 @@ def apply_multipole_phase(wave, wavelength_m, *, normal_m2=0., skew_m2=0., spher
                                 f"{largest:.6g} rad, budget 0.8*pi); refine the physical wave grid", required_scale)
     curvature = np.zeros((2, 2)) if wave.curvature_m1 is None else wave.curvature_m1
     tilt = np.zeros(2) if wave.tilt_rad is None else wave.tilt_rad
-    result = replace(wave, amplitude=amplitude*xp.exp(1j*(phase+2*np.pi*constant/wavelength_m)),
+    result = wave._replace_owned(amplitude*xp.exp(1j*(phase+2*np.pi*constant/wavelength_m)),
                      curvature_m1=curvature+hessian, tilt_rad=tilt+gradient)
     check_lossless_norm(wave.probability, result.probability, context="Column multipole phase")
     return result

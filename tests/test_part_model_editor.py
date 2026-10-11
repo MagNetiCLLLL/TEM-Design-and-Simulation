@@ -2,7 +2,6 @@
 
 from copy import deepcopy
 from dataclasses import replace
-import shutil
 from types import SimpleNamespace
 
 import numpy as np
@@ -316,11 +315,15 @@ def test_live_aperture_opening_updates_mesh_but_keeps_draft_and_selected_face(pa
 
 @pytest.mark.parametrize("inside_project", [False, True])
 def test_external_and_inactive_toml_do_not_borrow_live_aperture_opening(page, root, inside_project):
+    from temsim.part_model_document import PartModelDocument
+
     key = "condenser_aperture_2"
     destination = (root if inside_project else root.parent) / "independent_column.toml"
-    shutil.copyfile(root / COLUMN, destination)
+    # A raw copy at another directory would break relative shared-subassembly
+    # paths. Exercise the application's real independent-file export instead.
+    PartModelDocument(root / COLUMN).save_copy(destination)
     page.set_runtime_values({key: {"radius_mm": 0.05}})
-    assert page.open_path(destination, selected_key=key)
+    assert page.open_path(destination, selected_key=key), page.status.text()
     before = _vertices(page, key).copy()
     assert page._model_runtime_values() == {}
     page.set_runtime_values({key: {"radius_mm": 0.1}})
@@ -493,11 +496,14 @@ aperture_hole_diameters_um = [100.0, 200.0]
 def test_mainwindow_keeps_original_2d_view_and_binds_model_selection_and_project_save(window, qtbot, monkeypatch):
     layout = window.workspace.physical_layout
     original_plot = layout.plot
-    assert layout.tabs.count() == 3
-    assert [layout.tabs.tabText(index) for index in range(3)] == ["2D", "3D Parts", "3D"]
-    assert layout.tabs.widget(0) is layout.section_page
-    assert layout.tabs.widget(1) is layout.model_editor
-    assert layout.tabs.widget(2) is layout.assembly_3d
+    for widget, label in ((layout.section_page, "2D"),
+                          (layout.rotating_section, "Rotating section"),
+                          (layout.model_editor, "3D Parts"),
+                          (layout.assembly_3d, "3D"),
+                          (layout.energy_filter_structure, "Energy Filter")):
+        index = layout.tabs.indexOf(widget)
+        assert index >= 0 and layout.tabs.tabText(index) == label
+        assert sum(layout.tabs.widget(i) is widget for i in range(layout.tabs.count())) == 1
     assert layout.plot.parentWidget() is layout.section_page
     assert window.workspace.tabs.widget(window.workspace.tabs.indexOf(layout)) is layout
     page = layout.model_editor
@@ -539,7 +545,7 @@ def test_mainwindow_keeps_original_2d_view_and_binds_model_selection_and_project
     assert {lens.key: lens.percent for lens in window.state.lenses} == strengths
     assert not page.session.dirty
     assert window.workspace.physical_layout is layout and layout.plot is original_plot
-    assert layout.tabs.widget(0) is layout.section_page
+    assert layout.tabs.indexOf(layout.section_page) >= 0
     page.select_part(HOUSING)
     assert window.parameter_panel._manifest_target.part_key == HOUSING
     assert page._selected_key == HOUSING and page.session.part(COIL)["mechanical_inner_diameter_mm"] == 70

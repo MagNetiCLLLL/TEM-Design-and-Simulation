@@ -36,7 +36,8 @@ def test_image_corrector_default_envelopes_fit_column_and_keep_internal_clearanc
                 assert part["mechanical_outer_diameter_mm"] <= outer
     for key in RESIZED:
         part = by_key[key]
-        assert part["mechanical_outer_diameter_mm"] == outer == 180.0
+        assert outer == 180.0
+        assert part["mechanical_outer_diameter_mm"] == (54.0 if key in IMAGE_CONTROL_CHANNEL_KEYS else outer)
         assert part["vacuum_inner_diameter_mm"] == 5.0
         assert part["mechanical_clear_bore_diameter_mm"] == 8.0
         assert part.get("effective_length_mm", part.get("effective_thickness_mm")) == 30.0
@@ -59,7 +60,7 @@ def test_resolved_2d_3d_geometry_agrees_and_outer_resize_does_not_change_ray_tra
     meshes = {key: [m for m in model.meshes if m.key == key] for key in RESIZED}
     components = {c.key: c for c in state.corrector_elements}
     for key in RESIZED:
-        assert components[key].mechanical_outer_diameter_mm == 180.0
+        assert components[key].mechanical_outer_diameter_mm == (54.0 if key in IMAGE_CONTROL_CHANNEL_KEYS else 180.0)
         if key in IMAGE_CONTROL_CHANNEL_KEYS:
             assert records[key].outer_diameter_mm == 0
             assert records[key].layout_role == "control_channel"

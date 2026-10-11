@@ -111,7 +111,8 @@ def test_pipeline_routes_and_caches_round_prefix_without_repeating_the_gun(monke
     state = default_state()
     checkpoint, _ = fixture()
     checkpoint = replace(checkpoint, plane_z_mm=state.electron_gun.exit_plane_z_mm,
-        record={**checkpoint.record, "radial_output_modes": ("test_route_only",)})
+        record={**checkpoint.record, "radial_output_modes": (
+            {"mode_id": checkpoint.beam.modes[0].mode_id, "scope": "test_route_only"},)})
     calls = {"gun": 0, "radial": 0, "cartesian": 0}
     def gun(*a, **kw):
         calls["gun"] += 1
@@ -137,6 +138,10 @@ def test_pipeline_routes_and_caches_round_prefix_without_repeating_the_gun(monke
     monkeypatch.setattr(pipeline, "_propagate_column_segmented", lambda *a, **kw: (cartesian(*a, **kw), False))
     request = TipWaveRequest(stop="specimen_entrance", execution=WaveExecutionOptions(
         segmented=segmented, cache_directory=str(tmp_path/"executed")))
+    # This fixture replaces radial/Cartesian execution to test routing and
+    # reuse. Keep the newer, independent acceptance-window solver outside
+    # this routing fixture; its physical path has its own tests.
+    request = replace(request, acceptance_window=replace(request.acceptance_window, enabled=False))
     pipeline._STAGES.clear()
     first = simulate_tip_wave(state, request)
     again = simulate_tip_wave(state, request)

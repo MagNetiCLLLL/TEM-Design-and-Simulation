@@ -1369,8 +1369,8 @@ class PhysicalLayoutView(QWidget):
             self._filter_structure_pending = False
 
     def _lens_pose_global_transform(self, key):
-        """Convert the shared module-coordinate pose to the section's lab mm."""
-        from temsim.lens_pose import effective_part_transform_mm
+        """Convert mechanical placement to lab mm, excluding optical tilt."""
+        from temsim.lens_pose import mechanical_part_transform_mm
         cache = getattr(self, "_lens_pose_transforms", None)
         if cache is None:
             self._lens_pose_transforms = cache = {}
@@ -1384,7 +1384,7 @@ class PhysicalLayoutView(QWidget):
                   if module.key == part.module_key for item in module.parts}
         by_key.update({name: item.data for name, item in self._part_by_key.items()
                        if item.module_key == part.module_key})
-        rotation, translation = effective_part_transform_mm(part.data, by_key)
+        rotation, translation = mechanical_part_transform_mm(part.data, by_key)
         module_shift = np.array((0., 0., float(part.center_z_mm) - float(part.data["local_center_z_mm"])))
         cache[key] = rotation, translation + module_shift - rotation @ module_shift
         return cache[key]
@@ -1395,7 +1395,7 @@ class PhysicalLayoutView(QWidget):
         return float(point[2]), float(point[0])
 
     def _apply_section_lens_poses(self):
-        """Project posed local X-Z sections without rotating labels or text.
+        """Place material X-Z sections independently of optical-axis tilt.
 
         This remains a section schematic: out-of-plane Y placement is visible
         in the full 3D assembly, not invented as a radial displacement here.
@@ -2289,39 +2289,15 @@ class PhysicalLayoutView(QWidget):
             )
         )
         pole_assessment = self._eds_pole_centerline_assessment(geometry)
-        pole_tip_radius = max(
-            0.5 * float(upper_pole.pole_tip_diameter_mm),
-            0.5 * float(lower_pole.pole_tip_diameter_mm),
-            2.5,
-        )
-        objective_radius = 0.5 * float(objective.outer_diameter_mm)
-
-        # Display-only placement. Public reference material does not provide
-        # head/package dimensions, so keep a small fixed schematic head and
-        # solve its distance so every solid vertex clears the largest resolved
-        # upper/lower pole-piece radius.  The configured centre line is
-        # checked against the pole profile below.  Equivalent-acceptance
-        # boundaries may still cross the axisymmetric projection because they
-        # are aggregate angular metadata, not literal solid apertures.
-        face_half_width = max(
-            0.45 * pole_tip_radius,
-            0.025 * objective_radius,
-        )
-        housing_length = max(
-            0.8 * pole_tip_radius,
-            0.05 * objective_radius,
-        )
-        inner_half_width = 1.25 * face_half_width
-        outer_half_width = 0.82 * face_half_width
-        pole_outer_radius = max(
-            0.5 * float(upper_pole.outer_diameter_mm),
-            0.5 * float(lower_pole.outer_diameter_mm),
-        )
-        drawing_distance = (
-            pole_outer_radius
-            + self.EDS_POLE_DISPLAY_CLEARANCE_MM
-            + inner_half_width * math.sin(takeoff_rad)
-        ) / math.cos(takeoff_rad)
+        from temsim.cad_detectors import eds_head_geometry
+        head = eds_head_geometry(part.data, {
+            key: value.data for key, value in self._part_by_key.items()
+        })
+        face_half_width = head["face_half_width_mm"]
+        housing_length = head["housing_length_mm"]
+        inner_half_width = head["front_half_width_mm"]
+        outer_half_width = head["rear_half_width_mm"]
+        drawing_distance = head["drawing_distance_mm"]
         if pole_assessment is None:
             pole_clearance_text = ""
         else:
@@ -2365,7 +2341,8 @@ class PhysicalLayoutView(QWidget):
             + "Active "
             "area, sensor distance, crystal shape and external package "
             "dimensions are not public; the drawn heads and distance are "
-            "explicitly non-dimensional schematics pending user cross-sections.\n"
+            "engineering reconstructions, shared with the 3D material model; "
+            "they do not set photon acceptance.\n"
             f"Solid head polygons use a {self.EDS_POLE_DISPLAY_CLEARANCE_MM:g} mm "
             "display-only clearance outside the resolved pole-piece OD. This "
             "prevents a false 2D material overlap but is not an OEM product "

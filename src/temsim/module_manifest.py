@@ -908,6 +908,17 @@ def validate_document(document):
                 f"Symmetric component {key} must use its mechanical "
                 "centre as the TOML optical reference"
             )
+    if document.get("module", {}).get("type") == "mechanical":
+        if any(not is_custom_mechanical_part(part) for part in parts):
+            raise ValueError("An independent mechanical document cannot declare optical hardware")
+        from temsim.part_materials import validate_part_materials
+        validate_part_materials(parts)
+        from temsim.part_model_features import validate_model_3d
+        from temsim.part_model_3d import part_model_from_document
+        for part in parts:
+            validate_model_3d(part)
+            part_model_from_document(document, part["key"], include_children=False)
+        return document
     try:
         drift_diameter = float(
             document["geometry"]["vacuum_drift_inner_diameter_mm"]
@@ -939,6 +950,10 @@ def validate_document(document):
     from temsim.magnetic_circuits import validate_circuit_declarations
     validate_circuit_declarations(physical_parts)
     _validate_accelerator_stack_metadata(physical_parts)
+    from temsim.cad_detectors import validate_detector_material_geometry
+    detector_context = {part["key"]: part for part in physical_parts}
+    for part in physical_parts:
+        validate_detector_material_geometry(part, detector_context)
     if document.get("module", {}).get("type") == "gun":
         _validate_gun_mechanical_relationships(physical_parts)
     if document.get("module", {}).get("type") == "beam_blanker":
@@ -2995,6 +3010,11 @@ def _validate_column_mechanical_overlaps(parts):
         )
 
     def axial_envelope(part):
+        from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
+        if (part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES
+                and "winding_axial_length_mm" in part):
+            from temsim.corrector_model_3d import winding_axial_extent
+            return winding_axial_extent(part)
         active_intervals = objective_coil_active_intervals(part)
         if active_intervals is not None:
             return active_intervals[0][0], active_intervals[-1][1]

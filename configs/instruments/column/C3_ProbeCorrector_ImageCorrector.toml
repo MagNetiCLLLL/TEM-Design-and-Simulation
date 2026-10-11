@@ -984,20 +984,21 @@ geometry_source = "CEOS Linck MC2025 p26 and Lu2025 optical topology distinguish
 [[parts]]
 order = 47
 key = "image_dp11_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked model winding insert.
 layout_role = "control_channel"
 layout_owner = "image_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "image_dp11_coils"
 
 name = "Image Corrector DP11 Deflector"
 branch = "image"
 local_start_z_mm = 1358.9
 local_center_z_mm = 1361.9
 local_end_z_mm = 1364.9
-length_mm = 6.0
+length_mm = 6
 vacuum_inner_diameter_mm = 5
 optical_reference_local_z_mm = 1361.9
-mechanical_outer_diameter_mm = 80.0
+mechanical_outer_diameter_mm = 23.8
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 6.0
 geometry_status = "engineering_optical_placement_not_oem"
@@ -1048,20 +1049,21 @@ mechanical_coil_radial_thickness_mm = 15.109225750000007
 [[parts]]
 order = 49
 key = "image_dp12_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked model winding insert.
 layout_role = "control_channel"
 layout_owner = "image_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "image_dp12_coils"
 
 name = "Image Corrector DP12 Deflector"
 branch = "image"
 local_start_z_mm = 1416.15
 local_center_z_mm = 1423.65
 local_end_z_mm = 1431.15
-length_mm = 15.0
+length_mm = 15
 vacuum_inner_diameter_mm = 5
 optical_reference_local_z_mm = 1423.65
-mechanical_outer_diameter_mm = 75.0
+mechanical_outer_diameter_mm = 23.8
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 15.0
 geometry_status = "engineering_optical_placement_not_oem"
@@ -1112,26 +1114,24 @@ mechanical_coil_radial_thickness_mm = 7.682709600000003
 [[parts]]
 order = 51
 key = "image_dph1_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked model winding insert.
 layout_role = "control_channel"
 layout_owner = "image_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "image_dph1_coils"
 
 name = "Image Corrector DPH1 Deflector"
 branch = "image"
-local_start_z_mm = 1511.4
+local_start_z_mm = 1509.9
 local_center_z_mm = 1526.4
-local_end_z_mm = 1541.4
-length_mm = 30.0
+local_end_z_mm = 1542.9
+length_mm = 33
 vacuum_inner_diameter_mm = 5
 optical_reference_local_z_mm = 1526.4
 # Match the existing 180 mm column envelope; not an OEM dimension.
-mechanical_outer_diameter_mm = 180.0
+mechanical_outer_diameter_mm = 54
 mechanical_clear_bore_diameter_mm = 8.0
 effective_thickness_mm = 30.0
-parent_key = "image_hp1_hexapole"
-optical_reference_host_key = "image_hp1_hexapole"
-optical_reference_offset_mm = 0.0
 
 [[parts]]
 order = 52
@@ -1193,20 +1193,21 @@ mechanical_coil_radial_thickness_mm = 12.479790600000001
 [[parts]]
 order = 54
 key = "image_dp21_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked model winding insert.
 layout_role = "control_channel"
 layout_owner = "image_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "image_dp21_coils"
 
 name = "Image Corrector DP21 Deflector"
 branch = "image"
 local_start_z_mm = 1594.9
 local_center_z_mm = 1601.9
 local_end_z_mm = 1608.9
-length_mm = 14.0
+length_mm = 14
 vacuum_inner_diameter_mm = 5
 optical_reference_local_z_mm = 1601.9
-mechanical_outer_diameter_mm = 75.0
+mechanical_outer_diameter_mm = 23.8
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 14.0
 geometry_status = "engineering_optical_placement_not_oem"
@@ -1215,20 +1216,21 @@ geometry_source = "CEOS Linck MC2025 p26 and Lu2025 optical topology distinguish
 [[parts]]
 order = 55
 key = "image_dp22_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked model winding insert.
 layout_role = "control_channel"
 layout_owner = "image_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "image_dp22_coils"
 
 name = "Image Corrector DP22 Deflector"
 branch = "image"
 local_start_z_mm = 1598.4
 local_center_z_mm = 1605.4
 local_end_z_mm = 1612.4
-length_mm = 14.0
+length_mm = 14
 vacuum_inner_diameter_mm = 5
 optical_reference_local_z_mm = 1605.4
-mechanical_outer_diameter_mm = 75.0
+mechanical_outer_diameter_mm = 23.8
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 14.0
 
@@ -1275,26 +1277,24 @@ mechanical_coil_radial_thickness_mm = 12.378393899999999
 [[parts]]
 order = 57
 key = "image_dph2_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked model winding insert.
 layout_role = "control_channel"
 layout_owner = "image_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "image_dph2_coils"
 
 name = "Image Corrector DPH2 Deflector"
 branch = "image"
-local_start_z_mm = 1655.4
+local_start_z_mm = 1653.9
 local_center_z_mm = 1670.4
-local_end_z_mm = 1685.4
-length_mm = 30.0
+local_end_z_mm = 1686.9
+length_mm = 33
 vacuum_inner_diameter_mm = 5
 optical_reference_local_z_mm = 1670.4
 # Match the existing 180 mm column envelope; not an OEM dimension.
-mechanical_outer_diameter_mm = 180.0
+mechanical_outer_diameter_mm = 54
 mechanical_clear_bore_diameter_mm = 8.0
 effective_thickness_mm = 30.0
-parent_key = "image_hp2_hexapole"
-optical_reference_host_key = "image_hp2_hexapole"
-optical_reference_offset_mm = 0.0
 
 [[parts]]
 order = 58
@@ -1356,40 +1356,42 @@ mechanical_coil_radial_thickness_mm = 7.257574949999999
 [[parts]]
 order = 60
 key = "image_ish_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked model winding insert.
 layout_role = "control_channel"
 layout_owner = "image_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "image_ish_coils"
 
 name = "Image Corrector ISh Deflector"
 branch = "image"
 local_start_z_mm = 1737.4
 local_center_z_mm = 1744.4
 local_end_z_mm = 1751.4
-length_mm = 14.0
+length_mm = 14
 vacuum_inner_diameter_mm = 5
 optical_reference_local_z_mm = 1744.4
-mechanical_outer_diameter_mm = 70.0
+mechanical_outer_diameter_mm = 23.8
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 14.0
 
 [[parts]]
 order = 61
 key = "image_dsh_deflector"
-# Optical/control coordinates below do not define a separate material body.
+# Optical/control coordinates below are resolved from the linked model winding insert.
 layout_role = "control_channel"
 layout_owner = "image_corrector"
-physical_host_status = "unverified"
+physical_host_status = "modelled"
+physical_host_key = "image_dsh_coils"
 
 name = "Image Corrector DSh Deflector"
 branch = "image"
 local_start_z_mm = 1764.4
 local_center_z_mm = 1768.4
 local_end_z_mm = 1772.4
-length_mm = 8.0
+length_mm = 8
 vacuum_inner_diameter_mm = 5
 optical_reference_local_z_mm = 1768.4
-mechanical_outer_diameter_mm = 75.0
+mechanical_outer_diameter_mm = 23.8
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 8.0
 
@@ -2916,6 +2918,14 @@ mechanical_overlap_role = "member"
 mechanical_overlap_reason = "Off-axis sample-facing EDS segments occupy azimuthal access inside the Objective assembly; the zero-length row is an aggregate marker and not an axial electron stop."
 parent_key = "objective_lens"
 eds_detector_definition_file = "EDS.toml"
+# Material detail only; angular X-ray acceptance remains in EDS.toml.
+cad_export_unit = true
+detector_material_geometry_status = "engineering_reconstruction_not_oem"
+detector_material_geometry_source = "docs/references/cad-detectors.md"
+mechanical_sensor_thickness_mm = 0.45
+mechanical_support_thickness_mm = 0.30
+mechanical_housing_wall_mm = 0.25
+mechanical_back_wall_mm = 0.50
 
 [[parts]]
 order = 128
@@ -3067,3 +3077,249 @@ geometry_evidence = "engineering_assumption"
 geometry_source = "Generic concentric X/Y winding insert; CEOS US20090079531A1 Figs 5/6,10/11 supports the construction class, not an OEM DPH winding map. Dimensions are model allocations, not manufacturer measurements."
 optical_relation_source = "CEOS Mueller et al. 2006 Fig. 2 and CEOS-hosted MC2025_CEOS_PL_20250831 p.2; DPH is in the corresponding HP field region, DP21/22 flank the transfer doublet."
 optical_relation_status = "published_order_absolute_z_provisional"
+
+[[parts]]
+order = 133
+key = "image_dp11_coils"
+name = "Image Corrector DP11 X/Y steering coils"
+branch = "image"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+local_start_z_mm = 1358.9
+local_center_z_mm = 1361.9
+local_end_z_mm = 1364.9
+length_mm = 6
+optical_reference_local_z_mm = 1361.9
+effective_thickness_mm = 6
+winding_axial_length_mm = 4
+vacuum_inner_diameter_mm = 5
+mechanical_clear_bore_diameter_mm = 20
+mechanical_inner_diameter_mm = 22.2
+mechanical_outer_diameter_mm = 23.8
+winding_layer_thickness_mm = 0.32
+winding_angular_span_deg = 120
+winding_band_width_mm = 0.2
+physical_host_status = "modelled"
+geometry_evidence = "engineering_reconstruction_not_oem"
+geometry_source = "CEOS US20090079531A1 Figs 5-7,10-11 supports compact orthogonal coreless winding families; Linck MC2025 p26 supports this channel position. This chosen bulk saddle geometry and all internal dimensions are engineering reconstruction, not CETCOR manufacturing data."
+optical_relation_source = "CEOS Linck MC2025 p26. Existing field centre, signed drive and effective field length retained; copper geometry supplies no additional optical field."
+winding_extent_note = "Copper axial extent is independent of the existing effective uniform-field model. Remaining allocated axial space is not material and is not a measured fringe-field profile."
+radial_relation_note = "Two separated orthogonal winding layers outside the unchanged 20 mm clear bore; no new housing, yoke, magnetic pole, insulation or tube is inferred."
+
+[[parts]]
+order = 134
+key = "image_dp12_coils"
+name = "Image Corrector DP12 X/Y steering coils"
+branch = "image"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+local_start_z_mm = 1416.15
+local_center_z_mm = 1423.65
+local_end_z_mm = 1431.15
+length_mm = 15
+optical_reference_local_z_mm = 1423.65
+effective_thickness_mm = 15
+winding_axial_length_mm = 15
+vacuum_inner_diameter_mm = 5
+mechanical_clear_bore_diameter_mm = 20
+mechanical_inner_diameter_mm = 22.2
+mechanical_outer_diameter_mm = 23.8
+winding_layer_thickness_mm = 0.32
+winding_angular_span_deg = 120
+winding_band_width_mm = 0.2
+physical_host_status = "modelled"
+geometry_evidence = "engineering_reconstruction_not_oem"
+geometry_source = "CEOS US20090079531A1 Figs 5-7,10-11 supports compact orthogonal coreless winding families; Linck MC2025 p26 supports this channel position. This chosen bulk saddle geometry and all internal dimensions are engineering reconstruction, not CETCOR manufacturing data."
+optical_relation_source = "CEOS Linck MC2025 p26. Existing field centre, signed drive and effective field length retained; copper geometry supplies no additional optical field."
+winding_extent_note = "Copper axial extent is independent of the existing effective uniform-field model. Remaining allocated axial space is not material and is not a measured fringe-field profile."
+radial_relation_note = "Two separated orthogonal winding layers outside the unchanged 20 mm clear bore; no new housing, yoke, magnetic pole, insulation or tube is inferred."
+
+[[parts]]
+order = 135
+key = "image_dph1_coils"
+name = "Image Corrector DPH1 X/Y steering coils"
+branch = "image"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+local_start_z_mm = 1509.9
+local_center_z_mm = 1526.4
+local_end_z_mm = 1542.9
+length_mm = 33
+optical_reference_local_z_mm = 1526.4
+effective_thickness_mm = 30
+winding_axial_length_mm = 33
+vacuum_inner_diameter_mm = 5
+mechanical_clear_bore_diameter_mm = 8
+mechanical_inner_diameter_mm = 52
+mechanical_outer_diameter_mm = 54
+winding_layer_thickness_mm = 0.08
+winding_angular_span_deg = 90
+winding_band_width_mm = 0.04
+physical_host_status = "modelled"
+geometry_evidence = "engineering_reconstruction_not_oem"
+geometry_source = "CEOS US20090079531A1 Figs 5-7,10-11 supports compact orthogonal coreless winding families; Linck MC2025 p26 supports this channel position. This chosen bulk saddle geometry and all internal dimensions are engineering reconstruction, not CETCOR manufacturing data."
+optical_relation_source = "CEOS Linck MC2025 p26. Existing field centre, signed drive and effective field length retained; copper geometry supplies no additional optical field."
+winding_extent_note = "Copper axial extent is independent of the existing effective uniform-field model. Remaining allocated axial space is not material and is not a measured fringe-field profile."
+parent_key = "image_hp1_hexapole"
+optical_reference_host_key = "image_hp1_hexapole"
+optical_reference_offset_mm = 0.0
+radial_relation_note = "Four 90-degree saddle loops in two layers at radii 26-27 mm. Straight bands lie between the six existing pole stems; end arcs lie outside the 30 mm pole-pin interval. No HP material or 8 mm clear bore is changed."
+
+[[parts]]
+order = 136
+key = "image_dp21_coils"
+name = "Image Corrector DP21 X/Y steering coils"
+branch = "image"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+local_start_z_mm = 1594.9
+local_center_z_mm = 1601.9
+local_end_z_mm = 1608.9
+length_mm = 14
+optical_reference_local_z_mm = 1601.9
+effective_thickness_mm = 14
+winding_axial_length_mm = 3
+vacuum_inner_diameter_mm = 5
+mechanical_clear_bore_diameter_mm = 20
+mechanical_inner_diameter_mm = 22.2
+mechanical_outer_diameter_mm = 23.8
+winding_layer_thickness_mm = 0.32
+winding_angular_span_deg = 120
+winding_band_width_mm = 0.2
+physical_host_status = "modelled"
+geometry_evidence = "engineering_reconstruction_not_oem"
+geometry_source = "CEOS US20090079531A1 Figs 5-7,10-11 supports compact orthogonal coreless winding families; Linck MC2025 p26 supports this channel position. This chosen bulk saddle geometry and all internal dimensions are engineering reconstruction, not CETCOR manufacturing data."
+optical_relation_source = "CEOS Linck MC2025 p26. Existing field centre, signed drive and effective field length retained; copper geometry supplies no additional optical field."
+winding_extent_note = "Copper axial extent is independent of the existing effective uniform-field model. Remaining allocated axial space is not material and is not a measured fringe-field profile."
+radial_relation_note = "Two separated orthogonal winding layers outside the unchanged 20 mm clear bore; no new housing, yoke, magnetic pole, insulation or tube is inferred."
+
+[[parts]]
+order = 137
+key = "image_dp22_coils"
+name = "Image Corrector DP22 X/Y steering coils"
+branch = "image"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+local_start_z_mm = 1598.4
+local_center_z_mm = 1605.4
+local_end_z_mm = 1612.4
+length_mm = 14
+optical_reference_local_z_mm = 1605.4
+effective_thickness_mm = 14
+winding_axial_length_mm = 3
+vacuum_inner_diameter_mm = 5
+mechanical_clear_bore_diameter_mm = 20
+mechanical_inner_diameter_mm = 22.2
+mechanical_outer_diameter_mm = 23.8
+winding_layer_thickness_mm = 0.32
+winding_angular_span_deg = 120
+winding_band_width_mm = 0.2
+physical_host_status = "modelled"
+geometry_evidence = "engineering_reconstruction_not_oem"
+geometry_source = "CEOS US20090079531A1 Figs 5-7,10-11 supports compact orthogonal coreless winding families; Linck MC2025 p26 supports this channel position. This chosen bulk saddle geometry and all internal dimensions are engineering reconstruction, not CETCOR manufacturing data."
+optical_relation_source = "CEOS Linck MC2025 p26. Existing field centre, signed drive and effective field length retained; copper geometry supplies no additional optical field."
+winding_extent_note = "Copper axial extent is independent of the existing effective uniform-field model. Remaining allocated axial space is not material and is not a measured fringe-field profile."
+radial_relation_note = "Two separated orthogonal winding layers outside the unchanged 20 mm clear bore; no new housing, yoke, magnetic pole, insulation or tube is inferred."
+
+[[parts]]
+order = 138
+key = "image_dph2_coils"
+name = "Image Corrector DPH2 X/Y steering coils"
+branch = "image"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+local_start_z_mm = 1653.9
+local_center_z_mm = 1670.4
+local_end_z_mm = 1686.9
+length_mm = 33
+optical_reference_local_z_mm = 1670.4
+effective_thickness_mm = 30
+winding_axial_length_mm = 33
+vacuum_inner_diameter_mm = 5
+mechanical_clear_bore_diameter_mm = 8
+mechanical_inner_diameter_mm = 52
+mechanical_outer_diameter_mm = 54
+winding_layer_thickness_mm = 0.08
+winding_angular_span_deg = 90
+winding_band_width_mm = 0.04
+physical_host_status = "modelled"
+geometry_evidence = "engineering_reconstruction_not_oem"
+geometry_source = "CEOS US20090079531A1 Figs 5-7,10-11 supports compact orthogonal coreless winding families; Linck MC2025 p26 supports this channel position. This chosen bulk saddle geometry and all internal dimensions are engineering reconstruction, not CETCOR manufacturing data."
+optical_relation_source = "CEOS Linck MC2025 p26. Existing field centre, signed drive and effective field length retained; copper geometry supplies no additional optical field."
+winding_extent_note = "Copper axial extent is independent of the existing effective uniform-field model. Remaining allocated axial space is not material and is not a measured fringe-field profile."
+parent_key = "image_hp2_hexapole"
+optical_reference_host_key = "image_hp2_hexapole"
+optical_reference_offset_mm = 0.0
+radial_relation_note = "Four 90-degree saddle loops in two layers at radii 26-27 mm. Straight bands lie between the six existing pole stems; end arcs lie outside the 30 mm pole-pin interval. No HP material or 8 mm clear bore is changed."
+
+[[parts]]
+order = 139
+key = "image_ish_coils"
+name = "Image Corrector ISh X/Y steering coils"
+branch = "image"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+local_start_z_mm = 1737.4
+local_center_z_mm = 1744.4
+local_end_z_mm = 1751.4
+length_mm = 14
+optical_reference_local_z_mm = 1744.4
+effective_thickness_mm = 14
+winding_axial_length_mm = 14
+vacuum_inner_diameter_mm = 5
+mechanical_clear_bore_diameter_mm = 20
+mechanical_inner_diameter_mm = 22.2
+mechanical_outer_diameter_mm = 23.8
+winding_layer_thickness_mm = 0.32
+winding_angular_span_deg = 120
+winding_band_width_mm = 0.2
+physical_host_status = "modelled"
+geometry_evidence = "engineering_reconstruction_not_oem"
+geometry_source = "CEOS US20090079531A1 Figs 5-7,10-11 supports compact orthogonal coreless winding families; Linck MC2025 p26 supports this channel position. This chosen bulk saddle geometry and all internal dimensions are engineering reconstruction, not CETCOR manufacturing data."
+optical_relation_source = "CEOS Linck MC2025 p26. Existing field centre, signed drive and effective field length retained; copper geometry supplies no additional optical field."
+winding_extent_note = "Copper axial extent is independent of the existing effective uniform-field model. Remaining allocated axial space is not material and is not a measured fringe-field profile."
+radial_relation_note = "Two separated orthogonal winding layers outside the unchanged 20 mm clear bore; no new housing, yoke, magnetic pole, insulation or tube is inferred."
+
+[[parts]]
+order = 140
+key = "image_dsh_coils"
+name = "Image Corrector DSh X/Y steering coils"
+branch = "image"
+mechanical_only = true
+mechanical_profile = "deflector_coil_insert"
+mechanical_part_role = "deflector_coil_insert"
+material_class = "copper_winding"
+local_start_z_mm = 1764.4
+local_center_z_mm = 1768.4
+local_end_z_mm = 1772.4
+length_mm = 8
+optical_reference_local_z_mm = 1768.4
+effective_thickness_mm = 8
+winding_axial_length_mm = 8
+vacuum_inner_diameter_mm = 5
+mechanical_clear_bore_diameter_mm = 20
+mechanical_inner_diameter_mm = 22.2
+mechanical_outer_diameter_mm = 23.8
+winding_layer_thickness_mm = 0.32
+winding_angular_span_deg = 120
+winding_band_width_mm = 0.2
+physical_host_status = "modelled"
+geometry_evidence = "engineering_reconstruction_not_oem"
+geometry_source = "CEOS US20090079531A1 Figs 5-7,10-11 supports compact orthogonal coreless winding families; Linck MC2025 p26 supports this channel position. This chosen bulk saddle geometry and all internal dimensions are engineering reconstruction, not CETCOR manufacturing data."
+optical_relation_source = "CEOS Linck MC2025 p26. Existing field centre, signed drive and effective field length retained; copper geometry supplies no additional optical field."
+winding_extent_note = "Copper axial extent is independent of the existing effective uniform-field model. Remaining allocated axial space is not material and is not a measured fringe-field profile."
+radial_relation_note = "Two separated orthogonal winding layers outside the unchanged 20 mm clear bore; no new housing, yoke, magnetic pole, insulation or tube is inferred."

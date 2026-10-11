@@ -136,6 +136,12 @@ class ParameterPanel(QWidget):
         self.lens_aberration_provenance.setStyleSheet(
             "color: #64748b; font-weight: 600;"
         )
+        self.lens_intrinsic_button = QPushButton("Intrinsic aberrations...")
+        self.lens_intrinsic_button.setToolTip(
+            "Edit additional lens-local intrinsic coefficients. Particle and "
+            "coherent propagation use the same values; excitation stays unchanged."
+        )
+        self.lens_intrinsic_button.clicked.connect(self._edit_lens_intrinsic_aberrations)
         self.lens_field_direction = QComboBox()
         self.lens_field_direction.addItem("+Z", 1)
         self.lens_field_direction.addItem("-Z", -1)
@@ -158,6 +164,7 @@ class ParameterPanel(QWidget):
         lens_form.addRow("Chromatic aberration Cc", self.lens_cc)
         lens_form.addRow("Coefficient model", self.lens_aberration_model)
         lens_form.addRow(self.lens_aberration_provenance)
+        lens_form.addRow(self.lens_intrinsic_button)
         lens_form.addRow(
             "Effective axial field direction", self.lens_field_direction
         )
@@ -461,6 +468,16 @@ class ParameterPanel(QWidget):
         self.lens_diagnostics.setText(
             text or "Recalculate to update field and focal diagnostics."
         )
+
+    def _instrument_state(self):
+        # Splitters and docks reparent this panel after construction.
+        owner = self.parent()
+        while owner is not None:
+            state = getattr(owner, "state", None)
+            if state is not None:
+                return state
+            owner = owner.parent()
+        return None
 
     @staticmethod
     def _table(headers) -> QTableWidget:
@@ -1174,7 +1191,10 @@ class ParameterPanel(QWidget):
         self.lens_enabled.setChecked(bool(getattr(obj, "enabled", True)))
         self.lens_excitation.setMaximum(float(getattr(obj, "max_percent", 1000.0)))
         self.lens_excitation.setValue(float(obj.percent))
-        parent_state = getattr(self.parent(), "state", None)
+        parent_state = self._instrument_state()
+        self.lens_intrinsic_button.setEnabled(
+            parent_state is not None and hasattr(obj, "cs_mm") and hasattr(obj, "key")
+        )
         voltage_kv = float(getattr(parent_state, "beam_voltage_kv", 300.0))
         profile = intrinsic_lens_aberration_profile(obj, voltage_kv)
         explicit = (
@@ -1204,6 +1224,24 @@ class ParameterPanel(QWidget):
             -1 if polarity < 0 else 1
         )
         self.lens_field_direction.setCurrentIndex(max(direction_index, 0))
+
+    def _edit_lens_intrinsic_aberrations(self):
+        if self._runtime_target is None:
+            return
+        state = self._instrument_state()
+        if state is None:
+            return
+        from temsim.gui.lens_aberration_editor import LensAberrationEditor
+
+        try:
+            dialog = LensAberrationEditor(state, self._runtime_target.obj, self)
+        except (TypeError, ValueError) as exc:
+            self.error.emit(str(exc))
+            return
+        dialog.applied.connect(
+            lambda: self.runtime_changed.emit("lens_intrinsic_aberrations")
+        )
+        dialog.exec()
 
     def _runtime_item_changed(self, item: QTableWidgetItem) -> None:
         if self._updating or item.column() != 1 or self._runtime_target is None:
@@ -1296,7 +1334,7 @@ class ParameterPanel(QWidget):
             obj.cs_mm = None
             obj.cc_mm = None
         else:
-            parent_state = getattr(self.parent(), "state", None)
+            parent_state = self._instrument_state()
             voltage_kv = float(getattr(parent_state, "beam_voltage_kv", 300.0))
             profile = intrinsic_lens_aberration_profile(obj, voltage_kv)
             if profile.cs_mm is None or profile.cc_mm is None:

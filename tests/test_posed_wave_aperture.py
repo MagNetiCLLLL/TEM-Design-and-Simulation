@@ -1,4 +1,4 @@
-"""Finite tilted plate masks and ray contacts use one physical geometry."""
+"""Effective tilted aperture masks and ray contacts use one optical geometry."""
 from types import SimpleNamespace
 from dataclasses import asdict
 

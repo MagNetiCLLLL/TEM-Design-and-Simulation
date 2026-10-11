@@ -18,6 +18,54 @@ class UnsupportedWaveSource(ValueError):
     code = "GUN_PHASE_CHAIN_UNAVAILABLE"
 
 
+class UnsupportedIntrinsicLensLegacy(UnsupportedWaveSource):
+    code = "INTRINSIC_LENS_REQUIRES_COLUMN_WAVE"
+
+
+def require_legacy_aberration_compatibility(state, *, product,
+                                           start_z_mm=None, stop_z_mm=None):
+    """Legacy equivalent pupils/LCTs cannot carry arbitrary local lens actions.
+
+    Only an enabled native lens in the consumed interval blocks this route.
+    Matching field-map models already own their aberrations and deliberately
+    leave the native coefficient inputs inactive. The empty/default path
+    avoids provider construction or any numerical work.
+    """
+    from temsim.optics.intrinsic_aberrations import has_intrinsic_coefficients
+
+    definitions = getattr(state, "lens_intrinsic_aberrations", {})
+    if not definitions:
+        return
+    candidates = []
+    for lens in getattr(state, "lenses", ()):
+        row = definitions.get(lens.key, {})
+        if not lens.enabled or not row or not has_intrinsic_coefficients(row):
+            continue
+        if start_z_mm is not None or stop_z_mm is not None:
+            from temsim.lens_pose import lens_pose_registration
+            pose = lens_pose_registration(state, lens.key)
+            z_mm = float((pose.rotation_array @ np.array((0., 0., float(lens.z_mm)*1e-3))
+                          + pose.origin_array_m)[2])*1e3
+            if start_z_mm is not None and z_mm < float(start_z_mm):
+                continue
+            if stop_z_mm is not None and z_mm > float(stop_z_mm):
+                continue
+        candidates.append(lens.key)
+    if not candidates:
+        return
+    from temsim.physics.lens_field_provider import active_mapped_providers
+    mapped = {provider.lens_key for provider in active_mapped_providers(state)}
+    active = [key for key in candidates if key not in mapped]
+    if active:
+        raise UnsupportedIntrinsicLensLegacy(
+            f"{product}: the equivalent-pupil / first-order wave model cannot "
+            f"apply per-lens intrinsic aberrations ({', '.join(active)}). "
+            "Use Electron beam / Calculate beam for full-column coherent "
+            "propagation. The coefficients were not ignored or replaced by "
+            "fitted system residuals; all lens settings remain unchanged."
+        )
+
+
 def gun_phase_readiness(state):
     gun = state.electron_gun
     from temsim.optics.electron_gun.source_policy import require_physical_gun_source, UnsupportedSourceModel
@@ -65,6 +113,7 @@ def require_gun_wave_source(state, *, product):
     arrays as proof. This deliberately cannot be enabled with origin='gun'.
     Ray tracing, EDS particle transport and historical viewing remain available.
     """
+    require_legacy_aberration_compatibility(state, product=product)
     readiness = gun_phase_readiness(state)
     if readiness["code"] == "TIP_ORIGIN_REQUIRED":
         raise UnsupportedWaveSource(f"{product}: {readiness['reason']}")

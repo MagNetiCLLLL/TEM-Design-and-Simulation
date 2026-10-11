@@ -21,6 +21,22 @@ DESCRIPTION = (
 )
 
 
+def winding_axial_extent(part):
+    """Copper extent inside its allocated field/installation envelope, in mm.
+
+    An effective finite field need not end at the copper ends. An explicitly
+    shorter winding therefore changes only material geometry, never the
+    channel's effective_thickness_mm or axial field support.
+    """
+    start, end = (float(part[name]) for name in ("local_start_z_mm", "local_end_z_mm"))
+    value = part.get("winding_axial_length_mm", end - start)
+    if (isinstance(value, bool) or not isinstance(value, Real)
+            or not math.isfinite(value) or not 0.0 < value <= end - start + 1e-9):
+        raise ValueError(f"{part.get('key', 'winding')}: copper length must fit its allocated axial envelope")
+    centre = (start + end) / 2.0
+    return centre - float(value) / 2.0, centre + float(value) / 2.0
+
+
 def winding_dimensions(part):
     """Validate native dimensions; only the old profile supplies legacy defaults.
 
@@ -40,7 +56,8 @@ def winding_dimensions(part):
 
     inner = number("mechanical_inner_diameter_mm") / 2.0
     outer = number("mechanical_outer_diameter_mm") / 2.0
-    length = number("local_end_z_mm") - number("local_start_z_mm")
+    start, end = winding_axial_extent(part)
+    length = end - start
     if not (0.0 < inner < outer and length > 0.0):
         raise ValueError(f"{key}: windings require an open bore and positive radial/axial thickness")
     legacy = part.get("mechanical_profile") != PROFILE
@@ -135,7 +152,7 @@ def deflector_coil_meshes(part, angular_segments=32, *, drive_key=None):
     key = str(part["key"])
     layer, span, band = winding_dimensions(part)
     count = _segments(angular_segments)
-    start, end = _extent(part)
+    start, end = winding_axial_extent(part)
     inner = _number(part["mechanical_inner_diameter_mm"], "mechanical_inner_diameter_mm") / 2.0
     outer = _number(part["mechanical_outer_diameter_mm"], "mechanical_outer_diameter_mm") / 2.0
     if not (0.0 < inner < outer and end > start):
@@ -163,6 +180,8 @@ def deflector_coil_meshes(part, angular_segments=32, *, drive_key=None):
         f"{key}: {DESCRIPTION} Linked field source: {linked}.",
         str(part.get("axial_relation_note", "")),
         str(part.get("radial_relation_note", "")),
+        f"Copper axial length {end-start:g} mm; finite field length remains "
+        f"{part.get('effective_thickness_mm', 'unspecified')} mm independently.",
         f"Display construction: each winding layer is {layer:g} mm thick; "
         f"opposing loops span {span:g} degrees, with the second pair "
         f"rotated by 90 degrees. End/side band width is {band:g} mm. "

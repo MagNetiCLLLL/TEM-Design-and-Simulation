@@ -65,8 +65,18 @@ class PartModelEditorPage(QWidget):
         self._calculation_detail = "No completed calculation in this window."
         self._audit_dialog = None
         self._cad_export_dialog = None
+        self._cad_geometry_job = None
+        self._cad_geometry_dialog = None
+        self._step_import_dialog = None
+        self._cad_validation_request = None
+        self._cad_validation_report = None
+        self._cad_validation_dialog = None
+        self._cad_context_assembly = None
         self._region_models = {}
         self.open_button = QPushButton("Open TOML…")
+        self.import_step_button = QPushButton("Import STEP…")
+        self.import_step_button.setToolTip("Import exact STEP material as a mechanical component, or explicitly register it onto a selected material component. Optical settings are retained.")
+        self.import_step_button.clicked.connect(self.import_step)
         self.save_button = QPushButton("Save")
         self.save_copy_button = QPushButton("Save copy…")
         self.export_step_button = QPushButton("Export STEP…")
@@ -97,6 +107,9 @@ class PartModelEditorPage(QWidget):
         self.copy_component_button.setToolTip("Create an independent copy in this file or another assembly TOML; Save writes it")
         self.audit_button = QPushButton("Dimension audit…")
         self.audit_button.setToolTip("Review dimension meanings, evidence and missing definitions across saved modules")
+        self.geometry_check_button = QPushButton("Check geometry…")
+        self.geometry_check_button.setToolTip("Check the current material solids and declared optical openings in the background; electromagnetic fields are not recalculated.")
+        self.geometry_check_button.clicked.connect(self.check_geometry)
         self.source_label = QLabel("Open an instrument module or select a component in Physical Layout")
         self.source_label.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
         self.modules = QComboBox()
@@ -226,7 +239,7 @@ class PartModelEditorPage(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(6, 6, 6, 6)
         file_row = QHBoxLayout()
-        for widget in (self.open_button, self.save_button, self.save_copy_button, self.export_step_button, self.undo_button,
+        for widget in (self.open_button, self.import_step_button, self.save_button, self.save_copy_button, self.export_step_button, self.undo_button,
                        self.redo_button, self.revert_button):
             file_row.addWidget(widget)
         file_row.addWidget(self.source_label, 1)
@@ -237,6 +250,7 @@ class PartModelEditorPage(QWidget):
         module_row = QHBoxLayout()
         module_row.addWidget(self.modules, 1)
         module_row.addWidget(self.load_module_button)
+        module_row.addWidget(self.geometry_check_button)
         layout.addLayout(module_row)
         component_row = QHBoxLayout()
         for widget in (self.new_component_button, self.place_component_button, self.copy_component_button, self.subassembly_button):
@@ -303,6 +317,7 @@ class PartModelEditorPage(QWidget):
         previous_mesh = self._runtime_mesh_dependencies()
         previous_parameters = self._selected_runtime_values()
         self._project_root = Path(root).resolve()
+        self._cad_context_assembly = assembly
         self._project_save = save_callback
         self._runtime_values = deepcopy(runtime_values or {})
         paths = tuple((self._project_root / path).resolve().relative_to(self._project_root).as_posix()
@@ -568,7 +583,7 @@ class PartModelEditorPage(QWidget):
                     or part.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing"):
                 continue
             try:
-                index = self._aperture_index if key == self._selected_key and scope != "module" else 0
+                index = self._aperture_index if key == self._selected_key else 0
                 opening = _opening(part, runtime.get(key), index)
             except ValueError as exc:
                 # Invalid input is handled by the normal preview error path.
@@ -579,6 +594,7 @@ class PartModelEditorPage(QWidget):
     def _refresh_runtime_dependencies(self, previous_mesh, previous_parameters):
         self._runtime_refresh_pending |= previous_mesh != self._runtime_mesh_dependencies()
         self._runtime_parameters_pending |= previous_parameters != self._selected_runtime_values()
+        self._refresh_geometry_report_status()
         if self.isVisible():
             self._flush_runtime_refresh()
 
@@ -838,6 +854,7 @@ class PartModelEditorPage(QWidget):
         self.base_shape.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
         self.base_shape.setMinimumContentsLength(12)
         for label, key in (("Existing component geometry", "existing"),
+                           ("Imported STEP geometry", "step"),
                            ("Box", "box"), ("Elliptic cylinder", "elliptic_cylinder")):
             self.base_shape.addItem(label, key)
         self.apply_shape_button = QPushButton("Use this base shape")
@@ -870,8 +887,14 @@ class PartModelEditorPage(QWidget):
                       "A selected face or edge supplies the initial cut position. "
                       "Holes and slots remove material; all changes support Undo and Save.\n\n"
                       "Physical magnetic lens placement moves its field and child hardware. "
-                      "CAD shape changes do not infer field strength from coil dimensions.")
+                      "CAD shape changes do not infer field strength from coil dimensions.\n\n"
+                      "STEP supports configured dimensions and physical placement. Custom base shapes, "
+                      "holes, slots and scaling use the same saved recipe for preview and exact STEP export. "
+                      "Imported STEP previews use its tessellation; exact export and geometry checks use its B-rep. "
+                      "Original CAD feature history is not recovered. View sections only change the display.")
+        self.feature_scope_note = note
         note.setWordWrap(True)
+        note.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(note)
         self.parameter_tabs.addTab(page, "Features")
         self.apply_shape_button.clicked.connect(self._apply_base_shape)
@@ -887,6 +910,14 @@ class PartModelEditorPage(QWidget):
         part = self.session.part(self._selected_key)
         model = part.get("model_3d", {})
         self.base_shape.setCurrentIndex(max(0, self.base_shape.findData(model.get("base", {}).get("kind", "existing"))))
+        imported = model.get("base", {}).get("kind") == "step"
+        self.base_shape.model().item(self.base_shape.findData("step")).setEnabled(imported)
+        self.reset_model_button.setToolTip(
+            "Restore the imported STEP's original sizes and remove cuts; keep its current placement."
+            if imported else "Remove explicit shape edits and restore the component's configured native geometry.")
+        self.apply_shape_button.setToolTip(
+            "Choosing another base replaces the imported geometry in this draft. Undo restores the STEP source."
+            if imported else "Change the material shape; this does not create a new optical field model.")
         current = self.feature_tree.currentItem()
         selected = current.data(0, Qt.ItemDataRole.UserRole) if current else None
         blocked = self.feature_tree.blockSignals(True)
@@ -911,6 +942,10 @@ class PartModelEditorPage(QWidget):
         part = self.session.part(self._selected_key)
         model = deepcopy(part.get("model_3d") or default_model_3d(part))
         kind = self.base_shape.currentData()
+        if kind == "step":
+            if part.get("model_3d", {}).get("base", {}).get("kind") != "step":
+                self._message("Use Import STEP to choose an exact source geometry.", error=True)
+            return
         base = {"kind": kind}
         if kind != "existing":
             diameter = float(part.get("mechanical_outer_diameter_mm", 10.0))
@@ -928,7 +963,10 @@ class PartModelEditorPage(QWidget):
 
     def _reset_model_shape(self):
         if self._material_editing_enabled():
-            self.session.set_model_3d(self._selected_key, None)
+            if self.session.part(self._selected_key).get("model_3d", {}).get("base", {}).get("kind") == "step":
+                self.session.reset_model_geometry(self._selected_key)
+            else:
+                self.session.set_model_3d(self._selected_key, None)
             prefix = ("parts", self._selected_key, "model_3d")
             self._invalid_inputs = {path: text for path, text in self._invalid_inputs.items() if path[:3] != prefix}
             self._topology_selection = ()
@@ -954,9 +992,9 @@ class PartModelEditorPage(QWidget):
                 point, normal = energy_filter_feature_hit(part, by_key, point, normal)
             else:
                 import numpy as np
-                from temsim.lens_pose import effective_part_transform_mm, supports_physical_lens_pose
+                from temsim.lens_pose import mechanical_part_transform_mm, supports_physical_lens_pose
                 by_key = {row["key"]: row for row in self.session.document["parts"]}
-                rotation, translation = effective_part_transform_mm(part, by_key)
+                rotation, translation = mechanical_part_transform_mm(part, by_key)
                 point = rotation.T @ (np.asarray(point) - translation)
                 normal = rotation.T @ np.asarray(normal)
                 if supports_physical_lens_pose(part):
@@ -1458,10 +1496,25 @@ class PartModelEditorPage(QWidget):
     def _parameter_children(cls, parent, values, path=()):
         entries = values.items() if isinstance(values, dict) else enumerate(values)
         for key, value in entries:
+            if key == "asset_json" and isinstance(value, str):
+                from temsim.step_assets import read_asset
+                try:
+                    asset = read_asset(value)
+                    source = asset.get("source", {})
+                    summary = f"Embedded STEP source · {len(asset['leaves'])} bodies · {source.get('filename', 'STEP')}"
+                    detail = (summary + "\nSHA-256: " + str(source.get("sha256", "unknown")) +
+                              "\nExact source B-rep is stored in the TOML. Use Dimensions and Features to edit its recipe.")
+                except ValueError:
+                    summary = detail = "Invalid embedded STEP source; re-import the STEP file."
+                item = QTreeWidgetItem((str(key), summary))
+                item.setData(0, Qt.ItemDataRole.UserRole, (*path, key))
+                item.setToolTip(1, detail)
+                parent.addChild(item)
+                continue
             nested = isinstance(value, (dict, list, tuple))
             item = QTreeWidgetItem((str(key), "" if nested else str(value)))
             item.setData(0, Qt.ItemDataRole.UserRole, (*path, key))
-            item.setToolTip(1, str(value))
+            item.setToolTip(1, "Expand to inspect fields." if nested else str(value))
             parent.addChild(item)
             if nested:
                 cls._parameter_children(item, value, (*path, key))
@@ -1493,6 +1546,7 @@ class PartModelEditorPage(QWidget):
         if not self._loading and self.aperture.currentData() is not None:
             self._aperture_index = self.aperture.currentData()
             self._render(preserve_view=True)
+            self._refresh_geometry_report_status()
 
     def _region_changed(self):
         if self._loading or self.session is None or not self._selected_key:
@@ -1553,7 +1607,8 @@ class PartModelEditorPage(QWidget):
         try:
             if self.scope.currentData() == "module":
                 model = module_model_from_document(self.session.document, angular_segments=16,
-                                                   runtime_values=runtime_values)
+                                                   runtime_values=runtime_values,
+                                                   aperture_indices={self._selected_key: self._aperture_index})
                 meshes = list(model.meshes)
             else:
                 model = part_model_from_document(self.session.document, self._selected_key,
@@ -1594,7 +1649,9 @@ class PartModelEditorPage(QWidget):
                     continue
                 seen.add(signature)
                 # Launch surfaces and normal guides are not assignable material.
-                color = (mesh.color if mesh.region in {"emitting_cap", "emission_normals"}
+                imported_region = (part.get("model_3d", {}).get("base", {}).get("kind") == "step"
+                                   and str(mesh.region).startswith("step_"))
+                color = (mesh.color if imported_region or mesh.region in {"emitting_cap", "emission_normals"}
                          else configured_region_colour(part, mesh.region, mesh.color))
                 records.append(dict(vertices=mesh.vertices, faces=mesh.faces, key=mesh.key,
                                     region=mesh.region, color=color,
@@ -1614,6 +1671,259 @@ class PartModelEditorPage(QWidget):
             self._message("Preview: " + str(exc), error=True)
             return False
 
+    def import_step(self):
+        """Import an exact source once; dimensions/features use existing controls."""
+        if self._invalid_inputs:
+            self._message("Correct the invalid dimensions before importing STEP.", error=True)
+            return
+        if self._cad_geometry_job is not None and self._cad_geometry_job.busy:
+            self._cad_geometry_dialog.show()
+            self._cad_geometry_dialog.raise_()
+            return
+        if self._step_import_dialog is not None:
+            self._step_import_dialog.raise_()
+            return
+        path, _ = QFileDialog.getOpenFileName(self, "Import STEP material", "", "STEP files (*.step *.stp);;All files (*)")
+        if not path:
+            return
+        from temsim.gui.cad_step_import import StepImportDialog
+        session = self.session
+        snapshot = deepcopy(session.document) if session is not None else None
+        source_path = session.path.resolve() if session is not None else None
+        selected = None
+        if self._material_editing_enabled():
+            part = session.part(self._selected_key)
+            # Assemblies own independent leaves. Replacing a parent while its
+            # children remain visible would silently duplicate the material.
+            if not any(p.get("parent_key") == part["key"] for p in session.document["parts"]):
+                selected = part
+        dialog = StepImportDialog(path, selected_part=selected,
+            existing_keys=(p["key"] for p in session.document["parts"]) if session is not None else (), parent=self)
+        self._step_import_dialog = dialog
+        dialog.setWindowModality(Qt.WindowModality.WindowModal)
+
+        def reviewed(result):
+            self._step_import_dialog = None
+            if result == dialog.DialogCode.Accepted and dialog.result_value is not None:
+                values = dialog.result_value
+                destination = None
+                if session is None:
+                    name, _ = QFileDialog.getSaveFileName(self, "Choose a new TOML for this STEP model",
+                        str(Path(path).with_suffix(".toml")), "Instrument TOML (*.toml)")
+                    if not name:
+                        dialog.deleteLater()
+                        return
+                    destination = Path(name).resolve()
+                    if destination.exists():
+                        self._message("Choose a new TOML path. Open an existing TOML first to add imported material to it.", error=True)
+                        dialog.deleteLater()
+                        return
+                self._start_step_import(values, session, snapshot, destination, source_path=source_path)
+            dialog.deleteLater()
+
+        dialog.finished.connect(reviewed)
+        dialog.open()
+
+    def _start_step_import(self, values, source_session, source_document, destination=None, *, source_path=None):
+        from temsim.gui.cad_geometry_job import CadGeometryJob, CadGeometryProgress, request_digest
+        try:
+            source_path = (Path(source_path).resolve() if source_path is not None else
+                           source_session.path.resolve() if source_session is not None else None)
+            if self.session is not source_session or (source_session is not None and
+                    (source_session.path.resolve() != source_path or source_session.document != source_document)):
+                raise ValueError("The target draft changed. Reopen Import STEP to review the current target.")
+            request = {"op": "import_step", "path": values["path"],
+                       "draft_digest": request_digest(source_document),
+                       "target_document_path": str(source_path or destination),
+                       "linear_tolerance_mm": .05, "angular_tolerance_rad": .1}
+            self._dispose_finished_geometry_job()
+            job = CadGeometryJob(request, self)
+            progress = CadGeometryProgress(job, "Import STEP", self)
+            self._cad_geometry_job, self._cad_geometry_dialog = job, progress
+
+            def completed(success, receipt, message):
+                if self._cad_geometry_job is not job:
+                    return
+                if not success:
+                    self._message(message, error=True)
+                    self._update_buttons()
+                    return
+                if (self.session is not source_session or self._invalid_inputs
+                        or (source_session is not None and (source_session.path.resolve() != source_path
+                                                            or source_session.document != source_document))):
+                    self._message("The STEP import finished after the draft changed. Its result was not applied; the current geometry is retained.", error=True)
+                    self._update_buttons()
+                    return
+                try:
+                    asset = receipt["result"]
+                    if source_session is None:
+                        candidate = PartModelDocument.from_step_asset(asset, destination,
+                            key=values["key"], name=values["name"])
+                        selected_key = candidate.document["parts"][0]["key"]
+                    else:
+                        candidate = deepcopy(source_session)
+                        candidate.assert_source_current()
+                        selected_key = candidate.import_step_asset(asset, mode=values["mode"],
+                            target_key=values["key"] if values["mode"] == "replace" else None,
+                            registration=values["registration"], key=values["key"], name=values["name"])
+                    # Validate the mesh before replacing the current session.
+                    # This only consumes the worker's tessellation, not OCC.
+                    from temsim.part_model_3d import part_model_from_document
+                    part_model_from_document(candidate.document, selected_key)
+                    self.session = candidate
+                    self._invalid_inputs = {}
+                    self._topology_selection = ()
+                    self._pending_part = None
+                    self._pending_reveal = False
+                    self._removed_selection_key = None
+                    self._load_tree()
+                    self.select_part(selected_key, emit=False)
+                    self.view.fit_all()
+                    self._message("STEP imported into the draft. Use Dimensions and Features to edit; Save writes the TOML. Optical settings were not inferred from the imported shape.")
+                except Exception as exc:
+                    self._message("STEP was not applied: " + str(exc), error=True)
+                self._update_buttons()
+
+            job.completed.connect(completed)
+            job.start()
+            progress.show()
+            self._message("Reading STEP in the background. The current draft and geometry remain available.")
+            self._update_buttons()
+        except Exception as exc:
+            self._message(str(exc), error=True)
+            self._update_buttons()
+
+    def _dispose_finished_geometry_job(self):
+        # Receipts can contain large source B-reps. Do not retain every old
+        # QObject/signal closure (and its captured document) under the editor.
+        old = self._cad_geometry_job
+        if old is not None and not old.busy:
+            if self._cad_geometry_dialog is not None:
+                self._cad_geometry_dialog.close()
+                self._cad_geometry_dialog.deleteLater()
+                self._cad_geometry_dialog = None
+            old.deleteLater()
+            self._cad_geometry_job = None
+
+    def check_geometry(self):
+        """Review exact current-draft geometry without modifying or saving it."""
+        if self.session is None or self._invalid_inputs:
+            return
+        if self._cad_geometry_job is not None and self._cad_geometry_job.busy:
+            self._cad_geometry_dialog.show()
+            self._cad_geometry_dialog.raise_()
+            return
+        from temsim.cad_assembly_edit import build_current_assembly_edit_catalog, assembly_edit_context_is_current
+        from temsim.gui.cad_geometry_job import CadGeometryJob, CadGeometryProgress
+        from temsim.cad_edit_validation import build_edit_validation_request, finalize_edit_validation
+        try:
+            self.session.validate()
+            session = self.session
+            session_path = session.path.resolve()
+            runtime = self._runtime_values
+            indices = {self._selected_key: self._aperture_index}
+            catalog = build_current_assembly_edit_catalog(session, project_root=self._project_root,
+                project_paths=self._project_paths, module_origins=self._module_origins,
+                coordinate_source_bytes=self._coordinate_source_bytes, assembly=self._cad_context_assembly,
+                runtime_values=runtime, aperture_indices=indices)
+            request = build_edit_validation_request(session.document, catalog,
+                runtime_values=runtime, aperture_indices=indices)
+            self._dispose_finished_geometry_job()
+            job = CadGeometryJob(request, self)
+            progress = CadGeometryProgress(job, "Check geometry", self)
+            self._cad_geometry_job, self._cad_geometry_dialog = job, progress
+
+            def completed(success, receipt, message):
+                if self._cad_geometry_job is not job:
+                    return
+                try:
+                    if not success:
+                        raise ValueError(message)
+                    if (self.session is not session or self._invalid_inputs
+                            or session.path.resolve() != session_path):
+                        raise ValueError("Geometry result is stale; the target draft changed.")
+                    if not assembly_edit_context_is_current(job.request["catalog"],
+                            assembly=self._cad_context_assembly, module_origins=self._module_origins,
+                            coordinate_source_bytes=self._coordinate_source_bytes,
+                            runtime_values=self._runtime_values,
+                            aperture_indices={self._selected_key: self._aperture_index}, full_source_check=True):
+                        raise ValueError("Geometry result is stale; the installed assembly, source files or operating openings changed.")
+                    report = finalize_edit_validation(job.request, receipt,
+                        document=session.document, runtime_values=self._runtime_values,
+                        aperture_indices={self._selected_key: self._aperture_index})
+                    self._cad_validation_request = deepcopy(job.request)
+                    self._cad_validation_report = report
+                    self._show_geometry_report(report)
+                    self._message("Geometry checked within the listed scope." if report["can_apply"] else
+                        "Geometry conflicts found. Review the report before saving or using the geometry.",
+                        error=not report["can_apply"])
+                except Exception as exc:
+                    self._message(str(exc), error=True)
+                self._update_buttons()
+
+            job.completed.connect(completed)
+            job.start()
+            progress.show()
+            self._message("Checking material intersections and declared optical openings in the background.")
+        except Exception as exc:
+            self._message(str(exc), error=True)
+        self._update_buttons()
+
+    def _show_geometry_report(self, report):
+        import json
+        from PySide6.QtWidgets import QDialog, QPlainTextEdit
+        if self._cad_validation_dialog is not None:
+            self._cad_validation_dialog.close()
+            self._cad_validation_dialog.deleteLater()
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Geometry check — current draft")
+        dialog.resize(760, 560)
+        layout = QVBoxLayout(dialog)
+        status = QLabel()
+        status.setWordWrap(True)
+        status.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        dialog.report_status = status
+        details = QPlainTextEdit()
+        details.setReadOnly(True)
+        details.setPlainText(json.dumps(report, indent=2, ensure_ascii=False, allow_nan=False))
+        dialog.report_details = details
+        layout.addWidget(status)
+        layout.addWidget(details)
+        close = QPushButton("Close")
+        close.clicked.connect(dialog.close)
+        layout.addWidget(close)
+        self._cad_validation_dialog = dialog
+        self._refresh_geometry_report_status()
+        dialog.show()
+
+    def _geometry_report_is_current(self):
+        from temsim.cad_edit_validation import validation_is_current
+        from temsim.cad_assembly_edit import assembly_edit_context_is_current
+        return bool(self._cad_validation_report is not None and self.session is not None and
+            str(self.session.path.resolve()) == self._cad_validation_request["catalog"].get(
+                "edit_context", {}).get("draft_path") and
+            not self._invalid_inputs and validation_is_current(
+            self._cad_validation_request, self.session.document,
+            runtime_values=self._runtime_values,
+            aperture_indices={self._selected_key: self._aperture_index}) and
+            assembly_edit_context_is_current(self._cad_validation_request["catalog"],
+                assembly=self._cad_context_assembly, module_origins=self._module_origins,
+                coordinate_source_bytes=self._coordinate_source_bytes,
+                runtime_values=self._runtime_values,
+                aperture_indices={self._selected_key: self._aperture_index}))
+
+    def _refresh_geometry_report_status(self):
+        if self._cad_validation_report is None:
+            return
+        current = self._geometry_report_is_current()
+        report = self._cad_validation_report
+        label = ("Current draft: " + ("no conflicts in the checked scope." if report["can_apply"] else
+                 "geometry conflicts found.")) if current else "Previous draft only — this report is stale. Run Check geometry for the current draft."
+        if self._cad_validation_dialog is not None:
+            self._cad_validation_dialog.report_status.setText(label +
+                " Electromagnetic fields were not recomputed; STEP material does not define new optical roles.")
+        self.geometry_check_button.setToolTip(label)
+
     def export_step(self):
         if self.session is None or self._invalid_inputs:
             return
@@ -1623,13 +1933,17 @@ class PartModelEditorPage(QWidget):
             return
         from datetime import datetime
         from temsim.gui.cad_export import CadExportDialog, draft_catalog
-        chosen = QFileDialog.getExistingDirectory(self, "Choose a folder for the STEP export")
-        if not chosen:
-            return
         try:
+            # A valid B-rep alone does not establish valid shared mechanical
+            # dimensions or plane bindings. Apply the same gate as Save before
+            # opening a destination or launching the optional CAD interpreter.
+            self.session.validate()
             catalog = draft_catalog(self.session.document, source=self.session.path,
                                     runtime_values=self._model_runtime_values(),
                                     aperture_indices={self._selected_key: self._aperture_index})
+            chosen = QFileDialog.getExistingDirectory(self, "Choose a folder for the STEP export")
+            if not chosen:
+                return
             # A fresh subfolder preserves any older export in the chosen folder.
             base = Path(chosen) / ("step-" + datetime.now().strftime("%Y%m%d-%H%M%S"))
             destination, number = base, 1
@@ -1672,7 +1986,13 @@ class PartModelEditorPage(QWidget):
                     raise ValueError("This file is not registered in the instrument catalog. Save a copy outside the instrument catalog.")
             self.session.save(project_save=callback)
             self._load_parameters()
-            self._message("Saved and validated. Geometry and material assignments are up to date.")
+            current_geometry = self._geometry_report_is_current()
+            if current_geometry and not self._cad_validation_report["can_apply"]:
+                self._message("Draft saved. Parameter validation passed, but the current geometry report contains conflicts; review it before using the model.", error=True)
+            elif current_geometry:
+                self._message("Saved. Parameters validated; material geometry was checked within the report's declared scope.")
+            else:
+                self._message("Saved. Parameter validation passed. Check geometry reviews material intersections and declared optical openings separately.")
             self.saved.emit(str(self.session.path))
             completed = True
             return True
@@ -1775,11 +2095,18 @@ class PartModelEditorPage(QWidget):
 
     def _update_buttons(self):
         loaded = self.session is not None
+        running_geometry = self._cad_geometry_job is not None and self._cad_geometry_job.busy
+        self.import_step_button.setEnabled(not self._invalid_inputs and not running_geometry)
+        self.geometry_check_button.setEnabled(loaded and not self._invalid_inputs and not running_geometry)
         self.subassembly_button.setEnabled(loaded and bool(self.session.document.get("subassemblies")) and not self._invalid_inputs)
         self.save_button.setEnabled(loaded and self.session.dirty and not self._invalid_inputs)
         self.save_copy_button.setEnabled(loaded and not self._invalid_inputs)
         running_export = self._cad_export_dialog is not None and self._cad_export_dialog.busy
         self.export_step_button.setEnabled(loaded and not self._invalid_inputs and not running_export)
+        self.export_step_button.setToolTip(
+            "Export the validated module draft, including displayed aperture openings. "
+            "Imported STEP and saved cuts/scaling are evaluated as exact B-rep operations. "
+            "Display sections do not cut the exported material.")
         self.revert_button.setEnabled(loaded and (self.session.dirty or bool(self._invalid_inputs)))
         self.undo_button.setEnabled(loaded and (self.session.can_undo or bool(self._invalid_inputs)))
         self.redo_button.setEnabled(loaded and self.session.can_redo and not self._invalid_inputs)
@@ -1806,3 +2133,4 @@ class PartModelEditorPage(QWidget):
         if loaded:
             self._sync_source_context()
         self._refresh_calculation_status()
+        self._refresh_geometry_report_status()

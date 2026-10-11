@@ -30,3 +30,5 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "STEP validation failed" }
           environment/cad/Scripts/python.exe -m unittest discover -s tests -p test_cad_assembly_validation.py -v
           if ($LASTEXITCODE -ne 0) { throw "Assembly interference validation failed" }
+          environment/cad/Scripts/python.exe -m unittest discover -s tests -p test_cad_kernel.py -v
+          if ($LASTEXITCODE -ne 0) { throw "STEP import and editing kernel validation failed" }

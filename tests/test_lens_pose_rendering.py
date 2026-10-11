@@ -1,4 +1,4 @@
-"""Lens rigid placement must agree across editor, assembly and section views."""
+"""Mechanical views share offsets, while optical tilt leaves bodies unrotated."""
 from copy import deepcopy
 from types import SimpleNamespace
 from pathlib import Path
@@ -36,7 +36,7 @@ def _y_rotation(angle):
     return np.array(((c, 0., s), (0., 1., 0.), (-s, 0., c)))
 
 
-def test_lens_pose_moves_parent_children_and_edges_about_parent_centre_once():
+def test_lens_offsets_move_parent_children_and_edges_but_optical_tilt_does_not():
     rows = [_row("lens", "magnetic_lens_assembly"),
             _row("coil", "magnetic_excitation_coil", parent="lens", centre=15.)]
     document = dict(parts=rows)
@@ -45,9 +45,7 @@ def test_lens_pose_moves_parent_children_and_edges_about_parent_centre_once():
     captured = deepcopy(document)
     posed = part_model_from_document(document, "lens", angular_segments=8)
     whole = module_model_from_document(document, angular_segments=8)
-    rotation = _y_rotation(.030)
-    centre = np.array((0., 0., 12.))
-    transform = lambda values: (values-centre) @ rotation.T + centre + (.7, -.4, 0.)
+    transform = lambda values: values + (.7, -.4, 0.)
     for original, actual, module_mesh in zip(baseline.meshes, posed.meshes, whole.meshes, strict=True):
         np.testing.assert_allclose(actual.vertices, transform(original.vertices), atol=1e-13)
         np.testing.assert_array_equal(actual.vertices, module_mesh.vertices)
@@ -99,20 +97,20 @@ def test_pose_dimension_defaults_use_mrad_and_hide_old_rigid_cad_controls():
         ("model_3d", "transform", "rotation_deg")) for item in fields)
 
 
-def test_section_projection_uses_same_global_pose_and_leaves_y_out_of_plane():
+def test_section_projection_uses_mechanical_translation_without_optical_tilt():
     from temsim.gui.diagnostic_tabs import PhysicalLayoutView
     row = _row("lens", "magnetic_lens_assembly", offset_x_mm=.4, offset_y_mm=6., rotation_y_mrad=20.)
     part = _assembly([row], 800.).parts[0]
     view = SimpleNamespace(_part_by_key={"lens": part})
     view._lens_pose_global_transform = lambda key: PhysicalLayoutView._lens_pose_global_transform(view, key)
     z, x = PhysicalLayoutView._posed_section_point(view, "lens", 814., 1.)
-    expected = _y_rotation(.020) @ np.array((1., 0., 2.)) + (.4, 6., 812.)
+    expected = np.array((1.4, 6., 814.))
     assert z == pytest.approx(expected[2])
     assert x == pytest.approx(expected[0])
 
 
-def test_real_objective_moves_its_magnetic_hardware_not_independent_devices():
-    from temsim.lens_pose import effective_part_transform_mm
+def test_real_objective_tilts_its_optical_frame_but_only_translates_owned_hardware():
+    from temsim.lens_pose import effective_part_transform_mm, mechanical_part_transform_mm
     from temsim.module_manifest import read_document
     root = Path(__file__).resolve().parents[1]
     document = read_document(root / "configs/instruments/column/C3_ProbeCorrector.toml")
@@ -128,6 +126,9 @@ def test_real_objective_moves_its_magnetic_hardware_not_independent_devices():
     for key in ("objective_lens_excitation_coil", "objective_upper_pole", "mini_condenser"):
         rotation, _ = effective_part_transform_mm(rows[key], rows)
         np.testing.assert_allclose(rotation, _y_rotation(.01))
+        mechanical_rotation, mechanical_offset = mechanical_part_transform_mm(rows[key], rows)
+        np.testing.assert_array_equal(mechanical_rotation, np.eye(3))
+        np.testing.assert_allclose(mechanical_offset, (.2, 0., 0.), atol=1e-15)
     fields = part_dimension_specs(document, "objective_lens_excitation_coil")
     field = next(item for item in fields if item.path == ("parts", "objective_lens", "rotation_y_mrad"))
     assert field.label.startswith("Parent lens:") and field.value == 10.

@@ -222,7 +222,7 @@ def test_complete_classical_result_records_roundtrip_without_recomputing(materia
     assert payload["particle_signals"][0].expected_electrons == 3.
 
 
-@pytest.mark.parametrize("version", [None, True, 77, 79, "78", 78.0])
+@pytest.mark.parametrize("version", [None, True, 77, 80, "79", 79.0])
 def test_state_rejects_noncurrent_or_ambiguous_versions(version):
     from temsim.optics.model import State
     with pytest.raises(ValueError, match="schema"):
@@ -234,7 +234,7 @@ def test_current_state_roundtrip_preserves_tip_and_rejects_obsolete_inputs():
     from temsim.optics.model import State, STATE_SCHEMA_VERSION
     state = default_state()
     payload = state.to_dict()
-    assert payload["schema_version"] == STATE_SCHEMA_VERSION == 78
+    assert payload["schema_version"] == STATE_SCHEMA_VERSION == 79
     restored = State.from_dict(payload)
     assert restored.electron_gun.to_dict() == state.electron_gun.to_dict()
     for mutation in (lambda d: d["sample"].update(atomic_structure_source="preset"),

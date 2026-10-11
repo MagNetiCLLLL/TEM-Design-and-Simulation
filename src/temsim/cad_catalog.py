@@ -15,12 +15,13 @@ def part_solids(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.part_model_3d import _extent
     from temsim.cad_stage_holder import stage_holder_solids, access_port_solids
     from temsim.cad_vacuum_tube import tube_solids
+    from temsim.cad_detectors import detector_solids
     if non_material_role(part):
         return ()
     values = tube_solids(part)
     if values is not None:
         return values
-    for build in (stage_holder_solids, access_port_solids, round_lens_solids, multipole_solids):
+    for build in (detector_solids, stage_holder_solids, access_port_solids, round_lens_solids, multipole_solids):
         values=build(part,by_key)
         if values is not None:
             return values
@@ -43,10 +44,11 @@ def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
     from temsim.cad_stage_holder import stage_holder_solids, access_port_solids
     from temsim.cad_vacuum_tube import tube_solids
+    from temsim.cad_detectors import detector_solids
     values = tube_solids(part)
     if values is not None:
         return values
-    for build in (stage_holder_solids, access_port_solids):
+    for build in (detector_solids, stage_holder_solids, access_port_solids):
         values = build(part, by_key)
         if values is not None:
             return values
@@ -71,9 +73,14 @@ def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
 
 def is_reconstruction_region(part, region):
     """Display material categories do not create new FEM material assignments."""
+    if part.get("model_3d",{}).get("base",{}).get("kind") == "step" and region.startswith("step_"):
+        return True
     from temsim.cad_multipoles import multipole_solids
     from temsim.cad_auxiliary import accelerator_solids
     from temsim.cad_stage_holder import PROFILES
+    if (part.get("mechanical_profile") in {"transverse_eds_detector_array", "zebra_eels_detector"}
+            and part.get("detector_material_geometry_status")):
+        return True
     if (part.get("mechanical_profile") in PROFILES or "holder_side_port" in part
             or (part.get("mechanical_profile") == "magnetic_lens_housing"
                 and part.get("parent_key") == "objective_lens")):
@@ -96,25 +103,32 @@ def is_reconstruction_region(part, region):
 
 
 def posed_solids(part,by_key,**kwargs):
-    from temsim.lens_pose import effective_part_transform_mm
-    values=part_solids(part,by_key,**kwargs)
-    # Explicit shape edits must not be silently discarded in an export.
-    model=part.get("model_3d",{})
-    if model.get("base",{}).get("kind","existing") != "existing" or any(f.get("enabled",True) for f in model.get("features",())):
-        raise ValueError(f"{part['key']}: explicit Boolean editor geometry requires a CAD feature adapter before export")
-    if model and model.get("transform",{}).get("scale_xy",[1.,1.]) != [1.,1.]:
-        raise ValueError(f"{part['key']}: scaled editor geometry is not silently exported unscaled")
-    from temsim.lens_pose import supports_physical_lens_pose
-    transform=model.get("transform",{})
-    if not supports_physical_lens_pose(part) and any(float(v) for field in ("offset_mm","rotation_deg") for v in transform.get(field,())):
-        raise ValueError(f"{part['key']}: non-optical editor placement requires a CAD feature adapter; export was not performed")
+    from temsim.lens_pose import mechanical_part_transform_mm
+    from temsim.cad_features import map_solid
+    from temsim.component_representation import non_material_role
+    if non_material_role(part):
+        return ()
+    explicit=part.get("model_3d",{}).get("base",{}).get("kind","existing") != "existing"
+    values=() if explicit else part_solids(part,by_key,**kwargs)
     from temsim.energy_filter_model_3d import supports_energy_filter_part, FILTER_TO_COLUMN_ROTATION, energy_filter_origin_mm
+    if "model_3d" in part:
+        from temsim.cad_features import apply_solid_features
+        if supports_energy_filter_part(part):
+            from temsim.energy_filter_model_3d import energy_filter_component_pose
+            origin,basis=energy_filter_component_pose(part,by_key)
+            center=np.array([0.,0.,part["local_center_z_mm"]])
+            values=tuple(replace(s,shape=transformed(s.shape,rotation=basis.T.tolist(),offset=center-basis.T@origin)) for s in values)
+            values=apply_solid_features(part,values)
+            values=tuple(map_solid(s,lambda shape: transformed(shape,rotation=basis.tolist(),offset=origin-basis@center)) for s in values)
+        else:
+            from temsim.part_model_3d import lens_shape_part
+            values=apply_solid_features(lens_shape_part(part),values)
     if supports_energy_filter_part(part):
-        values=tuple(replace(s,shape=transformed(s.shape,rotation=[list(r) for r in FILTER_TO_COLUMN_ROTATION],
+        values=tuple(map_solid(s,lambda shape: transformed(shape,rotation=[list(r) for r in FILTER_TO_COLUMN_ROTATION],
             offset=(0.,0.,energy_filter_origin_mm(by_key)))) for s in values)
-    rotation,translation=effective_part_transform_mm(part,by_key)
+    rotation,translation=mechanical_part_transform_mm(part,by_key)
     if not (np.array_equal(rotation,np.eye(3)) and np.array_equal(translation,np.zeros(3))):
-        values=tuple(replace(s,shape=transformed(s.shape,rotation=rotation.tolist(),offset=translation)) for s in values)
+        values=tuple(map_solid(s,lambda shape: transformed(shape,rotation=rotation.tolist(),offset=translation)) for s in values)
     return values
 
 
@@ -142,6 +156,8 @@ def module_catalog(document, *, source="", runtime_values=None, aperture_indices
         group=groups.setdefault(owner["key"],{"key":owner["key"],"name":owner.get("name",owner["key"]),"solid_ids":[]})
         for spec in values:
             row=asdict(spec); row["color"]=list(spec.color)
+            if "step_color_rgba" in spec.parameters:
+                row["color"]=list(spec.parameters["step_color_rgba"])
             from temsim.part_materials import REGIONS, material_for_region, configured_region_colour
             if spec.region in REGIONS:
                 assignment=material_for_region(part,spec.region)
@@ -151,7 +167,10 @@ def module_catalog(document, *, source="", runtime_values=None, aperture_indices
             solids.append(row); group["solid_ids"].append(f"{spec.key}/{spec.region}")
     units=list(groups.values())
     module=document["module"]
+    import hashlib
+    from temsim.step_assets import canonical_json
     return {"key":module["key"],"name":module.get("name",module["key"]),"source":str(source),
+            "source_document_sha256":hashlib.sha256(canonical_json(document).encode("utf-8")).hexdigest(),
             "solids":solids,"units":units,"omitted":omitted}
 
 

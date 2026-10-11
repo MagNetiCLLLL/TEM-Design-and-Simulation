@@ -149,17 +149,24 @@ def _meaning(part, path, by_key):
             "Actual material thickness along the aperture's local axis, in mm. "
             "0 means unspecified; no physical thickness is supplied by default. "
             "Enter a positive actual plate thickness for tilted coherent propagation. "
-            "The same value controls the 3D plate and tilted ray/wave interception; "
+            "The same thickness value controls the nominal 3D plate and effective tilted ray/wave interception. "
+            "Optical tilt does not rotate the plate's mechanical envelope; "
             "the zero-length placement reference and schematic display thickness are not substitutes.")
     from temsim.lens_pose import PHYSICAL_POSE_FIELDS, supports_physical_lens_pose, physical_pose_description
     if field in PHYSICAL_POSE_FIELDS and supports_physical_lens_pose(part):
+        if field.startswith("rotation_"):
+            label = "Optical tilt " + field.split("_")[1].upper()
+        else:
+            label = "Position offset " + field.split("_")[1].upper()
         return label, "placement", physical_pose_description(part)
     if field == "model_3d":
         name = next((str(item) for item in reversed(path[3:]) if isinstance(item, str)), "model")
         if supports_physical_lens_pose(part) and len(relative) >= 3 and relative[1] == "transform" and relative[2] in {"offset_mm", "rotation_deg"}:
-            return "Physical component placement: " + name.replace("_", " "), "placement", (
-                "Legacy rigid placement, consumed by the shared component coordinates. "
-                "The editor exposes the same placement through scalar offsets in mm and rotations in mrad.")
+            return "Component alignment: " + name.replace("_", " "), "placement", (
+                "Legacy alignment input, exposed through the existing scalar controls: "
+                "offsets in mm move the mechanical and optical reference positions together; "
+                "rotations in mrad tilt only the optical action and reference planes. "
+                "Optical tilt does not rotate the CAD material envelope.")
         return "3D model: " + _label(name, ("parts", "", name, *[p for p in path[3:] if isinstance(p, int)])), "cad", (
             "Explicit user CAD base, transform or Boolean feature. This controls the 3D solid; the optical/magnetic solver does not infer a new field law from the mesh.")
     if part.get("key") in {CAMERA, FLUORESCENT_SCREEN, *STEM_DETECTOR_KEYS}:

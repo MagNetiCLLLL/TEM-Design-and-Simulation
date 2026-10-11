@@ -9,7 +9,6 @@ performed. Positive phase exp(+i k S) means dq/ds=-S_u, du/ds=S_q.
 The geometry remainder is a principal-symbol estimate, not a certification
 of the full quantum model, material Cs calibration or longitudinal splitting.
 """
-from dataclasses import replace
 import math
 
 import numpy as np
@@ -44,12 +43,12 @@ def _potential(points, fields, aligned_bz_t, *, gradient=False, xp=np):
     points = xp.asarray(points, dtype=xp.float64)
     a = .5*aligned_bz_t*xp.stack((-points[..., 1], points[..., 0], xp.zeros_like(points[..., 0])), axis=-1)
     if gradient:
-        derivative = np.zeros((*points.shape[:-1], 3, 3))
+        derivative = xp.zeros((*points.shape[:-1], 3, 3))
         derivative[..., 0, 1], derivative[..., 1, 0] = -.5*aligned_bz_t, .5*aligned_bz_t
     for field in fields:
         if isinstance(field, FrozenPosedMultipole):
             if gradient:
-                value, first, _ = field.vector_potential_jet(points)
+                value, first, _ = field.vector_potential_jet(points, xp=xp)
                 a += value
                 derivative += first
             else:
@@ -70,10 +69,10 @@ def _potential(points, fields, aligned_bz_t, *, gradient=False, xp=np):
         a += .5*xp.stack((-local[..., 1]*magnetic, local[..., 0]*magnetic,
                           xp.zeros_like(magnetic)), axis=-1)@rotation.T
         if gradient:
-            local_d = np.zeros((*local.shape[:-1], 3, 3))
+            local_d = xp.zeros((*local.shape[:-1], 3, 3))
             local_d[..., 0, 1], local_d[..., 1, 0] = -.5*magnetic, .5*magnetic
             local_d[..., 0, 2], local_d[..., 1, 2] = -.5*local[..., 1]*first_b, .5*local[..., 0]*first_b
-            derivative += np.einsum("ai,...ij,bj->...ab", rotation, local_d, rotation)
+            derivative += xp.einsum("ai,...ij,bj->...ab", rotation, local_d, rotation)
     return (a, derivative) if gradient else a
 
 
@@ -222,9 +221,9 @@ def _electric_remainder(kick, wavelength, p, p_ref, xy_bound, depth, bounds,
 
 def _phase(wave, wavelength, kick, centre, scale):
     from temsim.physics.multipole_wave import apply_multipole_phase
-    shifted = replace(wave, origin_m=wave.origin_m-centre)
+    shifted = wave._replace_metadata(origin_m=wave.origin_m-centre)
     result = apply_multipole_phase(shifted, wavelength, spherical_m3=kick.strength_m3*scale)
-    return replace(result, origin_m=wave.origin_m)
+    return result._replace_metadata(origin_m=wave.origin_m)
 
 
 def apply_posed_spherical(wave, wavelength, kick, *, momentum_kg_m_s,

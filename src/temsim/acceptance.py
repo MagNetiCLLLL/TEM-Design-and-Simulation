@@ -138,9 +138,18 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_cad_auxiliary.py", "tests/test_cad_export_gui.py",
                 "tests/test_compare_cad_assembly.py", "tests/test_cad_stage_holder.py",
                 "tests/test_stage_holder_manifest.py", "tests/test_export_resolved_cad_assembly.py",
-                "tests/test_cad_vacuum_tube.py")),
+                "tests/test_cad_vacuum_tube.py", "tests/test_cad_detectors.py",
+                "tests/test_cad_editing_contract.py", "tests/test_cad_optical_binding.py",
+                "tests/test_step_editing.py", "tests/test_step_import_gui.py",
+                "tests/test_cad_assembly_edit.py", "tests/test_component_datums.py",
+                "tests/test_ray_marker_pose_sync.py")),
             "field-ui/FU-19": ("CETCOR component identity and common-coordinate conjugate diagnostics", (
-                "tests/test_image_corrector_topology.py",)),
+                  "tests/test_image_corrector_topology.py", "tests/test_image_corrector_channel_hardware.py")),
+            "field-ui/FU-20": ("GPU and CPU retained CAD rendering, selection and optical material filter", (
+                "tests/test_assembly_optical_visibility.py", "tests/test_assembly_optical_view.py",
+                "tests/test_part_model_view_performance.py", "tests/test_mesh_annotation_performance.py",
+                "tests/test_part_model_gpu_view.py",
+                "tests/test_part_model_view.py", "tests/test_physical_layout_modes.py")),
         },
     },
     "cad-export": {
@@ -148,7 +157,8 @@ ACCEPTANCE_SCOPES = {
         "evidence_kind": "analytic-solid-and-step-metadata-round-trip",
         "criteria": {
             "cad-export/CAD-01": ("Analytic primitives, editable solids, material labels and placements", (
-                "tests/test_cad_step.py", "tests/test_cad_assembly_validation.py")),
+                "tests/test_cad_step.py", "tests/test_cad_assembly_validation.py",
+                "tests/test_cad_kernel.py")),
         },
     },
     "lens-geometry": {
@@ -238,6 +248,7 @@ ACCEPTANCE_SCOPES = {
             "coherent-development/CW-02": ("Executed upstream waves, exact plane routing and physical absorption", (
                 "tests/test_tip_wave_pipeline.py", "tests/test_column_wave_transport.py", "tests/test_scan_preparation.py",
                 "tests/test_wave_checkpoint_publication.py",
+                "tests/test_plane_wave_storage.py", "tests/test_radial_device_residency.py",
                 "tests/test_column_wave_electric.py", "tests/test_tip_gun_wave.py",
                 "tests/test_electrostatic_column_transport.py", "tests/test_wave_grid.py", "tests/test_wave_device.py",
                 "tests/test_wave_support.py", "tests/test_column_support_budget.py",
@@ -248,6 +259,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_planar_tip_boundary.py", "tests/test_driven_tip_gun.py")),
             "coherent-development/CW-03": ("Captured wave sessions, latest Z, resource ownership and bounded display", (
                 "tests/test_coherent_beam_gui.py", "tests/test_beam_comparison.py",
+                "tests/test_wave_read_session.py",
                 "tests/test_electron_detection.py", "tests/test_electron_beam_observation.py",
                 "tests/test_wave_beam_analysis.py", "tests/test_wave_plane_observables.py",
                 "tests/test_coherent_state_list.py", "tests/test_coherent_state_controller.py",
@@ -268,6 +280,17 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_posed_multipole_wave.py", "tests/test_tilted_multipole_column.py",
                 "tests/test_posed_wave_aperture.py", "tests/test_tilted_aperture_column.py",
                 "tests/test_posed_aberration_wave.py", "tests/test_tilted_spherical_column.py")),
+            "coherent-development/CW-09": ("Lens intrinsic actions share ray/wave definitions and preserve checkpoint ownership", (
+                "tests/test_intrinsic_aberration_operator.py",
+                "tests/test_intrinsic_aberration_integration.py",
+                "tests/test_intrinsic_ray_device.py",
+                "tests/test_particle_gpu_reference.py",
+                "tests/test_intrinsic_gpu_segments.py",
+                "tests/test_intrinsic_particle_backend.py",
+                "tests/test_intrinsic_archive_radial.py",
+                "tests/test_intrinsic_legacy_boundaries.py",
+                "tests/test_lens_aberration_editor.py",
+                "tests/test_system_residual_aberrations.py")),
         },
     },
 }

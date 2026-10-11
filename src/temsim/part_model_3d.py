@@ -198,7 +198,10 @@ def _part_index(document):
 
 def _dimensions(part, by_key=None):
     from temsim.parameter_semantics import describe_parameter
+    from temsim.cad_detectors import EDS_FIELDS, EDS_PROFILE, EELS_FIELDS, EELS_PROFILE
     fields = []
+    detector_fields = (EDS_FIELDS if part.get("mechanical_profile") == EDS_PROFILE else
+                       EELS_FIELDS if part.get("mechanical_profile") == EELS_PROFILE else ())
     def append(value, path, label, unit):
         if isinstance(value, (list, tuple)):
             for index, item in enumerate(value):
@@ -216,7 +219,7 @@ def _dimensions(part, by_key=None):
             continue
         holder_parameter = (part.get("mechanical_profile") in {"transverse_goniometer", "side_entry_sample_holder"}
                             and name.startswith(("holder_", "stage_")))
-        if not holder_parameter and not any(token in name for token in ("diameter", "radius", "length", "width", "height", "thickness", "gap", "inset", "angle", "angular_span", "radial_profile", "material_intervals", "path_center", "path_entrance", "strip_center_pitch")):
+        if not holder_parameter and name not in detector_fields and not any(token in name for token in ("diameter", "radius", "length", "width", "height", "thickness", "gap", "inset", "angle", "angular_span", "radial_profile", "material_intervals", "path_center", "path_entrance", "strip_center_pitch")):
             continue
         append(value, ("parts", part["key"], name),
                name.removesuffix("_" + unit).replace("_", " ").capitalize(), unit)
@@ -249,7 +252,12 @@ def _dimensions(part, by_key=None):
             label = "Parent: " + label
         if part.get("tip_particle_model") and item.path[-1] == "outer_diameter_mm":
             item = replace(item, editable=False, reason="Derived from the physical cap/cone, shank length and curvature radius.")
-        annotated.append(replace(item, label=label, reason=item.reason or meaning.description, meaning=meaning))
+        reason = item.reason or meaning.description
+        if item.path[-1] in detector_fields:
+            reason = ("Engineering detector material dimension, not an OEM measurement. "
+                      "Changes the native 3D and STEP material geometry; does not redefine "
+                      "EDS angular acceptance, sensor response, or the EELS readout plane.")
+        annotated.append(replace(item, label=label, reason=reason, meaning=meaning))
     return tuple(annotated)
 
 
@@ -319,12 +327,19 @@ def _legacy_part_meshes(part, by_key, count, aperture_index=0, runtime=None):
     if solids is not None:
         from temsim.cad_mesh import meshes_from_solids
         meshes = meshes_from_solids(solids, count)
-        if part.get("branch_path_only"):
+        if part.get("branch_path_only") or part.get("mechanical_profile") == "transverse_eds_detector_array":
             from temsim.cad_mesh import annotate_material_faces
             meshes = tuple(annotate_material_faces(mesh, part, runtime) for mesh in meshes)
+        if part.get("branch_path_only"):
             if part.get("mechanical_profile") == "tapered_sector_prism":
                 from temsim.energy_filter_model_3d import _prism_meshes
                 meshes += tuple(mesh for mesh in _prism_meshes(part, by_key, count) if mesh.wireframe)
+            elif part.get("mechanical_profile") == "zebra_eels_detector":
+                from temsim.energy_filter_model_3d import energy_filter_meshes
+                guides, _ = energy_filter_meshes(part, by_key, count, runtime, aperture_index)
+                # The overlapping alignment rectangle is a logical readout
+                # reference, not a second material sensor or a STEP solid.
+                meshes += tuple(mesh for mesh in guides if mesh.wireframe)
         notes = [spec.note for spec in solids]
         if part.get("mechanical_profile") == "xo_energy_slit_assembly" and (not runtime or "gap_m" not in runtime):
             notes.append(f"{part['key']}: no runtime slit gap supplied; blade edges show the configured maximum travel opening.")
@@ -489,13 +504,13 @@ def _part_meshes(part, by_key, count, aperture_index=0, runtime=None):
                 updated = tuple(preserved)
             meshes = tuple(rigid_mesh(mesh, rotation, origin - rotation @ center) for mesh in updated)
         else:
-            # A lens's rigid placement now belongs to the optical assembly.
-            # Keep CAD shape changes local, then apply the same rigid pose as
-            # the magnetic field to this part and each physical descendant.
+            # Keep CAD shape changes local, then apply mechanical placement.
+            # Optical-axis tilt is an alignment imperfection, not a rotation
+            # of the housing or any of its physical descendants.
             meshes = apply_model_features(lens_shape_part(part), meshes, angular_segments=count)
         notes += (f"{part['key']}: explicit 3D solid and feature geometry; the optical/magnetic solver does not infer a new field model from this mesh.",)
-    from temsim.lens_pose import effective_part_transform_mm
-    rotation, translation = effective_part_transform_mm(part, by_key)
+    from temsim.lens_pose import mechanical_part_transform_mm
+    rotation, translation = mechanical_part_transform_mm(part, by_key)
     if not (np.array_equal(rotation, np.eye(3)) and np.array_equal(translation, np.zeros(3))):
         from temsim.energy_filter_model_3d import rigid_mesh
         meshes = tuple(rigid_mesh(mesh, rotation, translation) for mesh in meshes)
@@ -503,11 +518,12 @@ def _part_meshes(part, by_key, count, aperture_index=0, runtime=None):
 
 
 def lens_shape_part(part):
-    """Return CAD geometry with a lens's separately applied rigid pose removed.
+    """Return CAD geometry with a lens's separately handled pose removed.
 
     Older files store that pose in ``model_3d.transform``.  It remains readable
-    by the common pose helper, but must never move the lens mesh twice. Scale
-    and Boolean features still describe shape only and do not rescale a field.
+    by the pose helpers: offsets place the material, while tilt affects only
+    the optical axis. Scale and Boolean features still describe shape only
+    and do not rescale a field.
     """
     from temsim.lens_pose import without_lens_rigid_cad
     return without_lens_rigid_cad(part)
@@ -553,7 +569,7 @@ def part_dimension_specs(document, part_key, *, runtime_values=None):
         prefix = "Physical host: " if host_key else ("Parent lens: " if pose_owner is not part else "")
         specs += tuple(DimensionSpec(("parts", pose_owner["key"], name), prefix +
             ("Position " + name[7].upper() + " offset" if name.startswith("offset_")
-             else "Rotation about " + name[9].upper()),
+             else "Optical tilt about " + name[9].upper()),
             float(value), "mrad" if name.endswith("_mrad") else "mm")
             for name, value in values.items())
     if part.get("tip_particle_model"):
@@ -630,13 +646,16 @@ def part_model_from_document(document, part_key, *, angular_segments=32, include
                        part_dimension_specs(document, part_key, runtime_values=runtime_values), tuple(notes))
 
 
-def module_model_from_document(document, *, angular_segments=32, runtime_values=None):
+def module_model_from_document(document, *, angular_segments=32, runtime_values=None,
+                               aperture_indices=None):
     """Render each declared part once, without duplicating shared ownership."""
     by_key = _part_index(document)
     count = _segments(angular_segments)
     meshes, fields, notes = [], [], []
     for part in by_key.values():
-        items, messages = _part_meshes(part, by_key, count, runtime=(runtime_values or {}).get(part["key"]))
+        items, messages = _part_meshes(part, by_key, count,
+            aperture_index=(aperture_indices or {}).get(part["key"], 0),
+            runtime=(runtime_values or {}).get(part["key"]))
         meshes.extend(items)
         fields.extend(part_dimension_specs(document, part["key"], runtime_values=runtime_values))
         notes.extend(messages)

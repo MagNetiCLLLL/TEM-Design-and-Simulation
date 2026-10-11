@@ -1,0 +1,74 @@
+{
+  "id": "KETEK-VITUS",
+  "kind": "manufacturer_datasheet",
+  "family": "Generic commercial silicon drift detector",
+  "title": "VITUS Silicon Drift Detectors - Product Information",
+  "authors": [
+    "KETEK GmbH"
+  ],
+  "owner": [
+    "KETEK GmbH"
+  ],
+  "dates": {
+    "publicUrlDirectory": "2025/06",
+    "documentRevision": "No explicit issue date identified; URL directory is not a claimed publication date."
+  },
+  "url": "https://www.ketek.net/wp-content/uploads/2025/06/KETEK-VITUS_Product-Information.pdf",
+  "primary_pdf_url": "https://www.ketek.net/wp-content/uploads/2025/06/KETEK-VITUS_Product-Information.pdf",
+  "figures": "PDF page 3 specifications; package outlines on page 2 are not adopted.",
+  "component_keys": [
+    "eds_detector_system"
+  ],
+  "supported_facts": [
+    "H7-H150 commercial Si absorption depth is 450 micrometres."
+  ],
+  "unsupported_claims": [
+    "Not a measurement of the Ultra-X die.",
+    "Windowed package and active areas are not transferred to the saved windowless array."
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T09:36:17.517325+00:00",
+  "archive_status": "original_pdf_saved",
+  "pdf_page_count": 4,
+  "pdf_metadata": {
+    "format": "PDF 1.7",
+    "title": "",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "Adobe InDesign 20.3 (Windows)",
+    "producer": "Adobe PDF Library 17.0",
+    "creationDate": "D:20250616191449+02'00'",
+    "modDate": "D:20250616191511+02'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    3
+  ],
+  "metadata_scope": "Bibliographic record, not ownership or patent-status certification.",
+  "rights_note": "Public original archived for project provenance; copyright remains with its owner, and public access is not an open licence.",
+  "assembly_comparison_rule": "Sources support identified construction families. Saved reception inputs remain authoritative; engineering dimensions are explicitly separate.",
+  "availability_notes": [
+    "Downloaded original PDF from its public primary host or public patent PDF archive; inspected full-page renders without geometric rescaling."
+  ],
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 2390030,
+      "sha256": "953bdc3bdff4c08070747603960a1801189b6b71823625f5837220165a630f79",
+      "kind": "original_pdf",
+      "method": "download_public_original_pdf",
+      "source_url": "https://www.ketek.net/wp-content/uploads/2025/06/KETEK-VITUS_Product-Information.pdf"
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 189106,
+      "sha256": "48167b788b4df98ec6b0bb9506a1930394e08b405c9e2f63f928270ffb8cce3c",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 3,
+      "render_dpi": 93.6
+    }
+  ]
+}

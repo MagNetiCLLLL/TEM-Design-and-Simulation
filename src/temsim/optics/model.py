@@ -6,12 +6,13 @@ from temsim import module_manifest
 from temsim import input_io
 from temsim.optics.nanopulser import NanoPulser
 from temsim.optics.aperture_policy import ApertureInsertionPolicy
+from temsim.optics.intrinsic_aberrations import validated_lens_aberrations
 from temsim.vacuum import VacuumMap
 
 
 _DEFAULT_COLUMN_MODULE = "column/C3_ProbeCorrector.toml"
 _DEFAULT_GUN_MODULE = "gun/FEG.toml"
-STATE_SCHEMA_VERSION = 78
+STATE_SCHEMA_VERSION = 79
 _DEFAULT_SAMPLE_PART = module_manifest.part_data(
     _DEFAULT_COLUMN_MODULE,
     "sample",
@@ -592,6 +593,8 @@ class State:
     # defaults derived from the active Objective and corrector fields.
     probe_aberrations: dict = field(default_factory=dict)
     image_aberrations: dict = field(default_factory=dict)
+    # Additional local imperfections; Cs/Cc remain owned by the lens objects.
+    lens_intrinsic_aberrations: dict = field(default_factory=dict)
 
     schema_version: int = STATE_SCHEMA_VERSION
 
@@ -1720,6 +1723,7 @@ class State:
             "chromatic_aberration_enabled":self.chromatic_aberration_enabled,
             "probe_aberrations":dict(self.probe_aberrations),
             "image_aberrations":dict(self.image_aberrations),
+            "lens_intrinsic_aberrations":deepcopy(self.lens_intrinsic_aberrations),
             "corrector_mode":corrector_mode,
             "energy_filter_mode":self.energy_filter_mode,
             "c2c3_crossover_required":self.c2c3_crossover_required,
@@ -1837,6 +1841,13 @@ class State:
             canonical_corrector_mode,
             corrector_mode_for_hardware,
         )
+        # Version 79 only adds optional per-lens imperfections. Preserve the
+        # immediately preceding input format without changing its optics;
+        # obsolete geometry/source migrations remain deliberately unsupported.
+        if isinstance(d, dict) and type(d.get("schema_version")) is int and d["schema_version"] == 78:
+            if "lens_intrinsic_aberrations" in d:
+                raise ValueError("State schema 78 cannot contain version 79 intrinsic coefficients")
+            d = {**d, "schema_version": STATE_SCHEMA_VERSION, "lens_intrinsic_aberrations": {}}
         if (not isinstance(d, dict) or type(d.get("schema_version")) is not int
                 or d["schema_version"] != STATE_SCHEMA_VERSION):
             raise ValueError(f"Unsupported instrument state schema; current schema_version {STATE_SCHEMA_VERSION} is required")
@@ -2475,6 +2486,7 @@ class State:
             ),
             probe_aberrations=dict(d.get("probe_aberrations", {})),
             image_aberrations=dict(d.get("image_aberrations", {})),
+            lens_intrinsic_aberrations=validated_lens_aberrations(d.get("lens_intrinsic_aberrations", {})),
             nanopulser=NanoPulser.from_dict(d.get("nanopulser", {})),
             schema_version=STATE_SCHEMA_VERSION,
         )

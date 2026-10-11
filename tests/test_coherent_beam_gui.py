@@ -905,9 +905,10 @@ def test_working_caps_and_stage_peak_are_independent_of_large_ram_cache(panel, s
     assert request.execution.maximum_ram_cache_bytes == 80*module.GIB
     claim = module._wave_resource_claim(panel._state, request)
     # Surface FEM and effective radial load overlap; Gaussian stages are
-    # sequential. A segmented request can add one checkpoint of <=1 GiB.
+    # sequential. A segmented request can add one checkpoint of <=1 GiB,
+    # plus the separately bounded request-local verified-mode read session.
     stage_peak = (2 if surface else 1)*module.GIB
-    assert claim.working_bytes == stage_peak+module.GIB+256*1024**2
+    assert claim.working_bytes == stage_peak+module.GIB+(256+128)*1024**2
     assert claim.working_bytes < 4*module.GIB
 
 
@@ -916,7 +917,10 @@ def test_cache_growth_claim_respects_small_explicit_retention_limit(panel):
     panel.ram_cache_gib.setValue(.25)
     request = panel._make_request()
     claim = module._wave_resource_claim(panel._state, request)
-    assert claim.working_bytes == 2*module.GIB+2*256*1024**2
+    # The request-local read cache is capped at one quarter of this smaller
+    # RAM retention setting, and is reserved separately from persistent data.
+    assert module._wave_read_session_bytes(request) == 64*1024**2
+    assert claim.working_bytes == 2*module.GIB+2*256*1024**2+64*1024**2
 
 
 def test_complete_source_modes_above_working_budget_are_rejected_before_job(panel, monkeypatch):

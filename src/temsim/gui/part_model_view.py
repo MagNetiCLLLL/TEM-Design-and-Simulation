@@ -1,8 +1,9 @@
-"""A software-rendered, freely rotatable CAD mesh viewport.
+"""A freely rotatable CAD mesh viewport with automatic hardware rendering.
 
 Coordinates and distances are in millimetres: x/y are radial and z is axial.
-The same triangle depth buffer drives painting and picking, including offscreen
-Qt platforms without an OpenGL context. No instrument state is owned here.
+Full-detail meshes are retained on the GPU when hardware OpenGL is available.
+The software renderer remains the fallback and the double-precision selection
+reference. No instrument state is owned here.
 """
 
 from __future__ import annotations
@@ -18,6 +19,12 @@ from PySide6.QtGui import QColor, QImage, QPainter, QPen
 from PySide6.QtWidgets import QWidget
 
 
+def _create_gpu_renderer():
+    # Import lazily: a missing GL library/driver must not prevent CAD editing.
+    from temsim.gui.cad_gpu_renderer import CadGpuRenderer
+    return CadGpuRenderer()
+
+
 @dataclass(frozen=True)
 class _Mesh:
     vertices: np.ndarray
@@ -29,6 +36,17 @@ class _Mesh:
     surfaces: dict
     edges: tuple
     wireframe: bool = False
+
+
+@dataclass(frozen=True)
+class _PreparedMesh:
+    """Camera-independent data, rebuilt only when geometry/section changes."""
+
+    triangles: np.ndarray
+    sources: np.ndarray
+    normals: np.ndarray
+    bases: np.ndarray
+    groups: np.ndarray
 
 
 def _value(record, name, default=None):
@@ -130,16 +148,18 @@ def _arc_rotation(start, end):
 
 def _section_triangles(triangles, *, with_sources=False, keep_positive_y=True):
     """Clip at world y=0 without reflecting or changing source coordinates."""
-    result = []
-    sources = []
     sign = 1.0 if keep_positive_y else -1.0
-    for source, triangle in enumerate(triangles):
-        if np.all(sign * triangle[:, 1] >= 0):
-            result.append(triangle)
-            sources.append(source)
-            continue
-        if np.all(sign * triangle[:, 1] < 0):
-            continue
+    triangles = np.asarray(triangles, dtype=float).reshape(-1, 3, 3)
+    inside = sign * triangles[..., 1] >= 0
+    retained = np.all(inside, axis=1)
+    crossing = np.flatnonzero(np.any(inside, axis=1) & ~retained)
+    counts = retained.astype(np.int64)
+    clipped = []
+    # Most faces of a column remain wholly inside/outside the section. Only
+    # intersecting faces need polygon clipping; preserve source-face order for
+    # deterministic coincident-surface depth and semantic picking.
+    for source in crossing:
+        triangle = triangles[source]
         polygon = []
         for previous, current in zip(np.roll(triangle, 1, axis=0), triangle):
             previous_inside, current_inside = sign * previous[1] >= 0, sign * current[1] >= 0
@@ -149,10 +169,33 @@ def _section_triangles(triangles, *, with_sources=False, keep_positive_y=True):
             if current_inside:
                 polygon.append(current)
         for index in range(1, len(polygon) - 1):
-            result.append([polygon[0], polygon[index], polygon[index + 1]])
-            sources.append(source)
-    result = np.asarray(result, dtype=float).reshape(-1, 3, 3)
-    return (result, np.asarray(sources, dtype=np.int64)) if with_sources else result
+            clipped.append([polygon[0], polygon[index], polygon[index + 1]])
+            counts[source] += 1
+    sources = np.repeat(np.arange(len(triangles), dtype=np.int64), counts)
+    result = np.empty((len(sources), 3, 3), dtype=float)
+    original = retained[sources]
+    result[original] = triangles[sources[original]]
+    if clipped:
+        result[~original] = clipped
+    return (result, sources) if with_sources else result
+
+
+def _prepare_mesh(mesh, section, keep_positive_y):
+    triangles = mesh.vertices[mesh.faces]
+    triangles, sources = (_section_triangles(triangles, with_sources=True,
+                           keep_positive_y=keep_positive_y) if section
+                          else (triangles, np.arange(len(mesh.faces), dtype=np.int64)))
+    normals = np.cross(triangles[:, 1] - triangles[:, 0], triangles[:, 2] - triangles[:, 0])
+    normals /= np.maximum(np.linalg.norm(normals, axis=1)[:, None], 1e-20)
+    bases = np.tile(mesh.color, (len(triangles), 1))
+    groups = np.asarray(mesh.face_groups)[sources] if mesh.face_groups else np.empty(0, dtype=str)
+    if mesh.face_groups:
+        for group, metadata in mesh.surfaces.items():
+            if "color" in metadata:
+                bases[groups == group] = metadata["color"]
+    for array in (triangles, sources, normals, bases, groups):
+        array.setflags(write=False)
+    return _PreparedMesh(triangles, sources, normals, bases, groups)
 
 
 @njit(cache=True, nogil=True)
@@ -334,6 +377,10 @@ class PartModelView(QWidget):
         self._view_title = "3D model"
         self._empty_text = "Select a part to view its 3D model"
         self._meshes = ()
+        self._mesh_pool = ()
+        self._visible_mesh_indices = ()
+        self._prepared_cache = {}
+        self._prepared = ()
         self._triangles = ()
         self._triangle_sources = ()
         self._section = False
@@ -359,10 +406,28 @@ class PartModelView(QWidget):
         self._face_ids = np.empty((0, 0), dtype=np.int32)
         self._screen_triangles = np.empty((0, 3, 3))
         self._render_sources = ()
+        self._render_mesh_ids = np.empty(0, dtype=np.int32)
+        self._gpu_renderer = None
+        self._gpu_attempted = False
+        self._gpu_geometry_dirty = True
+        self._gpu_bounds_corners = np.empty((0, 8, 3))
+        self._gpu_precision_fallback = False
+        self._renderer_detail = "Renderer will be selected automatically"
+        self._pick_dirty = True
         self._settle_timer = QTimer(self)
         self._settle_timer.setSingleShot(True)
         self._settle_timer.setInterval(120)
         self._settle_timer.timeout.connect(self._settle)
+
+    @property
+    def renderer_backend(self):
+        return "GPU" if self._gpu_renderer is not None and not self._gpu_precision_fallback else "CPU"
+
+    @property
+    def renderer_detail(self):
+        if self._gpu_precision_fallback:
+            return "CPU rendering: magnified CAD depth precision; GPU resumes at a suitable view scale"
+        return self._renderer_detail
 
     @property
     def selection(self):
@@ -443,8 +508,30 @@ class PartModelView(QWidget):
         return self._zoom
 
     def set_meshes(self, records, *, preserve_view=False):
+        """Read a fresh snapshot, including edits to previously supplied records."""
+        self.set_mesh_pool(records)
+        self.set_visible_mesh_indices(range(len(self._mesh_pool)), preserve_view=preserve_view)
+
+    def set_mesh_pool(self, records):
+        """Validate and detach a model once, before selecting its visible indices.
+
+        Pool lifetime is explicit: callers must install a new pool after an edit.
+        No source-object identity cache can hide changes to mutable CAD drafts.
+        Installing alone leaves the currently displayed snapshot untouched.
+        """
         meshes = tuple(_mesh(record) for record in records)
-        self._meshes = meshes
+        self._mesh_pool = meshes
+        self._prepared_cache = {}
+
+    def set_visible_mesh_indices(self, indices, *, preserve_view=False):
+        """Show a subset of the retained pool without copying geometry again."""
+        indices = tuple(indices)
+        if (any(not isinstance(index, (int, np.integer)) or isinstance(index, (bool, np.bool_))
+                or not 0 <= index < len(self._mesh_pool) for index in indices)
+                or len(set(indices)) != len(indices)):
+            raise ValueError("Visible mesh indices must be unique valid pool indices")
+        self._visible_mesh_indices = indices
+        meshes = self._meshes = tuple(self._mesh_pool[index] for index in indices)
         self._rebuild_triangles()
         self.set_topology_selection(self._topology_selection, emit=not self._selecting_topology)
         if not self._selection_keys.intersection(mesh.key for mesh in meshes):
@@ -459,11 +546,22 @@ class PartModelView(QWidget):
             self._invalidate()
 
     def _rebuild_triangles(self):
-        pairs = tuple(_section_triangles(mesh.vertices[mesh.faces], with_sources=True,
-                                        keep_positive_y=self._section_keep_positive_y) if self._section
-                      else (mesh.vertices[mesh.faces], np.arange(len(mesh.faces))) for mesh in self._meshes)
-        self._triangles = tuple(pair[0] for pair in pairs)
-        self._triangle_sources = tuple(pair[1] for pair in pairs)
+        prepared = []
+        for mesh in self._meshes:
+            # These identities refer only to this view's detached snapshots;
+            # the pool retains them and installing a new pool clears the cache.
+            key = (id(mesh), self._section, self._section_keep_positive_y if self._section else None)
+            if key not in self._prepared_cache:
+                self._prepared_cache[key] = _prepare_mesh(mesh, self._section, self._section_keep_positive_y)
+            prepared.append(self._prepared_cache[key])
+        self._prepared = tuple(prepared)
+        self._triangles = tuple(item.triangles for item in prepared)
+        self._triangle_sources = tuple(item.sources for item in prepared)
+        self._render_sources = tuple((mesh_id, int(source)) for mesh_id, item in enumerate(prepared)
+                                     for source in item.sources)
+        self._render_mesh_ids = np.repeat(np.arange(len(prepared), dtype=np.int32),
+                                          [len(item.triangles) for item in prepared])
+        self._gpu_geometry_dirty = True
 
     def set_selection(self, key, region=None, *, related_keys=()):
         selection = (str(key) if key is not None else "", region)
@@ -598,6 +696,7 @@ class PartModelView(QWidget):
 
     def _invalidate(self, *, interactive=False):
         self._dirty = True
+        self._pick_dirty = True
         if interactive:
             self._interactive = True
             self._settle_timer.start()
@@ -611,7 +710,169 @@ class PartModelView(QWidget):
         self._invalidate()
         super().resizeEvent(event)
 
+    def _use_cpu_renderer(self, reason):
+        renderer, self._gpu_renderer = self._gpu_renderer, None
+        self._gpu_precision_fallback = False
+        if renderer is not None:
+            try:
+                renderer.close()
+            except Exception:
+                # A failed/lost driver context can also fail during cleanup.
+                # Rendering and editing must still continue on the CPU.
+                pass
+        self._renderer_detail = "CPU rendering: " + str(reason)
+        self.setToolTip("Left drag: rotate freely. Right drag: pan. Wheel: zoom. "
+                        "Click a visible surface to select it.\n" + self._renderer_detail)
+
+    def _set_precision_fallback(self, enabled):
+        if self._gpu_precision_fallback != enabled:
+            self._gpu_precision_fallback = enabled
+            self.setToolTip("Left drag: rotate freely. Right drag: pan. Wheel: zoom. "
+                            "Click a visible surface to select it.\n" + self.renderer_detail)
+
     def _render(self):
+        if not self._dirty:
+            return
+        if not self._gpu_attempted and any(not mesh.wireframe and len(item.triangles)
+                                           for mesh, item in zip(self._meshes, self._prepared)):
+            self._gpu_attempted = True
+            try:
+                self._gpu_renderer = _create_gpu_renderer()
+                self._renderer_detail = "GPU rendering: " + self._gpu_renderer.renderer_name
+                self.setToolTip("Left drag: rotate freely. Right drag: pan. Wheel: zoom. "
+                                "Click a visible surface to select it.\n" + self._renderer_detail)
+                self.destroyed.connect(self._gpu_renderer.close)
+            except Exception as error:
+                self._use_cpu_renderer(error)
+        if self._gpu_renderer is not None:
+            try:
+                self._render_gpu()
+                return
+            except Exception as error:
+                # A lost context or exhausted graphics allocation must leave a
+                # usable editor. Retry on CPU in this frame; do not repeat failed
+                # driver/context initialization on every mouse movement.
+                self._use_cpu_renderer(error)
+        self._render_cpu()
+
+    def _selected_render_faces(self):
+        topology = {_topology_identity(item) for item in self._topology_selection}
+        selected_faces = []
+        offset = 0
+        for mesh, item in zip(self._meshes, self._prepared):
+            if not mesh.wireframe:
+                if (self._selection_mode == "part" and mesh.key in self._selection_keys
+                        and self._selection[1] in (None, mesh.region)):
+                    selected_faces.extend(range(offset, offset + len(item.triangles)))
+                elif topology and mesh.face_groups:
+                    groups = tuple(identity[3] for identity in topology
+                                   if identity[:3] == (mesh.key, mesh.region, "face"))
+                    if groups:
+                        selected_faces.extend(offset + np.flatnonzero(np.isin(item.groups, groups)))
+            offset += len(item.triangles)
+        return selected_faces, topology
+
+    def _render_gpu(self):
+        renderer = self._gpu_renderer
+        if self._gpu_geometry_dirty:
+            material = [(item, offset) for mesh, item, offset in zip(
+                self._meshes, self._prepared,
+                np.cumsum([0] + [len(item.triangles) for item in self._prepared[:-1]]))
+                if not mesh.wireframe and len(item.triangles)]
+            if material:
+                triangles = np.concatenate([item.triangles for item, _ in material])
+                normals = np.concatenate([item.normals for item, _ in material])
+                bases = np.concatenate([item.bases for item, _ in material])
+                face_ids = np.concatenate([offset + np.arange(len(item.triangles), dtype=np.int32)
+                                           for item, offset in material])
+                # Camera-space AABBs are cheap to update. Offscreen parts must
+                # not inflate the depth range when inspecting a tiny part.
+                lows = np.array([item.triangles.min(axis=(0, 1)) for item, _ in material])
+                highs = np.array([item.triangles.max(axis=(0, 1)) for item, _ in material])
+                corners = np.array([[x, y, z] for x in (0, 1) for y in (0, 1) for z in (0, 1)])
+                self._gpu_bounds_corners = lows[:, None] + corners * (highs - lows)[:, None]
+            else:
+                triangles = np.empty((0, 3, 3))
+                normals = bases = np.empty((0, 3))
+                face_ids = np.empty(0, dtype=np.int32)
+                self._gpu_bounds_corners = np.empty((0, 8, 3))
+            renderer.set_geometry(triangles, normals, bases, face_ids)
+            self._gpu_geometry_dirty = False
+        # The GPU keeps all triangles and the full viewport resolution, even
+        # while dragging. Only the camera uniforms change between frames.
+        width, height = max(1, self.width()), max(1, self.height())
+        bounds = self.project_points(self._gpu_bounds_corners)
+        if len(bounds):
+            low, high = bounds.min(axis=1), bounds.max(axis=1)
+            visible = ((low[:, 0] <= width + 2) & (high[:, 0] >= -2)
+                       & (low[:, 1] <= height + 2) & (high[:, 1] >= -2))
+            depths = bounds[visible, :, 2]
+        else:
+            depths = np.empty(0)
+        depth_extent = max(1e-9, float(np.max(np.abs(depths), initial=0)) * 1.01)
+        # Standard GL depth has 32-bit precision. If a long visible depth range
+        # cannot support the inspected detail (5% of one screen pixel), use the
+        # original exact renderer for this frame. Keep the GPU cache alive so
+        # zooming out immediately resumes hardware rendering, without a reupload.
+        requires_exact_depth = depth_extent * np.finfo(np.float32).eps > 0.05 / self._scale()
+        self._set_precision_fallback(requires_exact_depth)
+        if requires_exact_depth:
+            self._render_cpu()
+            return
+        selected_faces, topology = self._selected_render_faces()
+        pixels, face_ids = renderer.render(
+            width, height, self._rotation, self._center,
+            (self._scale(), self._scale()),
+            (width / 2 + self._pan[0], height / 2 + self._pan[1]),
+            depth_extent, selected_faces)
+        ids = np.full(face_ids.shape, -1, dtype=np.int32)
+        if len(self._render_mesh_ids):
+            visible = face_ids >= 0
+            ids[visible] = self._render_mesh_ids[face_ids[visible]]
+        if selected_faces:
+            selected_pixels = np.isin(face_ids, selected_faces)
+            interior = selected_pixels.copy()
+            interior[1:] &= selected_pixels[:-1]
+            interior[:-1] &= selected_pixels[1:]
+            interior[:, 1:] &= selected_pixels[:, :-1]
+            interior[:, :-1] &= selected_pixels[:, 1:]
+            pixels[selected_pixels & ~interior, :3] = [255, 211, 116]
+        screen_triangles = np.empty((0, 3, 3))
+        if self._selection_mode == "edge" or any(item[2] == "edge" for item in topology):
+            projected = [self.project_points(triangles) for triangles in self._triangles]
+            screen_triangles = np.concatenate(projected) if projected else screen_triangles
+            for mesh_id, mesh in enumerate(self._meshes):
+                for edge in mesh.edges:
+                    selected = (mesh.key, mesh.region, "edge", edge["id"]) in topology
+                    if not selected and self._selection_mode != "edge":
+                        continue
+                    segments = self.project_points(_edge_segments(edge["vertices"], self._section,
+                        keep_positive_y=self._section_keep_positive_y))
+                    _draw_semantic_edge(segments, mesh_id, pixels, ids, face_ids, screen_triangles,
+                        max(1e-10, self._radius * 1e-9),
+                        np.array([255, 211, 116] if selected else [113, 136, 162], dtype=np.uint8),
+                        1 if selected else 0)
+        self._image = QImage(pixels.data, width, height, pixels.strides[0], QImage.Format.Format_RGBA8888).copy()
+        self._ids, self._face_ids = ids, face_ids
+        self._screen_triangles = screen_triangles
+        self._depth = np.empty((0, 0))
+        self._dirty = False
+        self._pick_dirty = True
+
+    def _ensure_pick_buffers(self):
+        if self.renderer_backend == "GPU" and self._pick_dirty:
+            # CAD editing retains the original double-precision hit tests and
+            # deterministic coincident-face rules, independent of GPU raster
+            # rounding. This pass is only needed after a camera/geometry change
+            # when actually picking; it never runs for ordinary GPU rotation.
+            image = self._image
+            self._dirty = True
+            try:
+                self._render_cpu()
+            finally:
+                self._image = image
+
+    def _render_cpu(self):
         if not self._dirty:
             return
         budget = 100_000 if self._interactive else 900_000
@@ -623,42 +884,42 @@ class PartModelView(QWidget):
         depth = np.full((height, width), -np.inf, dtype=np.float64)
         ids = np.full((height, width), -1, dtype=np.int32)
         face_ids = np.full((height, width), -1, dtype=np.int32)
-        projected_meshes, render_sources = [], []
-        for mesh_id, (triangles, sources) in enumerate(zip(self._triangles, self._triangle_sources)):
+        projected_meshes = []
+        for triangles in self._triangles:
             projected = self.project_points(triangles)
             projected[..., 0] *= sx
             projected[..., 1] *= sy
             projected_meshes.append(projected)
-            render_sources.extend((mesh_id, int(source)) for source in sources)
         screen_triangles = np.concatenate(projected_meshes) if projected_meshes else np.empty((0, 3, 3))
         topology = {_topology_identity(item) for item in self._topology_selection}
         selected_faces = []
         face_offset = 0
         light = np.array([-0.3, 0.45, 0.84])
         light /= np.linalg.norm(light)
-        for mesh_id, (mesh, triangles, projected, sources) in enumerate(zip(
-                self._meshes, self._triangles, projected_meshes, self._triangle_sources)):
+        for mesh_id, (mesh, item, projected) in enumerate(zip(
+                self._meshes, self._prepared, projected_meshes)):
+            triangles = item.triangles
             if mesh.wireframe:
                 # Context is not an opaque solid and cannot hide real material.
                 face_offset += len(triangles)
                 continue
-            normals = np.cross(triangles[:, 1] - triangles[:, 0], triangles[:, 2] - triangles[:, 0])
-            lengths = np.linalg.norm(normals, axis=1)
-            camera_normals = (normals / np.maximum(lengths[:, None], 1e-20)) @ self._rotation.T
+            camera_normals = item.normals @ self._rotation.T
             shades = 0.38 + 0.62 * np.abs(camera_normals @ light)
             selected = (self._selection_mode == "part" and mesh.key in self._selection_keys
                         and self._selection[1] in (None, mesh.region))
-            bases = np.tile(mesh.color, (len(triangles), 1))
-            if mesh.face_groups:
-                groups = np.asarray(mesh.face_groups)[sources]
-                for group, metadata in mesh.surfaces.items():
-                    if "color" in metadata:
-                        bases[groups == group] = metadata["color"]
-            chosen = np.array([bool(selected or (mesh.face_groups and
-                              (mesh.key, mesh.region, "face", mesh.face_groups[source]) in topology))
-                               for source in sources], dtype=bool)
-            bases[chosen] = 0.35 * bases[chosen] + 0.65 * np.array([255, 196, 84])
-            selected_faces.extend(face_offset + np.flatnonzero(chosen))
+            bases = item.bases
+            chosen = None
+            if selected:
+                chosen = np.ones(len(triangles), dtype=bool)
+            elif topology and mesh.face_groups:
+                groups = tuple(identity[3] for identity in topology
+                               if identity[:3] == (mesh.key, mesh.region, "face"))
+                if groups:
+                    chosen = np.isin(item.groups, groups)
+            if chosen is not None:
+                bases = bases.copy()
+                bases[chosen] = 0.35 * bases[chosen] + 0.65 * np.array([255, 196, 84])
+                selected_faces.extend(face_offset + np.flatnonzero(chosen))
             colors = np.clip(shades[:, None] * bases, 0, 255).astype(np.uint8)
             _rasterize(projected, colors, mesh_id, face_offset, pixels, depth, ids, face_ids,
                        max(1e-12, self._radius * 1e-10))
@@ -689,8 +950,8 @@ class PartModelView(QWidget):
         self._image = QImage(pixels.data, width, height, pixels.strides[0], QImage.Format.Format_RGBA8888).copy()
         self._depth, self._ids = depth, ids
         self._face_ids, self._screen_triangles = face_ids, screen_triangles
-        self._render_sources = tuple(render_sources)
         self._dirty = False
+        self._pick_dirty = False
 
     def pick_at(self, position):
         """Return the frontmost visible (part key, region), or None."""
@@ -703,6 +964,7 @@ class PartModelView(QWidget):
             self._interactive = False
             self._dirty = True
         self._render()
+        self._ensure_pick_buffers()
         x = min(self._ids.shape[1] - 1, int(position.x() * self._ids.shape[1] / self.width()))
         y = min(self._ids.shape[0] - 1, int(position.y() * self._ids.shape[0] / self.height()))
         index = self._ids[y, x]
@@ -802,6 +1064,7 @@ class PartModelView(QWidget):
         painter.setPen(QColor("#b8c8dc"))
         section_label = " · Section y ≥ 0" if self._section_keep_positive_y else " · Section y ≤ 0"
         title = self._view_title + " · Orthographic" + (section_label if self._section else "")
+        title += " · " + self.renderer_backend
         painter.drawText(14, 24, title)
         if not self._meshes:
             painter.drawText(self.rect(), Qt.AlignmentFlag.AlignCenter, self._empty_text)

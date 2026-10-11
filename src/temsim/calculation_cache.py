@@ -58,7 +58,7 @@ _EDS_READOUT_FIELDS = (
     "eds_spectrum_max_energy_ev", "eds_spectrum_bin_width_ev",
     "eds_energy_resolution_fwhm_ev", "eds_poisson_enabled", "eds_poisson_seed",
 )
-_STAGE_INPUT_SCHEMA = "live-lens-components-v4-physical-gun-apertures"
+_STAGE_INPUT_SCHEMA = "live-lens-components-v6-intrinsic-aberrations"
 
 
 def _particle_point_digest(payload):
@@ -287,6 +287,11 @@ def _select_geometry_scope(
             for row in result.get("lenses", ())
             if isinstance(row, Mapping) and str(row.get("key", ""))
         }
+        intrinsic = result.get("lens_intrinsic_aberrations")
+        if isinstance(intrinsic, Mapping):
+            result["lens_intrinsic_aberrations"] = {
+                key: row for key, row in intrinsic.items() if key in retained_lens_keys
+            }
         descriptors = result.get("lens_field_map_descriptors")
         if isinstance(descriptors, Mapping):
             result["lens_field_map_descriptors"] = {

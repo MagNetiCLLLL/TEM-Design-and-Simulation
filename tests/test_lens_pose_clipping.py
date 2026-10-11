@@ -1,4 +1,4 @@
-"""Rigid lens hardware stops use the same local frame as its magnetic field."""
+"""Mechanical bores ignore optical tilt; effective aperture planes retain it."""
 from types import SimpleNamespace
 from dataclasses import replace
 
@@ -37,13 +37,13 @@ def test_shifted_bore_moves_clearance_in_both_directions():
     assert keys == ["", "column_wall"]
 
 
-def test_tilted_bore_finds_exact_wall_contact_between_saved_points():
+def test_optical_tilt_does_not_create_a_mechanical_bore_collision():
     state = _state(angle_y=100., bore_radius=.25)
     x = np.zeros((2, 1))
     alive, stops, keys = clip_column_wall(state, [10., 20.], x, x)
-    assert alive.tolist() == [False]
-    assert stops[0] == pytest.approx(10.+.25/np.sin(.1))
-    assert keys == ["column_wall"]
+    assert alive.tolist() == [True]
+    assert np.isnan(stops[0])
+    assert keys == [""]
 
 
 def test_stationary_vacuum_tube_does_not_follow_shifted_lens():
@@ -76,7 +76,7 @@ def test_post_sample_aperture_clipping_uses_same_tilted_plane():
     assert stops[0] == pytest.approx(10.+(2.-np.sin(.1))/np.cos(.1))
 
 
-def test_medium_path_ends_at_posed_wall_before_scattering():
+def test_medium_path_remains_unclipped_by_optical_tilt_alone():
     from temsim.physics.residual_medium import ColumnMediumTransport
     state = _state(angle_y=100., bore_radius=.25)
     transport = object.__new__(ColumnMediumTransport)
@@ -94,10 +94,9 @@ def test_medium_path_ends_at_posed_wall_before_scattering():
     transport.advance = advance
     before, after = np.zeros((4, 1)), np.zeros((4, 1))
     transport(0, before, after)
-    expected = 10.+.25/np.sin(.1)
-    assert not transport.alive[0]
-    assert transport.blocked_z[0] == pytest.approx(expected)
-    assert ends[0][0, 2]*1000 == pytest.approx(expected)
+    assert transport.alive[0]
+    assert np.isnan(transport.blocked_z[0])
+    assert ends[0][0, 2]*1000 == pytest.approx(20.)
 
 
 def test_real_resolver_keeps_hidden_fixed_tube_when_narrower_condenser_bore_moves():

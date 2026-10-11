@@ -985,18 +985,23 @@ def resolve_image_corrector_mechanical_anchors(state):
     tl11 = system.tl11_lens
     components = system.components
     offsets = state.image_corrector_component_offsets_from_tl11_mm
-    # Explicit optical registration does not invent a physical coil body.
-    # Read the active manifest, including user edits, rather than just the
-    # default centre coincidence. DPH drives retain their own electrical values.
+    # Read explicit registration through the material owner when present.
+    # The channel does not add a second displacement or an electrical drive.
     assembly = getattr(state, "_resolved_assembly", None)
     rows = {p.key: p.data for p in getattr(assembly, "parts", ())}
-    bindings = {
-        c.key: (str(row["optical_reference_host_key"]),
-                float(row.get("optical_reference_offset_mm", 0.)))
-        for c in components
-        if (row := rows.get(c.key, _DEFAULT_IMAGE_CORRECTOR_PARTS[c.key])).get(
-            "optical_reference_host_key")
-    }
+    bindings = {}
+    for component in components:
+        row = rows.get(component.key, _DEFAULT_IMAGE_CORRECTOR_PARTS[component.key])
+        if row.get("physical_host_key"):
+            host_key = str(row["physical_host_key"])
+            row = rows.get(host_key, _DEFAULT_IMAGE_CORRECTOR_PARTS.get(host_key))
+            if row is None:
+                raise ValueError(f"{component.key}: missing declared winding host {host_key}")
+        if row.get("optical_reference_host_key"):
+            bindings[component.key] = (
+                str(row["optical_reference_host_key"]),
+                float(row.get("optical_reference_offset_mm", 0.)),
+            )
     for key, value in default_image_corrector_offsets_from_tl11_mm().items():
         offsets.setdefault(key, value)
 

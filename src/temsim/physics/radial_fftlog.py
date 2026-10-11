@@ -91,7 +91,13 @@ def _validated_order(order):
     return float(order)
 
 
-def complex_hankel(value, dln, offset, *, inverse=False, order=0):
+def complex_hankel(value, dln, offset, *, inverse=False, order=0, keep_on_device=False):
+    """Transform one complex field, returning host data unless requested.
+
+    ``keep_on_device`` is used by the round-column executor to keep the
+    complete propagation chain in CUDA memory. Existing callers retain the
+    NumPy return contract. It never selects a different backend or precision.
+    """
     order = _validated_order(order)
     backend = _BACKEND.get()
     kernels = _KERNELS.get()
@@ -117,4 +123,4 @@ def complex_hankel(value, dln, offset, *, inverse=False, order=0):
     kernels.move_to_end(key)
     native = kernel.xp.asarray(value, dtype=kernel.xp.complex128)
     result = kernel.apply(native, offset, inverse=inverse)
-    return result if backend == "cpu" else kernel.xp.asnumpy(result)
+    return result if backend == "cpu" or keep_on_device else kernel.xp.asnumpy(result)

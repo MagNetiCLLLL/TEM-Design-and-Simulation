@@ -137,6 +137,7 @@ def finite_scan_responses(state, component, target_z_values_mm, *,
         events = tuple((c.event_z_mm, c.event_dx_rad, c.event_dy_rad) for c in relevant)
         plan = build_propagation_plan(private, source, stop, events,
             include_spherical_aberration=False, include_hexapole=True,
+            include_intrinsic_aberrations=True,
             save_z_mm=downstream, checkpoint_z_mm=downstream,
             maximum_step_mm=maximum_step_mm, _diagnostic_dipole_fields=relevant)
         points = execute_propagation_plan(private, plan, zero, zero, zero, zero)[-1]

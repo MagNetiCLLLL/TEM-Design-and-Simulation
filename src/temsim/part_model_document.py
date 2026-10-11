@@ -22,6 +22,7 @@ class PartModelDocument:
     """A file-backed draft shared by every selected part in the 3D editor."""
 
     def __init__(self, path):
+        self._new_document = False
         self.path = Path(path).resolve()
         self._source_bytes = input_io.read_bytes(self.path)
         self._archive_identity = input_io.active_archive().identity if input_io.active_archive() is not None else None
@@ -51,7 +52,105 @@ class PartModelDocument:
 
     @property
     def dirty(self):
-        return self.document != self._baseline
+        return getattr(self, "_new_document", False) or self.document != self._baseline
+
+    @classmethod
+    def from_step_asset(cls, asset, path, *, key=None, name=None):
+        """Create an unsaved independent mechanical module, without a temp file."""
+        import tomli_w
+        from temsim.step_assets import base_from_asset
+        base_from_asset(asset)
+        result = cls.__new__(cls)
+        result.path = Path(path).resolve()
+        if result.path.exists():
+            raise ValueError("Choose a new TOML path; existing definitions are not replaced by import")
+        result._new_document = True
+        result._source_bytes = b""
+        result._archive_identity = None
+        result._dependency_bytes = {}
+        result._subassembly_owners = {}
+        result._baseline = {"format_version": 1, "coordinate_system": "module_local_z_mm",
+                            "module": {"key": "mechanical:step", "type": "mechanical", "name": "Imported STEP"},
+                            "geometry": {"length_mm": 1.0}, "parts": []}
+        result._editable_text = tomli_w.dumps({k: v for k, v in result._baseline.items() if k != "parts"})
+        result.document = deepcopy(result._baseline)
+        result._history = [deepcopy(result.document)]
+        result._history_index = 0
+        result.import_step_asset(asset, key=key, name=name)
+        return result
+
+    def import_step_asset(self, asset, *, mode="add", target_key=None,
+                          registration="preserve", key=None, name=None):
+        """Atomically bind imported material; optical definitions remain intact.
+
+        New components preserve STEP module coordinates. Replacement can centre
+        the imported bounding box on the existing part reference; this is an
+        explicit registration, never a recovered optical datum from STEP.
+        """
+        import numpy as np
+        from temsim.step_assets import base_from_asset, asset_bounds
+        from temsim.part_model_features import default_model_3d, validate_model_3d
+        from temsim.component_operations import make_component
+        if mode not in {"add", "replace"} or registration not in {"preserve", "center"}:
+            raise ValueError("Choose add/replace and preserve/center registration")
+        base = base_from_asset(asset)
+        center, size = asset_bounds(asset)
+        if mode == "add":
+            if key is None:
+                used = {p["key"] for p in self.document["parts"]}
+                index = 1
+                while f"step_import_{index}" in used:
+                    index += 1
+                key = f"step_import_{index}"
+            target = make_component(key=key, name=name or asset.get("source", {}).get("filename", key), shape="box",
+                                    center_z_mm=float(center[2]), length_mm=float(size[2]),
+                                    width_mm=float(size[0]), height_mm=float(size[1]))
+            model = default_model_3d(target)
+            model["base"] = base
+            model["transform"]["offset_mm"] = [float(center[0]), float(center[1]), 0.]
+            target["model_3d"] = model
+            validate_model_3d(target)
+            return self.add_component(target)
+        if target_key is None:
+            raise ValueError("Select the material component to replace")
+        from temsim.component_representation import non_material_role
+        target = deepcopy(self.part(target_key))
+        if non_material_role(target) or any(p.get("parent_key") == target_key and not non_material_role(p)
+                                             for p in self.document["parts"]):
+            raise ValueError("Replace a material leaf, not an optical channel or an assembly with child parts")
+        model = default_model_3d(target)
+        model["base"] = base
+        if registration == "preserve":
+            from temsim.lens_pose import mechanical_part_transform_mm, supports_physical_lens_pose
+            from temsim.energy_filter_model_3d import supports_energy_filter_part
+            rotation, offset = mechanical_part_transform_mm(target, {p["key"]: p for p in self.document["parts"]})
+            if (supports_physical_lens_pose(target) or supports_energy_filter_part(target)
+                    or not np.allclose(rotation, np.eye(3), atol=1e-14, rtol=0)
+                    or not np.allclose(offset, np.zeros(3), atol=1e-14, rtol=0)):
+                raise ValueError("This component has an optical or branch placement. Choose explicit centre registration to retain that datum")
+            model["transform"]["offset_mm"] = [float(center[0]), float(center[1]),
+                                                     float(center[2]) - float(target["local_center_z_mm"])]
+        # Preserve legacy optical pose before installing new shape-only CAD.
+        from temsim.lens_pose import supports_physical_lens_pose, migrate_legacy_lens_pose
+        if supports_physical_lens_pose(target):
+            migrate_legacy_lens_pose(target)
+        target["model_3d"] = model
+        validate_model_3d(target)
+        self._synchronize_custom_base_length(target)
+        self._commit_part(target_key, target)
+        return target_key
+
+    def reset_model_geometry(self, key):
+        """Restore the imported source size and clear cuts, retaining placement."""
+        from temsim.step_assets import read_asset, base_from_asset
+        model = deepcopy(self.part(key).get("model_3d", {}))
+        if model.get("base", {}).get("kind") != "step":
+            self.set_model_3d(key, None)
+            return
+        model["base"] = base_from_asset(read_asset(model["base"]["asset_json"]))
+        model["features"] = []
+        model["transform"]["scale_xy"] = [1., 1.]
+        self.set_model_3d(key, model)
 
     @property
     def can_undo(self):
@@ -434,6 +533,10 @@ class PartModelDocument:
     def assert_source_current(self):
         if self._archive_identity is not None:
             raise ValueError("Archived structure is read-only; load a live assembly before saving structural edits")
+        if getattr(self, "_new_document", False):
+            if self.path.exists():
+                raise ValueError("The new destination now exists; Save copy to avoid replacing it")
+            return
         if self.path.read_bytes() != self._source_bytes:
             raise ValueError("The source file changed outside this editor. Save a copy or reopen it before saving.")
         from temsim.shared_tip import dependencies
@@ -443,6 +546,15 @@ class PartModelDocument:
     def save(self, *, project_save=None):
         self.assert_source_current()
         self.validate()
+        if getattr(self, "_new_document", False):
+            staged = self.independent_copy_text()
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            # Exclusive creation protects a new definition from a concurrent
+            # file appearing after the destination was chosen in the dialog.
+            with self.path.open("x", encoding="utf-8", newline="") as stream:
+                stream.write(staged)
+            self._accept_saved_file(self.path, expected=tomllib.loads(staged))
+            return
         updates = self.updates()
         if not updates:
             return
@@ -504,6 +616,7 @@ class PartModelDocument:
         if parsed != expected:
             raise ValueError("The saved file does not match the draft. The draft is retained; inspect the source before saving again.")
         self.path = path
+        self._new_document = False
         self._source_bytes = source
         from temsim.shared_tip import materialized_text, dependencies
         self._dependency_bytes = dependencies(path)

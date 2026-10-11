@@ -181,7 +181,15 @@ def test_linear_focus_refines_executed_complex_wave_and_matches_independent_anal
     fine_input = _astigmatic_focus_checkpoint(512)
     fine = _propagate_column(SimpleNamespace(), fine_input, 2000.1,
         _prepared=prepared, grid_numerics=WaveGridNumerics(automatic_refinement=False, maximum_pixels=512))
-    assert automatic.beam.modes[0].plane.amplitude.shape == (512, 512)
+    shape = automatic.beam.modes[0].plane.amplitude.shape
+    assert 64 < min(shape) <= max(shape) <= 512
+    rows = automatic.record["modes"][0]["grid_refinements"]
+    collins = next(row for row in rows
+                   if row["method"].startswith("zero-padded spatial Collins"))
+    # FFT-friendly refinement selects the smallest suitable smooth grid;
+    # the input quadrature and its Fourier period need not be powers of two.
+    assert collins["from_shape"][0] == collins["from_shape"][1]
+    automatic_quadrature_pixels = collins["from_shape"][0]
     lam, sigma, distance = float(wavelength_m(low.beam.modes[0].energy_kev*1000)), 10e-9, .0001
     precision = np.array((-10000., 0.))+1j*lam/(2*np.pi*sigma*sigma)
     factor = 1+distance*precision
@@ -189,7 +197,7 @@ def test_linear_focus_refines_executed_complex_wave_and_matches_independent_anal
     # derived complex Gaussian drift, including scalar phase and pixel area.
     # Increasing the INPUT grid alone does not refine a natural Collins
     # output cell; the low-grid execution also needs output quadrature.
-    for result, initial, quadrature_pixels in ((automatic, low, 128), (fine, fine_input, 512)):
+    for result, initial, quadrature_pixels in ((automatic, low, automatic_quadrature_pixels), (fine, fine_input, 512)):
         output = result.beam.modes[0]
         source = initial.beam.modes[0].plane
         xy = output.plane.coordinates_m()
@@ -200,8 +208,8 @@ def test_linear_focus_refines_executed_complex_wave_and_matches_independent_anal
         # period. Poisson images of the chirped input Gaussian therefore
         # contribute at the period edges; they have their own phase and are
         # not a missing tail to discard or fix by a tolerance change. The
-        # auto path first resolves its input at 128 samples; the independent
-        # path starts with 512. Both retain the same 192 nm source period.
+        # auto path resolves its input on the recorded quadrature grid; the
+        # independent path starts with 512. Both retain the same 192 nm source period.
         period = lam*distance/(192e-9/quadrature_pixels)
         chirp_precision = precision+1/distance
         expected = np.zeros(output.plane.amplitude.shape, dtype=complex)
@@ -221,7 +229,6 @@ def test_linear_focus_refines_executed_complex_wave_and_matches_independent_anal
         assert output.weight_per_reference_electron/initial.beam.total_weight == pytest.approx(
             window_probability, rel=1e-12)
     np.testing.assert_array_equal(low.beam.modes[0].plane.amplitude, original)
-    rows = automatic.record["modes"][0]["grid_refinements"]
     assert rows and rows[0]["operator"] == "distributed_linear"
     assert rows[0]["mode_id"] == low.beam.modes[0].mode_id
     assert rows[0]["z_mm"] == pytest.approx(2000.1)

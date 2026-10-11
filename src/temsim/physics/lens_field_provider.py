@@ -117,14 +117,18 @@ class CoordinateRegistration:
         return np.asarray(self.rotation_local_to_global, dtype=float)
 
     def positions_global_to_local_m(self, positions_m) -> np.ndarray:
-        positions = np.asarray(positions_m, dtype=float)
-        if positions.shape[-1:] != (3,) or not np.all(np.isfinite(positions)):
+        from temsim.physics.wave_device import array_module
+        xp = array_module(positions_m)
+        positions = xp.asarray(positions_m, dtype=xp.float64)
+        if positions.shape[-1:] != (3,) or not bool(xp.all(xp.isfinite(positions))):
             raise FieldMapError("Field query positions must end in a finite XYZ axis")
-        return (positions - self.origin_array_m) @ self.rotation_array
+        return (positions - xp.asarray(self.origin_array_m)) @ xp.asarray(self.rotation_array)
 
     def vectors_local_to_global(self, vectors) -> np.ndarray:
-        local = np.asarray(vectors, dtype=float)
-        return local @ self.rotation_array.T
+        from temsim.physics.wave_device import array_module
+        xp = array_module(vectors)
+        local = xp.asarray(vectors, dtype=xp.float64)
+        return local @ xp.asarray(self.rotation_array.T)
 
 
 def _identity_registration(registration: CoordinateRegistration) -> bool:
@@ -1806,12 +1810,15 @@ def _analytic_gaussian_terms(native_provider):
     return terms
 
 
-def _gaussian_axial_field(terms, z_m):
-    z = np.asarray(z_m, dtype=float)
-    bz, derivative = np.zeros_like(z), np.zeros_like(z)
+def _gaussian_axial_field(terms, z_m, *, xp=None):
+    if xp is None:
+        from temsim.physics.wave_device import array_module
+        xp = array_module(z_m)
+    z = xp.asarray(z_m, dtype=xp.float64)
+    bz, derivative = xp.zeros_like(z), xp.zeros_like(z)
     for amplitude, centre, sigma in terms:
         dz = z-centre
-        contribution = amplitude*np.exp(-0.5*(dz/sigma)**2)
+        contribution = amplitude*xp.exp(-0.5*(dz/sigma)**2)
         bz += contribution
         derivative -= contribution*dz/sigma**2
     return bz, derivative
@@ -1872,10 +1879,12 @@ class FrozenAnalyticField:
         return min(float(requested_step_mm), width_mm*.2, bend_step_mm)
 
     def field_at_global_positions_t(self, positions_m):
-        positions = np.asarray(positions_m, dtype=float)
+        from temsim.physics.wave_device import array_module
+        xp = array_module(positions_m)
+        positions = xp.asarray(positions_m, dtype=xp.float64)
         local = self.registration.positions_global_to_local_m(positions)
         bz, derivative = _gaussian_axial_field(self.terms_t_m, local[..., 2])
-        field = np.stack((-0.5*local[..., 0]*derivative, -0.5*local[..., 1]*derivative, bz), axis=-1)
+        field = xp.stack((-0.5*local[..., 0]*derivative, -0.5*local[..., 1]*derivative, bz), axis=-1)
         return self.registration.vectors_local_to_global(field)
 
     def slope_derivative(self, positions_m, slopes, charge_over_p):
@@ -1885,28 +1894,30 @@ class FrozenAnalyticField:
         its original local paraxial truncation plus the separately configured
         aberration kick, including in the limit of zero misalignment.
         """
-        positions = np.asarray(positions_m, dtype=float)
-        slopes = np.asarray(slopes, dtype=float)
+        from temsim.physics.wave_device import array_module
+        xp = array_module(positions_m)
+        positions = xp.asarray(positions_m, dtype=xp.float64)
+        slopes = xp.asarray(slopes, dtype=xp.float64)
         if positions.ndim != 2 or positions.shape[1] != 3 or slopes.shape != (len(positions), 2):
             raise FieldMapError("Analytic slope transport requires matching N by 3 positions and N by 2 slopes")
-        if not np.isfinite(slopes).all():
+        if not bool(xp.isfinite(slopes).all()):
             raise FieldMapError("Analytic lens slopes must be finite")
         local = self.registration.positions_global_to_local_m(positions)
-        direction = np.column_stack((slopes, np.ones(len(slopes)))) @ self.registration.rotation_array
-        if np.any(direction[:, 2] <= 1e-10):
+        direction = xp.column_stack((slopes, xp.ones(len(slopes)))) @ xp.asarray(self.registration.rotation_array)
+        if bool(xp.any(direction[:, 2] <= 1e-10)):
             raise FieldMapError("Analytic lens trajectory leaves the forward local-axis domain; "
                                 "reduce the tilt or use a 3D field model with time-domain transport")
         local_slopes = direction[:, :2] / direction[:, 2, None]
         bz, derivative = _gaussian_axial_field(self.terms_t_m, local[:, 2])
         bx, by = -.5*local[:, 0]*derivative, -.5*local[:, 1]*derivative
-        factor = np.broadcast_to(np.asarray(charge_over_p, dtype=float), (len(positions),))
-        if not np.isfinite(factor).all():
+        factor = xp.broadcast_to(xp.asarray(charge_over_p, dtype=xp.float64), (len(positions),))
+        if not bool(xp.isfinite(factor).all()):
             raise FieldMapError("Analytic lens charge over momentum must be finite")
-        local_acceleration = np.column_stack((factor*(local_slopes[:, 1]*bz-by),
-                                             factor*(bx-local_slopes[:, 0]*bz), np.zeros(len(slopes))))
+        local_acceleration = xp.column_stack((factor*(local_slopes[:, 1]*bz-by),
+                                             factor*(bx-local_slopes[:, 0]*bz), xp.zeros(len(slopes))))
         global_acceleration = self.registration.vectors_local_to_global(local_acceleration)
         global_direction = self.registration.vectors_local_to_global(
-            np.column_stack((local_slopes, np.ones(len(slopes)))))
+            xp.column_stack((local_slopes, xp.ones(len(slopes)))))
         dz = global_direction[:, 2, None]
         return (global_acceleration[:, :2]*dz-global_direction[:, :2]*global_acceleration[:, 2, None])/dz**3
 

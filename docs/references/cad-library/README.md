@@ -53,3 +53,14 @@
 - [Thermo-CrystalPack](Thermo-CrystalPack/简介.md)：original_pdf_saved。
 - [Thermo-Spectra-Ultra-holder](Thermo-Spectra-Ultra-holder/简介.md)：record_only_original_download_unavailable。
 - [LBNL-TEM-holders](LBNL-TEM-holders/简介.md)：original_html_saved。
+
+## EDS 与 EELS camera 材料
+
+[接收面不变、工程机械尺寸与资料边界](../cad-detectors.md)。新增四份原始 PDF、图页、简介及哈希已编入索引：
+
+- [US8410439B2](US8410439B2/简介.md)：SDD、窗口选择、冷屏与绝缘支承结构族。
+- [US7642513B2](US7642513B2/简介.md)：间接 EELS 转换层与光学传递结构族。
+- [DS0510](Thermo-Iliad-Ultra-DS0510/简介.md)：五条间接探测 strip 的公开规格。
+- [KETEK VITUS](KETEK-VITUS/简介.md)：同类 Si 吸收层厚度的数量级参考，不是 Ultra-X 图纸。
+
+Image corrector 的八个偶极线包参见 [CEOS 图与专利构造对照](../cad-image-corrector-channels.md)，原始文件校验记录见 [CETCOR channel 条目](CETCOR-channel-construction/source-entry.json)。

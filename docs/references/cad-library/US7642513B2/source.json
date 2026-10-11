@@ -1,0 +1,95 @@
+{
+  "id": "US7642513B2",
+  "kind": "patent",
+  "family": "Indirect EELS detector",
+  "title": "Device for obtaining the image and/or spectra of electron energy loss",
+  "authors": [
+    "Henri Pinna",
+    "Marcel Tence"
+  ],
+  "owner": [
+    "Centre National de la Recherche Scientifique",
+    "Universite Paris SUD 11"
+  ],
+  "dates": {
+    "priorityDate": "2004-08-04",
+    "filingDate": "2005-08-01",
+    "publicationDate": "2010-01-05"
+  },
+  "url": "https://patents.google.com/patent/US7642513B2/en",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/d3/22/e5/af9a3514c417d7/US7642513.pdf",
+  "figures": "Figures 1 and 2, PDF pages 2 and 3; indirect chain description PDF page 10.",
+  "component_keys": [
+    "energy_filter_zebra"
+  ],
+  "supported_facts": [
+    "An indirect EELS chain separates scintillator, viewport, optical transfer and optical image sensor."
+  ],
+  "unsupported_claims": [
+    "This is not Zebra hardware.",
+    "No adopted optical material, lens/fibre architecture, layer thickness or electronics from this device."
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T09:36:17.511327+00:00",
+  "archive_status": "original_pdf_saved",
+  "pdf_page_count": 14,
+  "pdf_metadata": {
+    "format": "PDF 1.3",
+    "title": "1499069917094850000-07642513",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "",
+    "producer": "ImageMagick 6.9.0-6 Q8 x86_64 2015-02-23 http://www.imagemagick.org",
+    "creationDate": "D:20170703011846",
+    "modDate": "D:20170703011846",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    2,
+    3,
+    4
+  ],
+  "metadata_scope": "Bibliographic record, not ownership or patent-status certification.",
+  "rights_note": "Public original archived for project provenance; copyright remains with its owner, and public access is not an open licence.",
+  "assembly_comparison_rule": "Sources support identified construction families. Saved reception inputs remain authoritative; engineering dimensions are explicitly separate.",
+  "availability_notes": [
+    "Downloaded original PDF from its public primary host or public patent PDF archive; inspected full-page renders without geometric rescaling."
+  ],
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 1181242,
+      "sha256": "89e14a843a41dbcdefec376338c8ed786963f974691a17b6a68b3f8243460456",
+      "kind": "original_pdf",
+      "method": "download_public_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/d3/22/e5/af9a3514c417d7/US7642513.pdf"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 64900,
+      "sha256": "dd77bb0314a17eb0ef4c26e3b580120b90be23834d35b07e0086dc4b24bdd3ce",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 2,
+      "render_dpi": 93.6
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 132351,
+      "sha256": "39eb06afd27e7e9c8822ba095833ac032f2a5eed209bbed77897aa9cb6573071",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 3,
+      "render_dpi": 93.6
+    },
+    {
+      "file": "page-04.png",
+      "bytes": 312951,
+      "sha256": "e3a93e4a6ba8c0f22b97f6db21cd86c880638966ac1014114f4303b3261219df",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 4,
+      "render_dpi": 93.6
+    }
+  ]
+}

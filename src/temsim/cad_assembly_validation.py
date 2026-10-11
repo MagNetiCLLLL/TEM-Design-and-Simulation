@@ -111,7 +111,7 @@ class AssemblyCollisionAuditor:
             self.statistics['boolean_intersections'] += 1
             if not common.isValid():
                 raise RuntimeError(f'Invalid BRep intersection: {a["id"]} / {b["id"]}')
-            volume = sum(s.Volume() for s in common.Solids())
+            volume = sum(self.backend.shape_volume(s) for s in common.Solids())
             if not math.isfinite(volume) or volume < 0:
                 raise RuntimeError('Nonphysical intersection volume')
             if volume:

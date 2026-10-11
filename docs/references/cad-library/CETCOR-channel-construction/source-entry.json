@@ -1,0 +1,91 @@
+{
+  "schema": "cad-reference-source-v1",
+  "id": "CETCOR-channel-construction",
+  "reviewed_on": "2026-10-11",
+  "kind": "cross_reference_evidence_entry",
+  "sources": [
+    {
+      "url": "https://www.ceos-gmbh.de/de/grundlagen/Workshop-Beitraege/01_How-do-aberration-correctors-work-pdf.pdf",
+      "figures": "page26",
+      "supports": "Optical order and DPH/HP co-location only"
+    },
+    {
+      "url": "https://patents.google.com/patent/US20090079531A1/en",
+      "figures": "5-7,10-11",
+      "supports": "Compact orthogonal coreless dipole winding construction class; not product-specific wiring or dimensions"
+    }
+  ],
+  "assets": [
+    {
+      "file": "../CEOS-Linck-2025/original.pdf",
+      "sha256": "b485a191e37744ab1c4cbfa679a2b252792389f87bd49c1459eed0b42a2beb4c",
+      "bytes": 3258741,
+      "use": "existing archived primary document or unaltered full-page render; no duplicated download"
+    },
+    {
+      "file": "../CEOS-Linck-2025/page-26.png",
+      "sha256": "4c21eb96c6e5a982f3a6b9c47ac51a304c1cd051f03063654a83620f2817dd89",
+      "bytes": 210511,
+      "use": "existing archived primary document or unaltered full-page render; no duplicated download"
+    },
+    {
+      "file": "../CEOS-Lu-2025/original.pdf",
+      "sha256": "267fc35146cdd2a3f4388303df9cb047d6e040a486d589de5e152c50704991a1",
+      "bytes": 4555802,
+      "use": "existing archived primary document or unaltered full-page render; no duplicated download"
+    },
+    {
+      "file": "../CEOS-Lu-2025/page-02.png",
+      "sha256": "18c1c511d76a3c9ab28fdac918481546c8b966e4f265a5dcc0344e4ce5deb3b7",
+      "bytes": 810499,
+      "use": "existing archived primary document or unaltered full-page render; no duplicated download"
+    },
+    {
+      "file": "../US20090079531A1/original.pdf",
+      "sha256": "8bcd868cc3831c433efa45c1190e46fb3bf7eb9df745949f6757c4d27e95acf7",
+      "bytes": 1067788,
+      "use": "existing archived primary document or unaltered full-page render; no duplicated download"
+    },
+    {
+      "file": "../US20090079531A1/page-03.png",
+      "sha256": "8e59b680563522d896559dd42031b5b4997aaaec3684d69155bbccfde511c5ef",
+      "bytes": 110331,
+      "use": "existing archived primary document or unaltered full-page render; no duplicated download"
+    },
+    {
+      "file": "../US20090079531A1/page-04.png",
+      "sha256": "3fc43454ecf5b179a01f4790b4b97816c183720074b02ada052667c654b86dcf",
+      "bytes": 139809,
+      "use": "existing archived primary document or unaltered full-page render; no duplicated download"
+    },
+    {
+      "file": "../US20090079531A1/page-06.png",
+      "sha256": "9d522341e5571739f80fc387580800a8c6f4899203a1102025345c37a2615f0d",
+      "bytes": 212620,
+      "use": "existing archived primary document or unaltered full-page render; no duplicated download"
+    }
+  ],
+  "component_keys": [
+    "image_dp11_coils",
+    "image_dp12_coils",
+    "image_dph1_coils",
+    "image_dp21_coils",
+    "image_dp22_coils",
+    "image_dph2_coils",
+    "image_ish_coils",
+    "image_dsh_coils"
+  ],
+  "geometry_status": "engineering_reconstruction_not_oem",
+  "unsupported_claims": [
+    "The chosen saddle dimensions or 90-degree DPH geometry are measured CETCOR hardware.",
+    "The compact patent embodiment is proven to be installed in a specific CETCOR.",
+    "HPol/QPol/DSt share an identified material host.",
+    "CAD-derived windings establish a new magnetic field calibration."
+  ],
+  "unresolved_channels": [
+    "image_hpol_hexapole",
+    "image_qpol_quadrupole",
+    "image_dstg_quadrupole"
+  ],
+  "library_index_modified": false
+}

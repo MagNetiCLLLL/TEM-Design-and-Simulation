@@ -14,7 +14,7 @@ from temsim.cad_vacuum_tube import (
     CONTINUOUS_TUBE_KEY, PROFILE, SLOT_KEYS, CLEARANCE, SLOTS,
     decorate_physical_tube_row, tube_solids, validate_material_tube_geometry,
 )
-from temsim.lens_pose import effective_part_transform_mm
+from temsim.lens_pose import mechanical_part_transform_mm
 from temsim.module_manifest import read_document, validate_document
 
 
@@ -79,7 +79,7 @@ def test_material_has_no_c3_pole_or_declared_aperture_overlap():
     assert (tube ^ mat(box((9.4,0.,z), (.05,.05,.05)))).volume() > 0.
 
 
-def test_aperture_slot_follows_same_pose_and_module_origin():
+def test_aperture_slot_follows_mechanical_offset_not_optical_tilt():
     document = read_document(COLUMNS[1])
     rows = {p["key"]: p for p in document["parts"]}
     part = rows["condenser_aperture_2"]
@@ -87,15 +87,19 @@ def test_aperture_slot_follows_same_pose_and_module_origin():
     row, assembly = fixture(document, origin=725.)
     decorated = decorate_physical_tube_row(row, assembly)
     slot = next(s for s in decorated[SLOTS] if s["aperture_key"] == part["key"])
-    rotation, translation = effective_part_transform_mm(part, rows)
+    rotation, translation = mechanical_part_transform_mm(part, rows)
     np.testing.assert_array_equal(slot["rotation_local_to_global"], rotation)
     np.testing.assert_array_equal(slot["translation_local_mm"], translation)
     assert slot["module_origin_z_mm"] == 725.
-    assert not np.array_equal(rotation, np.eye(3))
+    np.testing.assert_array_equal(rotation, np.eye(3))
+    np.testing.assert_array_equal(translation, (.3, -.15, 0.))
     aperture, = aperture_solids(part)
     placed = transformed(transformed(aperture.shape, rotation=rotation.tolist(),
                          offset=translation.tolist()), offset=(0.,0.,725.))
     assert (mat(tube_solids(decorated)[0].shape) ^ mat(placed)).volume() < 1e-9
+    part.update(rotation_x_mrad=-100., rotation_z_mrad=500.)
+    _, changed_assembly = fixture(document, origin=725.)
+    assert decorate_physical_tube_row(row, changed_assembly)[SLOTS] == decorated[SLOTS]
 
 
 @pytest.mark.parametrize("change", [

@@ -90,19 +90,20 @@ def _partition_vacuum_segments_uncached(state, segments):
     so recover those constraints from the captured assembly before partitioning.
     Unposed callers retain the original reduced-profile fast path.
     """
-    from temsim.lens_pose import lens_pose_registration, physical_pose_values, supports_physical_lens_pose
+    from temsim.lens_pose import mechanical_pose_registration, physical_pose_values, supports_physical_lens_pose
     assembly = getattr(state, "_resolved_assembly", None)
     parts = getattr(assembly, "parts", ())
     pose_rows = {part.key: part.data for module in getattr(assembly, "modules", ())
                  for part in module.parts}
     pose_rows.update({part.key: part.data for part in parts})
-    if not any(any(value != 0. for value in physical_pose_values(row).values())
+    if not any(any(value != 0. for name, value in physical_pose_values(row).items()
+                   if name.startswith("offset_"))
                for row in pose_rows.values() if supports_physical_lens_pose(row)):
         return tuple(segments), ()
     stationary, placed, registrations = [], [], {}
     def registration_for(key):
         if key not in registrations:
-            registrations[key] = lens_pose_registration(state, key)
+            registrations[key] = mechanical_pose_registration(state, key)
         return registrations[key]
     def is_placed(key):
         registration = registration_for(key)

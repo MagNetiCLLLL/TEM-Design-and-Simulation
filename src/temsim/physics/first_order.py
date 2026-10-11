@@ -26,7 +26,7 @@ import numpy as np
 
 from temsim.physics.core import propagate
 
-FIRST_ORDER_RESPONSE_SCHEMA = "captured-field-affine-canonical-diagnostics-v5"
+FIRST_ORDER_RESPONSE_SCHEMA = "captured-field-affine-canonical-diagnostics-v6-intrinsic"
 
 MECHANICAL_SLOPES = "mechanical_slopes"
 SPECIMEN_CANONICAL_MOMENTUM = "specimen_canonical_momentum"
@@ -53,6 +53,10 @@ def _trace_basis(state, source, stop, *, save_z_mm=(), maximum_step_mm=None, eve
     placed = tuple(field for field in capture_posed_column_fields(state)
                    if field.field_support_mm[0] <= stop and field.field_support_mm[1] >= source)
     vector_maps = bool(placed or active_vector_providers(state) or getattr(state, "electron_gun", None) is not None)
+    from temsim.physics.intrinsic_aberrations import capture_intrinsic_kicks
+    # C1/A1 change first-order focus. Off-axis higher terms can also feed down;
+    # differentiate the actual shared screen with small rays, never unit metres.
+    vector_maps = vector_maps or bool(capture_intrinsic_kicks(state, source, stop))
     steps = np.array((1e-8, 1e-8, 1e-6, 1e-6)) if vector_maps else np.ones(4)
     basis = np.column_stack((np.zeros(4), np.diag(steps)))
     if vector_maps:
@@ -60,6 +64,7 @@ def _trace_basis(state, source, stop, *, save_z_mm=(), maximum_step_mm=None, eve
     checkpoints = sorted({float(stop), *(float(z) for z in save_z_mm if source <= float(z) <= stop)})
     result = propagate(state, source, stop, basis[0], basis[2], basis[1], basis[3],
         events=events, include_spherical_aberration=False, include_hexapole=bool(placed),
+        include_intrinsic_aberrations=True,
         save_z_mm=checkpoints, checkpoint_z_mm=checkpoints, return_checkpoints=True,
         maximum_step_mm=maximum_step_mm)
     return result, steps, vector_maps

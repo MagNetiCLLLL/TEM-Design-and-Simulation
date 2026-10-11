@@ -49,11 +49,12 @@ from temsim.optics.electron_gun.base import (
 
 
 ARTIFACT_STORE_SCHEMA_VERSION = 1
-INCIDENT_SEED_CODEC = "incident-simulation-seed-v5-electromagnetic-energy"
+INCIDENT_SEED_CODEC = "incident-simulation-seed-v6-electromagnetic-energy-intrinsic"
 _HISTORICAL_INCIDENT_SEED_CODECS = (
     "incident-simulation-seed-v1", "incident-simulation-seed-v2-quadrupole-tensor",
     "incident-simulation-seed-v3-flight-time",
     "incident-simulation-seed-v4-shared-magnetic-field",
+    "incident-simulation-seed-v5-electromagnetic-energy",
 )
 CHECKPOINT_CODEC = "incident-propagation-checkpoints-v3-kinetic-energy"
 _ARRAY_NAME = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]{0,95}$")
@@ -856,6 +857,12 @@ class ArtifactStore:
                      "origin_global_m": kick.registration.origin_global_m,
                      "rotation_local_to_global": kick.registration.rotation_local_to_global}
                     for kick in plan.posed_spherical_kicks],
+                "plan_intrinsic_aberration_kicks": [
+                    {"lens_key": kick.lens_key, "local_z_m": kick.local_z_m,
+                     "focal_m": kick.focal_m, "coefficients": dict(kick.coefficients),
+                     "origin_global_m": kick.registration.origin_global_m,
+                     "rotation_local_to_global": kick.registration.rotation_local_to_global}
+                    for kick in plan.intrinsic_aberration_kicks],
                 "gun_blocked_key": list(gun_trace.blocked_key),
                 "gun_scalars": {
                     name: getattr(gun_trace, name)
@@ -921,6 +928,9 @@ class ArtifactStore:
                 or "plan_electric_field_identity" not in metadata
                 or "plan_electric_reference_invariant_ev" not in metadata):
             raise ArtifactIntegrityError("Incident seed lacks executed energy or electric-field identity; historical viewing only")
+        if ("plan_posed_spherical_kicks" not in metadata
+                or "plan_intrinsic_aberration_kicks" not in metadata):
+            raise ArtifactIntegrityError("Incident seed lacks complete aberration events; historical viewing only")
         try:
             mapped_fields = []
             for index, row in enumerate(metadata.get("plan_mapped_fields", ())):
@@ -952,6 +962,17 @@ class ArtifactStore:
                 row["lens_key"], row["local_z_m"], row["strength_m3"],
                 CoordinateRegistration(row["origin_global_m"], row["rotation_local_to_global"]))
                 for row in metadata.get("plan_posed_spherical_kicks", ()))
+            from temsim.physics.intrinsic_aberrations import FrozenIntrinsicAberrationKick
+            def decode_intrinsic(row):
+                if (not isinstance(row, Mapping) or not isinstance(row.get("coefficients"), Mapping)
+                        or not isinstance(row.get("lens_key"), str) or not row["lens_key"]
+                        or any(isinstance(row.get(name), (bool, str)) for name in ("local_z_m", "focal_m"))):
+                    raise ValueError("Malformed intrinsic aberration event")
+                return FrozenIntrinsicAberrationKick(
+                    row["lens_key"], row["local_z_m"], row["focal_m"],
+                    tuple(row["coefficients"].items()),
+                    CoordinateRegistration(row["origin_global_m"], row["rotation_local_to_global"]))
+            intrinsic_kicks = tuple(map(decode_intrinsic, metadata["plan_intrinsic_aberration_kicks"]))
             plan = AxialPropagationPlan(
                 **fields("plan", _INCIDENT_PLAN_ARRAY_FIELDS),
                 solver_signature=str(metadata["plan_solver_signature"]),
@@ -961,6 +982,7 @@ class ArtifactStore:
                 electric_reference_invariant_ev=metadata["plan_electric_reference_invariant_ev"],
                 mapped_fields=tuple(mapped_fields),
                 posed_spherical_kicks=posed_cs,
+                intrinsic_aberration_kicks=intrinsic_kicks,
             )
             from temsim.particle_section_io import _validate_plan_fields
             _validate_plan_fields(plan)

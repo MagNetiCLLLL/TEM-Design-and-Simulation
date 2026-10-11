@@ -1,10 +1,13 @@
-"""Rigid main-column placement shared by CAD, rays and wave field queries.
+"""Main-column placement and optical-axis misalignment.
 
 Offsets use mm, right-handed Euler angles use mrad, in Rz @ Ry @ Rx order.
-Each part rotates about its unposed mechanical centre. Parent transforms are
-then applied outside the child's transform. Shape and excitation stay separate.
+Translations place both hardware and optics. Rotations tilt the optical model
+about its unposed mechanical centre, without rotating material CAD or bores.
+Parent optical transforms are applied outside the child's optical transform.
+Shape, mechanical interference and excitation stay separate from optical tilt.
 """
 import math
+from dataclasses import dataclass
 from numbers import Real
 
 import numpy as np
@@ -70,12 +73,14 @@ def physical_pose_description(part):
         subject = ("Local field-coordinate placement. This channel has no verified separate material host; "
                    "the placement moves its field without creating a material body. ")
     elif "aperture" in str(part.get("key", "")):
-        subject = ("Physical aperture placement, shared by the opening and its material plate. "
-                   "The operating hole offset remains in the aperture's local frame. ")
+        subject = ("Aperture position and effective optical-stop tilt. Position moves the plate and "
+                   "optical stop; tilt changes the effective acceptance plane only. "
+                   "This idealised optical tilt does not model a mechanically tilted hole. ")
     else:
-        subject = "Physical component placement. Its field and physically owned child hardware move together. "
-    return subject + ("Rotations are right-handed X, then Y, then Z about the component centre, in mrad. "
-                      "Excitation and material dimensions are unchanged by rigid placement.")
+        subject = "Component position moves both its field and owned hardware. "
+    return subject + ("Optical tilts are right-handed X, then Y, then Z about the component centre, in mrad. "
+                      "They represent optical-axis imperfections; material envelopes and mechanical bores "
+                      "do not rotate. Excitation and material dimensions are unchanged.")
 
 
 def inherits_parent_lens_pose(part):
@@ -165,13 +170,27 @@ def rotation_matrix_mrad(angles):
 
 
 def effective_part_transform_mm(part, by_key):
-    """Return (R,t) with posed row-vector points = points @ R.T + t.
+    """Return the optical (R,t), with points = points @ R.T + t.
 
     ``part`` and ``by_key`` are module-coordinate TOML dictionaries. A child
-    inherits its physical parent's placement even if the child has no controls.
+    inherits its optical parent's placement even if the child has no controls.
     Specimen/steering/channel entries stop inheritance: their parent_key can
     express shared space or navigation rather than a rigid mechanical mount.
+    Material geometry must use ``mechanical_part_transform_mm`` instead.
     """
+    return _part_transform_mm(part, by_key, optical_tilt=True)
+
+
+def mechanical_part_transform_mm(part, by_key):
+    """Shared assembly translations, without optical-axis rotation of solids.
+
+    Explicit shape edits of CAD-only parts are handled by the CAD shape code;
+    this helper describes canonical column placement and its inherited offsets.
+    """
+    return _part_transform_mm(part, by_key, optical_tilt=False)
+
+
+def _part_transform_mm(part, by_key, *, optical_tilt):
     rotation, translation = np.eye(3), np.zeros(3)
     seen = set()
     current = part
@@ -190,7 +209,8 @@ def effective_part_transform_mm(part, by_key):
         seen.add(key)
         if supports_physical_lens_pose(current):
             values = physical_pose_values(current)
-            local_r = rotation_matrix_mrad([values[name] for name in PHYSICAL_POSE_FIELDS[3:]])
+            local_r = (rotation_matrix_mrad([values[name] for name in PHYSICAL_POSE_FIELDS[3:]])
+                       if optical_tilt else np.eye(3))
             centre = np.array((0.0, 0.0, float(current.get("local_center_z_mm", 0.0))))
             local_t = centre - local_r @ centre + np.array([values[name] for name in PHYSICAL_POSE_FIELDS[:3]])
             translation = local_r @ translation + local_t
@@ -202,10 +222,123 @@ def effective_part_transform_mm(part, by_key):
     return rotation, translation
 
 
+@dataclass(frozen=True)
+class PlaneDatum:
+    """A declared reference plane in global column mm, with a unit normal.
+
+    A reference plane is not necessarily a material surface or a thin field.
+    In particular the objective's virtual reference is distinct from its two
+    finite field centres. No focal or conjugate plane is inferred here.
+    """
+
+    point_mm: tuple[float, float, float]
+    normal: tuple[float, float, float]
+    kind: str
+    is_virtual: bool = False
+
+
+@dataclass(frozen=True)
+class ComponentDatums:
+    """Placed declared datums, independent of the edited mesh bounding box."""
+
+    mechanical_center_mm: tuple[float, float, float]
+    optical_reference: PlaneDatum | None
+    interaction_planes: tuple[PlaneDatum, ...]
+    representation_role: str
+    is_virtual: bool
+    # Rows of the local-to-global rotation; columns are the local X/Y/Z axes.
+    basis: tuple[tuple[float, float, float], ...]
+
+
+def component_datums_mm(part, assembly_or_state):
+    """Read main-column datums from an AssemblyPart and its captured context.
+
+    Mechanical centres use CAD placement (translations); optical references
+    use field registration (translations and optical-axis tilt). Both read the
+    same captured module origin and ownership. ``assembly_or_state`` is a
+    resolved assembly or a state carrying it.
+    This does not mutate geometry or excitation, inspect mesh bounds, or infer
+    an optical role for mechanical-only/imported components. CAD-only shape
+    offsets, Boolean features and scaling do not move these optical datums.
+
+    Aperture operating-hole offsets and detector readout-centre offsets are
+    not part of this component-axis datum; their existing acceptance models
+    apply those transverse values in the returned plane's local frame.
+    Curved energy-filter branch parts require their own mounted path frames.
+    """
+    from temsim.component_representation import non_material_role
+
+    assembly = getattr(assembly_or_state, "_resolved_assembly", assembly_or_state)
+    if assembly is None:
+        raise ValueError("Component datums require the captured assembly")
+    data = part.data
+    if data.get("branch_path_only", False):
+        raise ValueError("Energy-filter path datums require the mounted branch frame")
+    parts = tuple(getattr(assembly, "parts", ()))
+    matches = [item for item in parts
+               if item.key == part.key and item.module_key == part.module_key]
+    if len(matches) != 1 or matches[0] != part:
+        raise ValueError("Component datum is not from this captured assembly")
+    by_key = {item.key: item.data for module in getattr(assembly, "modules", ())
+              if module.key == part.module_key for item in module.parts}
+    by_key.update({item.key: item.data for item in parts
+                   if item.module_key == part.module_key})
+    local_center = _finite(data.get("local_center_z_mm", part.center_z_mm),
+                           "local_center_z_mm")
+    module_origin = _finite(part.center_z_mm, "center_z_mm") - local_center
+    rotation, translation = effective_part_transform_mm(data, by_key)
+    mechanical_r, mechanical_t = mechanical_part_transform_mm(data, by_key)
+    origin = np.array((0., 0., module_origin))
+    normal = tuple(float(value) for value in rotation[:, 2])
+    basis = tuple(tuple(float(value) for value in row) for row in rotation)
+
+    def point(local_z):
+        result = rotation @ np.array((0., 0., _finite(local_z, "datum_z_mm")))
+        result += translation + origin
+        if not np.isfinite(result).all():
+            raise ValueError("Component datum must be finite")
+        return tuple(float(value) for value in result)
+
+    non_material = non_material_role(data)
+    virtual = non_material == "virtual_reference"
+    mechanical_only = data.get("mechanical_only", False)
+    if not isinstance(mechanical_only, bool):
+        raise ValueError("mechanical_only must be a boolean")
+    role = non_material or ("mechanical_only" if mechanical_only else
+                            str(data.get("mechanical_part_role", "hardware")))
+    custom = str(data.get("mechanical_part_role", "")).startswith("custom_")
+    optical_reference = None
+    interactions = ()
+    if not mechanical_only and not custom:
+        if "virtual_reference_local_z_mm" in data:
+            optical_reference = PlaneDatum(point(data["virtual_reference_local_z_mm"]),
+                                           normal, "virtual_reference", True)
+        elif "optical_reference_local_z_mm" in data:
+            kind = ("virtual_reference" if virtual else "control_reference"
+                    if non_material == "control_channel" else "optical_reference")
+            optical_reference = PlaneDatum(point(data["optical_reference_local_z_mm"]),
+                                           normal, kind, virtual)
+        interactions = tuple(PlaneDatum(point(value), normal, "interaction_plane", virtual)
+                             for value in data.get("interaction_centers_local_z_mm", ()))
+    mechanical = mechanical_r @ np.array((0., 0., local_center)) + mechanical_t + origin
+    return ComponentDatums(tuple(float(v) for v in mechanical), optical_reference, interactions,
+                           role, virtual, basis)
+
+
 def lens_pose_registration(state, lens_key):
-    """Baseline global-SI to placed global-SI transform, captured from assembly."""
+    """Global-SI optical transform, including axis tilt, from captured assembly."""
+    return _pose_registration(state, lens_key, optical_tilt=True)
+
+
+def mechanical_pose_registration(state, component_key):
+    """Global-SI material placement; optical tilt does not tilt a physical bore."""
+    return _pose_registration(state, component_key, optical_tilt=False)
+
+
+def _pose_registration(state, lens_key, *, optical_tilt):
     from temsim.component_representation import SHARED_DEFLECTOR_HOSTS
     lens_key = SHARED_DEFLECTOR_HOSTS.get(str(lens_key), lens_key)
+    cache_key = lens_key if optical_tilt else ("mechanical", lens_key)
     from temsim.physics.lens_field_provider import CoordinateRegistration
     assembly = getattr(state, "_resolved_assembly", None)
     from temsim.column.module_assembly import ResolvedAssembly
@@ -219,26 +352,27 @@ def lens_pose_registration(state, lens_key):
             captured = (assembly, {})
             state._lens_pose_registration_cache = captured
         cache = captured[1]
-        if lens_key in cache:
-            return cache[lens_key]
+        if cache_key in cache:
+            return cache[cache_key]
     parts = getattr(assembly, "parts", ())
     part = next((p for p in parts if p.key == lens_key), None)
     if part is None:
         result = CoordinateRegistration()
         if cache is not None:
-            cache[lens_key] = result
+            cache[cache_key] = result
         return result
     # Omitted optical-parent envelopes can still own active physical children.
     # Match the renderer's captured source context, then let active rows win.
     by_key = {p.key: p.data for module in getattr(assembly, "modules", ())
               if module.key == part.module_key for p in module.parts}
     by_key.update({p.key: p.data for p in parts if p.module_key == part.module_key})
-    rotation, translation = effective_part_transform_mm(part.data, by_key)
+    transform = effective_part_transform_mm if optical_tilt else mechanical_part_transform_mm
+    rotation, translation = transform(part.data, by_key)
     origin = np.array((0.0, 0.0, part.center_z_mm-float(part.data.get("local_center_z_mm", part.center_z_mm))))
     global_t = origin - rotation @ origin + translation
     result = CoordinateRegistration(tuple(global_t * 1e-3), tuple(map(tuple, rotation)))
     if cache is not None:
-        cache[lens_key] = result
+        cache[cache_key] = result
     return result
 
 

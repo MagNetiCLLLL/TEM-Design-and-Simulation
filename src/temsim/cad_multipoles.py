@@ -11,7 +11,7 @@ from numbers import Integral, Real
 
 from temsim.cad_geometry import SolidSpec, annulus, box, difference, sector, transformed, union
 from temsim.component_representation import non_material_role
-from temsim.corrector_model_3d import PROFILE, winding_dimensions
+from temsim.corrector_model_3d import PROFILE, winding_axial_extent, winding_dimensions
 from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
 
 
@@ -72,10 +72,14 @@ def deflector_insert_solids(part, by_key=None):
     if non_material_role(part):
         return ()
     layer, span, band = winding_dimensions(part)
-    start, end, inner, outer = _envelope(part)
+    allocated_start, allocated_end, inner, outer = _envelope(part)
+    start, end = winding_axial_extent(part)
     linked = sorted(str(key) for key, row in (by_key or {}).items()
                     if row.get("physical_host_key") == part["key"])
     parameters = dict(inner_radius_mm=inner, outer_radius_mm=outer, start_mm=start, end_mm=end,
+        allocated_start_mm=allocated_start, allocated_end_mm=allocated_end,
+        winding_axial_length_mm=end-start,
+        effective_field_length_mm=part.get("effective_thickness_mm"),
         winding_layer_thickness_mm=layer, winding_angular_span_deg=span,
         winding_band_width_mm=band, linked_field_channels=linked,
         construction="Two concentric orthogonal saddle pairs; CEOS patent Figs. 5/6, 10/11")

@@ -8,7 +8,7 @@ import pytest
 
 from temsim.lens_pose import (
     PHYSICAL_POSE_FIELDS, column_pose_kind, effective_part_transform_mm,
-    lens_pose_registration, physical_pose_values, supports_physical_column_pose,
+    lens_pose_registration, mechanical_part_transform_mm, physical_pose_values, supports_physical_column_pose,
     validate_physical_lens_pose,
 )
 
@@ -69,7 +69,7 @@ def test_channel_pose_ui_is_field_coordinates_without_new_material_claim():
     assert column_pose_kind(row) == "field"
     path = ("parts", row["key"], "rotation_y_mrad")
     field = next(item for item in part_dimension_specs(document, row["key"]) if item.path == path)
-    assert field.editable and field.label.startswith("Field ")
+    assert field.editable and field.label.startswith("Field Optical tilt ")
     assert "without creating a material body" in describe_parameter(row, path).description
     assert physical_pose_values(row)["rotation_y_mrad"] == 0.
 
@@ -98,7 +98,7 @@ def test_existing_component_editor_stages_new_poses_and_preserves_undo():
         draft.set_physical_pose("descan_deflector", {"rotation_y_mrad": 2.})
 
 
-def test_aperture_material_mesh_uses_the_same_rigid_transform():
+def test_aperture_material_translates_without_following_effective_plane_tilt():
     from temsim.part_model_3d import part_model_from_document
     document = _document()
     rows = {row["key"]: row for row in document["parts"]}
@@ -106,7 +106,9 @@ def test_aperture_material_mesh_uses_the_same_rigid_transform():
     before = part_model_from_document(document, key, include_children=False)
     rows[key].update(rotation_y_mrad=3., offset_x_mm=.012)
     after = part_model_from_document(document, key, include_children=False)
-    rotation, translation = effective_part_transform_mm(rows[key], rows)
+    rotation, translation = mechanical_part_transform_mm(rows[key], rows)
+    np.testing.assert_array_equal(rotation, np.eye(3))
+    np.testing.assert_allclose(translation, (.012, 0., 0.), atol=1e-15)
     assert before.meshes and len(before.meshes) == len(after.meshes)
     for original, placed in zip(before.meshes, after.meshes, strict=True):
         np.testing.assert_allclose(placed.vertices, original.vertices @ rotation.T + translation, atol=1e-12)

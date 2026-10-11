@@ -1,0 +1,96 @@
+{
+  "id": "US8410439B2",
+  "kind": "patent",
+  "family": "EDS detector",
+  "title": "X-ray detector for electron microscope",
+  "authors": [
+    "Hanno Sebastian von Harrach",
+    "Bert Freitag",
+    "Pleun Dona"
+  ],
+  "owner": [
+    "PEI Company (as printed on patent front page)"
+  ],
+  "dates": {
+    "priorityDate": "2008-12-12",
+    "filingDate": "2011-12-06",
+    "publicationDate": "2013-04-02"
+  },
+  "url": "https://patents.google.com/patent/US8410439B2/en",
+  "primary_pdf_url": "https://patentimages.storage.googleapis.com/10/45/88/613c17c0f1730c/US8410439.pdf",
+  "figures": "Figures 1 and 3, PDF pages 3 and 5; Figure 2 on PDF page 4.",
+  "component_keys": [
+    "eds_detector_system"
+  ],
+  "supported_facts": [
+    "Sample-facing SDD, cold shield, ceramic support and windowless option.",
+    "The preferred illustration has four detectors."
+  ],
+  "unsupported_claims": [
+    "No proof of six-head Ultra-X dimensions or individual active area.",
+    "No inference of detector distance or housing taper from schematic scale."
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T09:36:17.507325+00:00",
+  "archive_status": "original_pdf_saved",
+  "pdf_page_count": 13,
+  "pdf_metadata": {
+    "format": "PDF 1.3",
+    "title": "1499080665396704000-08410439",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "",
+    "producer": "ImageMagick 6.9.0-6 Q8 x86_64 2015-02-23 http://www.imagemagick.org",
+    "creationDate": "D:20170703041753",
+    "modDate": "D:20170703041753",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    1,
+    3,
+    5
+  ],
+  "metadata_scope": "Bibliographic record, not ownership or patent-status certification.",
+  "rights_note": "Public original archived for project provenance; copyright remains with its owner, and public access is not an open licence.",
+  "assembly_comparison_rule": "Sources support identified construction families. Saved reception inputs remain authoritative; engineering dimensions are explicitly separate.",
+  "availability_notes": [
+    "Downloaded original PDF from its public primary host or public patent PDF archive; inspected full-page renders without geometric rescaling."
+  ],
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 965835,
+      "sha256": "f9ede79408db5e64863f996e51454512413b724fc81f2fdc837c89826ae28ad5",
+      "kind": "original_pdf",
+      "method": "download_public_original_pdf",
+      "source_url": "https://patentimages.storage.googleapis.com/10/45/88/613c17c0f1730c/US8410439.pdf"
+    },
+    {
+      "file": "page-01.png",
+      "bytes": 187153,
+      "sha256": "5ed456a2f83a9a23625c5793895d6b194e36385f875fea0fb8443aa9d3ea7283",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 1,
+      "render_dpi": 93.6
+    },
+    {
+      "file": "page-03.png",
+      "bytes": 36627,
+      "sha256": "d1f89f919017d8b336c8e43724016a74c385fba7171c7603b61882772fe64a08",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 3,
+      "render_dpi": 93.6
+    },
+    {
+      "file": "page-05.png",
+      "bytes": 77308,
+      "sha256": "1c61374c5b63a26781e90d339f592eadef1ba4b4c93d10bfe851a8fe4d9553fe",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 5,
+      "render_dpi": 93.6
+    }
+  ]
+}

@@ -104,7 +104,13 @@ def _wave_resource_claim(state, request):
     if not request.execution.segmented:
         # The standalone gun cache has a distinct cap in this path.
         cache_growth += gun
-    return ResourceClaim(stage_peak+cache_growth+256*1024**2)
+    return ResourceClaim(stage_peak+cache_growth+256*1024**2+_wave_read_session_bytes(request))
+
+
+def _wave_read_session_bytes(request):
+    """Bound short-lived checked modes separately from persistent wave caches."""
+    return min(128*1024**2, request.maximum_readout_bytes//4,
+               request.execution.maximum_ram_cache_bytes//4)
 
 
 @dataclass(frozen=True)
@@ -120,9 +126,10 @@ class _Preview:
     comparison_error: str | None = None
     axial_bz_t: float | None = None
     magnetic_gauge: object = None
+    wave_moments: object = None
 
 
-def _intensity_preview(checkpoint, *, cancelled=lambda: False, bins=128):
+def _intensity_preview(checkpoint, *, cancelled=lambda: False, bins=128, include_moments=False):
     """Conservative affine-cell probability density, not detector counts.
 
     Values are probabilities per tip electron per square micrometre. Native
@@ -131,7 +138,9 @@ def _intensity_preview(checkpoint, *, cancelled=lambda: False, bins=128):
     This is a display only; amplitudes and per-mode phase are untouched.
     """
     from temsim.physics.affine_cell_histogram import affine_cell_histogram
+    from temsim.physics.beam_comparison import _WavePlaneMoments
 
+    moments = _WavePlaneMoments(checkpoint) if include_moments else None
     bounds = np.array(((np.inf, -np.inf), (np.inf, -np.inf)))
     count = 0
     resident = 0
@@ -165,7 +174,10 @@ def _intensity_preview(checkpoint, *, cancelled=lambda: False, bins=128):
     for mode in modes:
         if cancelled():
             raise InterruptedError("Coherent beam display cancelled")
-        weight = mode.weight_per_reference_electron*abs(mode.plane.amplitude)**2
+        weight = abs(mode.plane.amplitude)**2
+        if moments is not None:
+            moments.add(mode, weight)
+        weight *= mode.weight_per_reference_electron
         contribution, _ = affine_cell_histogram(weight, mode.plane.basis_m*1e6,
             mode.plane.origin_m*1e6, bounds, bins)
         probability += contribution
@@ -180,7 +192,8 @@ def _intensity_preview(checkpoint, *, cancelled=lambda: False, bins=128):
     density.setflags(write=False)
     bounds.setflags(write=False)
     return _Preview(density, bounds, float(probability.sum()), count,
-                    resident+density.nbytes+bounds.nbytes, tuple(sorted(grid_shapes)))
+                    resident+density.nbytes+bounds.nbytes, tuple(sorted(grid_shapes)),
+                    wave_moments=moments)
 
 
 class _Signals(QObject):
@@ -223,6 +236,14 @@ class _WaveWorker(QRunnable):
             self.signals.progress.emit(self.generation, f"{text} ({done}/{total})")
 
     def run(self):
+        from temsim.physics.wave_checkpoint_store import wave_read_session
+        # Prefix verification, display, and matched moments read the same
+        # immutable checkpoint. Retain a bounded snapshot for this request
+        # only; the next request still verifies all files it reads.
+        with wave_read_session(_wave_read_session_bytes(self.request), cancelled=self.event.is_set) as read_session:
+            self._run_with_read_session(read_session)
+
+    def _run_with_read_session(self, read_session):
         try:
             if self.pair_context is not None:
                 from temsim.instrument_snapshot import capture_instrument_snapshot
@@ -237,7 +258,8 @@ class _WaveWorker(QRunnable):
             else:
                 result = self.observer.observe(self.request.observation_z_mm,
                     cancelled=self.event.is_set, progress_callback=self._report_progress)
-            preview = _intensity_preview(result.checkpoint, cancelled=self.event.is_set)
+            preview = _intensity_preview(result.checkpoint, cancelled=self.event.is_set,
+                                         include_moments=self.pair_context is not None)
             # Probability current needs the executed magnetic state, not the
             # live instrument which may have changed while this job ran.
             gauge = _plane_magnetic_gauge(self.state, result.checkpoint.plane_z_mm)
@@ -255,17 +277,19 @@ class _WaveWorker(QRunnable):
                     if (context.specimen_active and plane.z_mm > context.specimen_z_mm
                             and plane.provenance != "Specimen exit"):
                         raise ValueError("Executed specimen-exit particles are unavailable at this Z; the optical reference is not a specimen comparison")
-                    comparison = compare_beam_planes(plane, result.checkpoint)
+                    comparison = compare_beam_planes(plane, result.checkpoint, preview.wave_moments)
                     preview = replace(preview, pair_token=context.token, comparison=comparison)
                 except (ValueError, TypeError) as error:
                     preview = replace(preview, pair_token=context.token,
                                       comparison_error=str(error))
+            preview = replace(preview, wave_moments=None)
             if not self.event.is_set():
                 self.signals.solved.emit(self.generation, self.session, result, preview)
         except Exception as error:
             if not self.event.is_set():
                 self.signals.failed.emit(self.generation, str(error))
         finally:
+            read_session.clear()
             # The exception variable has now released its numerical frames.
             # Drain retired device pools even after cancellation or failure.
             from temsim.physics.wave_device import release_device_memory

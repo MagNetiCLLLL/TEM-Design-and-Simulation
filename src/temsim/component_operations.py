@@ -223,21 +223,21 @@ _MULTI_REFERENCES = frozenset({"magnetic_lens_keys", "contained_recording_plane_
 def _bake_copied_part_pose(original, copied, source_by_key, target_by_key, delta_z_mm):
     """Preserve the placed solid while detaching its optical pose controls.
 
-    CAD features and transverse scale stay editable. Only the rigid part of
-    their transform is composed with the source's inherited physical pose.
-    The current target-parent pose is undone so copying translates the actual
-    source solid, including when the destination is a tilted assembly.
+    CAD features and transverse scale stay editable. Their rigid transform
+    is composed with the source's inherited mechanical placement, excluding
+    optical-axis tilt. The target-parent placement is undone so copying
+    translates the actual source solid.
     """
     import numpy as np
     from scipy.spatial.transform import Rotation
-    from temsim.lens_pose import effective_part_transform_mm, without_lens_rigid_cad
+    from temsim.lens_pose import mechanical_part_transform_mm, without_lens_rigid_cad
 
     model = _plain(without_lens_rigid_cad(original).get("model_3d", {}))
     transform = model.get("transform", {})
     cad_rotation = Rotation.from_euler("xyz", transform.get("rotation_deg", [0, 0, 0]), degrees=True).as_matrix()
     cad_offset = np.asarray(transform.get("offset_mm", [0, 0, 0]), dtype=float)
-    source_rotation, source_offset = effective_part_transform_mm(original, source_by_key)
-    target_rotation, target_offset = effective_part_transform_mm(copied, target_by_key)
+    source_rotation, source_offset = mechanical_part_transform_mm(original, source_by_key)
+    target_rotation, target_offset = mechanical_part_transform_mm(copied, target_by_key)
     center = np.array([0.0, 0.0, original["local_center_z_mm"]])
     delta = np.array([0.0, 0.0, delta_z_mm])
     rotation = target_rotation.T @ source_rotation @ cad_rotation

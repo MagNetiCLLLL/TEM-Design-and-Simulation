@@ -53,6 +53,9 @@ from temsim.gui.sample_interactions_3d import SampleInteractions3DPage
 from temsim.gui.eds_panel import EDSPage
 from temsim.gui.aberration_view import AberrationComparisonView
 from temsim.gui.ray_scene import StaticRayLayers
+from temsim.gui.ray_datum_markers import (
+    display_datums, datum_tooltip, add_datum_line, update_datum_projection,
+)
 from temsim.gui.ray_curve_item import RayCurveItem
 from temsim.gui.ray_calculation_extent import RayCalculationExtentBar
 from temsim.gui.ray_extent_data import completed_ray_extent
@@ -641,11 +644,14 @@ class VisualizationWorkspace(QWidget):
         self.projection_slider.setToolTip(
             "Transverse projection angle, in tenths of a degree"
         )
-        self.component_centres = QPushButton("Centres")
+        self.component_centres = QPushButton("References")
         self.component_centres.setObjectName("componentCentresToggle")
         self.component_centres.setCheckable(True)
         self.component_centres.setChecked(True)
-        self.component_centres.setToolTip("Show component centre markers")
+        self.component_centres.setToolTip(
+            "Show captured mechanical centres and optical reference planes. "
+            "Hover a marker to distinguish them from focal or conjugate planes."
+        )
         self.crossovers = QPushButton("Crossovers")
         self.crossovers.setObjectName("crossoversToggle")
         self.crossovers.setCheckable(True)
@@ -2229,10 +2235,47 @@ class VisualizationWorkspace(QWidget):
 
     def _redraw_component_projection_items(self) -> None:
         """Refresh only small projected aperture/detector graphics."""
+        self._redraw_aperture_projection_items()
+        for item in self.recording_surface_range_items:
+            basis = getattr(item, "_projection_basis", None)
+            if basis is None:
+                continue
+            z_values, radial_values, offset_x, offset_y, interval_starts = basis
+            y_values = radial_values + float(self._project_transverse(offset_x, offset_y))
+            item.setData(z_values, y_values, connect="finite")
+            item.active_intervals_mm = tuple(
+                (float(y_values[start]), float(y_values[start + 1]))
+                for start in interval_starts
+            )
+        for item in (*self.component_marker_items, *self.deflector_pair_items):
+            self._update_component_datum_projection(item)
+
+    def _update_component_datum_projection(self, item) -> None:
+        update_datum_projection(self, item)
+
+    def _captured_component(self, part):
+        """Selections must follow the displayed result, never a newer live pose."""
+        assembly = getattr(getattr(self, "_last_result", None), "assembly", None)
+        return next((item for item in getattr(assembly, "parts", ())
+                     if item.key == part.key and not item.data.get("branch_path_only", False)), None)
+
+    def _component_datums(self, part, result=None):
+        return display_datums(part, getattr(self, "_last_result", None) if result is None else result)
+
+    def _redraw_aperture_projection_items(self) -> None:
+        """Project captured stop planes and openings without reading live state."""
         updated_spans = []
         for lower, upper, name, optical_z_mm, record in (
             self._aperture_projection_records
         ):
+            self._place_aperture_plane(lower, record)
+            if upper is not lower:
+                self._place_aperture_plane(upper, record)
+            body = record.get("_body_item")
+            if body is not None:
+                self._update_component_datum_projection(body)
+            if not record.get("_active_stop", True):
+                continue
             centre_u_mm, radius_mm = self._project_aperture_opening(record)
             updated_spans.append(
                 (lower, upper, centre_u_mm, radius_mm)
@@ -2245,20 +2288,15 @@ class VisualizationWorkspace(QWidget):
             lower.setToolTip(tooltip)
             upper.setToolTip(tooltip)
             upper.label.setToolTip(tooltip)
+            outline = record.get("_outline_item")
+            if outline is not None:
+                vertices = self._aperture_opening_outline(record)
+                outline.setData(vertices[:, 2], self._project_transverse(
+                    vertices[:, 0], vertices[:, 1]))
+                outline.setToolTip(tooltip)
         if updated_spans:
             self._aperture_span_records = updated_spans
             self._update_aperture_spans()
-        for item in self.recording_surface_range_items:
-            basis = getattr(item, "_projection_basis", None)
-            if basis is None:
-                continue
-            z_values, radial_values, offset_x, offset_y, interval_starts = basis
-            y_values = radial_values + float(self._project_transverse(offset_x, offset_y))
-            item.setData(z_values, y_values, connect="finite")
-            item.active_intervals_mm = tuple(
-                (float(y_values[start]), float(y_values[start + 1]))
-                for start in interval_starts
-            )
 
     def _finalize_projection(self) -> None:
         """Finish at the exact requested angle without clearing the scene."""
@@ -2531,7 +2569,13 @@ class VisualizationWorkspace(QWidget):
 
     def _highlight_ray_component(self, part) -> None:
         """Draw a persistent selected-component band independent of labels."""
-        centre = float(part.center_z_mm)
+        part = self._captured_component(part)
+        if part is None:
+            if self._ray_component_highlight is not None:
+                self.plot.removeItem(self._ray_component_highlight)
+                self._ray_component_highlight = None
+            return
+        centre = self._component_datums(part).mechanical_center_mm[2]
         half_width = max(
             0.5 * abs(float(part.end_z_mm) - float(part.start_z_mm)),
             0.5,
@@ -2550,20 +2594,23 @@ class VisualizationWorkspace(QWidget):
             highlight.setRegion((centre - half_width, centre + half_width))
         highlight.setZValue(24)
         highlight.setToolTip(
-            f"Selected: {part.name}\nCentre Z = {centre:.6g} mm"
+            f"Selected: {part.name}\nMechanical centre Z = {centre:.6g} mm\n"
+            "Selection guide; not an optical reference or focal plane."
         )
         highlight.component_key = str(part.key)
         self._ray_component_highlight = highlight
 
-    @staticmethod
-    def _component_x_range(part) -> tuple[float, float]:
+    def _component_x_range(self, part) -> tuple[float, float] | None:
+        part = self._captured_component(part)
+        if part is None:
+            return None
         mechanical_span = max(
             abs(float(part.end_z_mm) - float(part.start_z_mm)),
             abs(float(part.length_mm)),
             1.0,
         )
         half_window = max(45.0, min(260.0, 1.6 * mechanical_span))
-        centre = float(part.center_z_mm)
+        centre = self._component_datums(part).mechanical_center_mm[2]
         return centre - half_window, centre + half_window
 
     def _simulation_x_limits(self) -> tuple[float, float] | None:
@@ -3149,7 +3196,10 @@ class VisualizationWorkspace(QWidget):
             self.hint.setText(text)
 
     def _apply_component_zoom(self, part) -> None:
-        x_min, x_max = self._clamp_focus_range(*self._component_x_range(part))
+        component_range = self._component_x_range(part)
+        if component_range is None:
+            return
+        x_min, x_max = self._clamp_focus_range(*component_range)
         self.plot.disableAutoRange()
         self.plot.setXRange(x_min, x_max, padding=0.0)
         y_range = self._local_y_range(x_min, x_max)
@@ -3223,19 +3273,14 @@ class VisualizationWorkspace(QWidget):
         self._ray_label_font_pt = point_size
         return point_size
 
-    @staticmethod
-    def _deflector_planes(part) -> tuple[float, ...]:
-        local_planes = part.data.get("interaction_centers_local_z_mm", ())
-        if len(local_planes) != 2:
+    def _deflector_planes(self, part) -> tuple[float, ...]:
+        planes = self._component_datums(part).interaction_planes
+        if len(planes) != 2:
             return ()
-        local_center = float(
-            part.data.get("local_center_z_mm", part.center_z_mm)
-        )
-        module_origin = float(part.center_z_mm) - local_center
-        return tuple(module_origin + float(value) for value in local_planes)
+        return tuple(plane.point_mm[2] for plane in planes)
 
-    @staticmethod
-    def _aperture_optical_plane(part) -> float:
+    def _aperture_pose_frame(self, part, record=None) -> dict:
+        """Resolve one captured component transform; hole offsets stay local."""
         local_center = float(
             part.data.get("local_center_z_mm", part.center_z_mm)
         )
@@ -3243,7 +3288,94 @@ class VisualizationWorkspace(QWidget):
             part.data.get("optical_reference_local_z_mm", local_center)
         )
         module_origin = float(part.center_z_mm) - local_center
-        return module_origin + local_optical
+        unposed_reference_z = module_origin + local_optical
+        # Older display-only fixtures have no module identity or physical pose.
+        # Do not use this compatibility path for a malformed assembled part.
+        from temsim.lens_pose import PHYSICAL_POSE_FIELDS, component_datums_mm
+        legacy = not hasattr(part, "module_key") and not any(
+            key in part.data for key in (
+                *PHYSICAL_POSE_FIELDS, "parent_key", "physical_host_key",
+                "field_hardware_key", "model_3d",
+            )
+        )
+        if legacy:
+            basis = np.eye(3)
+            mechanical = np.array((0.0, 0.0, float(part.center_z_mm)))
+            reference = np.array((0.0, 0.0, unposed_reference_z))
+        else:
+            result = getattr(self, "_last_result", None)
+            assembly = getattr(result, "assembly", None)
+            if assembly is None:
+                assembly = getattr(result, "state_snapshot", None)
+            datums = component_datums_mm(part, assembly)
+            basis = np.asarray(datums.basis, dtype=float)
+            mechanical = np.asarray(datums.mechanical_center_mm, dtype=float)
+            if datums.optical_reference is None:
+                reference = mechanical + basis[:, 2] * (
+                    unposed_reference_z - float(part.center_z_mm))
+            else:
+                reference = np.asarray(datums.optical_reference.point_mm, dtype=float)
+        if record is not None:
+            # Runtime stop Z is an unposed physical reference, like the captured
+            # aperture law. Apply its axial displacement in the same local frame.
+            reference = reference + basis[:, 2] * (
+                float(record["z_mm"]) - unposed_reference_z)
+        return {
+            "_datum_point_mm": tuple(float(value) for value in reference),
+            "_datum_basis": tuple(tuple(float(v) for v in row) for row in basis),
+            "_datum_normal": tuple(float(value) for value in basis[:, 2]),
+            "_mechanical_point_mm": tuple(float(value) for value in mechanical),
+            "_tilted_stop": bool(np.linalg.norm(basis[:2, 2]) > 1.0e-12),
+        }
+
+    def _aperture_optical_plane(self, part) -> float:
+        return self._aperture_pose_frame(part)["_datum_point_mm"][2]
+
+    def _place_aperture_plane(self, item, record) -> None:
+        point = record.get("_datum_point_mm", (0.0, 0.0, record["z_mm"]))
+        normal = record.get("_datum_normal", (0.0, 0.0, 1.0))
+        normal_u = float(self._project_transverse(normal[0], normal[1]))
+        transverse = float(self._project_transverse(point[0], point[1]))
+        # The line is the section through the reference point at its hidden-V
+        # coordinate. A normal along V has no unique line in that section.
+        degenerate = np.hypot(normal_u, normal[2]) <= 1.0e-12
+        angle = (90.0 if abs(normal_u) <= 1.0e-12 else
+                 float(np.rad2deg(np.arctan2(normal[2], -normal_u))))
+        item.setAngle(angle)
+        item.setPos((float(point[2]), transverse))
+        item.setVisible(not degenerate)
+        item.datum_point_mm = tuple(point)
+        item.datum_normal = tuple(normal)
+        item.datum_role = "optical_reference"
+        item._aperture_tilted_stop = record.get("_tilted_stop", False)
+        item._aperture_degenerate_section = degenerate
+
+    @staticmethod
+    def _aperture_opening_outline(record) -> np.ndarray:
+        """Physical plane contour in column mm, solely for projection display."""
+        if record["shape"] == "circular":
+            angle = np.linspace(0.0, 2.0 * np.pi, 257)
+            radius = 0.5 * float(record["diameter_mm"])
+            x = float(record["offset_x_mm"]) + radius * np.cos(angle)
+            y = float(record["offset_y_mm"]) + radius * np.sin(angle)
+        elif record["shape"] == "two_blade_slit":
+            radius = 0.5 * float(record["bore_diameter_mm"])
+            lo, hi = -radius, radius
+            if record["slit_inserted"]:
+                gap = float(record["slit_gap_mm"])
+                centre = float(record["slit_centre_x_mm"])
+                lo, hi = max(lo, centre - gap / 2), min(hi, centre + gap / 2)
+                if gap <= 0 or lo >= hi:
+                    return np.empty((0, 3), dtype=float)
+            side_x = np.linspace(lo, hi, 129)
+            side_y = np.sqrt(np.maximum(0.0, radius ** 2 - side_x ** 2))
+            x = np.concatenate((side_x, side_x[::-1], side_x[:1]))
+            y = np.concatenate((side_y, -side_y[::-1], side_y[:1]))
+        else:
+            raise ValueError(f"Unsupported aperture shape: {record['shape']!r}")
+        local = np.column_stack((x, y, np.zeros_like(x)))
+        return (local @ np.asarray(record["_datum_basis"], dtype=float).T
+                + np.asarray(record["_datum_point_mm"], dtype=float))
 
     def _update_aperture_spans(self, *_args) -> None:
         if not self._aperture_span_records:
@@ -3251,6 +3383,13 @@ class VisualizationWorkspace(QWidget):
         y_min, y_max = self.plot.getViewBox().viewRange()[1]
         y_span = max(float(y_max - y_min), np.finfo(float).eps)
         for lower, upper, centre_u_mm, radius_mm in self._aperture_span_records:
+            if getattr(lower, "_aperture_tilted_stop", False):
+                # This continuous, faint line denotes the plane section. The
+                # separate contour shows the projected hole: they differ under
+                # tilt, so a projected gap here would claim a false section.
+                lower.setSpan(0.0, 0.5)
+                upper.setSpan(0.5, 1.0)
+                continue
             opening_lower = centre_u_mm - radius_mm
             opening_upper = centre_u_mm + radius_mm
             lower_fraction = float(
@@ -3265,32 +3404,36 @@ class VisualizationWorkspace(QWidget):
     def _project_aperture_opening(self, record) -> tuple[float, float]:
         """Centre/half-span of the physical opening's transverse projection."""
         shape = record["shape"]
+        if shape not in ("circular", "two_blade_slit"):
+            raise ValueError(f"Unsupported aperture shape: {shape!r}")
+        angle = np.deg2rad(self._projection_angle_deg)
+        projection = np.array((np.cos(angle), np.sin(angle), 0.0))
+        basis = np.asarray(record.get("_datum_basis", np.eye(3)), dtype=float)
+        point = np.asarray(record.get("_datum_point_mm", (0.0, 0.0, 0.0)), dtype=float)
+        reference_u = float(projection @ point)
+        c, signed_s = projection @ basis[:, :2]
+        s, scale = abs(float(signed_s)), float(np.hypot(c, signed_s))
         if shape == "circular":
             return (
-                float(self._project_transverse(
-                    record["offset_x_mm"], record["offset_y_mm"]
-                )),
-                0.5 * float(record["diameter_mm"]),
+                reference_u + float(c * float(record["offset_x_mm"])
+                                    + signed_s * float(record["offset_y_mm"])),
+                0.5 * float(record["diameter_mm"]) * scale,
             )
-        if shape != "two_blade_slit":
-            raise ValueError(f"Unsupported aperture shape: {shape!r}")
         radius = 0.5 * float(record["bore_diameter_mm"])
         if not record["slit_inserted"]:
-            return 0.0, radius
+            return reference_u, radius * scale
         gap = float(record["slit_gap_mm"])
         centre = float(record["slit_centre_x_mm"])
         x_lo, x_hi = max(-radius, centre - gap / 2), min(radius, centre + gap / 2)
-        if gap <= 0 or x_lo > x_hi:
-            return 0.0, 0.0
-        angle = np.deg2rad(self._projection_angle_deg)
-        c, s = float(np.cos(angle)), abs(float(np.sin(angle)))
-        # Extremise U = X cos(angle) + Y sin(angle) on the intersection
+        if gap <= 0 or x_lo > x_hi or scale <= 1.0e-15:
+            return reference_u, 0.0
+        # Extremise U = c X + s Y in the placed local opening on the intersection
         # of the circular bore and the physical X-directed blade gap.
-        x_min = float(np.clip(-radius * c, x_lo, x_hi))
-        x_max = float(np.clip(radius * c, x_lo, x_hi))
+        x_min = float(np.clip(-radius * c / scale, x_lo, x_hi))
+        x_max = float(np.clip(radius * c / scale, x_lo, x_hi))
         lo = c * x_min - s * np.sqrt(max(0.0, radius * radius - x_min * x_min))
         hi = c * x_max + s * np.sqrt(max(0.0, radius * radius - x_max * x_max))
-        return float((lo + hi) / 2), float((hi - lo) / 2)
+        return reference_u + float((lo + hi) / 2), float((hi - lo) / 2)
 
     def _aperture_opening_tooltip(self, name, optical_z_mm, record, centre, half_span):
         tooltip = (
@@ -3298,13 +3441,23 @@ class VisualizationWorkspace(QWidget):
             f"Allowed {self._projection_axis_name()} opening = "
             f"[{centre - half_span:.6g}, {centre + half_span:.6g}] mm\n"
         )
+        if record.get("_tilted_stop", False):
+            tooltip += (
+                "Tilted plane: the thin contour is the complete opening's projection; "
+                "the faint dashed line is a reference-plane section through its datum. "
+                "They are not the same section. Neither alone determines 3D transmission.\n"
+            )
+        explanation = (
+            "The contour projects the physical opening in its tilted local plane."
+            if record.get("_tilted_stop", False) else
+            "The blank gap is the opening projected onto the selected transverse axis; solid segments block."
+        )
         if record["shape"] == "circular":
             return tooltip + (
-                f"Circular radius = {half_span:.6g} mm\n"
+                f"Circular radius = {0.5 * float(record['diameter_mm']):.6g} mm\n"
                 f"X/Y offset = {float(record['offset_x_mm']):.6g} / "
-                f"{float(record['offset_y_mm']):.6g} mm\n"
-                "The blank gap is the circular opening projected onto the "
-                "selected transverse axis; solid segments block."
+                f"{float(record['offset_y_mm']):.6g} mm (local plane)\n"
+                + explanation
             )
         blades = "inserted" if record["slit_inserted"] else "retracted"
         return tooltip + (
@@ -3312,13 +3465,13 @@ class VisualizationWorkspace(QWidget):
             f"{float(record['slit_gap_mm']):.6g} mm\n"
             f"Slit centre X = {float(record['slit_centre_x_mm']):.6g} mm\n"
             f"Mechanical bore diameter = {float(record['bore_diameter_mm']):.6g} mm\n"
-            "The blank gap is the projection of the slit intersected with "
-            "the circular bore. Admission depends on both X and Y; "
+            + explanation + " The slit is intersected with "
+            "the circular bore. Admission depends on both local X and Y; "
             "the projected gap alone does not determine transmission."
         )
 
     def _add_aperture_stop(
-        self, part, optical_z_mm: float, record
+        self, part, optical_z_mm: float, record, *, frame=None
     ):
         available = record is not None
         enabled = bool(
@@ -3326,6 +3479,22 @@ class VisualizationWorkspace(QWidget):
             and record.get("enabled", True)
             and record.get("installed", True)
         )
+        if frame is None:
+            if not hasattr(part, "data") and not hasattr(part, "module_key"):
+                # Standalone diagnostic stop: the caller supplies its plane,
+                # without claiming a placed material component or field frame.
+                frame = {
+                    "_datum_point_mm": (0., 0., float(optical_z_mm)),
+                    "_mechanical_point_mm": (0., 0., float(optical_z_mm)),
+                    "_datum_basis": ((1., 0., 0.), (0., 1., 0.), (0., 0., 1.)),
+                    "_datum_normal": (0., 0., 1.), "_tilted_stop": False,
+                }
+            else:
+                frame = self._aperture_pose_frame(part, record)
+        display_record = dict(record or {"z_mm": optical_z_mm})
+        display_record.setdefault("z_mm", optical_z_mm)
+        display_record.update(frame, _active_stop=enabled)
+        optical_z_mm = frame["_datum_point_mm"][2]
         if not enabled:
             status = "RETRACTED" if available else "REFERENCE ONLY"
             line = pg.InfiniteLine(
@@ -3348,22 +3517,25 @@ class VisualizationWorkspace(QWidget):
             lines = (line,)
             representative = line
         else:
-            centre_u_mm, radius_mm = self._project_aperture_opening(record)
+            centre_u_mm, radius_mm = self._project_aperture_opening(display_record)
             tooltip = self._aperture_opening_tooltip(
-                part.name, optical_z_mm, record, centre_u_mm, radius_mm
+                part.name, optical_z_mm, display_record, centre_u_mm, radius_mm
             )
             stop_label = "SLIT OPTICAL STOP" if record["shape"] == "two_blade_slit" else "OPTICAL STOP"
+            stop_pen = (pg.mkPen((255, 176, 0, 105), width=1.0,
+                                 style=Qt.PenStyle.DashLine)
+                        if frame["_tilted_stop"] else pg.mkPen("#ffb000", width=2.4))
             lower = pg.InfiniteLine(
                 pos=optical_z_mm,
                 angle=90,
                 span=(0.0, 0.45),
-                pen=pg.mkPen("#ffb000", width=2.4),
+                pen=stop_pen,
             )
             upper = pg.InfiniteLine(
                 pos=optical_z_mm,
                 angle=90,
                 span=(0.55, 1.0),
-                pen=pg.mkPen("#ffb000", width=2.4),
+                pen=stop_pen,
                 label=f"{part.name} [{stop_label}]",
                 labelOpts={
                     "position": 0.62,
@@ -3374,23 +3546,29 @@ class VisualizationWorkspace(QWidget):
             self._aperture_span_records.append(
                 (lower, upper, centre_u_mm, radius_mm)
             )
-            self._aperture_projection_records.append(
-                (
-                    lower,
-                    upper,
-                    part.name,
-                    optical_z_mm,
-                    dict(record),
+            if frame["_tilted_stop"]:
+                vertices = self._aperture_opening_outline(display_record)
+                outline = pg.PlotDataItem(
+                    vertices[:, 2], self._project_transverse(vertices[:, 0], vertices[:, 1]),
+                    pen=pg.mkPen("#ffb000", width=1.6),
                 )
-            )
+                outline.setZValue(15)
+                outline.setToolTip(tooltip)
+                self.plot.addItem(outline)
+                display_record["_outline_item"] = outline
             lines = (lower, upper)
             representative = upper
 
         for line in lines:
+            line.component_key = str(getattr(part, "key", ""))
+            self._place_aperture_plane(line, display_record)
             line.setZValue(14)
             line.setToolTip(tooltip)
             self.plot.addItem(line)
             self.aperture_stop_segment_items.append(line)
+        self._aperture_projection_records.append(
+            (lines[0], representative, part.name, optical_z_mm, display_record)
+        )
         self._register_ray_label(representative.label)
         representative.label.setToolTip(tooltip)
         self.aperture_marker_items.append(representative)
@@ -3399,67 +3577,46 @@ class VisualizationWorkspace(QWidget):
 
     def _add_aperture_component(self, part, index: int) -> None:
         record = self._aperture_stops_by_key.get(part.key)
-        optical_z_mm = (
-            float(record["z_mm"])
-            if record is not None
-            else self._aperture_optical_plane(part)
-        )
+        frame = self._aperture_pose_frame(part, record)
+        optical_z_mm = frame["_datum_point_mm"][2]
+        mechanical = frame["_mechanical_point_mm"]
         separate_plane = (
-            abs(optical_z_mm - float(part.center_z_mm)) > 1.0e-9
+            np.linalg.norm(np.asarray(frame["_datum_point_mm"]) - mechanical) > 1.0e-9
         )
         if separate_plane:
-            body = pg.InfiniteLine(
-                pos=part.center_z_mm,
-                angle=90,
-                pen=pg.mkPen(
-                    "#fb923c", width=1.2, style=Qt.PenStyle.DashLine
-                ),
-                label=f"{part.name} [BODY CENTRE]",
-                labelOpts={
-                    "position": 0.76 + 0.07 * (index % 4),
-                    "color": "#fb923c",
-                    "rotateAxis": (1, 0),
-                },
-            )
             tooltip = (
-                f"{part.name}\nMechanical body centre Z = "
-                f"{part.center_z_mm:.6g} mm\nEffective optical stop Z = "
+                datum_tooltip(part.name, self._component_datums(part))
+                + "\nEffective optical stop Z = "
                 f"{optical_z_mm:.6g} mm"
             )
-            body.setZValue(12)
-            body.setToolTip(tooltip)
-            self._register_ray_label(body.label)
-            body.label.setToolTip(tooltip)
-            self.plot.addItem(body)
-            self.component_marker_items.append(body)
-            self._component_labels.append(
-                (body.label, float(part.center_z_mm), True)
+            body = add_datum_line(
+                self, part, mechanical, None, "mechanical_center",
+                f"{part.name} [BODY CENTRE]", tooltip,
+                colour="#fb923c", width=1.2,
+                label_position=.76 + .07 * (index % 4),
             )
+            frame["_body_item"] = body
 
-        stop = self._add_aperture_stop(part, optical_z_mm, record)
+        stop = self._add_aperture_stop(part, optical_z_mm, record, frame=frame)
         if not separate_plane:
             self.component_marker_items.append(stop)
         self._component_labels.append((stop.label, optical_z_mm, True))
 
     def _add_deflector_pair(self, part, planes: tuple[float, ...]) -> None:
-        upper_z, lower_z = planes
-        coincident = abs(upper_z - lower_z) <= 1.0e-9
+        datums = self._component_datums(part)
+        upper, lower = datums.interaction_planes
+        coincident = np.allclose(upper.point_mm, lower.point_mm, atol=1e-9, rtol=0)
         if not coincident:
-            region = pg.LinearRegionItem(
-                values=(upper_z, lower_z),
-                orientation="vertical",
-                movable=False,
-                brush=pg.mkBrush(16, 255, 170, 28),
-                pen=pg.mkPen(None),
-            )
-            region.setZValue(3)
-            region.setToolTip(f"{part.name}\nPaired deflector envelope")
-            self.plot.addItem(region)
-            self.deflector_pair_items.append(region)
+            axis = self.plot.plot(pen=pg.mkPen("#2cffad", width=2.0))
+            axis._datum_pair_points_mm = (upper.point_mm, lower.point_mm)
+            axis.setZValue(3)
+            axis.setToolTip(f"{part.name}\nAxis between the two deflection references; not a material envelope.")
+            self.deflector_pair_items.append(axis)
+            self._update_component_datum_projection(axis)
 
-        plane_values = (upper_z,) if coincident else (upper_z, lower_z)
+        plane_values = (upper,) if coincident else (upper, lower)
         plane_names = ("U/L",) if coincident else ("U", "L")
-        for index, (z_mm, plane_name) in enumerate(zip(plane_values, plane_names)):
+        for index, (plane, plane_name) in enumerate(zip(plane_values, plane_names)):
             if coincident:
                 label = f"{part.name} U/L coincident"
                 label_position = 0.72
@@ -3469,27 +3626,16 @@ class VisualizationWorkspace(QWidget):
             else:
                 label = "L"
                 label_position = 0.52
-            line = pg.InfiniteLine(
-                pos=z_mm,
-                angle=90,
-                pen=pg.mkPen("#2cffad", width=2.0),
-                label=label,
-                labelOpts={
-                    "position": label_position,
-                    "color": "#b7ffdf",
-                    "rotateAxis": (1, 0),
-                },
-            )
-            line.setZValue(11)
             tooltip = (
-                f"{part.name}\n{plane_name} deflection plane Z = "
-                f"{z_mm:.6g} mm"
+                datum_tooltip(part.name, datums)
+                + f"\n{plane_name} deflection plane Z = {plane.point_mm[2]:.9g} mm"
+                + "\nInteraction reference X/Y/Z = "
+                + ", ".join(f"{v:.9g}" for v in plane.point_mm) + " mm"
+                + "\nPlane normal X/Y/Z = " + ", ".join(f"{v:.9g}" for v in plane.normal)
             )
-            line.setToolTip(tooltip)
-            self._register_ray_label(line.label)
-            line.label.setToolTip(tooltip)
-            self.plot.addItem(line)
-            self.deflector_pair_items.append(line)
+            add_datum_line(self, part, plane.point_mm, plane.normal,
+                           "interaction_plane", label, tooltip, colour="#2cffad", width=2.0,
+                           label_position=label_position, target=self.deflector_pair_items)
 
     @staticmethod
     def _recording_plane_component(result, key: str):
@@ -3583,7 +3729,8 @@ class VisualizationWorkspace(QWidget):
         tooltip = (
             f"{part.name} ({status.lower()})\n"
             f"Detection plane Z = {signal_z_mm:.6g} mm\n"
-            f"{range_kind}: {radial_text}"
+            f"{range_kind}: {radial_text}\n"
+            + datum_tooltip(part.name, self._component_datums(part, result))
         )
         range_item = self.plot.plot(
             x_values,
@@ -3625,6 +3772,7 @@ class VisualizationWorkspace(QWidget):
             },
         )
         label_anchor.setZValue(17)
+        label_anchor.component_key = str(part.key)
         label_anchor.setToolTip(tooltip)
         self._register_ray_label(label_anchor.label)
         label_anchor.label.setToolTip(tooltip)
@@ -3658,64 +3806,45 @@ class VisualizationWorkspace(QWidget):
         if is_recording_surface:
             self._add_recording_surface_range(result, part, index)
             return
+        datums = self._component_datums(part, result)
+        tooltip = datum_tooltip(part.name, datums)
         planes = self._deflector_planes(part)
         is_deflector = bool(planes)
         if is_deflector:
             centre = pg.ScatterPlotItem(
-                x=[part.center_z_mm],
-                y=[0.0],
+                x=[datums.mechanical_center_mm[2]],
+                y=[float(self._project_transverse(*datums.mechanical_center_mm[:2]))],
                 symbol="+",
                 size=13,
                 pen=pg.mkPen("#c3ffe3", width=2.0),
             )
             centre.setZValue(12)
-            centre.setToolTip(
-                f"{part.name}\nPair centre Z = "
-                f"{part.center_z_mm:.6g} mm"
-            )
+            centre.component_key = str(part.key)
+            centre.datum_role = "mechanical_center"
+            centre.datum_point_mm = datums.mechanical_center_mm
+            centre.datum_normal = None
+            centre.setToolTip(tooltip)
             self.plot.addItem(centre)
             self.component_marker_items.append(centre)
             self._add_deflector_pair(part, planes)
             return
-        if is_lens:
-            colour = "#22d3ee"
-            width = 1.3
-            style = Qt.PenStyle.DashLine
-            label = part.name
-        else:
-            colour = "#94a3b8"
-            width = 0.7
-            style = Qt.PenStyle.DashLine
-            label = part.name
-        line = pg.InfiniteLine(
-            pos=part.center_z_mm,
-            angle=90,
-            pen=pg.mkPen(
-                colour,
-                width=width,
-                style=style,
-            ),
-            label=label,
-            labelOpts={
-                "position": 0.76 + 0.07 * (index % 4),
-                "color": colour,
-                "rotateAxis": (1, 0),
-            },
-        )
-        line.setZValue(6)
-        tooltip = f"{part.name}\nCentre Z = {part.center_z_mm:.6g} mm"
-        line.setToolTip(tooltip)
-        self._register_ray_label(line.label)
-        line.label.setToolTip(tooltip)
-        self.plot.addItem(line)
-        self.component_marker_items.append(line)
-        self._component_labels.append(
-            (
-                line.label,
-                float(part.center_z_mm),
-                is_lens,
-            )
-        )
+        ref = datums.optical_reference
+        separate = ref is not None and not np.allclose(
+            ref.point_mm, datums.mechanical_center_mm, atol=1e-9, rtol=0)
+        if ref is None or separate:
+            add_datum_line(
+                self, part, datums.mechanical_center_mm, None, "mechanical_center",
+                f"{part.name} [mechanical]" if separate else part.name, tooltip,
+                colour="#94a3b8", width=.7, priority=is_lens,
+                label_position=.76 + .07 * (index % 4))
+        if ref is not None:
+            label = f"{part.name} [optical]" if separate else part.name
+            if ref.is_virtual:
+                label += " [virtual reference]"
+            add_datum_line(
+                self, part, ref.point_mm, ref.normal, "optical_reference", label, tooltip,
+                colour="#22d3ee", width=1.3, priority=is_lens,
+                label_position=.68 if separate else .76 + .07 * (index % 4))
 
     def _add_sample_marker(self, result) -> None:
         """Draw the incident/post-specimen boundary above rays and lenses."""
@@ -3801,7 +3930,8 @@ class VisualizationWorkspace(QWidget):
         self.plot.addItem(axis_marker)
 
         self.sample_marker_items.extend((line, axis_marker))
-        # Preserve the established one-marker-per-assembly-part diagnostic.
+        line.component_key = "sample"
+        # Include the specimen in the assembly-component marker inventory.
         self.component_marker_items.append(line)
         self._component_labels.append((line.label, sample_z_mm, True))
 
@@ -3909,7 +4039,7 @@ class VisualizationWorkspace(QWidget):
             str(part.key), str(part.name), index,
             float(part.start_z_mm), float(part.center_z_mm), float(part.end_z_mm),
             bool(data.get("mechanical_only", False)), data.get("mechanical_profile"),
-            self._deflector_planes(part), self._aperture_optical_plane(part),
+            self._component_datums(part, result),
         )
         if "aperture" in part.key and not data.get("mechanical_only", False):
             record = self._aperture_stops_by_key.get(part.key)

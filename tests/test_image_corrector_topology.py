@@ -59,13 +59,14 @@ def test_five_physical_image_lenses_survive_assembly_and_state_roundtrip(filenam
 
 @pytest.mark.parametrize("filename,column", VARIANTS)
 @pytest.mark.parametrize("number", (1, 2))
-def test_image_dph_reference_follows_hp_idempotently_without_creating_a_body(filename, column, number):
+def test_image_dph_reference_follows_hp_through_one_material_host(filename, column, number):
     document = tomllib.loads((INSTRUMENT_CONFIG_ROOT / "column" / filename).read_text(encoding="utf-8"))
     rows = {p["key"]: p for p in document["parts"]}
     hp_key, dph_key = f"image_hp{number}_hexapole", f"image_dph{number}_deflector"
     hp, dph = rows[hp_key], rows[dph_key]
-    assert dph["optical_reference_host_key"] == hp_key
-    assert not dph.get("physical_host_key")
+    host_key = dph["physical_host_key"]
+    assert rows[host_key]["optical_reference_host_key"] == hp_key
+    assert not dph.get("optical_reference_host_key")
     keys_before, length_before = set(rows), dph["length_mm"]
     # Move an existing host. The stale DPH coordinate must not act as a second offset.
     for field in ("local_start_z_mm", "local_center_z_mm", "local_end_z_mm", "optical_reference_local_z_mm"):
@@ -77,6 +78,7 @@ def test_image_dph_reference_follows_hp_idempotently_without_creating_a_body(fil
     after = {p["key"]: p for p in resolved["parts"]}
     assert set(after) == keys_before
     assert after[dph_key]["local_center_z_mm"] == hp["optical_reference_local_z_mm"]
+    assert after[host_key]["local_center_z_mm"] == hp["optical_reference_local_z_mm"]
     assert after[dph_key]["length_mm"] == length_before
     assert not part_model_from_document(resolved, dph_key, angular_segments=8).meshes
 

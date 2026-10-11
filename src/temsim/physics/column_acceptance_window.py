@@ -94,6 +94,7 @@ def find_acceptance_span(prepared):
         span = _slice_prepared(prepared, first, last)
         sub = span[0]
         if (getattr(sub, "mapped_fields", ()) or getattr(sub, "posed_spherical_kicks", ())
+                or getattr(sub, "intrinsic_aberration_kicks", ())
                 or any(row.get("dynamic", False) for row in span[3])):
             continue
         if any(np.any(getattr(sub, name)) for name in (

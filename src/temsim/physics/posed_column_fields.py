@@ -111,50 +111,58 @@ class FrozenPosedMultipole:
         value = self._polynomial(local, xp)*self._envelope(local[..., 2], xp)[0]
         return value[..., None]*xp.asarray(self.registration.rotation_array[:, 2])
 
-    def vector_potential_jet(self, position_m):
+    def vector_potential_jet(self, position_m, *, xp=None):
         """Global A/dA/ddA within a support side; edges are not differentiable."""
-        local = self._local(position_m, np)
-        f, df, ddf = self._envelope(local[..., 2], np)
-        p, px, py = (self._polynomial(local, np, *orders) for orders in ((0, 0), (1, 0), (0, 1)))
-        gradient = np.stack((px*f, py*f, p*df), axis=-1)
-        hessian = np.empty((*local.shape[:-1], 3, 3))
-        hessian[..., 0, 0] = self._polynomial(local, np, 2, 0)*f
-        hessian[..., 1, 1] = self._polynomial(local, np, 0, 2)*f
-        hessian[..., 0, 1] = hessian[..., 1, 0] = self._polynomial(local, np, 1, 1)*f
+        if xp is None:
+            from temsim.physics.wave_device import array_module
+            xp = array_module(position_m)
+        local = self._local(position_m, xp)
+        f, df, ddf = self._envelope(local[..., 2], xp)
+        p, px, py = (self._polynomial(local, xp, *orders) for orders in ((0, 0), (1, 0), (0, 1)))
+        gradient = xp.stack((px*f, py*f, p*df), axis=-1)
+        hessian = xp.empty((*local.shape[:-1], 3, 3))
+        hessian[..., 0, 0] = self._polynomial(local, xp, 2, 0)*f
+        hessian[..., 1, 1] = self._polynomial(local, xp, 0, 2)*f
+        hessian[..., 0, 1] = hessian[..., 1, 0] = self._polynomial(local, xp, 1, 1)*f
         hessian[..., 0, 2] = hessian[..., 2, 0] = px*df
         hessian[..., 1, 2] = hessian[..., 2, 1] = py*df
         hessian[..., 2, 2] = p*ddf
-        rotation = self.registration.rotation_array
+        rotation = xp.asarray(self.registration.rotation_array)
         direction = rotation[:, 2]
         global_gradient = gradient@rotation.T
-        global_hessian = np.einsum("ai,...ij,bj->...ab", rotation, hessian, rotation)
+        global_hessian = xp.einsum("ai,...ij,bj->...ab", rotation, hessian, rotation)
         return ((p*f)[..., None]*direction,
-                np.einsum("i,...j->...ij", direction, global_gradient),
-                np.einsum("i,...jk->...ijk", direction, global_hessian))
+                xp.einsum("i,...j->...ij", direction, global_gradient),
+                xp.einsum("i,...jk->...ijk", direction, global_hessian))
 
     def field_at_global_positions_t(self, positions):
-        local = self._local(positions, np)
-        f = self._envelope(local[..., 2], np)[0]
-        magnetic = np.stack((self._polynomial(local, np, 0, 1)*f,
-                             -self._polynomial(local, np, 1, 0)*f, np.zeros_like(f)), axis=-1)
-        return magnetic@self.registration.rotation_array.T
+        from temsim.physics.wave_device import array_module
+        xp = array_module(positions)
+        local = self._local(positions, xp)
+        f = self._envelope(local[..., 2], xp)[0]
+        magnetic = xp.stack((self._polynomial(local, xp, 0, 1)*f,
+                             -self._polynomial(local, xp, 1, 0)*f, xp.zeros_like(f)), axis=-1)
+        return magnetic@xp.asarray(self.registration.rotation_array.T)
 
     def slope_derivative(self, positions_m, slopes, charge_over_p):
-        positions, slopes = np.asarray(positions_m, float), np.asarray(slopes, float)
-        if positions.shape != (len(slopes), 3) or slopes.shape != (len(slopes), 2) or not np.isfinite(slopes).all():
+        from temsim.physics.wave_device import array_module
+        xp = array_module(positions_m)
+        positions, slopes = xp.asarray(positions_m, dtype=xp.float64), xp.asarray(slopes, dtype=xp.float64)
+        if positions.shape != (len(slopes), 3) or slopes.shape != (len(slopes), 2) or not bool(xp.isfinite(slopes).all()):
             raise ValueError("Posed multipole transport requires finite matching XYZ and slope arrays")
-        direction = np.column_stack((slopes, np.ones(len(slopes))))@self.registration.rotation_array
-        if np.any(direction[:, 2] <= 1e-10):
+        rotation = xp.asarray(self.registration.rotation_array)
+        direction = xp.column_stack((slopes, xp.ones(len(slopes))))@rotation
+        if bool(xp.any(direction[:, 2] <= 1e-10)):
             raise ValueError("Posed multipole trajectory leaves the forward local-axis domain")
         local_slopes = direction[:, :2]/direction[:, 2, None]
-        local = self._local(positions, np)
-        f = self._envelope(local[:, 2], np)[0]
-        bx = self._polynomial(local, np, 0, 1)*f
-        by = -self._polynomial(local, np, 1, 0)*f
-        factor = np.broadcast_to(np.asarray(charge_over_p), (len(slopes),))
-        acceleration = np.column_stack((-factor*by, factor*bx, np.zeros(len(slopes))))
-        acceleration = acceleration@self.registration.rotation_array.T
-        direction = np.column_stack((local_slopes, np.ones(len(slopes))))@self.registration.rotation_array.T
+        local = self._local(positions, xp)
+        f = self._envelope(local[:, 2], xp)[0]
+        bx = self._polynomial(local, xp, 0, 1)*f
+        by = -self._polynomial(local, xp, 1, 0)*f
+        factor = xp.broadcast_to(xp.asarray(charge_over_p), (len(slopes),))
+        acceleration = xp.column_stack((-factor*by, factor*bx, xp.zeros(len(slopes))))
+        acceleration = acceleration@rotation.T
+        direction = xp.column_stack((local_slopes, xp.ones(len(slopes))))@rotation.T
         dz = direction[:, 2, None]
         return (acceleration[:, :2]*dz-direction[:, :2]*acceleration[:, 2, None])/dz**3
 

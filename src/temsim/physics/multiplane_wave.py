@@ -5,12 +5,33 @@ the wave onto a fictitious axis-aligned grid. Amplitudes are probability per
 pixel. FFTs are unitary; clipping never renormalises transmitted electrons.
 """
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from types import SimpleNamespace
 import math
 import numpy as np
 
 from temsim.physics.wave_device import array_module, max_abs, to_host
+
+
+_GPU_PROBABILITY_KERNEL = None
+
+
+def _amplitude_probability(amplitude):
+    """Reduce double-precision cell probabilities without device temporaries."""
+    xp = array_module(amplitude)
+    if xp is np:
+        return float(np.sum(np.abs(amplitude) ** 2))
+    global _GPU_PROBABILITY_KERNEL
+    if _GPU_PROBABILITY_KERNEL is None:
+        # Keep the reduction in float64. The mathematical value is abs(psi)^2;
+        # avoiding the intermediate modulus and power arrays also avoids a
+        # square root followed by squaring. Never retain a GPU norm: device
+        # arrays are publicly mutable, unlike immutable host checkpoints.
+        _GPU_PROBABILITY_KERNEL = xp.ReductionKernel(
+            "complex128 value", "float64 total",
+            "value.real() * value.real() + value.imag() * value.imag()",
+            "a + b", "total = a", "0", "plane_wave_probability_float64")
+    return float(_GPU_PROBABILITY_KERNEL(amplitude))
 
 
 class _AngularSpectrumDomainUnavailable(ValueError):
@@ -30,9 +51,66 @@ class PlaneWave:
     tilt_rad: np.ndarray | None = None
 
     def __post_init__(self):
+        self._initialise_storage()
+
+    @classmethod
+    def _from_owned_amplitude(cls, amplitude, basis_m, origin_m,
+                              curvature_m1=None, tilt_rad=None):
+        """Adopt a newly allocated complex128 device result inside an operator.
+
+        The caller must relinquish the result buffer and all writable aliases;
+        inputs and retained wave arrays must never be passed here. Shape,
+        finiteness, lattice and phase checks remain identical to the public
+        constructor. Host arrays retain the immutable bytes-backed snapshot.
+        The public constructor and dataclasses.replace remain defensive copies.
+        """
+        result = object.__new__(cls)
+        for name, value in (("amplitude", amplitude), ("basis_m", basis_m),
+                            ("origin_m", origin_m), ("curvature_m1", curvature_m1),
+                            ("tilt_rad", tilt_rad)):
+            object.__setattr__(result, name, value)
+        result._initialise_storage(owned_device_amplitude=True)
+        return result
+
+    def _replace_owned(self, amplitude, **metadata):
+        """Return an internal operator result, taking its fresh device buffer."""
+        values = self._replacement_metadata(metadata)
+        if amplitude is self.amplitude:
+            raise ValueError("Owned wave output must not be the retained input amplitude")
+        xp = array_module(amplitude)
+        if xp is not np and array_module(self.amplitude) is xp and xp.may_share_memory(amplitude, self.amplitude):
+            raise ValueError("Owned wave output must not alias the retained input amplitude")
+        return type(self)._from_owned_amplitude(amplitude, **values)
+
+    def _replace_metadata(self, **metadata):
+        """Reuse a retained field for an internal change of lattice or carrier.
+
+        Operators never mutate retained inputs. GPU storage remains shared only
+        within that contract and is rechecked because external device-array
+        mutation is possible; no finite/probability cache is trusted for CUDA.
+        CPU storage is immutable and can safely share its cached probability.
+        """
+        values = self._replacement_metadata(metadata)
+        result = object.__new__(type(self))
+        object.__setattr__(result, "amplitude", self.amplitude)
+        for name, value in values.items():
+            object.__setattr__(result, name, value)
+        result._initialise_storage(unchanged_amplitude=self)
+        return result
+
+    def _replacement_metadata(self, changes):
+        names = ("basis_m", "origin_m", "curvature_m1", "tilt_rad")
+        unknown = set(changes).difference(names)
+        if unknown:
+            raise TypeError(f"Unknown plane metadata: {', '.join(sorted(unknown))}")
+        return {name: changes.get(name, getattr(self, name)) for name in names}
+
+    def _initialise_storage(self, *, owned_device_amplitude=False, unchanged_amplitude=None):
         xp = array_module(self.amplitude)
         amplitude = xp.asarray(self.amplitude)
-        if amplitude.ndim != 2 or min(amplitude.shape) < 2 or not bool(xp.all(xp.isfinite(amplitude))):
+        immutable_input = unchanged_amplitude is not None and xp is np
+        if (amplitude.ndim != 2 or min(amplitude.shape) < 2
+                or (not immutable_input and not bool(xp.all(xp.isfinite(amplitude))))):
             raise ValueError("Plane wave must be a finite two-dimensional sampled amplitude")
         basis, origin = np.asarray(self.basis_m), np.asarray(self.origin_m)
         if (basis.shape != (2, 2) or origin.shape != (2,)
@@ -53,11 +131,19 @@ class PlaneWave:
         for name in ("amplitude", "basis_m", "origin_m", "curvature_m1", "tilt_rad"):
             value = getattr(self, name)
             if value is not None:
+                if name == "amplitude" and unchanged_amplitude is not None:
+                    object.__setattr__(self, name, unchanged_amplitude.amplitude)
+                    if immutable_input and "_cpu_probability" in unchanged_amplitude.__dict__:
+                        object.__setattr__(self, "_cpu_probability", unchanged_amplitude._cpu_probability)
+                    continue
                 if name == "amplitude" and xp is not np:
                     # Device fields own their storage. GPU stages never mutate
                     # a retained input; public checkpoints return to immutable
                     # CPU storage at the explicit stage boundary.
-                    object.__setattr__(self, name, xp.array(value, dtype=xp.complex128, copy=True))
+                    if owned_device_amplitude and amplitude.dtype == xp.complex128:
+                        object.__setattr__(self, name, amplitude)
+                    else:
+                        object.__setattr__(self, name, xp.array(value, dtype=xp.complex128, copy=True))
                     continue
                 array = np.asarray(value, dtype=complex if name == "amplitude" else float)
                 frozen = np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
@@ -77,8 +163,13 @@ class PlaneWave:
 
     @property
     def probability(self):
-        xp = array_module(self.amplitude)
-        return float(xp.sum(xp.abs(self.amplitude) ** 2))
+        if array_module(self.amplitude) is not np:
+            return _amplitude_probability(self.amplitude)
+        cached = self.__dict__.get("_cpu_probability")
+        if cached is None:
+            cached = _amplitude_probability(self.amplitude)
+            object.__setattr__(self, "_cpu_probability", cached)
+        return cached
 
     def canonical_covariance(self, wavelength_m):
         """Symmetrised (x,y,p_x/p0,p_y/p0) covariance of the full field.
@@ -121,17 +212,18 @@ def reselect_phase_carrier(wave, wavelength_m, *, grid_numerics,
     grid_numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
     if not np.isfinite(wavelength_m) or wavelength_m <= 0:
         raise ValueError("Phase carrier needs a positive finite wavelength")
-    if wave.probability == 0:
+    probability = wave.probability
+    if probability == 0:
         return wave, []
     boundary = _input_boundary_probability(wave.amplitude)
-    if boundary > max(1e-30, wave.probability*1e-12):
+    if boundary > max(1e-30, probability*1e-12):
         # This gauge is optional numerical preconditioning, not a physical
         # operation. Its Fourier-derivative estimate needs a resolved domain.
         # Keep the entire original field and its existing chart when that
         # prerequisite is absent; physical propagation still runs normally.
         return wave, [{"method": "phase-carrier optimization not applied: unresolved input boundary",
             "from_shape": wave.amplitude.shape, "to_shape": wave.amplitude.shape,
-            "input_boundary_probability": boundary, "probability": wave.probability}]
+            "input_boundary_probability": boundary, "probability": probability}]
     covariance = wave.canonical_covariance(wavelength_m)
     xx, xp = covariance[:2, :2], covariance[:2, 2:]
     if np.linalg.eigvalsh(xx).min() <= 0:
@@ -166,13 +258,14 @@ def reselect_phase_carrier(wave, wavelength_m, *, grid_numerics,
         if largest >= .8*np.pi:
             raise WaveSamplingError(f"Phase-carrier envelope plus compensating chirp is undersampled "
                 f"({largest:.6g} rad per cell); refine BEFORE exact gauge rephasing", largest/(.8*np.pi))
-        result = replace(current, amplitude=current.amplitude*xp.exp(1j*compensation), curvature_m1=selected)
-        check_lossless_norm(current.probability, result.probability, context="Exact phase-carrier gauge")
+        result = current._replace_owned(current.amplitude*xp.exp(1j*compensation), curvature_m1=selected)
+        result_probability = result.probability
+        check_lossless_norm(current.probability, result_probability, context="Exact phase-carrier gauge")
         selected_rows.append({"method": "exact envelope chirp compensation; full complex field retained",
             "from_curvature_m1": old.tolist(), "to_curvature_m1": selected.tolist(),
             "from_shape": current.amplitude.shape, "to_shape": result.amplitude.shape,
             "envelope_chirp_bandwidth_rad": largest, "shape": result.amplitude.shape,
-            "probability": result.probability})
+            "probability": result_probability})
         return result
     try:
         result, rows = apply_resolved_operator(wave, rephase, numerics=grid_numerics,
@@ -183,7 +276,7 @@ def reselect_phase_carrier(wave, wavelength_m, *, grid_numerics,
         # the physical propagator must still pass its own sampling checks.
         return wave, [{"method": "phase-carrier optimization not applied: refinement budget",
             "from_shape": wave.amplitude.shape, "to_shape": wave.amplitude.shape,
-            "reason": str(error), "probability": wave.probability}]
+            "reason": str(error), "probability": probability}]
     rows.extend(selected_rows)
     return result, rows
 
@@ -227,7 +320,8 @@ def propagate_plane_wave(wave, matrix, translation, wavelength_m, *,
     tilt = np.zeros(2) if wave.tilt_rad is None else wave.tilt_rad
     action = affine_centre_action(matrix, translation, wave.origin_m, tilt, affine_action_m)
     phase = 2*np.pi*action/wavelength_m + reference_phase_rad-chart_phase
-    result = replace(result, amplitude=result.amplitude*np.exp(1j*phase))
+    if phase != 0.:
+        result = result._replace_owned(result.amplitude*np.exp(1j*phase))
     check_lossless_norm(wave.probability, result.probability, context="Canonical plane propagation")
     if sampling_records is not None:
         sampling_records.extend(completed_records)
@@ -273,9 +367,13 @@ def _propagate_plane_wave(wave, matrix, translation, wavelength_m, reference_len
             # scaled angular-spectrum form resolves successive far-field
             # drifts without forcing another undersampled quadratic FFT.
             chart_phase = drift_gaussian_phase(drift, 1j*np.eye(2)/reference_length_m-curvature)
-            return (PlaneWave(amplitude, effective_a @ wave.basis_m, a @ wave.origin_m + b @ tilt + shift[:2],
-                              (c + d @ curvature) @ inverse_a, c @ wave.origin_m + d @ tilt + shift[2:]),
-                    chart_phase)
+            metadata = dict(basis_m=effective_a @ wave.basis_m,
+                origin_m=a @ wave.origin_m + b @ tilt + shift[:2],
+                curvature_m1=(c + d @ curvature) @ inverse_a,
+                tilt_rad=c @ wave.origin_m + d @ tilt + shift[2:])
+            result = (wave._replace_metadata(**metadata) if amplitude is wave.amplitude
+                      else wave._replace_owned(amplitude, **metadata))
+            return result, chart_phase
     try:
         result, chart_phase = _propagate_fresnel_chart(wave, matrix, shift, wavelength_m,
             reference_length_m, grid_numerics=grid_numerics, retained_bytes=retained_bytes,
@@ -312,9 +410,10 @@ def _propagate_fresnel_chart(wave, matrix, shift, wavelength_m, reference_length
         if abs(np.linalg.det(a)) < 1e-15:
             raise ValueError("Singular image-plane wave map")
         inverse_a = np.linalg.inv(a)
-        return (PlaneWave(wave.amplitude, a @ wave.basis_m, a @ wave.origin_m + shift[:2],
-                          inverse_a.T @ curvature @ inverse_a + c @ inverse_a,
-                          c @ wave.origin_m + d @ tilt + shift[2:]), 0.)
+        return (wave._replace_metadata(basis_m=a @ wave.basis_m,
+                          origin_m=a @ wave.origin_m + shift[:2],
+                          curvature_m1=inverse_a.T @ curvature @ inverse_a + c @ inverse_a,
+                          tilt_rad=c @ wave.origin_m + d @ tilt + shift[2:]), 0.)
     if np.linalg.cond(b) > 1e10:
         raise ValueError("Rank-deficient mixed-conjugacy wave map; increase plane separation or use a resolved grid")
     inverse = np.linalg.inv(b)
@@ -340,7 +439,8 @@ def _propagate_fresnel_chart(wave, matrix, shift, wavelength_m, reference_length
     # two output pixels. Evaluate the SAME Collins integral on a finer affine
     # output lattice with a chirp-z transform. Covariance chooses only the
     # numerical sampling; it never replaces the propagated complex field.
-    if wave.probability > 0:
+    input_probability = wave.probability
+    if input_probability > 0:
         output_covariance = matrix[:2]@wave.canonical_covariance(wavelength_m)@matrix[:2].T
         inverse_basis = np.linalg.inv(basis)
         index_covariance = inverse_basis@output_covariance@inverse_basis.T
@@ -369,7 +469,7 @@ def _propagate_fresnel_chart(wave, matrix, shift, wavelength_m, reference_length
                     raise ValueError("Collins output requires an unbounded output refinement")
                 factor = 2**max(1, math.ceil(math.log2(6./min(rms_pixels))))
                 boundary = _input_boundary_probability(wave.amplitude)
-                if boundary > max(1e-30, wave.probability*1e-12):
+                if boundary > max(1e-30, input_probability*1e-12):
                     raise ValueError("Collins output refinement needs a resolved input domain: "
                         f"boundary probability={boundary:.6g}; the input field was not zero-extended")
                 shape = (ny*factor, nx*factor)
@@ -415,7 +515,7 @@ def _propagate_fresnel_chart(wave, matrix, shift, wavelength_m, reference_length
                 amplitude *= correction[:, None] if axis == 0 else correction[None, :]
             amplitude *= scale/math.sqrt(nx*ny)
         norm = float(xp.sum(abs(amplitude)**2))
-        if math.isclose(norm, wave.probability, rel_tol=1e-10, abs_tol=1e-14) or scale == 1.:
+        if math.isclose(norm, input_probability, rel_tol=1e-10, abs_tol=1e-14) or scale == 1.:
             break
         failed_czt_norm = norm
         scale = min(1., scale*1.5)
@@ -427,8 +527,10 @@ def _propagate_fresnel_chart(wave, matrix, shift, wavelength_m, reference_length
     # wave) fixes the missing Collins prefactor and the physical path branch.
     precision = np.eye(2)/reference_length_m-1j*inverse@a
     chart_phase = -.5*float(np.sum(np.angle(np.linalg.eigvals(precision))))
-    return (PlaneWave(amplitude, basis, a @ wave.origin_m + b @ tilt + shift[:2],
-                      d @ inverse, c @ wave.origin_m + d @ tilt + shift[2:]), chart_phase)
+    return (wave._replace_owned(amplitude, basis_m=basis,
+                      origin_m=a @ wave.origin_m + b @ tilt + shift[:2],
+                      curvature_m1=d @ inverse,
+                      tilt_rad=c @ wave.origin_m + d @ tilt + shift[2:]), chart_phase)
 
 
 def _input_boundary_probability(amplitude):
@@ -487,7 +589,7 @@ def _extend_angular_spectrum_domain(wave, drift, wavelength_m, diagnostic, *, nu
         padded = xp.zeros(shape, dtype=xp.complex128)
         start_y, start_x = shape[0]//2-ny//2, shape[1]//2-nx//2
         padded[start_y:start_y+ny, start_x:start_x+nx] = initial.amplitude
-        wave = replace(initial, amplitude=padded)
+        wave = initial._replace_owned(padded)
         if cancelled():
             raise InterruptedError("Angular-spectrum domain extension cancelled")
         attempt = {}
@@ -621,9 +723,12 @@ def intermediate_apertures(state, stop_z_mm, *, excluded_keys=()):
 
 
 def project_through_apertures(state, wave, x_m, y_m, wavelength_m, target_z_mm, *, excluded_keys=()):
+    from temsim.physics.source_admission import require_legacy_aberration_compatibility
+    require_legacy_aberration_compatibility(state, product="Equivalent post-sample wave projection",
+        start_z_mm=state.sample.z_mm, stop_z_mm=target_z_mm)
     xp = array_module(wave)
     dx, dy = float(x_m[1] - x_m[0]), float(y_m[1] - y_m[0])
-    current = PlaneWave(xp.asarray(wave) * np.sqrt(dx * dy), np.diag((dx, dy)),
+    current = PlaneWave._from_owned_amplitude(xp.asarray(wave) * np.sqrt(dx * dy), np.diag((dx, dy)),
                         np.array((x_m[len(x_m)//2], y_m[len(y_m)//2])))
     previous, previous_offset = np.eye(4), np.zeros(4)
     rows = []
@@ -637,8 +742,7 @@ def project_through_apertures(state, wave, x_m, y_m, wavelength_m, target_z_mm, 
             mask = (plane.transmission_mask(xy[0], xy[1]) if plane.radius_mm > 0
                     else xp.zeros(current.amplitude.shape, bool))
             before = current.probability
-            current = PlaneWave(xp.where(mask, current.amplitude, 0j), current.basis_m, current.origin_m,
-                                current.curvature_m1, current.tilt_rad)
+            current = current._replace_owned(xp.where(mask, current.amplitude, 0j))
             rows.append({"key": plane.key, "physical_element_id": "aperture:" + plane.key,
                          "strategy": "physical_plane", "z_mm": float(plane.z_mm), "incoming_probability": before,
                          "radius_mm": plane.radius_mm, "offset_x_mm": plane.offset_x_mm,

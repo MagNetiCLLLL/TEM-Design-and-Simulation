@@ -107,7 +107,7 @@ def decorate_physical_tube_row(row, assembly, *, runtime_values=None, aperture_i
     if abs(float(row["local_end_z_mm"])-origin-float(geometry["c1_c2_objective_vacuum_tube_end_z_mm"])) > 1e-8:
         raise ValueError("Material tube row does not match its declared module span")
     from temsim.cad_auxiliary import aperture_solids
-    from temsim.lens_pose import effective_part_transform_mm
+    from temsim.lens_pose import mechanical_part_transform_mm
     result = dict(row)
     result[PROFILE] = [[float(z)+origin, float(d)] for z, d in geometry[PROFILE]]
     result[STATUS], result[SOURCE] = geometry[STATUS], geometry[SOURCE]
@@ -127,7 +127,9 @@ def decorate_physical_tube_row(row, assembly, *, runtime_values=None, aperture_i
         upper = float(row["mechanical_outer_diameter_mm"])/2 + clearance
         thickness = float(spec.parameters["plate_thickness_mm"]) + 2*clearance
         z = float(part.get("optical_reference_local_z_mm", part["local_center_z_mm"]))
-        rotation, translation = effective_part_transform_mm(part, by_key)
+        # The tube opening follows the inserted material, not an optical-axis
+        # tilt that leaves its mechanical envelope in place.
+        rotation, translation = mechanical_part_transform_mm(part, by_key)
         slot = box((0., (lower+upper)/2, z), (2*width, upper-lower, thickness))
         slot = transformed(slot, rotation=rotation.tolist(), offset=translation.tolist())
         slot = transformed(slot, offset=(0., 0., origin))

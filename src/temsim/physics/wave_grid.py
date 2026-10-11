@@ -184,6 +184,7 @@ class WaveGridNumerics:
                 "refinement_grid_selection": "fft-friendly-required-scale-1.05-min-growth-1.25-v1",
                 "posed_lens_model": "main-column-carrier-centred-bounded-electric-residual-v3",
                 "posed_spherical_model": "canonical-first-inclination-cs-v1",
+                "intrinsic_aberration_model": "intrinsic-polynomial-canonical-screen-v1",
                 "maximum_pixels": self.maximum_pixels,
                 "maximum_working_bytes": self.maximum_working_bytes,
                 "compute_backend": self.compute_backend,
@@ -215,7 +216,7 @@ def refine_plane_wave(wave, shape, *, numerics=WaveGridNumerics(), retained_byte
     padded[start[0]:start[0]+old[0], start[1]:start[1]+old[1]] = spectrum
     amplitude = xp.fft.fftshift(xp.fft.ifft2(xp.fft.ifftshift(padded), norm="ortho"))
     basis = wave.basis_m@np.diag((old[1]/shape[1], old[0]/shape[0]))
-    result = replace(wave, amplitude=amplitude, basis_m=basis)
+    result = wave._replace_owned(amplitude, basis_m=basis)
     check_lossless_norm(wave.probability, result.probability, context="Fourier wave refinement")
     return result
 

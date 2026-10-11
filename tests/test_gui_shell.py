@@ -2600,11 +2600,17 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
     window.workspace.display_result(result, "Preview")
     qtbot.wait(20)
 
-    axial_part_count = sum(
-        not bool(part.data.get("branch_path_only", False))
-        for part in assembly.parts
-    )
-    assert len(window.workspace.component_marker_items) == axial_part_count
+    # A part can have distinct mechanical and optical references (e.g. Tip
+    # body centre vs emission boundary). Check coverage, not one line per part.
+    axial_part_keys = {
+        part.key for part in assembly.parts
+        if not bool(part.data.get("branch_path_only", False))
+    }
+    assert {item.component_key for item in window.workspace.component_marker_items} == axial_part_keys
+    tip_markers = [item for item in window.workspace.component_marker_items
+                   if item.component_key == "feg_tip"]
+    assert {item.datum_role for item in tip_markers} == {"mechanical_center", "optical_reference"}
+    assert len({item.datum_point_mm for item in tip_markers}) == 2
     camera_signal_marker = next(
         item
         for item in window.workspace.component_marker_items

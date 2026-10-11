@@ -251,7 +251,7 @@ def _prefix_matches(old, new, old_index, new_index):
         return False
     count = new_index + 1
     for name in old.__dataclass_fields__:
-        if name in {"signature", "solver_signature", "mapped_fields", "posed_spherical_kicks",
+        if name in {"signature", "solver_signature", "mapped_fields", "posed_spherical_kicks", "intrinsic_aberration_kicks",
                     "save_index", "checkpoint_index", "electric_field"}:
             continue
         if name in {"reference_momentum_kg_m_s", "electric_field_identity", "electric_reference_invariant_ev"}:
@@ -270,8 +270,8 @@ def _prefix_matches(old, new, old_index, new_index):
     # Sparse optical actions are ordered events, not one entry per Z node.
     # A checkpoint contains every action at its plane. Preserve the execution
     # order of coincident kicks and ignore only actions strictly downstream.
-    old_kicks = tuple(kick for kick in old.posed_spherical_kicks if kick.z_mm <= boundary)
-    new_kicks = tuple(kick for kick in new.posed_spherical_kicks if kick.z_mm <= boundary)
+    old_kicks = tuple(kick for kick in (*old.posed_spherical_kicks, *old.intrinsic_aberration_kicks) if kick.z_mm <= boundary)
+    new_kicks = tuple(kick for kick in (*new.posed_spherical_kicks, *new.intrinsic_aberration_kicks) if kick.z_mm <= boundary)
     if old_kicks != new_kicks:
         return False
     for key in old_maps.keys() | new_maps.keys():

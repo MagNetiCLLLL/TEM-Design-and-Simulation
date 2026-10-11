@@ -280,6 +280,16 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
     if physical_pose:
         field_only = column_pose_kind(row) == "field"
         aperture_pose = _is_aperture(row)
+        optical_tilt = (field.startswith("rotation_") or
+                        (field == "model_3d" and path[4] == "rotation_deg"))
+        if optical_tilt:
+            return _impact("active" if connected else "unknown",
+                           "Optical aperture tilt" if aperture_pose else "Optical-axis tilt",
+                           physical_pose_description(row) + ("" if aperture_pose else
+                               " Field strength is prescribed by excitation, not inferred from winding thickness."),
+                           effects=("beam_clearance",) if aperture_pose else ("magnetic_field",),
+                           results=("ray_transport", "beam_transmission") if aperture_pose else
+                                   ("ray_transport", "magnetic_field", "optical_transfer"))
         effects = (("magnetic_field",) if field_only else
                    ("geometry", "beam_clearance") if aperture_pose else
                    ("geometry", "magnetic_field", "beam_clearance"))
@@ -313,7 +323,8 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
         return _impact("unsupported", "CAD display only",
                        "The saved model_3d base, scale and hole/slot features change the 3D mesh only. "
                        "These shape edits are not consumed by beam clipping, magnetic FEM or field-map geometry identity; no electrical/thermal coupling is inferred. "
-                       "Rigid offsets/rotations on supported magnetic assemblies are handled separately by physical lens placement.",
+                       "Supported component offsets move the mechanical and optical references together; "
+                       "optical tilt rotates the field/reference frame without rotating the CAD envelope.",
                        effects=("display",), results=("3d_preview",))
     if simulation_mode not in MODE_BY_KEY or not MODE_BY_KEY[simulation_mode].available:
         return _impact("unknown", "Simulation context not connected",
@@ -374,9 +385,11 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
             from temsim.lens_pose import physical_pose_values
             pose = physical_pose_values(row)
             tilted = bool(pose["rotation_x_mrad"] or pose["rotation_y_mrad"])
-            return _impact("active" if tilted else "inactive", "Finite tilted aperture plate",
-                           "Positive declared thickness defines the finite absorbing plate for tilted ray and wave interception, "
-                           "and the 3D material extent. Zero/unspecified thickness is rejected by tilted coherent propagation. "
+            return _impact("active" if tilted else "inactive", "Finite aperture optical thickness",
+                           "Positive declared thickness defines both the nominal CAD plate thickness and the effective absorbing "
+                           "thickness for tilted ray and wave interception. Optical tilt changes only that effective optical frame; "
+                           "the CAD material envelope keeps its orientation. This is an optical misalignment approximation, "
+                           "not a mechanically rotated plate. Zero/unspecified thickness is rejected by tilted coherent propagation. "
                            "Untilting retains the existing thin-plane optical model; it does not infer thickness from a display envelope.",
                            effects=("geometry", "beam_clearance") if tilted else ("geometry", "display"),
                            results=("3d_preview", "physical_layout", "ray_transport", "beam_transmission") if tilted

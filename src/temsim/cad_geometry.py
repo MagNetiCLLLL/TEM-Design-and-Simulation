@@ -14,6 +14,9 @@ MATERIAL_COLORS = {
     "nonmagnetic_housing": (.61, .65, .69, 1.),
     "electrode": (.71, .73, .77, 1.),
     "tungsten": (.50, .54, .60, 1.),
+    "silicon": (.28, .50, .75, 1.),
+    "scintillator_unspecified": (.51, .78, .47, 1.),
+    "optical_coupler_unspecified": (.42, .69, .74, 1.),
 }
 
 

@@ -89,6 +89,17 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Validation dependency installation failed" }
           python -m pip check
           if ($LASTEXITCODE -ne 0) { throw "Validation dependencies are inconsistent" }
+      - name: Install isolated CAD worker for real STEP editing checks
+        if: matrix.scope == 'field-ui'
+        run: |
+          python -m venv environment/cad
+          if ($LASTEXITCODE -ne 0) { throw "CAD worker environment creation failed" }
+          environment/cad/Scripts/python.exe -m pip install -r requirements-cad.txt
+          if ($LASTEXITCODE -ne 0) { throw "CAD worker dependencies failed" }
+          environment/cad/Scripts/python.exe -m pip check
+          if ($LASTEXITCODE -ne 0) { throw "CAD worker dependencies inconsistent" }
+          environment/cad/Scripts/python.exe -c "import cadquery; print(cadquery.__version__)"
+          if ($LASTEXITCODE -ne 0) { throw "Required STEP editing backend unavailable" }
       - name: Run declared scope with one numerical thread
         # Hosted Windows runners have no CUDA device. Keep real-GPU tests in
         # collection and report normal skips as NOT_RUN, never as GPU success.

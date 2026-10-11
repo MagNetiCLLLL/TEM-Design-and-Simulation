@@ -81,6 +81,29 @@ def _grid_electric(x, y, z, data):
     return lower+v*(upper-lower), -2.*x*radial, -2.*y*radial, -(upper-lower)/dz
 
 
+def _grid_electric_arrays(x, y, z, data, *, xp=np):
+    """Array equivalent of ``_grid_electric`` on NumPy or CuPy.
+
+    The right-hand cell at a node, clamped endpoint cells, and interpolation
+    in r squared (not r) exactly match the compiled particle kernel. Outside
+    the fixed domain every returned component is NaN, never extrapolated.
+    Coordinates are metres, potential volts and E volts/metre.
+    """
+    r, zz, voltage = data
+    x, y, z = xp.broadcast_arrays(xp.asarray(x), xp.asarray(y), xp.asarray(z))
+    radius = xp.sqrt(x*x+y*y)
+    valid = (xp.isfinite(radius+z) & (radius <= r[-1]) & (z >= zz[0]) & (z <= zz[-1]))
+    i = xp.clip(xp.searchsorted(r, radius, side="right")-1, 0, len(r)-2)
+    j = xp.clip(xp.searchsorted(zz, z, side="right")-1, 0, len(zz)-2)
+    ds, dz = r[i+1]*r[i+1]-r[i]*r[i], zz[j+1]-zz[j]
+    u, v = (radius*radius-r[i]*r[i])/ds, (z-zz[j])/dz
+    a, b, c, d = voltage[i, j], voltage[i+1, j], voltage[i, j+1], voltage[i+1, j+1]
+    lower, upper = a+u*(b-a), c+u*(d-c)
+    radial = ((1.-v)*(b-a)+v*(d-c))/ds
+    values = lower+v*(upper-lower), -2.*x*radial, -2.*y*radial, -(upper-lower)/dz
+    return tuple(xp.where(valid, value, xp.nan) for value in values)
+
+
 @register_jitable
 def _scalar_derivative(x, px, y, py, z, index, di, coefficients, forcing,
                        electric_data, invariant, optical_invariant, reference_p):
@@ -201,23 +224,39 @@ def _compiled_electric_data(field):
 
 def _vector_reference(inputs, z, electric, energy, optical_invariant, initial_time,
                       mapped_fields, step_operator, defer_nonfinite, cancel_check,
-                      posed_spherical_kicks=None):
+                      posed_spherical_kicks=None, *, xp=np, electric_data=None):
     (kx,ky,hn,hs,b,_,cs,power,rotation,step,x,tx,y,ty,kickx,kicky,save,cp,kxy,bx,by,ref) = inputs
     count = len(x)
-    history = np.empty((6,len(save),count)); checkpoints = np.empty((6,len(cp),count))
+    from temsim.physics.intrinsic_aberrations import FrozenIntrinsicAberrationKick
+    intrinsic_electric = {}
+    tilted_nodes = tuple(j for j, kicks in (posed_spherical_kicks or {}).items()
+        if any(isinstance(kick, FrozenIntrinsicAberrationKick) and np.any(kick.geometry()[1])
+               for kick in kicks))
+    if tilted_nodes:
+        # Same captured local electric expansion and obliquity budget as waves;
+        # this screen must not silently assume zero E in the instrument tail.
+        from temsim.physics.wave_field_admission import sample_spherical_electric
+        gradients, hessians = sample_spherical_electric(electric, z[list(tilted_nodes)]*1e3)
+        intrinsic_electric = dict(zip(tilted_nodes, zip(gradients, hessians)))
+    history = xp.empty((6,len(save),count)); checkpoints = xp.empty((6,len(cp),count))
+    bounds = getattr(electric, 'bounds_m', None)
+    bounds = None if bounds is None else xp.asarray(bounds)
     saved = captured = 0
     time = initial_time.copy()
     def sample(xx, yy, zz):
-        points = np.column_stack((xx,yy,np.full(count,zz)))
-        valid = np.all(np.isfinite(points),axis=1)
-        bounds = getattr(electric, 'bounds_m', None)
+        points = xp.column_stack((xx,yy,xp.full(count,zz)))
+        valid = xp.all(xp.isfinite(points),axis=1)
         if bounds is not None:
-            valid &= np.all((points >= bounds[0]) & (points <= bounds[1]),axis=1)
-            valid &= np.hypot(points[:,0],points[:,1]) <= bounds[1,0]
-        if not defer_nonfinite and not np.all(valid):
+            valid &= xp.all((points >= bounds[0]) & (points <= bounds[1]),axis=1)
+            valid &= xp.hypot(points[:,0],points[:,1]) <= bounds[1,0]
+        if not defer_nonfinite and not xp.all(valid):
             raise ValueError('Electric column trajectory left the fixed instrument field domain')
-        potential = np.full(count,np.nan); ef = np.full((count,3),np.nan)
-        if np.any(valid):
+        potential = xp.full(count,xp.nan); ef = xp.full((count,3),xp.nan)
+        if electric_data is not None:
+            phi, ex, ey, ez = _grid_electric_arrays(xx, yy, zz, electric_data, xp=xp)
+            potential = xp.where(valid, phi, xp.nan)
+            ef = xp.where(valid[:, None], xp.column_stack((ex, ey, ez)), xp.nan)
+        elif xp.any(valid):
             potential[valid],ef[valid] = electric.interpolate(points[valid])
         return potential,ef
     invariant = energy-sample(x,y,z[0])[0]
@@ -225,8 +264,8 @@ def _vector_reference(inputs, z, electric, energy, optical_invariant, initial_ti
     def pv(values):
         ratios = values/REST_EV
         with np.errstate(invalid='ignore',divide='ignore'):
-            momentum = M*C*np.sqrt(ratios)*np.sqrt(ratios+2.)
-            speed = C*np.sqrt(ratios/(ratios+1.))*np.sqrt((ratios+2.)/(ratios+1.))
+            momentum = M*C*xp.sqrt(ratios)*xp.sqrt(ratios+2.)
+            speed = C*xp.sqrt(ratios/(ratios+1.))*xp.sqrt((ratios+2.)/(ratios+1.))
         return momentum,speed
     for j in range(len(z)):
         if cancel_check is not None and j % 64 == 0: cancel_check()
@@ -237,19 +276,29 @@ def _vector_reference(inputs, z, electric, energy, optical_invariant, initial_ti
         tx,ty=tx+kickx[j],ty+kicky[j]
         radial=cs[j]*(x*x+y*y);tx,ty=tx-radial*x,ty-radial*y
         for kick in (posed_spherical_kicks or {}).get(j, ()):
+            if isinstance(kick, FrozenIntrinsicAberrationKick):
+                local_phi, _ = sample(x, y, z[j])
+                local_p, _ = pv(invariant+local_phi)
+                gradient, hessian = intrinsic_electric.get(j, (None, None))
+                x,tx,y,ty=kick.apply_canonical(x,tx,y,ty,
+                    momentum_kg_m_s=local_p,
+                    fields=mapped_fields, aligned_bz_t=2.*b[2*j]/Q,
+                    electrostatic_gradient_v_m=gradient,
+                    electrostatic_hessian_v_m2=hessian)
+                continue
             # Preserve the existing geometric ray screen. Its coherent
             # small-inclination approximation has separate phase-domain gates.
             x,tx,y,ty=kick.apply(x,tx,y,ty)
         phi,_=sample(x,y,z[j]); actual_energy=invariant+phi
         if saved<len(save) and j==save[saved]:
-            history[:,saved]=x,tx,y,ty,time,actual_energy;saved+=1
+            history[:,saved]=xp.stack((x,tx,y,ty,time,actual_energy));saved+=1
         if captured<len(cp) and j==cp[captured]:
-            checkpoints[:,captured]=x,tx,y,ty,time,actual_energy;captured+=1
+            checkpoints[:,captured]=xp.stack((x,tx,y,ty,time,actual_energy));captured+=1
         if j+1==len(z):break
         a,mid,c,d=2*j,2*j+1,2*j+2,3*j
         p,_=pv(oi+phi)
         before=tuple(v.copy() for v in (x,tx,y,ty))
-        initial=np.array((x,p*tx-b[a]*y,y,p*ty+b[a]*x))
+        initial=xp.stack((x,p*tx-b[a]*y,y,p*ty+b[a]*x))
         active=tuple(item for item in mapped_fields if item.field_support_mm[0]<z[j+1]*1e3 and item.field_support_mm[1]>z[j]*1e3)
         def derivative(values,index,di,zz):
             xx,px,yy,py=values
@@ -259,17 +308,17 @@ def _vector_reference(inputs, z, electric, energy, optical_invariant, initial_ti
             fx=-Q*by[di]+Q*ef[:,0]/v;fy=Q*bx[di]+Q*ef[:,1]/v
             if active:
                 from temsim.physics.vector_field_transport import magnetic_slope_derivative
-                points=np.column_stack((xx,yy,np.full(count,zz)))
-                good=np.all(np.isfinite(points),axis=1)
-                acceleration=np.full((count,2),np.nan)
-                if np.any(good):
+                points=xp.column_stack((xx,yy,xp.full(count,zz)))
+                good=xp.all(xp.isfinite(points),axis=1)
+                acceleration=xp.full((count,2),xp.nan)
+                if xp.any(good):
                     acceleration[good]=magnetic_slope_derivative(active, points[good],
-                        np.column_stack((ux[good],uy[good])),Q/p[good])
+                        xp.column_stack((ux[good],uy[good])),Q/p[good],xp=xp)
                 fx+=p*acceleration[:,0]
                 fy+=p*acceleration[:,1]
-            derivatives=np.array((ux,-(ref[0]*kx[index]+b[index]**2/p)*xx-ref[0]*kxy[index]*yy+(b[index]/p)*py-ref[0]*(hn[index]*hu+hs[index]*hv)+fx,
+            derivatives=xp.stack((ux,-(ref[0]*kx[index]+b[index]**2/p)*xx-ref[0]*kxy[index]*yy+(b[index]/p)*py-ref[0]*(hn[index]*hu+hs[index]*hv)+fx,
                                   uy,-(ref[0]*ky[index]+b[index]**2/p)*yy-ref[0]*kxy[index]*xx-(b[index]/p)*px+ref[0]*(hn[index]*hv-hs[index]*hu)+fy))
-            return derivatives,np.sqrt(1.+ux*ux+uy*uy)/va
+            return derivatives,xp.sqrt(1.+ux*ux+uy*uy)/va
         h=step[j]
         ka,ta=derivative(initial,a,d,np.nextafter(z[j],z[j+1]))
         kb,tb=derivative(initial+.5*h*ka,mid,d+1,.5*(z[j]+z[j+1]))
@@ -281,7 +330,7 @@ def _vector_reference(inputs, z, electric, energy, optical_invariant, initial_ti
         if step_operator is not None:
             step_operator.energies=invariant+sample(x,y,z[j+1])[0]
             x,tx,y,ty=step_operator(j,before,(x,tx,y,ty))
-        if not defer_nonfinite and not np.all(np.isfinite((x,tx,y,ty))):
+        if not defer_nonfinite and not xp.all(xp.isfinite(xp.stack((x,tx,y,ty)))):
             raise ValueError('Electric column trajectory left its positive-energy forward paraxial domain')
     return history,checkpoints
 

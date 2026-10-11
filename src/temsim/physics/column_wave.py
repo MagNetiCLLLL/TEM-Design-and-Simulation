@@ -468,7 +468,8 @@ def _linear_run(wave, wavelength, paths, first, plan, radii, stops, kick_x, kick
     accepted, last = None, first
     checks = []
     from temsim.physics.posed_aberrations import kick_indices
-    spherical_events = kick_indices(getattr(plan, "posed_spherical_kicks", ()), plan.z_mm,
+    spherical_events = kick_indices((*getattr(plan, "posed_spherical_kicks", ()),
+                                    *getattr(plan, "intrinsic_aberration_kicks", ())), plan.z_mm,
                                     include_initial=False)
     for i in range(first, len(paths)):
         j = i+1
@@ -577,7 +578,7 @@ def _clip(wave, radius_mm, apertures, z_mm, prior, *, previous_z_mm=None):
             before = wave.probability
             mask = xp.hypot(xy[0], xy[1]) < radius_mm
             if not bool(xp.all(mask)):
-                wave = replace(wave, amplitude=xp.where(mask, wave.amplitude, 0j))
+                wave = wave._replace_owned(xp.where(mask, wave.amplitude, 0j))
             if wave.probability < before:
                 rows.append({"component": "column_wall", "z_mm": z_mm,
                              "lost_weight": prior*(before-wave.probability)})
@@ -606,7 +607,7 @@ def _clip(wave, radius_mm, apertures, z_mm, prior, *, previous_z_mm=None):
         if mask.shape != wave.amplitude.shape:
             raise ValueError("Column aperture mask has the wrong shape")
         before = wave.probability
-        wave = replace(wave, amplitude=xp.where(mask, wave.amplitude, 0j))
+        wave = wave._replace_owned(xp.where(mask, wave.amplitude, 0j))
         rows.append({"component": a.key, "z_mm": z_mm,
             "input_weight": prior*before, "output_weight": prior*wave.probability,
             "lost_weight": prior*(before-wave.probability)})
@@ -684,7 +685,8 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
     maps = {} if _transport_cache is None else _transport_cache
     electric = _electric_coefficients(plan)
     from temsim.physics.posed_aberrations import kick_indices
-    spherical_events = kick_indices(getattr(plan, "posed_spherical_kicks", ()), plan.z_mm,
+    spherical_events = kick_indices((*getattr(plan, "posed_spherical_kicks", ()),
+                                    *getattr(plan, "intrinsic_aberration_kicks", ())), plan.z_mm,
                                     include_initial=False)
     spherical_electric = {}
     if spherical_events and getattr(plan, "electric_field", None) is not None:
@@ -697,11 +699,22 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
     retained_bytes += resident_wave_bytes(checkpoint.beam)
     map_bytes = (2048 if getattr(plan, "mapped_fields", ()) else 512)*len(plan.step_m)
     retained_bytes += map_bytes
-    for mode in checkpoint.beam.modes:
-        grid_numerics.check(mode.plane.amplitude.shape, retained_bytes=retained_bytes)
+    modes = checkpoint.beam.modes
+    if hasattr(modes, "rows"):
+        # Preflight all declared grids without checksumming/copying every
+        # multi-gigabyte field twice. The actual mode reader below still
+        # verifies every file and validates the full immutable amplitude.
+        shapes = (tuple(row["arrays"]["amplitude"]["shape"]) for row in modes.rows)
+    else:
+        shapes = (mode.plane.amplitude.shape for mode in modes)
+    for shape in shapes:
+        grid_numerics.check(shape, retained_bytes=retained_bytes)
     for index, mode in enumerate(checkpoint.beam.modes):
         if cancelled():
             raise InterruptedError("Column wave propagation cancelled")
+        # Recheck the loaded array too; metadata is a resource estimate, not
+        # permission to execute a differently sized or unverified field.
+        grid_numerics.check(mode.plane.amplitude.shape, retained_bytes=retained_bytes)
         from temsim.physics.tip_gun_wave import _momentum_velocity
         entrance_p, entrance_v = _momentum_velocity(mode.energy_kev*1000)
         nodes, phi, _, _ = electric
@@ -765,7 +778,9 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         support_ledger.update(maximum_accumulated_relative_l2=grid_numerics.maximum_accumulated_support_l2,
             scope="column support windows and Fourier projections; relative to this mode at column entrance; not total discretisation error")
         if _device.backend == "cupy":
-            wave = replace(wave, amplitude=_device.xp.asarray(wave.amplitude))
+            # This host checkpoint is immutable; its upload is a fresh device
+            # allocation owned by this mode, not another retained wave.
+            wave = wave._replace_owned(_device.xp.array(wave.amplitude, copy=True))
         wavelength = float(wavelength_m(mode.energy_kev*1000))
         def admit_compaction(original, compact, evidence, z, strengths):
             if evidence is None:
@@ -1016,9 +1031,12 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
             if plan.cs_kick_m3[j]:
                 carrier_dirty = True
             for spherical in spherical_events.get(j, ()):
-                if spherical.strength_m3 == 0:
+                from temsim.physics.intrinsic_aberrations import FrozenIntrinsicAberrationKick, apply_intrinsic_wave
+                intrinsic_event = isinstance(spherical, FrozenIntrinsicAberrationKick)
+                if not intrinsic_event and spherical.strength_m3 == 0:
                     continue
                 from temsim.physics.posed_aberration_wave import apply_posed_spherical
+                apply_event = apply_intrinsic_wave if intrinsic_event else apply_posed_spherical
                 evidence = []
 
                 def apply_spherical(value):
@@ -1026,7 +1044,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                     # scratch used by the obliquity/splitting checks.
                     grid_numerics.check(value.amplitude.shape, retained_bytes=retained_bytes,
                                         working_bytes_per_pixel=1024)
-                    result, record = apply_posed_spherical(value, wavelength, spherical,
+                    result, record = apply_event(value, wavelength, spherical,
                         momentum_kg_m_s=float(local_p), reference_momentum_kg_m_s=float(entrance_p),
                         fields=getattr(mode_plan, "mapped_fields", ()),
                         aligned_bz_t=float(plan.magnetic_t[j]), error_budget=1e-10,
@@ -1041,9 +1059,11 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                     wave, rows = apply_resolved_operator(wave, apply_spherical,
                         numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled)
                 except ValueError as error:
-                    raise ValueError(f"Spherical aberration of {spherical.lens_key} at "
+                    label = "Intrinsic" if intrinsic_event else "Spherical"
+                    raise ValueError(f"{label} aberration of {spherical.lens_key} at "
                                      f"Z {plan.z_mm[j]:.9g} mm: {error}") from error
-                refinements.extend(dict(row, z_mm=float(plan.z_mm[j]), operator="posed_spherical")
+                refinements.extend(dict(row, z_mm=float(plan.z_mm[j]),
+                                        operator="intrinsic_aberration" if intrinsic_event else "posed_spherical")
                                    for row in rows)
                 spherical_actions.extend(dict(row, z_mm=float(plan.z_mm[j]),
                                               component=spherical.lens_key) for row in evidence[-1:])
@@ -1097,6 +1117,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         "grid_numerics": grid_numerics.column_identity(),
         "integrator": "second-order midpoint affine quadratic Hamiltonian with variable longitudinal momentum / symmetric magnetic residual and cubic splits / discrete axial and canonical first-inclination Cs",
         "posed_spherical_model": "canonical-first-inclination-cs-v1; per-event approximation and exponential/splitting errors recorded separately",
+        "intrinsic_aberration_model": "intrinsic-polynomial-canonical-screen-v1; additional lens-local terms, legacy Cs remains separate",
         "coordinate_basis": "laboratory canonical normalized to each mode entrance momentum; output phase carriers converted to exit momentum; continuous symmetric axial-field gauge",
         "electric_model": "captured static scalar field, near-axis second-order transverse expansion; axis energy, axial action and flight time carried",
         "dipole_model": "shared finite field supports; driven coils frozen at per-mode axial arrival time, no longitudinal pulse envelope",
@@ -1127,6 +1148,9 @@ def _slice_prepared(prepared, first, last):
     # action. A lens at the right boundary belongs to this segment exactly once.
     values["posed_spherical_kicks"] = tuple(
         kick for kick in getattr(plan, "posed_spherical_kicks", ())
+        if plan.z_mm[first] < kick.z_mm <= plan.z_mm[last])
+    values["intrinsic_aberration_kicks"] = tuple(
+        kick for kick in getattr(plan, "intrinsic_aberration_kicks", ())
         if plan.z_mm[first] < kick.z_mm <= plan.z_mm[last])
     values["signature"] = json_digest((plan.signature, first, last))
     sliced_stops = {i-first: value for i, value in stops.items() if first < i <= last}

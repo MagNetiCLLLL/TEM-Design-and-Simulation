@@ -1,0 +1,75 @@
+{
+  "id": "Thermo-Iliad-Ultra-DS0510",
+  "kind": "manufacturer_datasheet",
+  "family": "Zebra EELS and Ultra-X EDS",
+  "title": "Iliad Ultra (S)TEM for materials science",
+  "authors": [
+    "Thermo Fisher Scientific"
+  ],
+  "owner": [
+    "Thermo Fisher Scientific Inc."
+  ],
+  "dates": {
+    "documentRevision": "DS0510-EN-07-2025"
+  },
+  "url": "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/iliad-ultra-datasheet-ds0510.pdf",
+  "primary_pdf_url": "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/iliad-ultra-datasheet-ds0510.pdf",
+  "figures": "Page 2 Zebra schematic and specification table; page 3 Ultra-X aggregate acceptance.",
+  "component_keys": [
+    "energy_filter_zebra",
+    "eds_detector_system"
+  ],
+  "supported_facts": [
+    "Indirect detection with five independent 2048-pixel strips, 14 micrometre pixels and a 256 by 2048 alignment area.",
+    "Camera deflection selects spectral strips."
+  ],
+  "unsupported_claims": [
+    "No measured alignment placement, package size, strip height/pitch, scintillator thickness or optical coupling topology.",
+    "Does not infer individual EDS sensor area or distance."
+  ],
+  "schema": "cad-reference-source-v1",
+  "archived_on": "2026-10-11",
+  "retrieved_utc": "2026-10-11T09:36:17.514325+00:00",
+  "archive_status": "original_pdf_saved",
+  "pdf_page_count": 4,
+  "pdf_metadata": {
+    "format": "PDF 1.5",
+    "title": "",
+    "author": "",
+    "subject": "",
+    "keywords": "",
+    "creator": "Adobe InDesign 20.4 (Macintosh)",
+    "producer": "Adobe PDF Library 17.0",
+    "creationDate": "D:20250714092517+02'00'",
+    "modDate": "D:20250714092519+02'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "rendered_pdf_pages_1based": [
+    2
+  ],
+  "metadata_scope": "Bibliographic record, not ownership or patent-status certification.",
+  "rights_note": "Public original archived for project provenance; copyright remains with its owner, and public access is not an open licence.",
+  "assembly_comparison_rule": "Sources support identified construction families. Saved reception inputs remain authoritative; engineering dimensions are explicitly separate.",
+  "availability_notes": [
+    "Downloaded original PDF from its public primary host or public patent PDF archive; inspected full-page renders without geometric rescaling."
+  ],
+  "assets": [
+    {
+      "file": "original.pdf",
+      "bytes": 943427,
+      "sha256": "7295f65572f93e264f31fcd06e9ca2f6d90509acb06f119e484d8906897b8a6c",
+      "kind": "original_pdf",
+      "method": "download_public_original_pdf",
+      "source_url": "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/iliad-ultra-datasheet-ds0510.pdf"
+    },
+    {
+      "file": "page-02.png",
+      "bytes": 413299,
+      "sha256": "a08581a689f7028e0372755493e5007c5afd7ca581af7d2390dc9c3be6bb0e16",
+      "kind": "unaltered_full_page_render",
+      "pdf_page_1based": 2,
+      "render_dpi": 93.6
+    }
+  ]
+}

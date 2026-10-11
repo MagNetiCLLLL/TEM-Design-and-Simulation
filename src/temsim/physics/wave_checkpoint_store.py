@@ -4,7 +4,10 @@ Only the pipeline constructs lookup keys from captured physical inputs. This
 is not an import API for a user-supplied beam. No pickle or executable codec.
 Incomplete writes are never indexed; immutable mode buffers load one at a time.
 """
+from collections import OrderedDict
 from collections.abc import Mapping, Sequence
+from contextlib import contextmanager
+from contextvars import ContextVar
 from dataclasses import asdict, dataclass
 from hashlib import sha256
 import json
@@ -19,6 +22,82 @@ from temsim.immutable_json import freeze_json, thaw_json, json_digest
 from temsim.physics.multiplane_wave import PlaneWave
 from temsim.physics.wave_flux import WaveMode
 from temsim.physics.wave_reference import AxialWaveReference
+
+
+_READ_SESSION = ContextVar("executed_wave_read_session", default=None)
+
+
+class _WaveReadSession:
+    """One request's bounded, verified immutable snapshots, never a file cache.
+
+    A mode becomes a snapshot only after the normal checksum and numerical
+    validation have succeeded. A subsequent request checks the files again,
+    including same-size/same-timestamp changes. Context-local ownership keeps
+    worker requests isolated and releases the retained arrays on cancellation.
+    """
+
+    def __init__(self, maximum_bytes, cancelled):
+        self.maximum_bytes = maximum_bytes
+        self.cancelled = cancelled
+        self._modes = OrderedDict()
+        self.resident_bytes = 0
+        self.peak_bytes = 0
+
+    def check_cancelled(self):
+        if self.cancelled():
+            raise InterruptedError("Executed wave read cancelled")
+
+    @staticmethod
+    def _key(reader, row):
+        # Different manifests can name the same directory; bind all mode
+        # metadata and array checksums, not just its path or array timestamp.
+        return reader.root, reader.reference, json_digest(row)
+
+    def find(self, reader, row):
+        self.check_cancelled()
+        key = self._key(reader, row)
+        item = self._modes.get(key)
+        if item is None:
+            return None
+        self._modes.move_to_end(key)
+        return item[0]
+
+    def retain(self, reader, row, mode):
+        self.check_cancelled()
+        size = sum(value.nbytes for name in ("amplitude", "basis_m", "origin_m", "curvature_m1", "tilt_rad")
+                   if (value := getattr(mode.plane, name)) is not None)
+        if size > self.maximum_bytes:
+            return
+        key = self._key(reader, row)
+        while self._modes and self.resident_bytes+size > self.maximum_bytes:
+            _, (_, removed) = self._modes.popitem(last=False)
+            self.resident_bytes -= removed
+        self._modes[key] = mode, size
+        self.resident_bytes += size
+        self.peak_bytes = max(self.peak_bytes, self.resident_bytes)
+
+    def clear(self):
+        self._modes.clear()
+        self.resident_bytes = 0
+
+
+@contextmanager
+def wave_read_session(maximum_bytes, *, cancelled=lambda: False):
+    """Share checked mode snapshots only within this synchronous request.
+
+    The caller includes this bounded retention in its memory reservation. A
+    zero budget preserves the one-mode streaming path. File verification is
+    unchanged outside the session, and no snapshot survives its exit.
+    """
+    if isinstance(maximum_bytes, bool) or not isinstance(maximum_bytes, int) or maximum_bytes < 0:
+        raise ValueError("Wave read-session memory budget must be a non-negative integer")
+    session = _WaveReadSession(maximum_bytes, cancelled)
+    token = _READ_SESSION.set(session)
+    try:
+        yield session
+    finally:
+        session.clear()
+        _READ_SESSION.reset(token)
 
 
 def _hash_file(path):
@@ -49,7 +128,13 @@ class _StoredModes(Sequence):
 
     def geometries(self):
         """Plan a covering domain without reading every large amplitude."""
+        session = _READ_SESSION.get()
         for row in self.rows:
+            snapshot = None if session is None else session.find(self, row)
+            if snapshot is not None:
+                plane = snapshot.plane
+                yield plane.amplitude.shape, plane.basis_m, plane.origin_m
+                continue
             arrays = row["arrays"]
             yield tuple(arrays["amplitude"]["shape"]), self._array(arrays["basis_m"]), self._array(arrays["origin_m"])
 
@@ -57,14 +142,21 @@ class _StoredModes(Sequence):
         if isinstance(index, slice):
             raise TypeError("Read stored modes one at a time, without materialising a slice")
         row = self.rows[index]
+        session = _READ_SESSION.get()
+        snapshot = None if session is None else session.find(self, row)
+        if snapshot is not None:
+            return snapshot
         values = {}
         for field, item in row["arrays"].items():
             # mmap avoids a second heap-sized input; PlaneWave owns the final
             # immutable bytes so later external writes cannot mutate a mode.
             values[field] = self._array(item)
         reference = None if row["axial_reference"] is None else AxialWaveReference(**row["axial_reference"])
-        return WaveMode(PlaneWave(**values), row["weight"], self.reference, row["mode_id"], row["energy_kev"],
+        mode = WaveMode(PlaneWave(**values), row["weight"], self.reference, row["mode_id"], row["energy_kev"],
                         reference, tuple(row.get("scattering_history", ())))
+        if session is not None:
+            session.retain(self, row, mode)
+        return mode
 
 
 @dataclass(frozen=True)

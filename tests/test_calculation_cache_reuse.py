@@ -359,6 +359,17 @@ def test_scan_calibration_model_versions_persisted_particle_and_wave_products(mo
         assert before[key] != historical[key]
 
 
+def test_optical_tilt_semantics_invalidate_old_rotating_hardware_products(monkeypatch):
+    from temsim import calculation_cache
+    state = default_state()
+    current = calculation_signatures(state)
+    monkeypatch.setattr(calculation_cache, "_STAGE_INPUT_SCHEMA",
+                        "live-lens-components-v4-physical-gun-apertures")
+    historical = calculation_signatures(state)
+    for key in ("request", "column", "incident", "scan_geometry", "scan_ray_paths", "stem"):
+        assert current[key] != historical[key]
+
+
 def test_scan_response_products_ignore_emitter_sampling_density():
     state = default_state()
     before = calculation_signatures(state)

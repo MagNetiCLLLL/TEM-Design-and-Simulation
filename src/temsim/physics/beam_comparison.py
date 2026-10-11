@@ -72,7 +72,7 @@ def particle_plane_moments(plane):
         population_count=plane.ray_count)
 
 
-def _mode_moments(plane):
+def _mode_moments(plane, intensity=None):
     """Affine cell moments without a full coordinate mesh or a remapped image."""
     if not isinstance(plane, PlaneWave):
         raise ValueError("This comparison needs a forward Cartesian wave checkpoint; two-way near fields need flux readout")
@@ -83,7 +83,8 @@ def _mode_moments(plane):
     xweights = np.zeros(nx)
     yweights = np.zeros(ny)
     for first in range(0, ny, 64):
-        probability = abs(plane.amplitude[first:first+64])**2
+        probability = (abs(plane.amplitude[first:first+64])**2 if intensity is None
+                       else intensity[first:first+64])
         xweights += probability.sum(axis=0)
         yweights[first:first+64] = probability.sum(axis=1)
     total = float(xweights.sum())
@@ -93,49 +94,76 @@ def _mode_moments(plane):
     dx, dy = xi-centre_index[0], yi-centre_index[1]
     cross = 0.
     for first in range(0, ny, 64):
-        probability = abs(plane.amplitude[first:first+64])**2
+        probability = (abs(plane.amplitude[first:first+64])**2 if intensity is None
+                       else intensity[first:first+64])
         cross += float(dy[first:first+64] @ probability @ dx)
     covariance_index = np.array(((dx**2 @ xweights, cross), (cross, dy**2 @ yweights)))/total
     return (total, plane.origin_m+plane.basis_m @ centre_index,
             plane.basis_m @ covariance_index @ plane.basis_m.T)
 
 
-def wave_plane_moments(checkpoint):
-    """Add per-mode intensities, retaining source loss and between-mode width."""
-    if checkpoint.beam.reference_plane != TIP_REFERENCE:
-        raise ValueError("Wave comparison requires an executed physical-tip reference")
-    z = _scalar(checkpoint.plane_z_mm, "Wave Z")
-    reference = _scalar(checkpoint.reference_current_a, "Wave source current", nonnegative=True)
-    total = 0.
-    centre = np.zeros(2)
-    covariance_sum = np.zeros((2, 2))
-    energy = variance_sum = 0.
-    count = 0
-    for mode in checkpoint.beam.modes:
-        count += 1
-        norm, mode_centre, mode_covariance = _mode_moments(mode.plane)
+class _WavePlaneMoments:
+    """Small request-local accumulator for a single pass over streamed modes.
+
+    The optional intensity is the current mode's unweighted cell probability,
+    already computed for the display. Neither it nor a mode array is retained.
+    The accumulator is bound to its checkpoint and cannot stand in for an
+    incomplete read or a different observation plane.
+    """
+
+    def __init__(self, checkpoint):
+        if checkpoint.beam.reference_plane != TIP_REFERENCE:
+            raise ValueError("Wave comparison requires an executed physical-tip reference")
+        self.checkpoint = checkpoint
+        self.z = _scalar(checkpoint.plane_z_mm, "Wave Z")
+        self.reference = _scalar(checkpoint.reference_current_a, "Wave source current", nonnegative=True)
+        self.total = 0.
+        self.centre = np.zeros(2)
+        self.covariance_sum = np.zeros((2, 2))
+        self.energy = self.variance_sum = 0.
+        self.count = 0
+        self.mode_ids = set()
+
+    def add(self, mode, intensity=None):
+        if mode.mode_id in self.mode_ids:
+            raise ValueError("Wave moments cannot count a mode more than once")
+        self.mode_ids.add(mode.mode_id)
+        self.count += 1
+        norm, mode_centre, mode_covariance = _mode_moments(mode.plane, intensity)
         weight = _scalar(mode.weight_per_reference_electron, "Mode probability", nonnegative=True)*norm
         if weight == 0:
-            continue
+            return
         mode_energy = _scalar(mode.energy_kev, "Mode reference energy", nonnegative=True)*1000.
         if mode_energy <= 0:
             raise ValueError("Mode reference energy must be positive")
-        combined = total+weight
-        delta = mode_centre-centre
-        covariance_sum += weight*mode_covariance + total*weight/combined*np.outer(delta, delta)
-        centre += weight/combined*delta
-        de = mode_energy-energy
-        variance_sum += total*weight/combined*de*de
-        energy += weight/combined*de
-        total = combined
-    return _summary(z, reference, total, centre if total else None,
-        covariance_sum/total if total else None, energy if total else None,
-        variance_sum/total if total else None,
-        representation="incoherent sum of propagated coherent modes", population_count=count,
-        energy_definition="forward-mode reference kinetic energy; not a local energy map inside a transverse electric field")
+        combined = self.total+weight
+        delta = mode_centre-self.centre
+        self.covariance_sum += weight*mode_covariance + self.total*weight/combined*np.outer(delta, delta)
+        self.centre += weight/combined*delta
+        de = mode_energy-self.energy
+        self.variance_sum += self.total*weight/combined*de*de
+        self.energy += weight/combined*de
+        self.total = combined
+
+    def finish(self, checkpoint):
+        if checkpoint is not self.checkpoint or self.count != len(checkpoint.beam.modes):
+            raise ValueError("Wave moments must cover every mode of the same checkpoint")
+        return _summary(self.z, self.reference, self.total, self.centre if self.total else None,
+            self.covariance_sum/self.total if self.total else None,
+            self.energy if self.total else None, self.variance_sum/self.total if self.total else None,
+            representation="incoherent sum of propagated coherent modes", population_count=self.count,
+            energy_definition="forward-mode reference kinetic energy; not a local energy map inside a transverse electric field")
 
 
-def compare_beam_planes(particle_plane, wave_checkpoint):
+def wave_plane_moments(checkpoint):
+    """Add per-mode intensities, retaining source loss and between-mode width."""
+    moments = _WavePlaneMoments(checkpoint)
+    for mode in checkpoint.beam.modes:
+        moments.add(mode)
+    return moments.finish(checkpoint)
+
+
+def compare_beam_planes(particle_plane, wave_checkpoint, wave_moments=None):
     """Compare geometry/current, not phase or equality of quantum/classical laws.
 
     The workflow must additionally match its frozen input identity. Historical
@@ -145,7 +173,8 @@ def compare_beam_planes(particle_plane, wave_checkpoint):
                         rel_tol=0., abs_tol=1e-9):
         raise ValueError("Particle and wave observations must be at the same Z")
     particles = particle_plane_moments(particle_plane)
-    wave = wave_plane_moments(wave_checkpoint)
+    wave = (wave_plane_moments(wave_checkpoint) if wave_moments is None
+            else wave_moments.finish(wave_checkpoint))
     if not math.isclose(particles["reference_current_a"], wave["reference_current_a"],
                         rel_tol=1e-10, abs_tol=1e-24):
         raise ValueError("Particle and wave results must share the emitted current reference")
