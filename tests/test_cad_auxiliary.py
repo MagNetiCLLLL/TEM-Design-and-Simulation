@@ -193,9 +193,80 @@ def test_filter_optical_channel_does_not_assign_physical_poles(filter_parts):
 
 
 @pytest.mark.parametrize("field,values", [("offset_mm", [1., 0., 0.]), ("rotation_deg", [0., 3., 0.])])
-def test_unadapted_gun_editor_pose_cannot_be_silently_exported_as_unposed(field, values):
+def test_gun_editor_pose_is_preserved_by_native_and_exported_geometry(field, values):
+    from temsim.cad_mesh import meshes_from_solids
+    from temsim.part_model_3d import part_model_from_document
+
     document = _document("configs/instruments/gun/FEG.toml")
     part = next(p for p in document["parts"] if p["key"] == "feg_extractor")
-    part["model_3d"] = dict(transform={field: values})
-    with pytest.raises(ValueError, match="placement|adapter"):
-        posed_solids(part, {part["key"]: part})
+    original = meshes_from_solids(posed_solids(part, {part["key"]: part}), 32)
+    native_original = part_model_from_document(document, part["key"], angular_segments=32).meshes
+    part["model_3d"] = dict(schema_version=1, transform={field: values})
+    before = deepcopy(document)
+    exported = meshes_from_solids(posed_solids(part, {part["key"]: part}), 32)
+    native = part_model_from_document(document, part["key"], angular_segments=32).meshes
+    center = np.array((0., 0., part["local_center_z_mm"]))
+    angle = np.deg2rad(3.) if field == "rotation_deg" else 0.
+    rotation = np.array(((np.cos(angle), 0., np.sin(angle)), (0., 1., 0.),
+                         (-np.sin(angle), 0., np.cos(angle))))
+    offset = np.asarray(values) if field == "offset_mm" else np.zeros(3)
+    for source, transformed_meshes in ((original, exported), (native_original, native)):
+        assert len(source) == len(transformed_meshes)
+        for baseline, changed in zip(source, transformed_meshes, strict=True):
+            expected = (baseline.vertices - center) @ rotation.T + center + offset
+            # Tessellation may reorder vertices; compare the complete point set.
+            def ordered(points):
+                return np.asarray(sorted(map(tuple, np.round(points, 10))))
+            np.testing.assert_allclose(ordered(changed.vertices), ordered(expected), rtol=0, atol=1e-9)
+    assert document == before
+
+
+def test_native_cad_affine_preserves_nested_placement_scale_shear_and_volume():
+    from itertools import product
+    from temsim.cad_geometry import SolidSpec, box, transformed
+    from temsim.cad_features import affine
+    from temsim.cad_mesh import meshes_from_solids
+
+    center, size = np.array((1., 2., 3.)), np.array((2., 3., 4.))
+    inner_rotation = np.array(((0., 0., 1.), (0., 1., 0.), (-1., 0., 0.)))
+    inner_offset = np.array((.2, .4, -.6))
+    matrix = np.array(((1.5, .2, 0.), (0., .5, .3), (0., 0., 1.2)))
+    offset = np.array((.3, -.2, 7.))
+    outer_rotation = np.array(((0., -1., 0.), (1., 0., 0.), (0., 0., 1.)))
+    outer_offset = np.array((-1., 2., 3.))
+    shape = transformed(affine(transformed(box(center, size),
+        rotation=inner_rotation.tolist(), offset=inner_offset), matrix, offset),
+        rotation=outer_rotation.tolist(), offset=outer_offset)
+    before = deepcopy(shape)
+    mesh, = meshes_from_solids((SolidSpec("fixture", "body", "electrode", shape),))
+
+    corners = center + np.array(list(product((-1., 1.), repeat=3))) * size/2
+    expected = ((corners @ inner_rotation.T + inner_offset) @ matrix.T + offset)
+    expected = expected @ outer_rotation.T + outer_offset
+    def ordered(points):
+        return np.asarray(sorted(map(tuple, np.round(points, 10))))
+    np.testing.assert_allclose(ordered(mesh.vertices), ordered(expected), rtol=0., atol=1e-9)
+    triangles = mesh.vertices[mesh.faces]
+    volume = np.einsum("ij,ij->i", triangles[:, 0],
+                       np.cross(triangles[:, 1], triangles[:, 2])).sum()/6
+    assert volume == pytest.approx(float(np.prod(size))*1.5*.5*1.2, rel=1e-12)
+    assert shape == before
+
+
+@pytest.mark.parametrize("matrix,offset", [
+    (np.ones((2, 3)), (0., 0., 0.)),
+    (np.eye(3), (0., 0.)),
+    (np.diag((1., np.nan, 1.)), (0., 0., 0.)),
+    (np.eye(3), (0., np.inf, 0.)),
+    (np.diag((1., 0., 1.)), (0., 0., 0.)),
+    (np.diag((-1., 1., 1.)), (0., 0., 0.)),
+    (np.diag((1., 1., 1e-16)), (0., 0., 0.)),
+])
+def test_native_cad_affine_rejects_invalid_or_nonpositive_placements(matrix, offset):
+    from temsim.cad_geometry import SolidSpec, box
+    from temsim.cad_features import affine
+    from temsim.cad_mesh import meshes_from_solids
+
+    shape = affine(box((0., 0., 0.), (1., 1., 1.)), matrix, offset)
+    with pytest.raises(ValueError, match="CAD affine"):
+        meshes_from_solids((SolidSpec("fixture", "body", "electrode", shape),))

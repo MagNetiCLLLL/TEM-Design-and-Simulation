@@ -53,6 +53,18 @@ def _manifold(shape, count):
         for item in items[1:]:
             solid = solid + item
         return solid
+    if kind == "affine":
+        matrix = np.asarray(shape["matrix"], float)
+        offset = np.asarray(shape.get("offset_mm", (0., 0., 0.)), float)
+        if (matrix.shape != (3, 3) or offset.shape != (3,)
+                or not np.isfinite(matrix).all() or not np.isfinite(offset).all()):
+            raise ValueError("CAD affine placement requires a finite 3 by 3 matrix and 3D offset")
+        determinant = float(np.linalg.det(matrix))
+        # Match the STEP export contract: positive scaling/shear is permitted,
+        # but a collapsed or reflected solid is not an editor placement.
+        if not math.isfinite(determinant) or determinant <= 1e-15:
+            raise ValueError("CAD affine transform must preserve orientation and nonzero volume")
+        return _manifold(shape["shape"], count).transform(np.column_stack((matrix, offset)))
     if kind == "transform":
         rotation = np.asarray(shape["rotation"], float)
         offset = np.asarray(shape["offset_mm"], float)

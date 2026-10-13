@@ -111,16 +111,29 @@ def test_grounded_field_requests_cover_the_shared_endpoint_without_solving(catal
 
 
 @pytest.mark.parametrize("selection", REPRESENTATIVE_SELECTIONS, ids=("short-no-filter", "long-filter-blanker"))
-def test_rendered_liner_uses_the_same_endpoint(catalog, selection):
+def test_rendered_liner_meets_terminal_component_without_duplicate_material(catalog, selection):
     state = default_state()
     assembly = catalog.apply(state, selection)
     # Only synthesize the resolved liner, avoiding a full instrument mesh.
     model = assembly_model_from_assembly(replace(assembly, modules=(), parts=()), angular_segments=8)
     assert not model.errors
     assert model.meshes
+    terminal = assembly.part("camera" if selection.recording == "No Energy Filter"
+                             else ENERGY_FILTER_ENTRANCE_APERTURE)
+    # The solver's equivalent liner continues through the terminal allocation,
+    # but its component body owns the material there. The independent drift
+    # tube meets the allocation's upstream end instead of adding a second wall.
     assert max(float(mesh.vertices[:, 2].max()) for mesh in model.meshes) == pytest.approx(
-        instrument_electric_end_mm(state)
+        terminal.start_z_mm
     )
+    assert all(mesh.key != f"@vacuum_liner:{terminal.key}" for mesh in model.meshes)
+    assert terminal.start_z_mm < instrument_electric_end_mm(state) <= terminal.end_z_mm
+    terminal_model = assembly_model_from_assembly(
+        replace(assembly, parts=(terminal,), vacuum_liner_segments=()), angular_segments=8,
+    )
+    assert not terminal_model.errors and terminal_model.meshes
+    assert min(float(mesh.vertices[:, 2].min()) for mesh in terminal_model.meshes) < terminal.center_z_mm
+    assert max(float(mesh.vertices[:, 2].max()) for mesh in terminal_model.meshes) > terminal.center_z_mm
     if selection.recording == "No Energy Filter":
         housing = assembly.part("camera_recording_housing")
         housing_model = assembly_model_from_assembly(

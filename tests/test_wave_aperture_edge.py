@@ -99,12 +99,8 @@ def test_uncovered_geometry_is_refused(invalid):
 
 
 def test_device_field_estimate_matches_cpu():
-    cp = pytest.importorskip('cupy')
-    try:
-        if cp.cuda.runtime.getDeviceCount() == 0:
-            pytest.skip('No CUDA device')
-    except cp.cuda.runtime.CUDARuntimeError:
-        pytest.skip('No CUDA runtime')
+    from test_wave_device import _cuda
+    cp = _cuda()
     wave = _wave(1)
     cpu = estimate_aperture_wall_edges(wave, **_arguments())
     gpu = estimate_aperture_wall_edges(replace(wave, amplitude=cp.asarray(wave.amplitude)), **_arguments())

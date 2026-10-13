@@ -60,8 +60,8 @@ def test_coil_parts_have_four_closed_separate_loops_and_keep_document(channel, l
         assert not mesh.is_exact and mesh.material_class == "copper_winding"
         assert "not OEM" in mesh.description and "not mesh" in mesh.description
         assert mesh.key == row["key"]
-        assert mesh.vertices[:, 2].min() == 650.0
-        assert mesh.vertices[:, 2].max() == 650.0 + length
+        assert mesh.vertices[:, 2].min() == pytest.approx(650.0, rel=0, abs=1e-12)
+        assert mesh.vertices[:, 2].max() == pytest.approx(650.0 + length, rel=0, abs=1e-12)
     assert model.meshes[0].color == model.meshes[1].color
     assert model.meshes[2].color == model.meshes[3].color
     assert model.meshes[0].color != model.meshes[2].color

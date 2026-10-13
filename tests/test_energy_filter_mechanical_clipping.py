@@ -23,7 +23,7 @@ def installed_filter():
     return state, assembly
 
 
-def test_main_vacuum_and_liner_reach_filter_optical_handoff(installed_filter):
+def test_equivalent_vacuum_reaches_handoff_but_material_tube_stops_at_filter_carrier(installed_filter):
     _state, assembly = installed_filter
     inlet = assembly.part(ENERGY_FILTER_ENTRANCE_APERTURE)
     assert max(segment.end_z_mm for segment in assembly.vacuum_bore_segments) == pytest.approx(inlet.center_z_mm)
@@ -38,7 +38,8 @@ def test_main_vacuum_and_liner_reach_filter_optical_handoff(installed_filter):
         replace(assembly, modules=(), parts=()), angular_segments=8
     )
     assert not model.errors
-    assert max(float(mesh.vertices[:, 2].max()) for mesh in model.meshes) == pytest.approx(inlet.center_z_mm)
+    assert max(float(mesh.vertices[:, 2].max()) for mesh in model.meshes) == pytest.approx(inlet.start_z_mm)
+    assert all(mesh.key != f"@vacuum_liner:{inlet.key}" for mesh in model.meshes)
 
 
 def test_filter_carrier_envelope_change_does_not_move_axial_handoff(installed_filter):

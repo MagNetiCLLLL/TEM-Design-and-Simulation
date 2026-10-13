@@ -23,6 +23,7 @@ def test_named_sections_cover_every_component_without_changing_physical_inputs(s
     assembly = state._resolved_assembly
     rows = assembly_sections(assembly)
     assert [r.name for r in rows if r.kind == "subassembly"] == [
+        "Sample stage and side-entry holder",
         "Imaging and projector stack", "Projection and detector chamber", "Energy filter"]
     assert set(section_by_component(assembly)) == {p.key for p in assembly.parts}
     for row in rows:
@@ -31,6 +32,40 @@ def test_named_sections_cover_every_component_without_changing_physical_inputs(s
         assert row.end_z_mm == max(p.end_z_mm for p in axial)
     assert not state.vacuum_map.enabled
     assert len(resolve_regions(state, include_disabled=True)) == 6
+
+
+@pytest.mark.parametrize("column,families", [
+    ("C3 + Probe Corrector", ("probe",)),
+    ("C3 + Image Corrector", ("image",)),
+    ("C3 + Probe Corrector + Image Corrector", ("probe", "image")),
+])
+def test_independent_corrector_coils_and_owned_channels_share_corrector_group(column, families):
+    from temsim.assembly_structure import build_assembly_structure
+    from temsim.instrument_snapshot import capture_instrument_snapshot
+
+    state = default_state()
+    catalog = AssemblyCatalog()
+    assembly = catalog.apply(state, replace(catalog.default_selection(), column=column))
+    before = capture_instrument_snapshot(state).digest
+    structure = build_assembly_structure(assembly)
+    physical = physical_assembly_sections(assembly)
+    for family in families:
+        labels, group, name = (
+            (("dp22", "dp21", "dp11"), "probe_correction", "Probe correction")
+            if family == "probe" else
+            (("dp11", "dp12", "dp21", "dp22", "ish", "dsh"), "imaging", "Imaging and projection"))
+        for label in labels:
+            coil, channel = f"{family}_{label}_coils", f"{family}_{label}_deflector"
+            assert assembly.part(coil).parent_key is None
+            assert structure.by_key[coil].parent_id is None
+            assert structure.by_key[coil].group_key == group
+            assert structure.by_key[channel].group_key == group
+            assert structure.by_key[channel].parent_id == structure.by_key[coil].instance_id
+            displayed = [section for section in physical if coil in section.part_keys]
+            assert len(displayed) == 1 and displayed[0].name == name
+            assert all(channel not in section.part_keys for section in physical)
+    assert all(section.name != "Other components" for section in physical)
+    assert capture_instrument_snapshot(state).digest == before
 
 
 def test_snapshot_carries_membership_and_resolves_anchors_without_live_files(state, monkeypatch):

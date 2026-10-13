@@ -247,6 +247,81 @@ def test_grouped_probability_records_preserve_aperture_and_wall_losses():
     assert record[0]["column"][0]["input_weight"] == .125
 
 
+@pytest.mark.parametrize("grouped", (False, True))
+@pytest.mark.parametrize("resume", (False, True))
+def test_trajectory_slices_preserve_inherited_support_budget_and_loss_units(tmp_path, monkeypatch, grouped, resume):
+    from temsim.physics import column_wave as column
+    from temsim.physics import specimen_wave_transport as specimen
+    from temsim.physics.inelastic_wave import _propagate_inelastic_attempt
+
+    state, source, material = material_fixture(configurations=2)
+    parent = {"reference_mode_weight": .8, "accumulated_relative_l2_bound": .02,
+              "probability_loss_per_tip_electron": .0004}
+    source = replace(source, record={"support_error_by_mode": {source.beam.modes[0].mode_id: parent}})
+    monkeypatch.setattr(specimen, "_regrid_refined_mode", lambda mode, *a: (mode, {}))
+    monkeypatch.setattr(specimen, "_material_phase", lambda mode, *a, **kw: (mode, {}))
+    monkeypatch.setattr(specimen, "_bandlimit_mode", lambda mode, *a, **kw: (mode, 0.))
+    monkeypatch.setattr("temsim.specimen.inelastic.real_inelastic_distribution",
+        lambda _: distribution(1., 0. if grouped else 1e-30, 0.))
+    incoming = []
+
+    def transport(state, local, stop, **kwargs):
+        mode = local.beam.modes[0]
+        ledger = column._previous_support_error(local.record, mode.mode_id)
+        incoming.append(dict(ledger))
+        ledger["accumulated_relative_l2_bound"] += .001
+        ledger["probability_loss_per_tip_electron"] += .0001/6
+        output = replace(mode, weight_per_reference_electron=mode.weight_per_reference_electron-.0003/6)
+        return TipGunCheckpoint(BeamState((output,), local.beam.reference_plane), stop,
+            local.reference_current_a, {"modes": [{"mode_id": mode.mode_id,
+                "input_weight": mode.weight_per_reference_electron,
+                "output_weight": output.weight_per_reference_electron,
+                "losses": [{"lost_weight": .0002/6}], "support_approximation": ledger}]})
+
+    monkeypatch.setattr(column, "_propagate_column", transport)
+    store = ExecutedWaveStore(tmp_path, "trajectory-support-fixture", 1 << 26)
+    cancelled = [False]
+    args = dict(numerics=InelasticWaveNumerics(trajectories_per_mode=3), store=store,
+        maximum_step_mm=.5, grid_numerics=WaveGridNumerics(compute_backend="CPU"), tip_time_s=0.,
+        cancelled=lambda: cancelled[0], progress_callback=None, verify=lambda: None, use_cache=True,
+        key=store.key("support-fixture"), material=material, refinement_factor=1, refinement_history=[])
+    if resume:
+        put = store.put
+        def interrupt_after_slice(*a, **kw):
+            saved = put(*a, **kw)
+            cancelled[0] = True
+            return saved
+        monkeypatch.setattr(store, "put", interrupt_after_slice)
+        with pytest.raises(InterruptedError):
+            _propagate_inelastic_attempt(state, source, **args)
+        cancelled[0] = False
+        monkeypatch.setattr(store, "put", put)
+    result = _propagate_inelastic_attempt(state, source, **args)
+    branch_count = 2 if grouped else 6
+    assert len(result.beam.modes) == branch_count
+    # A saved first slice is reused, preserving its accumulated error budget.
+    assert len(incoming) == branch_count*2
+    for index, ledger in enumerate(incoming):
+        assert ledger["reference_mode_weight"] == pytest.approx(.8/6)
+        assert ledger["accumulated_relative_l2_bound"] == pytest.approx(.02+.001*(index % 2))
+        assert ledger["probability_loss_per_tip_electron"] == pytest.approx((.0004+.0001*(index % 2))/6)
+    assert result.beam.total_weight == pytest.approx(.4-.0006, abs=1e-13)
+    for row in result.record["modes"]:
+        ledger = column._previous_support_error(result.record, row["mode_id"])
+        assert ledger["reference_mode_weight"] == pytest.approx(.8/branch_count)
+        assert ledger["accumulated_relative_l2_bound"] == pytest.approx(.022)
+        assert ledger["probability_loss_per_tip_electron"] == pytest.approx(.0006/branch_count)
+        assert row["numerical_support_loss"] == pytest.approx(.0002/branch_count)
+        assert row["column_loss"] == pytest.approx(.0004/branch_count)
+        assert row["probability_residual"] == pytest.approx(0., abs=1e-13)
+        for index, step in enumerate(row["steps"]):
+            assert step["numerical_support_loss"] == pytest.approx(.0001/branch_count)
+            assert step["column"][0]["support_approximation"]["reference_mode_weight"] == pytest.approx(.8/branch_count)
+            assert step["column"][0]["support_approximation"]["probability_loss_per_tip_electron"] == pytest.approx((.0005+.0001*index)/branch_count)
+    assert parent == {"reference_mode_weight": .8, "accumulated_relative_l2_bound": .02,
+                      "probability_loss_per_tip_electron": .0004}
+
+
 def test_progress_precedes_expensive_slice_and_updates_before_trajectory_end(tmp_path, monkeypatch):
     import temsim.physics.specimen_wave_transport as transport
     messages, seen, phase = [], [], transport._material_phase

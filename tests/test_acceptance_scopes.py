@@ -362,6 +362,54 @@ def test_bore_hardware_check_without_cupy_is_optional_only_in_explicit_cpu_lane(
     assert evaluate("coherent-development", receipt, allow_gpu_skips=True)["exit_code"] == 1
 
 
+@pytest.mark.parametrize("module_name,entry,node_name", [
+    ("test_column_acceptance_window", "test_aperture_refinement_uses_global_gpu_policy",
+     "test_aperture_refinement_uses_global_gpu_policy"),
+    ("test_wave_aperture_edge", "test_device_field_estimate_matches_cpu",
+     "test_device_field_estimate_matches_cpu"),
+    ("test_intrinsic_gpu_segments", "cuda_hardware", "test_cancel_keeps_input_arrays_unchanged"),
+])
+@pytest.mark.parametrize("availability", ["missing-cupy", "no-device", "invalid-configuration"])
+def test_real_device_gates_distinguish_absence_from_failures(
+        monkeypatch, module_name, entry, node_name, availability):
+    import importlib
+    import sys
+    from types import SimpleNamespace
+    from temsim.physics import compute_backend
+
+    check = getattr(importlib.import_module(module_name), entry)
+    if entry == "cuda_hardware":
+        check = check.__wrapped__  # Exercise the fixture's dependency gate.
+    if availability == "missing-cupy":
+        monkeypatch.setitem(sys.modules, "cupy", None)
+    else:
+        monkeypatch.setitem(sys.modules, "cupy", SimpleNamespace(__version__="test"))
+        if availability == "invalid-configuration":
+            def broken_discovery():
+                raise compute_backend.GPUExecutionError("invalid_configuration", "invalid numerical configuration")
+            monkeypatch.setattr(compute_backend, "cupy_capability", broken_discovery)
+            with pytest.raises(compute_backend.GPUExecutionError, match="invalid numerical configuration"):
+                check()
+            return
+        monkeypatch.setattr(compute_backend, "cupy_capability",
+            lambda: compute_backend.BackendCapability(False, "CuPy found no CUDA device"))
+    with pytest.raises(pytest.skip.Exception) as skipped:
+        check()
+
+    node = f"tests/{module_name}.py::{node_name}"
+    receipt = receipt_for("coherent-development")
+    receipt["collected"].append(node)
+    receipt["cases"][node] = {"setup": "passed", "call": "skipped", "teardown": "passed"}
+    receipt["skip_reasons"] = {node: str(skipped.value)}
+    assert evaluate("coherent-development", receipt)["exit_code"] == 1
+    report = evaluate("coherent-development", receipt, allow_gpu_skips=True)
+    assert report["exit_code"] == 0
+    assert report["gpu_hardware"]["status"] == "NOT_RUN"
+    assert report["gpu_hardware"]["not_run"] == [node]
+    receipt["cases"][node]["call"] = "failed"
+    assert evaluate("coherent-development", receipt, allow_gpu_skips=True)["exit_code"] == 1
+
+
 def test_gpu_registry_keeps_cpu_parameters_mandatory_and_matches_existing_tests():
     import ast
     from temsim.acceptance_gpu import GPU_TEST_IDS, GPU_PARAMETER_IDS, is_gpu_hardware_test

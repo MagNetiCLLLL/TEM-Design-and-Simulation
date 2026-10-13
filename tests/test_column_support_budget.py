@@ -414,6 +414,64 @@ def test_observation_endpoint_inside_hexapole_does_not_claim_physical_exit(monke
     assert compactions == []
 
 
+def test_nested_plan_slices_keep_the_original_hexapole_exit():
+    prepared = _quadratic_fixture(6)
+    prepared[0].midpoint_hex_normal_m3[:4] = 1.
+    prefix = column._slice_prepared(prepared, 0, 4)
+    middle = column._slice_prepared(prefix, 1, 3)
+    end = column._slice_prepared(prefix, 3, 4)
+    assert column._hexapole_exit_nodes(prefix[0]) == (4,)
+    assert column._hexapole_exit_nodes(middle[0]) == ()
+    assert column._hexapole_exit_nodes(end[0]) == (1,)
+
+
+@pytest.mark.parametrize("stop,expected", ((4., ()), (5., (5.,)), (6., (5.,))))
+@pytest.mark.parametrize("vector_only", (False, True))
+def test_prepared_hexapole_exit_uses_physical_union_despite_cancelled_fields(monkeypatch, stop, expected, vector_only):
+    from dataclasses import dataclass
+    from temsim.physics.core import hexapole_field_components
+
+    @dataclass(frozen=True)
+    class FixturePlan:
+        z_mm: np.ndarray
+        midpoint_hex_normal_m3: np.ndarray
+        midpoint_hex_skew_m3: np.ndarray
+        signature: str = "opposing-hexapole-fixture"
+        mapped_fields: tuple = ()
+        thin_power_m1: tuple = ()
+        thin_rotation_rad: tuple = ()
+        hexapole_exit_nodes: tuple | None = None
+
+    def component(key, lower, upper, strength):
+        return SimpleNamespace(key=key, enabled=True, strength_m3=strength,
+            field_support_mm=lambda cutoff: (lower, upper),
+            hexapole_strength_m3=lambda z: strength*np.ones_like(z))
+
+    state = SimpleNamespace(step_mm=1., corrector_elements=(
+        component("a", -1., 3., 1.), component("b", 1., 5., -1.)))
+    if vector_only:
+        # Core also accepts custom vector providers without a scalar strength
+        # or key. They must still prevent an exit while their support overlaps.
+        custom = state.corrector_elements[1]
+        del custom.hexapole_strength_m3, custom.strength_m3, custom.key
+        custom.hexapole_strength_components_m3 = lambda z: (-np.ones_like(z), np.zeros_like(z))
+    def prepared(state, start, stop, events, *, save_z_mm, maximum_step_mm):
+        z = np.unique(np.r_[np.arange(start, stop, maximum_step_mm), stop, save_z_mm])
+        normal, skew = hexapole_field_components((z[:-1]+z[1:])/2, state)
+        return FixturePlan(z, normal, skew)
+
+    monkeypatch.setattr(column, "build_propagation_plan", prepared)
+    monkeypatch.setattr(column, "_wave_apertures", lambda *a: ())
+    monkeypatch.setattr(column, "_wave_bores", lambda *a: ((), ()))
+    monkeypatch.setattr(column, "_component_events", lambda *a: ((), ()))
+    monkeypatch.setattr("temsim.physics.wave_field_admission.require_supported_column_wave_fields", lambda *a: None)
+    plan = column._prepare_column(state, 0., stop, 1.)[0]
+    assert tuple(plan.z_mm[list(column._hexapole_exit_nodes(plan))]) == expected
+    # The cancellation between the still-present fields is not an exit.
+    assert plan.midpoint_hex_normal_m3[1] == 0.
+    assert plan.signature != "opposing-hexapole-fixture"
+
+
 def _independent_mode_fixture():
     from temsim.physics.wave_flux import BeamState
     source = checkpoint()

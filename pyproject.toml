@@ -76,5 +76,8 @@ bdist_wheel = "temsim._build.FreshWheel"
 "configs/materials/magnetic" = ["configs/materials/magnetic/*.toml"]
 
 [tool.pytest.ini_options]
-addopts = "-q"
+# Zarr's dependency plugin imports optional GPU libraries during collection.
+# These tests do not use its fixtures; the acceptance runner also loads only
+# the project's evidence plugin and pytest-qt explicitly.
+addopts = "-q -p no:zarr"
 testpaths = ["tests"]

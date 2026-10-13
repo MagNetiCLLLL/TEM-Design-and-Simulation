@@ -12,15 +12,16 @@ from temsim.paths import INSTRUMENT_CONFIG_ROOT
 
 @pytest.fixture
 def draft(tmp_path):
-    source = INSTRUMENT_CONFIG_ROOT / "column/C3_ProbeCorrector.toml"
-    target = tmp_path / source.name
-    target.write_bytes(source.read_bytes())
-    return PartModelDocument(target)
+    from temsim.shared_tip import copy_catalog_inputs
+    root = tmp_path / "instruments"
+    relative = "column/C3_ProbeCorrector.toml"
+    copy_catalog_inputs(INSTRUMENT_CONFIG_ROOT, root, (relative,))
+    return PartModelDocument(root / relative)
 
 
 def test_bound_geometry_is_readonly_without_disabling_all_fields(draft):
-    editor = ManifestEditor(draft.path.parent)
-    target = ManifestTarget(draft.path.name, "probe_dph2_deflector")
+    editor = ManifestEditor(draft.path.parents[1])
+    target = ManifestTarget("column/" + draft.path.name, "probe_dph2_deflector")
     fields = {f.path[-1]: f for f in editor.fields(target)}
     assert not fields["effective_thickness_mm"].editable
     assert fields["effective_thickness_mm"].owner_key == "probe_dph2_coils"
@@ -119,8 +120,8 @@ def test_native_winding_dimensions_use_common_editor_units_and_save_chain(draft,
     values = {"winding_layer_thickness_mm": (.28, "mm"),
               "winding_angular_span_deg": (110., "deg"), "winding_band_width_mm": (.9, "mm")}
     fields = {field.path[-1]: field for field in part_dimension_specs(draft.document, key)}
-    manifest = ManifestEditor(draft.path.parent)
-    editable = {f.path[-1]: f for f in manifest.fields(ManifestTarget(draft.path.name, key))}
+    manifest = ManifestEditor(draft.path.parents[1])
+    editable = {f.path[-1]: f for f in manifest.fields(ManifestTarget("column/" + draft.path.name, key))}
     for name, (value, unit) in values.items():
         assert fields[name].editable and fields[name].unit == unit
         assert fields[name].meaning.category == "physical"
@@ -152,8 +153,8 @@ def test_invalid_winding_edit_is_atomic_and_generic_manifest_save_rejects_it(dra
     row["winding_angular_span_deg"] = 180.
     with pytest.raises(ValueError, match="winding angular span"):
         module_manifest.validate_document(candidate)
-    editor = ManifestEditor(draft.path.parent)
-    target = ManifestTarget(draft.path.name, "probe_dph2_coils")
+    editor = ManifestEditor(draft.path.parents[1])
+    target = ManifestTarget("column/" + draft.path.name, "probe_dph2_coils")
     original_bytes = draft.path.read_bytes()
     with pytest.raises(ValueError, match="winding layer thickness"):
         editor.save(target, {("parts", target.part_key, "winding_layer_thickness_mm"): .8}, None)
@@ -162,7 +163,7 @@ def test_invalid_winding_edit_is_atomic_and_generic_manifest_save_rejects_it(dra
 
 def test_legacy_profile_file_roundtrip_remains_readable(draft, tmp_path):
     from temsim.part_model_3d import part_model_from_document
-    raw = draft.path.read_text(encoding="utf-8")
+    raw = draft.independent_copy_text()
     raw = raw.replace('mechanical_profile = "deflector_coil_insert"',
                       'mechanical_profile = "corrector_deflector_coils"')
     raw = "\n".join(line for line in raw.splitlines() if not line.startswith("winding_")) + "\n"

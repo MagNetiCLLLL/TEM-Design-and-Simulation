@@ -488,6 +488,8 @@ def _prefix_fixture(monkeypatch):
 @pytest.mark.parametrize("policy_change", (
     {"enabled": False},
     {"maximum_relative_complex_change": .0025},
+    {"maximum_relative_current_change": .0005},
+    {"aperture_radius_cells": 256},
 ))
 def test_nonsegmented_observation_cache_does_not_bypass_changed_acceptance_policy(monkeypatch, tmp_path, policy_change):
     """The outer plane cache must not hide changed inner numerical admission."""

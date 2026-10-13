@@ -11,10 +11,11 @@ from temsim.physics.electrostatic_column_transport import _momentum_speed
 
 @pytest.fixture(autouse=True)
 def cuda_hardware():
-    from temsim.physics.compute_backend import cuda_capability, cupy_module
+    from temsim.physics.compute_backend import cuda_capability
+    from test_wave_device import _cuda
+    _cuda()
     if not cuda_capability().available:
         pytest.skip("No CUDA hardware")
-    cupy_module()
 
 
 def inputs_fixture(*, timed=True):

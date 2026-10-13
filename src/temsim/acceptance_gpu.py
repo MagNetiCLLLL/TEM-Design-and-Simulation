@@ -80,6 +80,9 @@ GPU_TEST_FUNCTIONS = {
     "test_canonical_action.py": (
         "test_cuda_lct_and_gauge_keep_complete_complex_field_on_device",
     ),
+    "test_column_acceptance_window.py": (
+        "test_aperture_refinement_uses_global_gpu_policy",
+    ),
     "test_electrostatic_column_transport.py": (
         "test_cuda_electric_batches_preserve_every_ray_and_report_real_completed_counts",
     ),
@@ -115,6 +118,9 @@ GPU_TEST_FUNCTIONS = {
     "test_wave_fft.py": (
         "test_cupy_tem_image_fft_matches_numpy_reference",
         "test_cupy_stem_detector_fft_matches_numpy_reference",
+    ),
+    "test_wave_aperture_edge.py": (
+        "test_device_field_estimate_matches_cpu",
     ),
     "test_wave_grid.py": (
         "test_cuda_fourier_refinement_and_nonlinear_carriers_preserve_phase_and_rejections",

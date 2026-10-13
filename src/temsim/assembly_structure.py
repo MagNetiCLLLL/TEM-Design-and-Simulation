@@ -29,6 +29,16 @@ GROUPS = (
     ("unclassified", "Other components"),
 )
 
+# These independent winding inserts own control channels, but are not optical
+# elements themselves. Classification must not invent a mechanical parent.
+_PROBE_CORRECTOR_HARDWARE_KEYS = frozenset({
+    "probe_dp22_coils", "probe_dp21_coils", "probe_dp11_coils",
+})
+_IMAGE_CORRECTOR_HARDWARE_KEYS = frozenset({
+    "image_dp11_coils", "image_dp12_coils", "image_dp21_coils",
+    "image_dp22_coils", "image_ish_coils", "image_dsh_coils",
+})
+
 
 def stable_id(kind, *keys):
     """UUIDs do not consume file paths, display labels, dimensions or order."""
@@ -45,9 +55,9 @@ def _root_group(part, module_type):
         return "blanker"
     if key == "energy_filter" or key in ENERGY_FILTER_INTERNAL_KEYS or part.branch == "energy_filter":
         return "energy_filter"
-    if key in IMAGE_CORRECTOR_KEYS:
+    if key in IMAGE_CORRECTOR_KEYS or key in _IMAGE_CORRECTOR_HARDWARE_KEYS:
         return "imaging"
-    if key in PROBE_CORRECTOR_KEYS:
+    if key in PROBE_CORRECTOR_KEYS or key in _PROBE_CORRECTOR_HARDWARE_KEYS:
         return "probe_correction"
     if key in {"objective_lens", "objective_aperture", "sample", "sample_stage"}:
         return "objective"

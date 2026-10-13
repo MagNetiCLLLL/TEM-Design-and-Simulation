@@ -59,14 +59,8 @@ def test_aperture_reconstruction_preserves_absolute_density_and_phase_cpu():
 
 
 def test_aperture_refinement_uses_global_gpu_policy():
-    from temsim.physics.compute_backend import cupy_module
-    cp=cupy_module()
-    if cp is None:
-        pytest.skip('CuPy unavailable')
-    try:
-        if cp.cuda.runtime.getDeviceCount()<1:pytest.skip('CUDA device unavailable')
-    except cp.cuda.runtime.CUDARuntimeError:
-        pytest.skip('CUDA runtime unavailable')
+    from test_wave_device import _cuda
+    _cuda()
     wave=field(pitch=.01,q=1.2)
     policy=AcceptanceWindowNumerics(aperture_radius_cells=32,output_halfwidth_radii=2.)
     cpu, _=sample_aperture_plane(wave,radius_m=.2,wavelength_m=.1,curvature=np.eye(2)*.8,

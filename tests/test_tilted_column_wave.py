@@ -242,7 +242,7 @@ def test_real_column_higher_order_magnetic_residual_runs_on_cpu_and_gpu():
 
 
 def test_magnetic_residual_rechecks_forward_support_after_refinement(monkeypatch):
-    """The real doubled Nyquist support must be checked before any retry."""
+    """The real refined Nyquist support must be checked before any retry."""
     from temsim.physics import wave_grid, wave_magnetic_residual
     state = _objective(angle_mrad=1.)
     prepared = _prepared(state)
@@ -276,7 +276,8 @@ def test_magnetic_residual_rechecks_forward_support_after_refinement(monkeypatch
             grid_numerics=WaveGridNumerics(compute_backend="CPU",
                 maximum_posed_lens_phase_error_rad_per_m=1e-14))
     assert operator_shapes == [(64, 64)]
-    assert refined_shapes == [(128, 128)]
+    # A requested 2x resolution includes 5% safety and an even FFT-friendly size.
+    assert refined_shapes == [(140, 140)]
     assert source.digest == original_digest
 
 

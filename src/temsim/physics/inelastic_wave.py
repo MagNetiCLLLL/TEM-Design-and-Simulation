@@ -38,6 +38,14 @@ def _identity_collision(distribution):
         and all(c.probability == 0. for c in distribution.channels if c.key != "real_zero_loss"))
 
 
+def _scale_support_weights(ledger, factor):
+    """Change probability units without restarting the relative error budget."""
+    result = dict(ledger)
+    for name in ("reference_mode_weight", "probability_loss_per_tip_electron"):
+        result[name] *= factor
+    return result
+
+
 def _scale_step_weights(steps, factor):
     """Keep probability bookkeeping in the grouped mode's reference units.
 
@@ -47,9 +55,13 @@ def _scale_step_weights(steps, factor):
     scaled = thaw_json(freeze_json(steps))
     for step in scaled:
         step["event"]["absorbed_weight"] *= factor
+        if "numerical_support_loss" in step:
+            step["numerical_support_loss"] *= factor
         for column in step["column"]:
             for name in ("input_weight", "output_weight"):
                 column[name] *= factor
+            if "support_approximation" in column:
+                column["support_approximation"] = _scale_support_weights(column["support_approximation"], factor)
             for loss in column["losses"]:
                 for name in ("input_weight", "output_weight", "lost_weight"):
                     if name in loss:  # column walls record lost weight only
@@ -118,7 +130,7 @@ def _propagate_inelastic_specimen(state, checkpoint, *, numerics, store, maximum
         grid_numerics, tip_time_s, cancelled, progress_callback, verify, use_cache):
     from temsim.physics.specimen_wave_transport import _with_material_refinement
     numerics.validate()
-    key = store.key("inelastic-specimen-carrier-basis-v4", checkpoint.digest, asdict(numerics),
+    key = store.key("inelastic-specimen-support-ledger-v5", checkpoint.digest, asdict(numerics),
                     maximum_step_mm, asdict(grid_numerics), tip_time_s)
     cached = store.get(key) if use_cache else None
     if cached is not None:
@@ -136,7 +148,7 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
         grid_numerics, tip_time_s, cancelled, progress_callback, verify, use_cache,
         key, material, refinement_factor, refinement_history):
     from temsim.physics.specimen_wave_transport import (_regrid_refined_mode, _material_phase, _material_wave_axes, _bandlimit_mode)
-    from temsim.physics.column_wave import _propagate_column
+    from temsim.physics.column_wave import _propagate_column, _previous_support_error
     from temsim.physics.wave_imaging import interaction_constant_rad_per_v_angstrom
     from temsim.specimen.inelastic import real_inelastic_distribution
     numerics.validate()
@@ -164,15 +176,20 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
     try:
         for source in checkpoint.beam.modes:
             base, regrid = _regrid_refined_mode(source, wave_x, wave_y, refinement_factor, grid_numerics)
+            parent_support = _previous_support_error(checkpoint.record, source.mode_id)
+            if parent_support is None:
+                parent_support = {"reference_mode_weight": source.weight_per_reference_electron,
+                                  "accumulated_relative_l2_bound": 0., "probability_loss_per_tip_electron": 0.}
             for ci, potential in enumerate(configs):
                 for ti in range(numerics.trajectories_per_mode):
                     if cancelled():
                         raise InterruptedError("Inelastic trajectory cancelled")
                     mode = replace(base, mode_id=base.mode_id+f"/phonon:{ci}/trajectory:{ti}",
                         weight_per_reference_electron=base.weight_per_reference_electron/(len(configs)*numerics.trajectories_per_mode))
+                    support_ledger = _scale_support_weights(parent_support, 1/(len(configs)*numerics.trajectories_per_mode))
                     initial = mode.weight_per_reference_electron
                     mode, band_loss = _bandlimit_mode(mode, state.sample.wave_bandwidth_fraction, frame=bandwidth_frame, numerics=grid_numerics)
-                    current_z, absorption, column_loss, steps = start, 0., 0., []
+                    current_z, absorption, column_loss, support_loss, steps = start, 0., 0., 0., []
                     identity_history = True
                     for si, dz in enumerate(dzs):
                         if cancelled():
@@ -191,6 +208,8 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                             mode = cached_slice.beam.modes[0]
                             row = cached_slice.record
                             band_loss, absorption, column_loss = row["band_loss"], row["absorption"], row["column_loss"]
+                            support_loss = row["numerical_support_loss"]
+                            support_ledger = _previous_support_error(row, mode.mode_id)
                             steps = list(row["steps"])
                             identity_history = row.get("identity_history", False) is True
                             current_z = next_z
@@ -205,12 +224,17 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                                 numerics=grid_numerics, cancelled=cancelled)
                             mode, lost = _bandlimit_mode(mode, state.sample.wave_bandwidth_fraction, frame=bandwidth_frame, numerics=grid_numerics); band_loss += lost
                         local = TipGunCheckpoint(BeamState((mode,), checkpoint.beam.reference_plane), current_z,
-                            checkpoint.reference_current_a, {"specimen_parent": parent_id})
+                            checkpoint.reference_current_a, {"specimen_parent": parent_id,
+                                "support_error_by_mode": {mode.mode_id: support_ledger}})
                         report("column fields through material")
                         propagated = _propagate_column(state, local, next_z, maximum_step_mm=maximum_step_mm,
                             grid_numerics=grid_numerics, tip_time_s=tip_time_s, cancelled=cancelled,
                             retained_bytes=retained_potential_bytes+base.plane.amplitude.nbytes+source.plane.amplitude.nbytes)
-                        column_loss += mode.weight_per_reference_electron-propagated.beam.total_weight
+                        previous_support_loss = support_ledger["probability_loss_per_tip_electron"]
+                        support_ledger = _previous_support_error(propagated.record, mode.mode_id)
+                        slice_support_loss = support_ledger["probability_loss_per_tip_electron"]-previous_support_loss
+                        support_loss += slice_support_loss
+                        column_loss += mode.weight_per_reference_electron-propagated.beam.total_weight-slice_support_loss
                         mode = propagated.beam.modes[0]
                         event = {"kind": "already_absorbed", "absorbed_weight": 0.}
                         if mode.weight_per_reference_electron:
@@ -228,12 +252,15 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                             absorption += event["absorbed_weight"]
                             mode, lost = _bandlimit_mode(mode, state.sample.wave_bandwidth_fraction, frame=bandwidth_frame, numerics=grid_numerics); band_loss += lost
                         steps.append({"slice": si, "event": event, "column": propagated.record["modes"],
+                                      "numerical_support_loss": slice_support_loss,
                                       "phase_before": phase_before, "phase_after": phase_after})
                         report("verifying and saving slice")
                         verify()
                         saved = store.put(step_key, TipGunCheckpoint(BeamState((mode,), checkpoint.beam.reference_plane), next_z,
                             checkpoint.reference_current_a, {"steps": steps, "band_loss": band_loss,
                                 "absorption": absorption, "column_loss": column_loss, "parent": parent_id,
+                                "numerical_support_loss": support_loss,
+                                "support_error_by_mode": {mode.mode_id: support_ledger},
                                 "identity_history": identity_history}))
                         del local, propagated, saved
                         current_z = next_z
@@ -249,14 +276,17 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                         band_loss *= multiplicity
                         absorption *= multiplicity
                         column_loss *= multiplicity
+                        support_loss *= multiplicity
+                        support_ledger = _scale_support_weights(support_ledger, multiplicity)
                         steps = _scale_step_weights(steps, multiplicity)
-                    accounted = mode.weight_per_reference_electron+band_loss+absorption+column_loss
+                    accounted = mode.weight_per_reference_electron+band_loss+absorption+column_loss+support_loss
                     if not math.isclose(accounted, initial, rel_tol=1e-9, abs_tol=1e-13):
                         raise ValueError("Quantum trajectory probability accounting failed")
                     writer.append(mode)
                     records.append({"mode_id": mode.mode_id, "input_weight": initial, "output_weight": mode.weight_per_reference_electron,
                         "energy_kev": mode.energy_kev, "regrid": regrid, "steps": steps,
                         "band_loss": band_loss, "absorption": absorption, "column_loss": column_loss,
+                        "numerical_support_loss": support_loss, "support_approximation": support_ledger,
                         "represented_trajectories": multiplicity, "identity_history": identity_history,
                         "probability_residual": initial-accounted})
                     del mode

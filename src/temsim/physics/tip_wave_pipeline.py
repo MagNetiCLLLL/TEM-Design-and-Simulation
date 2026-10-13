@@ -542,9 +542,12 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
             if request.execution.segmented:
                 result = column(upstream, float(stop))
             else:
+                # This outer cache can bypass column()'s acceptance admission.
+                # Include its policy even when the previous span needed no window.
                 result = stage("observation_column", lambda: column(upstream, float(stop)),
                     inputs=(upstream.digest, float(stop), request.column_step_mm,
-                            request.wave_grid.column_identity(), asdict(request.radial_column), epoch))
+                            request.wave_grid.column_identity(), asdict(request.radial_column),
+                            asdict(request.acceptance_window), epoch))
             remember_observation(result)
             return result
 

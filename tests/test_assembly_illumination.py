@@ -186,14 +186,26 @@ def test_failed_physical_traces_also_consume_the_calibration_budget(monkeypatch)
     assert any('budget exhausted' in a.get('error', '').lower() for a in report['attempts'])
 
 
-def test_historical_presets_are_visibly_distinguished_from_new_targets(qtbot):
+@pytest.mark.parametrize('retained', [False, True])
+def test_historical_presets_are_visibly_distinguished_from_new_targets(qtbot, retained):
     from temsim.gui.assembly_panel import AssemblyPanel
     catalog = AssemblyCatalog()
     panel = AssemblyPanel(catalog, catalog.default_selection())
     qtbot.addWidget(panel)
-    assert panel.apply_operating_mode_button.text() == 'Apply stored lens preset'
-    assert 'recalibration pending' in panel.operating_mode_status.text()
-    assert 'Historical reference only' in panel.operating_mode_status.toolTip()
+    # Exercise both provenance states independently of which preset is current.
+    selected = panel.probe_mode.currentData()
+    panel.operating_mode_catalog = replace(panel.operating_mode_catalog,
+        modes=tuple(replace(mode,
+            calibration_status=('retained_not_recomputed_fixture' if retained else 'computed_fixture'),
+            calibration_reference='Historical reference only: fixture')
+            if mode.key == selected else mode for mode in panel.operating_mode_catalog.modes))
+    panel._update_operating_mode_description()
+    assert panel.apply_operating_mode_button.text() == (
+        'Apply stored lens preset' if retained else 'Apply calculated lens preset')
+    assert ('recalibration pending' in panel.operating_mode_status.text()) is retained
+    assert ('Historical reference only' in panel.operating_mode_status.toolTip()) is retained
+    if not retained:
+        assert 'Preset reference sample semi-angle' in panel.operating_mode_status.toolTip()
 
 
 def test_candidate_polarity_is_detached_and_reported_for_exact_replay(monkeypatch):
@@ -208,10 +220,13 @@ def test_candidate_polarity_is_detached_and_reported_for_exact_replay(monkeypatc
     monkeypatch.setattr(checkpoints,'IlluminationCheckpoint',StubCheckpoint)
     monkeypatch.setattr(module,'measure_surface_focus',lambda *a,**k:measurement(1e-6,.0002))
     state = default_state()
+    mini = next(l for l in state.lenses if l.key == 'mini_condenser')
+    mini.percent = 27.5  # A live edit must survive; neither startup nor old 10% is authoritative.
     before = state.to_dict()
     candidate, report = module.calibrate_illumination(state,'micro_probe',mini_polarity=1)
     assert report['polarities']['mini_condenser']==1
-    assert report['mini_condenser_constraint']['magnitude_percent'] == 10.
+    assert report['mini_condenser_constraint']['magnitude_percent'] == mini.percent
+    assert next(l for l in candidate.lenses if l.key == 'mini_condenser').percent == mini.percent
     assert state.to_dict()==before
     assert candidate is not state
     assert report['status']=='NOT_QUALIFIED'

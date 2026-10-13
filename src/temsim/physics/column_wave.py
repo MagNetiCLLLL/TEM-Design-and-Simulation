@@ -273,6 +273,20 @@ def _prepare_column(state, start, stop, maximum_step_mm):
                             else (w.start_z_mm, w.end_z_mm)) if start < z < stop]
     boundaries.extend(z for aperture in apertures if isinstance(aperture, PosedWaveAperture)
                       for z in aperture.event_z_mm() if start < z < stop)
+    # Preserve each source's support, not just their sum: opposing HP fields
+    # can cancel at an interior node without either physical field ending.
+    from temsim.physics.core import _support_bounds_mm
+    hexapole_supports = []
+    for component in getattr(state, "corrector_elements", ()):
+        if (not getattr(component, "enabled", False)
+                or getattr(component, "strength_m3", None) == 0.
+                or not (hasattr(component, "hexapole_strength_components_m3")
+                        or hasattr(component, "hexapole_strength_m3"))):
+            continue
+        support = _support_bounds_mm(component)
+        lower, upper = (-np.inf, np.inf) if support is None else support
+        hexapole_supports.append((getattr(component, "key", None), lower, upper))
+        boundaries.extend(z for z in (lower, upper) if start < z < stop)
     events, owners = _component_events(state, start, stop)
     plan = build_propagation_plan(state, start, stop, events,
         save_z_mm=[a.z_mm for a in apertures if not isinstance(a, PosedWaveAperture)]+boundaries,
@@ -281,6 +295,24 @@ def _prepare_column(state, start, stop, maximum_step_mm):
     require_supported_column_wave_fields(state, start, stop, plan)
     from temsim.physics.posed_lens_wave import require_analytic_fields
     require_analytic_fields(plan.mapped_fields)
+    mapped_keys = {field.lens_key for field in plan.mapped_fields}
+    supports = sorted((lower, upper) for key, lower, upper in hexapole_supports if key not in mapped_keys)
+    merged = []
+    for lower, upper in supports:
+        if not merged or lower > merged[-1][1]:
+            merged.append([lower, upper])
+        else:
+            merged[-1][1] = max(upper, merged[-1][1])
+    exit_nodes = []
+    for _, upper in merged:
+        if start < upper <= stop:
+            index = int(np.argmin(abs(plan.z_mm-upper)))
+            if abs(plan.z_mm[index]-upper) > 1e-9:
+                raise ValueError("Column wave plan is missing a hexapole support exit")
+            exit_nodes.append(index)
+    from temsim.immutable_json import json_digest
+    plan = replace(plan, hexapole_exit_nodes=tuple(exit_nodes),
+        signature=json_digest((plan.signature, "physical-hexapole-exits-v1", exit_nodes)))
     if np.any(plan.thin_power_m1) or np.any(plan.thin_rotation_rad):
         raise ValueError("Unexecuted equivalent image maps are not admitted")
     axis, _, radii = _expanded_profile_axis(plan.z_mm, walls)
@@ -471,9 +503,11 @@ def _linear_run(wave, wavelength, paths, first, plan, radii, stops, kick_x, kick
     spherical_events = kick_indices((*getattr(plan, "posed_spherical_kicks", ()),
                                     *getattr(plan, "intrinsic_aberration_kicks", ())), plan.z_mm,
                                     include_initial=False)
+    hexapole_exits = frozenset(_hexapole_exit_nodes(plan))
     for i in range(first, len(paths)):
         j = i+1
         if (plan.midpoint_hex_normal_m3[i] or plan.midpoint_hex_skew_m3[i]
+                or j in hexapole_exits
                 or plan.cs_kick_m3[j] or j in spherical_events or kick_x[j] or kick_y[j]
                 or any(not isinstance(stop, (_ParallelBore, PosedWaveBore)) for stop in stops.get(j, ()))):
             break
@@ -673,6 +707,16 @@ def _previous_support_error(record, mode_id):
     return None
 
 
+def _hexapole_exit_nodes(plan):
+    """Known field exits on the complete grid, never an observation endpoint."""
+    if getattr(plan, "hexapole_exit_nodes", None) is not None:
+        return tuple(plan.hexapole_exit_nodes)
+    active = (np.asarray(plan.midpoint_hex_normal_m3) != 0) | (np.asarray(plan.midpoint_hex_skew_m3) != 0)
+    # Only a following field-free interval proves that a distributed HP run
+    # has ended. A last active interval may continue beyond the requested Z.
+    return tuple(int(index)+1 for index in np.flatnonzero(active[:-1] & ~active[1:]))
+
+
 def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                       grid_numerics=WaveGridNumerics(), retained_bytes=0,
                       tip_time_s=None, _prepared=None, _combine_linear=True, _device, _transport_cache=None,
@@ -681,6 +725,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
     from temsim.optics.electron_gun.tip_coherence import wavelength_m
     plan, radii, stops, owners = (_prepare_column(state, checkpoint.plane_z_mm, stop_z_mm, maximum_step_mm)
                                  if _prepared is None else _prepared)
+    hexapole_exits = frozenset(_hexapole_exit_nodes(plan))
     outputs, records = [], []
     maps = {} if _transport_cache is None else _transport_cache
     electric = _electric_coefficients(plan)
@@ -813,7 +858,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                 maximum_loss_fraction=grid_numerics.maximum_spectral_loss_fraction)
             return admit_compaction(wave, compact, evidence, z, strengths)
 
-        def multipole(wave, z, **strengths):
+        def multipole(wave, z, *, compact_after=True, **strengths):
             if not any(strengths.values()):
                 return wave
             def support_retry(value, error):
@@ -842,7 +887,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
             if rows and progress_callback:
                 progress_callback(index*len(plan.step_m)+i, len(checkpoint.beam.modes)*len(plan.step_m),
                                   f"Column wave refined {rows[0]['from_shape']} -> {rows[-1]['to_shape']} at {z:.9g} mm")
-            return compact_spectrum(result, z, strengths)
+            return compact_spectrum(result, z, strengths) if compact_after else result
         carrier_dirty = True
         def select_carrier_without_expansion(wave):
             # An optional gauge must not multiply the physical grid merely
@@ -974,7 +1019,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                 break
             multipole_scale = float(getattr(plan, "reference_momentum_kg_m_s", entrance_p))/entrance_p
             hn, hs = plan.midpoint_hex_normal_m3[i]*dz*multipole_scale/2, plan.midpoint_hex_skew_m3[i]*dz*multipole_scale/2
-            wave = multipole(wave, plan.z_mm[i], normal_m2=hn, skew_m2=hs)
+            wave = multipole(wave, plan.z_mm[i], compact_after=False, normal_m2=hn, skew_m2=hs)
             if hn or hs:
                 carrier_dirty = True
             selected = None
@@ -1010,10 +1055,14 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
             if isinstance(path, _PosedColumnPath) and check["magnetic_residual_required"]:
                 wave = magnetic_residual(wave, path, float(dz)/2, plan.z_mm[i+1])
                 carrier_dirty = True
-            wave = multipole(wave, plan.z_mm[i+1], normal_m2=hn, skew_m2=hs)
+            wave = multipole(wave, plan.z_mm[i+1], compact_after=False, normal_m2=hn, skew_m2=hs)
             if hn or hs:
                 carrier_dirty = True
             j = i+1
+            if j in hexapole_exits:
+                # Keep the resolved grid through both half-kicks and through
+                # internal checkpoints. Discrete Cs retains its own projection.
+                wave = compact_spectrum(wave, plan.z_mm[j], {"normal_m2": hn, "skew_m2": hs})
             if kick_x[j] or kick_y[j]:
                 kick = CanonicalPath(1e-3)
                 local_p, _ = _momentum_velocity(mode.energy_kev*1000+nodes[j]-nodes[0])
@@ -1136,6 +1185,8 @@ def _slice_prepared(prepared, first, last):
         "midpoint_sxy_m2",
         "midpoint_hex_normal_m3", "midpoint_hex_skew_m3")}
     values.update({name: getattr(plan, name)[first:last+1] for name in ("z_mm", "kick_x_rad", "kick_y_rad", "cs_kick_m3")})
+    values["hexapole_exit_nodes"] = tuple(index-first for index in _hexapole_exit_nodes(plan)
+                                           if first < index <= last)
     if hasattr(plan, "magnetic_t"):
         # Discrete posed Cs uses the same node gauge as its particle action.
         values["magnetic_t"] = plan.magnetic_t[first:last+1]
@@ -1152,7 +1203,7 @@ def _slice_prepared(prepared, first, last):
     values["intrinsic_aberration_kicks"] = tuple(
         kick for kick in getattr(plan, "intrinsic_aberration_kicks", ())
         if plan.z_mm[first] < kick.z_mm <= plan.z_mm[last])
-    values["signature"] = json_digest((plan.signature, first, last))
+    values["signature"] = json_digest((plan.signature, first, last, values["hexapole_exit_nodes"]))
     sliced_stops = {i-first: value for i, value in stops.items() if first < i <= last}
     entrance_bores = [value for value in stops.get(first, ()) if isinstance(value, (_ParallelBore, PosedWaveBore))]
     if entrance_bores:
@@ -1343,7 +1394,7 @@ def _propagate_column_segmented(state, checkpoint, stop_z_mm, *, store, segment_
         segment = _slice_prepared(prepared, first, last)
         time_key = tip_time_s if any(row["dynamic"] for row in segment[3]) else None
         parent_digest = result.digest
-        key = store.key("column-segment", parent_digest, segment[0].signature, grid_numerics.column_identity(), time_key)
+        key = store.key("column-segment-hp-exit-v2", parent_digest, segment[0].signature, grid_numerics.column_identity(), time_key)
         cached = store.get(key) if use_cache else None
         if cached is not None:
             result, hit = cached, True

@@ -133,6 +133,8 @@ class AxialPropagationPlan:
     electric_reference_invariant_ev: float | None = None
     posed_spherical_kicks: tuple = ()
     intrinsic_aberration_kicks: tuple = ()
+    # Column-wave scheduling metadata; None permits supplied-plan fallback.
+    hexapole_exit_nodes: tuple[int, ...] | None = None
 
 
 def _frozen_array(values, dtype=np.float64):
@@ -141,9 +143,8 @@ def _frozen_array(values, dtype=np.float64):
     return result
 
 
-def _support_mask(z_mm, provider):
-    """Return the solver's explicit finite-support mask for one field."""
-
+def _support_bounds_mm(provider):
+    """Canonical solver support, or None for an unbounded provider."""
     if hasattr(provider, "field_support_mm"):
         try:
             lower, upper = provider.field_support_mm(FIELD_SIGMA_CUTOFF)
@@ -154,7 +155,7 @@ def _support_mask(z_mm, provider):
             hasattr(provider, "effective_length_mm")
             or hasattr(provider, "length_mm")
         ):
-            return np.ones_like(np.asarray(z_mm), dtype=bool)
+            return None
         centre = float(getattr(provider, "z_mm"))
         length = float(
             getattr(
@@ -166,8 +167,17 @@ def _support_mask(z_mm, provider):
         sigma = max(abs(length) / 2.355, 1e-12)
         lower = centre - FIELD_SIGMA_CUTOFF * sigma
         upper = centre + FIELD_SIGMA_CUTOFF * sigma
+    return float(lower), float(upper)
+
+
+def _support_mask(z_mm, provider):
+    """Return the solver's explicit finite-support mask for one field."""
+    bounds = _support_bounds_mm(provider)
+    if bounds is None:
+        return np.ones_like(np.asarray(z_mm), dtype=bool)
+    lower, upper = bounds
     z = np.asarray(z_mm, dtype=float)
-    return (z >= float(lower)) & (z <= float(upper))
+    return (z >= lower) & (z <= upper)
 
 
 def electron(state):
