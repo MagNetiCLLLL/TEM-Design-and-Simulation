@@ -65,6 +65,7 @@ file = "column/C3_ImageCorrector.toml"
 c3_lens = true
 probe_corrector = false
 image_corrector = true
+image_corrector_design = "cetcor"
 
 [[column_variants]]
 name = "C3 + Probe Corrector + Image Corrector"
@@ -72,6 +73,23 @@ file = "column/C3_ProbeCorrector_ImageCorrector.toml"
 c3_lens = true
 probe_corrector = true
 image_corrector = true
+image_corrector_design = "cetcor"
+
+[[column_variants]]
+name = "C3 + B-COR"
+file = "column/C3_BCOR.toml"
+c3_lens = true
+probe_corrector = false
+image_corrector = true
+image_corrector_design = "bcor"
+
+[[column_variants]]
+name = "C3 + Probe Corrector + B-COR"
+file = "column/C3_ProbeCorrector_BCOR.toml"
+c3_lens = true
+probe_corrector = true
+image_corrector = true
+image_corrector_design = "bcor"
 
 # Optional post-column filter. Both choices use the existing assembly interfaces.
 [[project_and_recording_system_variants]]

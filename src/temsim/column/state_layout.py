@@ -52,8 +52,8 @@ from temsim.component_keys import (
     OBJECTIVE_APERTURE,
     OBJECTIVE_STIGMATOR,
     IMAGE_DIFFRACTION_DEFLECTOR,
-    IMAGE_CORRECTOR_ELEMENT_KEYS,
-    IMAGE_CORRECTOR_LENS_KEYS,
+    IMAGE_CORRECTOR_ALL_ELEMENT_KEYS,
+    IMAGE_CORRECTOR_ALL_LENS_KEYS,
     PROBE_DPH2_DEFLECTOR,
     PROBE_DPH1_DEFLECTOR,
     PROBE_DP11_DEFLECTOR,
@@ -98,7 +98,7 @@ _LENS_KEYS = {
     INTERMEDIATE_LENS: INTERMEDIATE_LENS,
     PROJECTOR_LENS_1: PROJECTOR_LENS_1,
     PROJECTOR_LENS_2: PROJECTOR_LENS_2,
-    **{key: key for key in IMAGE_CORRECTOR_LENS_KEYS},
+    **{key: key for key in IMAGE_CORRECTOR_ALL_LENS_KEYS},
 }
 
 _APERTURE_KEYS = {
@@ -146,7 +146,7 @@ _CORRECTOR_ELEMENT_KEYS = {
     PROBE_DP11_DEFLECTOR: PROBE_DP11_DEFLECTOR,
     AC_DEFLECTOR: AC_DEFLECTOR,
     DESCAN_DEFLECTOR: DESCAN_DEFLECTOR,
-    **{key: key for key in IMAGE_CORRECTOR_ELEMENT_KEYS},
+    **{key: key for key in IMAGE_CORRECTOR_ALL_ELEMENT_KEYS},
 }
 
 
@@ -214,6 +214,8 @@ def layout_configuration_from_state(
     assembly=None,
 ):
     """Translate persisted topology selections into layout configuration."""
+    from temsim.optics.image_corrector import ensure_image_corrector_design
+    ensure_image_corrector_design(state)
     hardware = C3Hardware(getattr(state, "layout_c3_hardware", "three_condenser"))
     corrector = _CORRECTORS.get(
         corrector_mode_for_hardware(
@@ -290,6 +292,7 @@ def layout_configuration_from_state(
     )
     configuration = LayoutConfiguration(
         corrector=corrector,
+        image_corrector_design=state.image_corrector_design,
         electron_gun_type=state.electron_gun.type_key,
         c3_hardware=hardware,
         c3_excited=c3_excited,
@@ -553,13 +556,14 @@ def apply_physical_layout_to_state(
             )
 
     image_on = state.image_corrector_installed
-    for key in IMAGE_CORRECTOR_LENS_KEYS:
+    selected_image_keys = {c.key for c in state.image_corrector_system.components}
+    for key in IMAGE_CORRECTOR_ALL_LENS_KEYS:
         if key in lenses:
             _set_topology_installation(
                 state,
                 lenses[key],
                 f"lens:{key}",
-                image_on,
+                image_on and key in selected_image_keys,
             )
 
     stigmators = _by_key(state.stigmators)
@@ -567,13 +571,13 @@ def apply_physical_layout_to_state(
     corrector_elements = _by_key(
         getattr(state, "corrector_elements", [])
     )
-    for key in IMAGE_CORRECTOR_ELEMENT_KEYS:
+    for key in IMAGE_CORRECTOR_ALL_ELEMENT_KEYS:
         if key in corrector_elements:
             _set_topology_installation(
                 state,
                 corrector_elements[key],
                 f"corrector:{key}",
-                image_on,
+                image_on and key in selected_image_keys,
             )
     if PROBE_DPH2_DEFLECTOR in corrector_elements:
         _set_topology_installation(
@@ -763,7 +767,7 @@ def apply_physical_layout_to_state(
         component.validate()
         prefix = (
             "lens"
-            if component.key in IMAGE_CORRECTOR_LENS_KEYS
+            if component.key in IMAGE_CORRECTOR_ALL_LENS_KEYS
             else "corrector"
         )
         state.layout_reference_positions.pop(

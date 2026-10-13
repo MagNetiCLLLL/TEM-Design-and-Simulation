@@ -35,6 +35,7 @@ _GUN_CONTROLS_KEY = "__gun_controls__"
 _SAMPLE_MODEL_KEY = "__sample_model__"
 _SIMULATION_MODEL_KEY = "__simulation_model__"
 _PROFILE_VERSION_KEY = "__profile_format_version__"
+_IMAGE_INITIALIZED_KEY = "__image_corrector_initialized_keys__"
 _SLIT_PHYSICAL_FIELDS = frozenset({"gap_m", "centre_m", "zero_loss_offset_m", "calibrated_dispersion_um_per_ev"})
 _COMPUTE_FIELDS = frozenset({"acceleration_backend", "acceleration_enabled"})
 
@@ -114,6 +115,7 @@ def save_profile(path: str | Path, state, selection: AssemblySelection) -> None:
             "column": selection.column,
             "recording": selection.recording,
             "beam_blanker": selection.beam_blanker,
+            "image_corrector_initialized_keys": list(state.image_corrector_initialized_keys),
         },
         "devices": devices,
         "gun_controls": capture_gun_profile_controls(state.electron_gun),
@@ -183,6 +185,7 @@ def _validate_profile_assembly(state, selection):
         "monochromator_installed": bool(gun.properties.get("monochromator", False)),
         "probe_corrector_installed": bool(column.properties["probe_corrector"]),
         "image_corrector_installed": bool(column.properties["image_corrector"]),
+        "image_corrector_design": str(column.properties.get("image_corrector_design", "cetcor")),
     }
     mismatches = [name for name, value in expected.items() if getattr(state, name) != value]
     if state.energy_filter.enabled != has_filter:
@@ -221,6 +224,9 @@ def read_profile(path: str | Path) -> tuple[AssemblySelection, dict]:
     if not isinstance(devices, dict):
         raise ValueError("Operating profile devices must be a table")
     values = dict(devices)
+    if "image_corrector_initialized_keys" in assembly:
+        values[_IMAGE_INITIALIZED_KEY] = _validated_image_initialized_keys(
+            assembly["image_corrector_initialized_keys"])
     none_values = document.get("none_values", {})
     if not isinstance(none_values, dict):
         raise ValueError("Operating profile none_values must be a table")
@@ -305,11 +311,21 @@ def _apply_sample_model(sample, model: dict) -> None:
     sample.wave_illumination = illumination
 
 
+def _validated_image_initialized_keys(value):
+    from temsim.component_keys import IMAGE_CORRECTOR_ALL_KEYS
+    if (not isinstance(value, (tuple, list)) or any(not isinstance(key, str) for key in value)
+            or len(set(value)) != len(value) or set(value) - set(IMAGE_CORRECTOR_ALL_KEYS)):
+        raise ValueError("Invalid initialized image-corrector component keys")
+    return tuple(sorted(value))
+
+
 def apply_profile_values(state, values: dict) -> None:
     """Apply validated current controls atomically; omitted controls stay unchanged."""
     if not isinstance(values, dict):
         raise ValueError("Operating profile devices must be a table")
     values = dict(values)
+    image_initialized = _validated_image_initialized_keys(values.pop(
+        _IMAGE_INITIALIZED_KEY, state.image_corrector_initialized_keys))
     gun_controls_present = _GUN_CONTROLS_KEY in values
     gun_controls = values.pop(_GUN_CONTROLS_KEY, None)
     if gun_controls_present and not isinstance(gun_controls, dict):
@@ -378,6 +394,26 @@ def apply_profile_values(state, values: dict) -> None:
     if "lens_excitation" in model_settings:
         raise ValueError("Active lens excitation belongs only in profile devices, not simulation_model.settings")
     targets = runtime_targets(state)
+    # A profile can retain temporarily uninstalled B-COR hardware. Prepare
+    # detached typed components and commit them only after all fields validate.
+    from temsim.optics.image_corrector import create_image_corrector_component
+    from temsim.runtime_parameters import RuntimeTarget
+    image_additions = []
+    for key in image_initialized:
+        if key not in targets:
+            item = create_image_corrector_component(key)
+            from types import SimpleNamespace
+            from temsim import module_manifest
+            from temsim.column.module_assembly import (
+                _apply_manifest_projector_field_calibration, _apply_manifest_field_polarity,
+            )
+            part = SimpleNamespace(key=key, data=module_manifest.part_data("column/C3_BCOR.toml", key))
+            _apply_manifest_projector_field_calibration(item, part)
+            _apply_manifest_field_polarity(item, part)
+            item.enabled = False
+            item._layout_installed = False
+            image_additions.append(item)
+            targets[key] = RuntimeTarget(key, item.name, item)
     pending = []
     for key, attributes in values.items():
         target = targets.get(key)
@@ -469,6 +505,11 @@ def apply_profile_values(state, values: dict) -> None:
     filter_candidate = _filter_controls_candidate(state, values, targets, pending, filter_model)
     candidate_sample.virtual_interactions = []
     candidate_sample.virtual_regions = []
+    from temsim.component_keys import IMAGE_CORRECTOR_ALL_LENS_KEYS
+    for item in image_additions:
+        (state.lenses if item.key in IMAGE_CORRECTOR_ALL_LENS_KEYS else state.corrector_elements).append(item)
+    state.image_corrector_initialized_keys = tuple(sorted(
+        set(state.image_corrector_initialized_keys) | set(image_initialized)))
     for obj, name, value in pending:
         if obj is not state.sample:
             setattr(obj, name, value)

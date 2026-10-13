@@ -1,4 +1,4 @@
-"""Modular CETCOR-style TEM image-corrector assembly."""
+"""Selectable CETCOR and three-hexapole B-COR image-corrector assemblies."""
 
 from __future__ import annotations
 
@@ -7,6 +7,14 @@ from typing import ClassVar, Optional
 
 from temsim import module_manifest
 from temsim.component_keys import (
+    BCOR_KEYS,
+    BCOR_EXTRA_KEYS,
+    IMAGE_CORRECTOR_ALL_KEYS,
+    IMAGE_CORRECTOR_ALL_LENS_KEYS,
+    IMAGE_CORRECTOR_ALL_ELEMENT_KEYS,
+    IMAGE_CORRECTOR_HP3_HEXAPOLE,
+    IMAGE_CORRECTOR_TL31_LENS,
+    IMAGE_CORRECTOR_TL32_LENS,
     IMAGE_CORRECTOR_ADAPTER_LENS,
     IMAGE_CORRECTOR_DP11_DEFLECTOR,
     IMAGE_CORRECTOR_DP12_DEFLECTOR,
@@ -140,11 +148,14 @@ _DEFAULT_IMAGE_CORRECTOR_SAMPLE_Z_MM = float(
 
 
 def _image_corrector_definition(
-    key, label, kind, shape_profile, **calibration
+    key, label, kind, shape_profile, *, parts=None, sample_z_mm=None,
+    **calibration,
 ):
     """Combine TOML-owned structure with code-owned field behaviour."""
 
-    part = _DEFAULT_IMAGE_CORRECTOR_PARTS[key]
+    part = (parts or _DEFAULT_IMAGE_CORRECTOR_PARTS)[key]
+    if sample_z_mm is None:
+        sample_z_mm = _DEFAULT_IMAGE_CORRECTOR_SAMPLE_Z_MM
     if kind == "round_lens":
         # One native part owns geometry, field profile and default drive.
         calibration.update(
@@ -177,7 +188,7 @@ def _image_corrector_definition(
         kind=kind,
         mechanical_center_from_specimen_mm=(
             float(part["local_center_z_mm"])
-            - _DEFAULT_IMAGE_CORRECTOR_SAMPLE_Z_MM
+            - sample_z_mm
         ),
         mechanical_length_mm=float(part["length_mm"]),
         outer_diameter_mm=(
@@ -188,7 +199,7 @@ def _image_corrector_definition(
         shape_profile=shape_profile,
         optical_reference_from_specimen_mm=(
             float(part["optical_reference_local_z_mm"])
-            - _DEFAULT_IMAGE_CORRECTOR_SAMPLE_Z_MM
+            - sample_z_mm
         ),
         effective_aperture_radius_mm=(
             0.5 * float(bore_diameter_mm)
@@ -327,22 +338,93 @@ IMAGE_CORRECTOR_ROUND_LENSES = tuple(
 )
 
 
-def default_image_corrector_offsets_from_tl11_mm():
+def validate_image_corrector_design(design):
+    if design not in {"cetcor", "bcor"}:
+        raise ValueError("Image corrector design must be 'cetcor' or 'bcor'.")
+    return design
+
+
+def image_corrector_keys(design="cetcor"):
+    return BCOR_KEYS if validate_image_corrector_design(design) == "bcor" else IMAGE_CORRECTOR_KEYS
+
+
+def image_corrector_definitions(design="cetcor", *, _document=None):
+    """Selected module owns B-COR geometry and engineering operating defaults.
+
+    The extra stage has no implicit proprietary calibration; supplied values
+    are explicitly documented simulator seeds in its TOML module.
+    """
+    if validate_image_corrector_design(design) == "cetcor":
+        return IMAGE_CORRECTOR_COMPONENTS
+    document = _document or module_manifest.read_document(
+        module_manifest.MODULE_ROOT / "column" / "C3_BCOR.toml"
+    )
+    parts = {str(row["key"]): row for row in document["parts"]}
+    sample_z_mm = float(parts["sample"]["local_center_z_mm"])
+    definitions = []
+    extras = {
+        IMAGE_CORRECTOR_TL31_LENS: ("TL31", "round_lens", "magnetic_lens_yoke"),
+        IMAGE_CORRECTOR_TL32_LENS: ("TL32", "round_lens", "magnetic_lens_yoke"),
+        IMAGE_CORRECTOR_HP3_HEXAPOLE: ("HP3", "hexapole", "hexapole_body"),
+    }
+    for key in BCOR_KEYS:
+        old = IMAGE_CORRECTOR_BY_KEY.get(key)
+        label, kind, shape = (
+            (old.label, old.kind, old.shape_profile) if old else extras[key]
+        )
+        calibration = {}
+        if old:
+            calibration = {name: getattr(old, name) for name in (
+                "maximum_strength_m2", "maximum_strength_m3", "default_strength_m3",
+                "orientation_rad", "maximum_kick_mrad", "conjugate_to",
+            )}
+        if kind == "hexapole":
+            for name in ("default_strength_m3", "orientation_rad", "maximum_strength_m3"):
+                if key != IMAGE_CORRECTOR_HPOL_HEXAPOLE or name in parts[key]:
+                    calibration[name] = float(parts[key][name])
+        definitions.append(_image_corrector_definition(
+            key, label, kind, shape, parts=parts, sample_z_mm=sample_z_mm,
+            **calibration,
+        ))
+    return tuple(definitions)
+
+
+def _component_defaults(key, design):
+    if design == "cetcor":
+        return IMAGE_CORRECTOR_BY_KEY[key], _DEFAULT_IMAGE_CORRECTOR_PARTS[key]
+    definition = next(d for d in image_corrector_definitions(design) if d.key == key)
+    return definition, module_manifest.part_data("column/C3_BCOR.toml", key)
+
+
+def _design_component_defaults(design):
+    """Read a fresh immutable-input context once for a bulk factory call."""
+    if design == "cetcor":
+        return {key: (IMAGE_CORRECTOR_BY_KEY[key], _DEFAULT_IMAGE_CORRECTOR_PARTS[key])
+                for key in IMAGE_CORRECTOR_KEYS}
+    document = module_manifest.read_document(
+        module_manifest.MODULE_ROOT / "column" / "C3_BCOR.toml"
+    )
+    parts = {str(row["key"]): row for row in document["parts"]}
+    return {d.key: (d, parts[d.key])
+            for d in image_corrector_definitions(design, _document=document)}
+
+
+def default_image_corrector_offsets_from_tl11_mm(design="cetcor"):
     """Return internal offsets from the first independent transfer lens.
 
     CEOS OL post is the downstream field of the existing Objective assembly,
     not an additional corrector lens. TL11 owns the relay entrance anchor.
     """
 
-    tl11_center_mm = IMAGE_CORRECTOR_BY_KEY[
-        IMAGE_CORRECTOR_TL11_LENS
-    ].mechanical_center_from_specimen_mm
+    definitions = image_corrector_definitions(design)
+    tl11_center_mm = next(d.mechanical_center_from_specimen_mm for d in definitions
+                         if d.key == IMAGE_CORRECTOR_TL11_LENS)
     return {
         definition.key: (
             float(definition.mechanical_center_from_specimen_mm)
             - float(tl11_center_mm)
         )
-        for definition in IMAGE_CORRECTOR_COMPONENTS
+        for definition in definitions
         if definition.key != IMAGE_CORRECTOR_TL11_LENS
     }
 
@@ -363,6 +445,14 @@ class ImageCorrectorTl22LensComponent(RoundLensComponent):
     EXPECTED_KEY: ClassVar[str] = IMAGE_CORRECTOR_TL22_LENS
 
 
+class ImageCorrectorTl31LensComponent(RoundLensComponent):
+    EXPECTED_KEY: ClassVar[str] = IMAGE_CORRECTOR_TL31_LENS
+
+
+class ImageCorrectorTl32LensComponent(RoundLensComponent):
+    EXPECTED_KEY: ClassVar[str] = IMAGE_CORRECTOR_TL32_LENS
+
+
 class ImageCorrectorAdapterLensComponent(RoundLensComponent):
     EXPECTED_KEY: ClassVar[str] = IMAGE_CORRECTOR_ADAPTER_LENS
 
@@ -377,6 +467,10 @@ class ImageCorrectorHp1HexapoleComponent(HexapoleComponent):
 
 class ImageCorrectorHp2HexapoleComponent(HexapoleComponent):
     EXPECTED_KEY: ClassVar[str] = IMAGE_CORRECTOR_HP2_HEXAPOLE
+
+
+class ImageCorrectorHp3HexapoleComponent(HexapoleComponent):
+    EXPECTED_KEY: ClassVar[str] = IMAGE_CORRECTOR_HP3_HEXAPOLE
 
 
 class ImageCorrectorQpolQuadrupoleComponent(QuadrupoleComponent):
@@ -545,6 +639,8 @@ _ROUND_LENS_TYPES = {
     IMAGE_CORRECTOR_TL12_LENS: ImageCorrectorTl12LensComponent,
     IMAGE_CORRECTOR_TL21_LENS: ImageCorrectorTl21LensComponent,
     IMAGE_CORRECTOR_TL22_LENS: ImageCorrectorTl22LensComponent,
+    IMAGE_CORRECTOR_TL31_LENS: ImageCorrectorTl31LensComponent,
+    IMAGE_CORRECTOR_TL32_LENS: ImageCorrectorTl32LensComponent,
     IMAGE_CORRECTOR_ADAPTER_LENS: ImageCorrectorAdapterLensComponent,
 }
 _HEXAPOLE_TYPES = {
@@ -554,6 +650,8 @@ _HEXAPOLE_TYPES = {
         ImageCorrectorHp1HexapoleComponent,
     IMAGE_CORRECTOR_HP2_HEXAPOLE:
         ImageCorrectorHp2HexapoleComponent,
+    IMAGE_CORRECTOR_HP3_HEXAPOLE:
+        ImageCorrectorHp3HexapoleComponent,
 }
 _QUADRUPOLE_TYPES = {
     IMAGE_CORRECTOR_QPOL_QUADRUPOLE:
@@ -588,9 +686,8 @@ def _mechanical_center_from_tip(definition):
     )
 
 
-def _create_round_lens(key):
-    definition = IMAGE_CORRECTOR_BY_KEY[key]
-    part = _DEFAULT_IMAGE_CORRECTOR_PARTS[key]
+def _create_round_lens(key, design="cetcor", defaults=None):
+    definition, part = defaults or _component_defaults(key, design)
     component_type = _ROUND_LENS_TYPES[key]
     bore = 2.0 * float(definition.effective_aperture_radius_mm)
     mechanical_center_mm = _mechanical_center_from_tip(definition)
@@ -607,22 +704,22 @@ def _create_round_lens(key):
         enabled=True,
         cs_mm=None,
         cc_mm=None,
-        polarity=int(_DEFAULT_IMAGE_CORRECTOR_PARTS[key]["field_polarity"]),
+        polarity=int(part["field_polarity"]),
         normalise_profile_peak=bool(part["normalise_field_profile_peak"]),
         mechanical_center_from_tip_mm=mechanical_center_mm,
         mechanical_length_mm=definition.mechanical_length_mm,
         mechanical_outer_diameter_mm=definition.outer_diameter_mm,
         bore_diameter_mm=bore,
         pole_gap_mm=float(
-            _DEFAULT_IMAGE_CORRECTOR_PARTS[key]["pole_gap_mm"]
+            part["pole_gap_mm"]
         ),
         optical_reference_from_tip_mm=mechanical_center_mm,
         corrector="image",
     ).validate()
 
 
-def _create_hexapole(key):
-    definition = IMAGE_CORRECTOR_BY_KEY[key]
+def _create_hexapole(key, design="cetcor", defaults=None):
+    definition, _part = defaults or _component_defaults(key, design)
     component_type = _HEXAPOLE_TYPES[key]
     mechanical_center_mm = _mechanical_center_from_tip(definition)
     return component_type(
@@ -649,8 +746,8 @@ def _create_hexapole(key):
     ).validate()
 
 
-def _create_quadrupole(key):
-    definition = IMAGE_CORRECTOR_BY_KEY[key]
+def _create_quadrupole(key, design="cetcor", defaults=None):
+    definition, _part = defaults or _component_defaults(key, design)
     component_type = _QUADRUPOLE_TYPES[key]
     mechanical_center_mm = _mechanical_center_from_tip(definition)
     return component_type(
@@ -676,8 +773,8 @@ def _create_quadrupole(key):
     ).validate()
 
 
-def _create_deflector(key):
-    definition = IMAGE_CORRECTOR_BY_KEY[key]
+def _create_deflector(key, design="cetcor", defaults=None):
+    definition, _part = defaults or _component_defaults(key, design)
     component_type = _DEFLECTOR_TYPES[key]
     mechanical_center_mm = _mechanical_center_from_tip(definition)
     return component_type(
@@ -704,38 +801,49 @@ def _create_deflector(key):
     ).validate()
 
 
-def create_image_corrector_component(key):
+def create_image_corrector_component(key, design=None, *, _defaults=None):
+    if design is None:
+        design = "bcor" if key in BCOR_EXTRA_KEYS else "cetcor"
+    validate_image_corrector_design(design)
     if key in _ROUND_LENS_TYPES:
-        return _create_round_lens(key)
+        return _create_round_lens(key, design, _defaults)
     if key in _HEXAPOLE_TYPES:
-        return _create_hexapole(key)
+        return _create_hexapole(key, design, _defaults)
     if key in _QUADRUPOLE_TYPES:
-        return _create_quadrupole(key)
+        return _create_quadrupole(key, design, _defaults)
     if key in _DEFLECTOR_TYPES:
-        return _create_deflector(key)
+        return _create_deflector(key, design, _defaults)
     if key == IMAGE_CORRECTOR_SAD_PLANE:
-        return ImageCorrectorSadPlaneComponent().validate()
+        component = ImageCorrectorSadPlaneComponent()
+        if design == "bcor":
+            definition, _part = _defaults or _component_defaults(key, design)
+            component.mechanical_center_from_tip_mm = _mechanical_center_from_tip(definition)
+            component.optical_reference_from_tip_mm = _mechanical_center_from_tip(definition)
+        return component.validate()
     raise KeyError(f"Unknown Image Corrector component: {key}")
 
 
-def create_image_corrector_components():
+def create_image_corrector_components(design="cetcor"):
+    defaults = _design_component_defaults(design)
     return tuple(
-        create_image_corrector_component(key)
-        for key in IMAGE_CORRECTOR_KEYS
+        create_image_corrector_component(key, design, _defaults=defaults[key])
+        for key in image_corrector_keys(design)
     )
 
 
-def create_image_corrector_lenses():
+def create_image_corrector_lenses(design="cetcor"):
+    defaults = _design_component_defaults(design)
     return [
-        create_image_corrector_component(key)
-        for key in IMAGE_CORRECTOR_LENS_KEYS
+        create_image_corrector_component(key, design, _defaults=defaults[key])
+        for key in image_corrector_keys(design) if key in IMAGE_CORRECTOR_ALL_LENS_KEYS
     ]
 
 
-def create_image_corrector_elements():
+def create_image_corrector_elements(design="cetcor"):
+    defaults = _design_component_defaults(design)
     return [
-        create_image_corrector_component(key)
-        for key in IMAGE_CORRECTOR_ELEMENT_KEYS
+        create_image_corrector_component(key, design, _defaults=defaults[key])
+        for key in image_corrector_keys(design) if key in IMAGE_CORRECTOR_ALL_ELEMENT_KEYS
     ]
 
 
@@ -757,6 +865,44 @@ def is_image_corrector_component(component):
     return expected_type is not None and isinstance(
         component, expected_type
     )
+
+
+def ensure_image_corrector_design(state):
+    """Create selected typed hardware; retain but disable uninstalled extras.
+
+    Restored B-COR components keep their saved operating parameters. Selecting
+    CETCOR cannot accidentally leave HP3 or TL31/TL32 active in propagation.
+    """
+    design = validate_image_corrector_design(getattr(state, "image_corrector_design", "cetcor"))
+    state.image_corrector_design = design
+    selected = frozenset(image_corrector_keys(design))
+    for collection_name, keys in (
+        ("lenses", IMAGE_CORRECTOR_ALL_LENS_KEYS),
+        ("corrector_elements", IMAGE_CORRECTOR_ALL_ELEMENT_KEYS),
+    ):
+        collection = list(getattr(state, collection_name, ()))
+        existing = {item.key for item in collection}
+        for key in keys:
+            if key in selected and key not in existing:
+                collection.append(create_image_corrector_component(key, design))
+        for item in collection:
+            if item.key in keys and item.key not in selected:
+                if bool(getattr(item, "_layout_installed", True)):
+                    preference = bool(item.enabled)
+                    item._layout_enabled_preference = preference
+                    prefix = "lens" if collection_name == "lenses" else "corrector"
+                    state.layout_reference_enabled[f"{prefix}:{item.key}"] = preference
+                item.enabled = False
+                item._layout_installed = False
+        setattr(state, collection_name, collection)
+    previous_design = getattr(state, "_image_corrector_runtime_design", None)
+    if previous_design != design:
+        state.image_corrector_component_offsets_from_tl11_mm = (
+            default_image_corrector_offsets_from_tl11_mm(design)
+        )
+        state._image_corrector_resolved_positions_mm = None
+    state._image_corrector_runtime_design = design
+    return state
 
 
 def image_corrector_component_from_dict(data):
@@ -788,8 +934,12 @@ class ImageCorrectorSystem:
     def __init__(self, state):
         self.state = state
 
+    @property
+    def design(self):
+        return validate_image_corrector_design(getattr(self.state, "image_corrector_design", "cetcor"))
+
     def component(self, key):
-        if key in IMAGE_CORRECTOR_LENS_KEYS:
+        if key in IMAGE_CORRECTOR_ALL_LENS_KEYS:
             return next(item for item in self.state.lenses if item.key == key)
         return next(
             item
@@ -854,6 +1004,18 @@ class ImageCorrectorSystem:
         return self.component(IMAGE_CORRECTOR_HP2_HEXAPOLE)
 
     @property
+    def tl31_lens(self):
+        return self.component(IMAGE_CORRECTOR_TL31_LENS)
+
+    @property
+    def tl32_lens(self):
+        return self.component(IMAGE_CORRECTOR_TL32_LENS)
+
+    @property
+    def hp3_hexapole(self):
+        return self.component(IMAGE_CORRECTOR_HP3_HEXAPOLE)
+
+    @property
     def adapter_lens(self):
         return self.component(IMAGE_CORRECTOR_ADAPTER_LENS)
 
@@ -871,18 +1033,20 @@ class ImageCorrectorSystem:
 
     @property
     def components(self):
-        return tuple(self.component(key) for key in IMAGE_CORRECTOR_KEYS)
+        return tuple(self.component(key) for key in image_corrector_keys(self.design))
 
     @property
     def round_lens_components(self):
         return tuple(
-            self.component(key) for key in IMAGE_CORRECTOR_LENS_KEYS
+            self.component(key) for key in image_corrector_keys(self.design)
+            if key in IMAGE_CORRECTOR_ALL_LENS_KEYS
         )
 
     @property
     def corrector_components(self):
         return tuple(
-            self.component(key) for key in IMAGE_CORRECTOR_ELEMENT_KEYS
+            self.component(key) for key in image_corrector_keys(self.design)
+            if key in IMAGE_CORRECTOR_ALL_ELEMENT_KEYS
         )
 
     @property
@@ -949,15 +1113,28 @@ class ImageCorrectorSystem:
             float(self.hp2_hexapole.z_mm),
         ).matrix
 
+    def main_hexapole_transfer_matrices(self):
+        """Return every adjacent main-HP relay in laboratory coordinates."""
+        from temsim.physics.first_order import trace_transverse_transfer
+        main = [self.hp1_hexapole, self.hp2_hexapole]
+        if self.design == "bcor":
+            main.append(self.hp3_hexapole)
+        return {
+            (a.key, b.key): trace_transverse_transfer(
+                self.state, float(a.z_mm), float(b.z_mm)
+            ).matrix
+            for a, b in zip(main, main[1:])
+        }
+
     def validate(self):
         if tuple(component.key for component in self.components) != (
-            IMAGE_CORRECTOR_KEYS
+            image_corrector_keys(self.design)
         ):
             raise ValueError(
                 "Image Corrector components are not in canonical order."
             )
         if len({id(component) for component in self.components}) != len(
-            IMAGE_CORRECTOR_KEYS
+            image_corrector_keys(self.design)
         ):
             raise ValueError(
                 "Image Corrector components must be independent instances."
@@ -991,7 +1168,9 @@ def resolve_image_corrector_mechanical_anchors(state):
     rows = {p.key: p.data for p in getattr(assembly, "parts", ())}
     bindings = {}
     for component in components:
-        row = rows.get(component.key, _DEFAULT_IMAGE_CORRECTOR_PARTS[component.key])
+        row = rows.get(component.key)
+        if row is None:
+            _definition, row = _component_defaults(component.key, system.design)
         if row.get("physical_host_key"):
             host_key = str(row["physical_host_key"])
             row = rows.get(host_key, _DEFAULT_IMAGE_CORRECTOR_PARTS.get(host_key))
@@ -1002,7 +1181,7 @@ def resolve_image_corrector_mechanical_anchors(state):
                 str(row["optical_reference_host_key"]),
                 float(row.get("optical_reference_offset_mm", 0.)),
             )
-    for key, value in default_image_corrector_offsets_from_tl11_mm().items():
+    for key, value in default_image_corrector_offsets_from_tl11_mm(system.design).items():
         offsets.setdefault(key, value)
 
     image_deflector = state.image_diffraction_deflector

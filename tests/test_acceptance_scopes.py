@@ -99,6 +99,7 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_beam_steering_gui.py", "test_actual_probe_diagnostics.py",
             "test_cad_round_lenses.py", "test_cad_multipoles.py", "test_cad_auxiliary.py", "test_cad_export_gui.py",
                 "test_compare_cad_assembly.py", "test_image_corrector_topology.py", "test_image_corrector_channel_hardware.py",
+                "test_bcor_runtime.py", "test_bcor_hardware.py", "test_bcor_selection.py",
                 "test_stage_holder_manifest.py", "test_cad_stage_holder.py", "test_export_resolved_cad_assembly.py",
                     "test_cad_vacuum_tube.py", "test_cad_detectors.py", "test_cad_editing_contract.py",
                     "test_cad_optical_binding.py", "test_step_editing.py", "test_step_import_gui.py",
@@ -175,7 +176,7 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
                 "test_intrinsic_ray_device.py", "test_particle_gpu_reference.py",
                 "test_intrinsic_gpu_segments.py", "test_intrinsic_particle_backend.py",
                 "test_intrinsic_archive_radial.py", "test_intrinsic_legacy_boundaries.py",
-                "test_lens_aberration_editor.py", "test_system_residual_aberrations.py"},
+                "test_lens_aberration_editor.py", "test_system_residual_aberrations.py", "test_bcor_propagation.py"},
     }
     for scope, expected in required.items():
         assert {Path(path).name for path in scope_test_files(scope)} == expected

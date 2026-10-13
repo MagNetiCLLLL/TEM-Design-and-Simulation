@@ -6,6 +6,9 @@ allows GPU skips. Policy/emulation tests are deliberately not included.
 """
 
 GPU_TEST_FUNCTIONS = {
+    "test_bcor_propagation.py": (
+        "test_real_cuda_bcor_rays_and_third_hexapole_wave_match_cpu",
+    ),
     "test_intrinsic_aberration_integration.py": (
         "test_full_column_wave_uses_intrinsic_screen_and_resumes_once_on_gpu",
     ),

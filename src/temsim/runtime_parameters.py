@@ -35,6 +35,8 @@ INTERNAL_FIELDS = frozenset({
     "energy_filter_installed",
     "energy_filter_mode",
     "image_corrector_installed",
+    "image_corrector_design",
+    "image_corrector_initialized_keys",
     "installation_model_version",
     "installed",
     "gap_m",

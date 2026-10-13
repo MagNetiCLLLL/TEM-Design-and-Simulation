@@ -545,6 +545,8 @@ class State:
     active_backend: str = "CPU"
 
     corrector_mode: str = "probe_corrector"
+    image_corrector_design: str = "cetcor"
+    image_corrector_initialized_keys: tuple[str, ...] = ()
 
     energy_filter_mode: str = "no_energy_filter"
 
@@ -601,6 +603,15 @@ class State:
     def __post_init__(self):
         if type(self.schema_version) is not int or self.schema_version != STATE_SCHEMA_VERSION:
             raise ValueError("Unsupported instrument state schema")
+        from temsim.optics.image_corrector import validate_image_corrector_design
+        self.image_corrector_design = validate_image_corrector_design(self.image_corrector_design)
+        from temsim.component_keys import IMAGE_CORRECTOR_ALL_KEYS
+        if (not isinstance(self.image_corrector_initialized_keys, (tuple, list))
+                or any(not isinstance(key, str) for key in self.image_corrector_initialized_keys)
+                or len(set(self.image_corrector_initialized_keys)) != len(self.image_corrector_initialized_keys)
+                or set(self.image_corrector_initialized_keys) - set(IMAGE_CORRECTOR_ALL_KEYS)):
+            raise ValueError("Invalid initialized image-corrector component keys")
+        self.image_corrector_initialized_keys = tuple(sorted(self.image_corrector_initialized_keys))
         from temsim.simulation_modes import validate_mode, normalise_profiles, validate_model_recipes
         self.simulation_mode = validate_mode(self.simulation_mode)
         self.simulation_mode_profiles = normalise_profiles(self.simulation_mode_profiles)
@@ -1725,6 +1736,8 @@ class State:
             "image_aberrations":dict(self.image_aberrations),
             "lens_intrinsic_aberrations":deepcopy(self.lens_intrinsic_aberrations),
             "corrector_mode":corrector_mode,
+            "image_corrector_design":self.image_corrector_design,
+            "image_corrector_initialized_keys":list(self.image_corrector_initialized_keys),
             "energy_filter_mode":self.energy_filter_mode,
             "c2c3_crossover_required":self.c2c3_crossover_required,
 
@@ -1870,8 +1883,8 @@ class State:
             PROJECTOR_LENS_1,
             PROJECTOR_LENS_2,
             IMAGE_DIFFRACTION_DEFLECTOR,
-            IMAGE_CORRECTOR_ELEMENT_KEYS,
-            IMAGE_CORRECTOR_LENS_KEYS,
+            IMAGE_CORRECTOR_ALL_ELEMENT_KEYS,
+            IMAGE_CORRECTOR_ALL_LENS_KEYS,
             MINI_CONDENSER,
             OBJECTIVE_APERTURE,
             OBJECTIVE_LENS,
@@ -2002,7 +2015,7 @@ class State:
                     condenser_lens_state_from_dict,
                 )
                 lenses.append(condenser_lens_state_from_dict(q))
-            elif q["key"] in IMAGE_CORRECTOR_LENS_KEYS:
+            elif q["key"] in IMAGE_CORRECTOR_ALL_LENS_KEYS:
                 from temsim.optics.image_corrector import (
                     image_corrector_component_from_dict,
                 )
@@ -2393,6 +2406,8 @@ class State:
             step_mm=d.get("step_mm",0.5),
             history_step_mm=d.get("history_step_mm",2.0), acceleration_enabled=d.get("acceleration_enabled",True),
             acceleration_backend=d.get("acceleration_backend","Auto"), active_backend=d.get("active_backend","CPU"),
+            image_corrector_design=d.get("image_corrector_design", "cetcor"),
+            image_corrector_initialized_keys=tuple(d.get("image_corrector_initialized_keys", ())),
             corrector_mode=corrector_mode_for_hardware(
                 d.get("corrector_mode", "probe_corrector"),
                 d.get("layout_c3_hardware", "three_condenser"),
@@ -2640,7 +2655,7 @@ class State:
                     state.corrector_elements.append(
                         descan_deflector_from_dict(values)
                     )
-                elif values["key"] in IMAGE_CORRECTOR_ELEMENT_KEYS:
+                elif values["key"] in IMAGE_CORRECTOR_ALL_ELEMENT_KEYS:
                     from temsim.optics.image_corrector import (
                         image_corrector_component_from_dict,
                     )

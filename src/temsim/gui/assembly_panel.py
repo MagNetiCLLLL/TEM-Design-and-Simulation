@@ -249,7 +249,8 @@ class AssemblyPanel(QWidget):
         names.extend(label for key, label in (
             ("monochromator", "Monochromator"), ("beam_blanker", "Beam blanker"),
             ("c3_lens", "C3"), ("probe_corrector", "Probe corrector"),
-            ("image_corrector", "Image corrector"), ("energy_filter", "Energy filter"))
+            ("image_corrector", "B-COR" if units.image_corrector_design == "bcor" else "CETCOR"),
+            ("energy_filter", "Energy filter"))
             if getattr(units, key))
         self.configuration_summary.setText(" · ".join(names))
         self._selection = selection

@@ -28,7 +28,8 @@ SCOPE = (
     "removed only from that reference. No coefficients or excitations "
     "are written back. Pupil interception, finite-source averaging, energy "
     "spread and specimen scattering are not measured. Step convergence and "
-    "the completeness of the aberration basis remain unassessed."
+    "the completeness of the aberration basis remain unassessed. This axial "
+    "pupil does not measure field-dependent/off-axial coma or certify B-COR correction."
 )
 
 
@@ -43,13 +44,34 @@ def _check_cancelled(cancelled):
         raise RuntimeError("System residual measurement cancelled")
 
 
+def image_residual_reference(state):
+    """Use the installed corrector's output, never its upstream objective image."""
+    if not bool(getattr(state, "image_corrector_installed", False)):
+        return float(state.objective_image_plane_z_mm), "objective image (sample-referred coefficients)"
+    planes = [item for item in getattr(state, "corrector_elements", ())
+              if item.key == "image_sad_plane" and bool(getattr(item, "enabled", False))
+              and bool(getattr(item, "_layout_installed", True))]
+    if len(planes) != 1:
+        raise ValueError("Installed image corrector requires one active SAD reference plane")
+    target = float(planes[0].z_mm)
+    downstream = [float(item.z_mm) for item in (
+        *getattr(state, "lenses", ()), *getattr(state, "corrector_elements", ()))
+        if str(getattr(item, "key", "")).startswith("image_")
+        and item.key != "image_sad_plane" and bool(getattr(item, "enabled", False))
+        and bool(getattr(item, "_layout_installed", True))]
+    if not np.isfinite(target) or any(not np.isfinite(z) or z >= target for z in downstream):
+        raise ValueError("Image corrector SAD reference must be downstream of its active elements")
+    return target, "image-corrector SAD (sample-referred coefficients)"
+
+
 def measure_system_residual(state, system, *, semiangle_mrad=10.0,
                             maximum_step_mm=.025, cancelled=None):
     """Measure a captured working point without mutating its optical inputs.
 
     Probe coefficients use angles at the exact sample plane, back-projected by
     the nominal 4-D first-order map. Image coefficients use angles at the sample
-    and intercepts at the exact objective image plane, referred back by J_img.
+    and intercepts at the exact corrector SAD plane (or the objective image
+    without a corrector), referred back by J_img.
     Neither construction changes physical lens settings or refocuses the rays.
     """
     _check_cancelled(cancelled)
@@ -84,8 +106,8 @@ def _measure(work, system, alpha, cancelled):
         z0, z1 = float(work.electron_gun.exit_plane_z_mm), float(work.sample.z_mm)
         reference_name = "sample/probe"
     else:
-        z0, z1 = float(work.sample.z_mm), float(work.objective_image_plane_z_mm)
-        reference_name = "objective image (sample-referred coefficients)"
+        z0 = float(work.sample.z_mm)
+        z1, reference_name = image_residual_reference(work)
     if not np.isfinite([z0, z1]).all() or z1 <= z0:
         raise ValueError("System residual requires an ordered physical reference interval")
     energy_kev = float(work.beam_voltage_kv)
@@ -122,7 +144,7 @@ def _measure(work, system, alpha, cancelled):
         else:
             image = np.asarray(transfer.j_img, float)
             if not np.isfinite(np.linalg.cond(image)) or np.linalg.cond(image) > 1e8:
-                raise ValueError("Objective image position map is singular for a sample-referred fit")
+                raise ValueError("Image reference position map is singular for a sample-referred fit")
             inputs, normalise = reference, np.linalg.inv(image)
             pupil_reference = "sample-plane mechanical angles"
         inputs = np.vstack((np.zeros((1, 4)), inputs))

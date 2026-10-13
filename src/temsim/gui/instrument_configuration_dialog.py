@@ -59,6 +59,16 @@ class InstrumentConfigurationDialog(QDialog):
         self.source = WheelSafeComboBox()
         self.source.addItem("Cold FEG", "cold_feg")
         self.source.addItem("Thermionic", "thermionic")
+        self.image_corrector_design = WheelSafeComboBox()
+        self.image_corrector_design.setObjectName("instrumentImageCorrectorDesign")
+        self.image_corrector_design.addItem("CETCOR · 2 hexapoles", "cetcor")
+        self.image_corrector_design.addItem("B-COR · 3 hexapoles", "bcor")
+        self.image_corrector_design.setToolTip(
+            "Select image-corrector hardware. B-COR follows the published CEOS "
+            "three-hexapole topology; its dimensions and excitations are simulator values."
+            " Existing installed drives are retained; new hardware uses selected defaults."
+        )
+        self.image_corrector_design.currentIndexChanged.connect(lambda *_: self._changed("image_corrector"))
         self.options = {}
         for row, (key, label) in enumerate(UNITS):
             self.table.setItem(row, 0, QTableWidgetItem(label))
@@ -71,7 +81,15 @@ class InstrumentConfigurationDialog(QDialog):
                 self.options[key] = control
                 control.toggled.connect(lambda _, k=key: self._changed(k))
             control.setObjectName(f"instrumentUnit_{key}")
-            self.table.setCellWidget(row, 1, control)
+            if key == "image_corrector":
+                choice = QWidget()
+                choice_layout = QHBoxLayout(choice)
+                choice_layout.setContentsMargins(0, 0, 0, 0)
+                choice_layout.addWidget(control)
+                choice_layout.addWidget(self.image_corrector_design, 1)
+                self.table.setCellWidget(row, 1, choice)
+            else:
+                self.table.setCellWidget(row, 1, control)
         left_layout.addWidget(self.table, 1)
         fixed = QLabel("C1/C2, objective, sample stage and recording hardware remain part of the base assembly.")
         fixed.setWordWrap(True)
@@ -118,6 +136,8 @@ class InstrumentConfigurationDialog(QDialog):
         self.source.setCurrentIndex(self.source.findData(units.source))
         for key, control in self.options.items():
             control.setChecked(getattr(units, key))
+        self.image_corrector_design.setCurrentIndex(
+            self.image_corrector_design.findData(units.image_corrector_design))
         self._updating = False
         self._dependencies()
         self._show_preview(state)
@@ -130,6 +150,7 @@ class InstrumentConfigurationDialog(QDialog):
 
     def units(self):
         return InstrumentUnits(source=self.source.currentData(),
+            image_corrector_design=self.image_corrector_design.currentData(),
             **{key: control.isChecked() for key, control in self.options.items()})
 
     def _dependencies(self):
@@ -146,6 +167,7 @@ class InstrumentConfigurationDialog(QDialog):
                 control.setEnabled(enabled)
                 control.setText("Installed" if enabled else reason)
                 control.setToolTip(reason)
+        self.image_corrector_design.setEnabled(self.options["image_corrector"].isChecked())
 
     def _changed(self, key):
         if self._updating:
@@ -171,6 +193,11 @@ class InstrumentConfigurationDialog(QDialog):
         if self._assembly is None or row < 0:
             return
         unit, label = UNITS[row]
+        if unit == "image_corrector":
+            selection = self.catalog.selection_for_resolved(self._assembly)
+            units = InstrumentUnits.from_selection(self.catalog, selection)
+            if units.image_corrector:
+                label += " · " + ("B-COR" if units.image_corrector_design == "bcor" else "CETCOR")
         members = [p for p in self._assembly.parts if unit_for_component(self._assembly, p.key) == unit]
         if not members:
             self.unit_status.setText(f"{label}: not in the displayed assembly")

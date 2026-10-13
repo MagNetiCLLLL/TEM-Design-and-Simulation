@@ -143,8 +143,9 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_step_editing.py", "tests/test_step_import_gui.py",
                 "tests/test_cad_assembly_edit.py", "tests/test_component_datums.py",
                 "tests/test_ray_marker_pose_sync.py")),
-            "field-ui/FU-19": ("CETCOR component identity and common-coordinate conjugate diagnostics", (
-                  "tests/test_image_corrector_topology.py", "tests/test_image_corrector_channel_hardware.py")),
+            "field-ui/FU-19": ("CETCOR/B-COR identity, assembly and common-coordinate diagnostics", (
+                  "tests/test_image_corrector_topology.py", "tests/test_image_corrector_channel_hardware.py",
+                  "tests/test_bcor_runtime.py", "tests/test_bcor_hardware.py", "tests/test_bcor_selection.py")),
             "field-ui/FU-20": ("GPU and CPU retained CAD rendering, selection and optical material filter", (
                 "tests/test_assembly_optical_visibility.py", "tests/test_assembly_optical_view.py",
                 "tests/test_part_model_view_performance.py", "tests/test_mesh_annotation_performance.py",
@@ -291,6 +292,8 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_intrinsic_legacy_boundaries.py",
                 "tests/test_lens_aberration_editor.py",
                 "tests/test_system_residual_aberrations.py")),
+            "coherent-development/CW-10": ("B-COR third-hexapole shared action and real CPU/CUDA parity", (
+                "tests/test_bcor_propagation.py",)),
         },
     },
 }

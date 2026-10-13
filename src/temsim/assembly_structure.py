@@ -12,7 +12,7 @@ import json
 from types import MappingProxyType
 from uuid import UUID, uuid5
 
-from temsim.component_keys import ENERGY_FILTER_INTERNAL_KEYS, IMAGE_CORRECTOR_KEYS, PROBE_CORRECTOR_KEYS
+from temsim.component_keys import ENERGY_FILTER_INTERNAL_KEYS, IMAGE_CORRECTOR_ALL_KEYS, PROBE_CORRECTOR_KEYS
 
 
 SCHEMA = "assembly-structure-v1"
@@ -45,7 +45,7 @@ def _root_group(part, module_type):
         return "blanker"
     if key == "energy_filter" or key in ENERGY_FILTER_INTERNAL_KEYS or part.branch == "energy_filter":
         return "energy_filter"
-    if key in IMAGE_CORRECTOR_KEYS:
+    if key in IMAGE_CORRECTOR_ALL_KEYS:
         return "imaging"
     if key in PROBE_CORRECTOR_KEYS:
         return "probe_correction"

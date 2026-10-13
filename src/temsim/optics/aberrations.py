@@ -379,7 +379,7 @@ def effective_aberration_comparison(state, system: str) -> tuple[EffectiveAberra
     ratio, rms_before, rms_after, source = _corrector_trace_ratio(state, system)
     after = replace(
         before,
-        correction_state="corrected" if source.startswith("distributed") else "uncorrected",
+        correction_state="corrector-active; correction unqualified" if source.startswith("distributed") else "uncorrected",
         c3_mm=before.c3_mm * ratio,
         source=source,
     )

@@ -407,7 +407,8 @@ def _one(entries, **selection):
     matches = [
         entry
         for entry in entries
-        if all(entry.get(key) == value for key, value in selection.items())
+        if all(entry.get(key, "cetcor" if key == "image_corrector_design" else None) == value
+               for key, value in selection.items())
     ]
     if len(matches) != 1:
         raise ValueError(f"Expected one module for {selection}, found {len(matches)}")
@@ -434,6 +435,11 @@ def _selected_entries(configuration, catalog):
     probe = corrector in {"probe_corrector", "double_corrector"}
     image = corrector in {"image_corrector", "double_corrector"}
     c3 = configuration.c3_hardware.value == "three_condenser"
+    column_properties = dict(c3_lens=c3, probe_corrector=probe, image_corrector=image)
+    if image:
+        column_properties["image_corrector_design"] = str(
+            getattr(configuration, "image_corrector_design", "cetcor")
+        )
     selected = {
         "gun": _one(
             catalog["gun_variants"],
@@ -442,9 +448,7 @@ def _selected_entries(configuration, catalog):
         ),
         "column": _one(
             catalog["column_variants"],
-            c3_lens=c3,
-            probe_corrector=probe,
-            image_corrector=image,
+            **column_properties,
         ),
         "project_and_recording_system": _one(
             catalog["project_and_recording_system_variants"],
@@ -798,6 +802,7 @@ def apply_column_manifest_geometry(
 
     from temsim.optics.energy_filter import ensure_energy_filter
     ensure_energy_filter(state)
+    initialise_new = frozenset(getattr(state, "_initialise_new_assembly_hardware", ()))
     operating_values = {}
     if preserve_operating_parameters:
         for lens in getattr(state, "lenses", ()):
@@ -869,13 +874,25 @@ def apply_column_manifest_geometry(
         component.apply_manifest_geometry(**geometry)
     _bind_projection_chamber_aperture(state, parts)
     _apply_manifest_runtime_geometry(state, parts, assembly)
-    if not preserve_operating_parameters:
-        from temsim.component_keys import IMAGE_CORRECTOR_LENS_KEYS
-        for lens in state.lenses:
-            if lens.key in IMAGE_CORRECTOR_LENS_KEYS and lens.key in parts:
-                # A newly selected assembly owns its starting working point.
-                # Later geometry refreshes preserve the user's live drive.
+    from temsim.component_keys import IMAGE_CORRECTOR_ALL_LENS_KEYS
+    for lens in state.lenses:
+        if lens.key in IMAGE_CORRECTOR_ALL_LENS_KEYS and lens.key in parts:
+            if not preserve_operating_parameters or lens.key in initialise_new:
+                # The selected manifest initializes newly installed hardware;
+                # a geometry refresh preserves the user's existing drives.
                 lens.percent = float(parts[lens.key].data["default_excitation_percent"])
+                operating_values.pop(str(lens.key), None)
+    for item in getattr(state, "corrector_elements", ()):
+        part = parts.get(item.key)
+        if part is None or not hasattr(item, "strength_m3"):
+            continue
+        if "maximum_strength_m3" in part.data:
+            item.maximum_strength_m3 = float(part.data["maximum_strength_m3"])
+        if not preserve_operating_parameters or item.key in initialise_new:
+            for attribute, field in (("strength_m3", "default_strength_m3"),
+                                     ("orientation_rad", "orientation_rad")):
+                if field in part.data:
+                    setattr(item, attribute, float(part.data[field]))
     # Match State.from_dict ordering so detached worker snapshots do not
     # invalidate caches merely by sorting the newly registered stop.
     state.apertures.sort(key=lambda aperture: float(aperture.z_mm))
@@ -897,6 +914,11 @@ def apply_column_manifest_geometry(
                 None,
             )
     state._module_manifest_parts = parts
+    from temsim.component_keys import IMAGE_CORRECTOR_ALL_KEYS
+    state.image_corrector_initialized_keys = tuple(sorted(
+        set(getattr(state, "image_corrector_initialized_keys", ()))
+        | (set(parts) & set(IMAGE_CORRECTOR_ALL_KEYS))
+    ))
     state._resolved_assembly = assembly
     state._module_optical_offsets_mm = {}
     state._module_gun_offsets_mm = {}
@@ -1197,8 +1219,8 @@ def _apply_manifest_condenser_field_calibration(item, part):
 def _apply_manifest_projector_field_calibration(item, part):
     """Apply TOML-owned round-lens field calibration without changing drive."""
 
-    from temsim.component_keys import IMAGE_CORRECTOR_LENS_KEYS
-    image_lens = str(part.key) in IMAGE_CORRECTOR_LENS_KEYS
+    from temsim.component_keys import IMAGE_CORRECTOR_ALL_LENS_KEYS
+    image_lens = str(part.key) in IMAGE_CORRECTOR_ALL_LENS_KEYS
     if str(part.key) not in module_manifest.PROJECTOR_LENS_KEYS and not image_lens:
         return
     from temsim.optics.model import Gaussian
