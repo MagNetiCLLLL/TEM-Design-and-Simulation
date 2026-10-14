@@ -252,7 +252,9 @@ def _wave_bores(state, start, stop):
     return stationary, tuple(bores)
 
 
-def _prepare_column(state, start, stop, maximum_step_mm):
+def _prepare_column(state, start, stop, maximum_step_mm, *, column_model="physical"):
+    from temsim.physics.ideal_column_reference import column_plan_for_model, validate_column_model
+    validate_column_model(column_model)
     if not math.isfinite(stop) or stop <= start:
         raise ValueError("Column wave output must follow the executed input plane")
     if not math.isfinite(maximum_step_mm) or maximum_step_mm <= 0:
@@ -344,7 +346,7 @@ def _prepare_column(state, start, stop, maximum_step_mm):
             tuple(a.identity for a in apertures if isinstance(a, PosedWaveAperture)),
             tuple((a.key, a.z_mm, asdict(a.registration))
                   for a in apertures if isinstance(a, _PlacedAperture)))))
-    return plan, radii, stops, owners
+    return column_plan_for_model(plan, column_model), radii, stops, owners
 
 
 def _linear_factor(path, generator, distance, depth=0, *, force=None, constant_h=0.):
@@ -657,15 +659,25 @@ def _maximum_mode_pixels(checkpoint):
     return max((mode.plane.amplitude.size for mode in modes), default=0)
 
 
+def _prepared_column_model(state, checkpoint, stop_z_mm, maximum_step_mm, prepared, column_model):
+    from temsim.physics.ideal_column_reference import column_plan_for_model, validate_column_model
+    validate_column_model(column_model)
+    if prepared is None:
+        if column_model == "physical":
+            return _prepare_column(state, checkpoint.plane_z_mm, stop_z_mm, maximum_step_mm)
+        return _prepare_column(state, checkpoint.plane_z_mm, stop_z_mm, maximum_step_mm,
+                               column_model=column_model)
+    return (column_plan_for_model(prepared[0], column_model), *prepared[1:])
+
+
 def _propagate_column(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                       grid_numerics=WaveGridNumerics(), retained_bytes=0,
                       tip_time_s=None, _prepared=None, _combine_linear=True, _transport_cache=None,
-                      _before_spherical=None,
+                      _before_spherical=None, column_model="physical",
                       cancelled=lambda: False, progress_callback=None):
     """Execute a segment with resident device fields and host checkpoints."""
     from temsim.physics.compute_backend import gpu_failure_category, gpu_retry_reason
-    prepared = (_prepare_column(state, checkpoint.plane_z_mm, stop_z_mm, maximum_step_mm)
-                if _prepared is None else _prepared)
+    prepared = _prepared_column_model(state, checkpoint, stop_z_mm, maximum_step_mm, _prepared, column_model)
     largest = _maximum_mode_pixels(checkpoint)
     arguments = dict(maximum_step_mm=maximum_step_mm, grid_numerics=grid_numerics,
         retained_bytes=retained_bytes, tip_time_s=tip_time_s, _prepared=prepared,
@@ -723,6 +735,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                       _before_spherical=None,
                       cancelled=lambda: False, progress_callback=None):
     from temsim.optics.electron_gun.tip_coherence import wavelength_m
+    from temsim.physics.ideal_column_reference import column_plan_record
     plan, radii, stops, owners = (_prepare_column(state, checkpoint.plane_z_mm, stop_z_mm, maximum_step_mm)
                                  if _prepared is None else _prepared)
     hexapole_exits = frozenset(_hexapole_exit_nodes(plan))
@@ -1161,6 +1174,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                         "grid_refinements": refinements, "quadratic_runs": linear_runs, "output_shape": wave.amplitude.shape})
     return TipGunCheckpoint(BeamState(tuple(outputs), checkpoint.beam.reference_plane), stop_z_mm,
         checkpoint.reference_current_a, {"schema": "executed-column-wave-v1", "upstream_digest": checkpoint.digest,
+        **column_plan_record(plan),
         "upstream": checkpoint.record, "field_plan_signature": plan.signature, "step_count": len(plan.step_m),
         "maximum_step_mm": maximum_step_mm, "deflector_actions": owners, "modes": records,
         "grid_numerics": grid_numerics.column_identity(),
@@ -1192,7 +1206,8 @@ def _slice_prepared(prepared, first, last):
         values["magnetic_t"] = plan.magnetic_t[first:last+1]
     values.update({name: getattr(plan, name)[3*first:3*last] for name in ("dipole_bx_t", "dipole_by_t")
                    if hasattr(plan, name)})
-    for name in ("electric_field", "electric_field_identity", "reference_momentum_kg_m_s", "mapped_fields"):
+    for name in ("electric_field", "electric_field_identity", "reference_momentum_kg_m_s", "mapped_fields",
+                 "solver_signature"):
         if hasattr(plan, name):
             values[name] = getattr(plan, name)
     # The checkpoint at the left boundary already contains its discrete
@@ -1379,10 +1394,10 @@ def _write_column_modes(state, checkpoint, stop_z_mm, writer, *, prepared, maxim
 def _propagate_column_segmented(state, checkpoint, stop_z_mm, *, store, segment_steps,
                                maximum_step_mm=.5, grid_numerics=WaveGridNumerics(), tip_time_s=None,
                                cancelled=lambda: False, progress_callback=None, verify=lambda: None, use_cache=True,
-                               checkpoint_callback=None, _prepared=None):
+                               checkpoint_callback=None, _prepared=None, column_model="physical"):
     from temsim.immutable_json import json_digest
-    prepared = (_prepare_column(state, checkpoint.plane_z_mm, stop_z_mm, maximum_step_mm)
-                if _prepared is None else _prepared)
+    from temsim.physics.ideal_column_reference import column_plan_record
+    prepared = _prepared_column_model(state, checkpoint, stop_z_mm, maximum_step_mm, _prepared, column_model)
     plan = prepared[0]
     if plan.z_mm[0] != checkpoint.plane_z_mm or plan.z_mm[-1] != stop_z_mm:
         raise ValueError("Prepared column plan must match the exact executed interval")
@@ -1424,6 +1439,7 @@ def _propagate_column_segmented(state, checkpoint, stop_z_mm, *, store, segment_
                     raise InterruptedError("Segment cancelled before checkpoint commit")
                 result = writer.finish(float(plan.z_mm[last]), result.reference_current_a,
                     {"schema": "executed-column-segment-v1", "upstream_digest": parent_digest,
+                      **column_plan_record(plan),
                      "upstream": result.record, "parent_plan_signature": plan.signature,
                      "node_span": (first, last), "modes": records,
                      "mode_execution": {"workers": workers, "retry_serial_for_memory": retry_serial,

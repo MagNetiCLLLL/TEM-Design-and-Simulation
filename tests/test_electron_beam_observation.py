@@ -189,3 +189,30 @@ def test_dense_arrivals_show_all_counts(qtbot, view):
     arrivals_ready(qtbot, view)
     assert view.arrival_image.isVisible() and not view.points.isVisible()
     assert view.arrival_image.image.sum() == view.detections.detected_count
+
+
+def test_phase_plate_retains_input_warning_until_a_new_result(qtbot, view):
+    result, preview = plane()
+    view.set_observation(result, preview, 0)
+    show(view, "wave_phase")
+    diagnostic_ready(qtbot, view)
+    assert view.mode.currentText() == "Phase plate"
+    assert "Tilt, defocus and aberrations are retained" in view.note.text()
+    values = view.diagnostics.analysis.wave.values.copy()
+    warning = "Previous calculation · inputs changed. Calculate beam to update."
+    view.mark_previous_calculation(warning)
+    # Display-only changes must not make the previous optics look current.
+    show(view, "intensity")
+    view.set_observation(result, preview, 1)
+    show(view, "wave_phase")
+    diagnostic_ready(qtbot, view)
+    assert view.input_status.isVisible()
+    assert view.input_status.text() == warning
+    np.testing.assert_array_equal(view.diagnostics.analysis.wave.values, values)
+    # A newly accepted calculation at the same Z clears the warning.
+    replacement, replacement_preview = plane()
+    view.set_observation(replacement, replacement_preview, 1)
+    diagnostic_ready(qtbot, view)
+    assert view.diagnostics.analysis.wave.checkpoint is replacement.checkpoint
+    assert view.input_status.isHidden()
+    assert not view.input_status.text()

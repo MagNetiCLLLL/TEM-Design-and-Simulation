@@ -1,8 +1,8 @@
 """Round-column propagation with the complete radial complex field.
 
 FFTLog's logarithmic Hankel transform transports one definite angular Fourier
-channel in round optics on one radial axis. No Cs term is switched off, and
-this is not an incoherent ray envelope. A non-axisymmetric operation ends
+channel in round optics on one radial axis. It executes the selected column
+model without fitting away its phase. A non-axisymmetric operation ends
 this representation before it is applied by the 2-D column operator.
 """
 from dataclasses import dataclass, replace
@@ -393,13 +393,25 @@ def from_executed_gun(mode, payload, samples=65536):
 def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                         initial_samples=65536, maximum_samples=4_194_304,
                         cancelled=lambda: False, progress_callback=None,
-                        device_resident=False):
+                        device_resident=False, column_model="physical"):
     """Execute the maximal round prefix; return before the first 2-D effect."""
     from temsim.physics.column_wave import _prepare_column, _column_transports, _PlacedAperture
     from temsim.physics.posed_wave_hardware import PosedWaveBore
     from temsim.physics.canonical_action import CanonicalPath
     from temsim.optics.electron_gun.tip_coherence import wavelength_m
-    plan, radii, stops, owners = _prepare_column(state, checkpoint.plane_z_mm, stop_z_mm, maximum_step_mm)
+    from temsim.physics.ideal_column_reference import column_model_record, validate_column_model
+    validate_column_model(column_model)
+    arguments = {} if column_model == "physical" else {"column_model": column_model}
+    plan, radii, stops, owners = _prepare_column(state, checkpoint.plane_z_mm, stop_z_mm,
+                                               maximum_step_mm, **arguments)
+    from temsim.physics.electrostatic_column_transport import active_electric_field
+    if (active_electric_field(plan) is not None or any(np.any(getattr(plan, name, ()))
+            for name in ("dipole_bx_t", "dipole_by_t"))):
+        # The radial checkpoint path assumes constant kinetic energy and a
+        # centred matrix-only action. Preserve the exact input for the 2-D
+        # operator, which carries electric work, affine action and clocks.
+        return checkpoint.plane_z_mm, (), {"reason":
+            "Electric fields or finite dipoles require the two-dimensional column operator"}
     if (any(kick.active for kick in getattr(plan, "intrinsic_aberration_kicks", ()))
             or any(kick.strength_m3 for kick in getattr(plan, "posed_spherical_kicks", ()))):
         # The radial backend only implements its historical centred C3
@@ -502,9 +514,10 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                         "input_fraction": mode.weight_per_reference_electron,
                         "output_fraction": mode.weight_per_reference_electron*wave.probability})
     return float(plan.z_mm[end_index]), tuple(result), {"schema": "executed-round-column-prefix-v1",
+        **column_model_record(column_model),
         "upstream_digest": checkpoint.digest, "plan_signature": plan.signature,
         "steps": end_index, "modes": records,
-        "representation": "Full radial complex field and analytic quadratic phase; all Cs retained",
+        "representation": "Full radial complex field and analytic quadratic phase; selected column model retained",
         "convergence": "Requires radial domain/grid and axial refinement; current balance is not accuracy"}
 
 

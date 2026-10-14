@@ -474,6 +474,50 @@ def test_instrument_publication_invalidates_without_launching(panel, qtbot):
     assert panel._captured is not panel._state
 
 
+def test_input_warning_survives_old_worker_and_failed_recalculation(panel, qtbot, monkeypatch):
+    calculate(panel, qtbot)
+    previous = panel.result
+    old_generation, old_session = panel._generation, panel._session
+    panel.mark_inputs_stale()
+    notice = panel.observation.input_status
+    assert not notice.isHidden() and "inputs changed" in notice.text()
+    panel.intensity_scale.setCurrentIndex(1)
+    panel._solved(old_generation, old_session, result(100.), preview())
+    assert panel.result is previous and "inputs changed" in notice.text()
+    monkeypatch.setattr(module, "simulate_tip_wave", lambda *_args, **_kwargs:
+        (_ for _ in ()).throw(ValueError("Phase refresh failure fixture")))
+    panel.calculate()
+    qtbot.waitUntil(lambda: panel._worker is None)
+    assert panel.result is previous and "failed" in notice.text()
+    monkeypatch.setattr(module, "simulate_tip_wave", lambda _state, request, **_kwargs:
+        result(request.observation_z_mm))
+    panel.calculate()
+    qtbot.waitUntil(lambda: panel._worker is None)
+    assert panel.result is not previous and notice.isHidden()
+
+
+@pytest.mark.parametrize("outcome", ("failed", "cancelled"))
+def test_return_to_same_valid_cached_plane_clears_request_notice(panel, qtbot, monkeypatch, outcome):
+    calculate(panel, qtbot)
+    previous = panel.result
+    queued = []
+    monkeypatch.setattr(panel.pool, "start", queued.append)
+    panel.set_selected_z(101.)
+    qtbot.waitUntil(lambda: bool(queued))
+    worker = queued[0]
+    if outcome == "failed":
+        panel._failed(worker.generation, "Fixture rejection of another Z")
+        panel._finished(worker.generation)
+    else:
+        panel.cancel()
+    notice = panel.observation.input_status
+    assert not notice.isHidden() and outcome in notice.text()
+    panel.set_selected_z(100.)
+    assert panel.result is previous  # Reuse the same accepted object.
+    assert notice.isHidden()
+    assert "Completed exact plane Z 100" in panel.status.text()
+
+
 def test_late_success_failure_and_progress_cannot_overwrite_current_session(panel, qtbot):
     calculate(panel, qtbot)
     old_generation, old_session = panel._generation, panel._session

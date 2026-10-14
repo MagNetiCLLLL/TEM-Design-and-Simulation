@@ -708,6 +708,7 @@ class CoherentBeamPage(QWidget):
         self.screen = CoherentIntensityView()
         from temsim.gui.electron_beam_observation import ElectronBeamObservation
         self.observation = ElectronBeamObservation(self.screen)
+        self.observation.reference_state_provider = self._reference_state_for_result
         self.plot, self.image = self.screen.plot, self.screen.image
         self.observation_changed.connect(self.observation.set_observation)
         splitter = QSplitter()
@@ -1024,6 +1025,8 @@ class CoherentBeamPage(QWidget):
         self._z_changed(z_mm)
 
     def _cancel_request(self):
+        if hasattr(self, "observation"):
+            self.observation.cancel_reference_work()
         self._generation += 1
         self.timer.stop()
         self._pending_z = False
@@ -1052,6 +1055,9 @@ class CoherentBeamPage(QWidget):
         self._session_ready = False
         self._cache.clear()
         self._observation_session = None
+        self.observation.invalidate_reference_context("Inputs changed. Calculate the actual beam before computing a new reference.")
+        self.observation.mark_previous_calculation(
+            "Previous calculation · inputs changed. Calculate beam to update the phase plate and other observations.")
         self.status.setStyleSheet("")
         if self.preflight_details.toPlainText():
             self.preflight_message.setText("Previous source check; inputs changed. Click Calculate beam to check the current settings. The retained report describes the previous attempt.")
@@ -1221,9 +1227,13 @@ class CoherentBeamPage(QWidget):
         self._session_ready = False
         self._cache.clear()
         self._observation_session = None
+        self.observation.mark_previous_calculation(
+            "Previous calculation · checking the current inputs for a new calculation.")
         try:
             captured, request, summary = self.capture_calculation_inputs()
         except Exception:
+            self.observation.mark_previous_calculation(
+                "Previous calculation · the current inputs could not be calculated. No new phase plate was produced.")
             return
         self.start_captured_calculation(captured, request, summary)
 
@@ -1251,6 +1261,8 @@ class CoherentBeamPage(QWidget):
         self._request = request
         self._observation_session = TipWaveObservationSession(captured, request)
         self._stale = False
+        self.observation.mark_previous_calculation(
+            "Previous calculation · a new calculation is running. The phase plate updates when a new plane completes.")
         self.status.setText(f"Source ready | {summary['model']} | {summary['mode_count']} modes. Queued exact-Z calculation; field support is checked during execution.")
         self._start_query()
 
@@ -1260,6 +1272,29 @@ class CoherentBeamPage(QWidget):
         self.comparison_table.setRowCount(0)
         self.comparison_status.setText(message)
         self.pair_invalidated.emit()
+
+    def _reference_state_for_result(self, result):
+        """Find the owned capture for this exact displayed state, never live inputs."""
+        if self._closed or float(result.checkpoint.plane_z_mm) != self._target_z_mm:
+            raise ValueError("Wait for the requested exact-Z actual result before computing its reference")
+        candidate = None
+        if (not self._stale and self._captured is not None
+                and any(item[0] is result for item in self._cache.values())):
+            candidate = self._captured
+        else:
+            states = self.state_set
+            admitted = {states.row_keys.get(identity) for identity in states.admitted_ids}
+            for key, run in states.runs.items():
+                if (key in admitted and run.instrument_identity == result.instrument_digest
+                        and any(item[0] is result for item in run.cache.values())):
+                    candidate = run.state
+                    break
+        if candidate is None:
+            raise ValueError("This result no longer has admitted captured inputs; calculate the actual beam again")
+        # Captures are already detached from the instrument. The backend checks
+        # their immutable identity and derives its own ideal state; never hand
+        # it the current state_provider() or reconstruct a source from a wave.
+        return candidate
 
     def _display_comparison(self, preview):
         context = self._pair_context
@@ -1335,6 +1370,7 @@ class CoherentBeamPage(QWidget):
     def _z_changed(self, z_mm):
         if self._closed:
             return
+        self.observation.cancel_reference_work()
         self._target_z_mm = float(z_mm)
         self._update_plane_positions()
         self._sync_z_slider()
@@ -1412,6 +1448,12 @@ class CoherentBeamPage(QWidget):
         self._display_comparison(preview)
         self._update_plane_positions()
         self._refresh_intensity()
+        cached = self._cache.get(float(result.checkpoint.plane_z_mm))
+        if not self._stale and cached is not None and cached[0] is result:
+            # Returning to the same accepted plane after another Z failed or
+            # was cancelled need not allocate a new result. Display-only
+            # refreshes never reach this admission check.
+            self.observation.clear_previous_calculation_notice()
         self.status.setStyleSheet("")
         input_hint = ("Live tuning refreshes after edits settle; other input changes require Calculate."
                       if self.live_refresh_enabled else
@@ -1445,6 +1487,8 @@ class CoherentBeamPage(QWidget):
                     if self.result is not None else "")
         self.status.setText(f"Coherent beam calculation failed{failed_plane}: {message}. "
                             f"No new image was produced.{retained}")
+        self.observation.mark_previous_calculation(
+            "Previous calculation · the requested calculation failed. No new phase plate was produced.")
 
     @Slot(int, str)
     def _progress(self, generation, message):
@@ -1473,6 +1517,8 @@ class CoherentBeamPage(QWidget):
         self._cancel_request()
         self.status.setText("Coherent beam request cancelled."
                             + (" Previous complete plane remains displayed." if self.result is not None else ""))
+        self.observation.mark_previous_calculation(
+            "Previous calculation · the request was cancelled. No new phase plate was produced.")
 
     def shutdown(self, msecs=3000):
         if not self._closed:

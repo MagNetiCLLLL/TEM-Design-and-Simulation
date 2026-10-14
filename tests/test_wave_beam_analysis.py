@@ -7,7 +7,7 @@ import pytest
 from temsim.gui.diagnostic_tabs import TransverseBeamView
 from temsim.physics.tip_gun_wave import TipGunCheckpoint
 from temsim.physics.wave_flux import BeamState
-from temsim.optics.electron_gun.tip_coherence import TIP_REFERENCE
+from temsim.optics.electron_gun.tip_coherence import TIP_REFERENCE, wavelength_m
 from test_wave_plane_observables import mode
 from test_beam_analysis_modes import make_result
 
@@ -75,6 +75,37 @@ def test_phase_selects_one_mode_and_keeps_relative_phase(view):
     view.analysis.colour_combo.setCurrentIndex(0)
     wait_for_readout(view)
     assert view.analysis.colour_combo.currentData() == 0  # No aggregate phase option accepted.
+
+
+def test_new_checkpoint_at_same_z_replaces_actual_phase_without_detrending(view):
+    original = checkpoint()
+    display(view, original, axial_bz_t=0.)
+    switch(view, "wave_phase")
+    before = view.analysis.wave.values.copy()
+    first, second = original.beam.modes
+    plane = first.plane
+    tilt = np.array((3e-5, -2e-5))
+    curvature = 500.*np.eye(2)
+    updated_first = replace(first, plane=replace(plane, tilt_rad=tilt, curvature_m1=curvature))
+    updated = replace(original, beam=BeamState((updated_first, second), TIP_REFERENCE))
+    display(view, updated, axial_bz_t=0.)
+    switch(view, "wave_phase")
+
+    displacement = plane.coordinates_m()-plane.origin_m[:, None, None]
+    phase_delta = 2*np.pi/wavelength_m(first.energy_kev*1000.)*(
+        np.einsum("i,iyx->yx", tilt, displacement)
+        +.5*np.einsum("iyx,ij,jyx->yx", displacement, curvature, displacement))
+    assert view.analysis.wave.checkpoint is updated
+    assert updated.plane_z_mm == original.plane_z_mm
+    assert updated_first.mode_id == first.mode_id
+    np.testing.assert_allclose(np.exp(1j*view.analysis.wave.values),
+                               np.exp(1j*(before+phase_delta)), atol=2e-12, rtol=0.)
+    assert np.max(np.abs(np.exp(1j*view.analysis.wave.values)-np.exp(1j*before))) > .5
+    assert "Phase plate" in view.analysis.mode_combo.currentText()
+    assert "wrapped rad" in view.analysis.legend.text()
+    assert "tilt and defocus retained" in view.analysis.legend.text()
+    assert "Actual transverse phase" in view.analysis.legend.toolTip()
+    assert first.plane.tilt_rad is None and first.plane.curvature_m1 is None
 
 
 def test_missing_plane_does_not_show_previous_wave_or_recompute(view):

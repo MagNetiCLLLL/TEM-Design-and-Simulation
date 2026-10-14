@@ -1,4 +1,4 @@
-"""Different observations of one accepted beam; never a propagation entry point."""
+"""Observations of an accepted beam and explicitly requested ideal references."""
 
 from threading import Event
 
@@ -54,9 +54,9 @@ class ElectronBeamObservation(QWidget):
     """
 
     MODES = (("Intensity", "intensity"), ("Electron arrivals", "arrivals"),
-             ("Beam current", "wave_current"), ("Phase", "wave_phase"),
+             ("Beam current", "wave_current"), ("Phase plate", "wave_phase"),
              ("Probability flow", "wave_flow"), ("Angular distribution", "wave_angles"),
-             ("Interactions", "wave_interactions"))
+             ("Interactions", "wave_interactions"), ("Wavefront comparison", "wavefront_comparison"))
 
     def __init__(self, intensity_view, parent=None):
         super().__init__(parent)
@@ -70,6 +70,8 @@ class ElectronBeamObservation(QWidget):
         self._detection_identity = None
         self._projection_angle_deg = 0.
         self.diagnostics = None
+        self.wavefront_comparison = None
+        self.reference_state_provider = None
         self.pool = CoordinatedPool(self)
         self.pool.coordinator.register_retained(self, "retained_roots")
         self.timer = QTimer(self)
@@ -80,6 +82,7 @@ class ElectronBeamObservation(QWidget):
         self.mode.setObjectName("electronBeamObservation")
         for label, key in self.MODES:
             self.mode.addItem(label, key)
+        self.mode.setToolTip("Read the calculated plane. Phase plate shows the actual single-mode transverse phase, including tilt, defocus and aberrations; no reference subtraction or phase fitting.")
         self.count = QSpinBox()
         self.count.setObjectName("observationEmissionCount")
         self.count.setRange(0, MAX_EMITTED_ELECTRONS)
@@ -123,9 +126,16 @@ class ElectronBeamObservation(QWidget):
         self.note = QLabel("Choose an observation of the calculated beam. No propagation is started by changing this view.")
         self.note.setWordWrap(True)
         self.note.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.input_status = QLabel()
+        self.input_status.setObjectName("observationInputStatus")
+        self.input_status.setWordWrap(True)
+        self.input_status.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.input_status.setStyleSheet("color:#ffb86b;")
+        self.input_status.hide()
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addLayout(toolbar)
+        layout.addWidget(self.input_status)
         layout.addWidget(self.stack, 1)
         layout.addWidget(self.note)
         self.mode.currentIndexChanged.connect(self._view_changed)
@@ -141,6 +151,8 @@ class ElectronBeamObservation(QWidget):
     def set_observation(self, result, preview, scale):
         if self._closed or preview is None:
             return
+        if result is not self.result:
+            self.clear_previous_calculation_notice()
         changed = result is not self.result or preview is not self.preview
         self.result, self.preview = result, preview
         self.screen.set_observation(result, preview, scale)
@@ -164,14 +176,19 @@ class ElectronBeamObservation(QWidget):
             return
         mode = self.mode.currentData()
         arrivals = mode == "arrivals"
+        comparison = mode == "wavefront_comparison"
         diagnostic = str(mode).startswith("wave_")
         for widget in (self.count_label, self.count, self.seed_label, self.seed):
             widget.setVisible(arrivals)
         for widget in (self.member_label, self.member):
-            widget.setVisible(diagnostic and self.member.count() > 1)
+            widget.setVisible((diagnostic or comparison) and self.member.count() > 1)
         if not arrivals:
             self._cancel_detections()
-        if diagnostic:
+        if not comparison:
+            self.cancel_reference_work()
+        if comparison:
+            self._show_wavefront_comparison()
+        elif diagnostic:
             self._show_diagnostic(mode)
         elif arrivals:
             self.stack.setCurrentWidget(self.arrival_plot)
@@ -280,22 +297,85 @@ class ElectronBeamObservation(QWidget):
         axial_bz = getattr(self.preview, "axial_bz_t", None)
         identity = (id(result.checkpoint), None if gauge is None else gauge.fingerprint, axial_bz)
         if identity != self._diagnostic_identity:
+            # Preserve the selected physical mode across exact-Z checkpoints,
+            # even when their storage order changes.
+            selected_mode_id = None
+            old_wave = self.diagnostics.analysis.wave
+            if old_wave is not None:
+                old_index = self.diagnostics.analysis.colour_combo.currentData()
+                if old_index is not None:
+                    from temsim.gui.wavefront_comparison import _mode_rows
+                    selected_mode_id = _mode_rows(old_wave.checkpoint)[old_index][0]
             # All listed states share installed optics and exact Z. Their
             # fields remain individual; an overlay is never given one phase.
             self.diagnostics.display_wave_checkpoint(result.checkpoint,
                 axial_bz_t=axial_bz, magnetic_gauge=gauge)
             self._diagnostic_identity = identity
             self.diagnostics.set_projection_angle(self._projection_angle_deg)
+            if selected_mode_id is not None:
+                from temsim.gui.wavefront_comparison import _mode_rows
+                index = next((i for i, row in enumerate(_mode_rows(result.checkpoint))
+                              if row[0] == selected_mode_id), None)
+                if index is not None:
+                    self.diagnostics.analysis.colour_combo.setCurrentIndex(index+1)
         combo = self.diagnostics.analysis.mode_combo
         combo.setCurrentIndex(combo.findData(mode))
         combo.hide()
         self.diagnostics.analysis.view_label.hide()
-        self.note.setText("Readout of one executed Tip state; independent modes sum currents/intensities. Phase selects a single mode. Probability-flow arrows are local current directions, not measured electron trajectories.")
+        self.note.setText(
+            "Actual transverse phase at the displayed Z, in radians wrapped to [-π, π]. "
+            "Tilt, defocus and aberrations are retained; no phase terms are fitted or subtracted. "
+            "Select one coherent mode; independent modes have no single combined phase."
+            if mode == "wave_phase" else
+            "Readout of one executed Tip state; independent modes sum currents/intensities. Phase selects a single mode. Probability-flow arrows are local current directions, not measured electron trajectories.")
+
+    def _show_wavefront_comparison(self):
+        if self.wavefront_comparison is None:
+            from temsim.gui.wavefront_comparison import WavefrontComparison
+            self.wavefront_comparison = WavefrontComparison(self._reference_state)
+            self.stack.addWidget(self.wavefront_comparison)
+        self.stack.setCurrentWidget(self.wavefront_comparison)
+        members = getattr(self.result, "members", (self.result,))
+        result = members[max(0, self.member.currentIndex())] if self.result is not None else None
+        self.wavefront_comparison.set_observation(result)
+        self.wavefront_comparison.set_projection_angle(self._projection_angle_deg)
+        self.note.setText("Compute reference runs an additional calculation for the displayed Tip state and exact Z. "
+                          "Changing the mode or constant-phase option only reads the completed reference.")
+
+    def _reference_state(self, actual):
+        if self.reference_state_provider is None:
+            raise ValueError("Captured calculation inputs are unavailable; calculate the actual beam first")
+        return self.reference_state_provider(actual)
+
+    def cancel_reference_work(self):
+        if self.wavefront_comparison is not None and self.wavefront_comparison._worker is not None:
+            self.wavefront_comparison.cancel()
+
+    def invalidate_reference_context(self, message):
+        if self.wavefront_comparison is not None:
+            self.wavefront_comparison.invalidate(message)
+
+    def mark_previous_calculation(self, message):
+        """Keep an old readout inspectable without labelling it as live optics.
+
+        Only a newly accepted result clears this notice. Switching views, Z
+        requests or display scales must not claim that old data was recalculated.
+        """
+        if self.result is not None:
+            self.input_status.setText(message)
+            self.input_status.show()
+
+    def clear_previous_calculation_notice(self):
+        """A result was accepted, including a valid return to a cached plane."""
+        self.input_status.clear()
+        self.input_status.hide()
 
     def set_projection_angle(self, angle):
         self._projection_angle_deg = float(angle)
         if self.diagnostics is not None:
             self.diagnostics.set_projection_angle(angle)
+        if self.wavefront_comparison is not None:
+            self.wavefront_comparison.set_projection_angle(angle)
 
     def fit_view(self):
         mode = self.mode.currentData()
@@ -303,6 +383,8 @@ class ElectronBeamObservation(QWidget):
             self.screen.fit_full()
         elif mode == "arrivals" and self._bounds is not None:
             self.arrival_plot.setRange(xRange=self._bounds[0], yRange=self._bounds[1], padding=.02)
+        elif mode == "wavefront_comparison" and self.wavefront_comparison is not None:
+            self.wavefront_comparison.fit_view()
         elif self.diagnostics is not None:
             self.diagnostics.fit_beam.click()
 
@@ -310,6 +392,8 @@ class ElectronBeamObservation(QWidget):
         self._closed = True
         self._cancel_detections()
         done = self.pool.waitForDone(msecs)
+        if self.wavefront_comparison is not None:
+            done = self.wavefront_comparison.shutdown(msecs) and done
         if self.diagnostics is not None and self.diagnostics.analysis.wave is not None:
             wave = self.diagnostics.analysis.wave
             wave.deactivate()

@@ -46,8 +46,13 @@ class TipWaveRequest:
     radial_column: RadialColumnNumerics = RadialColumnNumerics()
     acceptance_window: AcceptanceWindowNumerics = AcceptanceWindowNumerics()
     observation_z_mm: float | None = None
+    column_model: str = "physical"
 
     def validate(self):
+        from temsim.physics.ideal_column_reference import validate_column_model
+        validate_column_model(self.column_model)
+        if self.column_model != "physical" and self.stop == "tip_near_field":
+            raise ValueError("An ideal column reference starts at the executed gun exit")
         if self.stop not in ("tip_near_field", "gun_exit", "specimen_entrance", "specimen_exit", "detector", "plane"):
             raise ValueError("Unknown tip wave stopping stage")
         if self.stop == "plane":
@@ -320,6 +325,70 @@ retain their established workflows and are not replaced by this entry point.
         release_device_memory()
 
 
+def _executed_gun_digest(checkpoint):
+    """Find the actual immutable source checkpoint in the executed ancestry."""
+    from collections.abc import Mapping
+    record, digest = checkpoint.record, checkpoint.digest
+    seen = set()
+    while isinstance(record, Mapping) and id(record) not in seen:
+        seen.add(id(record))
+        if record.get("schema") in {
+            "executed-tip-gun-v1", "executed-grounded-round-surface-gun-v1",
+        }:
+            # The committed manifest binds the source metadata and every
+            # payload checksum, independently of its random storage directory.
+            # Re-executing without cache must not turn identical source bytes
+            # into an unrelated source merely by publishing them elsewhere.
+            storage = record.get("storage", {})
+            manifest = storage.get("manifest_digest") if isinstance(storage, Mapping) else None
+            if isinstance(manifest, str) and len(manifest) == 64:
+                return "stored:" + manifest
+            if isinstance(digest, str) and digest:
+                return digest
+            break
+        digest, record = record.get("upstream_digest"), record.get("upstream")
+    raise ValueError("Wavefront comparison requires verified executed gun ancestry; recalculate the beam")
+
+
+def simulate_ideal_reference(state, actual_result, *, use_cache=True,
+                             cancelled=lambda: False, progress_callback=None):
+    """Compare lenses from the same source, never replace a downstream wave.
+
+    The physical instrument is captured unchanged. Only downstream column
+    operators use the explicitly recorded reference policy. Each energy mode
+    keeps its focusing/rotation and source phase; this is not an achromatic
+    mixture or a replacement for material scattering. Shared gun cache keys
+    and verified source ancestry prevent two unrelated fields being compared.
+    """
+    if cancelled():
+        raise InterruptedError("Ideal wavefront reference cancelled")
+    if not isinstance(actual_result, TipWaveResult):
+        raise TypeError("An ideal reference needs one executed Tip wave result")
+    actual_request = actual_result.request.validate()
+    if actual_request.stop != "plane" or actual_request.column_model != "physical":
+        raise ValueError("Calculate a physical beam at an exact observation plane first")
+    if actual_result.checkpoint.plane_z_mm != actual_request.observation_z_mm:
+        raise ValueError("Actual wave does not belong to its requested exact observation plane")
+    snapshot = capture_instrument_snapshot(state)
+    if snapshot.digest != actual_result.instrument_digest:
+        raise ValueError("Source or instrument changed since the actual beam; recalculate it before comparison")
+    source_digest = _executed_gun_digest(actual_result.checkpoint)
+    ideal_request = replace(actual_request, column_model="first_order_reference")
+    reference = simulate_tip_wave(state, ideal_request, use_cache=use_cache,
+        cancelled=cancelled, progress_callback=progress_callback)
+    if cancelled():
+        raise InterruptedError("Ideal wavefront reference cancelled before publication")
+    snapshot.verify_current_inputs(state)
+    if capture_instrument_snapshot(state).digest != snapshot.digest:
+        raise ValueError("Source or instrument changed during reference calculation; recalculate the beam")
+    if (reference.instrument_digest != actual_result.instrument_digest
+            or reference.checkpoint.plane_z_mm != actual_result.checkpoint.plane_z_mm
+            or reference.resolved_scan_identity != actual_result.resolved_scan_identity
+            or _executed_gun_digest(reference.checkpoint) != source_digest):
+        raise ValueError("Actual and ideal wavefronts do not share the same executed source and plane")
+    return reference
+
+
 def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cache,
                       cancelled, progress_callback, scan_preparation_cache=None):
     """Execute from privately captured controls, never a replacement beam."""
@@ -330,10 +399,12 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
     # plans only within this request and only reuse their exact endpoint grid;
     # a detector/material split must never borrow a larger interval's plan.
     prepared_columns = {}
+    column_options = ({} if request.column_model == "physical"
+                      else {"column_model": request.column_model})
 
     def admit_column(start, stop):
         key = (float(start), float(stop))
-        prepared = _prepare_column(working, start, stop, request.column_step_mm)
+        prepared = _prepare_column(working, start, stop, request.column_step_mm, **column_options)
         prepared_columns[key] = prepared
         return prepared
 
@@ -406,6 +477,11 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
                                          cancelled=cancelled)
     def stage(name, producer, *, inputs=()):
         nonlocal cache_hit
+        # Both branches consume the identical executed source. All downstream
+        # caches are separately bound to the explicit idealisation policy.
+        if request.column_model != "physical" and name != "gun_exit":
+            from temsim.physics.ideal_column_reference import column_model_record
+            inputs = (*inputs, column_model_record(request.column_model))
         key = (propagation_id, name, json_digest(inputs))
         if cancelled():
             raise InterruptedError("Tip wave request cancelled")
@@ -448,7 +524,7 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
             )
             prepared = prepared_columns.pop((float(upstream.plane_z_mm), float(stop)), None)
             if prepared is None:
-                prepared = _prepare_column(working, upstream.plane_z_mm, stop, request.column_step_mm)
+                prepared = _prepare_column(working, upstream.plane_z_mm, stop, request.column_step_mm, **column_options)
             span = find_acceptance_span(prepared)
             if span is not None:
                 if span["start_z_mm"] > upstream.plane_z_mm:
@@ -474,7 +550,8 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
             original = upstream
             upstream = stage("round_column_prefix", lambda: execute_round_prefix(working, original, stop,
                 maximum_step_mm=request.column_step_mm, numerics=request.radial_column,
-                grid_numerics=request.wave_grid, cancelled=cancelled, progress_callback=progress_callback),
+                grid_numerics=request.wave_grid, cancelled=cancelled, progress_callback=progress_callback,
+                **column_options),
                 inputs=(original.digest, stop, request.column_step_mm, asdict(request.radial_column),
                         request.wave_grid.column_identity()))
             if upstream.plane_z_mm == stop:
@@ -486,12 +563,12 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
                 grid_numerics=request.wave_grid, tip_time_s=epoch, verify=verify,
                 cancelled=cancelled, progress_callback=progress_callback, use_cache=use_cache,
                 checkpoint_callback=remember_observation if observation_identity is not None else None,
-                _prepared=prepared)
+                _prepared=prepared, **column_options)
             cache_hit |= hit
             return result
         return _propagate_column(working, upstream, stop, maximum_step_mm=request.column_step_mm,
             grid_numerics=request.wave_grid, tip_time_s=epoch, cancelled=cancelled,
-            progress_callback=progress_callback, _prepared=prepared)
+            progress_callback=progress_callback, _prepared=prepared, **column_options)
     def compute_gun():
         model = getattr(working.electron_gun.emitter, "surface_model", None)
         if model is not None and model.coherence is not None:
@@ -562,13 +639,13 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
                     upstream = _propagate_inelastic_specimen(working, upstream, numerics=request.inelastic,
                         store=store, maximum_step_mm=request.column_step_mm, grid_numerics=request.wave_grid,
                         tip_time_s=epoch, cancelled=cancelled, progress_callback=progress_callback,
-                        verify=verify, use_cache=use_cache)
+                        verify=verify, use_cache=use_cache, **column_options)
                 else:
                     incident = upstream
                     upstream = stage("specimen_exit", lambda: _propagate_specimen(working, incident,
                         maximum_checkpoint_bytes=request.gun.maximum_checkpoint_bytes,
                         maximum_step_mm=request.column_step_mm, grid_numerics=request.wave_grid, tip_time_s=epoch,
-                        cancelled=cancelled, progress_callback=progress_callback),
+                        cancelled=cancelled, progress_callback=progress_callback, **column_options),
                         inputs=(incident.digest, asdict(request.inelastic), request.column_step_mm,
                                 asdict(request.wave_grid), epoch))
                 remember_observation(upstream)
@@ -608,12 +685,12 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
             result = _propagate_inelastic_specimen(working, upstream, numerics=request.inelastic,
                 store=store, maximum_step_mm=request.column_step_mm, grid_numerics=request.wave_grid,
                 tip_time_s=epoch, cancelled=cancelled, progress_callback=progress_callback,
-                verify=verify, use_cache=use_cache)
+                verify=verify, use_cache=use_cache, **column_options)
         else:
             result = stage("specimen_exit", lambda: _propagate_specimen(working, upstream,
                 maximum_checkpoint_bytes=request.gun.maximum_checkpoint_bytes,
                 maximum_step_mm=request.column_step_mm, grid_numerics=request.wave_grid, tip_time_s=epoch,
-                cancelled=cancelled, progress_callback=progress_callback),
+                cancelled=cancelled, progress_callback=progress_callback, **column_options),
                 inputs=(upstream.digest, asdict(request.inelastic), request.column_step_mm, asdict(request.wave_grid), epoch))
         del upstream
     readouts = []

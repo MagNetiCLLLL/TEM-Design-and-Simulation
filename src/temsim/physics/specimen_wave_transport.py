@@ -362,9 +362,10 @@ def _with_material_refinement(state, checkpoint, execute, *, grid_numerics, canc
 
 
 def _propagate_specimen(state, checkpoint, *, maximum_step_mm=.5, maximum_checkpoint_bytes=8*1024**3,
-                        grid_numerics=WaveGridNumerics(), tip_time_s=None,
+                        grid_numerics=WaveGridNumerics(), tip_time_s=None, column_model="physical",
                         cancelled=lambda: False, progress_callback=None):
     from temsim.specimen.scene import SpecimenScene
+    column_options = {} if column_model == "physical" else {"column_model": column_model}
     start = state.sample.z_mm-state.sample.thickness_nm*.5e-6
     stop = state.sample.z_mm+state.sample.thickness_nm*.5e-6
     if not math.isclose(checkpoint.plane_z_mm, start, abs_tol=1e-9, rel_tol=0):
@@ -374,20 +375,21 @@ def _propagate_specimen(state, checkpoint, *, maximum_step_mm=.5, maximum_checkp
     if SpecimenScene.from_state(state).is_vacuum:
         return _propagate_column(state, checkpoint, stop, maximum_step_mm=maximum_step_mm,
             grid_numerics=grid_numerics, tip_time_s=tip_time_s, cancelled=cancelled,
-            progress_callback=progress_callback)
+            progress_callback=progress_callback, **column_options)
     return _with_material_refinement(state, checkpoint,
         lambda material, factor, history: _propagate_specimen_attempt(state, checkpoint,
             maximum_step_mm=maximum_step_mm, maximum_checkpoint_bytes=maximum_checkpoint_bytes,
             grid_numerics=grid_numerics, tip_time_s=tip_time_s,
             cancelled=cancelled, progress_callback=progress_callback,
-            material=material, refinement_factor=factor, refinement_history=history),
+            material=material, refinement_factor=factor, refinement_history=history, column_model=column_model),
         grid_numerics=grid_numerics, cancelled=cancelled, progress_callback=progress_callback)
 
 
 def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_checkpoint_bytes,
                         grid_numerics, tip_time_s, cancelled, progress_callback,
-                        material, refinement_factor, refinement_history):
+                        material, refinement_factor, refinement_history, column_model="physical"):
     from temsim.physics.wave_imaging import interaction_constant_rad_per_v_angstrom
+    column_options = {} if column_model == "physical" else {"column_model": column_model}
     from temsim.specimen.inelastic import real_inelastic_distribution
     start = state.sample.z_mm-state.sample.thickness_nm*.5e-6
     stop = state.sample.z_mm+state.sample.thickness_nm*.5e-6
@@ -442,7 +444,7 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
                     grid_numerics=grid_numerics, tip_time_s=tip_time_s,
                     retained_bytes=resident_wave_bytes(checkpoint.beam)
                         +sum(m.plane.amplitude.nbytes for m in outputs)+sum(p.nbytes for p in configs),
-                    cancelled=cancelled)
+                    cancelled=cancelled, **column_options)
                 previous_support_loss = support_ledger["probability_loss_per_tip_electron"]
                 support_ledger = _previous_support_error(transported.record, mode.mode_id)
                 slice_support_loss = support_ledger["probability_loss_per_tip_electron"]-previous_support_loss

@@ -12,7 +12,7 @@ from temsim.physics.wave_grid import WaveGridNumerics
 
 def execute_round_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                          numerics=RadialColumnNumerics(), grid_numerics=WaveGridNumerics(),
-                         cancelled=lambda: False, progress_callback=None):
+                         cancelled=lambda: False, progress_callback=None, column_model="physical"):
     """Only consume the executed gun's matching radial complex expansion.
 
     The original mode identity, source weight, energy, scattering history and
@@ -20,10 +20,13 @@ def execute_round_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
     owned by the subsequent 2-D propagation, never approximated here.
     """
     numerics.validate(); grid_numerics.validate()
+    from temsim.physics.ideal_column_reference import column_model_record, validate_column_model
+    validate_column_model(column_model)
+    arguments = {} if column_model == "physical" else {"column_model": column_model}
     z, radial_modes, record = round_column_prefix(state, checkpoint, stop_z_mm,
         maximum_step_mm=maximum_step_mm, initial_samples=numerics.initial_samples,
         maximum_samples=numerics.maximum_samples, backend=numerics.backend,
-        cancelled=cancelled, progress_callback=progress_callback)
+        cancelled=cancelled, progress_callback=progress_callback, **arguments)
     if not radial_modes:
         if z != checkpoint.plane_z_mm:
             raise ValueError("An empty round prefix cannot advance a physical checkpoint")
@@ -62,6 +65,7 @@ def execute_round_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         raise InterruptedError("Round prefix checkpoint cancelled before publication")
     return TipGunCheckpoint(BeamState(tuple(outputs), checkpoint.beam.reference_plane), z,
         checkpoint.reference_current_a, {"schema": "executed-round-column-checkpoint-v1",
+            **column_model_record(column_model),
             "upstream_digest": checkpoint.digest, "upstream": checkpoint.record,
             "round_execution": record, "modes": rows, "numerics": asdict(numerics),
             "grid_numerics": grid_numerics.column_identity(),

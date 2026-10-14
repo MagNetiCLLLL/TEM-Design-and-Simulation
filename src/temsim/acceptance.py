@@ -112,6 +112,7 @@ ACCEPTANCE_SCOPES = {
             "field-ui/FU-10": ("Tip controls, coherent sessions and continuous latest-Z interaction", (
                 "tests/test_coherent_beam_gui.py", "tests/test_shared_tip_workflow.py",
                 "tests/test_electron_beam_observation.py", "tests/test_wave_beam_analysis.py",
+                "tests/test_wavefront_comparison_gui.py",
                 "tests/test_coherent_state_list.py", "tests/test_coherent_state_controller.py",
                 "tests/test_coherent_state_set.py",
                 "tests/test_tip_source_gui.py", "tests/test_beam_comparison.py",
@@ -253,6 +254,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_surface_wave_integration.py", "tests/test_radial_phase_fem.py")),
             "coherent-development/CW-02": ("Executed upstream waves, exact plane routing and physical absorption", (
                 "tests/test_tip_wave_pipeline.py", "tests/test_column_wave_transport.py", "tests/test_scan_preparation.py",
+                "tests/test_first_order_column_reference.py", "tests/test_ideal_reference_pipeline.py",
                 "tests/test_wave_checkpoint_publication.py",
                 "tests/test_plane_wave_storage.py", "tests/test_radial_device_residency.py",
                 "tests/test_column_wave_electric.py", "tests/test_tip_gun_wave.py",
@@ -268,6 +270,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_wave_read_session.py",
                 "tests/test_electron_detection.py", "tests/test_electron_beam_observation.py",
                 "tests/test_wave_beam_analysis.py", "tests/test_wave_plane_observables.py",
+                "tests/test_wavefront_comparison.py", "tests/test_wavefront_comparison_gui.py",
                 "tests/test_coherent_state_list.py", "tests/test_coherent_state_controller.py",
                 "tests/test_coherent_state_set.py")),
             "coherent-development/CW-04": ("Vacuum electrostatic boundaries do not depend on prescribed source phase", (

@@ -44,6 +44,35 @@ def test_phase_only_budget_cannot_change_or_erase_the_wave():
     np.testing.assert_array_equal(original.plane.amplitude, before)
 
 
+@pytest.mark.parametrize("parameter", ("tilt", "curvature"))
+def test_actual_phase_retains_independent_tilt_and_defocus_changes(parameter):
+    from temsim.physics.wave_plane_observables import mode_phase_samples
+    original = mode()
+    wave = original.plane
+    before = wave.amplitude.copy()
+    displacement = wave.coordinates_m()-wave.origin_m[:, None, None]
+    wave_number = 2*np.pi/wavelength_m(original.energy_kev*1000.)
+    if parameter == "tilt":
+        change = np.array((3e-5, -2e-5))
+        updated_plane = replace(wave, tilt_rad=wave.tilt_rad+change)
+        expected_delta = wave_number*np.einsum("i,iyx->yx", change, displacement)
+    else:
+        # Isotropic curvature is the quadratic focusing/defocus carrier.
+        change = 500.*np.eye(2)
+        updated_plane = replace(wave, curvature_m1=wave.curvature_m1+change)
+        expected_delta = .5*wave_number*np.einsum("iyx,ij,jyx->yx",
+                                                 displacement, change, displacement)
+    original_phase = mode_phase_samples(original)
+    changed_phase = mode_phase_samples(replace(original, plane=updated_plane))
+    # Compare wrapped phase differences to the independently calculated ramp
+    # or quadratic phase, retaining their full physical magnitude.
+    np.testing.assert_allclose(np.exp(1j*(changed_phase-original_phase)),
+                               np.exp(1j*expected_delta), atol=2e-12, rtol=0.)
+    assert np.max(np.abs(np.exp(1j*expected_delta)-1.)) > .5
+    assert np.all(np.abs(changed_phase) <= np.pi)
+    np.testing.assert_array_equal(original.plane.amplitude, before)
+
+
 def test_2048_phase_view_fits_below_full_current_analysis_budget(monkeypatch):
     from temsim.physics.wave_plane_observables import mode_phase_samples
     original = mode()

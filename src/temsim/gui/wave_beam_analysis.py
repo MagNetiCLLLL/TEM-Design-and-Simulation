@@ -208,7 +208,7 @@ class WaveBeamAnalysis(QObject):
     MODES = (("Beam intensity / current", "wave_current"),
              ("Probability flow direction", "wave_flow"),
              ("Canonical angular distribution", "wave_angles"),
-             ("Phase — one mode", "wave_phase"), ("Interaction breakdown", "wave_interactions"))
+             ("Phase plate — one mode", "wave_phase"), ("Interaction breakdown", "wave_interactions"))
     BINS = 128
     FLOW_BINS = 16
 
@@ -479,8 +479,10 @@ class WaveBeamAnalysis(QObject):
             current = 1e12*self.checkpoint.transmitted_current_a
             owner.summary.setText(f"Total forward current {current:.7g} pA | {len(self.checkpoint.beam.modes)} modes")
             if self.mode == "wave_phase":
-                a.legend.setText("Single-mode phase (rad) · no mixture phase")
-                a.legend.setToolTip(data["phase_reference"])
+                a.legend.setText("Single-mode phase plate (wrapped rad) · tilt and defocus retained")
+                a.legend.setToolTip("Actual transverse phase of the selected coherent mode, wrapped to "
+                    "[-π, π] radians. Tilt and defocus are retained; no detrending is applied. "
+                    f"Axial reference: {data['phase_reference']}")
             elif self.mode == "wave_angles":
                 a.legend.setText("Canonical angles | recorded posed-lens gauge"
                     if self.magnetic_gauge is not None and self.magnetic_gauge.fields

@@ -127,11 +127,14 @@ def _collide_slice(mode, inside, distribution, rng, z_mm):
 
 
 def _propagate_inelastic_specimen(state, checkpoint, *, numerics, store, maximum_step_mm,
-        grid_numerics, tip_time_s, cancelled, progress_callback, verify, use_cache):
+        grid_numerics, tip_time_s, cancelled, progress_callback, verify, use_cache, column_model="physical"):
     from temsim.physics.specimen_wave_transport import _with_material_refinement
     numerics.validate()
     key = store.key("inelastic-specimen-support-ledger-v5", checkpoint.digest, asdict(numerics),
                     maximum_step_mm, asdict(grid_numerics), tip_time_s)
+    if column_model != "physical":
+        from temsim.physics.ideal_column_reference import column_model_record
+        key = store.key(key, column_model_record(column_model))
     cached = store.get(key) if use_cache else None
     if cached is not None:
         return cached
@@ -140,13 +143,13 @@ def _propagate_inelastic_specimen(state, checkpoint, *, numerics, store, maximum
             numerics=numerics, store=store, maximum_step_mm=maximum_step_mm,
             grid_numerics=grid_numerics, tip_time_s=tip_time_s, cancelled=cancelled,
             progress_callback=progress_callback, verify=verify, use_cache=use_cache,
-            key=key, material=material, refinement_factor=factor, refinement_history=history),
+            key=key, material=material, refinement_factor=factor, refinement_history=history, column_model=column_model),
         grid_numerics=grid_numerics, cancelled=cancelled, progress_callback=progress_callback)
 
 
 def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_step_mm,
         grid_numerics, tip_time_s, cancelled, progress_callback, verify, use_cache,
-        key, material, refinement_factor, refinement_history):
+        key, material, refinement_factor, refinement_history, column_model="physical"):
     from temsim.physics.specimen_wave_transport import (_regrid_refined_mode, _material_phase, _material_wave_axes, _bandlimit_mode)
     from temsim.physics.column_wave import _propagate_column, _previous_support_error
     from temsim.physics.wave_imaging import interaction_constant_rad_per_v_angstrom
@@ -154,6 +157,7 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
     numerics.validate()
     start = checkpoint.plane_z_mm
     stop = state.sample.z_mm+state.sample.thickness_nm*.5e-6
+    column_options = {} if column_model == "physical" else {"column_model": column_model}
     parent_id = checkpoint.digest
     scene, prepared, x, y, dzs = material
     configs = prepared.potential_configurations_v_angstrom
@@ -229,7 +233,8 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                         report("column fields through material")
                         propagated = _propagate_column(state, local, next_z, maximum_step_mm=maximum_step_mm,
                             grid_numerics=grid_numerics, tip_time_s=tip_time_s, cancelled=cancelled,
-                            retained_bytes=retained_potential_bytes+base.plane.amplitude.nbytes+source.plane.amplitude.nbytes)
+                            retained_bytes=retained_potential_bytes+base.plane.amplitude.nbytes+source.plane.amplitude.nbytes,
+                            **column_options)
                         previous_support_loss = support_ledger["probability_loss_per_tip_electron"]
                         support_ledger = _previous_support_error(propagated.record, mode.mode_id)
                         slice_support_loss = support_ledger["probability_loss_per_tip_electron"]-previous_support_loss
