@@ -1,0 +1,639 @@
+{
+  "schema": "nanoprobe-condenser-validation-v1",
+  "passed": true,
+  "requested_backend": "Numba CPU",
+  "particle_budget": 3000,
+  "nanoprobe_range": "large_angle",
+  "integration_steps_mm": [
+    0.05,
+    0.025
+  ],
+  "target_alpha95_mrad": 30.0,
+  "angle_relative_tolerance": 0.01,
+  "focus_tolerance_nm": 1.0,
+  "minimum_surviving_and_effective_rays": 16,
+  "candidate": null,
+  "calibration_reference_particle_budget": 3000,
+  "sampling_convergence": "NOT_TESTED_FIXED_PARTICLE_BUDGET",
+  "sampling_note": "Changing the particle budget can change focus and alpha95; acceptance tolerances are unchanged",
+  "qualification": "Classical particles at two integration steps; no wave-optical or OEM qualification",
+  "backend_receipts": [
+    {
+      "stage": "gun",
+      "requested": "Numba CPU",
+      "actual": "CPU",
+      "outcome": "returned",
+      "reason": "CPU implementation; may reuse exact upstream data",
+      "monotonic_s": 53587.062
+    }
+  ],
+  "step_checks": [
+    {
+      "step_mm": 0.05,
+      "passed": true,
+      "backend_receipts": [
+        {
+          "stage": "gun",
+          "requested": "Numba CPU",
+          "actual": "CPU",
+          "outcome": "returned",
+          "reason": "CPU implementation; may reuse exact upstream data",
+          "monotonic_s": 53587.14
+        },
+        {
+          "stage": "column",
+          "requested": "Numba CPU",
+          "actual": "Numba CPU",
+          "outcome": "returned",
+          "reason": "",
+          "monotonic_s": 53623.609,
+          "retried": false
+        },
+        {
+          "stage": "gun",
+          "requested": "Numba CPU",
+          "actual": "CPU",
+          "outcome": "returned",
+          "reason": "CPU implementation; may reuse exact upstream data",
+          "monotonic_s": 53624.109
+        },
+        {
+          "stage": "column",
+          "requested": "Numba CPU",
+          "actual": "Numba CPU",
+          "outcome": "returned",
+          "reason": "",
+          "monotonic_s": 53686.0,
+          "retried": false
+        }
+      ],
+      "errors": [],
+      "topology": {
+        "schema": "condenser-topology-v1",
+        "requirement": "c2_c3_waist_and_c3_adl_waist",
+        "nanoprobe_range": "large_angle",
+        "status": "PASS",
+        "passed": true,
+        "failures": [],
+        "message": "C2-to-C3 and C3-to-ADL physical waists confirmed at the declared axial sampling",
+        "intervals": {
+          "c2_c3": {
+            "bounds_mm": [
+              650.0,
+              915.0
+            ],
+            "requirement": "at_least_one_executed_2d_waist",
+            "waists": [
+              {
+                "z_mm": 668.0,
+                "bracket_mm": [
+                  667.0,
+                  669.0
+                ],
+                "rms_radius_nm": 57.91990082416186,
+                "bracket_rms_radius_nm": [
+                  361.0398855535645,
+                  57.91990082416186,
+                  245.20559764821607
+                ],
+                "bracket_principal_rms_nm": [
+                  [
+                    254.75092592844916,
+                    255.8354250277485
+                  ],
+                  [
+                    40.868447807505135,
+                    41.042476597861075
+                  ],
+                  [
+                    173.01792083101316,
+                    173.75437890692743
+                  ]
+                ],
+                "bracket_covariance_m_rad": [
+                  -1.0943400170866051e-10,
+                  -1.755707838120541e-11,
+                  7.432695160217481e-11
+                ],
+                "ray_count": 2401,
+                "source_current_fraction": 1.0,
+                "cohort": "same positive-current rays surviving the entire sampled interval",
+                "status": "EXECUTED_AT_FIXED_SAMPLING",
+                "kind": "current-weighted two-dimensional corrector beam waist",
+                "bracket_covariance_growth_m2": [
+                  [
+                    6.322780295172666e-14,
+                    6.376728109732368e-14
+                  ],
+                  [
+                    2.826496987032251e-14,
+                    2.850610033621562e-14
+                  ]
+                ]
+              }
+            ],
+            "candidate_count": 1
+          },
+          "c3_adl": {
+            "bounds_mm": [
+              915.0,
+              1088.2
+            ],
+            "requirement": "at_least_one_executed_2d_waist",
+            "waists": [
+              {
+                "z_mm": 1017.5264367816092,
+                "bracket_mm": [
+                  1016.5310344827586,
+                  1018.5218390804598
+                ],
+                "rms_radius_nm": 295.55689264505816,
+                "bracket_rms_radius_nm": [
+                  1017.5978530440577,
+                  295.55689264505816,
+                  426.48408012371607
+                ],
+                "bracket_principal_rms_nm": [
+                  [
+                    718.0203288357591,
+                    721.077109537159
+                  ],
+                  [
+                    208.5458033985242,
+                    209.4338193197711
+                  ],
+                  [
+                    300.9287308249135,
+                    302.2094796049241
+                  ]
+                ],
+                "bracket_covariance_m_rad": [
+                  -7.381410858686096e-10,
+                  -2.1438988058060604e-10,
+                  3.093613247074039e-10
+                ],
+                "ray_count": 2401,
+                "source_current_fraction": 1.0,
+                "cohort": "same positive-current rays surviving the entire sampled interval",
+                "status": "EXECUTED_AT_FIXED_SAMPLING",
+                "kind": "current-weighted two-dimensional corrector beam waist",
+                "bracket_covariance_growth_m2": [
+                  [
+                    4.720618405062571e-13,
+                    4.76089673223617e-13
+                  ],
+                  [
+                    4.7066748920564566e-14,
+                    4.746804488840498e-14
+                  ]
+                ]
+              }
+            ],
+            "candidate_count": 1
+          }
+        },
+        "candidates": [
+          {
+            "z_mm": 668.191074732617,
+            "rms_radius_nm": 0.009235037826571008,
+            "bracket_mm": [
+              668.0,
+              669.0
+            ],
+            "rays": 2401,
+            "status": "INTERPOLATED_CANDIDATE_NOT_FOCUS_ACCEPTANCE"
+          },
+          {
+            "z_mm": 1017.9338901255359,
+            "rms_radius_nm": 0.05516696212441332,
+            "bracket_mm": [
+              1017.5264367816092,
+              1018.5218390804598
+            ],
+            "rays": 2401,
+            "status": "INTERPOLATED_CANDIDATE_NOT_FOCUS_ACCEPTANCE"
+          }
+        ],
+        "refinement_planes_mm": [],
+        "qualification": "Executed checkpoints at bounded axial sampling; not OEM qualification",
+        "cohort": {
+          "ray_count": 2401,
+          "source_current_fraction": 0.8003333333333333,
+          "definition": "same positive-current rays surviving all C2-to-ADL boundary-guard checkpoints"
+        },
+        "coverage": {
+          "start_mm": 649.5,
+          "end_mm": 1088.7,
+          "checkpoint_count": 444,
+          "maximum_spacing_mm": 1.0,
+          "requested_maximum_spacing_mm": 1.0
+        },
+        "integration_step_mm": 0.05,
+        "executions": 1
+      },
+      "surface_focus": {
+        "surface_z_mm": 1599.1999975,
+        "statistics": {
+          "surviving_rays": 2401,
+          "surviving_fraction": 0.8003333333333333,
+          "mean_x_m": -1.0050290660452582e-12,
+          "mean_y_m": 8.903139211544206e-14,
+          "mean_tx_rad": 6.504419243283759e-05,
+          "mean_ty_rad": 5.654021935360626e-05,
+          "convergence_rms_rad": 0.018889288867999905,
+          "convergence_95_rad": 0.030006730405420456,
+          "convergence_99_rad": 0.03168109627649211,
+          "convergence_edge_rad": 0.03226769692711581,
+          "radius_rms_m": 1.2587321935958315e-10,
+          "radius_95_m": 2.4761937907391717e-10,
+          "radius_99_m": 3.6509311360052657e-10,
+          "radial_position_angle_covariance_m_rad": -5.720175590266346e-18,
+          "radial_wavefront_curvature_per_m": -361.0294921880573,
+          "waist_offset_m": 1.6025472468633546e-14,
+          "twofold_moment": 0.027542766099934387,
+          "threefold_moment": 0.020667482800749235
+        },
+        "local_waist_offset_nm": 1.6317807569779616e-05,
+        "variance_second_derivative": 0.0007138854188980646,
+        "upstream_rms_radii_m": [
+          3.7806817870752115e-09,
+          1.8934815358874662e-09,
+          1.2587321935958315e-10
+        ],
+        "step_mm": 0.05,
+        "effective_rays": 2401.0000000000014,
+        "alpha95_mrad": 30.006730405420456,
+        "sample_current_a": 8.003333333333334e-06,
+        "passed": true
+      },
+      "actual_backends": [
+        "CPU",
+        "Numba CPU"
+      ],
+      "cpu_only": true
+    },
+    {
+      "step_mm": 0.025,
+      "passed": true,
+      "backend_receipts": [
+        {
+          "stage": "gun",
+          "requested": "Numba CPU",
+          "actual": "CPU",
+          "outcome": "returned",
+          "reason": "CPU implementation; may reuse exact upstream data",
+          "monotonic_s": 53686.171
+        },
+        {
+          "stage": "column",
+          "requested": "Numba CPU",
+          "actual": "Numba CPU",
+          "outcome": "returned",
+          "reason": "",
+          "monotonic_s": 53754.89,
+          "retried": false
+        },
+        {
+          "stage": "gun",
+          "requested": "Numba CPU",
+          "actual": "CPU",
+          "outcome": "returned",
+          "reason": "CPU implementation; may reuse exact upstream data",
+          "monotonic_s": 53755.406
+        },
+        {
+          "stage": "column",
+          "requested": "Numba CPU",
+          "actual": "Numba CPU",
+          "outcome": "returned",
+          "reason": "",
+          "monotonic_s": 53878.015,
+          "retried": false
+        }
+      ],
+      "errors": [],
+      "topology": {
+        "schema": "condenser-topology-v1",
+        "requirement": "c2_c3_waist_and_c3_adl_waist",
+        "nanoprobe_range": "large_angle",
+        "status": "PASS",
+        "passed": true,
+        "failures": [],
+        "message": "C2-to-C3 and C3-to-ADL physical waists confirmed at the declared axial sampling",
+        "intervals": {
+          "c2_c3": {
+            "bounds_mm": [
+              650.0,
+              915.0
+            ],
+            "requirement": "at_least_one_executed_2d_waist",
+            "waists": [
+              {
+                "z_mm": 668.0,
+                "bracket_mm": [
+                  667.0,
+                  669.0
+                ],
+                "rms_radius_nm": 57.919900644602635,
+                "bracket_rms_radius_nm": [
+                  361.0398853768828,
+                  57.919900644602635,
+                  245.20559783065892
+                ],
+                "bracket_principal_rms_nm": [
+                  [
+                    254.7509258037818,
+                    255.8354249025509
+                  ],
+                  [
+                    40.86844768080756,
+                    41.04247647062413
+                  ],
+                  [
+                    173.01792095974517,
+                    173.75437903620792
+                  ]
+                ],
+                "bracket_covariance_m_rad": [
+                  -1.0943400165617399e-10,
+                  -1.755707832694597e-11,
+                  7.432695165819158e-11
+                ],
+                "ray_count": 2401,
+                "source_current_fraction": 1.0,
+                "cohort": "same positive-current rays surviving the entire sampled interval",
+                "status": "EXECUTED_AT_FIXED_SAMPLING",
+                "kind": "current-weighted two-dimensional corrector beam waist",
+                "bracket_covariance_growth_m2": [
+                  [
+                    6.322780289856426e-14,
+                    6.376728104370795e-14
+                  ],
+                  [
+                    2.8264969925224297e-14,
+                    2.8506100391585926e-14
+                  ]
+                ]
+              }
+            ],
+            "candidate_count": 1
+          },
+          "c3_adl": {
+            "bounds_mm": [
+              915.0,
+              1088.2
+            ],
+            "requirement": "at_least_one_executed_2d_waist",
+            "waists": [
+              {
+                "z_mm": 1017.5264367816092,
+                "bracket_mm": [
+                  1016.5310344827586,
+                  1018.5218390804598
+                ],
+                "rms_radius_nm": 295.5568923339673,
+                "bracket_rms_radius_nm": [
+                  1017.5978527445604,
+                  295.5568923339673,
+                  426.48408044640024
+                ],
+                "bracket_principal_rms_nm": [
+                  [
+                    718.0203286244172,
+                    721.0771093249485
+                  ],
+                  [
+                    208.54580317900223,
+                    209.43381909934507
+                  ],
+                  [
+                    300.92873105261526,
+                    302.20947983356575
+                  ]
+                ],
+                "bracket_covariance_m_rad": [
+                  -7.381410856632144e-10,
+                  -2.1438988035839058e-10,
+                  3.093613249464386e-10
+                ],
+                "ray_count": 2401,
+                "source_current_fraction": 1.0,
+                "cohort": "same positive-current rays surviving the entire sampled interval",
+                "status": "EXECUTED_AT_FIXED_SAMPLING",
+                "kind": "current-weighted two-dimensional corrector beam waist",
+                "bracket_covariance_growth_m2": [
+                  [
+                    4.720618402943213e-13,
+                    4.760896730099051e-13
+                  ],
+                  [
+                    4.706674914916952e-14,
+                    4.746804511892973e-14
+                  ]
+                ]
+              }
+            ],
+            "candidate_count": 1
+          }
+        },
+        "candidates": [
+          {
+            "z_mm": 668.1910747320228,
+            "rms_radius_nm": 0.009235037880656332,
+            "bracket_mm": [
+              668.0,
+              669.0
+            ],
+            "rays": 2401,
+            "status": "INTERPOLATED_CANDIDATE_NOT_FOCUS_ACCEPTANCE"
+          },
+          {
+            "z_mm": 1017.9338901251004,
+            "rms_radius_nm": 0.055166962119541536,
+            "bracket_mm": [
+              1017.5264367816092,
+              1018.5218390804598
+            ],
+            "rays": 2401,
+            "status": "INTERPOLATED_CANDIDATE_NOT_FOCUS_ACCEPTANCE"
+          }
+        ],
+        "refinement_planes_mm": [],
+        "qualification": "Executed checkpoints at bounded axial sampling; not OEM qualification",
+        "cohort": {
+          "ray_count": 2401,
+          "source_current_fraction": 0.8003333333333333,
+          "definition": "same positive-current rays surviving all C2-to-ADL boundary-guard checkpoints"
+        },
+        "coverage": {
+          "start_mm": 649.5,
+          "end_mm": 1088.7,
+          "checkpoint_count": 444,
+          "maximum_spacing_mm": 1.0,
+          "requested_maximum_spacing_mm": 1.0
+        },
+        "integration_step_mm": 0.025,
+        "executions": 1
+      },
+      "surface_focus": {
+        "surface_z_mm": 1599.1999975,
+        "statistics": {
+          "surviving_rays": 2401,
+          "surviving_fraction": 0.8003333333333333,
+          "mean_x_m": -1.0031185842137207e-12,
+          "mean_y_m": 9.062276153952668e-14,
+          "mean_tx_rad": 6.504419147549455e-05,
+          "mean_ty_rad": 5.654022049010435e-05,
+          "convergence_rms_rad": 0.018889288873039683,
+          "convergence_95_rad": 0.03000673041343075,
+          "convergence_99_rad": 0.031681096284881284,
+          "convergence_edge_rad": 0.03226769693576704,
+          "radius_rms_m": 1.2587439747003755e-10,
+          "radius_95_m": 2.476518024463871e-10,
+          "radius_99_m": 3.654160747373389e-10,
+          "radial_position_angle_covariance_m_rad": 1.0287190013826044e-14,
+          "radial_wavefront_curvature_per_m": 649264.94075695,
+          "waist_offset_m": -2.8820283163806062e-11,
+          "twofold_moment": 0.027475279783049613,
+          "threefold_moment": 0.020667185300222123
+        },
+        "local_waist_offset_nm": -0.02881999105041639,
+        "variance_second_derivative": 0.0007138854190522941,
+        "upstream_rms_radii_m": [
+          3.780137287282923e-09,
+          1.8929379393052227e-09,
+          1.2587439747003755e-10
+        ],
+        "step_mm": 0.025,
+        "effective_rays": 2401.0000000000014,
+        "alpha95_mrad": 30.006730413430752,
+        "sample_current_a": 8.003333333333334e-06,
+        "passed": true
+      },
+      "actual_backends": [
+        "CPU",
+        "Numba CPU"
+      ],
+      "cpu_only": true
+    }
+  ],
+  "errors": [],
+  "numba_threads": 2,
+  "assembly": {
+    "gun": "FEG",
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "beam_blanker": "None"
+  },
+  "voltage_kv": 300.0,
+  "simulation_mode": "custom",
+  "modes": {
+    "condenser": "nano_probe_large_angle",
+    "projector": "diffraction"
+  },
+  "static_drives": {
+    "ac_raster": false,
+    "dc_raster": false,
+    "wobble": false
+  },
+  "lenses": {
+    "condenser_lens_1": 51.666666666666664,
+    "condenser_lens_2": 25.25772717253661,
+    "condenser_lens_3": 46.059815218359184,
+    "adapter_lens": 79.80694335935594,
+    "probe_tl22_lens": 59.93152503582202,
+    "probe_tl21_lens": 59.95527906841963,
+    "probe_tl12_lens": 49.977014835272826,
+    "mini_condenser": 43.88646617222637,
+    "objective_lens": 68.9801,
+    "diffraction_lens": 14.577617197168571,
+    "intermediate_lens": 0.035082657259397326,
+    "projector_lens_1": 32.1132572718703,
+    "projector_lens_2": 9.826874422815507,
+    "image_tl11_lens": 47.222628953204506,
+    "image_tl12_lens": 72.246157404236,
+    "image_tl21_lens": 60.00013477251599,
+    "image_tl22_lens": 60.00017182617688,
+    "image_adapter_lens": 48.97736117372686
+  },
+  "lens_polarities": {
+    "condenser_lens_1": 1,
+    "condenser_lens_2": 1,
+    "condenser_lens_3": 1,
+    "adapter_lens": 1,
+    "probe_tl22_lens": -1,
+    "probe_tl21_lens": 1,
+    "probe_tl12_lens": 1,
+    "mini_condenser": -1,
+    "objective_lens": 1,
+    "diffraction_lens": 1,
+    "intermediate_lens": 1,
+    "projector_lens_1": 1,
+    "projector_lens_2": 1,
+    "image_tl11_lens": -1,
+    "image_tl12_lens": 1,
+    "image_tl21_lens": 1,
+    "image_tl22_lens": -1,
+    "image_adapter_lens": 1
+  },
+  "hexapoles": {
+    "probe_hp2_hexapole": {
+      "strength_m3": 694323.0354215894,
+      "orientation_rad": 0.0
+    },
+    "probe_hpc_hexapole": {
+      "strength_m3": 0.0,
+      "orientation_rad": 0.0
+    },
+    "probe_hp1_hexapole": {
+      "strength_m3": 416774.6329835517,
+      "orientation_rad": -0.041975232520065166
+    },
+    "probe_hpol_hexapole": {
+      "strength_m3": 0.0,
+      "orientation_rad": 0.0
+    },
+    "image_hpol_hexapole": {
+      "strength_m3": 0.0,
+      "orientation_rad": 0.0
+    },
+    "image_hp1_hexapole": {
+      "strength_m3": 24905024.4,
+      "orientation_rad": 0.0
+    },
+    "image_hp2_hexapole": {
+      "strength_m3": 14929764.170818225,
+      "orientation_rad": -2.00126792
+    }
+  },
+  "source": {
+    "representation": "classical_particles",
+    "requested_rays": 3000,
+    "executed_rays": 3000,
+    "positive_weight_rays": 3000,
+    "gun_exit_current_carrying_rays": 3000,
+    "emitted_current_a": 1e-05,
+    "gun_exit_source_current_fraction": 1.0,
+    "gun_exit_current_a": 1e-05
+  },
+  "step_differences": {
+    "alpha95_mrad": 8.010296426164132e-09,
+    "rms_radius_nm": 1.1781104544044807e-06,
+    "local_waist_offset_nm": 0.02883630885798617
+  },
+  "elapsed_s": 460.65086860000156,
+  "actual_backends": [
+    "CPU",
+    "Numba CPU"
+  ],
+  "status": "PASS_AT_FIXED_PARTICLE_BUDGET",
+  "verification_date": "2026-10-14",
+  "reference_kind": "Large-angle Nanoprobe: executed CPU topology and specimen-entrance focus, fixed 3000-ray budget",
+  "source_control": {
+    "base_commit": "141fa25ba3c52120f85e7b1c827683e5c6b4a4dc",
+    "working_tree_changes": true,
+    "note": "Executed during implementation of the Normal/Large angle range selector; controls and assembly are captured in this report. Not an exact clean-commit identity."
+  },
+  "reproduce_command": "python scripts/validate_nanoprobe_condenser.py --range large_angle --rays 3000 --step 0.05 --threads 2",
+  "interpretation": "Both required waists are bracketed by actual ray covariances and independently confirmed as executed two-dimensional spatial minima. Reported candidate Z is interpolated; sampled minimum Z depends on checkpoint spacing. Focus and angle are measured separately at the physical specimen entrance. This does not qualify the complete column topology, variable particle sampling, an OEM instrument, wave resolution, or the whole requested angle range."
+}

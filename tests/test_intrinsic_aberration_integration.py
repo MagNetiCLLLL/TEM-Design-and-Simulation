@@ -119,6 +119,7 @@ def test_previous_inputs_add_only_zero_intrinsics_without_changing_optics():
     previous = deepcopy(current)
     previous["schema_version"] = 78
     del previous["lens_intrinsic_aberrations"]
+    del previous["nanoprobe_range"]
     restored = State.from_dict(previous).to_dict()
     assert restored["lens_intrinsic_aberrations"] == {}
     for key in ("lenses", "corrector_elements", "electron_gun", "stigmators"):

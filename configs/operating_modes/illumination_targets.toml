@@ -9,6 +9,14 @@ relative_tolerance = 0.01
 focus_tolerance_nm = 1.0
 maximum_curvature_per_m = 25.0
 
+# Optical branch selection is separate from the requested measured angle.
+# Both stored Nanoprobe working points are currently calibrated near 30 mrad.
+[nano_probe_large_angle]
+alpha95_mrad = 30.0
+relative_tolerance = 0.01
+focus_tolerance_nm = 1.0
+maximum_curvature_per_m = 25.0
+
 [micro_probe]
 alpha95_mrad = 0.3 # upper bound, not an equality target
 diameter95_um = 2.0

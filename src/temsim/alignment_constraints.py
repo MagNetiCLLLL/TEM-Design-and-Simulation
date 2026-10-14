@@ -90,7 +90,8 @@ def constraint_assessment(options, metrics):
                       passed=c.residual(metrics.get(c.metric)) == 0.) for c in options.constraints)
 
 
-def evaluate_incident(state, *, topology=False, spacing_mm=2., exact_roots=False):
+def evaluate_incident(state, *, topology=False, spacing_mm=2., exact_roots=False,
+                      condenser_topology=False):
     """Execute the same gun, fields and stops as the incident audit."""
     from temsim.optics.beam_path_audit import (incident_checkpoints, crossover_candidates,
         crossover_intervals, optical_component_planes, refine_crossover_candidate)
@@ -107,6 +108,9 @@ def evaluate_incident(state, *, topology=False, spacing_mm=2., exact_roots=False
         state._tuning_cancelled = cancellation
     start, end = float(state.electron_gun.exit_plane_z_mm), float(state.sample.upper_surface_z_mm)
     planes = sorted({end, *np.arange(start, end, spacing_mm)}) if topology else [end]
+    if condenser_topology:
+        from temsim.optics.condenser_topology import requested_capture_planes
+        planes = sorted({*planes, *requested_capture_planes(state)})
     if len(planes) > 8192 or len(planes) * state.electron_gun.emitter.ray_count * 128 > 256 * 1024**2:
         raise ValueError("Topology audit exceeds its 256 MiB / 8192-plane numerical budget")
     gun, checkpoints, mask = incident_checkpoints(state, planes, step_mm=state.step_mm)
@@ -115,6 +119,11 @@ def evaluate_incident(state, *, topology=False, spacing_mm=2., exact_roots=False
                   energy_offset_ev=gun.exit_bundle.energy_offset_ev, gun_ray_id=gun.exit_bundle.ray_id)
     summary = sampling_summary(arrays, plane_z_mm=end, source_current_a=effective_source_current_a(state))
     summary = {**summary, "actual_backend": str(getattr(state, "active_backend", "not_recorded"))}
+    if condenser_topology:
+        from temsim.alignment_transaction import _validate_condenser_topology_forward
+        summary["condenser_topology"] = _validate_condenser_topology_forward(
+            state, checkpoints=checkpoints, masks=mask, weights=gun.exit_bundle.weight,
+        )
     metrics = dict(effective_samples=summary["effective_samples"] or 0.,
                    current_pa=summary["plane_current_a"] * 1.e12 if summary["plane_current_a"] is not None else None)
     if summary["status"] == "AVAILABLE":
@@ -153,7 +162,7 @@ def solve_constrained_candidate(request, *, cancelled):
     from temsim.alignment_transaction import AlignmentCandidate, AlignmentCancelled, _allowed_state
     from temsim.instrument_snapshot import capture_instrument_snapshot
     from temsim.operating_modes import direct_alignment_by_key
-    from temsim.optics.direct_alignment import DirectAlignmentResult
+    from temsim.optics.direct_alignment import DirectAlignmentResult, _nanoprobe_topology_required
     from temsim.calculation_cache import calculation_signatures
     from temsim.working_point import WorkingPointCheckpoint
     definition = direct_alignment_by_key(request.key)
@@ -247,6 +256,7 @@ def solve_constrained_candidate(request, *, cancelled):
     strengths = best[3]
     candidate = _allowed_state(request, strengths)
     candidate_snapshot = capture_instrument_snapshot(candidate)
+    condenser_topology_required = _nanoprobe_topology_required(candidate, definition)
     passes, refinements = [], []
     final_arrays = final_summary = final_state = None
     # Column and gun step checks are independent, and use the full tip chain.
@@ -260,11 +270,16 @@ def solve_constrained_candidate(request, *, cancelled):
         refined._tuning_cancelled = cancelled
         try:
             metrics, arrays, summary, topo = evaluate_incident(refined, topology=options.check_topology,
-                spacing_mm=1. if axis == "column_step" else 2., exact_roots=True)
+                spacing_mm=1. if axis == "column_step" else 2., exact_roots=True,
+                condenser_topology=condenser_topology_required)
             values = residual(metrics, topo)
             passed = abs(values[0]) <= 1. and np.all(values[1:] == 0.) and metrics.get("current_pa", 0.) > 0
+            condenser_report = summary.get("condenser_topology")
+            if condenser_topology_required:
+                passed = passed and condenser_report is not None and condenser_report["status"] == "PASS"
             refinements.append(dict(axis=axis, metrics=metrics, constraints=constraint_assessment(options, metrics),
-                                    topology=topo, passed=bool(passed), snapshot_id=capture_instrument_snapshot(refined).digest,
+                                    topology=topo, condenser_topology=condenser_report,
+                                    passed=bool(passed), snapshot_id=capture_instrument_snapshot(refined).digest,
                                     actual_backend=summary.get("actual_backend", "not_recorded")))
             passes.append(bool(passed))
             final_arrays, final_summary, final_state = arrays, summary, refined
@@ -300,6 +315,14 @@ def solve_constrained_candidate(request, *, cancelled):
                  phase_status="NOT_COMPUTED", alignment_options=options.to_dict()), request.start_snapshot.digest)
     message = ("Joint constraints and independent gun/column step checks passed." if valid else
                f"{failure}: no acceptable candidate in this bounded search; no changes applied.")
+    if condenser_topology_required:
+        reports = [row.get("condenser_topology") for row in refinements]
+        if all(report is not None and report["status"] == "PASS" for report in reports):
+            message += " Nanoprobe condenser topology for the selected range passed all independent checks."
+        else:
+            details = list(dict.fromkeys(report["message"] for report in reports
+                           if report is not None and report["status"] != "PASS"))
+            message += " " + (" ".join(details) or "Nanoprobe condenser topology was not resolved for the selected range.")
     result = DirectAlignmentResult(key=request.key, success=valid, requested=request.target,
         achieved=final_metrics.get(target_metric, math.nan), unit=definition.unit,
         constraint_value=final_metrics.get("waist_offset_mm" if request.key == "nanoprobe_convergence" else "curvature_per_m", math.nan),

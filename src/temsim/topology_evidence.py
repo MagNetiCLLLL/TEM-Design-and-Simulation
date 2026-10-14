@@ -21,7 +21,11 @@ def topology_reference(snapshot):
     mode = root.get("illumination_mode")
     scope = dict(snapshot_id=snapshot.digest, implementation=snapshot.implementation,
         selected_modules=selected, mode=mode, model=root.get("simulation_mode"),
+        nanoprobe_range=root.get("nanoprobe_range", "normal"),
         qualification="NOT_ESTABLISHED")
+    if mode == "STEM" and root.get("nanoprobe_range", "normal") != "normal":
+        return freeze_json(dict(scope, status="NO_SCOPED_REFERENCE",
+            reason="No approved full-column topology reference for this Nanoprobe range"))
     if (selected.get("gun") != "gun/FEG.toml"
             or selected.get("column") != "column/C3_ProbeCorrector.toml"
             or "beam_blanker" in selected or mode not in {"TEM", "STEM"}):

@@ -15,6 +15,7 @@ import numpy as np
 from scipy.optimize import brentq
 
 from temsim.optics.assembly_illumination import TARGETS
+from temsim.operating_modes import is_nanoprobe_mode
 from temsim.optics.surface_probe_focus import surface_z_mm
 from temsim.physics.beam_statistics import transverse_beam_statistics
 
@@ -96,7 +97,7 @@ def focus_grid_proposals(state, keys, mode, *, primary_points=49,
                     s = measure(primary, root)
                     # A zero covariance can also be a broad, nearly parallel
                     # state. Candidate ranking distinguishes that from a probe.
-                    if mode == 'nano_probe':
+                    if is_nanoprobe_mode(mode):
                         score = abs(math.log(s.convergence_95_mrad/target.alpha95_mrad))
                         score += max(0., math.log(max(s.illumination_diameter_95_um*1e3, 1e-30)/10.))
                     else:

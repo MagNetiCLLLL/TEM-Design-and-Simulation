@@ -33,13 +33,25 @@ targets = { beam_character = "quasi_parallel", maximum_convergence_sem_angle_mra
 key = "nano_probe"
 name = "Nanoprobe"
 family = "condenser"
-calibration_status = "computed_300kv_non_oem_corrector_relay_gpu"
-calibration_reference = "Bounded 300 kV C3 + Probe Corrector calibration at CM -43.88646617222637% and fixed Objective 68.9801%. TL22/TL21 relay HP2 to HP1 with unit first-order magnification; TL1 and CM relay the corrector internal source image into the TL1-to-CM interval near Z 1400 mm and onward to the specimen. C3/ADL set the approximately 30 mrad probe; HP amplitudes and relative azimuth were fitted against the same finite-source rays with spherical and hexapole terms enabled. CUDA GPU verification used 3000 actual Tip samples, 2401 surviving physical aperture stops, with 0.05 and 0.025 mm integration steps. The static benchmark disables raster/wobble only; scan defaults are unchanged. Applies to the default CM magnitude and captured controls; changing illumination needs revalidation. Non-OEM simulator calibration; geometric spot metrics are not coherent-wave resolution, sampling convergence, or experimental qualification."
+calibration_status = "computed_300kv_non_oem_normal_nanoprobe_cpu"
+calibration_reference = "Ordinary Nanoprobe at 300 kV in the C3 + Probe Corrector assembly: an executed two-dimensional waist between C2 and C3, no additional C3-to-ADL waist, and a 30 mrad focused probe at the specimen entrance. Weak C3 and ADL are matched with TL1; TL22/TL21 retain HP2-to-HP1 unit first-order magnification. CM remains -43.88646617222637% and Objective 68.9801%. Two-thread CPU verification used 3000 actual Tip samples, 2661 surviving physical stops, with 0.05 and 0.025 mm steps. Fitted hexapoles reduce same-ray nonlinear error from 1.77764 nm to 0.02067 nm; the previous strong-C3 branch's smaller residual is not claimed for this working point. Static validation disables raster/wobble only. Applies at the default CM magnitude and captured controls; edited optics need revalidation. Non-OEM geometric particle calibration, not coherent-wave resolution, sampling convergence or experimental qualification. See docs/development/nanoprobe_normal_20261014.json."
+compatible_columns = ["C3 + Probe Corrector"]
+compatible_recording_systems = ["*"]
+devices = { condenser_lens_1 = { percent = 51.666666666666664 }, condenser_lens_2 = { percent = 23.225625142668733 }, condenser_lens_3 = { percent = 9.207984804305022 }, adapter_lens = { percent = 10.0 }, probe_tl22_lens = { percent = 59.93152503582202 }, probe_tl21_lens = { percent = 59.95527906841963 }, probe_tl12_lens = { percent = 36.004558708747176 }, mini_condenser = { field_polarity = -1 }, objective_lens = { percent = 68.9801 }, probe_hp2_hexapole = { enabled = true, strength_m3 = 423294.84130355046, orientation_rad = 0.0 }, probe_hp1_hexapole = { enabled = true, strength_m3 = 253195.31789553943, orientation_rad = -0.04199279823147041 } }
+apertures = { condenser_aperture_2 = { enabled = true, diameter_mm = 0.10 } }
+targets = { beam_character = "convergent_probe", condenser_topology = "c2_c3_waist_no_c3_adl_waist", target_convergence_sem_angle_mrad = 30.0, minimum_convergence_sem_angle_mrad = 3.0, maximum_convergence_sem_angle_mrad = 60.0, achieved_convergence_sem_angle_mrad = 29.99998764702638, achieved_waist_offset_nm = 0.3641096377154652, c2_aperture_diameter_um = 100.0, achieved_geometric_rms_radius_nm = 0.13890377053824888, achieved_geometric_diameter_95_nm = 0.5602843035380256, achieved_twofold_moment = 0.041564444848720315, achieved_threefold_moment = 0.05819579570710471, achieved_transmission_fraction = 0.887, calibration_ray_count = 3000, calibration_step_mm = 0.05, validation_step_mm = 0.025, step_waist_difference_nm = 0.028887489580319448, calibration_cm_excitation_percent = 43.88646617222637, calibration_backend = "Numba CPU", calibration_model = "custom", corrected_nonlinear_error_nm = 0.02066632726990227, uncorrected_nonlinear_error_nm = 1.7776364283322572 }
+
+[[modes]]
+key = "nano_probe_large_angle"
+name = "Nanoprobe — Large angle"
+family = "condenser"
+calibration_status = "computed_300kv_non_oem_large_angle_reference"
+calibration_reference = "Large-angle optical branch for the C3 + Probe Corrector assembly at 300 kV. The stronger C3 adds a real two-dimensional waist between C3 and ADL, while retaining the C2-to-C3 waist and specimen focus. C2/ADL/TL1 and the hexapoles are matched with C3; this is not a C3-only adjustment. This preset retains the historical 10 October strong-C3 30 mrad working point and its GPU metrics below; an independent CPU topology/focus recheck is recorded in docs/development/nanoprobe_large_angle_20261014.json. Both Normal and Large angle reference presets currently target 30 mrad; range selection identifies the optical branch, not a guaranteed larger measured angle or a qualified 3-60 mrad range. Default signed CM magnitude is preserved across mode changes. Non-OEM geometric particle model; edited controls require revalidation."
 compatible_columns = ["C3 + Probe Corrector"]
 compatible_recording_systems = ["*"]
 devices = { condenser_lens_1 = { percent = 51.666666666666664 }, condenser_lens_2 = { percent = 25.25772717253661 }, condenser_lens_3 = { percent = 46.059815218359184 }, adapter_lens = { percent = 79.80694335935594 }, probe_tl22_lens = { percent = 59.93152503582202 }, probe_tl21_lens = { percent = 59.95527906841963 }, probe_tl12_lens = { percent = 49.977014835272826 }, mini_condenser = { field_polarity = -1 }, objective_lens = { percent = 68.9801 }, probe_hp2_hexapole = { enabled = true, strength_m3 = 694323.0354215894, orientation_rad = 0.0 }, probe_hp1_hexapole = { enabled = true, strength_m3 = 416774.6329835517, orientation_rad = -0.041975232520065166 } }
 apertures = { condenser_aperture_2 = { enabled = true, diameter_mm = 0.10 } }
-targets = { beam_character = "convergent_probe", target_convergence_sem_angle_mrad = 30.0, minimum_convergence_sem_angle_mrad = 3.0, maximum_convergence_sem_angle_mrad = 60.0, achieved_convergence_sem_angle_mrad = 30.006730404408664, achieved_waist_offset_nm = -3.186394963268064e-06, c2_aperture_diameter_um = 100.0, achieved_geometric_rms_radius_nm = 0.1258732948531778, achieved_geometric_diameter_95_nm = 0.4952389487344912, achieved_twofold_moment = 0.027542819165794073, achieved_threefold_moment = 0.020667546542458, achieved_transmission_fraction = 0.8003333333333333, calibration_ray_count = 3000, calibration_step_mm = 0.05, validation_step_mm = 0.025, step_waist_difference_nm = 0.028837, calibration_cm_excitation_percent = 43.88646617222637, calibration_backend = "CUDA GPU", calibration_model = "custom", target_post_tl1_crossover_z_mm = 1400.0, corrected_nonlinear_error_nm = 0.00044257443365255776, uncorrected_nonlinear_error_nm = 0.6890254583448918 }
+targets = { beam_character = "convergent_probe", condenser_topology = "c2_c3_waist_and_c3_adl_waist", target_convergence_sem_angle_mrad = 30.0, minimum_convergence_sem_angle_mrad = 3.0, maximum_convergence_sem_angle_mrad = 60.0, achieved_convergence_sem_angle_mrad = 30.006730404408664, achieved_waist_offset_nm = -3.186394963268064e-06, c2_aperture_diameter_um = 100.0, achieved_geometric_rms_radius_nm = 0.1258732948531778, achieved_geometric_diameter_95_nm = 0.4952389487344912, achieved_twofold_moment = 0.027542819165794073, achieved_threefold_moment = 0.020667546542458, achieved_transmission_fraction = 0.8003333333333333, calibration_ray_count = 3000, calibration_step_mm = 0.05, validation_step_mm = 0.025, step_waist_difference_nm = 0.028837, calibration_cm_excitation_percent = 43.88646617222637, calibration_backend = "CUDA GPU", calibration_model = "custom", target_post_tl1_crossover_z_mm = 1400.0, corrected_nonlinear_error_nm = 0.00044257443365255776, uncorrected_nonlinear_error_nm = 0.6890254583448918 }
 
 [[modes]]
 key = "imaging"
@@ -70,7 +82,7 @@ key = "c1_c2_interlens"
 upstream_lens = "condenser_lens_1"
 downstream_lens = "condenser_lens_2"
 target_z_source = "pole_gap_midpoint"
-applies_to_modes = ["micro_probe", "nano_probe"]
+applies_to_modes = ["micro_probe", "nano_probe", "nano_probe_large_angle"]
 status = "confirmed"
 note = "The crossover target is the mid-plane of the opposing C1-lower and C2-upper pole tips."
 
@@ -85,6 +97,7 @@ key = "nanoprobe_convergence"
 name = "Nanoprobe convergence (current-weighted alpha95)"
 family = "condenser"
 mode_key = "nano_probe"
+applies_to_modes = ["nano_probe", "nano_probe_large_angle"]
 unit = "mrad"
 minimum = 3.0
 maximum = 60.0
@@ -93,8 +106,8 @@ devices = ["condenser_lens_2", "condenser_lens_3"]
 observable = "sample_current_weighted_95_percent_semi_angle"
 constraint = "probe_waist_at_sample"
 calibration_status = "live_coupled_solve_full_ray_validation_non_oem"
-calibration_reference = "C2/C3 are solved together at the active sample plane using the currently inserted C2 aperture diameter. The former aperture-path seed table was removed after changing the corrector relay and common CM magnitude; the live solve starts from current controls and bounded deterministic candidates. Every live solve validates the full nonlinear rays before committing strengths; the requested 3-60 mrad range is not an exact reachability or round-probe guarantee. Changing illumination may require a new corrector calibration."
-targets = { reference_c2_aperture_diameter_um = 100.0, maximum_relative_error = 0.08, maximum_waist_offset_mm = 0.00001, optimiser_waist_scale_mm = 0.002, maximum_numerical_spread = 0.01, optimiser_step_mm = 0.1, validation_step_mm = 0.1 }
+calibration_reference = "C2/C3 are solved together at the active sample plane using the currently inserted C2 aperture diameter. For an installed probe corrector, ordinary Nanoprobe requires an executed two-dimensional waist between C2 and C3 and no additional waist between C3 and ADL, as well as sample-plane focus. Large angle requires a two-dimensional waist in both intervals while preserving sample-plane focus. Candidate ranking and independent final nonlinear validation check this topology before committing strengths. The live solve starts from current controls and bounded deterministic candidates; the requested 3-60 mrad range is not an exact reachability or round-probe guarantee. Changing illumination may require a new corrector calibration."
+targets = { condenser_topology = "c2_c3_waist_no_c3_adl_waist", large_angle_condenser_topology = "c2_c3_waist_and_c3_adl_waist", reference_c2_aperture_diameter_um = 100.0, maximum_relative_error = 0.08, maximum_waist_offset_mm = 0.00001, optimiser_waist_scale_mm = 0.002, maximum_numerical_spread = 0.01, optimiser_step_mm = 0.1, validation_step_mm = 0.1 }
 
 [[direct_alignments]]
 key = "microprobe_illumination"

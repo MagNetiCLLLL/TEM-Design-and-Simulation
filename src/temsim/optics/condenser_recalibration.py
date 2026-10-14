@@ -14,7 +14,7 @@ import json
 
 import numpy as np
 
-from temsim.operating_modes import direct_alignment_by_key
+from temsim.operating_modes import direct_alignment_by_key, is_nanoprobe_mode
 from temsim.optics.calibration_beam import transmitted_calibration_beam
 from temsim.optics.mini_condenser import MINI_CONDENSER_MODE_CONTROL_SCHEMA
 
@@ -64,7 +64,7 @@ def recalibrate_nanopulser_condenser(state, mode, catalog):
     Cache keys describe the transmitted beam, so toggling either exposure gate
     does not alone invalidate an otherwise identical condenser calibration.
     """
-    key = ("nanoprobe_convergence" if mode.key == "nano_probe"
+    key = ("nanoprobe_convergence" if is_nanoprobe_mode(mode.key)
            else "microprobe_illumination")
     definition = direct_alignment_by_key(key, catalog)
     candidate = capture_instrument_snapshot(state).restore()
@@ -100,7 +100,7 @@ def _recalibrate_transmitted_condenser(state, mode, definition):
             lenses[lens_key].percent = cached.devices[lens_key]["percent"]
         return cached
 
-    if mode.key == "nano_probe":
+    if is_nanoprobe_mode(mode.key):
         lenses = {lens.key: lens for lens in state.lenses}
         keys = ("condenser_lens_2", "condenser_lens_3")
         initial = np.asarray([lenses[key].percent for key in keys])
@@ -143,7 +143,7 @@ def _recalibrate_transmitted_condenser(state, mode, definition):
         "validation_step_mm": result.validation_step_mm,
         "calibration_geometry_fingerprint": cache_key,
     })
-    if mode.key == "nano_probe":
+    if is_nanoprobe_mode(mode.key):
         targets["achieved_waist_offset_nm"] = result.constraint_value * 1.0e6
     else:
         targets["achieved_wavefront_curvature_per_m"] = result.constraint_value

@@ -67,7 +67,7 @@ class AlignmentRequest:
                 raise ValueError(reason)
             return cls(str(uuid4()), capture_instrument_snapshot(state), int(revision), key, 0.,
                        DEFINITION.definition_id, json_digest(asdict(DEFINITION)), options)
-        from temsim.optics.direct_alignment import _mode_matches
+        from temsim.optics.direct_alignment import _mode_matches, _nanoprobe_topology_required
         try:
             definition = direct_alignment_by_key(key)
         except KeyError as exc:
@@ -76,6 +76,9 @@ class AlignmentRequest:
             raise ValueError("This catalog entry is not an enabled inverse optics target")
         if not _mode_matches(state, definition):
             raise ValueError("Direct Alignment target is not enabled in the current operating mode")
+        # Validate the selected branch declaration before starting either the
+        # direct or joint numerical search; a missing token cannot bypass it.
+        _nanoprobe_topology_required(state, definition)
         if not math.isfinite(target) or not definition.minimum <= target <= definition.maximum:
             raise ValueError("Direct Alignment target is outside the registered range")
         lenses = {lens.key: lens for lens in state.lenses}
@@ -153,6 +156,41 @@ def _constraints_pass(definition, measured):
     return measured.diffraction_conjugacy_residual <= float(t["maximum_diffraction_conjugacy_residual"])
 
 
+def _validate_condenser_topology_forward(
+    state, simulation=None, *, checkpoints=None, masks=None, weights=None,
+):
+    """Reuse exact forward checkpoints before requesting missing evidence.
+
+    Display history and the final specimen survivor mask cannot establish
+    whether an upstream condenser waist existed.  Only executed checkpoints
+    and the stop position of each original ray are eligible for reuse.
+    """
+    from temsim.optics.condenser_topology import evaluate, validate
+
+    gun = getattr(simulation, "gun_trace", None)
+    incident = getattr(simulation, "incident", None)
+    if simulation is not None:
+        checkpoints = getattr(simulation, "incident_checkpoints", None)
+    if checkpoints is not None and gun is not None and incident is not None:
+        emitted = gun.exit_bundle
+        stops = np.asarray(incident.blocked_z, dtype=float)
+        masks = np.asarray(emitted.alive, dtype=bool)[None, :] & (
+            np.isnan(stops)[None, :]
+            | (stops[None, :] > np.asarray(checkpoints.z_mm)[:, None])
+        )
+        weights = emitted.weight
+    if checkpoints is not None and masks is not None and weights is not None:
+        report = evaluate(state, checkpoints, masks, weights)
+        if report["status"] in {"PASS", "FAIL"}:
+            return {**report, "evidence_source": "final_forward_checkpoints",
+                    "integration_step_mm": float(state.step_mm)}
+    # Production retains a bounded checkpoint cache.  A cache without the
+    # exact component guards cannot establish the selected range's required
+    # and forbidden waists; audit only the incident column with the cached gun.
+    report = validate(state, step_mm=float(state.step_mm))
+    return {**report, "evidence_source": "final_incident_topology_audit"}
+
+
 @input_io.using_state_inputs
 def solve_alignment_candidate(request, *, cancelled=lambda: False):
     if request.key == "condenser_twofold_shape":
@@ -167,7 +205,10 @@ def solve_alignment_candidate(request, *, cancelled=lambda: False):
     if request.key == "column_transport":
         from temsim.optics.transport_matching import solve_transport_candidate
         return solve_transport_candidate(request, cancelled=cancelled)
-    from temsim.optics.direct_alignment import _solve_direct_alignment, _condenser_measurement, _validate_projector_production
+    from temsim.optics.direct_alignment import (
+        _solve_direct_alignment, _condenser_measurement, _validate_projector_production,
+        _nanoprobe_topology_required,
+    )
     from temsim.physics.beam_statistics import branch_sample_statistics
     from temsim.physics.simulation import run
     from temsim.calculation_manifest import capture_calculation_manifest
@@ -208,10 +249,15 @@ def solve_alignment_candidate(request, *, cancelled=lambda: False):
             np.array([result.strengths[key] for key in definition.devices]), validation_state.step_mm)
         observable_backend = measured.execution_backend
     check_cancel()
+    topology_report = None
+    if _nanoprobe_topology_required(validation_state, definition):
+        topology_report = _validate_condenser_topology_forward(validation_state, simulation)
+        check_cancel()
     error = abs(math.log(max(measured.value, 1e-30) / request.target))
     spread = abs(measured.value - result.achieved) / max(abs(measured.value), 1e-30)
     valid = (math.isfinite(measured.value) and error <= float(definition.targets["maximum_relative_error"])
-             and spread <= float(definition.targets["maximum_numerical_spread"]) and _constraints_pass(definition, measured))
+             and spread <= float(definition.targets["maximum_numerical_spread"]) and _constraints_pass(definition, measured)
+             and (topology_report is None or topology_report["status"] == "PASS"))
     final = replace(result, success=valid, achieved=measured.value,
         constraint_value=measured.constraint_value, constraint_unit=measured.constraint_unit,
         convergence_95_mrad=measured.convergence_95_mrad, convergence_99_mrad=measured.convergence_99_mrad,
@@ -219,7 +265,8 @@ def solve_alignment_candidate(request, *, cancelled=lambda: False):
         relay_error_um=measured.relay_error_um, diffraction_conjugacy_residual=measured.diffraction_conjugacy_residual,
         validation_step_mm=validation_state.step_mm, numerical_spread=spread,
         message=f"Target {request.target:g}; achieved {measured.value:g} {definition.unit}. "
-                + ("Forward validation passed." if valid else "Final forward validation failed; no changes applied."))
+                + ("Forward validation passed." if valid else "Final forward validation failed; no changes applied.")
+                + (" " + topology_report["message"] if topology_report is not None else ""))
     checkpoint = WorkingPointCheckpoint.from_result(SimpleNamespace(simulation=simulation,
         calculation_manifest=manifest, signatures=manifest.calculation_signatures), parent_id=request.start_snapshot.digest)
     validation = {"status": "PASS" if valid else "FAIL", "definition_id": request.definition_id,
@@ -233,6 +280,8 @@ def solve_alignment_candidate(request, *, cancelled=lambda: False):
                   "observable_validation_backend": observable_backend,
                   "beam_state": "transmitted calibration reference; live exposure gates unchanged",
                   "independent_reference": "NOT_RUN"}
+    if topology_report is not None:
+        validation["condenser_topology"] = topology_report
     return AlignmentCandidate(request, final, checkpoint, validation, "READY_TO_APPLY" if valid else "FAILED")
 
 

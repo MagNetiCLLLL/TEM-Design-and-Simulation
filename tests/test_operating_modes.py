@@ -90,7 +90,7 @@ def test_probe_modes_reach_the_sample_angle_with_real_aperture_clipping(
     expected_percent = ({
         "probe_tl22_lens": 59.93152503582202,
         "probe_tl21_lens": 59.95527906841963,
-        "probe_tl12_lens": 49.977014835272826,
+        "probe_tl12_lens": 36.004558708747176,
     } if mode_key == "nano_probe" else dict.fromkeys(transfer_lenses, 60.0))
     assert transfer_lenses == pytest.approx(expected_percent)
     transfer_fields = {

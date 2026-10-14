@@ -16,6 +16,34 @@ from temsim.optics.excitation_policy import is_saturated_excitation
 MINI_CONDENSER_MODE_CONTROL_SCHEMA = "signed_equal_magnitude_v1"
 
 
+def is_nanoprobe_mode(key: str) -> bool:
+    """Both Nanoprobe ranges use a focused probe and negative CM polarity."""
+    return key in {"nano_probe", "nano_probe_large_angle"}
+
+
+def validate_nanoprobe_range(value: str) -> str:
+    if value not in ("normal", "large_angle"):
+        raise ValueError("Nanoprobe range must be normal or large_angle")
+    return value
+
+
+def condenser_mode_key(state) -> str:
+    """Identify applied illumination, retaining range while in Microprobe.
+
+    ``probe_mode`` is supported for existing lightweight observers; the live
+    instrument uses illumination_mode and the separately persisted range.
+    Unknown illumination remains unknown rather than implying Nanoprobe.
+    """
+    mode = str(getattr(state, "probe_mode", "")).lower()
+    if mode not in {"micro_probe", "nano_probe", "nano_probe_large_angle"}:
+        mode = {"TEM": "micro_probe", "STEM": "nano_probe"}.get(
+            str(getattr(state, "illumination_mode", "")).upper(), "")
+    if mode == "nano_probe":
+        selected = validate_nanoprobe_range(getattr(state, "nanoprobe_range", "normal"))
+        return "nano_probe_large_angle" if selected == "large_angle" else mode
+    return mode
+
+
 def load_mini_condenser_default_excitation_percent(column_module: str | None = None) -> float:
     """Read an installation default, never an independent per-mode live value.
 
@@ -460,13 +488,13 @@ def _apply_values(state, mode: OperatingModeDefinition) -> tuple[str, ...]:
     mini = targets.get("mini_condenser")
     controls_mini_mode = (
         mode.family == "condenser"
-        and mode.key in {"micro_probe", "nano_probe"}
+        and (mode.key == "micro_probe" or is_nanoprobe_mode(mode.key))
         and "mini_condenser" in mode.devices
     )
     if controls_mini_mode and mini is not None:
         # Validate before applying any preset values. Old cached definitions
         # may still carry distinct CM percentages; they are not mode inputs.
-        mini.obj.validate_probe_mode(mode.key)
+        mini.obj.validate_probe_mode("nano_probe" if is_nanoprobe_mode(mode.key) else mode.key)
     changed = []
     for group in (mode.devices, mode.apertures):
         for key, values in group.items():
@@ -477,7 +505,7 @@ def _apply_values(state, mode: OperatingModeDefinition) -> tuple[str, ...]:
                     f"Operating mode {mode.key!r} references missing device {key!r}"
                 ) from exc
             if key == "mini_condenser" and controls_mini_mode:
-                target.obj.set_probe_mode(mode.key)
+                target.obj.set_probe_mode("nano_probe" if is_nanoprobe_mode(mode.key) else mode.key)
             for field, raw_value in values.items():
                 if key == "mini_condenser" and controls_mini_mode and field in {
                     "percent", "polarity", "field_polarity", "enabled",
@@ -532,12 +560,16 @@ def _apply_operating_mode_pair(
     require_compatible(condenser)
     require_compatible(projector)
     if "mini_condenser" in condenser.devices:
-        state.mini_condenser.validate_probe_mode(condenser.key)
+        state.mini_condenser.validate_probe_mode(
+            "nano_probe" if is_nanoprobe_mode(condenser.key) else condenser.key)
 
     state.illumination_mode = {
         "micro_probe": "TEM",
         "nano_probe": "STEM",
+        "nano_probe_large_angle": "STEM",
     }[condenser.key]
+    if is_nanoprobe_mode(condenser.key):
+        state.nanoprobe_range = "large_angle" if condenser.key == "nano_probe_large_angle" else "normal"
     state.projector_mode = {
         "imaging": "image",
         "diffraction": "diffraction",
@@ -599,11 +631,6 @@ def apply_operating_mode_pair(
     arguments = dict(
         column_name=column_name, recording_name=recording_name, catalog=catalog,
     )
-    if not bool(getattr(getattr(state, "nanopulser", None), "installed", False)):
-        return _apply_operating_mode_pair(
-            state, condenser_key, projector_key, **arguments
-        )
-
     from temsim.runtime_parameters import runtime_targets
 
     targets = runtime_targets(state)
@@ -622,6 +649,7 @@ def apply_operating_mode_pair(
                     saved.append((obj, field, getattr(obj, field)))
     saved.extend((
         (state, "illumination_mode", state.illumination_mode),
+        (state, "nanoprobe_range", state.nanoprobe_range),
         (state, "projector_mode", state.projector_mode),
         (state.electron_gun.electrostatic_lens, "voltage_kv",
          state.electron_gun.electrostatic_lens.voltage_kv),

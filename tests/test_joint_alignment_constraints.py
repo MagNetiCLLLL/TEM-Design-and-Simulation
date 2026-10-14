@@ -34,6 +34,9 @@ def response_fixture(monkeypatch, state, *, topology_match=True):
         arrays = dict(x_m=np.zeros(32), y_m=np.zeros(32), tx_rad=np.zeros(32), ty_rad=np.zeros(32),
                       alive=np.ones(32, bool), weight=np.full(32, 1./32))
         summary = dict(plane_z_mm=scratch.sample.upper_surface_z_mm, source_current_a=1.e-11)
+        if kwargs.get("condenser_topology"):
+            summary["condenser_topology"] = dict(status="PASS", passed=True,
+                message="Synthetic transaction topology fixture")
         topo = dict(reference_match=topology_match, status="SYNTHETIC_TEST") if kwargs.get("topology") else None
         return metrics, arrays, summary, topo
     monkeypatch.setattr("temsim.alignment_constraints.evaluate_incident", measure)

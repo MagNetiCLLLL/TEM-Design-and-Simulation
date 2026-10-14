@@ -128,7 +128,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_mini_condenser_modes.py", "tests/test_assembly_illumination.py",
                 "tests/test_condenser_objective_design.py", "tests/test_scan_coil_design.py",
                 "tests/test_condenser_scan_design_gui.py", "tests/test_finite_scan_response.py",
-                "tests/test_projector_mode_switch.py")),
+                "tests/test_projector_mode_switch.py", "tests/test_nanoprobe_range_gui.py")),
             "field-ui/FU-16": ("Declared corrector winding ownership, geometry and edit persistence", (
                 "tests/test_corrector_deflector_coils.py", "tests/test_corrector_hardware_editing.py")),
             "field-ui/FU-17": ("Explicit reference-plane steering and captured actual-probe diagnostics", (
@@ -209,6 +209,9 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_dph_aberration_response.py", "tests/test_corrector_aberration_events.py")),
             "particle-continuation/PC-09": ("Finite entrance-pair local calibration and verified four-drive commit", (
                 "tests/test_beam_steering_calibration.py",)),
+            "particle-continuation/PC-10": ("Normal and Large-angle Nanoprobe topology, mode persistence and independent focus acceptance", (
+                "tests/test_condenser_topology.py", "tests/test_nanoprobe_topology_alignment.py",
+                "tests/test_validate_nanoprobe_condenser.py", "tests/test_nanoprobe_ranges.py")),
         },
     },
     "performance-observation": {

@@ -70,6 +70,7 @@ from temsim.operating_modes import (
     apply_operating_mode_pair,
     apply_projector_mode,
     compatible_modes,
+    condenser_mode_key,
     direct_alignment_by_key,
 )
 from temsim.profile_io import apply_profile_values, read_profile, save_profile
@@ -804,7 +805,8 @@ class MainWindow(QMainWindow):
             self.state
         )
         self.assembly_panel.load_operating_modes(
-            self.selection, condenser_key, projector_key
+            self.selection, condenser_key, projector_key,
+            nanoprobe_range=getattr(self.state, "nanoprobe_range", "normal"),
         )
         self.assembly_panel.set_direct_alignment_state(self.state)
         energy_filter_selections = self._energy_filter_selections()
@@ -1105,11 +1107,7 @@ class MainWindow(QMainWindow):
 
     @staticmethod
     def _state_operating_mode_keys(state) -> tuple[str, str]:
-        condenser_key = (
-            "micro_probe"
-            if str(state.illumination_mode).upper() == "TEM"
-            else "nano_probe"
-        )
+        condenser_key = condenser_mode_key(state)
         projector_key = (
             "imaging"
             if str(state.projector_mode).lower() == "image"

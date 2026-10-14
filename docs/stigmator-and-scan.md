@@ -68,10 +68,13 @@ interval. Cubic Hermite interpolation of executed positions and mechanical
 slopes only proposes candidates; batched finite-field propagation supplies the
 reported residuals. Bounded refinement is not an exhaustive root count.
 
-For the revised C3 + Probe Corrector installation, the AC coil centres are
-1387.5/1412.5 mm and enclose the source waist near 1400 mm. The accepted Nano
-working point has an effective downstream scan pivot near 1572.665 mm; it is
-not the source waist or a field-free cardinal plane of an isolated lens.
+For the C3 + Probe Corrector installation, the AC coil centres remain
+1387.5/1412.5 mm. In the historical **10 October 2026 strong-C3** working
+point they enclosed a source waist near 1400 mm, and the effective downstream
+scan pivot was near 1572.665 mm. Those observations do not validate the
+14 October ordinary Nanoprobe optics; recalibrate scan coupling after changing
+the working point. A scan pivot is not the source waist or a field-free
+cardinal plane of an isolated lens.
 See [the geometry and CUDA scan checks](probe_corrector_reference.md#ac-placement-and-finite-scan-validation)
 for the fixed-FOV evidence and its limits. Coil placement also depends on
 mechanical clearance, finite-field response, drive limits and conditioning;

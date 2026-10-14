@@ -331,6 +331,9 @@ def validate_runtime_assignment(
         raise ValueError(f"{target.key}.{name} must be positive")
     if name == "polarity" and int(converted) not in (-1, 1):
         raise ValueError(f"{target.key}.{name} must be +1 or -1")
+    if target.key == "simulation" and name == "nanoprobe_range":
+        from temsim.operating_modes import validate_nanoprobe_range
+        validate_nanoprobe_range(converted)
     if name == "voltage_reference" and converted not in {"tip", "extractor", "ground"}:
         raise ValueError("Gun-lens voltage reference must be tip, extractor or ground")
     if name == "specimen_mode":

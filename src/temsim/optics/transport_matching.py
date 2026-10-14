@@ -30,7 +30,7 @@ DEFINITION = DirectAlignmentDefinition(
     targets={"search_rays":49, "validation_rays":193, "minimum_survivors":4,
              "search_step_mm":.2, "validation_step_mm":.1, "refinement_step_mm":.05,
              "maximum_current_spread":.02, "maximum_envelope_spread":.02},
-    applies_to_modes=("nano_probe", "micro_probe"), state_parameters=(),
+    applies_to_modes=("nano_probe", "nano_probe_large_angle", "micro_probe"), state_parameters=(),
 )
 
 

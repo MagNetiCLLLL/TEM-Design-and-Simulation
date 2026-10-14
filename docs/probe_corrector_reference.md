@@ -364,7 +364,140 @@ Acceptance tolerances and the validated voltage, aperture, assembly and lens
 settings should accompany each calibration. A good default working point does
 not certify arbitrary later channel edits or another instrument configuration.
 
-## Recalibrated default and reproduction
+## Ordinary Nanoprobe condenser topology
+
+The ordinary Nanoprobe working point requires all three conditions together:
+
+- An executed two-dimensional source waist between the installed C2 and C3
+  lens centres.
+- No additional converging-to-diverging waist between C3 and ADL.
+- A focused probe at the specimen, with the requested convergence angle.
+
+This is the simulator's **Normal** Nanoprobe requirement. **Large angle** uses
+the stronger-C3 branch described below. Neither preset certifies an OEM
+lens-current table. Crossover markers continue to derive from propagated rays;
+no marker is hidden to satisfy these conditions.
+
+The `nanoprobe_convergence` Direct Alignment checks the first two conditions
+alongside its existing sample-focus and angle limits whenever the probe
+corrector is installed. Its final forward validation and constrained alignment
+path also reject an unresolved or incorrect condenser topology. A failed solve
+retains the previous controls. The editable 3–60 mrad range is a request range,
+not a guarantee of reachability on this branch.
+
+Topology evidence uses full-precision integration checkpoints, the original
+current weights and one cohort surviving the C2-to-ADL interval. A downstream
+stop cannot erase an earlier source waist. Required waists must show a local
+minimum in both transverse dimensions; a crossing in one projection is
+insufficient. Sampling is bounded to at most 1 mm between checkpoints with
+limited additional planes around an unresolved minimum. This is bounded
+numerical evidence, not proof at arbitrary axial resolution.
+
+The **14 October 2026** default uses C2 **23.225625142668733%**, C3
+**9.207984804305022%**, ADL **10%** and TL1 **36.004558708747176%**. C1,
+TL22/TL21, the CM magnitude and Objective excitation retain their previous
+values. HP2 is **423294.84130355046 m⁻³** at zero azimuth; HP1 is
+**253195.31789553943 m⁻³** at **−0.04199279823147041 rad**. The specimen and
+all hardware positions are unchanged.
+
+The fixed 3,000-particle CPU result at 0.025 mm step has **2,661 surviving
+rays (88.7% of emitted current)**, **alpha95 = 29.999988 mrad**, geometric
+**RMS radius = 0.138880 nm**, **D95 = 0.559282 nm**, and a **0.335222 nm**
+local waist offset from the specimen entrance. Halving the step from 0.05 mm
+changes the waist offset by **0.0288875 nm**. The C2-to-C3 waist is bracketed
+at **671–672 mm**, with an interpolated location near **671.5267 mm**;
+the independent executed two-dimensional minimum confirms its existence.
+There is no additional covariance waist between C3 at 915 mm and ADL at
+1088.2 mm under the declared sampling. HP2-to-HP1 first-order conjugacy is
+retained (`||B||₂ ≈ 5.83e−13 m/rad`, both position magnifications near one).
+
+This optical branch has a different nonlinear residual from the historical
+strong-C3 setting. At 0.05 mm, the absolute same-ray error relative to the
+linear column is **1.777636 nm without HP correction** and **0.020666 nm
+with correction**, a reduction of approximately **98.84%**. The source,
+weights and surviving pupil are identical in these comparisons. The new
+working-point regression bound is **0.025 nm**, replacing the historical
+0.01 nm absolute bound; its unchanged requirements include at least 90%
+suppression, RMS radius below 0.2 nm, D95 below 0.7 nm, focus and integration
+stability. This explicitly records the residual increase instead of claiming
+the previous branch's precision. The user's sub-nanometre D95 target remains
+satisfied. Evidence is retained in
+[`nanoprobe_normal_20261014.json`](development/nanoprobe_normal_20261014.json).
+
+Create a fresh **C3 + Probe Corrector** assembly, or select **Nanoprobe → Normal**,
+apply the lens preset and recalculate. The working point assumes the installation's
+**43.88646617222637%** CM magnitude (negative polarity in Nanoprobe); mode
+switching intentionally preserves any manually changed live CM magnitude.
+Automatic scan calibration follows the changed optics; a previously held scan
+calibration needs to be recalibrated for the new working point.
+
+The CPU reproduction entry point is:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\validate_nanoprobe_condenser.py --rays 3000 --step 0.05
+```
+
+It uses at most two CPU threads, compares 0.05 and 0.025 mm integration steps,
+and saves a JSON report without changing a running instrument. The detached
+benchmark disables raster and wobble only. The calibration checks the physical
+specimen entrance to 1 nm; ordinary Direct Alignment retains its existing
+sample-centre target and 10 nm tolerance. For the default 5 nm specimen those
+planes are 2.5 nm apart. A smaller `--rays` budget can change the measured
+current-contained angle and focus; it does not relax acceptance thresholds.
+
+## Nanoprobe range selection
+
+The main Probe selector remains **Microprobe / Nanoprobe**. Selecting Nanoprobe
+shows a second **Normal / Large angle** selector. Selecting an entry is pending
+until **Apply calculated lens preset** is pressed. Changing only the projector
+preserves the applied range and incident optics. Saved state JSON and operating
+profiles retain the range. State JSON versions 78/79 and older operating
+profiles without this field use Normal without silently replacing their saved
+lens strengths. Graph-form working-point and calculation archives retain their
+existing current-schema-only contract; this input migration does not convert
+older calculation archives.
+
+Both ranges require a C2-to-C3 two-dimensional waist and a focused specimen probe.
+Large angle additionally requires a two-dimensional waist between C3 and ADL.
+Its reference C3 excitation is **46.059815218359184%**, compared with Normal's
+**9.207984804305022%**. The reference also changes C2, ADL, TL1 and hexapole
+strengths together to maintain the downstream relay and focus. The CM's live
+magnitude is preserved and its Nanoprobe sign remains negative.
+
+Both stored reference working points currently give approximately **30 mrad**.
+The range identifies a different optical branch; it does not independently set
+the measured convergence angle. Use **Nanoprobe convergence** for a requested
+angle. Every alignment must pass its selected range's topology and focus checks;
+the advertised 3–60 mrad input range is not a validated reachability interval.
+
+The Large angle reference reuses the 10 October strong-C3 working point below.
+Its separate CPU topology/focus check is recorded in
+[`nanoprobe_large_angle_20261014.json`](development/nanoprobe_large_angle_20261014.json).
+At 3,000 emitted rays, 2,401 survive (80.0333%). Both 0.05 and 0.025 mm
+integration steps pass. The covariance roots are near **668.1911 mm** between
+C2 and C3 and **1017.9339 mm** between C3 and ADL, each with an independently
+confirmed executed two-dimensional minimum. At the finer step, alpha95 is
+**30.006730 mrad**, geometric D95 is **0.495304 nm**, and the local waist is
+**0.028820 nm upstream** of the specimen entrance. Halving the step shifts the
+waist by **0.028836 nm**. The catalog retains the historical GPU calibration
+metrics with their provenance; this separate CPU check confirms the topology
+and focus of the same controls without requiring a CUDA device.
+Reproduce it with the same bounded CPU entry point:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\validate_nanoprobe_condenser.py --range large_angle --rays 3000 --step 0.05
+```
+
+The old whole-column five-waist reference is not automatically assigned to this
+new named range. The local C2/C3/ADL test and specimen-focus test establish only
+their declared scope. Held scan calibration must be recalibrated after switching
+ranges; automatic scan calibration follows the changed optics.
+
+## Historical 10 October relay calibration
+
+The following numerical record describes the previous strong-C3 working
+point. Its source-waist location, aberration measurements and scan validation
+must not be reused as acceptance evidence for the ordinary Nanoprobe branch.
 
 The 10 October 2026 **Nanoprobe** preset is a 30 mrad working point for the
 current FEG, C3 + Probe Corrector column, 300 kV and 100 µm C2 aperture at
@@ -444,7 +577,12 @@ wave-probe resolution, an OEM current calibration or experimental microscope
 performance. The older 25 mrad / 1,000-ray and 15,000-ray figures described
 different optics and are superseded as default-preset claims.
 
-### Applying and validating the defaults
+### Reproducing the historical relay settings
+
+The instructions and CUDA validator below refer to the historical settings in
+the preceding tables. For the current ordinary Nanoprobe preset, use the CPU
+condenser validator above. Reapplying the current catalog does not reproduce
+the older relay settings.
 
 Restart and create a fresh default assembly to obtain the catalog CM magnitude.
 The 43.88646617222637% installation default applies specifically to **C3 +
@@ -454,16 +592,21 @@ this calibration. This selection initializes the single runtime CM control,
 not a second source of operating values.
 An existing instrument intentionally retains its live absolute CM excitation
 when changing Microprobe/Nanoprobe modes: applying a lens preset alone does not
-reset it. To adopt this working point in an existing assembly, set the Mini
-Condenser magnitude to **43.88646617222637%**, select **Nanoprobe**, and apply
-the lens preset. Nanoprobe uses the negative field direction; Microprobe uses
+reset it. To reproduce this historical working point, explicitly restore all
+round-lens and hexapole values from the historical tables above, or apply
+**Nanoprobe → Large angle**, and explicitly restore the Mini Condenser
+magnitude **43.88646617222637%**. Applying **Nanoprobe → Normal** instead
+restores the ordinary weak-C3 values. Nanoprobe uses the
+negative field direction; Microprobe uses
 the positive direction at the same magnitude. Use **Custom** optics and
 3,000 rays with a 0.05 mm or finer step to compare the nonlinear probe metrics.
 For the static figures above, disable the raster and wobble drives using their
 existing controls. Inspect Z near 1400.00070 mm in **Ray Diagram**, then the
 sample entrance and **Scanning Image → Probe Aberrations**.
 
-For a reproducible fresh-catalog check without modifying instrument settings:
+The following command was used with the historical catalog. It loads the
+catalog in its checkout: running it against today's catalog checks today's
+optics and does not reproduce the older 1400 mm source-waist result:
 
 ```powershell
 .\.venv\Scripts\python.exe .\scripts\validate_probe_relay.py --rays 3000 --figure
@@ -487,8 +630,10 @@ diameter. Projection-mode lens settings remain unchanged.
 
 ### AC placement and finite scan validation
 
-The **C3 + Probe Corrector** installation now places the AC pair around the
-executed TL1-to-CM source waist. Only this assembly's AC position changed:
+The **10 October C3 + Probe Corrector** installation placed the AC pair around
+that working point's executed TL1-to-CM source waist. The coil positions remain
+installed, but the following optical measurements are historical. Only this
+assembly's AC position changed:
 
 | Component or observation | Absolute Z (mm) |
 |---|---:|

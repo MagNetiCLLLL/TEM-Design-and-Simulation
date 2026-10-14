@@ -268,6 +268,8 @@ def decode_instrument(graph, *, assets=None):
         raise ValueError("Working-point root must be an instrument State")
     if type(result.schema_version) is not int or result.schema_version != STATE_SCHEMA_VERSION:
         raise ValueError(f"Unsupported instrument state schema; expected {STATE_SCHEMA_VERSION}")
+    from temsim.operating_modes import validate_nanoprobe_range
+    validate_nanoprobe_range(result.nanoprobe_range)
     if result.energy_filter.enabled is not bool(result.energy_filter_installed):
         raise ValueError("Energy filter participation must match its assembly installation")
     from temsim.optics.model import Stigmator

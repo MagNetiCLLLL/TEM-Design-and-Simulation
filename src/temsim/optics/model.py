@@ -12,7 +12,7 @@ from temsim.vacuum import VacuumMap
 
 _DEFAULT_COLUMN_MODULE = "column/C3_ProbeCorrector.toml"
 _DEFAULT_GUN_MODULE = "gun/FEG.toml"
-STATE_SCHEMA_VERSION = 79
+STATE_SCHEMA_VERSION = 80
 _DEFAULT_SAMPLE_PART = module_manifest.part_data(
     _DEFAULT_COLUMN_MODULE,
     "sample",
@@ -523,6 +523,9 @@ class State:
 
     illumination_mode: str = "STEM"
 
+    # Preserve the last selected range in Microprobe without changing optics.
+    nanoprobe_range: str = "normal"
+
     projector_mode: str = "diffraction"
 
     # Retained profile current ceiling, independent of Direct Alignment.
@@ -601,6 +604,8 @@ class State:
     def __post_init__(self):
         if type(self.schema_version) is not int or self.schema_version != STATE_SCHEMA_VERSION:
             raise ValueError("Unsupported instrument state schema")
+        from temsim.operating_modes import validate_nanoprobe_range
+        validate_nanoprobe_range(self.nanoprobe_range)
         from temsim.simulation_modes import validate_mode, normalise_profiles, validate_model_recipes
         self.simulation_mode = validate_mode(self.simulation_mode)
         self.simulation_mode_profiles = normalise_profiles(self.simulation_mode_profiles)
@@ -1546,6 +1551,8 @@ class State:
         """Return a complete, versioned, JSON-safe simulator state."""
         if type(self.schema_version) is not int or self.schema_version != STATE_SCHEMA_VERSION:
             raise ValueError("Unsupported instrument state schema; state cannot be silently converted")
+        from temsim.operating_modes import validate_nanoprobe_range
+        validate_nanoprobe_range(self.nanoprobe_range)
         from temsim.specimen.geometry import sample_orientation_quaternion
         sample_orientation_quaternion(self.sample)
         retired_sample_controls = {"g_inv_nm", "excitation_error_inv_nm",
@@ -1694,6 +1701,7 @@ class State:
                        if not key.startswith("virtual_")},
 
             "illumination_mode":self.illumination_mode,
+            "nanoprobe_range":self.nanoprobe_range,
 
             "component_placements":{
                 str(key):dict(value)
@@ -1841,13 +1849,17 @@ class State:
             canonical_corrector_mode,
             corrector_mode_for_hardware,
         )
-        # Version 79 only adds optional per-lens imperfections. Preserve the
-        # immediately preceding input format without changing its optics;
+        # Versions 79/80 add optional imperfections and the selected Nanoprobe
+        # range. Preserve preceding inputs without changing their optics;
         # obsolete geometry/source migrations remain deliberately unsupported.
         if isinstance(d, dict) and type(d.get("schema_version")) is int and d["schema_version"] == 78:
             if "lens_intrinsic_aberrations" in d:
                 raise ValueError("State schema 78 cannot contain version 79 intrinsic coefficients")
-            d = {**d, "schema_version": STATE_SCHEMA_VERSION, "lens_intrinsic_aberrations": {}}
+            d = {**d, "schema_version": 79, "lens_intrinsic_aberrations": {}}
+        if isinstance(d, dict) and type(d.get("schema_version")) is int and d["schema_version"] == 79:
+            if "nanoprobe_range" in d:
+                raise ValueError("State schema 79 cannot contain version 80 Nanoprobe range")
+            d = {**d, "schema_version": STATE_SCHEMA_VERSION, "nanoprobe_range": "normal"}
         if (not isinstance(d, dict) or type(d.get("schema_version")) is not int
                 or d["schema_version"] != STATE_SCHEMA_VERSION):
             raise ValueError(f"Unsupported instrument state schema; current schema_version {STATE_SCHEMA_VERSION} is required")
@@ -2383,7 +2395,9 @@ class State:
                 ).items()
                 if isinstance(value, dict)
             },
-            illumination_mode=d.get("illumination_mode","STEM"), projector_mode=d.get("projector_mode","diffraction"),
+            illumination_mode=d.get("illumination_mode","STEM"),
+            nanoprobe_range=d.get("nanoprobe_range", "normal"),
+            projector_mode=d.get("projector_mode","diffraction"),
             column_current_limit_percent=float(
                 d.get("column_current_limit_percent", 100.0)
             ),

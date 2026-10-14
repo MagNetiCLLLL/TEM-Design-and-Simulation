@@ -112,8 +112,10 @@ def validate(args, report):
     report['linear_pivot_checks'] = linear_pivot_checks(s, [pivot, *design.pivot.other_verified_roots_z_mm])
     prefix = float(s._resolved_assembly.part('ac_deflector').start_z_mm) - .001
     sample_planes = np.array([sample-.0002, sample-.0001, sample])
-    waist = 1400.0007  # Observation only; does not insert a source or set a focus.
-    grid = np.unique(np.r_[prefix, np.arange(np.ceil(prefix), sample, 1.), waist, pivot, sample_planes])
+    historical_waist = 1400.0007  # 10 October strong-C3 observation, not today's measured waist.
+    report['historical_source_waist_reference'] = dict(z_mm=historical_waist,
+        working_point='2026-10-10 strong-C3', verified_for_current_optics=False)
+    grid = np.unique(np.r_[prefix, np.arange(np.ceil(prefix), sample, 1.), historical_waist, pivot, sample_planes])
     ac.scan_enabled = False
     ac.kick_x_mrad = ac.kick_y_mrad = 0.
     print('Executing one Tip population and complete incident column on CUDA', flush=True)
@@ -221,7 +223,7 @@ def validate(args, report):
         ax.grid(alpha=.2)
     axes[0].axvspan(ac.upper_z_mm-7.5,ac.upper_z_mm+7.5,color='teal',alpha=.15)
     axes[0].axvspan(ac.lower_z_mm-7.5,ac.lower_z_mm+7.5,color='teal',alpha=.15)
-    axes[0].axvline(waist,color='purple',ls=':',label='Unscanned source waist')
+    axes[0].axvline(historical_waist,color='purple',ls=':',label='Historical 10 Oct waist reference')
     axes[0].legend(fontsize=7)
     axes[2].set(xlabel='Sample X (nm)',ylabel='Sample Y (nm)',aspect='equal',title='Executed probe centres')
     fig.suptitle('Finite AC fields and unchanged lenses | 3000 Tip rays | CUDA | Descan off')

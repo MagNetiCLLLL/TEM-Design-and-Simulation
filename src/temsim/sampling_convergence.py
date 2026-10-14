@@ -159,7 +159,8 @@ def _thresholds():
     path = Path(OPERATING_MODE_CONFIG_ROOT) / "illumination_targets.toml"
     content = input_io.read_bytes(path)
     targets = tomllib.loads(content.decode("utf-8"))
-    relative = min(float(targets[key]["relative_tolerance"]) for key in ("micro_probe", "nano_probe"))
+    modes = ("micro_probe", "nano_probe", "nano_probe_large_angle")
+    relative = min(float(targets[key]["relative_tolerance"]) for key in modes)
     if not np.isfinite(relative) or relative <= 0:
         raise ValueError("Invalid configured convergence tolerance")
     # Absolute floors describe numerical comparison resolution, not physical
@@ -167,7 +168,7 @@ def _thresholds():
     return dict(relative=relative, absolute={"transmission": 1e-12, "diameter95_m": 1e-15,
         "alpha95_rad": 1e-12, "centroid_x_m": 1e-12, "centroid_y_m": 1e-12},
         minimum_transmitted_samples=16, minimum_effective_samples=16,
-        focus_tolerance_nm=min(float(targets[key]["focus_tolerance_nm"]) for key in ("micro_probe", "nano_probe")),
+        focus_tolerance_nm=min(float(targets[key]["focus_tolerance_nm"]) for key in modes),
         source=str(path), source_sha256=sha256(content).hexdigest(),
         interpretation="Numerical pair comparison only; N_eff and sample minima are necessary screens, never proof of convergence")
 

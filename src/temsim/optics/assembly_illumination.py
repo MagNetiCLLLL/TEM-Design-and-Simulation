@@ -16,7 +16,7 @@ from threadpoolctl import threadpool_limits
 
 from temsim.assembly_catalog import AssemblySelection
 from temsim.instrument_snapshot import capture_instrument_snapshot
-from temsim.operating_modes import mode_by_key, _apply_values
+from temsim.operating_modes import mode_by_key, _apply_values, is_nanoprobe_mode
 from temsim.optics.surface_probe_focus import measure_surface_focus, surface_z_mm
 from temsim.optics.illumination_current import aperture_gate, current_gate, set_calibration_flux
 
@@ -32,7 +32,7 @@ class IlluminationTarget:
 
     def accepts(self, measurement):
         s = measurement.statistics
-        if self.key == "nano_probe":
+        if is_nanoprobe_mode(self.key):
             return measurement.accepts(self.alpha95_mrad,
                 angle_relative_tolerance=self.relative_tolerance,
                 focus_tolerance_nm=self.focus_tolerance_nm)
@@ -46,7 +46,7 @@ class IlluminationTarget:
         s = statistics
         if s.surviving_rays < 16:
             raise ValueError("Fewer than 16 transmitted calibration rays; increase the sampling budget")
-        if self.key == "nano_probe":
+        if is_nanoprobe_mode(self.key):
             values = (math.log(s.convergence_95_mrad / self.alpha95_mrad),
                       s.waist_offset_m / 1e-6)
         else:
@@ -65,7 +65,7 @@ def load_targets(path=None):
     if document.get('schema') != 'assembly-illumination-targets-v1':
         raise ValueError('Unsupported illumination target schema')
     result = {}
-    for key in ('nano_probe', 'micro_probe'):
+    for key in ('nano_probe', 'nano_probe_large_angle', 'micro_probe'):
         values = dict(document[key])
         values.setdefault('diameter95_um', None)
         target = IlluminationTarget(key, **values)
@@ -96,9 +96,9 @@ def diameter_gate(state, measurement, mode_key, path=None):
         raise ValueError('Probe-diameter limits must be finite and positive')
     diameter = float(measurement.statistics.illumination_diameter_95_um)*1e3
     passed = math.isfinite(diameter) and 0 <= diameter and (diameter < limit if corrected else diameter <= limit)
-    return dict(required=mode_key == 'nano_probe', probe_corrector_installed=corrected,
+    return dict(required=is_nanoprobe_mode(mode_key), probe_corrector_installed=corrected,
                 diameter95_nm=diameter, maximum_nm=limit, strict=corrected,
-                passed=passed if mode_key == 'nano_probe' else True)
+                passed=passed if is_nanoprobe_mode(mode_key) else True)
 
 
 def assembly_combinations(catalog):
@@ -133,11 +133,14 @@ def seed_illumination(state, mode_key):
         devices[key] = dict(values)
     apertures = {k: dict(v) for k, v in mode.apertures.items()
                  if k in installed and k in targets}
-    if mode_key == "nano_probe" and "condenser_aperture_2" in apertures:
+    if is_nanoprobe_mode(mode_key) and "condenser_aperture_2" in apertures:
         # Historical 100 um / 25 mrad pupil is a seed, not a 30 mrad
         # calibration. The physical 120 um opening is traced and clipped.
         apertures["condenser_aperture_2"]["diameter_mm"] = .12
     _apply_values(state, replace(mode, devices=devices, apertures=apertures))
+    state.illumination_mode = "STEM" if is_nanoprobe_mode(mode_key) else "TEM"
+    if is_nanoprobe_mode(mode_key):
+        state.nanoprobe_range = "large_angle" if mode_key == "nano_probe_large_angle" else "normal"
     state.sync_objective()
 
 
@@ -150,7 +153,7 @@ def variable_lenses(state, mode_key):
     elif "condenser_lens_3" in enabled:
         keys = ("condenser_lens_2", "condenser_lens_3")
     else:
-        keys = (("condenser_lens_2", "objective_lens") if mode_key == "nano_probe"
+        keys = (("condenser_lens_2", "objective_lens") if is_nanoprobe_mode(mode_key)
                 else ("condenser_lens_1", "condenser_lens_2"))
     if not set(keys) <= enabled:
         raise ValueError("The assembled column lacks the required focusing lenses")
@@ -178,15 +181,15 @@ def _focus_branch(measure, target, initial, upper):
         for _ in range(10):
             vector = np.array([primary, objective])
             m = measure(vector)
-            error = (m.statistics.waist_offset_m if target.key == "nano_probe"
+            error = (m.statistics.waist_offset_m if is_nanoprobe_mode(target.key)
                      else m.statistics.radial_wavefront_curvature_per_m)
-            tolerance = .05e-9 if target.key == "nano_probe" else .01
+            tolerance = .05e-9 if is_nanoprobe_mode(target.key) else .01
             if math.isfinite(error) and abs(error) <= tolerance:
                 focused[primary] = (vector, m)
                 return vector, m
             delta = 1e-4 if objective+1e-4 < upper[1] else -1e-4
             shifted = measure([primary, objective+delta]).statistics
-            shifted_error = shifted.waist_offset_m if target.key == "nano_probe" else shifted.radial_wavefront_curvature_per_m
+            shifted_error = shifted.waist_offset_m if is_nanoprobe_mode(target.key) else shifted.radial_wavefront_curvature_per_m
             derivative = (shifted_error-error)/delta
             if not math.isfinite(derivative) or abs(derivative) < 1e-20:
                 raise ValueError("The objective focus derivative is unresolved")
@@ -198,8 +201,8 @@ def _focus_branch(measure, target, initial, upper):
 
     def residual(primary):
         _, m = at(primary)
-        value = m.statistics.convergence_95_mrad if target.key == "nano_probe" else m.statistics.illumination_diameter_95_um
-        requested = target.alpha95_mrad if target.key == "nano_probe" else target.diameter95_um
+        value = m.statistics.convergence_95_mrad if is_nanoprobe_mode(target.key) else m.statistics.illumination_diameter_95_um
+        requested = target.alpha95_mrad if is_nanoprobe_mode(target.key) else target.diameter95_um
         if m.statistics.surviving_rays < 16 or not math.isfinite(value) or value <= 0:
             raise ValueError('The focused branch has insufficient transmitted rays or unresolved illumination')
         return math.log(value/requested)
@@ -253,7 +256,7 @@ def _proposals(state, keys, target, initial, maximum_evaluations, *, neighbourin
 
     seeds = [initial]
     # Alternative branches are proposals, never silently selected as qualified.
-    if target.key == "nano_probe":
+    if is_nanoprobe_mode(target.key):
         seeds += [np.array([v, initial[1]]) for v in (12., 25., 40., 55.)]
     else:
         seeds += [np.array([a, b]) for a, b in ((15., 30.), (30., 40.), (50., 20.))]
@@ -294,7 +297,7 @@ def calibrate_illumination(state, mode_key, *, rays=193, maximum_evaluations=30,
     candidate = original.restore()
     if candidate.electron_gun.source_representation != "classical_particles" or candidate.vacuum_map.enabled:
         raise ValueError("Default calibration requires classical tip emission with vacuum participation off")
-    candidate.mini_condenser.validate_probe_mode(mode_key)
+    candidate.mini_condenser.validate_probe_mode("nano_probe" if is_nanoprobe_mode(mode_key) else mode_key)
     candidate.electron_gun.emitter.ray_count = int(rays)
     seed_illumination(candidate, mode_key)
     if mini_polarity is not None:
@@ -363,7 +366,7 @@ def calibrate_illumination(state, mode_key, *, rays=193, maximum_evaluations=30,
         progress(f"{mode_key}: executing the physical gun and fixed upstream column")
         checkpoint = IlluminationCheckpoint(candidate, keys, step_mm=.05)
         report["executed_prefix_z_mm"] = checkpoint.prefix_z_mm
-        nested = keys[-1] == 'objective_lens' and mode_key == 'nano_probe'
+        nested = keys[-1] == 'objective_lens' and is_nanoprobe_mode(mode_key)
         proposals = ([initial] if keys[-1] == 'objective_lens'
             and not search_branches else _proposals(candidate, keys, target, initial, maximum_evaluations,
                                                     neighbouring_first=not search_branches))

@@ -384,6 +384,14 @@ loss of outer rays cannot manufacture a waist. Zero-current probes are ignored.
             return point, derivative
 
         def radial_derivative(t):
+            # The bracket was selected using these executed covariances.
+            # Re-evaluating the Hermite endpoint through a different floating
+            # point reduction can flip the sign of a near-zero endpoint and
+            # make brentq reject a valid waist lying exactly on that plane.
+            if t == 0.:
+                return float(corr[0])
+            if t == 1.:
+                return float(corr[1])
             px, vx = interpolate(x, tx, t)
             py, vy = interpolate(y, ty, t)
             return float(w@(px*vx+py*vy))

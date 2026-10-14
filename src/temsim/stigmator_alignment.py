@@ -19,7 +19,7 @@ DEFINITION = DirectAlignmentDefinition(key=KEY, name="Condenser twofold beam sha
     constraint="physical_current_support_size_rank_and_independent_steps",
     calibration_status="Local measured authority required; not wave A1 qualification",
     calibration_reference="Executed classical tip-origin beam at specimen entrance",
-    targets={}, applies_to_modes=("nano_probe", "micro_probe"), state_parameters=())
+    targets={}, applies_to_modes=("nano_probe", "nano_probe_large_angle", "micro_probe"), state_parameters=())
 
 
 @dataclass(frozen=True)

@@ -18,7 +18,7 @@ DEFINITION = DirectAlignmentDefinition(key=KEY, name="Beam centre and direction"
     constraint="captured_source_stops_current_and_independent_numerical_checks",
     calibration_status="Measured local control authority required",
     calibration_reference="Existing paired physical kick planes and executed tip-origin population",
-    targets={}, applies_to_modes=("nano_probe", "micro_probe"), state_parameters=())
+    targets={}, applies_to_modes=("nano_probe", "nano_probe_large_angle", "micro_probe"), state_parameters=())
 
 
 @dataclass(frozen=True)

@@ -245,6 +245,12 @@ def read_profile(path: str | Path) -> tuple[AssemblySelection, dict]:
         if isinstance(attributes, dict):
             values[key] = {name: value for name, value in attributes.items()
                            if name not in {"effective_thickness_mm", "optical_plane_separation_mm"}}
+    # Earlier complete profiles had one Nanoprobe range. Loading one into an
+    # instrument last used in Large angle must not inherit that selection or
+    # reapply lens presets. Partial apply_profile_values calls remain partial.
+    simulation = values.get("simulation")
+    if isinstance(simulation, dict):
+        values["simulation"] = {"nanoprobe_range": "normal", **simulation}
     values[_PROFILE_VERSION_KEY] = format_version
     for table, target in (("vacuum_map", "__vacuum_map__"),
                          ("simulation_model", _SIMULATION_MODEL_KEY),

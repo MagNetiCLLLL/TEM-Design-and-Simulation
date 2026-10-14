@@ -24,6 +24,7 @@ from temsim.gui.input_policy import WheelSafeDoubleSpinBox as QDoubleSpinBox
 from temsim.operating_modes import (
     DirectAlignmentDefinition,
     OperatingModeCatalog,
+    condenser_mode_key,
     load_operating_mode_catalog,
 )
 
@@ -55,7 +56,8 @@ _CURRENT_METRICS = {
 }
 
 _MODE_LABELS = {
-    "nano_probe": "Nanoprobe",
+    "nano_probe": "Nanoprobe (Normal)",
+    "nano_probe_large_angle": "Nanoprobe (Large angle)",
     "micro_probe": "Microprobe",
     "imaging": "Image",
     "diffraction": "Diffraction",
@@ -392,15 +394,7 @@ class DirectAlignmentPanel(QWidget):
         if state is None:
             return set()
 
-        probe_value = str(getattr(state, "probe_mode", "")).lower()
-        if probe_value not in {"nano_probe", "micro_probe"}:
-            illumination = str(
-                getattr(state, "illumination_mode", "")
-            ).upper()
-            probe_value = {
-                "STEM": "nano_probe",
-                "TEM": "micro_probe",
-            }.get(illumination, "")
+        probe_value = condenser_mode_key(state)
 
         projector_value = str(
             getattr(state, "projector_mode", "")
@@ -419,7 +413,8 @@ class DirectAlignmentPanel(QWidget):
             and not self._selected_mode_keys.issubset(active_modes)
         )
         active_probe = next(
-            (key for key in ("micro_probe", "nano_probe") if key in active_modes),
+            (key for key in ("micro_probe", "nano_probe", "nano_probe_large_angle")
+             if key in active_modes),
             None,
         )
         active_projector = next(
@@ -439,6 +434,9 @@ class DirectAlignmentPanel(QWidget):
                 "before adjusting Direct Alignment."
             )
         self.mode_status.setText(mode_text)
+        for editor in (self.beam_alignment_editor, self.stigmator_alignment_editor):
+            editor.setEnabled(not pending_mode_change)
+            editor.set_busy(self._busy_key is not None)
         self.projector_calibration_group.setVisible("diffraction" in active_modes)
         lenses = {
             str(getattr(lens, "key", "")): lens

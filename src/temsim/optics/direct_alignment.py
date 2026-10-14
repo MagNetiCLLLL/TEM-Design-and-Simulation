@@ -11,11 +11,13 @@ from __future__ import annotations
 from contextlib import contextmanager
 from dataclasses import dataclass, replace
 import math
+from types import SimpleNamespace
 
 import numpy as np
 from scipy.optimize import brentq, least_squares
 
 from temsim.component_keys import (
+    ADAPTER_LENS,
     CONDENSER_LENS_2,
     CONDENSER_LENS_3,
     DIFFRACTION_LENS,
@@ -97,6 +99,8 @@ class DirectAlignmentMeasurement:
     relay_error_um: float | None = None
     diffraction_conjugacy_residual: float | None = None
     execution_backend: str = "not_recorded"
+    condenser_topology_status: str | None = None
+    condenser_topology_message: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -826,12 +830,17 @@ class _LiveFirstOrderModel:
 
 
 class _CondenserMeasurementModel:
-    def __init__(self, state, *, step_mm: float) -> None:
+    def __init__(self, state, *, step_mm: float, topology: bool = False) -> None:
         from temsim.instrument_snapshot import capture_instrument_snapshot
         state = capture_instrument_snapshot(state).restore()
         self.state = state
         self.source_z_mm = float(state.electron_gun.exit_plane_z_mm)
         self.sample_z_mm = float(state.sample.z_mm)
+        if topology:
+            from temsim.optics.condenser_topology import requested_capture_planes
+            self.topology_planes = tuple(requested_capture_planes(state))
+        else:
+            self.topology_planes = ()
         apertures = tuple(state.apertures)
         nanopulser = getattr(state, "nanopulser", None)
         if nanopulser is not None and bool(nanopulser.installed):
@@ -864,7 +873,7 @@ class _CondenserMeasurementModel:
             self.sample_z_mm,
             CONDENSER_KEYS,
             step_mm=step_mm,
-            capture_z_mm=(
+            capture_z_mm=(*self.topology_planes, *(
                 float(aperture.z_mm)
                 for aperture in apertures
                 if bool(getattr(aperture, "enabled", True))
@@ -872,7 +881,7 @@ class _CondenserMeasurementModel:
                 and self.source_z_mm
                 < float(aperture.z_mm)
                 < self.sample_z_mm
-            ),
+            )),
         )
         self.apertures = tuple(
             aperture
@@ -920,6 +929,48 @@ class _CondenserMeasurementModel:
             alive=alive,
             weights=self.source_weights,
         )
+
+    def topology(self, vector):
+        """Screen an optimiser branch using the same captured source ensemble.
+
+        This inexpensive map is only a search aid.  Commitment still requires
+        nonlinear, executed checkpoints and all production clipping.
+        """
+        from temsim.optics.condenser_topology import evaluate
+
+        planes = np.asarray(sorted({
+            *self.topology_planes,
+            *(float(aperture.z_mm) for aperture in self.apertures),
+        }), dtype=float)
+        if self.sample_model.full_field_transfer:
+            captured = self.sample_model.rays_at(
+                vector, self.source_rays, planes,
+                initial_kinetic_energy_ev=self.source_kinetic_energy_ev,
+            )
+        else:
+            captured = self.sample_model.matrices_at(vector, planes) @ self.source_rays
+        alive = self.source_alive.copy()
+        masks = np.empty((len(planes), len(alive)), dtype=bool)
+        apertures_by_z = {}
+        for aperture in self.apertures:
+            apertures_by_z.setdefault(float(aperture.z_mm), []).append(aperture)
+        for index, plane in enumerate(planes):
+            for aperture in apertures_by_z.get(float(plane), ()):
+                rays = captured[index]
+                if hasattr(aperture, "transmission_mask"):
+                    passed = aperture.transmission_mask(rays[0] * 1.0e3, rays[1] * 1.0e3)
+                else:
+                    passed = np.hypot(
+                        rays[0] * 1.0e3 - float(aperture.offset_x_mm),
+                        rays[1] * 1.0e3 - float(aperture.offset_y_mm),
+                    ) <= max(0.0, float(aperture.radius_mm))
+                alive &= np.asarray(passed, dtype=bool)
+            masks[index] = alive
+        checkpoints = SimpleNamespace(
+            z_mm=planes, x_m=captured[:, 0], y_m=captured[:, 1],
+            tx_rad=captured[:, 2], ty_rad=captured[:, 3],
+        )
+        return evaluate(self.state, checkpoints, masks, self.source_weights)
 
 
 class _EquivalentImageFirstOrderModel:
@@ -1070,12 +1121,8 @@ def _set_vector(state, keys: tuple[str, ...], vector) -> None:
 
 
 def _mode_matches(state, definition: DirectAlignmentDefinition) -> bool:
-    active_modes = set()
-    illumination = str(state.illumination_mode).upper()
-    if illumination == "STEM":
-        active_modes.add("nano_probe")
-    elif illumination == "TEM":
-        active_modes.add("micro_probe")
+    from temsim.operating_modes import condenser_mode_key
+    active_modes = {condenser_mode_key(state)}
     projector = str(state.projector_mode).lower()
     if projector in {"image", "imaging"}:
         active_modes.add("imaging")
@@ -1088,6 +1135,40 @@ def _target_number(
     definition: DirectAlignmentDefinition, name: str, default: float
 ) -> float:
     return float(definition.targets.get(name, default))
+
+
+def _nanoprobe_topology_required(state, definition: DirectAlignmentDefinition) -> bool:
+    """Apply the selected Nanoprobe branch to corrected columns only.
+
+    Uncorrected assemblies retain disabled ADL templates in State.  Use the
+    installation flag rather than mistaking those templates for hardware.
+    An installed corrector with a missing/disabled ADL must still fail closed.
+    """
+    if definition.key != NANOPROBE_CONVERGENCE:
+        return False
+    installed = bool(getattr(state, "probe_corrector_installed", any(
+            str(lens.key) == ADAPTER_LENS
+            and bool(getattr(lens, "enabled", True))
+            and bool(getattr(lens, "_layout_installed", getattr(lens, "installed", True)))
+            for lens in state.lenses
+        )))
+    if not installed:
+        return False
+    from temsim.optics.condenser_topology import LARGE_ANGLE_REQUIREMENT, requirement_for_state
+    requirement = requirement_for_state(state)
+    target_key = ("large_angle_condenser_topology" if requirement == LARGE_ANGLE_REQUIREMENT
+                  else "condenser_topology")
+    if definition.targets.get(target_key) != requirement:
+        raise ValueError(f"Nanoprobe alignment requires {target_key}={requirement!r}")
+    return True
+
+
+def _nanoprobe_topology_acceptable(state, definition, measurement) -> bool:
+    # Unresolved geometry/sampling must not be mistaken for an absent waist.
+    return (
+        not _nanoprobe_topology_required(state, definition)
+        or measurement.condenser_topology_status == "PASS"
+    )
 
 
 def _image_preset_seeds(
@@ -1234,7 +1315,10 @@ def _optimise_condenser(
     optimiser_step = _target_number(
         definition, "optimiser_step_mm", 0.1
     )
-    model = _CondenserMeasurementModel(state, step_mm=optimiser_step)
+    topology_required = _nanoprobe_topology_required(state, definition)
+    model = _CondenserMeasurementModel(
+        state, step_mm=optimiser_step, topology=topology_required
+    )
     optimisation_lower = np.zeros(initial.size, dtype=float)
     optimisation_upper = model.upper.copy()
     if definition.key == NANOPROBE_CONVERGENCE:
@@ -1357,7 +1441,7 @@ def _optimise_condenser(
         ]
 
     best_vector = initial.copy()
-    best_cost = math.inf
+    best_cost = (True, math.inf)
     iterations = 0
     for seed in candidate_seeds:
         solution = least_squares(
@@ -1379,8 +1463,16 @@ def _optimise_condenser(
                 0.0, np.abs(solution.x - 50.0) - 20.0
             )
             cost += 1.0e-6 * float(headroom @ headroom)
-        if cost < best_cost:
-            best_cost = cost
+        topology_viable = True
+        if topology_required:
+            topology_report = model.topology(solution.x)
+            topology_viable = topology_report["status"] == "PASS" or (
+                topology_report["status"] == "UNRESOLVED"
+                and bool(topology_report["refinement_planes_mm"])
+            )
+        ranked_cost = (not topology_viable, cost)
+        if ranked_cost < best_cost:
+            best_cost = ranked_cost
             best_vector = solution.x.copy()
         measurement = _condenser_measurement(
             definition, model.measure(solution.x)
@@ -1410,6 +1502,7 @@ def _optimise_condenser(
             relative_error
             <= _target_number(definition, "maximum_relative_error", 0.03) * 0.5
             and constraint_ok
+            and topology_viable
         ):
             break
     return best_vector, iterations
@@ -1717,6 +1810,13 @@ def _validate_condenser_production(
 ) -> DirectAlignmentMeasurement:
     """Validate with the full nonlinear ray path and all physical clipping."""
 
+    topology_required = _nanoprobe_topology_required(state, definition)
+    topology_report = None
+    if topology_required:
+        from temsim.optics.condenser_topology import evaluate, requested_capture_planes
+        topology_planes = tuple(requested_capture_planes(state))
+    else:
+        topology_planes = ()
     with _production_validation_state(
         state, CONDENSER_KEYS, vector, step_mm
     ):
@@ -1732,39 +1832,57 @@ def _validate_condenser_production(
             and bool(getattr(aperture, "installed", True))
             and source_z_mm <= float(aperture.z_mm) <= sample_z_mm
         )
-        z_mm, x_m, tx_rad, y_m, ty_rad = propagate(
-            state,
-            source_z_mm,
-            sample_z_mm,
-            emitted.x_m,
-            emitted.tx_rad,
-            emitted.y_m,
-            emitted.ty_rad,
-            events=_pre_sample_kick_events(state),
-            energy_offset_ev=emitted.energy_offset_ev,
-            save_z_mm=aperture_z_mm,
-        )
-        alive = np.asarray(emitted.alive, dtype=bool).copy()
-        blocked_z_mm = np.asarray(gun_trace.blocked_z_mm, dtype=float).copy()
-        blocked_key = list(gun_trace.blocked_key)
-        alive, blocked_z_mm, blocked_key = clip_segment(
-            state,
-            z_mm,
-            x_m,
-            y_m,
-            alive,
-            blocked_z_mm,
-            blocked_key,
-        )
-        alive, _blocked_z_mm, _blocked_key = clip_column_wall(
-            state,
-            z_mm,
-            x_m,
-            y_m,
-            alive,
-            blocked_z_mm,
-            blocked_key,
-        )
+        for _refinement in range(3):
+            outputs = propagate(
+                state,
+                source_z_mm,
+                sample_z_mm,
+                emitted.x_m,
+                emitted.tx_rad,
+                emitted.y_m,
+                emitted.ty_rad,
+                events=_pre_sample_kick_events(state),
+                energy_offset_ev=emitted.energy_offset_ev,
+                save_z_mm=tuple(sorted(set((*aperture_z_mm, *topology_planes)))),
+                checkpoint_z_mm=topology_planes,
+                return_checkpoints=topology_required,
+            )
+            z_mm, x_m, tx_rad, y_m, ty_rad = outputs[:5]
+            alive = np.asarray(emitted.alive, dtype=bool).copy()
+            blocked_z_mm = np.asarray(gun_trace.blocked_z_mm, dtype=float).copy()
+            blocked_key = list(gun_trace.blocked_key)
+            alive, blocked_z_mm, blocked_key = clip_segment(
+                state, z_mm, x_m, y_m, alive, blocked_z_mm, blocked_key,
+            )
+            alive, blocked_z_mm, blocked_key = clip_column_wall(
+                state, z_mm, x_m, y_m, alive, blocked_z_mm, blocked_key,
+            )
+            if not topology_required:
+                break
+            checkpoints = outputs[-1]
+            # A downstream aperture must not erase a genuine upstream waist.
+            # The topology evaluator selects a fixed population that survives
+            # its own interval, independently of final specimen transmission.
+            masks = np.asarray(emitted.alive, dtype=bool)[None, :] & (
+                np.isnan(blocked_z_mm)[None, :]
+                | (blocked_z_mm[None, :] > np.asarray(checkpoints.z_mm)[:, None])
+            )
+            topology_report = evaluate(
+                state, checkpoints, masks, getattr(emitted, "weight", None),
+            )
+            if (topology_report["status"] != "UNRESOLVED"
+                    or not topology_report["refinement_planes_mm"]
+                    or _refinement == 2):
+                break
+            refined_planes = tuple(sorted({
+                *topology_planes, *topology_report["refinement_planes_mm"],
+            }))
+            if refined_planes == topology_planes:
+                break
+            topology_planes = refined_planes
+            # Do not retain a whole prior trajectory while integrating its
+            # refined replacement on memory-constrained development machines.
+            del outputs, checkpoints, masks, z_mm, x_m, tx_rad, y_m, ty_rad
         statistics = transverse_beam_statistics(
             x_m[-1],
             y_m[-1],
@@ -1774,7 +1892,12 @@ def _validate_condenser_production(
             weights=getattr(emitted, "weight", None),
         )
         execution_backend = str(state.active_backend)
-    return replace(_condenser_measurement(definition, statistics), execution_backend=execution_backend)
+    return replace(
+        _condenser_measurement(definition, statistics),
+        execution_backend=execution_backend,
+        condenser_topology_status=(topology_report["status"] if topology_report else None),
+        condenser_topology_message=(topology_report["message"] if topology_report else ""),
+    )
 
 
 def _refine_nanoprobe_production_focus(
@@ -1818,14 +1941,16 @@ def _refine_nanoprobe_production_focus(
         return (
             angle_error(measured) <= angle_tolerance
             and abs(measured.constraint_value) <= waist_tolerance
+            and _nanoprobe_topology_acceptable(state, definition, measured)
         )
 
     def score(candidate):
         measured = measure(candidate)
         # Every valid point ranks ahead of every invalid one.
-        return max(
-            angle_error(measured) / angle_tolerance,
-            abs(measured.constraint_value) / waist_tolerance,
+        return (
+            not _nanoprobe_topology_acceptable(state, definition, measured),
+            max(angle_error(measured) / angle_tolerance,
+                abs(measured.constraint_value) / waist_tolerance),
         )
 
     def polish_c3(vector):
@@ -2031,6 +2156,8 @@ def _solve_direct_alignment(
                     <= _target_number(
                         definition, "maximum_numerical_spread", 0.01
                     )
+                    and _nanoprobe_topology_acceptable(state, definition, coarse)
+                    and _nanoprobe_topology_acceptable(state, definition, fine)
                 )
             if current_is_acceptable:
                 candidate = initial.copy()
@@ -2093,8 +2220,12 @@ def _solve_direct_alignment(
             definition, "maximum_relative_error", 0.03
         )
         if definition.key == NANOPROBE_CONVERGENCE:
-            constraint_ok = abs(fine.constraint_value) <= _target_number(
-                definition, "maximum_waist_offset_mm", 0.002
+            constraint_ok = (
+                abs(fine.constraint_value) <= _target_number(
+                    definition, "maximum_waist_offset_mm", 0.002
+                )
+                and _nanoprobe_topology_acceptable(state, definition, coarse)
+                and _nanoprobe_topology_acceptable(state, definition, fine)
             )
         elif definition.key == MICROPROBE_ILLUMINATION:
             constraint_ok = (
@@ -2185,6 +2316,14 @@ def _solve_direct_alignment(
             f"{fine.constraint_value:.6g} {fine.constraint_unit}; "
             f"validated at {validation_step:g} mm."
         )
+        if _nanoprobe_topology_required(state, definition):
+            message += " " + (fine.condenser_topology_message or
+                "Nanoprobe condenser topology was not resolved for the selected range.")
+            if (coarse.condenser_topology_status != fine.condenser_topology_status):
+                message += (
+                    " Condenser topology disagrees between integration steps; "
+                    "both steps must pass."
+                )
         if not success:
             message += (
                 " Target is not reachable with the current field limits and "

@@ -64,6 +64,9 @@ class AssemblyPanel(QWidget):
         mode_form = QFormLayout(mode_box)
         self.probe_mode = QComboBox()
         self.probe_mode.setObjectName("probeModeSelector")
+        self.nanoprobe_range_combo = QComboBox()
+        self.nanoprobe_range_combo.setObjectName("nanoprobeRangeSelector")
+        self.nanoprobe_range_label = QLabel("Nanoprobe range")
         self.projector_mode = QComboBox()
         self.projector_mode.setObjectName("projectorModeSelector")
         for selector in (self.probe_mode, self.projector_mode):
@@ -72,7 +75,13 @@ class AssemblyPanel(QWidget):
             )
             selector.setMinimumContentsLength(18)
         mode_form.addRow("Probe / illumination", self.probe_mode)
+        mode_form.addRow(self.nanoprobe_range_label, self.nanoprobe_range_combo)
         mode_form.addRow("Projection", self.projector_mode)
+        self.nanoprobe_range_combo.setToolTip(
+            "Select the Normal or Large angle optical branch, then apply the preset. "
+            "The branches use different C3 and relay settings; both reference "
+            "presets currently have a 30 mrad semi-angle."
+        )
         self.probe_mode.setToolTip(
             "Sample illumination: Microprobe or Nanoprobe, independent of "
             "Image / Diffraction projection. Apply the preset to change optics."
@@ -143,7 +152,7 @@ class AssemblyPanel(QWidget):
         )
         self.direct_alignment = self.direct_alignment_panel
         self.direct_alignment_panel.set_selected_mode_keys(
-            self.probe_mode.currentData(), self.projector_mode.currentData()
+            self.selected_condenser_mode_key(), self.projector_mode.currentData()
         )
         self.component_pages.addTab(
             self.direct_alignment_panel, "Direct Alignment"
@@ -195,6 +204,9 @@ class AssemblyPanel(QWidget):
         )
         self.component_pages.currentChanged.connect(self._page_changed)
         self.probe_mode.currentIndexChanged.connect(
+            self._update_operating_mode_description
+        )
+        self.nanoprobe_range_combo.currentIndexChanged.connect(
             self._update_operating_mode_description
         )
         self.projector_mode.currentIndexChanged.connect(
@@ -267,11 +279,12 @@ class AssemblyPanel(QWidget):
         selection: AssemblySelection,
         condenser_key: str | None = None,
         projector_key: str | None = None,
+        *, nanoprobe_range: str | None = None,
     ) -> None:
         """Populate only modes compatible with the selected assembly."""
 
         selection = self.catalog.normalise_selection(selection)
-        condenser_key = condenser_key or self.probe_mode.currentData()
+        condenser_key = condenser_key or self.selected_condenser_mode_key()
         projector_key = projector_key or self.projector_mode.currentData()
         condenser_modes = compatible_modes(
             "condenser",
@@ -285,14 +298,29 @@ class AssemblyPanel(QWidget):
             selection.recording,
             self.operating_mode_catalog,
         )
-        for combo, modes, preferred in (
-            (self.probe_mode, condenser_modes, condenser_key),
-            (self.projector_mode, projector_modes, projector_key),
+        nano_keys = {"nano_probe", "nano_probe_large_angle"}
+        remembered_range = (self.nanoprobe_range_combo.currentData()
+                            if nanoprobe_range is None else
+                            {"normal": "nano_probe", "large_angle": "nano_probe_large_angle"}[nanoprobe_range])
+        range_preferred = condenser_key if condenser_key in nano_keys else remembered_range
+        probe_items = [(mode.name, mode.key) for mode in condenser_modes
+                       if mode.key not in nano_keys]
+        nano_modes = {mode.key for mode in condenser_modes if mode.key in nano_keys}
+        if nano_modes:
+            probe_items.append(("Nanoprobe", "nano_probe"))
+        range_items = [(label, key) for label, key in (
+            ("Normal", "nano_probe"), ("Large angle", "nano_probe_large_angle"))
+            if key in nano_modes]
+        for combo, items, preferred in (
+            (self.probe_mode, probe_items,
+             "nano_probe" if condenser_key in nano_keys else condenser_key),
+            (self.nanoprobe_range_combo, range_items, range_preferred),
+            (self.projector_mode, [(mode.name, mode.key) for mode in projector_modes], projector_key),
         ):
             blocked = combo.blockSignals(True)
             combo.clear()
-            for mode in modes:
-                combo.addItem(mode.name, mode.key)
+            for label, key in items:
+                combo.addItem(label, key)
             index = combo.findData(preferred)
             combo.setCurrentIndex(index if index >= 0 else 0)
             combo.blockSignals(blocked)
@@ -304,13 +332,24 @@ class AssemblyPanel(QWidget):
     def set_operating_mode_keys(
         self, condenser_key: str, projector_key: str
     ) -> None:
+        nano = condenser_key in {"nano_probe", "nano_probe_large_angle"}
         for combo, key in (
-            (self.probe_mode, condenser_key),
+            (self.probe_mode, "nano_probe" if nano else condenser_key),
+            (self.nanoprobe_range_combo,
+             condenser_key if nano else self.nanoprobe_range_combo.currentData()),
             (self.projector_mode, projector_key),
         ):
             index = combo.findData(key)
             if index >= 0:
+                blocked = combo.blockSignals(True)
                 combo.setCurrentIndex(index)
+                combo.blockSignals(blocked)
+        self._update_operating_mode_description()
+
+    def selected_condenser_mode_key(self) -> str | None:
+        """Return the complete pending preset key without changing live optics."""
+        key = self.probe_mode.currentData()
+        return self.nanoprobe_range_combo.currentData() if key == "nano_probe" else key
 
     def set_operating_mode_status(self, text: str) -> None:
         self.operating_mode_status.setText(text)
@@ -318,7 +357,7 @@ class AssemblyPanel(QWidget):
     def set_direct_alignment_state(self, state) -> None:
         available_modes = {
             str(combo.itemData(index))
-            for combo in (self.probe_mode, self.projector_mode)
+            for combo in (self.probe_mode, self.nanoprobe_range_combo, self.projector_mode)
             for index in range(combo.count())
             if combo.itemData(index) is not None
         }
@@ -341,7 +380,10 @@ class AssemblyPanel(QWidget):
         )
 
     def _update_operating_mode_description(self, _index: int = -1) -> None:
-        condenser_key = self.probe_mode.currentData()
+        nano_selected = self.probe_mode.currentData() == "nano_probe"
+        self.nanoprobe_range_combo.setVisible(nano_selected)
+        self.nanoprobe_range_label.setVisible(nano_selected)
+        condenser_key = self.selected_condenser_mode_key()
         projector_key = self.projector_mode.currentData()
         alignment_panel = getattr(self, "direct_alignment_panel", None)
         if alignment_panel is not None:
@@ -374,7 +416,7 @@ class AssemblyPanel(QWidget):
                 "diffraction reference plane"
             ),
         }.get(str(plane), str(plane))
-        if condenser.key == "nano_probe":
+        if condenser.key in {"nano_probe", "nano_probe_large_angle"}:
             illumination_note = (
                 "Convergence: C2 + C3 + C2 aperture; "
                 "probe focus: Objective lens."
@@ -401,6 +443,7 @@ class AssemblyPanel(QWidget):
         )
         self.operating_mode_status.setText(
             ("Stored reference; recalibration pending | " if retained else "")
+            + (f"{self.nanoprobe_range_combo.currentText()} | " if nano_selected else "")
             + f"{float(angle):.3f} mrad | C2 {c2:.2f}% | C3 {c3:.2f}% | "
             f"C2 aperture {aperture_um:.0f} µm | Objective {objective:.1f}% | "
             f"{plane_label}"
@@ -410,7 +453,7 @@ class AssemblyPanel(QWidget):
         )
 
     def _request_operating_mode(self) -> None:
-        condenser_key = self.probe_mode.currentData()
+        condenser_key = self.selected_condenser_mode_key()
         projector_key = self.projector_mode.currentData()
         if condenser_key is not None and projector_key is not None:
             self.operating_mode_requested.emit(

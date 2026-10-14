@@ -57,6 +57,11 @@ def clear_calibration_cache(monkeypatch):
     monkeypatch.setattr(alignment, "_refine_nanoprobe_production_focus",
                         lambda _state, _definition, _target, vector, _step:
                         (vector, 0))
+    # Transaction fixtures synthesize numerical evidence; no physical branch
+    # is certified here when the catalog enables ordinary-Nanoprobe topology.
+    monkeypatch.setattr("temsim.alignment_transaction._validate_condenser_topology_forward",
+                        lambda *_args, **_kwargs: dict(status="PASS", passed=True,
+                            message="Synthetic transaction topology fixture"))
     actual_capture = recalibration.capture_instrument_snapshot
     def capture(candidate):
         if not isinstance(candidate, SimpleNamespace):
@@ -94,8 +99,9 @@ def test_preset_uses_transmitted_beam_and_replaces_old_geometry_metrics(monkeypa
     result = recalibration.recalibrate_nanopulser_condenser(
         state, mode, load_operating_mode_catalog(),
     )
-    assert calls == [("nanoprobe_convergence", 25.0,
-                      recalibration.direct_alignment_by_key("nanoprobe_convergence").targets["validation_step_mm"])]
+    definition = recalibration.direct_alignment_by_key("nanoprobe_convergence")
+    assert calls == [("nanoprobe_convergence", definition.default_value,
+                      definition.targets["validation_step_mm"])]
     assert state.beam_blanked
     assert state.nanopulser.blanked
     assert state.electron_gun.emitter.ray_count == 15000
