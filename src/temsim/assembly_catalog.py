@@ -93,6 +93,10 @@ class AssemblyCatalog:
                         "Beam-blanker catalog entries must describe installed "
                         "modules; None is the implicit absent selection"
                     )
+            if module_type == "column":
+                for entry in entries:
+                    if entry.get("image_corrector", False) and entry.get("image_corrector_design", "cetcor") not in {"cetcor", "bcor"}:
+                        raise ValueError("Image-corrector catalog design must be cetcor or bcor")
             files = [Path(str(entry["file"])).as_posix() for entry in entries]
             signatures = [
                 tuple(sorted(
@@ -123,6 +127,13 @@ class AssemblyCatalog:
                     )
                 module_document = module_manifest.read_document(path)
                 module_manifest.validate_document(module_document)
+                if module_type == "column":
+                    entry = next(item for item in entries if Path(str(item["file"])).as_posix() == relative)
+                    if bool(entry.get("image_corrector", False)):
+                        declared = str(entry.get("image_corrector_design", "cetcor"))
+                        actual = str(module_document["module"].get("image_corrector_design", "cetcor"))
+                        if declared != actual:
+                            raise ValueError(f"Image-corrector design mismatch for {relative}: {declared} != {actual}")
                 actual_type = str(module_document["module"]["type"])
                 if actual_type != module_type:
                     raise ValueError(
@@ -261,6 +272,8 @@ class AssemblyCatalog:
         gun = self._by_name(self.guns, selection.gun)
         column = self._by_name(self.columns, selection.column)
         recording = self._by_name(self.recording_systems, selection.recording)
+        retained_component_keys = set(getattr(state, "image_corrector_initialized_keys", ()))
+        retained_component_keys.update(getattr(state, "_module_manifest_parts", {}))
         from temsim.optics.nanopulser import ensure_nanopulser
         ensure_nanopulser(state).installed = selection.beam_blanker != "None"
 
@@ -291,6 +304,7 @@ class AssemblyCatalog:
         state.corrector_mode = corrector_mode
         state.probe_corrector_installed = has_probe
         state.image_corrector_installed = has_image
+        state.image_corrector_design = str(column.properties.get("image_corrector_design", "cetcor"))
         state.layout_c3_hardware = "three_condenser" if has_c3 else "two_condenser"
         state.layout_c3_excited = has_c3
         state.column_mode = "three_lens" if has_c3 else "two_lens_c3_off"
@@ -303,11 +317,22 @@ class AssemblyCatalog:
             state.energy_filter.enabled = has_filter
         ensure_energy_filter(state)
         ensure_corrector_structure(state)
-        apply_physical_layout_to_state(
-            state,
-            preserve_operating_parameters=preserve_operating_parameters,
-            assembly_root=self.root,
+        # Fresh hardware receives its manifest working point. This is an
+        # explicit installation operation, unlike state/profile restoration,
+        # which must keep the supplied drive values even without a prior
+        # in-memory resolved assembly.
+        state._initialise_new_assembly_hardware = frozenset(
+            item.key for item in (*state.lenses, *state.corrector_elements)
+            if item.key not in retained_component_keys
         )
+        try:
+            apply_physical_layout_to_state(
+                state,
+                preserve_operating_parameters=preserve_operating_parameters,
+                assembly_root=self.root,
+            )
+        finally:
+            del state._initialise_new_assembly_hardware
         state.electron_gun._manifest_catalog_root = self.root
         if not preserve_operating_parameters and state.electron_gun.type_key == "cold_feg":
             from temsim.optics.electron_gun.tip_assembly import apply_tip_part

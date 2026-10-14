@@ -22,6 +22,7 @@ def test_cli_defaults_match_calibrated_budget_and_keep_small_budget_explicit(cli
     args = cli._arguments()
     assert (args.rays, args.threads, args.step, args.target) == (3000, 2, .05, 30.)
     assert args.range == "normal"
+    assert args.column == "C3 + Probe Corrector"
     monkeypatch.setattr(sys, "argv", ["validate_nanoprobe_condenser.py", "--rays", "512"])
     assert cli._arguments().rays == 512
 
@@ -32,6 +33,43 @@ def test_large_angle_is_an_explicit_branch_with_unchanged_acceptance(cli, monkey
     assert args.range == "large_angle"
     assert (args.rays, args.target, args.step) == (3000, 30., .05)
     monkeypatch.setattr(sys, "argv", ["validate_nanoprobe_condenser.py", "--range", "unknown"])
+    with pytest.raises(SystemExit):
+        cli._arguments()
+
+
+@pytest.mark.parametrize("nanoprobe_range", ["normal", "large_angle"])
+def test_bcor_validation_uses_incident_presets_and_preserves_downstream_controls(cli, nanoprobe_range):
+    from dataclasses import replace
+    from temsim.assembly_catalog import AssemblyCatalog
+    from temsim.optics.column import default_state
+    from temsim.optics.condenser_topology import (
+        LARGE_ANGLE_REQUIREMENT, REQUIREMENT, requirement_for_state,
+    )
+
+    column = "C3 + Probe Corrector + B-COR"
+    catalog = AssemblyCatalog()
+    baseline = default_state()
+    selection = replace(catalog.default_selection(), column=column)
+    catalog.apply(baseline, selection)
+    state, actual_selection, mode_key, projector_applied = cli._configured_state(column, nanoprobe_range)
+    assert actual_selection == selection
+    assert state.image_corrector_design == "bcor"
+    assert state.nanoprobe_range == nanoprobe_range
+    assert mode_key == ("nano_probe" if nanoprobe_range == "normal" else "nano_probe_large_angle")
+    assert requirement_for_state(state) == (REQUIREMENT if nanoprobe_range == "normal" else LARGE_ANGLE_REQUIREMENT)
+    assert not projector_applied
+    assert state.projector_mode == baseline.projector_mode
+    downstream = {"diffraction_lens", "intermediate_lens", "projector_lens_1", "projector_lens_2"}
+    for name in ("lenses", "corrector_elements"):
+        before = {item.key: vars(item) for item in getattr(baseline, name)
+                  if item.key in downstream or item.key.startswith("image_")}
+        after = {item.key: vars(item) for item in getattr(state, name)
+                 if item.key in downstream or item.key.startswith("image_")}
+        assert after == before
+
+
+def test_cli_rejects_bcor_without_probe_as_calibrated_nanoprobe_reference(cli, monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["validate_nanoprobe_condenser.py", "--column", "C3 + B-COR"])
     with pytest.raises(SystemExit):
         cli._arguments()
 

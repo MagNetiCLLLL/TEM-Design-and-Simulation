@@ -28,7 +28,7 @@ def column_pose_kind(part):
     on shared hardware have no second editable placement. Gun, receiver and
     energy-filter branches are deliberately outside this model.
     """
-    from temsim.component_keys import PROBE_CORRECTOR_KEYS, IMAGE_CORRECTOR_KEYS
+    from temsim.component_keys import PROBE_CORRECTOR_KEYS, IMAGE_CORRECTOR_ALL_KEYS
     from temsim.component_representation import non_material_role, SHARED_DEFLECTOR_HOSTS
     from temsim.optics.field_hardware_binding import COIL_INSERT_ROLE, field_hardware_host_key
     key = str(part.get("key", ""))
@@ -51,7 +51,7 @@ def column_pose_kind(part):
         "image_diffraction_deflector", "condenser_stigmator", "objective_stigmator",
         "diffraction_stigmator", "condenser_aperture_2", "condenser_aperture_3",
         "objective_aperture", "selected_area_aperture", "projection_chamber_dpa_aperture",
-        *PROBE_CORRECTOR_KEYS, *IMAGE_CORRECTOR_KEYS,
+        *PROBE_CORRECTOR_KEYS, *IMAGE_CORRECTOR_ALL_KEYS,
     }
     if key not in independent:
         return None

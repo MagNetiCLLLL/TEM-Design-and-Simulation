@@ -35,6 +35,9 @@ _GUN_CONTROLS_KEY = "__gun_controls__"
 _SAMPLE_MODEL_KEY = "__sample_model__"
 _SIMULATION_MODEL_KEY = "__simulation_model__"
 _PROFILE_VERSION_KEY = "__profile_format_version__"
+_IMAGE_INITIALIZED_KEY = "__image_corrector_initialized_keys__"
+_IMAGE_ENABLED_KEY = "__image_corrector_enabled_preferences__"
+_CHANNEL_GEOMETRY_FIELDS = frozenset({"effective_thickness_mm", "optical_plane_separation_mm"})
 _SLIT_PHYSICAL_FIELDS = frozenset({"gap_m", "centre_m", "zero_loss_offset_m", "calibrated_dispersion_um_per_ev"})
 _COMPUTE_FIELDS = frozenset({"acceleration_backend", "acceleration_enabled"})
 
@@ -77,6 +80,8 @@ def save_profile(path: str | Path, state, selection: AssemblySelection) -> None:
     _validate_profile_assembly(state, selection)
     from temsim.optics.electron_gun.profile_controls import capture_gun_profile_controls
     from temsim.component_keys import ENERGY_FILTER_MULTIPOLE_KEYS
+    from temsim.component_representation import PROBE_CONTROL_CHANNEL_KEYS, IMAGE_CONTROL_CHANNEL_KEYS, SHARED_DEFLECTOR_HOSTS
+    control_channels = PROBE_CONTROL_CHANNEL_KEYS | IMAGE_CONTROL_CHANNEL_KEYS | SHARED_DEFLECTOR_HOSTS.keys()
     devices = {}
     none_values = {}
     for key, target in runtime_targets(state).items():
@@ -85,6 +90,10 @@ def save_profile(path: str | Path, state, selection: AssemblySelection) -> None:
             continue
         values = {}
         for parameter in editable_parameters(target):
+            if key in control_channels and parameter.name in _CHANNEL_GEOMETRY_FIELDS:
+                # Dormant components restored from State lack private manifest
+                # ownership metadata; these remain geometry, not live drives.
+                continue
             if parameter.value is None:
                 if parameter.name not in _nullable_fields(type(target.obj)):
                     raise ValueError(f"{key}.{parameter.name} cannot be none")
@@ -114,6 +123,8 @@ def save_profile(path: str | Path, state, selection: AssemblySelection) -> None:
             "column": selection.column,
             "recording": selection.recording,
             "beam_blanker": selection.beam_blanker,
+            "image_corrector_initialized_keys": list(state.image_corrector_initialized_keys),
+            "image_corrector_enabled_preferences": _image_enabled_preferences(state),
         },
         "devices": devices,
         "gun_controls": capture_gun_profile_controls(state.electron_gun),
@@ -183,6 +194,7 @@ def _validate_profile_assembly(state, selection):
         "monochromator_installed": bool(gun.properties.get("monochromator", False)),
         "probe_corrector_installed": bool(column.properties["probe_corrector"]),
         "image_corrector_installed": bool(column.properties["image_corrector"]),
+        "image_corrector_design": str(column.properties.get("image_corrector_design", "cetcor")),
     }
     mismatches = [name for name, value in expected.items() if getattr(state, name) != value]
     if state.energy_filter.enabled != has_filter:
@@ -221,6 +233,12 @@ def read_profile(path: str | Path) -> tuple[AssemblySelection, dict]:
     if not isinstance(devices, dict):
         raise ValueError("Operating profile devices must be a table")
     values = dict(devices)
+    if "image_corrector_initialized_keys" in assembly:
+        values[_IMAGE_INITIALIZED_KEY] = _validated_image_initialized_keys(
+            assembly["image_corrector_initialized_keys"])
+    if "image_corrector_enabled_preferences" in assembly:
+        values[_IMAGE_ENABLED_KEY] = _validated_image_enabled_preferences(
+            assembly["image_corrector_enabled_preferences"])
     none_values = document.get("none_values", {})
     if not isinstance(none_values, dict):
         raise ValueError("Operating profile none_values must be a table")
@@ -239,12 +257,12 @@ def read_profile(path: str | Path) -> tuple[AssemblySelection, dict]:
         values[key] = {**attributes, **dict.fromkeys(names)}
     # Earlier writers included these two geometry readouts as operating fields.
     # Preserve the rest of those profiles while the physical host owns geometry.
-    from temsim.component_representation import SHARED_DEFLECTOR_HOSTS
-    for key in SHARED_DEFLECTOR_HOSTS:
+    from temsim.component_representation import PROBE_CONTROL_CHANNEL_KEYS, IMAGE_CONTROL_CHANNEL_KEYS, SHARED_DEFLECTOR_HOSTS
+    for key in PROBE_CONTROL_CHANNEL_KEYS | IMAGE_CONTROL_CHANNEL_KEYS | SHARED_DEFLECTOR_HOSTS.keys():
         attributes = values.get(key)
         if isinstance(attributes, dict):
             values[key] = {name: value for name, value in attributes.items()
-                           if name not in {"effective_thickness_mm", "optical_plane_separation_mm"}}
+                           if name not in _CHANNEL_GEOMETRY_FIELDS}
     # Earlier complete profiles had one Nanoprobe range. Loading one into an
     # instrument last used in Large angle must not inherit that selection or
     # reapply lens presets. Partial apply_profile_values calls remain partial.
@@ -311,11 +329,46 @@ def _apply_sample_model(sample, model: dict) -> None:
     sample.wave_illumination = illumination
 
 
+def _validated_image_initialized_keys(value):
+    from temsim.component_keys import IMAGE_CORRECTOR_ALL_KEYS
+    if (not isinstance(value, (tuple, list)) or any(not isinstance(key, str) for key in value)
+            or len(set(value)) != len(value) or set(value) - set(IMAGE_CORRECTOR_ALL_KEYS)):
+        raise ValueError("Invalid initialized image-corrector component keys")
+    return tuple(sorted(value))
+
+
+def _validated_image_enabled_preferences(value):
+    from temsim.component_keys import IMAGE_CORRECTOR_ALL_KEYS
+    if (not isinstance(value, dict) or set(value) - set(IMAGE_CORRECTOR_ALL_KEYS)
+            or any(type(enabled) is not bool for enabled in value.values())):
+        raise ValueError("Invalid image-corrector enabled preferences")
+    return dict(value)
+
+
+def _image_enabled_preferences(state):
+    from temsim.component_keys import IMAGE_CORRECTOR_ALL_LENS_KEYS
+    result = {}
+    for item in (*state.lenses, *state.corrector_elements):
+        if item.key not in state.image_corrector_initialized_keys:
+            continue
+        prefix = "lens" if item.key in IMAGE_CORRECTOR_ALL_LENS_KEYS else "corrector"
+        binding = f"{prefix}:{item.key}"
+        result[item.key] = (bool(item.enabled) if getattr(item, "_layout_installed", False)
+            else bool(state.layout_reference_enabled.get(binding,
+                getattr(item, "_layout_enabled_preference", item.enabled))))
+    return result
+
+
 def apply_profile_values(state, values: dict) -> None:
     """Apply validated current controls atomically; omitted controls stay unchanged."""
     if not isinstance(values, dict):
         raise ValueError("Operating profile devices must be a table")
     values = dict(values)
+    image_initialized = _validated_image_initialized_keys(values.pop(
+        _IMAGE_INITIALIZED_KEY, state.image_corrector_initialized_keys))
+    image_enabled = _validated_image_enabled_preferences(values.pop(_IMAGE_ENABLED_KEY, {}))
+    if set(image_enabled) - set(image_initialized):
+        raise ValueError("Image-corrector enabled preferences require initialized hardware")
     gun_controls_present = _GUN_CONTROLS_KEY in values
     gun_controls = values.pop(_GUN_CONTROLS_KEY, None)
     if gun_controls_present and not isinstance(gun_controls, dict):
@@ -384,6 +437,26 @@ def apply_profile_values(state, values: dict) -> None:
     if "lens_excitation" in model_settings:
         raise ValueError("Active lens excitation belongs only in profile devices, not simulation_model.settings")
     targets = runtime_targets(state)
+    # A profile can retain temporarily uninstalled B-COR hardware. Prepare
+    # detached typed components and commit them only after all fields validate.
+    from temsim.optics.image_corrector import create_image_corrector_component
+    from temsim.runtime_parameters import RuntimeTarget
+    image_additions = []
+    for key in image_initialized:
+        if key not in targets:
+            item = create_image_corrector_component(key)
+            from types import SimpleNamespace
+            from temsim import module_manifest
+            from temsim.column.module_assembly import (
+                _apply_manifest_projector_field_calibration, _apply_manifest_field_polarity,
+            )
+            part = SimpleNamespace(key=key, data=module_manifest.part_data("column/C3_BCOR.toml", key))
+            _apply_manifest_projector_field_calibration(item, part)
+            _apply_manifest_field_polarity(item, part)
+            item.enabled = False
+            item._layout_installed = False
+            image_additions.append(item)
+            targets[key] = RuntimeTarget(key, item.name, item)
     pending = []
     for key, attributes in values.items():
         target = targets.get(key)
@@ -475,9 +548,24 @@ def apply_profile_values(state, values: dict) -> None:
     filter_candidate = _filter_controls_candidate(state, values, targets, pending, filter_model)
     candidate_sample.virtual_interactions = []
     candidate_sample.virtual_regions = []
+    from temsim.component_keys import IMAGE_CORRECTOR_ALL_LENS_KEYS
+    for item in image_additions:
+        (state.lenses if item.key in IMAGE_CORRECTOR_ALL_LENS_KEYS else state.corrector_elements).append(item)
+    state.image_corrector_initialized_keys = tuple(sorted(
+        set(state.image_corrector_initialized_keys) | set(image_initialized)))
     for obj, name, value in pending:
         if obj is not state.sample:
             setattr(obj, name, value)
+    for key, preference in image_enabled.items():
+        item = targets[key].obj
+        prefix = "lens" if key in IMAGE_CORRECTOR_ALL_LENS_KEYS else "corrector"
+        installed = bool(getattr(item, "_layout_installed", False))
+        if installed:
+            # Active device controls remain the owner of the current switch.
+            preference = bool(item.enabled)
+        state.layout_reference_enabled[f"{prefix}:{key}"] = preference
+        item._layout_enabled_preference = preference
+        item.enabled = preference if installed else False
     if state.electron_gun.type_key == "cold_feg":
         state.electron_gun.emitter.coherence = tip_coherence
         state.electron_gun.emitter.surface_model = surface_model

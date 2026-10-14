@@ -16,6 +16,8 @@ control_convention = "Microprobe positive; Nanoprobe negative; equal magnitude. 
 [mini_condenser_control.column_startup_excitation_percent]
 # Both default probe modes were checked only for this column's relay geometry.
 "column/C3_ProbeCorrector.toml" = 43.88646617222637
+# The combined B-COR column retains these incident optics and CM working point.
+"column/C3_ProbeCorrector_BCOR.toml" = 43.88646617222637
 
 [[modes]]
 key = "micro_probe"
@@ -35,7 +37,8 @@ name = "Nanoprobe"
 family = "condenser"
 calibration_status = "computed_300kv_non_oem_normal_nanoprobe_cpu"
 calibration_reference = "Ordinary Nanoprobe at 300 kV in the C3 + Probe Corrector assembly: an executed two-dimensional waist between C2 and C3, no additional C3-to-ADL waist, and a 30 mrad focused probe at the specimen entrance. Weak C3 and ADL are matched with TL1; TL22/TL21 retain HP2-to-HP1 unit first-order magnification. CM remains -43.88646617222637% and Objective 68.9801%. Two-thread CPU verification used 3000 actual Tip samples, 2661 surviving physical stops, with 0.05 and 0.025 mm steps. Fitted hexapoles reduce same-ray nonlinear error from 1.77764 nm to 0.02067 nm; the previous strong-C3 branch's smaller residual is not claimed for this working point. Static validation disables raster/wobble only. Applies at the default CM magnitude and captured controls; edited optics need revalidation. Non-OEM geometric particle calibration, not coherent-wave resolution, sampling convergence or experimental qualification. See docs/development/nanoprobe_normal_20261014.json."
-compatible_columns = ["C3 + Probe Corrector"]
+# The B-COR extension shares the incident column; no projector qualification is inherited.
+compatible_columns = ["C3 + Probe Corrector", "C3 + Probe Corrector + B-COR"]
 compatible_recording_systems = ["*"]
 devices = { condenser_lens_1 = { percent = 51.666666666666664 }, condenser_lens_2 = { percent = 23.225625142668733 }, condenser_lens_3 = { percent = 9.207984804305022 }, adapter_lens = { percent = 10.0 }, probe_tl22_lens = { percent = 59.93152503582202 }, probe_tl21_lens = { percent = 59.95527906841963 }, probe_tl12_lens = { percent = 36.004558708747176 }, mini_condenser = { field_polarity = -1 }, objective_lens = { percent = 68.9801 }, probe_hp2_hexapole = { enabled = true, strength_m3 = 423294.84130355046, orientation_rad = 0.0 }, probe_hp1_hexapole = { enabled = true, strength_m3 = 253195.31789553943, orientation_rad = -0.04199279823147041 } }
 apertures = { condenser_aperture_2 = { enabled = true, diameter_mm = 0.10 } }
@@ -47,7 +50,8 @@ name = "Nanoprobe — Large angle"
 family = "condenser"
 calibration_status = "computed_300kv_non_oem_large_angle_reference"
 calibration_reference = "Large-angle optical branch for the C3 + Probe Corrector assembly at 300 kV. The stronger C3 adds a real two-dimensional waist between C3 and ADL, while retaining the C2-to-C3 waist and specimen focus. C2/ADL/TL1 and the hexapoles are matched with C3; this is not a C3-only adjustment. This preset retains the historical 10 October strong-C3 30 mrad working point and its GPU metrics below; an independent CPU topology/focus recheck is recorded in docs/development/nanoprobe_large_angle_20261014.json. Both Normal and Large angle reference presets currently target 30 mrad; range selection identifies the optical branch, not a guaranteed larger measured angle or a qualified 3-60 mrad range. Default signed CM magnitude is preserved across mode changes. Non-OEM geometric particle model; edited controls require revalidation."
-compatible_columns = ["C3 + Probe Corrector"]
+# The B-COR extension shares the incident column; no projector qualification is inherited.
+compatible_columns = ["C3 + Probe Corrector", "C3 + Probe Corrector + B-COR"]
 compatible_recording_systems = ["*"]
 devices = { condenser_lens_1 = { percent = 51.666666666666664 }, condenser_lens_2 = { percent = 25.25772717253661 }, condenser_lens_3 = { percent = 46.059815218359184 }, adapter_lens = { percent = 79.80694335935594 }, probe_tl22_lens = { percent = 59.93152503582202 }, probe_tl21_lens = { percent = 59.95527906841963 }, probe_tl12_lens = { percent = 49.977014835272826 }, mini_condenser = { field_polarity = -1 }, objective_lens = { percent = 68.9801 }, probe_hp2_hexapole = { enabled = true, strength_m3 = 694323.0354215894, orientation_rad = 0.0 }, probe_hp1_hexapole = { enabled = true, strength_m3 = 416774.6329835517, orientation_rad = -0.041975232520065166 } }
 apertures = { condenser_aperture_2 = { enabled = true, diameter_mm = 0.10 } }

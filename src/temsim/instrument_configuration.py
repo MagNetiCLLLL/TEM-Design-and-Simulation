@@ -18,29 +18,39 @@ class InstrumentUnits:
     probe_corrector: bool = True
     image_corrector: bool = False
     energy_filter: bool = True
+    # The existing Boolean controls installation; the design selects hardware.
+    # Appended so positional callers from the two-hexapole catalog stay valid.
+    image_corrector_design: str = "cetcor"
 
     def selection(self, catalog):
         if self.source not in {"cold_feg", "thermionic"}:
             raise ValueError("Select Cold FEG or Thermionic")
         for field in fields(self):
-            if field.name != "source" and type(getattr(self, field.name)) is not bool:
+            if field.name not in {"source", "image_corrector_design"} and type(getattr(self, field.name)) is not bool:
                 raise ValueError(f"{field.name} must be an explicit on/off choice")
+        if self.image_corrector_design not in {"cetcor", "bcor"}:
+            raise ValueError("Select CETCOR or B-COR image corrector hardware")
         if self.monochromator and self.source != "cold_feg":
             raise ValueError("Monochromator requires Cold FEG")
         if not self.c3_lens and (self.probe_corrector or self.image_corrector):
             raise ValueError("Probe and image correctors require C3 lens")
 
         def match(options, **properties):
-            found = [o for o in options if all(o.properties.get(k) == v for k, v in properties.items())]
+            found = [o for o in options if all(
+                o.properties.get(k, "cetcor" if k == "image_corrector_design" else None) == v
+                for k, v in properties.items())]
             if len(found) != 1:
                 raise ValueError(f"No unique supported assembly for {properties}")
             return found[0].name
 
+        column_properties = dict(c3_lens=self.c3_lens,
+            probe_corrector=self.probe_corrector, image_corrector=self.image_corrector)
+        if self.image_corrector:
+            column_properties["image_corrector_design"] = self.image_corrector_design
         return catalog.normalise_selection(AssemblySelection(
             gun=match(catalog.guns, electron_gun="FEG" if self.source == "cold_feg" else "Thermionic",
                       monochromator=self.monochromator),
-            column=match(catalog.columns, c3_lens=self.c3_lens,
-                         probe_corrector=self.probe_corrector, image_corrector=self.image_corrector),
+            column=match(catalog.columns, **column_properties),
             recording=match(catalog.recording_systems, energy_filter=self.energy_filter),
             beam_blanker=match(catalog.beam_blankers, installed=self.beam_blanker)))
 
@@ -54,7 +64,8 @@ class InstrumentUnits:
                    monochromator=bool(gun["monochromator"]),
                    beam_blanker=selection.beam_blanker != "None",
                    c3_lens=bool(column["c3_lens"]), probe_corrector=bool(column["probe_corrector"]),
-                   image_corrector=bool(column["image_corrector"]), energy_filter=bool(recording["energy_filter"]))
+                   image_corrector=bool(column["image_corrector"]), energy_filter=bool(recording["energy_filter"]),
+                   image_corrector_design=str(column.get("image_corrector_design", "cetcor")))
 
 
 @dataclass(frozen=True)
@@ -87,7 +98,7 @@ def check_instrument_configuration(state, catalog, units):
 
 def unit_for_component(assembly, key):
     """Mechanical children inherit the unit of their optical parent."""
-    from temsim.component_keys import IMAGE_CORRECTOR_KEYS, PROBE_CORRECTOR_KEYS
+    from temsim.component_keys import IMAGE_CORRECTOR_ALL_KEYS, PROBE_CORRECTOR_KEYS
     parts = {p.key: p for p in assembly.parts}
     visited = set()
     while key in parts and key not in visited:
@@ -99,7 +110,7 @@ def unit_for_component(assembly, key):
             return "c3_lens"
         if key in PROBE_CORRECTOR_KEYS:
             return "probe_corrector"
-        if key in IMAGE_CORRECTOR_KEYS:
+        if key in IMAGE_CORRECTOR_ALL_KEYS:
             return "image_corrector"
         if key.startswith("energy_filter") or part.branch == "energy_filter":
             return "energy_filter"

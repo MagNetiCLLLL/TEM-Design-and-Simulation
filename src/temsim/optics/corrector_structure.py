@@ -1,6 +1,8 @@
 from dataclasses import dataclass, asdict
 from temsim.optics.image_corrector import (
     create_image_corrector_elements,
+    ensure_image_corrector_design,
+    image_corrector_keys,
 )
 from temsim.component_keys import (
     AC_DEFLECTOR,
@@ -8,8 +10,8 @@ from temsim.component_keys import (
     ADAPTER_LENS,
     DC_DEFLECTOR,
     DESCAN_DEFLECTOR,
-    IMAGE_CORRECTOR_ELEMENT_KEYS,
-    IMAGE_CORRECTOR_LENS_KEYS,
+    IMAGE_CORRECTOR_ALL_ELEMENT_KEYS,
+    IMAGE_CORRECTOR_ALL_LENS_KEYS,
     PROBE_DP22_DEFLECTOR,
     PROBE_DP21_DEFLECTOR,
     PROBE_DP11_DEFLECTOR,
@@ -79,7 +81,7 @@ class CorrectorElement:
 
 
 
-def default_corrector_elements():
+def default_corrector_elements(design="cetcor"):
 
     # Normalised simulator coordinates. The sequence is grounded in the FEI
 
@@ -87,7 +89,7 @@ def default_corrector_elements():
 
     # distances are editable simulator defaults, not manufacturer dimensions.
 
-    image_elements = create_image_corrector_elements()
+    image_elements = create_image_corrector_elements(design)
 
     return [
 
@@ -135,7 +137,9 @@ def ensure_corrector_structure(state):
 
     for pair in state.deflectors:
         require_current_component_key(pair.key)
-    defaults = default_corrector_elements()
+    ensure_image_corrector_design(state)
+    selected_image_keys = frozenset(image_corrector_keys(state.image_corrector_design))
+    defaults = default_corrector_elements(state.image_corrector_design)
     expected_types = {item.key: type(item) for item in defaults}
     elements = list(getattr(state, "corrector_elements", ()))
     seen = set()
@@ -177,7 +181,10 @@ def ensure_corrector_structure(state):
             was_installed = bool(
                 getattr(item, "_layout_installed", True)
             )
-            if image_on:
+            installed = image_on and item.key in selected_image_keys
+            if installed:
+                if was_installed:
+                    enabled_reference[binding] = bool(item.enabled)
                 item.enabled = bool(enabled_reference.get(
                     binding,
                     getattr(
@@ -197,7 +204,7 @@ def ensure_corrector_structure(state):
                         enabled_reference[binding]
                     )
                 item.enabled = False
-            item._layout_installed = image_on
+            item._layout_installed = installed
 
         elif item.key == DESCAN_DEFLECTOR:
 
@@ -223,12 +230,15 @@ def ensure_corrector_structure(state):
 
             lens.enabled=probe_on
 
-        elif str(lens.key) in IMAGE_CORRECTOR_LENS_KEYS:
+        elif str(lens.key) in IMAGE_CORRECTOR_ALL_LENS_KEYS:
             binding = f"lens:{lens.key}"
             was_installed = bool(
                 getattr(lens, "_layout_installed", True)
             )
-            if image_on:
+            installed = image_on and lens.key in selected_image_keys
+            if installed:
+                if was_installed:
+                    enabled_reference[binding] = bool(lens.enabled)
                 lens.enabled = bool(enabled_reference.get(
                     binding,
                     getattr(
@@ -248,7 +258,7 @@ def ensure_corrector_structure(state):
                         enabled_reference[binding]
                     )
                 lens.enabled = False
-            lens._layout_installed = image_on
+            lens._layout_installed = installed
 
 
     return state

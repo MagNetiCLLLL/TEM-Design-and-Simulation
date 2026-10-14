@@ -1392,9 +1392,9 @@ def _validate_projector_field_calibrations(parts):
 
 
 def _validate_image_corrector_field_calibrations(parts):
-    from temsim.component_keys import IMAGE_CORRECTOR_LENS_KEYS
+    from temsim.component_keys import IMAGE_CORRECTOR_ALL_LENS_KEYS
     for part in parts:
-        if str(part["key"]) not in IMAGE_CORRECTOR_LENS_KEYS:
+        if str(part["key"]) not in IMAGE_CORRECTOR_ALL_LENS_KEYS:
             continue
         _validate_round_lens_field_calibration(
             part, str(part["key"]),
@@ -1402,6 +1402,32 @@ def _validate_image_corrector_field_calibrations(parts):
         )
         if not isinstance(part["normalise_field_profile_peak"], bool):
             raise ValueError(f"{part['key']}.normalise_field_profile_peak must be boolean")
+    by_key = {str(part["key"]): part for part in parts}
+    bcor = "image_hp3_hexapole" in by_key
+    fields = ("default_strength_m3", "maximum_strength_m3", "orientation_rad")
+    for key in ("image_hp1_hexapole", "image_hp2_hexapole", "image_hp3_hexapole"):
+        part = by_key.get(key)
+        if part is None:
+            continue
+        # Historical CETCOR documents inherit their fixed defaults. B-COR's
+        # three main fields are explicitly defined together in its manifest.
+        if not bcor and not any(field in part for field in fields):
+            continue
+        for field in fields:
+            value = part.get(field)
+            finite = False
+            if not isinstance(value, bool) and isinstance(value, (int, float)):
+                try:
+                    finite = math.isfinite(value)
+                except OverflowError:
+                    pass
+            if not finite:
+                raise ValueError(f"{key}.{field} must be a finite number")
+        maximum = part["maximum_strength_m3"]
+        if maximum <= 0.0:
+            raise ValueError(f"{key}.maximum_strength_m3 must be positive")
+        if abs(part["default_strength_m3"]) > maximum:
+            raise ValueError(f"{key}.default_strength_m3 exceeds maximum_strength_m3")
 
 
 def _validate_condenser_field_calibrations(parts, geometry):
@@ -2862,7 +2888,13 @@ def _expected_column_order(parts):
         expected.extend(PROBE_CORRECTOR_COLUMN_KEYS)
     expected.extend(OBJECTIVE_COLUMN_KEYS)
     if "image_tl11_lens" in keys:
-        expected.extend(IMAGE_CORRECTOR_COLUMN_KEYS)
+        extras = {"image_tl31_lens", "image_tl32_lens", "image_hp3_hexapole"}
+        if keys.intersection(extras) and not extras.issubset(keys):
+            raise ValueError("B-COR requires TL31, TL32 and HP3 together")
+        for key in IMAGE_CORRECTOR_COLUMN_KEYS:
+            expected.append(key)
+            if key == "image_hp2_hexapole" and extras.issubset(keys):
+                expected.extend(("image_tl31_lens", "image_tl32_lens", "image_hp3_hexapole"))
     return tuple(expected)
 
 

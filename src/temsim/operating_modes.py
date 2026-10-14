@@ -143,7 +143,7 @@ class OperatingModeCatalog:
 @dataclass(frozen=True)
 class AppliedOperatingModes:
     condenser: OperatingModeDefinition
-    projector: OperatingModeDefinition
+    projector: OperatingModeDefinition | None
     changed_devices: tuple[str, ...]
 
     @property
@@ -154,7 +154,7 @@ class AppliedOperatingModes:
         convergence = self.condenser.targets.get(
             "achieved_convergence_sem_angle_mrad"
         )
-        relay_um = self.projector.targets.get("achieved_relay_error_um")
+        relay_um = self.projector.targets.get("achieved_relay_error_um") if self.projector else None
         details = []
         if convergence is not None:
             label = (
@@ -171,7 +171,8 @@ class AppliedOperatingModes:
             )
         suffix = "; ".join(details)
         return (
-            f"{self.condenser.name} + {self.projector.name}"
+            (f"{self.condenser.name} + {self.projector.name}" if self.projector
+             else f"{self.condenser.name} illumination; projection settings retained")
             + (f": {suffix}" if suffix else "")
         )
 
@@ -529,7 +530,7 @@ def _apply_values(state, mode: OperatingModeDefinition) -> tuple[str, ...]:
 def _apply_operating_mode_pair(
     state,
     condenser_key: str,
-    projector_key: str,
+    projector_key: str | None,
     *,
     column_name: str | None = None,
     recording_name: str | None = None,
@@ -539,8 +540,8 @@ def _apply_operating_mode_pair(
 
     catalog = catalog or load_operating_mode_catalog()
     condenser = mode_by_key(condenser_key, catalog)
-    projector = mode_by_key(projector_key, catalog)
-    if condenser.family != "condenser" or projector.family != "projector":
+    projector = mode_by_key(projector_key, catalog) if projector_key is not None else None
+    if condenser.family != "condenser" or (projector is not None and projector.family != "projector"):
         raise ValueError("A mode pair requires one condenser and one projector mode")
 
     def require_compatible(mode: OperatingModeDefinition) -> None:
@@ -558,7 +559,8 @@ def _apply_operating_mode_pair(
             raise ValueError(f"{mode.name} is not calibrated for {recording_name}")
 
     require_compatible(condenser)
-    require_compatible(projector)
+    if projector is not None:
+        require_compatible(projector)
     if "mini_condenser" in condenser.devices:
         state.mini_condenser.validate_probe_mode(
             "nano_probe" if is_nanoprobe_mode(condenser.key) else condenser.key)
@@ -570,10 +572,11 @@ def _apply_operating_mode_pair(
     }[condenser.key]
     if is_nanoprobe_mode(condenser.key):
         state.nanoprobe_range = "large_angle" if condenser.key == "nano_probe_large_angle" else "normal"
-    state.projector_mode = {
-        "imaging": "image",
-        "diffraction": "diffraction",
-    }[projector.key]
+    if projector is not None:
+        state.projector_mode = {
+            "imaging": "image",
+            "diffraction": "diffraction",
+        }[projector.key]
     # A physical TEM screen/camera path and the inserted STEM detector stack
     # are mutually exclusive presets.  In TEM, retract annular/disk STEM
     # detectors before wave propagation; in STEM, retract the fluorescent
@@ -597,7 +600,9 @@ def _apply_operating_mode_pair(
             detector.readout_enabled = True
         state.fluorescent_screen.inserted = False
         state.camera.inserted = False
-    changed = _apply_values(state, condenser) + _apply_values(state, projector)
+    changed = _apply_values(state, condenser)
+    if projector is not None:
+        changed += _apply_values(state, projector)
     if not bool(getattr(state, "monochromator_installed", False)):
         state.condenser_aperture_3.radius_mm = (
             state.condenser_aperture_3.maximum_radius_mm
@@ -616,7 +621,7 @@ def _apply_operating_mode_pair(
 def apply_operating_mode_pair(
     state,
     condenser_key: str,
-    projector_key: str,
+    projector_key: str | None,
     *,
     column_name: str | None = None,
     recording_name: str | None = None,
@@ -636,6 +641,8 @@ def apply_operating_mode_pair(
     targets = runtime_targets(state)
     saved = []
     for key in (condenser_key, projector_key):
+        if key is None:
+            continue
         definition = mode_by_key(key, catalog)
         for group in (definition.devices, definition.apertures):
             for device_key, values in group.items():
@@ -669,6 +676,22 @@ def apply_operating_mode_pair(
             setattr(obj, field, value)
         state.sync_objective()
         raise
+
+
+def apply_condenser_mode(
+    state, condenser_key: str, *, column_name: str | None = None,
+    recording_name: str | None = None, catalog: OperatingModeCatalog | None = None,
+) -> AppliedOperatingModes:
+    """Apply illumination transactionally without loading a projector preset.
+
+    A downstream image corrector can share validated incident optics while
+    its projector/recording-plane conjugacy remains separately unqualified.
+    Blanker recalibration and rollback use the complete-preset transaction.
+    """
+    return apply_operating_mode_pair(
+        state, condenser_key, None, column_name=column_name,
+        recording_name=recording_name, catalog=catalog,
+    )
 
 
 def apply_projector_mode(

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 import re
 
 from temsim.component_keys import (
-    APERTURE_KEYS, PROBE_CORRECTOR_KEYS, IMAGE_CORRECTOR_KEYS,
+    APERTURE_KEYS, PROBE_CORRECTOR_KEYS, IMAGE_CORRECTOR_ALL_KEYS,
     CAMERA, FLUORESCENT_SCREEN, STEM_DETECTOR_KEYS,
 )
 from temsim.parameter_semantics import parameter_unit
@@ -149,7 +149,7 @@ _TIP_METADATA = {
     "vacuum_pa": "Historical source vacuum metadata. Residual-gas transport is controlled by the explicit vacuum map and its opt-in switch, not this value.",
 }
 
-_CORRECTOR_KEYS = frozenset((*PROBE_CORRECTOR_KEYS, *IMAGE_CORRECTOR_KEYS))
+_CORRECTOR_KEYS = frozenset((*PROBE_CORRECTOR_KEYS, *IMAGE_CORRECTOR_ALL_KEYS))
 _HEXAPOLE_KEYS = frozenset(k for k in _CORRECTOR_KEYS if k.endswith("_hexapole"))
 _QUADRUPOLE_KEYS = frozenset(k for k in _CORRECTOR_KEYS if k.endswith("_quadrupole"))
 _FIELD_LENGTH = ("Axial Gaussian FWHM of the effective field, not the material body length. "

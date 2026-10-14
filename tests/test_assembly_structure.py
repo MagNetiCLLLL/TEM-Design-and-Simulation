@@ -112,7 +112,8 @@ def test_functional_groups_do_not_split_mechanical_parents_or_filter_path(filter
 
 
 _OPTIONS = list(product(("FEG", "FEG + Mono", "Thermionic"),
-                       ("C2", "C3", "C3 + Probe Corrector", "C3 + Image Corrector", "C3 + Probe Corrector + Image Corrector"),
+                       ("C2", "C3", "C3 + Probe Corrector", "C3 + Image Corrector", "C3 + Probe Corrector + Image Corrector",
+                        "C3 + B-COR", "C3 + Probe Corrector + B-COR"),
                        ("None", "Electrostatic beam blanker")))
 
 
@@ -126,6 +127,27 @@ def test_all_existing_assembly_combinations_remain_representable(gun, column, bl
     assert {row.key for row in structure.components} == {part.key for part in assembly.parts}
     if blanker == "Electrostatic beam blanker":
         assert structure.by_key["nanopulser_aperture"].group_key == "blanker"
+
+
+@pytest.mark.parametrize("column", ["C3 + B-COR", "C3 + Probe Corrector + B-COR"])
+def test_bcor_extra_optics_and_children_keep_imaging_membership_and_real_parents(column):
+    from temsim.component_keys import BCOR_EXTRA_KEYS
+
+    state, catalog = default_state(), AssemblyCatalog()
+    assembly = catalog.apply(state, replace(catalog.default_selection(), column=column))
+    before = capture_instrument_snapshot(state).digest
+    structure = build_assembly_structure(assembly)
+    checked = set()
+    for part in assembly.parts:
+        if part.key in BCOR_EXTRA_KEYS or part.parent_key in BCOR_EXTRA_KEYS:
+            checked.add(part.key)
+            row = structure.by_key[part.key]
+            assert row.group_key == "imaging"
+            assert row.parent_id == (structure.by_key[part.parent_key].instance_id
+                                     if part.parent_key else None)
+    assert set(BCOR_EXTRA_KEYS) <= checked
+    assert {"image_tl31_lens_excitation_coil", "image_tl32_lens_excitation_coil"} <= checked
+    assert capture_instrument_snapshot(state).digest == before
 
 
 def test_tree_preserves_selection_and_parent_links_on_renamed_storage(state, qtbot):

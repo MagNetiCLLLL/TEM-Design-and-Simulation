@@ -1,19 +1,22 @@
 """CPU-only selected-nanoprobe topology and specimen-focus acceptance.
 
-Runs the installed default assembly at two integration steps with a fixed
+Runs a selected incident-column assembly at two integration steps with a fixed
 particle budget. This is not particle-sampling convergence, wave-optical probe
 qualification or an OEM calibration. Candidate input never changes the catalog.
 """
 from __future__ import annotations
 
 import argparse
-from dataclasses import asdict
+from dataclasses import asdict, replace
 import json
 import math
 import os
 from pathlib import Path
 import sys
 from time import perf_counter
+
+
+_COLUMNS = ("C3 + Probe Corrector", "C3 + Probe Corrector + B-COR")
 
 
 def _positive(value):
@@ -27,6 +30,8 @@ def _arguments():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--range", choices=("normal", "large_angle"), default="normal",
                         help="Nanoprobe optical branch to validate")
+    parser.add_argument("--column", choices=_COLUMNS, default=_COLUMNS[0],
+                        help="incident column; B-COR retains its downstream projector controls")
     parser.add_argument("--rays", type=int, default=3000,
                         help="fixed emitted-particle budget (default: calibrated 3000); smaller budgets can change alpha95 and do not relax acceptance")
     parser.add_argument("--step", type=_positive, default=.05,
@@ -82,6 +87,30 @@ def _actual_backends(receipts):
     return sorted({row["actual"] for row in receipts if row["outcome"] == "returned"})
 
 
+def _configured_state(column_name, nanoprobe_range):
+    """Construct detached incident optics without qualifying a B-COR projector."""
+    from temsim.assembly_catalog import AssemblyCatalog
+    from temsim.operating_modes import apply_condenser_mode, apply_operating_mode_pair
+    from temsim.optics.column import default_state
+
+    if column_name not in _COLUMNS:
+        raise ValueError(f"Unsupported incident-column reference: {column_name}")
+    if nanoprobe_range not in {"normal", "large_angle"}:
+        raise ValueError(f"Unknown Nanoprobe range: {nanoprobe_range}")
+    state = default_state()
+    catalog = AssemblyCatalog()
+    selection = replace(catalog.default_selection(), column=column_name)
+    catalog.apply(state, selection)
+    mode_key = "nano_probe_large_angle" if nanoprobe_range == "large_angle" else "nano_probe"
+    compatibility = dict(column_name=selection.column, recording_name=selection.recording)
+    projector_applied = column_name == _COLUMNS[0]
+    if projector_applied:
+        apply_operating_mode_pair(state, mode_key, "diffraction", **compatibility)
+    else:
+        apply_condenser_mode(state, mode_key, **compatibility)
+    return state, selection, mode_key, projector_applied
+
+
 def _execute(args, report):
     # Set limits before importing numerical libraries, even on CUDA-equipped hosts.
     for name in ("TEMSIM_CPU_THREADS", "OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS",
@@ -96,9 +125,6 @@ def _execute(args, report):
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
     import numpy as np
     from numba import config, set_num_threads, get_num_threads
-    from temsim.assembly_catalog import AssemblyCatalog
-    from temsim.operating_modes import apply_operating_mode_pair
-    from temsim.optics.column import default_state
     from temsim.optics.condenser_topology import validate
     from temsim.optics.electron_gun.source import trace_source_to_exit
     from temsim.optics.surface_probe_focus import measure_surface_focus
@@ -107,12 +133,7 @@ def _execute(args, report):
     set_num_threads(min(args.threads, config.NUMBA_NUM_THREADS))
     report["numba_threads"] = get_num_threads()
     # This new state is detached from any running GUI or saved instrument.
-    state = default_state()
-    catalog = AssemblyCatalog()
-    selection = catalog.default_selection()
-    catalog.apply(state, selection)
-    mode_key = "nano_probe_large_angle" if args.range == "large_angle" else "nano_probe"
-    apply_operating_mode_pair(state, mode_key, "diffraction")
+    state, selection, mode_key, projector_applied = _configured_state(args.column, args.range)
     state.simulation_mode = "custom"
     for deflector in (state.ac_deflector, state.descan_deflector):
         deflector.scan_enabled = False
@@ -126,7 +147,9 @@ def _execute(args, report):
         _load_candidate(state, args.candidate)
     report.update(assembly=asdict(selection), voltage_kv=state.beam_voltage_kv,
         simulation_mode=state.simulation_mode,
-        modes={"condenser": mode_key, "projector": "diffraction"},
+        modes={"condenser": mode_key, "projector": state.projector_mode},
+        projector_preset_applied=projector_applied,
+        validation_plane="specimen entrance; downstream image-corrector/projector not qualified",
         nanoprobe_range=state.nanoprobe_range,
         static_drives={"ac_raster": False, "dc_raster": False, "wobble": False},
         lenses={lens.key: float(lens.percent) for lens in state.lenses},
@@ -205,6 +228,7 @@ def main():
     report = dict(schema="nanoprobe-condenser-validation-v1", passed=False,
         requested_backend="Numba CPU", particle_budget=args.rays,
         nanoprobe_range=args.range,
+        requested_column=args.column,
         integration_steps_mm=[args.step, args.step / 2],
         target_alpha95_mrad=args.target, angle_relative_tolerance=.01,
         focus_tolerance_nm=1., minimum_surviving_and_effective_rays=16,

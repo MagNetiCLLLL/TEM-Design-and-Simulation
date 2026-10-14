@@ -38,6 +38,7 @@ class _NavigationTabs(QTabWidget):
 class AssemblyPanel(QWidget):
     configuration_requested = Signal()
     operating_mode_requested = Signal(str, str)
+    condenser_mode_requested = Signal(str)
     direct_alignment_requested = Signal(str, float)
     component_selected = Signal(object)
     component_activated = Signal(object, str)
@@ -261,7 +262,8 @@ class AssemblyPanel(QWidget):
         names.extend(label for key, label in (
             ("monochromator", "Monochromator"), ("beam_blanker", "Beam blanker"),
             ("c3_lens", "C3"), ("probe_corrector", "Probe corrector"),
-            ("image_corrector", "Image corrector"), ("energy_filter", "Energy filter"))
+            ("image_corrector", "B-COR" if units.image_corrector_design == "bcor" else "CETCOR"),
+            ("energy_filter", "Energy filter"))
             if getattr(units, key))
         self.configuration_summary.setText(" · ".join(names))
         self._selection = selection
@@ -325,7 +327,14 @@ class AssemblyPanel(QWidget):
             combo.setCurrentIndex(index if index >= 0 else 0)
             combo.blockSignals(blocked)
         self.apply_operating_mode_button.setEnabled(
-            self.probe_mode.count() > 0 and self.projector_mode.count() > 0
+            self.probe_mode.count() > 0
+        )
+        self.projector_mode.setPlaceholderText("Current projection retained")
+        self.projector_mode.setToolTip(
+            "No calibrated projection preset is available for this assembly. "
+            "Applying illumination retains the current projection settings."
+            if not projector_modes else
+            "Apply the selected Image or Diffraction lens preset."
         )
         self._update_operating_mode_description()
 
@@ -388,7 +397,7 @@ class AssemblyPanel(QWidget):
         alignment_panel = getattr(self, "direct_alignment_panel", None)
         if alignment_panel is not None:
             alignment_panel.set_selected_mode_keys(condenser_key, projector_key)
-        if condenser_key is None or projector_key is None:
+        if condenser_key is None:
             self.operating_mode_status.setText(
                 "No calibrated preset is available for this assembly."
             )
@@ -397,17 +406,17 @@ class AssemblyPanel(QWidget):
         condenser = mode_by_key(
             condenser_key, self.operating_mode_catalog
         )
-        projector = mode_by_key(
-            projector_key, self.operating_mode_catalog
-        )
+        projector = (mode_by_key(projector_key, self.operating_mode_catalog)
+                     if projector_key is not None else None)
         retained = condenser.calibration_status.startswith("retained_not_recomputed_")
         self.apply_operating_mode_button.setText(
+            "Apply illumination preset" if projector is None else
             "Apply stored lens preset" if retained else "Apply calculated lens preset"
         )
         angle = condenser.targets.get(
             "achieved_convergence_sem_angle_mrad"
         )
-        plane = projector.targets.get("conjugate_plane", "")
+        plane = projector.targets.get("conjugate_plane", "") if projector else "current projection retained"
         plane_label = {
             "objective_image_plane": "objective image plane",
             "objective_back_focal_plane": "objective back focal plane",
@@ -459,6 +468,8 @@ class AssemblyPanel(QWidget):
             self.operating_mode_requested.emit(
                 str(condenser_key), str(projector_key)
             )
+        elif condenser_key is not None:
+            self.condenser_mode_requested.emit(str(condenser_key))
 
     def load_assembly(self, assembly, runtime_targets=None) -> None:
         self._assembly = assembly

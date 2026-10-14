@@ -67,6 +67,7 @@ from temsim.gui.workspace_layouts import WorkspaceLayouts
 from temsim.manifest_editor import ManifestEditor, ManifestTarget
 from temsim.optics.column import default_state
 from temsim.operating_modes import (
+    apply_condenser_mode,
     apply_operating_mode_pair,
     apply_projector_mode,
     compatible_modes,
@@ -286,6 +287,9 @@ class MainWindow(QMainWindow):
         self.assembly_panel.configuration_requested.connect(self.open_instrument_configuration)
         self.assembly_panel.operating_mode_requested.connect(
             self.apply_operating_modes
+        )
+        self.assembly_panel.condenser_mode_requested.connect(
+            lambda key: self.apply_operating_modes(key, None)
         )
         self.assembly_panel.direct_alignment_requested.connect(
             self.apply_direct_alignment
@@ -1650,12 +1654,12 @@ class MainWindow(QMainWindow):
             self._show_error(f"Unable to load assembly: {exc}")
 
     def apply_operating_modes(
-        self, condenser_key: str, projector_key: str
+        self, condenser_key: str, projector_key: str | None
     ) -> None:
         self._invalidate_direct_alignment()
         try:
             current_condenser, current_projector = self._state_operating_mode_keys(self.state)
-            projector_only = (condenser_key == current_condenser
+            projector_only = (projector_key is not None and condenser_key == current_condenser
                               and projector_key != current_projector)
             if self.state.nanopulser.installed and not projector_only:
                 self._start_operating_preset(
@@ -1667,6 +1671,10 @@ class MainWindow(QMainWindow):
                     column_name=self.selection.column, recording_name=self.selection.recording)
                 # No topology or Objective change: a geometry refresh is not
                 # needed and must not reinterpret the held incident state.
+            elif projector_key is None:
+                result = apply_condenser_mode(self.state, condenser_key,
+                    column_name=self.selection.column, recording_name=self.selection.recording)
+                apply_physical_layout_to_state(self.state)
             else:
                 result = apply_operating_mode_pair(self.state, condenser_key, projector_key,
                     column_name=self.selection.column, recording_name=self.selection.recording)
@@ -1674,7 +1682,7 @@ class MainWindow(QMainWindow):
                 apply_physical_layout_to_state(self.state)
             self._refresh_assembly_views()
             self.assembly_panel.set_operating_mode_keys(
-                condenser_key, projector_key
+                condenser_key, projector_key or current_projector
             )
             details = "" if projector_only else self.assembly_panel.operating_mode_status.text()
             self.assembly_panel.set_operating_mode_status(

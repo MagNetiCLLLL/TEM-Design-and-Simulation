@@ -18,7 +18,9 @@ from temsim.component_names import (
     STIGMATOR_NAMES,
 )
 from temsim.optics.image_corrector import (
-    IMAGE_CORRECTOR_COMPONENTS,
+    image_corrector_definitions,
+    image_corrector_keys,
+    validate_image_corrector_design,
     REFERENCE_SAMPLE_EFFECTIVE_Z_MM,
     create_image_corrector_components,
 )
@@ -157,6 +159,10 @@ from temsim.component_keys import (
     IMAGE_CORRECTOR_HPOL_HEXAPOLE,
     IMAGE_CORRECTOR_ISH_DEFLECTOR,
     IMAGE_CORRECTOR_KEYS,
+    BCOR_EXTRA_KEYS,
+    IMAGE_CORRECTOR_HP3_HEXAPOLE,
+    IMAGE_CORRECTOR_TL31_LENS,
+    IMAGE_CORRECTOR_TL32_LENS,
     IMAGE_CORRECTOR_QPOL_QUADRUPOLE,
     IMAGE_CORRECTOR_SAD_PLANE,
     IMAGE_CORRECTOR_TL11_LENS,
@@ -419,6 +425,7 @@ class LayoutConfiguration:
     image_corrector_components: tuple = field(
         default_factory=create_image_corrector_components
     )
+    image_corrector_design: str = "cetcor"
     resolved_assembly: object = field(
         default=None,
         repr=False,
@@ -594,9 +601,14 @@ class LayoutConfiguration:
             raise ValueError("The HP2 hexapole has a non-canonical key.")
         if self.hpc_hexapole_component.key != PROBE_HPC_HEXAPOLE:
             raise ValueError("The HPC hexapole has a non-canonical key.")
+        validate_image_corrector_design(self.image_corrector_design)
+        if self.image_corrector_design == "bcor" and tuple(
+            component.key for component in self.image_corrector_components
+        ) == IMAGE_CORRECTOR_KEYS:
+            object.__setattr__(self, "image_corrector_components", create_image_corrector_components("bcor"))
         if tuple(
             component.key for component in self.image_corrector_components
-        ) != IMAGE_CORRECTOR_KEYS:
+        ) != image_corrector_keys(self.image_corrector_design):
             raise ValueError(
                 "Image Corrector components must be complete and canonical."
             )
@@ -664,17 +676,18 @@ class _LayoutSpec:
 def _image_corrector_specs(
     components=None,
     sample_center_from_source_mm=REFERENCE_SAMPLE_EFFECTIVE_Z_MM,
+    design="cetcor",
 ):
     runtime_components = {
         component.key: component
         for component in (
             components
             if components is not None
-            else create_image_corrector_components()
+            else create_image_corrector_components(design)
         )
     }
     specs = {}
-    for definition in IMAGE_CORRECTOR_COMPONENTS:
+    for definition in image_corrector_definitions(design):
         component = runtime_components[definition.key]
         mechanical_below_sample_mm = (
             float(component.mechanical_center_from_tip_mm)
@@ -817,6 +830,9 @@ _IMAGE_CORRECTOR_SEQUENCE = (
     IMAGE_CORRECTOR_TL22_LENS,
     IMAGE_CORRECTOR_DPH2_DEFLECTOR,
     IMAGE_CORRECTOR_HP2_HEXAPOLE,
+    IMAGE_CORRECTOR_TL31_LENS,
+    IMAGE_CORRECTOR_TL32_LENS,
+    IMAGE_CORRECTOR_HP3_HEXAPOLE,
     IMAGE_CORRECTOR_ADAPTER_LENS,
     IMAGE_CORRECTOR_ISH_DEFLECTOR,
     IMAGE_CORRECTOR_DSH_DEFLECTOR,
@@ -2168,6 +2184,7 @@ def _base_specs(configuration):
     specs.update(_image_corrector_specs(
         configuration.image_corrector_components,
         configuration.sample_center_from_source_mm,
+        configuration.image_corrector_design,
     ))
     magnetic_pole_parents = {
         component.key: component
@@ -2294,6 +2311,7 @@ def _pair_gaps(specs):
         _LOWER_SEQUENCE,
         _IMAGE_CORRECTOR_SEQUENCE,
     ):
+        sequence = tuple(key for key in sequence if key not in BCOR_EXTRA_KEYS or key in specs)
         for a, b in zip(sequence, sequence[1:]):
             if a in specs and b in specs:
                 gaps[(a, b)] = _nominal_gap(specs[a], specs[b])
@@ -3056,12 +3074,16 @@ def resolve_installed_image_corrector_exit_mechanical_axis(
         IMAGE_CORRECTOR_TL22_LENS,
         IMAGE_CORRECTOR_DPH2_DEFLECTOR,
         IMAGE_CORRECTOR_HP2_HEXAPOLE,
+        IMAGE_CORRECTOR_TL31_LENS,
+        IMAGE_CORRECTOR_TL32_LENS,
+        IMAGE_CORRECTOR_HP3_HEXAPOLE,
         IMAGE_CORRECTOR_ADAPTER_LENS,
         IMAGE_CORRECTOR_ISH_DEFLECTOR,
         IMAGE_CORRECTOR_DSH_DEFLECTOR,
         IMAGE_CORRECTOR_DSTG_QUADRUPOLE,
         SELECTED_AREA_APERTURE,
     )
+    axis_order = tuple(key for key in axis_order if key in by_key)
     components = tuple(
         _SourceReferencedAxisComponent(
             key,

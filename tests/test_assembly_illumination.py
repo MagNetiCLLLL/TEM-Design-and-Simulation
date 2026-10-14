@@ -1,4 +1,5 @@
 from dataclasses import replace
+from itertools import product
 from types import SimpleNamespace
 
 import numpy as np
@@ -37,9 +38,19 @@ def test_confirmed_targets_use_upper_surface_and_current_weighted_quantiles():
 def test_all_supported_assemblies_are_audited_without_assumed_equivalence():
     catalog = AssemblyCatalog()
     combinations = assembly_combinations(catalog)
-    assert len(combinations) == 60
-    assert len(set(combinations)) == 60
-    assert {c.gun for c in combinations} == {g.name for g in catalog.guns}
+    expected = {
+        AssemblySelection(gun.name, column.name, recording.name, blanker.name)
+        for gun, column, recording, blanker in product(
+            catalog.guns, catalog.columns, catalog.recording_systems, catalog.beam_blankers)
+    }
+    assert set(combinations) == expected
+    assert len(combinations) == len(expected)
+    for column_name in ("C3 + B-COR", "C3 + Probe Corrector + B-COR"):
+        assert {selection for selection in combinations if selection.column == column_name} == {
+            AssemblySelection(gun.name, column_name, recording.name, blanker.name)
+            for gun, recording, blanker in product(
+                catalog.guns, catalog.recording_systems, catalog.beam_blankers)
+        }
 
 
 @pytest.mark.parametrize('column', ['C2', 'C3', 'C3 + Probe Corrector',

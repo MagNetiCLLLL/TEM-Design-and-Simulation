@@ -73,6 +73,7 @@ def prepare(root, *, material_liners=True, holder_retractions=(0., 50., 160., 32
         configuration = SimpleNamespace(electron_gun_type='thermionic' if gun.properties['electron_gun'] == 'Thermionic' else 'cold_feg',
             monochromator_installed=bool(gun.properties['monochromator']),
             corrector=SimpleNamespace(value=corrector),
+            image_corrector_design=column.properties.get('image_corrector_design', 'cetcor'),
             c3_hardware=SimpleNamespace(value='three_condenser' if column.properties['c3_lens'] else 'two_condenser'),
             energy_filter_selected=bool(recording.properties['energy_filter']), nanopulser_installed=blanker.name != 'None')
         assembly = resolve_module_assembly(configuration, root=root / 'configs/instruments')

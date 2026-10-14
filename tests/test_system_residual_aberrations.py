@@ -67,6 +67,36 @@ def test_real_intrinsic_a1_and_c1_remain_in_residual_not_absorbed_by_reference()
     assert state.lenses[0].percent == 100.
 
 
+@pytest.mark.parametrize("design", ["cetcor", "bcor"])
+def test_image_residual_includes_lens_after_objective_image(design):
+    state = _state()
+    state.image_corrector_installed = True
+    state.image_corrector_design = design
+    state.objective_image_plane_z_mm = -.5  # Upstream of the aberrating lens.
+    state.corrector_elements = [SimpleNamespace(
+        key="image_sad_plane", z_mm=1., enabled=True, _layout_installed=True,
+        kind="reference_plane", optical_active=False)]
+    report = measure_system_residual(state, "image", semiangle_mrad=20., maximum_step_mm=.1)
+    expected = state.lenses[0].cs_mm*(.001**3*.001/.010**4)
+    assert report.coefficients.c3_mm == pytest.approx(expected, rel=1e-7)
+    assert report.diagnostics["reference_z_mm"] == 1.
+    assert report.diagnostics["coefficient_reference_z_mm"] == -1.
+    assert "SAD" in report.coefficients.reference_plane
+    assert "off-axial" in report.diagnostics["scope"]
+
+
+def test_missing_or_upstream_corrector_output_cannot_fall_back_to_objective_image():
+    from temsim.optics.system_residual_aberrations import image_residual_reference
+    state = _state()
+    state.image_corrector_installed = True
+    with pytest.raises(ValueError, match="one active SAD"):
+        image_residual_reference(state)
+    state.corrector_elements = [SimpleNamespace(key="image_sad_plane", z_mm=1., enabled=True),
+        SimpleNamespace(key="image_hp3_hexapole", z_mm=2., enabled=True)]
+    with pytest.raises(ValueError, match="downstream"):
+        image_residual_reference(state)
+
+
 def _mock_propagation(monkeypatch, *, singular=False, exact=True):
     from temsim.physics import core, first_order
     matrix = np.eye(4)

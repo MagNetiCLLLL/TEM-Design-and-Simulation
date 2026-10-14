@@ -19,6 +19,8 @@ COIL_SOURCE = "https://patents.google.com/patent/US20090079531A1/en"
 STIGMATOR_SOURCE = "https://patents.google.com/patent/US6548816B2/en"
 CESCOR_SOURCE = "https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf"
 CETCOR_SOURCE = "https://doi.org/10.1016/j.phpro.2008.07.093"
+BCOR_SOURCE = "https://www.ceos-gmbh.de/user/pages/02.products/Poster-internet.pdf"
+BCOR_PATENT_SOURCE = "https://patents.google.com/patent/EP1941531A2/en"
 NOTE = ("Generic mechanical reconstruction, not OEM CAD or a magnetic-material solution. "
         "The linked optical component supplies the field; these solids do not add excitations.")
 
@@ -263,8 +265,22 @@ def multipole_solids(part, by_key=None) -> tuple[SolidSpec, ...] | None:
         return None
     if key in {"probe_hp1_hexapole", "probe_hp2_hexapole"}:
         return _cescor_hexapole_solids(part)
-    if key in {"image_hp1_hexapole", "image_hp2_hexapole"}:
-        return _cescor_hexapole_solids(part, image_family=True)
+    if key in {"image_hp1_hexapole", "image_hp2_hexapole", "image_hp3_hexapole"}:
+        values = _cescor_hexapole_solids(part, image_family=True)
+        if part.get("bcor_geometry_status"):
+            # The patent establishes three hexapole fields and permits sixfold
+            # multipoles, but supplies no manufacturing dimensions. Preserve
+            # the existing family reconstruction without inventing extra coils.
+            values = tuple(replace(value,
+                evidence=(*value.evidence, BCOR_SOURCE, BCOR_PATENT_SOURCE),
+                note=(NOTE + " B-COR optical topology; six-pin internal construction "
+                      "uses the existing CEOS family reconstruction, not verified "
+                      "B-COR manufacturing geometry. No extra DPH winding is inferred."),
+                parameters={**value.parameters,
+                    "topology_status": "bcor_optical_topology_generic_six_pole_reconstruction",
+                    "bcor_geometry_source": part.get("bcor_geometry_source", "")})
+                for value in values)
+        return values
     if key.endswith("stigmator") or profile == "magnetic_stigmator":
         return _stigmator_windings(part)
     if key.endswith("quadrupole") or profile == "magnetic_quadrupole":

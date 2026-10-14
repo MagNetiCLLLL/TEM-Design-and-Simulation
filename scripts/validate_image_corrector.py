@@ -53,9 +53,9 @@ def matrix_metrics(matrix):
                 scaled_symplectic_residual=np.linalg.norm(m.T@j@m-j)/np.linalg.norm(j))
 
 
-def paired_matrices(state, source, targets):
+def paired_matrices(state, source, targets, *, stable_axisymmetric=True):
     from temsim.optics.direct_alignment import canonical_transfers, canonical_source_basis
-    transfers = canonical_transfers(state, source, targets)
+    transfers = canonical_transfers(state, source, targets, stable_axisymmetric=stable_axisymmetric)
     source_basis = canonical_source_basis(state, source)
     result = {}
     for z, transfer in transfers.items():

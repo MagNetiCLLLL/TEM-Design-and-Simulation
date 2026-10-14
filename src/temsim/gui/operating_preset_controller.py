@@ -9,7 +9,7 @@ from temsim import input_io
 from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal
 
 from temsim.column.state_layout import apply_physical_layout_to_state
-from temsim.operating_modes import apply_operating_mode_pair, compatible_modes
+from temsim.operating_modes import apply_condenser_mode, apply_operating_mode_pair, compatible_modes
 
 
 class _Signals(QObject):
@@ -56,17 +56,20 @@ class _Worker(QRunnable):
             )
             available = (
                 self.condenser_key in {mode.key for mode in condenser_modes}
-                and self.projector_key in {mode.key for mode in projector_modes}
+                and (self.projector_key is None
+                     or self.projector_key in {mode.key for mode in projector_modes})
             )
             if not available and not self.load_assembly:
                 raise ValueError("Selected assembly has no matching optical preset")
             result = None
             if available:
-                result = apply_operating_mode_pair(
-                    state, self.condenser_key, self.projector_key,
-                    column_name=self.selection.column,
-                    recording_name=self.selection.recording,
-                )
+                arguments = dict(column_name=self.selection.column,
+                                 recording_name=self.selection.recording)
+                if self.projector_key is None:
+                    result = apply_condenser_mode(state, self.condenser_key, **arguments)
+                else:
+                    result = apply_operating_mode_pair(
+                        state, self.condenser_key, self.projector_key, **arguments)
             apply_physical_layout_to_state(state, assembly_root=self.catalog.root)
             if self.cancel_event.is_set():
                 return

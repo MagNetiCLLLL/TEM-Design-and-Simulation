@@ -38,6 +38,8 @@ def test_named_sections_cover_every_component_without_changing_physical_inputs(s
     ("C3 + Probe Corrector", ("probe",)),
     ("C3 + Image Corrector", ("image",)),
     ("C3 + Probe Corrector + Image Corrector", ("probe", "image")),
+    ("C3 + B-COR", ("image",)),
+    ("C3 + Probe Corrector + B-COR", ("probe", "image")),
 ])
 def test_independent_corrector_coils_and_owned_channels_share_corrector_group(column, families):
     from temsim.assembly_structure import build_assembly_structure
