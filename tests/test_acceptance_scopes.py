@@ -96,6 +96,7 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_virtual_electron_dock.py", "test_magnetic_field_3d.py", "test_magnetic_field_canvas.py",
             "test_magnetic_field_lines.py", "test_magnetic_field_scene.py", "test_incremental_magnetic_scene.py",
             "test_magnetic_navigation_link.py", "test_hardware_tuning_gui.py", "test_hardware_tuning_bindings.py",
+            "test_corrector_channel_gui.py", "test_corrector_parameter_validation.py",
             "test_beam_steering_gui.py", "test_actual_probe_diagnostics.py",
             "test_cad_round_lenses.py", "test_cad_multipoles.py", "test_cad_auxiliary.py", "test_cad_export_gui.py",
                 "test_compare_cad_assembly.py", "test_image_corrector_topology.py", "test_image_corrector_channel_hardware.py",
@@ -196,7 +197,9 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
                 "test_intrinsic_ray_device.py", "test_particle_gpu_reference.py",
                 "test_intrinsic_gpu_segments.py", "test_intrinsic_particle_backend.py",
                 "test_intrinsic_archive_radial.py", "test_intrinsic_legacy_boundaries.py",
-                "test_lens_aberration_editor.py", "test_system_residual_aberrations.py", "test_bcor_propagation.py"},
+                "test_lens_aberration_editor.py", "test_system_residual_aberrations.py", "test_bcor_propagation.py",
+                "test_corrector_channels.py", "test_hexapole_thickness_response.py",
+                "test_corrector_channel_wave_transport.py"},
     }
     for scope, expected in required.items():
         assert {Path(path).name for path in scope_test_files(scope)} == expected

@@ -88,7 +88,8 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_virtual_electron_dock.py")),
             "field-ui/FU-04": ("In-place actual hardware bindings and transactional edits", (
                 "tests/test_hardware_tuning_bindings.py", "tests/test_hardware_tuning_gui.py",
-                "tests/test_hardware_tuning_feedback.py")),
+                "tests/test_hardware_tuning_feedback.py", "tests/test_corrector_channel_gui.py",
+                "tests/test_corrector_parameter_validation.py")),
             "field-ui/FU-05": ("Captured magnetic identities and equivalent deflector reference response", (
                 "tests/test_magnetic_field_identity.py",)),
             "field-ui/FU-06": ("Explicit diagnostic retry and rejection of late failure signals", (
@@ -316,6 +317,9 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_gaussian_quadratic_paths.py",
                 "tests/test_gaussian_precision_validation.py",
                 "tests/test_experimental_gaussian_gram.py",)),
+            "coherent-development/CW-12": ("Local physical A1/A2 channels, finite hexapole thickness and retained wave phase", (
+                "tests/test_corrector_channels.py", "tests/test_hexapole_thickness_response.py",
+                "tests/test_corrector_channel_wave_transport.py",)),
         },
     },
 }

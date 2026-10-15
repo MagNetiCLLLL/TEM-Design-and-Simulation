@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from typing import ClassVar
 
 from temsim.optics.component_position import TipReferencedPosition
@@ -67,6 +68,19 @@ class QuadrupoleComponent(TipReferencedPosition):
     def validate(self):
         if self.EXPECTED_KEY is not None and self.key != self.EXPECTED_KEY:
             raise ValueError(f"{self.name} key is not canonical.")
+        for field in (
+            "z_mm", "strength_m2", "maximum_strength_m2", "effective_length_mm",
+            "mechanical_center_from_tip_mm", "mechanical_length_mm",
+            "mechanical_outer_diameter_mm", "mechanical_clear_bore_diameter_mm",
+            "optical_reference_from_tip_mm",
+        ):
+            value = getattr(self, field)
+            try:
+                finite = not isinstance(value, (bool, np.bool_)) and math.isfinite(value)
+            except (TypeError, ValueError):
+                finite = False
+            if not finite:
+                raise ValueError(f"{self.name} {field} must be finite.")
         if self.mechanical_center_from_tip_mm < 0.0:
             raise ValueError(
                 f"{self.name} mechanical centre must follow the tip."
@@ -103,7 +117,9 @@ class QuadrupoleComponent(TipReferencedPosition):
         z = np.asarray(z_mm, dtype=float)
         if not self.enabled:
             return np.zeros_like(z)
-        sigma_mm = max(self.effective_length_mm / 2.355, 1e-12)
+        sigma_mm = self.effective_length_mm / 2.355
+        if not math.isfinite(sigma_mm) or sigma_mm <= 0.0:
+            raise ValueError(f"{self.name} effective length must be finite and positive.")
         envelope = np.exp(
             -0.5 * ((z - self.z_mm) / sigma_mm) ** 2
         )

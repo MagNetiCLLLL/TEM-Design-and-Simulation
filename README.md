@@ -39,6 +39,11 @@ The simulator does not currently provide autonomous microscope control.
 - Compressed result export/import (`.temresult`), reusable startup results and
   separate virtual-electron sessions (`.temdiag`).
 
+Open **Help → User guide** or press **F1** for the in-app feature guide, including
+quick-start workflows, beam and phase views, corrector controls and saved results.
+Use **Ctrl+F** in Help to search all topic text. Help can stay open beside the
+simulator and its text can be selected and copied.
+
 The **Electron beam** page has its own **Calculate beam** button. The top
 **Run high-accuracy once** button prepares classical particle results for Ray
 Diagram and the specimen/detector pages. Apply supported Tip emission/phase

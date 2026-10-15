@@ -530,4 +530,11 @@ def validate_runtime_assignment(
             raise ValueError(
                 f"{target.key}.{name} must be between 0 and {maximum:g}"
             )
+    from temsim.optics.hexapole import HexapoleComponent
+    from temsim.optics.quadrupole import QuadrupoleComponent
+    if isinstance(target.obj, (HexapoleComponent, QuadrupoleComponent)):
+        from copy import copy
+        candidate = copy(target.obj)
+        setattr(candidate, name, converted)
+        candidate.validate()
     return converted

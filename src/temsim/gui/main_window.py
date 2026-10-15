@@ -501,6 +501,24 @@ class MainWindow(QMainWindow):
         recorder_action.setObjectName("instrumentRecorderAction")
         recorder_action.triggered.connect(self._open_instrument_recorder)
 
+        help_menu = self.menuBar().addMenu("Help")
+        help_menu.setObjectName("helpMenu")
+        self.help_action = QAction("User guide", self)
+        self.help_action.setObjectName("openHelpAction")
+        self.help_action.setShortcut("F1")
+        self.help_action.triggered.connect(self._show_help)
+        help_menu.addAction(self.help_action)
+
+    def _show_help(self) -> None:
+        from temsim.gui.help_page import HelpDialog
+
+        dialog = getattr(self, "_help_dialog", None)
+        if dialog is None:
+            dialog = self._help_dialog = HelpDialog(self)
+        dialog.show()
+        dialog.raise_()
+        dialog.activateWindow()
+
     def _open_instrument_recorder(self) -> None:
         from temsim.gui.instrument_recorder import InstrumentRecorderWindow
 
@@ -713,6 +731,7 @@ class MainWindow(QMainWindow):
         self.live_beam_refresh.cancel()
         self.workspace.coherent_beam.cancel()
         self.workspace.hardware_tuning.steering.cancel()
+        self.workspace.hardware_tuning.corrector_channels.cancel()
         from temsim.gui.aberration_view import AberrationComparisonView
         for view in self.findChildren(AberrationComparisonView):
             view.cancel_actual_diagnostic()
@@ -2136,7 +2155,8 @@ class MainWindow(QMainWindow):
 
     def _hardware_tuning_changed(self, parameter: str) -> None:
         key = parameter.rsplit(".", 1)[0]
-        self.parameter_panel.refresh_live_values({key})
+        changed_keys = set(self._runtime_targets) if key == "corrector_channels" else {key}
+        self.parameter_panel.refresh_live_values(changed_keys)
         if key in {"ac_deflector", "descan_deflector"}:
             self.workspace.scan_control.set_state(self.state)
         self._runtime_parameter_changed(parameter)
@@ -3047,4 +3067,6 @@ class MainWindow(QMainWindow):
         self.workspace.magnetic_field.field_lines.electron.shutdown()
         DEVICE_CACHE.clear()
         self.result_files.close()
+        if getattr(self, "_help_dialog", None) is not None:
+            self._help_dialog.close()
         super().closeEvent(event)

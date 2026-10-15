@@ -1,5 +1,11 @@
 # TEM Simulator 项目地图
 
+2026-10-15 六极参数校验与局部通道：`optics/corrector_channels.py` 通过实际传播标定
+A1/A2 coarse/fine 的独立物理驱动，`gui/corrector_channels.py` 提供显式计算及原子应用。
+六极有效厚度继续参与传播，完整波相位保留倾斜、离焦及耦合像差；修改输入后必须重算。
+这是模拟器工作点标定，不是厂家硬件标定。使用和验证范围见
+[物理通道说明](corrector_channels.md)。
+
 2026-10-08 CM/物镜/扫描设计：`optics/mini_condenser.py` 统一等幅正负励磁，
 `optics/condenser_objective_design.py` 分析现有合成场、机械位置边界及共同入射条件，
 `optics/scan_coil_design.py` 求解完整双轴 AC 驱动和扫描枢轴，
@@ -39,6 +45,8 @@ STEM 显示倍率由显示尺寸与样品扫描 FOV 决定，不等于样品到�
 2026-10-04 多初态观察：`gui/coherent_state_list.py` 负责初态列表、名称、权重和显隐；`gui/coherent_state_controller.py` 负责已应用针尖初态的捕获、当前光学配置中的逐项计算、缓存与取消；`physics/coherent_state_set.py` 负责几何身份约束及同 Z、共同物理网格上的非相干强度叠加。它们复用现有传播引擎，保留各成员复场，不产生下游独立源或混合态的总相位。三个对应测试文件纳入 `field-ui/FU-10` 和 `coherent-development/CW-03`。操作方法和支持范围见相干计算说明；原文件统计未重算。
 
 2026-10-04 Tip 参数入口：界面统一使用 Tip / Tip parameters，几何、发射及相位参数归属于同一个 Tip。`physics/coherent_inputs.py` 的 `TipEmissionSettings` 仅表示待应用的发射参数编辑，`candidate_tip_emission` 验证编辑，计算读取已应用的 Tip；多初态列表记录该 Tip 的不同发射初态。`gui/gun_source_dialog.py` 始终提供已有 Gaussian-Schell 发射模型入口，未启用时也可在 Tip 编辑器中选择。历史配置标识未改，未扩展传播模型适用范围。
+
+2026-10-15 局部清理：删除失效的 `scripts/validate_illumination.py` 和两个已退出默认收集的历史 Python 文件 `illumination_wp03_contract.py`、`cache_projection_assumptions.py`。固定提交中的原文及现行数学、源准入、缓存回归见[波入口迁移记录](../tests/historical/WAVE_ENTRY_MIGRATION.md#retired-files-15-october-2026)。本次仅从对应附录清单移除三项并调整其局部数量；下列目录总数仍保留 2026-09-28 历史基准，未重新统计整个项目。
 
 这份地图用于定位功能、界面、模型、测试和可重构位置。初版仅整理静态导航，不是物理验收；后续局部修改及其验证记录在上面的更新说明中。
 
@@ -261,11 +269,11 @@ flowchart LR
 | 复用、样品与 EDS 计时 | `cache_high_accuracy.py`、`benchmark_eds_photon_cache.py`、`benchmark_specimen_transport.py`、`benchmark_prepared_specimen_cache.py`、`benchmark_report_workflows.py` |
 | 已存在的相干研究工具 | `trace_tip_wave.py`、`gun_wave_cli.py`、`inspect_surface_column.py`、`benchmark_stem_wave.py`、`benchmark_carrier_slab.py`、`benchmark_mixed_slab.py`、`compare_gun_boundaries.py`、`inspect_basis_support.py`、`inspect_moving_radial_frame.py`；保留读取/数学证据，暂停期间不应当作日常验证入口自动执行 |
 | 相干图像批处理 | `generate_si110_cif_stem_scan.py`、`run_stem_profile_scan.py`、`run_stem_profile_ensemble.py`、`verify_stem_profile_ensemble.py`；属于显式执行/核验工具，不能由 README 启动方式隐式运行 |
-| 历史验收/专题证据 | `validate_development_spec.py`、`validate_tem_p0.py`、`validate_illumination.py`、`validate_aberrations.py`、`validate_review_p0.py`；范围不同。`validate_development_spec.py` 的 `CRITERIA` / `SOURCE_MIGRATION_BLOCKERS` 仍被当前报告入口读取 |
+| 历史验收/专题证据 | `validate_development_spec.py`、`validate_tem_p0.py`、`validate_aberrations.py`、`validate_review_p0.py`；范围不同。`validate_development_spec.py` 的 `CRITERIA` / `SOURCE_MIGRATION_BLOCKERS` 仍被当前报告入口读取。已移除的 WP-03 runner 及其失效原因见[波入口迁移记录](../tests/historical/WAVE_ENTRY_MIGRATION.md#retired-files-15-october-2026) |
 | 冻结数值输入证据 | `freeze_physics_run.py`、`reuse_frozen_physics.py`、`physics_driver_log.py`、`surface_mode_evidence.py`；前缀/场证据不是可配置的新电子源 |
 | 记录器目录生成 | `tools/build_recorder_catalog.py::build` 静态读取用户提供的 SDK wheel AST，生成属性/类型/单位/排除列表 JSON；不导入/执行 SDK。生成结果 `src/temsim/recorder/autoscript_1_18.json` 是运行时包资源 |
 
-历史/暂停边界：`tests/historical/` 内两个 Python 文件不采用默认 `test_*.py` 名称；但许多波动相关测试仍在 `tests/` 根目录，不能把“根目录测试”理解成“当前经典粒子范围”。不要为了整理地图运行全量 pytest、启用 coherent 模式或启动历史长计算。当前验证结果和未覆盖项见 [VALIDATION.md](VALIDATION.md)。
+历史/暂停边界：`tests/historical/` 现保留三个迁移说明；两个原本不采用默认 `test_*.py` 名称的历史 Python 文件已于 2026-10-15 删除，原文仍可通过[固定提交链接](../tests/historical/WAVE_ENTRY_MIGRATION.md#retired-files-15-october-2026)追溯。许多波动相关测试仍在 `tests/` 根目录，不能把“根目录测试”理解成“当前经典粒子范围”。不要为了整理地图运行全量 pytest、启用 coherent 模式或启动历史长计算。当前验证结果和未覆盖项见 [VALIDATION.md](VALIDATION.md)。
 
 推荐按修改范围调用已注册的验收入口，例如：
 
@@ -1702,20 +1710,18 @@ GitHub 的 Windows CPU runner 使用 `--allow-gpu-skips`：`acceptance_gpu.py` �
 </details>
 
 <details>
-<summary>tests/historical · 5 个文件</summary>
+<summary>tests/historical · 3 个文件</summary>
 
 | 文件 | 行数 | 用途 / 源码定位 |
 | --- | ---: | --- |
 | [EXIT_SOURCE_WITHDRAWAL.md](../tests/historical/EXIT_SOURCE_WITHDRAWAL.md) | 22 | 文档：Exit-source withdrawal, 2026-09-11 |
 | [PROJECTOR_MODEL_SELECTION.md](../tests/historical/PROJECTOR_MODEL_SELECTION.md) | 20 | 文档：Historical projector-model selection expectation |
-| [WAVE_ENTRY_MIGRATION.md](../tests/historical/WAVE_ENTRY_MIGRATION.md) | 24 | 文档：Historical wave-entry tests and HANDOFF v2 |
-| [cache_projection_assumptions.py](../tests/historical/cache_projection_assumptions.py) | 82 | 历史/非默认收集：Historical assumption superseded by HANDOFF T2-23: mapped field support must be proved.；静态依赖：calculation_cache.py, optics/column.py, simulation_pipeline.py |
-| [illumination_wp03_contract.py](../tests/historical/illumination_wp03_contract.py) | 343 | 历史/非默认收集：WP-03 manufactured illumination benchmarks; not a material calibration.；静态依赖：assembly_catalog.py, calculation_cache.py, gui/illumination_dialog.py 等 |
+| [WAVE_ENTRY_MIGRATION.md](../tests/historical/WAVE_ENTRY_MIGRATION.md) | 55 | 文档：Historical wave-entry tests and HANDOFF v2；含 2026-10-15 删除记录、固定提交原文及现行回归入口 |
 
 </details>
 
 <details>
-<summary>scripts · 86 个文件</summary>
+<summary>scripts · 基准清单保留 85 个文件</summary>
 
 | 文件 | 行数 | 用途 / 源码定位 |
 | --- | ---: | --- |
@@ -1798,7 +1804,6 @@ GitHub 的 Windows CPU runner 使用 `--allow-gpu-skips`：`acceptance_gpu.py` �
 | [validate_closed_gun_transport.py](../scripts/validate_closed_gun_transport.py) | 181 | 开发/诊断工具：Single-threaded production gun validation; all generated arrays stay local.；入口：array_digest, emission_arrays, record_history |
 | [validate_continuous_electron_response.py](../scripts/validate_continuous_electron_response.py) | 726 | 开发/诊断工具：B06: bounded real Qt slider / isolated E+B transport / canvas response.；入口：trajectory_array_inventory, latency_summary, Probes |
 | [validate_development_spec.py](../scripts/validate_development_spec.py) | 153 | 开发/诊断工具：Trace all AT-01..33 to executed acceptance tests and measured evidence.；入口：evaluate_criteria, acceptance_exit_code, source_hashes |
-| [validate_illumination.py](../scripts/validate_illumination.py) | 69 | 开发/诊断工具：Run WP-03 acceptance and report source/energy quadrature convergence.；入口：main |
 | [validate_review_p0.py](../scripts/validate_review_p0.py) | 100 | 开发/诊断工具：Run scoped review regressions and preserve raw, input-bound evidence.；入口：main |
 | [validate_sampling_field_grid.py](../scripts/validate_sampling_field_grid.py) | 50 | 开发/诊断工具：Bounded real grounded-field refinement receipt; never installs a preset.；入口：main |
 | [validate_tem_p0.py](../scripts/validate_tem_p0.py) | 79 | 开发/诊断工具：Run the first development-spec batch and save an auditable CPU report.；入口：main |

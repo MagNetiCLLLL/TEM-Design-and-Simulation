@@ -1143,10 +1143,15 @@ def test_main_window_contains_the_toml_backed_workspace(qtbot):
     assert camera_length.target.maximum() == pytest.approx(2.5)
     assert window.compute_backend.objectName() == "computeBackend"
     assert window.compute_backend.currentData() == "Auto"
-    # Calibration provenance is owned by the active catalog, not an older
-    # UI sentence that claimed these retained settings were qualified.
+    # The current computed preset describes catalog reference settings;
+    # it does not use the historical retained-preset provenance tooltip.
     preset = mode_by_key("nano_probe", window.assembly_panel.operating_mode_catalog)
-    assert window.assembly_panel.operating_mode_status.toolTip() == preset.calibration_reference
+    assert preset.calibration_status.startswith("computed_")
+    tooltip = window.assembly_panel.operating_mode_status.toolTip()
+    reference_angle = float(preset.targets["achieved_convergence_sem_angle_mrad"])
+    reference_c2 = float(preset.devices["condenser_lens_2"]["percent"])
+    assert f"Preset reference sample semi-angle: {reference_angle:.3f} mrad." in tooltip
+    assert f"C2 {reference_c2:.2f}%" in tooltip
 
     window.load_assembly(AssemblySelection(
         "FEG", "C3 + Probe Corrector", "No Energy Filter"

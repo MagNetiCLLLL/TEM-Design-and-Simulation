@@ -166,6 +166,9 @@ TUNING_TASKS = (
                "Manual controls of the installed composite corrector. Coefficients are "
                "those of the effective field model, not measured coil currents or individual "
                "wave-aberration targets. No automatic correction is performed.", _PROBE_BINDINGS),
+    TuningTask("corrector_channels", "A1 / A2 coarse and fine", "Corrector",
+               "Measure and apply local aberration changes through existing physical drives. "
+               "Different coarse/fine drive groups are calibrated from the current optical model.", ()),
     TuningTask("scan_static", "Scan deflector static controls", "Scanning",
                "Adjust the static drive and pair coupling of the physical scan deflector. "
                "Raster timing, dynamic drive and calibration remain in Scanning Parameters.",

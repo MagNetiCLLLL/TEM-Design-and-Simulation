@@ -1,5 +1,8 @@
 # Probe-corrector reference and validation
 
+The current simulator's physical A1/A2 coarse/fine controls, finite-thickness
+semantics and usage are described in [Physical channel calibration](corrector_channels.md).
+
 The user-supplied photographs of an older **Probe Corrector DCOR (Service)**
 interface are references for separating hardware channels, calibrated controls,
 and correction diagnostics. They are not a magnetic-field calibration or a

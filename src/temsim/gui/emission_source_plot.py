@@ -29,7 +29,8 @@ class EmissionSourcePlot(QWidget):
     ``set_source`` accepts IDs, colours and two angle arrays of length N, plus
     positions of shape (N, 3). The caller selects the display sample; all inputs
     are copied. Unknown angles may be NaN. Invalid positions are omitted with an
-    explicit readout. Recolouring the same IDs and positions preserves pan/zoom.
+    explicit readout. Recolouring the same IDs and positions preserves zoom;
+    the physical origin always remains at the centre of the plotting rectangle.
     """
 
     METRES_TO_NM = 1.0e9
@@ -46,6 +47,7 @@ class EmissionSourcePlot(QWidget):
         self._projection_angle_deg = 0.0
         self._overlap_sample_count = 0
         self._overlap_position_count = 0
+        self._view_change_guard = False
         self.scatter = None
 
         self.plot = pg.PlotWidget(background="#050816")
@@ -56,6 +58,8 @@ class EmissionSourcePlot(QWidget):
         self.plot.showGrid(x=True, y=True, alpha=0.18)
         self.plot.setAspectLocked(True, ratio=1.0)
         self.plot.getViewBox().disableAutoRange()
+        self.plot.getViewBox().sigRangeChanged.connect(self._center_view_ranges)
+        self._apply_centered_view_ranges(0.5, 0.5)
         self.plot.getAxis("left").setWidth(66)
         self.plot.getAxis("bottom").setHeight(42)
         for name in ("bottom", "left"):
@@ -80,7 +84,9 @@ class EmissionSourcePlot(QWidget):
         )
         self.fit_button = QPushButton("Fit source")
         self.fit_button.setObjectName("fitEmissionSource")
-        self.fit_button.setToolTip("Fit the recorded source positions. No recalculation.")
+        self.fit_button.setToolTip(
+            "Fit the recorded source positions while keeping (0, 0) at the plot centre. No recalculation."
+        )
         self.fit_button.clicked.connect(self.fit_to_source)
         summary_row = QHBoxLayout()
         summary_row.setContentsMargins(0, 0, 0, 0)
@@ -181,6 +187,36 @@ class EmissionSourcePlot(QWidget):
         """Restore the view bounds using only the recorded display sample."""
         if self.scatter is not None:
             self._draw(fit=True)
+
+    def _apply_centered_view_ranges(self, x_half: float, y_half: float) -> None:
+        """Retain the selected scale, with the same zero-centred view as X/Y."""
+        if not all(math.isfinite(half) and half > 0 for half in (x_half, y_half)):
+            return
+        self._view_change_guard = True
+        try:
+            self.plot.setRange(
+                xRange=(-x_half, x_half), yRange=(-y_half, y_half),
+                padding=0.0, disableAutoRange=True,
+            )
+        finally:
+            self._view_change_guard = False
+
+    def _center_view_ranges(self, *_args) -> None:
+        # Mouse/axis zoom, panning and the auto-range button all use this path.
+        # Preserve their scale without translating the recorded source points.
+        if self._view_change_guard:
+            return
+        if self.scatter is not None and any(self.plot.getViewBox().autoRangeEnabled()):
+            # The built-in A button must include an off-axis source as well
+            # as zero, just like Fit source, rather than crop it on recentering.
+            self._apply_centered_view_ranges(*(
+                max(float(np.max(np.abs(values))) * 1.08, 0.5)
+                for values in self.scatter.getData()
+            ))
+            return
+        ranges = self.plot.viewRange()
+        if any(low != -high for low, high in ranges):
+            self._apply_centered_view_ranges(*(0.5 * (high - low) for low, high in ranges))
 
     def set_projection_angle(self, angle_deg: float) -> None:
         """Rotate X/Y into the shared U/V display basis while retaining zoom."""
@@ -299,9 +335,6 @@ class EmissionSourcePlot(QWidget):
         if fit:
             bounds = []
             for values in (u, v):
-                centre = (float(np.min(values)) + float(np.max(values))) / 2.0
-                half = max(float(np.ptp(values)) * 0.54, 0.5)
-                bounds.append((centre - half, centre + half))
-        self.plot.setRange(
-            xRange=bounds[0], yRange=bounds[1], padding=0.0, disableAutoRange=True,
-        )
+                half = max(float(np.max(np.abs(values))) * 1.08, 0.5)
+                bounds.append((-half, half))
+        self._apply_centered_view_ranges(*(0.5 * (high - low) for low, high in bounds))

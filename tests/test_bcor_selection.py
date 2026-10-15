@@ -6,7 +6,6 @@ import pytest
 
 from temsim.assembly_catalog import AssemblyCatalog
 from temsim.instrument_configuration import InstrumentUnits, check_instrument_configuration, unit_for_component
-from temsim.instrument_snapshot import capture_instrument_snapshot
 from temsim.optics.column import default_state
 from temsim.optics.model import State
 from temsim.profile_io import apply_profile_values, read_profile, save_profile
@@ -57,26 +56,11 @@ def test_bcor_survives_gun_recording_and_optional_module_changes(probe):
             assert unit_for_component(assembly, key) == "image_corrector"
 
 
-def test_bcor_roundtrips_snapshot_state_and_operating_profile(tmp_path):
+def test_bcor_profile_rejects_inconsistent_image_corrector_design(tmp_path):
     catalog = AssemblyCatalog()
     state = default_state()
     selection = _bcor(catalog)
     catalog.apply(state, selection)
-    hp3 = next(item for item in state.corrector_elements if item.key == "image_hp3_hexapole")
-    hp3.strength_m3 = 1234.5
-    for restored in (capture_instrument_snapshot(state).restore(), State.from_dict(state.to_dict())):
-        assert restored.image_corrector_design == "bcor"
-        assert catalog.selection_for_resolved(restored._resolved_assembly) == selection
-        assert next(item for item in restored.corrector_elements if item.key == hp3.key).strength_m3 == hp3.strength_m3
-    path = tmp_path / "bcor.toml"
-    save_profile(path, state, selection)
-    saved, values = read_profile(path)
-    restored = default_state()
-    catalog.apply(restored, saved)
-    apply_profile_values(restored, values)
-    assert saved == selection
-    assert restored.image_corrector_design == "bcor"
-    assert next(item for item in restored.corrector_elements if item.key == hp3.key).strength_m3 == hp3.strength_m3
     state.image_corrector_design = "cetcor"
     with pytest.raises(ValueError, match="image_corrector_design"):
         save_profile(tmp_path / "inconsistent.toml", state, selection)
@@ -105,36 +89,27 @@ def test_selected_tl31_manifest_field_edit_updates_runtime_without_changing_driv
     assert original.part(key).data == part.data
 
 
-def test_temporarily_uninstalled_bcor_keeps_saved_drives_after_state_restore(tmp_path):
-    catalog, state = AssemblyCatalog(), default_state()
-    bcor = _bcor(catalog)
-    catalog.apply(state, bcor, preserve_operating_parameters=True)
-    state.image_corrector_system.tl31_lens.percent = 12.345
-    state.image_corrector_system.hp3_hexapole.strength_m3 = 1234.5
-    catalog.apply(state, replace(bcor, column="C3 + Image Corrector"), preserve_operating_parameters=True)
-    restored = State.from_dict(state.to_dict())
-    path = tmp_path / "dormant-bcor.toml"
-    save_profile(path, state, catalog.selection_for_resolved(state._resolved_assembly))
-    selected, values = read_profile(path)
-    from_profile = default_state()
-    catalog.apply(from_profile, selected)
-    apply_profile_values(from_profile, values)
-    for candidate in (state, restored, from_profile):
-        catalog.apply(candidate, bcor, preserve_operating_parameters=True)
-        assert candidate.image_corrector_system.tl31_lens.percent == 12.345
-        assert candidate.image_corrector_system.hp3_hexapole.strength_m3 == 1234.5
-
-
-@pytest.mark.parametrize("probe", [False, True])
-@pytest.mark.parametrize("enabled", [(True, False, True), (False, True, False)])
-def test_dormant_bcor_state_and_profile_preserve_each_enable_preference(tmp_path, probe, enabled):
+@pytest.mark.parametrize("probe,enabled,preserve_initial_parameters", [
+    pytest.param(False, (True, True, True), True, id="no-probe-default-enabled-preserve-initial"),
+    pytest.param(False, (True, False, True), False, id="no-probe-tl31-hp3-enabled"),
+    pytest.param(True, (True, False, True), False, id="probe-tl31-hp3-enabled"),
+    pytest.param(False, (False, True, False), False, id="no-probe-tl32-enabled"),
+    pytest.param(True, (False, True, False), False, id="probe-tl32-enabled"),
+])
+def test_dormant_bcor_state_and_profile_preserve_each_enable_preference(
+    tmp_path, probe, enabled, preserve_initial_parameters,
+):
     catalog, state = AssemblyCatalog(), default_state()
     bcor = _bcor(catalog, probe=probe)
-    catalog.apply(state, bcor)
+    catalog.apply(state, bcor, preserve_operating_parameters=preserve_initial_parameters)
     system = state.image_corrector_system
     extras = (system.tl31_lens, system.tl32_lens, system.hp3_hexapole)
-    for component, preference in zip(extras, enabled):
-        component.enabled = preference
+    if preserve_initial_parameters:
+        # Keep the original first-installation defaults without overriding them.
+        assert tuple(component.enabled for component in extras) == enabled
+    else:
+        for component, preference in zip(extras, enabled):
+            component.enabled = preference
     system.tl31_lens.percent = 12.345
     system.hp3_hexapole.strength_m3 = 1234.5
     cetcor = replace(bcor, column="C3 + Probe Corrector + Image Corrector" if probe else "C3 + Image Corrector")

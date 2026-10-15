@@ -580,6 +580,13 @@ def build_propagation_plan(
 ):
     """Build the single global axial plan used by full and resumed traces."""
 
+    # Validate native hardware once before sampling any fields, not per ray or
+    # integration substep. Analytic test providers retain their own contracts.
+    from temsim.optics.hexapole import HexapoleComponent
+    from temsim.optics.quadrupole import QuadrupoleComponent
+    for component in getattr(state, "corrector_elements", ()):
+        if isinstance(component, (HexapoleComponent, QuadrupoleComponent)):
+            component.validate()
     events = tuple(events)
     electric_field = None
     electric_reference = None

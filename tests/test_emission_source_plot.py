@@ -61,11 +61,12 @@ def test_projection_rotates_only_display_and_keeps_original_colours(source_plot)
     assert source_plot.scatter.data["data"][1]["position_m"] == pytest.approx((2e-9, -4e-9, -.5e-9))
 
 
-def test_recolour_and_angle_changes_preserve_manual_pan_zoom(source_plot):
+def test_recolour_and_angle_changes_preserve_manual_zoom_at_source_origin(source_plot):
     data = launch_data()
     source_plot.set_source(**data)
     source_plot.plot.setRange(xRange=(30., 90.), yRange=(-60., -20.), padding=0.)
     before = np.asarray(source_plot.plot.viewRange())
+    np.testing.assert_allclose(before.mean(axis=1), 0., atol=1e-12)
     data["brushes"] = [pg.mkBrush("white")] * 3
     data["azimuth_rad"] = np.array([.5, .6, .7])
     source_plot.set_source(**data)
@@ -141,6 +142,7 @@ def test_fit_button_restores_source_view_without_new_data(source_plot, qtbot):
     source_plot.set_source(**launch_data())
     assert source_plot.fit_button.isEnabled()
     fitted = np.asarray(source_plot.plot.viewRange())
+    np.testing.assert_allclose(fitted.mean(axis=1), 0., atol=1e-12)
     source_ids = [record["source_ray_id"] for record in source_plot.scatter.data["data"]]
     source_plot.plot.setRange(xRange=(100., 200.), yRange=(100., 200.), padding=0.)
     assert not np.allclose(source_plot.plot.viewRange(), fitted)

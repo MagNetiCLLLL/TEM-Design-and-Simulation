@@ -279,7 +279,11 @@ def decode_instrument(graph, *, assets=None):
     from temsim.optics.model import Sample
     from temsim.optics.electron_gun.emitter import ColdFieldEmitter
     from temsim.optics.electron_gun.tip_curvature import validate_curvature
+    from temsim.optics.hexapole import HexapoleComponent
+    from temsim.optics.quadrupole import QuadrupoleComponent
     for component in restored.values():
+        if isinstance(component, (HexapoleComponent, QuadrupoleComponent)):
+            component.validate()
         if isinstance(component, Sample) and any(
             name in vars(component) for name in (
                 "specimen_rotation_x_deg", "specimen_rotation_y_deg", "specimen_rotation_z_deg",
