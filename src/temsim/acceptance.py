@@ -260,11 +260,20 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_column_wave_electric.py", "tests/test_tip_gun_wave.py",
                 "tests/test_electrostatic_column_transport.py", "tests/test_wave_grid.py", "tests/test_wave_device.py",
                 "tests/test_wave_support.py", "tests/test_column_support_budget.py",
-                "tests/test_column_acceptance_window.py", "tests/test_wave_aperture_edge.py",
+                "tests/test_column_acceptance_window.py", "tests/test_acceptance_aperture_sampling.py", "tests/test_wave_aperture_edge.py",
+                "tests/test_wave_aperture_sampling.py", "tests/test_multipole_wave.py",
+                "tests/test_wave_grid_low_memory.py", "tests/test_phase_carrier_moments.py",
+                "tests/test_corrector_memory_integration.py",
+                "tests/test_cpu_angular_spectrum.py",
+                "tests/test_cartesian_radial_handoff.py", "tests/test_radial_cartesian_handoff.py",
+                "tests/test_cartesian_round_route.py",
+                "tests/test_round_column_electric.py",
+                "tests/test_round_column_checkpoint.py", "tests/test_radial_memory_budget.py",
                 "tests/test_radial_fftlog.py", "tests/test_radial_column_wave.py",
                 "tests/test_tip_gun_shared_fields.py", "tests/test_canonical_action.py")),
             "coherent-development/CW-06": ("Driven near-tip boundary and gun continuation; not full microscope qualification", (
-                "tests/test_planar_tip_boundary.py", "tests/test_driven_tip_gun.py")),
+                "tests/test_planar_tip_boundary.py", "tests/test_driven_tip_gun.py",
+                "tests/test_gun_output_sampling.py", "tests/test_accelerating_tip_sampling.py")),
             "coherent-development/CW-03": ("Captured wave sessions, latest Z, resource ownership and bounded display", (
                 "tests/test_coherent_beam_gui.py", "tests/test_beam_comparison.py",
                 "tests/test_wave_read_session.py",
@@ -302,6 +311,11 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_system_residual_aberrations.py")),
             "coherent-development/CW-10": ("B-COR third-hexapole shared action and real CPU/CUDA parity", (
                 "tests/test_bcor_propagation.py",)),
+            "coherent-development/CW-11": ("Experimental Gaussian packet operators and bounded readout; not production or full-chain qualification", (
+                "tests/test_experimental_gaussian_beamlets.py",
+                "tests/test_gaussian_quadratic_paths.py",
+                "tests/test_gaussian_precision_validation.py",
+                "tests/test_experimental_gaussian_gram.py",)),
         },
     },
 }

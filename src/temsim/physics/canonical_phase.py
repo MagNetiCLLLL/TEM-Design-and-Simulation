@@ -8,10 +8,117 @@ from __future__ import annotations
 
 import numpy as np
 
-from temsim.physics.wave_device import array_module
+from temsim.physics.wave_device import array_module, to_host
 
 CANONICAL_BASIS = "laboratory-normalized-canonical"
 SYMPLECTIC_TOLERANCE = 1e-7
+_PHASE_MOMENT_TILE_CELLS = 262144
+
+
+def phase_carrier_moments_working_bytes(shape):
+    """Bound input, norm reduction and tiled complex128 moment scratch.
+
+    The input stays immutable. No full-grid coordinates, Fourier spectrum,
+    momentum components or four-component phase-space vectors are allocated.
+    Other retained waves belong in the caller's separate memory reservation.
+    """
+    cells = int(np.prod(shape))
+    tile = min(cells, max(_PHASE_MOMENT_TILE_CELLS, max(shape)))
+    return 32*cells+192*tile+128*sum(shape)
+
+
+def phase_carrier_covariance_blocks(wave, wavelength_m, *, cancelled=lambda: False):
+    """Return the exact finite-Fourier covariance blocks ``(xx, xp)``.
+
+    Only these blocks select a quadratic phase carrier. A derivative along
+    either lattice axis is its complete one-dimensional Fourier derivative;
+    the independent lines are processed in bounded batches. This is the same
+    derivative as the full two-dimensional transform, without calculating the
+    unused momentum-momentum block. Every sample and Fourier bin is retained.
+
+    ``p`` is laboratory canonical momentum divided by the reference momentum,
+    including the existing analytic curvature. Constant tilt and translation
+    cancel in the centred covariance; no phase or wave samples are changed.
+    """
+    if cancelled():
+        raise InterruptedError("Phase-carrier moments cancelled")
+    if not np.isfinite(wavelength_m) or wavelength_m <= 0:
+        raise ValueError("Phase-carrier moments need a positive finite wavelength")
+    norm = wave.probability
+    if norm <= 0:
+        raise ValueError("An empty wave has no phase-space covariance")
+    amplitude = wave.amplitude
+    xp = array_module(amplitude)
+    ny, nx = amplitude.shape
+    basis = wave.basis_m
+    first = xp.zeros(2, dtype=xp.float64)
+    second = xp.zeros((2, 2), dtype=xp.float64)
+
+    def coordinates(row_start, row_stop, column_start, column_stop):
+        ix = (xp.arange(column_start, column_stop)-nx//2)[None, :]
+        iy = (xp.arange(row_start, row_stop)-ny//2)[:, None]
+        return (basis[0, 0]*ix+basis[0, 1]*iy,
+                basis[1, 0]*ix+basis[1, 1]*iy)
+
+    rows = max(1, _PHASE_MOMENT_TILE_CELLS//nx)
+    for start in range(0, ny, rows):
+        if cancelled():
+            raise InterruptedError("Phase-carrier moments cancelled")
+        stop = min(ny, start+rows)
+        x, y = coordinates(start, stop, 0, nx)
+        power = xp.abs(amplitude[start:stop])
+        power *= power
+        first[0] += xp.sum(x*power)
+        first[1] += xp.sum(y*power)
+        second[0, 0] += xp.sum(x*x*power)
+        second[0, 1] += xp.sum(x*y*power)
+        second[1, 1] += xp.sum(y*y*power)
+    del x, y, power
+    second[1, 0] = second[0, 1]
+    mean_x = first/norm
+    xx = second/norm-xp.outer(mean_x, mean_x)
+
+    # Columns use the canonical lattice ordering (x frequency, y frequency).
+    first_frequency = xp.zeros(2, dtype=xp.float64)
+    mixed = xp.zeros((2, 2), dtype=xp.float64)
+    for axis, component in ((1, 0), (0, 1)):
+        length = amplitude.shape[axis]
+        across = amplitude.shape[1-axis]
+        batch = max(1, _PHASE_MOMENT_TILE_CELLS//length)
+        frequency = xp.fft.fftfreq(length)
+        frequency = frequency[None, :] if axis == 1 else frequency[:, None]
+        for start in range(0, across, batch):
+            if cancelled():
+                raise InterruptedError("Phase-carrier moments cancelled")
+            stop = min(across, start+batch)
+            if axis == 1:
+                part = amplitude[start:stop, :]
+                x, y = coordinates(start, stop, 0, nx)
+            else:
+                part = amplitude[:, start:stop]
+                x, y = coordinates(0, ny, start, stop)
+            scratch = xp.array(part, dtype=xp.complex128, copy=True)
+            if xp is np:
+                from scipy.fft import fft, ifft
+                transformed = fft(scratch, axis=axis, overwrite_x=True, workers=1)
+                transformed *= frequency
+                momentum = ifft(transformed, axis=axis, overwrite_x=True, workers=1)
+            else:
+                transformed = xp.fft.fft(scratch, axis=axis)
+                transformed *= frequency
+                momentum = xp.fft.ifft(transformed, axis=axis)
+            correlation = xp.real(part.conj()*momentum)
+            first_frequency[component] += xp.sum(correlation)
+            mixed[0, component] += xp.sum(x*correlation)
+            mixed[1, component] += xp.sum(y*correlation)
+            del scratch, transformed, momentum, correlation, x, y
+    if cancelled():
+        raise InterruptedError("Phase-carrier moments cancelled")
+    x_frequency = mixed/norm-xp.outer(mean_x, first_frequency/norm)
+    curvature = np.zeros((2, 2)) if wave.curvature_m1 is None else wave.curvature_m1
+    xp_covariance = (wavelength_m*x_frequency@xp.asarray(np.linalg.inv(basis))
+                     +xx@xp.asarray(curvature.T))
+    return to_host(xx), to_host(xp_covariance)
 
 
 def canonical_basis_matrix(*, charge_c: float, bz_t: float,

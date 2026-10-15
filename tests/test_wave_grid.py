@@ -106,6 +106,22 @@ def test_support_budget_is_numerical_validated_and_part_of_column_identity(field
             replace(original, **{field: value}).validate()
 
 
+def test_multipole_tail_admission_is_separate_validated_numerics_and_invalidates_column_cache():
+    original = WaveGridNumerics()
+    assert original.multipole_spectral_tail_fraction == 1e-12
+    for value in (0., 1e-12, 1e-8, 1e-4):
+        changed = replace(original, multipole_spectral_tail_fraction=value)
+        changed.validate()
+        assert changed.column_identity()["multipole_spectral_tail_fraction"] == value
+        assert changed.maximum_spectral_loss_fraction == original.maximum_spectral_loss_fraction
+        assert changed.maximum_accumulated_support_l2 == original.maximum_accumulated_support_l2
+        if value != original.multipole_spectral_tail_fraction:
+            assert changed.column_identity() != original.column_identity()
+    for value in (True, np.bool_(False), -1e-12, np.nan, np.inf, 1.00001e-4):
+        with pytest.raises(ValueError, match="Multipole spectral tail fraction"):
+            replace(original, multipole_spectral_tail_fraction=value).validate()
+
+
 def gaussian(n):
     axis = (np.arange(n)-n//2)*(128/n)*4e-9
     xx, yy = np.meshgrid(axis, axis)

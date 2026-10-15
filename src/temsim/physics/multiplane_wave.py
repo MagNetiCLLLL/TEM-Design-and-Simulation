@@ -207,9 +207,17 @@ def reselect_phase_carrier(wave, wavelength_m, *, grid_numerics,
     from scipy.linalg import solve_sylvester
     from temsim.physics.wave_grid import WaveSamplingError, WaveGridBudgetError, apply_resolved_operator
     from temsim.physics.wave_flux import check_lossless_norm
+    from temsim.physics.canonical_phase import phase_carrier_covariance_blocks, phase_carrier_moments_working_bytes
+    from temsim.physics.multipole_wave import _spectral_marginals, multipole_working_bytes, _MULTIPOLE_TILE_CELLS
     if cancelled():
         raise InterruptedError("Phase-carrier selection cancelled")
-    grid_numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
+    if array_module(wave.amplitude) is np:
+        # The original input and its norm must fit even when this optional
+        # representation change is declined for lack of scratch space.
+        grid_numerics.check_working_memory(wave.amplitude.shape,
+            working_bytes=32*wave.amplitude.size, retained_bytes=retained_bytes)
+    else:
+        grid_numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
     if not np.isfinite(wavelength_m) or wavelength_m <= 0:
         raise ValueError("Phase carrier needs a positive finite wavelength")
     probability = wave.probability
@@ -224,8 +232,17 @@ def reselect_phase_carrier(wave, wavelength_m, *, grid_numerics,
         return wave, [{"method": "phase-carrier optimization not applied: unresolved input boundary",
             "from_shape": wave.amplitude.shape, "to_shape": wave.amplitude.shape,
             "input_boundary_probability": boundary, "probability": probability}]
-    covariance = wave.canonical_covariance(wavelength_m)
-    xx, xp = covariance[:2, :2], covariance[:2, 2:]
+    if array_module(wave.amplitude) is np:
+        try:
+            grid_numerics.check_working_memory(wave.amplitude.shape,
+                working_bytes=max(phase_carrier_moments_working_bytes(wave.amplitude.shape),
+                                  multipole_working_bytes(wave.amplitude.shape)),
+                retained_bytes=retained_bytes)
+        except WaveGridBudgetError as error:
+            return wave, [{"method": "phase-carrier optimization not applied: scratch budget",
+                "from_shape": wave.amplitude.shape, "to_shape": wave.amplitude.shape,
+                "reason": str(error), "probability": probability}]
+    xx, xp = phase_carrier_covariance_blocks(wave, wavelength_m, cancelled=cancelled)
     if np.linalg.eigvalsh(xx).min() <= 0:
         raise ValueError("Phase-carrier selection needs a positive spatial covariance")
     selected = solve_sylvester(xx, xx, xp+xp.T)
@@ -239,26 +256,51 @@ def reselect_phase_carrier(wave, wavelength_m, *, grid_numerics,
         xp = array_module(current.amplitude)
         if cancelled():
             raise InterruptedError("Phase-carrier selection cancelled")
-        local = current.coordinates_m()-xp.asarray(current.origin_m)[:, None, None]
-        compensation = -np.pi/wavelength_m*xp.einsum("iyx,ij,jyx->yx", local, xp.asarray(delta), local)
-        occupied = abs(current.amplitude) > max_abs(current.amplitude)*1e-8
-        spectrum = abs(xp.fft.fft2(current.amplitude, norm="ortho"))**2
-        total, largest = float(spectrum.sum()), 0.
-        for axis in (0, 1):
-            count = current.amplitude.shape[axis]
-            low = xp.take(occupied, xp.arange(count-1), axis=axis)
-            high = xp.take(occupied, xp.arange(1, count), axis=axis)
-            added = max_abs(xp.diff(compensation, axis=axis)[low & high])
-            frequencies = abs(2*np.pi*xp.fft.fftfreq(count))
-            marginal = spectrum.sum(axis=1-axis)
+        ny, nx = current.amplitude.shape
+        rows_per_tile = max(1, _MULTIPOLE_TILE_CELLS//nx)
+        ix = (xp.arange(nx)-nx//2)[None, :]
+        basis = current.basis_m
+        def chirp_rows(start, stop):
+            iy = (xp.arange(start, stop)-ny//2)[:, None]
+            u = basis[0, 0]*ix+basis[0, 1]*iy
+            v = basis[1, 0]*ix+basis[1, 1]*iy
+            return -np.pi/wavelength_m*(delta[0, 0]*u*u
+                +(delta[0, 1]+delta[1, 0])*u*v+delta[1, 1]*v*v)
+        threshold = max(max_abs(current.amplitude[start:start+rows_per_tile])
+                        for start in range(0, ny, rows_per_tile))*1e-8
+        increments = [0., 0.]
+        for start in range(0, ny, rows_per_tile):
+            if cancelled():
+                raise InterruptedError("Phase-carrier selection cancelled")
+            stop = min(ny, start+rows_per_tile+1)
+            compensation = chirp_rows(start, stop)
+            occupied = abs(current.amplitude[start:stop]) > threshold
+            for axis in (0, 1):
+                neighbours = (occupied[:-1] & occupied[1:] if axis == 0
+                              else occupied[:, :-1] & occupied[:, 1:])
+                increments[axis] = max(increments[axis], max_abs(xp.diff(compensation, axis=axis)[neighbours]))
+        del compensation, occupied
+        marginals = _spectral_marginals(current.amplitude, cancelled=cancelled)
+        total, largest = float(marginals[0].sum()), 0.
+        for axis, marginal in enumerate(marginals):
+            frequencies = abs(2*np.pi*xp.fft.fftfreq(current.amplitude.shape[axis]))
             order = xp.argsort(frequencies)
             tails = xp.cumsum(marginal[order][::-1])[::-1]
             support = max_abs(frequencies[order][tails > total*1e-12])
-            largest = max(largest, support+added)
+            largest = max(largest, support+increments[axis])
         if largest >= .8*np.pi:
             raise WaveSamplingError(f"Phase-carrier envelope plus compensating chirp is undersampled "
                 f"({largest:.6g} rad per cell); refine BEFORE exact gauge rephasing", largest/(.8*np.pi))
-        result = current._replace_owned(current.amplitude*xp.exp(1j*compensation), curvature_m1=selected)
+        output = xp.empty_like(current.amplitude)
+        for start in range(0, ny, rows_per_tile):
+            if cancelled():
+                raise InterruptedError("Phase-carrier selection cancelled")
+            stop = min(ny, start+rows_per_tile)
+            compensation = chirp_rows(start, stop)
+            output[start:stop] = current.amplitude[start:stop]*xp.exp(1j*compensation)
+        del compensation
+        result = current._replace_owned(output, curvature_m1=selected)
+        del output
         result_probability = result.probability
         check_lossless_norm(current.probability, result_probability, context="Exact phase-carrier gauge")
         selected_rows.append({"method": "exact envelope chirp compensation; full complex field retained",
@@ -269,7 +311,8 @@ def reselect_phase_carrier(wave, wavelength_m, *, grid_numerics,
         return result
     try:
         result, rows = apply_resolved_operator(wave, rephase, numerics=grid_numerics,
-            retained_bytes=retained_bytes, cancelled=cancelled)
+            retained_bytes=retained_bytes, cancelled=cancelled,
+            operator_working_bytes=multipole_working_bytes if array_module(wave.amplitude) is np else None)
     except WaveGridBudgetError as error:
         # This is only an optional change of representation. Keep the entire
         # ORIGINAL field when its compensating chirp cannot fit the budget;
@@ -312,7 +355,11 @@ def propagate_plane_wave(wave, matrix, translation, wavelength_m, *,
     if cancelled():
         raise InterruptedError("Canonical plane propagation cancelled")
     if grid_numerics is not None:
-        grid_numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
+        if xp is np:
+            grid_numerics.check_working_memory(wave.amplitude.shape,
+                working_bytes=32*wave.amplitude.size, retained_bytes=retained_bytes)
+        else:
+            grid_numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
     completed_records = [] if sampling_records is not None else None
     result, chart_phase = _propagate_plane_wave(wave, matrix, translation, wavelength_m,
         reference_length_m, grid_numerics=grid_numerics, retained_bytes=retained_bytes,
@@ -349,8 +396,15 @@ def _propagate_plane_wave(wave, matrix, translation, wavelength_m, reference_len
         drift = inverse_a @ b
         conservative_drift = np.linalg.norm(drift, ord=2) * theta < .25 * extent
         diagnostic = {}
-        amplitude = _sampled_angular_spectrum(wave, drift, wavelength_m,
-            conservative=conservative_drift, diagnostic=diagnostic)
+        if conservative_drift and array_module(wave.amplitude) is np:
+            from temsim.physics.cpu_angular_spectrum import conservative_angular_spectrum
+            amplitude = conservative_angular_spectrum(wave, drift, wavelength_m,
+                grid_numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled)
+        else:
+            if grid_numerics is not None:
+                grid_numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
+            amplitude = _sampled_angular_spectrum(wave, drift, wavelength_m,
+                conservative=conservative_drift, diagnostic=diagnostic)
         if amplitude is None and diagnostic.get("failure") == "output_boundary" and grid_numerics is not None:
             try:
                 wave, amplitude = _extend_angular_spectrum_domain(wave, drift, wavelength_m,
@@ -375,6 +429,8 @@ def _propagate_plane_wave(wave, matrix, translation, wavelength_m, reference_len
                       else wave._replace_owned(amplitude, **metadata))
             return result, chart_phase
     try:
+        if grid_numerics is not None:
+            grid_numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
         result, chart_phase = _propagate_fresnel_chart(wave, matrix, shift, wavelength_m,
             reference_length_m, grid_numerics=grid_numerics, retained_bytes=retained_bytes,
             cancelled=cancelled, sampling_records=sampling_records)

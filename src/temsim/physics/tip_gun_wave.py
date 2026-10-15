@@ -41,6 +41,7 @@ class GunWaveNumerics:
     max_steps: int = 100_000
     maximum_checkpoint_bytes: int = 8 * 1024**3
     maximum_fractional_energy_change: float = 0.05
+    near_tip_source_padding_factor: int = 2
 
     def validate(self):
         for name in ("field_step_mm", "bore_step_mm"):
@@ -55,6 +56,9 @@ class GunWaveNumerics:
             raise ValueError("Gun wave max_steps must be a positive bounded integer")
         if isinstance(self.maximum_checkpoint_bytes, bool) or not isinstance(self.maximum_checkpoint_bytes, int) or self.maximum_checkpoint_bytes <= 0:
             raise ValueError("Gun checkpoint memory budget must be a positive integer")
+        if (type(self.near_tip_source_padding_factor) is not int
+                or not 1 <= self.near_tip_source_padding_factor <= 16):
+            raise ValueError("Gun near_tip_source_padding_factor must be an integer from 1 to 16")
         return self
 
 
@@ -380,6 +384,7 @@ def _mask_plane(gun, wave, z_mm, prior, column_apertures=()):
         half = .5*component.mechanical_length_mm
         if abs(z_mm-component.mechanical_center_from_tip_mm) <= half+1e-10:
             radius = .5*component.mechanical_clear_bore_diameter_mm
+            _require_resolved_gun_circle(wave, radius, component.key, z_mm)
             mask = np.hypot(xy[0], xy[1]) < radius
             before = wave.probability
             if not np.all(mask):
@@ -390,6 +395,11 @@ def _mask_plane(gun, wave, z_mm, prior, column_apertures=()):
     for aperture in (gun.dpa_aperture, gun.c1_aperture):
         if abs(z_mm-aperture.z_mm) < 1e-10:
             is_slit = aperture.kind == "energy_selection_slit"
+            if aperture.enabled and not is_slit:
+                _require_resolved_gun_circle(wave, aperture.radius_mm, aperture.key, z_mm)
+            elif is_slit:
+                _require_resolved_gun_circle(wave, .5*aperture.mechanical_bore_diameter_mm,
+                                             aperture.key, z_mm)
             if aperture.enabled and not is_slit and aperture.radius_mm <= 0:
                 # A zero-area opening transmits zero probability; a sampled
                 # pixel whose centre equals the aperture centre is not an area.
@@ -412,6 +422,7 @@ def _mask_plane(gun, wave, z_mm, prior, column_apertures=()):
     for aperture in column_apertures:
         if aperture.key in gun_keys or abs(z_mm-float(aperture.z_mm)) >= 1e-10:
             continue
+        _require_resolved_gun_circle(wave, float(aperture.radius_mm), aperture.key, z_mm)
         if float(aperture.radius_mm) <= 0:
             mask = np.zeros(wave.amplitude.shape, dtype=bool)
         elif hasattr(aperture, "transmission_mask"):
@@ -426,6 +437,54 @@ def _mask_plane(gun, wave, z_mm, prior, column_apertures=()):
                      "incoming_probability": prior*before, "outgoing_probability": prior*wave.probability,
                      "lost_probability": prior*(before-wave.probability)})
     return wave, rows
+
+
+def _require_resolved_gun_circle(wave, radius_mm, component, z_mm):
+    """A sub-cell opening cannot acquire the area of its centre pixel.
+
+    This is only a minimum sampling guard, not hard-edge convergence. A
+    closed opening still has exactly zero transmission. Refinement must be
+    executed before the physical mask, never after an aliased interception.
+    """
+    if radius_mm <= 0:
+        return
+    cell_mm = float(np.linalg.norm(wave.basis_m, ord=2))*1e3
+    if 2*radius_mm < 2*cell_mm:
+        from temsim.physics.wave_grid import WaveSamplingError
+        raise WaveSamplingError(
+            f"Gun opening {component} at {z_mm:.9g} mm is undersampled "
+            f"(diameter {2*radius_mm:.6g} mm, largest cell step {cell_mm:.6g} mm); "
+            "refine the executed incoming wave before computing its transmission",
+            cell_mm/radius_mm)
+
+
+def _execute_gun_segments(gun, wave, segments, energy_ev, prior, *, numerics,
+                          retained_bytes=0, column_apertures=(), cancelled=lambda: False):
+    """Execute the existing canonical gun maps with bounded output sampling.
+
+    In particular, a narrow natural Collins output needs zero extension of
+    its input quadrature. Increasing the sampled source alone does not refine
+    that output chart. The common wave operator retains every complex input
+    coefficient and records its numerical chart changes.
+    """
+    from temsim.physics.wave_grid import WaveGridNumerics
+    grid_numerics = WaveGridNumerics(maximum_working_bytes=numerics.maximum_checkpoint_bytes,
+                                    compute_backend="cpu")
+    losses, sampling = [], []
+    wavelength = float(wavelength_m(energy_ev))
+    for plane, matrix, offset, phase in segments:
+        if cancelled():
+            raise InterruptedError("Tip-to-exit wave propagation cancelled")
+        if wave.probability > 0:
+            first = len(sampling)
+            wave = propagate_plane_wave(wave, matrix, offset, wavelength, **phase,
+                grid_numerics=grid_numerics, retained_bytes=retained_bytes,
+                cancelled=cancelled, sampling_records=sampling)
+            for row in sampling[first:]:
+                row["z_mm"] = float(plane)
+            wave, rows = _mask_plane(gun, wave, plane, prior, column_apertures)
+            losses.extend(rows)
+    return wave, losses, sampling
 
 
 def _column_magnetic_coefficients(column, midpoints):
@@ -457,6 +516,17 @@ def _column_magnetic_coefficients(column, midpoints):
 _CACHE = OrderedDict()
 
 
+def _publish_gun_checkpoint(beam, plane_z_mm, reference_current_a, record, auxiliary, *,
+                            maximum_working_bytes, retained_bytes=0,
+                            cancelled=lambda: False):
+    from temsim.physics.accelerating_tip_boundary import _check_publication_memory
+    _check_publication_memory(tuple(auxiliary.values()),
+        maximum_working_bytes=maximum_working_bytes,
+        retained_bytes=retained_bytes+sum(mode.plane.amplitude.nbytes for mode in beam.modes),
+        cancelled=cancelled, context="Gun checkpoint")
+    return TipGunCheckpoint(beam, plane_z_mm, reference_current_a, record, auxiliary)
+
+
 def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
                              numerics=GunWaveNumerics(), use_cache=True,
                              cancelled=lambda: False, progress_callback=None,
@@ -483,7 +553,8 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
     near_numerics = None
     if driven:
         from temsim.physics.accelerating_tip_boundary import AcceleratingTipNumerics
-        near_numerics = AcceleratingTipNumerics(maximum_working_bytes=numerics.maximum_checkpoint_bytes)
+        near_numerics = AcceleratingTipNumerics(maximum_working_bytes=numerics.maximum_checkpoint_bytes,
+            source_padding_factor=numerics.near_tip_source_padding_factor)
     start_z_mm = 0. if near_numerics is None else near_numerics.end_z_nm*1e-9*1e3
     _require_supported_gun_fields(working)
     estimated_bytes = (emission.record["mode_count"]+8)*source_numerics.grid_pixels**2*16
@@ -591,15 +662,15 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
                                                     axial_b, electric_provider=electric)
         segments, transport = energy_maps[energy]
         energy_records[energy] = transport
-        wave, losses = mode.plane, []
-        for plane, matrix, offset, phase in segments:
-            if cancelled():
-                raise InterruptedError("Tip-to-exit wave propagation cancelled")
-            if wave.probability > 0:
-                wave = propagate_plane_wave(wave, matrix, offset, float(wavelength_m(energy)), **phase)
-                wave, rows = _mask_plane(working, wave, plane, mode.weight_per_reference_electron,
-                                         column_apertures)
-                losses.extend(rows)
+        # Earlier energy modes and the retained executed near field remain
+        # resident while this mode can acquire a larger output lattice.
+        retained = (sum(array.nbytes for array in auxiliary.values())
+                    +sum(output.plane.amplitude.nbytes for output in outputs)
+                    +z.nbytes+sum(array.nbytes for array in coefficients)
+                    +(0 if axial_b is None else axial_b.nbytes))
+        wave, losses, sampling = _execute_gun_segments(working, mode.plane, segments,
+            energy, mode.weight_per_reference_electron, numerics=numerics,
+            retained_bytes=retained, column_apertures=column_apertures, cancelled=cancelled)
         norm = wave.probability
         # This is a unit conversion of phase carriers, preserving their phase
         # in radians and all previously accumulated diffraction/aperture losses.
@@ -611,8 +682,9 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
             energy_kev=transport["exit_axial_energy_ev"]*1e-3,
             axial_reference=mode.axial_reference.advance(transport["reference_flight_time_s"], transport["reference_longitudinal_action_j_s"])))
         records.append({"mode_id": mode.mode_id, "input_weight": mode.weight_per_reference_electron,
-                        "output_weight": mode.weight_per_reference_electron*norm, "losses": losses})
-    checkpoint = TipGunCheckpoint(BeamState(tuple(outputs), TIP_REFERENCE), float(z[-1]),
+                        "output_weight": mode.weight_per_reference_electron*norm, "losses": losses,
+                        "sampling": sampling})
+    checkpoint = _publish_gun_checkpoint(BeamState(tuple(outputs), TIP_REFERENCE), float(z[-1]),
         emission.reference_current_a, {"schema": "executed-tip-gun-v1", "dependency_digest": dependency,
         "tip_emission_id": emission.digest, "tip_emission": emission.record,
         "field_digest": field_digest.hexdigest(), "field_steps": len(z)-1,
@@ -626,6 +698,7 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
         "physics": ("Two-way scalar driven Tip boundary followed by an executed second-order paraxial continuation in the installed fields"
                     if driven else "Stationary scalar second-order paraxial Hamiltonian in the installed solved gun electric field and captured magnetic components"),
         "integrator": "Energy-refined symmetric potential kick / variable-momentum drift / potential kick",
+        "sampling_policy": "Budgeted CPU canonical propagation; preserve full Collins output period and resolve narrow output grids before masks",
         "current_reference": "Physical tip emission before all gun losses",
         "limitations": ["After the bounded non-paraxial prefix, higher-order/non-paraxial gun dynamics are not included" if driven
                          else "Higher-order/non-paraxial gun dynamics not included in this operator",
@@ -633,7 +706,10 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
                         "Imported Wien fields require a separate validated operator",
                         "Body bores use axial absorbing projections; refine bore_step_mm",
                         "Reference flight time is axial, not a pulsed longitudinal wave packet"],
-        "validation_status": "DEVELOPMENT_NOT_FULL_TEM_STEM_ACCEPTANCE"}, auxiliary)
+        "validation_status": "DEVELOPMENT_NOT_FULL_TEM_STEM_ACCEPTANCE"}, auxiliary,
+        maximum_working_bytes=numerics.maximum_checkpoint_bytes,
+        retained_bytes=z.nbytes+sum(array.nbytes for array in coefficients)
+            +(0 if axial_b is None else axial_b.nbytes), cancelled=cancelled)
     if cancelled():
         raise InterruptedError("Tip-to-exit wave propagation cancelled; result not cached")
     if solver_source_identity() != implementation:

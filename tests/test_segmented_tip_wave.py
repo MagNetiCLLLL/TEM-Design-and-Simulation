@@ -73,15 +73,21 @@ def test_failed_writer_does_not_publish_or_delete_committed_results(tmp_path):
 
 
 def test_segmented_complex_wave_matches_monolithic_and_resumes_after_cancellation(tmp_path):
+    from temsim.physics.wave_grid import WaveGridNumerics
     state = quiet_state()
     aperture = default_state().objective_aperture
     aperture.enabled = aperture.installed = aperture.inserted = True
-    aperture.z_mm, aperture.radius_mm = 2000.5, .005
+    aperture.z_mm, aperture.radius_mm = 2000.5, .018
     state.apertures = [aperture]
     original = checkpoint(.6)
-    original = replace(original, beam=replace(original.beam, modes=(replace(original.beam.modes[0],
+    numerics = WaveGridNumerics(maximum_pixels=1024, maximum_working_bytes=256*1024**2)
+    # This tests exact resume/cache behaviour, not hard-edge convergence.
+    # Keep the original field and carriers with an aperture resolved at 18
+    # cells per radius; subcell aperture admission has separate focused tests.
+    mode = original.beam.modes[0]
+    original = replace(original, beam=replace(original.beam, modes=(replace(mode,
         axial_reference=AxialWaveReference(2e-8, 1e-22)),)))
-    full = _propagate_column(state, original, 2001., maximum_step_mm=.1)
+    full = _propagate_column(state, original, 2001., maximum_step_mm=.1, grid_numerics=numerics)
     store = ExecutedWaveStore(tmp_path, "same-physical-fixture", 1<<28)
     origin = store.put(store.key("fixture-upstream"), original)
     cancel = [False]
@@ -90,10 +96,14 @@ def test_segmented_complex_wave_matches_monolithic_and_resumes_after_cancellatio
             cancel[0] = True
     with pytest.raises(InterruptedError):
         _propagate_column_segmented(state, origin, 2001., store=store, segment_steps=3,
-            maximum_step_mm=.1, cancelled=lambda: cancel[0], progress_callback=progress)
-    streamed, reused = _propagate_column_segmented(state, origin, 2001., store=store, segment_steps=3, maximum_step_mm=.1)
+            maximum_step_mm=.1, grid_numerics=numerics,
+            cancelled=lambda: cancel[0], progress_callback=progress)
+    streamed, reused = _propagate_column_segmented(state, origin, 2001., store=store, segment_steps=3,
+        maximum_step_mm=.1, grid_numerics=numerics)
     assert reused
     a, b = full.beam.modes[0], streamed.beam.modes[0]
+    assert 0 < full.beam.total_weight < original.beam.total_weight
+    assert original.beam.total_weight-full.beam.total_weight > 1e-6
     assert streamed.beam.total_weight == pytest.approx(full.beam.total_weight, rel=2e-12)
     for field in ("amplitude", "basis_m", "origin_m", "curvature_m1", "tilt_rad"):
         np.testing.assert_allclose(getattr(a.plane, field), getattr(b.plane, field), rtol=1e-10, atol=1e-15)

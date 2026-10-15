@@ -12,7 +12,8 @@ import numpy as np
 from scipy.fft import fhtoffset
 from scipy.signal import resample
 
-from temsim.physics.wave_grid import WaveSamplingError
+from temsim.physics.wave_grid import WaveSamplingError, WaveMemoryBudgetError
+from temsim.physics.wave_execution import check_available_memory
 
 
 class RadialDomainError(ValueError):
@@ -140,7 +141,30 @@ def _hankel_grid(wave):
     return offset, np.exp(offset)/wave.radius_m[::-1]
 
 
-def expand_radial_domain(wave, factor=16., *, maximum_samples=4_194_304):
+def _check_radial_memory(samples, maximum_working_bytes=None, retained_bytes=0):
+    """Reserve input/output fields, Hankel scratch and radial phase arrays.
+
+    Retained checkpoints are already resident and count against the declared
+    budget. The operating-system check reserves only additional working
+    memory, matching the Cartesian grid policy.
+    """
+    if (maximum_working_bytes is not None
+            and (type(maximum_working_bytes) is not int or maximum_working_bytes <= 0)):
+        raise ValueError("Radial working memory budget must be a positive integer or None")
+    if type(retained_bytes) is not int or retained_bytes < 0:
+        raise ValueError("Radial retained bytes must be a nonnegative integer")
+    required = retained_bytes+256*int(samples)
+    if maximum_working_bytes is not None and required > maximum_working_bytes:
+        raise WaveMemoryBudgetError(
+            f"Radial wave working-memory budget exceeded: samples={samples}, "
+            f"estimated working bytes={required}; maximum_working_bytes={maximum_working_bytes}. "
+            "The unresolved radial operation was not allocated.")
+    check_available_memory(required-retained_bytes)
+    return required
+
+
+def expand_radial_domain(wave, factor=16., *, maximum_samples=4_194_304,
+                         maximum_working_bytes=None, retained_bytes=0):
     """Zero-pad the finite represented flux field, retaining all old samples.
 
     This is an expanded numerical interval, not a claim to recover unknown
@@ -152,6 +176,7 @@ def expand_radial_domain(wave, factor=16., *, maximum_samples=4_194_304):
     count = next_fast_len(len(wave.radius_m)+2*extra)
     if count > maximum_samples:
         raise ValueError(f"Expanded radial domain needs {count} samples, above {maximum_samples}")
+    _check_radial_memory(count, maximum_working_bytes, retained_bytes)
     xp = _array_module(wave.amplitude)
     radius = wave.radius_m[0]*xp.exp((xp.arange(count)-extra)*wave.dln)
     amplitude = xp.zeros(count, complex)
@@ -201,18 +226,21 @@ class RadialExecution:
     """
 
     def __init__(self, load, samples, maximum_samples, *, cancelled=lambda: False,
-                 report=None):
+                 report=None, maximum_working_bytes=None, retained_bytes=0):
         self.load = load
         self.samples = samples
         self.maximum_samples = maximum_samples
         self.cancelled = cancelled
         self.report = report
+        self.maximum_working_bytes = maximum_working_bytes
+        self.retained_bytes = retained_bytes
         self.operations = []
         self.ledger = []
         self.refinements = []
         while True:
             if self.cancelled():
                 raise InterruptedError("Loading the executed radial wave cancelled")
+            _check_radial_memory(self.samples, self.maximum_working_bytes, self.retained_bytes)
             try:
                 self.wave = load(self.samples)
                 break
@@ -226,6 +254,7 @@ class RadialExecution:
         if count > self.maximum_samples:
             raise ValueError(f"Replaying the executed radial chain needs {count} initial samples, "
                              f"above its {self.maximum_samples} budget; {error}") from error
+        _check_radial_memory(count, self.maximum_working_bytes, self.retained_bytes)
         self._record(self.samples, count, str(error), kind)
         self.samples = count
 
@@ -237,7 +266,8 @@ class RadialExecution:
                 return operator(value)
             except RadialDomainError as error:
                 before = len(value.radius_m)
-                value = expand_radial_domain(value, maximum_samples=self.maximum_samples)
+                value = expand_radial_domain(value, maximum_samples=self.maximum_samples,
+                    maximum_working_bytes=self.maximum_working_bytes, retained_bytes=self.retained_bytes)
                 self._record(before, len(value.radius_m), str(error), "domain_expansion")
 
     def _record(self, before, after, reason, kind):
@@ -251,6 +281,7 @@ class RadialExecution:
         while True:
             try:
                 if replay:
+                    _check_radial_memory(self.samples, self.maximum_working_bytes, self.retained_bytes)
                     value = self.load(self.samples)
                     ledger = []
                     for previous, identity in operations:
@@ -393,25 +424,36 @@ def from_executed_gun(mode, payload, samples=65536):
 def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                         initial_samples=65536, maximum_samples=4_194_304,
                         cancelled=lambda: False, progress_callback=None,
-                        device_resident=False, column_model="physical"):
+                        device_resident=False, column_model="physical",
+                        cartesian_numerics=None, cartesian_admission=None,
+                        maximum_working_bytes=None, retained_bytes=0):
     """Execute the maximal round prefix; return before the first 2-D effect."""
-    from temsim.physics.column_wave import _prepare_column, _column_transports, _PlacedAperture
+    from temsim.physics.column_wave import (
+        _prepare_column, _column_transports, _electric_coefficients, _linear_factor,
+        _PlacedAperture, _circular_opening,
+    )
     from temsim.physics.posed_wave_hardware import PosedWaveBore
     from temsim.physics.canonical_action import CanonicalPath
     from temsim.optics.electron_gun.tip_coherence import wavelength_m
     from temsim.physics.ideal_column_reference import column_model_record, validate_column_model
     validate_column_model(column_model)
+    if any(row.get("angular_order", 0) != 0 for row in getattr(checkpoint, "record", {}).get("radial_output_modes", ())):
+        return checkpoint.plane_z_mm, (), {"reason": "Nonzero angular order requires an angular Cartesian handoff"}
     arguments = {} if column_model == "physical" else {"column_model": column_model}
     plan, radii, stops, owners = _prepare_column(state, checkpoint.plane_z_mm, stop_z_mm,
                                                maximum_step_mm, **arguments)
-    from temsim.physics.electrostatic_column_transport import active_electric_field
-    if (active_electric_field(plan) is not None or any(np.any(getattr(plan, name, ()))
-            for name in ("dipole_bx_t", "dipole_by_t"))):
-        # The radial checkpoint path assumes constant kinetic energy and a
-        # centred matrix-only action. Preserve the exact input for the 2-D
-        # operator, which carries electric work, affine action and clocks.
+    if any(np.any(getattr(plan, name, ())) for name in ("dipole_bx_t", "dipole_by_t")):
         return checkpoint.plane_z_mm, (), {"reason":
-            "Electric fields or finite dipoles require the two-dimensional column operator"}
+            "Finite dipoles require the two-dimensional column operator"}
+    # Check the provider before reading the full plan: an unrecognized map
+    # must decline this representation, not be treated as a zero field.
+    from temsim.physics.wave_field_admission import sample_wave_electric, UnsupportedWaveElectricField
+    if getattr(plan, "electric_field", None) is not None:
+        try:
+            sample_wave_electric(plan.electric_field, np.array((checkpoint.plane_z_mm,)))
+        except UnsupportedWaveElectricField:
+            return checkpoint.plane_z_mm, (), {"reason":
+                "Unresolved electric fields require the two-dimensional column operator"}
     if (any(kick.active for kick in getattr(plan, "intrinsic_aberration_kicks", ()))
             or any(kick.strength_m3 for kick in getattr(plan, "posed_spherical_kicks", ()))):
         # The radial backend only implements its historical centred C3
@@ -427,6 +469,12 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         # A radial field has no azimuthal phase, shifted centre or oblique
         # material boundary. Preserve the executed 2-D input for that path.
         return checkpoint.plane_z_mm, (), {"reason": "Placed lenses/hardware require the two-dimensional column operator"}
+    electric = _electric_coefficients(plan)
+    nodes, phi, gradient, hessian = electric
+    if (np.any(gradient) or np.any(hessian[:, 0, 1]) or np.any(hessian[:, 1, 0])
+            or np.any(hessian[:, 0, 0] != hessian[:, 1, 1])):
+        return checkpoint.plane_z_mm, (), {"reason":
+            "Non-axisymmetric electric fields require the two-dimensional column operator"}
     end_index = len(plan.z_mm)-1
     for name in ("midpoint_sx_m2", "midpoint_sy_m2", "midpoint_sxy_m2", "midpoint_hex_normal_m3", "midpoint_hex_skew_m3"):
         active = np.flatnonzero(getattr(plan, name))
@@ -441,50 +489,72 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
             index = int(np.searchsorted(plan.z_mm, row["z_mm"]))
             end_index = min(end_index, max(0, index-1))
     for index, apertures in stops.items():
-        if any(getattr(a, "offset_x_mm", 0.) or getattr(a, "offset_y_mm", 0.) for a in apertures):
+        openings = tuple(_circular_opening(aperture) for aperture in apertures)
+        if (any(opening is None or np.any(opening[1]) for opening in openings)
+                or any(getattr(aperture, "kind", "") == "energy_selection_slit" for aperture in apertures)):
             end_index = min(end_index, max(0, index-1))
     if end_index == 0:
         return checkpoint.plane_z_mm, (), {"reason": "No round prefix before a non-axisymmetric operation"}
-    payloads = {row["mode_id"]: row for row in checkpoint.record["radial_output_modes"]}
+    payloads = {row["mode_id"]: row for row in checkpoint.record.get("radial_output_modes", ())}
+    if not payloads and cartesian_numerics is None:
+        raise ValueError("Round prefix needs the executed radial expansion or qualified Cartesian input")
+    if cartesian_numerics is not None:
+        admitted = tuple(row["mode_id"] for row in (cartesian_admission or ()))
+        if admitted != tuple(mode.mode_id for mode in checkpoint.beam.modes):
+            raise ValueError("Cartesian radial admission must retain every executed mode in order")
     result, records = [], []
+    retained = int(retained_bytes)
     for index, mode in enumerate(checkpoint.beam.modes):
         i = 0  # Input-grid replay can report before the first column step.
         def report(before, after, kind):
             if progress_callback:
                 progress_callback(i, end_index, f"Radial {kind}: {before} -> {after}")
         def load(samples):
-            wave = from_executed_gun(mode, payloads[mode.mode_id], samples)
+            if cartesian_numerics is None:
+                wave = from_executed_gun(mode, payloads[mode.mode_id], samples)
+            else:
+                from temsim.physics.cartesian_radial_handoff import cartesian_to_radial
+                wave, _ = cartesian_to_radial(mode.plane,
+                    wavelength_m=float(wavelength_m(mode.energy_kev*1000)), samples=samples,
+                    numerics=cartesian_numerics, retained_bytes=retained+mode.plane.amplitude.nbytes,
+                    cancelled=cancelled)
             return to_device(wave) if device_resident else wave
         execution = RadialExecution(load,
-            initial_samples, maximum_samples, cancelled=cancelled, report=report)
+            initial_samples, maximum_samples, cancelled=cancelled, report=report,
+            maximum_working_bytes=maximum_working_bytes,
+            retained_bytes=retained+(mode.plane.amplitude.nbytes if cartesian_numerics is not None else 0))
         wave = execution.wave
         energy = mode.energy_kev
         wavelength = float(wavelength_m(mode.energy_kev*1000))
+        from temsim.physics.tip_gun_wave import _momentum_velocity
+        entrance_p, _ = _momentum_velocity(energy*1000)
+        momentum, velocity = _momentum_velocity(energy*1000+phi[:end_index]-nodes[0])
+        exit_energy = float(energy*1000+nodes[end_index]-nodes[0])
+        exit_p, _ = _momentum_velocity(exit_energy)
+        flight_increment = float(np.sum(plan.step_m[:end_index]/velocity))
+        action_increment = float(np.sum(plan.step_m[:end_index]*momentum))
         pending = CanonicalPath(1e-3)
         # Conservative extent of the represented position/frequency grids.
         # If this bound reaches a wall, execute and clip at that exact node.
         # Otherwise grouping the known quadratic factors skips no interaction.
         spectral_extent = float(_hankel_grid(wave)[1][-1]) if wave.probability else 0.
         radial_extent = float(wave.radius_m[-1])
-        for i, path in enumerate(_column_transports(plan, energy)):
+        for i, path in enumerate(_column_transports(plan, energy, electric=electric)):
             if i >= end_index:
                 break
             if cancelled():
                 raise InterruptedError("Round-column wave cancelled")
             j = i+1
+            if np.any(path.offset) or path.action_m != 0.:
+                raise ValueError("A centred round column cannot discard affine displacement or scalar action")
             try:
                 pending.append(path.matrix)
             except ValueError as error:
                 if "phase path is undersampled" not in str(error):
                     raise
-                from types import SimpleNamespace
-                from temsim.physics.core import electron
-                from temsim.physics.column_wave import _linear_factor
-                charge, momentum, _ = electron(SimpleNamespace(beam_voltage_kv=energy))
-                g = charge*plan.midpoint_magnetic_t[i]/(2*momentum)
-                rotation = np.array(((0., g), (-g, 0.)))
-                generator = np.block([[rotation, np.eye(2)], [-np.eye(2)*g*g, rotation]])
-                _linear_factor(pending, generator, float(plan.step_m[i]))
+                # Replay the captured generator, including electric work and
+                # focusing, to retain its continuous metaplectic phase lift.
+                _linear_factor(pending, path.generator, path.distance_m, force=path.force)
             a, b, _, _ = round_map(pending.matrix)
             represented_extent = abs(a+b*wave.curvature_m1)*radial_extent+abs(b)*spectral_extent*wavelength/(2*np.pi)
             must_execute = (j == end_index or plan.cs_kick_m3[j] != 0 or j in stops
@@ -496,7 +566,9 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                     reference_phase_rad=phase, reference_length_m=length))
             pending = CanonicalPath(1e-3)
             if plan.cs_kick_m3[j] != 0:
-                wave = execution.apply(lambda w, strength=plan.cs_kick_m3[j]: radial_cs(w, wavelength, strength))
+                local_p, _ = _momentum_velocity(energy*1000+nodes[j]-nodes[0])
+                strength = float(plan.cs_kick_m3[j]*local_p/entrance_p)
+                wave = execution.apply(lambda w, strength=strength: radial_cs(w, wavelength, strength))
             radius = radii[j]*1e-3
             if math.isfinite(radius):
                 wave = execution.apply(lambda w, r=radius: _radial_stop(w, r),
@@ -509,15 +581,28 @@ def _round_column_prefix(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
             if progress_callback and i % 64 == 0:
                 progress_callback(index*end_index+i, len(checkpoint.beam.modes)*end_index,
                                   f"Round column wave at {plan.z_mm[j]:.6g} mm")
-        result.append((mode, to_host(wave)))
+        # Transport used fixed entrance-p canonical coordinates. The next
+        # checkpoint's carrier is in exit-p angular units, as in the 2-D path.
+        completed = replace(to_host(wave), curvature_m1=wave.curvature_m1*float(entrance_p/exit_p))
+        result.append((mode, completed))
+        retained += completed.radius_m.nbytes+completed.amplitude.nbytes
+        if cartesian_numerics is not None and hasattr(checkpoint.beam, "content_identity"):
+            retained += mode.plane.amplitude.nbytes
         records.append({"mode_id": mode.mode_id, "refinements": execution.refinements, "losses": execution.ledger,
+                        "entrance_energy_kev": float(energy), "exit_energy_kev": exit_energy*1e-3,
+                        "exit_carrier_momentum_ratio": float(entrance_p/exit_p),
+                        "reference_flight_time_increment_s": flight_increment,
+                        "reference_longitudinal_action_increment_j_s": action_increment,
                         "input_fraction": mode.weight_per_reference_electron,
                         "output_fraction": mode.weight_per_reference_electron*wave.probability})
     return float(plan.z_mm[end_index]), tuple(result), {"schema": "executed-round-column-prefix-v1",
         **column_model_record(column_model),
         "upstream_digest": checkpoint.digest, "plan_signature": plan.signature,
         "steps": end_index, "modes": records,
+        "cartesian_admission": cartesian_admission,
+        "maximum_working_bytes": maximum_working_bytes,
         "representation": "Full radial complex field and analytic quadratic phase; selected column model retained",
+        "coordinate_basis": "fixed entrance momentum; output carrier converted to exit momentum",
         "convergence": "Requires radial domain/grid and axial refinement; current balance is not accuracy"}
 
 

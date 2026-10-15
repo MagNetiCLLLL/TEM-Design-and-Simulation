@@ -168,3 +168,97 @@ All runs exited successfully. The phase examples are analytical fixtures, and
 GUI control tests substitute propagation; this follow-up does not assert a new
 full-column physical or experimental validation. The existing non-failing
 PyQtGraph teardown warning remains in the offscreen logs.
+
+## CPU memory and strong-corrector diagnostic follow-up (15 October 2026)
+
+The production Cartesian solver now bounds additional FFT/operator temporaries
+and releases obsolete refinement grids before the next retry. Its configurable
+`WaveGridNumerics.multipole_spectral_tail_fraction` changes the bandwidth
+admission quantile only: it does not delete spectrum bins, crop the physical
+wave, or renormalize probability. The default remains `1e-12`; explicitly
+relaxed values are recorded separately from physical support losses.
+
+Relaxing that tail test alone did not resolve the strong HP2 field in the
+executed Nanoprobe Normal case. An experimental CPU diagnostic therefore uses
+coherently summed Gaussian packets after an actual stored upstream wave, with
+local quadratic approximations of cubic/quartic actions. This avoids carrying
+a finite Cartesian window through the corrector. Complex coefficients still
+interfere; this is not an incoherent ray-density image or a fitted replacement
+source. Small canonical matrices integrate the quadratic fields with an
+independent fine axial step, and a fourth-order signed composition advances
+the nonlinear actions. The approximation is **not installed as an automatic
+fallback in the GUI**, and is not a certified full-wave solver.
+
+The local study uses C3 + Probe Corrector, Nanoprobe Normal, 300 kV. C3 changes
+by +/-0.1 percentage points; the common upper/lower objective control changes
+by +/-0.01 percentage points. All other controls and the specimen entrance
+remain fixed, with no autofocus. The plane is Z=1599.1999975 mm, 2.5 nm before
+the specimen centre. The nine upstream energy modes are retained, but the
+phase comparison follows one fixed coherent E0 component at
+300.0003593443496 keV. There is no single phase for the incoherent mixture.
+
+Prepared cases in `outputs/beamlet-case-inputs-20261015/` bind each instrument
+snapshot to a checksummed executed wave. C3 cases continue all nine modes from
+the retained C2 checkpoint. Unchanged upstream plans are checked before reuse;
+this study does not rerun the complete tip-to-specimen source chain. The
+experimental runner rejects unsupported hard apertures, posed/mapped fields
+and finite dipole drives. Its Gaussian bore-tail bound applies at the original
+physical axial nodes, not continuously between them.
+
+With those local prepared inputs available, a fresh baseline can be run using:
+
+```powershell
+.venv/Scripts/python.exe scripts/replay_gaussian_corrector.py --case-directory outputs/beamlet-case-inputs-20261015/baseline --output outputs/beamlet-reproduction/baseline --pixels 360 --axial-order 4 --maximum-step-mm 0.5 --quadratic-step-mm 0.0625
+```
+
+Use new output directories to preserve prior receipts. The runner forces CPU
+and one thread per numerical runtime. Repeat with `--maximum-step-mm 0.25`
+and, separately, `--pixels 512` to check the axial and packet discretizations.
+`scripts/experimental_gaussian_gram.py` supplies whole-plane coherent norms,
+moments and unadjusted complex-field comparisons; the readout and plotting
+scripts in the same directory retain absolute intensity and phase. No phase
+piston, position or normalization is fitted away.
+
+The current evidence is under `outputs/beamlet-hybrid-20261015/`. Earlier
+second-order results under `outputs/beamlet-prototype-20261015/` failed the
+axial comparison and must not be used as qualified lens comparisons. The
+conservative accumulated local Taylor bound is too loose to certify full-wave
+accuracy; successful numerical refinements establish convergence within this
+experimental model only. Generated wave arrays and figures remain local and
+are not included in the source repository.
+
+The completed hybrid baseline checks retain absolute complex phase:
+
+- Outer step 0.5 to 0.25 mm: whole-plane relative complex L2 difference
+  **0.18415%**; RMS radius changes from 0.220738665 to 0.220719313 nm.
+- Packet grid 360 squared to 512 squared: whole-plane relative complex L2
+  difference **0.11197%**. The tail-sensitive RMS radius changes to
+  0.222313819 nm (**0.7136%**), which is reported separately from field error.
+- Final diagnostic/helper/provenance/acceptance regressions: **212 passed**,
+  no failures or skips (`diagnostic-regressions-final.xml`). The independent
+  obsolete-grid lifetime tests also confirm unchanged complex output.
+
+These are baseline-only empirical checks, not a convergence claim for every
+lens setting. The earlier second-order axial comparison failed despite its
+apparently good packet-width comparison; it is explicitly superseded.
+
+All five 360-squared hybrid continuations completed on CPU. Their isolated
+process peaks were 290--308 MiB; the separate 512-squared validation reached
+384 MiB. These are process measurements, not the total GUI working set. The
+fixed-plane whole-space RMS radii were:
+
+| Excitation change | RMS radius (nm) |
+|---|---:|
+| Baseline | 0.220739 |
+| C3 -0.1 percentage points | 4.560803 |
+| C3 +0.1 percentage points | 4.440682 |
+| Common objective -0.01 percentage points | 65.091012 |
+| Common objective +0.01 percentage points | 64.915020 |
+
+The five coherent norms differ by at most 1.78e-10: the large radius changes
+are redistribution at the fixed plane, not substantial loss. Figures use a
+shared absolute logarithmic intensity scale and explicitly label their central
+2 nm crops; wide X/Y cuts show the broadened beams. The local
+`figures/report.html`, `figures/comparison-summary.json`, and
+`global-moments-five-cases.json` contain the plots, numerical controls, audited
+nonnumerical version changes, and exact packet/readout/source identities.

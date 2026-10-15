@@ -80,9 +80,19 @@ def test_tip_request_validates_radial_numerics():
         TipWaveRequest(radial_column=RadialColumnNumerics(maximum_samples=32)).validate()
 
 
-def test_extinguished_wave_traverses_real_round_plan_without_dividing_by_zero():
-    from temsim.optics.column import default_state
-    state = default_state()
+def test_extinguished_wave_traverses_declared_zero_field_round_plan_without_dividing_by_zero(monkeypatch):
+    # Independent zero-field bookkeeping fixture. The real default instrument
+    # includes a shared electric provider and correctly keeps its 2-D route.
+    from types import SimpleNamespace
+    from temsim.physics.canonical_action import CanonicalPath
+    state = SimpleNamespace(electron_gun=SimpleNamespace(exit_plane_z_mm=450.))
+    plan = SimpleNamespace(z_mm=np.array((450., 451.)), step_m=np.array((.001,)),
+        mapped_fields=(), signature="explicit-zero-field-fixture", midpoint_magnetic_t=np.zeros(1),
+        cs_kick_m3=np.zeros(2), kick_x_rad=np.zeros(2), kick_y_rad=np.zeros(2))
+    for name in ("midpoint_sx_m2", "midpoint_sy_m2", "midpoint_sxy_m2", "midpoint_hex_normal_m3", "midpoint_hex_skew_m3"):
+        setattr(plan, name, np.zeros(1))
+    monkeypatch.setattr("temsim.physics.column_wave._prepare_column", lambda *a, **kw: (plan, np.full(2, np.inf), {}, ()))
+    monkeypatch.setattr("temsim.physics.column_wave._column_transports", lambda *a, **kw: (CanonicalPath(.001),))
     original, _ = fixture()
     mode = original.beam.modes[0]
     mode = replace(mode, weight_per_reference_electron=0.,

@@ -36,6 +36,10 @@ class AcceleratingTipNumerics:
     maximum_paraxial_generator_error: float = .01
     angular_tail_tolerance: float = 1e-8
     maximum_working_bytes: int = 1024**3
+    # Enlarge the finite source domain at unchanged spatial pitch BEFORE
+    # executing its angular transfer. More source pixels at fixed physical
+    # width do not refine the angular quadrature of the near-field operator.
+    source_padding_factor: int = 2
 
     def validate(self):
         for name in ("end_z_nm", "transverse_radius_um", "maximum_step_nm",
@@ -50,6 +54,8 @@ class AcceleratingTipNumerics:
             raise ValueError("maximum_steps must be a positive bounded integer")
         if type(self.maximum_working_bytes) is not int or self.maximum_working_bytes <= 0:
             raise ValueError("maximum_working_bytes must be a positive integer")
+        if type(self.source_padding_factor) is not int or not 1 <= self.source_padding_factor <= 16:
+            raise ValueError("source_padding_factor must be an integer from 1 to 16")
         return self
 
 
@@ -188,8 +194,53 @@ def _near_field_domain(state, electric, magnetic, end_m, radius_m):
     return hardware
 
 
+def _zero_extend_tip_source(full, factor, *, grid_numerics, retained_bytes=0,
+                            cancelled=lambda: False):
+    """Refine angular quadrature without changing represented source cells.
+
+    Every complete complex source sample, including its phase, is copied at
+    the same physical position and pitch. This creates no fitted source and
+    never interpolates an already transmitted wave. The boundary-strip test
+    admits zero extension; it is not a bound on unknown continuum exterior
+    probability. No represented source probability is discarded.
+    """
+    from temsim.physics.multiplane_wave import _input_boundary_probability
+    if type(factor) is not int or not 1 <= factor <= 16:
+        raise ValueError("source_padding_factor must be an integer from 1 to 16")
+    if cancelled():
+        raise InterruptedError("Near-tip source quadrature refinement cancelled")
+    original = tuple(full.shape)
+    shape = tuple(n*factor for n in original)
+    # Robin reflection embedding keeps more angular arrays alive than an
+    # ordinary FFT. Reserve its scratch before enlarging the source at all.
+    required = grid_numerics.check(shape, retained_bytes=retained_bytes+full.nbytes,
+                                  working_bytes_per_pixel=512)
+    probability = float(np.sum(abs(full)**2))
+    boundary = _input_boundary_probability(full)
+    if factor > 1 and boundary > max(1e-30, probability*1e-12):
+        raise ValueError("Near-tip source zero extension needs a resolved input domain: "
+                         f"boundary probability={boundary:.6g}; no source samples were padded")
+    padded = full
+    if factor > 1:
+        if cancelled():
+            raise InterruptedError("Near-tip source quadrature refinement cancelled")
+        padded = np.zeros(shape, dtype=complex)
+        first_y, first_x = shape[0]//2-original[0]//2, shape[1]//2-original[1]//2
+        padded[first_y:first_y+original[0], first_x:first_x+original[1]] = full
+    output_probability = float(np.sum(abs(padded)**2))
+    if not math.isclose(probability, output_probability, rel_tol=1e-14, abs_tol=1e-15):
+        raise ValueError("Near-tip source zero extension changed represented probability")
+    return padded, {"method": "finite-complex-source-zero-extension-before-angular-transport",
+        "original_shape": original, "padded_shape": shape, "source_padding_factor": factor,
+        "original_probability": probability, "padded_probability": output_probability,
+        "input_boundary_probability": boundary,
+        "discarded_represented_probability": 0., "estimated_working_bytes": required,
+        "spatial_pitch_and_origin": "unchanged", "normalisation_correction": False,
+        "continuum_exterior_tail_bound": "not established by the boundary-strip check"}
+
+
 def _spectral_to_plane(coefficients, kxy, input_basis, origin, wavelength, quadratic_phase,
-                       grid_numerics, cancelled):
+                       grid_numerics, cancelled, *, retained_bytes=0):
     """Inverse Fourier transform with its large quadratic phase kept exact.
 
     The dual coordinates u=k/k0 * L are a numerical representation of an
@@ -209,8 +260,39 @@ def _spectral_to_plane(coefficients, kxy, input_basis, origin, wavelength, quadr
                        [np.eye(2)/length, np.zeros((2, 2))]])
     result = propagate_plane_wave(dual, matrix, np.zeros(4), wavelength,
         reference_phase_rad=math.pi/2, reference_length_m=length,
-        grid_numerics=grid_numerics, cancelled=cancelled)
+        grid_numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled)
     return replace(result, amplitude=-1j*result.amplitude)
+
+
+def _check_publication_memory(arrays, *, maximum_working_bytes, retained_bytes=0,
+                              cancelled=lambda: False, context):
+    """Reserve old arrays, immutable copies and one serialization temporary."""
+    from temsim.physics.wave_execution import check_available_memory
+    from temsim.physics.wave_grid import WaveMemoryBudgetError
+    if cancelled():
+        raise InterruptedError(f"{context} publication cancelled")
+    sizes = tuple(array.nbytes for array in arrays)
+    copied = sum(sizes)
+    additional = copied+max(sizes, default=0)
+    required = int(retained_bytes)+copied+additional
+    if required > maximum_working_bytes:
+        raise WaveMemoryBudgetError(f"{context} publication needs {required} bytes including "
+            f"retained arrays, immutable copies and serialization scratch; "
+            f"maximum_working_bytes={maximum_working_bytes}. Result not published.")
+    check_available_memory(additional)
+    return required
+
+
+def _publish_accelerating_tip(modes, amplitudes, derivatives, logs, energies,
+                             plane_z_mm, reference_current_a, record, *,
+                             maximum_working_bytes, retained_bytes=0,
+                             cancelled=lambda: False):
+    _check_publication_memory((*amplitudes, *derivatives, *logs),
+        maximum_working_bytes=maximum_working_bytes,
+        retained_bytes=retained_bytes+sum(mode.plane.amplitude.nbytes for mode in modes),
+        cancelled=cancelled, context="Accelerating tip")
+    return ExecutedAcceleratingTip(modes, amplitudes, derivatives, logs, energies,
+                                  plane_z_mm, reference_current_a, record)
 
 
 def execute_accelerating_tip(state, emission, electric, *, numerics=AcceleratingTipNumerics(),
@@ -247,6 +329,8 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
     end_m, radius_m = numerics.end_z_nm*1e-9, numerics.transverse_radius_um*1e-6
     hardware = _near_field_domain(state, electric, magnetic, end_m, radius_m)
     grid_numerics = grid_numerics or WaveGridNumerics(maximum_working_bytes=numerics.maximum_working_bytes)
+    grid_numerics = replace(grid_numerics,
+        maximum_working_bytes=min(grid_numerics.maximum_working_bytes, numerics.maximum_working_bytes))
     start_potential = float(electric.potential_rise_v_at_global_positions(np.zeros((1, 3)))[0])
     tip_radii = np.r_[0., electric.base_field.r[(electric.base_field.r > 0)
                     & (electric.base_field.r < math.sqrt(2)*radius_m)], math.sqrt(2)*radius_m]
@@ -285,14 +369,24 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
         if transverse_error > numerics.maximum_transverse_phase_error_rad:
             raise ValueError(f"Near-tip transverse electric phase estimate {transverse_error:.6g} exceeds its explicit numerical budget; a coupled transverse solve is required")
         full = mode.plane.full_amplitude(float(wavelength_m(original_energy)))
+        retained = (sum(a.nbytes for group in (amplitudes, derivatives, logs) for a in group)
+                    +sum(previous.plane.amplitude.nbytes for previous in modes))
+        full, source_sampling = _zero_extend_tip_source(full, numerics.source_padding_factor,
+            grid_numerics=grid_numerics, retained_bytes=retained, cancelled=cancelled)
         ny, nx = full.shape
-        grid_numerics.check(full.shape)
         fy, fx = np.meshgrid(np.fft.fftshift(np.fft.fftfreq(ny)), np.fft.fftshift(np.fft.fftfreq(nx)), indexing="ij")
         kxy = 2*np.pi*np.einsum("ij,jyx->iyx", np.linalg.inv(mode.plane.basis_m).T, np.stack((fx, fy)))
         transverse = np.sum(kxy*kxy, axis=0)
         source = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(full), norm="ortho"))
         normal_k = math.sqrt(float(_wave_number_squared(original_energy)))
         axial_k2 = _wave_number_squared(kinetic)
+        # These caller arrays remain resident throughout the two-way solve.
+        # Check before Robin allocates its reflection/transfer work arrays.
+        angular_retained = retained+sum(a.nbytes for a in (full, fy, fx, kxy, transverse, source))
+        source_sampling["angular_transport_working_bytes"] = grid_numerics.check(
+            full.shape, retained_bytes=angular_retained, working_bytes_per_pixel=512)
+        if cancelled():
+            raise InterruptedError("Accelerating tip boundary cancelled")
         log_transmitted, reflected, exit_k, record = scalar_robin_transport(
             axial_k2[:-1], dz, float(axial_k2[-1]), transverse, normal_k, cancelled=cancelled)
         incident = source/math.sqrt(normal_k)
@@ -326,9 +420,16 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
         # Unit flux shape is a factorisation. The weight below retains all
         # reflected current; it never restores output to the incident weight.
         spectral_flux = np.sqrt(exit_k.real)*field/math.sqrt(output)*np.exp(-1j*action/hbar)
+        # The angular state remains resident while its spatial chart is
+        # evaluated. Reserve it, as well as earlier energy modes, before any
+        # output-grid refinement can allocate a second large work buffer.
+        angular_arrays = (full, fy, fx, kxy, transverse, source, log_transmitted, reflected,
+            exit_k, incident, transmitted, field, derivative, flux, q2, errors, spectral_flux)
+        chart_retained = retained+sum(a.nbytes for a in {id(a): a for a in angular_arrays}.values())
+        del angular_arrays
         plane = _spectral_to_plane(spectral_flux, kxy, mode.plane.basis_m,
             mode.plane.origin_m, float(wavelength_m(float(kinetic[-1]))), quadratic_phase,
-            grid_numerics, cancelled)
+            grid_numerics, cancelled, retained_bytes=chart_retained)
         positions = plane.coordinates_m()
         outside = float(np.sum(abs(plane.amplitude[(abs(positions[0]) > radius_m)
                          | (abs(positions[1]) > radius_m)])**2))
@@ -344,12 +445,19 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
             "balance_residual": balance, "paraxial_incompatible_fraction": incompatible,
             "retained_evanescent_trace_fraction": evanescent_norm/max(total_trace_norm, 1e-300),
             "transverse_phase_error_estimate_rad": transverse_error,
-            "outside_checked_domain_fraction": outside, **record})
+            "outside_checked_domain_fraction": outside, "source_sampling": source_sampling,
+            "spectral_basis_rad_per_m": (2*np.pi*np.linalg.inv(mode.plane.basis_m).T
+                @np.diag((1/nx, 1/ny))).tolist(), **record})
         if progress_callback is not None:
             progress_callback(index+1, emission.record["mode_count"], "Executed non-paraxial accelerating tip boundary")
+        # Only the explicitly retained boundary arrays survive into the next
+        # energy mode. Otherwise loop locals keep the previous angular work
+        # buffers alive while a new mode allocates its own scratch.
+        del full, fy, fx, kxy, transverse, source, log_transmitted, reflected, exit_k
+        del incident, transmitted, field, derivative, flux, q2, errors, spectral_flux, positions, plane
     if graph_id != json_digest(encode_instrument(state)) or implementation != solver_source_identity():
         raise ValueError("Captured source, fields or solver changed during near-tip execution")
-    return ExecutedAcceleratingTip(tuple(modes), tuple(amplitudes), tuple(derivatives), tuple(logs), tuple(energies),
+    return _publish_accelerating_tip(tuple(modes), tuple(amplitudes), tuple(derivatives), tuple(logs), tuple(energies),
         end_m*1e3, emission.reference_current_a, {
             "schema": "executed-accelerating-planar-tip-v1", "tip_emission_id": emission.digest,
             "tip_emission": emission.record, "instrument_input_identity": graph_id,
@@ -365,4 +473,5 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
             "particle_interpretation": "near-field evanescent modes have no positive classical particle representation",
             "validation_status": "DEVELOPMENT_NOT_FULL_TEM_STEM_ACCEPTANCE",
             "gun_source_admission": "NOT_A_GUN_CHECKPOINT", "full_chain_status": "INCOMPLETE",
-        })
+        }, maximum_working_bytes=grid_numerics.maximum_working_bytes,
+        retained_bytes=mode.plane.amplitude.nbytes, cancelled=cancelled)

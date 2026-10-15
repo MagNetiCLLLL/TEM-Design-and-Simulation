@@ -359,6 +359,40 @@ def test_clear_bore_keeps_invalid_aperture_mask_rejection():
         _clip(_off_axis_affine_clip_wave(), .1, (aperture,), 42., .3)
 
 
+def test_subpixel_column_aperture_samples_incident_field_before_masking():
+    from types import SimpleNamespace
+    from temsim.physics.column_wave import _clip
+    from temsim.physics.multiplane_wave import PlaneWave
+    from temsim.physics.wave_grid import WaveGridNumerics
+    yy, xx = np.mgrid[-64:64, -64:64]
+    amplitude = np.exp(-(xx*xx+yy*yy)/(4*8**2)).astype(complex)
+    amplitude /= np.linalg.norm(amplitude)
+    source = PlaneWave(amplitude, np.eye(2)*.9424788945e-3, np.zeros(2))
+    aperture = SimpleNamespace(key="C2", radius_mm=.05, offset_x_mm=0., offset_y_mm=0.)
+    result, rows = _clip(source, np.inf, (aperture,), 765., .3,
+        wavelength_m=2e-12, grid_numerics=WaveGridNumerics(maximum_pixels=512,
+            maximum_working_bytes=256*1024**2))
+    # Formerly just the central input sample survived. A resolved finite hole
+    # now has a nonzero spatial covariance and its own physical pixel scale.
+    assert np.count_nonzero(result.amplitude) > 100
+    x, y = result.coordinates_m()
+    assert np.sum(abs(result.amplitude)**2*(x*x+y*y)) > 0
+    assert rows[0]["sampling"]["status"] == "converged"
+    assert rows[0]["output_weight"] == pytest.approx(.3*result.probability)
+    assert result.probability < abs(source.amplitude[64, 64])**2
+
+
+def test_custom_small_opening_cannot_silently_become_a_circle():
+    from types import SimpleNamespace
+    from temsim.physics.column_wave import _clip
+    from temsim.physics.wave_grid import WaveGridNumerics, WaveSamplingError
+    aperture = SimpleNamespace(key="slit", radius_mm=1e-6,
+        transmission_mask=lambda x, y: abs(x) < 1e-6)
+    with pytest.raises(WaveSamplingError, match="posed/custom"):
+        _clip(_off_axis_affine_clip_wave(), np.inf, (aperture,), 42., .3,
+              wavelength_m=2e-12, grid_numerics=WaveGridNumerics())
+
+
 def _quadratic_fixture(count=6):
     """Small analytic plan; no claim to qualify the captured whole instrument."""
     from types import SimpleNamespace

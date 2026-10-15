@@ -213,20 +213,20 @@ def sample_aperture_plane(wave, *, radius_m, wavelength_m, curvature, numerics,
 def _sample_aperture_plane(wave, *, radius_m, wavelength_m, curvature, numerics,
                            grid_numerics, cancelled, device, retained_bytes):
     from scipy.ndimage import map_coordinates as cpu_interpolation
-    from temsim.physics.wave_grid import refine_plane_wave
     from temsim.physics.multiplane_wave import PlaneWave
     if cancelled():
         raise InterruptedError("Acceptance aperture reconstruction cancelled")
     xp = device.xp
-    wave = replace(wave, amplitude=xp.asarray(wave.amplitude))
+    input_probability = wave.probability
     pitch = radius_m/numerics.aperture_radius_cells
     factor = max(1, math.ceil(float(np.linalg.norm(wave.basis_m, ord=2))/pitch))
-    if factor > 1:
-        wave = refine_plane_wave(wave, tuple(factor*n for n in wave.amplitude.shape),
-                                 numerics=grid_numerics, retained_bytes=retained_bytes)
+    sampling_basis = wave.basis_m/factor
+    refined_shape = np.asarray(wave.amplitude.shape)*factor
     half = math.ceil(numerics.output_halfwidth_radii*numerics.aperture_radius_cells)
     count = 2*half
-    grid_numerics.check((count, count), retained_bytes=retained_bytes+wave.amplitude.nbytes)
+    workspace_shape = tuple(max(count, n) for n in wave.amplitude.shape)
+    grid_numerics.check(workspace_shape, retained_bytes=retained_bytes+wave.amplitude.nbytes,
+                        working_bytes_per_pixel=384)
     axis = (np.arange(count)-half)*pitch
     yy, xx = np.meshgrid(axis, axis, indexing="ij")
     xy = np.stack((xx, yy))
@@ -235,17 +235,44 @@ def _sample_aperture_plane(wave, *, radius_m, wavelength_m, curvature, numerics,
     inside = xx*xx+yy*yy <= (1.05*radius_m)**2
     positions = xy[:, inside]
     delta = positions-wave.origin_m[:, None]
-    indices = np.linalg.inv(wave.basis_m)@delta
-    indices += np.array(wave.amplitude.shape[::-1])[:, None]//2
-    if np.any(indices < 2) or np.any(indices > np.array(wave.amplitude.shape[::-1])[:, None]-3):
+    indices = np.linalg.inv(sampling_basis)@delta
+    indices += refined_shape[::-1, None]//2
+    if np.any(indices < 2) or np.any(indices > refined_shape[::-1, None]-3):
         raise ValueError("The executed output field does not cover the receiving aperture")
+    sampling_amplitude = xp.asarray(wave.amplitude)
+    patch_guard = 0
+    if factor > 1:
+        from temsim.physics.wave_aperture_sampling import _sample_envelope
+        # This is the SAME finite Fourier interpolant as full-period zero
+        # padding, evaluated only where the common output needs it. A guard
+        # keeps the cubic/quintic spline prefilter's exponentially decaying
+        # boundary influence away from the receiving disk. At a physical
+        # window edge, preserve the original full-grid boundary instead.
+        patch_guard = 32
+        lower = np.maximum(0, np.floor(indices.min(axis=1)).astype(int)-patch_guard)
+        upper = np.minimum(refined_shape[::-1], np.ceil(indices.max(axis=1)).astype(int)+patch_guard+1)
+        patch_shape = tuple(int(n) for n in (upper-lower)[::-1])
+        workspace_shape = tuple(max(old, patch) for old, patch in zip(workspace_shape, patch_shape))
+        grid_numerics.check(workspace_shape,
+            retained_bytes=retained_bytes+2*wave.amplitude.nbytes, working_bytes_per_pixel=384)
+        if cancelled():
+            raise InterruptedError("Acceptance aperture reconstruction cancelled")
+        spectrum = xp.fft.fftshift(xp.fft.fft2(xp.fft.ifftshift(sampling_amplitude)))/sampling_amplitude.size
+        # Align the local patch with original refined cell centres, including
+        # odd grids. Do not shift/rephase the physical field's origin/carrier.
+        shift = (lower+np.asarray(patch_shape[::-1])//2-refined_shape[::-1]//2)/factor
+        sampling_amplitude = _sample_envelope(spectrum, patch_shape, 1./factor, shift, cancelled)
+        del spectrum
+        indices -= lower[:, None]
     if device.backend == "cupy":
         from cupyx.scipy.ndimage import map_coordinates as interpolate
     else:
         interpolate = cpu_interpolation
     index_array = xp.asarray(indices[::-1])
-    values = interpolate(wave.amplitude, index_array, order=3, mode="constant", cval=0.)
-    alternative = interpolate(wave.amplitude, index_array, order=5, mode="constant", cval=0.)
+    values = interpolate(sampling_amplitude, index_array, order=3, mode="constant", cval=0.)
+    if cancelled():
+        raise InterruptedError("Acceptance aperture reconstruction cancelled")
+    alternative = interpolate(sampling_amplitude, index_array, order=5, mode="constant", cval=0.)
     core = np.sum(positions*positions, axis=0) <= radius_m*radius_m
     denominator = float(xp.linalg.norm(values[xp.asarray(core)]))
     interpolation_change = float(xp.linalg.norm((alternative-values)[xp.asarray(core)]))/max(denominator, 1e-300)
@@ -261,11 +288,17 @@ def _sample_aperture_plane(wave, *, radius_m, wavelength_m, curvature, numerics,
     action = (.5*np.einsum('in,ij,jn->n', delta, q, delta)+tilt@delta
               -.5*np.einsum('in,ij,jn->n', positions, curvature, positions))
     value = np.zeros((count, count), complex)
-    value[inside] = values*np.exp(2j*np.pi*action/wavelength_m)*pitch/math.sqrt(abs(np.linalg.det(wave.basis_m)))
+    value[inside] = values*np.exp(2j*np.pi*action/wavelength_m)*pitch/math.sqrt(abs(np.linalg.det(sampling_basis)))
+    if cancelled():
+        raise InterruptedError("Acceptance aperture reconstruction cancelled")
     result = PlaneWave(value, np.eye(2)*pitch, np.zeros(2), curvature, np.zeros(2))
     return result, {"pre_aperture_refinement_factor": factor, "aperture_pitch_m": pitch,
         "output_period_m": count*pitch, "output_shape": [count, count],
-        "input_unmasked_probability": wave.probability,
+        "input_unmasked_probability": input_probability,
+        "interpolation_domain": "local_finite_fourier_patch" if factor > 1 else "original_input_grid",
+        "sampling_patch_shape": list(sampling_amplitude.shape),
+        "sampling_patch_spline_guard_cells": patch_guard,
+        "virtual_full_refined_shape": refined_shape.tolist(),
         "complex_interpolation_relative_change": interpolation_change,
         "maximum_residual_carrier_step_rad": phase_step,
         "compute_backend": device.evidence(),
@@ -357,7 +390,14 @@ def execute_acceptance_span(state, checkpoint, span, *, numerics, grid_numerics,
                 grid_numerics=grid_numerics, cancelled=cancelled,
                 retained_bytes=retained+actual_input.amplitude.nbytes)
             accepted, physical_losses = _clip(accepted, radii[-1], stops[len(plan.z_mm)-1],
-                span["stop_z_mm"], mode.weight_per_reference_electron)
+                span["stop_z_mm"], mode.weight_per_reference_electron,
+                wavelength_m=float(wavelength_m(output.energy_kev*1000.)), grid_numerics=grid_numerics,
+                retained_bytes=retained+actual_input.amplitude.nbytes, cancelled=cancelled)
+            # This receiving chart is independently reconstructed on a shared
+            # grid for guard comparison. A new local chart here would invalidate
+            # that comparison rather than certify its acceptance approximation.
+            if any(row.get("sampling", {}).get("status") == "converged" for row in physical_losses):
+                raise AcceptanceWindowUnavailable("Receiving aperture reconstruction needs a finer common grid before comparison")
             reconstruction.update(accepted_probability=accepted.probability,
                 physical_losses=physical_losses,
                 represented_branch_aperture_input_probability=field.probability,

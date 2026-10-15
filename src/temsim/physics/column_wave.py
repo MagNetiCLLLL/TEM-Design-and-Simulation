@@ -20,7 +20,7 @@ from temsim.physics.canonical_action import CanonicalPath
 from temsim.physics.core import build_propagation_plan, electron
 from temsim.physics.column_wall import _vacuum_segments, _expanded_profile_axis, _partition_vacuum_segments
 from temsim.physics.multiplane_wave import propagate_plane_wave, reselect_phase_carrier
-from temsim.physics.multipole_wave import apply_multipole_phase
+from temsim.physics.multipole_wave import apply_multipole_phase, multipole_working_bytes
 from temsim.physics.tip_gun_wave import TipGunCheckpoint
 from temsim.physics.wave_flux import BeamState, WaveMode
 from temsim.physics.wave_grid import WaveGridNumerics, WaveMemoryBudgetError, WaveSamplingError, apply_resolved_operator
@@ -603,29 +603,97 @@ def _linear_run(wave, wavelength, paths, first, plan, radii, stops, kick_x, kick
     return last, accepted
 
 
-def _clip(wave, radius_mm, apertures, z_mm, prior, *, previous_z_mm=None):
+def _circular_opening(aperture):
+    """Known round masks only; never infer a circle from a custom radius."""
+    from temsim.optics.condenser_aperture import ContinuousApertureComponent
+    from temsim.optics.objective_aperture import ObjectiveApertureComponent
+    from temsim.optics.selected_area_aperture import SelectedAreaApertureComponent
+    from temsim.optics.energy_filter_entrance_aperture import EnergyFilterEntranceApertureComponent
+    if isinstance(aperture, PosedWaveBore):
+        return None
+    placed = isinstance(aperture, _PlacedAperture)
+    component = aperture.component if placed else aperture
+    known = isinstance(component, _ParallelBore) or any(
+        isinstance(component, cls) and getattr(getattr(component, "transmission_mask", None), "__func__", None)
+        is cls.transmission_mask for cls in (ContinuousApertureComponent,
+            ObjectiveApertureComponent, SelectedAreaApertureComponent, EnergyFilterEntranceApertureComponent))
+    if not known and callable(getattr(component, "transmission_mask", None)):
+        return None
+    centre = np.array((getattr(component, "offset_x_mm", 0.), getattr(component, "offset_y_mm", 0.)), dtype=float)
+    if placed:
+        centre = (aperture.registration.rotation_array[:2, :2]@centre
+                  +aperture.registration.origin_array_m[:2]*1e3)
+    return float(component.radius_mm), centre
+
+
+def _clip(wave, radius_mm, apertures, z_mm, prior, *, previous_z_mm=None,
+          wavelength_m=None, grid_numerics=None, retained_bytes=0, cancelled=lambda: False):
+    # The legacy geometry-only helper remains usable without optical numerics.
+    # Every propagation caller supplies them; a subpixel stop is then sampled
+    # from its incident complex field BEFORE the physical mask is applied.
+    if (wavelength_m is None) != (grid_numerics is None):
+        raise ValueError("Aperture sampling requires both wavelength and grid numerics")
     xp = array_module(wave.amplitude)
     xy = None
     rows = []
+    def mask_coordinates(value):
+        # No allocation is needed for a bore that clears the entire lattice.
+        # Actual dense/posed mask evaluation retains its conservative budget.
+        if grid_numerics is not None:
+            grid_numerics.check(value.amplitude.shape, retained_bytes=retained_bytes)
+        return value.coordinates_m()*1e3
+    def small_circle(value, radius, centre, *, strict=False):
+        if grid_numerics is None or radius <= 0:
+            return None
+        cells = radius*1e-3/np.linalg.norm(value.basis_m, ord=2)
+        if cells >= 16:
+            return None
+        from temsim.physics.wave_aperture_sampling import apply_circular_aperture
+        return apply_circular_aperture(value, radius_m=radius*1e-3,
+            centre_m=np.asarray(centre)*1e-3, wavelength_m=wavelength_m,
+            grid_numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled,
+            strict_boundary=strict)
+
     if math.isfinite(radius_mm):
         inside_bore = _inside_bore(wave.amplitude.shape, wave.basis_m, wave.origin_m, radius_mm)
         if not inside_bore:
-            xy = wave.coordinates_m()*1e3
             before = wave.probability
-            mask = xp.hypot(xy[0], xy[1]) < radius_mm
-            if not bool(xp.all(mask)):
-                wave = wave._replace_owned(xp.where(mask, wave.amplitude, 0j))
-            if wave.probability < before:
+            sampled = small_circle(wave, radius_mm, (0., 0.), strict=True)
+            if sampled is not None:
+                wave, evidence = sampled
+            else:
+                xy = mask_coordinates(wave)
+                mask = xp.hypot(xy[0], xy[1]) < radius_mm
+                if not bool(xp.all(mask)):
+                    wave = wave._replace_owned(xp.where(mask, wave.amplitude, 0j))
+                evidence = None
+            if wave.probability < before or evidence is not None:
                 rows.append({"component": "column_wall", "z_mm": z_mm,
-                             "lost_weight": prior*(before-wave.probability)})
+                             "lost_weight": prior*(before-wave.probability),
+                             **({"sampling": evidence} if evidence is not None else {})})
     for a in apertures:
         if isinstance(a, _ParallelBore) and a.clears_grid(wave.amplitude.shape, wave.basis_m, wave.origin_m):
             continue
         if isinstance(a, PosedWaveBore) and a.clears_grid(wave.amplitude.shape,
                 wave.basis_m, wave.origin_m, z_mm, previous_z_mm=previous_z_mm):
             continue
+        opening = _circular_opening(a) if grid_numerics is not None else None
+        before = wave.probability
+        sampled = None if opening is None else small_circle(wave, *opening, strict=isinstance(a, _ParallelBore))
+        if sampled is not None:
+            wave, evidence = sampled
+            rows.append({"component": a.key, "z_mm": z_mm,
+                "input_weight": prior*before, "output_weight": prior*wave.probability,
+                "lost_weight": prior*(before-wave.probability), "sampling": evidence})
+            xy = None  # The admitted local chart may have a new shape/origin.
+            continue
+        if grid_numerics is not None and opening is None:
+            radius = float(getattr(a, "radius_mm", math.inf))
+            if 0 < radius*1e-3 < 16*np.linalg.norm(wave.basis_m, ord=2):
+                raise WaveSamplingError(f"Aperture {a.key} is smaller than 16 grid cells in radius; "
+                    "its posed/custom mask needs resolved incident sampling before clipping")
         if xy is None:
-            xy = wave.coordinates_m()*1e3
+            xy = mask_coordinates(wave)
         if isinstance(a, PosedWaveBore):
             # Even a closed tilted plate occupies only its local slab, not
             # the entire laboratory XY observation plane.
@@ -646,7 +714,11 @@ def _clip(wave, radius_mm, apertures, z_mm, prior, *, previous_z_mm=None):
         wave = wave._replace_owned(xp.where(mask, wave.amplitude, 0j))
         rows.append({"component": a.key, "z_mm": z_mm,
             "input_weight": prior*before, "output_weight": prior*wave.probability,
-            "lost_weight": prior*(before-wave.probability)})
+            "lost_weight": prior*(before-wave.probability),
+            **({"radius_cells": opening[0]*1e-3/np.linalg.norm(wave.basis_m, ord=2),
+                "sampling_scope": "Geometry guard only; full aperture convergence not established"}
+               if opening is not None else {"sampling_scope": "Existing posed/custom mask; transverse convergence not established"}
+               if grid_numerics is not None else {})})
     return wave, rows
 
 
@@ -719,6 +791,23 @@ def _previous_support_error(record, mode_id):
     return None
 
 
+def _previous_multipole_sampling(record, mode_id):
+    """Sampling admission evidence, independent of actual support losses."""
+    from temsim.immutable_json import thaw_json
+    support = _previous_support_error(record, mode_id)
+    if support is not None and "multipole_sampling" in support:
+        return thaw_json(support["multipole_sampling"])
+    while isinstance(record, Mapping):
+        ledgers = record.get("multipole_sampling_by_mode", {})
+        if mode_id in ledgers:
+            return thaw_json(ledgers[mode_id])
+        for row in record.get("modes", ()):
+            if row.get("mode_id") == mode_id and "multipole_sampling" in row:
+                return thaw_json(row["multipole_sampling"])
+        record = record.get("upstream")
+    return None
+
+
 def _hexapole_exit_nodes(plan):
     """Known field exits on the complete grid, never an observation endpoint."""
     if getattr(plan, "hexapole_exit_nodes", None) is not None:
@@ -765,14 +854,22 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         shapes = (tuple(row["arrays"]["amplitude"]["shape"]) for row in modes.rows)
     else:
         shapes = (mode.plane.amplitude.shape for mode in modes)
+    def check_input(shape):
+        if _device.backend == "numpy":
+            # Admit loading/validation separately from each physical operator.
+            # CPU tiled operators no longer need the generic dense-grid bound.
+            grid_numerics.check_working_memory(shape, working_bytes=32*math.prod(shape),
+                retained_bytes=retained_bytes)
+        else:
+            grid_numerics.check(shape, retained_bytes=retained_bytes)
     for shape in shapes:
-        grid_numerics.check(shape, retained_bytes=retained_bytes)
+        check_input(shape)
     for index, mode in enumerate(checkpoint.beam.modes):
         if cancelled():
             raise InterruptedError("Column wave propagation cancelled")
         # Recheck the loaded array too; metadata is a resource estimate, not
         # permission to execute a differently sized or unverified field.
-        grid_numerics.check(mode.plane.amplitude.shape, retained_bytes=retained_bytes)
+        check_input(mode.plane.amplitude.shape)
         from temsim.physics.tip_gun_wave import _momentum_velocity
         entrance_p, entrance_v = _momentum_velocity(mode.energy_kev*1000)
         nodes, phi, _, _ = electric
@@ -834,12 +931,52 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
             support_ledger = {"reference_mode_weight": float(mode.weight_per_reference_electron),
                               "accumulated_relative_l2_bound": 0., "probability_loss_per_tip_electron": 0.}
         support_ledger.update(maximum_accumulated_relative_l2=grid_numerics.maximum_accumulated_support_l2,
-            scope="column support windows and Fourier projections; relative to this mode at column entrance; not total discretisation error")
+            scope="column support windows, Fourier projections and observed nested circular-aperture changes; relative to this mode at column entrance; not a bound on continuum discretisation error")
+        sampling_ledger = _previous_multipole_sampling(checkpoint.record, mode.mode_id) or {
+            "schema": "column-multipole-sampling-admission-v1", "accepted_operations": 0,
+            "maximum_ignored_spectral_probability_fraction_yx": [0., 0.],
+            "maximum_combined_bandwidth_rad_per_step_yx": [0., 0.]}
+        sampling_ledger.update(
+            spectral_tail_fraction_per_axis=grid_numerics.multipole_spectral_tail_fraction,
+            budget_rad_per_step=.8*np.pi,
+            scope="Sampling admission only; all complex coefficients retained. Ignored tails are not removed probability or a cumulative continuum error bound; support losses are recorded separately.")
+        # Material/phonon branches already carry this envelope of numerical
+        # evidence. Keep sampling diagnostics separate from its loss counters.
+        support_ledger["multipole_sampling"] = sampling_ledger
         if _device.backend == "cupy":
             # This host checkpoint is immutable; its upload is a fresh device
             # allocation owned by this mode, not another retained wave.
             wave = wave._replace_owned(_device.xp.array(wave.amplitude, copy=True))
         wavelength = float(wavelength_m(mode.energy_kev*1000))
+        def clip_at(value, node, previous_z=None):
+            reference_weight = support_ledger["reference_mode_weight"]
+            weight_scale = math.sqrt(mode.weight_per_reference_electron/reference_weight) if reference_weight > 0 else 0.
+            aperture_error = support_ledger.get("observed_aperture_l2_change_sum", 0.)
+            remaining = max(0., grid_numerics.maximum_accumulated_support_l2
+                            -support_ledger["accumulated_relative_l2_bound"]-aperture_error)
+            local_grid = replace(grid_numerics, maximum_accumulated_support_l2=min(
+                grid_numerics.maximum_accumulated_support_l2,
+                remaining/weight_scale if weight_scale else remaining))
+            result, rows = _clip(value, radii[node], stops.get(node, ()), float(plan.z_mm[node]),
+                mode.weight_per_reference_electron, previous_z_mm=previous_z,
+                wavelength_m=wavelength, grid_numerics=local_grid,
+                retained_bytes=retained_bytes, cancelled=cancelled)
+            for row in rows:
+                evidence = row.get("sampling")
+                if evidence is None:
+                    continue
+                increment = evidence["complex_error_norm"]*weight_scale
+                aperture_error += increment
+                combined = support_ledger["accumulated_relative_l2_bound"]+aperture_error
+                if combined > grid_numerics.maximum_accumulated_support_l2:
+                    raise WaveSamplingError("Accumulated aperture/support quadrature exceeds the column L2 budget")
+                evidence.update(observed_relative_l2_increment=increment,
+                                combined_support_and_aperture_l2_estimate=combined)
+                support_ledger["observed_aperture_l2_change_sum"] = aperture_error
+                support_ledger["combined_support_and_aperture_l2_estimate"] = combined
+                support_ledger["aperture_estimate_scope"] = "Observed nested changes, not a rigorous continuum error bound"
+            return result, rows
+
         def admit_compaction(original, compact, evidence, z, strengths):
             if evidence is None:
                 return original
@@ -847,12 +984,14 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
             scale = math.sqrt(mode.weight_per_reference_electron*original.probability/reference_weight) if reference_weight > 0 else 0.
             increment = evidence["relative_l2_error"]*scale
             cumulative = support_ledger["accumulated_relative_l2_bound"]+increment
-            if cumulative > grid_numerics.maximum_accumulated_support_l2:
+            combined = cumulative+support_ledger.get("observed_aperture_l2_change_sum", 0.)
+            if combined > grid_numerics.maximum_accumulated_support_l2:
                 return original
             evidence.update(z_mm=float(z), mode_id=mode.mode_id, strengths=strengths,
                 relative_l2_bound_increment=increment, accumulated_relative_l2_bound=cumulative)
             support_events.append(evidence)
             support_ledger["accumulated_relative_l2_bound"] = cumulative
+            support_ledger["combined_support_and_aperture_l2_estimate"] = combined
             support_ledger["relative_intensity_l1_bound"] = 2*cumulative+cumulative*cumulative
             support_ledger["probability_loss_per_tip_electron"] += (
                 evidence["absolute_probability_loss"]*mode.weight_per_reference_electron)
@@ -866,6 +1005,13 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                     or grid_numerics.maximum_spectral_loss_fraction == 0
                     or grid_numerics.maximum_accumulated_support_l2 == 0):
                 return wave
+            from temsim.physics.wave_grid import WaveGridBudgetError
+            try:
+                grid_numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
+            except WaveGridBudgetError:
+                # Optional dense projection may cost more than the tiled
+                # physical operator; retain the complete resolved field.
+                return wave
             from temsim.physics.wave_support import compact_wave_spectrum
             compact, evidence = compact_wave_spectrum(wave,
                 maximum_loss_fraction=grid_numerics.maximum_spectral_loss_fraction)
@@ -874,6 +1020,15 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         def multipole(wave, z, *, compact_after=True, **strengths):
             if not any(strengths.values()):
                 return wave
+            accepted_sampling = {}
+            def apply_phase(value):
+                trial = {}
+                result = apply_multipole_phase(value, wavelength, **strengths,
+                    spectral_tail_fraction=grid_numerics.multipole_spectral_tail_fraction,
+                    sampling_record=trial)
+                # Rejected/refined attempts never count as executed operators.
+                accepted_sampling.update(trial)
+                return result
             def support_retry(value, error):
                 # Fourier refinement can reveal tiny interpolation tails not
                 # present at coarse cell centres. Reassess the actual current
@@ -882,6 +1037,11 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                 if (grid_numerics.maximum_support_loss_fraction == 0
                         or grid_numerics.maximum_accumulated_support_l2 == 0):
                     return value
+                from temsim.physics.wave_grid import WaveGridBudgetError
+                try:
+                    grid_numerics.check(value.amplitude.shape, retained_bytes=retained_bytes)
+                except WaveGridBudgetError:
+                    return value
                 from temsim.physics.wave_support import compact_wave_support
                 compact, evidence = compact_wave_support(value,
                     maximum_loss_fraction=grid_numerics.maximum_support_loss_fraction,
@@ -889,11 +1049,20 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                 return admit_compaction(value, compact, evidence, z, strengths)
             try:
                 result, rows = apply_resolved_operator(wave,
-                    lambda value: apply_multipole_phase(value, wavelength, **strengths),
+                    apply_phase,
                     numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled,
-                    prepare_retry=support_retry)
+                    prepare_retry=support_retry,
+                    operator_working_bytes=multipole_working_bytes
+                        if array_module(wave.amplitude) is np else None)
             except ValueError as error:
                 raise ValueError(f"Column z={z:.9g} mm, mode {mode.mode_id}, strengths={strengths}: {error}") from error
+            if accepted_sampling:
+                sampling_ledger["accepted_operations"] += 1
+                for source, destination in (
+                    ("ignored_probability_fraction_yx", "maximum_ignored_spectral_probability_fraction_yx"),
+                    ("combined_bandwidth_rad_per_step_yx", "maximum_combined_bandwidth_rad_per_step_yx")):
+                    sampling_ledger[destination] = [max(old, new) for old, new in
+                        zip(sampling_ledger[destination], accepted_sampling[source])]
             for row in rows:
                 row.update(z_mm=float(z), strengths=strengths)
             refinements.extend(rows)
@@ -1018,7 +1187,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
         # A resumed input may already touch the moved wall. Do not propagate
         # that amplitude through material before applying its first mask.
         if stops.get(0):
-            wave, rows = _clip(wave, radii[0], stops[0], float(plan.z_mm[0]), mode.weight_per_reference_electron)
+            wave, rows = clip_at(wave, 0)
             losses.extend(rows)
         paths = maps[mode.energy_kev]
         while i < len(paths):
@@ -1045,6 +1214,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                     phase_budget_per_m=grid_numerics.maximum_posed_lens_phase_error_rad_per_m)
                 if last > i+1:
                     wave = linear(wave, combined, plan.z_mm[last], input_z=plan.z_mm[i], selected_gauge=selected)
+                    del selected
                     posed_checks.extend(group_checks)
                     linear_runs.append({"first_step": i, "last_step_exclusive": last})
                     i = last
@@ -1064,7 +1234,9 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                     wave = magnetic_residual(wave, path, float(dz)/2, plan.z_mm[i])
                     carrier_dirty = True
                     selected = None  # The envelope changed; reselect its carrier normally.
+                del checked_wave
             wave = linear(wave, path, plan.z_mm[i+1], input_z=plan.z_mm[i], selected_gauge=selected)
+            del selected
             if isinstance(path, _PosedColumnPath) and check["magnetic_residual_required"]:
                 wave = magnetic_residual(wave, path, float(dz)/2, plan.z_mm[i+1])
                 carrier_dirty = True
@@ -1131,12 +1303,20 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                                               component=spherical.lens_key) for row in evidence[-1:])
                 carrier_dirty = True
             unclipped_amplitude = wave.amplitude
-            wave, rows = _clip(wave, radii[j], stops.get(j, ()), float(plan.z_mm[j]),
-                               mode.weight_per_reference_electron, previous_z_mm=float(plan.z_mm[i]))
+            wave, rows = clip_at(wave, j, float(plan.z_mm[i]))
             if wave.amplitude is not unclipped_amplitude:
                 carrier_dirty = True
+            del unclipped_amplitude
             losses.extend(rows)
             i += 1
+        # Publication retains the propagated field while constructing the
+        # normalized immutable checkpoint and its weight. Check even an empty
+        # segment, whose input-only preflight has not executed another stage.
+        if _device.backend == "numpy":
+            grid_numerics.check_working_memory(wave.amplitude.shape,
+                working_bytes=80*wave.amplitude.size, retained_bytes=retained_bytes)
+        else:
+            grid_numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
         norm = wave.probability
         reference = None if mode.axial_reference is None else mode.axial_reference.advance(flight_increment, action_increment)
         ratio = float(entrance_p/exit_p)
@@ -1148,6 +1328,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                          energy_kev=float(exit_energy)*1e-3,
                          axial_reference=reference)
         outputs.append(output)
+        del amplitude
         retained_bytes += output.plane.amplitude.nbytes
         records.append({"mode_id": mode.mode_id, "energy_kev": mode.energy_kev, **_device.evidence(),
                         "input_weight": mode.weight_per_reference_electron,
@@ -1161,6 +1342,7 @@ def _propagate_column_impl(state, checkpoint, stop_z_mm, *, maximum_step_mm=.5,
                         "output_weight": output.weight_per_reference_electron, "losses": losses,
                         "support_compactions": support_events,
                         "support_approximation": support_ledger,
+                        "multipole_sampling": sampling_ledger,
                         "posed_lens_approximation": {"checked_steps": len(posed_checks),
                             "magnetic_phase_error_bound_rad": sum(row["phase_error_bound_rad"] for row in posed_checks),
                             "electric_magnetic_remainder_bound_rad": sum(row["electric_magnetic_remainder_bound_rad"] for row in posed_checks),
@@ -1300,9 +1482,11 @@ def _write_column_modes(state, checkpoint, stop_z_mm, writer, *, prepared, maxim
             raise InterruptedError("Column mode propagation cancelled")
         mode = checkpoint.beam.modes[index]
         prior_support = _previous_support_error(checkpoint.record, mode.mode_id)
+        prior_sampling = _previous_multipole_sampling(checkpoint.record, mode.mode_id)
         local = TipGunCheckpoint(BeamState((mode,), checkpoint.beam.reference_plane), checkpoint.plane_z_mm,
             checkpoint.reference_current_a, {"executed_parent": parent_digest,
-                "support_error_by_mode": {} if prior_support is None else {mode.mode_id: prior_support}})
+                "support_error_by_mode": {} if prior_support is None else {mode.mode_id: prior_support},
+                "multipole_sampling_by_mode": {} if prior_sampling is None else {mode.mode_id: prior_sampling}})
         return _propagate_column(state, local, stop_z_mm, maximum_step_mm=maximum_step_mm,
             grid_numerics=local_numerics, tip_time_s=tip_time_s, _prepared=prepared,
             _transport_cache=transport_cache,

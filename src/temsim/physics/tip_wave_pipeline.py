@@ -503,6 +503,7 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
         elif use_cache:
             _retain(key, result, request.execution.maximum_ram_cache_bytes)
         return result
+    round_attempted_inputs = set()
     def column(upstream, stop, *, allow_acceptance=True):
         nonlocal cache_hit
         from temsim.physics.wave_mode_support import (
@@ -518,6 +519,30 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
             # Includes resumed prefixes and material branches. The budget is
             # spent once on the complete gun mixture, not once per segment.
             upstream = select_incoherent_modes(upstream, maximum_loss_probability=mode_budget)
+        # The executed gun is the only Cartesian-to-radial entry point.
+        # Qualify all modes before the optional aperture-conditioned path;
+        # nested acceptance calls must not retry a declined input mixture.
+        has_radial = "radial_output_modes" in upstream.record
+        at_gun_exit = float(upstream.plane_z_mm) == float(gun_end)
+        if (has_radial or at_gun_exit) and upstream.digest not in round_attempted_inputs:
+            from temsim.physics.round_column_checkpoint import execute_round_prefix
+            original = upstream
+            round_attempted_inputs.add(original.digest)
+            upstream = stage("round_column_prefix", lambda: execute_round_prefix(working, original, stop,
+                maximum_step_mm=request.column_step_mm, numerics=request.radial_column,
+                grid_numerics=request.wave_grid, cancelled=cancelled, progress_callback=progress_callback,
+                allow_cartesian=at_gun_exit, **column_options),
+                inputs=("executed-cartesian-round-routing-v2", original.digest, stop,
+                        request.column_step_mm, asdict(request.radial_column),
+                        request.wave_grid.column_identity()))
+            if upstream.plane_z_mm != original.plane_z_mm:
+                remember_observation(upstream)
+            else:
+                # Stored wrappers have a different digest from their input;
+                # mark that unchanged physical input as already attempted too.
+                round_attempted_inputs.add(upstream.digest)
+            if upstream.plane_z_mm == stop:
+                return upstream
         if request.acceptance_window.enabled and allow_acceptance:
             from temsim.physics.column_acceptance_window import (
                 SCHEMA, AcceptanceWindowUnavailable, find_acceptance_span, execute_acceptance_span,
@@ -545,17 +570,6 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
                     return upstream
                 return column(upstream, stop, allow_acceptance=False)
             prepared_columns[(float(upstream.plane_z_mm), float(stop))] = prepared
-        if "radial_output_modes" in upstream.record:
-            from temsim.physics.round_column_checkpoint import execute_round_prefix
-            original = upstream
-            upstream = stage("round_column_prefix", lambda: execute_round_prefix(working, original, stop,
-                maximum_step_mm=request.column_step_mm, numerics=request.radial_column,
-                grid_numerics=request.wave_grid, cancelled=cancelled, progress_callback=progress_callback,
-                **column_options),
-                inputs=(original.digest, stop, request.column_step_mm, asdict(request.radial_column),
-                        request.wave_grid.column_identity()))
-            if upstream.plane_z_mm == stop:
-                return upstream
         prepared = prepared_columns.pop((float(upstream.plane_z_mm), float(stop)), None)
         if request.execution.segmented:
             result, hit = _propagate_column_segmented(working, upstream, stop, store=store,

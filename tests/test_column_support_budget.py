@@ -34,7 +34,7 @@ def _controlled_column(monkeypatch, *, transmission=1.):
     calls = {"attempts": 0, "compactions": 0, "applied_norms": []}
     survival = .99
 
-    def phase(wave, wavelength, **strengths):
+    def phase(wave, wavelength, *, spectral_tail_fraction, sampling_record, **strengths):
         assert strengths == {"spherical_m3": 2.5}
         calls["attempts"] += 1
         if calls["attempts"] % 2:
@@ -75,6 +75,39 @@ def test_latest_mode_ledger_survives_wrappers_without_mutating_checkpoint():
     found["accumulated_relative_l2_bound"] = 0.
     assert newest["accumulated_relative_l2_bound"] == .007
     assert column._previous_support_error(record, "absent") is None
+
+
+def test_sampling_evidence_survives_segments_and_counts_only_applied_operators(monkeypatch, tmp_path):
+    state, source, prepared, calls, survival = _controlled_column(monkeypatch)
+    actual_phase = column.apply_multipole_phase
+    def phase(wave, wavelength, *, spectral_tail_fraction, sampling_record, **strengths):
+        assert spectral_tail_fraction == 1e-8
+        sampling_record.update(ignored_probability_fraction_yx=[.9, .9],
+            combined_bandwidth_rad_per_step_yx=[4., 4.])
+        result = actual_phase(wave, wavelength, spectral_tail_fraction=spectral_tail_fraction,
+            sampling_record=sampling_record, **strengths)
+        sampling_record.update(ignored_probability_fraction_yx=[2e-9, 3e-9],
+            combined_bandwidth_rad_per_step_yx=[1.2, 1.3])
+        return result
+    monkeypatch.setattr(column, "apply_multipole_phase", phase)
+    numerics = WaveGridNumerics(multipole_spectral_tail_fraction=1e-8,
+        maximum_support_loss_fraction=.1, maximum_accumulated_support_l2=.1)
+    args = dict(store=ExecutedWaveStore(tmp_path/"executed", "sampling-ledger-fixture", 1 << 26),
+        segment_steps=1, maximum_step_mm=1., grid_numerics=numerics, _prepared=prepared)
+    output, hit = column._propagate_column_segmented(state, source, 2002., **args)
+    assert not hit
+    for mode in output.beam.modes:
+        evidence = column._previous_multipole_sampling(output.record, mode.mode_id)
+        assert evidence["accepted_operations"] == 2
+        assert evidence["maximum_ignored_spectral_probability_fraction_yx"] == [2e-9, 3e-9]
+        assert evidence["maximum_combined_bandwidth_rad_per_step_yx"] == [1.2, 1.3]
+        # Returned evidence is independently owned, including nested arrays.
+        evidence["maximum_ignored_spectral_probability_fraction_yx"][0] = 1.
+        assert column._previous_multipole_sampling(output.record, mode.mode_id)[
+            "maximum_ignored_spectral_probability_fraction_yx"][0] == 2e-9
+    restored, hit = column._propagate_column_segmented(state, source, 2002., **args)
+    assert hit and restored.digest == output.digest
+    assert calls["attempts"] == 8
 
 
 @pytest.mark.parametrize("loss_budget,l2_budget,accepted", [

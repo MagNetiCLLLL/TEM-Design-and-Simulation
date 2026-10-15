@@ -120,6 +120,10 @@ class WaveGridNumerics:
     # source parameters and optical strengths are never changed.
     maximum_support_loss_fraction: float = 1e-6
     maximum_spectral_loss_fraction: float = 1e-8
+    # Admission-only spectral tail per axis for nonlinear column phases.
+    # All coefficients and probability remain present. This is independent
+    # of the measured Fourier-projection loss and its cumulative L2 ledger.
+    multipole_spectral_tail_fraction: float = 1e-12
     # Absolute per-reference-electron probability across all omitted mutually
     # incoherent modes, applied once after the executed gun. Not a Tip setting.
     maximum_incoherent_mode_loss_probability: float = 1e-8
@@ -157,15 +161,35 @@ class WaveGridNumerics:
             value = getattr(self, name)
             if isinstance(value, bool) or not math.isfinite(value) or not 0 <= value <= .1:
                 raise ValueError(f"{name} must be finite and between zero and 0.1")
+        value = self.multipole_spectral_tail_fraction
+        if isinstance(value, (bool, np.bool_)) or not math.isfinite(value) or not 0 <= value <= 1e-4:
+            raise ValueError("Multipole spectral tail fraction must be finite and between zero and 0.0001")
         return self
 
     def check(self, shape, *, retained_bytes=0, working_bytes_per_pixel=256):
-        self.validate()
         if (type(working_bytes_per_pixel) is not int or working_bytes_per_pixel < 256):
             raise ValueError("Wave working estimate must be at least 256 bytes per pixel")
         # Covers immutable input/output copies, FFT scratch, coordinates,
         # polynomial phase arrays and field propagation work, not total RSS.
-        required = int(retained_bytes)+working_bytes_per_pixel*math.prod(shape)
+        return self.check_working_memory(shape,
+            working_bytes=working_bytes_per_pixel*math.prod(shape), retained_bytes=retained_bytes)
+
+    def check_working_memory(self, shape, *, working_bytes, retained_bytes=0):
+        """Preflight an operator with an explicitly bounded allocation model.
+
+        ``working_bytes`` includes that operator's input, output, immutable
+        publication copies and scratch. ``retained_bytes`` counts other live
+        fields. Only operators with bounded allocations should use this entry;
+        ordinary operators retain the conservative per-pixel ``check`` above.
+        """
+        self.validate()
+        if (isinstance(working_bytes, bool) or not isinstance(working_bytes, (int, np.integer))
+                or working_bytes < 0):
+            raise ValueError("Wave operator working bytes must be a non-negative integer")
+        if (isinstance(retained_bytes, bool) or not isinstance(retained_bytes, (int, np.integer))
+                or retained_bytes < 0):
+            raise ValueError("Retained wave bytes must be a non-negative integer")
+        required = int(retained_bytes)+int(working_bytes)
         if max(shape) > self.maximum_pixels or required > self.maximum_working_bytes:
             # A simultaneous pixel and memory failure is still a pixel-cap
             # failure: serial execution cannot resolve it.
@@ -181,7 +205,8 @@ class WaveGridNumerics:
         """Consumed column numerics only; specimen quadrature is downstream."""
         self.validate()
         return {"automatic_refinement": self.automatic_refinement,
-                "refinement_grid_selection": "fft-friendly-required-scale-1.05-min-growth-1.25-v1",
+                "refinement_grid_selection": "fft-friendly-required-scale-1.05-budgeted-min-growth-1.25-v2",
+                "cpu_fourier_refinement": "tiled-complex128-unitary-frequency-embedding-v1",
                 "posed_lens_model": "main-column-carrier-centred-bounded-electric-residual-v3",
                 "posed_spherical_model": "canonical-first-inclination-cs-v1",
                 "intrinsic_aberration_model": "intrinsic-polynomial-canonical-screen-v1",
@@ -193,36 +218,151 @@ class WaveGridNumerics:
                 "support_compaction_model": "c2-window-and-bounded-fourier-projection-v2",
                 "maximum_support_loss_fraction": self.maximum_support_loss_fraction,
                 "maximum_spectral_loss_fraction": self.maximum_spectral_loss_fraction,
+                "multipole_sampling_model": "marginal-spectral-tail-admission-v1",
+                "multipole_spectral_tail_fraction": self.multipole_spectral_tail_fraction,
                 "maximum_incoherent_mode_loss_probability": self.maximum_incoherent_mode_loss_probability,
                 "maximum_accumulated_support_l2": self.maximum_accumulated_support_l2,
                 "maximum_spherical_obliquity_phase_error_rad": self.maximum_spherical_obliquity_phase_error_rad,
                 "maximum_posed_lens_phase_error_rad_per_m": self.maximum_posed_lens_phase_error_rad_per_m}
 
 
-def refine_plane_wave(wave, shape, *, numerics=WaveGridNumerics(), retained_bytes=0):
+_FOURIER_TILE_CELLS = 65536
+
+
+def _cpu_refinement_working_bytes(old, shape):
+    """Live arrays for the bounded complex128 CPU implementation below.
+
+    The immutable input stays live. During embedding the private input FFT
+    and target coexist; during publication target + immutable copy coexist.
+    PlaneWave's finiteness check can allocate one boolean target. FFT calls
+    see at most 65536 cells (or one longer axis), never the full image: 8 MiB
+    covers their tile copies and norm tiles; 1024 B per longest axis reserves
+    single-worker FFT line/twiddle/Bluestein scratch, including prime lengths.
+    This is a stage allocation bound, not a process-RSS guarantee.
+    """
+    old_bytes = 16*math.prod(old)
+    cells = math.prod(shape)
+    live = old_bytes+max(old_bytes+16*cells, 33*cells)
+    return live+8*1024**2+1024*max((*old, *shape))
+
+
+def _check_refinement_memory(wave, shape, numerics, retained_bytes):
+    if array_module(wave.amplitude) is np:
+        return numerics.check_working_memory(shape,
+            working_bytes=_cpu_refinement_working_bytes(wave.amplitude.shape, shape),
+            retained_bytes=retained_bytes)
+    return numerics.check(shape, retained_bytes=retained_bytes+wave.amplitude.nbytes)
+
+
+def _check_refinement_cancelled(cancelled):
+    if cancelled():
+        raise InterruptedError("Wave refinement cancelled")
+
+
+def _inplace_axis_fft(values, axis, *, inverse=False, cancelled=lambda: False):
+    """Native SciPy complex128 FFTs on bounded private views, one worker."""
+    from scipy import fft
+    transform = fft.ifft if inverse else fft.fft
+    batch = max(1, _FOURIER_TILE_CELLS//values.shape[axis])
+    other = 1-axis
+    with fft.set_backend("scipy", only=True):
+        for first in range(0, values.shape[other], batch):
+            _check_refinement_cancelled(cancelled)
+            selection = [slice(None), slice(None)]
+            selection[other] = slice(first, first+batch)
+            tile = values[tuple(selection)]
+            transformed = transform(tile, axis=axis, norm="ortho", overwrite_x=True, workers=1)
+            # Native complex-to-complex SciPy reuses the supplied output.
+            # A backend/version returning a fresh tile is still bounded by
+            # the same tile budget; never adopt a separate full-size result.
+            if not np.shares_memory(transformed, tile):
+                tile[...] = transformed
+
+
+def _centred_inverse_phase(count):
+    """Fourier multiplier for fftshift, exact signs for even dimensions."""
+    frequency = np.arange(count)
+    frequency[(count+1)//2:] -= count
+    sign = 1-2*(frequency % 2)
+    if count % 2 == 0:
+        return sign
+    # exp(-2*pi*i*k*floor(N/2)/N), with the bounded residual angle kept
+    # separate from integer parity to avoid a large-angle rounding error.
+    return sign*np.exp(1j*np.pi*frequency/count)
+
+
+def _cpu_fourier_embedding(amplitude, shape, *, cancelled):
+    old = amplitude.shape
+    spectrum = np.empty(old, dtype=np.complex128)
+    # ifftshift by quadrant copies, with no rolled full-image temporary.
+    for y0, y1 in ((slice(old[0]//2, None), slice(0, (old[0]+1)//2)),
+                   (slice(0, old[0]//2), slice((old[0]+1)//2, None))):
+        for x0, x1 in ((slice(old[1]//2, None), slice(0, (old[1]+1)//2)),
+                       (slice(0, old[1]//2), slice((old[1]+1)//2, None))):
+            spectrum[y1, x1] = amplitude[y0, x0]
+    _inplace_axis_fft(spectrum, 1, cancelled=cancelled)
+    _inplace_axis_fft(spectrum, 0, cancelled=cancelled)
+    _check_refinement_cancelled(cancelled)
+    output = np.zeros(shape, dtype=np.complex128)
+    phases = tuple(_centred_inverse_phase(n) for n in shape)
+    # Unshifted positive and negative frequency blocks. The even input's
+    # Nyquist bin remains negative; it is neither split nor discarded.
+    blocks = [((slice(0, (o+1)//2), slice(0, (o+1)//2)),
+               (slice((o+1)//2, None), slice(n-o//2, None))) for o, n in zip(old, shape)]
+    for sy, dy in blocks[0]:
+        for sx, dx in blocks[1]:
+            output[dy, dx] = spectrum[sy, sx]
+            output[dy, dx] *= phases[0][dy, None]
+            output[dy, dx] *= phases[1][None, dx]
+    del spectrum, phases
+    _inplace_axis_fft(output, 1, inverse=True, cancelled=cancelled)
+    _inplace_axis_fft(output, 0, inverse=True, cancelled=cancelled)
+    return output
+
+
+def _cpu_chunked_probability(amplitude):
+    batch = max(1, _FOURIER_TILE_CELLS//amplitude.shape[1])
+    return math.fsum(float(np.sum(abs(amplitude[first:first+batch])**2))
+                     for first in range(0, amplitude.shape[0], batch))
+
+
+def refine_plane_wave(wave, shape, *, numerics=WaveGridNumerics(), retained_bytes=0,
+                      cancelled=lambda: False):
     """Unitary Fourier embedding at fixed physical period and carrier gauge."""
     old = wave.amplitude.shape
     if len(shape) != 2 or any(isinstance(n, bool) or not isinstance(n, (int, np.integer)) or n < o
                               for n, o in zip(shape, old)):
         raise ValueError("Refinement needs two integer dimensions no smaller than the input")
     shape = tuple(int(n) for n in shape)
-    numerics.check(shape, retained_bytes=retained_bytes+wave.amplitude.nbytes)
+    _check_refinement_cancelled(cancelled)
+    _check_refinement_memory(wave, shape, numerics, retained_bytes)
     if shape == old:
         return wave
     xp = array_module(wave.amplitude)
-    spectrum = xp.fft.fftshift(xp.fft.fft2(xp.fft.ifftshift(wave.amplitude), norm="ortho"))
-    padded = xp.zeros(shape, dtype=xp.complex128)
-    start = tuple(n//2-o//2 for n, o in zip(shape, old))
-    padded[start[0]:start[0]+old[0], start[1]:start[1]+old[1]] = spectrum
-    amplitude = xp.fft.fftshift(xp.fft.ifft2(xp.fft.ifftshift(padded), norm="ortho"))
+    if xp is np:
+        amplitude = _cpu_fourier_embedding(wave.amplitude, shape, cancelled=cancelled)
+        before = _cpu_chunked_probability(wave.amplitude)
+        after = _cpu_chunked_probability(amplitude)
+        check_lossless_norm(before, after, context="Fourier wave refinement")
+    else:
+        spectrum = xp.fft.fftshift(xp.fft.fft2(xp.fft.ifftshift(wave.amplitude), norm="ortho"))
+        padded = xp.zeros(shape, dtype=xp.complex128)
+        start = tuple(n//2-o//2 for n, o in zip(shape, old))
+        padded[start[0]:start[0]+old[0], start[1]:start[1]+old[1]] = spectrum
+        amplitude = xp.fft.fftshift(xp.fft.ifft2(xp.fft.ifftshift(padded), norm="ortho"))
     basis = wave.basis_m@np.diag((old[1]/shape[1], old[0]/shape[0]))
+    _check_refinement_cancelled(cancelled)
     result = wave._replace_owned(amplitude, basis_m=basis)
-    check_lossless_norm(wave.probability, result.probability, context="Fourier wave refinement")
+    if xp is np:
+        object.__setattr__(result, "_cpu_probability", after)
+    else:
+        check_lossless_norm(wave.probability, result.probability, context="Fourier wave refinement")
     return result
 
 
 def apply_resolved_operator(wave, operator, *, numerics=WaveGridNumerics(), retained_bytes=0,
-                            cancelled=lambda: False, prepare_retry=None):
+                            cancelled=lambda: False, prepare_retry=None,
+                            operator_working_bytes=None):
     """Retry only a typed sampling failure, always from the pre-operator wave.
 
     An optional caller-owned preparation can compact the failed input within
@@ -230,7 +370,17 @@ def apply_resolved_operator(wave, operator, *, numerics=WaveGridNumerics(), reta
     by the physical operator before selecting a grid: the old required scale
     describes the old field. The callback owns its error/loss accounting.
     """
-    numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
+    initial_amplitude = wave.amplitude
+    def external_bytes(candidate):
+        # The caller still owns its original input after our local variable
+        # advances to a refined field. Count that immutable buffer once.
+        return retained_bytes+(0 if candidate.amplitude is initial_amplitude else initial_amplitude.nbytes)
+    def check_operator(shape, external):
+        if operator_working_bytes is None:
+            return numerics.check(shape, retained_bytes=external)
+        return numerics.check_working_memory(shape,
+            working_bytes=operator_working_bytes(shape), retained_bytes=external)
+    check_operator(wave.amplitude.shape, external_bytes(wave))
     rows = []
     while True:
         if cancelled():
@@ -243,13 +393,19 @@ def apply_resolved_operator(wave, operator, *, numerics=WaveGridNumerics(), reta
             if prepare_retry is not None:
                 prepared = prepare_retry(wave, error)
                 if prepared is not wave:
-                    numerics.check(prepared.amplitude.shape, retained_bytes=retained_bytes)
+                    check_operator(prepared.amplitude.shape, external_bytes(prepared))
                     previous = wave.amplitude.shape
                     wave = prepared
+                    del prepared
                     rows.append({"from_shape": previous, "to_shape": wave.amplitude.shape,
                                  "reason": str(error), "probability": wave.probability,
                                  "method": "caller-budgeted sampling preparation; physical operator rechecked"})
                     continue
+                # The callback may decline a crop by returning this input.
+                # Do not retain it after refinement: the next operator's
+                # reservation covers its current field and the caller's
+                # original, not an obsolete intermediate mesh as well.
+                del prepared
             if not math.isfinite(error.required_scale):
                 raise ValueError("Wave operator requires an unbounded refinement") from error
             # A power-of-two *factor* can almost quadruple the needed cell
@@ -257,24 +413,41 @@ def apply_resolved_operator(wave, operator, *, numerics=WaveGridNumerics(), reta
             # need not be powers of two. Keep a modest sampling guard and
             # retry the unchanged physical operator on every candidate grid.
             shape = _refinement_shape(wave.amplitude.shape, error.required_scale)
-            required = numerics.check(shape, retained_bytes=retained_bytes+wave.amplitude.nbytes)
+            # The target physical operator must fit as well as its temporary
+            # Fourier embedding, before any refinement allocation takes place.
+            budget_limited_growth = False
+            try:
+                required = check_operator(shape, retained_bytes+initial_amplitude.nbytes)
+                required = max(required, _check_refinement_memory(wave, shape, numerics, external_bytes(wave)))
+            except WaveGridBudgetError:
+                # A 25% minimum growth avoids many small retries, but is not
+                # a sampling requirement. Near a budget boundary use the
+                # actual requested scale with the same 5% resolution guard.
+                bounded = _refinement_shape(wave.amplitude.shape, error.required_scale, minimum_growth=1.)
+                if bounded == shape:
+                    raise
+                required = check_operator(bounded, retained_bytes+initial_amplitude.nbytes)
+                required = max(required, _check_refinement_memory(wave, bounded, numerics, external_bytes(wave)))
+                shape, budget_limited_growth = bounded, True
             previous = wave.amplitude.shape
-            wave = refine_plane_wave(wave, shape, numerics=numerics, retained_bytes=retained_bytes)
+            wave = refine_plane_wave(wave, shape, numerics=numerics,
+                                     retained_bytes=external_bytes(wave), cancelled=cancelled)
             rows.append({"from_shape": previous, "to_shape": shape, "reason": str(error),
                          "requested_scale": error.required_scale,
-                         "grid_selection": "FFT-friendly required scale with 5 percent guard; minimum growth 1.25",
+                         "grid_selection": "FFT-friendly required scale with 5 percent guard; minimum growth 1.25 when budget permits",
+                         "budget_limited_growth": budget_limited_growth,
                          "estimated_working_bytes": required, "probability": wave.probability,
                          "method": "unitary complex Fourier embedding; fixed physical period and analytical carriers"})
 
 
-def _refinement_shape(shape, required_scale):
+def _refinement_shape(shape, required_scale, *, minimum_growth=1.25):
     """Even smooth FFT dimensions covering the requested resolution increase."""
     from scipy.fft import next_fast_len
 
-    factor = max(1.25, float(required_scale)*1.05)
+    factor = max(minimum_growth, float(required_scale)*1.05)
     result = []
     for count in shape:
-        target = math.ceil(count*factor)
+        target = max(count+1, math.ceil(count*factor))
         target += target % 2
         target = int(next_fast_len(target))
         while target % 2:
