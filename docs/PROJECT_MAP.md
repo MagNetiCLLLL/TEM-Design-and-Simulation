@@ -1,5 +1,12 @@
 # TEM Simulator 项目地图
 
+2026-10-18 Descan 模式验证：共享 Image/Diffraction 双级偏转器在 C3 + Probe
+Corrector 的当前安装位置，已分别执行 Normal 与 Large Angle 的有限粒子比较。
+Large Angle 必须重新校准受到 TL12 边缘场影响的 AC；held 驱动继续保留真实失配。
+模式、共同交点、有限束腰、位置/机械角度和数值验证见
+[Normal 研究](development/descan-normal-2026-10-18.md)及
+[Large Angle 研究](development/descan-large-angle-2026-10-18.md)。
+
 2026-10-15 六极参数校验与局部通道：`optics/corrector_channels.py` 通过实际传播标定
 A1/A2 coarse/fine 的独立物理驱动，`gui/corrector_channels.py` 提供显式计算及原子应用。
 六极有效厚度继续参与传播，完整波相位保留倾斜、离焦及耦合像差；修改输入后必须重算。

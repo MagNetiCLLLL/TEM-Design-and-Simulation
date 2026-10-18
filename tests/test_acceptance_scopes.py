@@ -81,6 +81,8 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
     required = {
         "gun-fields": {"test_closed_gun_field.py", "test_continuous_tip_curvature.py",
                        "test_tip_curvature_comparison.py", "test_axisymmetric_cut_field.py",
+                       "test_geometry_gun_cache.py", "test_geometry_gun_implicit_tolerance.py",
+                       "test_gun_transverse_adaptive.py",
                        "test_diagnostic_field_identity.py", "test_diagnostic_gun_domains.py",
                        "test_grounded_field_identity.py", "test_instrument_electric.py",
                        "test_recording_vacuum_endpoint.py"},
@@ -132,6 +134,8 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_mini_condenser_modes.py", "test_assembly_illumination.py",
             "test_condenser_objective_design.py", "test_scan_coil_design.py", "test_finite_scan_response.py",
             "test_condenser_scan_design_gui.py", "test_projector_mode_switch.py", "test_nanoprobe_range_gui.py",
+            "test_descan_phase_space.py", "test_descan_phase_integration.py",
+            "test_descan_study_protocol.py", "test_operating_mode_input_archive.py",
             "test_corrector_deflector_coils.py", "test_corrector_hardware_editing.py"},
         "lens-geometry": {"test_lens_pose_capture.py", "test_lens_pose_rendering.py",
             "test_lens_pose_clipping.py", "test_lens_pose_transport.py", "test_rigid_lens_field_registration.py"},

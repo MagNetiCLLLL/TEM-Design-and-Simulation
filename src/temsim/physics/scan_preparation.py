@@ -39,7 +39,8 @@ def _resolved_values(state):
     result = []
     for index, component in enumerate(_components(state)):
         values = {name: deepcopy(value) for name, value in vars(component).items()
-                  if name in _DERIVED_PUBLIC or name.startswith(("_pure_shift_", "_image_plane_", "_scan_"))}
+                  if name in _DERIVED_PUBLIC or name == "_calibrated_constraint"
+                  or name.startswith(("_pure_shift_", "_image_plane_", "_scan_"))}
         if index == 1:
             values.update((name, getattr(component, name)) for name in _RASTER)
         result.append(values)

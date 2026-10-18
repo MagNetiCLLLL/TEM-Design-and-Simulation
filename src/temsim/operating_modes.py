@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from functools import lru_cache
 import math
 from pathlib import Path
 from temsim import input_io
@@ -190,7 +189,7 @@ class AppliedProjectorMode:
                 "Scan controls retained; use Calibrate Descan (keep AC) to hold AC at the new target optics.")
 
 
-@lru_cache(maxsize=1)
+@input_io.scoped_lru_cache(maxsize=8)
 def load_operating_mode_catalog() -> OperatingModeCatalog:
     """Load mode storage; this does not change the microscope state."""
     path = OPERATING_MODE_CONFIG_ROOT / "catalog.toml"

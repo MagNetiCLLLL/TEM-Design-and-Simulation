@@ -555,6 +555,8 @@ def _state_payload(state) -> dict[str, object]:
     payload["_gun_analytic_energy_schema"] = ANALYTIC_ENERGY_SCHEMA
     payload["_gun_analytic_step_schema"] = ANALYTIC_STEP_SCHEMA
     payload["_gun_analytic_maximum_relative_impulse"] = ANALYTIC_MAXIMUM_RELATIVE_IMPULSE
+    from temsim.optics.electron_gun.tracing import geometry_step_criteria
+    payload["_gun_geometry_step_criteria"] = geometry_step_criteria()
     from temsim.physics.flight_time import FLIGHT_TIME_SCHEMA
     from temsim.optics.electron_gun.tracing import GUN_FLIGHT_TIME_SCHEMA
     payload["_particle_flight_time_schema"] = FLIGHT_TIME_SCHEMA
@@ -748,7 +750,7 @@ def scan_controls_only_incident_change(previous_state, state, previous_incident_
         "wobble_period_s", "wobble_phase_deg", "scan_enabled",
         "scan_frame_period_s", "scan_pixels_x", "scan_lines", "scan_pixel_size_nm",
         "calibration_mode", "calibration_record_json", "scan_reference",
-        "pivot_offset_x", "pivot_offset_y", "descan_target_key",
+        "pivot_offset_x", "pivot_offset_y", "descan_target_key", "descan_constraint",
     }
     for row in current["corrector_elements"]:
         if row.get("key") in scan_keys:

@@ -111,8 +111,8 @@ class ScanControlView(QWidget):
             "foil controls. Automatic AC calibration targets zero first-order change in "
             "canonical direction at the chosen specimen reference, consistent with diffraction optics. Held calibration "
             "preserves saved drives and may produce mechanical-angle changes. "
-            "Descan uses the opposite raster command "
-            "and the selected physical observation plane. Held calibration does "
+            "Descan can cancel position alone or position and mechanical angle "
+            "at the selected physical observation plane. Held calibration does "
             "not refit when optics change. Calculated "
             "image/diffraction planes and physical aperture stations are "
             "classified independently for the current lens state. Preview "
@@ -136,6 +136,10 @@ class ScanControlView(QWidget):
         self.scan_reference.addItem("Specimen entrance", "sample_entrance")
         self.descan_target = QComboBox()
         self.descan_target.setObjectName("descanObservationTarget")
+        self.descan_constraint = QComboBox()
+        self.descan_constraint.setObjectName("descanConstraint")
+        self.descan_constraint.addItem("Position at selected plane", "position")
+        self.descan_constraint.addItem("Position and angle", "position_and_angle")
         self.calibrate_hold_button = QPushButton("Calibrate and hold")
         self.calibrate_hold_button.setObjectName("calibrateScanAndHold")
         self.calibrate_hold_button.setToolTip(
@@ -147,9 +151,9 @@ class ScanControlView(QWidget):
         self.calibrate_descan_button.setToolTip(
             "Requires a saved held AC calibration and enabled AC/Descan scans. "
             "Logical Descan static X/Y bias must be zero; physical host alignment is retained. "
-            "Keep AC and update only Descan to cancel scan-position motion at "
-            "the selected physical observation plane in the current optics. "
-            "This does not impose an angle constraint or change lenses.")
+            "Keep AC and update only Descan using the chosen position or "
+            "position-and-angle constraint at the selected observation plane. "
+            "The lens settings are retained.")
         self.calibration_status = QLabel("Automatic coupling follows the active optics.")
         self.calibration_status.setWordWrap(True)
         self.calibration_status.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
@@ -157,18 +161,21 @@ class ScanControlView(QWidget):
         calibration_form.addRow("Calibration", self.scan_calibration_mode)
         calibration_form.addRow("Probe scan reference", self.scan_reference)
         calibration_form.addRow("Descan observation plane", self.descan_target)
+        calibration_form.addRow("Descan constraint", self.descan_constraint)
         calibration_form.addRow(self.calibrate_hold_button)
         calibration_form.addRow(self.calibrate_descan_button)
         calibration_form.addRow(self.calibration_status)
         self.scan_calibration_mode.currentIndexChanged.connect(lambda: self._scan_calibration_changed("calibration_mode", self.scan_calibration_mode.currentData()))
         self.scan_reference.currentIndexChanged.connect(lambda: self._scan_calibration_changed("scan_reference", self.scan_reference.currentData()))
         self.descan_target.currentIndexChanged.connect(lambda: self._scan_calibration_changed("descan_target_key", self.descan_target.currentData()))
+        self.descan_constraint.currentIndexChanged.connect(lambda: self._scan_calibration_changed("descan_constraint", self.descan_constraint.currentData()))
         self.calibrate_hold_button.clicked.connect(self._calibrate_and_hold)
         self.calibrate_descan_button.clicked.connect(self._calibrate_descan_only)
         for widget, key, name in (
             (self.scan_calibration_mode, "ac_deflector", "calibration_mode"),
             (self.scan_reference, "ac_deflector", "scan_reference"),
             (self.descan_target, "descan_deflector", "descan_target_key"),
+            (self.descan_constraint, "descan_deflector", "descan_constraint"),
         ):
             widget.setToolTip(parameter_definition(key, name).tooltip())
         controls_layout.addWidget(calibration)
@@ -499,6 +506,12 @@ class ScanControlView(QWidget):
         downstream_layout.setContentsMargins(0, 0, 0, 0)
         downstream_layout.addLayout(downstream_header)
         downstream_layout.addWidget(self.downstream_plot, 1)
+        self.downstream_motion = QLabel("Calculate scan geometry to inspect position and angle.")
+        self.downstream_motion.setObjectName("scanDownstreamMotion")
+        self.downstream_motion.setWordWrap(True)
+        self.downstream_motion.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.downstream_motion.setToolTip("Captured first-order scan-induced peak-to-peak position and mechanical slope at the selected station; not absolute beam angle or convergence semi-angle.")
+        downstream_layout.addWidget(self.downstream_motion)
 
         plot_splitter = QSplitter(Qt.Orientation.Horizontal)
         plot_splitter.setObjectName("scanPlotSplitter")
@@ -843,7 +856,7 @@ class ScanControlView(QWidget):
         widgets["scan_pixel_size_nm"].setToolTip(
             "Shared specimen-plane square pixel pitch. Supported input range: "
             "0.001 nm (1 pm) to 1 mm. The active column optics derive the AC "
-            "command and its opposite Descan command."
+            "command and the calibrated Descan command on the same raster clock."
         )
         fov_x = QLabel()
         fov_x.setObjectName(f"{prefix}ScanFieldOfViewX")
@@ -1575,6 +1588,7 @@ class ScanControlView(QWidget):
         ac, ds = self._state.ac_deflector, self._state.descan_deflector
         self.scan_calibration_mode.setCurrentIndex(self.scan_calibration_mode.findData(ac.calibration_mode))
         self.scan_reference.setCurrentIndex(self.scan_reference.findData(ac.scan_reference))
+        self.descan_constraint.setCurrentIndex(self.descan_constraint.findData(ds.descan_constraint))
         self.descan_target.clear()
         for plane in physical_descan_targets(self._state):
             try:
@@ -1593,7 +1607,7 @@ class ScanControlView(QWidget):
     def _scan_calibration_changed(self, field, value):
         if self._updating or self._state is None or value is None:
             return
-        target = self._state.descan_deflector if field == "descan_target_key" else self._state.ac_deflector
+        target = self._state.descan_deflector if field in {"descan_target_key", "descan_constraint"} else self._state.ac_deflector
         previous = getattr(target, field)
         try:
             if field == "calibration_mode" and value == "held":
@@ -2040,13 +2054,16 @@ class ScanControlView(QWidget):
             descan_text = (
                 f" | Descan target {result.descan_target_name} at "
                 f"Z={result.descan_target_z_mm:.6g} mm: "
-                f"{result.descan_target_plane_kind}; opposite command, "
+                f"{result.descan_target_plane_kind}; constraint "
+                f"{getattr(result, 'descan_constraint', None) or 'unspecified'}, "
                 "lower <- upper "
                 f"[[{descan_coupling[0, 0]:.5g}, "
                 f"{descan_coupling[0, 1]:.5g}], "
                 f"[{descan_coupling[1, 0]:.5g}, "
                 f"{descan_coupling[1, 1]:.5g}]], response residual "
                 f"{self._finite_readout(result.descan_compensation_residual)} (dimensionless), "
+                "mechanical-angle residual "
+                f"{self._finite_readout(getattr(result, 'descan_angle_response_residual', None))} (dimensionless), "
                 "image conjugacy ||J_diff|| "
                 f"{self._finite_readout(result.descan_target_conjugacy_residual_m_per_rad, ' m/rad')}"
             )
@@ -2894,8 +2911,15 @@ class ScanControlView(QWidget):
         key = self.plane_selector.currentData()
         if result is None or key not in result.plane_positions_um:
             self.downstream_plot.clear()
+            self.downstream_motion.setText("Calculate scan geometry to inspect position and angle.")
             return
         x_values, y_values = result.plane_positions_um[str(key)]
+        angles = getattr(result, "plane_mechanical_angle_spans_mrad", {}).get(str(key))
+        angle_text = ("unavailable" if angles is None else
+                      f"X {angles[0]:.6g}, Y {angles[1]:.6g} mrad")
+        self.downstream_motion.setText(
+            f"Scan-induced peak-to-peak displacement: X {np.ptp(x_values):.6g}, "
+            f"Y {np.ptp(y_values):.6g} µm | Mechanical slope: {angle_text}")
         self._draw_trace(
             self.downstream_plot,
             x_values,

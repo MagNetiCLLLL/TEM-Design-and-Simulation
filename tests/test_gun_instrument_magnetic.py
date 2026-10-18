@@ -25,6 +25,10 @@ def test_downstream_magnetic_tuning_keeps_executed_gun_dependency(key):
     from temsim.physics.particle_sections import gun_dependency_signature
     from temsim.instrument_snapshot import encode_instrument, decode_instrument
     state = default_state()
+    # The default unfiltered recording ends at the camera's physical back face;
+    # upstream module choices need not place that boundary beyond 3000 mm.
+    electric_end_mm = state._resolved_assembly.part("camera").end_z_mm
+    assert max(row.end_z_mm for row in state._resolved_assembly.vacuum_liner_segments) == pytest.approx(electric_end_mm)
     before = _key(state)
     signature = gun_dependency_signature(state)
     # Reconstruct the same physical inputs, as continuation in a new process
@@ -36,7 +40,8 @@ def test_downstream_magnetic_tuning_keeps_executed_gun_dependency(key):
     with instrument_gun_field_context(state):
         gun = state.electron_gun
         assert gun._instrument_magnetic_query_upper_m == pytest.approx(.55)
-        assert gun._instrument_electric_end_mm > 3000.
+        assert gun._instrument_electric_end_mm == pytest.approx(electric_end_mm)
+        assert gun._instrument_electric_end_mm > 1000.*gun._instrument_magnetic_query_upper_m
         assert all(start <= 550. for start, _ in gun._instrument_magnetic_supports_mm)
 
 

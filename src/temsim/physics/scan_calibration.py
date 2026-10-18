@@ -5,7 +5,7 @@ import json
 import numpy as np
 from temsim.optics.shared_deflectors import shared_channel_enabled
 
-SCAN_CALIBRATION_MODEL = "finite-coil-canonical-v2"
+SCAN_CALIBRATION_MODEL = "finite-coil-canonical-descan-phase-v3"
 AUTOMATIC_AC_ANGLE_TARGET = "canonical"
 AC_ANGLE_TARGETS = frozenset({"canonical", "mechanical", "legacy_unknown"})
 
@@ -66,6 +66,15 @@ def validate_record(text):
         raise ValueError("Held descan calibration must name its physical deflector host")
     if record.get("ac_angle_target", "legacy_unknown") not in AC_ANGLE_TARGETS:
         raise ValueError("Invalid held AC angle target")
+    constraint = record.get("descan_constraint", "position")
+    if constraint not in ("position", "position_and_angle"):
+        raise ValueError("Invalid held Descan constraint")
+    if "descan_command_mrad" in record:
+        values = np.asarray(record["descan_command_mrad"], dtype=float)
+        if values.shape != (2, 2) or not np.all(np.isfinite(values)):
+            raise ValueError("Invalid held Descan command matrix")
+    elif constraint == "position_and_angle":
+        raise ValueError("Position-and-angle calibration requires its explicit Descan command")
     return record
 
 
@@ -85,6 +94,8 @@ def capture_record(state, *, descan_calibrated: bool, ac_angle_target=None):
                   ac_angle_target=ac_angle_target,
                   ac_ratio=ac.pure_shift_lower_ratio_matrix,
                   descan_ratio=descan.image_plane_lower_ratio_matrix,
+                  descan_constraint=getattr(descan, "_calibrated_constraint", "position"),
+                  descan_command_mrad=descan.scan_command_matrix_mrad,
                   command_mrad=ac.scan_command_matrix_mrad,
                   fov_nm=(ac.scan_field_of_view_x_nm, ac.scan_field_of_view_y_nm),
                   target_key=descan.image_plane_target_key,
@@ -96,6 +107,29 @@ def capture_record(state, *, descan_calibrated: bool, ac_angle_target=None):
     validate_record(encoded)
     ac.calibration_record_json = encoded
     return encoded
+
+
+def validate_descan_shared_peaks(state):
+    """Check every raster corner after summing the shared host alignment.
+
+    The affine square-raster bound is exact per physical coil axis. It uses
+    the accepted matrices, so held FOV changes and mixed X/Y coupling are
+    checked without refitting or changing static alignment.
+    """
+    descan = state.descan_deflector
+    host = getattr(descan, "_physical_host", None)
+    if host is None or not shared_channel_enabled(descan):
+        return
+    host_static = np.array(((host.upper_x_mrad, host.upper_y_mrad),
+                            (host.lower_x_mrad, host.lower_y_mrad)), dtype=float)
+    bias = np.array((descan.kick_x_mrad, descan.kick_y_mrad), dtype=float)
+    command = (np.asarray(descan.scan_command_matrix_mrad, dtype=float)
+               if descan.scan_enabled else np.zeros((2, 2)))
+    peaks = np.array([np.abs(static + np.asarray(mapping) @ bias)
+                      + np.sum(np.abs(np.asarray(mapping) @ command), axis=1)
+                      for static, mapping in zip(host_static, descan.coil_kick_matrices())])
+    if not np.isfinite(peaks).all() or np.any(peaks > float(host.maximum_kick_mrad)):
+        raise ValueError("Descan raster plus Image/Diffraction alignment exceeds the shared physical coil limit")
 
 
 def restore_held(state, *, restore_descan=True):
@@ -128,8 +162,16 @@ def restore_held(state, *, restore_descan=True):
         if restore_descan:
             descan.set_image_plane_coupling(record["descan_ratio"],
                 target_key=record["target_key"], target_z_mm=record["target_z_mm"])
-            descan.set_scan_command_matrix_mrad(-command)
+            # Older records contain only the opposite-AC command. New records
+            # retain independent Descan drives and scale the same raster axes.
+            descan_command = np.asarray(record.get(
+                "descan_command_mrad", -np.asarray(record["command_mrad"])))
+            descan.set_scan_command_matrix_mrad(
+                descan_command * (fov / record["fov_nm"])[None, :])
+            object.__setattr__(descan, "_calibrated_constraint", record.get(
+                "descan_constraint", "position"))
             descan.validate()
+            validate_descan_shared_peaks(state)
     except Exception:
         for component, saved in zip((ac, descan), snapshots):
             component.__dict__.clear()

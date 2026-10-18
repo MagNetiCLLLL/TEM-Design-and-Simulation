@@ -41,7 +41,9 @@ ACCEPTANCE_SCOPES = {
             "gun-fields/GF-01": ("Conductor geometry, field boundaries and exact field cache", (
                 "tests/test_closed_gun_field.py", "tests/test_axisymmetric_cut_field.py")),
             "gun-fields/GF-02": ("Continuous tip emission, transport and saved inputs", (
-                "tests/test_continuous_tip_curvature.py", "tests/test_tip_curvature_comparison.py")),
+                "tests/test_continuous_tip_curvature.py", "tests/test_tip_curvature_comparison.py",
+                "tests/test_geometry_gun_cache.py", "tests/test_geometry_gun_implicit_tolerance.py",
+                "tests/test_gun_transverse_adaptive.py")),
             "gun-fields/GF-03": ("Exact field identity, conservative reuse and domain comparison metrics", (
                 "tests/test_diagnostic_field_identity.py", "tests/test_grounded_field_identity.py",
                 "tests/test_diagnostic_gun_domains.py")),
@@ -130,7 +132,9 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_mini_condenser_modes.py", "tests/test_assembly_illumination.py",
                 "tests/test_condenser_objective_design.py", "tests/test_scan_coil_design.py",
                 "tests/test_condenser_scan_design_gui.py", "tests/test_finite_scan_response.py",
-                "tests/test_projector_mode_switch.py", "tests/test_nanoprobe_range_gui.py")),
+                "tests/test_projector_mode_switch.py", "tests/test_nanoprobe_range_gui.py",
+                "tests/test_descan_phase_space.py", "tests/test_descan_phase_integration.py",
+                "tests/test_descan_study_protocol.py", "tests/test_operating_mode_input_archive.py")),
             "field-ui/FU-16": ("Declared corrector winding ownership, geometry and edit persistence", (
                 "tests/test_corrector_deflector_coils.py", "tests/test_corrector_hardware_editing.py")),
             "field-ui/FU-17": ("Explicit reference-plane steering and captured actual-probe diagnostics", (

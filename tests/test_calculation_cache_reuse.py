@@ -843,7 +843,7 @@ def test_same_state_preview_does_not_replace_high_accuracy_tab_products(
         "wave": 0,
     }
 
-    monkeypatch.setattr(workspace, "_prepare_scan_ray_playback", lambda _r: None)
+    monkeypatch.setattr(workspace, "_prepare_scan_ray_playback", lambda _r, *, preserve_playback=False: None)
     monkeypatch.setattr(
         workspace,
         "_draw_ray_diagram",

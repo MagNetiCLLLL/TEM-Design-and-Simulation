@@ -872,13 +872,16 @@ drive_clock = "shared_ac_raster"
 field_geometry_status = "ideal_kicks_at_declared_interaction_centres_not_measured_coil_map"
 name = "Descan control channel"
 branch = "image"
-local_start_z_mm = 1316.9
-local_center_z_mm = 1336.9
-local_end_z_mm = 1356.9
+# Normal STEM finite-field study (2026-10-18): 3 mm after the lower pole,
+# fixed SAA/screen positions, shared Descan position-and-angle calibration.
+# Engineering placement, not measured OEM geometry; see descan-normal study.
+local_start_z_mm = 1216.9
+local_center_z_mm = 1236.9
+local_end_z_mm = 1256.9
 length_mm = 40.0
 vacuum_inner_diameter_mm = 20
-optical_reference_local_z_mm = 1336.9
-interaction_centers_local_z_mm = [1324.4, 1349.4]
+optical_reference_local_z_mm = 1236.9
+interaction_centers_local_z_mm = [1224.4, 1249.4]
 mechanical_outer_diameter_mm = 54.0
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 15.0
@@ -922,13 +925,16 @@ order = 43
 key = "image_diffraction_deflector"
 name = "Image/Diffraction Deflectors"
 branch = "image"
-local_start_z_mm = 1316.9
-local_center_z_mm = 1336.9
-local_end_z_mm = 1356.9
+# Normal STEM finite-field study (2026-10-18): 3 mm after the lower pole,
+# fixed SAA/screen positions, shared Descan position-and-angle calibration.
+# Engineering placement, not measured OEM geometry; see descan-normal study.
+local_start_z_mm = 1216.9
+local_center_z_mm = 1236.9
+local_end_z_mm = 1256.9
 length_mm = 40.0
 vacuum_inner_diameter_mm = 20
-optical_reference_local_z_mm = 1336.9
-interaction_centers_local_z_mm = [1324.4, 1349.4]
+optical_reference_local_z_mm = 1236.9
+interaction_centers_local_z_mm = [1224.4, 1249.4]
 mechanical_outer_diameter_mm = 54.0
 mechanical_clear_bore_diameter_mm = 20.0
 effective_thickness_mm = 15.0

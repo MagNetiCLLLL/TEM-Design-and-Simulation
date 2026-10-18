@@ -137,12 +137,14 @@ class DescanDeflectorComponent(SharedDeflectorChannel):
     scan_pixels_x: int = 64
     scan_lines: int = 64
     # This is the same specimen-raster pitch shown for the AC Scan Foils.
-    # Descan uses the opposite calibrated AC command; it does not define a
-    # second, independent specimen field of view.
+    # Descan uses a calibrated command on the same raster clock; it does not
+    # define a second, independent specimen field of view.
     scan_pixel_size_nm: float = 0.02
     upper_coil_gain: float = 0.5
     lower_coil_gain: float = 0.5
     descan_target_key: str = SELECTED_AREA_APERTURE
+    # Historical profiles retain their one-plane positional calibration.
+    descan_constraint: str = "position"
 
     EXPECTED_KEY: ClassVar[str] = DESCAN_DEFLECTOR
     KIND: ClassVar[str] = "paired_deflector"
@@ -253,6 +255,8 @@ class DescanDeflectorComponent(SharedDeflectorChannel):
         return self.z_mm + self.optical_plane_separation_mm / 2.0
 
     def validate(self):
+        if self.descan_constraint not in ("position", "position_and_angle"):
+            raise ValueError("Descan constraint must be position or position_and_angle.")
         if not isinstance(self.descan_target_key, str) or not self.descan_target_key.strip():
             raise ValueError("Descan observation plane must be an explicit physical component key.")
         if self.descan_target_key == "legacy_image_reference":
@@ -446,7 +450,7 @@ class DescanDeflectorComponent(SharedDeflectorChannel):
         return self
 
     def set_scan_command_matrix_mrad(self, command_matrix, residual=0.0):
-        """Install the command opposed to the calibrated AC raster."""
+        """Install the calibrated command on the shared AC raster clock."""
 
         rows = tuple(
             tuple(float(value) for value in row)
@@ -647,6 +651,7 @@ def descan_deflector_from_dict(data):
         "scan_pixel_size_nm",
         "upper_coil_gain",
         "descan_target_key",
+        "descan_constraint",
     ):
         if attribute in values:
             object.__setattr__(component, attribute, values[attribute])

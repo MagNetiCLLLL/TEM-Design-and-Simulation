@@ -810,6 +810,8 @@ class FieldEmissionGun:
         payload["analytic_energy_schema"] = ANALYTIC_ENERGY_SCHEMA
         payload["analytic_step_schema"] = ANALYTIC_STEP_SCHEMA
         payload["analytic_maximum_relative_impulse"] = ANALYTIC_MAXIMUM_RELATIVE_IMPULSE
+        from temsim.optics.electron_gun.tracing import geometry_step_criteria
+        payload["geometry_step_criteria"] = geometry_step_criteria()
         payload["tuning_sampling_schema"] = "physical-tip-grouped-support-v2"
         payload["tuning_surface_probes"] = int(getattr(self.emitter, "_tuning_surface_probes", 0))
         payload["tuning_boundary_probes"] = int(getattr(self.emitter, "_tuning_boundary_probes", 0))

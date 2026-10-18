@@ -108,7 +108,14 @@ def test_default_runtime_ac_centres_match_manifest_and_clear_neighbours(base_sta
     assert ac.upper_z_mm + ac.mechanical_coil_length_mm / 2 < 1400.0007
     assert ac.lower_z_mm - ac.mechanical_coil_length_mm / 2 > 1400.0007
     assert (base_state.descan_deflector.upper_z_mm,
-            base_state.descan_deflector.lower_z_mm) == (1774.4, 1799.4)
+            base_state.descan_deflector.lower_z_mm) == (1674.4, 1699.4)
+    host = base_state.image_diffraction_deflector
+    assert host.upper_surface_z_mm == pytest.approx(1666.9)
+    assert host.lower_surface_z_mm == pytest.approx(1706.9)
+    assert assembly.part("objective_lower_pole").end_z_mm + 3.0 == pytest.approx(host.upper_surface_z_mm)
+    assert host.lower_surface_z_mm < assembly.part("objective_stigmator").start_z_mm
+    assert base_state.selected_area_aperture.z_mm == pytest.approx(1824.4)
+    assert base_state.fluorescent_screen.z_mm == pytest.approx(2714.15)
 
 
 def test_bound_channel_and_deepcopy_follow_live_host_geometry(base_state):

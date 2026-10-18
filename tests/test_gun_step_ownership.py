@@ -135,7 +135,7 @@ def test_five_step_cancellation_retains_prior_states_and_independent_history(gun
     # Cancellation intentionally publishes no result. Inspect the abandoned
     # trace frame to check its retained snapshots before the frame is released.
     frame = cancelled.value.__traceback__
-    while frame.tb_frame.f_code is not tracing.trace_feg_to_exit.__code__:
+    while frame.tb_frame.f_code is not tracing._trace_feg_to_exit.__code__:
         frame = frame.tb_next
     pending = frame.tb_frame.f_locals
     positions, momenta = pending["history_position"], pending["history_momentum"]

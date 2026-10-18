@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 import numpy as np
 from temsim.physics.scan_calibration import (
     held, restore_held, sample_reference_z_mm, capture_record, ac_angle_target,
-    AUTOMATIC_AC_ANGLE_TARGET,
+    AUTOMATIC_AC_ANGLE_TARGET, validate_descan_shared_peaks,
 )
 from temsim.optics.direct_alignment import canonical_source_basis
 from temsim.optics.shared_deflectors import shared_channel_enabled
@@ -39,7 +39,7 @@ SHARED_RASTER_FIELDS = (
 
 @dataclass(frozen=True)
 class DescanCalibrationResult:
-    """One opposite-command descan solve at an image-reference station."""
+    """One Descan solve at an explicitly selected physical station."""
 
     target_key: str
     target_name: str
@@ -48,6 +48,11 @@ class DescanCalibrationResult:
     response_match_residual: float
     conjugacy_residual_m_per_rad: float
     plane_kind: str
+    constraint: str = "position"
+    angle_response_residual: float | None = None
+    position_residual_m: float | None = None
+    angle_residual_rad: float | None = None
+    condition_number: float | None = None
 
 
 @dataclass(frozen=True)
@@ -98,6 +103,9 @@ class ScanGeometryResult:
     sample_mechanical_angle_span_mrad: tuple[float, float] | None = None
     sample_canonical_angle_span_mrad: tuple[float, float] | None = None
     ac_angle_target: str | None = None
+    descan_constraint: str | None = None
+    descan_angle_response_residual: float | None = None
+    plane_mechanical_angle_spans_mrad: dict[str, tuple[float, float]] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -295,6 +303,15 @@ def paired_kick_response(state, component, observation_z_mm):
     return upper[:2] @ upper_map + lower[:2] @ lower_map
 
 
+def paired_phase_response(state, component, observation_z_mm):
+    """Full finite-pair response: x/y metres then mechanical slopes per rad."""
+    observation = float(observation_z_mm)
+    require_supported_descan_target(state, observation)
+    upper, lower = _coil_phase_responses(state, component, observation)
+    upper_map, lower_map = _coil_kick_matrices(component)
+    return upper @ upper_map + lower @ lower_map
+
+
 def paired_kick_response_grid(state, component, z_mm) -> np.ndarray:
     """Return pair-command position response at every requested axial Z.
 
@@ -403,13 +420,12 @@ def _calibrate_ac_scan_scale(state):
 
 
 def calibrate_descan_image_plane(state) -> DescanCalibrationResult:
-    """Match AC response at the selected physical plane using opposite commands.
+    """Calibrate the requested first-order Descan constraint.
 
-    Let ``q`` be the calibrated AC raster command. Descan is driven with
-    ``-q``. Its lower-foil 2-D coupling is solved so the paired Descan
-    position response equals the paired AC response at the selected
-    observation station. Therefore ``R_ac q + R_descan (-q) = 0`` to first order,
-    including Larmor rotation and anisotropic active optics.
+    Historical position-only calibration uses the opposite AC command and
+    fits the lower-coil coupling. Position-and-angle calibration solves both
+    physical coil drives. Held calibration restores its accepted command
+    without silently adopting a newly requested constraint.
     """
 
     ac = state.ac_deflector
@@ -422,7 +438,7 @@ def calibrate_descan_image_plane(state) -> DescanCalibrationResult:
 
 
 def recalibrate_descan_only(state) -> DescanCalibrationResult:
-    """Explicitly update downstream position compensation, keeping held AC.
+    """Explicitly update downstream compensation, keeping held AC.
 
     Restore the accepted AC ratios and its requested FOV scaling, then solve
     only Descan in the current fields at ``descan_target_key``. No sample-angle
@@ -454,12 +470,17 @@ def recalibrate_descan_only(state) -> DescanCalibrationResult:
 
 
 def _solve_descan_at_selected_plane(state) -> DescanCalibrationResult:
-    """Solve one downstream position constraint using the accepted AC drive."""
+    """Solve the selected Descan constraint, retaining the accepted AC drive."""
     ac, descan = state.ac_deflector, state.descan_deflector
     snapshot = dict(descan.__dict__)
     try:
         synchronize_scan_raster(ac, descan)
         command = np.asarray(ac.scan_command_matrix_mrad, dtype=float)
+        constraint = getattr(descan, "descan_constraint", "position")
+        if constraint == "position_and_angle":
+            return _solve_descan_position_and_angle(state)
+        if constraint != "position":
+            raise ValueError("Unknown Descan constraint")
         descan.set_scan_command_matrix_mrad(
             -command,
             float(ac.scan_scale_residual),
@@ -488,9 +509,10 @@ def _solve_descan_at_selected_plane(state) -> DescanCalibrationResult:
             target_key=target_key,
         )
         descan.validate()
+        object.__setattr__(descan, "_calibrated_constraint", "position")
     except Exception:
-        for name, value in snapshot.items():
-            object.__setattr__(descan, name, value)
+        descan.__dict__.clear()
+        descan.__dict__.update(snapshot)
         raise
     return DescanCalibrationResult(
         target_key=target_key,
@@ -501,6 +523,45 @@ def _solve_descan_at_selected_plane(state) -> DescanCalibrationResult:
         conjugacy_residual_m_per_rad=image_residual,
         plane_kind=plane_kind,
     )
+
+
+def _solve_descan_position_and_angle(state) -> DescanCalibrationResult:
+    """Cancel local scan-induced position and mechanical slope together.
+
+    The two physical coils still belong to the shared Image/Diffraction host.
+    Their independently solved drives use the same raster clock as AC. This
+    cancels scan increments, not existing alignment offsets or finite-probe
+    aberrations. Transactional rollback is owned by the caller.
+    """
+    from temsim.physics.descan_phase_space import solve_position_angle_cancellation
+    ac, descan = state.ac_deflector, state.descan_deflector
+    if any(float(getattr(descan, f"kick_{axis}_mrad")) != 0. for axis in ("x", "y")):
+        raise ValueError("Position-and-angle Descan calibration requires zero logical Descan static bias; physical host alignment is retained")
+    key, name, z = _descan_target(state)
+    incident = paired_phase_response(state, ac, z) @ (
+        np.asarray(ac.scan_command_matrix_mrad, dtype=float) * 1e-3)
+    finite = finite_scan_responses(state, descan, [z])
+    if z <= max(end for _, end in finite.coil_support_mm):
+        raise ValueError("Position-and-angle target must follow both complete Descan coil fields")
+    upper, lower, _ = finite.at(z)
+    solution = solve_position_angle_cancellation(upper, lower, incident,
+        separation_mm=float(descan.lower_z_mm-descan.upper_z_mm),
+        upper_gain=float(descan.upper_coil_gain))
+    kind, image, _ = _sample_plane_classification(state, z)
+    descan.set_image_plane_coupling(solution.lower_from_upper,
+        solution.position_relative_residual, target_z_mm=z, target_key=key)
+    descan.set_scan_command_matrix_mrad(solution.command_matrix_mrad,
+                                       solution.position_relative_residual)
+    descan.validate()
+    # A valid logical channel must also fit the shared hardware after adding
+    # its existing Image/Diffraction alignment at every raster corner.
+    validate_descan_shared_peaks(state)
+    object.__setattr__(descan, "_calibrated_constraint", "position_and_angle")
+    return DescanCalibrationResult(key, name, z, np.asarray(solution.lower_from_upper),
+        solution.position_relative_residual, image, kind,
+        constraint="position_and_angle", angle_response_residual=solution.angle_relative_residual,
+        position_residual_m=solution.position_residual_m, angle_residual_rad=solution.angle_residual_rad,
+        condition_number=solution.condition_number)
 
 
 def _solve_descan_response_match(
@@ -550,16 +611,23 @@ def _ac_angle_residual(state):
 
 def _measure_descan(state):
     key, name, z = _descan_target(state)
-    ac = paired_kick_response(state, state.ac_deflector, z)
-    ds = paired_kick_response(state, state.descan_deflector, z)
-    residual = float(np.linalg.norm(ac-ds) / max(np.linalg.norm(ac), 1e-30))
+    ac = paired_phase_response(state, state.ac_deflector, z) @ (
+        np.asarray(state.ac_deflector.scan_command_matrix_mrad) * 1e-3)
+    ds = paired_phase_response(state, state.descan_deflector, z) @ (
+        np.asarray(state.descan_deflector.scan_command_matrix_mrad) * 1e-3)
+    residual = float(np.linalg.norm((ac+ds)[:2]) / max(np.linalg.norm(ac[:2]), 1e-30))
+    angle_residual = float(np.linalg.norm((ac+ds)[2:]) /
+                          max(np.linalg.norm(ac[2:]), np.linalg.norm(ds[2:]), 1e-30))
     kind, image, _ = _sample_plane_classification(state, z)
     return DescanCalibrationResult(key, name, z,
-        np.asarray(state.descan_deflector.image_plane_lower_ratio_matrix), residual, image, kind)
+        np.asarray(state.descan_deflector.image_plane_lower_ratio_matrix), residual, image, kind,
+        constraint=getattr(state.descan_deflector, "_calibrated_constraint", "position"),
+        angle_response_residual=angle_residual, position_residual_m=float(np.linalg.norm((ac+ds)[:2])),
+        angle_residual_rad=float(np.linalg.norm((ac+ds)[2:])))
 
 
 def calibrate_scan_system(state, *, force=False, hold=False, observation_stop_z_mm=None):
-    """Calibrate specimen scan and, when active, opposite-command Descan."""
+    """Calibrate specimen scan and the selected active Descan constraint."""
 
     components = state.ac_deflector, state.descan_deflector
     def consumed(component):
@@ -880,6 +948,7 @@ def calculate_scan_geometry(state, *, observation_stop_z_mm=None, calibration=No
     sample_canonical_slopes = sample_slopes_rad - np.einsum("ij,...j->...i", g, sample_m)
     canonical_span_mrad = np.ptp(sample_canonical_slopes.reshape(-1, 2), axis=0) * 1.0e3
     plane_positions_um = {}
+    plane_angle_spans = {}
     plane_names = {}
     plane_roles = {}
     plane_image_residuals = {}
@@ -905,6 +974,13 @@ def calculate_scan_geometry(state, *, observation_stop_z_mm=None, calibration=No
             combined_m[..., 0] * 1.0e6,
             combined_m[..., 1] * 1.0e6,
         )
+        combined_slopes = _pair_mechanical_slopes_rad(
+            ac, ac_kicks, ac_paths, observation_z_mm
+        ) + _pair_mechanical_slopes_rad(
+            descan, descan_kicks, descan_paths, observation_z_mm
+        )
+        plane_angle_spans[str(plane.key)] = tuple(float(v) for v in
+            np.ptp(combined_slopes.reshape(-1, 2), axis=0) * 1e3)
         plane_key = str(plane.key)
         reference_suffix = calculated_suffixes.get(plane_key, "") or (
             " (physical diffraction-reference station)"
@@ -963,6 +1039,7 @@ def calculate_scan_geometry(state, *, observation_stop_z_mm=None, calibration=No
         plane_roles=plane_roles,
         plane_image_residuals_m_per_rad=plane_image_residuals,
         plane_diffraction_residuals=plane_diffraction_residuals,
+        plane_mechanical_angle_spans_mrad=plane_angle_spans,
         descan_target_key=(
             descan_calibration.target_key
             if descan_calibration is not None
@@ -988,6 +1065,9 @@ def calculate_scan_geometry(state, *, observation_stop_z_mm=None, calibration=No
             if descan_calibration is not None
             else None
         ),
+        descan_constraint=(descan_calibration.constraint if descan_calibration is not None else None),
+        descan_angle_response_residual=(descan_calibration.angle_response_residual
+            if descan_calibration is not None else None),
         descan_target_conjugacy_residual_m_per_rad=(
             descan_calibration.conjugacy_residual_m_per_rad
             if descan_calibration is not None

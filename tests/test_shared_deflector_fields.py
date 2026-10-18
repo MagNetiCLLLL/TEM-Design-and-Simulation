@@ -209,7 +209,7 @@ def test_old_or_different_descan_host_requires_explicit_recalibration(saved_host
     text = json.dumps(record)
     assert validate_record(text)["version"] == 1  # Still readable as historical data.
     state.ac_deflector.calibration_record_json = text
-    with pytest.raises(ValueError, match="Use Calibrate and hold"):
+    with pytest.raises(ValueError, match=r"older or different physical deflector.*Calibrate Descan \(keep AC\)"):
         restore_held(state)
 
 
@@ -234,12 +234,17 @@ def test_disabled_host_does_not_require_new_descan_calibration():
 
 def test_new_held_record_captures_physical_host(monkeypatch):
     from temsim.physics.scan_calibration import capture_record
-    state, host, _ = held_state()
+    state, host, record = held_state()
+    # A Descan-only capture retains the existing held AC calibration and its
+    # provenance; historical records do not establish a canonical angle solve.
+    state.ac_deflector.calibration_record_json = json.dumps(record)
     state.descan_deflector.set_image_plane_coupling(((1., 0.), (0., 1.)),
         target_key="selected_area_aperture", target_z_mm=host.lower_z_mm+10.)
     monkeypatch.setattr("temsim.instrument_snapshot.capture_instrument_snapshot",
                         lambda _s: SimpleNamespace(digest="isolated-calibration-fixture"))
-    assert json.loads(capture_record(state, descan_calibrated=True))["descan_physical_host_key"] == host.key
+    captured = json.loads(capture_record(state, descan_calibrated=True))
+    assert captured["descan_physical_host_key"] == host.key
+    assert captured["ac_angle_target"] == "legacy_unknown"
 
 
 def test_disabled_host_is_not_solved_by_scan_calibration(monkeypatch):

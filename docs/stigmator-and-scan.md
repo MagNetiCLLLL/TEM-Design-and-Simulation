@@ -156,6 +156,11 @@ another acquisition or another playback pass.
 
 ## Scan/descan controls
 
+For the current C3 + Probe Corrector Normal STEM installation, see the
+[2026-10-18 Descan/Lower Objective study](development/descan-normal-2026-10-18.md).
+It separates position-and-angle compensation, physical placement, common chief
+intersections and finite-beam waists, and includes a loadable input working point.
+
 The Descan entry is a control channel of the **Image/Diffraction Deflectors**.
 Static image/diffraction-shift and dynamic descan commands drive the same upper
 and lower coils. Their drives are summed once at the host's interaction centres;
@@ -184,11 +189,16 @@ In **Scanning Image > Scanning Parameters > Scan / descan calibration**:
 2. Select an installed **Descan observation plane**, for example Fluorescent
    Screen. Each choice displays the physical component name and current Z in
    millimetres. This is separate from the specimen plane used for probe scanning.
-3. Set the desired raster and current optics; click **Calibrate and hold** to
+3. Choose **Descan constraint**: **Position at selected plane** retains the
+   historical one-plane compensation. **Position and angle** jointly solves
+   both coil commands to cancel scan-induced displacement and mechanical slope.
+   The latter requires a target beyond both complete Descan coil fields and zero
+   logical Descan static bias; physical Image/Diffraction alignment is retained.
+4. Set the desired raster and current optics; click **Calibrate and hold** to
    recalculate both pairs using the production canonical-angle AC constraint.
-4. Adjust **AC pivot X/Y** or diffraction-lens excitation. The held ratios stay
+5. Adjust **AC pivot X/Y** or diffraction-lens excitation. The held ratios stay
    fixed, so residual scan angle and pattern displacement remain observable.
-5. Recalibrate explicitly when wanted, or select **Automatic recalibration** to
+6. Recalibrate explicitly when wanted, or select **Automatic recalibration** to
    restore automatic coupling.
 
 The target is an explicit component key, defaulting to
@@ -203,9 +213,29 @@ Both pairs use one raster clock. Each pair has two declared axial X/Y dipole
 stations. For the upper/lower AC canonical angular responses `Du`, `Dl`, calibration solves
 `Dl R = -Du`; physical optics determine `R`. The command matrix maps the requested
 specimen FOV to the actual response. Pivot offsets add to the diagonal of `R`.
-Descan uses the opposite command and matches the AC position response at the
-chosen observation plane. Equal timing and symmetric positions alone do not
-force equal coil ratios when intervening lenses change the transfer.
+Position-only Descan uses the opposite command and matches the AC position
+response at the chosen observation plane. Position-and-angle Descan solves
+`[U L] [Ku; Kl] = -P_ac`, where each finite-coil response has rows
+`(x, y, mechanical slope x, mechanical slope y)`. Position rows are scaled by
+the physical coil separation before conditioning and solving. The actual
+independent command and lower/upper coupling are stored together; the common
+raster timing and physical host are retained. Equal timing and symmetric
+positions alone do not force equal coil ratios when lenses change the transfer.
+
+Held records store the accepted constraint independently from the newly selected
+request. Changing the selector does not relabel or refit a held result; use
+**Calibrate Descan (keep AC)** to accept the new downstream constraint without
+re-solving AC. Older records without an explicit Descan command restore `-AC`.
+FOV scaling checks the sum of host alignment and raster peak against the shared
+physical coil limit. The captured readout reports position and angle residuals.
+
+For C3 + Probe Corrector, switching Nanoprobe Normal to Large Angle changes
+the TL12 fringe field across AC. To establish the new working point, choose
+**Position and angle** and use **Calibrate and hold** to update both AC and
+Descan. **Calibrate Descan (keep AC)** intentionally retains the old specimen
+scan map, including its mismatch. The same Image/Diffraction hardware remains
+the Descan host. The bounded 300 kV, 1 µm FOV finite-particle checks are recorded
+in [the Large Angle study](development/descan-large-angle-2026-10-18.md).
 
 The production response is linearized from the installed finite-length coil
 fields, including the lens field across each coil. A centre-plane angle kick is
@@ -221,7 +251,11 @@ cross-axis terms enter the solve. Neither a zero canonical-angle residual nor
 a canonical pivot, by itself, establishes a fixed
 pattern at every detector. Descan must use the physical station that needs to
 remain stationary; holding the beam at the selected-area aperture can increase
-its motion on a downstream screen.
+its motion on a downstream screen under position-only compensation. Joint
+position-and-angle cancellation removes both first-order increments after the
+pair; coincident downstream chief trajectories are not a unique tilt centre
+or evidence of a finite-probe crossover. Aberrations and physical clipping
+remain observable and require finite-particle verification.
 
 ### Direction in the objective field
 

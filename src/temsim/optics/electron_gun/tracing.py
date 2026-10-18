@@ -28,6 +28,34 @@ from temsim.physics.relativistic_lorentz import (
 from temsim.physics.gun_transport_domain import bounded_gun_time_step
 
 
+GEOMETRY_STEP_SCHEMA = "geometry-dg-transverse-step-doubled-retry-reuse-v2-inner-tolerance"
+GEOMETRY_IMPLICIT_TOLERANCE = 1e-13
+GEOMETRY_TOTAL_RELATIVE_MOMENTUM = 1e-6
+GEOMETRY_TRANSVERSE_RELATIVE_MOMENTUM = 1e-5
+GEOMETRY_TRANSVERSE_MOMENTUM_FLOOR_FRACTION = 1e-5
+GEOMETRY_MOMENTUM_NORM_FLOOR = 1e-30
+GEOMETRY_XY_ABSOLUTE_POSITION_M = 1e-13
+GEOMETRY_XY_RELATIVE_POSITION = 1e-6
+GEOMETRY_XYZ_ABSOLUTE_POSITION_M = 1e-13
+GEOMETRY_XYZ_RELATIVE_STEP = 1e-5
+GEOMETRY_STEP_MAXIMUM_RETRIES = 32
+
+
+def geometry_step_criteria():
+    """Cache the same numerical criteria used by geometry DG acceptance."""
+    return dict(schema=GEOMETRY_STEP_SCHEMA,
+        implicit_tolerance=GEOMETRY_IMPLICIT_TOLERANCE,
+        total_relative_momentum=GEOMETRY_TOTAL_RELATIVE_MOMENTUM,
+        transverse_relative_momentum=GEOMETRY_TRANSVERSE_RELATIVE_MOMENTUM,
+        transverse_momentum_floor_fraction=GEOMETRY_TRANSVERSE_MOMENTUM_FLOOR_FRACTION,
+        momentum_norm_floor=GEOMETRY_MOMENTUM_NORM_FLOOR,
+        xy_absolute_position_m=GEOMETRY_XY_ABSOLUTE_POSITION_M,
+        xy_relative_position=GEOMETRY_XY_RELATIVE_POSITION,
+        xyz_absolute_position_m=GEOMETRY_XYZ_ABSOLUTE_POSITION_M,
+        xyz_relative_step=GEOMETRY_XYZ_RELATIVE_STEP,
+        maximum_retries=GEOMETRY_STEP_MAXIMUM_RETRIES)
+
+
 def trace_feg_to_exit(gun, count=None, *, cancelled=None) -> GunTraceResult:
     from temsim.physics.grounded_particle_step import gun_step_workers
     with gun_step_workers():
@@ -712,30 +740,59 @@ def _analytic_step(gun, phase, dt, active, magnetic, electric, invariant_energy,
 
 
 def _surface_step(phase, dt, active, magnetic, electric):
-    """Step-doubled discrete-gradient Lorentz update, without energy projection."""
+    """Step-doubled DG update with active-ray transverse accuracy controls.
+
+    The existing total momentum and 3D displacement gates remain in force.
+    Each ray must also meet its own XY budget; a remote or stopped ray cannot
+    lend a larger transverse allowance. No energy projection is introduced.
+    """
     from temsim.physics.static_energy_lorentz import static_energy_step
     # Evaluate only live trajectories: stopped rays must not constrain later
     # time steps or sample fields outside the physical domain.
     local = RelativisticPhaseSpace(phase.position_m[active], phase.momentum_kg_m_per_s[active], phase.time_s)
-    for _ in range(32):
+    cached_full = None
+    for _ in range(GEOMETRY_STEP_MAXIMUM_RETRIES):
         try:
-            full = static_energy_step(local, dt, magnetic, electric)
-            half = static_energy_step(local, .5*dt, magnetic, electric)
-            fine = static_energy_step(half, .5*dt, magnetic, electric)
+            full = (cached_full if cached_full is not None else
+                    static_energy_step(local, dt, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE))
+            half = static_energy_step(local, .5*dt, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
+            fine = static_energy_step(half, .5*dt, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
         except ValueError as error:
             if "iteration did not converge" not in str(error):
                 raise
+            cached_full = None
             dt *= .5
             continue
-        pscale = np.maximum(np.linalg.norm(fine.momentum_kg_m_per_s, axis=1), 1e-30)
-        perr = np.max(np.linalg.norm(fine.momentum_kg_m_per_s-full.momentum_kg_m_per_s, axis=1)/pscale)
-        xerr = np.max(np.linalg.norm(fine.position_m-full.position_m, axis=1))
-        if perr <= 1e-6 and xerr <= max(1e-13, np.max(np.linalg.norm(fine.position_m-local.position_m, axis=1))*1e-5):
+        p = fine.momentum_kg_m_per_s
+        pscale = np.maximum(np.linalg.norm(p, axis=1), GEOMETRY_MOMENTUM_NORM_FLOOR)
+        delta_p = p-full.momentum_kg_m_per_s
+        delta_x = fine.position_m-full.position_m
+        momentum_error = np.linalg.norm(delta_p, axis=1)/pscale
+        xyz_error = np.linalg.norm(delta_x, axis=1)
+        xyz_budget = max(GEOMETRY_XYZ_ABSOLUTE_POSITION_M,
+            np.max(np.linalg.norm(fine.position_m-local.position_m, axis=1))*GEOMETRY_XYZ_RELATIVE_STEP)
+        transverse_scale = np.maximum(np.linalg.norm(p[:, :2], axis=1),
+            pscale*GEOMETRY_TRANSVERSE_MOMENTUM_FLOOR_FRACTION)
+        transverse_error = np.linalg.norm(delta_p[:, :2], axis=1)/transverse_scale
+        xy_error = np.linalg.norm(delta_x[:, :2], axis=1)
+        xy_budget = GEOMETRY_XY_ABSOLUTE_POSITION_M + GEOMETRY_XY_RELATIVE_POSITION*np.linalg.norm(
+            fine.position_m[:, :2], axis=1)
+        finite = (all(np.isfinite(value).all() for value in
+            (pscale, momentum_error, xyz_error, transverse_scale, transverse_error, xy_error, xy_budget))
+            and np.isfinite(xyz_budget))
+        if (finite
+                and np.all(momentum_error <= GEOMETRY_TOTAL_RELATIVE_MOMENTUM)
+                and np.all(xyz_error <= xyz_budget)
+                and np.all(transverse_error <= GEOMETRY_TRANSVERSE_RELATIVE_MOMENTUM)
+                and np.all(xy_error <= xy_budget)):
             positions, momenta = phase.position_m.copy(), phase.momentum_kg_m_per_s.copy()
-            positions[active], momenta[active] = fine.position_m, fine.momentum_kg_m_per_s
+            positions[active], momenta[active] = fine.position_m, p
             return RelativisticPhaseSpace(positions, momenta, phase.time_s+dt), dt
+        # At dt/2 this deterministic half update is exactly the next full
+        # update from local. Implicit failures invalidate it before retrying.
+        cached_full = half
         dt *= .5
-    raise ValueError("Surface extraction integration did not meet the local error budget")
+    raise ValueError("Surface extraction integration did not meet the transverse/local error budget")
 
 
 def _surface_plane_crossing(plane_z_m, position, momentum, previous_time_s,
@@ -747,8 +804,8 @@ def _surface_plane_crossing(plane_z_m, position, momentum, previous_time_s,
     def at_fraction(fraction):
         if fraction == 0:
             return start
-        half = static_energy_step(start, .5*duration*fraction, magnetic, electric)
-        return static_energy_step(half, .5*duration*fraction, magnetic, electric)
+        half = static_energy_step(start, .5*duration*fraction, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
+        return static_energy_step(half, .5*duration*fraction, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
     def residual(fraction):
         return float(at_fraction(fraction).position_m[0, 2]-plane_z_m)
     fraction = brentq(residual, 0., 1., xtol=1e-12)
