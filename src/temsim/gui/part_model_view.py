@@ -19,6 +19,10 @@ from PySide6.QtGui import QColor, QImage, QPainter, QPen
 from PySide6.QtWidgets import QWidget
 
 
+_NAVIGATION_HELP = ("Wheel: zoom and focus at the pointer. Left drag: rotate around that focus. "
+                    "Right drag: pan and focus the view centre. Click a visible surface to select it.")
+
+
 def _create_gpu_renderer():
     # Import lazily: a missing GL library/driver must not prevent CAD editing.
     from temsim.gui.cad_gpu_renderer import CadGpuRenderer
@@ -47,6 +51,7 @@ class _PreparedMesh:
     normals: np.ndarray
     bases: np.ndarray
     groups: np.ndarray
+    bounds_corners: np.ndarray
 
 
 def _value(record, name, default=None):
@@ -193,9 +198,15 @@ def _prepare_mesh(mesh, section, keep_positive_y):
         for group, metadata in mesh.surfaces.items():
             if "color" in metadata:
                 bases[groups == group] = metadata["color"]
-    for array in (triangles, sources, normals, bases, groups):
+    if len(triangles):
+        low, high = triangles.min(axis=(0, 1)), triangles.max(axis=(0, 1))
+        corners = np.array([[x, y, z] for x in (0, 1) for y in (0, 1) for z in (0, 1)])
+        bounds_corners = low + corners * (high - low)
+    else:
+        bounds_corners = np.empty((0, 3))
+    for array in (triangles, sources, normals, bases, groups, bounds_corners):
         array.setflags(write=False)
-    return _PreparedMesh(triangles, sources, normals, bases, groups)
+    return _PreparedMesh(triangles, sources, normals, bases, groups, bounds_corners)
 
 
 @njit(cache=True, nogil=True)
@@ -373,7 +384,7 @@ class PartModelView(QWidget):
         self.setMinimumSize(240, 240)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setMouseTracking(True)
-        self.setToolTip("Left drag: rotate freely. Right drag: pan. Wheel: zoom. Click a visible surface to select it.")
+        self.setToolTip(_NAVIGATION_HELP)
         self._view_title = "3D model"
         self._empty_text = "Select a part to view its 3D model"
         self._meshes = ()
@@ -694,6 +705,46 @@ class PartModelView(QWidget):
         screen[..., 1] = -camera[..., 1] * self._scale() + self.height() / 2 + self._pan[1]
         return screen
 
+    def _focus_at(self, position):
+        """Move the orbit pivot to the viewed surface without moving the image.
+
+        Cast one orthographic ray through retained, section-clipped geometry.
+        Bounds exclude unrelated parts before triangle work; no render, full
+        pick buffer or selection change is needed, including on the GPU path.
+        Empty space retains the current focus plane rather than snapping to
+        some other part of the column.
+        """
+        camera = np.array([(position.x() - self.width() / 2 - self._pan[0]) / self._scale(),
+                           -(position.y() - self.height() / 2 - self._pan[1]) / self._scale(), 0.0])
+        origin = camera @ self._rotation + self._center
+        nearest = -np.inf
+        for mesh, item in zip(self._meshes, self._prepared):
+            if mesh.wireframe or not len(item.triangles):
+                continue
+            bounds = (item.bounds_corners - origin) @ self._rotation.T
+            low, high = bounds.min(axis=0), bounds.max(axis=0)
+            if np.any(low[:2] > 0) or np.any(high[:2] < 0) or high[2] < nearest:
+                continue
+            triangles = (item.triangles - origin) @ self._rotation.T
+            a = triangles[:, 0]
+            u, v = triangles[:, 1] - a, triangles[:, 2] - a
+            first, second = u[:, 0] * v[:, 1], u[:, 1] * v[:, 0]
+            denominator = first - second
+            valid = np.abs(denominator) > 16 * np.finfo(float).eps * (np.abs(first) + np.abs(second))
+            if not valid.any():
+                continue
+            a, u, v, denominator = a[valid], u[valid], v[valid], denominator[valid]
+            b = (a[:, 1] * v[:, 0] - a[:, 0] * v[:, 1]) / denominator
+            c = (a[:, 0] * u[:, 1] - a[:, 1] * u[:, 0]) / denominator
+            inside = (b >= -1e-9) & (c >= -1e-9) & (b + c <= 1 + 1e-9)
+            if inside.any():
+                depth = a[:, 2] + b * u[:, 2] + c * v[:, 2]
+                nearest = max(nearest, float(depth[inside].max()))
+        point = origin + (nearest if np.isfinite(nearest) else 0.0) * self._rotation[2]
+        shift = (point - self._center) @ self._rotation.T
+        self._pan += self._scale() * np.array([shift[0], -shift[1]])
+        self._center = point
+
     def _invalidate(self, *, interactive=False):
         self._dirty = True
         self._pick_dirty = True
@@ -721,14 +772,12 @@ class PartModelView(QWidget):
                 # Rendering and editing must still continue on the CPU.
                 pass
         self._renderer_detail = "CPU rendering: " + str(reason)
-        self.setToolTip("Left drag: rotate freely. Right drag: pan. Wheel: zoom. "
-                        "Click a visible surface to select it.\n" + self._renderer_detail)
+        self.setToolTip(_NAVIGATION_HELP + "\n" + self._renderer_detail)
 
     def _set_precision_fallback(self, enabled):
         if self._gpu_precision_fallback != enabled:
             self._gpu_precision_fallback = enabled
-            self.setToolTip("Left drag: rotate freely. Right drag: pan. Wheel: zoom. "
-                            "Click a visible surface to select it.\n" + self.renderer_detail)
+            self.setToolTip(_NAVIGATION_HELP + "\n" + self.renderer_detail)
 
     def _render(self):
         if not self._dirty:
@@ -739,8 +788,7 @@ class PartModelView(QWidget):
             try:
                 self._gpu_renderer = _create_gpu_renderer()
                 self._renderer_detail = "GPU rendering: " + self._gpu_renderer.renderer_name
-                self.setToolTip("Left drag: rotate freely. Right drag: pan. Wheel: zoom. "
-                                "Click a visible surface to select it.\n" + self._renderer_detail)
+                self.setToolTip(_NAVIGATION_HELP + "\n" + self._renderer_detail)
                 self.destroyed.connect(self._gpu_renderer.close)
             except Exception as error:
                 self._use_cpu_renderer(error)
@@ -787,10 +835,7 @@ class PartModelView(QWidget):
                                            for item, offset in material])
                 # Camera-space AABBs are cheap to update. Offscreen parts must
                 # not inflate the depth range when inspecting a tiny part.
-                lows = np.array([item.triangles.min(axis=(0, 1)) for item, _ in material])
-                highs = np.array([item.triangles.max(axis=(0, 1)) for item, _ in material])
-                corners = np.array([[x, y, z] for x in (0, 1) for y in (0, 1) for z in (0, 1)])
-                self._gpu_bounds_corners = lows[:, None] + corners * (highs - lows)[:, None]
+                self._gpu_bounds_corners = np.array([item.bounds_corners for item, _ in material])
             else:
                 triangles = np.empty((0, 3, 3))
                 normals = bases = np.empty((0, 3))
@@ -1081,7 +1126,8 @@ class PartModelView(QWidget):
 
     def _trackball(self, position):
         radius = max(1.0, min(self.width(), self.height()) * 0.5)
-        x, y = (position.x() - self.width() / 2) / radius, (self.height() / 2 - position.y()) / radius
+        x = (position.x() - self.width() / 2 - self._pan[0]) / radius
+        y = (self.height() / 2 + self._pan[1] - position.y()) / radius
         squared = x * x + y * y
         return np.array([x, y, math.sqrt(1 - squared)]) if squared <= 1 else np.array([x, y, 0.0]) / math.sqrt(squared)
 
@@ -1114,6 +1160,9 @@ class PartModelView(QWidget):
 
     def mouseReleaseEvent(self, event):
         if self._press_position is not None and event.button() == self._pressed_button:
+            if event.button() == Qt.MouseButton.RightButton and self._dragged:
+                self._focus_at(QPointF(self.width() / 2, self.height() / 2))
+                self._invalidate(interactive=True)
             if event.button() == Qt.MouseButton.LeftButton and not self._dragged:
                 if self._selection_mode == "part":
                     picked = self.pick_at(event.position())
@@ -1161,8 +1210,11 @@ class PartModelView(QWidget):
             amount = event.pixelDelta().y() / 40.0
         if amount:
             previous = self._zoom
-            self._zoom = float(np.clip(previous * math.exp(np.clip(amount * math.log(1.2), -50, 50)), 1e-3, 1e3))
-            anchor = np.array([event.position().x() - self.width() / 2, event.position().y() - self.height() / 2])
-            self._pan = anchor - (anchor - self._pan) * (self._zoom / previous)
-            self._invalidate(interactive=True)
+            zoom = float(np.clip(previous * math.exp(np.clip(amount * math.log(1.2), -50, 50)), 1e-3, 1e3))
+            if zoom != previous:
+                self._focus_at(event.position())
+                self._zoom = zoom
+                anchor = np.array([event.position().x() - self.width() / 2, event.position().y() - self.height() / 2])
+                self._pan = anchor - (anchor - self._pan) * (self._zoom / previous)
+                self._invalidate(interactive=True)
         event.accept()

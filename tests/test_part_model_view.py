@@ -154,6 +154,112 @@ def test_right_pan_and_wheel_zoom_preserve_rotation_and_zoom_anchor(view, qtbot)
     assert np.array_equal(rotation, view.camera_rotation)
 
 
+def _wheel_at(view, position):
+    event = QWheelEvent(position, QPointF(view.mapToGlobal(position.toPoint())),
+                        QPoint(), QPoint(0, 120), Qt.MouseButton.NoButton,
+                        Qt.KeyboardModifier.NoModifier, Qt.ScrollPhase.NoScrollPhase, False)
+    QApplication.sendEvent(view, event)
+
+
+@pytest.mark.parametrize("preset", ["set_front_view", "set_isometric_view"])
+def test_zoomed_surface_stays_fixed_during_following_rotation(view, qtbot, preset):
+    # A sub-mm part near the end of a metre-scale column must use its local
+    # visible surface depth, without losing precision to the column offset.
+    offset = np.array([125., -30., 3000.])
+    records = [_triangle("rear", 80), _triangle("front", -20)]
+    for record in records:
+        record["vertices"] = record["vertices"] * 1e-3 + offset
+    view.set_meshes(records)
+    getattr(view, preset)()
+    focus = np.array([8., -20., 4.]) * 1e-3 + offset
+    before = view.project_points([focus])[0, :2]
+    rotation = view.camera_rotation
+    selections = []
+    view.selection_changed.connect(lambda *args: selections.append(args))
+
+    _wheel_at(view, QPointF(*before))
+    np.testing.assert_allclose(view._center, focus, rtol=0, atol=1e-12)
+    np.testing.assert_allclose(view.project_points([focus])[0, :2], before, atol=1e-12)
+    np.testing.assert_array_equal(view.camera_rotation, rotation)
+
+    _drag(qtbot, view, Qt.MouseButton.LeftButton, QPoint(320, 260), QPoint(430, 335))
+    assert not np.allclose(view.camera_rotation, rotation)
+    np.testing.assert_allclose(view.project_points([focus])[0, :2], before, atol=1e-12)
+    assert selections == []
+
+
+def test_zoom_limit_does_not_change_focus_or_pan(view):
+    view._zoom = 1e3
+    before = (view._center.copy(), view._pan.copy(), view.camera_rotation)
+    _wheel_at(view, QPointF(5., 30.))
+    assert view.zoom_factor == 1e3
+    for actual, expected in zip((view._center, view._pan, view.camera_rotation), before):
+        np.testing.assert_array_equal(actual, expected)
+
+
+def test_pan_reframes_rotation_pivot_without_a_second_image_shift(view, qtbot):
+    probes = np.array([[0., -20., 0.], [8., -20., 4.], [-10., -20., -10.]])
+    before = view.project_points(probes)[:, :2]
+    rotation = view.camera_rotation
+    zoom = view.zoom_factor
+    _drag(qtbot, view, Qt.MouseButton.RightButton, QPoint(250, 230), QPoint(293, 267))
+
+    np.testing.assert_allclose(view.project_points(probes)[:, :2], before + [43, 37], atol=1e-12)
+    np.testing.assert_array_equal(view.camera_rotation, rotation)
+    assert view.zoom_factor == zoom
+    focus = view._center.copy()
+    assert focus[1] == pytest.approx(-20.)
+    screen_center = np.array([view.width() / 2, view.height() / 2])
+    np.testing.assert_allclose(view.project_points([focus])[0, :2], screen_center, atol=1e-12)
+    _drag(qtbot, view, Qt.MouseButton.LeftButton, QPoint(320, 260), QPoint(430, 335))
+    np.testing.assert_allclose(view.project_points([focus])[0, :2], screen_center, atol=1e-12)
+
+
+@pytest.mark.parametrize("target_x", [0., 80.], ids=["aperture", "background"])
+def test_zoom_in_empty_space_keeps_previous_focus_depth(view, target_x):
+    from temsim.part_model_3d import revolve_section
+
+    mesh = revolve_section([(10, 20), (10, 40), (190, 40), (190, 20)], key="coil")
+    view.set_meshes([mesh])
+    view.set_axial_view()
+    cap = np.array([30., 0., 190.])
+    _wheel_at(view, QPointF(*view.project_points([cap])[0, :2]))
+    np.testing.assert_allclose(view._center, cap, atol=1e-12)
+
+    # Neither the bore nor background has a surface: keep the cap's depth,
+    # rather than jumping back to the full component's centre at z=100.
+    target = np.array([target_x, 0., 190.])
+    anchor = view.project_points([target])[0, :2]
+    _wheel_at(view, QPointF(*anchor))
+    np.testing.assert_allclose(view._center, target, atol=1e-12)
+    np.testing.assert_allclose(view.project_points([target])[0, :2], anchor, atol=1e-12)
+
+
+@pytest.mark.parametrize("reverse_order", [False, True])
+@pytest.mark.parametrize("section", [False, True])
+def test_focus_uses_frontmost_retained_material_and_ignores_guides(view, monkeypatch,
+                                                               reverse_order, section):
+    guide = _triangle("outline", -80.)
+    guide["wireframe"] = True
+    records = [guide, _triangle("front", -20.), _triangle("rear", 20.)]
+    view.set_meshes(records[::-1] if reverse_order else records)
+    view.set_section_enabled(section)
+    target = np.array([8., 20. if section else -20., 4.])
+    probes = np.concatenate([record["vertices"] for record in records])
+    before = view.project_points(probes)[:, :2]
+    anchor = QPointF(*view.project_points([target])[0, :2])
+
+    # Resolving a camera pivot must not force GPU users through the complete
+    # software picking frame or modify the current selection.
+    with monkeypatch.context() as patch:
+        patch.setattr(view, "pick_at", lambda *_: pytest.fail("Unexpected selection render"))
+        patch.setattr(view, "_render_cpu", lambda *_: pytest.fail("Unexpected CPU frame"))
+        view._focus_at(anchor)
+    np.testing.assert_allclose(view._center, target, atol=1e-12)
+    np.testing.assert_allclose(view.project_points(probes)[:, :2], before, atol=1e-12)
+    assert view.selection == ("", None)
+
+
 def test_fit_presets_resize_and_preserve_view_rebuild_the_render(view, qtbot):
     _drag(qtbot, view, Qt.MouseButton.RightButton, QPoint(250, 230), QPoint(293, 267))
     panned = view.project_points([[0, -20, 0]])
