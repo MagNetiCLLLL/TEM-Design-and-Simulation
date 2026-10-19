@@ -58,7 +58,7 @@ def test_all_native_round_material_base_shapes_match_existing_view(relative):
     assert doc == before
 
 
-def test_all_18_round_optical_parents_add_material_only_through_their_children():
+def test_all_round_optical_parents_add_material_only_through_their_children():
     parents = set()
     for p in (ROOT / "configs/instruments/column").glob("*.toml"):
         doc = read_document(p)
@@ -71,7 +71,16 @@ def test_all_18_round_optical_parents_add_material_only_through_their_children()
         if row.get("mechanical_profile") == "magnetic_lens_assembly":
             parents.add(row["key"])
             assert round_lens_solids(row, {}) == ()
-    assert len(parents) == 18
+    # The B-COR variant already adds TL31/TL32; the former count of 18
+    # silently omitted those existing units from this catalog expectation.
+    assert parents == {
+        'adapter_lens', 'condenser_lens_1', 'condenser_lens_2', 'condenser_lens_3',
+        'diffraction_lens', 'intermediate_lens', 'mini_condenser', 'objective_lens',
+        'projector_lens_1', 'projector_lens_2',
+        'probe_tl12_lens', 'probe_tl21_lens', 'probe_tl22_lens',
+        'image_adapter_lens', 'image_tl11_lens', 'image_tl12_lens',
+        'image_tl21_lens', 'image_tl22_lens', 'image_tl31_lens', 'image_tl32_lens',
+    }
     assert "image_tl12_lens" in parents
     assert "image_ol_post_lens" not in parents
 

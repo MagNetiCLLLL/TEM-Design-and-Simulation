@@ -252,7 +252,7 @@ def create_condenser_stigmator():
     return CONDENSER_STIGMATOR_DEFINITION.create_component()
 
 
-def condenser_stigmator_from_dict(data):
+def condenser_stigmator_from_dict(data, *, defer_geometry_validation=False):
     values = dict(data)
     if values.get("key") != CONDENSER_STIGMATOR:
         raise ValueError(f"Condenser stigmator requires component key {CONDENSER_STIGMATOR!r}")
@@ -266,9 +266,16 @@ def condenser_stigmator_from_dict(data):
         "enabled",
         "colour",
         "max_strength_m2",
+        "length_mm",
     ):
         if attribute in values:
             object.__setattr__(component, attribute, values[attribute])
     component.key = CONDENSER_STIGMATOR
     component.corrector = CONDENSER_STIGMATOR_DEFINITION.owner
+    if defer_geometry_validation:
+        # State restoration binds the selected assembly before checking that
+        # this operating width fits its body; imported defaults may differ.
+        from temsim.optics.stigmator_field import validate_stigmator_field
+        validate_stigmator_field(component)
+        return component
     return component.validate()

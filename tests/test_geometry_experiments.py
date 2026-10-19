@@ -72,3 +72,58 @@ def test_geometry_editor_captures_explicit_controls_without_mutation(qtbot):
     editor.request()
     assert set(requests[1][1].assumptions['optimization']['options']['bounds']) == {'condenser_lens_3'}
     assert live.to_dict() == before
+
+
+@pytest.mark.parametrize("module,key", [
+    ("column", "condenser_stigmator"),
+    ("column", "objective_stigmator"),
+    ("recording", "diffraction_stigmator"),
+])
+def test_stigmator_effective_length_candidates_override_only_the_selected_width(module, key):
+    import numpy as np
+    from temsim.assembly_catalog import AssemblyCatalog
+    from temsim.design_explorer import capture_design_snapshot, HighAccuracyRequest
+    from temsim.design_experiments import recipe_from_snapshot
+    from temsim.design_sweep_execution import _runtime_operating_values
+    from temsim.instrument_snapshot import capture_instrument_snapshot
+    from temsim.physics.core import multipole_focusing_fields
+
+    live, _ = source()
+    reference = float(live._resolved_assembly.part(key).data["effective_length_mm"])
+    for item in live.stigmators:
+        item.length_mm = 2.0
+        item.strength_x_percent, item.strength_y_percent = 4.0, -2.0
+    live.electron_gun.emitter.ray_count = 9
+    live.step_mm = live.history_step_mm = 2.5
+    live.simulation_time_s = 0.0
+    before = capture_instrument_snapshot(live).physical_digest
+    controls = _runtime_operating_values(live)
+    catalog = AssemblyCatalog()
+    recipe = recipe_from_snapshot(capture_design_snapshot(
+        live, catalog.default_selection(), slot="A", request=HighAccuracyRequest(9, 2.5)),
+        name="stigmator width candidates")
+    archive = input_io.capture_input_archive(live)
+    # Include the original TOML value: it must still replace a runtime override.
+    values = (reference / 2.0, reference)
+    sweep = plan_geometry_sweep(recipe, module, key, "effective_length_mm", values)
+    actions = []
+    for point, width in zip(sweep.points, values):
+        state, _, evidence = candidate_state(recipe, point, sweep, archive)
+        actual = _runtime_operating_values(state)
+        assert actual[key]["length_mm"] == width
+        actual[key]["length_mm"] = controls[key]["length_mm"]
+        assert actual == controls
+        stigma = next(item for item in state.stigmators if item.key == key)
+        assert state._resolved_assembly.part(key).data["effective_length_mm"] == width
+        assert evidence["operating_controls"][key]["length_mm"] == width
+        z = stigma.z_mm + np.linspace(-50.0, 50.0, 4001)
+        excluded = {item.key for item in (*state.stigmators, *state.corrector_elements)
+                    if item.key != key}
+        sx, _ = multipole_focusing_fields(z, state, exclude_mapped_keys=excluded)
+        action = np.trapezoid(sx, z * 1e-3)
+        # Independent integral of a Gaussian quadrupole, in inverse metres.
+        expected = 12.0 * np.sqrt(2.0 * np.pi) * width / 2.355 * 1e-3
+        assert action == pytest.approx(expected, rel=2e-5)
+        actions.append(action)
+    assert actions[1] / actions[0] == pytest.approx(2.0, rel=2e-5)
+    assert capture_instrument_snapshot(live).physical_digest == before

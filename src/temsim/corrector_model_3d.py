@@ -76,6 +76,8 @@ def winding_dimensions(part):
 def validate_deflector_coil_part(part):
     if part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES:
         winding_dimensions(part)
+    from temsim.deflector_support_geometry import deflector_support_dimensions
+    deflector_support_dimensions(part)
 
 
 def _saddle_loop(*, key, region, inner, outer, start, end, angle, count, color,
@@ -91,14 +93,20 @@ def _saddle_loop(*, key, region, inner, outer, start, end, angle, count, color,
     window_half_angle = half_angle - band / ((inner + outer) / 2.0)
     # Polygonal inner arcs must also stay outside the declared inner radius.
     # Bound their chord sagitta before placing the inner vertices outward.
-    maximum_step = 2.0 * math.acos(inner / (inner + 0.25 * (outer - inner)))
-    intervals = max(16, math.ceil(count / 3),
-                    math.ceil(2.0 * window_half_angle / maximum_step))
-    if intervals > 4096:
+    sagitta = 0.25 * (outer - inner)
+    maximum_step = 4.0 * math.asin(math.sqrt(sagitta / (2.0 * (inner + sagitta))))
+    requested_intervals = max(32, math.ceil(count * half_angle / math.pi))
+    maximum_step = min(maximum_step, 2.0 * half_angle / requested_intervals)
+    # Subdivide both solid side bands as well as the open middle window. A
+    # single wide side-band chord otherwise determines the radial correction
+    # at every vertex, thinning or eliminating an otherwise valid winding.
+    side_intervals = max(1, math.ceil((half_angle - window_half_angle) / maximum_step))
+    window_intervals = max(1, math.ceil(2.0 * window_half_angle / maximum_step))
+    if 2 * side_intervals + window_intervals > 4096:
         raise ValueError(f"{key}: winding radial thickness is too small to mesh")
-    angles = np.r_[-half_angle,
-                   np.linspace(-window_half_angle, window_half_angle, intervals + 1),
-                   half_angle] + angle
+    angles = np.r_[np.linspace(-half_angle, -window_half_angle, side_intervals + 1)[:-1],
+                   np.linspace(-window_half_angle, window_half_angle, window_intervals + 1)[:-1],
+                   np.linspace(window_half_angle, half_angle, side_intervals + 1)] + angle
     step = float(np.diff(angles).max())
     inner_vertex_radius = inner / math.cos(step / 2.0)
     if not inner_vertex_radius < outer:
@@ -126,7 +134,7 @@ def _saddle_loop(*, key, region, inner, outer, start, end, angle, count, color,
     )
     for t in range(len(angles) - 1):
         for z in range(3):
-            if z == 1 and t not in (0, len(angles) - 2):
+            if z == 1 and side_intervals <= t < side_intervals + window_intervals:
                 continue
             for side in sides:
                 quad = tuple(vertex((r, t + dt, z + dz)) for r, dt, dz in side)
@@ -148,9 +156,13 @@ def deflector_coil_meshes(part, angular_segments=32, *, drive_key=None):
     two winding layers is a display construction, never an excitation model.
     """
     from temsim.part_model_3d import _extent, _number, _segments
+    from temsim.deflector_support_geometry import (
+        annotate_support_mesh, deflector_support_solids, support_mesh_segments,
+    )
 
     key = str(part["key"])
     layer, span, band = winding_dimensions(part)
+    support_solids = deflector_support_solids(part)
     count = _segments(angular_segments)
     start, end = winding_axial_extent(part)
     inner = _number(part["mechanical_inner_diameter_mm"], "mechanical_inner_diameter_mm") / 2.0
@@ -175,6 +187,11 @@ def deflector_coil_meshes(part, angular_segments=32, *, drive_key=None):
                 count=count, color=colors[axis],
                 half_angle=math.radians(span / 2.0), band=layer_band,
             ))
+    if support_solids:
+        from temsim.cad_mesh import meshes_from_solids
+        meshes.extend(annotate_support_mesh(mesh, part)
+                      for mesh in meshes_from_solids(support_solids,
+                                                    support_mesh_segments(support_solids, count)))
     linked = str(drive_key or "declared DPH/DP channel")
     notes = (
         f"{key}: {DESCRIPTION} Linked field source: {linked}.",
@@ -191,7 +208,8 @@ def deflector_coil_meshes(part, angular_segments=32, *, drive_key=None):
          "8% axial extent and 20% layer inner radius."
          if part.get("mechanical_profile") != PROFILE and "winding_band_width_mm" not in part else ""),
     )
-    return tuple(meshes), tuple(note for note in notes if note)
+    support_notes = tuple(dict.fromkeys(solid.note for solid in support_solids))
+    return tuple(meshes), tuple(note for note in notes if note) + support_notes
 
 
 # Public Python entry point retained for callers of the initial implementation.

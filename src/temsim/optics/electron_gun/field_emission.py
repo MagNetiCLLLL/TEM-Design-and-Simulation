@@ -375,6 +375,10 @@ def _apply_resolved_part_geometry(component, part):
 
 def _component_payload(component, *, include_geometry=False):
     payload = asdict(component)
+    if isinstance(component, ColdFieldEmitter) and component.sampling is not None:
+        payload["sampling"] = asdict(component.sampling)
+    if isinstance(component, ColdFieldEmitter) and component.cdf_quadrature is not None:
+        payload["cdf_quadrature"] = asdict(component.cdf_quadrature)
     if isinstance(component, ColdFieldEmitter) and component.quadrature is not None:
         payload["quadrature"] = asdict(component.quadrature)
     if isinstance(component, ColdFieldEmitter) and component.curvature_nm_inv:
@@ -398,14 +402,16 @@ def _component_payload(component, *, include_geometry=False):
 
 def _restore_component_settings(component, row):
     allowed = component.__dataclass_fields__
-    extra = {"quadrature", "curvature_nm_inv", "emission_geometry_model", "coherence", "surface_model"} if isinstance(component, ColdFieldEmitter) else set()
+    extra = {"cdf_quadrature", "sampling", "quadrature", "curvature_nm_inv", "emission_geometry_model", "coherence", "surface_model"} if isinstance(component, ColdFieldEmitter) else set()
     unknown = set(row) - set(allowed) - extra
     if unknown:
         raise ValueError(f"Unknown {component.key} fields: {', '.join(sorted(unknown))}")
     if row.get("key") != component.key:
         raise ValueError(f"Electron-gun component key must be {component.key}")
     if isinstance(component, ColdFieldEmitter):
-        from temsim.optics.electron_gun.emitter import EmissionQuadrature
+        from temsim.optics.electron_gun.emitter import EmissionQuadrature, EmissionSampling, EmissionCDFQuadrature
+        component.cdf_quadrature = None if row.get("cdf_quadrature") is None else EmissionCDFQuadrature.from_dict(row["cdf_quadrature"])
+        component.sampling = None if row.get("sampling") is None else EmissionSampling(**row["sampling"])
         component.quadrature = None if row.get("quadrature") is None else EmissionQuadrature(**row["quadrature"])
         from temsim.optics.electron_gun.tip_curvature import MODEL
         component.curvature_nm_inv = row.get("curvature_nm_inv", 0.0)

@@ -31,6 +31,50 @@ from temsim.paths import INSTRUMENT_CONFIG_ROOT
 from temsim.simulation_pipeline import CalculationResult
 
 
+@pytest.mark.parametrize("width_mm,valid", [(34., True), (41., False)])
+def test_payload_only_recipe_uses_selected_catalog_for_stigmator_body(tmp_path, width_mm, valid):
+    from dataclasses import asdict
+    from temsim.design_experiments import DesignRecipe, save_recipe, load_recipe
+    from temsim.part_model_document import PartModelDocument
+    from temsim.shared_tip import copy_catalog_tree
+
+    root = tmp_path / "configs" / "instruments"
+    copy_catalog_tree(INSTRUMENT_CONFIG_ROOT, root)
+    draft = PartModelDocument(root / "column/C3_ProbeCorrector.toml")
+    draft.set_dimension(("parts", "condenser_stigmator", "length_mm"), 40.)
+    draft.set_dimension(("parts", "condenser_stigmator", "effective_length_mm"), 35.)
+    draft.save()
+    catalog = AssemblyCatalog(root)
+    selected = AssemblySelection("FEG", "C3 + Probe Corrector", "No Energy Filter")
+    state = default_state()
+    catalog.apply(state, selected)
+    state.condenser_stigmator.length_mm = 34.
+    state.condenser_stigmator.strength_x_percent = 7.
+    payload = state.to_dict()
+    next(item for item in payload["stigmators"]
+         if item["key"] == "condenser_stigmator")["length_mm"] = width_mm
+    recipe = DesignRecipe("payload-only long stigmator", "2026-10-19T19:30:00+00:00",
+                          asdict(selected), payload, HighAccuracyRequest(49, 2.5), "")
+    path = tmp_path / "recipe.json"
+    save_recipe(path, recipe)
+    restored_recipe = load_recipe(path)
+    assert restored_recipe.instrument_snapshot is None
+    assert restored_recipe.digest == recipe.digest
+
+    if not valid:
+        with pytest.raises(ValueError, match="field length must fit its body"):
+            rebuild_recipe_state(restored_recipe, catalog=catalog)
+        return
+    rebuilt, selection = rebuild_recipe_state(restored_recipe, catalog=catalog)
+    assert selection == selected
+    assert rebuilt._resolved_assembly.root == catalog.root
+    assert rebuilt.condenser_stigmator.mechanical_length_mm == 40.
+    assert rebuilt.condenser_stigmator.length_mm == width_mm
+    assert rebuilt.condenser_stigmator.strength_x_percent == 7.
+    assert state.condenser_stigmator.length_mm == 34.
+    assert state.condenser_stigmator.mechanical_length_mm == 40.
+
+
 def _recipe(*, objective_percent=73.25, selection=None):
     catalog = AssemblyCatalog()
     selection = selection or catalog.default_selection()

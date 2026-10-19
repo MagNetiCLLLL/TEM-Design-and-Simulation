@@ -73,8 +73,7 @@ def test_electron_controls_are_a_native_tabified_dock_with_view_menu_and_toolbar
     dock.toggleViewAction().trigger()
     qtbot.waitUntil(controller.panel.isVisible)
     assert dock in window.tabifiedDockWidgets(window.instrument_dock)
-    assert window.workspace.tabs.currentWidget() is window.workspace.ray_page
-    assert window.workspace.magnetic_field_toggle.isChecked()
+    assert window.workspace.tabs.currentWidget() is window.workspace.magnetic_field
     assert window.workspace.magnetic_field.display_mode.currentData() == "electron"
     assert dock.toggleViewAction().isChecked()
     dock.close()

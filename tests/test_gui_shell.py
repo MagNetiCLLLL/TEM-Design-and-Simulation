@@ -253,27 +253,24 @@ def test_ray_diagram_sections_are_user_resizable_and_keep_ray_priority(qtbot):
     qtbot.addWidget(workspace)
     workspace.resize(1_200, 850)
     workspace.show()
-    workspace.magnetic_field_toggle.setChecked(True)
     qtbot.wait(20)
 
     splitter = workspace.ray_vertical_splitter
-    assert splitter.count() == 3
+    assert splitter.count() == 2
     assert splitter.widget(0) is workspace.ray_primary_panel
     assert splitter.widget(1) is workspace.interaction_detail
-    assert splitter.widget(2) is workspace.magnetic_field
     assert splitter.handleWidth() >= 7
     initial_sizes = splitter.sizes()
     assert initial_sizes[0] > initial_sizes[1]
-    assert initial_sizes[0] > initial_sizes[2]
 
-    splitter.setSizes((300, 220, 280))
+    splitter.setSizes((300, 500))
     qtbot.wait(20)
     adjusted_sizes = splitter.sizes()
     assert adjusted_sizes[1] > initial_sizes[1]
     assert adjusted_sizes[0] < initial_sizes[0]
 
-    workspace.magnetic_field_toggle.setChecked(False)
-    workspace.magnetic_field_toggle.setChecked(True)
+    workspace.tabs.setCurrentWidget(workspace.magnetic_field)
+    workspace.show_ray_diagram()
     qtbot.wait(20)
     assert splitter.sizes() == adjusted_sizes
 
@@ -326,7 +323,7 @@ def test_magnetic_field_and_ray_diagram_share_the_axial_axis(qtbot):
     qtbot.addWidget(workspace)
     workspace.resize(1_200, 850)
     workspace.show()
-    workspace.magnetic_field_toggle.setChecked(True)
+    workspace.tabs.setCurrentWidget(workspace.magnetic_field)
 
     workspace.plot.setXRange(100.0, 260.0, padding=0.0)
     qtbot.wait(20)
@@ -790,6 +787,8 @@ def _prepare_component_reveal_views(window):
         blocked_key=np.array((None,), dtype=object),
     )
     window.workspace._last_result = SimpleNamespace(
+        assembly=window.assembly,
+        layout=layout,
         simulation=SimpleNamespace(incident=branch, branches={})
     )
 
@@ -1518,7 +1517,10 @@ def test_direct_alignment_selector_changes_wait_for_applied_optics(qtbot):
     with qtbot.assertNotEmitted(panel.adjustment_requested):
         panel._request("nanoprobe_convergence")
 
-    assembly.apply_operating_mode_button.click()
+    # Image applies a receiver-aware solve in the background. Controls must
+    # reflect the committed optics only after that owned request finishes.
+    with qtbot.waitSignal(window.operating_presets.finished, timeout=60_000):
+        assembly.apply_operating_mode_button.click()
     window.preview_timer.stop()
     assert {
         key for key, control in panel.controls.items() if not control.group.isHidden()
@@ -1909,6 +1911,14 @@ def test_gui_applies_retained_probe_and_calculated_projection_modes(qtbot):
     qtbot.addWidget(window)
     window.preview_timer.stop()
     panel = window.assembly_panel
+    receiver_z_mm = float(window.state.camera.z_mm)
+    assert not window.state.camera.inserted and not window.state.fluorescent_screen.inserted
+    accepted = []
+    window.operating_presets.result_ready.connect(
+        lambda candidate, _selection, result, _duration: accepted.append((
+            {lens.key: lens.percent for lens in candidate.lenses}, result,
+        ))
+    )
 
     panel.probe_mode.setCurrentIndex(
         panel.probe_mode.findData("micro_probe")
@@ -1916,8 +1926,11 @@ def test_gui_applies_retained_probe_and_calculated_projection_modes(qtbot):
     panel.projector_mode.setCurrentIndex(
         panel.projector_mode.findData("imaging")
     )
-    panel.apply_operating_mode_button.click()
+    with qtbot.waitSignal(window.operating_presets.finished, timeout=60_000):
+        panel.apply_operating_mode_button.click()
     window.preview_timer.stop()
+    assert len(accepted) == 1
+    accepted_strengths, applied = accepted[0]
 
     by_key = {lens.key: lens for lens in window.state.lenses}
     microprobe = mode_by_key("micro_probe")
@@ -1935,19 +1948,31 @@ def test_gui_applies_retained_probe_and_calculated_projection_modes(qtbot):
     assert by_key["objective_lens"].percent == pytest.approx(
         microprobe.devices["objective_lens"]["percent"]
     )
-    assert by_key["diffraction_lens"].percent == pytest.approx(
-        imaging.devices["diffraction_lens"]["percent"]
+    # The Camera reference currents seed Image; D/I are then refocused for
+    # the actual receiver. Check the committed candidate and its validated
+    # conjugacy, while P1/P2 retain the stored reference strengths.
+    assert {key: by_key[key].percent for key in imaging.devices} == pytest.approx(
+        {key: accepted_strengths[key] for key in imaging.devices}
     )
-    expected_angle = float(
-        microprobe.targets["achieved_convergence_sem_angle_mrad"]
-    )
-    assert (
-        f"stored reference semi-angle {expected_angle:.3f} mrad"
-        in panel.operating_mode_status.text()
-    )
-    assert "condenser preset not recalculated for current geometry" in (
-        panel.operating_mode_status.text()
-    )
+    for key in ("projector_lens_1", "projector_lens_2"):
+        assert by_key[key].percent == pytest.approx(imaging.devices[key]["percent"])
+    projection = applied.image_projection
+    assert projection is not None
+    # The complete STEM -> TEM preset inserts the Camera when both TEM
+    # receivers were retracted; a projection-only change would retain them.
+    assert window.state.camera.inserted and not window.state.fluorescent_screen.inserted
+    assert projection.receiver_key == "camera"
+    assert projection.receiver_z_mm == pytest.approx(receiver_z_mm)
+    assert projection.receiver_inserted
+    assert projection.image_residual_m_per_rad <= 2.e-5
+    assert projection.magnification == pytest.approx(projection.target_magnification, rel=1.e-3)
+    expected_angle = float(applied.condenser.targets["achieved_convergence_sem_angle_mrad"])
+    retained = applied.condenser.calibration_status.startswith("retained_not_recomputed_")
+    angle_label = "stored reference semi-angle" if retained else "sample semi-angle"
+    assert panel.operating_mode_status.text() == f"Applied: {applied.summary}"
+    assert f"{angle_label} {expected_angle:.3f} mrad" in panel.operating_mode_status.text()
+    assert ("condenser preset not recalculated for current geometry"
+            in panel.operating_mode_status.text()) is retained
 
 
 def test_component_navigation_filters_only_the_active_assembly(qtbot):
@@ -2685,6 +2710,7 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
         "Electron beam",
         "Hardware tuning",
         "Physical Layout",
+        "Magnetic field",
         "Energy Filter",
         "Sample",
         "Vacuum map",
@@ -2720,8 +2746,17 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
         window.workspace.illuminating_page.tabText(index)
         for index in range(window.workspace.illuminating_page.count())
     ] == ["Camera / screen", "Image Aberrations", "Stored wave / reference"]
+    assert window.workspace.tabs.indexOf(window.workspace.magnetic_field) == (
+        window.workspace.tabs.indexOf(window.workspace.physical_layout) + 1
+    )
+    assert sum(
+        window.workspace.tabs.widget(index) is window.workspace.magnetic_field
+        for index in range(window.workspace.tabs.count())
+    ) == 1
+    assert not hasattr(window.workspace, "magnetic_field_toggle")
+    assert not window.workspace.ray_page.isAncestorOf(window.workspace.magnetic_field)
     assert window.workspace.magnetic_field.isHidden()
-    window.workspace.magnetic_field_toggle.setChecked(True)
+    window.workspace.tabs.setCurrentWidget(window.workspace.magnetic_field)
     assert not window.workspace.magnetic_field.isHidden()
     # Optional panels consume the newest result when first made visible.
     window.workspace.tabs.setCurrentWidget(window.workspace.physical_layout)
@@ -2756,9 +2791,26 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
     assert gap_end - gap_start == pytest.approx(20.0)
     assert gap_midpoint == pytest.approx(c1.end_z_mm)
     assert len(window.workspace.physical_layout._design_reference_items) == 1
-    assert len(window.workspace.physical_layout._vacuum_liner_items) == (
-        2 * len(assembly.vacuum_liner_segments)
-    )
+    from temsim.assembly_section import mesh_section
+    from temsim.cad_stage_holder import physical_liner_rows
+    from temsim.part_model_3d import part_model_from_document
+    layout = window.workspace.physical_layout
+    expected_liner_sections = []
+    for row in physical_liner_rows(assembly, runtime_values=layout.assembly_3d._runtime_values):
+        model = part_model_from_document({"parts": [row]}, row["key"],
+                                         angular_segments=16, include_children=False)
+        for mesh in model.meshes:
+            points = mesh_section(mesh, 0.).segments_mm.reshape(-1, 2)
+            if len(points):
+                expected_liner_sections.append(points)
+    # Only independently defined material tubes are drawn. Each curve keeps
+    # disconnected mesh-section segments and real access openings; numerical
+    # equivalent component bore boundaries must not add duplicate sleeves.
+    assert expected_liner_sections
+    assert len(layout._vacuum_liner_items) == len(expected_liner_sections)
+    for curve, expected in zip(layout._vacuum_liner_items, expected_liner_sections):
+        assert curve.opts["connect"] == "pairs"
+        np.testing.assert_array_equal(np.column_stack(curve.getData()), expected)
     assert len(
         window.workspace.physical_layout._c1_c2_pole_piece_cartridge_items
     ) == 2
@@ -2838,21 +2890,39 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
     stage_items = window.workspace.physical_layout._sample_stage_items
     holder_items = window.workspace.physical_layout._sample_holder_items
     sample_plane_items = window.workspace.physical_layout._sample_plane_items
-    assert len(stage_items) == 3
-    assert len(holder_items) == 4
-    assert len(sample_plane_items) == 2
+    source_stage = assembly.part("sample_stage")
+    stage_document = {"parts": [part.data for part in assembly.parts
+                                if part.module_key == source_stage.module_key]}
+    stage_shift = source_stage.center_z_mm - source_stage.data["local_center_z_mm"]
+    for items, keys in ((stage_items, ("objective_lens_housing", "sample_stage")),
+                        (holder_items, ("sample_holder",))):
+        expected_sections = []
+        for key in keys:
+            model = part_model_from_document(stage_document, key, include_children=False,
+                                             angular_segments=32)
+            for mesh in model.meshes:
+                points = mesh_section(mesh, 0.).segments_mm.reshape(-1, 2)
+                if len(points):
+                    expected_sections.append(points + (stage_shift, 0.))
+        assert expected_sections
+        assert len(items) == len(expected_sections)
+        for curve, expected in zip(items, expected_sections):
+            assert curve.opts["connect"] == "pairs"
+            np.testing.assert_array_equal(np.column_stack(curve.getData()), expected)
+    assert len(sample_plane_items) == 1
+    assert {layout._selectable_item_keys[id(item)] for item in stage_items} == {
+        "objective_lens_housing", "sample_stage",
+    }
+    assert {layout._selectable_item_keys[id(item)] for item in holder_items} == {"sample_holder"}
+    assert all("Saved material X-Z section" in item.toolTip()
+               for item in (*stage_items, *holder_items))
     assert len(
         window.workspace.physical_layout._sample_plane_labels
     ) == 1
-    stage_sleeve = stage_items[0].rect()
-    holder_shaft = holder_items[0].rect()
     sample_z_mm = assembly.part("sample").center_z_mm
-    assert stage_sleeve.left() <= holder_shaft.left()
-    assert stage_sleeve.right() >= holder_shaft.right()
-    assert holder_shaft.center().x() == pytest.approx(sample_z_mm)
-    holder_tip = holder_items[1].polygon()[0]
-    assert holder_tip.x() == pytest.approx(sample_z_mm)
-    assert holder_tip.y() == pytest.approx(0.0)
+    sample_z, sample_radius = sample_plane_items[0].getData()
+    np.testing.assert_array_equal(sample_z, (sample_z_mm, sample_z_mm))
+    assert sample_radius[0] < 0. < sample_radius[1]
 
     recording_items = (
         window.workspace.physical_layout._recording_device_items
@@ -2914,8 +2984,6 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
     assert {
         "objective:upper",
         "objective:lower",
-        "sample:stage",
-        "sample:holder",
         "sample:specimen",
         "recording:camera",
         "recording:flu_screen",
@@ -2966,8 +3034,8 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
     assert horizontally_offset_leaders > 0
     for callout in label_callouts.values():
         assert callout.label.isVisible() == callout.leader.isVisible()
-    window.workspace.show_ray_diagram()
     magnetic = window.workspace.magnetic_field
+    window.workspace.tabs.setCurrentWidget(magnetic)
     qtbot.waitUntil(lambda: magnetic._profile is not None, timeout=15000)
     assert set(magnetic._curves) == {"bz", "bu", "bv", "transverse_rms"}
     assert len(magnetic.legend.items) == 4
@@ -2975,6 +3043,7 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
     assert not hasattr(magnetic, "show_individual")
     assert not magnetic.field_map_import.isVisible()
     assert "Combined magnetic field" in magnetic.details.toPlainText()
+    window.workspace.show_ray_diagram()
     assert window.workspace.transverse_beam._scatter is not None
     assert window.workspace.stop_marker_items
     assert len(window.workspace.crossover_marker_items) >= len(crossovers)
@@ -3158,9 +3227,9 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
     )
 
     view_before_magnetic_z = window.workspace.plot.getViewBox().viewRange()
-    window.workspace.tabs.setCurrentIndex(2)
+    window.workspace.tabs.setCurrentWidget(window.workspace.magnetic_field)
     window.workspace.magnetic_field.axial_position_selected.emit(950.0)
-    assert window.workspace.tabs.currentIndex() == 0
+    assert window.workspace.tabs.currentWidget() is window.workspace.ray_page
     assert window.workspace._selected_z_mm == pytest.approx(950.0)
     assert window.workspace.transverse_beam._plane_z_mm == pytest.approx(950.0)
     assert window.workspace.plot.getViewBox().viewRange()[0] == pytest.approx(
@@ -3297,6 +3366,9 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
     focused_range = window.workspace.plot.getViewBox().viewRange()[0]
     assert focused_range[0] < objective.center_z_mm < focused_range[1]
     assert focused_range[1] - focused_range[0] <= 520.0
+    # A new result queued while this separate tab was hidden is published
+    # when it is shown; selection alone must not start hidden field work.
+    window.workspace.tabs.setCurrentWidget(window.workspace.magnetic_field)
     qtbot.waitUntil(lambda: "peak |Bz|" in window.parameter_panel.lens_diagnostics.text(), timeout=15000)
     assert "peak |Bz|" in window.parameter_panel.lens_diagnostics.text()
     assert "field direction" in window.parameter_panel.lens_diagnostics.text()
@@ -3313,6 +3385,8 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
         window.workspace.optical_transfer.matrix_text.toPlainText()
     )
 
+    window.workspace.tabs.setCurrentWidget(window.workspace.physical_layout)
+    qtbot.waitUntil(lambda: window.workspace.physical_layout not in window.workspace._pending_ray_panels)
     c1_callout = (
         window.workspace.physical_layout._label_callouts[
             "component:condenser_lens_1"
@@ -3330,14 +3404,25 @@ def test_ray_plot_marks_every_component_centre_and_detected_crossover(
     assert window.assembly_panel.optical_filter.currentData() == "lens"
 
     window.workspace.auto_zoom.setChecked(False)
-    stage_body = (
-        window.workspace.physical_layout._sample_stage_items[0]
-    )
-    stage_bounds = stage_body.boundingRect()
-    stage_click = _SceneClick(stage_body.mapToScene(QPointF(
-        stage_bounds.left() + 0.15 * stage_bounds.width(),
-        stage_bounds.top() + 0.10 * stage_bounds.height(),
-    )))
+    from temsim.gui.diagnostic_tabs import _selectable_key_at_scene_position
+    physical = window.workspace.physical_layout
+    # Saved material curves are boundaries, not filled schematic rectangles;
+    # select a real visible sample-stage segment rather than a bounding box.
+    stage_click_position = None
+    for curve in physical._sample_stage_items:
+        if physical._selectable_item_keys.get(id(curve)) != "sample_stage":
+            continue
+        segments = np.column_stack(curve.getData()).reshape(-1, 2, 2)
+        for point in segments.mean(axis=1):
+            position = curve.mapToScene(QPointF(*point))
+            if _selectable_key_at_scene_position(physical.plot.scene(), position,
+                                                physical._selectable_item_keys) == "sample_stage":
+                stage_click_position = position
+                break
+        if stage_click_position is not None:
+            break
+    assert stage_click_position is not None
+    stage_click = _SceneClick(stage_click_position)
     window.workspace.physical_layout._component_item_clicked(stage_click)
     assert stage_click.accepted
     assert window.assembly_panel.component_pages.currentIndex() == 1

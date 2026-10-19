@@ -56,13 +56,15 @@ def test_assembly_selector_and_quick_blanking_controls(qtbot):
     catalog = AssemblyCatalog()
     panel = AssemblyPanel(catalog, catalog.default_selection())
     qtbot.addWidget(panel)
-    assert panel.beam_blanker.currentText() == "None"
-    panel.beam_blanker.setCurrentText("Electrostatic beam blanker")
-    selection = panel.current_selection()
+    assert panel.current_selection().beam_blanker == "None"
+    with qtbot.waitSignal(panel.configuration_requested):
+        panel.configure_button.click()
+    selection = replace(panel.current_selection(), beam_blanker="Electrostatic beam blanker")
+    panel.set_selection(selection)
     assert selection.beam_blanker == "Electrostatic beam blanker"
     panel.reload_catalog(catalog, selection)
-    assert panel.beam_blanker.count() == 2
-    assert panel.beam_blanker.currentText() == "Electrostatic beam blanker"
+    assert panel.current_selection() == selection
+    assert "Beam blanker" in panel.configuration_summary.text()
 
     state = default_state()
     catalog.apply(state, selection)

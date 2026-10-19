@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
+import json
+import math
 from typing import Iterable
 
 import numpy as np
@@ -38,6 +41,102 @@ def _truncated_gaussian_disk(radial_u, azimuth_u, sigma, cutoff):
     )
     azimuth = 2.0 * np.pi * azimuth_u
     return radius * np.cos(azimuth), radius * np.sin(azimuth)
+
+
+@dataclass(frozen=True)
+class EmissionSampling:
+    """Explicit nested source-level quadrature; absent records stay legacy."""
+    seed: int = 0
+    schema: str = "tip-sobol-antithetic-v1"
+
+    def validate(self):
+        if self.schema != "tip-sobol-antithetic-v1" or type(self.seed) is not int or not 0 <= self.seed < 2**32:
+            raise ValueError("Tip sampling requires the versioned Sobol rule and an unsigned 32-bit seed")
+        return self
+
+    def validate_count(self, count):
+        if type(count) is not int or not 16 <= count <= 1048576 or count & (count-1):
+            raise ValueError("Sobol tip sampling requires a complete power-of-two ray count from 16 to 1048576")
+        return count
+
+
+@dataclass(frozen=True)
+class EmissionCDFQuadrature:
+    """Captured CDF nodes and original weights, including zero-current probes.
+
+    Signs act on local x/y/slopes before physical tip curvature. No emitted or
+    transmitted population is recentered or renormalized by this record.
+    """
+    coordinates: tuple[tuple[float, ...], ...]
+    weights: tuple[float, ...]
+    signs: tuple[int, ...]
+    ray_ids: tuple[int, ...]
+    schema: str = "tip-explicit-cdf-v1"
+    role: str = "quadrature"
+    construction: str = ""
+
+    @property
+    def total(self):
+        return len(self.coordinates)
+
+    def validate(self):
+        if self.schema != "tip-explicit-cdf-v1" or self.role not in {"quadrature", "boundary-probes"}:
+            raise ValueError("Explicit tip CDF nodes require a supported schema and role")
+        if not isinstance(self.construction, str) or len(self.construction) > 16384:
+            raise ValueError("CDF construction description must be a bounded text record")
+        arrays = (self.coordinates, self.weights, self.signs, self.ray_ids)
+        if any(type(a) is not tuple for a in arrays) or not 9 <= self.total <= 1048576:
+            raise ValueError("Explicit tip CDF records require immutable tuples with 9 to 1048576 nodes")
+        if any(len(a) != self.total for a in arrays):
+            raise ValueError("Explicit tip CDF fields must have the same complete node count")
+        if any(type(row) is not tuple or len(row) != 6 or any(
+                type(v) is not float or not math.isfinite(v) or not 0 <= v <= 1 for v in row)
+               for row in self.coordinates):
+            raise ValueError("Explicit tip coordinates must contain six finite float CDF values in [0, 1]")
+        if any(type(w) is not float or not math.isfinite(w) or not 0 <= w <= 1 for w in self.weights):
+            raise ValueError("Explicit tip CDF weights must be finite non-negative probabilities")
+        if any(type(s) is not int or s not in {-1, 1} for s in self.signs):
+            raise ValueError("Explicit tip CDF signs must be integer -1 or +1")
+        if any(type(i) is not int or not 0 <= i <= np.iinfo(np.int64).max for i in self.ray_ids) or len(set(self.ray_ids)) != self.total:
+            raise ValueError("Explicit tip CDF ray IDs must be unique non-negative int64 integers")
+        total = math.fsum(self.weights)
+        if self.role == "boundary-probes":
+            if total != 0:
+                raise ValueError("Boundary probes must carry exactly zero physical current")
+        elif not math.isclose(total, 1., rel_tol=0., abs_tol=1e-12):
+            raise ValueError("Explicit tip quadrature weights must sum to one; they are never renormalized")
+        return self
+
+    @classmethod
+    def from_arrays(cls, coordinates, weights, *, signs=None, ray_ids=None,
+                    role="quadrature", construction=""):
+        u, w = np.asarray(coordinates), np.asarray(weights)
+        if u.ndim != 2 or u.shape[1] != 6 or w.shape != (u.shape[0],) or u.dtype.kind not in "fiu" or w.dtype.kind not in "fiu":
+            raise ValueError("CDF coordinates and weights must be numeric N-by-6 and N arrays")
+        n = len(u)
+        signs = np.ones(n, dtype=np.int64) if signs is None else np.asarray(signs)
+        ray_ids = np.arange(n, dtype=np.int64) if ray_ids is None else np.asarray(ray_ids)
+        if signs.shape != (n,) or ray_ids.shape != (n,) or signs.dtype.kind not in "iu" or ray_ids.dtype.kind not in "iu":
+            raise ValueError("CDF signs and IDs must be complete integer arrays")
+        return cls(tuple(tuple(float(v) for v in row) for row in u), tuple(float(v) for v in w),
+                   tuple(int(v) for v in signs), tuple(int(v) for v in ray_ids),
+                   role=role, construction=construction).validate()
+
+    @classmethod
+    def from_dict(cls, row):
+        expected = {"coordinates", "weights", "signs", "ray_ids", "schema", "role", "construction"}
+        if not isinstance(row, dict) or set(row) != expected:
+            raise ValueError("Explicit tip CDF record must include every versioned field")
+        if row["schema"] != "tip-explicit-cdf-v1":
+            raise ValueError("Unsupported explicit tip CDF schema")
+        return cls.from_arrays(row["coordinates"], row["weights"], signs=row["signs"],
+            ray_ids=row["ray_ids"], role=row["role"], construction=row["construction"])
+
+    @property
+    def digest(self):
+        from dataclasses import asdict
+        return hashlib.sha256(json.dumps(asdict(self), sort_keys=True,
+            separators=(",", ":"), allow_nan=False).encode("utf-8")).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -82,6 +181,32 @@ class ColdFieldEmitter:
     boersch_sigma_ev: float = 0.10
     energy_half_range_ev: float = 1.0
     ray_count: int = 3000
+
+    @property
+    def cdf_quadrature(self):
+        return self.__dict__.get("_emission_cdf_quadrature")
+
+    @cdf_quadrature.setter
+    def cdf_quadrature(self, value):
+        if value is None:
+            self.__dict__.pop("_emission_cdf_quadrature", None)
+        elif isinstance(value, EmissionCDFQuadrature):
+            self.__dict__["_emission_cdf_quadrature"] = value.validate()
+        else:
+            raise ValueError("Expected a captured explicit tip CDF quadrature")
+
+    @property
+    def sampling(self):
+        return self.__dict__.get("_emission_sampling")
+
+    @sampling.setter
+    def sampling(self, value):
+        if value is None:
+            self.__dict__.pop("_emission_sampling", None)
+        elif isinstance(value, EmissionSampling):
+            self.__dict__["_emission_sampling"] = value.validate()
+        else:
+            raise ValueError("Expected an explicit versioned tip emission sampling rule")
 
     @property
     def quadrature(self):
@@ -186,6 +311,24 @@ class ColdFieldEmitter:
         return "feg_tip"
 
     def validate(self):
+        if self.cdf_quadrature is not None:
+            self.cdf_quadrature.validate()
+            if self.ray_count != self.cdf_quadrature.total:
+                raise ValueError("Tip ray count must match the complete explicit CDF table")
+            if any(model is not None for model in (self.sampling, self.quadrature, self.surface_model, self.coherence)):
+                raise ValueError("Explicit tip CDF quadrature cannot be combined with another sampling or source model")
+            if not np.isfinite(self.energy_half_range_ev) or self.energy_half_range_ev <= 0:
+                raise ValueError("Explicit tip CDF quadrature requires a finite positive energy half range")
+            if getattr(self, "_tuning_boundary_probes", 0) or getattr(self, "_tuning_surface_probes", 0):
+                raise ValueError("Explicit tip CDF tables cannot be repartitioned for tuning probes")
+        if self.sampling is not None:
+            self.sampling.validate().validate_count(self.ray_count)
+            if not np.isfinite(self.energy_half_range_ev) or self.energy_half_range_ev <= 0:
+                raise ValueError("Sobol tip sampling requires a finite positive energy half range")
+            if self.quadrature is not None or self.surface_model is not None or self.coherence is not None:
+                raise ValueError("Sobol tip sampling cannot be combined with product, surface, or coherent source models")
+            if getattr(self, "_tuning_boundary_probes", 0) or getattr(self, "_tuning_surface_probes", 0):
+                raise ValueError("Sobol tip sampling cannot be repartitioned for tuning probes; use High accuracy")
         if self.quadrature is not None:
             self.quadrature.validate()
             if self.coherence is not None or (self.surface_model is not None
@@ -240,9 +383,20 @@ class ColdFieldEmitter:
 
     def emit(self, count: int | None = None) -> EmissionBundle:
         self.validate()
+        if self.cdf_quadrature is not None:
+            requested = self.ray_count if count is None else count
+            if type(requested) is not int or requested != self.cdf_quadrature.total:
+                raise ValueError("Requested ray budget must match the complete explicit CDF table")
+            from temsim.optics.electron_gun.tip_joint_sampling import explicit_cdf_bundle
+            return explicit_cdf_bundle(self)
+        if self.sampling is not None:
+            self.sampling.validate_count(self.ray_count if count is None else count)
         n = int(self.ray_count if count is None else count)
         if n < 9:
             raise ValueError("Cold FEG emission requires at least 9 rays.")
+        if self.sampling is not None:
+            from temsim.optics.electron_gun.tip_joint_sampling import joint_bundle
+            return joint_bundle(self, n)
         if self.quadrature is not None:
             if n != self.quadrature.total:
                 raise ValueError("Requested ray budget must equal the complete tip product quadrature; change its factors explicitly")

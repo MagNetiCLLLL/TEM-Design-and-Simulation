@@ -35,6 +35,15 @@ class PartModelDocument:
         keys = [part.get("key") for part in self._baseline["parts"]]
         if any(not isinstance(key, str) or not key for key in keys) or len(keys) != len(set(keys)):
             raise ValueError("Every part must have a unique non-empty key")
+        from temsim.probe_hexapole_geometry import validate_probe_hexapole_geometry
+        from temsim.corrector_model_3d import validate_deflector_coil_part
+        from temsim.ordinary_deflector_geometry import validate_ordinary_deflector_part
+        for part in self._baseline["parts"]:
+            validate_probe_hexapole_geometry(part)
+            validate_deflector_coil_part(part)
+            validate_ordinary_deflector_part(part)
+        from temsim.deflector_support_geometry import validate_support_installations
+        validate_support_installations(self._baseline["parts"])
         by_key = {part["key"]: part for part in self._baseline["parts"]}
         for key in keys:
             seen = set()
@@ -173,19 +182,25 @@ class PartModelDocument:
         self._history_index = len(self._history) - 1
 
     def _commit_part(self, key, candidate):
+        from temsim.ordinary_deflector_geometry import validate_ordinary_deflector_part
         from temsim.optics.electron_gun.tip_assembly import complete_tip_updates, validate_tip_part
         from temsim.corrector_model_3d import validate_deflector_coil_part
+        from temsim.probe_hexapole_geometry import validate_probe_hexapole_geometry
         previous = self.part(key)
         updates = {("parts", key, field): value for field, value in candidate.items()
                    if previous.get(field) != value}
         for path, value in complete_tip_updates(self.document, updates).items():
             candidate[path[2]] = value
         validate_tip_part(candidate)
+        validate_ordinary_deflector_part(candidate)
         validate_deflector_coil_part(candidate)
+        validate_probe_hexapole_geometry(candidate)
         for index, part in enumerate(self.document["parts"]):
             if part["key"] == key:
                 updated = deepcopy(self.document)
                 updated["parts"][index] = candidate
+                from temsim.deflector_support_geometry import validate_support_installations
+                validate_support_installations(updated["parts"])
                 from temsim.subassemblies import reflow
                 candidate_document = reflow(self.document, updated, self.path, owners=self._subassembly_owners)
                 self.document = resolve_field_hardware_parts(candidate_document)

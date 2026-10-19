@@ -11,6 +11,33 @@ production drawing of the simulated corrector. Those older screenshots show
 **Iliad Ultra CEOS probe corrector** show **DCORPRIME SERVICE UI**, operating
 at **STEM @ 80 kV**. The current default simulation uses **300 kV**.
 
+## Lens excitation terminology
+
+The project uses the following user-defined optical convention (17 October 2026)
+when describing a lens at a particular working point:
+
+- **Strong excitation:** at least one beam crossover occurs downstream of that
+  lens and upstream of the next optical lens.
+- **Weak excitation:** no beam crossover occurs in that interval.
+
+The classification describes the propagated beam and the actual optical order.
+It is not a fixed current, field or excitation-percentage threshold, and weak
+excitation does not mean zero excitation. Source or upstream-optics changes can
+change the classification even when the lens's own setting is unchanged.
+
+For **C3 + Probe Corrector, STEM Nanoprobe Normal**, the required sequence is
+**C2 → crossover → C3 → no crossover → ADL**. C2 is therefore strong and C3
+weak under this convention. Both Nanoprobe branches require the C2–C3 crossover;
+the Large angle reference additionally requires a C3–ADL crossover and therefore
+uses strong C3 excitation.
+
+Use the executed two-dimensional beam waist, not a crossing in only one plotted
+projection, to establish a crossover. The existing condenser-topology gate checks
+these intervals at declared axial sampling; an unresolved interval must remain
+unresolved rather than being called weak. Recheck the topology after changing
+the source or optical controls. This terminology does not extend the scope of
+the recorded particle or coherent-wave validation.
+
 ## Reading the DCOR screenshots
 
 - **Internal Single Channels / Total Output** shows absolute channel outputs,
@@ -95,10 +122,12 @@ independent material bodies, vacuum walls or FEM iron.
 
 Each insert is an **engineering reconstruction**, not an OEM CAD part. Its
 14.5/14.6 mm mechanical length and 4 mm effective magnetic length retain the
-previous model allocations. The 22.2 mm inner and 23.8 mm outer diameters fit
-outside the existing 20 mm vacuum passage and its liner. The HP envelope's
-material opening is 24 mm to leave room for the DPH insert; its optical clear
-bore and vacuum passage remain 20 mm. The rendered orthogonal winding pairs
+previous model allocations. The copper inner/outer diameters remain 22.2/23.8 mm.
+The current C3 + Probe Corrector adds a source-backed bulk laminate equivalent:
+two carriers, two radial covers and one interlayer bond. Its full material
+inner/outer diameters are 22.12/23.88 mm. The continuous tube is 5.76 mm ID /
+19.2 mm OD; the insert's separately declared clear-bore convention remains
+20 mm. The HP material opening is 24 mm. The rendered orthogonal winding pairs
 show their two-axis role; turn count, resistance, inductance, current-to-field
 calibration and a magnetostatic solution of these windings are not claimed.
 
@@ -133,10 +162,14 @@ for the default gun's source-absolute Z):
 | DP11 winding insert | 889.0–903.6 | 896.3 | After HP1, before TL1 |
 | TL1 | 903.6–929.0 | 916.3 | Before the separate AC scan pair |
 
-At either DPH/HP centre, inside-to-outside diameters are: vacuum 20 mm,
-liner outer diameter 20.5 mm, DPH winding inner/outer diameter 22.2/23.8 mm,
-HP material opening 24 mm. These give radial gaps of 0.85 mm before the
-winding and 0.10 mm outside it. The two winding layers are orthogonal X/Y
+At either DPH/HP centre in C3 + Probe Corrector, inside-to-outside diameters
+are: continuous tube ID/OD 5.76/19.2 mm, laminate ID/OD 22.12/23.88 mm,
+HP material opening 24 mm. These give radial gaps of 1.46 mm before the
+carrier and 0.06 mm outside the radial cover. These are reconstruction
+clearances, not manufacturing tolerances. Layer bonding fixes the laminate
+internally; fastening to the host is unverified. Other module variants retain
+their saved geometry. See [support structure and sources](references/cad-probe-corrector.md).
+The two winding layers are orthogonal X/Y
 steering pairs, not two additional serial lenses. The TOMLs and 3D part notes
 record these axial and radial relationships separately.
 

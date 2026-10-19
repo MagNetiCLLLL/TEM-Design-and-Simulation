@@ -131,7 +131,13 @@ def test_actual_catalog_covers_all_modules_parts_and_arrays_without_changing_fil
     assert not {"measured", "documented"}.intersection(audit.summary["by_source"])
     coil = next(row for row in audit.records if row.part_key == "intermediate_lens_excitation_coil" and row.path[-1] == "length_mm" and row.source_file.endswith("EnergyFilter.toml"))
     assert coil.value == 180 and coil.semantics.category == "physical"
-    assert audit.summary["issues_by_code"]["undefined_strip_outline"] == 23
+    # Alternative modules (including B-COR) retain separate definitions.
+    # Check their identities against raw inputs rather than an obsolete total.
+    strip_definitions = {(source, part["key"]) for source, rows in expected.items()
+                         for part in rows if part.get("aperture_plate_form") == "perforated_strip"}
+    strip_issues = [issue for issue in audit.issues if issue.code == "undefined_strip_outline"]
+    assert {(issue.source_file, issue.part_key) for issue in strip_issues} == strip_definitions
+    assert len(strip_issues) == len(strip_definitions)
     assert len(json.loads(audit.to_json())["records"]) == len(audit.records)
     markdown = audit.to_markdown()
     assert f"{sum(map(len, expected.values()))} component definitions" in markdown and "Evidence gaps by component" in markdown

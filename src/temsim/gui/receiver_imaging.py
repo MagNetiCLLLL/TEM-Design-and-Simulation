@@ -22,7 +22,8 @@ from temsim.gui.page_calculation import PageCalculationBar
 class ReceiverImagingView(QWidget):
     """Display only; instrument changes and transport remain explicit requests.
 
-    Histograms/FFT previews are bounded to 192² pixels, built only while visible.
+    Static views rebin retained hits on a selected bounded grid when zoomed.
+    Geometric scan previews retain their bounded 192² full-receiver grid.
     A bounded display timer plays retained scan geometry, never new transport.
     """
 
@@ -38,6 +39,8 @@ class ReceiverImagingView(QWidget):
         self._dirty = True
         self._mode_chosen = False
         self._fit_next = True
+        self._view_extent = None
+        self._setting_range = False
         self._cache = {}
         self._prepared_scans = {}
         self._play_origin_s = 0.
@@ -97,6 +100,17 @@ class ReceiverImagingView(QWidget):
         self.quantity.addItem("Intensity per emitted electron", "probability")
         self.quantity.addItem("Expected incident electrons", "electrons")
         self.log_scale = QCheckBox("Log display")
+        self.detector_blur = QCheckBox("Detector blur")
+        self.detector_blur.setChecked(True)
+        self.detector_blur.setToolTip("Show the configured physical detector response. Uncheck to inspect actual particle arrival bins before detector blur.")
+        self.pixels = WheelSafeComboBox()
+        self.pixels.setObjectName("receiverPixelGrid")
+        for size in (32, 64, 128, 256, 512, 1024):
+            self.pixels.addItem(f"{size} × {size}", size)
+        self.pixels.setCurrentIndex(self.pixels.findData(512))
+        self.pixels.setToolTip("Rebin the same retained particle hits in the current view. No new particles, smoothing or probability renormalization. Scan previews retain their 192 × 192 grid.")
+        row.insertWidget(3, QLabel("Pixels"))
+        row.insertWidget(4, self.pixels)
         self.export_button = QPushButton("Export receiver…")
         self.export_button.setEnabled(False)
         row2 = QHBoxLayout()
@@ -104,6 +118,7 @@ class ReceiverImagingView(QWidget):
         row2.addWidget(self.exposure)
         row2.addWidget(self.quantity)
         row2.addWidget(self.log_scale)
+        row2.addWidget(self.detector_blur)
         row2.addStretch(1)
         row2.addWidget(self.export_button)
 
@@ -140,6 +155,7 @@ class ReceiverImagingView(QWidget):
         position_layout.addWidget(self.position_text)
         self.position_row.hide()
         self.summary = CompactStatusLabel("No receiver result. Run high-accuracy once, then Calculate imaging.")
+        self._sampling_help = "Sampling statistics describe retained numerical hits before detector blur. Weighted effective hits per occupied bin use (sum w)^2 / sum(w^2). Deterministic or related source samples do not imply Poisson uncertainty. This is not a convergence proof; compare particle budgets, integration steps and pixel grids separately."
         self.notice = QLabel("Select an installed Camera or Fluorescent Screen. No image has been calculated.")
         self.notice.setWordWrap(True)
         self.notice.setStyleSheet("color: #fbbf24;")
@@ -148,6 +164,7 @@ class ReceiverImagingView(QWidget):
         self.plot.setLabel("bottom", "Receiver X (mm)")
         self.plot.setLabel("left", "Receiver Y (mm)")
         self.plot.setAspectLocked(True)
+        self.plot.disableAutoRange()
         self.image = pg.ImageView(view=self.plot)
         self.plot.invertY(False)
         self.image.setObjectName("receiverImageView")
@@ -183,6 +200,9 @@ class ReceiverImagingView(QWidget):
         self.exposure.valueChanged.connect(self._schedule)
         self.quantity.currentIndexChanged.connect(self._schedule)
         self.log_scale.toggled.connect(self._schedule)
+        self.detector_blur.toggled.connect(self._schedule)
+        self.pixels.currentIndexChanged.connect(self._schedule)
+        self.plot.getViewBox().sigRangeChanged.connect(self._viewport_changed)
         self.show_trajectory.toggled.connect(self._schedule)
         self.fit_receiver_button.clicked.connect(self.fit_receiver)
         self.fit_beam_button.clicked.connect(self.fit_beam)
@@ -215,7 +235,9 @@ class ReceiverImagingView(QWidget):
             if index < 0:
                 index = next((i for i, p in enumerate(planes) if bool(getattr(p, "inserted", False))), 0)
             self.receiver.setCurrentIndex(index if planes else -1)
-        self._fit_next = True
+        if self.receiver.currentData() != old:
+            self._fit_next = True
+            self._view_extent = None
 
     def display_result(self, result):
         def optical_only(candidate):
@@ -270,6 +292,22 @@ class ReceiverImagingView(QWidget):
     def _receiver_changed(self, *_args):
         self.pause_scan()
         self._fit_next = True
+        self._view_extent = None
+        self._schedule()
+
+    def _viewport_changed(self, *_args):
+        if (self._setting_range or self._displayed_image is None
+                or self.mode.currentData() != "current"):
+            return
+        ranges = self.plot.getViewBox().viewRange()
+        physical = self._physical_extent()
+        extent = (max(ranges[0][0], physical[0]), min(ranges[0][1], physical[1]),
+                  max(ranges[1][0], physical[2]), min(ranges[1][1], physical[3]))
+        if extent[0] >= extent[1] or extent[2] >= extent[3]:
+            return
+        if self._view_extent is not None and np.allclose(extent, self._view_extent, rtol=1e-10, atol=1e-14):
+            return
+        self._view_extent = tuple(float(value) for value in extent)
         self._schedule()
 
     def _mode_changed(self, *_args):
@@ -549,6 +587,8 @@ class ReceiverImagingView(QWidget):
         self.show_trajectory.setEnabled(preview_mode)
         self.exposure.setEnabled(not preview_mode)
         self.quantity.setEnabled(not preview_mode)
+        self.detector_blur.setEnabled(not preview_mode)
+        self.pixels.setEnabled(not preview_mode)
         if preview_mode and self.quantity.currentData() != "probability":
             with QSignalBlocker(self.quantity):
                 self.quantity.setCurrentIndex(0)
@@ -561,13 +601,17 @@ class ReceiverImagingView(QWidget):
         try:
             cache_key = (key, mode, self.position.value() if mode in {"position", "accumulate"} else None,
                          self.exposure.value() if mode == "current" else None)
+            if not preview_mode:
+                cache_key += (self._view_extent, self.pixels.currentData(), self.detector_blur.isChecked())
             if cache_key not in self._cache:
                 if preview_mode:
                     value = self._prepared_scan().preview(
                         self.position.value() if mode in {"position", "accumulate"} else None,
                         accumulate=mode == "accumulate")
                 else:
-                    value = receiver_image(self._result, key, pixels=192, exposure_s=self.exposure.value())
+                    value = receiver_image(self._result, key, pixels=int(self.pixels.currentData()),
+                        exposure_s=self.exposure.value(), extent_mm=self._view_extent,
+                        include_response=self.detector_blur.isChecked())
                 if len(self._cache) >= 6:
                     self._cache.pop(next(iter(self._cache)))
                 self._cache[cache_key] = value
@@ -594,6 +638,10 @@ class ReceiverImagingView(QWidget):
             self._displayed_image = image
             counts = not preview_mode and self.quantity.currentData() == "electrons"
             values = image.expected_electrons if counts else image.response_probability
+            if not preview_mode and not self.detector_blur.isChecked():
+                values = image.ideal_probability
+                if counts:
+                    values = values*float(image.metrics["source_current_pa"])*1e-12/1.602176634e-19*image.exposure_s
             if values is None:
                 raise ValueError("No physical incident-electron expectation is available for this result")
             values = np.asarray(values)
@@ -610,11 +658,17 @@ class ReceiverImagingView(QWidget):
                     contrast_peak = float(np.max(reference.response_probability))
             display = np.log10(1. + values / max(contrast_peak, 1e-300) * 1e4) if self.log_scale.isChecked() else values
             max_value = float(np.log10(1.+1e4)) if self.log_scale.isChecked() else contrast_peak
-            self.image.setImage(display, autoRange=False, autoLevels=False, levels=(0., max_value if max_value > 0 else 1.))
-            dx, dy = float(image.x_mm[1]-image.x_mm[0]), float(image.y_mm[1]-image.y_mm[0])
-            self.image.getImageItem().setRect(QRectF(float(image.x_mm[0]-.5*dx), float(image.y_mm[0]-.5*dy), dx*len(image.x_mm), dy*len(image.y_mm)))
+            self._setting_range = True
+            try:
+                self.image.setImage(display, autoRange=False, autoLevels=False, levels=(0., max_value if max_value > 0 else 1.))
+                dx, dy = float(image.x_mm[1]-image.x_mm[0]), float(image.y_mm[1]-image.y_mm[0])
+                self.image.getImageItem().setRect(QRectF(float(image.x_mm[0]-.5*dx), float(image.y_mm[0]-.5*dy), dx*len(image.x_mm), dy*len(image.y_mm)))
+            finally:
+                self._setting_range = False
             self._draw_sensor_outline(image)
             title = "Geometric scan preview" if preview_mode else "Physical particle reception"
+            if not preview_mode and not self.detector_blur.isChecked():
+                title = "Particle arrivals · before detector blur"
             self.plot.setTitle(title + (" · log display" if self.log_scale.isChecked() else " · linear display"))
             self.trajectory.setData([], [])
             self.marker.setData([], [])
@@ -636,11 +690,25 @@ class ReceiverImagingView(QWidget):
                     detail += f" | frame exposure {100.*float(image.metrics.get('exposure_fraction', 0.)):.1f}%"
                 self.notice.setText("Geometry preview: scan-dependent specimen scattering and upstream clipping are not recalculated. Cyan: predicted centroid path.")
             else:
-                detail += f"Received {100.*float(image.ideal_probability.sum()):.5g}% | {image.current_pa:.6g} pA | exposure {image.exposure_s:g} s"
-                self.notice.setText("Classical particle reception, including calculated scattering. Coherent diffraction/interference is not calculated here.")
-                if not np.any(image.ideal_probability):
+                total = float(image.metrics.get("intercepted_probability", image.ideal_probability.sum()))
+                detail += (f"Received {100.*total:.5g}% | {image.current_pa:.6g} pA | exposure {image.exposure_s:g} s"
+                           f" | In view {100.*float(image.ideal_probability.sum()):.5g}%"
+                           f" | Pixel {dx*1e3:.4g} × {dy*1e3:.4g} µm")
+                sampling = image.metrics.get("sampling")
+                if sampling is not None:
+                    detail += (f" | Hits in view {sampling['in_view_positive_weight_hit_count']:,}"
+                               f" / {sampling['positive_weight_hit_count']:,}"
+                               f" | Occupied bins {sampling['occupied_bin_count']:,}")
+                    median = sampling["effective_hits_per_occupied_bin"]["median"]
+                    if median is not None:
+                        detail += f" | Median weighted hits/bin {median:.3g}"
+                prefix_notice = "Configured detector blur. " if self.detector_blur.isChecked() else "Particle arrivals before detector blur. "
+                self.notice.setText(prefix_notice + "Zoom and Fit beam rebin retained hits. Current is for the full receiver; no coherent interference is inferred.")
+                if total == 0:
                     detail += " | No electrons received"
             self.summary.setText(prefix + detail)
+            if not preview_mode:
+                self.summary.setToolTip(prefix + detail + "\n" + self._sampling_help)
             self.notice.setToolTip(value.detail + "\n" + str(image.metrics.get("response_scope", "")))
             self.calculation_bar.set_result_available(True)
             if self._stale:
@@ -660,8 +728,8 @@ class ReceiverImagingView(QWidget):
                      if str(p.key) == image.key)
         dx = float(image.x_mm[1] - image.x_mm[0])
         width = float(getattr(plane, "outer_width_mm", dx * len(image.x_mm)))
-        cx = float((image.x_mm[0] + image.x_mm[-1]) / 2.)
-        cy = float((image.y_mm[0] + image.y_mm[-1]) / 2.)
+        physical = self._physical_extent()
+        cx, cy = .5*(physical[0]+physical[1]), .5*(physical[2]+physical[3])
         geometry = str(getattr(plane, "geometry", "disk" if image.key == "flu_screen" else "square")).lower()
         if geometry in {"square", "rectangle", "camera"}:
             x, y = np.asarray([-1, 1, 1, -1, -1]), np.asarray([-1, -1, 1, 1, -1])
@@ -695,19 +763,55 @@ class ReceiverImagingView(QWidget):
         if self.mode.currentData() in {"position", "accumulate"}:
             self.marker.setData([x[index]], [y[index]])
 
-    def fit_receiver(self):
+    def _physical_extent(self):
         image = self._displayed_image
+        if image is not None and "physical_area_extent_mm" in image.metrics:
+            return image.metrics["physical_area_extent_mm"]
+        plane = next((p for p in available_receivers(getattr(self._result, "state_snapshot", None))
+                      if str(p.key) == self.receiver.currentData()), None)
+        if plane is not None and hasattr(plane, "outer_width_mm"):
+            half = .5*float(plane.outer_width_mm)
+            cx, cy = float(getattr(plane, "centre_offset_x_mm", 0.)), float(getattr(plane, "centre_offset_y_mm", 0.))
+            return cx-half, cx+half, cy-half, cy+half
         if image is None:
-            return
+            return (-1., 1., -1., 1.)
         dx, dy = image.x_mm[1]-image.x_mm[0], image.y_mm[1]-image.y_mm[0]
-        self.plot.setRange(xRange=(image.x_mm[0]-.5*dx, image.x_mm[-1]+.5*dx),
-                           yRange=(image.y_mm[0]-.5*dy, image.y_mm[-1]+.5*dy), padding=.02)
+        return image.x_mm[0]-.5*dx, image.x_mm[-1]+.5*dx, image.y_mm[0]-.5*dy, image.y_mm[-1]+.5*dy
+
+    def fit_receiver(self):
+        extent = self._physical_extent()
+        old_extent, self._view_extent = self._view_extent, None
+        self._setting_range = True
+        try:
+            self.plot.setRange(xRange=extent[:2], yRange=extent[2:], padding=.02)
+        finally:
+            self._setting_range = False
+        if old_extent is not None:
+            self._schedule()
 
     def fit_beam(self):
         image = self._displayed_image
         if image is None:
             return
-        values = np.asarray(image.response_probability)
+        bounds = image.metrics.get("first_hit_bounds_mm")
+        if self.mode.currentData() == "current" and bounds is not None:
+            physical = self._physical_extent()
+            sigma = (max(float(image.metrics.get("point_spread_sigma_x_mm", 0.)),
+                         float(image.metrics.get("point_spread_sigma_y_mm", 0.)))
+                     if self.detector_blur.isChecked() and image.metrics.get("point_spread_model") != "none" else 0.)
+            ranges = []
+            for start in (0, 2):
+                low, high = bounds[start:start+2]
+                width = high-low
+                if width == 0 and sigma == 0:
+                    width = (physical[start+1]-physical[start])/512
+                margin = max(.1*width, 5*sigma, np.finfo(float).eps*max(1., abs(low), abs(high))*32)
+                ranges.append((max(low-margin, physical[start]), min(high+margin, physical[start+1])))
+            self.plot.setRange(xRange=ranges[0], yRange=ranges[1], padding=0.)
+            self._viewport_changed()
+            return
+        values = np.asarray(image.ideal_probability if image.response_probability is None
+                            else image.response_probability)
         rows, columns = np.nonzero(values > max(float(values.max())*1e-8, 0.))
         if not len(rows):
             self.fit_receiver()
@@ -723,13 +827,19 @@ class ReceiverImagingView(QWidget):
             raise ValueError("No receiver image is displayed")
         metadata = dict(image.metrics, status=image.status, detail=image.detail,
                         receiver_name=image.name, stale=self._stale,
-                        exposure_s=image.exposure_s, current_pa=image.current_pa)
+                        exposure_s=image.exposure_s, current_pa=image.current_pa,
+                        display_detector_blur=self.detector_blur.isChecked(),
+                        display_quantity=self.quantity.currentData())
         arrays = dict(ideal_probability=image.ideal_probability,
-                      response_probability=image.response_probability,
                       x_mm=image.x_mm, y_mm=image.y_mm,
                       metadata_json=np.asarray(json.dumps(metadata, ensure_ascii=False, default=str)))
+        if image.response_probability is not None:
+            arrays["response_probability"] = image.response_probability
         if image.expected_electrons is not None:
             arrays["expected_electrons"] = image.expected_electrons
+        if image.exposure_s is not None and "source_current_pa" in image.metrics:
+            arrays["expected_arrival_electrons"] = (image.ideal_probability*
+                float(image.metrics["source_current_pa"])*1e-12/1.602176634e-19*image.exposure_s)
         if self._scan_preview is not None:
             for name in ("times_s", "displacement_x_mm", "displacement_y_mm", "trajectory_x_mm", "trajectory_y_mm"):
                 arrays[name] = getattr(self._scan_preview, name)

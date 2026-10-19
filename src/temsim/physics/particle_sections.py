@@ -258,6 +258,17 @@ def _prefix_matches(old, new, old_index, new_index):
             if getattr(old, name) != getattr(new, name):
                 return False
             continue
+        if name == "hexapole_exit_nodes":
+            # Sparse scheduling metadata is optional, not a dense node array.
+            # Keep unknown provenance distinct from an explicitly empty list.
+            before, after = getattr(old, name), getattr(new, name)
+            if before is None or after is None:
+                if before is not after:
+                    return False
+            elif (tuple(node for node in before if node <= old_index)
+                  != tuple(node for node in after if node <= new_index)):
+                return False
+            continue
         size = new_index if name == "step_m" or name.startswith("midpoint_") else count
         if name in {"dipole_bx_t", "dipole_by_t"}:
             size = 3*new_index

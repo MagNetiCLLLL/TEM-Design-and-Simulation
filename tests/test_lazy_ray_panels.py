@@ -72,18 +72,70 @@ def test_latest_only_flushes_on_tab_and_toggle_visibility(workspace, qtbot, monk
     workspace.tabs.setCurrentWidget(workspace.physical_layout)
     qtbot.waitUntil(lambda: len(physical) == 1)
     assert physical == [last]
-    workspace.magnetic_field_toggle.setChecked(True)
-    qtbot.wait(10)
-    assert magnetic == []  # Its Ray Diagram parent is still hidden.
-    workspace.show_ray_diagram()
+    assert magnetic == []  # Each hidden main tab retains only the latest result.
+    workspace.tabs.setCurrentWidget(workspace.magnetic_field)
+    qtbot.waitUntil(lambda: len(magnetic) == 1)
     assert magnetic == [last]
+    workspace.show_ray_diagram()
     workspace.transverse_beam_toggle.setChecked(True)
     assert workspace.transverse_beam._result is last
     assert workspace._pending_ray_panels == {}
     workspace.tabs.setCurrentWidget(workspace.physical_layout)
+    workspace.tabs.setCurrentWidget(workspace.magnetic_field)
     workspace.show_ray_diagram()
     qtbot.wait(10)
     assert magnetic == [last] and physical == [last]
+
+
+def test_main_magnetic_tab_prepares_real_field_and_refreshes_latest_snapshot(workspace, qtbot):
+    from temsim.optics.column import default_state
+
+    state = default_state()
+    first = _result()
+    first.state_snapshot = state
+    first.simulation.incident.z = np.array([0., 3100.])
+    field = workspace.magnetic_field
+    tabs = workspace.tabs
+    assert tabs.indexOf(field) == tabs.indexOf(workspace.physical_layout) + 1
+    assert [tabs.tabText(index) for index in range(tabs.count())].count("Magnetic field") == 1
+    assert not workspace.ray_page.isAncestorOf(field)
+    assert not hasattr(workspace, "magnetic_field_toggle")
+
+    workspace.display_result(first, "Preview")
+    assert field._profile is None and field._profile_worker is None
+    tabs.setCurrentWidget(field)
+    qtbot.waitUntil(lambda: field._profile is not None or field._profile_error is not None,
+                   timeout=15000)
+    assert field._profile_error is None
+    previous_profile = field._profile
+    assert np.any(np.abs(previous_profile.on_axis_t[:, 2]) > 0.)
+    assert field._state_snapshot is state
+    assert field.field_lines.canvas._horizontal_plot_edges is None
+
+    workspace.show_ray_diagram()
+    latest = _result(2.)
+    latest.state_snapshot = default_state()
+    latest.simulation.incident.z = first.simulation.incident.z.copy()
+    active_lens = next(lens for lens in latest.state_snapshot.lenses
+                       if lens.enabled and lens.percent > 0.)
+    active_lens.percent *= .5
+    workspace.display_result(latest, "Preview")
+    assert field._profile is None and field._profile_worker is None
+    tabs.setCurrentWidget(field)
+    qtbot.waitUntil(lambda: field._profile is not None or field._profile_error is not None,
+                   timeout=15000)
+    assert field._profile_error is None
+    assert field._state_snapshot is latest.state_snapshot
+    common = field._profile.valid & previous_profile.valid
+    assert np.any(common)
+    difference = field._profile.on_axis_t[common] - previous_profile.on_axis_t[common]
+    assert np.all(np.isfinite(difference))
+    assert np.max(np.abs(difference[:, 2])) > 1.e-8
+    current_profile = field._profile
+    workspace.show_ray_diagram()
+    tabs.setCurrentWidget(field)
+    qtbot.wait(20)
+    assert field._profile is current_profile and field._profile_worker is None
 
 
 def test_hidden_workspace_flushes_after_parent_show(workspace, qtbot):
@@ -171,13 +223,13 @@ def test_reopening_magnetic_field_keeps_current_ray_axis(workspace, qtbot, monke
         workspace.magnetic_field.plot.setRange(xRange=(0, 3000), yRange=(-1, 1), padding=0)
     monkeypatch.setattr(workspace.magnetic_field, "display_result", render)
     workspace.display_result(_result(), "Preview")
-    workspace.magnetic_field_toggle.setChecked(True)
-    workspace.magnetic_field_toggle.setChecked(False)
+    workspace.tabs.setCurrentWidget(workspace.magnetic_field)
+    workspace.show_ray_diagram()
     workspace.plot.setRange(xRange=(4.0, 8.0), yRange=(-2, 3), padding=0)
     qtbot.wait(10)
     workspace.display_result(_result(2.0), "Medium")
     before = np.array(workspace.plot.viewRange())
-    workspace.magnetic_field_toggle.setChecked(True)
+    workspace.tabs.setCurrentWidget(workspace.magnetic_field)
     qtbot.wait(10)
     np.testing.assert_allclose(workspace.plot.viewRange(), before, rtol=0, atol=1e-10)
     np.testing.assert_allclose(workspace.magnetic_field.plot.viewRange()[0], before[0], rtol=0, atol=1e-10)
@@ -241,7 +293,7 @@ def test_live_input_change_cancels_hidden_field_publication_until_new_result(wor
     assert workspace.magnetic_field._inputs_stale
     assert workspace.magnetic_field.field_lines.electron._fields_stale
     assert "Stale" in workspace.magnetic_field.diagnostic_text("camera")
-    workspace.magnetic_field_toggle.setChecked(True)
+    workspace.tabs.setCurrentWidget(workspace.magnetic_field)
     qtbot.wait(100)
     assert not calls  # Opening the panel cannot turn its old queued result into current fields.
     latest = _result(2.)

@@ -171,7 +171,8 @@ def test_window_applies_large_range_then_switches_only_projector(qtbot, monkeypa
     before = [(lens.key, lens.percent) for lens in window.state.lenses
               if lens.key not in {"diffraction_lens", "intermediate_lens", "projector_lens_1", "projector_lens_2"}]
     window.state.nanopulser.installed = True
-    monkeypatch.setattr(window, "_start_operating_preset", lambda *_a, **_k:
+    from temsim.gui import operating_preset_controller as worker
+    monkeypatch.setattr(worker, "apply_operating_mode_pair", lambda *_a, **_k:
                         pytest.fail("Projection-only change must not solve a condenser preset"))
     monkeypatch.setattr(shell, "apply_operating_mode_pair", lambda *_a, **_k:
                         pytest.fail("Projection-only change must preserve the Large angle branch"))
@@ -179,6 +180,7 @@ def test_window_applies_large_range_then_switches_only_projector(qtbot, monkeypa
                         pytest.fail("Projection-only change must not rebuild upstream optics"))
     widget.projector_mode.setCurrentIndex(widget.projector_mode.findData("imaging"))
     widget.apply_operating_mode_button.click()
+    qtbot.waitUntil(lambda: window._preset_state_token is None, timeout=90_000)
     assert not errors
     assert window.state.nanoprobe_range == "large_angle"
     assert window.state.projector_mode == "image"

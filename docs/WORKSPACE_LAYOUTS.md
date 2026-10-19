@@ -15,10 +15,11 @@ Each layout retains:
 - Dock visibility, docking/tabbing, floating positions and floating sizes.
 - Instrument editor, Live tuning, Ray Diagram, Sample, Sample Interactions 3D,
   Energy Filter, Scanning Image, Design Explorer and magnetic-validation splitters.
-- Presentation tab selections, magnetic/transverse/conjugate panel switches,
+- Presentation tab selections, transverse/conjugate panel switches,
+  Magnetic field's Ray Diagram range-link switch,
   interaction-budget visibility, Plot details, conjugate Details and Advanced
   bank expansion.
-- Separate Ray Diagram sizes for magnetic/transverse/conjugate/interaction
+- Separate Ray Diagram sizes for transverse/conjugate/interaction
   on/off combinations and Plot details, including the divider above the
   conjugate results.
 
@@ -51,8 +52,13 @@ reference plane and selection without recalculating. Candidate clicks and
 **Interaction budget** hides the lower readout when more plot space is needed.
 **Plot details** expands the calculation-coverage bar and stop/display readouts;
 these start collapsed so the rays and conjugate table can share the screen.
-**Beam analysis** and **Magnetic field** retain their existing visibility
-controls. The status/calculation log can be closed or floated using its dock
+**Beam analysis** retains its visibility control. **Magnetic field** is a
+separate main tab immediately after **Physical Layout**; it includes the 2D
+profile, 3D field lines, electron trajectories and component field vectors.
+It shares physical ranges with Ray Diagram while using its own page width.
+Older layouts retain their remaining Ray Diagram pane proportions; the former
+embedded magnetic visibility setting no longer hides or relocates the tab.
+The status/calculation log can be closed or floated using its dock
 controls. Long ray headings and status lines stay on one line; hover for the
 complete text. These adjustments only change presentation and use no extra
 particle or field calculations.

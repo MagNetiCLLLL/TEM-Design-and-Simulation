@@ -736,7 +736,9 @@ def stage_manifest_text(text, updates, *, validate=True, source_path=None):
 
 
 def validate_document(document):
+    from temsim.ordinary_deflector_geometry import validate_ordinary_deflector_part
     from temsim.corrector_model_3d import validate_deflector_coil_part
+    from temsim.probe_hexapole_geometry import validate_probe_hexapole_geometry
     from temsim.optics.shared_deflectors import resolve_shared_deflector_parts
     from temsim.optics.field_hardware_binding import resolve_field_hardware_parts
     from temsim.optics.electron_gun.tip_assembly import validate_tip_part, validate_electrical_defaults
@@ -774,7 +776,9 @@ def validate_document(document):
     validate_electrical_defaults(parts)
     for part in parts:
         validate_tip_part(part)
+        validate_ordinary_deflector_part(part)
         validate_deflector_coil_part(part)
+        validate_probe_hexapole_geometry(part)
         validate_physical_lens_pose(part)
         validate_optional_plate_thickness(part)
         key = str(part["key"])
@@ -2936,6 +2940,9 @@ def _validate_column_order(parts):
 
 def _validate_column_mechanical_overlaps(parts):
     from temsim.component_representation import non_material_role
+    from temsim.deflector_support_geometry import validate_support_installations
+
+    validate_support_installations(parts)
 
     tolerance = 1.0e-9
     by_key = {str(part["key"]): part for part in parts}
@@ -2952,6 +2959,11 @@ def _validate_column_mechanical_overlaps(parts):
         return False
 
     def radial_annulus(part, overlap_start, overlap_end):
+        from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
+        if part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES:
+            from temsim.deflector_support_geometry import full_material_radial_extent
+            inner, outer = full_material_radial_extent(part)
+            return 2.0 * inner, 2.0 * outer
         if part.get("pole_piece_geometry_style") == (
             "objective_vertical_back_inserted_shank_tapered_nose"
         ):

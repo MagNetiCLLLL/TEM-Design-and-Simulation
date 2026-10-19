@@ -1,5 +1,6 @@
 """Camera reception UI keeps capture provenance and never runs a scan loop."""
 import json
+from copy import deepcopy
 from types import SimpleNamespace
 
 import numpy as np
@@ -8,6 +9,7 @@ import pytest
 from temsim.gui import receiver_imaging as module
 from temsim.detector import receiver_scan
 from temsim.detector.receiver_image import ReceiverImage
+from test_receiver_image import capture
 
 
 def _capture():
@@ -157,6 +159,159 @@ def test_static_export_keeps_raw_values_after_log_display(page, tmp_path):
         assert data["expected_electrons"].sum() == 25.
         assert json.loads(str(data["metadata_json"]))["capture_request_identity"] == "original-capture"
     assert page.plot.getViewBox().state["yInverted"] is False
+
+
+def test_pixel_selection_rebins_retained_hits_and_caches_each_grid(qtbot, capture, monkeypatch, tmp_path):
+    view = module.ReceiverImagingView()
+    qtbot.addWidget(view)
+    original = module.receiver_image
+    calls, requested = [], []
+    def sampled(result, key, **kwargs):
+        calls.append((result, kwargs))
+        return original(result, key, **kwargs)
+    monkeypatch.setattr(module, "receiver_image", sampled)
+    view.calculation_requested.connect(lambda: requested.append(True))
+    before = capture.simulation.branches["post"].x.copy()
+    view.display_result(capture)
+    view.receiver.setCurrentIndex(view.receiver.findData("camera"))
+    view._fit_next = False
+    extent = (-.5, .5, -.5, .5)
+    view._view_extent = extent
+    view._render()
+    default = view._displayed_image
+    assert view.pixels.currentData() == 512
+    assert [view.pixels.itemData(i) for i in range(view.pixels.count())] == [32, 64, 128, 256, 512, 1024]
+    view.pixels.setCurrentIndex(view.pixels.findData(64))
+    view._render()
+    coarse = view._displayed_image
+    assert coarse.ideal_probability.shape == (64, 64)
+    assert coarse.metrics["display_extent_mm"] == default.metrics["display_extent_mm"] == extent
+    assert coarse.current_pa == default.current_pa
+    assert coarse.ideal_probability.sum() == default.ideal_probability.sum()
+    view.pixels.setCurrentIndex(view.pixels.findData(512))
+    view._render()
+    assert view._displayed_image is default
+    assert len(calls) == 2 and all(result is capture for result, _ in calls)
+    assert not requested
+    np.testing.assert_array_equal(capture.simulation.branches["post"].x, before)
+    assert "Hits in view 1 / 1" in view.summary.text()
+    assert "Median weighted hits/bin 1" in view.summary.text()
+    assert "not a convergence proof" in view.summary.toolTip()
+    path = tmp_path/"sampling.npz"
+    view.export_result(path)
+    with np.load(path) as saved:
+        metadata = json.loads(str(saved["metadata_json"]))
+        assert metadata["sampling"]["occupied_bin_count"] == 1
+        assert metadata["display_pixels"] == 512
+
+
+def test_static_pixel_choice_does_not_change_scan_preview_grid(page, monkeypatch):
+    capture = _capture()
+    capture.scan_geometry = SimpleNamespace(times_s=np.array([[0.]]))
+    calls = []
+    preview = SimpleNamespace(image=_image(status="GEOMETRIC_PREVIEW"), status="GEOMETRIC_PREVIEW", detail="Preview")
+    prepared = SimpleNamespace(preview=lambda *a, **kw: preview, times_s=np.array([[0.]]),
+                               metrics={}, base_image=_image())
+    def prepare(*args, **kwargs):
+        calls.append(kwargs)
+        return prepared
+    monkeypatch.setattr(module, "prepare_receiver_scan", prepare)
+    monkeypatch.setattr(page, "_draw_trajectory", lambda value: None)
+    page.pixels.setCurrentIndex(page.pixels.findData(1024))
+    page.display_result(capture)
+    page._render()
+    assert page.mode.currentData() == "frame" and not page.pixels.isEnabled()
+    assert calls[0]["pixels"] == 192
+    page.pixels.setCurrentIndex(page.pixels.findData(32))
+    page._render()
+    assert len(calls) == 1 and page._displayed_image is preview.image
+
+
+def test_actual_hits_rebin_on_zoom_and_keep_fixed_view_for_new_capture(qtbot, capture, tmp_path):
+    view = module.ReceiverImagingView()
+    qtbot.addWidget(view)
+    view.resize(1000, 700)
+    view.display_result(capture)
+    view.receiver.setCurrentIndex(view.receiver.findData("camera"))
+    view.show()
+    qtbot.waitUntil(lambda: view._displayed_image is not None)
+    full = view._displayed_image
+    assert full.ideal_probability.shape == (512, 512)
+    view.plot.setRange(xRange=(-.02, .02), yRange=(-.02, .02), padding=0.)
+    qtbot.waitUntil(lambda: view._displayed_image is not None and
+                   view._displayed_image.metrics["pixel_size_x_mm"] < .001)
+    zoomed = view._displayed_image
+    extent = zoomed.metrics["display_extent_mm"]
+    assert zoomed is not full and zoomed.current_pa == full.current_pa
+    shifted = deepcopy(capture)
+    shifted.simulation.branches["post"].x[:, 0] += 5e-6
+    view.display_result(shifted)
+    qtbot.waitUntil(lambda: view._displayed_image is not None)
+    changed = view._displayed_image
+    assert changed.metrics["display_extent_mm"] == pytest.approx(extent)
+    assert not np.array_equal(changed.ideal_probability, zoomed.ideal_probability)
+    # Sensor outline remains at the physical position while the viewport moves.
+    outline_x, outline_y = view.sensor_outline.getData()
+    assert (min(outline_x), max(outline_x), min(outline_y), max(outline_y)) == pytest.approx((-1, 1, -1, 1))
+    path = tmp_path/"crop.npz"
+    view.export_result(path)
+    with np.load(path, allow_pickle=False) as data:
+        metadata = json.loads(str(data["metadata_json"]))
+        assert metadata["display_extent_mm"] == pytest.approx(extent)
+        assert metadata["physical_area_extent_mm"] == [-1, 1, -1, 1]
+        assert metadata["current_pa"] == full.current_pa
+        assert metadata["pixel_size_x_mm"] < .001
+    view.fit_receiver()
+    qtbot.waitUntil(lambda: view._displayed_image is not None and
+                   view._displayed_image.metrics["display_extent_mm"] == (-1., 1., -1., 1.))
+
+
+def test_fit_beam_uses_actual_hit_bounds_and_blur_toggle_has_separate_cache(qtbot, capture, tmp_path):
+    view = module.ReceiverImagingView()
+    qtbot.addWidget(view)
+    camera = capture.state_snapshot.recording_planes[1]
+    camera.point_spread_model = "gaussian"
+    camera.point_spread_sigma_x_mm, camera.point_spread_sigma_y_mm = .02, .03
+    camera.point_spread_rotation_deg = 37.
+    branch = capture.simulation.branches["post"]
+    branch.blocked_key[1] = "camera"
+    branch.blocked_z[1] = 3.
+    branch.x[:, 0], branch.x[:, 1] = 10e-6, 12e-6
+    view.display_result(capture)
+    view.receiver.setCurrentIndex(view.receiver.findData("camera"))
+    view.resize(1000, 700)
+    view.show()
+    qtbot.waitUntil(lambda: view._displayed_image is not None)
+    view.detector_blur.setChecked(False)
+    view.fit_beam()
+    qtbot.waitUntil(lambda: view._displayed_image is not None and
+                   view._displayed_image.metrics["pixel_size_x_mm"] < 1e-4)
+    arrivals = view._displayed_image
+    assert np.count_nonzero(arrivals.ideal_probability) == 2
+    assert arrivals.current_pa == pytest.approx(1.)
+    np.testing.assert_array_equal(view.image.getImageItem().image, arrivals.ideal_probability)
+    assert arrivals.response_probability is None and arrivals.expected_electrons is None
+    path = tmp_path/"arrivals.npz"
+    view.export_result(path)
+    with np.load(path, allow_pickle=False) as data:
+        assert "response_probability" not in data and "expected_electrons" not in data
+        assert data["expected_arrival_electrons"].sum() == pytest.approx(1e-12/1.602176634e-19)
+        assert json.loads(str(data["metadata_json"]))["response_computed"] is False
+    view.detector_blur.setChecked(True)
+    qtbot.waitUntil(lambda: view._displayed_image is not None and
+                   view._displayed_image.response_probability is not None)
+    response = view._displayed_image
+    assert response is not arrivals and response.current_pa == arrivals.current_pa
+    np.testing.assert_array_equal(view.image.getImageItem().image, response.response_probability)
+    view.detector_blur.setChecked(False)
+    qtbot.waitUntil(lambda: view._displayed_image is arrivals)
+    view.detector_blur.setChecked(True)
+    qtbot.waitUntil(lambda: view._displayed_image is response)
+    view.fit_beam()
+    qtbot.waitUntil(lambda: view._displayed_image is not None and
+                   view._displayed_image.metrics["display_extent_mm"][1]-
+                   view._displayed_image.metrics["display_extent_mm"][0] >= .2)
+    assert "full receiver" in view.notice.text()
 
 
 def test_later_optical_preview_keeps_completed_physical_receiver(page):

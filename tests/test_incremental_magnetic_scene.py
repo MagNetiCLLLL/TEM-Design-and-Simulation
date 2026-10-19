@@ -110,6 +110,73 @@ def publish(view, qtbot, latest):
     assert view._profile is not None, view.details.toPlainText()
 
 
+def test_vector_view_receives_same_latest_captured_scene_and_stale_lifecycle(view, qtbot, monkeypatch):
+    publications, obsolete = [], []
+    monkeypatch.setattr(view.field_vectors, "update_snapshot",
+                        lambda *args, **kwargs: publications.append((args, kwargs)))
+    monkeypatch.setattr(view.field_vectors, "mark_inputs_stale", lambda: obsolete.append("stale"))
+    first = result(amplitude=1.)
+    first.signatures = {"request": "first-request"}
+    publish(view, qtbot, first)
+    args, kwargs = publications[-1]
+    assert args == (first.state_snapshot, view._records, (0., 100.))
+    assert kwargs["prepared_scene"] is view._scene
+    assert kwargs["result_reference"] == "request:first-request"
+    old_generation = view._profile_generation
+    old_payload = (view._scene, view._profile, view._records, view._plane_records)
+    view.mark_inputs_stale()
+    assert obsolete == ["stale"]
+    # A worker that finished after an edit must not refresh vector optics.
+    view._profile_finished(old_generation, old_payload, None)
+    assert len(publications) == 1
+    second = result(amplitude=2.)
+    publish(view, qtbot, second)
+    assert len(publications) == 2
+    assert publications[-1][0][0] is second.state_snapshot
+    assert publications[-1][1]["prepared_scene"] is view._scene
+
+
+def test_vector_mode_activation_and_panel_switch_do_not_recapture_fields(view, qtbot, monkeypatch):
+    events = []
+    monkeypatch.setattr(view.field_vectors, "set_active", lambda active: events.append(bool(active)))
+    view.resize(1000, 600)
+    view.show()
+    mode = view.display_mode.findData("vectors")
+    assert mode >= 0
+    view.display_mode.setCurrentIndex(mode)
+    assert view.view_stack.currentWidget() is view.field_vectors
+    assert events[-1] is True
+    assert not view.field_lines._active
+    assert not view.advanced_button.isVisible()
+    assert not view.field_lines.fit_button.isVisible()
+    view.hide()
+    assert events[-1] is False
+    view.show()
+    assert events[-1] is True
+    view.display_mode.setCurrentIndex(0)
+    assert events[-1] is False
+    assert view.view_stack.currentWidget() is view.plot
+    assert view.field_lines.fit_button.isVisible()
+    assert view.advanced_button.isVisible()
+    assert view.test_provider_calls == []
+
+
+def test_failed_magnetic_profile_still_forwards_snapshot_for_electric_inspection(view, qtbot, monkeypatch):
+    publications = []
+    monkeypatch.setattr(view.field_vectors, "update_snapshot",
+                        lambda *args, **kwargs: publications.append((args, kwargs)))
+    def unavailable(*args, **kwargs):
+        raise ValueError("Captured magnetic map unavailable")
+    monkeypatch.setattr("temsim.magnetic_field_scene.prepare_magnetic_scene", unavailable)
+    latest = result()
+    view.display_result(latest)
+    qtbot.waitUntil(lambda: view._profile_worker is None, timeout=5000)
+    assert "map unavailable" in view.details.toPlainText()
+    assert len(publications) == 1
+    assert publications[0][0][0] is latest.state_snapshot
+    assert publications[0][1].get("prepared_scene") is None
+
+
 def test_new_snapshot_updates_four_combined_curves_without_graphics_recreation(view, qtbot, monkeypatch):
     first = result()
     publish(view, qtbot, first)

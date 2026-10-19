@@ -12,6 +12,7 @@ MATERIAL_COLORS = {
     "soft_magnetic": (.36, .49, .64, 1.),
     "insulator": (.87, .83, .68, 1.),
     "insulating_polymer_unspecified": (.80, .77, .66, 1.),
+    "bonding_material_unspecified": (.69, .56, .38, 1.),
     "nonmagnetic_housing": (.61, .65, .69, 1.),
     "electrode": (.71, .73, .77, 1.),
     "tungsten": (.50, .54, .60, 1.),

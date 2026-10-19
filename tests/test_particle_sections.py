@@ -264,6 +264,23 @@ def test_section_prefix_compares_posed_cs_events_by_axial_plane(fixture):
         assert not sections._prefix_matches(original, replace(original, posed_spherical_kicks=kicks), index, index)
 
 
+def test_section_prefix_preserves_optional_sparse_hexapole_exit_metadata(fixture):
+    state, _, _ = fixture
+    plan = sections.build_propagation_plan(state, 450., 454.)
+    index = int(np.flatnonzero(plan.z_mm == 452.)[0])
+    assert plan.hexapole_exit_nodes is None
+    assert sections._prefix_matches(plan, plan, index, index)
+    # Missing scheduling provenance is not interchangeable with an explicit
+    # empty event list. Known events use their axial node, not tuple position.
+    assert not sections._prefix_matches(plan, replace(plan, hexapole_exit_nodes=()), index, index)
+    known = replace(plan, hexapole_exit_nodes=(index, index+1))
+    assert sections._prefix_matches(known, replace(known, hexapole_exit_nodes=(index, index+2)), index, index)
+    assert not sections._prefix_matches(known, replace(known, hexapole_exit_nodes=(index-1, index+1)), index, index)
+    field = np.array(plan.hex_normal_m3)
+    field[index] += 1.
+    assert not sections._prefix_matches(plan, replace(plan, hex_normal_m3=field), index, index)
+
+
 def test_section_prefix_checks_all_coincident_posed_cs_actions(fixture):
     from temsim.physics.lens_field_provider import CoordinateRegistration
     from temsim.physics.posed_aberrations import FrozenLensAberrationKick

@@ -116,7 +116,11 @@ general rotate the axes by 90 degrees. A zero tensor has no defined principal ax
 
 The basis is defined relative to column X/Y, not the rotated Ray Diagram view.
 Structural TOML owns basis angles and physical positions. Effective field widths
-are initialised from TOML and remain editable through the existing runtime validator.
+are initialised from TOML when installing an assembly and remain editable through
+the existing runtime validator. Saving/restoring a state, preparing a calculation
+and refreshing the same assembly preserve those runtime widths. Explicitly
+changing a TOML effective width and reloading its assembly applies the new width;
+an effective-width geometry sweep likewise uses the candidate's selected value.
 The Gaussian FWHM is the effective length; it is not a measured coil support.
 Percent scales `max_strength_m2`, not amperes. The manifests explicitly identify
 the co-located analytic model as **not a measured coil map**. Existing housing
@@ -319,15 +323,20 @@ a new calibration. Singular or over-limit calibration fails without partial edit
 ### Projector switching with held AC
 
 With the condenser mode unchanged, selecting the other **Image / Diffraction**
-mode and applying it changes only the stored D/I/P1/P2 strengths. Tip, condenser,
+mode and applying it changes only D/I/P1/P2 strengths. Tip, condenser,
 CM, Objective, scan controls, held record and receiver insertion remain as set.
 Applying the same mode selections again reapplies both complete presets. The
 existing Apply button's tooltip explains this distinction.
 
-Stored projector strengths do not solve conjugacy for the current Objective or
-chosen receiver. The switch reports that condition as **unqualified** and marks
-previous particle/wave results stale. An Image label alone does not establish a
-focused specimen image on the physical Fluorescent Screen (`flu_screen`).
+Image now refocuses D/I for the first inserted TEM receiver (or the Camera optical
+reference when both are retracted), preserving the stored Camera-reference sample
+magnification with the current Objective held fixed. The background solve reports
+its independently checked first-order sample-image residual before committing.
+Use **Focus Image at receiver** to repeat only this downstream solve after changing
+the receiver or optics while already in Image. It does not correct nonlinear
+aberrations or acquire an image. Diffraction switches still load stored strengths
+and report current conjugacy as **unqualified**; use its separate alignment and
+transfer checks. Both operations mark previous particle/wave results stale.
 
 To retain an accepted AC calibration while changing downstream optics:
 

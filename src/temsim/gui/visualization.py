@@ -713,13 +713,6 @@ class VisualizationWorkspace(QWidget):
         self.jump_to_position.setToolTip(
             "Centre the Ray Diagram on the entered axial position"
         )
-        self.magnetic_field_toggle = QPushButton("Magnetic field")
-        self.magnetic_field_toggle.setObjectName("rayMagneticFieldToggle")
-        self.magnetic_field_toggle.setCheckable(True)
-        self.magnetic_field_toggle.setChecked(False)
-        self.magnetic_field_toggle.setToolTip(
-            "Show or hide magnetic fields below the ray diagram; choose 2D strength or 3D field lines"
-        )
         self.transverse_beam_toggle = QPushButton("Beam analysis")
         self.transverse_beam_toggle.setObjectName("rayTransverseBeamToggle")
         self.transverse_beam_toggle.setCheckable(True)
@@ -738,7 +731,6 @@ class VisualizationWorkspace(QWidget):
             self.column_walls,
             self.fit_column,
             self.jump_to_position,
-            self.magnetic_field_toggle,
             self.transverse_beam_toggle,
         ):
             option_button.setStyleSheet(self.OPTION_BUTTON_STYLE)
@@ -747,7 +739,6 @@ class VisualizationWorkspace(QWidget):
         # expand into oversized grid cells or wrap across multiple rows.
         heading_row = QHBoxLayout()
         heading_row.addWidget(self.heading, 1)
-        heading_row.addWidget(self.magnetic_field_toggle)
         heading_row.addWidget(self.transverse_beam_toggle)
         self.live_tuning_toggle = QToolButton()
         self.live_tuning_toggle.setObjectName("rayLiveTuningToggle")
@@ -905,12 +896,12 @@ class VisualizationWorkspace(QWidget):
         )
 
         self.magnetic_field = MagneticFieldView()
-        self.magnetic_field.setObjectName("embeddedMagneticFieldView")
+        self.magnetic_field.setObjectName("magneticFieldPage")
         self.magnetic_field.setSizePolicy(
             QSizePolicy.Policy.Ignored,
             QSizePolicy.Policy.Expanding,
         )
-        self.magnetic_field.link_axial_axis(self.plot)
+        self.magnetic_field.link_axial_axis(self.plot, align_pixels=False)
 
         self.ray_primary_panel = QWidget()
         self.ray_primary_panel.setObjectName("rayDiagramPrimaryPanel")
@@ -1006,19 +997,16 @@ class VisualizationWorkspace(QWidget):
             " background: #2563eb; border-top-color: #60a5fa; }"
         )
         self.ray_vertical_splitter.setToolTip(
-            "Drag the horizontal separators to resize the Ray Diagram, "
-            "selected-plane interaction budget, and Magnetic Field panels."
+            "Drag the horizontal separator to resize the Ray Diagram "
+            "and selected-plane interaction budget."
         )
         self.ray_vertical_splitter.addWidget(self.ray_primary_panel)
         self.ray_vertical_splitter.addWidget(self.interaction_detail)
-        self.ray_vertical_splitter.addWidget(self.magnetic_field)
         self.ray_vertical_splitter.setStretchFactor(0, 6)
         self.ray_vertical_splitter.setStretchFactor(1, 1)
-        self.ray_vertical_splitter.setStretchFactor(2, 3)
         # Keep the electron-ray display dominant on first use.  These are
-        # relative weights; the user can freely drag both splitter handles.
-        self.ray_vertical_splitter.setSizes((650, 110, 260))
-        self.magnetic_field.setVisible(False)
+        # relative weights; the user can freely drag the splitter handle.
+        self.ray_vertical_splitter.setSizes((650, 110))
 
         self.ray_page = QWidget()
         ray_layout = QVBoxLayout(self.ray_page)
@@ -1246,6 +1234,7 @@ class VisualizationWorkspace(QWidget):
             lambda: self.tabs.setCurrentWidget(self.coherent_beam))
         self.tabs.addTab(self.hardware_tuning, "Hardware tuning")
         self.tabs.addTab(self.physical_layout, "Physical Layout")
+        self.tabs.addTab(self.magnetic_field, "Magnetic field")
         self.tabs.addTab(self.energy_filter_page, "Energy Filter")
         self.tabs.addTab(self.sample_page, "Sample")
         self.tabs.addTab(self.vacuum_map, "Vacuum map")
@@ -1276,9 +1265,6 @@ class VisualizationWorkspace(QWidget):
         self.column_walls.toggled.connect(self._redraw_last_result)
         self.ray_colour_mode.currentIndexChanged.connect(self._ray_colour_mode_changed)
         self.transverse_beam.colour_quantity_changed.connect(self._beam_colour_quantity_changed)
-        self.magnetic_field_toggle.toggled.connect(
-            lambda visible: self._set_ray_panel_visible(self.magnetic_field, visible)
-        )
         self.transverse_beam_toggle.toggled.connect(
             lambda visible: self._set_ray_panel_visible(self.ray_beam_tabs, visible)
         )

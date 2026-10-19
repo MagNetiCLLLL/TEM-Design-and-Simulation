@@ -403,6 +403,7 @@ def create_diffraction_stigmator():
 def diffraction_stigmator_from_dict(
     data,
     active_installation=None,
+    *, defer_geometry_validation=False,
 ):
     values = dict(data)
     if values.get("key") != DIFFRACTION_STIGMATOR:
@@ -432,4 +433,8 @@ def diffraction_stigmator_from_dict(
         active_installation
         or values.get("active_installation", STANDALONE_INSTALLATION)
     )
+    if defer_geometry_validation:
+        from temsim.optics.stigmator_field import validate_stigmator_field
+        validate_stigmator_field(component)
+        return component
     return component.validate()

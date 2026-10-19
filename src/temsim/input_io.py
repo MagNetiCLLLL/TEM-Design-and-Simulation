@@ -302,9 +302,9 @@ def capture_input_archive(state):
 def restore_profile_inputs(function):
     """Retain archive ownership across the existing profile reconstruction path."""
     @wraps(function)
-    def wrapped(payload):
+    def wrapped(payload, **kwargs):
         with input_scope(payload, inherit=False):
-            result = function(payload)
+            result = function(payload, **kwargs)
         archive = archive_payload(payload)
         if archive is not None:
             bind_archive(result, archive)

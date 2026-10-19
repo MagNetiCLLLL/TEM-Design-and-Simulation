@@ -58,6 +58,7 @@ def candidate_state(recipe, point, sweep, base_archive, *, cancelled=lambda: Fal
     resolved = state._resolved_assembly
     paths = dict(resolved.selected_module_paths)
     module = settings["module"]
+    module = "project_and_recording_system" if module == "recording" else module
     if module not in paths:
         raise ValueError("The selected module is not installed in the captured assembly")
     path = Path(resolved.root) / paths[module]
@@ -81,9 +82,21 @@ def candidate_state(recipe, point, sweep, base_archive, *, cancelled=lambda: Fal
     if settings["part"] == "feg_tip" and settings["dimension"] == "tip_radius_nm":
         for parameters in before.values():
             parameters.pop("curvature_nm_inv", None)
+    stigmator = next((item for item in state.stigmators
+                      if item.key == settings["part"]), None)
+    changes_stigmator_width = (stigmator is not None
+                              and settings["dimension"] == "effective_length_mm")
+    if changes_stigmator_width:
+        # This candidate explicitly varies the field width. Restoring the
+        # captured runtime override would cancel the requested geometry axis.
+        before.get(stigmator.key, {}).pop("length_mm", None)
     with input_io.input_scope(state):
         catalog = AssemblyCatalog(root=resolved.root)
         candidate = catalog.apply(state, selection, preserve_operating_parameters=True)
+        if changes_stigmator_width:
+            # A candidate equal to the original TOML default still replaces
+            # a different runtime override; no default-change detection fires.
+            stigmator.length_mm = float(candidate.part(stigmator.key).data["effective_length_mm"])
         restore_operating_values(state, before)
         apply_physical_layout_to_state(state, preserve_operating_parameters=True,
             assembly_root=catalog.root, assembly=candidate)

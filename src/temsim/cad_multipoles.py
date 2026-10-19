@@ -73,6 +73,8 @@ def deflector_insert_solids(part, by_key=None):
         return None
     if non_material_role(part):
         return ()
+    from temsim.deflector_support_geometry import deflector_support_solids
+    support_solids = deflector_support_solids(part)
     layer, span, band = winding_dimensions(part)
     allocated_start, allocated_end, inner, outer = _envelope(part)
     start, end = winding_axial_extent(part)
@@ -94,7 +96,7 @@ def deflector_insert_solids(part, by_key=None):
             shape = _loop(start, end, low, high, 90*axis+180*side, span, layer_band)
             solids.append(_solid(part, f"{'xy'[axis]}_winding_{side+1}", "copper_winding",
                                  shape, params, (COIL_SOURCE,)))
-    return tuple(solids)
+    return tuple(solids) + support_solids
 
 
 def _rotation(angle_deg):
@@ -123,6 +125,8 @@ def _cescor_hexapole_solids(part, *, image_family=False):
     not transplanted into the simulator. A pole pin is one joined material
     body; no extra insulation, housing or vacuum tube is inferred here.
     """
+    if not image_family:
+        return _probe_hexapole_solids(part)
     start, end, inner, outer = _envelope(part)
     length, width, centre = end-start, outer-inner, (start+end)/2
     pole_length = (_number(part, "effective_length_mm") if image_family else .8*length)
@@ -183,6 +187,68 @@ def _cescor_hexapole_solids(part, *, image_family=False):
     return tuple(result)
 
 
+def _probe_hexapole_solids(part):
+    """Six tapered radial pole noses with explicit mechanical winding windows.
+
+    Fig. 3 establishes topology and an inward taper, not the exact pole-face
+    contour. A planar taper and rectangular bulk winding are engineering
+    sections at the same detail level as the other native material parts.
+    Existing box/boolean/rotation primitives serve both mesh and STEP export.
+    """
+    from temsim.probe_hexapole_geometry import probe_hexapole_dimensions, PREFIX
+    d = probe_hexapole_dimensions(part)
+    start, end = d['start_mm'], d['end_mm']
+    inner, outer = d['inner_radius_mm'], d['outer_radius_mm']
+    centre, length = (start+end)/2, end-start
+    root = inner+d['taper_length_mm']
+    yoke_inner = outer-d['yoke_thickness_mm']
+    coil_start = inner+d['coil_radial_inset_mm']
+    coil_end = coil_start+d['coil_radial_length_mm']
+    tip_half, root_half = d['tip_width_mm']/2, d['root_width_mm']/2
+    angle = math.degrees(math.atan2(root_half-tip_half, root-inner))
+    # Cut two half spaces from a rectangular prism. Both cuts are oversized
+    # construction tools, never extra physical solids. The resulting inward
+    # taper is tangent to the saved bore and has no invented hyperbolic contour.
+    reach = 8*max(outer, length)
+    tools = []
+    for sign in (-1, 1):
+        tools.append(transformed(box((0., sign*reach/2, 0.), (reach, reach, 2*reach)),
+            rotation=_rotation(sign*angle), offset=(inner, sign*tip_half, centre)))
+    nose = difference(box(((inner+root)/2, 0., centre),
+                          (root-inner, 2*root_half, d['pole_length_mm'])), *tools)
+    overlap = min(.01, .01*d['taper_length_mm'])
+    stem_start = root-overlap
+    stem = box(((stem_start+yoke_inner)/2, 0., centre),
+               (yoke_inner-stem_start, 2*root_half, d['stem_height_mm']))
+    stem = difference(stem, annulus(start, end, yoke_inner, outer+outer-inner))
+    pin = union(nose, stem)
+    coil = difference(box(((coil_start+coil_end)/2, 0., centre),
+        (coil_end-coil_start, d['coil_width_mm'], d['coil_height_mm'])),
+        box(((coil_start+coil_end)/2, 0., centre),
+        (2*outer, d['coil_window_width_mm'], d['coil_window_height_mm'])))
+    params = dict(d, physical_pole_count=6, coil_count=6,
+        topology_source="Mueller et al. 2006, p.443; p.444 Fig.3 real hexapole photograph",
+        dimension_status="Engineering reconstruction; published 152 mm OD and pole dimensions are not used",
+        geometry_revision="probe_radial_taper_v2",
+        pole_face_status="Planar taper reconstruction, not measured OEM pole contour",
+        physical_length_source=("explicit mechanical_hexapole_pole_length_mm" if PREFIX+'pole_length_mm' in part
+                                else "legacy envelope allocation: 0.8 times mechanical length"),
+        effective_field_length_mm=part.get('effective_length_mm'),
+        coil_axis="radial", pole_pitch_deg=60.,
+        coil_core_clearance_tangential_mm=(d['coil_window_width_mm']-d['root_width_mm'])/2,
+        coil_core_clearance_axial_mm=(d['coil_window_height_mm']-d['stem_height_mm'])/2,
+        construction="Six joined tapered pole pins, six radial-axis bulk windings, one shared yoke")
+    evidence = (CESCOR_SOURCE, "docs/references/cad-probe-corrector.md")
+    result = [_solid(part, 'return_yoke', 'soft_magnetic',
+                     annulus(start, end, yoke_inner, outer), params, evidence)]
+    for index in range(6):
+        for region, material, shape in ((f'pole_pin_{index+1}', 'soft_magnetic', pin),
+                                       (f'coil_{index+1}', 'copper_winding', coil)):
+            result.append(_solid(part, region, material,
+                transformed(shape, rotation=_rotation(60*index)), params, evidence))
+    return tuple(result)
+
+
 def _stigmator_windings(part):
     """Keep declared bulk coils; coil count never implies magnetic pole count."""
     if part.get("coil_topology") != "two_interleaved_four_pole_windings":
@@ -229,6 +295,11 @@ def _stigmator_windings(part):
 
 
 def _deflector_solids(part):
+    from temsim.ordinary_deflector_geometry import ordinary_deflector_support_solids, support_dimensions
+    # Validate opt-in supports before a legacy envelope fallback can hide a
+    # malformed construction declaration. Parts without support fields retain
+    # their existing material geometry and dimensions.
+    support_dimensions(part)
     start, end, inner, outer = _envelope(part)
     length, width = end-start, outer-inner
     centres = part.get("interaction_centers_local_z_mm")
@@ -260,7 +331,7 @@ def _deflector_solids(part):
             for side in range(2):
                 result.append(_solid(part, f"coil_{index+1}_{'xy'[axis]}_winding_{side+1}", "copper_winding",
                     _loop(a, b, low, high, 90*axis+180*side, span, band), params, (COIL_SOURCE,)))
-    return tuple(result)
+    return tuple(result) + ordinary_deflector_support_solids(part, result)
 
 
 def multipole_solids(part, by_key=None) -> tuple[SolidSpec, ...] | None:

@@ -173,9 +173,7 @@ def input_signature(state, key, options):
 def snapshot_state(state):
     """Capture on the GUI thread; resolved production assemblies are immutable."""
     if hasattr(state, "to_dict"):
-        result = type(state).from_dict(state.to_dict())
-        result._resolved_assembly = state._resolved_assembly
-        return result
+        return type(state).from_dict(state.to_dict(), resolved_assembly=state._resolved_assembly)
     return deepcopy(state)  # Small synthetic reference fixtures only.
 
 

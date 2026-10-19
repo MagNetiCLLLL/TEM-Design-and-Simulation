@@ -38,6 +38,7 @@ def _check_closed_loop(mesh):
     shifted = triangles - mesh.vertices.mean(axis=0)
     volume = np.einsum("ij,ij->i", shifted[:, 0], np.cross(shifted[:, 1], shifted[:, 2])).sum() / 6
     assert volume > 0
+    return volume
 
 
 @pytest.mark.parametrize("channel,length", [
@@ -156,3 +157,81 @@ def test_legacy_long_coil_retains_per_layer_implicit_band_width():
     assert sorted(set(meshes[0].vertices[:, 2]))[1] == pytest.approx(650. + .2 * 11.1)
     assert sorted(set(meshes[2].vertices[:, 2]))[1] == pytest.approx(650. + .2 * (11.1 + .6 * .8))
     assert any("Legacy file" in note for note in notes)
+
+
+@pytest.mark.parametrize("band", [1.16, 4., 5., 6.])
+def test_wide_side_bands_converge_to_annular_loop_volume_without_closing_window(band):
+    row = _native_part(winding_band_width_mm=band)
+    before = deepcopy(row)
+    errors = []
+    for count in (32, 128, 512):
+        meshes, _ = deflector_coil_meshes(row, count)
+        level_errors = []
+        for index, mesh in enumerate(meshes):
+            # Independent annular-sector volume minus the open central window.
+            inner = 11.1 if index < 2 else 11.58
+            outer = inner + .32
+            span = np.deg2rad(120.)
+            window_span = span - 2 * band / ((inner + outer) / 2)
+            exact = .5 * (outer**2 - inner**2) * (
+                span * 14.5 - window_span * (14.5 - 2 * band))
+            volume = _check_closed_loop(mesh)
+            assert volume <= exact * (1 + 1e-12)
+            level_errors.append(abs(volume / exact - 1))
+            points = mesh.vertices[:, :2]
+            assert np.linalg.norm(points, axis=1).max() <= outer + 1e-12
+            # Radial clearance applies to triangle interiors, not only their
+            # vertices. The nearest point on a triangle is on one of its edges
+            # for these annular cells, which never surround the optical axis.
+            triangles = points[mesh.faces]
+            for a, b in ((0, 1), (1, 2), (2, 0)):
+                left, delta = triangles[:, a], triangles[:, b] - triangles[:, a]
+                square = np.einsum("ij,ij->i", delta, delta)
+                t = np.clip(np.divide(-np.einsum("ij,ij->i", left, delta), square,
+                    out=np.zeros_like(square), where=square > 0), 0, 1)
+                assert np.linalg.norm(left + t[:, None] * delta, axis=1).min() >= inner - 1e-12
+        errors.append(max(level_errors))
+    assert errors[2] < errors[1] < errors[0]
+    assert errors[0] < .025
+    assert errors[-1] < .001
+    assert row == before
+
+
+def test_wide_band_saved_draft_reopens_and_keeps_native_part_and_module_visible(tmp_path):
+    from temsim.part_model_document import PartModelDocument
+    from temsim.part_model_3d import module_model_from_document
+    from temsim.paths import INSTRUMENT_CONFIG_ROOT
+
+    source = INSTRUMENT_CONFIG_ROOT / "column/C3_ProbeCorrector.toml"
+    draft = PartModelDocument(source)
+    key = "probe_dph2_coils"
+    old_channel = deepcopy(draft.part("probe_dph2_deflector"))
+    old_row = deepcopy(draft.part(key))
+    old_support = tuple(mesh for mesh in part_model_from_document(draft.document, key).meshes
+                        if mesh.material_class != "copper_winding")
+    draft.set_dimension(("parts", key, "winding_band_width_mm"), 6.)
+    destination = tmp_path / "wide-band.toml"
+    draft.save_copy(destination)
+    reopened = PartModelDocument(destination)
+    assert reopened.part("probe_dph2_deflector") == old_channel
+    assert reopened.part(key) == {**old_row, "winding_band_width_mm": 6.}
+    model = part_model_from_document(reopened.document, key)
+    assert len(model.meshes) == 9
+    new_support = tuple(mesh for mesh in model.meshes if mesh.material_class != "copper_winding")
+    for before, after in zip(old_support, new_support, strict=True):
+        np.testing.assert_array_equal(before.vertices, after.vertices)
+        np.testing.assert_array_equal(before.faces, after.faces)
+    # Render the same source row through the module path without generating all
+    # unrelated objective and detector geometry in this focused regression.
+    isolated = {"parts": [deepcopy(reopened.part(key))]}
+    isolated["parts"][0].pop("parent_key", None)
+    assert len(module_model_from_document(isolated).meshes) == 9
+
+
+def test_wide_band_honours_maximum_requested_tessellation():
+    meshes, _ = deflector_coil_meshes(_native_part(winding_band_width_mm=6.), 4096)
+    for mesh in meshes:
+        _check_closed_loop(mesh)
+        # Each of at most 4096 angular cells has two radial and four axial
+        # corner coordinates; the bounded grid keeps allocation predictable.
+        assert len(mesh.vertices) <= 8 * (4096 + 1)

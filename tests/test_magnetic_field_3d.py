@@ -211,14 +211,15 @@ def test_ray_projection_and_axial_range_follow_in_hidden_and_visible_field(qtbot
     monkeypatch.setattr("temsim.magnetic_field_lines.build_field_lines", forbidden)
     workspace._set_projection_angle(298.3)
     assert field.field_lines.canvas.projection_angle_deg == 298.3
-    workspace.magnetic_field_toggle.setChecked(True)
+    workspace.tabs.setCurrentWidget(field)
     field.display_mode.setCurrentIndex(1)
     workspace.projection_yz.click()
     assert field.field_lines.canvas.projection_angle_deg == 90.
     workspace.plot.setXRange(1200., 1800., padding=0.)
     qtbot.wait(30)
     np.testing.assert_allclose(field.field_lines.view_range_mm(), workspace.plot.viewRange())
-    workspace.magnetic_field_toggle.setChecked(False)
+    workspace.show_ray_diagram()
+    assert not field.field_lines._active
     workspace._set_projection_angle(35.)
     assert field.field_lines.canvas.projection_angle_deg == 35.
 

@@ -112,6 +112,8 @@ def test_standalone_split_materials_and_cap_paths_ignore_new_parent_geometry():
 
 
 def test_ordinary_coil_copy_never_inherits_target_objective_split():
+    from temsim.lens_pose import PHYSICAL_POSE_FIELDS
+
     source = document("project_and_recording_system/EnergyFilter.toml")
     key = "intermediate_lens_excitation_coil"
     before = part_model_from_document(source, key, include_children=False).meshes
@@ -121,7 +123,17 @@ def test_ordinary_coil_copy_never_inherits_target_objective_split():
     after = part_model_from_document(target, new_key, include_children=False).meshes
     assert len(after) == len(before) == 1
     assert after[0].vertices == pytest.approx(before[0].vertices + [0, 0, 800 - part(source, key)["local_center_z_mm"]])
-    assert all(spec.path[1] == new_key for spec in part_dimension_specs(target, new_key))
+    specs = part_dimension_specs(target, new_key)
+    parent_specs = [spec for spec in specs if spec.path[1] != new_key]
+    # Owned children expose the parent's explicitly labelled placement, but
+    # never acquire the target objective's winding dimensions or split layers.
+    assert len(parent_specs) == len(PHYSICAL_POSE_FIELDS)
+    assert {spec.path for spec in parent_specs} == {
+        ("parts", "objective_lens", field) for field in PHYSICAL_POSE_FIELDS
+    }
+    assert all(spec.editable and spec.label.startswith("Parent lens: ") for spec in parent_specs)
+    assert all(path[1] == new_key for surface in after[0].surfaces.values()
+               for path in surface["parameter_paths"])
 
 
 @pytest.mark.parametrize("mode", [None, "ideal", "analytic", "linear", "nonlinear", "custom"])

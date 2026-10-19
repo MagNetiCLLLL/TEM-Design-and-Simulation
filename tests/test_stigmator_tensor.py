@@ -169,6 +169,11 @@ def test_current_stigmator_loaders_require_explicit_physical_model(kind):
     record = asdict(create())
     restored = restore(record)
     assert restored.field_model == "normal_skew"
+    record["length_mm"] = 3.
+    assert restore(record).length_mm == 3.
+    for width in (0., -1., float("nan"), float("inf")):
+        with pytest.raises(ValueError, match="finite|positive"):
+            restore({**record, "length_mm": width})
     for value in ("legacy_difference", None):
         invalid = dict(record)
         if value is None:

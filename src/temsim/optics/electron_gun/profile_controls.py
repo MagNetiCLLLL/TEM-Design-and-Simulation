@@ -9,7 +9,7 @@ from copy import copy
 from dataclasses import asdict, dataclass
 import math
 
-from .emitter import ColdFieldEmitter, EmissionQuadrature
+from .emitter import ColdFieldEmitter, EmissionQuadrature, EmissionSampling, EmissionCDFQuadrature
 
 
 @dataclass(frozen=True, slots=True)
@@ -18,6 +18,8 @@ class PreparedGunProfileControls:
     accelerator_key: str
     tip_quadrature: EmissionQuadrature | None
     stage_values: tuple[tuple[float, float], ...]
+    tip_sampling: EmissionSampling | None = None
+    tip_cdf_quadrature: EmissionCDFQuadrature | None = None
 
 
 def _finite_number(value, name):
@@ -50,6 +52,10 @@ def capture_gun_profile_controls(gun) -> dict:
     if "tip_quadrature" in keys:
         quadrature = gun.emitter.quadrature
         payload["tip_quadrature"] = {} if quadrature is None else asdict(quadrature)
+        if gun.emitter.sampling is not None:
+            payload["tip_sampling"] = asdict(gun.emitter.sampling)
+        if gun.emitter.cdf_quadrature is not None:
+            payload["tip_cdf_quadrature"] = asdict(gun.emitter.cdf_quadrature)
     prepare_gun_profile_controls(gun, payload)
     return payload
 
@@ -62,12 +68,27 @@ pending emitter/accelerator candidates, so validation uses the final coupled
 parameters rather than whichever values happen to be currently installed.
 """
     keys = _expected_keys(gun)
-    if not isinstance(payload, dict) or set(payload) != keys:
+    optional = {"tip_sampling", "tip_cdf_quadrature"} if gun.type_key == "cold_feg" else set()
+    if not isinstance(payload, dict) or not keys <= set(payload) <= keys | optional:
         raise ValueError("Gun profile controls must contain exactly the current control tables")
     incoming_emitter = copy(gun.emitter if emitter is None else emitter)
     incoming_accelerator = copy(gun.accelerator if accelerator is None else accelerator)
     quadrature = None
+    sampling = None
+    cdf_quadrature = None
     if "tip_quadrature" in keys:
+        cdf_row = payload.get("tip_cdf_quadrature", {})
+        if not isinstance(cdf_row, dict):
+            raise ValueError("Tip CDF quadrature must be empty or a complete versioned table")
+        if cdf_row:
+            cdf_quadrature = EmissionCDFQuadrature.from_dict(cdf_row)
+        incoming_emitter.cdf_quadrature = cdf_quadrature
+        sampling_row = payload.get("tip_sampling", {})
+        if not isinstance(sampling_row, dict) or (sampling_row and set(sampling_row) != {"schema", "seed"}):
+            raise ValueError("Tip sampling must be empty or a complete schema and seed table")
+        if sampling_row:
+            sampling = EmissionSampling(**sampling_row).validate()
+        incoming_emitter.sampling = sampling
         row = payload["tip_quadrature"]
         if not isinstance(row, dict) or (row and set(row) != {"spatial", "directions", "energies", "schema"}):
             raise ValueError("Tip quadrature must be empty or a complete current factor table")
@@ -96,7 +117,7 @@ parameters rather than whichever values happen to be currently installed.
     if grounded and stages[-1].voltage_fraction != 1.0:
         raise ValueError("Grounded gun requires the final accelerator fraction to equal one")
     return PreparedGunProfileControls(gun.type_key, gun.accelerator.key, quadrature,
-        tuple((stage.voltage_fraction, stage.soft_edge_mm) for stage in stages))
+        tuple((stage.voltage_fraction, stage.soft_edge_mm) for stage in stages), sampling, cdf_quadrature)
 
 
 def apply_prepared_gun_profile_controls(gun, prepared: PreparedGunProfileControls) -> None:
@@ -109,6 +130,8 @@ def apply_prepared_gun_profile_controls(gun, prepared: PreparedGunProfileControl
         raise ValueError("Prepared gun controls do not match the installed accelerator")
     if gun.type_key == "cold_feg":
         gun.emitter.quadrature = prepared.tip_quadrature
+        gun.emitter.sampling = prepared.tip_sampling
+        gun.emitter.cdf_quadrature = prepared.tip_cdf_quadrature
     for stage, (fraction, edge) in zip(gun.accelerator.stages, prepared.stage_values):
         stage.voltage_fraction = fraction
         stage.soft_edge_mm = edge

@@ -273,8 +273,10 @@ def test_actual_toml_scan_and_shift_tilt_coils_use_saved_finite_positions():
         before = deepcopy(row)
         solids = multipole_solids(row, by_key)
         windings = [solid for solid in solids if solid.material == "copper_winding"]
-        assert len(windings) == len(solids) == 8 and row == before
-        assert not any("insulation" in s.region or s.region in {"housing", "return_yoke"} for s in solids)
+        assert len(windings) == 8 and len(solids) == 20 and row == before
+        supports = [solid for solid in solids if solid.material != "copper_winding"]
+        assert len(supports) == 12 and {solid.material for solid in supports} == {"insulator"}
+        assert not any(s.region in {"housing", "return_yoke"} for s in solids)
         length = row.get("mechanical_coil_length_mm", row["effective_thickness_mm"])
         centres = row["interaction_centers_local_z_mm"]
         for index, centre in enumerate(centres):

@@ -144,6 +144,7 @@ class AppliedOperatingModes:
     condenser: OperatingModeDefinition
     projector: OperatingModeDefinition | None
     changed_devices: tuple[str, ...]
+    image_projection: object | None = None
 
     @property
     def summary(self) -> str:
@@ -153,7 +154,8 @@ class AppliedOperatingModes:
         convergence = self.condenser.targets.get(
             "achieved_convergence_sem_angle_mrad"
         )
-        relay_um = self.projector.targets.get("achieved_relay_error_um") if self.projector else None
+        relay_um = (self.projector.targets.get("achieved_relay_error_um")
+                    if self.projector and self.image_projection is None else None)
         details = []
         if convergence is not None:
             label = (
@@ -168,6 +170,8 @@ class AppliedOperatingModes:
             details.append(
                 "condenser preset not recalculated for current geometry or source model"
             )
+        if self.image_projection is not None:
+            details.append(self.image_projection.summary)
         suffix = "; ".join(details)
         return (
             (f"{self.condenser.name} + {self.projector.name}" if self.projector
@@ -180,9 +184,13 @@ class AppliedOperatingModes:
 class AppliedProjectorMode:
     projector: OperatingModeDefinition
     changed_devices: tuple[str, ...]
+    image_projection: object | None = None
 
     @property
     def summary(self) -> str:
+        if self.image_projection is not None:
+            return (self.image_projection.summary + " Scan controls retained; use "
+                    "Calibrate Descan (keep AC) for the new target optics.")
         return (f"Stored {self.projector.name} projector strengths applied. "
                 "Current objective and recording-plane conjugacy are unqualified; "
                 "no image focus or diffraction stability was recalculated. "
@@ -614,7 +622,11 @@ def _apply_operating_mode_pair(
             recalibrate_nanopulser_condenser,
         )
         condenser = recalibrate_nanopulser_condenser(state, condenser, catalog)
-    return AppliedOperatingModes(condenser, projector, changed)
+    image_projection = None
+    if projector is not None and projector.key == "imaging":
+        from temsim.optics.projector_reference import focus_image_projector
+        image_projection = focus_image_projector(state)
+    return AppliedOperatingModes(condenser, projector, changed, image_projection)
 
 
 def apply_operating_mode_pair(
@@ -697,11 +709,12 @@ def apply_projector_mode(
     state, projector_key: str, *, column_name: str | None = None,
     recording_name: str | None = None, catalog: OperatingModeCatalog | None = None,
 ) -> AppliedProjectorMode:
-    """Apply stored D/I/P1/P2 strengths while retaining the incident working point.
+    """Apply D/I/P1/P2 while retaining the incident working point.
 
-    This is a projector-mode switch, not a new conjugacy solution. In
-    particular the Objective, physical tip, receiver insertion and held scan
-    record remain owned by the current working point.
+    Image refocuses D/I to the active screen or Camera reference and validates
+    the first-order sample image. Diffraction applies its stored strengths.
+    The Objective, physical tip, receiver insertion and held scan record stay
+    owned by the current working point. Image callers should run asynchronously.
     """
     projector = mode_by_key(projector_key, catalog or load_operating_mode_catalog())
     if projector.family != "projector" or projector.key not in {"imaging", "diffraction"}:
@@ -722,10 +735,14 @@ def apply_projector_mode(
     try:
         changed = _apply_values(state, projector)
         state.projector_mode = {"imaging": "image", "diffraction": "diffraction"}[projector.key]
+        image_projection = None
+        if projector.key == "imaging":
+            from temsim.optics.projector_reference import focus_image_projector
+            image_projection = focus_image_projector(state)
     except Exception:
         for obj, values in saved:
             obj.__dict__.clear()
             obj.__dict__.update(values)
         state.projector_mode = previous_mode
         raise
-    return AppliedProjectorMode(projector, changed)
+    return AppliedProjectorMode(projector, changed, image_projection)

@@ -327,8 +327,17 @@ def _legacy_part_meshes(part, by_key, count, aperture_index=0, runtime=None):
     if solids is not None:
         from temsim.cad_mesh import meshes_from_solids
         meshes = meshes_from_solids(solids, count)
-        if part.get("branch_path_only") or part.get("mechanical_profile") == "transverse_eds_detector_array":
+        if part.get("deflector_support_profile"):
             from temsim.cad_mesh import annotate_material_faces
+            meshes = tuple(annotate_material_faces(mesh, part, runtime)
+                           if mesh.material_class != "copper_winding" else mesh for mesh in meshes)
+        if part.get("branch_path_only") or part.get("mechanical_profile") in {
+                "transverse_eds_detector_array", "objective_electronics_sleeve"}:
+            from temsim.cad_mesh import annotate_material_faces
+            # A reconstructed sleeve has closed material that supports cuts,
+            # while its engineering dimensions remain explicitly non-OEM.
+            # Preserve that evidence status; do not promote is_exact or admit
+            # the unknown envelopes handled by the fallback builder below.
             meshes = tuple(annotate_material_faces(mesh, part, runtime) for mesh in meshes)
         if part.get("branch_path_only"):
             if part.get("mechanical_profile") == "tapered_sector_prism":

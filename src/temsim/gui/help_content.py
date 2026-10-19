@@ -78,7 +78,8 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         "Operating modes and calculations",
         "Apply illumination and projection presets, choose accuracy and manage calculation scope.",
         ("Microprobe", "Nanoprobe", "Normal", "Large angle", "Image", "Diffraction",
-         "CPU", "GPU", "live tuning", "cutoff", "cancel", "cache", "Simulation"),
+         "CPU", "GPU", "live tuning", "cutoff", "cancel", "cache", "Simulation",
+         "crossover", "strong excitation", "weak excitation", "C2", "C3", "ADL"),
         """
         <p><b>Where:</b> <b>Optical operating preset</b>, the top calculation toolbar,
         <b>Simulation</b>, and <b>Live tuning → Calculation</b>.</p>
@@ -97,6 +98,29 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         <p>Normal and Large angle select different optical branches; their labels alone
         do not specify the achieved convergence angle. Read the preset status and
         measured beam result. Illumination and downstream projection have separate roles.</p>
+        <p>Applying <b>Image</b> refocuses downstream projection for the inserted
+        main screen or Camera, using the Camera as an optical reference when both
+        are retracted. The status reports the checked first-order image residual.
+        After changing the receiver while already in Image, use
+        <b>Focus Image at receiver</b> to keep illumination, Objective and receiver
+        insertion unchanged. Recalculate the beam and image afterwards.
+        Applying the same complete preset again can reset receiver insertion.</p>
+        <h3>Strong and weak lens excitation</h3>
+        <p>In this project, <b>strong excitation</b> means the beam forms a crossover
+        after that lens and before the next optical lens. <b>Weak excitation</b>
+        means there is no crossover in that interval. These descriptions refer to
+        the beam at the current working point; excitation percentage alone does not
+        determine the classification. Weak excitation does not mean the lens is off.</p>
+        <p>For <b>C3 + Probe Corrector, STEM Nanoprobe → Normal</b>, a crossover is
+        required between <b>C2 and C3</b>: C2 is strong in this convention.
+        <b>C3 is weak</b>, so there must be no crossover between <b>C3 and ADL</b>.
+        In the Large angle reference branch, C3 is strong and a crossover is also
+        required between C3 and ADL.</p>
+        <p>Confirm a crossover from the propagated beam's two-dimensional waist,
+        rather than a crossing of lines in one projection. Recheck the beam after
+        changing its source or optics; an unresolved interval is not evidence of
+        weak excitation.</p>
+        <h3>Calculation and reuse</h3>
         <p><b>Compute</b> applies across pages. Auto tries supported GPU work and can
         fall back to CPU; Require GPU reports a failure when the required backend is
         unavailable. Read the completed result's actual backend.</p>
@@ -137,6 +161,60 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         imaging geometry, including magnification and rotation; they do not establish
         transmission or diffraction intensity.</p>
         <p>See <a href="help:coherent_beam">Electron beam</a> for wave observations.</p>
+        """,
+    ),
+    HelpTopic(
+        "field_vectors",
+        "Component magnetic and electric field vectors",
+        "Inspect individual or combined captured fields, sections and electron force.",
+        ("magnetic", "electric", "vectors", "Lorentz", "force", "stigmator",
+         "hexapole", "deflector", "Wien", "section", "validity", "shared circuit"),
+        """
+        <p><b>Where:</b> the <b>Magnetic field</b> tab immediately after
+        <b>Physical Layout</b>, then <b>Component field vectors</b>.</p>
+        <ol>
+          <li>Calculate rays to capture the instrument settings. Choose one source
+          for its individual field, or check several sources for their sum.</li>
+          <li>Choose magnetic B, electric E, their overlay, or electron force.
+          For force, set the diagnostic electron's local kinetic energy and direction.</li>
+          <li>Choose an XY, XZ or YZ section and its position, or inspect the 3D
+          volume. Adjust the sampled extent and density to resolve a local component.</li>
+          <li>Enable <b>Physical models</b> and adjust <b>Model opacity</b> to compare
+          the field with captured coils, pole pieces and supports. <b>Fit models</b>
+          frames the hardware without changing field sampling; <b>Reset view</b>
+          returns to the sampled extent. Section views show material intersections;
+          vectors are drawn in front of the geometry.</li>
+          <li>Read source details and the valid/unknown sample counts. Changing
+          instrument inputs clears the obsolete vector result. Calculate again;
+          the next completed snapshot updates the view automatically.</li>
+        </ol>
+        <p>B is in tesla, E in volts per metre, and force in newtons. E and B have
+        separate display scales and cannot be directly added. Force is
+        <b>q(E + v × B)</b> with the negative electron charge. The selected energy
+        is a local test condition, not the final beam energy applied everywhere
+        in the accelerating gun. Selection changes this diagnostic only.</p>
+        <p>Arrow reference values stay fixed across recalculations so strength
+        changes remain visible. Use <b>Use current peaks</b> to rescale explicitly.
+        Hollow squares mean unavailable samples; circled dots and crosses show
+        positive and negative components along the named section-normal axis.
+        Dashed boxes show model support, not physical coil outlines.</p>
+        <p>Physical models use the same captured configuration as the field.
+        Shared hardware is drawn once. Additional child hardware is mechanical
+        context only and does not add unselected fields. Material models do not
+        expand field validity or turn an equivalent field into a winding-resolved solve.</p>
+        <p>Shared Descan/Image-Diffraction coils count once. Saturated joint
+        magnetic circuits are inseparable total fields and appear as grouped
+        sources. Gun electrostatics is also a joint electrode-boundary solution;
+        this view does not invent independent electrode fields.</p>
+        <p>Near-axis equivalent multipoles, finite uniform deflector fields and
+        imported or calculated field maps retain their own limitations. A CAD
+        winding mesh does not establish a coil-resolved field solution. Unknown
+        or unsupported regions are marked rather than replaced with zero.
+        Passive structures contribute only through the boundaries and materials
+        already represented by the selected solver. The active electrostatic
+        blanker and bent post-column filter lack a supported continuous field in
+        this straight-column display.</p>
+        <p><a href="help:rays">Ray diagnostics</a> describes the propagation views.</p>
         """,
     ),
     HelpTopic(
@@ -262,7 +340,8 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         "Scanning images and detectors",
         "Acquire a STEM frame, inspect detector reception and understand image-model limits.",
         ("STEM", "AC", "Descan", "raster", "HAADF", "BF", "DF", "camera",
-         "screen", "4D-STEM", "projected atoms", "counts", "Poisson", "image"),
+         "screen", "4D-STEM", "projected atoms", "counts", "Poisson", "image",
+         "Ronchigram", "Fit beam", "Detector blur", "sampling"),
         """
         <p><b>Where:</b> <b>Scanning Image</b> for raster acquisition;
         <b>Illuminating Image → Camera / screen</b> for recording-plane reception.</p>
@@ -285,6 +364,15 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         <p>Detector positions and inner/outer collection dimensions matter. A
         detector signal does not by itself prove the plane is a diffraction focus.
         Auto contrast changes display limits, not the stored signal.</p>
+        <p>For a static Camera / screen image, <b>Fit beam</b> and zoom resample
+        the retained particle arrivals within the displayed area. The pixel pitch
+        changes; no additional electrons are calculated. <b>Detector blur</b>
+        switches between the configured screen response and ideal arrival bins.
+        Total received current is for the whole receiver, even when zoomed.</p>
+        <p>Particle Diffraction can show angular distributions and geometric
+        distortions. It does not generate coherent Ronchigram interference.
+        A physical Ronchigram requires the aberrated electron wave, an explicit
+        specimen interaction and propagation to a diffraction plane.</p>
         <p>Expected counts and seeded Poisson counts describe different quantities.
         Changing their display selection does not acquire a new frame. The 4D-STEM
         area can inspect available diffraction cubes and integrate virtual annuli;

@@ -200,3 +200,52 @@ def test_partial_mode_request_applies_physical_mode_controls():
     assert state.energy_filter.energy_slit.inserted
     assert state.energy_filter.output_detector_inserted
     assert not state.energy_filter.zebra_detector.inserted
+
+
+def test_open_profile_entry_preserves_captured_body_and_restores_saved_width(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+    from temsim.gui import main_window as gui
+    from temsim.part_model_document import PartModelDocument
+    from temsim.paths import INSTRUMENT_CONFIG_ROOT
+    from temsim.shared_tip import copy_catalog_tree
+
+    root = tmp_path / "configs" / "instruments"
+    copy_catalog_tree(INSTRUMENT_CONFIG_ROOT, root)
+    draft = PartModelDocument(root / "column/C3_ProbeCorrector.toml")
+    draft.set_dimension(("parts", "condenser_stigmator", "length_mm"), 40.)
+    draft.set_dimension(("parts", "condenser_stigmator", "effective_length_mm"), 35.)
+    draft.save()
+    catalog = AssemblyCatalog(root)
+    selection = AssemblySelection("FEG", "C3 + Probe Corrector", "No Energy Filter")
+    state = default_state()
+    catalog.apply(state, selection)
+    state.condenser_stigmator.length_mm = 34.
+    state.condenser_stigmator.strength_x_percent = 7.
+    path = tmp_path / "saved-width.toml"
+    save_profile(path, state, selection)
+    state.condenser_stigmator.length_mm = 33.
+    state.condenser_stigmator.strength_x_percent = -2.
+    before = deepcopy(state.to_dict())
+    errors, selected, messages, previews = [], [], [], []
+    window = SimpleNamespace(
+        state=state, catalog=catalog, selection=selection, assembly=state._resolved_assembly,
+        _show_error=errors.append, _invalidate_direct_alignment=lambda: None,
+        _refresh_assembly_views=lambda: None, _sync_working_point_selectors=lambda: None,
+        schedule_preview=lambda: previews.append(True),
+        assembly_panel=SimpleNamespace(set_selection=selected.append),
+        log_output=SimpleNamespace(appendPlainText=messages.append),
+    )
+    window._copy_state_for_assembly = lambda: gui.MainWindow._copy_state_for_assembly(window)
+    # Exercise the actual action without opening a file picker or window.
+    monkeypatch.setattr(gui.QFileDialog, "getOpenFileName", lambda *args: (str(path), ""))
+
+    gui.MainWindow.open_profile(window)
+
+    assert not errors
+    assert window.state is not state
+    assert state.to_dict() == before
+    assert window.state.condenser_stigmator.mechanical_length_mm == 40.
+    assert window.state.condenser_stigmator.length_mm == 34.
+    assert window.state.condenser_stigmator.strength_x_percent == 7.
+    assert selected == [selection] and previews == [True]
+    assert messages and str(path) in messages[-1]

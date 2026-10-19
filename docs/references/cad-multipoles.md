@@ -17,6 +17,12 @@ this geometric allocation never rescales excitation or effective field length.
 
 ## Evidence
 
+The probe HP1/HP2 shape and explicit mechanical-dimension update reviewed on
+2026-10-18 is recorded in [Probe Corrector internal structure](cad-probe-corrector.md).
+It refines the existing 13-solid construction using inward-tapered pole noses,
+radial winding windows and saved independent dimensions. It does not change
+the image-corrector geometry or claim a new field calibration.
+
 The adopted HP geometry is specifically supported by [Müller et al. 2006](cad-library/Mueller2006a/简介.md): p.443 identifies six ferromagnetic pole pins, and Fig.3 on p.444 is a real hexapole photograph identifying poles, coils and yoke. This supports the main probe HP1/HP2 construction family; the paper's numerical dimensions are not substituted for this model. See [the current uniform-detail policy](CAD_DETAIL_POLICY.md). The other patent alternatives below do not by themselves authorize extra components in this instrument.
 
 The image HP1/HP2 model uses an explicitly labelled **CETCOR family inference**.
@@ -86,3 +92,122 @@ winding turns, wire cross section, cooling paths and mounting tolerances are not
 established by this ledger. A material-field solver or manufacturing claim would
 require those additional inputs. No source here certifies the precise internal
 construction of the installed CESCOR DPH1/DPH2, QPH or HP units.
+
+## Ordinary TEM deflectors: rigid-carrier update, 2026-10-18
+
+The four ordinary magnetic deflector hosts in the C3 + Probe Corrector column
+now select `rigid_insulating_carriers_pinned` explicitly. This is a common,
+source-backed engineering construction family, selected separately for each
+saved host. It is not an identification of the manufacturer's internals.
+Different optical functions alone do not establish different winding or
+support architectures.
+
+The existing two interaction centres and eight copper regions of each host
+are retained. All positions below are column-local millimetres, not
+source-absolute positions. Sizes are explicit engineering allocations within
+the current physical envelopes; none were measured from patent drawings.
+
+| Host | Two interaction centres (mm) | Support decision and allocation | Coverage |
+| --- | --- | --- | --- |
+| Condenser Deflector | 350 / 370 | Rigid insulating carriers in the existing larger winding envelope; 0.30 mm radial skin, 0.60 mm casing and 0.60 mm pin diameter | 8 copper + 12 passive solids |
+| BSh/BTlt Beam Deflector | 577.5 / 602.5 | Same supported construction family, independently selected for the shared shift/tilt host; 0.30 / 0.60 / 0.60 mm allocations | 8 copper + 12 passive solids |
+| AC Scan | 937.5 / 962.5 | Compact rigid carriers fitted to its existing winding envelope; 0.20 / 0.40 / 0.40 mm allocations | 8 copper + 12 passive solids |
+| Image/Diffraction Deflectors | 1224.4 / 1249.4 | Compact rigid carriers; 0.20 / 0.40 / 0.40 mm allocations; the de-scan channel remains on this physical host. C3 + Probe Corrector placement updated by the Normal STEM finite-field study | 8 copper + 12 passive solids |
+| De-scan control | Same as Image/Diffraction | Shared control, not a fifth physical host | 0 additional solids |
+
+The FEG gun separately contains a two-station deflector at gun-local centres
+402 / 418 mm, also eight copper solids. The EnergyFilter camera deflector
+instead has two electrostatic electrode solids in its bent branch frame; it
+must not receive a magnetic winding support by name alone. NoEnergyFilter
+has no additional independently defined deflector in the inspected module.
+The backend inventory is saved in
+`outputs/probe_corrector_auxiliary_20261018/ordinary-deflector-inventory.json`.
+
+Before this update, each station contained only four 120-degree bulk saddle
+loops at fixed radial fractions of the saved envelope. Their region identities,
+shapes, angular orientation and axial extents remain the comparison baseline.
+The ordinary-deflector support profile does not apply automatically to the
+gun, electrostatic filter parts, unselected instrument configurations or
+Probe Corrector DPH/DP inserts.
+
+| Primary evidence | Supported conclusion | Boundary for this model |
+| --- | --- | --- |
+| [JEOL, double-deflection system](https://www.jeol.com/words/emterms/20121023.075958.php) | Two axial deflection stages cooperate for alignment, illumination and STEM operations. | Confirms the optical layout class, not support dimensions or a universal winding construction. |
+| [JEOL, de-scan](https://www.jeol.com/words/emterms/20160713.103817.php) | Downstream two-stage deflection can compensate the position/angle changes caused by illumination scanning. | The current software's shared Image/Diffraction host is a project configuration; the glossary does not prove that every microscope uses this sharing. |
+| [Nikon, US5994704A, Figs. 1–4](https://patents.google.com/patent/US5994704A/en) | Concentric insulating carriers hold orthogonal saddle conductors, separated by an insulating cylinder. Two insulating radial pins register their relative angle; round holes are an explicit alternative to adjustment slots. Fig. 4 describes an insulating casing, whereas Fig. 2 prefers ferrite. | The model selects the insulating-casing variant. Carrier grades, dimensions and placement in this TEM are engineering choices. The Fig. 3 aluminium cylinder is a temporary manufacturing mandrel, not a retained part. |
+| [Carl Zeiss, US6642525B2, Figs. 2–4, 8 and 12](https://patents.google.com/patent/US6642525B2/en) | Several winding arrangements and ferrite-ring stacks are described, including ceramic spacers. Fig. 12 supplies a TEM embodiment. | The TEM example uses a particular variable-axis arrangement. It does not establish that all beam-shift or scan coils use ring stacks. |
+
+### Material representation and fit
+
+Each station adds six passive regions: two rigid insulating carriers with
+copper-shaped pockets, one insulating spacer, one insulating casing and two
+insulating registration pins. The pins occupy 45-degree and 225-degree
+radial directions at the station midplane, with matching round bores. Their
+ends follow the carrier radial boundaries. These azimuths and all pin sizes
+are allocated to avoid the existing copper and clear bore; they are not
+manufacturer dimensions. No support extends the station's axial allocation.
+
+`deflector_support_radial_skin_thickness_mm` sets the continuous radial
+backing of each carrier. This keeps the pocketed carrier connected. It is
+an engineering embedding of the existing bulk copper, rather than a literal
+model of the patent's preferred through-wall electroplating process. The
+old closed copper loops remain winding-package volumes: electrical terminal
+gaps, individual turns, wire insulation and external leads are unresolved.
+
+`deflector_support_casing_thickness_mm` and
+`deflector_support_pin_diameter_mm` save the other two allocated dimensions.
+Each selected host records
+`deflector_support_geometry_status = "engineering_reconstruction_not_oem"`,
+the primary URL in `deflector_support_source`, and its scope in
+`deflector_support_source_note`.
+
+With the saved values, Condenser and BSh/BTlt supports have a 25.00 mm material
+bore and 47.00 mm outer diameter; AC and Image/Diffraction supports have a
+22.32 mm material bore and 33.44 mm outer diameter. These dimensions describe
+the added material assembly, not a replacement for the optical clear aperture
+or the host's larger configured envelope. The four hosts contain 80 material
+regions in total: the original 32 copper regions and 48 added passive regions.
+
+The same TOML, `SolidSpec`, material-category, native 3D, edit/save and STEP
+paths carry this structure. Insulating material categories do not establish
+ceramic/polymer grades, breakdown strength or thermal performance. Internal
+pins express the relative fixation of the concentric carriers; axial retention
+of the complete assembly in the microscope remains undocumented. No extra
+magnetic core, mounting screw, clamp, flange or field excitation is inferred.
+Descan retains its existing Image/Diffraction ownership and receives no
+duplicate coil or mechanical host.
+
+### Backend verification for the saved configuration
+
+The output location is `outputs/ordinary_deflectors_20261018/`. The frozen
+baseline contains 32 copper regions, while the updated four-host catalog
+contains 80 regions. `ordinary-deflector-comparison.png` shows the native
+before/after sections; `ordinary-deflector-details.png` isolates the two
+carriers and the spacer/pin arrangement. These are offscreen CPU renders,
+without desktop automation.
+
+- `focused-regression.xml`: 353 tests passed, with no failures or skips.
+  Coverage includes ordinary and corrector supports, shared fields and
+  dimensions, transactional editing, native geometry and parameter provenance.
+  The old shared-deflector test fixtures were aligned with the existing
+  Calibrate Descan (keep AC) contract; production calibration was not changed.
+- `step/step-manifest.json`: four individual STEP files and one combined
+  assembly passed analytic B-rep validity and STEP metadata/volume/bounds
+  round-trip checks. All 80 material bodies are valid.
+- `collision/report.json`: 89 bodies, including the four hosts, three adjacent
+  material bodies and six scoped portions of the saved continuous tube;
+  448 exact pair evaluations, zero volume intersections, 120 boundary contacts
+  and no unresolved material pairs. The real tube profile and aperture-entry
+  adapter are used. Tube material is included over each station's actual
+  axial span and is not invented beyond the saved tube extent.
+- `preservation-verification.json`: all 193 pre-existing full-column material
+  records are unchanged. The only configuration changes are the 28 support
+  fields on the four selected hosts; the 48 new passive bodies add no optical
+  sources. Descan's shared host and all optical configuration values are intact.
+
+These results validate the current engineering geometry and software paths,
+not OEM construction, a material-field calibration or arbitrary future
+mechanical poses. Reproduce the catalog and native previews with
+`scripts/export_ordinary_deflector_models.py`, using the frozen
+`before-catalog.json` as its baseline; the existing STEP exporter and exact
+assembly validator consume its `catalog.json` and `collision-input.json`.

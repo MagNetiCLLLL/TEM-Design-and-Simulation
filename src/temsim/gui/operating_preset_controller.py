@@ -9,7 +9,9 @@ from temsim import input_io
 from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal
 
 from temsim.column.state_layout import apply_physical_layout_to_state
-from temsim.operating_modes import apply_condenser_mode, apply_operating_mode_pair, compatible_modes
+from temsim.operating_modes import (
+    apply_condenser_mode, apply_operating_mode_pair, apply_projector_mode, compatible_modes,
+)
 
 
 class _Signals(QObject):
@@ -20,16 +22,20 @@ class _Signals(QObject):
 
 class _Worker(QRunnable):
     def __init__(self, generation, state_type, payload, catalog, selection,
-                 condenser_key, projector_key, load_assembly):
+                 condenser_key, projector_key, load_assembly, projector_only=False,
+                 resolved_assembly=None):
         super().__init__()
         self.generation = generation
         self.state_type = state_type
         self.payload = payload
+        self._archive_inputs = payload.get("archived_inputs") if projector_only else None
         self.catalog = catalog
         self.selection = selection
         self.condenser_key = condenser_key
         self.projector_key = projector_key
         self.load_assembly = load_assembly
+        self.projector_only = projector_only
+        self.resolved_assembly = resolved_assembly
         self.cancel_event = Event()
         self.signals = _Signals()
 
@@ -37,13 +43,29 @@ class _Worker(QRunnable):
     def run(self):
         started = perf_counter()
         try:
-            state = self.state_type.from_dict(self.payload)
+            if self.cancel_event.is_set():
+                return
+            if self.projector_only:
+                from temsim.instrument_snapshot import decode_instrument
+                # Preserve the complete incident graph, including held drives,
+                # edited geometry and source quadrature. A projector switch must
+                # not rebuild the column from assembly defaults.
+                state = decode_instrument(self.payload)
+            else:
+                if self.resolved_assembly is None:
+                    state = self.state_type.from_dict(self.payload)
+                else:
+                    state = self.state_type.from_dict(
+                        self.payload, resolved_assembly=self.resolved_assembly)
             state._tuning_cancelled = self.cancel_event.is_set
             if self.load_assembly:
                 self.catalog.apply(state, self.selection)
-            else:
-                # State deserialization starts with the default module root.
-                # The solve must use the selected instrument's geometry too.
+            elif not self.projector_only:
+                # This is a restored operating state, not a live TOML edit.
+                # Rebinding its selected catalog must retain the saved field
+                # widths even when that catalog has different defaults.
+                for component in getattr(state, "stigmators", ()):
+                    vars(component).pop("_manifest_effective_length_mm", None)
                 apply_physical_layout_to_state(
                     state, assembly_root=self.catalog.root,
                     preserve_operating_parameters=True,
@@ -55,7 +77,7 @@ class _Worker(QRunnable):
                 "projector", self.selection.column, self.selection.recording
             )
             available = (
-                self.condenser_key in {mode.key for mode in condenser_modes}
+                (self.projector_only or self.condenser_key in {mode.key for mode in condenser_modes})
                 and (self.projector_key is None
                      or self.projector_key in {mode.key for mode in projector_modes})
             )
@@ -65,12 +87,15 @@ class _Worker(QRunnable):
             if available:
                 arguments = dict(column_name=self.selection.column,
                                  recording_name=self.selection.recording)
-                if self.projector_key is None:
+                if self.projector_only:
+                    result = apply_projector_mode(state, self.projector_key, **arguments)
+                elif self.projector_key is None:
                     result = apply_condenser_mode(state, self.condenser_key, **arguments)
                 else:
                     result = apply_operating_mode_pair(
                         state, self.condenser_key, self.projector_key, **arguments)
-            apply_physical_layout_to_state(state, assembly_root=self.catalog.root)
+            if not self.projector_only:
+                apply_physical_layout_to_state(state, assembly_root=self.catalog.root)
             if self.cancel_event.is_set():
                 return
             if hasattr(state, "_tuning_cancelled"):
@@ -98,15 +123,24 @@ class OperatingPresetController(QObject):
         self._generation = 0
 
     def submit(self, state, catalog, selection, condenser_key, projector_key,
-               *, load_assembly=False):
+               *, load_assembly=False, projector_only=False):
+        if projector_only and (load_assembly or projector_key is None):
+            raise ValueError("A projector-only calculation requires a projection and the current assembly")
+        if projector_only:
+            from temsim.instrument_snapshot import encode_instrument
+            payload = encode_instrument(state)
+        else:
+            payload = state.to_dict()
         self.invalidate_pending()
         worker = _Worker(
-            self._generation, type(state), state.to_dict(), catalog, selection,
-            condenser_key, projector_key, load_assembly,
+            self._generation, type(state), payload, catalog, selection,
+            condenser_key, projector_key, load_assembly, projector_only,
+            resolved_assembly=None if projector_only else getattr(state, "_resolved_assembly", None),
         )
         from temsim.immutable_json import json_digest
         worker.job_input_identity = json_digest(dict(payload=worker.payload, selection=selection,
-            condenser=condenser_key, projector=projector_key, load_assembly=load_assembly))
+            condenser=condenser_key, projector=projector_key, load_assembly=load_assembly,
+            projector_only=projector_only, resolved_assembly=worker.resolved_assembly))
         self._active_cancel = worker.cancel_event
         worker.signals.result.connect(self._accept_result)
         worker.signals.error.connect(self._accept_error)

@@ -162,6 +162,14 @@ maximum_radius_mm = 2.0
 [[parts]]
 order = 8
 key = "condenser_deflector"
+# Source-backed structure family; dimensions and installation are engineering choices.
+deflector_support_profile = "rigid_insulating_carriers_pinned"
+deflector_support_geometry_status = "engineering_reconstruction_not_oem"
+deflector_support_source = "https://patents.google.com/patent/US5994704A/en"
+deflector_support_source_note = "Two 10 mm stations; retained condenser winding allocation. US5994704A Figs 1-4 supports rigid insulating carriers, spacer, round-hole registration pins and the insulating-case variant. Bulk embedding and dimensions are not OEM; internal pins do not establish external host fastening."
+deflector_support_radial_skin_thickness_mm = 0.3
+deflector_support_casing_thickness_mm = 0.6
+deflector_support_pin_diameter_mm = 0.6
 name = "Condenser Deflector"
 branch = "common"
 local_start_z_mm = 340.0
@@ -213,7 +221,7 @@ layout_owner = "probe_corrector"
 physical_host_status = "modelled"
 physical_host_key = "probe_dph2_coils"
 axial_relation_note = "Same optical Z as probe_hp2_hexapole; contained axially inside its envelope. DPH is not a separate upstream stage."
-radial_relation_note = "Inside to outside at the common centre: 20 mm vacuum passage; 20.5 mm liner OD; DPH windings ID 22.2 / OD 23.8 mm; HP opening ID 24 mm. Winding and HP dimensions are provisional model allocations."
+radial_relation_note = "Inside to outside at the common centre: continuous tube ID 5.76 / OD 19.2 mm; declared clear-bore convention 20 mm; laminate ID 22.12 / OD 23.88 mm around copper ID 22.2 / OD 23.8 mm; HP opening ID 24 mm. Reconstruction dimensions, not OEM measurements; host fastening unverified."
 
 name = "DPH2 Deflector"
 branch = "illumination"
@@ -304,6 +312,23 @@ mechanical_inner_diameter_mm = 24.0
 effective_length_mm = 6.0
 optical_reference_local_z_mm = 694.5
 
+# Source-backed six-pin topology; dimensions are engineering reconstruction, not OEM.
+mechanical_hexapole_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_hexapole_geometry_source = "Mueller et al. 2006 p.443 and p.444 Fig.3: six radial pole pins with inward-tapering noses, radial-axis bulk windings and a shared yoke. Exact pole contour and internal dimensions are model choices; optical effective_length_mm is independent."
+mechanical_hexapole_geometry_source_urls = ["https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf"]
+mechanical_hexapole_pole_length_mm = 14.56
+mechanical_hexapole_tip_width_mm = 2.448
+mechanical_hexapole_root_width_mm = 4.896
+mechanical_hexapole_taper_length_mm = 8.925
+mechanical_hexapole_stem_height_mm = 7.28
+mechanical_hexapole_yoke_thickness_mm = 5.61
+mechanical_hexapole_coil_radial_inset_mm = 10.71
+mechanical_hexapole_coil_radial_length_mm = 6.885
+mechanical_hexapole_coil_width_mm = 12.24
+mechanical_hexapole_coil_height_mm = 12.74
+mechanical_hexapole_coil_window_width_mm = 6.885
+mechanical_hexapole_coil_window_height_mm = 8.736
+
 [[parts]]
 order = 18
 key = "probe_tl22_lens"
@@ -341,7 +366,7 @@ layout_owner = "probe_corrector"
 physical_host_status = "modelled"
 physical_host_key = "probe_dp22_coils"
 axial_relation_note = "Downstream of TL22; upstream of the central relay region and DP21."
-radial_relation_note = "X/Y winding insert outside the 20 mm vacuum passage and liner; no independent iron housing inferred."
+radial_relation_note = "X/Y winding laminate outside the continuous tube OD 19.2 mm and declared clear-bore convention 20 mm; no independent iron housing or host fastener inferred."
 
 name = "DP22 Deflector"
 branch = "illumination"
@@ -404,7 +429,7 @@ layout_owner = "probe_corrector"
 physical_host_status = "modelled"
 physical_host_key = "probe_dp21_coils"
 axial_relation_note = "Downstream of the central relay region and DP22; upstream of TL21."
-radial_relation_note = "X/Y winding insert outside the 20 mm vacuum passage and liner; no independent iron housing inferred."
+radial_relation_note = "X/Y winding laminate outside the continuous tube OD 19.2 mm and declared clear-bore convention 20 mm; no independent iron housing or host fastener inferred."
 
 name = "DP21 Deflector"
 branch = "illumination"
@@ -455,7 +480,7 @@ layout_owner = "probe_corrector"
 physical_host_status = "modelled"
 physical_host_key = "probe_dph1_coils"
 axial_relation_note = "Same optical Z as probe_hp1_hexapole; contained axially inside its envelope. DPH is not a separate upstream stage."
-radial_relation_note = "Inside to outside at the common centre: 20 mm vacuum passage; 20.5 mm liner OD; DPH windings ID 22.2 / OD 23.8 mm; HP opening ID 24 mm. Winding and HP dimensions are provisional model allocations."
+radial_relation_note = "Inside to outside at the common centre: continuous tube ID 5.76 / OD 19.2 mm; declared clear-bore convention 20 mm; laminate ID 22.12 / OD 23.88 mm around copper ID 22.2 / OD 23.8 mm; HP opening ID 24 mm. Reconstruction dimensions, not OEM measurements; host fastening unverified."
 
 name = "DPH1 Deflector"
 branch = "illumination"
@@ -506,6 +531,23 @@ mechanical_inner_diameter_mm = 24.0
 effective_length_mm = 10.0
 optical_reference_local_z_mm = 850.85
 
+# Source-backed six-pin topology; dimensions are engineering reconstruction, not OEM.
+mechanical_hexapole_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_hexapole_geometry_source = "Mueller et al. 2006 p.443 and p.444 Fig.3: six radial pole pins with inward-tapering noses, radial-axis bulk windings and a shared yoke. Exact pole contour and internal dimensions are model choices; optical effective_length_mm is independent."
+mechanical_hexapole_geometry_source_urls = ["https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf"]
+mechanical_hexapole_pole_length_mm = 14.48
+mechanical_hexapole_tip_width_mm = 2.448
+mechanical_hexapole_root_width_mm = 4.896
+mechanical_hexapole_taper_length_mm = 8.925
+mechanical_hexapole_stem_height_mm = 7.24
+mechanical_hexapole_yoke_thickness_mm = 5.61
+mechanical_hexapole_coil_radial_inset_mm = 10.71
+mechanical_hexapole_coil_radial_length_mm = 6.885
+mechanical_hexapole_coil_width_mm = 12.24
+mechanical_hexapole_coil_height_mm = 12.67
+mechanical_hexapole_coil_window_width_mm = 6.885
+mechanical_hexapole_coil_window_height_mm = 8.688
+
 [[parts]]
 order = 27
 key = "probe_hpol_hexapole"
@@ -555,7 +597,7 @@ layout_owner = "probe_corrector"
 physical_host_status = "modelled"
 physical_host_key = "probe_dp11_coils"
 axial_relation_note = "Downstream of HP1 and the HPol/QPol field markers; upstream of TL1 (stored key probe_tl12_lens)."
-radial_relation_note = "X/Y winding insert outside the 20 mm vacuum passage and liner; no independent iron housing inferred."
+radial_relation_note = "X/Y winding laminate outside the continuous tube OD 19.2 mm and declared clear-bore convention 20 mm; no independent iron housing or host fastener inferred."
 
 name = "DP11 Deflector"
 branch = "illumination"
@@ -709,6 +751,14 @@ parent_key = "objective_lens"
 [[parts]]
 order = 13
 key = "beam_deflector"
+# Source-backed structure family; dimensions and installation are engineering choices.
+deflector_support_profile = "rigid_insulating_carriers_pinned"
+deflector_support_geometry_status = "engineering_reconstruction_not_oem"
+deflector_support_source = "https://patents.google.com/patent/US5994704A/en"
+deflector_support_source_note = "Two 15 mm stations; retained shared beam-shift and beam-tilt winding allocation. US5994704A Figs 1-4 supports rigid insulating carriers, spacer, round-hole registration pins and the insulating-case variant. Bulk embedding and dimensions are not OEM; internal pins do not establish external host fastening."
+deflector_support_radial_skin_thickness_mm = 0.3
+deflector_support_casing_thickness_mm = 0.6
+deflector_support_pin_diameter_mm = 0.6
 name = "BSh/BTlt Beam Shift/Tilt Deflector"
 branch = "common"
 local_start_z_mm = 570.0
@@ -726,6 +776,14 @@ mechanical_inter_coil_gap_mm = 10.0
 [[parts]]
 order = 35
 key = "ac_deflector"
+# Source-backed structure family; dimensions and installation are engineering choices.
+deflector_support_profile = "rigid_insulating_carriers_pinned"
+deflector_support_geometry_status = "engineering_reconstruction_not_oem"
+deflector_support_source = "https://patents.google.com/patent/US5994704A/en"
+deflector_support_source_note = "Two compact 15 mm scan stations; retained objective-relative placement. US5994704A Figs 1-4 supports rigid insulating carriers, spacer, round-hole registration pins and the insulating-case variant. Bulk embedding and dimensions are not OEM; internal pins do not establish external host fastening."
+deflector_support_radial_skin_thickness_mm = 0.2
+deflector_support_casing_thickness_mm = 0.4
+deflector_support_pin_diameter_mm = 0.4
 scan_structure = "two_axial_xy_dipole_pairs"
 field_basis = "column_xy"
 drive_clock = "shared_ac_raster"
@@ -872,9 +930,6 @@ drive_clock = "shared_ac_raster"
 field_geometry_status = "ideal_kicks_at_declared_interaction_centres_not_measured_coil_map"
 name = "Descan control channel"
 branch = "image"
-# Normal STEM finite-field study (2026-10-18): 3 mm after the lower pole,
-# fixed SAA/screen positions, shared Descan position-and-angle calibration.
-# Engineering placement, not measured OEM geometry; see descan-normal study.
 local_start_z_mm = 1216.9
 local_center_z_mm = 1236.9
 local_end_z_mm = 1256.9
@@ -923,6 +978,14 @@ parent_key = "objective_lens"
 [[parts]]
 order = 43
 key = "image_diffraction_deflector"
+# Source-backed structure family; dimensions and installation are engineering choices.
+deflector_support_profile = "rigid_insulating_carriers_pinned"
+deflector_support_geometry_status = "engineering_reconstruction_not_oem"
+deflector_support_source = "https://patents.google.com/patent/US5994704A/en"
+deflector_support_source_note = "Two compact 15 mm imaging stations; Descan remains a control on this same physical host. US5994704A Figs 1-4 supports rigid insulating carriers, spacer, round-hole registration pins and the insulating-case variant. Bulk embedding and dimensions are not OEM; internal pins do not establish external host fastening."
+deflector_support_radial_skin_thickness_mm = 0.2
+deflector_support_casing_thickness_mm = 0.4
+deflector_support_pin_diameter_mm = 0.4
 name = "Image/Diffraction Deflectors"
 branch = "image"
 # Normal STEM finite-field study (2026-10-18): 3 mm after the lower pole,
@@ -1916,6 +1979,12 @@ mechanical_part_role = "deflector_coil_insert"
 material_class = "copper_winding"
 # Native reconstruction dimensions; not measured OEM windings.
 winding_layer_thickness_mm = 0.32
+# Source-backed laminate class; thicknesses are engineering allocations.
+winding_support_profile = "bonded_flexible_pcb_equivalent"
+winding_support_carrier_thickness_mm = 0.04
+winding_support_cover_thickness_mm = 0.04
+winding_support_source = "CEOS US20090079531A1 Figs 1/4/6: flexible carrier, insulation and layer bonding. Radial bulk-stack equivalent; not a detailed winding map."
+winding_support_host_fixation_status = "unverified; interlayer bond fixes layers only, no inferred host fastener"
 winding_angular_span_deg = 120.0
 winding_band_width_mm = 1.16
 local_start_z_mm = 687.25
@@ -1948,6 +2017,12 @@ mechanical_part_role = "deflector_coil_insert"
 material_class = "copper_winding"
 # Native reconstruction dimensions; not measured OEM windings.
 winding_layer_thickness_mm = 0.32
+# Source-backed laminate class; thicknesses are engineering allocations.
+winding_support_profile = "bonded_flexible_pcb_equivalent"
+winding_support_carrier_thickness_mm = 0.04
+winding_support_cover_thickness_mm = 0.04
+winding_support_source = "CEOS US20090079531A1 Figs 1/4/6: flexible carrier, insulation and layer bonding. Radial bulk-stack equivalent; not a detailed winding map."
+winding_support_host_fixation_status = "unverified; interlayer bond fixes layers only, no inferred host fastener"
 winding_angular_span_deg = 120.0
 winding_band_width_mm = 1.16
 local_start_z_mm = 843.6
@@ -1980,6 +2055,12 @@ mechanical_part_role = "deflector_coil_insert"
 material_class = "copper_winding"
 # Native reconstruction dimensions; not measured OEM windings.
 winding_layer_thickness_mm = 0.32
+# Source-backed laminate class; thicknesses are engineering allocations.
+winding_support_profile = "bonded_flexible_pcb_equivalent"
+winding_support_carrier_thickness_mm = 0.04
+winding_support_cover_thickness_mm = 0.04
+winding_support_source = "CEOS US20090079531A1 Figs 1/4/6: flexible carrier, insulation and layer bonding. Radial bulk-stack equivalent; not a detailed winding map."
+winding_support_host_fixation_status = "unverified; interlayer bond fixes layers only, no inferred host fastener"
 winding_angular_span_deg = 120.0
 winding_band_width_mm = 1.16
 local_start_z_mm = 729.1
@@ -2009,6 +2090,12 @@ mechanical_part_role = "deflector_coil_insert"
 material_class = "copper_winding"
 # Native reconstruction dimensions; not measured OEM windings.
 winding_layer_thickness_mm = 0.32
+# Source-backed laminate class; thicknesses are engineering allocations.
+winding_support_profile = "bonded_flexible_pcb_equivalent"
+winding_support_carrier_thickness_mm = 0.04
+winding_support_cover_thickness_mm = 0.04
+winding_support_source = "CEOS US20090079531A1 Figs 1/4/6: flexible carrier, insulation and layer bonding. Radial bulk-stack equivalent; not a detailed winding map."
+winding_support_host_fixation_status = "unverified; interlayer bond fixes layers only, no inferred host fastener"
 winding_angular_span_deg = 120.0
 winding_band_width_mm = 1.168
 local_start_z_mm = 772.6
@@ -2038,6 +2125,12 @@ mechanical_part_role = "deflector_coil_insert"
 material_class = "copper_winding"
 # Native reconstruction dimensions; not measured OEM windings.
 winding_layer_thickness_mm = 0.32
+# Source-backed laminate class; thicknesses are engineering allocations.
+winding_support_profile = "bonded_flexible_pcb_equivalent"
+winding_support_carrier_thickness_mm = 0.04
+winding_support_cover_thickness_mm = 0.04
+winding_support_source = "CEOS US20090079531A1 Figs 1/4/6: flexible carrier, insulation and layer bonding. Radial bulk-stack equivalent; not a detailed winding map."
+winding_support_host_fixation_status = "unverified; interlayer bond fixes layers only, no inferred host fastener"
 winding_angular_span_deg = 120.0
 winding_band_width_mm = 1.168
 local_start_z_mm = 889

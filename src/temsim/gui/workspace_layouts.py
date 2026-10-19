@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from PySide6.QtCore import QByteArray, QEvent, QObject, QSignalBlocker, QTimer
 from PySide6.QtGui import QActionGroup
-from PySide6.QtWidgets import QDockWidget, QInputDialog, QSplitter, QTabWidget
+from PySide6.QtWidgets import QDockWidget, QInputDialog, QSplitter, QTabWidget, QWidget
 
 
 class WorkspaceLayouts(QObject):
@@ -32,7 +32,6 @@ class WorkspaceLayouts(QObject):
         self.tabs = self._named_widgets(QTabWidget)
         workspace = window.workspace
         self.toggles = {
-            "magnetic": workspace.magnetic_field_toggle,
             "magnetic_link_ray": workspace.magnetic_field.field_lines.link_view,
             "transverse": workspace.transverse_beam_toggle,
             "conjugate": workspace.conjugate_planes_toggle,
@@ -85,7 +84,9 @@ class WorkspaceLayouts(QObject):
 
     def _ray_variant(self):
         workspace = self.window.workspace
-        base = f"m{int(workspace.magnetic_field_toggle.isChecked())}t{int(workspace.transverse_beam_toggle.isChecked())}"
+        # Magnetic field is a separate main tab. Retain the m0 prefix so
+        # existing saved ray-panel arrangements keep their stable keys.
+        base = f"m0t{int(workspace.transverse_beam_toggle.isChecked())}"
         conjugate = workspace.conjugate_planes_toggle.isChecked()
         interaction = workspace.interaction_detail_toggle.isChecked()
         # Keep existing saved m/t proportions for the original arrangement.
@@ -95,6 +96,39 @@ class WorkspaceLayouts(QObject):
 
     def _variant(self, name):
         return self.ray_variant if name in self.RAY_SPLITTERS else "default"
+
+    def _migrate_splitter_states(self, raw, toggles):
+        if not isinstance(raw, dict):
+            return {}
+        legacy_magnetic = isinstance(toggles, dict) and toggles.get("magnetic") is True
+        result = {}
+        for name, variants in raw.items():
+            if not isinstance(variants, dict):
+                continue
+            valid = {key: state for key, state in variants.items()
+                     if isinstance(key, str) and isinstance(state, QByteArray)}
+            if name in self.RAY_SPLITTERS:
+                # The two former magnetic visibility variants now describe
+                # the same ray layout. Prefer the variant the user last used.
+                preferred = "m1" if legacy_magnetic else "m0"
+                ordered = sorted(valid, key=lambda key: key.startswith(preferred))
+                valid = {
+                    ("m0" + key[2:] if key.startswith(("m0t", "m1t")) else key): valid[key]
+                    for key in ordered
+                }
+            if name == "rayDiagramVerticalSplitter" and name in self.splitters:
+                # Qt restores the remaining first two panes from its legacy
+                # three-pane state. Re-save through its public API to discard
+                # the removed field pane while keeping sizes and splitter flags.
+                live = self.splitters[name]
+                migration = QSplitter(live.orientation())
+                for _ in range(live.count()):
+                    migration.addWidget(QWidget())
+                valid = {key: migration.saveState() for key, state in valid.items()
+                         if migration.restoreState(state)}
+                migration.deleteLater()
+            result[name] = valid
+        return result
 
     def _remember(self, name):
         widget = self.splitters[name]
@@ -241,10 +275,7 @@ class WorkspaceLayouts(QObject):
                     self.toggles[name].setChecked(checked)
             self.ray_variant = self._ray_variant()
             raw = data.get("splitters", {})
-            self.splitter_states = {
-                name: {variant: state for variant, state in variants.items() if isinstance(state, QByteArray)}
-                for name, variants in raw.items() if isinstance(variants, dict)
-            } if isinstance(raw, dict) else {}
+            self.splitter_states = self._migrate_splitter_states(raw, toggles)
             self.window._live_tuning_layout_initialized = bool(data.get("live_width_initialized", True))
             # Restoring presentation tabs must not emit computation requests.
             tab_states = data.get("tabs", {})

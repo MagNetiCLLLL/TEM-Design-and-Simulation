@@ -38,6 +38,7 @@ class _NavigationTabs(QTabWidget):
 class AssemblyPanel(QWidget):
     configuration_requested = Signal()
     operating_mode_requested = Signal(str, str)
+    image_projection_requested = Signal()
     condenser_mode_requested = Signal(str)
     direct_alignment_requested = Signal(str, float)
     component_selected = Signal(object)
@@ -98,6 +99,16 @@ class AssemblyPanel(QWidget):
             "applyOperatingModeButton"
         )
         mode_form.addRow(self.apply_operating_mode_button)
+        self.focus_image_button = QPushButton("Focus Image at receiver")
+        self.focus_image_button.setObjectName("focusImageReceiverButton")
+        self.focus_image_button.setToolTip(
+            "Refocus Image projection at the inserted screen or Camera while keeping "
+            "illumination, Objective and receiver insertion unchanged. "
+            "When both are retracted, use the Camera optical reference."
+        )
+        self.focus_image_button.setEnabled(False)
+        self.focus_image_button.clicked.connect(self.image_projection_requested)
+        mode_form.addRow(self.focus_image_button)
         self.operating_mode_status = QLabel()
         self.operating_mode_status.setObjectName("operatingModeStatus")
         self.operating_mode_status.setWordWrap(True)
@@ -364,6 +375,11 @@ class AssemblyPanel(QWidget):
         self.operating_mode_status.setText(text)
 
     def set_direct_alignment_state(self, state) -> None:
+        condenser = ("micro_probe" if state.illumination_mode == "TEM" else
+                     "nano_probe_large_angle" if getattr(state, "nanoprobe_range", "normal") == "large_angle"
+                     else "nano_probe")
+        self._image_focus_modes = (condenser, "imaging" if state.projector_mode == "image" else "diffraction")
+        self._update_image_focus_button()
         available_modes = {
             str(combo.itemData(index))
             for combo in (self.probe_mode, self.nanoprobe_range_combo, self.projector_mode)
@@ -380,6 +396,16 @@ class AssemblyPanel(QWidget):
 
     def set_direct_alignment_busy(self, key: str | None) -> None:
         self.direct_alignment_panel.set_busy(key)
+        self._image_focus_busy = key is not None
+        self._update_image_focus_button()
+
+    def _update_image_focus_button(self) -> None:
+        selected = (self.selected_condenser_mode_key(), self.projector_mode.currentData())
+        self.focus_image_button.setEnabled(
+            selected[1] == "imaging"
+            and selected == getattr(self, "_image_focus_modes", None)
+            and not getattr(self, "_image_focus_busy", False)
+        )
 
     def set_direct_alignment_message(
         self, message: str, *, error: bool = False
@@ -389,6 +415,7 @@ class AssemblyPanel(QWidget):
         )
 
     def _update_operating_mode_description(self, _index: int = -1) -> None:
+        self._update_image_focus_button()
         nano_selected = self.probe_mode.currentData() == "nano_probe"
         self.nanoprobe_range_combo.setVisible(nano_selected)
         self.nanoprobe_range_label.setVisible(nano_selected)

@@ -31,10 +31,21 @@ A1/A2 coarse/fine 的独立物理驱动，`gui/corrector_channels.py` 提供显�
 `field-ui` 与 `coherent-development` 验收范围。局部响应与驱动一致性不替代有限探针
 聚焦、完整样品衍射或实验资格验证。
 
-2026-10-08 投影切换与独立 Descan 校准：`operating_modes.apply_projector_mode()`
+2026-10-17 主屏 Image 与采样修复：`optics/projector_reference.py` 按实际插入的
+TEM 接收面求样品一阶像共轭，独立细步复核后提交 D/I；Image 切换与显式
+**Focus Image at receiver** 通过后台任务执行，保留当前照明、Objective 和 held 扫描。
+`detector/receiver_image.py` 与 `gui/receiver_imaging.py` 为静态接收图提供
+可选 32²–1024² 视区重分箱（默认 512²），保留原始落点，并区分探测器展宽和全屏电流。
+采样提示报告视区内粒子、占用像素和加权有效样本数，不作为统计误差或收敛证明。
+`scripts/validate_image_intensity_convergence.py` 分别改变真实发射粒子数和积分步长；
+`scripts/analyse_image_intensity_convergence.py` 对保留落点执行固定视区的像素、步长及
+粒子数差分检查，零差分明确标记为未分辨，不用平滑替代原始强度收敛。
+见 [Camera / screen 操作与物理边界](RECEIVER_IMAGING.md)。
+
+2026-10-08 投影切换与独立 Descan 校准（Image 行为已由上项更新）：`operating_modes.apply_projector_mode()`
 由 `gui/main_window.py` 在 condenser 不变、Image/Diffraction 选择改变时调用，
-仅应用存储的 D/I/P1/P2 强度，保留 Tip、CM/Objective、AC held 记录及接收器状态；
-相同选择再次应用仍重载完整预设。当前 Objective/物理接收面的共轭关系不会自动重解。
+仅修改 D/I/P1/P2 强度，保留 Tip、CM/Objective、AC held 记录及接收器状态；
+相同选择再次应用仍重载完整预设。Diffraction 仍加载存储强度；Image 现按接收面重解。
 `gui/scan_panel.py` 的 **Calibrate Descan (keep AC)** 显式调用
 `physics.scan_geometry.recalibrate_descan_only()`，保留 held AC（包括已接受的
 canonical pivot 驱动），仅在选定物理接收面重校 Descan 并更新 held 记录。
@@ -146,6 +157,26 @@ flowchart TD
 | 实体布局、3D 零件、材料编辑 | `gui/assembly_model_page.py`、`part_model_editor.py`、`part_geometry_editor.py` | `part_model_3d.py`、`part_model_features.py`、`part_model_document.py`、`component_persistence.py` | 渲染网格不是自动有效的电磁场模型 |
 | Design Explorer、参数扫描/比较 | `gui/design_explorer.py`、`design_sweep_controller.py` | `design_experiments.py`、`design_sweep_execution.py`、`geometry_experiments.py` | 对分离状态执行，验证后显式采用；不冒充实验完成 |
 | 数值证据/模型检查 | `gui/model_inspector.py`、`qualification_dialog.py`、`magnetic_validation.py` | `acceptance.py`、`sampling_qualification.py`、`magnetic_validation.py`、`topology_evidence.py` | 局部数值通过不能外推完整仪器物理合格 |
+
+电子源粒子数与屏幕差分的专项入口：
+[tip_joint_sampling.py](../src/temsim/optics/electron_gun/tip_joint_sampling.py)
+提供显式、能量映射不随粒子数变化的源采样；
+[validate_image_intensity_convergence.py](../scripts/validate_image_intensity_convergence.py)
+采集独立传播结果；
+[analyse_image_intensity_convergence.py](../scripts/analyse_image_intensity_convergence.py)
+分解存活粒子位移与孔径得失强度；
+[source_radial_quadrature.py](../scripts/source_radial_quadrature.py)
+为离线验证提供实际孔径边界分区和完整概率积分。
+[validate_conditional_source_convergence.py](../scripts/validate_conditional_source_convergence.py)
+执行完整源概率的条件积分，
+[source_azimuth_orbit.py](../scripts/source_azimuth_orbit.py)
+在发射端加入共同方位角积分，
+[source_energy_strata.py](../scripts/source_energy_strata.py)
+在保持完整源概率的条件下分层采样稀少的孔径临界能量区间，
+[analyse_conditional_source_convergence.py](../scripts/analyse_conditional_source_convergence.py)
+分别检查独立源基点数、方位角阶数和径向积分阶数。
+这些方法的身份、历史兼容和数值证据边界见
+[RECEIVER_IMAGING.md](RECEIVER_IMAGING.md#source-sampling-and-rare-aperture-interception)。
 | 实验记录 | `gui/instrument_recorder.py`；`tem-instrument-recorder` | `recorder/backend.py`、`snapshot.py`、`records.py` | 原始采集与模拟结果分开；接口目录不证明连接过真实设备 |
 
 ### 独立虚拟电子的数据链

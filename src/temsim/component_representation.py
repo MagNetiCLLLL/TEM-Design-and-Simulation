@@ -63,7 +63,7 @@ SHARED_DEFLECTOR_READ_ONLY_FIELDS = SHARED_DEFLECTOR_GEOMETRY_FIELDS | {
 
 def shared_deflector_field_owner(part_key, field) -> str:
     """Identify fields that are supplied by shared hardware, not its channel."""
-    if str(field) in SHARED_DEFLECTOR_READ_ONLY_FIELDS:
+    if str(field) in SHARED_DEFLECTOR_READ_ONLY_FIELDS or str(field).startswith("deflector_support_"):
         return SHARED_DEFLECTOR_HOSTS.get(str(part_key), "")
     return ""
 

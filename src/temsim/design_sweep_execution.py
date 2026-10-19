@@ -347,7 +347,9 @@ def rebuild_recipe_state(
     payload = thaw_json(state_payload or recipe.state_payload)
     simulation_time_s = float(payload.pop("simulation_time_s", 0.0))
     if recipe.instrument_snapshot is None:
-        state = State.from_dict(payload)
+        # Payload-only recipes still need their selected catalog's physical
+        # bodies before operating field widths can be validated.
+        state = State.from_dict(payload, assembly_root=catalog.root if catalog is not None else None)
     else:
         from temsim.instrument_snapshot import InstrumentSnapshot
         from temsim.design_explorer import flatten_payload

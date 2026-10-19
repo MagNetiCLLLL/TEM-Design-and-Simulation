@@ -126,3 +126,116 @@ def test_no_resolved_assembly_cannot_claim_physical_hardware(base_state):
     del state._resolved_assembly
     with pytest.raises(ValueError, match="resolved assembly"):
         inspect_stigmator_hardware(state)
+
+
+@pytest.fixture
+def editable_catalog(tmp_path):
+    from temsim.paths import INSTRUMENT_CONFIG_ROOT
+    from temsim.shared_tip import copy_catalog_tree
+    root = tmp_path / "configs" / "instruments"
+    copy_catalog_tree(INSTRUMENT_CONFIG_ROOT, root)
+    return AssemblyCatalog(root)
+
+
+def _set_manifest_widths(catalog, values):
+    from temsim.part_model_document import PartModelDocument
+    for module, entries in (
+        ("column/C3_ProbeCorrector.toml", zip(("condenser_stigmator", "objective_stigmator"), values[:2])),
+        ("project_and_recording_system/NoEnergyFilter.toml", [("diffraction_stigmator", values[2])]),
+    ):
+        draft = PartModelDocument(catalog.root / module)
+        for key, width in entries:
+            draft.set_dimension(("parts", key, "effective_length_mm"), width)
+        draft.save()
+
+
+def test_manifest_width_initialization_edit_and_operating_override(editable_catalog):
+    from temsim.column.state_layout import apply_physical_layout_to_state
+    selection = AssemblySelection("FEG", "C3 + Probe Corrector", "No Energy Filter")
+    state = default_state()
+    _set_manifest_widths(editable_catalog, (4.5, 4.5, 6.))
+    editable_catalog.apply(state, selection)
+    assert [s.length_mm for s in state.stigmators] == [4.5, 4.5, 6.]
+    for s in state.stigmators:
+        s.length_mm = 2.
+        s.strength_x_percent, s.strength_y_percent = 7., -2.
+    editable_catalog.apply(state, selection, preserve_operating_parameters=True)
+    assert [s.length_mm for s in state.stigmators] == [2.] * 3
+    _set_manifest_widths(editable_catalog, (4., 4., 5.))
+    editable_catalog.apply(state, selection, preserve_operating_parameters=True)
+    assert [s.length_mm for s in state.stigmators] == [4., 4., 5.]
+    for s in state.stigmators:
+        assert (s.strength_x_percent, s.strength_y_percent) == (7., -2.)
+        s.length_mm = 3.
+    apply_physical_layout_to_state(state)
+    assert [s.length_mm for s in state.stigmators] == [3.] * 3
+
+
+def test_live_editor_copy_retains_old_manifest_widths_until_reload(editable_catalog):
+    from types import SimpleNamespace
+    from temsim.gui.main_window import MainWindow
+    selection = AssemblySelection("FEG", "C3 + Probe Corrector", "No Energy Filter")
+    state = default_state()
+    _set_manifest_widths(editable_catalog, (4.5, 4.5, 6.))
+    editable_catalog.apply(state, selection)
+    for s in state.stigmators:
+        s.length_mm = 2.
+    # Real editor order: save first, copy the old live state, then reload.
+    _set_manifest_widths(editable_catalog, (4., 4., 5.))
+    candidate = MainWindow._copy_state_for_assembly(SimpleNamespace(state=state))
+    assert [s.length_mm for s in candidate.stigmators] == [2.] * 3
+    editable_catalog.apply(candidate, selection, preserve_operating_parameters=True)
+    assert [s.length_mm for s in candidate.stigmators] == [4., 4., 5.]
+    assert [s.length_mm for s in state.stigmators] == [2.] * 3
+
+
+@pytest.mark.parametrize("quality", ["Preview", "Medium", "High accuracy"])
+def test_calculation_snapshot_keeps_runtime_width_and_field(editable_catalog, quality):
+    from threading import Event
+    from temsim.gui.calculation_request import CapturedCalculationRequest
+    from temsim.profile_io import apply_profile_values
+    state = default_state()
+    _set_manifest_widths(editable_catalog, (4.5, 4.5, 6.))
+    editable_catalog.apply(state, AssemblySelection("FEG", "C3 + Probe Corrector", "No Energy Filter"))
+    apply_profile_values(state, {s.key: {"length_mm": 3., "strength_x_percent": 1.,
+                                       "strength_y_percent": -2.} for s in state.stigmators})
+    z = np.array([s.z_mm + 3. for s in state.stigmators])
+    expected = (*multipole_focusing_fields(z, state), skew_quadrupole_field(z, state))
+    request = CapturedCalculationRequest.capture(state, quality, 49, 1.)
+    try:
+        snapshot = request.prepare(Event()).snapshot
+        assert [s.length_mm for s in snapshot.stigmators] == [3.] * 3
+        assert [s.length_mm for s in state.stigmators] == [3.] * 3
+        actual = (*multipole_focusing_fields(z, snapshot), skew_quadrupole_field(z, snapshot))
+        np.testing.assert_array_equal(actual, expected)
+        # The selected catalog differs from process defaults; later refreshes
+        # must also preserve this captured width rather than reinterpret it.
+        from temsim.column.state_layout import apply_physical_layout_to_state
+        apply_physical_layout_to_state(snapshot)
+        assert [s.length_mm for s in snapshot.stigmators] == [3.] * 3
+    finally:
+        if request._input_assets is not None:
+            request._input_assets.close()
+
+
+def test_snapshot_validates_field_width_against_captured_body(editable_catalog):
+    from threading import Event
+    from temsim.part_model_document import PartModelDocument
+    from temsim.gui.calculation_request import CapturedCalculationRequest
+    from temsim.gui.main_window import MainWindow
+    from types import SimpleNamespace
+    draft = PartModelDocument(editable_catalog.root / "column/C3_ProbeCorrector.toml")
+    draft.set_dimension(("parts", "condenser_stigmator", "length_mm"), 40.)
+    draft.set_dimension(("parts", "condenser_stigmator", "effective_length_mm"), 35.)
+    draft.save()
+    state = default_state()
+    editable_catalog.apply(state, AssemblySelection("FEG", "C3 + Probe Corrector", "No Energy Filter"))
+    assert state.condenser_stigmator.mechanical_length_mm == 40.
+    state.condenser_stigmator.length_mm = 34.
+    snapshot = CapturedCalculationRequest.capture(state, "Preview", 49, 1.).prepare(Event()).snapshot
+    assert snapshot.condenser_stigmator.length_mm == 34.
+    assert MainWindow._copy_state_for_assembly(SimpleNamespace(state=state)).condenser_stigmator.length_mm == 34.
+    invalid = state.to_dict()
+    next(row for row in invalid["stigmators"] if row["key"] == "condenser_stigmator")["length_mm"] = 41.
+    with pytest.raises(ValueError, match="field length must fit"):
+        type(state).from_dict(invalid, resolved_assembly=state._resolved_assembly)

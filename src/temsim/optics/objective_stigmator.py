@@ -240,7 +240,7 @@ def create_objective_stigmator():
     return OBJECTIVE_STIGMATOR_DEFINITION.create_component().validate()
 
 
-def objective_stigmator_from_dict(data):
+def objective_stigmator_from_dict(data, *, defer_geometry_validation=False):
     values = dict(data)
     if values.get("key") != OBJECTIVE_STIGMATOR:
         raise ValueError(f"Objective stigmator requires component key {OBJECTIVE_STIGMATOR!r}")
@@ -254,10 +254,15 @@ def objective_stigmator_from_dict(data):
         "enabled",
         "colour",
         "max_strength_m2",
+        "length_mm",
     ):
         if attribute in values:
             object.__setattr__(component, attribute, values[attribute])
     component.key = OBJECTIVE_STIGMATOR
     component.name = "Objective Stigmator"
     component.corrector = OBJECTIVE_STIGMATOR_DEFINITION.owner
+    if defer_geometry_validation:
+        from temsim.optics.stigmator_field import validate_stigmator_field
+        validate_stigmator_field(component)
+        return component
     return component.validate()

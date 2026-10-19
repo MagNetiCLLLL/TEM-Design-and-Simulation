@@ -4,6 +4,7 @@ from copy import deepcopy
 import numpy as np
 import pytest
 from PySide6.QtCore import QSettings
+from PySide6.QtWidgets import QSplitter, QWidget
 
 from temsim.gui import interactive_calculation as gui
 from temsim.gui import main_window as shell
@@ -67,19 +68,20 @@ def test_named_layouts_restore_each_page_and_do_not_change_optics(windows, qtbot
     saved_id = manager.save_as("Sample analysis")
     custom_ratio = _resize_splitter(window, "samplePageSplitter", [750, 940], qtbot)
     assert not np.allclose(default_ratio, custom_ratio)
-    workspace.magnetic_field_toggle.setChecked(True)
+    workspace.tabs.setCurrentWidget(workspace.magnetic_field)
     workspace.magnetic_field.field_lines.link_view.setChecked(False)
     manager.save_current()
     manager.select("default")
     qtbot.wait(40)
     assert workspace.tabs.currentWidget() is workspace.sample_page
     _assert_ratio(manager.splitters["samplePageSplitter"], default_ratio)
-    assert not workspace.magnetic_field_toggle.isChecked()
     assert workspace.magnetic_field.field_lines.link_view.isChecked()
     manager.select(saved_id)
     qtbot.wait(40)
+    assert workspace.tabs.currentWidget() is workspace.magnetic_field
+    workspace.tabs.setCurrentWidget(workspace.sample_page)
+    qtbot.wait(40)
     _assert_ratio(manager.splitters["samplePageSplitter"], custom_ratio)
-    assert workspace.magnetic_field_toggle.isChecked()
     assert not workspace.magnetic_field.field_lines.link_view.isChecked()
     assert workspace._high_accuracy_result is old_high
     assert workspace.interactive_calculation.controller.bank is old_bank
@@ -135,29 +137,32 @@ def test_ray_panel_combinations_keep_independent_sizes_across_restart(windows, q
     window = make()
     manager, workspace = window.workspace_layouts, window.workspace
     vertical = workspace.ray_vertical_splitter
-    plain = _resize_splitter(window, vertical.objectName(), [660, 120, 0], qtbot)
-    workspace.magnetic_field_toggle.setChecked(True)
-    qtbot.wait(30)
-    magnetic = _resize_splitter(window, vertical.objectName(), [430, 110, 260], qtbot)
+    plain = _resize_splitter(window, vertical.objectName(), [660, 120], qtbot)
     workspace.transverse_beam_toggle.setChecked(False)
     qtbot.wait(30)
-    wide_magnetic = _resize_splitter(window, vertical.objectName(), [300, 120, 420], qtbot)
-    for magnetic_on, transverse_on, expected in ((True, True, magnetic), (False, True, plain), (True, False, wide_magnetic)):
-        workspace.magnetic_field_toggle.setChecked(magnetic_on)
+    wide = _resize_splitter(window, vertical.objectName(), [440, 250], qtbot)
+    for transverse_on, expected in ((True, plain), (False, wide)):
         workspace.transverse_beam_toggle.setChecked(transverse_on)
         qtbot.wait(50)
         _assert_ratio(vertical, expected)
+    # Visiting the field tab cannot create a new embedded-ray size variant.
+    variant = manager.ray_variant
+    workspace.tabs.setCurrentWidget(workspace.magnetic_field)
+    qtbot.wait(30)
+    assert manager.ray_variant == variant
+    workspace.show_ray_diagram()
+    qtbot.wait(30)
+    _assert_ratio(vertical, wide)
     manager.save_current()
     window.close()
     restored = make()
     workspace = restored.workspace
-    assert workspace.magnetic_field_toggle.isChecked()
     assert not workspace.transverse_beam_toggle.isChecked()
     qtbot.wait(40)
-    _assert_ratio(workspace.ray_vertical_splitter, wide_magnetic)
+    _assert_ratio(workspace.ray_vertical_splitter, wide)
     workspace.transverse_beam_toggle.setChecked(True)
     qtbot.wait(40)
-    _assert_ratio(workspace.ray_vertical_splitter, magnetic)
+    _assert_ratio(workspace.ray_vertical_splitter, plain)
 
 
 def test_conjugate_workspace_visibility_and_split_preserved_across_restart(windows, qtbot, monkeypatch):
@@ -220,7 +225,7 @@ def test_legacy_ray_layout_keeps_original_readout_visibility_and_sizes(windows, 
     window = make()
     manager, workspace = window.workspace_layouts, window.workspace
     workspace.show_ray_diagram()
-    expected = _resize_splitter(window, "rayDiagramVerticalSplitter", [660, 120, 0], qtbot)
+    expected = _resize_splitter(window, "rayDiagramVerticalSplitter", [660, 120], qtbot)
     legacy = manager._snapshot()
     for name in manager.RAY_DETAIL_DEFAULTS:
         legacy["toggles"].pop(name)
@@ -259,6 +264,44 @@ def test_layout_changes_autosave_without_normal_exit(windows, qtbot):
     manager.select("default")
     qtbot.wait(40)
     _assert_ratio(window.instrument_editor, expected)
+
+
+def test_legacy_magnetic_panel_layout_migrates_without_reembedding(windows, qtbot):
+    make, _ = windows
+    window = make()
+    manager, workspace = window.workspace_layouts, window.workspace
+    legacy = manager._snapshot()
+    legacy["toggles"]["magnetic"] = True
+    legacy["tabs"]["visualizationTabs"] = "Ray Diagram"
+    old = QSplitter(workspace.ray_vertical_splitter.orientation())
+    qtbot.addWidget(old)
+    for _ in range(3):
+        old.addWidget(QWidget())
+    old.setSizes([240, 240, 520])
+    plain = old.saveState()
+    old.setSizes([540, 180, 280])
+    magnetic = old.saveState()
+    old.setSizes([360, 240, 400])
+    wide = old.saveState()
+    legacy["splitters"]["rayDiagramVerticalSplitter"] = {
+        "m0t1": plain, "m1t1": magnetic, "m1t0": wide,
+    }
+    workspace.tabs.setCurrentWidget(workspace.magnetic_field)
+    manager._apply(legacy)
+    qtbot.wait(40)
+    assert workspace.tabs.currentWidget() is workspace.ray_page
+    assert workspace.tabs.indexOf(workspace.magnetic_field) == workspace.tabs.indexOf(workspace.physical_layout) + 1
+    assert workspace.ray_vertical_splitter.count() == 2
+    assert workspace.ray_vertical_splitter.indexOf(workspace.magnetic_field) == -1
+    assert "magnetic" not in manager.toggles
+    _assert_ratio(workspace.ray_vertical_splitter, [0.75, 0.25])
+    workspace.transverse_beam_toggle.setChecked(False)
+    qtbot.wait(40)
+    _assert_ratio(workspace.ray_vertical_splitter, [0.60, 0.40])
+    saved = manager._snapshot()
+    assert "magnetic" not in saved["toggles"]
+    assert set(saved["splitters"]["rayDiagramVerticalSplitter"]) == {"m0t1", "m0t0"}
+    assert not window.preview_timer.isActive()
 
 
 def test_layout_names_and_corrupt_entries_do_not_overwrite_current_layout(windows):
@@ -324,16 +367,16 @@ def test_reset_only_affects_selected_layout_and_registry_covers_workspace(window
             "instrumentEditorSplitter", "interactiveCalculationSplitter"} <= manager.splitters.keys()
     manager.save_current()
     custom = manager.save_as("Field inspection")
-    workspace.magnetic_field_toggle.setChecked(True)
+    workspace.tabs.setCurrentWidget(workspace.magnetic_field)
     manager.save_current()
     manager.select("default")
     qtbot.wait(30)
     window.reset_workspace()
     qtbot.wait(30)
-    assert not workspace.magnetic_field_toggle.isChecked()
+    assert workspace.tabs.currentWidget() is workspace.ray_page
     manager.select(custom)
     qtbot.wait(30)
-    assert workspace.magnetic_field_toggle.isChecked()
+    assert workspace.tabs.currentWidget() is workspace.magnetic_field
 
 
 def test_builtin_task_layouts_use_existing_pages_without_changing_inputs(windows, qtbot):

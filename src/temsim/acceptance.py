@@ -49,6 +49,15 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_diagnostic_gun_domains.py")),
             "gun-fields/GF-04": ("Grounded instrument coverage and installed filter axial handoff", (
                 "tests/test_instrument_electric.py", "tests/test_recording_vacuum_endpoint.py")),
+            "gun-fields/GF-05": ("Captured emission CDF measure, prefix stability and persistence", (
+                "tests/test_nested_emission_sampling.py", "tests/test_explicit_emission_cdf.py")),
+            "gun-fields/GF-06": ("Conditional quadrature and unrenormalised source probability", (
+                "tests/test_source_radial_quadrature.py", "tests/test_source_azimuth_orbit.py",
+                "tests/test_source_energy_strata.py")),
+            "gun-fields/GF-07": ("Offline conditional-source evidence and archive contracts, not propagation qualification", (
+                "tests/test_conditional_source_analysis.py", "tests/test_conditional_source_validation.py",
+                "tests/test_conditional_energy_analysis.py", "tests/test_conditional_energy_measure.py",
+                "tests/test_conditional_energy_source_validation.py", "tests/test_conditional_energy_transport_contract.py")),
         },
     },
     "electron-execution": {
@@ -81,9 +90,13 @@ ACCEPTANCE_SCOPES = {
         "evidence_kind": "offscreen-ui-and-bounded-field-checks",
         "criteria": {
             "field-ui/FU-01": ("Combined field support and direction-aware field-line geometry", (
-                "tests/test_magnetic_field_scene.py", "tests/test_magnetic_field_lines.py")),
+                "tests/test_magnetic_field_scene.py", "tests/test_magnetic_field_lines.py",
+                "tests/test_field_vector_scene.py", "tests/test_field_vector_production.py")),
             "field-ui/FU-02": ("Cached field rendering and physical display-range linkage", (
                 "tests/test_magnetic_field_3d.py", "tests/test_magnetic_field_canvas.py",
+                "tests/test_field_vector_page.py",
+                "tests/test_field_vector_geometry.py", "tests/test_field_vector_mesh_canvas.py",
+                "tests/test_field_vector_overlay_page.py",
                 "tests/test_incremental_magnetic_scene.py", "tests/test_magnetic_navigation_link.py")),
             "field-ui/FU-03": ("Latest electron edits, continuous progress and dock lifetime", (
                 "tests/test_magnetic_test_electron_gui.py", "tests/test_continuous_electron_gui.py",
@@ -160,6 +173,9 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_part_model_view_performance.py", "tests/test_mesh_annotation_performance.py",
                 "tests/test_part_model_gpu_view.py",
                 "tests/test_part_model_view.py", "tests/test_physical_layout_modes.py")),
+            "field-ui/FU-21": ("Physical coil supports, hexapole structure and atomic geometry edits", (
+                "tests/test_deflector_support_geometry.py", "tests/test_ordinary_deflector_structure.py",
+                "tests/test_probe_hexapole_geometry.py", "tests/test_probe_hexapole_document_validation.py")),
         },
     },
     "cad-export": {
@@ -191,6 +207,11 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_receiver_scan_link.py", "tests/test_receiver_transport_integration.py")),
             "receiver-imaging/RI-02": ("Receiver controls, immutable captured scans and playback lifecycle", (
                 "tests/test_receiver_imaging_gui.py", "tests/test_receiver_playback_gui.py")),
+            "receiver-imaging/RI-03": ("Pixel-integrated receiver response and convergence evidence contracts", (
+                "tests/test_compact_gaussian_response.py", "tests/test_image_intensity_analysis.py",
+                "tests/test_image_intensity_validation.py")),
+            "receiver-imaging/RI-04": ("Physical receiver conjugacy and transactional asynchronous projection", (
+                "tests/test_image_receiver_focus.py", "tests/test_projector_preset_controller.py")),
         },
     },
     "particle-continuation": {

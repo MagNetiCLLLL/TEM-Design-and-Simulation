@@ -197,6 +197,35 @@ def test_production_snapshot_preserves_resolved_geometry_and_detaches_controls()
     assert "new" not in state.lens_field_map_descriptors
 
 
+def test_snapshot_uses_captured_stigmator_body_before_validating_runtime_width(tmp_path):
+    from temsim.assembly_catalog import AssemblyCatalog, AssemblySelection
+    from temsim.optics.column import default_state
+    from temsim.part_model_document import PartModelDocument
+    from temsim.paths import INSTRUMENT_CONFIG_ROOT
+    from temsim.shared_tip import copy_catalog_tree
+
+    root = tmp_path / "configs" / "instruments"
+    copy_catalog_tree(INSTRUMENT_CONFIG_ROOT, root)
+    draft = PartModelDocument(root / "column/C3_ProbeCorrector.toml")
+    draft.set_dimension(("parts", "condenser_stigmator", "length_mm"), 40.)
+    draft.set_dimension(("parts", "condenser_stigmator", "effective_length_mm"), 35.)
+    draft.save()
+    state = default_state()
+    AssemblyCatalog(root).apply(state, AssemblySelection("FEG", "C3 + Probe Corrector", "No Energy Filter"))
+    state.condenser_stigmator.length_mm = 34.
+    state.condenser_stigmator.strength_x_percent = 7.
+    before = deepcopy(state.to_dict())
+
+    copied = snapshot_state(state)
+
+    assert copied._resolved_assembly is state._resolved_assembly
+    assert copied.condenser_stigmator.mechanical_length_mm == 40.
+    assert copied.condenser_stigmator.length_mm == 34.
+    assert copied.condenser_stigmator.strength_x_percent == 7.
+    copied.condenser_stigmator.length_mm = 33.
+    assert state.to_dict() == before
+
+
 def test_unrelated_distant_lens_changes_preserve_a_linear_circuit_study():
     helpers = runpy.run_path(str(Path(__file__).with_name("test_magnetic_circuits.py")))
     rows = helpers["_shared_rows"]()+[

@@ -1857,7 +1857,7 @@ class State:
 
     @staticmethod
     @input_io.restore_profile_inputs
-    def from_dict(d):
+    def from_dict(d, *, resolved_assembly=None, assembly_root=None):
         from temsim.configuration import (
             canonical_corrector_mode,
             corrector_mode_for_hardware,
@@ -2323,7 +2323,7 @@ class State:
                     condenser_stigmator_from_dict,
                 )
                 loaded_stigmators.append(
-                    condenser_stigmator_from_dict(values)
+                    condenser_stigmator_from_dict(values, defer_geometry_validation=True)
                 )
                 condenser_stigmator_loaded = True
             elif values["key"] == OBJECTIVE_STIGMATOR:
@@ -2331,7 +2331,7 @@ class State:
                     objective_stigmator_from_dict,
                 )
                 loaded_stigmators.append(
-                    objective_stigmator_from_dict(values)
+                    objective_stigmator_from_dict(values, defer_geometry_validation=True)
                 )
                 objective_stigmator_loaded = True
             elif values["key"] == DIFFRACTION_STIGMATOR:
@@ -2346,6 +2346,7 @@ class State:
                 loaded_stigmators.append(
                     diffraction_stigmator_from_dict(
                         values,
+                        defer_geometry_validation=True,
                         active_installation=(
                             IMAGE_CORRECTED_INSTALLATION
                             if corrector_mode in {
@@ -2703,7 +2704,7 @@ class State:
         synchronise_probe_corrector_physical_axis(state)
         if state.monochromator_installed:
             from temsim import module_manifest
-            state._set_monochromator_column_offset(
+            state.monochromator_column_offset_mm = (
                 module_manifest.port_z_mm(
                     "gun/FEG_Mono.toml", "exit"
                 )
@@ -2712,10 +2713,13 @@ class State:
                 )
             )
         else:
-            state._set_monochromator_column_offset(0.0)
+            state.monochromator_column_offset_mm = 0.0
+        # Bind the assembly only once, below. An intermediate rebuild from the
+        # default catalog would consume its field-width defaults before the
+        # captured assembly is restored, overwriting runtime stigmator widths.
         from temsim.component_names import normalise_component_names
         normalise_component_names(state)
         state.sync_objective()
         from temsim.column.state_layout import apply_physical_layout_to_state
-        apply_physical_layout_to_state(state)
+        apply_physical_layout_to_state(state, assembly=resolved_assembly, assembly_root=assembly_root)
         return state

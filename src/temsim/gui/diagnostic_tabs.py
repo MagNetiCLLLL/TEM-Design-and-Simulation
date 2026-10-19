@@ -5381,6 +5381,7 @@ class MagneticFieldView(QWidget):
         self._profile_worker = None
         self._profile_request = None
         self._linked_axial_plot = None
+        self._align_axial_plot_edges = True
         self._syncing_axial_range = False
         self._alignment_widgets = ()
         self._alignment_timer = QTimer(self)
@@ -5395,7 +5396,8 @@ class MagneticFieldView(QWidget):
         self.display_mode.addItem("2D combined field", "2d")
         self.display_mode.addItem("3D field lines", "3d")
         self.display_mode.addItem("Electron trajectories", "electron")
-        self.display_mode.setToolTip("Combined magnetic field, or independent virtual electrons in captured electric and magnetic fields. Add and select electrons, or overlay checked paths. New electrons default to tip emission; projection follows Ray Diagram.")
+        self.display_mode.addItem("Component field vectors", "vectors")
+        self.display_mode.setToolTip("Combined magnetic field, independent virtual electrons, or selectable component E/B vectors and electron force. Field vectors use the current captured calculation and mark unsupported regions.")
         self.advanced_button = QPushButton("Advanced…")
         self.advanced_button.setObjectName("magneticFieldAdvanced")
         self.status = QLabel("Recalculate to capture the total magnetic field.")
@@ -5414,10 +5416,13 @@ class MagneticFieldView(QWidget):
         self.legend = self.plot.addLegend(offset=(10, 10), colCount=4)
         from temsim.gui.magnetic_field_3d import MagneticField3DPage
         self.field_lines = MagneticField3DPage()
+        from temsim.gui.field_vector_page import FieldVectorPage
+        self.field_vectors = FieldVectorPage()
         self.view_stack = QStackedWidget()
         self.view_stack.setObjectName("magneticFieldViewStack")
         self.view_stack.addWidget(self.plot)
         self.view_stack.addWidget(self.field_lines)
+        self.view_stack.addWidget(self.field_vectors)
 
         self.advanced_dialog = QDialog(self)
         self.advanced_dialog.setObjectName("magneticFieldAdvancedDialog")
@@ -5519,16 +5524,20 @@ class MagneticFieldView(QWidget):
     def _display_mode_changed(self, *_args):
         three_d = self.display_mode.currentData() == "3d"
         electron = self.display_mode.currentData() == "electron"
+        vectors = self.display_mode.currentData() == "vectors"
         spatial = three_d or electron
         self.field_lines.set_electron_mode(electron)
-        self.view_stack.setCurrentWidget(self.field_lines if spatial else self.plot)
+        self.view_stack.setCurrentWidget(self.field_vectors if vectors else self.field_lines if spatial else self.plot)
         self.density_label.setVisible(three_d)
         self.field_lines.density.setVisible(three_d)
         self.field_lines.link_view.setVisible(spatial)
         self.field_lines.electron.controls_button.setVisible(electron)
-        self.status.setVisible(not spatial)
+        self.status.setVisible(not spatial and not vectors)
+        self.field_lines.fit_button.setVisible(not vectors)
+        self.advanced_button.setVisible(not vectors)
         self.field_lines.fit_button.setText("Fit")
         self.field_lines.set_active(spatial and self.isVisible())
+        self.field_vectors.set_active(vectors and self.isVisible())
         if spatial and self.field_lines.link_view.isChecked():
             self._spatial_link_changed(True)
         self._schedule_plot_alignment()
@@ -5556,10 +5565,12 @@ class MagneticFieldView(QWidget):
     def showEvent(self, event):
         super().showEvent(event)
         self.field_lines.set_active(self.display_mode.currentData() in {"3d", "electron"})
+        self.field_vectors.set_active(self.display_mode.currentData() == "vectors")
         self._schedule_plot_alignment()
 
     def hideEvent(self, event):
         self.field_lines.set_active(False)
+        self.field_vectors.set_active(False)
         super().hideEvent(event)
 
     def _update_field_map_import_enabled(self, *_args) -> None:
@@ -5706,12 +5717,13 @@ class MagneticFieldView(QWidget):
                 "registration and residuals without modifying source data."
             )
 
-    def link_axial_axis(self, source_plot) -> None:
+    def link_axial_axis(self, source_plot, *, align_pixels=True) -> None:
         """Link physical ranges without coupling axes with different units.
 
         The field profile keeps its magnetic Y axis. Spatial field/electron
         views can link both Z and projected displacement to Ray Diagram.
         All spatial range values use the Ray Diagram's internal mm units.
+        Separate tabs share coordinates but use their own available pixel width.
         """
         if self._linked_axial_plot is not None:
             self._linked_axial_plot.getViewBox().sigRangeChanged.disconnect(self._ray_range_changed)
@@ -5719,6 +5731,7 @@ class MagneticFieldView(QWidget):
             self._linked_axial_plot.destroyed.disconnect(self._linked_plot_destroyed)
         self._syncing_axial_range = True
         self._linked_axial_plot = source_plot
+        self._align_axial_plot_edges = bool(align_pixels)
         self.plot.getAxis("left").setWidth(source_plot.getAxis("left").minimumWidth())
         self.plot.getViewBox().disableAutoRange(axis=pg.ViewBox.XAxis)
         # Physical limits and screen placement are separate. Do not use
@@ -5771,6 +5784,9 @@ class MagneticFieldView(QWidget):
         return super().eventFilter(watched, event)
 
     def _sync_plot_pixel_edges(self):
+        if not self._align_axial_plot_edges:
+            self.field_lines.canvas.set_horizontal_plot_edges(None)
+            return
         self._refresh_alignment_event_filters()
         source = self._linked_axial_plot
         canvas = self.field_lines.canvas
@@ -5881,6 +5897,7 @@ class MagneticFieldView(QWidget):
         if self._profile_worker is not None:
             self._profile_worker.cancelled.set()
         self.field_lines.mark_inputs_stale()
+        self.field_vectors.mark_inputs_stale()
         self.status.setText("Stale magnetic field — instrument inputs changed; recalculate the main beam.")
         self._refresh_details()
         self.diagnostics_updated.emit()
@@ -5897,6 +5914,7 @@ class MagneticFieldView(QWidget):
         if self._profile_worker is not None:
             self._profile_worker.cancelled.set()
         self.field_lines.invalidate()
+        self.field_vectors.invalidate()
         for curve in self._curves.values():
             curve.setData([], [])
         for item in self._sample_field_items:
@@ -5925,6 +5943,7 @@ class MagneticFieldView(QWidget):
             self._z_limits_mm = None
             self._clear_field_graphics()
             self.field_lines.invalidate("No calculation state snapshot is available.")
+            self.field_vectors.invalidate("No calculation state snapshot is available.")
             self.status.setText("No calculation state snapshot is available.")
             self._populate_field_map_lenses()
             self._refresh_details()
@@ -6003,6 +6022,10 @@ class MagneticFieldView(QWidget):
             self.status.setText("Magnetic field unavailable — see Advanced.")
             self.details.setPlainText(f"Could not prepare the captured magnetic field: {error}")
             self.field_lines.invalidate(str(error))
+            # An unavailable B provider must not prevent inspection of a
+            # supported electric source. The vector catalogue marks failures.
+            self.field_vectors.update_snapshot(self._state_snapshot, self._records, self._z_limits_mm,
+                                               result_reference=self._result_reference)
             self._populate_field_map_lenses()
             self.diagnostics_updated.emit()
             return
@@ -6035,6 +6058,8 @@ class MagneticFieldView(QWidget):
         self.field_lines.update_snapshot(self._state_snapshot, self._records, self._z_limits_mm,
                                          peak_t=peak, prepared_scene=scene,
                                          result_reference=self._result_reference)
+        self.field_vectors.update_snapshot(self._state_snapshot, self._records, self._z_limits_mm,
+                                           prepared_scene=scene, result_reference=self._result_reference)
         self._populate_field_map_lenses()
         self._refresh_details()
         self.diagnostics_updated.emit()

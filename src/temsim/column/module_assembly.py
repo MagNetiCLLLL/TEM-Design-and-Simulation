@@ -874,6 +874,19 @@ def apply_column_manifest_geometry(
         component.apply_manifest_geometry(**geometry)
     _bind_projection_chamber_aperture(state, parts)
     _apply_manifest_runtime_geometry(state, parts, assembly)
+    for item in state.stigmators:
+        part = parts.get(item.key)
+        if part is None or "effective_length_mm" not in part.data:
+            continue
+        # The manifest supplies the initial field width. A live geometry edit
+        # replaces that width, but an ordinary refresh or restored snapshot
+        # must preserve the user's operating override. Track the last consumed
+        # default separately from length_mm (the actual Gaussian field FWHM).
+        reference = float(part.data["effective_length_mm"])
+        previous = getattr(item, "_manifest_effective_length_mm", reference)
+        if not preserve_operating_parameters or previous != reference:
+            item.length_mm = reference
+        item._manifest_effective_length_mm = reference
     from temsim.component_keys import IMAGE_CORRECTOR_ALL_LENS_KEYS
     for lens in state.lenses:
         if lens.key in IMAGE_CORRECTOR_ALL_LENS_KEYS and lens.key in parts:

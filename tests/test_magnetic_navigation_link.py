@@ -221,6 +221,29 @@ def test_separate_windows_keep_standalone_margins(linked, qtbot):
     assert view.field_lines.canvas._horizontal_plot_edges is None
 
 
+def test_dedicated_field_tab_uses_own_width_while_preserving_ray_coordinates(qtbot):
+    from temsim.gui.visualization import VisualizationWorkspace
+    workspace = VisualizationWorkspace()
+    qtbot.addWidget(workspace)
+    workspace.resize(1400, 900)
+    workspace.show()
+    source, view = workspace.plot, workspace.magnetic_field
+    source.setRange(xRange=(120., 480.), yRange=(-.002, .003), padding=0)
+    expected = source.viewRange()
+    workspace.tabs.setCurrentWidget(view)
+    view.display_mode.setCurrentIndex(view.display_mode.findData("3d"))
+    qtbot.waitUntil(lambda: not view._alignment_timer.isActive())
+    canvas = view.field_lines.canvas
+    assert not source.isVisible() and canvas.isVisible()
+    assert canvas._horizontal_plot_edges is None
+    assert canvas._plot_rect().width() > .8 * canvas.width()
+    np.testing.assert_allclose(canvas.view_range_mm(), expected)
+    workspace.resize(1600, 950)
+    qtbot.wait(20)
+    assert canvas._plot_rect().width() > .8 * canvas.width()
+    np.testing.assert_allclose(canvas.view_range_mm(), expected)
+
+
 def test_field_profile_pixel_edges_align_without_changing_tesla_axis(stacked_linked, qtbot):
     source, view, window, _dock, row, _column = stacked_linked
     view.plot.setYRange(-.15, .25, padding=0)

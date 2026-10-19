@@ -77,6 +77,83 @@ def test_native_mesh_is_opaque_open_annulus_and_excluded_from_optical_only_view(
         assert (material ^ cavity).volume() < 1e-10  # No hidden end disks.
 
 
+@pytest.mark.parametrize("side", ["upper", "lower"])
+@pytest.mark.parametrize("copied", [False, True], ids=["installed", "copy"])
+def test_sleeve_side_hole_preserves_material_provenance_and_roundtrips(tmp_path, side, copied):
+    import manifold3d as m
+    from temsim.assembly_optical_visibility import optical_mesh_visible
+    from temsim.cad_catalog import posed_solids
+    from temsim.part_model_3d import part_model_from_document
+    from temsim.part_model_document import PartModelDocument
+
+    path = ROOT/"configs/instruments/column/C3_ProbeCorrector.toml"
+    original_bytes = path.read_bytes()
+    draft = PartModelDocument(path)
+    key = f"objective_{side}_electronics_sleeve"
+    if copied:
+        key = draft.copy_component_from(draft.document, key, key + "_copy", 4000.)
+
+    def mesh_of(document):
+        mesh, = part_model_from_document(document, key, include_children=False,
+                                         angular_segments=48).meshes
+        return mesh
+
+    def solid_of(mesh):
+        solid = m.Manifold(m.Mesh64(mesh.vertices.copy(), mesh.faces.astype(np.uint64)))
+        assert solid.status() == m.Error.NoError and not solid.is_empty()
+        assert solid.volume() > 0.
+        return solid
+
+    before = mesh_of(draft.document)
+    assert not before.is_exact
+    assert all(info["kind"] == "cad_material" for info in before.surfaces.values())
+    draft.upsert_model_feature(key, {
+        "id": "side_access", "kind": "hole", "axis": "x", "center_mm": [0., 0., 0.],
+        "depth_mm": 100., "diameter_mm": 6., "enabled": True,
+    })
+    draft.validate()
+    after = mesh_of(draft.document)
+    assert not after.is_exact
+    assert 10. < solid_of(before).volume() - solid_of(after).volume() < 25.
+    assert "feature:side_access:wall" in after.surfaces
+    assert any(info["kind"] == "cad_material" for info in after.surfaces.values())
+    assert all(path[1] == key for info in after.surfaces.values() for path in info["parameter_paths"])
+    assert not optical_mesh_visible(after, draft.part(key))
+    specs = posed_solids(draft.part(key), {row["key"]: row for row in draft.document["parts"]})
+    assert len(specs) == 1 and specs[0].status == "engineering_reconstruction"
+    assert specs[0].material == MATERIAL
+    assert len(specs[0].parameters["editor_tools_global"]) == 1
+
+    draft.save_copy(tmp_path/"sleeve_with_access_hole.toml")
+    restored = PartModelDocument(draft.path)
+    restored.validate()
+    reloaded = mesh_of(restored.document)
+    np.testing.assert_allclose(reloaded.vertices, after.vertices, rtol=0., atol=1e-11)
+    np.testing.assert_array_equal(reloaded.faces, after.faces)
+    assert restored.part(key)["model_3d"] == draft.part(key)["model_3d"]
+    assert not reloaded.is_exact
+    assert path.read_bytes() == original_bytes
+
+
+def test_sleeve_name_does_not_allow_cutting_an_unknown_envelope():
+    from temsim.part_model_3d import part_model_from_document
+    from temsim.part_model_features import default_model_3d
+
+    document = read_document(ROOT/"configs/instruments/column/C3_ProbeCorrector.toml")
+    part = next(row for row in sleeve_rows(document) if row["sleeve_side"] == "upper")
+    part["mechanical_profile"] = "unknown_mechanism"
+    part["model_3d"] = default_model_3d(part)
+    before, = part_model_from_document(document, part["key"], include_children=False).meshes
+    assert not before.is_exact
+    assert not any(info["kind"] == "cad_material" for info in before.surfaces.values())
+    part["model_3d"]["features"] = [{
+        "id": "side_access", "kind": "hole", "axis": "x", "center_mm": [0., 0., 0.],
+        "depth_mm": 100., "diameter_mm": 6., "enabled": True,
+    }]
+    with pytest.raises(ValueError, match="envelope is not a verified solid"):
+        part_model_from_document(document, part["key"], include_children=False)
+
+
 @pytest.mark.parametrize("change,reason", [
     ({"mechanical_inner_diameter_mm": 0.}, "open bore"),
     ({"mechanical_outer_diameter_mm": 59.1}, "open bore"),

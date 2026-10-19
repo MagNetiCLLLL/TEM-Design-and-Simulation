@@ -73,6 +73,11 @@ _FRIENDLY = {
     "winding_layer_thickness_mm": "Winding layer radial thickness",
     "winding_angular_span_deg": "Winding loop angular span",
     "winding_band_width_mm": "Winding end and side band width",
+    "winding_support_carrier_thickness_mm": "Flexible winding carrier thickness",
+    "winding_support_cover_thickness_mm": "Winding radial insulation thickness",
+    "deflector_support_radial_skin_thickness_mm": "Rigid carrier radial insulation thickness",
+    "deflector_support_casing_thickness_mm": "Insulating casing radial thickness",
+    "deflector_support_pin_diameter_mm": "Insulating registration pin diameter",
     "length_mm": "Length", "percent": "Excitation strength",
     "tip_radius_nm": "Apex curvature radius",
     "tip_cone_half_angle_deg": "Tip cone half-angle",
@@ -128,6 +133,11 @@ def _meaning(part, path, by_key):
     field = str(relative[0]) if relative else ""
     label = _label(field, ("parts", "", *relative))
     profile = part.get("mechanical_profile", "")
+    if field in {"deflector_support_radial_skin_thickness_mm", "deflector_support_casing_thickness_mm",
+                 "deflector_support_pin_diameter_mm"}:
+        return label, "physical", (
+            "Dimension of the rigid insulating carrier assembly. Pins register the two coil carriers internally; "
+            "external host fastening is not specified. Mechanical edits do not recalibrate optical fields.")
     if path and path[0] not in {"parts", "runtime", "derived"}:
         last_field = next((item for item in reversed(path) if isinstance(item, str)), "Parameter")
         label = _label(last_field, ("parts", "", last_field, *[item for item in path if isinstance(item, int)]))
@@ -236,7 +246,13 @@ def _meaning(part, path, by_key):
         if field in {"length_mm", "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm", "magnetic_radial_profile_mm"}:
             return label, "physical", "Dimension of the configured material body; its real inner/outer surfaces remain separate from the vacuum-passage constraint."
     if profile in DEFLECTOR_COIL_PROFILES:
+        if part.get("winding_support_profile") and field in {"mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm"}:
+            return label.replace("Material", "Copper"), "physical", (
+                "Diameter of the copper winding envelope. The carrier extends inward and the radial cover outward; "
+                "the full laminate material envelope includes their separately editable thicknesses.")
         explanations = {
+            "winding_support_carrier_thickness_mm": "Radial thickness of each carrier in the equivalent flexible laminate. The interlayer bond fills the remaining positive gap; host mounting is unverified.",
+            "winding_support_cover_thickness_mm": "Radial thickness of each dielectric cover in the bulk laminate equivalent. It increases the full material outer radius; it does not model individual conductor sidewall insulation.",
             "winding_layer_thickness_mm": "Radial material thickness of each of the two winding layers. Their remaining radial gap must be positive.",
             "winding_angular_span_deg": "Full angular span of each loop about the local axis. Opposite loops must stay separated; the X/Y pairs are rotated by 90 degrees.",
             "winding_band_width_mm": "Axial end-band width and circumferential side-band width at the layer mean radius. Both must leave an open loop window.",
@@ -321,6 +337,9 @@ def _source(part, path, category):
         status, note = part.get(prefix + "_status"), part.get(prefix + "_source")
         if status is not None or note is not None:
             return _source_from_text(status, note, explicit_field=True)
+    if field.startswith("deflector_support_") and category == "physical":
+        return _source_from_text(part.get("deflector_support_geometry_status"),
+                                 part.get("deflector_support_source_note"), explicit_field=False)
     if category in {"physical", "envelope", "placement"}:
         status, note = part.get("mechanical_geometry_status"), part.get("mechanical_geometry_source")
         if status is not None or note is not None:

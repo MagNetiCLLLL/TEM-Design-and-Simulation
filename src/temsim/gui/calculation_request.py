@@ -19,7 +19,6 @@ from temsim.calculation_manifest import (
     assert_external_input_inventory_unchanged,
     capture_external_input_identities,
 )
-from temsim.column.state_layout import apply_physical_layout_to_state
 from temsim.instrument_snapshot import encode_instrument, decode_instrument
 from temsim import input_io
 from temsim.job_events import job_stage
@@ -42,13 +41,9 @@ def reconstruct_calculation_state(
     quality, ray_count, step_mm,
 ):
     """Keep the same persistence/assembly authority as synchronous requests."""
-    snapshot = state_type.from_dict(payload)
-    if resolved_assembly is not None:
-        snapshot._resolved_assembly = resolved_assembly
-        apply_physical_layout_to_state(
-            snapshot, assembly=resolved_assembly,
-            preserve_operating_parameters=True,
-        )
+    # Bind captured geometry during restoration, before validating operating
+    # field widths against bodies that may differ from the live catalog.
+    snapshot = state_type.from_dict(payload, resolved_assembly=resolved_assembly)
     if simulation_time_s is not None:
         snapshot.simulation_time_s = float(simulation_time_s)
     return apply_request_numerics(snapshot, quality, ray_count, step_mm)

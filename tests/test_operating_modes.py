@@ -5,7 +5,8 @@ import pytest
 
 from temsim.assembly_catalog import AssemblyCatalog, AssemblySelection
 from temsim.optics.column import default_state
-from temsim.operating_modes import apply_operating_mode_pair, mode_by_key
+from temsim.operating_modes import apply_operating_mode_pair, apply_projector_mode, mode_by_key
+from temsim.optics.direct_alignment import diffraction_transfers
 from temsim.physics.aperture_clipping import clip_segment
 from temsim.physics.column_wall import clip_column_wall
 from temsim.physics.core import complex_transfer, propagate
@@ -111,29 +112,30 @@ def test_probe_modes_reach_the_sample_angle_with_real_aperture_clipping(
         assert statistics["rms_radius_nm"] < 2.0
 
 
-def test_imaging_mode_relays_the_selected_objective_image_plane():
+def test_imaging_mode_relays_the_sample_to_its_reported_receiver():
     state = _state()
-    apply_operating_mode_pair(state, "nano_probe", "imaging")
-    state.step_mm = 0.1
-    source_z = state.objective_lens.image_plane_z_mm(
-        state.beam_voltage_kv, state.sample
+    state.acceleration_enabled = True
+    state.acceleration_backend = "Numba CPU"
+    result = apply_operating_mode_pair(state, "nano_probe", "imaging")
+    focus = result.image_projection
+    # Nanoprobe owns the STEM insertion state. Image still supplies a Camera
+    # optical reference; it must not fabricate a physical Camera exposure.
+    assert focus.receiver_key == "camera"
+    assert not focus.receiver_inserted
+    assert focus.receiver_z_mm == state.camera.z_mm
+    transfer = diffraction_transfers(state, [focus.receiver_z_mm])[focus.receiver_z_mm]
+    assert np.linalg.norm(transfer.j_diff_m_per_rad, ord=2) < 1.0e-5
+    assert np.sqrt(abs(np.linalg.det(transfer.j_img))) == pytest.approx(
+        focus.magnification, rel=5.0e-4,
     )
-
-    matrix = complex_transfer(
-        state, source_z, tem_camera_plane_z(state)
-    )
-
-    assert source_z is not None
-    assert state.objective_image_plane_z_mm == pytest.approx(source_z)
-    assert abs(matrix[0, 1]) < 1.0e-5
-    assert abs(matrix[0, 0]) > 1.0
+    assert focus.magnification > 1.0
 
 
 @pytest.mark.parametrize(
     "column",
     ("C2", "C3", "C3 + Probe Corrector"),
 )
-def test_stored_imaging_relay_is_valid_for_each_declared_column(column):
+def test_stored_camera_relay_and_live_screen_focus_for_each_declared_column(column):
     state = default_state()
     AssemblyCatalog().apply(
         state,
@@ -145,7 +147,9 @@ def test_stored_imaging_relay_is_valid_for_each_declared_column(column):
     for key, values in imaging.devices.items():
         lenses[key].percent = float(values["percent"])
     state.sync_objective()
-    state.step_mm = 0.1
+    state.acceleration_enabled = True
+    state.acceleration_backend = "Numba CPU"
+    state.step_mm = 0.025
     source_z = state.objective_lens.image_plane_z_mm(
         state.beam_voltage_kv, state.sample
     )
@@ -159,6 +163,30 @@ def test_stored_imaging_relay_is_valid_for_each_declared_column(column):
     assert abs(matrix[0, 0]) == pytest.approx(
         imaging.targets["achieved_plane_magnification"],
         rel=5.0e-4,
+    )
+    # Retain the original isolated-objective-plane / stored-Camera calibration
+    # above. Its relay magnification is not the complete sample magnification,
+    # and those same currents do not establish an image at the upstream screen.
+    planes = (float(state.camera.z_mm), float(state.fluorescent_screen.z_mm))
+    stored = diffraction_transfers(state, planes)
+    camera = stored[planes[0]]
+    assert np.linalg.norm(camera.j_diff_m_per_rad, ord=2) < 1.0e-5
+    assert np.linalg.norm(stored[planes[1]].j_diff_m_per_rad, ord=2) > 1.0e-3
+    camera_sample_magnification = np.sqrt(abs(np.linalg.det(camera.j_img)))
+    state.fluorescent_screen.inserted = True
+    state.camera.inserted = False
+    for detector in state.stem_detectors:
+        detector.inserted = detector.readout_enabled = False
+    result = apply_projector_mode(state, "imaging", column_name=column,
+                                  recording_name="Energy Filter")
+    focus = result.image_projection
+    assert focus.receiver_key == "flu_screen"
+    assert focus.receiver_inserted
+    assert focus.target_magnification == pytest.approx(camera_sample_magnification, rel=5.0e-4)
+    screen = diffraction_transfers(state, [planes[1]])[planes[1]]
+    assert np.linalg.norm(screen.j_diff_m_per_rad, ord=2) < 1.0e-5
+    assert np.sqrt(abs(np.linalg.det(screen.j_img))) == pytest.approx(
+        camera_sample_magnification, rel=5.0e-4,
     )
 
 

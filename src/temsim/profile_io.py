@@ -530,6 +530,8 @@ def apply_profile_values(state, values: dict) -> None:
         )
         if candidate_emitter is not None:
             candidate_emitter.quadrature = prepared_gun_controls.tip_quadrature
+            candidate_emitter.sampling = prepared_gun_controls.tip_sampling
+            candidate_emitter.cdf_quadrature = prepared_gun_controls.tip_cdf_quadrature
     if candidate_emitter is not None:
         candidate_emitter.validate()
     for obj, name, value in pending:

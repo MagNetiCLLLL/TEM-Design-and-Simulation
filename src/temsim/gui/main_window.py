@@ -288,6 +288,7 @@ class MainWindow(QMainWindow):
         self.assembly_panel.operating_mode_requested.connect(
             self.apply_operating_modes
         )
+        self.assembly_panel.image_projection_requested.connect(self.refocus_image_projection)
         self.assembly_panel.condenser_mode_requested.connect(
             lambda key: self.apply_operating_modes(key, None)
         )
@@ -951,9 +952,9 @@ class MainWindow(QMainWindow):
                 self._live_tuning_layout_initialized = True
 
     def _show_virtual_electrons(self) -> None:
-        self.workspace.show_ray_diagram()
-        self.workspace.magnetic_field_toggle.setChecked(True)
         field = self.workspace.magnetic_field
+        self.workspace.tabs.setCurrentWidget(field)
+        self.workspace._refresh_visible_ray_panels()
         field.display_mode.setCurrentIndex(field.display_mode.findData("electron"))
         self.virtual_electrons_dock.show()
         self.virtual_electrons_dock.raise_()
@@ -1586,7 +1587,8 @@ class MainWindow(QMainWindow):
         )
 
     def _copy_state_for_assembly(self):
-        candidate = type(self.state).from_dict(self.state.to_dict())
+        candidate = type(self.state).from_dict(
+            self.state.to_dict(), resolved_assembly=getattr(self.state, "_resolved_assembly", None))
         # This is a live reload, not a historical snapshot read. Carry the
         # previously consumed defaults so catalog.apply can detect a changed
         # shared definition even when the constructor already read the new file.
@@ -1597,6 +1599,12 @@ class MainWindow(QMainWindow):
                 value = getattr(previous.get(component.key), attribute, None)
                 if value is not None:
                     setattr(component, attribute, value)
+        previous_stigmators = {item.key: item for item in self.state.stigmators}
+        for component in candidate.stigmators:
+            value = getattr(previous_stigmators.get(component.key),
+                            "_manifest_effective_length_mm", None)
+            if value is not None:
+                component._manifest_effective_length_mm = value
         return candidate
 
     def open_instrument_configuration(self):
@@ -1649,10 +1657,8 @@ class MainWindow(QMainWindow):
         self._invalidate_direct_alignment()
         try:
             selection = self.catalog.normalise_selection(selection)
-            if selection.beam_blanker != "None":
-                condenser_key, projector_key = self._state_operating_mode_keys(
-                    self.state
-                )
+            condenser_key, projector_key = self._state_operating_mode_keys(self.state)
+            if selection.beam_blanker != "None" or projector_key == "imaging":
                 self._start_operating_preset(
                     selection, condenser_key, projector_key, load_assembly=True
                 )
@@ -1680,9 +1686,10 @@ class MainWindow(QMainWindow):
             current_condenser, current_projector = self._state_operating_mode_keys(self.state)
             projector_only = (projector_key is not None and condenser_key == current_condenser
                               and projector_key != current_projector)
-            if self.state.nanopulser.installed and not projector_only:
+            if projector_key == "imaging" or (self.state.nanopulser.installed and not projector_only):
                 self._start_operating_preset(
-                    self.selection, condenser_key, projector_key
+                    self.selection, condenser_key, projector_key,
+                    projector_only=projector_only,
                 )
                 return
             if projector_only:
@@ -1715,8 +1722,17 @@ class MainWindow(QMainWindow):
         except Exception as exc:
             self._show_error(f"Unable to apply operating preset: {exc}")
 
+    def refocus_image_projection(self) -> None:
+        """Explicitly adapt Image to the current receiver without resetting illumination."""
+        condenser, projector = self._state_operating_mode_keys(self.state)
+        if projector != "imaging":
+            return
+        self._invalidate_direct_alignment()
+        self._start_operating_preset(self.selection, condenser, "imaging", projector_only=True)
+
     def _start_operating_preset(
-        self, selection, condenser_key, projector_key, *, load_assembly=False
+        self, selection, condenser_key, projector_key, *, load_assembly=False,
+        projector_only=False,
     ) -> None:
         if self.workspace.interactive_calculation.busy:
             self.status_label.setText("Finish or cancel the Live tuning bank operation first")
@@ -1724,27 +1740,28 @@ class MainWindow(QMainWindow):
         self.preview_timer.stop()
         self.calculations.invalidate_pending()
         self._set_progress_active("calculation", False)
-        self._preset_state_token = repr(self.state.to_dict())
+        self._preset_state_token = self._operating_preset_state_identity()
         self.assembly_panel.set_direct_alignment_busy("condenser_preset")
         self.progress.setRange(0, 0)
-        self.progress.setFormat("Calibrating condenser preset")
+        self.progress.setFormat("Solving Image projection" if projector_only else "Calibrating optical preset")
         self._set_progress_active("operating_preset", True)
         self.status_label.setText(
-            "Solving condenser preset for the installed Electrostatic beam blanker geometry…"
+            "Solving Image conjugacy for the recording plane…" if projector_only else
+            "Calculating the optical preset for the installed instrument…"
         )
         try:
             self.operating_presets.submit(
                 self.state, self.catalog, selection, condenser_key, projector_key,
-                load_assembly=load_assembly,
+                load_assembly=load_assembly, projector_only=projector_only,
             )
         except Exception:
             self._operating_preset_finished()
             raise
 
     def _operating_preset_ready(self, state, selection, result, duration) -> None:
-        if self._preset_state_token != repr(self.state.to_dict()):
+        if self._preset_state_token != self._operating_preset_state_identity():
             self.log_output.appendPlainText(
-                "Discarded condenser preset after a newer microscope edit."
+                "Discarded optical preset after a newer microscope edit."
             )
             return
         previous = self.state, self.selection, self.assembly
@@ -1765,7 +1782,7 @@ class MainWindow(QMainWindow):
             else "Assembly loaded; no compatible condenser preset"
         )
         self.assembly_panel.set_operating_mode_status(f"Applied: {detail}")
-        self.status_label.setText(f"Electrostatic beam blanker assembly/preset applied in {duration:.2f} s")
+        self.status_label.setText(f"Optical preset applied in {duration:.2f} s")
         self.log_output.appendPlainText(
             f"Loaded {selection.gun} | {selection.column} | {selection.beam_blanker}: "
             f"{detail} ({duration:.2f} s)."
@@ -1773,7 +1790,12 @@ class MainWindow(QMainWindow):
         self.schedule_preview()
 
     def _operating_preset_failed(self, message) -> None:
-        self._show_error(f"Unable to apply Electrostatic beam blanker assembly/preset: {message}")
+        self._show_error(f"Unable to apply optical preset: {message}")
+
+    def _operating_preset_state_identity(self):
+        from temsim.immutable_json import json_digest
+        from temsim.instrument_snapshot import encode_instrument
+        return json_digest(encode_instrument(self.state))
 
     def _operating_preset_finished(self) -> None:
         self._preset_state_token = None
@@ -2205,7 +2227,7 @@ class MainWindow(QMainWindow):
         if self._preset_state_token is not None:
             self._operating_preset_finished()
             self.log_output.appendPlainText(
-                "Condenser preset cancelled after a microscope state change."
+                "Optical preset cancelled after a microscope state change."
             )
 
     def _sync_ray_count_selector(self) -> None:
@@ -2920,7 +2942,7 @@ class MainWindow(QMainWindow):
         try:
             selection, values = read_profile(path)
             selection = self.catalog.normalise_selection(selection)
-            candidate_state = type(self.state).from_dict(self.state.to_dict())
+            candidate_state = self._copy_state_for_assembly()
             candidate_assembly = self.catalog.apply(
                 candidate_state, selection
             )
