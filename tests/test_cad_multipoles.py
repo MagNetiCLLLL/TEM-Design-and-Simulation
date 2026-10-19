@@ -141,6 +141,69 @@ def test_declared_stigmator_coil_count_does_not_create_poles_or_optional_hardwar
             multipole_solids({**row, "coil_count": bad}, {})
 
 
+def _stigmator_row(**changes):
+    return {**_row("objective_stigmator"), "coil_count": 8,
+            "coil_topology": "two_interleaved_four_pole_windings", **changes}
+
+
+def test_stigmator_basis_rotation_moves_material_without_changing_axial_or_field_inputs():
+    row = _stigmator_row(strength_x_percent=12., strength_y_percent=-7.,
+                        effective_length_mm=6., channel_x_angle_deg=0., channel_y_angle_deg=45.)
+    baseline = multipole_solids(row, {})
+    # Historical rows lacking explicit angles retain the same 0/45 geometry.
+    historical = multipole_solids(_stigmator_row(), {})
+    assert [s.shape for s in historical] == [s.shape for s in baseline]
+    turned = {**row, "channel_x_angle_deg": 17., "channel_y_angle_deg": 62.}
+    before = deepcopy(turned)
+    rotated = multipole_solids(turned, {})
+    assert turned == before
+    assert [s.region for s in rotated] == [s.region for s in baseline]
+    angle = np.radians(17.)
+    rotation = np.array([[np.cos(angle), -np.sin(angle), 0.],
+                         [np.sin(angle), np.cos(angle), 0.], [0., 0., 1.]])
+    rng = np.random.default_rng(1401)
+    points = rng.uniform([-38., -38., 685.], [38., 38., 704.], (20000, 3))
+    for index, (old, new) in enumerate(zip(baseline, rotated)):
+        np.testing.assert_array_equal(_contains(old.shape, points),
+                                      _contains(new.shape, points @ rotation.T))
+        assert new.parameters["coil_group"] == "xy"[index % 2]
+        assert new.parameters["basis_angle_deg"] == (17., 62.)[index % 2]
+        assert new.shape["shape"] == old.shape["shape"]  # Same axial/radial allocation.
+    assert any(not np.array_equal(_contains(old.shape, points), _contains(new.shape, points))
+               for old, new in zip(baseline, rotated))
+
+
+@pytest.mark.parametrize("angles", [(10., 40.), (44., 45.), (15., -15.)])
+def test_nonorthogonal_stigmator_basis_keeps_disjoint_copper_at_one_axial_station(angles):
+    row = _stigmator_row(channel_x_angle_deg=angles[0], channel_y_angle_deg=angles[1])
+    solids = multipole_solids(row, {})
+    # Sample each actual end band, including very narrow coils that a uniform
+    # volume sampler could miss. No other declared coil may occupy that band.
+    local_points = []
+    for solid in solids:
+        base = solid.shape["shape"]["base"]
+        centre, size = np.asarray(base["center_mm"]), np.asarray(base["size_mm"])
+        point = centre + [0., 0., .44*size[2]]
+        rotation = np.asarray(solid.shape["rotation"])
+        local_points.append(point @ rotation.T)
+        # The entire box's angular half-width is below half its nearest gap.
+        radial_inner = centre[0]-size[0]/2
+        half_width = np.degrees(np.arctan2(size[1]/2, radial_inner))
+        assert 2*half_width < solid.parameters["minimum_coil_separation_deg"]
+        assert centre[2] == pytest.approx(694.5)
+        assert radial_inner > 12.
+        assert np.hypot(centre[0]+size[0]/2, size[1]/2) < 37.5
+    occupied = np.column_stack([_contains(s.shape, np.asarray(local_points)) for s in solids])
+    np.testing.assert_array_equal(occupied, np.eye(8, dtype=bool))
+
+
+@pytest.mark.parametrize("angles", [(0., 90.), (20., 110.), (0., 0.),
+                                    (float("nan"), 45.), (0., float("inf")), (True, 45.)])
+def test_stigmator_geometry_rejects_dependent_or_nonfinite_structural_bases(angles):
+    with pytest.raises(ValueError, match="independent|finite"):
+        multipole_solids(_stigmator_row(channel_x_angle_deg=angles[0], channel_y_angle_deg=angles[1]), {})
+
+
 @pytest.mark.parametrize("key", ["image_hp1_hexapole", "image_hp2_hexapole"])
 def test_cetcor_hp_is_explicit_family_inference_preserving_saved_envelope(key):
     document = tomllib.loads(Path("configs/instruments/column/C3_ImageCorrector.toml").read_text(encoding="utf-8"))

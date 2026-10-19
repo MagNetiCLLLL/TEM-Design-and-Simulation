@@ -18,6 +18,24 @@ def _document():
     return tomllib.loads(path.read_text())
 
 
+@pytest.mark.parametrize("relative_path", [
+    "instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "subassemblies/projector_stack.toml",
+])
+def test_diffraction_stigmator_has_physical_identity_and_shared_translation(relative_path):
+    path = Path(__file__).resolve().parents[1] / "configs" / relative_path
+    rows = {row["key"]: row for row in tomllib.loads(path.read_text())["parts"]}
+    row = rows["diffraction_stigmator"]
+    assert column_pose_kind(row) == "hardware"
+    assert row["coil_count"] == 8
+    row.update(offset_x_mm=.15, offset_y_mm=.08, offset_z_mm=.3)
+    optical_rotation, optical_shift = effective_part_transform_mm(row, rows)
+    body_rotation, body_shift = mechanical_part_transform_mm(row, rows)
+    np.testing.assert_allclose(body_rotation, optical_rotation, atol=1e-14)
+    np.testing.assert_allclose(body_shift, optical_shift, atol=1e-14)
+    np.testing.assert_allclose(body_shift, [.15, .08, .3], atol=1e-14)
+
+
 @pytest.mark.parametrize("key", ["condenser_stigmator", "objective_stigmator", "ac_deflector",
     "condenser_deflector", "image_diffraction_deflector", "condenser_aperture_2",
     "objective_aperture", "probe_hp1_hexapole", "probe_qph1_quadrupole"])

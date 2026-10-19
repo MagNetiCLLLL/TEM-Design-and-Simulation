@@ -89,6 +89,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_magnetic_test_electron_gui.py", "tests/test_continuous_electron_gui.py",
                 "tests/test_virtual_electron_dock.py")),
             "field-ui/FU-04": ("In-place actual hardware bindings and transactional edits", (
+                "tests/test_stigmator_hardware.py",
                 "tests/test_hardware_tuning_bindings.py", "tests/test_hardware_tuning_gui.py",
                 "tests/test_hardware_tuning_feedback.py", "tests/test_corrector_channel_gui.py",
                 "tests/test_corrector_parameter_validation.py")),
@@ -140,6 +141,7 @@ ACCEPTANCE_SCOPES = {
             "field-ui/FU-17": ("Explicit reference-plane steering and captured actual-probe diagnostics", (
                 "tests/test_beam_steering_gui.py", "tests/test_actual_probe_diagnostics.py")),
             "field-ui/FU-18": ("Analytic CAD construction and native display/export lifecycle", (
+                "tests/test_objective_electronics_sleeves.py",
                 "tests/test_cad_round_lenses.py", "tests/test_cad_multipoles.py",
                 "tests/test_cad_auxiliary.py", "tests/test_cad_export_gui.py",
                 "tests/test_compare_cad_assembly.py", "tests/test_cad_stage_holder.py",

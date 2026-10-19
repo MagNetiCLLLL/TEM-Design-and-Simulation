@@ -16,12 +16,13 @@ def part_solids(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.cad_stage_holder import stage_holder_solids, access_port_solids
     from temsim.cad_vacuum_tube import tube_solids
     from temsim.cad_detectors import detector_solids
+    from temsim.cad_objective_sleeves import sleeve_solids
     if non_material_role(part):
         return ()
     values = tube_solids(part)
     if values is not None:
         return values
-    for build in (detector_solids, stage_holder_solids, access_port_solids, round_lens_solids, multipole_solids):
+    for build in (sleeve_solids, detector_solids, stage_holder_solids, access_port_solids, round_lens_solids, multipole_solids):
         values=build(part,by_key)
         if values is not None:
             return values
@@ -45,10 +46,11 @@ def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.cad_stage_holder import stage_holder_solids, access_port_solids
     from temsim.cad_vacuum_tube import tube_solids
     from temsim.cad_detectors import detector_solids
+    from temsim.cad_objective_sleeves import sleeve_solids
     values = tube_solids(part)
     if values is not None:
         return values
-    for build in (detector_solids, stage_holder_solids, access_port_solids):
+    for build in (sleeve_solids, detector_solids, stage_holder_solids, access_port_solids):
         values = build(part, by_key)
         if values is not None:
             return values
@@ -75,6 +77,8 @@ def is_reconstruction_region(part, region):
     """Display material categories do not create new FEM material assignments."""
     if part.get("model_3d",{}).get("base",{}).get("kind") == "step" and region.startswith("step_"):
         return True
+    if part.get("mechanical_profile") == "objective_electronics_sleeve":
+        return region == "body" and part.get("mechanical_part_role") != "custom_mechanical_copy"
     from temsim.cad_multipoles import multipole_solids
     from temsim.cad_auxiliary import accelerator_solids
     from temsim.cad_stage_holder import PROFILES

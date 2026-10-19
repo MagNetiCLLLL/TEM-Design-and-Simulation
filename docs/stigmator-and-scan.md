@@ -92,6 +92,11 @@ profile; moving the existing CM into the solid upper pole is not an allowed fix.
 
 ## Stigmator controls
 
+The [19 October hardware and patent audit](references/tem-stigmator-hardware-audit.md)
+compares assembly variants, identifies physical devices versus shared controls,
+and provides reproducible native 3D previews and CPU field checks. The current
+read-only inventory is available under **Model Inspector > Stigmator hardware**.
+
 Select **Condenser Stigmator**, **Objective Stigmator** or **Diffraction Stigmator**
 in the optical component list. All three use independent X/Y quadrupole channels
 with a 0/45-degree structural basis (`field_model = "normal_skew"`). The obsolete

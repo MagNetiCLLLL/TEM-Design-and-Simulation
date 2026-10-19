@@ -143,3 +143,84 @@ def test_field_fit_is_reused_by_detached_snapshot_and_display(qtbot, monkeypatch
     assert view.table.isColumnHidden(2)
     assert view.table.isColumnHidden(4)
     assert view.table.rowCount() == len(aberrations.SYSTEM_COEFFICIENT_ROWS)
+
+
+def _stigmator_row(page, key):
+    from PySide6.QtCore import Qt
+    return next(row for row in range(page.stigmator_table.rowCount())
+                if page.stigmator_table.item(row, 0).data(Qt.ItemDataRole.UserRole) == key)
+
+
+def test_stigmator_hardware_readout_shows_current_shared_controls_without_mutation(qtbot):
+    from PySide6.QtWidgets import QAbstractItemView, QTabWidget
+    state = default_state()
+    before = deepcopy(state.to_dict())
+    page = ModelInspectorPage()
+    qtbot.addWidget(page)
+    changes = []
+    page.changed.connect(changes.append)
+    page.set_state(state)
+    tabs = page.findChild(QTabWidget, "modelInspectorTabs")
+    assert "Stigmator hardware" in [tabs.tabText(i) for i in range(tabs.count())]
+    assert page.stigmator_table.editTriggers() == QAbstractItemView.EditTrigger.NoEditTriggers
+    assert page.stigmator_table.rowCount() == 3
+    row = _stigmator_row(page, "condenser_stigmator")
+    assert "Probe A1 fine" in page.stigmator_table.item(row, 3).text()
+    assert "same drives" in page.stigmator_table.item(row, 3).text()
+    assert "OEM coil locations" in page.stigmator_note.text()
+    assert "shares the Image/Diffraction deflector coil pair" in page.stigmator_shared_host.text()
+    assert "Not declared" in page.stigmator_table.item(row, 0).toolTip()
+    assert state.to_dict() == before
+    assert not changes
+    state.condenser_stigmator.strength_x_percent = 3.5
+    state.condenser_stigmator.strength_y_percent = -2.25
+    state.condenser_stigmator.channel_x_angle_deg = 15.
+    state.condenser_stigmator.channel_y_angle_deg = 60.
+    state.image_diffraction_deflector.enabled = False
+    before = deepcopy(state.to_dict())
+    page.refresh()
+    assert page.stigmator_table.horizontalHeaderItem(2).text() == "Channel drive (%)"
+    assert page.stigmator_table.item(row, 2).text() == "X channel +3.5\nY channel -2.25"
+    assert "Channel basis angles: X 15°, Y 60°" in page.stigmator_table.item(row, 2).toolTip()
+    assert "Descan inactive" in page.stigmator_shared_host.text()
+    assert state.to_dict() == before
+    assert not changes
+    state.image_diffraction_deflector.enabled = True
+    state.descan_deflector.enabled = False
+    page.refresh()
+    assert "Descan inactive" in page.stigmator_shared_host.text()
+    assert "disabled" not in page.stigmator_shared_host.text()
+    assert state.image_diffraction_deflector.enabled
+
+
+def test_stigmator_hardware_readout_follows_changed_assembly(qtbot):
+    from temsim.assembly_catalog import AssemblyCatalog, AssemblySelection
+    state = default_state()
+    page = ModelInspectorPage()
+    qtbot.addWidget(page)
+    page.set_state(state)
+    AssemblyCatalog().apply(state, AssemblySelection("FEG", "C3", "No Energy Filter"))
+    page.set_state(state)
+    row = _stigmator_row(page, "condenser_stigmator")
+    assert "A1 fine" not in page.stigmator_table.item(row, 3).text()
+    assert f"Z {state.condenser_stigmator.z_mm:.6g}" in page.stigmator_table.item(row, 1).text()
+
+
+def test_invalid_stigmator_readout_clears_stale_rows_but_keeps_other_inspector_tabs(qtbot):
+    state = default_state()
+    page = ModelInspectorPage()
+    qtbot.addWidget(page)
+    page.set_state(state)
+    existing_rows = page.table.rowCount()
+    state.stigmators.append(state.condenser_stigmator)
+    page.refresh()
+    assert "readout unavailable" in page.stigmator_note.text()
+    assert "Duplicate runtime field component" in page.stigmator_note.text()
+    assert page.stigmator_table.rowCount() == 0
+    assert not page.stigmator_shared_host.text()
+    assert page.table.rowCount() == existing_rows
+    assert page.circuit_table.rowCount() > 0
+    state.stigmators.pop()
+    page.refresh()
+    assert page.stigmator_table.rowCount() == 3
+    assert "readout unavailable" not in page.stigmator_note.text()

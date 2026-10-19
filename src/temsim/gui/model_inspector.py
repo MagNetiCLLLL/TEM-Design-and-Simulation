@@ -123,6 +123,27 @@ class ModelInspectorPage(QWidget):
         tables.setObjectName("modelInspectorTabs")
         tables.addTab(self.table, "Model checks")
         tables.addTab(self.circuit_table, "Magnetic circuits")
+        stigmator_page = QWidget()
+        stigmator_layout = QVBoxLayout(stigmator_page)
+        self.stigmator_note = QLabel()
+        self.stigmator_note.setWordWrap(True)
+        self.stigmator_note.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        stigmator_layout.addWidget(self.stigmator_note)
+        self.stigmator_table = QTableWidget(0, 4)
+        self.stigmator_table.setObjectName("stigmatorHardwareTable")
+        self.stigmator_table.setHorizontalHeaderLabels(("Physical unit", "Z / field FWHM (mm)",
+                                                       "Channel drive (%)", "Shared controls"))
+        self.stigmator_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.stigmator_table.setAlternatingRowColors(True)
+        self.stigmator_table.horizontalHeader().setStretchLastSection(True)
+        for column, width in enumerate((210, 180, 180)):
+            self.stigmator_table.setColumnWidth(column, width)
+        stigmator_layout.addWidget(self.stigmator_table, 1)
+        self.stigmator_shared_host = QLabel()
+        self.stigmator_shared_host.setWordWrap(True)
+        self.stigmator_shared_host.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        stigmator_layout.addWidget(self.stigmator_shared_host)
+        tables.addTab(stigmator_page, "Stigmator hardware")
         from temsim.gui.magnetic_validation import MagneticValidationPage
         self.validation_page = MagneticValidationPage()
         tables.addTab(self.validation_page, "Field validation")
@@ -396,6 +417,7 @@ class ModelInspectorPage(QWidget):
     def refresh(self):
         if self._state is None:
             return
+        self._refresh_stigmators()
         self._update_aberration_mode_availability()
         self.validation_page.set_context(self._state, self.lens.currentData())
         rows = []
@@ -465,6 +487,57 @@ class ModelInspectorPage(QWidget):
                 item = QTableWidgetItem(value)
                 item.setToolTip(values[3])
                 self.table.setItem(row, column, item)
+
+    def _refresh_stigmators(self):
+        from temsim.optics.stigmator_hardware import inspect_stigmator_hardware
+        self.stigmator_table.setRowCount(0)
+        self.stigmator_shared_host.clear()
+        try:
+            report = inspect_stigmator_hardware(self._state)
+        except (AttributeError, KeyError, TypeError, ValueError) as exc:
+            self.stigmator_note.setText(f"Stigmator hardware readout unavailable: {exc}")
+            return
+        self.stigmator_note.setText(
+            "Current column stigmators · configured geometry, before rigid pose. "
+            "Shared control names do not establish OEM coil locations. Details: hover over a row.")
+        aliases = {}
+        for alias in report.control_aliases:
+            label = {"probe.a1_fine": "Probe A1 fine", "image.a1_fine": "Image A1 fine"}.get(alias.channel, alias.channel)
+            aliases.setdefault(alias.component_key, []).append(label)
+        self.stigmator_table.setRowCount(len(report.stigmators))
+        for row, record in enumerate(report.stigmators):
+            commands = record.channel_commands_percent
+            shared = aliases.get(record.key, ())
+            values = (record.name + (" (disabled)" if not record.enabled else ""),
+                      f"Z {record.field_reference_z_mm:.6g}\nFWHM {record.field_width_fwhm_mm:.6g}",
+                      f"X channel {commands[0]:+.6g}\nY channel {commands[1]:+.6g}",
+                      ", ".join(shared) + " · same drives" if shared else "Stigmation controls")
+            start, end = record.assembled_extent_z_mm
+            tensor = record.tensor_at_reference_m2
+            detail = (f"Configured axial extent: {start:.6g}–{end:.6g} mm\n"
+                      f"Assembly parent: {record.assembly_parent_key or 'None'}\n"
+                      f"Declared physical host: {record.declared_physical_host_key or 'Not declared'}\n"
+                      f"Host status: {record.physical_host_status.replace('_', ' ')}\n"
+                      f"Geometry: {record.geometry_status.replace('_', ' ')}\n"
+                      f"Representation: {record.representation_role.replace('_', ' ')}\n"
+                      f"Channel basis angles: X {record.channel_basis_angles_deg[0]:.6g}°, "
+                      f"Y {record.channel_basis_angles_deg[1]:.6g}°\n"
+                      "Channel commands are measured in that basis; they are not necessarily laboratory normal/skew components.\n"
+                      f"Field tensor at reference (m⁻²): [{tensor[0][0]:.6g}, {tensor[0][1]:.6g}; "
+                      f"{tensor[1][0]:.6g}, {tensor[1][1]:.6g}]\n"
+                      "An assembly parent or a shared control name does not prove an OEM winding host.")
+            for column, value in enumerate(values):
+                item = QTableWidgetItem(value)
+                item.setData(Qt.ItemDataRole.UserRole, record.key)
+                item.setToolTip(detail)
+                self.stigmator_table.setItem(row, column, item)
+        self.stigmator_table.resizeRowsToContents()
+        lines = []
+        for binding in report.shared_deflector_channels:
+            start, end = binding.host_interaction_z_mm
+            lines.append(f"Descan shares the Image/Diffraction deflector coil pair: Z {start:.6g}, {end:.6g} mm "
+                         f"(Descan {'active' if binding.enabled else 'inactive'}). Commands are summed on those coils.")
+        self.stigmator_shared_host.setText("\n".join(lines))
 
     def display_result(self, result):
         from dataclasses import asdict

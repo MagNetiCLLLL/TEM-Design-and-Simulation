@@ -192,15 +192,27 @@ def _stigmator_windings(part):
         raise ValueError(f"{part['key']}: two_interleaved_four_pole_windings requires coil_count=8")
     start, end, inner, outer = _envelope(part)
     length, width, centre = end-start, outer-inner, (start+end)/2
-    pitch = 360/count
+    basis = (_number(part, "channel_x_angle_deg", 0.),
+             _number(part, "channel_y_angle_deg", 45.))
+    if abs(math.sin(math.radians(2*(basis[1]-basis[0])))) < 1e-6:
+        raise ValueError(f"{part['key']}: stigmator channels must be independent quadrupoles")
+    # Keep the existing alternating X/Y identities. The two groups occupy
+    # one axial station, including when their declared structural basis rotates.
+    angles = [basis[index % 2]+90*(index//2) for index in range(count)]
+    ordered = sorted(angle % 360 for angle in angles)
+    separation = min(b-a for a, b in zip(ordered, ordered[1:]+[ordered[0]+360]))
     # Preserve the bulk winding allocation, but do not invent magnetic cores,
     # shoes, return yokes, housings or insulating supports around those coils.
     coil_start, coil_end = inner+.28*width, inner+.69*width
-    available = min(2*coil_start*math.tan(math.pi/count), .6*width)
+    # Bound each rectangular winding inside its own angular wedge. A valid
+    # non-45-degree field basis must not manufacture intersecting copper loops.
+    # This only allocates reconstruction geometry; it does not rescale fields.
+    available = min(2*coil_start*math.tan(math.radians(separation/2)), .6*width)
     params = dict(coil_count=count, coil_topology=part["coil_topology"],
         start_mm=start, end_mm=end, inner_radius_mm=inner, outer_radius_mm=outer,
         coil_radial_fractions=[.28, .69], coil_axial_fraction=.70, coil_window_axial_fraction=.48,
-        tangential_fractions=[.45, .80],
+        tangential_fractions=[.45, .80], minimum_coil_separation_deg=separation,
+        winding_tangential_allocation_mm=available,
         construction="Declared two interleaved four-coil groups represented as bulk windings; dimensions are envelope allocations, not individual turns")
     evidence = tuple(source for source in (part.get("coil_topology_source_url"), STIGMATOR_SOURCE) if source)
     result = []
@@ -209,8 +221,10 @@ def _stigmator_windings(part):
                               (coil_end-coil_start, .80*available, .70*length)),
                           box(((coil_start+coil_end)/2, 0., centre),
                               (coil_end-coil_start+width, .45*available, .48*length)))
+        coil_params = {**params, "coil_group": "xy"[index % 2],
+                       "basis_angle_deg": basis[index % 2], "coil_azimuth_deg": angles[index]}
         result.append(_solid(part, f"coil_{index+1}", "copper_winding",
-                             transformed(coil, rotation=_rotation(index*pitch)), params, evidence))
+                             transformed(coil, rotation=_rotation(angles[index])), coil_params, evidence))
     return tuple(result)
 
 

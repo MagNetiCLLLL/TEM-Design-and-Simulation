@@ -6,6 +6,15 @@ Titan/Spectra/CESCOR, or a magnetic-material field qualification. Patent figures
 provide construction alternatives; their proportions must not be used to infer
 millimetre dimensions for the simulator.
 
+The [2026-10-19 TEM stigmator audit](tem-stigmator-hardware-audit.md) adds
+Philips/FEI section evidence, Tecnai/Titan/Spectra/Iliad applicability, and
+assembly-specific positions. Declared stigmator winding groups now use the
+same structural basis angles as the optical tensor: four X-group coils at
+`channel_x_angle_deg + 90*k` and four Y-group coils at
+`channel_y_angle_deg + 90*k`, all at one axial station. For a non-45-degree
+independent basis, bulk winding widths are limited by the nearest angular gap;
+this geometric allocation never rescales excitation or effective field length.
+
 ## Evidence
 
 The adopted HP geometry is specifically supported by [Müller et al. 2006](cad-library/Mueller2006a/简介.md): p.443 identifies six ferromagnetic pole pins, and Fig.3 on p.444 is a real hexapole photograph identifying poles, coils and yoke. This supports the main probe HP1/HP2 construction family; the paper's numerical dimensions are not substituted for this model. See [the current uniform-detail policy](CAD_DETAIL_POLICY.md). The other patent alternatives below do not by themselves authorize extra components in this instrument.

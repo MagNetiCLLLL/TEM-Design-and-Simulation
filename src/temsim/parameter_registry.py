@@ -182,7 +182,7 @@ _SCAN_RESPONSES = {
     "scan_amplitude_y_mrad": "Initial uncalibrated Y diagonal seed, not an editable scan control. Active scan drives use the calibrated 2x2 command matrix from requested pitch and counts.",
     "effective_thickness_mm": "Stored effective coil thickness for validation and layout annotations. The present transport applies thin kicks at the separately defined upper/lower planes; this value does not change their separation or create a distributed coil field.",
     "optical_plane_separation_mm": "Axial separation of the two physical descan kick planes. Changing it changes their optical response and pivot; a held calibration keeps the old drive ratios.",
-    "wobble_enabled": "Enables periodic beam-tilt commands for alignment. Scan and wobble are mutually exclusive in this component; wobble does not change the tip source.",
+    "wobble_enabled": "Enables periodic deflector commands for alignment. Static, wobble and raster commands use the same AC pair and current coil coupling; the observed motion is not necessarily a pure tilt. Scan and wobble are mutually exclusive in this component; wobble does not change the tip source.",
     "wobble_amplitude_x_mrad": "Signed X amplitude of the sinusoidal common-pair wobble command. The coil ratios and optics determine position and angle at an observation plane.",
     "wobble_amplitude_y_mrad": "Signed Y amplitude of the sinusoidal common-pair wobble command. Both axes share one time factor; this is a line wobble, not an independently phased ellipse.",
     "wobble_period_s": "Period of the sinusoidal wobble command. Hold normalized phase fixed to compare amplitudes; no frequency-dependent electronics are modelled.",

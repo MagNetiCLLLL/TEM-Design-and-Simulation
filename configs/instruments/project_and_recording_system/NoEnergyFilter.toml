@@ -96,11 +96,13 @@ optical_reference_local_z_mm = 25.0
 mechanical_outer_diameter_mm = 120.0
 mechanical_clear_bore_diameter_mm = 20.0
 effective_length_mm = 8.0
-mechanical_profile = "quadrupole_field_channel"
-mechanical_part_role = "field_channel"
+mechanical_profile = "magnetic_stigmator"
+mechanical_part_role = "stigmator_windings"
+mechanical_geometry_status = "configured_envelope_generic_windings_not_oem"
+mechanical_structure_source_url = "https://patents.google.com/patent/US8569693B2/en"
 mechanical_overlap_group = "diffraction_lens_assembly"
 mechanical_overlap_role = "member"
-mechanical_overlap_reason = "Upstream Diffraction Stigmator field channel assigned to the D alignment package; it lies outside the reconstructed D yoke envelope."
+mechanical_overlap_reason = "Physical diffraction stigmator assigned to the D alignment package, upstream of its reconstructed yoke. FEI US8569693B2 supports the separate stigmator role, not these configured dimensions or exact OEM placement."
 parent_key = "diffraction_lens"
 
 [[parts]]

@@ -92,6 +92,10 @@ def inherits_parent_lens_pose(part):
     """
     from temsim.component_representation import non_material_role
     from temsim.optics.field_hardware_binding import COIL_INSERT_ROLE
+    if part.get("mechanical_profile") == "objective_electronics_sleeve":
+        # The objective is its navigation/enclosure parent. Its separately
+        # mounted electronics do not move with objective-axis placement.
+        return False
     if part.get("mechanical_part_role") == COIL_INSERT_ROLE:
         return True
     if supports_physical_lens_pose(part) and part.get("mechanical_profile") in _PROFILES:

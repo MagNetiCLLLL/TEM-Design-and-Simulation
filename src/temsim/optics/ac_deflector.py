@@ -648,8 +648,9 @@ class AcDeflectorComponent:
         }
 
 
-# The canonical Probe-Corrector package places the AC centre after
-# DP12 → Condenser Stigmator → Beam Deflector with 5 mm clearances.
+# The selected TOML owns the AC position. In C3 + Probe Corrector the AC pair
+# follows the corrector, whereas the distinct Beam Shift/Tilt deflector is
+# upstream of its ADL. Static, wobble and raster share this AC pair's coupling.
 AC_DEFLECTOR_DEFINITION = AcDeflectorDefinition(
     key=AC_DEFLECTOR,
     label="AC Scan Coil",
@@ -692,9 +693,10 @@ def resolve_ac_scan_coil_installation(state, *, probe_installed):
 def resolve_ac_downstream_anchors(state, *, probe_installed):
     """Compatibility wrapper for the upper-objective package resolver.
 
-    AC no longer owns the downstream chain.  The package is rooted at the
-    condenser stigmator and contains Beam, AC, and Mini Condenser in that
-    order inside the Upper Objective Lens body above the pole piece.
+    AC does not own or reposition the downstream chain. The selected TOML
+    supplies its position and the adjacent Objective-package coordinates.
+    Beam Shift/Tilt uses the distinct beam_deflector, which is upstream of the
+    corrector in C3 + Probe Corrector; it is not an alias of these AC coils.
     """
 
     from temsim.optics.upper_objective_package import (

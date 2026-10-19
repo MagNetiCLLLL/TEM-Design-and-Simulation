@@ -147,6 +147,8 @@ REFERENCE_FREE_PART_KEYS = frozenset({
     "sample_holder",
     "objective_upper_pole",
     "objective_lower_pole",
+    "objective_upper_electronics_sleeve",
+    "objective_lower_electronics_sleeve",
     "energy_filter",
     "condenser_lens_1_lower_pole",
     "condenser_lens_2_upper_pole",
@@ -767,6 +769,8 @@ def validate_document(document):
     if len(set(part_orders)) != len(part_orders):
         raise ValueError("Duplicate part order in module TOML")
     _validate_custom_mechanical_parts(parts)
+    from temsim.cad_objective_sleeves import validate_objective_sleeves
+    validate_objective_sleeves(parts)
     validate_electrical_defaults(parts)
     for part in parts:
         validate_tip_part(part)

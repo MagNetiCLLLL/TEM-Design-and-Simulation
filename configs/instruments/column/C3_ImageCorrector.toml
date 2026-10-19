@@ -2347,3 +2347,57 @@ geometry_source = "CEOS US20090079531A1 Figs 5-7,10-11 supports compact orthogon
 optical_relation_source = "CEOS Linck MC2025 p26. Existing field centre, signed drive and effective field length retained; copper geometry supplies no additional optical field."
 winding_extent_note = "Copper axial extent is independent of the existing effective uniform-field model. Remaining allocated axial space is not material and is not a measured fringe-field profile."
 radial_relation_note = "Two separated orthogonal winding layers outside the unchanged 20 mm clear bore; no new housing, yoke, magnetic pole, insulation or tube is inferred."
+
+# User-requested passive polymer carrier; dimensions are engineering allocations, not OEM data.
+[[parts]]
+order = 98
+key = "objective_upper_electronics_sleeve"
+name = "Upper Objective Electronics Sleeve"
+branch = "common"
+local_start_z_mm = 661.500000
+local_center_z_mm = 710.500000
+local_end_z_mm = 759.500000
+length_mm = 98.000000
+vacuum_inner_diameter_mm = 59.2
+mechanical_inner_diameter_mm = 59.2
+mechanical_outer_diameter_mm = 59.8
+mechanical_profile = "objective_electronics_sleeve"
+mechanical_part_role = "insulating_electronics_sleeve"
+material_class = "insulating_polymer_unspecified"
+mechanical_only = true
+axial_vacuum_context_only = true
+parent_key = "objective_lens"
+sleeve_side = "upper"
+sleeve_component_keys = ["condenser_stigmator", "ac_deflector", "mini_condenser"]
+mechanical_geometry_status = "user_requested_engineering_clearance_not_oem"
+mechanical_geometry_source = "User-requested hollow polymer carrier, 2026-10-19. Material grade unspecified; 0.3 mm wall with 0.1 mm nominal radial clearance from the 59 mm mini-condenser housing and 60 mm objective winding bore. Open ends and separate upper/lower carriers avoid objective poles; no field or vacuum boundary is created."
+mechanical_overlap_group = "objective_assembly"
+mechanical_overlap_role = "member"
+mechanical_overlap_reason = "Passive open-ended sleeve around independently mounted objective electronics; nominal radial clearances checked separately."
+
+# User-requested passive polymer carrier; dimensions are engineering allocations, not OEM data.
+[[parts]]
+order = 99
+key = "objective_lower_electronics_sleeve"
+name = "Lower Objective Electronics Sleeve"
+branch = "common"
+local_start_z_mm = 956.900000
+local_center_z_mm = 995.400000
+local_end_z_mm = 1033.900000
+length_mm = 77.000000
+vacuum_inner_diameter_mm = 59.2
+mechanical_inner_diameter_mm = 59.2
+mechanical_outer_diameter_mm = 59.8
+mechanical_profile = "objective_electronics_sleeve"
+mechanical_part_role = "insulating_electronics_sleeve"
+material_class = "insulating_polymer_unspecified"
+mechanical_only = true
+axial_vacuum_context_only = true
+parent_key = "objective_lens"
+sleeve_side = "lower"
+sleeve_component_keys = ["objective_stigmator", "image_diffraction_deflector"]
+mechanical_geometry_status = "user_requested_engineering_clearance_not_oem"
+mechanical_geometry_source = "User-requested hollow polymer carrier, 2026-10-19. Material grade unspecified; 0.3 mm wall with 0.1 mm nominal radial clearance from the 59 mm mini-condenser housing and 60 mm objective winding bore. Open ends and separate upper/lower carriers avoid objective poles; no field or vacuum boundary is created."
+mechanical_overlap_group = "objective_assembly"
+mechanical_overlap_role = "member"
+mechanical_overlap_reason = "Passive open-ended sleeve around independently mounted objective electronics; nominal radial clearances checked separately."

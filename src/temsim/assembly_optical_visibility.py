@@ -27,7 +27,7 @@ _PASSIVE_PROFILES = frozenset({
     "magnetic_lens_housing", "post_projector_detector_chamber", "vacuum_liner",
     "vacuum_bore", "transverse_goniometer", "side_entry_sample_holder",
     "branch_reference_plane", "eftem_output_reference_plane", "virtual_plane",
-    "virtual_layout", "integrated_magnetic_lens_channel",
+    "virtual_layout", "integrated_magnetic_lens_channel", "objective_electronics_sleeve",
 })
 _MAGNETIC_PROFILES = frozenset({
     "magnetic_pole_piece", "magnetic_excitation_coil", "magnetic_lens_yoke",
