@@ -95,6 +95,11 @@ construction of the installed CESCOR DPH1/DPH2, QPH or HP units.
 
 ## Ordinary TEM deflectors: rigid-carrier update, 2026-10-18
 
+The subsequent [Beam Deflector registration review](beam-deflector-registration.md)
+adds an explicitly saved angular-slot option to this same construction family.
+Only the default column's Beam host selects it; the 20 regions, winding and
+pin locations, field channels and other three hosts remain unchanged.
+
 The four ordinary magnetic deflector hosts in the C3 + Probe Corrector column
 now select `rigid_insulating_carriers_pinned` explicitly. This is a common,
 source-backed engineering construction family, selected separately for each

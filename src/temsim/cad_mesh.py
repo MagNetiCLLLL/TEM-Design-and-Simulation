@@ -100,7 +100,8 @@ def annotate_material_faces(mesh, part, runtime=None):
     planes,inverse=np.unique(rounded,axis=0,return_inverse=True)
     groups=np.array([f"material_face_{i}" for i in inverse],dtype=object)
     excluded={"length_mm","local_start_z_mm","local_center_z_mm","local_end_z_mm"} if part.get("branch_path_only") else set()
-    fields=tuple(("parts",part["key"],key) for key in part if key.endswith("_mm") and key not in excluded)
+    fields=tuple(("parts",part["key"],key) for key in part
+                 if key.endswith(("_mm", "_deg")) and key not in excluded)
     if runtime:
         fields+=tuple(("runtime",part["key"],key) for key in ("gap_m","centre_m") if key in runtime)
     metadata={f"material_face_{i}":{"label":f"{mesh.region} material face {i+1}","kind":"cad_material",

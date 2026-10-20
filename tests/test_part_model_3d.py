@@ -167,12 +167,17 @@ def test_shared_bodies_are_not_duplicated_or_claimed_as_solid_homogeneous_materi
     for key in ("condenser_lens_1", "condenser_lens_2"):
         model = part_model_from_document(document, key)
         shared = [mesh for mesh in model.meshes if mesh.key == "c1_c2_pole_piece_cartridge"]
-        assert len(shared) == 1
-        assert not shared[0].is_exact
-        assert "Envelope" in shared[0].description
+        # One shared carrier now has three explicit material regions. Each
+        # appears once per selected optical assembly, never once per channel.
+        assert {mesh.region for mesh in shared} == {
+            "c1_carrier_unresolved", "nonmagnetic_separator_assumed", "c2_carrier_unresolved"}
+        assert len(shared) == 3
+        assert all(not mesh.is_exact for mesh in shared)
+        assert all("unresolved" in mesh.description for mesh in shared)
+        assert all(mesh.material_class != "soft_magnetic" for mesh in shared)
         assert len({(mesh.key, mesh.region) for mesh in model.meshes}) == len(model.meshes)
     module = module_model_from_document(document, angular_segments=8)
-    assert sum(mesh.key == "c1_c2_pole_piece_cartridge" for mesh in module.meshes) == 1
+    assert sum(mesh.key == "c1_c2_pole_piece_cartridge" for mesh in module.meshes) == 3
 
 
 def test_multi_gap_shared_profile_is_shown_as_one_shaped_body_for_each_channel(document):

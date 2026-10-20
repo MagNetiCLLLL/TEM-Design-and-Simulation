@@ -42,6 +42,8 @@ def _meshes(model, key):
 
 def _vertices(model, key):
     meshes = _meshes(model, key)
+    if any(mesh.region == "connection_rod" for mesh in meshes):
+        meshes = tuple(mesh for mesh in meshes if mesh.region == "body")
     assert meshes, f"No aperture plate was generated for {key}"
     return np.concatenate([mesh.vertices for mesh in meshes])
 
@@ -81,7 +83,7 @@ def _working_wall_radii(model, key):
 def _assert_schematic(model, key):
     assert all(not mesh.is_exact for mesh in _meshes(model, key))
     text = " ".join(model.notes).lower()
-    assert "schematic" in text
+    assert "schematic" in text or "engineering reconstruction" in text
     assert "transverse" in text
     assert any(word in text for word in ("unspecified", "undefined", "not defined", "not specified"))
 

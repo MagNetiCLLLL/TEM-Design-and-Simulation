@@ -19,7 +19,10 @@ CONFIG = Path(__file__).resolve().parents[1] / "configs/instruments/column/C3_Pr
 
 def _row(key):
     document = tomllib.loads(CONFIG.read_text(encoding="utf-8"))
-    return next(row for row in document["parts"] if row["key"] == key)
+    row = next(row for row in document["parts"] if row["key"] == key)
+    # Keep this baseline suite independent of the opt-in HP2 passive supports;
+    # the default supported assembly is covered in test_probe_hexapole_support.
+    return {name: value for name, value in row.items() if not name.startswith("hexapole_support_")}
 
 
 def _bodies(row):

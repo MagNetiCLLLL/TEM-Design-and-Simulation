@@ -1,8 +1,10 @@
 """Shared view controls and component navigation never start a ray calculation."""
 import pytest
-from PySide6.QtCore import QSettings
+from PySide6.QtCore import QSettings, Qt
+from PySide6.QtWidgets import QDoubleSpinBox, QSizePolicy
 
 from temsim.gui import main_window as shell
+from temsim.gui.projection_angle_controls import ProjectionAngleControls
 
 
 @pytest.fixture
@@ -37,7 +39,7 @@ def test_vector_rotation_joins_shared_projection_without_signal_echo(window, mon
     workspace._set_projection_angle(27.5)
     assert received == [27.5]
     assert requests == []
-    assert vectors.angle.value() == 27.5
+    assert vectors.projection_controls.angle_deg == 27.5
     assert field.field_lines.canvas.projection_angle_deg == 27.5
     assert workspace.physical_layout.rotating_section._angle_deg == 27.5
 
@@ -69,22 +71,22 @@ def test_longitudinal_angle_controls_sync_field_ray_and_physical_without_echo(wi
     assert section.follow_ray_diagram.isChecked()
 
     # The field control changes the common observation angle, not lens placement.
-    vectors.angle.setValue(37.5)
+    vectors.projection_controls.slider.setValue(375)
     assert field_requests == [37.5]
     assert physical_requests == []
     assert workspace._projection_angle_deg == 37.5
     assert workspace.projection_slider.value() == 375
     assert vectors.canvas.projection_angle_deg == 37.5
-    assert section.angle_spin.value() == 37.5
+    assert section.projection_controls.angle_deg == 37.5
     assert section._angle_deg == 37.5
 
     # Receiving a Physical Layout angle must not emit a field request in return.
-    section.angle_spin.setValue(90.)
+    section.projection_controls.yz.click()
     assert field_requests == [37.5]
     assert physical_requests == [90.]
     assert workspace._projection_angle_deg == 90.
     assert workspace.projection_yz.isChecked()
-    assert vectors.angle.value() == 90.
+    assert vectors.projection_controls.angle_deg == 90.
     assert vectors.canvas.projection_angle_deg == 90.
     assert vectors.section.currentData() == "UZ"
 
@@ -93,9 +95,83 @@ def test_longitudinal_angle_controls_sync_field_ray_and_physical_without_echo(wi
     assert field_requests == [37.5]
     assert physical_requests == [90.]
     assert workspace._projection_angle_deg == 0.
-    assert vectors.angle.value() == 0.
-    assert section.angle_spin.value() == 0.
+    assert vectors.projection_controls.angle_deg == 0.
+    assert section.projection_controls.angle_deg == 0.
+
+    # The 360° endpoint remains visible on every slider; the canvas may use 0°.
+    vectors.projection_controls.slider.setValue(3600)
+    assert field_requests == [37.5, 360.0]
+    assert physical_requests == [90.]
+    assert workspace._projection_angle_deg == 360.
+    for control in (workspace.projection_controls, vectors.projection_controls,
+                    section.projection_controls):
+        assert control.angle_deg == 360.
+        assert control.slider.value() == 3600
+        assert control.xz.isChecked()
+    assert vectors.canvas.projection_angle_deg == 0.
+    workspace._set_projection_angle(37.25)
+    for control in (workspace.projection_controls, vectors.projection_controls,
+                    section.projection_controls):
+        assert control.angle_deg == 37.25
+        assert control.slider.value() == 373
+    assert section._angle_deg == 37.25
     assert not window.preview_timer.isActive()
+
+
+def test_shared_angle_controls_use_the_same_order_dimensions_and_tooltips(window):
+    workspace = window.workspace
+    controls = (workspace.projection_controls,
+                workspace.magnetic_field.field_vectors.projection_controls,
+                workspace.physical_layout.rotating_section.projection_controls)
+    expected_tooltips = None
+    expected_styles = None
+    for control in controls:
+        assert isinstance(control, ProjectionAngleControls)
+        widgets = (control.label, control.xz, control.yz, control.slider)
+        assert tuple(control.layout().itemAt(i).widget() for i in range(4)) == widgets
+        assert control.layout().spacing() == 3
+        assert control.layout().alignment() & Qt.AlignmentFlag.AlignLeft
+        assert control.layout().contentsMargins().left() == 0
+        assert control.label.text() == "Angle"
+        assert [control.xz.text(), control.yz.text()] == ["X-Z", "Y-Z"]
+        assert (control.slider.minimum(), control.slider.maximum()) == (0, 3600)
+        assert (control.slider.minimumWidth(), control.slider.maximumWidth()) == (120, 180)
+        assert (control.slider.singleStep(), control.slider.pageStep()) == (1, 50)
+        assert not control.findChildren(QDoubleSpinBox)
+        assert all(button.sizePolicy().horizontalPolicy() == QSizePolicy.Policy.Fixed
+                   for button in (control.xz, control.yz))
+        styles = tuple(widget.styleSheet() for widget in (control, *widgets))
+        if expected_styles is None:
+            expected_styles = styles
+        assert styles == expected_styles
+        tooltips = tuple(widget.toolTip() for widget in widgets)
+        if expected_tooltips is None:
+            expected_tooltips = tooltips
+        assert tooltips == expected_tooltips
+
+
+def test_shared_angle_control_endpoint_and_receiving_values_do_not_echo(qtbot):
+    control = ProjectionAngleControls()
+    qtbot.addWidget(control)
+    requests = []
+    control.angle_changed.connect(requests.append)
+    control.set_angle(37.5)
+    control.set_angle(float("nan"))
+    assert control.angle_deg == 37.5
+    assert control.slider.value() == 375
+    assert requests == []
+    control.slider.setValue(3600)
+    assert control.angle_deg == 360.0
+    assert control.xz.isChecked()
+    assert requests == [360.0]
+    control.xz.click()
+    assert control.angle_deg == 0.0
+    assert control.slider.value() == 0
+    assert control.xz.isChecked()
+    assert requests == [360.0, 0.0]
+    control.xz.click()
+    assert control.xz.isChecked()
+    assert requests == [360.0, 0.0]
 
 
 def test_physical_menu_opens_vector_view_and_retains_real_component_key(window, monkeypatch):

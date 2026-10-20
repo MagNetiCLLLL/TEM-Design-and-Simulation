@@ -270,6 +270,27 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
     row, index, path, kind, field = _context(part, path, by_key)
     if not row:
         return _impact("unknown", "Source part not connected", "The parameter's source part is unavailable; its physical route needs verification.")
+    if (kind == "parts" and field in row
+            and field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
+            and field.endswith(("_mm", "_deg"))):
+        if field.startswith(("mechanical_cartridge_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_")):
+            recipes = descriptors or {}
+            lens_keys = row.get("magnetic_lens_keys", ()) if field.startswith("mechanical_cartridge_") else (row.get("parent_key"),)
+            imported = [key for key in lens_keys
+                        if isinstance(recipes.get(key), Mapping)
+                        and any(name in recipes[key] for name in ("source_path", "geometry_fingerprint", "map_type"))]
+            return _impact("configuration_required" if imported else "inactive",
+                           "Matching field map required" if imported else "Internal material geometry; map identity",
+                           "The internal construction changes native 3D and STEP geometry and its lens "
+                           "geometry fingerprint. An older imported field map must be revalidated after an edit. "
+                           "These passive details are not additional FEM material regions; existing analytical "
+                           "fields and vacuum passage do not change from these subdivision dimensions.",
+                           effects=("display", "geometry", "field_map_identity"),
+                           results=("3d_preview", "physical_layout", "field_map_validity"))
+        return _impact("inactive", "Internal material geometry only",
+                       "This explicit engineering dimension changes the native 3D and STEP construction. "
+                       "No coil-resolved field, new magnetic-material solver region, optical gap or "
+                       "vacuum boundary is inferred from it. Existing field and beam-passage inputs remain separate.")
     from temsim.optics.electron_gun.tip_assembly import is_tip_part, PART_FIELDS
     connected = simulation_mode in MODE_BY_KEY and MODE_BY_KEY[simulation_mode].available
     from temsim.lens_pose import PHYSICAL_POSE_FIELDS, supports_physical_lens_pose, column_pose_kind, physical_pose_description

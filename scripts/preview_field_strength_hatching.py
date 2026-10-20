@@ -211,7 +211,7 @@ def main():
             raster_bytes=int(texture.sizeInBytes()) if texture is not None else 0,
             raster_size=[texture.width(), texture.height()] if texture is not None else None,
             provider_calls=len(scene.calls), redraw_added_provider_calls=len(scene.calls) - before_calls,
-            zoom=page.canvas._zoom, pan=[page.canvas._pan.x(), page.canvas._pan.y()],
+            zoom=page.canvas._zoom.tolist(), pan=[page.canvas._pan.x(), page.canvas._pan.y()],
             canvas_size=[page.canvas.width(), page.canvas.height()],
             window_size=[window.width(), window.height()],
             plot_rect_pixels=[plot.x(), plot.y(), plot.width(), plot.height()],

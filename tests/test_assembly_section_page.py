@@ -78,10 +78,10 @@ def test_follow_angle_has_no_signal_echo_and_can_be_unlocked(qtbot):
     received = []
     page.projection_angle_changed.connect(received.append)
     page.set_projection_angle(35)
-    assert page.angle_spin.value() == 35
+    assert page.projection_controls.angle_deg == 35
     assert page.angle_slider.value() == 350
     assert received == []
-    page.angle_spin.setValue(47.5)
+    page.angle_slider.setValue(475)
     assert received == [47.5]
     page.follow_ray_diagram.setChecked(False)
     page.set_projection_angle(90)

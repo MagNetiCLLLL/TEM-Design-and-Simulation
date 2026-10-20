@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 from PySide6.QtCore import QEvent, QPointF, Qt
-from PySide6.QtGui import QImage, QMouseEvent, QPainter
+from PySide6.QtGui import QImage, QMouseEvent, QPainter, QWheelEvent
 
 from temsim.gui.field_vector_canvas import FieldVectorCanvas
 from temsim.part_model_3d import TriangleMesh, revolve_section
@@ -53,7 +53,7 @@ def test_mesh_and_field_share_projection_under_fit_rotation_pan_and_zoom(qtbot):
     canvas.fit_physical_models()
     for angle, zoom, pan in ((0., 1., QPointF()), (37., 2.3, QPointF(37, -23))):
         canvas.set_projection_angle(angle)
-        canvas._zoom, canvas._pan = zoom, pan
+        canvas._zoom, canvas._pan = np.full(2, zoom), pan
         canvas.grab()
         actual = canvas._project_positions(mesh.vertices[::17])[:, :2]
         np.testing.assert_allclose(actual, canvas._screen_points, atol=1e-10)
@@ -82,7 +82,8 @@ def test_fit_models_only_changes_display_bounds_and_reset_restores_sample(qtbot)
     assert all(plot.contains(QPointF(*point)) for point in screen[:, :2])
     canvas.reset_view()
     np.testing.assert_array_equal(canvas._view_bounds_m, bounds)
-    assert canvas._zoom == 1. and not canvas._fit_models
+    np.testing.assert_array_equal(canvas._zoom, np.ones(2))
+    assert not canvas._fit_models
 
 
 @pytest.mark.parametrize("section", ["3D", "XY", "XZ", "YZ"])
@@ -234,7 +235,7 @@ def _drag(canvas, button, start, end):
     _mouse(canvas, QEvent.Type.MouseButtonRelease, end, button, Qt.MouseButton.NoButton)
 
 
-def test_shared_angle_drag_reprojects_only_and_pan_reset_preserve_angle(qtbot, monkeypatch):
+def test_left_and_middle_drag_pan_without_changing_shared_angle_or_physical_data(qtbot):
     canvas = canvas_with_sample(qtbot)
     sample = canvas.sample
     arrays = {name: getattr(sample, name).copy() for name in vars(sample)}
@@ -250,16 +251,86 @@ def test_shared_angle_drag_reprojects_only_and_pan_reset_preserve_angle(qtbot, m
     assert emitted == []  # Programmatic synchronization cannot loop.
     centre = canvas._plot_rect().center()
     _drag(canvas, Qt.MouseButton.LeftButton, centre, centre+QPointF(40., 20.))
-    assert canvas.projection_angle_deg == 40. and emitted == [40.]
-    _drag(canvas, Qt.MouseButton.RightButton, centre, centre+QPointF(20., 10.))
-    assert canvas._pan == QPointF(20., 10.)
+    assert canvas.projection_angle_deg == 20. and emitted == []
+    _drag(canvas, Qt.MouseButton.MiddleButton, centre, centre+QPointF(20., 10.))
+    assert canvas._pan == QPointF(60., 30.)
     assert not selected and not contexts
     canvas.reset_view()
-    assert canvas.projection_angle_deg == 40. and emitted == [40.]
+    assert canvas.projection_angle_deg == 20. and emitted == []
     assert canvas.sample is sample and canvas._physical_meshes is meshes
     for name, before in arrays.items():
         np.testing.assert_array_equal(getattr(sample, name), before)
     np.testing.assert_array_equal(mesh.vertices, vertices)
+
+
+@pytest.mark.parametrize("delta", [QPointF(20., 0.), QPointF(0., 15.), QPointF(-20., 15.)])
+def test_right_drag_matches_ray_axis_scales_and_keeps_press_coordinate_fixed(qtbot, delta):
+    canvas = canvas_with_sample(qtbot)
+    canvas._zoom = np.array([1.3, .7])
+    canvas._pan = QPointF(12., -9.)
+    canvas.set_projection_angle(37.)
+    point = np.array([[.00004, .00006, .00007]])
+    anchor = QPointF(*canvas._project_positions(point)[0, :2])
+    zoom = canvas._zoom.copy()
+    emitted = []
+    canvas.projection_angle_requested.connect(emitted.append)
+    _drag(canvas, Qt.MouseButton.RightButton, anchor, anchor+delta)
+    np.testing.assert_allclose(canvas._zoom, zoom*np.power(1.02, [delta.x(), -delta.y()]))
+    np.testing.assert_allclose(canvas._project_positions(point)[0, :2], [anchor.x(), anchor.y()])
+    assert canvas.projection_angle_deg == 37. and emitted == []
+
+
+def test_same_snapshot_detail_retains_cached_sections_but_replacement_clears_them(qtbot):
+    canvas = canvas_with_sample(qtbot, "UZ")
+    mesh = tube_mesh()
+    canvas.set_physical_meshes((mesh,))
+    cuts = canvas._physical_sections()
+    canvas.set_sample(sample_at([[0, 0, 0]]), canvas._bounds_m, "UZ", preserve_geometry=True)
+    canvas.set_physical_meshes((mesh,))
+    assert canvas._physical_sections() is cuts
+    canvas.set_projection_angle(17.)
+    assert canvas._physical_sections() is not cuts
+    canvas.set_sample(canvas.sample, canvas._bounds_m, "UZ")
+    assert not canvas._physical_meshes and canvas._section_cache is None
+
+
+@pytest.mark.parametrize("section", ["3D", "UZ"])
+def test_model_camera_geometry_is_reused_for_pan_and_independent_axis_zoom(qtbot, section):
+    canvas = canvas_with_sample(qtbot, section)
+    canvas.set_physical_meshes((tube_mesh(),))
+    canvas.fit_physical_models()
+    before = _model_layer_image(canvas)
+    cache = canvas._model_triangle_cache[False] if section == "3D" else canvas._model_path_cache
+    canvas._zoom *= [1.4, .7]
+    canvas._pan += QPointF(13., -7.)
+    canvas._view_updated()
+    after = _model_layer_image(canvas)
+    assert (canvas._model_triangle_cache[False] if section == "3D" else canvas._model_path_cache) is cache
+    assert bytes(before.constBits()) != bytes(after.constBits())
+    canvas.set_projection_angle(32.)
+    _model_layer_image(canvas)
+    assert (canvas._model_triangle_cache[False] if section == "3D" else canvas._model_path_cache) is not cache
+
+
+def test_pending_section_preserves_accepted_frame_and_disables_inspection(qtbot):
+    canvas = canvas_with_sample(qtbot, "UZ")
+    canvas.set_physical_meshes((tube_mesh(),))
+    canvas.set_projection_angle(23.)
+    sample = canvas.sample
+    before = canvas._project_positions(sample.points_m).copy()
+    canvas.set_pending_section_angle(61.)
+    assert canvas._pending_section_angle == 61.
+    assert canvas.projection_angle_deg == 23. and "23°" in canvas.projection_caption
+    np.testing.assert_array_equal(canvas._project_positions(sample.points_m), before)
+    assert canvas.pick_component_at(canvas._plot_rect().center()) is None
+    assert canvas._density_hover_text(canvas._plot_rect().center()) is None
+    canvas.grab()  # Paint the conspicuous accepted/target-angle notice offscreen.
+    assert canvas.sample is sample
+    canvas.set_pending_section_angle(None)
+    assert canvas._pending_section_angle is None
+    canvas.set_pending_section_angle(70.)
+    canvas.clear()
+    assert canvas._pending_section_angle is None
 
 
 def test_projection_rejects_nonfinite_angles_without_changing_view(qtbot):
@@ -402,3 +473,131 @@ def test_selected_section_boundaries_do_not_accumulate_opacity(qtbot):
     assert 0 < alpha.max() <= 90
     centre = QPointF(*canvas._project_positions(np.array([[0., 0., 0.]]))[0, :2])
     assert canvas.pick_component_at(centre) is None  # Hollow bore remains empty.
+
+
+def _wheel_at(canvas, position, delta=120):
+    event = QWheelEvent(position, QPointF(canvas.mapToGlobal(position.toPoint())),
+                        QPointF().toPoint(), QPointF(0., delta).toPoint(),
+                        Qt.MouseButton.NoButton, Qt.KeyboardModifier.NoModifier,
+                        Qt.ScrollPhase.ScrollUpdate, False)
+    canvas.wheelEvent(event)
+
+
+def _axis_wheel_position(canvas, axis):
+    plot = canvas._plot_rect()
+    if axis == 0:
+        return QPointF(plot.left() + .7 * plot.width(), plot.bottom() + 8.)
+    return QPointF(plot.left() - 8., plot.top() + .3 * plot.height())
+
+
+def _visible_zu_corners(canvas):
+    plot = canvas._plot_rect()
+    screen = np.array([[plot.left(), plot.top()], [plot.right(), plot.bottom()]])
+    positions = canvas._section_positions(screen, canvas._section_inverse(plot))
+    theta = np.deg2rad(canvas.projection_angle_deg)
+    return np.column_stack((positions[:, 2],
+                            positions[:, 0] * np.cos(theta) + positions[:, 1] * np.sin(theta)))
+
+
+@pytest.mark.parametrize("axis", [0, 1], ids=["horizontal", "vertical"])
+@pytest.mark.parametrize("angle", [0., 37.])
+@pytest.mark.parametrize("on_line", [False, True], ids=["tick-band", "axis-line"])
+def test_axis_wheel_matches_ray_scale_and_preserves_other_axis_and_anchor(qtbot, axis, angle, on_line):
+    canvas = canvas_with_sample(qtbot, "UZ")
+    canvas.set_projection_angle(angle)
+    sample = canvas.sample
+    arrays = {name: value.copy() for name, value in vars(sample).items()}
+    mesh = tube_mesh()
+    vertices = mesh.vertices.copy()
+    canvas.set_physical_meshes((mesh,))
+    references = canvas.references.copy()
+    bounds = canvas._bounds_m.copy()
+    plot = canvas._plot_rect()
+    cursor = _axis_wheel_position(canvas, axis)
+    if on_line:
+        if axis == 0:
+            cursor.setY(plot.bottom())
+        else:
+            cursor.setX(plot.left())
+    anchor_screen = np.array([[cursor.x() if axis == 0 else plot.center().x(),
+                               cursor.y() if axis == 1 else plot.center().y()]])
+    anchor = canvas._section_positions(anchor_screen, canvas._section_inverse(plot))
+    before = _visible_zu_corners(canvas)
+    model_before = canvas._project_positions(mesh.vertices)[:, :2]
+    requests, view_changes = [], []
+    canvas.projection_angle_requested.connect(requests.append)
+    canvas.view_changed.connect(lambda: view_changes.append(True))
+
+    _wheel_at(canvas, cursor)
+
+    # Ray Diagram's ViewBox uses range scale 1.02 ** (-delta / 8).
+    scale = 1.02 ** (120. / 8.)
+    after = _visible_zu_corners(canvas)
+    np.testing.assert_allclose(after[:, 1-axis], before[:, 1-axis], atol=1e-16, rtol=0.)
+    assert np.ptp(after[:, axis]) == pytest.approx(np.ptp(before[:, axis]) / scale, rel=1e-12)
+    np.testing.assert_allclose(canvas._project_positions(anchor)[:, :2], anchor_screen, atol=1e-10)
+    model_after = canvas._project_positions(mesh.vertices)[:, :2]
+    np.testing.assert_allclose(model_after[:, 1-axis], model_before[:, 1-axis], atol=1e-10, rtol=0.)
+    assert np.ptp(model_after[:, axis]) == pytest.approx(np.ptp(model_before[:, axis]) * scale)
+    assert not requests and len(view_changes) == 1
+    assert canvas.sample is sample and canvas.projection_angle_deg == angle
+    assert canvas.references == references
+    np.testing.assert_array_equal(canvas._bounds_m, bounds)
+    np.testing.assert_array_equal(mesh.vertices, vertices)
+    for name, before_array in arrays.items():
+        np.testing.assert_array_equal(getattr(sample, name), before_array)
+
+
+def test_sequential_axis_wheels_remain_independent_and_plot_zoom_keeps_their_ratio(qtbot):
+    canvas = canvas_with_sample(qtbot, "UZ")
+    canvas.set_projection_angle(37.)
+    initial = _visible_zu_corners(canvas)
+    _wheel_at(canvas, _axis_wheel_position(canvas, 0), 240)
+    after_horizontal = _visible_zu_corners(canvas)
+    _wheel_at(canvas, _axis_wheel_position(canvas, 1), -120)
+    after_both = _visible_zu_corners(canvas)
+    np.testing.assert_allclose(after_both[:, 0], after_horizontal[:, 0], atol=1e-16, rtol=0.)
+    np.testing.assert_allclose(after_horizontal[:, 1], initial[:, 1], atol=1e-16, rtol=0.)
+    assert np.ptp(after_both[:, 1]) > np.ptp(initial[:, 1])
+    # Inside the plot both dimensions zoom, preserving an intentionally
+    # independent aspect ratio rather than making the scales equal again.
+    plot = canvas._plot_rect()
+    _wheel_at(canvas, QPointF(plot.left() + .65 * plot.width(), plot.top() + .4 * plot.height()))
+    after_plot = _visible_zu_corners(canvas)
+    np.testing.assert_allclose(np.ptp(after_plot, axis=0),
+                               np.ptp(after_both, axis=0) / (1.02 ** 15.), rtol=1e-12)
+
+
+def test_axis_zoom_reset_and_fit_restore_both_display_dimensions(qtbot):
+    canvas = canvas_with_sample(qtbot, "UZ")
+    canvas.set_projection_angle(37.)
+    mesh = tube_mesh()
+    canvas.set_physical_meshes((mesh,))
+    initial = canvas._project_positions(mesh.vertices).copy()
+    _wheel_at(canvas, _axis_wheel_position(canvas, 0), 240)
+    _wheel_at(canvas, _axis_wheel_position(canvas, 1), -120)
+    canvas.reset_view()
+    np.testing.assert_allclose(canvas._project_positions(mesh.vertices), initial, atol=1e-10, rtol=0.)
+    canvas.fit_physical_models()
+    fitted = canvas._project_positions(mesh.vertices).copy()
+    _wheel_at(canvas, _axis_wheel_position(canvas, 0), -120)
+    _wheel_at(canvas, _axis_wheel_position(canvas, 1), 360)
+    canvas.fit_physical_models()
+    np.testing.assert_allclose(canvas._project_positions(mesh.vertices), fitted, atol=1e-10, rtol=0.)
+    assert canvas.projection_angle_deg == 37.
+    assert all(canvas._plot_rect().contains(QPointF(*point)) for point in fitted[:, :2])
+
+
+def test_wheel_outside_plot_and_axis_bands_does_not_change_view(qtbot):
+    canvas = canvas_with_sample(qtbot, "UZ")
+    points = canvas.sample.points_m.copy()
+    before = canvas._project_positions(points).copy()
+    changed = []
+    canvas.view_changed.connect(lambda: changed.append(True))
+    plot = canvas._plot_rect()
+    for position in (QPointF(plot.center().x(), 10.),
+                     QPointF(8., canvas.height()-8.),
+                     QPointF(canvas.width()-8., plot.center().y())):
+        _wheel_at(canvas, position)
+    assert not changed
+    np.testing.assert_array_equal(canvas._project_positions(points), before)

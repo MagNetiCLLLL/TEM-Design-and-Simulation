@@ -196,6 +196,24 @@ outer_diameter_mm = 90.0
 bore_diameter_mm = 10.0
 active_length_mm = 8.0
 
+# Explicit engineering adaptation; no OEM internal dimensions or field recalibration.
+gun_stigmator_geometry_profile = "eight_coil_slotted_carrier"
+gun_stigmator_geometry_status = "engineering_reconstruction_not_oem"
+gun_stigmator_coil_source = "https://www.jeol.co.jp/words/semterms/20201020.111014.html"
+gun_stigmator_support_source = "https://patents.google.com/patent/CN102509689B/en"
+gun_stigmator_source_note = "Two four-coil quadrupole groups; objective-stigmator slotted carrier/former/adhesive principle adapted for a gun. Dimensions and bulk insulation are engineering assumptions; no shield or OEM mounting inferred."
+gun_stigmator_coil_count = 8
+gun_stigmator_coil_inner_radius_mm = 16.0
+gun_stigmator_coil_outer_radius_mm = 34.0
+gun_stigmator_coil_width_mm = 6.0
+gun_stigmator_coil_length_mm = 8.0
+gun_stigmator_window_width_mm = 3.0
+gun_stigmator_window_length_mm = 4.0
+gun_stigmator_insulation_thickness_mm = 0.2
+gun_stigmator_former_wall_thickness_mm = 0.5
+gun_stigmator_adhesive_thickness_mm = 0.2
+gun_stigmator_basis_angle_deg = 0.0
+
 [[parts]]
 order = 8
 key = "feg_c1_aperture"

@@ -162,7 +162,7 @@ def test_longitudinal_view_replaces_transverse_and_fixed_axis_selectors(qtbot, m
     assert [page.section.itemData(index) for index in range(page.section.count())] == ["UZ", "3D"]
     assert page.section.currentData() == "UZ"
     assert all(page.section.findData(old) == -1 for old in ("XY", "XZ", "YZ"))
-    assert page.angle.value() == 0.
+    assert page.projection_controls.angle_deg == 0.
 
 
 def test_rotating_section_reuses_capture_with_auto_detail_disabled(qtbot, monkeypatch):
@@ -172,14 +172,18 @@ def test_rotating_section_reuses_capture_with_auto_detail_disabled(qtbot, monkey
     before, capture_count = len(scene.calls), len(captures)
     changed = []
     page.settings_changed.connect(lambda: changed.append(True))
+    accepted = page.canvas.sample
     page.set_projection_angle(90.)
-    assert page._sample is None and page.canvas.sample is None
+    assert page._sample is None and page.canvas.sample is accepted
+    assert page.canvas._projection_angle_deg == 0.
+    assert "showing the accepted 0°" in page.status.text()
     wait_sample(qtbot, page)
     assert len(scene.calls) == before + 1
     assert len(captures) == capture_count
     assert page._sample.section_angle_deg == 90.
     assert np.allclose(page._sample.points_m[:, 0], 0., atol=1e-16)
-    assert page.angle.value() == 90.
+    assert page.projection_controls.angle_deg == 90.
+    assert page.canvas._projection_angle_deg == 90.
     assert not changed
     page.set_projection_angle(90.)
     page.set_projection_angle(450.)
@@ -227,11 +231,41 @@ def test_angle_control_and_canvas_requests_update_page_before_forwarding(qtbot, 
     page, _scene, _captures = setup_page(qtbot, monkeypatch)
     received = []
     page.projection_angle_requested.connect(
-        lambda angle: received.append((angle, page.angle.value(), page._projection_angle_deg)))
-    page.angle.setValue(45.)
+        lambda angle: received.append((angle, page.projection_controls.angle_deg, page._projection_angle_deg)))
+    page.projection_controls.slider.setValue(450)
     page.canvas.projection_angle_requested.emit(90.)
     assert received == [(45., 45., 45.), (90., 90., 90.)]
     assert page.canvas._projection_angle_deg == 90.
+
+
+def test_pending_angle_cannot_reuse_previous_plane_for_viewport_detail(qtbot, monkeypatch):
+    page, scene, _ = setup_page(qtbot, monkeypatch)
+    activate(qtbot, page)
+    accepted = page.canvas.sample
+    before = len(scene.calls)
+    page.set_projection_angle(35.)
+    page.canvas._zoom[:] = (2., 3.)
+    page._view_changed()
+    page._request_view_detail()
+    assert page.canvas.sample is accepted
+    assert page.canvas._projection_angle_deg == accepted.section_angle_deg == 0.
+    assert page._base_sample_data is None
+    assert len(scene.calls) == before
+    wait_sample(qtbot, page)
+    assert page.canvas.sample.section_angle_deg == page.canvas._projection_angle_deg == 35.
+    page.set_active(False)
+
+
+def test_input_edit_during_pending_angle_clears_retained_frame(qtbot, monkeypatch):
+    page, scene, _ = setup_page(qtbot, monkeypatch)
+    activate(qtbot, page)
+    page.set_projection_angle(35.)
+    assert page.canvas.sample is not None
+    page.mark_inputs_stale()
+    page.set_projection_angle(50.)
+    qtbot.wait(300)
+    assert page.canvas.sample is None and page._sample is None
+    assert "Recalculate" in page.canvas._message
 
 
 def test_inflight_old_angle_cannot_overwrite_latest_plane(qtbot, monkeypatch):
@@ -251,7 +285,11 @@ def test_inflight_old_angle_cannot_overwrite_latest_plane(qtbot, monkeypatch):
     try:
         page.set_projection_angle(30.)
         qtbot.waitUntil(entered.is_set, timeout=10000)
+        calls_before_pending = len(scene.calls)
         page.set_projection_angle(60.)
+        qtbot.wait(350)
+        assert len(scene.calls) == calls_before_pending
+        assert len(page._jobs) == 1
         release.set()
         wait_sample(qtbot, page)
         qtbot.waitUntil(lambda: not page._jobs, timeout=10000)

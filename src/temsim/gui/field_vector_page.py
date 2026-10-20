@@ -15,6 +15,8 @@ from PySide6.QtWidgets import (
 from temsim.gui.field_vector_canvas import FieldVectorCanvas
 from temsim.gui.input_policy import WheelSafeComboBox as QComboBox
 from temsim.gui.input_policy import WheelSafeDoubleSpinBox as QDoubleSpinBox
+from temsim.gui.projection_angle_controls import ProjectionAngleControls
+from temsim.gui.transverse_projection import format_projection_angle
 from temsim.field_density_texture import section_grid_axes
 
 
@@ -247,15 +249,8 @@ class FieldVectorPage(QWidget):
         self.section.setToolTip(
             "Z always runs horizontally. The longitudinal section rotates through the column axis "
             "with the shared Ray Diagram / Physical Layout angle; 0° is X–Z and 90° is Y–Z.")
-        self.angle = _spin(0., 360., 0., "°", 2)
-        self.angle.setObjectName("fieldVectorAngle")
-        self.angle.setMinimumWidth(70)
-        self.angle.setMaximumWidth(100)
-        self.angle.setToolTip(
-            "Shared Ray Diagram / Physical Layout rotation about Z. "
-            "U = X cos(angle) + Y sin(angle). The 2D section samples the plane V = 0; "
-            "rotation resamples this plane from the captured field model.")
-        self.angle.valueChanged.connect(self._angle_requested)
+        self.projection_controls = ProjectionAngleControls()
+        self.projection_controls.angle_changed.connect(self._angle_requested)
         self.quantity = QComboBox()
         for label, value in (("B + E overlay", "overlay"), ("Magnetic B", "B"), ("Electric E", "E"), ("Electron force", "force")):
             self.quantity.addItem(label, value)
@@ -402,6 +397,11 @@ class FieldVectorPage(QWidget):
         layout.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
         layout.setContentsMargins(3, 3, 3, 3)
         layout.setSpacing(4)
+        angle_row = QHBoxLayout()
+        angle_row.setContentsMargins(0, 0, 0, 0)
+        angle_row.addWidget(self.projection_controls)
+        angle_row.addStretch()
+        layout.addLayout(angle_row)
         scope_row = QHBoxLayout()
         scope_row.addWidget(QLabel("Field contributions"))
         scope_row.addWidget(self.field_scope)
@@ -435,8 +435,6 @@ class FieldVectorPage(QWidget):
         model_controls.addWidget(self.model_opacity_label)
         model_controls.addWidget(self.fit_models)
         model_controls.addStretch()
-        model_controls.addWidget(QLabel("Angle"))
-        model_controls.addWidget(self.angle)
         layout.addLayout(model_controls)
         detail_row = QHBoxLayout()
         detail_row.addWidget(QLabel("Display"))
@@ -483,9 +481,10 @@ class FieldVectorPage(QWidget):
         angle = float(angle)
         if not np.isfinite(angle):
             return
+        # Preserve the slider's 360-degree endpoint consistently on all pages;
+        # the physical plane still uses a periodic angle.
+        self.projection_controls.set_angle(angle if 0. <= angle <= 360. else angle % 360.)
         angle %= 360.
-        with QSignalBlocker(self.angle):
-            self.angle.setValue(angle)
         if abs((angle - self._projection_angle_deg + 180.) % 360. - 180.) < 1e-10:
             return
         self._projection_angle_deg = angle
@@ -494,8 +493,8 @@ class FieldVectorPage(QWidget):
                      and self._worker.generation == self._generation
                      and not self._worker.cancelled.is_set())
         if rotates_plane:
-            # Remove the old plane before the canvas emits view_changed.
-            # Otherwise its viewport timer could reuse samples from that plane.
+            # Invalidate work for the previous plane, but retain its accepted
+            # display at its actual angle while the latest request is sampled.
             # Provider capture is independent of the section angle. Preserve
             # an in-flight capture; its first sample will use the latest angle.
             if not preparing:
@@ -511,15 +510,24 @@ class FieldVectorPage(QWidget):
                 message = "Preparing field providers; the latest longitudinal angle will be sampled."
             else:
                 message = "Rotating section; sampling the new longitudinal plane…"
-            self.canvas.clear(message)
-            self.legend.setText("B [T] | E [V/m] | electron force [N] — no current samples")
-        self.canvas.set_projection_angle(angle)
+            if self.canvas.sample is not None and not self._fields_stale:
+                self.canvas.set_pending_section_angle(angle)
+                self.status.setText(
+                    f"Updating section to {format_projection_angle(angle)}°; showing the accepted "
+                    f"{format_projection_angle(self.canvas.projection_angle_deg)}° section until sampling completes.")
+                self.fit_models.setEnabled(False)
+            else:
+                self.canvas.clear(message)
+                self.canvas.set_projection_angle(angle)
+                self.legend.setText("B [T] | E [V/m] | electron force [N] — no current samples")
+        else:
+            self.canvas.set_projection_angle(angle)
         if rotates_plane and not preparing:
             self._schedule(250)
 
     def _angle_requested(self, angle):
         self.set_projection_angle(angle)
-        self.projection_angle_requested.emit(self._projection_angle_deg)
+        self.projection_angle_requested.emit(self.projection_controls.angle_deg)
 
     def _populate_component_picker(self):
         from temsim.component_representation import non_material_role
@@ -963,7 +971,9 @@ class FieldVectorPage(QWidget):
     def _request_sample(self):
         if not self._active or self._state is None or self._fields_stale:
             return
-        if self._worker is not None:
+        # Cancellation is cooperative: an older provider may still be inside
+        # its current chunk. Keep only one base capture/sample in flight.
+        if self._worker is not None or self._jobs:
             return
         self._generation += 1
         token = self._generation
@@ -1001,10 +1011,16 @@ class FieldVectorPage(QWidget):
         self._jobs[token] = self._worker = worker
         QThreadPool.globalInstance().start(worker)
 
+    def _resume_latest_request(self):
+        if (not self._jobs and self._worker is None and self._sample is None
+                and not self._request_timer.isActive()):
+            self._schedule()
+
     @Slot(int, object, object)
     def _prepared(self, generation, scene, error):
         self._jobs.pop(generation, None)
         if generation != self._generation or self._fields_stale or not self._active:
+            self._resume_latest_request()
             return
         self._worker = None
         if error or scene is None:
@@ -1036,6 +1052,7 @@ class FieldVectorPage(QWidget):
     def _sampled(self, generation, result, error):
         self._jobs.pop(generation, None)
         if generation != self._generation or self._fields_stale or not self._active:
+            self._resume_latest_request()
             return
         self._worker = None
         if error or result is None:
@@ -1047,18 +1064,26 @@ class FieldVectorPage(QWidget):
         self._detail_key = None
         self._publish_sample(result)
         if (self.auto_detail.isChecked()
-                and (self.canvas._zoom != 1. or not self.canvas._pan.isNull())):
+                and (np.any(self.canvas._zoom != 1.) or not self.canvas._pan.isNull())):
             self._view_changed()
         if self._detail_dirty:
             self._detail_timer.start()
 
     def _publish_sample(self, result):
         self._sample, bounds, section = result
+        # Switch the field and its physical cut together, never reprojecting
+        # samples from the old U-Z plane as if they belonged to the new one.
+        with QSignalBlocker(self.canvas):
+            self.canvas.set_projection_angle(
+                self._sample.section_angle_deg if section == "UZ" else self._projection_angle_deg)
+            self.canvas.set_pending_section_angle(None)
         regions = (() if self._display_regions is None else
                    self._display_regions.regions_for_component(self._selected_component))
         self.canvas.set_source_regions(tuple((region.label, region.bounds_m) for region in regions))
         self.canvas.set_observation_regions(self._display_regions, self._selected_component)
-        self.canvas.set_sample(self._sample, bounds, section)
+        # Input/source invalidation has already cleared old geometry; accepted
+        # angle/viewport results belong to this same captured configuration.
+        self.canvas.set_sample(self._sample, bounds, section, preserve_geometry=True)
         self.canvas.set_mode(self.quantity.currentData())
         self.canvas.set_render_style(self.render_style.currentData())
         self._refresh_geometry()
@@ -1216,7 +1241,9 @@ class FieldVectorPage(QWidget):
         if self._sample is not None:
             lines.extend(("", "Sampling diagnostics:"))
             lines.extend(str(note) for note in self._sample.notes)
-        self.details.setPlainText("\n".join(lines))
+        text = "\n".join(lines)
+        if text != self.details.toPlainText():
+            self.details.setPlainText(text)
 
     def closeEvent(self, event):
         self.set_active(False)

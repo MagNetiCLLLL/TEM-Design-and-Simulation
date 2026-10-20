@@ -1,6 +1,6 @@
 # EDS and EELS detector material reconstruction
 
-Reviewed 2026-10-11. These are source-backed construction families with explicitly
+Reviewed 2026-10-20. These are source-backed construction families with explicitly
 declared engineering dimensions, **not an Ultra-X or Zebra manufacturing model**.
 Internal electronics, cooling services, shutters and detailed semiconductor
 structures are outside this reconstruction. All lengths below are millimetres.
@@ -22,7 +22,7 @@ their respective owners. No length is measured from a schematic's page scale.
 
 `EDS.toml` remains the only source of segment count, azimuths, takeoff angle and
 solid angles. The physical photon model still uses those angular inputs.
-It does **not** trace acceptance against a newly invented finite sensor disk.
+It does **not** trace acceptance against the illustrative finite sensor face.
 In particular, the existing 4.45 sr aggregate cannot be used to infer both die
 area and distance; the old equivalent-cone illustration is not a literal array
 of independent circular sensor faces.
@@ -30,38 +30,55 @@ of independent circular sensor faces.
 `eds_head_geometry()` lifts the pre-existing 2D head construction into six
 azimuthal positions. Let `r_tip` be the greater pole-tip radius, bounded below
 by 2.5 mm; `R_objective` the parent outer radius; and `R_pole` the larger pole
-outer radius. The old drawing rules are retained:
+outer radius. The old drawing distances and side half-widths are retained:
 
 ```
-r_face = max(0.45*r_tip, 0.025*R_objective)
+half_face = max(0.45*r_tip, 0.025*R_objective)
 length = max(0.8*r_tip, 0.05*R_objective)
-r_front = 1.25*r_face;  r_rear = 0.82*r_face
-distance = (R_pole + 1 mm + r_front*sin(takeoff))/cos(takeoff)
+half_front = 1.25*half_face;  half_rear = 0.82*half_face
+distance = (R_pole + 1 mm + half_front*sin(takeoff))/cos(takeoff)
 direction = (cos(takeoff)*cos(azimuth), cos(takeoff)*sin(azimuth), -sin(takeoff))
 front_centre = sample_position + distance*direction
 ```
 
 Negative column Z is toward the gun. The head's material extends away from the
 sample along `direction`. No source proves that the resulting distance is the
-real sensor distance. Each head contains a Si disk, insulating support and
-open-front tapered cold-shield shell. The die drawing is explicitly mechanical,
-not a second active-area definition. No entrance window is introduced.
+real sensor distance. Each head contains a square Si slab, square insulating
+support and open-front tapered square cold-shield shell. This square convention
+was explicitly requested by the user on 2026-10-20; the cited sources do **not**
+establish the OEM die or package shape. It replaces the previous circular disks
+and rotational shell while preserving centres, directions, axial depth and side
+half-widths. The corners therefore extend beyond the old circular outline. The
+die drawing is explicitly mechanical, not a second active-area definition. No
+entrance window is introduced. Four planar cuts of a box define each tapered
+square shell in both native meshes and analytical STEP, without a separate
+display-only approximation.
 
 | Persisted mechanical field | Current engineering value | Meaning |
 | --- | ---: | --- |
 | `mechanical_sensor_thickness_mm` | 0.45 | Illustrative Si depth, family-scale reference from KETEK; not measured Ultra-X thickness |
 | `mechanical_support_thickness_mm` | 0.30 | Axial insulating substrate allocation behind the die |
-| `mechanical_housing_wall_mm` | 0.25 | Radial shell thickness inside the retained tapered outer envelope |
+| `mechanical_housing_wall_mm` | 0.25 | Transverse side inset inside the tapered square outer envelope |
 | `mechanical_back_wall_mm` | 0.50 | Rear closing wall within that same envelope |
 
-The present C3 ProbeCorrector dimensions give face radius 2.25, housing length
-4.5, front/rear radii 2.8125/1.845, and a drawing distance of 59.57915.
+The present C3 ProbeCorrector dimensions give a 4.5 × 4.5 square face, housing
+length 4.5, front/rear half-widths 2.8125/1.845, and a drawing distance of 59.57915.
 The front centre is about 50.49289 radially and 31.62503 upstream of the sample.
 These are calculated **display dimensions**, not inferred acceptance calibration.
 Focused native closed-mesh checks included the actual split objective coil/yoke,
 housing and both poles, rather than checking pole outlines alone. They found no
 positive material overlap for this configuration. This is not thermal design,
 service access, arbitrary edited assemblies or a mechanical tolerance certificate.
+
+The EDS assembly row retains a zero-length optical/sample datum. It does not
+describe the material extent of these off-axis heads. Physical Layout and the
+Magnetic field model overlay now retain all declared sensor, support and
+cold-shield meshes through the shared assembly builder, with one module-to-column
+translation. A legacy EDS reference without material dimensions remains omitted;
+an incomplete material declaration is reported as an error. Displaying the heads
+adds no X-ray acceptance boundary, electron stop or magnetic-field source. The
+straight-column field-observation envelope index still does not define an EDS
+sampling region; the material overlay does not substitute for that missing model.
 
 ## EELS: retain the five strip faces and branch placement
 
@@ -96,6 +113,12 @@ definition explicitly marked it unknown. This new engineering envelope is
 reception plane. Changing these mechanical fields must not change response,
 spectral dispersion or pixel calibration.
 
+The persisted EELS footprint is `rectangle`: every spectral strip is
+28.672 × 0.8 mm and the alignment region is 28.672 × 3.584 mm. Both axes
+remain independent in reception, native meshes and CAD; no square proxy is
+used. The five strips share one rectangular camera body. Their five readouts
+do not introduce five extra physical cameras.
+
 ## Persistence and validation boundary
 
 Both families require the complete corresponding mechanical field set plus:
@@ -111,3 +134,66 @@ do not fit are rejected; no implicit thickness is assigned. The same `SolidSpec`
 leaves feed native closed meshes and analytical STEP conversion. Tests preserve
 the original reception geometry and immutable source dictionaries, check proper
 frames and one-time placement, and reject material overlap between layer stacks.
+
+## Main-column recording planes: configured footprints and surface details
+
+Reviewed 2026-10-20. These parts use only the dimensions and signal-plane datum
+already declared in `project_and_recording_system/NoEnergyFilter.toml` and the
+corresponding detector definitions. They do not use the EDS/EELS material-stack
+reconstruction described above.
+
+| Recording plane | Existing reception footprint | Existing nominal layout thickness |
+| --- | --- | ---: |
+| HAADF | Annulus, 22 mm outer diameter and 4 mm open bore | 0.5 mm |
+| Fluorescent screen | Disk, 80 mm diameter | 0.5 mm |
+| DF | Annulus, 14 mm outer diameter and 2 mm open bore | 0.5 mm |
+| BF | Disk, 1.5 mm diameter | 0.5 mm |
+| Camera | Square, 57.344 mm per side | 0.5 mm |
+
+The Camera particle model (`temsim/detector/camera.py`, `hit_mask`) has always
+accepted a square. The previous generic rotational 3D fallback instead showed
+a circular disk, omitting corners that the reception model accepted. The native
+mesh and analytic CAD now both use the configured square. Circular and annular
+receivers retain their existing footprints and open bores.
+
+Each finite mesh identifies the upstream collection surface, downstream face,
+outer rim and, when present, open inner bore rim. The square Camera has four
+separate edge faces. These are selectable semantic surfaces of a single slab;
+no second coincident layer or invented support housing is added. The collection
+surface stays at the saved upstream signal datum, rather than moving to the
+slab centre. Ordinary mechanical transforms apply once to the whole mesh and
+its surface normals. A zero-thickness reference remains a planar wire guide
+with no finite CAD solid.
+
+The saved 0.5 mm is a **nominal layout allocation**, not a measured scintillator
+or semiconductor sensitive depth. Material composition, layer structure,
+insertion carriage, cooling, fasteners and package clearance remain unknown.
+Consequently these slabs retain envelope status rather than claiming exact
+material reconstruction. Separate configured recording chambers remain separate
+parts. Reception, blocking/retraction state, detector orientation and image
+sampling are unchanged; the new surfaces only make the existing geometry
+inspectable.
+
+## Shared footprint convention and logical image products
+
+Both the direct No Energy Filter recording definition and the detector-chamber
+subassembly persist `mechanical_footprint_shape`: `square` for Camera, `annulus`
+for HAADF/DF, and `disk` for BF/the fluorescent screen. All seven column variants
+declare the user-requested `square` EDS engineering representation. EELS declares
+`rectangle`; the optional EFTEM output is a `square` zero-thickness reference
+with no invented package or material depth. Explicit metadata inconsistent with
+these roles is rejected during document validation and geometry construction.
+Older documents without this metadata retain the same role-based convention.
+Camera and circular-receiver width/bore constraints are also checked before an
+edit enters the draft or is saved: finite positive outer width, a nonnegative
+bore smaller than that width, and no bore for a square Camera. An omitted legacy
+bore retains its zero default.
+
+Scanning Image and Illuminating Image do not add independent physical camera
+aliases. The latter selects the installed receivers, including the main Camera.
+The raw 4D-STEM cube stores specimen-exit angular diffraction probabilities,
+independent of downstream projector settings. Its physical-recording products
+use the same installed receiver plan; virtual detectors are numerical integration
+regions, not new material components. This distinction preserves the existing
+reception physics while making all actual component models follow the requested
+shape convention.

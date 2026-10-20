@@ -181,7 +181,7 @@ def main():
             raise RuntimeError("Native QWidget screenshot save failed")
         frame = dict(image=name, samples=len(page.canvas.sample.points_m),
                      visible_glyphs=len(page.canvas._visible_sample_indices),
-                     provider_calls=len(scene.calls), zoom=page.canvas._zoom,
+                     provider_calls=len(scene.calls), zoom=page.canvas._zoom.tolist(),
                      pan=[page.canvas._pan.x(), page.canvas._pan.y()],
                      canvas=[page.canvas.width(), page.canvas.height()],
                      window=[window.width(), window.height()], references=page.canvas.references.copy(),

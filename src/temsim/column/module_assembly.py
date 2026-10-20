@@ -229,7 +229,14 @@ def _module_continuous_vacuum_tube(module, origin):
 
 
 def _module_vacuum_segments(module, origin, resolved_parts):
-    """Resolve overlaps by keeping the narrowest electron-accessible bore."""
+    """Intersect component-local vacuum bores with the continuous tube bore.
+
+    A corrector's 20 mm local opening remains a mechanical/field-envelope
+    dimension. Where the enclosing continuous tube has ID 5.76 mm, the latter
+    is the resolved electron-accessible boundary. Do not overwrite one with
+    the other: the material tube OD, local material bore and beam clearance
+    describe different nested surfaces.
+    """
 
     module_start = origin + module.entrance_z_mm
     module_end = origin + module.exit_z_mm

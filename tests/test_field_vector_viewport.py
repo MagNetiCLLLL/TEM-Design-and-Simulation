@@ -20,8 +20,8 @@ def ready(qtbot, monkeypatch):
     return page, scene, captures
 
 
-def zoom(page, amount=120):
-    position = page.canvas._plot_rect().center()
+def zoom(page, amount=120, position=None):
+    position = page.canvas._plot_rect().center() if position is None else position
     event = QWheelEvent(position, position, QPointF().toPoint(), QPointF(0, amount).toPoint(),
                         Qt.MouseButton.NoButton, Qt.KeyboardModifier.NoModifier,
                         Qt.ScrollPhase.ScrollUpdate, False)
@@ -66,7 +66,7 @@ def test_repeated_wheels_coalesce_and_returning_view_uses_cache(qtbot, monkeypat
     assert len(scene.calls) == calls
     wait_detail(qtbot, page)
     first, first_key = page._sample, page._detail_key
-    camera = page.canvas._zoom, QPointF(page.canvas._pan)
+    camera = page.canvas._zoom.copy(), QPointF(page.canvas._pan)
     zoom(page, 240)
     wait_detail(qtbot, page)
     assert page._detail_key != first_key
@@ -78,6 +78,51 @@ def test_repeated_wheels_coalesce_and_returning_view_uses_cache(qtbot, monkeypat
     assert page._detail_key == first_key
     assert len(scene.calls) == calls
     assert "cache" in page.detail_status.text()
+
+
+@pytest.mark.parametrize("axis", ["horizontal", "vertical"])
+def test_axis_wheel_refines_only_selected_physical_extent_on_rotated_plane(qtbot, monkeypatch, axis):
+    from temsim.field_density_texture import to_longitudinal
+
+    page, scene, captures = ready(qtbot, monkeypatch)
+    page.set_projection_angle(37.)
+    wait_sample(qtbot, page)
+    # Start inside the original domain so clipping cannot hide an unintended
+    # change to the other axis. Sample coordinates are global metres.
+    zoom(page, 240)
+    wait_detail(qtbot, page)
+    before = to_longitudinal(page._sample.points_m, 37.)[:, [2, 0]]
+    before_limits = np.array([before.min(axis=0), before.max(axis=0)])
+    base, refs, capture_count = page._base_sample_data, page.canvas.references.copy(), len(captures)
+    calls = len(scene.calls)
+    plot = page.canvas._plot_rect()
+    position = (QPointF(plot.center().x(), plot.bottom()+8.) if axis == "horizontal"
+                else QPointF(plot.left()-8., plot.center().y()))
+    zoom(page, 240, position)
+    wait_detail(qtbot, page)
+    after = to_longitudinal(page._sample.points_m, 37.)
+    after_limits = np.array([after[:, [2, 0]].min(axis=0), after[:, [2, 0]].max(axis=0)])
+    selected = 0 if axis == "horizontal" else 1
+    unchanged = 1-selected
+    np.testing.assert_allclose(after_limits[:, unchanged], before_limits[:, unchanged], atol=1e-15)
+    # Viewport bounds snap outward at subpixel precision for cache reuse.
+    expected_span = np.ptp(before_limits[:, selected]) / 1.02**30
+    assert np.ptp(after_limits[:, selected]) == pytest.approx(expected_span, rel=1e-3)
+    np.testing.assert_allclose(after[:, 1], 0., atol=1e-18)
+    assert len(captures) == capture_count and len(scene.calls) > calls
+    assert page._base_sample_data is base and page.canvas.references == refs
+    np.testing.assert_array_equal(page._sample.b_t[:, 2], 1.)
+    np.testing.assert_array_equal(page._sample.e_v_per_m[:, 0], 2.)
+    assert all(call[1] == ("magnet", "electrode") for call in scene.calls[calls:])
+
+    # New source selection must keep both accepted display scales and refine
+    # that same anisotropic viewport from the existing captured providers.
+    page.sources.item(1).setCheckState(Qt.CheckState.Unchecked)
+    wait_sample(qtbot, page)
+    wait_detail(qtbot, page)
+    retained = to_longitudinal(page._sample.points_m, 37.)[:, [2, 0]]
+    np.testing.assert_allclose([retained.min(axis=0), retained.max(axis=0)], after_limits, atol=1e-15)
+    assert scene.calls[-1][1] == ("magnet",) and len(captures) == capture_count
 
 
 def test_slow_detail_keeps_one_job_and_cannot_publish_obsolete_view(qtbot, monkeypatch):

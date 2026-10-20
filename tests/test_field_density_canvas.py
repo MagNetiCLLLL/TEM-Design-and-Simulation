@@ -3,7 +3,8 @@ from types import SimpleNamespace
 
 import numpy as np
 import pytest
-from PySide6.QtCore import QPointF
+from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QWheelEvent
 
 from temsim.field_density_texture import section_grid_axes
 from temsim.gui.field_vector_canvas import FieldVectorCanvas
@@ -50,7 +51,7 @@ def widget_pixels(canvas):
 def test_density_uses_full_norm_and_shared_rotated_physical_coordinates(qtbot, section, angle):
     canvas = canvas_fixture(qtbot, section)
     canvas.set_projection_angle(angle)
-    canvas._zoom = 1.8
+    canvas._zoom = np.full(2, 1.8)
     canvas._pan = QPointF(12., -6.)
     xyz = np.array([[.0001, -.0002, .0003]])
     normal = {"XY": 2, "XZ": 1, "YZ": 0}[section]
@@ -219,6 +220,19 @@ def test_region_culling_matches_exact_union_including_tilt_and_boundary_roundoff
     np.testing.assert_array_equal(canvas._observation_mask(points), expected)
     assert {key for key, _count in queries} == {"cylinder", "tilted"}
     assert sum(count for _key, count in queries) < len(points)
+    cached_bounds = canvas._observation_bounds_cache
+    np.testing.assert_array_equal(canvas._observation_mask(points[::3]), expected[::3])
+    assert canvas._observation_bounds_cache is cached_bounds
+    # Replacing a snapshot or selecting a different envelope must never reuse
+    # the old union, even if the new index contains the same region objects.
+    subset = FieldDisplayRegions((cylinder, tilted, distant),
+                                 component_region_keys={"tilted": ("tilted",)})
+    canvas.set_observation_regions(subset)
+    np.testing.assert_array_equal(canvas._observation_mask(points), expected)
+    canvas.set_observation_regions(subset, "tilted")
+    np.testing.assert_array_equal(canvas._observation_mask(points), tilted.contains(points))
+    canvas.set_observation_regions(subset, "absent")
+    np.testing.assert_array_equal(canvas._observation_mask(points), False)
 
 
 def longitudinal_canvas(qtbot, angle):
@@ -287,7 +301,41 @@ def test_longitudinal_physical_cut_and_component_bounds_rotate_on_the_same_plane
     assert len(canvas._longitudinal_box_cut(bounds + [1., 0., 0.])) == 0
 
 
-def test_longitudinal_left_drag_requests_shared_rotation_and_middle_drag_pans(qtbot):
+@pytest.mark.parametrize("axis", ["horizontal", "vertical"])
+def test_axis_zoom_rebuilds_hatching_with_same_physical_field_and_inverse(qtbot, axis):
+    from temsim.field_density_texture import from_longitudinal
+
+    canvas = longitudinal_canvas(qtbot, 37.)
+    sample = canvas.sample
+    original = {key: value.copy() for key, value in vars(sample).items() if isinstance(value, np.ndarray)}
+    refs = canvas.references.copy()
+    plot = canvas._plot_rect()
+    first = canvas._density_image(plot)
+    grid = canvas._magnitude_grid()
+    position = (QPointF(plot.center().x(), plot.bottom()+8.) if axis == "horizontal"
+                else QPointF(plot.left()-8., plot.center().y()))
+    event = QWheelEvent(position, position, QPointF().toPoint(), QPointF(0., 120.).toPoint(),
+                        Qt.MouseButton.NoButton, Qt.KeyboardModifier.NoModifier,
+                        Qt.ScrollPhase.ScrollUpdate, False)
+    canvas.wheelEvent(event)
+    assert canvas._density_image_cache is None
+    refreshed = canvas._density_image(plot)
+    assert refreshed is not first and canvas._density_image(plot) is refreshed
+    assert canvas._magnitude_grid() is grid
+    assert np.any(rgba(refreshed)[..., 3] == 220)
+
+    world = from_longitudinal(np.array([[.00025, 0., .11]]), 37.)
+    projected = canvas._project_positions(world)[:, :2]
+    recovered = canvas._section_positions(projected, canvas._section_inverse(plot))
+    np.testing.assert_allclose(recovered, world, atol=1e-17)
+    magnitude = np.linalg.norm([world[0, 0]*2, world[0, 1], 0.])
+    assert f"|B| ≈ {magnitude:.6g} T" in canvas._density_hover_text(QPointF(*projected[0]))
+    assert canvas.sample is sample and canvas.references == refs
+    for key, value in original.items():
+        np.testing.assert_array_equal(getattr(sample, key), value)
+
+
+def test_longitudinal_left_and_middle_drag_pan_without_requesting_rotation(qtbot):
     from PySide6.QtCore import QEvent, Qt
     from PySide6.QtGui import QMouseEvent
     canvas = longitudinal_canvas(qtbot, 0.)
@@ -306,9 +354,49 @@ def test_longitudinal_left_drag_requests_shared_rotation_and_middle_drag_pans(qt
                 canvas.mouseMoveEvent(event)
             else:
                 canvas.mouseReleaseEvent(event)
-        if button == Qt.MouseButton.LeftButton:
-            assert angles == [20.]
-            assert canvas._pan == before
-        else:
-            assert len(angles) == 1
-            assert canvas._pan != before
+        assert angles == []
+        assert canvas._pan == before+QPointF(40., 10.)
+
+
+def test_navigation_preview_is_bounded_and_restores_full_texture_without_resampling(qtbot):
+    canvas = canvas_fixture(qtbot)
+    canvas.resize(1600, 1000)
+    plot = canvas._plot_rect()
+    sample, refs = canvas.sample, canvas.references.copy()
+    full = canvas._density_image(plot)
+    grid = canvas._magnitude_grid()
+    canvas.set_interaction_active(True)
+    preview = canvas._density_image(plot)
+    assert preview.width()*preview.height() <= 32768
+    assert preview.sizeInBytes() <= 128*1024
+    assert preview.width() < full.width()
+    assert canvas._density_image(plot) is preview
+    canvas._interaction_timer.start(1)
+    qtbot.waitUntil(lambda: not canvas._interaction_active, timeout=1000)
+    restored = canvas._density_image(plot)
+    np.testing.assert_array_equal(rgba(restored), rgba(full))
+    assert canvas._magnitude_grid() is grid
+    assert canvas.sample is sample and canvas.references == refs
+
+
+def test_preview_preserves_unavailable_mask_and_current_inverse_transform(qtbot):
+    canvas = canvas_fixture(qtbot, "XY")
+    canvas.resize(1600, 1000)
+    canvas.sample.magnetic_valid[:] = False
+    canvas.set_sample(canvas.sample, canvas._bounds_m, "XY")
+    canvas.set_interaction_active(True)
+    canvas._pan = QPointF(21., -13.)
+    canvas._zoom = np.array([1.7, .8])
+    batches = []
+
+    def mask(points, _component=None):
+        batches.append(points.copy())
+        return np.linalg.norm(points[:, :2], axis=1) < .00075
+
+    canvas.set_observation_regions(SimpleNamespace(mask=mask))
+    result = rgba(canvas._density_image(canvas._plot_rect()))
+    assert np.any(result[..., 3] == 160)
+    assert not np.any(result[..., 3] == 220)
+    assert max(map(len, batches)) <= 8192
+    assert canvas._density_hover_text(QPointF(*canvas._project_positions([[0, 0, 0]])[0, :2])).endswith(
+        "B: unavailable / outside model validity (not zero).")

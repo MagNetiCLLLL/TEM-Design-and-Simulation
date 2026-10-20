@@ -16,13 +16,19 @@ def part_solids(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.cad_stage_holder import stage_holder_solids, access_port_solids
     from temsim.cad_vacuum_tube import tube_solids
     from temsim.cad_detectors import detector_solids
+    from temsim.cad_recording_planes import recording_plane_solids
+    from temsim.cad_gun_stigmator import gun_stigmator_solids
+    from temsim.cad_stigmator_support import stigmator_support_solids
+    from temsim.cad_c3_lens_hardware import c3_lens_hardware_solids
+    from temsim.cad_adapter_lens_hardware import adapter_lens_hardware_solids
+    from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
     from temsim.cad_objective_sleeves import sleeve_solids
     if non_material_role(part):
         return ()
     values = tube_solids(part)
     if values is not None:
         return values
-    for build in (sleeve_solids, detector_solids, stage_holder_solids, access_port_solids, round_lens_solids, multipole_solids):
+    for build in (sleeve_solids, detector_solids, recording_plane_solids, gun_stigmator_solids, stigmator_support_solids, c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, stage_holder_solids, access_port_solids, round_lens_solids, multipole_solids):
         values=build(part,by_key)
         if values is not None:
             return values
@@ -41,16 +47,23 @@ def part_solids(part, by_key, *, runtime=None, aperture_index=0):
 def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
     """Only replace incomplete native envelopes; preserve existing face editing."""
     from temsim.cad_multipoles import multipole_solids
-    from temsim.cad_auxiliary import accelerator_solids, filter_solids
+    from temsim.cad_auxiliary import accelerator_solids, filter_solids, gun_electrode_solids
     from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
     from temsim.cad_stage_holder import stage_holder_solids, access_port_solids
     from temsim.cad_vacuum_tube import tube_solids
     from temsim.cad_detectors import detector_solids
+    from temsim.cad_recording_planes import recording_plane_solids
+    from temsim.cad_gun_stigmator import gun_stigmator_solids
+    from temsim.cad_condenser_cartridge import cartridge_solids
+    from temsim.cad_stigmator_support import stigmator_support_solids
+    from temsim.cad_c3_lens_hardware import c3_lens_hardware_solids
+    from temsim.cad_adapter_lens_hardware import adapter_lens_hardware_solids
+    from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
     from temsim.cad_objective_sleeves import sleeve_solids
     values = tube_solids(part)
     if values is not None:
         return values
-    for build in (sleeve_solids, detector_solids, stage_holder_solids, access_port_solids):
+    for build in (sleeve_solids, detector_solids, recording_plane_solids, gun_stigmator_solids, stigmator_support_solids, c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, cartridge_solids, stage_holder_solids, access_port_solids):
         values = build(part, by_key)
         if values is not None:
             return values
@@ -61,6 +74,9 @@ def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
     if values is not None:
         return values or None
     values=accelerator_solids(part)
+    if values is not None:
+        return values
+    values = gun_electrode_solids(part)
     if values is not None:
         return values
     if part.get("key")=="feg_monochromator_wien" or part.get("mechanical_profile")=="electrostatic_parallel_plates":
@@ -77,6 +93,24 @@ def is_reconstruction_region(part, region):
     """Display material categories do not create new FEM material assignments."""
     if part.get("model_3d",{}).get("base",{}).get("kind") == "step" and region.startswith("step_"):
         return True
+    if part.get("aperture_support_profile") and region in {"connection_rod", "fixing_screw"}:
+        return True
+    from temsim.cad_gun_stigmator import gun_stigmator_solids
+    from temsim.cad_condenser_cartridge import cartridge_solids
+    from temsim.cad_stigmator_support import stigmator_support_solids
+    from temsim.cad_c3_lens_hardware import c3_lens_hardware_solids
+    from temsim.cad_adapter_lens_hardware import adapter_lens_hardware_solids
+    from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
+    for build in (c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids):
+        regions = build(part)
+        if regions is not None:
+            # Keep the original housing material editable. Reconstructed end
+            # layers are passive display material, not extra solver domains.
+            return region != "body" and region in {spec.region for spec in regions}
+    for build in (gun_stigmator_solids, stigmator_support_solids, cartridge_solids):
+        values = build(part)
+        if values is not None:
+            return region in {spec.region for spec in values}
     if part.get("mechanical_profile") == "objective_electronics_sleeve":
         return region == "body" and part.get("mechanical_part_role") != "custom_mechanical_copy"
     from temsim.cad_multipoles import multipole_solids

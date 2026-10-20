@@ -188,14 +188,22 @@ def test_projector_pole_edit_keeps_objective_map_and_incident_signature(
     assert after["incident"] == before["incident"]
 
 
+@pytest.mark.parametrize("cartridge_field,delta", [
+    ("mechanical_outer_diameter_mm", .25),
+    ("mechanical_cartridge_spacer_start_local_z_mm", 1.),
+    ("mechanical_cartridge_spacer_end_local_z_mm", -1.),
+])
 def test_shared_c1_c2_cartridge_stales_both_maps_but_projector_does_not(
-    tmp_path,
+    tmp_path, cartridge_field, delta,
 ):
     state = default_state()
     providers = {
         key: state.condenser_system[key]
         for key in ("condenser_lens_1", "condenser_lens_2")
     }
+    axial_samples = np.linspace(450., 750., 101)
+    analytic_before = {key: provider.magnetic_field_t(axial_samples).copy()
+                       for key, provider in providers.items()}
     mapped = {}
     bindings = {}
     for index, (key, provider) in enumerate(providers.items(), start=1):
@@ -254,9 +262,9 @@ def test_shared_c1_c2_cartridge_stales_both_maps_but_projector_does_not(
             part,
             data={
                 **dict(part.data),
-                "mechanical_outer_diameter_mm": (
-                    float(dict(part.data)["mechanical_outer_diameter_mm"])
-                    + 0.25
+                cartridge_field: (
+                    float(dict(part.data)[cartridge_field])
+                    + delta
                 ),
             },
         )
@@ -280,6 +288,21 @@ def test_shared_c1_c2_cartridge_stales_both_maps_but_projector_does_not(
             lens_geometry_binding(state, key, provider).geometry_fingerprint
             != bindings[key].geometry_fingerprint
         )
+        np.testing.assert_array_equal(fallback.magnetic_field_t(axial_samples), analytic_before[key])
+
+
+def test_cartridge_provenance_does_not_change_geometry_binding():
+    state = default_state()
+    keys = ("condenser_lens_1", "condenser_lens_2")
+    before = {key: lens_geometry_binding(state, key).geometry_fingerprint for key in keys}
+    assembly = state._resolved_assembly
+    state._resolved_assembly = replace(assembly, parts=tuple(
+        replace(part, data={**part.data,
+            "mechanical_cartridge_geometry_source": "Reworded engineering evidence note",
+            "mechanical_cartridge_geometry_source_urls": ["https://example.org/reference"],
+            "mechanical_cartridge_geometry_status": "reworded_status"})
+        if part.key == "c1_c2_pole_piece_cartridge" else part for part in assembly.parts))
+    assert {key: lens_geometry_binding(state, key).geometry_fingerprint for key in keys} == before
 
 
 def test_field_map_descriptor_survives_state_worker_round_trip(tmp_path):

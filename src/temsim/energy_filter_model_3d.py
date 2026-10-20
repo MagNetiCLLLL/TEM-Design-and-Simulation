@@ -318,6 +318,8 @@ def _deflection_guides(part, count):
 
 
 def _zebra_meshes(part):
+    from temsim.cad_recording_planes import validate_detector_footprint
+    validate_detector_footprint(part)
     count = part["strip_count"]
     if isinstance(count, bool) or not isinstance(count, Integral) or not 1 <= count <= 256:
         raise ValueError("Zebra strip count must be a positive bounded integer")

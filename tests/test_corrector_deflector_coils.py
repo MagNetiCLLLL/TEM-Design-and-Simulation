@@ -207,8 +207,10 @@ def test_wide_band_saved_draft_reopens_and_keeps_native_part_and_module_visible(
     key = "probe_dph2_coils"
     old_channel = deepcopy(draft.part("probe_dph2_deflector"))
     old_row = deepcopy(draft.part(key))
-    old_support = tuple(mesh for mesh in part_model_from_document(draft.document, key).meshes
-                        if mesh.material_class != "copper_winding")
+    old_meshes = {mesh.region: mesh for mesh in part_model_from_document(draft.document, key).meshes}
+    old_support = tuple(mesh for mesh in old_meshes.values()
+                        if mesh.material_class != "copper_winding"
+                        and not mesh.region.endswith("conductor_gap_insulation"))
     draft.set_dimension(("parts", key, "winding_band_width_mm"), 6.)
     destination = tmp_path / "wide-band.toml"
     draft.save_copy(destination)
@@ -216,16 +218,30 @@ def test_wide_band_saved_draft_reopens_and_keeps_native_part_and_module_visible(
     assert reopened.part("probe_dph2_deflector") == old_channel
     assert reopened.part(key) == {**old_row, "winding_band_width_mm": 6.}
     model = part_model_from_document(reopened.document, key)
-    assert len(model.meshes) == 9
-    new_support = tuple(mesh for mesh in model.meshes if mesh.material_class != "copper_winding")
+    assert len(model.meshes) == 13
+    new_support = tuple(mesh for mesh in model.meshes if mesh.material_class != "copper_winding"
+                        and not mesh.region.endswith("conductor_gap_insulation"))
     for before, after in zip(old_support, new_support, strict=True):
         np.testing.assert_array_equal(before.vertices, after.vertices)
         np.testing.assert_array_equal(before.faces, after.faces)
+    # Wider copper occupies more of each filled conductor layer, and the
+    # matching gap insulation must shrink. Independent curved-face sampling
+    # does not support exact volume conservation on these coarse display meshes.
+    def volume(mesh):
+        triangles = mesh.vertices[mesh.faces] - mesh.vertices.mean(axis=0)
+        return np.einsum("ij,ij->i", triangles[:, 0],
+            np.cross(triangles[:, 1], triangles[:, 2])).sum() / 6
+    new_meshes = {mesh.region: mesh for mesh in model.meshes}
+    for axis in ("x", "y"):
+        gap = axis + "_conductor_gap_insulation"
+        assert volume(new_meshes[gap]) < volume(old_meshes[gap])
+        for region in (axis + "_winding_1", axis + "_winding_2"):
+            assert volume(new_meshes[region]) > volume(old_meshes[region])
     # Render the same source row through the module path without generating all
     # unrelated objective and detector geometry in this focused regression.
     isolated = {"parts": [deepcopy(reopened.part(key))]}
     isolated["parts"][0].pop("parent_key", None)
-    assert len(module_model_from_document(isolated).meshes) == 9
+    assert len(module_model_from_document(isolated).meshes) == 13
 
 
 def test_wide_band_honours_maximum_requested_tessellation():

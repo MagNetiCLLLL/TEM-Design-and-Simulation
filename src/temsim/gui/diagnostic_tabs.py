@@ -6047,7 +6047,8 @@ class MagneticFieldView(QWidget):
             raise ValueError("Projection angle must be finite")
         self._projection_angle_deg = angle % 360.0
         self.field_lines.set_projection_angle(self._projection_angle_deg)
-        self.field_vectors.set_projection_angle(self._projection_angle_deg)
+        self.field_vectors.set_projection_angle(angle if 0. <= angle <= 360.
+                                                else self._projection_angle_deg)
         self._render_cached_profile()
 
     def _plot_position_clicked(self, event) -> None:

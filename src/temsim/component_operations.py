@@ -316,6 +316,12 @@ def copied_component_document(document, source, key, new_key, center_z_mm, *, pa
             # Never retain a live field/HP anchor to the original corrector.
             row.pop(binding, None)
         source_parent = source_by_key.get(original.get("parent_key"), {})
+        if row.get("mechanical_cartridge_structure"):
+            # The detailed carrier is a self-contained mechanical solid. Its
+            # C1/C2 links identify the original shared field assembly, not a
+            # dependency of an independent CAD copy. Preserve that provenance
+            # below without binding the copy to either target optical channel.
+            row.pop("magnetic_lens_keys", None)
         if (row.get("mechanical_part_role") not in CUSTOM_COMPONENT_ROLES
                 and row.get("mechanical_profile") in {"magnetic_excitation_coil", "magnetic_lens_yoke"}):
             intervals = objective_layer_intervals_mm(source_parent, source_parent.get("local_start_z_mm", 0),
@@ -349,6 +355,8 @@ def copied_component_document(document, source, key, new_key, center_z_mm, *, pa
         row["copy_provenance"] = {"source_module_key": str(source.get("module", {}).get("key", "")),
                                   "source_part_key": old,
                                   "physics_note": "Independent mechanical copy; no new optical control or magnetic circuit is created."}
+        if original.get("mechanical_cartridge_structure"):
+            row["copy_provenance"]["source_magnetic_lens_keys"] = list(original.get("magnetic_lens_keys", ()))
         target["parts"].append(row)
     copied_by_key = validate_component_graph(target)
     for old in selected:

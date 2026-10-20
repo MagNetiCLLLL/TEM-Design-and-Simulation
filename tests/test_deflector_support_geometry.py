@@ -13,6 +13,10 @@ from temsim.cad_mesh import _manifold
 from temsim.cad_multipoles import deflector_insert_solids
 from temsim.corrector_model_3d import deflector_coil_meshes
 from temsim.deflector_support_geometry import (
+    END_COVER_FIELD,
+    END_REGIONS,
+    GAP_FILL_FIELD,
+    GAP_REGIONS,
     SUPPORT_PROFILE,
     deflector_support_dimensions,
     deflector_support_solids,
@@ -87,8 +91,10 @@ def test_actual_inserts_have_matching_native_and_cad_supports(document, key):
     assert deflector_support_dimensions(row) is not None
     specs = {spec.region: spec for spec in part_solids(row, rows)}
     meshes = {mesh.region: mesh for mesh in part_model_from_document(document, key).meshes}
-    assert set(specs) == set(meshes) == COPPER | SUPPORT_RADII.keys()
-    for region in SUPPORT_RADII:
+    assert row[GAP_FILL_FIELD] is True
+    end_regions = set(END_REGIONS) if END_COVER_FIELD in row else set()
+    assert set(specs) == set(meshes) == COPPER | SUPPORT_RADII.keys() | set(GAP_REGIONS) | end_regions
+    for region in (*SUPPORT_RADII, *GAP_REGIONS):
         spec, mesh = specs[region], meshes[region]
         assert mesh.material_class == spec.material
         assert spec.material != "copper_winding"
@@ -134,6 +140,11 @@ def test_supports_are_closed_single_volumes_and_have_no_material_penetration(doc
     # 3 um, greater than the 180-segment sagitta but far below the 40 um film.
     interiors = []
     for spec in specs:
+        # Filled conductor layers have coincident curved copper interfaces.
+        # Independent polygonal Boolean rebuilds make contact slivers there;
+        # their analytic occupancy and actual display meshes are checked below.
+        if spec.region in GAP_REGIONS:
+            continue
         shape = spec.shape
         if spec.region in SUPPORT_RADII:
             section = np.asarray(shape["section_zr_mm"])
@@ -230,6 +241,8 @@ INVALID_CHANGES = [
     {SUPPORT_FIELDS[1]: True},
     {SUPPORT_FIELDS[1]: float("inf")},
     {SUPPORT_FIELDS[1]: .2},  # Consumes the positive interlayer bond.
+    {GAP_FILL_FIELD: 1},
+    {GAP_FILL_FIELD: "true"},
 ]
 
 
@@ -300,3 +313,61 @@ def test_full_support_envelope_is_used_for_adjacent_material_overlap(document):
     _validate_column_mechanical_overlaps([_without_support(row), obstacle])
     with pytest.raises(ValueError, match="overlap"):
         _validate_column_mechanical_overlaps([row, obstacle])
+
+
+@pytest.mark.parametrize("key", COILS)
+def test_filled_laminate_uses_only_saved_copper_layer_voids(document, key):
+    from test_cad_multipoles import _contains
+
+    row = _rows(document)[key]
+    saved = deepcopy(row)
+    full = {spec.region: spec for spec in deflector_insert_solids(row)}
+    previous = {spec.region: spec for spec in deflector_insert_solids({**row, GAP_FILL_FIELD: False})}
+    assert row == saved
+    assert set(full) - set(previous) == set(GAP_REGIONS)
+    assert all(full[name] == spec for name, spec in previous.items())
+    for axis, region, radii in (("x", GAP_REGIONS[0], (11.10, 11.42)),
+                                ("y", GAP_REGIONS[1], (11.58, 11.90))):
+        spec = full[region]
+        assert spec.status == "engineering_reconstruction_family_inference"
+        assert spec.parameters["new_dimensions_introduced"] is False
+        assert spec.evidence and "not verified" in spec.note
+        copper = [full[f"{axis}_winding_{index}"] for index in (1, 2)]
+        assert spec.shape["tools"] == [item.shape for item in copper]
+        # Independent cylindrical samples check complete partition of each
+        # copper layer, including winding windows, bands and angular gaps.
+        rng = np.random.default_rng(512)
+        theta = rng.uniform(-np.pi, np.pi, 20000)
+        radius = rng.uniform(radii[0]+1e-5, radii[1]-1e-5, len(theta))
+        z = rng.uniform(row["local_start_z_mm"]+1e-5, row["local_end_z_mm"]-1e-5, len(theta))
+        points = np.column_stack((radius*np.cos(theta), radius*np.sin(theta), z))
+        occupancy = sum(_contains(item.shape, points).astype(int) for item in (*copper, spec))
+        np.testing.assert_array_equal(occupancy, np.ones(len(points), int))
+        assert _contains(spec.shape, points).any()
+
+
+@pytest.mark.parametrize("segments", (16, 32, 72))
+def test_gap_display_contacts_copper_without_rebuilding_or_intersecting_it(document, segments):
+    import manifold3d as m
+
+    row = _rows(document)[COILS[0]]
+    baseline, _ = deflector_coil_meshes({**row, GAP_FILL_FIELD: False}, angular_segments=segments)
+    added, _ = deflector_coil_meshes(row, angular_segments=segments)
+    by_region = {mesh.region: mesh for mesh in added}
+    for before in baseline:
+        after = by_region[before.region]
+        np.testing.assert_array_equal(after.vertices, before.vertices)
+        np.testing.assert_array_equal(after.faces, before.faces)
+    for region in GAP_REGIONS:
+        mesh = by_region[region]
+        _closed_volume(mesh)
+        gap = m.Manifold(m.Mesh64(mesh.vertices.copy(), mesh.faces.astype(np.uint64)))
+        for name in COPPER:
+            copper = by_region[name]
+            solid = m.Manifold(m.Mesh64(copper.vertices.copy(), copper.faces.astype(np.uint64)))
+            assert (gap ^ solid).volume() < 1e-9
+        radius = np.linalg.norm(mesh.vertices[:, :2], axis=1)
+        assert radius.min() > row["mechanical_clear_bore_diameter_mm"]/2
+        assert radius.max() <= row["mechanical_outer_diameter_mm"]/2 + 1e-10
+        assert mesh.vertices[:, 2].min() >= row["local_start_z_mm"] - 1e-10
+        assert mesh.vertices[:, 2].max() <= row["local_end_z_mm"] + 1e-10

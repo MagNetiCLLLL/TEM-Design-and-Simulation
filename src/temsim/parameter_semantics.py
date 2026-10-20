@@ -75,9 +75,11 @@ _FRIENDLY = {
     "winding_band_width_mm": "Winding end and side band width",
     "winding_support_carrier_thickness_mm": "Flexible winding carrier thickness",
     "winding_support_cover_thickness_mm": "Winding radial insulation thickness",
+    "winding_support_end_cover_thickness_mm": "Winding axial end insulation thickness",
     "deflector_support_radial_skin_thickness_mm": "Rigid carrier radial insulation thickness",
     "deflector_support_casing_thickness_mm": "Insulating casing radial thickness",
     "deflector_support_pin_diameter_mm": "Insulating registration pin diameter",
+    "deflector_support_registration_slot_sweep_deg": "Registration slot centreline sweep",
     "length_mm": "Length", "percent": "Excitation strength",
     "tip_radius_nm": "Apex curvature radius",
     "tip_cone_half_angle_deg": "Tip cone half-angle",
@@ -133,8 +135,15 @@ def _meaning(part, path, by_key):
     field = str(relative[0]) if relative else ""
     label = _label(field, ("parts", "", *relative))
     profile = part.get("mechanical_profile", "")
+    if (field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "hexapole_support_"))
+            and field.endswith(("_mm", "_deg"))):
+        return label, "physical", (
+            "Explicit engineering dimension of the reconstructed internal material. "
+            "Updates the shared native 3D and STEP geometry; it is not an OEM measurement. "
+            "These construction details do not recalibrate the existing field, change its "
+            "effective length, or replace the separately declared vacuum passage.")
     if field in {"deflector_support_radial_skin_thickness_mm", "deflector_support_casing_thickness_mm",
-                 "deflector_support_pin_diameter_mm"}:
+                 "deflector_support_pin_diameter_mm", "deflector_support_registration_slot_sweep_deg"}:
         return label, "physical", (
             "Dimension of the rigid insulating carrier assembly. Pins register the two coil carriers internally; "
             "external host fastening is not specified. Mechanical edits do not recalibrate optical fields.")
@@ -253,6 +262,7 @@ def _meaning(part, path, by_key):
         explanations = {
             "winding_support_carrier_thickness_mm": "Radial thickness of each carrier in the equivalent flexible laminate. The interlayer bond fills the remaining positive gap; host mounting is unverified.",
             "winding_support_cover_thickness_mm": "Radial thickness of each dielectric cover in the bulk laminate equivalent. It increases the full material outer radius; it does not model individual conductor sidewall insulation.",
+            "winding_support_end_cover_thickness_mm": "Engineering axial end insulation outside the unchanged copper allocation. It extends the material stack but does not change optical length, winding centres or field calibration; it is not verified DPH2 OEM packaging.",
             "winding_layer_thickness_mm": "Radial material thickness of each of the two winding layers. Their remaining radial gap must be positive.",
             "winding_angular_span_deg": "Full angular span of each loop about the local axis. Opposite loops must stay separated; the X/Y pairs are rotated by 90 degrees.",
             "winding_band_width_mm": "Axial end-band width and circumferential side-band width at the layer mean radius. Both must leave an open loop window.",
@@ -329,6 +339,9 @@ def _source(part, path, category):
                     "not measured", "unmeasured", "not documented", "undocumented")):
                 return "unspecified", "Field metadata cites uncalibrated/topology evidence rather than a dimension. " + note
             return kind, note or "Field metadata explicitly leaves its source unspecified."
+    if field == "winding_support_end_cover_thickness_mm" and category == "physical":
+        return _source_from_text(part.get("winding_support_end_cover_geometry_status"),
+                                 part.get("winding_support_end_cover_source_note"), explicit_field=False)
     stem = re.sub(r"_(?:mrad|nm|um|mm|deg|rad|m|s)$", "", field)
     prefixes = list(dict.fromkeys((field, stem, re.sub(r"_(?:diameter|radius|length|width|height|thickness)$", "", stem))))
     if field == "length_mm" and part.get("mechanical_profile") == "fixed_differential_pumping_aperture":
@@ -340,6 +353,30 @@ def _source(part, path, category):
     if field.startswith("deflector_support_") and category == "physical":
         return _source_from_text(part.get("deflector_support_geometry_status"),
                                  part.get("deflector_support_source_note"), explicit_field=False)
+    if field.startswith("gun_stigmator_") and category == "physical":
+        return _source_from_text(part.get("gun_stigmator_geometry_status"),
+                                 part.get("gun_stigmator_source_note"), explicit_field=False)
+    if field.startswith("mechanical_cartridge_") and category == "physical":
+        return _source_from_text(part.get("mechanical_cartridge_geometry_status"),
+                                 part.get("mechanical_cartridge_geometry_source"), explicit_field=False)
+    if field.startswith("stigmator_support_") and category == "physical":
+        return _source_from_text(part.get("stigmator_support_geometry_status"),
+                                 part.get("stigmator_support_source_note"), explicit_field=False)
+    if field.startswith("aperture_support_") and category == "physical":
+        return _source_from_text(part.get("aperture_support_geometry_status"),
+                                 part.get("aperture_support_source_note"), explicit_field=False)
+    if field.startswith("mechanical_c3_end_") and category == "physical":
+        return _source_from_text(part.get("mechanical_c3_end_geometry_status"),
+                                 part.get("mechanical_c3_end_geometry_source"), explicit_field=False)
+    if field.startswith("mechanical_adapter_end_") and category == "physical":
+        return _source_from_text(part.get("mechanical_adapter_end_geometry_status"),
+                                 part.get("mechanical_adapter_end_geometry_source"), explicit_field=False)
+    if field.startswith("mechanical_tl22_end_") and category == "physical":
+        return _source_from_text(part.get("mechanical_tl22_end_geometry_status"),
+                                 part.get("mechanical_tl22_end_geometry_source"), explicit_field=False)
+    if field.startswith("hexapole_support_") and category == "physical":
+        return _source_from_text(part.get("hexapole_support_geometry_status"),
+                                 part.get("hexapole_support_source_note"), explicit_field=False)
     if category in {"physical", "envelope", "placement"}:
         status, note = part.get("mechanical_geometry_status"), part.get("mechanical_geometry_source")
         if status is not None or note is not None:

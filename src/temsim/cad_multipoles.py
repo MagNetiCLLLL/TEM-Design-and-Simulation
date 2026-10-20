@@ -74,7 +74,12 @@ def deflector_insert_solids(part, by_key=None):
     if non_material_role(part):
         return ()
     from temsim.deflector_support_geometry import deflector_support_solids
-    support_solids = deflector_support_solids(part)
+    windings = deflector_insert_winding_solids(part, by_key)
+    return windings + deflector_support_solids(part, windings)
+
+
+def deflector_insert_winding_solids(part, by_key=None):
+    """Copper only, also used as the exact insulation subtraction tools."""
     layer, span, band = winding_dimensions(part)
     allocated_start, allocated_end, inner, outer = _envelope(part)
     start, end = winding_axial_extent(part)
@@ -96,7 +101,7 @@ def deflector_insert_solids(part, by_key=None):
             shape = _loop(start, end, low, high, 90*axis+180*side, span, layer_band)
             solids.append(_solid(part, f"{'xy'[axis]}_winding_{side+1}", "copper_winding",
                                  shape, params, (COIL_SOURCE,)))
-    return tuple(solids) + support_solids
+    return tuple(solids)
 
 
 def _rotation(angle_deg):
@@ -246,6 +251,8 @@ def _probe_hexapole_solids(part):
                                        (f'coil_{index+1}', 'copper_winding', coil)):
             result.append(_solid(part, region, material,
                 transformed(shape, rotation=_rotation(60*index)), params, evidence))
+    from temsim.cad_probe_hexapole_support import hexapole_support_solids
+    result.extend(hexapole_support_solids(part))
     return tuple(result)
 
 

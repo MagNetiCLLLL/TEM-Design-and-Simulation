@@ -12,9 +12,11 @@ import math
 from dataclasses import replace
 
 import numpy as np
-from PySide6.QtCore import QPointF, QRectF, QSize, Qt, Signal
-from PySide6.QtGui import QColor, QImage, QMouseEvent, QPainter, QPen, QPolygonF, QWheelEvent
+from PySide6.QtCore import QPointF, QRectF, QSize, Qt, Signal, QTimer
+from PySide6.QtGui import QColor, QImage, QMouseEvent, QPainter, QPainterPath, QPen, QPolygonF, QTransform, QWheelEvent
 from PySide6.QtWidgets import QToolTip, QWidget
+
+from temsim.gui.transverse_projection import format_projection_angle
 
 
 class FieldVectorCanvas(QWidget):
@@ -43,10 +45,22 @@ class FieldVectorCanvas(QWidget):
         self._render_style = "arrows"
         self._observation_regions = None
         self._observation_component = None
+        self._observation_bounds_cache = None
         self._density_grid_cache = None
         self._density_image_cache = None
         self._density_notice = ""
-        self._zoom = 1.
+        self._interaction_active = False
+        self._interaction_timer = QTimer(self)
+        self._interaction_timer.setSingleShot(True)
+        self._interaction_timer.setInterval(150)
+        self._interaction_timer.timeout.connect(lambda: self.set_interaction_active(False))
+        self._pending_section_angle = None
+        self._source_outline_cache = None
+        self._model_path_cache = None
+        self._model_triangle_cache = {}
+        # Screen horizontal/vertical magnifications are independent, like the
+        # Ray Diagram's unlocked ViewBox axes. Apply them after XYZ rotation.
+        self._zoom = np.ones(2)
         self._pan = QPointF()
         self._projection_angle_deg = 0.
         self._selected_component_keys = frozenset()
@@ -59,8 +73,10 @@ class FieldVectorCanvas(QWidget):
         self._source_regions = ()
         self.references = {"B": None, "E": None, "F": None}
         self._message = "Calculate the column, then select sources."
-        self.setToolTip("Left drag a longitudinal section or 3D volume: rotate the shared observation angle. "
-                        "Right or middle drag: pan. Wheel: display zoom. "
+        self.setToolTip("Left or middle drag: pan, as in Ray Diagram. "
+                        "Right drag: scale horizontal and vertical axes independently about the press position. "
+                        "Use Angle to rotate the shared observation section. Wheel over an axis: zoom only that axis; "
+                        "wheel inside the plot: zoom both axes, preserving their relative scales. "
                         "Click a physical model to select; right-click it for navigation. "
                         "Double click: reset view. Hover a sample for physical XYZ components. "
                         "Navigation immediately reprojects cached samples. The page may refine a visible "
@@ -77,6 +93,31 @@ class FieldVectorCanvas(QWidget):
     @property
     def projection_angle_deg(self):
         return self._projection_angle_deg
+
+    def set_pending_section_angle(self, angle):
+        """Keep the accepted plane explicit while a replacement is calculated."""
+        if angle is not None:
+            angle = float(angle)
+            if not math.isfinite(angle):
+                raise ValueError("Pending section angle must be finite")
+            angle %= 360.
+        self._pending_section_angle = angle
+        QToolTip.hideText()
+        self.update()
+
+    def set_interaction_active(self, active):
+        """Bound raster work during navigation; rebuild full detail once idle.
+
+        Both paths evaluate the current coordinate transform, masks and fixed
+        physical scale. Only raster resolution changes, never field samples.
+        """
+        active = bool(active)
+        if not active:
+            self._interaction_timer.stop()
+        if active != self._interaction_active:
+            self._interaction_active = active
+            self._density_image_cache = None
+            self.update()
 
     def set_projection_angle(self, angle):
         """Project cached XYZ using the shared U=X cos(angle)+Y sin(angle)."""
@@ -121,12 +162,16 @@ class FieldVectorCanvas(QWidget):
         self._density_image_cache = None
         self._physical_meshes = ()
         self._section_cache = None
+        self._model_path_cache = None
+        self._model_triangle_cache.clear()
+        self._pending_section_angle = None
+        self.set_interaction_active(False)
         self._screen_points = np.empty((0, 2))
         self._visible_sample_indices = np.empty(0, dtype=int)
         self._message = str(message)
         self.update()
 
-    def set_sample(self, sample, bounds_m, section):
+    def set_sample(self, sample, bounds_m, section, *, preserve_geometry=False):
         bounds = np.asarray(bounds_m, dtype=float)
         if section == "UZ":
             self._sample_plane_m = 0.
@@ -149,11 +194,15 @@ class FieldVectorCanvas(QWidget):
         self._density_grid_cache = None
         self._density_image_cache = None
         self._bounds_m = bounds.copy()
-        # Meshes belong to the same accepted snapshot/selection as the sample;
-        # publication must explicitly supply them again after a replacement.
-        self._physical_meshes = ()
-        self._section_cache = None
-        self._view_bounds_m = self._bounds_m.copy()
+        # Default replacement cannot leave obsolete geometry. The page may
+        # explicitly retain it for detail samples from the same accepted
+        # configuration; the section cache itself keys the plane and angle.
+        if not preserve_geometry:
+            self._physical_meshes = ()
+            self._section_cache = None
+            self._model_path_cache = None
+            self._model_triangle_cache.clear()
+        self._update_view_bounds()
         self._section = str(section)
         self.use_current_peaks(only_unset=True)
         self._screen_points = np.empty((0, 2))
@@ -327,6 +376,7 @@ class FieldVectorCanvas(QWidget):
         """Captured geometry supplies a CPU-only mask, never field values."""
         if regions is not self._observation_regions or component_key != self._observation_component:
             self._density_image_cache = None
+            self._observation_bounds_cache = None
         self._observation_regions = regions
         self._observation_component = component_key
         self.update()
@@ -401,18 +451,23 @@ class FieldVectorCanvas(QWidget):
         result = np.zeros(len(points), dtype=bool)
         if not len(points):
             return result
+        if self._observation_bounds_cache is None:
+            selected = regions.regions_for_component(self._observation_component)
+            bounds = np.asarray([region.bounds_m for region in selected]).reshape(-1, 2, 3)
+            padding = 64*np.finfo(float).eps*np.maximum(np.max(np.abs(bounds), axis=1),
+                                                       np.ptp(bounds, axis=1))
+            self._observation_bounds_cache = selected, bounds[:, 0]-padding, bounds[:, 1]+padding
+        selected, bound_low, bound_high = self._observation_bounds_cache
         low, high = points.min(axis=0), points.max(axis=0)
-        for region in regions.regions_for_component(self._observation_component):
-            bounds = region.bounds_m
-            padding = 64*np.finfo(float).eps*np.maximum(np.max(np.abs(bounds), axis=0),
-                                                       np.ptp(bounds, axis=0))
-            bound_low, bound_high = bounds[0]-padding, bounds[1]+padding
-            if np.any(bound_high < low) or np.any(bound_low > high):
-                continue
-            candidates = np.flatnonzero(~result & np.all(points >= bound_low, axis=1)
-                                        & np.all(points <= bound_high, axis=1))
+        # The whole column has many envelopes. Test their cached boxes in one
+        # array operation, not a Python/NumPy call chain per box per raster row.
+        possible = np.flatnonzero(np.all(bound_high >= low, axis=1)
+                                 & np.all(bound_low <= high, axis=1))
+        for index in possible:
+            candidates = np.flatnonzero(~result & np.all(points >= bound_low[index], axis=1)
+                                        & np.all(points <= bound_high[index], axis=1))
             if len(candidates):
-                result[candidates] = region.contains(points[candidates])
+                result[candidates] = selected[index].contains(points[candidates])
             if np.all(result):
                 break
         return result
@@ -439,16 +494,18 @@ class FieldVectorCanvas(QWidget):
         reference = self.references[label]
         key = (id(self._sample), self._mode, self._section, reference,
                tuple(self._view_bounds_m.ravel()), self._projection_angle_deg,
-               self._zoom, self._pan.x(), self._pan.y(), plot.width(), plot.height(),
-               id(self._observation_regions), self._observation_component)
+               tuple(self._zoom), self._pan.x(), self._pan.y(), plot.width(), plot.height(),
+               id(self._observation_regions), self._observation_component, self._interaction_active)
         if self._density_image_cache is not None and self._density_image_cache[0] == key:
             self._density_notice = self._density_image_cache[2]
             return self._density_image_cache[1]
         from temsim.field_density_texture import hatch_mask
         # At most 2 MiB retained RGBA, regardless of monitor size or DPI.
         # Only 8192 texels' interpolation/mask temporaries are live at a time.
-        scale = min(1., 1024./max(plot.width(), plot.height()),
-                    math.sqrt(524288./(plot.width()*plot.height())))
+        pixel_budget, longest_side = ((32768., 256.) if self._interaction_active
+                                      else (524288., 1024.))
+        scale = min(1., longest_side/max(plot.width(), plot.height()),
+                    math.sqrt(pixel_budget/(plot.width()*plot.height())))
         width = max(1, int(plot.width()*scale))
         height = max(1, int(plot.height()*scale))
         rgba = np.zeros((height, width, 4), dtype=np.uint8)
@@ -524,6 +581,8 @@ class FieldVectorCanvas(QWidget):
                              Qt.AlignmentFlag.AlignVCenter, "× fixed reference")
 
     def _density_hover_text(self, position):
+        if self._pending_section_angle is not None:
+            return None
         grid = self._magnitude_grid()
         inverse = self._section_inverse(self._plot_rect())
         if grid is None or inverse is None:
@@ -545,7 +604,13 @@ class FieldVectorCanvas(QWidget):
         return text
 
     def set_source_regions(self, regions):
-        self._source_regions = tuple((str(label), np.asarray(bounds, dtype=float).copy()) for label, bounds in regions)
+        updated = tuple((str(label), np.asarray(bounds, dtype=float).copy()) for label, bounds in regions)
+        if (len(updated) == len(self._source_regions)
+                and all(label == old_label and np.array_equal(bounds, old_bounds)
+                        for (label, bounds), (old_label, old_bounds) in zip(updated, self._source_regions))):
+            return
+        self._source_regions = updated
+        self._source_outline_cache = None
         self.update()
 
     def set_physical_meshes(self, meshes):
@@ -554,6 +619,10 @@ class FieldVectorCanvas(QWidget):
         TriangleMesh normally uses millimetres. The field-scene adapter makes
         this explicit conversion before calling this display-only API.
         """
+        meshes = tuple(meshes)
+        if len(meshes) == len(self._physical_meshes) and all(
+                mesh is current for mesh, current in zip(meshes, self._physical_meshes)):
+            return
         accepted = []
         for mesh in meshes:
             vertices = np.asarray(mesh.vertices, dtype=float)
@@ -568,6 +637,8 @@ class FieldVectorCanvas(QWidget):
                 accepted.append(mesh)
         self._physical_meshes = tuple(accepted)
         self._section_cache = None
+        self._model_path_cache = None
+        self._model_triangle_cache.clear()
         self._update_view_bounds()
         self.update()
 
@@ -592,18 +663,18 @@ class FieldVectorCanvas(QWidget):
     def fit_physical_models(self):
         """Fit the union of model and sample extents; never alter the sample."""
         self._fit_models = True
-        self._zoom, self._pan = 1., QPointF()
+        self._zoom, self._pan = np.ones(2), QPointF()
         self._update_view_bounds()
         if self._section == "3D":
             # The independently scaled bounding box has half-width .5 on
             # every axis; include its rotated corners with a 10% margin.
-            self._zoom = .9 / (.72 * np.abs(self._basis()[:2]).sum(axis=1).max())
+            self._zoom.fill(.9 / (.72 * np.abs(self._basis()[:2]).sum(axis=1).max()))
         else:
-            self._zoom = .9
+            self._zoom.fill(.9)
         self._view_updated()
 
     def reset_view(self):
-        self._zoom, self._pan = 1., QPointF()
+        self._zoom, self._pan = np.ones(2), QPointF()
         self._fit_models = False
         self._update_view_bounds()
         self._view_updated()
@@ -727,43 +798,75 @@ class FieldVectorCanvas(QWidget):
                        if (mesh.key in self._selected_component_keys) == selected)
         if not meshes:
             return
+        centre, span, basis, size, origin = self._projection(plot)
+        transform = QTransform(size[0], 0., 0., size[1], origin[0], origin[1])
         if self._section != "3D":
-            for mesh, segments in self._physical_sections():
+            sections = self._physical_sections()
+            key = (id(sections), tuple(self._view_bounds_m.ravel()), self._projection_angle_deg)
+            if self._model_path_cache is None or self._model_path_cache[0] != key:
+                paths = []
+                for mesh, segments in sections:
+                    vertices = ((segments-centre)/span) @ basis.T
+                    path = QPainterPath()
+                    for segment in vertices:
+                        path.moveTo(QPointF(*segment[0, :2]))
+                        path.lineTo(QPointF(*segment[1, :2]))
+                    paths.append((mesh, path))
+                self._model_path_cache = key, paths
+            painter.save()
+            painter.setTransform(transform, combine=True)
+            for mesh, path in self._model_path_cache[1]:
                 if (mesh.key in self._selected_component_keys) != selected:
                     continue
                 colour = QColor.fromRgbF(*self._model_colour(mesh, group_surface=selected))
-                painter.setPen(QPen(colour, 2.2 if selected else 1.7))
-                for segment in self._project_positions(segments, plot):
-                    painter.drawLine(QPointF(*segment[0, :2]), QPointF(*segment[1, :2]))
+                pen = QPen(colour, 2.2 if selected else 1.7)
+                pen.setCosmetic(True)
+                painter.setPen(pen)
+                painter.drawPath(path)
+            painter.restore()
             return
         # Depth-sort each pass's real material triangles. Selected assemblies
         # form a translucent inspection overlay; vectors remain foreground.
-        triangles, colours = [], []
-        centre, span, basis, _size, _origin = self._projection(plot)
-        for mesh in meshes:
-            projected = self._project_positions(mesh.vertices, plot)[mesh.faces]
-            triangles.append(projected)
-            colour = self._model_colour(mesh, group_surface=selected)
-            world = ((mesh.vertices - centre) / span) @ basis.T
-            face_vertices = world[mesh.faces]
-            normals = np.cross(face_vertices[:, 1] - face_vertices[:, 0], face_vertices[:, 2] - face_vertices[:, 0])
-            norm = np.linalg.norm(normals, axis=1)
-            shade = .62 + .38 * np.divide(np.abs(normals[:, 2]), norm, out=np.zeros_like(norm), where=norm > 0)
-            rgba = np.tile(colour, (len(projected), 1))
-            rgba[:, :3] *= shade[:, None]
-            colours.append(np.clip(rgba, 0., 1.))
-        triangles, colours = np.concatenate(triangles), np.concatenate(colours)
-        order = np.argsort(triangles[:, :, 2].mean(axis=1), kind="stable")
+        # Store camera-coordinate polygons once. Pan/axis zoom only change a
+        # QPainter transform, without rebuilding every QPointF or face normal.
+        key = (tuple(id(mesh) for mesh in meshes), tuple(self._view_bounds_m.ravel()),
+               self._projection_angle_deg, self._selected_component_keys, self._model_opacity)
+        cache = self._model_triangle_cache.get(selected)
+        if cache is None or cache[0] != key:
+            triangles, colours = [], []
+            for mesh in meshes:
+                world = ((mesh.vertices-centre)/span) @ basis.T
+                face_vertices = world[mesh.faces]
+                triangles.append(face_vertices)
+                normals = np.cross(face_vertices[:, 1]-face_vertices[:, 0],
+                                   face_vertices[:, 2]-face_vertices[:, 0])
+                norm = np.linalg.norm(normals, axis=1)
+                shade = .62 + .38*np.divide(np.abs(normals[:, 2]), norm,
+                                            out=np.zeros_like(norm), where=norm > 0)
+                rgba = np.tile(self._model_colour(mesh, group_surface=selected), (len(face_vertices), 1))
+                rgba[:, :3] *= shade[:, None]
+                colours.append(np.clip(rgba, 0., 1.))
+            triangles, colours = np.concatenate(triangles), np.concatenate(colours)
+            order = np.argsort(triangles[:, :, 2].mean(axis=1), kind="stable")
+            triangles, colours = triangles[order], colours[order]
+            polygons = tuple(QPolygonF([QPointF(*point[:2]) for point in triangle]) for triangle in triangles)
+            brushes = tuple(QColor.fromRgbF(*colour) for colour in colours)
+            low, high = triangles[:, :, :2].min(axis=1), triangles[:, :, :2].max(axis=1)
+            cache = (key, polygons, brushes, low, high)
+            self._model_triangle_cache[selected] = cache
+        _key, polygons, brushes, low, high = cache
+        visible = np.array([[plot.left(), plot.top()], [plot.right(), plot.bottom()]])
+        visible = (visible-origin)/size
+        visible_low, visible_high = visible.min(axis=0), visible.max(axis=0)
+        indices = np.flatnonzero(np.all(high >= visible_low, axis=1)
+                                 & np.all(low <= visible_high, axis=1))
+        painter.save()
+        painter.setTransform(transform, combine=True)
         painter.setPen(Qt.PenStyle.NoPen)
-        for index in order:
-            triangle = triangles[index, :, :2]
-            # Rectangle culling only; no material faces are decimated.
-            if (triangle[:, 0].max() < plot.left() or triangle[:, 0].min() > plot.right()
-                    or triangle[:, 1].max() < plot.top() or triangle[:, 1].min() > plot.bottom()):
-                continue
-            painter.setBrush(QColor.fromRgbF(*colours[index]))
-            painter.drawPolygon(QPolygonF([QPointF(*point) for point in triangle]))
-        painter.setBrush(Qt.BrushStyle.NoBrush)
+        for index in indices:
+            painter.setBrush(brushes[index])
+            painter.drawPolygon(polygons[index])
+        painter.restore()
 
     def _fields(self):
         if self._sample is None:
@@ -804,6 +907,37 @@ class FieldVectorCanvas(QWidget):
         coordinates = points @ self._basis()[:2].T
         centred = coordinates-coordinates.mean(axis=0)
         return points[np.argsort(np.arctan2(centred[:, 1], centred[:, 0]))]
+
+    def _source_outlines(self):
+        """Physical envelope intersections do not change during pan or zoom."""
+        key = (self._section, self._projection_angle_deg, tuple(self._section_centre()))
+        if self._source_outline_cache is not None and self._source_outline_cache[0] == key:
+            return self._source_outline_cache[1]
+        outlines = []
+        for label, bounds in self._source_regions:
+            if self._section == "UZ":
+                corners = self._longitudinal_box_cut(bounds)
+                if not len(corners):
+                    continue
+                edges = tuple((i, (i+1) % len(corners)) for i in range(len(corners)))
+            elif self._section != "3D":
+                first, second, normal = {"XY": (0, 1, 2), "XZ": (0, 2, 1), "YZ": (1, 2, 0)}[self._section]
+                plane = self._section_centre()[normal]
+                if not bounds[0, normal] <= plane <= bounds[1, normal]:
+                    continue
+                corners = np.tile(self._section_centre(), (4, 1))
+                corners[:, normal] = plane
+                corners[:, first] = bounds[[0, 1, 1, 0], first]
+                corners[:, second] = bounds[[0, 0, 1, 1], second]
+                edges = ((0, 1), (1, 2), (2, 3), (3, 0))
+            else:
+                corners = np.array([[bounds[x, 0], bounds[y, 1], bounds[z, 2]]
+                                    for x in (0, 1) for y in (0, 1) for z in (0, 1)])
+                edges = tuple((index, index ^ bit) for index in range(8) for bit in (1, 2, 4)
+                              if index < (index ^ bit))
+            outlines.append((label, corners, edges))
+        self._source_outline_cache = key, tuple(outlines)
+        return self._source_outline_cache[1]
 
     def _glyph_indices(self, projected, plot=None, *, cell_px=24., max_glyphs=1000):
         """Choose visible representatives without modifying cached SI samples.
@@ -851,7 +985,8 @@ class FieldVectorCanvas(QWidget):
 
     def pick_component_at(self, position):
         """Pick actual visible geometry, never a field-support bounding box."""
-        if self._sample is None or not self.model_overlay_visible or not self._plot_rect().contains(position):
+        if (self._pending_section_angle is not None or self._sample is None
+                or not self.model_overlay_visible or not self._plot_rect().contains(position)):
             return None
         cursor = np.array([position.x(), position.y()])
         if self._section != "3D":
@@ -924,28 +1059,12 @@ class FieldVectorCanvas(QWidget):
                 painter.setPen(foreground)
                 painter.drawText(plot.adjusted(8, 8, -8, -8),
                                  Qt.AlignmentFlag.AlignCenter | Qt.TextFlag.TextWordWrap, self._density_notice)
-        region_pen = QPen(QColor(foreground.red(), foreground.green(), foreground.blue(), 90), .8, Qt.PenStyle.DashLine)
+        # Many overlapping envelopes are guides, not field strength. Keep them
+        # quieter than vectors and material boundaries in whole-column views.
+        region_alpha = 90 if len(self._source_regions) <= 5 else 42
+        region_pen = QPen(QColor(foreground.red(), foreground.green(), foreground.blue(), region_alpha), .8, Qt.PenStyle.DashLine)
         painter.setPen(region_pen)
-        for label, bounds in self._source_regions:
-            if self._section == "UZ":
-                corners = self._longitudinal_box_cut(bounds)
-                if not len(corners):
-                    continue
-                edges = tuple((i, (i+1) % len(corners)) for i in range(len(corners)))
-            elif self._section != "3D":
-                first, second, normal = {"XY": (0, 1, 2), "XZ": (0, 2, 1), "YZ": (1, 2, 0)}[self._section]
-                plane = self._section_centre()[normal]
-                if not bounds[0, normal] <= plane <= bounds[1, normal]:
-                    continue
-                corners = np.tile(centre, (4, 1))
-                corners[:, normal] = plane
-                corners[:, first] = bounds[[0, 1, 1, 0], first]
-                corners[:, second] = bounds[[0, 0, 1, 1], second]
-                edges = ((0, 1), (1, 2), (2, 3), (3, 0))
-            else:
-                corners = np.array([[bounds[x, 0], bounds[y, 1], bounds[z, 2]]
-                                    for x in (0, 1) for y in (0, 1) for z in (0, 1)])
-                edges = tuple((index, index ^ bit) for index in range(8) for bit in (1, 2, 4) if index < (index ^ bit))
+        for label, corners, edges in self._source_outlines():
             outline = (((corners-centre)/span) @ basis.T)[:, :2] * size + origin
             for first, second in edges:
                 painter.drawLine(QPointF(*outline[first]), QPointF(*outline[second]))
@@ -1004,6 +1123,19 @@ class FieldVectorCanvas(QWidget):
                     painter.drawPoint(QPointF(*point))
                     drawn_indices.add(int(index))
         self._visible_sample_indices = np.array(sorted(drawn_indices), dtype=int)
+        status = None
+        if self._pending_section_angle is not None:
+            status = (f"Updating section to {format_projection_angle(self._pending_section_angle)}°; "
+                      f"showing {format_projection_angle(self._projection_angle_deg)}°. Inspection resumes when ready.")
+        elif self._interaction_active and self._render_style == "density":
+            status = "Navigation preview; full texture detail returns after navigation stops."
+        if status:
+            rect = QRectF(plot.left()+8, plot.top()+8, max(1., plot.width()-16), 38)
+            painter.fillRect(rect, palette.base())
+            painter.setPen(foreground)
+            painter.drawText(rect.adjusted(6, 2, -6, -2),
+                             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter | Qt.TextFlag.TextWordWrap,
+                             status)
         painter.restore()
         painter.setPen(foreground)
         longitudinal = self._section != "XY"
@@ -1036,12 +1168,12 @@ class FieldVectorCanvas(QWidget):
     @property
     def projection_caption(self):
         if self._section == "UZ":
-            return (f"Longitudinal U-Z section · shared angle {self._projection_angle_deg:g}° "
+            return (f"Longitudinal U-Z section · shared angle {format_projection_angle(self._projection_angle_deg)}° "
                     "· Z right, U up · V = 0")
         if self._section == "XY":
             return "Sampled XY section · axial XY view (sampling plane unchanged)"
         sampled = "3D volume" if self._section == "3D" else f"{self._section} section (plane unchanged)"
-        return f"Sampled {sampled} · Ray projection {self._projection_angle_deg:g}°: Z right, U up"
+        return f"Sampled {sampled} · Ray projection {format_projection_angle(self._projection_angle_deg)}°: Z right, U up"
 
     def mousePressEvent(self, event: QMouseEvent):
         if (event.button() in (Qt.MouseButton.LeftButton, Qt.MouseButton.RightButton, Qt.MouseButton.MiddleButton)
@@ -1068,6 +1200,8 @@ class FieldVectorCanvas(QWidget):
         self._drag = None
         self._press_position = None
         self._drag_button = Qt.MouseButton.NoButton
+        if self._interaction_active:
+            self._interaction_timer.start()
         event.accept()
 
     def mouseMoveEvent(self, event: QMouseEvent):
@@ -1079,15 +1213,20 @@ class FieldVectorCanvas(QWidget):
                 return
             delta = event.position() - self._drag
             self._drag = event.position()
-            if self._section in ("UZ", "3D") and self._drag_button == Qt.MouseButton.LeftButton:
-                previous = self._projection_angle_deg
-                self.set_projection_angle(self._projection_angle_deg+delta.x()*.5)
-                if self._projection_angle_deg != previous:
-                    self.projection_angle_requested.emit(self._projection_angle_deg)
+            self._interaction_timer.stop()
+            self.set_interaction_active(True)
+            if self._drag_button == Qt.MouseButton.RightButton:
+                # ViewBox scales its ranges by 1.02**(-dx, +dy). Screen
+                # magnification is the inverse; keep the initial press fixed.
+                factors = np.exp(np.clip(np.array([delta.x(), -delta.y()])*math.log(1.02), -20., 20.))
+                self._scale_view(factors, self._press_position)
             else:
                 self._pan += delta
                 self._view_updated()
             event.accept()
+            return
+        if self._pending_section_angle is not None:
+            QToolTip.hideText()
             return
         if (self._render_style == "density" and self._sample is not None
                 and self._plot_rect().contains(event.position())):
@@ -1113,18 +1252,41 @@ class FieldVectorCanvas(QWidget):
         QToolTip.hideText()
 
     def wheelEvent(self, event: QWheelEvent):
-        factor = math.exp(event.angleDelta().y() / 120. * .15)
-        previous = self._zoom
-        self._zoom = min(50., max(.05, self._zoom * factor))
-        ratio = self._zoom/previous
-        # Preserve the physical point beneath the cursor. Do not anchor to
-        # a label outside the plot when a wheel event arrives there.
         plot = self._plot_rect()
-        cursor = event.position() if plot.contains(event.position()) else plot.center()
-        offset = cursor-plot.center()-self._pan
-        self._pan += (1.-ratio)*offset
-        self._view_updated()
+        cursor = event.position()
+        if (plot.left() <= cursor.x() <= plot.right()
+                and plot.bottom() <= cursor.y() < self.height()-41.):
+            axes = np.array([True, False])  # Bottom ticks and axis title.
+        elif (0. <= cursor.x() <= plot.left()
+              and plot.top() <= cursor.y() <= plot.bottom()):
+            axes = np.array([False, True])  # Left ticks.
+        elif plot.contains(cursor):
+            axes = np.array([True, True])
+        else:
+            event.ignore()  # Captions, legends and corners are not axes.
+            return
+        delta = event.angleDelta().y()
+        if not delta:
+            event.ignore()
+            return
+        # Ray Diagram uses ViewBox's range scale 1.02**(-delta/8).
+        # Projection magnification is its inverse. Bound extreme input before
+        # exponentiation, then apply the existing limits to each axis alone.
+        factor = math.exp(float(np.clip(delta * math.log(1.02) / 8., -20., 20.)))
+        self.set_interaction_active(True)
+        self._interaction_timer.start()
+        self._scale_view(np.where(axes, factor, 1.), cursor)
         event.accept()
+
+    def _scale_view(self, factors, cursor):
+        previous = self._zoom.copy()
+        self._zoom = np.clip(previous*np.asarray(factors), .05, 50.)
+        ratio = self._zoom/previous
+        # Preserve the physical coordinate under the cursor in each affected
+        # dimension. The other axis keeps both its scale and its translation.
+        offset = cursor-self._plot_rect().center()-self._pan
+        self._pan += QPointF((1.-ratio[0])*offset.x(), (1.-ratio[1])*offset.y())
+        self._view_updated()
 
     def resizeEvent(self, event):
         super().resizeEvent(event)

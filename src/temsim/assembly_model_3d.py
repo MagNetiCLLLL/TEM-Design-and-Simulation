@@ -176,6 +176,15 @@ def _omission_reason(part, physical_parent_keys):
     if (row.get("virtual") or row.get("virtual_only")
             or "reference_plane" in str(row.get("mechanical_profile", ""))):
         return "virtual/reference plane, not material"
+    # The EDS row is a zero-thickness sample/acceptance datum. Its declared
+    # off-axis sensor, support and cold-shield geometry has its own finite
+    # dimensions; let the existing detector builder validate and place it.
+    # A legacy datum with no material declaration remains a reference only,
+    # while partial/invalid declarations must reach validation, not disappear.
+    from temsim.cad_detectors import EDS_PROFILE, EDS_FIELDS, PROVENANCE_FIELDS
+    if (row.get("mechanical_profile") == EDS_PROFILE
+            and any(field in row for field in (*EDS_FIELDS, *PROVENANCE_FIELDS))):
+        return None
     start, end = _extent(row)
     if start == end:
         return "zero-thickness reference/envelope plane, not a solid"

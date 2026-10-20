@@ -17,8 +17,16 @@ The display offers magnetic **B**, electric **E**, a separate-colour **B + E**
 overlay, and electron force. The default **Longitudinal section (Z–U)** uses
 Z to the right and `U = X cos(theta) + Y sin(theta)` upwards,
 matching Ray Diagram and Physical Layout's rotating section. The viewing angle
-is shared in both directions: use the visible **Angle** control or left-drag
-the section or a 3D volume. Right/middle drag pans; the wheel zooms.
+is shared in both directions. Ray Diagram, this page and Physical Layout's
+rotating section use the same **Angle / X-Z / Y-Z / slider** control at the
+upper left. Left/middle drag pans; right drag scales the two display axes
+independently, matching Ray Diagram. Dragging never changes the shared angle.
+As in Ray Diagram, the
+wheel over the bottom axis zooms only Z, and over the left axis zooms only U.
+These display scales are independent; wheel zoom inside the plot changes both
+while retaining their relative scales, with the same wheel sensitivity as
+Ray Diagram. Captions, legends and corners do not zoom the plot. Double-click
+resets both scales and the pan without changing the shared observation angle.
 There is no transverse XY view or separate XZ/YZ slice selector.
 **Rotation changes the actual longitudinal section**, with
 `V = -X sin(theta) + Y cos(theta) = 0`. At 0° it samples the XZ plane; at 90°
@@ -151,8 +159,13 @@ data. The next completed calculation publishes the captured state and automatica
 refreshes an open vector view. With automatic ray preview enabled this follows
 the normal preview lifecycle; otherwise calculate again explicitly.
 An old asynchronous job cannot publish over a newer snapshot or section angle.
-Zoom and pan first redraw cached vectors. Rotation clears the obsolete 2D slice
-and, after a 250 ms pause, samples the new plane from the captured providers.
+Zoom and pan first redraw cached vectors. While the angle changes, the last
+accepted 2D section stays visible at its original angle, explicitly labelled
+with the displayed and requested angles. After a 250 ms pause the latest plane
+is sampled from the captured providers and replaces that display atomically.
+Pending sections do not offer field hover values or component picking.
+Cancelled base requests finish their current chunk before the next request
+starts, so repeated angle changes cannot queue overlapping base sampling jobs.
 This also applies with automatic viewport detail switched off: a new physical
 plane requires new sample locations. Hidden pages defer sampling until shown.
 The original field models and particle trajectories are not recalculated.
@@ -186,6 +199,15 @@ reveals local arrows without changing their fixed SI magnitude references.
 Normal-direction dot/cross symbols and unavailable values retain their separate
 meanings. Hover reports the actual sampled value of a displayed glyph. Mouse
 wheel zoom keeps the physical point under the cursor stationary.
+
+Envelope intersections and material-section paths are cached while panning or
+zooming; accepted detail samples from the same captured configuration reuse
+the geometry. Whole-column envelope guides are subdued so they do not compete
+with the field vectors. Strength hatching uses a labelled, bounded texture
+preview during navigation (at most 32,768 pixels), then restores the full
+texture after 150 ms idle. This only changes texture resolution: sampled field
+values, validity masks, section coordinates and fixed strength references remain
+unchanged. The final texture may still take longer to render on complex views.
 
 The **2D combined field** view has its own **Auto detail** switch. It preserves
 the full-column 3000-point overview, then samples the visible Z interval after the

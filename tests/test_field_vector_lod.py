@@ -10,6 +10,33 @@ from PySide6.QtWidgets import QApplication, QToolTip
 from temsim.gui.field_vector_canvas import FieldVectorCanvas
 
 
+def test_envelope_cuts_are_reused_for_pan_zoom_but_rebuilt_for_angle(qtbot, monkeypatch):
+    canvas = FieldVectorCanvas()
+    qtbot.addWidget(canvas)
+    bounds = np.array([[-.001, -.001, .1], [.001, .001, .15]])
+    canvas.set_sample(_sample([[0., 0., .125]]), bounds, "UZ")
+    canvas.set_source_regions((("coil", bounds),))
+    calls = []
+    original = canvas._longitudinal_box_cut
+
+    def cut(region):
+        calls.append(region.copy())
+        return original(region)
+
+    monkeypatch.setattr(canvas, "_longitudinal_box_cut", cut)
+    first = canvas._source_outlines()
+    canvas._pan = QPointF(19., -11.)
+    canvas._zoom = np.array([1.5, .8])
+    canvas._view_updated()
+    canvas.set_source_regions((("coil", bounds.copy()),))
+    assert canvas._source_outlines() is first and len(calls) == 1
+    canvas.set_projection_angle(35.)
+    assert canvas._source_outlines() is not first and len(calls) == 2
+    canvas.set_source_regions((("coil", bounds*1.1),))
+    canvas._source_outlines()
+    assert len(calls) == 3
+
+
 def _sample(points, values=None):
     points = np.asarray(points, dtype=float)
     values = np.tile((.2, .4, .8), (len(points), 1)) if values is None else np.asarray(values)
@@ -97,7 +124,7 @@ def test_grid_budget_and_stable_quantized_cache_coordinates(qtbot):
     again, same_key = canvas.viewport_sample_grid(count=21)
     assert key == same_key
     np.testing.assert_array_equal(points, again)
-    canvas._zoom = 2.37
+    canvas._zoom = np.full(2, 2.37)
     canvas._pan = QPointF(2.123, -6.123)
     first, key = canvas.viewport_sample_grid()
     canvas._pan += QPointF(.00000001, -.00000001)
@@ -128,7 +155,7 @@ def test_3d_navigation_stays_cached_and_view_events_do_not_publish_samples(qtbot
 
 def test_section_pan_requests_new_visible_bounds_without_touching_field_data(qtbot):
     canvas = _canvas(qtbot, "XZ")
-    canvas._zoom = 3.
+    canvas._zoom = np.full(2, 3.)
     initial, initial_key = canvas.viewport_sample_grid()
     sample = canvas.sample
     signals = []

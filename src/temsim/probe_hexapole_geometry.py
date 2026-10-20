@@ -75,5 +75,9 @@ def probe_hexapole_dimensions(part):
 
 
 def validate_probe_hexapole_geometry(part):
+    # Explicit CAD replacement owns its dimensions; the saved native recipe
+    # becomes active and is validated again when 'existing' is restored.
+    if part.get('model_3d', {}).get('base', {}).get('kind', 'existing') != 'existing':
+        return
     if is_probe_hexapole(part):
         probe_hexapole_dimensions(part)

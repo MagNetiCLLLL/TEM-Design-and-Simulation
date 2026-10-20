@@ -305,7 +305,9 @@ def _named_labels(doc):
 def _write_step(assembly, path, materials):
     from cadquery.occ_impl.assembly import toCAF
     from OCP.TCollection import TCollection_ExtendedString
-    from OCP.XCAFDoc import XCAFDoc_DocumentTool
+    from OCP.XCAFDoc import (XCAFDoc_DocumentTool, XCAFDoc_ColorGen,
+                            XCAFDoc_ColorSurf, XCAFDoc_ColorCurv)
+    from OCP.Quantity import Quantity_ColorRGBA
     from OCP.XSControl import XSControl_WorkSession
     from OCP.STEPCAFControl import STEPCAFControl_Writer
     from OCP.STEPControl import STEPControl_StepModelType
@@ -313,21 +315,33 @@ def _write_step(assembly, path, materials):
     from OCP.Interface import Interface_Static
     _, doc = toCAF(assembly, True)
     layers = XCAFDoc_DocumentTool.LayerTool_s(doc.Main())
+    colors = XCAFDoc_DocumentTool.ColorTool_s(doc.Main())
     shape_tool = XCAFDoc_DocumentTool.ShapeTool_s(doc.Main())
+    leaf_colors = {name.rsplit("/", 1)[-1]: color
+                   for _, name, _, color in assembly if color is not None}
     assigned = set()
     for name, label in _named_labels(doc):
         if name in materials:
             layer = TCollection_ExtendedString("material:"+materials[name])
             layers.SetLayer(label, layer)
             # Boolean results can contain nested compounds. STEP omits an
-            # outer compound's layer when it flattens that compound; classify
-            # its actual solid subshapes as well, without altering geometry.
+            # outer compound's layer/color when it flattens that compound;
+            # carry both onto its actual solids without altering geometry.
             cq = _cadquery()
             shape = cq.Shape.cast(shape_tool.GetShape_s(label))
+            color = leaf_colors.get(name)
             for solid in shape.Solids():
                 sublabel = shape_tool.AddSubShape(label, solid.wrapped)
                 if not sublabel.IsNull():
                     layers.SetLayer(sublabel, layer)
+                    # addSubshape colors already belong to this solid. A leaf
+                    # default supplies only missing color; it must not erase a
+                    # saved generic, surface or curve override.
+                    explicit_color = any(colors.GetColor_s(sublabel, kind, Quantity_ColorRGBA())
+                                         for kind in (XCAFDoc_ColorGen, XCAFDoc_ColorSurf,
+                                                      XCAFDoc_ColorCurv))
+                    if color is not None and not explicit_color:
+                        colors.SetColor(sublabel, color.wrapped, XCAFDoc_ColorGen)
             assigned.add(name)
     if assigned != set(materials):
         raise ValueError("Not every CAD leaf received its material classification")
@@ -365,6 +379,20 @@ def _read_step(path):
         raise RuntimeError("Exported STEP could not be transferred for validation")
     assembly = cq.Assembly()
     _importDoc(doc, assembly)
+    # STEP flattens nested compounds and may attach their uniform color only
+    # to the constituent solids. Recover a leaf color only when every actual
+    # solid has that same recorded color; never infer it from an expected input
+    # or hide missing/mixed material colors.
+    for item in assembly.objects.values():
+        if item.obj is None or item.color is not None:
+            continue
+        solids = [solid for shape in item.shapes for solid in shape.Solids()]
+        recorded = [item._subshape_colors.get(solid) for solid in solids]
+        if len(recorded) > 1 and all(color is not None for color in recorded):
+            reference = recorded[0].toTuple()
+            if all(max(abs(a-b) for a, b in zip(reference, color.toTuple())) < 1e-12
+                   for color in recorded[1:]):
+                item.color = recorded[0]
     tool = XCAFDoc_DocumentTool.LayerTool_s(doc.Main())
     layers = {}
     for name, label in _named_labels(doc):

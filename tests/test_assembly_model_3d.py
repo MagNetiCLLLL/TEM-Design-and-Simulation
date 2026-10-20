@@ -282,3 +282,103 @@ def test_region_palette_fallback_and_explicit_region_assignment_preserve_geometr
     np.testing.assert_array_equal(captured.meshes[0].vertices, original.meshes[0].vertices)
     np.testing.assert_array_equal(captured.meshes[0].faces, original.meshes[0].faces)
     assert assembly_model_fingerprint(assembly) != assembly_model_fingerprint(_assembly([bare]))
+
+
+@pytest.fixture(scope="module")
+def current_eds_assembly():
+    from temsim.assembly_catalog import AssemblyCatalog, AssemblySelection
+    from temsim.optics.column import default_state
+
+    return AssemblyCatalog().apply(default_state(), AssemblySelection(
+        "FEG", "C3 + Probe Corrector", "No Energy Filter"))
+
+
+@pytest.fixture(scope="module")
+def current_eds_model(current_eds_assembly):
+    return assembly_model_from_assembly(current_eds_assembly, angular_segments=8)
+
+
+def test_current_zero_length_eds_datum_renders_declared_material_once_in_global_coordinates(
+        current_eds_assembly, current_eds_model):
+    assembly, model = current_eds_assembly, current_eds_model
+    eds = assembly.part("eds_detector_system")
+    assert eds.start_z_mm == eds.center_z_mm == eds.end_z_mm
+    before = assembly_model_fingerprint(assembly)
+    module = next(module for module in assembly.modules if module.key == eds.module_key)
+    document = {"parts": [row.data for row in module.parts]}
+    local = part_model_from_document(document, eds.key, angular_segments=8, include_children=False)
+    actual = tuple(mesh for mesh in model.meshes if mesh.key == eds.key)
+    expected_regions = {f"segment_{index}_{region}" for index in range(1, 7)
+                        for region in ("sensor", "support", "cold_shield")}
+    assert not model.errors and eds.key not in model.omitted_keys
+    assert len(actual) == len(local.meshes) == len(expected_regions)
+    assert {mesh.region for mesh in actual} == expected_regions
+    shift = eds.center_z_mm - eds.data["local_center_z_mm"]
+    for mesh, source in zip(actual, local.meshes, strict=True):
+        np.testing.assert_array_equal(mesh.faces, source.faces)
+        np.testing.assert_array_equal(mesh.vertices, source.vertices + (0., 0., shift))
+        assert np.all(np.ptp(mesh.vertices, axis=0) > 0.)
+        assert not mesh.is_exact  # Engineering geometry remains non-OEM.
+        with pytest.raises(ValueError):
+            mesh.vertices.setflags(write=True)
+        with pytest.raises(TypeError):
+            mesh.surfaces["invented"] = {}
+    assert assembly_model_fingerprint(assembly) == before
+    assert eds.data["length_mm"] == 0.  # Do not turn an optical datum into a stop.
+
+
+def test_magnetic_overlay_reuses_eds_material_with_one_unit_conversion_and_no_new_field(
+        current_eds_assembly, current_eds_model, monkeypatch):
+    from temsim.field_vector_geometry import build_field_vector_geometry
+
+    def no_io(*args, **kwargs):
+        pytest.fail("Captured EDS geometry must not read current files")
+    monkeypatch.setattr(Path, "open", no_io)
+    state = SimpleNamespace(_resolved_assembly=current_eds_assembly)
+    overlay = build_field_vector_geometry(state, (), angular_segments=8)
+    local = tuple(mesh for mesh in current_eds_model.meshes if mesh.key == "eds_detector_system")
+    selected = overlay.select_component("eds_detector_system")
+    assert not overlay.errors and not overlay.meshes and not overlay.source_mesh_keys
+    assert len(selected) == len(local) == 18
+    assert len({(mesh.key, mesh.region) for mesh in selected}) == 18
+    assert len([mesh for mesh in overlay.select_component("objective_lens")
+                if mesh.key == "eds_detector_system"]) == 18
+    for mesh, source in zip(selected, local, strict=True):
+        np.testing.assert_array_equal(mesh.vertices, source.vertices * 1e-3)
+        np.testing.assert_array_equal(mesh.faces, source.faces)
+        assert mesh.color == source.color
+        for edge, original in zip(mesh.edges, source.edges, strict=True):
+            np.testing.assert_array_equal(edge["vertices"], original["vertices"] * 1e-3)
+        with pytest.raises(ValueError):
+            mesh.vertices.setflags(write=True)
+
+
+def _eds_only(assembly, data):
+    original = assembly.part("eds_detector_system")
+    return replace(assembly, parts=(replace(original, data=_freeze(data)),), vacuum_liner_segments=())
+
+
+def test_legacy_eds_without_material_declaration_remains_an_omitted_reference(current_eds_assembly):
+    from temsim.cad_detectors import EDS_FIELDS, PROVENANCE_FIELDS
+
+    data = {key: value for key, value in current_eds_assembly.part("eds_detector_system").data.items()
+            if key not in (*EDS_FIELDS, *PROVENANCE_FIELDS)}
+    model = assembly_model_from_assembly(_eds_only(current_eds_assembly, data), angular_segments=8)
+    assert not model.meshes and not model.errors
+    assert model.omitted_keys == ("eds_detector_system",)
+    assert any("zero-thickness reference" in note for note in model.notes)
+
+
+@pytest.mark.parametrize("invalid", ["incomplete", "nonpositive"])
+def test_invalid_declared_eds_material_is_reported_instead_of_silently_omitted(
+        current_eds_assembly, invalid):
+    data = dict(current_eds_assembly.part("eds_detector_system").data)
+    if invalid == "incomplete":
+        data.pop("mechanical_sensor_thickness_mm")
+    else:
+        data["mechanical_sensor_thickness_mm"] = 0.
+    model = assembly_model_from_assembly(_eds_only(current_eds_assembly, data), angular_segments=8)
+    assert not model.meshes and model.omitted_keys == ("eds_detector_system",)
+    assert len(model.errors) == 1 and model.errors[0].startswith("eds_detector_system:")
+    assert ("Incomplete detector material geometry" if invalid == "incomplete"
+            else "must be finite and positive") in model.errors[0]

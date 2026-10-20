@@ -27,9 +27,9 @@ The currently cited [US20150021476A1](https://patents.google.com/patent/US201500
 |---|---|---|---|
 | `condenser_lens_1` | Condenser, R1/R4; R8 shows alternative designs | C1 optical envelope; coil, yoke, housing; `condenser_lens_1_lower_pole` orientation | Keep one C1 channel within the shared cartridge. Export the existing pole and winding separately. Missing opposite magnetic-return detail must not be filled by inventing a second pole or a double gap. |
 | `condenser_lens_2` | Condenser, R1/R4 | C2 envelope; coil, yoke, housing; `condenser_lens_2_upper_pole` orientation | Same shared-cartridge treatment. C1/C2 100/200 mm split and cartridge dimensions are user reconstruction, not manufacturer-derived dimensions. |
-| `condenser_lens_3` | Condenser, R1/R4 | Existing two tapered poles, coil annulus, yoke and housing | Analytic revolving solids are sufficient for current contour. Cooling, electrical insulation and gap spacers need explicit native dimensions before they can become physical CAD bodies. |
-| `adapter_lens` | Probe-corrector adapter, R1/R5 | Existing five material children and saved gap | Use ordinary round-lens construction; no objective specimen chamber. Internal fillets/coil turns remain unresolved. |
-| `probe_tl22_lens` | Probe relay, R1/R5/R6 | Existing two-pole section, winding and return-yoke dimensions | Preserve HP2-to-HP1 optical placement. Do not copy a double-gap corrector patent embodiment into this single native lens. |
+| `condenser_lens_3` | Condenser, R1/R4 | Existing two tapered poles, coil annulus, yoke and housing; explicit insulated coil-end cooling plates in six C3 configurations (2026-10-20 update below) | Preserve existing optical/magnetic bodies. The four added thermal/insulating regions belong to the housing's mechanical hardware; they neither become another winding nor fill the magnetic gap. Unknown magnetic return flanges and coolant/fixing details remain unresolved. |
+| `adapter_lens` | Probe-corrector adapter, R1/R5 | Existing five material children and saved gap; explicit insulated end plates in all three Probe Corrector variants (2026-10-20 update below) | Housing owns four passive end regions. Winding, poles, yoke, 14 mm gap and optical calibration are unchanged. Unknown magnetic returns, coolant routes and mounting/turn details remain unresolved. |
+| `probe_tl22_lens` | Probe relay, R1/R5/R6 | Existing two-pole section, winding and return-yoke dimensions; four explicit insulated end regions in three Probe Corrector variants | Preserve optical placement, polarity and 12 mm single gap. End hardware uses TL22's own winding interfaces and 1.275 mm end spaces. Existing HP2/TL22 and TL22/DP22 material face contacts have no assembly clearance; DP22 end insulation remains unresolved. |
 | `probe_tl21_lens` | Probe relay, R1/R5/R6 | Same existing section family, independent saved length | Keep it as a separately named assembly/field channel; preserve its configured polarity. |
 | `probe_tl12_lens` | Probe exit transfer lens, R1/R5 | Existing short section and its five material children | The key is retained even where a reference diagram labels the corresponding transfer function TL1. No key rename or new optical element is needed for CAD. |
 | `mini_condenser` | Nested auxiliary lens, R1/R3/R4 | Saved 59 mm OD, 20 mm length, 20 mm bore, 12 mm pole gap; its small poles, winding, yoke and housing | Already nested in `objective_lens`; do not enlarge to the normal 180 mm OD. Preserve independent excitation while grouping the physical assembly with the objective. R3 motivates possible shared magnetic interfaces/nonmagnetic breaks, but their dimensions and exact Titan realization remain unverified. |
@@ -43,7 +43,7 @@ The currently cited [US20150021476A1](https://patents.google.com/patent/US201500
 | `intermediate_lens` | Projector-stack relay, R1; R3 Fig. 1 | Native longer envelope and sections | Do not infer a longer winding or new pole shape from a desired focal length; keep saved geometry. |
 | `projector_lens_1` | Projector stack, R1; R3 Fig. 1 | Native section and child ownership | Same generic material topology. Detailed winding and cooling not measured. |
 | `projector_lens_2` | Projector stack, R1; R3 Fig. 1 | Native longer section and child ownership | Same topology, independently parameterized envelope; not a scaled objective drawing. |
-| `c1_c2_pole_piece_cartridge` | Shared mechanical cartridge; no exact OEM section found | Existing 300 mm span, 60/90.75 mm inner/outer diameters and mixed-material evidence status | One physical assembly, linked to both C1/C2 fields. Preserve continuous tube and existing pole members. Do not label the whole unresolved cartridge pure iron, duplicate it per lens, or invent hidden spacers. |
+| `c1_c2_pole_piece_cartridge` | Shared mechanical cartridge; no exact OEM section found | Existing 300 mm span, 60/90.75 mm inner/outer diameters; explicit three-section engineering partition in the installed C3+Probe profile (2026-10-20 update below) | One physical assembly, linked to both C1/C2 fields. Preserve continuous tube and existing pole members. Carrier sections remain unresolved mixed material; the saved separator is an assumed generic construction, not an observed OEM spacer or another magnetic gap. |
 
 The former interpretation of `image_tl12_lens` as a 1 mm integrated/control plane was contradicted by the CETCOR diagram and has been removed. There are still 18 distinct round-lens parent keys: retiring `image_ol_post_lens` and making TL12 physical does not add a sixth image-corrector lens. Virtual upper/lower objective optical references do not imply additional physical coils.
 
@@ -57,3 +57,92 @@ The former interpretation of `image_tl12_lens` as a 1 mm integrated/control plan
 6. **Report unresolved detail.** Current 0.38-times-length pole-nose fallback is reconstruction. `pole_root_fillet_radius_range_mm` is a range note, not one manufacturable radius; leave existing sharp shoulders until an explicit radius is selected and saved. Cooling paths, coil terminals, turns, exact magnetic alloy and hidden cartridge interfaces are not established by present TOML or the matched public drawings.
 
 The first executable CAD stage can preserve every current material surface without inventing new dimensions. A later source-backed internal-detail stage needs explicit saved parameters and evidence before introducing spacers, cooling channels or a modified magnetic connection. Geometry refinement alone must not silently change the analytical field model or its saved settings.
+
+## 2026-10-20: installed C1/C2 carrier subdivision
+
+The earlier single unresolved annulus obscured the distinction between the common carrier and its independently owned C1/C2 poles, coils and yokes. All seven column variants share the same saved carrier and contained-pole dimensions, so each now opts into the same three separately named solids. Only this shared upper component was synchronized; image-corrector internals were not changed. Older manifests without the explicit fields keep their previous single-body fallback.
+
+| Region | Module-local Z, mm | Material interpretation |
+| --- | --- | --- |
+| `c1_carrier_unresolved` | 0–90 | Unresolved mixed carrier; not homogeneous iron |
+| `nonmagnetic_separator_assumed` | 90–110 | Nonmagnetic structural separator, engineering assumption |
+| `c2_carrier_unresolved` | 110–300 | Unresolved mixed carrier; not homogeneous iron |
+
+All three retain the existing ID60 / OD90.75 mm. The two new interfaces reuse the **existing** C1 lower-pole end (90 mm) and C2 upper-pole start (110 mm). Their coordinates are explicit `mechanical_cartridge_spacer_start_local_z_mm` / `mechanical_cartridge_spacer_end_local_z_mm` values, editable independently thereafter. The local-Z naming follows the shared move/copy convention, so placement translates both interfaces with their carrier. Their sum occupies exactly the former annulus, with shared faces and no material overlap. The original pole bodies, coil annuli, yokes, continuous tube, lens locations and excitation settings remain separate and unchanged.
+
+The source for the *construction family* is [Hitachi JP2967966B2](https://patents.google.com/patent/JP2967966B2/en), conventional lens description and claim 2: a nonmagnetic spacer fixes pole pieces. This supports a possible supporting-separator role, **not** this instrument's material composition, dimensions or C1/C2 magnetic topology. The position/material assignment here is expressly an engineering adaptation. The public descriptions were checked; no new OEM section or photograph was measured. JEOL's double-gap condenser patent (R8) remains a counterexample and is not used to introduce another lens, gap or saturable shunt. Hidden cooling channels, threads and fasteners remain unresolved.
+
+`cad_condenser_cartridge` uses the same `SolidSpec` representation as the other components, so native display and STEP consume the same geometry. Strict validation rejects misspelled fields, nonfinite/bool dimensions, inverted sections, conflicting radial profiles, wrong material claims and contained-pole overlap. A mechanical-only copied carrier retains the partition without acquiring optical pole children.
+
+This subdivision does **not** become a new magnetic-material region in the built-in solver and does not change native analytic B. Its explicit geometry is included in the existing shared-cartridge identity: a previously imported measured/FEM map must no longer be used after either interface is edited. Both C1 and C2 maps are invalidated; their existing provisional analytic fallback remains numerically unchanged. Source-note, status and URL edits do not alter map identity. This is validity checking, not a new field solution or measured improvement.
+
+Backend regressions independently check closed meshes, preserved bore/envelope/volume, absence of material intersections at 16/32/64 angular samples, unchanged circuit inventory, editable interfaces, legacy/copy behavior, validation and both channels' map validity. The adjacent vacuum semantics are documented in [the continuous-tube bore contract](cad-vacuum-tube.md).
+
+## 2026-10-20: C3 insulated coil-end cooling plates
+
+The six C3 column variants have identical C3 material geometry; C2-only has no C3 and receives no such parts. The existing C3 winding occupies local Z388.5–541.5 mm, ID96 / OD156 mm. It leaves 8.5 mm at either end inside the Z380–550 mm housing. The poles still occupy 380–456 and 474–550 mm, retaining the 18 mm gap; yoke, pole shapes, effective field geometry, optical position and excitation are unchanged.
+
+Four additional regions now occupy part of these existing end spaces:
+
+| Housing-owned region | Local Z, mm | Saved material category |
+| --- | --- | --- |
+| `upper_cooling_plate` | 386–388 | Passive copper cooling plate |
+| `upper_coil_insulation` | 388–388.5 | Electrical insulator, grade unspecified |
+| `lower_coil_insulation` | 541.5–542 | Electrical insulator, grade unspecified |
+| `lower_cooling_plate` | 542–544 | Passive copper cooling plate |
+
+All four reuse the winding's ID96 / OD156 mm. A **0.5 mm insulating layer and 2.0 mm plate thickness are engineering allocations**, saved explicitly under `mechanical_c3_end_*`; they are not inferred manufacturer measurements. There is 6 mm of unfilled axial space beyond each plate. [Hitachi JP2967966B2](https://patents.google.com/patent/JP2967966B2/en), conventional Fig.8 / paragraph0005 and paragraph0015, supports the topology of copper cooling plates separated from a winding by thin electrical insulation. It does not establish this C3's sizes or construction. This implementation uses that generic family and does not reproduce its hidden water pipes, fastening bolts or a claimed transient-response improvement.
+
+The original housing wall remains a separate, unchanged `body` region. Housing ownership collects mechanical hardware inside the already declared 170 mm host envelope; it does not reclassify passive plate copper as excitation winding. Existing winding material and its FEM conductor dimensions stay exactly as before. No thermal, coolant or eddy-current calculation is implied, and no magnetic material is added.
+
+The self-contained recipe explicitly saves both contact coordinates and plate diameters. Native validation checks agreement with the available winding and clearance from available poles/yoke. A contradictory winding edit must explicitly synchronize the housing recipe; it is rejected instead of silently moving material or altering the winding. Older files without the profile retain their old shell. Detached mechanical copies do not read dimensions from the original instrument; local-Z interfaces follow their own placement and resize convention.
+
+The actual current yoke remains an outer annulus (ID162 / OD170), while the existing pole shoulders are OD92. The intervening **radial magnetic-return connections are unresolved**; passive copper plates must not be presented as iron return flanges or proof of a complete magnetic circuit. Their future reconstruction needs its own topology, saved dimensions and field-material validation.
+
+The CAD recipe and native display use identical `SolidSpec` regions. Independent tests cover six-config consistency, unchanged housing/winding/pole/yoke solids, closed positive meshes, every pair of material regions without volume overlap, contact positions, self-contained copies, invalid/misspelled inputs and the real tube/pole clearance. See [the tube clearance calculation](cad-vacuum-tube.md#c3-radial-clearance-and-shortest-three-dimensional-distance) for the distinction between 0.4 mm radial and approximately 0.398 mm shortest clearance.
+
+## 2026-10-20: Adapter Lens end hardware
+
+The installed Adapter Lens lies at module-local Z620–656.4 mm (global Z1070–1106.4 mm in the default column). Its original five material children are two poles, one winding, one outer yoke and one housing. The poles retain their 20 mm bore and 14 mm gap. The ID78.33 / OD91.05 mm winding spans Z621.82–654.58 mm, leaving 1.82 mm of axial space at each housing end. All three Probe Corrector column variants have the same saved geometry; only those variants receive this opt-in detail. The four variants without this Adapter Lens receive no new parts, including no change to the separate image-corrector adapter.
+
+The housing now owns four independently named material regions in addition to its unchanged wall:
+
+| Region | Local Z, mm | Material interpretation |
+| --- | --- | --- |
+| `upper_cooling_plate` | 621.22–621.72 | Passive copper plate |
+| `upper_coil_insulation` | 621.72–621.82 | Electrical insulator, grade unspecified |
+| `lower_coil_insulation` | 654.58–654.68 | Electrical insulator, grade unspecified |
+| `lower_cooling_plate` | 654.68–655.18 | Passive copper plate |
+
+These regions reuse the existing winding's inner and outer diameters. The **0.1 mm insulation and 0.5 mm plate thicknesses are explicit engineering allocations**, saved under `mechanical_adapter_end_*`, leaving 1.22 mm beyond either stack. The construction family is supported by [Hitachi JP2967966B2](https://patents.google.com/patent/JP2967966B2/en), conventional Fig.8 and paragraphs0005/0015: metal plates contact opposite winding ends through electrical insulation. This does not establish an OEM Adapter Lens construction or size. [CEOS Müller et al.](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf) supplies the adapter's optical role, not its material section. Neither source justifies inventing hidden coolant paths, bolts, turns or a support fastener at an arbitrary location; those remain unresolved.
+
+The yoke remains the existing ID99.05 / OD170 mm annulus, and pole shoulders remain OD66.33 mm. The radial magnetic-return interfaces between them are still unresolved. The added copper must not be interpreted as magnetic iron, a closed magnetic circuit, a new current source or a computed thermal improvement. Original winding/field material domains, optical position, focal calibration and excitation are preserved. Explicit hardware dimension changes invalidate an imported field map's geometry identity; they do not introduce new analytic magnetic fields or a thermal/eddy-current solver. Provenance-only changes do not alter that identity.
+
+`cad_round_lens_end_hardware` provides the common geometry/validation implementation with separate C3 and Adapter Lens facades, preserving the C3 API and saved dimensions. The recipe stores its own contacts and radii, so a detached mechanical copy needs no original coil. With a native parent or sibling material context, however, the referenced coil must exist and match; misspelled coil keys cannot disable the contact check. The empty context and a context containing only the housing deliberately use its self-contained recipe. Conflicting C3 and Adapter Lens recipes on one housing are rejected. Unknown fields, nonfinite dimensions, reordered contacts, material intrusion and incompatible native winding edits also fail before rendering. Explicit box/STEP replacement geometry has priority over the inactive native recipe; restoring the native base revalidates it transactionally.
+
+Backend tests check all seven configuration dispositions, closed meshes and all 36 material pairs at 16/32/64 angular samples, preservation of the original five shapes and magnetic circuit inventory, exact native/CAD region correspondence, copy/move/save restoration and invalid-edit rollback. The actual material unions have 10.00 mm separation from Beam Deflector, **30.81 mm from DPH2** and 29.00 mm from HP2, with zero intersection. The preceding Adapter Lens checkpoint recorded 30.85 mm before DPH2 acquired its explicit 0.04 mm upstream end seal; the changed current distance comes from that additional material, not an optical displacement. The constant tube OD19.2 mm has 0.4 mm nominal radial clearance in the 20 mm pole bores; see the [tube clearance result](cad-vacuum-tube.md#adapter-lens-constant-tube-clearance). These values describe the saved centered geometry, not mechanical alignment tolerances or hardware validation.
+
+## 2026-10-20: TL22 transfer-lens end hardware and neighboring contacts
+
+All three Probe Corrector variants have identical TL22 material geometry: local Z703.6–729.1 mm (global Z1153.6–1179.1 mm), 25.5 mm total length, a 20 mm bore and a 12 mm pole gap. The winding occupies local Z704.875–727.825 mm, ID78.33 / OD93.5109425 mm. Its 22.95 mm length leaves **1.275 mm at each end**, less than the Adapter Lens's 1.82 mm. The saved polarity remains −1 with its existing provisional-status note; no working point or optical relationship was retuned.
+
+[CEOS Müller et al. (2006)](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf), Fig.2 and pp.443–444, identifies TL21/TL22 as the transfer doublet between the principal hexapoles. That optical schematic supplies no coil or cooling dimensions. [Hitachi JP2967966B2](https://patents.google.com/patent/JP2967966B2/en), conventional Fig.8 and paragraph0005, supports a generic round-lens winding with insulated metal end plates. Applying that construction family to TL22 is an engineering reconstruction, not a claim about CEOS manufacturing details.
+
+TL22 therefore saves its own complete recipe under `mechanical_tl22_end_*`, using its existing winding contacts and radial dimensions. A **0.1 mm electrical insulating layer plus a 0.5 mm passive copper plate** fits each 1.275 mm end space and retains 0.675 mm beyond the stack. These thicknesses are explicit engineering allocations, not inferred OEM measurements. The added housing-owned regions are:
+
+| Region | Local Z, mm | Material interpretation |
+| --- | --- | --- |
+| `upper_cooling_plate` | 704.275–704.775 | Passive copper plate |
+| `upper_coil_insulation` | 704.775–704.875 | Electrical insulator, grade unspecified |
+| `lower_coil_insulation` | 727.825–727.925 | Electrical insulator, grade unspecified |
+| `lower_cooling_plate` | 727.925–728.425 | Passive copper plate |
+
+The original housing annulus, winding, two pole sections and yoke remain unchanged. The yoke ID101.5109425 mm and pole shoulder OD66.33 mm still lack explicit radial magnetic-return connections; the new copper cannot serve as magnetic iron or as evidence of a complete return circuit. Mounting hardware, water paths, winding turns, thermal conduction and eddy-current response remain unresolved. The shared `SolidSpec` route preserves separate native/CAD regions and material ownership, and the generic family-conflict checks prevent another end-hardware recipe from silently replacing TL22's. Copies, saved coordinates, explicit replacement precedence and native-restoration validation follow the same rules as C3 and Adapter Lens.
+
+The neighboring parts need a stronger distinction than “no overlap”:
+
+- At **Z703.6 mm**, the existing HP2 return-yoke end meets the TL22 upper pole directly. Their material contact is the annulus `r = 31.89–33.165 mm`, with analytic area **260.579795 mm²**. The independent 32/64/128-segment contact areas are 258.908658 / 260.161406 / 260.475160 mm². This is a shared material face, not positive assembly clearance or proof of intended magnetic connection.
+- At **Z729.1 mm**, the TL22 lower pole meets DP22's four copper saddles and seven laminate regions. At128 segments, the four copper end contacts total approximately **30.8173 mm²**. The current model does not represent a separate DP22 axial end insulator at that interface. This existing contact is recorded as unresolved electrical isolation; zero volume intersection does not establish electrical safety or a manufacturable joint.
+- The new TL22 plates remain within its original envelope and do not create either contact or move the neighbors. The TL21 material assembly remains 58.1 mm downstream. DPH2 ends upstream of TL22; its precise positive material clearance is evaluated using the saved end insulation, when present, rather than its optical reference plane.
+
+Both TL22 poles have 0.4 mm nominal separation from the constant OD19.2 mm tube. Mesh gaps at32/64/128 segments are 0.398073891 / 0.399518182 / 0.399879527 mm, with zero intersection. The tube bore remains the beam-space authority. Focused regressions also cover all configuration variants, the 36 internal material pairs at16/32/64 segments, unchanged original solids and field-source inventory, native/CAD correspondence, actual neighboring material contacts and saved/editable copy behavior.

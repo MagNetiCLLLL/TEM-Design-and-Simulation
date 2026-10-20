@@ -745,6 +745,15 @@ def validate_document(document):
     from temsim.magnetic_circuits import is_custom_mechanical_part
     from temsim.lens_pose import validate_physical_lens_pose
     from temsim.part_model_apertures import validate_optional_plate_thickness
+    from temsim.cad_recording_planes import validate_detector_footprint
+    from temsim.cad_gun_stigmator import gun_stigmator_dimensions
+    from temsim.cad_condenser_cartridge import validate_cartridge_geometry
+    from temsim.cad_stigmator_support import stigmator_support_dimensions
+    from temsim.cad_aperture_support import validate_aperture_support
+    from temsim.cad_c3_lens_hardware import validate_c3_lens_hardware
+    from temsim.cad_adapter_lens_hardware import validate_adapter_lens_hardware
+    from temsim.cad_tl22_lens_hardware import validate_tl22_lens_hardware
+    from temsim.cad_probe_hexapole_support import validate_hexapole_support
     document = dict(resolve_field_hardware_parts(resolve_shared_deflector_parts(document)))
     document["parts"] = [
         (
@@ -757,6 +766,7 @@ def validate_document(document):
     if document.get("coordinate_system") != "module_local_z_mm":
         raise ValueError("Invalid module coordinate system")
     parts = tuple(document.get("parts", ()))
+    detail_context = {part["key"]: part for part in parts}
     part_keys = [str(part["key"]) for part in parts]
     if len(set(part_keys)) != len(part_keys):
         raise ValueError("Duplicate part key in module TOML")
@@ -781,6 +791,15 @@ def validate_document(document):
         validate_probe_hexapole_geometry(part)
         validate_physical_lens_pose(part)
         validate_optional_plate_thickness(part)
+        validate_detector_footprint(part)
+        gun_stigmator_dimensions(part)
+        validate_cartridge_geometry(part, detail_context)
+        stigmator_support_dimensions(part)
+        validate_aperture_support(part, detail_context, document.get("geometry", {}))
+        validate_c3_lens_hardware(part, detail_context)
+        validate_adapter_lens_hardware(part, detail_context)
+        validate_tl22_lens_hardware(part, detail_context)
+        validate_hexapole_support(part)
         key = str(part["key"])
         start = float(part["local_start_z_mm"])
         center = float(part["local_center_z_mm"])
@@ -2960,7 +2979,8 @@ def _validate_column_mechanical_overlaps(parts):
 
     def radial_annulus(part, overlap_start, overlap_end):
         from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
-        if part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES:
+        if (part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES
+                and part.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing"):
             from temsim.deflector_support_geometry import full_material_radial_extent
             inner, outer = full_material_radial_extent(part)
             return 2.0 * inner, 2.0 * outer
@@ -3060,9 +3080,9 @@ def _validate_column_mechanical_overlaps(parts):
     def axial_envelope(part):
         from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
         if (part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES
-                and "winding_axial_length_mm" in part):
-            from temsim.corrector_model_3d import winding_axial_extent
-            return winding_axial_extent(part)
+                and part.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing"):
+            from temsim.deflector_support_geometry import full_material_axial_extent
+            return full_material_axial_extent(part)
         active_intervals = objective_coil_active_intervals(part)
         if active_intervals is not None:
             return active_intervals[0][0], active_intervals[-1][1]

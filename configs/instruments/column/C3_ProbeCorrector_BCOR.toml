@@ -431,6 +431,12 @@ mechanical_clear_bore_diameter_mm = 20.0
 mechanical_inner_diameter_mm = 24.0
 effective_length_mm = 6.0
 optical_reference_local_z_mm = 694.5
+hexapole_support_profile = "bonded_radial_coil_formers"
+hexapole_support_geometry_status = "engineering_reconstruction_not_oem"
+hexapole_support_source = "https://patents.google.com/patent/JP2004241190A/en"
+hexapole_support_source_note = "Generic multipole hollow winding member and core bonding from paragraph 0005, Fig.7(c,d); bobbins also permitted in 0055. Rectangular flanges, dimensions, unspecified insulating former and bulk core bedding are engineering adaptations, not confirmed CEOS HP2 construction. Original poles, copper, yoke and field inputs are unchanged."
+hexapole_support_former_wall_thickness_mm = 0.25
+hexapole_support_flange_thickness_mm = 0.25
 
 [[parts]]
 order = 16
@@ -2146,6 +2152,19 @@ bcor_geometry_source = "B-COR topology follows CEOS Poster-internet.pdf and EP19
 order = 83
 key = "adapter_lens_housing"
 name = "ADL (Adapter Lens) Housing"
+mechanical_adapter_end_structure = "insulated_coil_end_cooling_plates"
+# Explicit engineering allocation within each 1.82 mm coil end space.
+# Saved contacts and radial sizes reproduce the existing winding interfaces.
+mechanical_adapter_end_upper_contact_local_z_mm = 621.82
+mechanical_adapter_end_lower_contact_local_z_mm = 654.58
+mechanical_adapter_end_inner_diameter_mm = 78.33
+mechanical_adapter_end_outer_diameter_mm = 91.05
+mechanical_adapter_end_insulation_thickness_mm = 0.1
+mechanical_adapter_end_cooling_plate_thickness_mm = 0.5
+mechanical_adapter_end_coil_key = "adapter_lens_excitation_coil"
+mechanical_adapter_end_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_adapter_end_geometry_source = "Generic insulated round-lens end plates following Hitachi JP2967966B2 conventional Fig.8 and paragraphs0005/0015, not an OEM Adapter Lens reconstruction. The existing winding ID78.33/OD91.05 and local contact planes621.82/654.58 are retained. Explicit engineering choices of 0.1 mm insulation and 0.5 mm passive copper plates fit within the existing 1.82 mm end spaces, leaving 1.22 mm beyond each stack. Original poles, magnetic yoke, winding, 14 mm gap, optical position and calibration remain unchanged. Mounting bolts, hidden coolant channels and complete magnetic-return interfaces are unresolved; no thermal or eddy-current solution is implied."
+mechanical_adapter_end_geometry_source_urls = ["https://patents.google.com/patent/JP2967966B2/en"]
 branch = "illumination"
 local_start_z_mm = 620
 local_center_z_mm = 638.2
@@ -2342,6 +2361,19 @@ field_source_key = "condenser_lens_2"
 order = 92
 key = "condenser_lens_3_housing"
 name = "C3 Lens Housing"
+mechanical_c3_end_structure = "insulated_coil_end_cooling_plates"
+# Explicit engineering end-stack dimensions; contacts/radii reuse the saved
+# coil faces/diameters. These plates do not change the excitation winding.
+mechanical_c3_end_upper_contact_local_z_mm = 388.5
+mechanical_c3_end_lower_contact_local_z_mm = 541.5
+mechanical_c3_end_inner_diameter_mm = 96.0
+mechanical_c3_end_outer_diameter_mm = 156.0
+mechanical_c3_end_insulation_thickness_mm = 0.5
+mechanical_c3_end_cooling_plate_thickness_mm = 2.0
+mechanical_c3_end_coil_key = "condenser_lens_3_excitation_coil"
+mechanical_c3_end_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_c3_end_geometry_source = "Hitachi JP2967966B2 conventional Fig.8 and paragraphs0005/0015 describe upper/lower copper cooling plates with thin electrical insulation against the winding. This is a generic family adaptation, not a verified C3 OEM section: plate ID96/OD156 and contact Z388.5/541.5 reuse existing C3 coil dimensions; 0.5 mm insulation and 2.0 mm plates are explicit engineering allocations inside each 8.5 mm end space, leaving 6.0 mm beyond the plates. The separate winding, poles, yoke, 18 mm magnetic gap, optical position and excitation are unchanged. Bolts, hidden coolant channels and thermal/eddy-current effects are not specified or simulated."
+mechanical_c3_end_geometry_source_urls = ["https://patents.google.com/patent/JP2967966B2/en"]
 branch = "common"
 local_start_z_mm = 380
 local_center_z_mm = 465
@@ -2994,6 +3026,19 @@ field_source_key = "probe_tl21_lens"
 order = 122
 key = "probe_tl22_lens_housing"
 name = "TL22 Transfer Lens Housing"
+mechanical_tl22_end_structure = "insulated_coil_end_cooling_plates"
+# TL22 has 1.275 mm at each winding end; these explicit engineering layers leave 0.675 mm.
+# Contact planes and diameters are the existing TL22 winding interfaces, not Adapter Lens sizes.
+mechanical_tl22_end_upper_contact_local_z_mm = 704.875
+mechanical_tl22_end_lower_contact_local_z_mm = 727.825
+mechanical_tl22_end_inner_diameter_mm = 78.33
+mechanical_tl22_end_outer_diameter_mm = 93.5109425
+mechanical_tl22_end_insulation_thickness_mm = 0.1
+mechanical_tl22_end_cooling_plate_thickness_mm = 0.5
+mechanical_tl22_end_coil_key = "probe_tl22_lens_excitation_coil"
+mechanical_tl22_end_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_tl22_end_geometry_source = "Generic insulated round-lens end plates following Hitachi JP2967966B2 conventional Fig.8 and paragraphs0005/0015, not an OEM TL22 reconstruction. Existing TL22 winding ID78.33/OD93.5109425 and local contacts704.875/727.825 are retained. Explicit engineering allocations of 0.1 mm insulation and 0.5 mm passive copper plates fit within each 1.275 mm end space, leaving 0.675 mm. Original poles, magnetic yoke, winding, 12 mm gap, optical position and calibration are unchanged. Existing HP2/TL22 and TL22/DP22 axial face contacts are preserved; no clearance is fabricated by moving elements. Fasteners, hidden coolant paths and radial magnetic-return interfaces remain unresolved; no thermal or eddy-current solution is implied."
+mechanical_tl22_end_geometry_source_urls = ["https://patents.google.com/patent/JP2967966B2/en"]
 branch = "illumination"
 local_start_z_mm = 703.6
 local_center_z_mm = 716.35
@@ -3070,6 +3115,16 @@ mechanical_profile = "c1_c2_pole_piece_cartridge"
 magnetic_lens_keys = ["condenser_lens_1", "condenser_lens_2"]
 mechanical_part_role = "pole_piece_cartridge"
 material_class = "mixed_material_cartridge_user_photo_unresolved"
+mechanical_cartridge_structure = "carrier_separator_carrier"
+# This saved mechanical split reuses the existing C1 pole end (90 mm) and
+# C2 pole start (110 mm); it is NOT a new C1/C2 optical gap or an OEM section.
+mechanical_cartridge_spacer_start_local_z_mm = 90.0
+mechanical_cartridge_spacer_end_local_z_mm = 110.0
+mechanical_cartridge_spacer_material = "non_magnetic_structural"
+mechanical_cartridge_pole_keys = ["condenser_lens_1_lower_pole", "condenser_lens_2_upper_pole"]
+mechanical_cartridge_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_cartridge_geometry_source = "Engineering partition of the existing photo-scaled 300 mm carrier, ID60/OD90.75 mm. Separator endpoints reuse existing contained pole envelope endpoints 90/110 mm; both remain explicit editable local-Z dimensions. A nonmagnetic supporting separator is a generic family adaptation from Hitachi JP2967966B2 Figs.6-7 and claim2, NOT evidence for this instrument's internal material, magnetic gap or an added lens. The two carriers retain unresolved mixed material. Existing independent C1/C2 poles, coils, yokes, continuous vacuum tube and analytic field inputs are unchanged."
+mechanical_cartridge_geometry_source_urls = ["https://patents.google.com/patent/JP2967966B2/en"]
 mechanical_only = true
 mechanical_overlap_group = "condenser_lens_2_assembly"
 mechanical_overlap_role = "container"
@@ -3088,6 +3143,8 @@ length_mm = 0.0
 vacuum_inner_diameter_mm = 5.0
 axial_vacuum_context_only = true
 mechanical_profile = "transverse_eds_detector_array"
+mechanical_footprint_shape = "square"
+mechanical_footprint_source = "User-specified square engineering representation, 2026-10-20; not a measured OEM active-face or package shape. Angular X-ray acceptance remains independently defined in EDS.toml."
 mechanical_part_role = "sample_adjacent_x_ray_detector_array"
 mechanical_only = true
 mechanical_overlap_group = "objective_assembly"
@@ -3135,6 +3192,16 @@ parent_key = "probe_hp2_hexapole"
 optical_reference_host_key = "probe_hp2_hexapole"
 optical_reference_offset_mm = 0.0
 optical_relation_status = "schematic_midplane_model"
+winding_support_profile = "bonded_flexible_pcb_equivalent"
+winding_support_fill_conductor_gaps = true
+winding_support_carrier_thickness_mm = 0.04
+winding_support_cover_thickness_mm = 0.04
+winding_support_end_cover_thickness_mm = 0.04
+winding_support_end_cover_geometry_status = "engineering_reconstruction_family_inference"
+winding_support_end_cover_source = "https://patents.google.com/patent/US20090079531A1/en"
+winding_support_end_cover_source_note = "Explicit engineering axial edge-seal equivalent of the covered flexible-laminate construction family. CEOS Fig 4 establishes insulating cover and full-surface bonding, not a DPH2 OEM end-cap design. Two 0.04 mm annular seals extend beyond the unchanged 14.5 mm copper allocation, within the HP2 host. Resin grade, individual turns, terminals and host fastening remain unverified; no field parameter changes."
+winding_support_source = "CEOS US20090079531A1 Figs 1/4/6: flexible carrier, insulation and layer bonding. Radial bulk-stack with conductor-layer gap insulation derived from the copper shapes; filled laminate is a construction-family inference, not verified DPH/DP OEM geometry or a detailed winding map."
+winding_support_host_fixation_status = "unverified; interlayer bond fixes layers only, no inferred host fastener"
 
 [[parts]]
 order = 128

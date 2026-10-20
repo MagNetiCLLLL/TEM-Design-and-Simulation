@@ -12,13 +12,80 @@ from temsim.cad_geometry import SolidSpec, annulus, box, difference, sector, tra
 GUN_SOURCE = "https://patents.google.com/patent/US9548182B2/en"
 WIEN_SOURCE = "https://patents.google.com/patent/US6844548B2/en"
 FILTER_SOURCE = "https://patents.google.com/patent/US9966219B2/en"
+GUN_ELECTRODE_KEYS = frozenset({
+    "feg_extractor", "feg_electrostatic_lens",
+    "thermionic_gun_lens", "thermionic_wehnelt",
+})
+_OUTER_RADIUS_FIELDS = (("mechanical_outer_diameter_mm", .5),
+                       ("mechanical_outer_radius_mm", 1.),
+                       ("outer_diameter_mm", .5), ("outer_width_mm", .5))
+_INNER_RADIUS_FIELDS = (("mechanical_inner_diameter_mm", .5),
+                       ("mechanical_bore_diameter_mm", .5),
+                       ("mechanical_clear_bore_diameter_mm", .5),
+                       ("mechanical_bore_radius_mm", 1.),
+                       ("bore_diameter_mm", .5), ("clear_bore_diameter_mm", .5),
+                       ("inner_diameter_mm", .5))
 
 
 def _radii(part):
     from temsim.part_model_3d import _radius
-    outer = _radius(part, (("mechanical_outer_diameter_mm", .5), ("mechanical_outer_radius_mm", 1.), ("outer_diameter_mm", .5), ("outer_width_mm", .5)))
-    inner = _radius(part, (("mechanical_inner_diameter_mm", .5), ("mechanical_bore_diameter_mm", .5), ("mechanical_clear_bore_diameter_mm", .5), ("mechanical_bore_radius_mm", 1.), ("bore_diameter_mm", .5), ("clear_bore_diameter_mm", .5), ("inner_diameter_mm", .5)))
+    outer = _radius(part, _OUTER_RADIUS_FIELDS)
+    inner = _radius(part, _INNER_RADIUS_FIELDS)
     return inner, outer
+
+
+def gun_electrode_solids(part):
+    """Configured open gun electrodes, shared by native display and CAD."""
+    if part.get("key") not in GUN_ELECTRODE_KEYS:
+        return None
+    from temsim.part_model_3d import _extent
+    start, end = _extent(part)
+    inner, outer = _radii(part)
+    if inner is None or outer is None or not (start < end and 0 < inner < outer):
+        raise ValueError("Gun electrode requires positive length and 0 < bore < outer radius")
+    return (SolidSpec(
+        part["key"], "body", "electrode", annulus(start, end, inner, outer),
+        (GUN_SOURCE,), "configured_geometry",
+        "Configured open annular electrode: upstream/downstream faces and beam bore "
+        "use the saved dimensions. OEM nose and support details are not established.",
+        parameters={"upstream_face_z_mm": start, "downstream_face_z_mm": end,
+                    "bore_radius_mm": inner, "outer_radius_mm": outer},
+    ),)
+
+
+def annotate_gun_electrode_faces(mesh, part):
+    """Keep four physical boundaries selectable with their actual dimension paths."""
+    if part.get("key") not in GUN_ELECTRODE_KEYS:
+        return mesh
+    from temsim.part_model_features import _decorate, _normal_data, _paths
+    centers, normals = _normal_data(mesh.vertices, mesh.faces)
+    groups = np.where(
+        np.abs(normals[:, 2]) > 1 - 1e-9,
+        np.where(normals[:, 2] > 0, "electrode_downstream", "electrode_upstream"),
+        np.where(np.einsum("ij,ij->i", centers[:, :2], normals[:, :2]) < 0,
+                 "electrode_bore", "electrode_outer"),
+    )
+    # Only the first supported radius field is authoritative, as in _radii.
+    inner = _paths(part, (next(name for name, _ in _INNER_RADIUS_FIELDS if name in part),))
+    outer = _paths(part, (next(name for name, _ in _OUTER_RADIUS_FIELDS if name in part),))
+    extent = ()
+    if part["local_start_z_mm"] == part["local_end_z_mm"]:
+        extent = _paths(part, (next(name for name in
+                         ("housing_length_mm", "electrode_length_mm", "plate_thickness_mm")
+                         if name in part and part[name] > 0),))
+    upstream = (*_paths(part, ("local_start_z_mm",)), *extent, *inner, *outer)
+    downstream = (*_paths(part, ("local_end_z_mm",)), *extent, *inner, *outer)
+    surfaces = {
+        "electrode_upstream": {"label": "Upstream electrode face", "kind": "cap",
+                              "parameter_paths": upstream},
+        "electrode_downstream": {"label": "Downstream electrode face", "kind": "cap",
+                                "parameter_paths": downstream},
+        "electrode_bore": {"label": "Open beam bore", "kind": "inner",
+                          "parameter_paths": inner},
+        "electrode_outer": {"label": "Outer electrode surface", "kind": "outer",
+                           "parameter_paths": outer},
+    }
+    return _decorate(mesh, groups, surfaces, normals=normals)
 
 
 def accelerator_solids(part):
@@ -59,6 +126,10 @@ def accelerator_solids(part):
 
 
 def aperture_solids(part, runtime=None, aperture_index=0):
+    from temsim.cad_aperture_support import aperture_support_solids
+    supported = aperture_support_solids(part, runtime, aperture_index)
+    if supported is not None:
+        return supported
     from temsim.part_model_apertures import is_strip_aperture, _opening, plate_thickness_field
     if not is_strip_aperture(part):
         return None
@@ -198,11 +269,9 @@ def auxiliary_solids(part, by_key, runtime=None, aperture_index=0):
     for value in (accelerator_solids(part),tip_solids(part,runtime),aperture_solids(part,runtime,aperture_index)):
         if value is not None:
             return value
-    if part["key"] in {"feg_extractor","feg_electrostatic_lens","thermionic_gun_lens","thermionic_wehnelt"}:
-        from temsim.part_model_3d import _extent
-        start,end=_extent(part); inner,outer=_radii(part)
-        return (SolidSpec(part["key"],"body","electrode",annulus(start,end,inner,outer),(GUN_SOURCE,),
-            "configured_geometry","Configured open annular electrode; OEM nose and support details are not established."),)
+    values = gun_electrode_solids(part)
+    if values is not None:
+        return values
     if part["key"]=="feg_monochromator_wien":
         from temsim.part_model_3d import _extent
         start,end=_extent(part); inner,outer=_radii(part)

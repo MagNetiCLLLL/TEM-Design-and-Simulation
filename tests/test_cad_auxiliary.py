@@ -82,6 +82,9 @@ def test_aperture_working_hole_thickness_and_offsets_match_native_plate(holes, i
     from temsim.part_model_apertures import strip_meshes
     document = _document("configs/instruments/column/C3_ProbeCorrector.toml")
     part = next(p for p in document["parts"] if p["key"] == "condenser_aperture_2")
+    # Retain the legacy unmeasured-outline contract; the opt-in C2 attachment
+    # has separate native/CAD and working-hole coverage in its dedicated suite.
+    part = {key: value for key, value in part.items() if not key.startswith("aperture_support_")}
     if holes is not None:
         part["aperture_hole_diameters_mm"] = holes
     runtime = dict(radius_mm=.012, offset_x_mm=.2, offset_y_mm=-.1)
@@ -105,6 +108,7 @@ def test_aperture_working_hole_thickness_and_offsets_match_native_plate(holes, i
 def test_unspecified_aperture_and_zero_thickness_reference_are_not_invented():
     document = _document("configs/instruments/column/C3_ProbeCorrector.toml")
     part = next(p for p in document["parts"] if p["key"] == "condenser_aperture_2")
+    part = {key: value for key, value in part.items() if not key.startswith("aperture_support_")}
     spec, = aperture_solids(part)
     assert spec.parameters["working_diameter_mm"] is None
     assert "not specified" in spec.note

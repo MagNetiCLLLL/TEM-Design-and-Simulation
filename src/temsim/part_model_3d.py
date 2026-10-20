@@ -219,7 +219,8 @@ def _dimensions(part, by_key=None):
             continue
         holder_parameter = (part.get("mechanical_profile") in {"transverse_goniometer", "side_entry_sample_holder"}
                             and name.startswith(("holder_", "stage_")))
-        if not holder_parameter and name not in detector_fields and not any(token in name for token in ("diameter", "radius", "length", "width", "height", "thickness", "gap", "inset", "angle", "angular_span", "radial_profile", "material_intervals", "path_center", "path_entrance", "strip_center_pitch")):
+        internal_detail = name.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
+        if not holder_parameter and not internal_detail and name not in detector_fields and not any(token in name for token in ("diameter", "radius", "length", "width", "height", "thickness", "gap", "inset", "angle", "angular_span", "radial_profile", "material_intervals", "path_center", "path_entrance", "strip_center_pitch")):
             continue
         append(value, ("parts", part["key"], name),
                name.removesuffix("_" + unit).replace("_", " ").capitalize(), unit)
@@ -322,17 +323,29 @@ def _pole_section(part, start, end):
 
 
 def _legacy_part_meshes(part, by_key, count, aperture_index=0, runtime=None):
+    from temsim.cad_recording_planes import recording_plane_meshes
+    recording = recording_plane_meshes(part, count)
+    if recording is not None:
+        return recording
     from temsim.cad_catalog import native_reconstruction
     solids = native_reconstruction(part, by_key, runtime=runtime, aperture_index=aperture_index)
     if solids is not None:
         from temsim.cad_mesh import meshes_from_solids
         meshes = meshes_from_solids(solids, count)
+        from temsim.cad_auxiliary import annotate_gun_electrode_faces
+        meshes = tuple(annotate_gun_electrode_faces(mesh, part) for mesh in meshes)
         if part.get("deflector_support_profile"):
             from temsim.cad_mesh import annotate_material_faces
             meshes = tuple(annotate_material_faces(mesh, part, runtime)
                            if mesh.material_class != "copper_winding" else mesh for mesh in meshes)
-        if part.get("branch_path_only") or part.get("mechanical_profile") in {
-                "transverse_eds_detector_array", "objective_electronics_sleeve"}:
+        if (part.get("gun_stigmator_geometry_profile") or part.get("mechanical_cartridge_structure")
+                or part.get("stigmator_support_profile")
+                or part.get("mechanical_c3_end_structure")
+                or part.get("mechanical_adapter_end_structure")
+                or part.get("mechanical_tl22_end_structure")
+                or part.get("hexapole_support_profile")
+                or part.get("branch_path_only") or part.get("mechanical_profile") in {
+                "transverse_eds_detector_array", "objective_electronics_sleeve"}):
             from temsim.cad_mesh import annotate_material_faces
             # A reconstructed sleeve has closed material that supports cuts,
             # while its engineering dimensions remain explicitly non-OEM.

@@ -49,7 +49,13 @@ def test_all_native_round_material_base_shapes_match_existing_view(relative):
         # Comparing the actual vertex set checks noses, bores and gaps, not only
         # the outer envelope. All current regions use the same 16-angle grid.
         vertices = lambda ms: set(map(tuple, np.round(np.concatenate([m.vertices for m in ms]), 9)))
-        assert vertices(new) == vertices(old), part["key"]
+        if (part.get("mechanical_cartridge_structure") or part.get("mechanical_c3_end_structure")
+                or part.get("mechanical_adapter_end_structure") or part.get("mechanical_tl22_end_structure")):
+            # Declared internal detail preserves every existing exterior vertex.
+            # Independent detail tests verify its partition/non-overlap.
+            assert vertices(old) < vertices(new), part["key"]
+        else:
+            assert vertices(new) == vertices(old), part["key"]
         assert all(s.key == part["key"] for s in specs)
         assert all(s.evidence and "OEM" in s.note or "unresolved" in s.note for s in specs)
         checked.append(part["key"])
@@ -94,7 +100,11 @@ def test_objective_split_intervals_and_mixed_cartridge_are_preserved():
         a, b = [np.asarray(s.shape["section_zr_mm"])[:, 0] for s in specs]
         assert a.max() < b.min()  # Never fill the sample interval with material.
     key = "c1_c2_pole_piece_cartridge"
-    spec, = round_lens_solids(rows[key], rows)
+    # A legacy manifest without an explicit material split retains one unknown
+    # body. The installed opt-in split must not change this fallback contract.
+    legacy = {name: value for name, value in rows[key].items()
+              if not name.startswith("mechanical_cartridge_")}
+    spec, = round_lens_solids(legacy, rows)
     assert spec.status == "mixed_material_cartridge_unresolved"
     assert spec.material == "mixed_material_cartridge_user_photo_unresolved"
     assert spec.material != "soft_magnetic"

@@ -224,10 +224,10 @@ def test_rotating_section_shares_meshes_and_angle_without_changing_physics(windo
     assert workspace._projection_angle_deg == section._angle_deg == 90
     assert updates == [True]  # Keep the existing deferred ray redraw path.
     workspace._set_projection_angle(37.5)
-    assert section.angle_spin.value() == 37.5
+    assert section.projection_controls.angle_deg == 37.5
     qtbot.waitUntil(lambda: section._section.angle_deg == 37.5)
     section.follow_ray_diagram.setChecked(False)
-    section.angle_spin.setValue(120)
+    section.angle_slider.setValue(1200)
     assert workspace._projection_angle_deg == 37.5
     workspace._set_projection_angle(62)
     assert section._angle_deg == 120

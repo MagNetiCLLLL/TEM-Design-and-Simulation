@@ -76,6 +76,73 @@ class AnalyticStepTests(unittest.TestCase):
                 self.assertAlmostEqual(actual, expected, places=5)
             self.assertEqual(json.loads((Path(path)/"step-manifest.json").read_text())["status"], "passed")
 
+    def test_disconnected_insulation_region_keeps_its_colour_and_material(self):
+        # Conductor-layer insulation has disconnected windows and spaces
+        # between windings, all belonging to the same named material region.
+        shape = dict(kind="difference", base=box([0, 0, 0], [8, 8, 2]), tools=[
+            box([0, 0, 0], [2, 10, 4]), box([0, 0, 0], [10, 2, 4])])
+        color = [.87, .83, .68, .75]
+        catalog = dict(units="mm", modules=[dict(key="laminate", name="Laminate",
+            solids=[dict(key="insert", region="insulation", material="insulator",
+                         color=color, shape=shape)],
+            units=[dict(key="insert", name="Insert", solid_ids=["insert/insulation"])])])
+        with tempfile.TemporaryDirectory() as path:
+            report = cad.export_catalog(catalog, path)
+            self.assertEqual(report["status"], "passed")
+            for export in report["exports"]:
+                record, = export["records"]
+                self.assertEqual(record["solid_count"], 4)
+                self.assertEqual(record["material"], "insulator")
+                self.assertAlmostEqual(record["volume_mm3"], 72., places=9)
+                for expected, actual in zip(color, record["color_rgba"]):
+                    self.assertAlmostEqual(actual, expected, places=6)
+
+    def test_compound_readback_does_not_hide_mixed_or_missing_solid_colours(self):
+        cq = cad._cadquery()
+        shape = cad.build_shape(dict(kind="union", shapes=[
+            box([0, 0, 0], [1, 1, 1]), box([3, 0, 0], [1, 1, 1])]))
+        for second in (None, cq.Color(.2, .4, .6)):
+            with self.subTest(second=second):
+                assembly = cq.Assembly(name="insert")
+                assembly.add(shape, name="gap")
+                first, other = shape.Solids()
+                assembly["gap"].addSubshape(first, color=cq.Color(.87, .83, .68))
+                if second is not None:
+                    assembly["gap"].addSubshape(other, color=second)
+                with tempfile.TemporaryDirectory() as directory:
+                    path = Path(directory)/"mixed.step"
+                    cad._write_step(assembly, path, {"gap": "insulator"})
+                    restored, _ = cad._read_step(path)
+                    self.assertIsNone(restored["gap"].color)
+
+    def test_compound_default_colour_preserves_explicit_solid_override(self):
+        cq = cad._cadquery()
+        shape = cad.build_shape(dict(kind="union", shapes=[
+            box([0, 0, 0], [1, 1, 1]), box([3, 0, 0], [1, 1, 1])]))
+        assembly = cq.Assembly(name="insert")
+        assembly.add(shape, name="gap", color=cq.Color(1., 0., 0.))
+        first, second = shape.Solids()
+        assembly["gap"].addSubshape(second, color=cq.Color(0., 0., 1.))
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/"override.step"
+            cad._write_step(assembly, path, {"gap": "insulator"})
+            restored, layers = cad._read_step(path)
+            leaf = restored["gap"]
+            self.assertIsNone(leaf.color)
+            actual = sorted((solid.Center().x, color.toTuple())
+                            for solid, color in leaf._subshape_colors.items())
+            self.assertEqual(len(actual), 2)
+            for (position, color), expected_position, expected_color in zip(
+                    actual, (0., 3.), ((1., 0., 0., 1.), (0., 0., 1., 1.))):
+                self.assertAlmostEqual(position, expected_position, places=9)
+                for value, expected in zip(color, expected_color):
+                    self.assertAlmostEqual(value, expected, places=6)
+            self.assertIn("material:insulator", layers["gap"])
+            # The uniform-leaf verification contract must reject a mixed leaf,
+            # rather than reporting success after erasing its explicit override.
+            with self.assertRaisesRegex(ValueError, "RGBA colour"):
+                cad.export_assembly(assembly, Path(directory)/"verified.step", {"gap": "insulator"})
+
 
 if __name__ == "__main__":
     unittest.main()

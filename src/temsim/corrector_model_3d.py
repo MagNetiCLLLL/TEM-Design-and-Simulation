@@ -74,6 +74,10 @@ def winding_dimensions(part):
 
 
 def validate_deflector_coil_part(part):
+    # A replacement base owns its geometry. Retain the native recipe for an
+    # eventual restore, but do not constrain that base with inactive windings.
+    if part.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+        return
     if part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES:
         winding_dimensions(part)
     from temsim.deflector_support_geometry import deflector_support_dimensions
@@ -149,6 +153,30 @@ def _saddle_loop(*, key, region, inner, outer, start, end, angle, count, color,
     return replace(mesh, color=color)
 
 
+def _conductor_gap_mesh(spec, copper_meshes, count):
+    """Subtract the displayed copper tessellation without rebuilding that copper.
+
+    STEP subtracts the analytic winding solids; here the same material boundary
+    follows the existing native saddle tessellation exactly. Independent angular
+    grids would otherwise leave thin insulation/copper interpenetrations.
+    """
+    import manifold3d as m
+    from temsim.cad_mesh import _manifold
+    from temsim.part_model_3d import _mesh
+
+    solid = _manifold(spec.shape["base"], count)
+    regions = set(spec.parameters["subtracted_winding_regions"])
+    for mesh in copper_meshes:
+        if mesh.region in regions:
+            solid -= m.Manifold(m.Mesh64(mesh.vertices.copy(), mesh.faces.astype(np.uint64)))
+    if solid.status() != m.Error.NoError or solid.is_empty() or solid.volume() <= 0:
+        raise ValueError(f"{spec.key}/{spec.region}: invalid conductor-gap insulation mesh")
+    raw = solid.to_mesh64()
+    result = _mesh(np.asarray(raw.vert_properties)[:, :3], np.asarray(raw.tri_verts),
+                   spec.key, spec.region, spec.material, False, spec.note)
+    return replace(result, color=spec.color)
+
+
 def deflector_coil_meshes(part, angular_segments=32, *, drive_key=None):
     """Return two orthogonal pairs within the declared annular envelope.
 
@@ -157,7 +185,8 @@ def deflector_coil_meshes(part, angular_segments=32, *, drive_key=None):
     """
     from temsim.part_model_3d import _extent, _number, _segments
     from temsim.deflector_support_geometry import (
-        annotate_support_mesh, deflector_support_solids, support_mesh_segments,
+        GAP_REGIONS, annotate_support_mesh, deflector_support_solids, full_material_axial_extent,
+        support_mesh_segments,
     )
 
     key = str(part["key"])
@@ -189,9 +218,12 @@ def deflector_coil_meshes(part, angular_segments=32, *, drive_key=None):
             ))
     if support_solids:
         from temsim.cad_mesh import meshes_from_solids
-        meshes.extend(annotate_support_mesh(mesh, part)
-                      for mesh in meshes_from_solids(support_solids,
-                                                    support_mesh_segments(support_solids, count)))
+        support_count = support_mesh_segments(support_solids, count)
+        copper_meshes = tuple(meshes)
+        for spec in support_solids:
+            mesh = (_conductor_gap_mesh(spec, copper_meshes, support_count)
+                    if spec.region in GAP_REGIONS else meshes_from_solids((spec,), support_count)[0])
+            meshes.append(annotate_support_mesh(mesh, part))
     linked = str(drive_key or "declared DPH/DP channel")
     notes = (
         f"{key}: {DESCRIPTION} Linked field source: {linked}.",
@@ -209,6 +241,11 @@ def deflector_coil_meshes(part, angular_segments=32, *, drive_key=None):
          if part.get("mechanical_profile") != PROFILE and "winding_band_width_mm" not in part else ""),
     )
     support_notes = tuple(dict.fromkeys(solid.note for solid in support_solids))
+    material_start, material_end = full_material_axial_extent(part)
+    if material_start < start or material_end > end:
+        notes += (f"Passive laminate material extends from {material_start:g} to {material_end:g} mm "
+                  "local Z, including explicitly declared axial edge covers; copper and optical "
+                  "allocation remain unchanged.",)
     return tuple(meshes), tuple(note for note in notes if note) + support_notes
 
 

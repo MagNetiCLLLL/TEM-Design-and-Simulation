@@ -14,13 +14,14 @@ import numpy as np
 import pyqtgraph as pg
 from PySide6.QtCore import QSignalBlocker, Qt, QTimer, Signal
 from PySide6.QtWidgets import (
-    QCheckBox, QComboBox, QDoubleSpinBox, QHBoxLayout, QLabel, QPushButton,
-    QSlider, QVBoxLayout, QWidget,
+    QCheckBox, QComboBox, QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget,
 )
 
 from temsim.assembly_section import assembly_section_from_model
 from temsim.cell_geometry import CellPhysicalContext
 from temsim.gui.assembly_geometry_cache import AssemblyGeometryCache
+from temsim.gui.projection_angle_controls import ProjectionAngleControls
+from temsim.gui.transverse_projection import format_projection_angle
 
 
 class AssemblySectionPage(QWidget):
@@ -56,22 +57,10 @@ class AssemblySectionPage(QWidget):
         self._refresh_timer.setSingleShot(True)
         self._refresh_timer.timeout.connect(self._flush)
 
-        self.xz_button = QPushButton("X-Z")
-        self.yz_button = QPushButton("Y-Z")
-        for button in (self.xz_button, self.yz_button):
-            button.setCheckable(True)
-        self.xz_button.setChecked(True)
-        self.angle_slider = QSlider(Qt.Orientation.Horizontal)
-        self.angle_slider.setRange(0, 3600)
-        self.angle_slider.setPageStep(50)
-        self.angle_slider.setMinimumWidth(100)
-        self.angle_slider.setMaximumWidth(260)
-        self.angle_spin = QDoubleSpinBox()
-        self.angle_spin.setRange(0.0, 360.0)
-        self.angle_spin.setDecimals(1)
-        self.angle_spin.setSingleStep(1.0)
-        self.angle_spin.setSuffix(" °")
-        self.angle_spin.setKeyboardTracking(False)
+        self.projection_controls = ProjectionAngleControls()
+        self.xz_button = self.projection_controls.xz
+        self.yz_button = self.projection_controls.yz
+        self.angle_slider = self.projection_controls.slider
         self.follow_ray_diagram = QCheckBox("Follow Ray Diagram")
         self.follow_ray_diagram.setChecked(True)
         self.follow_ray_diagram.setToolTip(
@@ -111,9 +100,10 @@ class AssemblySectionPage(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(6, 6, 6, 6)
         angles = QHBoxLayout()
-        for widget in (self.xz_button, self.yz_button, QLabel("Angle"), self.angle_slider,
-                       self.angle_spin, self.follow_ray_diagram):
-            angles.addWidget(widget)
+        angles.setSpacing(3)
+        angles.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        angles.addWidget(self.projection_controls)
+        angles.addWidget(self.follow_ray_diagram)
         angles.addStretch(1)
         actions = QHBoxLayout()
         for widget in (self.component_combo, self.fit_all, self.fit_selected, self.edit_part):
@@ -131,10 +121,7 @@ class AssemblySectionPage(QWidget):
         layout.addWidget(self.selection_label)
         layout.addWidget(self.status)
 
-        self.xz_button.clicked.connect(lambda: self._set_angle(0.0, user=True))
-        self.yz_button.clicked.connect(lambda: self._set_angle(90.0, user=True))
-        self.angle_slider.valueChanged.connect(lambda value: self._set_angle(value / 10.0, user=True))
-        self.angle_spin.valueChanged.connect(lambda value: self._set_angle(value, user=True))
+        self.projection_controls.angle_changed.connect(lambda value: self._set_angle(value, user=True))
         self.follow_ray_diagram.toggled.connect(self._follow_changed)
         self.component_combo.currentIndexChanged.connect(self._component_changed)
         self.fit_all.clicked.connect(self._fit_all)
@@ -173,14 +160,10 @@ class AssemblySectionPage(QWidget):
             self._set_angle(self._last_ray_angle_deg)
 
     def _set_angle(self, angle, *, user=False):
-        angle = round(float(np.clip(angle, 0.0, 360.0)), 1)
+        angle = float(np.clip(angle, 0.0, 360.0))
         changed = angle != self._angle_deg
         self._angle_deg = angle
-        for widget, value in ((self.angle_slider, round(angle * 10)), (self.angle_spin, angle)):
-            with QSignalBlocker(widget):
-                widget.setValue(value)
-        self.xz_button.setChecked(angle % 360.0 == 0.0)
-        self.yz_button.setChecked(angle == 90.0)
+        self.projection_controls.set_angle(angle)
         self._update_plane_label()
         if changed:
             self._schedule()
@@ -191,7 +174,9 @@ class AssemblySectionPage(QWidget):
         angle = self._angle_deg
         axis = "X" if angle % 360.0 == 0.0 else "Y" if angle == 90.0 else "U"
         self.view.setLabel("left", f"Section coordinate {axis}", units="mm")
-        self.plane_label.setText(f"{axis}-Z section | {angle:g}° | Through the nominal column axis")
+        self.plane_label.setText(
+            f"{axis}-Z section | {format_projection_angle(angle)}° | Through the nominal column axis"
+        )
         self.plane_label.setToolTip(
             "Intersections with saved three-dimensional meshes, not a projection of all surfaces. "
             "U = X cos(angle) + Y sin(angle); V = -X sin(angle) + Y cos(angle) = 0. "

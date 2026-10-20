@@ -26,7 +26,6 @@ from PySide6.QtWidgets import (
     QPushButton,
     QScrollArea,
     QSizePolicy,
-    QSlider,
     QSplitter,
     QTabWidget,
     QToolButton,
@@ -65,6 +64,7 @@ from temsim.gui.selected_plane_readout import SelectedPlaneReadout
 from temsim.gui.conjugate_plane_panel import ConjugatePlanePanel
 from temsim.gui.compact_status_label import CompactStatusLabel
 from temsim.gui.current_page_tabs import CurrentPageHeightTabs
+from temsim.gui.projection_angle_controls import ProjectionAngleControls, VIEW_OPTION_BUTTON_STYLE
 from temsim.gui.conjugate_plane_overlay import ConjugatePlaneOverlay
 from temsim.gui.design_explorer import DesignExplorerPage
 from temsim.gui.interactive_calculation import InteractiveCalculationPage
@@ -543,30 +543,7 @@ class VisualizationWorkspace(QWidget):
         "physical_rutherford": "Physical Rutherford approximation",
         "unknown": "Unknown interaction",
     }
-    OPTION_BUTTON_STYLE = """
-        QPushButton {
-            min-height: 24px;
-            padding: 2px 7px;
-            border: 1px solid #64748b;
-            border-radius: 6px;
-            background: #f8fafc;
-            color: #0f172a;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        QPushButton:hover {
-            background: #e2e8f0;
-            border-color: #334155;
-        }
-        QPushButton:checked {
-            background: #2563eb;
-            border-color: #1d4ed8;
-            color: white;
-        }
-        QPushButton:checked:hover {
-            background: #1d4ed8;
-        }
-    """
+    OPTION_BUTTON_STYLE = VIEW_OPTION_BUTTON_STYLE
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -617,33 +594,11 @@ class VisualizationWorkspace(QWidget):
         self._projection_finalize_timer.timeout.connect(
             self._finalize_projection
         )
-        self.projection_label = QLabel("Angle")
-        self.projection_label.setToolTip(
-            "Rotate the displayed transverse axis continuously about Z; "
-            "this reprojects the existing X/Y result without retracing rays"
-        )
-        self.projection_xz = QPushButton("X-Z")
-        self.projection_xz.setObjectName("projectionXZButton")
-        self.projection_xz.setCheckable(True)
-        self.projection_xz.setChecked(True)
-        self.projection_yz = QPushButton("Y-Z")
-        self.projection_yz.setObjectName("projectionYZButton")
-        self.projection_yz.setCheckable(True)
-        for projection_button in (self.projection_xz, self.projection_yz):
-            projection_button.setSizePolicy(
-                QSizePolicy.Policy.Fixed,
-                QSizePolicy.Policy.Fixed,
-            )
-        self.projection_slider = QSlider(Qt.Orientation.Horizontal)
-        self.projection_slider.setObjectName("projectionAngleSlider")
-        self.projection_slider.setRange(0, 3600)
-        self.projection_slider.setSingleStep(1)
-        self.projection_slider.setPageStep(50)
-        self.projection_slider.setMinimumWidth(120)
-        self.projection_slider.setMaximumWidth(180)
-        self.projection_slider.setToolTip(
-            "Transverse projection angle, in tenths of a degree"
-        )
+        self.projection_controls = ProjectionAngleControls()
+        self.projection_label = self.projection_controls.label
+        self.projection_xz = self.projection_controls.xz
+        self.projection_yz = self.projection_controls.yz
+        self.projection_slider = self.projection_controls.slider
         self.component_centres = QPushButton("References")
         self.component_centres.setObjectName("componentCentresToggle")
         self.component_centres.setCheckable(True)
@@ -722,8 +677,6 @@ class VisualizationWorkspace(QWidget):
             "weighted intensity and interaction channels."
         )
         for option_button in (
-            self.projection_xz,
-            self.projection_yz,
             self.auto_zoom,
             self.component_centres,
             self.crossovers,
@@ -761,10 +714,7 @@ class VisualizationWorkspace(QWidget):
         view_controls.setContentsMargins(0, 0, 0, 0)
         view_controls.setSpacing(3)
         view_controls.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        view_controls.addWidget(self.projection_label)
-        view_controls.addWidget(self.projection_xz)
-        view_controls.addWidget(self.projection_yz)
-        view_controls.addWidget(self.projection_slider)
+        view_controls.addWidget(self.projection_controls)
         option_buttons = (
             self.auto_zoom,
             self.fit_column,
@@ -2472,16 +2422,7 @@ class VisualizationWorkspace(QWidget):
         self._projection_angle_deg = angle
         self._projection_syncing = True
         try:
-            self.projection_slider.setValue(
-                int(np.floor(angle * 10.0 + 0.5))
-            )
-            normalized = angle % 360.0
-            self.projection_xz.setChecked(
-                bool(np.isclose(normalized, 0.0, atol=0.05))
-            )
-            self.projection_yz.setChecked(
-                bool(np.isclose(normalized, 90.0, atol=0.05))
-            )
+            self.projection_controls.set_angle(angle)
         finally:
             self._projection_syncing = False
         self.transverse_beam.set_projection_angle(

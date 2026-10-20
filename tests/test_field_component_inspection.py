@@ -68,7 +68,7 @@ def test_physical_envelope_includes_bore_and_excludes_external_3d_corners(qtbot,
     qtbot.wait(150)
     assert page._sample is sample and len(scene.calls) == calls
     assert page.canvas.projection_angle_deg == 57.
-    assert page.angle.value() == 57.
+    assert page.projection_controls.angle_deg == 57.
 
 
 def test_longitudinal_rotation_samples_new_physical_plane_without_repreparing_scene(qtbot, monkeypatch):
@@ -89,8 +89,10 @@ def test_longitudinal_rotation_samples_new_physical_plane_without_repreparing_sc
     for angle in (37.5, 90.):
         calls = len(scene.calls)
         page.set_projection_angle(angle)
-        # Never label the old plane's samples as belonging to the new section.
-        assert page._sample is None and page.canvas.sample is None
+        # Keep the accepted plane visible while sampling; never relabel it as the new plane.
+        assert page._sample is None and page.canvas.sample is previous
+        assert page.canvas.projection_angle_deg == previous.section_angle_deg
+        assert page.canvas._pending_section_angle == angle
         assert len(scene.calls) == calls
         wait_sample(qtbot, page)
         sample = page._sample
@@ -104,7 +106,7 @@ def test_longitudinal_rotation_samples_new_physical_plane_without_repreparing_sc
         assert np.ptp(sample.points_m[:, 2]) == pytest.approx(np.ptp(original.points_m[:, 2]))
         assert regions.mask(sample.points_m, "magnet").all()
         assert page.canvas.references == references
-        assert page.angle.value() == angle
+        assert page.projection_controls.angle_deg == angle
         previous = sample
     # Rotation affects observation only; neither the saved part nor old sample moves.
     np.testing.assert_allclose(original.points_m[:, 1], 0., atol=1e-15)

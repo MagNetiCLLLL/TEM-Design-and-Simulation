@@ -38,11 +38,16 @@
 [US20090079531A1](https://patents.google.com/patent/US20090079531A1/en)、
 [US8569693B2](https://patents.google.com/patent/US8569693B2/en)。
 
-当前三维模型采用八个同轴向位置的径向铜线圈块，表示两组四极绕组。
+本报告2026-10-19基线采用八个同轴向位置的径向铜线圈块，表示两组四极绕组。
 它们不是独立的圆透镜，也没有凭空增加铁芯、磁轭、绝缘套或八只磁极。
 线圈径向/轴向占比是从现有包络分配的工程示意值，不是 OEM 线圈尺寸。
 Gun stigmator 使用另外的磁梯度模型，缺少已声明的绕组结构，仍保留未解析包络；
 没有把柱体八线圈模型无依据地套到电子枪上。
+
+2026-10-20后续结构补充见 [Condenser Deflector / Condenser Stigmator](condenser-deflector-stigmator-structure.md)：
+默认 C3 + Probe Corrector 的 Condenser Stigmator 已在保留原八铜绕组的基础上，
+显式加入非OEM工程骨架、绝缘包层、胶座和开槽支架。上段是补充前的基线，
+不能再用来断言该器件当前没有被动支撑。
 
 ## 控制别名不等于新的物理器件
 

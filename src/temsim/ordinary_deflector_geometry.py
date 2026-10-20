@@ -10,7 +10,7 @@ from __future__ import annotations
 import math
 from numbers import Real
 
-from temsim.cad_geometry import SolidSpec, annulus, difference, transformed
+from temsim.cad_geometry import SolidSpec, annulus, difference, sector, transformed
 from temsim.component_representation import non_material_role
 
 
@@ -21,9 +21,10 @@ HOST_KEYS = frozenset({"condenser_deflector", "beam_deflector", "ac_deflector",
                        "image_diffraction_deflector"})
 DIMENSIONS = (PREFIX + "radial_skin_thickness_mm", PREFIX + "casing_thickness_mm",
               PREFIX + "pin_diameter_mm")
+SLOT_SWEEP_FIELD = PREFIX + "registration_slot_sweep_deg"
 METADATA_FIELDS = (PREFIX + "profile", PREFIX + "geometry_status", PREFIX + "source",
                    PREFIX + "source_note")
-FIELDS = frozenset((*DIMENSIONS, *METADATA_FIELDS))
+FIELDS = frozenset((*DIMENSIONS, SLOT_SWEEP_FIELD, *METADATA_FIELDS))
 NOTE = (
     "Rigid insulating-carrier engineering equivalent based on US5994704A "
     "Figs. 1-4, not verified OEM hardware. Existing saddle-loop copper volumes "
@@ -34,6 +35,15 @@ NOTE = (
     "carriers; external host mounting, wiring, individual-turn insulation and "
     "calibrated magnetic, electric, thermal or vacuum properties are not "
     "established. These passive solids do not add optical field sources."
+)
+SLOT_NOTE = (
+    "The optional round-ended circumferential registration slots follow "
+    "US5994704A Figs. 1-2 and the description of elongated outer-carrier and "
+    "spacer knock holes. The inner carrier retains round holes. This model's "
+    "saved radial order calls the outer carrier Y, whereas the patent calls "
+    "its outer carrier X. The total centreline sweep is an engineering "
+    "dimension, not an OEM measurement or a command to rotate either coil. "
+    "Copper, registration-pin axes and the calibrated field bases do not move."
 )
 
 
@@ -116,9 +126,12 @@ def support_dimensions(part):
     # a conservative cylindrical-pin angular bound over the complete pin.
     angular_clearance = min(60.0-math.degrees(band/((x_low+x_high)/2.0))-45.0,
                             45.0-(30.0+math.degrees(band/((y_low+y_high)/2.0))))
+    slot_sweep = _number(part, SLOT_SWEEP_FIELD, 0.0)
+    if slot_sweep < 0.0:
+        raise ValueError(f"{key}: registration slot sweep must be nonnegative")
     if (pin_radius >= x_carrier[0] or angular_clearance <= 0.0
-            or math.degrees(math.asin(pin_radius/x_carrier[0])) >= angular_clearance-1e-8):
-        raise ValueError(f"{key}: registration pins must remain inside both angular winding windows")
+            or slot_sweep/2.0 + math.degrees(math.asin(pin_radius/x_carrier[0])) >= angular_clearance-1e-8):
+        raise ValueError(f"{key}: registration pins and slots must remain inside both angular winding windows")
     return dict(start_mm=start, end_mm=end, inner_radius_mm=inner, outer_radius_mm=outer,
                 clear_radius_mm=clear, finite_coil_centres_mm=centres,
                 mechanical_coil_length_mm=coil_length, winding_layer_thickness_mm=layer,
@@ -129,6 +142,7 @@ def support_dimensions(part):
                 outer_casing_radii_mm=(y_carrier[1], y_carrier[1]+casing),
                 radial_skin_thickness_mm=skin, casing_thickness_mm=casing,
                 pin_diameter_mm=pin_diameter, pin_angles_deg=(45.0, 225.0),
+                registration_slot_sweep_deg=slot_sweep,
                 material_inner_radius_mm=x_carrier[0],
                 material_outer_radius_mm=y_carrier[1]+casing)
 
@@ -154,6 +168,29 @@ def _radial_pin(start, end, radius, angle_deg, centre, clip_inner, clip_outer):
         annulus(centre-radius-padding, centre+radius+padding, clip_outer, clip_outer+padding))
 
 
+def _registration_slot(inner, outer, radius, angle_deg, centre, sweep_deg):
+    """Round-ended angular slot with the existing pin's axial diameter.
+
+    The sector joins two radial round end bores. The cutting tools extend
+    beyond both radial carrier faces to avoid coincident Boolean surfaces;
+    subtraction clips the result to each carrier. No polygonal approximation
+    defines the exported slot, or opens the carrier's axial ends.
+    """
+    padding = max(1., radius)
+    low, high = max(0., inner-padding), outer+padding
+    caps = []
+    for sign in (-1., 1.):
+        angle = math.radians(angle_deg+sign*sweep_deg/2.)
+        c, s = math.cos(angle), math.sin(angle)
+        caps.append(transformed(annulus(low, high, 0., radius),
+            rotation=[[-s, 0., c], [c, 0., s], [0., 1., 0.]], offset=(0., 0., centre)))
+    # Keep the three overlapping cutters separate. A pre-fused slot generates
+    # unnecessary trimmed-surface seams whose STEP round trip measurably
+    # changes the volume integration. Cutting by the same primitive union in
+    # one difference preserves the analytic boundary and existing tolerances.
+    return (sector(centre-radius, centre+radius, low, high, angle_deg, sweep_deg), *caps)
+
+
 def ordinary_deflector_support_solids(part, copper_specs):
     """Six passive material regions per stage, shared by native and STEP CAD."""
     d = support_dimensions(part)
@@ -174,18 +211,26 @@ def ordinary_deflector_support_solids(part, copper_specs):
         inner, outer = d["x_carrier_radii_mm"][0], d["y_carrier_radii_mm"][1]
         pins = [_radial_pin(inner, outer, d["pin_diameter_mm"]/2, angle, centre, inner, outer)
                 for angle in d["pin_angles_deg"]]
+        sweep = d["registration_slot_sweep_deg"]
+        slots = ([tool for angle in d["pin_angles_deg"] for tool in
+                  _registration_slot(inner, outer, d["pin_diameter_mm"]/2., angle, centre, sweep)]
+                 if sweep else pins)
         stage_parameters = {**parameters, "station_index": index,
                             "station_centre_mm": centre, "station_start_mm": a, "station_end_mm": b}
         for axis in "xy":
             low, high = d[f"{axis}_carrier_radii_mm"]
             coils = [copper[f"coil_{index}_{axis}_winding_{side}"].shape for side in (1, 2)]
-            shape = difference(annulus(a, b, low, high), *coils, *pins)
+            # Preserve the current inner-X / outer-Y winding order. Only the
+            # outer carrier and intervening spacer receive adjustment slots.
+            tools = slots if axis == "y" else pins
+            shape = difference(annulus(a, b, low, high), *coils, *tools)
             solids.append(SolidSpec(str(part["key"]), f"coil_{index}_{axis}_carrier", "insulator",
-                shape, (SUPPORT_SOURCE,), note=NOTE,
+                shape, (SUPPORT_SOURCE,), note=NOTE + (" " + SLOT_NOTE if sweep and axis == "y" else ""),
                 parameters={**stage_parameters, "role": "insulating_coil_carrier", "axis": axis}))
         low, high = d["interaxis_spacer_radii_mm"]
         solids.append(SolidSpec(str(part["key"]), f"coil_{index}_interaxis_spacer", "insulator",
-            difference(annulus(a, b, low, high), *pins), (SUPPORT_SOURCE,), note=NOTE,
+            difference(annulus(a, b, low, high), *slots), (SUPPORT_SOURCE,),
+            note=NOTE + (" " + SLOT_NOTE if sweep else ""),
             parameters={**stage_parameters, "role": "insulating_interaxis_spacer"}))
         low, high = d["outer_casing_radii_mm"]
         solids.append(SolidSpec(str(part["key"]), f"coil_{index}_outer_casing", "insulator",

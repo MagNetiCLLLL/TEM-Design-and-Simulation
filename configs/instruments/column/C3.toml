@@ -559,6 +559,8 @@ length_mm = 0.0
 vacuum_inner_diameter_mm = 5.0
 axial_vacuum_context_only = true
 mechanical_profile = "transverse_eds_detector_array"
+mechanical_footprint_shape = "square"
+mechanical_footprint_source = "User-specified square engineering representation, 2026-10-20; not a measured OEM active-face or package shape. Angular X-ray acceptance remains independently defined in EDS.toml."
 mechanical_part_role = "sample_adjacent_x_ray_detector_array"
 mechanical_only = true
 mechanical_overlap_group = "objective_assembly"
@@ -862,6 +864,19 @@ field_source_key = "condenser_lens_2"
 order = 34
 key = "condenser_lens_3_housing"
 name = "C3 Lens Housing"
+mechanical_c3_end_structure = "insulated_coil_end_cooling_plates"
+# Explicit engineering end-stack dimensions; contacts/radii reuse the saved
+# coil faces/diameters. These plates do not change the excitation winding.
+mechanical_c3_end_upper_contact_local_z_mm = 388.5
+mechanical_c3_end_lower_contact_local_z_mm = 541.5
+mechanical_c3_end_inner_diameter_mm = 96.0
+mechanical_c3_end_outer_diameter_mm = 156.0
+mechanical_c3_end_insulation_thickness_mm = 0.5
+mechanical_c3_end_cooling_plate_thickness_mm = 2.0
+mechanical_c3_end_coil_key = "condenser_lens_3_excitation_coil"
+mechanical_c3_end_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_c3_end_geometry_source = "Hitachi JP2967966B2 conventional Fig.8 and paragraphs0005/0015 describe upper/lower copper cooling plates with thin electrical insulation against the winding. This is a generic family adaptation, not a verified C3 OEM section: plate ID96/OD156 and contact Z388.5/541.5 reuse existing C3 coil dimensions; 0.5 mm insulation and 2.0 mm plates are explicit engineering allocations inside each 8.5 mm end space, leaving 6.0 mm beyond the plates. The separate winding, poles, yoke, 18 mm magnetic gap, optical position and excitation are unchanged. Bolts, hidden coolant channels and thermal/eddy-current effects are not specified or simulated."
+mechanical_c3_end_geometry_source_urls = ["https://patents.google.com/patent/JP2967966B2/en"]
 branch = "common"
 local_start_z_mm = 380
 local_center_z_mm = 465
@@ -1066,6 +1081,16 @@ mechanical_profile = "c1_c2_pole_piece_cartridge"
 magnetic_lens_keys = ["condenser_lens_1", "condenser_lens_2"]
 mechanical_part_role = "pole_piece_cartridge"
 material_class = "mixed_material_cartridge_user_photo_unresolved"
+mechanical_cartridge_structure = "carrier_separator_carrier"
+# This saved mechanical split reuses the existing C1 pole end (90 mm) and
+# C2 pole start (110 mm); it is NOT a new C1/C2 optical gap or an OEM section.
+mechanical_cartridge_spacer_start_local_z_mm = 90.0
+mechanical_cartridge_spacer_end_local_z_mm = 110.0
+mechanical_cartridge_spacer_material = "non_magnetic_structural"
+mechanical_cartridge_pole_keys = ["condenser_lens_1_lower_pole", "condenser_lens_2_upper_pole"]
+mechanical_cartridge_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_cartridge_geometry_source = "Engineering partition of the existing photo-scaled 300 mm carrier, ID60/OD90.75 mm. Separator endpoints reuse existing contained pole envelope endpoints 90/110 mm; both remain explicit editable local-Z dimensions. A nonmagnetic supporting separator is a generic family adaptation from Hitachi JP2967966B2 Figs.6-7 and claim2, NOT evidence for this instrument's internal material, magnetic gap or an added lens. The two carriers retain unresolved mixed material. Existing independent C1/C2 poles, coils, yokes, continuous vacuum tube and analytic field inputs are unchanged."
+mechanical_cartridge_geometry_source_urls = ["https://patents.google.com/patent/JP2967966B2/en"]
 mechanical_only = true
 mechanical_overlap_group = "condenser_lens_2_assembly"
 mechanical_overlap_role = "container"

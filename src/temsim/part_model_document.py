@@ -18,6 +18,32 @@ from temsim.component_operations import (
 )
 
 
+def _validate_internal_details(parts, geometry=None):
+    """Validate the final material draft before publishing it or its history."""
+    from temsim.cad_recording_planes import validate_detector_footprint
+    from temsim.cad_detectors import validate_detector_material_geometry
+    from temsim.cad_gun_stigmator import gun_stigmator_dimensions
+    from temsim.cad_condenser_cartridge import validate_cartridge_geometry
+    from temsim.cad_stigmator_support import stigmator_support_dimensions
+    from temsim.cad_aperture_support import validate_aperture_support
+    from temsim.cad_c3_lens_hardware import validate_c3_lens_hardware
+    from temsim.cad_adapter_lens_hardware import validate_adapter_lens_hardware
+    from temsim.cad_tl22_lens_hardware import validate_tl22_lens_hardware
+    from temsim.cad_probe_hexapole_support import validate_hexapole_support
+    by_key = {part["key"]: part for part in parts}
+    for part in parts:
+        validate_detector_footprint(part)
+        validate_detector_material_geometry(part, by_key)
+        gun_stigmator_dimensions(part)
+        validate_cartridge_geometry(part, by_key)
+        stigmator_support_dimensions(part)
+        validate_aperture_support(part, by_key, geometry)
+        validate_c3_lens_hardware(part, by_key)
+        validate_adapter_lens_hardware(part, by_key)
+        validate_tl22_lens_hardware(part, by_key)
+        validate_hexapole_support(part)
+
+
 class PartModelDocument:
     """A file-backed draft shared by every selected part in the 3D editor."""
 
@@ -42,6 +68,7 @@ class PartModelDocument:
             validate_probe_hexapole_geometry(part)
             validate_deflector_coil_part(part)
             validate_ordinary_deflector_part(part)
+        _validate_internal_details(self._baseline["parts"], self._baseline.get("geometry"))
         from temsim.deflector_support_geometry import validate_support_installations
         validate_support_installations(self._baseline["parts"])
         by_key = {part["key"]: part for part in self._baseline["parts"]}
@@ -203,7 +230,9 @@ class PartModelDocument:
                 validate_support_installations(updated["parts"])
                 from temsim.subassemblies import reflow
                 candidate_document = reflow(self.document, updated, self.path, owners=self._subassembly_owners)
-                self.document = resolve_field_hardware_parts(candidate_document)
+                candidate_document = resolve_field_hardware_parts(candidate_document)
+                _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+                self.document = candidate_document
                 self._remember()
                 return
         raise ValueError(f"Unknown part: {key}")
@@ -325,6 +354,15 @@ class PartModelDocument:
             return
         ratio = length / previous
         center = float(part["local_center_z_mm"])
+        if part.get("mechanical_cartridge_structure"):
+            for name in ("mechanical_cartridge_spacer_start_local_z_mm",
+                         "mechanical_cartridge_spacer_end_local_z_mm"):
+                part[name] = center + (float(part[name]) - center) * ratio
+        for prefix in ("mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_"):
+            if part.get(prefix + "structure"):
+                for suffix in ("upper_contact_local_z_mm", "lower_contact_local_z_mm"):
+                    name = prefix + suffix
+                    part[name] = center + (float(part[name]) - center) * ratio
         if "material_intervals_mm" in part:
             part["material_intervals_mm"] = [
                 [center + (float(value) - center) * ratio for value in interval]

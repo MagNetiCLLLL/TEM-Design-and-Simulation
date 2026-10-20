@@ -121,9 +121,17 @@ def decorate_physical_tube_row(row, assembly, *, runtime_values=None, aperture_i
         part = resolved.data
         if abs(float(resolved.center_z_mm)-float(part["local_center_z_mm"])-origin) > 1e-8:
             raise ValueError("Tube and aperture must share the same module placement")
-        spec, = aperture_solids(part, (runtime_values or {}).get(key), (aperture_indices or {}).get(key, 0))
-        width = float(spec.parameters["strip_half_width_mm"]) + clearance
-        lower = float(spec.parameters["strip_y_bounds_mm"][0]) - clearance
+        # The side-entry slot follows only the plate, not its external rod or
+        # fixing screw. Aperture material may now contain several regions.
+        spec, = [spec for spec in aperture_solids(
+            part, (runtime_values or {}).get(key), (aperture_indices or {}).get(key, 0))
+            if spec.region == "body"]
+        from temsim.cad_aperture_support import aperture_material_scale_xy
+        scale_x, scale_y = aperture_material_scale_xy(part)
+        # Native material applies CAD transverse scaling before its shared
+        # rigid placement. Clearance is a physical gap in mm, not a scale.
+        width = float(spec.parameters["strip_half_width_mm"])*scale_x + clearance
+        lower = float(spec.parameters["strip_y_bounds_mm"][0])*scale_y - clearance
         upper = float(row["mechanical_outer_diameter_mm"])/2 + clearance
         thickness = float(spec.parameters["plate_thickness_mm"]) + 2*clearance
         z = float(part.get("optical_reference_local_z_mm", part["local_center_z_mm"]))

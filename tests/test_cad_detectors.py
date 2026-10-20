@@ -68,7 +68,7 @@ def test_eds_rejects_invalid_or_unattributed_material_geometry(column, field, va
         detector_solids(part, column)
 
 
-def test_eds_heads_retain_old_envelope_and_real_angular_definition(column):
+def test_eds_heads_retain_side_widths_positions_and_real_angular_definition(column):
     part = _eds(column)
     before = deepcopy(part)
     angular = EDSDetectorArrayGeometry.from_part_data(part)
@@ -90,6 +90,65 @@ def test_eds_heads_retain_old_envelope_and_real_angular_definition(column):
     detector_solids(part, column)
     assert EDSDetectorArrayGeometry.from_part_data(part) == angular
     assert part == before
+
+
+def test_eds_square_die_support_and_taper_have_analytic_material_volume(column):
+    part = _eds(column)
+    geometry = eds_head_geometry(part, column)
+    specs = detector_solids(part, column)
+    half = geometry['face_half_width_mm']
+    front, rear = geometry['front_half_width_mm'], geometry['rear_half_width_mm']
+    depth = geometry['housing_length_mm']
+    wall, back = part['mechanical_housing_wall_mm'], part['mechanical_back_wall_mm']
+    cavity_front = front-wall
+    cavity_rear = front+(rear-front)*(depth-back)/depth-wall
+    frustum_volume = lambda a, b, length: 4*length*(a*a+a*b+b*b)/3
+    shell_volume = frustum_volume(front, rear, depth)-frustum_volume(cavity_front, cavity_rear, depth-back)
+    for head in geometry['heads']:
+        leaves = [s for s in specs if s.parameters['index'] == head['index']]
+        for spec, thickness in zip(leaves[:2], (part['mechanical_sensor_thickness_mm'],
+                                                part['mechanical_support_thickness_mm']), strict=True):
+            local = spec.shape['shape']
+            assert local['kind'] == 'box'
+            np.testing.assert_allclose(local['size_mm'], (2*half, 2*half, thickness))
+            assert _manifold(spec.shape, 24).volume() == pytest.approx((2*half)**2*thickness)
+            assert spec.parameters['mechanical_footprint_shape'] == 'square'
+            assert 'not verified OEM shapes' in spec.note
+        assert _manifold(leaves[2].shape, 24).volume() == pytest.approx(shell_volume)
+        # Transform the actual native sensor vertices back into the head frame:
+        # all four square corners survive, including points outside the old disk.
+        mesh, = meshes_from_solids(leaves[:1], 24)
+        local_points = (mesh.vertices-np.asarray(head['center_mm']))@np.asarray(head['rotation'])
+        assert set(map(tuple, np.round(local_points[:, :2], 9))) == {
+            (-half, -half), (-half, half), (half, -half), (half, half)}
+
+
+def test_all_installed_column_aliases_declare_square_eds_without_changing_acceptance():
+    paths = sorted((ROOT/'configs/instruments/column').glob('*.toml'))
+    count = 0
+    for path in paths:
+        by_key = {row['key']: row for row in PartModelDocument(path).document['parts']}
+        for part in by_key.values():
+            if part.get('mechanical_profile') != EDS_PROFILE:
+                continue
+            count += 1
+            before = deepcopy(by_key)
+            assert part['mechanical_footprint_shape'] == 'square'
+            assert 'not a measured OEM' in part['mechanical_footprint_source']
+            angular = EDSDetectorArrayGeometry.from_part_data(resolve_eds_detector_part_data(part))
+            specs = detector_solids(part, by_key)
+            assert len(specs) == 3*angular.segment_count == 18
+            assert all(spec.parameters['mechanical_footprint_shape'] == 'square' for spec in specs)
+            assert by_key == before
+    assert count == 7
+
+
+@pytest.mark.parametrize('profile,shape', [(EDS_PROFILE, 'disk'), (EELS_PROFILE, 'square')])
+def test_detector_shape_convention_rejects_incompatible_metadata(column, eels, profile, shape):
+    part, by_key = (_eds(column), column) if profile == EDS_PROFILE else eels
+    part['mechanical_footprint_shape'] = shape
+    with pytest.raises(ValueError, match='mechanical_footprint_shape'):
+        detector_solids(part, by_key)
 
 
 def test_eds_material_closed_nonoverlapping_and_clear_of_full_objective(column):
@@ -155,4 +214,45 @@ def test_eels_material_is_closed_and_layer_stack_does_not_overlap(eels):
             assert (solid ^ other).volume() < 1e-10
     part['mechanical_optical_coupling_depth_mm'] = 20.
     with pytest.raises(ValueError, match='fit ahead'):
+        detector_solids(part, by_key)
+
+
+def test_eels_receiving_regions_are_real_rectangles_in_cad_and_runtime(eels):
+    from temsim.energy_filter_model_3d import _zebra_meshes
+    from temsim.optics.energy_filter_detector import ZebraEELSDetector
+
+    part, by_key = eels
+    assert part['mechanical_footprint_shape'] == 'rectangle'
+    guides = _zebra_meshes(part)
+    strips = [g for g in guides if g.region.startswith('active_strip_')]
+    assert len(strips) == 5
+    for guide in strips:
+        np.testing.assert_allclose(np.ptp(guide.vertices, axis=0), (28.672, .8, 0.))
+    alignment = next(g for g in guides if 'alignment' in g.region)
+    np.testing.assert_allclose(np.ptp(alignment.vertices, axis=0), (28.672, 3.584, 0.))
+    for spec in detector_solids(part, by_key):
+        assert spec.parameters['mechanical_footprint_shape'] == 'rectangle'
+    detector = ZebraEELSDetector().validate()
+    for alignment_mode, half_height in ((False, .4), (True, 1.792)):
+        detector.alignment_mode = alignment_mode
+        # Inside a long-strip corner, outside its narrow height, and outside width.
+        x_mm = np.array([14., 0., 14.4])
+        y_mm = np.array([.9*half_height, 1.1*half_height, 0.])
+        np.testing.assert_array_equal(detector.recording_mask(x_mm*1e-3, y_mm*1e-3),
+                                      [True, False, False])
+        detector.inserted = False
+        assert not detector.recording_mask(x_mm*1e-3, y_mm*1e-3).any()
+        detector.inserted = True
+
+
+@pytest.mark.parametrize('width,height', [('strip_active_width_mm', 'strip_active_height_mm'),
+                                         ('alignment_active_width_mm', 'alignment_active_height_mm')])
+def test_eels_cannot_silently_become_square(eels, width, height):
+    from temsim.energy_filter_model_3d import _zebra_meshes
+
+    part, by_key = eels
+    part[height] = part[width]
+    with pytest.raises(ValueError, match='distinct width and height'):
+        _zebra_meshes(part)
+    with pytest.raises(ValueError, match='distinct width and height'):
         detector_solids(part, by_key)

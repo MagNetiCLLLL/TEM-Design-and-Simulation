@@ -96,6 +96,10 @@ def operating_dimension_specs(part, runtime):
 
 
 def strip_meshes(part, count, runtime=None, aperture_index=0):
+    from temsim.cad_aperture_support import aperture_support_meshes
+    supported = aperture_support_meshes(part, count, runtime, aperture_index)
+    if supported is not None:
+        return supported
     from temsim.part_model_3d import _mesh, _number
     from temsim.part_model_features import _decorate, _manifold_module, _normal_data
 

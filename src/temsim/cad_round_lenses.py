@@ -87,6 +87,19 @@ def round_lens_solids(part, by_key) -> tuple[SolidSpec, ...] | None:
         return ()
     if profile not in SUPPORTED_PROFILES:
         return None
+    if profile == MAGNETIC_LENS_HOUSING:
+        from temsim.cad_c3_lens_hardware import c3_lens_hardware_solids
+        from temsim.cad_adapter_lens_hardware import adapter_lens_hardware_solids
+        from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
+        for builder in (c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids):
+            detailed = builder(part, by_key)
+            if detailed is not None:
+                return detailed
+    if profile == C1_C2_POLE_PIECE_CARTRIDGE:
+        from temsim.cad_condenser_cartridge import cartridge_solids
+        detailed = cartridge_solids(part, by_key)
+        if detailed is not None:
+            return detailed
 
     # Local imports prevent a cycle when the native view consumes these specs.
     from temsim.component_representation import non_material_role

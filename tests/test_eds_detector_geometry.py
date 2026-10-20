@@ -65,7 +65,10 @@ def test_eds_definition_is_included_in_installed_project_data():
 def test_every_column_installs_the_same_evidence_bounded_eds_array():
     paths = sorted(COLUMN_ROOT.glob("*.toml"))
 
-    assert len(paths) == 5
+    assert {path.stem for path in paths} == {
+        'C2', 'C3', 'C3_BCOR', 'C3_ImageCorrector', 'C3_ProbeCorrector',
+        'C3_ProbeCorrector_BCOR', 'C3_ProbeCorrector_ImageCorrector',
+    }
     for path in paths:
         raw_document = _column_document(path.name)
         raw_detectors = [
@@ -87,6 +90,7 @@ def test_every_column_installs_the_same_evidence_bounded_eds_array():
         assert detector["mechanical_only"] is True
         assert detector["axial_vacuum_context_only"] is True
         assert detector["parent_key"] == "objective_lens"
+        assert detector["mechanical_footprint_shape"] == "square"
         assert detector["local_start_z_mm"] == pytest.approx(
             sample["local_center_z_mm"]
         )

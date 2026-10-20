@@ -11,7 +11,8 @@ from numbers import Real
 
 import numpy as np
 
-from temsim.cad_geometry import SolidSpec, annulus, box, difference, revolve, transformed
+from temsim.cad_geometry import SolidSpec, box, difference, transformed
+from temsim.cad_recording_planes import validate_detector_footprint
 from temsim.detector.eds_geometry import EDSDetectorArrayGeometry, resolve_eds_detector_part_data
 
 
@@ -108,6 +109,7 @@ def validate_detector_material_geometry(part, by_key):
     immutable inputs. Missing mechanical geometry is not defaulted silently.
     """
     part = _resolved(part)
+    validate_detector_footprint(part)
     fields = _declared_fields(part)
     if not fields:
         return
@@ -142,17 +144,49 @@ def validate_detector_material_geometry(part, by_key):
             raise ValueError("EELS housing wall must fit inside the declared frame margin")
 
 
+def _square_frustum(start, end, front, rear):
+    """Square tapered body from existing planar CSG primitives.
+
+    Oversized cutting boxes represent four half spaces, not additional parts.
+    Front/rear values are side half-widths at the two supplied Z coordinates.
+    """
+    length = end-start
+    extent = max(front, rear)
+    base = box((0., 0., (start+end)/2), (2*extent, 2*extent, length))
+    if front == rear:
+        return base
+    slope = (front-rear)/length
+    angle = math.atan(slope)
+    c, s = math.cos(angle), math.sin(angle)
+    tilt = np.array(((c, 0., -s), (0., 1., 0.), (s, 0., c)))
+    distance = 4*max(extent, length)
+    tools = []
+    for side in range(4):
+        a = side*math.pi/2
+        ca, sa = math.cos(a), math.sin(a)
+        turn = np.array(((ca, -sa, 0.), (sa, ca, 0.), (0., 0., 1.)))
+        rotation = turn @ tilt
+        origin = turn @ np.array((front, 0., start)) + rotation[:, 0]*distance/2
+        tools.append(transformed(box((0., 0., 0.), (distance, 2*distance, 2*distance)),
+                                 rotation=rotation.tolist(), offset=origin.tolist()))
+    return difference(base, *tools)
+
+
 def _eds_solids(part, by_key):
     geometry = eds_head_geometry(part, by_key)
-    radius, length = geometry["face_half_width_mm"], geometry["housing_length_mm"]
+    half_width, length = geometry["face_half_width_mm"], geometry["housing_length_mm"]
     front, rear = geometry["front_half_width_mm"], geometry["rear_half_width_mm"]
     sensor, support, wall, back = (float(part[field]) for field in EDS_FIELDS)
     inside_back = front+(rear-front)*(length-back)/length-wall
-    # Open front, finite side wall, closed rear. No fictitious entrance window.
-    shell = revolve([(0., front-wall), (0., front), (length, rear), (length, 0.),
-                     (length-back, 0.), (length-back, inside_back)])
-    shapes = (("sensor", "silicon", annulus(0., sensor, 0., radius)),
-              ("support", "insulator", annulus(sensor, sensor+support, 0., radius)),
+    # User-specified square face and package convention, preserving all saved
+    # lengths, face centres and side half-widths. The cavity cuts through the
+    # front but retains the declared rear wall; no entrance window is added.
+    inner_start = -wall
+    inside_front = front-wall+(rear-front)*inner_start/length
+    shell = difference(_square_frustum(0., length, front, rear),
+                       _square_frustum(inner_start, length-back, inside_front, inside_back))
+    shapes = (("sensor", "silicon", box((0., 0., sensor/2), (2*half_width, 2*half_width, sensor))),
+              ("support", "insulator", box((0., 0., sensor+support/2), (2*half_width, 2*half_width, support))),
               ("cold_shield", "nonmagnetic_housing", shell))
     values = []
     for head in geometry["heads"]:
@@ -160,13 +194,13 @@ def _eds_solids(part, by_key):
             values.append(SolidSpec(part["key"], f"segment_{head['index']+1}_{name}", material,
                 transformed(shape, rotation=head["rotation"], offset=head["center_mm"]),
                 (REFERENCE, EDS_SOURCE, SDD_SOURCE), STATUS,
-                "Windowless EDS engineering material in the existing schematic head envelope. "
-                "The front disk is a mechanical Si die illustration, not a newly inferred active area; "
+                "Windowless EDS with user-specified square faces and square tapered housing; not verified OEM shapes. "
+                "The front square is a mechanical Si die illustration, not a newly inferred active area; "
                 "the unchanged angular photon acceptance does not intersect this CAD face. "
                 "Cold shield and insulating support are simplified topology; cooling plumbing, shutter and circuits are not reconstructed.",
                 {**{field: part[field] for field in EDS_FIELDS}, **head,
-                 "face_radius_mm": radius, "housing_length_mm": length,
-                 "front_radius_mm": front, "rear_radius_mm": rear,
+                 "mechanical_footprint_shape": "square", "face_half_width_mm": half_width,
+                 "housing_length_mm": length, "front_half_width_mm": front, "rear_half_width_mm": rear,
                  "drawing_distance_mm": geometry["drawing_distance_mm"],
                  "physical_acceptance": geometry["physical_acceptance"]}))
     return tuple(values)
@@ -182,7 +216,7 @@ def _eels_solids(part, by_key):
     width, height = upper[0]-lower[0], upper[1]-lower[1]
     cx, cy = (upper[:2]+lower[:2])/2
     parameters = {field: part[field] for field in EELS_FIELDS}
-    parameters.update(active_strip_count=len(strips), readout_datum_mm=0.,
+    parameters.update(mechanical_footprint_shape="rectangle", active_strip_count=len(strips), readout_datum_mm=0.,
         mechanical_front_width_mm=float(width+2*margin), mechanical_front_height_mm=float(height+2*margin),
         alignment_scope="unchanged_overlapping_reference_guide_not_second_material_sensor")
     values = []

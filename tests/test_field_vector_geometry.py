@@ -188,7 +188,11 @@ def test_real_hp2_tl22_and_dph2_reuse_production_physical_regions_and_positions(
         assert mesh.color == original.color and mesh.is_exact == original.is_exact
     hp = [mesh for mesh in result.meshes if mesh.key == "probe_hp2_hexapole"]
     assert sum(mesh.region.startswith("pole_pin_") for mesh in hp) == 6
-    assert sum(mesh.region.startswith("coil_") for mesh in hp) == 6
+    assert {mesh.region for mesh in hp if mesh.material_class == "copper_winding"} == {
+        f"coil_{index}" for index in range(1, 7)}
+    assert sum(mesh.region.endswith("_former") for mesh in hp) == 6
+    assert sum(mesh.region.endswith("_core_bedding") for mesh in hp) == 6
+    assert len(hp) == 25
     assert {mesh.key for mesh in result.select(("probe_tl22_lens",))} == {
         "probe_tl22_lens_upper_pole", "probe_tl22_lens_lower_pole", "probe_tl22_lens_housing",
         "probe_tl22_lens_yoke", "probe_tl22_lens_excitation_coil",
