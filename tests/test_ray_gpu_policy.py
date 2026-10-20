@@ -5,6 +5,7 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
+from backend_test_fakes import install_fake_numba_cuda, numba_error
 from temsim.physics import compute_backend as backend
 
 
@@ -15,14 +16,12 @@ from temsim.physics import compute_backend as backend
 def test_auto_missing_cuda_compiler_completes_column_on_cpu(
     monkeypatch, ray_count, tuning, expected, field_route,
 ):
-    from numba import cuda
-    from numba.cuda.cudadrv import driver
+    monkeypatch.delenv("CUDA_VISIBLE_DEVICES", raising=False)
+    install_fake_numba_cuda(monkeypatch)
     from temsim.optics.column import default_state
     from temsim.physics import core
     from temsim.physics.backend_execution import backend_receipts
 
-    monkeypatch.setattr(cuda, "is_available", lambda: False)
-    monkeypatch.setattr(driver, "driver", SimpleNamespace(is_available=True))
     state = default_state()
     state.step_mm = 1.
     state.acceleration_enabled = True
@@ -78,14 +77,13 @@ def test_preference_and_explicit_cpu_remain_distinct(monkeypatch):
 
 
 def test_numba_invalid_inputs_and_generic_errors_are_not_retryable():
-    from numba.cuda.cudadrv.driver import CudaAPIError
-    assert backend.gpu_failure_category(CudaAPIError(2, "fixture oom")) == "out_of_memory"
-    for error in (ValueError("invalid optics"), RuntimeError("cancelled"), CudaAPIError(1, "invalid value"),
+    assert backend.gpu_failure_category(numba_error(2, "fixture oom")) == "out_of_memory"
+    for error in (ValueError("invalid optics"), RuntimeError("cancelled"), numba_error(1, "invalid value"),
                   backend.GPUExecutionError("unsupported_physics", "fixture")):
         with pytest.raises(type(error)):
             backend.gpu_retry_reason(error, "Prefer GPU")
     with pytest.raises(backend.GPUExecutionError):
-        backend.gpu_retry_reason(CudaAPIError(2, "fixture oom"), "Require GPU")
+        backend.gpu_retry_reason(numba_error(2, "fixture oom"), "Require GPU")
 
 
 @pytest.mark.parametrize("kind", ["invalid", "resource", "strict_resource"])

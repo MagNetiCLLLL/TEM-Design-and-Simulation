@@ -257,9 +257,72 @@ def test_direction_arrow_display_is_bounded_without_changing_physical_geometry(c
                         bounds_m=np.array([[-0.02, -0.02, 0.0], [0.02, 0.02, 1.0]]),
                         direction_segments_m=segments)
     np.testing.assert_array_equal(canvas._direction_segments_m, segments)
+    canvas._field_arrows_on_screen(canvas._screen_transform())
+    assert 0 < len(canvas._direction_draw_indices) <= 160
+    np.testing.assert_array_equal(canvas._direction_segments_m, segments)
+    assert len(canvas._field_projected_arrows) == len(segments)
+
+
+def test_direction_arrows_are_visible_and_separated_in_screen_space(canvas):
+    segments, strength = _scene()
+    canvas.set_geometry(segments, strength, reference_t=1.,
+                        bounds_m=[[-.02, -.02, 0.], [.02, .02, 1.]],
+                        direction_segments_m=segments)
+    canvas.set_view_range_mm((200., 750.), (-15., 15.))
+    path = canvas._field_arrows_on_screen(canvas._screen_transform())
+    tips = np.array([[path.elementAt(i).x, path.elementAt(i).y]
+                     for i in range(1, path.elementCount(), 3)])
+    assert len(tips) > 10
+    assert len(tips) == len(canvas._direction_draw_indices)
+    assert all(canvas._plot_rect().contains(QPointF(*point)) for point in tips)
+    distances = np.linalg.norm(tips[:, None, :] - tips[None, :, :], axis=2)
+    np.fill_diagonal(distances, np.inf)
+    assert np.min(distances) >= 20. - 1e-9
+    for tip, source_index in zip(tips, canvas._direction_draw_indices):
+        midpoint = np.mean(segments[source_index], axis=0)
+        expected = canvas.physical_mm_to_screen(midpoint[2]*1e3, midpoint[0]*1e3)
+        np.testing.assert_allclose(tip, [expected.x(), expected.y()], atol=1e-10)
+
+
+def test_zoom_recovers_local_directions_without_rebuilding_lines(canvas, monkeypatch):
+    z = np.linspace(.0001, .9999, 4000)
+    starts = np.column_stack((np.zeros_like(z), np.zeros_like(z), z))
+    segments = np.stack((starts, starts + [0., 0., .00001]), axis=1)
+    canvas.set_geometry(segments, np.ones(len(z)), reference_t=1.,
+                        bounds_m=[[-.001, -.001, 0.], [.001, .001, 1.]],
+                        direction_segments_m=segments)
+    canvas.set_view_range_mm((0., 1000.), (-1., 1.))
+    canvas._field_arrows_on_screen(canvas._screen_transform())
+    overview_indices = set(canvas._direction_draw_indices)
+    retained = (canvas._segments_m, canvas._direction_segments_m, canvas._colour_paths)
+    monkeypatch.setattr(canvas, "_rebuild_projection",
+                        lambda: pytest.fail("Navigation must reuse captured line geometry"))
+    canvas.set_view_range_mm((198., 202.), (-1., 1.))
+    closeup = canvas._field_arrows_on_screen(canvas._screen_transform())
+    closeup_indices = set(canvas._direction_draw_indices)
+    assert len(closeup_indices) >= 8
+    assert closeup_indices - overview_indices
+    assert all(198. <= np.mean(segments[index, :, 2])*1e3 <= 202. for index in closeup_indices)
+    assert canvas._field_arrows_on_screen(canvas._screen_transform()) is closeup
+    assert all(current is previous for current, previous in zip(
+        (canvas._segments_m, canvas._direction_segments_m, canvas._colour_paths), retained))
+    np.testing.assert_array_equal(canvas._direction_segments_m, segments)
+
+
+def test_offscreen_direction_candidates_do_not_consume_arrow_budget(canvas):
+    x, z = np.meshgrid(np.linspace(-.009, .009, 24), np.linspace(.4, .6, 30))
+    starts = np.column_stack((x.ravel(), np.zeros(x.size), z.ravel()))
+    visible = np.stack((starts, starts + [0., 0., .0001]), axis=1)
+    outside = np.repeat([[[.2, 0., .1], [.2, 0., .1001]]], 2000, axis=0)
+    segments = np.concatenate((outside, visible, outside))
+    canvas.set_geometry(segments, np.ones(len(segments)), reference_t=1.,
+                        bounds_m=[[-.02, -.01, 0.], [.21, .01, 1.]],
+                        direction_segments_m=segments)
+    canvas.set_view_range_mm((390., 610.), (-10., 10.))
+    canvas._field_arrows_on_screen(canvas._screen_transform())
     assert len(canvas._direction_draw_indices) == 160
-    assert canvas._direction_draw_indices[0] == 0
-    assert canvas._direction_draw_indices[-1] == len(segments) - 1
+    assert min(canvas._direction_draw_indices) >= len(outside)
+    assert max(canvas._direction_draw_indices) < len(outside) + len(visible)
 
 
 def test_electron_overlay_is_detached_and_keeps_turning_path_in_time_order(canvas):

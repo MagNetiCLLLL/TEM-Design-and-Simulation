@@ -8,6 +8,7 @@ returns canonical backend names consumed by the ray propagator and GUI.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import os
 
 
 BACKEND_AUTO = "Auto"
@@ -104,6 +105,14 @@ class BackendCapability:
     detail: str
 
 
+def cuda_disabled_reason() -> str | None:
+    """Respect explicit process-level CPU isolation without loading a driver."""
+    visible = os.environ.get("CUDA_VISIBLE_DEVICES")
+    if visible is not None and visible.strip() in {"", "-1"}:
+        return "CUDA disabled by CUDA_VISIBLE_DEVICES"
+    return None
+
+
 def numba_cpu_capability() -> BackendCapability:
     try:
         import numba  # noqa: F401
@@ -115,6 +124,9 @@ def numba_cpu_capability() -> BackendCapability:
 def cuda_capability() -> BackendCapability:
     from temsim.physics.ray_device_cache import DEVICE_CACHE
     DEVICE_CACHE.assert_usable()
+    disabled = cuda_disabled_reason()
+    if disabled is not None:
+        return BackendCapability(False, disabled)
     try:
         from numba import cuda
 
@@ -156,6 +168,9 @@ def cupy_capability() -> BackendCapability:
 
     from temsim.physics.ray_device_cache import DEVICE_CACHE
     DEVICE_CACHE.assert_usable()
+    disabled = cuda_disabled_reason()
+    if disabled is not None:
+        return BackendCapability(False, disabled)
     try:
         import cupy as cp
 

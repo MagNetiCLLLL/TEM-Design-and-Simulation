@@ -9,7 +9,7 @@ from collections import OrderedDict
 from dataclasses import replace
 from pathlib import Path
 
-from PySide6.QtCore import QSignalBlocker
+from PySide6.QtCore import QObject, QSignalBlocker, Slot
 from PySide6.QtWidgets import QFileDialog, QHBoxLayout, QPushButton
 
 from temsim.diagnostic_electron_record import ElectronRecord
@@ -34,10 +34,11 @@ def scene_dependency(scene, *, result_reference=None):
     )
 
 
-class ElectronSessionActions:
+class ElectronSessionActions(QObject):
     """Own file presentation and atomic record replacement, never integration."""
 
     def __init__(self, controller, layout):
+        super().__init__(controller)
         self.controller = controller
         self.capture_view = lambda: DiagnosticDisplayState()
         self.restore_view = lambda display: None
@@ -154,6 +155,7 @@ class ElectronSessionActions:
         c.background_changed.emit(c.background.isChecked())
         return session
 
+    @Slot()
     def choose_save(self):
         c = self.controller
         path, _ = QFileDialog.getSaveFileName(c.panel, "Save virtual electron session", "electrons.temdiag",
@@ -166,6 +168,7 @@ class ElectronSessionActions:
             else:
                 c._status(f"Diagnostic session saved: {Path(path)}")
 
+    @Slot()
     def choose_load(self):
         c = self.controller
         path, _ = QFileDialog.getOpenFileName(c.panel, "Open virtual electron session", "",

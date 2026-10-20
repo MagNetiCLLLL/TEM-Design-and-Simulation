@@ -7,17 +7,17 @@ the numerical derivative of the magnetic field from the ray equations.
 """
 
 import math
+from threading import RLock
 
 import numpy as np
 
 ELECTRON_CHARGE_C = -1.602176634e-19
 
 try:
-    from numba import cuda, njit, prange
+    from numba import njit, prange
     from numba.extending import register_jitable
     NUMBA_AVAILABLE = True
 except ImportError:
-    cuda = None
     NUMBA_AVAILABLE = False
     prange = range
 
@@ -26,6 +26,14 @@ except ImportError:
 
     def register_jitable(*args, **kwargs):
         return lambda function: function
+
+
+# Importing numba.cuda can load a native driver even without a CUDA job.
+# Keep CPU kernels importable and compile device kernels only on first use.
+cuda = None
+_cuda_rk4_kernel = None
+_cuda_time_rk4_kernel = None
+_cuda_kernel_lock = RLock()
 
 
 @register_jitable(inline="always")
@@ -298,7 +306,11 @@ def vectorised_rk4(
     return (*result, T, CT) if time is not None else result
 
 
-if NUMBA_AVAILABLE:
+def _build_cuda_kernels():
+    global cuda, _canonical_stages_cuda, _rk4_flight_cuda
+    global _cuda_rk4_kernel, _cuda_time_rk4_kernel
+    from numba import cuda
+
     _canonical_stages_cuda = cuda.jit(device=True)(_canonical_rk4_stages)
     _rk4_flight_cuda = cuda.jit(device=True)(_rk4_flight_increment)
 
@@ -413,14 +425,25 @@ if NUMBA_AVAILABLE:
             x, tx, y, ty = values[:4]
             time += _rk4_flight_cuda(step_m[j], inv_v, values[4], values[5],
                 values[6], values[7], values[8], values[9], values[10], values[11])
-else:
-    _cuda_rk4_kernel = None
-    _cuda_time_rk4_kernel = None
+
+
+def _ensure_cuda_kernels():
+    from temsim.physics.compute_backend import GPUExecutionError, cuda_disabled_reason
+    from temsim.physics.ray_device_cache import DEVICE_CACHE
+
+    DEVICE_CACHE.assert_usable()
+    disabled = cuda_disabled_reason()
+    if disabled is not None:
+        raise GPUExecutionError("unavailable", disabled)
+    if not NUMBA_AVAILABLE:
+        raise GPUExecutionError("unavailable", "Numba CUDA support is not importable")
+    with _cuda_kernel_lock:
+        if _cuda_rk4_kernel is None or _cuda_time_rk4_kernel is None:
+            _build_cuda_kernels()
 
 
 def cuda_rk4(*inputs, initial_time_s=None, inverse_speed=None):
-    if cuda is None or _cuda_rk4_kernel is None:
-        raise RuntimeError("Numba CUDA support is not importable")
+    _ensure_cuda_kernels()
     from temsim.physics.ray_device_cache import DEVICE_CACHE
     if initial_time_s is not None:
         return DEVICE_CACHE.execute(cuda, _cuda_time_rk4_kernel,

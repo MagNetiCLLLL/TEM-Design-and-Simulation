@@ -5,6 +5,7 @@ hardware; a cell replaces the ambient medium only in its finite volume.
 """
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import asdict, dataclass, field, replace
 import hashlib
 import json
@@ -149,6 +150,13 @@ class VacuumMap:
     cell: SpecimenCell = field(default_factory=SpecimenCell)
     max_optical_depth_per_step: float = 0.02
     max_transport_nodes: int = 2000000
+    def __getattr__(self, name):
+        # Optional display metadata is deliberately not a dataclass field:
+        # exact pre-feature working-point graphs retain their original schema.
+        # Merely viewing a legacy map must not add an attribute to that graph.
+        if name == "pumping":
+            return {}
+        raise AttributeError(f"{type(self).__name__!r} has no attribute {name!r}")
 
     def validate(self):
         if self.schema != VACUUM_SCHEMA:
@@ -189,16 +197,28 @@ class VacuumMap:
         for window in (self.cell.upstream_window, self.cell.downstream_window):
             if window.thickness_nm and window.radius_mm(self.cell) < self.cell.diameter_mm / 2:
                 raise ValueError("Each nonzero window must cover the cell aperture")
+        from temsim.vacuum_pumping import validate_pumping_layout
+        validate_pumping_layout(self.pumping, keys)
         return self
 
     def to_dict(self):
-        return asdict(self)
+        data = asdict(self)
+        data["pumping"] = deepcopy(self.pumping)
+        return data
+
+    def transport_dict(self):
+        """Inputs consumed by residual-medium transport, excluding drawings."""
+        data = self.to_dict()
+        data.pop("pumping", None)
+        return data
 
     @classmethod
     def from_dict(cls, data):
         if not isinstance(data, dict):
             raise ValueError("Vacuum map must be a table")
         data = dict(data)
+        has_pumping = "pumping" in data
+        pumping = data.pop("pumping", None)
         try:
             data["regions"] = [VacuumRegion(**{**r, "medium": Medium(**r.get("medium", {}))})
                                for r in data.get("regions", [])]
@@ -210,7 +230,10 @@ class VacuumMap:
                     window["medium"] = Medium(**window["medium"])
                 windows[key] = CellWindow(**window)
             data["cell"] = SpecimenCell(**{**c, "medium": Medium(**c.get("medium", {})), **windows})
-            return cls(**data).validate()
+            result = cls(**data)
+            if has_pumping:
+                result.pumping = deepcopy(pumping)
+            return result.validate()
         except (TypeError, AttributeError) as exc:
             raise ValueError(f"Invalid vacuum map fields: {exc}") from exc
 
@@ -239,7 +262,7 @@ class VacuumMap:
             Path(name).unlink(missing_ok=True)
 
     def signature(self):
-        return hashlib.sha256(json.dumps(self.to_dict(), sort_keys=True).encode()).hexdigest()
+        return hashlib.sha256(json.dumps(self.transport_dict(), sort_keys=True).encode()).hexdigest()
 
 
 @dataclass(frozen=True)

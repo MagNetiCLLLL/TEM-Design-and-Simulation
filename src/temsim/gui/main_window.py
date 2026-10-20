@@ -79,9 +79,6 @@ from temsim.physics.compute_backend import (
     BACKEND_AUTO,
     BACKEND_CHOICES,
     BACKEND_CPU,
-    BACKEND_CUDA,
-    cupy_capability,
-    cuda_capability,
 )
 from temsim.runtime_parameters import editable_parameters, runtime_targets
 from temsim.simulation_modes import MODE_BY_KEY, mode_key, switch_mode, promote_custom_mode
@@ -356,6 +353,7 @@ class MainWindow(QMainWindow):
             self._reveal_physical_model
         )
         self.workspace.physical_layout.navigation_requested.connect(self._navigate_physical_component)
+        self.workspace.magnetic_field.navigation_requested.connect(self._navigate_physical_component)
         self.assembly_panel.navigation_requested.connect(self._navigate_physical_component)
         self.workspace.vacuum_map.changed.connect(self._runtime_parameter_changed)
         self.workspace.vacuum_map.geometry_requested.connect(self._open_cell_geometry)
@@ -694,9 +692,8 @@ class MainWindow(QMainWindow):
         from temsim.physics.compute_backend import normalise_backend
         selected_index = self.compute_backend.findData(normalise_backend(selected_backend))
         self.compute_backend.setCurrentIndex(max(selected_index, 0))
-        from temsim.physics.compute_backend import capability_detail_for_display
-        cuda_detail = capability_detail_for_display(cuda_capability)
-        cupy_detail = capability_detail_for_display(cupy_capability)
+        # Capability probes initialise native GPU drivers. Building a tooltip
+        # must not do that, especially in a CPU-only or headless GUI session.
         self.compute_backend.setToolTip(
             "The single device preference for all calculation pages. Auto "
             "uses an available GPU for supported ray and wave operations, "
@@ -704,7 +701,8 @@ class MainWindow(QMainWindow):
             "Prefer GPU reports CPU fallback; Require GPU rejects unavailable or unsupported accelerated stages. "
             "CUDA GPU requests acceleration and reports any CPU retry. "
             "Gun extraction/acceleration and other CPU-only preparation remain separate. "
-            f"Ray CUDA: {cuda_detail}. Wave CUDA: {cupy_detail}."
+            "GPU availability is checked when a calculation needs it; "
+            "the calculation log reports the backend actually used."
         )
         self.compute_backend.currentIndexChanged.connect(
             self._compute_backend_changed
@@ -1378,6 +1376,18 @@ class MainWindow(QMainWindow):
             if not part.data.get("cell_context"):
                 self.workspace.reveal_component(part, preferred_view="ray")
             self.status_label.setText(f"Showing {part.name} in Ray Diagram")
+        elif destination == "physical":
+            layout = self.workspace.physical_layout
+            layout.tabs.setCurrentWidget(layout.rotating_section)
+            self.workspace.reveal_component(part, preferred_view="physical")
+            self.status_label.setText(f"Showing {part.name} in Physical Layout / Rotating section")
+        elif destination == "magnetic":
+            field = self.workspace.magnetic_field
+            self.workspace.tabs.setCurrentWidget(field)
+            field.display_mode.setCurrentIndex(field.display_mode.findData("vectors"))
+            self.workspace._refresh_visible_ray_panels()
+            field.focus_component(part)
+            self.status_label.setText(f"Showing {part.name} in Magnetic field / Component field vectors")
         elif destination == "vacuum":
             if part.data.get("cell_context"):
                 self.workspace.vacuum_map.select_region("specimen_cell")
@@ -1553,7 +1563,8 @@ class MainWindow(QMainWindow):
         """Open the left editor for a component clicked in a plot."""
 
         key = str(key)
-        if self.workspace.tabs.currentWidget() is self.workspace.physical_layout:
+        if self.workspace.tabs.currentWidget() in (
+                self.workspace.physical_layout, self.workspace.magnetic_field):
             self._select_physical_component(key)
             return
         if key == "sample":
@@ -2280,18 +2291,9 @@ class MainWindow(QMainWindow):
         self.workspace.magnetic_field.field_lines.set_compute_policy(
             backend, self.state.acceleration_enabled)
         self.schedule_preview("acceleration_backend", automatic=False)
-        if backend == BACKEND_CUDA:
-            from temsim.physics.compute_backend import capability_detail_for_display
-            ray_detail = capability_detail_for_display(cuda_capability)
-            wave_detail = capability_detail_for_display(cupy_capability)
-            detail = (
-                f" (ray: {ray_detail}; wave: {wave_detail})"
-            )
-        else:
-            detail = ""
-        self.status_label.setText(f"Compute backend: {backend}{detail}")
+        self.status_label.setText(f"Compute backend requested: {backend}")
         self.log_output.appendPlainText(
-            f"Compute backend requested: {backend}{detail}."
+            f"Compute backend requested: {backend}. Availability is checked when calculating."
         )
 
     def run_preview(self) -> None:

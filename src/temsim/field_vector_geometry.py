@@ -38,6 +38,8 @@ class FieldVectorGeometry:
     notes: tuple[str, ...] = ()
     errors: tuple[str, ...] = ()
     source_notes: Mapping[str, tuple[str, ...]] = field(default_factory=lambda: MappingProxyType({}))
+    all_meshes: tuple[TriangleMesh, ...] = ()
+    component_mesh_keys: Mapping[str, tuple[str, ...]] = field(default_factory=lambda: MappingProxyType({}))
 
     def select(self, source_keys=None):
         """Return the union once, without rebuilding geometry or fields."""
@@ -47,6 +49,11 @@ class FieldVectorGeometry:
             raise ValueError(f"Unknown field source keys: {', '.join(sorted(map(str, unknown)))}")
         parts = {part for key in keys for part in self.source_mesh_keys[key]}
         return tuple(mesh for mesh in self.meshes if mesh.key in parts)
+
+    def select_component(self, component_key):
+        """A passive selected part remains visible without acquiring a field."""
+        keys = set(self.component_mesh_keys.get(str(component_key), ()))
+        return tuple(mesh for mesh in self.all_meshes if mesh.key in keys)
 
 
 def _runtime_geometry(state):
@@ -138,11 +145,19 @@ def build_field_vector_geometry(state, sources, *, angular_segments=16):
             messages.append(f"{source.key}: no independently modelled material geometry is available for this captured source.")
         source_notes[str(source.key)] = tuple(dict.fromkeys(messages))
     used = {key for keys in mapping.values() for key in keys}
-    meshes = tuple(_mesh_metres(mesh) for mesh in model.meshes if mesh.key in used)
+    all_meshes = tuple(_mesh_metres(mesh) for mesh in model.meshes)
+    meshes = tuple(mesh for mesh in all_meshes if mesh.key in used)
+    component_mapping = {
+        key: tuple(sorted(_physical_keys((key,), parts)[0] & available)) for key in parts
+    }
+    # Physical Layout may add independent vacuum-tube meshes derived from the
+    # captured assembly. They are selectable bodies, never new field sources.
+    component_mapping.update({key: (key,) for key in available if key not in component_mapping})
     notes = (
         "Physical models reuse the captured Physical Layout meshes and configured material colours; global right-handed XYZ metres, +Z downstream.",
         "Material placement uses the existing mechanical pose. Optical-axis tilt does not rotate housings, poles or coils. Shared material hosts are drawn once.",
         "Declared mechanical children are included as assembly context; displaying their material does not select their independent field contributions.",
         "Configured / reconstructed geometry is not measured OEM CAD. Approximation labels are retained; model surfaces do not imply valid fields inside materials or outside the field provider domain.",
     )
-    return FieldVectorGeometry(meshes, MappingProxyType(mapping), notes, model.errors, MappingProxyType(source_notes))
+    return FieldVectorGeometry(meshes, MappingProxyType(mapping), notes, model.errors,
+                               MappingProxyType(source_notes), all_meshes, MappingProxyType(component_mapping))

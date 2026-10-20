@@ -111,3 +111,123 @@ reference = "Editable illustrative membrane; see docs/development/CELL_ENVIRONME
 phase = "solid"
 formula = "Si3N4"
 density_kg_m3 = 3100.0
+
+# Editable service schematic only: no pressure, conductance or interlock solve.
+# One turbo and its scroll backing pump serve multiple isolated branches.
+[pumping]
+schema = "vacuum-pumping-layout-v1"
+
+[[pumping.pumps]]
+key = "igp_tip"
+name = "Gun IGP"
+kind = "igp"
+
+[[pumping.pumps]]
+key = "igp_accelerator"
+name = "Accelerator IGP"
+kind = "igp"
+
+[[pumping.pumps]]
+key = "igp_column"
+name = "Column IGP"
+kind = "igp"
+
+[[pumping.pumps]]
+key = "igp_post_column"
+name = "Post-specimen IGP"
+kind = "igp"
+
+[[pumping.pumps]]
+key = "turbo"
+name = "Shared turbo"
+kind = "turbo"
+
+[[pumping.pumps]]
+key = "scroll"
+name = "Dry backing / roughing"
+kind = "scroll"
+
+[[pumping.auxiliaries]]
+key = "airlock"
+name = "Holder airlock"
+anchor = "sample"
+
+[[pumping.lines]]
+key = "gun_tip_igp"
+source = "region:gun_tip"
+target = "pump:igp_tip"
+role = "high_vacuum"
+valve = ""
+open = true
+
+[[pumping.lines]]
+key = "gun_accelerator_igp"
+source = "region:gun_accelerator"
+target = "pump:igp_accelerator"
+role = "high_vacuum"
+valve = ""
+open = true
+
+[[pumping.lines]]
+key = "column_igp"
+source = "region:column"
+target = "pump:igp_column"
+role = "high_vacuum"
+valve = ""
+open = true
+
+[[pumping.lines]]
+key = "specimen_igp"
+source = "region:specimen"
+target = "pump:igp_column"
+role = "high_vacuum"
+valve = ""
+open = true
+
+[[pumping.lines]]
+key = "post_column_igp"
+source = "region:post_column"
+target = "pump:igp_post_column"
+role = "high_vacuum"
+valve = ""
+open = true
+
+[[pumping.lines]]
+key = "projection_turbo"
+source = "region:projection"
+target = "pump:turbo"
+role = "high_vacuum"
+valve = "Projection isolation"
+open = true
+
+[[pumping.lines]]
+key = "airlock_turbo"
+source = "aux:airlock"
+target = "pump:turbo"
+role = "high_vacuum"
+valve = "Airlock high vacuum"
+open = false
+
+[[pumping.lines]]
+key = "turbo_backing"
+source = "pump:turbo"
+target = "pump:scroll"
+role = "backing"
+valve = ""
+open = true
+
+[[pumping.lines]]
+key = "airlock_roughing"
+source = "aux:airlock"
+target = "pump:scroll"
+role = "roughing"
+valve = "Airlock roughing"
+open = false
+
+[[pumping.lines]]
+key = "airlock_transfer"
+source = "aux:airlock"
+target = "region:specimen"
+role = "transfer"
+valve = "Holder transfer isolation"
+open = false

@@ -1468,7 +1468,7 @@ class PhysicalLayoutView(QWidget):
         record = self._record_by_key.get(key)
         menu.addSection(record.name if record else key)
         for title, target in (("Go to Ray Diagram", "ray"), ("Go to 3D Parts", "parts"),
-                              ("Go to Vacuum map", "vacuum")):
+                              ("Go to Vacuum map", "vacuum"), ("Go to Magnetic field", "magnetic")):
             action = menu.addAction(title)
             action.setData(target)
             action.triggered.connect(lambda checked=False, destination=target:
@@ -5354,14 +5354,21 @@ class OpticalTransferView(QWidget):
 class MagneticFieldView(QWidget):
     """Whole-column magnetic diagnostics; view changes reuse captured vectors."""
 
+    DETAIL_DELAY_MS = 250
+    DETAIL_MAX_POINTS = 4096
+    DETAIL_CACHE_SIZE = 4
+
     component_selected = Signal(str)
+    navigation_requested = Signal(str, str, float)
+    projection_angle_requested = Signal(float)
     axial_position_selected = Signal(float)
     field_map_import_requested = Signal(str, str, str, float, int)
     field_map_clear_requested = Signal(str)
     diagnostics_updated = Signal()
 
     def __init__(self, parent=None) -> None:
-        from PySide6.QtWidgets import QDialog, QDialogButtonBox, QFormLayout
+        from collections import OrderedDict
+        from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QFormLayout
         super().__init__(parent)
         self._records = ()
         self._plane_records = ()
@@ -5380,6 +5387,18 @@ class MagneticFieldView(QWidget):
         self._profile_generation = 0
         self._profile_worker = None
         self._profile_request = None
+        # The whole-column profile remains the reference for 3D/electron
+        # publication. Viewport sampling is a separate, bounded display cache.
+        self._detail_profile = None
+        self._detail_key = None
+        self._detail_target_key = None
+        self._detail_generation = 0
+        self._detail_worker = None
+        self._detail_request = None
+        self._detail_cache = OrderedDict()
+        self._detail_timer = QTimer(self)
+        self._detail_timer.setSingleShot(True)
+        self._detail_timer.timeout.connect(self._request_profile_detail)
         self._linked_axial_plot = None
         self._align_axial_plot_edges = True
         self._syncing_axial_range = False
@@ -5398,6 +5417,14 @@ class MagneticFieldView(QWidget):
         self.display_mode.addItem("Electron trajectories", "electron")
         self.display_mode.addItem("Component field vectors", "vectors")
         self.display_mode.setToolTip("Combined magnetic field, independent virtual electrons, or selectable component E/B vectors and electron force. Field vectors use the current captured calculation and mark unsupported regions.")
+        self.auto_detail = QCheckBox("Auto detail")
+        self.auto_detail.setObjectName("magneticFieldAutoDetail")
+        self.auto_detail.setChecked(True)
+        self.auto_detail.setToolTip(
+            "Refine the visible 2D curve after zooming or panning. Samples the "
+            "captured field on CPU; does not recalculate optics or electrons. "
+            "Turn off to show the whole-column cached profile."
+        )
         self.advanced_button = QPushButton("Advanced…")
         self.advanced_button.setObjectName("magneticFieldAdvanced")
         self.status = QLabel("Recalculate to capture the total magnetic field.")
@@ -5418,6 +5445,9 @@ class MagneticFieldView(QWidget):
         self.field_lines = MagneticField3DPage()
         from temsim.gui.field_vector_page import FieldVectorPage
         self.field_vectors = FieldVectorPage()
+        self.field_vectors.component_selected.connect(self.component_selected)
+        self.field_vectors.navigation_requested.connect(self.navigation_requested)
+        self.field_vectors.projection_angle_requested.connect(self.projection_angle_requested)
         self.view_stack = QStackedWidget()
         self.view_stack.setObjectName("magneticFieldViewStack")
         self.view_stack.addWidget(self.plot)
@@ -5485,6 +5515,7 @@ class MagneticFieldView(QWidget):
         row.setSpacing(6)
         row.addWidget(self.heading)
         row.addWidget(self.display_mode)
+        row.addWidget(self.auto_detail)
         row.addStretch(1)
         self.density_label = QLabel("Density")
         row.addWidget(self.density_label)
@@ -5504,6 +5535,7 @@ class MagneticFieldView(QWidget):
         self.plot.scene().sigMouseClicked.connect(self._plot_position_clicked)
         self.plot.getViewBox().sigXRangeChanged.connect(self._field_axial_range_changed)
         self.plot.getViewBox().sigResized.connect(self._schedule_plot_alignment)
+        self.plot.getViewBox().sigResized.connect(self._schedule_profile_detail)
         self.field_lines.view_range_changed.connect(self._spatial_range_changed)
         self.field_lines.canvas.plot_geometry_changed.connect(self._schedule_plot_alignment)
         self.field_lines.link_view.toggled.connect(self._spatial_link_changed)
@@ -5515,6 +5547,7 @@ class MagneticFieldView(QWidget):
         self.field_map_clear.clicked.connect(self._clear_field_map)
         self.display_mode.currentIndexChanged.connect(self._display_mode_changed)
         self.display_mode.activated.connect(self._display_mode_activated)
+        self.auto_detail.toggled.connect(self._detail_option_changed)
         self._update_field_map_import_enabled()
         self._display_mode_changed()
         self.field_lines.fit_button.show()
@@ -5535,12 +5568,14 @@ class MagneticFieldView(QWidget):
         self.status.setVisible(not spatial and not vectors)
         self.field_lines.fit_button.setVisible(not vectors)
         self.advanced_button.setVisible(not vectors)
+        self.auto_detail.setVisible(not spatial and not vectors)
         self.field_lines.fit_button.setText("Fit")
         self.field_lines.set_active(spatial and self.isVisible())
         self.field_vectors.set_active(vectors and self.isVisible())
         if spatial and self.field_lines.link_view.isChecked():
             self._spatial_link_changed(True)
         self._schedule_plot_alignment()
+        self._schedule_profile_detail()
 
     def _display_mode_activated(self, *_args):
         if self.display_mode.currentData() == "electron":
@@ -5567,11 +5602,150 @@ class MagneticFieldView(QWidget):
         self.field_lines.set_active(self.display_mode.currentData() in {"3d", "electron"})
         self.field_vectors.set_active(self.display_mode.currentData() == "vectors")
         self._schedule_plot_alignment()
+        self._schedule_profile_detail()
 
     def hideEvent(self, event):
+        self._cancel_profile_detail()
+        self._render_cached_profile()
         self.field_lines.set_active(False)
         self.field_vectors.set_active(False)
         super().hideEvent(event)
+
+    def _detail_enabled(self):
+        return (
+            self.auto_detail.isChecked() and self.isVisible()
+            and self.display_mode.currentData() == "2d"
+            and self._scene is not None and self._profile is not None
+            and not self._inputs_stale and not self._presentation_pending
+        )
+
+    def _profile_detail_key(self):
+        if not self._detail_enabled() or len(self._profile.z_mm) < 2:
+            return None
+        lower, upper = self.plot.viewRange()[0]
+        lower = max(float(lower), float(self._profile.z_mm[0]))
+        upper = min(float(upper), float(self._profile.z_mm[-1]))
+        if not math.isfinite(lower + upper) or upper <= lower:
+            return None
+        # Quantise the pixel budget, not the physical limits: small changes in
+        # axis-label width must not continuously invalidate a finished profile.
+        width = max(1., float(self.plot.getViewBox().width()))
+        count = min(self.DETAIL_MAX_POINTS, max(128, 64 * math.ceil(width / 32)))
+        overview_step = float(np.max(np.diff(self._profile.z_mm)))
+        if (upper - lower) / (count - 1) >= overview_step * .9:
+            return None  # The retained overview already resolves this view.
+        return (self._profile_generation, lower, upper, count)
+
+    def _cancel_profile_detail(self, *, clear_cache=False):
+        self._detail_timer.stop()
+        self._detail_generation += 1
+        self._detail_request = None
+        self._detail_target_key = None
+        if self._detail_worker is not None:
+            self._detail_worker.cancelled.set()
+        if clear_cache:
+            self._detail_cache.clear()
+        self._detail_profile = None
+        self._detail_key = None
+
+    def _detail_option_changed(self, *_args):
+        self._cancel_profile_detail()
+        self._render_cached_profile()
+        self._schedule_profile_detail()
+
+    def _schedule_profile_detail(self, *_args):
+        key = self._profile_detail_key()
+        if key == self._detail_target_key:
+            return
+        had_detail = self._detail_profile is not None
+        self._cancel_profile_detail()
+        self._detail_target_key = key
+        if had_detail:
+            self._render_cached_profile()
+        if key is not None:
+            self._detail_timer.start(self.DETAIL_DELAY_MS)
+
+    def _request_profile_detail(self):
+        key = self._profile_detail_key()
+        if key is None or key != self._detail_target_key:
+            return
+        if key in self._detail_cache:
+            self._detail_profile = self._detail_cache[key]
+            self._detail_cache.move_to_end(key)
+            self._detail_key = key
+            self._render_cached_profile()
+            return
+        self._detail_request = (self._detail_generation, key, self._scene)
+        self._start_detail_worker()
+
+    def _start_detail_worker(self):
+        if self._detail_worker is not None or self._detail_request is None:
+            return
+        from PySide6.QtCore import QObject, QRunnable, QThreadPool
+        from threading import Event
+
+        class Signals(QObject):
+            finished = Signal(int, object, object)
+
+        class Worker(QRunnable):
+            def __init__(worker, request):
+                super().__init__()
+                worker.request = request
+                worker.cancelled = Event()
+                worker.signals = Signals()
+
+            def run(worker):
+                generation, key, scene = worker.request
+                profile, error = None, None
+                try:
+                    from temsim.cpu_resources import numerical_job
+                    from temsim.magnetic_field_scene import sample_magnetic_diagnostic
+                    with numerical_job(1, cancelled=worker.cancelled.is_set):
+                        if not worker.cancelled.is_set():
+                            profile = sample_magnetic_diagnostic(
+                                scene, np.linspace(key[1], key[2], key[3])
+                            )
+                except Exception as exc:
+                    error = str(exc)
+                if worker.cancelled.is_set():
+                    profile, error = None, None
+                worker.signals.finished.emit(generation, profile, error)
+
+        worker = Worker(self._detail_request)
+        self._detail_request = None
+        self._detail_worker = worker
+        worker.destruction_connection = self.destroyed.connect(
+            lambda *_args, stop=worker.cancelled: stop.set()
+        )
+        worker.signals.finished.connect(self._detail_finished)
+        QThreadPool.globalInstance().start(worker)
+
+    def _detail_finished(self, generation, profile, error):
+        from PySide6.QtCore import QObject
+        worker = self._detail_worker
+        if worker is None:
+            return
+        QObject.disconnect(worker.destruction_connection)
+        self._detail_worker = None
+        key, scene = worker.request[1:]
+        if (generation == self._detail_generation and scene is self._scene
+                and key == self._detail_target_key and self._detail_enabled()):
+            if profile is not None and error is None:
+                self._detail_cache[key] = profile
+                self._detail_cache.move_to_end(key)
+                while len(self._detail_cache) > self.DETAIL_CACHE_SIZE:
+                    self._detail_cache.popitem(last=False)
+                self._detail_profile = profile
+                self._detail_key = key
+                # Display only: no snapshot publication, Fit, reference change
+                # or invalidation of field lines, component vectors or electrons.
+                self._render_cached_profile()
+            elif error:
+                self.status.setToolTip(
+                    f"Local display refinement unavailable: {error}\n"
+                    "The whole-column cached profile remains available."
+                )
+        self._start_detail_worker()
 
     def _update_field_map_import_enabled(self, *_args) -> None:
         self.field_map_import.setEnabled(bool(
@@ -5831,6 +6005,9 @@ class MagneticFieldView(QWidget):
         self._schedule_plot_alignment()
 
     def _field_axial_range_changed(self, _box, limits):
+        # Also runs for changes received from Ray Diagram while the recursion
+        # guard is set; only the reverse axis publication is suppressed.
+        self._schedule_profile_detail()
         if self._syncing_axial_range or self._linked_axial_plot is None:
             return
         self._syncing_axial_range = True
@@ -5870,6 +6047,7 @@ class MagneticFieldView(QWidget):
             raise ValueError("Projection angle must be finite")
         self._projection_angle_deg = angle % 360.0
         self.field_lines.set_projection_angle(self._projection_angle_deg)
+        self.field_vectors.set_projection_angle(self._projection_angle_deg)
         self._render_cached_profile()
 
     def _plot_position_clicked(self, event) -> None:
@@ -5891,6 +6069,7 @@ class MagneticFieldView(QWidget):
         if self._inputs_stale:
             return
         self._inputs_stale = True
+        self._cancel_profile_detail(clear_cache=True)
         self._profile_generation += 1
         self._profile_request = None
         self._presentation_pending = False
@@ -5898,11 +6077,14 @@ class MagneticFieldView(QWidget):
             self._profile_worker.cancelled.set()
         self.field_lines.mark_inputs_stale()
         self.field_vectors.mark_inputs_stale()
+        # Keep the complete prior plot, not just the last refined viewport.
+        self._render_cached_profile()
         self.status.setText("Stale magnetic field — instrument inputs changed; recalculate the main beam.")
         self._refresh_details()
         self.diagnostics_updated.emit()
 
     def mark_presentation_pending(self) -> None:
+        self._cancel_profile_detail(clear_cache=True)
         self._profile_generation += 1
         self._inputs_stale = False
         self._profile_request = None
@@ -6063,11 +6245,12 @@ class MagneticFieldView(QWidget):
         self._populate_field_map_lenses()
         self._refresh_details()
         self.diagnostics_updated.emit()
+        self._schedule_profile_detail()
 
     def _render_cached_profile(self):
         if self._profile is None:
             return
-        profile = self._profile
+        profile = self._detail_profile if self._detail_profile is not None else self._profile
         u, v = transverse_view_coordinates(profile.on_axis_t[:, 0], profile.on_axis_t[:, 1], self._projection_angle_deg)
         rows = (("bz", "Bz", "#f8fafc", profile.on_axis_t[:, 2]),
                 ("bu", "Bu", "#38bdf8", u), ("bv", "Bv", "#c084fc", v),
@@ -6088,7 +6271,9 @@ class MagneticFieldView(QWidget):
             "Shows off-axis stigmator/corrector fields even when B is zero on axis.")
         self.status.setText("Stale magnetic field — instrument inputs changed; recalculate the main beam."
                             if self._inputs_stale else
-                            f"{len(self._scene.source_keys)} combined components · projection {format_projection_angle(self._projection_angle_deg)}° · RMS ring {radius_text}")
+                            f"{len(self._scene.source_keys)} combined components · projection {format_projection_angle(self._projection_angle_deg)}° · RMS ring {radius_text}"
+                            + (f" · local detail {len(profile.z_mm)} samples"
+                               if self._detail_profile is not None else " · cached overview"))
         self.status.setToolTip("\n".join(self._scene.notes))
 
     def _refresh_details(self):
@@ -6128,9 +6313,10 @@ class MagneticFieldView(QWidget):
         self.details.setPlainText("\n".join(lines))
 
     def focus_component(self, part) -> None:
-        # Component selection may choose an Advanced diagnostic/map target,
-        # but never hides other fields or changes the camera/range.
+        # Select the component-vector observation region and Advanced map target.
+        # The whole-column field profile and independent electron view stay intact.
         self._selected_key = str(getattr(part, "key", ""))
+        self.field_vectors.focus_component(self._selected_key, getattr(part, "center_z_mm", None))
         index = self.field_map_lens.findData(self._selected_key)
         if index >= 0:
             self.field_map_lens.setCurrentIndex(index)

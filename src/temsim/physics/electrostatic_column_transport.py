@@ -9,6 +9,7 @@ model.  Thin optical actions remain explicit and conserve kinetic energy.
 from __future__ import annotations
 
 import math
+from threading import RLock
 import numpy as np
 
 from .compute_backend import BACKEND_CPU, BACKEND_NUMBA, BACKEND_CUDA, GPUExecutionError
@@ -23,13 +24,18 @@ REST_EV = M*C*C/(-Q)
 CUDA_PARTICLE_BATCH_SIZE = 4096
 
 try:
-    from numba import njit, prange, cuda
+    from numba import njit, prange
     from numba.extending import register_jitable
 except ImportError:
-    njit = cuda = None
+    njit = None
     prange = range
     def register_jitable(function=None, **kwargs):
         return function if callable(function) else lambda wrapped: wrapped
+
+
+cuda = None
+_cuda_kernel = None
+_cuda_kernel_lock = RLock()
 
 
 def active_electric_field(plan):
@@ -196,7 +202,10 @@ def _parallel_impl(ray_start, ray_stop, coordinates, initial_energy, optical_inv
 _parallel = njit(cache=True, nogil=True, parallel=True)(_parallel_impl) if njit is not None else None
 _serial = njit(cache=True, nogil=True)(_parallel_impl) if njit is not None else None
 
-if cuda is not None:
+def _build_cuda_kernel():
+    global cuda, _cuda_kernel
+    from numba import cuda
+
     @cuda.jit
     def _cuda_kernel(ray_start, ray_stop, coordinates, initial_energy, optical_invariant, initial_time,
                      z, coefficients, forcing, actions, electric_data, reference_p,
@@ -205,8 +214,21 @@ if cuda is not None:
         if ray < ray_stop:
             _trace_one(ray,coordinates,initial_energy,optical_invariant,initial_time,z,
                        coefficients,forcing,actions,electric_data,reference_p,save,checkpoint,history,checkpoints,error)
-else:
-    _cuda_kernel = None
+
+
+def _ensure_cuda_kernel():
+    from .compute_backend import cuda_disabled_reason
+    from .ray_device_cache import DEVICE_CACHE
+
+    DEVICE_CACHE.assert_usable()
+    disabled = cuda_disabled_reason()
+    if disabled is not None:
+        raise GPUExecutionError("unavailable", disabled)
+    if njit is None:
+        raise GPUExecutionError("unavailable", "CUDA electric-column kernel is not available")
+    with _cuda_kernel_lock:
+        if _cuda_kernel is None:
+            _build_cuda_kernel()
 
 
 def _compiled_electric_data(field):
@@ -371,7 +393,7 @@ def electrostatic_column_rk4(inputs, *, z_mm, electric_field, initial_kinetic_en
         history=np.empty((6,len(save),count));checkpoints=np.empty((6,len(cp),count));error=np.zeros(count,np.int64)
         args=(coords,energy,math.nan if optical_reference_invariant_ev is None else float(optical_reference_invariant_ev),times,z,coeff,forcing,actions,data,float(inputs[21][0]),save,cp,history,checkpoints,error)
         if backend==BACKEND_CUDA:
-            if _cuda_kernel is None:raise GPUExecutionError('unavailable','CUDA electric-column kernel is not available')
+            _ensure_cuda_kernel()
             device=[]
             for index,value in enumerate(args):
                 # Histories are outputs, fully written by the kernel. Uploading

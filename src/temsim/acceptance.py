@@ -21,7 +21,10 @@ CLASSICAL_CRITERIA = {
     "round2/R2-AT-07": ("Captured inputs and latest live work", ("tests/test_background_calculation_requests.py", "tests/test_background_preview_gui.py", "tests/test_calculation_controller.py")),
     "round2/R2-AT-08": ("Exactly-once terminal ownership", ("tests/test_job_lifecycle.py", "tests/test_job_coordination.py")),
     "round2/R2-AT-09": ("Independent High and experiment ownership", ("tests/test_job_coordination_gui.py", "tests/test_result_readout.py")),
-    "round2/R2-AT-10": ("Backend absence/resource policy and available-GPU selection", ("tests/test_compute_backend.py", "tests/test_ray_gpu_policy.py", "tests/test_backend_failure_semantics.py")),
+    "round2/R2-AT-10": ("Backend absence/resource policy and available-GPU selection", (
+        "tests/test_compute_backend.py", "tests/test_ray_gpu_policy.py",
+        "tests/test_backend_failure_semantics.py", "tests/test_gui_backend_discovery.py",
+        "tests/test_cpu_backend_isolation.py", "tests/test_lazy_cuda_kernels.py")),
     "round2/R2-AT-11": ("Original non-retryable failures", ("tests/test_backend_failure_semantics.py",)),
     "round2/R2-AT-12": ("Stage reporting and device ownership fixtures", ("tests/test_backend_failure_semantics.py", "tests/test_ray_device_residency.py", "tests/test_calculation_performance.py")),
 }
@@ -91,15 +94,25 @@ ACCEPTANCE_SCOPES = {
         "criteria": {
             "field-ui/FU-01": ("Combined field support and direction-aware field-line geometry", (
                 "tests/test_magnetic_field_scene.py", "tests/test_magnetic_field_lines.py",
+                "tests/test_field_display_regions.py",
                 "tests/test_field_vector_scene.py", "tests/test_field_vector_production.py")),
             "field-ui/FU-02": ("Cached field rendering and physical display-range linkage", (
                 "tests/test_magnetic_field_3d.py", "tests/test_magnetic_field_canvas.py",
                 "tests/test_field_vector_page.py",
+                "tests/test_field_vector_lod.py", "tests/test_field_vector_viewport.py",
+                "tests/test_field_density_texture.py", "tests/test_field_density_canvas.py",
+                "tests/test_field_density_page.py",
+                "tests/test_magnetic_profile_lod.py",
                 "tests/test_field_vector_geometry.py", "tests/test_field_vector_mesh_canvas.py",
                 "tests/test_field_vector_overlay_page.py",
+                "tests/test_field_component_inspection.py", "tests/test_magnetic_component_navigation.py",
                 "tests/test_incremental_magnetic_scene.py", "tests/test_magnetic_navigation_link.py")),
             "field-ui/FU-03": ("Latest electron edits, continuous progress and dock lifetime", (
                 "tests/test_magnetic_test_electron_gui.py", "tests/test_continuous_electron_gui.py",
+                "tests/test_gui_signal_receiver_lifetime.py", "tests/test_qt_test_cleanup.py",
+                "tests/test_workspace_lifetime.py",
+                "tests/test_gui_backend_discovery.py",
+                "tests/test_cpu_backend_isolation.py",
                 "tests/test_virtual_electron_dock.py")),
             "field-ui/FU-04": ("In-place actual hardware bindings and transactional edits", (
                 "tests/test_stigmator_hardware.py",
@@ -139,9 +152,11 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_energy_filter_workspace_views.py")),
             "field-ui/FU-13": ("Settled live edits and latest particle frame gate coherent refresh", (
                 "tests/test_live_beam_refresh.py",)),
-            "field-ui/FU-14": ("Physical assembly sections and bounded workspace presentation", (
+            "field-ui/FU-14": ("Physical assembly sections, vacuum services and bounded workspace presentation", (
                 "tests/test_assembly_section.py", "tests/test_assembly_section_page.py",
-                "tests/test_current_page_tabs.py", "tests/test_ray_compact_layout.py")),
+                "tests/test_current_page_tabs.py", "tests/test_ray_compact_layout.py",
+                "tests/test_vacuum_pumping.py", "tests/test_vacuum_pumping_gui.py",
+                "tests/test_vacuum_pumping_overlay.py")),
             "field-ui/FU-15": ("Fixed-magnitude signed CM modes and bounded combined-field scan design", (
                 "tests/test_mini_condenser_modes.py", "tests/test_assembly_illumination.py",
                 "tests/test_condenser_objective_design.py", "tests/test_scan_coil_design.py",

@@ -131,6 +131,10 @@ def _drop_sample_fields(
 def _drop_runtime_solver_state(payload: dict[str, object]) -> dict[str, object]:
     result = deepcopy(payload)
     result.pop("active_backend", None)
+    # The service drawing has no pressure/conductance solver and is never an
+    # electron-transport input. Retain actual pressures and the opt-in switch.
+    if isinstance(result.get("vacuum_map"), dict):
+        result["vacuum_map"].pop("pumping", None)
     # Inactive fidelity shelves do not change the active calculation. Keep
     # simulation_mode itself in every affected product identity.
     result.pop("simulation_mode_profiles", None)

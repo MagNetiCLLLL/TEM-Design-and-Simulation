@@ -23,10 +23,9 @@ def _label(text=''):
 
 
 def _physical_graph_signature(graph):
-    from temsim.immutable_json import thaw_json, json_digest
-    payload = thaw_json(graph)
-    payload['nodes'][payload['root']['ref']]['attributes'].pop('virtual_observation_z_mm', None)
-    return json_digest(payload)
+    from temsim.immutable_json import json_digest
+    from temsim.instrument_snapshot import physical_identity_graph
+    return json_digest(physical_identity_graph(graph))
 
 
 class _Signals(QObject):

@@ -6,7 +6,7 @@ display operations; neither retraces particles nor changes hardware.
 """
 import numpy as np
 import pyqtgraph as pg
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QObject, Qt, Slot
 from PySide6.QtGui import QAction, QPainterPath
 from PySide6.QtWidgets import QCheckBox, QGraphicsPathItem, QHBoxLayout, QLabel, QMenu, QPushButton, QToolButton
 
@@ -15,11 +15,12 @@ from temsim.gui.plane_hardware_geometry import hardware_geometry_snapshot, proje
 from temsim.gui.transverse_projection import transverse_view_coordinates
 
 
-class PlaneHardwareOverlay:
+class PlaneHardwareOverlay(QObject):
     PALETTE = ("#fbbf24", "#22d3ee", "#f472b6", "#a78bfa", "#4ade80", "#fb923c", "#60a5fa")
     SPATIAL_MODES = {"position", "intensity"}
 
     def __init__(self, owner):
+        super().__init__(owner)
         self.owner = owner
         self.items, self.labels, self.label_lines, self.stop_items = [], [], [], []
         self.fill_items = []
@@ -78,11 +79,16 @@ class PlaneHardwareOverlay:
         self.status.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse
                                             | Qt.TextInteractionFlag.TextSelectableByKeyboard)
         layout.addWidget(self.status)
-        self.toggle.toggled.connect(lambda _checked: self.redraw())
-        self.stops_toggle.toggled.connect(lambda _checked: self.redraw())
+        self.toggle.toggled.connect(self._visibility_changed)
+        self.stops_toggle.toggled.connect(self._visibility_changed)
         self.fit_button.clicked.connect(self.fit)
         self.reset_button.clicked.connect(self.reset_visibility)
         owner.plot.getViewBox().sigRangeChanged.connect(self._reposition_labels)
+
+    @Slot(bool)
+    def _visibility_changed(self, _checked):
+        # The check state is not the optional cached plane-data argument.
+        self.redraw()
 
     def invalidate(self):
         """An accepted publication replaces captured geometry and stop history."""
@@ -191,6 +197,7 @@ class PlaneHardwareOverlay:
             self._hidden.add(identity)
         self.redraw()
 
+    @Slot()
     def reset_visibility(self):
         self._hidden.clear()
         self._menu_key = None
@@ -267,6 +274,7 @@ class PlaneHardwareOverlay:
         self._annotations.append((label, line, u, v, anchor, ordinal, count))
         return (u, v)
 
+    @Slot()
     def _reposition_labels(self, *_args):
         """Keep text inside the actual plot after fitting/resizing/panning."""
         bounds = self.owner.plot.viewRange()
@@ -375,6 +383,7 @@ class PlaneHardwareOverlay:
                             + ("\nMore stop groups in Cutoffs…" if len(stop_descriptions) > 5 else ""))
         self.status.setTextFormat(Qt.TextFormat.PlainText)
 
+    @Slot()
     def fit(self):
         if not self.fit_button.isEnabled():
             return

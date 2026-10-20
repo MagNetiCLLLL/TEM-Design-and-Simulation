@@ -100,6 +100,25 @@ def test_display_plane_does_not_stale_alignment_or_get_reset(state):
     assert restored.virtual_observation_z_mm == 1300.
 
 
+def test_display_pumping_survives_pending_alignment_without_mutating_candidate(state):
+    from copy import deepcopy
+    candidate = candidate_for(state, revision=3)
+    captured = deepcopy(state.vacuum_map.pumping)
+    state.vacuum_map.pumping["pumps"][0]["name"] = "Live renamed IGP"
+    state.vacuum_map.pumping["lines"][-1]["open"] = True
+    live = deepcopy(state.vacuum_map.pumping)
+    initial = candidate.request.start_snapshot
+    assert capture_instrument_snapshot(state).physical_digest == initial.physical_digest
+    gate = AlignmentCommitGate()
+    changed = gate.apply(state, candidate, revision=3)
+    assert changed.vacuum_map.pumping == live
+    assert changed.vacuum_map.pumping is not state.vacuum_map.pumping
+    assert candidate.request.start_snapshot.restore().vacuum_map.pumping == captured
+    assert candidate.checkpoint.snapshot.restore().vacuum_map.pumping == captured
+    assert gate.apply(changed, candidate, revision=4) is changed
+    assert gate.undo().vacuum_map.pumping == live
+
+
 def test_unknown_new_parameters_remain_physical_for_alignment(state):
     before = capture_instrument_snapshot(state)
     state.new_physics_control = 1.

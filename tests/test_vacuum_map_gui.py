@@ -142,6 +142,31 @@ def test_z_range_shared_both_ways_without_selection_or_resize_fit(qtbot):
     workspace.tabs.setCurrentWidget(page)
     qtbot.wait(30)
     assert page.diagram.getViewBox().width() == pytest.approx(physical_width, abs=1)
+    from PySide6.QtCore import QPointF
+    from temsim.vacuum_pumping import effective_pumping_layout
+    physical_vb = physical.plot.getViewBox()
+    physical_scale = (physical_vb.mapViewToScene(QPointF(550, 0)).x()
+                      - physical_vb.mapViewToScene(QPointF(450, 0)).x())
+    original_regions = {key: (box.left(), box.width()) for box, key in page.diagram.boxes}
+    for visible in (False, True):
+        page.show_pumping.setChecked(visible)
+        qtbot.wait(10)
+        vb = page.diagram.getViewBox()
+        vacuum_scale = vb.mapViewToScene(QPointF(550, 1.35)).x()-vb.mapViewToScene(QPointF(450, 1.35)).x()
+        assert vacuum_scale == pytest.approx(physical_scale, abs=.1)
+        assert vb.viewRange()[0] == pytest.approx([450, 850])
+        assert {key: (box.left(), box.width()) for box, key in page.diagram.boxes} == original_regions
+    pipes = effective_pumping_layout(state.vacuum_map)
+    pipes["lines"][0]["target"] = "pump:turbo"  # A much longer displayed connection.
+    assert page.install_pumping(pipes)
+    qtbot.wait(10)
+    vb = page.diagram.getViewBox()
+    assert vb.width() == pytest.approx(physical_width, abs=1)
+    vacuum_scale = vb.mapViewToScene(QPointF(550, 1.35)).x()-vb.mapViewToScene(QPointF(450, 1.35)).x()
+    assert vacuum_scale == pytest.approx(physical_scale, abs=.1)
+    assert page.diagram.getViewBox().viewRange()[0] == pytest.approx([450, 850])
+    assert physical_vb.viewRange()[0] == pytest.approx([450, 850])
+    assert {key: (box.left(), box.width()) for box, key in page.diagram.boxes} == original_regions
     page.focus_component(state._resolved_assembly.part("condenser_lens_2"))
     assert page.diagram.getViewBox().viewRange()[0] == pytest.approx([450, 850])
     page.pressure.setText("4e-7")

@@ -17,6 +17,9 @@ from temsim.parameter_semantics import parameter_unit
 # Existing dynamic aliases/readbacks already have scoped cache owners. Anything
 # else added to a public model object is conservatively an unclassified input.
 _KNOWN_DYNAMIC = {
+    # Persisted service drawing; explicitly removed from physical identities.
+    # Optional to preserve the exact dataclass schema of older working points.
+    "VacuumMap": {"pumping"},
     "State": {"corrector_elements", "recording_planes", "energy_filter_installed",
               "image_corrector_installed", "probe_corrector_installed", "show_field_diagram",
               "objective_back_focal_plane_z_mm", "objective_image_plane_z_mm", "simulation_time_s"},

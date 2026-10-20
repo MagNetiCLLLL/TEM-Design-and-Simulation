@@ -6,16 +6,18 @@ from dataclasses import asdict
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QSplitter,
     QLabel, QPushButton, QCheckBox, QComboBox, QLineEdit, QDoubleSpinBox,
-    QSpinBox, QScrollArea, QFileDialog)
+    QSpinBox, QScrollArea, QFileDialog, QDialog)
 
 from temsim.vacuum import VacuumMap, Medium, boundary_anchors, resolve_regions, module_axial_ranges, DEFAULT_PATH
 from temsim.assembly_navigation import assembly_sections, component_anchor, physical_assembly_sections
 from temsim.gui.vacuum_axial_view import VacuumAxialView
 from temsim.gui.cell_environment_editor import CellChamberView
+from temsim.vacuum_pumping import effective_pumping_layout, validate_pumping_layout
 
 
 class VacuumMapPage(QWidget):
     changed = Signal(str)
+    display_changed = Signal(str)
     geometry_requested = Signal()
     CORE_KEYS = {"gun_tip", "gun_accelerator", "column", "specimen", "post_column", "projection"}
 
@@ -24,6 +26,8 @@ class VacuumMapPage(QWidget):
         self.state = None
         self.current_key = ""
         self._filling = False
+        self._pumping_selection = ""
+        self._pumping_line = ""
         outer = QVBoxLayout(self)
         outer.setContentsMargins(11, 9, 11, 9)
         toolbar = QHBoxLayout()
@@ -37,9 +41,29 @@ class VacuumMapPage(QWidget):
             toolbar.addWidget(button)
         toolbar.addStretch()
         outer.addLayout(toolbar)
+        view_toolbar = QHBoxLayout()
+        self.show_pumping = QCheckBox("Show pumps & pipes")
+        self.show_pumping.setChecked(True)
+        self.show_pumping.setToolTip(
+            "Connect services to the actual vacuum regions. Column Z positions and lengths stay unchanged; "
+            "pump positions and connection lengths are schematic.")
+        view_toolbar.addWidget(self.show_pumping)
+        self.edit_pumping = QPushButton("Edit pumps & pipes…")
+        self.edit_pumping.clicked.connect(self.open_pumping_editor)
+        view_toolbar.addWidget(self.edit_pumping)
+        self.parameters_toggle = QPushButton("Region parameters")
+        self.parameters_toggle.setCheckable(True)
+        self.parameters_toggle.setEnabled(False)
+        view_toolbar.addWidget(self.parameters_toggle)
+        view_toolbar.addStretch()
+        outer.addLayout(view_toolbar)
         splitter = QSplitter(Qt.Orientation.Vertical)
         self.diagram = VacuumAxialView()
         splitter.addWidget(self.diagram)
+        self.show_pumping.toggled.connect(self.diagram.set_pumping_visible)
+        self.diagram.set_pumping_visible(self.show_pumping.isChecked())
+        self.diagram.pumping_selected.connect(self._pumping_selected)
+        self.diagram.pumping_line_selected.connect(self._pumping_line_selected)
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         form_widget = QWidget()
@@ -61,6 +85,9 @@ class VacuumMapPage(QWidget):
         self.modules_text = QLabel()
         self.modules_text.setWordWrap(True)
         form.addRow("Physical sections", self.modules_text)
+        self.pump_assignment = QLabel()
+        self.pump_assignment.setWordWrap(True)
+        form.addRow("Pump connections", self.pump_assignment)
         self.position_mode = QComboBox()
         self.position_mode.addItem("Component / subassembly anchors", "anchors")
         self.position_mode.addItem("Z positions", "positions")
@@ -135,9 +162,12 @@ class VacuumMapPage(QWidget):
         self.result_text.setWordWrap(True)
         form.addRow("Last particle calculation", self.result_text)
         self.editor = scroll
+        self.parameters_toggle.toggled.connect(scroll.setVisible)
         scroll.setWidget(form_widget)
         scroll.hide()
-        self.selection_hint = QLabel("Select a vacuum interval or choose a region above to display its parameters. Z follows Physical Layout.")
+        self.selection_hint = QLabel(
+            "Column Z follows Physical Layout. Pumps and pipe lengths are schematic. "
+            "Select a vacuum region for its parameters, or a pump / pipe to edit its connections.")
         self.selection_hint.setWordWrap(True)
         outer.addWidget(self.selection_hint)
         splitter.addWidget(scroll)
@@ -169,9 +199,69 @@ class VacuumMapPage(QWidget):
         try:
             rows = resolve_regions(self.state, include_disabled=True)
             self.diagram.set_regions(rows, physical_assembly_sections(getattr(self.state, "_resolved_assembly", None)), self.current_key)
+            self.diagram.set_pumping_layout(
+                effective_pumping_layout(self.state.vacuum_map), anchors=boundary_anchors(self.state))
+            self.diagram.set_pumping_selection(self._pumping_selection, self._pumping_line)
+            self._update_pump_assignment()
         except ValueError as exc:
             self.diagram.set_regions((), physical_assembly_sections(getattr(self.state, "_resolved_assembly", None)), self.current_key)
+            self.diagram.set_pumping_layout({"pumps": [], "auxiliaries": [], "lines": []})
             self.status.setText(f"Invalid vacuum map: {exc}")
+
+    def _pumping_selected(self, endpoint):
+        self._pumping_selection, self._pumping_line = endpoint, ""
+        if endpoint.startswith("region:"):
+            self.select_region(endpoint.split(":", 1)[1])
+        else:
+            self.parameters_toggle.setChecked(False)
+            self.selection_hint.setVisible(True)
+            self.selection_hint.setText("Selected pump / auxiliary chamber. Use Edit pumps & pipes to change its type, name or connections.")
+
+    def _pumping_line_selected(self, key):
+        self._pumping_line, self._pumping_selection = key, ""
+        self.parameters_toggle.setChecked(False)
+        self.selection_hint.setVisible(True)
+        self.selection_hint.setText("Selected pipe. Use Edit pumps & pipes to change its endpoints, service or displayed valve state.")
+
+    def _update_pump_assignment(self):
+        if self.state is None:
+            return
+        layout = effective_pumping_layout(self.state.vacuum_map)
+        pumps = {f"pump:{pump['key']}": pump for pump in layout["pumps"]}
+        endpoint = f"region:{self.current_key}"
+        lines = []
+        for pipe in layout["lines"]:
+            other = pipe["target"] if pipe["source"] == endpoint else pipe["source"] if pipe["target"] == endpoint else None
+            if other in pumps:
+                pump = pumps[other]
+                state = "open" if pipe["open"] else "closed"
+                lines.append(f"{pump['name']} ({pump['kind'].upper()}) · {pipe['valve'] or 'direct pipe'}: {state}")
+        self.pump_assignment.setText("\n".join(lines) or "No direct pump connection assigned in the schematic.")
+
+    def install_pumping(self, layout):
+        """Install display metadata without invalidating calculation results."""
+        if self.state is None:
+            return False
+        try:
+            candidate = validate_pumping_layout(layout, [region.key for region in self.state.vacuum_map.regions])
+        except (TypeError, ValueError) as exc:
+            self.status.setText(f"Pipes not applied: {exc}")
+            return False
+        self.state.vacuum_map.pumping = deepcopy(candidate)
+        self._refresh_diagram()
+        self.status.setText("Pump connections saved in this map. Given pressures and particle results are unchanged.")
+        self.display_changed.emit("vacuum_pumping")
+        return True
+
+    def open_pumping_editor(self):
+        if self.state is None:
+            return
+        from temsim.gui.vacuum_pumping_editor import VacuumPumpingDialog
+        dialog = VacuumPumpingDialog(self.state, self)
+        dialog.select_item(self._pumping_selection, self._pumping_line)
+        if dialog.exec() == QDialog.DialogCode.Accepted and self.install_pumping(dialog.result_layout):
+            self.show_pumping.setChecked(True)
+        dialog.deleteLater()
 
     def showEvent(self, event):
         super().showEvent(event)
@@ -301,6 +391,7 @@ class VacuumMapPage(QWidget):
         if key and key.startswith("cell_window_"):
             key = "specimen_cell"
         self.current_key = key
+        self._pumping_selection, self._pumping_line = f"region:{key}" if key else "", ""
         index = self.selection.findData(key)
         self.selection.blockSignals(True)
         self.selection.setCurrentIndex(max(index, 0))
@@ -313,11 +404,17 @@ class VacuumMapPage(QWidget):
         config = self.state.vacuum_map
         key = self.selection.currentData()
         self.current_key = key
+        self._pumping_selection, self._pumping_line = f"region:{key}" if key else "", ""
         self._refresh_diagram()
-        self.editor.setVisible(bool(key) and not key.startswith("transition:"))
+        editable = bool(key) and not key.startswith("transition:")
+        self.parameters_toggle.setEnabled(editable)
+        self.parameters_toggle.setChecked(editable)
+        self.editor.setVisible(editable)
         self.selection_hint.setVisible(not key or key.startswith("transition:"))
         if not key:
-            self.selection_hint.setText("Select a vacuum interval or choose a region above to display its parameters. Z follows Physical Layout.")
+            self.selection_hint.setText(
+                "Column Z follows Physical Layout. Pumps and pipe lengths are schematic. "
+                "Select a vacuum region for its parameters, or a pump / pipe to edit its connections.")
             return
         if key.startswith("transition:"):
             row = next(r for r in self.diagram.rows if r.key == key)
@@ -404,6 +501,11 @@ class VacuumMapPage(QWidget):
         candidate = copy(self.state)
         candidate.vacuum_map = config
         resolve_regions(candidate, include_disabled=True)
+        if config.transport_dict() == self.state.vacuum_map.transport_dict():
+            # Opening or saving a map whose only changes are its schematic is
+            # also a display edit, not a reason to discard particle results.
+            self.install_pumping(config.pumping)
+            return
         self.state.vacuum_map = config
         self.set_state(self.state)
         self.status.setText(message)
@@ -476,6 +578,23 @@ class VacuumMapPage(QWidget):
         r.end_offset_mm = r.start_offset_mm+(resolved.end_z_mm-resolved.start_z_mm)/2
         new.start_anchor, new.start_offset_mm = r.end_anchor, r.end_offset_mm
         config.regions.insert(index+1, new)
+        # A split keeps a shared pump service for both new pressure intervals.
+        # Their pressures remain independently prescribed.
+        layout = effective_pumping_layout(self.state.vacuum_map)
+        for line in tuple(layout["lines"]):
+            if f"region:{r.key}" not in (line["source"], line["target"]):
+                continue
+            duplicate = deepcopy(line)
+            for field in ("source", "target"):
+                if duplicate[field] == f"region:{r.key}":
+                    duplicate[field] = f"region:{new.key}"
+            keys = {item["key"] for item in layout["lines"]}
+            number = 1
+            while f"{line['key']}_split_{number}" in keys:
+                number += 1
+            duplicate["key"] = f"{line['key']}_split_{number}"
+            layout["lines"].append(duplicate)
+        config.pumping = layout
         self.current_key = new.key
         try:
             self._install(config, "Region split. Both sections have independent medium parameters.")
@@ -491,6 +610,32 @@ class VacuumMapPage(QWidget):
         config.regions[index-1].end_anchor = removed.end_anchor
         config.regions[index-1].end_offset_mm = removed.end_offset_mm
         self.current_key = config.regions[index-1].key
+        layout = effective_pumping_layout(self.state.vacuum_map)
+        removed_endpoint = f"region:{removed.key}"
+        identity_fields = ("source", "target", "role", "valve", "open")
+        retained = []
+        seen = {
+            tuple(line[field] for field in identity_fields)
+            for line in layout["lines"]
+            if removed_endpoint not in (line["source"], line["target"])
+        }
+        for line in layout["lines"]:
+            if removed_endpoint not in (line["source"], line["target"]):
+                # Separate user-defined pipes outside this merge keep their
+                # identities, even when their displayed properties coincide.
+                retained.append(line)
+                continue
+            for field in ("source", "target"):
+                if line[field] == removed_endpoint:
+                    line[field] = f"region:{self.current_key}"
+            # Split copies collapse again; unrelated valves on the same
+            # endpoints remain distinct.
+            identity = tuple(line[field] for field in identity_fields)
+            if line["source"] != line["target"] and identity not in seen:
+                retained.append(line)
+                seen.add(identity)
+        layout["lines"] = retained
+        config.pumping = layout
         try:
             self._install(config, "Regions merged; previous region's medium retained.")
         except ValueError as exc:

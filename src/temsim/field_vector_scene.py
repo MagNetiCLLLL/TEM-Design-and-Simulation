@@ -276,6 +276,19 @@ def _source_groups(state, magnetic):
     return catalogue
 
 
+def _gun_electric_component_keys(gun):
+    """Known joint-boundary participants, even when their solve is unavailable."""
+    channels = {"gun_electric_field"}
+    for name in ("extractor", "electrostatic_lens", "accelerator"):
+        component = getattr(gun, name, None)
+        if component is not None:
+            channels.add(str(component.key))
+    emitter = getattr(gun, "emitter", None)
+    if emitter is not None:
+        channels.add(str(getattr(emitter, "key", "emitter")))
+    return channels
+
+
 @input_io.using_state_inputs
 def prepare_field_vector_scene(state, *, magnetic_scene=None, z_limits_mm=None):
     """Capture selectable production B/E providers in a numerical worker.
@@ -330,19 +343,17 @@ def prepare_field_vector_scene(state, *, magnetic_scene=None, z_limits_mm=None):
             electric_capture = capture_instrument_electric_field(state)
         except (ValueError, RuntimeError, NotImplementedError, OSError) as error:
             note = f"Instrument electrostatic capture unavailable: {error}. No zero electric field is inferred."
+            # Keep explicit electrode identities from the captured inputs.
+            # Otherwise a single-component view would select no sources and
+            # report a valid zero for the failed joint electrostatic solution.
+            channels = _gun_electric_component_keys(state.electron_gun)
             catalogue.append(FieldVectorSource("gun_electric_field", "Gun electrostatics — unavailable", "unmodelled",
-                                               ("gun_electric_field",), _bounds(fallback), "unavailable_electric", (note,),
+                                               tuple(sorted(channels)), _bounds(fallback), "unavailable_electric", (note,),
                                                False, _unknown_e=True))
         else:
             bounds = _bounds(electric_capture.bounds_m)
             gun = electric_capture.gun_snapshot
-            channels = {"gun_electric_field"}
-            for name in ("extractor", "electrostatic_lens", "accelerator"):
-                part = getattr(gun, name, None)
-                if part is not None:
-                    channels.add(str(part.key))
-            if getattr(gun, "emitter", None) is not None:
-                channels.add(str(getattr(gun.emitter, "key", "emitter")))
+            channels = _gun_electric_component_keys(gun)
             base = electric_capture.base_field
             # Boundary rings, including a common-potential Wien housing, are
             # participants in this joint Laplace solution. They are distinct
@@ -420,13 +431,18 @@ def prepare_field_vector_scene(state, *, magnetic_scene=None, z_limits_mm=None):
             catalogue.append(FieldVectorSource(key, label+" — disabled", "magnetic", (key,),
                                                _component_bounds(component, bounds), "disabled_zero",
                                                ("Disabled production component: exact zero contribution; no active field geometry is inferred.",)))
-        elif magnetic_error is None:
+        else:
             # Mechanical length does not delimit an unmodelled fringe field.
             # Its missing contribution invalidates the selected total across
             # the view until an actual provider supplies a supported domain.
+            # Retain the component identity after a whole-graph failure too:
+            # an empty single-component selection would falsely show zero.
+            missing_notes = ["Enabled component is absent from the captured magnetic graph; no independent provider or finite field extent is declared. Its selected magnetic contribution remains unknown."]
+            if magnetic_error is not None:
+                missing_notes.append(f"Magnetic graph capture failed: {magnetic_error}")
             catalogue.append(FieldVectorSource(key, label+" — magnetic provider unavailable", "unmodelled", (key,),
                                                bounds, "unavailable_magnetic",
-                                               ("Enabled component is absent from the captured magnetic graph; no independent provider or finite field extent is declared. Its selected magnetic contribution remains unknown.",),
+                                               tuple(missing_notes),
                                                False, _unknown_b=True))
 
     unsupported = []

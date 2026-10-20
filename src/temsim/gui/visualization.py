@@ -1134,7 +1134,7 @@ class VisualizationWorkspace(QWidget):
         self.ray_workspace_splitter.setStretchFactor(0, 3)
         self.ray_workspace_splitter.setStretchFactor(1, 1)
         self.ray_workspace_splitter.setSizes((1350, 450))
-        self.scan_control = ScanControlView()
+        self.scan_control = ScanControlView(self)
         self.sample_page = SamplePage()
         self.sample_interactions_3d = SampleInteractions3DPage()
         self.eds_page = EDSPage()
@@ -1151,6 +1151,10 @@ class VisualizationWorkspace(QWidget):
         scanning_parameters, scanning_results = (
             self.scan_control.take_workspace_panels()
         )
+        # The panes move into the composite page, but this hidden controller
+        # still owns signals and playback timers. Keep its Qt lifetime tied
+        # to the workspace so its callbacks cannot retain deleted plots.
+        self.scan_control.hide()
         self.scanning_controls_tabs = QTabWidget()
         self.scanning_controls_tabs.setObjectName("scanningControlTabs")
         self.scanning_controls_tabs.addTab(
@@ -1304,6 +1308,8 @@ class VisualizationWorkspace(QWidget):
             self.component_selected.emit
         )
         self.magnetic_field.field_lines.session_projection_requested.connect(self._set_projection_angle)
+        self.magnetic_field.projection_angle_requested.connect(
+            lambda angle: self._set_projection_angle(angle, defer_redraw=True))
         self.physical_layout.rotating_section.projection_angle_changed.connect(
             lambda angle: self._set_projection_angle(angle, defer_redraw=True))
         self.physical_layout.energy_filter_structure.component_selected.connect(

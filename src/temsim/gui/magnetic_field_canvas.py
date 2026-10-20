@@ -27,6 +27,7 @@ from temsim.gui.electron_display_geometry import simplify_screen_vertices
 
 _COLOUR_BINS = 24
 _MAX_DIRECTION_ARROWS = 160
+_DIRECTION_ARROW_SPACING_PX = 20.0
 _MAX_ELECTRON_ARROWS = 12
 _ELECTRON_LINE_WIDTH = 1.0
 _SELECTED_ELECTRON_LINE_WIDTH = 1.4
@@ -413,17 +414,17 @@ class MagneticFieldCanvas(QWidget):
         self._bounds_path = _paired_path(projected_corners[np.asarray(edges)])
         column = np.array([[0.0, 0.0, display_bounds[0, 2]], [0.0, 0.0, display_bounds[1, 2]]])
         self._axis_path = _paired_path(self._project(column[None, :, :]))
-        # Direction is a display aid. Bound its overdraw independently of the
-        # field-line density, preserving the full supplied physical geometry.
+        # Keep every supplied direction candidate. The screen-space selector
+        # budgets visible arrows after zooming, so distant parts cannot consume
+        # the local view's direction markers.
         if self._axial_range_m is None:
             eligible = np.arange(len(self._direction_segments_m))
         else:
             _, direction_selected = _clip_axial_segments(self._direction_segments_m, *self._axial_range_m)
             eligible = np.flatnonzero(direction_selected)
-        self._direction_draw_indices = eligible[np.linspace(
-            0, len(eligible) - 1, min(len(eligible), _MAX_DIRECTION_ARROWS), dtype=np.int64,
-        )]
-        arrows = self._project(self._direction_segments_m[self._direction_draw_indices])
+        self._field_arrow_source_indices = eligible
+        self._direction_draw_indices = np.empty(0, dtype=np.int64)
+        arrows = self._project(self._direction_segments_m[eligible])
         self._field_projected_arrows = arrows
         self._field_arrow_screen_key = None
         self._projected_labels = tuple((text, self._project(position)) for text, position in self._labels)
@@ -603,23 +604,60 @@ class MagneticFieldCanvas(QWidget):
         return pen
 
     def _field_arrows_on_screen(self, transform: QTransform) -> QPainterPath:
-        """Bounded screen-size direction heads, never enlarged in physical U.
+        """Select separated, visible heads from the retained physical directions.
 
         Anisotropic Z/U scaling must not stretch arrowheads into transverse
-        spikes. Repainting a fixed viewport reuses this small display cache.
+        spikes. Zooming reveals previously omitted local directions without
+        tracing new lines. Repainting a fixed viewport reuses this small cache.
         """
-        key = (transform.m11(), transform.m22(), transform.dx(), transform.dy())
+        rect = self._plot_rect()
+        key = (self._projection_revision, transform.m11(), transform.m12(),
+               transform.m21(), transform.m22(), transform.dx(), transform.dy(),
+               rect.x(), rect.y(), rect.width(), rect.height(), self.devicePixelRatioF())
         if key != self._field_arrow_screen_key:
             path = QPainterPath()
-            for first, last in self._field_projected_arrows:
-                start, end = (transform.map(QPointF(*point)) for point in (first, last))
-                dx, dy = end.x()-start.x(), end.y()-start.y()
-                length = math.hypot(dx, dy)
-                if length < 1e-9:
-                    continue
-                direction = QPointF(dx/length, dy/length)
+            projected = self._field_projected_arrows
+            screen = np.empty_like(projected)
+            screen[..., 0] = (projected[..., 0]*transform.m11()
+                              + projected[..., 1]*transform.m21() + transform.dx())
+            screen[..., 1] = (projected[..., 0]*transform.m12()
+                              + projected[..., 1]*transform.m22() + transform.dy())
+            tips = np.mean(screen, axis=1)
+            directions = screen[:, 1] - screen[:, 0]
+            lengths = np.hypot(directions[:, 0], directions[:, 1])
+            visible = np.flatnonzero(
+                (lengths >= 1e-9) & np.isfinite(lengths) & np.isfinite(tips).all(axis=1)
+                & (tips[:, 0] >= rect.left()) & (tips[:, 0] <= rect.right())
+                & (tips[:, 1] >= rect.top()) & (tips[:, 1] <= rect.bottom()))
+            selected = []
+            if len(visible):
+                spacing = _DIRECTION_ARROW_SPACING_PX
+                cells = np.floor((tips[visible] - (rect.left(), rect.top())) / spacing).astype(np.int64)
+                # One deterministic representative per screen cell prevents a
+                # dense source from dominating the display budget.
+                _, representatives = np.unique(cells, axis=0, return_index=True)
+                candidates = visible[representatives]
+                candidate_cells = cells[representatives]
+                spread = np.linspace(0, len(candidates)-1,
+                                     min(len(candidates), _MAX_DIRECTION_ARROWS), dtype=np.int64)
+                remaining = np.flatnonzero(~np.isin(np.arange(len(candidates)), spread))
+                occupied = {}
+                for index in np.concatenate((spread, remaining)):
+                    candidate = candidates[index]
+                    cell = tuple(candidate_cells[index])
+                    nearby = [occupied[neighbor] for dx in (-1, 0, 1) for dy in (-1, 0, 1)
+                              if (neighbor := (cell[0]+dx, cell[1]+dy)) in occupied]
+                    if any(np.sum((tips[candidate]-tips[other])**2) < spacing**2 for other in nearby):
+                        continue
+                    occupied[cell] = candidate
+                    selected.append(candidate)
+                    if len(selected) == _MAX_DIRECTION_ARROWS:
+                        break
+            self._direction_draw_indices = self._field_arrow_source_indices[selected]
+            for index in selected:
+                direction = QPointF(*(directions[index]/lengths[index]))
                 wing = QPointF(-direction.y(), direction.x())*2.
-                tip = (start+end)*.5
+                tip = QPointF(*tips[index])
                 back = tip-direction*5.
                 path.moveTo(back+wing)
                 path.lineTo(tip)

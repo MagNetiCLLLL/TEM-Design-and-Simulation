@@ -128,7 +128,101 @@ gas/liquid TEM or STEM wave imaging**. Paused coherent-source development has
 not been restarted. The existing forward-Z and finite-step scattering limits
 are documented in [Vacuum map](https://github.com/MagNetiCLLLL/tem_simulator_v2/blob/04e87584ecb88a802813e2f109d67a5719615399/docs/development/VACUUM_MAP_2026-09-14.md).
 
+## Pump and pipe schematic
+
+In **Vacuum map**, **Show pumps & pipes** adds services directly to the existing
+axial map and is on by default. Column sections and vacuum intervals retain
+their actual Z coordinates and lengths, with the same horizontal scale as
+Physical Layout. Region connections start at their resolved Z positions;
+the column is never stretched or divided into equal-width schematic boxes
+to make room for pumps.
+
+Pump symbols and off-axis auxiliary chambers occupy annotation space beneath
+the map. Their placement and the connecting lines are schematic: lines may
+take any length or route needed for clarity. This does not prescribe physical
+pipe length, move hardware, or change the shared axial viewport. Use
+**Edit pumps & pipes…** to edit pumps and branches. A pump is one node with one
+or more connections, so several chambers can share the same pump.
+
+The default illustrative network covers the six existing pressure regions:
+
+| Connection | Initial state |
+|---|---|
+| Gun tip and extraction to its IGP | Open |
+| Accelerator to its IGP | Open |
+| Column before specimen and specimen surroundings to a shared IGP | Open |
+| Column after specimen to its IGP | Open |
+| Projection / camera chamber to the shared Turbo | Open |
+| Holder airlock to the same Turbo | Closed |
+| Turbo backing outlet to the Scroll pump | Open |
+| Holder airlock roughing branch to the Scroll pump | Closed |
+| Holder airlock transfer connection to specimen surroundings | Closed |
+
+The four IGPs, the shared Turbo, and its Scroll backing pump are separately
+identifiable. Valve labels show whether a connection is open or isolated;
+a drawn branch alone does not mean it is open or being pumped. Pump motor
+operation is not modelled.
+The airlock is a side chamber for holder transfer, not an additional slice of
+the axial electron path. Its transfer connection is distinct from its pumping
+branches.
+
+This arrangement takes its shared-pump topology from the manufacturer's
+*Talos Basic General Information*, PN 1093302-B, pp. 51-52, particularly
+[Figure 36, Vacuum System, Field Emission Gun](https://www.mcgill.ca/femr/files/femr/tfs_talos_basic_guide.pdf).
+That figure connects the projection chamber and a separately valved airlock
+branch to the same TMP; the accompanying text describes IGPs for the upper
+column/gun and a buffer plus prevacuum pump behind the TMP. Figure 37 on the
+next page includes a different, ODP-based example and is not merged into this
+default network. The project's four-IGP assignment, direct Scroll backing,
+roughing bypass, branch labels, and initial valve states are editable project
+choices, not a claimed reproduction of a particular Titan or Talos instrument.
+
+A Scroll pump is a reasonable oil-free roughing/backing choice:
+[Edwards' dry-scroll documentation](https://www.edwardsvacuum.com/pl-pl/vacuum-pumps/our-products/dry-scroll-pumps/xds)
+lists chamber evacuation, electron microscopy, and turbopump backing among
+its applications. The [Edwards TMP description](https://www.edwardsvacuum.com/en-uk/vacuum-pumps/our-products/turbomolecular-pumps-mechanical)
+explains why the Turbo needs a backing pump to exhaust toward atmosphere.
+IGPs maintain a previously evacuated region; they are not atmospheric roughing
+pumps, as explained in the [Agilent ion-pump FAQ](https://www.agilent.com/en/support/ion-pumps-frequently-asked-questions-faqs).
+
+This is a configurable display of pumping connections. Region pressures and
+gas composition remain prescribed inputs to the existing transport model.
+Changing a pump or valve does not solve pressure, conductance, gas load,
+pump-down time, venting, or hardware interlocks, and does not operate hardware.
+These display-only edits do not invalidate particle results or trigger a new
+particle calculation. They persist with the vacuum TOML and operating profile.
+Changes to actual pressure, composition, cell geometry, or transport enablement
+remain physics changes with the existing calculation invalidation rules.
+
 ## Validation
+
+2026-10-20 axial-map overlay: **162 targeted checks passed** (39.91 s),
+including the complete window, original region editor, real mouse selection,
+the overlay, and acceptance-scope registration. Region Z bounds and widths
+remain unchanged when services are hidden/shown or a long pipe is rewired;
+the shared Physical Layout horizontal range and pixel scale are preserved.
+Ports use true region midpoints and follow zoom/pan. Ports outside the current
+Z viewport are explicitly omitted instead of being moved to its edge.
+The 1000 × 650 page was rendered with the pressure editor both closed and
+open; it retains that window size and keeps the map readable.
+
+2026-10-20 initial separate schematic (subsequently replaced by the axial
+overlay described above): **199 targeted tests passed** across three
+source-stable runs: 193 model/editor/view/cache/transaction/scope checks,
+one isolated full-window display-edit check, and five cell-navigation,
+boundary-edit, and exact working-point restoration checks. The tests used one
+CPU numerical thread and disabled CUDA devices. Old exact snapshots retain
+their dataclass schema; reading legacy default connections does not modify
+their captured graph. Actual pressure changes still invalidate physics.
+The styled page and editor were rendered at 1000 × 650 and 940 × 560 and
+checked for readable pump cards and complete valve labels.
+
+Earlier broader GUI batches aborted with Windows access violations, including
+a real condenser-optimizer worker. They are not counted as passing. The
+previously interrupted working-point restoration case passed in the final
+stable run; the numerical optimizer was not rerun for this display feature.
+This is not a full-project regression or pump-pressure solver validation.
+Non-fatal CuPy CUDA-path and pyqtgraph teardown warnings remain on this host.
 
 2026-09-15 integration: **172 affected tests passed**. Coverage includes independently sized
 windows, geometry-to-transport face agreement, imposed gas pressure gradients,

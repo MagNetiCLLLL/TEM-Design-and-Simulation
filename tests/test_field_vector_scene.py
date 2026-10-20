@@ -268,3 +268,96 @@ def test_electrostatic_boundary_membership_does_not_hide_missing_magnet(monkeypa
     sample = scene.sample(((0., 0., .015),))
     assert sample.electric_valid.all() and not sample.magnetic_valid.any()
     assert not next(entry for entry in scene.sources if entry.key == "custom_magnet").supported
+
+
+def _observation_index(inputs, scene, rows):
+    """Small captured mechanical fixture; no assembly files or field solves."""
+    from temsim.field_display_regions import build_field_display_regions
+    parts = []
+    for key, changes in rows:
+        row = dict(key=key, name=key, local_start_z_mm=14., local_center_z_mm=15.,
+                   local_end_z_mm=16., length_mm=2., mechanical_outer_diameter_mm=4.,
+                   mechanical_profile="magnetic_lens_assembly")
+        row.update(changes)
+        parts.append(SimpleNamespace(key=key, name=key, module_key="captured",
+                                     center_z_mm=15., data=row))
+    inputs._resolved_assembly = SimpleNamespace(parts=tuple(parts), modules=())
+    return build_field_display_regions(inputs, scene.sources)
+
+
+def test_failed_magnetic_capture_preserves_single_component_unknown_and_passive_zero(monkeypatch):
+    def unavailable(_):
+        raise ValueError("captured joint magnetic cache missing")
+    monkeypatch.setattr("temsim.field_vector_scene.prepare_magnetic_scene", unavailable)
+    inputs = state()
+    inputs.lenses = (SimpleNamespace(key="lens", enabled=True),
+                     SimpleNamespace(key="off", enabled=False, z_mm=15., length_mm=2.))
+    inputs.stigmators = (SimpleNamespace(key="stigmator", enabled=True),)
+    inputs.deflectors = (SimpleNamespace(key="image_diffraction_deflector", enabled=True),
+                        SimpleNamespace(key="descan_deflector", enabled=True),
+                        SimpleNamespace(key="reference", enabled=True, INTERACTION_KIND="none"))
+    scene = prepare_field_vector_scene(inputs)
+    index = _observation_index(inputs, scene, [
+        ("lens", {}), ("off", {}), ("stigmator", {}),
+        ("lens_coil", dict(parent_key="lens", mechanical_profile="magnetic_excitation_coil")),
+        ("image_diffraction_deflector", {}),
+        ("descan_deflector", {}),
+        ("reference", dict(layout_role="virtual_reference")),
+        ("passive", dict(parent_key="lens", mechanical_profile="aperture_plate", mechanical_only=True)),
+    ])
+    points = ((0., 0., .015),)
+    for key in ("lens", "lens_coil", "stigmator", "image_diffraction_deflector", "descan_deflector"):
+        keys = index.source_keys_for_component(key)
+        assert keys, f"{key} must retain its failed field identity"
+        sample = scene.sample(points, keys)
+        assert not sample.magnetic_valid.any()
+        assert np.isnan(sample.b_t).all() and np.isnan(sample.force_n).all()
+        assert sample.electric_valid.all()
+    assert index.source_keys_for_component("image_diffraction_deflector") == index.source_keys_for_component("descan_deflector")
+    assert index.source_keys_for_component("reference") == ()
+    assert index.source_keys_for_component("passive") == ()
+    for key in ("off", "passive"):
+        sample = scene.sample(points, index.source_keys_for_component(key))
+        assert sample.force_valid.all()
+        np.testing.assert_array_equal(sample.b_t, 0.)
+    assert "captured joint magnetic cache missing" in " ".join(
+        next(entry for entry in scene.sources if entry.key == "lens").notes)
+
+
+@pytest.mark.parametrize("failed", [False, True])
+def test_joint_electrode_identity_is_retained_when_capture_fails(monkeypatch, failed):
+    gun = SimpleNamespace(**{name: SimpleNamespace(key=key) for name, key in (
+        ("extractor", "extractor"), ("electrostatic_lens", "gun_lens"),
+        ("accelerator", "accelerator"), ("emitter", "feg_tip"))})
+    if failed:
+        def unavailable(_):
+            raise ValueError("missing gun boundary")
+        monkeypatch.setattr("temsim.physics.instrument_electric.capture_instrument_electric_field", unavailable)
+    else:
+        captured = fake_electric(monkeypatch)
+        captured.gun_snapshot = gun
+    inputs = state(electron_gun=gun)
+    scene = prepare_field_vector_scene(inputs, magnetic_scene=magnetic_scene(source()))
+    index = _observation_index(inputs, scene, [
+        *((key, dict(mechanical_profile="electrode")) for key in
+          ("extractor", "gun_lens", "accelerator", "feg_tip")),
+        ("passive", dict(parent_key="extractor", mechanical_profile="aperture_plate", mechanical_only=True)),
+    ])
+    entry, = (item for item in scene.sources if item.key == "gun_electric_field")
+    assert set(entry.component_keys) == {"gun_electric_field", "extractor", "gun_lens", "accelerator", "feg_tip"}
+    points = ((0., 0., .015),)
+    for key in ("extractor", "gun_lens", "accelerator", "feg_tip"):
+        keys = index.source_keys_for_component(key)
+        assert keys == ("gun_electric_field",)
+        sample = scene.sample(points, keys)
+        assert sample.magnetic_valid.all()
+        if failed:
+            assert not sample.electric_valid.any()
+            assert np.isnan(sample.e_v_per_m).all() and np.isnan(sample.force_n).all()
+        else:
+            assert sample.force_valid.all()
+            np.testing.assert_array_equal(sample.e_v_per_m, ((12., 0., 0.),))
+    assert index.source_keys_for_component("passive") == ()
+    passive = scene.sample(points, ())
+    assert passive.force_valid.all()
+    np.testing.assert_array_equal(passive.e_v_per_m, 0.)

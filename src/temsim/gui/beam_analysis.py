@@ -12,7 +12,7 @@ import math
 
 import numpy as np
 import pyqtgraph as pg
-from PySide6.QtCore import QRectF, Qt, QTimer
+from PySide6.QtCore import QObject, QRectF, Qt, QTimer, Slot
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import (
     QAbstractItemView, QHBoxLayout, QHeaderView, QLabel, QTableWidget,
@@ -31,7 +31,7 @@ from temsim.gui.transverse_projection import (
 )
 
 
-class BeamAnalysisControls:
+class BeamAnalysisControls(QObject):
     """Presentation-only companion of TransverseBeamView; one plane cache."""
 
     MODES = (
@@ -62,6 +62,9 @@ class BeamAnalysisControls:
     }
 
     def __init__(self, owner):
+        # Qt must disconnect view/menu signals when their owning panel dies,
+        # even if Python references keep this companion alive until cyclic GC.
+        super().__init__(owner)
         self.owner = owner
         self.mode = "position"
         self.wave = None
@@ -162,16 +165,18 @@ class BeamAnalysisControls:
         self.colour_combo.currentIndexChanged.connect(self._colour_changed)
         self.tracking_combo.currentIndexChanged.connect(self._tracking_changed)
         owner.plot.scene().sigMouseMoved.connect(self._mouse_moved)
-        self._resize_timer = QTimer(owner)
+        self._resize_timer = QTimer(self)
         self._resize_timer.setSingleShot(True)
         self._resize_timer.timeout.connect(self._refresh_view_geometry)
         owner.plot.getViewBox().sigResized.connect(self._queue_geometry_refresh)
         self._update_controls()
 
+    @Slot()
     def _queue_geometry_refresh(self, *_args):
         if not self._drawing and self.mode == "intensity" and self.owner.isVisible():
             self._resize_timer.start(0)
 
+    @Slot()
     def _refresh_view_geometry(self):
         if self.mode == "intensity" and self.owner._result is not None and self.owner.isVisible():
             # An equal-aspect plot can acquire a wider field when its panel
@@ -197,6 +202,7 @@ class BeamAnalysisControls:
             self._source_has_positions = bool(np.any(np.all(np.isfinite(self._source_data.position_m), axis=1)))
         return self._source_data
 
+    @Slot()
     def _tracking_changed(self):
         key = self.tracking_combo.currentData()
         if key == "advanced":
@@ -279,6 +285,7 @@ class BeamAnalysisControls:
             self._cache_key = key
         return self._cache
 
+    @Slot()
     def _mode_changed(self):
         if self.wave is not None:
             self.wave.selection_changed()
@@ -294,6 +301,7 @@ class BeamAnalysisControls:
             self.owner._update_projection_labels()
         self.owner._redraw()
 
+    @Slot()
     def _colour_changed(self):
         if self.wave is not None:
             self.wave.selection_changed()
@@ -681,6 +689,7 @@ class BeamAnalysisControls:
         self.legend.setText("All reaching weighted rays · not collision counts")
         self._summary(data)
 
+    @Slot(object)
     def _mouse_moved(self, position):
         if self.wave is not None:
             self.wave.mouse_moved(position)

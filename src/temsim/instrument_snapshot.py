@@ -315,6 +315,22 @@ def decode_instrument(graph, *, assets=None):
     return result
 
 
+def physical_identity_graph(graph):
+    """Detached graph with only explicitly display-only inputs omitted.
+
+    The pumping drawing is a primitive mapping, so excluding it cannot leave
+    orphaned model nodes or change references to any physical model object.
+    Complete snapshots still capture and restore the full drawing.
+    """
+    payload = thaw_json(freeze_json(graph))
+    root = payload["root"]["ref"]
+    payload["nodes"][root]["attributes"].pop("virtual_observation_z_mm", None)
+    for node in payload["nodes"]:
+        if node["type"] == "temsim.vacuum:VacuumMap":
+            node["attributes"].pop("pumping", None)
+    return payload
+
+
 @dataclass(frozen=True, slots=True)
 class InstrumentSnapshot:
     """Complete model graph and content-pinned external inputs.
@@ -342,13 +358,12 @@ class InstrumentSnapshot:
     def physical_digest(self):
         """Compare physics without changing the complete restoration payload.
 
-        Only the explicitly read-only virtual observation plane is omitted.
+        Only the virtual observation plane and vacuum-service drawing are omitted.
         Unknown/new fields remain physical by default. Do not use display
         signatures to ignore source, geometry, model or numerical changes.
         """
-        payload = thaw_json(freeze_json(self.identity_payload()))
-        root = payload["graph"]["root"]["ref"]
-        payload["graph"]["nodes"][root]["attributes"].pop("virtual_observation_z_mm", None)
+        payload = self.identity_payload()
+        payload["graph"] = physical_identity_graph(self.graph)
         return json_digest(payload)
 
     def identity_payload(self):

@@ -4,6 +4,7 @@ import sys
 
 import pytest
 
+from backend_test_fakes import install_fake_numba_cuda, numba_error
 from temsim.physics import compute_backend as backend
 from temsim.physics.backend_execution import backend_receipts, classical_backend_preflight, record_backend
 from temsim.physics.ray_device_cache import RayDeviceCache
@@ -37,8 +38,7 @@ def test_cupy_taxonomy_uses_api_and_code_not_blanket_class(name, code, module, c
     (709, "context_corrupted"), (710, "context_corrupted"), (719, "context_corrupted"),
     (701, "invalid_configuration"), (218, "compilation_failure"), (999, None)])
 def test_numba_taxonomy(code, category):
-    from numba.cuda.cudadrv.driver import CudaAPIError
-    assert backend.gpu_failure_category(CudaAPIError(code, "fixture")) == category
+    assert backend.gpu_failure_category(numba_error(code)) == category
 
 
 @pytest.mark.parametrize("error", [ValueError("invalid optics"), FloatingPointError("nonfinite wave"),
@@ -95,11 +95,12 @@ def test_corrupt_context_clears_and_quarantines_until_explicit_new_process(monke
 
 @pytest.mark.parametrize("function,module", [(backend.cuda_capability, "numba.cuda"), (backend.cupy_capability, "cupy")])
 def test_unknown_discovery_error_propagates(function, module, monkeypatch):
+    # Exercise the synthetic discovery branch even in a CPU-isolated CI job.
+    monkeypatch.delenv("CUDA_VISIBLE_DEVICES", raising=False)
     def fail(*args):
         raise ValueError("broken capability input")
     if module == "numba.cuda":
-        from numba import cuda
-        monkeypatch.setattr(cuda, "is_available", fail)
+        install_fake_numba_cuda(monkeypatch, is_available=fail)
     else:
         monkeypatch.setitem(sys.modules, "cupy", SimpleNamespace(cuda=SimpleNamespace(runtime=SimpleNamespace(getDeviceCount=fail))))
     with pytest.raises(ValueError, match="broken capability"):
@@ -107,16 +108,15 @@ def test_unknown_discovery_error_propagates(function, module, monkeypatch):
 
 
 def test_missing_optional_cupy_is_unavailable_not_hardware_pass(monkeypatch):
+    monkeypatch.delenv("CUDA_VISIBLE_DEVICES", raising=False)
     monkeypatch.setitem(sys.modules, "cupy", None)
     assert not backend.cupy_capability().available
 
 
 @pytest.fixture
 def missing_numba_cuda_compiler(monkeypatch):
-    from numba import cuda
-    from numba.cuda.cudadrv import driver
-    monkeypatch.setattr(cuda, "is_available", lambda: False)
-    monkeypatch.setattr(driver, "driver", SimpleNamespace(is_available=True))
+    monkeypatch.delenv("CUDA_VISIBLE_DEVICES", raising=False)
+    install_fake_numba_cuda(monkeypatch)
 
 
 def test_missing_numba_compiler_is_not_reported_as_absent_device(missing_numba_cuda_compiler):

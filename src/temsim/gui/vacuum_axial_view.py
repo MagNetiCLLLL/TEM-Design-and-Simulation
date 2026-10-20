@@ -6,6 +6,7 @@ import pyqtgraph as pg
 from PySide6.QtCore import QRectF, Qt, QTimer, Signal
 from PySide6.QtGui import QPainterPath
 from PySide6.QtWidgets import QGraphicsPathItem, QGraphicsRectItem
+from temsim.gui.vacuum_pumping_overlay import VacuumPumpingOverlay
 
 
 @dataclass
@@ -20,6 +21,8 @@ class _IntervalLabel:
 
 class VacuumAxialView(pg.PlotWidget):
     selected = Signal(str)
+    pumping_selected = Signal(str)
+    pumping_line_selected = Signal(str)
 
     def __init__(self):
         super().__init__(background="#050816")
@@ -32,6 +35,8 @@ class VacuumAxialView(pg.PlotWidget):
         self._label_timer = QTimer(self)
         self._label_timer.setSingleShot(True)
         self._label_timer.timeout.connect(self._layout_labels)
+        self._pumping_visible = True
+        self.pumping_overlay = VacuumPumpingOverlay(self)
         self.component = None
         self.sample_z_mm = None
         self.sample_marker = None
@@ -85,6 +90,18 @@ class VacuumAxialView(pg.PlotWidget):
     def set_regions(self, rows, modules, current=""):
         self.rows, self.modules, self.current = tuple(rows), tuple(modules), current
         self.redraw()
+
+    def set_pumping_layout(self, layout, anchors=None):
+        self.pumping_overlay.set_layout(layout, anchors)
+        self._layout_labels()
+
+    def set_pumping_visible(self, visible):
+        self._pumping_visible = bool(visible)
+        self.pumping_overlay.setVisible(self._pumping_visible)
+        self._layout_labels()
+
+    def set_pumping_selection(self, endpoint="", line_key=""):
+        self.pumping_overlay.set_selection(endpoint, line_key)
 
     def _rectangle(self, start, end, bottom, height, colour, label, key=None, dashed=False, band="assembly"):
         box = QRectF(start, bottom, end-start, height)
@@ -144,7 +161,7 @@ class VacuumAxialView(pg.PlotWidget):
             self.sample_marker.setToolTip(f"Sample centre Z {self.sample_z_mm:.9g} mm; geometry is defined in Sample.")
             self.addItem(self.sample_marker, ignoreBounds=True)
             self._items.append(self.sample_marker)
-            label = pg.TextItem(f"Sample · {self.sample_z_mm:.9g} mm", color="#fbbf24", anchor=(.5, 0))
+            label = pg.TextItem(f"Sample · {self.sample_z_mm:.9g} mm", color="#fbbf24", anchor=(0, 0))
             label.setPos(self.sample_z_mm, .95)
             self.addItem(label, ignoreBounds=True)
             self._items.append(label)
@@ -236,8 +253,18 @@ class VacuumAxialView(pg.PlotWidget):
         assembly_top += heights["vacuum"]
         y_min = min(0, .1-heights["cell"]-.15)
         y_max = max(3, assembly_top+heights["assembly"]+.2)
-        self.setMinimumHeight(max(210, math.ceil((y_max-y_min)*pixels_per_row_unit+45)))
-        self.setYRange(y_min, y_max, padding=0)
+        service_height = (self.pumping_overlay.required_height(vb.width())
+                          if self._pumping_visible and self.pumping_overlay.layout else 0)
+        # Reserve a readable column area when the pressure editor is opened,
+        # without adding a whole service panel to the existing minimum (which
+        # would enlarge the main window while this hidden page is laid out).
+        self.setMinimumHeight(max(210, math.ceil((y_max-y_min)*pixels_per_row_unit+45),
+                                  service_height+228 if service_height else 0))
+        # Only the annotation Y axis gains space. Physical Z and every region
+        # rectangle retain their exact coordinates and horizontal pixel scale.
+        service_units = ((y_max-y_min)*service_height/max(100, vb.height()-service_height)
+                         if service_height else 0)
+        self.setYRange(y_min-service_units, y_max, padding=0)
         self.getAxis("left").setTicks([[(2.45+heights["vacuum"], "Assembly"), (1.35, "Vacuum"), (.35, "Cell")]])
         for entry in self._labels:
             rect = QRectF(entry.base_rect)
@@ -265,6 +292,9 @@ class VacuumAxialView(pg.PlotWidget):
                 entry.leader.setPath(path)
                 entry.leader.show()
                 label.update()
+        self.pumping_overlay.setVisible(bool(self._pumping_visible and self.pumping_overlay.layout))
+        if self.pumping_overlay.isVisible():
+            self.pumping_overlay.rebuild(max(0, vb.height()-service_height))
 
     def region_at(self, z, y=1.35):
         for box, key in reversed(self.boxes):
@@ -278,6 +308,9 @@ class VacuumAxialView(pg.PlotWidget):
         vb = self.getViewBox()
         if not vb.sceneBoundingRect().contains(event.scenePos()):
             return
+        if self.pumping_overlay.isVisible() and any(self.pumping_overlay.hit_at(
+                self.pumping_overlay.mapFromScene(event.scenePos()))):
+            return  # The persistent overlay dispatches its own node/pipe click.
         for entry in reversed(self._labels):
             if entry.key and entry.text.isVisible() and entry.text.sceneBoundingRect().contains(event.scenePos()):
                 self.selected.emit(entry.key)

@@ -6,6 +6,7 @@ No preset, blanker override, model switch or sample replacement is permitted.
 """
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import asdict, dataclass, replace
 from contextvars import ContextVar
 import math
@@ -331,6 +332,9 @@ class AlignmentCommitGate:
         # candidate/checkpoint captured before that display-only movement.
         if hasattr(state, "virtual_observation_z_mm"):
             restored.virtual_observation_z_mm = state.virtual_observation_z_mm
+        # A pending optical solve does not own edits to the service drawing.
+        # Keep live routing while leaving its immutable validation record intact.
+        restored.vacuum_map.pumping = deepcopy(state.vacuum_map.pumping)
         self._applied[request.request_id] = (restored_snapshot.physical_digest, revision + 1)
         return restored
 
