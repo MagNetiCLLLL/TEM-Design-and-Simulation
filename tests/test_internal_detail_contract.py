@@ -60,9 +60,9 @@ def test_cartridge_subdivision_reports_imported_map_revalidation_without_claimin
     ("column/C3_ProbeCorrector.toml", "condenser_aperture_2", "aperture_support_rod_start_y_mm", 5.),
     ("column/C3_ProbeCorrector.toml", "condenser_stigmator", "stigmator_support_insulation_thickness_mm", 20.),
     ("column/C3_ProbeCorrector.toml", "condenser_lens_3_housing", "mechanical_c3_end_cooling_plate_thickness_mm", 20.),
-    ("column/C3_ProbeCorrector.toml", "condenser_lens_3_excitation_coil", "mechanical_inner_diameter_mm", 98.),
+    ("column/C3_ProbeCorrector.toml", "condenser_lens_3_excitation_coil", "mechanical_inner_diameter_mm", 160.),
     ("column/C3_ProbeCorrector.toml", "adapter_lens_housing", "mechanical_adapter_end_cooling_plate_thickness_mm", 2.),
-    ("column/C3_ProbeCorrector.toml", "adapter_lens_excitation_coil", "mechanical_inner_diameter_mm", 80.),
+    ("column/C3_ProbeCorrector.toml", "adapter_lens_excitation_coil", "mechanical_inner_diameter_mm", 100.),
     ("column/C3_ProbeCorrector.toml", "condenser_aperture_3", "aperture_support_rod_start_y_mm", 5.),
     ("column/C3_ProbeCorrector.toml", "beam_deflector", "deflector_support_registration_slot_sweep_deg", 90.),
     ("column/C3_ProbeCorrector.toml", "probe_tl22_lens_housing", "mechanical_tl22_end_cooling_plate_thickness_mm", 1.5),
@@ -75,6 +75,40 @@ def test_invalid_internal_edit_preserves_draft_history_and_source(module, key, f
     with pytest.raises(ValueError):
         draft.set_dimension(("parts", key, field), value)
     assert draft.document == before and not draft.dirty and not draft.can_undo
+    assert draft.path.read_bytes() == raw
+
+
+@pytest.mark.parametrize("lens,prefix,value", (
+    ("condenser_lens_3", "mechanical_c3_end_", 98.),
+    ("adapter_lens", "mechanical_adapter_end_", 80.),
+))
+def test_valid_coil_id_edit_synchronizes_end_layers_and_parent_radial_size(lens, prefix, value):
+    from temsim.cad_catalog import part_solids
+
+    draft = PartModelDocument(INSTRUMENT_CONFIG_ROOT / "column/C3_ProbeCorrector.toml")
+    before, raw = deepcopy(draft.document), draft.path.read_bytes()
+    coil, housing = lens + "_excitation_coil", lens + "_housing"
+    rows = {p["key"]: p for p in draft.document["parts"]}
+    old_shapes = {key: tuple(s.shape for s in part_solids(rows[key], rows)) for key in (coil, housing)}
+    outer = rows[coil]["mechanical_outer_diameter_mm"]
+    expected_parent = deepcopy(rows[lens])
+    expected_parent["mechanical_coil_radial_thickness_mm"] = (outer - value) / 2.
+    draft.set_dimension(("parts", coil, "mechanical_inner_diameter_mm"), value)
+    assert draft.part(coil)["mechanical_outer_diameter_mm"] == outer
+    assert draft.part(coil)["mechanical_inner_diameter_mm"] == value
+    assert draft.part(housing)[prefix + "inner_diameter_mm"] == value
+    # The only parent change is its linked physical winding thickness; no
+    # excitation, optical gap or effective field parameter is recalibrated.
+    assert draft.part(lens) == expected_parent
+    rows = {p["key"]: p for p in draft.document["parts"]}
+    for key in (coil, housing):
+        assert tuple(s.shape for s in part_solids(rows[key], rows)) != old_shapes[key]
+    validate_document(draft.document)
+    after = deepcopy(draft.document)
+    draft.undo()
+    assert draft.document == before
+    draft.redo()
+    assert draft.document == after
     assert draft.path.read_bytes() == raw
 
 

@@ -13,7 +13,8 @@ from temsim.magnetic_circuits import is_custom_mechanical_part, part_data
 
 
 STATUS = "engineering_reconstruction_not_oem"
-FAMILY_PREFIXES = ("mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_")
+FAMILY_PREFIXES = ("mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_",
+                   "mechanical_transfer_end_")
 SUFFIXES = (
     "structure", "upper_contact_local_z_mm", "lower_contact_local_z_mm",
     "inner_diameter_mm", "outer_diameter_mm", "insulation_thickness_mm",
@@ -83,8 +84,12 @@ def validate_lens_end_hardware(row, by_key=None, *, prefix, label):
             "outer_diameter_mm", "insulation_thickness_mm", "cooling_plate_thickness_mm"))
     housing_inner, housing_outer, vacuum = (_number(row, name) for name in (
         "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm", "vacuum_inner_diameter_mm"))
-    if not (0 < insulation and 0 < plate and start <= upper - insulation - plate < upper
-            < lower < lower + insulation + plate <= end):
+    # Test the same individual planes used by the solid builder. A positive
+    # decimal thickness can round away at a nonzero column Z, even when the
+    # combined insulation/plate stack still has a positive total span.
+    if not (0 < insulation and 0 < plate
+            and start <= upper - insulation - plate < upper - insulation < upper
+            < lower < lower + insulation < lower + insulation + plate <= end):
         raise ValueError(f"{row['key']}: {label} end hardware needs positive thicknesses and ordered contacts inside housing")
     if not 0 < vacuum < inner < outer < housing_inner < housing_outer:
         raise ValueError(f"{row['key']}: {label} end hardware requires vacuum < plate ID < plate OD < housing ID < OD")

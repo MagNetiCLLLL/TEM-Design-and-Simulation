@@ -1,4 +1,4 @@
-"""Opt-in passive winding formers for the reconstructed HP2 six-pin family.
+"""Opt-in passive winding formers for the reconstructed HP1/HP2 six-pin family.
 
 Coordinates are module-local mm. The generic multipole winding-member and
 bonding principle is documented; rectangular flanges, dimensions and material
@@ -22,7 +22,7 @@ FIELDS = frozenset((*DIMENSIONS, *(PREFIX+name for name in (
 NOTE = (
     "Engineering adaptation of the hollow winding member and core bonding in "
     "JP2004241190A paragraph 0005, Fig.7(c,d); paragraph 0055 also permits bobbins. "
-    "This is generic multipole construction evidence, not verified CEOS HP2 hardware. "
+    "This is generic multipole construction evidence, not verified CEOS HP1/HP2 hardware. "
     "Rectangular former flanges, unspecified insulating material and bulk core bedding "
     "are saved reconstruction assumptions. No individual turns, screws, cooling or "
     "mounting to the column is inferred. Original copper, magnetic poles, yoke and "
@@ -56,8 +56,8 @@ def hexapole_support_dimensions(part):
     if supplied-FIELDS:
         raise ValueError(f"{key}: unknown hexapole support fields: {sorted(supplied-FIELDS)}")
     if (not is_probe_hexapole(part)
-            or part.get("geometry_template_key", key) != "probe_hp2_hexapole"):
-        raise ValueError(f"{key}: winding supports require the material HP2 hexapole")
+            or part.get("geometry_template_key", key) not in {"probe_hp1_hexapole", "probe_hp2_hexapole"}):
+        raise ValueError(f"{key}: winding supports require a material HP1/HP2 hexapole")
     if part.get(PREFIX+"profile") != PROFILE:
         raise ValueError(f"{key}: hexapole support requires profile {PROFILE}")
     if part.get(PREFIX+"geometry_status") != "engineering_reconstruction_not_oem":

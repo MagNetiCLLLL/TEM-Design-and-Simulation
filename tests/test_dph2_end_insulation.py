@@ -60,10 +60,13 @@ def test_end_covers_are_explicit_family_inference_and_leave_all_old_eleven_regio
         assert spec.parameters["optical_field_unchanged"]
     assert by_key[CHANNEL]["effective_thickness_mm"] == 4.
     assert by_key[CHANNEL]["physical_host_key"] == KEY
-    # No automatic rollout to the other four inserts.
-    for key in ("probe_dph1_coils", "probe_dp22_coils", "probe_dp21_coils", "probe_dp11_coils"):
-        assert all(field not in by_key[key] for field in END_FIELDS)
-        assert len(part_solids(by_key[key], by_key)) == 11
+    # Edge seals are explicit per-insert allocations, never automatic geometry.
+    # Lower DP copper has its own explicit shorter allocation so both end
+    # seals fit with a positive pole clearance, tested by its own regression.
+    for key, count in (("probe_dph1_coils", 13), ("probe_dp22_coils", 13),
+                       ("probe_dp21_coils", 13), ("probe_dp11_coils", 13)):
+        assert all(field in by_key[key] for field in END_FIELDS)
+        assert len(part_solids(by_key[key], by_key)) == count
 
 
 def test_caps_touch_copper_ends_without_overlap_and_preserve_open_bore(document):

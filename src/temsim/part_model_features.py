@@ -150,7 +150,12 @@ def annotate_legacy_mesh(mesh, part, by_key=None):
     groups = np.where(np.abs(normals[:, 2]) > 1 - 1e-9,
                       np.where(normals[:, 2] > 0, "axial_positive", "axial_negative"),
                       np.where(np.einsum("ij,ij->i", centers[:, :2], normals[:, :2]) < 0, "inner", "outer"))
-    axial = _paths(part, ("length_mm", "pole_nose_axial_length_mm", "pole_face_land_axial_thickness_mm", "pole_mounting_shank_axial_length_mm",
+    from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
+    copper_length = (part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES
+                     and "winding_axial_length_mm" in part
+                     and part.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing")
+    axial_field = "winding_axial_length_mm" if copper_length else "length_mm"
+    axial = _paths(part, (axial_field, "pole_nose_axial_length_mm", "pole_face_land_axial_thickness_mm", "pole_mounting_shank_axial_length_mm",
                           "pole_vacuum_connector_axial_length_mm", "plate_thickness_mm"))
     outer = _paths(part, ("mechanical_outer_diameter_mm", "mechanical_outer_radius_mm", "outer_diameter_mm",
                           "outer_width_mm", "mechanical_tip_diameter_mm", "pole_stem_outer_diameter_mm",

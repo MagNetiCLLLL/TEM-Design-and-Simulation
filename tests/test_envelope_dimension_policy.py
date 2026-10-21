@@ -1,5 +1,6 @@
 """Only proven allocation references are locked; material controls stay live."""
 from copy import deepcopy
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -48,7 +49,23 @@ def test_known_allocation_edit_is_readonly_and_rejected_before_draft_history_cha
     else:
         assert spec.label == "Envelope length"
     impact = describe_parameter_impact(draft.part(key), spec.path)
-    assert impact.status == "inactive" and "geometry" not in impact.effects
+    # Read-only material allocations can still delimit a real vacuum segment.
+    # Ask the production profile builder in isolation so that a narrower
+    # continuous liner does not mask the consumer we are checking here.
+    from temsim.column.module_assembly import _module_vacuum_segments
+    row = draft.part(key)
+    start, end = row["local_start_z_mm"], row["local_end_z_mm"]
+    bounds_vacuum_segment = False
+    if field == "length_mm" and end > start:
+        module_row = SimpleNamespace(key="allocation_probe", entrance_z_mm=start-1., exit_z_mm=end+1.,
+                                     geometry={"vacuum_drift_inner_diameter_mm": 1000.})
+        part = SimpleNamespace(key=key, name=row["name"], module_key=module_row.key,
+                               data=row, start_z_mm=start, end_z_mm=end, length_mm=row["length_mm"])
+        bounds_vacuum_segment = any(segment.key == key for segment in
+                                    _module_vacuum_segments(module_row, 0., [part]))
+    assert impact.status == ("active" if bounds_vacuum_segment else "inactive")
+    assert set(impact.effects) == ({"display", "beam_clearance"} if bounds_vacuum_segment else {"display"})
+    assert "geometry" not in impact.effects and "magnetic_field" not in impact.effects
     with pytest.raises(ValueError):
         draft.set_dimension(spec.path, spec.value*1.01 if spec.value else .01)
     assert draft.document == before and draft._history == history and not draft.can_undo

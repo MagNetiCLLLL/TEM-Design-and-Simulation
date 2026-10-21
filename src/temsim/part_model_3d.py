@@ -219,7 +219,7 @@ def _dimensions(part, by_key=None):
             continue
         holder_parameter = (part.get("mechanical_profile") in {"transverse_goniometer", "side_entry_sample_holder"}
                             and name.startswith(("holder_", "stage_")))
-        internal_detail = name.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
+        internal_detail = name.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
         if not holder_parameter and not internal_detail and name not in detector_fields and not any(token in name for token in ("diameter", "radius", "length", "width", "height", "thickness", "gap", "inset", "angle", "angular_span", "radial_profile", "material_intervals", "path_center", "path_entrance", "strip_center_pitch")):
             continue
         append(value, ("parts", part["key"], name),
@@ -351,6 +351,7 @@ def _legacy_part_meshes(part, by_key, count, aperture_index=0, runtime=None):
                 or part.get("mechanical_c3_end_structure")
                 or part.get("mechanical_adapter_end_structure")
                 or part.get("mechanical_tl22_end_structure")
+                or part.get("mechanical_transfer_end_structure")
                 or part.get("hexapole_support_profile")
                 or part.get("branch_path_only") or part.get("mechanical_profile") in {
                 "transverse_eds_detector_array", "objective_electronics_sleeve"}):

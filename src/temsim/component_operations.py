@@ -143,6 +143,49 @@ def translated_component(part, delta_z_mm):
     return result
 
 
+def resized_copied_axial_fields(part, length_mm, *, center_z_mm=None):
+    """Derive saved axial material fields for an independent copied body.
+
+    Both editors use this law. Native optical assemblies keep their independently
+    declared interfaces; only a mechanical copy scales its saved reconstruction.
+    The returned fields never mutate the source or a user's explicit constraints.
+    """
+    if part.get("mechanical_part_role") != "custom_mechanical_copy":
+        return {}
+    previous = _number(part["length_mm"], "Previous copied length")
+    length = _number(length_mm, "Copied length")
+    old_center = _number(part["local_center_z_mm"], "Copied centre")
+    center = old_center if center_z_mm is None else _number(center_z_mm, "Copied centre")
+    if previous <= 0 or (previous == length and center == old_center):
+        return {}
+    ratio = _number(length / previous, "Copied axial scale")
+
+    def absolute(value, label):
+        return _number(center + (_number(value, label) - old_center) * ratio, label)
+
+    fields = {}
+    if part.get("mechanical_cartridge_structure"):
+        for name in ("mechanical_cartridge_spacer_start_local_z_mm",
+                     "mechanical_cartridge_spacer_end_local_z_mm"):
+            fields[name] = absolute(part[name], name)
+    from temsim.cad_round_lens_end_hardware import FAMILY_PREFIXES
+    for prefix in FAMILY_PREFIXES:
+        if part.get(prefix + "structure"):
+            for suffix in ("upper_contact_local_z_mm", "lower_contact_local_z_mm"):
+                name = prefix + suffix
+                fields[name] = absolute(part[name], name)
+    if "material_intervals_mm" in part:
+        fields["material_intervals_mm"] = [
+            [absolute(value, "material_intervals_mm") for value in interval]
+            for interval in part["material_intervals_mm"]]
+    if "magnetic_radial_profile_mm" in part:
+        fields["magnetic_radial_profile_mm"] = [
+            [_number(_number(row[0], "magnetic_radial_profile_mm") * ratio,
+                     "magnetic_radial_profile_mm"), *row[1:]]
+            for row in part["magnetic_radial_profile_mm"]]
+    return fields
+
+
 def make_component(*, key, name=None, shape="tube", center_z_mm=0.0,
                    length_mm=10.0, inner_diameter_mm=10.0, outer_diameter_mm=20.0,
                    width_mm=20.0, height_mm=20.0, parent_key=None,
@@ -227,7 +270,7 @@ _MULTI_REFERENCES = frozenset({"magnetic_lens_keys", "contained_recording_plane_
 # that same new subtree rather than silently retaining the original component.
 _OPTIONAL_MATERIAL_REFERENCES = frozenset({
     "mechanical_c3_end_coil_key", "mechanical_adapter_end_coil_key",
-    "mechanical_tl22_end_coil_key", "mechanical_cartridge_pole_keys",
+    "mechanical_tl22_end_coil_key", "mechanical_transfer_end_coil_key", "mechanical_cartridge_pole_keys",
 })
 
 

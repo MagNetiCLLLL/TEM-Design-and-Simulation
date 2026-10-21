@@ -24,11 +24,12 @@ DIMENSIONS = (PREFIX + "carrier_thickness_mm", PREFIX + "cover_thickness_mm")
 GAP_FILL_FIELD = PREFIX + "fill_conductor_gaps"
 GAP_REGIONS = ("x_conductor_gap_insulation", "y_conductor_gap_insulation")
 END_COVER_FIELD = PREFIX + "end_cover_thickness_mm"
+END_SIDE_FIELD = PREFIX + "end_cover_side"
 END_METADATA_FIELDS = tuple(PREFIX + "end_cover_" + name for name in (
     "geometry_status", "source", "source_note"))
 END_REGIONS = ("upstream_end_cover", "downstream_end_cover")
 END_STATUS = "engineering_reconstruction_family_inference"
-FIELDS = frozenset((*DIMENSIONS, GAP_FILL_FIELD, END_COVER_FIELD, *END_METADATA_FIELDS,
+FIELDS = frozenset((*DIMENSIONS, GAP_FILL_FIELD, END_COVER_FIELD, END_SIDE_FIELD, *END_METADATA_FIELDS,
                     PREFIX + "profile", PREFIX + "source", PREFIX + "host_fixation_status"))
 NOTE = (
     "Bonded flexible-PCB bulk laminate equivalent; patent Figs. 1, 4 and 6 "
@@ -50,8 +51,8 @@ GAP_NOTE = (
 END_NOTE = (
     "Optional bulk axial edge seals of the already filled flexible laminate. "
     "CEOS US20090079531A1 Fig. 4 supports conductor cover insulation and "
-    "full-surface bonding, not a documented DPH2 axial end-cap design. These "
-    "two annular covers and their saved thickness are an explicit engineering "
+    "full-surface bonding, not a documented DPH2/DPH1/DP axial end-cap design. The "
+    "selected annular covers and their saved thickness are an explicit engineering "
     "construction-family inference, not verified OEM geometry or a chosen "
     "resin/coverlay grade. They cover the model's exposed bulk winding ends "
     "without changing the copper allocation, individual turns, connections, "
@@ -104,7 +105,8 @@ def deflector_support_dimensions(part):
     if not bond > 0.0:
         raise ValueError(f"{key}: winding support must leave a positive interlayer bond thickness")
     end_cover = 0.
-    if any(name in part for name in (END_COVER_FIELD, *END_METADATA_FIELDS)):
+    end_side = "both"
+    if any(name in part for name in (END_COVER_FIELD, END_SIDE_FIELD, *END_METADATA_FIELDS)):
         end_cover = _number(part, END_COVER_FIELD)
         if end_cover <= 0.:
             raise ValueError(f"{key}: axial end-cover thickness must be positive")
@@ -115,13 +117,22 @@ def deflector_support_dimensions(part):
         note = part.get(END_METADATA_FIELDS[2])
         if not isinstance(note, str) or not note.strip():
             raise ValueError(f"{key}: axial end covers require a nonempty engineering source note")
+        end_side = part.get(END_SIDE_FIELD, "both")
+        if not isinstance(end_side, str) or end_side not in ("both", "upstream", "downstream"):
+            raise ValueError(f"{key}: axial end-cover side must be both, upstream or downstream")
         if not math.isfinite(start-end_cover) or not math.isfinite(end+end_cover):
             raise ValueError(f"{key}: axial end-cover extent must be finite")
+    upstream_cover = end_cover if end_side in ("both", "upstream") else 0.
+    downstream_cover = end_cover if end_side in ("both", "downstream") else 0.
+    if ((upstream_cover and not start-upstream_cover < start)
+            or (downstream_cover and not end < end+downstream_cover)):
+        raise ValueError(f"{key}: axial end-cover thickness is too small at its allocated position")
     return dict(start_mm=start, end_mm=end, inner_radius_mm=inner, outer_radius_mm=outer,
                 carrier_thickness_mm=carrier, cover_thickness_mm=cover,
                 bond_thickness_mm=bond, winding_layer_thickness_mm=layer,
                 end_cover_thickness_mm=end_cover,
-                material_start_mm=start-end_cover, material_end_mm=end+end_cover,
+                end_cover_side=end_side,
+                material_start_mm=start-upstream_cover, material_end_mm=end+downstream_cover,
                 material_inner_radius_mm=inner-carrier,
                 material_outer_radius_mm=outer+cover)
 
@@ -203,6 +214,9 @@ def deflector_support_solids(part, windings=None):
     if d["end_cover_thickness_mm"]:
         for region, a, b in ((END_REGIONS[0], d["material_start_mm"], d["start_mm"]),
                              (END_REGIONS[1], d["end_mm"], d["material_end_mm"])):
+            if ((region == END_REGIONS[0] and d["end_cover_side"] == "downstream")
+                    or (region == END_REGIONS[1] and d["end_cover_side"] == "upstream")):
+                continue
             result += (SolidSpec(str(part["key"]), region, "insulator",
                 annulus(a, b, d["material_inner_radius_mm"], d["material_outer_radius_mm"]),
                 (SUPPORT_SOURCE,), status=END_STATUS, note=END_NOTE,

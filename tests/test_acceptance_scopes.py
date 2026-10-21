@@ -80,6 +80,7 @@ def test_declared_scopes_use_existing_unique_whole_files_and_namespaced_criteria
 def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
     required = {
         "gun-fields": {"test_closed_gun_field.py", "test_continuous_tip_curvature.py",
+                       "test_small_bore_electrode_mesh.py", "test_tip_model_switch_validation.py",
                        "test_tip_curvature_comparison.py", "test_axisymmetric_cut_field.py",
                        "test_geometry_gun_cache.py", "test_geometry_gun_implicit_tolerance.py",
                        "test_gun_transverse_adaptive.py",
@@ -129,6 +130,14 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_cad_adapter_lens_hardware.py",
             "test_dph2_end_insulation.py", "test_probe_hexapole_support.py",
             "test_cad_tl22_lens_hardware.py",
+            "test_cad_probe_transfer_lens_hardware.py", "test_probe_hp1_support.py",
+            "test_probe_lower_deflector_details.py", "test_copied_axial_dimension_sync.py",
+            "test_deflector_winding_length_contract.py", "test_pole_face_land_geometry.py",
+            "test_component_replacement_recipes.py", "test_dimension_edit_policy.py",
+            "test_envelope_dimension_policy.py", "test_manifest_dimension_bindings.py",
+            "test_mechanical_dimension_bindings.py", "test_mechanical_overlap_async.py",
+            "test_mechanical_overlap_editor.py", "test_recording_field_observation.py",
+            "test_field_tooltip_lifecycle.py",
             "test_objective_electronics_sleeves.py",
                 "test_compare_cad_assembly.py", "test_image_corrector_topology.py", "test_image_corrector_channel_hardware.py",
                 "test_bcor_runtime.py", "test_bcor_hardware.py", "test_bcor_selection.py",

@@ -159,3 +159,14 @@ DPH2 在原 11 区基础上新增两个 0.04 mm 被动环形封边，保留铜�
 Image-corrector DPH/DP inserts with an explicit `winding_axial_length_mm` use that field for the copper length about their saved centre. For example, BCOR/CETCOR DP11 allocates 6 mm axially but saves 4 mm of copper. The existing `winding_extent_note` explicitly states that the remaining allocation is not material or a measured fringe-field profile. Therefore `length_mm` is now labelled as a read-only installation/field allocation in the dimension editor, while `winding_axial_length_mm` is the editable physical size. Editing it updates native and CAD copper without moving the centre or changing the effective field thickness, channel calibration or operating controls. It must still fit the allocation and leave the configured saddle-loop window open.
 
 The distinction is conditional: existing probe inserts without an explicit copper length, including DPH2, still use their saved `length_mm` as the physical winding length. Their original dimension remains editable. No automatic copper scaling from an optical allocation is introduced. These are the same engineering winding reconstructions already documented above, not additional OEM dimensions.
+
+## 2026-10-21：TL22 下游配件复核
+
+在上述历史基线之后，本轮继续检查 DP22、DP21、TL21、DPH1、HP1、DP11 和 TL1（存储 TL12），为 HP1 增加显式绕组骨架/粘接区，为 TL21/TL1 增加各自保存尺寸的端部叠层，并按空余空间选择 DPH/DP 封边侧。三种 Probe 配置同步采用这些被动结构。原铜、铁磁材料与光学值保留。
+
+逐件变化、真空管间隙、三处未解决的铜—极靴零间隙接触、尺寸编辑一致性修复及后台证据见 [本轮总检查记录](probe-lower-detail-review-2026-10-21.md)、[偏转器记录](probe-lower-deflector-details-2026-10-21.md) 和 [传递透镜记录](probe-lower-transfer-lenses-2026-10-21.md)。上文各日期的材料区数量仅指对应历史阶段。
+
+
+## 2026-10-21：三处 DP 铜端接触的后续处理
+
+DP22、DP21、DP11 采用显式 `winding_axial_length_mm`，固定中心下每端铜内收 0.14 mm、两端均加 0.04 mm 绝缘封边，至相邻极靴留下 0.10 mm 名义装配间隙。光学分配和有效厚度保留；所有极靴、磁隙及真空管保持。具体尺寸是工程重建，公开资料支持绝缘结构族，不提供本机制造尺寸或耐压等级。铜形状已按本次有意缩短，不能沿用上一阶段“所有铜形状不变”的结论。详见 [端部绝缘与间隙修复记录](probe-contact-isolation-2026-10-21.md)。

@@ -146,7 +146,7 @@ def _meaning(part, path, by_key):
                 "Carrier bore reference" if "bore" in field else
                 "Mechanism envelope diameter" if field in {"mechanical_outer_diameter_mm", "outer_diameter_mm"} else
                 "Reference cone angle"), "envelope" if field in {"mechanical_outer_diameter_mm", "outer_diameter_mm"} else "unknown", reason
-    if (field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "hexapole_support_"))
+    if (field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "hexapole_support_"))
             and field.endswith(("_mm", "_deg"))):
         return label, "physical", (
             "Explicit engineering dimension of the reconstructed internal material. "
@@ -274,7 +274,7 @@ def _meaning(part, path, by_key):
             "winding_axial_length_mm": "Actual copper winding length about the saved winding centre. It does not change the independent effective thickness or analytical field support.",
             "winding_support_carrier_thickness_mm": "Radial thickness of each carrier in the equivalent flexible laminate. The interlayer bond fills the remaining positive gap; host mounting is unverified.",
             "winding_support_cover_thickness_mm": "Radial thickness of each dielectric cover in the bulk laminate equivalent. It increases the full material outer radius; it does not model individual conductor sidewall insulation.",
-            "winding_support_end_cover_thickness_mm": "Engineering axial end insulation outside the unchanged copper allocation. It extends the material stack but does not change optical length, winding centres or field calibration; it is not verified DPH2 OEM packaging.",
+            "winding_support_end_cover_thickness_mm": "Engineering axial insulation on the selected end(s) of the configured DPH/DP copper winding. It follows the actual copper length and extends the material stack; the complete stack must clear neighbouring parts. It does not change optical length, winding centres or field calibration and is not verified OEM packaging.",
             "winding_layer_thickness_mm": "Radial material thickness of each of the two winding layers. Their remaining radial gap must be positive.",
             "winding_angular_span_deg": "Full angular span of each loop about the local axis. Opposite loops must stay separated; the X/Y pairs are rotated by 90 degrees.",
             "winding_band_width_mm": "Axial end-band width and circumferential side-band width at the layer mean radius. Both must leave an open loop window.",
@@ -386,6 +386,9 @@ def _source(part, path, category):
     if field.startswith("mechanical_tl22_end_") and category == "physical":
         return _source_from_text(part.get("mechanical_tl22_end_geometry_status"),
                                  part.get("mechanical_tl22_end_geometry_source"), explicit_field=False)
+    if field.startswith("mechanical_transfer_end_") and category == "physical":
+        return _source_from_text(part.get("mechanical_transfer_end_geometry_status"),
+                                 part.get("mechanical_transfer_end_geometry_source"), explicit_field=False)
     if field.startswith("hexapole_support_") and category == "physical":
         return _source_from_text(part.get("hexapole_support_geometry_status"),
                                  part.get("hexapole_support_source_note"), explicit_field=False)

@@ -280,10 +280,22 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
                            effects=("display", "beam_clearance"), results=("ray_transport", "beam_transmission"))
         return _impact("inactive", "Reference dimension only", reason,
                        effects=("display",), results=("input_validation",))
+    from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
+    if (kind == "parts" and len(path) == 3 and field == "winding_axial_length_mm"
+            and field in row and row.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES):
+        from temsim.dimension_edit_policy import inactive_native_dimension_reason
+        if reason := inactive_native_dimension_reason(row, field):
+            return _impact("inactive", "Stored native winding length only", reason,
+                           effects=("display",), results=("input_validation",))
+        return _impact("inactive", "Copper and laminate geometry only",
+                       "This explicit copper length resizes the native winding and its laminate about their fixed centre. "
+                       "Axial insulation follows the copper ends. The independent installation allocation, vacuum boundary, "
+                       "effective field thickness and prescribed field calibration do not change. "
+                       "The current field model does not solve this winding geometry; this does not establish unchanged real fields.")
     if (kind == "parts" and field in row
-            and field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
+            and field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
             and field.endswith(("_mm", "_deg"))):
-        if field.startswith(("mechanical_cartridge_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_")):
+        if field.startswith(("mechanical_cartridge_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_")):
             recipes = descriptors or {}
             lens_keys = row.get("magnetic_lens_keys", ()) if field.startswith("mechanical_cartridge_") else (row.get("parent_key"),)
             imported = [key for key in lens_keys

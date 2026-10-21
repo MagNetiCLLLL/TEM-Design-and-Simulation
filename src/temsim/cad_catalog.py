@@ -21,6 +21,7 @@ def part_solids(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.cad_stigmator_support import stigmator_support_solids
     from temsim.cad_c3_lens_hardware import c3_lens_hardware_solids
     from temsim.cad_adapter_lens_hardware import adapter_lens_hardware_solids
+    from temsim.cad_probe_transfer_lens_hardware import probe_transfer_lens_hardware_solids
     from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
     from temsim.cad_objective_sleeves import sleeve_solids
     if non_material_role(part):
@@ -28,7 +29,7 @@ def part_solids(part, by_key, *, runtime=None, aperture_index=0):
     values = tube_solids(part)
     if values is not None:
         return values
-    for build in (sleeve_solids, detector_solids, recording_plane_solids, gun_stigmator_solids, stigmator_support_solids, c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, stage_holder_solids, access_port_solids, round_lens_solids, multipole_solids):
+    for build in (sleeve_solids, detector_solids, recording_plane_solids, gun_stigmator_solids, stigmator_support_solids, c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, probe_transfer_lens_hardware_solids, stage_holder_solids, access_port_solids, round_lens_solids, multipole_solids):
         values=build(part,by_key)
         if values is not None:
             return values
@@ -58,12 +59,13 @@ def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.cad_stigmator_support import stigmator_support_solids
     from temsim.cad_c3_lens_hardware import c3_lens_hardware_solids
     from temsim.cad_adapter_lens_hardware import adapter_lens_hardware_solids
+    from temsim.cad_probe_transfer_lens_hardware import probe_transfer_lens_hardware_solids
     from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
     from temsim.cad_objective_sleeves import sleeve_solids
     values = tube_solids(part)
     if values is not None:
         return values
-    for build in (sleeve_solids, detector_solids, recording_plane_solids, gun_stigmator_solids, stigmator_support_solids, c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, cartridge_solids, stage_holder_solids, access_port_solids):
+    for build in (sleeve_solids, detector_solids, recording_plane_solids, gun_stigmator_solids, stigmator_support_solids, c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, probe_transfer_lens_hardware_solids, cartridge_solids, stage_holder_solids, access_port_solids):
         values = build(part, by_key)
         if values is not None:
             return values
@@ -100,8 +102,9 @@ def is_reconstruction_region(part, region):
     from temsim.cad_stigmator_support import stigmator_support_solids
     from temsim.cad_c3_lens_hardware import c3_lens_hardware_solids
     from temsim.cad_adapter_lens_hardware import adapter_lens_hardware_solids
+    from temsim.cad_probe_transfer_lens_hardware import probe_transfer_lens_hardware_solids
     from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
-    for build in (c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids):
+    for build in (c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, probe_transfer_lens_hardware_solids):
         regions = build(part)
         if regions is not None:
             # Keep the original housing material editable. Reconstructed end

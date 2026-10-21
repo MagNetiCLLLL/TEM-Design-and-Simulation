@@ -15,6 +15,7 @@ from temsim.optics.field_hardware_binding import bound_field_owner, resolve_fiel
 from temsim.component_operations import (
     PartChangeSet, added_component_document, placed_component_document,
     copied_component_document, validate_component_graph, CUSTOM_COMPONENT_ROLES,
+    resized_copied_axial_fields,
 )
 
 
@@ -30,6 +31,7 @@ def _validate_internal_details(parts, geometry=None):
     from temsim.cad_aperture_support import validate_aperture_support
     from temsim.cad_c3_lens_hardware import validate_c3_lens_hardware
     from temsim.cad_adapter_lens_hardware import validate_adapter_lens_hardware
+    from temsim.cad_probe_transfer_lens_hardware import validate_probe_transfer_lens_hardware
     from temsim.cad_tl22_lens_hardware import validate_tl22_lens_hardware
     from temsim.cad_probe_hexapole_support import validate_hexapole_support
     by_key = {part["key"]: part for part in parts}
@@ -45,6 +47,7 @@ def _validate_internal_details(parts, geometry=None):
         validate_c3_lens_hardware(part, by_key)
         validate_adapter_lens_hardware(part, by_key)
         validate_tl22_lens_hardware(part, by_key)
+        validate_probe_transfer_lens_hardware(part, by_key)
         validate_hexapole_support(part)
 
 
@@ -355,31 +358,7 @@ class PartModelDocument:
 
     @staticmethod
     def _resize_copied_axial_geometry(part, length):
-        if part.get("mechanical_part_role") != "custom_mechanical_copy":
-            return
-        previous = float(part["length_mm"])
-        if previous <= 0 or previous == length:
-            return
-        ratio = length / previous
-        center = float(part["local_center_z_mm"])
-        if part.get("mechanical_cartridge_structure"):
-            for name in ("mechanical_cartridge_spacer_start_local_z_mm",
-                         "mechanical_cartridge_spacer_end_local_z_mm"):
-                part[name] = center + (float(part[name]) - center) * ratio
-        for prefix in ("mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_"):
-            if part.get(prefix + "structure"):
-                for suffix in ("upper_contact_local_z_mm", "lower_contact_local_z_mm"):
-                    name = prefix + suffix
-                    part[name] = center + (float(part[name]) - center) * ratio
-        if "material_intervals_mm" in part:
-            part["material_intervals_mm"] = [
-                [center + (float(value) - center) * ratio for value in interval]
-                for interval in part["material_intervals_mm"]
-            ]
-        if "magnetic_radial_profile_mm" in part:
-            part["magnetic_radial_profile_mm"] = [
-                [float(row[0]) * ratio, *row[1:]] for row in part["magnetic_radial_profile_mm"]
-            ]
+        part.update(resized_copied_axial_fields(part, length))
 
     @staticmethod
     def _synchronize_custom_base_length(part):

@@ -42,7 +42,8 @@ ACCEPTANCE_SCOPES = {
         "evidence_kind": "bounded-numerical-and-software-checks",
         "criteria": {
             "gun-fields/GF-01": ("Conductor geometry, field boundaries and exact field cache", (
-                "tests/test_closed_gun_field.py", "tests/test_axisymmetric_cut_field.py")),
+                "tests/test_closed_gun_field.py", "tests/test_axisymmetric_cut_field.py",
+                "tests/test_small_bore_electrode_mesh.py", "tests/test_tip_model_switch_validation.py")),
             "gun-fields/GF-02": ("Continuous tip emission, transport and saved inputs", (
                 "tests/test_continuous_tip_curvature.py", "tests/test_tip_curvature_comparison.py",
                 "tests/test_geometry_gun_cache.py", "tests/test_geometry_gun_implicit_tolerance.py",
@@ -183,6 +184,9 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_cad_adapter_lens_hardware.py",
                 "tests/test_dph2_end_insulation.py", "tests/test_probe_hexapole_support.py",
                 "tests/test_cad_tl22_lens_hardware.py",
+                "tests/test_cad_probe_transfer_lens_hardware.py",
+                "tests/test_probe_hp1_support.py", "tests/test_probe_lower_deflector_details.py",
+                "tests/test_copied_axial_dimension_sync.py",
                 "tests/test_compare_cad_assembly.py", "tests/test_cad_stage_holder.py",
                 "tests/test_stage_holder_manifest.py", "tests/test_export_resolved_cad_assembly.py",
                 "tests/test_cad_vacuum_tube.py", "tests/test_cad_detectors.py",
@@ -201,7 +205,14 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_part_model_view.py", "tests/test_physical_layout_modes.py")),
             "field-ui/FU-21": ("Physical coil supports, hexapole structure and atomic geometry edits", (
                 "tests/test_deflector_support_geometry.py", "tests/test_ordinary_deflector_structure.py",
-                "tests/test_probe_hexapole_geometry.py", "tests/test_probe_hexapole_document_validation.py")),
+                "tests/test_probe_hexapole_geometry.py", "tests/test_probe_hexapole_document_validation.py",
+                "tests/test_deflector_winding_length_contract.py", "tests/test_pole_face_land_geometry.py",
+                "tests/test_component_replacement_recipes.py", "tests/test_dimension_edit_policy.py",
+                "tests/test_envelope_dimension_policy.py", "tests/test_manifest_dimension_bindings.py",
+                "tests/test_mechanical_dimension_bindings.py", "tests/test_mechanical_overlap_async.py",
+                "tests/test_mechanical_overlap_editor.py")),
+            "field-ui/FU-22": ("Complete recording observation and current field-value tooltips", (
+                "tests/test_recording_field_observation.py", "tests/test_field_tooltip_lifecycle.py")),
         },
     },
     "cad-export": {

@@ -84,7 +84,7 @@ def test_default_support_preserves_all_original_thirteen_material_shapes_and_opt
             p['mechanical_outer_diameter_mm']) == (685.4, 694.5, 703.6, 6., 24., 75.)
     assert all(s.parameters['passive_geometry_only'] and s.parameters['optical_field_unchanged']
                for s in specs[13:])
-    assert hexapole_support_solids(_part(document, 'probe_hp1_hexapole')) == ()
+    assert len(hexapole_support_solids(_part(document, 'probe_hp1_hexapole'))) == 12
     assert hexapole_support_solids(_legacy(p)) == ()
     assert document == before
 
@@ -175,7 +175,7 @@ def test_invalid_support_dimensions_are_rejected(field, value, host):
     {PREFIX+'flange_thickness_mm': 2.},
     {PREFIX+'unknown_width_mm': .1}, {PREFIX+'profile': 'invented'},
     {PREFIX+'geometry_status': 'OEM'}, {PREFIX+'source_note': ''},
-    {'geometry_template_key': 'probe_hp1_hexapole'},
+    {'geometry_template_key': 'probe_hpc_hexapole'},
 ])
 def test_bad_profiles_or_support_collisions_fail_before_building(changes, host):
     _, p, _, _ = host

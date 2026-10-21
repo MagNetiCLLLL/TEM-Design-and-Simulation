@@ -49,8 +49,9 @@ def test_all_native_round_material_base_shapes_match_existing_view(relative):
         # Comparing the actual vertex set checks noses, bores and gaps, not only
         # the outer envelope. All current regions use the same 16-angle grid.
         vertices = lambda ms: set(map(tuple, np.round(np.concatenate([m.vertices for m in ms]), 9)))
-        if (part.get("mechanical_cartridge_structure") or part.get("mechanical_c3_end_structure")
-                or part.get("mechanical_adapter_end_structure") or part.get("mechanical_tl22_end_structure")):
+        from temsim.cad_round_lens_end_hardware import FAMILY_PREFIXES
+        if (part.get("mechanical_cartridge_structure")
+                or any(part.get(prefix + "structure") for prefix in FAMILY_PREFIXES)):
             # Declared internal detail preserves every existing exterior vertex.
             # Independent detail tests verify its partition/non-overlap.
             assert vertices(old) < vertices(new), part["key"]

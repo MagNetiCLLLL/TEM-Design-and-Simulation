@@ -90,8 +90,9 @@ def round_lens_solids(part, by_key) -> tuple[SolidSpec, ...] | None:
     if profile == MAGNETIC_LENS_HOUSING:
         from temsim.cad_c3_lens_hardware import c3_lens_hardware_solids
         from temsim.cad_adapter_lens_hardware import adapter_lens_hardware_solids
+        from temsim.cad_probe_transfer_lens_hardware import probe_transfer_lens_hardware_solids
         from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
-        for builder in (c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids):
+        for builder in (c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, probe_transfer_lens_hardware_solids):
             detailed = builder(part, by_key)
             if detailed is not None:
                 return detailed

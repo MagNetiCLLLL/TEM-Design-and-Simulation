@@ -257,8 +257,23 @@ def _complete_part_length_updates(document, updates):
     """Complete linked geometry while preserving explicit batch constraints."""
 
     from temsim.optics.electron_gun.tip_assembly import complete_tip_updates, is_tip_part
+    from temsim.component_operations import resized_copied_axial_fields
     completed = complete_tip_updates(document, updates)
     parts = {str(part["key"]): part for part in document.get("parts", ())}
+
+    def same_constraint(first, second):
+        if isinstance(first, (list, tuple)) and isinstance(second, (list, tuple)):
+            return len(first) == len(second) and all(
+                same_constraint(a, b) for a, b in zip(first, second))
+        if isinstance(first, bool) or isinstance(second, bool):
+            return type(first) is type(second) and first == second
+        if isinstance(first, Real) and isinstance(second, Real):
+            try:
+                return math.isclose(float(first), float(second), rel_tol=1e-10, abs_tol=1e-9)
+            except (OverflowError, ValueError):
+                return False
+        return first == second
+
     for path, length in updates.items():
         if len(path) != 3 or path[0] != "parts" or path[2] != "length_mm":
             continue
@@ -268,10 +283,19 @@ def _complete_part_length_updates(document, updates):
         # quoted number/bool must not slip through after an earlier valid edit.
         _validated_part_length(length)
         prefix = path[:2]
-        if any(prefix + (field,) in updates for field in ("local_start_z_mm", "local_end_z_mm")):
-            continue
         if path[1] not in parts:
             raise ValueError(f"Missing TOML part {path[1]!r}")
+        derived = resized_copied_axial_fields(parts[path[1]], length,
+            center_z_mm=updates.get(prefix + ("local_center_z_mm",)))
+        for field, value in derived.items():
+            field_path = prefix + (field,)
+            if field_path in updates:
+                if not same_constraint(updates[field_path], value):
+                    raise ValueError(f"{path[1]}.{field}: explicit value conflicts with copied axial scaling")
+            else:
+                completed[field_path] = value
+        if any(prefix + (field,) in updates for field in ("local_start_z_mm", "local_end_z_mm")):
+            continue
         endpoints = resized_part_axial_coordinates(
             parts[path[1]], length,
             center_z_mm=updates.get(prefix + ("local_center_z_mm",)),

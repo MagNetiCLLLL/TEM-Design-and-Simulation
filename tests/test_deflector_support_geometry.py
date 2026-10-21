@@ -15,6 +15,7 @@ from temsim.corrector_model_3d import deflector_coil_meshes
 from temsim.deflector_support_geometry import (
     END_COVER_FIELD,
     END_REGIONS,
+    END_SIDE_FIELD,
     GAP_FILL_FIELD,
     GAP_REGIONS,
     SUPPORT_PROFILE,
@@ -92,7 +93,10 @@ def test_actual_inserts_have_matching_native_and_cad_supports(document, key):
     specs = {spec.region: spec for spec in part_solids(row, rows)}
     meshes = {mesh.region: mesh for mesh in part_model_from_document(document, key).meshes}
     assert row[GAP_FILL_FIELD] is True
-    end_regions = set(END_REGIONS) if END_COVER_FIELD in row else set()
+    side = row.get(END_SIDE_FIELD, "both")
+    end_regions = (set(END_REGIONS if side == "both" else
+                       (END_REGIONS[0 if side == "upstream" else 1],))
+                   if END_COVER_FIELD in row else set())
     assert set(specs) == set(meshes) == COPPER | SUPPORT_RADII.keys() | set(GAP_REGIONS) | end_regions
     for region in (*SUPPORT_RADII, *GAP_REGIONS):
         spec, mesh = specs[region], meshes[region]
@@ -101,8 +105,10 @@ def test_actual_inserts_have_matching_native_and_cad_supports(document, key):
         assert not mesh.is_exact
         assert spec.evidence
         assert "OEM" in spec.note or "manufacturer" in spec.note
-        assert np.min(mesh.vertices[:, 2]) == pytest.approx(row["local_start_z_mm"])
-        assert np.max(mesh.vertices[:, 2]) == pytest.approx(row["local_end_z_mm"])
+        centre = (row["local_start_z_mm"] + row["local_end_z_mm"]) / 2
+        half = row.get("winding_axial_length_mm", row["length_mm"]) / 2
+        assert np.min(mesh.vertices[:, 2]) == pytest.approx(centre - half)
+        assert np.max(mesh.vertices[:, 2]) == pytest.approx(centre + half)
 
 
 def test_supports_are_opt_in_and_do_not_rebuild_or_relabel_copper(document):
@@ -342,7 +348,12 @@ def test_filled_laminate_uses_only_saved_copper_layer_voids(document, key):
         z = rng.uniform(row["local_start_z_mm"]+1e-5, row["local_end_z_mm"]-1e-5, len(theta))
         points = np.column_stack((radius*np.cos(theta), radius*np.sin(theta), z))
         occupancy = sum(_contains(item.shape, points).astype(int) for item in (*copper, spec))
-        np.testing.assert_array_equal(occupancy, np.ones(len(points), int))
+        centre = (row["local_start_z_mm"] + row["local_end_z_mm"]) / 2
+        half = row.get("winding_axial_length_mm", row["length_mm"]) / 2
+        # Sample the entire original allocation: its newly cleared ends must
+        # stay empty, while copper and gap fill partition the actual laminate.
+        expected = ((z > centre - half) & (z < centre + half)).astype(int)
+        np.testing.assert_array_equal(occupancy, expected)
         assert _contains(spec.shape, points).any()
 
 
