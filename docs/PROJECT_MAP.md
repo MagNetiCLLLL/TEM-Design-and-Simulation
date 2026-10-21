@@ -1,4 +1,4 @@
-# TEM Simulator 项目地图
+# TEMForge 项目地图
 
 2026-10-18 Descan 模式验证：共享 Image/Diffraction 双级偏转器在 C3 + Probe
 Corrector 的当前安装位置，已分别执行 Normal 与 Large Angle 的有限粒子比较。
@@ -119,7 +119,7 @@ STEM 显示倍率由显示尺寸与样品扫描 FOV 决定，不等于样品到�
 
 ```mermaid
 flowchart TD
-    Entry[main.py / tem-simulator] --> App[app.py: QApplication 与全局样式]
+    Entry[main.py / temforge] --> App[app.py: QApplication 与全局样式]
     App --> Window[gui/main_window.py: 页面与信号装配]
     Config[configs + 输入配置] --> Model[装配 / State / 参数定义]
     Model --> Capture[calculation_request: 捕获不可变输入]
@@ -177,7 +177,7 @@ flowchart TD
 分别检查独立源基点数、方位角阶数和径向积分阶数。
 这些方法的身份、历史兼容和数值证据边界见
 [RECEIVER_IMAGING.md](RECEIVER_IMAGING.md#source-sampling-and-rare-aperture-interception)。
-| 实验记录 | `gui/instrument_recorder.py`；`tem-instrument-recorder` | `recorder/backend.py`、`snapshot.py`、`records.py` | 原始采集与模拟结果分开；接口目录不证明连接过真实设备 |
+| 实验记录 | `gui/instrument_recorder.py`；`temforge-recorder` | `recorder/backend.py`、`snapshot.py`、`records.py` | 原始采集与模拟结果分开；接口目录不证明连接过真实设备 |
 
 ### 独立虚拟电子的数据链
 
@@ -437,7 +437,7 @@ GitHub 的 Windows CPU runner 使用 `--allow-gpu-skips`：`acceptance_gpu.py` �
 | [.gitattributes](../.gitattributes) | 2 | Git 文件属性与科学数据字节约定 |
 | [.gitignore](../.gitignore) | 28 | 本地环境、缓存与生成产物排除规则 |
 | [LICENSE](../LICENSE) | 21 | MIT 许可证 |
-| [README.md](../README.md) | 52 | 文档：TEM Simulator v2 |
+| [README.md](../README.md) | 52 | 文档：TEMForge |
 | [main.py](../main.py) | 8 | PyCharm-friendly application entry point. |
 | [pyproject.toml](../pyproject.toml) | 86 | 操作配置/依赖构建声明 |
 | [setup_env.py](../setup_env.py) | 143 | Install the project using local wheels and, unless offline, the package index.；入口：venv_python, run, runtime_info |
@@ -458,7 +458,7 @@ GitHub 的 Windows CPU runner 使用 `--allow-gpu-skips`：`acceptance_gpu.py` �
 
 | 文件 | 行数 | 用途 / 源码定位 |
 | --- | ---: | --- |
-| [__init__.py](../src/temsim/__init__.py) | 7 | TEM Simulator v2 package. |
+| [__init__.py](../src/temsim/__init__.py) | 7 | TEMForge package. |
 | [_build.py](../src/temsim/_build.py) | 31 | Wheel build isolation; imported by setuptools without the runtime package.；入口：FreshWheel |
 | [acceptance.py](../src/temsim/acceptance.py) | 249 | Fail-closed, namespaced software evidence; never physical qualification.；入口：scope_test_files, merge_criteria, software_report |
 | [acceptance_pytest.py](../src/temsim/acceptance_pytest.py) | 24 | Exact collection and three-phase outcomes for the bounded acceptance CLI.；入口：pytest_collection_finish, pytest_deselected, pytest_runtest_logreport |
@@ -668,7 +668,7 @@ GitHub 的 Windows CPU runner 使用 `--allow-gpu-skips`：`acceptance_gpu.py` �
 | [magnetic_field_canvas.py](../src/temsim/gui/magnetic_field_canvas.py) | 944 | Bounded orthographic 3-D display of already calculated magnetic field lines.；入口：MagneticFieldCanvas |
 | [magnetic_test_electron.py](../src/temsim/gui/magnetic_test_electron.py) | 1402 | Independent electron records with selected or overlaid electromagnetic paths.；入口：TestElectronController |
 | [magnetic_validation.py](../src/temsim/gui/magnetic_validation.py) | 336 | Explicit background validation, separate from microscope calculations.；入口：MagneticValidationPage |
-| [main_window.py](../src/temsim/gui/main_window.py) | 2785 | Main TEM Simulator v2 desktop window.；入口：MainWindow |
+| [main_window.py](../src/temsim/gui/main_window.py) | 2785 | Main TEMForge desktop window.；入口：MainWindow |
 | [model_inspector.py](../src/temsim/gui/model_inspector.py) | 489 | Compact model evidence and explicit numerical-model controls.；入口：ModelInspectorPage |
 | [operating_preset_controller.py](../src/temsim/gui/operating_preset_controller.py) | 129 | Background assembly/preset calculations on isolated microscope states.；入口：OperatingPresetController |
 | [parameter_panel.py](../src/temsim/gui/parameter_panel.py) | 1325 | Operating, TOML and anchor parameters for the selected component.；入口：ParameterPanel |

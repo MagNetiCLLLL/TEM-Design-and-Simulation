@@ -1,4 +1,4 @@
-"""Main TEM Simulator v2 desktop window."""
+"""Main TEMForge desktop window."""
 
 from __future__ import annotations
 
@@ -36,6 +36,7 @@ from PySide6.QtWidgets import (
 )
 
 from temsim.assembly_catalog import AssemblyCatalog
+from temsim.branding import APP_NAME, WINDOW_TITLE
 from temsim.column.state_layout import (
     apply_physical_layout_to_state,
     layout_configuration_from_state,
@@ -102,7 +103,7 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         install_numeric_input_policy()
         self.setObjectName("mainWindow")
-        self.setWindowTitle("TEM Simulator v2")
+        self.setWindowTitle(WINDOW_TITLE)
         self.resize(1500, 920)
         self.setDockNestingEnabled(True)
 
@@ -172,7 +173,7 @@ class MainWindow(QMainWindow):
         self.log_output.setObjectName("calculationLog")
         self.log_output.setReadOnly(True)
         self.log_output.setMaximumBlockCount(2_000)
-        self.log_output.appendPlainText("TEM Simulator v2 started.")
+        self.log_output.appendPlainText(f"{APP_NAME} started.")
         self.log_output.appendPlainText(
             f"TOML catalog validated: {catalog_audit.module_count} modules, "
             f"{catalog_audit.part_definition_count} part definitions, "
@@ -3009,7 +3010,7 @@ class MainWindow(QMainWindow):
     def _show_error(self, message: str) -> None:
         self.status_label.setText(message)
         self.log_output.appendPlainText(f"ERROR: {message}")
-        QMessageBox.critical(self, "TEM Simulator", message)
+        QMessageBox.critical(self, APP_NAME, message)
 
     def _restore_workspace(self) -> None:
         settings = QSettings()

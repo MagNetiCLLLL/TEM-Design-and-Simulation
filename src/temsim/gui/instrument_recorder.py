@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from threading import Event
 
-from PySide6.QtCore import QObject, QSettings, QThread, Qt, Signal, Slot, QUrl
+from PySide6.QtCore import QObject, QThread, Qt, Signal, Slot, QUrl
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import (
     QDialog, QDialogButtonBox, QFileDialog, QFormLayout, QHBoxLayout, QLabel,
@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
 import pyqtgraph as pg
 
 from temsim.gui.input_policy import WheelSafeComboBox as QComboBox
+from temsim.branding import RECORDER_NAME, recorder_settings
 from temsim.gui.scientific_equipment_names import scientific_equipment_text
 from temsim.recorder.backend import InstrumentRecorder
 from temsim.recorder.records import CaptureRequest
@@ -60,9 +61,9 @@ class InstrumentRecorderWindow(QMainWindow):
 
     def __init__(self, parent=None, *, backend=None, settings=None):
         super().__init__(parent, Qt.WindowType.Window)
-        self.setWindowTitle("Instrument Recorder")
+        self.setWindowTitle(RECORDER_NAME)
         self.setObjectName("instrumentRecorderWindow")
-        self.settings = settings or QSettings("TEM Simulator", "Instrument Recorder")
+        self.settings = settings if settings is not None else recorder_settings()
         self.backend = backend or InstrumentRecorder()
         self.cancel_event = Event()
         self.busy = self.connected = self._closing = self._shutdown = False

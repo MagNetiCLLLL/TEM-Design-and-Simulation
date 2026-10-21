@@ -19,6 +19,7 @@ from threading import Event, RLock, Thread
 from uuid import uuid4
 
 from temsim.job_events import job_event
+from temsim.branding import application_cache_root
 
 
 SCHEMA = "electron-worker-diagnostics-v1"
@@ -43,8 +44,7 @@ _POSIX_PATH = re.compile(r"(?<![\w:/>])/(?:[^\s/\"'<>]+/)*[^\s\"'<>]*")
 
 
 def default_diagnostics_root():
-    local = str(os.environ.get("LOCALAPPDATA", "")).strip()
-    return (Path(local) if local else Path.home()/".cache")/"TEM Simulator v2"/"electron_diagnostics"
+    return application_cache_root("electron_diagnostics")
 
 
 def _utc():

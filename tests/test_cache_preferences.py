@@ -13,6 +13,50 @@ def settings(tmp_path):
     return QSettings(str(tmp_path / "cache.ini"), QSettings.Format.IniFormat)
 
 
+@pytest.mark.parametrize("helper, new_application, old_application", [
+    ("application_settings", "TEMForge", "TEM Simulator v2"),
+    ("recorder_settings", "TEMForge Instrument Recorder", "Instrument Recorder"),
+])
+def test_branding_import_preserves_settings_without_overwriting_or_resurrecting(
+    tmp_path, monkeypatch, helper, new_application, old_application,
+):
+    from PySide6 import QtCore
+    from temsim import branding
+
+    def isolated_settings(organization, application):
+        return QSettings(str(tmp_path / organization / f"{application}.ini"),
+                         QSettings.Format.IniFormat)
+
+    legacy = isolated_settings("TEM Simulator", old_application)
+    geometry = QtCore.QByteArray(b"\x00saved-window-geometry\xff")
+    legacy.setValue("geometry", geometry)
+    legacy.setValue("output", str(tmp_path / "recordings"))
+    legacy.setValue("workspace_layouts/v1/active", "alignment")
+    preferences = replace(cache.CachePreferences(), high_cache_budget_bytes=12 * cache.GIB)
+    cache.save_cache_preferences(legacy, preferences, 64 * cache.GIB)
+    current = isolated_settings("TEMForge", new_application)
+    current.setValue("workspace_layouts/v1/active", "my-new-layout")
+    current.sync()
+    monkeypatch.setattr(QtCore, "QSettings", isolated_settings)
+
+    imported = getattr(branding, helper)()
+    assert imported.value("geometry") == geometry
+    assert imported.value("output") == str(tmp_path / "recordings")
+    assert imported.value("workspace_layouts/v1/active") == "my-new-layout"
+    assert cache.load_cache_preferences(imported, 64 * cache.GIB) == preferences
+    assert legacy.value("workspace_layouts/v1/active") == "alignment"
+    assert set(legacy.allKeys()) == {"geometry", "output", "workspace_layouts/v1/active"} | {
+        f"{cache.SETTINGS_ROOT}/{field.name}" for field in cache.fields(preferences)
+    }
+
+    # Resetting a preference after import must not restore the previous copy.
+    imported.remove("geometry")
+    imported.sync()
+    reopened = getattr(branding, helper)()
+    assert not reopened.contains("geometry")
+    assert reopened.value("workspace_layouts/v1/active") == "my-new-layout"
+
+
 @pytest.mark.parametrize("ram_gib", [1, 2, 4, 8, 16, 32, 128])
 def test_hardware_defaults_are_bounded(ram_gib):
     prefs = cache.default_cache_preferences(ram_gib * cache.GIB)

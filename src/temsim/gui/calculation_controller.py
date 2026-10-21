@@ -34,6 +34,7 @@ from temsim.cache_memory import (
     retained_memory_inventory,
 )
 from temsim.artifact_store import ArtifactStore
+from temsim.branding import application_cache_root
 from temsim.calculation_manifest import (
     CalculationManifest,
     assert_external_input_inventory_unchanged,
@@ -85,13 +86,7 @@ PERSISTENT_ARTIFACT_CACHE_BUDGET_BYTES = 16 * 1024**3
 def default_artifact_cache_root() -> Path:
     """Return the bounded, user-writable cache directory for this app."""
 
-    local_app_data = str(os.environ.get("LOCALAPPDATA", "")).strip()
-    base = (
-        Path(local_app_data)
-        if local_app_data
-        else Path.home() / ".cache"
-    )
-    return base / "TEM Simulator v2" / "high_accuracy_artifacts"
+    return application_cache_root("high_accuracy_artifacts", reuse_legacy=True)
 
 
 def project_artifact_fallback_root() -> Path | None:

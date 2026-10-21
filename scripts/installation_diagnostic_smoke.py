@@ -62,6 +62,7 @@ def column_history_summary(simulation) -> dict:
 def installation_checks(output_directory: Path) -> dict:
     import numpy as np
     import temsim
+    from temsim.branding import DISTRIBUTION_NAME
     from temsim.assembly_catalog import AssemblyCatalog
     from temsim.calculation_manifest import solver_source_identity
     from temsim.cpu_resources import numerical_job
@@ -217,7 +218,7 @@ def installation_checks(output_directory: Path) -> dict:
                     "bytes": session_path.stat().st_size, "exact_arrays": 8, "load_mode": "history only"},
         "gui": {"status": "PASS", "mode": "offscreen", "panels": ["Hardware tuning", "Virtual electrons"],
                 "read_only_selection": True, "numerical_work_started_by_opening": False},
-        "versions": {name: metadata.version(name) for name in ("numpy", "scipy", "PySide6", "tem-simulator-v2")},
+        "versions": {name: metadata.version(name) for name in ("numpy", "scipy", "PySide6", DISTRIBUTION_NAME)},
         "coherent_execution": "NOT_RUN_PAUSED", "gpu_validation": "NOT_RUN",
         "full_microscope_qualification": "NOT_ESTABLISHED",
     }

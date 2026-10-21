@@ -40,7 +40,7 @@ def freeze(root, destination):
         raise ValueError("The frozen destination must be outside source/input trees")
     files = inventory(root)
     if not files or "src/temsim/calculation_manifest.py" not in files:
-        raise ValueError("A complete TEM simulator checkout is required")
+        raise ValueError("A complete TEMForge checkout is required")
     destination.mkdir(parents=True, exist_ok=False)
     for name in files:
         target = destination/name

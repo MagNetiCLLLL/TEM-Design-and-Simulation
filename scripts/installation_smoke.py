@@ -16,6 +16,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 def installation_checks():
     import numpy as np
     import temsim
+    from temsim.branding import DISTRIBUTION_NAME
     from temsim.optics.column import default_state
     from temsim.assembly_catalog import AssemblyCatalog
     from temsim.calculation_manifest import solver_source_identity
@@ -75,7 +76,7 @@ def installation_checks():
             "grid_shape":list(exit_wave.shape),"exit_norm":exit_norm,"backend":diagnostics.compute_backend},
         "wave_images":wave_images,"gui":"offscreen model inspector opened",
         "gpu_validation":"NOT_RUN" if not gpu.available else "NOT_RUN: this script validates CPU installation",
-        "gpu_capability":gpu.detail,"versions":{n:metadata.version(n) for n in ("numpy","scipy","abtem","PySide6","tem-simulator-v2")}}
+        "gpu_capability":gpu.detail,"versions":{n:metadata.version(n) for n in ("numpy","scipy","abtem","PySide6",DISTRIBUTION_NAME)}}
 
 
 def main():

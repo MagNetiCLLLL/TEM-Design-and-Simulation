@@ -9,6 +9,7 @@ from pathlib import Path
 from PySide6.QtCore import QCoreApplication
 from PySide6.QtWidgets import QApplication
 
+from temsim.branding import APP_NAME, ORGANIZATION_NAME, application_settings
 from temsim.gui.main_window import MainWindow
 from temsim.gui.input_policy import install_numeric_input_policy
 
@@ -154,8 +155,9 @@ def create_application(argv: Sequence[str] | None = None) -> QApplication:
         install_numeric_input_policy(existing)
         return existing
 
-    QCoreApplication.setOrganizationName("TEM Simulator")
-    QCoreApplication.setApplicationName("TEM Simulator v2")
+    QCoreApplication.setOrganizationName(ORGANIZATION_NAME)
+    QCoreApplication.setApplicationName(APP_NAME)
+    application_settings()
     application = QApplication(list(argv) if argv is not None else sys.argv)
     application.setStyle("Fusion")
     application.setStyleSheet(APPLICATION_STYLE)

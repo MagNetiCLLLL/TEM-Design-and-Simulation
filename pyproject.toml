@@ -3,9 +3,10 @@ requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "tem-simulator-v2"
+name = "temforge"
 version = "0.1.0"
-description = "Transmission electron microscope simulation and control GUI"
+description = "Interactive TEM/STEM Simulation and Design Workbench"
+readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.11,<3.14"
@@ -39,9 +40,14 @@ gpu = [
 ]
 atomistic = []
 
+[project.urls]
+Homepage = "https://github.com/MagNetiCLLLL/TEMForge"
+Repository = "https://github.com/MagNetiCLLLL/TEMForge"
+Issues = "https://github.com/MagNetiCLLLL/TEMForge/issues"
+
 [project.scripts]
-tem-simulator = "temsim.app:run"
-tem-instrument-recorder = "temsim.recorder.__main__:run"
+temforge = "temsim.app:run"
+temforge-recorder = "temsim.recorder.__main__:run"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

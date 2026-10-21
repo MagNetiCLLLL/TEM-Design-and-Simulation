@@ -79,7 +79,7 @@ Si 计时为首次执行后 3 次的中位数；读取测试为 3 次顺序执�
 
 ## 复现和原始证据
 
-工作目录 `F:\tem_simulator_v2`，解释器 `.venv\Scripts\python.exe`。
+工作目录为项目根目录，解释器 `.venv\Scripts\python.exe`。
 本轮修改前的实际工作区（包含当时未提交修改）保存在
 `outputs/wave-speed-20261011/baseline/`，不是用 Git HEAD 代替基线。
 源文件哈希及配置文件未变化检查见同目录上一级 `source-manifest.json`。

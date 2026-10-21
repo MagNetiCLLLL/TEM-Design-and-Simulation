@@ -1,7 +1,13 @@
-# TEM Simulator v2
+# TEMForge
 
-A Python/PySide6 desktop application for exploring transmission electron
-microscopy, electron optics and simulated detector signals.
+**Interactive TEM/STEM Simulation and Design Workbench**
+
+TEMForge is a Python/PySide6 desktop application for exploring transmission
+electron microscopy, electron optics and simulated detector signals.
+
+[Get started](#setup-and-launch) · [Project map](docs/PROJECT_MAP.md) ·
+[Beam model and limits](docs/COHERENT_BEAM.md) ·
+[Report an issue](https://github.com/MagNetiCLLLL/TEMForge/issues)
 
 ## AI for experiments
 
@@ -125,6 +131,7 @@ CIF library or automatic material selection is provided.
 
 ## Setup and launch
 
+Download or clone [TEMForge](https://github.com/MagNetiCLLLL/TEMForge).
 On Windows, install **64-bit Python 3.12** (recommended), then run these commands
 from the project folder:
 

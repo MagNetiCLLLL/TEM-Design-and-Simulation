@@ -68,6 +68,7 @@ def verify(python: Path, *, gpu: bool = False) -> None:
     imports = (
         "import abtem, ase, cloudpickle, manifold3d, matplotlib, numba, numpy, "
         "pytest, PySide6, scipy, temsim, xraylib; "
+        "from temsim.branding import APP_NAME; "
         "from PySide6 import QtCore, QtGui, QtWidgets; "
         "import OpenGL, pyqtgraph; "
         + ("import cupy; " if gpu else "")
@@ -76,7 +77,7 @@ def verify(python: Path, *, gpu: bool = False) -> None:
         "print('PySide6:', PySide6.__version__); "
         "print('Qt:', QtCore.qVersion()); "
         "print('PyQtGraph:', pyqtgraph.__version__); "
-        "print('TEM Simulator:', temsim.__version__)"
+        "print(APP_NAME + ':', temsim.__version__)"
     )
     run([str(python), "-c", imports])
 

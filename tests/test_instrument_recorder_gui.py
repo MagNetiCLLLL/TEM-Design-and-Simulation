@@ -35,6 +35,7 @@ def close_window(qtbot, window):
 
 def test_only_three_buttons_no_manual_acquisition_or_sample_inputs(qtbot, tmp_path):
     window, fake = make_window(qtbot, tmp_path)
+    assert window.windowTitle() == "TEMForge Instrument Recorder"
     assert len(window.findChildren(QPushButton)) == 3
     assert not window.findChildren(QLineEdit)
     assert not window.findChildren(QDoubleSpinBox)

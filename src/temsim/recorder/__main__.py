@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import sys
 
+from temsim.branding import ORGANIZATION_NAME, RECORDER_NAME
+
 
 def run():
     from PySide6.QtCore import QCoreApplication
@@ -10,8 +12,8 @@ def run():
     from temsim.gui.input_policy import install_numeric_input_policy
     from temsim.gui.instrument_recorder import InstrumentRecorderWindow
 
-    QCoreApplication.setOrganizationName("TEM Simulator")
-    QCoreApplication.setApplicationName("Instrument Recorder")
+    QCoreApplication.setOrganizationName(ORGANIZATION_NAME)
+    QCoreApplication.setApplicationName(RECORDER_NAME)
     app = QApplication.instance() or QApplication(sys.argv)
     app.setStyle("Fusion")
     install_numeric_input_policy(app)

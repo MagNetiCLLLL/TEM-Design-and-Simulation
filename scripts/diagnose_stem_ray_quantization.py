@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 import numpy as np
 from temsim.gui.calculation_request import CapturedCalculationRequest
+from temsim.gui.calculation_controller import default_artifact_cache_root
 from temsim.optics.column import default_state
 from temsim.specimen.source import specimen_structure_available
 
@@ -50,7 +51,7 @@ def main():
             captured_wave_enabled=prepared.snapshot.sample.stem_wave_enabled,
             structure_available=specimen_structure_available(prepared.snapshot.sample),
             ray_count=prepared.ray_count, step_mm=prepared.step_mm))
-    cache_root = Path.home()/"AppData/Local/TEM Simulator v2/high_accuracy_artifacts/objects"
+    cache_root = default_artifact_cache_root() / "objects"
     manifests = sorted(cache_root.rglob("manifest.json"), key=lambda path:path.stat().st_mtime, reverse=True)
     cached_weight = None
     if manifests:

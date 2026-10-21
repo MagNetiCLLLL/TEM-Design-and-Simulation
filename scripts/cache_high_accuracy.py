@@ -20,6 +20,7 @@ import numpy as np
 
 from temsim.artifact_store import ArtifactStore
 from temsim.assembly_catalog import AssemblyCatalog
+from temsim.branding import application_settings
 from temsim.cache_preferences import load_cache_preferences
 from temsim.calculation_manifest import (
     CalculationManifest, ExternalInputIdentity, SolverIdentity, capture_calculation_manifest,
@@ -108,8 +109,7 @@ def main(argv=None) -> int:
         parser.error("Choose --profile or --startup-defaults")
     if not args.verify_existing and args.output is not None and args.output.exists():
         parser.error("The output already exists; choose a new directory")
-    from PySide6.QtCore import QSettings
-    preferences = load_cache_preferences(QSettings("TEM Simulator", "TEM Simulator v2"))
+    preferences = load_cache_preferences(application_settings())
     cache_root = args.cache_root or default_artifact_cache_root()
     if args.verify_existing:
         manifest = read_manifest(args.output / "manifest.json")

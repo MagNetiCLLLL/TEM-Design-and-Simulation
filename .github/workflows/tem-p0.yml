@@ -29,7 +29,7 @@ jobs:
           New-Item -ItemType Directory -Path $WheelDir | Out-Null
           python -m pip wheel --no-deps --no-build-isolation --wheel-dir $WheelDir .
           if ($LASTEXITCODE -ne 0) { throw "Wheel build failed" }
-          $Wheels = @(Get-ChildItem -Path $WheelDir -Filter "tem_simulator_v2-*.whl" -File)
+          $Wheels = @(Get-ChildItem -Path $WheelDir -Filter "temforge-*.whl" -File)
           if ($Wheels.Count -ne 1) { throw "Expected exactly one newly built application wheel" }
           python -m venv $VenvDir
           if ($LASTEXITCODE -ne 0) { throw "Isolated environment creation failed" }

@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
 )
 
 from temsim.gui.help_content import HELP_TOPICS
+from temsim.branding import APP_NAME, APP_SUBTITLE
 
 
 class HelpPage(QWidget):
@@ -25,11 +26,11 @@ class HelpPage(QWidget):
         self._search_text = {}
         self._items = {}
 
-        title = QLabel("TEM Simulator v2 · Help")
+        title = QLabel(f"{APP_NAME} · Help")
         title.setObjectName("helpTitle")
         title.setStyleSheet("font-size: 21px; font-weight: 600; color: #f1f5f9;")
         title.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        intro = QLabel("Explore the features, follow a workflow, or find a control by name.")
+        intro = QLabel(f"{APP_SUBTITLE}\nExplore the features, follow a workflow, or find a control by name.")
         intro.setWordWrap(True)
         intro.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         intro.setStyleSheet("color: #94a3b8;")
@@ -189,7 +190,7 @@ class HelpDialog(QDialog):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.setObjectName("helpDialog")
-        self.setWindowTitle("TEM Simulator v2 — Help")
+        self.setWindowTitle(f"{APP_NAME} — Help")
         self.setModal(False)
         self.setMinimumSize(640, 440)
         available = self.screen().availableGeometry()
