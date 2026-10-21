@@ -135,7 +135,8 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         "Ray Diagram and transverse views",
         "Follow rays from the source, inspect a selected Z and search conjugate planes.",
         ("transverse", "XY", "X-Y", "origin", "zero", "Fit beam", "source position",
-         "source angle", "colour", "conjugate", "magnetic", "virtual electrons"),
+         "source angle", "colour", "conjugate", "magnetic", "virtual electrons",
+         "particles", "spot", "intensity", "grid", "smoothing", "fixed colour scale"),
         """
         <p><b>Where:</b> <b>Ray Diagram</b>, its transverse <b>Classical rays</b>
         view, and <b>Conjugate planes</b>.</p>
@@ -155,6 +156,30 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         Changing Z or view angle preserves this reference; Fit beam changes the scale
         without centring on a displaced beam. A displaced spot can therefore reveal
         steering rather than a display offset.</p>
+        <h3>Particles and spot intensity</h3>
+        <p>Use the visible <b>Display → Particles / Spot</b> control above the
+        selected-plane plot. Spot deposits the absolute weights of every ray
+        reaching that plane onto the chosen <b>Grid</b>, including rays omitted
+        from the particle-marker display limit. Subpixel deposition shares a ray
+        between neighbouring pixels. It preserves flux and first moments when
+        the full deposition kernel fits inside the view.</p>
+        <p>Colour means current density in <b>pA / µm²</b>, or <b>% source / µm²</b>
+        if source current is unavailable. <b>Fixed colour scale</b> is enabled
+        initially and keeps the first nonzero maximum across Z, result and grid
+        changes. Use <b>Use current maximum</b> to deliberately reset it. Disabling
+        the checkbox rescales each frame, so brightness is no longer directly
+        comparable between frames.</p>
+        <p><b>Display smoothing</b> is optional and initially off. It changes only
+        the displayed image, not the raw deposition, physical particle count,
+        all-plane current or weighted centroid. A finer grid or smoother image
+        does not improve propagation accuracy or introduce coherent interference.</p>
+        <p>The readout distinguishes the full-plane flux from the portion inside
+        the viewport and cropped image. Weights lost to apertures remain lost;
+        rays and smoothing tails outside the view are not renormalised back into
+        it. The beam is never recentered on its own centroid. After settings change,
+        the previous calculation is explicitly marked until updated rays arrive;
+        the new result replaces the image while retaining the selected display
+        controls and colour scale.</p>
         <p>Ray colours and path lines describe the displayed particle calculation.
         Virtual electrons are separately adjustable diagnostic paths. Neither is a
         coherent phase measurement. Conjugate-plane results describe first-order

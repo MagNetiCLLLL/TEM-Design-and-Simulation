@@ -27,6 +27,10 @@ The simulator does not currently provide autonomous microscope control.
   separate bulk material bodies and explicit limits for unknown internals.
 - Interactive ray diagrams, transverse beam plots, flight-time colouring,
   magnetic-field views and individually adjustable virtual electron paths.
+- Direct **Particles / Spot** switching for transverse sections, with adjustable
+  grids, conservative subpixel deposition, fixed intensity-density colour scales
+  and optional display smoothing. Absolute ray weights, beam displacement and
+  aperture losses remain visible; old calculations are marked after input edits.
 - Ray Diagram conjugate-plane searches from a pinned Z, with magnification,
   rotation and separate point-image / line-focus diagnostics.
 - **Calculate beam** on the **Electron beam** page for a captured Tip and

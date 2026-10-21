@@ -4363,6 +4363,7 @@ class TransverseBeamView(QWidget):
         self._result = None
         self._plane_z_mm = None
         self._scatter = None
+        self._inputs_stale = False
         self._focused_component_key = None
         self._point_spread_image = None
         self._point_spread_response = None
@@ -4382,6 +4383,11 @@ class TransverseBeamView(QWidget):
         )
         self.summary.setWordWrap(True)
         self.summary.setStyleSheet("color: #64748b; font-weight: 600;")
+        self.snapshot_status = QLabel()
+        self.snapshot_status.setObjectName("transverseSnapshotStatus")
+        self.snapshot_status.setWordWrap(True)
+        self.snapshot_status.setStyleSheet("color: #fbbf24;")
+        self.snapshot_status.hide()
         self.fit_beam = QPushButton("Fit beam")
         self.fit_beam.setStyleSheet(BUTTON_STYLE)
         self.fit_beam.setToolTip(
@@ -4427,7 +4433,8 @@ class TransverseBeamView(QWidget):
             "color: #e2e8f0; font-weight: 700;"
         )
         self.initial_beam_heading.setWordWrap(True)
-        for label in (self.heading, self.summary, self.initial_beam_heading):
+        for label in (self.heading, self.summary, self.initial_beam_heading,
+                      self.snapshot_status):
             label.setTextInteractionFlags(
                 Qt.TextInteractionFlag.TextSelectableByMouse
                 | Qt.TextInteractionFlag.TextSelectableByKeyboard
@@ -4467,6 +4474,7 @@ class TransverseBeamView(QWidget):
         heading_row.addWidget(self.fit_beam)
         section_beam_layout.addLayout(heading_row)
         section_beam_layout.addWidget(self.plot, 1)
+        section_beam_layout.addWidget(self.snapshot_status)
         section_beam_layout.addWidget(self.summary)
 
         from temsim.gui.transverse_plot_layout import TransversePlotLayout
@@ -4641,13 +4649,27 @@ class TransverseBeamView(QWidget):
             + fraction * np.asarray(values[upper], dtype=float)
         )
 
-    def display_result(self, result, *, focus=None) -> None:
+    def mark_inputs_stale(self) -> None:
+        self._inputs_stale = True
+        self._update_snapshot_status()
+
+    def _update_snapshot_status(self) -> None:
+        stale = (self._inputs_stale and self._result is not None
+                 and self.analysis.wave is None)
+        self.snapshot_status.setText(
+            "Previous calculation — settings changed; awaiting updated rays."
+            if stale else ""
+        )
+        self.snapshot_status.setVisible(stale)
+
+    def display_result(self, result, *, focus=None, inputs_stale=False) -> None:
         if self.analysis.wave is not None:
             wave, self.analysis.wave = self.analysis.wave, None
             wave.deactivate()
         self.analysis.invalidate()
         self.hardware.invalidate()
         self._result = result
+        self._inputs_stale = bool(inputs_stale)
         if focus is not None:
             kind, value = focus
             if kind == "component" and value is not None:
@@ -4774,6 +4796,7 @@ class TransverseBeamView(QWidget):
         return response
 
     def _redraw(self) -> None:
+        self._update_snapshot_status()
         if self.analysis.wave is not None:
             self.analysis.wave.redraw()
             return

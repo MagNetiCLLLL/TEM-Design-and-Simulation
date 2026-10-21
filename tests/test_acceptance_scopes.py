@@ -166,6 +166,7 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_plane_cutoff_events.py", "test_lazy_ray_panels.py", "test_ray_extent_workspace.py",
             "test_incremental_ray_scene.py",
             "test_beam_analysis_modes.py", "test_transverse_source_tracking.py", "test_filter_plane_analysis.py",
+            "test_beam_spot_gui.py", "test_beam_plane_data.py",
             "test_ray_flight_time_colours.py", "test_transverse_plot_sizes.py", "test_transverse_plot_size_persistence.py",
             "test_energy_filter_mechanical_clipping.py", "test_energy_filter_model_3d.py",
             "test_energy_filter_workspace_views.py", "test_live_beam_refresh.py",

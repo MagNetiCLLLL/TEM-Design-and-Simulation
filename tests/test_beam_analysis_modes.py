@@ -69,6 +69,12 @@ def interaction_colours(view):
     view.colour_mode.setCurrentIndex(view.colour_mode.findData("interaction"))
 
 
+def displayed_spot_flux(payload):
+    """Integrate displayed density using its physical micrometre pixel area."""
+    _kind, values, x_edges_um, y_edges_um, _unit = payload
+    return float(values.sum() * np.diff(x_edges_um)[0] * np.diff(y_edges_um)[0])
+
+
 @pytest.fixture
 def view(qtbot):
     widget=TransverseBeamView(); qtbot.addWidget(widget)
@@ -97,7 +103,7 @@ def test_each_function_reads_existing_result_without_mutation(view, mode):
         assert view.analysis.table.item(0, 2).text() == "200"
         assert view.plot.isHidden()
     elif mode == "intensity":
-        assert view.analysis._hover_payload[-1] == "pA / bin"
+        assert view.analysis._hover_payload[-1] == "pA / µm²"
 
 
 def test_angular_projection_phase_space_and_source_colours_agree(view):
@@ -165,13 +171,13 @@ def test_intensity_uses_all_rays_not_display_count_and_no_viewport_renormalizati
     assert len(view._scatter.data) < 2000
     switch(view, "intensity")
     payload=view.analysis._hover_payload
-    assert payload[1].sum() == pytest.approx(expected*200.)
+    assert displayed_spot_flux(payload) == pytest.approx(expected*200.)
     images=[item for item in view.plot.items() if isinstance(item, pg.ImageItem)]
     assert len(images) == 1 and images[0].axisOrder == "row-major"
     np.testing.assert_array_equal(images[0].image, payload[1].T)
     view.plot.setRange(xRange=(-.02, .02), yRange=(-.02, .02), padding=0)
     view._manual_view_range_changed(None)
-    assert view.analysis._hover_payload[1].sum() < expected*200.
+    assert displayed_spot_flux(view.analysis._hover_payload) < expected*200.
     assert view.analysis.plane_data().total_source_fraction == pytest.approx(expected)
     assert "before its detector response" in view.summary.toolTip()
 
@@ -192,8 +198,8 @@ def test_cache_is_shared_between_modes_but_new_publication_invalidates(view, mon
 
 def test_missing_current_uses_source_fraction_and_bad_weights_are_not_fake_intensity(view):
     res=make_result(current=None); view.display_result(res); switch(view, "intensity")
-    assert view.analysis._hover_payload[-1] == "% source / bin"
-    assert view.analysis._hover_payload[1].sum() == pytest.approx(100.)
+    assert view.analysis._hover_payload[-1] == "% source / µm²"
+    assert displayed_spot_flux(view.analysis._hover_payload) == pytest.approx(100.)
     res.simulation.incident.ray_weight[0]=-1.
     view.display_result(res)
     assert view.summary.text() == "Analysis unavailable"

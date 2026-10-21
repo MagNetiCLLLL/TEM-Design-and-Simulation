@@ -10,7 +10,7 @@ import pytest
 
 from temsim.component_keys import ENERGY_FILTER_EFTEM_OUTPUT_PLANE, ENERGY_FILTER_SLIT
 from temsim.gui.filter_plane_data import sample_filter_plane
-from test_beam_analysis_modes import add_detailed_exit, switch, view
+from test_beam_analysis_modes import add_detailed_exit, displayed_spot_flux, switch, view
 from test_flight_time_display import filter_result
 from test_transverse_source_tracking import colours, preset
 
@@ -60,7 +60,10 @@ def test_all_advanced_views_share_filter_population_and_local_axes(view, mode):
         assert view.analysis.table.item(0, 1).text() == "30"
     elif mode in {"intensity", "angle_histogram"}:
         view.analysis.fit()
-        assert np.sum(view.analysis._hover_payload[1]) == pytest.approx(60.)
+        payload = view.analysis._hover_payload
+        current = (displayed_spot_flux(payload) if mode == "intensity"
+                   else np.sum(payload[1]))
+        assert current == pytest.approx(60.)
         axis = view.plot.getAxis("bottom").labelText
         assert ("outgoing axis" in axis if mode == "angle_histogram" else "Dispersive" in axis)
     else:

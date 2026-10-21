@@ -138,6 +138,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_plane_cutoff_events.py", "tests/test_lazy_ray_panels.py",
                 "tests/test_ray_extent_workspace.py", "tests/test_incremental_ray_scene.py",
                 "tests/test_beam_analysis_modes.py", "tests/test_transverse_source_tracking.py",
+                "tests/test_beam_spot_gui.py", "tests/test_beam_plane_data.py",
                 "tests/test_filter_plane_analysis.py", "tests/test_ray_flight_time_colours.py",
                 "tests/test_transverse_plot_sizes.py", "tests/test_transverse_plot_size_persistence.py")),
             "field-ui/FU-10": ("Tip controls, coherent sessions and continuous latest-Z interaction", (

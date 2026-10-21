@@ -15,8 +15,8 @@ import pyqtgraph as pg
 from PySide6.QtCore import QObject, QRectF, Qt, QTimer, Slot
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import (
-    QAbstractItemView, QHBoxLayout, QHeaderView, QLabel, QTableWidget,
-    QTableWidgetItem,
+    QAbstractItemView, QCheckBox, QHBoxLayout, QHeaderView, QLabel, QPushButton,
+    QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget,
 )
 
 from temsim.gui.input_policy import WheelSafeComboBox
@@ -24,8 +24,9 @@ from temsim.gui.emission_source_data import EmissionSourceData
 from temsim.gui.beam_colours import emission_colour
 from temsim.gui.filter_plane_data import sample_filter_plane
 from temsim.gui.beam_plane_data import (
-    sample_beam_plane, spatial_histogram, angular_histogram,
+    sample_beam_plane, angular_histogram,
 )
+from temsim.gui.beam_spot_data import rasterize_beam_spot
 from temsim.gui.transverse_projection import (
     transverse_view_coordinates, projection_axis_name, orthogonal_axis_name,
 )
@@ -83,6 +84,15 @@ class BeamAnalysisControls(QObject):
         self._ranges = {}
         self._hover_payload = None
         self._drawing = False
+        self._particle_mode = "position"
+        self._spot_cache_key = None
+        self._spot_raster = None
+        self._spot_scale_by_unit = {}
+        self._spot_colour_unit = None
+        self._spot_colour_maximum = None
+        self._spot_current_maximum = None
+        self._spot_image = pg.ImageItem(axisOrder="row-major")
+        self._spot_image.setLookupTable(pg.colormap.get("viridis").getLookupTable(nPts=256))
         self.mode_combo = WheelSafeComboBox()
         self.mode_combo.setObjectName("beamAnalysisMode")
         for label, key in self.MODES:
@@ -161,6 +171,7 @@ class BeamAnalysisControls(QObject):
         layout.insertWidget(4, self.table)
         layout.insertWidget(5, self.legend)
         layout.insertWidget(6, self.readout)
+        self._create_spot_controls(layout)
         self.mode_combo.currentIndexChanged.connect(self._mode_changed)
         self.colour_combo.currentIndexChanged.connect(self._colour_changed)
         self.tracking_combo.currentIndexChanged.connect(self._tracking_changed)
@@ -170,6 +181,124 @@ class BeamAnalysisControls(QObject):
         self._resize_timer.timeout.connect(self._refresh_view_geometry)
         owner.plot.getViewBox().sigResized.connect(self._queue_geometry_refresh)
         self._update_controls()
+
+    def _create_spot_controls(self, layout):
+        self.display_controls = QWidget()
+        row = QHBoxLayout(self.display_controls)
+        row.setContentsMargins(0, 0, 0, 0)
+        row.addWidget(QLabel("Display"))
+        self.display_combo = WheelSafeComboBox()
+        self.display_combo.setObjectName("beamSectionDisplay")
+        self.display_combo.addItem("Particles", "particles")
+        self.display_combo.addItem("Spot", "spot")
+        self.display_combo.setPlaceholderText("Diagnostic view")
+        self.display_combo.setToolTip(
+            "Particles show sampled trajectories. Spot shows the weighted spatial flux "
+            "of all rays reaching this plane. Neither option changes propagation."
+        )
+        row.addWidget(self.display_combo, 1)
+        self.spot_controls = QWidget()
+        rows = QVBoxLayout(self.spot_controls)
+        rows.setContentsMargins(0, 0, 0, 0)
+        grid_row = QHBoxLayout()
+        grid_row.addWidget(QLabel("Grid"))
+        self.spot_grid_combo = WheelSafeComboBox()
+        self.spot_grid_combo.setObjectName("beamSpotGrid")
+        for bins in (32, 64, 128, 256, 512):
+            self.spot_grid_combo.addItem(f"{bins} × {bins}", bins)
+        self.spot_grid_combo.setCurrentIndex(self.spot_grid_combo.findData(128))
+        self.spot_grid_combo.setToolTip(
+            "Display grid only. Subpixel deposition conserves source weights; increasing "
+            "the grid does not create more particles or improve transport sampling."
+        )
+        grid_row.addWidget(self.spot_grid_combo, 1)
+        grid_row.addWidget(QLabel("Display smoothing"))
+        self.spot_smoothing_combo = WheelSafeComboBox()
+        self.spot_smoothing_combo.setObjectName("beamSpotSmoothing")
+        for label, sigma in (("Off", 0.), ("0.5 px", .5), ("1 px", 1.), ("2 px", 2.), ("3 px", 3.)):
+            self.spot_smoothing_combo.addItem(label, sigma)
+        self.spot_smoothing_combo.setToolTip(
+            "Optional Gaussian display kernel, in grid pixels. Raw deposition, total flux "
+            "and centroid remain unchanged. This is not a detector PSF or coherent diffraction. "
+            "Smoothing outside the visible field is cropped, never renormalised."
+        )
+        grid_row.addWidget(self.spot_smoothing_combo, 1)
+        rows.addLayout(grid_row)
+        colour_row = QHBoxLayout()
+        self.spot_fixed_colour = QCheckBox("Fixed colour scale")
+        self.spot_fixed_colour.setObjectName("beamSpotFixedColour")
+        self.spot_fixed_colour.setChecked(True)
+        self.spot_fixed_colour.setToolTip(
+            "Retain the first nonzero density maximum across planes, parameters and grids. "
+            "Separate scales are retained for current density and source-fraction density."
+        )
+        self.spot_rescale = QPushButton("Use current maximum")
+        self.spot_rescale.setObjectName("beamSpotRescale")
+        self.spot_rescale.setToolTip("Replace the fixed colour maximum with the current spot maximum.")
+        colour_row.addWidget(self.spot_fixed_colour)
+        colour_row.addWidget(self.spot_rescale, 1)
+        rows.addLayout(colour_row)
+        layout.insertWidget(1, self.display_controls)
+        layout.insertWidget(2, self.spot_controls)
+        self.display_combo.currentIndexChanged.connect(self._display_changed)
+        self.spot_grid_combo.currentIndexChanged.connect(self._spot_settings_changed)
+        self.spot_smoothing_combo.currentIndexChanged.connect(self._spot_settings_changed)
+        self.spot_fixed_colour.toggled.connect(self._spot_lock_changed)
+        self.spot_rescale.clicked.connect(self._spot_use_current_maximum)
+
+    def set_wave_visibility(self, active):
+        """Wave observations have their own observables and display controls."""
+        self.display_controls.setVisible(not active)
+        self.spot_controls.setVisible(not active and self.mode == "intensity")
+
+    @Slot()
+    def _display_changed(self):
+        if self.wave is not None:
+            return
+        selected = self.display_combo.currentData()
+        if selected not in {"particles", "spot"}:
+            return
+        if selected == "spot":
+            if self.mode in self.POINT_MODES:
+                self._particle_mode = self.mode
+            target = "intensity"
+        else:
+            target = self._particle_mode
+        if target == self.mode:
+            return
+        # The quick switch compares the same spatial field; diagnostic modes
+        # continue to retain their own independent ranges.
+        if {target, self.mode} == {"position", "intensity"}:
+            bounds = self.owner.plot.viewRange()
+            self._ranges["intensity"] = bounds
+            self.owner._view_ranges = tuple(tuple(axis) for axis in bounds)
+            self.owner._view_scale_initialized = True
+        self.mode_combo.setCurrentIndex(self.mode_combo.findData(target))
+
+    @Slot()
+    def _spot_settings_changed(self):
+        if self.wave is None and self.mode == "intensity":
+            self.redraw()
+
+    @Slot()
+    def _spot_lock_changed(self):
+        if self.spot_fixed_colour.isChecked():
+            # Turning the lock on is an explicit capture of the current image.
+            if self._spot_colour_unit and self._spot_current_maximum is not None:
+                if self._spot_current_maximum > 0:
+                    self._spot_scale_by_unit[self._spot_colour_unit] = self._spot_current_maximum
+                else:
+                    self._spot_scale_by_unit.pop(self._spot_colour_unit, None)
+        self._spot_settings_changed()
+
+    @Slot()
+    def _spot_use_current_maximum(self):
+        if self._spot_colour_unit and self._spot_current_maximum is not None:
+            if self._spot_current_maximum > 0:
+                self._spot_scale_by_unit[self._spot_colour_unit] = self._spot_current_maximum
+            else:
+                self._spot_scale_by_unit.pop(self._spot_colour_unit, None)
+        self._spot_settings_changed()
 
     @Slot()
     def _queue_geometry_refresh(self, *_args):
@@ -194,6 +323,8 @@ class BeamAnalysisControls(QObject):
         self._source_has_positions = False
         self._source_brush_cache.clear()
         self._source_plot_key = None
+        self._spot_cache_key = None
+        self._spot_raster = None
 
     def source_data(self):
         """One immutable launch lookup per publication, independent of Z."""
@@ -211,6 +342,9 @@ class BeamAnalysisControls(QObject):
             return
         self._advanced = False
         _label, mode, colour = self.TRACKING_PRESETS[key]
+        self._particle_mode = mode
+        if self.mode == "intensity":
+            mode = "intensity"
         for combo in (self.mode_combo, self.colour_combo):
             combo.blockSignals(True)
         self.mode_combo.setCurrentIndex(self.mode_combo.findData(mode))
@@ -232,7 +366,7 @@ class BeamAnalysisControls(QObject):
     def refresh_source_plot(self):
         """Draw actual launch positions, never downstream survivors or a colour wheel."""
         colour = self.colour_combo.currentData()
-        if self.mode not in self.POINT_MODES or colour not in {"source", "emission_direction", "emission_angle"}:
+        if self.mode not in self.POINT_MODES | {"intensity"} or colour not in {"source", "emission_direction", "emission_angle"}:
             return
         data = self.source_data()
         key = (id(data), colour, self.owner._projection_angle_deg)
@@ -313,19 +447,26 @@ class BeamAnalysisControls(QObject):
         points = self.mode in self.POINT_MODES
         colour = self.colour_combo.currentData()
         preset = next((key for key, (_label, mode, quantity) in self.TRACKING_PRESETS.items()
-                       if (self.mode, colour) == (mode, quantity)), None)
+                       if (self.mode, colour) == (mode, quantity)
+                       or self.mode == "intensity" and colour == quantity), None)
         advanced = advanced or self._advanced or preset is None
         self._advanced = advanced
         self.tracking_combo.blockSignals(True)
         self.tracking_combo.setCurrentIndex(self.tracking_combo.findData("advanced" if advanced else preset))
         self.tracking_combo.blockSignals(False)
         self.mode_combo.setVisible(advanced)
+        self.display_combo.blockSignals(True)
+        self.display_combo.setCurrentIndex(self.display_combo.findData(
+            "spot" if self.mode == "intensity" else "particles" if points else None))
+        self.display_combo.blockSignals(False)
+        self.set_wave_visibility(self.wave is not None)
         self.view_label.setText("Diagnostic view" if advanced else
                                f"Selected plane: {self.mode_combo.currentText()}")
         self.colour_combo.setVisible(points and advanced)
         self.colour_label.setVisible(points and advanced)
         self.owner.initial_beam_panel.show()
-        source_visible = points and colour in {"source", "emission_direction", "emission_angle", "tof"}
+        source_visible = (points and colour in {"source", "emission_direction", "emission_angle", "tof"}
+                          or self.mode == "intensity" and colour in {"source", "emission_direction", "emission_angle"})
         self.owner.source_plot.setVisible(source_visible)
         self.owner.initial_beam_heading.setVisible(source_visible)
         wheel_visible = source_visible and colour not in {"emission_angle", "tof"}
@@ -518,6 +659,8 @@ class BeamAnalysisControls(QObject):
     def redraw(self):
         owner = self.owner
         self._drawing = True
+        self._spot_current_maximum = None
+        self.spot_rescale.setEnabled(False)
         data = None
         try:
             owner.plot.clear()
@@ -532,6 +675,8 @@ class BeamAnalysisControls(QObject):
             self.update_labels()
             label = dict((key, name) for name, key in self.MODES)[self.mode]
             if owner._result is None or owner._plane_z_mm is None:
+                self._spot_raster = None
+                self._spot_cache_key = None
                 owner.heading.setText(label)
                 owner.summary.setText("No cached beam result")
                 return
@@ -541,6 +686,8 @@ class BeamAnalysisControls(QObject):
             if data.coordinate_frame == "sector_exit_local":
                 owner.heading.setText(f"{label} | Filter exit frame")
             if data.status == "Unavailable":
+                self._spot_raster = None
+                self._spot_cache_key = None
                 self._summary(data)
                 self.readout.setText(" ".join(data.diagnostics))
                 self.readout.setVisible(True)
@@ -561,6 +708,8 @@ class BeamAnalysisControls(QObject):
             elif self.mode == "angle_histogram":
                 self._draw_angles(data)
         except ValueError as exc:
+            self._spot_raster = None
+            self._spot_cache_key = None
             owner.summary.setText("Analysis unavailable")
             owner.summary.setToolTip(str(exc))
             self.readout.setText("Cached ray data are incomplete; hover for details.")
@@ -624,31 +773,87 @@ class BeamAnalysisControls(QObject):
         self._summary(data, f" | {np.count_nonzero(selected):,} shown")
 
     def _draw_intensity(self, data):
-        u, v = transverse_view_coordinates(data.x_m, data.y_m, self.owner._projection_angle_deg)
-        bounds = self._ranges.get(self.mode, self._point_bounds(u*1e6, v*1e6))
+        bins = int(self.spot_grid_combo.currentData())
+        sigma = float(self.spot_smoothing_combo.currentData())
+        bounds = self._ranges.get(self.mode)
+        if bounds is None:
+            # Explicit Fit includes deposition and display-kernel support. An
+            # existing viewport stays unchanged when display settings change,
+            # so cropping remains visible instead of being renormalised away.
+            fitted = rasterize_beam_spot(data, bins=bins,
+                projection_angle_deg=self.owner._projection_angle_deg,
+                smoothing_sigma_px=sigma)
+            bounds = [(edges[0]*1e6, edges[-1]*1e6)
+                      for edges in (fitted.x_edges_m, fitted.y_edges_m)]
         self._set_ranges(bounds)
         bounds = self._ranges[self.mode]
-        hist, xe, ye = spatial_histogram(data, bins=self.BINS,
-            projection_angle_deg=self.owner._projection_angle_deg,
-            range_m=tuple(tuple(value*1e-6 for value in pair) for pair in bounds))
-        scale, unit = self._flux_units(data)
-        values = hist*scale
+        range_m = tuple(tuple(value*1e-6 for value in pair) for pair in bounds)
+        key = (id(data), bins, sigma, self.owner._projection_angle_deg, range_m)
+        if key != self._spot_cache_key:
+            self._spot_raster = rasterize_beam_spot(data, bins=bins,
+                projection_angle_deg=self.owner._projection_angle_deg,
+                range_m=range_m, smoothing_sigma_px=sigma)
+            self._spot_cache_key = key
+        raster = self._spot_raster
+        xe, ye = raster.x_edges_m, raster.y_edges_m
+        scale = data.source_current_pa if data.source_current_pa is not None else 100.
+        unit = "pA / µm²" if data.source_current_pa is not None else "% source / µm²"
+        values = raster.display_fraction * (scale / (raster.pixel_area_m2 * 1e12))
         maximum = float(np.max(values)) if values.size else 0.
-        image = pg.ImageItem(axisOrder="row-major")
-        image.setLookupTable(pg.colormap.get("viridis").getLookupTable(nPts=256))
-        image.setImage(values.T, autoLevels=False, levels=(0, maximum if maximum > 0 else 1.))
-        image.setRect(QRectF(xe[0]*1e6, ye[0]*1e6, np.ptp(xe)*1e6, np.ptp(ye)*1e6))
-        self.owner.plot.addItem(image)
-        self._hover_payload = ("intensity", values, xe*1e6, ye*1e6, unit)
+        unit_changed = self._spot_colour_unit is not None and self._spot_colour_unit != unit
+        self._spot_colour_unit = unit
+        self._spot_current_maximum = maximum
+        fixed = self.spot_fixed_colour.isChecked()
+        if fixed and unit not in self._spot_scale_by_unit and maximum > 0:
+            self._spot_scale_by_unit[unit] = maximum
+        colour_maximum = self._spot_scale_by_unit.get(unit) if fixed else maximum
+        self._spot_colour_maximum = colour_maximum
+        upper = colour_maximum if colour_maximum is not None and colour_maximum > 0 else 1.
+        self._spot_image.setImage(values, autoLevels=False, levels=(0, upper))
+        self._spot_image.setRect(QRectF(xe[0]*1e6, ye[0]*1e6, np.ptp(xe)*1e6, np.ptp(ye)*1e6))
+        self.owner.plot.addItem(self._spot_image)
+        self.owner.plot.addLine(x=0, pen=pg.mkPen("#94a3b8", width=.8))
+        self.owner.plot.addLine(y=0, pen=pg.mkPen("#94a3b8", width=.8))
+        # Hover payload retains the shared X/Y indexing used by other analysis
+        # views, while the image and immutable raster use row-major Y/X.
+        self._hover_payload = ("intensity", values.T, xe*1e6, ye*1e6, unit)
         colours = ("#440154", "#3b528b", "#21918c", "#5ec962", "#fde725")
+        scale_text = "fixed" if fixed else "auto"
+        if fixed and colour_maximum is None:
+            scale_text = "fixed · awaiting nonzero flux"
+        elif unit_changed:
+            scale_text += " · scale for these units"
+        elif maximum > upper:
+            scale_text += " · peak exceeds colour maximum"
         self.legend.setText("0 " + "".join(f'<span style="color:{colour}">■</span>' for colour in colours)
-            + f" {maximum:.6g} {unit}")
+            + f" {upper:.6g} {unit} · {scale_text}")
         self.legend.setToolTip(
-            "Linear colour scale; maximum updates for the current plane. Compare values, "
-            "not colours, across planes. Each value is flux in a spatial bin, not per unit area."
+            "Colour shows source-weighted spatial density per square micrometre, so grid changes "
+            "do not change its units. Fixed scale retains its maximum across planes and results; "
+            "Use current maximum explicitly resets it. Values are never normalised to surviving rays. "
+            "Optional smoothing changes this display only, not the raw raster, total flux or centroid. "
+            "Viewport losses include cropped subpixel and smoothing tails; no edge reflection or renormalisation."
         )
-        self.readout.setText("Hover for position and bin flux")
-        self._summary(data, f" | visible {float(np.sum(hist))*100:.6g}% of source")
+        self.spot_rescale.setEnabled(fixed and maximum > 0)
+        smoothing_text = f"display smoothing σ {sigma:g} px" if sigma else "display smoothing off"
+        self.readout.setText(f"Hover for position and density | {bins} × {bins} | {smoothing_text}")
+        self.readout.setToolTip("Hover reports the displayed density; the raw weighted centroid and flux are listed below.")
+        if raster.centroid_m is None:
+            centroid = " | centroid unavailable"
+        else:
+            cx, cy = raster.centroid_m
+            centroid = (f" | centroid ({cx*1e6:.6g}, {cy*1e6:.6g}) µm"
+                        if np.isfinite(cx) and np.isfinite(cy) else " | centroid unavailable")
+        self._summary(data,
+            f" | visible {raster.display_visible_fraction*100:.6g}% of source"
+            f" | {raster.ray_count:,} rays (effective {raster.effective_ray_count:.6g})" + centroid)
+        self.owner.summary.setToolTip(self.owner.summary.toolTip() +
+            f" Hit centres inside viewport: {raster.viewport_source_fraction*100:.6g}% of source; "
+            f"raw deposited visible flux: {raster.raw_visible_fraction*100:.6g}%; "
+            f"displayed visible flux: {raster.display_visible_fraction*100:.6g}%. "
+            "Centroid uses all reaching weighted rays, including those outside the viewport. "
+            "A smooth appearance does not establish sufficient particle sampling.")
+        self.refresh_source_plot()
 
     def _draw_angles(self, data):
         if self.mode not in self._ranges:

@@ -64,6 +64,25 @@ def test_same_panel_current_and_angles_keep_absolute_tip_weights(view, monkeypat
     assert original.digest == digest
 
 
+def test_wave_readout_hides_particle_spot_controls_and_restores_them(view):
+    view.display_result(make_result())
+    a = view.analysis
+    a.display_combo.setCurrentIndex(a.display_combo.findData("spot"))
+    a.spot_grid_combo.setCurrentIndex(a.spot_grid_combo.findData(256))
+    maximum = a._spot_colour_maximum
+    view.mark_inputs_stale()
+    assert view.snapshot_status.isVisible()
+    display(view, checkpoint(), axial_bz_t=0.)
+    assert not a.display_combo.isVisible()
+    assert not a.spot_grid_combo.isVisible()
+    assert not view.snapshot_status.isVisible()
+    view.display_result(make_result())
+    assert a.display_combo.isVisible() and a.display_combo.currentData() == "spot"
+    assert a.spot_grid_combo.isVisible() and a.spot_grid_combo.currentData() == 256
+    assert a._spot_colour_maximum == maximum
+    assert not view.snapshot_status.isVisible()
+
+
 def test_phase_selects_one_mode_and_keeps_relative_phase(view):
     display(view, checkpoint(), axial_bz_t=0.)
     switch(view, "wave_phase")

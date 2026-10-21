@@ -342,3 +342,77 @@ def test_standalone_transverse_api_remains_eager(qtbot):
     assert "Z = 5 mm" in view.heading.text()
     view.set_projection_angle(90.0)
     assert view._projection_angle_deg == 90.0
+
+
+def _spot_result(value=1.0, *, blocked=False):
+    result = _result(value)
+    branch = result.simulation.incident
+    branch.tx = np.zeros_like(branch.x)
+    branch.ty = np.zeros_like(branch.y)
+    branch.ray_weight = np.array([.2, .3, .5])
+    branch.weight = 1.0
+    if blocked:
+        branch.blocked_z[2] = 7.0
+    result.simulation.metrics.update(
+        branch_weights_are_absolute=True, effective_source_current_pa=100.)
+    return result
+
+
+def _mark_inputs_changed(workspace, monkeypatch):
+    monkeypatch.setattr(workspace, "_refresh_ray_calculation_extent", lambda: None)
+    live = SimpleNamespace(
+        electron_gun=SimpleNamespace(type_key="thermionic", display_name="Thermionic source"),
+        apertures=(),
+    )
+    workspace.mark_ray_stale(live)
+
+
+def test_spot_stale_snapshot_survives_display_edits_and_new_result_clears_it(workspace, monkeypatch):
+    view = workspace.transverse_beam
+    workspace.display_result(_spot_result(), "Preview")
+    view.analysis.display_combo.setCurrentIndex(view.analysis.display_combo.findData("spot"))
+    raster = view.analysis._spot_raster
+    maximum = view.analysis._spot_colour_maximum
+    assert raster.total_source_fraction == pytest.approx(1.)
+    assert not view.snapshot_status.isVisible()
+
+    _mark_inputs_changed(workspace, monkeypatch)
+    assert view.snapshot_status.isVisible()
+    assert "Previous calculation" in view.snapshot_status.text()
+    view.focus_z(9.)
+    view.analysis.spot_grid_combo.setCurrentIndex(view.analysis.spot_grid_combo.findData(64))
+    assert view._inputs_stale and view.snapshot_status.isVisible()
+    assert view.analysis._spot_colour_maximum == maximum
+
+    latest = _spot_result(2., blocked=True)
+    workspace.display_result(latest, "Preview")
+    assert view._result is latest
+    assert not view._inputs_stale and not view.snapshot_status.isVisible()
+    assert view.analysis._spot_raster.total_source_fraction == pytest.approx(.5)
+    assert view.analysis._spot_raster.current_pa == pytest.approx(50.)
+    assert view.analysis._spot_raster.centroid_m != raster.centroid_m
+    assert view.analysis.spot_grid_combo.currentData() == 64
+    assert view.analysis._spot_colour_maximum == maximum
+
+
+def test_hidden_old_spot_publication_remains_stale_until_latest_result(workspace, monkeypatch):
+    view = workspace.transverse_beam
+    view.analysis.display_combo.setCurrentIndex(view.analysis.display_combo.findData("spot"))
+    workspace.transverse_beam_toggle.setChecked(False)
+    queued = _spot_result()
+    workspace.display_result(queued, "Preview")
+    _mark_inputs_changed(workspace, monkeypatch)
+    assert view._result is None
+    workspace.transverse_beam_toggle.setChecked(True)
+    assert view._result is queued
+    assert view._inputs_stale and view.snapshot_status.isVisible()
+    assert view.analysis._spot_raster.total_source_fraction == pytest.approx(1.)
+
+    latest = _spot_result(3., blocked=True)
+    workspace.display_result(latest, "Preview")
+    assert not view._inputs_stale and not view.snapshot_status.isVisible()
+    assert view.analysis._spot_raster.total_source_fraction == pytest.approx(.5)
+    view.mark_inputs_stale()
+    view.display_result(None)
+    assert not view.snapshot_status.isVisible()
+    assert view.analysis._spot_raster is None

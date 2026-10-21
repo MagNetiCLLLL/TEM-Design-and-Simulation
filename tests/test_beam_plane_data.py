@@ -1,6 +1,7 @@
 """Selected-plane geometry and probability accounting from cached histories."""
 
 from types import SimpleNamespace
+from dataclasses import replace
 
 import numpy as np
 import pytest
@@ -13,6 +14,7 @@ from temsim.gui.beam_plane_data import (
 )
 from temsim.physics.interaction_budget import plane_interaction_budget
 from temsim.specimen.downstream_transport import GeometricSpecimenExit
+from temsim.gui.beam_spot_data import rasterize_beam_spot
 
 
 def make_branch(name="incident", count=4, z=(0.0, 10.0), **changes):
@@ -372,3 +374,173 @@ def test_histograms_reject_invalid_bin_counts(bins):
         angular_histogram(plane, bins=bins)
     with pytest.raises(ValueError):
         spatial_histogram(plane, bins=bins)
+
+
+def spot_plane(x, y, weights):
+    """Small physical coordinate/probability fixture, with a 20 pA source."""
+    return replace(sample_beam_plane(make_result(), 5.0),
+                   x_m=np.asarray(x, float), y_m=np.asarray(y, float),
+                   source_fraction=np.asarray(weights, float))
+
+
+def spot_moments(raster, *, smooth=False):
+    values = raster.display_fraction if smooth else raster.raw_fraction
+    x = (raster.x_edges_m[:-1] + raster.x_edges_m[1:]) / 2
+    y = (raster.y_edges_m[:-1] + raster.y_edges_m[1:]) / 2
+    total = values.sum()
+    return total, (float(np.sum(values * x[None, :]) / total),
+                   float(np.sum(values * y[:, None]) / total))
+
+
+def test_spot_bilinear_subpixel_weights_and_duplicate_hits_are_conservative():
+    plane = spot_plane([0.25e-6] * 3, [0.75e-6] * 3, [0.1, 0.2, 0.3])
+    raster = rasterize_beam_spot(plane, bins=4,
+                                range_m=((-2e-6, 2e-6), (-2e-6, 2e-6)))
+    expected = np.zeros((4, 4))
+    expected[2:4, 1:3] = np.array([[3 / 16, 9 / 16], [1 / 16, 3 / 16]]) * 0.6
+    np.testing.assert_allclose(raster.raw_fraction, expected, atol=1e-16)
+    total, centroid = spot_moments(raster)
+    assert total == pytest.approx(0.6, abs=1e-15)
+    np.testing.assert_allclose(centroid, [0.25e-6, 0.75e-6], atol=1e-21)
+    assert raster.centroid_m == pytest.approx(centroid, abs=1e-21)
+    assert raster.current_pa == pytest.approx(12.0)
+    assert raster.ray_count == 3
+    assert raster.effective_ray_count == pytest.approx(0.6**2 / (0.1**2 + 0.2**2 + 0.3**2))
+    assert raster.pixel_area_m2 == pytest.approx(1e-12)
+    for array in (raster.raw_fraction, raster.display_fraction,
+                  raster.x_edges_m, raster.y_edges_m):
+        with pytest.raises(ValueError):
+            array.setflags(write=True)
+
+
+@pytest.mark.parametrize("bins", [32, 64, 128, 512])
+@pytest.mark.parametrize("sigma", [0.0, 0.8, 3.0])
+def test_spot_grid_and_display_smoothing_preserve_translated_weighted_beam(bins, sigma):
+    plane = spot_plane(np.array([-.35, .12, .61]) * 1e-6,
+                       np.array([.22, -.18, .44]) * 1e-6, [.1, .2, .4])
+    before = (plane.x_m.copy(), plane.y_m.copy(), plane.source_fraction.copy())
+    raster = rasterize_beam_spot(plane, bins=bins, smoothing_sigma_px=sigma)
+    expected = np.array([np.dot(plane.x_m, plane.source_fraction),
+                         np.dot(plane.y_m, plane.source_fraction)]) / 0.7
+    for smooth in (False, True):
+        total, centroid = spot_moments(raster, smooth=smooth)
+        assert total == pytest.approx(0.7, abs=4e-15)
+        np.testing.assert_allclose(centroid, expected, atol=3e-21, rtol=2e-14)
+    np.testing.assert_allclose(raster.centroid_m, expected, atol=2e-22)
+    assert raster.total_source_fraction == pytest.approx(.7)
+    assert raster.viewport_source_fraction == pytest.approx(.7)
+    assert raster.current_pa == pytest.approx(14.)
+    assert raster.ray_count == 3
+    assert raster.effective_ray_count == pytest.approx(.7**2 / (.1**2 + .2**2 + .4**2))
+    for previous, current in zip(before, (plane.x_m, plane.y_m, plane.source_fraction)):
+        np.testing.assert_array_equal(previous, current)
+    # Changing smoothing changes only displayed density, not deposition.
+    plain = rasterize_beam_spot(plane, bins=bins,
+        range_m=((raster.x_edges_m[0], raster.x_edges_m[-1]),
+                 (raster.y_edges_m[0], raster.y_edges_m[-1])))
+    np.testing.assert_array_equal(plain.raw_fraction, raster.raw_fraction)
+
+
+def test_spot_crop_does_not_rescale_and_display_halo_never_reflects_or_wraps():
+    # A particle on the left viewport edge has half its linear support outside.
+    # Another farther outside cannot be reflected back into the viewport.
+    plane = spot_plane([-2e-6, -20e-6], [.5e-6, .5e-6], [.25, .5])
+    raster = rasterize_beam_spot(plane, bins=4,
+                                range_m=((-2e-6, 2e-6), (-2e-6, 2e-6)))
+    assert raster.total_source_fraction == pytest.approx(.75)
+    assert raster.viewport_source_fraction == pytest.approx(.25)
+    assert raster.raw_visible_fraction == pytest.approx(.125)
+    assert raster.display_visible_fraction == pytest.approx(.125)
+    assert raster.raw_fraction[2, 0] == pytest.approx(.125)
+    assert not np.any(raster.raw_fraction[:, -1])
+    assert raster.centroid_m == pytest.approx((-14e-6, .5e-6), abs=1e-21)
+    smoothed = rasterize_beam_spot(plane, bins=16, smoothing_sigma_px=1,
+                                  range_m=((-2e-6, 2e-6), (-2e-6, 2e-6)))
+    assert smoothed.total_source_fraction == pytest.approx(.75)
+    assert smoothed.display_visible_fraction == pytest.approx(.125, abs=1e-15)
+    assert not np.any(smoothed.display_fraction[:, -1])
+
+
+def test_spot_smoothing_reads_halo_outside_view_instead_of_smoothing_a_crop():
+    # Coordinates coincide with a pixel centre just outside a four-pixel view.
+    plane = spot_plane([-2.5e-6], [.5e-6], [.6])
+    limits = ((-2e-6, 2e-6), (-2e-6, 2e-6))
+    plain = rasterize_beam_spot(plane, bins=4, range_m=limits)
+    smooth = rasterize_beam_spot(plane, bins=4, range_m=limits, smoothing_sigma_px=.5)
+    assert plain.raw_visible_fraction == pytest.approx(0.)
+    assert smooth.viewport_source_fraction == pytest.approx(0.)
+    assert 0. < smooth.display_visible_fraction < .6
+    assert smooth.total_source_fraction == .6 and smooth.centroid_m == (-2.5e-6, .5e-6)
+    assert smooth.display_fraction[:, -1].sum() == 0.
+    np.testing.assert_array_equal(smooth.raw_fraction, plain.raw_fraction)
+
+
+def test_spot_projection_rotates_true_centroid_and_axes_without_changing_flux():
+    plane = spot_plane([2e-6], [1e-6], [.4])
+    raster = rasterize_beam_spot(plane, bins=32, projection_angle_deg=90.,
+                                smoothing_sigma_px=1.)
+    np.testing.assert_allclose(raster.centroid_m, [1e-6, -2e-6], atol=1e-21)
+    total, centroid = spot_moments(raster, smooth=True)
+    assert total == pytest.approx(.4, abs=1e-15)
+    np.testing.assert_allclose(centroid, [1e-6, -2e-6], atol=1e-21)
+
+
+def test_spot_physical_interception_changes_current_without_renormalising():
+    branch = make_branch(ray_weight=np.array([.1, .2, .3, .4]),
+                         blocked_z=np.array([np.nan, 5., np.nan, np.nan]))
+    result = make_result(branch)
+    before = rasterize_beam_spot(sample_beam_plane(result, 4.9), smoothing_sigma_px=1.)
+    after = rasterize_beam_spot(sample_beam_plane(result, 5.1), smoothing_sigma_px=1.)
+    assert before.display_visible_fraction == pytest.approx(1.)
+    assert after.display_visible_fraction == pytest.approx(.8)
+    assert before.current_pa == pytest.approx(20.)
+    assert after.current_pa == pytest.approx(16.)
+    assert after.ray_count == 3
+    assert after.centroid_m != before.centroid_m
+
+
+def test_spot_empty_zero_weight_and_subnormal_probability_are_not_invented():
+    for plane in (spot_plane([], [], []), spot_plane([1e-6], [1e-6], [0.])):
+        raster = rasterize_beam_spot(plane, smoothing_sigma_px=1.)
+        assert raster.total_source_fraction == 0.
+        assert raster.raw_visible_fraction == raster.display_visible_fraction == 0.
+        assert raster.centroid_m is None and raster.effective_ray_count == 0.
+    tiny = spot_plane([1e-6, 3e-6], [0., 0.], [1e-300, 3e-300])
+    raster = rasterize_beam_spot(tiny)
+    assert raster.total_source_fraction == 4e-300
+    assert raster.effective_ray_count == pytest.approx(1.6)
+    np.testing.assert_allclose(raster.centroid_m, [2.5e-6, 0.], atol=1e-21)
+
+
+@pytest.mark.parametrize("changes", [
+    {"bins": 1}, {"bins": 1025}, {"bins": np.inf}, {"bins": 1.5},
+    {"bins": True}, {"bins": np.bool_(True)}, {"bins": None},
+    {"smoothing_sigma_px": np.nan}, {"smoothing_sigma_px": -1},
+    {"smoothing_sigma_px": 8.1}, {"smoothing_sigma_px": True},
+    {"projection_angle_deg": np.inf}, {"projection_angle_deg": None},
+    {"range_m": ((0, 0), (0, 1))}, {"range_m": ((0, np.inf), (0, 1))},
+    {"range_m": ((0, 1e-300), (0, 1e-300))}, {"range_m": ((0, 1),)},
+    {"bins": 2, "smoothing_sigma_px": 3.},
+])
+def test_spot_rejects_invalid_and_unresolved_display_parameters(changes):
+    with pytest.raises(ValueError):
+        rasterize_beam_spot(spot_plane([0.], [0.], [1.]), **changes)
+
+
+@pytest.mark.parametrize("changes", [
+    {"weights_valid": False}, {"x_m": np.array([np.nan])},
+    {"x_m": np.array([0., 1.])}, {"source_fraction": np.array([-.5])},
+    {"source_fraction": np.array([np.nan])}, {"source_fraction": np.array([1.1])},
+])
+def test_spot_rejects_unavailable_or_invalid_particle_weights(changes):
+    with pytest.raises(ValueError):
+        rasterize_beam_spot(replace(spot_plane([0.], [0.], [1.]), **changes))
+
+
+def test_spot_extreme_offscreen_particles_do_not_overflow_integer_deposition():
+    plane = spot_plane([0., 1e200, -1e200], [0., 1e200, -1e200], [.2, .3, .5])
+    with np.errstate(all="raise"):
+        raster = rasterize_beam_spot(plane, bins=128,
+                                    range_m=((-1e-12, 1e-12), (-1e-12, 1e-12)))
+    assert raster.raw_visible_fraction == pytest.approx(.2)
+    assert raster.total_source_fraction == 1.

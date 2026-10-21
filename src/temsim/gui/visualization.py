@@ -1379,7 +1379,8 @@ class VisualizationWorkspace(QWidget):
                 focus = self._transverse_focus_request
                 if focus is not None and focus[0] == "component":
                     focus = (focus[0], self._current_presentation_part(result, focus[1]))
-                panel.display_result(result, focus=focus)
+                panel.display_result(result, focus=focus,
+                                     inputs_stale=self._ray_extent_stale)
                 if self._ray_hardware_preview is not None:
                     panel.hardware.set_geometry_preview(self._ray_hardware_preview)
             else:
@@ -4602,6 +4603,7 @@ class VisualizationWorkspace(QWidget):
         )
 
     def mark_ray_stale(self, state, assembly=None) -> None:
+        self.transverse_beam.mark_inputs_stale()
         self.coherent_beam.set_state(state)
         self.receiver_imaging.set_state(state)
         self.receiver_imaging.mark_result_stale()

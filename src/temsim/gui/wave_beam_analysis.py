@@ -244,6 +244,8 @@ class WaveBeamAnalysis(QObject):
 
     def activate(self):
         a = self.analysis
+        a.set_wave_visibility(True)
+        self.owner.snapshot_status.hide()
         for combo in (a.mode_combo, a.colour_combo):
             combo.blockSignals(True)
             combo.clear()
