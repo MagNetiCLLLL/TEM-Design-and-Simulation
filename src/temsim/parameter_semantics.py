@@ -146,7 +146,7 @@ def _meaning(part, path, by_key):
                 "Carrier bore reference" if "bore" in field else
                 "Mechanism envelope diameter" if field in {"mechanical_outer_diameter_mm", "outer_diameter_mm"} else
                 "Reference cone angle"), "envelope" if field in {"mechanical_outer_diameter_mm", "outer_diameter_mm"} else "unknown", reason
-    if (field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "hexapole_support_"))
+    if (field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_", "hexapole_support_"))
             and field.endswith(("_mm", "_deg"))):
         return label, "physical", (
             "Explicit engineering dimension of the reconstructed internal material. "
@@ -389,6 +389,9 @@ def _source(part, path, category):
     if field.startswith("mechanical_transfer_end_") and category == "physical":
         return _source_from_text(part.get("mechanical_transfer_end_geometry_status"),
                                  part.get("mechanical_transfer_end_geometry_source"), explicit_field=False)
+    if field.startswith("mechanical_objective_upper_end_") and category == "physical":
+        return _source_from_text(part.get("mechanical_objective_upper_end_geometry_status"),
+                                 part.get("mechanical_objective_upper_end_geometry_source"), explicit_field=False)
     if field.startswith("hexapole_support_") and category == "physical":
         return _source_from_text(part.get("hexapole_support_geometry_status"),
                                  part.get("hexapole_support_source_note"), explicit_field=False)

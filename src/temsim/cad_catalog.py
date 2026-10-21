@@ -24,12 +24,13 @@ def part_solids(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.cad_probe_transfer_lens_hardware import probe_transfer_lens_hardware_solids
     from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
     from temsim.cad_objective_sleeves import sleeve_solids
+    from temsim.cad_objective_upper_hardware import objective_upper_hardware_solids
     if non_material_role(part):
         return ()
     values = tube_solids(part)
     if values is not None:
         return values
-    for build in (sleeve_solids, detector_solids, recording_plane_solids, gun_stigmator_solids, stigmator_support_solids, c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, probe_transfer_lens_hardware_solids, stage_holder_solids, access_port_solids, round_lens_solids, multipole_solids):
+    for build in (objective_upper_hardware_solids, sleeve_solids, detector_solids, recording_plane_solids, gun_stigmator_solids, stigmator_support_solids, c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, probe_transfer_lens_hardware_solids, stage_holder_solids, access_port_solids, round_lens_solids, multipole_solids):
         values=build(part,by_key)
         if values is not None:
             return values
@@ -62,10 +63,11 @@ def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.cad_probe_transfer_lens_hardware import probe_transfer_lens_hardware_solids
     from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
     from temsim.cad_objective_sleeves import sleeve_solids
+    from temsim.cad_objective_upper_hardware import objective_upper_hardware_solids
     values = tube_solids(part)
     if values is not None:
         return values
-    for build in (sleeve_solids, detector_solids, recording_plane_solids, gun_stigmator_solids, stigmator_support_solids, c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, probe_transfer_lens_hardware_solids, cartridge_solids, stage_holder_solids, access_port_solids):
+    for build in (objective_upper_hardware_solids, sleeve_solids, detector_solids, recording_plane_solids, gun_stigmator_solids, stigmator_support_solids, c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, probe_transfer_lens_hardware_solids, cartridge_solids, stage_holder_solids, access_port_solids):
         values = build(part, by_key)
         if values is not None:
             return values
@@ -93,6 +95,10 @@ def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
 
 def is_reconstruction_region(part, region):
     """Display material categories do not create new FEM material assignments."""
+    if (part.get("mechanical_objective_upper_end_structure")
+            and region in {"upper_winding_inner_insulation", "upper_end_insulation", "lower_end_insulation",
+                           "upper_cooling_plate", "lower_cooling_plate"}):
+        return True
     if part.get("model_3d",{}).get("base",{}).get("kind") == "step" and region.startswith("step_"):
         return True
     if part.get("aperture_support_profile") and region in {"connection_rod", "fixing_screw"}:

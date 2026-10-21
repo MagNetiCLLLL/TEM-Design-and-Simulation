@@ -44,13 +44,22 @@ def test_all_native_round_material_base_shapes_match_existing_view(relative):
         # access port intentionally changes the final objective shell surface.
         with patch("temsim.cad_catalog.native_reconstruction", return_value=None):
             old, _ = _legacy_part_meshes(part, by_key, 16)
-        new = _meshes(specs)
+        comparison_specs = specs
+        if part.get("mechanical_objective_upper_end_structure"):
+            # The original winding envelope is partitioned into copper and
+            # bore insulation. New end plates occupy the existing yoke inset;
+            # their independent extent is tested by the dedicated helper suite.
+            comparison_specs = tuple(s for s in specs if s.region in {
+                "upper", "lower", "upper_winding_inner_insulation"})
+            assert len(specs) == 7 and len(comparison_specs) == 3
+        new = _meshes(comparison_specs)
         assert np.allclose(_bbox(new), _bbox(old), atol=1e-10, rtol=0), part["key"]
         # Comparing the actual vertex set checks noses, bores and gaps, not only
         # the outer envelope. All current regions use the same 16-angle grid.
         vertices = lambda ms: set(map(tuple, np.round(np.concatenate([m.vertices for m in ms]), 9)))
         from temsim.cad_round_lens_end_hardware import FAMILY_PREFIXES
         if (part.get("mechanical_cartridge_structure")
+                or part.get("mechanical_objective_upper_end_structure")
                 or any(part.get(prefix + "structure") for prefix in FAMILY_PREFIXES)):
             # Declared internal detail preserves every existing exterior vertex.
             # Independent detail tests verify its partition/non-overlap.
@@ -97,9 +106,13 @@ def test_objective_split_intervals_and_mixed_cartridge_are_preserved():
     rows = {r["key"]: r for r in doc["parts"]}
     for key in ("objective_lens_yoke", "objective_lens_excitation_coil"):
         specs = round_lens_solids(rows[key], rows)
-        assert [s.region for s in specs] == ["upper", "lower"]
-        a, b = [np.asarray(s.shape["section_zr_mm"])[:, 0] for s in specs]
+        packs = [s for s in specs if s.region in {"upper", "lower"}]
+        assert [s.region for s in packs] == ["upper", "lower"]
+        a, b = [np.asarray(s.shape["section_zr_mm"])[:, 0] for s in packs]
         assert a.max() < b.min()  # Never fill the sample interval with material.
+        for spec in specs:
+            lo, hi = np.asarray(spec.shape["section_zr_mm"])[:, 0].min(), np.asarray(spec.shape["section_zr_mm"])[:, 0].max()
+            assert hi < rows["objective_upper_pole"]["local_end_z_mm"] or lo > rows["objective_lower_pole"]["local_start_z_mm"]
     key = "c1_c2_pole_piece_cartridge"
     # A legacy manifest without an explicit material split retains one unknown
     # body. The installed opt-in split must not change this fallback contract.

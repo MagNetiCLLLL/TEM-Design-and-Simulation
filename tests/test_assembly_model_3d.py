@@ -95,7 +95,9 @@ def test_source_parent_context_preserves_actual_split_objective_intervals():
                                         angular_segments=8).meshes
     model = assembly_model_from_assembly(assembly, angular_segments=8)
     assert not model.errors
-    assert [mesh.region for mesh in model.meshes] == ["upper", "lower"]
+    assert [mesh.region for mesh in model.meshes] == [
+        "upper", "lower", "upper_winding_inner_insulation", "upper_cooling_plate",
+        "upper_end_insulation", "lower_end_insulation", "lower_cooling_plate"]
     for actual, local in zip(model.meshes, expected, strict=True):
         np.testing.assert_array_equal(actual.vertices, local.vertices + (0, 0, 350))
 

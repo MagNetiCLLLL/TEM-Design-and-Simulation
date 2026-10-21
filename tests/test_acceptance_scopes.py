@@ -131,6 +131,8 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_dph2_end_insulation.py", "test_probe_hexapole_support.py",
             "test_cad_tl22_lens_hardware.py",
             "test_cad_probe_transfer_lens_hardware.py", "test_probe_hp1_support.py",
+            "test_ac_scan_structure.py", "test_cad_objective_upper_hardware.py",
+            "test_objective_upper_integration.py",
             "test_probe_lower_deflector_details.py", "test_copied_axial_dimension_sync.py",
             "test_deflector_winding_length_contract.py", "test_pole_face_land_geometry.py",
             "test_component_replacement_recipes.py", "test_dimension_edit_policy.py",

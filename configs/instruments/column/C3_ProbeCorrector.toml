@@ -828,11 +828,12 @@ mechanical_inter_coil_gap_mm = 10.0
 [[parts]]
 order = 35
 key = "ac_deflector"
+deflector_support_registration_slot_sweep_deg = 6.0
 # Source-backed structure family; dimensions and installation are engineering choices.
 deflector_support_profile = "rigid_insulating_carriers_pinned"
 deflector_support_geometry_status = "engineering_reconstruction_not_oem"
 deflector_support_source = "https://patents.google.com/patent/US5994704A/en"
-deflector_support_source_note = "Two compact 15 mm scan stations; retained objective-relative placement. US5994704A Figs 1-4 supports rigid insulating carriers, spacer, round-hole registration pins and the insulating-case variant. Bulk embedding and dimensions are not OEM; internal pins do not establish external host fastening."
+deflector_support_source_note = "Two compact 15 mm scan stations at their existing objective-relative positions. US5994704A Figs 1-4 supports rigid insulating carriers, inter-axis spacer, round inner-carrier holes, elongated outer-carrier/spacer registration holes and insulating casing. The 6 degree slot centreline sweep and all dimensions are engineering allocations, not OEM; copper and pin axes remain fixed, external host fastening unverified."
 deflector_support_radial_skin_thickness_mm = 0.2
 deflector_support_casing_thickness_mm = 0.4
 deflector_support_pin_diameter_mm = 0.4
@@ -1786,6 +1787,13 @@ parent_key = "objective_lens"
 order = 71
 key = "objective_lens_excitation_coil"
 name = "Objective Lens Excitation Coil"
+mechanical_objective_upper_end_structure = "insulated_upper_winding_end_cooling_plates"
+mechanical_objective_upper_end_insulation_thickness_mm = 0.2
+mechanical_objective_upper_end_inner_insulation_thickness_mm = 0.2
+mechanical_objective_upper_end_cooling_plate_thickness_mm = 1.0
+mechanical_objective_upper_end_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_objective_upper_end_geometry_source = "JP2967966B2 Fig. 8 supports insulated winding end cooling plates. The 0.2 mm end/bore insulation and 1 mm passive plates are engineering allocations. Upper material endpoints follow the parent yoke and inset, not the legacy coil envelope. The field solver retains its existing homogenized winding envelope; these CAD subdivisions do not create new field sources. Cooling circuits, fastening details and the complete magnetic return path remain unverified."
+mechanical_objective_upper_end_geometry_source_urls = ["https://patents.google.com/patent/JP2967966B2/en"]
 branch = "common"
 local_start_z_mm = 1068.2
 local_center_z_mm = 1149.2

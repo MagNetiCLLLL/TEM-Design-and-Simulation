@@ -758,6 +758,7 @@ def validate_document(document):
     from temsim.cad_adapter_lens_hardware import validate_adapter_lens_hardware
     from temsim.cad_probe_transfer_lens_hardware import validate_probe_transfer_lens_hardware
     from temsim.cad_tl22_lens_hardware import validate_tl22_lens_hardware
+    from temsim.cad_objective_upper_hardware import validate_objective_upper_hardware
     from temsim.cad_probe_hexapole_support import validate_hexapole_support
     document = dict(resolve_field_hardware_parts(resolve_shared_deflector_parts(document)))
     document["parts"] = [
@@ -806,6 +807,7 @@ def validate_document(document):
         validate_c3_lens_hardware(part, detail_context)
         validate_adapter_lens_hardware(part, detail_context)
         validate_tl22_lens_hardware(part, detail_context)
+        validate_objective_upper_hardware(part, detail_context)
         validate_probe_transfer_lens_hardware(part, detail_context)
         validate_hexapole_support(part)
         key = str(part["key"])

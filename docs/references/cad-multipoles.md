@@ -97,8 +97,11 @@ construction of the installed CESCOR DPH1/DPH2, QPH or HP units.
 
 The subsequent [Beam Deflector registration review](beam-deflector-registration.md)
 adds an explicitly saved angular-slot option to this same construction family.
-Only the default column's Beam host selects it; the 20 regions, winding and
-pin locations, field channels and other three hosts remain unchanged.
+The default column's Beam host first selected it. The subsequent
+[AC Scan review](ac-scan-structure.md) enables the same sourced registration
+topology for that column's AC host. Both retain their 20 regions, winding and
+pin locations and field channels; Condenser and Image/Diffraction hosts retain
+their previous round registration holes.
 
 The four ordinary magnetic deflector hosts in the C3 + Probe Corrector column
 now select `rigid_insulating_carriers_pinned` explicitly. This is a common,

@@ -219,7 +219,7 @@ def _dimensions(part, by_key=None):
             continue
         holder_parameter = (part.get("mechanical_profile") in {"transverse_goniometer", "side_entry_sample_holder"}
                             and name.startswith(("holder_", "stage_")))
-        internal_detail = name.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
+        internal_detail = name.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
         if not holder_parameter and not internal_detail and name not in detector_fields and not any(token in name for token in ("diameter", "radius", "length", "width", "height", "thickness", "gap", "inset", "angle", "angular_span", "radial_profile", "material_intervals", "path_center", "path_entrance", "strip_center_pitch")):
             continue
         append(value, ("parts", part["key"], name),
@@ -342,6 +342,9 @@ def _legacy_part_meshes(part, by_key, count, aperture_index=0, runtime=None):
         meshes = meshes_from_solids(solids, count)
         from temsim.cad_auxiliary import annotate_gun_electrode_faces
         meshes = tuple(annotate_gun_electrode_faces(mesh, part) for mesh in meshes)
+        if part.get("mechanical_objective_upper_end_structure"):
+            from temsim.part_model_features import annotate_objective_winding_mesh
+            meshes = tuple(annotate_objective_winding_mesh(mesh, part, by_key) for mesh in meshes)
         if part.get("deflector_support_profile"):
             from temsim.cad_mesh import annotate_material_faces
             meshes = tuple(annotate_material_faces(mesh, part, runtime)

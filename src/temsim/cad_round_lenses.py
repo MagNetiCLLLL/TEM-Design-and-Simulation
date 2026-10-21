@@ -87,6 +87,11 @@ def round_lens_solids(part, by_key) -> tuple[SolidSpec, ...] | None:
         return ()
     if profile not in SUPPORTED_PROFILES:
         return None
+    if profile == MAGNETIC_EXCITATION_COIL:
+        from temsim.cad_objective_upper_hardware import objective_upper_hardware_solids
+        detailed = objective_upper_hardware_solids(part, by_key)
+        if detailed is not None:
+            return detailed
     if profile == MAGNETIC_LENS_HOUSING:
         from temsim.cad_c3_lens_hardware import c3_lens_hardware_solids
         from temsim.cad_adapter_lens_hardware import adapter_lens_hardware_solids

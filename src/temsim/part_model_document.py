@@ -33,6 +33,7 @@ def _validate_internal_details(parts, geometry=None):
     from temsim.cad_adapter_lens_hardware import validate_adapter_lens_hardware
     from temsim.cad_probe_transfer_lens_hardware import validate_probe_transfer_lens_hardware
     from temsim.cad_tl22_lens_hardware import validate_tl22_lens_hardware
+    from temsim.cad_objective_upper_hardware import validate_objective_upper_hardware
     from temsim.cad_probe_hexapole_support import validate_hexapole_support
     by_key = {part["key"]: part for part in parts}
     for part in parts:
@@ -47,6 +48,7 @@ def _validate_internal_details(parts, geometry=None):
         validate_c3_lens_hardware(part, by_key)
         validate_adapter_lens_hardware(part, by_key)
         validate_tl22_lens_hardware(part, by_key)
+        validate_objective_upper_hardware(part, by_key)
         validate_probe_transfer_lens_hardware(part, by_key)
         validate_hexapole_support(part)
 

@@ -300,7 +300,7 @@ def _part_geometry_data(part) -> dict[str, object]:
             # Explicit carrier partitions must stale a map of the old shared
             # body, even though native analytic fields do not solve this
             # engineering material split. Provenance is excluded above.
-            or lowered.startswith(("mechanical_cartridge_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_"))
+            or lowered.startswith(("mechanical_cartridge_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_"))
             or any(token in lowered for token in _PART_GEOMETRY_TOKENS)
         ):
             result[name] = value

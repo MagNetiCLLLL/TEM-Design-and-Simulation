@@ -281,6 +281,17 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
         return _impact("inactive", "Reference dimension only", reason,
                        effects=("display",), results=("input_validation",))
     from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
+    if (kind == "parts" and field in {"mechanical_coil_length_mm", "mechanical_inter_coil_gap_mm"}
+            and field in row and row.get("key") == "ac_deflector"):
+        connected = simulation_mode in MODE_BY_KEY and MODE_BY_KEY[simulation_mode].available
+        return _impact("active" if connected else "unknown", "Coupled scan-station geometry",
+                       "AC coil length and gap jointly set the station separation. A valid saved change must "
+                       "also satisfy the total installation length, interaction centres and effective field thickness. "
+                       "The native copper/support geometry follows these dimensions; the coupled optical planes "
+                       "can move and change scan transport. A single inconsistent dimension edit is rejected at validation. "
+                       "The prescribed field calibration is not solved from the copper shape.",
+                       effects=("display", "geometry", "magnetic_field"),
+                       results=("3d_preview", "physical_layout", "ray_transport", "magnetic_field", "optical_transfer"))
     if (kind == "parts" and len(path) == 3 and field == "winding_axial_length_mm"
             and field in row and row.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES):
         from temsim.dimension_edit_policy import inactive_native_dimension_reason
@@ -293,9 +304,9 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
                        "effective field thickness and prescribed field calibration do not change. "
                        "The current field model does not solve this winding geometry; this does not establish unchanged real fields.")
     if (kind == "parts" and field in row
-            and field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
+            and field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
             and field.endswith(("_mm", "_deg"))):
-        if field.startswith(("mechanical_cartridge_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_")):
+        if field.startswith(("mechanical_cartridge_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_")):
             recipes = descriptors or {}
             lens_keys = row.get("magnetic_lens_keys", ()) if field.startswith("mechanical_cartridge_") else (row.get("parent_key"),)
             imported = [key for key in lens_keys

@@ -185,6 +185,8 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_dph2_end_insulation.py", "tests/test_probe_hexapole_support.py",
                 "tests/test_cad_tl22_lens_hardware.py",
                 "tests/test_cad_probe_transfer_lens_hardware.py",
+                "tests/test_ac_scan_structure.py", "tests/test_cad_objective_upper_hardware.py",
+                "tests/test_objective_upper_integration.py",
                 "tests/test_probe_hp1_support.py", "tests/test_probe_lower_deflector_details.py",
                 "tests/test_copied_axial_dimension_sync.py",
                 "tests/test_compare_cad_assembly.py", "tests/test_cad_stage_holder.py",

@@ -154,9 +154,16 @@ def annotate_legacy_mesh(mesh, part, by_key=None):
     copper_length = (part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES
                      and "winding_axial_length_mm" in part
                      and part.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing")
-    axial_field = "winding_axial_length_mm" if copper_length else "length_mm"
+    station_length = (part.get("geometry_template_key", part.get("key")) == "ac_deflector"
+                      and "mechanical_coil_length_mm" in part
+                      and part.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing")
+    axial_field = ("winding_axial_length_mm" if copper_length else
+                   "mechanical_coil_length_mm" if station_length else "length_mm")
     axial = _paths(part, (axial_field, "pole_nose_axial_length_mm", "pole_face_land_axial_thickness_mm", "pole_mounting_shank_axial_length_mm",
                           "pole_vacuum_connector_axial_length_mm", "plate_thickness_mm"))
+    if station_length:
+        axial += tuple(("parts", part["key"], "interaction_centers_local_z_mm", i)
+                       for i in range(len(part.get("interaction_centers_local_z_mm", ()))))
     outer = _paths(part, ("mechanical_outer_diameter_mm", "mechanical_outer_radius_mm", "outer_diameter_mm",
                           "outer_width_mm", "mechanical_tip_diameter_mm", "pole_stem_outer_diameter_mm",
                           "pole_vacuum_connector_outer_diameter_mm", "pole_nose_axial_length_mm", "pole_face_land_axial_thickness_mm"))
@@ -209,6 +216,35 @@ def annotate_legacy_mesh(mesh, part, by_key=None):
             surfaces[identity] = {**surfaces[group], "label": surfaces[group]["label"] +
                                   (f" at Z {start:g} mm" if start == end else f" section {ordinal + 1}")}
     return _decorate(mesh, groups, surfaces, normals=normals)
+
+
+def annotate_objective_winding_mesh(mesh, part, by_key):
+    """Keep parent section controls on an explicitly subdivided winding."""
+    prefix = "mechanical_objective_upper_end_"
+    if mesh.region in {"upper", "lower"}:
+        mesh = annotate_legacy_mesh(mesh, part, by_key)
+        if mesh.region == "lower":
+            return mesh
+        # Only the upper copper's inner radius is offset by the bore insulation.
+        extra = _paths(part, (prefix + "inner_insulation_thickness_mm",))
+        surfaces = {key: {**value, "parameter_paths": tuple(dict.fromkeys(
+                    (*value["parameter_paths"], *(extra if value["kind"] in {"inner", "cap"} else ())))) }
+                    for key, value in mesh.surfaces.items()}
+    else:
+        from temsim.cad_mesh import annotate_material_faces
+        mesh = annotate_material_faces(mesh, part)
+        paths = _paths(part, ("mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm",
+                             prefix + "insulation_thickness_mm", prefix + "inner_insulation_thickness_mm",
+                             prefix + "cooling_plate_thickness_mm"))
+        from temsim.magnetic_circuits import is_custom_mechanical_part
+        if is_custom_mechanical_part(part) and "material_intervals_mm" in part:
+            paths += tuple(("parts", part["key"], "material_intervals_mm", 0, i) for i in range(2))
+        else:
+            parent = by_key.get(part.get("parent_key"), {})
+            paths += _paths(parent, ("upper_yoke_start_local_z_mm", "upper_yoke_end_local_z_mm",
+                                     "mechanical_coil_axial_inset_mm"))
+        surfaces = {key: {**value, "parameter_paths": paths} for key, value in mesh.surfaces.items()}
+    return _decorate(mesh, mesh.face_groups, surfaces)
 
 
 def _legacy_array_specs(part):
