@@ -157,6 +157,9 @@ class FieldVectorCanvas(QWidget):
         return text
 
     def clear(self, message="No current field samples."):
+        # Qt keeps a shown tooltip independently of the canvas sample. Clear
+        # it before invalidating data so stale physical values cannot linger.
+        QToolTip.hideText()
         self._sample = None
         self._density_grid_cache = None
         self._density_image_cache = None
@@ -172,6 +175,7 @@ class FieldVectorCanvas(QWidget):
         self.update()
 
     def set_sample(self, sample, bounds_m, section, *, preserve_geometry=False):
+        QToolTip.hideText()
         bounds = np.asarray(bounds_m, dtype=float)
         if section == "UZ":
             self._sample_plane_m = 0.

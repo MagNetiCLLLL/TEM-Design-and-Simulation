@@ -17,6 +17,14 @@ def candidate_tip_edit(gun, values):
     candidate.source_representation = "classical_particles"
     candidate._trace_cache = candidate._trace_cache_key = None
     candidate.validate()
+    if candidate.emitter.surface_model is None and candidate.emitter.coherence is not None:
+        # Apply the same existing particle-domain admission to every editing
+        # entry point. Defining a complex boundary alone does not admit its
+        # Wigner/geometric representation as forward physical particles.
+        from temsim.optics.electron_gun.tip_coherence import tip_covariance
+        from temsim.optics.electron_gun.tip_source_domain import validate_tip_particle_domain
+        tip_covariance(candidate.emitter, candidate.emitter.emission_energy_ev)
+        validate_tip_particle_domain(candidate.emitter)
     return candidate
 
 

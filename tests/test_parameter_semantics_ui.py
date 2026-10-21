@@ -81,7 +81,7 @@ def test_manifest_fields_append_meaning_without_replacing_raw_keys_or_values(sou
     by_name = {field.label: field for field in fields}
     assert by_name["length_mm"].meaning.label == "Mechanism envelope length"
     assert by_name["plate_thickness_mm"].meaning.label == "Aperture plate thickness"
-    assert by_name["mechanical_bore_diameter_mm"].meaning.label == "Carrier bore diameter"
+    assert by_name["mechanical_bore_diameter_mm"].meaning.label == "Carrier bore reference"
     assert by_name["length_mm"].meaning.category != by_name["plate_thickness_mm"].meaning.category
 
 

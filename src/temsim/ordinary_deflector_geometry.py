@@ -56,6 +56,11 @@ def _number(part, field, default=None):
 
 def support_dimensions(part):
     """Validate the explicit opt-in; legacy ordinary coils remain unchanged."""
+    if part.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+        # Explicit material replaces the two-stage native coil/support recipe.
+        # Keep its saved dimensions inactive until 'existing' is restored, when
+        # transactional validators must check them against the current envelope.
+        return None
     supplied = {name for name in part if str(name).startswith(PREFIX)}
     if not supplied:
         return None

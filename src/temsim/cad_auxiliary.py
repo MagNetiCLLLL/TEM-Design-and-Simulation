@@ -34,15 +34,45 @@ def _radii(part):
     return inner, outer
 
 
-def gun_electrode_solids(part):
-    """Configured open gun electrodes, shared by native display and CAD."""
-    if part.get("key") not in GUN_ELECTRODE_KEYS:
+def _is_gun_electrode(part):
+    from temsim.magnetic_circuits import is_custom_mechanical_part
+    identity = (part.get("geometry_template_key", part.get("key"))
+                if is_custom_mechanical_part(part) else part.get("key"))
+    return identity in GUN_ELECTRODE_KEYS
+
+
+def validate_gun_electrode_geometry(part):
+    """Validate active native material before editing, saving or building it.
+
+    Installed electrodes retain their optical boundaries even with a CAD
+    replacement. Only an independent mechanical copy can defer native recipe
+    validation until restoring ``existing``. No field boundary, excitation or
+    calibration is modified here.
+    """
+    if not _is_gun_electrode(part):
+        return None
+    from temsim.magnetic_circuits import is_custom_mechanical_part
+    if (is_custom_mechanical_part(part)
+            and part.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing"):
         return None
     from temsim.part_model_3d import _extent
     start, end = _extent(part)
     inner, outer = _radii(part)
-    if inner is None or outer is None or not (start < end and 0 < inner < outer):
+    if (inner is None or outer is None
+            or not all(math.isfinite(value) for value in (start, end, inner, outer))
+            or not (start < end and 0 < inner < outer)):
         raise ValueError("Gun electrode requires positive length and 0 < bore < outer radius")
+    return start, end, inner, outer
+
+
+def gun_electrode_solids(part):
+    """Configured open gun electrodes, shared by native display and CAD."""
+    if part.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+        return None
+    dimensions = validate_gun_electrode_geometry(part)
+    if dimensions is None:
+        return None
+    start, end, inner, outer = dimensions
     return (SolidSpec(
         part["key"], "body", "electrode", annulus(start, end, inner, outer),
         (GUN_SOURCE,), "configured_geometry",
@@ -55,7 +85,7 @@ def gun_electrode_solids(part):
 
 def annotate_gun_electrode_faces(mesh, part):
     """Keep four physical boundaries selectable with their actual dimension paths."""
-    if part.get("key") not in GUN_ELECTRODE_KEYS:
+    if not _is_gun_electrode(part):
         return mesh
     from temsim.part_model_features import _decorate, _normal_data, _paths
     centers, normals = _normal_data(mesh.vertices, mesh.faces)

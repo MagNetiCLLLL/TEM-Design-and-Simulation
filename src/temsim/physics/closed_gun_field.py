@@ -27,6 +27,7 @@ import numpy as np
 from temsim.cpu_resources import numerical_job
 from temsim.physics.axisymmetric_cut_field import AxisymmetricCutField
 from temsim.physics.grounded_tip_field import merge_axis_nodes
+from temsim.physics.electrode_mesh import electrode_axial_bands
 from temsim.physics.planar_gun_field import (
     MAX_VERTICES, PlanarGunField, load_cached_field,
     _axis_nodes, planar_field_request, request_digest,
@@ -186,7 +187,7 @@ def closed_field_request(gun, *, liner_segments=None,
         "required_composition": "ordinary_apertures_magnetic_components_and_installed_monochromator"})
     request["boundary_conditions"]["exit"]["location"] = "numerical_cut_inside_continuing_grounded_liner"
     request["boundary_conditions"]["grounded_liner"] = "physical_shells_and_radial_step_faces_at_ground"
-    request["numerics"]["mesh"] = "electrode-local-and-grounded-liner-face-graded-v1"
+    request["numerics"]["mesh"] = "electrode-local-and-grounded-liner-face-graded-v2"
     request["numerics"]["grounded_liner_face_refinement_bores"] = 2.
     request["numerics"]["grounded_liner_axial_cells_per_bore"] = cells_per_bore/2
     request["limitations"] = [
@@ -222,6 +223,7 @@ def mesh_axes(request):
     n = request["numerics"]["cells_per_bore"]
     radial_boundaries, axial_boundaries = {0., rmax}, {start, end, domain["gun_exit_m"]}
     radial_bands, axial_bands = [], []
+    coarse_step = max(row["inner_m"] for row in request["rings"])/n
     for row in request["rings"]:
         inner, outer = row["inner_m"], row["outer_m"]
         step = inner/n
@@ -241,15 +243,14 @@ def mesh_axes(request):
             # A long uniform conductor is refined at its faces, not uniformly
             # along field-free internal drift. Both ends and radial bore remain
             # exact. The free outer field still receives a graded axial grid.
-            intervals = [(max(start, face-2*inner), min(end, face+2*inner))
+            intervals = [(max(start, face-2*inner), min(end, face+2*inner), 2*step)
                 for face in (row["start_m"], row["stop_m"])]
         else:
-            intervals = [(max(start, row["start_m"]-4*inner), min(end, row["stop_m"]+4*inner))]
-        for left, right in intervals:
+            intervals = electrode_axial_bands(row["start_m"], row["stop_m"], inner, n, coarse_step)
+        for left, right, axial_step in intervals:
+            left, right = max(start, left), min(end, right)
             axial_boundaries.update((left, right))
-            axial_step = 2*step if row["key"].startswith("grounded_outlet") else step
             axial_bands.append((left, right, axial_step))
-    coarse_step = max(row["inner_m"] for row in request["rings"])/n
     r = _axis_nodes(radial_boundaries, radial_bands, coarse_step, MAX_VERTICES//3)
     z = _axis_nodes(axial_boundaries, axial_bands, coarse_step, MAX_VERTICES//len(r))
     rfaces = [0., domain["outer_radius_m"],

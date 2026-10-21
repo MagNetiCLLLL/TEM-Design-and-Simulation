@@ -681,6 +681,8 @@ def stage_manifest_text(text, updates, *, validate=True, source_path=None):
     from temsim.optics.electron_gun.tip_assembly import OPTIONAL_NUMERICAL_FIELDS
     from temsim.lens_pose import PHYSICAL_POSE_FIELDS
     optional_fields = set(OPTIONAL_NUMERICAL_FIELDS) | set(PHYSICAL_POSE_FIELDS)
+    # Direct winding ID/OD edits can derive this existing optional dimension.
+    optional_fields.add("mechanical_coil_radial_thickness_mm")
     text = _stage_part_structure(text, updates)
     from temsim.part_model_apertures import has_optional_plate_thickness
     optional_plate_keys = {part["key"] for part in tomllib.loads(text).get("parts", ())
@@ -736,6 +738,8 @@ def stage_manifest_text(text, updates, *, validate=True, source_path=None):
 
 
 def validate_document(document):
+    from temsim.cad_auxiliary import validate_gun_electrode_geometry
+    from temsim.pole_geometry import validate_pole_face_land_geometry
     from temsim.ordinary_deflector_geometry import validate_ordinary_deflector_part
     from temsim.corrector_model_3d import validate_deflector_coil_part
     from temsim.probe_hexapole_geometry import validate_probe_hexapole_geometry
@@ -785,6 +789,8 @@ def validate_document(document):
     validate_objective_sleeves(parts)
     validate_electrical_defaults(parts)
     for part in parts:
+        validate_gun_electrode_geometry(part)
+        validate_pole_face_land_geometry(part)
         validate_tip_part(part)
         validate_ordinary_deflector_part(part)
         validate_deflector_coil_part(part)

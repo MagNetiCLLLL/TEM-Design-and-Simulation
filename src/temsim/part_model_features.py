@@ -150,11 +150,11 @@ def annotate_legacy_mesh(mesh, part, by_key=None):
     groups = np.where(np.abs(normals[:, 2]) > 1 - 1e-9,
                       np.where(normals[:, 2] > 0, "axial_positive", "axial_negative"),
                       np.where(np.einsum("ij,ij->i", centers[:, :2], normals[:, :2]) < 0, "inner", "outer"))
-    axial = _paths(part, ("length_mm", "pole_nose_axial_length_mm", "pole_mounting_shank_axial_length_mm",
+    axial = _paths(part, ("length_mm", "pole_nose_axial_length_mm", "pole_face_land_axial_thickness_mm", "pole_mounting_shank_axial_length_mm",
                           "pole_vacuum_connector_axial_length_mm", "plate_thickness_mm"))
     outer = _paths(part, ("mechanical_outer_diameter_mm", "mechanical_outer_radius_mm", "outer_diameter_mm",
                           "outer_width_mm", "mechanical_tip_diameter_mm", "pole_stem_outer_diameter_mm",
-                          "pole_vacuum_connector_outer_diameter_mm", "pole_nose_axial_length_mm"))
+                          "pole_vacuum_connector_outer_diameter_mm", "pole_nose_axial_length_mm", "pole_face_land_axial_thickness_mm"))
     inner = _paths(part, ("mechanical_inner_diameter_mm", "mechanical_bore_diameter_mm", "bore_diameter_mm",
                           "mechanical_clear_bore_diameter_mm", "mechanical_bore_radius_mm", "clear_bore_diameter_mm",
                           "inner_diameter_mm", "pole_mounting_shank_inner_diameter_mm"))

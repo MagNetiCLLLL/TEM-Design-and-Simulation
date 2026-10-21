@@ -27,10 +27,10 @@ import scipy
 
 from temsim.cpu_resources import numerical_job
 from temsim.physics.axisymmetric_cut_field import AxisymmetricCutField
+from temsim.physics.electrode_mesh import MAX_VERTICES, electrode_axial_bands
 
 
 SCHEMA = "diagnostic-planar-cathode-annular-gun-v1"
-MAX_VERTICES = 1_500_000
 
 
 def _json_bytes(value):
@@ -45,7 +45,8 @@ def request_digest(request):
 
 def _implementation_hash():
     paths = [Path(__file__), Path(inspect.getfile(AxisymmetricCutField)),
-             Path(inspect.getfile(inspect.unwrap(numerical_job)))]
+             Path(inspect.getfile(inspect.unwrap(numerical_job))),
+             Path(inspect.getfile(electrode_axial_bands))]
     return {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
             for path in paths}
 
@@ -161,7 +162,7 @@ def planar_field_request(gun, *, cathode_boundary, cells_per_bore=8,
         "numerics": {"cells_per_bore": cells_per_bore,
                      "outer_radius_factor": outer_factor,
                      "exit_extension_mm": exit_extension_mm,
-                     "mesh": "electrode-local-axial-radial-feature-graded-v1",
+                     "mesh": "electrode-local-axial-radial-feature-graded-v2",
                      "interpolation": "bilinear-radius-squared-and-z-v1",
                      "linear_residual_tolerance": 1e-9,
                      "maximum_vertices": MAX_VERTICES},
@@ -205,6 +206,7 @@ def mesh_axes(request):
     start, end, rmax = domain["entrance_m"], domain["exit_m"], domain["outer_radius_m"]
     radial_boundaries, axial_boundaries = {0., rmax}, {start, end}
     radial_bands, axial_bands = [], []
+    coarse_step = max(row["inner_m"] for row in rings)/n
     for ring in rings:
         inner, outer = ring["inner_m"], ring["outer_m"]
         step = inner/n
@@ -212,10 +214,12 @@ def mesh_axes(request):
             left, right = max(0., radius-inner), min(rmax, radius+inner)
             radial_boundaries.update((left, radius, right))
             radial_bands.append((left, right, step))
-        left, right = max(start, ring["start_m"]-4*inner), min(end, ring["stop_m"]+4*inner)
-        axial_boundaries.update((left, ring["start_m"], ring["stop_m"], right))
-        axial_bands.append((left, right, step))
-    coarse_step = max(row["inner_m"] for row in rings)/n
+        axial_boundaries.update((ring["start_m"], ring["stop_m"]))
+        for left, right, axial_step in electrode_axial_bands(
+                ring["start_m"], ring["stop_m"], inner, n, coarse_step):
+            left, right = max(start, left), min(end, right)
+            axial_boundaries.update((left, right))
+            axial_bands.append((left, right, axial_step))
     r = _axis_nodes(radial_boundaries, radial_bands, coarse_step, maximum//3)
     z = _axis_nodes(axial_boundaries, axial_bands, coarse_step, maximum//len(r))
     if len(r)*len(z) > maximum:

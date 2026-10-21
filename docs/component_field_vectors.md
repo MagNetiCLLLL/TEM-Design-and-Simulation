@@ -344,3 +344,10 @@ construction and numerical consistency; it does not qualify actual GPU hardware.
 
 These checks validate source reuse, equations, selection, validity and publication
 behaviour; they do not constitute experimental magnetic/electric field calibration.
+
+Recording-plane observation envelopes now include the saved rectangular camera
+footprints and disk/ring detector footprints with their captured placement.
+Selecting a camera or detector therefore samples its observation region without
+creating a new field source. Unsupported EELS branch geometry and points outside
+the modeled field domains remain unavailable, rather than extrapolated. Clearing
+or replacing a sample also hides any tooltip from the previous numerical result.

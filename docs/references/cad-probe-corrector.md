@@ -153,3 +153,9 @@ DPH2 完整材料外半径 11.94 mm 与 HP2 极尖的 12 mm 孔保留 0.06 mm �
 ## 2026-10-20 DPH2 轴向封边
 
 DPH2 在原 11 区基础上新增两个 0.04 mm 被动环形封边，保留铜、4 mm 有效场长度及光学通道。完整材料范围、HP2/真空管/TL22 间隙、工程推断边界和实际场/粒子前后验证见 [DPH2 轴向封边复核](dph2-edge-insulation.md)。该封边是覆盖叠层结构族的工程适配，未声称属于已核实的 DPH2 原厂内部形状。
+
+## Winding length versus installation allocation (2026-10-21)
+
+Image-corrector DPH/DP inserts with an explicit `winding_axial_length_mm` use that field for the copper length about their saved centre. For example, BCOR/CETCOR DP11 allocates 6 mm axially but saves 4 mm of copper. The existing `winding_extent_note` explicitly states that the remaining allocation is not material or a measured fringe-field profile. Therefore `length_mm` is now labelled as a read-only installation/field allocation in the dimension editor, while `winding_axial_length_mm` is the editable physical size. Editing it updates native and CAD copper without moving the centre or changing the effective field thickness, channel calibration or operating controls. It must still fit the allocation and leave the configured saddle-loop window open.
+
+The distinction is conditional: existing probe inserts without an explicit copper length, including DPH2, still use their saved `length_mm` as the physical winding length. Their original dimension remains editable. No automatic copper scaling from an optical allocation is introduced. These are the same engineering winding reconstructions already documented above, not additional OEM dimensions.

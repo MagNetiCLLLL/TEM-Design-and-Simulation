@@ -134,7 +134,11 @@ def translated_component(part, delta_z_mm):
         return _number(_number(value, label) + delta, label)
 
     for name, value in tuple(result.items()):
-        if name in {"local_start_z_mm", "local_center_z_mm", "local_end_z_mm", "material_intervals_mm"} or name.endswith("_local_z_mm"):
+        # Accelerator electrode centres are absolute module coordinates despite
+        # their historical name. Relative profiles, CAD offsets and voltages
+        # must remain unchanged when the assembly moves.
+        if name in {"local_start_z_mm", "local_center_z_mm", "local_end_z_mm",
+                    "material_intervals_mm", "stage_centers_z_mm"} or name.endswith("_local_z_mm"):
             result[name] = shift(value, name)
     return result
 
@@ -218,6 +222,13 @@ def placed_component_document(document, key, center_z_mm, *, include_children=Tr
 _SINGLE_REFERENCES = frozenset({"nested_lens_parent_key", "shared_housing_key", "field_source_key",
                               "upstream_boundary_aperture_key"})
 _MULTI_REFERENCES = frozenset({"magnetic_lens_keys", "contained_recording_plane_keys"})
+# These recipes are self-contained when copied alone; omitted partners remain
+# source provenance. When the partner is copied too, its interface must follow
+# that same new subtree rather than silently retaining the original component.
+_OPTIONAL_MATERIAL_REFERENCES = frozenset({
+    "mechanical_c3_end_coil_key", "mechanical_adapter_end_coil_key",
+    "mechanical_tl22_end_coil_key", "mechanical_cartridge_pole_keys",
+})
 
 
 def _bake_copied_part_pose(original, copied, source_by_key, target_by_key, delta_z_mm):
@@ -342,6 +353,11 @@ def copied_component_document(document, source, key, new_key, center_z_mm, *, pa
                 raise ValueError(f"Cannot copy {old}: include or detach external {field_name} dependencies {missing}")
             mapped = [names[ref] for ref in refs if ref]
             row[field_name] = mapped if field_name in _MULTI_REFERENCES else (mapped[0] if mapped else "")
+        for field_name in _OPTIONAL_MATERIAL_REFERENCES:
+            if field_name in row:
+                value = row[field_name]
+                row[field_name] = ([names.get(ref, ref) for ref in value]
+                                   if isinstance(value, (list, tuple)) else names.get(value, value))
         row = translated_component(row, delta)
         row.update(key=names[old], order=next_order + index, mechanical_only=True,
                    mechanical_part_role="custom_mechanical_copy", axial_vacuum_context_only=True,

@@ -160,11 +160,11 @@ def evaluate(solids, *, linear_tolerance_mm=.05, angular_tolerance_rad=.1, inclu
     shapes, edit_report = backend.build_solid_rows(normalized)
     leaves, ids = [], set()
     for index, spec in enumerate(normalized):
-        identity = str(spec.get("id", str(spec.get("key", index)) + "/" + str(spec.get("region", "body"))))
+        identity = str(spec.get("id", backend.solid_identity(spec)))
         if identity in ids:
             raise ValueError("Duplicate solid identity: " + identity)
         ids.add(identity)
-        shape = shapes.get(spec["key"] + "/" + spec["region"])
+        shape = shapes.get(backend.solid_identity(spec))
         if shape is None:
             continue
         row = _leaf(backend, shape, identity=identity, name=str(spec.get("name", identity)),
@@ -222,7 +222,7 @@ def validate_catalog(catalog, *, optical_probes=(), binding_report_sha256=None):
         shapes, edits = backend.build_solid_rows(row["solids"])
         module_shapes[row["key"]] = shapes
         removed = set(edits["removed_leaf_ids"])
-        resolved.append(dict(row, solids=[s for s in row["solids"] if s["key"]+"/"+s["region"] not in removed]))
+        resolved.append(dict(row, solids=[s for s in row["solids"] if backend.solid_identity(s) not in removed]))
         edit_reports[row["key"]] = edits
     report = audit.audit_document(dict(units="mm", modules=resolved, assemblies=assemblies))
     resolved_by_key = {row["key"]: row for row in resolved}
@@ -273,7 +273,7 @@ def validate_catalog(catalog, *, optical_probes=(), binding_report_sha256=None):
             placed_key = placement["module_key"]
             offset = audit._vector(placement.get("offset_mm", (0., 0., 0.)))
             for row in resolved_by_key[placed_key]["solids"]:
-                sid = row["key"] + "/" + row["region"]
+                sid = backend.solid_identity(row)
                 shape = module_shapes[placed_key][sid].translate(offset)
                 if audit.bbox_distance(metrics["bounds_mm"], backend._shape_metrics(shape)["bounds_mm"]) > 1e-7:
                     continue
@@ -286,7 +286,7 @@ def validate_catalog(catalog, *, optical_probes=(), binding_report_sha256=None):
                               instance_key=placement.get("instance_key", placed_key))
                 if volume > 0 and unknown:
                     unresolved.append(record)
-                elif placement_index == owner_index and sid in expected_ids:
+                elif placement_index == owner_index and row["key"] + "/" + row["region"] in expected_ids:
                     covered.append(shape)
                 elif volume > 1e-9:
                     blockers.append(record)
@@ -322,7 +322,7 @@ def export_step(solids, path, *, name="edited_geometry"):
     shapes, edit_report = backend.build_solid_rows(normalized)
     for index, row in enumerate(normalized):
         label = "solid_" + str(index)
-        shape = shapes.get(row["key"] + "/" + row["region"])
+        shape = shapes.get(backend.solid_identity(row))
         if shape is None:
             continue
         color = row.get("color", row.get("color_rgba")) or [.64, .70, .75, 1.]

@@ -25,7 +25,7 @@ def _parts(path):
 @pytest.mark.parametrize("field,category,label", [
     ("length_mm", "envelope", "Mechanism envelope length"),
     ("mechanical_outer_diameter_mm", "envelope", "Mechanism envelope diameter"),
-    ("mechanical_bore_diameter_mm", "physical", "Carrier bore diameter"),
+    ("mechanical_bore_diameter_mm", "unknown", "Carrier bore reference"),
     ("plate_thickness_mm", "physical", "Aperture plate thickness"),
     ("maximum_radius_mm", "operating", "Maximum working opening radius"),
     ("vacuum_inner_diameter_mm", "vacuum", "Beam passage (vacuum)"),

@@ -52,7 +52,7 @@ def field_request(gun):
     # locations. Moving metal now changes the field through its boundary.
     return {"schema": "axisymmetric-grounded-feg-laplace-v2",
             "potential_interpolation": "conforming-cut-axis-regular-radius-squared-z-v3",
-            "mesh_generation": "tip-graded-electrode-local-v2",
+            "mesh_generation": "tip-graded-electrode-local-v3",
             "geometry": asdict(model.geometry), "numerics": asdict(model.field_numerics),
             "gun_lens_voltage_reference": gun.electrostatic_lens.voltage_reference,
             "rings": rings, "high_tension_v": ht, "exit_m": gun.exit_plane_z_mm*1e-3}
@@ -175,27 +175,44 @@ def refine_electrode_axes(r, z, rings, cells_per_bore):
     """
     if cells_per_bore == 0:
         return r, z
+    from temsim.physics.electrode_mesh import electrode_axial_bands
     radial, axial = [], []
+    narrow_channel = any(stop-start > 8*inner for _, start, stop, inner, _, _ in rings)
+    coarse_step = max(row[3] for row in rings)/cells_per_bore
     for _, start, stop, inner, outer, _ in rings:
         step = inner/cells_per_bore
         radial.extend(((0., 2*inner, step),
                        (outer-inner, outer+inner, step)))
-        axial.append((start-4*inner, stop+4*inner, step))
+        axial.extend(electrode_axial_bands(start, stop, inner, cells_per_bore, coarse_step))
     bore = min(row[3] for row in rings)
     axial.append((z[-1]-4*bore, z[-1], bore/cells_per_bore))
 
-    def refine(nodes, bands):
+    def refine(nodes, bands, boundaries):
+        if narrow_channel:
+            # Do not impose a nanometre band on an entire intersecting coarse
+            # interval. Split at its exact bounds before choosing subdivisions.
+            edges = [v for band in bands for v in band[:2] if nodes[0] < v < nodes[-1]]
+            nodes = merge_axis_nodes(nodes, edges, boundaries=boundaries)
         width = np.diff(nodes)
         maximum = width.copy()
         for start, stop, step in bands:
             hit = (nodes[:-1] < stop) & (nodes[1:] > start)
             maximum[hit] = np.minimum(maximum[hit], step)
-        count = np.ceil(width/maximum).astype(int)
+        with np.errstate(over="ignore", divide="ignore"):
+            count = np.ceil(width/maximum)
+        if (not np.isfinite(count).all()
+                or np.sum(count) >= np.iinfo(np.intp).max):
+            raise ValueError("Grounded tip electrode mesh has an unrepresentable node count")
+        count = count.astype(np.intp)
         extra = [np.linspace(a, b, n+1)[1:-1]
                  for a, b, n in zip(nodes[:-1], nodes[1:], count) if n > 1]
         return np.sort(np.concatenate([nodes, *extra])) if extra else nodes
 
-    return refine(r, radial), refine(z, axial)
+    radial_nodes = refine(r, radial,
+                         [r[0], r[-1], *[v for row in rings for v in row[3:5]]])
+    axial_nodes = refine(z, axial,
+                        [z[0], z[-1], *[v for row in rings for v in row[1:3]]])
+    return radial_nodes, axial_nodes
 
 
 def grade_electrode_corners(r, z, rings, cells):

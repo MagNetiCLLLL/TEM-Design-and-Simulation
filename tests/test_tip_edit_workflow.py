@@ -50,7 +50,10 @@ def test_invalid_model_switch_is_atomic_and_does_not_reinterpret_voltage(qtbot):
     from temsim.gui.gun_source_dialog import GunSourceDialog
     gun = FieldEmissionGun()
     gun.emitter.surface_model = curved_model()
-    gun.electrostatic_lens.voltage_reference = "tip"
+    # Both curved and flat cold-FEG models now solve the electrode field, so
+    # "tip" is a supported reference in both. Exercise an actually invalid
+    # reference rather than the old extractor-only analytic-field restriction.
+    gun.electrostatic_lens.voltage_reference = "undefined"
     before = gun.to_dict()
     dialog = GunSourceDialog(gun)
     qtbot.addWidget(dialog)

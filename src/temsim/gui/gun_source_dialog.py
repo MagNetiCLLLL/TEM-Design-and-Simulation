@@ -6,7 +6,7 @@ from pathlib import Path
 
 from PySide6.QtCore import QSignalBlocker, Qt
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QFormLayout, QLabel, QLineEdit, QScrollArea, QVBoxLayout, QWidget, QPushButton, QSpinBox
-from temsim.optics.electron_gun.tip_coherence import TipCoherence, tip_covariance
+from temsim.optics.electron_gun.tip_coherence import TipCoherence
 from temsim.optics.electron_gun.tip_surface import SharedSurfaceCoherence, SurfaceCoherence, load_tip_surface_reference, reference_path_for_gun
 from temsim.optics.electron_gun.tip_patch import patch_dimensions
 from temsim.gui.tip_geometry_preview import TipGeometryPreview
@@ -602,10 +602,6 @@ class GunSourceDialog(QDialog):
                                    **{key: float(edit.text()) for key, edit in self.coherence_inputs.items()})
                                    if self.coherence_enabled.isChecked() else None)
             candidate.validate()
-            if candidate.coherence is not None:
-                tip_covariance(candidate, candidate.emission_energy_ev)
-                from temsim.optics.electron_gun.tip_source_domain import validate_tip_particle_domain
-                validate_tip_particle_domain(candidate)
             values["coherence"] = candidate.coherence
             values["surface_model"] = None
             from temsim.optics.electron_gun.tip_edit import candidate_tip_edit

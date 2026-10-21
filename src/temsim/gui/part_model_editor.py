@@ -6,7 +6,7 @@ from dataclasses import replace
 import math
 import tomllib
 
-from PySide6.QtCore import Qt, QSize, Signal
+from PySide6.QtCore import Qt, QSize, QTimer, Signal
 from PySide6.QtGui import QBrush, QColor, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QCheckBox, QFileDialog, QHBoxLayout, QHeaderView, QLabel, QPushButton,
@@ -72,6 +72,11 @@ class PartModelEditorPage(QWidget):
         self._cad_validation_report = None
         self._cad_validation_dialog = None
         self._cad_context_assembly = None
+        self._auto_geometry_pending = False
+        self._overlap_timer = QTimer(self)
+        self._overlap_timer.setSingleShot(True)
+        self._overlap_timer.setInterval(900)
+        self._overlap_timer.timeout.connect(self._run_pending_overlap_check)
         self._region_models = {}
         self.open_button = QPushButton("Open TOML…")
         self.import_step_button = QPushButton("Import STEP…")
@@ -184,6 +189,12 @@ class PartModelEditorPage(QWidget):
         self.parameters.setColumnWidth(0, 190)
         self.parameter_tabs.addTab(self.parameters, "All parameters")
         self._create_features_page()
+        from temsim.gui.mechanical_overlap_panel import MechanicalOverlapPanel
+        self.overlaps = MechanicalOverlapPanel(self)
+        self.parameter_tabs.addTab(self.overlaps, "Mechanical overlaps")
+        self.overlaps.check_requested.connect(lambda: self.check_geometry(allow_draft_conflicts=True))
+        self.overlaps.auto_check.toggled.connect(self._auto_overlap_toggled)
+        self.overlaps.component_requested.connect(self._overlap_component_requested)
         self.selection_label = QLabel("No component selected")
         self.selection_label.setWordWrap(True)
         self.calculation_label = QLabel("Simulation context not connected")
@@ -315,6 +326,7 @@ class PartModelEditorPage(QWidget):
 
     def set_project_context(self, root, assembly, save_callback, runtime_values=None):
         previous_mesh = self._runtime_mesh_dependencies()
+        previous_assembly_mesh = self._runtime_mesh_dependencies(whole_assembly=True)
         previous_parameters = self._selected_runtime_values()
         self._project_root = Path(root).resolve()
         self._cad_context_assembly = assembly
@@ -387,7 +399,9 @@ class PartModelEditorPage(QWidget):
             # A module can become inactive while its document stays open, or a
             # newly loaded profile can change the working opening. Neither
             # transition may leave the old instrument's aperture in the mesh.
-            self._refresh_runtime_dependencies(previous_mesh, previous_parameters)
+            self._refresh_runtime_dependencies(previous_mesh, previous_parameters, previous_assembly_mesh)
+        elif source_reloaded:
+            self._queue_overlap_check()
         self._sync_source_context()
 
     def _catalog_component_paths(self, fallback=()):
@@ -505,6 +519,7 @@ class PartModelEditorPage(QWidget):
                     self.view.fit_all()
                 self._message("Component draft preview updated. Save writes " + str(self.session.path))
                 self._update_buttons()
+                self._queue_overlap_check()
             dialog.deleteLater()
 
         dialog.finished.connect(finished)
@@ -526,9 +541,10 @@ class PartModelEditorPage(QWidget):
     def set_runtime_values(self, values):
         """Refresh operating apertures without replacing the mechanical draft."""
         previous_mesh = self._runtime_mesh_dependencies()
+        previous_assembly_mesh = self._runtime_mesh_dependencies(whole_assembly=True)
         previous_parameters = self._selected_runtime_values()
         self._runtime_values = deepcopy(values or {})
-        self._refresh_runtime_dependencies(previous_mesh, previous_parameters)
+        self._refresh_runtime_dependencies(previous_mesh, previous_parameters, previous_assembly_mesh)
 
     def _selected_runtime_values(self):
         if self.session is None or self._selected_key is None:
@@ -539,16 +555,20 @@ class PartModelEditorPage(QWidget):
             key = self.session.part(key).get("parent_key")
         return values.get(key, {})
 
-    def _runtime_mesh_dependencies(self):
-        """Track only operating values consumed by the selected mesh builders."""
+    def _runtime_mesh_dependencies(self, *, whole_assembly=False):
+        """Track material openings separately from field-only operating values."""
         if self.session is None or self._selected_key is None:
             return ()
         from temsim.part_model_apertures import _opening, is_strip_aperture
         from temsim.energy_filter_model_3d import slit_render_dependency, supports_energy_filter_part
 
         parts = {part["key"]: part for part in self.session.document["parts"]}
+        if whole_assembly:
+            installed = {part.key: part.data for part in
+                         getattr(self._cad_context_assembly, "parts", ())}
+            parts = {**installed, **parts}
         scope = self.scope.currentData()
-        if scope == "module":
+        if whole_assembly or scope == "module":
             keys = set(parts)
         else:
             keys = {self._selected_key}
@@ -564,7 +584,7 @@ class PartModelEditorPage(QWidget):
                 parent = parts[self._selected_key].get("parent_key")
                 keys.update(key for key, part in parts.items()
                             if parent and part.get("parent_key") == parent)
-        runtime = self._model_runtime_values()
+        runtime = self._runtime_values if whole_assembly else self._model_runtime_values()
         dependencies = []
         for key, part in parts.items():
             if key in keys and part.get("tip_particle_model"):
@@ -591,10 +611,14 @@ class PartModelEditorPage(QWidget):
             dependencies.append((key, opening))
         return tuple(dependencies)
 
-    def _refresh_runtime_dependencies(self, previous_mesh, previous_parameters):
+    def _refresh_runtime_dependencies(self, previous_mesh, previous_parameters, previous_assembly_mesh=None):
         self._runtime_refresh_pending |= previous_mesh != self._runtime_mesh_dependencies()
         self._runtime_parameters_pending |= previous_parameters != self._selected_runtime_values()
         self._refresh_geometry_report_status()
+        assembly_changed = (previous_assembly_mesh is not None and
+                            previous_assembly_mesh != self._runtime_mesh_dependencies(whole_assembly=True))
+        if self.session is not None and (assembly_changed or previous_mesh != self._runtime_mesh_dependencies()):
+            self._queue_overlap_check()
         if self.isVisible():
             self._flush_runtime_refresh()
 
@@ -1164,6 +1188,12 @@ class PartModelEditorPage(QWidget):
         elif self.session is None and self.modules.count():
             self._open_active_module()
         self._flush_runtime_refresh()
+        if self._auto_geometry_pending:
+            self._overlap_timer.start()
+
+    def hideEvent(self, event):
+        self._overlap_timer.stop()
+        super().hideEvent(event)
 
     def _open_pending_part(self):
         path, key = self._pending_part
@@ -1249,6 +1279,9 @@ class PartModelEditorPage(QWidget):
             self._message(str(exc), error=True)
             return False
         self.session = candidate
+        self._auto_geometry_pending = False
+        self._overlap_timer.stop()
+        self.overlaps.pending("File opened. Edit a dimension or choose Check now to check material overlaps.")
         self._invalid_inputs = {}
         self._topology_selection = ()
         self._removed_selection_key = None
@@ -1532,9 +1565,12 @@ class PartModelEditorPage(QWidget):
             self._load_parameters()
             if self._render(preserve_view=True):
                 self._message("Unapplied draft. Other dimensions can be edited before validating and saving.")
+            self._queue_overlap_check()
         except Exception as exc:
             self._invalid_inputs[path] = item.text()
             self._message(str(exc), error=True)
+            self._overlap_timer.stop()
+            self.overlaps.pending("Edit rejected: " + str(exc) + "\nThe previous valid geometry is retained.")
         self._update_buttons()
 
     def _material_changed(self):
@@ -1805,23 +1841,76 @@ class PartModelEditorPage(QWidget):
             old.deleteLater()
             self._cad_geometry_job = None
 
-    def check_geometry(self):
+    def _auto_overlap_toggled(self, enabled):
+        if enabled and self.session is not None:
+            self._queue_overlap_check()
+        else:
+            self._overlap_timer.stop()
+            self._auto_geometry_pending = False
+
+    def _queue_overlap_check(self):
+        self.overlaps.pending()
+        self._auto_geometry_pending = self.overlaps.auto_check.isChecked()
+        job = self._cad_geometry_job
+        if job is not None and job.busy and getattr(job, "automatic_overlap_check", False):
+            job.cancel()
+        if self._auto_geometry_pending and self.isVisible():
+            self._overlap_timer.start()
+
+    def _run_pending_overlap_check(self):
+        if not self._auto_geometry_pending or not self.isVisible() or self._invalid_inputs:
+            return
+        if self._cad_geometry_job is not None and self._cad_geometry_job.busy:
+            self._overlap_timer.start()
+            return
+        self._auto_geometry_pending = False
+        self.check_geometry(automatic=True)
+
+    def _overlap_component_requested(self, key, region):
+        if key in getattr(self, "_tree_nodes", {}):
+            self.select_part(key, region=region)
+            self.parameter_tabs.setCurrentWidget(self.dimensions)
+            self.view.fit_selection()
+        else:
+            self.component_selected.emit(key)
+            self._message(f"{key} belongs to another assembly component. Save or Revert this draft before opening its dimensions.")
+
+    def _overlap_names(self):
+        return {part["key"]: part.get("name", part["key"])
+                for part in self.session.document["parts"]} if self.session else {}
+
+    def _geometry_aperture_indices(self):
+        # Omitted indices already mean zero. Navigating to another component
+        # must not invalidate an unchanged material check merely by its key.
+        from temsim.part_model_apertures import is_strip_aperture
+        if (self.session is not None and self._selected_key is not None
+                and self._aperture_index and is_strip_aperture(self.session.part(self._selected_key))):
+            return {self._selected_key: self._aperture_index}
+        return {}
+
+    def check_geometry(self, *, automatic=False, allow_draft_conflicts=False):
         """Review exact current-draft geometry without modifying or saving it."""
         if self.session is None or self._invalid_inputs:
             return
         if self._cad_geometry_job is not None and self._cad_geometry_job.busy:
-            self._cad_geometry_dialog.show()
-            self._cad_geometry_dialog.raise_()
+            if not automatic and self._cad_geometry_dialog is not None:
+                self._cad_geometry_dialog.show()
+                self._cad_geometry_dialog.raise_()
             return
         from temsim.cad_assembly_edit import build_current_assembly_edit_catalog, assembly_edit_context_is_current
         from temsim.gui.cad_geometry_job import CadGeometryJob, CadGeometryProgress
         from temsim.cad_edit_validation import build_edit_validation_request, finalize_edit_validation
         try:
-            self.session.validate()
+            # A physically buildable draft may intentionally intersect a
+            # neighbour while being edited. Material checks must list those
+            # pairs before Save's full configuration validation, whether they
+            # run automatically or were requested with Check now.
+            if not (automatic or allow_draft_conflicts):
+                self.session.validate()
             session = self.session
             session_path = session.path.resolve()
             runtime = self._runtime_values
-            indices = {self._selected_key: self._aperture_index}
+            indices = self._geometry_aperture_indices()
             catalog = build_current_assembly_edit_catalog(session, project_root=self._project_root,
                 project_paths=self._project_paths, module_origins=self._module_origins,
                 coordinate_source_bytes=self._coordinate_source_bytes, assembly=self._cad_context_assembly,
@@ -1832,6 +1921,7 @@ class PartModelEditorPage(QWidget):
             job = CadGeometryJob(request, self)
             progress = CadGeometryProgress(job, "Check geometry", self)
             self._cad_geometry_job, self._cad_geometry_dialog = job, progress
+            job.automatic_overlap_check = automatic
 
             def completed(success, receipt, message):
                 if self._cad_geometry_job is not job:
@@ -1846,26 +1936,43 @@ class PartModelEditorPage(QWidget):
                             assembly=self._cad_context_assembly, module_origins=self._module_origins,
                             coordinate_source_bytes=self._coordinate_source_bytes,
                             runtime_values=self._runtime_values,
-                            aperture_indices={self._selected_key: self._aperture_index}, full_source_check=True):
+                            aperture_indices=self._geometry_aperture_indices(), full_source_check=True):
                         raise ValueError("Geometry result is stale; the installed assembly, source files or operating openings changed.")
                     report = finalize_edit_validation(job.request, receipt,
                         document=session.document, runtime_values=self._runtime_values,
-                        aperture_indices={self._selected_key: self._aperture_index})
+                        aperture_indices=self._geometry_aperture_indices())
                     self._cad_validation_request = deepcopy(job.request)
                     self._cad_validation_report = report
-                    self._show_geometry_report(report)
+                    self.overlaps.set_report(report, names=self._overlap_names())
+                    if not automatic:
+                        self._show_geometry_report(report)
+                    elif any(row.get("collisions") for row in report["geometry_report"]["assemblies"]):
+                        self.parameter_tabs.setTabText(self.parameter_tabs.indexOf(self.overlaps), "Mechanical overlaps !")
+                    else:
+                        self.parameter_tabs.setTabText(self.parameter_tabs.indexOf(self.overlaps), "Mechanical overlaps")
                     self._message("Geometry checked within the listed scope." if report["can_apply"] else
                         "Geometry conflicts found. Review the report before saving or using the geometry.",
                         error=not report["can_apply"])
                 except Exception as exc:
-                    self._message(str(exc), error=True)
+                    if not (automatic and self._auto_geometry_pending):
+                        self.overlaps.pending("Check incomplete: " + str(exc))
+                        self._message(str(exc), error=True)
                 self._update_buttons()
+                if self._auto_geometry_pending and self.isVisible():
+                    self._overlap_timer.start()
 
             job.completed.connect(completed)
+            # This check already captures all preceding edits. A subsequent
+            # edit can enqueue a new request while this one is running.
+            self._auto_geometry_pending = False
+            self._overlap_timer.stop()
             job.start()
-            progress.show()
+            if not automatic:
+                progress.show()
+            self.overlaps.pending("Checking current material geometry in the background…")
             self._message("Checking material intersections and declared optical openings in the background.")
         except Exception as exc:
+            self.overlaps.pending("Check unavailable: " + str(exc))
             self._message(str(exc), error=True)
         self._update_buttons()
 
@@ -1905,12 +2012,12 @@ class PartModelEditorPage(QWidget):
             not self._invalid_inputs and validation_is_current(
             self._cad_validation_request, self.session.document,
             runtime_values=self._runtime_values,
-            aperture_indices={self._selected_key: self._aperture_index}) and
+            aperture_indices=self._geometry_aperture_indices()) and
             assembly_edit_context_is_current(self._cad_validation_request["catalog"],
                 assembly=self._cad_context_assembly, module_origins=self._module_origins,
                 coordinate_source_bytes=self._coordinate_source_bytes,
                 runtime_values=self._runtime_values,
-                aperture_indices={self._selected_key: self._aperture_index}))
+                aperture_indices=self._geometry_aperture_indices()))
 
     def _refresh_geometry_report_status(self):
         if self._cad_validation_report is None:
@@ -1923,6 +2030,10 @@ class PartModelEditorPage(QWidget):
             self._cad_validation_dialog.report_status.setText(label +
                 " Electromagnetic fields were not recomputed; STEP material does not define new optical roles.")
         self.geometry_check_button.setToolTip(label)
+        if current and not self._auto_geometry_pending:
+            self.overlaps.set_report(report, names=self._overlap_names())
+        elif not current and self.overlaps._current:
+            self.overlaps.set_report(report, names=self._overlap_names(), current=False)
 
     def export_step(self):
         if self.session is None or self._invalid_inputs:
@@ -2076,6 +2187,7 @@ class PartModelEditorPage(QWidget):
         self._update_buttons()
         if rendered:
             self._message("Draft updated." if self.session.dirty else "Saved dimensions restored.")
+        self._queue_overlap_check()
 
     def _message(self, text, *, error=False):
         self.status.setText(text)

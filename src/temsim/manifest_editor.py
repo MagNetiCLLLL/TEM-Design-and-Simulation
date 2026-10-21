@@ -100,8 +100,161 @@ def resized_part_axial_coordinates(part, length, *, center_z_mm=None):
     return resized
 
 
+def _complete_material_dimension_updates(document, updates, explicit):
+    """Resolve one complete batch without overriding an explicit constraint.
+
+    The shared material binder performs the actual geometry updates. This
+    adapter only resolves simultaneous diameter/thickness inputs and stages
+    old gap faces for that binder's fixed-centre relationship.
+    """
+    from copy import deepcopy
+    from temsim.component_operations import CUSTOM_COMPONENT_ROLES
+    from temsim.dimension_edit_policy import dimension_reference_reason
+    from temsim.mechanical_dimension_bindings import (
+        FIELDS, _coil_for, _native, _positive, _synchronize_coil_radials,
+        synchronize_dimension_edit,
+    )
+
+    original = {str(part["key"]): part for part in document.get("parts", ())}
+    candidate = deepcopy(document)
+    parts = {str(part["key"]): part for part in candidate.get("parts", ())}
+    for path, value in updates.items():
+        if len(path) == 3 and path[0] == "parts" and path[1] in parts:
+            if path[2] == "model_3d" and value is None:
+                parts[path[1]].pop(path[2], None)
+            else:
+                parts[path[1]][path[2]] = deepcopy(value)
+    from temsim.part_model_features import validate_model_3d
+    for path, value in explicit.items():
+        if len(path) == 3 and path[0] == "parts" and path[2] == "model_3d" and path[1] in parts and value is not None:
+            validate_model_3d(parts[path[1]])
+    custom_lengths = {}
+    for key, part in parts.items():
+        path = ("parts", key, "length_mm")
+        base = part.get("model_3d", {}).get("base", {})
+        if (path in explicit and part.get("mechanical_part_role") in CUSTOM_COMPONENT_ROLES
+                and base.get("kind", "existing") != "existing"):
+            model_path = ("parts", key, "model_3d")
+            if model_path in explicit:
+                if not math.isclose(float(base["length_mm"]), float(explicit[path]), rel_tol=1e-10, abs_tol=1e-9):
+                    raise ValueError(f"{key}: explicit base length conflicts with the part length")
+            base["length_mm"] = explicit[path]
+            custom_lengths[model_path] = deepcopy(part["model_3d"])
+    for path, value in explicit.items():
+        if len(path) == 3 and path[0] == "parts" and path[1] in original:
+            # A batch may replace the native recipe while changing its new
+            # envelope. Its final active base determines the edit policy.
+            reason = dimension_reference_reason(parts[path[1]], path[2])
+            if reason and value != original[path[1]].get(path[2]):
+                raise ValueError(f"{path[1]}.{path[2]}: {reason}")
+    staged = deepcopy(parts)
+
+    def same(first, second):
+        if isinstance(first, bool) or isinstance(second, bool):
+            return type(first) is type(second) and first == second
+        if isinstance(first, Real) and isinstance(second, Real):
+            try:
+                return math.isclose(float(first), float(second), rel_tol=1e-10, abs_tol=1e-9)
+            except (OverflowError, ValueError):
+                return False
+        return first == second
+
+    changed = [(key, field) for section, key, field in
+               (path for path in explicit if len(path) == 3 and path[0] == "parts")
+               if key in original and field in FIELDS and
+               explicit[(section, key, field)] != original[key].get(field) and _native(parts[key])]
+    # Gap derivation sees all other explicit dimensions first (e.g. a shorter
+    # nose or changed back face), but starts from the old declared face law.
+    for key, field in sorted(changed):
+        lens = parts[key]
+        if field != "pole_gap_mm" or lens.get("mechanical_profile") != "magnetic_lens_assembly":
+            continue
+        poles = sorted((part for part in parts.values() if part.get("parent_key") == key
+                        and part.get("mechanical_profile") == "magnetic_pole_piece"),
+                       key=lambda part: float(original[part["key"]]["local_start_z_mm"]))
+        previous = original[key][field]
+        if len(poles) == 2:
+            old_center = float(original[key]["local_center_z_mm"])
+            if (not same(original[poles[0]["key"]]["local_end_z_mm"], old_center-previous/2)
+                    or not same(original[poles[1]["key"]]["local_start_z_mm"], old_center+previous/2)):
+                raise ValueError(f"{key}: saved pole faces do not bound the previous gap about its fixed centre")
+            center = float(lens["local_center_z_mm"])
+            poles[0]["local_end_z_mm"] = center-previous/2
+            poles[1]["local_start_z_mm"] = center+previous/2
+        synchronize_dimension_edit(candidate, key, field, previous)
+
+    groups = {}
+    for key, field in changed:
+        row = parts[key]
+        profile = row.get("mechanical_profile")
+        lens = (row if profile == "magnetic_lens_assembly" and field == "mechanical_coil_radial_thickness_mm"
+                else parts.get(row.get("parent_key")) if profile == "magnetic_excitation_coil"
+                and field in {"mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm"} else None)
+        if lens is not None and lens.get("mechanical_profile") == "magnetic_lens_assembly":
+            group = ("shared", lens["shared_housing_key"]) if lens.get("shared_housing_key") else ("lens", lens["key"])
+            groups.setdefault(group, lens)
+
+    def constraint(rows, field):
+        values = [(row["key"], explicit[("parts", row["key"], field)]) for row in rows
+                  if ("parts", row["key"], field) in explicit]
+        if not values:
+            return None
+        for key, value in values:
+            try:
+                _positive(value, f"{key}.{field}")
+            except (OverflowError, TypeError) as exc:
+                raise ValueError(f"{key}.{field} must be a finite positive dimension") from exc
+            if not same(value, values[0][1]):
+                raise ValueError(f"Conflicting explicit values for shared {field}")
+        return float(values[0][1])
+
+    for group, lens in sorted(groups.items()):
+        owners = ([part for part in parts.values() if part.get("shared_housing_key") == group[1]
+                   and part.get("mechanical_profile") == "magnetic_lens_assembly"]
+                  if group[0] == "shared" else [lens])
+        coils = [_coil_for(candidate, owner) for owner in owners]
+        inner = constraint(coils, "mechanical_inner_diameter_mm")
+        outer = constraint(coils, "mechanical_outer_diameter_mm")
+        thickness = constraint(owners, "mechanical_coil_radial_thickness_mm")
+        old_coil = original[coils[0]["key"]]
+        old_inner, old_outer = (float(old_coil[name]) for name in
+                                ("mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm"))
+        if thickness is not None:
+            if inner is None and outer is None:
+                # Preserve the single-field editor's guard against an already
+                # inconsistent parent/coil relationship.
+                old_thickness = original[lens["key"]].get("mechanical_coil_radial_thickness_mm")
+                if old_thickness is not None and not same(old_thickness, (old_outer-old_inner)/2):
+                    raise ValueError(f"{lens['key']}: saved coil diameters do not match the previous radial thickness")
+                inner = old_inner
+            if inner is None:
+                inner = outer-2*thickness
+            elif outer is None:
+                outer = inner+2*thickness
+            elif not same((outer-inner)/2, thickness):
+                raise ValueError(f"{lens['key']}: explicit winding diameters conflict with radial thickness")
+        else:
+            inner = old_inner if inner is None else inner
+            outer = old_outer if outer is None else outer
+        _synchronize_coil_radials(candidate, lens, inner, outer)
+
+    completed = dict(updates)
+    completed.update(custom_lengths)
+    for key, part in parts.items():
+        for field, value in part.items():
+            path = ("parts", key, field)
+            if field in staged[key] and value == staged[key][field]:
+                continue
+            if path in explicit and not same(value, explicit[path]):
+                raise ValueError(f"{key}.{field}: explicit value conflicts with the linked material dimensions")
+            # Preserve the user's representation of a numerically equal
+            # explicit constraint; derived values belong only to omissions.
+            completed[path] = explicit[path] if path in explicit else value
+    return completed
+
+
 def _complete_part_length_updates(document, updates):
-    """Supply redundant endpoints for a length edit; explicit endpoints win."""
+    """Complete linked geometry while preserving explicit batch constraints."""
 
     from temsim.optics.electron_gun.tip_assembly import complete_tip_updates, is_tip_part
     completed = complete_tip_updates(document, updates)
@@ -140,7 +293,7 @@ def _complete_part_length_updates(document, updates):
         for field, value in candidate.items():
             if field not in original or value != original[field]:
                 completed[("parts", key, field)] = value
-    return completed
+    return _complete_material_dimension_updates(document, completed, updates)
 
 
 class ManifestEditor:
@@ -149,6 +302,7 @@ class ManifestEditor:
 
     def fields(self, target: ManifestTarget) -> tuple[ManifestField, ...]:
         from temsim.parameter_semantics import describe_parameter
+        from temsim.dimension_edit_policy import dimension_reference_reason, inactive_native_dimension_reason
 
         document = module_manifest.read_document(self.root / target.module_path)
         by_key = {str(part["key"]): part for part in document.get("parts", ())}
@@ -165,6 +319,15 @@ class ManifestEditor:
             from temsim.part_model_apertures import has_optional_plate_thickness
             if has_optional_plate_thickness(part):
                 editable_values.setdefault("plate_thickness_mm", 0.)
+            meanings = {str(field): describe_parameter(part, ("parts", target.part_key, str(field)), by_key=by_key)
+                        for field in editable_values}
+            from temsim.part_model_3d import part_dimension_specs
+            # The general editor also contains active optical settings with
+            # dimensional units. Only classified material sizes are inactive
+            # when a replacement shape supplies the surfaces instead.
+            material_fields = {spec.path[2] for spec in part_dimension_specs(document, target.part_key)
+                               if spec.path[1] == target.part_key and spec.meaning is not None
+                               and spec.meaning.category in {"physical", "envelope"}}
             return tuple(
                 ManifestField(
                     path=("parts", target.part_key, str(field)),
@@ -172,8 +335,11 @@ class ManifestEditor:
                     value=value,
                     editable=(str(field) not in STRUCTURAL_READ_ONLY_FIELDS
                               and not shared_deflector_field_owner(target.part_key, field)
-                              and not bound_field_owner(part, field)),
-                    meaning=describe_parameter(part, ("parts", target.part_key, str(field)), by_key=by_key),
+                              and not bound_field_owner(part, field)
+                              and not dimension_reference_reason(part, str(field))
+                              and not (str(field) in material_fields
+                                       and inactive_native_dimension_reason(part, str(field)))),
+                    meaning=meanings[str(field)],
                     owner_key=(bound_field_owner(part, field)
                                or shared_deflector_field_owner(target.part_key, field)),
                 )

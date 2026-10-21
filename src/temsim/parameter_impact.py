@@ -49,7 +49,7 @@ _FEM_FIELDS = _AXIAL_EXTENTS | {
     "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm",
     "mechanical_bore_diameter_mm", "mechanical_tip_diameter_mm",
     "magnetic_radial_profile_mm", "material_intervals_mm",
-    "pole_nose_axial_length_mm", "pole_mounting_shank_axial_length_mm",
+    "pole_nose_axial_length_mm", "pole_face_land_axial_thickness_mm", "pole_mounting_shank_axial_length_mm",
     "pole_vacuum_connector_axial_length_mm", "pole_stem_outer_diameter_mm",
     "pole_vacuum_connector_outer_diameter_mm", "pole_mounting_shank_inner_diameter_mm",
     "pole_piece_geometry_style", "coil_ampere_turn_fraction",
@@ -270,6 +270,16 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
     row, index, path, kind, field = _context(part, path, by_key)
     if not row:
         return _impact("unknown", "Source part not connected", "The parameter's source part is unavailable; its physical route needs verification.")
+    from temsim.dimension_edit_policy import dimension_reference_reason
+    if kind == "parts" and (reason := dimension_reference_reason(row, field)):
+        if _wall_effect(row, field):
+            return _impact("active", "Vacuum allocation; no material resizing",
+                           reason + " This saved axial allocation still bounds the separate vacuum-ID segment; "
+                           "an aperture allocation is not its plate thickness. An overlapping narrower bore "
+                           "can mask the beam-clearance effect. Material editors keep this reference read-only.",
+                           effects=("display", "beam_clearance"), results=("ray_transport", "beam_transmission"))
+        return _impact("inactive", "Reference dimension only", reason,
+                       effects=("display",), results=("input_validation",))
     if (kind == "parts" and field in row
             and field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
             and field.endswith(("_mm", "_deg"))):

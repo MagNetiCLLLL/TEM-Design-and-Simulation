@@ -178,6 +178,7 @@ def _component_sources(rows, sources):
 
 def _region(part, row, by_key):
     from temsim.cad_vacuum_tube import PROFILE
+    from temsim.cad_recording_planes import supports_recording_plane, validate_detector_footprint
     from temsim.energy_filter_model_3d import supports_energy_filter_part
     from temsim.lens_pose import mechanical_part_transform_mm, without_lens_rigid_cad
     from temsim.part_model_3d import _extent
@@ -203,12 +204,20 @@ def _region(part, row, by_key):
         note = "Explicit CAD outer primitive, including internal holes, with captured affine placement."
     elif kind == "existing":
         start, end = _extent(row)
-        diameter = _number(row.get("mechanical_outer_diameter_mm"), "mechanical_outer_diameter_mm")
-        half = np.array((.5 * diameter, .5 * diameter, .5 * (end - start)))
         primitive_centre = np.array((0., 0., .5 * (start + end)))
-        shape = "elliptic_cylinder"
-        note = "Declared mechanical outer cylinder including bore; an observation envelope, not material occupancy or OEM geometry."
-        if PROFILE in row:
+        if supports_recording_plane(row):
+            footprint = validate_detector_footprint(row)
+            width = _number(row.get("outer_width_mm"), "outer_width_mm")
+            half = np.array((.5 * width, .5 * width, .5 * (end - start)))
+            shape = "box" if footprint == "square" else "elliptic_cylinder"
+            note = (f"Configured {footprint} recording footprint and nominal slab, including any inner hole; "
+                    "an observation envelope, not sensor material occupancy or an independent field source.")
+        else:
+            diameter = _number(row.get("mechanical_outer_diameter_mm"), "mechanical_outer_diameter_mm")
+            half = np.array((.5 * diameter, .5 * diameter, .5 * (end - start)))
+            shape = "elliptic_cylinder"
+            note = "Declared mechanical outer cylinder including bore; an observation envelope, not material occupancy or OEM geometry."
+        if PROFILE in row and not supports_recording_plane(row):
             nodes = np.asarray(row[PROFILE], dtype=float)
             if (nodes.ndim != 2 or nodes.shape[1] != 2 or len(nodes) < 2
                     or not np.isfinite(nodes).all() or np.any(np.diff(nodes[:, 0]) <= 0)

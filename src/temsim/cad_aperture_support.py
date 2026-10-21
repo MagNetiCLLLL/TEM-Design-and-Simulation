@@ -48,14 +48,58 @@ def aperture_material_scale_xy(part):
     return result
 
 
+def _validate_detached_tube_placement(part, by_key, geometry, label, bounds=None):
+    """Check actual replacement/copy bounds independently of an inactive recipe.
+
+    No insertion slot is inferred for independent material. Subtractive CAD
+    features cannot enlarge this conservative enclosing box. STEP base sizes
+    use the same centred asset bounds as the production CAD transform.
+    """
+    if not geometry or "c1_c2_objective_vacuum_tube_outer_diameter_mm" not in geometry:
+        return
+    from temsim.lens_pose import mechanical_part_transform_mm
+    from temsim.part_model_features import _transform, validate_model_3d
+    from temsim.part_model_3d import lens_shape_part
+    validate_model_3d(part)
+    physical_rotation, translation = mechanical_part_transform_mm(part, by_key or {part["key"]: part})
+    center = np.array([0., 0., float(part["local_center_z_mm"])])
+    if bounds is None:
+        base = part["model_3d"]["base"]
+        size = np.array([base[name] for name in ("width_mm", "height_mm", "length_mm")], float)
+        lo, hi = -size/2, size/2
+    else:
+        lo, hi = np.asarray(bounds)-center
+    corners = np.array([[x, y, z] for x in (lo[0], hi[0])
+        for y in (lo[1], hi[1]) for z in (lo[2], hi[2])])
+    matrix, offset = _transform(lens_shape_part(part))
+    placed = (corners @ matrix.T+center+offset) @ physical_rotation.T+translation
+    bounds = np.vstack((placed.min(0), placed.max(0)))
+    nearest = np.maximum(np.maximum(bounds[0, :2], -bounds[1, :2]), 0.)
+    radius = float(geometry["c1_c2_objective_vacuum_tube_outer_diameter_mm"])/2
+    clearance = float(geometry.get("mechanical_material_tube_aperture_slot_clearance_mm", 0.))
+    start = float(geometry["c1_c2_objective_vacuum_tube_start_z_mm"])
+    end = float(geometry["c1_c2_objective_vacuum_tube_end_z_mm"])
+    if (bounds[1, 2] > start and bounds[0, 2] < end
+            and np.linalg.norm(nearest) <= radius+clearance):
+        raise ValueError(f"Independent or replacement {label} aperture material must remain outside the continuous tube; "
+                         "its rotated/scaled envelope has no declared insertion slot")
+
+
 def validate_aperture_support(part, by_key=None, geometry=None):
     """Return explicit dimensions or None; reject an incomplete opt-in recipe."""
     declared = {name for name in part if name.startswith(PREFIX)}
     if not declared:
         return None
+    host = part.get("geometry_template_key", part.get("key"))
+    if part.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+        # Preserve the native recipe for a later restore, without using its rod,
+        # screw or optical plane to constrain the active replacement material.
+        from temsim.part_model_features import validate_model_3d
+        validate_model_3d(part)
+        _validate_detached_tube_placement(part, by_key, geometry, HOST_LABELS.get(host, ""))
+        return None
     if declared != FIELDS:
         raise ValueError(f"Aperture support fields missing {sorted(FIELDS-declared)} or unknown {sorted(declared-FIELDS)}")
-    host = part.get("geometry_template_key", part.get("key"))
     if (host not in HOST_LABELS
             or part.get("aperture_plate_form") != "perforated_strip"
             or part.get("aperture_plate_attachment") != "screw_to_single_connection_rod"):
@@ -96,35 +140,12 @@ def validate_aperture_support(part, by_key=None, geometry=None):
         tube_start = float(geometry["c1_c2_objective_vacuum_tube_start_z_mm"])
         tube_end = float(geometry["c1_c2_objective_vacuum_tube_end_z_mm"])
         from temsim.magnetic_circuits import is_custom_mechanical_part
-        replacement = part.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing"
-        if is_custom_mechanical_part(part) or replacement:
+        if is_custom_mechanical_part(part):
             # A detached copy has no declared entry slot. Evaluate its actual
             # CAD placement, including independent rotations/scaling, instead
             # of pretending its old optical template proves an insertion path.
-            from temsim.part_model_features import _transform, validate_model_3d
-            from temsim.part_model_3d import lens_shape_part
-            validate_model_3d(part)
-            center = np.array([0., 0., float(part["local_center_z_mm"])])
-            if replacement:
-                base = part["model_3d"]["base"]
-                size = np.array([base[name] for name in ("width_mm", "height_mm", "length_mm")], float)
-                lo, hi = -size/2, size/2
-            else:
-                lo = np.array([-w, a, z-thickness/2-ht])-center
-                hi = np.array([w, r1, z+thickness/2+rt])-center
-            # Transform an enclosing box analytically: inscribed mesh bounds
-            # can miss a rotated curved surface, especially after large scale.
-            # Subtractive CAD holes/slots cannot enlarge this conservative box.
-            corners = np.array([[x, y, zz] for x in (lo[0], hi[0])
-                for y in (lo[1], hi[1]) for zz in (lo[2], hi[2])])
-            matrix, offset = _transform(lens_shape_part(part))
-            placed = (corners @ matrix.T+center+offset) @ physical_rotation.T+translation
-            bounds = np.vstack((placed.min(0), placed.max(0)))
-            nearest = np.maximum(np.maximum(bounds[0, :2], -bounds[1, :2]), 0.)
-            if (bounds[1, 2] > tube_start and bounds[0, 2] < tube_end
-                    and np.linalg.norm(nearest) <= tube_radius+clearance):
-                raise ValueError(f"Independent or replacement {label} aperture material must remain outside the continuous tube; "
-                                 "its rotated/scaled envelope has no declared insertion slot")
+            _validate_detached_tube_placement(part, by_key, geometry, label,
+                ([-w, a, z-thickness/2-ht], [w, r1, z+thickness/2+rt]))
             return d
         axial_overlap = (z+thickness/2+rt+float(translation[2]) > tube_start
                          and z-thickness/2-ht+float(translation[2]) < tube_end)

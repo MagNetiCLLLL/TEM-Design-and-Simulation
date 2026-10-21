@@ -109,6 +109,8 @@ def test_place_subtree_translates_absolute_references_but_not_relative_profiles_
     part = {"local_start_z_mm": 10, "local_center_z_mm": 15, "local_end_z_mm": 20, "length_mm": 10,
             "optical_reference_local_z_mm": 15, "interaction_centers_local_z_mm": [12, 18],
             "upper_yoke_start_local_z_mm": 11, "material_intervals_mm": [[11, 13], [17, 19]],
+            "stage_centers_z_mm": [12., 18.], "electrode_thickness_mm": 1.,
+            "default_high_tension_kv": 300., "stage_voltage_fractions": [0., 1.],
             "magnetic_radial_profile_mm": [[0, 1, 4], [10, 2, 5]],
             "model_3d": {"features": [{"center_mm": [0, 0, 1]}]}, "offset_mm": 3}
     original = deepcopy(part)
@@ -118,8 +120,58 @@ def test_place_subtree_translates_absolute_references_but_not_relative_profiles_
     assert moved["optical_reference_local_z_mm"] == 22
     assert moved["interaction_centers_local_z_mm"] == [19, 25]
     assert moved["material_intervals_mm"] == [[18, 20], [24, 26]]
-    for field in ("length_mm", "magnetic_radial_profile_mm", "model_3d", "offset_mm"):
+    assert moved["stage_centers_z_mm"] == [19., 25.]
+    for field in ("length_mm", "magnetic_radial_profile_mm", "model_3d", "offset_mm",
+                  "electrode_thickness_mm", "default_high_tension_kv", "stage_voltage_fractions"):
         assert moved[field] == original[field]
+
+
+@pytest.mark.parametrize("filename", ["FEG.toml", "FEG_Mono.toml"])
+def test_accelerator_copy_and_placement_translate_electrodes_with_the_envelope(tmp_path, filename):
+    from temsim.cad_auxiliary import accelerator_solids
+    from temsim.cad_catalog import posed_solids
+    from temsim.cad_mesh import _manifold
+
+    draft = PartModelDocument(INSTRUMENT_CONFIG_ROOT/"gun"/filename)
+    source = deepcopy(draft.document)
+    source_bytes = draft.path.read_bytes()
+    original = deepcopy(draft.part("feg_accelerator"))
+    original_specs = accelerator_solids(original)
+    original_meshes = _single(draft, "feg_accelerator")
+    delta = 2500.-original["local_center_z_mm"]
+    key = draft.copy_component_from(draft.document, "feg_accelerator", "copied_accelerator", 2500.,
+                                    include_children=False)
+    copied = draft.part(key)
+    np.testing.assert_allclose(copied["stage_centers_z_mm"], np.array(original["stage_centers_z_mm"])+delta)
+    np.testing.assert_allclose(np.diff(copied["stage_centers_z_mm"]), np.diff(original["stage_centers_z_mm"]),
+                               atol=1e-12, rtol=0.)
+    assert len(_single(draft, key)) == len(original_meshes) == 19
+    for before, after in zip(original_meshes, _single(draft, key), strict=True):
+        np.testing.assert_allclose(after.vertices, before.vertices+[0., 0., delta], atol=1e-12, rtol=0.)
+        np.testing.assert_array_equal(after.faces, before.faces)
+    for before, after in zip(original_specs, posed_solids(copied, {p['key']: p for p in draft.document['parts']}), strict=True):
+        first, second = _manifold(before.shape, 32), _manifold(after.shape, 32)
+        assert second.volume() == pytest.approx(first.volume(), rel=1e-10)
+        np.testing.assert_allclose(np.array(second.bounding_box()).reshape(2, 3),
+            np.array(first.bounding_box()).reshape(2, 3)+[0., 0., delta], atol=1e-11, rtol=0.)
+    for field in ("electrode_thickness_mm", "bore_diameter_mm", "outer_diameter_mm", "default_high_tension_kv"):
+        assert copied[field] == original[field]
+    assert copied["mechanical_only"] and copied["axial_vacuum_context_only"]
+    assert copied["mechanical_part_role"] == "custom_mechanical_copy"
+    assert draft.document['parts'][:-1] == source['parts']
+    draft.place_component(key, 2600.)
+    np.testing.assert_allclose(draft.part(key)["stage_centers_z_mm"],
+                               np.array(original["stage_centers_z_mm"])+delta+100.)
+    draft.undo()
+    assert draft.part(key) == copied
+    draft.redo()
+    target = tmp_path/"copied-accelerator.toml"
+    draft.save_copy(target)
+    reopened = PartModelDocument(target)
+    reopened.validate()
+    assert len(_single(reopened, key)) == 19
+    assert reopened.part("feg_accelerator") == original
+    assert (INSTRUMENT_CONFIG_ROOT/"gun"/filename).read_bytes() == source_bytes
 
 
 def test_place_is_one_undo_preserves_ports_and_optionally_leaves_children(documents):

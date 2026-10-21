@@ -131,6 +131,13 @@ def test_voltage_reference_is_independent_of_source_energy_and_cache_is_segmente
 
 
 def test_old_window_and_potential_scale_do_not_control_new_field(gun):
+    legacy_values = [(component, name, getattr(component, name)) for component, name in (
+        (gun.extractor, "transition_start_mm"),
+        (gun.extractor, "transition_end_mm"),
+        (gun.electrostatic_lens, "potential_scale"),
+        (gun.electrostatic_lens, "soft_edge_mm"),
+        (gun.accelerator.stages[0], "soft_edge_mm"),
+    )]
     f = gun.electric_field
     gun.extractor.transition_start_mm = .123
     gun.extractor.transition_end_mm = .456
@@ -143,8 +150,15 @@ def test_old_window_and_potential_scale_do_not_control_new_field(gun):
     gun.validate()  # inactive historical ramps do not constrain physical metal
     assert gun.field_supports_mm == ((-1., gun.exit_plane_z_mm),)
     gun.emitter.surface_model = None
-    with pytest.raises(ValueError, match="field transition"):
-        gun.validate()
+    # Flat cold FEG also solves the physical electrode field. Turning off the
+    # surface source must not reactivate historical analytic ramps.
+    from temsim.physics.closed_gun_field import closed_field_request
+    assert gun.uses_geometry_electric_field
+    gun.validate()
+    flat_request = closed_field_request(gun)
+    for component, name, value in legacy_values:
+        setattr(component, name, value)
+    assert closed_field_request(gun) == flat_request
 
 
 def test_discretised_tip_absorbs_returning_electrons_without_moving_launch(gun):

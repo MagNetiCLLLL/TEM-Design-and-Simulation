@@ -199,6 +199,14 @@ def build_shape(spec, *, allow_empty=False):
     return shape
 
 
+def solid_identity(row):
+    """Keep separately placed material segments distinct within one module."""
+    identity = row.get("instance_key", row["key"] + "/" + row["region"])
+    if not isinstance(identity, str) or not identity.strip():
+        raise ValueError("A solid instance requires a nonempty identity")
+    return identity
+
+
 def build_solid_rows(specs):
     """Validate part-wide cuts before allowing deletion of an individual leaf."""
     groups, shapes, removed, edits = {}, {}, [], []
@@ -233,7 +241,7 @@ def build_solid_rows(specs):
             edits.append(dict(key=key, initial_volume_mm3=initial, remaining_volume_mm3=remaining,
                               removed_volume_per_tool_mm3=losses))
         for index, row in enumerate(rows):
-            identity = row["key"] + "/" + row["region"]
+            identity = solid_identity(row)
             if identity in shapes or identity in removed:
                 raise ValueError("Duplicate solid ID: " + identity)
             shape = build_shape(row["shape"], allow_empty=editing)
@@ -489,15 +497,15 @@ def export_catalog(catalog, output_directory, *, progress=None, manifest_name="s
             module_key = _label(module["key"])
             root = cq.Assembly(name=module_key)
             specs = [_normalise_solid(row) for row in module["solids"]]
-            ids = [row["key"]+"/"+row["region"] for row in specs]
+            ids = [solid_identity(row) for row in specs]
             if len(ids) != len(set(ids)):
                 raise ValueError(f"Duplicate solid IDs in {module_key}")
             shapes, edit_report = build_solid_rows(specs)
             removed = set(edit_report["removed_leaf_ids"])
-            specs = [spec for spec in specs if spec["key"]+"/"+spec["region"] not in removed]
-            ids = [row["key"]+"/"+row["region"] for row in specs]
+            specs = [spec for spec in specs if solid_identity(spec) not in removed]
+            ids = [solid_identity(row) for row in specs]
             spec_by_id = dict(zip(ids, specs))
-            leaf_names = {key: _label(spec["key"]+"__"+spec["region"]) for key, spec in zip(ids, specs)}
+            leaf_names = {key: _label(key.replace("/", "__")) for key in ids}
             if len(set(leaf_names.values())) != len(ids):
                 raise ValueError("Solid naming collision")
             units = [dict(unit, solid_ids=[key for key in unit["solid_ids"] if key not in removed])

@@ -17,7 +17,7 @@ import math
 import numpy as np
 
 MU0 = 4e-7 * math.pi
-SOLVER_VERSION = "axisymmetric-aphi-bh-material-regions-v4"
+SOLVER_VERSION = "axisymmetric-aphi-bh-material-regions-pole-lands-v5"
 
 
 def _merged_axis(values):
@@ -65,7 +65,10 @@ def _part_mask(part, r, z):
         distance = z - start if upper else end - z
         length = end - start
         nose = float(data.get("pole_nose_axial_length_mm", 0)) * 1e-3 or 0.38 * length
-        outer_radius = np.minimum(outer_radius, tip + (outer - tip) * (length - distance) / nose)
+        from temsim.pole_geometry import pole_face_land_mm
+        land = pole_face_land_mm(data, nose*1e3)*1e-3
+        taper_distance = np.maximum(length-distance-land, 0.) if land else length-distance
+        outer_radius = np.minimum(outer_radius, tip + (outer - tip) * taper_distance / (nose-land))
         style = data.get("pole_piece_geometry_style", "")
         if style == "objective_vertical_back_inserted_shank_tapered_nose":
             shank = float(data["pole_mounting_shank_axial_length_mm"]) * 1e-3
@@ -152,6 +155,17 @@ def _solve_bound_geometry(geometry_json, settings_json):
         if profile is not None:
             axial_edges.extend((profile[:, 0]+p["start_z_mm"])*1e-3)
             radial_edges.extend(profile[:, 1:].ravel()*1e-3)
+        elif (p["data"].get("mechanical_profile") == "magnetic_pole_piece"
+              and "pole_face_land_axial_thickness_mm" in p["data"]):
+            # Preserve the saved taper-to-land boundary on the FEM grid, just
+            # as the existing explicit radial-profile knots are preserved.
+            from temsim.pole_geometry import pole_face_land_mm
+            nose = float(p["data"].get("pole_nose_axial_length_mm",
+                                       .38*(p["end_z_mm"]-p["start_z_mm"])))
+            land = pole_face_land_mm(p["data"], nose)
+            face = p["end_z_mm"] if "upper" in p["key"] else p["start_z_mm"]
+            sign = -1 if "upper" in p["key"] else 1
+            axial_edges.extend((face+sign*value)*1e-3 for value in (nose, land))
     radial_edges = [value for value in radial_edges if 0 <= value <= radius*padding]
     axial_edges = [value for value in axial_edges if centre-half*padding <= value <= centre+half*padding]
     r = _merged_axis(np.r_[np.linspace(0, radius * padding, nr), radial_edges])

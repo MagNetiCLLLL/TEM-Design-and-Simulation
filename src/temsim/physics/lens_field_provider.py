@@ -215,6 +215,7 @@ _PART_GEOMETRY_FIELDS = frozenset({
     "mechanical_outer_diameter_mm",
     "pole_gap_mm",
     "pole_nose_axial_length_mm",
+    "pole_face_land_axial_thickness_mm",
     "pole_cone_angle_to_axis_deg",
     "pole_stem_outer_diameter_mm",
     "material_class",
@@ -303,6 +304,15 @@ def _part_geometry_data(part) -> dict[str, object]:
             or any(token in lowered for token in _PART_GEOMETRY_TOKENS)
         ):
             result[name] = value
+    data = dict(getattr(part, "data", {}))
+    if (data.get("mechanical_profile") == "magnetic_pole_piece"
+            and "pole_face_land_axial_thickness_mm" in data
+            and "magnetic_radial_profile_mm" not in data
+            and data.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing"):
+        # Older geometry identities included the saved land number even when
+        # the contour ignored it. Invalidate those maps without staling lenses
+        # whose actual material interpretation has not changed.
+        result["resolved_pole_face_land_model"] = "nose_includes_tip_land_v1"
     return result
 
 

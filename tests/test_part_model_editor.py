@@ -221,7 +221,7 @@ def test_aperture_labels_distinguish_plate_from_mechanism_and_remain_readable(pa
     for name, expected in {
         "length_mm": "Mechanism envelope length",
         "mechanical_outer_diameter_mm": "Mechanism envelope diameter",
-        "mechanical_bore_diameter_mm": "Carrier bore diameter",
+        "mechanical_bore_diameter_mm": "Carrier bore reference",
         "plate_thickness_mm": "Aperture plate thickness",
     }.items():
         value = _dimension(page, key, name)
@@ -289,7 +289,7 @@ def test_live_aperture_opening_updates_mesh_but_keeps_draft_and_selected_face(pa
     identity = [(hit["key"], hit["kind"], hit["id"]) for hit in page._topology_selection]
     page.scope.setCurrentIndex(page.scope.findData(scope))
     # Retain even invalid text while a separate runtime control is changing.
-    _edit(page, key, "length_mm", "invalid")
+    _edit(page, key, "plate_thickness_mm", "invalid")
     draft, invalid = deepcopy(page.session.document), dict(page._invalid_inputs)
     assert invalid
     rotation = page.view._rotation.copy()
@@ -372,15 +372,16 @@ def test_part_selection_preserves_shared_draft_and_undo_redo_revert(page):
     assert not page.redo_button.isEnabled() and not page.save_button.isEnabled()
 
 
-def test_invalid_dimensions_keep_editable_draft_until_corrected(page):
+def test_invalid_linked_dimensions_keep_editable_input_and_last_valid_draft(page):
     source = page.session.path.read_bytes()
+    before = deepcopy(page.session.document)
     invalid_inner = page.session.part(COIL)["mechanical_outer_diameter_mm"] + 1.0
     _edit(page, COIL, "mechanical_inner_diameter_mm", invalid_inner)
-    assert page.session.part(COIL)["mechanical_inner_diameter_mm"] == invalid_inner
-    assert "valid dimensions" in page.model_note.text()
+    assert page.session.document == before
+    assert page._invalid_inputs
     assert _dimension(page, COIL, "mechanical_inner_diameter_mm").flags() & Qt.ItemFlag.ItemIsEditable
     assert not page.save()
-    assert page.session.dirty and page.session.path.read_bytes() == source
+    assert not page.session.dirty and page.session.path.read_bytes() == source
     page.select_part(HOUSING)
     page.select_part(COIL)
     assert float(_dimension(page, COIL, "mechanical_inner_diameter_mm").text()) == invalid_inner

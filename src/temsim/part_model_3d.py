@@ -296,6 +296,14 @@ def _pole_section(part, start, end):
     if style not in {"", "embedded_hourglass_bore", "tapered_bore_pole",
                      "objective_vertical_back_inserted_shank_tapered_nose"}:
         return None
+    from temsim.pole_geometry import pole_face_land_mm
+    land = pole_face_land_mm(part, nose)
+    # The saved nose includes its terminal cylindrical land. Keep the shoulder
+    # and pole face fixed; only the intervening outer material contour changes.
+    nose_edge = [(length - nose, outer)]
+    if land:
+        nose_edge.append((length - land, tip))
+    nose_edge.append((length, tip))
     if style == "objective_vertical_back_inserted_shank_tapered_nose":
         shank = get("pole_mounting_shank_axial_length_mm")
         shank_inner = get("pole_mounting_shank_inner_diameter_mm") / 2
@@ -307,10 +315,10 @@ def _pole_section(part, start, end):
         section = [(0, shank_inner), (0, tail)]
         if connector:
             section += [(connector, tail), (connector, stem)]
-        section += [(shank, stem), (shank, outer), (length - nose, outer),
-                    (length, tip), (length, bore), (shank, bore), (shank, shank_inner)]
+        section += [(shank, stem), (shank, outer)] + nose_edge
+        section += [(length, bore), (shank, bore), (shank, shank_inner)]
     else:
-        section = [(0, bore), (0, outer), (length - nose, outer), (length, tip), (length, bore)]
+        section = [(0, bore), (0, outer)] + nose_edge + [(length, bore)]
     # The shared C1/C2 cartridge's two pole faces are reversed relative to their
     # optical names, as in the existing physical-layout projection.
     template_key = part.get("geometry_template_key", part["key"]) if is_custom_mechanical_part(part) else part["key"]
@@ -634,6 +642,11 @@ def part_dimension_specs(document, part_key, *, runtime_values=None):
                           reason=f"Derived from {owner}; edit its physical geometry or placement. For an anchored insert, its optical reference offset controls the axial relation.")
                   if (owner := bound_field_owner(by_key.get(item.path[1], part), item.path[2]))
                   else item for item in specs)
+    from temsim.dimension_edit_policy import dimension_reference_reason, inactive_native_dimension_reason
+    specs = tuple(replace(item, editable=False, reason=reason) if (reason := (
+        dimension_reference_reason(by_key.get(item.path[1], part), item.path[2]) or
+        inactive_native_dimension_reason(by_key.get(item.path[1], part), item.path[2])))
+        else item for item in specs)
     return specs
 
 

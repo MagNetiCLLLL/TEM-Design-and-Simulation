@@ -20,6 +20,8 @@ from temsim.component_operations import (
 
 def _validate_internal_details(parts, geometry=None):
     """Validate the final material draft before publishing it or its history."""
+    from temsim.cad_auxiliary import validate_gun_electrode_geometry
+    from temsim.pole_geometry import validate_pole_face_land_geometry
     from temsim.cad_recording_planes import validate_detector_footprint
     from temsim.cad_detectors import validate_detector_material_geometry
     from temsim.cad_gun_stigmator import gun_stigmator_dimensions
@@ -32,6 +34,8 @@ def _validate_internal_details(parts, geometry=None):
     from temsim.cad_probe_hexapole_support import validate_hexapole_support
     by_key = {part["key"]: part for part in parts}
     for part in parts:
+        validate_gun_electrode_geometry(part)
+        validate_pole_face_land_geometry(part)
         validate_detector_footprint(part)
         validate_detector_material_geometry(part, by_key)
         gun_stigmator_dimensions(part)
@@ -226,6 +230,10 @@ class PartModelDocument:
             if part["key"] == key:
                 updated = deepcopy(self.document)
                 updated["parts"][index] = candidate
+                from temsim.mechanical_dimension_bindings import FIELDS, synchronize_dimension_edit
+                for field in FIELDS:
+                    if field in part and field in candidate and candidate[field] != part[field]:
+                        synchronize_dimension_edit(updated, key, field, part[field])
                 from temsim.deflector_support_geometry import validate_support_installations
                 validate_support_installations(updated["parts"])
                 from temsim.subassemblies import reflow
@@ -394,6 +402,9 @@ class PartModelDocument:
             raise ValueError(f"{path[1]} uses shared hardware; edit {host} to change its structure")
         part = deepcopy(self.part(path[1]))
         field = path[2]
+        from temsim.dimension_edit_policy import dimension_reference_reason
+        if reason := dimension_reference_reason(part, field):
+            raise ValueError(reason)
         from temsim.lens_pose import PHYSICAL_POSE_FIELDS, supports_physical_lens_pose
         if len(path) == 3 and field in PHYSICAL_POSE_FIELDS and supports_physical_lens_pose(part):
             self.set_physical_pose(path[1], {field: value})

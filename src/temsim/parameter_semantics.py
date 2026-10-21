@@ -135,6 +135,17 @@ def _meaning(part, path, by_key):
     field = str(relative[0]) if relative else ""
     label = _label(field, ("parts", "", *relative))
     profile = part.get("mechanical_profile", "")
+    from temsim.dimension_edit_policy import dimension_reference_reason
+    if reason := dimension_reference_reason(part, field):
+        if field == "length_mm":
+            reference_label = ("Mechanism envelope length" if part.get("aperture_plate_form") == "perforated_strip" else
+                "Installation/field allocation length" if profile in DEFLECTOR_COIL_PROFILES and "winding_axial_length_mm" in part else
+                "Envelope length")
+            return reference_label, "envelope", reason
+        return ("Reference pole gap" if field == "pole_gap_mm" else
+                "Carrier bore reference" if "bore" in field else
+                "Mechanism envelope diameter" if field in {"mechanical_outer_diameter_mm", "outer_diameter_mm"} else
+                "Reference cone angle"), "envelope" if field in {"mechanical_outer_diameter_mm", "outer_diameter_mm"} else "unknown", reason
     if (field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "hexapole_support_"))
             and field.endswith(("_mm", "_deg"))):
         return label, "physical", (
@@ -260,6 +271,7 @@ def _meaning(part, path, by_key):
                 "Diameter of the copper winding envelope. The carrier extends inward and the radial cover outward; "
                 "the full laminate material envelope includes their separately editable thicknesses.")
         explanations = {
+            "winding_axial_length_mm": "Actual copper winding length about the saved winding centre. It does not change the independent effective thickness or analytical field support.",
             "winding_support_carrier_thickness_mm": "Radial thickness of each carrier in the equivalent flexible laminate. The interlayer bond fills the remaining positive gap; host mounting is unverified.",
             "winding_support_cover_thickness_mm": "Radial thickness of each dielectric cover in the bulk laminate equivalent. It increases the full material outer radius; it does not model individual conductor sidewall insulation.",
             "winding_support_end_cover_thickness_mm": "Engineering axial end insulation outside the unchanged copper allocation. It extends the material stack but does not change optical length, winding centres or field calibration; it is not verified DPH2 OEM packaging.",

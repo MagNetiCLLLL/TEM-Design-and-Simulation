@@ -41,6 +41,44 @@ class ExactCadKernelTests(unittest.TestCase):
             matrix=[[0., -3., 0.], [2., 0., 0.], [0., 0., 1.]], offset_mm=[10., 20., 30.]))
         self.assertAlmostEqual(b._shape_metrics(transformed)["volume_mm3"], 36*math.pi, places=7)
 
+    def test_segment_instances_keep_material_in_catalog_and_clearance_probes(self):
+        segments = [dict(key="liner", region="body", instance_key=f"liner/body/segment-{i}",
+                         status="configured_geometry", material="steel",
+                         shape=box(center=(0, 0, z), size=(2, 2, 2)))
+                    for i, z in enumerate((0, 4))]
+        block = dict(key="block", region="body", status="configured_geometry", material="steel",
+                     shape=box(center=(0, 0, 4.5), size=(1, 1, 1)))
+        probe = dict(id="passage", kind="clearance", shape=box(size=(.5, .5, 12)))
+        result = kernel.validate_catalog(dict(key="fixture", solids=[*segments, block]), optical_probes=[probe])
+        pair = result["geometry_report"]["assemblies"][0]["collisions"]
+        self.assertEqual(len(pair), 1)
+        self.assertAlmostEqual(pair[0]["intersection_volume_mm3"], 1.)
+        blocked = result["probe_results"][0]["material_blockers"]
+        self.assertEqual({row["solid_id"] for row in blocked},
+                         {"liner/body/segment-0", "liner/body/segment-1", "block/body"})
+        covered = kernel.validate_catalog(dict(key="fixture", solids=segments), optical_probes=[
+            dict(id="surface", kind="coverage", expected_solid_ids=["liner/body"],
+                 shape=dict(kind="union", shapes=[row["shape"] for row in segments]))])
+        self.assertEqual(covered["probe_results"][0]["status"], "passed")
+        evaluated = kernel.evaluate(segments, include_mesh=False)
+        self.assertEqual({row["id"] for row in evaluated["leaves"]},
+                         {row["instance_key"] for row in segments})
+
+    def test_duplicate_explicit_solid_instance_is_rejected(self):
+        first = dict(key="liner", region="body", instance_key="segment-0", shape=box())
+        with self.assertRaisesRegex(ValueError, "Duplicate solid ID"):
+            self.backend.build_solid_rows([first, dict(first, key="different_owner")])
+
+    def test_export_preserves_segment_instances_with_the_same_component_region(self):
+        segments = [dict(key="liner", region="body", instance_key=f"segment-{i}",
+                         shape=box(center=(0, 0, 4*i), size=(1, 2, 3))) for i in range(2)]
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "segments.step"
+            kernel.export_step(segments, path)
+            restored = kernel.import_step(path)
+        self.assertEqual(len(restored["leaves"]), 2)
+        self.assertAlmostEqual(restored["metrics"]["volume_mm3"], 12.)
+
     def test_hole_slot_and_strict_edit_noop_or_empty(self):
         b = self.backend
         hole = dict(kind="cylinder", radius_mm=.5, length_mm=8., center_mm=[0., 0., 0.])

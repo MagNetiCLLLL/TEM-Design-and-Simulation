@@ -7,8 +7,10 @@ import tomllib
 import numpy as np
 import pytest
 
-from temsim.cad_auxiliary import GUN_ELECTRODE_KEYS, gun_electrode_solids
-from temsim.cad_catalog import native_reconstruction, part_solids
+from temsim.cad_auxiliary import (
+    GUN_ELECTRODE_KEYS, gun_electrode_solids, validate_gun_electrode_geometry,
+)
+from temsim.cad_catalog import native_reconstruction, part_solids, posed_solids
 from temsim.part_model_3d import part_model_from_document
 
 
@@ -153,3 +155,122 @@ def test_unknown_gun_internals_do_not_gain_electrodes_or_guessed_poles():
     assert spec.status == "configured_envelope"
     mesh, = part_model_from_document(document, part["key"], angular_segments=32).meshes
     assert not mesh.is_exact
+
+
+@pytest.mark.parametrize("value", [0., -1., 20., 21., float("nan"), float("inf"), True, 10**1000])
+def test_gun_electrode_bad_bore_edit_rejects_before_draft_or_history_changes(value):
+    from temsim.part_model_document import PartModelDocument
+
+    draft = PartModelDocument(ROOT/"configs/instruments/gun/FEG.toml")
+    before, history = deepcopy(draft.document), deepcopy(draft._history)
+    raw, index = draft.path.read_bytes(), draft._history_index
+    with pytest.raises(ValueError):
+        draft.set_dimension(("parts", "feg_extractor", "bore_diameter_mm"), value)
+    assert draft.document == before and draft._history == history
+    assert draft._history_index == index and not draft.dirty
+    assert draft.path.read_bytes() == raw
+    part = deepcopy(draft.part("feg_extractor"))
+    part["bore_diameter_mm"] = value
+    with pytest.raises(ValueError):
+        validate_gun_electrode_geometry(part)
+
+
+@pytest.mark.parametrize("value", [0., 20., 21.])
+def test_gun_electrode_bad_document_cannot_validate_or_be_saved(tmp_path, value):
+    from temsim.module_manifest import validate_document
+    from temsim.part_model_document import PartModelDocument
+
+    draft = PartModelDocument(ROOT/"configs/instruments/gun/FEG.toml")
+    draft.part("feg_extractor")["bore_diameter_mm"] = value
+    with pytest.raises(ValueError, match="bore"):
+        validate_document(draft.document)
+    destination = tmp_path/"invalid-gun.toml"
+    with pytest.raises(ValueError, match="bore"):
+        draft.save_copy(destination)
+    assert not destination.exists()
+
+
+@pytest.mark.parametrize("filename,key", ELECTRODES)
+def test_valid_electrode_edit_changes_shared_geometry_and_survives_save_reopen(tmp_path, filename, key):
+    from temsim.part_model_document import PartModelDocument
+
+    draft = PartModelDocument(ROOT/"configs/instruments/gun"/filename)
+    original = deepcopy(draft.document)
+    raw = draft.path.read_bytes()
+    before = gun_electrode_solids(draft.part(key))
+    bore = (draft.part(key)["bore_diameter_mm"]+draft.part(key)["outer_diameter_mm"])/2
+    draft.set_dimension(("parts", key, "bore_diameter_mm"), bore)
+    after = gun_electrode_solids(draft.part(key))
+    assert after != before and after[0].parameters["bore_radius_mm"] == bore/2
+    expected = deepcopy(original)
+    next(row for row in expected["parts"] if row["key"] == key)["bore_diameter_mm"] = bore
+    assert draft.document == expected  # No excitation/calibration/other geometry edit.
+    mesh, = part_model_from_document(draft.document, key, include_children=False).meshes
+    assert np.linalg.norm(mesh.vertices[:, :2], axis=1).min() == pytest.approx(bore/2)
+    draft.undo()
+    assert draft.document == original
+    draft.redo()
+    destination = tmp_path/"edited-gun.toml"
+    draft.save_copy(destination)
+    reopened = PartModelDocument(destination)
+    reopened.validate()
+    assert reopened.part(key)["bore_diameter_mm"] == bore
+    assert gun_electrode_solids(reopened.part(key)) == after
+    assert (ROOT/"configs/instruments/gun"/filename).read_bytes() == raw
+
+
+def test_independent_electrode_replacement_defers_native_validation_until_atomic_restore(tmp_path):
+    from temsim.cad_mesh import _manifold
+    from temsim.part_model_document import PartModelDocument
+
+    draft = PartModelDocument(ROOT/"configs/instruments/gun/FEG.toml")
+    original = deepcopy(draft.part("feg_extractor"))
+    key = draft.copy_component_from(draft.document, "feg_extractor", "copied_electrode", 2500.,
+                                    include_children=False)
+    assert gun_electrode_solids(draft.part(key))[0].material == "electrode"
+    draft.update_model_3d(key, {"base": {"kind": "box", "width_mm": 10.,
+                                       "height_mm": 10., "length_mm": 1.}})
+    draft.set_dimension(("parts", key, "bore_diameter_mm"), 21.)
+    assert validate_gun_electrode_geometry(draft.part(key)) is None
+    assert gun_electrode_solids(draft.part(key)) is None
+    draft.validate()
+    mesh, = part_model_from_document(draft.document, key, include_children=False).meshes
+    np.testing.assert_allclose(np.ptp(mesh.vertices, axis=0), [10., 10., 1.])
+    solid, = posed_solids(draft.part(key), {p["key"]: p for p in draft.document["parts"]})
+    assert _manifold(solid.shape, 32).volume() == pytest.approx(100.)
+    before, history = deepcopy(draft.document), deepcopy(draft._history)
+    index = draft._history_index
+    native = deepcopy(draft.part(key)["model_3d"])
+    native["base"] = {"kind": "existing"}
+    with pytest.raises(ValueError, match="bore"):
+        draft.set_model_3d(key, native)
+    assert draft.document == before and draft._history == history and draft._history_index == index
+    assert draft.part("feg_extractor") == original
+    target = tmp_path/"replacement-gun.toml"
+    draft.save_copy(target)
+    reopened = PartModelDocument(target)
+    assert len(part_model_from_document(reopened.document, key, include_children=False).meshes) == 1
+    reopened.set_dimension(("parts", key, "bore_diameter_mm"), 6.)
+    reopened.set_model_3d(key, native)
+    assert gun_electrode_solids(reopened.part(key))[0].parameters["bore_radius_mm"] == 3.
+
+
+@pytest.mark.parametrize("bore", [0., 20., 21.])
+def test_installed_electrode_replacement_still_validates_live_optical_boundaries(bore):
+    from temsim.module_manifest import validate_document
+    from temsim.part_model_document import PartModelDocument
+
+    draft = PartModelDocument(ROOT/"configs/instruments/gun/FEG.toml")
+    key = "feg_extractor"
+    draft.update_model_3d(key, {"base": {"kind": "box", "width_mm": 10.,
+                                       "height_mm": 10., "length_mm": 1.}})
+    before, history = deepcopy(draft.document), deepcopy(draft._history)
+    assert gun_electrode_solids(draft.part(key)) is None
+    assert validate_gun_electrode_geometry(draft.part(key)) is not None
+    with pytest.raises(ValueError, match="bore"):
+        draft.set_dimension(("parts", key, "bore_diameter_mm"), bore)
+    assert draft.document == before and draft._history == history
+    invalid = deepcopy(before)
+    next(part for part in invalid["parts"] if part["key"] == key)["bore_diameter_mm"] = bore
+    with pytest.raises(ValueError, match="bore"):
+        validate_document(invalid)
