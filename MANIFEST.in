@@ -1,0 +1,4 @@
+# Local third-party reference copies are not part of the source distribution.
+# Authored Markdown notes and source-link/hash metadata remain eligible.
+recursive-exclude docs/references *.pdf *.html *.htm *.png *.jpg *.jpeg *.gif *.webp *.tif *.tiff *.ppt *.pptx *.doc *.docx *.zip
+prune docs/references/local-only

@@ -1,7 +1,21 @@
 # Preserve the original scientific reference CIF bytes.
 configs/reference_samples/*.cif -text
 
-# Archived source pages retain their original bytes and whitespace for SHA checks.
-docs/references/cad-library/**/*.html -text -whitespace
-docs/references/cad-library/**/*.pdf binary
-docs/references/cad-library/**/*.png binary
+# Local third-party reading copies must not enter source archives, even if a
+# copy is accidentally force-added. Keep original bytes for local SHA checks.
+docs/references/**/*.html -text -whitespace export-ignore
+docs/references/**/*.htm -text -whitespace export-ignore
+docs/references/**/*.pdf binary export-ignore
+docs/references/**/*.png binary export-ignore
+docs/references/**/*.jpg binary export-ignore
+docs/references/**/*.jpeg binary export-ignore
+docs/references/**/*.gif binary export-ignore
+docs/references/**/*.webp binary export-ignore
+docs/references/**/*.tif binary export-ignore
+docs/references/**/*.tiff binary export-ignore
+docs/references/**/*.ppt binary export-ignore
+docs/references/**/*.pptx binary export-ignore
+docs/references/**/*.doc binary export-ignore
+docs/references/**/*.docx binary export-ignore
+docs/references/**/*.zip binary export-ignore
+docs/references/local-only export-ignore

@@ -1,4 +1,9 @@
-# Public gun-electrode patent figure excerpts
+# Gun-electrode patent references (local figure copies)
+
+The figure files listed below are retained locally and excluded from Git and
+source distributions. Use the original-document links for the public source;
+the filenames describe local copies, not files supplied by a fresh clone.
+See the [reference-copy policy](../README.md).
 
 Retrieved and visually checked on 2026-09-26. These are reference document
 figures, not simulator outputs, dimensional measurements or claims about a

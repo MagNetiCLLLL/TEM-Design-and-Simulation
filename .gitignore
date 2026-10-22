@@ -23,6 +23,25 @@ dist/
 *.temresult
 *.temdiag
 
+# Third-party reference originals and screenshots are local reading copies.
+# Keep authored notes and source-link/hash metadata under version control.
+/docs/references/**/*.pdf
+/docs/references/**/*.html
+/docs/references/**/*.htm
+/docs/references/**/*.png
+/docs/references/**/*.jpg
+/docs/references/**/*.jpeg
+/docs/references/**/*.gif
+/docs/references/**/*.webp
+/docs/references/**/*.tif
+/docs/references/**/*.tiff
+/docs/references/**/*.ppt
+/docs/references/**/*.pptx
+/docs/references/**/*.doc
+/docs/references/**/*.docx
+/docs/references/**/*.zip
+/docs/references/local-only/
+
 # Retain the immutable assembly regression fixture, not generated evidence.
 /docs/development/evidence/*
 !/docs/development/evidence/default-assembly-identity-map-v1.json
