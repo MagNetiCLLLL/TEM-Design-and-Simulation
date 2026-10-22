@@ -7,8 +7,18 @@ name = "tem-design-simulation"
 version = "0.1.0"
 description = "TEM Design & Simulation — An Interactive TEM/STEM Platform for Education and Research"
 readme = "README.md"
-license = "MIT"
-license-files = ["LICENSE"]
+license = "GPL-3.0-only"
+license-files = [
+    "LICENSE",
+    "COPYRIGHT",
+    "licenses/legacy-MIT.txt",
+    "THIRD_PARTY_NOTICES.md",
+    "third_party_licenses/README.md",
+    "third_party_licenses/inventory.json",
+    "third_party_licenses/supplements.json",
+    "third_party_licenses/packages/**/*.txt",
+    "third_party_licenses/upstream/*.txt",
+]
 requires-python = ">=3.11,<3.14"
 dependencies = [
     "abtem==1.0.10",
@@ -41,9 +51,9 @@ gpu = [
 atomistic = []
 
 [project.urls]
-Homepage = "https://github.com/MagNetiCLLLL/TEMForge"
-Repository = "https://github.com/MagNetiCLLLL/TEMForge"
-Issues = "https://github.com/MagNetiCLLLL/TEMForge/issues"
+Homepage = "https://github.com/MagNetiCLLLL/tem_simulator_v2"
+Repository = "https://github.com/MagNetiCLLLL/tem_simulator_v2"
+Issues = "https://github.com/MagNetiCLLLL/tem_simulator_v2/issues"
 
 [project.scripts]
 tem-design-simulation = "temsim.app:run"

@@ -1,6 +1,12 @@
 # Preserve the original scientific reference CIF bytes.
 configs/reference_samples/*.cif -text
 
+# Preserve upstream license bytes and their inventory SHA-256 checksums.
+/LICENSE -text
+/licenses/*.txt -text
+/third_party_licenses/packages/**/*.txt -text -whitespace
+/third_party_licenses/upstream/*.txt -text -whitespace
+
 # Local third-party reading copies must not enter source archives, even if a
 # copy is accidentally force-added. Keep original bytes for local SHA checks.
 docs/references/**/*.html -text -whitespace export-ignore
@@ -19,3 +25,4 @@ docs/references/**/*.doc binary export-ignore
 docs/references/**/*.docx binary export-ignore
 docs/references/**/*.zip binary export-ignore
 docs/references/local-only export-ignore
+output/references export-ignore

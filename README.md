@@ -135,7 +135,7 @@ CIF library or automatic material selection is provided.
 
 ## Setup and launch
 
-Download or clone [TEM Design & Simulation](https://github.com/MagNetiCLLLL/TEMForge).
+Download or clone [TEM Design & Simulation](https://github.com/MagNetiCLLLL/tem_simulator_v2).
 On Windows, install **64-bit Python 3.12** (recommended), then run these commands
 from the project folder:
 
@@ -164,4 +164,27 @@ repository address currently retains its previous name.
 
 [Project map / 项目地图](docs/PROJECT_MAP.md): files, features, UI, tests and refactoring candidates.
 
-[MIT License](LICENSE).
+## License
+
+TEM Design & Simulation is licensed under the **GNU General Public License,
+version 3 only** (`GPL-3.0-only`). See [LICENSE](LICENSE) for the complete terms
+and [COPYRIGHT](COPYRIGHT) for the project's copyright and licensing notice.
+Educational, research and commercial use are permitted. When distributing a
+covered program, comply with the GPL's corresponding-source and redistribution
+requirements; do not add a noncommercial restriction. The program is provided
+without warranty.
+
+Earlier versions released under MIT retain the rights already granted for those
+versions. The [historical MIT notice](licenses/legacy-MIT.txt) is retained as a
+record, not as a dual-license offer for new changes.
+
+Dependencies keep their own licenses. [Third-party notices](THIRD_PARTY_NOTICES.md)
+and the [versioned license inventory](third_party_licenses/README.md) identify
+the reviewed CPU dependency set and include license texts. These records do not
+replace the corresponding-source obligations of anyone redistributing a full
+dependency bundle, or an audit of optional GPU/CAD components they ship.
+
+Third-party reference PDFs, downloaded pages and screenshots are kept locally
+and excluded from new commits and distribution archives. Authored notes and
+original source links remain available. See the [reference policy](docs/references/README.md).
+This change does not rewrite or remove older Git history.

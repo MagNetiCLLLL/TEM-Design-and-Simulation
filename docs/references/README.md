@@ -15,8 +15,9 @@ the reader separately obtains those files with appropriate permission. An
 a promise that the file is supplied by this repository.
 
 Put other private reference material in `docs/references/local-only/`, which
-is ignored as a whole. Do not force-add reading copies or attach them to
-releases. Simulator-generated illustrations and runtime assets elsewhere in
+is ignored as a whole. Existing reading copies under `output/references/`
+are also excluded from Git and distribution archives. Do not force-add reading
+copies or attach them to releases. Simulator-generated illustrations and runtime assets elsewhere in
 the project are outside this exclusion.
 
 Removing a file from current tracking does not remove it from earlier Git

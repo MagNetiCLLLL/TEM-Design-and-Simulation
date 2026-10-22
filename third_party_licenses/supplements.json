@@ -1,0 +1,233 @@
+[
+  {
+    "packages": [
+      "abtem"
+    ],
+    "package_versions": {
+      "abtem": "1.0.10"
+    },
+    "path": "upstream/abtem-1.0.10-LICENSE.txt",
+    "url": "https://raw.githubusercontent.com/abTEM/abTEM/v1.0.10/LICENSE",
+    "source": "versioned-upstream",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "bytes": 35149
+  },
+  {
+    "packages": [
+      "pyopengl"
+    ],
+    "package_versions": {
+      "pyopengl": "3.1.10"
+    },
+    "path": "upstream/pyopengl-3.1.10-license.txt",
+    "url": "https://raw.githubusercontent.com/mcfletch/pyopengl/3.1.10/license.txt",
+    "source": "versioned-upstream",
+    "sha256": "d37ec6e00a4f88bf80ec0b7b3b9dbea88534c1c66c2f529dc64c7c02e07a6a1b",
+    "bytes": 11678
+  },
+  {
+    "packages": [
+      "pyfftw"
+    ],
+    "package_versions": {
+      "pyfftw": "0.15.1"
+    },
+    "path": "upstream/fftw-3.3.5-COPYING.txt",
+    "url": "https://raw.githubusercontent.com/FFTW/fftw3/fftw-3.3.5/COPYING",
+    "source": "versioned-upstream",
+    "sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c",
+    "bytes": 18002
+  },
+  {
+    "packages": [
+      "tqdm"
+    ],
+    "package_versions": {
+      "tqdm": "4.70.0"
+    },
+    "path": "upstream/MPL-2.0.txt",
+    "url": "https://www.mozilla.org/media/MPL/2.0/index.txt",
+    "source": "official-license-text",
+    "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04",
+    "bytes": 16726
+  },
+  {
+    "packages": [
+      "xraylib"
+    ],
+    "package_versions": {
+      "xraylib": "4.3.0"
+    },
+    "path": "upstream/xraylib-4.3.0-license_all.txt",
+    "url": "https://raw.githubusercontent.com/tschoonj/xraylib/xraylib-4.3.0/license_all.txt",
+    "source": "versioned-upstream",
+    "sha256": "dc793dac39e5a3744b935b14e4658c4d880ba799d39f24a9a1424b32120ca8fb",
+    "bytes": 1628
+  },
+  {
+    "packages": [
+      "xraylib"
+    ],
+    "package_versions": {
+      "xraylib": "4.3.0"
+    },
+    "path": "upstream/xraylib-4.3.0-license_teemu.txt",
+    "url": "https://raw.githubusercontent.com/tschoonj/xraylib/xraylib-4.3.0/license_teemu.txt",
+    "source": "versioned-upstream",
+    "sha256": "f03bb70e17d4f835f8d1ffc2987a1c1b0d2b1fd7583f41eed8d66d7c16f6100c",
+    "bytes": 1400
+  },
+  {
+    "packages": [
+      "xraylib"
+    ],
+    "package_versions": {
+      "xraylib": "4.3.0"
+    },
+    "path": "upstream/xraylib-4.3.0-license_tom.txt",
+    "url": "https://raw.githubusercontent.com/tschoonj/xraylib/xraylib-4.3.0/license_tom.txt",
+    "source": "versioned-upstream",
+    "sha256": "44876ed58d712ea7ab03c6d9fb1257c6de59d554bfa852a66ae21501e143b6cd",
+    "bytes": 1406
+  },
+  {
+    "packages": [
+      "pyside6",
+      "pyside6-essentials",
+      "pyside6-addons",
+      "shiboken6"
+    ],
+    "package_versions": {
+      "pyside6": "6.8.3",
+      "pyside6-essentials": "6.8.3",
+      "pyside6-addons": "6.8.3",
+      "shiboken6": "6.8.3"
+    },
+    "path": "upstream/qt-pyside-6.8.3-GPL-2.0-only.txt",
+    "url": "https://raw.githubusercontent.com/qtproject/pyside-pyside-setup/v6.8.3/LICENSES/GPL-2.0-only.txt",
+    "source": "versioned-upstream",
+    "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+    "bytes": 18092
+  },
+  {
+    "packages": [
+      "pyside6",
+      "pyside6-essentials",
+      "pyside6-addons",
+      "shiboken6"
+    ],
+    "package_versions": {
+      "pyside6": "6.8.3",
+      "pyside6-essentials": "6.8.3",
+      "pyside6-addons": "6.8.3",
+      "shiboken6": "6.8.3"
+    },
+    "path": "upstream/qt-pyside-6.8.3-GPL-3.0-only.txt",
+    "url": "https://raw.githubusercontent.com/qtproject/pyside-pyside-setup/v6.8.3/LICENSES/GPL-3.0-only.txt",
+    "source": "versioned-upstream",
+    "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "bytes": 35147
+  },
+  {
+    "packages": [
+      "pyside6",
+      "pyside6-essentials",
+      "pyside6-addons",
+      "shiboken6"
+    ],
+    "package_versions": {
+      "pyside6": "6.8.3",
+      "pyside6-essentials": "6.8.3",
+      "pyside6-addons": "6.8.3",
+      "shiboken6": "6.8.3"
+    },
+    "path": "upstream/qt-pyside-6.8.3-LGPL-3.0-only.txt",
+    "url": "https://raw.githubusercontent.com/qtproject/pyside-pyside-setup/v6.8.3/LICENSES/LGPL-3.0-only.txt",
+    "source": "versioned-upstream",
+    "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768",
+    "bytes": 7651
+  },
+  {
+    "packages": [
+      "pyside6",
+      "pyside6-essentials",
+      "pyside6-addons",
+      "shiboken6"
+    ],
+    "package_versions": {
+      "pyside6": "6.8.3",
+      "pyside6-essentials": "6.8.3",
+      "pyside6-addons": "6.8.3",
+      "shiboken6": "6.8.3"
+    },
+    "path": "upstream/qt-pyside-6.8.3-Qt-GPL-exception-1.0.txt",
+    "url": "https://raw.githubusercontent.com/qtproject/pyside-pyside-setup/v6.8.3/LICENSES/Qt-GPL-exception-1.0.txt",
+    "source": "versioned-upstream",
+    "sha256": "40678d338ce53cd93f8b22b281a2ecbcaa3ee65ce60b25ffb0c462b0530846b2",
+    "bytes": 965
+  },
+  {
+    "packages": [
+      "pyside6",
+      "pyside6-essentials",
+      "pyside6-addons",
+      "shiboken6"
+    ],
+    "package_versions": {
+      "pyside6": "6.8.3",
+      "pyside6-essentials": "6.8.3",
+      "pyside6-addons": "6.8.3",
+      "shiboken6": "6.8.3"
+    },
+    "path": "upstream/qt-pyside-6.8.3-BSD-3-Clause.txt",
+    "url": "https://raw.githubusercontent.com/qtproject/pyside-pyside-setup/v6.8.3/LICENSES/BSD-3-Clause.txt",
+    "source": "versioned-upstream",
+    "sha256": "9f0490f18656c6f2435bd14f603ef0c96434d1825615363dce43abb42ed1dcce",
+    "bytes": 1469
+  },
+  {
+    "packages": [
+      "pyside6",
+      "pyside6-essentials",
+      "pyside6-addons",
+      "shiboken6"
+    ],
+    "package_versions": {
+      "pyside6": "6.8.3",
+      "pyside6-essentials": "6.8.3",
+      "pyside6-addons": "6.8.3",
+      "shiboken6": "6.8.3"
+    },
+    "path": "upstream/qt-pyside-6.8.3-Apache-2.0.txt",
+    "url": "https://raw.githubusercontent.com/qtproject/pyside-pyside-setup/v6.8.3/LICENSES/Apache-2.0.txt",
+    "source": "versioned-upstream",
+    "sha256": "e3ba223bb1423f0aad8c3dfce0fe3148db48926d41e6fbc3afbbf5ff9e1c89cb",
+    "bytes": 10398
+  },
+  {
+    "packages": [
+      "pyfftw"
+    ],
+    "package_versions": {
+      "pyfftw": "0.15.1"
+    },
+    "path": "upstream/fftw-3.3.5-COPYRIGHT.txt",
+    "url": "https://raw.githubusercontent.com/FFTW/fftw3/fftw-3.3.5/COPYRIGHT",
+    "source": "versioned-upstream",
+    "sha256": "8a74b35d541d93fdf58a22a3d3baa48ae3edbf6d715edfeb6457c21968ae43ac",
+    "bytes": 844
+  },
+  {
+    "packages": [
+      "pyfftw"
+    ],
+    "package_versions": {
+      "pyfftw": "0.15.1"
+    },
+    "path": "upstream/fftw-3.3.5-AUTHORS.txt",
+    "url": "https://raw.githubusercontent.com/FFTW/fftw3/fftw-3.3.5/AUTHORS",
+    "source": "versioned-upstream",
+    "sha256": "14e1b1c6a7d84613c85a4c457b4167fb4927ce239ec45123e85ba5eefca4e7bb",
+    "bytes": 585
+  }
+]

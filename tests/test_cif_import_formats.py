@@ -1,10 +1,15 @@
 """Advertised CIF/MCIF imports retain atoms across GUI and numerical inputs."""
 
 from pathlib import Path
+from email import message_from_bytes
+import hashlib
+import json
 import shutil
 import subprocess
 import sys
 from sysconfig import get_platform
+import tarfile
+import tomllib
 import zipfile
 
 import numpy as np
@@ -48,10 +53,40 @@ def test_wheel_excludes_reference_library_and_stale_modules(tmp_path):
     root = Path(__file__).resolve().parents[1]
     project = tmp_path / "project"
     project.mkdir()
-    for name in ("pyproject.toml", "LICENSE"):
+    for name in ("pyproject.toml", "LICENSE", "COPYRIGHT", "README.md",
+                 "MANIFEST.in", "THIRD_PARTY_NOTICES.md"):
         shutil.copyfile(root / name, project / name)
+    for name in ("licenses", "third_party_licenses"):
+        shutil.copytree(root / name, project / name, ignore=shutil.ignore_patterns("__pycache__"))
     shutil.copytree(root / "src", project / "src", ignore=shutil.ignore_patterns("__pycache__", "*.egg-info"))
     shutil.copytree(root / "configs", project / "configs")
+    local_references = [
+        "docs/references/cad-library/vendor/original.pdf",
+        "docs/references/cad-library/vendor/original.html",
+        "docs/references/cad-library/vendor/page-01.png",
+        "docs/references/ceos_dcorprime/local-screen.jpg",
+        "docs/references/local-only/private-note.txt",
+        "output/references/probe-corrector/local-paper.pdf",
+    ]
+    for name in local_references:
+        path = project / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("private reading copy", encoding="utf-8")
+    # Exclusions must win even if an earlier manifest collected all docs.
+    manifest = project / "MANIFEST.in"
+    manifest.write_text("recursive-include docs/references *\nrecursive-include output/references *\n"
+                        + manifest.read_text(encoding="utf-8"), encoding="utf-8")
+    config = tomllib.loads((project / "pyproject.toml").read_text(encoding="utf-8"))
+    license_paths = {p for pattern in config["project"]["license-files"]
+                     for p in project.glob(pattern) if p.is_file()}
+    license_bytes = {p.relative_to(project).as_posix(): p.read_bytes() for p in license_paths}
+    assert {"LICENSE", "COPYRIGHT", "THIRD_PARTY_NOTICES.md", "third_party_licenses/inventory.json"} <= set(license_bytes)
+    inventory = json.loads(license_bytes["third_party_licenses/inventory.json"])
+    for package in inventory["packages"]:
+        for notice in package["notice_files"]:
+            data = license_bytes["third_party_licenses/" + notice["path"]]
+            assert len(data) == notice["bytes"]
+            assert hashlib.sha256(data).hexdigest() == notice["sha256"]
     # Ordinary incremental builds used to package deleted modules from build/
     # even though they no longer exist in src/. Include an interrupted wheel
     # staging tree as well as the previous build library.
@@ -62,10 +97,12 @@ def test_wheel_excludes_reference_library_and_stale_modules(tmp_path):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("stale build output", encoding="utf-8")
     completed = subprocess.run(
-        [sys.executable, "-c", "from setuptools.build_meta import build_wheel; build_wheel('dist')"],
-        cwd=project, capture_output=True, text=True, timeout=60,
+        [sys.executable, "-c", "from setuptools.build_meta import build_sdist, build_wheel; build_sdist('dist'); build_wheel('dist')"],
+        cwd=project, capture_output=True, text=True, timeout=120,
     )
-    assert completed.returncode == 0, completed.stdout + completed.stderr
+    build_log = completed.stdout + completed.stderr
+    (tmp_path / "package-build.log").write_text(build_log, encoding="utf-8")
+    assert completed.returncode == 0, build_log[-6000:]
     wheel, = (project / "dist").glob("*.whl")
     with zipfile.ZipFile(wheel) as archive:
         expected = {p.relative_to(project / "src").as_posix(): p.read_bytes()
@@ -77,6 +114,21 @@ def test_wheel_excludes_reference_library_and_stale_modules(tmp_path):
             assert archive.read(name) == original
         assert "temsim/gui/assets/retired.svg" not in archive.namelist()
         assert not any("reference_samples" in name for name in archive.namelist())
+        assert not any("docs/references/" in name or "output/references/" in name for name in archive.namelist())
+        metadata_name, = (name for name in archive.namelist() if name.endswith(".dist-info/METADATA"))
+        metadata = message_from_bytes(archive.read(metadata_name))
+        assert metadata["License-Expression"] == "GPL-3.0-only"
+        assert set(metadata.get_all("License-File")) == set(license_bytes)
+        license_root = metadata_name.rsplit("/", 1)[0] + "/licenses/"
+        for name, original in license_bytes.items():
+            assert archive.read(license_root + name) == original
+    source, = (project / "dist").glob("*.tar.gz")
+    with tarfile.open(source) as archive:
+        members = {member.name.split("/", 1)[1]: member for member in archive.getmembers()
+                   if member.isfile() and "/" in member.name}
+        assert not set(local_references).intersection(members)
+        for name, original in license_bytes.items():
+            assert archive.extractfile(members[name]).read() == original
 
 
 def test_mcif_scan_sampling_hint_and_match_grid_action(qtbot, tmp_path, monkeypatch):

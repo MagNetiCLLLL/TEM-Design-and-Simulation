@@ -436,7 +436,7 @@ GitHub 的 Windows CPU runner 使用 `--allow-gpu-skips`：`acceptance_gpu.py` �
 | --- | ---: | --- |
 | [.gitattributes](../.gitattributes) | 2 | Git 文件属性与科学数据字节约定 |
 | [.gitignore](../.gitignore) | 28 | 本地环境、缓存与生成产物排除规则 |
-| [LICENSE](../LICENSE) | 21 | MIT 许可证 |
+| [LICENSE](../LICENSE) | 674 | GNU GPLv3 完整许可文本；本项目采用 GPL-3.0-only，见 COPYRIGHT 与 THIRD_PARTY_NOTICES.md |
 | [README.md](../README.md) | 52 | 文档：TEM Design & Simulation |
 | [main.py](../main.py) | 8 | PyCharm-friendly application entry point. |
 | [pyproject.toml](../pyproject.toml) | 86 | 操作配置/依赖构建声明 |
