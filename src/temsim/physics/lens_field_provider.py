@@ -306,6 +306,15 @@ def _part_geometry_data(part) -> dict[str, object]:
             result[name] = value
     data = dict(getattr(part, "data", {}))
     if (data.get("mechanical_profile") == "magnetic_pole_piece"
+            and part.key in {"condenser_lens_1_lower_pole", "condenser_lens_2_upper_pole"}
+            and "magnetic_radial_profile_mm" not in data
+            and data.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing"):
+        # These two faces belong to the shared C1/C2 cartridge. Older FEM
+        # maps interpreted their optical names as an ordinary pole pair and
+        # reversed their material contours. Invalidate only that interpretation.
+        from temsim.pole_geometry import pole_face_at_end
+        result["resolved_pole_face_at_end"] = pole_face_at_end(data, key=part.key)
+    if (data.get("mechanical_profile") == "magnetic_pole_piece"
             and "pole_face_land_axial_thickness_mm" in data
             and "magnetic_radial_profile_mm" not in data
             and data.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing"):

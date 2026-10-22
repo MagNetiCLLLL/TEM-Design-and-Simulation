@@ -1,5 +1,6 @@
 """Cache configuration persistence without physical models or calculations."""
 from dataclasses import replace
+from pathlib import Path
 
 import pytest
 from PySide6.QtCore import QSettings
@@ -13,12 +14,14 @@ def settings(tmp_path):
     return QSettings(str(tmp_path / "cache.ini"), QSettings.Format.IniFormat)
 
 
-@pytest.mark.parametrize("helper, new_application, old_application", [
-    ("application_settings", "TEMForge", "TEM Simulator v2"),
-    ("recorder_settings", "TEMForge Instrument Recorder", "Instrument Recorder"),
+@pytest.mark.parametrize("helper, new_application, old_organization, old_application", [
+    ("application_settings", "TEM Design & Simulation", "TEM Simulator", "TEM Simulator v2"),
+    ("recorder_settings", "TEM Design & Simulation Instrument Recorder", "TEM Simulator", "Instrument Recorder"),
+    ("application_settings", "TEM Design & Simulation", "TEMForge", "TEMForge"),
+    ("recorder_settings", "TEM Design & Simulation Instrument Recorder", "TEMForge", "TEMForge Instrument Recorder"),
 ])
 def test_branding_import_preserves_settings_without_overwriting_or_resurrecting(
-    tmp_path, monkeypatch, helper, new_application, old_application,
+    tmp_path, monkeypatch, helper, new_application, old_organization, old_application,
 ):
     from PySide6 import QtCore
     from temsim import branding
@@ -27,14 +30,14 @@ def test_branding_import_preserves_settings_without_overwriting_or_resurrecting(
         return QSettings(str(tmp_path / organization / f"{application}.ini"),
                          QSettings.Format.IniFormat)
 
-    legacy = isolated_settings("TEM Simulator", old_application)
+    legacy = isolated_settings(old_organization, old_application)
     geometry = QtCore.QByteArray(b"\x00saved-window-geometry\xff")
     legacy.setValue("geometry", geometry)
     legacy.setValue("output", str(tmp_path / "recordings"))
     legacy.setValue("workspace_layouts/v1/active", "alignment")
     preferences = replace(cache.CachePreferences(), high_cache_budget_bytes=12 * cache.GIB)
     cache.save_cache_preferences(legacy, preferences, 64 * cache.GIB)
-    current = isolated_settings("TEMForge", new_application)
+    current = isolated_settings("TEM Design & Simulation", new_application)
     current.setValue("workspace_layouts/v1/active", "my-new-layout")
     current.sync()
     monkeypatch.setattr(QtCore, "QSettings", isolated_settings)
@@ -55,6 +58,161 @@ def test_branding_import_preserves_settings_without_overwriting_or_resurrecting(
     reopened = getattr(branding, helper)()
     assert not reopened.contains("geometry")
     assert reopened.value("workspace_layouts/v1/active") == "my-new-layout"
+
+
+@pytest.mark.parametrize("helper, previous_app, oldest_app", [
+    ("application_settings", "TEMForge", "TEM Simulator v2"),
+    ("recorder_settings", "TEMForge Instrument Recorder", "Instrument Recorder"),
+])
+@pytest.mark.parametrize("reset_all", [False, True])
+def test_latest_brand_import_does_not_resurrect_settings_from_an_older_brand(
+    tmp_path, monkeypatch, helper, previous_app, oldest_app, reset_all,
+):
+    from PySide6 import QtCore
+    from temsim import branding
+
+    def isolated_settings(organization, application):
+        return QSettings(str(tmp_path / organization / f"{application}.ini"),
+                         QSettings.Format.IniFormat)
+
+    oldest = isolated_settings("TEM Simulator", oldest_app)
+    oldest.setValue("geometry", "deleted-in-TEMForge")
+    oldest.setValue("output", "obsolete-output")
+    oldest.sync()
+    previous = isolated_settings("TEMForge", previous_app)
+    previous.setValue("branding/preferences_imported_v1", True)
+    if not reset_all:
+        previous.setValue("output", "latest-output")
+    previous.sync()
+    before = {key: previous.value(key) for key in previous.allKeys()}
+    monkeypatch.setattr(QtCore, "QSettings", isolated_settings)
+
+    imported = getattr(branding, helper)()
+    assert not imported.contains("geometry")
+    assert imported.value("output") == (None if reset_all else "latest-output")
+    assert not imported.contains("branding/preferences_imported_v1")
+    assert imported.value(branding._MIGRATION_KEY, type=bool)
+    assert {key: previous.value(key) for key in previous.allKeys()} == before
+
+
+def _saved_library(root, name):
+    from temsim.result_library import ResultLibrary
+
+    library = ResultLibrary(root)
+    package = library.allocate_path()
+    package.write_bytes(b"Result-library path fixture; not a calculation payload.")
+    entry = library.remember(name, {
+        "path": str(package), "identity": "a" * 64, "_package_digest": "b" * 64,
+        "quality": "Preview", "target_z_mm": 1000., "resumable_through_z_mm": 1000.,
+        "saved_at_utc": "2026-10-22T00:00:00+00:00",
+    })
+    library.set_startup(entry["id"])
+    return library, entry
+
+
+@pytest.mark.parametrize("legacy_cache", [False, True])
+@pytest.mark.parametrize("current_cache", [False, True])
+@pytest.mark.parametrize("empty_current_library", [False, True])
+@pytest.mark.parametrize("previous_name", ["TEMForge", "TEM Simulator v2"])
+def test_saved_results_and_startup_survive_independent_cache_directories(
+    tmp_path, monkeypatch, legacy_cache, current_cache, empty_current_library, previous_name,
+):
+    from temsim.branding import application_result_library_root
+    from temsim.result_library import ResultLibrary
+
+    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
+    legacy, entry = _saved_library(tmp_path / previous_name / "saved_results", "Old result")
+    index_before = legacy.index_path.read_bytes()
+    package_before = Path(entry["path"]).read_bytes()
+    current = tmp_path / "TEM Design & Simulation" / "saved_results"
+    for application, enabled in ((previous_name, legacy_cache), ("TEM Design & Simulation", current_cache)):
+        if enabled:
+            (tmp_path / application / "high_accuracy_artifacts").mkdir(parents=True)
+    if empty_current_library:
+        current.mkdir(parents=True, exist_ok=True)
+
+    selected = ResultLibrary(application_result_library_root())
+    assert selected.root == legacy.root
+    assert selected.entries() == (entry,)
+    assert selected.startup_entry() == entry
+    assert legacy.index_path.read_bytes() == index_before
+    assert Path(entry["path"]).read_bytes() == package_before
+    assert not (current / "index.json").exists()
+    assert current.exists() == empty_current_library
+
+
+@pytest.mark.parametrize("current_contents", ["saved", "empty", "corrupt"])
+def test_current_saved_index_is_authoritative_even_when_empty_or_corrupt(
+    tmp_path, monkeypatch, current_contents,
+):
+    from temsim.branding import application_result_library_root
+    from temsim.result_library import ResultLibrary
+
+    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
+    legacy, _ = _saved_library(tmp_path / "TEM Simulator v2" / "saved_results", "Old result")
+    current, entry = _saved_library(tmp_path / "TEM Design & Simulation" / "saved_results", "New result")
+    if current_contents == "empty":
+        current.index_path.write_text(
+            '{"schema":"temsim-result-library-v1","entries":[],"startup_entry_id":null}',
+            encoding="utf-8",
+        )
+    elif current_contents == "corrupt":
+        current.index_path.write_text("broken", encoding="utf-8")
+    before = {root.index_path: root.index_path.read_bytes() for root in (legacy, current)}
+
+    assert application_result_library_root() == current.root
+    if current_contents == "corrupt":
+        with pytest.raises(ValueError, match="Malformed result library index"):
+            ResultLibrary(application_result_library_root())
+    else:
+        selected = ResultLibrary(application_result_library_root())
+        assert selected.entries() == ((entry,) if current_contents == "saved" else ())
+        assert selected.startup_entry() == (entry if current_contents == "saved" else None)
+    assert all(path.read_bytes() == content for path, content in before.items())
+
+
+@pytest.mark.parametrize("previous_contents", ["missing", "empty", "saved", "corrupt"])
+def test_saved_library_checks_legacy_indexes_in_order_without_hiding_old_results(
+    tmp_path, monkeypatch, previous_contents,
+):
+    from temsim.branding import application_result_library_root
+    from temsim.result_library import ResultLibrary
+
+    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
+    oldest, _ = _saved_library(tmp_path / "TEM Simulator v2" / "saved_results", "Oldest")
+    previous = tmp_path / "TEMForge" / "saved_results"
+    previous.mkdir(parents=True)
+    current = tmp_path / "TEM Design & Simulation" / "saved_results"
+    current.mkdir(parents=True)
+    if previous_contents != "missing":
+        library, _ = _saved_library(previous, "Previous")
+        if previous_contents == "empty":
+            library.index_path.write_text(
+                '{"schema":"temsim-result-library-v1","entries":[],"startup_entry_id":null}',
+                encoding="utf-8",
+            )
+        elif previous_contents == "corrupt":
+            library.index_path.write_text("broken", encoding="utf-8")
+    assert application_result_library_root() == (oldest.root if previous_contents == "missing" else previous)
+    if previous_contents == "corrupt":
+        with pytest.raises(ValueError, match="Malformed result library index"):
+            ResultLibrary(application_result_library_root())
+    assert not (current / "index.json").exists()
+
+
+@pytest.mark.parametrize("local_appdata", [True, False])
+def test_fresh_result_library_resolution_does_not_create_storage(tmp_path, monkeypatch, local_appdata):
+    from temsim.branding import application_result_library_root
+
+    monkeypatch.setattr(Path, "home", classmethod(lambda cls: tmp_path))
+    if local_appdata:
+        monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
+        base = tmp_path
+    else:
+        monkeypatch.delenv("LOCALAPPDATA", raising=False)
+        base = tmp_path / ".cache"
+    assert application_result_library_root() == base / "TEM Design & Simulation" / "saved_results"
+    assert not list(tmp_path.iterdir())
 
 
 @pytest.mark.parametrize("ram_gib", [1, 2, 4, 8, 16, 32, 128])

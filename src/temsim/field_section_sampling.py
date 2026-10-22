@@ -1,0 +1,128 @@
+"""Bounded, source-aware longitudinal sampling; no field evaluation or solves.
+
+The returned nonuniform tensor grid retains explicit axes for strength hatching.
+Source bounds guide sample placement only; physical masks and provider validity
+remain the caller's responsibility. All coordinates are metres.
+"""
+from __future__ import annotations
+
+import numpy as np
+
+from temsim.field_density_texture import from_longitudinal, to_longitudinal
+
+
+def _section_interval(bounds, angle_deg):
+    """Intersect a global enclosing box with V=0, returning U/Z bounds."""
+    bounds = np.asarray(bounds, dtype=float)
+    if bounds.shape != (2, 3) or not np.isfinite(bounds).all():
+        return None
+    direction = np.array([np.cos(np.deg2rad(angle_deg)), np.sin(np.deg2rad(angle_deg))])
+    low, high = -np.inf, np.inf
+    for axis, component in enumerate(direction):
+        if abs(component) < 1e-14:
+            if not bounds[0, axis] <= 0. <= bounds[1, axis]:
+                return None
+        else:
+            ends = bounds[:, axis] / component
+            low, high = max(low, min(ends)), min(high, max(ends))
+    if high <= low or bounds[1, 2] <= bounds[0, 2]:
+        return None
+    return np.array([low, bounds[0, 2]]), np.array([high, bounds[1, 2]])
+
+
+def _axis(low, high, preferred, secondary, regular, limit):
+    """Keep bounds and ordered anchors; fill remaining slots across the span."""
+    chosen = [float(low), float(high)]
+    tolerance = 64 * np.finfo(float).eps * max(abs(low), abs(high), high-low, 1e-300)
+    for group in (preferred, secondary):
+        candidates = np.unique([float(value) for value in group
+                                if np.isfinite(value) and low <= value <= high])
+        # If an unusually large assembly exceeds the budget, spread retained
+        # anchors over the column instead of dropping its downstream end.
+        available = limit-len(chosen)
+        if len(candidates) > available > 0:
+            candidates = candidates[np.unique(np.linspace(0, len(candidates)-1, available, dtype=int))]
+        for value in candidates:
+            if len(chosen) >= limit:
+                break
+            if min(abs(value-old) for old in chosen) > tolerance:
+                chosen.append(float(value))
+    candidates = np.unique(np.r_[regular, np.linspace(low, high, limit)])
+    while len(chosen) < limit and len(candidates):
+        distance = np.min(np.abs(candidates[:, None]-np.asarray(chosen)), axis=1)
+        index = int(np.argmax(distance))
+        if distance[index] <= tolerance:
+            break
+        chosen.append(float(candidates[index]))
+        candidates = np.delete(candidates, index)
+    return np.sort(chosen)
+
+
+def longitudinal_field_grid(points_m, sources, *, angle_deg=0., component_centres=(), max_points=1600):
+    """Refine a visible U-Z window around captured source supports.
+
+    Uses the complete source catalogue, independently of checked contributions.
+    ``component_centres`` contains (key, global Z) for captured physical parts,
+    including individual lenses in an inseparable joint magnetic circuit.
+    At most 17 transverse rows leave room for thin axial features, with a hard
+    1600-point cap for the full grid *before* physical-envelope masking.
+    """
+    points = np.asarray(points_m, dtype=float)
+    if not len(points):
+        return points.reshape(0, 3), None
+    local = to_longitudinal(points, angle_deg)
+    u_regular, z_regular = np.unique(local[:, 0]), np.unique(local[:, 2])
+    if len(u_regular) < 2 or len(z_regular) < 2:
+        return points, None
+    budget = min(1600, int(max_points))
+    if budget < 4:
+        return np.empty((0, 3)), None
+    low = np.array([u_regular[0], z_regular[0]])
+    high = np.array([u_regular[-1], z_regular[-1]])
+    u_centres, z_centres, u_near, z_near = [], [], [], []
+    component_keys = set()
+    intervals = []
+    for source in sources:
+        # Unsupported sources also need positions: their samples must expose
+        # unknown regions rather than letting a thin missing model disappear.
+        component_keys.update(getattr(source, "component_keys", ()))
+        native = getattr(source, "_magnetic", ())
+        # A joint source may span multiple physical lenses. Keep their native
+        # supports as well as the common source envelope.
+        for item in native or (source,):
+            bounds = getattr(item, "bounds_m", None)
+            if bounds is None:
+                continue
+            interval = _section_interval(bounds, angle_deg)
+            if interval is None:
+                continue
+            start, end = interval
+            if np.any(end < low) or np.any(start > high):
+                continue
+            centre = (start+end)*.5
+            if low[1] <= centre[1] <= high[1]:
+                z_centres.append(centre[1])
+            z_near.extend((start[1]*.75+end[1]*.25, start[1]*.25+end[1]*.75))
+            if low[0] <= centre[0] <= high[0]:
+                u_centres.append(centre[0])
+                intervals.append((end[0]-start[0], centre[0]))
+    for key, z in component_centres:
+        if key in component_keys and low[1] <= z <= high[1]:
+            z_centres.append(float(z))
+    # Capture the narrowest supported near-axis structure, including nonzero
+    # multipole fields which vanish exactly on the axis. Never move a field.
+    if intervals:
+        width, centre = min(intervals)
+        u_near.extend((centre-width*.25, centre+width*.25))
+    if low[0] <= 0. <= high[0]:
+        u_centres.insert(0, 0.)
+    u_count = min(17, max(7, len(u_regular)), max(2, budget//2))
+    # Small local views need no full-budget sampling. Allocate additional
+    # columns only for source centres and their immediate neighbourhoods.
+    z_count = min(budget//u_count, max(len(z_regular), len(set(z_centres+z_near))+2))
+    u = _axis(low[0], high[0], ([0.] if low[0] <= 0. <= high[0] else [])+u_near,
+              u_centres, u_regular, u_count)
+    z = _axis(low[1], high[1], z_centres, z_near, z_regular, z_count)
+    uu, zz = np.meshgrid(u, z, indexing="ij")
+    result = from_longitudinal(np.column_stack((uu.ravel(), np.zeros(uu.size), zz.ravel())), angle_deg)
+    return result, (u, z)

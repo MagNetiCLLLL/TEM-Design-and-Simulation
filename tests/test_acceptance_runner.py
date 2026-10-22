@@ -166,7 +166,7 @@ def test_ci_runs_every_declared_scope_and_retains_failure_evidence():
     wheel = next(step for step in cpu_steps if step.get("id") == "wheel")
     assert "$env:RUNNER_TEMP" in wheel["run"] and "[guid]::NewGuid()" in wheel["run"]
     assert '$Wheels.Count -ne 1' in wheel["run"]
-    assert 'temforge-*.whl' in wheel["run"]
+    assert 'tem_design_simulation-*.whl' in wheel["run"]
     assert 'pip check' in wheel["run"]
     smoke = next(step for step in cpu_steps if ' -I ' in step.get("run", ""))
     assert 'Push-Location $env:INSTALL_ROOT' in smoke["run"]

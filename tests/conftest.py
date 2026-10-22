@@ -10,6 +10,19 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 _qt_cleanup_pending = False
 
 
+@pytest.fixture(autouse=True)
+def isolated_gui_storage(request):
+    """Never discover a user's saved/startup results when constructing a GUI.
+
+    Calculation-cache and result-library roots are independent. Isolate their
+    common application-data base, including tests that only stub the cache.
+    Individual path-compatibility fixtures may still override this environment.
+    """
+    if "qapp" in request.fixturenames:
+        root = request.getfixturevalue("tmp_path") / "local-app-data"
+        request.getfixturevalue("monkeypatch").setenv("LOCALAPPDATA", str(root))
+
+
 @pytest.hookimpl(tryfirst=True)
 def pytest_runtest_setup(item):
     """Release the previous Qt test's fixture cycles before creating new views.

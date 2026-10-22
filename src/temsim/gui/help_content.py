@@ -218,11 +218,19 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         <b>q(E + v × B)</b> with the negative electron charge. The selected energy
         is a local test condition, not the final beam energy applied everywhere
         in the accelerating gun. Selection changes this diagnostic only.</p>
-        <p>Arrow reference values stay fixed across recalculations so strength
-        changes remain visible. Use <b>Use current peaks</b> to rescale explicitly.
-        Hollow squares mean unavailable samples; circled dots and crosses show
-        positive and negative components along the named section-normal axis.
-        Dashed boxes show model support, not physical coil outlines.</p>
+        <p><b>Auto scale</b> fits each quantity to its current sampled peak.
+        Select <b>Fixed scale</b> to retain references across recalculations and
+        zoom for comparisons. Editing a reference selects Fixed scale;
+        <b>Use current peaks</b> rescales explicitly. B is cyan, E amber, force violet.
+        Hollow squares mean unavailable samples; hollow circles mean zero;
+        diamonds mean nonzero vectors below the arrow display scale. Circled
+        dots and crosses show positive and negative components along the named
+        section-normal axis. Hover reads the actual magnitude and XYZ values.
+        Dashed boxes show physical observation envelopes, not exact coil outlines.</p>
+        <p>Whole-column sampling prioritises the axis, nearby off-axis fields
+        and thin field sources within a 1600-point CPU budget. It reuses captured
+        field providers. Unknown values remain unavailable; zero sampled values
+        do not prove the whole column has no field.</p>
         <p>Physical models use the same captured configuration as the field.
         Shared hardware is drawn once. Additional child hardware is mechanical
         context only and does not add unselected fields. Material models do not

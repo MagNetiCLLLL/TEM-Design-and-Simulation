@@ -1078,7 +1078,7 @@ def test_main_window_contains_the_toml_backed_workspace(qtbot):
     window = MainWindow()
     qtbot.addWidget(window)
 
-    assert window.windowTitle() == "TEMForge — Interactive TEM/STEM Simulation and Design Workbench"
+    assert window.windowTitle() == "TEM Design & Simulation — An Interactive TEM/STEM Platform for Education and Research"
     assert window.centralWidget().objectName() == "visualizationWorkspace"
     assert window.findChild(QDockWidget, "instrumentDock") is not None
     assert window.findChild(QDockWidget, "parameterDock") is None

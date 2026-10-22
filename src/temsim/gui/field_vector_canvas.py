@@ -72,6 +72,7 @@ class FieldVectorCanvas(QWidget):
         self._visible_sample_indices = np.empty(0, dtype=int)
         self._source_regions = ()
         self.references = {"B": None, "E": None, "F": None}
+        self.auto_reference = False
         self._message = "Calculate the column, then select sources."
         self.setToolTip("Left or middle drag: pan, as in Ray Diagram. "
                         "Right drag: scale horizontal and vertical axes independently about the press position. "
@@ -143,18 +144,33 @@ class FieldVectorCanvas(QWidget):
         if self._sample is None:
             return "B [T] | E [V/m] | electron force [N]"
         labels = []
+        colours = {"B": "cyan", "E": "amber", "F": "violet"}
         for label, unit, values, valid, _colour in fields:
             good = valid & np.isfinite(values).all(axis=1)
-            peak = float(np.max(np.linalg.norm(values[good], axis=1))) if np.any(good) else None
+            norms = np.linalg.norm(values[good], axis=1)
+            peak = float(np.max(norms)) if len(norms) else None
             reference = self.references[label]
             kind = "hatch" if self._render_style == "density" else "arrow"
             reference_text = f"; {kind} ref {reference:.5g}" if reference is not None else "; reference pending"
-            labels.append((f"{label} [{unit}]: max {peak:.5g}" if peak is not None
-                           else f"{label} [{unit}]: unavailable") + reference_text)
-        text = " | ".join(labels)
+            warning = ""
+            if self._render_style == "arrows" and reference:
+                clipped = int(np.count_nonzero(norms > 4.*reference))
+                if clipped:
+                    warning = f"; {clipped}/{len(norms)} above arrow limit — rescale"
+            if peak == 0.:
+                warning += "; sampled values are zero, not a whole-column guarantee"
+            labels.append((f"{label} [{unit}] ({colours[label]}): max {peak:.5g}" if peak is not None
+                           else f"{label} [{unit}] ({colours[label]}): unavailable") + reference_text + warning)
+        text = ("Auto scale (current samples) | " if self.auto_reference else "Fixed scale (comparison) | ") + " | ".join(labels)
         if self._render_style == "density":
-            text += " | Full XYZ magnitude; denser = stronger; fixed ref; saturation at 2x ref"
+            text += " | Full XYZ magnitude; denser = stronger; saturation at 2x ref"
         return text
+
+    @property
+    def symbol_legend(self):
+        normal = "Z" if self._section == "XY" else "V"
+        return (f"□ unavailable · ○ zero · ◇ below scale · ⊙ +{normal} / ⊗ -{normal} "
+                "· arrow limit 4× ref")
 
     def clear(self, message="No current field samples."):
         # Qt keeps a shown tooltip independently of the canvas sample. Clear
@@ -208,7 +224,7 @@ class FieldVectorCanvas(QWidget):
             self._model_triangle_cache.clear()
         self._update_view_bounds()
         self._section = str(section)
-        self.use_current_peaks(only_unset=True)
+        self.use_current_peaks(only_unset=not self.auto_reference)
         self._screen_points = np.empty((0, 2))
         self._visible_sample_indices = np.empty(0, dtype=int)
         self.update()
@@ -346,6 +362,28 @@ class FieldVectorCanvas(QWidget):
             raise ValueError("Field strength reference must be finite and positive")
         self.references[key] = value
         self.update()
+
+    def set_automatic_reference(self, enabled):
+        """Choose independent current-sample scales or retain comparison scales.
+
+        Only the display reference changes. Field values, sample positions and
+        field-provider work are untouched, including when switching to Fixed.
+        """
+        self.auto_reference = bool(enabled)
+        if self.auto_reference:
+            self.use_current_peaks()
+        self.update()
+
+    @staticmethod
+    def _glyph_kind(value, available, length, normal):
+        """Keep missing, exactly zero and subpixel nonzero values distinct."""
+        if not available:
+            return "unavailable"
+        if not np.any(value):
+            return "zero"
+        if length > .8:
+            return "arrow"
+        return "normal" if normal != 0. else "below_scale"
 
     def _display_vectors(self, values, valid, basis, span, size, max_length, reference):
         """Affine directions and fixed physical strength, capped at 4× ref."""
@@ -708,6 +746,21 @@ class FieldVectorCanvas(QWidget):
         projected[..., :2] = projected[..., :2] * size + origin
         return projected
 
+    def axis_guide(self, plot=None):
+        """Screen segment of the true column axis in a longitudinal section.
+
+        This is a coordinate guide, not a sampled field or a component axis.
+        The global X=Y=0 line stays U=0 under the shared section rotation.
+        """
+        if self._sample is None or self._section != "UZ":
+            return None
+        plot = self._plot_rect() if plot is None else plot
+        z = float(np.mean(self._view_bounds_m[:, 2]))
+        y = float(self._project_positions([[0., 0., z]], plot)[0, 1])
+        if not np.isfinite(y) or not plot.top() <= y <= plot.bottom():
+            return None
+        return np.array([[plot.left(), y], [plot.right(), y]])
+
     def _physical_sections(self):
         """Actual mesh cuts at the sampled plane, returned as global XYZ m."""
         if self._section == "3D":
@@ -948,8 +1001,9 @@ class FieldVectorCanvas(QWidget):
 
         Opposite out-of-plane signs receive distinct representatives in the
         same screen cell, including when 3D samples project onto each other.
-        Unavailable values keep their own marker class. Only glyph density is
-        reduced; sample validity, values and physical references stay intact.
+        Unavailable and zero values keep their own marker classes. Nonzero
+        representatives take priority within the bounded display budget, so a
+        narrow lens field cannot disappear behind nearby zero samples.
         """
         plot = self._plot_rect() if plot is None else plot
         projected = np.asarray(projected)
@@ -962,10 +1016,19 @@ class FieldVectorCanvas(QWidget):
             return np.empty(0, dtype=int)
         basis = self._basis()
         classes = []
+        nonzero_count = np.zeros(len(points), dtype=int)
+        strength = np.zeros(len(points))
         for _label, _unit, values, valid, _colour in self._fields():
             available = np.asarray(valid, dtype=bool) & np.isfinite(values).all(axis=1)
             normal = np.asarray(values) @ basis[2]
-            classes.append(np.where(available, np.where(normal > 0, 1, np.where(normal < 0, -1, 0)), 2))
+            nonzero = available & np.any(values != 0., axis=1)
+            nonzero_count += nonzero
+            norms = np.linalg.norm(np.where(available[:, None], values, 0.), axis=1)
+            reference = self.references[_label]
+            if reference:
+                strength = np.maximum(strength, np.minimum(norms/reference, 4.))
+            classes.append(np.where(available,
+                np.where(normal > 0, 1, np.where(normal < 0, -1, np.where(nonzero, 3, 0))), 2))
         classes = np.column_stack(classes)
         spacing = max(1., float(cell_px))
         origin = np.array([plot.left(), plot.top()])
@@ -974,7 +1037,7 @@ class FieldVectorCanvas(QWidget):
             centres = origin + (cells+.5)*spacing
             distances = np.sum((points[candidates]-centres)**2, axis=1)
             depth = projected[candidates, 2] if projected.shape[1] > 2 else np.zeros(len(candidates))
-            order = np.lexsort((candidates, -depth, distances))
+            order = np.lexsort((candidates, -depth, distances, -strength[candidates], -nonzero_count[candidates]))
             chosen = {}
             for offset in order:
                 index = int(candidates[offset])
@@ -985,7 +1048,7 @@ class FieldVectorCanvas(QWidget):
                 return np.array(sorted(chosen.values()), dtype=int)
             spacing *= max(1.1, math.sqrt(len(chosen)/max_glyphs))
         # A hard limit also bounds unusual imported data with many overlaps.
-        return np.array(sorted(chosen.values())[:max_glyphs], dtype=int)
+        return np.array(sorted(list(chosen.values())[:max_glyphs]), dtype=int)
 
     def pick_component_at(self, position):
         """Pick actual visible geometry, never a field-support bounding box."""
@@ -1077,6 +1140,17 @@ class FieldVectorCanvas(QWidget):
             if len(self._source_regions) <= 5:
                 painter.drawText(QPointF(*outline[0]) + QPointF(3, -3), f"{label}: model bounds")
         self._draw_physical_models(painter, plot)
+        guide = self.axis_guide(plot)
+        if guide is not None:
+            # Distinguish the optical coordinate axis from closed, grey
+            # physical-envelope outlines without covering the field arrows.
+            axis_colour = QColor(125, 180, 202, 125)
+            painter.setPen(QPen(axis_colour, .9, Qt.PenStyle.DashDotLine))
+            painter.drawLine(QPointF(*guide[0]), QPointF(*guide[1]))
+            axis_colour.setAlpha(190)
+            painter.setPen(axis_colour)
+            label_y = guide[0, 1]-5. if guide[0, 1] >= plot.top()+17. else guide[0, 1]+14.
+            painter.drawText(QPointF(plot.left()+5., label_y), "U = 0")
         # A fixed reference has a fixed pixel length regardless of sample
         # density, so refining a viewport cannot imitate a weaker field.
         max_length = 20.
@@ -1084,14 +1158,16 @@ class FieldVectorCanvas(QWidget):
         for field_index, (_label, _unit, values, valid, colour) in enumerate(arrow_fields):
             values = np.asarray(values)
             valid = np.asarray(valid, dtype=bool) & np.isfinite(values).all(axis=1)
-            norms = np.linalg.norm(values[valid], axis=1)
-            peak = float(norms.max()) if len(norms) else 0.
             reference = self.references[_label]
             directions = self._display_vectors(values, valid, basis, span, size, max_length, reference)
             painter.setPen(QPen(colour, 1.15))
             for index in glyph_indices:
                 point = points[index]
-                if not valid[index]:
+                vector = directions[index]
+                length = np.linalg.norm(vector)
+                normal = float(values[index] @ basis[2]) if valid[index] else 0.
+                kind = self._glyph_kind(values[index], valid[index], length, normal)
+                if kind == "unavailable":
                     delta = 2.2
                     offset = (field_index - .5) * 3.5 if self._mode == "overlay" else 0.
                     x, y = point + offset
@@ -1100,9 +1176,20 @@ class FieldVectorCanvas(QWidget):
                     drawn_indices.add(int(index))
                     painter.setPen(QPen(colour, 1.15))
                     continue
-                vector = directions[index]
-                length = np.linalg.norm(vector)
-                if length > .8:
+                if kind in ("zero", "below_scale"):
+                    # Offset overlapping B/E status marks without moving any
+                    # directional arrow or its physical sampling coordinate.
+                    offset = (field_index-.5)*4. if self._mode == "overlay" else 0.
+                    spot = QPointF(*(point+offset))
+                    if kind == "zero":
+                        painter.drawEllipse(spot, 1.8, 1.8)
+                    else:
+                        painter.drawPolygon(QPolygonF([
+                            spot+QPointF(0., -2.5), spot+QPointF(2.5, 0.),
+                            spot+QPointF(0., 2.5), spot+QPointF(-2.5, 0.)]))
+                    drawn_indices.add(int(index))
+                    continue
+                if kind == "arrow":
                     end = point + vector
                     painter.drawLine(QPointF(*point), QPointF(*end))
                     unit = vector / length
@@ -1111,21 +1198,18 @@ class FieldVectorCanvas(QWidget):
                     painter.drawLine(QPointF(*end), QPointF(*(end - head * unit + .45 * head * side)))
                     painter.drawLine(QPointF(*end), QPointF(*(end - head * unit - .45 * head * side)))
                     drawn_indices.add(int(index))
-                if peak > 0:
-                    normal = float(values[index] @ basis[2])
-                    if abs(normal) > 0 and reference:
-                        radius = min(8., max(.5, 3. * abs(normal) / reference))
-                        spot = QPointF(*point)
-                        painter.drawEllipse(spot, radius, radius)
-                        drawn_indices.add(int(index))
-                        if normal > 0:
-                            painter.drawPoint(spot)
-                        else:
-                            painter.drawLine(spot + QPointF(-radius*.6, -radius*.6), spot + QPointF(radius*.6, radius*.6))
-                            painter.drawLine(spot + QPointF(-radius*.6, radius*.6), spot + QPointF(radius*.6, -radius*.6))
-                elif length <= .8:
-                    painter.drawPoint(QPointF(*point))
+                if normal != 0. and reference:
+                    # A readable circled sign must not collapse to the plain
+                    # ring reserved for an exactly zero field sample.
+                    radius = min(8., max(3., 3. * abs(normal) / reference))
+                    spot = QPointF(*point)
+                    painter.drawEllipse(spot, radius, radius)
                     drawn_indices.add(int(index))
+                    if normal > 0:
+                        painter.drawPoint(spot)
+                    else:
+                        painter.drawLine(spot + QPointF(-radius*.6, -radius*.6), spot + QPointF(radius*.6, radius*.6))
+                        painter.drawLine(spot + QPointF(-radius*.6, radius*.6), spot + QPointF(radius*.6, -radius*.6))
         self._visible_sample_indices = np.array(sorted(drawn_indices), dtype=int)
         status = None
         if self._pending_section_angle is not None:
@@ -1154,13 +1238,12 @@ class FieldVectorCanvas(QWidget):
         axes = "Z [mm] / vertical U [mm] · independent display scales" if longitudinal else "X [mm] / vertical Y [mm] · axes independently scaled"
         painter.drawText(QRectF(plot.left(), plot.bottom()+21, plot.width(), 20), Qt.AlignmentFlag.AlignCenter, axes)
         painter.drawText(QRectF(8, 3, self.width()-16, 22), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, self.projection_caption)
-        normal_axis = "V" if longitudinal else "Z"
-        footer = (f"Hollow square: unavailable; dot: +{normal_axis}; cross: -{normal_axis}; "
-                  "arrows capped at 4x reference")
         if self._render_style == "density":
             footer = "Denser = stronger; grey dots = unavailable; empty = unsampled / outside. Scale: strength / ref"
-        painter.drawText(QRectF(8, self.height()-41, self.width()-16, 20), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
-                         footer)
+            painter.drawText(QRectF(8, self.height()-41, self.width()-16, 20),
+                             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, footer)
+        else:
+            self._draw_symbol_legend(painter, foreground)
         if self._render_style == "density":
             self._draw_density_key(painter, foreground)
         elif self.model_overlay_visible:
@@ -1168,6 +1251,40 @@ class FieldVectorCanvas(QWidget):
             painter.drawText(QRectF(8, self.height()-22, self.width()-16, 20), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
                              f"{qualifier}; field arrows drawn in front for visibility")
         painter.end()
+
+    def _draw_symbol_legend(self, painter, colour):
+        """Native shapes keep the key readable even without Unicode fallback."""
+        painter.save()
+        painter.setPen(QPen(colour, 1.15))
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        normal = "Z" if self._section == "XY" else "V"
+        entries = (("unavailable", "Unavailable"), ("zero", "zero"),
+                   ("small", "below scale"), ("positive", f"+{normal}"),
+                   ("negative", f"-{normal}"))
+        metrics = painter.fontMetrics()
+        x, y = 8., self.height()-31.
+        baseline = y+(metrics.ascent()-metrics.descent())*.5
+        for kind, label in entries:
+            spot = QPointF(x+4., y)
+            if kind == "unavailable":
+                painter.drawRect(QRectF(spot.x()-3., spot.y()-3., 6., 6.))
+            elif kind == "zero":
+                painter.drawEllipse(spot, 2., 2.)
+            elif kind == "small":
+                painter.drawPolygon(QPolygonF([
+                    spot+QPointF(0., -3.5), spot+QPointF(3.5, 0.),
+                    spot+QPointF(0., 3.5), spot+QPointF(-3.5, 0.)]))
+            else:
+                painter.drawEllipse(spot, 4., 4.)
+                if kind == "positive":
+                    painter.drawPoint(spot)
+                else:
+                    painter.drawLine(spot+QPointF(-2., -2.), spot+QPointF(2., 2.))
+                    painter.drawLine(spot+QPointF(-2., 2.), spot+QPointF(2., -2.))
+            painter.drawText(QPointF(x+12., baseline), label)
+            x += 12.+metrics.horizontalAdvance(label)+14.
+        painter.drawText(QPointF(x, baseline), "cap 4x ref")
+        painter.restore()
 
     @property
     def projection_caption(self):
@@ -1189,6 +1306,26 @@ class FieldVectorCanvas(QWidget):
             event.accept()
         else:
             super().mousePressEvent(event)
+
+    def sample_tooltip(self, index):
+        """Read exact SI values independently of symbol size or clipping."""
+        xyz = self._sample.points_m[index]*1000.
+        lines = [f"X={xyz[0]:.6g}, Y={xyz[1]:.6g}, Z={xyz[2]:.6g} mm"]
+        for label, unit, values, valid, _colour in self._fields():
+            value = np.asarray(values[index])
+            if not valid[index] or not np.isfinite(value).all():
+                lines.append(f"{label}: unavailable — outside model support / unmodelled; not zero")
+                continue
+            magnitude = float(np.linalg.norm(value))
+            status = " (zero at this sample)" if not np.any(value) else ""
+            reference = self.references[label]
+            if reference and magnitude > 4.*reference:
+                status += " (arrow length capped; numeric value unchanged)"
+            lines.extend((f"|{label}| = {magnitude:.6g} {unit}{status}",
+                          f"{label} XYZ = ({value[0]:.6g}, {value[1]:.6g}, {value[2]:.6g}) {unit}"))
+        lines.append("Arrow: in-plane field direction. Circled signs: section normal. "
+                     "Axis scales are independent; screen angles are not physical angles.")
+        return "\n".join(lines)
 
     def mouseReleaseEvent(self, event: QMouseEvent):
         if self._drag is None or event.button() != self._drag_button:
@@ -1246,12 +1383,7 @@ class FieldVectorCanvas(QWidget):
             nearest = int(np.argmin(distance))
             index = int(indices[nearest])
             if distance[nearest] < 144:
-                xyz = self._sample.points_m[index] * 1000
-                lines = [f"X={xyz[0]:.6g}, Y={xyz[1]:.6g}, Z={xyz[2]:.6g} mm"]
-                for label, unit, values, valid, _colour in self._fields():
-                    value = values[index]
-                    lines.append(f"{label} XYZ = ({value[0]:.6g}, {value[1]:.6g}, {value[2]:.6g}) {unit}" if valid[index] else f"{label}: outside model support / unmodelled")
-                QToolTip.showText(event.globalPosition().toPoint(), "\n".join(lines), self)
+                QToolTip.showText(event.globalPosition().toPoint(), self.sample_tooltip(index), self)
                 return
         QToolTip.hideText()
 

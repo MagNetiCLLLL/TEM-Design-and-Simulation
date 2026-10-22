@@ -266,3 +266,128 @@ def test_invalid_land_in_field_payload_without_a_source_row_key_is_a_value_error
         pole_nose_axial_length_mm=4., pole_face_land_axial_thickness_mm=4.))
     with pytest.raises(ValueError, match="pole face land"):
         _part_mask(part, np.array([.003]), np.array([.009]))
+
+
+@pytest.mark.parametrize("key, at_end, expected", [
+    ("condenser_lens_1_lower_pole", True, [True, False]),
+    ("condenser_lens_2_upper_pole", False, [False, True]),
+])
+@pytest.mark.parametrize("land", [None, 2.])
+def test_joint_c1_c2_faces_match_cad_in_global_fem_coordinates(key, at_end, expected, land):
+    from matplotlib.path import Path
+    from temsim.physics.axisymmetric_magnetostatics import _part_mask
+
+    doc = read_document(INSTRUMENT_CONFIG_ROOT/'column/C3_ProbeCorrector.toml')
+    rows = {p['key']: p for p in doc['parts']}
+    carrier = rows['c1_c2_pole_piece_cartridge']
+    assert set(carrier['magnetic_lens_keys']) == {'condenser_lens_1', 'condenser_lens_2'}
+    assert set(carrier['mechanical_cartridge_pole_keys']) == {
+        'condenser_lens_1_lower_pole', 'condenser_lens_2_upper_pole'}
+    row = deepcopy(rows[key])
+    assert row['mechanical_container_key'] == carrier['key']
+    if land is not None:
+        row[FIELD] = land
+    start, end = row['local_start_z_mm'], row['local_end_z_mm']
+    shift = 450.
+    wrapped = dict(key=key, start_z_mm=start+shift, end_z_mm=end+shift, data=row)
+    # Independent fixed observations of the shared cartridge's two faces:
+    # C1 narrows downstream, C2 narrows upstream, despite their optical names.
+    samples = np.array([[start+1., 25.], [end-1., 25.]])
+    np.testing.assert_array_equal(Path(_pole_section(row, start, end)).contains_points(samples), expected)
+    np.testing.assert_array_equal(_part_mask(wrapped, samples[:, 1]*1e-3,
+                                           (samples[:, 0]+shift)*1e-3), expected)
+    z, r = np.meshgrid(np.linspace(start+.013, end-.017, 67), np.linspace(9.613, 30.021, 53))
+    polygon = Path(_pole_section(row, start, end))
+    expected_grid = polygon.contains_points(np.c_[z.ravel(), r.ravel()]).reshape(z.shape)
+    np.testing.assert_array_equal(_part_mask(wrapped, r*1e-3, (z+shift)*1e-3), expected_grid)
+    # A passive copy must keep the same source face direction after renaming.
+    copy = {**row, 'key': 'renamed_copy', 'mechanical_part_role': 'custom_mechanical_copy',
+            'geometry_template_key': key}
+    assert _pole_section(copy, start, end) == _pole_section(row, start, end)
+    face = end if at_end else start
+    assert (face, row['mechanical_tip_diameter_mm']/2) in _pole_section(row, start, end)
+
+
+def test_c1_c2_land_mesh_uses_the_shared_cartridge_face_directions():
+    """Small material-domain solve only; not a calibrated column calculation."""
+    import json
+    from types import SimpleNamespace
+    from temsim.physics.axisymmetric_magnetostatics import solve_geometry_field_map
+
+    doc = read_document(INSTRUMENT_CONFIG_ROOT/'column/C3_ProbeCorrector.toml')
+    channels = ('condenser_lens_1', 'condenser_lens_2')
+    parts = [deepcopy(p) for p in doc['parts'] if p.get('parent_key') in channels
+             and p.get('mechanical_profile') in {'magnetic_pole_piece', 'magnetic_excitation_coil'}]
+    assert len(parts) == 4  # The same two pole faces and two current channels.
+    for part in parts:
+        if part['mechanical_profile'] == 'magnetic_pole_piece':
+            part[FIELD] = 2.
+    settings = dict(solver='axisymmetric_linear_fem', relative_permeability=50.,
+                    ampere_turns=100., radial_nodes=12, axial_nodes=16, padding_factor=2.)
+    encoded_parts = [dict(key=p['key'], start_z_mm=p['local_start_z_mm'],
+                          end_z_mm=p['local_end_z_mm'], data=p) for p in parts]
+    for channel in channels:
+        geometry = dict(lens_key=channel, lens_assembly=dict(parts=encoded_parts))
+        binding = SimpleNamespace(canonical_geometry_json=json.dumps(geometry, sort_keys=True))
+        field = solve_geometry_field_map(binding, settings)
+        # Face positions are 90/110 mm within the shared assembly. Their lands
+        # and nose shoulders must enter the mesh on the inward material side.
+        for boundary in (88., 71., 112., 132.8):
+            assert np.any(np.isclose(field.axes_m[1], boundary*1e-3, atol=1e-14, rtol=0))
+        assert all(np.isfinite(values).all() for values in field.components_t)
+
+
+@pytest.mark.parametrize('fem', [False, True])
+def test_corrected_c1_c2_orientation_invalidates_old_maps_without_changing_optics(monkeypatch, fem):
+    import json
+    from temsim.optics.column import default_state
+    from temsim.physics import lens_field_provider as fields
+
+    state = default_state()
+    channels = ('condenser_lens_1', 'condenser_lens_2')
+    keys = (*channels, 'condenser_lens_3', 'objective_lens', 'projector_lens_1')
+    if fem:
+        state.lens_field_map_descriptors = {key: dict(solver='axisymmetric_linear_fem', padding_factor=2.)
+                                            for key in channels}
+    z = np.linspace(450., 750., 31)
+    values = {key: state.condenser_system[key].magnetic_field_t(z).copy() for key in channels}
+    before_assembly = state._resolved_assembly
+    current = {key: fields.lens_geometry_binding(state, key) for key in keys}
+    for key in channels:
+        payload = json.loads(current[key].canonical_geometry_json)['lens_assembly']
+        parts = payload['parts']
+        assert sum(p['key'] == 'c1_c2_pole_piece_cartridge' for p in parts) == 1
+        all_parts = parts + payload.get('magnetostatic_neighbours', [])
+        faces = {p['key']: p['data']['resolved_pole_face_at_end']
+                 for p in all_parts if 'resolved_pole_face_at_end' in p['data']}
+        assert faces[key+('_lower_pole' if key.endswith('_1') else '_upper_pole')] is key.endswith('_1')
+        if fem:
+            assert faces == {'condenser_lens_1_lower_pole': True, 'condenser_lens_2_upper_pole': False}
+    original = fields._part_geometry_data
+
+    def old_orientation_identity(part):
+        data = original(part)
+        data.pop('resolved_pole_face_at_end', None)
+        return data
+
+    monkeypatch.setattr(fields, '_part_geometry_data', old_orientation_identity)
+    previous = {key: fields.lens_geometry_binding(state, key) for key in keys}
+    assert all(previous[key].geometry_fingerprint != current[key].geometry_fingerprint for key in channels)
+    assert all(previous[key] == current[key] for key in keys if key not in channels)
+    assert state._resolved_assembly is before_assembly
+    for key in channels:
+        np.testing.assert_array_equal(state.condenser_system[key].magnetic_field_t(z), values[key])
+
+
+@pytest.mark.parametrize('replacement', [False, True])
+def test_orientation_identity_does_not_override_explicit_geometry(replacement):
+    from types import SimpleNamespace
+    from temsim.physics.lens_field_provider import _part_geometry_data
+
+    data = dict(mechanical_profile='magnetic_pole_piece')
+    if replacement:
+        data['model_3d'] = {'base': {'kind': 'step'}}
+    else:
+        data['magnetic_radial_profile_mm'] = [[0., 10., 30.], [50., 10., 30.]]
+    part = SimpleNamespace(key='condenser_lens_1_lower_pole', data=data)
+    assert 'resolved_pole_face_at_end' not in _part_geometry_data(part)

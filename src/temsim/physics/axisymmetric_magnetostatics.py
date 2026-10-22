@@ -17,7 +17,7 @@ import math
 import numpy as np
 
 MU0 = 4e-7 * math.pi
-SOLVER_VERSION = "axisymmetric-aphi-bh-material-regions-pole-lands-v5"
+SOLVER_VERSION = "axisymmetric-aphi-bh-material-regions-pole-orientation-v6"
 
 
 def _merged_axis(values):
@@ -61,11 +61,11 @@ def _part_mask(part, r, z):
     if data.get("mechanical_profile") == "magnetic_pole_piece":
         inner = float(data["mechanical_bore_diameter_mm"]) * 0.5e-3
         tip = float(data["mechanical_tip_diameter_mm"]) * 0.5e-3
-        upper = "upper" in part["key"]
-        distance = z - start if upper else end - z
+        from temsim.pole_geometry import pole_face_at_end, pole_face_land_mm
+        face_at_end = pole_face_at_end(data, key=part["key"])
+        distance = z - start if face_at_end else end - z
         length = end - start
         nose = float(data.get("pole_nose_axial_length_mm", 0)) * 1e-3 or 0.38 * length
-        from temsim.pole_geometry import pole_face_land_mm
         land = pole_face_land_mm(data, nose*1e3)*1e-3
         taper_distance = np.maximum(length-distance-land, 0.) if land else length-distance
         outer_radius = np.minimum(outer_radius, tip + (outer - tip) * taper_distance / (nose-land))
@@ -159,12 +159,13 @@ def _solve_bound_geometry(geometry_json, settings_json):
               and "pole_face_land_axial_thickness_mm" in p["data"]):
             # Preserve the saved taper-to-land boundary on the FEM grid, just
             # as the existing explicit radial-profile knots are preserved.
-            from temsim.pole_geometry import pole_face_land_mm
+            from temsim.pole_geometry import pole_face_at_end, pole_face_land_mm
             nose = float(p["data"].get("pole_nose_axial_length_mm",
                                        .38*(p["end_z_mm"]-p["start_z_mm"])))
             land = pole_face_land_mm(p["data"], nose)
-            face = p["end_z_mm"] if "upper" in p["key"] else p["start_z_mm"]
-            sign = -1 if "upper" in p["key"] else 1
+            face_at_end = pole_face_at_end(p["data"], key=p["key"])
+            face = p["end_z_mm"] if face_at_end else p["start_z_mm"]
+            sign = -1 if face_at_end else 1
             axial_edges.extend((face+sign*value)*1e-3 for value in (nose, land))
     radial_edges = [value for value in radial_edges if 0 <= value <= radius*padding]
     axial_edges = [value for value in axial_edges if centre-half*padding <= value <= centre+half*padding]

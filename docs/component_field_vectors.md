@@ -50,12 +50,19 @@ provider queries use metres. +Z points downstream in a right-handed XYZ frame.
 
 Arrow scales and sampled extents are display settings. A visible sparse grid
 does not establish spatial convergence of the underlying field solution.
-Each quantity initializes its arrow reference from its first nonzero sample and
-then keeps that reference across snapshots. Edit B/E/F reference values or use
-**Use current peaks** to rescale deliberately. Arrows are capped at four times
-the reference for readability; the hover values and maximum remain unmodified.
-Hollow squares mark unavailable samples, while a circled dot/cross marks a
-positive/negative component along the viewing-normal axis. Dashed boxes show
+**Auto scale** starts enabled and fits B, E and force independently to their
+current sampled peaks, including after changing the observation window. Use
+**Fixed scale** when comparing excitation changes: it retains the references
+across snapshots and navigation. Editing a B/E/F reference selects Fixed scale;
+**Use current peaks** updates the references deliberately. Arrows are capped at
+four times the reference, and the legend reports samples exceeding that cap.
+The hover values and maximum remain unmodified in either mode.
+The legend identifies cyan B, amber E and violet force. Hollow squares mark
+unavailable samples, hollow circles mark valid zero values, and diamonds mark
+nonzero in-plane vectors too short to resolve at the current scale. A circled
+dot/cross marks a positive/negative component along the viewing-normal axis.
+Zero sampled values do not establish a zero field throughout the column.
+Dashed boxes show
 physical observation envelopes' enclosing boxes, not exact winding surfaces.
 
 ## Source ownership and physical limits
@@ -194,8 +201,19 @@ use cached data only. Rotation still samples the new longitudinal plane.
 A 3D volume always retains its bounded original grid
 (at most 9 × 9 × 9 locations) when rotated.
 
-Arrows use screen-space thinning to avoid overlap in the overview. Zooming
-reveals local arrows without changing their fixed SI magnitude references.
+Longitudinal grids reserve positions for U=0, nearby off-axis fields, thin
+source centres and individual physical lenses in shared sources such as C1/C2.
+They redistribute the sampling budget into a nonuniform U-Z grid instead of
+increasing it without bound. The complete grid is capped at 1600 locations;
+physical masking can reduce that number. Sampling hints use the complete
+captured source catalogue, so changing the displayed contributions does not
+move the sample locations. Source supports guide placement but never replace
+physical masks or provider validity. Explicit grid axes preserve missing rows
+and columns for hatching; the display never interpolates across those gaps.
+
+Arrows use screen-space thinning to avoid overlap in the overview, prioritising
+nonzero field samples so near-axis fields survive thinning. Zooming reveals
+local arrows; Fixed scale retains their SI magnitude references.
 Normal-direction dot/cross symbols and unavailable values retain their separate
 meanings. Hover reports the actual sampled value of a displayed glyph. Mouse
 wheel zoom keeps the physical point under the cursor stationary.
@@ -263,8 +281,9 @@ are outside the observation envelope or lack complete sampled cells.
 Missing data must not be interpreted as zero.
 
 The reference controls under **Sources and section controls** apply to both
-arrows and hatching, and remain fixed across zoom, grid refinement and snapshots.
-Use **Use current peaks** only when intentionally changing the comparison scale.
+arrows and hatching. **Auto scale** follows current sampled peaks; **Fixed scale**
+retains references across zoom, grid refinement and snapshots for comparisons.
+Use **Use current peaks** to deliberately reset the fixed comparison scale.
 Hatch spacing is independent of the numerical sampling grid and never indicates
 field direction. This is a magnitude texture, not a finite-element mesh or an
 isoline plot.

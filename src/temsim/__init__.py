@@ -1,4 +1,4 @@
-"""TEMForge application package; the stable Python import namespace is temsim."""
+"""TEM Design & Simulation; the stable Python import namespace is temsim."""
 
 __version__ = "0.1.0"
 

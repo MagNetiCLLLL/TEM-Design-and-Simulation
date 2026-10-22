@@ -13,6 +13,7 @@ from PySide6.QtGui import QAction, QActionGroup
 from PySide6.QtWidgets import QFileDialog, QInputDialog, QLabel, QPushButton
 from shiboken6 import isValid
 
+from temsim.branding import application_result_library_root
 from temsim.instrument_snapshot import decode_instrument, encode_instrument
 from temsim.particle_section_io import section_archive_summary
 from temsim.result_library import ResultLibrary
@@ -32,12 +33,11 @@ class ResultFiles(QObject):
 
     def __init__(self, window):
         super().__init__(window)
-        from temsim.gui import calculation_controller
         self.window = window
         self.library = None
         self.startup_error = None
         try:
-            self.library = ResultLibrary(calculation_controller.default_artifact_cache_root().parent / "saved_results")
+            self.library = ResultLibrary(application_result_library_root())
             self.startup_entry = self.library.startup_entry()
         except (OSError, ValueError) as exc:
             self.startup_entry = None

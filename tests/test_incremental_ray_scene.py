@@ -313,7 +313,7 @@ def test_removed_component_and_dynamic_groups_leave_no_duplicate_graphics(make_w
     assert all(reference() is None for reference in old_arrays[:-1])
 
 
-def test_changed_axial_extent_clamps_cursor_without_resetting_user_range(make_workspace):
+def test_changed_axial_extent_retains_observation_plane_and_user_range(make_workspace):
     view = make_workspace()
     view.display_result(_result(), "Preview")
     view.jump_to_ray_position(19.0, activate_tab=False)
@@ -321,8 +321,10 @@ def test_changed_axial_extent_clamps_cursor_without_resetting_user_range(make_wo
     before = _set_user_view(view)
     view.display_result(_result(end_z=16.0), "Preview")
     assert view.axial_cursor_item is cursor
-    assert cursor.value() == 16.0
-    assert view._selected_z_mm == 16.0
+    assert cursor.value() == 19.0
+    assert view._selected_z_mm == 19.0
+    assert view.axial_position.value() == 19.0
+    assert view._transverse_focus_request == ("z", 19.0)
     np.testing.assert_allclose(view.plot.viewRange(), before, rtol=0, atol=1e-12)
 
 

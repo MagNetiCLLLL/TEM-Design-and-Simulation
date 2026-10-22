@@ -241,17 +241,18 @@ def test_fallback_locator_does_not_search_installed_package_data(monkeypatch, tm
 def test_default_primary_path_uses_current_brand(monkeypatch, tmp_path):
     monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
     assert controller_module.default_artifact_cache_root() == (
-        tmp_path / "TEMForge" / "high_accuracy_artifacts"
+        tmp_path / "TEM Design & Simulation" / "high_accuracy_artifacts"
     )
 
 
-def test_existing_legacy_results_stay_reusable_without_moving_or_copying(monkeypatch, tmp_path):
+@pytest.mark.parametrize("previous_name", ["TEMForge", "TEM Simulator v2"])
+def test_existing_legacy_results_stay_reusable_without_moving_or_copying(monkeypatch, tmp_path, previous_name):
     monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
-    legacy = tmp_path / "TEM Simulator v2" / "high_accuracy_artifacts"
+    legacy = tmp_path / previous_name / "high_accuracy_artifacts"
     legacy.mkdir(parents=True)
     result = legacy / "saved-result"
     result.write_bytes(b"scientific result retained")
-    current = tmp_path / "TEMForge" / "high_accuracy_artifacts"
+    current = tmp_path / "TEM Design & Simulation" / "high_accuracy_artifacts"
 
     assert controller_module.default_artifact_cache_root() == legacy
     assert result.read_bytes() == b"scientific result retained"
@@ -266,5 +267,5 @@ def test_cache_path_without_windows_environment_uses_home_cache(monkeypatch, tmp
     monkeypatch.delenv("LOCALAPPDATA", raising=False)
     monkeypatch.setattr(Path, "home", lambda: tmp_path)
     assert controller_module.default_artifact_cache_root() == (
-        tmp_path / ".cache" / "TEMForge" / "high_accuracy_artifacts"
+        tmp_path / ".cache" / "TEM Design & Simulation" / "high_accuracy_artifacts"
     )

@@ -296,7 +296,7 @@ def _pole_section(part, start, end):
     if style not in {"", "embedded_hourglass_bore", "tapered_bore_pole",
                      "objective_vertical_back_inserted_shank_tapered_nose"}:
         return None
-    from temsim.pole_geometry import pole_face_land_mm
+    from temsim.pole_geometry import pole_face_at_end, pole_face_land_mm
     land = pole_face_land_mm(part, nose)
     # The saved nose includes its terminal cylindrical land. Keep the shoulder
     # and pole face fixed; only the intervening outer material contour changes.
@@ -319,14 +319,7 @@ def _pole_section(part, start, end):
         section += [(length, bore), (shank, bore), (shank, shank_inner)]
     else:
         section = [(0, bore), (0, outer)] + nose_edge + [(length, bore)]
-    # The shared C1/C2 cartridge's two pole faces are reversed relative to their
-    # optical names, as in the existing physical-layout projection.
-    template_key = part.get("geometry_template_key", part["key"]) if is_custom_mechanical_part(part) else part["key"]
-    face_at_end = "upper" in template_key
-    if template_key == "condenser_lens_1_lower_pole":
-        face_at_end = True
-    elif template_key == "condenser_lens_2_upper_pole":
-        face_at_end = False
+    face_at_end = pole_face_at_end(part)
     return [(start + z if face_at_end else end - z, radius) for z, radius in section]
 
 

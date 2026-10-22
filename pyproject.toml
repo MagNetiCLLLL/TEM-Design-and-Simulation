@@ -3,9 +3,9 @@ requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "temforge"
+name = "tem-design-simulation"
 version = "0.1.0"
-description = "Interactive TEM/STEM Simulation and Design Workbench"
+description = "TEM Design & Simulation — An Interactive TEM/STEM Platform for Education and Research"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -46,8 +46,8 @@ Repository = "https://github.com/MagNetiCLLLL/TEMForge"
 Issues = "https://github.com/MagNetiCLLLL/TEMForge/issues"
 
 [project.scripts]
-temforge = "temsim.app:run"
-temforge-recorder = "temsim.recorder.__main__:run"
+tem-design-simulation = "temsim.app:run"
+tem-design-simulation-recorder = "temsim.recorder.__main__:run"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

@@ -4834,11 +4834,15 @@ class TransverseBeamView(QWidget):
         interaction_styles = []
         offset = 0
         plane = float(self._plane_z_mm)
+        history_covers_plane = False
         for branch, count in zip(branches, counts):
             z_values = np.asarray(branch.z, dtype=float)
             selected = pool[(pool >= offset) & (pool < offset + count)] - offset
             offset += count
-            if selected.size == 0 or plane < z_values[0] - 1.0e-9 or plane > z_values[-1] + 1.0e-9:
+            if not z_values.size or plane < z_values[0] - 1.0e-9 or plane > z_values[-1] + 1.0e-9:
+                continue
+            history_covers_plane = True
+            if selected.size == 0:
                 continue
             blocked = np.asarray(branch.blocked_z, dtype=float)
             selected = selected[np.isnan(blocked[selected]) | (blocked[selected] >= plane - 1.0e-9)]
@@ -4860,10 +4864,16 @@ class TransverseBeamView(QWidget):
         if not parts:
             self._display_source_ids = np.empty(0, dtype=np.int64)
             self.heading.setText(f"Transverse beam at Z = {plane:.6g} mm")
-            self.summary.setText(
-                f"{source_label} | Z {plane:.6g} mm | no displayed rays reach this plane."
-            )
+            outside_history = bool(branches) and not history_covers_plane
+            message = ("no calculated ray data at this plane (outside cached range)."
+                       if outside_history else "no displayed rays reach this plane.")
+            self.summary.setText(f"{source_label} | Z {plane:.6g} mm | {message}")
             self.analysis.finish_position([])
+            if outside_history:
+                self.summary.setToolTip(
+                    "The selected observation Z is retained. This result has no ray history "
+                    "at that plane; the previous spot is cleared and no extrapolation is used."
+                )
             self.hardware.redraw()
             self._settle_panel_layout()
             self._restore_centered_view_ranges()

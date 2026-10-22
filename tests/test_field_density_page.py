@@ -141,7 +141,7 @@ def test_grid_metadata_keeps_rows_removed_by_the_physical_mask(qtbot, monkeypatc
     page.auto_detail.setChecked(False)
     activate(qtbot, page)
     full_points, _bounds, _section = page._sample_grid()
-    full_x, full_z = np.unique(full_points[:, 0]), np.unique(full_points[:, 2])
+    full_points, (full_x, full_z) = page._section_sampling_plan(full_points, _section)
     removed_x = full_x[len(full_x) // 2]
     page._display_regions.mask = lambda points, key=None: points[:, 0] != removed_x
     page._controls_changed()
@@ -160,6 +160,7 @@ def test_visible_detail_and_cache_retain_the_unmasked_grid(qtbot, monkeypatch):
     xs, zs = np.linspace(-.001, .001, 5), np.linspace(0., .01, 4)
     xx, zz = np.meshgrid(xs, zs, indexing="ij")
     full_points = np.column_stack((xx.ravel(), np.zeros(xx.size), zz.ravel()))
+    planned, (planned_x, planned_z) = page._section_sampling_plan(full_points, "UZ")
     key = ("density-test-visible-grid",)
     page._display_regions.mask = lambda points, component=None: points[:, 0] != 0.
     monkeypatch.setattr(page.canvas, "viewport_sample_grid",
@@ -168,9 +169,11 @@ def test_visible_detail_and_cache_retain_the_unmasked_grid(qtbot, monkeypatch):
     qtbot.waitUntil(lambda: page._detail_key == key and page._detail_worker is None,
                     timeout=10000)
 
-    assert len(page._sample.points_m) == 16
-    np.testing.assert_array_equal(page._sample.grid_axes_m[0], xs)
-    np.testing.assert_array_equal(page._sample.grid_axes_m[1], zs)
+    assert len(page._sample.points_m) == np.count_nonzero(planned[:, 0] != 0.)
+    assert not np.any(page._sample.points_m[:, 0] == 0.)
+    assert 0. in page._sample.grid_axes_m[0]
+    np.testing.assert_array_equal(page._sample.grid_axes_m[0], planned_x)
+    np.testing.assert_array_equal(page._sample.grid_axes_m[1], planned_z)
     cached = page._detail_cache[key][0]
     assert cached is page._sample
     call_count = len(scene.calls)

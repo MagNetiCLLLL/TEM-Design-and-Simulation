@@ -220,6 +220,38 @@ def test_valid_empty_exit_has_zero_flux_and_no_resurrected_rays(view):
         assert "0%" in view.summary.text()
 
 
+@pytest.mark.parametrize("selected_z", [.5, 1.5])
+def test_retained_observation_outside_new_history_clears_spot_without_moving_z(view, selected_z):
+    view.display_result(make_result())
+    view.focus_z(selected_z)
+    assert view._scatter is not None and view._scatter.data.size
+    old_scatter = view._scatter
+
+    shortened = make_result()
+    if selected_z < 1.:
+        shortened.simulation.incident.z[0] = .8
+    else:
+        shortened.simulation.branches["000"].z[-1] = 1.2
+    view.display_result(shortened)
+    assert view._plane_z_mm == selected_z
+    assert view._scatter is None and old_scatter not in view.plot.plotItem.items
+    assert view._fit_coordinates is None
+    assert view.analysis._hover_payload is None
+    assert "no calculated ray data" in view.summary.text()
+    assert "outside cached range" in view.summary.text()
+    assert "no extrapolation" in view.summary.toolTip()
+    assert view.analysis.plane_data().ray_count == 0
+
+    restored = make_result()
+    restored.simulation.incident.x += 1e-6
+    restored.simulation.branches["000"].x += 1e-6
+    view.display_result(restored)
+    assert view._plane_z_mm == selected_z
+    assert view._result is restored
+    assert view._scatter is not None and view._scatter.data.size
+    assert "no calculated ray data" not in view.summary.text()
+
+
 def test_histogram_hover_reports_physical_angle_and_flux(view):
     view.display_result(make_result()); switch(view, "angle_histogram")
     kind, values, edges, _, unit=view.analysis._hover_payload

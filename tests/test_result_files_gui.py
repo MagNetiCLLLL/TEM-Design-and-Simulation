@@ -15,11 +15,12 @@ from test_particle_section_io import executed_section
 
 @pytest.fixture
 def gui_environment(qtbot, monkeypatch, tmp_path):
-    from temsim.gui import main_window, interactive_calculation, calculation_controller
+    from temsim.gui import main_window, interactive_calculation, calculation_controller, result_files
     settings = QSettings(str(tmp_path / "workspace.ini"), QSettings.IniFormat)
     monkeypatch.setattr(main_window, "QSettings", lambda: settings)
     monkeypatch.setattr(interactive_calculation, "QSettings", lambda: settings)
     monkeypatch.setattr(calculation_controller, "default_artifact_cache_root", lambda: tmp_path / "artifacts")
+    monkeypatch.setattr(result_files, "application_result_library_root", lambda: tmp_path / "saved_results")
     monkeypatch.setattr(main_window.MainWindow, "INITIAL_PREVIEW_DELAY_MS", 60000)
     errors = []
     monkeypatch.setattr(main_window.MainWindow, "_show_error", lambda self, text: errors.append(text))
@@ -57,6 +58,52 @@ def loaded_info(result, path, token="load-1"):
     return dict(section_archive_summary(result, path=path, saved_at_utc="2026-09-22T12:00:00+00:00"),
                 operation_token=token, status="loaded", _package_digest="a" * 64,
                 compressed_size_bytes=1048576, unpacked_size_bytes=2097152)
+
+
+@pytest.mark.parametrize("corrupt_current_index", [False, True])
+@pytest.mark.parametrize("previous_name", ["TEMForge", "TEM Simulator v2"])
+def test_startup_library_is_resolved_without_consulting_calculation_cache(
+    qtbot, tmp_path, monkeypatch, corrupt_current_index, previous_name,
+):
+    from PySide6.QtWidgets import QWidget
+    from temsim.gui import calculation_controller, result_files
+
+    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
+    legacy = ResultLibrary(tmp_path / previous_name / "saved_results")
+    path = legacy.allocate_path()
+    path.write_bytes(b"Dispatch fixture only; no decoding or transport.")
+    entry = legacy.remember("Saved startup", {
+        "path": str(path), "identity": "a" * 64, "_package_digest": "b" * 64,
+        "quality": "Preview", "target_z_mm": 1000., "resumable_through_z_mm": 1000.,
+        "saved_at_utc": "2026-10-22T00:00:00+00:00",
+    })
+    legacy.set_startup(entry["id"])
+    # This new cache must not redirect the long-lived saved-result library.
+    (tmp_path / "TEM Design & Simulation" / "high_accuracy_artifacts").mkdir(parents=True)
+    if corrupt_current_index:
+        current = tmp_path / "TEM Design & Simulation" / "saved_results"
+        current.mkdir()
+        (current / "index.json").write_text("broken", encoding="utf-8")
+
+    def forbidden():
+        pytest.fail("Saved-result discovery must not consult the calculation cache")
+
+    monkeypatch.setattr(calculation_controller, "default_artifact_cache_root", forbidden)
+    window = QWidget()
+    qtbot.addWidget(window)
+    files = result_files.ResultFiles(window)
+    requests, errors = [], []
+    monkeypatch.setattr(files, "load", lambda path, *, entry: requests.append((path, entry)))
+    monkeypatch.setattr(files, "_error", errors.append)
+    assert files.hold_automatic_preview
+    files.start()
+    if corrupt_current_index:
+        assert files.library is None and files.startup_entry is None
+        assert not requests and "Malformed result library index" in errors[0]
+    else:
+        assert files.library.root == legacy.root and files.startup_entry == entry
+        assert requests == [(entry["path"], entry)] and not errors
+    assert legacy.startup_entry() == entry
 
 
 def begin_load(window, monkeypatch, path, token="load-1"):

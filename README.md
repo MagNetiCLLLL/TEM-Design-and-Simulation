@@ -1,8 +1,8 @@
-# TEMForge
+# TEM Design & Simulation
 
-**Interactive TEM/STEM Simulation and Design Workbench**
+**An Interactive TEM/STEM Platform for Education and Research**
 
-TEMForge is a Python/PySide6 desktop application for exploring transmission
+TEM Design & Simulation is a Python/PySide6 desktop application for exploring transmission
 electron microscopy, electron optics and simulated detector signals.
 
 [Get started](#setup-and-launch) · [Project map](docs/PROJECT_MAP.md) ·
@@ -135,7 +135,7 @@ CIF library or automatic material selection is provided.
 
 ## Setup and launch
 
-Download or clone [TEMForge](https://github.com/MagNetiCLLLL/TEMForge).
+Download or clone [TEM Design & Simulation](https://github.com/MagNetiCLLLL/TEMForge).
 On Windows, install **64-bit Python 3.12** (recommended), then run these commands
 from the project folder:
 
@@ -151,6 +151,16 @@ for offline installation and optional GPU settings.
 
 For subsequent launches, run only the second command. In PyCharm, select
 `.venv\Scripts\python.exe` as the interpreter and run `main.py`.
+
+The installed package is named `tem-design-simulation`. After installation,
+the commands `tem-design-simulation` and `tem-design-simulation-recorder` launch
+the simulator and instrument recorder respectively. The Python import namespace
+remains `temsim`.
+
+Settings, calculation caches and saved results from the previous **TEMForge**
+and **TEM Simulator v2** names remain readable. Existing saved results are kept
+in place; renaming the application does not move or delete them. The GitHub
+repository address currently retains its previous name.
 
 [Project map / 项目地图](docs/PROJECT_MAP.md): files, features, UI, tests and refactoring candidates.
 

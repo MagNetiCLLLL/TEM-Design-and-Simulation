@@ -1,4 +1,4 @@
-"""Main TEMForge desktop window."""
+"""Main TEM Design & Simulation desktop window."""
 
 from __future__ import annotations
 
@@ -1207,7 +1207,7 @@ class MainWindow(QMainWindow):
             except KeyError:
                 pass
             else:
-                self.workspace.focus_component(part)
+                self.workspace.focus_component(part, select_observation_plane=False)
                 self.workspace.physical_layout.model_editor.focus_project_part(part)
         self.parameter_panel.set_lens_diagnostics(
             self.workspace.magnetic_field.diagnostic_text(selection.key)
@@ -1375,12 +1375,12 @@ class MainWindow(QMainWindow):
             # Cell context has no optical-assembly component or fictitious
             # mechanical envelope. The shared Z cursor already identifies it.
             if not part.data.get("cell_context"):
-                self.workspace.reveal_component(part, preferred_view="ray")
+                self.workspace.reveal_component(part, preferred_view="ray", select_observation_plane=False)
             self.status_label.setText(f"Showing {part.name} in Ray Diagram")
         elif destination == "physical":
             layout = self.workspace.physical_layout
             layout.tabs.setCurrentWidget(layout.rotating_section)
-            self.workspace.reveal_component(part, preferred_view="physical")
+            self.workspace.reveal_component(part, preferred_view="physical", select_observation_plane=False)
             self.status_label.setText(f"Showing {part.name} in Physical Layout / Rotating section")
         elif destination == "magnetic":
             field = self.workspace.magnetic_field
@@ -2484,7 +2484,11 @@ class MainWindow(QMainWindow):
                 self.status_label.setText(
                     "Live tuning: completed ray frame displayed; newer settings pending")
                 return
-            if page._section_result is result:
+            # A completed section's endpoint is a first-result default, not
+            # the observation plane. display_result already preserves the
+            # selected/dragged Z, even outside the new calculated extent.
+            if (page._section_result is result and self.workspace._selected_z_mm is None
+                    and self.workspace._transverse_focus_request is None):
                 self.workspace.jump_to_ray_position(float(result.simulation.metrics["section_target_z_mm"]), activate_tab=False)
             if not newer_values_pending:
                 self.live_beam_refresh.particle_ready()

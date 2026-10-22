@@ -2450,13 +2450,14 @@ class VisualizationWorkspace(QWidget):
         if checked and self._focused_part is not None:
             self._apply_component_zoom(self._focused_part)
 
-    def focus_component(self, part) -> None:
-        """Remember the selected part and optionally focus its optical region."""
+    def focus_component(self, part, *, select_observation_plane: bool = True) -> None:
+        """Highlight a component; editor refreshes do not select a beam plane."""
         self._focused_part = part
         self.energy_filter_rays.focus_component(part)
         self.vacuum_map.focus_component(part)
         self._pending_ray_focus.update((self.physical_layout, self.magnetic_field))
-        self._focus_transverse("component", part)
+        if select_observation_plane:
+            self._focus_transverse("component", part)
         self._refresh_visible_ray_panels()
         if self._last_result is not None:
             self._highlight_ray_component(part)
@@ -2481,7 +2482,8 @@ class VisualizationWorkspace(QWidget):
         self.ray_result_tabs.setCurrentWidget(self.ray_workspace_splitter)
         self._refresh_visible_ray_panels()
 
-    def reveal_component(self, part, *, preferred_view: str = "ray") -> str:
+    def reveal_component(self, part, *, preferred_view: str = "ray",
+                         select_observation_plane: bool = True) -> str:
         """Show and centre a tree-activated component in a visual page."""
 
         current_page = self.tabs.currentWidget()
@@ -2489,7 +2491,7 @@ class VisualizationWorkspace(QWidget):
             preferred_view == "physical"
             or current_page is self.physical_layout
         )
-        self.focus_component(part)
+        self.focus_component(part, select_observation_plane=select_observation_plane)
         if use_physical:
             self.tabs.setCurrentWidget(self.physical_layout)
             self._refresh_visible_ray_panels()
@@ -2567,6 +2569,14 @@ class VisualizationWorkspace(QWidget):
         self._ray_display_cache_put(cache_key, sources, (np.asarray(limits, dtype=float),))
         return limits
 
+    def _axial_navigation_limits(self, selected_z=None):
+        """Keep an observation coordinate reachable when result coverage shrinks."""
+        limits = self._simulation_x_limits()
+        selected = self._selected_z_mm if selected_z is None else selected_z
+        if limits is None or selected is None:
+            return limits
+        return min(limits[0], selected), max(limits[1], selected)
+
     def _jump_to_position_input(self) -> None:
         self.jump_to_ray_position(self.axial_position.value())
 
@@ -2586,7 +2596,7 @@ class VisualizationWorkspace(QWidget):
     def _add_axial_position_cursor(self) -> None:
         if self._selected_z_mm is None:
             return
-        limits = self._simulation_x_limits()
+        limits = self._axial_navigation_limits()
         cursor = pg.InfiniteLine(
             pos=self._selected_z_mm,
             angle=90,
@@ -2648,6 +2658,19 @@ class VisualizationWorkspace(QWidget):
                 "interaction fractions."
             )
             self.interaction_detail.setToolTip("")
+            return
+        extent = completed_ray_extent(self._last_result)
+        limits = self._simulation_x_limits()
+        start, end = extent.get("start_z_mm"), extent.get("completed_z_mm")
+        if start is None or end is None:
+            start, end = limits if limits is not None else (None, None)
+        if start is not None and not start <= self._selected_z_mm <= end:
+            self.interaction_detail.setHtml(
+                f"<b>Selected-plane interaction budget</b> — Z {self._selected_z_mm:.9g} mm<br>"
+                "Not calculated at this observation plane. Its position is retained; "
+                "this result does not cover it."
+            )
+            self.interaction_detail.setToolTip("No current or interaction fractions are inferred outside the calculated range.")
             return
         _branches, display_status = downstream_display_branches(self._last_result)
         sample = getattr(getattr(self._last_result, "state_snapshot", None), "sample", None)
@@ -2794,13 +2817,15 @@ class VisualizationWorkspace(QWidget):
         Cursor, spin-box, and linked-view Z changes preserve both Ray Diagram
         axes exactly. Fit and component Auto zoom remain explicit view tools.
         """
-        limits = self._simulation_x_limits()
-        if limits is None or not np.isfinite(z_mm):
+        if not np.isfinite(z_mm):
+            return
+        limits = self._axial_navigation_limits(float(z_mm))
+        if limits is None:
             return
         preserved_range = self.plot.getViewBox().viewRange()
         self.plot.disableAutoRange()
         lower_limit, upper_limit = limits
-        selected = float(np.clip(z_mm, lower_limit, upper_limit))
+        selected = float(z_mm)
         self._selected_z_mm = selected
         self._focus_transverse("z", selected)
         self.selected_plane_readout.select_z(selected)
@@ -2814,6 +2839,8 @@ class VisualizationWorkspace(QWidget):
         if self.axial_cursor_item is None:
             self._add_axial_position_cursor()
         else:
+            with QSignalBlocker(self.axial_cursor_item):
+                self.axial_cursor_item.setBounds(limits)
             self.axial_cursor_item.setValue(selected)
 
         self.plot.getViewBox().setRange(
@@ -4257,15 +4284,15 @@ class VisualizationWorkspace(QWidget):
         self._sync_ray_curves(simulation, bundles)
         self._add_stop_markers(display_simulation)
         self._sync_ray_static_layers(result)
-        limits = self._simulation_x_limits()
+        cursor_z = (self.axial_cursor_item.value()
+                    if self.axial_cursor_item is not None else self._selected_z_mm)
+        limits = self._axial_navigation_limits(cursor_z)
         if limits is not None:
             self.axial_position.setRange(*limits)
             if self._selected_z_mm is not None:
                 # A worker may publish between cursor-drag events and release.
                 # Keep the displayed cursor position, not its last committed Z.
-                cursor_z = (self.axial_cursor_item.value()
-                            if self.axial_cursor_item is not None else self._selected_z_mm)
-                self._selected_z_mm = float(np.clip(cursor_z, *limits))
+                self._selected_z_mm = float(cursor_z)
                 self.axial_position.setValue(self._selected_z_mm)
                 if self.axial_cursor_item is None:
                     self._add_axial_position_cursor()
@@ -4605,6 +4632,10 @@ class VisualizationWorkspace(QWidget):
     def mark_ray_stale(self, state, assembly=None) -> None:
         self.transverse_beam.mark_inputs_stale()
         self.coherent_beam.set_state(state)
+        selected_z = (self.axial_cursor_item.value()
+                      if self.axial_cursor_item is not None else self._selected_z_mm)
+        if selected_z is not None:
+            self.coherent_beam.set_selected_z(selected_z)
         self.receiver_imaging.set_state(state)
         self.receiver_imaging.mark_result_stale()
         self._ray_hardware_preview = self.transverse_beam.hardware.set_current_state(state, assembly)

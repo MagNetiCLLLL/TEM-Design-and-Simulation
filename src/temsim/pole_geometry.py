@@ -6,6 +6,26 @@ radius. This convention uses existing dimensions; it is not an OEM drawing.
 """
 
 
+def pole_face_at_end(part, *, key=None):
+    """Resolve a native pole's face direction for both material and CAD.
+
+    C1/C2 name their two faces by optical channel within one shared cartridge;
+    those names have the opposite axial convention to ordinary upper/lower
+    pole pairs. A detached mechanical copy retains its source convention.
+    ``key`` supplies the identity omitted from a field-map data payload.
+    """
+    from temsim.magnetic_circuits import is_custom_mechanical_part
+
+    key = part["key"] if key is None else key
+    if is_custom_mechanical_part(part):
+        key = part.get("geometry_template_key", key)
+    if key == "condenser_lens_1_lower_pole":
+        return True
+    if key == "condenser_lens_2_upper_pole":
+        return False
+    return "upper" in key
+
+
 def pole_face_land_mm(part, nose):
     """Return the saved land, preserving the legacy zero-land contour if absent."""
     from temsim.part_model_3d import _number

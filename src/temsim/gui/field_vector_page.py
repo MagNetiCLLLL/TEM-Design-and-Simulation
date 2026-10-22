@@ -291,6 +291,16 @@ class FieldVectorPage(QWidget):
         self.fit_view = QPushButton("Reset view")
         self.fit_view.clicked.connect(lambda: self.canvas.reset_view())
         self.canvas = FieldVectorCanvas()
+        self.strength_scale = QComboBox()
+        self.strength_scale.setObjectName("fieldVectorStrengthScale")
+        self.strength_scale.addItem("Auto scale", "auto")
+        self.strength_scale.addItem("Fixed scale", "fixed")
+        self.strength_scale.setToolTip(
+            "Auto: fit each quantity's current sampled peak for readability. "
+            "Fixed: retain B/E/F references across zoom and calculations to compare strength changes. "
+            "Actual field values are unchanged; hover reads SI values in either mode.")
+        self.canvas.set_automatic_reference(True)
+        self.strength_scale.currentIndexChanged.connect(self._strength_scale_changed)
         # Axes/footer occupy 111 px. A 90 px canvas leaves no field area when
         # the scrollable controls are opened on a laptop-sized window.
         self.canvas.setMinimumHeight(220)
@@ -336,7 +346,7 @@ class FieldVectorPage(QWidget):
         self.legend = QLabel("B [T] | E [V/m] | electron force [N]")
         self.convention = QLabel("Z → right | U → up | View angle follows Ray Diagram | Physical envelopes only")
         self.convention.setToolTip(
-            "Global right-handed XYZ; +Z downstream. Fixed, independent B/E/F strength references. "
+            "Global right-handed XYZ; +Z downstream. Independent B/E/F strength references. "
             "Samples stay in the chosen physical plane and inside component envelopes, including the beam bore. "
             "Hollow squares mean unavailable, not zero.")
         for label in (self.status, self.legend, self.convention):
@@ -440,6 +450,7 @@ class FieldVectorPage(QWidget):
         detail_row.addWidget(QLabel("Display"))
         detail_row.addWidget(self.render_style)
         detail_row.addWidget(self.quantity)
+        detail_row.addWidget(self.strength_scale)
         detail_row.addWidget(self.auto_detail)
         detail_row.addWidget(self.detail_status, 1)
         layout.addLayout(detail_row)
@@ -890,11 +901,18 @@ class FieldVectorPage(QWidget):
                 self.reference_inputs[key].setText(f"{reference:.9g}")
         self.legend.setText(self.canvas.legend_text)
 
+    def _strength_scale_changed(self, *_args):
+        self.canvas.set_automatic_reference(self.strength_scale.currentData() == "auto")
+        self._refresh_references()
+        self.settings_changed.emit()
+
     def _reference_changed(self, key):
         try:
             self.canvas.set_reference(key, float(self.reference_inputs[key].text()))
         except ValueError:
             self.status.setText(f"{key} strength reference must be a finite positive SI value; previous reference retained.")
+        else:
+            self.strength_scale.setCurrentIndex(self.strength_scale.findData("fixed"))
         self._refresh_references()
 
     def _match_references(self):
@@ -967,6 +985,19 @@ class FieldVectorPage(QWidget):
             points = np.column_stack((uu.ravel()*cosine, uu.ravel()*sine, zz.ravel()))
         return points, np.array([centre-half, centre+half]), section
 
+    def _section_sampling_plan(self, points, section):
+        if section != "UZ" or self._scene is None:
+            return points, section_grid_axes(points, section, angle_deg=self._projection_angle_deg)
+        from temsim.field_section_sampling import longitudinal_field_grid
+        assembly = getattr(self._state, "_resolved_assembly", None)
+        centres = [(part.key, float(part.center_z_mm)*.001)
+                   for part in getattr(assembly, "parts", ())]
+        centres.extend((lens.key, float(lens.z_mm)*.001)
+                       for lens in getattr(self._state, "lenses", ()))
+        return longitudinal_field_grid(
+            points, self._scene.sources, angle_deg=self._projection_angle_deg,
+            component_centres=centres, max_points=1600)
+
     @Slot()
     def _request_sample(self):
         if not self._active or self._state is None or self._fields_stale:
@@ -993,7 +1024,7 @@ class FieldVectorPage(QWidget):
                 return
             points, bounds, section = self._sample_grid()
             angle = self._projection_angle_deg
-            grid_axes_m = section_grid_axes(points, section, angle_deg=angle)
+            points, grid_axes_m = self._section_sampling_plan(points, section)
             if self._display_regions is None:
                 points = points[:0]
             else:
@@ -1162,7 +1193,7 @@ class FieldVectorPage(QWidget):
             return
         _sample, bounds, section = self._base_sample_data
         angle = self._projection_angle_deg
-        grid_axes_m = section_grid_axes(points, section, angle_deg=angle)
+        points, grid_axes_m = self._section_sampling_plan(points, section)
         if self._display_regions is None:
             points = points[:0]
         else:
@@ -1205,7 +1236,7 @@ class FieldVectorPage(QWidget):
                 self._detail_cache.popitem(last=False)
             self._publish_sample(result)
             self.detail_status.setText(
-                f"Visible detail: {len(result[0].points_m)} samples · fixed strength references · model unchanged.")
+                f"Visible detail: {len(result[0].points_m)} samples · axis/source detail · model unchanged.")
         elif accepted and error:
             self.detail_status.setText(f"Visible refinement unavailable: {error}. Previous samples retained.")
         if self._detail_dirty and self._active and not self._fields_stale and not self._detail_timer.isActive():

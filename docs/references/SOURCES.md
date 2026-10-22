@@ -6,7 +6,7 @@ development evidence, not current feature guarantees or instrument calibration.
 The cleanup did not re-fetch or independently re-validate these sources.
 Original reference figures and their metadata remain in this directory.
 
-## TEMForge — Round 2 Usability and Simulation Optimisation
+## TEM Design & Simulation — Round 2 Usability and Simulation Optimisation
 
 Original document: `CODEX_OPTIMIZATION_ROUND2.md`.
 

@@ -141,9 +141,11 @@ def test_slice_coordinates_and_3d_budget(qtbot, monkeypatch, section, angle):
         u = points[:, 0] * np.cos(theta) + points[:, 1] * np.sin(theta)
         v = -points[:, 0] * np.sin(theta) + points[:, 1] * np.cos(theta)
         assert np.allclose(v, 0., rtol=0., atol=1e-16)
-        assert np.isclose(np.mean(u), .0001*np.cos(theta) + .0002*np.sin(theta))
-        assert np.isclose(np.mean(points[:, 2]), .004)
-        assert len(points) == 441
+        centre_u = .0001*np.cos(theta) + .0002*np.sin(theta)
+        np.testing.assert_allclose([u.min(), u.max()], [centre_u-.001, centre_u+.001])
+        np.testing.assert_allclose([points[:, 2].min(), points[:, 2].max()], [-.001, .009])
+        assert np.any(u == 0.)  # Source-aware samples retain the axis after panning.
+        assert len(points) <= 1600 and page._sample.grid_axes_m is not None
         assert page._sample.section_angle_deg == angle
         # Increasing axial position always moves right, even at 90°.
         pair = np.array([[0., 0., .003], [0., 0., .005]])
@@ -397,6 +399,7 @@ def test_control_burst_is_debounced_and_hidden_page_has_no_minimum_layout_pressu
 
 def test_fixed_arrow_references_preserve_strength_changes_across_snapshots(qtbot, monkeypatch):
     page, scene, _ = setup_page(qtbot, monkeypatch)
+    page.strength_scale.setCurrentIndex(page.strength_scale.findData("fixed"))
     activate(qtbot, page)
     page.sources.item(2).setCheckState(Qt.CheckState.Unchecked)
     wait_sample(qtbot, page)
@@ -422,6 +425,31 @@ def test_fixed_arrow_references_preserve_strength_changes_across_snapshots(qtbot
     assert "positive" in page.status.text()
     qtbot.wait(150)
     assert len(scene.calls) == count
+
+
+def test_auto_scale_updates_with_current_fields_and_manual_reference_locks_it(qtbot, monkeypatch):
+    page, scene, _ = setup_page(qtbot, monkeypatch)
+    activate(qtbot, page)
+    page.sources.item(2).setCheckState(Qt.CheckState.Unchecked)
+    wait_sample(qtbot, page)
+    assert page.strength_scale.currentData() == "auto"
+    assert page.canvas.references["B"] == 1.
+    points = page._sample.points_m.copy()
+    scene.value = 100.
+    page.update_snapshot(SimpleNamespace(beam_voltage_kv=200.))
+    wait_sample(qtbot, page)
+    np.testing.assert_array_equal(points, page._sample.points_m)
+    assert page.canvas.references["B"] == 100.
+    before = len(scene.calls)
+    page.reference_inputs["B"].setText("2")
+    page.reference_inputs["B"].editingFinished.emit()
+    assert page.strength_scale.currentData() == "fixed" and not page.canvas.auto_reference
+    assert page.canvas.references["B"] == 2.
+    assert "above arrow limit" in page.legend.text()
+    page.strength_scale.setCurrentIndex(page.strength_scale.findData("auto"))
+    assert page.canvas.references["B"] == 100.
+    qtbot.wait(150)
+    assert len(scene.calls) == before  # Display scale needs no field resampling.
 
 
 def test_parent_destruction_cancels_inflight_job_without_close_event(qtbot, monkeypatch):
