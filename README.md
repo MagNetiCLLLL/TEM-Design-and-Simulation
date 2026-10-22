@@ -135,7 +135,7 @@ CIF library or automatic material selection is provided.
 
 ## Setup and launch
 
-Download or clone [TEM Design & Simulation](https://github.com/MagNetiCLLLL/tem_simulator_v2).
+Download or clone [TEM Design & Simulation](https://github.com/MagNetiCLLLL/TEMForge).
 On Windows, install **64-bit Python 3.12** (recommended), then run these commands
 from the project folder:
 

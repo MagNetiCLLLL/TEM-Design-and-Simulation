@@ -51,9 +51,9 @@ gpu = [
 atomistic = []
 
 [project.urls]
-Homepage = "https://github.com/MagNetiCLLLL/tem_simulator_v2"
-Repository = "https://github.com/MagNetiCLLLL/tem_simulator_v2"
-Issues = "https://github.com/MagNetiCLLLL/tem_simulator_v2/issues"
+Homepage = "https://github.com/MagNetiCLLLL/TEMForge"
+Repository = "https://github.com/MagNetiCLLLL/TEMForge"
+Issues = "https://github.com/MagNetiCLLLL/TEMForge/issues"
 
 [project.scripts]
 tem-design-simulation = "temsim.app:run"
