@@ -104,6 +104,7 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
         "field-ui": {"test_magnetic_test_electron_gui.py", "test_continuous_electron_gui.py",
             "test_field_vector_scene.py", "test_field_vector_production.py", "test_field_vector_page.py",
             "test_field_vector_lod.py", "test_field_vector_viewport.py", "test_magnetic_profile_lod.py",
+            "test_field_section_sampling.py", "test_field_vector_readability.py",
             "test_field_density_texture.py", "test_field_density_canvas.py", "test_field_density_page.py",
             "test_gui_signal_receiver_lifetime.py", "test_qt_test_cleanup.py",
             "test_workspace_lifetime.py",
@@ -181,7 +182,8 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_deflector_support_geometry.py", "test_ordinary_deflector_structure.py",
             "test_probe_hexapole_geometry.py", "test_probe_hexapole_document_validation.py"},
         "lens-geometry": {"test_lens_pose_capture.py", "test_lens_pose_rendering.py",
-            "test_lens_pose_clipping.py", "test_lens_pose_transport.py", "test_rigid_lens_field_registration.py"},
+            "test_lens_pose_clipping.py", "test_lens_pose_transport.py", "test_rigid_lens_field_registration.py",
+            "test_material_interval_validation.py", "test_nonlinear_magnetostatics.py"},
         "receiver-imaging": {"test_receiver_image.py", "test_receiver_scan.py",
             "test_receiver_scan_link.py", "test_receiver_transport_integration.py",
             "test_receiver_imaging_gui.py", "test_receiver_playback_gui.py",
@@ -201,7 +203,8 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_condenser_topology.py", "test_nanoprobe_topology_alignment.py",
             "test_validate_nanoprobe_condenser.py", "test_nanoprobe_ranges.py",
             "test_bcor_nanoprobe_integration.py"},
-        "acceptance-policy": {"test_acceptance_scopes.py", "test_acceptance_runner.py", "test_validation_process.py"},
+        "acceptance-policy": {"test_acceptance_scopes.py", "test_acceptance_runner.py", "test_validation_process.py",
+            "test_setup_env.py"},
         "performance-observation": {"test_electron_execution_performance.py", "test_electron_response_benchmark.py",
             "test_continuous_electron_response_benchmark.py", "test_particle_benchmark.py"},
         "coherent-development": {"test_coherent_inputs.py", "test_tip_coherent_emission.py",
@@ -277,6 +280,24 @@ def test_shared_component_regressions_are_mandatory_classical_evidence():
         receipt["collected"].remove(missing)
         del receipt["cases"][missing]
         assert evaluate("classical", receipt)["software_scope_status"] == "INCOMPLETE"
+
+
+@pytest.mark.parametrize("fault", ["missing", "skipped", "failed"])
+def test_installer_regressions_are_mandatory_acceptance_policy_evidence(fault):
+    path = "tests/test_setup_env.py"
+    criterion = "acceptance-policy/AP-04"
+    assert ACCEPTANCE_SCOPES["acceptance-policy"]["criteria"][criterion][1] == (path,)
+    receipt = receipt_for("acceptance-policy")
+    node = next(node for node in receipt["collected"] if node.startswith(path + "::"))
+    if fault == "missing":
+        receipt["collected"].remove(node)
+        del receipt["cases"][node]
+    else:
+        receipt["cases"][node]["call"] = fault
+    report = evaluate("acceptance-policy", receipt)
+    assert report["criteria"][criterion]["status"] != "PASS"
+    assert report["software_scope_status"] != "PASS"
+    assert report["exit_code"] == 1
 
 
 @pytest.mark.parametrize("scope", tuple(ACCEPTANCE_SCOPES))

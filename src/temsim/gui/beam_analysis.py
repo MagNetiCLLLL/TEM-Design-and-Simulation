@@ -302,12 +302,16 @@ class BeamAnalysisControls(QObject):
 
     @Slot()
     def _queue_geometry_refresh(self, *_args):
-        if not self._drawing and self.mode == "intensity" and self.owner.isVisible():
+        if (self.wave is None and not self._drawing and self.mode == "intensity"
+                and self.owner.isVisible()):
             self._resize_timer.start(0)
 
     @Slot()
     def _refresh_view_geometry(self):
-        if self.mode == "intensity" and self.owner._result is not None and self.owner.isVisible():
+        # The classical mode and result remain cached while a wave owns this
+        # canvas. A queued resize must not restore Spot or replace its range.
+        if (self.wave is None and self.mode == "intensity"
+                and self.owner._result is not None and self.owner.isVisible()):
             # An equal-aspect plot can acquire a wider field when its panel
             # is resized. Rebin that visible field using the same plane cache.
             self._ranges[self.mode] = self.owner.plot.viewRange()

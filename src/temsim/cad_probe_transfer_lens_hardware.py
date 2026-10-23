@@ -1,6 +1,6 @@
 """Explicit passive end hardware for the lower probe transfer lenses.
 
-TL21 and TL1 (stored as TL12) use their own saved winding interfaces. The
+TL21 and TL12 use their own saved winding interfaces. The
 construction family is shared with the other round lenses; no dimensions,
 currents or optical settings are inferred from a transfer-lens name.
 """

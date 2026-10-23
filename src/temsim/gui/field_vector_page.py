@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
 )
 
 from temsim.gui.field_vector_canvas import FieldVectorCanvas
+from temsim.gui.compact_status_label import CompactStatusLabel
 from temsim.gui.input_policy import WheelSafeComboBox as QComboBox
 from temsim.gui.input_policy import WheelSafeDoubleSpinBox as QDoubleSpinBox
 from temsim.gui.projection_angle_controls import ProjectionAngleControls
@@ -317,9 +318,9 @@ class FieldVectorPage(QWidget):
             "At most 1600 points; the captured field model, physical limits and strength references stay fixed. "
             "3D volumes reuse their existing samples.")
         self.auto_detail.toggled.connect(self._auto_detail_changed)
-        self.detail_status = QLabel("Zoom a section to refine visible samples.")
-        self.detail_status.setWordWrap(True)
-        self.detail_status.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
+        # Match Ray Diagram readouts: status text must not resize the canvas
+        # and trigger another refinement just because a message wraps.
+        self.detail_status = CompactStatusLabel("Zoom a section to refine visible samples.")
         self.show_models = QCheckBox("Physical models")
         self.show_models.setObjectName("fieldVectorShowModels")
         self.show_models.setToolTip("Overlay the selected sources' captured coil, pole and support geometry. Geometry is prepared on first use.")
@@ -986,9 +987,12 @@ class FieldVectorPage(QWidget):
         return points, np.array([centre-half, centre+half]), section
 
     def _section_sampling_plan(self, points, section):
+        from temsim.field_section_sampling import longitudinal_field_grid, with_source_support
+        sources = () if self._scene is None else self._scene.sources
+        selected = tuple(source for source in sources if source.key in self.selected_source_keys)
         if section != "UZ" or self._scene is None:
-            return points, section_grid_axes(points, section, angle_deg=self._projection_angle_deg)
-        from temsim.field_section_sampling import longitudinal_field_grid
+            axes = section_grid_axes(points, section, angle_deg=self._projection_angle_deg)
+            return points, with_source_support(axes, selected)
         assembly = getattr(self._state, "_resolved_assembly", None)
         centres = [(part.key, float(part.center_z_mm)*.001)
                    for part in getattr(assembly, "parts", ())]
@@ -996,7 +1000,7 @@ class FieldVectorPage(QWidget):
                        for lens in getattr(self._state, "lenses", ()))
         return longitudinal_field_grid(
             points, self._scene.sources, angle_deg=self._projection_angle_deg,
-            component_centres=centres, max_points=1600)
+            component_centres=centres, max_points=1600, interpolation_sources=selected)
 
     @Slot()
     def _request_sample(self):

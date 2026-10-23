@@ -271,7 +271,7 @@ flowchart LR
 | `field-ui` | 叠加磁场、磁力线、显示缓存、Ray Diagram 联动、电子连续编辑、Dock、硬件控件、历史会话；`test_magnetic_field_3d.py`、`test_magnetic_navigation_link.py`、`test_continuous_electron_gui.py`、`test_hardware_tuning_feedback.py`、`test_electron_session_gui.py` |
 | `particle-continuation` | 已执行截面、材料段续算、EDS 复用、无损紧凑存档、文件请求归属；`test_particle_sections.py`、`test_material_section_resume.py`、`test_particle_section_eds_reuse.py`、`test_particle_archive_compression.py`、`test_result_files_gui.py` |
 | `performance-observation` | 计时证据与测量路径的正确性，不直接宣告性能合格；`test_electron_execution_performance.py`、`test_electron_response_benchmark.py`、`test_continuous_electron_response_benchmark.py`、`test_particle_benchmark.py` |
-| `acceptance-policy` | 集合完整性、缺失/空收集/超时/失败不得记作 PASS、子进程清理；`test_acceptance_scopes.py`、`test_acceptance_runner.py`、`test_validation_process.py` |
+| `acceptance-policy` | 集合完整性、缺失/空收集/超时/失败不得记作 PASS、子进程清理、安装器兼容性与离线 wheel 安装；`test_acceptance_scopes.py`、`test_acceptance_runner.py`、`test_validation_process.py`、`test_setup_env.py` |
 | `full-report` | 仅报告尚未覆盖和已暂停项目；不会启动 pytest 或完整相干计算，结果保持 `NOT_RUN` / `UNQUALIFIED` |
 
 ### 按功能查找测试

@@ -177,6 +177,13 @@ Descan has no independent solid, vacuum restriction or collision envelope.
 This relationship follows the
 [FEI Tecnai manual, sections 3.3.3–3.3.4](https://www.dartmouth.edu/emlab/docs/fei_tecnai_f20_alignments_doc.pdf).
 
+AC and the shared Image/Diffraction host use finite uniform transverse fields
+centred on each declared interaction plane. Their support is the configured
+`effective_thickness_mm` (15 mm per station in all seven supplied columns),
+with hard axial edges; measured coil fringes are not modelled. The TOML
+`field_geometry_status` describes this same finite-field approximation.
+Lens fields overlapping those intervals remain part of the combined field.
+
 The upstream Beam Shift/Tilt pair and downstream AC Scan pair remain separate.
 In a probe-corrected column the scan must remain after the corrector and before
 the objective, as described by [CEOS](https://www.ceos-gmbh.de/de/produkte/residualsCEXCOR).

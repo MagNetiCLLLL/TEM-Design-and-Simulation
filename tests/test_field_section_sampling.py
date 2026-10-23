@@ -4,8 +4,8 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from temsim.field_density_texture import SectionMagnitudeGrid, from_longitudinal, to_longitudinal
-from temsim.field_section_sampling import longitudinal_field_grid
+from temsim.field_density_texture import SectionMagnitudeGrid, from_longitudinal, to_longitudinal, section_grid_axes
+from temsim.field_section_sampling import longitudinal_field_grid, with_source_support
 from temsim.field_vector_scene import FieldVectorScene, FieldVectorSource
 
 
@@ -103,3 +103,102 @@ def test_narrow_near_axis_rows_survive_many_offset_sources():
     points, axes = longitudinal_field_grid(uniform_window(), (narrow, *offset))
     assert len(points) <= 1600
     assert all(value in axes[0] for value in (-5e-6, 0., 5e-6))
+
+
+def constant_source(key, centre, half, vector, radius=.003):
+    result = source(key, centre, half=half, radius=radius)
+    result._magnetic[0].provider.field_at_global_positions_t = lambda points: np.tile(vector, (len(points), 1))
+    return result
+
+
+@pytest.mark.parametrize("angle", [0., 37.5, 90.])
+def test_finite_sources_keep_gap_exactly_zero_in_rotated_strength_sections(angle):
+    sources = (constant_source("upper", .8, .005, (2., -3., 0.)),
+               constant_source("lower", .82, .005, (1., 2., 0.)))
+    scene = FieldVectorScene(sources, np.array([[-.1, -.1, 0.], [.1, .1, 3.]]), ())
+    points, axes = longitudinal_field_grid(uniform_window(angle=angle), sources, angle_deg=angle)
+    sampled = scene.sample(points)
+    grid = SectionMagnitudeGrid(points, sampled.b_t, sampled.magnetic_valid, "UZ", axes, angle_deg=angle)
+    query = from_longitudinal(np.array([[0., 0., z] for z in (.798, .803, .806, .807, .81, .814, .818)]), angle)
+    actual = scene.sample(query)
+    magnitude, supported, valid = grid.evaluate(query)
+    assert supported.all() and valid.all()
+    np.testing.assert_array_equal(magnitude, np.hypot.reduce(actual.b_t, axis=1))
+    np.testing.assert_array_equal(magnitude[2:6], np.zeros(4))
+
+
+def test_gap_retains_other_source_field_and_vector_cancellation():
+    upper = constant_source("upper", .8, .005, (2., -3., 0.))
+    opposite = constant_source("opposite", .8, .005, (-2., 3., 0.))
+    background = constant_source("background", 1.5, 1.5, (0., 0., .25))
+    sources = (upper, opposite, background)
+    scene = FieldVectorScene(sources, np.array([[-.1, -.1, 0.], [.1, .1, 3.]]), ())
+    points, axes = longitudinal_field_grid(uniform_window(), sources)
+    sampled = scene.sample(points)
+    grid = SectionMagnitudeGrid(points, sampled.b_t, sampled.magnetic_valid, "UZ", axes)
+    query = np.array([[0., 0., z] for z in (.798, .803, .807, .81, .818)])
+    magnitude, supported, valid = grid.evaluate(query)
+    assert supported.all() and valid.all()
+    np.testing.assert_array_equal(magnitude, np.full(len(query), .25))
+    # Sampling positions must remain comparable when contributions are toggled.
+    selected_points, selected_axes = longitudinal_field_grid(
+        uniform_window(), sources, interpolation_sources=(background,))
+    np.testing.assert_array_equal(points, selected_points)
+    assert len(selected_axes.support_planes) < len(axes.support_planes)
+
+
+@pytest.mark.parametrize("unknown", [False, True])
+def test_budget_cannot_remove_barrier_and_infer_zero_across_missed_source(unknown):
+    narrow = constant_source("narrow", 1.234567, 1e-6, (1., 0., 0.))
+    if unknown:
+        narrow = FieldVectorSource("missing", "Missing", "unmodelled", ("missing",),
+                                   narrow.bounds_m, "unavailable", supported=False, _unknown_b=True)
+    scene = FieldVectorScene((narrow,), np.array([[-.1, -.1, 0.], [.1, .1, 3.]]), ())
+    points, axes = longitudinal_field_grid(uniform_window(), (narrow,), max_points=6)
+    assert len(points) <= 6 and len(axes.support_planes) == 2
+    sampled = scene.sample(points)
+    assert sampled.magnetic_valid.all() and not sampled.b_t.any()  # Retained points miss the source.
+    grid = SectionMagnitudeGrid(points, sampled.b_t, sampled.magnetic_valid, "UZ", axes)
+    magnitude, supported, valid = grid.evaluate([[0., 0., 1.234567]])
+    assert not supported[0] and not valid[0] and np.isnan(magnitude[0])
+
+
+@pytest.mark.parametrize("section,angle", [("UZ", 0.), ("UZ", 37.5), ("UZ", 90.),
+                                          ("XY", 0.), ("XZ", 0.), ("YZ", 0.)])
+def test_posed_native_axial_boundary_blocks_interpolation_inside_global_bounds(section, angle):
+    from temsim.magnetic_field_scene import _Source
+    from temsim.physics.lens_field_provider import CoordinateRegistration
+    theta = np.deg2rad(25.)
+    rotation = np.array([[np.cos(theta), 0., np.sin(theta)], [0., 1., 0.],
+                         [-np.sin(theta), 0., np.cos(theta)]])
+    registration = CoordinateRegistration(origin_global_m=(0., 0., .8), rotation_local_to_global=rotation)
+    bounds = np.array([[-.02, -.02, .78], [.02, .02, .82]])
+    provider = SimpleNamespace(registration=registration, native_field_support_mm=lambda: (-5., 5.),
+                               field_at_global_positions_t=lambda p: np.tile((1., 0., 0.), (len(p), 1)))
+    native = _Source("posed", provider, bounds, .02)
+    posed = FieldVectorSource("posed", "Posed", "magnetic", ("posed",), bounds, "test", _magnetic=(native,))
+    scene = FieldVectorScene((posed,), bounds, ())
+    def section_points(count0, count1):
+        first = np.linspace(-.019, .019, count0)
+        second = np.linspace(*((-.019, .019) if section == "XY" else (.781, .819)), count1)
+        aa, bb = np.meshgrid(first, second, indexing="ij")
+        result = np.zeros((aa.size, 3))
+        if section == "XY":
+            result[:, 2] = .8
+        active = {"XY": (0, 1), "XZ": (0, 2), "YZ": (1, 2), "UZ": (0, 2)}[section]
+        result[:, active] = np.column_stack((aa.ravel(), bb.ravel()))
+        return from_longitudinal(result, angle) if section == "UZ" else result
+
+    points = section_points(31, 31)
+    if section == "UZ":
+        points, axes = longitudinal_field_grid(points, (posed,), angle_deg=angle)
+    else:
+        axes = with_source_support(section_grid_axes(points, section), (posed,))
+    sampled = scene.sample(points)
+    grid = SectionMagnitudeGrid(points, sampled.b_t, sampled.magnetic_valid, section, axes, angle_deg=angle)
+    query = section_points(61, 67)
+    actual = scene.sample(query)
+    magnitude, supported, valid = grid.evaluate(query)
+    assert supported.any() and valid.any()
+    np.testing.assert_array_equal(magnitude[valid], np.hypot.reduce(actual.b_t[valid], axis=1))
+    assert np.any(valid & (magnitude == 0.)) and np.any(valid & (magnitude == 1.))

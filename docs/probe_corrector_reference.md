@@ -142,7 +142,7 @@ installed hardware in place. Zero deflection is also not hardware removal.
 
 Positive Z is downstream. The physical order is BSh/BTlt → ADL →
 **HP2 with DPH2 inside** → TL22 → DP22 → central relay region → DP21 →
-TL21 → **HP1 with DPH1 inside** → DP11 → TL1 (stored key `probe_tl12_lens`)
+TL21 → **HP1 with DPH1 inside** → DP11 → TL12 (stored key `probe_tl12_lens`)
 → AC scan pair → mini condenser / objective. The QPH/HPol/QPol and other
 field-only markers do not add separate material stages to this sequence.
 
@@ -159,8 +159,8 @@ for the default gun's source-absolute Z):
 | TL21 | 787.2–812.7 | 799.95 | Before HP1 |
 | HP1 | 841.8–859.9 | 850.85 | DPH1 occupies the same optical centre |
 | DPH1 winding insert | 843.6–858.1 | 850.85 | Inside HP1, not upstream of it |
-| DP11 winding insert | 889.0–903.6 | 896.3 | After HP1, before TL1 |
-| TL1 | 903.6–929.0 | 916.3 | Before the separate AC scan pair |
+| DP11 winding insert | 889.0–903.6 | 896.3 | After HP1, before TL12 |
+| TL12 | 903.6–929.0 | 916.3 | Before the separate AC scan pair |
 
 At either DPH/HP centre in C3 + Probe Corrector, inside-to-outside diameters
 are: continuous tube ID/OD 5.76/19.2 mm, laminate ID/OD 22.12/23.88 mm,
@@ -180,7 +180,7 @@ identify flange locations or which adapter/transfer optics are included.
 [DCOR/ASCOR specifications](https://www.ceos-gmbh.de/de/produkte/stemkorrektoren/dcor-ascor)
 give different device dimensions; they must not substitute for CESCOR.
 
-The current model's HP2-to-HP1 core envelope is **174.5 mm**; ADL-to-TL1
+The current model's HP2-to-HP1 core envelope is **174.5 mm**; ADL-to-TL12
 coupled optics span **309 mm**; including BSh/BTlt spans **359 mm**. These
 are three distinct scopes, not three measurements of the manufacturer's
 housing. The optical core is compatible in scale with the 255 mm device
@@ -215,7 +215,7 @@ response, not the winding's current-to-field calibration.
 
 The unchanged baseline gave HP2-to-HP1 `||B||₂ = 5.16e-14 m/rad`, unit
 first-order magnification, sample RMS radius **0.125874 nm**, and sample D95
-**0.495304 nm**. Source waists remained above ADL and between TL1 and the mini
+**0.495304 nm**. Source waists remained above ADL and between TL12 and the mini
 condenser; the latter was at **Z = 1400.000702 mm**. The TL22–TL21 region had a
 radial minimum at **Z = 1208.148342 mm**, but its two principal transverse
 waists were separated by approximately **6.23 µm**. The width difference was
@@ -430,7 +430,7 @@ limited additional planes around an unresolved minimum. This is bounded
 numerical evidence, not proof at arbitrary axial resolution.
 
 The **14 October 2026** default uses C2 **23.225625142668733%**, C3
-**9.207984804305022%**, ADL **10%** and TL1 **36.004558708747176%**. C1,
+**9.207984804305022%**, ADL **10%** and TL12 **36.004558708747176%**. C1,
 TL22/TL21, the CM magnitude and Objective excitation retain their previous
 values. HP2 is **423294.84130355046 m⁻³** at zero azimuth; HP1 is
 **253195.31789553943 m⁻³** at **−0.04199279823147041 rad**. The specimen and
@@ -496,7 +496,7 @@ older calculation archives.
 Both ranges require a C2-to-C3 two-dimensional waist and a focused specimen probe.
 Large angle additionally requires a two-dimensional waist between C3 and ADL.
 Its reference C3 excitation is **46.059815218359184%**, compared with Normal's
-**9.207984804305022%**. The reference also changes C2, ADL, TL1 and hexapole
+**9.207984804305022%**. The reference also changes C2, ADL, TL12 and hexapole
 strengths together to maintain the downstream relay and focus. The CM's live
 magnitude is preserved and its Nanoprobe sign remains negative.
 
@@ -553,7 +553,7 @@ The preset restores these round-lens settings and both principal hexapoles:
 | ADL | 79.80694335935594 | +Z |
 | TL22 | 59.93152503582202 | −Z |
 | TL21 | 59.95527906841963 | +Z |
-| TL1 (stored key `probe_tl12_lens`) | 49.977014835272826 | +Z |
+| TL12 (stored key `probe_tl12_lens`) | 49.977014835272826 | +Z |
 | Mini Condenser | 43.88646617222637 | −Z |
 | Objective | 68.9801 | +Z |
 
@@ -570,10 +570,10 @@ projection is insufficient:
   singular values of `A` approximately one. This is unit-magnification imaging
   of the HP planes. It does not assert that the full four-dimensional transfer
   is `−I` or afocal; the remaining blocks and magnetic rotation also matter.
-- **An executed crossover between TL1 and CM:** the current-weighted physical
+- **An executed crossover between TL12 and CM:** the current-weighted physical
   ray bundle converges and then diverges near **Z 1400.00070 mm**, with RMS
   radius **2.15835 nm**. Both principal transverse widths have a local minimum.
-  The waist lies between TL1's hardware exit at 1379 mm and CM's entrance at
+  The waist lies between TL12's hardware exit at 1379 mm and CM's entrance at
   1512.5 mm. Its finite radius reflects the finite source and aberrations; it
   is not a requirement that every ray intersect the axis at one point.
 - **Sample focus:** the same emitted population reaches a focused probe at the
@@ -667,13 +667,13 @@ diameter. Projection-mode lens settings remain unchanged.
 ### AC placement and finite scan validation
 
 The **10 October C3 + Probe Corrector** installation placed the AC pair around
-that working point's executed TL1-to-CM source waist. The coil positions remain
+that working point's executed TL12-to-CM source waist. The coil positions remain
 installed, but the following optical measurements are historical. Only this
 assembly's AC position changed:
 
 | Component or observation | Absolute Z (mm) |
 |---|---:|
-| TL1 hardware exit | 1379 |
+| TL12 hardware exit | 1379 |
 | AC upper coil body / centre | 1380–1395 / 1387.5 |
 | Source waist, scan disabled | approximately 1400.0007 |
 | AC lower coil body / centre | 1405–1420 / 1412.5 |
@@ -681,7 +681,7 @@ assembly's AC position changed:
 | Mini Condenser body / centre | 1512.5–1532.5 / 1522.5 |
 
 The 40 mm pair moved upstream by 91.5 mm. It has 1 mm axial clearance after
-TL1 and 16.5 mm before the next stigmator; the two 15 mm coils retain their
+TL12 and 16.5 mm before the next stigmator; the two 15 mm coils retain their
 10 mm gap. Actual assembly meshes retain both complete coil bodies. This is
 an envelope/layout check, not measured OEM coil geometry or winding clearance.
 With these adjacent envelopes and the same pair dimensions, simple non-overlap

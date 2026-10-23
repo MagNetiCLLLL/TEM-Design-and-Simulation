@@ -144,10 +144,16 @@ py -3.12 setup_env.py
 .venv\Scripts\python.exe main.py
 ```
 
-Setup creates or reuses `.venv`, installs dependencies and checks the environment.
-Python 3.11–3.13 is supported; the interface uses PySide6 6.8.3. Internet access
-is normally needed for missing dependencies. Run `py -3.12 setup_env.py --help`
-for offline installation and optional GPU settings.
+Setup creates or reuses `.venv`, installs dependencies and checks the environment,
+including the installed project name and launch commands. Windows 64-bit
+CPython 3.12 uses `requirements/validation-cpu-lock.txt`, the same dependency
+versions as CI; rerunning setup synchronises an existing environment to that lock.
+Python 3.11–3.13 is supported; other runtimes resolve compatible dependencies.
+The interface uses PySide6 6.8.3. Internet access is normally needed for missing
+dependencies. Use `--offline` to require local wheels/installed packages,
+including every locked version, or `--gpu` to add optional CUDA 12.x CuPy support.
+The separate CAD environment is unchanged. Run `py -3.12 setup_env.py --help`
+for alternate environment and wheel directories.
 
 For subsequent launches, run only the second command. In PyCharm, select
 `.venv\Scripts\python.exe` as the interpreter and run `main.py`.

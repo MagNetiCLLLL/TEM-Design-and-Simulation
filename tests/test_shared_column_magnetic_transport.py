@@ -137,8 +137,9 @@ def test_finite_forcing_and_clock_backend_parity(monkeypatch, engine, timed):
         if len(values) and engine == "mapped":
             # An overlapping zero imported map must leave the driven orbit
             # unchanged while exercising the mapped interval's full derivative.
+            # Frozen bindings expose their placed support in global coordinates.
             zero_map = SimpleNamespace(scale=1.,
-                field_map=SimpleNamespace(field_support_mm=(0., 10.)),
+                field_support_mm=(0., 10.),
                 field_at_global_positions_t=lambda points: np.zeros_like(points))
             plan = replace(plan, mapped_fields=(zero_map,))
         values.append(core.execute_propagation_plan(state, plan, *(np.zeros(3),)*4,

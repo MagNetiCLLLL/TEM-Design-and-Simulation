@@ -47,6 +47,67 @@ def widget_pixels(canvas):
     return bytes(image.constBits())
 
 
+def test_production_deflector_zero_gap_has_no_strength_hatching(qtbot):
+    """A coarse whole-column capture stays honest when zoomed into a coil gap."""
+    from temsim.optics.column import default_state
+    from temsim.field_vector_scene import prepare_field_vector_scene
+    from temsim.field_display_regions import build_field_display_regions
+    from temsim.gui.field_vector_page import FieldVectorPage
+    state = default_state()
+    deflector = state.deflectors[0]
+    deflector.upper_x_mrad, deflector.upper_y_mrad = 2., -3.
+    deflector.lower_x_mrad = deflector.lower_y_mrad = 0.
+    bare = SimpleNamespace(lenses=(), stigmators=(), corrector_elements=(), deflectors=(deflector,),
+        apertures=(), beam_voltage_kv=state.beam_voltage_kv, simulation_time_s=0.,
+        simulation_mode="analytical", sample=state.sample, _resolved_assembly=state._resolved_assembly)
+    scene = prepare_field_vector_scene(bare)
+    regions = build_field_display_regions(bare, scene.sources)
+    page = FieldVectorPage()
+    qtbot.addWidget(page)
+    page._state, page._scene = bare, scene
+    page.centre_z.setValue(1500.)
+    page.radius.setValue(100.)
+    page.axial_half_span.setValue(1500.)
+    full, _, section = page._sample_grid()
+    points, axes = page._section_sampling_plan(full, section)
+    assert len(points) <= 1600
+    assert page.selected_source_keys == tuple(source.key for source in scene.sources)
+    assert len(axes.support_planes) > 0
+    page.field_scope.setCurrentIndex(page.field_scope.findData("checked"))
+    deselected_points, deselected_axes = page._section_sampling_plan(full, section)
+    assert page.selected_source_keys == () and len(deselected_axes.support_planes) == 0
+    np.testing.assert_array_equal(deselected_points, points)
+    page.field_scope.setCurrentIndex(page.field_scope.findData("all"))
+    points = points[regions.mask(points)]
+    sample = scene.sample(points)
+    canvas = FieldVectorCanvas()
+    qtbot.addWidget(canvas)
+    canvas.resize(1000, 500)
+    published = SimpleNamespace(**vars(sample), grid_axes_m=axes, section_angle_deg=0.)
+    canvas.set_observation_regions(regions, deflector.key)
+    canvas.set_sample(published, np.array([[-.001, -.001, .79], [.001, .001, .83]]), "UZ")
+    canvas.set_mode("B")
+    canvas.set_render_style("density")
+    plot = canvas._plot_rect()
+    image = canvas._density_image(plot)
+    xx, yy = np.meshgrid(plot.left()+(np.arange(image.width())+.5)*plot.width()/image.width(),
+                        plot.top()+(np.arange(image.height())+.5)*plot.height()/image.height())
+    positions = canvas._section_positions(np.column_stack((xx.ravel(), yy.ravel())),
+                                         canvas._section_inverse(plot))
+    gap = ((positions[:, 2] >= .806) & (positions[:, 2] <= .809)
+           & (np.abs(positions[:, 0]) < .0004))
+    assert np.count_nonzero(gap) > 1000
+    truth = scene.sample(positions[gap])
+    assert truth.magnetic_valid.all() and not truth.b_t.any()
+    magnitude, supported, valid = canvas._magnitude_grid().evaluate(positions[gap])
+    assert supported.all() and valid.all() and not magnitude.any()
+    colour = canvas._fields()[0][4]
+    coloured = np.all(rgba(image).reshape(-1, 4)[:, :3] ==
+                      (colour.red(), colour.green(), colour.blue()), axis=1)
+    assert coloured.any()  # The excited coil is still visible.
+    assert not np.any(gap & coloured)
+
+
 @pytest.mark.parametrize("section,angle", [("XY", 0.), ("XZ", 31.), ("YZ", 64.)])
 def test_density_uses_full_norm_and_shared_rotated_physical_coordinates(qtbot, section, angle):
     canvas = canvas_fixture(qtbot, section)

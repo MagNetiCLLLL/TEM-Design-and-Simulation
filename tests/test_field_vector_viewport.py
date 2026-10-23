@@ -253,6 +253,27 @@ def test_view_cache_is_bounded_and_sampling_failure_retains_current_data(qtbot, 
     assert not page._detail_jobs
 
 
+def test_detail_messages_do_not_resize_canvas_or_restart_sampling(qtbot, monkeypatch):
+    page, scene, _ = ready(qtbot, monkeypatch)
+    zoom(page)
+    wait_detail(qtbot, page)
+    qtbot.wait(250)
+    size, revision = page.canvas.size(), page._view_revision
+    calls, sample = len(scene.calls), page._sample
+    messages = ("Ready.", "Visible refinement unavailable: "
+                "the selected field provider returned an unavailable value at the requested "
+                "position near the boundary of its measured domain. Previous samples retained.")
+    for message in messages:
+        page.detail_status.setText(message)
+        qtbot.wait(250)
+        assert page.detail_status.text() == message
+        assert page.detail_status.toolTip() == message
+        assert page.canvas.size() == size
+        assert page._view_revision == revision
+        assert len(scene.calls) == calls and page._sample is sample
+        assert not page._detail_jobs and not page._detail_timer.isActive()
+
+
 def test_expanded_controls_preserve_plot_area_in_small_window(qtbot, monkeypatch):
     page, _scene, _ = ready(qtbot, monkeypatch)
     page.auto_detail.setChecked(False)

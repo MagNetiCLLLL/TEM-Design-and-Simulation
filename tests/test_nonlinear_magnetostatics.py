@@ -192,6 +192,41 @@ def test_objective_intervals_and_projector_taper_use_existing_geometry():
     np.testing.assert_array_equal(_part_mask(pole, np.array([.009, .009, .003, .001]), np.array([.002, .009, .009, .009])), [True, False, True, False])
 
 
+def test_local_material_sections_are_translated_for_passive_and_joint_domains():
+    from temsim.physics.lens_field_provider import lens_geometry_binding
+    from temsim.physics.nonlinear_circuits import resolve_nonlinear_provider
+    fixture = runpy.run_path(str(Path(__file__).with_name("test_magnetic_circuits.py")))
+    rows = fixture["_shared_rows"]()
+    rows.append(fixture["_part"](
+        "passive", "magnetic_lens_yoke", 15., 22., 32., 36.,
+        material_intervals_mm=[[15., 17.], [20., 22.]],
+    ))
+    coil = next(row for row in rows if row["key"] == "coil_a")
+    coil["material_intervals_mm"] = [[-9., -7.], [-4., -2.]]
+    state = fixture["_state"](rows)
+    offset = 1000.
+    state._resolved_assembly.parts = tuple(replace(
+        part, start_z_mm=part.start_z_mm + offset, center_z_mm=part.center_z_mm + offset,
+        end_z_mm=part.end_z_mm + offset,
+    ) for part in state._resolved_assembly.parts)
+    for lens in state.lenses:
+        lens.z_mm += offset
+    # The local linear binding and the rebuilt joint nonlinear domain must use
+    # the same global material intervals, including bodies with no lens parent.
+    binding = lens_geometry_binding(state, "a")
+    local_domain = json.loads(binding.canonical_geometry_json)["lens_assembly"]
+    for recipe in state.lens_field_map_descriptors.values():
+        recipe.update(solver="axisymmetric_nonlinear_fem", bh_material=_linear_curve())
+    geometry, _, _ = resolve_nonlinear_provider(state, "a", state.lenses[0], binding, prepare_only=True)
+    for domain in (local_domain, geometry["lens_assembly"]):
+        passive = next(p for p in domain["magnetostatic_neighbours"] if p["key"] == "passive")
+        active = next(p for p in domain["parts"] if p["key"] == "coil_a")
+        np.testing.assert_allclose(passive["data"]["material_intervals_mm"], [[1015., 1017.], [1020., 1022.]], rtol=0, atol=1e-12)
+        np.testing.assert_allclose(active["data"]["material_intervals_mm"], [[991., 993.], [996., 998.]], rtol=0, atol=1e-12)
+        np.testing.assert_array_equal(_part_mask(passive, np.full(3, .017), np.array([1.016, 1.018, 1.021])), [True, False, True])
+    assert rows[-1]["material_intervals_mm"] == [[15., 17.], [20., 22.]]
+
+
 def test_nonlinear_menu_recipe_roundtrip_without_solving(qtbot, monkeypatch):
     from temsim.gui.model_inspector import ModelInspectorPage
     from temsim.gui.simulation_menu import SimulationMenu

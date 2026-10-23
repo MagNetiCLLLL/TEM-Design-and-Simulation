@@ -17,6 +17,24 @@ HATCH_THRESHOLDS = (1 / 8, 1 / 4, 1 / 2, 1., 2.)
 HATCH_SPACINGS_PX = (128., 64., 32., 16., 8., 4.)
 
 
+class SectionGridAxes(tuple):
+    """Two section axes plus global planes across which fields may jump.
+
+    Each plane is ``(nx, ny, nz, offset)`` with ``n dot XYZ = offset``.
+    Metadata is independent of retained samples: a bounded sampling budget
+    must not remove the evidence of a finite source's support boundary.
+    """
+
+    def __new__(cls, axes, support_planes=()):
+        result = super().__new__(cls, axes)
+        planes = np.asarray(support_planes, dtype=float).reshape(-1, 4).copy()
+        if not np.isfinite(planes).all():
+            raise ValueError("Support planes must be finite")
+        planes.setflags(write=False)
+        result.support_planes = planes
+        return result
+
+
 def _points_array(points_m):
     points = np.asarray(points_m, dtype=float)
     if points.ndim != 2 or points.shape[1] != 3:
@@ -134,6 +152,10 @@ class SectionMagnitudeGrid:
     outside the sampled rectangle or section plane is unsupported. A 3D or
     unidentifiable grid evaluates as unsupported everywhere.
 
+    ``SectionGridAxes`` additionally forbids interpolation in cells touching
+    finite source activation boundaries. Those cells remain unsupported, not
+    valid zeros; sampled zero regions and overlapping vector sums are retained.
+
     For UZ, input and query coordinates remain global XYZ; ``angle_deg``
     defines the V=0 plane. Grid metadata uses local U/Z axes. Coordinates are
     transformed for interpolation, while vector components remain global XYZ.
@@ -197,6 +219,28 @@ class SectionMagnitudeGrid:
         self._supported[index0, index1] = True
         self._valid[index0, index1] = good
         self._vectors[index0, index1] = np.where(good[:, None], vectors, 0.)
+        self._continuous = np.ones((len(axis0)-1, len(axis1)-1), dtype=bool)
+        # Build barriers once, not once per texture pixel. A cell crossing a
+        # finite support boundary has no justified bilinear interpolant, even
+        # when all four retained samples happen to be valid zeros. Do not infer
+        # a field or a zero in a thin source missed by the sampling budget.
+        for plane in getattr(grid_axes_m, "support_planes", ()):
+            normal_vector, offset = plane[:3], float(plane[3])
+            if self._longitudinal:
+                normal_vector = to_longitudinal(normal_vector[None, :], angle_deg)[0]
+            a, b = normal_vector[first], normal_vector[second]
+            if abs(a)+abs(b) <= 64*np.finfo(float).eps*np.linalg.norm(normal_vector):
+                continue  # The whole section is parallel to this boundary.
+            distance = (a*axis0[:, None] + b*axis1[None, :]
+                        + normal_vector[normal]*self._plane - offset)
+            corners = (distance[:-1, :-1], distance[1:, :-1],
+                       distance[:-1, 1:], distance[1:, 1:])
+            scale = max(abs(offset), np.max(abs(a*axis0)), np.max(abs(b*axis1)),
+                        abs(normal_vector[normal]*self._plane), 1e-300)
+            tolerance = 64*np.finfo(float).eps*scale
+            crosses = ((np.minimum.reduce(corners) <= tolerance)
+                       & (np.maximum.reduce(corners) >= -tolerance))
+            self._continuous &= ~crosses
 
     def evaluate(self, points_m):
         """Return 1D ``(magnitudes, supported, valid)`` arrays for query XYZ."""
@@ -227,6 +271,7 @@ class SectionMagnitudeGrid:
         j = np.clip(np.searchsorted(axis1, y, side="right") - 1, 0, len(axis1) - 2)
         corners = ((i, j), (i + 1, j), (i, j + 1), (i + 1, j + 1))
         supported[rows] = np.logical_and.reduce([self._supported[a, b] for a, b in corners])
+        supported[rows] &= self._continuous[i, j]
         valid[rows] = supported[rows] & np.logical_and.reduce(
             [self._valid[a, b] for a, b in corners])
         good = valid[rows]

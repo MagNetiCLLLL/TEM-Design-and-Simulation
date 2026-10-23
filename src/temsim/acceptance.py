@@ -101,6 +101,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_magnetic_field_3d.py", "tests/test_magnetic_field_canvas.py",
                 "tests/test_field_vector_page.py",
                 "tests/test_field_vector_lod.py", "tests/test_field_vector_viewport.py",
+                "tests/test_field_section_sampling.py", "tests/test_field_vector_readability.py",
                 "tests/test_field_density_texture.py", "tests/test_field_density_canvas.py",
                 "tests/test_field_density_page.py",
                 "tests/test_magnetic_profile_lod.py",
@@ -236,6 +237,8 @@ ACCEPTANCE_SCOPES = {
             "lens-geometry/LG-02": ("Posed field registration, transport and mechanical interception", (
                 "tests/test_lens_pose_clipping.py", "tests/test_lens_pose_transport.py",
                 "tests/test_rigid_lens_field_registration.py")),
+            "lens-geometry/LG-03": ("Assembled material sections and linear/nonlinear FEM coordinates", (
+                "tests/test_material_interval_validation.py", "tests/test_nonlinear_magnetostatics.py")),
         },
     },
     "receiver-imaging": {
@@ -310,6 +313,8 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_acceptance_runner.py",)),
             "acceptance-policy/AP-03": ("Bounded owned process cleanup and explicit cleanup failure", (
                 "tests/test_validation_process.py",)),
+            "acceptance-policy/AP-04": ("Installer compatibility, environment ownership and offline wheel resolution", (
+                "tests/test_setup_env.py",)),
         },
     },
     "coherent-development": {

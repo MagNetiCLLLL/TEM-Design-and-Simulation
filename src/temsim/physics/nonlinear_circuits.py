@@ -62,6 +62,7 @@ def resolve_nonlinear_provider(state, key, native, binding, *, prepare_only=Fals
     from temsim.part_materials import is_magnetostatic_body
     from temsim.physics.lens_field_provider import (
         lens_geometry_binding, _runtime_excitation, MappedLensFieldProvider, FieldMapError, _part_geometry_data, _fingerprint,
+        _global_part_geometry_data,
     )
     recipes = state.lens_field_map_descriptors
     lenses = {lens.key: lens for lens in state.lenses}
@@ -112,15 +113,9 @@ def resolve_nonlinear_provider(state, key, native, binding, *, prepare_only=Fals
                 raise FieldMapError(f"Active coil {channel} overlaps the nonlinear domain; include it in the B-H solve or explicitly disable it")
     # Rebuild passive neighbours over the combined domain, not just the individual
     # local domains. Their canonical data and split intervals come from bindings.
-    from temsim.magnetic_geometry import objective_layer_intervals_mm
     for part in by_key.values():
         if part.key not in parts and is_magnetostatic_body(part.data) and part.start_z_mm < centre+half and part.end_z_mm > centre-half:
-            data = _part_geometry_data(part)
-            parent = by_key.get(part.parent_key)
-            if parent is not None:
-                intervals = objective_layer_intervals_mm(parent.data, parent.start_z_mm, data["mechanical_profile"])
-                if intervals and data["mechanical_profile"] == "magnetic_lens_yoke":
-                    data["material_intervals_mm"] = intervals
+            data = _global_part_geometry_data(part, by_key)
             neighbours[part.key] = dict(key=part.key, start_z_mm=part.start_z_mm, end_z_mm=part.end_z_mm, data=data)
     geometry = dict(lens_key="joint_bh", lens_assembly=dict(
         magnetic_circuit_topology="joint_nonlinear", magnetic_circuit_channels=keys,

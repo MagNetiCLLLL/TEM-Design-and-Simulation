@@ -22,7 +22,8 @@ def source_hashes(root):
         paths.update(p for p in (root / directory).rglob("*")
                      if p.is_file() and p.suffix.lower() in
                      {".py", ".toml", ".json", ".cif", ".mcif", ".yml", ".yaml", ".txt"})
-    paths.update(root / name for name in ("pyproject.toml", "AGENTS.md", "PROJECT_FUNCTION_SPEC.md")
+    paths.update(root / name for name in ("pyproject.toml", "setup_env.py", "requirements-cad.txt",
+                                          "AGENTS.md", "PROJECT_FUNCTION_SPEC.md")
                  if (root / name).is_file())
     return {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(paths)}
 

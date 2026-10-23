@@ -111,7 +111,7 @@ def preview(catalog, baseline, output):
     assembly = QWidget()
     assembly.setStyleSheet('QWidget {background:#101823;color:#e5edf7;} QLabel {font-size:16px;}')
     layout = QVBoxLayout(assembly)
-    layout.addWidget(QLabel('Probe Corrector | ADL, HP2, TL22, TL21, HP1, TL1 and alignment inserts'))
+    layout.addWidget(QLabel('Probe Corrector | ADL, HP2, TL22, TL21, HP1, TL12 and alignment inserts'))
     layout.addWidget(QLabel('Native section view | configured engineering dimensions | unresolved channels have no material'))
     grid = QGridLayout()
     layout.addLayout(grid)
@@ -140,7 +140,7 @@ def preview(catalog, baseline, output):
     relay_keys = {s['key'] for s in catalog['modules'][0]['solids']
                   if s['key'].startswith('probe_tl12_lens')}
     relay_keys.update({'probe_hp1_hexapole', 'probe_dph1_coils', 'probe_dp11_coils'})
-    panel(grid, 1, 1, 'HP1 > DP11 > TL1 | saved axial placement (section)',
+    panel(grid, 1, 1, 'HP1 > DP11 > TL12 | saved axial placement (section)',
           meshes(catalog, relay_keys), 'column_isometric', True)
     steering.resize(1500, 1100)
     steering.show()

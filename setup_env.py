@@ -7,16 +7,20 @@ Run ``python setup_env.py --help`` for alternate environments and offline setup.
 from __future__ import annotations
 
 import argparse
+from importlib import metadata
 import json
 import os
 from pathlib import Path
 import subprocess
 import sys
+import sysconfig
+import tomllib
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 VENV_DIR = PROJECT_ROOT / ".venv"
 WHEEL_DIR = PROJECT_ROOT / "wheels"
+CPU_LOCK = PROJECT_ROOT / "requirements" / "validation-cpu-lock.txt"
 MIN_PYTHON = (3, 11)
 MAX_PYTHON = (3, 14)  # PySide6 6.8.3 requires Python <3.14.
 
@@ -34,7 +38,8 @@ def runtime_info(python: Path) -> dict:
     code = (
         "import json, struct, sys; "
         "print(json.dumps({'version': list(sys.version_info[:3]), "
-        "'bits': struct.calcsize('P')*8, 'implementation': sys.implementation.name}))"
+        "'bits': struct.calcsize('P')*8, 'implementation': sys.implementation.name, "
+        "'platform': sys.platform}))"
     )
     result = subprocess.run([str(python), "-c", code], cwd=PROJECT_ROOT,
                             check=True, capture_output=True, text=True)
@@ -63,8 +68,47 @@ def wheel_sources(directory: Path, offline: bool) -> list[str]:
     return options
 
 
+def validation_lock(info: dict) -> Path | None:
+    """The CPU lock is validated for Windows 64-bit CPython 3.12 only."""
+    if (tuple(info["version"][:2]) == (3, 12)
+            and info["implementation"] == "cpython" and info["bits"] == 64
+            and info.get("platform") == "win32"):
+        if not CPU_LOCK.is_file():
+            raise ValueError(f"The validated dependency lock is missing: {CPU_LOCK}")
+        return CPU_LOCK
+    return None
+
+
+def verify_installation() -> None:
+    """Check distribution metadata and launchers inside the selected interpreter.
+
+    Importing temsim alone also succeeds with an old editable installation, so
+    it cannot verify that a project rename installed its current commands.
+    """
+    with (PROJECT_ROOT / "pyproject.toml").open("rb") as stream:
+        project = tomllib.load(stream)["project"]
+    name = project["name"]
+    try:
+        installed = metadata.distribution(name)
+    except metadata.PackageNotFoundError as error:
+        raise ValueError(f"Project distribution {name!r} is not installed. Rerun setup_env.py.") from error
+    if installed.version != project["version"]:
+        raise ValueError(f"Installed {name} version {installed.version} does not match {project['version']}.")
+    entry_points = {entry.name: entry.value for entry in installed.entry_points
+                    if entry.group == "console_scripts"}
+    scripts = Path(sysconfig.get_path("scripts"))
+    suffix = ".exe" if os.name == "nt" else ""
+    for command, target in project.get("scripts", {}).items():
+        if entry_points.get(command) != target:
+            raise ValueError(f"Installed command {command!r} does not point to {target!r}. Rerun setup_env.py.")
+        launcher = scripts / f"{command}{suffix}"
+        if not launcher.is_file():
+            raise ValueError(f"Installed command launcher is missing: {launcher}. Rerun setup_env.py.")
+
+
 def verify(python: Path, *, gpu: bool = False) -> None:
     run([str(python), "-m", "pip", "--disable-pip-version-check", "check"])
+    run([str(python), "-c", "from setup_env import verify_installation; verify_installation()"])
     imports = (
         "import abtem, ase, cloudpickle, manifold3d, matplotlib, numba, numpy, "
         "pytest, PySide6, scipy, temsim, xraylib; "
@@ -112,8 +156,11 @@ def main(argv: list[str] | None = None) -> int:
             run([str(base_python), "-m", "venv", str(directory)])
 
         print("Selected Python:", ".".join(map(str, info["version"])))
-        if tuple(info["version"][:2]) != (3, 12):
-            print("Python 3.12 remains the reference for the CPU validation lock; other versions resolve compatible dependencies.")
+        lock = validation_lock(info)
+        if lock is None:
+            print("Windows CPython 3.12 uses the CPU validation lock; this runtime resolves compatible dependencies.")
+        else:
+            print(f"Using the same dependency versions as Windows CPU CI: {lock}")
         print(f"Local wheels: {wheel_directory} ({sum(1 for _ in wheel_directory.rglob('*.whl'))} files)")
         # Read build requirements and runtime dependencies from the project.
         # This runs inside the selected interpreter (which supplies tomllib).
@@ -123,11 +170,16 @@ def main(argv: list[str] | None = None) -> int:
         )
         bootstrap = ["pip>=23.1", *json.loads(metadata.stdout)]
         install = [str(python), "-m", "pip", "--disable-pip-version-check", "install", *sources]
-        run([*install, *bootstrap])
+        constraints = ["--constraint", str(lock)] if lock else []
+        run([*install, *constraints, *bootstrap])
         extras = "dev,gpu" if args.gpu else "dev"
         # Build dependencies were installed with the same wheel/index policy.
         # Avoid a second isolated build environment bypassing that setup.
-        run([*install, "--no-build-isolation", "--editable", f"{PROJECT_ROOT}[{extras}]"])
+        # Install the complete lock as requirements as well: constraints alone
+        # would not synchronise already-installed optional/transitive packages.
+        locked_requirements = ["--requirement", str(lock)] if lock else []
+        run([*install, *constraints, *locked_requirements, "--no-build-isolation",
+             "--editable", f"{PROJECT_ROOT}[{extras}]"])
         verify(python, gpu=args.gpu)
     except (OSError, ValueError, subprocess.CalledProcessError) as error:
         print(f"\nERROR: Environment setup failed: {error}", file=sys.stderr)

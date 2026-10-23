@@ -325,6 +325,35 @@ def _part_geometry_data(part) -> dict[str, object]:
     return result
 
 
+def _global_part_geometry_data(part, parts_by_key) -> dict[str, object]:
+    """Return FEM geometry with material sections in global axial millimetres.
+
+    Saved explicit intervals use the module's local Z coordinates, as do the
+    CAD mesh and dimension editor. The assembled envelope supplies that
+    module's translation. Objective-owned intervals already use global Z and
+    retain precedence over explicit child intervals.
+    """
+    data = _part_geometry_data(part)
+    parent = parts_by_key.get(getattr(part, "parent_key", None))
+    if parent is not None and data.get("mechanical_profile") in {
+        "magnetic_lens_yoke", "magnetic_excitation_coil",
+    }:
+        from temsim.magnetic_geometry import objective_layer_intervals_mm
+        intervals = objective_layer_intervals_mm(
+            parent.data, parent.start_z_mm, data["mechanical_profile"],
+        )
+        if intervals:
+            data["material_intervals_mm"] = intervals
+            return data
+    if "material_intervals_mm" in data:
+        offset = float(part.start_z_mm) - float(part.data["local_start_z_mm"])
+        data["material_intervals_mm"] = tuple(
+            (float(start) + offset, float(end) + offset)
+            for start, end in data["material_intervals_mm"]
+        )
+    return data
+
+
 def _part_is_descendant_of(
     part,
     lens_key: str,
@@ -440,13 +469,7 @@ def _lens_assembly_payload(
             continue
         if key != lens_key and not _is_field_structure_part(part, lens_key):
             continue
-        physical_data = _part_geometry_data(part)
-        parent = parts_by_key.get(getattr(part, "parent_key", None))
-        if parent is not None and physical_data.get("mechanical_profile") in {"magnetic_lens_yoke", "magnetic_excitation_coil"}:
-            from temsim.magnetic_geometry import objective_layer_intervals_mm
-            intervals = objective_layer_intervals_mm(parent.data, parent.start_z_mm, physical_data["mechanical_profile"])
-            if intervals:
-                physical_data["material_intervals_mm"] = intervals
+        physical_data = _global_part_geometry_data(part, parts_by_key)
         if physical_data.get("mechanical_profile") == "magnetic_excitation_coil":
             physical_data.setdefault("field_source_key", optical_owner(part, parts_by_key))
         related_parts.append({
@@ -537,6 +560,7 @@ def lens_geometry_binding(
         field_parts = [part for part in own_parts if is_magnetostatic_body(part["data"])
                        or part["data"].get("mechanical_profile") == "magnetic_excitation_coil"]
         neighbours = []
+        parts_by_key = {part.key: part for part in assembly.parts}
         if field_parts:
             lower = min(part["start_z_mm"] for part in field_parts)
             upper = max(part["end_z_mm"] for part in field_parts)
@@ -545,13 +569,7 @@ def lens_geometry_binding(
             for part in assembly.parts:
                 if (part.key not in own_keys and part.start_z_mm < centre+half and part.end_z_mm > centre-half
                         and is_magnetostatic_body(part.data)):
-                    data = _part_geometry_data(part)
-                    parent = next((p for p in assembly.parts if p.key == part.parent_key), None)
-                    if parent is not None and data.get("mechanical_profile") == "magnetic_lens_yoke":
-                        from temsim.magnetic_geometry import objective_layer_intervals_mm
-                        intervals = objective_layer_intervals_mm(parent.data, parent.start_z_mm, data["mechanical_profile"])
-                        if intervals:
-                            data["material_intervals_mm"] = intervals
+                    data = _global_part_geometry_data(part, parts_by_key)
                     neighbours.append({"key": part.key, "start_z_mm": part.start_z_mm, "end_z_mm": part.end_z_mm,
                                        "data": data})
         # Nearby passive magnetic material affects the selected coil response.

@@ -188,7 +188,7 @@ def validate(args, report):
     lower = float(assembly.part("probe_tl12_lens").end_z_mm)
     upper = float(assembly.part("mini_condenser").start_z_mm)
     if not lower < upper:
-        raise ValueError("TL1 exit must precede Mini Condenser entrance")
+        raise ValueError("TL12 exit must precede Mini Condenser entrance")
     sample = float(state.sample.upper_surface_z_mm)
     sample_planes = np.asarray([sample-.0002, sample-.0001, sample])
     snapshot = capture_instrument_snapshot(state)
@@ -218,7 +218,7 @@ def validate(args, report):
         passed=bool(hp_b <= LIMITS["hp_b_norm_m_per_rad"]
                     and np.max(abs(magnifications-1)) <= LIMITS["hp_magnification_error"]),
     )
-    print("Tracing physical Tip and coarse TL1-CM checkpoints", flush=True)
+    print("Tracing physical Tip and coarse TL12-CM checkpoints", flush=True)
     planes = np.unique(np.r_[np.arange(lower, upper, .5), upper, sample_planes])
     gun, cp, masks = trace(state, planes, .05, report["backend_receipts"])
     report["physical_source"] = dict(
@@ -231,7 +231,7 @@ def validate(args, report):
     report["coarse_crossover_proposals"] = proposals
     report["coarse_sample"] = surface_measurement(cp, masks, gun.exit_bundle.weight, sample_planes)
     if not proposals:
-        raise RuntimeError("No converging-to-diverging Tip-ray waist bracket between TL1 and CM")
+        raise RuntimeError("No converging-to-diverging Tip-ray waist bracket between TL12 and CM")
     roots = np.array([row["z_mm"] for row in proposals])
     refined_planes = np.unique(np.r_[roots-.001, roots, roots+.001, sample_planes])
     report["refined"] = []
@@ -278,7 +278,7 @@ def figure(path, data, report):
     lower, upper = report["interval_mm"]
     fig, axes = plt.subplots(1, 3, figsize=(13, 4), constrained_layout=True)
     for ax, points, alive, label in zip(axes[:2], (cp, fine), (masks, fine_masks),
-                                      ("Executed TL1-CM envelope", "Executed waist checkpoints")):
+                                      ("Executed TL12-CM envelope", "Executed waist checkpoints")):
         selected = (points.z_mm > lower) & (points.z_mm < upper)
         cohort = np.all(alive[selected], axis=0) & (weights > 0)
         radii = [statistics(points, i, weights, cohort).radius_rms_m*1e9

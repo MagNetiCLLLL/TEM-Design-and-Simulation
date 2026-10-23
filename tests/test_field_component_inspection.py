@@ -77,6 +77,7 @@ def test_longitudinal_rotation_samples_new_physical_plane_without_repreparing_sc
     assert page.section.currentData() == "UZ"
     original = page._sample
     np.testing.assert_allclose(original.points_m[:, 1], 0., atol=1e-15)
+    page.strength_scale.setCurrentIndex(page.strength_scale.findData("fixed"))
     page.canvas.set_reference("B", 3.)
     references = page.canvas.references.copy()
     regions = build_field_display_regions(state, scene.sources)

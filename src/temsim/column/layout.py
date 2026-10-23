@@ -2207,7 +2207,14 @@ def _base_specs(configuration):
     }
     for lens_key, component in magnetic_pole_parents.items():
         parent = specs[lens_key]
-        pole_gap = float(component.pole_gap_mm)
+        # Mini Condenser definitions carry separate installation geometries;
+        # their selected gap and bore are already resolved in the parent spec.
+        # Runtime components and definition-only layouts must use that same
+        # geometry when constructing the nested pole pieces.
+        pole_gap = float(
+            parent.active_length_mm
+            if lens_key == MINI_CONDENSER else component.pole_gap_mm
+        )
         if parent.active_length_mm is None:
             parent = replace(parent, active_length_mm=pole_gap)
             specs[lens_key] = parent
@@ -2216,7 +2223,11 @@ def _base_specs(configuration):
             0.001,
         )
         offset = 0.5 * (pole_gap + pole_length)
-        bore_diameter = getattr(component, "bore_diameter_mm", None)
+        bore_diameter = (
+            parent.active_diameter_mm
+            if lens_key == MINI_CONDENSER
+            else getattr(component, "bore_diameter_mm", None)
+        )
         if bore_diameter is None:
             bore_diameter = component.mechanical_clear_bore_diameter_mm
         bore_diameter = float(bore_diameter)
@@ -2812,7 +2823,7 @@ def _build_optics_layout_metadata(
 
 
 def build_optics_layout(
-    configuration: LayoutConfiguration = LayoutConfiguration(),
+    configuration: Optional[LayoutConfiguration] = None,
     *,
     assembly=None,
 ) -> LayoutResult:
@@ -2820,6 +2831,8 @@ def build_optics_layout(
         apply_module_assembly, resolve_module_assembly,
     )
 
+    if configuration is None:
+        configuration = LayoutConfiguration()
     if assembly is None:
         assembly = configuration.resolved_assembly
     if assembly is None:
@@ -2938,13 +2951,13 @@ class _SourceReferencedAxisComponent:
 
 
 def resolve_objective_entrance_mechanical_axis(configuration=None):
-    """Diagnose the serial package embedded above the sample."""
+    """Diagnose the entrance package relative to the source mechanical centre."""
 
     if configuration is None:
         configuration = LayoutConfiguration()
     layout = build_optics_layout(configuration)
     by_key = {component.key: component for component in layout}
-    axis_order = (
+    component_keys = (
         CONDENSER_STIGMATOR,
         AC_DEFLECTOR,
         MINI_CONDENSER,
@@ -2963,7 +2976,16 @@ def resolve_objective_entrance_mechanical_axis(configuration=None):
                 - by_key[key].mechanical.start_s_mm
             ),
         )
-        for key in axis_order
+        for key in component_keys
+    )
+    # Selected column modules place AC and CLS in different orders. Inspect
+    # their resolved source-referenced positions without moving either part;
+    # the axis validator still rejects any actual envelope intersection.
+    axis_order = tuple(
+        component.key for component in sorted(
+            components,
+            key=lambda component: component.mechanical_center_from_tip_mm,
+        )
     )
     return resolve_mechanical_axis(components, axis_order)
 

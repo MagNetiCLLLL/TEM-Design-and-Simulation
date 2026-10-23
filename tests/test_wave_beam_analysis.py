@@ -2,6 +2,7 @@
 from dataclasses import replace
 
 import numpy as np
+import pyqtgraph as pg
 import pytest
 
 from temsim.gui.diagnostic_tabs import TransverseBeamView
@@ -9,11 +10,15 @@ from temsim.physics.tip_gun_wave import TipGunCheckpoint
 from temsim.physics.wave_flux import BeamState
 from temsim.optics.electron_gun.tip_coherence import TIP_REFERENCE, wavelength_m
 from test_wave_plane_observables import mode
-from test_beam_analysis_modes import make_result
+from test_beam_analysis_modes import displayed_spot_flux, make_result
 
 
 @pytest.fixture
-def view(qtbot):
+def view(qtbot, monkeypatch, tmp_path):
+    from PySide6 import QtCore
+    settings_type = QtCore.QSettings
+    monkeypatch.setattr(QtCore, "QSettings", lambda *args, **kwargs: settings_type(
+        str(tmp_path / "wave-view.ini"), settings_type.Format.IniFormat))
     widget = TransverseBeamView()
     qtbot.addWidget(widget)
     widget.resize(500, 900)
@@ -81,6 +86,56 @@ def test_wave_readout_hides_particle_spot_controls_and_restores_them(view):
     assert a.spot_grid_combo.isVisible() and a.spot_grid_combo.currentData() == 256
     assert a._spot_colour_maximum == maximum
     assert not view.snapshot_status.isVisible()
+
+
+@pytest.mark.parametrize("wave_z_mm", (1., 1500.))
+def test_spot_resize_cannot_overwrite_wave_and_resumes_after_return(view, wave_z_mm):
+    old = make_result()
+    view.display_result(old, focus=("z", 1.))
+    a = view.analysis
+    a.display_combo.setCurrentIndex(a.display_combo.findData("spot"))
+    view._test_qtbot.wait(50)
+    spot_range = np.array(a._ranges["intensity"])
+
+    # A pending Spot refresh is cancelled when the wave takes the same canvas.
+    a._queue_geometry_refresh()
+    assert a._resize_timer.isActive()
+    original = replace(checkpoint(), plane_z_mm=wave_z_mm)
+    view.display_wave_checkpoint(original, axial_bz_t=0.)
+    assert not a._resize_timer.isActive()
+    wait_for_readout(view)
+    wave = a.wave
+    values = wave.values.copy()
+    summary, heading, legend = view.summary.text(), view.heading.text(), a.legend.text()
+
+    view.plot_layout.set_state({"beam": [600, 500], "legend": [184, 184]})
+    view._test_qtbot.wait(100)
+    # Also exercise a refresh already dispatched before the mode transition.
+    a._refresh_view_geometry()
+    images = [item for item in view.plot.items() if isinstance(item, pg.ImageItem)]
+    assert len(images) == 1 and images[0] is not a._spot_image
+    np.testing.assert_array_equal(images[0].image, values.T)
+    assert (view.summary.text(), view.heading.text(), a.legend.text()) == (summary, heading, legend)
+    assert a.wave is wave and wave.checkpoint is original
+    assert wave.values.sum() == pytest.approx(50000., rel=1e-12)
+    assert not a._resize_timer.isActive()
+    np.testing.assert_array_equal(a._ranges["intensity"], spot_range)
+
+    # Returning to Spot must restore its range and keep resize-driven rebinning.
+    view.display_result(old, focus=("z", 1.))
+    assert a.wave is None and a.mode == "intensity"
+    assert a.display_combo.currentData() == "spot"
+    assert a._spot_image in view.plot.items()
+    before = a._spot_raster
+    view.plot_layout.set_state({"beam": [800, 400], "legend": [184, 184]})
+    view._test_qtbot.waitUntil(lambda: a._spot_raster is not before, timeout=5000)
+    raster = a._spot_raster
+    np.testing.assert_allclose(
+        [[raster.x_edges_m[0], raster.x_edges_m[-1]],
+         [raster.y_edges_m[0], raster.y_edges_m[-1]]],
+        np.array(view.plot.viewRange()) * 1e-6, rtol=1e-12, atol=1e-18)
+    assert displayed_spot_flux(a._hover_payload) == pytest.approx(200., rel=1e-12)
+    assert view._result is old
 
 
 def test_phase_selects_one_mode_and_keeps_relative_phase(view):

@@ -101,12 +101,14 @@ def test_launch_failure_replaces_previous_success_and_retains_diagnostics(runner
     assert not report["artifacts"]["junit"]["exists"]
 
 
-def test_lockfile_changes_are_bound_to_validation(runner, tmp_path):
-    path = tmp_path / "requirements/validation-cpu-lock.txt"
-    path.parent.mkdir()
+@pytest.mark.parametrize("relative", ["requirements/validation-cpu-lock.txt", "requirements-cad.txt",
+                                     "setup_env.py"])
+def test_installation_input_changes_are_bound_to_validation(runner, tmp_path, relative):
+    path = tmp_path / relative
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("numpy==1.0\n")
     before = runner["source_hashes"](tmp_path)
-    assert "requirements/validation-cpu-lock.txt" in before
+    assert relative in before
     path.write_text("numpy==2.0\n")
     assert runner["source_hashes"](tmp_path) != before
     path.unlink()
