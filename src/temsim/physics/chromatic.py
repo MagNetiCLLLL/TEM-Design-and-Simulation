@@ -248,11 +248,14 @@ def objective_chromatic_kick_from_state(
     )
     if focal is None:
         return np.zeros_like(x), np.zeros_like(y)
+    cc_mm = getattr(state.objective_lens, "cc_mm", None)
+    if cc_mm is None:
+        cc_mm = 2.0
     return objective_chromatic_kick(
         x,
         y,
         energy_offset_ev,
         float(state.beam_voltage_kv) * 1000.0,
-        float(getattr(state.objective_lens, "cc_mm", 2.0) or 2.0),
+        float(cc_mm),
         focal,
     )

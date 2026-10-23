@@ -273,7 +273,8 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_section_archive_identity.py", "tests/test_result_file_request_routing.py",
                 "tests/test_result_files_gui.py")),
             "particle-continuation/PC-05": ("Specimen downstream handoff, branch weights and executed flight times", (
-                "tests/test_downstream_transport.py", "tests/test_specimen_time_of_flight.py")),
+                "tests/test_downstream_transport.py", "tests/test_specimen_time_of_flight.py",
+                "tests/test_objective_chromatic_kick.py")),
             "particle-continuation/PC-06": ("Measured corrector waists, nonlinear source correction and current preset seeds", (
                 "tests/test_corrector_crossover_measurement.py",
                 "tests/test_probe_corrector_calibration.py", "tests/test_direct_alignment_precalibration.py")),
@@ -286,7 +287,7 @@ ACCEPTANCE_SCOPES = {
             "particle-continuation/PC-10": ("Normal and Large-angle Nanoprobe topology, mode persistence and independent focus acceptance", (
                 "tests/test_condenser_topology.py", "tests/test_nanoprobe_topology_alignment.py",
                 "tests/test_validate_nanoprobe_condenser.py", "tests/test_nanoprobe_ranges.py",
-                "tests/test_bcor_nanoprobe_integration.py")),
+                "tests/test_bcor_nanoprobe_integration.py", "tests/test_supplemental_crossover.py")),
         },
     },
     "performance-observation": {

@@ -10,7 +10,7 @@ from dataclasses import dataclass, field, replace
 from enum import Enum
 from typing import Optional, Tuple
 
-from temsim.mechanical_axis import resolve_mechanical_axis
+from temsim.mechanical_axis import MechanicalNestingPermission, resolve_mechanical_axis
 from temsim.component_names import (
     APERTURE_NAMES,
     DEFLECTOR_NAMES,
@@ -2950,6 +2950,71 @@ class _SourceReferencedAxisComponent:
     mechanical_length_mm: float
 
 
+def _resolve_physical_mechanical_axis(configuration, component_keys, *, optional=False):
+    """Check installed axial packages, resolving channels to their material hosts.
+
+    Positions are relative to the source mechanical centre, not an effective
+    optical plane. Native coil inserts use their full material extent, including
+    insulation/end covers; their optical allocation is not a solid. Replacement
+    CAD models retain their declared installation envelope, without reviving
+    inactive winding parameters. Explicitly nested inserts remain in placements
+    without consuming serial axis space.
+    This nominal axial check does not replace posed 3-D material collision tests.
+    """
+    from temsim.column.module_assembly import resolve_module_assembly
+    from temsim.component_representation import SHARED_DEFLECTOR_HOSTS, non_material_role
+    from temsim.deflector_support_geometry import full_material_axial_extent
+    from temsim.optics.field_hardware_binding import COIL_INSERT_ROLE
+
+    assembly = configuration.resolved_assembly
+    if assembly is None:
+        assembly = resolve_module_assembly(configuration)
+    parts = {part.key: part for part in assembly.parts}
+    source_z = next(parts[key].center_z_mm for key in (FEG_TIP, THERMIONIC_CATHODE)
+                    if key in parts)
+    physical = {}
+    for key in component_keys:
+        if optional and key not in parts:
+            continue
+        part = parts[key]
+        role = non_material_role(part.data)
+        if role:
+            if role != "control_channel":
+                continue
+            host = SHARED_DEFLECTOR_HOSTS.get(key) or part.data.get("physical_host_key")
+            if not host:
+                # An optical reference host is not evidence of separate hardware.
+                continue
+            if host not in parts or non_material_role(parts[host].data):
+                raise ValueError(f"{key}: missing material mechanical host {host}")
+            part = parts[host]
+        physical[part.key] = part
+
+    components, nesting = [], []
+    for part in physical.values():
+        start, end = part.start_z_mm, part.end_z_mm
+        if part.data.get("mechanical_part_role") == COIL_INSERT_ROLE:
+            base_kind = part.data.get("model_3d", {}).get("base", {}).get("kind", "existing")
+            if base_kind == "existing":
+                local_start, local_end = full_material_axial_extent(part.data)
+                module_offset = part.center_z_mm - float(part.data["local_center_z_mm"])
+                start, end = local_start + module_offset, local_end + module_offset
+            if part.parent_key in physical:
+                nesting.append(MechanicalNestingPermission(
+                    part.key, part.parent_key,
+                    "Declared coil insert within its mechanical parent; axial "
+                    "containment only, not a 3-D material collision exemption.",
+                ))
+        components.append(_SourceReferencedAxisComponent(
+            part.key, 0.5 * (start + end) - source_z, end - start,
+        ))
+    nested_keys = {permission.child_key for permission in nesting}
+    axis_order = tuple(component.key for component in sorted(
+        components, key=lambda component: component.mechanical_center_from_tip_mm,
+    ) if component.key not in nested_keys)
+    return resolve_mechanical_axis(components, axis_order, nesting)
+
+
 def resolve_objective_entrance_mechanical_axis(configuration=None):
     """Diagnose the entrance package relative to the source mechanical centre."""
 
@@ -2991,12 +3056,10 @@ def resolve_objective_entrance_mechanical_axis(configuration=None):
 
 
 def resolve_objective_exit_mechanical_axis(configuration=None):
-    """Diagnose the serial sample-to-Image/Deflector mechanical path."""
+    """Diagnose the sample/exit packages, counting shared Descan hardware once."""
 
     if configuration is None:
         configuration = LayoutConfiguration()
-    layout = build_optics_layout(configuration)
-    by_key = {component.key: component for component in layout}
     component_keys = (
         "sample",
         OBJECTIVE_APERTURE,
@@ -3005,66 +3068,28 @@ def resolve_objective_exit_mechanical_axis(configuration=None):
         "objective_stigmator",
         IMAGE_DIFFRACTION_DEFLECTOR,
     )
-    axis_order = (
-        "sample",
-        OBJECTIVE_APERTURE,
-        "objective_lower_pole",
-        DESCAN_DEFLECTOR,
-        "objective_stigmator",
-        IMAGE_DIFFRACTION_DEFLECTOR,
-    )
-    components = tuple(
-        _SourceReferencedAxisComponent(
-            key,
-            (
-                layout.source_to_sample_mm
-                - by_key[key].local_s_center_mm
-            ),
-            (
-                by_key[key].mechanical.end_s_mm
-                - by_key[key].mechanical.start_s_mm
-            ),
-        )
-        for key in component_keys
-    )
-    return resolve_mechanical_axis(components, axis_order)
+    return _resolve_physical_mechanical_axis(configuration, component_keys)
 
 
 def resolve_post_objective_deflector_mechanical_axis(
     configuration=None,
 ):
-    """Diagnose Descan, Objective Stigmator and Image/Deflector."""
+    """Diagnose the stigmator and the shared Descan/Image/Deflector host."""
 
     if configuration is None:
         configuration = LayoutConfiguration()
-    layout = build_optics_layout(configuration)
-    by_key = {component.key: component for component in layout}
-    axis_order = (
+    component_keys = (
         DESCAN_DEFLECTOR,
         "objective_stigmator",
         IMAGE_DIFFRACTION_DEFLECTOR,
     )
-    components = tuple(
-        _SourceReferencedAxisComponent(
-            key,
-            (
-                layout.source_to_sample_mm
-                - by_key[key].local_s_center_mm
-            ),
-            (
-                by_key[key].mechanical.end_s_mm
-                - by_key[key].mechanical.start_s_mm
-            ),
-        )
-        for key in axis_order
-    )
-    return resolve_mechanical_axis(components, axis_order)
+    return _resolve_physical_mechanical_axis(configuration, component_keys)
 
 
 def resolve_installed_image_corrector_exit_mechanical_axis(
     configuration=None,
 ):
-    """Diagnose the installed Image Corrector path through the SAA."""
+    """Diagnose installed Image Corrector hardware through SAA, not channels."""
 
     if configuration is None:
         configuration = LayoutConfiguration(
@@ -3078,11 +3103,9 @@ def resolve_installed_image_corrector_exit_mechanical_axis(
             "The Image Corrector exit mechanical axis requires an "
             "installed Image Corrector."
         )
-    layout = build_optics_layout(configuration)
-    by_key = {component.key: component for component in layout}
-    axis_order = (
+    component_keys = (
         IMAGE_DIFFRACTION_DEFLECTOR,
-            IMAGE_CORRECTOR_HPOL_HEXAPOLE,
+        IMAGE_CORRECTOR_HPOL_HEXAPOLE,
         IMAGE_CORRECTOR_QPOL_QUADRUPOLE,
         IMAGE_CORRECTOR_DP11_DEFLECTOR,
         IMAGE_CORRECTOR_TL11_LENS,
@@ -3105,19 +3128,7 @@ def resolve_installed_image_corrector_exit_mechanical_axis(
         IMAGE_CORRECTOR_DSTG_QUADRUPOLE,
         SELECTED_AREA_APERTURE,
     )
-    axis_order = tuple(key for key in axis_order if key in by_key)
-    components = tuple(
-        _SourceReferencedAxisComponent(
-            key,
-            layout.source_to_sample_mm - by_key[key].local_s_center_mm,
-            (
-                by_key[key].mechanical.end_s_mm
-                - by_key[key].mechanical.start_s_mm
-            ),
-        )
-        for key in axis_order
-    )
-    return resolve_mechanical_axis(components, axis_order)
+    return _resolve_physical_mechanical_axis(configuration, component_keys, optional=True)
 
 
 def resolve_standalone_selected_area_aperture_mechanical_axis(

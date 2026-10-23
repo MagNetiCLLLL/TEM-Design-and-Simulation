@@ -10,7 +10,10 @@ from temsim.column.layout import (
     CorrectorAssembly,
     LayoutConfiguration,
     build_optics_layout,
+    resolve_installed_image_corrector_exit_mechanical_axis,
     resolve_objective_entrance_mechanical_axis,
+    resolve_objective_exit_mechanical_axis,
+    resolve_post_objective_deflector_mechanical_axis,
 )
 from temsim.column.module_assembly import resolve_module_assembly
 from temsim.column.state_layout import layout_configuration_from_state
@@ -112,9 +115,8 @@ _COLUMN_LAYOUTS = (
 )
 
 
-@pytest.fixture(scope="module", params=_COLUMN_LAYOUTS, ids=lambda row: row[0])
-def column_layout(request):
-    name, hardware, corrector, design, ac_first = request.param
+def _selected_column_layout(row):
+    name, hardware, corrector, design, ac_first = row
     bare = LayoutConfiguration(
         c3_hardware=hardware,
         c3_excited=hardware is C3Hardware.THREE_CONDENSER,
@@ -130,6 +132,11 @@ def column_layout(request):
     state.mini_condenser.percent += 0.5
     configuration = layout_configuration_from_state(state)
     return state, assembly, configuration, bare, ac_first
+
+
+@pytest.fixture(scope="module", params=_COLUMN_LAYOUTS, ids=lambda row: row[0])
+def column_layout(request):
+    return _selected_column_layout(request.param)
 
 
 def _assert_manifest_envelopes(layout, assembly):
@@ -201,6 +208,302 @@ def test_objective_entrance_still_rejects_real_overlap_for_every_column(column_l
 def test_layout_and_entrance_support_no_argument_public_entry_points():
     assert build_optics_layout() == build_optics_layout(LayoutConfiguration())
     assert resolve_objective_entrance_mechanical_axis() == resolve_objective_entrance_mechanical_axis(LayoutConfiguration())
+
+
+def test_exit_diagnostics_support_no_argument_public_entry_points():
+    for helper in (resolve_objective_exit_mechanical_axis,
+                   resolve_post_objective_deflector_mechanical_axis):
+        assert helper() == helper(LayoutConfiguration())
+    assert resolve_installed_image_corrector_exit_mechanical_axis() == (
+        resolve_installed_image_corrector_exit_mechanical_axis(
+            LayoutConfiguration(corrector=CorrectorAssembly.IMAGE_CORRECTOR)))
+
+
+@pytest.mark.parametrize("column", [row for row in _COLUMN_LAYOUTS
+    if row[2] not in (CorrectorAssembly.IMAGE_CORRECTOR, CorrectorAssembly.DOUBLE_CORRECTOR)],
+    ids=lambda row: row[0])
+def test_image_exit_requires_an_installed_corrector(column):
+    _, hardware, corrector, design, _ = column
+    configuration = LayoutConfiguration(c3_hardware=hardware,
+        c3_excited=hardware is C3Hardware.THREE_CONDENSER,
+        corrector=corrector, image_corrector_design=design)
+    with pytest.raises(ValueError, match="requires an installed Image Corrector"):
+        resolve_installed_image_corrector_exit_mechanical_axis(configuration)
+
+
+def _configuration_with_part_replacements(configuration, assembly, *parts):
+    replacements = {part.key: part for part in parts}
+    changed = replace(assembly, parts=tuple(
+        replacements.get(part.key, part) for part in assembly.parts))
+    return replace(configuration, resolved_assembly=changed)
+
+
+def _part_at_center(part, center_z_mm):
+    shift = center_z_mm - part.center_z_mm
+    return replace(part, start_z_mm=part.start_z_mm + shift,
+                   center_z_mm=center_z_mm, end_z_mm=part.end_z_mm + shift)
+
+
+def _assert_axis_matches_physical_parts(axis, assembly, keys):
+    # Expected positions come from the selected assembly, independent of the
+    # helper's candidate list, sorting and shared-channel handling.
+    expected = sorted((assembly.part(key) for key in keys),
+                      key=lambda part: part.center_z_mm)
+    assert axis.axis_order == tuple(part.key for part in expected)
+    assert set(axis.by_key) == set(keys)
+    source_z = assembly.part("feg_tip").center_z_mm
+    for part in expected:
+        placement = axis.by_key[part.key]
+        assert (placement.start_z_mm, placement.center_z_mm,
+                placement.end_z_mm) == pytest.approx((
+                    part.start_z_mm - source_z, part.center_z_mm - source_z,
+                    part.end_z_mm - source_z))
+    for upstream, downstream in zip(expected, expected[1:]):
+        assert axis.clearance_between(upstream.key, downstream.key) == pytest.approx(
+            downstream.start_z_mm - upstream.end_z_mm)
+
+
+def test_objective_exit_diagnostics_use_shared_hardware_once_for_every_column(column_layout):
+    state, assembly, configuration, bare, _ = column_layout
+    before = capture_instrument_snapshot(state).digest
+    exit_keys = {"sample", "objective_aperture", "objective_lower_pole",
+                 "objective_stigmator", "image_diffraction_deflector"}
+    post_keys = {"objective_stigmator", "image_diffraction_deflector"}
+    for selected in (configuration, bare):
+        for helper, keys in (
+            (resolve_objective_exit_mechanical_axis, exit_keys),
+            (resolve_post_objective_deflector_mechanical_axis, post_keys),
+        ):
+            axis = helper(selected)
+            _assert_axis_matches_physical_parts(axis, assembly, keys)
+            assert "descan_deflector" not in axis.by_key
+            assert axis.axis_order.count("image_diffraction_deflector") == 1
+    assert capture_instrument_snapshot(state).digest == before
+
+
+def test_post_objective_diagnostic_follows_edited_positions_and_dimensions(column_layout):
+    state, assembly, configuration, _, _ = column_layout
+    before = capture_instrument_snapshot(state).digest
+    stigma = assembly.part("objective_stigmator")
+    host = assembly.part("image_diffraction_deflector")
+    baseline = resolve_post_objective_deflector_mechanical_axis(configuration)
+    baseline_gap = baseline.clearance_between(*baseline.axis_order)
+
+    # Exchanging separated physical bodies must reverse their displayed order;
+    # the stale Descan channel coordinates must not create another body.
+    exchanged = _configuration_with_part_replacements(configuration, assembly,
+        _part_at_center(stigma, host.center_z_mm),
+        _part_at_center(host, stigma.center_z_mm))
+    swapped = resolve_post_objective_deflector_mechanical_axis(exchanged)
+    assert swapped.axis_order == tuple(reversed(baseline.axis_order))
+    assert swapped.clearance_between(*swapped.axis_order) == pytest.approx(baseline_gap)
+    _assert_axis_matches_physical_parts(swapped, exchanged.resolved_assembly,
+        {"objective_stigmator", "image_diffraction_deflector"})
+
+    # A 2 mm longer body consumes 1 mm more space on each side of its centre.
+    longer = replace(stigma, start_z_mm=stigma.start_z_mm - 1,
+                     end_z_mm=stigma.end_z_mm + 1, length_mm=stigma.length_mm + 2)
+    resized = resolve_post_objective_deflector_mechanical_axis(
+        _configuration_with_part_replacements(configuration, assembly, longer))
+    assert resized.axis_order == baseline.axis_order
+    assert resized.clearance_between(*resized.axis_order) == pytest.approx(baseline_gap - 1)
+    assert capture_instrument_snapshot(state).digest == before
+
+
+@pytest.mark.parametrize("helper", (
+    resolve_objective_exit_mechanical_axis,
+    resolve_post_objective_deflector_mechanical_axis,
+), ids=("objective-exit", "post-objective"))
+def test_objective_exit_diagnostics_still_reject_real_body_overlap(column_layout, helper):
+    state, assembly, configuration, _, _ = column_layout
+    before = capture_instrument_snapshot(state).digest
+    overlap = _part_at_center(assembly.part("objective_stigmator"),
+                              assembly.part("image_diffraction_deflector").center_z_mm)
+    changed = _configuration_with_part_replacements(configuration, assembly, overlap)
+    with pytest.raises(ValueError, match="Unapproved mechanical overlap:.*(?:objective_stigmator|image_diffraction_deflector)"):
+        helper(changed)
+    assert capture_instrument_snapshot(state).digest == before
+
+
+@pytest.fixture(scope="module", params=[row for row in _COLUMN_LAYOUTS
+    if row[2] in (CorrectorAssembly.IMAGE_CORRECTOR, CorrectorAssembly.DOUBLE_CORRECTOR)],
+    ids=lambda row: row[0])
+def image_corrector_layout(request):
+    return _selected_column_layout(request.param)
+
+
+def test_image_corrector_exit_checks_materials_not_field_channels(image_corrector_layout):
+    state, assembly, configuration, bare, _ = image_corrector_layout
+    before = capture_instrument_snapshot(state).digest
+    required_materials = {
+        "image_diffraction_deflector", "image_tl11_lens", "image_tl12_lens",
+        "image_tl21_lens", "image_tl22_lens", "image_hp1_hexapole",
+        "image_hp2_hexapole", "image_adapter_lens", "selected_area_aperture",
+        "image_dp11_coils", "image_dp12_coils", "image_dph1_coils",
+        "image_dp21_coils", "image_dp22_coils", "image_dph2_coils",
+        "image_ish_coils", "image_dsh_coils",
+    }
+    if configuration.image_corrector_design == "bcor":
+        required_materials.update({"image_tl31_lens", "image_tl32_lens",
+                                   "image_hp3_hexapole"})
+    field_channels = {
+        "image_hpol_hexapole", "image_qpol_quadrupole",
+        "image_dp11_deflector", "image_dp12_deflector",
+        "image_dph1_deflector", "image_dph2_deflector",
+        "image_dp21_deflector", "image_dp22_deflector",
+        "image_ish_deflector", "image_dsh_deflector", "image_dstg_quadrupole",
+    }
+    for selected in (configuration, bare):
+        axis = resolve_installed_image_corrector_exit_mechanical_axis(selected)
+        assert required_materials <= set(axis.by_key)
+        assert field_channels.isdisjoint(axis.by_key)
+        assert "image_sad_plane" not in axis.by_key
+        assert len(axis.axis_order) == len(set(axis.axis_order))
+        centers = [axis.by_key[key].center_z_mm for key in axis.axis_order]
+        assert centers == sorted(centers)
+        assert axis.clearance_between("image_dp11_coils", "image_tl11_lens") == pytest.approx(0.5)
+        assert axis.clearance_between("image_dp21_coils", "image_dp22_coils") == pytest.approx(0.5)
+        for number in (1, 2):
+            coil_key = f"image_dph{number}_coils"
+            placement = axis.by_key[coil_key]
+            assert placement.nested_parent_key == f"image_hp{number}_hexapole"
+            assert placement.nesting_reason
+            assert coil_key not in axis.axis_order
+        # The physical aperture stays at the selected real observation plane;
+        # omitting a virtual marker must not erase the actual aperture body.
+        aperture = assembly.part("selected_area_aperture")
+        assert axis.by_key[aperture.key].center_z_mm == pytest.approx(
+            aperture.center_z_mm - assembly.part("feg_tip").center_z_mm)
+    assert capture_instrument_snapshot(state).digest == before
+
+
+def test_image_corrector_exit_follows_aperture_position_and_size(image_corrector_layout):
+    state, assembly, configuration, _, _ = image_corrector_layout
+    before = capture_instrument_snapshot(state).digest
+    baseline = resolve_installed_image_corrector_exit_mechanical_axis(configuration)
+    aperture = assembly.part("selected_area_aperture")
+    assert baseline.axis_order[-1] == aperture.key
+    previous_key = baseline.axis_order[-2]
+    gap = baseline.clearance_between(previous_key, aperture.key)
+
+    moved = _part_at_center(aperture, aperture.center_z_mm + 2)
+    translated = resolve_installed_image_corrector_exit_mechanical_axis(
+        _configuration_with_part_replacements(configuration, assembly, moved))
+    assert translated.axis_order == baseline.axis_order
+    assert translated.clearance_between(previous_key, aperture.key) == pytest.approx(gap + 2)
+
+    longer = replace(aperture, start_z_mm=aperture.start_z_mm - 1,
+                     end_z_mm=aperture.end_z_mm + 1, length_mm=aperture.length_mm + 2)
+    resized = resolve_installed_image_corrector_exit_mechanical_axis(
+        _configuration_with_part_replacements(configuration, assembly, longer))
+    assert resized.axis_order == baseline.axis_order
+    assert resized.clearance_between(previous_key, aperture.key) == pytest.approx(gap - 1)
+    assert capture_instrument_snapshot(state).digest == before
+
+
+def test_image_corrector_exit_still_rejects_real_aperture_lens_overlap(image_corrector_layout):
+    state, assembly, configuration, _, _ = image_corrector_layout
+    before = capture_instrument_snapshot(state).digest
+    aperture = _part_at_center(assembly.part("selected_area_aperture"),
+                              assembly.part("image_tl12_lens").center_z_mm)
+    changed = _configuration_with_part_replacements(configuration, assembly, aperture)
+    with pytest.raises(ValueError, match="Unapproved mechanical overlap:.*(?:selected_area_aperture|image_tl12_lens)"):
+        resolve_installed_image_corrector_exit_mechanical_axis(changed)
+    assert capture_instrument_snapshot(state).digest == before
+
+
+def test_image_corrector_coil_material_length_controls_clearance(image_corrector_layout):
+    state, assembly, configuration, _, _ = image_corrector_layout
+    before = capture_instrument_snapshot(state).digest
+    coil = assembly.part("image_dp21_coils")
+    assert coil.length_mm == 14.0
+    assert coil.data["winding_axial_length_mm"] == 3.0
+    longer = replace(coil, data={**coil.data, "winding_axial_length_mm": 3.5})
+    axis = resolve_installed_image_corrector_exit_mechanical_axis(
+        _configuration_with_part_replacements(configuration, assembly, longer))
+    assert axis.by_key[coil.key].end_z_mm - axis.by_key[coil.key].start_z_mm == pytest.approx(3.5)
+    # Centres are 3.5 mm apart: 3.5 mm + 3 mm copper leaves 0.25 mm.
+    assert axis.clearance_between(coil.key, "image_dp22_coils") == pytest.approx(0.25)
+    touching = replace(coil, data={**coil.data, "winding_axial_length_mm": 4.0})
+    axis = resolve_installed_image_corrector_exit_mechanical_axis(
+        _configuration_with_part_replacements(configuration, assembly, touching))
+    assert axis.clearance_between(coil.key, "image_dp22_coils") == pytest.approx(0.0)
+    crossing = replace(coil, data={**coil.data, "winding_axial_length_mm": 4.2})
+    with pytest.raises(ValueError, match="Unapproved mechanical overlap:.*image_dp21_coils.*image_dp22_coils"):
+        resolve_installed_image_corrector_exit_mechanical_axis(
+            _configuration_with_part_replacements(configuration, assembly, crossing))
+    assert capture_instrument_snapshot(state).digest == before
+
+
+def test_image_corrector_coil_end_cover_consumes_real_clearance(image_corrector_layout):
+    from temsim.deflector_support_geometry import END_STATUS, SUPPORT_PROFILE, SUPPORT_SOURCE
+
+    state, assembly, configuration, _, _ = image_corrector_layout
+    before = capture_instrument_snapshot(state).digest
+    coil = assembly.part("image_dp21_coils")
+    # Explicit synthetic support edit: copper and its 14 mm field allocation
+    # stay fixed; only a downstream 0.25 mm material cover is added.
+    supported_data = {
+        **coil.data,
+        "winding_support_profile": SUPPORT_PROFILE,
+        "winding_support_carrier_thickness_mm": 0.04,
+        "winding_support_cover_thickness_mm": 0.04,
+        "winding_support_end_cover_thickness_mm": 0.25,
+        "winding_support_end_cover_side": "downstream",
+        "winding_support_end_cover_geometry_status": END_STATUS,
+        "winding_support_end_cover_source": SUPPORT_SOURCE,
+        "winding_support_end_cover_source_note": "Synthetic regression geometry, not OEM evidence.",
+    }
+    covered = replace(coil, data=supported_data)
+    axis = resolve_installed_image_corrector_exit_mechanical_axis(
+        _configuration_with_part_replacements(configuration, assembly, covered))
+    assert axis.by_key[coil.key].end_z_mm - axis.by_key[coil.key].start_z_mm == pytest.approx(3.25)
+    assert axis.clearance_between(coil.key, "image_dp22_coils") == pytest.approx(0.25)
+    crossing = replace(coil, data={**supported_data,
+        "winding_support_end_cover_thickness_mm": 0.6})
+    with pytest.raises(ValueError, match="Unapproved mechanical overlap:.*image_dp21_coils.*image_dp22_coils"):
+        resolve_installed_image_corrector_exit_mechanical_axis(
+            _configuration_with_part_replacements(configuration, assembly, crossing))
+    assert capture_instrument_snapshot(state).digest == before
+
+
+def test_image_corrector_replacement_uses_declared_envelope_not_inactive_winding(image_corrector_layout):
+    state, assembly, configuration, _, _ = image_corrector_layout
+    before = capture_instrument_snapshot(state).digest
+    coil = assembly.part("image_dp12_coils")
+    replacement = replace(coil, data={
+        **coil.data,
+        "winding_axial_length_mm": 999.0,
+        "model_3d": {
+            "schema_version": 1,
+            "base": {"kind": "box", "width_mm": 1.0,
+                     "height_mm": 1.0, "length_mm": 2.0},
+            "features": [],
+        },
+    })
+    axis = resolve_installed_image_corrector_exit_mechanical_axis(
+        _configuration_with_part_replacements(configuration, assembly, replacement))
+    actual = axis.by_key[coil.key]
+    source_z = assembly.part("feg_tip").center_z_mm
+    # This helper validates the declared installation envelope, not the posed
+    # replacement CAD. Inactive native winding settings must not be evaluated.
+    assert (actual.start_z_mm, actual.center_z_mm, actual.end_z_mm) == pytest.approx((
+        coil.start_z_mm - source_z, coil.center_z_mm - source_z,
+        coil.end_z_mm - source_z))
+    assert capture_instrument_snapshot(state).digest == before
+
+
+@pytest.mark.parametrize("number", (1, 2))
+def test_image_corrector_nested_winding_cannot_leave_hexapole(image_corrector_layout, number):
+    state, assembly, configuration, _, _ = image_corrector_layout
+    before = capture_instrument_snapshot(state).digest
+    coil = assembly.part(f"image_dph{number}_coils")
+    parent = assembly.part(f"image_hp{number}_hexapole")
+    outside = _part_at_center(coil, parent.end_z_mm)
+    with pytest.raises(ValueError, match=f"Nested component {coil.key} is not fully contained"):
+        resolve_installed_image_corrector_exit_mechanical_axis(
+            _configuration_with_part_replacements(configuration, assembly, outside))
+    assert capture_instrument_snapshot(state).digest == before
 
 
 @pytest.mark.parametrize("installation", ["integrated", "standalone"])
