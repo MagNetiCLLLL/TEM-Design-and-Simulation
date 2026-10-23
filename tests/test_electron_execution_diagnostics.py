@@ -34,7 +34,7 @@ def test_stderr_rotation_keeps_tail_and_has_per_file_byte_limits(tmp_path):
 
 
 def test_split_utf8_and_invalid_bytes_do_not_break_drain(tmp_path):
-    encoded = "电场 \N{GREEK SMALL LETTER PHI}\n".encode()
+    encoded = "Electric field \N{GREEK SMALL LETTER PHI} →\n".encode()
     pieces = deque(bytes([item]) for item in encoded)
     pieces.extend((b"\xff\n", b"EOF marker", b""))
     class Chunks:
@@ -46,7 +46,7 @@ def test_split_utf8_and_invalid_bytes_do_not_break_drain(tmp_path):
     reader = log.start_stderr_drain(Chunks())
     reader.join(3.)
     log.close()
-    assert "电场 φ" in log.tail_text()
+    assert "Electric field φ →" in log.tail_text()
     assert "�" in log.tail_text()
     assert "EOF marker" in log.tail_text()
 

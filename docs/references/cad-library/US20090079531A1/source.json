@@ -1,7 +1,7 @@
 {
   "id": "US20090079531A1",
   "kind": "patent",
-  "family": "CEOS 多极线圈与 DPH 插入件",
+  "family": "CEOS multipole coils and DPH inserts",
   "url": "https://patents.google.com/patent/US20090079531A1/en",
   "figures": "Figs. 5-6, 8-11",
   "component_keys": [
@@ -14,12 +14,12 @@
     "beam_deflector"
   ],
   "supported_facts": [
-    "柔性线圈可构成同心层的正交偶极场。",
-    "示例可安放于透镜通道或凹槽内。"
+    "Flexible coils can produce orthogonal dipole fields in concentric layers.",
+    "The examples can be installed in lens channels or recesses."
   ],
   "unsupported_claims": [
-    "不证明 CESCOR DPH1/2 的专有绕组完全采用该实施例。",
-    "不证明当前绕组圈数、导体截面、尺寸或所需驱动。"
+    "Does not prove that proprietary CESCOR DPH1/2 windings fully follow this embodiment.",
+    "Does not establish current winding turn counts, conductor cross-sections, dimensions or required drives."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -104,6 +104,6 @@
     6
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original remain with their holders; public accessibility is not an open licence. Retained only for traceable reference reading in this project, without claiming the original as this project's work.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; axial/radial values for this model remain governed by the original TOML. Structural additions or dimension replacements require separate evidence and must not be inferred from diagram proportions."
 }

@@ -1,7 +1,7 @@
 {
   "id": "WO2021170762A1",
   "kind": "patent",
-  "family": "物镜",
+  "family": "objective lens",
   "url": "https://patents.google.com/patent/WO2021170762A1/en",
   "figures": "Figs. 2-3; PDF pages 20-21",
   "component_keys": [
@@ -12,11 +12,11 @@
     "objective_lens_yoke"
   ],
   "supported_facts": [
-    "提供 TEM 物镜的极靴、绕组、磁轭、样品间隙与支撑结构示例。"
+    "Provides examples of TEM objective pole shoes, windings, yokes, specimen gaps and support structures."
   ],
   "unsupported_claims": [
-    "不能把后续可移动极靴实施例当成本项目必需结构。",
-    "未给当前机器的孔径、间距或材料牌号。"
+    "Later movable-pole-shoe embodiments cannot be treated as required structures for this project.",
+    "Does not establish this instrument's bores, spacings or material grades."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -48,7 +48,7 @@
     }
   ],
   "availability_notes": [
-    "复用项目已保存的原始 PDF；本次归档时间不冒充首次网络获取时间。"
+    "Reuses the original PDF already saved by the project; this archive timestamp is not presented as the first web-retrieval time."
   ],
   "title": "Pole piece for a transmission electron microscope",
   "authors": [
@@ -85,6 +85,6 @@
     21
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original remain with their holders; public accessibility is not an open licence. Retained only for traceable reference reading in this project, without claiming the original as this project's work.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; axial/radial values for this model remain governed by the original TOML. Structural additions or dimension replacements require separate evidence and must not be inferred from diagram proportions."
 }

@@ -1,54 +1,54 @@
-# C3 下游结构检查：C3 光阑、Beam Deflector 与 Adapter Lens
+# Structures downstream of C3: C3 Aperture, Beam Deflector and Adapter Lens
 
-本轮以已经完成上游细节修订的工作区为基线，继续沿 +Z 向下检查。默认配置为 FEG / C3 + Probe Corrector / No Energy Filter；柱体局部坐标加 450 mm 得到全局坐标。只使用后台程序、离屏网格检查和独立 CAD 内核，不操作桌面程序。
+This review starts from the workspace in which upstream detail revisions were already complete, and continues downstream along +Z. The default configuration is FEG / C3 + Probe Corrector / No Energy Filter; adding 450 mm to column-local coordinates gives global coordinates. Only background programs, offscreen mesh checks and an independent CAD kernel were used; no desktop application was operated.
 
-## 结构依据与本轮差异
+## Structural evidence and changes in this review
 
-| 配件 | 原模型 | 本轮细化 | 来源与边界 |
+| Component | Previous model | Refinement in this review | Sources and limits |
 | --- | --- | --- | --- |
-| C3 光阑 | 0.2 mm 薄片与当前选定工作孔 | 补上独立连接杆、固定螺钉和配合固定孔；共 3 个材料区域 | [JEOL JP2007329043A](https://patents.google.com/patent/JP2007329043A/en) 区分孔板、孔架、螺孔与螺钉；[JP2012146543A](https://patents.google.com/patent/JP2012146543A/en) 支持孔架与移动机构的螺钉连接。单杆拓扑沿用已有用户照片识别记录，尺寸是明确保存的工程分配，未重新测量照片。 |
-| Beam Deflector | 两个轴向站，8 个铜线包及 12 个绝缘载体、隔筒、外壳和销区域 | 外层载体与隔筒的圆定位孔改为圆端周向长孔；内层圆孔、销位置及铜形不变，仍为 20 个材料区域 | [Nikon US5994704A](https://patents.google.com/patent/US5994704A/en) Fig.1–4 及正文支持外层长孔、隔筒长孔、内层圆孔的组合。本机原配置的外层为 Y，而专利标为 X；保留本机线圈顺序。6° 总扫角是工程尺寸，不是光学旋转或 OEM 测量。 |
-| Adapter Lens | 两个极靴、一个励磁线包、一个磁轭及一个外壳 | 外壳下增加上下两组线圈端部绝缘层和被动铜冷却板；总计 9 个材料区域 | [Hitachi JP2967966B2](https://patents.google.com/patent/JP2967966B2/en) 常规结构 Fig.8 及段落 0005/0015 支持线圈端板与电绝缘层；按现有 ADL 包络适配，未声称它是本机厂商图纸。 |
+| C3 Aperture | A 0.2 mm plate and the currently selected working aperture | Added a separate connecting rod, fastening screw and matching mounting hole; 3 material regions in total | [JEOL JP2007329043A](https://patents.google.com/patent/JP2007329043A/en) distinguishes the aperture plate, holder, screw hole and screw; [JP2012146543A](https://patents.google.com/patent/JP2012146543A/en) supports a screwed connection between the aperture holder and moving mechanism. The single-rod topology follows the existing identification record from user photographs. Dimensions are explicitly saved engineering allocations; the photographs were not measured again. |
+| Beam Deflector | Two axial stations, with 8 copper winding packs and 12 regions for insulating carriers, spacers, sleeves and pins | Circular locating holes in the outer carriers and spacers were changed to circumferential slots with rounded ends; inner circular holes, pin positions and copper shapes remain unchanged, still totaling 20 material regions | [Nikon US5994704A](https://patents.google.com/patent/US5994704A/en), Fig.1–4 and the text support the combination of outer slots, spacer slots and inner circular holes. The existing instrument configuration has Y outside, whereas the patent labels the outer layer X; this instrument's coil order is retained. The total 6° sweep is an engineering dimension, not an optical rotation or OEM measurement. |
+| Adapter Lens | Two pole pieces, one excitation winding pack, one yoke and one housing | Added upper and lower groups of coil-end insulation and passive copper cooling plates beneath the housing; 9 material regions in total | [Hitachi JP2967966B2](https://patents.google.com/patent/JP2967966B2/en), conventional structure Fig.8 and paragraphs 0005/0015 support coil end plates and electrical insulation layers. They are adapted to the existing ADL envelope, without claiming that the patent is this instrument manufacturer's drawing. |
 
-C3 光阑、Beam Deflector 的新增细节仅在本轮审查的 C3 + Probe Corrector 配置显式启用。三个已有 ADL 配置保存同一套端部结构参数。旧文件不含新结构声明时继续使用原几何。
+The new C3 Aperture and Beam Deflector details are explicitly enabled only in the C3 + Probe Corrector configuration reviewed here. The three existing ADL configurations save the same end-structure parameters. Old files without the new structural declarations continue to use the original geometry.
 
-原生三维、Magnetic field 配件叠加和 STEP 均使用相同的材料几何定义。没有增加场源、磁芯、完整绕组匝数、外部装配支架、螺纹、真空密封件或未确认的冷却管。
+Native 3D, the Magnetic field component overlay and STEP all use the same material geometry definitions. No field sources, magnetic cores, complete turn counts, external mounting brackets, threads, vacuum seals or unconfirmed cooling pipes were added.
 
-## 尺寸与间隙
+## Dimensions and clearances
 
-| 项目 | 当前名义值 / 检查结果 |
+| Item | Current nominal value / check result |
 | --- | --- |
-| C3 光阑光学平面 | 全局 Z = 1010 mm；原 0.2 mm 板厚、75 mm 机构外径、工作孔和偏移逻辑保留 |
-| C3 光阑实际材料轴向范围 | Z = 1009.3–1012.1 mm；上方 C3 材料净距 9.3 mm，下方 Beam Deflector 材料轴向净距 7.9 mm |
-| 光阑侧插槽 | 真空管为 +Y 侧开口；片边及轴向各保留 0.2 mm 分配间隙，反侧管壁保留；连接杆与管外壁名义径向净距 1.9 mm，螺钉头 2.2 mm |
-| Beam Deflector | Z = 1020–1060 mm，两个场中心 1027.5 / 1052.5 mm；实际线包长度明确保存为每站 15 mm，原有效厚度 15 mm 不变 |
-| Beam Deflector 到真空管 | 最近实际绝缘材料半径 12.5 mm，管外半径 9.6 mm，名义径向净距 2.9 mm；声明的 20 mm 机械孔不是最近材料直径 |
-| Beam Deflector 到 ADL | 轴向材料净距 10 mm |
-| ADL | Z = 1070–1106.4 mm，中心 1088.2 mm，原单间隙 14 mm，极靴机械孔直径 20 mm |
-| ADL 端层 | 每侧 0.1 mm 绝缘 + 0.5 mm 铜板，占用原 1.82 mm 端部余量，每端仍留 1.22 mm；不移动线包 |
-| ADL 到真空管 | 20 mm 机械孔配 19.2 mm 管外径，名义径向净距 0.4 mm |
-| ADL 到下一组材料 | 至 HP2 轴向净距 29 mm，至 DPH2 净距 30.85 mm |
+| C3 Aperture optical plane | Global Z = 1010 mm; the original 0.2 mm plate thickness, 75 mm mechanism outer diameter, working aperture and offset logic are retained |
+| C3 Aperture actual axial material extent | Z = 1009.3–1012.1 mm; 9.3 mm clearance to C3 material above and 7.9 mm axial material clearance to the Beam Deflector below |
+| Aperture side-entry slot | The vacuum tube opens on the +Y side; allocated 0.2 mm clearances are retained at the plate edges and axially, and the opposite tube wall remains; nominal radial clearance to the tube exterior is 1.9 mm for the connecting rod and 2.2 mm for the screw head |
+| Beam Deflector | Z = 1020–1060 mm, with field centers at 1027.5 / 1052.5 mm; the actual winding-pack length is explicitly saved as 15 mm per station, while the original 15 mm effective thickness is unchanged |
+| Beam Deflector to vacuum tube | The nearest actual insulation material has radius 12.5 mm; the tube outer radius is 9.6 mm, giving nominal radial clearance 2.9 mm; the declared 20 mm mechanical bore is not the nearest material diameter |
+| Beam Deflector to ADL | Axial material clearance 10 mm |
+| ADL | Z = 1070–1106.4 mm, center 1088.2 mm, original single gap 14 mm, pole-piece mechanical bore diameter 20 mm |
+| ADL end layers | Each side has 0.1 mm insulation + 0.5 mm copper plate, using the original 1.82 mm end allowance and leaving 1.22 mm per end; the winding pack is not moved |
+| ADL to vacuum tube | A 20 mm mechanical bore around a 19.2 mm tube outer diameter gives nominal radial clearance 0.4 mm |
+| ADL to the next material groups | Axial clearance 29 mm to HP2 and 30.85 mm to DPH2 |
 
-这些是当前配置的几何净距，没有包含制造公差、装配偏心、热变形或实机检验。检查使用连续变径、带实际光阑侧槽的真空管以及相邻配件的材料实体，未把光学父件包络当成材料。
+These are geometric clearances in the current configuration, excluding manufacturing tolerances, mounting eccentricity, thermal deformation and instrument inspection. The checks use the continuously varying-diameter vacuum tube with its actual aperture side slots, and the material solids of adjacent components; optical parent envelopes are not treated as material.
 
-连续管内径仍为 5.76 mm。C3 光阑及 Beam Deflector 原来另有 5 mm 局部通束约束；ADL 处的有效通束直径为 5.76 mm，而不是极靴的 20 mm 机械孔。粒子与波动边界回归共同检查这些区别，工作光阑裁切仍是另外一层约束。
+The continuous tube inner diameter remains 5.76 mm. C3 Aperture and Beam Deflector already had a separate local 5 mm beam-passage constraint; at ADL the effective beam-passage diameter is 5.76 mm, not the 20 mm pole-piece mechanical bore. Particle and wave boundary regressions check these distinctions together; working-aperture clipping remains a separate constraint.
 
-## 参数与物理边界
+## Parameters and physical limits
 
-所有新尺寸进入已有编辑、撤销、保存、重载、材质和统一 STEP 路径。无效尺寸不得留下半完成草稿。线圈端层与线包接触面不一致时需同步结构参数；独立机械副本仍不成为光学元件。
+All new dimensions enter the existing edit, undo, save, reload, material and unified STEP paths. Invalid dimensions must not leave partially modified drafts. If the coil-end layers and winding-pack contact faces are inconsistent, the structural parameters must be synchronized; independent mechanical copies still do not become optical elements.
 
-新被动结构不重标定解析场、不改变有效光学长度、lens strength、像差、模式校准或传播算法。ADL 几何变化会改变导入场图的几何身份，需要重新核对旧场图；它不自动建立新的 FEM 求解材料区域。
+The new passive structures do not recalibrate analytical fields or change effective optical lengths, lens strength, aberrations, mode calibration or propagation algorithms. ADL geometry changes alter the geometry identity of imported field maps, requiring old maps to be rechecked; they do not automatically create new FEM material regions.
 
-ADL 的完整磁轭—极靴回磁连接、外部紧固和冷却流路尚无足够资料，继续标为未确认。显示铜端板不代表已经模拟热传导或涡流；绝缘类别也不代表指定了材料牌号或耐压性能。
+There is still insufficient evidence for the complete ADL yoke–pole-piece return-flux connection, external fastenings and cooling circuit; these remain unconfirmed. Displaying copper end plates does not mean heat conduction or eddy currents have been simulated; the insulation category does not specify a material grade or voltage-withstand performance.
 
-## 验证记录
+## Verification record
 
-本轮基线、配置逐字段差异、整柱闭合网格检查、材料布尔相交检查、STEP 导出回读、传播对照和回归报告保存在 `outputs/post-c3-details-20261020/`。详细的配件构造记录见 [光阑结构](cad-gun-filter-apertures.md)、[普通偏转器结构](cad-multipoles.md) 和 [圆透镜结构](cad-round-lenses.md)。
+The baseline, field-by-field configuration differences, whole-column closed-mesh checks, material Boolean intersections, STEP export/readback, propagation comparisons and regression reports are saved under `outputs/post-c3-details-20261020/`. Detailed component construction records are in [aperture structures](cad-gun-filter-apertures.md), [ordinary deflector structures](cad-multipoles.md) and [round-lens structures](cad-round-lenses.md).
 
-- 默认装配保留 130 个安装记录，材料网格从 407 增至 413；新增 6 区域，未删除区域。401 个原网格完全一致；光阑薄片增加固定孔，Beam 的 4 个区域增加长孔，ADL 外壳仅重新离散而包络及体积不变。
-- 对同柱 293 个材料实体进行候选筛选，目标材料相关的 129 对包围盒交叠组合均完成实际布尔检查，材料穿插和未解决包络穿插均为零。7 种代表性装配组合均没有网格、CAD 构造或材料遗漏错误。
-- 33 个目标材料区域（含连续真空管）生成 5 份 STEP；严格回读检查体积、边界、材料身份、颜色及层级均通过。修复了定位槽切削工具预融合引起的 STEP 体积偏差，使用等价的独立切削工具，未放宽原检查公差。
-- 本轮完整配置对照仅增加 50 个结构字段、更新 1 条来源说明；没有改动任何已有数值字段。STEM Nanoprobe Normal、300 kV 下，39 个唯一场源、13 个有限偏转场、6080 个有效场采样及 9 条粒子轨迹的 352 个保存截面前后逐元素相同。主动将 Beam 上级 X 从 0.012 调到 0.014 mrad 的正对照产生最大场分量差 2.80088e-7 T、最大 X 位移差约 266.976 nm，验证探针确实能检测传播响应。
-- 回归最终按测试身份去重为 **851 项通过，零未解决失败、错误或跳过**。这是 791 项主回归、复审后定向测试及独立 CAD 内核测试的汇总，不是一次单独运行。原始报告保留了已修正的 2 个旧外形断言，以及 3 个 STEP 文件在沙箱内回读被拒绝的记录；后者在批准的后台测试环境中原样通过。主环境跳过的 9 个 CAD 内核用例均已在安装 CAD 的独立环境执行通过。
+- The default assembly retains 130 installation records; material meshes increased from 407 to 413. There are 6 new regions and no removed regions. 401 original meshes are identical; the aperture plate gained a mounting hole, 4 Beam regions gained slots, and only the ADL housing was retessellated, with its envelope and volume unchanged.
+- Candidate screening covered 293 material solids in the same column. All 129 bounding-box-overlap pairs involving target materials underwent actual Boolean checks; material interpenetrations and unresolved envelope interpenetrations were both zero. All 7 representative assembly combinations had no mesh, CAD construction or missing-material errors.
+- 33 target material regions, including the continuous vacuum tube, generated 5 STEP files. Strict readback checks passed for volumes, boundaries, material identities, colors and hierarchy. A STEP volume deviation caused by prefusing slot-cutting tools was fixed using equivalent separate cutting tools, without relaxing the original check tolerances.
+- The full configuration comparison added only 50 structural fields and updated 1 source description; no existing numeric fields changed. Under STEM Nanoprobe Normal at 300 kV, 39 unique field sources, 13 finite deflection fields, 6080 valid field samples and 352 saved sections of 9 particle trajectories were elementwise identical before and after. A positive control actively changing upper Beam X from 0.012 to 0.014 mrad produced a maximum field-component difference of 2.80088e-7 T and maximum X-displacement difference of approximately 266.976 nm, confirming that the probe detects propagation responses.
+- The final regressions, deduplicated by test identity, totaled **851 passed, with zero unresolved failures, errors or skips**. This combines 791 main regressions, targeted tests after review and independent CAD-kernel tests; it is not a single run. The raw reports retain 2 corrected obsolete shape assertions and records of 3 STEP files whose readback was denied inside the sandbox; the latter passed unchanged in the approved background test environment. All 9 CAD-kernel cases skipped in the main environment passed in the separate environment with CAD installed.
 
-最终回归汇总为 `verification.json` / `verified-regression.xml`；实际传播证据为 `transport-verification.json`，STEP 回读证据为 `step/step-manifest.json`。这些检查不构成实机结构、制造公差、散热、耐压或磁场绝对精度认证。
+The final regression summaries are `verification.json` / `verified-regression.xml`; actual propagation evidence is in `transport-verification.json`, and STEP readback evidence is in `step/step-manifest.json`. These checks do not certify real-instrument structure, manufacturing tolerances, heat dissipation, voltage withstand or absolute magnetic-field accuracy.

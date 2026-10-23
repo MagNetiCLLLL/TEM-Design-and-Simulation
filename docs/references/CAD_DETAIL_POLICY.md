@@ -1,62 +1,62 @@
-# CAD 细节层级与证据规则
+# CAD detail levels and evidence rules
 
-2026-10-11 制定，2026-10-18 补充 Probe Corrector 偏转器叠层及普通偏转器刚性载体规则；适用于现有部件的 STEP 和软件原生 3D 模型。
+Established 2026-10-11; extended 2026-10-18 with Probe Corrector deflector laminates and rigid-carrier rules for ordinary deflectors. Applies to STEP and native software 3D models of existing parts.
 
-全机采用**功能性材料块**层级：有依据的极靴/极针、整体线包、磁轭、电极片和绝缘段可以分别显示。所有部件均不细画单根导线、螺纹、表面刻字、未配置的冷却管、紧固件或密封件。曲面在 STEP 中保持解析实体，在同一软件视图中使用相同的角向离散设置、照明和材料类别配色。
+The instrument uses a **functional material-block** level of detail: supported pole pieces/pins, bulk winding packs, yokes, electrode plates, and insulation sections can be displayed separately. No part models individual wires, threads, surface lettering, or unconfigured cooling tubes, fasteners, or seals. STEP retains analytical curved solids; within the same software view, all parts use the same angular tessellation setting, lighting, and material-category colors.
 
-几何细节层级一致不等于各部件的真实尺寸精度相同。现有配置、专利实例和定性结构示意必须分别记录；不能给来源较弱的部件补装饰性实体来制造“同样精确”的观感。
+A consistent geometric detail level does not mean all parts have equally accurate real dimensions. Existing configurations, patent embodiments, and qualitative structural diagrams must be recorded separately; decorative solids must not make poorly supported components appear “equally precise.”
 
-## 内部实体的准入条件
+## Admission criteria for internal solids
 
-1. 原 TOML 明确列出的材料子件、实际电极面、工作孔和物理线圈中心，保留其身份和装配关系。
-2. 厂家/原始论文直接支持与当前部件相符的结构族，可以建立同级别的简化内部结构。其尺寸若仍是配置或包络内的分配值，必须明确标为重建。
-3. 只存在光学通道名称、谐波阶数或另一种专利方案，不能据此添加磁极、线圈、支架、磁轭或外壳。
-4. 未确定内部结构的真实部件保留原外形包络，标为 `configured_envelope`。该闭合占位几何的体积不是实际材料体积，不能用于质量、热学或场求解。
-5. 纯控制通道、虚拟光学平面和没有厚度的探测器有效面，不获得虚构的有限厚度实体。
+1. Retain the identity and assembly relationships of material subparts, actual electrode surfaces, working openings, and physical coil centers explicitly listed in the original TOML.
+2. If manufacturer information/original papers directly support a structural family matching the current component, simplified internals at the same detail level may be built. Dimensions that remain configuration values or allocations within an envelope must be explicitly labeled as reconstruction.
+3. An optical channel name, harmonic order, or alternative patent scheme alone cannot justify adding poles, coils, brackets, yokes, or housings.
+4. Real components with unresolved internal structures retain their original outer envelopes, labeled `configured_envelope`. The volume of this closed placeholder geometry is not actual material volume and must not be used for mass, thermal, or field calculations.
+5. Pure control channels, virtual optical planes, and zero-thickness detector active surfaces do not receive invented finite-thickness solids.
 
-## 本次逐类处理
+## Treatment by category in this round
 
-| 类别 | 保留依据 | 不增加的细节 |
+| Category | Retained evidence | Details not added |
 | --- | --- | --- |
-| 圆透镜/物镜/mini condenser | 原材料子件和截面；透镜专利支持极靴、整体线圈、回磁轭的结构族 | 不补线圈匝数、冷却槽或未知紧固件；虚拟上下物镜不变成额外硬件 |
-| 主 probe corrector HP1/HP2 | Müller 2006 正文及 Fig.3 直接说明六个磁极针、线圈、磁轭 | 不移植其 152 mm 外径、30 mm 极长、4 mm 孔半径；不添加未确认外壳和绝缘支架 |
-| DPH/DP | 原配置的同轴双方向 saddle 线包和轴向/径向关系；CEOS 线圈专利支持柔性载体、径向绝缘覆盖及层间粘接，按 `bonded_flexible_pcb_equivalent` 表达 | 不将驱动通道重复建成硬件；不据此添加硬质骨架、螺钉、夹箍或宿主固定件；不宣称专利即特定型号绕组图 |
-| 已声明 8 线圈的 stigmator | 原配置同时给出的 `coil_count` 和 `coil_topology` | 8 线圈不推导为 8 个铁芯或极靴；未声明拓扑的保持包络 |
-| 普通 deflector/scan pair | 已声明物理线圈中心、长度和整体 X/Y 线包；C3 + Probe Corrector 中四个明确选用 `rigid_insulating_carriers_pinned` 的宿主补充有来源的刚性绝缘载体、隔筒、绝缘外壳和定位销 | 不按光学名称推断 OEM 结构；不向其他配置自动推广，不添加未知磁芯、外部安装件或重复的 Descan 硬件 |
-| Accelerator | 已定义厚度的电极和专利支持的级间绝缘段 | 不补入口/出口支撑环；缺电极厚度的热发射模块仅留包络 |
-| 静电 blanker/四极电极 | 明确的电极功能、间隙和长度 | 不添加未确认绝缘载体，不改成磁线圈 |
-| Wien 与 filter 多极 carrier | 原包络/支路位置 | 一种 12 极专利或光学多极通道不足以给本机指定物理极数 |
-| Aperture/狭缝 | 原厚度、已给定工作开口和位置 | 未知工作孔不替换为真空孔；无工作缝宽的双叶片载体不添加任意叶片 |
+| Round lenses/objective/mini condenser | Original material subparts and sections; lens patents support the family of pole pieces, bulk coils, and return yokes | No invented winding counts, cooling grooves, or unknown fasteners; virtual upper/lower objectives do not become extra hardware |
+| Main probe corrector HP1/HP2 | Müller 2006 text and Fig.3 directly describe six pole pins, coils, and a yoke | Do not transplant its 152 mm OD, 30 mm pole length, or 4 mm bore radius; do not add unconfirmed housings or insulating supports |
+| DPH/DP | Originally configured coaxial, dual-direction saddle winding packs and axial/radial relationships; the CEOS coil patent supports flexible carriers, radial insulation covers, and interlayer bonding, represented as `bonded_flexible_pcb_equivalent` | Do not duplicate drive channels as hardware or infer rigid formers, screws, clamps, or host fasteners; do not claim the patent is the winding drawing of a specific model |
+| Stigmators with 8 declared coils | `coil_count` and `coil_topology` both supplied in the original configuration | 8 coils do not imply 8 iron cores or pole pieces; undeclared topologies remain envelopes |
+| Ordinary deflector/scan pair | Declared physical coil centers, lengths, and bulk X/Y winding packs; four hosts explicitly selecting `rigid_insulating_carriers_pinned` in C3 + Probe Corrector gain sourced rigid insulating carriers, spacer sleeves, insulating housings, and locating pins | Do not infer OEM structures from optical names or automatically extend them to other configurations; no unknown magnetic cores, external mounting parts, or duplicate Descan hardware |
+| Accelerator | Electrodes with defined thicknesses and patent-supported interstage insulation sections | No entrance/exit support rings; thermionic modules without electrode thicknesses retain only envelopes |
+| Electrostatic blanker/quadrupole electrodes | Explicit electrode functions, gaps, and lengths | No unconfirmed insulating carriers; do not replace them with magnetic coils |
+| Wien and filter multipole carriers | Original envelopes/branch positions | A 12-pole patent or optical multipole channel is insufficient to assign a physical pole count to this instrument |
+| Apertures/slits | Original thicknesses, supplied working openings, and positions | Unknown working openings are not replaced with vacuum bores; a two-blade carrier without a working slit width does not receive arbitrary blades |
 
-## 与原 TOML 的比较
+## Comparison with the original TOML
 
-比较基线是本轮 CAD 接入前的已保存装配参数，包含其共享 Tip 与子装配依赖；不是用更早 Git 版本替换此前已完成的光学调整。比较时保存原文与 SHA，同一解析文档分别通过原有几何路径和新增 CAD 路径。
+The comparison baseline is the saved assembly parameters before CAD integration in this round, including shared Tip and subassembly dependencies; earlier Git versions are not substituted for previously completed optical adjustments. Original text and SHA are saved for comparison, and the same parsed document is passed through both the original geometry path and the new CAD path.
 
-检查部件身份、父子关系、次序、轴向中心、外形、孔隙及整体安装变换。新增内部实体和删除的未知细节单独列出，不能把“外形不变”写成“内部几何完全相同”。能量过滤器单独验证弯转坐标与整机安装变换。对照图使用同一相机、比例和剖面。
+Check part identities, parent/child relationships, order, axial centers, shapes, openings, and overall installation transforms. List added internal solids and removed unknown details separately; “unchanged outline” must not become “identical internal geometry.” Energy filters separately validate bending coordinates and full-column installation transforms. Comparison figures use the same camera, scale, and section.
 
-此检查不改变粒子/波动输入，也不以 CAD 图形代替电磁场计算。
+This check does not change particle/wave inputs or substitute CAD graphics for electromagnetic-field calculations.
 
-## Probe Corrector 偏转器的被动叠层
+## Passive laminates in Probe Corrector deflectors
 
-2026-10-18 的辅助结构更新仅作用于 DPH1/DPH2、DP11/DP21/DP22，保留已有四个铜线包，分别增加两个基材载体、两个径向覆盖层和一个层间粘接区。结构依据、尺寸和限制详见 [Probe Corrector 内部三维结构](cad-probe-corrector.md)。普通 TEM deflector/scan pair 不自动继承该结构；需要独立核对其资料及宿主。
+The auxiliary-structure update of 2026-10-18 applies only to DPH1/DPH2 and DP11/DP21/DP22. It retains the existing four copper winding packs and adds two substrate carriers, two radial cover layers, and one interlayer adhesive region per component. See [Probe Corrector internal 3D structure](cad-probe-corrector.md) for evidence, dimensions, and limitations. Ordinary TEM deflector/scan pairs do not automatically inherit this structure; their references and hosts require separate review.
 
-新增结构继续使用 TOML 参数、`SolidSpec`、统一材料类别、原生三维和解析 STEP 格式。它是功能性材料块层级的叠层等效模型，不是逐匝 PCB 制造文件。覆盖环仅表示径向覆盖面，不证明导体侧壁、引线出口和接缝已得到完整绝缘。聚合物、胶种、绝缘性能及粘接强度未指定，图形材料类别不作为性能标定。
+The additions retain TOML parameters, `SolidSpec`, unified material categories, native 3D, and analytical STEP formats. This is a laminate equivalent at functional material-block detail, not a turn-by-turn PCB manufacturing file. Cover rings represent radial cover surfaces only and do not establish complete insulation of conductor sidewalls, lead exits, or seams. Polymer and adhesive types, insulation performance, and bond strength are unspecified; graphical material categories are not performance calibrations.
 
-层间粘接可以作为已有文献支持的相对固定方式表达；插入件如何连接到实际透镜、六极或真空管仍未确认。不得用新的粘接层推断 OEM 宿主固定方式，也不为装饰完整度添加支肩、夹持件或紧固件。新增几何必须单独验证实体接触、无体积穿插、真实材料孔及宿主间隙，不能沿用添加前的实体数和验证结果。
+Interlayer bonding can represent a literature-supported method of relative fixation; attachment of the insert to the actual lens, hexapole, or vacuum tube remains unconfirmed. New adhesive layers must not be used to infer OEM host mounting, nor may shoulders, clamps, or fasteners be added for decorative completeness. New geometry requires separate checks of solid contacts, absence of volumetric interpenetration, actual material bores, and host clearances; pre-addition solid counts and validation results cannot be reused.
 
-## 普通双级偏转器的刚性载体
+## Rigid carriers for ordinary two-stage deflectors
 
-C3 + Probe Corrector 的 Condenser、BSh/BTlt、AC Scan、Image/Diffraction 四组宿主分别选择同一有依据的刚性载体结构族。具体依据、尺寸分配和比较见 [普通 TEM 偏转器结构记录](cad-multipoles.md#ordinary-tem-deflectors-rigid-carrier-update-2026-10-18)。这是一种明确标注的工程等效选择，不表示已经确认四组实际 OEM 内部结构相同，也不因功能不同而强行指定不同结构。
+The four Condenser, BSh/BTlt, AC Scan, and Image/Diffraction hosts in C3 + Probe Corrector each select the same evidence-supported rigid-carrier structural family. See the [ordinary TEM deflector structure record](cad-multipoles.md#ordinary-tem-deflectors-rigid-carrier-update-2026-10-18) for specific evidence, dimension allocations, and comparisons. This is an explicitly labeled engineering equivalent; it does not confirm identical OEM internals for all four groups or force different structures merely because their functions differ.
 
-每个轴向站保留四个铜线包，增加两个带铜形容纳槽和连续径向底层的绝缘载体、一个绝缘隔筒、一个绝缘外壳以及两根带配合圆孔的绝缘定位销。外壳采用来源中明确描述的绝缘方案，不附加另一方案的铁氧体磁芯或柔性 PCB 叠层。定位销属于载体之间的固定结构，不能表述为电镜宿主的完整安装方式。径向底层、销孔方位和全部毫米尺寸是包络内工程分配，不是制造商测量值。
+Each axial station retains four copper winding packs and gains two insulating carriers with copper-shaped recesses and continuous radial backing, an insulating spacer sleeve, an insulating housing, and two insulating locating pins with mating round holes. The housing uses the insulating scheme explicitly described in the source; ferrite cores or flexible PCB laminates from other schemes are not appended. The locating pins fix the carriers relative to each other, not the complete assembly to its microscope host. Radial backing, pin-hole azimuths, and all millimeter dimensions are engineering allocations within the envelope, not manufacturer measurements.
 
-两个轴向场中心、已有铜实体和有效场参数仍由原配置确定，新增结构不延长轴向分配、不添加场源。Descan 继续共用 Image/Diffraction 实体，纯控制记录不得形成第五组材料。固定方式细化不意味着接线端、逐匝绝缘、整机轴向固定、材料牌号或磁场标定已解决；这些缺项必须继续说明。新增实体必须通过同一原生网格、解析 STEP、保存重载和装配间隙检查，不能以旧模型的回归结果代替。
+The original configuration still defines both axial field centers, existing copper solids, and effective field parameters; the additions do not extend axial allocations or add field sources. Descan continues to share the Image/Diffraction solids; pure control records must not create a fifth material group. More detailed fixation does not mean terminals, turn-by-turn insulation, full-column axial mounting, material grades, or magnetic-field calibration are resolved; these omissions must remain explicit. New solids must pass the same native-mesh, analytical-STEP, save/reload, and assembly-clearance checks; old-model regression results are not substitutes.
 
-## 2026-10-21 下游 Probe 配件细化
+## 2026-10-21 downstream Probe component refinements
 
-HP1 沿用 HP2 已声明的通用多极绕组骨架/粘接结构族，但按 HP1 自身窗口与磁芯尺寸生成；不是从 CEOS 照片推定原厂骨架。TL21/TL12 使用各自接口的通用绝缘端板结构。DP22、DP21、DP11 仅在不接触极靴的一端封边，DPH1 可双端封边。端封标为结构族推断，毫米参数标为工程重建。三处既有铜端接触及透镜回磁连接缺口仍列入限制，不用新细节制造完整制造图的印象。详见 [检查记录](probe-lower-detail-review-2026-10-21.md)。
+HP1 reuses HP2's declared generic multipole winding-former/bonding structural family but is generated from HP1's own window and core dimensions; no OEM former is inferred from CEOS photographs. TL21/TL12 use generic insulating end-plate structures specific to their interfaces. DP22, DP21, and DP11 receive edge sealing only at the end not touching a pole piece; DPH1 can be sealed at both ends. End sealing is labeled structural-family inference, and millimeter parameters are labeled engineering reconstruction. Three existing copper-end contacts and gaps in lens magnetic-return connections remain limitations; new detail must not create the impression of a complete manufacturing drawing. See the [inspection record](probe-lower-detail-review-2026-10-21.md).
 
 
-## 2026-10-21 三处 DP 铜端接触修复
+## 2026-10-21 repair of three DP copper-end contacts
 
-后续版本对 DP22/DP21/DP11 采用固定中心的显式短铜长度与双端绝缘，留下至极靴的正间隙；这替代上一节的单端封边与三处未解决接触状态。只对三组绕组材料执行公开标注的工程收口，不调整极靴磁路或光学参数。真实线圈场会依赖导体布局；当前传播采用独立配置的有效场，不把软件前后相同当作真实装配等场证明。尺寸和证据见 [端部绝缘与间隙修复记录](probe-contact-isolation-2026-10-21.md)。
+The subsequent version uses explicitly shorter copper lengths with fixed centers and insulation at both ends for DP22/DP21/DP11, leaving positive clearances to the pole pieces; this supersedes the previous section's single-end sealing and three unresolved contacts. Only these three winding materials receive this publicly labeled engineering closure; pole-piece magnetic circuits and optical parameters are unchanged. Real coil fields depend on conductor layout; current propagation uses separately configured effective fields, so identical software results before and after do not prove equal fields in a real assembly. See the [end-insulation and clearance repair record](probe-contact-isolation-2026-10-21.md) for dimensions and evidence.

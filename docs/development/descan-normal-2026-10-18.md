@@ -1,80 +1,80 @@
-# STEM Nanoprobe Normal：Descan 与 Lower Objective
+# STEM Nanoprobe Normal: Descan and Lower Objective
 
-日期：2026-10-18。范围为 **C3 + Probe Corrector、STEM Nanoprobe Normal、300 kV、Diffraction 投影、1 µm 方形扫描视场**。所有检查均通过后台代码完成。
+Date: 2026-10-18. Scope: **C3 + Probe Corrector, STEM Nanoprobe Normal, 300 kV, Diffraction projection, 1 µm square scan field**. All checks used background code.
 
-## 已采用的修改
+## Adopted changes
 
-1. `C3_ProbeCorrector.toml` 中 Image/Diffraction 双级偏转器整体上移 100 mm；Descan 继续作为同一硬件的动态通道，没有增加第二套线圈。其他 column 变体未改位置。
-2. 新增 **Position and angle** 校准：联合求解上下两级的 X/Y 驱动，抵消选定平面的扫描位移和机械入射角增量。历史 **Position at selected plane** 模式继续可用。
-3. 保存实际 Descan 命令、上下级耦合和已接受的约束。旧 held 记录仍恢复原来的 `-AC` 命令；选择新约束不会自动改写旧校准。扩大 FOV 时检查静态 Image/Diffraction 对准量加扫描峰值，超限则回滚。
-4. 下游截面读数显示已计算的扫描位移和机械角度变化。数值为扫描造成的变化，绝对束心与真实倾角仍由实际粒子记录保留。
+1. The complete Image/Diffraction two-stage deflector in `C3_ProbeCorrector.toml` moves upward by 100 mm. Descan remains a dynamic channel of the same hardware, with no second coil set. Positions in other column variants are unchanged.
+2. New **Position and angle** calibration jointly solves upper/lower X/Y drives to cancel scan displacement and mechanical incidence-angle increments at the selected plane. Historical **Position at selected plane** remains available.
+3. Actual Descan commands, upper/lower coupling and accepted constraints are saved. Old held records still restore their original `-AC` commands; selecting a new constraint does not automatically rewrite an old calibration. Increasing FOV checks static Image/Diffraction alignment plus scan peaks and rolls back if limits are exceeded.
+4. Downstream section readouts show calculated scan displacement and mechanical-angle changes. These are scan-induced changes; actual particle records retain absolute centroids and true tilts.
 
-| 项目 | 原位置 / 数值 | 更新后 |
+| Item | Original position / value | Updated |
 |---|---:|---:|
-| 上级线圈中心，全局 Z / mm | 1774.4 | 1674.4 |
-| 下级线圈中心，全局 Z / mm | 1799.4 | 1699.4 |
-| 双级本体范围，全局 Z / mm | 1766.9–1806.9 | 1666.9–1706.9 |
-| 线圈长度 / 中心间距 / mm | 15 / 25 | 15 / 25 |
-| 选区光阑 Z / mm | 1824.4 | 1824.4 |
-| 主荧光屏 Z / mm | 2714.15 | 2714.15 |
-| 原位置联合校准的峰值驱动 / mrad | 0.559525 | 新位置 0.242460 |
+| Upper-coil centre, global Z / mm | 1774.4 | 1674.4 |
+| Lower-coil centre, global Z / mm | 1799.4 | 1699.4 |
+| Two-stage body extent, global Z / mm | 1766.9–1806.9 | 1666.9–1706.9 |
+| Coil length / centre spacing / mm | 15 / 25 | 15 / 25 |
+| Selected-area aperture Z / mm | 1824.4 | 1824.4 |
+| Main fluorescent-screen Z / mm | 2714.15 | 2714.15 |
+| Peak drive for joint calibration at original position / mrad | 0.559525 | New position 0.242460 |
 
-这里的驱动是模型中的积分名义偏转角，不能直接当作线圈电流。位置属于工程建模选择，不是厂商测量尺寸。
+Drives here are integrated nominal deflection angles in the model, not directly coil currents. Positions are engineering modelling choices, not manufacturer measurements.
 
-## 为什么只匹配一个位置不够
+## Why matching one position is insufficient
 
-原方案固定 Descan 的上级命令为反向 AC，只求下级耦合，使选区光阑上的束心重合；这没有同时约束入射角。实际有限电子束验证中，它在选区光阑保持约 0.39 nm 的扫描位移，却留下约 782 µrad 的角度变化；主荧光屏随即出现约 0.892 mm 的移动。
+The original scheme fixed the upper Descan command to reversed AC and solved only lower-stage coupling to align centroids at the selected-area aperture, without also constraining incidence angle. Actual finite-beam validation kept scan displacement there near 0.39 nm but left approximately 782 µrad angle change, producing approximately 0.892 mm main-screen motion.
 
-新的局部响应求解为 `[U L] [Ku; Kl] = -P_ac`，四行依次是 X、Y 位置和 X、Y 机械斜率。`U`、`L` 来自实际有限长度线圈及沿途透镜场的传播导数。位置行以线圈间距作尺度归一化，检查条件数后求解；不以伪逆掩盖不可控轴。AC 的已接受驱动、透镜激发和物理 Image/Diffraction 静态对准均保留。
+The new local-response solve is `[U L] [Ku; Kl] = -P_ac`, whose four rows are X/Y positions and X/Y mechanical slopes. `U` and `L` come from propagation derivatives through actual finite-length coils and intervening lens fields. Position rows are scaled by coil spacing, and the system is solved after checking its condition number, without using a pseudoinverse to hide uncontrollable axes. Accepted AC drives, lens excitation and physical Image/Diffraction static alignment are retained.
 
-这与 JEOL 对 [de-scan](https://www.jeol.com/words/emterms/20160713.103817.php) 的双级成像侧偏转器说明一致：检测器处的位置与角度是需要分别控制的量。具体安装坐标和驱动值来自本项目传播与装配计算。
+This agrees with JEOL's [de-scan](https://www.jeol.com/words/emterms/20160713.103817.php) description of a two-stage imaging-side deflector: detector position and angle require separate control. Specific installation coordinates and drives come from this project's propagation and assembly calculations.
 
-## 有限电子束结果
+## Finite-beam results
 
-从当前配置重新运行 3000 个物理 Tip 采样，所有方案复用同一个已经执行的上游粒子状态、权重、能量和 ID。比较扫描中心及四角，Descan 开/关，积分步长 0.1 / 0.05 mm，共 60 次 GPU 传播，另有三组 CPU 重放。下表是四角相对该方案扫描中心的最大二维矢量变化，采用 0.05 mm 数据。
+3000 physical Tip samples were rerun from the current configuration. All schemes reused the same executed upstream particle states, weights, energies and IDs. The scan centre and four corners, Descan on/off and 0.1 / 0.05 mm steps gave 60 GPU propagations plus three CPU replays. The table gives maximum 2D vector changes at the corners relative to each scheme's scan centre, using 0.05 mm data.
 
-| 观测量 | 原位置、仅位置校准 | 原位置、位置与角度校准 | 新位置、位置与角度校准 |
+| Observable | Original position, position only | Original position, position and angle | New position, position and angle |
 |---|---:|---:|---:|
-| 选区光阑位移 / nm | 0.390513 | 0.390513 | 0.390432 |
-| 选区光阑机械角变化 / µrad | 782.081 | 0.00160476 | 0.00160413 |
-| 主荧光屏位移 / nm | 892006.671 | 0.391971 | 0.391977 |
-| 主荧光屏机械角变化 / µrad | 2122.018 | 0.00126705 | 0.00126713 |
+| Selected-area aperture displacement / nm | 0.390513 | 0.390513 | 0.390432 |
+| Selected-area aperture mechanical-angle change / µrad | 782.081 | 0.00160476 | 0.00160413 |
+| Main-screen displacement / nm | 892006.671 | 0.391971 | 0.391977 |
+| Main-screen mechanical-angle change / µrad | 2122.018 | 0.00126705 | 0.00126713 |
 
-![有限电子束比较](assets/descan-normal-2026-10-18.png)
+![Finite electron-beam comparison](assets/descan-normal-2026-10-18.png)
 
-**屏幕稳定性的主要改善来自联合驱动求解。** 移位使峰值驱动从 0.559525 降至 0.242460 mrad，降低约 56.7%；没有把两种位置之间极小的残差差别当作新的束心精度提升。移动后的尺度化条件数约 62.98，高于原位置的 6.85，仍通过扰动和步长验证。更靠上的 −102 mm 候选驱动仅再降低约 2.7%，但装配余量更小，因此采用 −100 mm。
+**The main improvement in screen stability comes from the joint drive solve.** Moving the deflector reduces peak drive from 0.559525 to 0.242460 mrad, approximately 56.7%. The tiny residual difference between positions is not presented as improved centroid accuracy. The moved system's scaled condition number is approximately 62.98, higher than the original 6.85, but passes perturbation and step validation. The higher −102 mm candidate lowers drive only another approximately 2.7%, with less assembly margin, so −100 mm was adopted.
 
-所有 60 次传播都保留相同的 2662 个存活粒子，源电流比例 0.887333；Descan 调整没有新增截断。未强制归零束心、去倾斜或归一化电流。例如新方案中心束在选区光阑的实际束心约为 `(−0.823789, +0.984893) µm`，主荧光屏约为 `(−2.009288, −1.886446) µm`，这些偏移仍在数据中。
+All 60 propagations retain the same 2662 survivors and source-current fraction 0.887333; Descan adjustment adds no clipping. Centroids are not forced to zero, tilt is not removed and current is not normalized. For example, the new scheme's actual centre-beam centroid is approximately `(−0.823789, +0.984893) µm` at the selected-area aperture and `(−2.009288, −1.886446) µm` at the main screen; these offsets remain in the data.
 
-选区光阑和屏幕的中心束 RMS 半径约为 417.447 / 895.893 µm。小的扫描位移残差表示图样基本不随扫描移动，不表示这些平面上的束斑缩小至亚纳米。
+Central-beam RMS radii at the selected-area aperture/screen are approximately 417.447 / 895.893 µm. Small scan-displacement residuals mean the pattern barely moves during scanning, not that these beam spots shrink to subnanometre size.
 
-## 共同倾转中心与 crossover
+## Common tilt centres and crossovers
 
-- 当前 AC-only 扫描束心在样品下游存在两个共同交点：全局 **Z≈1605.1935、1625.7351 mm**；交点处扫描斜率非零。它们是不同扫描束心轨迹的交点。
-- 同一中心束的电流加权 RMS 包络有一个样品之后的局部束腰：**Z≈1612.48 mm，位置括定 ±0.01 mm**。在该点及 ±0.005 / ±0.01 mm 处进行精确积分观测，并将步长从 0.05 减至 0.025 mm；中心 RMS 半径约 0.22708 nm。中心化的 `x·tx + y·ty` 协方差在束腰前为负、后为正，且使用相同粒子群，支持实际有限束斑局部收敛后发散的判断。
-- 该束腰与上述共同交点不同。它也不等于 Lower Objective 的几何中心。
-- 联合 Descan 补偿后，下游的一阶扫描束心轨迹重合。因此不能将每个零响应平面都标成独立 tilt 中心，也不能由此推断下游每个平面都是 crossover。
+- Current AC-only scan centroids have two shared intersections downstream of the specimen: global **Z≈1605.1935, 1625.7351 mm**, with nonzero scan slopes. These are intersections of different scan-centroid trajectories.
+- The same central beam's current-weighted RMS envelope has a post-specimen local waist at **Z≈1612.48 mm, bracketed by ±0.01 mm**. Exact integration observations at that point and ±0.005 / ±0.01 mm, with step refinement from 0.05 to 0.025 mm, give a central RMS radius of approximately 0.22708 nm. Centred `x·tx + y·ty` covariance is negative before and positive after the waist for the same particle population, supporting actual local convergence followed by divergence of the finite spot.
+- This waist is distinct from the shared intersections and from the geometric centre of Lower Objective.
+- After joint Descan compensation, downstream first-order scan-centroid trajectories coincide. Every zero-response plane therefore cannot be labelled a separate tilt centre, nor can every downstream plane be inferred to be a crossover.
 
-原研究中的强激发 C3 数值不能直接用于这里的 Normal：本次 C3 为 9.2079848%，Objective 为 68.9801%。Lower Objective 下极靴范围是 1601.9–1663.9 mm，极靴中心为 1632.9 mm；下轭铁中心 1729.4 mm 和下部场参考 1600.55 mm 是不同定义，不能混用。
+Strong-excitation C3 values in the original study do not directly apply to Normal here: this run uses C3 at 9.2079848% and Objective at 68.9801%. Lower Objective's lower pole shoe spans 1601.9–1663.9 mm and is centred at 1632.9 mm; the lower yoke centre at 1729.4 mm and lower field reference at 1600.55 mm are distinct definitions.
 
-## 装配与数值验证
+## Assembly and numerical validation
 
-- 新本体上端距离下极靴出口 3 mm，下端距离物镜消像散器分配区入口 25 mm。
-- 原研究工作区中的较完整三维重建模型含 20 个实体，对 15 个邻件进行 300 对精确几何检查，无体积相交；最小材料间隙为 3.38136 mm。其 STEP 回读为 20 个有效实体，该研究配置与候选、STEP 的 40 次对称差体积均为零。未把未建模的管件或厂商公差计入已验证范围。
-- 本次 Descan 范围提交仅包含共享偏转器的位置调整，未包含上述辅助支撑结构重建；所提交版本仍采用原来的 8 个铜线圈实体。20 实体的间隙与 STEP 结果是原研究模型的历史证据，不是本次范围提交的 CAD 验证。
-- 新位置的 0.1→0.05 mm 最大绝对束心变化：选区光阑 0.004762 nm，屏幕 0.002714 nm；这与扫描中心差分残差是不同指标。
-- 新位置 CPU/GPU 对比最大束心差为 7.29×10⁻¹⁰ nm，机械斜率差 2.75×10⁻¹² µrad，同一存活群和电流。
-- 在实际更新后的安装配置中再次运行生产场计划与真实孔径截断，中心和一角与诊断候选符合，束心差不超过 1.35×10⁻⁹ nm。这一步没有替换为候选场提供器。
+- The new body's upper end is 3 mm from the lower pole-shoe exit, and its lower end is 25 mm from the objective-stigmator allocation entrance.
+- The more complete 3D reconstruction in the original research workspace contains 20 solids. All 300 exact geometry pairs against 15 neighbours showed no volume intersection; minimum material clearance was 3.38136 mm. STEP rereading yielded 20 valid solids, and all 40 symmetric-difference volumes between that research configuration, the candidate and STEP were zero. Unmodelled tubing and manufacturer tolerances were excluded from the validated scope.
+- This scoped Descan commit includes only the shared-deflector position change, not that auxiliary-support reconstruction; the committed version still uses the original 8 copper-coil solids. The 20-solid clearance/STEP results are historical evidence for the original research model, not CAD validation of this scoped commit.
+- At the new position, maximum absolute centroid changes for 0.1→0.05 mm were 0.004762 nm at the selected-area aperture and 0.002714 nm at the screen, distinct from scan-centre difference residuals.
+- New-position CPU/GPU differences were at most 7.29×10⁻¹⁰ nm in centroid and 2.75×10⁻¹² µrad in mechanical slope, with identical survivors and current.
+- Rerunning the production field plan and actual aperture clipping in the updated installation reproduced the diagnostic candidate at centre and one corner, with centroid differences at most 1.35×10⁻⁹ nm. This step did not substitute a candidate field provider.
 
-这些是当前模拟场模型和限定工作点的数值结果。没有做实机标定、样品散射、探测器像素强度或其他工作模式的光学验收；SAA 在此工作点仍分类为 mixed，校准不会将它重命名为共轭像平面。
+These are numerical results for the current simulated field model and bounded operating point. No real-instrument calibration, specimen scattering, detector pixel intensities or optical acceptance for other operating modes was performed. SAA remains classified as mixed here; calibration does not rename it a conjugate image plane.
 
-## 使用与重现
+## Use and reproduction
 
-在扫描校准区选择 **Position and angle**。已有 held AC 时使用 **Calibrate Descan (keep AC)**；需要重新求 AC 时使用 **Calibrate and hold**。改变透镜后 held 驱动不会自动消除物理变化，需要明确重新校准。
+Select **Position and angle** in scan calibration. With held AC already present, use **Calibrate Descan (keep AC)**; to resolve AC as well, use **Calibrate and hold**. Held drives do not automatically remove physical changes after lens edits; recalibration must be explicit.
 
-也可加载 `configs/design_candidates/nanoprobe_normal_descan_position_angle_20261018.toml`；对应 `.temwp` 是可导入 Working Points 的完整输入包，包含更新后位置及已保持的驱动，没有冒充保存的粒子计算结果。发布包从本次范围提交的干净检出重新生成，与较完整原研究工作区的旧包区分。输入包恢复会校验归档输入完整性并保留原始实现身份；允许当前兼容实现读取输入，但所有物理结果仍需重新计算，不复用历史计算。
+Alternatively load `configs/design_candidates/nanoprobe_normal_descan_position_angle_20261018.toml`. Its `.temwp` is a complete input package importable into Working Points, containing updated positions and held drives, not purported saved particle results. Publication packages were regenerated from a clean checkout of this scoped commit and are distinct from old packages from the more complete original research workspace. Restoration validates archived-input integrity and retains original implementation identity; compatible current implementations may read the inputs, but all physical results require recalculation without reusing historical calculations.
 
-稳定重现历史位置的一阶研究：
+Reproduce the historical-position first-order study consistently:
 
 ```powershell
 .venv/Scripts/python.exe scripts/study_descan_phase_space.py --output outputs/descan_repeat --baseline-pair-center-mm 1786.9 --shifts 0 -102 -100 -90 -80 -76 --pivot-audit
@@ -82,16 +82,16 @@
 .venv/Scripts/python.exe scripts/validate_descan_transport.py --output outputs/descan_repeat_installed --replay-prefix-source outputs/descan_repeat_particles --backend gpu
 ```
 
-有限粒子比较、安装重放和精确束腰括定由 `scripts/validate_descan_transport.py` 完成。
-历史 `legacy0` 由研究文件中的原位置与原驱动明确构建，不随新默认安装位置改变。
-主批次没有重用旧日期的电子源；安装复核只在源设置、透镜、AC、固定观测站和粒子 ID 检查通过后重用该批次的前缀。
-主要原始证据保存在：
+Finite-particle comparisons, installation replay and exact waist bracketing use `scripts/validate_descan_transport.py`.
+Historical `legacy0` is explicitly built from original positions/drives in the study file and does not track new default installation positions.
+The main batch did not reuse a source from an earlier date. Installation review reused that batch's prefix only after checks of source settings, lenses, AC, fixed observation stations and particle IDs.
+Primary raw evidence is retained in:
 
-- `outputs/descan_optimization_20261018/all_candidates.json`：位置、步长和扰动研究。
-- `outputs/descan_transport_physical_20261018/report.json`：实际粒子记录、绝对束心/斜率/电流、步长与匹配 ID 比较。
-- `outputs/descan_transport_physical_20261018/installed/installed-replay.json`：实际安装重放及精确束腰括定。
-- `outputs/descan_optimization_20261018/mechanical-candidate-minus100.json`：实体间隙。
-- `outputs/descan_optimization_20261018/production-minus100-identity-validation.json`：原研究工作区 20 实体配置与候选/STEP 一致性，不代表本次范围提交的 CAD 结构。
-- `outputs/descan_optimization_20261018/image-diffraction-minus100.step`：更新后的共享偏转器三维模型。
-- `outputs/descan_optimization_20261018/final-geometry-scan-regression.xml`：225 项最终位置/扫描回归。
-- `outputs/descan_optimization_20261018/final-held-cache-regression.xml`：190 项最终保持校准、缓存、共享硬件、配置和尺寸回归。两组不重复，合计 **415 项通过**。
+- `outputs/descan_optimization_20261018/all_candidates.json`: position, step and perturbation studies.
+- `outputs/descan_transport_physical_20261018/report.json`: actual particle records, absolute centroids/slopes/current, step and matching-ID comparisons.
+- `outputs/descan_transport_physical_20261018/installed/installed-replay.json`: actual installation replay and exact waist bracketing.
+- `outputs/descan_optimization_20261018/mechanical-candidate-minus100.json`: solid clearances.
+- `outputs/descan_optimization_20261018/production-minus100-identity-validation.json`: consistency of the original research workspace's 20-solid configuration with candidate/STEP, not the CAD structure of this scoped commit.
+- `outputs/descan_optimization_20261018/image-diffraction-minus100.step`: updated shared-deflector 3D model.
+- `outputs/descan_optimization_20261018/final-geometry-scan-regression.xml`: 225 final position/scan regressions.
+- `outputs/descan_optimization_20261018/final-held-cache-regression.xml`: 190 final regressions for held calibration, caches, shared hardware, configuration and dimensions. The disjoint groups total **415 passed**.

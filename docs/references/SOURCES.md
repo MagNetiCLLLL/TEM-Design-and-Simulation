@@ -157,7 +157,7 @@ Original document: `docs/development/SURFACE_PROBE_FOCUS_2026-09-14.md`.
 
 - <https://www.jeol.com/words/semterms/20121024.063858.php>
 
-## 从 FEG tip 到成像的波动计算
+## Wave calculations from FEG tip to imaging
 
 Original document: `docs/development/TIP_TO_IMAGE_WAVE.md`.
 
@@ -178,7 +178,7 @@ Original document: `docs/development/VACUUM_MAP_2026-09-14.md`.
 - <https://geant4.web.cern.ch/documentation/pipelines/master/prm_html/PhysicsReferenceManual/electromagnetic/elastic_scattering/elecnuc.html>
 - <https://www.nist.gov/publications/nist-electron-elastic-scattering-cross-section-database-version-40>
 
-## 加速管内束径检查与资料核查
+## Beam-diameter and reference review inside the accelerator
 
 Original document: `docs/development/accelerator-envelope-audit-2026-09-15.md`.
 
@@ -187,14 +187,14 @@ Original document: `docs/development/accelerator-envelope-audit-2026-09-15.md`.
 - <https://patents.justia.com/patent/20180323036>
 - <https://patents.google.com/patent/US5196707>
 
-## 加速器逐级弯折：电场、积分与绘图检查
+## Stage-by-stage accelerator bending: field, integration and plotting checks
 
 Original document: `docs/development/accelerator-field-trajectory-audit-2026-09-25.md`.
 
 - <https://cds.cern.ch/record/1005034/files/p27.pdf>
 - <https://research.tudelft.nl/en/publications/a-new-approach-for-fast-field-calculation-in-electrostatic-electr/>
 
-## 加速过程中横向转折的成因：受控计算与专利比例参考
+## Causes of transverse turning during acceleration: controlled calculations and patent-proportion references
 
 Original document: `docs/development/accelerator-turning-mechanism-2026-09-26.md`.
 
@@ -214,7 +214,7 @@ Original document: `docs/development/eds-readout-cache-2026-09-19.md`.
 
 - <https://numba.readthedocs.io/en/stable/user/jit.html#cache>
 
-## 电子枪电位关系与专利剖面核查
+## Gun-potential relationships and patent cross-section review
 
 Original document: `docs/development/gun-electrode-patent-review-2026-09-26.md`.
 
@@ -227,12 +227,12 @@ Original document: `docs/development/gun-electrode-patent-review-2026-09-26.md`.
 - <https://patentimages.storage.googleapis.com/7f/c2/d0/a6b3a74f06eec1/US5196707.pdf#page=5>
 - <https://patents.google.com/patent/US5196707>
 
-## 平面阴极与参考枪电极的统一电场计算
+## Unified field calculation for a planar cathode and reference gun electrodes
 
 Original document: `docs/development/planar-gun-coupled-field-2026-09-26.md`.
 
-- <https://simion.com/manual/chap2.html)。该手册也明确区分不含空间电荷的>
-- <https://doc.comsol.com/6.4/doc/com.comsol.help.particle/particle_introduction.02.02.html)。>
+- <https://simion.com/manual/chap2.html>. The manual also explicitly distinguishes the case without space charge
+- <https://doc.comsol.com/6.4/doc/com.comsol.help.particle/particle_introduction.02.02.html).>
 
 ## Classical parameter inventory: first qualification batch
 
@@ -248,13 +248,13 @@ Original document: `docs/development/qualitative-third-batch-2026-09-19.md`.
 - <https://physics.nist.gov/cuu/Constants/Value/e.html>
 - <https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.fftconvolve.html>
 
-## 曲面源 Preview 修复与旧电势系数来源
+## Curved-source Preview repair and origin of old potential coefficients
 
 Original document: `docs/development/tip-preview-repair-2026-09-15.md`.
 
 - <https://doc.comsol.com/6.4/doc/com.comsol.help.models.particle.einzel_lens/einzel_lens.html>
 
-## 平面源切换曲面源：束径与 Preview 耗时调查
+## Switching from planar to curved source: beam diameter and Preview runtime investigation
 
 Original document: `docs/development/tip-switch-investigation-2026-09-15.md`.
 
@@ -278,13 +278,13 @@ Original document: `docs/development/virtual-electron-polar-angle-audit-2026-09-
 
 - <https://farside.ph.utexas.edu/teaching/336L/Fluid/node258.html>
 
-## WP-03：显式 pupil 与独立源模式
+## WP-03: explicit pupil and independent source modes
 
 Original document: `docs/validation/WP03_ILLUMINATION.md`.
 
-- <https://abtem.readthedocs.io/en/latest/user_guide/tutorials/partial_coherence.html)。本实现的能量节点直接更新传播参数；并未把教程中的离焦分布近似当作完整能量传播的替代。>
+- <https://abtem.readthedocs.io/en/latest/user_guide/tutorials/partial_coherence.html>. Energy nodes in this implementation update propagation parameters directly; the tutorial's defocus-distribution approximation is not used as a substitute for full energy-dependent propagation.
 
-## WP-04：A5、场像差拟合与数值验证
+## WP-04: A5, field-aberration fitting and numerical validation
 
 Original document: `docs/validation/WP04_ABERRATIONS.md`.
 

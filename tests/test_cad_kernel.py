@@ -200,7 +200,7 @@ class ExactCadKernelTests(unittest.TestCase):
         self.assertNotIn("temsim", sys.modules)
         with tempfile.TemporaryDirectory() as folder:
             folder = Path(folder)
-            request = dict(operation="evaluate", request_id="测试", draft_digest="draft1", include_mesh=False,
+            request = dict(operation="evaluate", request_id="test-φ", draft_digest="draft1", include_mesh=False,
                            solids=[dict(shape=box())])
             request_path = folder / "request.json"
             request_path.write_text(json.dumps(request, ensure_ascii=False), encoding="utf-8")
@@ -209,7 +209,7 @@ class ExactCadKernelTests(unittest.TestCase):
             self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
             result = json.loads((folder / "result.json").read_text())
             self.assertEqual(result["request_sha256"], kernel.digest(request))
-            self.assertEqual(result["request_id"], "测试")
+            self.assertEqual(result["request_id"], "test-φ")
             self.assertEqual(result["status"], "complete")
             request["operation"] = "unrecognized"
             request_path.write_text(json.dumps(request), encoding="utf-8")

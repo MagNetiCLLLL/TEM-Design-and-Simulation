@@ -1,43 +1,43 @@
-# CETCOR image corrector：本轮修改与验证
+# CETCOR image corrector: changes and validation in this round
 
-日期：2026-10-11。当前结果是 **CEOS 光路拓扑修正、一阶位置共轭校准和统一细节 CAD**。一阶通过不表示已完成有限六极子或物镜球差校正。本文对应 `outputs/image_corrector_20261011/`；首次全库 CAD 包仍保留在旧目录，不覆盖其历史输入。
+Date: 2026-10-11. Current results are **CEOS optical-topology corrections, first-order position-conjugacy calibration, and CAD with consistent detail**. Passing first-order checks does not establish correction of finite hexapoles or objective spherical aberration. This document corresponds to `outputs/image_corrector_20261011/`; the initial full-library CAD package remains in its old directory, preserving historical inputs.
 
-## 与 CEOS 资料比较后修改的内容
+## Changes following comparison with CEOS sources
 
-依据 CEOS 的 [Linck 2025 原讲义](references/cad-library/CEOS-Linck-2025/original.pdf)、[Lu 2025 CETCOR/CESCOR 对照图](references/cad-library/CEOS-Lu-2025/page-02.png)、[原始出处与逐项证据](image_corrector_reference.md)。未从示意图比例读取毫米尺寸。
+Based on CEOS's [original Linck 2025 slides](references/cad-library/CEOS-Linck-2025/original.pdf), [Lu 2025 CETCOR/CESCOR comparison diagram](references/cad-library/CEOS-Lu-2025/page-02.png), and [original sources and itemized evidence](image_corrector_reference.md). Millimeter dimensions were not read from schematic proportions.
 
-- `OL pre/post` 是当前跨样品物镜的两半场。移除多余 `image_ol_post_lens` 身份及其第二套驱动；原材料分配区改供 TL11 使用。
-- TL11 和 TL12 是独立圆透镜，DP12 在二者之间。撤销旧版“DP12 与 1 mm TL12 同 Z”的处理；TL12 补齐极靴、整体线包、磁轭和外壳。
-- DP21 移至 TL21 出口一侧，DP22 留在 TL22 入口一侧。它们的数值场可与透镜尾场重叠；场区间不等于独立线圈外壳。
-- DPH1/DPH2 的光学参考分别绑定 HP1/HP2，移动 HP 后同步；保留独立偏转驱动。公开资料尚不能确定本机径向绕组结构，因此不添加虚构 DPH/QPH 机械体。
-- Image HP1/HP2 使用六极针、六组整体线包和一个磁轭的共同结构族，和已有 probe HP 保持同等级细节。原始 CETCOR 机械图未取得，明确标为结构族工程推断，不声称是现役 CETCOR 原厂 CAD。
+- `OL pre/post` are the two halves of the current objective field spanning the specimen. Removed the redundant `image_ol_post_lens` identity and second drive; its former material allocation now serves TL11.
+- TL11 and TL12 are separate round lenses, with DP12 between them. Reversed the old treatment placing “DP12 at the same Z as a 1 mm TL12”; TL12 now has pole pieces, a bulk winding pack, yoke, and housing.
+- DP21 moves to the TL21 exit side, while DP22 remains on the TL22 entrance side. Their numerical fields can overlap lens fringe fields; field intervals are not separate coil housings.
+- DPH1/DPH2 optical references are bound to HP1/HP2, respectively, and follow HP movement; their deflection drives remain independent. Public sources do not yet establish radial winding construction for this instrument, so no invented DPH/QPH mechanical solids are added.
+- Image HP1/HP2 use a shared structural family of six pole pins, six bulk winding packs, and one yoke, at the same detail level as the existing probe HP. Original CETCOR mechanical drawings were not obtained; this is explicitly labeled an engineering inference within a structural family, not OEM CAD for a current CETCOR.
 
-两种 image 柱配置均已修改，模块总长度、HP1 及后方部件中心、安装接口不变。没有更改 Tip 参数，也没有重调上游 probe corrector。
+Both image-column configurations are updated, preserving total module length, centers of HP1 and subsequent parts, and installation interfaces. Tip parameters and upstream probe-corrector tuning are unchanged.
 
-## 当前局部几何
+## Current local geometry
 
-以下是 `C3_ImageCorrector.toml` 的 **模块 local Z，单位 mm**；双校正器模块对应值全部加 324 mm。全仪器绝对 Z 还包括枪出口安装偏移。尺寸是本项目显式工程分配，非 CEOS 实测值。
+The following gives **module local Z in mm** for `C3_ImageCorrector.toml`; add 324 mm to all corresponding dual-corrector module values. Absolute instrument Z also includes the gun-exit installation offset. Dimensions are explicit project engineering allocations, not CEOS measurements.
 
-| 元件 | 中心 | 机械区间或有效场区间 | 说明 |
+| Element | Center | Mechanical or effective-field interval | Description |
 |---|---:|---|---|
-| HPol / QPol / DP11 | 1037.9 | 各 6 mm 有效场 | 共处入口对准区域；机械宿主未确认 |
-| TL11 | 1062.9 | 1040.4–1085.4 | 45 mm 长，180 mm OD |
-| DP12 | 1099.65 | 1092.15–1107.15 | 位于 TL11/TL12 的 28.5 mm 间隙 |
-| TL12 | 1136.9 | 1113.9–1159.9 | 46 mm 长，160 mm OD，13 mm bore |
-| HP1 / DPH1 | 1202.4 | HP 外包络 1180.4–1224.4 | 同光学参考；不推断独立 DPH 材料 |
-| TL21 | 1256.4 | 1238.4–1274.4 | 现有 36 mm 圆透镜 |
-| DP21 / DP22 | 1277.9 / 1281.4 | 现有有限场长度 | 前后位置明确，允许尾场重叠 |
-| TL22 | 1306.4 | 1288.4–1324.4 | 原位置保留 |
-| HP2 / DPH2 | 1346.4 | HP 外包络 1324.4–1368.4 | 与 HP1 相同表示规则 |
-| ADL / SAD | 1386.4 / 1476.4 | 原位置保留 | SAD 是这里的样品像面 |
+| HPol / QPol / DP11 | 1037.9 | 6 mm effective field each | Shared entrance-alignment region; mechanical hosts unconfirmed |
+| TL11 | 1062.9 | 1040.4–1085.4 | 45 mm long, 180 mm OD |
+| DP12 | 1099.65 | 1092.15–1107.15 | Within the 28.5 mm gap between TL11/TL12 |
+| TL12 | 1136.9 | 1113.9–1159.9 | 46 mm long, 160 mm OD, 13 mm bore |
+| HP1 / DPH1 | 1202.4 | HP outer envelope 1180.4–1224.4 | Same optical reference; no separate DPH material inferred |
+| TL21 | 1256.4 | 1238.4–1274.4 | Existing 36 mm round lens |
+| DP21 / DP22 | 1277.9 / 1281.4 | Existing finite field lengths | Explicit upstream/downstream positions; fringe-field overlap allowed |
+| TL22 | 1306.4 | 1288.4–1324.4 | Original position retained |
+| HP2 / DPH2 | 1346.4 | HP outer envelope 1324.4–1368.4 | Same representation rules as HP1 |
+| ADL / SAD | 1386.4 / 1476.4 | Original positions retained | SAD is the specimen image plane here |
 
-HP 使用配置的 180 mm OD、8 mm bore、44 mm 外包络及 30 mm 极针分配。没有用论文另一实例的 152/154 mm OD 覆盖当前尺寸。CEOS 产品页的 250×396×306 mm 未给出接口基准，不可等同于整个物镜至 SAD 光程，故没有据此压缩全部装配。
+HP uses the configured 180 mm OD, 8 mm bore, 44 mm outer envelope, and 30 mm pole-pin allocation. The 152/154 mm OD from another example in the paper does not replace current dimensions. The CEOS product page's 250×396×306 mm dimensions lack interface datums and cannot be equated with the full objective-to-SAD optical path, so the entire assembly was not compressed to fit them.
 
-## 一阶校准与实际 GPU 核对
+## First-order calibration and actual GPU checks
 
-五个透镜的磁场幅值、宽度、Gaussian 形状、归一化约定、极性和默认百分比全部从 **所选 TOML** 读取。新装配采用所选文件的默认值；仅刷新几何时保留用户的实时激励。这里保留原字段形状，百分比不是原厂电流标定，未归一化 Gaussian 的 `maximum_peak_field_t` 也不应直接解释为真实峰值实测。
+Magnetic-field amplitudes, widths, Gaussian shapes, normalization conventions, polarities, and default percentages of all five lenses come from the **selected TOML**. New assemblies use that file's defaults; geometry-only refresh retains the user's live excitations. Original field forms are retained: percentages are not OEM current calibration, and `maximum_peak_field_t` for an unnormalized Gaussian should not be directly interpreted as a measured physical peak.
 
-| 透镜 | 新默认激励 |
+| Lens | New default excitation |
 |---|---:|
 | TL11 | 47.2226289532% |
 | TL12 | 72.2461574042% |
@@ -45,49 +45,49 @@ HP 使用配置的 180 mm OD、8 mm bore、44 mm 外包络及 30 mm 极针分配
 | TL22 | 60.0001718262% |
 | ADL | 48.9773611737% |
 
-采用同一实验室坐标 `(x,y,theta_x,theta_y)` 的完整 4×4 矩阵，分别报告位置、角度、旋转与正则/机械坐标变换。对于 `r₂=A r₁+B θ₁`，**位置共轭检查整个 2×2 的 B≈0**，不再使用单轴切片或仅凭轨迹在图上交轴判断。
+The full 4×4 matrix in the same laboratory coordinates `(x,y,theta_x,theta_y)` is used, reporting position, angle, rotation, and canonical/mechanical coordinate transforms separately. For `r₂=A r₁+B θ₁`, **position conjugacy checks the entire 2×2 block B≈0**, not a single-axis slice or a plotted trajectory crossing the axis.
 
-`final-validation/report.json` 保存两种配置的实际结果，300 kV：
+`final-validation/report.json` records actual results for both configurations at 300 kV:
 
-| 关系 | image-only 绝对 Z | 双校正器绝对 Z | 两配置最大 ‖B‖₂ |
+| Relationship | image-only absolute Z | Dual-corrector absolute Z | Maximum ‖B‖₂ across both configurations |
 |---|---|---|---:|
-| 样品→TL11/TL12 间 I1 | 1275.2→1549.9 mm | 1599.2→1873.9 mm | 2.33×10⁻¹³ m/rad |
-| 样品→TL21/TL22 间 I2 | 1275.2→1731.4 mm | 1599.2→2055.4 mm | 4.01×10⁻¹³ m/rad |
-| 样品→SAD | 1275.2→1926.4 mm | 1599.2→2250.4 mm | 3.11×10⁻¹³ m/rad |
+| Specimen→I1 between TL11/TL12 | 1275.2→1549.9 mm | 1599.2→1873.9 mm | 2.33×10⁻¹³ m/rad |
+| Specimen→I2 between TL21/TL22 | 1275.2→1731.4 mm | 1599.2→2055.4 mm | 4.01×10⁻¹³ m/rad |
+| Specimen→SAD | 1275.2→1926.4 mm | 1599.2→2250.4 mm | 3.11×10⁻¹³ m/rad |
 | HP1→HP2 | 1652.4→1796.4 mm | 1976.4→2120.4 mm | 2.34×10⁻¹¹ m/rad |
 
-HP 位置倍率的奇异值与 1 相差不到 2.8×10⁻¹⁰。上述值描述数值模型中的求解残差，不是实验设备精度。
+Singular values of HP position magnification differ from 1 by less than 2.8×10⁻¹⁰. These values describe solution residuals in the numerical model, not experimental instrument precision.
 
-每种配置使用 193 条诊断轨迹：轴上光线，以及 1、5、10 mrad 三圈各 64 条。实际 CUDA 返回记录共 16 条；有限 HP 与 Cs 开启后以 0.05/0.025 mm 两步长核对，SAD 位置 RMS 差约 1.02×10⁻¹¹ m。最终验证约 29.3 s，输入和实现 SHA 在执行前后相同。光路图来自这次传播保留的轨迹，没有为画图再跑另一轮。该群体是受控光学诊断，不是来自真实 Tip 的完整电子群，也未进行孔径截断资格检查。
+Each configuration uses 193 diagnostic trajectories: an axial ray and three rings of 64 rays at 1, 5, and 10 mrad. There are 16 actual CUDA receipt records; with finite HP and Cs enabled, comparison at 0.05/0.025 mm steps gives approximately 1.02×10⁻¹¹ m SAD position RMS difference. Final validation took about 29.3 s, with identical input and implementation SHA values before/after execution. Ray diagrams use trajectories retained from this propagation, without another plotting run. This population is a controlled optical diagnostic, not a full electron population from an actual Tip, and aperture-cutoff qualification was not performed.
 
-![实际 CUDA 内部光路](../outputs/image_corrector_20261011/final-validation/internal-ray-paths.png)
+![Actual CUDA internal ray paths](../outputs/image_corrector_20261011/final-validation/internal-ray-paths.png)
 
-上图为一阶观察，下图保留有限 HP 与当前 Cs 算子；下图不完全交于同一点，正是不能把一阶共轭当成最终像差校正的原因。
+The upper figure is a first-order view; the lower retains finite HP and the current Cs operator. The lower trajectories do not all meet at one point, illustrating why first-order conjugacy is not final aberration correction.
 
-## 尚未建立的条件
+## Conditions not yet established
 
-- HP1→HP2 的实验室坐标旋转约 −175.7914°，相对 −180° 仍差约 4.2086°；C 块的量级约 24.99 m⁻¹。它满足单位位置共轭，但**不是完整 −I 变换**。
-- `finite-pair/report.json` 另对有限 HP 做了有界二阶响应检查。在明确关闭扫描驱动的诊断副本内，调整 HP2 强度和方位，仍留下约 11.333% 的加权相空间二阶响应。其步长差约为单 HP 响应的 4.85×10⁻⁹，不能归因为积分误差。这个拟合含人为 0.05 m 角度权重，**未写入默认值**；保留原 HP 激励，不宣称已校正。
-- 现有物镜 Cs kick 是中心平面的空间形式。样品点从物镜中心以不同角度出射时，不能据此证明物镜的角度球差得到准确补偿。因此撤销旧测试中未经物理资格建立的“image corrector 已抵消 80% 球差”断言，保留 probe 既有断言；本轮不虚构 image Cs 通过结果。
-- Coma-free aperture plane 是像差条件，不能只用一阶矩阵或几何 BFP 标签命名。短程补充搜索给出 image-only 的 HP1 位置共轭源面 Z≈1275.717286 mm（样品后 0.517286 mm），由已有全程矩阵与一次短程 GPU 传播合成核对，‖B‖₂≈5.42×10⁻¹⁴ m/rad。现有物镜 BFP 标签在 1289.452626 mm，其到 HP1 的 ‖B‖₂≈0.07727 m/rad，二者明显不同。证据为 `final-validation/conjugate-source-search.json`；只有位置共轭成立，不能将这个源面或 BFP 标签称为已验证的无彗差面。
-- 本轮未重复长时间相干传播、Tip 传播或真实桌面交互验收。软件的既有传播方法未因 CAD 细节而替换为新材料场模型。
+- HP1→HP2 rotation in laboratory coordinates is about −175.7914°, still about 4.2086° from −180°; the C block is of order 24.99 m⁻¹. It satisfies unit position conjugacy but is **not a full −I transform**.
+- `finite-pair/report.json` also records a bounded second-order response check of finite HP. In a diagnostic copy with scan drives explicitly disabled, adjusting HP2 strength and azimuth still leaves about 11.333% weighted second-order phase-space response. Its step-size difference is about 4.85×10⁻⁹ of the single-HP response and cannot be attributed to integration error. This fit includes an artificial 0.05 m angular weight and **was not written into defaults**; original HP excitations are retained, with no correction claim.
+- The existing objective Cs kick is a spatial form at the center plane. For a specimen point emitting at different angles from the objective center, it cannot establish accurate compensation of the objective's angular spherical aberration. The old, physically unqualified assertion that “the image corrector cancels 80% of spherical aberration” was therefore removed, while existing probe assertions remain; no passing image-Cs result is invented in this round.
+- A coma-free aperture plane is an aberration condition and cannot be named from a first-order matrix or geometric BFP label alone. A supplementary short-range search gives an image-only HP1 position-conjugate source plane at Z≈1275.717286 mm (0.517286 mm after the specimen), checked by combining existing full-path matrices with one short GPU propagation, with ‖B‖₂≈5.42×10⁻¹⁴ m/rad. The existing objective BFP label is at 1289.452626 mm and gives ‖B‖₂≈0.07727 m/rad to HP1, clearly different. Evidence is in `final-validation/conjugate-source-search.json`; only position conjugacy is established, and neither this source plane nor the BFP label can be called a validated coma-free plane.
+- This round did not repeat long coherent propagation, Tip propagation, or actual desktop-interaction acceptance. Existing propagation methods were not replaced by a new material-field model because of CAD details.
 
-## CAD、回归与复现
+## CAD, regression, and reproduction
 
-新版交付：[CAD 使用说明](../outputs/image_corrector_20261011/cad/README.md)，[新旧原生同尺度对照](../outputs/image_corrector_20261011/mechanical-comparison/README.md)。包括 43 个 STEP：2 个完整配置模块和 41 个光学单元，共 324 个几何构造实体。这是两个备选配置的合计，不能叠放成一台电镜。
+Updated delivery: [CAD instructions](../outputs/image_corrector_20261011/cad/README.md), [native old/new comparison at the same scale](../outputs/image_corrector_20261011/mechanical-comparison/README.md). Includes 43 STEP files: 2 complete configuration modules and 41 optical units, totaling 324 constructed geometric solids. This combines two alternative configurations; they must not be superposed into one microscope.
 
-全部 STEP 通过实际 CadQuery/OpenCascade 导出和回读，最大边界往返差 1.22×10⁻¹¹ mm，最大相对体积差 2.28×10⁻⁹；这些是格式误差，不是物理尺寸精度。软件原生 3D 和 STEP 共享几何规则。外部编辑 STEP 不会自动回写 TOML。
+All STEP files passed actual CadQuery/OpenCascade export and reimport, with maximum round-trip bound difference 1.22×10⁻¹¹ mm and maximum relative volume difference 2.28×10⁻⁹; these are format errors, not physical dimensional precision. Native 3D and STEP share geometry rules. External STEP edits do not automatically write back to TOML.
 
-有针对性的拓扑、参数权威、坐标、DPH 绑定、材料包络、CAD 与 CI 注册检查已通过；最后的拓扑/校准/default 工作点组合为 16 个通过用例。没有重复全项目测试。独立只读复核检查了两变体实际装配和 State 往返、旧 OLpost 引用清理及同坐标 API。
+Targeted topology, parameter authority, coordinate, DPH binding, material-envelope, CAD, and CI-registration checks passed; the final combined topology/calibration/default-operating-point group had 16 passing cases. The full project suite was not repeated. An independent read-only review checked actual assembly and State round trips for both variants, removal of old OLpost references, and same-coordinate APIs.
 
-从仓库根目录复现最终光学验证：
+Reproduce the final optical validation from the repository root:
 
 ```powershell
 .\.venv\Scripts\python.exe scripts/validate_image_corrector.py --rays --output outputs/image_corrector_recheck
 ```
 
-该验证要求实际 GPU，报告保留后端回执。重求工作点用 `scripts/solve_image_corrector.py`，其候选只写报告；不能把未经验证的候选直接覆盖默认。
+This validation requires an actual GPU, and the report retains backend receipts. Use `scripts/solve_image_corrector.py` to resolve the operating point; candidates are written only to reports and must not overwrite defaults without validation.
 
-运行中的程序需重启，进入 Configure instrument，选择含 Image Corrector 的配置并 Assemble，才会加载新版默认装配。含旧 `image_ol_post_lens` 的保存工作点不能静默套用到五镜系统，会要求重新装配/计算；旧数值证据保留在原始快照，不伪装为新版计算。
+Restart the running application, open Configure instrument, select a configuration with Image Corrector, and Assemble to load the new default assembly. Saved operating points containing old `image_ol_post_lens` cannot be silently applied to the five-lens system and require reassembly/recalculation; old numerical evidence remains in original snapshots rather than masquerading as new-version calculations.
 
-原始资料、PDF、图页、简介、SHA 和出处统一位于 [参考库](references/cad-library/README.md)。全部毫米几何、材料类别和未确认部分保留来源标签；本轮成果不是制造图纸或 OEM 磁场标定。
+Original sources, PDFs, figure pages, summaries, SHA values, and provenance are kept together in the [reference library](references/cad-library/README.md). All millimeter geometry, material categories, and unconfirmed parts retain provenance labels; these results are not manufacturing drawings or OEM magnetic-field calibration.

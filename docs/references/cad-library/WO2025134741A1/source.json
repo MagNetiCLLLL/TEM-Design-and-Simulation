@@ -9,15 +9,15 @@
     "sample"
   ],
   "supported_facts": [
-    "[0036]提及FEI（现Thermo Fisher）的细轴，并明确phi 7 mm holder shaft。",
-    "[0037]描述与杆轴垂直的beta倾转机构。"
+    "[0036] mentions a slender shaft for FEI (now Thermo Fisher) and explicitly specifies a phi 7 mm holder shaft.",
+    "[0037] describes a beta-tilt mechanism perpendicular to the shaft axis."
   ],
   "unsupported_claims": [
-    "专利为特殊可收回/加电tip；只支持兼容结构族杆径，不证明普通Titan/Spectra OEM holder全尺寸。",
-    "不能据此增加普通杆不存在的电极、收回驱动或在位附件。"
+    "The patent concerns a specialized retractable/electrically biased tip; it supports only shaft diameter within a compatible structural family, not full dimensions of a conventional Titan/Spectra OEM holder.",
+    "It cannot justify adding electrodes, retraction drives, or in situ accessories absent from conventional holders."
   ],
   "authors": [
-    "裕也 宮崎"
+    "Hiroya Miyazaki"
   ],
   "owner": [
     "Mel Build Corp"

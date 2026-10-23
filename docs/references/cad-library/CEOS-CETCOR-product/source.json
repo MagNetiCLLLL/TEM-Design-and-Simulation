@@ -13,12 +13,12 @@
     "image_corrector"
   ],
   "supported_facts": [
-    "厂家明示HxBxT=250x396x306 mm，即高/宽/深。",
-    "列Titan、Themis、Spectra等兼容TEM。"
+    "The manufacturer explicitly states HxBxT=250x396x306 mm, meaning height/width/depth.",
+    "Lists compatible TEMs including Titan, Themis and Spectra."
   ],
   "unsupported_claims": [
-    "无安装接口参考面，不知外形是否包含外接耦合镜。",
-    "不能将全OL到SAD光程压缩成250mm或当本机精确CAD。"
+    "No mounting-interface reference plane is given; whether the envelope includes external coupling lenses is unknown.",
+    "The entire OL-to-SAD optical path cannot be compressed into 250mm or treated as exact CAD for this instrument."
   ],
   "archive_status": "original_html_saved",
   "schema": "cad-reference-source-v1",

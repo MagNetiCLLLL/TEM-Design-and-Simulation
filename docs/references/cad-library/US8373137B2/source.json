@@ -1,18 +1,18 @@
 {
   "id": "US8373137B2",
   "kind": "patent",
-  "family": "能滤复用多极元件",
+  "family": "Multipurpose energy-filter multipole elements",
   "url": "https://patents.google.com/patent/US8373137B2/en",
   "figures": "Fig. 1 and description of twelve-pole elements",
   "component_keys": [
     "energy_filter_multipole_*"
   ],
   "supported_facts": [
-    "一个多极实体可通过激励组合提供偶极、四极、六极和更高项。"
+    "A single multipole body can provide dipole, quadrupole, hexapole and higher-order terms through combinations of excitation."
   ],
   "unsupported_claims": [
-    "光学排列不是本项目支架或绕组的尺寸剖面图。",
-    "不确认每个现有能滤元件实际具有十二个磁极。"
+    "The optical arrangement is not a dimensioned section drawing of this project's supports or windings.",
+    "Does not confirm that every existing energy-filter element physically has twelve poles."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -70,6 +70,6 @@
     2
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original remain with their respective holders; public access does not imply an open license. Retained only for traceable reference in this project, with no claim that the original is this project's own work.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; the instrument's axial/radial values remain governed by the original TOML. Additional structures or replacement dimensions require separate evidence and must not be inferred from schematic proportions."
 }

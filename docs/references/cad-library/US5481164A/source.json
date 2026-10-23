@@ -1,7 +1,7 @@
 {
   "id": "US5481164A",
   "kind": "patent",
-  "family": "同位置 normal/skew 消像散器",
+  "family": "Colocated normal/skew stigmators",
   "url": "https://patents.google.com/patent/US5481164A/en",
   "figures": "Figs. 1-2; text explains axial separation is illustrative",
   "component_keys": [
@@ -10,11 +10,11 @@
     "quadrupole normal/skew channels"
   ],
   "supported_facts": [
-    "两组相对转动 45 度的四极结构可处于同一轴向位置。"
+    "Two quadrupole structures rotated 45 degrees relative to one another can occupy the same axial position."
   ],
   "unsupported_claims": [
-    "分解图不意味着两件串联透镜。",
-    "不提供 CEOS 的安装位置或尺寸。"
+    "An exploded view does not imply two lenses in series.",
+    "Does not provide CEOS installation positions or dimensions."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -72,6 +72,6 @@
     2
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original remain with their respective holders; public access does not imply an open license. Retained only for traceable reference in this project, with no claim that the original is this project's own work.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; the instrument's axial/radial values remain governed by the original TOML. Additional structures or replacement dimensions require separate evidence and must not be inferred from schematic proportions."
 }

@@ -1,7 +1,7 @@
 {
   "id": "JP2967966B2",
   "kind": "patent",
-  "family": "普通圆磁透镜",
+  "family": "Conventional round magnetic lenses",
   "url": "https://patents.google.com/patent/JP2967966B2/en",
   "figures": "Figs. 5-8; description [0003]-[0005]",
   "component_keys": [
@@ -19,12 +19,12 @@
     "projector_lens_2"
   ],
   "supported_facts": [
-    "典型圆磁透镜由磁轭、绕组、上下极靴及间隙组成。",
-    "文中区分冷却板、薄电绝缘层及间隔件。"
+    "A typical round magnetic lens consists of a yoke, winding, upper and lower pole pieces, and a gap.",
+    "The text distinguishes cooling plates, thin electrical insulation layers and spacers."
   ],
   "unsupported_claims": [
-    "不是 Titan/Spectra 尺寸图。",
-    "没有足够尺寸依据在所有透镜中新增冷却管、螺钉或开槽。"
+    "This is not a Titan/Spectra dimensional drawing.",
+    "There is insufficient dimensional evidence to add cooling pipes, screws or slots to every lens."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -39,13 +39,13 @@
     }
   ],
   "availability_notes": [
-    "该公开记录未提供 PDF 下载地址；保留可核对文字记录，未冒充已获得原始图纸。"
+    "The public record provides no PDF download URL; a verifiable text record is retained, without claiming that original drawings were obtained."
   ],
   "title": "Electron lens and electron microscope",
   "authors": [
-    "聰一郎 林",
-    "俊男 小内",
-    "健一 明珍"
+    "Soichiro Hayashi",
+    "Toshio Kouchi",
+    "Kenichi Myochin"
   ],
   "owner": [
     "Hitachi Ltd"
@@ -55,9 +55,9 @@
     "filingDate": "1993-08-31",
     "publicationDate": "1999-10-25"
   },
-  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification.",
+  "metadata_scope": "Bibliographic metadata from the public patent record; assignee is not a legal ownership certification. Latin-script inventor names follow the corresponding publication JPH0773836A: https://patents.google.com/patent/JPH0773836A/en.",
   "primary_pdf_url": null,
   "archive_status": "record_only_original_pdf_unavailable",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original remain with their respective holders; public access does not imply an open license. Retained only for traceable reference in this project, with no claim that the original is this project's own work.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; the instrument's axial/radial values remain governed by the original TOML. Additional structures or replacement dimensions require separate evidence and must not be inferred from schematic proportions."
 }

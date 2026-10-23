@@ -1,164 +1,164 @@
-# 2026-10-20：从电子枪到相机的三维结构复核
+# 2026-10-20: Three-dimensional structure review from electron gun to camera
 
-## 后续完善：电子枪 stigmator、C1/C2 cartridge 和接收器形状
+## Follow-up refinements: gun stigmator, C1/C2 cartridge, and receiver shapes
 
-以下原始检查记录保留其当时范围；其中未解决的电子枪 stigmator 与 cartridge
-细节已在同日后续任务中补充。三种电子枪采用显式保存尺寸的八线圈、绝缘、
-骨架、开槽载体与粘接座；七种柱体的共享 cartridge 增加两侧承载段与中央隔环。
-隔环材质和电子枪支撑适配仍是工程假设，公开资料没有提供本机制造尺寸。
-详见[电子枪结构依据](cad-gun-filter-apertures.md)与[C1/C2 结构依据](cad-round-lenses.md)。
+The original inspection records below retain their scope at the time; the unresolved gun stigmator and cartridge
+details were added in a subsequent task on the same day. All three electron guns use eight coils, insulation,
+formers, a slotted carrier, and adhesive seats with explicitly saved dimensions; the shared cartridge in all seven column variants gains two load-bearing sections and a central spacer ring.
+The spacer material and adaptation of the gun supports remain engineering assumptions; public sources do not provide manufacturing dimensions for this instrument.
+See the [gun structure evidence](cad-gun-filter-apertures.md) and [C1/C2 structure evidence](cad-round-lenses.md).
 
-主 Camera 接收面为方形，HAADF/DF 为圆环，BF/荧光屏为圆盘，六个 EDS 探头
-按用户要求改为方形，EELS 保持长方形。接收面与独立圆形真空腔体不能混为一件。
-[接收器形状和模型边界](cad-detectors.md)说明原有接收模型的保留范围。
-配件 20 mm 局部孔径并非装配后的通束直径；连续管 ID 5.76 mm 才是该处更窄的
-粒子、波与接地电场边界，详见[真空管孔径合同](cad-vacuum-tube.md)。
+The main Camera receiving surface is square, HAADF/DF are annular, BF/the fluorescent screen are disks, and all six EDS heads
+were made square at the user's request; EELS remains rectangular. A receiving surface and its separate circular vacuum chamber must not be treated as one part.
+[Receiver shapes and model boundaries](cad-detectors.md) explains which parts of the previous receiver models are retained.
+A component's local 20 mm bore is not the assembled clear beam diameter; the continuous tube ID of 5.76 mm is the narrower
+particle, wave, and grounded electric-field boundary there. See the [vacuum-tube aperture contract](cad-vacuum-tube.md).
 
-新版默认装配为 130 个条目、376 个网格，未发现拓扑、构建或材料遗漏问题。
-[七种柱体检查](../../outputs/upper-detector-detail-20261020/variant-audit.json)还覆盖三种电子枪
-及两种记录系统；[后台结构预览](../../outputs/upper-detector-detail-20261020/detail-preview.png)
-由共享 CAD/原生网格生成，隐藏件和半剖仅用于观察，不改保存模型。
-[最终回归记录](../../outputs/upper-detector-detail-20261020/verified-regression.xml)与
-[13 个 STEP 文件回读记录](../../outputs/upper-detector-detail-20261020/step-final/step-manifest.json)
-是后续任务证据：最终 734 项回归通过，零失败、零跳过；66 个材料实体经 STEP 导出回读通过。
-验证始终限于后台软件和配置几何，不等于 OEM 或实验验证。
+The updated default assembly contains 130 entries and 376 meshes, with no topology, construction, or material omission issues found.
+The [seven-column audit](../../outputs/upper-detector-detail-20261020/variant-audit.json) also covers three electron guns
+and two recording systems; the [backend structure preview](../../outputs/upper-detector-detail-20261020/detail-preview.png)
+was generated from shared CAD/native meshes. Hidden parts and half-sections are viewing aids only and do not change the saved model.
+The [final regression record](../../outputs/upper-detector-detail-20261020/verified-regression.xml) and
+[round-trip record for 13 STEP files](../../outputs/upper-detector-detail-20261020/step-final/step-manifest.json)
+are evidence from the follow-up task: the final 734 regression tests passed with zero failures or skips; 66 material solids passed STEP export and reimport.
+Validation remains limited to backend software and configured geometry; it is not OEM or experimental validation.
 
-## 原始逐件检查记录
+## Original component-by-component inspection record
 
-本轮检查当前默认 **FEG + C3 + Probe Corrector + No Energy Filter** 装配。
-以 `3dac7ba` 为代码基线，同时核对 `13255c9` 的逐配件场图/实体叠加和
-`0dce5d0` 的 stigmator/物镜套筒改动。工作区上一轮 Magnetic field 交互修改保留。
-未操作桌面、未提交 Git；通过实际生产网格、后台 CAD 和离屏图检查。
+This review inspects the current default **FEG + C3 + Probe Corrector + No Energy Filter** assembly.
+It uses `3dac7ba` as the code baseline and also checks the per-component field/solid overlays in `13255c9` and
+the stigmator/objective sleeve changes in `0dce5d0`. The preceding Magnetic field interaction changes in the workspace were preserved.
+No desktop interaction or Git commit was performed; inspection used actual production meshes, backend CAD, and offscreen figures.
 
-完整顺序清单、每个材料区及其来源记录在
-[130 项检查表](../../outputs/column-model-review-20261020/README.md)、
-[结构化检查结果](../../outputs/column-model-review-20261020/audit.json)。
-它们来自当前实际装配，不是从目录中混合不同配置拼出的一台电镜。
-未安装的 image corrector 和 energy filter 不属于本轮逐件清单。
+The complete ordered inventory, every material region, and its provenance are recorded in the
+[130-entry checklist](../../outputs/column-model-review-20261020/README.md) and
+[structured inspection results](../../outputs/column-model-review-20261020/audit.json).
+They describe the current actual assembly, not a microscope assembled by mixing different configurations from the directory.
+The uninstalled image corrector and energy filter are outside this round's component inventory.
 
-## 实际改动
+## Actual changes
 
-### 电子枪电极
+### Electron-gun electrodes
 
-Extractor 和 Gun Lens 已有供 CAD 使用的开孔电极配方，但原生显示此前走通用包络。
-现在两者使用相同实体配方，并提供上游端面、下游端面、束孔壁和外表面四类选择。
-沿用原配置中的端面、内外径；与实际电子枪场请求使用的电极边界核对。
-共享实现同时覆盖 FEG + Mono 和 Thermionic 已有的对应电极。
-未新增未经确定的电极鼻部、固定件或电子枪 stigmator 线圈。
+Extractor and Gun Lens already had perforated-electrode recipes for CAD, but their native display previously used generic envelopes.
+Both now use the same solid recipes and expose four selectable surface classes: upstream face, downstream face, beam-bore wall, and exterior.
+The original configured end faces and inner/outer diameters are retained and checked against the electrode boundaries used by actual gun-field requests.
+The shared implementation also covers the existing corresponding electrodes in FEG + Mono and Thermionic.
+No unconfirmed electrode noses, fasteners, or gun-stigmator coils were added.
 
-依据及限制：[电子枪结构记录](cad-gun-filter-apertures.md)。
+Evidence and limitations: [gun structure record](cad-gun-filter-apertures.md).
 
-### Probe Corrector 的五个 DPH/DP 插件
+### Five DPH/DP inserts in the Probe Corrector
 
-DPH2、DP22、DP21、DPH1、DP11 各补充 X/Y 两个导体层间隙绝缘区，共 10 区。
-每个区由已有导体层环体减去原来的两只铜线包构成，填充窗口与线包间空隙。
-使用原有尺寸，没有改变铜线包、载体、覆盖层、粘接层、通束孔或轴向位置。
+DPH2, DP22, DP21, DPH1, and DP11 each gain gap-insulation regions for the X/Y conductor layers, for 10 regions in total.
+Each region subtracts the original pair of copper winding packs from the existing conductor-layer annulus, filling the windows and spaces between winding packs.
+Existing dimensions are used; the copper winding packs, carriers, cover layers, adhesive layers, beam bores, and axial positions are unchanged.
 
-[CEOS multipole-coils 专利 US20090079531A1](https://patents.google.com/patent/US20090079531A1/en)
-Fig. 4 支持绝缘覆盖和层间整面粘接的结构类型。选择填充型整体等效体属于
-**结构族的工程推断**，不证明这些命名 DPH/DP 的 OEM 内部结构已经确定。
-配置明确记录该范围；旧文件缺少开关时仍保留旧结构。
-没有由被动几何细化推导新的磁场、球差或散热性能。
+The [CEOS multipole-coils patent US20090079531A1](https://patents.google.com/patent/US20090079531A1/en)
+Fig. 4 supports the structural types of insulating covers and full-surface interlayer bonding. Choosing a filled equivalent bulk solid is an
+**engineering inference within the structural family**; it does not establish the OEM internal construction of these named DPH/DP components.
+The configuration explicitly records this scope; older files without the switch retain the old structure.
+No new magnetic field, spherical aberration, or thermal performance is inferred from passive geometric refinements.
 
-详细材料边界：[Probe Corrector 结构记录](cad-probe-corrector.md)。
+Detailed material boundaries: [Probe Corrector structure record](cad-probe-corrector.md).
 
-### 下部记录面
+### Lower recording planes
 
-Camera 的粒子接收范围为 57.344 mm × 57.344 mm 方形，原 3D 和 CAD 通用回转体却是圆盘。
-现已统一为方形，保留原中心、接收面和 0.5 mm 布局厚度。
-HAADF、DF 保持环形开孔，BF 和荧光屏保持圆盘。
+The Camera's particle receiving area is a 57.344 mm × 57.344 mm square, whereas its former generic 3D/CAD solid of revolution was a disk.
+It is now consistently square, retaining the original center, receiving plane, and 0.5 mm layout thickness.
+HAADF and DF retain annular openings; BF and the fluorescent screen remain disks.
 
-五个记录面均补充可选择的上游接收面、背面及边缘；有束孔的增加孔缘，
-Camera 区分四个侧边。接收面保持在已存上游位置，未移到板厚中心。
-零厚参考面仍为无体积引导面。0.5 mm 仅为原布局厚度，不代表真实敏感层厚度。
-插入、撤回、读出和粒子阻挡语义沿用现有实现。
+All five recording planes gain selectable upstream receiving faces, rear faces, and edges; those with beam bores also gain bore rims,
+and Camera distinguishes its four sides. Receiving faces remain at the saved upstream positions rather than moving to the plate-thickness centers.
+Zero-thickness reference planes remain nonvolumetric guide surfaces. The 0.5 mm value is only the original layout thickness, not the real sensitive-layer thickness.
+Insertion, retraction, readout, and particle-blocking semantics retain the existing implementation.
 
-依据及限制：[探测器结构记录](cad-detectors.md)。
+Evidence and limitations: [detector structure record](cad-detectors.md).
 
-### EDS 已有实体被整机显示遗漏
+### Existing EDS solids omitted from the full-column display
 
-逐图核对发现：EDS 的光学参考面为零厚度，但其声明的探测头材料具有有限尺寸。
-旧整机过滤规则将两者混为一谈，跳过了已经存在的 EDS 内部实体。
-现在有明确材料配置的 EDS 进入既有严格校验和建模流程；旧的纯参考面仍可省略，
-坏配置则报告错误。没有给光学参考面增加厚度，也没有重新设计探测头。
+Comparison of the figures showed that the EDS optical reference plane has zero thickness, but the declared detector-head materials have finite dimensions.
+The old full-column filtering rule conflated the two and skipped the existing EDS internal solids.
+EDS components with explicit material configurations now enter the existing strict validation and modeling workflow; old pure reference planes may still be omitted,
+while invalid configurations report errors. No thickness was added to the optical reference plane, and the detector head was not redesigned.
 
-整机与 Magnetic field 实体叠加共用这条修复。检查器另增加独立交叉检查：
-当 CAD 定义存在材料、整机却无对应网格时，报告 `omitted_material`，
-不能仅凭旧过滤规则将其算作正常省略。
-EDS 的有限材料模型不代表已经建立该探测器的电磁场或三维场采样区。
+The full-column and Magnetic field solid overlays share this fix. The inspector also gains an independent cross-check:
+if a CAD definition contains material but the full-column assembly lacks a corresponding mesh, it reports `omitted_material`
+rather than classifying the omission as normal solely under the old filtering rule.
+The finite EDS material model does not mean that this detector's electromagnetic field or three-dimensional field-sampling region has been established.
 
-### 多实体材料区的 STEP 颜色
+### STEP colors for material regions with multiple solids
 
-新增绝缘区在几何上由几个分离体积组成。STEP 回读发现，原导出器在展开这类
-复合材料区时保留了名称和材料，却丢失了颜色。现将相同材料区的颜色同时写入
-尚未显式设色的各个实体，保留用户单独设置的颜色；
-回读仅在所有实际实体都记录相同颜色时恢复区域颜色。
-缺色或混色不会被预期输入替换。新增负向测试覆盖这两种情况。
+The new insulation regions consist of several disconnected volumes. STEP reimport revealed that the old exporter retained
+names and materials when expanding these composite material regions but lost their colors. The same region color is now also written
+to each solid that does not already have an explicit color, preserving colors individually set by the user;
+reimport restores a region color only when every actual solid records the same color.
+Missing or mixed colors are not replaced with expected inputs. New negative tests cover both cases.
 
-## 从上到下的检查结论
+## Inspection conclusions from top to bottom
 
-下表按光柱位置分组；每组内所有装配条目均包含在上述 130 项清单中。
-Z 是当前保存装配的中心坐标，单位 mm；接收面、薄板工作面和光学中心另行区分。
+The table below groups parts by column position; every assembly entry within each group appears in the 130-entry inventory above.
+Z is the center coordinate of the currently saved assembly, in mm; receiving surfaces, thin-plate working faces, and optical centers are distinguished separately.
 
-| 顺序 / 中心 Z | 配件范围 | 检查结果与本轮处理 |
+| Order / center Z | Component range | Inspection results and treatment in this round |
 | --- | --- | --- |
-| −0.5 | FEG Tip | 保留球面尖端与截锥结构；不从宏观预览推定发射区已解析。 |
-| 8、18 | Extractor、Gun Lens | 修复原生显示/CAD 分流，补充四类物理表面；已存场边界不变。 |
-| 24 | Gun DPA | 保留已有薄板/参考结构；未指定的工作孔不能由机械包络推断。 |
-| 200 | 加速管 | 检查 10 个电极及 9 个级间绝缘区；电极位置与独立绝缘结构保留。 |
-| 410、433、445 | Gun deflector、gun stigmator、C1 aperture | 偏转线包保留；gun stigmator 仍为未知内部包络，未假定线圈数或磁极数。 |
-| 500–765 | C1/C2 极靴、线圈、磁轭、外壳、共享 cartridge、C2 aperture | 独立材料子件与共享归属保留；cartridge 内部混合材料没有可靠分界，不分造隐藏支撑。 |
-| 810 | Condenser deflector | 保留已有两级正交铜线包、载体、绝缘和层间连接；不重复创建轴向通道。 |
-| 868–1010 | C3 极靴、线圈、磁轭、外壳、C3 aperture | 检查开放束孔和实际极靴轮廓；无已存厚度的冷却板、绝缘层和紧固件不新增。 |
-| 1040 | Beam deflector | 保留两级结构与已有支撑；它与下游 AC scan 是不同的已安装配件。 |
-| 1075.6–1100.8 | ADL | 检查上下极靴、环形励磁线包、磁轭和外壳，保持已有圆透镜结构。 |
-| 1144.5、1300.85 | HP2、HP1 | 各含六根极针、六个开窗铜线包及公共磁轭；机械极长与光学有效长度仍独立。 |
-| 1144.5–1346.3 | DPH2、DP22、DP21、DPH1、DP11 | 每组增加两个导体层间隙绝缘区；原 20 个铜线包和五组径向支撑不变。 |
-| 1156.975–1376.15 | TL22、TL21、TL12 | 检查三组圆透镜材料子件；未按光学符号增造另一种极靴结构。 |
-| 1128.15–1384 | QPH/HPC/QPC/HPol/QPol、DP12 与逻辑别名 | 保留控制/参考身份；没有把未知宿主画成新硬件，DP12 不重复生成 AC 线圈。 |
-| 1400、1451.5、1456.75 | AC scan、condenser stigmator、上部 electronics sleeve | 保留两级扫描、已有开窗 stigmator 线圈和开孔套筒；没有实体化独立“控制轴”。 |
-| 1514.5–1632.9 | Mini-condenser、objective 极靴/线圈/磁轭/外壳 | 维持 MC 与物镜嵌套和样品间隙，物镜上/下光学作用不生成两套重复机械磁路。 |
-| 1599.2–1600.7 | 样品、holder、stage、EDS、objective aperture | 修复 EDS 已有材料实体被零厚参考面规则过滤的问题；保留样品开口、支架/端口与探测头既有配方。 |
-| 1686.9–1746.9 | Image/Diffraction、Descan、下部 sleeve、objective stigmator | 保留共享 Image/Diffraction–Descan 硬件，仅绘制一次；套筒开孔及线圈结构保留。 |
-| 1824.4、1839.4 | SA aperture、diffraction stigmator | 保留薄板和已有 stigmator 绕组；机械通孔、真空孔和未确定的工作孔分别记录。 |
-| 1878.9–2468.65 | D、I、P1、P2 | 逐组检查上/下极靴、线圈、磁轭、外壳；不从焦距反推新的线圈或冷却结构。 |
-| 2586.9 | Projection DPA | 保留 0.2 mm 板厚及当前 12 mm 设计孔；文献中的 0.2 mm 参考孔径是另一项信息。 |
-| 2594.4–2986.9 | HAADF、荧光屏、DF、BF、Camera | 补充表面细节，修正 Camera 方形轮廓；保留开孔、上游接收面及原插入状态逻辑。 |
-| 2750.65、2950.775 | Post-projector chamber、camera housing | 保留独立工程包络，未添加没有安装依据的滑台、接头、螺钉或敏感材料层。 |
+| −0.5 | FEG Tip | Retained the spherical tip and truncated-cone structure; a macroscopic preview does not establish that the emission region is resolved. |
+| 8, 18 | Extractor, Gun Lens | Fixed the native-display/CAD divergence and added four physical surface classes; saved field boundaries are unchanged. |
+| 24 | Gun DPA | Retained the existing thin-plate/reference structure; an unspecified working opening cannot be inferred from the mechanical envelope. |
+| 200 | Accelerator | Inspected 10 electrodes and 9 interstage insulation regions; electrode positions and separate insulation structures are retained. |
+| 410, 433, 445 | Gun deflector, gun stigmator, C1 aperture | Deflector winding packs retained; gun stigmator still has an unresolved internal envelope, with no assumed coil or pole count. |
+| 500–765 | C1/C2 pole pieces, coils, yokes, housings, shared cartridge, C2 aperture | Separate material subparts and shared ownership retained; no reliable boundary is available for mixed materials inside the cartridge, so hidden supports were not invented. |
+| 810 | Condenser deflector | Retained existing two-stage orthogonal copper winding packs, carriers, insulation, and interlayer connections; no duplicate axial channels created. |
+| 868–1010 | C3 pole pieces, coils, yoke, housing, C3 aperture | Inspected the open beam bore and actual pole-piece profiles; cooling plates, insulation layers, and fasteners without saved thicknesses were not added. |
+| 1040 | Beam deflector | Retained its two-stage structure and existing supports; it is a different installed component from downstream AC scan. |
+| 1075.6–1100.8 | ADL | Inspected upper/lower pole pieces, annular excitation winding pack, yoke, and housing, retaining the existing round-lens structure. |
+| 1144.5, 1300.85 | HP2, HP1 | Each has six pole pins, six copper winding packs with windows, and a common yoke; mechanical pole length and effective optical length remain independent. |
+| 1144.5–1346.3 | DPH2, DP22, DP21, DPH1, DP11 | Added two conductor-layer gap-insulation regions per group; the original 20 copper winding packs and five sets of radial supports are unchanged. |
+| 1156.975–1376.15 | TL22, TL21, TL12 | Inspected material subparts of the three round lenses; optical signs were not used to invent another pole-piece structure. |
+| 1128.15–1384 | QPH/HPC/QPC/HPol/QPol, DP12, and logical aliases | Control/reference identities retained; unknown hosts were not rendered as new hardware, and DP12 does not generate duplicate AC coils. |
+| 1400, 1451.5, 1456.75 | AC scan, condenser stigmator, upper electronics sleeve | Retained two-stage scanning, existing stigmator coils with windows, and the open sleeve; separate “control axes” were not made into solids. |
+| 1514.5–1632.9 | Mini-condenser, objective pole pieces/coils/yoke/housing | MC/objective nesting and the specimen gap retained; upper/lower objective optical actions do not generate duplicate mechanical magnetic circuits. |
+| 1599.2–1600.7 | Specimen, holder, stage, EDS, objective aperture | Fixed existing EDS material solids being filtered by the zero-thickness reference-plane rule; retained existing recipes for specimen openings, holders/ports, and detector heads. |
+| 1686.9–1746.9 | Image/Diffraction, Descan, lower sleeve, objective stigmator | Shared Image/Diffraction–Descan hardware retained and drawn only once; sleeve openings and coil structures retained. |
+| 1824.4, 1839.4 | SA aperture, diffraction stigmator | Retained thin plates and existing stigmator windings; mechanical bores, vacuum bores, and unconfirmed working openings recorded separately. |
+| 1878.9–2468.65 | D, I, P1, P2 | Inspected upper/lower pole pieces, coils, yokes, and housings in each group; no new coils or cooling structures inferred from focal lengths. |
+| 2586.9 | Projection DPA | Retained the 0.2 mm plate thickness and current 12 mm design opening; the 0.2 mm reference aperture in the literature is a separate item of information. |
+| 2594.4–2986.9 | HAADF, fluorescent screen, DF, BF, Camera | Added surface details and corrected the Camera's square outline; retained openings, upstream receiving faces, and original insertion-state logic. |
+| 2750.65, 2950.775 | Post-projector chamber, camera housing | Retained separate engineering envelopes; no unsupported translation stages, fittings, screws, or sensitive-material layers added. |
 
-仍需澄清一处已有的尺寸定义差异：corrector 连续真空管当前实际 CAD 材料内径为
-5.76 mm，而相关配置声明通束孔为 20 mm。两者不能当成同一个有效孔径使用。
-本轮绝缘新增区位于原铜层内，不改变这根管，也没有用外部包络将该差异掩盖。
-准确的管内径与通束定义需要单独统一；本轮不宣称已解决此项。
-电子枪 stigmator、共享 C1/C2 cartridge 的内部分材，以及未指定的冷却/紧固结构
-也仍属于资料或参数缺失范围。
+One existing discrepancy in dimension definitions still needs clarification: the actual current CAD material inner diameter of the corrector's continuous vacuum tube is
+5.76 mm, whereas the related configurations declare a 20 mm clear beam bore. They cannot be used as the same effective aperture.
+The insulation regions added in this round are inside the original copper-layer volumes; they do not alter this tube or conceal the discrepancy behind an external envelope.
+The exact tube ID and clear-beam definition require separate reconciliation; this round does not claim to resolve it.
+The gun stigmator, internal material separation in the shared C1/C2 cartridge, and unspecified cooling/fastening structures
+also remain areas with missing evidence or parameters.
 
-## 验证及可复现输出
+## Validation and reproducible outputs
 
-生产装配从 314 个网格增至 342 个，104 个条目有实体、26 个为有意省略的父装配、
-共享通道或参考。增加的 28 个网格为 10 个绝缘区及恢复显示的 18 个 EDS 材料区。
-原有 307 个网格的顶点和三角形哈希完全相同；另 7 个由统一的
-电极/记录面配方重新生成，其中 Camera 轮廓得到修正。没有移除原有网格，
-原有各网格的轴对齐外包络均不变。
+The production assembly increased from 314 to 342 meshes; 104 entries contain solids and 26 are intentionally omitted parent assemblies,
+shared channels, or references. The 28 additional meshes comprise 10 insulation regions and 18 restored EDS material regions.
+Vertex and triangle hashes of 307 original meshes are identical; another 7 were regenerated from the unified
+electrode/recording-plane recipes, including the corrected Camera outline. No original meshes were removed,
+and the axis-aligned bounds of every original mesh remain unchanged.
 
-检查记录有限坐标、退化三角形、边界边、非流形边、带符号体积、材料身份和来源。
-物质实体的开放边界或非正体积被标为异常，零厚引导面单独处理。
-这不是全光柱任意位姿下的碰撞、公差、磁场或 OEM 认证。
+The inspection records finite coordinates, degenerate triangles, boundary edges, nonmanifold edges, signed volume, material identity, and provenance.
+Open boundaries or nonpositive volumes of material solids are flagged as anomalies; zero-thickness guide surfaces are handled separately.
+This is not collision, tolerance, magnetic-field, or OEM certification for arbitrary poses throughout the full column.
 
-九张离屏联系图覆盖所有实体条目，每格独立等比例缩放。
-它们使用实际生产三角网格、材料颜色和程序现有 CPU 深度渲染器。
-光照仅用于辨认表面，不表示磁场或材料光学性能；图片不能替代精确碰撞检查。
-从上到下：[1：电子枪](../../outputs/column-model-review-20261020/contact-01.png)、
-[2：C1/C2/C3](../../outputs/column-model-review-20261020/contact-02.png)、
-[3：ADL/HP2](../../outputs/column-model-review-20261020/contact-03.png)、
-[4：Corrector 中下段](../../outputs/column-model-review-20261020/contact-04.png)、
-[5：TL12/AC/MC](../../outputs/column-model-review-20261020/contact-05.png)、
-[6：物镜/EDS/样品](../../outputs/column-model-review-20261020/contact-06.png)、
-[7：物镜下游/D/I](../../outputs/column-model-review-20261020/contact-07.png)、
-[8：投影系统](../../outputs/column-model-review-20261020/contact-08.png)、
-[9：记录系统](../../outputs/column-model-review-20261020/contact-09.png)。
+Nine offscreen contact sheets cover all solid entries; every panel uses its own equal-axis scale.
+They use actual production triangle meshes, material colors, and the application's existing CPU depth renderer.
+Lighting only helps identify surfaces; it does not represent magnetic fields or optical material properties. Images cannot replace exact collision checks.
+From top to bottom: [1: Electron gun](../../outputs/column-model-review-20261020/contact-01.png),
+[2: C1/C2/C3](../../outputs/column-model-review-20261020/contact-02.png),
+[3: ADL/HP2](../../outputs/column-model-review-20261020/contact-03.png),
+[4: Middle/lower Corrector](../../outputs/column-model-review-20261020/contact-04.png),
+[5: TL12/AC/MC](../../outputs/column-model-review-20261020/contact-05.png),
+[6: Objective/EDS/specimen](../../outputs/column-model-review-20261020/contact-06.png),
+[7: Downstream of objective/D/I](../../outputs/column-model-review-20261020/contact-07.png),
+[8: Projection system](../../outputs/column-model-review-20261020/contact-08.png),
+[9: Recording system](../../outputs/column-model-review-20261020/contact-09.png).
 
-重新生成全部清单和图片：
+Regenerate the complete inventory and all images:
 
 ```powershell
 $env:QT_QPA_PLATFORM = "offscreen"
@@ -166,36 +166,36 @@ $env:TEMSIM_CPU_THREADS = "1"
 .venv/Scripts/python.exe scripts/audit_column_model_details.py --output outputs/column-model-review-20261020
 ```
 
-本轮后台验证结果如下；不同组有少量共用测试，不能直接将各行相加当成唯一测试数。
+Backend validation results for this round are listed below. Some tests are shared between groups, so the rows cannot simply be summed as a unique test count.
 
-| 验证范围 | 结果 |
+| Validation scope | Result |
 | --- | --- |
-| 电子枪新增测试、CAD auxiliary、part model | 95 项通过 |
-| 记录面、探测器、光学绑定、实际阻挡平面与真空终点 | 129 项通过 |
-| Corrector、六极、DPH/DP、普通偏转器、套筒与 stigmator | 260 项通过 |
-| 独立 CAD 环境中的 STEP 与 CAD kernel | 6 + 9 项通过，未跳过 |
-| 装配、圆透镜、光学绑定、datum、场图几何及测试范围登记 | 200 项通过 |
-| 编辑功能与场图实体叠加 | 100 项通过 |
-| 清单检查器与更新后的测试范围登记 | 最终 145 项通过，包括深度渲染与材料遗漏交叉检查 |
-| EDS 修复后的装配、探测器、共享场图几何及可见性 | 75 项通过 |
-| EDS 修复后的 Physical Layout 与场图实体显示 | 70 项通过 |
+| New gun tests, CAD auxiliary, part model | 95 passed |
+| Recording planes, detectors, optical bindings, actual blocking planes, and vacuum endpoints | 129 passed |
+| Corrector, hexapoles, DPH/DP, ordinary deflectors, sleeves, and stigmators | 260 passed |
+| STEP and CAD kernel in the separate CAD environment | 6 + 9 passed, none skipped |
+| Assembly, round lenses, optical bindings, datums, field-map geometry, and test-scope registration | 200 passed |
+| Editing features and field-map solid overlays | 100 passed |
+| Inventory inspector and updated test-scope registration | Final 145 passed, including depth rendering and material-omission cross-checks |
+| Assembly, detectors, shared field-map geometry, and visibility after the EDS fix | 75 passed |
+| Physical Layout and field-map solid display after the EDS fix | 70 passed |
 
-全装配检查得到 **0 个网格拓扑问题、0 个 CAD 配方错误、0 个装配构建错误、
-0 个已定义材料遗漏**；
-四组自动连接衬管也已包含在检查范围。五个 DPH/DP 插件的精确 BRep 检查覆盖
-275 对材料，以 1e-9 mm³ 为体积交叠阈值，没有超阈值穿插，记录 90 处接触。
-这不等于执行了整台电镜所有任意位姿的精确碰撞检查。
+The full-assembly audit found **0 mesh-topology issues, 0 CAD recipe errors, 0 assembly-construction errors,
+and 0 omissions of defined material**;
+the four automatically connected liner groups are also included. Exact BRep checks of the five DPH/DP inserts covered
+275 material pairs; with a volume-overlap threshold of 1e-9 mm³, no interpenetration exceeded the threshold and 90 contacts were recorded.
+This does not mean that exact collision checks were performed for every arbitrary pose of the entire microscope.
 
-五个插件及其总装共 **6 个 STEP 文件**回读通过，核对实体数量、体积、
-边界、名称、材料和 RGBA。配置前后对比确认只增加五个开关和相应来源说明，
-既有光学数值、位置和有效长度没有变化。
-证据见 [精确材料检查](../../outputs/corrector_detail_20261020/analytic-contacts.json)、
-[配置比较](../../outputs/corrector_detail_20261020/configuration-comparison.json)、
-[STEP 回读记录](../../outputs/corrector_detail_20261020/step/step-manifest.json)。
+The five inserts and their combined assembly passed round-trip checks for **6 STEP files**, comparing solid counts, volumes,
+bounds, names, materials, and RGBA. Before/after configuration comparison confirmed only five switches and their provenance notes were added;
+existing optical values, positions, and effective lengths are unchanged.
+Evidence: [exact material checks](../../outputs/corrector_detail_20261020/analytic-contacts.json),
+[configuration comparison](../../outputs/corrector_detail_20261020/configuration-comparison.json),
+[STEP round-trip records](../../outputs/corrector_detail_20261020/step/step-manifest.json).
 
-部分首次 CAD 子进程检查遇到 Windows 临时目录权限错误；在工作区临时目录或
-经批准的后台环境重跑后通过。没有为消除错误而删除断言或跳过 CAD 检查。
-现存 Pydantic 弃用警告仍在，与本轮几何改动无关。
+Some initial CAD subprocess checks encountered Windows temporary-directory permission errors; reruns in a workspace temporary directory or
+an approved backend environment passed. No assertions were removed or CAD checks skipped to suppress errors.
+Existing Pydantic deprecation warnings remain and are unrelated to this round's geometry changes.
 
-所有生成证据在 `outputs/`，代码、配置、测试和本参考文档保留在项目常规目录。
-本轮没有重新求解相干传播、完整磁场或粒子收敛，也没有进行硬件验证。
+All generated evidence is under `outputs/`; code, configuration, tests, and this reference document remain in the project's normal directories.
+This round did not rerun coherent propagation, full magnetic-field solutions, or particle convergence, and performed no hardware validation.

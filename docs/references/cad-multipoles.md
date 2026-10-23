@@ -23,7 +23,7 @@ It refines the existing 13-solid construction using inward-tapered pole noses,
 radial winding windows and saved independent dimensions. It does not change
 the image-corrector geometry or claim a new field calibration.
 
-The adopted HP geometry is specifically supported by [Müller et al. 2006](cad-library/Mueller2006a/简介.md): p.443 identifies six ferromagnetic pole pins, and Fig.3 on p.444 is a real hexapole photograph identifying poles, coils and yoke. This supports the main probe HP1/HP2 construction family; the paper's numerical dimensions are not substituted for this model. See [the current uniform-detail policy](CAD_DETAIL_POLICY.md). The other patent alternatives below do not by themselves authorize extra components in this instrument.
+The adopted HP geometry is specifically supported by [Müller et al. 2006](cad-library/Mueller2006a/summary.md): p.443 identifies six ferromagnetic pole pins, and Fig.3 on p.444 is a real hexapole photograph identifying poles, coils and yoke. This supports the main probe HP1/HP2 construction family; the paper's numerical dimensions are not substituted for this model. See [the current uniform-detail policy](CAD_DETAIL_POLICY.md). The other patent alternatives below do not by themselves authorize extra components in this instrument.
 
 The image HP1/HP2 model uses an explicitly labelled **CETCOR family inference**.
 The author text of [Müller et al. 2008, *Aberration-corrected optics: from an idea

@@ -168,7 +168,7 @@ and **TEM Simulator v2** names remain readable. Existing saved results are kept
 in place; renaming the application does not move or delete them. The GitHub
 repository address currently retains its previous name.
 
-[Project map / 项目地图](docs/PROJECT_MAP.md): files, features, UI, tests and refactoring candidates.
+[Project map](docs/PROJECT_MAP.md): files, features, UI, tests and refactoring candidates.
 
 ## License
 

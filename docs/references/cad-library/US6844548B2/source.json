@@ -1,18 +1,18 @@
 {
   "id": "US6844548B2",
   "kind": "patent",
-  "family": "Wien 过滤器",
+  "family": "Wien filter",
   "url": "https://patents.google.com/patent/US6844548B2/en",
   "figures": "Fig. 1: transverse XY; Fig. 2: longitudinal XZ; Figs. 3-4: drives",
   "component_keys": [
     "feg_monochromator_wien"
   ],
   "supported_facts": [
-    "十二极实施例结合电势激励与磁势激励，构成横向交叉电磁场。"
+    "The twelve-pole embodiment combines electric-potential and magnetic-potential excitation to form transverse crossed electric and magnetic fields."
   ],
   "unsupported_claims": [
-    "不是项目已有解析场具有十二路独立标定的证据。",
-    "不提供现有模块机械尺寸。"
+    "This is not evidence that the project's existing analytical field has twelve independently calibrated channels.",
+    "Does not provide mechanical dimensions for the existing module."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -70,6 +70,6 @@
     2
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original remain with their respective holders; public access does not imply an open license. Retained only for traceable reference in this project, with no claim that the original is this project's own work.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; the instrument's axial/radial values remain governed by the original TOML. Additional structures or replacement dimensions require separate evidence and must not be inferred from schematic proportions."
 }

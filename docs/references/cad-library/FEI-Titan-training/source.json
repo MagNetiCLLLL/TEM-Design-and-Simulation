@@ -1,7 +1,7 @@
 {
   "id": "FEI-Titan-training",
   "kind": "manufacturer_training",
-  "family": "Titan mini condenser 与照明系统",
+  "family": "Titan mini condenser and illumination system",
   "url": "https://emfacility.science.oregonstate.edu/sites/emfacility.science.oregonstate.edu/files/2025-09/Titan%20training%20manual_0.pdf",
   "title": "Titan Training Material",
   "authors": [
@@ -10,7 +10,7 @@
   ],
   "owner": "FEI; public university host Oregon State University",
   "publication_date": null,
-  "date_note": "本次未从原文确认正式出版日期；URL 中 2025-09 仅是托管目录。",
+  "date_note": "The formal publication date was not confirmed from the original in this round; 2025-09 in the URL is only a hosting directory.",
   "figures": "Module 1 pp. 1, 4; Figs. 1, 5; PDF pages 3, 6",
   "component_keys": [
     "condenser_lens_1",
@@ -20,12 +20,12 @@
     "objective_lens"
   ],
   "supported_facts": [
-    "厂家教学图说明 C1/C2/C3、mini condenser 与上物镜的光学关系。",
-    "mini condenser 光学开关涉及相反电流方向，不应解释为线圈电流总为零。"
+    "The manufacturer's teaching diagram shows optical relationships among C1/C2/C3, the mini condenser, and the upper objective.",
+    "Optically switching the mini condenser involves opposite current directions and must not be interpreted as coil current always being zero."
   ],
   "unsupported_claims": [
-    "光路图不是制造剖面图，不能按比例量取内部几何。",
-    "本地 PDF 为图像扫描，文本层缺失。"
+    "An optical diagram is not a manufacturing section and cannot be used to measure internal geometry by proportion.",
+    "The local PDF is an image scan without a text layer."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -57,7 +57,7 @@
     }
   ],
   "availability_notes": [
-    "复用项目已保存的原始 PDF；本次归档时间不冒充首次网络获取时间。"
+    "Reuses an original PDF already saved in the project; this archive timestamp is not presented as the first network retrieval time."
   ],
   "primary_pdf_url": "https://emfacility.science.oregonstate.edu/sites/emfacility.science.oregonstate.edu/files/2025-09/Titan%20training%20manual_0.pdf",
   "cached_source": "outputs\\cad_research_20261011\\sources\\Titan_training_material.pdf",
@@ -80,6 +80,6 @@
     6
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original belong to its rights holders; public accessibility does not imply an open license. It is retained only for provenance reading in this project and is not claimed as original project content.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; axial/radial values for this instrument remain governed by the original TOML. Added structures or replacement dimensions require separate evidence and must not be inferred from schematic proportions."
 }

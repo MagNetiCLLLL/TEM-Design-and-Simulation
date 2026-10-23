@@ -1,75 +1,46 @@
-# AC Scan 内部定位结构复核（2026-10-21）
+# AC Scan Internal Registration Structure Review (2026-10-21)
 
-本轮针对默认 `C3_ProbeCorrector.toml` 的 AC Scan 两级线圈，从 Probe Corrector
-出口向下检查。没有移动线圈、修改激励、重定标扫描枢轴或改变光学传播。其他两个
-Probe Corrector 组合没有相同的刚性载体配置，因此不自动安装这一结构。
+This round reviews the two AC Scan coil stages in default `C3_ProbeCorrector.toml`, proceeding downstream from the Probe Corrector exit. It does not move coils, change excitation, recalibrate the scan pivot or change optical propagation. The other two Probe Corrector combinations lack the same rigid-carrier configuration, so this structure is not installed automatically.
 
-## 资料与新增细节
+## Evidence and added detail
 
-[Nikon US5994704A](https://patents.google.com/patent/US5994704A/en) Figs. 1–2
-及定位孔说明支持同心绝缘载体、隔筒、径向定位销；外层载体及隔筒可采用长定位孔，
-内层采用圆孔；Fig. 4 给出绝缘外壳版本。正文也允许全部圆孔，因此原来的圆孔模型
-是该结构族的有效简化，并不是缺少全部骨架。
+[Nikon US5994704A](https://patents.google.com/patent/US5994704A/en), Figs. 1–2 and the registration-hole description, supports concentric insulating carriers, spacers and radial locating pins. Outer carriers and spacers may use elongated registration holes, with round inner-layer holes; Fig. 4 shows an insulating-housing version. The text also permits all-round holes, so the original round-hole model is a valid simplification of this structural family, not a model lacking all supports.
 
-原有每级四个铜线包、内外载体、隔筒、外壳和两个定位销均保留。现在将每级外层
-Y 载体与隔筒的定位孔改为圆端周向槽；两级共四个被动材料区域变化，其余十六个
-材料区域不变。内层 X 载体仍为圆孔，定位销轴线仍在 45° / 225°。
+Each stage retains its original four copper windings, inner/outer carriers, spacer, housing and two locating pins. Registration holes in the outer Y carrier and spacer of each stage now become circumferential slots with round ends. Four passive regions change across both stages; the other sixteen remain unchanged. Inner X-carrier holes stay round, with pin axes at 45° / 225°.
 
-专利的 X/Y 命名与当前模型的内外层命名相反，本轮仅对应径向构造，不交换已校准
-的场方向。新增 `deflector_support_registration_slot_sweep_deg=6` 表示槽中心线
-总扫角 6°，不是线圈转角，也不是场方向旋转。缺省或为 0 时恢复旧圆孔结构。
+The patent's X/Y names reverse this model's inner/outer-layer names. This round maps radial construction only, without exchanging calibrated field directions. New `deflector_support_registration_slot_sweep_deg=6` means a total 6° slot-centreline sweep, not coil rotation or field-direction rotation. Missing or 0 restores the old round-hole structure.
 
-**6°、所有尺寸及材料牌号均不是 OEM 测量结果。** 模型保持
-`engineering_reconstruction_not_oem`。定位销只说明内部载体的相对定位，不代表已
-验证外部紧固方式。专利制作过程的临时心轴不作为成品内部硬件。引线、实际匝数、
-匝间绝缘细节、外部固定和热设计尚无足够资料，本轮不猜测添加。
+**6°, all dimensions and material grades are not OEM measurements.** The model remains `engineering_reconstruction_not_oem`. Pins represent relative internal-carrier registration, not verified external attachment. Temporary mandrels used during patent manufacture are not finished internal hardware. Leads, actual turns, inter-turn insulation, external attachment and thermal design lack sufficient evidence and are not conjecturally added.
 
-## 已保存尺寸及实际材料
+## Saved dimensions and actual materials
 
-坐标采用柱模块局部毫米；默认安装原点为全局 Z=450 mm。
+Coordinates are column-module local millimetres; default installation origin is global Z=450 mm.
 
-| 项目 | 当前值 |
+| Item | Current value |
 | --- | ---: |
-| AC 包络 | local Z930–970；global Z1380–1420 mm |
-| 两个作用中心 | local Z937.5 / 962.5；global Z1387.5 / 1412.5 mm |
-| 单级线包物理长度 / 级间隙 | 15 / 10 mm |
-| 级内载体径向包覆厚度 | 0.2 mm |
-| 外绝缘壳厚度 / 定位销直径 | 0.4 / 0.4 mm |
-| 声明通束孔 / 声明外包络 | ID20 / OD54 mm |
-| 实际载体最小内径 / 实际材料最大外径 | ID22.32 / OD33.44 mm |
-| 连续真空管局部外径 | OD19.2 mm |
-| 实际材料到真空管的解析径向间隙 | (22.32−19.2)/2 = 1.56 mm |
-| 实际材料到上部电子元件套筒内壁的解析径向间隙 | (59.2−33.44)/2 = 12.88 mm |
+| AC envelope | local Z930–970; global Z1380–1420 mm |
+| Two action centres | local Z937.5 / 962.5; global Z1387.5 / 1412.5 mm |
+| Single-stage physical winding length / interstage gap | 15 / 10 mm |
+| In-stage carrier radial cover thickness | 0.2 mm |
+| Outer insulating-housing thickness / pin diameter | 0.4 / 0.4 mm |
+| Declared beam-clearance bore / outer envelope | ID20 / OD54 mm |
+| Actual minimum carrier inner diameter / maximum material outer diameter | ID22.32 / OD33.44 mm |
+| Local continuous vacuum-tube outer diameter | OD19.2 mm |
+| Analytic radial material-to-vacuum-tube clearance | (22.32−19.2)/2 = 1.56 mm |
+| Analytic radial clearance to upper electron-optics sleeve inner wall | (59.2−33.44)/2 = 12.88 mm |
 
-不能把 OD54 的包络当成实心圆筒，也不能把 ID20 的通束约束直接等同于真实材料
-内径。最近的上游 TL12 下极靴对应已保存键 `probe_tl12_lens_lower_pole`；旧说明
-中的 TL1 是该模型透镜的历史简称，不代表另一片透镜。回归检查此透镜的材料子件、上套筒、
-Condenser Stigmator、Mini Condenser 的材料子件、物镜铜线包和连续真空管。
+The OD54 envelope is not a solid cylinder, and the ID20 beam-clearance constraint is not the actual material inner diameter. The nearest upstream TL12 lower pole shoe has saved key `probe_tl12_lens_lower_pole`; TL1 in old descriptions is a historical abbreviation for this model lens, not a different lens. Regressions check this lens's material subparts, upper sleeve, Condenser Stigmator, Mini Condenser material subparts, objective copper windings and continuous vacuum tube.
 
-## 尺寸编辑与物理边界
+## Dimension editing and physical boundaries
 
-载体厚度、外壳厚度、销径和槽扫角均从相同的已保存字段生成原生网格与 CAD。
-两种编辑入口都保留撤销、重新读取和输入校验。非法值以及侵入铜线包窗口的长槽
-不能保存。复制保留结构与参数归属；明确替换为自定义模型时，原生载体配方失效，
-恢复原生模型后重新启用原配方。
+Carrier thickness, housing thickness, pin diameter and slot sweep generate native meshes and CAD from the same saved fields. Both editing entry points retain undo, rereading and validation. Invalid values and elongated slots intruding into copper-winding windows cannot be saved. Copying retains structure and parameter ownership; explicit replacement with a custom model disables the native carrier recipe, which is re-enabled upon restoring native geometry.
 
-这些被动支持参数不会新增磁场源。铜线包和线圈中心不变，Descan 与 Image/Diffraction
-仍共享原物理宿主。线包端面的尺寸入口应指向实际
-`mechanical_coil_length_mm`，不能指向仅作为派生包络的总长。
+These passive support parameters add no magnetic-field sources. Copper windings and centres are unchanged; Descan and Image/Diffraction still share their original physical host. Winding end-face dimension controls must target actual `mechanical_coil_length_mm`, not total length used only as a derived envelope.
 
-但 AC 的物理线包长度**不是独立的被动参数**：运行时两中心由 `coil_length + gap`
-决定；保存还要求 `length = 2*coil_length + gap`、作用中心与机械中心对称、有限场
-厚度不大于线包长度。单改 15→14 mm 可以暂存为几何草稿，但必须在保存时拒绝
-不一致的场厚度和布局；需要协调改动相关字段并重新核对扫描校准。这不同于本轮
-仅新增定位长孔的被动细节。
+AC physical winding length, however, **is not an independent passive parameter**: runtime centres depend on `coil_length + gap`; saving also requires `length = 2*coil_length + gap`, action centres symmetric about the mechanical centre, and finite-field thickness no greater than winding length. Changing only 15→14 mm may remain as a geometry draft, but saving must reject inconsistent field thickness/layout. Related fields must be adjusted together and scan calibration rechecked. This differs from this round's passive registration-slot addition.
 
-## 后台验证
+## Background validation
 
-`tests/test_ac_scan_structure.py` 覆盖四个槽区域的差分、内层圆孔保留、二十个材料
-区域的闭合和不相交、真实真空管与邻件间隙、两种编辑入口的尺寸联动、错误输入、
-复制、模型替换、保存回读和运行时作用中心。使用真实材料实体而非光学父件空模型
-检查机械交叠。精确 STEP 和整机传播的一致性证据由本轮 AC Scan / Upper Objective
-联合验证记录提供。
+`tests/test_ac_scan_structure.py` covers differences in four slotted regions, retained inner round holes, closure/nonintersection of twenty regions, actual vacuum-tube/neighbour clearances, dimension linkage through both editing entry points, invalid inputs, copying, model replacement, save/reread and runtime action centres. Mechanical overlaps are checked using actual material solids rather than empty optical-parent models. Exact STEP and full-instrument propagation consistency evidence is provided by this round's joint AC Scan / Upper Objective validation record.
 
-这些结果证明当前工程模型的几何和软件边界一致；不表示完成 OEM 制造复刻、实际
-绝缘电压、真空、温升或涡流测试，也不把被动细节解释为已经求解的新磁场性能。
+These results establish consistency of geometry and software boundaries in the current engineering model, not OEM manufacturing reproduction or actual insulation-voltage, vacuum, temperature-rise or eddy-current testing. Passive detail is not presented as newly solved magnetic-field performance.

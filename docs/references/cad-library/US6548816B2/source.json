@@ -1,7 +1,7 @@
 {
   "id": "US6548816B2",
   "kind": "patent",
-  "family": "消像散器",
+  "family": "stigmator",
   "url": "https://patents.google.com/patent/US6548816B2/en",
   "figures": "Fig. 1: eight coils; Fig. 3: twelve coils",
   "component_keys": [
@@ -11,11 +11,11 @@
     "diffraction_stigmator"
   ],
   "supported_facts": [
-    "不同电流组合可在同一多线圈结构上产生多个场谐波。",
-    "四极作用不等于只有四个实体线圈。"
+    "Different current combinations can generate multiple field harmonics in the same multicoil structure.",
+    "Quadrupole action does not imply only four physical coils."
   ],
   "unsupported_claims": [
-    "未确认项目每个消像散器的实际极数和绕组。"
+    "Actual pole counts and windings of each project stigmator remain unconfirmed."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -81,6 +81,6 @@
     3
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original remain with their holders; public accessibility is not an open licence. Retained only for traceable reference reading in this project, without claiming the original as this project's work.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; axial/radial values for this model remain governed by the original TOML. Structural additions or dimension replacements require separate evidence and must not be inferred from diagram proportions."
 }

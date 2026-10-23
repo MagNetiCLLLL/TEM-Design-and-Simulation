@@ -78,8 +78,8 @@ def test_external_export_roundtrip_copies_only_detached_navigation_metadata(tmp_
     library = ResultLibrary(tmp_path / "library")
     info = export_info(tmp_path / "external")
     info.update(arrays=object(), executed_state=object(), size_bytes=999)
-    entry = library.remember("  常用样品截面  ", info)
-    assert entry["name"] == "常用样品截面"
+    entry = library.remember("  Reference specimen section φ  ", info)
+    assert entry["name"] == "Reference specimen section φ"
     assert entry["path"] == str(Path(info["path"]).resolve())
     assert entry["size_bytes"] == Path(info["path"]).stat().st_size
     assert entry["result_identity"] == info["identity"]

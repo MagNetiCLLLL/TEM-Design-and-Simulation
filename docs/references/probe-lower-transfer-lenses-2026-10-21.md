@@ -1,55 +1,55 @@
-# TL21 与下游 TL12 的内部结构复核
+# Internal structure review of TL21 and downstream TL12
 
-> 后续更新：本文保留三处铜端接触修复前的检查基线和验证记录。TL22–DP22、DP21–TL21、DP11–TL12 已通过显式铜绕组长度、双端绝缘封边及正装配间隙继续处理；当前结构及本轮证据见 [端部绝缘与间隙修复记录](probe-contact-isolation-2026-10-21.md)。下文“未解决接触”和“铜保持”仅描述此前阶段。
+> Follow-up update: this document retains the inspection baseline and validation records from before the three copper-end contact fixes. TL22–DP22, DP21–TL21, and DP11–TL12 were subsequently addressed with explicit copper winding lengths, insulation at both ends, and positive assembly gaps; see the [end-insulation and clearance fix record](probe-contact-isolation-2026-10-21.md) for the current structure and evidence from that work. References below to unresolved contacts and retained copper describe the earlier stage only.
 
-范围为 TL22 下方的 TL21 及 TL12（保存键为 `probe_tl12_lens`，早期资料曾简称 TL1）。全部长度为模块局部 mm，+Z 指向下游。默认装配转换为全局坐标时加 450 mm。本轮只补充被动机械结构，不调整透镜位置、极隙、励磁方向、强度或传播公式。
+The scope is TL21 and TL12 below TL22 (saved key `probe_tl12_lens`, abbreviated TL1 in earlier material). All lengths are in module-local mm, with +Z downstream. Add 450 mm to convert the default assembly to global coordinates. This work only adds passive mechanical structure, without changing lens positions, pole gaps, excitation directions, strengths, or propagation formulas.
 
-## 资料与结构边界
+## Sources and structural limits
 
-[Müller 等 2006，Fig.2、pp.443–444](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf) 区分六极之间的 TL21/TL22 传递双透镜及下游 TL11/TL12 传递系统，但不提供本项目透镜的材料加工尺寸。[Hitachi JP2967966B2，常规 Fig.8、[0005]](https://patents.google.com/patent/JP2967966B2/en) 描述绕组两端的金属冷却板及绕组与板之间的电气绝缘层。本轮使用这一通用圆透镜结构族，**不是 CEOS 原厂内部结构认证**。
+[Müller et al. 2006, Fig.2, pp.443–444](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf) distinguishes the TL21/TL22 transfer doublet between the hexapoles from the downstream TL11/TL12 transfer system, but does not provide material manufacturing dimensions for this project's lenses. [Hitachi JP2967966B2, conventional Fig.8, [0005]](https://patents.google.com/patent/JP2967966B2/en) describes metal cooling plates at both winding ends and electrical insulation between the winding and plates. This work uses that generic round-lens structural family; **it is not certification of CEOS OEM internal construction**.
 
-已有五个材料部件——上下极靴、整体励磁线包、回磁轭及外壳——全部保留。每个外壳新增上、下各一片绝缘层和被动铜板，共四个独立区域。统一使用 `SolidSpec`、原生 3D 与解析 STEP 路径，板铜不归入励磁绕组，不额外叠加磁场。机械字段保存为 `mechanical_transfer_end_*`；两个透镜分别保存自己的绕组接口，不能借用 TL22 的绕组外径或绝对 Z。
+All five existing material parts are retained: upper/lower pole pieces, the bulk excitation winding pack, the return yoke, and the housing. Each housing gains an insulation layer and a passive copper plate at each end, totaling four independent regions. They share the `SolidSpec`, native 3D, and analytic STEP paths; plate copper is not part of the excitation winding and contributes no additional superposed field. Mechanical fields are saved as `mechanical_transfer_end_*`; each lens stores its own winding interfaces and must not reuse TL22's winding OD or absolute Z.
 
-## 保存尺寸与端部空间
+## Saved dimensions and end space
 
-| 项目 | TL21 | TL12 |
+| Item | TL21 | TL12 |
 | --- | ---: | ---: |
-| 外壳轴向范围 | 787.2–812.7 | 903.6–929.0 |
-| 原绕组轴向范围 | 788.475–811.425 | 904.87–927.73 |
-| 原绕组 ID / OD | 78.33 / 93.3164759 | 78.33 / 93.63 |
-| 每端原有空余 | 1.275 | 1.27 |
-| 新绝缘层厚度 | 0.1 | 0.1 |
-| 新铜板厚度 | 0.5 | 0.5 |
-| 新叠层之外每端剩余空间 | 0.675 | 0.67 |
+| Housing axial range | 787.2–812.7 | 903.6–929.0 |
+| Original winding axial range | 788.475–811.425 | 904.87–927.73 |
+| Original winding ID / OD | 78.33 / 93.3164759 | 78.33 / 93.63 |
+| Original space at each end | 1.275 | 1.27 |
+| New insulation thickness | 0.1 | 0.1 |
+| New copper-plate thickness | 0.5 | 0.5 |
+| Remaining space beyond the new layers at each end | 0.675 | 0.67 |
 
-0.1/0.5 mm 是明确保存的工程分配，不是由论文或照片测量所得。绝缘和铜板的径向范围与各自原绕组相同；TL21 的 OD93.3164759 与 TL12 的 OD93.63 均不同于 TL22 的 OD93.5109425。
+The 0.1/0.5 mm values are explicitly saved engineering allocations, not measurements from papers or photographs. Insulation and copper plates have the same radial ranges as their respective original windings; TL21's OD93.3164759 and TL12's OD93.63 both differ from TL22's OD93.5109425.
 
-| 区域 | TL21 局部 Z | TL12 局部 Z |
+| Region | TL21 local Z | TL12 local Z |
 | --- | --- | --- |
-| 上铜板 | 787.875–788.375 | 904.27–904.77 |
-| 上绝缘层 | 788.375–788.475 | 904.77–904.87 |
-| 下绝缘层 | 811.425–811.525 | 927.73–927.83 |
-| 下铜板 | 811.525–812.025 | 927.83–928.33 |
+| Upper copper plate | 787.875–788.375 | 904.27–904.77 |
+| Upper insulation | 788.375–788.475 | 904.77–904.87 |
+| Lower insulation | 811.425–811.525 | 927.73–927.83 |
+| Lower copper plate | 811.525–812.025 | 927.83–928.33 |
 
-两组极靴孔径仍为 20，实际连续真空管外径为 19.2，名义径向间隙为 **0.4**。真空管实际内径为 5.76，不能把声明通束孔 20 误作实际管内径。新增板层位于半径 39.165 之外，不侵入管道或原极靴。
+Both pole-piece bores remain 20, the actual continuous vacuum-tube OD is 19.2, and nominal radial clearance is **0.4**. The actual tube ID is 5.76; the declared clear beam bore of 20 must not be mistaken for the actual tube ID. New plate layers lie outside radius 39.165 and do not intrude into the tube or original pole pieces.
 
-## 保留的既有接触与结构缺口
+## Retained existing contacts and structural gaps
 
-- DP21 下游铜端面与 TL21 上极靴在 Z787.2 接触。
-- DP11 下游铜端面与 TL12 上极靴在 Z903.6 接触。
+- The downstream copper end face of DP21 contacts the upper TL21 pole piece at Z787.2.
+- The downstream copper end face of DP11 contacts the upper TL12 pole piece at Z903.6.
 
-这两处是**零间隙材料面接触**，不能写作正机械间隙或已获得电气隔离。没有通过移动光学件、缩短铜线包、扩大极孔或重叠添加绝缘来掩盖它们。新增外侧绕组端部绝缘不能解决束轴附近偏转线包与极靴的接触问题。
+These are **zero-gap material-face contacts**, not positive mechanical clearances or established electrical isolation. They were not concealed by moving optical parts, shortening copper winding packs, enlarging pole bores, or adding overlapping insulation. The new insulation at the outer winding ends cannot resolve contacts between deflector winding packs and pole pieces near the beam axis.
 
-TL21 原磁轭 ID101.3164759、TL12 原磁轭 ID101.63，与 OD66.33 的极肩之间仍缺少确认的径向磁路连接。新增铜板不是铁磁回路连接。水路、螺钉、线匝、引线、宿主固定方式和材料热/电/磁参数仍未复原；没有据此声称散热、涡流响应或球差性能改善。
+The original TL21 yoke ID101.3164759 and TL12 yoke ID101.63 still lack a confirmed radial magnetic-circuit connection to the pole shoulders of OD66.33. The new copper plates are not ferromagnetic return-path connections. Water channels, screws, individual turns, leads, host mounting, and material thermal/electrical/magnetic parameters remain unreconstructed; no improvement in cooling, eddy-current response, or spherical-aberration performance is claimed.
 
-## 尺寸联动与验证范围
+## Dimension coupling and validation scope
 
-绕组 ID/OD 编辑联动对应端板 ID/OD；极隙编辑保持光学中心与极靴背面，变更面对间隙的端面。父组件复制时重映射线圈引用，移动时所有保存接口随同移动；单独外壳复制保持自包含结构，引用仅作来源。参数通过其他配件相同的尺寸、来源和影响说明显示。启用显式 Box/STEP 替代体时停用原生配方，恢复时重新校验，失败不污染草稿或历史。
+Winding ID/OD edits update the corresponding end-plate ID/OD; pole-gap edits preserve the optical center and pole-piece rear faces while updating the gap-facing end faces. Copying the parent component remaps coil references, and moving it moves all saved interfaces together; copying a housing alone preserves self-contained structure, with references serving only as provenance. Parameters use the same dimension, provenance, and impact descriptions as other components. Enabling an explicit Box/STEP replacement disables the native recipe; restoring it triggers validation, and failures do not corrupt the draft or history.
 
-专属回归文件为 `tests/test_cad_probe_transfer_lens_hardware.py`，覆盖配置范围、原五个材料区保持、全部 36 个内部材料对、闭合网格、端面位置、实际管壁间隙、既有铜接触、尺寸联动、复制/保存/撤销、替代体优先级及错误参数。32/64/128 段管壁间隙对照解析的 0.4 mm 圆柱间隙；分段曲面结果不可当作原厂装配公差。
+The dedicated regression file is `tests/test_cad_probe_transfer_lens_hardware.py`, covering configuration scope, preservation of the five original material regions, all 36 internal material pairs, closed meshes, end-face positions, actual tube-wall clearance, existing copper contacts, dimension coupling, copy/save/undo, replacement precedence, and invalid parameters. Tube-wall checks with 32/64/128 segments are compared with the analytic 0.4 mm cylindrical clearance; faceted-surface results must not be treated as OEM assembly tolerances.
 
-复核还修复了通用端部配方的浮点边界问题：极小的正层厚可能在当前非零 Z 坐标上舍入为零，原先仅检查叠层总厚度会接受退化的单层。现在按实际造型表达式逐段检查四层边界严格有序，在配置验证和编辑提交时拒绝不能表示的层厚，没有人为增大物理最小厚度或改动正常配置。
+The review also fixed a floating-point boundary issue in the generic end-layer recipe: a very small positive layer thickness can round to zero at the current nonzero Z coordinate, whereas checking only total stack thickness previously accepted a degenerate individual layer. Each boundary of the four layers is now checked for strict ordering using the actual geometry-construction expressions. Configuration validation and edit submission reject unrepresentable thicknesses without artificially increasing the physical minimum thickness or changing normal configurations.
 
-本轮专属 **47 项回归通过**，与 C3、Adapter、TL22 既有套件合计 **130 项通过**，最新回执为 `outputs/probe-lower-details-20261021/lens-layer-boundary-regression.xml`（早期 37 项记录保留为历史）。同目录 `step/step-manifest.json` 记录下游配件及真空管共 9 个解析 STEP 文件的成功回读；实体数量、体积、边界、名称、材料和颜色均由现有导出校验器核对。独立 CAD 环境的 `test_cad_step.py`、`test_cad_kernel.py`、`test_cad_assembly_validation.py` 共 **26 项通过**，逐项 XML 分别保存在 `exact-cad-regression.xml` 和 `exact-cad-assembly-regression.xml`。
+The **47 dedicated regressions passed**, and **130 tests passed** when combined with the existing C3, Adapter, and TL22 suites. The latest receipt is `outputs/probe-lower-details-20261021/lens-layer-boundary-regression.xml` (the earlier 37-test record is retained as history). The same directory's `step/step-manifest.json` records successful readback of 9 analytic STEP files for downstream components and the vacuum tube; the existing export validator checks solid counts, volumes, bounds, names, materials, and colors. In the isolated CAD environment, `test_cad_step.py`, `test_cad_kernel.py`, and `test_cad_assembly_validation.py` had **26 passes**, with per-case XML records saved in `exact-cad-regression.xml` and `exact-cad-assembly-regression.xml`.
 
-这些检查证明保存几何及软件路径的一致性，不等同于实机尺寸、热学、电气绝缘或完整磁场 FEM 的验证。
+These checks establish consistency of saved geometry and software paths, not validation of physical instrument dimensions, thermal behavior, electrical insulation, or complete magnetic-field FEM.

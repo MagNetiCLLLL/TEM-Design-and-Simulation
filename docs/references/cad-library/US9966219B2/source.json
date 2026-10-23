@@ -1,7 +1,7 @@
 {
   "id": "US9966219B2",
   "kind": "patent",
-  "family": "EELS 能滤与狭缝",
+  "family": "EELS energy filters and slits",
   "url": "https://patents.google.com/patent/US9966219B2/en",
   "figures": "Figs. 1-4; PDF pages 3-6. Fig.3: drift tube with slit; Fig.4: projected slit/energy-cutoff view, not a dimensional mechanical section.",
   "component_keys": [
@@ -12,11 +12,11 @@
     "energy_filter_camera_deflector"
   ],
   "supported_facts": [
-    "支持弯转支路、漂移管及相向可调狭缝叶片的结构关系。"
+    "Supports structural relationships among the bent branch, drift tube, and opposing adjustable slit blades."
   ],
   "unsupported_claims": [
-    "未确定本机棱镜磁极外形或机械尺寸。",
-    "本项目 shutter 和 camera deflector 的板厚、外伸量仍为通用重建，专利不证明其精确结构。"
+    "Does not establish this instrument's prism-pole shapes or mechanical dimensions.",
+    "Plate thicknesses and extensions of this project's shutter and camera deflector remain generic reconstructions; the patent does not establish their exact structures."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -94,6 +94,6 @@
     6
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original belong to its rights holders; public accessibility does not imply an open license. It is retained only for provenance reading in this project and is not claimed as original project content.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; axial/radial values for this instrument remain governed by the original TOML. Added structures or replacement dimensions require separate evidence and must not be inferred from schematic proportions."
 }

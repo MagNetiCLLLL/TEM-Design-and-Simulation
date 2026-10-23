@@ -1,7 +1,7 @@
 {
   "id": "US8841630B2",
   "kind": "patent",
-  "family": "校正器传输透镜",
+  "family": "Corrector transfer lenses",
   "url": "https://patents.google.com/patent/US8841630B2/en",
   "figures": "Fig. 1; Figs. 6-7 are alternative double-gap embodiments",
   "component_keys": [
@@ -12,11 +12,11 @@
     "image_*_lens"
   ],
   "supported_facts": [
-    "区分校正器多极场及传输透镜的光学角色。"
+    "Distinguishes the optical roles of corrector multipole fields and transfer lenses."
   ],
   "unsupported_claims": [
-    "双间隙实施例不能自动取代当前单间隙零件。",
-    "不提供当前装配的尺寸和绕组参数。"
+    "The double-gap embodiment cannot automatically replace current single-gap parts.",
+    "Does not provide dimensions or winding parameters for the current assembly."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -40,7 +40,7 @@
     }
   ],
   "availability_notes": [
-    "复用项目已保存的原始 PDF；本次归档时间不冒充首次网络获取时间。"
+    "Reuses the original PDF already saved by the project; this archive date is not presented as the first online retrieval date."
   ],
   "title": "Corrector for axial aberrations of a particle-optical lens",
   "authors": [
@@ -75,6 +75,6 @@
     3
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original remain with their respective holders; public access does not imply an open license. Retained only for traceable reference in this project, with no claim that the original is this project's own work.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; the instrument's axial/radial values remain governed by the original TOML. Additional structures or replacement dimensions require separate evidence and must not be inferred from schematic proportions."
 }

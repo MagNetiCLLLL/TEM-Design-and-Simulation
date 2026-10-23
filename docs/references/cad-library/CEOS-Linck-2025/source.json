@@ -22,12 +22,12 @@
     "image_adapter_lens"
   ],
   "supported_facts": [
-    "CETCOR成像光路与附加对准通道。",
-    "DP12位于TL11与TL12之间；DPH1/2与对应HP同Z作用。"
+    "CETCOR imaging optical path and additional alignment channels.",
+    "DP12 lies between TL11 and TL12; DPH1/2 act at the same Z as their corresponding HPs."
   ],
   "unsupported_claims": [
-    "无机械毫米尺度。",
-    "同Z符号不能唯一证明实际径向绕组或磁芯宿主。"
+    "No mechanical scale in millimeters.",
+    "Symbols at the same Z do not uniquely establish the actual radial winding or magnetic-core host."
   ],
   "archive_status": "original_pdf_saved",
   "schema": "cad-reference-source-v1",

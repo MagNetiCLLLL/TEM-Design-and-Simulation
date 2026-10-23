@@ -1,55 +1,55 @@
-# DPH2、HP2、TL22 内部结构复核（2026-10-20）
+# DPH2, HP2, and TL22 internal-structure review (2026-10-20)
 
-本轮从 Adapter Lens 下方继续，补充 Probe Corrector 的 DPH2、HP2 六极、TL22 传输透镜。检查、几何生成、STEP 回读及传播验证全部在后台完成，没有操作桌面。默认列局部坐标加 450 mm 为全局 Z，+Z 指向下游，本文长度均为 mm。
+Continuing below the Adapter Lens, this round refines the Probe Corrector's DPH2, HP2 hexapole, and TL22 transfer lens. Inspection, geometry generation, STEP round trips, and propagation validation were all performed through backend code, without desktop interaction. Default column global Z is local Z plus 450 mm, with +Z downstream; all lengths in this document are in mm.
 
-## 本轮结构变化与资料边界
+## Structural changes and evidence boundaries
 
-| 部件 | 原有结构 | 本轮新增 | 当前材料区域数 |
+| Part | Existing structure | Additions in this round | Current material-region count |
 | --- | --- | --- | ---: |
-| DPH2 | 四只正交马鞍铜线包、径向载体/覆盖/粘接及导体空隙绝缘 | 上下端各 0.04 厚的环形绝缘封边；通孔保持打开 | 13 |
-| HP2 | 六根极针、六只径向铜线包、公共回磁轭 | 六只空心绕组骨架及六个磁芯粘接等效区，骨架壁与端缘厚度均为 0.25 | 25 |
-| TL22 | 外壳、励磁线包、上下极靴、磁轭 | 线圈每端 0.1 绝缘层与 0.5 被动铜板；每端还保留 0.675 空间 | 9 |
+| DPH2 | Four orthogonal saddle copper winding packs, radial carriers/covers/bonding, and conductor-gap insulation | Annular insulating edge seals 0.04 thick at each end; through-bore remains open | 13 |
+| HP2 | Six pole pins, six radial copper winding packs, common return yoke | Six hollow winding formers and six equivalent core-bonding regions; former walls and end rims both 0.25 thick | 25 |
+| TL22 | Housing, excitation winding pack, upper/lower pole pieces, yoke | 0.1 insulation and a 0.5 passive copper plate at each coil end; 0.675 space remains at each end | 9 |
 
-三种 Probe Corrector 配置均保存这些结构。两个组合配置原来没有 DPH2 径向支撑声明，本轮同时补齐；所有原有参数值保持不变。HP1、其他 DPH/DP 和 image corrector 没有套用本轮新配方。
+All three Probe Corrector configurations save these structures. The two combined configurations previously lacked DPH2 radial-support declarations, which are also added here; all original parameter values remain unchanged. HP1, other DPH/DP components, and image correctors do not adopt these new recipes in this round.
 
-- **DPH2**：依据 [CEOS US20090079531A1](https://patents.google.com/patent/US20090079531A1/en) Fig.1/4/6 的柔性绕组载体、覆盖绝缘、整面粘接与正交层。轴向封边是该结构族的工程推断，专利没有给出本模型 DPH2 的原厂封边或尺寸。详见 [DPH2 封边说明](dph2-edge-insulation.md)。
-- **HP2**：现有六极拓扑依据 [Müller 等 2006，Fig.3](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf)。新增骨架与磁芯粘接原则依据 [JEOL JP2004241190A](https://patents.google.com/patent/JP2004241190A/en) [0005]、Fig.7(c,d)。这是通用多极结构适配，不能当作 CEOS HP2 制造图。矩形端缘、厚度和体积等效粘接填充均显式标记为工程假设。详见 [六极与辅助结构](cad-probe-corrector.md)。
-- **TL22**：依据 [Hitachi JP2967966B2](https://patents.google.com/patent/JP2967966B2/en) 常规 Fig.8、[0005] 的线圈端板与绝缘结构。使用 TL22 自身保存的线圈尺寸分配空间，没有复制 ADL 的尺寸。详见 [透镜端部及邻接检查](cad-round-lenses.md#2026-10-20-tl22-transfer-lens-end-hardware-and-neighboring-contacts)。
+- **DPH2**: based on flexible winding carriers, cover insulation, full-surface bonding, and orthogonal layers in [CEOS US20090079531A1](https://patents.google.com/patent/US20090079531A1/en), Fig.1/4/6. Axial edge seals are an engineering inference within this family; the patent does not provide OEM edge seals or dimensions for the modeled DPH2. See [DPH2 edge-seal notes](dph2-edge-insulation.md).
+- **HP2**: existing hexapole topology follows [Müller et al. 2006, Fig.3](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf). Added former/core-bonding principles follow [JEOL JP2004241190A](https://patents.google.com/patent/JP2004241190A/en), [0005], Fig.7(c,d). This adapts a generic multipole structure, not a CEOS HP2 manufacturing drawing. Rectangular end rims, thicknesses, and volume-equivalent adhesive fill are explicitly labeled engineering assumptions. See [hexapoles and auxiliary structures](cad-probe-corrector.md).
+- **TL22**: based on coil end plates and insulation in [Hitachi JP2967966B2](https://patents.google.com/patent/JP2967966B2/en), conventional Fig.8, [0005]. Space is allocated using TL22's own saved winding dimensions rather than copying ADL dimensions. See [lens ends and adjacency checks](cad-round-lenses.md#2026-10-20-tl22-transfer-lens-end-hardware-and-neighboring-contacts).
 
-没有从资料不足的照片或示意图推算螺钉、接头、水路、逐匝导线、材料牌号、介电或热学性能。新增铜板是被动结构，不作为另一线圈重复叠加磁场。改善的是内部结构表达、参数校验与装配可检查性，不代表球差性能提升。
+Screws, fittings, water circuits, individual wires, material grades, dielectric properties, or thermal performance were not inferred from insufficient photographs or schematics. New copper plates are passive structures, not additional coils that duplicate magnetic fields. Improvements concern internal-structure representation, parameter validation, and assembly inspectability, not improved spherical-aberration performance.
 
-## 实际管壁与邻件间隙
+## Actual tube walls and neighboring clearances
 
-| 接口 | 当前名义结果 | 判读 |
+| Interface | Current nominal result | Interpretation |
 | --- | ---: | --- |
-| 真空管外壁—DPH2 内层 | 径向 1.46 | 管外半径 9.6；支撑内半径 11.06 |
-| DPH2 外层—HP2 极尖孔壁 | 径向 0.06 | 外半径 11.94 对孔半径 12；最小名义间隙，没有制造公差证据 |
-| 真空管外壁—HP2 极尖 | 径向 2.4 | HP2 新骨架远离该孔，不改变这项间隙 |
-| 真空管外壁—TL22 极靴 | 径向 0.4 | 管外径 19.2 对极靴孔径 20 |
-| ADL—DPH2 | 轴向 30.81 | 计入新上端封边，原值 30.85 |
-| DPH2—TL22 | 轴向 1.81 | 计入新下端封边，原值 1.85 |
-| TL22—TL21 | 轴向 58.1 | 原位置不变 |
-| HP2—TL22 | **零间隙端面接触** | local Z703.6；不是正间隙 |
-| TL22—DP22 | **零间隙端面接触** | local Z729.1，包含 DP22 铜线包端面 |
+| Tube exterior—DPH2 inner layer | Radial 1.46 | Tube outer radius 9.6; support inner radius 11.06 |
+| DPH2 outer layer—HP2 pole-tip bore wall | Radial 0.06 | Outer radius 11.94 versus bore radius 12; minimum nominal clearance, without manufacturing-tolerance evidence |
+| Tube exterior—HP2 pole tips | Radial 2.4 | New HP2 formers lie away from this bore and do not change this clearance |
+| Tube exterior—TL22 pole pieces | Radial 0.4 | Tube OD 19.2 versus pole-piece bore diameter 20 |
+| ADL—DPH2 | Axial 30.81 | Includes new upper edge seal; original value 30.85 |
+| DPH2—TL22 | Axial 1.81 | Includes new lower edge seal; original value 1.85 |
+| TL22—TL21 | Axial 58.1 | Original positions unchanged |
+| HP2—TL22 | **Zero-clearance end-face contact** | Local Z703.6; not positive clearance |
+| TL22—DP22 | **Zero-clearance end-face contact** | Local Z729.1, including DP22 copper winding end faces |
 
-DPH2 完整材料范围为 local Z687.21–701.79，原铜线包仍为 687.25–701.75。光学有效厚度仍为 4；HP2 物理长度仍为 18.2、有效场长度仍为 6。它们不是可互换的长度。
+The complete DPH2 material extent is local Z687.21–701.79; original copper winding packs remain at 687.25–701.75. Effective optical thickness remains 4; HP2 physical length remains 18.2 and effective field length remains 6. These lengths are not interchangeable.
 
-连续真空管在这些位置的实际内径为 **5.76**、外径 **19.2**；配件声明的 20 通束孔不是管内径。现有粒子/相干通束约束仍使用实际连续管道规则，本轮未扩大通束空间。
+The continuous vacuum tube's actual ID at these positions is **5.76** and OD **19.2**; the component's declared 20 clear-beam bore is not the tube ID. Existing particle/coherent clearance constraints still use actual continuous-tube rules; this round did not expand clear beam space.
 
-**保留并明确记录的结构缺口：**HP2 磁轭与 TL22 上极靴接触环面积约 260.58 mm²，但不能由此确认原厂有意采用这种磁路接触。TL22 下极靴与 DP22 的四只铜端面接触面积合计约 30.82 mm²（128 段网格），DP22 该处的轴向绝缘尚未建模。TL22 原磁轭与极肩之间的径向回磁连接也未完整重建。本轮没有为了消除这些既有接触或缺口而移动元件、修改极靴或添加无依据结构；零体积穿插不等于电气隔离和完整磁路已经成立。
+**Structural gaps retained and explicitly recorded:** the HP2 yoke/TL22 upper-pole contact annulus is about 260.58 mm², but that does not establish an intentional OEM magnetic-circuit contact. Total contact area between the TL22 lower pole piece and four DP22 copper ends is about 30.82 mm² (128-segment mesh); DP22 axial insulation there is not yet modeled. The radial return connection between TL22's original yoke and pole shoulders is also not fully reconstructed. No parts were moved, pole pieces changed, or unsupported structures added to eliminate these existing contacts/gaps; zero volumetric interpenetration does not establish electrical isolation or a complete magnetic circuit.
 
-## 统一编辑及验证
+## Unified editing and validation
 
-新增尺寸进入现有参数编辑、表面参数来源、撤销、保存和复制流程。非法层厚、非有限值、未知字段、压缩绕组窗口及超出宿主的端封均拒绝。邻件检查使用包含封边的完整轴向范围。显式替代 CAD 基体启用时停用原生配方；恢复原生时重新校验，失败不修改草稿或历史。TL22 端部变化也会使已有导入场图的几何指纹失效，要求重新核对，而不会自动产生新的场解。
+New dimensions enter existing parameter editing, surface-parameter provenance, undo, save, and copy workflows. Invalid layer thicknesses, nonfinite values, unknown fields, compressed winding windows, and end seals beyond their hosts are rejected. Neighbor checks use complete axial extents including seals. Activating an explicit replacement CAD body disables the native recipe; restoring the native recipe reruns validation, with failures leaving draft/history unchanged. TL22 end changes also invalidate geometry fingerprints of existing imported field maps and require review rather than automatically generating a new field solution.
 
-本轮证据位于 `outputs/probe-hp2-tl22-details-20261020/`：
+Evidence from this round is under `outputs/probe-hp2-tl22-details-20261020/`:
 
-- `preservation.json`：比较 35 个配置文件，仅新增 75 个结构/来源字段，原值没有变化。默认 413 个旧网格中 412 个逐位保持；TL22 外壳改用统一 CAD 网格路径，原解析形状、材料与边界保持，新增 18 区后总数 431。
-- `after/audit.json`：130 个安装条目，431 区；无闭合性问题、CAD 构造错误或材料遗漏。组合配置也通过生产装配生成检查，更新记录见 `updated-variant-audit.json`。
-- `assembly-clearance-verified.json`：以同一全局坐标检查 311 个柱内材料区与实际连续管道，筛选并计算 214 对包围盒重叠候选。四处 DPH2 曲面接触的粗网格标记经精确 OpenCascade 复核交集均为零；原生显示网格在 32–288 段也无实际穿插。原始标记保留在 `assembly-clearance.json`，没有放宽交叠阈值掩盖结果。
-- `step/step-manifest.json`：48 个选中材料区，5 个 STEP 文件通过实体数、体积、边界、名称、材质与颜色回读。
-- `dph2-band-volume-verification.json`：将铜线包带宽由 1.16 改为 6 时，精确 CAD 的 X/Y 层铜加绝缘体积分别保持 328.273812833028 / 342.267723149177 mm³，前后最大差约 1.71e-13 mm³；铜/绝缘穿插与相对完整环体的缺失/超出均为零。显示网格圆周采样随带宽改变，不能对粗网格施加同等精度的体积守恒断言。
-- `transport-verification.json`：300 kV、STEM Nanoprobe Normal、非零 DPH2 偏转，39 个独立场源、6080 个有效场矢量样本、9 条粒子及 352 个保存平面前后逐位一致。将 DPH2 X 偏转由 0.012 增至 0.014 mrad 的正对照则产生场及轨迹变化。
-- `verified-regression.xml` / `verification.json`：**907 个独立测试的最终结果全部通过，零失败、错误和跳过**。这是 892 项主回归、15 项独立 CAD 回归及修复后定向复测按测试名去重的结果，不是一次单独运行的计数。原始失败记录保留：恢复测试补齐版本号，旧材料计数与线圈类别断言更新，后台 CAD 文件读取受到沙箱限制的两项单独重跑通过。
+- `preservation.json`: compares 35 configuration files; only 75 structural/provenance fields were added, with no original values changed. Of 413 old default meshes, 412 are bitwise preserved; TL22 housing now uses the unified CAD mesh path, preserving its analytical shape, material, and bounds. Adding 18 regions gives a total of 431.
+- `after/audit.json`: 130 installed entries, 431 regions; no closedness issues, CAD construction errors, or material omissions. Combined configurations also pass production-assembly generation checks; see `updated-variant-audit.json` for updated records.
+- `assembly-clearance-verified.json`: checks 311 in-column material regions and actual continuous tubes in the same global coordinates, screening and calculating 214 bounding-box-overlap candidate pairs. Four coarse-mesh flags at DPH2 curved contacts have zero intersection on exact OpenCascade review; native display meshes from 32–288 segments also show no actual interpenetration. Original flags remain in `assembly-clearance.json`; overlap thresholds were not relaxed to conceal results.
+- `step/step-manifest.json`: 48 selected material regions in 5 STEP files passed round-trip checks of solid counts, volumes, bounds, names, materials, and colors.
+- `dph2-band-volume-verification.json`: when copper winding band width changes from 1.16 to 6, exact CAD copper-plus-insulation volumes of the X/Y layers remain 328.273812833028 / 342.267723149177 mm³, respectively, with maximum before/after difference about 1.71e-13 mm³; copper/insulation interpenetration and missing/excess volume relative to the complete annulus are all zero. Circumferential display-mesh sampling changes with band width, so coarse meshes cannot be subjected to equally precise volume-conservation assertions.
+- `transport-verification.json`: at 300 kV, STEM Nanoprobe Normal, and nonzero DPH2 deflection, 39 independent field sources, 6080 valid field-vector samples, 9 particles, and 352 saved planes are bitwise identical before/after. A positive control increasing DPH2 X deflection from 0.012 to 0.014 mrad changes fields and trajectories.
+- `verified-regression.xml` / `verification.json`: **final results for all 907 distinct tests passed, with zero failures, errors, or skips**. This is deduplicated by test name across 892 main regressions, 15 independent CAD regressions, and targeted post-fix reruns, not the count of one standalone run. Original failures are retained: restoration tests received missing version numbers, obsolete material-count and coil-category assertions were updated, and two backend CAD file-read checks restricted by the sandbox passed separate reruns.
 
-这些检查覆盖当前模型的几何一致性和既有 CPU 传播保持性；不属于原厂尺寸认证、FEM 材料求场或实机热学/电气性能验证。
+These checks cover geometric consistency of the current model and preservation of existing CPU propagation; they are not OEM dimensional certification, material FEM field solutions, or validation of real-instrument thermal/electrical performance.

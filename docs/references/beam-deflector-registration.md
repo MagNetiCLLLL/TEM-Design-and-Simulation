@@ -1,68 +1,68 @@
-# Beam Deflector 内部定位结构复核（2026-10-20）
+# Beam Deflector internal locating-structure review (2026-10-20)
 
-本轮范围是默认 **FEG / C3 + Probe Corrector / No Energy Filter** 中的
-`beam_deflector`。继续使用原有 BSh/BTlt 两级物理宿主，不新增光学线圈或独立的
-Shift/Tilt 机械配件。坐标为柱模块局部毫米；安装后该模块原点为全局 Z=450 mm。
+This round covers `beam_deflector` in the default **FEG / C3 + Probe Corrector / No Energy Filter**
+assembly. It retains the original two-stage BSh/BTlt physical host, without new optical coils or separate
+Shift/Tilt mechanical components. Coordinates are column-module local millimeters; after installation, the module origin is global Z=450 mm.
 
-## 资料和模型边界
+## Sources and model boundaries
 
-[Nikon US5994704A](https://patents.google.com/patent/US5994704A/en) 的 Figs. 1–2
-及定位孔说明给出：同心绝缘载体、隔筒、径向定位销；外层载体和隔筒的周向长孔
-允许装配角度调整，内层采用圆孔。正文也明确允许全部圆孔的版本。Fig. 4 提供绝缘
-外壳版本。因此旧模型并非缺少全部骨架；它已经包含每级四个铜线包和六个被动区域，
-两级合计 20 个材料区域。
+[Nikon US5994704A](https://patents.google.com/patent/US5994704A/en), Figs. 1–2
+and the locating-hole description provide concentric insulating carriers, a spacer sleeve, and radial locating pins; circumferential slots
+in the outer carrier and spacer permit angular assembly adjustment, while the inner carrier has round holes. The text also explicitly allows all-round-hole versions. Fig. 4 supplies an insulating
+housing version. The old model therefore did not lack all supporting structure: it already contained four copper winding packs and six passive regions per stage,
+for 20 material regions across both stages.
 
-[JEOL 双级偏转系统说明](https://www.jeol.com/words/emterms/20121023.075958.php)
-支持两级协同控制束位移/倾斜的功能类别，但不能据此确定某台电镜的内部制造尺寸。
+The [JEOL two-stage deflection-system description](https://www.jeol.com/words/emterms/20121023.075958.php)
+supports the functional category of coordinated two-stage beam shift/tilt control, but cannot determine internal manufacturing dimensions for a particular microscope.
 
-这里选择有资料支持的长定位孔结构族；**6° 槽中心线总扫角是工程分配值，未经
-OEM 测量**。圆端槽的具体加工形状、0.6 mm 定位销、载体径向尺寸及装配位置均为
-已明确记录的模型假设。专利把外层称为 X，本模型原有外层是 Y；本轮按内外层结构
-对应，不交换任何原有线包、方向基或光学通道。未知外部安装、引线、实际匝数、材料
-牌号及热/电性能仍不推定。
+This model selects the supported slotted locating-hole structural family; the **6° total slot-centerline sweep is an engineering allocation, not
+an OEM measurement**. Rounded-slot machining geometry, the 0.6 mm locating pins, carrier radial dimensions, and assembly positions are all
+explicitly recorded model assumptions. The patent calls the outer layer X, whereas this model's existing outer layer is Y; the correspondence follows inner/outer structure
+without swapping original winding packs, directional bases, or optical channels. Unknown external mounting, leads, actual turn counts, material
+grades, and thermal/electrical performance remain uninferred.
 
-## 本轮变化
+## Changes in this round
 
-| 项目 | 结果 |
+| Item | Result |
 | --- | --- |
-| 物理站点 | local 577.5 / 602.5；global 1027.5 / 1052.5 mm，保持不变 |
-| 线包物理厚度 | 显式保存 `mechanical_coil_length_mm=15`，脱离有效作用厚度的默认回退；铜体积和现有有效厚度仍不变 |
-| 新参数 | `deflector_support_registration_slot_sweep_deg=6`，即槽中心线 ±3°；单位 deg；属于被动几何 |
-| 开槽区域 | 每级外层 Y carrier 和 interaxis spacer，共四个区域；内层 X carrier 仍为圆孔 |
-| 定位销 | 原有 45° / 225° 轴线、直径及材料区域不变 |
-| 材料数量 | 仍是 8 个铜区域 + 12 个被动区域，没有重复宿主 |
+| Physical stations | Local 577.5 / 602.5; global 1027.5 / 1052.5 mm, unchanged |
+| Physical winding-pack thickness | Explicitly saves `mechanical_coil_length_mm=15`, removing fallback to effective interaction thickness; copper volume and existing effective thickness remain unchanged |
+| New parameter | `deflector_support_registration_slot_sweep_deg=6`, meaning slot centerline ±3°; unit deg; passive geometry |
+| Slotted regions | Outer Y carrier and interaxis spacer at each stage, four regions total; inner X carriers retain round holes |
+| Locating pins | Existing 45° / 225° axes, diameters, and material regions unchanged |
+| Material count | Still 8 copper + 12 passive regions; no duplicate host |
 
-槽由圆端径向孔和中间环形扇区构成，径向切削工具越过材料两侧，避免共面布尔边界。
-各工具直接从载体/隔筒减去，保持它们的几何并集；不先融合成复杂切削实体。实际
-STEP 回读曾发现预融合写法产生的曲面裁剪缝导致体积校验失败；现在的写法通过
-原有严格容差，未放宽检查。缺省槽参数或显式为 0 时仍保留旧圆孔形状。
+Slots combine round-ended radial holes with intermediate annular sectors; radial cutting tools extend beyond both material sides to avoid coplanar Boolean boundaries.
+Tools are subtracted directly from carriers/spacers, preserving their geometric union, rather than first fusing them into a complex cutter. Actual
+STEP reimport found that trimming seams from prefused curved surfaces caused volume-validation failures; the current construction passes
+the original strict tolerances without relaxed checks. An absent slot parameter or explicit 0 preserves the old round holes.
 
-输入校验拒绝非有限值、布尔值、负扫角及侵入铜线包窗口的槽宽；保留保存、撤销和
-重做。槽尺寸变化不会被当成实际线圈旋转或新的场激励。
+Input validation rejects nonfinite values, booleans, negative sweep angles, and slot widths entering copper winding windows; save, undo, and
+redo remain supported. Slot resizing is not interpreted as actual coil rotation or a new field excitation.
 
-## 安装间隙与运行验证
+## Installation clearances and runtime validation
 
-检查真实材料实体和连续真空管外形，而不是只比较 nominal bore：
+Checks use actual material solids and continuous-tube shapes, not nominal bores alone:
 
-| Beam 材料到邻件 | 最小间隙 |
+| Beam material to neighboring part | Minimum clearance |
 | --- | ---: |
-| 连续真空管，局部 OD19.2 | 解析径向 2.9 mm；144 分段网格最短距离 2.89931 mm |
-| C3 Aperture 当前实际硬件 | 7.9 mm |
-| Adapter Lens 最近上极靴 | 10.0 mm |
+| Continuous vacuum tube, local OD19.2 | Analytical radial 2.9 mm; 144-segment mesh minimum distance 2.89931 mm |
+| Current actual C3 Aperture hardware | 7.9 mm |
+| Nearest Adapter Lens upper pole piece | 10.0 mm |
 
-这些材料组合的布尔交叠体积均为 0。Beam 的 nominal local Z570–610 与 C3 Aperture
-nominal 包络在 Z570 接触，不代表两者实际材料相交。材料通孔 ID25 和已保存的
-局部求解通束 ID5 是不同约束，均未改动。
+Boolean overlap volumes for these material combinations are all 0. The Beam nominal local Z570–610 and C3 Aperture
+nominal envelopes touch at Z570, which does not mean their actual materials intersect. Material through-bore ID25 and the saved
+local solver clear-beam ID5 are distinct constraints; neither changed.
 
-使用本轮保存的 before catalog 和更新后配置分别重新解析整机，采用相同 300 kV
-STEM Nanoprobe Normal 预设与非零偏转输入。39 个唯一场源、13 个有限偏转源、6080
-个有效矢量采样点以及 9 条粒子在 352 个保存截面的数值逐元素一致；没有重新校准。
-作为正对照，仅把 Beam 上级 X 从 0.012 改为 0.014 mrad，磁场最大差为
-2.80088×10⁻⁷ T，轨迹最大 X 差约 266.976 nm，说明检验经过实际响应路径。
+The full instrument was reparsed separately from this round's saved before catalog and updated configuration, using the same 300 kV
+STEM Nanoprobe Normal preset and nonzero deflection inputs. Values for 39 unique field sources, 13 finite deflection sources, 6080
+valid vector samples, and 9 particles at 352 saved sections agree element by element; no recalibration was performed.
+As a positive control, changing only upper-stage Beam X from 0.012 to 0.014 mrad gives maximum field difference
+2.80088×10⁻⁷ T and maximum trajectory X difference about 266.976 nm, demonstrating that the check uses the actual response route.
 
-证据：`outputs/post-c3-details-20261020/transport-verification.json`；复现脚本
-`outputs/post-c3-details-20261020/verify_transport.py`。这是当前解析磁场、生产电场和
-CPU 传播的一致性检查，不是材料涡流、热或 FEM 实测验证。
+Evidence: `outputs/post-c3-details-20261020/transport-verification.json`; reproduction script
+`outputs/post-c3-details-20261020/verify_transport.py`. This checks consistency of current analytical magnetic fields, production electric fields, and
+CPU propagation, not material eddy-current, thermal, or measured FEM validation.
 
-回归：`tests/test_beam_deflector_registration.py`（含真正调用独立 CAD 环境的
-20 材料区 STEP 写入/回读测试），以及既有普通偏转器、共享场和光学传播回归。
+Regression: `tests/test_beam_deflector_registration.py` (including an actual independent-CAD-environment
+STEP write/reimport test for 20 material regions), plus existing ordinary-deflector, shared-field, and optical-propagation regressions.

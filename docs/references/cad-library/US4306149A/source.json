@@ -1,7 +1,7 @@
 {
   "id": "US4306149A",
   "kind": "patent",
-  "family": "辅助 mini condenser 与物镜",
+  "family": "Auxiliary mini condenser and objective",
   "url": "https://patents.google.com/patent/US4306149A/en",
   "figures": "Fig. 2 and Figs. 3a-3b; PDF pages 3-4",
   "component_keys": [
@@ -10,12 +10,12 @@
     "ac_deflector"
   ],
   "supported_facts": [
-    "历史 Philips 设计将辅助绕组和非磁性间断结合到上物镜磁路。",
-    "辅助激励方向改变联合透镜作用。"
+    "The historical Philips design combines an auxiliary winding and a nonmagnetic interruption within the upper-objective magnetic circuit.",
+    "Auxiliary excitation direction changes the combined lens action."
   ],
   "unsupported_claims": [
-    "不是 Titan/Spectra 现役线圈形状或电流标定。",
-    "示意图比例不能决定零件毫米尺寸。"
+    "This is not the coil geometry or current calibration of a current Titan/Spectra.",
+    "Schematic proportions cannot determine part dimensions in millimeters."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -39,7 +39,7 @@
     }
   ],
   "availability_notes": [
-    "复用项目已保存的原始 PDF；本次归档时间不冒充首次网络获取时间。"
+    "Reuses an original PDF already saved in the project; this archive timestamp is not presented as the first network retrieval time."
   ],
   "title": "Electron microscope (comprising an auxiliary lens)",
   "authors": [
@@ -76,6 +76,6 @@
     3
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original belong to its rights holders; public accessibility does not imply an open license. It is retained only for provenance reading in this project and is not claimed as original project content.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; axial/radial values for this instrument remain governed by the original TOML. Added structures or replacement dimensions require separate evidence and must not be inferred from schematic proportions."
 }

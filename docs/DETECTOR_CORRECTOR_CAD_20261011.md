@@ -1,46 +1,46 @@
-# EDS、EELS camera 与 image corrector 机械补齐
+# Mechanical additions for EDS, EELS camera, and image corrector
 
-本轮以 `0b346ebab7e027f3c9b78ab380b1f25e0235bfcb` 为修改前版本。原始 31 份 TOML 和 SHA-256 保存在 `outputs/detector_corrector_cad_20261011/originals/`，逐字段对比见同目录上一级的 `configuration-comparison.json`。
+The pre-change version for this round is `0b346ebab7e027f3c9b78ab380b1f25e0235bfcb`. The original 31 TOML files and SHA-256 values are saved in `outputs/detector_corrector_cad_20261011/originals/`; see `configuration-comparison.json` in its parent directory for field-by-field comparison.
 
-## 模型与依据
+## Models and evidence
 
-| 对象 | 已补内容 | 接收/光学定义与边界 |
+| Object | Additions | Receiving/optical definitions and boundaries |
 | --- | --- | --- |
-| EDS | 六个头的 Si 示意实体、绝缘支承、开口冷屏；共 18 个材料实体 | 延续旧 2D 头的外轮廓与位置算法。六方向、32.06°、4.45/4.04 sr 仍取自唯一 EDS.toml；没有用新机械圆片重新定义光子接受区域 |
-| EELS camera | 五个间接转换条带、共同光学背衬、开口框架；共 7 个材料实体 | 原 strip 前表面、宽高、间距、路径坐标不动。alignment 保留为参考图层，不再重叠制造第二个传感器 |
-| image corrector | DP11/12/21/22、DPH1/2、ISh、DSh 八个独立绕组宿主；每个宿主有 X/Y saddle 对 | 驱动通道绑定实际宿主，避免重复场。DPH 与 HP 同中心，细直段处于极针间、端弧处于极针端外；没有改变 HP 孔径、极针或主线圈 |
+| EDS | Schematic Si solids, insulating supports, and open cold shields for six heads; 18 material solids | Retains the old 2D heads' outer outlines and position algorithm. Six directions, 32.06°, and 4.45/4.04 sr still come from the sole EDS.toml; new mechanical disks do not redefine photon acceptance regions |
+| EELS camera | Five indirect-conversion strips, shared optical backing, open frame; 7 material solids | Original strip front surfaces, widths/heights, spacing, and path coordinates are unchanged. Alignment remains a reference layer rather than an overlapping second sensor |
+| image corrector | Eight separate winding hosts: DP11/12/21/22, DPH1/2, ISh, DSh; each has X/Y saddle pairs | Drive channels bind to actual hosts to avoid duplicate fields. DPH and HP share centers; thin straight runs lie between pole pins and end arcs lie beyond pin ends; HP bores, pole pins, and main coils are unchanged |
 
-详细来源：[探测器资料与参数](references/cad-detectors.md)、[image corrector 线圈资料](references/cad-image-corrector-channels.md)、[原文资料库](references/cad-library/README.md)。资料包括厂家数据表、CEOS 示意图和原始专利 PDF；没有按无尺寸图的像素比例推算 OEM 尺寸。
+Detailed sources: [detector references and parameters](references/cad-detectors.md), [image-corrector coil references](references/cad-image-corrector-channels.md), and [original source library](references/cad-library/README.md). Sources include manufacturer datasheets, CEOS schematics, and original patent PDFs; OEM dimensions were not inferred from pixel proportions in undimensioned drawings.
 
-EDS 未公开真实晶片面积和距离。新增 Si 圆片是原工程包络中的机械表示，**不是经校准的光子截获面**。EELS 外壳旧定义没有实体尺寸，新外包络 30.672 × 6.8 × 6 mm 明确标为工程分配。材料层细节保持与其他模块相同的简化程度；未添加电路、制冷管路或无法确认的支架。HPol、QPol、DSt 尚无足够资料确认独立机械宿主，因此没有凭通道名称新建硬件。
+Actual EDS wafer areas and distances are unpublished. New Si disks are mechanical representations inside the original engineering envelopes, **not calibrated photon-interception surfaces**. The old EELS housing definition had no solid dimensions; the new 30.672 × 6.8 × 6 mm outer envelope is explicitly labeled an engineering allocation. Material-layer detail retains the same simplification level as other modules; no circuitry, cooling lines, or unconfirmed brackets were added. HPol, QPol, and DSt lack sufficient evidence for separate mechanical hosts, so channel names alone did not create hardware.
 
-## 与光学计算一致性
+## Consistency with optical calculations
 
-两种 image corrector 配置均对照了修改前记录：809 个轴向采样的圆透镜、HP 与四极场数组相同，原有光学中心和有效场长度相同。DPH 的机械分配长度为 33 mm，有效场仍为 30 mm；DP11/21/22 的铜绕组更短，但原有限场范围不变。完整 4×4 一阶响应的最大相对差约 2.14e-9，参考束心差约 1.35e-14 m。该比较没有重新调节光学强度或电子源。
+Both image-corrector configurations were compared with pre-change records: round-lens, HP, and quadrupole field arrays at 809 axial samples are identical, as are original optical centers and effective field lengths. DPH has a mechanical allocation length of 33 mm and still a 30 mm effective field; DP11/21/22 copper windings are shorter, but original finite-field extents remain unchanged. Maximum relative difference of the full 4×4 first-order response is about 2.14e-9; reference-beam-center difference is about 1.35e-14 m. This comparison did not retune optical strengths or the electron source.
 
-EDS 的材料厚度编辑不改变角接受模型。EELS 外壳深度编辑不改变条带前表面和 `recording_mask`；将 `path_center_mm` 增加 1 mm 后，原生几何沿支路切向移动 1 mm，保存并重新装配后实际 `zebra_detector_d_mm` 同步增加 1 mm。材料位置与接收面位置的概念仍分开。
+EDS material-thickness edits do not change angular acceptance. EELS housing-depth edits do not change strip front surfaces or `recording_mask`; increasing `path_center_mm` by 1 mm moves native geometry 1 mm along the branch tangent, and saving/reassembling increases actual `zebra_detector_d_mm` by 1 mm. Material positions and receiving-plane positions remain distinct concepts.
 
-## 软件内编辑能力
+## In-application editing capabilities
 
-| 操作 | 本轮核查结果 |
+| Operation | Findings in this round |
 | --- | --- |
-| Dimensions 修改现有尺寸 | 新探测器 wall/depth 等字段已接入；重建共享材料几何，支持撤销/重做与保存重读 |
-| 物理位置和倾转 | 支持的主柱光学宿主使用同一坐标变换供显示、保存和场注册；不能独立移动绑定通道造成图/场分离 |
-| EELS 接收路径坐标 | 使用已有 `path_center_mm`，重新装配同步到实际计算面；没有新增第二套接收位置 |
-| 孔径档位 | 修复整模块 3D 预览未采用当前选择孔径的问题，使其与独立部件和 STEP 一致 |
-| STEP 导出 | 修复导出前遗漏完整草稿校验的问题；尺寸合法但装配净空无效的草稿也会拒绝导出 |
-| Box、缩放、开孔、槽等形状功能 | 原生几何编辑与保存仍可用；这些操作不自动重建解析电磁场，目前 STEP 对不支持的自定义特征明确拒绝，不静默丢弃 |
-| 新增、复制、移动机械部件 | 保持现有机械编辑流程；新增机械体不会凭空增加一个光学场或控制通道 |
-| 新材料区域 | 可查看及选择几何参数，但不伪装成新增、已标定的 FEM 材料域 |
+| Edit existing dimensions under Dimensions | New detector wall/depth fields are connected; shared material geometry rebuilds, with undo/redo and save/reload support |
+| Physical position and tilt | Supported main-column optical hosts use the same coordinate transforms for display, persistence, and field registration; bound channels cannot move independently and separate graphics from fields |
+| EELS receiving-path coordinate | Uses existing `path_center_mm`, synchronized to the actual computational plane on reassembly; no second receiving-position definition |
+| Aperture selection | Fixed full-module 3D preview ignoring the current aperture selection, bringing it into agreement with standalone parts and STEP |
+| STEP export | Fixed missing full-draft validation before export; drafts with valid dimensions but invalid assembly clearance are also rejected |
+| Shape operations such as Box, scaling, holes, and slots | Native geometry editing/saving remain available; these do not automatically rebuild analytical electromagnetic fields. Unsupported custom features are currently explicitly rejected by STEP, not silently dropped |
+| Add, copy, and move mechanical parts | Existing mechanical editing workflow retained; new mechanical solids do not invent optical fields or control channels |
+| New material regions | Geometry parameters can be viewed/selected, but regions do not masquerade as new calibrated FEM material domains |
 
-STEP 和原生 3D 由同一 `SolidSpec` 几何生成。当前交付目录为 `outputs/detector_corrector_cad_20261011/cad/`：`parts/` 有 187 个全部模块和光学单元文件；`assembled/` 与 `assembled-energy-filter/` 分别有 82 和 100 个文件，包含不含/包含 energy filter 的整机全局装配及其单元。总计 369 个 STEP（含模块/整机重复表示），每组实际回读通过。最终源码重新生成的材料目录与导出输入逐实体一致。
+STEP and native 3D are generated from the same `SolidSpec` geometry. Current delivery is in `outputs/detector_corrector_cad_20261011/cad/`: `parts/` contains 187 files for all modules and optical units; `assembled/` and `assembled-energy-filter/` contain 82 and 100 files, respectively, for global full-instrument assemblies and their units without/with an energy filter. The total is 369 STEP files, including repeated module/full-instrument representations; each group passed actual reimport. The material catalog regenerated from final source matches export inputs solid by solid.
 
-## 验证范围
+## Validation scope
 
-实际 Qt 控件检查覆盖修改、撤销/重做、保存副本、重新装配、孔径切换、STEP 导出校验和接收面同步。原生截图由软件 `PartModelView` 渲染，保存在 `outputs/detector_corrector_cad_20261011/preview/`；非手绘示意图。
+Actual Qt-widget checks cover edits, undo/redo, saving copies, reassembly, aperture switching, STEP export validation, and receiving-plane synchronization. Native screenshots rendered by the software's `PartModelView` are saved in `outputs/detector_corrector_cad_20261011/preview/`; they are not hand-drawn schematics.
 
-碰撞验证使用精确 BRep 布尔交集，覆盖 60 个目录装配组合与 5 个 holder 伸出位置，完成 3052 个独立材料配对检查，已定义材料实体的碰撞数为 0。详见 `outputs/detector_corrector_cad_20261011/collision/report.json`。旧的未定材料包络仍有 40 次正体积交叠，分属 FEG+Mono slit/C1 aperture 与 Thermionic accelerator/anode 两类，与修改前相同；没有新增、消除或掩盖这些不确定项。不能把这一结果说成全机制造认证，也不能保证任意用户编辑都无碰撞。
+Collision validation used exact BRep Boolean intersections across 60 catalog assembly combinations and 5 holder extension positions, completing 3052 independent material-pair checks with 0 collisions among defined material solids. See `outputs/detector_corrector_cad_20261011/collision/report.json`. Old unresolved-material envelopes still have 40 positive-volume overlaps in two categories, FEG+Mono slit/C1 aperture and Thermionic accelerator/anode, unchanged from before; these uncertainties were neither added, removed, nor concealed. This is not full-instrument manufacturing certification and cannot guarantee collision-free arbitrary user edits.
 
-编辑/几何扩展回归首轮 330 项中 7 项因旧测试假设或新测试登记失败；修正合法独立副本 fixture、当前标签页身份、孔径支路坐标/有限板厚预期和 CI 登记后，原失败项均定向通过。其余已通过项未重复执行。另有探测器与 corrector 的专门材料/场绑定检查和真实 Qt 编辑检查；各次记录与光学比较整理在交付目录的 `verification/`，首轮失败记录没有删除。
+In the first 330 editing/geometry regression tests, 7 failed due to old test assumptions or new-test registration. After correcting valid standalone-copy fixtures, current tab identities, aperture branch-coordinate/finite-plate-thickness expectations, and CI registration, all originally failing cases passed targeted reruns. Other already-passing cases were not repeated. Dedicated detector/corrector material and field-binding checks and actual Qt editing checks were also performed; all run records and optical comparisons are collected under the delivery directory's `verification/`, with initial failures retained.
 
-本轮是机械实体、编辑联动与既有光学不变性的验证，没有重新执行长时间相干传播，也没有声称新的 GPU 性能或实验定量标定。
+This round validates mechanical solids, editing synchronization, and preservation of existing optics; it did not rerun long coherent propagation or claim new GPU performance or experimental quantitative calibration.

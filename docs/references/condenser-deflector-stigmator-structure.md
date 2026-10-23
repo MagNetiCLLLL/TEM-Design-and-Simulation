@@ -1,68 +1,68 @@
-# Condenser Deflector / Condenser Stigmator 内部结构
+# Internal structures of Condenser Deflector / Condenser Stigmator
 
-核对日期：2026-10-20。范围为当前 FEG + C3 + Probe Corrector + No Energy Filter。
-轴向正向由电子枪指向样品。结构参数使用 mm；以下位置是项目解析结果，非厂家测量。
+Review date: 2026-10-20. Scope: the current FEG + C3 + Probe Corrector + No Energy Filter configuration.
+The positive axial direction runs from the electron gun toward the specimen. Structural parameters use mm; positions below are resolved project values, not manufacturer measurements.
 
-## 资料依据与边界
+## Sources and limits
 
-- [US5994704A，Fig.1–4](https://patents.google.com/patent/US5994704A/en)：两正交方向的鞍形线圈、同心绝缘支撑筒、中间绝缘筒、定位销与外套支持现有双级偏转器结构家族。它并不证明当前机型尺寸、绕线匝数或外部安装方式。
-- [JEOL stigmator 说明，Fig.2–3](https://www.jeol.com/words/semterms/20201020.111014.php)：四只线圈构成一个基底，第二组与第一组相差45°。仅用于解释现有八线圈与双通道拓扑。
-- [Philips US4902940A](https://patents.google.com/patent/US4902940A/en)：四极线圈中心保留真空管通道，并描述两个45°基底。未据此改变场激发或电流标度。
-- [CN102509689B，Fig.5、6、12](https://patents.google.com/patent/CN102509689B/en)：物镜消像散器实施例中，圆筒支架端部开八槽、槽内安装线圈框，漆包线绕组由粘合剂固定。这里仅将支架/骨架/绝缘/粘合的结构原则适配到已有 Condenser Stigmator 铜线圈；这不是其 OEM 结构证明。
+- [US5994704A, Fig.1–4](https://patents.google.com/patent/US5994704A/en): Saddle coils in two orthogonal directions, concentric insulating support cylinders, an intermediate insulating cylinder, locating pins and an outer sleeve support the existing two-stage deflector structural family. They do not establish this model's dimensions, winding turn counts or external mounting method.
+- [JEOL stigmator description, Fig.2–3](https://www.jeol.com/words/semterms/20201020.111014.php): Four coils form one basis, with the second group rotated 45° from the first. Used only to explain the existing eight-coil, two-channel topology.
+- [Philips US4902940A](https://patents.google.com/patent/US4902940A/en): A vacuum-tube passage is retained at the center of the quadrupole coils, and two bases offset by 45° are described. Field excitation and current scaling were not changed on this basis.
+- [CN102509689B, Fig.5, 6, 12](https://patents.google.com/patent/CN102509689B/en): In an objective stigmator embodiment, the end of a cylindrical support has eight slots containing coil formers, and enamelled-wire windings are fixed with adhesive. Only the structural principles of support/former/insulation/adhesive are adapted here to the existing Condenser Stigmator copper coils; this is not proof of its OEM structure.
 
-没有转移专利中的磁屏蔽套、铁芯、螺纹、独立光阑、导线或材料牌号。
-新增被动实体不产生新的场；仍未建立磁静力学、介电、热或真空材料参数。
+No magnetic shielding sleeve, iron core, thread, separate aperture, lead or material grade was transferred from the patents.
+The new passive solids do not generate new fields; magnetostatic, dielectric, thermal and vacuum material parameters remain unspecified.
 
-## 检查结果与修改
+## Findings and changes
 
-Condenser Deflector 原模型已经包含两级八个铜鞍形绕组，以及每级 X/Y carrier、
-inter-axis spacer、外套和两根定位销，共20个材料区域。线圈和支撑无需重造。
-本次只将其已有10 mm物理绕组长度显式保存为 `mechanical_coil_length_mm`，
-避免再从 `effective_thickness_mm` 推导机械长度。当前有效场宽仍为10 mm；
-以后调整有效场宽不会自动拉伸实体线圈。
+The original Condenser Deflector already contained two stages with eight copper saddle windings, and X/Y carriers,
+inter-axis spacers, outer sleeves and two locating pins per stage, totaling 20 material regions. The coils and supports need no reconstruction.
+This change only explicitly saves its existing 10 mm physical winding length as `mechanical_coil_length_mm`,
+so the mechanical length is no longer derived from `effective_thickness_mm`. The current effective field width remains 10 mm;
+future changes to effective field width will not automatically stretch the physical coils.
 
-Condenser Stigmator 原有八个径向开窗铜绕组，在同一轴向位置表达 X/Y 两基底。
-新增一个八槽支架、每只线圈的等效绝缘包层、开孔骨架和胶座，共新增25个被动区域，
-合计33个区域。铜实体、通道角度、安装位置、30 mm整体包络与6 mm有效场宽均保留。
-正常/斜四极依然由同一器件提供，Probe A1 fine 的绑定不变。
+The original Condenser Stigmator had eight copper windings with radial windows, representing X/Y bases at the same axial position.
+An eight-slot support, an equivalent insulating jacket for each coil, open formers and adhesive seats add 25 passive regions,
+for 33 regions in total. The copper solids, channel angles, installation position, 30 mm overall envelope and 6 mm effective field width are retained.
+Normal/skew quadrupoles are still supplied by the same device; the Probe A1 fine binding is unchanged.
 
-| 新增配置 | 工程值 | 含义 |
+| New configuration field | Engineering value | Meaning |
 | --- | ---: | --- |
-| `stigmator_support_insulation_thickness_mm` | 0.1 | 整个铜包的等效绝缘外包层，非单匝漆膜 |
-| `stigmator_support_former_wall_thickness_mm` | 0.3 | 绕组窗内的骨架壁及两侧挡边 |
-| `stigmator_support_adhesive_thickness_mm` | 0.1 | 槽底胶座轴向分配 |
+| `stigmator_support_insulation_thickness_mm` | 0.1 | Equivalent insulation jacket around the entire copper pack, not individual-turn enamel |
+| `stigmator_support_former_wall_thickness_mm` | 0.3 | Former walls inside the winding window and flanges on both sides |
+| `stigmator_support_adhesive_thickness_mm` | 0.1 | Axial allocation for the adhesive seat at the slot bottom |
 
-这三个数值与 `engineering_reconstruction_not_oem`、来源和说明一同保存。
-支架开槽和骨架开窗由同一铜绕组几何推导；每组支撑随对应基底转动。
-非法壁厚、闭合的绕组窗口、相邻支撑相交或超出包络的修改会在编辑与保存前拒绝。
+These three values are saved together with `engineering_reconstruction_not_oem`, sources and notes.
+Support slots and former windows derive from the same copper winding geometry; each support group rotates with its corresponding basis.
+Edits producing invalid wall thicknesses, closed winding windows, intersecting adjacent supports or envelope overflow are rejected before editing and saving.
 
-## 真空管和实际材料净隙
+## Vacuum tube and actual material clearances
 
-核对使用 Physical Layout 同一条连续管的真实外径折线和光阑开槽实体，
-不是仅比较器件名义孔径。该连续管的等效内径为5.76 mm；材料外径沿轴向
-在19.2和17.2 mm之间变化。求解器还会与器件局部真空孔径取共同限制，
-因此并非整段电子通束域都统一为5.76 mm。
+Checks use the actual outer-diameter polyline and aperture-slot solids of the same continuous tube as Physical Layout,
+rather than simply comparing nominal device bores. This continuous tube has an equivalent inner diameter of 5.76 mm; its material outer diameter
+varies axially between 19.2 and 17.2 mm. The solver also applies the common constraint with each device's local vacuum aperture,
+so the entire electron beam-passage domain does not uniformly have a 5.76 mm diameter.
 
-| 器件 | 全局 Z / mm | 实际材料内/外半径 / mm | 同区最大管 OD / mm | 最小径向净隙 / mm |
+| Device | Global Z / mm | Actual material inner/outer radius / mm | Maximum tube OD in the same region / mm | Minimum radial clearance / mm |
 | --- | --- | --- | ---: | ---: |
-| Condenser Deflector | 包络790–830；材料795–805、815–825 | 12.5 / 23.5 | 19.2 | 2.9 |
-| Condenser Stigmator | 1436.5–1466.5，中心1451.5 | 支架10 / 28 | 19.2 | 0.4 |
+| Condenser Deflector | Envelope 790–830; material 795–805, 815–825 | 12.5 / 23.5 | 19.2 | 2.9 |
+| Condenser Stigmator | 1436.5–1466.5, center 1451.5 | Support 10 / 28 | 19.2 | 0.4 |
 
-偏转器的材料两级之间有10 mm轴向空隙；配置中的20 mm `mechanical_inter_coil_gap_mm`
-目前代表级中心间距，不应解释为铜实体间净距。偏转器的 `vacuum_inner_diameter_mm=5`
-是生效的局部求解通束约束；解析后的790–830 mm区段仍按5 mm处理粒子/波截断，
-即使连续管材料内径为5.76 mm。这项等效限制不能用于反推支撑与管外壁的净隙。
-Stigmator 的20 mm材料孔径套在19.2 mm外径管外；其局部真空配置与连续管合并后，
-实际求解通束内径仍为5.76 mm，不是20 mm。
-Condenser Stigmator 位于 corrector 下游、objective 组件的上游嵌套空间，
-并不位于 C2 与 C3 之间。本次没有移动这两个器件。
+There is a 10 mm axial material gap between the deflector's two stages; the configured 20 mm `mechanical_inter_coil_gap_mm`
+currently represents the stage-center separation and must not be interpreted as the clear gap between copper solids. The deflector's `vacuum_inner_diameter_mm=5`
+is an active local beam-passage constraint in the solver; the resolved 790–830 mm section still uses 5 mm for particle/wave clipping,
+even though the continuous tube material inner diameter is 5.76 mm. This equivalent limit cannot be used to infer support-to-tube-exterior clearance.
+The Stigmator's 20 mm material bore surrounds the tube with 19.2 mm outer diameter; after combining its local vacuum configuration with the continuous tube,
+the actual solver beam-passage inner diameter remains 5.76 mm, not 20 mm.
+Condenser Stigmator is downstream of the corrector, in the upstream nested space of the objective assembly,
+not between C2 and C3. Neither device was moved in this change.
 
-## 后台验证范围
+## Background verification scope
 
-回归检查了原八铜几何不变、33区域的封闭边界、材料之间无正体积重叠、八个绕组窗口、
-中心通孔、与真实管实体无交叠、毫米到全局位置的一次转换、编辑撤销和保存副本。
-绝缘包层有外壳与包住铜的内腔边界；Manifold 会把这两个定向表面分开，
-不能据此认定两块断裂实体。独立 OpenCascade 检查该包层为1个有效实体、2个壳面，
-体积96.4236 mm³；没有把负向内腔当成另一块材料。
+Regressions checked that all eight original copper geometries remain unchanged, the 33 regions have closed boundaries, materials have no positive-volume overlaps, all eight winding windows
+and the central bore remain open, there is no intersection with the actual tube solid, conversion from millimeters to global position occurs once, and edits can be undone and saved as copies.
+The insulating jacket has an outer shell and an inner cavity boundary around the copper; Manifold separates these two oriented surfaces,
+which must not be interpreted as two disconnected solids. An independent OpenCascade check found 1 valid solid with 2 shells,
+volume 96.4236 mm³; the negatively oriented cavity was not counted as a separate material.
 
-这些是所保存工程结构的几何与程序一致性检查，不是 OEM 装配、公差或场标定验证。
+These are geometry and program-consistency checks of the saved engineering structure, not OEM assembly, tolerance or field-calibration validation.

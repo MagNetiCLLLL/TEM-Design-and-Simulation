@@ -1,7 +1,7 @@
 {
   "id": "US20240371597A1",
   "kind": "patent",
-  "family": "通用多极磁芯/绕组/磁轭",
+  "family": "Generic multipole cores/windings/yokes",
   "url": "https://patents.google.com/patent/US20240371597A1/en",
   "figures": "Figs. 1-7; winding alternatives Figs. 8-11",
   "component_keys": [
@@ -12,12 +12,12 @@
     "physical multipole hosts"
   ],
   "supported_facts": [
-    "给出磁轭、径向磁芯、内侧极靴与绕组的可实现拓扑。",
-    "特定实施例讨论绝缘或隔真空管。"
+    "Provides feasible topologies of yokes, radial cores, inner pole pieces, and windings.",
+    "Specific embodiments discuss insulating or vacuum-separating tubes."
   ],
   "unsupported_claims": [
-    "不能把所有实施例合并为一个实际机器。",
-    "不确定当前设备采用的极面、材料曲线、绕组或内置管。"
+    "All embodiments cannot be combined into one actual instrument.",
+    "It does not establish the pole faces, material curves, windings, or internal tubes used in the current equipment."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -84,6 +84,6 @@
     3
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original belong to its rights holders; public accessibility does not imply an open license. It is retained only for provenance reading in this project and is not claimed as original project content.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; axial/radial values for this instrument remain governed by the original TOML. Added structures or replacement dimensions require separate evidence and must not be inferred from schematic proportions."
 }

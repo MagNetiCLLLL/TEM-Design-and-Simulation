@@ -14,11 +14,11 @@
     "sample"
   ],
   "supported_facts": [
-    "beta轴通常非eucentric；Compucentricity按特定holder校准后通过其他stage轴补偿。"
+    "The beta axis is usually noneucentric; after calibration for a specific holder, Compucentricity compensates through other stage axes."
   ],
   "unsupported_claims": [
-    "不能默认所有双倾杆的两根旋转轴精确通过样品中心。",
-    "无机械外形尺寸。"
+    "One cannot assume that both rotation axes of every double-tilt holder pass exactly through the specimen center.",
+    "No mechanical exterior dimensions are provided."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",

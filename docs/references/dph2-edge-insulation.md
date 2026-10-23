@@ -1,44 +1,44 @@
-# DPH2 轴向封边复核（2026-10-20）
+# DPH2 axial end-cover review (2026-10-20)
 
-默认 C3 + Probe Corrector 的 `probe_dph2_coils` 原有 11 个材料区：四只铜线包、五个径向支撑/覆盖/粘接区，以及 X/Y 两个导体层空隙绝缘区。此前已完成导体侧面与窗口的体积等效填充，本轮没有重复添加这些材料。本轮只增加上、下两个轴向封边，使 DPH2 共 13 区；其余四组 DPH/DP 插入件仍为 11 区。
+The default C3 + Probe Corrector `probe_dph2_coils` originally had 11 material regions: four copper winding packs, five radial support/cover/bond regions and two inter-conductor insulation regions for the X/Y layers. Volume-equivalent filling around conductor sides and windows was already complete; these materials were not added again. This round adds only upper and lower axial end covers, bringing DPH2 to 13 regions; the other four DPH/DP insert groups remain at 11 regions.
 
-两个 Probe + Image Corrector / B-COR 组合配置此前只含 DPH2 的四个铜区，没有继承默认配置的径向支撑。本轮为这两份配置补齐相同径向支撑与端封，因此三份配置的 DPH2 均为 13 区，既有铜形状和原参数值不变。其他 DPH/DP 在各配置中保持此前的结构，不扩大本轮同步范围。
+The two Probe + Image Corrector / B-COR combination configurations previously contained only DPH2's four copper regions and had not inherited the default configuration's radial supports. The same radial supports and end covers are added to those two configurations, so DPH2 has 13 regions in all three configurations, with existing copper shapes and original parameter values unchanged. Other DPH/DP structures retain their previous form in each configuration; the synchronization scope is not expanded here.
 
-## 依据与建模边界
+## Evidence and modeling limits
 
-[CEOS US20090079531A1 的 Fig.4 与相邻说明](https://patents.google.com/patent/US20090079531A1/en) 描述柔性导体上的绝缘覆盖、叠层整面粘接，并讨论避免层间空气间隙。该资料支持覆盖与粘接的结构类别，**没有证明 CEOS DPH2 采用本模型的轴向环形端封**。本轮将铜线包轴向端头的覆盖表示为两个整环，是明确标注的结构族工程推断。
+[Fig.4 and adjacent text in CEOS US20090079531A1](https://patents.google.com/patent/US20090079531A1/en) describe insulating cover layers on flexible conductors and full-surface bonding of stacked layers, and discuss avoiding interlayer air gaps. This supports the structural categories of covering and bonding, but **does not establish that CEOS DPH2 uses this model's annular axial end covers**. Representing coverage of the axial copper-pack ends as two complete rings is an explicitly labeled engineering inference for the structural family.
 
-`winding_support_end_cover_thickness_mm = 0.04` 是保存于配置的工程尺寸；`winding_support_end_cover_geometry_status = "engineering_reconstruction_family_inference"`、原始资料链接及说明随之保存。未指定树脂或覆盖膜牌号，没有把材料配色当作介电、热学、机械、磁学或真空性能。没有添加未经证实的宿主固定螺钉、接线、过孔、逐匝绝缘或卷绕接缝。
+`winding_support_end_cover_thickness_mm = 0.04` is an engineering dimension saved in configuration; `winding_support_end_cover_geometry_status = "engineering_reconstruction_family_inference"`, the original source link and notes are saved with it. No resin or cover-film grade is specified; material colors are not treated as dielectric, thermal, mechanical, magnetic or vacuum properties. No unverified host fastening screws, wiring, vias, turn-by-turn insulation or winding seams were added.
 
-## 实际材料范围
+## Actual material extents
 
-| 项目 | 本轮结果 |
+| Item | Result in this review |
 | --- | --- |
-| 铜线包及原 11 区 | 原形状、材料和位置全部保留 |
-| 铜/安装分配轴向范围 | local Z 687.25–701.75 mm，长度 14.5 mm |
-| 上端封边 | local Z 687.21–687.25 mm |
-| 下端封边 | local Z 701.75–701.79 mm |
-| 完整材料轴向范围 | local Z 687.21–701.79 mm；默认装配 global Z 1137.21–1151.79 mm |
-| 完整材料内外径 | 22.12 / 23.88 mm，通孔保持打开 |
-| 实际真空管材料外径 | 19.2 mm；最小径向净距 1.46 mm |
-| HP2 实际材料孔径 | 24 mm；最小径向净距 0.06 mm |
-| TL22 最近材料上端 | local Z 703.6 mm；最小轴向净距由 1.85 变为 1.81 mm |
-| DPH2 光学场有效厚度 | 原 4 mm，独立于铜与被动封边长度 |
+| Copper winding packs and original 11 regions | All original shapes, materials and positions retained |
+| Copper / mounting allocation axial extent | Local Z 687.25–701.75 mm, length 14.5 mm |
+| Upper end cover | Local Z 687.21–687.25 mm |
+| Lower end cover | Local Z 701.75–701.79 mm |
+| Full axial material extent | Local Z 687.21–701.79 mm; global Z 1137.21–1151.79 mm in the default assembly |
+| Full material inner/outer diameters | 22.12 / 23.88 mm; the through-hole remains open |
+| Actual vacuum-tube material outer diameter | 19.2 mm; minimum radial clearance 1.46 mm |
+| HP2 actual material bore diameter | 24 mm; minimum radial clearance 0.06 mm |
+| Upper end of nearest TL22 material | Local Z 703.6 mm; minimum axial clearance changes from 1.85 to 1.81 mm |
+| DPH2 optical-field effective thickness | Original 4 mm, independent of copper and passive end-cover lengths |
 
-封边位于原铜分配区外侧，因此不能仅以原 `length_mm` 检查安装。`full_material_axial_extent` 提供完整材料范围，宿主安装和邻件轴向重叠校验均使用它；HP2 仍包容整个 DPH2 插入件。新增端封与铜端头接触，但不占据铜体积。上述间隙基于默认装配的真实材料体，包括连续真空管的实际外轮廓；不是将真空通束参数当作材料管径。
+The end covers lie outside the original copper allocation, so installation cannot be checked using the original `length_mm` alone. `full_material_axial_extent` provides the complete material extent, used by host installation and adjacent-component axial-overlap validation; HP2 still contains the entire DPH2 insert. The new end covers contact the copper ends without occupying copper volume. These clearances use actual material solids in the default assembly, including the real outer contour of the continuous vacuum tube, rather than treating vacuum beam-passage parameters as material tube diameters.
 
-## 编辑和兼容性
+## Editing and compatibility
 
-未声明新端封字段的旧配方继续生成原 11 区。启用时厚度必须为有限正数，必须提供完整的工程状态、来源与说明；布尔值、溢出整数、未知前缀字段和不完整元数据在进入几何前拒绝。端封厚度由统一尺寸编辑机制提供，可撤销、重做及保存。原生端面选择含该尺寸的参数来源。
+Old recipes without the new end-cover fields continue to generate the original 11 regions. When enabled, thickness must be finite and positive, and complete engineering status, sources and notes are required; booleans, overflowing integers, unknown prefixed fields and incomplete metadata are rejected before geometry construction. End-cover thickness is exposed through unified dimension editing, with undo, redo and save support. Native end-face selection includes the parameter provenance of this dimension.
 
-复制出的独立配件仍可使用此配方。显式替代 CAD 基体启用时，原生绕组/支撑配方保存但停用；恢复 `existing` 基体时重新校验。若替代期间的新尺寸不再容纳原绕组，恢复原生结构会原子失败，不留下半修改草稿。光学控制通道没有被画成第二套实体。
+Independent copied components can still use this recipe. With an explicit replacement CAD base enabled, the native winding/support recipe is saved but disabled; restoring the `existing` base triggers revalidation. If dimensions edited during replacement no longer accommodate the original winding, restoring native geometry fails atomically without leaving a partially modified draft. Optical control channels are not drawn as a second set of physical solids.
 
-## 后台证据
+## Background evidence
 
-针对性回归位于 `tests/test_dph2_end_insulation.py` 和 `tests/test_deflector_support_geometry.py`，覆盖原 11 区逐体不变、端封体积/孔径/接触、实际管壁与邻件净距、完整材料范围校验、元数据、非法输入及编辑事务。
+Targeted regressions in `tests/test_dph2_end_insulation.py` and `tests/test_deflector_support_geometry.py` cover unchanged original 11 regions solid by solid, end-cover volumes/bores/contacts, actual tube-wall and adjacent-component clearances, full-material-extent validation, metadata, invalid inputs and editing transactions.
 
-解析环面和扇形在相互独立的粗三角化中会产生不同圆周弦线，因此单用通用 CAD 三角化做接触布尔检查会出现伪穿插。此问题不能通过放宽实体交叠阈值判断为通过。对本次标记的四对旧材料，实际全局坐标 OpenCascade 曲面交集体积均为零；原生显示采用原铜网格边界构造对应绝缘，在 32、48、72、96、144、288 段检查中的体积残差量级不超过约 `1e-13 mm³`。原始粗网格标记与精确解析复核均保留在本轮输出，未改变原铜形状。
+Analytical annuli and sectors acquire different circumferential chords in independently generated coarse triangulations, so generic CAD triangulation alone can produce spurious contact intersections. This cannot be declared a pass by relaxing the solid-overlap threshold. For the four flagged pairs of existing materials, actual global-coordinate OpenCascade surface intersection volumes were all zero; native display constructs corresponding insulation using the original copper mesh boundaries, with volume residuals no greater than approximately `1e-13 mm³` in checks at 32, 48, 72, 96, 144 and 288 segments. Both the original coarse-mesh flags and exact analytical rechecks are retained in this round's output, without changing the original copper shapes.
 
-`outputs/probe-hp2-tl22-details-20261020/transport-verification.json` 比较保存的完整前态配置与当前配置，采用实际解析场提供器和 CPU 粒子传播：300 kV、STEM Nanoprobe Normal、C3 + Probe Corrector、非零 DPH2 偏转、9 条粒子、352 个保存平面。DPH2、HP2、TL22 的被动材料均确实改变；39 个独立场源、6080 个有效矢量样本和全部轨迹/斜率数组前后逐位一致。DPH2 X 偏转由 0.012 增至 0.014 mrad 的主动正对照产生约 `1.05033e-6 T` 最大场分量差及 `1.36498e-7 m` 最大 X 轨迹差，确认比较没有误用静态或零场数据。原始配置文件哈希保持不变。
+`outputs/probe-hp2-tl22-details-20261020/transport-verification.json` compares the saved complete pre-change configuration with the current configuration, using actual analytical field providers and CPU particle propagation: 300 kV, STEM Nanoprobe Normal, C3 + Probe Corrector, nonzero DPH2 deflection, 9 particles and 352 saved planes. Passive materials in DPH2, HP2 and TL22 all changed; 39 independent field sources, 6080 valid vector samples and all trajectory/slope arrays were bitwise identical before and after. An active positive control increasing DPH2 X deflection from 0.012 to 0.014 mrad produced approximately `1.05033e-6 T` maximum field-component difference and `1.36498e-7 m` maximum X-trajectory difference, confirming that the comparison did not mistakenly use static or zero-field data. Original configuration-file hashes remained unchanged.
 
-这些结果证明被动模型没有改变当前求解器的既有传播输入，不证明工程重建材料的 FEM 场、热学、真空性能或实机球差表现；新求场需要另行指定材料、激励和边界条件。
+These results establish that the passive model did not change the current solver's existing propagation inputs; they do not establish FEM fields, thermal or vacuum properties, or real-instrument spherical-aberration performance of the engineering reconstruction. New field solutions require materials, excitations and boundary conditions to be specified separately.

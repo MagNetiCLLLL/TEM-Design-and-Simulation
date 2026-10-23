@@ -14,12 +14,12 @@
     "objective_lens"
   ],
   "supported_facts": [
-    "官方描述宽间隙物镜与分析双倾holder共同使用，holder会遮挡一部分EDS接收立体角。"
+    "The official description combines a wide-gap objective with an analytical double-tilt holder; the holder obscures part of the EDS collection solid angle."
   ],
   "unsupported_claims": [
-    "没有holder外包络工程尺寸；不能把EDS性能值反推出侧入口尺寸。"
+    "No engineering dimensions for the holder envelope are provided; side-entry dimensions cannot be inferred from EDS performance values."
   ],
-  "access_note": "Web搜索可读官方产品描述；本次原始HTML下载403，未保存伪造页面。",
+  "access_note": "The official product description is readable via web search; downloading original HTML returned 403 in this round, and no fabricated page was saved.",
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
   "retrieved_utc": "2026-10-11T01:30:02.846632+00:00",

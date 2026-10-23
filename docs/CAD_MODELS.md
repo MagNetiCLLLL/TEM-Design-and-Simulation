@@ -1,85 +1,85 @@
-# 可编辑 CAD 与软件 3D 模型
+# Editable CAD and Software 3D Models
 
-2026-10-11。本轮交付的是按现有装配尺寸建立的材料实体模型。公开专利和厂家示意图用于判断结构类别；没有把未标尺寸的示意图比例当作测量值。
+2026-10-11. This round delivers material solid models built to existing assembly dimensions. Public patents and manufacturer diagrams establish structural categories; proportions in undimensioned diagrams are not treated as measurements.
 
-**当前整库交付：** `outputs/detector_corrector_cad_20261011/` 已加入 EDS、EELS camera 和 image corrector 的八组偏转线包。11 种模块有 187 个配件/模块 STEP，另有含／不含 energy filter 的全局整机装配。详见 [探测器与 corrector 更新报告](DETECTOR_CORRECTOR_CAD_20261011.md)，包括未公开尺寸的边界、编辑能力与干涉验证。下文保留首次 CAD 阶段记录，不作为当前版本清单。
+**Current full-library delivery:** `outputs/detector_corrector_cad_20261011/` adds EDS, the EELS camera and eight groups of image-corrector deflection windings. There are 187 component/module STEP files across 11 module types, plus global full-instrument assemblies with/without the energy filter. See the [detector and corrector update report](DETECTOR_CORRECTOR_CAD_20261011.md), including limits of unpublished dimensions, editing capabilities and interference validation. The text below retains the first CAD-stage record and is not the current version inventory.
 
-**同日后续更新：** 下文 `outputs/cad_models_20261011` 和全库压缩包记录首次 CAD 交付。之后已按 CETCOR 资料修正 image corrector 的光学身份、局部布局、默认圆透镜激励及 HP 内部表示；新的两个 image 模块单独交付在 `outputs/image_corrector_20261011/cad/`。需要 image corrector 时以这个新版为准，参见 [CETCOR 更新报告](IMAGE_CORRECTOR_UPDATE_20261011.md)。首次全库的统计数和“光学未改变”仅适用于首次 CAD 阶段。
+**Later update on the same day:** The `outputs/cad_models_20261011` and full-library archive records below describe the first CAD delivery. Subsequently, image-corrector optical identities, local layout, default round-lens excitations and HP internal representation were corrected against CETCOR references. The two new image modules are delivered separately under `outputs/image_corrector_20261011/cad/`. Use that newer version for the image corrector; see the [CETCOR update report](IMAGE_CORRECTOR_UPDATE_20261011.md). Counts and the “optics unchanged” statement for the first full library apply only to that first CAD stage.
 
-## 已提供的模型
+## Provided models
 
-交付目录为 `outputs/cad_models_20261011`。`step/` 包含 **154 个 STEP 文件**：11 种配置模块的完整装配，以及这些模块中的 143 个光学单元。共有 745 个几何实体；这是所有备选模块累计的数量，并非一台电镜的部件数。不同柱配置、电子枪和记录系统应分别选用，不能叠放全部模块。
+The delivery directory is `outputs/cad_models_20261011`. `step/` contains **154 STEP files**: complete assemblies for 11 configuration modules and their 143 optical units. There are 745 geometric solids, summed across alternative modules, not the component count of one microscope. Different column configurations, guns and recording systems must be selected separately, not all superimposed.
 
-光学单元中有依据的极靴、整体绕组、磁轭、外壳、电极或绝缘件分别保留；未知内部只保留明确标识的配置包络。材料类别以颜色、名称和 STEP 分类层记录。单位为毫米，使用配置模块坐标。整模块 STEP 保留单元层级和装配位置。软件完整装配视图再使用现有模块安装位置；能量过滤器保持柱底部的 90° 支路。
+Evidence-supported pole shoes, bulk windings, yokes, housings, electrodes and insulators are retained separately within optical units. Unknown interiors retain clearly labelled configured envelopes only. Material categories are recorded through colour, names and STEP classification layers. Units are millimetres in configuration-module coordinates. Module STEP files preserve unit hierarchy and assembly positions. The software's complete assembly view then uses existing module installation positions; the energy filter retains its 90° branch at the column bottom.
 
-| 部件类别 | 本轮模型内容 |
+| Component category | Model content in this round |
 | --- | --- |
-| 圆磁透镜，包括 condenser、relay、objective、mini condenser、projector | 由现有材料截面生成解析旋转实体，保留上下极靴、线圈、磁轭、外壳和已定义的分段结构 |
-| 主 HP1/HP2 | CEOS 原文确认的六个磁极针、六组整体线包和一个磁轭；无证据的外壳、绝缘支架不添加 |
-| 其他磁多极件和 stigmator | 已明确线圈拓扑的显示整体线包；其他未知结构保留配置包络，不由光学谐波推断实体极数 |
-| DPH 与普通 deflector、AC scan coil | 同一套部件格式；保留实际轴向中心及同一 Z 内的径向嵌套关系，线圈材料与驱动通道分开 |
-| Tip、枪电极与 accelerator | Tip 实际几何、已定义厚度的导体电极与级间绝缘段；缺电极厚度的模块保留包络；发射宽度不作为金属 Tip 半径 |
-| Aperture | 有限厚度的孔径片，使用已指定的工作孔和位置；未知孔径不擅自填入一个数值 |
-| 静电 blanker | 两块电极板，保留工作间隙和轴向长度，不添加未确认的绝缘支架 |
-| Energy Filter | 弯转磁极、支路多极件、电极、狭缝片与漂移管；未给定厚度的探测器有效面不制造为虚构实体 |
+| Round magnetic lenses, including condenser, relay, objective, mini condenser and projector | Analytic revolved solids from existing material cross-sections, retaining upper/lower pole shoes, coils, yokes, housings and defined segmented structures |
+| Main HP1/HP2 | Six pole pins, six bulk windings and one yoke confirmed by the original CEOS text; no unsupported housing or insulating supports |
+| Other magnetic multipoles and stigmators | Bulk windings where coil topology is established; configured envelopes for unknown structures, without inferring physical pole count from optical harmonics |
+| DPH, ordinary deflectors and AC scan coils | Shared component format; actual axial centres and radial nesting at the same Z retained, with coil material separate from drive channels |
+| Tip, gun electrodes and accelerator | Actual Tip geometry, conductor electrodes of defined thickness and interstage insulation; modules lacking electrode thickness retain envelopes; emission width is not treated as metallic Tip radius |
+| Aperture | Finite-thickness aperture plate using specified working bore and position; no invented value for an unknown bore |
+| Electrostatic blanker | Two electrode plates retaining working gap and axial length, without unconfirmed insulating supports |
+| Energy Filter | Bending poles, branch multipoles, electrodes, slit plates and drift tubes; detector active surfaces without specified thickness are not fabricated into fictitious solids |
 
-## 在软件中查看和导出
+## Viewing and exporting in the software
 
-1. 重启运行中的软件以加载本轮代码，进入 **Physical Layout → 3D** 查看整机。
-2. 选择部件，点击 **Open in 3D Parts**；也可直接进入 **Physical Layout → 3D Parts** 打开所需模块。
-3. 使用 **Section** 查看内部结构，使用材料/部件可见性控制逐项查看。普通已定义尺寸仍通过现有参数编辑界面修改。
-4. 点击文件栏中 **Save copy…** 右侧的 **Export STEP…**，选择输出父文件夹。
-5. 软件创建新的 `step-日期-时间` 子目录，在后台导出当前模块的每个光学单元及整模块。导出包含当前未保存草稿和已传入的运行时孔径/狭缝状态；输出 `catalog-input.json` 保留该次输入。完成前可取消。
+1. Restart the running software to load this round's code, then open **Physical Layout → 3D** for the full instrument.
+2. Select a component and click **Open in 3D Parts**, or open the desired module directly in **Physical Layout → 3D Parts**.
+3. Use **Section** to inspect interiors and material/component visibility controls to inspect individual items. Ordinary defined dimensions remain editable in the existing parameter interface.
+4. Click **Export STEP…** to the right of **Save copy…** in the file bar and select an output parent folder.
+5. The software creates a new `step-date-time` subdirectory and exports every optical unit plus the complete module in the background. Export includes the current unsaved draft and supplied runtime aperture/slit states; `catalog-input.json` preserves that input. Cancellation is possible before completion.
 
-未给定运行时狭缝间隙时显示、导出的是配置中的最大机械行程开口；这不代表当前能量选择宽度。导出完成提示只在 STEP 回读验证和输入身份核对通过后出现。
+If no runtime slit gap is supplied, display/export uses the configuration's maximum mechanical-travel opening, not the current energy-selection width. Completion is reported only after STEP reread validation and input-identity checks pass.
 
-新加入的重建材料区可以查看，但不会自动变成材料场求解器的参数域。编辑器现已接通 STEP 导入、尺寸缩放、开孔和切槽：这些编辑与原生 3D 使用同一套操作参数，导出保留精确 B-rep。详见 [STEP 编辑操作说明](CAD_STEP_EDITING.md)。
+New reconstructed material regions can be viewed but do not automatically become parameter domains for a material-field solver. The editor now supports STEP import, dimension scaling, holes and slots. These operations share parameters with native 3D, and export retains exact B-rep. See the [STEP editing instructions](CAD_STEP_EDITING.md).
 
-## 如何编辑，以及“同步”的含义
+## Editing and the meaning of synchronization
 
-STEP 文件包含可由 CAD 软件编辑的解析边界实体，不是把三角网格封装成 STEP。可在支持 STEP 的 CAD 工具中选择独立材料实体、修改几何或重新装配。
+STEP contains analytic boundary solids editable in CAD software, not triangle meshes wrapped in STEP. Compatible CAD tools can select independent material solids, alter geometry or reassemble them.
 
-STEP 本身不保留完整的建模操作历史。项目同时提供 `catalog.json` 与生成器，保存截面、布尔构造、放置变换和材料信息，便于重建。软件内 3D 视图与 STEP 使用相同的部件构造规则和原有参数；改变软件中的受支持参数，再次导出即可保持一致。外部修改的 STEP 可通过 **Import STEP…** 显式导入为新机械件或替换已选材料实体。源 B-rep、原文件摘要、名称路径、颜色和本程序新增的编辑记录嵌入 TOML；不会自动反推透镜激励、材料本构或探测器接受区。
+STEP itself does not preserve the full modelling history. The project also provides `catalog.json` and generators storing cross-sections, Boolean constructions, placement transforms and material information for reconstruction. Software 3D views and STEP share component construction rules and existing parameters; edit supported parameters in the software and export again to maintain consistency. Externally modified STEP can be explicitly imported through **Import STEP…** as a new mechanical component or replacement for selected material solids. Source B-rep, original-file digest, name paths, colours and edits added in this program are embedded in TOML; lens excitation, material constitutive laws and detector acceptance are not automatically inferred.
 
-STEP 导出使用独立的可选环境，软件的粒子和波动计算环境不安装或加载 OpenCascade：
+STEP export uses a separate optional environment; the particle/wave environment neither installs nor loads OpenCascade:
 
 ```powershell
 python -m venv environment/cad
 environment/cad/Scripts/python.exe -m pip install -r requirements-cad.txt
 ```
 
-按当前项目配置重新生成全套模型：
+Regenerate the complete model set from the current project configuration:
 
 ```powershell
 .venv/Scripts/python.exe -m temsim.cad_catalog --output outputs/cad_models/catalog.json
 environment/cad/Scripts/python.exe scripts/export_cad_models.py outputs/cad_models/catalog.json --output outputs/cad_models/step
 ```
 
-## 证据和模型边界
+## Evidence and model boundaries
 
-结构依据按部件归档：[原始文献、专利与图页目录](references/cad-library/README.md)、[统一细节规则](references/CAD_DETAIL_POLICY.md)、[圆透镜](references/cad-round-lenses.md)、[多极件与偏转器](references/cad-multipoles.md)、[枪、孔径与能量过滤器](references/cad-gun-filter-apertures.md)。每个实体在 `catalog.json` 中还包含 `status`、`note` 和 `evidence`：
+Structural evidence is archived by component: [original literature, patents and figure-page catalog](references/cad-library/README.md), [common detail policy](references/CAD_DETAIL_POLICY.md), [round lenses](references/cad-round-lenses.md), [multipoles and deflectors](references/cad-multipoles.md), [gun, apertures and energy filter](references/cad-gun-filter-apertures.md). Each solid in `catalog.json` also carries `status`, `note` and `evidence`:
 
-- `configured_geometry`：依据当前已定义的尺寸生成；不等于厂家实测认证。
-- `engineering_reconstruction`：有结构类型依据，但部分内部尺寸为显式重建值。
-- `configured_envelope`：只有配置中的外形或包络可靠，内部结构仍未确定。
-- `mixed_material_cartridge_unresolved`：保留已知共享载体外形，内部材料分区尚未确认。
+- `configured_geometry`: generated from currently defined dimensions; not manufacturer measurement certification.
+- `engineering_reconstruction`: supported structural type, with some explicitly reconstructed internal dimensions.
+- `configured_envelope`: only configured shape/envelope is reliable; internal structure remains unresolved.
+- `mixed_material_cartridge_unresolved`: known shared-carrier shape retained, with internal material partitioning unconfirmed.
 
-最终清单中有 669 个重建实体、29 个配置几何、42 个未知内部包络和 5 个未细分材料的共享载体。后三类的标签尤其不能被理解为制造精度或真实材料体积。
+The final inventory contains 669 reconstructed solids, 29 configured geometries, 42 unknown-interior envelopes and 5 shared carriers without material partitioning. In particular, the latter three labels must not be interpreted as manufacturing accuracy or actual material volume.
 
-本轮没有找到足以推翻特定现有装配外尺寸的直接证据，因此 CAD 构建保留这些尺寸。没有擅自修改电子源、激励值、光学中心、孔径工作尺寸或传播算法。绕线匝数、冷却通道、螺钉、密封、材料牌号和 B–H 曲线等未确认信息不作为已知输入；这些模型目前不能作为制造图纸或新的材料场校准依据。
+No direct evidence sufficient to overturn specific existing external assembly dimensions was found, so CAD construction retains them. The electron source, excitations, optical centres, working aperture dimensions and propagation algorithms were not arbitrarily changed. Unconfirmed turn counts, cooling channels, screws, seals, material grades and B–H curves are not known inputs; these models are not manufacturing drawings or a basis for new material-field calibration.
 
-例如 `FEG_Mono` 的双叶片狭缝尚无已知工作缝宽，当前保留载体包络；部分探测器封装、样品腔和热发射阴极也仅有已配置外形。它们在清单中明确标识，不能把本轮成果理解为所有内部细节均已确定。
+For example, the `FEG_Mono` two-blade slit has no known working gap, so it retains a carrier envelope. Some detector packages, the specimen chamber and thermionic cathode likewise retain only configured external shapes. They are explicitly labelled in the inventory; this work does not establish all interior details.
 
-## 验证结果
+## Validation results
 
-154 个 STEP 均执行导出后回读：检查实体有效、体积为正、尺寸/体积保持、名称层级、颜色、材料分类层及毫米单位。与生成实体相比，最大边界差约 `3.81e-10 mm`，最大相对体积差约 `2.28e-9`；这是格式往返误差，不是物理尺寸准确度。
+All 154 STEP files were exported and reread, checking valid solids, positive volumes, preserved dimensions/volumes, name hierarchy, colours, material classification layers and millimetre units. Maximum boundary difference versus generated solids was approximately `3.81e-10 mm`, and maximum relative volume difference approximately `2.28e-9`; these are format round-trip errors, not physical dimensional accuracy.
 
-最终清单为 `step/step-manifest.json` 和 `step-final-verification.json`。按统一细节与证据规则修订后，已全量重新导出、回读，并核对全部文件 SHA。旧的阶段性验收清单不纳入交付压缩包。
+Final manifests are `step/step-manifest.json` and `step-final-verification.json`. Following revisions to the common detail/evidence rules, all files were re-exported, reread and SHA-checked. Old interim acceptance manifests are excluded from the delivery archive.
 
-原生预览保存在 `preview/native_material_previews.png`，由实际 `PartModelView` 离屏绘制并截图，不是图片生成器或手绘效果图。预览仅为观察内部结构隐藏了部分外围组件，详情见 `preview/preview_manifest.json`。
+Native previews are in `preview/native_material_previews.png`, rendered and captured offscreen by the actual `PartModelView`, not an image generator or hand-drawn illustration. Some outer components are hidden only to expose internal structure; see `preview/preview_manifest.json`.
 
-与原 TOML 的对照位于 `assembly-comparison/README.md`，其中保存原始模块和共享定义的原文、SHA、逐件数据及 18 张同尺度双栏图。覆盖 11 模块、493 条部件记录和 204 个独立键：362 条原生网格完全不变，66 条显示几何或表示方式改变，51 条为非材料通道，14 条没有可定义表面。原输入、身份、父子次序与光学中心保留；整机坐标转换最大误差约 `4.55e-13 mm`，适用的包络/孔隙检查未发现新增负余量。HP/DPH 径向间隙仍为 `0.1 mm`。
+Comparison with original TOML is in `assembly-comparison/README.md`, preserving original module/shared-definition text, SHA, per-component data and 18 same-scale two-column figures. It covers 11 modules, 493 component records and 204 unique keys: 362 native meshes are unchanged, 66 display geometries/representations change, 51 are nonmaterial channels, and 14 have no definable surface. Original inputs, identities, parent–child ordering and optical centres are retained; maximum full-instrument coordinate-transform error is approximately `4.55e-13 mm`, and applicable envelope/bore checks found no new negative margins. HP/DPH radial clearance remains `0.1 mm`.
 
-原物镜线圈按父件的上下两段实际材料区间绘制，其范围本来就超出自身的等效轴向段；报告同时保留初始数值差和正确的物理区间，未为让比较通过而修改线圈。这些检查不是整机三维碰撞或制造公差认证。
+Original objective coils are drawn over their parent's actual upper/lower material intervals, which already extend beyond their own equivalent axial segments. The report retains both initial numerical differences and correct physical intervals; coils were not changed to make comparison pass. These checks do not certify full-instrument 3D collision freedom or manufacturing tolerances.
 
-CAD 专项几何、GUI 和 CI 注册检查，以及相关旧 3D/装配回归已通过。STEP 后端在独立 CadQuery 环境验证，新增独立 GitHub workflow；这不是声称远端 GitHub 已运行。本轮没有重新执行无关的长时间相干传播计算。
+Dedicated CAD geometry, GUI and CI-registration checks and related existing 3D/assembly regressions passed. The STEP backend was validated in a separate CadQuery environment and a separate GitHub workflow added; this does not claim a remote GitHub run. Unrelated long coherent-propagation calculations were not rerun.

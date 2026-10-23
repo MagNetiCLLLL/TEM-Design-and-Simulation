@@ -1,7 +1,7 @@
 {
   "id": "US9548182B2",
   "kind": "patent",
-  "family": "枪与加速电极",
+  "family": "Gun and accelerating electrodes",
   "url": "https://patents.google.com/patent/US9548182B2/en",
   "figures": "Fig. 2; PDF page 4, sheet 2/6",
   "component_keys": [
@@ -11,12 +11,12 @@
     "thermionic_accelerator"
   ],
   "supported_facts": [
-    "显示加速电极与绝缘件交替的轴向结构。",
-    "区分阴极、阳极、束流真空通道和高压外壳。"
+    "Shows the axial structure of alternating accelerating electrodes and insulators.",
+    "Distinguishes the cathode, anode, beam vacuum passage, and high-voltage housing."
   ],
   "unsupported_claims": [
-    "不提供当前枪区所有隐藏轮廓、绝缘材料或电压分配。",
-    "厚度和中心来自本地 TOML，不由专利比例推导。"
+    "Does not provide all hidden profiles, insulating materials, or voltage allocations in the current gun region.",
+    "Thicknesses and centers come from local TOML, not patent drawing proportions."
   ],
   "schema": "cad-reference-source-v1",
   "archived_on": "2026-10-11",
@@ -40,7 +40,7 @@
     }
   ],
   "availability_notes": [
-    "复用项目已保存的原始 PDF；本次归档时间不冒充首次网络获取时间。"
+    "Reuses an original PDF already saved in the project; this archive timestamp is not presented as the first network retrieval time."
   ],
   "title": "Charged particle beam generating apparatus, charged particle beam apparatus, high voltage generating apparatus, and high potential apparatus",
   "authors": [
@@ -77,6 +77,6 @@
     4
   ],
   "archive_status": "original_pdf_saved",
-  "rights_note": "原文权利归原权利人；公开可访问不等于开放许可。仅作本项目溯源阅读，未声称原文为本项目原创。",
-  "assembly_comparison_rule": "本文支持结构/功能类别；本机轴向/径向数值以原始 TOML 为准。结构新增或尺寸替换必须有单独证据，不能从示意图比例推导。"
+  "rights_note": "Rights to the original belong to its rights holders; public accessibility does not imply an open license. It is retained only for provenance reading in this project and is not claimed as original project content.",
+  "assembly_comparison_rule": "This source supports structural/functional categories; axial/radial values for this instrument remain governed by the original TOML. Added structures or replacement dimensions require separate evidence and must not be inferred from schematic proportions."
 }

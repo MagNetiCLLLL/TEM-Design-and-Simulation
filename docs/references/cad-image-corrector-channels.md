@@ -1,19 +1,19 @@
-# Image corrector 控制通道与机械线包
+# Image Corrector Control Channels and Mechanical Windings
 
-本轮只补全已有光学通道的材料表示。两份 image-corrector 装配保留原光学中心、驱动值、圆透镜、HP、孔径、接收面及有效场长度。以下形状是有出处的**工程重建**，不是 CETCOR 制造图，也没有从 CAD 反推出新的场强。
+This round only completes material representations for existing optical channels. Both image-corrector assemblies retain original optical centres, drives, round lenses, HPs, apertures, receiving planes and effective-field lengths. The shapes below are sourced **engineering reconstructions**, not CETCOR manufacturing drawings, and no new field strength is inferred from CAD.
 
-## 证据与未决范围
+## Evidence and unresolved scope
 
-- [CEOS Linck 2025，第26页](https://www.ceos-gmbh.de/de/grundlagen/Workshop-Beitraege/01_How-do-aberration-correctors-work-pdf.pdf)明确画出 DP11、DP12、DP21、DP22、DPH1/2、ISh、DSh，以及 HPol/QPol/DSt。DPH 与对应 HP 位于同一场区。这是光学位置证据，不是径向绕组截面。
-- [CEOS US20090079531A1](https://patents.google.com/patent/US20090079531A1/en) Fig.5–7 支持同心层的两个正交偶极线圈，Fig.10–11 支持紧凑线圈布置于通道或凹槽。采用该构造族的四个闭合 saddle 线包，不添加假定的铁芯、磁轭、壳体、紧固件或冷却结构。专利实施例**不证明某台 CETCOR 使用相同绕组**。
-- 同一专利还举出了 Q/H 线圈和组合驱动，但没有指认本装配的 HPol、QPol、DSt 宿主、具体径向位置或接线。因此这三个通道保持 `physical_host_status="unverified"`，不按谐波阶数生成假磁极，不将其未经证实地绑定到附近 TL/HP。
-- 已归档 [Lu 2025](../image_corrector_reference.md)图和 CETCOR 资料用于核对整体拓扑；没有新增可据以认定上述三个未知宿主的制造尺寸。原始证据文件及 SHA 见 [独立条目](cad-library/CETCOR-channel-construction/source-entry.json)。本轮条目已合入资料库索引。
+- [CEOS Linck 2025, page 26](https://www.ceos-gmbh.de/de/grundlagen/Workshop-Beitraege/01_How-do-aberration-correctors-work-pdf.pdf) explicitly shows DP11, DP12, DP21, DP22, DPH1/2, ISh, DSh and HPol/QPol/DSt. DPH occupies the same field region as its HP. This establishes optical position, not radial winding cross-sections.
+- [CEOS US20090079531A1](https://patents.google.com/patent/US20090079531A1/en), Fig.5–7, supports two orthogonal dipole coils in concentric layers; Fig.10–11 supports compact coils inside channels or recesses. Four closed saddle windings from that structural family are used without assumed cores, yokes, housings, fasteners or cooling. The patent embodiment **does not prove identical windings in a particular CETCOR**.
+- The same patent also gives Q/H coils and combined drives, but does not identify this assembly's HPol, QPol or DSt hosts, radial positions or wiring. These three channels therefore remain `physical_host_status="unverified"`, without false physical poles inferred from harmonic order or unverified attachment to nearby TL/HP units.
+- Archived [Lu 2025](../image_corrector_reference.md) figures and CETCOR sources check overall topology; no new manufacturing dimensions establish those three unknown hosts. Original evidence files and SHA are in the [separate entry](cad-library/CETCOR-channel-construction/source-entry.json). This round's entry is included in the reference-library index.
 
-## 当前选定的可装配重建
+## Currently selected assemblable reconstruction
 
-每个已补通道保持原 key，只新增一个 `mechanical_only` 线包宿主。宿主没有第二份光学驱动。每个宿主包含两层、各两个闭合铜线包，合计每个 variant 8 个宿主 / 32 个材料实体。表中坐标属于 `C3_ImageCorrector.toml` 的模块局部坐标；Probe+Image variant 的这些坐标整体加 324 mm。
+Each completed channel keeps its original key and gains only one `mechanical_only` winding host, without a second optical drive. Every host has two layers with two closed copper windings each: 8 hosts / 32 material solids per variant. Table coordinates are local to `C3_ImageCorrector.toml`; add 324 mm throughout for Probe+Image.
 
-| 通道 | 局部光学 Z / mm | 原有效场长度 / mm | 铜线包轴长 / mm | 铜径向分配 / mm |
+| Channel | Local optical Z / mm | Original effective-field length / mm | Copper axial length / mm | Copper radial allocation / mm |
 |---|---:|---:|---:|---|
 | DP11 | 1037.9 | 6 | 4 | R 11.1–11.9 |
 | DP12 | 1099.65 | 15 | 15 | R 11.1–11.9 |
@@ -24,19 +24,19 @@
 | ISh | 1420.4 | 14 | 14 | R 11.1–11.9 |
 | DSh | 1444.4 | 8 | 8 | R 11.1–11.9 |
 
-普通 DP/ISh/DSh 分配两层 0.32 mm 厚的 120° saddle，端/侧线包带宽 0.2 mm。DPH 分配两层 0.08 mm 厚的 90° saddle、带宽 0.04 mm。这些数值是本模型的材料分配参数；不表示真实线规、圈数、PCB 层数或经过验证的电流负荷。
+Ordinary DP/ISh/DSh use two 0.32 mm-thick, 120° saddle layers with 0.2 mm end/side band widths. DPH uses two 0.08 mm-thick, 90° layers with 0.04 mm bands. These are this model's material-allocation parameters, not actual wire gauges, turn counts, PCB layer counts or validated current ratings.
 
-DPH 直段位于 45°、135°、225°、315° 一带，避开现有六根径向极针；端弧位于 HP 中心 ±16.5 mm，处在原 30 mm 极针段的两端外侧，同时完全位于 HP 原 44 mm 外包络内。HP 的极针、主线包、磁轭、180 mm 外径和 8 mm 通孔均未削切或扩大。DPH 宿主的光学中心显式跟随 HP，移动 HP 后材料和场位置遵循同一绑定。
+DPH straight sections lie near 45°, 135°, 225° and 315°, avoiding the existing six radial pole pins. End arcs lie at HP centre ±16.5 mm, outside both ends of the original 30 mm pole-pin segment while entirely inside HP's original 44 mm outer envelope. HP pole pins, main windings, yoke, 180 mm outer diameter and 8 mm bore are neither cut nor enlarged. DPH host optical centres explicitly follow HP, so material and field positions share the same binding when HP moves.
 
-DP11 的铜长4 mm放入实际5 mm间隙。DP21/22各3 mm铜长沿既有中心布置，彼此间隙0.5 mm。它们原6/14/14 mm长度继续作为**有效场分配**，不是实心壳体或铜长度。`winding_axial_length_mm` 仅影响铜的 CAD/原生几何；求解器仍读原 `effective_thickness_mm`。这没有新增实测 fringe-field 模型，现有均匀有限场近似的限制仍然存在。
+DP11's 4 mm copper length fits the actual 5 mm gap. DP21/22 each have 3 mm copper at their existing centres, with 0.5 mm between them. Their original 6/14/14 mm lengths remain **effective-field allocations**, not solid housings or copper lengths. `winding_axial_length_mm` affects only copper CAD/native geometry; the solver still reads original `effective_thickness_mm`. No measured fringe-field model is added; existing uniform finite-field approximation limits remain.
 
-## 绑定、编辑与验证
+## Binding, editing and validation
 
-`channel.physical_host_key → coils` 是唯一材料/几何所有者；DPH 进一步由 `coils.optical_reference_host_key → HP` 定位。通道不生成材料，不新增 runtime component，也不重复施加偶极 kick。原配置未声明铜长的线包保持历史全轴长形状。
+`channel.physical_host_key → coils` is the sole material/geometry owner; DPH is additionally positioned by `coils.optical_reference_host_key → HP`. Channels generate no materials, add no runtime components and do not duplicate dipole kicks. Windings without a declared copper length retain their historical full-axial-length shapes.
 
-2026-10-11 的局部证据位于 `outputs/image_corrector_channels_20261011/`：
+Local evidence from 2026-10-11 is in `outputs/image_corrector_channels_20261011/`:
 
-- `candidate-material-report.json`：107 个已解析实体的真实 BRep 交集，材料碰撞0；8个新宿主相对其他已建材料部件的最小净空0.5 mm。父子关系没有成为碰撞豁免。这是局部静态检查，不是整机/OEM/制造公差认证。
-- `optical-comparison.json`：两种装配的809点圆場/HP/Q场数组、光学参数及非零有限偶极场记录与旧状态完全相同。DPH 仍覆盖原中心±15 mm。完整4×4数值响应按1 μm/1 mrad状态尺度归一后，相对 Frobenius 差约2.14×10⁻⁹，参考电子位置差不超过1.36×10⁻¹⁴ m；保留数值差异，没有声称矩阵逐位相同。
-- 比较矩阵是既有一阶观察器输出，不冒充新的非线性像差标定。HP 非线性场数组另行精确比较；没有删除 HP/Cs，也没有重算或改造 Tip。
-- 最终整机组合审计由本轮主清单统一完成。HPol/QPol/DSt 的内部材料仍未确定，因此不能将“已建材料无碰撞”解释为未知内部净空也通过。
+- `candidate-material-report.json`: actual BRep intersections for 107 resolved solids, 0 material collisions; minimum clearance from 8 new hosts to other modelled material components is 0.5 mm. Parent–child relationships are not collision exemptions. This is a local static check, not full-instrument/OEM/manufacturing-tolerance certification.
+- `optical-comparison.json`: 809-point round/HP/Q field arrays, optical parameters and nonzero finite-dipole records in both assemblies exactly match the previous state. DPH still covers original centre±15 mm. For the complete 4×4 numerical response normalized by 1 μm/1 mrad state scales, relative Frobenius difference is approximately 2.14×10⁻⁹ and reference-electron position differences no greater than 1.36×10⁻¹⁴ m. Numerical differences are retained, without claiming bitwise matrix identity.
+- Comparison matrices come from the existing first-order observer, not a new nonlinear-aberration calibration. HP nonlinear-field arrays are compared exactly and separately; HP/Cs are not removed, and Tip is neither recomputed nor reworked.
+- This round's main manifest handles final full-instrument combination audits. HPol/QPol/DSt internal materials remain unresolved, so “no collisions among modelled materials” does not establish clearance of unknown interiors.

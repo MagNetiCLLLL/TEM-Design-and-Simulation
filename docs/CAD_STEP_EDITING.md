@@ -1,62 +1,62 @@
-# STEP 导入、编辑与验证
+# STEP import, editing, and validation
 
-入口：**Physical Layout → 3D Parts**。使用项目已有的独立 CadQuery 2.6.1 环境；导入、精确检查和导出在独立后台进程运行，可取消。
+Entry point: **Physical Layout → 3D Parts**. Uses the project's existing separate CadQuery 2.6.1 environment; import, exact checks, and export run in a separate background process and can be canceled.
 
-## 操作
+## Workflow
 
-1. 打开要修改的模块 TOML，点击 **Import STEP…**，选择 `.step` 或 `.stp`。
-2. 选择新机械部件，或替换当前选中材料实体。新部件保留 STEP 的 XYZ 坐标；导入器将文件单位转换为 mm。没有打开模块时，选择一个新 TOML 保存路径即可建立独立机械文档，点击 Save 前不写文件。
-3. 替换时可明确选择中心配准：将导入包围盒中心对齐现有部件中心，保留原位置、光学倾转和光学参考。包围盒不是从 STEP 识别出的光学面。带位置/倾转参数或能量过滤器支路的部件要求中心配准，避免含糊套用坐标。光学倾转不旋转导入的机械包络。带独立材料子件的装配不能整组替换，应选材料实体；附属非材料控制通道保留。
-4. 在 **Dimensions** 修改导入实体的 Width、Height、Length 或比例、位置。三维尺寸修改是相对原包围盒的缩放，不是恢复外部 CAD 软件的草图约束。
-5. 在 **Features** 点击 **Add hole…** 或 **Add slot / groove…**。孔为圆柱切削，槽为圆端槽；可指定轴向、位置、尺寸、深度和转角。深度不足时为盲孔/槽，超过实体时为贯穿切削。所有修改支持 Undo/Redo。
-6. 编辑器内 3D 立即更新。默认开启 **Mechanical overlaps → Check overlaps after edits**：暂停编辑后在后台精确检查当前草稿，列出相交配件、内部区域及相交体积。双击列表中的配件可定位对应区域；接触、不确定包络和未解析材料可在筛选框中分别查看，不计作已确认重叠。连续编辑会取消过时的自动检查；草稿、运行孔径或装配上下文变化后旧列表失效。**Check now** 或 **Check geometry…** 可手动检查，并查看含光学通路/接收区域的完整报告。
-7. **Save** 保存包含源实体和编辑记录的 TOML；修改当前安装模块或其共享定义后，整机 3D 同步刷新。独立导入文档不会自动安装到光路。**Export STEP…** 将当前草稿（包括未保存的修改）导出到新子文件夹，并执行精确实体回读验证。不会用显示三角网格反向制作 STEP。
+1. Open the module TOML to edit, click **Import STEP…**, and select a `.step` or `.stp` file.
+2. Choose a new mechanical part or replace the currently selected material solid. New parts retain STEP XYZ coordinates; the importer converts file units to mm. If no module is open, choose a new TOML save path to create a standalone mechanical document; no file is written until Save is clicked.
+3. During replacement, center registration can be selected explicitly: align the imported bounding-box center to the existing part center while retaining the original position, optical tilt, and optical reference. The bounding box is not an optical surface identified from STEP. Parts with position/tilt parameters or on an energy-filter branch require center registration to avoid ambiguous coordinate application. Optical tilt does not rotate the imported mechanical envelope. An assembly with separate material subparts cannot be replaced as a whole; select a material solid. Associated nonmaterial control channels are retained.
+4. Under **Dimensions**, edit the imported solid's Width, Height, Length, scale, or position. Three-dimensional resizing scales the original bounding box; it does not recover sketch constraints from external CAD software.
+5. Under **Features**, click **Add hole…** or **Add slot / groove…**. Holes are cylindrical cuts and slots have rounded ends; axis, position, dimensions, depth, and rotation can be specified. Insufficient depth gives a blind hole/slot; a cut extending beyond the solid is through-cutting. All edits support Undo/Redo.
+6. The editor's 3D view updates immediately. **Mechanical overlaps → Check overlaps after edits** is enabled by default: after editing pauses, an exact background check of the current draft lists intersecting components, internal regions, and intersection volumes. Double-click a component in the list to locate its region; contacts, uncertain envelopes, and unresolved materials can be viewed separately with filters and are not counted as confirmed overlaps. Continued editing cancels outdated automatic checks; changes to the draft, runtime apertures, or assembly context invalidate the old list. **Check now** or **Check geometry…** starts a manual check and opens the full report, including optical paths/receiving regions.
+7. **Save** writes a TOML containing source solids and edit history; editing an installed module or its shared definitions also refreshes full-column 3D. A standalone imported document is not automatically installed in the optical column. **Export STEP…** exports the current draft, including unsaved changes, into a new subfolder and performs exact solid round-trip validation. STEP is not reconstructed from display triangle meshes.
 
-**Restore original shape** 对 STEP 恢复原始三维尺寸并移除本程序增加的切削，保留当前摆放位置。切换为 Box 等其他基础形状会替换草稿中的 STEP 几何，Undo 可恢复。
+For STEP, **Restore original shape** restores the original three-dimensional dimensions and removes cuts added by this application, retaining the current placement. Switching to another primitive such as Box replaces the STEP geometry in the draft; Undo can restore it.
 
-## 保留的数据与同步范围
+## Retained data and synchronization scope
 
-原 STEP 文件不被修改。源 B-rep 和显示网格独立保存：显示网格只用于快速预览，精确布尔、碰撞及 STEP 输出始终使用原 B-rep 和同一编辑参数。名称路径和原分类层作为来源信息保留；导出采用当前部件/模块层级，不声称重建原 CAD 特征树或完全复刻外部装配树。导入颜色按实体保留；外部逐面颜色不作为材料模型。
+The original STEP file is not modified. Source B-rep and display mesh are stored separately: the mesh is only for fast preview, while exact booleans, collisions, and STEP output always use the original B-rep and the same edit parameters. Name paths and original classification layers are retained as provenance; export uses the current part/module hierarchy and does not claim to reconstruct the original CAD feature tree or exactly reproduce an external assembly tree. Imported colors are retained per solid; external per-face colors are not treated as a material model.
 
-新增机械部件不创建新的透镜、场源或探测接受区。替换已有材料几何不会自动改变光学中心、透镜激励、接收面定义或重算电磁场。检查会分别报告实体重叠、孔内材料遮挡、接收区域缺失及需要复核的几何覆盖；仅有几何通过不能作为光学结果已校准的证据。
+Adding a mechanical part does not create a new lens, field source, or detector acceptance region. Replacing existing material geometry does not automatically change optical centers, lens excitation, receiving-plane definitions, or recompute electromagnetic fields. Checks separately report solid overlaps, material obstructing bores, missing receiving areas, and geometric coverage requiring review; passing geometry checks alone is not evidence of calibrated optical results.
 
-独立文件按模块坐标检查；从当前装配打开的编辑器使用捕获的装配位置，检查跨模块材料及已定义真空管。所属模块的光学通路探针按同一装配位移转换到整机坐标，并与所有已安装材料比较，因此相邻模块伸入通孔、但没有碰到孔板时也能报告遮挡。探测接受区域只能由其所属传感材料覆盖，其他模块不能冒充传感面。此检查不会代替重新装配，不自动猜测尺寸修改后的新安装位置。未知内部材料分布保留为未确认包络，不能据此宣称全机无碰撞。
+Standalone files are checked in module coordinates; editors opened from the current assembly use captured assembly positions to check materials across modules and defined vacuum tubes. The owning module's optical-path probes are transformed to full-column coordinates using the same assembly displacement and compared with every installed material, so obstruction can be reported when a neighboring module enters a bore without touching the aperture plate. Detector acceptance regions can only be covered by their own sensor materials; other modules cannot stand in for a sensing surface. This check does not replace reassembly or automatically infer new installation positions after resizing. Unknown internal material distributions remain unconfirmed envelopes and cannot establish that the entire instrument is collision-free.
 
-## 本次实际验证
+## Validation actually performed
 
-- 真实 OpenCascade：STEP 单位换算、层级/颜色/来源、B-rep 完整性、尺寸与孔槽、实体碰撞、导出回读。
-- 真实 Qt 控件：导入、尺寸修改、孔/槽对话框、撤销/恢复、保存重开、精确 STEP 导出、后台取消、失败保护及旧结果失效。
-- 光学对应检查独立于机械碰撞：同模块或相邻模块放在孔中的金属塞不与孔板碰撞，但会被孔通路检查识别为遮挡。
-- 现有孔径倾转替换验证：原光学参考位置保留；倾转仅用于光学作用，机械包络只跟随位置偏移。
+- Actual OpenCascade: STEP unit conversion, hierarchy/colors/provenance, B-rep integrity, dimensions and holes/slots, solid collisions, export and reimport.
+- Actual Qt widgets: import, resizing, hole/slot dialogs, undo/restore, save and reopen, exact STEP export, background cancellation, failure protection, and stale-result invalidation.
+- Optical correspondence checks are independent of mechanical collision: a metal plug from the same or an adjacent module can sit inside a bore without colliding with its plate, yet the bore-path check identifies it as an obstruction.
+- Replacement validation for an existing tilted aperture: the original optical reference position is retained; tilt applies only to optical action, while the mechanical envelope follows only position offsets.
 
-实际编辑示例和回执保存在 `outputs/step_editing_20261011/gui-120129/`：来自已有 C2 aperture STEP 的独立演示副本，宽度乘 1.2，新增直径 1 mm 孔和 0.7 × 3.2 mm 槽，未替换电镜默认配件。`step_editing_gui.png` 是实际 Qt 编辑器离屏截图，`workflow.json` 记录操作与来源摘要，`geometry-report.json` 和 `step-*/step-manifest.json` 保存精确检查/导出结果。
+The actual editing example and receipts are saved in `outputs/step_editing_20261011/gui-120129/`: a standalone demonstration copy of an existing C2 aperture STEP, with width multiplied by 1.2 and an added 1 mm diameter hole and 0.7 × 3.2 mm slot; the microscope's default component was not replaced. `step_editing_gui.png` is an offscreen screenshot of the actual Qt editor, `workflow.json` records operations and a provenance summary, and `geometry-report.json` plus `step-*/step-manifest.json` preserve exact check/export results.
 
-本轮未重新运行耗时的粒子或相干传播；几何验证不等于新的电磁场标定。
+This round did not rerun expensive particle or coherent propagation; geometric validation is not new electromagnetic-field calibration.
 
-## Ray Diagram 与装配参考点
+## Ray Diagram and assembly reference points
 
-Ray Diagram 从所显示结果的装配快照读取参考点。模块安装位置、部件位移以及宿主/父件的位移由 CAD 和光学计算共用；`rotation_x/y/z_mrad` 则表示光学失准，仅旋转光学作用坐标和参考面，不旋转机械包络。改变位置或光学倾转后重算所得结果会更新标线；显示旧计算结果时仍使用旧结果的装配与光学状态，避免把新位置叠到旧轨迹上。
+Ray Diagram reads reference points from the assembly snapshot of the displayed result. Module installation positions, part displacements, and host/parent displacements are shared by CAD and optical calculations; `rotation_x/y/z_mrad` denotes optical misalignment and rotates only optical-action coordinates and reference planes, not mechanical envelopes. Recalculation after changing position or optical tilt updates the markers; displaying an old calculation retains that result's assembly and optical state, avoiding new positions overlaid on old trajectories.
 
-- **机械中心**是 TOML 声明的装配基准点，不是切孔或编辑后的实体包围盒中心。虚线 Z 指示仅便于定位，不代表光学平面。
-- **光学参考面**由 TOML 明确声明。与机械中心分开时显示两条有名称的标线；重合时合并标线并在悬停说明中注明。物镜虚拟参考面、有限场相互作用中心、焦面及共轭面不是同一个概念。
-- 倾转光学面的标线表示通过参考点的当前纵向截线，随 X–Z/Y–Z 观察方向改变；图中横向放大使显示角度不等于真实倾角。配件参考点单独用小十字标记。
-- 双偏转线圈分别显示其 U/L 光学相互作用参考面。孔径倾转时显示有效光学开口的投影轮廓；淡虚线是参考截线，开口投影范围不冒充粒子的实际截断条件。截断使用已有厚孔光学模型，机械孔板包络保持原方向；这是模拟光学失准的近似，不等价于真实孔板发生机械倾转。
-- 相机/探测器接收面仍使用其接收定义，并在说明中同时列出机械中心。机械实体或无实体控制通道不会因绘制标线而新增光学作用。
+- The **mechanical center** is the assembly datum declared in TOML, not the solid's bounding-box center after holes or edits. Its dashed Z indicator is only a locator, not an optical plane.
+- The **optical reference plane** is explicitly declared in TOML. When separate from the mechanical center, two named markers are shown; when coincident, they merge and the tooltip explains this. A virtual objective reference plane, finite-field interaction center, focal plane, and conjugate plane are different concepts.
+- The marker of a tilted optical plane is its current longitudinal intersection through the reference point and changes with the X–Z/Y–Z viewing direction; transverse magnification in the plot makes the displayed angle differ from the actual tilt. Component reference points are separately marked by small crosses.
+- Paired deflector coils show their U/L optical-interaction reference planes separately. A tilted aperture displays the projected outline of the effective optical opening; the faint dashed line is the reference section, and the projected opening is not presented as the actual particle-cutoff condition. Cutoff uses the existing thick-aperture optical model, while the mechanical plate envelope retains its original orientation; this is an approximation for optical misalignment, not a real mechanically tilted aperture plate.
+- Camera/detector receiving planes continue to use their receiving definitions, and their descriptions also list the mechanical center. Drawing a marker does not add optical action to a mechanical solid or nonphysical control channel.
 
-此同步修复不修改透镜、偏转器、消像散器或校正器强度，也不改变默认光学参数或 CAD 外形尺寸。
+This synchronization fix does not alter lens, deflector, stigmator, or corrector strengths, default optical parameters, or CAD dimensions.
 
-## 倾转与机械重叠
+## Tilt and mechanical overlaps
 
-光学倾转不会改变材料实体，因此不会仅因输入倾角产生新的机械碰撞。机械碰撞检查使用声明的 CAD 材料：改变安装位置、位移、尺寸或孔槽后，自动检查会重新排队；关闭自动检查时可用 **Mechanical overlaps → Check now** 检查当前可构造的草稿，即使草稿已有重叠。**Check geometry…** 和保存入口保留完整配置校验。发现的重叠在列表及报告中给出，不会自动搬动配件或修改光学强度来消除重叠。检查范围以报告为准，未知内部结构不能被判定为无碰撞。
+Optical tilt does not change material solids, so entering a tilt angle alone cannot create new mechanical collisions. Mechanical collision checks use declared CAD materials: changes to installation positions, displacements, dimensions, or holes/slots requeue automatic checks; when automatic checking is off, **Mechanical overlaps → Check now** checks the currently constructible draft, even if it already contains overlaps. **Check geometry…** and Save retain full configuration validation. Found overlaps appear in the list and report; parts are not moved or optical strengths changed automatically to eliminate them. The report defines the check's scope; unknown internal structures cannot be declared collision-free.
 
-光学作用轴倾斜后可能偏离固定的机械通孔；光学截断和通路检查与材料实体之间的碰撞是两件事。机械无重叠不保证光学通路畅通，也不证明光学倾转对应了真实磁场的机械成因。
+A tilted optical-action axis may deviate from a fixed mechanical bore; optical cutoff and path checks are separate from collisions between material solids. Absence of mechanical overlap does not guarantee a clear optical path or establish that an optical tilt corresponds to a mechanical cause in the real magnetic field.
 
-## 尺寸联动与保留参考值（2026-10-21）
+## Dimension coupling and retained reference values (2026-10-21)
 
-有效材料尺寸由同一套参数生成原生 3D 和 CAD 实体。两极透镜的 pole gap 编辑保持光学中心和极靴背面不动，只移动相对极面；线圈径向厚度保持内径并改变外径。直接修改绕组 ID/OD 会同步父件的厚度及明确匹配的端板。C1/C2 共用结构的径向关系一并更新；整套复制后这些引用指向副本。尺寸、复制和撤销均先在草稿中完成，保存失败不覆盖源文件。
+Effective material dimensions generate native 3D and CAD solids from the same parameters. Editing the pole gap of a two-pole lens holds the optical center and pole-piece rear faces fixed and moves only the opposing pole faces; coil radial thickness retains the ID and changes the OD. Direct winding ID/OD edits synchronize the parent's thickness and explicitly matching end plates. Radial relationships in the shared C1/C2 structure are updated together; after copying the entire assembly, these references point to the copies. Resizing, copying, and undo occur in the draft first; failed saves do not overwrite the source.
 
-部分旧字段仅是参考或分配范围，不能假装成可编辑的实体尺寸：只有一个已建模极面的 C1/C2 pole gap、未建模光阑载体的 carrier bore、旧 cone angle、已有独立铜绕组长度时的安装/场包络长度。加速管由电极中心和厚度定义实体，偏转器由线圈中心和实际线圈长度定义实体，光阑由板厚及明确的支撑尺寸定义实体；这些部件未参与实体生成的安装分配值同样只读，并说明应编辑哪个实际尺寸。仍参与真空截断的参考范围保留其光学作用说明。真正绘制的透镜参考包络可以调整，但不会被描述为实心材料。
+Some old fields are only references or allocation ranges and must not masquerade as editable solid dimensions: C1/C2 pole gap when only one pole face is modeled, carrier bore for an unmodeled aperture carrier, legacy cone angle, and installation/field-envelope length when separate copper winding lengths already exist. Accelerator solids are defined by electrode centers and thicknesses, deflectors by coil centers and actual coil lengths, and apertures by plate thickness and explicit support dimensions; installation allocations unused in solid generation are likewise read-only and identify the actual dimension to edit. Reference ranges still involved in vacuum cutoff retain descriptions of their optical roles. Lens reference envelopes that are actually drawn can be adjusted but are not described as solid material.
 
-3D 编辑器和通用参数面板采用相同联动规则。同时输入线圈内径、外径及厚度时，只接受相互一致的值；不会悄悄覆盖矛盾的显式输入。替换为 Box/STEP 等形状时，编辑替换体尺寸；原生结构参数作为恢复所需信息保留。恢复原生结构前重新执行其校验。已安装电子枪仍保留电场模型实际使用的电极孔径/外径校验。
+The 3D editor and generic parameter panel use the same coupling rules. When coil ID, OD, and thickness are entered together, only mutually consistent values are accepted; conflicting explicit inputs are not silently overwritten. Replacing a structure with Box/STEP edits the replacement's dimensions, while native-structure parameters are retained for restoration. Native validation runs again before restoring that structure. Installed electron guns retain the electrode aperture/OD checks actually required by their electric-field model.
 
-几何编辑不自动调整激励或修改传播算法。已配置的轴对称 FEM 使用对应材料形状重新计算时，场可以随实体尺寸变化；旧导入场图必须通过更新后的几何标识校验。默认理想/解析模型仍使用既有光学参数。极靴端部 land 的具体几何含义及兼容范围见 [圆透镜模型说明](references/cad-round-lenses.md)。
+Geometry edits do not automatically adjust excitation or change propagation algorithms. When configured axisymmetric FEM is recalculated with the corresponding material shapes, fields can change with solid dimensions; old imported field maps must pass updated geometry-identity validation. Default ideal/analytical models retain existing optical parameters. See the [round-lens model description](references/cad-round-lenses.md) for the exact geometric meaning and compatibility scope of pole-end lands.

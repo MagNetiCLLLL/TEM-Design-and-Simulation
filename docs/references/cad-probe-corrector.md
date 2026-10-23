@@ -1,158 +1,158 @@
-# Probe Corrector 内部三维结构
+# Probe Corrector Internal 3D Structure
 
-核对日期：2026-10-18。范围是当前 C3 + Probe Corrector 的主六极 HP1/HP2，以及与其装配的传递透镜和偏转线包；本次不重建 image corrector。主六极优化完成后，本轮补充 DPH1/DPH2、DP11/DP21/DP22 的载体、径向绝缘覆盖和层间粘接结构。这里的优化指机械表达、参数独立性和几何校验，没有进行光学工作点优化或磁场重新标定。
+Review date: 2026-10-18. The scope is the main hexapoles HP1/HP2 in the current C3 + Probe Corrector, together with their transfer lenses and deflection windings; this round does not rebuild the image corrector. Following the main hexapole improvements, this round adds carriers, radial insulation coverage and interlayer bonding to DPH1/DPH2 and DP11/DP21/DP22. Improvement here means mechanical representation, parameter independence and geometric validation, not optical operating-point optimization or field recalibration.
 
-## 结构依据与精度
+## Structural evidence and accuracy
 
-[Müller 等，2006，Advancing the Hexapole Cs-Corrector for the Scanning Transmission Electron Microscope](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf#page=3)，正文 p.443 与 p.444 的 Figure 3，支持六个径向铁磁极针、向束轴收窄的极头、围绕径向磁芯的线包和公共回磁轭。Figure 3 是内部实物照片；其图注明确没有显示真空 liner。
+[Müller et al., 2006, Advancing the Hexapole Cs-Corrector for the Scanning Transmission Electron Microscope](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf#page=3), p.443 and Figure 3 on p.444, support six radial ferromagnetic pole pins, pole tips narrowing toward the beam axis, windings around radial cores and a common return yoke. Figure 3 is an interior photograph; its caption explicitly says that the vacuum liner is not shown.
 
-照片不能确定本项目所用极面的精确曲率、绕组匝数、加工尺寸或材料曲线。论文实物的外径、孔径与极长没有移植到本项目。当前数值均标为 `engineering_reconstruction_not_oem`；平面渐缩极鼻和矩形整体线包是同层级的工程近似，不是厂家制造图。细节层级遵循 [统一 CAD 规则](CAD_DETAIL_POLICY.md)，保留材料块，不添加无依据的冷却、紧固件、线匝或绝缘支架。
+The photograph cannot establish this project's exact pole-face curvature, turn count, manufacturing dimensions or material curves. The hardware outer diameter, bore and pole length in the paper were not transferred to this project. Current values are all labelled `engineering_reconstruction_not_oem`; flat tapered pole noses and rectangular bulk windings are engineering approximations at the same level, not manufacturer drawings. Detail follows the [common CAD policy](CAD_DETAIL_POLICY.md): retain material volumes without adding unsupported cooling, fasteners, individual turns or insulating supports.
 
-## 上一阶段主六极的实际改进
+## Actual improvements to the main hexapoles in the previous stage
 
-主六极阶段的比较基线是修改前已经存在的 13 实体 HP 模型，不是更早仅显示环形包络的版本。旧模型已经有六根极针、六个铜线包和一个磁轭，不把这些既有实体说成新增硬件。本轮辅助配件修改保留这套主六极几何。
+The main hexapole comparison baseline is the existing 13-solid HP model before modification, not the earlier version showing only an annular envelope. It already had six pole pins, six copper windings and one yoke; these existing solids are not described as added hardware. This round of auxiliary-component changes retains that main hexapole geometry.
 
-| 部位 | 修改前 | 本次改进 |
+| Part | Before modification | Improvement in this round |
 | --- | --- | --- |
-| 极鼻与极针 | 39° 环扇形极靴连接窄矩形杆 | 面向轴线的平面渐缩极鼻连接径向磁芯；每根极针保持一个连通实体 |
-| 绕组 | 矩形实体减矩形窗；尺寸来自函数内比例 | 保留整体矩形线包，明确径向绕组轴、绕组窗口及磁芯间隙；径向位置和尺寸独立保存 |
-| 机械极长 | 隐含取安装包络长度的 80% | 以 `mechanical_hexapole_pole_length_mm` 明确保存；旧文件仍可按原包络比例取得默认值 |
-| 内部尺寸 | 极宽、线包尺寸、磁轭厚度等写死在生成函数中 | 保存为 `mechanical_hexapole_*` 毫米参数，使用常规尺寸编辑和保存格式 |
-| 参数约束 | 主要检查包络、材料孔及实体构造 | 在文件读取和编辑提交时检查有限数、正尺寸、极针/窗口/线包包含关系、周向邻件间隙及线包角点与磁轭间隙 |
+| Pole nose and pole pin | 39° annular-sector pole shoe joined to a narrow rectangular stem | Flat tapered pole nose facing the axis, joined to a radial core; each pole pin remains one connected solid |
+| Winding | Rectangular solid minus a rectangular window; dimensions from in-function ratios | Retains the bulk rectangular winding, explicitly defining its radial axis, window and core clearance; radial position and dimensions are saved independently |
+| Mechanical pole length | Implicitly 80% of installation-envelope length | Explicitly saved as `mechanical_hexapole_pole_length_mm`; old files can still obtain defaults from the original envelope ratio |
+| Internal dimensions | Pole width, winding dimensions, yoke thickness, etc. hardcoded in the generator | Saved as millimetre `mechanical_hexapole_*` parameters using the regular dimension editor and save format |
+| Parameter constraints | Mainly envelope, material-bore and solid-construction checks | Loading and edit submission check finite numbers, positive dimensions, pole/window/winding containment, circumferential neighbour clearances and winding-corner/yoke clearances |
 
-这提高了内部结构的可读性、可调整性和几何一致性，没有证明球差更小或校正性能更好。
+This improves internal-structure readability, adjustability and geometric consistency; it does not demonstrate lower spherical aberration or better correction performance.
 
-## 当前配置尺寸
+## Current configured dimensions
 
-下表读取自 `configs/instruments/column/C3_ProbeCorrector.toml`，单位均为 mm。径向长度沿极针方向，宽度沿该极针的局部切向，高度/极长沿束轴 Z。`coil_radial_inset_mm` 从材料孔半径向外量起。
+The table below is read from `configs/instruments/column/C3_ProbeCorrector.toml`; all units are mm. Radial length follows the pole pin, width follows its local tangent, and height/pole length follows beam-axis Z. `coil_radial_inset_mm` is measured outward from the material-bore radius.
 
-| 项目／字段后缀 | HP1 | HP2 |
+| Item / field suffix | HP1 | HP2 |
 | --- | ---: | ---: |
-| 安装包络长度 `length_mm` | 18.1 | 18.2 |
-| 机械极长 `pole_length_mm` | 14.48 | 14.56 |
-| 极鼻端宽 `tip_width_mm` | 2.448 | 2.448 |
-| 极针根宽 `root_width_mm` | 4.896 | 4.896 |
-| 径向渐缩段长 `taper_length_mm` | 8.925 | 8.925 |
-| 磁芯高度 `stem_height_mm` | 7.24 | 7.28 |
-| 磁轭径向厚度 `yoke_thickness_mm` | 5.61 | 5.61 |
-| 线包径向起始偏移 `coil_radial_inset_mm` | 10.71 | 10.71 |
-| 线包径向长度 `coil_radial_length_mm` | 6.885 | 6.885 |
-| 线包宽度 `coil_width_mm` | 12.24 | 12.24 |
-| 线包高度 `coil_height_mm` | 12.67 | 12.74 |
-| 窗口宽度 `coil_window_width_mm` | 6.885 | 6.885 |
-| 窗口高度 `coil_window_height_mm` | 8.688 | 8.736 |
-| 光学有效场宽度 `effective_length_mm`，高斯 FWHM | 10.0 | 6.0 |
+| Installation-envelope length `length_mm` | 18.1 | 18.2 |
+| Mechanical pole length `pole_length_mm` | 14.48 | 14.56 |
+| Pole-tip width `tip_width_mm` | 2.448 | 2.448 |
+| Pole-root width `root_width_mm` | 4.896 | 4.896 |
+| Radial taper length `taper_length_mm` | 8.925 | 8.925 |
+| Core height `stem_height_mm` | 7.24 | 7.28 |
+| Radial yoke thickness `yoke_thickness_mm` | 5.61 | 5.61 |
+| Winding radial start offset `coil_radial_inset_mm` | 10.71 | 10.71 |
+| Winding radial length `coil_radial_length_mm` | 6.885 | 6.885 |
+| Winding width `coil_width_mm` | 12.24 | 12.24 |
+| Winding height `coil_height_mm` | 12.67 | 12.74 |
+| Window width `coil_window_width_mm` | 6.885 | 6.885 |
+| Window height `coil_window_height_mm` | 8.688 | 8.736 |
+| Optical effective-field width `effective_length_mm`, Gaussian FWHM | 10.0 | 6.0 |
 
-除明确列出的 `length_mm` 与 `effective_length_mm` 外，上述字段均加 `mechanical_hexapole_` 前缀。两块主六极均保持 75 mm 外径、24 mm 材料孔及配置声明的 20 mm 通束孔；后者不能当作独立真空管材料模型的实测内径。线包与磁芯的单边切向间隙为 0.9945 mm；单边轴向间隙分别为 HP1 的 0.724 mm 与 HP2 的 0.728 mm。这些是当前重建几何的间隙，不是装配公差或实测值。
+Except for the explicitly listed `length_mm` and `effective_length_mm`, these fields have the `mechanical_hexapole_` prefix. Both main hexapoles retain a 75 mm outer diameter, 24 mm material bore and configured 20 mm beam-clearance bore; the latter cannot be treated as a measured inner diameter of the separate vacuum-tube material model. The one-sided tangential winding/core clearance is 0.9945 mm; one-sided axial clearances are 0.724 mm for HP1 and 0.728 mm for HP2. These are clearances in the reconstructed geometry, not assembly tolerances or measurements.
 
-机械极长、铜线包高度、安装包络长度与有效场宽度是独立参数。改变显式机械尺寸不会改写 `effective_length_mm`；缩小安装包络到容不下已保存内部尺寸时拒绝提交，不自动压缩内部结构。
+Mechanical pole length, copper-winding height, installation-envelope length and effective-field width are independent. Changing explicit mechanical dimensions does not rewrite `effective_length_mm`; shrinking the installation envelope until saved internal dimensions no longer fit is rejected, without automatically compressing the interior.
 
-## 与其他配件共用的格式
+## Format shared with other components
 
-TOML 是尺寸来源；`probe_hexapole_geometry.py` 解析并校验尺寸，`cad_multipoles.py` 生成 `SolidSpec`。每块主 HP 继续输出 `pole_pin_1`–`pole_pin_6`、`coil_1`–`coil_6`、`return_yoke`，沿用 `soft_magnetic` 与 `copper_winding` 材料类别和模块局部毫米坐标。
+TOML supplies dimensions; `probe_hexapole_geometry.py` parses and validates them, and `cad_multipoles.py` generates `SolidSpec`. Each main HP still outputs `pole_pin_1`–`pole_pin_6`, `coil_1`–`coil_6` and `return_yoke`, retaining the `soft_magnetic` and `copper_winding` categories and module-local millimetre coordinates.
 
-同一实体配方同时供原生三维网格与解析 STEP 使用，沿用 `temsim-analytic-material-cad-v1` 目录格式和 `temsim-analytic-step-v1` 导出记录。STEP 由解析体构建，不把显示三角网格转换为 STEP。全局安装变换、部件身份和材料颜色沿用原流程。机械材料分类不等同于已标定磁导率或 B–H 曲线。
+The same solid recipe supplies native 3D meshes and analytic STEP, retaining the `temsim-analytic-material-cad-v1` catalog format and `temsim-analytic-step-v1` export record. STEP is built from analytic solids, not display triangles. Global installation transforms, component identities and material colours follow the existing workflow. Mechanical material categories do not imply calibrated permeability or B–H curves.
 
-ADL、TL21、TL22、TL12 继续使用现有圆透镜材料子件；DPH1/DPH2 和 DP 保持原铜线包、宿主和位置，新增的五个被动材料区也通过同一 `SolidSpec`、原生三维和 STEP 路线输出。载体与覆盖层沿用 `insulator` 材料类别，粘接层单独记录材料角色，不赋予未经校准的介电、磁性或热学参数。HPC、QPC、HPol、QPol、QPH 等未确认物理宿主的控制通道不获得猜测的独立材料实体，也不产生额外光学激励。现有真空管由其独立结构负责，不在 HP 内重复添加。
+ADL, TL21, TL22 and TL12 retain the existing round-lens material subparts. DPH1/DPH2 and DP retain their copper windings, hosts and positions; the five added passive material regions also use the same `SolidSpec`, native 3D and STEP routes. Carriers and covers use `insulator`; bonding layers record a separate material role without uncalibrated dielectric, magnetic or thermal parameters. HPC, QPC, HPol, QPol, QPH and other control channels with unconfirmed physical hosts receive neither conjectured independent material solids nor extra optical excitation. The existing vacuum tube remains its own structure and is not duplicated inside HP.
 
-## 六极以外的内部配件
+## Internal components other than hexapoles
 
-下表是当前模型的材料覆盖范围；不能把“已建模”读成厂家实物结构已完整验证。
+The table describes current material-model coverage; “modelled” does not mean complete verification of the manufacturer's hardware.
 
-| 配件 | 当前材料结构与装配位置 | 本轮处理及限制 |
+| Component | Current material structure and installation position | Treatment and limitations in this round |
 | --- | --- | --- |
-| DPH2 / DPH1 | 每组 4 个闭合铜线包，X/Y 两对正交马鞍线包分处两层；分别装在 HP2 / HP1 材料孔内 | 每组增加 2 个载体、2 个径向覆盖层、1 个层间粘接区；六极自身的 6 组励磁线包与偏转线包是不同部件 |
-| DP22 / DP21 | 各 4 个相同类型的线包；在当前配置中分别位于 TL22 下游和 TL21 上游 | 增加相同的五个被动材料区，共用参数、编辑和 STEP 构造；保存位置不是 OEM 安装尺寸 |
-| DP11 | 4 个线包，在当前配置中位于 HP1 与 TL12之间 | 增加相同的五个被动材料区；保持独立材料部件和独立 STEP |
-| ADL / TL22 / TL21 / TL12 | 每个单元包含上下极靴、环形励磁线包、回磁轭与外壳 | 已沿用其他圆透镜的材料子件格式；本轮未重新设计 |
-| QPH1/2、HPC/QPC、HPol/QPol | 有光学通道，实际线圈宿主未确认 | 暂无独立材料实体，不能从名称推断磁极数或增加独立铁芯 |
-| DP12 | 虚拟对准参考 | 不额外生成偏转器材料实体；下游 AC 扫描线圈是另一个已建模部件 |
+| DPH2 / DPH1 | 4 closed copper windings per group; orthogonal X/Y saddle pairs occupy two layers, installed inside HP2 / HP1 material bores respectively | Adds 2 carriers, 2 radial covers and 1 interlayer bonding region per group; the hexapole's own 6 excitation windings are distinct from these deflection windings |
+| DP22 / DP21 | 4 windings of the same type each; currently downstream of TL22 and upstream of TL21 respectively | Adds the same five passive regions with shared parameters, editing and STEP construction; saved positions are not OEM installation dimensions |
+| DP11 | 4 windings, currently between HP1 and TL12 | Adds the same five passive regions; retains separate material components and a separate STEP |
+| ADL / TL22 / TL21 / TL12 | Each unit contains upper/lower pole shoes, an annular excitation winding, return yoke and housing | Already follows other round lenses' material-subpart format; not redesigned this round |
+| QPH1/2, HPC/QPC, HPol/QPol | Optical channels exist; actual coil hosts remain unconfirmed | No independent material solids; names cannot establish pole counts or justify independent iron cores |
+| DP12 | Virtual alignment reference | No extra deflector material solid; the downstream AC scan coil is another modelled component |
 
-五组 DPH/DP 原有的 20 个铜线包保持不变。主六极阶段的 66 实体装配及其检查是历史基线；本轮每组增加 5 个被动材料区，配方合计由 66 增至 91 个实体，不能沿用旧检查结果证明新增实体通过验证。
+The 20 original copper windings in the five DPH/DP groups remain unchanged. The main hexapole stage's 66-solid assembly and checks are historical baselines. Adding 5 passive regions per group increases the recipe from 66 to 91 solids; old checks cannot validate the additions.
 
-四个线包表示两轴偏转的两对绕组，不表示一只四极透镜。铜线包内外径仍为 22.2/23.8 mm，两层各厚 0.32 mm，周向跨度为 120°。这些尺寸描述整体导体占用空间，不代表导线直径、匝数或逐匝印制走线。
+Four windings represent two pairs for two-axis deflection, not a quadrupole lens. Copper-winding inner/outer diameters remain 22.2/23.8 mm, each layer is 0.32 mm thick, and angular span is 120°. These dimensions describe bulk conductor occupancy, not wire diameter, turn count or individual printed traces.
 
-## 本轮偏转器支撑结构的依据和区别
+## Evidence and differences for this round of deflector supports
 
-[CEOS 的 multipole-coils 专利](https://patents.google.com/patent/US20090079531A1/en) Fig. 1 支持卷成圆筒的柔性载体；Fig. 4 描述导体覆盖绝缘及层间粘接；Fig. 6 支持同心双方向绕组；Figs. 10–11 描述孔内或凹槽安装。这些依据用于 `bonded_flexible_pcb_equivalent` 结构族，不证明当前命名通道采用同一原厂构造。专利未确定本模型的层厚、聚合物或胶种。
+The [CEOS multipole-coils patent](https://patents.google.com/patent/US20090079531A1/en), Fig. 1, supports a flexible carrier rolled into a cylinder; Fig. 4 describes conductor-cover insulation and interlayer bonding; Fig. 6 supports concentric windings in two directions; Figs. 10–11 describe bore or recess mounting. This evidence supports the `bonded_flexible_pcb_equivalent` structural family, not proof that the named channels use the same factory construction. The patent does not establish this model's layer thicknesses, polymer or adhesive type.
 
-| 内容 | 原模型 | 本轮模型 |
+| Item | Previous model | Model in this round |
 | --- | --- | --- |
-| 线包载体 | 仅显示 4 个铜线包，没有材料载体 | 两层各增加一个圆筒状绝缘基材，承托对应铜线包 |
-| 径向绝缘 | 两导体层之间显示 0.16 mm 空隙 | 分配为 X 覆盖层 0.04 mm、粘接层 0.08 mm、Y 载体 0.04 mm；另有 X 载体和 Y 覆盖层 |
-| 层间固定 | 没有可见材料结构 | 增加粘接区，表达层间相对位置由粘接保持；胶种、热导率及连接强度未指定 |
-| 对宿主的安装 | 只记录 HP 内嵌或透镜之间的位置 | 保留位置关系；未添加没有资料支持的硬质骨架、螺钉、夹箍、支肩或接头 |
+| Winding carrier | Only 4 copper windings, no material carrier | One cylindrical insulating substrate per layer, supporting its copper windings |
+| Radial insulation | 0.16 mm gap between conductor layers | Allocated to 0.04 mm X cover, 0.08 mm bonding layer and 0.04 mm Y carrier, plus an X carrier and Y cover |
+| Interlayer attachment | No visible material structure | Adds a bonding region representing bonded relative positioning; adhesive type, thermal conductivity and joint strength are unspecified |
+| Host mounting | Only HP nesting or position between lenses recorded | Retains the relationships; no unsupported rigid formers, screws, clamps, shoulders or connectors |
 
-以下是工程分配的径向材料范围，单位为 mm，半径均相对局部束轴。载体和覆盖层厚度各为 0.04 mm；层间粘接厚度由保留的铜层间距扣除相邻绝缘层得到，当前为 0.08 mm。
+The following radial material ranges are engineering allocations in mm, relative to the local beam axis. Carriers and covers are each 0.04 mm thick. Bonding thickness is the retained copper-layer spacing minus adjacent insulating layers, currently 0.08 mm.
 
-| 材料区 | 内半径 | 外半径 | 新增情况 |
+| Material region | Inner radius | Outer radius | Addition status |
 | --- | ---: | ---: | --- |
-| X 载体 | 11.06 | 11.10 | 新增 |
-| X 铜线包 | 11.10 | 11.42 | 原有两只线包 |
-| X 径向覆盖层 | 11.42 | 11.46 | 新增 |
-| 层间粘接区 | 11.46 | 11.54 | 新增 |
-| Y 载体 | 11.54 | 11.58 | 新增 |
-| Y 铜线包 | 11.58 | 11.90 | 原有两只线包 |
-| Y 径向覆盖层 | 11.90 | 11.94 | 新增 |
+| X carrier | 11.06 | 11.10 | Added |
+| X copper winding | 11.10 | 11.42 | Two existing windings |
+| X radial cover | 11.42 | 11.46 | Added |
+| Interlayer bonding region | 11.46 | 11.54 | Added |
+| Y carrier | 11.54 | 11.58 | Added |
+| Y copper winding | 11.58 | 11.90 | Two existing windings |
+| Y radial cover | 11.90 | 11.94 | Added |
 
-支撑叠层总内外径为 22.12/23.88 mm，较原铜线包径向各扩展 0.04 mm；在 24 mm 的 HP 材料孔内保留 0.06 mm 外侧径向间隙。轴向位置和原铜线包几何不因这些新增材料改变。
+The support stack's total inner/outer diameters are 22.12/23.88 mm, extending 0.04 mm radially on each side of the original copper windings and retaining 0.06 mm outer radial clearance in the 24 mm HP material bore. Axial positions and original copper geometry are unchanged.
 
-这里的圆筒基材、覆盖和粘接是整体叠层等效体，只表示径向覆盖面；没有补齐导体侧壁的共形绝缘、逐匝间隙、过孔、卷绕接缝或完整制造叠层。层间粘接不等于已经复原插入件对宿主的实际固定方式。改善的是载体、绝缘和层间连接的可读性，没有据此宣称场更纯、散热更好或球差性能提升。
+These cylindrical substrates, covers and bonding regions are bulk equivalent stack volumes representing radial coverage only. They do not complete conformal conductor-sidewall insulation, inter-turn gaps, vias, winding seams or the manufacturing stack. Interlayer bonding does not reconstruct the insert's actual attachment to its host. The improvement is the readability of carriers, insulation and interlayer connections, without claims of purer fields, better cooling or improved spherical-aberration performance.
 
-独立真空管当前实际 CAD 材料内外径为 5.76/19.2 mm，与配置声明的 20 mm 通束孔不是同一个量；旧说明中将其写作 20/20.5 mm 的说法不适用于当前材料配方。本轮保持该真空管不变，偏转器载体与其外壁的径向间隙为 1.46 mm。通束声明和真空管实际材料孔径的差异仍需单独核对，不能用本轮支撑建模掩盖。
+The separate vacuum tube currently has actual CAD material inner/outer diameters of 5.76/19.2 mm, distinct from the configured 20 mm beam-clearance bore; the previous 20/20.5 mm description does not apply to the current material recipe. This round retains that tube, with 1.46 mm radial clearance to the deflector carrier. The discrepancy between the beam-clearance declaration and actual tube bore still needs separate review and must not be obscured by this support modelling.
 
-所有新增材料为被动机械结构，不增加光学通道，也不由 CAD 直接推导偏转磁场。数值尺寸仍标为 `engineering_reconstruction_not_oem`；材料配色不代表材料性能已经验证。
+All added materials are passive mechanical structures. They add no optical channels and do not directly derive deflection fields from CAD. Dimensions remain labelled `engineering_reconstruction_not_oem`; material colours do not imply validated properties.
 
-## 后台导出与检查
+## Background export and checks
 
-生成目录及预览，不操作桌面：
+Generate the catalog and previews without operating the desktop:
 
 ```powershell
 .venv/Scripts/python.exe scripts/export_probe_corrector_model.py --output outputs/probe_corrector_auxiliary_20261018 --preview
 ```
 
-输出目录保存 `catalog.json`、`comparison.json` 及原生三维后台预览。偏转器支撑的前后对照图为 `deflector-support-comparison.png`；装配图和偏转器放大图沿用 `probe-corrector-assembly.png`、`probe-deflectors.png`。有修改前保存的目录时，可追加 `--baseline-catalog <before-catalog.json>` 生成同一尺度的前后对照。上一阶段 `outputs/probe_corrector_structure_20261018` 保留为历史结果，不用其 66 实体检查替代本轮验证。STEP 仍使用现有导出器：
+The output directory stores `catalog.json`, `comparison.json` and native 3D background previews. The deflector-support comparison is `deflector-support-comparison.png`; assembly and enlarged deflector views retain `probe-corrector-assembly.png` and `probe-deflectors.png`. With a saved pre-change catalog, add `--baseline-catalog <before-catalog.json>` for a same-scale comparison. Previous-stage `outputs/probe_corrector_structure_20261018` remains historical; its 66-solid checks do not replace this round's validation. STEP still uses the existing exporter:
 
 ```powershell
 environment/cad/Scripts/python.exe scripts/export_cad_models.py outputs/probe_corrector_auxiliary_20261018/catalog.json --output outputs/probe_corrector_auxiliary_20261018/step
 ```
 
-STEP 导出器会重新读取导出文件，核对实体数量、体积、边界、名称、颜色及材料分类。几何检查需覆盖原有铜线包不变、五组新增材料数量与径向次序、正的层厚、相邻材料接触而无体积穿插、与 HP 及实际真空管的间隙、轴向中心和光学输入保持。主六极仍需保留六组 60° 对称、每根极针连通、磁轭连接及绕组/磁芯间隙检查。以上是验证范围，具体结果记录如下。这些检查不能代替三维磁场计算或硬件验证。
+The STEP exporter rereads files to check solid counts, volumes, bounds, names, colours and material categories. Geometry checks must cover unchanged original copper, added-material counts and radial ordering in five groups, positive thicknesses, contact without volumetric intersections, HP/actual-vacuum-tube clearances, and preserved axial centres and optical inputs. Main hexapoles retain checks for sixfold 60° symmetry, connected pole pins, yoke connections and winding/core clearances. This is the validation scope; results follow. These checks do not replace 3D field calculations or hardware validation.
 
-本轮后台结果：323 项相关回归全部通过；10 个 STEP 文件回读通过。新旧目录逐实体对比为新增 25 个被动实体、原有 66 个实体形状和材料不变。加入同一轴向范围的实际真空管段后，92 个解析实体没有超出公差的材料体积交叠，记录 90 处材料接触；DPH 与 HP 的最小外侧径向间隙为 0.06 mm。原 TOML 的光学数值、位置和有效场长度没有变化。结果位于 `regression-final.xml`、`comparison.json`、`configuration-comparison.json`、`step/step-manifest.json` 和 `collision/report.json`。
+Background results: all 323 related regressions passed; 10 STEP files passed rereading. Per-solid catalog comparison found 25 added passive solids, with the original 66 solids' shapes and materials unchanged. Including the actual vacuum-tube segment over the same axial range, 92 analytic solids had no material-volume overlaps beyond tolerance, with 90 material contacts recorded. Minimum DPH/HP outer radial clearance was 0.06 mm. Original TOML optical values, positions and effective-field lengths were unchanged. Results are in `regression-final.xml`, `comparison.json`, `configuration-comparison.json`, `step/step-manifest.json` and `collision/report.json`.
 
-新增尺寸使用与其他配件相同的编辑、撤销和保存机制。载体/覆盖层不能为非正值、布尔值或非有限值，必须留有正厚度的层间粘接区，并保持通束约束；DPH 支撑外径不能借父子装配的重叠许可进入 HP 孔壁。此限制检查名义同轴安装包络，任意移动/倾斜后的装配仍应使用精确几何检查。后续普通 TEM 偏转器的资料与现有硬件清单见 [普通偏转器研究](cad-multipoles.md#ordinary-tem-deflectors-follow-on-review-2026-10-18)。
+New dimensions use the same edit, undo and save mechanisms as other components. Carrier/cover values cannot be nonpositive, Boolean or nonfinite; a positive-thickness bonding region and beam-clearance constraints are required. Parent–child overlap permission cannot allow the DPH support to enter the HP bore wall. This checks nominal coaxial installation envelopes; arbitrary movement/tilt still requires exact geometry checks. References and existing ordinary TEM deflector hardware are listed in the [ordinary deflector study](cad-multipoles.md#ordinary-tem-deflectors-follow-on-review-2026-10-18).
 
-## 2026-10-20 逐配件复核：导体层空隙绝缘
+## 2026-10-20 component review: conductor-gap insulation
 
-上面的 91 实体和 323 项测试是上一轮径向支撑模型的历史结果。逐配件复核发现：五个径向环层已经存在，但铜线包之间以及线包窗口中的空间仍为空，尚未表达填充型柔性叠层的导体侧面绝缘。
+The 91 solids and 323 tests above are historical results from the previous radial-support model. Component review found five existing radial annular layers, but empty spaces between copper windings and inside winding windows, without conductor-side insulation representing a filled flexible stack.
 
-本次仅对当前 `C3_ProbeCorrector.toml` 的 DPH2、DP22、DP21、DPH1、DP11 启用 `winding_support_fill_conductor_gaps = true`。依据仍是 [CEOS US20090079531A1](https://patents.google.com/patent/US20090079531A1/en) Fig. 4 所述覆盖绝缘，以及全文描述的整面粘接、避免层间空气间隙。选择填充型叠层是**结构族的工程推断**，不是这些 DPH/DP 原厂内部结构已获验证；未指定树脂、介电常数或热学性能。
+This round enables `winding_support_fill_conductor_gaps = true` only for DPH2, DP22, DP21, DPH1 and DP11 in current `C3_ProbeCorrector.toml`. Evidence remains the cover insulation in [CEOS US20090079531A1](https://patents.google.com/patent/US20090079531A1/en) Fig. 4 and the full text's full-surface bonding to avoid interlayer air gaps. Selecting a filled stack is an **engineering inference about the structural family**, not verification of these DPH/DP factory interiors. Resin, dielectric constant and thermal properties are unspecified.
 
-每组新增 X、Y 两个 `conductor_gap_insulation` 材料区。每个区严格由原铜层的完整环形体减去该层的两只原铜线包得到，既填充窗口，也填充两只线包之间的角向空隙。它们没有引入新尺寸，仍在原内外径及原轴向范围内；原铜线包、五个径向支撑区、HP 孔隙、光学场强、有效长度、物理宿主与共享通道均保持不变。每个材料区可包含数个互不连接的体积，与相邻载体和覆盖层接触，不表示一块独立可拆卸零件。
+Each group gains X and Y `conductor_gap_insulation` material regions. Each is exactly the original copper layer's complete annulus minus its two original copper windings, filling windows and angular inter-winding gaps. No new dimensions are introduced; regions remain within original diameters and axial extents. Original copper, five radial supports, HP clearances, optical strengths, effective lengths, physical hosts and shared channels remain unchanged. A region may contain disconnected volumes touching adjacent carriers/covers; it is not a separately removable part.
 
-旧文件未声明开关或显式设为 `false` 时保留原五层结构；开关只接受布尔值。原生显示用已有铜线包网格作为减法边界，避免不同圆周采样产生穿插；STEP 使用相同铜线包的解析曲面做减法。两条路径均保持原铜几何不变。此补充仍没有建模逐匝绝缘、过孔、接线端、卷绕接缝或对宿主的紧固方式，也不据此宣称磁场或球差性能改善。
+Old files without the switch or with explicit `false` retain the original five-layer structure; only Boolean values are accepted. Native display subtracts existing copper meshes to avoid intersections from different circumferential sampling; STEP subtracts the same windings' analytic surfaces. Both preserve original copper. This still omits turn-by-turn insulation, vias, terminals, seams and host attachment, and makes no field or spherical-aberration improvement claim.
 
-本轮验证：260 项相关后台/离屏回归及 15 项独立 CAD 回归通过；五组插入件合计 275 对解析材料体积交叠检查通过（阈值 `1e-9 mm³`），记录 90 处材料接触。55 个材料区输出为 5 个单件 STEP 和 1 个集合 STEP，实体数量、体积、边界、名称、材质和 RGBA 颜色全部回读通过。比较确认新增 10 个区域，原 45 个区域的形状和材料、全部光学输入均不变。结果位于 `outputs/corrector_detail_20261020/` 下的 `regression.xml`、`analytic-contacts.json`、`configuration-comparison.json` 和 `step/step-manifest.json`。STEP 检查同时修复了一个公共问题：同一材料区含多个不连通实体时，颜色必须随实体保存；只有未显式设色的实体才继承区域默认颜色，原有实体、表面或曲线颜色不被覆盖。回读只在每个实体都具有相同已保存颜色时恢复区域颜色，缺色或混色不会被掩盖。
+Validation: 260 related background/offscreen regressions and 15 independent CAD regressions passed; 275 analytic material-volume pairs across five inserts passed overlap checks (threshold `1e-9 mm³`), with 90 contacts. The 55 material regions were exported as 5 individual STEP files and 1 collection STEP; solid counts, volumes, bounds, names, materials and RGBA colours passed rereading. Comparison confirmed 10 additions, with original 45-region shapes/materials and all optical inputs unchanged. Results are under `outputs/corrector_detail_20261020/`: `regression.xml`, `analytic-contacts.json`, `configuration-comparison.json` and `step/step-manifest.json`. STEP checks also fixed a shared issue: colours must be saved per solid when a region contains disconnected solids. Only solids without explicit colours inherit defaults; existing solid, surface or curve colours are not overwritten. Rereading restores a region colour only when every solid has the same saved colour, without hiding missing or mixed colours.
 
-## 2026-10-20 HP2 绕组骨架与磁芯粘接适配
+## 2026-10-20 HP2 winding-former and core-bonding adaptation
 
-HP2 原模型的六根内收极针、六只铜线包和公共磁轭共 13 个材料区保持原样。本次对三种 Probe Corrector 配置的 HP2 同步增加六只空心绕组骨架、六个磁芯周围的粘接等效区，共 25 区；HP1 和未声明新 profile 的旧文件保持原模型。
+HP2's original 13 material regions—six inward-tapering pole pins, six copper windings and a common yoke—remain unchanged. HP2 in all three Probe Corrector configurations gains six hollow winding formers and six equivalent core-bonding regions, totalling 25 regions. HP1 and old files without the new profile retain their previous model.
 
-一手资料 [JEOL 多极子制造专利 JP2004241190A](https://patents.google.com/patent/JP2004241190A/en) 的 [0005] 与 Fig.7(c,d) 介绍以空心绕线构件承载绕组、将其粘接固定到极芯的通用结构；[0055] 也允许使用 bobbin。这只支持**绕线构件与磁芯连接的结构原则**。它不是 CEOS HP2 生产图，也不能证明本机采用这种装配方式。现有六极外形仍以 [Müller 等 2006，p.443–444、Fig.3](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf) 为拓扑依据。没有混入另一种专利的可拆磁芯、螺钉、定位销或额外磁轭。
+The primary source [JEOL multipole manufacturing patent JP2004241190A](https://patents.google.com/patent/JP2004241190A/en), [0005] and Fig.7(c,d), describes windings on hollow winding members bonded to pole cores; [0055] also permits bobbins. This supports only the **structural principle of connecting winding members to cores**. It is not a CEOS HP2 production drawing or proof of this instrument's assembly. Hexapole topology remains based on [Müller et al. 2006, p.443–444, Fig.3](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf). No removable cores, screws, locating pins or extra yokes from another patent were mixed in.
 
-新 profile 为 `hexapole_support_profile = "bonded_radial_coil_formers"`，两个尺寸显式保存为工程假设：骨架壁厚 0.25 mm、径向两端缘厚度各 0.25 mm。矩形骨架截面及端缘、未指定牌号的绝缘材料分类，也都是适配假设。原铜线包内窗 6.885 × 8.736 mm、芯柱 4.896 × 7.28 mm 不变；骨架内窗因此为 6.385 × 8.236 mm。剩余切向/轴向单侧空间 0.7445/0.478 mm 用作**体积等效粘接填充**，不是声称实机存在如此厚的胶膜。未指定介电、导热、机械或真空性能，亦未解析逐匝漆膜。
+New profile: `hexapole_support_profile = "bonded_radial_coil_formers"`. Two dimensions are explicit engineering assumptions: 0.25 mm former wall thickness and 0.25 mm flange thickness at each radial end. Rectangular cross-sections/flanges and unspecified-grade insulating material are also adaptation assumptions. Original copper windows of 6.885 × 8.736 mm and core stems of 4.896 × 7.28 mm remain unchanged; former inner windows are therefore 6.385 × 8.236 mm. Remaining one-sided tangential/axial spaces of 0.7445/0.478 mm become **volume-equivalent bonding fill**, not a claim of such thick adhesive films in real hardware. Dielectric, thermal, mechanical and vacuum properties remain unspecified; individual turn enamel is unresolved.
 
-绕组轴沿各自径向。骨架筒壁接触原铜窗内壁，两端缘接触原铜线包的径向端面；粘接等效区连接骨架内壁与原芯柱。各材料接触但不穿插，六组沿 60° 等间隔复制。新增材料最内径向位置为 22.46 mm，远离 HP2 原 12 mm 材料孔半径，既不形成轴向端盖也不压缩 DPH2 的通道。HP2 原有效场长度 6 mm、物理包络 18.2 mm、内外径 24/75 mm 及全部光学位置不变。
+Winding axes are radial. Former walls touch original copper-window walls; flanges touch radial copper end faces; equivalent bonding joins former interiors to original core stems. Materials contact without intersection, with six copies at 60° intervals. Added materials start at radius 22.46 mm, well outside HP2's original 12 mm material-bore radius, without axial end caps or DPH2-channel restriction. HP2's original 6 mm effective-field length, 18.2 mm physical envelope, 24/75 mm diameters and all optical positions remain unchanged.
 
-DPH2 完整材料外半径 11.94 mm 与 HP2 极尖的 12 mm 孔保留 0.06 mm 最小径向间隙；实际真空管外半径 9.6 mm 也不受新增支撑影响。HP2 公共磁轭的下端仍在 local Z=703.6 mm，与 TL22 原上端平面接触，不能写作存在正轴向间隙。新增骨架和填充区只延伸至 local Z=700.87 mm，未靠近该接触面。任意移动、倾斜或缩放后的邻件仍需使用实际装配几何检查，不能把本次同轴安装间隙视作所有布置的保证。
+DPH2's full material outer radius of 11.94 mm retains 0.06 mm minimum radial clearance to the 12 mm HP2 pole-tip bore; the actual vacuum tube's 9.6 mm outer radius is also unaffected. HP2's common-yoke lower end remains at local Z=703.6 mm, in planar contact with TL22's original upper end, not a positive axial gap. New formers/fill extend only to local Z=700.87 mm, away from this contact. Arbitrarily moved, tilted or scaled neighbours still require actual assembly-geometry checks; these coaxial clearances do not guarantee all arrangements.
 
-该配方由原生网格与 STEP 共享相同实体描述。编辑壁厚/端缘厚度只改变被动材料；替代 CAD 基体激活时保留但停用此配方，恢复原生结构时重新校验，非法恢复不能半途修改草稿。被动材料分类不是新增 FEM 材料或新的磁场解，不改变当前解析六极、球差或电子传播；若重新基于 CAD 求场，应另行建立材料与边界条件。
+Native mesh and STEP share the solid description. Wall/flange edits change passive materials only. Replacement CAD retains but disables this recipe; restoring native geometry revalidates it, and invalid restoration cannot partially change a draft. Passive material categories are not new FEM materials or field solutions and do not alter current analytic hexapoles, spherical aberration or electron propagation; CAD-based field recomputation needs separate material and boundary definitions.
 
 
-## 2026-10-20 DPH2 轴向封边
+## 2026-10-20 DPH2 axial edge insulation
 
-DPH2 在原 11 区基础上新增两个 0.04 mm 被动环形封边，保留铜、4 mm 有效场长度及光学通道。完整材料范围、HP2/真空管/TL22 间隙、工程推断边界和实际场/粒子前后验证见 [DPH2 轴向封边复核](dph2-edge-insulation.md)。该封边是覆盖叠层结构族的工程适配，未声称属于已核实的 DPH2 原厂内部形状。
+DPH2 adds two 0.04 mm passive annular edge seals to its original 11 regions, retaining copper, 4 mm effective-field length and optical channels. Full material extents, HP2/vacuum-tube/TL22 clearances, inference limits and actual before/after field/particle validation are in the [DPH2 axial edge-insulation review](dph2-edge-insulation.md). This is an engineering adaptation of a covered-stack family, not a claimed verified factory DPH2 interior shape.
 
 ## Winding length versus installation allocation (2026-10-21)
 
@@ -160,13 +160,13 @@ Image-corrector DPH/DP inserts with an explicit `winding_axial_length_mm` use th
 
 The distinction is conditional: existing probe inserts without an explicit copper length, including DPH2, still use their saved `length_mm` as the physical winding length. Their original dimension remains editable. No automatic copper scaling from an optical allocation is introduced. These are the same engineering winding reconstructions already documented above, not additional OEM dimensions.
 
-## 2026-10-21：TL22 下游配件复核
+## 2026-10-21: review downstream of TL22
 
-在上述历史基线之后，本轮继续检查 DP22、DP21、TL21、DPH1、HP1、DP11 和 TL12，为 HP1 增加显式绕组骨架/粘接区，为 TL21/TL12 增加各自保存尺寸的端部叠层，并按空余空间选择 DPH/DP 封边侧。三种 Probe 配置同步采用这些被动结构。原铜、铁磁材料与光学值保留。
+After the historical baselines above, this round reviews DP22, DP21, TL21, DPH1, HP1, DP11 and TL12, adding explicit winding formers/bonding to HP1 and separately dimensioned end stacks to TL21/TL12, and selecting DPH/DP edge-seal sides by available space. All three Probe configurations adopt these passive structures. Original copper, ferromagnetic materials and optical values are retained.
 
-逐件变化、真空管间隙、三处未解决的铜—极靴零间隙接触、尺寸编辑一致性修复及后台证据见 [本轮总检查记录](probe-lower-detail-review-2026-10-21.md)、[偏转器记录](probe-lower-deflector-details-2026-10-21.md) 和 [传递透镜记录](probe-lower-transfer-lenses-2026-10-21.md)。上文各日期的材料区数量仅指对应历史阶段。
+Individual changes, tube clearances, three unresolved copper–pole-shoe zero-clearance contacts, dimension-editing consistency fixes and background evidence are in the [overall review](probe-lower-detail-review-2026-10-21.md), [deflector record](probe-lower-deflector-details-2026-10-21.md) and [transfer-lens record](probe-lower-transfer-lenses-2026-10-21.md). Earlier material-region counts apply only to their respective historical stages.
 
 
-## 2026-10-21：三处 DP 铜端接触的后续处理
+## 2026-10-21: follow-up on three DP copper end contacts
 
-DP22、DP21、DP11 采用显式 `winding_axial_length_mm`，固定中心下每端铜内收 0.14 mm、两端均加 0.04 mm 绝缘封边，至相邻极靴留下 0.10 mm 名义装配间隙。光学分配和有效厚度保留；所有极靴、磁隙及真空管保持。具体尺寸是工程重建，公开资料支持绝缘结构族，不提供本机制造尺寸或耐压等级。铜形状已按本次有意缩短，不能沿用上一阶段“所有铜形状不变”的结论。详见 [端部绝缘与间隙修复记录](probe-contact-isolation-2026-10-21.md)。
+DP22, DP21 and DP11 use explicit `winding_axial_length_mm`: fixed-centre copper retracts 0.14 mm per end, with 0.04 mm insulation at both ends, leaving 0.10 mm nominal assembly clearance to adjacent pole shoes. Optical allocations/effective thicknesses, all pole shoes, magnetic gaps and vacuum tubes are retained. Dimensions are engineering reconstructions; public sources support the insulation family but not this instrument's manufacturing dimensions or voltage ratings. Copper shapes are intentionally shortened, so the previous “all copper shapes unchanged” conclusion no longer applies. See the [end-insulation and clearance repair record](probe-contact-isolation-2026-10-21.md).

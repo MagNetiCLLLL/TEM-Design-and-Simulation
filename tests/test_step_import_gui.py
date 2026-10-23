@@ -38,7 +38,7 @@ sys.exit(1 if r.get('fail') else 0)
 
 
 def test_worker_is_nonblocking_and_result_is_bound_to_immutable_request(qtbot, fake_worker):
-    request = dict(op="import_step", path="输入.step", draft_digest="draft", marker=[1])
+    request = dict(op="import_step", path="input-µ.step", draft_digest="draft", marker=[1])
     job = CadGeometryJob(request, interpreter=sys.executable, worker=fake_worker)
     with qtbot.waitSignal(job.completed, timeout=10000) as result:
         job.start()

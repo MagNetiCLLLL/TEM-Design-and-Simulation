@@ -1,37 +1,37 @@
-# 单镜固有像差与系统残余像差
+# Intrinsic single-lens aberrations and system residual aberrations
 
-## 操作
+## Workflow
 
-在仪器的配件列表选择一个透镜，进入 **Parameters → Operating → Intrinsic aberrations...**。
-每行提供系数（mm）和非轴对称项的方位角（deg），支持科学计数法。
-Apply 只更新所选透镜；Reset draft 只重置本窗口草稿，仍需 Apply。
-原有 Cs、Cc 继续使用原来的单镜输入控件，不在新表中重复定义。
+Select a lens in the instrument component list and open **Parameters → Operating → Intrinsic aberrations...**.
+Each row provides a coefficient (mm) and an azimuth (deg) for non-axisymmetric terms, with scientific notation supported.
+Apply updates only the selected lens; Reset draft resets only this dialog's draft and still requires Apply.
+Existing Cs and Cc retain their original single-lens input controls and are not redefined in the new table.
 
-修改后重新计算 Ray Diagram 或 Electron beam。新增输入属于工作点，随保存的输入、
-计算快照和结果归档保存，不修改基础 TOML 中的默认激励。
-上一版（schema 78）输入可加载为新增项全零；重新保存采用 schema 79。
-旧的已执行缓存不能冒充新版本的传播结果，会重新计算所需部分。
+After editing, recalculate Ray Diagram or Electron beam. The new inputs belong to the operating point and are retained in saved inputs,
+calculation snapshots, and result archives; they do not change default excitations in the base TOML.
+Inputs from the preceding version (schema 78) load with all new terms zero; resaving uses schema 79.
+Old executed caches cannot masquerade as new-version propagation results; required parts are recalculated.
 
-在 Scanning Image 的 Probe Aberrations、或 Illuminating Image 的 Image Aberrations
-中进入 **System residual → Measure system residual**，测量最近一次已完成计算的
-光学快照。实时修改的参数须先重新计算，才进入这里的快照。
-测量有独立取消按钮，打开页面不会自动运行测量。
+In Scanning Image's Probe Aberrations or Illuminating Image's Image Aberrations,
+open **System residual → Measure system residual** to measure the optical snapshot from the latest
+completed calculation. Live parameter edits must be recalculated before entering this snapshot.
+Measurement has a separate Cancel button; opening the page does not run it automatically.
 
-## 物理定义和所有权
+## Physical definitions and ownership
 
-新增项是 C1（固有散焦）、A1、B2、A2、S3、A3、C5、A5。
-它们采用透镜的局部光学 X/Y 坐标，方位角从局部 +X 转向 +Y。
-所有新增系数默认零；现有源、激励、极性、位置、Cs/Cc 和校正器强度均不自动调整。
-这是一组有限阶模型，尚不包含所有可能的高阶像差。
+The new terms are C1 (intrinsic defocus), A1, B2, A2, S3, A3, C5, and A5.
+They use the lens's local optical X/Y coordinates, with azimuth measured from local +X toward +Y.
+All new coefficients default to zero; existing source, excitation, polarity, position, Cs/Cc, and corrector strengths are not adjusted automatically.
+This is a finite-order model and does not yet include all possible higher-order aberrations.
 
-共享波像差基为
+The shared wave-aberration basis is
 
 \[
 W(\alpha,\phi)=\sum_{n,m}\frac{C_{nm}}{n+1}
 \alpha^{n+1}\cos[m(\phi-\phi_{nm})].
 \]
 
-每镜参考面上的等效薄算子采用局部横坐标 \(q\) 和该镜当前焦距 \(f\)：
+The equivalent thin operator at each lens reference plane uses local transverse coordinate \(q\) and that lens's current focal length \(f\):
 
 \[
 S(q)=-W(q/f),\qquad
@@ -39,61 +39,61 @@ S(q)=-W(q/f),\qquad
 \Delta\theta=\nabla_q S.
 \]
 
-粒子方向与相干相位使用同一个解析多项式及其导数。这里的系数不是任意系统像面上
-直接测得的残余系数；跨透镜比较和汇总必须在明确参考面重新测量，不能直接相加。
-倾转采用已有的有界一阶倾转 canonical/Weyl 近似，并检查余项和采样预算；不是任意大角度精确解。
-光学倾转只变换光学坐标，不旋转机械外包络。
+Particle directions and coherent phases use the same analytical polynomial and its derivatives. These coefficients are not residual coefficients
+measured directly at an arbitrary system image plane; cross-lens comparisons and aggregation require remeasurement at an explicit reference plane, not direct addition.
+Tilt uses the existing bounded first-order canonical/Weyl approximation, with remainder and sampling-budget checks; it is not an exact solution at arbitrary large angles.
+Optical tilt transforms optical coordinates only and does not rotate the outer mechanical envelope.
 
-Cs 只由原有 Cs 算子执行一次。偏移/倾转和 HP 等校正器场产生的效应来自实际传播，
-不应再抄入固有项。采用实际映射磁场的透镜不叠加这些原生等效项，避免对同一磁场
-重复计入；编辑值仍保存供原生解析模型使用。
-系统残余报告仅作观察，不写回单镜输入，也不再施加给全柱波函数。
+Cs is applied once by the existing Cs operator. Effects of offsets/tilts and corrector fields such as HP arise from actual propagation
+and must not be copied into intrinsic terms. Lenses using actual mapped magnetic fields do not superpose these native equivalent terms, avoiding double counting
+of the same field; edited values remain saved for the native analytical model.
+System residual reports are observational only: they do not write back to lens inputs or apply another correction to the full-column wavefunction.
 
-一阶平面判定和有限扫描响应会包含新项对局部一阶响应的影响，尤其是 C1/A1。
-系统残余诊断则明确采用不含新增固有项的名义一阶基线，保留可测的 C1/A1 残余。
+First-order plane classification and finite scan responses include the new terms' effects on local first-order response, especially C1/A1.
+System residual diagnostics explicitly use a nominal first-order baseline without the new intrinsic terms, retaining measurable C1/A1 residuals.
 
-## 残余报告
+## Residual report
 
-- Probe：在样品的精确 Z 平面，以实验室 X/Y 和名义样品面机械角度定义瞳孔。
-- Image：在物镜像面的精确 Z 测量位移，再通过位置传递矩阵折算至样品参考坐标；
-  显示面与系数参考面分别标明。
-- 全部镜片、当前有效偏转、校正器、光学位姿和固有项经过同一生产传播计划。
-  报告保留 C1，显示训练残差、独立验证残差、半角、步长、参考面及实际计算后端。
-- Cc 尚未由这个单能量诊断测量；能量展宽、有限源、样品散射、孔径接受度和步长收敛
-  不属于该报告的验证结论。数值很小不代表真实仪器已无像差。
+- Probe: the pupil is defined at the specimen's exact Z plane using laboratory X/Y and nominal mechanical angles at the specimen plane.
+- Image: displacement is measured at the exact Z of the objective image plane, then mapped back through the position-transfer matrix to specimen reference coordinates;
+  the display plane and coefficient reference plane are labeled separately.
+- All lenses, currently effective deflections, correctors, optical poses, and intrinsic terms pass through the same production propagation plan.
+  The report retains C1 and displays training residual, independent validation residual, semiangle, step size, reference planes, and actual computational backend.
+- Cc is not measured by this single-energy diagnostic; energy spread, finite source, specimen scattering, aperture acceptance, and step-size convergence
+  are outside its validation conclusions. Small numerical values do not mean a real instrument is aberration-free.
 
-旧的单个等效 TEM/STEM 像差传递函数不能完整表达这些沿柱分布的作用，非零新增项
-不得在该路径被静默忽略或误折算成 Cs；完整传播请用 Electron beam。
+The old single equivalent TEM/STEM aberration transfer function cannot fully represent these distributed column effects. Nonzero new terms
+must not be silently ignored or incorrectly converted to Cs in that route; use Electron beam for full propagation.
 
-## 计算和验证范围
+## Computation and validation scope
 
-C1/A1 的二次相位保存在解析载波中，不要求为其密集采样；高阶相位按已有预算细化网格。
-全柱波动算子支持实际 CuPy GPU，CPU/GPU 比较检查复振幅而不只是强度。
-新增固有项的粒子传播与相干计算继续读取顶部同一个 CPU/GPU 选项。Auto 在可用时
-选用 GPU，CPU 可强制使用 CPU，Require GPU 不允许静默回退。没有新增后端按钮。
-对齐光路的普通区间使用已有 CUDA 积分器，在像差平面调用共享的 CuPy 算子；
-只有这些稀疏平面的完整双精度状态用于区间交接，不从绘图精度的轨迹恢复。
-有位姿变化的原生解析透镜、多极场使用 GPU 向量积分，保留同一套场、倾转和像差定义。
-静电场变化时继续传递实际能量及飞行时间。原有 Cs 与新增项在各自参考面仅执行一次。
-任意导入磁场图和残余气体碰撞仍受原有 CPU 支持范围限制，不能据此声称所有计算均在 GPU。
-仅设备不可用或显存不足允许 Auto 从原始输入重新执行 CPU 路径；物理输入错误直接报告。
+C1/A1 quadratic phases are stored in the analytical carrier and need not be densely sampled; higher-order phases refine the grid within the existing budget.
+Full-column wave operators support actual CuPy GPU execution; CPU/GPU comparisons check complex amplitudes, not just intensity.
+Particle propagation and coherent calculations with new intrinsic terms continue to read the same top-level CPU/GPU option. Auto
+selects GPU when available, CPU forces CPU, and Require GPU forbids silent fallback. No additional backend button is introduced.
+Ordinary intervals of aligned optics use the existing CUDA integrator, calling the shared CuPy operator at aberration planes;
+only full double-precision states at these sparse planes are used for interval handoffs, never restored from plotting-precision trajectories.
+Native analytical lenses and multipole fields with pose changes use GPU vector integration, retaining the same field, tilt, and aberration definitions.
+Actual energy and flight time continue through electric-field changes. Existing Cs and new terms are each applied once at their respective reference planes.
+Arbitrary imported magnetic-field maps and residual-gas collisions remain within the existing CPU support scope; this does not establish that every calculation runs on GPU.
+Only unavailable hardware or insufficient GPU memory permits Auto to rerun the CPU path from original inputs; physical-input errors are reported directly.
 
-针对性检查覆盖：独立解析公式、局部坐标与倾转、粒子/波动质心和动量、实际 GPU
-复场及粒子双精度断点一致性、单次屏作用及精确断点恢复、归档、缓存失效、GUI 事务应用，以及参考面
-残余拟合。它们不是整个 TEM 在所有参数范围内的实验资格认证。
+Targeted checks cover independent analytical formulas, local coordinates and tilt, particle/wave centroids and momentum, actual GPU
+complex fields and double-precision particle checkpoint agreement, single application of screens and exact checkpoint restoration, archives, cache invalidation, transactional GUI application, and reference-plane
+residual fitting. They are not experimental qualification of the whole TEM across all parameter ranges.
 
-### 2026-10-11 粒子 GPU 对照
+### 2026-10-11 particle GPU comparison
 
-在 NVIDIA GeForce RTX 5090 上执行实际 GPU 测试，覆盖全部八类新增项、倾转、
-原生多极场、原有 Cs、静电能量变化、飞行时间、精确断点恢复以及顶部后端选择。
-相干复场 CPU/GPU 对照和局部窄波包质心响应对照均通过；这不意味着波动分布应当
-与无干涉的粒子分布完全相同。
+Actual GPU tests ran on NVIDIA GeForce RTX 5090, covering all eight new term classes, tilt,
+native multipole fields, existing Cs, electrostatic energy changes, flight time, exact checkpoint restoration, and top-level backend selection.
+Both coherent complex-field CPU/GPU comparisons and local narrow-wavepacket centroid-response comparisons passed; this does not imply that wave distributions
+should be identical to noninterfering particle distributions.
 
-一个预热后的定向性能算例使用 3000 条粒子、2000 个积分步、100 mm 传播区间，
-单镜同时启用八类新增项及原有 Cs。CPU 为 0.608 s，GPU 为 0.0657 s，约 9.3 倍。
-两者精确断点的最大位置差为 2.72×10⁻²⁰ m、方向差为 4.34×10⁻¹⁹ rad，
-该算例的能量和飞行时间一致。输入来自 `test_intrinsic_particle_backend.py` 中
-`fixture(_all_terms())` 和 `_sources(3000)`，镜片峰值场 0.002 T、Cs 0.5 mm、
-步长 0.05 mm，Z 为 −50 到 +50 mm，图像历史间距 0.5 mm，断点为 0 和 50 mm。
-这是隔离新增路径的数值算例，不是完整 GUI/整机耗时，也不包含首次 GPU 编译成本；
-稀疏粒子或大量倾转场的小批量运算不保证获得相同加速比。
+A warmed-up targeted benchmark used 3000 particles, 2000 integration steps, and a 100 mm propagation interval,
+with all eight new terms and existing Cs active in one lens. CPU took 0.608 s and GPU 0.0657 s, approximately 9.3 times faster.
+Maximum exact-checkpoint differences were 2.72×10⁻²⁰ m in position and 4.34×10⁻¹⁹ rad in direction;
+energy and flight time agreed in this example. Inputs came from `test_intrinsic_particle_backend.py`,
+using `fixture(_all_terms())` and `_sources(3000)`, with lens peak field 0.002 T and Cs 0.5 mm,
+step 0.05 mm, Z from −50 to +50 mm, image-history spacing 0.5 mm, and checkpoints at 0 and 50 mm.
+This numerical example isolates the new route; it is not full-GUI/full-instrument timing and excludes first-time GPU compilation;
+sparse particles or small batches with many tilted fields are not guaranteed the same speedup.

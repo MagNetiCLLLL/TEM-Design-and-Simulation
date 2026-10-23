@@ -1,59 +1,59 @@
-# Probe Corrector 三处铜端面接触的绝缘与间隙修订
+# Insulation and Clearance Revision for Three Probe Corrector Copper End Contacts
 
-本轮处理 TL22–DP22、DP21–TL21、DP11–TL12（存储键 `probe_tl12_lens`）三处端面接触。承接[上轮内部结构检查](probe-lower-detail-review-2026-10-21.md)，采用原生材料模型、原有 CAD / STEP 格式和后台验证，不操作图形桌面。坐标为列模块局部 Z，单位 mm，正向沿电子束下游；默认全局位置在下表基础上加 450 mm。
+This round addresses end contacts at TL22–DP22, DP21–TL21 and DP11–TL12 (stored key `probe_tl12_lens`). Following the [previous internal-structure review](probe-lower-detail-review-2026-10-21.md), it uses native material models, existing CAD / STEP formats and background validation, without desktop interaction. Coordinates are column-module local Z in mm, positive downstream along the electron beam; add 450 mm to the tables for default global positions.
 
-## 资料与方案选择
+## Evidence and design choice
 
-[CEOS US20090079531A1](https://patents.google.com/patent/US20090079531A1/en) Fig.4 及其说明给出柔性绕组的导体覆盖绝缘与整面粘接；Fig.10、11 给出透镜孔内或凹槽内安装多极线圈的结构族，并说明较大的凹槽可能改变透镜磁场。资料没有给出本项目 DP22/DP21/DP11 的原厂端封、尺寸或安装公差。
+[CEOS US20090079531A1](https://patents.google.com/patent/US20090079531A1/en) Fig.4 and its description establish conductor-cover insulation and full-surface bonding for flexible windings. Fig.10 and 11 show multipole-coil structural families mounted in lens bores or recesses and note that larger recesses may change lens fields. They do not establish factory end seals, dimensions or assembly tolerances for this project's DP22/DP21/DP11.
 
-[Hitachi JP2967966B2](https://patents.google.com/patent/JP2967966B2/en) 传统结构 Fig.8、[0005] 说明透镜励磁线圈与铜冷却板之间采用薄绝缘层。这仅补充绝缘隔开的结构依据，不能证明特定 DP 端封形状或材料等级。
+[Hitachi JP2967966B2](https://patents.google.com/patent/JP2967966B2/en), conventional structure Fig.8 and [0005], describes a thin insulating layer between a lens excitation coil and a copper cooling plate. This only supplements evidence for insulation separation, not a specific DP end-seal shape or material grade.
 
-本轮选择在固定安装中心内对称缩短机械铜线包，并在两端补齐既有绝缘封边。复用已经支持的 `winding_axial_length_mm`，无需增加跨配件尺寸副本、切削极靴或修改透镜磁隙。两端各退让 0.14，其中 0.04 分配给绝缘封边，剩余 0.10 作为名义机械间隙。这些数字是**显式工程重建尺寸，不是原厂测量或耐压设计结果**。
+This round symmetrically shortens mechanical copper windings about fixed installation centres and completes existing insulation at both ends. It reuses `winding_axial_length_mm`, without duplicate cross-component dimensions, pole-shoe machining or lens magnetic-gap changes. Copper retracts 0.14 per end: 0.04 for insulating edge seals and 0.10 for nominal mechanical clearance. These are **explicit engineering reconstruction dimensions, not OEM measurements or voltage-withstand design results**.
 
-未采用极靴开凹槽的备选方案：虽然结构族有资料支持，它会改动磁性材料，而当前问题可通过既有独立机械铜长参数解决。也没有新增未证实的紧固件、接头、走线或固定座。
+The alternative of recessing pole shoes was not adopted: although supported as a structural family, it changes magnetic material, whereas the present issue can be resolved using the existing independent mechanical copper-length parameter. No unverified fasteners, connectors, wiring or mounts are added.
 
-## 修改前后的材料边界
+## Material boundaries before and after modification
 
-| 配件 | 原铜区间 | 修订后铜区间 | 修订后完整绝缘区间 | 实际铜长 |
+| Component | Original copper interval | Revised copper interval | Revised full insulation interval | Actual copper length |
 | --- | --- | --- | --- | ---: |
 | DP22 | 729.10–743.60 | 729.24–743.46 | 729.20–743.50 | 14.22 |
 | DP21 | 772.60–787.20 | 772.74–787.06 | 772.70–787.10 | 14.32 |
 | DP11 | 889.00–903.60 | 889.14–903.46 | 889.10–903.50 | 14.32 |
 
-| 接口 | 极靴接触面的原位置 | 原铜到极靴 | 修订后铜到极靴 | 修订后绝缘到极靴 |
+| Interface | Original pole-shoe contact plane | Original copper-to-pole gap | Revised copper-to-pole gap | Revised insulation-to-pole gap |
 | --- | ---: | ---: | ---: | ---: |
-| TL22 下极靴—DP22 上端 | 729.10 | 0 | 0.14 | 0.10 |
-| DP21 下端—TL21 上极靴 | 787.20 | 0 | 0.14 | 0.10 |
-| DP11 下端—TL12 上极靴 | 903.60 | 0 | 0.14 | 0.10 |
+| TL22 lower pole shoe—DP22 upper end | 729.10 | 0 | 0.14 | 0.10 |
+| DP21 lower end—TL21 upper pole shoe | 787.20 | 0 | 0.14 | 0.10 |
+| DP11 lower end—TL12 upper pole shoe | 903.60 | 0 | 0.14 | 0.10 |
 
-表中数值来自保存的配置及统一材料边界函数。完整绝缘区间包含铜、径向载体、覆盖层、粘接区、导体间隙绝缘以及两端封边；不能只凭铜包络判断是否穿插。
+Values come from saved configuration and the common material-boundary function. Full insulation intervals include copper, radial carriers, covers, bonding regions, conductor-gap insulation and both edge seals; copper envelopes alone cannot establish absence of intersections.
 
-三组铜层的半径仍为 11.10–11.90，完整径向叠层仍为 11.06–11.94。实际连续真空管内径 / 外径仍为 5.76 / 19.20，管外壁到叠层内壁的名义径向间隙保持 1.46。配置中的 20 通束声明不是实际真空管内径。极靴主孔及其到管壁的最小径向间隙仍分别为 20 和 0.40。DPH1、DPH2 等不在三处接触中的绕组不缩短。
+All three copper layers retain radii 11.10–11.90, and complete radial stacks remain 11.06–11.94. Actual continuous vacuum-tube inner/outer diameters remain 5.76 / 19.20, retaining 1.46 nominal radial clearance from tube exterior to stack interior. The configured 20 beam-clearance declaration is not the actual tube inner diameter. Main pole-shoe bores and minimum radial clearances to the tube remain 20 and 0.40 respectively. Windings outside these three contacts, including DPH1 and DPH2, are not shortened.
 
-## 尺寸编辑与材料联动
+## Dimension editing and material linkage
 
-三份 `C3_ProbeCorrector`、`C3_ProbeCorrector_ImageCorrector`、`C3_ProbeCorrector_BCOR` 保存同一配方。三个机械安装长度仍分别为 14.5、14.6、14.6，光学中心、有效厚度、场标定和控制通道不变。
+`C3_ProbeCorrector`, `C3_ProbeCorrector_ImageCorrector` and `C3_ProbeCorrector_BCOR` save the same recipe. The three mechanical installation lengths remain 14.5, 14.6 and 14.6; optical centres, effective thicknesses, field calibration and control channels are unchanged.
 
-`winding_axial_length_mm` 控制固定中心两侧的实际铜边界。载体、覆盖层、粘接区及导体间隙绝缘共同采用该边界；端封厚度再向两端延伸。已有真实长度 / 开窗约束、层厚可表示性及邻件交叠校验继续生效。尺寸更改后的间隙应由完整材料重新计算，不能把 0.10 当作所有后续编辑都自动维持的间隙。
+`winding_axial_length_mm` controls actual copper boundaries about a fixed centre. Carriers, covers, bonding and conductor-gap insulation share those boundaries, with edge-seal thickness extending them at both ends. Existing actual-length/window constraints, layer-thickness representability and neighbour-overlap validation remain active. Clearances after dimension changes must be recomputed from complete materials; 0.10 is not automatically maintained through all later edits.
 
-本轮同时修复两个与显式铜长有关的编辑说明问题：铜端面选中后的尺寸路径使用实际铜长，避免指向只读安装长度；实际铜长的影响说明明确为材料几何，并解释与有效场厚度独立。仍无独立铜长的旧 DPH2 使用原 `length_mm` 路径。选用替换基础模型时，保留的原生铜长标为未激活，不再宣称它会改变替换模型。
+This round also fixes two editing-description issues associated with explicit copper length: selected copper end faces now point to actual copper length rather than read-only installation length; the actual-length effect description explicitly concerns material geometry and explains independence from effective-field thickness. Old DPH2 without a separate copper length retains the `length_mm` path. With a replacement base model selected, retained native copper length is labelled inactive rather than claiming to modify the replacement.
 
-## 验证记录
+## Validation record
 
-原始回执、参数前后比较及几何验证输出保存在 `outputs/probe-contact-isolation-20261021/`，该目录不作为源码发布。
+Raw receipts, before/after parameter comparisons and geometry outputs are in `outputs/probe-contact-isolation-20261021/`, excluded from source publication.
 
-- 本轮相关回归共 **478 项唯一测试通过**，无最终失败、错误或跳过。包括三配置尺寸联动、铜端面参数路径、原生/CAD 网格、参数说明、保存/重载/撤销/恢复、机械重叠列表和磁场物理模型叠加。`final-validation.json` 按最新完整测试文件复测结果替换历史记录，逐项去重，不把旧失败计为通过。
-- 独立 CAD 环境 `test_cad_assembly_validation.py` **8 项通过**，无跳过，见 `exact-cad-assembly-regression.xml`。
-- 三种配置分别构建 339、345、368 个材料区，以三组修改组件为对象，对整列邻件及实际真空管各检查 498 对邻近材料、537 次精确距离。无体积穿插或亚阈值交叠；三处铜—极靴距离为 0.139999999999873，绝缘—极靴为 0.099999999999909，真空管径向间隙为 1.46。见 `geometry-verification-summary.json` 和三份 `after-exact-contact-*.json`。这不是对未改动配件之间全部材料对的重新认证。
-- 三组接口装配、真实连续真空管及总装共 **5 个 STEP 文件回读通过**；总装含 67 个命名材料区、85 个连通实体，名称、材料/颜色、体积及边界按现有导出器验证。见 `step/step-manifest.json`。
-- 故意恢复原铜长度或将封边加厚至 0.15 的六个坏草稿均被精确 CAD 报告为对应端盖与极靴穿插。草稿仍允许修改；配置校验、原位保存和另存为均拒绝，原文件不被改写。见 `invalid-draft-exact-collisions.json`。粗校验可先报告所属透镜，精确列表给出具体极靴及材料区。
-- 35 份配置的比较仅发现约定的 27 个字段变化（三配置 × 三绕组 × 铜长/封边侧/来源说明）；其余值及配件次序不变。非目标材料保持，三组现有 36 个材料区随实际铜长缩短、每配置新增三个端盖，见 `material-preservation.json`。
-- 在 300 kV、FEG、C3 + Probe Corrector、STEM Nanoprobe Normal、无能量过滤器的限定 CPU 比较中，ideal/analytical 模式各 18 个场和轨迹数组与修改前逐位一致。使用 9 条确定性轨迹、Z450–1810、最大步长 0.5，39 个场源和 13 个 dipole。C3 励磁 +1% 正对照产生约 3.20894e-4 T 场变化和 4.34007e-7 m 轨迹变化，证明对比能识别真实输入变化。见 `transport-preservation.json`。
+- **478 unique related regression tests passed**, with no final failures, errors or skips. Coverage includes dimension linkage across three configurations, copper end-face parameter paths, native/CAD meshes, parameter descriptions, save/reload/undo/restore, mechanical-overlap lists and physical-model overlays in magnetic-field views. `final-validation.json` replaces historical records with latest complete-test-file reruns, deduplicating each case without counting old failures as passes.
+- Independent CAD environment `test_cad_assembly_validation.py`: **8 passed**, none skipped; see `exact-cad-assembly-regression.xml`.
+- The three configurations build 339, 345 and 368 material regions. For each, the three modified components are checked against column neighbours and the actual vacuum tube using 498 nearby material pairs and 537 exact distances. No volume intersection or subthreshold overlap; the three copper–pole distances are 0.139999999999873, insulation–pole distances 0.099999999999909, and tube radial clearance 1.46. See `geometry-verification-summary.json` and three `after-exact-contact-*.json` files. This is not recertification of every pair of unchanged components.
+- **5 STEP files passed rereading**, covering three interface assemblies, the actual continuous vacuum tube and the combined assembly. The latter contains 67 named material regions and 85 connected solids; names, materials/colours, volumes and bounds are checked by the existing exporter. See `step/step-manifest.json`.
+- All six deliberately invalid drafts restoring original copper lengths or increasing edge seals to 0.15 were reported by exact CAD as intersections between the corresponding end caps and pole shoes. Draft editing remains possible, but configuration validation, in-place save and Save As reject them without rewriting originals. See `invalid-draft-exact-collisions.json`. Coarse checks may first identify the parent lens; exact lists identify specific pole shoes and material regions.
+- Comparison of 35 configurations found only the agreed 27 field changes (three configurations × three windings × copper length/edge-seal side/source note); all other values and component ordering remain unchanged. Nontarget materials are preserved; the three groups' existing 36 regions shorten with actual copper length, and each configuration gains three end caps. See `material-preservation.json`.
+- In the bounded CPU comparison at 300 kV, FEG, C3 + Probe Corrector, STEM Nanoprobe Normal, without energy filter, all 18 field/trajectory arrays in each ideal/analytical mode were bitwise unchanged. The comparison uses 9 deterministic trajectories, Z450–1810, maximum step 0.5, 39 field sources and 13 dipoles. A C3 excitation +1% positive control produced approximately 3.20894e-4 T field change and 4.34007e-7 m trajectory change, demonstrating sensitivity to real input changes. See `transport-preservation.json`.
 
-首轮测试中的沙箱临时文件/STEP 权限问题已在正常权限、离屏环境下重测；另修正测试对实际铜区间、原始存储与解析后的 Descan 元数据、可编辑冲突草稿的旧假设。未放宽几何容差或修改原子保存、传播逻辑。早期回执保留供追溯，最终结果由完整模块复测覆盖。没有进行桌面操作、完整相干计算、全源采样、材料 FEM/BEM 或实机验证。
+Initial sandbox temporary-file/STEP permission issues were rerun with normal permissions offscreen. Tests were also corrected for old assumptions about actual copper intervals, original stored versus parsed Descan metadata, and editable conflicting drafts. Geometry tolerances, atomic saving and propagation logic were not relaxed or changed. Early receipts remain traceable; final results supersede them through complete-module reruns. No desktop interaction, full coherent calculation, full-source sampling, material FEM/BEM or real-instrument validation was performed.
 
-## 物理模型边界
+## Physical-model boundaries
 
-本次改变了三组铜线包的机械轴向长度，而非单纯改颜色或显示比例。当前传播采用独立保存的有效场厚度和场标定，不从这些铜 CAD 回路求解磁场；因此可以检查当前模型的光学输入、场及轨迹是否保持，但不能据此声称缩短实物电流路径后场严格不变。实物几何调整仍可能需要重新标定或材料分辨的 FEM / BEM 计算。
+This changes the mechanical axial length of three copper winding groups, not merely colour or display scale. Current propagation uses independently saved effective-field thicknesses and calibration, rather than solving fields from these copper CAD loops. It can therefore verify preserved optical inputs, fields and trajectories in the current model, but cannot establish that shortening a real current path leaves its field exactly unchanged. Actual geometric modification may require recalibration or material-resolved FEM / BEM.
 
-绝缘材质等级、介电强度、爬电路径、热膨胀、真空兼容性、制造公差和外部固定方式均未由现有资料建立。0.04 绝缘层与 0.10 间隙消除的是本重建模型中的铜—铁直接端面接触，不等于完成实机电气、热学或制造认证。
+Existing sources do not establish insulation grade, dielectric strength, creepage paths, thermal expansion, vacuum compatibility, manufacturing tolerances or external attachment. The 0.04 insulation and 0.10 clearance remove direct copper–iron end-face contact in this reconstruction; they do not complete electrical, thermal or manufacturing certification for real hardware.
