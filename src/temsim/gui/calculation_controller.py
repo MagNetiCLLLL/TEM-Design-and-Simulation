@@ -637,15 +637,40 @@ class SectionFileSignals(QObject):
     finished = Signal()
 
 
+def _cancel_startup_result(store, token):
+    """Optional navigation persistence must never invalidate saved physics."""
+    if store is None or token is None:
+        return None
+    try:
+        store.cancel_save(token)
+    except Exception as exc:
+        return str(exc)
+    return None
+
+
+def _commit_startup_result(store, token, info):
+    if store is None or token is None:
+        return
+    try:
+        info["auto_startup_saved"] = bool(store.commit_save(token, info))
+    except Exception as exc:
+        info["auto_startup_error"] = str(exc)
+        _cancel_startup_result(store, token)
+
+
 class SectionFileWorker(QRunnable):
     """Archive/capture work stays off the GUI thread and shares resource admission."""
     def __init__(self, token, operation, path, result=None, *, automatic=False,
-                 maximum_unpacked_bytes, unpacked_size_bytes=None, expected_package_digest=None):
+                 maximum_unpacked_bytes, unpacked_size_bytes=None, expected_package_digest=None,
+                 startup_result_store=None, startup_result_token=None, startup_result_error=None):
         super().__init__()
         self.token, self.operation, self.path = token, operation, Path(path)
         self.payload = result
         self.state = getattr(result, "state_snapshot", None)
         self.automatic = automatic
+        self.startup_result_store = startup_result_store if automatic and operation == "save" else None
+        self.startup_result_token = startup_result_token if self.startup_result_store is not None else None
+        self.startup_result_error = startup_result_error
         self.maximum_unpacked_bytes = int(maximum_unpacked_bytes)
         self.expected_package_digest = expected_package_digest
         # A queued archive must not outgrow its admission reservation if the
@@ -687,10 +712,19 @@ class SectionFileWorker(QRunnable):
             info["file_io_operation"] = ("load" if self.operation == "load" else
                 "verify_existing" if self.automatic and info.get("reused") else "save")
             info["file_io_reused_measurement"] = False
+            if self.startup_result_error is not None:
+                info["auto_startup_error"] = self.startup_result_error
+            if not self.cancel_event.is_set():
+                # Commit while this owned worker is alive. Application shutdown
+                # can wait for disk IO without processing any queued GUI signal.
+                _commit_startup_result(self.startup_result_store, self.startup_result_token, info)
+                self.startup_result_token = None
             self.signals.result.emit(self.token, output)
         except Exception as exc:
             self.signals.error.emit(str(exc))
         finally:
+            _cancel_startup_result(self.startup_result_store, self.startup_result_token)
+            self.startup_result_token = None
             self.signals.finished.emit()
 
 
@@ -717,12 +751,14 @@ class CalculationController(QObject):
             PERSISTENT_ARTIFACT_CACHE_BUDGET_BYTES
         ),
         persistent_cache_enabled: bool = True,
+        startup_result_store=None,
     ) -> None:
         super().__init__(parent)
         from temsim.gui.job_coordinator import CoordinatedPool
         self.pool = CoordinatedPool(self)
         self.pool.setMaxThreadCount(1)
         self.section_file_pool = CoordinatedPool(self)
+        self.startup_result_store = startup_result_store
         self._section_file_jobs = {}
         self._section_file_pending = {}
         self._section_archive_records = OrderedDict()
@@ -794,17 +830,28 @@ class CalculationController(QObject):
         automatic = path is None
         destination = self.section_archive_root if automatic else Path(path)
         identity = info["identity"]
-        previous = self._section_archive_records.get(identity)
-        if (automatic and previous is not None and self._section_archive_record_current(previous)
-                and not self._section_archive_replacement_pending(previous["path"])):
-            self.section_archive_changed.emit(dict(previous, status="saved", reused=True,
-                file_io_reused_measurement=True))
-            return identity
-        if previous is not None and not self._section_archive_record_current(previous):
-            self._section_archive_records.pop(identity, None)
         pending_key = (identity, os.path.normcase(str(destination.resolve())), automatic)
         if pending_key in self._section_file_pending:
             return identity
+        previous = self._section_archive_records.get(identity)
+        if (automatic and previous is not None and self._section_archive_record_current(previous)
+                and not self._section_archive_replacement_pending(previous["path"])):
+            reused = dict(previous, status="saved", reused=True, file_io_reused_measurement=True)
+            reused.pop("auto_startup_saved", None)
+            reused.pop("auto_startup_error", None)
+            # A previously completed package requires no new worker or arrays.
+            # It is nevertheless a new accepted intent for the next startup.
+            if self.startup_result_store is not None:
+                try:
+                    startup_token = self.startup_result_store.begin_save(identity)
+                except Exception as exc:
+                    reused["auto_startup_error"] = str(exc)
+                else:
+                    _commit_startup_result(self.startup_result_store, startup_token, reused)
+            self.section_archive_changed.emit(reused)
+            return identity
+        if previous is not None and not self._section_archive_record_current(previous):
+            self._section_archive_records.pop(identity, None)
         # Pin the displayed product references before returning to the event
         # loop: sample/EDS panels may publish additional products during IO.
         # Dense, published numerical buffers remain shared until the worker
@@ -818,9 +865,15 @@ class CalculationController(QObject):
         info = dict(info, operation_token=token)
         if not automatic:
             info["path"] = str(destination.resolve())
-        self._section_file_pending[pending_key] = token
         worker = SectionFileWorker(token, "save", destination, payload, automatic=automatic,
                                    maximum_unpacked_bytes=self.section_file_pool.coordinator.ram_budget_bytes)
+        if automatic and self.startup_result_store is not None:
+            worker.startup_result_store = self.startup_result_store
+            try:
+                worker.startup_result_token = self.startup_result_store.begin_save(identity)
+            except Exception as exc:
+                worker.startup_result_error = info["auto_startup_error"] = str(exc)
+        self._section_file_pending[pending_key] = token
         self._section_file_jobs[token] = worker
         self.section_archive_changed.emit(dict(info, status="saving", automatic=automatic))
         worker.signals.result.connect(self._section_file_completed)
@@ -829,6 +882,8 @@ class CalculationController(QObject):
         try:
             self.section_file_pool.start(worker)
         except Exception:
+            _cancel_startup_result(worker.startup_result_store, worker.startup_result_token)
+            worker.startup_result_token = None
             self._section_file_finished(token)
             raise
         return identity
@@ -944,7 +999,11 @@ class CalculationController(QObject):
                                                    operation=worker.operation))
 
     def _section_file_finished(self, token):
-        self._section_file_jobs.pop(token, None)
+        worker = self._section_file_jobs.pop(token, None)
+        if worker is not None:
+            # A queued job can be cancelled by admission without ever running.
+            _cancel_startup_result(worker.startup_result_store, worker.startup_result_token)
+            worker.startup_result_token = None
         if token == self._latest_section_load_token:
             self._latest_section_load_token = None
         for key, pending in tuple(self._section_file_pending.items()):

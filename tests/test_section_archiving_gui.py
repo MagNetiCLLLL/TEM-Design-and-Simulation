@@ -1,6 +1,6 @@
 """Archive dispatch/UI policy; real serialization is covered by section IO tests."""
 from threading import Event, get_ident
-from types import SimpleNamespace as NS
+from types import MethodType, SimpleNamespace as NS
 
 import numpy as np
 import pytest
@@ -28,7 +28,7 @@ def completed():
         "section_target_z_mm": 1100., "section_component_keys": (), "section_full_path": True,
         "section_resumable_through_z_mm": 1100., "tuning_quality": "High accuracy",
         "section_reuse_reason": "upstream_inputs_or_model_changed", "section_resume_z_mm": 450.,
-    }), state_snapshot=state, signatures={"request": "request"}, model_signature="current")
+    }), state_snapshot=state, signatures={"request": "request"}, model_signature="current", workflow="full")
 
 
 def test_archive_summary_is_selectable_and_distinguishes_pending_failure_and_saved(page, completed):
@@ -144,10 +144,14 @@ def test_final_button_passes_empty_participant_section_without_live_mode(page):
     shell = NS(workspace=NS(interactive_calculation=page), preview_timer=NS(stop=lambda: None),
                calculations=NS(submit_background=lambda *args, **kwargs: submitted.append((args, kwargs))),
                high_rays=NS(value=lambda: 5000), high_step=NS(value=lambda: .2), state=object(),
+               _particle_ray_count=lambda: 5000, _particle_step_mm=lambda: .2,
+               live_beam_refresh=NS(cancel=lambda: None),
                result_files=NS(loading=False, hold_automatic_preview=False))
-    MainWindow.run_high_accuracy(shell)
+    shell._submit_high_accuracy = MethodType(MainWindow._submit_high_accuracy, shell)
+    MainWindow.run_section_high_accuracy(shell)
     assert submitted[0][0][1:] == ("High accuracy", 5000, .2)
     assert submitted[0][1]["section_request"] == {"target_z_mm": 1100., "component_keys": ()}
+    assert submitted[0][1]["workflow"] == "full"
     assert not page._live_mode
 
 

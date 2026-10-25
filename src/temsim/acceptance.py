@@ -271,7 +271,8 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_particle_section_eds_archive.py")),
             "particle-continuation/PC-04": ("Archive identity and latest file-request ownership", (
                 "tests/test_section_archive_identity.py", "tests/test_result_file_request_routing.py",
-                "tests/test_result_files_gui.py")),
+                "tests/test_result_files_gui.py", "tests/test_automatic_result.py",
+                "tests/test_automatic_result_worker.py", "tests/test_automatic_result_gui.py")),
             "particle-continuation/PC-05": ("Specimen downstream handoff, branch weights and executed flight times", (
                 "tests/test_downstream_transport.py", "tests/test_specimen_time_of_flight.py",
                 "tests/test_objective_chromatic_kick.py")),

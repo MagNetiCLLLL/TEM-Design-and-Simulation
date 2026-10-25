@@ -211,6 +211,7 @@ class MainWindow(QMainWindow):
         )
 
         self.calculations = CalculationController(self)
+        self.calculations.startup_result_store = self.result_files.automatic_store
         self.calculations.pool.coordinator.register_retained(self, "_retained_job_roots")
         self._cache_settings = QSettings()
         self._cache_settings_dialog = None
@@ -425,6 +426,26 @@ class MainWindow(QMainWindow):
             QTimer.singleShot(0, self.result_files.start)
         else:
             self.preview_timer.start(self.INITIAL_PREVIEW_DELAY_MS)
+
+    def _resume_default_startup(self, reason: str) -> None:
+        """Recover an unavailable automatic snapshot using ordinary startup inputs."""
+        if self.result_files._closed:
+            return
+        self.log_output.appendPlainText("Automatic result could not be restored: " + str(reason))
+        try:
+            state = default_state()
+            selection = self.catalog.default_selection()
+            self.catalog.apply(state, selection)
+            if self._apply_state_operating_modes(state, selection) is None:
+                raise ValueError("The default assembly has no compatible operating-mode pair")
+            switch_mode(state, "ideal")
+            self._install_working_point(state, None)
+            self.status_label.setText("Automatic result unavailable; starting a fresh calculation with standard settings.")
+            self.log_output.appendPlainText(
+                "Starting standard settings after automatic restore failure; the saved file was retained.")
+            self.preview_timer.start(self.INITIAL_PREVIEW_DELAY_MS)
+        except (OSError, ValueError, TypeError, RuntimeError) as exc:
+            self._show_error("Standard startup could not be prepared: " + str(exc))
 
     def _create_dock(self, title, object_name, widget, area) -> QDockWidget:
         dock = QDockWidget(title, self)
@@ -1026,11 +1047,15 @@ class MainWindow(QMainWindow):
             return
         self.workspace.interactive_calculation.set_section_archive_status(info)
         self.result_files.archive_status(info)
+        if info.get("auto_startup_error"):
+            self.log_output.appendPlainText("Automatic startup index was not updated: " + str(info["auto_startup_error"]))
         if info.get("status") == "saved":
             resumable = info.get("resumable_through_z_mm", info["target_z_mm"])
             self.log_output.appendPlainText(
                 f"Particle result saved | calculated Z = {info['target_z_mm']:.9g} mm | "
                 f"resumable Z = {resumable:.9g} mm | {info.get('physics_scope', 'classical particles')} | {info['path']}")
+            if info.get("auto_startup_saved"):
+                self.log_output.appendPlainText("Automatic startup result is ready for the next launch.")
         elif info.get("status") == "failed":
             self.log_output.appendPlainText(f"Particle section archive failed: {info.get('error', 'Unknown error')}")
 

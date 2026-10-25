@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 from pathlib import Path
+from zipfile import BadZipFile
 
 from PySide6.QtCore import QObject, QSignalBlocker
 from PySide6.QtGui import QAction, QActionGroup
@@ -14,6 +15,7 @@ from PySide6.QtWidgets import QFileDialog, QInputDialog, QLabel, QPushButton
 from shiboken6 import isValid
 
 from temsim.branding import application_result_library_root
+from temsim.automatic_result import AutomaticResult
 from temsim.instrument_snapshot import decode_instrument, encode_instrument
 from temsim.particle_section_io import section_archive_summary
 from temsim.result_library import ResultLibrary
@@ -36,13 +38,27 @@ class ResultFiles(QObject):
         self.window = window
         self.library = None
         self.startup_error = None
+        self.automatic_store = None
+        self.automatic_startup = False
+        self.automatic_startup_error = None
+        self._automatic_loading = False
         try:
-            self.library = ResultLibrary(application_result_library_root())
+            root = application_result_library_root()
+            self.library = ResultLibrary(root)
             self.startup_entry = self.library.startup_entry()
         except (OSError, ValueError) as exc:
             self.startup_entry = None
             self.startup_error = str(exc)
-        self.hold_automatic_preview = self.startup_entry is not None or self.startup_error is not None
+        if self.startup_error is None:
+            try:
+                self.automatic_store = AutomaticResult(root)
+                if self.startup_entry is None and self.automatic_store.enabled():
+                    self.startup_entry = self.automatic_store.entry()
+                    self.automatic_startup = self.startup_entry is not None
+            except (OSError, ValueError) as exc:
+                self.automatic_startup_error = str(exc)
+        self.hold_automatic_preview = (self.startup_entry is not None or self.startup_error is not None
+                                       or self.automatic_startup_error is not None)
         self.loading = self.hold_automatic_preview
         self._loading_token = None
         self._installed_load_token = None
@@ -86,7 +102,13 @@ class ResultFiles(QObject):
             self.loading = False
             self._error("Saved result library could not be read: " + self.startup_error)
         elif self.startup_entry is not None:
-            self.load(self.startup_entry["path"], entry=self.startup_entry)
+            if self.automatic_startup:
+                self.load(self.startup_entry["path"], entry=self.startup_entry, automatic=True)
+            else:
+                self.load(self.startup_entry["path"], entry=self.startup_entry)
+        elif self.automatic_startup_error is not None:
+            self._automatic_loading = True
+            self._load_failed(self.automatic_startup_error)
 
     def _conflicting_work(self):
         w = self.window
@@ -139,7 +161,12 @@ class ResultFiles(QObject):
             return
         none = self.startup_menu.addAction("None — start with standard settings")
         none.setCheckable(True)
-        none.setChecked(selected is None)
+        try:
+            automatic_enabled = self.automatic_store is not None and self.automatic_store.enabled()
+            automatic_error = self.automatic_startup_error if self.automatic_store is None else None
+        except (OSError, ValueError) as exc:
+            automatic_enabled, automatic_error = False, str(exc)
+        none.setChecked(selected is None and not automatic_enabled)
         self.startup_actions.addAction(none)
         none.triggered.connect(lambda: self.set_startup(None))
         if not entries:
@@ -154,14 +181,35 @@ class ResultFiles(QObject):
             action.setChecked(selected is not None and selected["id"] == entry["id"])
             self.startup_actions.addAction(action)
             action.triggered.connect(lambda _checked=False, identity=entry["id"]: self.set_startup(identity))
+        automatic = self.startup_menu.addAction("Automatic — last completed particle result")
+        automatic.setCheckable(True)
+        automatic.setChecked(selected is None and automatic_enabled)
+        automatic.setToolTip(automatic_error or
+            "Restore the last automatically saved particle result and its calculated settings without recalculation. "
+            "Uncalculated edits and coherent waves are not included. Invalid or incompatible automatic files fall back to standard startup.")
+        automatic.setEnabled(self.automatic_store is not None and automatic_error is None)
+        self.startup_actions.addAction(automatic)
+        automatic.triggered.connect(self.set_automatic_startup)
 
     def set_startup(self, identity):
         try:
             self.library.set_startup(identity)
+            if identity is None and self.automatic_store is not None:
+                self.automatic_store.set_enabled(False)
             self.refresh_menus()
             self.window.status_label.setText(
                 "Startup result saved; current settings and calculations are unchanged."
                 if identity is not None else "Startup result cleared; current settings are unchanged.")
+        except (OSError, ValueError) as exc:
+            self._error(str(exc))
+
+    def set_automatic_startup(self, _checked=False):
+        try:
+            self.automatic_store.set_enabled(True)
+            self.library.set_startup(None)
+            self.refresh_menus()
+            self.window.status_label.setText(
+                "Automatic startup enabled: restore the last completed particle result and its calculated settings.")
         except (OSError, ValueError) as exc:
             self._error(str(exc))
 
@@ -237,12 +285,13 @@ class ResultFiles(QObject):
                 widget.setEnabled(enabled)
         self._disabled_widgets.clear()
 
-    def load(self, path, *, entry=None):
+    def load(self, path, *, entry=None, automatic=False):
         if self._closed:
             return
         if self._saving or self._conflicting_work():
             self._error("Finish or cancel the current calculation before opening a result.")
             return
+        self._automatic_loading = automatic
         self.loading = self.hold_automatic_preview = True
         self._loading_token = None
         self._installed_load_token = None
@@ -254,7 +303,7 @@ class ResultFiles(QObject):
         try:
             self._loading_token = self.window.calculations.load_section_archive(self._loading_path)
             self.refresh_actions()
-        except (OSError, ValueError, TypeError, RuntimeError) as exc:
+        except (OSError, ValueError, TypeError, RuntimeError, BadZipFile) as exc:
             self._load_failed(str(exc))
 
     def archive_status(self, info):
@@ -337,13 +386,18 @@ class ResultFiles(QObject):
             self._load_failed(str(exc))
             return
         self.loading = False
+        automatic = self._automatic_loading
+        self._automatic_loading = False
         self._installed_load_token = info["operation_token"]
         self.window._invalidate_direct_alignment()
         self._stop_automatic_updates()
         self._unlock_inputs()
         self.refresh_actions()
-        self.window.status_label.setText("Loaded result; no recalculation. " + self._description(info))
-        self.window.log_output.appendPlainText(f"Loaded calculated result: {info['path']}")
+        self.window.status_label.setText(
+            ("Restored automatic result; no recalculation. " if automatic else "Loaded result; no recalculation. ")
+            + self._description(info))
+        self.window.log_output.appendPlainText(
+            f"{'Restored automatic' if automatic else 'Loaded calculated'} result: {info['path']}")
 
     def _install_result(self, result, info):
         w = self.window
@@ -433,6 +487,11 @@ class ResultFiles(QObject):
         self._stop_automatic_updates()
         self._unlock_inputs()
         self.refresh_actions()
+        if self._automatic_loading:
+            self._automatic_loading = False
+            self.hold_automatic_preview = False
+            self.window._resume_default_startup(message)
+            return
         self._error("Result was not opened; previous settings and result are retained. " + message)
 
     def _error(self, message):

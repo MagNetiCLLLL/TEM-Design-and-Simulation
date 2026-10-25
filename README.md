@@ -7,6 +7,7 @@ electron microscopy, electron optics and simulated detector signals.
 
 [Get started](#setup-and-launch) · [Project map](docs/PROJECT_MAP.md) ·
 [Beam model and limits](docs/COHERENT_BEAM.md) ·
+[Automatic startup recovery](docs/AUTOMATIC_STARTUP_RESULTS.md) ·
 [Report an issue](https://github.com/MagNetiCLLLL/TEMForge/issues)
 
 ## AI for experiments

@@ -195,6 +195,7 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_material_section_resume.py", "test_particle_section_eds_archive.py",
             "test_particle_section_eds_reuse.py", "test_particle_archive_compression.py",
             "test_section_archive_identity.py", "test_result_file_request_routing.py", "test_result_files_gui.py",
+            "test_automatic_result.py", "test_automatic_result_worker.py", "test_automatic_result_gui.py",
             "test_downstream_transport.py", "test_specimen_time_of_flight.py",
             "test_objective_chromatic_kick.py",
             "test_corrector_crossover_measurement.py", "test_probe_corrector_calibration.py",
