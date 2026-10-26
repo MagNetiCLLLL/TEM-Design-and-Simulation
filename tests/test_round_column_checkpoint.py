@@ -112,6 +112,9 @@ def test_extinguished_wave_traverses_declared_zero_field_round_plan_without_divi
 
 @pytest.mark.parametrize("segmented", [False, True])
 def test_pipeline_routes_and_caches_round_prefix_without_repeating_the_gun(monkeypatch, tmp_path, segmented):
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "Substituted radial and Cartesian execution"))
     """Explicit routing fixture; the returned field is not a physical source."""
     from temsim.optics.column import default_state
     from temsim.physics.tip_wave_pipeline import TipWaveRequest, simulate_tip_wave

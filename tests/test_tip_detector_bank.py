@@ -22,6 +22,9 @@ from temsim.physics.wave_execution import WaveExecutionOptions
 
 @pytest.fixture
 def bank(monkeypatch, tmp_path):
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "Substituted gun and column execution"))
     import temsim.physics.tip_wave_pipeline as pipeline
     import temsim.physics.inelastic_wave as inelastic
     from test_wave_detector_readout import checkpoint
@@ -67,6 +70,9 @@ def bank(monkeypatch, tmp_path):
     request = TipWaveRequest(detector_keys=("bf", "haadf", "df"), detector_pixels=256,
         execution=WaveExecutionOptions(segmented=False, cache_directory=str(tmp_path/"bank")),
         readout=WaveReadoutOptions(phase=True, complex_amplitude=True))
+    # This detector-routing fixture supplies no physical prepared column.
+    # Keep the independent acceptance-window solver outside the stubbed path.
+    request = replace(request, acceptance_window=replace(request.acceptance_window, enabled=False))
     return state, request, seed, calls, arrivals
 
 

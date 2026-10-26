@@ -23,6 +23,7 @@ CLASSICAL_CRITERIA = {
     "round2/R2-AT-09": ("Independent High and experiment ownership", ("tests/test_job_coordination_gui.py", "tests/test_result_readout.py")),
     "round2/R2-AT-10": ("Backend absence/resource policy and available-GPU selection", (
         "tests/test_compute_backend.py", "tests/test_ray_gpu_policy.py",
+        "tests/test_coherent_cuda_policy.py", "tests/test_coherent_cli_policy.py",
         "tests/test_backend_failure_semantics.py", "tests/test_gui_backend_discovery.py",
         "tests/test_cpu_backend_isolation.py", "tests/test_lazy_cuda_kernels.py")),
     "round2/R2-AT-11": ("Original non-retryable failures", ("tests/test_backend_failure_semantics.py",)),

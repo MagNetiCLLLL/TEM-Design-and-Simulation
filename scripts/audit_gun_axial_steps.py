@@ -98,13 +98,15 @@ def occupied_difference(first, second, incoming):
     return float(np.linalg.norm(apply(first)-apply(second))/norm)
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("input", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--timeout", type=float, default=600.)
     parser.add_argument("--occupied-waves", action="store_true")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
+    from temsim.physics.compute_backend import require_coherent_cuda
+    require_coherent_cuda()
     args.output.mkdir(parents=True, exist_ok=False)
     archived = json.loads(args.input.read_text(encoding="utf-8"))
     state = InstrumentSnapshot.from_dict(archived["instrument_snapshot"]).restore()

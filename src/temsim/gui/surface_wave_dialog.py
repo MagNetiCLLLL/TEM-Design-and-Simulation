@@ -37,6 +37,8 @@ class SurfaceWaveDialog(QDialog):
         from matplotlib.figure import Figure
         from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
         self.snapshot = capture_instrument_snapshot(state)
+        self._compute_policy = getattr(state, "acceleration_backend", "Auto")
+        self._acceleration_enabled = bool(getattr(state, "acceleration_enabled", True))
         self.worker = None
         self.calculation = None
         self._closing = False
@@ -94,6 +96,12 @@ class SurfaceWaveDialog(QDialog):
 
     def _start(self):
         if self.worker is not None:
+            return
+        try:
+            from temsim.physics.compute_backend import require_coherent_cuda
+            require_coherent_cuda(self._compute_policy, acceleration_enabled=self._acceleration_enabled)
+        except Exception as error:
+            self._failed(f"Coherent near field not started: {error}")
             return
         numerics = replace(SurfaceWaveNumerics(), radial_nodes=self.radial.value(),
             axial_nodes=self.axial.value(), energy_samples=self.energies.value(),

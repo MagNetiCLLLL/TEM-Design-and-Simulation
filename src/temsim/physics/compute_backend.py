@@ -217,6 +217,59 @@ def cupy_module():
     return cp
 
 
+def coherent_cuda_capability() -> BackendCapability:
+    """Probe a tiny device FFT before admitting a user wave calculation.
+
+    Device enumeration alone does not establish that CuPy can allocate or load
+    cuFFT. This bounded check never prepares an instrument or propagates a wave.
+    Keep it separate from operator backend selection, which still supports CPU
+    reference tests and reading previously computed results.
+    """
+    try:
+        status = cupy_capability()
+        if not status.available:
+            return status
+        import cupy as cp
+        import numpy as np
+
+        values = cp.asarray(np.ones((2, 2), dtype=np.complex128))
+        if not hasattr(values, "__cuda_array_interface__"):
+            return BackendCapability(False, "CuPy did not allocate a CUDA array")
+        transformed = cp.asnumpy(cp.fft.fft2(values))
+        if not np.array_equal(transformed, np.array([[4., 0.], [0., 0.]])):
+            return BackendCapability(False, "CuPy CUDA FFT capability check returned invalid values")
+        return BackendCapability(True, status.detail + "; CUDA allocation and FFT verified")
+    except Exception as error:
+        return BackendCapability(False,
+            f"CuPy CUDA execution check failed ({type(error).__name__}): {error}")
+
+
+def require_coherent_cuda(requested=BACKEND_AUTO, *, acceleration_enabled=True):
+    """Admit new user wave jobs with an execution policy that forbids fallback."""
+    message = ("Coherent calculations currently require a working CuPy CUDA backend. "
+               "CPU execution and automatic CPU fallback are disabled for these jobs. ")
+    if not acceleration_enabled or str(requested).strip().lower() in {
+        "cpu", "numba", "numba cpu", "numpy", "numpy cpu",
+    }:
+        raise GPUExecutionError("required", message +
+            "Enable acceleration and select Auto, CUDA GPU, Prefer GPU or Require GPU.")
+    status = coherent_cuda_capability()
+    if not status.available:
+        raise GPUExecutionError("unavailable", message + status.detail)
+    return BACKEND_REQUIRE_GPU
+
+
+def coherent_execution_state(state):
+    """Keep the user's controls while requiring CUDA in a detached wave job."""
+    from copy import copy
+    policy = require_coherent_cuda(getattr(state, "acceleration_backend", BACKEND_AUTO),
+        acceleration_enabled=bool(getattr(state, "acceleration_enabled", True)))
+    working = copy(state)
+    working.acceleration_backend = policy
+    working.acceleration_enabled = True
+    return working
+
+
 def normalise_backend(value: object) -> str:
     requested = str(value or BACKEND_AUTO).strip()
     aliases = {

@@ -11,8 +11,37 @@ from temsim.physics.tip_wave_pipeline import TipWaveRequest, simulate_tip_wave
 from temsim.physics.wave_execution import WaveExecutionOptions
 
 
+@pytest.fixture
+def coherent_cuda():
+    """Actual workflow coverage is unavailable without executable CuPy CUDA."""
+    from temsim.physics.compute_backend import coherent_cuda_capability
+    capability = coherent_cuda_capability()
+    if not capability.available:
+        pytest.skip("CuPy CUDA unavailable: " + capability.detail)
+
+
+@pytest.fixture
+def mock_coherent_admission(monkeypatch):
+    """Admit control-only cases while forbidding every real wave producer."""
+    from temsim.physics import compute_backend, tip_wave_pipeline as pipeline
+    from temsim.physics import round_column_checkpoint, surface_wave, tip_gun_wave, wave_device
+
+    def forbidden(*_args, **_kwargs):
+        pytest.fail("Control-only fixture must not execute coherent propagation")
+
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "synthetic control-only CUDA capability"))
+    for name in ("build_tip_gun_checkpoint", "_propagate_column", "_propagate_column_segmented", "_propagate_specimen"):
+        monkeypatch.setattr(pipeline, name, forbidden)
+    monkeypatch.setattr(tip_gun_wave, "_axial_grid", forbidden)
+    monkeypatch.setattr(surface_wave, "compute_surface_wave", forbidden)
+    monkeypatch.setattr(round_column_checkpoint, "execute_round_prefix",
+        lambda _state, upstream, *_a, **_k: upstream)
+    monkeypatch.setattr(wave_device, "release_device_memory", lambda: None)
+
+
 @pytest.mark.parametrize("segmented", [False, True])
-def test_default_coherent_tip_domain_rejection_does_not_execute_or_publish(monkeypatch, tmp_path, segmented):
+def test_default_coherent_tip_domain_rejection_does_not_execute_or_publish(monkeypatch, tmp_path, segmented, mock_coherent_admission):
     from temsim.instrument_snapshot import capture_instrument_snapshot
     from temsim.optics.electron_gun.tip_source_domain import TipSourceDomainError
     from temsim.physics import tip_gun_wave, tip_wave_pipeline
@@ -21,6 +50,9 @@ def test_default_coherent_tip_domain_rejection_does_not_execute_or_publish(monke
     state.electron_gun.emitter.energy_spread_fwhm_ev = 0.
     before = capture_instrument_snapshot(state).digest
     stages = tuple(tip_wave_pipeline._STAGES)
+    # Exercise only source-domain validation; the numerical axial grid is
+    # forbidden below and by the control-only fixture.
+    monkeypatch.setattr(tip_wave_pipeline, "build_tip_gun_checkpoint", tip_gun_wave.build_tip_gun_checkpoint)
     monkeypatch.setattr(tip_gun_wave, "_axial_grid", lambda *a, **kw: pytest.fail("Rejected tip must not transport"))
     request = TipWaveRequest(stop="gun_exit", source=TipWaveNumerics(energy_samples=1),
         execution=WaveExecutionOptions(segmented=segmented, cache_directory=str(tmp_path/"executed")),
@@ -43,14 +75,14 @@ def test_cancel_and_invalid_numerics_do_not_start_transport():
             request.validate()
 
 
-def test_unexecuted_equivalent_state_is_not_a_pipeline_option():
+def test_unexecuted_equivalent_state_is_not_a_pipeline_option(mock_coherent_admission):
     state = default_state()
     state.equivalent_image_lenses_enabled = True
     with pytest.raises(ValueError, match="executed upstream caches"):
         simulate_tip_wave(state, TipWaveRequest(stop="gun_exit"))
 
 
-def test_installed_energy_filter_is_not_silently_bypassed():
+def test_installed_energy_filter_is_not_silently_bypassed(mock_coherent_admission):
     state = default_state()
     _install_filter(state)
     # A selected physical path crossing the real entrance remains unsupported.
@@ -59,7 +91,7 @@ def test_installed_energy_filter_is_not_silently_bypassed():
         simulate_tip_wave(state, TipWaveRequest(stop="detector"))
 
 
-def test_filter_after_selected_detector_does_not_prevent_upstream_calculation(monkeypatch):
+def test_filter_after_selected_detector_does_not_prevent_upstream_calculation(monkeypatch, mock_coherent_admission):
     """Control fixture checks filter ordering, not unsupported column physics."""
     import temsim.physics.tip_wave_pipeline as pipeline
     state = default_state()
@@ -78,7 +110,7 @@ def test_filter_after_selected_detector_does_not_prevent_upstream_calculation(mo
     assert state.energy_filter_installed and state.energy_filter.entrance_z_mm == before
 
 
-def test_partial_stage_cannot_cross_a_filter_moved_upstream():
+def test_partial_stage_cannot_cross_a_filter_moved_upstream(mock_coherent_admission):
     state = default_state()
     _install_filter(state)
     state.energy_filter.entrance_z_mm = state.electron_gun.exit_plane_z_mm-1.
@@ -244,7 +276,7 @@ def _observation_request(tmp_path, z, *, segmented=False, **options):
             cache_directory=str(tmp_path/"waves"), maximum_disk_cache_bytes=1<<28), **options)
 
 
-def test_virtual_plane_inside_gun_is_rejected_before_execution(monkeypatch, tmp_path):
+def test_virtual_plane_inside_gun_is_rejected_before_execution(monkeypatch, tmp_path, mock_coherent_admission):
     import temsim.physics.tip_wave_pipeline as pipeline
     state = _quiet_observation_state()
     monkeypatch.setattr(pipeline, "build_tip_gun_checkpoint", lambda *_a, **_kw: pytest.fail("Unsupported gun plane must not execute"))
@@ -253,7 +285,7 @@ def test_virtual_plane_inside_gun_is_rejected_before_execution(monkeypatch, tmp_
     assert not (tmp_path/"waves").exists()
 
 
-def test_virtual_material_internal_plane_requires_truncated_operator(monkeypatch, tmp_path):
+def test_virtual_material_internal_plane_requires_truncated_operator(monkeypatch, tmp_path, mock_coherent_admission):
     from types import SimpleNamespace
     from temsim.specimen.scene import SpecimenScene
     import temsim.physics.tip_wave_pipeline as pipeline
@@ -265,7 +297,7 @@ def test_virtual_material_internal_plane_requires_truncated_operator(monkeypatch
 
 
 @pytest.mark.parametrize("offset", (0., 1.))
-def test_virtual_plane_cannot_cross_installed_filter(monkeypatch, tmp_path, offset):
+def test_virtual_plane_cannot_cross_installed_filter(monkeypatch, tmp_path, offset, mock_coherent_admission):
     import temsim.physics.tip_wave_pipeline as pipeline
     # Install against a complete physical assembly before any fixture removes
     # apertures. The filter rejects before column or gun execution.
@@ -276,7 +308,7 @@ def test_virtual_plane_cannot_cross_installed_filter(monkeypatch, tmp_path, offs
         simulate_tip_wave(state, _observation_request(tmp_path, state.energy_filter.entrance_z_mm+offset))
 
 
-def test_virtual_plane_rejects_unknown_post_gun_electric_provider(monkeypatch, tmp_path):
+def test_virtual_plane_rejects_unknown_post_gun_electric_provider(monkeypatch, tmp_path, mock_coherent_admission):
     from types import SimpleNamespace
     import temsim.physics.tip_wave_pipeline as pipeline
     state = _quiet_observation_state()
@@ -290,7 +322,7 @@ def test_virtual_plane_rejects_unknown_post_gun_electric_provider(monkeypatch, t
         simulate_tip_wave(state, _observation_request(tmp_path, state.electron_gun.exit_plane_z_mm+.1))
 
 
-def test_virtual_plane_does_not_omit_unknown_electric_field_inside_material(monkeypatch, tmp_path):
+def test_virtual_plane_does_not_omit_unknown_electric_field_inside_material(monkeypatch, tmp_path, mock_coherent_admission):
     """Control fixture checks the same electric gate through material slices."""
     from types import SimpleNamespace
     from temsim.specimen.scene import SpecimenScene
@@ -310,7 +342,7 @@ def test_virtual_plane_does_not_omit_unknown_electric_field_inside_material(monk
         simulate_tip_wave(state, _observation_request(tmp_path, exit_z+.1))
 
 
-def test_virtual_gun_exit_uses_only_executed_tip_checkpoint(monkeypatch, tmp_path):
+def test_virtual_gun_exit_uses_only_executed_tip_checkpoint(monkeypatch, tmp_path, mock_coherent_admission):
     import temsim.physics.tip_wave_pipeline as pipeline
     state = _quiet_observation_state()
     checkpoint = _fixture_tip_checkpoint(state.electron_gun.exit_plane_z_mm)
@@ -322,7 +354,7 @@ def test_virtual_gun_exit_uses_only_executed_tip_checkpoint(monkeypatch, tmp_pat
     assert result.checkpoint.beam.reference_plane == checkpoint.beam.reference_plane
 
 
-def test_virtual_plane_actual_column_matches_complex_analytic_gaussian_drift(monkeypatch, tmp_path):
+def test_virtual_plane_actual_column_matches_complex_analytic_gaussian_drift(monkeypatch, tmp_path, coherent_cuda):
     """Isolated physical vacuum reference, not microscope/source qualification."""
     from temsim.optics.electron_gun.tip_coherence import wavelength_m
     import temsim.physics.tip_wave_pipeline as pipeline
@@ -354,7 +386,7 @@ def test_virtual_plane_actual_column_matches_complex_analytic_gaussian_drift(mon
 
 
 @pytest.mark.parametrize("segmented", (False, True))
-def test_virtual_plane_absorbs_all_prior_detectors_even_with_readout_disabled(monkeypatch, tmp_path, segmented):
+def test_virtual_plane_absorbs_all_prior_detectors_even_with_readout_disabled(monkeypatch, tmp_path, segmented, coherent_cuda):
     """Calling-chain fixture with the real physical stop kernel and wave cache."""
     import temsim.physics.tip_wave_pipeline as pipeline
     from temsim.physics import column_wave
@@ -384,7 +416,7 @@ def test_virtual_plane_absorbs_all_prior_detectors_even_with_readout_disabled(mo
     assert first.checkpoint.beam.modes[0].mode_id == original.beam.modes[0].mode_id
 
 
-def test_virtual_plane_coincident_with_detector_returns_incident_state(monkeypatch, tmp_path):
+def test_virtual_plane_coincident_with_detector_returns_incident_state(monkeypatch, tmp_path, coherent_cuda):
     import temsim.physics.tip_wave_pipeline as pipeline
     from temsim.physics import column_wave
     state = _quiet_observation_state()
@@ -400,7 +432,7 @@ def test_virtual_plane_coincident_with_detector_returns_incident_state(monkeypat
 
 
 @pytest.mark.parametrize("face", ("entrance", "exit", "after"))
-def test_virtual_material_boundaries_execute_the_existing_specimen_stage(monkeypatch, tmp_path, face):
+def test_virtual_material_boundaries_execute_the_existing_specimen_stage(monkeypatch, tmp_path, face, mock_coherent_admission):
     """Control-only doubles verify ownership/order, not multislice accuracy."""
     from types import SimpleNamespace
     from temsim.physics.wave_execution import InelasticWaveNumerics
@@ -441,7 +473,7 @@ def test_virtual_material_boundaries_execute_the_existing_specimen_stage(monkeyp
     np.testing.assert_array_equal(result.checkpoint.beam.modes[0].plane.amplitude, expected)
 
 
-def test_cancelled_virtual_result_cannot_be_published(monkeypatch, tmp_path):
+def test_cancelled_virtual_result_cannot_be_published(monkeypatch, tmp_path, mock_coherent_admission):
     """A late cancellation never turns a completed double into a current result."""
     import temsim.physics.tip_wave_pipeline as pipeline
     state = _quiet_observation_state()
@@ -491,7 +523,7 @@ def _prefix_fixture(monkeypatch):
     {"maximum_relative_current_change": .0005},
     {"aperture_radius_cells": 256},
 ))
-def test_nonsegmented_observation_cache_does_not_bypass_changed_acceptance_policy(monkeypatch, tmp_path, policy_change):
+def test_nonsegmented_observation_cache_does_not_bypass_changed_acceptance_policy(monkeypatch, tmp_path, policy_change, coherent_cuda):
     """The outer plane cache must not hide changed inner numerical admission."""
     state, original, gun_calls, calls = _prefix_fixture(monkeypatch)
     request = _observation_request(tmp_path, original.plane_z_mm+.1, segmented=False)
@@ -513,7 +545,7 @@ def test_nonsegmented_observation_cache_does_not_bypass_changed_acceptance_polic
 
 
 @pytest.mark.parametrize("segmented", (False, True))
-def test_virtual_plane_resumes_nearest_completed_post_sample_observation(monkeypatch, tmp_path, segmented):
+def test_virtual_plane_resumes_nearest_completed_post_sample_observation(monkeypatch, tmp_path, segmented, coherent_cuda):
     """Actual complex drift/control fixture, not an admitted full tip chain."""
     state, original, gun_calls, calls = _prefix_fixture(monkeypatch)
     start = original.plane_z_mm
@@ -546,7 +578,7 @@ def test_virtual_plane_resumes_nearest_completed_post_sample_observation(monkeyp
 
 
 @pytest.mark.parametrize("segmented", (False, True))
-def test_virtual_plane_never_resumes_from_a_downstream_observation(monkeypatch, tmp_path, segmented):
+def test_virtual_plane_never_resumes_from_a_downstream_observation(monkeypatch, tmp_path, segmented, coherent_cuda):
     state, original, _gun_calls, calls = _prefix_fixture(monkeypatch)
     start = original.plane_z_mm
     simulate_tip_wave(state, _observation_request(tmp_path, start+.2, segmented=segmented))
@@ -557,7 +589,7 @@ def test_virtual_plane_never_resumes_from_a_downstream_observation(monkeypatch, 
 
 
 @pytest.mark.parametrize("segmented", (False, True))
-def test_virtual_plane_prefix_at_detector_absorbs_once_when_continuing(monkeypatch, tmp_path, segmented):
+def test_virtual_plane_prefix_at_detector_absorbs_once_when_continuing(monkeypatch, tmp_path, segmented, coherent_cuda):
     """Real stop execution checks incident and already-absorbed boundaries."""
     from temsim.detector import wave_readout
     import temsim.physics.tip_wave_pipeline as pipeline
@@ -586,7 +618,7 @@ def test_virtual_plane_prefix_at_detector_absorbs_once_when_continuing(monkeypat
 
 
 @pytest.mark.parametrize("change", ("state", "column_step", "source", "grid", "inelastic", "epoch"))
-def test_virtual_plane_prefix_invalidates_consumed_input_changes(monkeypatch, tmp_path, change):
+def test_virtual_plane_prefix_invalidates_consumed_input_changes(monkeypatch, tmp_path, change, coherent_cuda):
     from temsim.physics.wave_execution import InelasticWaveNumerics
     state, original, _gun_calls, calls = _prefix_fixture(monkeypatch)
     start = original.plane_z_mm
@@ -610,7 +642,7 @@ def test_virtual_plane_prefix_invalidates_consumed_input_changes(monkeypatch, tm
     assert calls[0][0] == start
 
 
-def test_virtual_plane_disk_prefix_checks_array_corruption_before_reuse(monkeypatch, tmp_path):
+def test_virtual_plane_disk_prefix_checks_array_corruption_before_reuse(monkeypatch, tmp_path, coherent_cuda):
     """Even an exact-Z observation validates the existing committed arrays."""
     from pathlib import Path
     import temsim.physics.tip_wave_pipeline as pipeline
@@ -629,7 +661,7 @@ def test_virtual_plane_disk_prefix_checks_array_corruption_before_reuse(monkeypa
 
 
 @pytest.mark.parametrize("segmented", (False, True))
-def test_failed_virtual_continuation_does_not_register_an_observation(monkeypatch, tmp_path, segmented):
+def test_failed_virtual_continuation_does_not_register_an_observation(monkeypatch, tmp_path, segmented, coherent_cuda):
     import temsim.physics.tip_wave_pipeline as pipeline
     from temsim.physics import column_wave
     state, original, _gun_calls, _calls = _prefix_fixture(monkeypatch)
@@ -644,7 +676,7 @@ def test_failed_virtual_continuation_does_not_register_an_observation(monkeypatc
     assert tuple(pipeline._OBSERVATION_PREFIXES.items()) == before
 
 
-def test_virtual_observation_prefix_index_is_bounded_and_ram_budgeted(monkeypatch, tmp_path):
+def test_virtual_observation_prefix_index_is_bounded_and_ram_budgeted(monkeypatch, tmp_path, coherent_cuda):
     import temsim.physics.tip_wave_pipeline as pipeline
     state, original, _gun_calls, _calls = _prefix_fixture(monkeypatch)
     monkeypatch.setattr(pipeline, "_MAXIMUM_OBSERVATION_PREFIXES", 2)
@@ -661,7 +693,7 @@ def test_virtual_observation_prefix_index_is_bounded_and_ram_budgeted(monkeypatc
 
 
 @pytest.mark.parametrize("segmented", (False, True))
-def test_pre_sample_virtual_plane_reuses_executed_upstream_state(monkeypatch, tmp_path, segmented):
+def test_pre_sample_virtual_plane_reuses_executed_upstream_state(monkeypatch, tmp_path, segmented, coherent_cuda):
     """An upstream observation is a real continuation, not a new source."""
     state, original, gun_calls, calls = _prefix_fixture(monkeypatch)
     start = original.plane_z_mm
@@ -675,7 +707,7 @@ def test_pre_sample_virtual_plane_reuses_executed_upstream_state(monkeypatch, tm
     assert result.checkpoint.plane_z_mm < state.sample.z_mm
 
 
-def test_backward_unvisited_plane_reuses_nearest_committed_column_segment(monkeypatch, tmp_path):
+def test_backward_unvisited_plane_reuses_nearest_committed_column_segment(monkeypatch, tmp_path, coherent_cuda):
     """Actual vacuum complex propagation starts before Z, never runs backwards."""
     import temsim.physics.tip_wave_pipeline as pipeline
     from temsim.optics.electron_gun.tip_coherence import wavelength_m
@@ -703,7 +735,7 @@ def test_backward_unvisited_plane_reuses_nearest_committed_column_segment(monkey
         fresh_mode.axial_reference.flight_time_s, rel=1e-12)
 
 
-def test_verified_prefix_only_admits_remaining_column_span(monkeypatch, tmp_path):
+def test_verified_prefix_only_admits_remaining_column_span(monkeypatch, tmp_path, coherent_cuda):
     import temsim.physics.tip_wave_pipeline as pipeline
     state, original, _gun_calls, _calls = _prefix_fixture(monkeypatch)
     start = original.plane_z_mm
@@ -721,7 +753,7 @@ def test_verified_prefix_only_admits_remaining_column_span(monkeypatch, tmp_path
     assert admitted == []
 
 
-def test_backward_detector_plane_keeps_incident_checkpoint(monkeypatch, tmp_path):
+def test_backward_detector_plane_keeps_incident_checkpoint(monkeypatch, tmp_path, coherent_cuda):
     """Intermediate checkpoint discovery must not substitute transmitted flux."""
     state, original, _gun_calls, calls = _prefix_fixture(monkeypatch)
     start = original.plane_z_mm
@@ -736,7 +768,7 @@ def test_backward_detector_plane_keeps_incident_checkpoint(monkeypatch, tmp_path
     assert incident.checkpoint.beam.total_weight == pytest.approx(original.beam.total_weight, abs=1e-12)
 
 
-def test_cancelled_observation_keeps_only_completed_intermediate_segments(monkeypatch, tmp_path):
+def test_cancelled_observation_keeps_only_completed_intermediate_segments(monkeypatch, tmp_path, coherent_cuda):
     import temsim.physics.tip_wave_pipeline as pipeline
     state, original, gun_calls, calls = _prefix_fixture(monkeypatch)
     start = original.plane_z_mm
@@ -756,7 +788,7 @@ def test_cancelled_observation_keeps_only_completed_intermediate_segments(monkey
     assert calls[0][0] == committed_z
 
 
-def test_live_observation_session_captures_once_and_keeps_input_state_independent(monkeypatch, tmp_path):
+def test_live_observation_session_captures_once_and_keeps_input_state_independent(monkeypatch, tmp_path, coherent_cuda):
     """Actual complex drift uses a fixed captured tip, never the later live edits."""
     import temsim.physics.tip_wave_pipeline as pipeline
     from temsim.instrument_snapshot import InstrumentSnapshot
@@ -798,7 +830,7 @@ def test_live_observation_session_captures_once_and_keeps_input_state_independen
     assert len(captures) == len(restores) == len(identities) == 1
 
 
-def test_live_session_rechecks_source_before_reusing_an_exact_z(monkeypatch, tmp_path):
+def test_live_session_rechecks_source_before_reusing_an_exact_z(monkeypatch, tmp_path, coherent_cuda):
     import temsim.physics.tip_wave_pipeline as pipeline
     from temsim import calculation_manifest
     state, original, _gun_calls, calls = _prefix_fixture(monkeypatch)
@@ -812,7 +844,7 @@ def test_live_session_rechecks_source_before_reusing_an_exact_z(monkeypatch, tmp
     assert calls == []
 
 
-def test_live_session_rejects_external_change_and_keeps_checkpoint_unpublished(monkeypatch, tmp_path):
+def test_live_session_rejects_external_change_and_keeps_checkpoint_unpublished(monkeypatch, tmp_path, coherent_cuda):
     import temsim.physics.tip_wave_pipeline as pipeline
     state, original, _gun_calls, calls = _prefix_fixture(monkeypatch)
     path = tmp_path / "external-field.dat"
@@ -830,7 +862,7 @@ def test_live_session_rejects_external_change_and_keeps_checkpoint_unpublished(m
     assert tuple(pipeline._OBSERVATION_PREFIXES.items()) == before
 
 
-def test_live_observation_session_rejects_parallel_use_and_releases_after_failure(monkeypatch, tmp_path):
+def test_live_observation_session_rejects_parallel_use_and_releases_after_failure(monkeypatch, tmp_path, coherent_cuda):
     import temsim.physics.tip_wave_pipeline as pipeline
     state, original, _gun_calls, _calls = _prefix_fixture(monkeypatch)
     request = _observation_request(tmp_path, original.plane_z_mm+.1)
@@ -863,7 +895,7 @@ def test_live_observation_session_rejects_invalid_targets_before_snapshot_captur
         pipeline.TipWaveObservationSession(state, replace(request, stop="gun_exit", observation_z_mm=None))
 
 
-def test_live_session_real_field_plan_matches_fresh_column_execution(monkeypatch, tmp_path):
+def test_live_session_real_field_plan_matches_fresh_column_execution(monkeypatch, tmp_path, coherent_cuda):
     """Real local lens/E-field providers; gun production alone is a test double."""
     from collections import OrderedDict
     import temsim.physics.tip_wave_pipeline as pipeline
@@ -900,7 +932,7 @@ def test_live_session_real_field_plan_matches_fresh_column_execution(monkeypatch
 
 
 @pytest.mark.parametrize("segmented", (False, True))
-def test_virtual_column_reuses_admitted_exact_plan_with_identical_complex_field(monkeypatch, tmp_path, segmented):
+def test_virtual_column_reuses_admitted_exact_plan_with_identical_complex_field(monkeypatch, tmp_path, segmented, coherent_cuda):
     """Real weak-lens/E-field column; the gun producer is an isolated fixture."""
     import temsim.physics.tip_wave_pipeline as pipeline
     from temsim.physics import column_wave
@@ -947,7 +979,7 @@ def test_virtual_column_reuses_admitted_exact_plan_with_identical_complex_field(
 
 
 @pytest.mark.parametrize("segmented", (False, True))
-def test_admitted_plan_cannot_cross_a_detector_absorption_boundary(monkeypatch, tmp_path, segmented):
+def test_admitted_plan_cannot_cross_a_detector_absorption_boundary(monkeypatch, tmp_path, segmented, coherent_cuda):
     """Real complex propagation and stop kernel on an analytic vacuum plan."""
     import temsim.physics.tip_wave_pipeline as pipeline
     from temsim.physics import column_wave

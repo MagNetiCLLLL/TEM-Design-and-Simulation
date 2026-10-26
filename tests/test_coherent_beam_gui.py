@@ -53,6 +53,10 @@ class _GuiObservationSession:
 
 @pytest.fixture
 def panel(qtbot, monkeypatch):
+    # This fixture substitutes propagation; admit only its fake execution.
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "GUI execution fixture"))
     def capture(state, settings):
         if not settings.enabled:
             raise ValueError("Select a coherent tip boundary before calculating a wave")
@@ -859,7 +863,7 @@ def test_capture_reads_backend_from_same_captured_state_as_optics(panel):
         calls.append(1)
         return provider_state if len(calls) == 1 else panel._state
     panel.state_provider = current_state
-    captured, request, _ = panel.capture_calculation_inputs()
+    captured, request, _ = panel.capture_calculation_inputs(for_execution=False)
     assert captured.acceleration_backend == "Require GPU"
     assert request.wave_grid.compute_backend == captured.acceleration_backend
     assert request.wave_grid.acceleration_enabled is False
@@ -871,8 +875,9 @@ def test_capture_reads_backend_from_same_captured_state_as_optics(panel):
 
 @pytest.mark.parametrize("backend,label", [("cupy", "GPU (CuPy)"), ("numpy", "CPU (NumPy)")])
 def test_result_displays_executed_device_not_requested_policy(panel, qtbot, backend, label):
-    panel._state.acceleration_backend = "CUDA GPU" if backend == "numpy" else "CPU"
     calculate(panel, qtbot)
+    # Changing the requested policy cannot relabel an already computed result.
+    panel._state.acceleration_backend = "CUDA GPU" if backend == "numpy" else "CPU"
     calculated = result(panel._target_z_mm)
     calculated.checkpoint.record = {"schema": "executed-column-segment-v1", "modes": [
         {"compute_backend": backend, "numeric_precision": "complex128 / float64", "fallback_reason": None}]}

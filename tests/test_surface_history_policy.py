@@ -12,6 +12,9 @@ from temsim.physics.wave_execution import WaveExecutionOptions
 @pytest.mark.parametrize("segmented", [False, True])
 @pytest.mark.parametrize("reuse", [False, True])
 def test_surface_history_write_store_is_present_independently_of_reuse(tmp_path, monkeypatch, segmented, reuse):
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "Stops before physical execution"))
     state = default_state()
     state.electron_gun.emitter.surface_model = replace(load_tip_surface_reference(), coherence=SurfaceCoherence())
     request = TipWaveRequest(stop="gun_exit", execution=WaveExecutionOptions(

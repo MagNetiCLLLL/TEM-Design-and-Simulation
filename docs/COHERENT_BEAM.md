@@ -9,6 +9,14 @@ calculation; it is off by default. This does not invent phase from particle
 positions or flight times, or accept a configurable gun-exit or specimen-plane
 source. Existing stored source settings remain unchanged until explicitly applied.
 
+**Temporary execution requirement:** new coherent calculations require a usable
+CUDA device, driver and CuPy backend. An unavailable CUDA backend or explicit
+CPU selection is rejected before expensive preparation or propagation. CUDA
+failures do not trigger CPU retries. Input editing, reading completed results
+and classical particle calculations remain available without CUDA. Historical
+CPU measurements below describe earlier validation, not permission to launch
+new CPU coherent workflows under this restriction.
+
 The main toolbar's **Run high-accuracy once** button runs classical particles
 and prepares the incident beam required by Scanning Image and the
 specimen/detector pages. It is also available as **Simulation → Calculate
@@ -56,7 +64,8 @@ electric tails when their bound fits the declared budget; a larger unresolved
 coupling is rejected. When spatial magnetic terms exceed the omission budget, a Hermitian
 spectral operator applies the spatial magnetic residual on the complex envelope,
 symmetrically around the quadratic step. It retains the analytical phase carrier
-and executes on the same CPU/GPU backend. The numerical default permits at most
+and executes on the same selected backend. New coherent jobs require CUDA under
+the temporary execution policy. The numerical default permits at most
 0.01 rad of omitted action per propagated metre; corrected steps allocate the
 budget left after electric-magnetic omission to the finite-grid exponential series. The execution record
 separates these quantities from floating-point allowances. Neither bound certifies
@@ -176,10 +185,12 @@ than passing this source check or a single successful calculation.
 The main toolbar's **Compute** choice is captured with the applied Tip and
 optics for coherent column and material calculations. This is the only editable
 CPU/GPU selection; STEM and coherent pages consume the same captured preference.
-**Auto** prefers an available supported GPU even for small jobs; **CUDA GPU**
-and **Prefer GPU** request it and report an allowed
-CPU fallback. **Require GPU** stops if the requested GPU execution cannot be
-provided. Gun propagation remains on CPU.
+For new coherent jobs, **Auto**, **CUDA GPU**, **Prefer GPU** and **Require GPU**
+all require usable CuPy CUDA execution. **CPU**, **Numba CPU** and disabled
+acceleration are rejected for these jobs. There is no CPU fallback after an
+unavailable-device, allocation or execution failure. Existing CPU-only
+preparation stages remain on CPU; requiring CUDA does not claim every stage
+has a GPU implementation. Classical particle backend selection is unchanged.
 
 **Advanced calculation options → GPU working limit** defaults to **24 GiB**.
 It is separate from **Working limit per stage** and the RAM/disk cache limits;
@@ -193,8 +204,8 @@ toolbar selection; older records without this evidence say that the execution
 device was not recorded. Coherent GPU operators retain **complex128 / float64**.
 The CPU timings below remain CPU evidence, not GPU speed measurements.
 
-After restarting the application, choose **Compute → CUDA GPU** (or **Require
-GPU** when an unavailable GPU must be reported as an error), keep **GPU working
+After restarting the application, choose **Compute → CUDA GPU** or **Require
+GPU**. Both stop if CUDA is unavailable for a new coherent calculation. Keep **GPU working
 limit = 24 GiB** on the tested 32 GB device, and press **Calculate beam**.
 The optional classical comparison uses that same captured device selection;
 it does not define different Tip parameters. An already running task retains its original
@@ -1032,9 +1043,9 @@ pass a fresh sampling check before the operator is applied.
 Serial GPU modes within one column segment reuse a bounded device pool and
 FFT-plan cache. Static same-energy transport maps are reused only within that
 prepared segment; driven, arrival-time-dependent fields are rebuilt. These
-optimisations do not change physical operators. Explicit CPU fallback remains
-distinct from Require GPU, and physical or sampling errors do not trigger a
-silent CPU retry.
+optimisations do not change physical operators. New coherent jobs require CUDA
+and never retry on CPU, including after physical or sampling errors. Historical
+CPU comparisons remain numerical evidence from before this restriction.
 
 For a static, centred round segment ending at a physical circular aperture,
 an aperture-conditioned calculation can avoid resolving the phase of a broad

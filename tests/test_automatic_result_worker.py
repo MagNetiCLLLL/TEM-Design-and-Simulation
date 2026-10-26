@@ -1,6 +1,7 @@
 """Automatic-startup IO routing; no transport or scientific arrays are computed."""
 from hashlib import sha256
 from pathlib import Path
+from threading import Event, Thread
 from types import SimpleNamespace
 
 import pytest
@@ -80,10 +81,151 @@ def test_duplicate_pending_request_does_not_create_an_unowned_intent(routing):
     for _ in range(3):
         routing.owner.archive_completed_section(first)
     assert len(routing.workers) == 1
-    assert routing.workers[0].startup_result_token == token
+    assert routing.workers[0].startup_result_token != token
+    assert routing.store.commit_save(token, {}) is False
     routing.workers[0].run()
     assert routing.store.entry()["result_identity"] == first.identity
     assert routing.states[-1]["auto_startup_saved"]
+
+
+@pytest.mark.parametrize("completion_order", [(0, 1), (1, 0)])
+def test_reaccepted_pending_result_owns_startup_regardless_of_completion_order(routing, completion_order):
+    first, second = _result("first"), _result("second")
+    routing.owner.archive_completed_section(first)
+    routing.owner.archive_completed_section(second)
+    routing.owner.archive_completed_section(first)
+    assert len(routing.workers) == 2
+    for index in completion_order:
+        routing.workers[index].run()
+    assert routing.store.entry()["result_identity"] == first.identity
+    assert sorted(routing.writes) == sorted([first.identity, second.identity])
+    assert not routing.owner._section_file_pending
+
+
+@pytest.mark.parametrize("disable_restore", [False, True])
+def test_reaccepted_result_after_worker_completion_does_not_wait_for_gui_callbacks(routing, disable_restore):
+    _save(routing, "old")
+    previous = routing.store.entry()
+    first, second = _result("first"), _result("second")
+    routing.owner.archive_completed_section(first)
+    earlier = routing.workers[-1]
+    routing.owner.archive_completed_section(second)
+    later = routing.workers[-1]
+    pool = QThreadPool()
+    earlier.setAutoDelete(False)
+    pool.start(earlier)
+    assert pool.waitForDone(5000)
+    # No event processing: the successful receipt still belongs to the pending
+    # worker, and normal shutdown must not need a queued GUI callback to commit.
+    assert earlier.token in routing.owner._section_file_jobs
+    if disable_restore:
+        routing.store.set_enabled(False)
+    routing.owner.archive_completed_section(first)
+    assert len(routing.workers) == 3  # The baseline save and two distinct results.
+    if disable_restore:
+        assert routing.store.entry() == previous
+    else:
+        assert routing.store.entry()["result_identity"] == first.identity
+    accepted_entry = routing.store.entry()
+    later.run()
+    assert routing.store.entry() == accepted_entry
+    assert routing.writes.count(first.identity) == 1
+    QCoreApplication.processEvents()
+    assert not routing.owner._section_file_pending
+
+
+def test_reaccepted_result_while_archive_io_is_running_renews_owned_worker(routing, monkeypatch):
+    first, second = _result("first"), _result("second")
+    writing, release = Event(), Event()
+    automatic = codec.archive_section_result
+
+    def blocked_save(result, directory, **kwargs):
+        if result is first:
+            writing.set()
+            assert release.wait(5)
+        return automatic(result, directory, **kwargs)
+
+    monkeypatch.setattr(codec, "archive_section_result", blocked_save)
+    routing.owner.archive_completed_section(first)
+    earlier = routing.workers[-1]
+    earlier.setAutoDelete(False)
+    pool = QThreadPool()
+    pool.start(earlier)
+    try:
+        assert writing.wait(5)
+        routing.owner.archive_completed_section(second)
+        later = routing.workers[-1]
+        routing.owner.archive_completed_section(first)
+    finally:
+        release.set()
+        assert pool.waitForDone(5000)
+    assert routing.store.entry()["result_identity"] == first.identity
+    later.run()
+    assert routing.store.entry()["result_identity"] == first.identity
+    assert len(routing.workers) == 2 and len(routing.writes) == 2
+    QCoreApplication.processEvents()
+
+
+def test_reaccept_during_index_commit_cannot_lose_the_renewed_intent(routing, monkeypatch):
+    first, second = _result("first"), _result("second")
+    routing.owner.archive_completed_section(first)
+    earlier = routing.workers[-1]
+    routing.owner.archive_completed_section(second)
+    later = routing.workers[-1]
+    committing, renewing, release = Event(), Event(), Event()
+    commit = routing.store.commit_save
+    original_token = earlier.startup_result_token
+
+    def blocked_commit(token, info):
+        if token == original_token:
+            committing.set()
+            assert release.wait(5)
+        return commit(token, info)
+
+    renew = earlier.renew_startup_result
+
+    def marked_renew(identity):
+        renewing.set()
+        return renew(identity)
+
+    monkeypatch.setattr(routing.store, "commit_save", blocked_commit)
+    monkeypatch.setattr(earlier, "renew_startup_result", marked_renew)
+    pool = QThreadPool()
+    earlier.setAutoDelete(False)
+    pool.start(earlier)
+
+    def release_commit():
+        renewing.wait(5)
+        release.set()
+
+    unlocker = Thread(target=release_commit)
+    unlocker.start()
+    try:
+        assert committing.wait(5)
+        routing.owner.archive_completed_section(first)
+    finally:
+        release.set()
+        unlocker.join(timeout=5)
+        assert pool.waitForDone(5000)
+    later.run()
+    assert routing.store.entry()["result_identity"] == first.identity
+    assert len(routing.workers) == 2 and len(routing.writes) == 2
+    QCoreApplication.processEvents()
+
+
+def test_reaccepted_cancelled_pending_result_gets_a_new_owned_worker(routing):
+    result = _result("first")
+    routing.owner.archive_completed_section(result)
+    cancelled = routing.workers[-1]
+    cancelled.cancel_event.set()
+    routing.owner.archive_completed_section(result)
+    replacement = routing.workers[-1]
+    assert replacement is not cancelled
+    cancelled.run()
+    replacement.run()
+    assert routing.store.entry()["result_identity"] == result.identity
+    assert routing.writes == [result.identity]
+    assert not routing.owner._section_file_pending
 
 
 def test_manual_export_never_supersedes_pending_automatic_save(routing, tmp_path):

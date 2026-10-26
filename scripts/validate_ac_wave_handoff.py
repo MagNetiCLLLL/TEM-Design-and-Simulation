@@ -245,7 +245,7 @@ def prepare(args):
     return consumer,working,protocol,request,grid,boundary,descriptor
 
 
-def main():
+def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--producer',type=Path,required=True)
     parser.add_argument('--pin-patches',type=Path,nargs=2,metavar=('HP_PATCH','CACHE_PATCH'))
@@ -255,11 +255,14 @@ def main():
     parser.add_argument('--column-step',type=float,default=.05)
     parser.add_argument('--positions',nargs='+')
     parser.add_argument('--prepare-only',action='store_true')
-    args=parser.parse_args()
+    args=parser.parse_args(argv)
     if args.pin_patches:
         print(json.dumps(pin_changes(args.producer.resolve(),args.pin_patches),indent=2));return
     if args.cache_key is None or args.output is None:
         parser.error('--cache-key and --output are required for handoff')
+    if not args.prepare_only:
+        from temsim.physics.compute_backend import require_coherent_cuda
+        require_coherent_cuda()
     snapshot,state,protocol,request,grid,boundary,descriptor=prepare(args)
     if args.prepare_only:
         print(json.dumps(dict(status='PREPARED_HANDOFF_ONLY',input_identity=snapshot.digest,

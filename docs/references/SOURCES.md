@@ -10,24 +10,24 @@ Original reference figures and their metadata remain in this directory.
 
 Original document: `CODEX_OPTIMIZATION_ROUND2.md`.
 
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/AGENTS.md>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/PROJECT_FUNCTION_SPEC.md>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/docs/working-points-and-convergence.md>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/docs/development/PRODUCT_USABILITY_PROGRESS.md>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/CODEX_DEVELOPMENT_GUIDE.md>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/gui/main_window.py>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/gui/calculation_controller.py>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/gui/job_coordinator.py>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/physics/compute_backend.py>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/parameter_registry.py>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/runtime_parameters.py>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/sampling_diagnostics.py>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/physics/beam_statistics.py>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/README.md>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/docs/SIX_STAGE_PHYSICS_IMPLEMENTATION.md>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/pyproject.toml>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/.github/workflows/tem-p0.yml>
-- <https://github.com/MagNetiCLLLL/TEMForge/blob/985463968f365fdb945af1b4f3a744a7a53a5912/scripts/validate_development_spec.py>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/AGENTS.md>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/PROJECT_FUNCTION_SPEC.md>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/docs/working-points-and-convergence.md>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/docs/development/PRODUCT_USABILITY_PROGRESS.md>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/CODEX_DEVELOPMENT_GUIDE.md>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/gui/main_window.py>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/gui/calculation_controller.py>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/gui/job_coordinator.py>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/physics/compute_backend.py>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/parameter_registry.py>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/runtime_parameters.py>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/sampling_diagnostics.py>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/src/temsim/physics/beam_statistics.py>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/README.md>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/docs/SIX_STAGE_PHYSICS_IMPLEMENTATION.md>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/pyproject.toml>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/.github/workflows/tem-p0.yml>
+- <https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/blob/985463968f365fdb945af1b4f3a744a7a53a5912/scripts/validate_development_spec.py>
 
 ## Canonical path phase and exact incident reuse
 

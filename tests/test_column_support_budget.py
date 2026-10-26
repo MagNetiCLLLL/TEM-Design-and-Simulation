@@ -586,6 +586,10 @@ def test_independent_mode_budget_is_spent_once_through_segment_and_branch_record
 
 
 def test_pipeline_independent_mode_selection_cache_and_strict_budget_reuse_gun(monkeypatch, tmp_path):
+    from temsim.physics.compute_backend import coherent_cuda_capability
+    capability = coherent_cuda_capability()
+    if not capability.available:
+        pytest.skip(f"CuPy CUDA unavailable: {capability.detail}")
     from collections import OrderedDict
     from temsim.physics import tip_wave_pipeline as pipeline
     from temsim.physics.wave_mode_support import incoherent_mode_approximation
@@ -605,7 +609,7 @@ def test_pipeline_independent_mode_selection_cache_and_strict_budget_reuse_gun(m
     monkeypatch.setattr(pipeline, "_prepare_column", _quiet_prepared_column)
     monkeypatch.setattr(column, "_prepare_column", _quiet_prepared_column)
     request = _observation_request(tmp_path, start+.3, segmented=True,
-        wave_grid=WaveGridNumerics(compute_backend="CPU", maximum_incoherent_mode_loss_probability=.035))
+        wave_grid=WaveGridNumerics(compute_backend="Require GPU", maximum_incoherent_mode_loss_probability=.035))
     first = pipeline.simulate_tip_wave(state, request)
     second = pipeline.simulate_tip_wave(state, request)
     assert len(first.checkpoint.beam.modes) == len(second.checkpoint.beam.modes) == 2

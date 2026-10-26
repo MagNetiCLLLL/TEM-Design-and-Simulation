@@ -30,7 +30,9 @@ from temsim.physics.coherent_inputs import (
     TipEmissionSettings, candidate_tip_emission, prepare_coherent_state,
     source_settings_from_state, wave_input_summary,
 )
-from temsim.physics.tip_wave_pipeline import TipWaveObservationSession, TipWaveRequest, simulate_tip_wave
+from temsim.physics.tip_wave_pipeline import (
+    TipWaveObservationSession, TipWaveRequest, simulate_tip_wave, require_tip_wave_cuda,
+)
 
 GIB = 1024**3
 
@@ -1177,7 +1179,7 @@ class CoherentBeamPage(QWidget):
                 maximum_ram_cache_bytes=round(self.ram_cache_gib.value()*GIB),
                 maximum_disk_cache_bytes=round(self.disk_cache_gib.value()*GIB))).validate()
 
-    def capture_calculation_inputs(self):
+    def capture_calculation_inputs(self, *, for_execution=True):
         """Check drafts and freeze one source, optics and numerical request."""
         summary = None
         settings = None
@@ -1186,8 +1188,10 @@ class CoherentBeamPage(QWidget):
             state = self.state_provider() if self.state_provider is not None else self._state
             if state is None:
                 raise ValueError("No current instrument inputs are available")
+            request = self._make_request(state)
+            if for_execution:
+                request = require_tip_wave_cuda(request)
             captured = prepare_coherent_state(state, settings)
-            request = self._make_request(captured)
             summary = wave_input_summary(captured, request)
             if summary["status"] != "SOURCE_READY":
                 raise ValueError(summary.get("reason", "Coherent tip inputs are not ready"))
@@ -1243,6 +1247,11 @@ class CoherentBeamPage(QWidget):
     def start_captured_calculation(self, captured, request, summary, *, pair_context=None):
         """Run already validated captured inputs; never re-read live controls."""
         if self._closed:
+            return
+        try:
+            request = require_tip_wave_cuda(request)
+        except Exception as error:
+            self.status.setText(f"Coherent beam not started: {error} Previous result retained.")
             return
         self.state_set.cancel()
         self.state_list.mode.setCurrentIndex(self.state_list.mode.findData("current"))

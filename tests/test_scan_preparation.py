@@ -161,6 +161,9 @@ def test_prepare_cache_keeps_dynamic_request_identity(monkeypatch):
 
 @pytest.mark.parametrize("entry", ("direct", "session"))
 def test_wave_entry_prepares_before_column_field_capture(monkeypatch, entry):
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "Stops before column execution"))
     import temsim.physics.tip_wave_pipeline as pipeline
     import temsim.physics.scan_geometry as geometry
     state = _state()
@@ -190,6 +193,9 @@ def test_wave_entry_prepares_before_column_field_capture(monkeypatch, entry):
 
 
 def test_scan_dwells_keep_one_prepared_request_and_distinct_emission_times(monkeypatch):
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "Substituted scan execution"))
     import temsim.physics.tip_wave_scan as scanning
     import temsim.physics.tip_wave_pipeline as pipeline
     import temsim.physics.scan_geometry as geometry

@@ -9,6 +9,7 @@ from temsim.optics.column import default_state
 from temsim.optics.electron_gun.tip_surface import load_tip_surface_reference, SurfaceCoherence
 from temsim.physics.surface_wave import SurfaceWaveNumerics
 from temsim.physics.tip_wave_pipeline import TipWaveRequest, simulate_tip_wave
+from test_tip_wave_pipeline import coherent_cuda, mock_coherent_admission
 
 
 def configured(*, recording=None):
@@ -28,7 +29,7 @@ REQUEST = TipWaveRequest(stop="tip_near_field",
     surface=SurfaceWaveNumerics(radial_nodes=17, axial_nodes=33, energy_samples=1))
 
 
-def test_pipeline_preserves_phase_cache_and_instrument_identity():
+def test_pipeline_preserves_phase_cache_and_instrument_identity(coherent_cuda):
     state = configured()
     result = simulate_tip_wave(state, REQUEST)
     repeated = simulate_tip_wave(state, REQUEST)
@@ -53,7 +54,7 @@ def test_full_image_is_not_admitted_by_the_existence_of_a_near_field():
     assert gun_phase_readiness(state)["gun_phase_transfer"] == "DEVELOPMENT_TWO_WAY_ROUND_GUN_AVAILABLE_NOT_QUALIFIED"
 
 
-def test_column_aperture_and_filter_moved_to_tip_cannot_be_skipped():
+def test_column_aperture_and_filter_moved_to_tip_cannot_be_skipped(mock_coherent_admission):
     state = configured()
     aperture = state.apertures[0]
     aperture.apply_manifest_geometry(z_mm=1e-6)
@@ -68,7 +69,7 @@ def test_column_aperture_and_filter_moved_to_tip_cannot_be_skipped():
         simulate_tip_wave(state, REQUEST)
 
 
-def test_shared_column_field_is_checked_before_cached_wave_reuse(monkeypatch):
+def test_shared_column_field_is_checked_before_cached_wave_reuse(monkeypatch, coherent_cuda):
     import temsim.physics.tip_wave_pipeline as pipeline
     state = configured()
     simulate_tip_wave(state, REQUEST)
@@ -104,7 +105,7 @@ def test_profile_and_snapshot_roundtrip_without_converting_classical_source(tmp_
     assert restored.electron_gun.emitter.surface_model.coherence is None
 
 
-def test_archive_keeps_complex_mode_and_does_not_overwrite(tmp_path):
+def test_archive_keeps_complex_mode_and_does_not_overwrite(tmp_path, coherent_cuda):
     from temsim.physics.surface_wave_export import export_surface_wave, draw_surface_wave
     from matplotlib.figure import Figure
     from matplotlib.backends.backend_agg import FigureCanvasAgg
@@ -144,7 +145,7 @@ def test_historical_surface_editor_retains_read_only_energy_record(qtbot):
     assert state.electron_gun.emitter.surface_model.coherence.mean_energy_ev == .3
 
 
-def test_viewer_close_cancels_without_destroying_a_running_thread(qtbot):
+def test_viewer_close_cancels_without_destroying_a_running_thread(qtbot, coherent_cuda):
     from temsim.gui.surface_wave_dialog import SurfaceWaveDialog
     dialog = SurfaceWaveDialog(configured())
     qtbot.addWidget(dialog)
@@ -173,7 +174,7 @@ def test_obsolete_surface_profile_is_rejected_without_changing_tip(tmp_path, ver
 
 
 
-def test_viewer_runs_without_replacing_instrument_state_and_keeps_failed_result(qtbot):
+def test_viewer_runs_without_replacing_instrument_state_and_keeps_failed_result(qtbot, coherent_cuda):
     from temsim.gui.surface_wave_dialog import SurfaceWaveDialog
     state = configured()
     dialog = SurfaceWaveDialog(state)
@@ -192,7 +193,7 @@ def test_viewer_runs_without_replacing_instrument_state_and_keeps_failed_result(
     dialog.close()
 
 
-def test_cli_executes_and_exports_coherent_near_field(tmp_path):
+def test_cli_executes_and_exports_coherent_near_field(tmp_path, coherent_cuda):
     import importlib.util
     from pathlib import Path
     from temsim.profile_io import save_profile

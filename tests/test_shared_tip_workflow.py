@@ -11,6 +11,25 @@ from temsim.physics.coherent_inputs import TipEmissionSettings, source_settings_
 from test_working_point_restore_gui import window
 
 
+pytestmark = pytest.mark.usefixtures("substituted_wave_admission")
+
+
+@pytest.fixture
+def substituted_wave_admission(monkeypatch):
+    """Exercise window routing with fake CUDA and forbid real propagation."""
+    from temsim.physics import compute_backend, tip_wave_pipeline
+    from temsim.gui import coherent_beam
+
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "Window routing fixture only"))
+
+    def forbidden(*_args, **_kwargs):
+        pytest.fail("Window routing tests must substitute numerical wave execution")
+
+    monkeypatch.setattr(tip_wave_pipeline, "_execute_tip_wave", forbidden)
+    monkeypatch.setattr(coherent_beam, "simulate_tip_wave", forbidden)
+
+
 def supported_settings(state):
     # Declared synthetic Gaussian boundary for software wiring, not a measured
     # FEG or a replacement startup default. Keep nonzero energy spread.

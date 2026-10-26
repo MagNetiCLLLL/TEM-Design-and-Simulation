@@ -175,9 +175,10 @@ def test_invalid_candidate_keeps_current_gun_and_snapshot(settings):
 
 
 def test_unsupported_candidate_cannot_break_working_particle_source():
+    from temsim.optics.electron_gun.tip_source_domain import TipSourceDomainError
     state = default_state()
     before = capture_instrument_snapshot(state).digest
-    with pytest.raises(ValueError, match="Tip unchanged.*cannot represent"):
+    with pytest.raises(TipSourceDomainError, match="cannot establish forward support"):
         candidate_tip_emission(state, replace(source_settings_from_state(state), enabled=True,
             boundary_model=FORWARD_GAUSSIAN_SCHELL))
     assert capture_instrument_snapshot(state).digest == before

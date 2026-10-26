@@ -51,9 +51,9 @@ gpu = [
 atomistic = []
 
 [project.urls]
-Homepage = "https://github.com/MagNetiCLLLL/TEMForge"
-Repository = "https://github.com/MagNetiCLLLL/TEMForge"
-Issues = "https://github.com/MagNetiCLLLL/TEMForge/issues"
+Homepage = "https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation"
+Repository = "https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation"
+Issues = "https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/issues"
 
 [project.scripts]
 tem-design-simulation = "temsim.app:run"
@@ -73,6 +73,7 @@ bdist_wheel = "temsim._build.FreshWheel"
 "temsim.recorder" = ["autoscript_1_18.json"]
 
 [tool.setuptools.data-files]
+"." = ["requirements-cad.txt"]
 "configs/environments" = ["configs/environments/*.toml"]
 "configs/sources" = ["configs/sources/*.toml"]
 "configs/subassemblies" = ["configs/subassemblies/*.toml"]

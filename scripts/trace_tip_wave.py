@@ -133,7 +133,8 @@ def main(argv=None):
     parser.add_argument("--surface-radius-factor", type=float, default=1.5)
     parser.add_argument("--observables", nargs="+", choices=("intensity", "phase", "complex", "covariance"), default=["intensity"])
     parser.add_argument("--column-step-mm", type=float, default=.5)
-    parser.add_argument("--radial-column-backend", choices=("cpu", "cuda"), default="cpu")
+    parser.add_argument("--radial-column-backend", choices=("cpu", "cuda"), default="cuda",
+                        help="Execution requires cuda; cpu is accepted only for configuration descriptions")
     parser.add_argument("--radial-column-samples", type=int, default=65536)
     parser.add_argument("--maximum-radial-column-samples", type=int, default=8_388_608)
     parser.add_argument("--handoff-pixels", type=int, default=256)
@@ -173,6 +174,9 @@ def main(argv=None):
         parser.error("--output is required unless --describe is selected")
     if not args.describe and args.output.exists():
         parser.error("Output already exists; choose a new directory")
+    if not args.describe:
+        from temsim.physics.compute_backend import require_coherent_cuda
+        require_coherent_cuda("CPU" if args.radial_column_backend == "cpu" else "Require GPU")
     state = default_state()
     catalog = AssemblyCatalog()
     selection, values = read_profile(args.profile)
@@ -194,7 +198,7 @@ def main(argv=None):
             energy_samples=args.energy_samples, maximum_working_bytes=args.gun_budget_mb*1024**2),
         column_step_mm=args.column_step_mm, detector_pixels=args.detector_pixels, detector_key=args.detector,
         detector_keys=tuple(args.detectors or ()),
-        wave_grid=WaveGridNumerics(automatic_refinement=not args.no_wave_refinement,
+        wave_grid=WaveGridNumerics(compute_backend="Require GPU", automatic_refinement=not args.no_wave_refinement,
             maximum_pixels=args.maximum_wave_grid, maximum_working_bytes=args.wave_budget_mb*1024**2,
             specimen_phase_method=args.specimen_phase_method,
             specimen_quadrature_factor=args.specimen_quadrature_factor),

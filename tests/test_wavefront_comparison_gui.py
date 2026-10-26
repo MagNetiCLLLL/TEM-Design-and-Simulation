@@ -26,6 +26,9 @@ def actual_result(z=1500., *, identity="captured", reverse=False, single=False):
 
 @pytest.fixture
 def backend(monkeypatch):
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "Substituted reference execution"))
     from temsim.physics import tip_wave_pipeline, wavefront_comparison as numerical
     from temsim.gui import coherent_beam
     propagation, readouts = [], []

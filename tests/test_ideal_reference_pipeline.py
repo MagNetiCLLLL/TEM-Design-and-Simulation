@@ -11,6 +11,7 @@ from temsim.physics.ideal_column_reference import column_plan_for_model
 from test_tip_wave_pipeline import (
     _fixture_tip_checkpoint, _observation_request,
     _quiet_observation_state, _quiet_prepared_column,
+    coherent_cuda, mock_coherent_admission,
 )
 
 
@@ -37,8 +38,14 @@ def paired_fixture(monkeypatch):
     return state, gun, gun_calls
 
 
+def completed_control_result(state, gun, tmp_path):
+    """Synthetic completed input for control checks; no wave is propagated."""
+    request = _observation_request(tmp_path, gun.plane_z_mm)
+    return pipeline.TipWaveResult(gun, None, request, False, capture_instrument_snapshot(state).digest)
+
+
 @pytest.mark.parametrize("segmented", (False, True))
-def test_reference_shares_gun_but_never_reuses_physical_plane_prefix(monkeypatch, tmp_path, segmented):
+def test_reference_shares_gun_but_never_reuses_physical_plane_prefix(monkeypatch, tmp_path, segmented, coherent_cuda):
     state, gun, gun_calls = paired_fixture(monkeypatch)
     before = capture_instrument_snapshot(state).digest
     request = _observation_request(tmp_path, gun.plane_z_mm+.1, segmented=segmented)
@@ -65,9 +72,9 @@ def test_reference_shares_gun_but_never_reuses_physical_plane_prefix(monkeypatch
     assert pipeline.simulate_tip_wave(state, request).checkpoint.digest == actual.checkpoint.digest
 
 
-def test_reference_rejects_changed_instrument_without_starting_a_second_solve(monkeypatch, tmp_path):
+def test_reference_rejects_changed_instrument_without_starting_a_second_solve(monkeypatch, tmp_path, mock_coherent_admission):
     state, gun, _ = paired_fixture(monkeypatch)
-    actual = pipeline.simulate_tip_wave(state, _observation_request(tmp_path, gun.plane_z_mm+.1))
+    actual = completed_control_result(state, gun, tmp_path)
     state.step_mm *= .5
     monkeypatch.setattr(pipeline, "simulate_tip_wave", lambda *a, **k: pytest.fail("Changed inputs must reject first"))
     with pytest.raises(ValueError, match="changed since"):
@@ -75,7 +82,7 @@ def test_reference_rejects_changed_instrument_without_starting_a_second_solve(mo
 
 
 @pytest.mark.parametrize("segmented", (False, True))
-def test_recomputed_identical_gun_is_independent_of_storage_location(monkeypatch, tmp_path, segmented):
+def test_recomputed_identical_gun_is_independent_of_storage_location(monkeypatch, tmp_path, segmented, coherent_cuda):
     state, gun, gun_calls = paired_fixture(monkeypatch)
     actual = pipeline.simulate_tip_wave(state,
         _observation_request(tmp_path, gun.plane_z_mm+.1, segmented=segmented))
@@ -84,9 +91,9 @@ def test_recomputed_identical_gun_is_independent_of_storage_location(monkeypatch
     assert pipeline._executed_gun_digest(actual.checkpoint) == pipeline._executed_gun_digest(ideal.checkpoint)
 
 
-def test_reference_rejects_controls_changed_during_calculation(monkeypatch, tmp_path):
+def test_reference_rejects_controls_changed_during_calculation(monkeypatch, tmp_path, mock_coherent_admission):
     state, gun, _ = paired_fixture(monkeypatch)
-    actual = pipeline.simulate_tip_wave(state, _observation_request(tmp_path, gun.plane_z_mm))
+    actual = completed_control_result(state, gun, tmp_path)
 
     def changed(*_args, **_kwargs):
         state.step_mm *= .5
@@ -97,9 +104,9 @@ def test_reference_rejects_controls_changed_during_calculation(monkeypatch, tmp_
         pipeline.simulate_ideal_reference(state, actual)
 
 
-def test_reference_rejects_wrong_source_even_when_plane_and_instrument_match(monkeypatch, tmp_path):
+def test_reference_rejects_wrong_source_even_when_plane_and_instrument_match(monkeypatch, tmp_path, mock_coherent_admission):
     state, gun, _ = paired_fixture(monkeypatch)
-    actual = pipeline.simulate_tip_wave(state, _observation_request(tmp_path, gun.plane_z_mm+.1))
+    actual = completed_control_result(state, gun, tmp_path)
     unrelated = replace(actual.checkpoint, record={"schema": "executed-tip-gun-v1", "other_source": True})
     wrong = replace(actual, checkpoint=unrelated,
                     request=replace(actual.request, column_model="first_order_reference"))
@@ -108,10 +115,9 @@ def test_reference_rejects_wrong_source_even_when_plane_and_instrument_match(mon
         pipeline.simulate_ideal_reference(state, actual)
 
 
-def test_reference_cancel_and_missing_ancestry_do_not_start_propagation(monkeypatch, tmp_path):
+def test_reference_cancel_and_missing_ancestry_do_not_start_propagation(monkeypatch, tmp_path, mock_coherent_admission):
     state, gun, _ = paired_fixture(monkeypatch)
-    request = _observation_request(tmp_path, gun.plane_z_mm)
-    actual = pipeline.simulate_tip_wave(state, request)
+    actual = completed_control_result(state, gun, tmp_path)
     monkeypatch.setattr(pipeline, "simulate_tip_wave", lambda *a, **k: pytest.fail("Must not propagate"))
     with pytest.raises(InterruptedError):
         pipeline.simulate_ideal_reference(state, actual, cancelled=lambda: True)
@@ -120,9 +126,9 @@ def test_reference_cancel_and_missing_ancestry_do_not_start_propagation(monkeypa
         pipeline.simulate_ideal_reference(state, unknown)
 
 
-def test_reference_requires_physical_exact_plane_and_explicit_policy(monkeypatch, tmp_path):
+def test_reference_requires_physical_exact_plane_and_explicit_policy(monkeypatch, tmp_path, mock_coherent_admission):
     state, gun, _ = paired_fixture(monkeypatch)
-    actual = pipeline.simulate_tip_wave(state, _observation_request(tmp_path, gun.plane_z_mm))
+    actual = completed_control_result(state, gun, tmp_path)
     with pytest.raises(ValueError, match="physical beam"):
         pipeline.simulate_ideal_reference(state, replace(actual,
             request=replace(actual.request, column_model="first_order_reference")))
@@ -132,9 +138,9 @@ def test_reference_requires_physical_exact_plane_and_explicit_policy(monkeypatch
         replace(actual.request, column_model="vacuum").validate()
 
 
-def test_reference_late_cancellation_never_publishes(monkeypatch, tmp_path):
+def test_reference_late_cancellation_never_publishes(monkeypatch, tmp_path, mock_coherent_admission):
     state, gun, _ = paired_fixture(monkeypatch)
-    actual = pipeline.simulate_tip_wave(state, _observation_request(tmp_path, gun.plane_z_mm))
+    actual = completed_control_result(state, gun, tmp_path)
     cancelled = [False]
 
     def completed(*_args, **_kwargs):

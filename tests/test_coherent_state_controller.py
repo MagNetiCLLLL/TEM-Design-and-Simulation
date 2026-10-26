@@ -58,6 +58,10 @@ class _Execution:
 
 @pytest.fixture
 def page(qtbot, monkeypatch):
+    # No real wave job is run by this scheduling fixture.
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "Scheduling execution fixture"))
     execution = _Execution()
 
     class ObservationSession:

@@ -75,7 +75,7 @@ class CoherentStateController(QObject):
     def _capture(self):
         # The existing guard rejects unapplied source drafts. Capturing a row
         # must not secretly apply them, even when no propagation is requested.
-        state, _, _ = self.page.capture_calculation_inputs()
+        state, _, _ = self.page.capture_calculation_inputs(for_execution=False)
         return capture_instrument_snapshot(state)
 
     @staticmethod
@@ -173,7 +173,8 @@ class CoherentStateController(QObject):
             return
         try:
             state = self._state()
-            request = self.page._make_request()
+            from temsim.physics.tip_wave_pipeline import require_tip_wave_cuda
+            request = require_tip_wave_cuda(self.page._make_request())
             request_key = json_digest(asdict(replace(request, observation_z_mm=0.)))
             prepared = {}
             for entry in entries:

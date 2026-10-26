@@ -208,6 +208,9 @@ def test_scan_accumulator_preserves_missing_positions_and_dwell_weights():
 
 
 def test_scan_generator_passes_hardware_times_and_releases_previous_result(monkeypatch):
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "Substituted scan execution"))
     import temsim.physics.tip_wave_scan as scanning
     state = default_state()
     scan = state.ac_deflector

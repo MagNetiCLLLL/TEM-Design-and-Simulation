@@ -8,7 +8,7 @@ electron microscopy, electron optics and simulated detector signals.
 [Get started](#setup-and-launch) · [Project map](docs/PROJECT_MAP.md) ·
 [Beam model and limits](docs/COHERENT_BEAM.md) ·
 [Automatic startup recovery](docs/AUTOMATIC_STARTUP_RESULTS.md) ·
-[Report an issue](https://github.com/MagNetiCLLLL/TEMForge/issues)
+[Report an issue](https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/issues)
 
 ## AI for experiments
 
@@ -60,6 +60,11 @@ The **Electron beam** page has its own **Calculate beam** button. The top
 Diagram and the specimen/detector pages. Apply supported Tip emission/phase
 parameters explicitly; opening the page or calculating never enables a source
 model or applies a draft.
+New coherent calculations temporarily require a usable CUDA device, driver
+and CuPy backend. They stop before propagation when CUDA is unavailable or CPU
+execution is selected, and do not fall back to CPU after a CUDA failure.
+Classical particles, input editing and reading completed results remain
+available on CPU-only computers.
 The default tip-to-image chain and arbitrary Z within the gun or material are
 not yet qualified. See [electron-beam inputs and limits](docs/COHERENT_BEAM.md).
 Models target physical mechanisms and qualitative parameter trends, rather than
@@ -109,10 +114,12 @@ speed. The supplied SFEG illustration provides structural context; it does
 not specify dimensions or change the current cold-field-emitter model.
 
 High-accuracy particle calculations default to **3,000 rays**. The top toolbar's
-**Compute** control is the single CPU/GPU selection for all pages. **Auto** uses
-a usable GPU for supported operations, including small jobs, and otherwise uses
-CPU. CPU-only preparation remains on CPU; completed results report the actual
-backend. Individual pages do not override this preference.
+**Compute** control is the single CPU/GPU selection for all pages. For classical
+particles, **Auto** uses a usable GPU for supported operations, including small
+jobs, and otherwise uses CPU. New coherent jobs require CUDA under **Auto**,
+**CUDA GPU**, **Prefer GPU** and **Require GPU**; explicit CPU selections are
+rejected for those jobs. CPU-only preparation remains on CPU; completed results
+report the actual backend.
 For particle calculations, a CUDA driver without Numba's CUDA compiler also
 triggers CPU fallback under **Auto**; the result retains the reason.
 **Require GPU** continues to reject an unavailable GPU backend.
@@ -136,7 +143,7 @@ CIF library or automatic material selection is provided.
 
 ## Setup and launch
 
-Download or clone [TEM Design & Simulation](https://github.com/MagNetiCLLLL/TEMForge).
+Download or clone [TEM Design & Simulation](https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation).
 On Windows, install **64-bit Python 3.12** (recommended), then run these commands
 from the project folder:
 
@@ -167,7 +174,8 @@ remains `temsim`.
 Settings, calculation caches and saved results from the previous **TEMForge**
 and **TEM Simulator v2** names remain readable. Existing saved results are kept
 in place; renaming the application does not move or delete them. The GitHub
-repository address currently retains its previous name.
+repository is named **TEM-Design-and-Simulation**, using a URL-friendly form
+of the application's display name, **TEM Design & Simulation**.
 
 [Project map](docs/PROJECT_MAP.md): files, features, UI, tests and refactoring candidates.
 

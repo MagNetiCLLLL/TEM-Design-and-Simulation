@@ -257,6 +257,8 @@ class WavefrontComparison(QWidget):
             self._start_readout()
             return
         try:
+            from temsim.physics.compute_backend import require_coherent_cuda
+            require_coherent_cuda()
             state = self.state_provider(self.actual)
             if state is None:
                 raise ValueError("The captured inputs for this executed plane are unavailable; calculate the actual beam again")

@@ -6,7 +6,7 @@ import numpy as np
 
 from temsim.instrument_snapshot import capture_instrument_snapshot
 from temsim.physics.wave_execution import ScanWaveNumerics
-from temsim.physics.tip_wave_pipeline import TipWaveRequest, simulate_tip_wave
+from temsim.physics.tip_wave_pipeline import TipWaveRequest, simulate_tip_wave, require_tip_wave_cuda
 from temsim.optics.shared_deflectors import bind_shared_deflector_channels, shared_channel_enabled
 
 
@@ -131,6 +131,9 @@ samples are incoherent exposures; retain phases per sample, never average them.
 The inelastic RNG uses common random numbers across dwell/scan positions;
 per-position errors cannot be combined as independent scan noise.
 """
+    if cancelled():
+        raise InterruptedError("Physical wave scan cancelled")
+    request = require_tip_wave_cuda(request)
     snapshot = capture_instrument_snapshot(state)
     working = snapshot.restore()
     scan_preparation = {}

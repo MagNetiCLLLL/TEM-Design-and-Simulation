@@ -36,12 +36,13 @@ def _persist_report(output, report):
     temporary.replace(output/"report.json")
 
 
-def main():
+def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--maximum-radial-samples", type=int, default=8_388_608)
     p.add_argument("--stop", choices=("gun", "round-prefix"), default="round-prefix")
-    p.add_argument("--radial-backend", choices=("cpu", "cuda"), default="cpu")
+    p.add_argument("--radial-backend", choices=("cpu", "cuda"), default="cuda",
+                   help="CUDA is required; explicit CPU execution is temporarily disabled")
     p.add_argument("--direct-radial-phase", action="store_true")
     p.add_argument("--coordinate-width", type=float, default=.2,
                    help="Numerical Laguerre width / physical emitting-cap radius; not a source width")
@@ -85,11 +86,15 @@ def main():
     p.add_argument("--occupied-budget-allocation", choices=("uniform", "initial_indicator"), default="uniform")
     p.add_argument("--refine-pilot-charts", action="store_true",
                    help="Also refine unpublished coordinate-selection pilots; the final physical solve is always checked")
-    args = p.parse_args()
+    args = p.parse_args(argv)
+    from temsim.physics.compute_backend import require_coherent_cuda
+    execution_policy = require_coherent_cuda(args.radial_backend)
     from temsim.physics.axial_mesh_seed import read_mesh_seed
     mesh_seed = read_mesh_seed(args.occupied_mesh_seed)
     args.output.mkdir(parents=True, exist_ok=False)
     state = default_state()
+    state.acceleration_backend = execution_policy
+    state.acceleration_enabled = True
     state.electron_gun.emitter.surface_model = replace(load_tip_surface_reference(), coherence=SurfaceCoherence())
     if args.field_refinement < 1:
         p.error("--field-refinement must be a positive integer")

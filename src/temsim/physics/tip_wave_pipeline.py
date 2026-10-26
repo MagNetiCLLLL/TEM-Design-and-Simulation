@@ -32,7 +32,7 @@ class TipWaveRequest:
     source: TipWaveNumerics = TipWaveNumerics()
     gun: GunWaveNumerics = GunWaveNumerics()
     column_step_mm: float = .5
-    wave_grid: WaveGridNumerics = WaveGridNumerics()
+    wave_grid: WaveGridNumerics = WaveGridNumerics(compute_backend="Require GPU")
     readout: WaveReadoutOptions = WaveReadoutOptions()
     detector_pixels: int = 512
     detector_key: str | None = None
@@ -43,7 +43,7 @@ class TipWaveRequest:
     detector_keys: tuple[str, ...] = ()
     surface: SurfaceWaveNumerics = SurfaceWaveNumerics.joint_gun()
     radial_gun: RadialGunNumerics = RadialGunNumerics()
-    radial_column: RadialColumnNumerics = RadialColumnNumerics()
+    radial_column: RadialColumnNumerics = RadialColumnNumerics(backend="cuda")
     acceptance_window: AcceptanceWindowNumerics = AcceptanceWindowNumerics()
     observation_z_mm: float | None = None
     column_model: str = "physical"
@@ -111,6 +111,19 @@ _MAXIMUM_CACHE_BYTES = 8*1024**3
 # they add no duplicate wave arrays or file format.
 _OBSERVATION_PREFIXES = OrderedDict()
 _MAXIMUM_OBSERVATION_PREFIXES = 512
+
+
+def require_tip_wave_cuda(request):
+    """Check user execution before capture and forbid downstream CPU fallback."""
+    from temsim.physics.compute_backend import GPUExecutionError, require_coherent_cuda
+    request.validate()
+    if request.radial_column.backend != "cuda":
+        raise GPUExecutionError("required",
+            "Coherent calculations currently require CUDA radial transforms; "
+            "set radial_column.backend='cuda'. CPU execution is disabled for user wave jobs.")
+    policy = require_coherent_cuda(request.wave_grid.compute_backend,
+        acceleration_enabled=request.wave_grid.acceleration_enabled)
+    return replace(request, wave_grid=replace(request.wave_grid, compute_backend=policy))
 
 
 def _find_observation_prefix(identity, minimum_z_mm, target_z_mm, store, *, segmented, cancelled):
@@ -280,6 +293,7 @@ class TipWaveObservationSession:
         request = replace(self.__request, observation_z_mm=z_mm).validate()
         if cancelled():
             raise InterruptedError("Tip wave observation cancelled")
+        request = require_tip_wave_cuda(request)
         if not self.__lock.acquire(blocking=False):
             raise RuntimeError("Only one observation may execute in a coherent session at a time")
         try:
@@ -314,6 +328,7 @@ retain their established workflows and are not replaced by this entry point.
     request.validate()
     if cancelled():
         raise InterruptedError("Tip wave request cancelled")
+    request = require_tip_wave_cuda(request)
     snapshot = capture_instrument_snapshot(state)
     working = snapshot.restore()
     try:
@@ -369,6 +384,7 @@ def simulate_ideal_reference(state, actual_result, *, use_cache=True,
         raise ValueError("Calculate a physical beam at an exact observation plane first")
     if actual_result.checkpoint.plane_z_mm != actual_request.observation_z_mm:
         raise ValueError("Actual wave does not belong to its requested exact observation plane")
+    actual_request = require_tip_wave_cuda(actual_request)
     snapshot = capture_instrument_snapshot(state)
     if snapshot.digest != actual_result.instrument_digest:
         raise ValueError("Source or instrument changed since the actual beam; recalculate it before comparison")

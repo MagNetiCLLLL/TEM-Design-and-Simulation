@@ -168,7 +168,7 @@ def backend_rows(record):
     return list(unique.values())
 
 
-def main():
+def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,default=Path('outputs/ac_wave_scan_20261010'))
     parser.add_argument('--previous',type=Path,default=Path('outputs/ac_scan_pivot_20261010'))
@@ -190,7 +190,7 @@ def main():
         help='Use the guarded downstream-aperture numerical approximation; physical Tip and optics are unchanged')
     parser.add_argument('--positions',nargs='*',default=None)
     parser.add_argument('--prepare-only',action='store_true')
-    args=parser.parse_args()
+    args=parser.parse_args(argv)
     if args.column_step is not None and (not np.isfinite(args.column_step) or args.column_step <= 0):
         parser.error('--column-step must be finite and positive')
     if args.segment_steps is not None and args.segment_steps <= 0:
@@ -199,6 +199,9 @@ def main():
         value=getattr(args,option)
         if value is not None and (not np.isfinite(value) or value < 0):
             parser.error('--'+option.replace('_','-')+' must be finite and nonnegative')
+    if not args.prepare_only:
+        from temsim.physics.compute_backend import require_coherent_cuda
+        require_coherent_cuda()
     args.output.mkdir(parents=True,exist_ok=True)
     if args.recapture_inputs is not None:
         state,protocol=recapture_inputs(args.output,args.recapture_inputs)

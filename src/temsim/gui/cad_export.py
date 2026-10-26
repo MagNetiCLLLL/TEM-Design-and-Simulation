@@ -9,12 +9,7 @@ import tempfile
 from PySide6.QtCore import QProcess, QProcessEnvironment, Qt, QTimer, Signal
 from PySide6.QtWidgets import QApplication, QDialog, QLabel, QPlainTextEdit, QPushButton, QVBoxLayout
 
-
-def setup_instructions():
-    return ("Install the optional STEP exporter from the project folder:\n"
-            "python -m venv environment/cad\n"
-            "environment/cad/Scripts/python.exe -m pip install -r requirements-cad.txt\n"
-            "This uses a separate environment from the simulator.")
+from temsim.cad_runtime import cad_interpreter, cad_process_root, setup_instructions
 
 
 def draft_catalog(document, *, source, runtime_values=None, aperture_indices=None):
@@ -39,9 +34,9 @@ class CadExportDialog(QDialog):
         self.setWindowTitle("Export STEP")
         self.resize(660, 390)
         self.setModal(False)
-        self.project_root = Path(project_root or Path(__file__).resolve().parents[3]).resolve()
-        self.interpreter = Path(interpreter or self.project_root / "environment/cad/Scripts/python.exe")
-        self.exporter = Path(exporter or self.project_root / "scripts/export_cad_models.py")
+        self.project_root = Path(project_root or cad_process_root()).resolve()
+        self.interpreter = cad_interpreter(self.project_root, interpreter)
+        self.exporter = Path(exporter or Path(__file__).resolve().parents[1] / "cad_export_worker.py")
         self.output_directory = Path(output_directory).resolve()
         self.catalog = deepcopy(catalog)
         self.busy = False
@@ -81,7 +76,8 @@ class CadExportDialog(QDialog):
         if self.busy or self._finished:
             raise RuntimeError("This export has already been started.")
         if not self.interpreter.is_file():
-            raise FileNotFoundError("The optional STEP exporter is not installed.\n\n" + setup_instructions())
+            raise FileNotFoundError("The optional STEP exporter is not installed.\n\n"
+                                    + setup_instructions(self.project_root, self.interpreter))
         if not self.exporter.is_file():
             raise FileNotFoundError("The STEP export script is missing from this installation.")
         encoded = json.dumps(self.catalog, indent=2, ensure_ascii=False, allow_nan=False)
@@ -130,7 +126,7 @@ class CadExportDialog(QDialog):
         except Exception as exc:
             message = str(exc)
             if "No module named" in self._log_text or "CadQuery" in self._log_text:
-                message += "\n\n" + setup_instructions()
+                message += "\n\n" + setup_instructions(self.project_root, self.interpreter)
             self._finish(False, message)
 
     def _finish(self, success, message):

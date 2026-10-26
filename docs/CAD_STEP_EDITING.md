@@ -2,6 +2,29 @@
 
 Entry point: **Physical Layout → 3D Parts**. Uses the project's existing separate CadQuery 2.6.1 environment; import, exact checks, and export run in a separate background process and can be canceled.
 
+## CAD environment for source and wheel installations
+
+The CAD worker and exporter ship inside the simulator package. They run with a
+separate CAD Python interpreter and do not require a source checkout or a second
+installation of the simulator in that environment. Source checkouts continue to
+use `environment/cad` under the project root by default; wheel installations use
+`environment/cad` under the simulator environment root. The installed environment
+also includes `requirements-cad.txt` with the same pinned CAD dependencies.
+
+To keep CAD in another location, create that environment and set
+`TEMSIM_CAD_PYTHON` before launching the simulator. For example, in PowerShell:
+
+```powershell
+python -m venv C:\Environments\temsim-cad
+& C:\Environments\temsim-cad\Scripts\python.exe -m pip install -r C:\Environments\temsim\requirements-cad.txt
+$env:TEMSIM_CAD_PYTHON = 'C:\Environments\temsim-cad\Scripts\python.exe'
+& C:\Environments\temsim\Scripts\tem-design-simulation.exe
+```
+
+Replace these example paths with the actual environment locations. Existing
+source commands in `scripts/cad_geometry_worker.py` and
+`scripts/export_cad_models.py` remain available and invoke the packaged workers.
+
 ## Workflow
 
 1. Open the module TOML to edit, click **Import STEP…**, and select a `.step` or `.stp` file.

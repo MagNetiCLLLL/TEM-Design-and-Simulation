@@ -253,7 +253,7 @@ def load_inputs(args):
     return snapshot,state,protocol,request,grid,boundary,producer,baseline_rows,report
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--baseline',type=Path,required=True)
     parser.add_argument('--source-cache',type=Path,help='Default: unchanged baseline request cache path')
@@ -264,10 +264,13 @@ def main():
     parser.add_argument('--column-step',type=float,default=.025)
     parser.add_argument('--supplement-focus',action='store_true',help='Also observe centre at sample +/-40 nm, separately from the original protocol')
     parser.add_argument('--prepare-only',action='store_true',help='Validate committed metadata and save a plan; no propagation or GPU execution')
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     output, baseline_folder = args.output.resolve(), args.baseline.resolve()
     if output == baseline_folder or baseline_folder in output.parents or output in baseline_folder.parents:
         parser.error('--output must be separate from the baseline and its ancestors')
+    if not args.prepare_only:
+        from temsim.physics.compute_backend import require_coherent_cuda
+        require_coherent_cuda()
     snapshot,state,protocol,request,grid,boundary,producer,base,baseline_report = load_inputs(args)
     if output == Path(producer['cache_directory']) or Path(producer['cache_directory']) in output.parents:
         parser.error('--output must not be inside the source cache')

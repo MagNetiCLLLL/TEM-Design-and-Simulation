@@ -3,6 +3,8 @@
 from copy import deepcopy
 import json
 from pathlib import Path
+import shutil
+import subprocess
 import sys
 
 import pytest
@@ -79,13 +81,103 @@ def test_close_cancels_only_owned_export_and_keeps_input_receipt(qtbot, tmp_path
     assert "incomplete" in dialog.status.text()
 
 
-def test_missing_optional_environment_gives_setup_without_changing_main_python(qtbot, tmp_path):
+def test_missing_optional_environment_gives_setup_without_changing_main_python(qtbot, tmp_path, monkeypatch):
+    monkeypatch.delenv("TEMSIM_CAD_PYTHON", raising=False)
     dialog = CadExportDialog(CATALOG, tmp_path / "absent", project_root=tmp_path)
     qtbot.addWidget(dialog)
     with pytest.raises(FileNotFoundError, match="requirements-cad.txt"):
         dialog.start()
     assert dialog.process.state() == QProcess.ProcessState.NotRunning
     assert not dialog.output_directory.exists()
+
+
+@pytest.fixture
+def installed_cad_package(tmp_path):
+    """A wheel layout with no scripts directory or importable simulator."""
+    package = tmp_path / "simulator environment" / "Lib" / "site-packages" / "temsim"
+    (package / "gui").mkdir(parents=True)
+    for name in ("cad_geometry_worker.py", "cad_export_worker.py", "cad_kernel.py",
+                 "cad_step.py", "cad_assembly_validation.py"):
+        shutil.copyfile(ROOT / "src" / "temsim" / name, package / name)
+    (package / "__init__.py").write_text("raise RuntimeError('Simulator must stay unloaded')\n", encoding="utf-8")
+    return package
+
+
+def test_installed_gui_uses_packaged_cad_entries_and_configured_python(qtbot, tmp_path, monkeypatch, installed_cad_package):
+    from temsim.gui import cad_export, cad_geometry_job
+    package = installed_cad_package
+    install_root = package.parents[2]
+    monkeypatch.setenv("TEMSIM_CAD_PYTHON", sys.executable)
+    for module in (cad_export, cad_geometry_job):
+        monkeypatch.setattr(module, "__file__", str(package / "gui" / Path(module.__file__).name))
+        monkeypatch.setattr(module, "cad_process_root", lambda: install_root)
+    job = cad_geometry_job.CadGeometryJob({"op": "installation_probe"})
+    assert job.interpreter == Path(sys.executable).resolve()
+    assert job.worker == package / "cad_geometry_worker.py"
+    with qtbot.waitSignal(job.completed, timeout=10000) as signal:
+        job.start()
+    assert signal.args[0] is False
+    assert job.receipt["error"]["message"] == "Unknown CAD operation: installation_probe"
+    assert job.receipt["request_sha256"] == job.request_sha256
+    dialog = cad_export.CadExportDialog({**CATALOG, "units": "m"}, tmp_path / "export")
+    qtbot.addWidget(dialog)
+    assert dialog.interpreter == job.interpreter
+    assert dialog.exporter == package / "cad_export_worker.py"
+    with qtbot.waitSignal(dialog.completed, timeout=10000) as signal:
+        dialog.start()
+    assert signal.args[0] is False
+    assert "CAD catalogs must explicitly use millimetres" in dialog.log.toPlainText()
+    assert not (install_root / "scripts").exists()
+
+
+def test_cad_runtime_root_tracks_installation_not_configuration_override(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+    from temsim import cad_runtime
+    monkeypatch.setenv("TEMSIM_PROJECT_ROOT", str(tmp_path / "custom-configs"))
+    assert cad_runtime.cad_process_root() == ROOT
+    installed_root = tmp_path / "simulator environment"
+    package = installed_root / "Lib" / "site-packages" / "temsim"
+    monkeypatch.setattr(cad_runtime, "__file__", str(package / "cad_runtime.py"))
+    monkeypatch.setattr(cad_runtime, "sys", SimpleNamespace(prefix=str(installed_root)))
+    assert cad_runtime.cad_process_root() == installed_root
+
+
+def test_cad_interpreter_argument_overrides_environment_and_preserves_source_default(qtbot, tmp_path, monkeypatch):
+    import os
+    from temsim.gui.cad_geometry_job import CadGeometryJob
+    monkeypatch.setenv("TEMSIM_CAD_PYTHON", str(tmp_path / "configured-python"))
+    job = CadGeometryJob({}, interpreter=sys.executable)
+    assert job.interpreter == Path(sys.executable).resolve()
+    dialog = CadExportDialog(CATALOG, tmp_path / "output", interpreter=sys.executable)
+    qtbot.addWidget(dialog)
+    assert dialog.interpreter == job.interpreter
+    monkeypatch.delenv("TEMSIM_CAD_PYTHON")
+    default_job = CadGeometryJob({}, project_root=ROOT)
+    executable = "Scripts/python.exe" if os.name == "nt" else "bin/python"
+    assert default_job.interpreter == ROOT / "environment" / "cad" / executable
+
+
+@pytest.mark.parametrize("source_entry", [False, True])
+def test_cad_entries_need_only_stdlib_until_an_operation_requests_cad(tmp_path, installed_cad_package, source_entry):
+    """Run actual entry points without site packages or editable import hooks."""
+    request = tmp_path / "request.json"
+    request.write_text(json.dumps({"op": "installation_probe", "request_id": "probe"}), encoding="utf-8")
+    worker = (ROOT / "scripts" / "cad_geometry_worker.py" if source_entry else
+              installed_cad_package / "cad_geometry_worker.py")
+    process = subprocess.run([sys.executable, "-I", "-S", str(worker), str(request), "--output", str(tmp_path)],
+                             cwd=tmp_path, capture_output=True, text=True, timeout=15)
+    assert process.returncode == 1, process.stdout + process.stderr
+    receipt = json.loads((tmp_path / "result.json").read_text(encoding="utf-8"))
+    assert receipt["error"]["message"] == "Unknown CAD operation: installation_probe"
+    assert receipt["request_id"] == "probe"
+    catalog = tmp_path / "catalog.json"
+    catalog.write_text(json.dumps({**CATALOG, "units": "m"}), encoding="utf-8")
+    exporter = (ROOT / "scripts" / "export_cad_models.py" if source_entry else
+                installed_cad_package / "cad_export_worker.py")
+    process = subprocess.run([sys.executable, "-I", "-S", str(exporter), str(catalog), "--output", str(tmp_path)],
+                             cwd=tmp_path, capture_output=True, text=True, timeout=15)
+    assert process.returncode == 1
+    assert "CAD catalogs must explicitly use millimetres" in process.stderr
 
 
 def test_draft_catalog_passes_displayed_runtime_and_aperture_without_mutation(monkeypatch):

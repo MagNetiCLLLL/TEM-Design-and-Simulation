@@ -64,23 +64,26 @@ def benchmark_inputs(scan_side=8, grid=256, configurations=1):
     return state, SimpleNamespace(incident=incident), detectors, scan_x, scan_y, plan
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--backends", nargs="+", default=["CPU", "CUDA GPU"])
+    parser.add_argument("--backends", nargs="+", default=["Require GPU"],
+                        help="CUDA policies only; CPU wave benchmarks are temporarily disabled")
     parser.add_argument("--scan-side", type=int, default=8)
     parser.add_argument("--grid", type=int, default=256)
     parser.add_argument("--configurations", type=int, default=1)
     parser.add_argument("--repeat", type=int, default=2)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if min(args.scan_side, args.grid, args.configurations, args.repeat) < 1:
         parser.error("All sizes and repeat counts must be positive.")
+    from temsim.physics.compute_backend import require_coherent_cuda
+    policies = {backend: require_coherent_cuda(backend) for backend in args.backends}
     reference = None
     for backend in args.backends:
         for repeat in range(args.repeat):
             state, simulation, detectors, x, y, plan = benchmark_inputs(
                 args.scan_side, args.grid, args.configurations)
-            state.acceleration_backend = backend
-            state.acceleration_enabled = backend != "CPU"
+            state.acceleration_backend = policies[backend]
+            state.acceleration_enabled = True
             start = time.perf_counter()
             result = simulate_angle_resolved_stem(
                 state, simulation, detectors, x, y, record_plane_plan=plan)

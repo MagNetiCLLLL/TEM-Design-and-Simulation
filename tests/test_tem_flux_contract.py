@@ -1,9 +1,15 @@
-"""Isolated numerical CPU benchmarks, not full-source-chain acceptance.
+"""Small flux operators and CUDA TEM contracts, not source-chain acceptance.
 
 Source admission is replaced ONLY in this fixture: the input specimen/wave
 and known column map are synthetic. FFT transfer, aperture ownership, camera
 deposition and ensemble reduction remain production code. These checks do not
 certify a gun source or independently validate a material model.
+
+Public TEM integration checks require real CUDA. Their default specimen is a
+zero-potential, zero-thickness vacuum, whose multislice action is the identity;
+the GPU fixture uses that equivalent path instead of the CPU-only phase object.
+Explicit grating and bandwidth tests keep their original nonzero slice arrays.
+Phase-object user requests are tested separately as rejected policy calls.
 """
 from types import SimpleNamespace
 
@@ -11,6 +17,7 @@ import numpy as np
 import pytest
 
 from temsim.optics.column import default_state
+from temsim.physics import compute_backend
 from temsim.physics import wave_imaging as imaging
 
 
@@ -26,6 +33,7 @@ def tem_benchmark(monkeypatch):
     state.illumination_mode = "TEM"
     state.projector_mode = "image"
     state.sample.z_mm = 0.
+    state.sample.inserted = False
     state.sample.wave_multislice_enabled = False
     for aperture in state.apertures:
         aperture.enabled = False
@@ -71,23 +79,44 @@ def tem_benchmark(monkeypatch):
     return fixture
 
 
-def test_at06_known_aperture_transmission_is_not_renormalised(tem_benchmark):
+@pytest.fixture
+def tem_cuda_benchmark(tem_benchmark):
+    capability = compute_backend.coherent_cuda_capability()
+    if not capability.available:
+        pytest.skip("CuPy CUDA unavailable: " + capability.detail)
     f = tem_benchmark
+    f.state.acceleration_backend = "Require GPU"
+    f.state.acceleration_enabled = True
+    f.state.sample.wave_multislice_enabled = True
+    return f
+
+
+@pytest.fixture
+def fake_cuda_admission(monkeypatch):
+    """Admission only; each consumer must reject before a real wave operator."""
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "synthetic policy capability"))
+
+
+def test_at06_known_aperture_transmission_is_not_renormalised(tem_cuda_benchmark):
+    f = tem_cuda_benchmark
     f.incident = np.sqrt(.2) * f.incident + np.sqrt(.8) * f.order_wave
     result = f.run()
     assert result.metrics["camera_collected_zero_loss_relative_intensity"] == pytest.approx(.2, abs=1e-10)
 
 
-def test_require_gpu_tem_phase_object_reports_cpu_only_stage(tem_benchmark):
+def test_require_gpu_tem_phase_object_reports_cpu_only_stage(tem_benchmark, fake_cuda_admission, monkeypatch):
     from temsim.physics.compute_backend import GPUExecutionError
     f = tem_benchmark
     f.state.acceleration_backend = "Require GPU"
     f.state.acceleration_enabled = True
+    monkeypatch.setattr(imaging, "propagate_multislice", lambda *a, **kw: pytest.fail("No propagation is allowed"))
+    monkeypatch.setattr(imaging, "apply_coherent_transfer", lambda *a, **kw: pytest.fail("No FFT is allowed"))
     with pytest.raises(GPUExecutionError, match="unsupported_stage.*phase-object"):
         f.run()
 
 
-def test_tem_multislice_receives_captured_toolbar_policy(tem_benchmark, monkeypatch):
+def test_tem_multislice_receives_captured_toolbar_policy(tem_benchmark, fake_cuda_admission, monkeypatch):
     from temsim.physics.compute_backend import GPUExecutionError, WAVE_BACKEND_CUPY
     f = tem_benchmark
     f.state.acceleration_backend = "Require GPU"
@@ -101,30 +130,26 @@ def test_tem_multislice_receives_captured_toolbar_policy(tem_benchmark, monkeypa
         raise GPUExecutionError("out_of_memory", "TEM specimen allocation failed")
 
     monkeypatch.setattr(imaging, "propagate_multislice", fail_at_multislice)
+    monkeypatch.setattr(imaging, "apply_coherent_transfer", lambda *a, **kw: pytest.fail("No FFT is allowed"))
     with pytest.raises(GPUExecutionError, match="TEM specimen allocation failed"):
         f.run()
 
 
-def test_tem_auto_keeps_gpu_fft_after_cpu_only_phase_object(tem_benchmark, monkeypatch):
-    from temsim.physics.compute_backend import GPUExecutionError, WAVE_BACKEND_CUPY
+def test_tem_auto_rejects_cpu_only_phase_object_before_fft(tem_benchmark, fake_cuda_admission, monkeypatch):
+    from temsim.physics.compute_backend import GPUExecutionError
     f = tem_benchmark
     f.state.acceleration_backend = "Auto"
     f.state.acceleration_enabled = True
-    monkeypatch.setattr(imaging, "choose_wave_backend", lambda *args, **kwargs: (WAVE_BACKEND_CUPY, None))
-
-    def fail_at_fft(*args, **kwargs):
-        assert kwargs["requested_policy"] == "Auto"
-        assert kwargs["compute_backend"] == WAVE_BACKEND_CUPY
-        assert "phase-object" in kwargs["fallback_reason"]
-        raise GPUExecutionError("out_of_memory", "TEM FFT allocation failed")
-
-    monkeypatch.setattr(imaging, "apply_coherent_transfer", fail_at_fft)
-    with pytest.raises(GPUExecutionError, match="TEM FFT allocation failed"):
+    monkeypatch.setattr(imaging, "choose_wave_backend", lambda *a, **kw: pytest.fail("Reject before backend selection"))
+    monkeypatch.setattr(imaging, "propagate_multislice", lambda *a, **kw: pytest.fail("No propagation is allowed"))
+    monkeypatch.setattr(imaging, "apply_coherent_transfer", lambda *a, **kw: pytest.fail("No FFT is allowed"))
+    with pytest.raises(GPUExecutionError, match="unsupported_stage.*phase-object"):
         f.run()
+    assert f.state.acceleration_backend == "Auto"
 
 
-def test_at02_offset_aperture_selects_nonzero_diffraction_order(tem_benchmark):
-    f = tem_benchmark
+def test_at02_offset_aperture_selects_nonzero_diffraction_order(tem_cuda_benchmark):
+    f = tem_cuda_benchmark
     f.incident = np.sqrt(.2) * f.incident + np.sqrt(.8) * f.order_wave
     f.state.objective_aperture.offset_x_mm = f.order_position_mm
     result = f.run()
@@ -132,8 +157,8 @@ def test_at02_offset_aperture_selects_nonzero_diffraction_order(tem_benchmark):
 
 
 @pytest.mark.parametrize("strategy", ["physical_plane", "equivalent_pupil"])
-def test_at04_closed_aperture_is_valid_zero_result(tem_benchmark, strategy):
-    f = tem_benchmark
+def test_at04_closed_aperture_is_valid_zero_result(tem_cuda_benchmark, strategy):
+    f = tem_cuda_benchmark
     f.state.sample.wave_objective_aperture_strategy = strategy
     f.state.objective_aperture.radius_mm = 0.
     result = f.run()
@@ -142,8 +167,8 @@ def test_at04_closed_aperture_is_valid_zero_result(tem_benchmark, strategy):
 
 
 @pytest.mark.parametrize("flag", ["enabled", "installed", "inserted"])
-def test_at04_inactive_aperture_does_not_clip(tem_benchmark, flag):
-    f = tem_benchmark
+def test_at04_inactive_aperture_does_not_clip(tem_cuda_benchmark, flag):
+    f = tem_cuda_benchmark
     f.incident = f.order_wave
     setattr(f.state.objective_aperture, flag, False)
     result = f.run()
@@ -151,8 +176,8 @@ def test_at04_inactive_aperture_does_not_clip(tem_benchmark, flag):
     assert not result.metrics["intermediate_aperture_transmissions"]
 
 
-def test_at01_at03_actual_map_and_one_execution_per_branch(tem_benchmark):
-    f = tem_benchmark
+def test_at01_at03_actual_map_and_one_execution_per_branch(tem_cuda_benchmark):
+    f = tem_cuda_benchmark
     f.incident = f.order_wave
     f.state.objective_aperture.offset_x_mm = f.order_position_mm
     first = f.run()
@@ -165,8 +190,8 @@ def test_at01_at03_actual_map_and_one_execution_per_branch(tem_benchmark):
     assert rows[0]["physical_element_id"] == "aperture:" + f.state.objective_aperture.key
 
 
-def test_at05_equivalent_fourier_pupil_matches_physical_plane(tem_benchmark):
-    f = tem_benchmark
+def test_at05_equivalent_fourier_pupil_matches_physical_plane(tem_cuda_benchmark):
+    f = tem_cuda_benchmark
     f.incident = np.sqrt(.2) * f.incident + np.sqrt(.8) * f.order_wave
     f.state.objective_aperture.offset_x_mm = f.order_position_mm
     physical = f.run()
@@ -177,9 +202,9 @@ def test_at05_equivalent_fourier_pupil_matches_physical_plane(tem_benchmark):
     assert len(rows) == 1 and rows[0]["strategy"] == "equivalent_pupil"
 
 
-def test_at05_non_fourier_equivalent_pupil_fails_explicitly(tem_benchmark, monkeypatch):
+def test_at05_non_fourier_equivalent_pupil_fails_explicitly(tem_cuda_benchmark, monkeypatch):
     from temsim.physics import multiplane_wave
-    f = tem_benchmark
+    f = tem_cuda_benchmark
     f.state.sample.wave_objective_aperture_strategy = "equivalent_pupil"
     monkeypatch.setattr(multiplane_wave, "_canonical_map_and_offset",
                         lambda *args: (np.eye(4), np.zeros(4)))
@@ -187,9 +212,9 @@ def test_at05_non_fourier_equivalent_pupil_fails_explicitly(tem_benchmark, monke
         f.run()
 
 
-def test_at08_real_phase_grating_ensemble_keeps_prior_and_loss(tem_benchmark):
+def test_at08_real_phase_grating_ensemble_keeps_prior_and_loss(tem_cuda_benchmark):
     from dataclasses import replace
-    f = tem_benchmark
+    f = tem_cuda_benchmark
     f.state.sample.wave_multislice_enabled = True
     f.state.sample.wave_bandwidth_fraction = 1.
     sigma = imaging.interaction_constant_rad_per_v_angstrom(f.state.beam_voltage_kv)
@@ -210,8 +235,8 @@ def test_at08_real_phase_grating_ensemble_keeps_prior_and_loss(tem_benchmark):
     assert result.absolute_diffraction_probability.sum() == pytest.approx(1., abs=1e-10)
 
 
-def test_replay_offset_expansion_strategy_matches_fresh_without_mutation(tem_benchmark):
-    f = tem_benchmark
+def test_replay_offset_expansion_strategy_matches_fresh_without_mutation(tem_cuda_benchmark):
+    f = tem_cuda_benchmark
     f.incident = np.sqrt(.2) * f.incident + np.sqrt(.8) * f.order_wave
     original = f.run()
     source = original.projector_checkpoint.unapertured_wave_configurations[0].copy()
@@ -267,9 +292,9 @@ def test_duplicate_physical_execution_rejected():
         ledger.record("camera", 1., .5, "missed_detector")
 
 
-def test_numerical_bandwidth_loss_is_retained_and_not_physical_absorption(tem_benchmark):
+def test_numerical_bandwidth_loss_is_retained_and_not_physical_absorption(tem_cuda_benchmark):
     from dataclasses import replace
-    f = tem_benchmark
+    f = tem_cuda_benchmark
     f.state.sample.wave_multislice_enabled = True
     f.state.sample.wave_bandwidth_fraction = 2/3
     f.state.objective_aperture.enabled = False
@@ -289,10 +314,10 @@ def test_numerical_bandwidth_loss_is_retained_and_not_physical_absorption(tem_be
     assert not any(r["loss_category"] == "physical_stop" for r in rows)
 
 
-def test_export_preserves_raw_flux_and_execution_graph(tem_benchmark, tmp_path):
+def test_export_preserves_raw_flux_and_execution_graph(tem_cuda_benchmark, tmp_path):
     import json
     from temsim.physics.wave_export import export_wave_image
-    f = tem_benchmark
+    f = tem_cuda_benchmark
     f.incident = np.sqrt(.2) * f.incident + np.sqrt(.8) * f.order_wave
     result = f.run()
     path = export_wave_image(result, tmp_path / "raw.npz")
@@ -304,8 +329,8 @@ def test_export_preserves_raw_flux_and_execution_graph(tem_benchmark, tmp_path):
         assert metadata["probability_reference"] == "specimen_entrance_conditional_zero_loss"
 
 
-def test_provenance_binding_does_not_initialise_or_change_hardware(tem_benchmark):
-    f = tem_benchmark
+def test_provenance_binding_does_not_initialise_or_change_hardware(tem_cuda_benchmark):
+    f = tem_cuda_benchmark
     physical_inputs = lambda: tuple((a.key, a.z_mm, a.enabled, getattr(a, "inserted", True)) for a in f.state.apertures)
     before = physical_inputs()
     result = f.run()

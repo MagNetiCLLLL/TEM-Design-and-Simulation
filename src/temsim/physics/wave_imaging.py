@@ -296,6 +296,8 @@ def reproject_wave_image(state, result: WaveImagingResult) -> WaveImagingResult:
         "illumination_model", "ray_conditioned_reduced_order")})
     from temsim.physics.source_admission import require_gun_wave_source
     require_gun_wave_source(state, product="TEM reprojection")
+    from temsim.physics.compute_backend import coherent_execution_state
+    state = coherent_execution_state(state)
     checkpoint = result.projector_checkpoint
     if checkpoint is None:
         raise ValueError(
@@ -1782,5 +1784,7 @@ def simulate_wave_image(state, simulation) -> WaveImagingResult:
     illumination_config(state)
     from temsim.physics.source_admission import require_gun_wave_source
     require_gun_wave_source(state, product="TEM image")
+    from temsim.physics.compute_backend import coherent_execution_state
+    state = coherent_execution_state(state)
     from temsim.execution_evidence import attach_execution_evidence
     return attach_execution_evidence(_simulate_wave_image(state, simulation), state, "TEM")

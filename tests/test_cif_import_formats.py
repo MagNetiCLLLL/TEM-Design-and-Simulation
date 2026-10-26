@@ -53,7 +53,7 @@ def test_wheel_excludes_reference_library_and_stale_modules(tmp_path):
     root = Path(__file__).resolve().parents[1]
     project = tmp_path / "project"
     project.mkdir()
-    for name in ("pyproject.toml", "LICENSE", "COPYRIGHT", "README.md",
+    for name in ("pyproject.toml", "LICENSE", "COPYRIGHT", "README.md", "requirements-cad.txt",
                  "MANIFEST.in", "THIRD_PARTY_NOTICES.md"):
         shutil.copyfile(root / name, project / name)
     for name in ("licenses", "third_party_licenses"):
@@ -112,6 +112,18 @@ def test_wheel_excludes_reference_library_and_stale_modules(tmp_path):
         assert packaged == set(expected)
         for name, original in expected.items():
             assert archive.read(name) == original
+        cad_requirements, = (name for name in archive.namelist()
+                              if name.endswith(".data/data/requirements-cad.txt"))
+        assert archive.read(cad_requirements) == (root / "requirements-cad.txt").read_bytes()
+        # Installed CAD entry points are real package files and run without the
+        # source tree or any simulator dependencies in the CAD interpreter.
+        installed = tmp_path / "installed" / "Lib" / "site-packages"
+        archive.extractall(installed)
+        for name in ("cad_geometry_worker.py", "cad_export_worker.py"):
+            command = [sys.executable, "-I", "-S", str(installed / "temsim" / name), "--help"]
+            result = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True, timeout=15)
+            assert result.returncode == 0, result.stdout + result.stderr
+            assert "--output" in result.stdout
         assert "temsim/gui/assets/retired.svg" not in archive.namelist()
         assert not any("reference_samples" in name for name in archive.namelist())
         assert not any("docs/references/" in name or "output/references/" in name for name in archive.namelist())
@@ -127,6 +139,7 @@ def test_wheel_excludes_reference_library_and_stale_modules(tmp_path):
         members = {member.name.split("/", 1)[1]: member for member in archive.getmembers()
                    if member.isfile() and "/" in member.name}
         assert not set(local_references).intersection(members)
+        assert archive.extractfile(members["requirements-cad.txt"]).read() == (root / "requirements-cad.txt").read_bytes()
         for name, original in license_bytes.items():
             assert archive.extractfile(members[name]).read() == original
 

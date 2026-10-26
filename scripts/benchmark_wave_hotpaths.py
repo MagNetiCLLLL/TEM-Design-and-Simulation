@@ -19,7 +19,7 @@ import sys
 import time
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--fixture", type=Path, required=True)
@@ -28,10 +28,12 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument("--profile", action="store_true")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.repeats < 1:
         parser.error("At least one timed repeat is required")
     sys.path.insert(0, str(args.source_root.resolve()))
+    from temsim.physics.compute_backend import require_coherent_cuda
+    require_coherent_cuda()
     for key in ("TEMSIM_CPU_THREADS", "NUMBA_NUM_THREADS", "OMP_NUM_THREADS", "OMP_THREAD_LIMIT"):
         os.environ[key] = "16"
     for key in ("OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
@@ -65,7 +67,7 @@ def main():
     instrument_data = args.instrument.read_bytes()
     state = decode_instrument(json.loads(instrument_data))
     numerics = WaveGridNumerics(**report["request"]["wave_grid"])
-    if numerics.compute_backend != "Require GPU":
+    if numerics.compute_backend != "Require GPU" or not numerics.acceleration_enabled:
         raise ValueError("This fixture must explicitly require CUDA")
     target = checkpoint.plane_z_mm + .001
     began = time.perf_counter()

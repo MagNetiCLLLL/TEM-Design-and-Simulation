@@ -32,6 +32,12 @@ def _require_atomistic_backend():
         pytest.skip(capability.detail)
 
 
+def _require_coherent_cuda():
+    capability = compute_backend.coherent_cuda_capability()
+    if not capability.available:
+        pytest.skip("CuPy CUDA unavailable: " + capability.detail)
+
+
 def _incident_bundle():
     return SimpleNamespace(
         alive=np.ones(5, dtype=bool),
@@ -199,9 +205,8 @@ def test_atomistic_ensemble_rejects_unsafe_potential_storage_before_build():
 
 
 def test_rectangular_atomic_slices_match_between_cpu_and_cuda():
+    _require_coherent_cuda()
     _require_atomistic_backend()
-    if not compute_backend.cupy_capability().available:
-        pytest.skip("CuPy CUDA backend unavailable")
     preset = load_specimen_preset("si_110")
     ensemble = build_atomistic_potential_ensemble(
         preset,
@@ -241,7 +246,7 @@ def test_rectangular_atomic_slices_match_between_cpu_and_cuda():
         wave, potential, compute_backend="NumPy CPU", **common
     )
     gpu, diagnostics = propagate_multislice(
-        wave, potential, compute_backend="CuPy CUDA", **common
+        wave, potential, compute_backend="CuPy CUDA", requested_policy="Require GPU", **common
     )
 
     relative_error = np.linalg.norm(gpu - cpu) / np.linalg.norm(cpu)
@@ -249,9 +254,33 @@ def test_rectangular_atomic_slices_match_between_cpu_and_cuda():
     assert relative_error < 5.0e-5
 
 
+@pytest.mark.parametrize("product", ["TEM", "STEM"])
+def test_atomistic_synthetic_source_is_rejected_before_cuda_or_propagation(monkeypatch, product):
+    from temsim.physics import wave_imaging, stem_wave_imaging
+    from temsim.physics.source_admission import UnsupportedWaveSource
+    state = _small_atomistic_state()
+    state.illumination_mode = product
+
+    def forbidden(*_args, **_kwargs):
+        pytest.fail("Unsupported source admission must reject before CUDA or propagation")
+
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability", forbidden)
+    monkeypatch.setattr(wave_imaging, "_simulate_wave_image", forbidden)
+    monkeypatch.setattr(stem_wave_imaging, "_simulate_angle_resolved_stem", forbidden)
+    with pytest.raises(UnsupportedWaveSource):
+        if product == "TEM":
+            simulate_wave_image(state, SimpleNamespace(incident=_incident_bundle()))
+        else:
+            simulate_angle_resolved_stem(state, SimpleNamespace(incident=_incident_bundle()),
+                (AngularDetector("bf", 0., 20.),), np.zeros((1, 1)), np.zeros((1, 1)))
+
+
 def test_isolated_tem_reference_cif_frozen_phonons_average_intensities_on_finite_roi_grid(monkeypatch):
+    _require_coherent_cuda()
     _require_atomistic_backend()
     state = _small_atomistic_state()
+    state.acceleration_backend = "Require GPU"
+    state.acceleration_enabled = True
     state.illumination_mode = "TEM"
     for detector in state.stem_detectors:
         detector.inserted = False
@@ -290,8 +319,11 @@ def test_isolated_tem_reference_cif_frozen_phonons_average_intensities_on_finite
 
 
 def test_isolated_stem_atomistic_frozen_phonons_average_detector_intensities(monkeypatch):
+    _require_coherent_cuda()
     _require_atomistic_backend()
     state = _small_atomistic_state()
+    state.acceleration_backend = "Require GPU"
+    state.acceleration_enabled = True
     state.illumination_mode = "STEM"
     state.sample.wave_frozen_phonon_enabled = True
     state.sample.wave_frozen_phonon_configurations = 2

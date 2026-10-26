@@ -1,6 +1,24 @@
-# Project language and user communication
+# Project language, communication and execution policy
 
 This policy applies throughout the repository.
+
+## Temporary CUDA requirement for coherent calculations
+
+- Until the user explicitly lifts this restriction, new coherent wave
+  calculations require a usable CUDA device, driver and CuPy execution backend.
+  An installed CUDA package alone is not evidence that execution is available.
+- Enforce this requirement at public calculation entry points before expensive
+  preparation or propagation, including GUI, scan and command-line workflows.
+  Reject unavailable CUDA and explicit CPU execution clearly; do not fall back
+  to CPU after a CUDA failure.
+- Do not run coherent pipelines, long coherent benchmarks or broad coherent
+  regression suites on this workstation without verified usable CUDA. Prefer
+  bounded, targeted checks. Small CPU numerical-operator tests and mocked
+  execution-policy tests remain allowed; they are not full coherent runs.
+- Classical particle calculations may still use CPU. Editing inputs, inspecting
+  settings and reading already completed results do not require CUDA.
+- Preserve numerical formulas, physical inputs and existing results when
+  applying this execution restriction. Report actual validation limits.
 
 ## Project files
 

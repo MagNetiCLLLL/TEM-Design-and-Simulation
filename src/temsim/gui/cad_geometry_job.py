@@ -9,6 +9,8 @@ from uuid import uuid4
 from PySide6.QtCore import QObject, QProcess, QProcessEnvironment, QTimer, Signal, Qt
 from PySide6.QtWidgets import QApplication, QDialog, QLabel, QPlainTextEdit, QProgressBar, QPushButton, QVBoxLayout
 
+from temsim.cad_runtime import cad_interpreter, cad_process_root, setup_instructions
+
 
 def request_digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
@@ -27,9 +29,9 @@ class CadGeometryJob(QObject):
 
     def __init__(self, request, parent=None, *, project_root=None, interpreter=None, worker=None):
         super().__init__(parent)
-        self.project_root = Path(project_root or Path(__file__).resolve().parents[3]).resolve()
-        self.interpreter = Path(interpreter or self.project_root / "environment/cad/Scripts/python.exe")
-        self.worker = Path(worker or self.project_root / "scripts/cad_geometry_worker.py")
+        self.project_root = Path(project_root or cad_process_root()).resolve()
+        self.interpreter = cad_interpreter(self.project_root, interpreter)
+        self.worker = Path(worker or Path(__file__).resolve().parents[1] / "cad_geometry_worker.py")
         self.request = deepcopy(request)
         self.request.setdefault("request_id", str(uuid4()))
         self.request_sha256 = request_digest(self.request)
@@ -58,8 +60,8 @@ class CadGeometryJob(QObject):
         if self.busy or self.finished:
             raise RuntimeError("This CAD operation has already been started")
         if not self.interpreter.is_file():
-            from temsim.gui.cad_export import setup_instructions
-            raise FileNotFoundError("The optional STEP geometry engine is not installed.\n\n" + setup_instructions())
+            raise FileNotFoundError("The optional STEP geometry engine is not installed.\n\n"
+                                    + setup_instructions(self.project_root, self.interpreter))
         if not self.worker.is_file():
             raise FileNotFoundError("The STEP geometry worker is missing from this installation")
         self._temporary = tempfile.TemporaryDirectory(prefix="temsim-cad-geometry-")

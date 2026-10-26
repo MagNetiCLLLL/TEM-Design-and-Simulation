@@ -12,7 +12,11 @@ from temsim.profile_io import save_profile
 
 
 @pytest.fixture
-def cli(tmp_path):
+def cli(tmp_path, monkeypatch):
+    # These cases describe inputs, reject sources or substitute propagation.
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "CLI contract fixture"))
     spec = importlib.util.spec_from_file_location("tip_trace_cli_test", Path(__file__).parents[1]/"scripts"/"trace_tip_wave.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -46,18 +50,23 @@ def test_failed_request_preserves_inputs_and_identity_without_a_wave_archive(cli
 
 
 def test_describe_selects_numerics_without_transport_or_files(cli, tmp_path, monkeypatch, capsys):
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: pytest.fail("A configuration description must not probe CUDA"))
     module, profile = cli
     output = tmp_path/"description"
     monkeypatch.setattr(module, "simulate_tip_wave", lambda *a, **kw: pytest.fail("description must not propagate"))
     module.main(["--profile", str(profile), "--output", str(output), "--describe", "--no-wave-refinement",
                  "--maximum-wave-grid", "512", "--observables", "phase", "covariance",
-                 "--specimen-phase-method", "galerkin", "--specimen-quadrature-factor", "4"])
+                 "--specimen-phase-method", "galerkin", "--specimen-quadrature-factor", "4",
+                 "--radial-column-backend", "cpu"])
     description = json.loads(capsys.readouterr().out)
     assert description["request"]["wave_grid"]["automatic_refinement"] is False
     assert description["request"]["wave_grid"]["maximum_pixels"] == 512
     assert description["request"]["wave_grid"]["specimen_phase_method"] == "galerkin"
     assert description["request"]["wave_grid"]["specimen_quadrature_factor"] == 4
     assert description["request"]["readout"]["intensity"] is False
+    assert description["request"]["radial_column"]["backend"] == "cpu"
     assert not output.exists()
 
 

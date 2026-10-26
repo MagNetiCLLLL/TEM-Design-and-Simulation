@@ -11,7 +11,7 @@ from dataclasses import (
 import math
 import os
 from pathlib import Path
-from threading import Event
+from threading import Event, RLock
 from time import perf_counter
 from uuid import uuid4
 from temsim.job_events import job_event, job_stage
@@ -671,6 +671,9 @@ class SectionFileWorker(QRunnable):
         self.startup_result_store = startup_result_store if automatic and operation == "save" else None
         self.startup_result_token = startup_result_token if self.startup_result_store is not None else None
         self.startup_result_error = startup_result_error
+        self._startup_result_lock = RLock()
+        self._startup_result_info = None
+        self._startup_result_finished = False
         self.maximum_unpacked_bytes = int(maximum_unpacked_bytes)
         self.expected_package_digest = expected_package_digest
         # A queued archive must not outgrow its admission reservation if the
@@ -684,6 +687,46 @@ class SectionFileWorker(QRunnable):
         working_bytes = (2 * 1024**3 if unpacked_size_bytes is None else
                          max(512 * 1024**2, 2 * int(unpacked_size_bytes)))
         self.resource_claim = ResourceClaim(working_bytes=working_bytes)
+
+    def renew_startup_result(self, identity):
+        """Accept a repeated result without duplicating its archive work.
+
+        The lock covers only navigation metadata, never the archive's array IO.
+        A completed worker may still be awaiting its queued GUI callbacks; its
+        receipt can publish the new intent immediately without opening arrays.
+        """
+        with self._startup_result_lock:
+            if (self.cancel_event.is_set()
+                    or (self._startup_result_finished and self._startup_result_info is None)):
+                return False
+            info = self._startup_result_info
+            if info is not None and not CalculationController._section_archive_record_current(info):
+                return False
+            try:
+                self.startup_result_token = self.startup_result_store.begin_save(identity)
+                self.startup_result_error = None
+            except Exception as exc:
+                self.startup_result_error = str(exc)
+            if info is not None:
+                self._publish_startup_result(info)
+            return True
+
+    def _publish_startup_result(self, info):
+        """Publish while holding the metadata lock shared with renewed intents."""
+        info.pop("auto_startup_saved", None)
+        info.pop("auto_startup_error", None)
+        if self.startup_result_error is not None:
+            info["auto_startup_error"] = self.startup_result_error
+        if not self.cancel_event.is_set():
+            self._startup_result_info = info
+            _commit_startup_result(self.startup_result_store, self.startup_result_token, info)
+            self.startup_result_token = None
+
+    def finish_startup_result(self):
+        with self._startup_result_lock:
+            _cancel_startup_result(self.startup_result_store, self.startup_result_token)
+            self.startup_result_token = None
+            self._startup_result_finished = True
 
     @input_io.using_state_inputs
     def run(self):
@@ -712,19 +755,15 @@ class SectionFileWorker(QRunnable):
             info["file_io_operation"] = ("load" if self.operation == "load" else
                 "verify_existing" if self.automatic and info.get("reused") else "save")
             info["file_io_reused_measurement"] = False
-            if self.startup_result_error is not None:
-                info["auto_startup_error"] = self.startup_result_error
-            if not self.cancel_event.is_set():
+            with self._startup_result_lock:
                 # Commit while this owned worker is alive. Application shutdown
                 # can wait for disk IO without processing any queued GUI signal.
-                _commit_startup_result(self.startup_result_store, self.startup_result_token, info)
-                self.startup_result_token = None
+                self._publish_startup_result(info)
             self.signals.result.emit(self.token, output)
         except Exception as exc:
             self.signals.error.emit(str(exc))
         finally:
-            _cancel_startup_result(self.startup_result_store, self.startup_result_token)
-            self.startup_result_token = None
+            self.finish_startup_result()
             self.signals.finished.emit()
 
 
@@ -832,7 +871,11 @@ class CalculationController(QObject):
         identity = info["identity"]
         pending_key = (identity, os.path.normcase(str(destination.resolve())), automatic)
         if pending_key in self._section_file_pending:
-            return identity
+            pending = self._section_file_jobs[self._section_file_pending[pending_key]]
+            if not automatic or pending.startup_result_store is None:
+                return identity
+            if pending.renew_startup_result(identity):
+                return identity
         previous = self._section_archive_records.get(identity)
         if (automatic and previous is not None and self._section_archive_record_current(previous)
                 and not self._section_archive_replacement_pending(previous["path"])):
@@ -869,10 +912,9 @@ class CalculationController(QObject):
                                    maximum_unpacked_bytes=self.section_file_pool.coordinator.ram_budget_bytes)
         if automatic and self.startup_result_store is not None:
             worker.startup_result_store = self.startup_result_store
-            try:
-                worker.startup_result_token = self.startup_result_store.begin_save(identity)
-            except Exception as exc:
-                worker.startup_result_error = info["auto_startup_error"] = str(exc)
+            worker.renew_startup_result(identity)
+            if worker.startup_result_error is not None:
+                info["auto_startup_error"] = worker.startup_result_error
         self._section_file_pending[pending_key] = token
         self._section_file_jobs[token] = worker
         self.section_archive_changed.emit(dict(info, status="saving", automatic=automatic))
@@ -882,8 +924,6 @@ class CalculationController(QObject):
         try:
             self.section_file_pool.start(worker)
         except Exception:
-            _cancel_startup_result(worker.startup_result_store, worker.startup_result_token)
-            worker.startup_result_token = None
             self._section_file_finished(token)
             raise
         return identity
@@ -1002,8 +1042,7 @@ class CalculationController(QObject):
         worker = self._section_file_jobs.pop(token, None)
         if worker is not None:
             # A queued job can be cancelled by admission without ever running.
-            _cancel_startup_result(worker.startup_result_store, worker.startup_result_token)
-            worker.startup_result_token = None
+            worker.finish_startup_result()
         if token == self._latest_section_load_token:
             self._latest_section_load_token = None
         for key, pending in tuple(self._section_file_pending.items()):

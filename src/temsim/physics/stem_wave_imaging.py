@@ -1473,6 +1473,8 @@ def simulate_angle_resolved_stem(state, simulation, detectors, scan_x_um, scan_y
     illumination_config(state)
     from temsim.physics.source_admission import require_gun_wave_source
     require_gun_wave_source(state, product="STEM image")
+    from temsim.physics.compute_backend import coherent_execution_state
+    state = coherent_execution_state(state)
     from temsim.execution_evidence import attach_execution_evidence
     result = _simulate_angle_resolved_stem(state, simulation, detectors, scan_x_um, scan_y_um, **kwargs)
     return attach_execution_evidence(result, state, "STEM")
