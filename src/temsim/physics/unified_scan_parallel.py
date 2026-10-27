@@ -5,7 +5,7 @@ The captured instrument is restored once per worker and its complete runtime
 identity must match the parent. Only scheduling changes: every task calls the
 ordinary scalar response executor with its original numerical arguments.
 """
-from contextlib import ExitStack
+from contextlib import ExitStack, redirect_stdout
 import json
 import math
 import os
@@ -51,7 +51,14 @@ def _write_message(stream, message):
     data = json.dumps(message, separators=(",", ":"), allow_nan=False).encode()+b"\n"
     if len(data) > MAX_MESSAGE_BYTES:
         raise ValueError("Scan worker message exceeds the bounded transfer budget")
-    stream.write(data)
+    # Raw/unbuffered pipes may accept only part of a frame. In particular, do
+    # not report a successful send when its terminating newline was not sent.
+    remaining = memoryview(data)
+    while remaining:
+        written = stream.write(remaining)
+        if written is None or written <= 0:
+            raise BrokenPipeError("Scan worker pipe closed before the complete message was written")
+        remaining = remaining[written:]
     stream.flush()
 
 
@@ -59,8 +66,11 @@ def _read_message(stream):
     data = stream.readline(MAX_MESSAGE_BYTES+1)
     if not data:
         return None
-    if len(data) > MAX_MESSAGE_BYTES or not data.endswith(b"\n"):
-        raise ValueError("Incomplete or oversized scan worker message")
+    if len(data) > MAX_MESSAGE_BYTES:
+        raise ValueError(f"Oversized scan worker message ({len(data)} bytes read; "
+                         f"limit {MAX_MESSAGE_BYTES} bytes)")
+    if not data.endswith(b"\n"):
+        raise ValueError(f"Incomplete scan worker message ({len(data)} bytes before EOF; missing newline)")
     value = json.loads(data)
     if not isinstance(value, dict):
         raise ValueError("Invalid scan worker message")
@@ -155,6 +165,9 @@ def parallel_scan_responses(state, runtime, targets, source, energy, step, incre
                     if kind == "closed" and expected <= completed:
                         continue
                     detail = str(message.get("message", "worker exited before completion"))
+                    returncode = processes[worker_index].poll()
+                    if returncode is not None:
+                        detail += f" (worker {worker_index+1}, exit code {returncode})"
                     diagnostic = _stderr_tail(logs[worker_index])
                     raise RuntimeError("Parallel scan response failed: "+detail+
                                        ("\nWorker diagnostic: "+diagnostic if diagnostic else ""))
@@ -221,6 +234,19 @@ def parallel_scan_responses(state, runtime, targets, source, energy, step, incre
 
 def _worker_main(path):
     """Private fixed entry point; never imports a caller's application main."""
+    # Reserve the protocol pipe before numerical/provider imports can emit
+    # diagnostics. Redirect fd 1 as well as Python stdout, so native writes
+    # cannot mix with JSON frames. Leave fd 1 on stderr through process exit
+    # to keep late native-library flushes out of the protocol too.
+    sys.stdout.flush()
+    with os.fdopen(os.dup(sys.stdout.fileno()), "wb", buffering=0) as output:
+        os.dup2(sys.stderr.fileno(), sys.stdout.fileno())
+        with redirect_stdout(sys.stderr):
+            return _worker_loop(path, output)
+
+
+def _worker_loop(path, output):
+    """Execute captured traces with a dedicated, isolated protocol stream."""
     from temsim import input_io
     from temsim.immutable_json import thaw_json
     from temsim.instrument_snapshot import InstrumentSnapshot
@@ -233,7 +259,7 @@ def _worker_main(path):
 
     def send(message):
         with output_lock:
-            _write_message(sys.stdout.buffer, message)
+            _write_message(output, message)
 
     def receive():
         try:

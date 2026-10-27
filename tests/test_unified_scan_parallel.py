@@ -1,5 +1,10 @@
 """Unchanged scalar physics under bounded, isolated process scheduling."""
 from io import BytesIO
+import os
+from pathlib import Path
+import subprocess
+import sys
+import textwrap
 from types import SimpleNamespace
 import time
 
@@ -67,6 +72,94 @@ def test_worker_messages_reject_partial_oversized_and_non_mapping_payloads(monke
     parallel._write_message(stream, {"kind": "finish"})
     stream.seek(0)
     assert parallel._read_message(stream) == {"kind": "finish"}
+
+
+def test_worker_messages_complete_short_writes_and_keep_consecutive_frames():
+    class ShortWriter(BytesIO):
+        def write(self, data):
+            return super().write(data[:3])
+
+    messages = [{"kind": "progress", "index": 0, "fraction": 12},
+                {"kind": "result", "index": 0, "row": {"values": [1, 2, 3]}}]
+    stream = ShortWriter()
+    for message in messages:
+        parallel._write_message(stream, message)
+    stream.seek(0)
+    assert [parallel._read_message(stream) for _ in messages] == messages
+    assert parallel._read_message(stream) is None
+
+
+@pytest.mark.parametrize("written", [0, None])
+def test_worker_messages_reject_writes_without_progress(written):
+    class StalledWriter:
+        calls = 0
+
+        def write(self, data):
+            self.calls += 1
+            assert self.calls == 1, "A stalled pipe must fail instead of retrying forever"
+            return written
+
+        def flush(self):
+            raise AssertionError("A partial frame must not be accepted and flushed")
+
+    with pytest.raises(BrokenPipeError):
+        parallel._write_message(StalledWriter(), {"kind": "finish"})
+
+
+def test_worker_message_write_budget_includes_the_frame_delimiter(monkeypatch):
+    message = {"kind": "finish"}
+    reference = BytesIO()
+    parallel._write_message(reference, message)
+    monkeypatch.setattr(parallel, "MAX_MESSAGE_BYTES", len(reference.getvalue()))
+    stream = BytesIO()
+    parallel._write_message(stream, message)
+    stream.seek(0)
+    assert parallel._read_message(stream) == message
+    monkeypatch.setattr(parallel, "MAX_MESSAGE_BYTES", len(reference.getvalue())-1)
+    rejected = BytesIO()
+    with pytest.raises(ValueError, match="bounded transfer budget"):
+        parallel._write_message(rejected, message)
+    assert rejected.getvalue() == b""
+
+
+def test_worker_protocol_output_is_isolated_from_python_and_native_stdout():
+    # Load only the stdlib-only protocol module: no physical field preparation,
+    # numerical imports, or application startup are needed for this pipe test.
+    script = textwrap.dedent("""
+        import importlib.util
+        import os
+        import sys
+
+        spec = importlib.util.spec_from_file_location("scan_worker_under_test", sys.argv[1])
+        worker = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(worker)
+        assert hasattr(worker, "_worker_loop"), "Worker entry must isolate stdout before its computation loop"
+
+        def fake_loop(path, output):
+            assert path == "unused-inputs.json"
+            assert "numpy" not in sys.modules and "numba" not in sys.modules
+            print("python diagnostic without newline", end="", flush=True)
+            os.write(1, b"native diagnostic without newline")
+            worker._write_message(output, {"kind": "result", "index": 0, "row": "stub"})
+            return 0
+
+        worker._worker_loop = fake_loop
+        result = worker._worker_main("unused-inputs.json")
+        print("exit diagnostic", end="", flush=True)
+        raise SystemExit(result)
+    """)
+    environment = {**os.environ, "OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1",
+                   "MKL_NUM_THREADS": "1", "NUMBA_NUM_THREADS": "1"}
+    completed = subprocess.run(
+        [sys.executable, "-S", "-c", script, str(Path(parallel.__file__).resolve())],
+        stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        env=environment, timeout=10,
+        creationflags=(subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0))
+    assert completed.returncode == 0, completed.stderr.decode("utf-8", errors="replace")
+    stream = BytesIO(completed.stdout)
+    assert parallel._read_message(stream) == {"kind": "result", "index": 0, "row": "stub"}
+    assert parallel._read_message(stream) is None
+    assert completed.stderr == b"python diagnostic without newlinenative diagnostic without newlineexit diagnostic"
 
 
 def test_startup_error_tail_is_bounded_and_retains_the_actual_failure(tmp_path):
