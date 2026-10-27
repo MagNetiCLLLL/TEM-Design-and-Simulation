@@ -214,13 +214,13 @@ class MainWindow(QMainWindow):
         self.assembly = self.catalog.apply(self.state, self.selection)
         # Source defaults are owned by the tip / assembly loader, not a
         # GUI-only override. Explicit profile and model choices remain separate.
-        if (not self.result_files.hold_automatic_preview
-                and self._apply_state_operating_modes(self.state, self.selection) is None):
-            raise ValueError(
-                "The default assembly has no compatible operating-mode pair"
-            )
         if not self.result_files.hold_automatic_preview:
             switch_mode(self.state, "unified")
+            if self._apply_state_operating_modes(self.state, self.selection) is None:
+                raise ValueError(
+                    "The default assembly has no compatible operating-mode pair"
+                )
+            self.state.step_mm = 0.05
         self.manifest_editor = ManifestEditor()
         catalog_audit = self.manifest_editor.validate_catalog()
         self._runtime_targets = {}
@@ -534,9 +534,10 @@ class MainWindow(QMainWindow):
             state = default_state()
             selection = self.catalog.default_selection()
             self.catalog.apply(state, selection)
+            switch_mode(state, "unified")
             if self._apply_state_operating_modes(state, selection) is None:
                 raise ValueError("The default assembly has no compatible operating-mode pair")
-            switch_mode(state, "unified")
+            state.step_mm = 0.05
             self._install_working_point(state, None)
             self.status_label.setText("Automatic result unavailable; starting a fresh calculation with standard settings.")
             self.log_output.appendPlainText(
@@ -755,6 +756,11 @@ class MainWindow(QMainWindow):
         if not changed:
             return
         self._invalidate_direct_alignment()
+        condenser_key, projector_key = self._state_operating_mode_keys(self.state)
+        self.assembly_panel.load_operating_modes(
+            self.selection, condenser_key, projector_key,
+            nanoprobe_range=self.state.nanoprobe_range, simulation_mode=mode_key(self.state),
+        )
         self.workspace.model_inspector.set_state(self.state)
         self.parameter_panel.refresh_runtime_values()
         selected = MODE_BY_KEY[mode_key(self.state)]
@@ -804,9 +810,7 @@ class MainWindow(QMainWindow):
         toolbar.addWidget(QLabel("Step (mm)"))
         self.high_step = _ParticleStepInput()
         self.high_step.setObjectName("highAccuracyStep")
-        # Preserve the established GUI accuracy while making this toolbar
-        # value part of the persisted instrument's numerical settings.
-        self.state.step_mm = 0.1
+        # Display the selected startup or restored accuracy without replacing it.
         self._sync_step_selector()
         self.high_step.valueChanged.connect(self._high_step_changed)
         self.high_step.invalidInput.connect(lambda message: self._show_error(message))
@@ -977,6 +981,7 @@ class MainWindow(QMainWindow):
         self.assembly_panel.load_operating_modes(
             self.selection, condenser_key, projector_key,
             nanoprobe_range=getattr(self.state, "nanoprobe_range", "normal"),
+            simulation_mode=mode_key(self.state),
         )
         self.assembly_panel.set_direct_alignment_state(self.state)
         energy_filter_selections = self._energy_filter_selections()

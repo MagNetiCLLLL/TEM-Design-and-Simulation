@@ -1,0 +1,293 @@
+{
+  "schema": "finite-field-nanoprobe-default-evidence-v1",
+  "status": "PASS_AT_FIXED_PARTICLE_BUDGET",
+  "recorded_utc": "2026-10-27T16:31:23Z",
+  "simulation_mode": "unified",
+  "accepted_snapshot_digest": "9c1c4372f691cd1f37108af6bcb7c35af0d53ef29ed171cd50d9867c861b2da9",
+  "source_population_identity": "dc54dc1697106946b89deb8591d2a8f4e6f9ae04390e2eafd6945a3f10bed946",
+  "controls_percent": {
+    "condenser_lens_2": 13.899040164772698,
+    "condenser_lens_3": 15.68823681182136,
+    "mini_condenser": 43.88646617222637,
+    "objective_lens": 68.97810600833917
+  },
+  "corrector_parameters": {
+    "probe_hp2_hexapole": {
+      "strength_m3": 4371028.449290636,
+      "orientation_rad": 0.0,
+      "effective_length_mm": 6.0,
+      "maximum_strength_m3": 1000000000.0,
+      "z_mm": 1144.5,
+      "enabled": true,
+      "installed": true
+    },
+    "probe_hp1_hexapole": {
+      "strength_m3": 2616320.416243901,
+      "orientation_rad": -0.042012393991127016,
+      "effective_length_mm": 10.0,
+      "maximum_strength_m3": 1000000000.0,
+      "z_mm": 1300.85,
+      "enabled": true,
+      "installed": true
+    }
+  },
+  "particle_count": 49,
+  "sampling_convergence": "NOT_TESTED",
+  "topology_qualification": "NOT_TESTED",
+  "qualification_scope": "Fixed supplied classical source, surface focus and two integration steps only",
+  "thresholds": {
+    "maximum_rms_radius_nm": 0.2,
+    "maximum_diameter95_nm": 0.7
+  },
+  "step_consistency_limits": {
+    "radius_rms_nm": 0.005,
+    "diameter95_nm": 0.02,
+    "local_waist_nm": 0.1,
+    "covariance_waist_nm": 0.1,
+    "alpha95_relative": 0.001
+  },
+  "step_difference": {
+    "radius_rms_nm": 1.0051402813324408e-06,
+    "diameter95_nm": 0.00010808793164613189,
+    "local_waist_nm": -0.02865243556084255,
+    "covariance_waist_nm": -0.028652420493146723,
+    "alpha95_relative": 2.6428580213178066e-09
+  },
+  "acquisition": {
+    "requested": {
+      "simulation_mode": "unified",
+      "specimen": "Si [110]",
+      "detector": "df",
+      "shape_yx": [
+        64,
+        64
+      ],
+      "pixel_step_nm": 0.02,
+      "integration_step_mm": 0.05,
+      "target_scan_center_nm": [
+        0.0,
+        0.0
+      ]
+    },
+    "qualification": {
+      "qualified": true,
+      "status": "postcalibration_size_and_source_checks_passed",
+      "actual_rms_radius_nm": 0.15639986060131156,
+      "actual_diameter95_nm": 0.5773640655927622,
+      "failures": [],
+      "scope": "Accepted surface focus plus actual sample-plane size and source retention; particle-sampling convergence remains untested"
+    },
+    "checks": {
+      "x_pitch_nm": true,
+      "y_pitch_nm": true,
+      "cross_axis_constant": true,
+      "center_at_zero": true,
+      "incident_identity_unchanged": true,
+      "full_final_inputs_unchanged": true,
+      "production_probability_conserved": true,
+      "poisson_disabled": true,
+      "external_pixel_ledger_conserved": true
+    },
+    "actual_scan_center_nm": [
+      -2.0599841277224584e-18,
+      2.7755575615628914e-17
+    ],
+    "actual_scan_bounds_nm": {
+      "x": [
+        -0.6300000000000419,
+        0.6300000000000417
+      ],
+      "y": [
+        -0.6300000000000419,
+        0.6300000000000417
+      ]
+    },
+    "image_statistics": {
+      "minimum": 0.008953669768438888,
+      "maximum": 0.020290883329688675,
+      "mean": 0.01446412664180885,
+      "standard_deviation": 0.003455661038704911,
+      "nonzero_pixels": 4096,
+      "relative_peak_to_peak": 0.7838159774181831
+    },
+    "signal_scope": "Expected fraction of emitted electrons; not Poisson-sampled counts",
+    "model_limitation": "Independent-atom, thin projected scattering with an executed Gaussian probe. HAADF estimates incoherent atomic contrast. BF/DF show particle redistribution, not Bragg interference, phase contrast, channeling or quantitative multislice agreement.",
+    "probe_sigma_principal_nm": [
+      0.08444703614476888,
+      0.13164199361326076
+    ],
+    "maximum_numerical_truncation_fraction": 0.0
+  },
+  "reference": {
+    "surface_z_mm": 1599.1999975,
+    "statistics": {
+      "surviving_rays": 49,
+      "surviving_fraction": 1.0,
+      "mean_x_m": -6.257515929433852e-10,
+      "mean_y_m": -6.105095019276335e-10,
+      "mean_tx_rad": -9.967586027120495e-05,
+      "mean_ty_rad": -5.3968816339664435e-05,
+      "convergence_rms_rad": 0.005329083066772748,
+      "convergence_95_rad": 0.009969356824092643,
+      "convergence_99_rad": 0.011418402521649969,
+      "convergence_edge_rad": 0.011418402521649969,
+      "radius_rms_m": 1.5583139548095872e-10,
+      "radius_95_m": 2.7784480925278306e-10,
+      "radius_99_m": 5.320589163687465e-10,
+      "radial_position_angle_covariance_m_rad": -2.9438563646470293e-18,
+      "radial_wavefront_curvature_per_m": -121.22904853805306,
+      "waist_offset_m": 1.0365583357023215e-13,
+      "twofold_moment": 0.42601536060400325,
+      "threefold_moment": 0.6432607025398707
+    },
+    "local_waist_offset_nm": 0.00010394811967285354,
+    "variance_second_derivative": 5.6800562612483794e-05,
+    "upstream_rms_radii_m": [
+      1.0771703008018532e-09,
+      5.552358303560118e-10,
+      1.5583139548095872e-10
+    ],
+    "step_mm": 0.05,
+    "effective_rays": 49.0,
+    "source_population_identity": "dc54dc1697106946b89deb8591d2a8f4e6f9ae04390e2eafd6945a3f10bed946",
+    "surviving_source_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48
+    ],
+    "transmitted_source_weight": 0.9999999999999999,
+    "column_prefix_reused": true
+  },
+  "refined": {
+    "surface_z_mm": 1599.1999975,
+    "statistics": {
+      "surviving_rays": 49,
+      "surviving_fraction": 1.0,
+      "mean_x_m": -6.257547041214581e-10,
+      "mean_y_m": -6.105105313597914e-10,
+      "mean_tx_rad": -9.967585960499555e-05,
+      "mean_ty_rad": -5.396881819331819e-05,
+      "convergence_rms_rad": 0.005329083080917772,
+      "convergence_95_rad": 0.009969356850521225,
+      "convergence_99_rad": 0.011418402551593178,
+      "convergence_edge_rad": 0.011418402551593178,
+      "radius_rms_m": 1.5583240062124005e-10,
+      "radius_95_m": 2.778988532186061e-10,
+      "radius_99_m": 5.323351021094382e-10,
+      "radial_position_angle_covariance_m_rad": 8.107933735840671e-16,
+      "radial_wavefront_curvature_per_m": 33388.32778497779,
+      "waist_offset_m": -2.854876465957649e-11,
+      "twofold_moment": 0.4259350247675962,
+      "threefold_moment": 0.6439461347735322
+    },
+    "local_waist_offset_nm": -0.028548487441169695,
+    "variance_second_derivative": 5.680056275638417e-05,
+    "upstream_rms_radii_m": [
+      1.0770193490279371e-09,
+      5.550895367866785e-10,
+      1.5583240062124005e-10
+    ],
+    "step_mm": 0.025,
+    "effective_rays": 49.0,
+    "source_population_identity": "dc54dc1697106946b89deb8591d2a8f4e6f9ae04390e2eafd6945a3f10bed946",
+    "surviving_source_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48
+    ],
+    "transmitted_source_weight": 0.9999999999999999,
+    "column_prefix_reused": false
+  }
+}

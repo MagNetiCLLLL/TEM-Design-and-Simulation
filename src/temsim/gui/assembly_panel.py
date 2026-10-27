@@ -81,8 +81,7 @@ class AssemblyPanel(QWidget):
         mode_form.addRow("Projection", self.projector_mode)
         self.nanoprobe_range_combo.setToolTip(
             "Select the Normal or Large angle optical branch, then apply the preset. "
-            "The branches use different C3 and relay settings; both reference "
-            "presets currently have a 30 mrad semi-angle."
+            "The branches use different C3 and relay settings."
         )
         self.probe_mode.setToolTip(
             "Sample illumination: Microprobe or Nanoprobe, independent of "
@@ -292,11 +291,16 @@ class AssemblyPanel(QWidget):
         selection: AssemblySelection,
         condenser_key: str | None = None,
         projector_key: str | None = None,
-        *, nanoprobe_range: str | None = None,
+        *, nanoprobe_range: str | None = None, simulation_mode: str | None = None,
     ) -> None:
         """Populate only modes compatible with the selected assembly."""
 
         selection = self.catalog.normalise_selection(selection)
+        if simulation_mode is not None:
+            catalog = load_operating_mode_catalog(simulation_mode)
+            if catalog.direct_alignments != self.operating_mode_catalog.direct_alignments:
+                self.direct_alignment_panel.set_catalog(catalog)
+            self.operating_mode_catalog = catalog
         condenser_key = condenser_key or self.selected_condenser_mode_key()
         projector_key = projector_key or self.projector_mode.currentData()
         condenser_modes = compatible_modes(
@@ -324,6 +328,16 @@ class AssemblyPanel(QWidget):
         range_items = [(label, key) for label, key in (
             ("Normal", "nano_probe"), ("Large angle", "nano_probe_large_angle"))
             if key in nano_modes]
+        references = {mode.key: mode.targets.get("achieved_convergence_sem_angle_mrad")
+                      for mode in condenser_modes}
+        angles = "; ".join(f"{label}: {float(references[key]):.3g} mrad"
+                           for label, key in range_items if references[key] is not None)
+        self.nanoprobe_range_combo.setToolTip(
+            "Select the Normal or Large angle optical branch, then apply the preset. "
+            "The branches use different C3 and relay settings. "
+            + (f"Stored reference semi-angles: {angles}. See each preset's qualification limits."
+               if angles else "No reference semi-angle is available.")
+        )
         for combo, items, preferred in (
             (self.probe_mode, probe_items,
              "nano_probe" if condenser_key in nano_keys else condenser_key),
@@ -455,7 +469,7 @@ class AssemblyPanel(QWidget):
         if condenser.key in {"nano_probe", "nano_probe_large_angle"}:
             illumination_note = (
                 "Convergence: C2 + C3 + C2 aperture; "
-                "probe focus: Objective lens."
+                "probe focus: Mini Condenser + Objective; corrector matching also matters."
             )
         else:
             illumination_note = (

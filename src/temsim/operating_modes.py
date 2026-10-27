@@ -198,13 +198,40 @@ class AppliedProjectorMode:
 
 
 @input_io.scoped_lru_cache(maxsize=8)
-def load_operating_mode_catalog() -> OperatingModeCatalog:
-    """Load mode storage; this does not change the microscope state."""
+def load_operating_mode_catalog(simulation_mode: str | None = None) -> OperatingModeCatalog:
+    """Load references for one field model without changing the live state.
+
+    The default catalog retains historical calibration data. Model overrides
+    merge device controls, but replace their entire target/qualification record
+    so a new working point cannot inherit another model's measured claims.
+    """
     path = OPERATING_MODE_CONFIG_ROOT / "catalog.toml"
     with input_io.open_input(path) as stream:
         document = tomllib.load(stream)
     if int(document.get("format_version", 0)) != 1:
         raise ValueError(f"{path}: unsupported operating-mode format")
+
+    rows = document.get("modes", ())
+    overrides = document.get("simulation_mode_overrides", {}).get(simulation_mode, {})
+    known_keys = {str(item["key"]) for item in rows}
+    if set(overrides) - known_keys:
+        raise ValueError(f"{path}: simulation-model override references an unknown mode")
+    resolved_rows = []
+    for item in rows:
+        override = overrides.get(str(item["key"]))
+        if override is None:
+            resolved_rows.append(item)
+            continue
+        allowed = {"devices", "targets", "calibration_status", "calibration_reference"}
+        required = {"targets", "calibration_status", "calibration_reference"}
+        if not isinstance(override, dict) or set(override) - allowed or not required <= set(override):
+            raise ValueError(f"{path}: model override requires its own qualification record")
+        devices = {key: dict(values) for key, values in item.get("devices", {}).items()}
+        for key, values in override.get("devices", {}).items():
+            if key not in devices:
+                raise ValueError(f"{path}: model override references an unknown device {key!r}")
+            devices[key].update(values)
+        resolved_rows.append({**item, **override, "devices": devices})
 
     modes = tuple(
         OperatingModeDefinition(
@@ -235,7 +262,7 @@ def load_operating_mode_catalog() -> OperatingModeCatalog:
                 item.get("calibration_reference", "")
             ),
         )
-        for item in document.get("modes", ())
+        for item in resolved_rows
     )
     mode_keys = [mode.key for mode in modes]
     if len(set(mode_keys)) != len(mode_keys):
@@ -644,6 +671,9 @@ def apply_operating_mode_pair(
     a partially applied pair when its recalculation cannot meet the requested
     sample illumination and focus constraints.
     """
+    if catalog is None:
+        from temsim.simulation_modes import mode_key
+        catalog = load_operating_mode_catalog(mode_key(state))
     arguments = dict(
         column_name=column_name, recording_name=recording_name, catalog=catalog,
     )

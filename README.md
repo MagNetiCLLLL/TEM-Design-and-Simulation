@@ -137,8 +137,14 @@ The [coherent UI route](docs/UNIFIED_WAVE_UI_ROUTE.md) documents admitted source
 and fields; [calculation progress](docs/CALCULATION_PROGRESS.md) explains the
 separate current-step and completed-stage indicators.
 
-For the existing CIF-dependent HAADF/BF/DF image workflows, select the explicit
-**Parameterized fields (legacy)** execution entry. First run **Run high-accuracy once**
+Standard startup uses the tuned **Finite-Field Optics / Nanoprobe** default
+(approximately 10 mrad alpha95), with a 0.05 mm high-accuracy integration step.
+Saved-result startup retains the saved inputs. The
+[default calibration report](docs/development/FINITE_FIELD_NANOPROBE_DEFAULT_2026-10-27.md)
+records the controls, fixed-particle validation limits and how to reload them.
+
+For CIF-dependent HAADF/BF/DF projected image workflows, **Finite-Field Optics**
+uses the shared finite-field particle executor. First run **Run high-accuracy once**
 with the current instrument settings. Then choose **Projected atoms (fast
 approximation)** in Scanning Image, set the scan pixel size and click
 **Calculate**. This non-wave model combines actual CIF positions/occupancies,

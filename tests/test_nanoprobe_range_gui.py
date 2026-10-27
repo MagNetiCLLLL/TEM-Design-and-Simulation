@@ -152,12 +152,15 @@ def test_window_applies_large_range_then_switches_only_projector(qtbot, monkeypa
     monkeypatch.setattr(interactive_calculation, "QSettings", lambda: settings)
     monkeypatch.setattr(calculation_controller, "default_artifact_cache_root", lambda: tmp_path / "artifacts")
     monkeypatch.setattr(shell.MainWindow, "INITIAL_PREVIEW_DELAY_MS", 60000)
-    monkeypatch.setattr(shell.MainWindow, "schedule_preview", lambda _self: None)
+    monkeypatch.setattr(shell.MainWindow, "schedule_preview", lambda *_args, **_kwargs: None)
     window = shell.MainWindow()
     qtbot.addWidget(window)
     window.preview_timer.stop()
     errors = []
     monkeypatch.setattr(window, "_show_error", errors.append)
+    # This regression executes the legacy image-projector calibration below.
+    # Unified finite-field optics deliberately rejects that calibration route.
+    window.set_simulation_mode("custom")
     widget = window.assembly_panel
     select_range(widget, LARGE)
     assert window.state.nanoprobe_range == "normal"

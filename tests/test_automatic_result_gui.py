@@ -212,4 +212,8 @@ def test_standard_fallback_prepares_default_mode_and_schedules_one_initial_previ
     assert window.preview_timer.isActive()
     assert window.workspace._last_result is before
     assert window.state.simulation_mode == "unified"
+    assert window.state.step_mm == 0.05
+    lenses = {lens.key: lens for lens in window.state.lenses}
+    assert lenses["condenser_lens_2"].percent == 13.899040164772698
+    assert lenses["objective_lens"].percent == 68.97810600833917
     assert "starting a fresh calculation" in window.status_label.text()

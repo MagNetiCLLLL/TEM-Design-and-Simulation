@@ -237,6 +237,12 @@ def test_main_menu_switch_preserves_result_cache_and_accuracy(qtbot, monkeypatch
     window.preview_timer.stop()
     assert [action.text() for action in window.menuBar().actions()][:3] == ["File", "View", "Simulation"]
     assert is_unified(window.state)
+    lenses = {lens.key: lens for lens in window.state.lenses}
+    assert lenses["condenser_lens_2"].percent == 13.899040164772698
+    assert lenses["condenser_lens_3"].percent == 15.68823681182136
+    assert lenses["objective_lens"].percent == 68.97810600833917
+    assert window.state.step_mm == window.high_step.value() == 0.05
+    assert "9.969 mrad" in window.assembly_panel.operating_mode_status.text()
     menu = window.simulation_menu
     assert not menu.mode_actions["nonlinear_material"].isEnabled()
     assert not menu.mode_actions["coupled_multiphysics"].isEnabled()
@@ -244,11 +250,15 @@ def test_main_menu_switch_preserves_result_cache_and_accuracy(qtbot, monkeypatch
     cached = object()
     window.calculations._high_cache["retained"] = cached
     before = (window.high_rays.value(), window.high_step.value(), [lens.percent for lens in window.state.lenses])
+    alignment = window.assembly_panel.direct_alignment_panel
+    alignment.controls["nanoprobe_convergence"].target.setValue(25.0)
     monkeypatch.setattr(window.operating_presets, "submit", lambda *a, **k: pytest.fail("No preset solve"))
     menu.mode_actions["analytical"].trigger()
     window.preview_timer.stop()
     assert mode_key(window.state) == "analytical"
     assert window.simulation_mode_label.text() == "Finite-Field Optics / Analytical Field (compatibility)"
+    assert "30.000 mrad" in window.assembly_panel.operating_mode_status.text()
+    assert alignment.controls["nanoprobe_convergence"].target.value() == 25.0
     assert window.calculations._high_cache["retained"] is cached
     assert before == (window.high_rays.value(), window.high_step.value(), [lens.percent for lens in window.state.lenses])
 
