@@ -148,9 +148,6 @@ class AppliedOperatingModes:
 
     @property
     def summary(self) -> str:
-        condenser_is_retained = self.condenser.calibration_status.startswith(
-            "retained_not_recomputed_"
-        )
         convergence = self.condenser.targets.get(
             "achieved_convergence_sem_angle_mrad"
         )
@@ -158,18 +155,15 @@ class AppliedOperatingModes:
                     if self.projector and self.image_projection is None else None)
         details = []
         if convergence is not None:
-            label = (
-                "stored reference semi-angle"
-                if condenser_is_retained
-                else "sample semi-angle"
-            )
-            details.append(f"{label} {float(convergence):.3f} mrad")
+            # Even a computed catalog entry describes its recorded working
+            # point, not a new measurement of the user's current instrument.
+            details.append(f"stored reference semi-angle {float(convergence):.3f} mrad")
         if relay_um is not None:
-            details.append(f"conjugate residual {float(relay_um):.3f} µm")
-        if condenser_is_retained:
-            details.append(
-                "condenser preset not recalculated for current geometry or source model"
-            )
+            details.append(f"stored reference conjugate residual {float(relay_um):.3f} µm")
+        details.append(
+            "condenser preset not recalculated for current controls, geometry or source model; "
+            "edited working points require revalidation"
+        )
         if self.image_projection is not None:
             details.append(self.image_projection.summary)
         suffix = "; ".join(details)

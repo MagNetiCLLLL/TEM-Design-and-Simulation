@@ -26,6 +26,19 @@ def _sampler(snapshot):
     return compile_unified_potential_sampler(snapshot)
 
 
+def _positive_step_mm(value, label):
+    """Validate each supplied limit before combining independent bounds."""
+    if isinstance(value, (bool, np.bool_)):
+        raise ValueError(f"{label} must be positive and finite, not boolean")
+    try:
+        step = float(value)
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise ValueError(f"{label} must be positive and finite") from exc
+    if not math.isfinite(step) or step <= 0:
+        raise ValueError(f"{label} must be positive and finite")
+    return step
+
+
 def build_unified_plan(state, z0, z1, events=(), *, save_z_mm=(), checkpoint_z_mm=(),
                        maximum_step_mm=None, particle_medium=False, diagnostic_dipoles=None,
                        _captured_runtime=None):
@@ -35,6 +48,10 @@ def build_unified_plan(state, z0, z1, events=(), *, save_z_mm=(), checkpoint_z_m
     from temsim.physics.instrument_magnetic import active_column_events
     if particle_medium or diagnostic_dipoles is not None:
         raise ValueError("Unified fields do not accept residual-medium or synthetic dipole overrides")
+    step = _positive_step_mm(state.step_mm, "Unified particle step")
+    if maximum_step_mm is not None:
+        maximum_step = _positive_step_mm(maximum_step_mm, "Unified maximum particle step")
+        step = min(step, maximum_step)
     actual = list(active_column_events(state))
     for event in events:
         event = tuple(event)
@@ -44,16 +61,14 @@ def build_unified_plan(state, z0, z1, events=(), *, save_z_mm=(), checkpoint_z_m
             raise ValueError("Unified fields require actual physical drives, not extra thin steering events")
     runtime = get_unified_field_runtime(state) if _captured_runtime is None else _captured_runtime
     runtime.require_state(state)
-    if not np.isfinite((z0, z1)).all() or z1 <= z0 or z0*.001 < runtime.start_z_m or z1*.001 > runtime.stop_z_m:
+    gun_exit_observation = z0 == z1 == float(state.electron_gun.exit_plane_z_mm)
+    if (not np.isfinite((z0, z1)).all() or z1 < z0 or (z1 == z0 and not gun_exit_observation)
+            or z0*.001 < runtime.start_z_m or z1*.001 > runtime.stop_z_m):
         raise ValueError("Unified column interval is outside the captured physical source/receiver span")
-    step = float(state.step_mm)
-    if maximum_step_mm is not None:
-        step = min(step, float(maximum_step_mm))
-    if not math.isfinite(step) or step <= 0:
-        raise ValueError("Unified particle step must be positive and finite")
-    count = max(1, math.ceil((z1-z0)/step))
-    if count > 1_000_000:
+    intervals = (z1-z0)/step
+    if not math.isfinite(intervals) or intervals > 1_000_000:
         raise ValueError("Unified particle interval exceeds the integration node budget")
+    count = max(1, math.ceil(intervals))
     faces = []
     for row in runtime.snapshot.contributions:
         base = getattr(row.potential, "base", None)
@@ -73,16 +88,19 @@ def build_unified_plan(state, z0, z1, events=(), *, save_z_mm=(), checkpoint_z_m
     z = np.unique(np.r_[np.linspace(z0, z1, count+1), [v for v in requested if z0 <= v <= z1]])
     # Keep every integration node for exact mechanical stop and detector views.
     cp = np.searchsorted(z, sorted(set((z0, z1, *(v for v in checkpoint_z_mm if z0 <= v <= z1)))))
-    numerical = json_digest({"runtime": runtime.digest, "z_mm": z.tolist(), "checkpoints": cp.tolist(), "integrator": "Lorentz-RK4"})
+    numerical = json_digest({"runtime": runtime.digest, "z_mm": z.tolist(), "checkpoints": cp.tolist(),
+        "integrator": "gun-exit-observation" if gun_exit_observation else "Lorentz-RK4"})
     records = tuple(InteractionRecord(interaction_id=row.source_id, owner_id=row.owner_ids[0],
         effect_family="electromagnetic_potential", representation="field", interval_mm=(z0,z1),
         covered_effects=tuple(owner+":"+row.kind for owner in row.owner_ids), source_digest=row.potential.digest)
-        for row in runtime.snapshot.contributions)
+        for row in runtime.snapshot.contributions if not gun_exit_observation)
     contract = _seal({"schema": SCHEMA, "mode": "unified", "interval_mm": (float(z0),float(z1)),
         "scene": runtime.snapshot.scene.to_dict(), "interactions": InteractionRegistry(records).to_dict(),
         "unified_capture": {"runtime":runtime.digest,"field":runtime.snapshot.numerical_digest,"geometry":runtime.geometry.digest},
         "reference_planes_mm": {}, "numerical_digest": numerical,
-        "scope": "Shared captured potentials and finite absorbing mechanics from the executed gun exit",
+        "scope": ("Executed gun-exit observation; no column field or mechanical action"
+                  if gun_exit_observation else
+                  "Shared captured potentials and finite absorbing mechanics from the executed gun exit"),
         "limitations": ("Forward Lorentz RK4 with actual time and induced electric work", "No empirical aberration or equivalent image action",
                         "Separate physical gun, specimen and receiver responsibilities")})
     nodes = {name: _frozen_array(np.zeros(len(z))) for name in (
@@ -115,10 +133,67 @@ def _contact(pieces, before, after):
     return contact(pieces, before, after)
 
 
+def _history_indices(state, plan, *, start_index=0, history_policy="full"):
+    """Select exact output nodes without changing the executed integration mesh."""
+    if not isinstance(history_policy, str) or history_policy not in ("full", "checkpoints"):
+        raise ValueError("Unified history policy must be 'full' or 'checkpoints'")
+    z = np.asarray(plan.z_mm)
+    if (isinstance(start_index, (bool, np.bool_)) or not isinstance(start_index, (int, np.integer))
+            or not 0 <= start_index < len(z)):
+        raise ValueError("Unified history start index is invalid")
+    if history_policy == "full":
+        return np.arange(start_index, len(z), dtype=np.int64)
+    checkpoints = np.asarray(plan.checkpoint_index)
+    retained = [int(start_index), len(z)-1, *checkpoints[checkpoints >= start_index]]
+    # Receiver clipping follows propagation. Its exact physical plane must not
+    # become an interpolation between sparse observation rows.
+    for plane in getattr(state, "recording_planes", ()):
+        if not bool(getattr(plane, "inserted", False)):
+            continue
+        position = float(plane.z_mm)
+        if z[start_index] <= position <= z[-1]:
+            index = int(np.searchsorted(z, position))
+            if index >= len(z) or z[index] != position:
+                raise ValueError("Unified sparse history requires exact inserted receiver planes")
+            retained.append(index)
+            # The existing receiver interpolation still evaluates its adjacent
+            # pair at an exact node. Preserve that pair's floating-point order
+            # for particles exactly on a receiver edge.
+            retained.append(index-1 if index > start_index else min(index+1, len(z)-1))
+    return np.unique(np.asarray(retained, dtype=np.int64))
+
+
+def unified_history_memory_bytes(state, plan, particle_count, *, start_index=0,
+                                 history_policy="full"):
+    """Conservative retained arrays and working-buffer budget, excluding inputs.
+
+    Zero particles returns fixed index/metadata storage for batch planning.
+    The same estimate gates the executor and its complete-source observers.
+    """
+    if (isinstance(particle_count, (bool, np.bool_))
+            or not isinstance(particle_count, (int, np.integer)) or particle_count < 0):
+        raise ValueError("Unified history budget requires a nonnegative integer population")
+    retained = _history_indices(state, plan, start_index=start_index, history_policy=history_policy)
+    checkpoints = int(np.count_nonzero(np.asarray(plan.checkpoint_index) >= start_index))
+    # The dataclass constructor retains all six indexed arguments while their
+    # immutable copies are made (96 bytes per checkpoint/ray). Internal work
+    # and activity originals/copies add 18, with headroom for validation masks.
+    # Include the full-node row map even for sparse output. Caller-owned source,
+    # field-provider buffers and final observation assembly are separate.
+    return int((48*len(retained) + 128*checkpoints + 1024)*int(particle_count)
+               + 32*len(retained) + 8*len(plan.z_mm[start_index:]) + 1024*checkpoints)
+
+
 def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, start_index=0,
         include_initial_plane_kicks=True, defer_nonfinite_until_clipping=False, medium_transport=None,
         initial_time_s=None, return_flight_times=False, initial_kinetic_energy_ev=None, energy_output=None,
-        unified_resume=None):
+        unified_resume=None, history_policy="full"):
+    """Execute every field/contact step; optionally retain exact checkpoints only.
+
+    The default keeps the complete plotting history. Sparse output is intended
+    for consumers that explicitly request exact observations, never as an
+    interchangeable arbitrary-plane plotting history.
+    """
     from temsim.physics.core import PropagationCheckpoints, _frozen_array, _record_active_backend
     from temsim.physics.optical_tuning import check_tuning_cancelled
     from temsim.physics.transport_progress import report_transport_progress
@@ -129,6 +204,8 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
     from temsim.physics.unified_particle_contacts import compile_contact_geometry
     if medium_transport is not None:
         raise ValueError("Unified field transport does not execute residual-medium collisions")
+    if len(plan.z_mm) == 1:
+        raise ValueError("Gun-exit observation requires the executed gun checkpoint, not column propagation")
     if normalise_backend(getattr(state,"acceleration_backend","Auto")) == "Require GPU":
         raise GPUExecutionError("unsupported_stage", "Unified potential Lorentz integration currently uses CPU")
     runtime = plan.unified_runtime
@@ -159,6 +236,10 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
     if times.shape!=energy.shape or np.isinf(times).any() or np.any(times<0):
         raise ValueError("Unified flight times must be nonnegative or unknown")
     z = np.asarray(plan.z_mm[start_index:],dtype=float)
+    history_index = _history_indices(state, plan, start_index=start_index,
+                                    history_policy=history_policy)-start_index
+    history_rows = np.full(len(z), -1, dtype=np.int64)
+    history_rows[history_index] = np.arange(len(history_index))
     implementation_digest = solver_source_identity()
     retained = None
     if unified_resume is not None:
@@ -184,10 +265,11 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
         raise ValueError("Unified entrance kinetic energies must be positive and finite")
     if dynamic and np.any(active & ~np.isfinite(times)):
         raise ValueError("Time-dependent fields require actual finite entrance flight times")
-    required_bytes = len(z)*len(current)*8*6 + len(plan.checkpoint_index)*len(current)*8*12
+    required_bytes = unified_history_memory_bytes(state, plan, len(current),
+        start_index=start_index, history_policy=history_policy)
     if required_bytes > MAX_UNIFIED_HISTORY_BYTES:
         raise ValueError(f"Unified particle history requires {required_bytes:,} bytes, exceeding the "
-                         f"{MAX_UNIFIED_HISTORY_BYTES:,}-byte numerical budget; reduce the particle count or requested span")
+                         f"{MAX_UNIFIED_HISTORY_BYTES:,}-byte numerical budget; use exact-checkpoint history or bounded source batches")
     raw_sample = _sampler(runtime.snapshot)
     contacts = compile_contact_geometry(runtime.geometry)
     swept_bounds = np.array(((0., 0., z[0]*.001), (0., 0., z[0]*.001))) if retained is None else retained["swept_bounds_m"]
@@ -215,8 +297,8 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
         induction_work_ev = retained["induction_work_ev"]
         blocked, labels = retained["blocked_z_mm"], np.asarray(retained["blocked_key"],dtype=object)
         initial_phi = retained["reference_phi_v"]
-    histories = np.full((len(z),len(current),4),np.nan)
-    clocks = np.full((len(z),len(current)),np.nan)
+    histories = np.full((len(history_index),len(current),4),np.nan)
+    clocks = np.full((len(history_index),len(current)),np.nan)
     energies = np.full_like(clocks,np.nan)
     energies[0] = energy if retained is None else previous.kinetic_energy_ev[row]
     cp_index = np.asarray(plan.checkpoint_index)
@@ -228,10 +310,15 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
     evaluations = 0
     for index, plane in enumerate(z):
         check_tuning_cancelled(state)
-        histories[index], clocks[index] = current, times
+        history_row = int(history_rows[index])
+        if history_row >= 0:
+            histories[history_row], clocks[history_row] = current, times
         if active.any():
+            # Even an unretained node keeps its field-domain query and swept
+            # bounds. Storage selection must not change numerical admission.
             phi = sample(np.c_[current[active,:2],np.full(active.sum(),plane*.001)],times[active])["phi_v"]
-            energies[index,active] = energy[active]+phi-initial_phi[active]+induction_work_ev[active]
+            if history_row >= 0:
+                energies[history_row,active] = energy[active]+phi-initial_phi[active]+induction_work_ev[active]
         if index in cp_rows:
             cp_row = cp_rows[index]
             cp_work[cp_row], cp_active[cp_row], cp_bounds[cp_row] = induction_work_ev, active, swept_bounds
@@ -302,13 +389,15 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
             at_plane=ids[hit & (fraction==1.)]
             if len(at_plane):
                 phi=sample(np.c_[current[at_plane,:2],np.full(len(at_plane),upper)],times[at_plane])["phi_v"]
-                energies[index+1,at_plane]=energy[at_plane]+phi-initial_phi[at_plane]+induction_work_ev[at_plane]
+                next_history_row = int(history_rows[index+1])
+                if next_history_row >= 0:
+                    energies[next_history_row,at_plane]=energy[at_plane]+phi-initial_phi[at_plane]+induction_work_ev[at_plane]
             # Retain the last finite state for inspection; downstream views use
             # the independently recorded contact, never reinterpret it as flux.
         if index % max(1,(len(z)-1)//100) == 0:
             report_transport_progress(f"Unified column | CPU | {len(current):,} electrons | Z {plane:.6g} mm",
                                       completed=index,total=len(z)-1)
-    output_z = z.copy()
+    output_z = z[history_index].copy()
     _STOPS[id(output_z)] = (weakref.ref(output_z,lambda ref,key=id(output_z):_STOPS.pop(key,None)),
                            blocked.copy(),labels.copy(),runtime.digest)
     # Descending boxes allow the dependency proof to reuse an exact-zero
@@ -317,8 +406,9 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
     internal_state = UnifiedParticleCheckpointState(energy,initial_phi,cp_work,cp_active,blocked,
         tuple(str(value) for value in labels),runtime.digest,implementation_digest,epoch,cp_bounds,
         spatial_ids)
-    cp = PropagationCheckpoints(z[cp_index],histories[cp_index,:,0],histories[cp_index,:,2],
-        histories[cp_index,:,1],histories[cp_index,:,3],clocks[cp_index],energies[cp_index],unified_state=internal_state)
+    cp_history = np.searchsorted(history_index, cp_index)
+    cp = PropagationCheckpoints(z[cp_index],histories[cp_history,:,0],histories[cp_history,:,2],
+        histories[cp_history,:,1],histories[cp_history,:,3],clocks[cp_history],energies[cp_history],unified_state=internal_state)
     if energy_output is not None:
         energy_output.append(_frozen_array(energies))
     _record_active_backend(state,"CPU")
@@ -414,7 +504,7 @@ def trace_unified_response(state, phase_space_xy_slopes, z0_m, observation_z_m, 
     energies = []
     result = execute_unified_plan(state,plan,initial[:,0],initial[:,2],initial[:,1],initial[:,3],
         initial_kinetic_energy_ev=energy_ev,initial_time_s=np.broadcast_to(flight_time_s,(len(initial),)),
-        return_flight_times=True,energy_output=energies)
+        return_flight_times=True,energy_output=energies,history_policy="checkpoints")
     indexes = np.searchsorted(result[0],target_mm)
     if not np.array_equal(result[0][indexes],target_mm):
         raise ValueError("Unified response observations lost their exact plane identity")
@@ -440,4 +530,5 @@ def trace_unified_response(state, phase_space_xy_slopes, z0_m, observation_z_m, 
             "parent_runtime_digest":original_digest,"field_digest":runtime.snapshot.numerical_digest,
             "geometry_digest":runtime.geometry.digest,"coil_perturbations_rad":normalized,
             "scope":"Supplied differential phase-space probes; not an electron source",
-            "empirical_aberrations_applied":False,"maximum_step_m":float(maximum_step_m)})}
+            "empirical_aberrations_applied":False,"maximum_step_m":float(maximum_step_m),
+            "history_policy":"exact_checkpoints"})}

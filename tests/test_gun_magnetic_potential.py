@@ -103,3 +103,24 @@ def test_selected_gun_alignment_capture_owns_each_original_source_once():
 def test_invalid_coordinates_fail(point):
     with pytest.raises(ValueError, match="finite real XYZ"):
         GunMagneticPotential.from_provider(_deflector()).sample(point)
+
+
+@pytest.mark.parametrize("factory", [_deflector, _stigmator])
+def test_exact_zero_values_skip_derivatives_but_preserve_active_bore(factory, monkeypatch):
+    captured = GunMagneticPotential.from_provider(factory(enabled=False))
+    center = captured.terms[0][0]
+    points = np.array(((.0002, -.0001, center), (100., -100., 1.)))
+    expected = captured.sample_jet(points)
+
+    def forbidden_derivatives(*args):
+        raise AssertionError("Exact-zero field values do not require derivative tensors")
+
+    monkeypatch.setattr(GunMagneticPotential, "sample_jet", forbidden_derivatives)
+    result = captured.sample(points)
+    np.testing.assert_array_equal(result["A_t_m"], expected["A_t_m"])
+    np.testing.assert_array_equal(result["B_t"], np.zeros_like(points))
+    assert captured.sample(np.empty((0, 3)))["A_t_m"].shape == (0, 3)
+    with pytest.raises(ValueError, match="bore"):
+        captured.sample((captured.radial_support_m*2, 0., center))
+    with pytest.raises(ValueError, match="finite real XYZ"):
+        captured.sample((np.nan, 0., center))

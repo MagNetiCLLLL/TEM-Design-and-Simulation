@@ -16,7 +16,7 @@ def prepare_compiled_magnetic_sources(source_records):
     if njit is None:
         return None
     from temsim.test_electron_compiled_laws import lens_family, magnetic_provider_is_supported, multipole_is_supported
-    from temsim.physics.lens_field_provider import GeometryAwareAnalyticFieldProvider
+    from temsim.physics.lens_field_provider import GeometryAwareAnalyticFieldProvider, _identity_registration
     from temsim.magnetic_field_scene import _MultipoleField
     from temsim.physics.instrument_magnetic import ColumnDipoleField
     from temsim.optics.lens_focal_length import raw_unit_field_peak
@@ -29,6 +29,11 @@ def prepare_compiled_magnetic_sources(source_records):
             return None
         provider = source.provider
         if not magnetic_provider_is_supported(provider):
+            return None
+        registration = getattr(provider, 'registration', None)
+        if registration is not None and not _identity_registration(registration):
+            # These numeric laws use global-axis coordinates. Preserve placed
+            # coil/lens transforms through the native provider instead.
             return None
         start = len(terms)
         kind, derivative_step = 0., 0.
@@ -169,8 +174,44 @@ def compiled_magnetic_field(point, sources, terms, check_transverse=True):
 
 
 @_jit
-def compiled_magnetic_batch(points, sources, terms):
+def _magnetic_batch_all_sources(points, sources, terms):
     result = np.empty_like(points)
     for index in range(len(points)):
         _, result[index] = compiled_magnetic_field(points[index], sources, terms, False)
     return result
+
+
+@_jit
+def compiled_magnetic_batch(points, sources, terms):
+    """Cull only sources outside the complete query batch's exact Z range.
+
+    The scalar law already applies these captured finite support bounds. Keep
+    inclusive faces and original summation order; never discard a weak field
+    within its support. Posed/unsupported providers are rejected by packing,
+    so an untransformed local bound cannot enter this global-axis fast path.
+    """
+    if not len(points) or not len(sources):
+        return np.zeros_like(points)
+    lower, upper = np.inf, -np.inf
+    for point in points:
+        z = point[2]
+        if not np.isfinite(z):
+            # Preserve scalar behavior for a mixed finite/nonfinite batch.
+            # NaN comparisons must not turn valid neighbouring fields to zero.
+            return _magnetic_batch_all_sources(points, sources, terms)
+        lower, upper = min(lower, z), max(upper, z)
+    count = 0
+    for source in sources:
+        if source[2] <= upper and source[5] >= lower:
+            count += 1
+    if count == 0:
+        return np.zeros_like(points)
+    if count == len(sources):
+        return _magnetic_batch_all_sources(points, sources, terms)
+    selected = np.empty_like(sources[:count])
+    index = 0
+    for source in sources:
+        if source[2] <= upper and source[5] >= lower:
+            selected[index] = source
+            index += 1
+    return _magnetic_batch_all_sources(points, selected, terms)

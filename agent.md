@@ -2,6 +2,19 @@
 
 This policy applies throughout the repository.
 
+## Optical tuning contract
+
+- Follow [optical control roles and illumination constraints](docs/OPTICAL_CONTROL_ROLES.md)
+  when changing illumination controls or fitting operating presets.
+- Preserve the microscope meaning of C1 spot size; do not replace it with a
+  literal specimen-plane spot radius. Keep C3 Normal/Large angle selection
+  distinct from Mini Condenser Nanoprobe/Microprobe selection.
+- A tuned Nanoprobe working point must satisfy the selected C2-C3 and C3-ADL
+  crossover requirements as well as convergence, focus and current criteria.
+  Stored reference values or tests of another field model are not qualification.
+- Maintenance fixes must not silently retune lenses or refocus deliberate
+  perturbations. Keep physical interception and absolute particle weights.
+
 ## Temporary CUDA requirement for coherent calculations
 
 - Until the user explicitly lifts this restriction, new coherent wave

@@ -485,7 +485,7 @@ current-contained angle and focus; it does not relax acceptance thresholds.
 
 The main Probe selector remains **Microprobe / Nanoprobe**. Selecting Nanoprobe
 shows a second **Normal / Large angle** selector. Selecting an entry is pending
-until **Apply calculated lens preset** is pressed. Changing only the projector
+until **Apply stored lens preset** is pressed. Changing only the projector
 preserves the applied range and incident optics. Saved state JSON and operating
 profiles retain the range. State JSON versions 78/79 and older operating
 profiles without this field use Normal without silently replacing their saved

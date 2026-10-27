@@ -1,5 +1,6 @@
 """Nanoprobe range selection is pending until Apply and survives projection changes."""
 from dataclasses import replace
+from copy import deepcopy
 
 import pytest
 
@@ -51,6 +52,34 @@ def test_range_selector_keeps_two_probe_modes_and_only_emits_on_apply(panel):
     assert requests == [(LARGE, "diffraction")]
     assert "30 mrad" in widget.nanoprobe_range_combo.toolTip()
     assert "Large angle" in widget.operating_mode_status.text()
+
+
+def test_unified_reference_discloses_fixed_source_and_unqualified_limits(qtbot):
+    from temsim.operating_modes import apply_condenser_mode
+    from temsim.simulation_modes import switch_mode
+
+    catalog = AssemblyCatalog()
+    selection = catalog.default_selection()
+    state = default_state()
+    catalog.apply(state, selection)
+    switch_mode(state, "unified")
+    state.mini_condenser.percent = 37.25
+    applied = apply_condenser_mode(state, NORMAL)
+    before = deepcopy(state.to_dict())
+    widget = AssemblyPanel(catalog, selection)
+    qtbot.addWidget(widget)
+    widget.load_operating_modes(selection, NORMAL, "diffraction", simulation_mode="unified")
+    widget.set_direct_alignment_state(state)
+    tooltip = widget.operating_mode_status.toolTip()
+    assert applied.condenser.calibration_reference in tooltip
+    assert "49 original source particles" in tooltip
+    assert "0.05 and 0.025 mm" in tooltip
+    assert "particle-sampling convergence" in tooltip and "remain untested" in tooltip
+    assert "edited geometry/source requires revalidation" in tooltip
+    assert "not measurements of the current beam" in tooltip
+    assert widget.operating_mode_status.text().startswith("Stored reference |")
+    assert widget.apply_operating_mode_button.text() == "Apply stored lens preset"
+    assert state.to_dict() == before
 
 
 def test_pending_range_disables_every_alignment_and_reverting_restores_it(panel):

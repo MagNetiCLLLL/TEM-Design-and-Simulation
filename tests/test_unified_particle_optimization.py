@@ -285,3 +285,150 @@ def test_final_restart_box_contains_every_sample_and_rejected_contact_query(monk
     points = np.concatenate(queried)
     assert np.all(points >= saved.swept_bounds_m[-1, 0])
     assert np.all(points <= saved.swept_bounds_m[-1, 1])
+
+
+@pytest.mark.parametrize("dynamic", [False, True])
+def test_checkpoint_storage_keeps_every_force_contact_and_complete_restart(monkeypatch, dynamic):
+    """Storage cannot change field work, a later loss, or the reuse proof."""
+    from temsim.physics.electric_potential_snapshot import ElectricPotentialSnapshot
+    from temsim.physics.planar_gun_field import PlanarGunField
+    from temsim.physics.potential_snapshot import PotentialContribution
+    from temsim.physics.unified_particle_restart import STATE_ARRAY_FIELDS
+    from test_unified_field_particle import controlled
+    from test_unified_field_runtime import parked_state
+    from test_unified_particle_prefix import compact
+
+    state = parked_state()
+    state.step_mm = .05
+    iris = PosedWaveAperture("iris", 451., 451.1, .015, CoordinateRegistration())
+    radius, axial = np.array([0., .02]), np.array([.449, .453])
+    phi = np.broadcast_to(200000.+2e6*(axial-.45), (2, 2)).copy()
+    electric = ElectricPotentialSnapshot.from_provider(PlanarGunField({}, radius, axial, phi))
+    runtime = controlled(state, (compact(1e-6, 450.),
+        PotentialContribution("electric", ("electric",), electric, "electric")), (iris,))
+    if dynamic:
+        from temsim.physics.dynamic_potential import DynamicPotentialSnapshot
+        from test_dynamic_potential import coil
+        runtime = replace(runtime, snapshot=DynamicPotentialSnapshot(runtime.snapshot, (coil(),)))
+    plan = particle.build_unified_plan(state, 450., 452., checkpoint_z_mm=(450., 450.5, 451., 452.),
+                                       _captured_runtime=runtime)
+    phase = (np.array([1e-6, 3e-5]), np.array([.001, .0]), np.zeros(2), np.zeros(2))
+    energy, times = np.array([200000., 300000.]), np.array([2e-9, 2.1e-9])
+    counts = {"sample": 0, "contact": 0}
+    original_sampler, original_contact = particle._sampler, particle._contact
+
+    def counted_sampler(snapshot):
+        sample = original_sampler(snapshot)
+        def counted(*args, **kwargs):
+            counts["sample"] += 1
+            return sample(*args, **kwargs)
+        return counted
+
+    def counted_contact(*args):
+        counts["contact"] += 1
+        return original_contact(*args)
+
+    monkeypatch.setattr(particle, "_sampler", counted_sampler)
+    monkeypatch.setattr(particle, "_contact", counted_contact)
+    full_energy, sparse_energy = [], []
+    full = particle.execute_unified_plan(state, plan, *phase, initial_time_s=times,
+        initial_kinetic_energy_ev=energy, return_flight_times=True, energy_output=full_energy)
+    full_counts = counts.copy()
+    counts.update(sample=0, contact=0)
+    sparse = particle.execute_unified_plan(state, plan, *phase, initial_time_s=times,
+        initial_kinetic_energy_ev=energy, return_flight_times=True, energy_output=sparse_energy,
+        history_policy="checkpoints")
+    assert counts == full_counts
+    assert len(sparse[0]) < len(full[0])
+    rows = np.searchsorted(full[0], sparse[0])
+    for have, expected in zip(sparse[1:6], full[1:6]):
+        np.testing.assert_array_equal(have, expected[rows])
+    np.testing.assert_array_equal(sparse_energy[0], full_energy[0][rows])
+    for name in ("z_mm", "x_m", "y_m", "tx_rad", "ty_rad", "flight_time_s", "kinetic_energy_ev"):
+        np.testing.assert_array_equal(getattr(sparse[-1], name), getattr(full[-1], name))
+    for name in STATE_ARRAY_FIELDS:
+        np.testing.assert_array_equal(getattr(sparse[-1].unified_state, name),
+                                      getattr(full[-1].unified_state, name))
+    assert sparse[-1].unified_state.spatial_dependency_identities == full[-1].unified_state.spatial_dependency_identities
+    cp = sparse[-1]
+    assert cp.unified_state.active[1].tolist() == [True, True]
+    assert cp.unified_state.active[-1].tolist() == [True, False]
+    assert cp.unified_state.blocked_key == ("", "iris")
+    assert np.isfinite(cp.kinetic_energy_ev[2, 1])  # Exact material-face energy.
+    row = 1
+    resumed_energy = []
+    resumed = particle.execute_unified_plan(state, plan,
+        *(getattr(cp, key)[row] for key in ("x_m", "tx_rad", "y_m", "ty_rad")),
+        start_index=int(np.searchsorted(plan.z_mm, cp.z_mm[row])), unified_resume=(cp, row),
+        initial_time_s=cp.flight_time_s[row], initial_kinetic_energy_ev=cp.kinetic_energy_ev[row],
+        return_flight_times=True, energy_output=resumed_energy, history_policy="checkpoints")
+    for have, expected in zip(resumed[1:6], sparse[1:6]):
+        np.testing.assert_array_equal(have, expected[row:])
+    np.testing.assert_array_equal(resumed_energy[0], sparse_energy[0][row:])
+
+
+def test_sparse_history_keeps_unrequested_receiver_plane_and_full_default(monkeypatch):
+    from temsim.physics.recording_clipping import clip_recording_planes
+    from test_unified_field_particle import controlled
+    from test_unified_field_runtime import parked_state
+
+    state = parked_state()
+    state.step_mm = .1
+    receiver = state.recording_planes[0]
+    receiver.z_mm = 450.73
+    receiver.geometry, receiver.inner_diameter_mm, receiver.outer_width_mm = "disk", 0., .02
+    runtime = controlled(state)
+    plan = particle.build_unified_plan(state, 450., 452., checkpoint_z_mm=(450., 452.),
+                                       _captured_runtime=runtime)
+    phase = (np.array([0., 2e-5]), np.zeros(2), np.zeros(2), np.zeros(2))
+    full = particle.execute_unified_plan(state, plan, *phase, initial_time_s=np.zeros(2))
+    sparse = particle.execute_unified_plan(state, plan, *phase, initial_time_s=np.zeros(2),
+                                           history_policy="checkpoints")
+    np.testing.assert_array_equal(full[0], plan.z_mm)
+    predecessor = plan.z_mm[np.searchsorted(plan.z_mm, receiver.z_mm)-1]
+    np.testing.assert_array_equal(sparse[0], [450., predecessor, receiver.z_mm, 452.])
+    assert receiver.z_mm not in sparse[-1].z_mm
+    stopped = []
+    for result in (full, sparse):
+        stopped.append(clip_recording_planes(state, result[0], result[1], result[3],
+            np.ones(2, bool), np.full(2, np.nan), ["", ""]))
+    for have, expected in zip(stopped[1], stopped[0]):
+        np.testing.assert_array_equal(have, expected)
+    np.testing.assert_array_equal(stopped[1][0], [False, True])
+    assert stopped[1][1][0] == receiver.z_mm
+    sparse_budget = particle.unified_history_memory_bytes(state, plan, 2, history_policy="checkpoints")
+    monkeypatch.setattr(particle, "MAX_UNIFIED_HISTORY_BYTES", sparse_budget)
+    with pytest.raises(ValueError, match="history requires"):
+        particle.execute_unified_plan(state, plan, *phase, initial_time_s=np.zeros(2))
+    particle.execute_unified_plan(state, plan, *phase, initial_time_s=np.zeros(2), history_policy="checkpoints")
+    with pytest.raises(ValueError, match="history policy"):
+        particle.execute_unified_plan(state, plan, *phase, history_policy="approximate")
+
+
+def test_history_budget_covers_actual_immutable_checkpoint_construction_peak():
+    """Measure constructor coexistence, including its still-live arguments."""
+    import tracemalloc
+    from types import SimpleNamespace
+    from temsim.physics.core import PropagationCheckpoints
+    from temsim.physics.unified_particle_restart import UnifiedParticleCheckpointState
+
+    count, rows = 257, 129
+    plan = SimpleNamespace(z_mm=np.linspace(0., 1., 513), checkpoint_index=np.arange(0, 513, 4))
+    state = SimpleNamespace(recording_planes=())
+    budget = particle.unified_history_memory_bytes(state, plan, count, history_policy="checkpoints")
+    tracemalloc.start()
+    try:
+        phase = np.zeros((rows, count, 4))
+        clock, kinetic = np.zeros((rows, count)), np.full((rows, count), 300000.)
+        work, active = np.zeros((rows, count)), np.ones((rows, count), bool)
+        internal = UnifiedParticleCheckpointState(np.full(count, 300000.), np.zeros(count), work, active,
+            np.full(count, np.nan), ("",)*count, "0"*64, "0"*64, 0., np.zeros((rows, 2, 3)), ("0"*64,)*rows)
+        selected = np.arange(rows)
+        cp = PropagationCheckpoints(plan.z_mm[plan.checkpoint_index],
+            phase[selected, :, 0], phase[selected, :, 2], phase[selected, :, 1], phase[selected, :, 3],
+            clock[selected], kinetic[selected], unified_state=internal)
+        _, peak = tracemalloc.get_traced_memory()
+    finally:
+        tracemalloc.stop()
+    assert cp.x_m.shape == (rows, count)
+    assert peak <= budget

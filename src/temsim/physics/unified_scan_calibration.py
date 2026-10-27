@@ -14,7 +14,7 @@ from temsim import input_io
 from temsim.immutable_json import json_digest, thaw_json
 from temsim.optics.shared_deflectors import shared_channel_enabled
 from temsim.physics.scan_calibration import (
-    held, restore_held, sample_reference_z_mm, validate_descan_shared_peaks,
+    held, restore_held, sample_reference_z_mm, validate_descan_shared_peaks, capture_record,
 )
 
 
@@ -75,11 +75,16 @@ def measure_scan_responses(state, observation_z_mm, *, perturbation_rad=1e-6,
     """
     from temsim.physics.finite_scan_response import _private_reference
     from temsim.physics.instrument_magnetic import column_dipole_fields
+    from temsim.physics.unified_field_particle import _positive_step_mm
     from temsim.calculation_manifest import solver_source_identity
     implementation = solver_source_identity()
     targets = tuple(sorted(set(float(z) for z in observation_z_mm)))
     h = float(perturbation_rad)
-    step = float(maximum_step_mm)
+    requested_step = _positive_step_mm(maximum_step_mm, "Shared-potential response maximum step")
+    state_step = _positive_step_mm(state.step_mm, "Shared-potential response particle step")
+    # All entry points share the actual integration bound, including callers
+    # that leave the response cap at its default. Validate before taking min.
+    step = min(requested_step, state_step)
     if not targets or not np.isfinite(targets).all() or not np.isfinite((h, step)).all() or min(h, step) <= 0:
         raise ValueError("Shared-potential scan response needs finite planes and positive numerical steps")
     private, _ = _private_reference(state, "ac_deflector")
@@ -220,8 +225,37 @@ def _trace_scan_responses(private, runtime, targets, source, selected, energy, h
 
 @input_io.using_state_inputs
 def calibrate_unified_scan(state, *, observation_stop_z_mm=None,
-                           maximum_step_mm=.2, perturbation_rad=1e-6):
-    """Resolve only derived drives; roll back every control on failure."""
+                           maximum_step_mm=.2, perturbation_rad=1e-6,
+                           force=False, hold=False):
+    """Resolve derived drives; explicit force may capture a new held record.
+
+    Ordinary held execution restores its fixed drives and requested FOV scaling.
+    Force measures the current shared fields even when a previous record is held.
+    Neither operation changes lenses, source inputs or shared-host alignment.
+    """
+    return _calibrate_unified_scan(state, observation_stop_z_mm=observation_stop_z_mm,
+        maximum_step_mm=maximum_step_mm, perturbation_rad=perturbation_rad,
+        force=force, hold=hold)
+
+
+@input_io.using_state_inputs
+def recalibrate_unified_descan_only(state, *, maximum_step_mm=.2, perturbation_rad=1e-6):
+    """Measure current Descan response while preserving the saved AC drive."""
+    if not held(state):
+        raise ValueError("Descan-only calibration requires a saved held AC calibration")
+    if not all(shared_channel_enabled(part) and part.scan_enabled
+               for part in (state.ac_deflector, state.descan_deflector)):
+        raise ValueError("Enable AC scan and Descan scan, including their physical hosts, before calibrating Descan")
+    if state.descan_deflector.kick_x_mrad or state.descan_deflector.kick_y_mrad:
+        raise ValueError("Descan-only calibration requires zero logical Descan static bias; the shared coil coupling would otherwise change that bias")
+    return _calibrate_unified_scan(state, maximum_step_mm=maximum_step_mm,
+        perturbation_rad=perturbation_rad, keep_ac=True)[2]
+
+
+def _calibrate_unified_scan(state, *, observation_stop_z_mm=None,
+                            maximum_step_mm=.2, perturbation_rad=1e-6,
+                            force=False, hold=False, keep_ac=False):
+    """One transactional solve for automatic, held capture and Descan-only work."""
     from temsim.physics.scan_geometry import _descan_target, synchronize_scan_raster, DescanCalibrationResult
     from temsim.physics.instrument_magnetic import column_dipole_fields
     ac, descan = state.ac_deflector, state.descan_deflector
@@ -230,34 +264,55 @@ def calibrate_unified_scan(state, *, observation_stop_z_mm=None,
               or row.field_support_mm[0] < observation_stop_z_mm for key in row.drive_keys}
     consumed = {part.key for part in (ac, descan)
                 if shared_channel_enabled(part) and part.scan_enabled and part.key in active}
+    if observation_stop_z_mm is not None and not consumed:
+        return None
+    if force:
+        if not shared_channel_enabled(ac) or ac.key not in active:
+            raise ValueError("Enable the physical AC coils and observe downstream before capturing scan calibration")
+        # An explicit capture may prepare AC while its raster is switched off.
+        consumed.add(ac.key)
     if not consumed:
         return None
     snapshots = [deepcopy({k: v for k, v in vars(part).items() if k != "_physical_host"}) for part in (ac, descan)]
     measured = None
     try:
-        if held(state):
+        from temsim.physics.optical_tuning import check_tuning_cancelled
+        check_tuning_cancelled(state)
+        if force:
+            ac.calibration_mode = "automatic"
+        if held(state) and not keep_ac:
             command = restore_held(state, restore_descan=descan.key in consumed)
+            synchronize_scan_raster(ac, descan)
             object.__setattr__(ac, "_scan_execution_receipt", {
                 "model": MODEL, "status": "explicit_held_drives", "record_identity": json_digest(ac.calibration_record_json),
                 "scope": "Restored user-held drives; no claim of a new shared-potential calibration"})
             return command, float(ac.scan_scale_residual), None
+        if keep_ac:
+            restore_held(state, restore_descan=False)
         sample = sample_reference_z_mm(state)
         target = _descan_target(state) if descan.key in consumed else None
         measured = measure_scan_responses(state, (sample,) if target is None else (sample, target[2]),
             maximum_step_mm=maximum_step_mm, perturbation_rad=perturbation_rad, _defer_disk=True)
-        sample_index = measured["z_mm"].index(sample)
-        up, low = (measured["phase"][f"ac_deflector:{i}"][sample_index] for i in (0, 1))
-        cu, cl = (measured["canonical"][f"ac_deflector:{i}"][sample_index] for i in (0, 1))
-        ratio = _solve(cl, -cu, "AC canonical-angle response")
-        ac.set_pure_shift_coupling(ratio, float(np.linalg.norm(cu+cl@ratio)/max(np.linalg.norm(cu), 1e-30)))
-        object.__setattr__(ac, "_pure_shift_angle_target", "canonical")
-        upper_map, lower_map = map(np.asarray, ac.coil_kick_matrices())
-        response = up[:2]@upper_map+low[:2]@lower_map
-        desired = np.diag((ac.scan_field_of_view_x_nm, ac.scan_field_of_view_y_nm))*.5e-9
-        command = _solve(response, desired, "AC specimen-position response")
-        residual = float(np.linalg.norm(response@command-desired)/np.linalg.norm(desired))
-        ac.set_scan_command_matrix_mrad(command*1e3, residual)
-        ac.validate()
+        if keep_ac:
+            # Do not solve AC against changed optics: its deliberately retained
+            # focus/pivot error is part of the requested Descan-only experiment.
+            command = np.asarray(ac.scan_command_matrix_mrad)*1e-3
+            residual = float(ac.scan_scale_residual)
+            upper_map, lower_map = map(np.asarray, ac.coil_kick_matrices())
+        else:
+            sample_index = measured["z_mm"].index(sample)
+            up, low = (measured["phase"][f"ac_deflector:{i}"][sample_index] for i in (0, 1))
+            cu, cl = (measured["canonical"][f"ac_deflector:{i}"][sample_index] for i in (0, 1))
+            ratio = _solve(cl, -cu, "AC canonical-angle response")
+            ac.set_pure_shift_coupling(ratio, float(np.linalg.norm(cu+cl@ratio)/max(np.linalg.norm(cu), 1e-30)))
+            object.__setattr__(ac, "_pure_shift_angle_target", "canonical")
+            upper_map, lower_map = map(np.asarray, ac.coil_kick_matrices())
+            response = up[:2]@upper_map+low[:2]@lower_map
+            desired = np.diag((ac.scan_field_of_view_x_nm, ac.scan_field_of_view_y_nm))*.5e-9
+            command = _solve(response, desired, "AC specimen-position response")
+            residual = float(np.linalg.norm(response@command-desired)/np.linalg.norm(desired))
+            ac.set_scan_command_matrix_mrad(command*1e3, residual)
+            ac.validate()
         synchronize_scan_raster(ac, descan)
         result = None
         if target is not None:
@@ -293,11 +348,16 @@ def calibrate_unified_scan(state, *, observation_stop_z_mm=None,
             result = DescanCalibrationResult(key, name, z, ratio, error, float("nan"),
                 "unqualified", constraint=constraint)
         object.__setattr__(ac, "_scan_execution_receipt", {**thaw_json(measured["receipt"]),
-            "status": "executed_shared_potential_response", "sample_z_mm": sample,
+            "status": "executed_shared_potential_descan_response" if keep_ac else "executed_shared_potential_response",
+            "ac_recalibrated": not keep_ac, "sample_z_mm": sample,
             "descan_target_z_mm": None if target is None else target[2],
-            "sample_position_relative_residual": residual,
+            "sample_position_relative_residual": None if keep_ac else residual,
             "commands_identity": json_digest((ac.scan_command_matrix_mrad, descan.scan_command_matrix_mrad))})
-        from temsim.physics.optical_tuning import check_tuning_cancelled
+        if force or keep_ac:
+            capture_record(state, descan_calibrated=result is not None,
+                           ac_angle_target=None if keep_ac else "canonical")
+            if force:
+                ac.calibration_mode = "held" if hold else snapshots[0]["calibration_mode"]
         from temsim.physics.unified_scan_cache import commit_scan_response
         check_tuning_cancelled(state)
         cache_key = measured["receipt"].get("response_cache", {}).get("key")

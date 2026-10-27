@@ -306,6 +306,12 @@ class ElectricPotentialSnapshot:
             q[:, 2] = np.minimum(q[:, 2], z[-1])
         if np.any(radius > r[-1]) or np.any(q[:, 2] < z[0]) or np.any(q[:, 2] > z[-1]):
             raise ValueError("Position outside captured electric potential domain; no extrapolation")
+        if kind == "grounded_downstream" and np.all(extended):
+            # The original scalar law already replaces these samples with a
+            # constant after interpolation. Keep all domain checks above and
+            # avoid evaluating interpolation values that cannot contribute.
+            return {"phi_v": np.full(p.shape[:-1], m["continuation"]["value_v"]),
+                    "E_v_per_m": np.zeros_like(p)}
         if m["basis"] == _BILINEAR:
             phi, electric = _bilinear(q, r, z, a["voltage"])
         else:

@@ -92,7 +92,7 @@ class AssemblyPanel(QWidget):
             "Microprobe / Nanoprobe illumination. Apply the preset to change optics."
         )
         self.apply_operating_mode_button = QPushButton(
-            "Apply calculated lens preset"
+            "Apply stored lens preset"
         )
         self.apply_operating_mode_button.setObjectName(
             "applyOperatingModeButton"
@@ -452,7 +452,7 @@ class AssemblyPanel(QWidget):
         retained = condenser.calibration_status.startswith("retained_not_recomputed_")
         self.apply_operating_mode_button.setText(
             "Apply illumination preset" if projector is None else
-            "Apply stored lens preset" if retained else "Apply calculated lens preset"
+            "Apply stored lens preset"
         )
         angle = condenser.targets.get(
             "achieved_convergence_sem_angle_mrad"
@@ -487,19 +487,23 @@ class AssemblyPanel(QWidget):
             f"C2 {c2:.2f}%, C3 {c3:.2f}%, C2 aperture "
             f"diameter {aperture_um:.0f} µm, Objective focus {objective:.1f}%. "
             f"{illumination_note} Projection conjugate: {plane_label}. "
+            "These are stored reference values, not measurements of the current beam. "
+            "Applying the preset does not revalidate the current source, geometry or "
+            "Mini Condenser magnitude. "
             "Apply the preset, use Direct Alignment for coupled user-level "
             "adjustments, or edit individual values under Optical > "
             "Lenses/Correctors."
         )
         self.operating_mode_status.setText(
-            ("Stored reference; recalibration pending | " if retained else "")
+            ("Stored reference; recalibration pending | " if retained else "Stored reference | ")
             + (f"{self.nanoprobe_range_combo.currentText()} | " if nano_selected else "")
             + f"{float(angle):.3f} mrad | C2 {c2:.2f}% | C3 {c3:.2f}% | "
             f"C2 aperture {aperture_um:.0f} µm | Objective {objective:.1f}% | "
             f"{plane_label}"
         )
         self.operating_mode_status.setToolTip(
-            condenser.calibration_reference if retained else detail_text
+            detail_text + "\n\nIllumination reference: " + condenser.calibration_reference
+            + ("\n\nProjection reference: " + projector.calibration_reference if projector else "")
         )
 
     def _request_operating_mode(self) -> None:

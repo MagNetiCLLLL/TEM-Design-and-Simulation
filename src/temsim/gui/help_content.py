@@ -24,7 +24,7 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
           <li>In <b>Instrument configuration</b>, choose <b>Configure instrument…</b>,
           select the required units and click <b>Assemble</b>.</li>
           <li>Under <b>Optical operating preset</b>, choose illumination and projection,
-          then click <b>Apply calculated lens preset</b>.</li>
+          then click <b>Apply stored lens preset</b>.</li>
           <li>Click <b>Update rays</b> for a fast preview. Inspect <b>Ray Diagram</b>
           and select an axial Z position.</li>
           <li>Set <b>High-accuracy rays</b>, <b>Step (mm)</b> and <b>Compute</b>,
@@ -80,7 +80,8 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         ("Microprobe", "Nanoprobe", "Normal", "Large angle", "Image", "Diffraction",
          "CPU", "GPU", "live tuning", "cutoff", "cancel", "cache", "Simulation",
          "Ideal Optics", "Finite-Field Optics", "Coupled Multiphysics", "thin", "numerical settings",
-         "crossover", "strong excitation", "weak excitation", "C2", "C3", "ADL"),
+         "crossover", "strong excitation", "weak excitation", "Gun Lens", "C1", "spot size",
+         "C2", "C3", "ADL", "Mini Condenser", "Objective", "probe current"),
         """
         <p><b>Where:</b> <b>Optical operating preset</b>, the top calculation toolbar,
         <b>Simulation</b>, and <b>Live tuning → Calculation</b>.</p>
@@ -88,7 +89,7 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
           <li>Select <b>Probe / illumination</b>: Microprobe or Nanoprobe.
           For Nanoprobe, choose the available <b>Nanoprobe range</b>.</li>
           <li>Select <b>Projection</b>: Image or Diffraction. Click
-          <b>Apply calculated lens preset</b> to change the optical controls.</li>
+          <b>Apply stored lens preset</b> to change the optical controls.</li>
           <li>Use <b>Calculate setup</b> to review calculation settings.
           Use <b>Update rays</b> for a preview and <b>Run high-accuracy once</b>
           for a captured particle calculation. The latter is also available through
@@ -99,6 +100,22 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         <p>Normal and Large angle select different optical branches; their labels alone
         do not specify the achieved convergence angle. Read the preset status and
         measured beam result. Illumination and downstream projection have separate roles.</p>
+        <h3>Illumination control roles</h3>
+        <p><b>Gun Lens</b> controls the current admitted to the column through
+        physical gun-aperture interception. <b>C1</b> controls microscope
+        <b>spot size</b> (source imaging/demagnification) and current below C1.
+        This spot-size setting is not the literal spot radius at the specimen.</p>
+        <p>In Nanoprobe, <b>C2 and C3 together</b> control the probe convergence
+        semi-angle. <b>C3</b> selects the Normal/Large angle branch through its
+        excitation and crossover topology. <b>Mini Condenser</b> selects
+        Nanoprobe/Microprobe; together with the <b>Objective</b> it forms the probe.
+        The Objective controls whether the probe is focused on the specimen.
+        These controls are coupled, so recheck the executed beam after tuning.</p>
+        <p>Preset angles and focus values are stored references, not fresh
+        measurements. The current Finite-Field Normal focus record uses 49
+        particles and 0.05/0.025 mm steps; particle-sampling convergence and
+        condenser topology are not yet qualified. Manual lens perturbations
+        retain their actual defocus and transmitted current.</p>
         <p>Applying <b>Image</b> refocuses downstream projection for the inserted
         main screen or Camera, using the Camera as an optical reference when both
         are retracted. The status reports the checked first-order image residual.

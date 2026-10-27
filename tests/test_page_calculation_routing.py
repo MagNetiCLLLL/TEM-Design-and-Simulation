@@ -101,15 +101,18 @@ def test_toolbar_and_live_section_are_separate_requests():
 
 def test_page_uses_displayed_high_accuracy_seed_and_reports_missing_beam():
     from temsim.gui.main_window import MainWindow
-    calls, errors = [], []
+    calls, errors, rejected = [], [], []
     window = SimpleNamespace(_submit_high_accuracy=lambda **kw: calls.append(kw),
-                             _show_error=errors.append, workspace=SimpleNamespace(_high_accuracy_result=None))
+                             _show_error=errors.append, workspace=SimpleNamespace(_high_accuracy_result=None),
+                             calculations=SimpleNamespace(report_rejected_request=lambda *args: rejected.append(args)))
     MainWindow.run_page_calculation(window, "stem")
     assert not calls and "Ray Diagram" in errors[-1]
+    assert rejected == [("High accuracy", errors[-1])]
     seed = SimpleNamespace(simulation=object())
     window.workspace._high_accuracy_result = seed
     MainWindow.run_page_calculation(window, "stem")
     assert calls == [{"workflow": "stem", "existing_result": seed}]
+    assert len(errors) == len(rejected) == 1
 
 
 def test_ray_request_draws_optical_reference_even_with_retained_readouts():

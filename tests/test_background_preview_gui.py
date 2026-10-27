@@ -138,7 +138,7 @@ def test_toolbar_owns_persisted_particle_population_and_preview_remains_local(wi
     from temsim.instrument_snapshot import encode_instrument, decode_instrument
     from temsim.runtime_parameters import runtime_targets, editable_parameters
     assert window.high_rays.value() == window.state.electron_gun.ray_count == 3000
-    assert window.high_step.value() == window.state.step_mm == 0.1
+    assert window.high_step.value() == window.state.step_mm == 0.05
     changes = []
     monkeypatch.setattr(window, "schedule_preview", lambda parameter, **options: changes.append((parameter, options)))
     window.high_rays.setValue(4000)

@@ -1133,7 +1133,9 @@ def test_main_window_contains_the_toml_backed_workspace(qtbot):
     assert window.assembly_panel.probe_mode.currentData() == "nano_probe"
     assert window.assembly_panel.projector_mode.currentData() == "diffraction"
     by_key = {lens.key: lens for lens in window.state.lenses}
-    assert by_key["objective_lens"].percent == pytest.approx(68.9801)
+    preset = mode_by_key("nano_probe", window.assembly_panel.operating_mode_catalog)
+    assert by_key["objective_lens"].percent == pytest.approx(
+        preset.devices["objective_lens"]["percent"])
     assert by_key["diffraction_lens"].percent == pytest.approx(
         14.577617197168571
     )
@@ -1142,15 +1144,15 @@ def test_main_window_contains_the_toml_backed_workspace(qtbot):
     assert camera_length.target.maximum() == pytest.approx(2.5)
     assert window.compute_backend.objectName() == "computeBackend"
     assert window.compute_backend.currentData() == "Auto"
-    # The current computed preset describes catalog reference settings;
-    # it does not use the historical retained-preset provenance tooltip.
-    preset = mode_by_key("nano_probe", window.assembly_panel.operating_mode_catalog)
+    # Computed catalog settings remain stored references; their complete
+    # provenance must remain available without claiming a new measurement.
     assert preset.calibration_status.startswith("computed_")
     tooltip = window.assembly_panel.operating_mode_status.toolTip()
     reference_angle = float(preset.targets["achieved_convergence_sem_angle_mrad"])
     reference_c2 = float(preset.devices["condenser_lens_2"]["percent"])
     assert f"Preset reference sample semi-angle: {reference_angle:.3f} mrad." in tooltip
     assert f"C2 {reference_c2:.2f}%" in tooltip
+    assert preset.calibration_reference in tooltip
 
     window.load_assembly(AssemblySelection(
         "FEG", "C3 + Probe Corrector", "No Energy Filter"
@@ -1909,6 +1911,9 @@ def test_optical_transfer_view_pairs_image_and_diffraction_captures(qtbot):
 def test_gui_applies_retained_probe_and_calculated_projection_modes(qtbot):
     window = MainWindow()
     qtbot.addWidget(window)
+    # This test validates the live legacy Image solver, which remains
+    # unavailable in the separate unified finite-field execution mode.
+    window.set_simulation_mode("custom")
     window.preview_timer.stop()
     panel = window.assembly_panel
     receiver_z_mm = float(window.state.camera.z_mm)
@@ -1967,12 +1972,9 @@ def test_gui_applies_retained_probe_and_calculated_projection_modes(qtbot):
     assert projection.image_residual_m_per_rad <= 2.e-5
     assert projection.magnification == pytest.approx(projection.target_magnification, rel=1.e-3)
     expected_angle = float(applied.condenser.targets["achieved_convergence_sem_angle_mrad"])
-    retained = applied.condenser.calibration_status.startswith("retained_not_recomputed_")
-    angle_label = "stored reference semi-angle" if retained else "sample semi-angle"
     assert panel.operating_mode_status.text() == f"Applied: {applied.summary}"
-    assert f"{angle_label} {expected_angle:.3f} mrad" in panel.operating_mode_status.text()
-    assert ("condenser preset not recalculated for current geometry"
-            in panel.operating_mode_status.text()) is retained
+    assert f"stored reference semi-angle {expected_angle:.3f} mrad" in panel.operating_mode_status.text()
+    assert "condenser preset not recalculated for current controls" in panel.operating_mode_status.text()
 
 
 def test_component_navigation_filters_only_the_active_assembly(qtbot):

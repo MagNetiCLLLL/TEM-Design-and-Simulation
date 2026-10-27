@@ -211,12 +211,12 @@ def test_historical_presets_are_visibly_distinguished_from_new_targets(qtbot, re
             calibration_reference='Historical reference only: fixture')
             if mode.key == selected else mode for mode in panel.operating_mode_catalog.modes))
     panel._update_operating_mode_description()
-    assert panel.apply_operating_mode_button.text() == (
-        'Apply stored lens preset' if retained else 'Apply calculated lens preset')
+    assert panel.apply_operating_mode_button.text() == 'Apply stored lens preset'
+    assert panel.operating_mode_status.text().startswith('Stored reference')
     assert ('recalibration pending' in panel.operating_mode_status.text()) is retained
-    assert ('Historical reference only' in panel.operating_mode_status.toolTip()) is retained
-    if not retained:
-        assert 'Preset reference sample semi-angle' in panel.operating_mode_status.toolTip()
+    assert 'Historical reference only' in panel.operating_mode_status.toolTip()
+    assert 'Preset reference sample semi-angle' in panel.operating_mode_status.toolTip()
+    assert 'not measurements of the current beam' in panel.operating_mode_status.toolTip()
 
 
 def test_candidate_polarity_is_detached_and_reported_for_exact_replay(monkeypatch):

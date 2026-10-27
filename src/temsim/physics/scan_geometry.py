@@ -449,6 +449,11 @@ def recalibrate_descan_only(state) -> DescanCalibrationResult:
     profile loading consume. This operation never switches automatic mode to
     held or silently retargets AC to the production canonical-angle condition.
     """
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        from temsim.physics.unified_scan_calibration import recalibrate_unified_descan_only
+        return recalibrate_unified_descan_only(state,
+            maximum_step_mm=min(.2, float(state.step_mm)))
     if not held(state):
         raise ValueError("Descan-only calibration requires a saved held AC calibration")
     components = state.ac_deflector, state.descan_deflector
@@ -629,6 +634,12 @@ def _measure_descan(state):
 def calibrate_scan_system(state, *, force=False, hold=False, observation_stop_z_mm=None):
     """Calibrate specimen scan and the selected active Descan constraint."""
 
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        from temsim.physics.unified_scan_calibration import calibrate_unified_scan
+        return calibrate_unified_scan(state, force=force, hold=hold,
+            observation_stop_z_mm=observation_stop_z_mm,
+            maximum_step_mm=min(.2, float(state.step_mm)))
     components = state.ac_deflector, state.descan_deflector
     def consumed(component):
         if not (shared_channel_enabled(component) and component.scan_enabled):

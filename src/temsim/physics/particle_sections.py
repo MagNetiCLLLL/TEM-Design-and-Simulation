@@ -311,7 +311,7 @@ def _prefix_matches(old, new, old_index, new_index, *, checkpoints=None, checkpo
 def _trace_segment(state, name, start, stop, initial, energy, weights, identity,
                    survival, events, previous, boundary, *, initial_kicks,
                    save_z_mm=(), dependency_context="", initial_kinetic_energy_ev=None,
-                   preserve_existing_mesh=False):
+                   preserve_existing_mesh=False, checkpoint_ray_count=None):
     from temsim.physics.simulation import Branch, _column_checkpoint_planes, _merge_checkpoints
     from temsim.physics.aperture_clipping import clip_segment
     from temsim.physics.recording_clipping import clip_recording_planes
@@ -329,7 +329,14 @@ def _trace_segment(state, name, start, stop, initial, energy, weights, identity,
                   and getattr(previous.checkpoints, "kinetic_energy_ev", None) is not None
                   and getattr(previous.branch, "kinetic_energy_ev", None) is not None
                   and not state.vacuum_map.enabled)
-    checkpoints = tuple(_column_checkpoint_planes(start, stop, len(x0)))
+    # Batched observations retain the checkpoint mesh of the complete source.
+    # The default remains the original per-call population for all other users.
+    checkpoint_count = len(x0) if checkpoint_ray_count is None else checkpoint_ray_count
+    if (isinstance(checkpoint_count, (bool, np.bool_))
+            or not isinstance(checkpoint_count, (int, np.integer))
+            or checkpoint_count < len(x0)):
+        raise ValueError("Checkpoint population must be an integer covering the executed source slice")
+    checkpoints = tuple(_column_checkpoint_planes(start, stop, checkpoint_count))
     retained = (tuple(float(z) for z in previous.checkpoints.z_mm if start <= z <= stop)
                 if compatible else ())
     safe_boundary = (float(np.nextafter(boundary, -math.inf)),) if start < boundary < stop else ()
@@ -355,6 +362,26 @@ def _trace_segment(state, name, start, stop, initial, energy, weights, identity,
         medium_energy_ev=kinetic0)
     if preserve_existing_mesh and not np.array_equal(plan.z_mm, original.z_mm):
         raise ValueError("Checkpoint capture must not change the executed optical mesh")
+    if plan.unified_runtime is not None and start == stop:
+        # The gun already owns this boundary. Observe its exact output without
+        # querying the column field, reapplying a contact or converting stopped
+        # finite placeholder coordinates to NaN. This is not an executed field
+        # prefix: a later extension reuses the gun and initializes the column
+        # at the entrance, including its mechanical boundary, exactly once.
+        if name != "incident" or start != float(state.electron_gun.exit_plane_z_mm):
+            raise ValueError("A single-plane unified section must observe the executed gun exit")
+        from temsim.physics.core import PropagationCheckpoints
+        x, tx, y, ty, times = (np.asarray(value, dtype=np.float64)[None, :].copy()
+                              for value in initial)
+        kinetic = np.asarray(kinetic0, dtype=np.float64)[None, :].copy()
+        z = np.array((start,), dtype=np.float64)
+        cp = PropagationCheckpoints(z, x, tx, y, ty, times, kinetic)
+        branch = Branch(name, (.22, .74, .97), z, x, y, tx, ty,
+            np.asarray(alive0, dtype=bool).copy(), np.asarray(blocked0, dtype=float).copy(), list(keys0),
+            1., np.asarray(energy).copy(), np.asarray(weights).copy(), interaction_kind="incident",
+            source_ray_id=np.asarray(identity[0]).copy(), source_azimuth_rad=np.asarray(identity[1]).copy(),
+            flight_time_s=times, kinetic_energy_ev=kinetic)
+        return ParticleSectionSegment(name, branch, plan, cp, dependency), float(start), False
     resume = None
     unified = getattr(plan, "unified_runtime", None) is not None
     implementation = None

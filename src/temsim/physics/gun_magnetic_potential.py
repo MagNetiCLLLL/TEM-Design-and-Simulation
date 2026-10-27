@@ -153,6 +153,20 @@ class GunMagneticPotential:
         return {"A_t_m": value, "jac_A_t": jacobian, "hess_A_t_per_m": hessian}
 
     def sample(self, positions_m):
+        # Zero drives still own their native bore domain. Avoid constructing
+        # derivative tensors only when every retained coefficient is exactly
+        # zero; nonzero controls keep the original evaluation and admission.
+        if all(all(coefficient == 0. for coefficient in term[3:]) for term in self.terms):
+            raw = np.asarray(positions_m)
+            if raw.dtype.kind not in "iuf" or raw.shape[-1:] != (3,) or not np.isfinite(raw).all():
+                raise ValueError("Gun potential positions must be finite real XYZ metres")
+            points = np.asarray(raw, dtype=float)
+            x, y, z = np.moveaxis(points, -1, 0)
+            for center, half, edge, *_ in self.terms:
+                active = (z >= center-half-edge) & (z <= center+half+edge)
+                if np.any(active & (np.hypot(x, y) > self.radial_support_m)):
+                    raise ValueError("Position is outside the gun magnetic potential bore domain")
+            return {"A_t_m": np.zeros_like(points), "B_t": np.zeros_like(points)}
         jet = self.sample_jet(positions_m)
         gradient = jet["jac_A_t"]
         return {"A_t_m": jet["A_t_m"], "B_t": np.stack((gradient[..., 2, 1],

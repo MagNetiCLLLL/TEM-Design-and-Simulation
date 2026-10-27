@@ -62,13 +62,103 @@ def trace_feg_to_exit(gun, count=None, *, cancelled=None) -> GunTraceResult:
         return _trace_feg_to_exit(gun, count, cancelled=cancelled)
 
 
-def _trace_feg_to_exit(gun, count=None, *, cancelled=None) -> GunTraceResult:
+def trace_feg_with_observations(gun, planes_mm, count=None, *, cancelled=None):
+    """Observe actual geometry-field crossings without changing normal tracing.
+
+    Bind the same instrument gun field context as the source dispatcher. This
+    explicit audit bypasses ordinary caches because observation planes are not
+    part of their historical payload; it never changes the emitted population.
+    """
+    from temsim.optics.electron_gun.observations import ExactGunPlaneObserver
+    from temsim.physics.grounded_particle_step import gun_step_workers
+    observer = ExactGunPlaneObserver(planes_mm, gun.exit_plane_z_mm)
+    gun.validate()
+    with gun_step_workers():
+        traced = _trace_feg_to_exit(gun, count, cancelled=cancelled, observer=observer)
+    return traced, observer.result()
+
+
+def _diagnostic_emission(gun, bundle):
+    """Copy validated zero-current probes without sampling or changing a source.
+
+    A caller supplies actual launch coordinates and directions, including any
+    curved-source frame. Statistical source support is checked by the pupil
+    measurement separately: geometrically accepted rays may lie outside it.
+    The independent surface-wave source has no diagnostic contract here yet.
+    """
+    from temsim.optics.electron_gun.base import EmissionBundle
+    if getattr(gun.emitter, "surface_model", None) is not None:
+        raise ValueError("Diagnostic gun rays do not support the independent surface source")
+    names = ("x_m", "y_m", "tx_rad", "ty_rad", "energy_offset_ev", "weight")
+    values = [np.asarray(getattr(bundle, name), dtype=float) for name in names]
+    count = values[0].size
+    if (not count or any(value.shape != (count,) or not np.isfinite(value).all()
+                         for value in values)):
+        raise ValueError("Diagnostic emission needs matching finite nonempty vectors")
+    if np.any(values[-1] != 0):
+        raise ValueError("Diagnostic emission must carry exactly zero source current")
+    energies = float(gun.emitter.emission_energy_ev) + values[4]
+    if not np.isfinite(energies).all() or np.any(energies <= 0):
+        raise ValueError("Diagnostic emission requires positive finite launch energies")
+    ids = np.asarray(bundle.ray_id)
+    if (ids.shape != (count,) or ids.dtype.kind not in "iu" or np.any(ids < 0)
+            or np.any(ids > np.iinfo(np.int64).max) or len(np.unique(ids)) != count):
+        raise ValueError("Diagnostic emission needs unique nonnegative integer ray IDs")
+    result = EmissionBundle(*(value.copy() for value in values), ids.astype(np.int64, copy=True))
+    curved = ("surface_position_m", "surface_direction", "surface_normal")
+    present = [hasattr(bundle, name) for name in curved]
+    if any(present):
+        if not all(present):
+            raise ValueError("Diagnostic curved emission needs a complete source frame")
+        frame = [np.asarray(getattr(bundle, name), dtype=float) for name in curved]
+        if any(value.shape != (count, 3) or not np.isfinite(value).all() for value in frame):
+            raise ValueError("Diagnostic curved emission needs finite three-dimensional frames")
+        position, direction, normal = frame
+        if (np.any(direction[:, 2] <= 0)
+                or not np.allclose(np.linalg.norm(direction, axis=1), 1., rtol=0, atol=1e-12)
+                or not np.allclose(np.linalg.norm(normal, axis=1), 1., rtol=0, atol=1e-12)
+                or not np.array_equal(position[:, :2], np.column_stack(values[:2]))
+                or not np.allclose(direction[:, :2] / direction[:, 2, None],
+                                   np.column_stack(values[2:4]), rtol=1e-12, atol=1e-15)):
+            raise ValueError("Diagnostic curved emission has inconsistent coordinates or directions")
+        for name, value in zip(curved, frame):
+            object.__setattr__(result, name, value.copy())
+        if hasattr(bundle, "emission_geometry_model"):
+            object.__setattr__(result, "emission_geometry_model", bundle.emission_geometry_model)
+    elif float(getattr(gun.emitter, "curvature_nm_inv", 0.)) != 0:
+        raise ValueError("Diagnostic curved sources require their actual launch frame")
+    return result
+
+
+def trace_feg_diagnostic_to_exit(gun, emitted_bundle, *, cancelled=None) -> GunTraceResult:
+    """Trace explicit zero-current launch probes through unchanged gun physics.
+
+    This bypasses the ordinary emission/cache entry point, not any electrode,
+    aperture, bore, energy or time integration. Bind the instrument magnetic
+    environment on a private gun/state before calling, as for ordinary traces.
+    No nominal mechanical pupil or source reachability is inferred here.
+    """
+    from dataclasses import replace
+    from temsim.physics.grounded_particle_step import gun_step_workers
+    if cancelled is not None and cancelled():
+        raise RuntimeError("Superseded optical tuning request")
+    emitted = _diagnostic_emission(gun, emitted_bundle)
+    gun.validate()
+    with gun_step_workers():
+        result = _trace_feg_to_exit(gun, cancelled=cancelled, emitted_bundle=emitted)
+    return replace(result, emitted_current_a=0., dpa_transmitted_current_a=0.,
+                   c1_transmitted_current_a=0.,
+                   monochromator_transmitted_current_a=(
+                       None if result.monochromator_transmitted_current_a is None else 0.))
+
+
+def _trace_feg_to_exit(gun, count=None, *, cancelled=None, emitted_bundle=None, observer=None) -> GunTraceResult:
     from temsim.physics.transport_progress import report_transport_progress, transport_progress_active
     started = last_report = perf_counter()
     report_transport_progress("Electron gun | preparing emission and electrode field")
     from temsim.vacuum import ensure_standalone_gun_environment
     ensure_standalone_gun_environment(gun)
-    emitted = gun.emit(count)
+    emitted = gun.emit(count) if emitted_bundle is None else emitted_bundle
     from temsim.physics.ray_identity import emission_reference
     launch_reference = emission_reference(emitted, getattr(gun.emitter, "surface_model", None))
     surface_model = getattr(gun.emitter, "surface_model", None)
@@ -91,6 +181,8 @@ def _trace_feg_to_exit(gun, count=None, *, cancelled=None) -> GunTraceResult:
     medium = MediumTransport(getattr(gun, "_vacuum_regions", ()), n,
                              getattr(gun, "_vacuum_seed", 914), stream=0,
                              max_step_tau=getattr(gun, "_vacuum_max_step_tau", .02))
+    if observer is not None and (not geometry_field or medium.regions):
+        raise ValueError("Exact gun observations currently require static geometry-field vacuum transport")
     direction = np.column_stack((
         emitted.tx_rad,
         emitted.ty_rad,
@@ -129,6 +221,8 @@ def _trace_feg_to_exit(gun, count=None, *, cancelled=None) -> GunTraceResult:
                               if hasattr(electric_base, "launch_boundary_report") else None)
     momentum = momentum_from_kinetic_energy_ev(launch_energy, direction)
     phase = RelativisticPhaseSpace(position, momentum)
+    if observer is not None:
+        observer.initialize(phase)
     alive = np.ones(n, dtype=bool)
     completed = np.zeros(n, dtype=bool)
     dpa_passed = np.zeros(n, dtype=bool)
@@ -470,6 +564,10 @@ def _trace_feg_to_exit(gun, count=None, *, cancelled=None) -> GunTraceResult:
                                       (gun.c1_aperture, c1_arrival_time)):
                 at_plane = newly_stopped & np.isfinite(arrival) & (blocked_z == aperture.z_mm)
                 blocked_time_s[at_plane] = arrival[at_plane]
+        if observer is not None:
+            observer.observe(previous_position, previous_momentum, previous_time_s,
+                phase.position_m, phase.time_s, active, blocked_time_s,
+                electric_provider, magnetic_provider)
         if (
             step_index % history_stride == 0
             or not np.any(alive & ~completed)

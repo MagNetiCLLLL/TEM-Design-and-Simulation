@@ -179,9 +179,21 @@ def test_unchanged_optical_plan_reuses_the_complete_incident_trace():
     state.sample.eds_detector_efficiency = 0.625
 
     updated = run(state, existing_simulation=previous)
+    cold = run(type(state).from_dict(state.to_dict()))
 
-    assert updated.metrics["column_segment_cache"]["mode"] == "full_incident"
+    cache = updated.metrics["column_segment_cache"]
+    # Scene provenance changes with the detector setting, while every
+    # incident numerical node remains reusable through its exact endpoint.
+    assert cache["mode"] == "checkpoint"
+    assert cache["resume_z_mm"] == state.sample.z_mm
+    assert cache["recomputed_integration_nodes"] == 0
+    assert cache["reused_integration_nodes"] == len(updated.incident_plan.z_mm)
+    assert (updated.incident_plan.physics_contract["numerical_digest"]
+            == previous.incident_plan.physics_contract["numerical_digest"])
     _assert_incident_equal(updated.incident, previous.incident)
+    _assert_incident_equal(updated.incident, cold.incident)
+    for name in ("flight_time_s", "kinetic_energy_ev", "ray_weight"):
+        np.testing.assert_array_equal(getattr(updated.incident, name), getattr(cold.incident, name))
     for name in ("z", "x", "tx", "y", "ty"):
         assert not np.shares_memory(
             np.asarray(getattr(updated.incident, name)),
@@ -202,10 +214,18 @@ def test_changed_aperture_reuses_coordinates_but_recomputes_all_stops():
     incremental = run(state, existing_simulation=previous)
     cold = run(cold_state)
 
-    assert incremental.metrics["column_segment_cache"]["mode"] == (
-        "full_incident"
-    )
+    cache = incremental.metrics["column_segment_cache"]
+    # The changed mechanical scene prevents reusing the old whole-plan
+    # identity. Its numerical endpoint is valid and clipping is re-evaluated.
+    assert cache["mode"] == "checkpoint"
+    assert cache["resume_z_mm"] == state.sample.z_mm
+    assert cache["recomputed_integration_nodes"] == 0
+    assert cache["reused_integration_nodes"] == len(incremental.incident_plan.z_mm)
+    assert (incremental.incident_plan.physics_contract["numerical_digest"]
+            == previous.incident_plan.physics_contract["numerical_digest"])
     _assert_incident_equal(incremental.incident, cold.incident)
+    for name in ("flight_time_s", "kinetic_energy_ev", "ray_weight"):
+        np.testing.assert_array_equal(getattr(incremental.incident, name), getattr(cold.incident, name))
 
 
 def test_solver_fields_are_exactly_zero_outside_declared_support():

@@ -236,6 +236,40 @@ def test_native_gun_cut_field_parity_and_explicit_grounded_continuation(kind):
             snapshot.sample([0., 0., .003])
 
 
+def test_grounded_shortcut_preserves_tail_mixed_queries_and_both_domains(monkeypatch):
+    regular = cut_fixture(regular=True)
+    provider = object.__new__(GroundedTipField)
+    provider._regular, provider._fem = regular, regular.field
+    provider.r, provider.z = regular.field.r, regular.field.z
+    provider.request, provider.high_tension_v = {}, 200000.
+    snapshot = ElectricPotentialSnapshot.from_provider(wrapped(provider,
+        [[-1e-3, -1e-3, 0.], [1e-3, 1e-3, .004]]))
+    native_snapshot = ElectricPotentialSnapshot.from_provider(provider)
+    mixed = np.array(((.0002, 0., np.nextafter(provider.z[-1], -np.inf)),
+                      (.0002, 0., .003)))
+    actual = snapshot.sample(mixed)
+    np.testing.assert_array_equal(actual["phi_v"], provider.potential_rise_v_at_global_positions(mixed))
+    np.testing.assert_array_equal(actual["E_v_per_m"], provider.field_at_global_positions_v_per_m(mixed))
+    assert np.any(actual["E_v_per_m"][0] != 0.)
+    np.testing.assert_array_equal(actual["E_v_per_m"][1], np.zeros(3))
+
+    def forbidden_interpolation(*args):
+        raise AssertionError("Declared grounded continuation must not interpolate overwritten values")
+
+    monkeypatch.setattr("temsim.physics.electric_potential_snapshot._evaluate", forbidden_interpolation)
+    for points in (np.array((.0002, 0., .003)),
+                   np.array((((0., 0., .002), (.001, 0., .004)),)), np.empty((0, 3))):
+        result = snapshot.sample(points)
+        np.testing.assert_array_equal(result["phi_v"], np.full(points.shape[:-1], 200000.))
+        np.testing.assert_array_equal(result["E_v_per_m"], np.zeros_like(points))
+    with pytest.raises(ValueError, match="no extrapolation"):
+        native_snapshot.sample((.0012, 0., .003))
+    with pytest.raises(ValueError, match="fixed instrument"):
+        snapshot.sample((0., 0., .005))
+    with pytest.raises(ValueError, match="finite XYZ"):
+        snapshot.sample((0., np.nan, .003))
+
+
 def test_unknown_composed_and_overridden_providers_fail_without_querying():
     class Unknown:
         def interpolate(self, _):

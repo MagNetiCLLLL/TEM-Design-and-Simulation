@@ -1,5 +1,9 @@
 # Parameter definitions, evidence and calculation use
 
+For Gun Lens, C1 microscope spot size, the C2/C3 convergence controls,
+Mini Condenser/Objective roles and required Nanoprobe crossovers, see
+[optical control roles and illumination constraints](OPTICAL_CONTROL_ROLES.md).
+
 Physical Layout, the 3D dimension inspector and the TOML parameter panel share
 one parameter description. Select a dimension to see its meaning, declared
 source and use by the active simulation mode. These are independent properties:

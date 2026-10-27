@@ -153,6 +153,56 @@ def test_packed_full_sum_matches_native_without_display_radius_clipping():
     np.testing.assert_allclose(actual, expected, rtol=2e-7, atol=1e-12)
 
 
+def test_packed_batch_keeps_exact_faces_tails_and_nonfinite_scalar_behavior():
+    from temsim.physics.compiled_magnetic_field import compiled_magnetic_field
+    state = default_state()
+    state.electron_gun.deflector.upper_field_y_mt = .37
+    field = capture_instrument_magnetic_field(state)
+    packed = prepare_compiled_magnetic_sources(field._sources)
+    assert packed is not None
+    faces = np.unique(packed[0][:, [2, 5]].ravel())
+    boundary = np.r_[np.nextafter(faces, -np.inf), faces, np.nextafter(faces, np.inf)]
+    for z in (np.linspace(0., .025, 513), np.linspace(.447, .45, 19), boundary,
+              np.array([np.nan, -np.inf, np.inf, .5]), np.empty(0)):
+        points = np.c_[np.full(len(z), 1e-5), np.full(len(z), -2e-5), z]
+        expected = np.array([compiled_magnetic_field(p, *packed, False)[1]
+                             for p in points]).reshape(-1, 3)
+        actual = compiled_magnetic_batch(points, *packed)
+        assert actual.dtype == expected.dtype and actual.tobytes() == expected.tobytes()
+
+
+def test_packed_batch_culling_keeps_nonassociative_source_order():
+    # Three overlapping dipoles must retain their captured addition order.
+    sources = np.zeros((4, 11))
+    sources[:, :3] = (-1., -1., 0.)
+    sources[:, 3:6] = (1., 1., 1.)
+    sources[:, 6:8] = (1., 2.)
+    sources[:, 8] = np.arange(4)
+    sources[:, 9] = np.arange(1, 5)
+    sources[1, 2], sources[1, 5] = 2., 3.
+    terms = np.zeros((4, 9))
+    terms[:, 3] = (1e16, 9., 1., -1e16)
+    points = np.array([[0., 0., .5], [0., 0., 1.5]])
+    actual = compiled_magnetic_batch(points, sources, terms)
+    np.testing.assert_array_equal(actual, np.zeros_like(points))
+
+
+def test_posed_providers_cannot_enter_untransformed_packed_support_fast_path():
+    from temsim.physics.lens_field_provider import CoordinateRegistration
+    from temsim.physics.instrument_magnetic import ColumnDipoleField
+    field = capture_instrument_magnetic_field(default_state())
+    source = next(row for row in field._sources if row.key == CONDENSER_LENS_1)
+    angle = .1
+    rotation = ((np.cos(angle), 0., np.sin(angle)), (0., 1., 0.),
+                (-np.sin(angle), 0., np.cos(angle)))
+    registration = CoordinateRegistration((0., 0., 0.), rotation)
+    posed = replace(source.provider, registration=registration)
+    dipole = ColumnDipoleField('posed', .4, .41, .001, -.002, 405.,
+                              .01, .02, 1., registration=registration)
+    for provider in (posed, dipole):
+        assert prepare_compiled_magnetic_sources((replace(source, provider=provider),)) is None
+
+
 def test_closed_compiled_step_keeps_full_instrument_magnetic_force():
     from temsim.physics.closed_gun_field import ClosedGunField, closed_field_request
     from temsim.physics.relativistic_lorentz import RelativisticPhaseSpace, momentum_from_kinetic_energy_ev

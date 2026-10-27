@@ -95,10 +95,24 @@ def test_normal_large_angle_normal_and_repeated_application_restore_the_focused_
 def test_finite_field_preset_keeps_a_manually_selected_cm_magnitude(state):
     switch_mode(state, "unified")
     state.mini_condenser.percent = 37.25
-    apply_condenser_mode(state, "nano_probe")
+    result = apply_condenser_mode(state, "nano_probe")
     assert state.mini_condenser.percent == 37.25
     assert state.mini_condenser.polarity == -1
     assert_controls(state, FOCUSED_CONTROLS)
+    assert "stored reference semi-angle 9.969 mrad" in result.summary
+    assert "sample semi-angle" not in result.summary
+    assert "not recalculated for current controls, geometry or source model" in result.summary
+    assert "require revalidation" in result.summary
+
+
+@pytest.mark.parametrize("model", ["unified", "custom", "ideal", "analytical", "ideal_thin"])
+def test_catalog_application_never_claims_a_new_illumination_measurement(state, model):
+    switch_mode(state, model)
+    result = apply_condenser_mode(state, "nano_probe")
+    angle = float(result.condenser.targets["achieved_convergence_sem_angle_mrad"])
+    assert f"stored reference semi-angle {angle:.3f} mrad" in result.summary
+    assert "not recalculated" in result.summary
+    assert "require revalidation" in result.summary
 
 
 def test_explicit_catalog_wins_over_the_field_model(state):

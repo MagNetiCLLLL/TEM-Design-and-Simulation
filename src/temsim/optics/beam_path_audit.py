@@ -201,6 +201,9 @@ mask at each requested plane; eventual specimen losses do not erase C1 data.
         raise ValueError("Ordered audit planes must lie between gun exit and specimen entrance")
     if bool(getattr(getattr(state, "vacuum_map", None), "enabled", False)):
         raise ValueError("This spot audit does not yet qualify active residual-medium transport")
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        return _unified_incident_checkpoints(state, planes, step_mm=step_mm)
     gun = trace_source_to_exit(state)
     e = gun.exit_bundle
     apertures = tuple(a.z_mm for a in state.apertures if start < a.z_mm <= planes[-1])
@@ -218,6 +221,129 @@ mask at each requested plane; eventual specimen losses do not erase C1 data.
     if len(cp.z_mm) != len(planes) or not np.allclose(cp.z_mm, planes, rtol=0, atol=1e-10):
         raise ValueError("The audit requires exact full-precision physical planes")
     return gun, cp, mask
+
+
+def _unified_incident_checkpoints(state, planes, *, step_mm):
+    """Observe executed unified checkpoints without legacy clipping or resets."""
+    from temsim.instrument_snapshot import capture_instrument_snapshot
+    from temsim.optics.electron_gun.source import trace_source_to_exit
+    from temsim.physics.core import PropagationCheckpoints, build_propagation_plan
+    from temsim.physics.particle_sections import _events
+    from temsim.physics.simulation import _validate_gun_flight_times, _column_checkpoint_planes
+    from temsim.physics.unified_field_particle import (
+        _positive_step_mm, MAX_UNIFIED_HISTORY_BYTES, execute_unified_plan,
+        merge_unified_stops, unified_history_memory_bytes,
+    )
+    from temsim.physics.recording_clipping import clip_recording_planes
+    from temsim.physics.instrument_magnetic import events_overlapping_interval
+    from temsim.physics.optical_tuning import check_tuning_cancelled
+    from temsim.physics.transport_progress import transport_progress_segment
+
+    original = capture_instrument_snapshot(state)
+    candidate = original.restore()
+    if callable(getattr(state, "_tuning_cancelled", None)):
+        candidate._tuning_cancelled = state._tuning_cancelled
+    candidate.step_mm = min(_positive_step_mm(candidate.step_mm, "Unified particle step"),
+                            _positive_step_mm(step_mm, "Unified audit maximum step"))
+    check_tuning_cancelled(candidate)
+    gun = trace_source_to_exit(candidate)
+    if not _validate_gun_flight_times(gun):
+        raise ValueError("Unified beam audit requires the executed gun flight-time history")
+    # Gun preparation binds derived vacuum/provider context. Keep the column's
+    # original captured input identity, just as the previous per-batch adapter
+    # did, while retaining the actual executed gun output without recomputation.
+    column_step = candidate.step_mm
+    candidate = original.restore()
+    candidate.step_mm = column_step
+    if callable(getattr(state, "_tuning_cancelled", None)):
+        candidate._tuning_cancelled = state._tuning_cancelled
+    emitted = gun.exit_bundle
+    weights = np.asarray(emitted.weight)
+    initial = tuple(np.asarray(getattr(emitted, key)) for key in
+                    ("x_m", "tx_rad", "y_m", "ty_rad", "flight_time_s"))
+    offsets = np.asarray(emitted.energy_offset_ev)
+    energy = float(candidate.electron_gun.nominal_exit_energy_ev) + offsets
+    survival = (np.asarray(emitted.alive, bool), np.asarray(gun.blocked_z_mm), list(gun.blocked_key))
+    count = len(weights)
+    if count == 0:
+        raise ValueError("Unified beam audit requires a complete nonempty emitted population")
+    start, stop = float(candidate.electron_gun.exit_plane_z_mm), float(planes[-1])
+    if start == stop:
+        # The source already executed this boundary. Preserve its finite
+        # stopped placeholders and original clocks without another field query.
+        cp = PropagationCheckpoints(planes, initial[0][None, :], initial[1][None, :],
+            initial[2][None, :], initial[3][None, :], initial[4][None, :], energy[None, :])
+        if capture_instrument_snapshot(state).digest != original.digest:
+            raise ValueError("Live inputs changed during unified beam audit")
+        return gun, cp, ((weights > 0) & survival[0])[None, :]
+    events = events_overlapping_interval(candidate, _events(candidate), start, stop)
+    common_planes = tuple(sorted(set((start, stop, *planes,
+                                      *_column_checkpoint_planes(start, stop, count)))))
+    common_plan = build_propagation_plan(candidate, start, stop, events,
+        save_z_mm=common_planes, checkpoint_z_mm=common_planes)
+    fixed_bytes = unified_history_memory_bytes(candidate, common_plan, 0, history_policy="checkpoints")
+    per_ray_bytes = (unified_history_memory_bytes(candidate, common_plan, 1, history_policy="checkpoints")
+                     - fixed_bytes)
+    # Publication temporarily holds batch arrays, six concatenated constructor
+    # arguments and six immutable copies, plus masks and validation temporaries.
+    if 146 * len(planes) * count + 32 * len(planes) > MAX_UNIFIED_HISTORY_BYTES:
+        raise ValueError("Selected unified audit observation assembly exceeds the memory budget")
+    observation_bytes_per_ray = 49 * len(planes)
+    # A later batch runs while earlier observations remain resident. Reserving
+    # the complete output and subtracting the current slice accounts for that
+    # overlap without penalizing a single complete-source execution.
+    capacity = ((MAX_UNIFIED_HISTORY_BYTES - fixed_bytes - observation_bytes_per_ray * count)
+                // (per_ray_bytes - observation_bytes_per_ray))
+    if capacity < 1:
+        raise ValueError("One unified audit ray exceeds the bounded batch history budget")
+    # Sparse retained arrays admit a complete source without repeating the
+    # entire axial loop. Larger inputs still share one fixed integration mesh.
+    batch_size = min(count, capacity)
+    fields = ("x_m", "tx_rad", "y_m", "ty_rad", "flight_time_s", "kinetic_energy_ev")
+    observations, mask_parts = [], []
+    batches = math.ceil(count / batch_size)
+    for batch_index, lower in enumerate(range(0, count, batch_size)):
+        check_tuning_cancelled(candidate)
+        selection = slice(lower, min(count, lower + batch_size))
+        with transport_progress_segment(batch_index, batches, label="Observing unified particle batches"):
+            # Gun-stopped finite placeholders are not live column particles.
+            # Keep all original source columns, weights and IDs in their order.
+            phase = tuple(np.where(survival[0][selection], value[selection], np.nan)
+                          for value in initial[:4])
+            result = execute_unified_plan(candidate, common_plan, *phase, offsets[selection],
+                initial_time_s=initial[4][selection], initial_kinetic_energy_ev=energy[selection],
+                defer_nonfinite_until_clipping=True, return_flight_times=True,
+                history_policy="checkpoints")
+            alive, stops, labels = merge_unified_stops(result[0], survival[0][selection],
+                survival[1][selection], survival[2][selection])
+            alive, stops, labels = clip_recording_planes(candidate, result[0], result[1], result[3],
+                                                        alive, stops, labels)
+            visible = ~np.isfinite(stops)[None, :] | (result[0][:, None] <= stops[None, :])
+            if any(np.any(~np.isfinite(value) & visible) for value in result[1:5]):
+                raise ValueError("Non-finite audit trajectory before a physical stop")
+            executed = result[-1]
+            if not np.array_equal(executed.z_mm, common_plan.z_mm[common_plan.checkpoint_index]):
+                raise ValueError("Unified audit checkpoints must retain the complete source integration mesh")
+            # Checkpoints own immutable copies. Release output buffers before
+            # copying the smaller published observation set.
+            del result, phase, visible
+            indices = np.searchsorted(executed.z_mm, planes)
+            if (np.any(indices >= len(executed.z_mm))
+                    or not np.allclose(executed.z_mm[indices], planes, rtol=0, atol=1e-10)):
+                raise ValueError("The unified audit requires exact full-precision physical planes")
+            observations.append(tuple(np.asarray(getattr(executed, key))[indices].copy() for key in fields))
+            mask_parts.append((weights[selection] > 0)[None, :] & survival[0][selection][None, :]
+                & (np.isnan(stops)[None, :] | (stops[None, :] > planes[:, None])))
+            del executed
+        check_tuning_cancelled(candidate)
+    # Concatenation preserves the original particle order and measure. These
+    # observations do not invent a restart state for independently run slices.
+    cp = PropagationCheckpoints(planes,
+        *(np.concatenate([part[index] for part in observations], axis=1) for index in range(len(fields))))
+    masks = np.concatenate(mask_parts, axis=1)
+    if capture_instrument_snapshot(state).digest != original.digest:
+        raise ValueError("Live inputs changed during unified beam audit")
+    return gun, cp, masks
 
 
 def crossover_intervals(crossovers_mm, component_planes, *, boundary_tolerance_mm=1e-6):
