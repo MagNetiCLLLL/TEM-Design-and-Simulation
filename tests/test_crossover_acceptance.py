@@ -1,11 +1,20 @@
 """Small analytical checks for the incident-column acceptance inventory."""
 from types import SimpleNamespace
+from copy import deepcopy
+import importlib.util
 import json
+from pathlib import Path
 
 import numpy as np
 import pytest
 
 from temsim.optics.crossover_acceptance import evaluate_crossover_chain
+
+
+_spec = importlib.util.spec_from_file_location("compare_particle_optical_models",
+    Path(__file__).resolve().parents[1] / "scripts/compare_particle_optical_models.py")
+_comparison = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_comparison)
 
 
 def drift(*, count=16, root=2., z=None):
@@ -90,3 +99,131 @@ def test_invalid_capture_is_rejected(invalid):
         cp.tx_rad[1, 0] = np.nan
     with pytest.raises(ValueError):
         evaluate(cp, masks, weights, identities)
+
+
+def comparison_chain(scale=1.):
+    cp, masks, weights, identities = drift()
+    phi = np.arange(len(weights))*2*np.pi/len(weights)
+    # A tangential emittance offset gives an analytical nonzero waist while
+    # retaining the same exact focus and current-carrying source cohort.
+    cp.x_m = 3e-6 + scale*(cp.x_m-3e-6+1e-9*np.sin(phi))
+    cp.y_m = -4e-6 + scale*(cp.y_m+4e-6-1e-9*np.cos(phi))
+    cp.tx_rad *= scale
+    cp.ty_rad *= scale
+    return evaluate(cp, masks, weights, identities)
+
+
+def test_legacy_comparison_uses_current_weighted_rms_and_reports_d95_without_mutating_capture():
+    reference, candidate = comparison_chain(), comparison_chain(9.)
+    frozen = deepcopy((reference, candidate))
+    result = _comparison.compare_crossover_chains(reference, candidate)
+    assert result["status"] == "PASS_AT_BOUNDED_SAMPLING"
+    waist, = result["matched_waists"]
+    assert waist["common"]["rms_radius_nm"]["ratio"] == pytest.approx(9.)
+    assert waist["common"]["diameter95_nm"]["ratio"] == pytest.approx(9.)
+    assert result["same_common_cohort"]
+    assert (reference, candidate) == frozen
+    assert _comparison.compare_crossover_chains(reference, comparison_chain(11.))["status"] == "FAIL"
+    json.dumps(result, allow_nan=False)
+
+
+@pytest.mark.parametrize("difference", ["missing_waist", "changed_region", "changed_cohort", "extra_candidate"])
+def test_legacy_comparison_cannot_hide_topology_population_or_unresolved_candidate(difference):
+    reference = comparison_chain()
+    candidate = deepcopy(reference)
+    if difference == "missing_waist":
+        candidate["executed_waists"] = []
+    elif difference == "changed_region":
+        candidate["executed_waists"][0]["region"] = "another_component_interval"
+    elif difference == "changed_cohort":
+        candidate["common_cohort"]["original_weights"][0] *= .5
+    else:
+        candidate["unresolved_candidates"] = [dict(z_mm=3.5, kind="radial_candidate")]
+    result = _comparison.compare_crossover_chains(reference, candidate)
+    assert result["status"] == ("UNRESOLVED" if difference == "extra_candidate" else "FAIL")
+    assert result["candidate_waist_count"] == len(candidate["executed_waists"])
+    assert result["unresolved_candidates"]["candidate"] == candidate["unresolved_candidates"]
+
+
+def test_legacy_comparison_does_not_create_a_floor_for_zero_size_reference():
+    cp, masks, weights, identities = drift()
+    reference = evaluate(cp, masks, weights, identities)
+    result = _comparison.compare_crossover_chains(reference, comparison_chain())
+    assert result["status"] == "FAIL"
+    size = result["matched_waists"][0]["common"]["rms_radius_nm"]
+    assert not size["within_limit"]
+    with pytest.raises(ValueError):
+        _comparison.compare_crossover_chains(reference, reference, maximum_size_ratio=float("nan"))
+
+
+def test_unresolved_or_unsampled_waist_is_not_claimed_as_confirmed_missing():
+    reference = comparison_chain()
+    candidate = deepcopy(reference)
+    candidate["executed_waists"] = []
+    candidate["status"] = "UNRESOLVED"
+    candidate["unresolved_candidates"] = [dict(z_mm=2., kind="radial_candidate")]
+    result = _comparison.compare_crossover_chains(reference, candidate)
+    assert result["status"] == "UNRESOLVED"
+    assert result["observed_count_differences"][0]["status"] == "UNRESOLVED"
+    assert not result["ordered_topology_matches"]
+    candidate["unresolved_candidates"] = []
+    candidate["intervals"]["test_interval"]["status"] = "UNRESOLVED_COVERAGE"
+    assert _comparison.compare_crossover_chains(reference, candidate)["status"] == "UNRESOLVED"
+
+
+def test_legacy_no_added_diagnostic_does_not_retune_fields_or_mutate_inputs():
+    inputs = dict(lenses=[dict(key="objective_lens", percent=51., z_mm=1599., cs_mm=1.2),
+                          dict(key="condenser_lens_2", percent=43., z_mm=700., cs_mm=None)],
+        corrector_elements=[dict(key="probe_hp1_hexapole", strength_m3=12.)],
+        probe_aberrations={"A1": [1., 2.]}, image_aberrations={},
+        lens_intrinsic_aberrations={"objective_lens": {"B2": [1., 0.]}},
+        chromatic_aberration_enabled=True)
+    original = deepcopy(inputs)
+    result = _comparison.without_added_aberrations(inputs)
+    assert inputs == original
+    assert result["corrector_elements"] == original["corrector_elements"]
+    assert all(row["cs_mm"] == 0. for row in result["lenses"])
+    assert [(row["percent"], row["z_mm"]) for row in result["lenses"]] == [(51., 1599.), (43., 700.)]
+    assert not result["probe_aberrations"] and not result["lens_intrinsic_aberrations"]
+    assert not result["chromatic_aberration_enabled"]
+
+
+def test_cached_legacy_source_reuses_exact_energy_offsets_ids_weights_and_clock(tmp_path):
+    from temsim.optics.column import default_state
+    state = default_state()
+    inputs = json.loads(json.dumps(state.to_dict()))
+    prefix, cache = tmp_path/"saved", tmp_path/"gun.npz"
+    ids = np.array([2, 7, 19], dtype=np.int64)
+    weights, offsets = np.array([.1, .2, .7]), np.array([-.1, .01, .2])
+    initial = (np.array([-1e-6, 0., 2e-6]), np.array([1e-4, -2e-4, 3e-4]),
+               np.array([2e-7, 1e-7, -1e-7]), np.array([-2e-4, 3e-4, 1e-4]),
+               np.array([1e-8, 1.1e-8, 1.2e-8]))
+    alive = np.ones(3, bool)
+    identity = _comparison._digest_arrays(*initial, offsets, weights, alive, ids)
+    prefix.with_suffix(".inputs.json").write_text(json.dumps(inputs), encoding="utf-8")
+    prefix.with_suffix(".json").write_text(json.dumps(dict(source_population_identity=identity)), encoding="utf-8")
+    kinetic = float(state.electron_gun.nominal_exit_energy_ev)+offsets
+    np.savez(prefix.with_suffix(".npz"), z_mm=[state.electron_gun.exit_plane_z_mm, 500.],
+             source_id=ids, weight=weights, source_energy_offset_ev=offsets,
+             kinetic_energy_ev=np.tile(kinetic+np.spacing(kinetic), (2, 1)))
+    data = dict(zip(("x_m", "tx_rad", "y_m", "ty_rad", "flight_time_s"), initial))
+    data.update(ray_id=ids, weight=weights, energy_offset_ev=offsets, alive=alive,
+                blocked_z_mm=np.full(3, np.nan), blocked_key=np.full(3, ""))
+    np.savez(cache, **data)
+    returned, _, source = _comparison.read_source_result(prefix, cache)
+    assert returned == inputs
+    assert source["source_hash"] == identity
+    np.testing.assert_array_equal(source["kinetic"], float(state.electron_gun.nominal_exit_energy_ev)+offsets)
+    for actual, expected in zip(source["initial"], initial):
+        np.testing.assert_array_equal(actual, expected)
+    np.testing.assert_array_equal(source["identity"][0], ids)
+    np.testing.assert_array_equal(source["weights"], weights)
+    np.savez(prefix.with_suffix(".npz"), z_mm=[state.electron_gun.exit_plane_z_mm, 500.],
+             source_id=ids, weight=weights, source_energy_offset_ev=offsets,
+             kinetic_energy_ev=np.tile(kinetic+.01, (2, 1)))
+    with pytest.raises(ValueError, match="kinetic energies"):
+        _comparison.read_source_result(prefix, cache)
+    data["weight"] = weights*2
+    np.savez(cache, **data)
+    with pytest.raises(ValueError, match="fingerprint"):
+        _comparison.read_source_result(prefix, cache)

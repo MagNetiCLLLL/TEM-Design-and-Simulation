@@ -21,9 +21,9 @@ MAX_UNIFIED_HISTORY_BYTES = 2*1024**3
 
 
 def _sampler(snapshot):
-    """Use the shared retained-potential sampler with legacy native dispatch."""
+    """Reuse exact-Z field coefficients, with strict native posed fallback."""
     from temsim.physics.unified_potential_sampler import compile_unified_potential_sampler
-    return compile_unified_potential_sampler(snapshot)
+    return compile_unified_potential_sampler(snapshot, prefer_plane=True)
 
 
 def _positive_step_mm(value, label):
@@ -274,12 +274,15 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
     contacts = compile_contact_geometry(runtime.geometry)
     swept_bounds = np.array(((0., 0., z[0]*.001), (0., 0., z[0]*.001))) if retained is None else retained["swept_bounds_m"]
     def include_points(points):
-        finite = np.asarray(points)[np.isfinite(points).all(axis=1)]
+        points = np.asarray(points)
+        finite_rows = np.isfinite(points).all(axis=1)
+        finite = points if finite_rows.all() else points[finite_rows]
         if len(finite):
             np.minimum(swept_bounds[0], finite.min(axis=0), out=swept_bounds[0])
             np.maximum(swept_bounds[1], finite.max(axis=0), out=swept_bounds[1])
-    def sample(points, elapsed):
-        include_points(points)
+    def sample(points, elapsed, *, bounds_already_included=False):
+        if not bounds_already_included:
+            include_points(points)
         return raw_sample(points,epoch+elapsed) if dynamic else raw_sample(points)
     if retained is None:
         induction_work_ev = np.zeros(len(current))
@@ -292,7 +295,8 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
         active[lost],blocked[lost],labels[lost] = False,z[0],names[np.isfinite(contact)]
         initial_phi = np.full(len(current),np.nan)
         if active.any():
-            initial_phi[active] = sample(np.c_[current[active,:2],np.full(active.sum(),z[0]*.001)],times[active])["phi_v"]
+            initial_phi[active] = sample(np.c_[current[active,:2],np.full(active.sum(),z[0]*.001)],
+                times[active], bounds_already_included=True)["phi_v"]
     else:
         induction_work_ev = retained["induction_work_ev"]
         blocked, labels = retained["blocked_z_mm"], np.asarray(retained["blocked_key"],dtype=object)
@@ -314,9 +318,11 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
         if history_row >= 0:
             histories[history_row], clocks[history_row] = current, times
         if active.any():
-            # Even an unretained node keeps its field-domain query and swept
-            # bounds. Storage selection must not change numerical admission.
-            phi = sample(np.c_[current[active,:2],np.full(active.sum(),plane*.001)],times[active])["phi_v"]
+            # Every node retains its field-domain query. After the entrance,
+            # these actual states are a subset of the preceding complete end
+            # points, already included before any new mechanical stops.
+            phi = sample(np.c_[current[active,:2],np.full(active.sum(),plane*.001)],
+                times[active], bounds_already_included=index > 0)["phi_v"]
             if history_row >= 0:
                 energies[history_row,active] = energy[active]+phi-initial_phi[active]+induction_work_ev[active]
         if index in cp_rows:
@@ -347,7 +353,9 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
             elapsed = times[ids[valid]]+values[valid,4]
             if dynamic:
                 runtime.snapshot.require_time_interval(epoch+times[ids[valid]],epoch+elapsed)
-            fields = sample(points[valid],elapsed)
+            # Include all stage trials above, including intercepted trials;
+            # the valid field-query subset cannot extend that spatial bound.
+            fields = sample(points[valid],elapsed,bounds_already_included=True)
             kinetic = (energy[ids[valid]]+fields["phi_v"]-initial_phi[ids[valid]]+values[valid,5])*e
             if np.any(kinetic<=0) or not np.isfinite(kinetic).all():
                 raise ValueError("Unified ray left the positive-energy forward domain")
@@ -359,7 +367,8 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
             bx,by,bz = fields["B_t"].T
             ex,ey,ez = fields["E_v_per_m"].T
             magnetic,electric = -e/pz,-e*gamma_mass/(pz*pz)
-            work = np.sum(fields.get("dA_dt_t_m_per_s",np.zeros((valid.sum(),3)))*np.c_[sx,sy,np.ones(valid.sum())],axis=1)
+            work = (np.sum(fields["dA_dt_t_m_per_s"]*np.c_[sx,sy,np.ones(len(sx))],axis=1)
+                    if "dA_dt_t_m_per_s" in fields else np.zeros(len(sx)))
             out[valid] = np.c_[sx,sy,
                 magnetic*(sy*bz-(1+sx*sx)*by+sx*sy*bx)+electric*(ex-sx*ez),
                 magnetic*((1+sy*sy)*bx-sx*bz-sx*sy*by)+electric*(ey-sy*ez),norm*gamma_mass/p,work]
@@ -388,7 +397,8 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
             active[lost] = False
             at_plane=ids[hit & (fraction==1.)]
             if len(at_plane):
-                phi=sample(np.c_[current[at_plane,:2],np.full(len(at_plane),upper)],times[at_plane])["phi_v"]
+                phi=sample(np.c_[current[at_plane,:2],np.full(len(at_plane),upper)],
+                    times[at_plane],bounds_already_included=True)["phi_v"]
                 next_history_row = int(history_rows[index+1])
                 if next_history_row >= 0:
                     energies[next_history_row,at_plane]=energy[at_plane]+phi-initial_phi[at_plane]+induction_work_ev[at_plane]

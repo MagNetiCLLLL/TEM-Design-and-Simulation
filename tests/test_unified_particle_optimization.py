@@ -262,6 +262,7 @@ def test_final_restart_box_contains_every_sample_and_rejected_contact_query(monk
     runtime = controlled(state, pieces=(piece,))
     initial = np.array([[0., 0., .001, -.002], [2e-5, 0., .03, .02]])
     queried = []
+    queries_by_node = []
     original_sampler, original_contact = particle._sampler, particle._contact
 
     def recording_sampler(snapshot):
@@ -269,6 +270,11 @@ def test_final_restart_box_contains_every_sample_and_rejected_contact_query(monk
 
         def observed(points, *args):
             queried.append(np.asarray(points).copy())
+            # Exact node queries precede checkpoint publication. One-sided
+            # RK endpoints must remain separate from this physical plane.
+            plane = float(points[0, 2])
+            if np.all(points[:, 2] == plane):
+                queries_by_node.append((plane, len(queried)))
             return sample(points, *args)
 
         return observed
@@ -285,6 +291,13 @@ def test_final_restart_box_contains_every_sample_and_rejected_contact_query(monk
     points = np.concatenate(queried)
     assert np.all(points >= saved.swept_bounds_m[-1, 0])
     assert np.all(points <= saved.swept_bounds_m[-1, 1])
+    for row, plane_mm in enumerate(result[-1].z_mm):
+        plane = float(plane_mm)*.001
+        prefixes = [stop for z, stop in queries_by_node if z == plane]
+        assert prefixes
+        prefix = np.concatenate((np.array([[0., 0., .45]]), *queried[:max(prefixes)]))
+        expected = np.array((prefix.min(axis=0), prefix.max(axis=0)))
+        np.testing.assert_array_equal(saved.swept_bounds_m[row], expected)
 
 
 @pytest.mark.parametrize("dynamic", [False, True])

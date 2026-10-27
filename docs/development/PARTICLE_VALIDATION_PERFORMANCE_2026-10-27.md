@@ -1,5 +1,9 @@
 # Complete-source particle validation performance
 
+The subsequent [cached-source column optimization report](UNIFIED_COLUMN_PERFORMANCE_2026-10-27.md)
+documents the next optimization of the 1,143-second incident-column stage.
+The measurements below remain the preserved complete-source baseline.
+
 ## Scope and status
 
 This work responds to the unacceptable runtime of the 12,289-particle

@@ -138,3 +138,62 @@ def test_actual_29_source_plane_matches_original_at_crossover_lens_and_hexapole_
         expected, actual = snapshot.sample(points), sampler.sample(points)
         for key in ("A_t_m", "B_t"):
             np.testing.assert_allclose(actual[key], expected[key], rtol=4e-12, atol=2e-16)
+
+
+def test_exact_plane_cache_reuses_coefficients_but_rechecks_each_particle_domain(monkeypatch):
+    import temsim.physics.potential_plane_sampler as module
+    snapshot = _snapshot(_round(), _rotated_multipole())
+    sampler = compile_plane_sampler(snapshot)
+    calls = []
+    original = module._plane_coefficients
+
+    def observed(z, *args):
+        calls.append(z)
+        return original(z, *args)
+
+    monkeypatch.setattr(module, "_plane_coefficients", observed)
+    z = .001
+    first, second = np.array([[1e-5, 0., z]]), np.array([[2e-5, -3e-5, z]])
+    sampler.sample(first)
+    actual = sampler.sample(second)
+    assert calls == [z]
+    for key, expected in snapshot.sample(second).items():
+        np.testing.assert_allclose(actual[key], expected, rtol=4e-12, atol=2e-16)
+    # A cached narrow cloud cannot admit a later out-of-bore cloud.
+    with pytest.raises(ValueError, match="outside"):
+        sampler.sample((.004, 0., z))
+    assert calls == [z]
+    shifted = np.nextafter(z, np.inf)
+    sampler.sample((1e-5, 0., shifted))
+    assert calls == [z, shifted]
+    for array in sampler._coefficient_cache[z][:4]:
+        with pytest.raises(ValueError):
+            array.setflags(write=True)
+    for value in np.linspace(.0011, .0012, module._MAXIMUM_CACHED_PLANES+1):
+        sampler.sample((1e-5, 0., value))
+    assert len(sampler._coefficient_cache) == module._MAXIMUM_CACHED_PLANES
+    assert z not in sampler._coefficient_cache
+    sampler.sample(first)
+    assert calls[-1] == z
+    changed = compile_plane_sampler(_snapshot(_round(.4), _rotated_multipole()))
+    assert not changed._coefficient_cache
+    assert changed.snapshot_digest != sampler.snapshot_digest
+    assert not np.array_equal(changed.sample(first)["B_t"], sampler.sample(first)["B_t"])
+
+
+@pytest.mark.parametrize("copies", [1, 2])
+def test_extreme_opposing_sources_keep_native_finite_range_admission(copies):
+    # With two positive sources the ordered B sum overflows before the
+    # negatives arrive. Aggregating A coefficients first would conceal it.
+    positive = _round(1.2e308, 1)
+    negative = _round(-1.2e308, 1)
+    sampler = compile_plane_sampler(_snapshot(*([positive]*copies+[negative]*copies)))
+    point = (0., 0., 0.)
+    if copies == 2:
+        with pytest.raises(ValueError, match="finite"):
+            sampler.fallback.sample(point)
+        with pytest.raises(ValueError, match="finite"):
+            sampler.sample(point)
+    else:
+        for key, expected in sampler.fallback.sample(point).items():
+            np.testing.assert_array_equal(sampler.sample(point)[key], expected)
