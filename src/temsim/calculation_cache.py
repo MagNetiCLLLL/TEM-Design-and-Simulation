@@ -58,7 +58,7 @@ _EDS_READOUT_FIELDS = (
     "eds_spectrum_max_energy_ev", "eds_spectrum_bin_width_ev",
     "eds_energy_resolution_fwhm_ev", "eds_poisson_enabled", "eds_poisson_seed",
 )
-_STAGE_INPUT_SCHEMA = "live-lens-components-v6-intrinsic-aberrations"
+_STAGE_INPUT_SCHEMA = "live-lens-components-v7-shared-chromatic"
 
 
 def _particle_point_digest(payload):
@@ -138,7 +138,7 @@ def _drop_runtime_solver_state(payload: dict[str, object]) -> dict[str, object]:
     # Inactive fidelity shelves do not change the active calculation. Keep
     # simulation_mode itself in every affected product identity.
     result.pop("simulation_mode_profiles", None)
-    if result.get("simulation_mode", "custom") in {"ideal", "analytical"}:
+    if result.get("simulation_mode", "custom") in {"ideal", "analytical", "ideal_thin"}:
         result["lens_field_map_descriptors"] = {}
     # This map only remembers enabled preferences while optional hardware is
     # removed/reinserted.  The current components already carry the effective
@@ -640,7 +640,7 @@ def incident_field_dependencies(state):
     from temsim.lens_pose import has_lens_pose, lens_pose_registration
     sample_z = float(state.sample.z_mm)
     recipes = getattr(state, "lens_field_map_descriptors", {})
-    conservative = bool(recipes) and str(getattr(state, "simulation_mode", "custom")) not in {"ideal", "analytical"}
+    conservative = bool(recipes) and str(getattr(state, "simulation_mode", "custom")) not in {"ideal", "analytical", "ideal_thin"}
     assembly = getattr(state, "_resolved_assembly", None)
     if assembly is not None:
         from temsim.magnetic_circuits import circuit_channels

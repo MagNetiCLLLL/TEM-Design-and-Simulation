@@ -18,6 +18,38 @@ from temsim.gui.sample_interactions_3d import (
 from temsim.optics.column import default_state
 
 
+def test_unified_optical_result_skips_unsupported_specimen_extrapolation(monkeypatch):
+    import temsim.gui.sample_interactions_3d as view
+
+    def unsupported(*args, **kwargs):
+        raise AssertionError("Optical display must not execute specimen material transport")
+
+    monkeypatch.setattr(view, "SpecimenFieldTransport", unsupported)
+    result = SimpleNamespace(state_snapshot=SimpleNamespace(simulation_mode="unified"),
+        simulation=SimpleNamespace(incident=object(), branches={}))
+    assert view._sample_boundary_paths(result, SimpleNamespace()) == []
+
+
+def test_unified_scene_labels_unsupported_local_transport_without_legacy_fields(monkeypatch):
+    import temsim.gui.sample_interactions_3d as view
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("Unified display must not sample compatibility fields")
+
+    state = default_state()
+    state.simulation_mode = "unified"
+    state.sample.inserted = False
+    state.sample.specimen_mode = "vacuum"
+    result = SimpleNamespace(state_snapshot=state, simulation=None,
+        specimen_interactions=None, wave_imaging=None)
+    monkeypatch.setattr(view, "sample_axial_field_diagnostic", forbidden)
+    scene = view.build_sample_interaction_scene(result)
+    assert scene.paths == ()
+    assert np.isnan(scene.sample_axial_field_t)
+    assert scene.sample_field_transport_model == "unavailable"
+    assert "No additional empirical Cs/Cc" in view._aberration_scope_text(result)
+
+
 def _calculation_result():
     state = default_state()
     state.sample.z_mm = 1.5

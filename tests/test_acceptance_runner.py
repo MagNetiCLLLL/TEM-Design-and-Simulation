@@ -150,7 +150,16 @@ def test_ci_runs_every_declared_scope_and_retains_failure_evidence():
 
     jobs = yaml.safe_load((ROOT / ".github/workflows/tem-p0.yml").read_text())["jobs"]
     feature = jobs["feature-acceptance"]
-    assert set(feature["strategy"]["matrix"]["scope"]) == set(ACCEPTANCE_SCOPES) - {"classical", "cad-export"}
+    assert set(feature["strategy"]["matrix"]["scope"]) == set(ACCEPTANCE_SCOPES) - {"classical", "cad-export", "column-wave-qualification"}
+    wave_workflow = yaml.safe_load((ROOT / ".github/workflows/unified-column-qualification.yml").read_text())
+    # PyYAML's YAML 1.1 parser treats the workflow key "on" as boolean True.
+    triggers = wave_workflow.get("on", wave_workflow.get(True))
+    assert set(triggers) == {"workflow_dispatch"}
+    wave_job = wave_workflow["jobs"]["column-wave-qualification"]
+    wave_steps = wave_job["steps"]
+    assert any("--scope column-wave-qualification" in step.get("run", "") for step in wave_steps)
+    assert not any(step.get("continue-on-error") for step in wave_steps)
+    assert any(step.get("if") == "always()" and step.get("uses", "").startswith("actions/upload-artifact@") for step in wave_steps)
     cad_jobs = yaml.safe_load((ROOT / ".github/workflows/cad-export.yml").read_text())["jobs"]
     cad_steps = cad_jobs["cad-export"]["steps"]
     assert any("requirements-cad.txt" in step.get("run", "") for step in cad_steps)

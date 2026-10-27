@@ -161,18 +161,23 @@ def test_finite_coil_crossing_sample_plane_preserves_both_halves(fixture, centre
                                rtol=1e-9, atol=1e-15)
 
 
-def test_pre_specimen_stop_does_not_apply_chromatic_reference_kick(fixture, monkeypatch):
-    state, _, _ = fixture
-    calls = []
-    def kick(s,x,y,energy,**kwargs):
-        calls.append(True)
-        return np.full_like(x, .002), np.full_like(y, -.001)
-    monkeypatch.setattr("temsim.physics.chromatic.objective_chromatic_kick_from_state", kick)
+def test_pre_specimen_stop_defers_cc_and_vacuum_resume_does_not_repeat_it(fixture, monkeypatch):
+    state, gun, _ = fixture
+    lens = state.lenses[0]
+    lens.enabled, lens.b0_t = True, 0.
+    lens.z_mm, lens.cs_mm, lens.cc_mm = state.sample.z_mm, 0., 2.
+    monkeypatch.setattr("temsim.optics.lens_focal_length.focal_length_mm", lambda *_: 10.)
+    # The synthetic source retains its off-nominal energy through the actual
+    # section kernels. No legacy helper is mocked into the propagated result.
+    state.chromatic_aberration_enabled = True
+    gun.exit_bundle.energy_offset_ev[:] = 100.
     first = trace(state, 453.)
-    assert not calls and not first.branches
+    assert not first.branches
     second = trace(state, 456., first)
-    assert len(calls) == 1
-    np.testing.assert_allclose(second.branches["000"].tx[0], second.incident.tx[-1]+.002)
+    expected_x = gun.exit_bundle.x_m+gun.exit_bundle.tx_rad*.004
+    expected_tx = gun.exit_bundle.tx_rad+expected_x*.002*(100./300000.)/.01**2
+    np.testing.assert_allclose(second.incident.tx[-1], expected_tx, rtol=1e-12, atol=1e-18)
+    np.testing.assert_allclose(second.branches["000"].tx[0], expected_tx, rtol=1e-12, atol=1e-18)
     assert second.branches["000"].z[-1] == 456.
     assert second.metrics["sample_scattering_applied"] is False
     assert second.metrics["sample_illumination_evaluated"]

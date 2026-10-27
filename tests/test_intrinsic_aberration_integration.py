@@ -178,7 +178,10 @@ def test_full_column_wave_uses_intrinsic_screen_and_resumes_once_on_gpu(tmp_path
     for name in ("x_m", "y_m", "tx_rad", "ty_rad"):
         np.testing.assert_allclose(getattr(gpu_ray[-1], name), getattr(rays[1][-1], name),
             rtol=8e-11, atol=2e-19)
-    node = int(np.flatnonzero(prepared[0].z_mm == prepared[0].intrinsic_aberration_kicks[0].z_mm)[0])
+    from temsim.physics.posed_aberrations import kick_indices
+    node, = kick_indices(prepared[0].intrinsic_aberration_kicks, prepared[0].z_mm)
+    assert abs(prepared[0].z_mm[node]-prepared[0].intrinsic_aberration_kicks[0].z_mm) <= (
+        8*np.spacing(max(abs(prepared[0].z_mm[node]), 1.)))
     store = ExecutedWaveStore(tmp_path, "intrinsic-objective", 1<<27)
     options = WaveGridNumerics(compute_backend="Require GPU", maximum_pixels=512,
         maximum_working_bytes=512*1024**2, maximum_device_working_bytes=512*1024**2)

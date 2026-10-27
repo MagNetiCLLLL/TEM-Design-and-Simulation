@@ -24,6 +24,7 @@ CLASSICAL_CRITERIA = {
     "round2/R2-AT-10": ("Backend absence/resource policy and available-GPU selection", (
         "tests/test_compute_backend.py", "tests/test_ray_gpu_policy.py",
         "tests/test_coherent_cuda_policy.py", "tests/test_coherent_cli_policy.py",
+        "tests/test_coherent_cuda_unified_merge.py",
         "tests/test_backend_failure_semantics.py", "tests/test_gui_backend_discovery.py",
         "tests/test_cpu_backend_isolation.py", "tests/test_lazy_cuda_kernels.py")),
     "round2/R2-AT-11": ("Original non-retryable failures", ("tests/test_backend_failure_semantics.py",)),
@@ -44,11 +45,12 @@ ACCEPTANCE_SCOPES = {
         "criteria": {
             "gun-fields/GF-01": ("Conductor geometry, field boundaries and exact field cache", (
                 "tests/test_closed_gun_field.py", "tests/test_axisymmetric_cut_field.py",
+                "tests/test_analytic_gun_field.py",
                 "tests/test_small_bore_electrode_mesh.py", "tests/test_tip_model_switch_validation.py")),
-            "gun-fields/GF-02": ("Continuous tip emission, transport and saved inputs", (
+            "gun-fields/GF-02": ("Continuous tip and thermionic emission, transport and saved inputs", (
                 "tests/test_continuous_tip_curvature.py", "tests/test_tip_curvature_comparison.py",
                 "tests/test_geometry_gun_cache.py", "tests/test_geometry_gun_implicit_tolerance.py",
-                "tests/test_gun_transverse_adaptive.py")),
+                "tests/test_gun_transverse_adaptive.py", "tests/test_thermionic_source_validation.py")),
             "gun-fields/GF-03": ("Exact field identity, conservative reuse and domain comparison metrics", (
                 "tests/test_diagnostic_field_identity.py", "tests/test_grounded_field_identity.py",
                 "tests/test_diagnostic_gun_domains.py")),
@@ -155,7 +157,8 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_energy_filter_mechanical_clipping.py", "tests/test_energy_filter_model_3d.py",
                 "tests/test_energy_filter_workspace_views.py")),
             "field-ui/FU-13": ("Settled live edits and latest particle frame gate coherent refresh", (
-                "tests/test_live_beam_refresh.py",)),
+                "tests/test_live_beam_refresh.py", "tests/test_calculation_progress.py",
+                "tests/test_calculation_progress_gui.py")),
             "field-ui/FU-14": ("Physical assembly sections, vacuum services and bounded workspace presentation", (
                 "tests/test_assembly_section.py", "tests/test_assembly_section_page.py",
                 "tests/test_current_page_tabs.py", "tests/test_ray_compact_layout.py",
@@ -240,6 +243,97 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_rigid_lens_field_registration.py")),
             "lens-geometry/LG-03": ("Assembled material sections and linear/nonlinear FEM coordinates", (
                 "tests/test_material_interval_validation.py", "tests/test_nonlinear_magnetostatics.py")),
+            "lens-geometry/LG-04": ("Retained native potentials, immutable source coverage and explicit validity domains", (
+                "tests/test_axisymmetric_potential.py", "tests/test_electric_potential_snapshot.py",
+                "tests/test_analytic_potential.py", "tests/test_potential_snapshot.py",
+                "tests/test_potential_capture.py", "tests/test_potential_fem_qualification.py",
+                "tests/test_analytic_potential_domain.py", "tests/test_gun_magnetic_potential.py",
+                "tests/test_potential_capabilities.py", "tests/test_potential_native_sampler.py",
+                "tests/test_potential_plane_sampler.py")),
+            "lens-geometry/LG-05": ("Independent high-order round-lens fields and natural aberration benchmarks", (
+                "tests/test_high_order_round_lens.py", "tests/test_round_lens_aberration_benchmark.py",
+                "tests/test_regular_axisymmetric_magnetic_potential.py", "tests/test_potential_fem_aberrations.py")),
+            "lens-geometry/LG-06": ("Bounded potential wave operator, gauge covariance and flux accounting", (
+                "tests/test_potential_wave.py", "tests/test_potential_wave_mode.py",
+                "tests/test_potential_wave_carrier.py", "tests/test_potential_wave_carrier_reference.py",
+                "tests/test_potential_wave_support.py", "tests/test_potential_phase_budget.py")),
+            "lens-geometry/LG-07": ("Shared-potential Lorentz rays, static electric energy and explicit stop losses", (
+                "tests/test_potential_ray.py", "tests/test_potential_aberrations.py")),
+            "lens-geometry/LG-08": ("Explicit thin optical events, seven-column ownership and resume boundaries", (
+                "tests/test_thin_optics.py", "tests/test_thin_direct_alignment.py",
+                "tests/test_thin_specimen_transport.py")),
+            "lens-geometry/LG-09": ("Controlled C3 and Probe potential pilots and existing checkpoint/readout bridges", (
+                "tests/test_potential_probe_pilot.py", "tests/test_potential_probe_wave_pilot.py",
+                "tests/test_potential_wave_observation.py")),
+            "lens-geometry/LG-10": ("Qualified quadratic field interval reductions with explicit support and ownership", (
+                "tests/test_qualified_field_reduction.py", "tests/test_bounded_optical_design.py")),
+            "lens-geometry/LG-11": ("Finite mechanical boundaries and actual conditional material-to-detector handoff", (
+                "tests/test_potential_geometry.py", "tests/test_potential_support_lineage.py",
+                "tests/test_potential_material_phase_budget.py",
+                "tests/test_potential_specimen_transport.py", "tests/test_potential_field_vector_scene.py")),
+            "lens-geometry/LG-12": ("GUI-routed shared potentials, actual-source execution and explicit support gates", (
+                "tests/test_unified_field_runtime.py", "tests/test_unified_field_particle.py",
+                "tests/test_unified_particle_optimization.py", "tests/test_unified_particle_prefix.py",
+                "tests/test_unified_scan_response_cache.py", "tests/test_unified_scan_persistence.py",
+                "tests/test_unified_scan_parallel.py", "tests/test_unified_surface_probe_focus.py",
+                "tests/test_unified_projected_stem.py", "tests/test_unified_projected_downstream.py",
+                "tests/test_unified_projected_trajectory_reuse.py",
+                "tests/test_unified_stem_workflow.py",
+                "tests/test_unified_wave_runtime.py", "tests/test_unified_direct_alignment.py",
+                "tests/test_unified_scan_calibration.py", "tests/test_dynamic_potential.py",
+                "tests/test_electric_wave_reference.py", "tests/test_retarded_wave.py",
+                "tests/test_gaussian_remote_domain.py", "tests/test_potential_wave_carrier_fft.py",
+                "tests/test_potential_wave_action_factorization.py",
+                "tests/test_potential_axial_resource_retry.py",
+                "tests/test_canonical_chart_resources.py",
+                "tests/test_potential_wave_boundary_windows.py",
+                "tests/test_potential_wave_spatial_pressure.py",
+                "tests/test_residual_exponential_allowance.py",
+                "tests/test_exploratory_column_budgets.py",
+                "tests/test_exploratory_budget_controls.py",
+                "tests/test_immutable_wave_checks.py",
+                "tests/test_potential_segment_resampling.py",
+                "tests/test_preview_segment_resampling.py",
+                "tests/test_preview_segment_resampling_gui.py",
+                "tests/test_preview_segment_carrier.py",
+                "tests/test_potential_kinetic_expansion.py", "tests/test_potential_wave_device.py",
+                "tests/test_potential_wave_chebyshev.py", "tests/test_potential_wave_carrier_chebyshev.py",
+                "tests/test_potential_wave_policy.py", "tests/test_potential_wave_resampling.py",
+                "tests/test_potential_wave_residual_memory.py",
+                "tests/test_potential_wave_coefficient_memory.py",
+                "tests/test_captured_phi_reuse.py",
+                "tests/test_potential_representation_estimates.py",
+                "tests/test_phase_segment_resampling.py",
+                "tests/test_preview_phase_carrier.py",
+                "tests/test_preview_phase_reselection.py",
+                "tests/test_preview_phase_reselection_gui.py",
+                "tests/test_nominal_energy_source.py",
+                "tests/test_nominal_energy_preview_pipeline.py",
+                "tests/test_nominal_energy_preview_gui.py",
+                "tests/test_potential_wave_chebyshev_memory.py",
+                "tests/test_wave_resource_preparation.py",
+                "tests/test_wave_device_reuse.py",
+                "tests/test_unified_exploratory_preview.py",
+                "tests/test_coherent_result_labels.py",
+                "tests/test_completed_wave_planes.py",
+                "tests/test_potential_weighted_resampling.py", "tests/test_potential_column_segments.py",
+                "tests/test_unified_weighted_resampling.py", "tests/test_coherent_weighted_resampling_gui.py")),
+        },
+    },
+    "column-field-pilot": {
+        "description": "Actual static C3 and Probe canonical response qualification",
+        "evidence_kind": "controlled-canonical-pupil-and-frozen-field-convergence",
+        "criteria": {
+            "column-field-pilot/CF-01": ("Independent field, energy and trajectory refinement with physical drive responses", (
+                "tests/test_potential_probe_canonical.py",)),
+        },
+    },
+    "column-wave-qualification": {
+        "description": "Long controlled full-interval coherent C3 and Probe qualification",
+        "evidence_kind": "controlled-complex-wave-window-step-and-response-convergence",
+        "criteria": {
+            "column-wave-qualification/CW-01": ("Full Normal and Large Angle static wave paths and raw phase responses", (
+                "tests/test_potential_probe_whole_wave.py",)),
         },
     },
     "receiver-imaging": {
@@ -253,9 +347,10 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_receiver_imaging_gui.py", "tests/test_receiver_playback_gui.py")),
             "receiver-imaging/RI-03": ("Pixel-integrated receiver response and convergence evidence contracts", (
                 "tests/test_compact_gaussian_response.py", "tests/test_image_intensity_analysis.py",
-                "tests/test_image_intensity_validation.py")),
+                "tests/test_image_intensity_validation.py", "tests/test_gaussian_pixel_response.py")),
             "receiver-imaging/RI-04": ("Physical receiver conjugacy and transactional asynchronous projection", (
-                "tests/test_image_receiver_focus.py", "tests/test_projector_preset_controller.py")),
+                "tests/test_image_receiver_focus.py", "tests/test_projector_preset_controller.py",
+                "tests/test_equivalent_image_energy.py")),
         },
     },
     "particle-continuation": {
@@ -276,10 +371,11 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_automatic_result_worker.py", "tests/test_automatic_result_gui.py")),
             "particle-continuation/PC-05": ("Specimen downstream handoff, branch weights and executed flight times", (
                 "tests/test_downstream_transport.py", "tests/test_specimen_time_of_flight.py",
-                "tests/test_objective_chromatic_kick.py")),
+                "tests/test_objective_chromatic_kick.py", "tests/test_shared_chromatic_screens.py")),
             "particle-continuation/PC-06": ("Measured corrector waists, nonlinear source correction and current preset seeds", (
                 "tests/test_corrector_crossover_measurement.py",
-                "tests/test_probe_corrector_calibration.py", "tests/test_direct_alignment_precalibration.py")),
+                "tests/test_probe_corrector_calibration.py", "tests/test_direct_alignment_precalibration.py",
+                "tests/test_surface_probe_focus.py")),
             "particle-continuation/PC-07": ("Bound corrector finite dipoles and independent response reference", (
                 "tests/test_corrector_deflector_binding.py", "tests/test_corrector_deflector_validation.py")),
             "particle-continuation/PC-08": ("DPH changes the centered HP response in parameterised optics", (
@@ -290,6 +386,9 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_condenser_topology.py", "tests/test_nanoprobe_topology_alignment.py",
                 "tests/test_validate_nanoprobe_condenser.py", "tests/test_nanoprobe_ranges.py",
                 "tests/test_bcor_nanoprobe_integration.py", "tests/test_supplemental_crossover.py")),
+            "particle-continuation/PC-11": ("Shared physical scene, effect ownership and seven-column numerical compatibility", (
+                "tests/test_physical_scene.py", "tests/test_interaction_registry.py",
+                "tests/test_plan_physics_contract.py", "tests/test_physics_contract_persistence.py")),
         },
     },
     "performance-observation": {
@@ -336,6 +435,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_column_wave_electric.py", "tests/test_tip_gun_wave.py",
                 "tests/test_electrostatic_column_transport.py", "tests/test_wave_grid.py", "tests/test_wave_device.py",
                 "tests/test_wave_support.py", "tests/test_column_support_budget.py",
+                "tests/test_wave_domain_support.py",
                 "tests/test_column_acceptance_window.py", "tests/test_acceptance_aperture_sampling.py", "tests/test_wave_aperture_edge.py",
                 "tests/test_wave_aperture_sampling.py", "tests/test_multipole_wave.py",
                 "tests/test_wave_grid_low_memory.py", "tests/test_phase_carrier_moments.py",
@@ -376,6 +476,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_posed_aberration_wave.py", "tests/test_tilted_spherical_column.py")),
             "coherent-development/CW-09": ("Lens intrinsic actions share ray/wave definitions and preserve checkpoint ownership", (
                 "tests/test_intrinsic_aberration_operator.py",
+                "tests/test_chromatic_column_wave.py",
                 "tests/test_intrinsic_aberration_integration.py",
                 "tests/test_intrinsic_ray_device.py",
                 "tests/test_particle_gpu_reference.py",

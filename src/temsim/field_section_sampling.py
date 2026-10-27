@@ -21,6 +21,13 @@ def source_support_planes(sources):
     """
     planes = []
     for source in sources:
+        # Retained potentials expose their exact support/domain faces directly.
+        # An explicit empty set means no finite axial boundary (Gaussian tails),
+        # not permission to substitute the display box as a physical cutoff.
+        explicit_planes = getattr(source, "support_planes_m", None)
+        if explicit_planes is not None:
+            planes.extend(explicit_planes)
+            continue
         native = getattr(source, "_magnetic", ())
         if not native or getattr(source, "_unknown_b", False) or getattr(source, "_unknown_e", False):
             bounds = np.asarray(source.bounds_m, dtype=float)
@@ -143,8 +150,9 @@ def longitudinal_field_grid(points_m, sources, *, angle_deg=0., component_centre
         native = getattr(source, "_magnetic", ())
         # A joint source may span multiple physical lenses. Keep their native
         # supports as well as the common source envelope.
-        for item in native or (source,):
-            bounds = getattr(item, "bounds_m", None)
+        hints = getattr(source, "sampling_bounds_m", None)
+        boxes = hints if hints is not None else (getattr(item, "bounds_m", None) for item in native or (source,))
+        for bounds in boxes:
             if bounds is None:
                 continue
             interval = _section_interval(bounds, angle_deg)

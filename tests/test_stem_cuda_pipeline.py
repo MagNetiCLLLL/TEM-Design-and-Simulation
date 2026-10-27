@@ -332,7 +332,7 @@ def test_toolbar_require_gpu_does_not_retry_stem_on_cpu(monkeypatch):
     monkeypatch.setattr(stem_wave_imaging, "resident_stem_batch_size", lambda *a, **k: 4)
     monkeypatch.setattr(stem_wave_imaging, "propagate_multislice", forbidden_cpu)
     from temsim.optics.aberrations import EffectiveAberrationSet
-    # Supply the local operator's coefficients explicitly: ideal optics still
+    # Supply the local operator's coefficients explicitly: parameterized finite optics still
     # retains installed hardware and may run the upstream calibration trace.
     coefficients = EffectiveAberrationSet("probe", "test supplied coefficients")
     monkeypatch.setattr(stem_wave_imaging, "active_effective_aberrations",

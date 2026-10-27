@@ -115,8 +115,10 @@ def test_operator_callback_keeps_callers_original_input_after_multiple_refinemen
     assert len(visited) == 3 and result is not wave
     operator_checks = [(shape, retained) for shape, work, retained in observed if work == 80*math.prod(shape)]
     assert operator_checks[0] == ((32, 32), 123)
-    assert all(retained == 123+wave.amplitude.nbytes for _, retained in operator_checks[1:])
-    assert any(shape == visited[-1] and retained == 123+wave.amplitude.nbytes
+    from temsim.cache_memory import retained_memory_inventory
+    retained_original = sum(retained_memory_inventory(wave.amplitude).values())
+    assert all(retained == 123+retained_original for _, retained in operator_checks[1:])
+    assert any(shape == visited[-1] and retained == 123+retained_original
                for shape, _, retained in observed)
 
 

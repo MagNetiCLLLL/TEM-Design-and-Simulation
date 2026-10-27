@@ -112,14 +112,28 @@ class LensAberrationEditor(QDialog):
             mode_key(self.state) in {"linear_geometry", "nonlinear_material"}
             or bool(descriptors.get(self.lens_key)) or self.lens_key in bindings
         )
-        if mapped:
+        if mode_key(self.state) == "unified":
+            self.model_note.setText(
+                "Finite-Field Optics derives aberrations from the shared potentials. "
+                "Empirical intrinsic coefficients, Cs/Cc screens and equivalent image lenses "
+                "are not added again in the column interval. These values remain saved for "
+                "legacy execution; changing them does not change the shared field. "
+                "Change the field excitation, geometry or potential recipe to affect both solvers."
+            )
+        elif mapped:
             self.model_note.setText(
                 "This lens is configured to use a generated or imported field. "
                 "When a matching field is active, native intrinsic terms are "
                 "not added to that field, to avoid "
                 "counting the same aberration twice. Values are retained for "
-                "Ideal Optics / Analytical Field. A reported analytic fallback "
+                "parameterized Finite-Field Optics. A reported analytic fallback "
                 "uses these coefficients."
+            )
+        elif mode_key(self.state) == "ideal_thin":
+            self.model_note.setText(
+                "Ideal Optics uses integrated thin particle actions. Intrinsic aberration coefficients "
+                "remain stored for Finite-Field Optics; their residual screens are not applied in this mode. "
+                "Coherent calculations require Finite-Field Optics."
             )
         else:
             self.model_note.setText(
@@ -152,6 +166,12 @@ class LensAberrationEditor(QDialog):
         self.state.lens_intrinsic_aberrations = updated
         self._set_draft(coefficients)
         self._refresh_model_note()
-        self.status.setText("Applied to this lens. Recalculate to update particles, waves and residual aberrations.")
+        if mode_key(self.state) == "unified":
+            self.status.setText(
+                "Saved for legacy execution. Shared-potential propagation does not "
+                "apply these residual coefficients."
+            )
+        else:
+            self.status.setText("Applied to this lens. Recalculate to update particles, waves and residual aberrations.")
         self.applied.emit()
         return True

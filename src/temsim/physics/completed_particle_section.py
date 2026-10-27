@@ -71,8 +71,14 @@ def capture_completed_particle_section(result):
     # may remain attached for viewing without becoming this restart state.
     optical_reference = (result.workflow == "rays"
         or bool(simulation.metrics.get("optical_tuning", False)))
-    post = (() if optical_reference else
-            tuple(getattr(simulation, "completed_post_sections", ())))
+    post = tuple(getattr(simulation, "completed_post_sections", ()))
+    if optical_reference:
+        # Only explicitly captured unified optical references carry complete
+        # internal state. Their context signature prevents material reuse.
+        post = tuple(segment for segment in post if
+            segment.branch.interaction_kind == "optical_reference"
+            and segment.plan.unified_runtime is not None
+            and segment.checkpoints.unified_state is not None)
     checkpoint = ParticleSectionCheckpoint(SECTION_SCHEMA, signature,
         simulation.gun_trace, (incident, *post))
     validate_section_checkpoint(checkpoint)

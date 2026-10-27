@@ -88,8 +88,14 @@ def gaussian_kernel(
     pixel_size_x_mm: float,
     pixel_size_y_mm: float,
     maximum_half_pixels: int | None = None,
+    support_sigma: float = 4.0,
+    preserve_tail_loss: bool = False,
 ) -> np.ndarray:
-    """Return a unit-sum sampled Gaussian kernel on a detector image grid."""
+    """Return a sampled Gaussian kernel on a detector image grid.
+
+    The historical default is unit sum. A physically resolved integration grid
+    can instead retain the continuous density scale and finite support loss.
+    """
 
     point_spread.validated()
     dx = float(pixel_size_x_mm)
@@ -100,8 +106,10 @@ def gaussian_kernel(
         return np.ones((1, 1), dtype=float)
 
     sigma_max = max(point_spread.sigma_x_mm, point_spread.sigma_y_mm)
-    half_x = max(1, int(math.ceil(4.0 * sigma_max / dx)))
-    half_y = max(1, int(math.ceil(4.0 * sigma_max / dy)))
+    if not math.isfinite(support_sigma) or support_sigma <= 0.:
+        raise ValueError("Gaussian support must be finite and positive")
+    half_x = max(1, int(math.ceil(support_sigma * sigma_max / dx)))
+    half_y = max(1, int(math.ceil(support_sigma * sigma_max / dy)))
     if maximum_half_pixels is not None:
         limit = max(1, int(maximum_half_pixels))
         half_x = min(half_x, limit)
@@ -121,6 +129,8 @@ def gaussian_kernel(
     total = float(kernel.sum())
     if not math.isfinite(total) or total <= 0.0:
         raise ValueError("Point-spread kernel has no finite positive support.")
+    if preserve_tail_loss:
+        return kernel * (dx/point_spread.sigma_x_mm) * (dy/point_spread.sigma_y_mm) / (2.*math.pi)
     return kernel / total
 
 
@@ -130,6 +140,8 @@ def apply_point_spread(
     *,
     pixel_size_x_mm: float,
     pixel_size_y_mm: float,
+    support_sigma: float = 4.0,
+    preserve_tail_loss: bool = False,
 ) -> np.ndarray:
     """Forward-convolve a non-negative detector image with zero padding.
 
@@ -150,7 +162,9 @@ def apply_point_spread(
         point_spread,
         pixel_size_x_mm=pixel_size_x_mm,
         pixel_size_y_mm=pixel_size_y_mm,
-        maximum_half_pixels=2 * max(values.shape),
+        maximum_half_pixels=None if preserve_tail_loss else 2 * max(values.shape),
+        support_sigma=support_sigma,
+        preserve_tail_loss=preserve_tail_loss,
     )
     response = fftconvolve(values, kernel, mode="same")
     # FFT round-off can produce tiny negative values around exact zeros.

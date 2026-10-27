@@ -15,6 +15,7 @@ from PySide6.QtGui import QTransform
 from PySide6.QtWidgets import QTableWidgetItem
 
 from temsim.gui.job_coordinator import CoordinatedPool, ResourceClaim
+from temsim.gui.coherent_result_labels import coherent_preview_text
 from temsim.physics.wave_plane_observables import (
     canonical_angular_spectrum, column_mode_observables, mode_phase_samples,
     interaction_weights,
@@ -448,22 +449,24 @@ class WaveBeamAnalysis(QObject):
             unit = "mrad" if self.mode == "wave_angles" else "µm"
             for axis, label in (("bottom", "U"), ("left", "V")):
                 owner.plot.getAxis(axis).setLabel(label, units=unit, siPrefixEnableRanges=())
-            owner.heading.setText(f"Wave section | Z {self.checkpoint.plane_z_mm:.9g} mm")
+            preview_note = coherent_preview_text(self.checkpoint)
+            owner.heading.setText(("Exploratory preview | " if preview_note else "")
+                                  + f"Wave section | Z {self.checkpoint.plane_z_mm:.9g} mm")
             a.legend.setText("Executed wave checkpoint · not detector counts")
             a.legend.setToolTip("Readout of the executed checkpoint; absolute tip weights are retained. No propagation.")
             if not math.isclose(owner._plane_z_mm, self.checkpoint.plane_z_mm, rel_tol=0., abs_tol=1e-12):
                 self._cancel_pending()
-                owner.summary.setText(f"Z {owner._plane_z_mm:.9g} mm is not cached. No wave interpolation or propagation was performed.")
+                owner.summary.setText(preview_note + f"Z {owner._plane_z_mm:.9g} mm is not cached. No wave interpolation or propagation was performed.")
                 return
             key = self._request_key()
             if self._cached_key != key:
                 if self._pending_key != key:
                     self._submit(key)
-                owner.summary.setText("Preparing wave readout from the executed checkpoint…")
+                owner.summary.setText(preview_note + "Preparing wave readout from the executed checkpoint…")
                 return
             data = self._data
             if "error" in data:
-                owner.summary.setText(f"Wave view unavailable: {data['error']}")
+                owner.summary.setText(preview_note + f"Wave view unavailable: {data['error']}")
                 return
             if interactions:
                 self._draw_interactions(data["rows"])
@@ -479,14 +482,16 @@ class WaveBeamAnalysis(QObject):
                 bounds = data["bounds"]
                 owner.plot.setRange(xRange=bounds[0], yRange=bounds[1], padding=0., disableAutoRange=True)
             current = 1e12*self.checkpoint.transmitted_current_a
-            owner.summary.setText(f"Total forward current {current:.7g} pA | {len(self.checkpoint.beam.modes)} modes")
+            owner.summary.setText(preview_note + f"Total forward current {current:.7g} pA | {len(self.checkpoint.beam.modes)} modes")
             if self.mode == "wave_phase":
                 a.legend.setText("Single-mode phase plate (wrapped rad) · tilt and defocus retained")
                 a.legend.setToolTip("Actual transverse phase of the selected coherent mode, wrapped to "
                     "[-π, π] radians. Tilt and defocus are retained; no detrending is applied. "
                     f"Axial reference: {data['phase_reference']}")
             elif self.mode == "wave_angles":
-                a.legend.setText("Canonical angles | recorded posed-lens gauge"
+                a.legend.setText("Canonical angles | executed shared-potential gauge"
+                    if getattr(self.magnetic_gauge, "snapshot", None) is not None else
+                    "Canonical angles | recorded posed-lens gauge"
                     if self.magnetic_gauge is not None and self.magnetic_gauge.fields
                     else "Canonical angles | Bz not recorded" if self.bz is None
                     else f"Canonical angles | Bz {self.bz:.6g} T")

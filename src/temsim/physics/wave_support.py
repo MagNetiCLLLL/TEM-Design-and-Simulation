@@ -4,7 +4,9 @@ This is a numerical approximation, not an aperture, source adjustment or
 probability normalisation. The returned record measures both lost probability
 and the L2 difference of the complex field. Later unitary propagation preserves
 that L2 bound; absorbing operators can only reduce it. Bounds from successive
-compactions must be accumulated by the caller.
+compactions must be accumulated by the caller. That statement assumes the same
+subsequent physical operator; changing its numerical domain or boundary
+discretization still requires independent convergence checks.
 """
 from dataclasses import replace
 import math
@@ -23,6 +25,17 @@ def _crop_interval(core_low, core_high, size):
         return 0, size
     low = max(0, min(size-wanted, low-(wanted-(stop-low)+1)//2))
     return low, low+wanted
+
+
+def _marginal_core(marginal, maximum_loss_fraction):
+    """Bound both tails directly, including budgets below unit roundoff."""
+    forward = np.cumsum(marginal, dtype=float)
+    backward = np.cumsum(marginal[::-1], dtype=float)
+    budget = float(forward[-1])*maximum_loss_fraction/4
+    size = len(marginal)
+    low = min(size-1, int(np.searchsorted(forward, budget, side="left")))
+    high = size-1-min(size-1, int(np.searchsorted(backward, budget, side="left")))
+    return low, high
 
 
 def compact_wave_support(wave, *, maximum_loss_fraction, wavelength_m):
@@ -59,11 +72,7 @@ def compact_wave_support(wave, *, maximum_loss_fraction, wavelength_m):
     cores, intervals = [], []
     for axis, size in enumerate(shape):
         marginal = to_host(probability.sum(axis=1-axis))
-        cumulative = np.cumsum(marginal, dtype=float)
-        tail_budget = float(cumulative[-1])*maximum_loss_fraction/4
-        low = min(size-1, int(np.searchsorted(cumulative, tail_budget, side="left")))
-        high = min(size-1, int(np.searchsorted(cumulative, cumulative[-1]-tail_budget,
-                                             side="left")))
+        low, high = _marginal_core(marginal, maximum_loss_fraction)
         cores.append((low, high))
         intervals.append(_crop_interval(low, high, size))
     new_shape = tuple(stop-low for low, stop in intervals)
@@ -85,7 +94,7 @@ def compact_wave_support(wave, *, maximum_loss_fraction, wavelength_m):
     lost = outside_probability+float((retained_probability*(1.-window**2)).sum())
     squared_error = outside_probability+float((retained_probability*(1.-window)**2).sum())
     loss_fraction = lost/total
-    if loss_fraction > maximum_loss_fraction+32*np.finfo(float).eps:
+    if loss_fraction > maximum_loss_fraction:
         raise ValueError("Support window exceeded its integrated probability-loss budget")
     shift_indices_xy = np.array((x0+new_shape[1]//2-shape[1]//2,
                                  y0+new_shape[0]//2-shape[0]//2))
@@ -155,11 +164,7 @@ def compact_wave_spectrum(wave, *, maximum_loss_fraction):
     target, cores, intervals = [], [], []
     for axis, size in enumerate(shape):
         marginal = to_host(spectral_probability.sum(axis=1-axis))
-        cumulative = np.cumsum(marginal, dtype=float)
-        tail_budget = float(cumulative[-1])*maximum_loss_fraction/4
-        low = min(size-1, int(np.searchsorted(cumulative, tail_budget, side="left")))
-        high = min(size-1, int(np.searchsorted(cumulative, cumulative[-1]-tail_budget,
-                                             side="left")))
+        low, high = _marginal_core(marginal, maximum_loss_fraction)
         frequency_low, frequency_high = low-size//2, high-size//2
         # An even output represents integer modes [-n/2, n/2-1]. In particular
         # the positive upper endpoint needs one more slot than the negative.
@@ -181,7 +186,7 @@ def compact_wave_spectrum(wave, *, maximum_loss_fraction):
     lost = float(spectral_probability[:y0].sum()+spectral_probability[y1:].sum()
                  +spectral_probability[y0:y1, :x0].sum()+spectral_probability[y0:y1, x1:].sum())
     loss_fraction = lost/total
-    if loss_fraction > maximum_loss_fraction+32*np.finfo(float).eps:
+    if loss_fraction > maximum_loss_fraction:
         raise ValueError("Spectral projection exceeded its integrated probability-loss budget")
     amplitude = xp.fft.fftshift(xp.fft.ifft2(xp.fft.ifftshift(spectrum[y0:y1, x0:x1]), norm="ortho"))
     basis = wave.basis_m@np.diag((shape[1]/target[1], shape[0]/target[0]))

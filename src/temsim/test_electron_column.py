@@ -100,12 +100,16 @@ def trace_instrument_electron(scene, settings, cancelled, progress, interval, us
 
     def result(reason):
         output = _electromagnetic_result(settings, positions, momenta, times, distances, potentials, reason)
-        from temsim.simulation_modes import is_ideal
-        note = ("Shared production column: forward paraxial propagation, captured electric potential, "
+        from temsim.simulation_modes import is_ideal, is_thin
+        thin = is_thin(state)
+        note = ("Shared production column: exact drifts and integrated thin optical actions; "
+                "no resolved field-thickness dynamics or material/detector interactions." if thin else
+                "Shared production column: forward paraxial propagation, captured electric potential, "
                 "finite magnetic optics and the same enabled thin optical actions; no material/detector interactions.")
         extras = (note,
             "Gun and column use their common production segment methods; this is not an independent full-Lorentz column reference.",
-            "Forward column step is capped by both instrument and diagnostic step sizes. Relative error tolerance controls the adaptive gun segment; column accuracy is checked by step refinement.",
+            ("Thin column actions occur at declared planes; history spacing controls the plotted straight drifts. Gun integration retains its separate numerical controls." if thin else
+             "Forward column step is capped by both instrument and diagnostic step sizes. Relative error tolerance controls the adaptive gun segment; column accuracy is checked by step refinement."),
             "Column travelled path is reconstructed by second-order speed integration between executed checkpoints; contact positions and times are interpolated within the stopping interval.")
         extras += (f"Column compute policy: {state.acceleration_backend}; acceleration "
                    f"{'enabled' if state.acceleration_enabled else 'disabled'}; executed backend: "
@@ -113,7 +117,7 @@ def trace_instrument_electron(scene, settings, cancelled, progress, interval, us
         if not use_compiled:
             extras += ("Explicit uncompiled CPU reference requested for this diagnostic; the captured instrument compute policy was not changed.",)
         if is_ideal(state):
-            extras += ("Ideal Optics uses configured analytical column fields and aberrations; trajectory, kinetic energy and flight time use the actual electron energy.",)
+            extras += ("Finite-Field Optics uses configured analytical column fields and aberrations; trajectory, kinetic energy and flight time use the actual electron energy.",)
         notes = tuple(note for note in output.notes
                       if not note.startswith(("Second-order discrete-gradient", "Time and travelled path")))
         return replace(output, notes=(*notes, *extras))

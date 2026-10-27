@@ -15,6 +15,14 @@ from temsim.physics.wave_execution import check_available_memory
 from temsim.physics.wave_device import array_module, check_device_memory, max_abs, normalise_backend
 
 
+# These are input ceilings, not achieved-error or accuracy certificates.
+# Wider allowances require an explicit exploratory column grid; strict gun
+# requests and all default values remain unchanged.
+STRICT_SUPPORT_BUDGET_MAXIMUM = .1
+EXPLORATORY_SUPPORT_PROBABILITY_MAXIMUM = .5
+EXPLORATORY_SUPPORT_L2_MAXIMUM = 4.
+
+
 class WaveSamplingError(ValueError):
     """An operator has not been applied because its grid needs refinement."""
 
@@ -33,6 +41,110 @@ class WaveMemoryBudgetError(WaveGridBudgetError):
     Unlike a pixel cap or unresolved operator, this may be retried with fewer
     concurrent modes without changing any numerical or physical operator.
     """
+
+
+@dataclass(frozen=True)
+class CanonicalChartResourceHint:
+    """A declared resource refusal of one complete canonical chart.
+
+    The alternative Collins sampling demand is diagnostic, not a prerequisite
+    for retrying this angular-spectrum chart. No field or wave arrays belong
+    here, and a hint is usable only on its exact unexecuted input lattice.
+    """
+
+    input_shape: tuple
+    required_shape: tuple
+    preferred_chart: str
+    reason: str
+    alternate_chart: str
+    alternate_reason: str
+    alternate_required_scale: float
+
+    def __post_init__(self):
+        for shape in (self.input_shape, self.required_shape):
+            if (type(shape) is not tuple or len(shape) != 2
+                    or any(type(count) is not int or count <= 0 for count in shape)):
+                raise ValueError("Canonical chart resource shapes must be positive integer pairs")
+        if (any(required < source for required, source in zip(self.required_shape, self.input_shape))
+                or self.required_shape == self.input_shape):
+            raise ValueError("Canonical domain resources must expand the original lattice")
+        if (type(self.preferred_chart) is not str or self.preferred_chart != "angular_spectrum_domain"
+                or type(self.reason) is not str or self.reason != "declared_domain_grid_budget"
+                or type(self.alternate_chart) is not str or self.alternate_chart != "collins"
+                or type(self.alternate_reason) is not str or not self.alternate_reason):
+            raise ValueError("Unknown canonical chart resource alternative")
+        if (type(self.alternate_required_scale) not in (int, float)
+                or not math.isfinite(self.alternate_required_scale)
+                or self.alternate_required_scale <= 0):
+            raise ValueError("Canonical alternate sampling scale must be finite and positive")
+
+
+def matching_canonical_chart_hint(error, input_shape):
+    """Unknown or stale hints never authorize a different recovery path."""
+    hint = getattr(error, "canonical_chart_resource_hint", None)
+    return hint if type(hint) is CanonicalChartResourceHint and hint.input_shape == tuple(input_shape) else None
+
+
+class CanonicalChartResourceError(WaveGridBudgetError):
+    """A retryable preferred chart refused its declared numerical resources."""
+
+    def __init__(self, message, hint, input_shape):
+        super().__init__(message)
+        if type(hint) is not CanonicalChartResourceHint or hint.input_shape != tuple(input_shape):
+            raise ValueError("Canonical chart resource hint does not match its executed input")
+        self.canonical_chart_resource_hint = hint
+
+
+@dataclass(frozen=True)
+class WaveResourcePressure:
+    """Measured pressure for a proposal from the fixed, unexecuted entrance."""
+
+    attempt: int
+    previous_shape: tuple | None
+    required_shape: tuple
+    growth_scale: float
+
+
+@dataclass(frozen=True)
+class WaveResourceProposal:
+    """An uncommitted candidate; its receipt is published only after success.
+
+    The commit callback must not retain the candidate array: refinement can
+    replace that array before the operator is accepted. No rollback callback
+    is necessary because proposal construction must not change caller state.
+    """
+
+    wave: object
+    commit: object
+
+    def __post_init__(self):
+        if not callable(self.commit):
+            raise ValueError("A resource proposal requires a callable commit")
+
+
+@dataclass(frozen=True)
+class WaveResourceTransaction:
+    """Explicit opt-in to bounded proposals from one immutable entrance.
+
+    Plain two-argument preparation callbacks retain their historical single
+    attempt behavior. A transactional callback accepts a third pressure
+    argument and returns a WaveResourceProposal or the unchanged entrance.
+    Ordinary sampling callbacks receive pressure=None and must not stage a
+    resource proposal without an actual typed resource failure.
+    """
+
+    prepare: object
+    maximum_attempts: int = 6
+
+    def __post_init__(self):
+        if not callable(self.prepare):
+            raise ValueError("A resource transaction requires a callable preparation")
+        if (type(self.maximum_attempts) is not int
+                or not 1 <= self.maximum_attempts <= 16):
+            raise ValueError("Resource transaction attempts must be an integer from 1 to 16")
+
+    def __call__(self, wave, error, pressure=None):
+        return self.prepare(wave, error, pressure)
 
 
 def check_combined_phase_sampling(wave, phase, wavelength_m):
@@ -128,10 +240,21 @@ class WaveGridNumerics:
     # incoherent modes, applied once after the executed gun. Not a Tip setting.
     maximum_incoherent_mode_loss_probability: float = 1e-8
     maximum_accumulated_support_l2: float = .02
+    # Historical callers retain doubling. The unified vacuum column selects
+    # the minimum complete domain explicitly; material substeps need reserve.
+    angular_domain_padding: str = "doubling"
+    # Explicit column-only exploration. It changes only the permitted complex
+    # support projection allowance, never physical or spectral admission gates.
+    exploratory_support_budget: bool = False
 
     def validate(self):
+        if type(self.exploratory_support_budget) is not bool:
+            raise ValueError("Exploratory support budget must be an explicit boolean")
         if not isinstance(self.automatic_refinement, bool):
             raise ValueError("Automatic wave refinement must be a boolean")
+        if (type(self.angular_domain_padding) is not str
+                or self.angular_domain_padding not in ("doubling", "minimum_full_band")):
+            raise ValueError("Angular domain padding must be doubling or minimum_full_band")
         if isinstance(self.maximum_pixels, bool) or not isinstance(self.maximum_pixels, int) or not 32 <= self.maximum_pixels <= 65536:
             raise ValueError("Maximum wave grid pixels must be an integer from 32 to 65536")
         if isinstance(self.maximum_working_bytes, bool) or not isinstance(self.maximum_working_bytes, int) or self.maximum_working_bytes <= 0:
@@ -159,8 +282,14 @@ class WaveGridNumerics:
                      "maximum_incoherent_mode_loss_probability",
                      "maximum_accumulated_support_l2"):
             value = getattr(self, name)
-            if isinstance(value, bool) or not math.isfinite(value) or not 0 <= value <= .1:
-                raise ValueError(f"{name} must be finite and between zero and 0.1")
+            maximum = STRICT_SUPPORT_BUDGET_MAXIMUM
+            if self.exploratory_support_budget:
+                if name == "maximum_accumulated_support_l2":
+                    maximum = EXPLORATORY_SUPPORT_L2_MAXIMUM
+                elif name == "maximum_support_loss_fraction":
+                    maximum = EXPLORATORY_SUPPORT_PROBABILITY_MAXIMUM
+            if isinstance(value, (bool, np.bool_)) or not math.isfinite(value) or not 0 <= value <= maximum:
+                raise ValueError(f"{name} must be finite and between zero and {maximum:g}")
         value = self.multipole_spectral_tail_fraction
         if isinstance(value, (bool, np.bool_)) or not math.isfinite(value) or not 0 <= value <= 1e-4:
             raise ValueError("Multipole spectral tail fraction must be finite and between zero and 0.0001")
@@ -205,6 +334,8 @@ class WaveGridNumerics:
         """Consumed column numerics only; specimen quadrature is downstream."""
         self.validate()
         return {"automatic_refinement": self.automatic_refinement,
+                **({"exploratory_support_budget": True} if self.exploratory_support_budget else {}),
+                "angular_domain_padding": self.angular_domain_padding,
                 "refinement_grid_selection": "fft-friendly-required-scale-1.05-budgeted-min-growth-1.25-v2",
                 "cpu_fourier_refinement": "tiled-complex128-unitary-frequency-embedding-v1",
                 "posed_lens_model": "main-column-carrier-centred-bounded-electric-residual-v3",
@@ -361,83 +492,250 @@ def refine_plane_wave(wave, shape, *, numerics=WaveGridNumerics(), retained_byte
 
 
 def apply_resolved_operator(wave, operator, *, numerics=WaveGridNumerics(), retained_bytes=0,
-                            cancelled=lambda: False, prepare_retry=None,
-                            operator_working_bytes=None):
-    """Retry only a typed sampling failure, always from the pre-operator wave.
+                            cancelled=lambda: False, prepare_retry=None, prepare_resource=None,
+                            operator_working_bytes=None, operator_resource_check=None,
+                            preferred_resource_check=None):
+    """Retry admitted preparation only on the unchanged pre-operator field.
+
+    Typed resource failures may invoke an explicit caller-owned projection.
+    Transactional proposals retry a fixed unexecuted entrance and commit only
+    after the complete operator succeeds. Candidates decrease monotonically
+    and retain their original allowance. Plain callbacks still run once.
 
     An optional caller-owned preparation can compact the failed input within
     its explicit approximation budget. A changed input MUST be checked again
     by the physical operator before selecting a grid: the old required scale
     describes the old field. The callback owns its error/loss accounting.
+
+    Additional mandatory resources (for example a required device workspace)
+    are checked before allocation. A soft resource preference may select the
+    smaller guarded candidate, but never rejects an otherwise admitted input
+    or changes the caller's permitted backend fallback.
     """
+    for callback in (operator_resource_check, preferred_resource_check, prepare_resource):
+        if callback is not None and not callable(callback):
+            raise ValueError("Operator resource checks must be callable or None")
     initial_amplitude = wave.amplitude
+    transactional = isinstance(prepare_resource, WaveResourceTransaction)
+    resource_anchor = None
+    pending_commit = None
+    previous_proposal_shape = None
+    resource_growth_scale = 1.25
+    resource_shape = wave.amplitude.shape
+    resource_rows_start = None
+
+    def owned_bytes(amplitude=None):
+        from temsim.cache_memory import retained_memory_inventory
+        active = retained_memory_inventory(amplitude) if amplitude is not None else {}
+        owners = retained_memory_inventory(initial_amplitude,
+            None if resource_anchor is None else resource_anchor.amplitude)
+        return sum(size for identity, size in owners.items() if identity not in active)
+
     def external_bytes(candidate):
         # The caller still owns its original input after our local variable
-        # advances to a refined field. Count that immutable buffer once.
-        return retained_bytes+(0 if candidate.amplitude is initial_amplitude else initial_amplitude.nbytes)
+        # advances to a refined field. A distinct transaction entrance stays
+        # alive as well; views count their backing allocation only once.
+        return retained_bytes+owned_bytes(candidate.amplitude)
     def check_operator(shape, external):
         if operator_working_bytes is None:
-            return numerics.check(shape, retained_bytes=external)
-        return numerics.check_working_memory(shape,
-            working_bytes=operator_working_bytes(shape), retained_bytes=external)
-    check_operator(wave.amplitude.shape, external_bytes(wave))
+            required = numerics.check(shape, retained_bytes=external)
+        else:
+            required = numerics.check_working_memory(shape,
+                working_bytes=operator_working_bytes(shape), retained_bytes=external)
+        if operator_resource_check is not None:
+            operator_resource_check(shape)
+        return required
+    def preferred(shape):
+        result = preferred_resource_check(shape)
+        if not isinstance(result, (bool, np.bool_)):
+            raise ValueError("An operator resource preference must return a boolean")
+        return bool(result)
     rows = []
+    resource_attempts = 0
+
+    def release_failed_frames(error):
+        # Discard unaccepted output/coefficient arrays before allocating a
+        # replacement entrance. Exception locations and messages survive.
+        import traceback
+        pending, seen = [error], set()
+        while pending:
+            current = pending.pop()
+            if current is None or id(current) in seen:
+                continue
+            seen.add(id(current))
+            traceback.clear_frames(current.__traceback__)
+            pending.extend((current.__cause__, current.__context__))
+
+    def recover_resource(error, stage):
+        nonlocal wave, resource_attempts, resource_anchor, pending_commit
+        nonlocal previous_proposal_shape, resource_growth_scale, resource_rows_start
+        maximum = prepare_resource.maximum_attempts if transactional else 1
+        if (prepare_resource is None or resource_attempts >= maximum
+                or not numerics.automatic_refinement):
+            return False
+        if cancelled():
+            raise InterruptedError("Wave resource preparation cancelled")
+        resource_attempts += 1
+        release_failed_frames(error)
+        if transactional:
+            if resource_anchor is None:
+                resource_anchor = wave
+                resource_rows_start = len(rows)
+            if previous_proposal_shape is not None:
+                resource_growth_scale = max(resource_growth_scale,
+                    *(required/previous for required, previous in
+                      zip(resource_shape, previous_proposal_shape)))
+            # Drop an unsuccessful candidate and every subsequent embedding
+            # before preparing another proposal. Its pending receipt was never
+            # published. Failed physical outputs are not a projection source.
+            pending_commit = None
+            wave = resource_anchor
+            del rows[resource_rows_start:]
+            pressure = WaveResourcePressure(resource_attempts,
+                previous_proposal_shape, tuple(resource_shape), resource_growth_scale)
+        try:
+            proposal = (prepare_resource(wave, error, pressure) if transactional
+                        else prepare_resource(wave, error))
+            if transactional:
+                if proposal is wave:
+                    return False
+                if not isinstance(proposal, WaveResourceProposal):
+                    raise ValueError("A resource transaction must return a staged proposal or its entrance")
+                prepared, commit = proposal.wave, proposal.commit
+                del proposal
+            else:
+                prepared, commit = proposal, None
+                del proposal
+            if cancelled():
+                raise InterruptedError("Wave resource preparation cancelled")
+            # Metadata-only copies and unchanged grids cannot resolve this
+            # resource pressure and must not create a retry/allowance loop.
+            if prepared is wave or prepared.amplitude.size >= wave.amplitude.size:
+                return False
+            if (transactional and previous_proposal_shape is not None
+                    and (prepared.amplitude.size >= math.prod(previous_proposal_shape)
+                         or any(n > old for n, old in
+                                zip(prepared.amplitude.shape, previous_proposal_shape)))):
+                return False
+            check_operator(prepared.amplitude.shape, external_bytes(prepared))
+        except WaveGridBudgetError as rejected:
+            release_failed_frames(rejected)
+            return False
+        previous = wave.amplitude.shape
+        wave = prepared
+        if transactional:
+            pending_commit = commit
+            previous_proposal_shape = wave.amplitude.shape
+        rows.append({"from_shape": previous, "to_shape": wave.amplitude.shape,
+                     "reason": str(error), "resource_stage": stage,
+                     "probability": wave.probability,
+                     "method": "caller-budgeted resource preparation; physical operator rechecked"})
+        return True
+
     while True:
         if cancelled():
             raise InterruptedError("Wave refinement cancelled")
         try:
-            return operator(wave), rows
-        except WaveSamplingError as error:
-            if not numerics.automatic_refinement:
-                raise
-            if prepare_retry is not None:
-                prepared = prepare_retry(wave, error)
-                if prepared is not wave:
-                    check_operator(prepared.amplitude.shape, external_bytes(prepared))
-                    previous = wave.amplitude.shape
-                    wave = prepared
-                    del prepared
-                    rows.append({"from_shape": previous, "to_shape": wave.amplitude.shape,
-                                 "reason": str(error), "probability": wave.probability,
-                                 "method": "caller-budgeted sampling preparation; physical operator rechecked"})
-                    continue
-                # The callback may decline a crop by returning this input.
-                # Do not retain it after refinement: the next operator's
-                # reservation covers its current field and the caller's
-                # original, not an obsolete intermediate mesh as well.
-                del prepared
-            if not math.isfinite(error.required_scale):
-                raise ValueError("Wave operator requires an unbounded refinement") from error
-            # A power-of-two *factor* can almost quadruple the needed cell
-            # count, causing an avoidable memory failure. FFT-friendly sizes
-            # need not be powers of two. Keep a modest sampling guard and
-            # retry the unchanged physical operator on every candidate grid.
-            shape = _refinement_shape(wave.amplitude.shape, error.required_scale)
-            # The target physical operator must fit as well as its temporary
-            # Fourier embedding, before any refinement allocation takes place.
-            budget_limited_growth = False
             try:
-                required = check_operator(shape, retained_bytes+initial_amplitude.nbytes)
-                required = max(required, _check_refinement_memory(wave, shape, numerics, external_bytes(wave)))
-            except WaveGridBudgetError:
-                # A 25% minimum growth avoids many small retries, but is not
-                # a sampling requirement. Near a budget boundary use the
-                # actual requested scale with the same 5% resolution guard.
-                bounded = _refinement_shape(wave.amplitude.shape, error.required_scale, minimum_growth=1.)
-                if bounded == shape:
+                stage = "operator resource preflight"
+                resource_shape = wave.amplitude.shape
+                check_operator(wave.amplitude.shape, external_bytes(wave))
+                stage = "physical operator"
+                output = operator(wave)
+                if cancelled():
+                    raise InterruptedError("Wave operator cancelled before resource commit")
+                if pending_commit is not None:
+                    pending_commit()
+                return output, rows
+            except WaveSamplingError as error:
+                # Ordinary lossless retries have no preparation callback, but
+                # must release failed private outputs before allocating too.
+                release_failed_frames(error)
+                if not numerics.automatic_refinement:
                     raise
-                required = check_operator(bounded, retained_bytes+initial_amplitude.nbytes)
-                required = max(required, _check_refinement_memory(wave, bounded, numerics, external_bytes(wave)))
-                shape, budget_limited_growth = bounded, True
-            previous = wave.amplitude.shape
-            wave = refine_plane_wave(wave, shape, numerics=numerics,
-                                     retained_bytes=external_bytes(wave), cancelled=cancelled)
-            rows.append({"from_shape": previous, "to_shape": shape, "reason": str(error),
-                         "requested_scale": error.required_scale,
-                         "grid_selection": "FFT-friendly required scale with 5 percent guard; minimum growth 1.25 when budget permits",
-                         "budget_limited_growth": budget_limited_growth,
-                         "estimated_working_bytes": required, "probability": wave.probability,
-                         "method": "unitary complex Fourier embedding; fixed physical period and analytical carriers"})
+                hint = matching_canonical_chart_hint(error, wave.amplitude.shape)
+                if transactional and hint is not None:
+                    # The preferred chart needs physical-domain padding, not
+                    # Fourier refinement of the independent Collins chirp.
+                    # Preserve both diagnostics while reporting the measured
+                    # preferred requirement to the unchanged-input transaction.
+                    resource_shape = hint.required_shape
+                    raise CanonicalChartResourceError(str(error), hint, wave.amplitude.shape) from error
+                if prepare_retry is not None:
+                    stage = "sampling preparation"
+                    prepared = prepare_retry(wave, error)
+                    if prepared is not wave:
+                        check_operator(prepared.amplitude.shape, external_bytes(prepared))
+                        previous = wave.amplitude.shape
+                        wave = prepared
+                        del prepared
+                        rows.append({"from_shape": previous, "to_shape": wave.amplitude.shape,
+                                     "reason": str(error), "probability": wave.probability,
+                                     "method": "caller-budgeted sampling preparation; physical operator rechecked"})
+                        continue
+                    # The callback may decline a crop by returning this input.
+                    # Do not retain it after refinement: the next operator's
+                    # reservation covers its current field and the caller's
+                    # original, not an obsolete intermediate mesh as well.
+                    del prepared
+                stage = "Fourier refinement"
+                if not math.isfinite(error.required_scale):
+                    raise ValueError("Wave operator requires an unbounded refinement") from error
+                # A power-of-two *factor* can almost quadruple the needed cell
+                # count, causing an avoidable memory failure. FFT-friendly sizes
+                # need not be powers of two. Keep a modest sampling guard and
+                # retry the unchanged physical operator on every candidate grid.
+                shape = _refinement_shape(wave.amplitude.shape, error.required_scale)
+                resource_shape = shape
+                # The target physical operator must fit as well as its temporary
+                # Fourier embedding, before any refinement allocation takes place.
+                budget_limited_growth = False
+                resource_preferred_growth = False
+                try:
+                    required = check_operator(shape, retained_bytes+owned_bytes())
+                    required = max(required, _check_refinement_memory(wave, shape, numerics, external_bytes(wave)))
+                except WaveGridBudgetError:
+                    # A 25% minimum growth avoids many small retries, but is not
+                    # a sampling requirement. Near a budget boundary use the
+                    # actual requested scale with the same 5% resolution guard.
+                    bounded = _refinement_shape(wave.amplitude.shape, error.required_scale, minimum_growth=1.)
+                    resource_shape = bounded
+                    if bounded == shape:
+                        raise
+                    required = check_operator(bounded, retained_bytes+owned_bytes())
+                    required = max(required, _check_refinement_memory(wave, bounded, numerics, external_bytes(wave)))
+                    shape, budget_limited_growth = bounded, True
+                if (preferred_resource_check is not None and not budget_limited_growth
+                        and not preferred(shape)):
+                    bounded = _refinement_shape(wave.amplitude.shape, error.required_scale, minimum_growth=1.)
+                    if bounded != shape:
+                        try:
+                            bounded_required = check_operator(bounded, retained_bytes+owned_bytes())
+                            bounded_required = max(bounded_required,
+                                _check_refinement_memory(wave, bounded, numerics, external_bytes(wave)))
+                        except WaveGridBudgetError:
+                            # The original candidate passed all mandatory limits.
+                            # A soft preference cannot remove a valid CPU fallback.
+                            pass
+                        else:
+                            if preferred(bounded):
+                                shape, required = bounded, bounded_required
+                                resource_preferred_growth = True
+                previous = wave.amplitude.shape
+                wave = refine_plane_wave(wave, shape, numerics=numerics,
+                                         retained_bytes=external_bytes(wave), cancelled=cancelled)
+                rows.append({"from_shape": previous, "to_shape": shape, "reason": str(error),
+                             "requested_scale": error.required_scale,
+                             "grid_selection": "FFT-friendly required scale with 5 percent guard; minimum growth 1.25 when budget permits",
+                             "budget_limited_growth": budget_limited_growth,
+                             "resource_preferred_growth": resource_preferred_growth,
+                             "estimated_working_bytes": required, "probability": wave.probability,
+                             "method": "unitary complex Fourier embedding; fixed physical period and analytical carriers"})
+
+        except WaveGridBudgetError as error:
+            if recover_resource(error, stage):
+                continue
+            raise
 
 
 def _refinement_shape(shape, required_scale, *, minimum_growth=1.25):

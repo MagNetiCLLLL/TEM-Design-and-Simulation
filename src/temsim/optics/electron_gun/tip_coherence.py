@@ -341,12 +341,16 @@ class TipEmission:
                                    axial_reference=AxialWaveReference(0., 0.))
 
 
-def _generate_tip_emission(gun, numerics, *, driven_boundary):
+def _generate_tip_emission(gun, numerics, *, driven_boundary, nominal_energy_preview=False):
     from temsim.optics.electron_gun.source_policy import require_physical_gun_source
     require_physical_gun_source(gun)
     emitter = gun.emitter
     _require_emitter(emitter)
     numerics.validate()
+    if type(nominal_energy_preview) is not bool:
+        raise ValueError("Nominal-energy preview must be an explicit boolean")
+    if nominal_energy_preview and numerics.energy_samples != 1:
+        raise ValueError("Nominal-energy preview requires exactly one source energy sample")
     from temsim.optics.electron_gun.tip_source_domain import (
         SOURCE_DOMAIN_SCHEMA, inspect_tip_source_domain,
         validate_tip_boundary, validate_tip_geometric_domain, validate_tip_source_domain,
@@ -369,7 +373,11 @@ def _generate_tip_emission(gun, numerics, *, driven_boundary):
             }
     else:
         source_domain = validate_tip_source_domain(emitter)
-    energies = tip_energy_samples(emitter, numerics.energy_samples)
+    # This explicit approximation generates a NEW monochromatic Tip source.
+    # It never chooses or renormalizes a cached energy-quadrature component,
+    # and leaves all configured emitter/field parameters unchanged.
+    energies = (np.array([float(emitter.emission_energy_ev)]) if nominal_energy_preview
+                else tip_energy_samples(emitter, numerics.energy_samples))
     rows = [_mode_row(emitter, energy, numerics) for energy in energies]
     count = sum(row["modes_per_axis"]**2 for row in rows)
     if count > numerics.maximum_modes:
@@ -397,17 +405,29 @@ def _generate_tip_emission(gun, numerics, *, driven_boundary):
             injected_flux_status="REQUIRES_BOUNDARY_SOLVER",
             particle_domain=geometric_domain,
         )
+    if nominal_energy_preview:
+        record.update(
+            nominal_energy_preview=True,
+            nominal_energy_ev=float(emitter.emission_energy_ev),
+            configured_energy_spread_fwhm_ev=float(emitter.energy_spread_fwhm_ev),
+            configured_energy_spread_integrated=False,
+            high_accuracy_eligible=False,
+            energy_law="Monochromatic preview at the declared nominal Tip energy; configured energy spread not integrated",
+            energy_convergence="NOT_VALIDATED_CONFIGURED_SPREAD_NOT_INTEGRATED",
+            source_weight_policy="Unit energy weight for a new declared monochromatic source; original spatial mode weights retained",
+        )
     return TipEmission(parameters, numerics, record)
 
 
-def generate_tip_emission(gun, numerics=TipWaveNumerics()):
+def generate_tip_emission(gun, numerics=TipWaveNumerics(), *, nominal_energy_preview=False):
     """Generate modes under the Tip's explicitly published boundary model."""
     if getattr(getattr(gun.emitter, "coherence", None), "boundary_model", None) == DRIVEN_GAUSSIAN_SCHELL:
-        return generate_tip_boundary_emission(gun, numerics)
-    return _generate_tip_emission(gun, numerics, driven_boundary=False)
+        return generate_tip_boundary_emission(gun, numerics, nominal_energy_preview=nominal_energy_preview)
+    return _generate_tip_emission(gun, numerics, driven_boundary=False,
+                                  nominal_energy_preview=nominal_energy_preview)
 
 
-def generate_tip_boundary_emission(gun, numerics=TipWaveNumerics()):
+def generate_tip_boundary_emission(gun, numerics=TipWaveNumerics(), *, nominal_energy_preview=False):
     """Build the same physical tip boundary for an explicit non-paraxial solve.
 
     No source width, energy, phase, current or mode shape is changed. The
@@ -417,4 +437,5 @@ def generate_tip_boundary_emission(gun, numerics=TipWaveNumerics()):
     this opt-in function does not change the Tip's published model. Production
     selection requires boundary_model='driven_gaussian_schell' on the Tip.
     """
-    return _generate_tip_emission(gun, numerics, driven_boundary=True)
+    return _generate_tip_emission(gun, numerics, driven_boundary=True,
+                                  nominal_energy_preview=nominal_energy_preview)

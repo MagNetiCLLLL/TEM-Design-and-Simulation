@@ -16,9 +16,10 @@ from temsim import input_io
 
 import numpy as np
 
-from PySide6.QtCore import QByteArray, QSettings, QSignalBlocker, Qt, QTimer
-from PySide6.QtGui import QAction, QCloseEvent
+from PySide6.QtCore import QByteArray, QSettings, QSignalBlocker, Qt, QTimer, Signal
+from PySide6.QtGui import QAction, QCloseEvent, QValidator
 from PySide6.QtWidgets import (
+    QAbstractSpinBox,
     QDockWidget,
     QDialog,
     QDialogButtonBox,
@@ -82,11 +83,108 @@ from temsim.physics.compute_backend import (
     BACKEND_CPU,
 )
 from temsim.runtime_parameters import editable_parameters, runtime_targets
-from temsim.simulation_modes import MODE_BY_KEY, mode_key, switch_mode, promote_custom_mode
+from temsim.simulation_modes import MODE_BY_KEY, mode_key, mode_display_label, switch_mode, promote_custom_mode, is_unified
 from temsim.gui.simulation_menu import SimulationMenu
 from temsim.instrument_snapshot import capture_instrument_snapshot
 from temsim.alignment_transaction import AlignmentCommitGate
 from temsim.gui.working_point_panel import WorkingPointPanel
+
+
+class _ParticleStepInput(QAbstractSpinBox):
+    """Exact positive binary64 input, without decimal-place quantization.
+
+    QDoubleSpinBox rounds even restored values and cannot represent the smallest
+    subnormal at its 323-decimal limit. Keep the same spin-editor interaction,
+    but display the shortest round-trip representation of the actual value.
+    Range/decimal accessors preserve the result-file UI snapshot interface;
+    they never round a loaded numerical input.
+    """
+    valueChanged = Signal(float)
+    invalidInput = Signal(str)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._value, self._minimum, self._maximum = .1, .01, 1.
+        self._decimals = 17
+        self.lineEdit().setText(repr(self._value))
+        self.editingFinished.connect(self._commit)
+
+    def value(self):
+        return self._value
+
+    def setValue(self, value):
+        value = float(value)
+        if not np.isfinite(value) or value <= 0.:
+            raise ValueError("Particle integration step must be finite and positive")
+        changed = value != self._value
+        self._value = value
+        self._minimum = min(self._minimum, value)
+        self._maximum = max(self._maximum, value)
+        self.lineEdit().setText(repr(value))
+        if changed:
+            self.valueChanged.emit(value)
+
+    def setRange(self, minimum, maximum):
+        self._minimum, self._maximum = float(minimum), float(maximum)
+
+    def minimum(self):
+        return self._minimum
+
+    def maximum(self):
+        return self._maximum
+
+    def setDecimals(self, decimals):
+        self._decimals = int(decimals)
+
+    def decimals(self):
+        return self._decimals
+
+    def validate(self, text, position):
+        raw = text.strip()
+        try:
+            value = float(raw)
+        except ValueError:
+            partial = (not raw or raw in {"+", ".", "+."}
+                       or raw.lower().endswith(("e", "e+", "e-")))
+            state = QValidator.State.Intermediate if partial else QValidator.State.Invalid
+        else:
+            state = (QValidator.State.Acceptable if np.isfinite(value) and value > 0.
+                     else QValidator.State.Intermediate if value == 0. else QValidator.State.Invalid)
+        return state, text, position
+
+    def fixup(self, text):
+        if text.strip() != repr(self._value):
+            self.invalidInput.emit("Particle integration step must be finite and positive")
+        return repr(self._value)
+
+    def commit_pending(self):
+        text = self.lineEdit().text()
+        if self.validate(text, len(text))[0] == QValidator.State.Acceptable:
+            self.setValue(float(text))
+        else:
+            raise ValueError("Particle integration step must be finite and positive")
+
+    def _commit(self):
+        try:
+            self.commit_pending()
+        except ValueError as error:
+            self.lineEdit().setText(repr(self._value))
+            self.invalidInput.emit(str(error))
+
+    def stepBy(self, steps):
+        self._commit()
+        value = self._value+int(steps)*.01
+        if np.isfinite(value) and value > 0.:
+            self.setValue(value)
+
+    def stepEnabled(self):
+        flags = QAbstractSpinBox.StepEnabledFlag.StepUpEnabled
+        if self._value > .01:
+            flags |= QAbstractSpinBox.StepEnabledFlag.StepDownEnabled
+        return flags
+
+    def wheelEvent(self, event):
+        event.ignore()
 
 
 class MainWindow(QMainWindow):
@@ -122,7 +220,7 @@ class MainWindow(QMainWindow):
                 "The default assembly has no compatible operating-mode pair"
             )
         if not self.result_files.hold_automatic_preview:
-            switch_mode(self.state, "ideal")
+            switch_mode(self.state, "unified")
         self.manifest_editor = ManifestEditor()
         catalog_audit = self.manifest_editor.validate_catalog()
         self._runtime_targets = {}
@@ -438,7 +536,7 @@ class MainWindow(QMainWindow):
             self.catalog.apply(state, selection)
             if self._apply_state_operating_modes(state, selection) is None:
                 raise ValueError("The default assembly has no compatible operating-mode pair")
-            switch_mode(state, "ideal")
+            switch_mode(state, "unified")
             self._install_working_point(state, None)
             self.status_label.setText("Automatic result unavailable; starting a fresh calculation with standard settings.")
             self.log_output.appendPlainText(
@@ -498,6 +596,8 @@ class MainWindow(QMainWindow):
         self.simulation_menu = SimulationMenu(self)
         self.menuBar().addMenu(self.simulation_menu)
         self.simulation_menu.mode_requested.connect(self.set_simulation_mode)
+        self.simulation_menu.particle_settings_requested.connect(self._show_particle_numerics)
+        self.simulation_menu.coherent_settings_requested.connect(self._show_coherent_numerics)
         self.simulation_menu.configure_requested.connect(
             lambda: self.workspace.tabs.setCurrentWidget(self.workspace.model_inspector)
         )
@@ -605,9 +705,21 @@ class MainWindow(QMainWindow):
         self.simulation_menu.set_state(self.state)
         if hasattr(self, "simulation_mode_label"):
             selected = MODE_BY_KEY[mode_key(self.state)]
-            self.simulation_mode_label.setText(selected.label)
+            self.simulation_mode_label.setText(mode_display_label(self.state))
             self.simulation_mode_label.setToolTip(selected.detail)
+        if hasattr(self, "workspace"):
+            self.workspace.coherent_beam.update_simulation_mode(self.state)
         self._refresh_parameter_simulation_context()
+
+    def _show_particle_numerics(self):
+        self.high_rays.setFocus(Qt.FocusReason.ShortcutFocusReason)
+        self.high_rays.selectAll()
+        self.status_label.setText("Particle sampling: edit High-accuracy rays and Step in the calculation toolbar. Coherent grids use separate controls.")
+
+    def _show_coherent_numerics(self):
+        page = self.workspace.coherent_beam
+        self.workspace.tabs.setCurrentWidget(page)
+        page.show_numerical_settings()
 
     def _refresh_parameter_simulation_context(self):
         if not hasattr(self, "workspace"):
@@ -684,20 +796,20 @@ class MainWindow(QMainWindow):
         self.high_rays.setObjectName("highAccuracyRayCount")
         self.high_rays.setRange(1_000, 1_000_000)
         self.high_rays.setSingleStep(1_000)
+        self.high_rays.setKeyboardTracking(False)
         self._sync_ray_count_selector()
         self.high_rays.valueChanged.connect(self._high_ray_count_changed)
         toolbar.addWidget(self.high_rays)
 
         toolbar.addWidget(QLabel("Step (mm)"))
-        self.high_step = QDoubleSpinBox()
+        self.high_step = _ParticleStepInput()
         self.high_step.setObjectName("highAccuracyStep")
-        self.high_step.setDecimals(4)
-        self.high_step.setRange(0.01, 1.0)
         # Preserve the established GUI accuracy while making this toolbar
         # value part of the persisted instrument's numerical settings.
         self.state.step_mm = 0.1
         self._sync_step_selector()
         self.high_step.valueChanged.connect(self._high_step_changed)
+        self.high_step.invalidInput.connect(lambda message: self._show_error(message))
         toolbar.addWidget(self.high_step)
 
         toolbar.addWidget(QLabel("Compute"))
@@ -741,6 +853,11 @@ class MainWindow(QMainWindow):
         )
         high_button.clicked.connect(self.run_high_accuracy)
         toolbar.addWidget(high_button)
+        wave_settings_button = QPushButton("Coherent settings")
+        wave_settings_button.setObjectName("coherentNumericalSettingsButton")
+        wave_settings_button.setToolTip("Open independent coherent grid, energy sampling, propagation step and memory limits. Particle count and integration step remain in this toolbar.")
+        wave_settings_button.clicked.connect(self._show_coherent_numerics)
+        toolbar.addWidget(wave_settings_button)
         cancel_button = QPushButton("Cancel calculations")
         cancel_button.setObjectName("cancelCapturedCalculations")
         cancel_button.setToolTip("Cancel queued/running Preview and High calculations at safe boundaries. Completed working points and independent experiments remain available.")
@@ -796,6 +913,13 @@ class MainWindow(QMainWindow):
         self.simulation_mode_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         self.statusBar().addPermanentWidget(self.simulation_mode_label)
         self.statusBar().addPermanentWidget(self.progress)
+        from temsim.gui.calculation_progress import CalculationProgressWidget
+        self.calculation_progress = CalculationProgressWidget(self)
+        self.statusBar().addPermanentWidget(self.calculation_progress)
+        self.calculations.progress_detail.connect(self.calculation_progress.set_progress)
+        self.workspace.coherent_beam.progress_detail.connect(self.calculation_progress.set_progress)
+        self.workspace.coherent_beam.progress_detail.connect(self.paired_beams.accept_wave_progress)
+        self.paired_beams.progress_detail.connect(self.calculation_progress.set_progress)
         self._refresh_simulation_mode()
 
     def _set_progress_active(self, owner: str, active: bool) -> None:
@@ -803,7 +927,9 @@ class MainWindow(QMainWindow):
             self._progress_owners.add(str(owner))
         else:
             self._progress_owners.discard(str(owner))
-        self.progress.setVisible(bool(self._progress_owners))
+        # Particle, coherent and paired work use independently owned counters.
+        # The indeterminate legacy bar remains for calibration jobs only.
+        self.progress.setVisible(bool(self._progress_owners - {"calculation"}))
         self.result_files.refresh_actions()
 
     @input_io.using_state_inputs
@@ -929,8 +1055,8 @@ class MainWindow(QMainWindow):
         try:
             plan = calculations.describe_high_accuracy_reuse(
                 self.state,
-                high_rays.value(),
-                high_step.value(),
+                self._particle_ray_count(commit_pending=False),
+                self._particle_step_mm(commit_pending=False),
                 completed_summary=(
                     self.workspace.high_accuracy_result_summary()
                 ),
@@ -948,10 +1074,10 @@ class MainWindow(QMainWindow):
     def _capture_design_snapshot(self, slot: str) -> None:
         """Capture current settings for A/B comparison without calculating."""
 
-        request = HighAccuracyRequest(
-            self.high_rays.value(), self.high_step.value()
-        )
         try:
+            request = HighAccuracyRequest(
+                self._particle_ray_count(), self._particle_step_mm()
+            )
             from temsim.gui.calculation_request import CapturedCalculationRequest
             captured = CapturedCalculationRequest.capture(self.state, "High accuracy", request.ray_count, request.step_mm)
             self.workspace.design_explorer.capture_in_background(captured, self.selection, slot)
@@ -987,7 +1113,7 @@ class MainWindow(QMainWindow):
         page = self.workspace.interactive_calculation
         try:
             snapshot = CalculationController._calculation_snapshot(
-                self.state, "High accuracy", self.high_rays.value(), self.high_step.value())
+                self.state, "High accuracy", self._particle_ray_count(), self._particle_step_mm())
             page.set_source(snapshot, self.calculations.completed_high_accuracy_results())
         except (ValueError, RuntimeError, TypeError) as exc:
             page.show_error(str(exc))
@@ -1500,6 +1626,7 @@ class MainWindow(QMainWindow):
             return
         page = self.workspace.coherent_beam
         try:
+            ray_count, step_mm = self._particle_ray_count(), self._particle_step_mm()
             captured, request, summary = page.capture_calculation_inputs()
             surface = getattr(captured.electron_gun.emitter, "surface_model", None)
             if surface is not None and surface.coherence is not None and not surface.shared_boundary:
@@ -1514,7 +1641,7 @@ class MainWindow(QMainWindow):
             self.result_files.hold_automatic_preview = False
             page.mark_inputs_stale()
             self.paired_beams.start(captured, request, summary,
-                self.high_rays.value(), self.high_step.value())
+                ray_count, step_mm)
             page.cancel_button.setEnabled(True)
         except Exception as error:
             self._paired_beams_failed(str(error))
@@ -1540,6 +1667,7 @@ class MainWindow(QMainWindow):
             captured, request, summary, pair_context=context)
 
     def _paired_beams_failed(self, message):
+        self.paired_beams.report_rejected_request(message)
         self.paired_beams.cancel()
         page = self.workspace.coherent_beam
         page.mark_inputs_stale()
@@ -2177,7 +2305,8 @@ class MainWindow(QMainWindow):
             page.particle_signal_status.setText("Previous pixel | settings changed; awaiting calculation.")
         if page._section_result is not None:
             page.invalidate_section_result("Settings changed; calculate the section again before saving.")
-        if _parameter == "interactive_tuning":
+        shared_refresh = is_unified(self.state) and automatic
+        if _parameter == "interactive_tuning" or shared_refresh:
             self.live_beam_refresh.invalidate(
                 lambda: self.workspace.mark_ray_stale(self.state, self.assembly))
         else:
@@ -2272,39 +2401,82 @@ class MainWindow(QMainWindow):
         emitter = getattr(self.state.electron_gun, "emitter", self.state.electron_gun)
         count = int(emitter.ray_count)
         quadrature = getattr(emitter, "quadrature", None)
+        cdf = getattr(emitter, "cdf_quadrature", None)
         with QSignalBlocker(self.high_rays):
             self.high_rays.setRange(min(1_000, count), max(1_000_000, count))
             self.high_rays.setValue(count)
-            self.high_rays.setEnabled(quadrature is None)
+            self.high_rays.setEnabled(quadrature is None and cdf is None)
         self.high_rays.setToolTip(
+            "Derived from the complete explicit Tip CDF table. Replace that table to change its population."
+            if cdf is not None else
             "Derived from the complete Tip position × direction × energy quadrature. "
             "Change its factors to change this population." if quadrature is not None else
             "Particle samples for Ray Diagram and page calculations. Preview uses its own smaller captured population.")
 
     def _high_ray_count_changed(self, count: int) -> None:
         emitter = getattr(self.state.electron_gun, "emitter", self.state.electron_gun)
-        if getattr(emitter, "quadrature", None) is not None:
+        if (getattr(emitter, "quadrature", None) is not None
+                or getattr(emitter, "cdf_quadrature", None) is not None):
             # Product sampling requires every declared stratum. Do not
             # replace a loaded quadrature with a differently sized draw.
             self._sync_ray_count_selector()
             return
         if int(emitter.ray_count) == int(count):
             return
+        sampling = getattr(emitter, "sampling", None)
+        if sampling is not None:
+            try:
+                sampling.validate_count(int(count))
+            except ValueError as error:
+                self._sync_ray_count_selector()
+                self._show_error(str(error))
+                return
         emitter.ray_count = int(count)
         self._invalidate_direct_alignment()
         self.schedule_preview("ray_count", automatic=False)
 
+    def _particle_ray_count(self, *, commit_pending=True) -> int:
+        """Commit a complete count edit before capturing its source population."""
+        emitter = getattr(self.state.electron_gun, "emitter", self.state.electron_gun)
+        fixed = getattr(emitter, "quadrature", None) or getattr(emitter, "cdf_quadrature", None)
+        if commit_pending and fixed is None and self.high_rays.lineEdit().isModified():
+            try:
+                count = int(self.high_rays.cleanText())
+            except ValueError as error:
+                raise ValueError("Particle count must be a complete positive integer") from error
+            if not self.high_rays.minimum() <= count <= self.high_rays.maximum():
+                raise ValueError("Particle count is outside the displayed input range")
+            sampling = getattr(emitter, "sampling", None)
+            if sampling is not None:
+                sampling.validate_count(count)
+            self.high_rays.setValue(count)
+        return int(emitter.ray_count)
+
     def _sync_step_selector(self) -> None:
         """Display loaded integration steps without emitting a settings edit."""
-        step = float(self.state.step_mm)
+        step = self._particle_step_mm(commit_pending=False)
         with QSignalBlocker(self.high_step):
             self.high_step.setRange(min(0.01, step), max(1.0, step))
             self.high_step.setValue(step)
 
+    def _particle_step_mm(self, *, commit_pending=True) -> float:
+        """One validated authority for requests, reuse checks and paired beams."""
+        if commit_pending and self.high_step.lineEdit().isModified():
+            self.high_step.commit_pending()
+        value = float(self.state.step_mm)
+        if not np.isfinite(value) or value <= 0.:
+            raise ValueError("Particle integration step must be finite and positive")
+        return value
+
     def _high_step_changed(self, step: float) -> None:
-        if float(self.state.step_mm) == float(step):
+        step = float(step)
+        if not np.isfinite(step) or step <= 0.:
+            self._sync_step_selector()
+            self._show_error("Particle integration step must be finite and positive")
             return
-        self.state.step_mm = float(step)
+        if self._particle_step_mm(commit_pending=False) == step:
+            return
+        self.state.step_mm = step
         self._invalidate_direct_alignment()
         self.schedule_preview("step_mm", automatic=False)
 
@@ -2369,6 +2541,7 @@ class MainWindow(QMainWindow):
                 **section_options,
             )
         except ValueError as exc:
+            self.calculations.report_rejected_request(profile.quality, str(exc))
             self._show_error(str(exc))
             return
         if interactive:
@@ -2394,6 +2567,7 @@ class MainWindow(QMainWindow):
                 raise ValueError("Click Run high-accuracy once in the top toolbar to prepare Ray Diagram before calculating this page.")
             self._submit_high_accuracy(workflow=workflow, existing_result=seed)
         except ValueError as exc:
+            self.calculations.report_rejected_request("High accuracy", str(exc))
             self._show_error(str(exc))
 
     def _submit_high_accuracy(self, *, workflow="full", section_request=None, existing_result=None) -> None:
@@ -2410,8 +2584,8 @@ class MainWindow(QMainWindow):
             self.calculations.submit_background(
                 self.state,
                 "High accuracy",
-                self.high_rays.value(),
-                self.high_step.value(),
+                self._particle_ray_count(),
+                self._particle_step_mm(),
                 parent_id=getattr(self, "_working_point_parent", None),
                 section_request=section_request,
                 workflow=workflow,
@@ -2422,20 +2596,15 @@ class MainWindow(QMainWindow):
             message = str(exc)
             if isinstance(exc, UnsupportedWaveSource):
                 message += "\nSource selection and previous results are unchanged."
+            self.calculations.report_rejected_request("High accuracy", message)
             self._show_error(message)
 
     def _calculation_started(self, quality: str) -> None:
         self.workspace.physical_layout.model_editor.set_calculation_status("running", f"{quality} submitted for captured settings; waiting or running in the shared queue.")
         if quality == "High accuracy":
-            self.progress.setRange(0, 1)
-            self.progress.setValue(0)
-            self.progress.setFormat("Preparing calculation stages")
             self.workspace.design_explorer.set_calculation_status(
                 "High accuracy running"
             )
-        else:
-            self.progress.setRange(0, 0)
-            self.progress.setFormat(quality)
         self._set_progress_active("calculation", True)
         self.status_label.setText(f"{quality} submitted for captured settings...")
 
@@ -2446,16 +2615,6 @@ class MainWindow(QMainWindow):
         total: int,
         stage: str,
     ) -> None:
-        if total <= 0:
-            return
-        bounded_completed = min(max(int(completed), 0), int(total))
-        self.progress.setRange(0, int(total))
-        self.progress.setValue(bounded_completed)
-        self.progress.setFormat(stage)
-        self.progress.setToolTip(
-            f"{stage}\nThe bar allocates equal space to calculation stages, not elapsed time. "
-            "Counts describe the named step; percentages describe progress within its stage."
-        )
         self.status_label.setText(f"{quality}: {stage}...")
         if stage.startswith("Backend requirements |"):
             self.log_output.appendPlainText(stage)
@@ -2628,6 +2787,8 @@ class MainWindow(QMainWindow):
     @staticmethod
     def _df_geometry_plan_inputs(result, frame):
         """Match the production wave raster origin and timed downstream map."""
+        if is_unified(result.state_snapshot):
+            raise ValueError("DF geometry calibration is not yet connected to the shared potentials. Use an explicit legacy calculation for this design tool.")
         from temsim.physics.scan_geometry import calibrate_scan_system, paired_kick_response, raster_sample_grid
         from temsim.physics.record_plane import build_record_plane_plan
         from temsim.physics.wave_imaging import _weighted_ray_statistics

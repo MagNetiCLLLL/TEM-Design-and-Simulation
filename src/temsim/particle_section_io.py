@@ -40,6 +40,11 @@ _PLAN_ELECTRIC_FIELDS = frozenset({"electric_field", "electric_field_identity", 
 
 def _validate_plan_fields(plan):
     """Admit executed field coefficients and their electrostatic identity."""
+    from temsim.physics.plan_contract import validate_plan_contract
+    validate_plan_contract(getattr(plan, "physics_contract", None))
+    if str(plan.solver_signature).startswith("ideal-thin-events-v1:"):
+        from temsim.physics.thin_optics import validate_thin_plan
+        validate_thin_plan(plan)
     z = np.asarray(plan.z_mm)
     if z.ndim != 1 or z.size < 1:
         raise ValueError("Archived axial plan requires at least one axial node")
@@ -287,6 +292,8 @@ def _data_classes():
     from temsim.physics.particle_sections import ParticleSectionCheckpoint, ParticleSectionSegment, MaterialSectionCache
     from temsim.physics.simulation import Simulation, Branch
     from temsim.physics.core import AxialPropagationPlan, PropagationCheckpoints
+    from temsim.physics.unified_particle_restart import UnifiedParticleCheckpointState
+    from temsim.physics.thin_optics import ThinOpticalAction
     from temsim.optics.electron_gun.base import (
         GunTraceResult, GunExitBundle, GunPlaneArrival, GunEqualTimeHistory,
     )
@@ -328,8 +335,8 @@ def _data_classes():
     from temsim.diagnostics import OpticalTransferRecord
     return {cls.__name__: cls for cls in (
         ParticleSectionCheckpoint, ParticleSectionSegment, Simulation, Branch,
-        AxialPropagationPlan, PropagationCheckpoints, GunTraceResult, GunExitBundle, FrozenLensAberrationKick,
-        FrozenIntrinsicAberrationKick,
+        AxialPropagationPlan, PropagationCheckpoints, UnifiedParticleCheckpointState, GunTraceResult, GunExitBundle, FrozenLensAberrationKick,
+        FrozenIntrinsicAberrationKick, ThinOpticalAction,
         GunPlaneArrival, GunEqualTimeHistory, FrozenMappedField, FrozenAnalyticField, MagneticFieldMap,
         CoordinateRegistration, FieldMapProvenance, MaterialSectionCache,
         ElasticTransportResult, ElasticTerminalBundle, ElasticTrajectory,
@@ -359,6 +366,9 @@ def _enum_types():
 
 
 def _pack(value, arrays, memo, types):
+    from temsim.physics.unified_field_runtime import UnifiedFieldRuntime
+    if type(value) is UnifiedFieldRuntime:
+        return {"unified_runtime": value.to_dict()}
     if isinstance(value, Enum):
         name = type(value).__module__ + ":" + type(value).__name__
         if _enum_types().get(name) is not type(value):
@@ -466,6 +476,9 @@ def _unpack(value, arrays, types, depth=0, _records=None, _definitions=None):
                 pending.extend((child, level + 1) for child in item)
     def decode(v):
         return _unpack(v, arrays, types, depth + 1, _records, _definitions)
+    if set(value) == {"unified_runtime"}:
+        from temsim.physics.unified_field_runtime import UnifiedFieldRuntime
+        return UnifiedFieldRuntime.from_dict(value["unified_runtime"])
     if set(value) == {"enum", "value"}:
         cls = _enum_types().get(value["enum"])
         if cls is None:
@@ -505,7 +518,11 @@ def _unpack(value, arrays, types, depth=0, _records=None, _definitions=None):
         if (cls is types.get("AxialPropagationPlan") and isinstance(value["fields"], dict)
                 and not _PLAN_ELECTRIC_FIELDS <= value["fields"].keys()):
             raise ValueError("Archived axial plan lacks the current electric-field identity; historical viewing only")
-        optional_legacy = {"posed_spherical_kicks", "intrinsic_aberration_kicks"} if cls is types.get("AxialPropagationPlan") else set()
+        optional_legacy = {"posed_spherical_kicks", "intrinsic_aberration_kicks", "thin_actions", "unified_runtime"} if cls is types.get("AxialPropagationPlan") else set()
+        if cls is types.get("PropagationCheckpoints"):
+            optional_legacy = {"unified_state"}
+        if cls is types.get("FrozenIntrinsicAberrationKick"):
+            optional_legacy = {"chromatic_reference_energy_ev"}
         if (not isinstance(value["fields"], dict)
                 or set(value["fields"]) - allowed
                 or allowed - set(value["fields"]) - optional_legacy):

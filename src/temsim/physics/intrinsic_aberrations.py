@@ -97,11 +97,33 @@ class FrozenIntrinsicAberrationKick:
     focal_m: float
     coefficients: tuple[tuple[str, float], ...]
     registration: CoordinateRegistration = CoordinateRegistration()
+    chromatic_reference_energy_ev: float | None = None
 
     def __post_init__(self):
         if not np.isfinite((self.local_z_m, self.focal_m)).all() or self.focal_m <= 0:
             raise ValueError("Intrinsic aberration plane and positive focal length must be finite")
         object.__setattr__(self, "coefficients", _coefficients(self.coefficients))
+        energy = self.chromatic_reference_energy_ev
+        if energy is not None:
+            if isinstance(energy, (bool, str)) or not math.isfinite(energy) or energy <= 0:
+                raise ValueError("Chromatic reference kinetic energy must be finite and positive")
+            if any(value for name, value in self.coefficients if name != "c1_mm"):
+                raise ValueError("A chromatic screen must contain only its equivalent C1 coefficient")
+
+    def energy_scale(self, momentum, *, xp=np, mass=m_e):
+        """Additional Cc action, using the executing solver's mass convention.
+
+        The field solver already owns its momentum-dependent focusing. This
+        screen adds only the explicitly declared residual focal perturbation.
+        """
+        if self.chromatic_reference_energy_ev is None:
+            return xp.ones_like(momentum, dtype=xp.float64)
+        pc = xp.asarray(momentum)*c
+        rest = mass*c*c
+        kinetic_ev = pc*pc/(xp.hypot(pc, rest)+rest)/e
+        delta = (kinetic_ev-self.chromatic_reference_energy_ev)/self.chromatic_reference_energy_ev
+        # Suppress only roundoff in the inverse relativistic conversion.
+        return xp.where(abs(delta) <= 8*np.finfo(float).eps, 0., delta)
 
     @property
     def z_mm(self):
@@ -134,6 +156,9 @@ class FrozenIntrinsicAberrationKick:
 
 def capture_intrinsic_kicks(state, z0, z1):
     """Capture immutable additional screens, never legacy Cs or field-map Cs."""
+    from temsim.simulation_modes import is_thin
+    if is_thin(state):
+        return ()
     from temsim.lens_pose import lens_pose_registration
     from temsim.optics.lens_focal_length import focal_length_mm
     from temsim.physics.lens_field_provider import active_mapped_providers
@@ -154,9 +179,94 @@ def capture_intrinsic_kicks(state, z0, z1):
             raise ValueError(f"{lens.key}: nonzero intrinsic aberrations require an active finite-focus lens")
         kick = FrozenIntrinsicAberrationKick(lens.key, float(lens.z_mm)*1e-3,
             focal_m, coefficients, lens_pose_registration(state, lens.key))
-        if z0 <= kick.z_mm <= z1:
+        if z0-1e-9 <= kick.z_mm <= z1+1e-9:
             result.append(kick)
     return tuple(result)
+
+
+def capture_chromatic_kicks(state, z0, z1):
+    """Capture declared additional Cc once, sharing ray and wave ownership.
+
+    A missing Cc remains inactive except for the historical objective 2 mm
+    fallback. Spatial field maps own their chromatic response and are excluded.
+    No coefficient is inferred from, or added to, a field-derived Cc estimate.
+    """
+    from temsim.simulation_modes import is_thin
+    if is_thin(state):
+        return ()
+    from temsim.lens_pose import lens_pose_registration
+    from temsim.optics.lens_focal_length import focal_length_mm
+    from temsim.physics.lens_field_provider import active_mapped_providers
+    if not bool(getattr(state, "chromatic_aberration_enabled", False)):
+        return ()
+    mapped = {provider.lens_key for provider in active_mapped_providers(state)}
+    result = []
+    for lens in state.lenses:
+        if not lens.enabled or lens.key in mapped:
+            continue
+        cc = getattr(lens, "cc_mm", None)
+        if cc is None:
+            cc = 2. if lens.key == "objective_lens" else 0.
+        if isinstance(cc, (bool, str)) or not math.isfinite(cc) or cc < 0:
+            raise ValueError(f"{lens.key}: Cc must be finite and nonnegative")
+        if not cc:
+            continue
+        if float(getattr(lens, "percent", 100.)) == 0.:
+            continue
+        focal = float(focal_length_mm(lens, state.beam_voltage_kv))*1e-3
+        if not math.isfinite(focal) or focal <= 0:
+            raise ValueError(f"{lens.key}: nonzero Cc requires an active finite-focus lens")
+        kick = FrozenIntrinsicAberrationKick(lens.key, float(lens.z_mm)*1e-3,
+            focal, (("c1_mm", -float(cc)),), lens_pose_registration(state, lens.key),
+            float(state.beam_voltage_kv)*1000.)
+        # Use the event-index tolerance at interval endpoints as well:
+        # mm -> m -> mm can round a coincident specimen plane by one ulp.
+        if z0-1e-9 <= kick.z_mm <= z1+1e-9:
+            result.append(kick)
+    return tuple(result)
+
+
+def specimen_chromatic_energy_change(state, x_m, y_m, incoming_energy_ev, outgoing_energy_ev,
+                                    *, active_mask=None):
+    """Particle-only incremental Cc at a coincident material reference plane.
+
+    The incident trace has already executed Cc at its incoming energy. For
+    material reinjection add only the energy change, never its full offset
+    from nominal again. Finite material is matched to this same reference
+    plane: this is the existing equivalent thin-material approximation, not
+    a distributed chromatic treatment inside the specimen. Tilted events are
+    rejected because their energy-switch canonical bridge is not implemented.
+    """
+    x, y = np.broadcast_arrays(np.asarray(x_m, float), np.asarray(y_m, float))
+    dx, dy = np.zeros_like(x), np.zeros_like(y)
+    if not bool(getattr(state, "chromatic_aberration_enabled", False)):
+        return dx, dy
+    z = float(state.sample.z_mm)
+    kicks = capture_chromatic_kicks(state, z-1e-9, z+1e-9)
+    if not kicks:
+        return dx, dy
+    active = (np.isfinite(x)&np.isfinite(y) if active_mask is None else
+              np.broadcast_to(np.asarray(active_mask, bool), x.shape))
+    if not np.any(active):
+        return dx, dy
+    incoming = np.broadcast_to(np.asarray(incoming_energy_ev, float), x.shape)[active]
+    outgoing = np.broadcast_to(np.asarray(outgoing_energy_ev, float), x.shape)[active]
+    if (not np.isfinite(incoming).all() or not np.isfinite(outgoing).all()
+            or np.any(incoming <= 0) or np.any(outgoing <= 0)
+            or not np.isfinite(x[active]).all() or not np.isfinite(y[active]).all()):
+        raise ValueError("Specimen chromatic update requires known positive incoming and outgoing energies")
+    change = outgoing-incoming
+    if not np.any(change):
+        return dx, dy
+    for kick in kicks:
+        centre, inclination, _, terms = kick.geometry()
+        if np.any(inclination):
+            raise ValueError("A tilted Cc screen at the specimen cannot yet bridge a material energy change")
+        _, gradient, _ = polynomial_jet(terms, x[active]-centre[0], y[active]-centre[1])
+        scale = change/kick.chromatic_reference_energy_ev
+        dx[active] += scale*gradient[..., 0]
+        dy[active] += scale*gradient[..., 1]
+    return dx, dy
 
 
 def _absolute_bounds(terms, radius):
@@ -302,6 +412,14 @@ def apply_intrinsic_wave(wave, wavelength, kick, *, momentum_kg_m_s,
     record = {"model": MODEL_VERSION, "lens_key": kick.lens_key, "z_mm": kick.z_mm,
         "ownership": "additional intrinsic coefficients only; legacy Cs and physical fields executed separately",
         "input_probability": wave.probability}
+    if kick.chromatic_reference_energy_ev is not None:
+        scale = float(kick.energy_scale(p))
+        record.update(model="additional-chromatic-canonical-screen-v1",
+            ownership="declared additional Cc; field momentum dependence remains separate",
+            cc_mm=-dict(kick.coefficients)["c1_mm"], relative_energy_offset=scale,
+            chromatic_reference_energy_ev=kick.chromatic_reference_energy_ev)
+        kick = replace(kick, coefficients=tuple((name, value*scale) for name, value in kick.coefficients),
+                       chromatic_reference_energy_ev=None)
     if not kick.active:
         return wave, {**record, "method": "zero intrinsic identity", "output_probability": wave.probability, "split_steps": 0}
     centre, b, inclination, terms = kick.geometry()
@@ -394,6 +512,11 @@ def apply_intrinsic_rays(kick, x, tx, y, ty, *, momentum_kg_m_s,
     if not bool(valid.any()):
         return x, tx, y, ty
     p = p[valid]
+    # Ray solvers use the project's fixed CODATA mass. The coherent solver
+    # uses scipy.constants and passes through the wave action above instead.
+    scale = kick.energy_scale(p, xp=xp, mass=9.1093837015e-31)
+    if not bool(xp.any(scale)):
+        return x, tx, y, ty
     pref = p if reference_momentum_kg_m_s is None else xp.broadcast_to(
         xp.asarray(reference_momentum_kg_m_s, dtype=xp.float64), x.shape)[valid]
     if not bool(xp.isfinite(pref).all()) or bool(xp.any(pref <= 0)):
@@ -401,7 +524,7 @@ def apply_intrinsic_rays(kick, x, tx, y, ty, *, momentum_kg_m_s,
     q = xp.column_stack((x[valid], y[valid]))
     if not np.any(b):
         _, gradient, _ = polynomial_jet(terms, *(q-centre_device).T, xp=xp)
-        tx[valid] += gradient[:, 0]; ty[valid] += gradient[:, 1]
+        tx[valid] += scale*gradient[:, 0]; ty[valid] += scale*gradient[:, 1]
         return x, tx, y, ty
     if not _supported(fields):
         raise ValueError("Tilted intrinsic screens require captured analytic vector potentials")
@@ -411,7 +534,8 @@ def apply_intrinsic_rays(kick, x, tx, y, ty, *, momentum_kg_m_s,
     xy_bound = xp.max(abs(q), axis=0)
     if xp is not np:
         xy_bound = xp.asnumpy(xy_bound)
-    _domain(terms, b, radius, xy_bound, theta, 2*math.pi*hbar/pmax, pmin, pmin,
+    bounded_terms = tuple((i, j, value*float(xp.max(abs(scale)))) for i, j, value in terms)
+    _domain(bounded_terms, b, radius, xy_bound, theta, 2*math.pi*hbar/pmax, pmin, pmin,
         fields, aligned_bz_t, kick.z_mm*1e-3, maximum_obliquity_phase_error_rad,
         electrostatic_gradient_v_m, electrostatic_hessian_v_m2)
     points = lambda pos: xp.column_stack((pos, xp.full(len(pos), kick.z_mm*1e-3)))
@@ -420,6 +544,8 @@ def apply_intrinsic_rays(kick, x, tx, y, ty, *, momentum_kg_m_s,
     def flow(pos, momentum):
         relative = pos-centre_device
         _, gradient, hessian = polynomial_jet(terms, *relative.T, xp=xp)
+        gradient *= scale[:, None]
+        hessian *= scale[:, None, None]
         depth = -relative@b_device
         velocity = depth[:, None]*gradient
         derivative = depth[:, None, None]*hessian-gradient[:, :, None]*b_device[None, None, :]

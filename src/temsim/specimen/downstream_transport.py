@@ -19,10 +19,6 @@ import math
 
 import numpy as np
 
-from temsim.physics.chromatic import (
-    configured_objective_chromatic_focal_mm,
-    objective_chromatic_kick_from_state,
-)
 from temsim.physics.column_wall import clip_column_wall
 from temsim.physics.core import propagate
 from temsim.physics.recording_clipping import clip_recording_planes
@@ -273,6 +269,8 @@ def build_geometric_specimen_exit(
     tuning_component_keys: tuple[str, ...] = (),
     capture_sections: bool = True,
     recording_interceptions: bool = True,
+    projected_reference_plane: bool = False,
+    _projected_trajectory_reuse=None,
 ) -> GeometricSpecimenExit:
     """Combine elastic exit phase space and exclusive inelastic populations.
 
@@ -280,8 +278,23 @@ def build_geometric_specimen_exit(
     screened-Rutherford terminal distribution is multiplied by the aggregate
     Poisson energy-loss distribution.  This produces one conserved electron
     population; elastic and inelastic branch weights are never added together.
+
+    Unified fields currently admit only the separately labelled projected
+    intensity response. Its angular redistribution occurs at the executed
+    specimen reference plane with zero projected event duration. It cannot be
+    saved or presented as a finite-volume material continuation checkpoint.
     """
 
+    from temsim.simulation_modes import is_thin, is_unified
+    thin_mode = is_thin(state)
+    unified = is_unified(state)
+    if unified and (projected_reference_plane is not True or capture_sections):
+        raise ValueError("Finite-Field Optics currently supports only explicitly labelled projected specimen responses; finite-volume material continuation is not yet connected")
+    if _projected_trajectory_reuse is not None:
+        from temsim.specimen.projected_trajectory_reuse import ProjectedTrajectoryReuse
+        if (type(_projected_trajectory_reuse) is not ProjectedTrajectoryReuse or not unified
+                or not projected_reference_plane or capture_sections or recording_interceptions):
+            raise ValueError("Prepared trajectory reuse belongs only to deferred projected unified responses")
     if stop_z_mm is None:
         # Default transport ends at the straight-column handoff, including
         # the installed filter entrance rather than a recording-plane margin.
@@ -295,7 +308,8 @@ def build_geometric_specimen_exit(
     terminal = getattr(elastic_transport, "terminal_electrons", None)
     source_fraction = _sample_incident_fraction(simulation)
     empty_metrics = {
-        "model": "finite_geometry_elastic_x_inelastic_tensor_product",
+        "model": ("projected_reference_x_inelastic_unified_downstream" if unified
+                  else "finite_geometry_elastic_x_inelastic_tensor_product"),
         "sample_incident_source_probability": source_fraction,
         "elastic_forward_conditional_probability": 0.0,
         "elastic_nontransmitted_conditional_probability": 1.0,
@@ -312,9 +326,13 @@ def build_geometric_specimen_exit(
         "post_sample_reinjection_plane_z_mm": float(state.sample.z_mm),
         "material_terminal_z_collapsed_to_reference_plane": False,
         "terminal_state_projection_model": (
+            "zero-depth projected scattering at the executed reference plane"
+            if unified else
+            "straight thin-optics reference-plane matching (no crossed thin action)"
+            if thin_mode else
             "inverse shared-vector-field reference-plane matching"
         ),
-        "terminal_state_projection_preserves_free_flight_line": False,
+        "terminal_state_projection_preserves_free_flight_line": thin_mode,
         "source_probability_conservation_error": 0.0,
         "source_probability_conserved": True,
         "geometric_reference_point_only": True,
@@ -390,6 +408,9 @@ def build_geometric_specimen_exit(
             raise ValueError("Specimen terminal timing must retain one value per history")
         terminal_times = incident_times[source_indices] + reference_offsets
         terminal_times[~np.isfinite(terminal_times) | (terminal_times < 0.)] = np.nan
+    if unified and (np.any(positions_nm[:, 2] != 0.) or reference_offsets is None
+                    or np.any(reference_offsets != 0.)):
+        raise ValueError("Unified projected responses must originate at the specimen reference plane with zero projected event duration")
     specs, inelastic_tracked, inelastic_absorbed = _inelastic_specs(
         inelastic_distribution,
         source_ray_count,
@@ -428,12 +449,13 @@ def build_geometric_specimen_exit(
     from temsim.physics.instrument_magnetic import events_overlapping_interval
     events = events_overlapping_interval(state, _post_sample_events(state),
                                          float(state.sample.z_mm), stop_z_mm)
-    chromatic_focal_mm = configured_objective_chromatic_focal_mm(state)
-    field_diagnostic = sample_axial_field_diagnostic(state)
-    field_transport = SpecimenFieldTransport(state)
+    field_diagnostic = None if unified else sample_axial_field_diagnostic(state)
+    field_transport = None if unified else SpecimenFieldTransport(state)
     branches: list[Branch] = []
     segments = []
     resume_records = []
+    trajectory_reuse_hits = 0
+    trajectory_reuse_misses = 0
     # Historical lightweight adapters and participating stochastic vacuum use
     # the original complete transport. Vacuum restart needs collision/RNG state.
     sectional = (capture_sections and recording_interceptions
@@ -457,9 +479,9 @@ def build_geometric_specimen_exit(
         terminal_energies = energies[eligible]
         terminal_scattered = scattered[eligible]
         terminal_indices = source_indices[eligible]
-        # Terminal Z is specimen-local.  Invert the same local objective-field
-        # vector-field transport used inside the finite specimen to obtain a common
-        # specimen-reference phase space for the ordinary downstream solver.
+        # Terminal Z is specimen-local. Match through the same local model
+        # used by material transport. The thin route is straight and refuses
+        # crossing an action; it never replays an already executed thin lens.
         reference_positions = np.empty_like(local_positions)
         reference_directions = np.empty_like(terminal_direction)
         matching_time_offsets = np.empty(len(local_positions), dtype=np.float64)
@@ -469,6 +491,14 @@ def build_geometric_specimen_exit(
             terminal_energies,
             strict=True,
         )):
+            if unified:
+                # This observable is explicitly a zero-depth projected
+                # scatter at the executed reference plane, not a material
+                # checkpoint or an inverse replay through the objective.
+                reference_positions[index] = position
+                reference_directions[index] = direction
+                matching_time_offsets[index] = 0.
+                continue
             (reference_positions[index], reference_directions[index],
              matching_time_offsets[index]) = (
                 field_transport.to_plane(
@@ -507,13 +537,14 @@ def build_geometric_specimen_exit(
             if np.any(outgoing_energy <= 0.0):
                 raise ValueError("Inelastic loss leaves a non-positive electron energy")
             energy_offset = outgoing_energy - nominal_energy_ev
-            chromatic_x, chromatic_y = objective_chromatic_kick_from_state(
-                state,
-                reference_xy_nm[:, 0] * 1.0e-9,
-                reference_xy_nm[:, 1] * 1.0e-9,
-                energy_offset,
-                resolved_focal_mm=chromatic_focal_mm,
-            )
+            from temsim.physics.intrinsic_aberrations import specimen_chromatic_energy_change
+            incident_energy = getattr(simulation.incident, "kinetic_energy_ev", None)
+            incoming_energy = (None if incident_energy is None else
+                               np.asarray(incident_energy)[-1, terminal_indices])
+            chromatic_x, chromatic_y = ((np.zeros(len(outgoing_energy)), np.zeros(len(outgoing_energy)))
+                if unified else specimen_chromatic_energy_change(
+                    state, reference_xy_nm[:, 0]*1e-9, reference_xy_nm[:, 1]*1e-9,
+                    incoming_energy, outgoing_energy))
             start_tx = elastic_slopes[:, 0] + kick_x_values + chromatic_x
             start_ty = elastic_slopes[:, 1] + kick_y_values + chromatic_y
             # The signed inverse matching time initializes a virtual reference
@@ -562,6 +593,7 @@ def build_geometric_specimen_exit(
                 medium_results = []
                 energy_output = []
                 traced_segment = None
+                transport_stop_receipt = None
                 alive = np.ones(np.count_nonzero(mask), dtype=bool)
                 blocked = np.full(alive.size, np.nan, dtype=float)
                 blocked_keys = [""] * alive.size
@@ -599,25 +631,52 @@ def build_geometric_specimen_exit(
                             copy(plane) for plane in getattr(state, "recording_planes", ())]
                         for plane in propagation_state.recording_planes:
                             plane.inserted = False
-                    z, x, tx, y, ty, flight_times = propagate(
-                        propagation_state, float(state.sample.z_mm), stop_z_mm,
-                        reference_xy_nm[mask, 0] * 1.0e-9, start_tx[mask],
-                        reference_xy_nm[mask, 1] * 1.0e-9, start_ty[mask],
-                        events, energy_offset[mask], save_z_mm=save_z_mm,
-                        include_initial_plane_kicks=False,
-                        particle_medium=state.vacuum_map.enabled, medium_output=medium_results,
-                        medium_stream=100+progress_completed,
-                        initial_time_s=initial_times[mask], return_flight_times=True,
-                        initial_kinetic_energy_ev=outgoing_energy[mask], energy_output=energy_output,
-                        defer_nonfinite_until_clipping=not capture_sections,
-                    )
-                    kinetic_energy = energy_output[0]
+                        camera_key = getattr(getattr(state, "camera", None), "key", None)
+                        if camera_key is not None:
+                            propagation_state.camera = next(
+                                (plane for plane in propagation_state.recording_planes
+                                 if plane.key == camera_key), getattr(state, "camera", None))
+                    if _projected_trajectory_reuse is not None:
+                        transport, reused = _projected_trajectory_reuse.propagate(
+                            propagation_state, float(state.sample.z_mm), stop_z_mm,
+                            (reference_xy_nm[mask, 0]*1e-9, start_tx[mask],
+                             reference_xy_nm[mask, 1]*1e-9, start_ty[mask]),
+                            events, energy_offset[mask], save_z_mm=save_z_mm,
+                            initial_time_s=initial_times[mask], kinetic_energy_ev=outgoing_energy[mask],
+                            weights=group_weights/group_weight, source_ids=group_source_ids,
+                            source_azimuths=group_source_azimuths,
+                            absolute_probability=absolute_probability,
+                            recording_interceptions=recording_interceptions)
+                        z, x, tx, y, ty, flight_times, kinetic_energy, *transport_stop_receipt = transport
+                        trajectory_reuse_hits += int(reused)
+                        trajectory_reuse_misses += int(not reused)
+                    else:
+                        z, x, tx, y, ty, flight_times = propagate(
+                            propagation_state, float(state.sample.z_mm), stop_z_mm,
+                            reference_xy_nm[mask, 0] * 1.0e-9, start_tx[mask],
+                            reference_xy_nm[mask, 1] * 1.0e-9, start_ty[mask],
+                            events, energy_offset[mask], save_z_mm=save_z_mm,
+                            include_initial_plane_kicks=False,
+                            particle_medium=state.vacuum_map.enabled, medium_output=medium_results,
+                            medium_stream=100+progress_completed,
+                            initial_time_s=initial_times[mask], return_flight_times=True,
+                            initial_kinetic_energy_ev=outgoing_energy[mask], energy_output=energy_output,
+                            defer_nonfinite_until_clipping=not capture_sections,
+                        )
+                        kinetic_energy = energy_output[0]
                 flight_times = np.asarray(flight_times, dtype=np.float64).copy()
                 terminal_z_mm = float(state.sample.z_mm) + local_positions[mask, 2] * 1e-6
                 flight_times[np.asarray(z)[:, None] < terminal_z_mm[None, :] - 1e-12] = np.nan
                 if medium_results:
                     alive, blocked, blocked_keys = medium_results[0].merge_stops(alive, blocked, blocked_keys)
                 if traced_segment is None:
+                    if unified:
+                        if transport_stop_receipt is not None:
+                            alive, blocked, blocked_keys = transport_stop_receipt
+                            blocked_keys = list(blocked_keys)
+                        else:
+                            from temsim.physics.unified_field_particle import merge_unified_stops
+                            alive, blocked, blocked_keys = merge_unified_stops(z, alive, blocked, blocked_keys)
                     clipping_state = state
                     if not recording_interceptions:
                         # A raster response defers detector absorption to its
@@ -625,13 +684,14 @@ def build_geometric_specimen_exit(
                         from types import SimpleNamespace
                         clipping_state = SimpleNamespace(
                             sample=state.sample,
-                            apertures=getattr(state, "apertures", ()),
+                            apertures=() if unified else getattr(state, "apertures", ()),
                             recording_planes=(),
                         )
                     alive, blocked, blocked_keys = clip_recording_planes(
                         clipping_state, z, x, y, alive, blocked, blocked_keys)
-                    alive, blocked, blocked_keys = clip_column_wall(
-                        state, z, x, y, alive, blocked, blocked_keys)
+                    if not unified:
+                        alive, blocked, blocked_keys = clip_column_wall(
+                            state, z, x, y, alive, blocked, blocked_keys)
                     if not capture_sections:
                         # Auxiliary angular responses can leave the field or
                         # forward-column domain after a physical intercept.
@@ -643,7 +703,13 @@ def build_geometric_specimen_exit(
                         for ray in np.flatnonzero(np.any(invalid, axis=0)):
                             first = int(np.flatnonzero(invalid[:, ray])[0])
                             invalid_z = float(z[first])
-                            if np.isfinite(blocked[ray]) and blocked[ray] < invalid_z - 1e-12:
+                            if np.isfinite(blocked[ray]) and (
+                                    blocked[ray] < invalid_z - 1e-12
+                                    or (unified and blocked[ray] <= invalid_z + 1e-12)):
+                                # Unified interception may make energy unknown
+                                # at the exact absorbed node, including entry.
+                                # Its executed mechanical receipt still owns
+                                # that loss; do not relabel it as truncation.
                                 continue
                             alive[ray] = False
                             blocked[ray] = invalid_z
@@ -732,9 +798,11 @@ def build_geometric_specimen_exit(
     if abs(conservation_error) > 5.0e-12:
         raise RuntimeError("Geometric specimen-exit source probability is not conserved")
     metrics = {
-        "model": "finite_geometry_elastic_x_inelastic_tensor_product",
+        "model": ("projected_reference_x_inelastic_unified_downstream" if unified
+                  else "finite_geometry_elastic_x_inelastic_tensor_product"),
         "coupling_approximation": (
-            "independent finite-geometry screened-Rutherford terminal state "
+            "independent zero-depth projected angular response times exclusive aggregate Poisson energy-loss population"
+            if unified else "independent finite-geometry screened-Rutherford terminal state "
             "times exclusive aggregate Poisson energy-loss population"
         ),
         "sample_incident_source_probability": source_fraction,
@@ -742,8 +810,9 @@ def build_geometric_specimen_exit(
         "elastic_nontransmitted_conditional_probability": nontransmitted_weight,
         "inelastic_tracked_conditional_probability": inelastic_tracked,
         "inelastic_absorbed_conditional_probability": inelastic_absorbed,
-        "inelastic_material_path_known": material_paths_known,
-        "inelastic_geometry_scope": ("executed_material_paths" if material_paths_known else "historical_nominal_material_approximation"),
+        "inelastic_material_path_known": material_paths_known and not unified,
+        "inelastic_geometry_scope": ("nominal_thickness_projected_approximation" if unified
+            else "executed_material_paths" if material_paths_known else "historical_nominal_material_approximation"),
         "vacuum_miss_forward_conditional_probability": vacuum_forward_weight,
         "tracked_downstream_source_probability": tracked_source,
         "inelastic_absorbed_source_probability": absorbed_source,
@@ -764,26 +833,39 @@ def build_geometric_specimen_exit(
         "post_sample_reinjection_plane_z_mm": float(state.sample.z_mm),
         "material_terminal_z_collapsed_to_reference_plane": False,
         "terminal_state_projection_model": (
+            "zero-depth projected scattering at the executed reference plane"
+            if unified else
+            "straight thin-optics reference-plane matching (no crossed thin action)"
+            if thin_mode else
             "inverse shared-vector-field reference-plane matching"
         ),
         "source_probability_conservation_error": conservation_error,
         "source_probability_conserved": abs(conservation_error) <= 5.0e-12,
-        "terminal_state_projected_to_sample_reference_plane": True,
-        "terminal_state_projection_preserves_free_flight_line": False,
-        "sample_axial_field_t": field_diagnostic.total_field_t,
-        "sample_objective_field_t": field_diagnostic.objective_field_t,
+        "terminal_state_projected_to_sample_reference_plane": not unified,
+        "terminal_state_projection_preserves_free_flight_line": thin_mode,
+        "sample_axial_field_t": None if unified else field_diagnostic.total_field_t,
+        "sample_objective_field_t": None if unified else field_diagnostic.objective_field_t,
+        "sample_field_diagnostic_scope": ("actual time-dependent fields evaluated per propagated particle; no static reference value"
+            if unified else field_diagnostic.field_source),
         "geometric_reference_point_only": True,
         "pixel_resolved_specimen_contrast": False,
         "used_by_wave_multislice": False,
         "downstream_stop_z_mm": stop_z_mm,
-        "flight_time_model": "executed elastic flights with signed reference-plane matching",
+        "flight_time_model": ("executed entrance clock plus zero-duration projected scattering"
+            if unified else "executed elastic flights with signed reference-plane matching"),
         "flight_time_missing_inelastic_event_depth": material_forward_weight > 0.0 and any(float(spec[5]) > 0. for spec in specs),
         "flight_time_terminal_rows_known": int(np.count_nonzero(np.isfinite(terminal_times))),
-        "flight_time_virtual_reference_rows_unavailable": True,
+        "flight_time_virtual_reference_rows_unavailable": not unified,
         "material_section_reused_prefix": any(record["hit"] for record in resume_records),
         "material_section_resume": tuple(resume_records),
         "material_section_vacuum_restart": "recomputed" if state.vacuum_map.enabled else "not_participating",
     }
+    if unified:
+        metrics.update(unified_potential_downstream=True,
+                       prepared_trajectory_reuse_hits=trajectory_reuse_hits,
+                       prepared_trajectory_reuse_misses=trajectory_reuse_misses,
+                       empirical_aberrations_applied=False,
+                       finite_volume_material_checkpoint=False)
     return GeometricSpecimenExit(
         tuple(branches),
         metrics,

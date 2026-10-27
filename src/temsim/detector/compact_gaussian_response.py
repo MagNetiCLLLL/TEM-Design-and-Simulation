@@ -70,8 +70,9 @@ def _integrated_hermite(edges, centre, sigma):
 def compact_gaussian_response(positions_mm, weights, x_edges, y_edges, point_spread):
     """Return a bounded compact response, or None for the ordinary fallback.
 
-    Only axis-aligned Gaussian PSFs and positive-weight clouds within a maximum
-    whitened expansion radius of 0.001 qualify. Off-axis anisotropy, broader clouds, or
+    Gaussian PSFs and positive-weight clouds within a maximum
+    whitened expansion radius of 0.001 qualify. Rotated anisotropy uses conditional
+    Hermite pixel integrals in Cholesky-whitened coordinates. Broader clouds or
     floating-point parameter extremes fall back without changing input data.
     Invalid numeric records are errors rather than a reason to conceal data.
     Arrays use [y, x]; positions and edges are physical millimetres. The result
@@ -88,17 +89,21 @@ def compact_gaussian_response(positions_mm, weights, x_edges, y_edges, point_spr
     angle = float(point_spread.rotation_deg)
     if not all(math.isfinite(value) for value in (sx, sy, angle)) or sx <= 0. or sy <= 0.:
         return None
+    rotated = False
     if sx != sy:
         axis_angle = math.remainder(angle, 180.)
         if abs(axis_angle) == 90.:
             sx, sy = sy, sx
         elif axis_angle != 0.:
-            return None
+            rotated = True
     # Keep variance and whitening arithmetic in a finite normal range. The
     # regular renderer is responsible for any unsupported extreme settings.
     minimum, maximum = math.sqrt(np.finfo(float).tiny), math.sqrt(np.finfo(float).max)/4.
     if not minimum <= min(sx, sy) <= max(sx, sy) <= maximum:
         return None
+    if rotated:
+        from temsim.detector.gaussian_pixel_response import compact_rotated_gaussian_response
+        return compact_rotated_gaussian_response(positions_mm, weights, x_edges, y_edges, point_spread)
     positions = np.asarray(positions_mm, dtype=float)
     w = np.asarray(weights, dtype=float)
     xe, ye = np.asarray(x_edges, dtype=float), np.asarray(y_edges, dtype=float)

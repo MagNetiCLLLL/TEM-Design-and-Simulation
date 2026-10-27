@@ -1,4 +1,6 @@
 """Bounded classical response tests; elementary limits are not full-chain acceptance."""
+from types import SimpleNamespace
+
 import numpy as np
 import pytest
 
@@ -27,14 +29,36 @@ def field_free_fixture():
     return state
 
 
-def test_first_order_map_uses_full_precision_not_drawing_history():
+def _constant_electric_fixture(monkeypatch):
+    """Declared zero E on the complete test span, not a small gun-field tail."""
+    from temsim.physics.closed_gun_field import ClosedGunField
+    from temsim.physics.instrument_electric import InstrumentElectricField
+    # Same controlled scalar-grid provider as test_electrostatic_column_transport.
+    r = np.array((0., .01, .02))
+    z = np.array((0., .5, 1.))
+    base = ClosedGunField({}, r, z, np.zeros((len(r), len(z))))
+    field = InstrumentElectricField(
+        base, base, SimpleNamespace(exit_plane_z_mm=450.),
+        np.array(((-.02, -.02, 0.), (.02, .02, 1.))),
+        "constant-zero-potential-fixture", "constant-zero-potential-fixture",
+        "constant-zero-potential-fixture", (),
+    )
+    np.testing.assert_array_equal(field.field_at_global_positions_v_per_m(
+        np.array(((0., 0., .5), (1e-6, -2e-6, .6001234)))), 0.)
+    monkeypatch.setattr("temsim.physics.instrument_electric.capture_instrument_electric_field",
+                        lambda _state: field)
+
+
+def test_first_order_map_uses_full_precision_not_drawing_history(monkeypatch):
+    _constant_electric_fixture(monkeypatch)
     state = field_free_fixture()
     length_m = (600.1234 - 500.) * 1e-3
     transfer = trace_transverse_transfer(state, 500., 600.1234)
     np.testing.assert_allclose(transfer.j_diff_m_per_rad, np.eye(2)*length_m, rtol=0, atol=1e-13)
 
 
-def test_scan_response_is_the_on_axis_derivative_not_a_nonlinear_test_ray():
+def test_scan_response_is_the_on_axis_derivative_not_a_nonlinear_test_ray(monkeypatch):
+    _constant_electric_fixture(monkeypatch)
     state = field_free_fixture()
     hp = next(c for c in state.corrector_elements if c.kind == "hexapole")
     hp.optical_reference_from_tip_mm = 550.

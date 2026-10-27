@@ -233,10 +233,10 @@ def objective_chromatic_kick_from_state(
 ):
     """Return the configured objective chromatic kick for one phase space.
 
-    Both the ordinary column trace and specimen-exit reinjection use this
-    helper so a finite-geometry specimen path cannot silently apply a different
-    first-order chromatic model.  Disabled chromatic aberration is an exact
-    zero kick.
+    Compatibility formula for callers requesting the historical objective
+    approximation. Production column propagation owns Cc through the shared
+    captured lens screen; callers must not add this result to an executed plan.
+    Disabled chromatic aberration is an exact zero kick.
     """
 
     x = np.asarray(x_m, dtype=float)

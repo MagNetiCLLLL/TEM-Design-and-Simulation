@@ -460,8 +460,10 @@ def _electron_paths(
                 weight=float(sample_ray.weight),
                 kinetic_energy_ev=float(sample_ray.kinetic_energy_ev),
                 provenance=(
-                    "cached sample-plane phase space; shared vector-field "
-                    "boundary transport"
+                    "cached sample-plane phase space; straight thin-optics "
+                    "boundary transport (no crossed thin action)"
+                    if getattr(field_transport, "thin_mode", False) else
+                    "cached sample-plane phase space; shared vector-field boundary transport"
                 ),
                 downstream_eligible=True,
                 **lineage(int(getattr(sample_ray, "source_ray_index", -1))),

@@ -80,6 +80,7 @@ def test_declared_scopes_use_existing_unique_whole_files_and_namespaced_criteria
 def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
     required = {
         "gun-fields": {"test_closed_gun_field.py", "test_continuous_tip_curvature.py",
+                       "test_analytic_gun_field.py", "test_thermionic_source_validation.py",
                        "test_small_bore_electrode_mesh.py", "test_tip_model_switch_validation.py",
                        "test_tip_curvature_comparison.py", "test_axisymmetric_cut_field.py",
                        "test_geometry_gun_cache.py", "test_geometry_gun_implicit_tolerance.py",
@@ -171,6 +172,7 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_ray_flight_time_colours.py", "test_transverse_plot_sizes.py", "test_transverse_plot_size_persistence.py",
             "test_energy_filter_mechanical_clipping.py", "test_energy_filter_model_3d.py",
             "test_energy_filter_workspace_views.py", "test_live_beam_refresh.py",
+            "test_calculation_progress.py", "test_calculation_progress_gui.py",
             "test_assembly_section.py", "test_assembly_section_page.py",
             "test_current_page_tabs.py", "test_ray_compact_layout.py",
             "test_mini_condenser_modes.py", "test_assembly_illumination.py",
@@ -183,13 +185,69 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_probe_hexapole_geometry.py", "test_probe_hexapole_document_validation.py"},
         "lens-geometry": {"test_lens_pose_capture.py", "test_lens_pose_rendering.py",
             "test_lens_pose_clipping.py", "test_lens_pose_transport.py", "test_rigid_lens_field_registration.py",
-            "test_material_interval_validation.py", "test_nonlinear_magnetostatics.py"},
+            "test_material_interval_validation.py", "test_nonlinear_magnetostatics.py",
+            "test_axisymmetric_potential.py", "test_electric_potential_snapshot.py",
+            "test_analytic_potential.py", "test_potential_snapshot.py", "test_potential_capture.py",
+            "test_potential_fem_qualification.py", "test_analytic_potential_domain.py", "test_gun_magnetic_potential.py",
+            "test_potential_capabilities.py", "test_potential_native_sampler.py", "test_potential_plane_sampler.py",
+            "test_high_order_round_lens.py", "test_round_lens_aberration_benchmark.py",
+            "test_potential_wave.py", "test_potential_wave_mode.py", "test_potential_wave_carrier.py", "test_potential_wave_carrier_reference.py", "test_potential_wave_support.py", "test_potential_phase_budget.py",
+            "test_potential_ray.py", "test_potential_aberrations.py", "test_thin_optics.py", "test_thin_direct_alignment.py",
+            "test_thin_specimen_transport.py",
+            "test_regular_axisymmetric_magnetic_potential.py", "test_potential_fem_aberrations.py",
+            "test_potential_probe_pilot.py", "test_potential_probe_wave_pilot.py",
+            "test_potential_wave_observation.py", "test_qualified_field_reduction.py", "test_bounded_optical_design.py",
+            "test_potential_geometry.py", "test_potential_support_lineage.py", "test_potential_specimen_transport.py",
+            "test_potential_material_phase_budget.py",
+            "test_potential_field_vector_scene.py", "test_unified_field_runtime.py",
+            "test_unified_field_particle.py", "test_unified_wave_runtime.py", "test_unified_direct_alignment.py",
+            "test_unified_particle_optimization.py", "test_unified_particle_prefix.py",
+            "test_unified_scan_response_cache.py", "test_unified_scan_persistence.py",
+            "test_unified_scan_parallel.py", "test_unified_surface_probe_focus.py",
+            "test_unified_projected_stem.py", "test_unified_projected_downstream.py",
+            "test_unified_projected_trajectory_reuse.py",
+            "test_unified_stem_workflow.py",
+            "test_dynamic_potential.py", "test_electric_wave_reference.py",
+            "test_retarded_wave.py", "test_unified_scan_calibration.py", "test_gaussian_remote_domain.py",
+            "test_potential_wave_carrier_fft.py", "test_potential_kinetic_expansion.py",
+            "test_potential_wave_action_factorization.py", "test_potential_axial_resource_retry.py",
+            "test_canonical_chart_resources.py", "test_potential_wave_boundary_windows.py",
+            "test_potential_wave_spatial_pressure.py",
+            "test_residual_exponential_allowance.py",
+            "test_exploratory_column_budgets.py", "test_exploratory_budget_controls.py",
+            "test_immutable_wave_checks.py", "test_potential_segment_resampling.py",
+            "test_preview_segment_resampling.py", "test_preview_segment_resampling_gui.py",
+            "test_preview_segment_carrier.py",
+            "test_potential_wave_device.py", "test_potential_wave_chebyshev.py",
+            "test_potential_wave_carrier_chebyshev.py", "test_potential_wave_policy.py",
+            "test_potential_wave_resampling.py", "test_potential_weighted_resampling.py",
+            "test_potential_wave_residual_memory.py",
+            "test_potential_wave_coefficient_memory.py",
+            "test_captured_phi_reuse.py",
+            "test_potential_representation_estimates.py",
+            "test_phase_segment_resampling.py",
+            "test_preview_phase_carrier.py",
+            "test_preview_phase_reselection.py",
+            "test_preview_phase_reselection_gui.py",
+            "test_nominal_energy_source.py",
+            "test_nominal_energy_preview_pipeline.py",
+            "test_nominal_energy_preview_gui.py",
+            "test_potential_wave_chebyshev_memory.py",
+            "test_wave_resource_preparation.py",
+            "test_wave_device_reuse.py",
+            "test_unified_exploratory_preview.py", "test_coherent_result_labels.py",
+            "test_completed_wave_planes.py",
+            "test_potential_column_segments.py", "test_unified_weighted_resampling.py",
+            "test_coherent_weighted_resampling_gui.py"},
+        "column-field-pilot": {"test_potential_probe_canonical.py"},
+        "column-wave-qualification": {"test_potential_probe_whole_wave.py"},
         "receiver-imaging": {"test_receiver_image.py", "test_receiver_scan.py",
             "test_receiver_scan_link.py", "test_receiver_transport_integration.py",
             "test_receiver_imaging_gui.py", "test_receiver_playback_gui.py",
             "test_compact_gaussian_response.py", "test_image_intensity_analysis.py",
             "test_image_intensity_validation.py", "test_image_receiver_focus.py",
-            "test_projector_preset_controller.py"},
+            "test_projector_preset_controller.py", "test_equivalent_image_energy.py",
+            "test_gaussian_pixel_response.py"},
         "particle-continuation": {"test_particle_sections.py", "test_particle_section_io.py",
             "test_completed_particle_sections.py", "test_material_particle_sections.py",
             "test_material_section_resume.py", "test_particle_section_eds_archive.py",
@@ -197,14 +255,17 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_section_archive_identity.py", "test_result_file_request_routing.py", "test_result_files_gui.py",
             "test_automatic_result.py", "test_automatic_result_worker.py", "test_automatic_result_gui.py",
             "test_downstream_transport.py", "test_specimen_time_of_flight.py",
-            "test_objective_chromatic_kick.py",
+            "test_objective_chromatic_kick.py", "test_shared_chromatic_screens.py",
             "test_corrector_crossover_measurement.py", "test_probe_corrector_calibration.py",
+            "test_surface_probe_focus.py",
             "test_direct_alignment_precalibration.py", "test_corrector_deflector_binding.py",
             "test_corrector_deflector_validation.py", "test_dph_aberration_response.py",
             "test_corrector_aberration_events.py", "test_beam_steering_calibration.py",
             "test_condenser_topology.py", "test_nanoprobe_topology_alignment.py",
             "test_validate_nanoprobe_condenser.py", "test_nanoprobe_ranges.py",
-            "test_bcor_nanoprobe_integration.py", "test_supplemental_crossover.py"},
+            "test_bcor_nanoprobe_integration.py", "test_supplemental_crossover.py",
+            "test_physical_scene.py", "test_interaction_registry.py",
+            "test_plan_physics_contract.py", "test_physics_contract_persistence.py"},
         "acceptance-policy": {"test_acceptance_scopes.py", "test_acceptance_runner.py", "test_validation_process.py",
             "test_setup_env.py"},
         "performance-observation": {"test_electron_execution_performance.py", "test_electron_response_benchmark.py",
@@ -225,7 +286,7 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_first_order_column_reference.py", "test_ideal_reference_pipeline.py",
             "test_column_wave_electric.py", "test_tip_gun_wave.py", "test_tip_gun_shared_fields.py",
             "test_electrostatic_column_transport.py", "test_wave_grid.py",
-            "test_wave_support.py", "test_column_support_budget.py",
+            "test_wave_support.py", "test_column_support_budget.py", "test_wave_domain_support.py",
             "test_column_acceptance_window.py", "test_acceptance_aperture_sampling.py", "test_wave_aperture_edge.py",
             "test_wave_aperture_sampling.py", "test_multipole_wave.py",
             "test_wave_grid_low_memory.py", "test_phase_carrier_moments.py",
@@ -249,6 +310,7 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_posed_wave_aperture.py", "test_tilted_aperture_column.py",
                 "test_posed_aberration_wave.py", "test_tilted_spherical_column.py",
                 "test_intrinsic_aberration_operator.py", "test_intrinsic_aberration_integration.py",
+                "test_chromatic_column_wave.py",
                 "test_intrinsic_ray_device.py", "test_particle_gpu_reference.py",
                 "test_intrinsic_gpu_segments.py", "test_intrinsic_particle_backend.py",
                 "test_intrinsic_archive_radial.py", "test_intrinsic_legacy_boundaries.py",
@@ -299,6 +361,32 @@ def test_installer_regressions_are_mandatory_acceptance_policy_evidence(fault):
     report = evaluate("acceptance-policy", receipt)
     assert report["criteria"][criterion]["status"] != "PASS"
     assert report["software_scope_status"] != "PASS"
+    assert report["exit_code"] == 1
+
+
+@pytest.mark.parametrize("scope,criterion,filename", [
+    ("gun-fields", "GF-01", "test_analytic_gun_field.py"),
+    ("gun-fields", "GF-02", "test_thermionic_source_validation.py"),
+    ("receiver-imaging", "RI-03", "test_gaussian_pixel_response.py"),
+    ("receiver-imaging", "RI-04", "test_equivalent_image_energy.py"),
+    ("particle-continuation", "PC-05", "test_shared_chromatic_screens.py"),
+    ("coherent-development", "CW-02", "test_wave_domain_support.py"),
+    ("coherent-development", "CW-09", "test_chromatic_column_wave.py"),
+])
+@pytest.mark.parametrize("fault", ["missing", "skipped", "failed"])
+def test_optics_review_regressions_require_complete_cpu_evidence(scope, criterion, filename, fault):
+    key, path = f"{scope}/{criterion}", f"tests/{filename}"
+    assert path in ACCEPTANCE_SCOPES[scope]["criteria"][key][1]
+    receipt = receipt_for(scope)
+    node = next(node for node in receipt["collected"] if node.startswith(path + "::"))
+    if fault == "missing":
+        receipt["collected"].remove(node)
+        del receipt["cases"][node]
+    else:
+        receipt["cases"][node]["call"] = fault
+        receipt["skip_reasons"] = {node: "CUDA hardware is unavailable"}
+    report = evaluate(scope, receipt, allow_gpu_skips=True)
+    assert report["criteria"][key]["status"] != "PASS"
     assert report["exit_code"] == 1
 
 
@@ -385,6 +473,28 @@ def test_cpu_lane_may_report_reviewed_gpu_absence_without_claiming_gpu_success()
     assert report["cases"][node]["call"] == "skipped"
     assert report["criteria"]["round2/R2-AT-10"]["gpu_not_run"] == [node]
     assert report["full_simulator_qualification"] == "UNQUALIFIED"
+
+
+@pytest.mark.parametrize("node", [
+    "tests/test_wave_device_reuse.py::test_real_cuda_reuse_preserves_raw_complex_fields_and_live_arrays",
+    "tests/test_potential_wave_residual_memory.py::test_actual_cuda_lifetime_estimate_covers_all_supported_taylor_variants[8-True-False-True]",
+    "tests/test_potential_wave_chebyshev_memory.py::test_actual_cuda_grouped_workspace_covers_supported_variants[8-True-False-True-8-shape0]",
+    "tests/test_potential_wave_chebyshev_memory.py::test_actual_gpu_reduces_group_under_device_limit_without_using_cpu_base",
+])
+def test_coherent_memory_device_cases_record_absent_gpu_but_reject_busy_or_failed_runs(node):
+    receipt = receipt_for("lens-geometry")
+    receipt["collected"].append(node)
+    receipt["cases"][node] = {"setup": "passed", "call": "skipped", "teardown": "passed"}
+    receipt["skip_reasons"] = {node: "Skipped: Optional real CUDA device unavailable"}
+    assert evaluate("lens-geometry", receipt)["exit_code"] == 1
+    report = evaluate("lens-geometry", receipt, allow_gpu_skips=True)
+    assert report["exit_code"] == 0
+    assert report["gpu_hardware"]["not_run"] == [node]
+    assert report["criteria"]["lens-geometry/LG-12"]["gpu_not_run"] == [node]
+    receipt["skip_reasons"][node] = "Skipped: Concurrent GPU work occupies at least 8 GiB"
+    assert evaluate("lens-geometry", receipt, allow_gpu_skips=True)["exit_code"] == 1
+    receipt["cases"][node]["call"] = "failed"
+    assert evaluate("lens-geometry", receipt, allow_gpu_skips=True)["exit_code"] == 1
 
 
 @pytest.mark.parametrize("outcomes", [
@@ -523,6 +633,45 @@ def test_gpu_registry_keeps_cpu_parameters_mandatory_and_matches_existing_tests(
     assert not is_gpu_hardware_test("tests/test_stem_cuda_pipeline.py::test_toolbar_require_gpu_does_not_retry_stem_on_cpu")
 
 
+@pytest.mark.parametrize("function,parameter", [
+    ("test_mixed_energy_thin_event_matches_independent_oracle", f"{backend}-{timed}")
+    for backend in ("numpy", "numba_serial", "numba_parallel", "vector_numpy")
+    for timed in (False, True)
+] + [
+    ("test_electric_event_uses_actual_local_momentum", f"{reference}-{backend}")
+    for reference in ("None", "300000.0") for backend in ("CPU", "Numba CPU")
+])
+def test_equivalent_image_cpu_parameters_cannot_use_gpu_skip_allowance(function, parameter):
+    from temsim.acceptance_gpu import is_gpu_hardware_test
+
+    node = f"tests/test_equivalent_image_energy.py::{function}[{parameter}]"
+    assert not is_gpu_hardware_test(node)
+    receipt = receipt_for("receiver-imaging")
+    receipt["collected"].append(node)
+    receipt["cases"][node] = {"setup": "passed", "call": "skipped", "teardown": "passed"}
+    receipt["skip_reasons"] = {node: "CUDA hardware is unavailable"}
+    report = evaluate("receiver-imaging", receipt, allow_gpu_skips=True)
+    assert report["exit_code"] == 1
+    assert node not in report["allowed_gpu_skips"]
+
+
+def test_carrier_refinement_cpu_remains_mandatory_when_gpu_absence_is_allowed():
+    from temsim.acceptance_gpu import is_gpu_hardware_test
+
+    prefix = ("tests/test_column_support_budget.py::"
+              "test_optional_carrier_refinement_keeps_the_original_finite_mask_domain")
+    assert is_gpu_hardware_test(prefix + "[Require GPU]")
+    node = prefix + "[CPU]"
+    assert not is_gpu_hardware_test(node)
+    receipt = receipt_for("coherent-development")
+    receipt["collected"].append(node)
+    receipt["cases"][node] = {"setup": "passed", "call": "skipped", "teardown": "passed"}
+    receipt["skip_reasons"] = {node: "No CUDA hardware"}
+    report = evaluate("coherent-development", receipt, allow_gpu_skips=True)
+    assert report["exit_code"] == 1
+    assert node not in report["allowed_gpu_skips"]
+
+
 @pytest.mark.parametrize("scope,node,reason", [
     ("coherent-development", "tests/test_intrinsic_aberration_integration.py::test_full_column_wave_uses_intrinsic_screen_and_resumes_once_on_gpu[True]", "optional real CUDA verification requires CuPy"),
     ("coherent-development", "tests/test_intrinsic_gpu_segments.py::test_cancel_keeps_input_arrays_unchanged", "No CUDA hardware"),
@@ -531,6 +680,17 @@ def test_gpu_registry_keeps_cpu_parameters_mandatory_and_matches_existing_tests(
     ("coherent-development", "tests/test_wave_device.py::test_real_gpu_segmented_modes_reuse_one_pool_and_match_cpu", "could not import 'cupy': No module named 'cupy'"),
     ("field-ui", "tests/test_part_model_gpu_view.py::test_real_gpu_keeps_cad_triangles_and_interior_lighting", "Real GPU rendering unavailable: CPU rendering: No OpenGL context is available"),
     ("field-ui", "tests/test_part_model_gpu_view.py::test_real_gpu_section_invalidates_picking_and_preserves_source_faces", "Real GPU rendering unavailable: CPU rendering: No hardware OpenGL renderer is available: GDI Generic"),
+    ("receiver-imaging", "tests/test_equivalent_image_energy.py::test_mixed_energy_thin_event_matches_independent_oracle[cuda-False]", "CUDA hardware is unavailable"),
+    ("receiver-imaging", "tests/test_equivalent_image_energy.py::test_mixed_energy_thin_event_matches_independent_oracle[cuda-True]", "CUDA hardware is unavailable"),
+    ("receiver-imaging", "tests/test_equivalent_image_energy.py::test_mixed_energy_thin_event_matches_independent_oracle[vector_cupy-False]", "could not import 'cupy': No module named 'cupy'"),
+    ("receiver-imaging", "tests/test_equivalent_image_energy.py::test_mixed_energy_thin_event_matches_independent_oracle[vector_cupy-True]", "CUDA hardware is unavailable"),
+    ("receiver-imaging", "tests/test_equivalent_image_energy.py::test_electric_event_uses_actual_local_momentum[None-CUDA GPU]", "CUDA hardware is unavailable"),
+    ("receiver-imaging", "tests/test_equivalent_image_energy.py::test_electric_event_uses_actual_local_momentum[300000.0-CUDA GPU]", "CUDA hardware is unavailable"),
+    ("particle-continuation", "tests/test_shared_chromatic_screens.py::test_off_energy_cuda_screen_matches_cpu_without_recentering", "No CUDA hardware"),
+    ("coherent-development", "tests/test_chromatic_column_wave.py::test_real_lens_cc_mixed_modes_cuda_matches_cpu_complex_phase_and_weight[objective_lens]", "No CUDA hardware"),
+    ("coherent-development", "tests/test_chromatic_column_wave.py::test_real_lens_cc_mixed_modes_cuda_matches_cpu_complex_phase_and_weight[condenser_lens_2]", "No CUDA hardware"),
+    ("coherent-development", "tests/test_wave_domain_support.py::test_cuda_conservative_domain_expansion_matches_cpu_complex_field", "No CUDA hardware"),
+    ("coherent-development", "tests/test_column_support_budget.py::test_optional_carrier_refinement_keeps_the_original_finite_mask_domain[Require GPU]", "No CUDA hardware"),
 ])
 def test_new_device_tests_report_absence_without_hiding_failures(scope, node, reason):
     receipt = receipt_for(scope)

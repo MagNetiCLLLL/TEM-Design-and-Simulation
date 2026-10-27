@@ -15,6 +15,7 @@ from threading import Event, RLock
 from time import perf_counter
 from uuid import uuid4
 from temsim.job_events import job_event, job_stage
+from temsim.calculation_progress import CalculationProgress, callback_progress
 from temsim.physics.backend_execution import capture_worker_backends, classical_backend_preflight
 from temsim import input_io
 from types import MappingProxyType
@@ -270,6 +271,7 @@ class WorkerSignals(QObject):
     result = Signal(int, str, object, float)
     error = Signal(int, str, str)
     progress = Signal(int, str, int, int, str)
+    progress_detail = Signal(int, object)
     finished = Signal(int, str)
 
 
@@ -526,7 +528,9 @@ class CalculationWorker(QRunnable):
                 result.particle_signals = measure_particle_detectors(result)
             elif is_tuning_quality(self.quality):
                 layout = apply_physical_layout_to_state(self.state)
-                with job_stage("ray_transport"):
+                from temsim.physics.transport_progress import transport_progress
+                with job_stage("ray_transport"), transport_progress(
+                        lambda label: self._report_progress(0, 0, label)):
                     section_options = {}
                     if self.section_request is not None:
                         section_options = {
@@ -615,11 +619,16 @@ class CalculationWorker(QRunnable):
     ) -> None:
         if self.cancel_event.is_set():
             raise RuntimeError("Calculation cancelled")
-        if getattr(self, "_progress_stage", None) != stage:
+        details = getattr(stage, "progress", None)
+        stage_identity = details.name if details is not None else None
+        if stage_identity is not None and getattr(self, "_progress_stage", None) != stage_identity:
             if getattr(self, "_progress_stage", None) is not None:
                 job_event("stage_exit", stage=self._progress_stage, outcome="next_progress_stage")
-            self._progress_stage = str(stage)
-            job_event("stage_entry", stage=str(stage), evidence="solver_progress_boundary")
+            self._progress_stage = stage_identity
+            job_event("stage_entry", stage=stage_identity, evidence="declared_workflow_stage")
+        previous = getattr(self, "_progress_details", CalculationProgress("", self.quality, "Preparing"))
+        self._progress_details = callback_progress(previous, completed, total, stage, reserved_stages=1)
+        self.signals.progress_detail.emit(self.generation, self._progress_details)
         self.signals.progress.emit(
             self.generation,
             self.quality,
@@ -772,6 +781,7 @@ class CalculationController(QObject):
     result_ready = Signal(str, object, float)
     failed = Signal(str, str)
     progress_changed = Signal(str, int, int, str)
+    progress_detail = Signal(object)
     finished = Signal(str)
     section_archive_changed = Signal(object)
     section_loaded = Signal(object, object)
@@ -1662,15 +1672,48 @@ class CalculationController(QObject):
         entry = self._best_seed_entry(signatures)
         return entry[1] if entry is not None else None
 
-    def _begin_request(self, quality="Preview") -> int:
+    def _begin_request(self, quality="Preview", *, request_id=None) -> int:
         # Live edits coalesce only live work. Explicit High requests retain
         # their captured state, cancellation token and result association.
         self._cancel_live_requests()
         self._generation += 1
         self._request_input_guard = None
         self._cancel_event = Event()
-        self._requests[self._generation] = dict(quality=quality, cancel=self._cancel_event, guard=None, request_id=uuid4().hex)
+        # Capture, preparation and execution own one progress operation. Set
+        # its identity before the first update so completion can close it.
+        self._requests[self._generation] = dict(quality=quality, cancel=self._cancel_event, guard=None,
+            request_id=uuid4().hex if request_id is None else request_id)
+        self._publish_progress(self._generation, CalculationProgress(
+            self._requests[self._generation]["request_id"], quality, "Preparing captured inputs"))
         return self._generation
+
+    def _publish_progress(self, generation, update):
+        item = self._requests.get(generation)
+        if item is None:
+            return
+        previous = item.get("progress")
+        if previous is not None and not previous.active:
+            return
+        update = replace(update, operation_id=item["request_id"], operation=item["quality"])
+        item["progress"] = update
+        self.progress_detail.emit(update)
+
+    def _terminal_progress(self, generation, status, message):
+        item = self._requests.get(generation)
+        if item is not None:
+            previous = item.get("progress", CalculationProgress(
+                item["request_id"], item["quality"], message))
+            self._publish_progress(generation, previous.terminal(status, message))
+
+    def report_rejected_request(self, quality, message):
+        """A capture/admission error is a failed request, never an old success."""
+        self.progress_detail.emit(CalculationProgress(f"particle-check:{uuid4().hex}",
+            str(quality), "Checking captured inputs", stages_completed=0, stages_total=1
+            ).terminal("failed", str(message)))
+
+    def _accept_progress_detail(self, generation, update):
+        if self._request_active(generation):
+            self._publish_progress(generation, update)
 
     def _trace_request(self, generation, event, **details):
         item = self._requests.get(generation, {})
@@ -1684,6 +1727,7 @@ class CalculationController(QObject):
         for generation, item in tuple(self._requests.items()):
             if item["quality"] != "High accuracy":
                 self._trace_request(generation, "cancellation_request")
+                self._terminal_progress(generation, "cancelled", "Superseded by a newer request")
                 item["cancel"].set()
                 del self._requests[generation]
         self.pool.clear(lambda worker: getattr(worker, "quality", "") != "High accuracy")
@@ -1742,12 +1786,11 @@ class CalculationController(QObject):
             self.pool.coordinator.events.record("capture_exit", request_id=capture_id,
                 outcome="failed", error=str(exc), elapsed_s=perf_counter()-capture_started)
             raise ValueError(f"Could not capture calculation settings: {exc}") from exc
-        generation = self._begin_request(quality)
+        generation = self._begin_request(quality, request_id=capture_id)
         self._requests[generation]["section_request"] = section_request
         self._requests[generation]["particle_tuning"] = bool(particle_tuning)
         self._requests[generation]["workflow"] = workflow
         self._requests[generation]["seed_result"] = existing_result
-        self._requests[generation]["request_id"] = capture_id
         self._trace_request(generation, "capture_exit", outcome="captured", elapsed_s=perf_counter()-capture_started)
         self._requests[generation]["parent_id"] = parent_id
         worker = PreparationWorker(generation, request, self._cancel_event)
@@ -2059,6 +2102,7 @@ class CalculationController(QObject):
         worker.signals.result.connect(self._accept_result)
         worker.signals.error.connect(self._accept_error)
         worker.signals.progress.connect(self._accept_progress)
+        worker.signals.progress_detail.connect(self._accept_progress_detail)
         worker.signals.finished.connect(self._accept_finished)
         if not already_started:
             self.started.emit(quality)
@@ -2075,6 +2119,7 @@ class CalculationController(QObject):
         if include_explicit:
             for generation, item in self._requests.items():
                 self._trace_request(generation, "cancellation_request")
+                self._terminal_progress(generation, "cancelled", "Calculation cancelled")
                 item["cancel"].set()
             self._requests.clear()
             self._high_requests.clear()
@@ -2105,10 +2150,12 @@ class CalculationController(QObject):
             else:
                 self._cache_tuning_result(quality, result)
             self._trace_request(generation, "publication", quality=quality)
+            self._terminal_progress(generation, "succeeded", "Accepted result")
             self.result_ready.emit(quality, result, duration)
 
     def _accept_error(self, generation, quality, message) -> None:
         if self._request_active(generation):
+            self._terminal_progress(generation, "failed", str(message))
             self.failed.emit(quality, message)
 
     def _accept_progress(
@@ -2132,6 +2179,7 @@ class CalculationController(QObject):
         active = self._request_active(generation)
         if active or owned:
             self._trace_request(generation, "request_terminal", quality=quality)
+            self._terminal_progress(generation, "cancelled", "Request ended without a new accepted result")
         self._finished_generation = max(self._finished_generation, generation)
         # Cancellation is also a terminal lifecycle: never retain its guard.
         if getattr(self, "_request_input_guard", None) is not None and self._request_input_guard[0] == generation:

@@ -1,4 +1,5 @@
 import math
+from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
@@ -21,6 +22,15 @@ from temsim.specimen.elastic_transport import (
     screened_rutherford_total_cross_section_cm2,
     simulate_elastic_point_transport,
 )
+
+
+def _material_state():
+    """Explicit silicon matter; startup vacuum is not a material fixture."""
+    state = default_state()
+    state.sample.specimen_mode = "atomic"
+    state.sample.inserted = True
+    state.sample.cif_path = str(Path(__file__).parent / "fixtures" / "cif" / "Si.cif")
+    return state
 
 
 def _incident_rays(count, *, x_nm=0.0, y_nm=0.0, energy_ev=300_000.0):
@@ -195,7 +205,7 @@ def test_incident_bundle_interpolates_an_upstream_boundary_before_later_stop():
 
 
 def test_finite_geometry_finds_sample_face_and_mesh_sidewall():
-    state = default_state()
+    state = _material_state()
     geometry = ElasticTransportGeometry.from_state(state)
     start = np.asarray(
         (0.0, 0.0, geometry.sample_top_nm - 8.0 * geometry.epsilon_nm)
@@ -229,7 +239,7 @@ def test_finite_geometry_finds_sample_face_and_mesh_sidewall():
 
 
 def test_finite_geometry_uses_the_circular_disk_sidewall():
-    state = default_state()
+    state = _material_state()
     state.sample.size_x_nm = state.sample.size_y_nm = 10.0
     geometry = ElasticTransportGeometry.from_state(state)
     inside = np.asarray((0.0, 0.0, 0.0))
@@ -274,7 +284,7 @@ def test_tilted_incident_ray_is_back_projected_from_the_reference_plane():
 
 
 def test_point_transport_is_seeded_and_aggregates_real_material_paths():
-    state = default_state()
+    state = _material_state()
     # A finite foil thick enough to sample both histories with this small,
     # deterministic ensemble; independent of the application's 5 nm default.
     state.sample.thickness_nm = 100.0
@@ -341,7 +351,7 @@ def test_point_transport_progress_reports_completed_histories():
 
 
 def test_retracted_holder_removes_sample_and_support_from_transport():
-    state = default_state()
+    state = _material_state()
     state.sample.inserted = False
     state.sample.eds_support_material_key = "gold"
     result = simulate_elastic_point_transport(
@@ -354,7 +364,7 @@ def test_retracted_holder_removes_sample_and_support_from_transport():
 
 
 def test_heavy_support_sets_accuracy_warning_and_event_guard():
-    state = default_state()
+    state = _material_state()
     state.sample.thickness_nm = 0.0
     state.sample.eds_support_material_key = "gold"
     state.sample.eds_support_mesh_key = "square_200"

@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 from temsim.diagnostics import OpticalTransferRecord
-from temsim.gui import diagnostic_tabs
+from temsim import diagnostics
 from temsim.gui.diagnostic_tabs import OpticalTransferView
 from temsim.physics.first_order import (
     DetectorFrameCalibration,
@@ -148,7 +148,7 @@ def test_target_changes_reuse_cached_records_and_keep_numeric_details(qtbot, mon
     def forbidden_trace(_state):
         pytest.fail("Changing an optical-transfer display must reuse cached records")
 
-    monkeypatch.setattr(diagnostic_tabs, "optical_transfer_records", forbidden_trace)
+    monkeypatch.setattr(diagnostics, "optical_transfer_records", forbidden_trace)
     view = OpticalTransferView()
     qtbot.addWidget(view)
     first = _record(np.eye(2), np.zeros((2, 2)), key="first")
@@ -173,7 +173,7 @@ def test_target_changes_reuse_cached_records_and_keep_numeric_details(qtbot, mon
     _assert_mapped_circle(view.overview.position_response, first.transfer.j_img)
 
 
-def test_legacy_optical_records_are_rebuilt_in_canonical_coordinates(qtbot, monkeypatch):
+def test_legacy_optical_records_require_recalculation_without_ui_solver(qtbot, monkeypatch):
     view = OpticalTransferView()
     qtbot.addWidget(view)
     canonical = _record(3.0 * np.eye(2), np.zeros((2, 2)))
@@ -184,23 +184,95 @@ def test_legacy_optical_records_are_rebuilt_in_canonical_coordinates(qtbot, monk
         j_diff_m_per_rad=mechanical.j_diff_m_per_rad,
         position_offset_m=mechanical.position_offset_m,
     )
-    calls = []
+    def forbidden_trace(_state):
+        pytest.fail("Rendering an old archive must not start a canonical solve on the GUI thread")
 
-    def rebuild(snapshot):
-        calls.append(snapshot)
-        return (canonical,)
-
-    monkeypatch.setattr(diagnostic_tabs, "optical_transfer_records", rebuild)
-    for index, old_transfer in enumerate((mechanical, untagged), start=1):
+    monkeypatch.setattr(diagnostics, "optical_transfer_records", forbidden_trace)
+    for old_transfer in (mechanical, untagged):
+        view.display_result(_result(canonical))
         result = _result(replace(old_record, transfer=old_transfer))
         view.display_result(result)
-        assert len(calls) == index
-        assert calls[-1] is result.state_snapshot
-        assert "image" in view.overview.plane_kind.text().lower()
-        _assert_mapped_circle(view.overview.position_response, canonical.transfer.j_img)
-        view._display_selected_record()
-        assert len(calls) == index
+        assert "Recalculate High accuracy" in view.summary.text()
+        assert view.target_plane.count() == 0
+        assert view.matrix_text.toPlainText() == ""
+        assert not view.capture_current.isEnabled()
+        assert _outline(view.overview.position_response).size == 0
         assert result.simulation.optical_transfers[0].transfer is old_transfer
+
+
+@pytest.mark.parametrize("quality", ["Preview", "Medium"])
+def test_tuning_without_executed_records_clears_previous_diagnostics(qtbot, monkeypatch, quality):
+    def forbidden_trace(*_args, **_kwargs):
+        pytest.fail("A live frame must not run first-order optics while publishing its result")
+
+    from temsim.optics import direct_alignment
+    monkeypatch.setattr(diagnostics, "optical_transfer_records", forbidden_trace)
+    monkeypatch.setattr(direct_alignment, "canonical_transfers", forbidden_trace)
+    view = OpticalTransferView()
+    qtbot.addWidget(view)
+    previous = _record(np.eye(2), np.eye(2))
+    view.display_result(_result(previous))
+    view._capture_current_mode()
+    captured = view._captures.copy()
+    result = _result()
+    result.simulation.metrics.update(tuning_quality=quality, particle_tuning=True)
+
+    view.display_result(result)
+
+    assert f"not calculated for {quality}" in view.summary.text()
+    assert view.target_plane.count() == 0
+    assert view._records == ()
+    assert view.matrix_text.toPlainText() == ""
+    assert not view.capture_current.isEnabled()
+    assert _outline(view.overview.position_response).size == 0
+    assert _outline(view.overview.angle_response).size == 0
+    assert view._captures == captured  # Explicit historical captures keep their old record.
+
+
+@pytest.mark.parametrize("explicit_status", [False, True])
+def test_unified_missing_diagnostics_does_not_call_legacy_solver(qtbot, monkeypatch, explicit_status):
+    def forbidden_trace(*_args, **_kwargs):
+        pytest.fail("Unified beam publication must not invoke a legacy diagnostic")
+
+    from temsim.optics import direct_alignment
+    monkeypatch.setattr(diagnostics, "optical_transfer_records", forbidden_trace)
+    monkeypatch.setattr(direct_alignment, "canonical_transfers", forbidden_trace)
+    view = OpticalTransferView()
+    qtbot.addWidget(view)
+    view.display_result(_result(_record(np.eye(2), np.eye(2))))
+    result = _result()
+    result.state_snapshot.simulation_mode = "unified"
+    if explicit_status:
+        result.simulation.metrics.update(canonical_transfer_status="unavailable",
+                                        canonical_transfer_reason="Unified canonical diagnostics are not qualified.")
+
+    view.display_result(result)
+
+    assert "unavailable" in view.summary.text().lower()
+    assert "qualified" in view.summary.text().lower()
+    assert view._records == ()
+    assert not view.capture_current.isEnabled()
+    assert view.matrix_text.toPlainText() == ""
+
+
+def test_high_accuracy_publishes_exact_executed_records_without_new_trace(qtbot, monkeypatch):
+    def forbidden_trace(*_args, **_kwargs):
+        pytest.fail("High accuracy must display the already executed canonical diagnostics")
+
+    from temsim.optics import direct_alignment
+    monkeypatch.setattr(diagnostics, "optical_transfer_records", forbidden_trace)
+    monkeypatch.setattr(direct_alignment, "canonical_transfers", forbidden_trace)
+    view = OpticalTransferView()
+    qtbot.addWidget(view)
+    record = _record(3*np.eye(2), np.eye(2))
+    result = _result(record)
+    result.state_snapshot._tuning_quality = "High accuracy"
+
+    view.display_result(result)
+
+    assert view._records[0] is record
+    assert view.capture_current.isEnabled()
+    _assert_mapped_circle(view.overview.position_response, record.transfer.j_img)
 
 
 def test_missing_snapshot_clears_previous_visual_and_numeric_result(qtbot):

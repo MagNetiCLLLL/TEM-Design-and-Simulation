@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
 )
 
 from temsim.gui.job_coordinator import CoordinatedPool, ResourceClaim
+from temsim.gui.coherent_result_labels import coherent_preview_text
 from temsim.physics.electron_detection import MAX_EMITTED_ELECTRONS, sample_electron_detections
 
 
@@ -201,7 +202,7 @@ class ElectronBeamObservation(QWidget):
                 self._schedule_detections()
         else:
             self.stack.setCurrentWidget(self.screen)
-            self.note.setText("Expected screen intensity from the retained complex modes. Purple is low intensity on this colour scale; it is not a material or vacuum background.")
+            self.note.setText(coherent_preview_text(self.result) + "Expected screen intensity from the retained complex modes. Purple is low intensity on this colour scale; it is not a material or vacuum background.")
 
     def _cancel_detections(self):
         self.timer.stop()
@@ -215,7 +216,7 @@ class ElectronBeamObservation(QWidget):
         if self._closed or self.mode.currentData() != "arrivals" or self.preview is None:
             return
         self._cancel_detections()
-        self.note.setText("Sampling virtual arrivals from the displayed plane; the propagated beam is unchanged.")
+        self.note.setText(coherent_preview_text(self.result) + "Sampling virtual arrivals from the displayed plane; the propagated beam is unchanged.")
         self.timer.start(50)
 
     def _start_detections(self):
@@ -258,14 +259,14 @@ class ElectronBeamObservation(QWidget):
         if first:
             self.fit_view()
         self.arrival_plot.setTitle(f"Exact Z {self.result.checkpoint.plane_z_mm:.9g} mm<br>Simulated electron arrivals")
-        self.note.setText(f"Emitted {data.emitted_count:,} | Arrived {data.detected_count:,} | Not reaching this screen {data.lost_count:,} | "
+        self.note.setText(coherent_preview_text(self.result) + f"Emitted {data.emitted_count:,} | Arrived {data.detected_count:,} | Not reaching this screen {data.lost_count:,} | "
             f"Expected arrival fraction {data.detection_probability:.7g}. "
             + ("All arrivals shown as counts per bin. " if dense else "Dots are independent virtual screen events, not trajectories. ")
             + "Positions are sampled at the intensity display-bin resolution. No detector response or electron-electron interactions are added.")
 
     def _detections_failed(self, generation, error):
         if not self._closed and generation == self._generation:
-            self.note.setText(f"Electron arrivals unavailable: {error}. The calculated beam is retained.")
+            self.note.setText(coherent_preview_text(self.result) + f"Electron arrivals unavailable: {error}. The calculated beam is retained.")
 
     def _detections_finished(self, generation):
         if generation == self._generation:
@@ -323,11 +324,12 @@ class ElectronBeamObservation(QWidget):
         combo.hide()
         self.diagnostics.analysis.view_label.hide()
         self.note.setText(
+            coherent_preview_text(self.result, member_index=max(0, self.member.currentIndex())) + (
             "Actual transverse phase at the displayed Z, in radians wrapped to [-π, π]. "
             "Tilt, defocus and aberrations are retained; no phase terms are fitted or subtracted. "
             "Select one coherent mode; independent modes have no single combined phase."
             if mode == "wave_phase" else
-            "Readout of one executed Tip state; independent modes sum currents/intensities. Phase selects a single mode. Probability-flow arrows are local current directions, not measured electron trajectories.")
+            "Readout of one executed Tip state; independent modes sum currents/intensities. Phase selects a single mode. Probability-flow arrows are local current directions, not measured electron trajectories."))
 
     def _show_wavefront_comparison(self):
         if self.wavefront_comparison is None:
@@ -339,7 +341,8 @@ class ElectronBeamObservation(QWidget):
         result = members[max(0, self.member.currentIndex())] if self.result is not None else None
         self.wavefront_comparison.set_observation(result)
         self.wavefront_comparison.set_projection_angle(self._projection_angle_deg)
-        self.note.setText("Compute reference runs an additional calculation for the displayed Tip state and exact Z. "
+        self.note.setText(coherent_preview_text(self.result, member_index=max(0, self.member.currentIndex()))
+                          + "Compute reference runs an additional calculation for the displayed Tip state and exact Z. "
                           "Changing the mode or constant-phase option only reads the completed reference.")
 
     def _reference_state(self, actual):

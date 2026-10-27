@@ -69,6 +69,20 @@ def test_same_panel_current_and_angles_keep_absolute_tip_weights(view, monkeypat
     assert original.digest == digest
 
 
+def test_standalone_section_and_phase_display_exploratory_label(view):
+    from test_coherent_result_labels import preview_profile
+    original = replace(checkpoint(), record={'unified_numerical_profile': preview_profile()})
+    digest = original.digest
+    display(view, original, axial_bz_t=0.)
+    assert 'Exploratory preview' in view.heading.text()
+    assert 'not accuracy qualified' in view.summary.text()
+    assert 'Column cap 2048' in view.summary.text()
+    switch(view, 'wave_phase')
+    assert 'not accuracy qualified' in view.summary.text()
+    assert 'Single-mode phase plate' in view.analysis.legend.text()
+    assert original.digest == digest
+
+
 def test_wave_readout_hides_particle_spot_controls_and_restores_them(view):
     view.display_result(make_result())
     a = view.analysis

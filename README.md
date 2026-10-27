@@ -124,7 +124,21 @@ For particle calculations, a CUDA driver without Numba's CUDA compiler also
 triggers CPU fallback under **Auto**; the result retains the reason.
 **Require GPU** continues to reject an unavailable GPU backend.
 
-For fast CIF-dependent HAADF/BF/DF images, first run **Run high-accuracy once**
+The **Simulation** menu separates three physical-model categories from those
+numerical settings: **Ideal Optics** uses fast thin optical events,
+**Finite-Field Optics** connects particles and coherent waves to shared immutable
+potentials and geometry, with explicit source and solver support gates,
+and **Coupled Multiphysics** is reserved for future development. Existing saved
+`ideal` profiles keep their finite-field behavior. Particle count and step remain
+in the toolbar; **Coherent settings** opens the separate wave grid, energy,
+step and memory inputs. See [calculation models and numerical controls](docs/CALCULATION_MODES_AND_NUMERICS.md)
+and [shared-field execution and qualification boundaries](docs/UNIFIED_FIELD_EXECUTION.md).
+The [coherent UI route](docs/UNIFIED_WAVE_UI_ROUTE.md) documents admitted sources
+and fields; [calculation progress](docs/CALCULATION_PROGRESS.md) explains the
+separate current-step and completed-stage indicators.
+
+For the existing CIF-dependent HAADF/BF/DF image workflows, select the explicit
+**Parameterized fields (legacy)** execution entry. First run **Run high-accuracy once**
 with the current instrument settings. Then choose **Projected atoms (fast
 approximation)** in Scanning Image, set the scan pixel size and click
 **Calculate**. This non-wave model combines actual CIF positions/occupancies,

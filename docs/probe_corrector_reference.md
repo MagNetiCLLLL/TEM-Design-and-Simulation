@@ -777,13 +777,16 @@ NumPy, Numba and CUDA use the same step formula; public results retain physical
 ray slopes. A finer step now verifies the fitted optics instead of moving the
 focus by a large discretisation error.
 
-## DPH response with the revised Ideal Optics definition
+## Historical DPH response with parameterized finite fields
 
 On 10 October 2026, Ideal Optics was changed to retain configured HP, Cs,
 chromatic and actual-energy effects. Its distinction is the use of parameterised
 fields rather than a material/pole-piece field solution; see
 [Simulation model levels](SIMULATION_MODES.md). No source or optical strength
 was retuned for the following check.
+
+That historical `ideal` key is now named **Finite-Field Optics**. The numerical
+record below does not qualify the new `ideal_thin` approximation.
 
 `scripts/validate_dph_aberrations.py` executed 26 downstream CUDA comparisons
 in 51.1 seconds. The completed record is

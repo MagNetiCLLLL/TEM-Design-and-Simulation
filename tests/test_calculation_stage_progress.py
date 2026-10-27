@@ -21,7 +21,7 @@ def test_history_count_never_weights_eds_more_than_other_stages(histories):
     progress.update(histories, histories, "Elastic histories complete")
     completed, total, label = events[-1]
     assert completed / total < 0.5
-    assert label == "Stage 2/4 | Elastic histories complete | stage progress 100.0%"
+    assert label == "Stage 2/4 | Elastic histories complete | step progress 100.0%"
     assert total <= _QT_PROGRESS_SAFE_MAX
     progress.advance()
     assert events[-1] == (20_000, 40_000, "Stage 3/4 | STEM")
@@ -33,8 +33,8 @@ def test_new_local_step_reports_real_counts_without_outer_regression():
     progress.update(15_000, 15_000, "Elastic histories")
     progress.update(0, 80, "X-ray collection 0/80")
     progress.update(20, 80, "X-ray collection 20/80")
-    assert events[-2][2].endswith("X-ray collection 0/80 | stage progress 0.0%")
-    assert events[-1][2].endswith("X-ray collection 20/80 | stage progress 25.0%")
+    assert events[-2][2].endswith("X-ray collection 0/80 | step progress 0.0%")
+    assert events[-1][2].endswith("X-ray collection 20/80 | step progress 25.0%")
     positions = [done / total for done, total, _ in events]
     assert positions == sorted(positions)
     assert positions[-1] < 0.5
@@ -52,15 +52,17 @@ def test_only_finished_pipeline_reports_complete():
     assert events[-1] == (40_000, 40_000, "Complete")
 
 
-def test_invalid_nested_counts_are_bounded_and_unknown_totals_are_ignored():
+def test_invalid_nested_counts_are_bounded_and_unknown_totals_clear_local_progress():
     progress, events = reporter()
     progress.update(-10, 2, "Before work")
-    assert events[-1] == (0, 40_000, "Stage 1/4 | Before work | stage progress 0.0%")
+    assert events[-1] == (0, 40_000, "Stage 1/4 | Before work | step progress 0.0%")
     progress.update(10, 2, "After work")
-    assert events[-1] == (9_999, 40_000, "Stage 1/4 | After work | stage progress 100.0%")
+    assert events[-1] == (9_999, 40_000, "Stage 1/4 | After work | step progress 100.0%")
     count = len(events)
     progress.update(0, 0, "Unknown")
-    assert len(events) == count
+    assert len(events) == count + 1
+    assert events[-1][2] == "Stage 1/4 | Unknown"
+    assert events[-1][2].progress.local_total is None
 
 
 def test_callback_exceptions_preserve_cancellation_contract():
@@ -105,6 +107,96 @@ def test_transport_progress_scope_cleans_up_on_cancellation():
     assert events == ["outer restored"]
 
 
+def test_nested_transport_traces_keep_one_monotonic_local_progress_without_completing_workflow():
+    from temsim.physics.transport_progress import (
+        transport_progress, transport_progress_segment, report_transport_progress)
+    from temsim.calculation_progress import CalculationProgress, callback_progress
+    events = []
+    with transport_progress(events.append):
+        for trace, steps in enumerate((8, 13, 5)):
+            with transport_progress_segment(trace, 3, label="Actual scan response"):
+                report_transport_progress("Preparing unknown work")
+                for step in range(steps+1):
+                    report_transport_progress("Column integration", completed=step, total=steps)
+                assert events[-1].local_progress.completed < (trace+1)*1_000_000
+    counts = [event.local_progress.completed for event in events]
+    assert counts == sorted(counts)
+    assert {event.local_progress.total for event in events} == {3_000_000}
+    assert counts[-1] == 3_000_000
+    assert "1/3" in events[0] and "3/3" in events[-1]
+    previous = CalculationProgress("job", "Particles", "Prepare", stages_completed=0,
+                                   stages_total=4, stage_name="Prepare")
+    final = callback_progress(previous, 0, 0, events[-1])
+    assert final.stages_completed == 0 and final.stages_total == 4
+    assert final.status == "running"
+
+
+@pytest.mark.parametrize("exception", [InterruptedError, RuntimeError])
+def test_nested_transport_failure_does_not_complete_trace_and_restores_parent(exception):
+    from temsim.physics.transport_progress import (
+        transport_progress, transport_progress_segment, report_transport_progress)
+    events = []
+    with transport_progress(events.append):
+        with pytest.raises(exception):
+            with transport_progress_segment(1, 2, label="Response"):
+                report_transport_progress("Half done", completed=5, total=10)
+                report_transport_progress("Unknown remainder")
+                assert events[-1].local_progress.completed == 1_500_000
+                raise exception("Stop this trace")
+        assert events[-1].local_progress.completed < events[-1].local_progress.total
+        report_transport_progress("Outer callback restored")
+    assert events[-1] == "Outer callback restored"
+    assert not hasattr(events[-1], "local_progress")
+
+
+def test_progress_segment_composes_without_overwriting_parent_mapping():
+    from temsim.physics.transport_progress import (
+        transport_progress, transport_progress_segment, report_transport_progress)
+    events = []
+    with transport_progress(events.append), transport_progress_segment(0, 2, label="Calibration"):
+        with transport_progress_segment(1, 4, label="Trace"):
+            report_transport_progress("Actual step", completed=1, total=2)
+            assert events[-1].local_progress.completed == 375_000
+            assert events[-1].local_progress.total == 2_000_000
+    assert events[-1].local_progress.completed == 1_000_000
+
+
+@pytest.mark.parametrize("cancelled", [False, True])
+def test_particle_section_reports_scan_calibration_before_starting_source(monkeypatch, cancelled):
+    import temsim.simulation_pipeline as pipeline
+    from temsim.optics.column import default_state
+    from temsim.physics.transport_progress import report_transport_progress, transport_progress_active
+
+    state = default_state()
+    state.simulation_mode = "unified"
+    events = []
+    class ReachedSourcePreparation(RuntimeError):
+        pass
+
+    def calibration(_state, **kwargs):
+        assert transport_progress_active()
+        report_transport_progress("Finite-coil response", completed=7, total=17)
+        assert events[-1][2].progress.local_completed == 7
+        assert events[-1][2].progress.local_total == 17
+        if cancelled:
+            raise InterruptedError("Cancelled in scan calibration")
+        report_transport_progress("Finite-coil response complete", completed=17, total=17)
+
+    def captured(_state):
+        raise ReachedSourcePreparation("Calibration finished before source capture")
+
+    monkeypatch.setattr("temsim.physics.unified_scan_calibration.calibrate_unified_scan", calibration)
+    monkeypatch.setattr(pipeline, "capture_external_input_identities", captured)
+    with pytest.raises(InterruptedError if cancelled else ReachedSourcePreparation):
+        pipeline.calculate_particle_section(state, target_z_mm=state.sample.z_mm,
+            acquire_stem=False, progress_callback=lambda *row: events.append(row))
+    assert len(events) == (2 if cancelled else 3)
+    assert all(row[2].progress.completed == 0 and row[2].progress.total == 4 for row in events)
+    assert events[0][2].progress.local_total is None
+    assert events[-1][2].progress.local_completed == (7 if cancelled else 17)
+    assert not transport_progress_active()
+
+
 def test_bank_progress_names_point_and_stage_without_global_percentage(qtbot):
     from types import SimpleNamespace
     from PySide6.QtWidgets import QProgressBar
@@ -116,11 +208,11 @@ def test_bank_progress_names_point_and_stage_without_global_percentage(qtbot):
     page = SimpleNamespace(progress=bar)
     InteractiveCalculationPage._progress(
         page, 1, 5, 15_000, 30_000,
-        "Stage 2/3 | EDS photons 20/80 | stage progress 50.0%",
+        "Stage 2/3 | EDS photons 20/80 | step progress 50.0%",
     )
     assert bar.value() == 300
     assert bar.text().startswith("Point 2/5 | Stage 2/3")
-    assert "stage progress 50.0%" in bar.text()
+    assert "step progress 50.0%" in bar.text()
     assert "%p" not in bar.format()
 
 

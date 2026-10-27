@@ -617,6 +617,47 @@ def test_virtual_plane_prefix_at_detector_absorbs_once_when_continuing(monkeypat
     assert after.checkpoint.beam.total_weight == pytest.approx(transmitted.checkpoint.beam.total_weight, rel=1e-12)
 
 
+@pytest.mark.parametrize("prefix_kind", ("incident", "dense", "streamed", "stamped"))
+def test_same_plane_prefix_distinguishes_detector_entrance_from_executed_exit(monkeypatch, tmp_path, prefix_kind, coherent_cuda):
+    """Real mask/drift fixture with an explicitly injected resume candidate."""
+    from temsim.detector import wave_readout
+    from temsim.physics.wave_checkpoint_store import ExecutedWaveStore
+    import temsim.physics.tip_wave_pipeline as pipeline
+    state, original, _gun_calls, _calls = _prefix_fixture(monkeypatch)
+    start = original.plane_z_mm
+    detector = state.camera
+    detector.z_mm, detector.outer_width_mm = start+.1, .01
+    detector.inserted, detector.readout_enabled = True, False
+    incident = simulate_tip_wave(state, _observation_request(tmp_path, detector.z_mm)).checkpoint
+    dense = wave_readout._apply_recording_stop(incident, detector)
+    if prefix_kind == "incident":
+        prefix = incident
+    elif prefix_kind == "dense":
+        prefix = dense
+    elif prefix_kind == "streamed":
+        store = ExecutedWaveStore(tmp_path/"exit", "actual-stop-exit-fixture", 2**26)
+        prefix = wave_readout._recording_stop_streamed(incident, detector, store,
+            verify=lambda: None, cancelled=lambda: False)
+    else:
+        # Only the receipt wrapper is shaped as a unified stamp; the mask
+        # and complex propagation above/below are actual executed fixtures.
+        prefix = replace(dense, record={"schema": "unified-source-column-v1",
+            "unified_recording_stops": [{"detector": detector.key, "modes": dense.record["modes"]}],
+            "upstream": incident.record})
+    applied = []
+    actual_stop = wave_readout._apply_recording_stop
+    def observe_stop(checkpoint, plane):
+        applied.append(plane.key)
+        return actual_stop(checkpoint, plane)
+    monkeypatch.setattr(pipeline, "_apply_recording_stop", observe_stop)
+    monkeypatch.setattr(wave_readout, "_apply_recording_stop", observe_stop)
+    monkeypatch.setattr(pipeline, "_find_observation_prefix", lambda *_a, **_k: prefix)
+    result = simulate_tip_wave(state, _observation_request(tmp_path, start+.2))
+    assert applied == ([detector.key] if prefix_kind == "incident" else [])
+    assert 0 < result.checkpoint.beam.total_weight < incident.beam.total_weight
+    assert result.checkpoint.beam.total_weight == pytest.approx(dense.beam.total_weight, rel=1e-12)
+
+
 @pytest.mark.parametrize("change", ("state", "column_step", "source", "grid", "inelastic", "epoch"))
 def test_virtual_plane_prefix_invalidates_consumed_input_changes(monkeypatch, tmp_path, change, coherent_cuda):
     from temsim.physics.wave_execution import InelasticWaveNumerics

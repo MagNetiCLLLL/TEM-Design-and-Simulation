@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from contextlib import contextmanager
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 import errno
 from hashlib import sha256
 import json
@@ -49,8 +49,9 @@ from temsim.optics.electron_gun.base import (
 
 
 ARTIFACT_STORE_SCHEMA_VERSION = 1
-INCIDENT_SEED_CODEC = "incident-simulation-seed-v6-electromagnetic-energy-intrinsic"
+INCIDENT_SEED_CODEC = "incident-simulation-seed-v8-electromagnetic-energy-ownership"
 _HISTORICAL_INCIDENT_SEED_CODECS = (
+    "incident-simulation-seed-v6-electromagnetic-energy-intrinsic",
     "incident-simulation-seed-v1", "incident-simulation-seed-v2-quadrupole-tensor",
     "incident-simulation-seed-v3-flight-time",
     "incident-simulation-seed-v4-shared-magnetic-field",
@@ -656,6 +657,8 @@ class ArtifactStore:
         arrays = {name: getattr(checkpoints, name) for name in _CHECKPOINT_ARRAY_FIELDS}
         if checkpoints.flight_time_s is not None:
             arrays["flight_time_s"] = checkpoints.flight_time_s
+        from temsim.physics.unified_particle_restart import encode_checkpoint_state
+        unified_checkpoint_state = encode_checkpoint_state(checkpoints, arrays)
         return self.put_array_bundle(
             manifest,
             product_key="incident",
@@ -665,6 +668,7 @@ class ArtifactStore:
             codec=CHECKPOINT_CODEC,
             arrays=arrays,
             metadata={
+                "unified_checkpoint_state": unified_checkpoint_state,
                 "coordinate_system": "column-z-downstream",
                 "units": {
                     "z_mm": "mm",
@@ -692,7 +696,8 @@ class ArtifactStore:
         if bundle is None:
             return None
         required = set(_CHECKPOINT_ARRAY_FIELDS)
-        if set(bundle.arrays) not in (required, required | {"flight_time_s"}):
+        ordinary = {name for name in bundle.arrays if not name.startswith("unified.")}
+        if ordinary not in (required, required | {"flight_time_s"}):
             raise ArtifactIntegrityError(
                 "Incident checkpoint artifact has unexpected arrays"
             )
@@ -705,6 +710,7 @@ class ArtifactStore:
                 "Incident checkpoint phase-space arrays do not align"
             )
         try:
+            from temsim.physics.unified_particle_restart import decode_checkpoint_state
             from temsim.physics.simulation import validate_kinetic_energy_array
             validate_kinetic_energy_array(bundle.arrays["kinetic_energy_ev"], shape, "Checkpoint", allow_unknown=True)
             validate_flight_time_array(bundle.arrays.get("flight_time_s"), shape, "Checkpoint")
@@ -716,6 +722,7 @@ class ArtifactStore:
                 ty_rad=bundle.arrays["ty_rad"],
                 flight_time_s=bundle.arrays.get("flight_time_s"),
                 kinetic_energy_ev=bundle.arrays["kinetic_energy_ev"],
+                unified_state=decode_checkpoint_state(bundle.metadata.get("unified_checkpoint_state"), bundle.arrays),
             )
         except ValueError as exc:
             raise ArtifactIntegrityError("Incident checkpoint clock or kinetic energy is invalid") from exc
@@ -801,6 +808,8 @@ class ArtifactStore:
             arrays[f"plan.{field}"] = getattr(plan, field)
         for field in _CHECKPOINT_ARRAY_FIELDS:
             arrays[f"checkpoint.{field}"] = getattr(checkpoints, field)
+        from temsim.physics.unified_particle_restart import encode_checkpoint_state
+        unified_checkpoint_state = encode_checkpoint_state(checkpoints, arrays, prefix="checkpoint.unified.")
         for field in _GUN_TRACE_ARRAY_FIELDS:
             arrays[f"gun.{field}"] = getattr(gun_trace, field)
         for field in _GUN_EXIT_ARRAY_FIELDS:
@@ -850,6 +859,10 @@ class ArtifactStore:
                 ),
                 "source_model": "gun-ray-trace; not a coherent-wave source checkpoint",
                 "plan_signature": str(plan.signature),
+                "plan_physics_contract": plan.physics_contract,
+                "plan_thin_actions": [asdict(action) for action in plan.thin_actions],
+                "plan_unified_runtime": None if plan.unified_runtime is None else plan.unified_runtime.to_dict(),
+                "unified_checkpoint_state": unified_checkpoint_state,
                 "plan_mapped_fields": map_metadata,
                 "plan_posed_spherical_kicks": [
                     {"lens_key": kick.lens_key, "local_z_m": kick.local_z_m,
@@ -860,6 +873,7 @@ class ArtifactStore:
                 "plan_intrinsic_aberration_kicks": [
                     {"lens_key": kick.lens_key, "local_z_m": kick.local_z_m,
                      "focal_m": kick.focal_m, "coefficients": dict(kick.coefficients),
+                     "chromatic_reference_energy_ev": kick.chromatic_reference_energy_ev,
                      "origin_global_m": kick.registration.origin_global_m,
                      "rotation_local_to_global": kick.registration.rotation_local_to_global}
                     for kick in plan.intrinsic_aberration_kicks],
@@ -931,6 +945,8 @@ class ArtifactStore:
         if ("plan_posed_spherical_kicks" not in metadata
                 or "plan_intrinsic_aberration_kicks" not in metadata):
             raise ArtifactIntegrityError("Incident seed lacks complete aberration events; historical viewing only")
+        if "plan_physics_contract" not in metadata:
+            raise ArtifactIntegrityError("Incident seed lacks physical ownership metadata; historical viewing only")
         try:
             mapped_fields = []
             for index, row in enumerate(metadata.get("plan_mapped_fields", ())):
@@ -965,14 +981,23 @@ class ArtifactStore:
             from temsim.physics.intrinsic_aberrations import FrozenIntrinsicAberrationKick
             def decode_intrinsic(row):
                 if (not isinstance(row, Mapping) or not isinstance(row.get("coefficients"), Mapping)
+                        or "chromatic_reference_energy_ev" not in row
                         or not isinstance(row.get("lens_key"), str) or not row["lens_key"]
                         or any(isinstance(row.get(name), (bool, str)) for name in ("local_z_m", "focal_m"))):
                     raise ValueError("Malformed intrinsic aberration event")
                 return FrozenIntrinsicAberrationKick(
                     row["lens_key"], row["local_z_m"], row["focal_m"],
                     tuple(row["coefficients"].items()),
-                    CoordinateRegistration(row["origin_global_m"], row["rotation_local_to_global"]))
+                    CoordinateRegistration(row["origin_global_m"], row["rotation_local_to_global"]),
+                    row["chromatic_reference_energy_ev"])
             intrinsic_kicks = tuple(map(decode_intrinsic, metadata["plan_intrinsic_aberration_kicks"]))
+            from temsim.physics.thin_optics import ThinOpticalAction
+            thin_actions = tuple(ThinOpticalAction(**{
+                **row, "registration": CoordinateRegistration(**row["registration"])})
+                for row in metadata.get("plan_thin_actions", ()))
+            from temsim.physics.unified_field_runtime import UnifiedFieldRuntime
+            unified_record=metadata.get("plan_unified_runtime")
+            unified_runtime=None if unified_record is None else UnifiedFieldRuntime.from_dict(unified_record)
             plan = AxialPropagationPlan(
                 **fields("plan", _INCIDENT_PLAN_ARRAY_FIELDS),
                 solver_signature=str(metadata["plan_solver_signature"]),
@@ -983,6 +1008,9 @@ class ArtifactStore:
                 mapped_fields=tuple(mapped_fields),
                 posed_spherical_kicks=posed_cs,
                 intrinsic_aberration_kicks=intrinsic_kicks,
+                physics_contract=metadata["plan_physics_contract"],
+                thin_actions=thin_actions,
+                unified_runtime=unified_runtime,
             )
             from temsim.particle_section_io import _validate_plan_fields
             _validate_plan_fields(plan)
@@ -991,9 +1019,12 @@ class ArtifactStore:
             validate_kinetic_energy_array(arrays["incident.kinetic_energy_ev"], np.shape(arrays["incident.x"]), "Incident", allow_unknown=True)
             validate_flight_time_array(arrays.get("checkpoint.flight_time_s"),
                                       np.shape(arrays["checkpoint.x_m"]), "Checkpoint")
+            from temsim.physics.unified_particle_restart import decode_checkpoint_state
             checkpoints = PropagationCheckpoints(
                 **fields("checkpoint", _CHECKPOINT_ARRAY_FIELDS),
                 flight_time_s=arrays.get("checkpoint.flight_time_s"),
+                unified_state=decode_checkpoint_state(
+                    metadata.get("unified_checkpoint_state"), arrays, prefix="checkpoint.unified."),
             )
             exit_bundle = GunExitBundle(
                 **fields("gun_exit", _GUN_EXIT_ARRAY_FIELDS),

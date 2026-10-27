@@ -517,7 +517,8 @@ class State:
     lens_field_map_descriptors: dict = field(default_factory=dict, repr=False)
 
     # Legacy states keep their mixed per-lens configuration. New teaching
-    # windows explicitly select Ideal Optics without changing operating values.
+    # windows explicitly select parameterized Finite-Field Optics (the historical
+    # ideal key) without changing operating values. ideal_thin is a separate mode.
     simulation_mode: str = "custom"
     simulation_mode_profiles: dict = field(default_factory=dict, repr=False)
 

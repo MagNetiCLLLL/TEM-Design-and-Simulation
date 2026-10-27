@@ -427,6 +427,13 @@ def test_real_instrument_state_vacuum_response_keeps_property_backed_recorders()
     from temsim.optics.column import default_state
     from temsim.physics.recording_clipping import clip_recording_planes
     state = default_state()
+    # This fixture tests recording/medium ownership with an exact straight
+    # path. Excited lenses would bend its nonzero input positions even with
+    # zero initial slopes, so their path length would exceed the axial span.
+    for collection in (state.lenses, state.stigmators, state.deflectors, state.corrector_elements):
+        for component in collection:
+            component.enabled = False
+    state.equivalent_image_lenses_enabled = False
     state.vacuum_map.enabled = True
     state.sample.inserted = False
     state.sample.thickness_nm = 0.

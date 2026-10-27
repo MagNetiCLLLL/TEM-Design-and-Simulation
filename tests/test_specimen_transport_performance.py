@@ -1,6 +1,7 @@
 """Boundary-work regressions and analytic fixtures, not OEM validation."""
 
 import math
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -17,6 +18,10 @@ from temsim.specimen.vector_field_transport import SpecimenFieldTransport
 def _state():
     state = default_state()
     switch_mode(state, "ideal")
+    # Geometry/performance tests require actual matter, not the startup vacuum.
+    state.sample.specimen_mode = "atomic"
+    state.sample.inserted = True
+    state.sample.cif_path = str(Path(__file__).parent / "fixtures" / "cif" / "Si.cif")
     state.sample.thickness_nm = 10.0
     state.sample.eds_support_material_key = "vacuum"
     return state

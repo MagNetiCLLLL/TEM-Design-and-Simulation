@@ -320,6 +320,19 @@ def reselect_phase_carrier(wave, wavelength_m, *, grid_numerics,
         return wave, [{"method": "phase-carrier optimization not applied: refinement budget",
             "from_shape": wave.amplitude.shape, "to_shape": wave.amplitude.shape,
             "reason": str(error), "probability": probability}]
+    refined_boundary = _input_boundary_probability(result.amplitude)
+    if refined_boundary > max(1e-30, probability*1e-12):
+        # Fourier embedding after a hard mask can populate the cell boundary
+        # with the periodic interpolant's sinc tails. Zero-extending that
+        # interpolant later would change the finite input domain according to
+        # how often this optional gauge was selected. Leave the original
+        # samples and carrier intact so the physical propagator can admit or
+        # extend their domain before any representation refinement.
+        return wave, [{"method": "phase-carrier optimization not applied: unresolved refined input boundary",
+            "from_shape": wave.amplitude.shape, "to_shape": wave.amplitude.shape,
+            "attempted_shape": result.amplitude.shape,
+            "input_boundary_probability": boundary,
+            "refined_boundary_probability": refined_boundary, "probability": probability}]
     rows.extend(selected_rows)
     return result, rows
 
@@ -400,6 +413,7 @@ def _propagate_plane_wave(wave, matrix, translation, wavelength_m, reference_len
             from temsim.physics.cpu_angular_spectrum import conservative_angular_spectrum
             amplitude = conservative_angular_spectrum(wave, drift, wavelength_m,
                 grid_numerics=grid_numerics, retained_bytes=retained_bytes, cancelled=cancelled)
+            amplitude = _admit_angular_spectrum_domain(wave, amplitude, drift, wavelength_m, diagnostic)
         else:
             if grid_numerics is not None:
                 grid_numerics.check(wave.amplitude.shape, retained_bytes=retained_bytes)
@@ -415,7 +429,11 @@ def _propagate_plane_wave(wave, matrix, translation, wavelength_m, reference_len
                 # and try the original Collins operator within the SAME budget.
                 # Cancellation, memory exhaustion, invalid settings and an
                 # unresolved physical operator are deliberately not caught.
-                unavailable_domain = error
+                # The failed optional chart may have allocated larger waves
+                # before its next candidate exceeded the budget. Preserve
+                # its diagnostic without retaining those arrays through the
+                # exception traceback while the alternate chart executes.
+                unavailable_domain = _AngularSpectrumDomainUnavailable(str(error), error.diagnostic)
         if amplitude is not None:
             # M L(Q) = L(Q_out) S(A_eff) D(A_eff^-1 B). This
             # scaled angular-spectrum form resolves successive far-field
@@ -440,7 +458,15 @@ def _propagate_plane_wave(wave, matrix, translation, wavelength_m, reference_len
         from temsim.physics.wave_grid import WaveSamplingError
         message = f"{unavailable_domain}; Collins alternate failed: {error}"
         if isinstance(error, WaveSamplingError):
-            raise WaveSamplingError(message, required_scale=error.required_scale) from error
+            combined = WaveSamplingError(message, required_scale=error.required_scale)
+            diagnostic = unavailable_domain.diagnostic
+            if diagnostic.get("resource_refusal") == "declared_domain_grid_budget":
+                from temsim.physics.wave_grid import CanonicalChartResourceHint
+                combined.canonical_chart_resource_hint = CanonicalChartResourceHint(
+                    tuple(wave.amplitude.shape), tuple(diagnostic["requested_shape"]),
+                    "angular_spectrum_domain", "declared_domain_grid_budget", "collins",
+                    str(error), error.required_scale)
+            raise combined from error
         raise ValueError(message) from error
     if unavailable_domain is not None and sampling_records is not None:
         sampling_records.append({"method": "resolved Collins alternate after optional angular-spectrum domain unavailable",
@@ -599,6 +625,41 @@ def _input_boundary_probability(amplitude):
         +xp.sum(abs(amplitude[2:-2, :2])**2)+xp.sum(abs(amplitude[2:-2, -2:])**2))
 
 
+def _admit_angular_spectrum_domain(wave, amplitude, drift, wavelength_m, diagnostic):
+    """Check spatial support independently of the FFT's phase/norm accuracy.
+
+    A short full-band drift can still move an off-centre packet through a
+    periodic boundary. Check its output edges and the input margin needed by
+    every represented group displacement; the latter also catches a packet
+    that has already wrapped completely past the output edge strips. This
+    is a finite-grid admission check, not a continuum tail error bound.
+    """
+    if np.all(drift == 0):
+        return amplitude
+    xp = array_module(amplitude)
+    probability = float(xp.sum(abs(amplitude)**2))
+    boundary = _input_boundary_probability(amplitude)
+    inverse = np.linalg.inv(wave.basis_m)
+    group_cells = .5*wavelength_m*np.sum(abs(inverse@drift@inverse.T), axis=1)
+    ny, nx = wave.amplitude.shape
+    margin_x = min(nx, 2+int(math.ceil(group_cells[0])))
+    margin_y = min(ny, 2+int(math.ceil(group_cells[1])))
+    if 2*margin_x >= nx or 2*margin_y >= ny:
+        input_margin = wave.probability
+    else:
+        value = wave.amplitude
+        input_margin = float(xp.sum(abs(value[:margin_y])**2)+xp.sum(abs(value[-margin_y:])**2)
+            +xp.sum(abs(value[margin_y:-margin_y, :margin_x])**2)
+            +xp.sum(abs(value[margin_y:-margin_y, -margin_x:])**2))
+    diagnostic.update(output_boundary_probability=boundary,
+        input_displacement_margin_probability=input_margin,
+        maximum_group_displacement_cells_xy=group_cells.tolist())
+    if max(boundary, input_margin) > max(1e-30, probability*1e-12):
+        diagnostic["failure"] = "output_boundary"
+        return None
+    return amplitude
+
+
 def _extend_angular_spectrum_domain(wave, drift, wavelength_m, diagnostic, *, numerics,
                                    retained_bytes=0, cancelled=lambda: False, sampling_records=None):
     """Keep all executed finite quadrature cells while expanding their domain.
@@ -608,10 +669,13 @@ def _extend_angular_spectrum_domain(wave, drift, wavelength_m, diagnostic, *, nu
     infinite-domain tails vanish. Its admitted output retains the entire
     expanded field. Material/domain convergence remains a separate check.
     """
+    from scipy.fft import next_fast_len
     from temsim.physics.wave_grid import WaveGridBudgetError
     if cancelled():
         raise InterruptedError("Angular-spectrum domain extension cancelled")
     initial_diagnostic = dict(diagnostic)
+    numerics.validate()
+    padding_policy = numerics.angular_domain_padding
     if not numerics.automatic_refinement:
         raise _AngularSpectrumDomainUnavailable(
             "Angular-spectrum physical-domain extension is required; automatic refinement is disabled", initial_diagnostic)
@@ -623,27 +687,69 @@ def _extend_angular_spectrum_domain(wave, drift, wavelength_m, diagnostic, *, nu
     # Maximum group displacement of EVERY represented Fourier bin, in
     # lattice-index x/y units. Padding leaves a larger margin than this
     # displacement around all retained input cells, not just the bright core.
-    group_cells = .5*wavelength_m*np.sum(abs(inverse_basis@drift@inverse_basis.T), axis=1)
-    factor = 2
-    while True:
-        if cancelled():
-            raise InterruptedError("Angular-spectrum domain extension cancelled")
-        shape = (ny*factor, nx*factor)
+    with np.errstate(over="ignore", invalid="ignore"):
+        group_cells = .5*wavelength_m*np.sum(abs(inverse_basis@drift@inverse_basis.T), axis=1)
+    if not np.all(np.isfinite(group_cells)):
+        raise _AngularSpectrumDomainUnavailable(
+            "Angular-spectrum domain extension needs an unrepresentable finite grid",
+            initial_diagnostic)
+
+    attempted_shapes = []
+
+    def checked_shape(shape):
+        # A legal finite optical map can need an astronomically large
+        # chart near a caustic. Reject its integer/working-space bound before
+        # asking the native FFT planner to find a representable fast length.
+        if max(shape) > np.iinfo(np.intp).max:
+            raise _AngularSpectrumDomainUnavailable(
+                "Angular-spectrum domain extension needs an unrepresentable finite grid",
+                {**initial_diagnostic, "requested_shape": shape})
         try:
-            required = numerics.check(shape, retained_bytes=retained_bytes+initial.amplitude.nbytes+wave.amplitude.nbytes)
+            return numerics.check(shape,
+                retained_bytes=retained_bytes+initial.amplitude.nbytes+wave.amplitude.nbytes)
         except WaveGridBudgetError as error:
-            # Fourier input refinement keeps the physical window and cannot
-            # resolve this failure. Do not expose it as a sampling retry.
             raise _AngularSpectrumDomainUnavailable(
                 f"Angular-spectrum domain extension budget exceeded: {error}",
                 {**initial_diagnostic, "requested_shape": shape,
+                 "attempted_shapes": attempted_shapes,
+                  "resource_refusal": "declared_domain_grid_budget",
                  "input_boundary_probability": original_boundary}) from error
-        margin = np.array(((shape[1]-nx)/2, (shape[0]-ny)/2))
-        if np.any(group_cells >= margin):
-            factor *= 2
-            continue
-        padded = xp.zeros(shape, dtype=xp.complex128)
+
+    def fft_extent(minimum):
+        count = next_fast_len(int(math.ceil(minimum)))
+        while count % 2:
+            count = next_fast_len(count+1)
+        return count
+
+    # Candidate size is independent on each lattice axis. Include every
+    # represented group displacement and the same two output-edge strips
+    # checked below; admission still requires the actual propagated field.
+    minimum_shape = ((2*ny, 2*nx) if padding_policy == "doubling" else
+        (ny+2*math.ceil(group_cells[1]+2), nx+2*math.ceil(group_cells[0]+2)))
+    checked_shape(minimum_shape)
+    shape = (minimum_shape if padding_policy == "doubling" else
+             tuple(fft_extent(count) for count in minimum_shape))
+    while True:
+        if cancelled():
+            raise InterruptedError("Angular-spectrum domain extension cancelled")
         start_y, start_x = shape[0]//2-ny//2, shape[1]//2-nx//2
+        side_margins = np.array(((start_x, shape[1]-nx-start_x),
+                                 (start_y, shape[0]-ny-start_y)))
+        margin = np.min(side_margins, axis=1)
+        # Odd input shapes do not have equal left/right padding. The actual
+        # centred insertion, rather than a fractional mean, sets the margin.
+        insufficient = (np.any(group_cells >= margin) if padding_policy == "doubling" else
+                        np.any(margin < np.ceil(group_cells+2)))
+        if insufficient:
+            minimum_shape = (tuple(count*2 for count in shape) if padding_policy == "doubling" else
+                             (shape[0]+2, shape[1]+2))
+            checked_shape(minimum_shape)
+            shape = (minimum_shape if padding_policy == "doubling" else
+                     tuple(fft_extent(count) for count in minimum_shape))
+            continue
+        attempted_shapes.append(shape)
+        required = checked_shape(shape)
+        padded = xp.zeros(shape, dtype=xp.complex128)
         padded[start_y:start_y+ny, start_x:start_x+nx] = initial.amplitude
         wave = initial._replace_owned(padded)
         if cancelled():
@@ -656,15 +762,22 @@ def _extend_angular_spectrum_domain(wave, drift, wavelength_m, diagnostic, *, nu
         if amplitude is not None:
             if sampling_records is not None:
                 sampling_records.append({"method": "spatial zero extension of every executed complex quadrature cell; full output domain retained",
-                    "reason": "sampled spectral propagation exceeded the finite output boundary budget",
+                    "reason": "sampled spectral propagation exceeded the finite spatial-support budget",
                     "from_shape": (ny, nx), "to_shape": shape,
                     "input_boundary_probability": original_boundary,
                     "previous_output_boundary_probability": diagnostic["output_boundary_probability"],
+                    "previous_input_displacement_margin_probability": diagnostic.get("input_displacement_margin_probability"),
                     "output_boundary_probability": attempt["output_boundary_probability"],
                     "spectral_phase_increment_rad": attempt["spectral_phase_increment_rad"],
                     "full_spectral_band_checked": True,
                     "maximum_group_displacement_cells_xy": group_cells.tolist(),
                     "domain_margin_cells_xy": margin.tolist(),
+                    "domain_side_margins_cells_xy": side_margins.tolist(),
+                    "attempted_shapes": attempted_shapes,
+                    "angular_domain_padding": padding_policy,
+                    "candidate_policy": ("Historical powers of two with complete-band input-margin and output-edge admission"
+                        if padding_policy == "doubling" else
+                        "Full-band displacement plus two edge cells on each side; independent even FFT-friendly axes, then at least 1.25 growth after failed output admission"),
                     "input_period_vectors_m": (initial.basis_m@np.diag((nx, ny))).tolist(),
                     "output_period_vectors_m": (wave.basis_m@np.diag((shape[1], shape[0]))).tolist(),
                     "basis_m": wave.basis_m.tolist(), "estimated_working_bytes": required,
@@ -672,15 +785,22 @@ def _extend_angular_spectrum_domain(wave, drift, wavelength_m, diagnostic, *, nu
                     "continuum_tail_scope": "All executed finite cells retained; unknown exterior continuum tails are not established"})
             return wave, amplitude
         diagnostic = attempt
-        factor *= 2
+        if cancelled():
+            raise InterruptedError("Angular-spectrum domain extension cancelled")
+        minimum_shape = (tuple(count*2 for count in shape) if padding_policy == "doubling" else
+                         tuple((5*count+3)//4 for count in shape))
+        checked_shape(minimum_shape)
+        shape = (minimum_shape if padding_policy == "doubling" else
+                 tuple(fft_extent(count) for count in minimum_shape))
 
 
 def _sampled_angular_spectrum(wave, drift, wavelength_m, *, conservative, full_band=False, diagnostic=None):
     """Resolve a spectral drift without treating empty Nyquist bins as rays.
 
-    Outside the existing conservative full-band domain, both the occupied
-    spectral phase and the output boundary mass must pass. Failure selects
-    Fresnel quadrature instead; it never changes or repairs the input field.
+    The conservative full-band criterion bounds spectral phase increments,
+    not spatial support. Every nonzero drift must pass the same input-margin
+    and output-edge checks. Failure selects domain expansion or Fresnel
+    quadrature; it never changes or repairs the input field.
     """
     if diagnostic is None:
         diagnostic = {}
@@ -720,14 +840,7 @@ def _sampled_angular_spectrum(wave, drift, wavelength_m, *, conservative, full_b
             diagnostic["failure"] = "spectral_sampling"
             return None
     amplitude = xp.fft.ifft2(spectrum*xp.exp(1j*phase))
-    if not conservative:
-        probability = float(xp.sum(abs(amplitude)**2))
-        boundary = _input_boundary_probability(amplitude)
-        diagnostic.update(output_boundary_probability=boundary)
-        if boundary > max(1e-30, probability*1e-12):
-            diagnostic["failure"] = "output_boundary"
-            return None
-    return amplitude
+    return _admit_angular_spectrum_domain(wave, amplitude, drift, wavelength_m, diagnostic)
 
 
 def _canonical_map_and_offset(state, z_mm):

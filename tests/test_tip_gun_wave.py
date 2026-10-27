@@ -20,6 +20,122 @@ SOURCE = TipWaveNumerics(energy_samples=1)
 NUMERICS = GunWaveNumerics(field_step_mm=.05, bore_step_mm=2.)
 
 
+@pytest.mark.parametrize("value", [True, np.bool_(True), "12.5", None, 1+0j,
+    0., -1., np.nan, np.inf, -np.inf, 10**1000])
+def test_near_tip_step_rejects_nonphysical_numeric_inputs_before_source_execution(value, monkeypatch):
+    from temsim.physics import tip_gun_wave
+    monkeypatch.setattr(tip_gun_wave, "generate_tip_emission", lambda *_a, **_k:
+                        pytest.fail("Invalid numerical settings must not execute the source"))
+    with pytest.raises(ValueError, match="near_tip_maximum_step_nm"):
+        build_tip_gun_checkpoint(FieldEmissionGun(),
+            numerics=replace(NUMERICS, near_tip_maximum_step_nm=value))
+
+
+@pytest.mark.parametrize("step", [None, 12.5])
+def test_driven_gun_passes_explicit_near_tip_step_without_changing_physical_source(step, monkeypatch):
+    from temsim.optics.column import default_state
+    from temsim.physics import accelerating_tip_boundary
+    from temsim.instrument_snapshot import encode_instrument
+    state = default_state()
+    state.electron_gun.emitter.coherence = TipCoherence(boundary_model="driven_gaussian_schell")
+    state.electron_gun.emitter.energy_spread_fwhm_ev = 0.
+    before = encode_instrument(state)
+    numerical = GunWaveNumerics() if step is None else GunWaveNumerics(near_tip_maximum_step_nm=step)
+    expected = accelerating_tip_boundary.AcceleratingTipNumerics()
+    received = []
+
+    class StopBeforeTransport(Exception):
+        pass
+
+    def capture(**values):
+        received.append(values)
+        raise StopBeforeTransport
+
+    monkeypatch.setattr(accelerating_tip_boundary, "AcceleratingTipNumerics", capture)
+    with pytest.raises(StopBeforeTransport):
+        build_tip_gun_checkpoint(state.electron_gun,
+            source_numerics=TipWaveNumerics(grid_pixels=32, energy_samples=1),
+            numerics=numerical, _column_state=state)
+    assert received == [{"maximum_working_bytes": numerical.maximum_checkpoint_bytes,
+        "source_padding_factor": numerical.near_tip_source_padding_factor,
+        "maximum_step_nm": expected.maximum_step_nm if step is None else step}]
+    assert encode_instrument(state) == before
+
+
+def test_unified_gun_support_is_bounded_non_executable_and_preserves_source_ownership(monkeypatch):
+    from temsim.optics.column import default_state
+    from temsim.simulation_modes import switch_mode
+    from temsim.physics import core, unified_field_particle
+    from temsim.instrument_snapshot import encode_instrument
+    state = default_state()
+    switch_mode(state, "unified")
+    before = encode_instrument(state)
+    monkeypatch.setattr(unified_field_particle, "build_unified_plan", lambda *_a, **_k:
+                        pytest.fail("Gun support must not ask the post-gun executor for a source plan"))
+    support = core.capture_gun_source_support(state, 0., state.electron_gun.exit_plane_z_mm,
+                                              maximum_step_mm=1.)
+    assert support.record["owner"] == "accelerating_gun_source"
+    assert support.record["selected_column_mode"] == "unified"
+    assert support.record["executable"] is False
+    assert support.record["optical_actions_executed"] is False
+    assert support.record["electric_field_identity"]
+    assert support.z_mm[0] == 0. and support.z_mm[-1] == state.electron_gun.exit_plane_z_mm
+    assert not hasattr(support, "solver_signature") and not hasattr(support, "magnetic_t")
+    with pytest.raises(TypeError, match="inspection metadata"):
+        core.execute_propagation_plan(state, support, *[np.zeros(1)]*4)
+    with pytest.raises(TypeError):
+        support.record["executable"] = True
+    assert encode_instrument(state) == before
+    state.lenses[0].percent += .1
+    changed = core.capture_gun_source_support(state, 0., state.electron_gun.exit_plane_z_mm,
+                                              maximum_step_mm=1.)
+    assert changed.signature != support.signature
+
+
+@pytest.mark.parametrize("start, stop, step", [(-1., 1., 1.), (0., 451., 1.),
+    (1., 1., 1.), (0., 1., 0.), (0., float("nan"), 1.), (False, 1., 1.)])
+def test_gun_support_cannot_describe_an_unowned_column_span(start, stop, step):
+    from temsim.optics.column import default_state
+    from temsim.physics.core import capture_gun_source_support
+    with pytest.raises(ValueError, match="inside.*gun exit"):
+        capture_gun_source_support(default_state(), start, stop, maximum_step_mm=step)
+
+
+def test_gun_support_rejects_actual_nonquadratic_and_dynamic_overlaps():
+    from temsim.optics.column import default_state
+    from temsim.simulation_modes import switch_mode
+    from temsim.physics.core import capture_gun_source_support
+    state = default_state()
+    switch_mode(state, "unified")
+    # Moving an excited physical source into the gun changes its ownership;
+    # it cannot be discarded just because the column starts at the gun exit.
+    state.ac_deflector.z_mm = 100.
+    with pytest.raises(ValueError, match="Time-dependent.*joint source"):
+        capture_gun_source_support(state, 0., 450., maximum_step_mm=1.)
+    state = default_state()
+    switch_mode(state, "unified")
+    state.lenses[0].z_mm = 100.
+    state.lenses[0].cs_mm = 2.
+    with pytest.raises(ValueError, match="Non-quadratic.*joint operator"):
+        capture_gun_source_support(state, 0., 450., maximum_step_mm=1.)
+
+
+def test_near_tip_hardware_inspection_never_dispatches_the_downstream_executor(monkeypatch):
+    from temsim.optics.column import default_state
+    from temsim.simulation_modes import switch_mode
+    from temsim.physics.planar_tip_boundary import _guard_hardware
+    from temsim.physics import column_wave, unified_field_particle
+    state = default_state()
+    switch_mode(state, "unified")
+    for module, name in ((column_wave, "_prepare_column"), (unified_field_particle, "build_unified_plan")):
+        monkeypatch.setattr(module, name, lambda *_a, **_k:
+                            pytest.fail("A local hardware inspection cannot execute downstream optics"))
+    assert len(_guard_hardware(state, .0004, .00001)) == 64
+    state.electron_gun.dpa_aperture.mechanical_center_from_tip_mm = .0002
+    with pytest.raises(ValueError, match="mask cannot be omitted"):
+        _guard_hardware(state, .0004, .00001)
+
+
 @pytest.fixture
 def gun():
     gun = FieldEmissionGun()

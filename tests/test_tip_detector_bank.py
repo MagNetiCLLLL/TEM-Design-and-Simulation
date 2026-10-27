@@ -70,8 +70,9 @@ def bank(monkeypatch, tmp_path):
     request = TipWaveRequest(detector_keys=("bf", "haadf", "df"), detector_pixels=256,
         execution=WaveExecutionOptions(segmented=False, cache_directory=str(tmp_path/"bank")),
         readout=WaveReadoutOptions(phase=True, complex_amplitude=True))
-    # This detector-routing fixture supplies no physical prepared column.
-    # Keep the independent acceptance-window solver outside the stubbed path.
+    # This receiver-order fixture deliberately substitutes identity column
+    # transport. It has no prepared physical span on which an aperture-window
+    # optimization could run; that operator has separate actual-field tests.
     request = replace(request, acceptance_window=replace(request.acceptance_window, enabled=False))
     return state, request, seed, calls, arrivals
 

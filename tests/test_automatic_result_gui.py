@@ -211,5 +211,5 @@ def test_standard_fallback_prepares_default_mode_and_schedules_one_initial_previ
     assert not errors
     assert window.preview_timer.isActive()
     assert window.workspace._last_result is before
-    assert window.state.simulation_mode == "ideal"
+    assert window.state.simulation_mode == "unified"
     assert "starting a fresh calculation" in window.status_label.text()

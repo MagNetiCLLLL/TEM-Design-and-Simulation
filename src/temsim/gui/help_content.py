@@ -79,6 +79,7 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         "Apply illumination and projection presets, choose accuracy and manage calculation scope.",
         ("Microprobe", "Nanoprobe", "Normal", "Large angle", "Image", "Diffraction",
          "CPU", "GPU", "live tuning", "cutoff", "cancel", "cache", "Simulation",
+         "Ideal Optics", "Finite-Field Optics", "Coupled Multiphysics", "thin", "numerical settings",
          "crossover", "strong excitation", "weak excitation", "C2", "C3", "ADL"),
         """
         <p><b>Where:</b> <b>Optical operating preset</b>, the top calculation toolbar,
@@ -120,6 +121,37 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         rather than a crossing of lines in one projection. Recheck the beam after
         changing its source or optics; an unresolved interval is not evidence of
         weak excitation.</p>
+        <h3>Calculation model and numerical resolution</h3>
+        <ul>
+          <li><b>Ideal Optics</b>: fast thin lens, stigmator, deflector and multipole
+          actions between straight drifts. Finite field thickness and magnetic
+          materials are not resolved. Configured empirical Cs/Cc screens are inactive;
+          their saved values are retained. Strong-lens focus and transmission can differ
+          from a finite-field preset; currents are not retuned automatically.</li>
+          <li><b>Finite-Field Optics</b>: shared immutable potentials and finite geometry
+          for particles and coherent waves. Field-derived column aberrations replace
+          empirical residual screens and equivalent Image maps. Unsupported source,
+          field or product configurations are reported explicitly. Saved
+          <code>ideal</code> profiles retain the separate legacy execution entry.</li>
+          <li><b>Coupled Multiphysics</b>: reserved for future electromagnetic,
+          vacuum, thermal and mechanical coupling, including specimen drift.
+          This category is not available yet.</li>
+        </ul>
+        <p><b>High accuracy</b> controls numerical resolution, independently of the
+        physical model. Particle calculations use <b>High-accuracy rays</b> and
+        <b>Step (mm)</b>. <b>Coherent settings</b> opens separate grid, energy-sample,
+        propagation-step and memory inputs. Grid cells are not particles.</p>
+        <p>Use Finite-Field Optics for coherent propagation and for finite-volume
+        material histories that intersect an excited thin optical action. The thin
+        model does not replay inverse optical actions through random scattering.
+        Existing high-accuracy Sample, Scanning Image and detector workflows
+        remain available through explicit legacy execution. The shared-potential
+        route rejects products whose internal field consumer has not been migrated.</p>
+        <p>The status bar separates current-step counts from completed workflow
+        stages. Unknown work is indeterminate; only accepted output completes a
+        task. After automatic optical edits, an existing coherent result refreshes
+        after the latest particle frame. Previous plots remain labelled stale
+        until replacement succeeds.</p>
         <h3>Calculation and reuse</h3>
         <p><b>Compute</b> applies across pages. Auto tries supported GPU work and can
         fall back to CPU; Require GPU reports a failure when the required backend is
@@ -260,6 +292,10 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
         """
         <p><b>Where:</b> <b>Electron beam</b>; its observation is also available under
         <b>Ray Diagram → Beam observation</b>.</p>
+        <p>Select <b>Finite-Field Optics</b> in Simulation. The directly visible
+        <b>Coherent numerical settings</b> controls the initial and maximum grid,
+        energy samples, column step and working memory independently of particle
+        count. Physical source width and coherence remain source parameters.</p>
         <ol>
           <li>Review <b>Tip parameters</b>, choose a supported emission/coherence
           model and click <b>Apply tip parameters</b>. This applies the source edit

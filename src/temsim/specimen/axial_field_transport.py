@@ -13,6 +13,7 @@ import math
 import numpy as np
 
 from temsim.component_keys import CONDENSER_LENS_KEYS
+from temsim.simulation_modes import is_thin
 from temsim.physics.core import (
     _LegacyAxialFieldProvider,
     _support_mask,
@@ -54,6 +55,16 @@ def sample_axial_field_diagnostic(state) -> SampleAxialFieldDiagnostic:
 
     sample = state.sample
     sample_z_mm = float(sample.z_mm)
+    if is_thin(state):
+        return SampleAxialFieldDiagnostic(
+            sample_z_mm=sample_z_mm, total_field_t=0.0, objective_field_t=0.0,
+            face_fields_t=(0.0, 0.0), active_lens_contributions_t=(),
+            transport_model="thin_optics_straight_specimen_flights",
+            field_source=("No continuous optical E/B in Ideal Optics; the column owns "
+                          "thin actions. Finite material and local matching must not "
+                          "intersect a nonzero thin action plane."),
+            objective_field_model_status="thin_action_owned_by_column",
+        )
     thickness_nm = max(float(getattr(sample, "thickness_nm", 0.0)), 0.0)
     half_thickness_mm = 0.5 * thickness_nm * 1.0e-6
     axial_points = np.asarray(

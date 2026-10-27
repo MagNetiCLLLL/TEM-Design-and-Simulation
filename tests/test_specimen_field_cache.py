@@ -1,6 +1,7 @@
 """Exact scalar field reuse; seeded transport fixtures are not OEM validation."""
 
 from dataclasses import fields
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
 
@@ -150,6 +151,11 @@ def _assert_exact_transport(actual, expected):
 def test_seeded_elastic_histories_match_uncached_fields_exactly(monkeypatch, mode):
     state = default_state()
     switch_mode(state, mode)
+    # Explicit matter is needed for a seeded collision/cache comparison;
+    # the default specimen is vacuum even when its envelope has thickness.
+    state.sample.specimen_mode = "atomic"
+    state.sample.inserted = True
+    state.sample.cif_path = str(Path(__file__).parent / "fixtures" / "cif" / "Si.cif")
     state.sample.thickness_nm = 100.0
     state.sample.eds_support_material_key = "vacuum"
     unit = np.array((0.015, -0.01, 1.0))

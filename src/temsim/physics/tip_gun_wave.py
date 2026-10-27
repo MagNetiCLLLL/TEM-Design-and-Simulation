@@ -20,6 +20,7 @@ from copy import deepcopy
 from dataclasses import asdict, dataclass, field, replace
 from hashlib import sha256
 import math
+from numbers import Real
 from types import MappingProxyType
 
 import numpy as np
@@ -42,8 +43,18 @@ class GunWaveNumerics:
     maximum_checkpoint_bytes: int = 8 * 1024**3
     maximum_fractional_energy_change: float = 0.05
     near_tip_source_padding_factor: int = 2
+    near_tip_maximum_step_nm: float = 50.0
 
     def validate(self):
+        near_step = self.near_tip_maximum_step_nm
+        try:
+            valid_near_step = (isinstance(near_step, Real)
+                and not isinstance(near_step, (bool, np.bool_))
+                and math.isfinite(float(near_step)) and near_step > 0)
+        except (OverflowError, TypeError, ValueError):
+            valid_near_step = False
+        if not valid_near_step:
+            raise ValueError("Gun near_tip_maximum_step_nm must be a positive finite real number")
         for name in ("field_step_mm", "bore_step_mm"):
             value = getattr(self, name)
             if isinstance(value, bool) or not math.isfinite(value) or value <= 0:
@@ -530,7 +541,7 @@ def _publish_gun_checkpoint(beam, plane_z_mm, reference_current_a, record, auxil
 def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
                              numerics=GunWaveNumerics(), use_cache=True,
                              cancelled=lambda: False, progress_callback=None,
-                             _column_state=None):
+                             _column_state=None, nominal_energy_preview=False):
     """Execute from tip parameters and actual optics, or reuse the exact result.
 
     There is deliberately no intermediate-wave argument. Preparation consumes
@@ -540,21 +551,27 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
     from temsim.instrument_snapshot import encode_instrument, decode_instrument
     from temsim.optics.electron_gun.source_policy import require_physical_gun_source
     require_physical_gun_source(gun)
+    if type(nominal_energy_preview) is not bool:
+        raise ValueError("Nominal-energy preview must be an explicit boolean")
+    if nominal_energy_preview and source_numerics.energy_samples != 1:
+        raise ValueError("Nominal-energy preview requires exactly one source energy sample")
     if cancelled():
         raise InterruptedError("Tip-to-exit wave propagation cancelled")
     numerics.validate()
     working = deepcopy(gun)
     working.validate()
     driven = getattr(working.emitter.coherence, "boundary_model", "forward_gaussian_schell") == "driven_gaussian_schell"
-    emission = (generate_tip_boundary_emission(working, source_numerics) if driven
-                else generate_tip_emission(working, source_numerics))
+    source_options = {"nominal_energy_preview": True} if nominal_energy_preview else {}
+    emission = (generate_tip_boundary_emission(working, source_numerics, **source_options) if driven
+                else generate_tip_emission(working, source_numerics, **source_options))
     if driven and _column_state is None:
         raise ValueError("The driven Tip boundary requires the captured instrument so all shared electric and magnetic fields are retained")
     near_numerics = None
     if driven:
         from temsim.physics.accelerating_tip_boundary import AcceleratingTipNumerics
         near_numerics = AcceleratingTipNumerics(maximum_working_bytes=numerics.maximum_checkpoint_bytes,
-            source_padding_factor=numerics.near_tip_source_padding_factor)
+            source_padding_factor=numerics.near_tip_source_padding_factor,
+            maximum_step_nm=numerics.near_tip_maximum_step_nm)
     start_z_mm = 0. if near_numerics is None else near_numerics.end_z_nm*1e-9*1e3
     _require_supported_gun_fields(working)
     estimated_bytes = (emission.record["mode_count"]+8)*source_numerics.grid_pixels**2*16
@@ -565,9 +582,8 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
     column_record, axial_b, electric, column = None, None, None, None
     column_apertures, exact_z = (), ()
     if _column_state is not None:
-        from temsim.physics.core import build_propagation_plan
+        from temsim.physics.core import capture_gun_source_support
         from temsim.physics.instrument_electric import capture_instrument_electric_field, configure_instrument_electric_domain
-        from temsim.physics.instrument_magnetic import active_column_events
         column = decode_instrument(encode_instrument(_column_state))
         if json_digest(encode_instrument(column.electron_gun)) != json_digest(encode_instrument(working)):
             raise ValueError("Shared column and gun inputs do not describe the same installed gun")
@@ -577,20 +593,21 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
         electric = capture_instrument_electric_field(column)
         configure_instrument_electric_domain(working, float(electric.bounds_m[1, 2])*1e3)
         stop = float(working.exit_plane_z_mm)
-        shared = build_propagation_plan(column, 0., stop, active_column_events(column),
-                                       maximum_step_mm=numerics.field_step_mm)
-        # Quadratic column lenses, stigmators and finite dipoles are included
-        # below. Non-quadratic maps/correctors still fail explicitly.
-        if shared.mapped_fields or any(np.any(getattr(shared, name)) for name in (
-                "hex_normal_m3", "hex_skew_m3", "midpoint_hex_normal_m3", "midpoint_hex_skew_m3",
-                "cs_kick_m3", "thin_power_m1", "thin_rotation_rad", "kick_x_rad", "kick_y_rad")):
-            raise ValueError("Non-quadratic column components inside the accelerating gun require a joint operator; they cannot be skipped")
+        # The source owns [tip, gun exit]. The unified column executor starts
+        # at the exit and cannot supply a plan for this accelerating interval.
+        # Inspect the common support description only; the actual gun operator
+        # below still uses its solved electric potential and magnetic fields.
+        # No legacy column trace or empirical aberration action is executed.
+        shared = capture_gun_source_support(column, 0., stop,
+                                            maximum_step_mm=numerics.field_step_mm)
         exact_z = tuple(shared.z_mm)
         column_apertures = tuple(a for a in column.apertures
             if all(bool(getattr(a, name, True)) for name in ("installed", "enabled", "inserted"))
             and 0 < float(a.z_mm) <= stop)
         column_record = {"inputs": encode_instrument(column), "plan_signature": shared.signature,
                          "electric_field_identity": electric.numerical_identity,
+                         "ownership": "accelerating_gun_source; non-executable support inspection only",
+                         "source_support": shared.record,
                          "boundary_gauge": "A=(-Bz*y/2,Bz*x/2,0); canonical momentum continuous"}
     if electric is None:
         electric = working.electric_field
@@ -687,6 +704,8 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
     checkpoint = _publish_gun_checkpoint(BeamState(tuple(outputs), TIP_REFERENCE), float(z[-1]),
         emission.reference_current_a, {"schema": "executed-tip-gun-v1", "dependency_digest": dependency,
         "tip_emission_id": emission.digest, "tip_emission": emission.record,
+        **({"nominal_energy_preview": True, "configured_energy_spread_integrated": False,
+            "high_accuracy_eligible": False} if nominal_energy_preview else {}),
         "field_digest": field_digest.hexdigest(), "field_steps": len(z)-1,
         "shared_column": column_record,
         "implementation": implementation,

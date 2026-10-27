@@ -198,6 +198,9 @@ def _validate_section_checkpoint(checkpoint):
         if not isinstance(segment, ParticleSectionSegment) or not segment.initial_dependency_signature:
             raise ValueError("Invalid section segment identity")
         branch, cp, plan = segment.branch, segment.checkpoints, segment.plan
+        if getattr(cp, "unified_state", None) is not None:
+            from temsim.physics.unified_particle_restart import validate_unified_checkpoint
+            validate_unified_checkpoint(cp, plan)
         z = np.asarray(branch.z)
         if z.ndim != 1 or not z.size or not np.all(np.isfinite(z)) or np.any(np.diff(z) <= 0):
             raise ValueError("Section history planes are invalid")
@@ -241,8 +244,15 @@ def _validate_section_checkpoint(checkpoint):
     return checkpoint
 
 
-def _prefix_matches(old, new, old_index, new_index):
+def _prefix_matches(old, new, old_index, new_index, *, checkpoints=None, checkpoint_row=None,
+                    implementation_digest=None):
     """Compare every consumed node, RK midpoint, action and mapped field."""
+    if any(getattr(plan, "unified_runtime", None) is not None for plan in (old, new)):
+        if checkpoints is None or checkpoint_row is None or implementation_digest is None:
+            return False
+        from temsim.physics.unified_particle_restart import unified_prefix_matches
+        return unified_prefix_matches(old, new, checkpoints, checkpoint_row,
+            old_index, new_index, implementation_digest=implementation_digest)
     if any((getattr(plan, "electric_field", None) is not None
             or getattr(plan, "electric_reference_invariant_ev", None) is not None)
            and getattr(plan, "electric_field_identity", None) is None for plan in (old, new)):
@@ -252,7 +262,10 @@ def _prefix_matches(old, new, old_index, new_index):
     count = new_index + 1
     for name in old.__dataclass_fields__:
         if name in {"signature", "solver_signature", "mapped_fields", "posed_spherical_kicks", "intrinsic_aberration_kicks",
-                    "save_index", "checkpoint_index", "electric_field"}:
+                    "save_index", "checkpoint_index", "electric_field", "physics_contract", "thin_actions", "unified_runtime"}:
+            # Whole-scene provenance is not a sampled coefficient array. The
+            # caller's existing input/boundary identity gates and the consumed
+            # fields/actions below remain authoritative for prefix reuse.
             continue
         if name in {"reference_momentum_kg_m_s", "electric_field_identity", "electric_reference_invariant_ev"}:
             if getattr(old, name) != getattr(new, name):
@@ -297,7 +310,8 @@ def _prefix_matches(old, new, old_index, new_index):
 
 def _trace_segment(state, name, start, stop, initial, energy, weights, identity,
                    survival, events, previous, boundary, *, initial_kicks,
-                   save_z_mm=(), dependency_context="", initial_kinetic_energy_ev=None):
+                   save_z_mm=(), dependency_context="", initial_kinetic_energy_ev=None,
+                   preserve_existing_mesh=False):
     from temsim.physics.simulation import Branch, _column_checkpoint_planes, _merge_checkpoints
     from temsim.physics.aperture_clipping import clip_segment
     from temsim.physics.recording_clipping import clip_recording_planes
@@ -325,11 +339,28 @@ def _trace_segment(state, name, start, stop, initial, energy, weights, identity,
     # All checkpoints are actual integration planes, never nearest display rows.
     from temsim.physics.instrument_magnetic import events_overlapping_interval
     events = events_overlapping_interval(state, events, start, stop)
+    if preserve_existing_mesh:
+        # The completed optical-reference workflow historically used propagate
+        # without inserted checkpoint planes. Retain that exact integration
+        # mesh and choose checkpoint rows from its existing nodes only.
+        original = build_propagation_plan(state, start, stop, events,
+            particle_medium=state.vacuum_map.enabled, medium_energy_ev=kinetic0)
+        if original.unified_runtime is None:
+            raise ValueError("Existing-mesh checkpoint capture requires unified fields")
+        indexes = np.clip(np.searchsorted(original.z_mm, planes), 0, len(original.z_mm)-1)
+        planes = tuple(np.unique(original.z_mm[indexes]))
     plan = build_propagation_plan(state, start, stop, events,
         save_z_mm=planes, checkpoint_z_mm=planes,
         particle_medium=state.vacuum_map.enabled,
         medium_energy_ev=kinetic0)
+    if preserve_existing_mesh and not np.array_equal(plan.z_mm, original.z_mm):
+        raise ValueError("Checkpoint capture must not change the executed optical mesh")
     resume = None
+    unified = getattr(plan, "unified_runtime", None) is not None
+    implementation = None
+    if compatible and unified:
+        from temsim.calculation_manifest import solver_source_identity
+        implementation = solver_source_identity()
     if compatible:
         for row in range(len(previous.checkpoints.z_mm)-1, -1, -1):
             z = float(previous.checkpoints.z_mm[row])
@@ -337,7 +368,8 @@ def _trace_segment(state, name, start, stop, initial, energy, weights, identity,
                 continue
             oi = np.flatnonzero(np.asarray(previous.plan.z_mm) == z)
             ni = np.flatnonzero(np.asarray(plan.z_mm) == z)
-            if oi.size and ni.size and _prefix_matches(previous.plan, plan, int(oi[0]), int(ni[0])):
+            if oi.size and ni.size and _prefix_matches(previous.plan, plan, int(oi[0]), int(ni[0]),
+                    checkpoints=previous.checkpoints, checkpoint_row=row, implementation_digest=implementation):
                 resume = (row, int(ni[0]), z)
                 break
     transport = (ColumnMediumTransport(state, plan, len(x0), kinetic0,
@@ -350,17 +382,23 @@ def _trace_segment(state, name, start, stop, initial, energy, weights, identity,
         x0, tx0, y0, ty0, time0 = (np.asarray(getattr(cp, key)[row]) for key in
                                   ("x_m", "tx_rad", "y_m", "ty_rad", "flight_time_s"))
         kinetic0 = np.asarray(cp.kinetic_energy_ev[row])
-    energy_alive = alive0 if resume is None else previous.branch.alive
+    energy_alive = (alive0 if resume is None else
+                    previous.checkpoints.unified_state.active[row] if unified else previous.branch.alive)
     unknown_stopped = ~np.isfinite(kinetic0) & ~np.asarray(energy_alive, dtype=bool)
-    if np.any(unknown_stopped):
-        x0, tx0, y0, ty0 = (np.where(unknown_stopped, np.nan, value)
+    from temsim.simulation_modes import is_unified
+    inactive = ~np.asarray(energy_alive,dtype=bool) if is_unified(state) else unknown_stopped
+    if np.any(inactive) and not (unified and resume is not None):
+        # The gun retains finite placeholder coordinates for absorbed rays.
+        # They have no exit clock and are not column source particles.
+        x0, tx0, y0, ty0 = (np.where(inactive, np.nan, value)
                             for value in (x0, tx0, y0, ty0))
     energy_history = []
     output = execute_propagation_plan(state, plan, x0, tx0, y0, ty0, energy,
         start_index=index, include_initial_plane_kicks=initial_kicks if resume is None else False,
         defer_nonfinite_until_clipping=True, medium_transport=transport,
         initial_time_s=time0, return_flight_times=True,
-        initial_kinetic_energy_ev=kinetic0, energy_output=energy_history)
+        initial_kinetic_energy_ev=kinetic0, energy_output=energy_history,
+        unified_resume=(previous.checkpoints, row) if unified and resume is not None else None)
     z, x, tx, y, ty, times, cp = output
     kinetic = energy_history[0]
     if resume is not None:
@@ -371,6 +409,9 @@ def _trace_segment(state, name, start, stop, initial, energy, weights, identity,
             for key, value in zip(("x", "tx", "y", "ty", "flight_time_s"), (x, tx, y, ty, times)))
         cp = _merge_checkpoints(previous.checkpoints, cp, resume_z)
         kinetic = np.vstack((np.asarray(old.kinetic_energy_ev)[keep], kinetic))
+        if unified:
+            from temsim.physics.unified_particle_restart import rebind_unified_stops
+            rebind_unified_stops(output[0], z)
     # Publish exact checkpoint precision, including segment boundary rows.
     # A displayed material/vacuum interface must retain the same phase state
     # used by the next segment, without an extra float32 round trip.
@@ -382,9 +423,15 @@ def _trace_segment(state, name, start, stop, initial, energy, weights, identity,
     alive, blocked, labels = alive0.copy(), blocked0.copy(), list(keys0)
     if transport is not None:
         alive, blocked, labels = transport.merge_stops(alive, blocked, labels)
-    alive, blocked, labels = clip_segment(state, z, x, y, alive, blocked, labels)
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        from temsim.physics.unified_field_particle import merge_unified_stops
+        alive, blocked, labels = merge_unified_stops(z, alive, blocked, labels)
+    else:
+        alive, blocked, labels = clip_segment(state, z, x, y, alive, blocked, labels)
     alive, blocked, labels = clip_recording_planes(state, z, x, y, alive, blocked, labels)
-    alive, blocked, labels = clip_column_wall(state, z, x, y, alive, blocked, labels)
+    if not is_unified(state):
+        alive, blocked, labels = clip_column_wall(state, z, x, y, alive, blocked, labels)
     visible = ~np.isfinite(blocked)[None, :] | (z[:, None] <= blocked[None, :])
     if any(np.any(~np.isfinite(v) & visible) for v in (x, tx, y, ty)):
         raise ValueError("Non-finite section trajectory before a physical stop")
@@ -404,8 +451,13 @@ def run_particle_section(state, *, observation_stop_z_mm, tuning_component_keys=
     from temsim.optics.electron_gun.source_policy import require_physical_gun_source
     from temsim.optics.electron_gun.source import trace_source_to_exit
     from temsim.physics.ray_identity import emitted_source_identity
-    from temsim.physics.chromatic import objective_chromatic_kick_from_state, configured_objective_chromatic_focal_mm
     require_physical_gun_source(state.electron_gun)
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        from temsim.physics.unified_field_runtime import unified_runtime_preflight
+        issues = unified_runtime_preflight(state)["issues"]
+        if issues:
+            raise ValueError("Finite-Field Optics: "+"; ".join(issues))
     check_tuning_cancelled(state)
     if resolved_layout is None:
         from temsim.column.state_layout import apply_physical_layout_to_state
@@ -470,10 +522,7 @@ def run_particle_section(state, *, observation_stop_z_mm, tuning_component_keys=
     branches = {}
     if target > sample_z:
         sample_energy = np.asarray(branch.kinetic_energy_ev[-1])
-        cx, cy = objective_chromatic_kick_from_state(state, branch.x[-1], branch.y[-1],
-                     sample_energy - state.beam_voltage_kv*1000,
-                     resolved_focal_mm=configured_objective_chromatic_focal_mm(state))
-        outgoing = (branch.x[-1], branch.tx[-1]+cx, branch.y[-1], branch.ty[-1]+cy,
+        outgoing = (branch.x[-1], branch.tx[-1], branch.y[-1], branch.ty[-1],
                     np.where(branch.alive, branch.flight_time_s[-1], np.nan))
         post, post_resume, post_hit = _trace_segment(state, "000", sample_z, target,
             outgoing, energy, weights, identity, (branch.alive, branch.blocked_z, branch.blocked_key),

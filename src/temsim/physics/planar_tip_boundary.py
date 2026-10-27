@@ -137,17 +137,23 @@ def _retained_source(mode, pixels, tolerance):
 
 
 def _guard_hardware(state, stop_mm, corner_radius_mm):
-    from temsim.physics.column_wave import _prepare_column
+    from temsim.physics.column_wave import _component_events, _wave_apertures, _wave_bores, _expanded_profile_axis
+    from temsim.physics.core import capture_gun_source_support
     gun = state.electron_gun
     if stop_mm >= gun.exit_plane_z_mm:
         raise ValueError("The local boundary termination is not a full gun-exit load")
     if bool(getattr(state, "energy_filter_installed", False)) and state.energy_filter.entrance_z_mm <= stop_mm:
         raise ValueError("The local tip domain reaches the energy filter; it cannot be bypassed")
-    plan, radii, stops, owners = _prepare_column(state, 0., stop_mm, stop_mm/8)
-    if stops or owners or np.any(radii <= corner_radius_mm):
+    support = capture_gun_source_support(state, 0., stop_mm, maximum_step_mm=stop_mm/8)
+    # Hardware inspection does not admit or execute a downstream column model.
+    # In particular, an unsupported device below the gun cannot become a
+    # prerequisite for resolving the physical local emission boundary.
+    walls, placed_bores = _wave_bores(state, 0., stop_mm)
+    _, _, radii = _expanded_profile_axis(np.asarray(support.z_mm), walls)
+    _, owners = _component_events(state, 0., stop_mm)
+    if (_wave_apertures(state, 0., stop_mm) or placed_bores
+            or owners or np.any(radii <= corner_radius_mm)):
         raise ValueError("An installed column interception/field requires a joint near-tip operator")
-    if plan.mapped_fields:
-        raise ValueError("Mapped fields require a joint magnetic near-tip operator")
     for part in gun.bore_components:
         low = part.mechanical_center_from_tip_mm-.5*part.mechanical_length_mm
         high = part.mechanical_center_from_tip_mm+.5*part.mechanical_length_mm
@@ -156,7 +162,7 @@ def _guard_hardware(state, stop_mm, corner_radius_mm):
     for aperture in (gun.dpa_aperture, gun.c1_aperture):
         if bool(aperture.enabled) and 0 <= aperture.z_mm <= stop_mm:
             raise ValueError(f"Near-tip domain reaches {aperture.key}; its mask cannot be omitted")
-    return plan.signature
+    return support.signature
 
 
 def build_planar_tip_boundary(state, numerics=PlanarTipBoundaryNumerics(), *,

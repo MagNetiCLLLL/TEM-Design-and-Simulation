@@ -23,8 +23,11 @@ def kicks():
     return intrinsic, spherical
 
 
-def populated_store(tmp_path, result):
+def populated_store(tmp_path, result, chromatic=False):
     intrinsic, spherical = kicks()
+    if chromatic:
+        intrinsic = replace(intrinsic, coefficients=(("c1_mm", -2.),),
+                            chromatic_reference_energy_ev=300000.)
     plan = replace(result.simulation.incident_plan,
         intrinsic_aberration_kicks=(intrinsic,), posed_spherical_kicks=(spherical,))
     simulation = replace(result.simulation, incident_plan=plan)
@@ -33,8 +36,9 @@ def populated_store(tmp_path, result):
     return store, simulation
 
 
-def test_incident_seed_preserves_intrinsic_and_posed_cs_actions(storage_result, tmp_path):
-    store, original = populated_store(tmp_path, storage_result)
+@pytest.mark.parametrize("chromatic", [False, True])
+def test_incident_seed_preserves_intrinsic_and_posed_cs_actions(storage_result, tmp_path, chromatic):
+    store, original = populated_store(tmp_path, storage_result, chromatic)
     restored = store.get_incident_simulation_seed(storage_result.calculation_manifest)
     original_plan, restored_plan = original.incident_plan, restored.incident_plan
     assert restored_plan.intrinsic_aberration_kicks == original_plan.intrinsic_aberration_kicks
@@ -43,13 +47,13 @@ def test_incident_seed_preserves_intrinsic_and_posed_cs_actions(storage_result, 
                    np.array((3e-6, 4e-6)), np.array((2e-5, 1e-5)))
     for before, after in zip((*original_plan.intrinsic_aberration_kicks, *original_plan.posed_spherical_kicks),
                              (*restored_plan.intrinsic_aberration_kicks, *restored_plan.posed_spherical_kicks)):
-        expected = before.apply_canonical(*coordinates, momentum_kg_m_s=original_plan.reference_momentum_kg_m_s)
-        actual = after.apply_canonical(*coordinates, momentum_kg_m_s=restored_plan.reference_momentum_kg_m_s)
+        expected = before.apply_canonical(*coordinates, momentum_kg_m_s=original_plan.reference_momentum_kg_m_s*1.001)
+        actual = after.apply_canonical(*coordinates, momentum_kg_m_s=restored_plan.reference_momentum_kg_m_s*1.001)
         for x, y in zip(expected, actual):
             np.testing.assert_array_equal(x, y)
 
 
-@pytest.mark.parametrize("damage", ("missing_intrinsic", "missing_posed", "negative_focal", "coefficient_shape", "duplicate_cs"))
+@pytest.mark.parametrize("damage", ("missing_intrinsic", "missing_posed", "negative_focal", "coefficient_shape", "duplicate_cs", "missing_energy_reference"))
 def test_current_seed_cannot_drop_or_invent_aberration_actions(storage_result, tmp_path, damage):
     store, _ = populated_store(tmp_path, storage_result)
     manifest = storage_result.calculation_manifest
@@ -64,6 +68,8 @@ def test_current_seed_cannot_drop_or_invent_aberration_actions(storage_result, t
         metadata["plan_intrinsic_aberration_kicks"][0]["focal_m"] = -1.
     elif damage == "coefficient_shape":
         metadata["plan_intrinsic_aberration_kicks"][0]["coefficients"] = [1., 2.]
+    elif damage == "missing_energy_reference":
+        metadata["plan_intrinsic_aberration_kicks"][0].pop("chromatic_reference_energy_ev")
     else:
         metadata["plan_intrinsic_aberration_kicks"][0]["coefficients"]["c3_mm"] = 1.
     store.put_array_bundle(manifest, product_key="incident",

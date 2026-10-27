@@ -61,6 +61,7 @@ from temsim.optics.direct_alignment_precalibration import (
     interpolated_nanoprobe_seed,
     precalculated_alignment_points,
 )
+from temsim.simulation_modes import is_thin, is_unified
 
 try:
     from numba import njit
@@ -180,6 +181,13 @@ def _posed_field_overlaps(field, source_z_mm, target_z_mm):
     return bool(field.scale) and float(low) <= target_z_mm and float(high) >= source_z_mm
 
 
+def _require_qualified_alignment(state):
+    if is_unified(state):
+        raise ValueError("Direct Alignment and canonical transfer calibration are not yet qualified for "
+                         "unified Finite-Field Optics. No legacy fitted image map or field basis was used; "
+                         "the captured physical-field particle calculation remains available.")
+
+
 def canonical_source_basis(state, source_z_mm, *, momentum_kg_m_s=None,
                            electric_field=None, position_xy_m=(0., 0.),
                            vector_providers=None, posed_fields=None):
@@ -197,6 +205,7 @@ def canonical_source_basis(state, source_z_mm, *, momentum_kg_m_s=None,
     finite-amplitude transfer. At hard field-support edges use a one-sided
     source plane; the discontinuous model has no two-sided derivative there.
     """
+    _require_qualified_alignment(state)
     from temsim.physics.lens_field_provider import MappedLensFieldProvider, freeze_vector_provider
     from temsim.physics.posed_column_fields import capture_posed_column_fields
     from temsim.physics.posed_lens_wave import vector_potential_jet
@@ -208,6 +217,11 @@ def canonical_source_basis(state, source_z_mm, *, momentum_kg_m_s=None,
                 if momentum_kg_m_s is None else float(momentum_kg_m_s))
     if not math.isfinite(momentum) or momentum <= 0:
         raise ValueError("Canonical source basis needs positive finite mechanical momentum")
+    if is_thin(state):
+        # Thin events carry their complete impulse/rotation at the reference
+        # plane. There is no distributed vector potential between events, so
+        # a finite-field A gradient must not be added to the entrance basis.
+        return np.eye(4, dtype=float)
     providers = active_vector_providers(state) if vector_providers is None else tuple(vector_providers)
     analytic = tuple(provider for provider in providers if not isinstance(provider, MappedLensFieldProvider))
     excluded = tuple(provider.lens_key for provider in analytic)
@@ -280,6 +294,7 @@ def canonical_transfers(
     not move the specimen or any hardware. The caller must restrict use to the
     paraxial, straight-column domain; material interactions are not traversed.
     """
+    _require_qualified_alignment(state)
     source = float(source_z_mm)
     targets = sorted({float(value) for value in target_z_values_mm})
     if not math.isfinite(source) or any(not math.isfinite(z) for z in targets):
@@ -289,10 +304,11 @@ def canonical_transfers(
     if not targets:
         return {}
     target = targets[-1]
-    electric_field = _active_column_electric_field(state, source, target)
-    vector_providers = active_vector_providers(state)
+    thin = is_thin(state)
+    electric_field = None if thin else _active_column_electric_field(state, source, target)
+    vector_providers = () if thin else active_vector_providers(state)
     from temsim.physics.posed_column_fields import capture_posed_column_fields
-    posed_fields = capture_posed_column_fields(state, include_hexapole=True)
+    posed_fields = () if thin else capture_posed_column_fields(state, include_hexapole=True)
     relevant_posed = tuple(field for field in posed_fields if _posed_field_overlaps(field, source, target))
 
     def canonical_from_mechanical(requested_targets):
@@ -314,12 +330,12 @@ def canonical_transfers(
             )
         return result
 
-    if (not stable_axisymmetric or vector_providers or relevant_posed
+    if (thin or not stable_axisymmetric or vector_providers or relevant_posed
             or electric_field is not None or target == source):
         # A field encountered only after an earlier target must not switch that
         # target away from the solver used for an individual selected-Z query.
         prefix = []
-        if stable_axisymmetric and not vector_providers and target > source:
+        if not thin and stable_axisymmetric and not vector_providers and target > source:
             prefix = [z for z in targets
                       if (electric_field is None or electric_field.is_constant_on_interval(source, z))
                       and not any(_posed_field_overlaps(field, source, z) for field in relevant_posed)]
@@ -640,14 +656,17 @@ class _LiveFirstOrderModel:
         step_mm: float,
         capture_z_mm=(),
     ) -> None:
+        _require_qualified_alignment(state)
         self.state = state
         self.variable_keys = tuple(variable_keys)
-        self._electric_field = _active_column_electric_field(state, source_z_mm, target_z_mm)
+        thin = is_thin(state)
+        self._electric_field = (None if thin else
+            _active_column_electric_field(state, source_z_mm, target_z_mm))
         from temsim.physics.posed_column_fields import capture_posed_column_fields
-        posed = capture_posed_column_fields(state, include_hexapole=True)
+        posed = () if thin else capture_posed_column_fields(state, include_hexapole=True)
         self._posed_field_options = ({"exclude_mapped_keys": tuple({field.component_key for field in posed})}
                                      if posed else {})
-        self.full_field_transfer = bool(active_vector_providers(state) or self._electric_field is not None
+        self.full_field_transfer = thin or bool(active_vector_providers(state) or self._electric_field is not None
             or any(_posed_field_overlaps(field, source_z_mm, target_z_mm) for field in posed))
         self.maximum_step_mm = float(step_mm)
         self.z_mm = _piecewise_endpoint_exact_grid(
@@ -677,8 +696,8 @@ class _LiveFirstOrderModel:
             raise ValueError("Coupled lens limits must be positive")
 
         if self.full_field_transfer:
-            # Electric fields, imported B maps and skew quadrupoles need the complete
-            # production XY Jacobian instead of the reduced diagonal model.
+            # Thin events, electric fields, imported B maps and skew quadrupoles
+            # need the production XY Jacobian instead of the cached field RK4.
             return
 
         original = np.asarray(
@@ -758,7 +777,11 @@ class _LiveFirstOrderModel:
 
     def rays_at(self, vector, source_rays, targets, *, initial_kinetic_energy_ev=None,
                 defer_nonfinite_until_clipping=False):
-        """Capture complete trajectories using the executed gun-exit energies."""
+        """Capture trajectories from the model's after-action thin reference.
+
+        Input energies remain those of the executed source; finite-field
+        entrance behavior is unchanged.
+        """
         targets = tuple(float(z) for z in targets)
         with self._mapped_candidate(vector):
             z, x, tx, y, ty = propagate(
@@ -766,6 +789,7 @@ class _LiveFirstOrderModel:
                 source_rays[0], source_rays[2], source_rays[1], source_rays[3],
                 save_z_mm=targets, maximum_step_mm=self.maximum_step_mm,
                 events=active_column_events(self.state),
+                include_initial_plane_kicks=not is_thin(self.state),
                 initial_kinetic_energy_ev=initial_kinetic_energy_ev,
                 defer_nonfinite_until_clipping=defer_nonfinite_until_clipping,
             )
@@ -977,6 +1001,7 @@ class _EquivalentImageFirstOrderModel:
     """Selected equivalent lenses, retaining distributed E when present."""
 
     def __init__(self, state, source_z_mm: float, target_z_mm: float) -> None:
+        _require_qualified_alignment(state)
         self.state = state
         self.source_z_mm = float(source_z_mm)
         self.target_z_mm = float(target_z_mm)
@@ -1022,6 +1047,7 @@ class _ProjectorMeasurementModel:
     def __init__(
         self, state, definition: DirectAlignmentDefinition, *, step_mm: float
     ) -> None:
+        _require_qualified_alignment(state)
         from temsim.instrument_snapshot import capture_instrument_snapshot
         # Constructing basis fields temporarily varies lens excitations and
         # invalidates derived objective planes. Own that scratch graph too,
@@ -1039,7 +1065,7 @@ class _ProjectorMeasurementModel:
             self.variable_keys = IMAGE_KEYS
             # Geometric support does not authorize selecting the thin-lens
             # model. Search and validation must respect the captured choice.
-            if equivalent_image_lenses_enabled(state):
+            if not is_thin(state) and equivalent_image_lenses_enabled(state):
                 self.sample_model = _EquivalentImageFirstOrderModel(
                     state, float(state.sample.z_mm), stop_z_mm,
                 )
@@ -2094,6 +2120,7 @@ def _solve_direct_alignment(
 ) -> DirectAlignmentResult:
     """Solve and transactionally apply one Direct Alignment target."""
 
+    _require_qualified_alignment(state)
     definition = definition or direct_alignment_by_key(key)
     if definition.key != str(key):
         raise ValueError("Direct Alignment definition key does not match")
@@ -2426,6 +2453,7 @@ def apply_direct_alignment(
     Numerical fixtures may call the private solver. Production callers cannot
     replace catalog permissions with a caller-supplied target definition.
     """
+    _require_qualified_alignment(state)
     if definition is not None and definition != direct_alignment_by_key(key):
         raise ValueError("Production Direct Alignment requires the registered catalog definition")
     from temsim.alignment_transaction import AlignmentRequest, AlignmentCommitGate, solve_alignment_candidate

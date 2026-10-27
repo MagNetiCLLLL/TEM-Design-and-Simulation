@@ -187,13 +187,18 @@ def _radius(component):
     raise ValueError(f"{component.key}: posed magnetic field requires its physical clear bore")
 
 
-def capture_posed_column_fields(state, *, include_hexapole=True, time_s=None, arrival_time=None, dipoles=None):
+def capture_posed_column_fields(state, *, include_hexapole=True, time_s=None, arrival_time=None, dipoles=None,
+                               include_aligned=False, component_keys=None):
     """Freeze nonzero placements; zero-pose optics retain their original path.
 
     ``dipoles`` optionally restricts capture to events admitted by a particle
     plan. Dynamic wave callers freeze each coil at the arrival time of its
     placed global centre plane via ``arrival_time(z_mm)``; its original event
     plane remains the ownership key. No longitudinal pulse envelope is added.
+    ``include_aligned`` exports the same native potential definitions for P1
+    diagnostics. Its default retains the existing propagation routing.
+    ``component_keys`` optionally restricts P1 capture before validating other
+    multipoles. Independent unselected sources are not silently substituted.
     """
     from temsim.lens_pose import has_lens_pose, lens_pose_registration
     from temsim.physics.core import electron, FIELD_SIGMA_CUTOFF
@@ -202,7 +207,10 @@ def capture_posed_column_fields(state, *, include_hexapole=True, time_s=None, ar
                   *getattr(state, "deflectors", ()))
     by_key = {str(component.key): component for component in components}
     posed_keys = {key for key, component in by_key.items()
-                  if bool(getattr(component, "enabled", False)) and has_lens_pose(state, key)}
+                  if bool(getattr(component, "enabled", False))
+                  and (include_aligned or has_lens_pose(state, key))}
+    if component_keys is not None:
+        posed_keys &= set(component_keys)
     if not posed_keys:
         return ()
     charge, momentum, _ = electron(state)
@@ -212,8 +220,17 @@ def capture_posed_column_fields(state, *, include_hexapole=True, time_s=None, ar
         if key not in posed_keys or not any(hasattr(component, name) for name in
                 ("quadrupole_tensor_m2", "quadrupole_strength_m2", "hexapole_strength_components_m3")):
             continue
-        from temsim.test_electron_compiled_laws import multipole_is_supported
-        if not multipole_is_supported(component):
+        from temsim.test_electron_compiled_laws import multipole_is_supported, _MULTIPOLES
+        supported = multipole_is_supported(component)
+        if include_aligned and not supported:
+            # B-COR HP3 uses this exact unchanged Gaussian law, but extending
+            # P1 capture must not broaden legacy compiled-backend admission.
+            from temsim.optics.hexapole import HexapoleComponent
+            from temsim.optics.image_corrector import ImageCorrectorHp3HexapoleComponent
+            supported = (type(component) is ImageCorrectorHp3HexapoleComponent and all(
+                getattr(getattr(component, name), "__func__", None) is original
+                for name, original in _MULTIPOLES[HexapoleComponent]))
+        if not supported:
             raise ValueError(f"{key}: posed multipole requires its declared native Gaussian field model")
         z = float(component.z_mm)
         if hasattr(component, "quadrupole_tensor_m2"):

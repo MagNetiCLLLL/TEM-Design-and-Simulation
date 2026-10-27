@@ -17,6 +17,20 @@ def source(shape=(33, 37)):
                      np.array((3e-8, -2e-8)), np.array(((300., -20.), (-20., -100.))), np.array((1e-4, -2e-4)))
 
 
+def localized_source(shape):
+    """A resolved finite-domain input for physical public propagation.
+
+    Random samples extending to the edge remain useful for testing the exact
+    periodic Fourier kernel, but must not bypass physical-domain admission.
+    """
+    from dataclasses import replace
+    yy, xx = np.meshgrid((np.arange(shape[0])-shape[0]//2)/shape[0],
+                         (np.arange(shape[1])-shape[1]//2)/shape[1], indexing="ij")
+    amplitude = np.exp(-(xx*xx+yy*yy)/(4*.035**2))*(1+.2*np.cos(2*np.pi*8*xx))
+    amplitude = (amplitude/np.linalg.norm(amplitude)).astype(complex)
+    return replace(source(shape), amplitude=amplitude)
+
+
 def dense_reference(wave, drift, wavelength):
     fy, fx = np.meshgrid(np.fft.fftfreq(wave.amplitude.shape[0]),
                         np.fft.fftfreq(wave.amplitude.shape[1]), indexing="ij")
@@ -125,7 +139,7 @@ def test_canonical_cpu_routing_fits_below_dense_budget_with_exact_global_phase(m
     """Test the public map, including its publication and affine phase."""
     import temsim.physics.cpu_angular_spectrum as angular
     import temsim.physics.multiplane_wave as canonical
-    initial, wavelength = source((512, 512)), 2e-12
+    initial, wavelength = localized_source((512, 512)), 2e-12
     matrix = _drift_map(1e-6)
     offset = np.array((2e-8, -1e-8, 3e-5, -2e-5))
     numerics = WaveGridNumerics(maximum_working_bytes=48*1024**2, compute_backend="CPU")
@@ -205,7 +219,7 @@ def test_column_cpu_load_and_drift_succeed_below_old_dense_preflight(monkeypatch
     from temsim.physics.column_wave import _propagate_column
     from temsim.physics.wave_reference import AxialWaveReference
     import temsim.physics.multiplane_wave as canonical
-    initial = replace(source((512, 512)), basis_m=np.eye(2)*20e-9,
+    initial = replace(localized_source((512, 512)), basis_m=np.eye(2)*20e-9,
                       origin_m=np.zeros(2), curvature_m1=None, tilt_rad=None)
     captured = checkpoint()
     mode = replace(captured.beam.modes[0], plane=initial, axial_reference=AxialWaveReference(0., 0.))

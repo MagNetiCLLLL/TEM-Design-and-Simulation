@@ -6,6 +6,9 @@ allows GPU skips. Policy/emulation tests are deliberately not included.
 """
 
 GPU_TEST_FUNCTIONS = {
+    "test_completed_wave_planes.py": (
+        "test_public_changed_target_reuses_committed_intermediate_after_session_restart",
+    ),
     "test_tem_flux_contract.py": (
         "test_at06_known_aperture_transmission_is_not_renormalised",
         "test_at02_offset_aperture_selects_nonzero_diffraction_order",
@@ -26,6 +29,7 @@ GPU_TEST_FUNCTIONS = {
         "test_isolated_stem_atomistic_frozen_phonons_average_detector_intensities",
     ),
     "test_tip_wave_pipeline.py": (
+        "test_same_plane_prefix_distinguishes_detector_entrance_from_executed_exit",
         "test_virtual_plane_actual_column_matches_complex_analytic_gaussian_drift",
         "test_virtual_plane_absorbs_all_prior_detectors_even_with_readout_disabled",
         "test_virtual_plane_coincident_with_detector_returns_incident_state",
@@ -64,6 +68,44 @@ GPU_TEST_FUNCTIONS = {
     ),
     "test_column_support_budget.py": (
         "test_pipeline_independent_mode_selection_cache_and_strict_budget_reuse_gun",
+    ),
+    "test_preview_phase_carrier.py": (
+        "test_real_gpu_phase_preview_matches_cpu_complex_field_and_both_histories",
+    ),
+    "test_preview_segment_carrier.py": (
+        "test_real_gpu_preview_segment_h8_matches_cpu_fields_weights_and_ledger",
+    ),
+    "test_potential_wave_carrier_fft.py": (
+        "test_real_cpu_gpu_envelope_sampling_suggestions_and_gate_agree",
+    ),
+    "test_residual_exponential_allowance.py": (
+        "test_real_gpu_declared_allowance_matches_cpu_actual_h8_field_and_certificate",
+    ),
+    "test_potential_wave_chebyshev.py": (
+        "test_real_small_gpu_chebyshev_matches_cpu_complete_mixed_operator",
+    ),
+    "test_potential_wave_device.py": (
+        "test_real_gpu_complete_carrier_matches_cpu_and_returns_host",
+        "test_real_gpu_mixed_electric_operator_keeps_full_grid_cross_terms",
+    ),
+    "test_wave_device_reuse.py": (
+        "test_real_cuda_reuse_preserves_raw_complex_fields_and_live_arrays",
+    ),
+    "test_potential_wave_residual_memory.py": (
+        "test_actual_cuda_lifetime_estimate_covers_all_supported_taylor_variants",
+    ),
+    "test_potential_wave_chebyshev_memory.py": (
+        "test_actual_cuda_grouped_workspace_covers_supported_variants",
+        "test_actual_gpu_reduces_group_under_device_limit_without_using_cpu_base",
+    ),
+    "test_shared_chromatic_screens.py": (
+        "test_off_energy_cuda_screen_matches_cpu_without_recentering",
+    ),
+    "test_chromatic_column_wave.py": (
+        "test_real_lens_cc_mixed_modes_cuda_matches_cpu_complex_phase_and_weight",
+    ),
+    "test_wave_domain_support.py": (
+        "test_cuda_conservative_domain_expansion_matches_cpu_complex_field",
     ),
     "test_bcor_propagation.py": (
         "test_real_cuda_bcor_rays_and_third_hexapole_wave_match_cpu",
@@ -224,10 +266,24 @@ GPU_TEST_IDS = frozenset(
     for filename, names in GPU_TEST_FUNCTIONS.items()
     for name in names
 )
-# This test also has mandatory CPU parameters; never exclude its whole function.
+# These tests also have mandatory CPU parameters; never exclude whole functions.
 GPU_PARAMETER_IDS = frozenset({
+    "tests/test_column_support_budget.py::"
+    "test_optional_carrier_refinement_keeps_the_original_finite_mask_domain[Require GPU]",
     "tests/test_electrostatic_column_transport.py::"
     "test_closed_electric_and_magnetic_actions_match_reference_backend[CUDA GPU]",
+    "tests/test_equivalent_image_energy.py::"
+    "test_mixed_energy_thin_event_matches_independent_oracle[cuda-False]",
+    "tests/test_equivalent_image_energy.py::"
+    "test_mixed_energy_thin_event_matches_independent_oracle[cuda-True]",
+    "tests/test_equivalent_image_energy.py::"
+    "test_mixed_energy_thin_event_matches_independent_oracle[vector_cupy-False]",
+    "tests/test_equivalent_image_energy.py::"
+    "test_mixed_energy_thin_event_matches_independent_oracle[vector_cupy-True]",
+    "tests/test_equivalent_image_energy.py::"
+    "test_electric_event_uses_actual_local_momentum[None-CUDA GPU]",
+    "tests/test_equivalent_image_energy.py::"
+    "test_electric_event_uses_actual_local_momentum[300000.0-CUDA GPU]",
 })
 
 
@@ -268,6 +324,8 @@ def is_gpu_unavailable_reason(reason: str) -> bool:
         return False
     return reason in {
         "CUDA device unavailable", "NOT_RUN: actual CUDA device unavailable",
+        "Optional real CUDA device unavailable",
+        "CUDA hardware is unavailable",
         "No CUDA hardware", "CuPy CUDA backend unavailable", "No CUDA device",
         "CUDA is unavailable", "A CUDA device is required for complex128 parity",
         "optional real CUDA verification requires CuPy", "CuPy found no CUDA device",

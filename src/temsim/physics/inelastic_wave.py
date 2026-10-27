@@ -127,7 +127,8 @@ def _collide_slice(mode, inside, distribution, rng, z_mm):
 
 
 def _propagate_inelastic_specimen(state, checkpoint, *, numerics, store, maximum_step_mm,
-        grid_numerics, tip_time_s, cancelled, progress_callback, verify, use_cache, column_model="physical"):
+        grid_numerics, tip_time_s, cancelled, progress_callback, verify, use_cache, column_model="physical",
+        column_propagator=None):
     from temsim.physics.specimen_wave_transport import _with_material_refinement
     numerics.validate()
     key = store.key("inelastic-specimen-support-ledger-v5", checkpoint.digest, asdict(numerics),
@@ -135,6 +136,10 @@ def _propagate_inelastic_specimen(state, checkpoint, *, numerics, store, maximum
     if column_model != "physical":
         from temsim.physics.ideal_column_reference import column_model_record
         key = store.key(key, column_model_record(column_model))
+    if column_propagator is not None:
+        if column_model != "physical" or not callable(column_propagator) or not isinstance(column_propagator.digest, str):
+            raise ValueError("Explicit material transport requires a captured identity and no legacy reference")
+        key = store.key(key, "explicit-column-transport-v1", column_propagator.digest)
     cached = store.get(key) if use_cache else None
     if cached is not None:
         return cached
@@ -143,15 +148,19 @@ def _propagate_inelastic_specimen(state, checkpoint, *, numerics, store, maximum
             numerics=numerics, store=store, maximum_step_mm=maximum_step_mm,
             grid_numerics=grid_numerics, tip_time_s=tip_time_s, cancelled=cancelled,
             progress_callback=progress_callback, verify=verify, use_cache=use_cache,
-            key=key, material=material, refinement_factor=factor, refinement_history=history, column_model=column_model),
+            key=key, material=material, refinement_factor=factor, refinement_history=history, column_model=column_model,
+            column_propagator=column_propagator),
         grid_numerics=grid_numerics, cancelled=cancelled, progress_callback=progress_callback)
 
 
 def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_step_mm,
         grid_numerics, tip_time_s, cancelled, progress_callback, verify, use_cache,
-        key, material, refinement_factor, refinement_history, column_model="physical"):
+        key, material, refinement_factor, refinement_history, column_model="physical", column_propagator=None):
     from temsim.physics.specimen_wave_transport import (_regrid_refined_mode, _material_phase, _material_wave_axes, _bandlimit_mode)
     from temsim.physics.column_wave import _propagate_column, _previous_support_error
+    transport = _propagate_column if column_propagator is None else column_propagator
+    if column_propagator is not None and column_model != "physical":
+        raise ValueError("An explicit specimen transport cannot also apply a legacy column reference")
     from temsim.physics.wave_imaging import interaction_constant_rad_per_v_angstrom
     from temsim.specimen.inelastic import real_inelastic_distribution
     numerics.validate()
@@ -194,6 +203,8 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                     initial = mode.weight_per_reference_electron
                     mode, band_loss = _bandlimit_mode(mode, state.sample.wave_bandwidth_fraction, frame=bandwidth_frame, numerics=grid_numerics)
                     current_z, absorption, column_loss, support_loss, steps = start, 0., 0., 0., []
+                    transport_context = {} if column_propagator is None else column_propagator.context(
+                        checkpoint.record, 1/(len(configs)*numerics.trajectories_per_mode))
                     identity_history = True
                     for si, dz in enumerate(dzs):
                         if cancelled():
@@ -216,6 +227,8 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                             support_ledger = _previous_support_error(row, mode.mode_id)
                             steps = list(row["steps"])
                             identity_history = row.get("identity_history", False) is True
+                            if column_propagator is not None:
+                                transport_context = column_propagator.context(row)
                             current_z = next_z
                             report("saved slice restored", finished=True)
                             continue
@@ -229,12 +242,15 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                             mode, lost = _bandlimit_mode(mode, state.sample.wave_bandwidth_fraction, frame=bandwidth_frame, numerics=grid_numerics); band_loss += lost
                         local = TipGunCheckpoint(BeamState((mode,), checkpoint.beam.reference_plane), current_z,
                             checkpoint.reference_current_a, {"specimen_parent": parent_id,
+                                **transport_context,
                                 "support_error_by_mode": {mode.mode_id: support_ledger}})
                         report("column fields through material")
-                        propagated = _propagate_column(state, local, next_z, maximum_step_mm=maximum_step_mm,
+                        propagated = transport(state, local, next_z, maximum_step_mm=maximum_step_mm,
                             grid_numerics=grid_numerics, tip_time_s=tip_time_s, cancelled=cancelled,
                             retained_bytes=retained_potential_bytes+base.plane.amplitude.nbytes+source.plane.amplitude.nbytes,
                             **column_options)
+                        if column_propagator is not None:
+                            transport_context = column_propagator.context(propagated.record)
                         previous_support_loss = support_ledger["probability_loss_per_tip_electron"]
                         support_ledger = _previous_support_error(propagated.record, mode.mode_id)
                         slice_support_loss = support_ledger["probability_loss_per_tip_electron"]-previous_support_loss
@@ -252,6 +268,10 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                             identity_history = identity_history and _identity_collision(distribution)
                             xy = mode.plane.coordinates_m()*1e9
                             inside = scene.sample_contains_xy(xy[0], xy[1])
+                            if column_propagator is not None:
+                                validate_collision = getattr(column_propagator, "validate_collision", None)
+                                if validate_collision is not None:
+                                    validate_collision(transport_context, inside, distribution)
                             mode, event = _collide_slice(mode, inside, distribution,
                                 _trajectory_rng(numerics.seed, source.mode_id, ci, ti, si), next_z)
                             absorption += event["absorbed_weight"]
@@ -263,6 +283,7 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                         verify()
                         saved = store.put(step_key, TipGunCheckpoint(BeamState((mode,), checkpoint.beam.reference_plane), next_z,
                             checkpoint.reference_current_a, {"steps": steps, "band_loss": band_loss,
+                                **transport_context,
                                 "absorption": absorption, "column_loss": column_loss, "parent": parent_id,
                                 "numerical_support_loss": support_loss,
                                 "support_error_by_mode": {mode.mode_id: support_ledger},
@@ -274,7 +295,7 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                     # every actual slice energy, not from one entrance rate or
                     # the fact that a random sample happened to lose no energy.
                     # Distinct source/phonon modes never share this proof.
-                    multiplicity = numerics.trajectories_per_mode if ti == 0 and identity_history else 1
+                    multiplicity = numerics.trajectories_per_mode if ti == 0 and identity_history and column_propagator is None else 1
                     if multiplicity > 1:
                         mode = replace(mode, weight_per_reference_electron=mode.weight_per_reference_electron*multiplicity)
                         initial *= multiplicity
@@ -290,6 +311,7 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
                     writer.append(mode)
                     records.append({"mode_id": mode.mode_id, "input_weight": initial, "output_weight": mode.weight_per_reference_electron,
                         "energy_kev": mode.energy_kev, "regrid": regrid, "steps": steps,
+                        **({} if column_propagator is None else {"column_transport_context": transport_context}),
                         "band_loss": band_loss, "absorption": absorption, "column_loss": column_loss,
                         "numerical_support_loss": support_loss, "support_approximation": support_ledger,
                         "represented_trajectories": multiplicity, "identity_history": identity_history,
@@ -309,6 +331,7 @@ def _propagate_inelastic_attempt(state, checkpoint, *, numerics, store, maximum_
         return writer.finish(stop, checkpoint.reference_current_a,
             {"schema": "executed-inelastic-trajectories-v1", "upstream_digest": parent_id, "upstream": checkpoint.record,
              "potential": prepared.metrics, "modes": records, "numerics": asdict(numerics),
+             **({} if column_propagator is None else {"column_transport_identity": column_propagator.digest}),
              "requested_trajectories": total, "executed_trajectories": len(records),
              "material_grid_refinement": {"factor": refinement_factor, "attempts": refinement_history},
              "specimen_phase_method": grid_numerics.specimen_phase_method,

@@ -292,7 +292,8 @@ class ModelInspectorPage(QWidget):
     @staticmethod
     def _field_fit_unavailable_message():
         return ("Field-derived aberration fitting requires an active spatial field map. "
-                "Ideal Optics and Analytical Field use parameterized fields. Choose Manual, "
+                "Parameterized Finite-Field Optics and its compatibility alias use analytical fields; "
+                "Ideal Optics uses thin actions. Choose Manual, "
                 "or explicitly select a spatial-field model before requesting a fit.")
 
     def _validate_aberration_mode(self, mode):

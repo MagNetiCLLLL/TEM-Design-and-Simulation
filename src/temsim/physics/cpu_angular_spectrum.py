@@ -4,6 +4,8 @@ The caller must already admit the same full-band conservative drift domain as
 ``multiplane_wave._sampled_angular_spectrum``. This module changes allocation
 order only: all complex128 frequency bins and their quadratic phase survive.
 It supplies no replacement for non-conservative-domain or CUDA admission.
+The caller must also check the physical input/output support: a conservative
+Fourier phase increment alone does not prevent finite-window wraparound.
 """
 import math
 

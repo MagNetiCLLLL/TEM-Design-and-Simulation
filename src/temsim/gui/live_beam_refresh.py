@@ -1,4 +1,4 @@
-"""Coalesce Live tuning edits before refreshing an already calculated wave.
+"""Coalesce optical edits before refreshing an already calculated wave.
 
 This schedules the existing Electron beam action, never another solver or
 source definition. Particle frames keep their own scheduler. A wave refresh
@@ -39,8 +39,8 @@ class LiveBeamRefresh(QObject):
         if page.state_set.viewing_states():
             calculated = page.state_set.active and page.result is not None
         else:
-            calculated = (not page._stale and page.result is not None
-                          and (page._session_ready or page._worker is not None))
+            calculated = (not page._stale and (page._worker is not None
+                          or (page.result is not None and page._session_ready)))
         eligible = continuing or calculated
         # set_state cancels old wave work and preserves the previous image.
         # Draft edits, explicit Cancel, or other input changes alter identity.
@@ -51,7 +51,7 @@ class LiveBeamRefresh(QObject):
             self.timer.start(self.SETTLE_MS)
             page.cancel_button.setEnabled(True)
             page.status.setText(
-                "Live tuning: previous coherent image retained; waiting for "
+                "Synchronized refresh: previous coherent image retained; waiting for "
                 "edits to settle and the latest particle frame before updating.")
 
     def particle_ready(self):

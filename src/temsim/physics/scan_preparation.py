@@ -81,7 +81,13 @@ def scan_drive_identity(state, *, emission_time_s=None):
             scan_command_matrix_mrad=component.scan_command_matrix_mrad))
     epoch = (getattr(state, "simulation_time_s", 0.)
              if emission_time_s is None else emission_time_s)
-    return json_digest({"calibration_model": SCAN_CALIBRATION_MODEL,
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        from temsim.physics.unified_scan_calibration import MODEL
+        model = MODEL
+    else:
+        model = SCAN_CALIBRATION_MODEL
+    return json_digest({"calibration_model": model,
                         "ac_angle_target": angle_target,
                         "emission_time_s": float(epoch), "scan_drives": rows})
 
@@ -136,8 +142,13 @@ def prepare_scan_drives(state, request_identity, *, observation_stop_z_mm=None,
         if session_cache is not None:
             session_cache[key] = values
         return
-    from temsim.physics.scan_geometry import calibrate_scan_system
-    calibrate_scan_system(state, observation_stop_z_mm=observation_stop_z_mm)
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        from temsim.physics.unified_scan_calibration import calibrate_unified_scan
+        calibrate_unified_scan(state, observation_stop_z_mm=observation_stop_z_mm)
+    else:
+        from temsim.physics.scan_geometry import calibrate_scan_system
+        calibrate_scan_system(state, observation_stop_z_mm=observation_stop_z_mm)
     remember_resolved_scan_drives(state, request_identity, active_keys=active)
     if session_cache is not None:
         session_cache[(identity, active)] = _resolved_values(state)

@@ -1,8 +1,8 @@
 """Explicit column-lens fidelity, independent of numerical accuracy and specimen physics.
 
-Ideal uses parameterised finite fields with configured aberrations, multipoles
-and actual electron energies; it does not solve material/pole-piece fields or
-alter TOML geometry. Mode shelves
+The historical ``ideal`` key retains parameterised finite fields. The separate
+``ideal_thin`` key selects the new thin-element particle approximation. Labels
+never reinterpret saved mode keys. Mode shelves
 store model settings and round-lens excitations, never resolved geometry.
 """
 
@@ -20,14 +20,17 @@ class SimulationMode:
 
 
 MODES = (
-    SimulationMode("ideal", "Ideal Optics", "Parameterized finite column fields with configured aberrations, corrector multipoles and actual electron energies. Pole-piece shape and magnetic materials are not used to solve the field. Hardware positions and apertures remain active."),
-    SimulationMode("analytical", "Analytical Field", "Parameterized fields with configured aberrations and correctors; the same field laws as Ideal Optics. Retained for existing profiles. Saved geometry/map recipes are inactive."),
+    SimulationMode("ideal_thin", "Ideal Optics", "Fast thin-element particle optics. Lenses, stigmators and deflectors act at declared planes; field thickness and magnetic materials are not resolved. Positions and apertures remain active. Configured empirical Cs/Cc screens are inactive; saved values are retained. Coherent propagation requires Finite-Field Optics."),
+    SimulationMode("unified", "Finite-Field Optics", "Particles and coherent waves use the same immutable electromagnetic potentials and finite geometry. Natural field aberrations replace empirical Cs/Cc screens and equivalent image lenses in the owned column interval; saved values remain unchanged. Unsupported source, field, geometry or wave configurations are rejected explicitly. This is a bounded forward-field model, not full instrument qualification."),
+    SimulationMode("ideal", "Parameterized fields (legacy)", "Compatibility execution of parameterized finite column fields with configured aberrations, corrector multipoles and actual electron energies. Pole-piece shape and magnetic materials are not used to solve the field. The historical ideal key keeps its original behavior; it does not select the unified potential executor."),
+    SimulationMode("analytical", "Analytical Field (compatibility)", "Compatibility alias for parameterized Finite-Field Optics. Existing profiles retain their key, configured aberrations and correctors. Saved geometry/map recipes are inactive."),
     SimulationMode("linear_geometry", "Linear Geometry Field", "Every enabled column round lens requires an explicit linear FEM recipe. Materials, mesh and geometry must be valid; no analytic fallback."),
     SimulationMode("nonlinear_material", "Nonlinear Material Field", "Static isotropic B-H fields, jointly solved at the complete current vector. Explicit reference materials required; no hysteresis or thermal coupling."),
-    SimulationMode("coupled_multiphysics", "Coupled Multiphysics", "Not implemented: requires explicit circuit, thermal and structural coupling.", False),
+    SimulationMode("coupled_multiphysics", "Coupled Multiphysics", "Future model: coupled electromagnetic, vacuum, thermal and mechanical behavior, including physically defined specimen drift. Not implemented; existing independent vacuum scattering is a separate approximation.", False),
     SimulationMode("custom", "Custom / Per-lens Models", "Each lens explicitly selects its analytic, generated or imported field model; not a uniform fidelity level."),
 )
 MODE_BY_KEY = {item.key: item for item in MODES}
+FINITE_FIELD_KEYS = ("unified", "ideal", "linear_geometry", "nonlinear_material", "custom", "analytical")
 MODEL_SETTINGS = ("lens_field_map_descriptors", "probe_aberrations", "image_aberrations",
                   "chromatic_aberration_enabled", "equivalent_image_lenses_enabled")
 
@@ -46,11 +49,40 @@ def mode_key(state):
 
 
 def is_ideal(state):
+    """Historical finite-field flag; never reinterpret it as thin optics."""
     return mode_key(state) == "ideal"
 
 
+def is_thin(state):
+    return mode_key(state) == "ideal_thin"
+
+
+def is_unified(state):
+    """The shared potential executor, separate from archived compatibility modes."""
+    return mode_key(state) == "unified"
+
+
+def coherent_mode_issue(state):
+    if is_thin(state):
+        return ("Coherent propagation is unavailable in Ideal Optics (thin elements). "
+                "Select Finite-Field Optics in Simulation; the mode was not changed automatically.")
+    return None
+
+
+def require_coherent_mode(state):
+    issue = coherent_mode_issue(state)
+    if issue:
+        raise ValueError(issue)
+
+
+def mode_display_label(state):
+    key = mode_key(state)
+    label = MODE_BY_KEY[key].label
+    return f"Finite-Field Optics / {label}" if key in FINITE_FIELD_KEYS and key != "unified" else label
+
+
 def uses_field_maps(state):
-    return mode_key(state) in {"custom", "linear_geometry", "nonlinear_material"}
+    return mode_key(state) in {"unified", "custom", "linear_geometry", "nonlinear_material"}
 
 
 def normalise_profiles(profiles):
@@ -191,6 +223,11 @@ def nonlinear_mode_issues(state, descriptors=None):
 def promote_custom_mode(state):
     """Explicit model editing keeps current controls, rather than restoring a shelf."""
     current = mode_key(state)
+    if current == "unified":
+        # Editing a retained potential recipe does not opt out of shared-field
+        # execution. Capability validation takes place before propagation.
+        state._runtime_lens_field_provider_cache = {}
+        return
     if current != "custom":
         profiles = normalise_profiles(getattr(state, "simulation_mode_profiles", {}))
         profiles[current] = capture_mode_settings(state)

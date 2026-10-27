@@ -166,12 +166,20 @@ def _trace_one(ray, coordinates, initial_energy, optical_invariant, initial_time
     oi = invariant if math.isnan(optical_invariant) else optical_invariant
     time, saved, captured = initial_time[ray], 0, 0
     for j in range(len(z)):
-        # These maps are defined as slope kicks, at unchanged kinetic energy.
-        tx, ty = tx-actions[1,j]*x, ty-actions[1,j]*y
-        if actions[2,j] != 0.:
-            co, si = math.cos(actions[2,j]), math.sin(actions[2,j])
-            x, y = co*x-si*y, si*x+co*y
-            tx, ty = co*tx-si*ty, si*tx+co*ty
+        # Magnetic thin maps use the actual local momentum, including electric work.
+        if actions[1,j] != 0. or actions[2,j] != 0.:
+            local_energy = invariant+_grid_electric(x,y,z[j],electric_data)[0]
+            scale = math.nan
+            if math.isfinite(local_energy) and local_energy > 0.:
+                local_p, _ = _momentum_speed(local_energy)
+                scale = reference_p/local_p
+            power = actions[1,j]*scale**2
+            tx, ty = tx-power*x, ty-power*y
+            if actions[2,j] != 0.:
+                angle = actions[2,j]*scale
+                co, si = math.cos(angle), math.sin(angle)
+                x, y = co*x-si*y, si*x+co*y
+                tx, ty = co*tx-si*ty, si*tx+co*ty
         tx, ty = tx+actions[3,j], ty+actions[4,j]
         radial = actions[0,j]*(x*x+y*y)
         tx, ty = tx-radial*x, ty-radial*y
@@ -291,10 +299,15 @@ def _vector_reference(inputs, z, electric, energy, optical_invariant, initial_ti
         return momentum,speed
     for j in range(len(z)):
         if cancel_check is not None and j % 64 == 0: cancel_check()
-        tx,ty=tx-power[j]*x,ty-power[j]*y
-        if rotation[j] != 0.:
-            co,si=math.cos(rotation[j]),math.sin(rotation[j])
-            x,y=co*x-si*y,si*x+co*y;tx,ty=co*tx-si*ty,si*tx+co*ty
+        if power[j] != 0. or rotation[j] != 0.:
+            local_p, _ = pv(invariant+sample(x,y,z[j])[0])
+            scale = ref[0]/local_p
+            local_power = power[j]*scale**2
+            tx,ty=tx-local_power*x,ty-local_power*y
+            if rotation[j] != 0.:
+                angle = rotation[j]*scale
+                co,si=xp.cos(angle),xp.sin(angle)
+                x,y=co*x-si*y,si*x+co*y;tx,ty=co*tx-si*ty,si*tx+co*ty
         tx,ty=tx+kickx[j],ty+kicky[j]
         radial=cs[j]*(x*x+y*y);tx,ty=tx-radial*x,ty-radial*y
         for kick in (posed_spherical_kicks or {}).get(j, ()):

@@ -49,7 +49,7 @@ def _prepared_planes(state, response, planes):
 def acquire_projected_stem_scan(
     simulation, state, inserted, *, scan_x_um, scan_y_um, kick_grid_mrad,
     baseline_scan_mrad, scan_times_s, baseline_descan_scan_mrad, sample_response,
-    real_interactions=None, progress_callback=None,
+    real_interactions=None, progress_callback=None, optical_response=None,
 ):
     from temsim.detector.projected_response import build_projected_responses
     from temsim.detector.stem_signal import (
@@ -57,6 +57,8 @@ def acquire_projected_stem_scan(
     )
 
     check_tuning_cancelled(state)
+    if str(getattr(state, "simulation_mode", "")) == "unified" and optical_response is None:
+        raise ValueError("Shared-potential projected STEM requires measured optical responses")
     incident = incident_rays_from_simulation(state, simulation)
     baseline_um = np.asarray(sample_response) @ (np.asarray(baseline_scan_mrad) * 1e-3) * 1e3
     # The captured beam already contains the reference-time scan kick. Replace
@@ -95,7 +97,7 @@ def acquire_projected_stem_scan(
               if response.branches else np.empty(0, dtype=bool))
         for key, response in responses.items()
     }
-    plane_responses = {
+    plane_responses = optical_response["plane_responses"] if optical_response is not None else {
         plane.key: (1e3 * paired_kick_response(state, state.ac_deflector, plane.z_mm),
                     1e3 * paired_kick_response(state, state.descan_deflector, plane.z_mm))
         for plane in planes
@@ -142,7 +144,8 @@ def acquire_projected_stem_scan(
         fraction = float(images[detector.key].mean())
         simulated, current, electrons = _current_values(state, fraction)
         signals[detector.key] = DetectorSignal(detector.key, detector.name, fraction,
-                                              simulated, current, electrons, collection_angle(state, detector))
+                                              simulated, current, electrons,
+                                              None if optical_response is not None else collection_angle(state, detector))
     metadata = {
         "model": "projected_atomic_scattering", "quantitative_model": False,
         "pixel_resolved_specimen_contrast": True, "coherent_imaging": False,
@@ -174,6 +177,8 @@ def acquire_projected_stem_scan(
             "The executed probe width is retained. A broad probe or coarse pixel sampling can remove atomic contrast.",
         ),
     }
+    if optical_response is not None:
+        metadata.update(optical_response["metadata"])
     return _stem_result(state, simulation, x_um, y_um, images, signals, metadata,
                         uncollected_fraction=np.maximum(remainder, 0), absorbed_fraction=absorbed,
                         truncated_fraction=truncated)

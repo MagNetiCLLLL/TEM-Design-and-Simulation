@@ -11,6 +11,7 @@ from contextvars import ContextVar
 from dataclasses import asdict, dataclass
 from hashlib import sha256
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -263,7 +264,7 @@ class _ModeWriter:
         self._require_open()
         if not self.rows:
             raise ValueError("An executed checkpoint needs at least one mode")
-        data = {"schema": "executed-tip-wave-disk-v1", "dependency": self.store.dependency, "key": self.key,
+        data = {"schema": "executed-tip-wave-disk-v1", "dependency": thaw_json(self.store.dependency), "key": self.key,
                 "reference_plane": self.reference, "plane_z_mm": float(z_mm), "current_a": current_a,
                 "modes": self.rows, "record": thaw_json(freeze_json(record))}
         if self.auxiliary:
@@ -307,10 +308,19 @@ class _ModeWriter:
 
 class ExecutedWaveStore:
     def __init__(self, directory, dependency, maximum_bytes):
+        # Callers, immutable checkpoint records and JSON decoders represent
+        # sequences differently. Capture one immutable JSON identity before
+        # any caller-owned nested container can change this store's keys.
+        self._dependency = freeze_json(dependency)
+        self._dependency_digest = json_digest(self._dependency)
         self.root = Path(directory).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
-        self.dependency, self.maximum_bytes = dependency, maximum_bytes
+        self.maximum_bytes = maximum_bytes
         self._used_bytes = sum(p.stat().st_size for p in self.root.rglob("*") if p.is_file())
+
+    @property
+    def dependency(self):
+        return self._dependency
 
     def key(self, *parts):
         return json_digest(("executed-tip-wave-disk-v1", self.dependency, parts))
@@ -338,7 +348,8 @@ class ExecutedWaveStore:
             raise ValueError("Invalid executed cache directory")
         data = json.loads((directory/"manifest.json").read_text(encoding="utf-8"))
         identity = data.pop("manifest_digest")
-        if identity != pointer["digest"] or identity != json_digest(data) or data["dependency"] != self.dependency or data["key"] != key:
+        if (identity != pointer["digest"] or identity != json_digest(data)
+                or json_digest(data["dependency"]) != self._dependency_digest or data["key"] != key):
             raise ValueError("Executed wave cache identity/dependency changed")
         if data["schema"] != "executed-tip-wave-disk-v1":
             raise ValueError("Unsupported executed wave cache schema")
@@ -375,6 +386,143 @@ class ExecutedWaveStore:
             return writer.finish(checkpoint.plane_z_mm, checkpoint.reference_current_a, checkpoint.record)
         finally:
             writer.abort()
+
+    def _completed_directory(self, identity):
+        self._validate_key(identity)
+        return self.root/"completed_planes"/self.key("completed-planes-v1", identity)
+
+    @staticmethod
+    def _complete_modes(checkpoint, expected_mode_ids):
+        """Reject single-mode work products, even if their payload is valid."""
+        record = checkpoint.record
+        rows = checkpoint.beam.modes.rows
+        mode_ids = tuple(row["mode_id"] for row in rows)
+        contexts = record.get("unified_mode_contexts", {})
+        if (record.get("schema") != "unified-source-column-v1"
+                or record.get("unified_column_executed") is not True
+                or not mode_ids or len(set(mode_ids)) != len(mode_ids)
+                or mode_ids != tuple(expected_mode_ids) or set(contexts) != set(mode_ids)):
+            raise ValueError("Completed-plane reference requires the entire committed mode mixture")
+        if any(context.get("unified_wave_identity") != record.get("unified_wave_identity")
+               for context in contexts.values()):
+            raise ValueError("Completed-plane modes disagree about their executed field identity")
+        from temsim.physics.potential_phase_budget import KineticPhaseLedger
+        plane = record.get("unified_executed_plane_z_m")
+        if (type(plane) not in (int, float) or not math.isfinite(plane)
+                or plane*1000. != checkpoint.plane_z_mm):
+            raise ValueError("Completed-plane checkpoint lost its exact executed coordinate")
+        for context in contexts.values():
+            kinetic = KineticPhaseLedger.from_dict(context.get("kinetic_phase_ledger"))
+            geometry = context.get("potential_geometry", {})
+            if (kinetic.binding is None or kinetic.last_z_m != plane
+                    or kinetic.binding["snapshot_digest"] != record.get("snapshot_digest")
+                    or geometry.get("last_z_m") != plane
+                    or geometry.get("geometry_digest") != record.get("unified_geometry_digest")):
+                raise ValueError("Completed-plane phase/geometry histories disagree with the complete mixture")
+        return mode_ids
+
+    def register_completed_plane(self, identity, checkpoint, *, expected_mode_ids,
+                                 validate, cancelled=lambda: False):
+        """Publish a durable reference only; never duplicate complex arrays.
+
+        The caller owns the exact request/source/adapter/numerical identity and
+        must validate every phase, electric and support history. The reference
+        binds one complete committed mixture, never a collection of partial
+        modes. Individual immutable files retain older planes across restarts.
+        """
+        if cancelled():
+            raise InterruptedError("Completed-plane registration cancelled")
+        directory = self._completed_directory(identity)
+        if directory.resolve() != directory:
+            raise ValueError("Invalid completed-plane reference directory")
+        storage = checkpoint.record.get("storage", {})
+        if json_digest(storage.get("dependency")) != self._dependency_digest or not storage.get("key"):
+            raise ValueError("Completed-plane registration requires this store's committed checkpoint")
+        committed = self.get(storage["key"])
+        if (committed is None or committed.digest != checkpoint.digest
+                or committed.record["storage"]["manifest_digest"] != storage.get("manifest_digest")):
+            raise ValueError("Completed-plane checkpoint differs from its committed manifest")
+        mode_ids = self._complete_modes(committed, expected_mode_ids)
+        validate(committed)
+        payload = {"schema": "completed-unified-plane-reference-v1", "dependency": thaw_json(self.dependency),
+            "identity": identity, "key": storage["key"], "manifest_digest": storage["manifest_digest"],
+            "checkpoint_digest": committed.digest, "plane_z_mm": committed.plane_z_mm,
+            "mode_ids": mode_ids}
+        digest = json_digest(payload)
+        path = directory/(digest+".json")
+        content = json.dumps({**payload, "digest": digest}, ensure_ascii=False).encode("utf-8")
+        if path.exists():
+            if (path.is_symlink()
+                    or json_digest(json.loads(path.read_text(encoding="utf-8")))
+                    != json_digest({**payload, "digest": digest})):
+                raise ValueError("Completed-plane reference changed")
+            return
+        self.check_space(len(content))
+        if cancelled():
+            raise InterruptedError("Completed-plane registration cancelled before publication")
+        directory.mkdir(parents=True, exist_ok=True)
+        temporary = directory/("pending-"+uuid4().hex+".tmp")
+        try:
+            temporary.write_bytes(content)
+            if cancelled():
+                raise InterruptedError("Completed-plane registration cancelled before publication")
+            os.replace(temporary, path)
+            self._used_bytes += len(content)
+        finally:
+            temporary.unlink(missing_ok=True)
+
+    def find_completed_plane(self, identity, minimum_z_mm, target_z_mm, *, validate,
+                             cancelled=lambda: False):
+        """Load the closest complete forward prefix for an exact request.
+
+        All reference and manifest identities fail closed. Array verification
+        streams modes, including exact-plane observations. A later checkpoint
+        is never propagated backwards or combined with partially saved modes.
+        """
+        if (not all(isinstance(z, (int, float)) and not isinstance(z, bool) and math.isfinite(z)
+                    for z in (minimum_z_mm, target_z_mm)) or minimum_z_mm > target_z_mm):
+            raise ValueError("Completed-plane lookup requires finite forward bounds")
+        if cancelled():
+            raise InterruptedError("Completed-plane lookup cancelled")
+        directory = self._completed_directory(identity)
+        if directory.resolve() != directory:
+            raise ValueError("Invalid completed-plane reference directory")
+        candidates = []
+        for path in directory.glob("*.json"):
+            if cancelled():
+                raise InterruptedError("Completed-plane lookup cancelled")
+            if path.is_symlink():
+                raise ValueError("Invalid completed-plane reference path")
+            row = json.loads(path.read_text(encoding="utf-8"))
+            digest = row.pop("digest")
+            if (digest != path.stem or json_digest(row) != digest
+                    or row.get("schema") != "completed-unified-plane-reference-v1"
+                    or row.get("identity") != identity
+                    or json_digest(row.get("dependency")) != self._dependency_digest):
+                raise ValueError("Completed-plane reference identity changed")
+            z = row["plane_z_mm"]
+            if isinstance(z, bool) or not isinstance(z, (int, float)) or not math.isfinite(z):
+                raise ValueError("Invalid completed-plane reference coordinate")
+            if minimum_z_mm <= z <= target_z_mm:
+                candidates.append(row)
+        candidates.sort(key=lambda row: (row["plane_z_mm"], row["key"]), reverse=True)
+        if not candidates:
+            return None
+        row = candidates[0]
+        checkpoint = self.get(row["key"])
+        if (checkpoint is None or checkpoint.plane_z_mm != row["plane_z_mm"]
+                or checkpoint.digest != row["checkpoint_digest"]
+                or checkpoint.record["storage"]["manifest_digest"] != row["manifest_digest"]):
+            raise ValueError("Completed-plane reference lost or changed its committed checkpoint")
+        self._complete_modes(checkpoint, row["mode_ids"])
+        for mode in checkpoint.beam.modes:
+            if cancelled():
+                raise InterruptedError("Completed-plane payload verification cancelled")
+            del mode
+        validate(checkpoint)
+        if cancelled():
+            raise InterruptedError("Completed-plane lookup cancelled before reuse")
+        return checkpoint
 
 
 def resident_wave_bytes(beam):

@@ -92,7 +92,9 @@ def test_editable_stigmator_multipole_and_scan_controls_have_causal_explanations
             assert definition is not None, (key, parameter.name)
             assert definition.description and not definition.sweep_eligible
     assert state.to_dict() == before
-    assert "including Ideal Optics" in runtime_definition(targets["probe_hp2_hexapole"], "strength_m3").tooltip()
+    tooltip = runtime_definition(targets["probe_hp2_hexapole"], "strength_m3").tooltip()
+    assert "Finite-Field Optics resolves the field" in tooltip
+    assert "Ideal Optics applies its integrated thin action" in tooltip
     for key in ("ac_deflector", "descan_deflector"):
         assert runtime_definition(targets[key], "scan_amplitude_x_mrad").category == "metadata"
         assert runtime_definition(targets[key], "effective_thickness_mm").category == "metadata"

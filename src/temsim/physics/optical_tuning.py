@@ -68,7 +68,8 @@ def prepare_tuning_snapshot(state, quality, *, particle_signals=False):
     # The legacy optical diagnostic omits raster and material observables.
     # Physical particle tuning preserves raster, elastic/inelastic scattering
     # and independently selected EDS. Live tuning does not request wave products.
-    if not particle_signals:
+    from temsim.simulation_modes import is_unified
+    if not particle_signals and not is_unified(state):
         state.ac_deflector.scan_enabled = False
         state.descan_deflector.scan_enabled = False
     state.sample.wave_enabled = False

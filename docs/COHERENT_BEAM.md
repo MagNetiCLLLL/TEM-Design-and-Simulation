@@ -28,6 +28,17 @@ scattering or pressure attenuation. Electric and magnetic fields, specimen
 interactions, apertures, column walls and physical detector absorption remain
 active. Ideal vacuum does not mean ideal lenses or removal of aberrations.
 
+Finite Cartesian FFT propagation checks physical support even for a short,
+conservative drift. It checks both the occupied input support with the step's
+spectral displacement and the propagated output edge, extending the domain or
+using the existing alternate propagation chart when needed. Insufficient
+memory/pixel budgets produce a sampling error rather than a periodically
+wrapped wave. Zero drift remains an exact identity. These checks preserve the
+complex field, absolute probability and real centroid; they do not recenter or
+renormalise a clipped result. Declared additional Cc uses the same per-lens
+energy-dependent action as particles; see
+[chromatic coefficient ownership](LENS_INTRINSIC_ABERRATIONS.md#declared-additional-chromatic-coefficient).
+
 ### Displaced and tilted main-column components
 
 The column wave solver supports small installation offsets and tilts of the
@@ -48,7 +59,7 @@ coordinates. For placed fields the conversion from canonical to mechanical
 increments uses the full `e/p * d(Axy)/d(x,y)` matrix at the reference chief
 ray, rather than assuming an axisymmetric Larmor term. These remain local
 first-order maps about that ray, not exact finite-amplitude maps with all
-aberrations. A displaced enabled hexapole, including in Ideal Optics, retains its linear feed-down in
+aberrations. A displaced enabled hexapole in Finite-Field Optics retains its linear feed-down in
 this local observer. Imported maps without a wave vector potential retain
 their separately labelled historical gauge approximation.
 

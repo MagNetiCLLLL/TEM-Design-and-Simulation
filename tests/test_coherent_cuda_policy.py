@@ -191,6 +191,7 @@ def test_gui_checks_cuda_before_capture_but_configuration_capture_is_allowed(no_
     owner = SimpleNamespace(_settings=lambda: object(), state_provider=None, _state=state,
         _make_request=lambda *_: pipeline.TipWaveRequest(), result=object(),
         _show_source_check=lambda *a: None,
+        progress_detail=SimpleNamespace(emit=lambda *_: None),
         status=SimpleNamespace(setStyleSheet=lambda *_: None, setText=lambda *_: None))
     with pytest.raises(backend.GPUExecutionError):
         coherent_beam.CoherentBeamPage.capture_calculation_inputs(owner)

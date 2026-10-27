@@ -129,7 +129,11 @@ def _wait_overlay(page, qtbot, z_mm, count=2):
         qtbot.waitUntil(lambda: isinstance(page.result, EnsembleObservation)
             and page.result.checkpoint.plane_z_mm == z_mm
             and len(page.result.members) == count
-            and page.state_set.worker is None, timeout=10000)
+            and page.state_set.worker is None
+            # Between selected states, the completed worker has been released
+            # while a zero-delay timer still owns the next state. The previous
+            # complete overlay remains visible and is not the new result.
+            and not page.state_set.timer.isActive(), timeout=10000)
     except QtTimeoutError as error:
         raise AssertionError(f"Overlay did not complete: {page.status.text()}; "
             f"failed states={page.state_set.failed}; calls={len(page.execution.calls)}") from error
@@ -167,6 +171,32 @@ def test_different_states_overlay_same_plane_in_shared_optics_without_live_mutat
     assert page.result.members[0].checkpoint.initial_energy_ev == 4.
     assert page.result.members[1].checkpoint.initial_energy_ev == 5.
     assert page.result.relative_weights == (.5, .5)
+
+
+@pytest.mark.parametrize('count', [1, 2])
+def test_saved_state_publication_labels_preview_members_without_pooling_budgets(page, qtbot, count):
+    from test_coherent_result_labels import preview_profile
+    if count == 1:
+        _add(page)
+    else:
+        _two_states(page)
+    _calculate(page, qtbot, count=count)
+    density = page.preview.density.copy()
+    weights = page.result.relative_weights
+    for index, member in enumerate(page.result.members):
+        member.checkpoint.record = {'upstream': {'unified_numerical_profile':
+            preview_profile(probability=.001*(index+1), l2=.1*(index+1), pixels=2048//(index+1))}}
+    calls = len(page.execution.calls)
+    assert page.state_set._publish()
+    assert len(page.execution.calls) == calls
+    assert 'Exploratory preview' in page.status.text()
+    assert 'not accuracy qualified' in page.readout.text()
+    if count == 2:
+        assert 'member budgets and losses are separate' in page.readout.text()
+        assert 'probability 0.001, L2 0.1' in page.readout.text()
+        assert 'probability 0.002, L2 0.2' in page.readout.text()
+    np.testing.assert_array_equal(page.preview.density, density)
+    assert page.result.relative_weights == weights
 
 
 def test_duplicates_and_repeat_calculate_reuse_one_executed_state(page, qtbot):

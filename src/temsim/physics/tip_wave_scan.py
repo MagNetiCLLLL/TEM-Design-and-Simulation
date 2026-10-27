@@ -18,6 +18,10 @@ class ScanWaveSample:
     tip_time_s: float
     dwell_weight: float
     calculation: object
+    # A unified raster has one captured optical configuration but a separate
+    # immutable request/field epoch at every physical dwell.
+    scan_instrument_digest: str | None = None
+    dwell_instrument_digest: str | None = None
 
 
 class ScanResponseAccumulator:
@@ -56,6 +60,16 @@ class ScanResponseAccumulator:
         if self._detector_keys is not None and keys != self._detector_keys:
             raise ValueError("Detector channels changed within the scan")
         identity = getattr(calculation, "instrument_digest", None)
+        if sample.scan_instrument_digest is not None:
+            if (not isinstance(sample.scan_instrument_digest, str)
+                    or len(sample.scan_instrument_digest) != 64
+                    or not isinstance(sample.dwell_instrument_digest, str)
+                    or len(sample.dwell_instrument_digest) != 64
+                    or identity != sample.dwell_instrument_digest):
+                raise ValueError("Scan dwell result does not match its captured instrument inputs")
+            if getattr(getattr(calculation, "request", None), "tip_time_s", None) != sample.tip_time_s:
+                raise ValueError("Scan dwell result does not match its captured emission time")
+            identity = sample.scan_instrument_digest
         if self._values and identity != self._instrument_digest:
             raise ValueError("Instrument inputs changed within the scan")
         responses = [readout.record.get("response_weight") for readout in readouts]
@@ -136,13 +150,23 @@ per-position errors cannot be combined as independent scan noise.
     request = require_tip_wave_cuda(request)
     snapshot = capture_instrument_snapshot(state)
     working = snapshot.restore()
+    from temsim.simulation_modes import is_unified
+    unified = is_unified(working)
     scan_preparation = {}
     for row, column, dwell, time, weight in physical_scan_samples(working, numerics):
         if cancelled():
             raise InterruptedError("Physical wave scan cancelled")
-        result = simulate_tip_wave(working, replace(request, tip_time_s=time), cancelled=cancelled,
+        dwell_state = snapshot.restore() if unified else working
+        if unified:
+            # A scheduled raster explicitly selects these emission epochs.
+            # Capture that change before creating the runtime, rather than
+            # silently applying a new request time to an old field identity.
+            dwell_state.simulation_time_s = time
+        dwell_identity = capture_instrument_snapshot(dwell_state).digest if unified else None
+        result = simulate_tip_wave(dwell_state, replace(request, tip_time_s=time), cancelled=cancelled,
                                   progress_callback=progress_callback, use_cache=use_cache,
                                   _scan_preparation_cache=scan_preparation)
         snapshot.restore()
-        yield ScanWaveSample(row, column, dwell, time, weight, result)
+        yield ScanWaveSample(row, column, dwell, time, weight, result,
+                            snapshot.digest if unified else None, dwell_identity)
         del result

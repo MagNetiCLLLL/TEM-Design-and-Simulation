@@ -15,7 +15,10 @@ import numpy as np
 from temsim.component_keys import CAMERA, FLUORESCENT_SCREEN
 from temsim.detector.particle_readout import measure_particle_detectors
 from temsim.detector.compact_gaussian_response import compact_gaussian_response
-from temsim.detector.point_spread import DetectorPointSpread, apply_point_spread
+from temsim.detector.point_spread import DetectorPointSpread
+from temsim.detector.gaussian_pixel_response import (
+    integrated_gaussian_response, sampled_gaussian_response, TAIL_SIGMA,
+)
 
 
 @dataclass(frozen=True)
@@ -100,11 +103,11 @@ def _response_from_hits(positions, weights, x_edges, y_edges, point_spread, *, d
     """Include response from outside the viewport without normalizing the crop.
 
     Compact axis-aligned Gaussian clouds use bounded sixth-order pixel
-    integrals that retain their physical moments. Other small axis-aligned
-    requests use direct Gaussian pixel integrals; remaining requests use a
-    bounded convolution grid. Sub-PSF display pixels sample the smooth response
-    density; they never narrow the configured physical PSF. Optional diagnostics
-    report the compact expansion and its truncation bound, excluding roundoff.
+    integrals that retain their physical moments. Other affordable requests use
+    conditional Gaussian pixel integrals at any angle. Large populations use
+    a PSF-resolved convolution grid and conservative pixel integration. Display
+    pixel pitch never coarsens the physical PSF. Diagnostics identify the method
+    and its tail or compact-expansion bound, excluding roundoff and grid error.
     """
     if diagnostics is not None:
         diagnostics.clear()
@@ -115,64 +118,21 @@ def _response_from_hits(positions, weights, x_edges, y_edges, point_spread, *, d
         if diagnostics is not None:
             diagnostics.update(method="compact_gaussian_moments", **compact.metadata)
         return compact.probability, "Compact sixth-order Gaussian pixel integrals from physical hits", None
-    angle = math.radians(point_spread.rotation_deg)
-    c, s = math.cos(angle), math.sin(angle)
-    a, b = point_spread.sigma_x_mm**2, point_spread.sigma_y_mm**2
-    xx, yy, xy = c*c*a+s*s*b, s*s*a+c*c*b, c*s*(a-b)
-    n = len(x_edges)-1
-    if abs(xy) <= 1e-13*math.sqrt(xx*yy) and n*n*len(weights) <= 16*1024**2:
-        from scipy.special import ndtr
-        response = np.zeros((n, n), dtype=float)
-        def mass(edges, centres, sigma):
-            values = (edges[:, None]-centres[None, :])/sigma
-            low, high = values[:-1], values[1:]
-            return np.maximum(np.where(low > 0, ndtr(-low)-ndtr(-high),
-                                       ndtr(high)-ndtr(low)), 0.)
-        for start in range(0, len(weights), 128):
-            stop = start+128
-            mx = mass(x_edges, positions[start:stop, 0], math.sqrt(xx))
-            my = mass(y_edges, positions[start:stop, 1], math.sqrt(yy))
-            response += (my*weights[None, start:stop]) @ mx.T
-        return response, "Gaussian pixel integrals from all physical hits", None
-    dx, dy = x_edges[1]-x_edges[0], y_edges[1]-y_edges[0]
-    sigma = max(point_spread.sigma_x_mm, point_spread.sigma_y_mm)
-    # The physical response is smooth on the smallest PSF principal width.
-    # Fine viewports use sigma/24; coarser viewports retain their pixel pitch.
-    # This bounds work independently of a nanometre-sized view on an 80 mm screen.
-    minimum_pitch = min(point_spread.sigma_x_mm, point_spread.sigma_y_mm)/24
-    wx, wy = max(dx, minimum_pitch), max(dy, minimum_pitch)
-    cx, cy = math.ceil((x_edges[-1]-x_edges[0])/wx), math.ceil((y_edges[-1]-y_edges[0])/wy)
-    hx, hy = math.ceil(4*sigma/wx)+1, math.ceil(4*sigma/wy)+1
-    nx, ny = cx+2*hx, cy+2*hy
-    if nx*ny > 4*1024**2:
-        raise ValueError("Detector PSF exceeds the bounded display grid; widen the view or inspect particle arrivals without Detector blur")
-    extended_x = x_edges[0]+np.arange(-hx, cx+hx+1)*wx
-    extended_y = y_edges[0]+np.arange(-hy, cy+hy+1)*wy
-    # Linear deposition preserves sub-cell hit displacements and first
-    # moments on the response grid, before convolution and interpolation.
-    gx = (positions[:, 0]-extended_x[0])/wx-.5
-    gy = (positions[:, 1]-extended_y[0])/wy-.5
-    nearby = (gx >= -1) & (gx < nx) & (gy >= -1) & (gy < ny)
-    gx, gy, nearby_weights = gx[nearby], gy[nearby], weights[nearby]
-    ix, iy = np.floor(gx).astype(np.int64), np.floor(gy).astype(np.int64)
-    fx, fy = gx-ix, gy-iy
-    padded = np.zeros((ny, nx))
-    for ox, oy, fraction in ((0, 0, (1-fx)*(1-fy)), (1, 0, fx*(1-fy)),
-                              (0, 1, (1-fx)*fy), (1, 1, fx*fy)):
-        cols, rows = ix+ox, iy+oy
-        valid = (cols >= 0) & (cols < nx) & (rows >= 0) & (rows < ny)
-        padded += np.bincount(rows[valid]*nx+cols[valid],
-            weights=nearby_weights[valid]*fraction[valid], minlength=nx*ny).reshape(ny, nx)
-    response = apply_point_spread(padded, point_spread,
-                                 pixel_size_x_mm=wx, pixel_size_y_mm=wy)
-    if wx == dx and wy == dy:
-        return response[hy:hy+n, hx:hx+n], "Sampled Gaussian with four-sigma viewport halo", (wx, wy)
-    from scipy.ndimage import map_coordinates
-    ix = (.5*(x_edges[:-1]+x_edges[1:])-extended_x[0])/wx-.5
-    iy = (.5*(y_edges[:-1]+y_edges[1:])-extended_y[0])/wy-.5
-    grid_x, grid_y = np.meshgrid(ix, iy)
-    sampled = map_coordinates(response, (grid_y, grid_x), order=1, mode="constant", cval=0.)
-    return sampled*(dx*dy/(wx*wy)), "Bounded sampled Gaussian density; grid pitch is max(view pixel pitch, minimum PSF sigma/24) per axis", (wx, wy)
+    response = integrated_gaussian_response(positions, weights, x_edges, y_edges, point_spread)
+    tail_bound = 2.*math.erfc(TAIL_SIGMA/math.sqrt(2.))*float(np.sum(weights))
+    if response is not None:
+        if diagnostics is not None:
+            diagnostics.update(method="conditional_gaussian_pixel_integrals", maximum_quadrature_order=16,
+                               short_interval_relative_error_bound=2e-13,
+                               maximum_conditioned_interval=.5,
+                               marginal_tail_probability_bound=tail_bound)
+        return response, "Gaussian pixel integrals from physical hits", None
+    response, pitch = sampled_gaussian_response(positions, weights, x_edges, y_edges, point_spread)
+    if diagnostics is not None:
+        diagnostics.update(method="integrated_physical_gaussian_grid", cells_per_minimum_sigma=24,
+                           marginal_tail_probability_bound=tail_bound,
+                           approximation="CIC deposition and integrated bilinear density on a PSF-resolved grid")
+    return response, "Bounded physical Gaussian grid with conservative pixel integrals", pitch
 
 
 def receiver_image(result, key, *, pixels=512, exposure_s=1.0, extent_mm=None,

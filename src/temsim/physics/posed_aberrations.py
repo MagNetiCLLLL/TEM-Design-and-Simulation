@@ -76,7 +76,7 @@ def posed_spherical_kicks(state, z0, z1):
             continue
         event = FrozenLensAberrationKick(lens.key, float(lens.z_mm)*1e-3,
             float(cs)*1e-3/(focal*1e-3)**4, lens_pose_registration(state, lens.key))
-        if z0 <= event.z_mm <= z1:
+        if z0-1e-9 <= event.z_mm <= z1+1e-9:
             result.append(event)
     return tuple(result)
 
@@ -84,7 +84,11 @@ def posed_spherical_kicks(state, z0, z1):
 def kick_indices(kicks, z_mm, *, include_initial=True):
     result = {}
     for kick in kicks:
-        index = int(np.argmin(np.abs(z_mm-kick.z_mm)))
+        distance = np.abs(z_mm-kick.z_mm)
+        coincident = np.flatnonzero(distance <= 8*np.spacing(max(abs(kick.z_mm), 1.)))
+        # A transformed event can differ by an ulp from its original plane.
+        # Prefer the first coincident node so restart ownership is stable.
+        index = int(coincident[0]) if coincident.size else int(np.argmin(distance))
         if (np.isclose(z_mm[index], kick.z_mm, rtol=0., atol=1e-9)
                 and (include_initial or index != 0)):
             result.setdefault(index, []).append(kick)

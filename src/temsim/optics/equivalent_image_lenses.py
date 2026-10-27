@@ -7,6 +7,10 @@ power is derived from its isolated ``integral(Bz**2 dz)``.  Its signed Larmor
 rotation is retained as a separate event.  Diffraction mode continues to use
 the distributed magnetic fields because effective camera length is calibrated
 against the Objective back-focal plane instead.
+
+Event strengths are calibrated at the nominal beam momentum. Particle
+executors scale focusing by (p_ref/p_actual)**2 and rotation by p_ref/p_actual;
+electric transport uses each particle's local kinetic energy at the event.
 """
 
 from __future__ import annotations
@@ -125,12 +129,14 @@ def _calibration_signature(state, sample_z_mm: float, stop_z_mm: float):
         lens = lenses[key]
         gaussian_values = []
         for attribute in ("gaussian", "upper_gaussian", "lower_gaussian"):
-            for term in getattr(lens, attribute, ()):
-                gaussian_values.append((
+            # Moving a term between upper and lower profiles changes the field.
+            gaussian_values.append((attribute, tuple(
+                (
                     float(term.amplitude),
                     float(term.offset),
                     float(term.sigma),
-                ))
+                ) for term in getattr(lens, attribute, ())
+            )))
         lens_values.append((
             id(lens),
             key,
@@ -143,6 +149,9 @@ def _calibration_signature(state, sample_z_mm: float, stop_z_mm: float):
             float(getattr(lens, "a_mm", 0.0)),
             float(getattr(lens, "upper_a_mm", 0.0)),
             float(getattr(lens, "lower_a_mm", 0.0)),
+            getattr(lens, "upper_field_center_z_mm", None),
+            getattr(lens, "lower_field_center_z_mm", None),
+            bool(getattr(lens, "normalise_profile_peak", True)),
             int(getattr(lens, "polarity", 1)),
             tuple(gaussian_values),
         ))

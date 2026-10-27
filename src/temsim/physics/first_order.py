@@ -26,7 +26,7 @@ import numpy as np
 
 from temsim.physics.core import propagate
 
-FIRST_ORDER_RESPONSE_SCHEMA = "captured-field-affine-canonical-diagnostics-v6-intrinsic"
+FIRST_ORDER_RESPONSE_SCHEMA = "captured-field-affine-canonical-diagnostics-v7-thin-postaction"
 
 MECHANICAL_SLOPES = "mechanical_slopes"
 SPECIMEN_CANONICAL_MOMENTUM = "specimen_canonical_momentum"
@@ -40,10 +40,15 @@ def _trace_basis(state, source, stop, *, save_z_mm=(), maximum_step_mm=None, eve
     mapped fields use small central differences around the actual reference
     trajectory, including nonlinear feeddown of placed multipoles. These
     diagnostic bases are never a beam source.
+
+    In thin optics the input state is immediately after all source-plane
+    actions, matching an executed checkpoint and the identity source map.
+    The finite-field observer retains its historical entrance convention.
     """
     from temsim.physics.lens_field_provider import active_vector_providers
     from temsim.physics.instrument_magnetic import active_column_events, events_overlapping_interval
     from temsim.physics.posed_column_fields import capture_posed_column_fields
+    from temsim.simulation_modes import is_thin,is_unified
     # Normal observers trace the actual captured affine orbit. An explicitly
     # supplied empty tuple is reserved for an undriven mathematical response.
     events = events_overlapping_interval(state,
@@ -56,7 +61,7 @@ def _trace_basis(state, source, stop, *, save_z_mm=(), maximum_step_mm=None, eve
     from temsim.physics.intrinsic_aberrations import capture_intrinsic_kicks
     # C1/A1 change first-order focus. Off-axis higher terms can also feed down;
     # differentiate the actual shared screen with small rays, never unit metres.
-    vector_maps = vector_maps or bool(capture_intrinsic_kicks(state, source, stop))
+    vector_maps = vector_maps or (not is_unified(state) and bool(capture_intrinsic_kicks(state, source, stop)))
     steps = np.array((1e-8, 1e-8, 1e-6, 1e-6)) if vector_maps else np.ones(4)
     basis = np.column_stack((np.zeros(4), np.diag(steps)))
     if vector_maps:
@@ -64,6 +69,7 @@ def _trace_basis(state, source, stop, *, save_z_mm=(), maximum_step_mm=None, eve
     checkpoints = sorted({float(stop), *(float(z) for z in save_z_mm if source <= float(z) <= stop)})
     result = propagate(state, source, stop, basis[0], basis[2], basis[1], basis[3],
         events=events, include_spherical_aberration=False, include_hexapole=bool(placed),
+        include_initial_plane_kicks=not is_thin(state),
         include_intrinsic_aberrations=True,
         save_z_mm=checkpoints, checkpoint_z_mm=checkpoints, return_checkpoints=True,
         maximum_step_mm=maximum_step_mm)

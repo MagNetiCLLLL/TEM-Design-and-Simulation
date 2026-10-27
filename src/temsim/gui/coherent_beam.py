@@ -8,30 +8,40 @@ intensities; their individual complex fields remain in the executed checkpoint.
 from collections import OrderedDict
 from collections.abc import Mapping
 from dataclasses import asdict, dataclass, replace
+from decimal import Decimal, InvalidOperation
 import json
 import math
 from numbers import Real
 from threading import Event
 from time import monotonic
+from uuid import uuid4
 
 import numpy as np
 import pyqtgraph as pg
 from PySide6.QtCore import QObject, QRectF, QRunnable, QTimer, Qt, Signal, Slot
 from PySide6.QtWidgets import (
     QCheckBox, QComboBox, QDoubleSpinBox, QFormLayout, QGroupBox, QHBoxLayout, QLabel,
-    QPlainTextEdit, QPushButton, QScrollArea, QSizePolicy, QSlider, QSpinBox, QSplitter,
+    QLineEdit, QPlainTextEdit, QPushButton, QScrollArea, QSizePolicy, QSlider, QSpinBox, QSplitter,
     QVBoxLayout, QWidget, QTableWidget, QTableWidgetItem, QHeaderView,
     QAbstractItemView,
 )
 
 from temsim.gui.job_coordinator import CoordinatedPool, ResourceClaim
+from temsim.gui.coherent_result_labels import coherent_preview_text as _coherent_preview_text
+from temsim.calculation_progress import CalculationProgress, callback_progress
 from temsim.immutable_json import thaw_json
+from temsim.simulation_modes import coherent_mode_issue, require_coherent_mode
 from temsim.physics.coherent_inputs import (
     TipEmissionSettings, candidate_tip_emission, prepare_coherent_state,
     source_settings_from_state, wave_input_summary,
 )
 from temsim.physics.tip_wave_pipeline import (
     TipWaveObservationSession, TipWaveRequest, simulate_tip_wave, require_tip_wave_cuda,
+)
+from temsim.physics.emission_timing import resolve_emission_time_s
+from temsim.physics.wave_grid import (
+    EXPLORATORY_SUPPORT_L2_MAXIMUM, EXPLORATORY_SUPPORT_PROBABILITY_MAXIMUM,
+    STRICT_SUPPORT_BUDGET_MAXIMUM,
 )
 
 GIB = 1024**3
@@ -202,6 +212,7 @@ class _Signals(QObject):
     solved = Signal(int, int, object, object)
     failed = Signal(int, str)
     progress = Signal(int, str)
+    progress_detail = Signal(int, object)
     finished = Signal(int)
 
 
@@ -230,12 +241,30 @@ class _WaveWorker(QRunnable):
         self.job_input_identity = f"coherent-session:{session}:Z:{request.observation_z_mm.hex()}"
         self.resource_claim = _wave_resource_claim(state, request)
         self.signals = _Signals()
+        self.progress_state = CalculationProgress(
+            f"coherent:{id(self)}:{generation}", "Coherent beam", "Preparing wave transport",
+            stages_completed=0, stages_total=3, stage_name="Wave transport",
+            parent_id=getattr(pair_context, "token", None))
 
     def _report_progress(self, done, total, text):
         now = monotonic()
-        if not self.event.is_set() and (done == total or now-self._last_progress_time >= .05):
+        update = callback_progress(self.progress_state, done, total, text)
+        completed_step = update.total is not None and update.completed == update.total
+        if not self.event.is_set() and (update.completed == 0 or completed_step or now-self._last_progress_time >= .05):
             self._last_progress_time = now
-            self.signals.progress.emit(self.generation, f"{text} ({done}/{total})")
+            self.progress_state = replace(update,
+                stages_completed=self.progress_state.stages_completed, stages_total=3,
+                stage_name=self.progress_state.stage_name)
+            self.signals.progress_detail.emit(self.generation, self.progress_state)
+            suffix = f" ({update.completed}/{update.total})" if update.total is not None else ""
+            self.signals.progress.emit(self.generation, f"{update.step}{suffix}")
+
+    def _report_stage(self, completed_stages, label):
+        if not self.event.is_set():
+            self.progress_state = replace(self.progress_state, step=label, stage_name=label,
+                completed=None, total=None, stages_completed=completed_stages)
+            self.signals.progress_detail.emit(self.generation, self.progress_state)
+            self.signals.progress.emit(self.generation, label)
 
     def run(self):
         from temsim.physics.wave_checkpoint_store import wave_read_session
@@ -260,15 +289,21 @@ class _WaveWorker(QRunnable):
             else:
                 result = self.observer.observe(self.request.observation_z_mm,
                     cancelled=self.event.is_set, progress_callback=self._report_progress)
+            self._report_stage(1, "Building intensity and phase readout")
             preview = _intensity_preview(result.checkpoint, cancelled=self.event.is_set,
                                          include_moments=self.pair_context is not None)
             # Probability current needs the executed magnetic state, not the
             # live instrument which may have changed while this job ran.
-            gauge = _plane_magnetic_gauge(self.state, result.checkpoint.plane_z_mm)
-            from temsim.physics.wave_plane_observables import checkpoint_magnetic_gauge
-            gauge = checkpoint_magnetic_gauge(gauge, result.checkpoint)
+            unified_column = getattr(result.checkpoint, "record", {}).get("unified_column_executed", False)
+            if unified_column:
+                from temsim.physics.unified_wave_runtime import unified_checkpoint_magnetic_gauge
+                gauge = unified_checkpoint_magnetic_gauge(result.checkpoint)
+            else:
+                gauge = _plane_magnetic_gauge(self.state, result.checkpoint.plane_z_mm)
+                from temsim.physics.wave_plane_observables import checkpoint_magnetic_gauge
+                gauge = checkpoint_magnetic_gauge(gauge, result.checkpoint)
             preview = replace(preview, magnetic_gauge=gauge,
-                axial_bz_t=None if gauge is None or gauge.fields else gauge.aligned_bz_t)
+                axial_bz_t=None if unified_column or gauge is None or gauge.fields else gauge.aligned_bz_t)
             if self.pair_context is not None and not self.event.is_set():
                 context = self.pair_context
                 try:
@@ -286,6 +321,7 @@ class _WaveWorker(QRunnable):
                                       comparison_error=str(error))
             preview = replace(preview, wave_moments=None)
             if not self.event.is_set():
+                self._report_stage(2, "Publishing coherent result")
                 self.signals.solved.emit(self.generation, self.session, result, preview)
         except Exception as error:
             if not self.event.is_set():
@@ -337,6 +373,20 @@ def _integer(value, minimum, maximum):
     control.setRange(minimum, maximum)
     control.setValue(value)
     return control
+
+
+def _support_budget(control, name, maximum=STRICT_SUPPORT_BUDGET_MAXIMUM):
+    """Capture the complete typed float without decimal-place rounding."""
+    try:
+        text = control if isinstance(control, str) else control.text()
+        value = float(text)
+        if value == 0. and Decimal(text) != 0:
+            raise ValueError("A nonzero budget must remain representable")
+    except (ValueError, OverflowError, InvalidOperation) as error:
+        raise ValueError(f"{name} must be a finite number between zero and {maximum:g}") from error
+    if not math.isfinite(value) or not 0. <= value <= maximum:
+        raise ValueError(f"{name} must be a finite number between zero and {maximum:g}")
+    return value
 
 
 class CoherentIntensityView(QWidget):
@@ -444,6 +494,7 @@ class CoherentBeamMirror(QWidget):
         toolbar.addStretch()
         toolbar.addWidget(self.controls_button)
         self.status = _label(owner.status.text())
+        self.timing_status = _label(owner.timing_status.text())
         self.status.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Minimum)
         self.plane_positions = _label(owner.plane_positions.text())
         self.plane_positions.setToolTip(owner.plane_positions.toolTip())
@@ -456,6 +507,7 @@ class CoherentBeamMirror(QWidget):
         layout.addLayout(toolbar)
         layout.addWidget(self.plane_positions)
         layout.addWidget(self.status)
+        layout.addWidget(self.timing_status)
         layout.addWidget(self.screen, 1)
         layout.addWidget(self.readout)
         layout.addWidget(self.comparison_status)
@@ -463,6 +515,7 @@ class CoherentBeamMirror(QWidget):
         owner.plane_positions.text_changed.connect(self.plane_positions.setText)
         owner.readout.text_changed.connect(self.readout.setText)
         owner.comparison_status.text_changed.connect(self.comparison_status.setText)
+        owner.timing_status.text_changed.connect(self.timing_status.setText)
         owner.observation_changed.connect(self.screen.set_observation)
         self.screen.set_observation(owner.result, owner.preview,
                                     owner.intensity_scale.currentIndex())
@@ -478,6 +531,7 @@ class CoherentBeamPage(QWidget):
     tip_editor_requested = Signal()
     paired_calculation_requested = Signal()
     pair_invalidated = Signal()
+    progress_detail = Signal(object)
     _SCOPE = (
         "Development: physical tip → extraction → acceleration → installed column → exact Z. "
         "Ideal vacuum (no gas scattering/attenuation); fields and hardware absorption remain active. "
@@ -643,21 +697,135 @@ class CoherentBeamPage(QWidget):
         self.advanced_body = QWidget()
         numerics = QFormLayout(self.advanced_body)
         numerics.addRow(self.compare_classical)
+        self.numerical_settings = QGroupBox("Coherent numerical settings")
+        self.numerical_settings.setObjectName("coherentNumericalSettings")
+        direct_numerics = QFormLayout(self.numerical_settings)
+        numerical_note = _label("Grid cells and energy samples describe coherent modes. They are independent of the particle count and particle integration step.")
+        direct_numerics.addRow(numerical_note)
+        self.mode_status = _label()
+        self.mode_status.setObjectName("coherentSimulationModeStatus")
+        direct_numerics.addRow(self.mode_status)
         default_request = TipWaveRequest()
         self.grid_pixels = _integer(128, 32, 4096)
         self.maximum_grid_pixels = _integer(default_request.wave_grid.maximum_pixels, 32, 65536)
         self.maximum_grid_pixels.setToolTip("Maximum cells per axis after automatic refinement. A budget failure never applies an unresolved operator or discards physical effects.")
         self.energy_samples = _integer(1, 1, 64)
         self.energy_samples.valueChanged.connect(self._mark_energy_samples_edited)
+        self.source_nominal_energy_preview = QCheckBox("Nominal emission energy (preview)")
+        self.source_nominal_energy_preview.setObjectName("coherent_source_nominal_energy_preview")
+        self.source_nominal_energy_preview.setChecked(default_request.source_nominal_energy_preview)
+        self.source_nominal_energy_preview.setEnabled(False)
+        self.source_nominal_energy_preview.setToolTip(
+            "Use the emitter's declared nominal initial energy for every retained spatial mode. This is a new source calculation, "
+            "not a selected member of an existing energy mixture. The configured physical energy spread is unchanged. "
+            "Exploratory preview only; disabling restores the previous energy sample count. "
+            "The omitted energy distribution is not accuracy qualified.")
+        self._nominal_energy_settings = None
         self.tip_energy_spread.valueChanged.connect(self._refresh_energy_sample_default)
         self.material_trajectories = _integer(default_request.inelastic.trajectories_per_mode, 1, 1000000)
         self.material_trajectories.setToolTip("Independent material histories per spatial/energy mode. If every executed slice has exactly zero event probabilities, identical histories are represented once with their full weight. Any nonzero scattering or absorption probability keeps all requested histories; converge count and seed separately. Sample interactions remain active.")
         self.column_step = _double(.5, .000001, 100., " mm", 6)
+        self.column_step.setToolTip(
+            "Maximum column propagation step. Exploratory preview suggests 2 mm, but the value remains adjustable. "
+            "This exploratory step is not converged for the whole column. Projection budgets do not bound axial-step error; "
+            "compare smaller steps when assessing intensity and phase.")
         self.gun_step = _double(.05, .000001, 100., " mm", 6)
         self.gun_bore_step = _double(default_request.gun.bore_step_mm, .000001, 100., " mm", 6)
         self.gun_bore_step.setToolTip("Axial sampling of the gun body's absorbing bore projections. Apertures and interception remain active; refine independently when checking bore convergence.")
         self.gun_energy_step = _double(5., .005, 20., " %", 3)
         self.gun_energy_step.setToolTip("Maximum kinetic-energy change within a gun integration step. Lower values resolve rapid acceleration near the tip more finely.")
+        self.gun_near_tip_step = _double(default_request.gun.near_tip_maximum_step_nm,
+                                        .000001, 1000000., " nm", 6)
+        self.gun_near_tip_step.setToolTip("Maximum axial step for the driven near-tip boundary solver. Refine this independently when increasing the source grid; evanescent channels and error checks remain active. This does not change the source or the gun field step.")
+        self.column_kinetic_order = QComboBox()
+        for order in (2, 4, 6, 8):
+            self.column_kinetic_order.addItem(str(order), order)
+        self.column_kinetic_order.setCurrentIndex(
+            self.column_kinetic_order.findData(default_request.column_kinetic_order))
+        self.column_kinetic_order.setToolTip("Unified Finite-Field Optics only. Retained transverse kinetic expansion order; 6 and 8 use the explicit high-order scalar split. The full forward-motion and cumulative kinetic-phase checks remain active. Converge the axial step independently; a higher order does not certify the source or the full calculation.")
+        self.column_exponential_method = QComboBox()
+        self.column_exponential_method.addItem("Taylor", "taylor")
+        self.column_exponential_method.addItem("Chebyshev", "chebyshev")
+        self.column_exponential_method.setCurrentIndex(
+            self.column_exponential_method.findData(default_request.column_exponential_method))
+        self.column_exponential_method.setToolTip("Unified Finite-Field Optics only. Chebyshev reduces repeated applications of the same Hermitian operator when its certified plan fits the selected resources; otherwise the original Taylor exponential is used on the selected device. All original boundary, spectrum, flux and kinetic checks remain active. The certificate excludes FFT and recurrence roundoff and does not establish axial or source convergence.")
+        self.column_chebyshev_group = _integer(default_request.column_chebyshev_group, 1, 32)
+        self.column_chebyshev_group.setToolTip("Maximum number of original exponential substeps sharing one Chebyshev recurrence. Every original check time is retained. A larger group uses more memory; resource admission can select a smaller group or the original Taylor method.")
+        self.column_support_projection = QCheckBox("Allow controlled support projection")
+        self.column_support_projection.setChecked(default_request.column_support_projection)
+        support_note = ("Unified Finite-Field Optics only. Projection-only numerical budgets relative to each fixed gun-exit mode: "
+            "L2 allowance = epsilon * sqrt(entrance weight); probability allowance = delta * entrance weight. "
+            "They are allocated once, never renewed after losses, and do not renormalize the beam. "
+            "These are not bounds on the total propagation error. Zero in either budget disables projection.")
+        self.column_support_projection.setToolTip(support_note)
+        self.column_weighted_resampling = QCheckBox("Allow weighted coherent resampling")
+        self.column_weighted_resampling.setChecked(default_request.column_weighted_resampling)
+        self.column_weighted_resampling.setEnabled(False)
+        self.column_weighted_resampling.setToolTip(
+            "Unified Finite-Field Optics with controlled support projection only. "
+            "When a grid exceeds a declared resource limit, keep the largest affordable grid "
+            "within the remaining intensity and complex-wave error allowances. "
+            "Retained spectral amplitudes and phases are preserved; lost intensity is not restored. "
+            "Saving a segment or an ordinary sampling retry does not itself trigger downsampling. "
+            "The original mode weights and cumulative source budgets remain in force. "
+            "All fields, including overlapping fields and Gaussian tails, remain active across segments. "
+            "Resampling error is recorded separately from physical absorption; validate intensity and phase convergence.")
+        self.support_l2_budget = QLineEdit(repr(default_request.wave_grid.maximum_accumulated_support_l2))
+        self.support_probability_budget = QLineEdit(repr(default_request.wave_grid.maximum_support_loss_fraction))
+        self.column_exploratory_preview = QCheckBox("Exploratory preview")
+        self.column_exploratory_preview.setChecked(default_request.column_exploratory_preview)
+        self.column_preview_segment_resampling = QCheckBox("Resample at segment starts")
+        self.column_preview_segment_resampling.setChecked(default_request.column_preview_segment_resampling)
+        self.column_preview_segment_resampling.setEnabled(False)
+        self.column_preview_segment_resampling.setToolTip(
+            "Exploratory preview only. Permit one voluntary complex-weighted projection at the first residual "
+            "of each actual column segment, using the original one-percent per-event support allowance. "
+            "Resource-limit retries remain available. All cumulative source budgets, real intensity losses "
+            "and retained phases are preserved; no budget is renewed at a segment boundary.")
+        self.column_preview_phase_reselection = QCheckBox("Prepare phase representation")
+        self.column_preview_phase_reselection.setChecked(default_request.column_preview_phase_reselection)
+        self.column_preview_phase_reselection.setEnabled(False)
+        self.column_preview_phase_reselection.setToolTip(
+            "Explicit exploratory approximation at segment starts. Prepare a new phase representation on CPU "
+            "using at most twice the column pixels per axis and the unchanged host memory limit. "
+            "Propagation keeps its original grid limit. Representation error is estimated, not a certified bound, "
+            "and shares the original cumulative complex L2 allowance with support projections. "
+            "Original source weights, prior errors and budgets are retained; results are not accuracy qualified.")
+        self.column_exploratory_preview.setToolTip(
+            "Finite-Field Optics only. Limit the column grid while keeping every source mode and the original gun calculation. "
+            "Enabling suggests a 2 mm column step, probability loss 0.01 and complex L2 allowance 0.5; all remain adjustable. "
+            f"Explicit preview limits may reach probability {EXPLORATORY_SUPPORT_PROBABILITY_MAXIMUM:g} and cumulative L2 {EXPLORATORY_SUPPORT_L2_MAXIMUM:g}. "
+            "Large allowances can substantially alter intensity and phase; they do not certify accuracy. "
+            "This also enables optional segment-start resampling. These column-only allowances never replace the gun budgets. L2 is not a phase-error certificate. "
+            "The 2 mm step is not converged for the whole column. Projection budgets do not bound axial-step error. "
+            "Disabling restores the previous column step and support settings. This is an exploratory approximation, not an accuracy-qualified result.")
+        self.column_preview_pixels = _integer(default_request.column_preview_pixels, 32, 8192)
+        self.column_preview_pixels.setToolTip(
+            "Maximum column pixels per axis in exploratory preview, also bounded by the global grid limit. "
+            "The gun grid, fields and all existing physical admission checks remain unchanged.")
+        self.column_preview_pixels.setEnabled(False)
+        self._strict_support_settings = None
+        for name, control in (("column_kinetic_order", self.column_kinetic_order),
+                ("column_exponential_method", self.column_exponential_method),
+                ("column_chebyshev_group", self.column_chebyshev_group),
+                ("column_support_projection", self.column_support_projection),
+                ("column_weighted_resampling", self.column_weighted_resampling),
+                ("column_exploratory_preview", self.column_exploratory_preview),
+                ("column_preview_segment_resampling", self.column_preview_segment_resampling),
+                ("column_preview_phase_reselection", self.column_preview_phase_reselection),
+                ("column_preview_pixels", self.column_preview_pixels),
+                ("support_l2_budget", self.support_l2_budget),
+                ("support_probability_budget", self.support_probability_budget)):
+            control.setObjectName("coherent_" + name)
+        self.support_l2_budget.setToolTip(support_note +
+            f" Enter a finite value from 0 to {STRICT_SUPPORT_BUDGET_MAXIMUM:g}, or up to {EXPLORATORY_SUPPORT_L2_MAXIMUM:g} for explicit exploratory column preview; "
+            "scientific notation is accepted. This cumulative complex-wave allowance covers support projections "
+            "and any charged representation estimates; it is not a phase-error certificate. "
+            "Larger values require a new column branch from the original gun, not a reset of an executed budget.")
+        self.support_probability_budget.setToolTip(support_note +
+            f" Enter a finite value from 0 to {STRICT_SUPPORT_BUDGET_MAXIMUM:g}, or up to {EXPLORATORY_SUPPORT_PROBABILITY_MAXIMUM:g} for explicit exploratory column preview; "
+            "scientific notation is accepted. This bounds allowed numerical probability loss relative to the original source. "
+            "Preview edits affect only a new column branch; executed budgets are never reset.")
         self.segment_steps = _integer(128, 1, 100000)
         self.working_gib = _double(8., .25, 80., " GiB", 2)
         self.working_gib.setToolTip("Working limit for each numerical stage. Coupled tip/radial stages can overlap; shared admission also accounts for retained checkpoints.")
@@ -668,13 +836,31 @@ class CoherentBeamPage(QWidget):
         self.disk_cache_gib = _double(192., 1., 2048., " GiB", 2)
         for caption, control in (("Initial grid pixels", self.grid_pixels),
                 ("Maximum refined grid pixels", self.maximum_grid_pixels),
+                ("Calculation profile", self.column_exploratory_preview),
+                ("Preview column pixels", self.column_preview_pixels),
                 ("Energy samples", self.energy_samples),
+                ("Source energy approximation", self.source_nominal_energy_preview),
+                ("Column propagation step", self.column_step),
+                ("Working limit per stage", self.working_gib),
+                ("GPU working limit", self.gpu_working_gib)):
+            direct_numerics.addRow(caption, control)
+        for name in ("grid_pixels", "maximum_grid_pixels", "energy_samples", "column_step", "working_gib"):
+            getattr(self, name).setObjectName("coherent_"+name)
+        for caption, control in (
                 ("Material trajectories per mode", self.material_trajectories),
-                ("Column step", self.column_step),
+                ("Column kinetic order", self.column_kinetic_order),
+                ("Column exponential", self.column_exponential_method),
+                ("Maximum Chebyshev group", self.column_chebyshev_group),
+                ("Column support", self.column_support_projection),
+                ("Segment resampling", self.column_weighted_resampling),
+                ("Preview segment starts", self.column_preview_segment_resampling),
+                ("Preview phase preparation", self.column_preview_phase_reselection),
+                ("Relative support L2 budget (epsilon)", self.support_l2_budget),
+                ("Relative support probability budget (delta)", self.support_probability_budget),
                 ("Gun field step", self.gun_step), ("Gun bore sampling step", self.gun_bore_step),
                 ("Gun energy change per step", self.gun_energy_step),
+                ("Driven near-tip maximum step", self.gun_near_tip_step),
                 ("Steps per segment", self.segment_steps),
-                ("Working limit per stage", self.working_gib), ("GPU working limit", self.gpu_working_gib),
                 ("RAM cache limit", self.ram_cache_gib),
                 ("Disk cache limit", self.disk_cache_gib)):
             numerics.addRow(caption, control)
@@ -688,6 +874,7 @@ class CoherentBeamPage(QWidget):
         from temsim.gui.coherent_state_list import TipStateList
         self.state_list = TipStateList()
         controls_layout.addWidget(self.state_list)
+        controls_layout.addWidget(self.numerical_settings)
         self.tip_parameters = QGroupBox("Tip parameters")
         tip_layout = QVBoxLayout(self.tip_parameters)
         tip_layout.addWidget(self.source_enabled)
@@ -704,6 +891,7 @@ class CoherentBeamPage(QWidget):
         controls_layout.addWidget(self.advanced)
         controls_layout.addStretch()
         scroll = QScrollArea()
+        self.controls_scroll = scroll
         scroll.setWidgetResizable(True)
         scroll.setWidget(controls)
         scroll.setMinimumWidth(250)
@@ -722,6 +910,8 @@ class CoherentBeamPage(QWidget):
         self.scope_label = _label(self._SCOPE)
         self.scope_label.setStyleSheet("color:#d3ab61;")
         self.status = _label("Apply the Tip parameters, then click Calculate beam. Choose an observation without recalculating propagation.", observable=True)
+        self.timing_status = _label("No captured tip emission time. A single observation is not a raster exposure.", observable=True)
+        self.timing_status.setObjectName("coherentEmissionTimeStatus")
         self.status.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Minimum)
         self.plane_positions = _label(observable=True)
         self.plane_positions.setObjectName("coherentPlanePositions")
@@ -745,6 +935,7 @@ class CoherentBeamPage(QWidget):
         layout.addWidget(self.scope_label)
         layout.addWidget(self.plane_positions)
         layout.addWidget(self.status)
+        layout.addWidget(self.timing_status)
         layout.addWidget(splitter, 1)
         layout.addWidget(self.readout)
         layout.addWidget(self.comparison_status)
@@ -774,10 +965,25 @@ class CoherentBeamPage(QWidget):
             control.valueChanged.connect(self._mark_source_draft)
         for control in (self.grid_pixels, self.maximum_grid_pixels, self.energy_samples,
                         self.material_trajectories, self.column_step,
-                        self.gun_step, self.gun_bore_step, self.gun_energy_step,
+                        self.gun_step, self.gun_bore_step, self.gun_energy_step, self.gun_near_tip_step,
                         self.segment_steps, self.working_gib, self.gpu_working_gib,
                         self.ram_cache_gib, self.disk_cache_gib):
             control.valueChanged.connect(self.mark_inputs_stale)
+        self.column_kinetic_order.currentIndexChanged.connect(self.mark_inputs_stale)
+        self.column_exponential_method.currentIndexChanged.connect(self.mark_inputs_stale)
+        self.column_chebyshev_group.valueChanged.connect(self.mark_inputs_stale)
+        self.column_support_projection.toggled.connect(self.mark_inputs_stale)
+        self.column_support_projection.toggled.connect(self._update_weighted_resampling_availability)
+        self.column_weighted_resampling.toggled.connect(self.mark_inputs_stale)
+        self.column_weighted_resampling.toggled.connect(self._update_weighted_resampling_availability)
+        self.column_preview_segment_resampling.toggled.connect(self.mark_inputs_stale)
+        self.column_preview_segment_resampling.toggled.connect(self._update_weighted_resampling_availability)
+        self.column_preview_phase_reselection.toggled.connect(self.mark_inputs_stale)
+        self.source_nominal_energy_preview.toggled.connect(self._set_nominal_energy_preview)
+        self.column_exploratory_preview.toggled.connect(self._set_exploratory_preview)
+        self.column_preview_pixels.valueChanged.connect(self.mark_inputs_stale)
+        self.support_l2_budget.textChanged.connect(self.mark_inputs_stale)
+        self.support_probability_budget.textChanged.connect(self.mark_inputs_stale)
         self._show_source_controls()
         from temsim.gui.coherent_state_controller import CoherentStateController
         self.state_set = CoherentStateController(self, self.state_list)
@@ -785,7 +991,105 @@ class CoherentBeamPage(QWidget):
     def _mark_energy_samples_edited(self, *_args):
         self._energy_samples_edited = True
 
+    def _set_nominal_energy_preview(self, checked):
+        if checked:
+            self._nominal_energy_settings = (self.energy_samples.value(), self._energy_samples_edited)
+            self.energy_samples.blockSignals(True)
+            self.energy_samples.setValue(1)
+            self.energy_samples.blockSignals(False)
+        elif self._nominal_energy_settings is not None:
+            count, edited = self._nominal_energy_settings
+            self._nominal_energy_settings = None
+            self.energy_samples.blockSignals(True)
+            self.energy_samples.setValue(count)
+            self.energy_samples.blockSignals(False)
+            self._energy_samples_edited = edited
+        self.energy_samples.setEnabled(not checked)
+        self.mark_inputs_stale()
+
+    def _set_exploratory_preview(self, checked):
+        if checked:
+            self._strict_support_settings = (self.support_l2_budget.text(), self.support_probability_budget.text(),
+                self.column_support_projection.isChecked(), self.column_weighted_resampling.isChecked(),
+                self.column_step.value())
+            self.column_support_projection.setChecked(True)
+            self.column_weighted_resampling.setChecked(True)
+            self.column_preview_segment_resampling.setChecked(True)
+            self.support_l2_budget.setText("0.5")
+            self.support_probability_budget.setText("0.01")
+            self.column_step.setValue(2.)
+        elif self._strict_support_settings is not None:
+            l2, probability, support, weighted, column_step = self._strict_support_settings
+            self._strict_support_settings = None
+            self.support_l2_budget.setText(l2)
+            self.support_probability_budget.setText(probability)
+            self.column_support_projection.setChecked(support)
+            self.column_weighted_resampling.setChecked(weighted)
+            self.column_step.setValue(column_step)
+        from temsim.simulation_modes import is_unified
+        if not checked:
+            self.column_preview_segment_resampling.setChecked(False)
+            self.column_preview_phase_reselection.setChecked(False)
+            self.source_nominal_energy_preview.setChecked(False)
+        state = self.state_provider() if self.state_provider is not None else self._state
+        self.column_support_projection.setEnabled(is_unified(state) and not checked)
+        self._update_weighted_resampling_availability()
+        self.mark_inputs_stale()
+
+    def _update_weighted_resampling_availability(self, *_args):
+        # Preserve the checked draft while its parent option or execution mode
+        # is disabled; request construction still admits only active choices.
+        self.column_weighted_resampling.setEnabled(
+            self.column_support_projection.isEnabled() and self.column_support_projection.isChecked())
+        self.column_preview_pixels.setEnabled(
+            self.column_exploratory_preview.isEnabled() and self.column_exploratory_preview.isChecked())
+        self.column_preview_segment_resampling.setEnabled(
+            self.column_exploratory_preview.isEnabled() and self.column_exploratory_preview.isChecked()
+            and self.column_support_projection.isChecked() and self.column_weighted_resampling.isChecked())
+        self.column_preview_phase_reselection.setEnabled(
+            self.column_preview_segment_resampling.isEnabled()
+            and self.column_preview_segment_resampling.isChecked())
+        self.source_nominal_energy_preview.setEnabled(
+            self.column_exploratory_preview.isEnabled() and self.column_exploratory_preview.isChecked())
+
+    def update_simulation_mode(self, state):
+        issue = coherent_mode_issue(state)
+        from temsim.simulation_modes import is_unified, mode_display_label
+        if not is_unified(state) and self.column_exploratory_preview.isChecked():
+            # Do not carry relaxed preview tolerances into another executor.
+            self.column_exploratory_preview.setChecked(False)
+        for control in (self.column_kinetic_order, self.column_support_projection,
+                        self.column_exploratory_preview,
+                        self.column_exponential_method, self.column_chebyshev_group,
+                        self.support_l2_budget, self.support_probability_budget):
+            control.setEnabled(is_unified(state))
+        if self.column_exploratory_preview.isChecked():
+            self.column_support_projection.setEnabled(False)
+        self._update_weighted_resampling_availability()
+        self.mode_status.setText(issue or (
+            "Finite-Field Optics: shared potentials and geometry; independent wave sampling; host field and canonical propagation, selected device for residual operators. "
+            "Field-derived column aberrations replace empirical Cs/Cc and equivalent image lenses. "
+            "Unsupported configurations are rejected before propagation."
+            if is_unified(state) else
+            mode_display_label(state) + ": compatibility execution with independent coherent sampling."
+        ))
+        if is_unified(state):
+            from temsim.physics.unified_field_runtime import unified_runtime_preflight
+            report = unified_runtime_preflight(state)
+            if report["issues"]:
+                self.mode_status.setText(self.mode_status.text() + " Current configuration: "
+                    + "; ".join(report["issues"]) + ". Settings have not been changed.")
+        if issue:
+            self.mark_inputs_stale()
+
+    def show_numerical_settings(self):
+        self.controls_scroll.ensureWidgetVisible(self.numerical_settings)
+        self.grid_pixels.setFocus(Qt.FocusReason.ShortcutFocusReason)
+        self.grid_pixels.selectAll()
+
     def _set_default_energy_samples(self, count):
+        if self.source_nominal_energy_preview.isChecked():
+            return
         if not self._energy_samples_edited:
             self.energy_samples.blockSignals(True)
             self.energy_samples.setValue(count)
@@ -813,6 +1117,8 @@ class CoherentBeamPage(QWidget):
         draft = (self._settings() if not reset_source and state is self._state
                  and loaded_settings is not None else None)
         self._state = state
+        if state is not None:
+            self.update_simulation_mode(state)
         self.mark_inputs_stale()
         self.apply_source_button.setEnabled(False)
         self._loaded_source_settings = None
@@ -1027,6 +1333,7 @@ class CoherentBeamPage(QWidget):
         self._z_changed(z_mm)
 
     def _cancel_request(self):
+        self._terminal_progress("cancelled", "Coherent request cancelled")
         if hasattr(self, "observation"):
             self.observation.cancel_reference_work()
         self._generation += 1
@@ -1153,12 +1460,32 @@ class CoherentBeamPage(QWidget):
             tip_tilt_x_mrad=self.tip_tilt_x.value(), tip_tilt_y_mrad=self.tip_tilt_y.value())
 
     def _make_request(self, state=None):
+        from temsim.simulation_modes import is_unified
+
         default = TipWaveRequest()
+        # Captured or restored requests can contain valid numerical settings
+        # without a dedicated widget. Preserve those fields across UI edits.
+        grid_template = default.wave_grid if self._request is None else self._request.wave_grid
         working = round(self.working_gib.value()*GIB)
         if state is None:
             state = self.state_provider() if self.state_provider is not None else self._state
+        if state is not None:
+            require_coherent_mode(state)
         compute_backend = getattr(state, "acceleration_backend", "Auto")
+        preview = is_unified(state) and self.column_exploratory_preview.isChecked()
+        if preview:
+            # Visible preview edits belong only to propagation after the real
+            # gun. Retain the exact strict draft captured before activation.
+            strict = self._strict_support_settings
+            strict_l2 = (grid_template.maximum_accumulated_support_l2 if strict is None else
+                _support_budget(strict[0], "Strict support L2 budget"))
+            strict_probability = (grid_template.maximum_support_loss_fraction if strict is None else
+                _support_budget(strict[1], "Strict support probability budget"))
+        else:
+            strict_l2 = _support_budget(self.support_l2_budget, "Relative support L2 budget")
+            strict_probability = _support_budget(self.support_probability_budget, "Relative support probability budget")
         return replace(default, stop="plane", observation_z_mm=self._target_z_mm,
+            tip_time_s=resolve_emission_time_s(state),
             source=replace(default.source, grid_pixels=self.grid_pixels.value(),
                            energy_samples=self.energy_samples.value()),
             surface=replace(default.surface, energy_samples=self.energy_samples.value(),
@@ -1166,10 +1493,32 @@ class CoherentBeamPage(QWidget):
             gun=replace(default.gun, field_step_mm=self.gun_step.value(),
                         bore_step_mm=self.gun_bore_step.value(),
                         maximum_fractional_energy_change=self.gun_energy_step.value()/100.,
+                        near_tip_maximum_step_nm=self.gun_near_tip_step.value(),
                         maximum_checkpoint_bytes=working),
             radial_gun=replace(default.radial_gun, maximum_working_bytes=working),
             column_step_mm=self.column_step.value(),
-            wave_grid=replace(default.wave_grid, maximum_pixels=self.maximum_grid_pixels.value(),
+            column_kinetic_order=self.column_kinetic_order.currentData(),
+            column_exponential_method=self.column_exponential_method.currentData(),
+            column_chebyshev_group=self.column_chebyshev_group.value(),
+            column_support_projection=self.column_support_projection.isChecked(),
+            column_weighted_resampling=(is_unified(state) and self.column_support_projection.isChecked()
+                                        and self.column_weighted_resampling.isChecked()),
+            column_exploratory_preview=preview,
+            source_nominal_energy_preview=(preview and self.source_nominal_energy_preview.isChecked()),
+            column_preview_segment_resampling=(preview and self.column_support_projection.isChecked()
+                and self.column_weighted_resampling.isChecked() and self.column_preview_segment_resampling.isChecked()),
+            column_preview_phase_reselection=(preview and self.column_support_projection.isChecked()
+                and self.column_weighted_resampling.isChecked() and self.column_preview_segment_resampling.isChecked()
+                and self.column_preview_phase_reselection.isChecked()),
+            column_preview_pixels=self.column_preview_pixels.value(),
+            column_preview_support_l2=(_support_budget(self.support_l2_budget, "Preview support L2 budget", EXPLORATORY_SUPPORT_L2_MAXIMUM)
+                                       if preview else None),
+            column_preview_support_probability=(_support_budget(self.support_probability_budget,
+                "Preview support probability budget", EXPLORATORY_SUPPORT_PROBABILITY_MAXIMUM) if preview else None),
+            wave_grid=replace(grid_template, maximum_pixels=self.maximum_grid_pixels.value(),
+                              maximum_accumulated_support_l2=strict_l2,
+                              maximum_support_loss_fraction=strict_probability,
+                              exploratory_support_budget=False,
                               maximum_working_bytes=working, compute_backend=compute_backend,
                               acceleration_enabled=getattr(state, "acceleration_enabled", True),
                               maximum_device_working_bytes=round(self.gpu_working_gib.value()*GIB)),
@@ -1188,6 +1537,7 @@ class CoherentBeamPage(QWidget):
             state = self.state_provider() if self.state_provider is not None else self._state
             if state is None:
                 raise ValueError("No current instrument inputs are available")
+            require_coherent_mode(state)
             request = self._make_request(state)
             if for_execution:
                 request = require_tip_wave_cuda(request)
@@ -1201,6 +1551,9 @@ class CoherentBeamPage(QWidget):
                     f"above the selected working limit {request.wave_grid.maximum_working_bytes}. "
                     "Increase the numerical working budget; no source modes were removed.")
         except Exception as error:
+            self.progress_detail.emit(CalculationProgress(
+                f"coherent-check:{uuid4().hex}", "Coherent beam", "Checking captured inputs",
+                stages_completed=0, stages_total=1).terminal("failed", str(error)))
             self._stale = True
             self._show_source_check(summary, settings, str(error))
             self.status.setStyleSheet("color:#ffb86b;")
@@ -1248,9 +1601,14 @@ class CoherentBeamPage(QWidget):
         """Run already validated captured inputs; never re-read live controls."""
         if self._closed:
             return
+        require_coherent_mode(captured)
+        epoch = resolve_emission_time_s(captured, request.tip_time_s)
         try:
             request = require_tip_wave_cuda(request)
         except Exception as error:
+            self.progress_detail.emit(CalculationProgress(
+                f"coherent-check:{uuid4().hex}", "Coherent beam", "Checking captured inputs",
+                stages_completed=0, stages_total=1).terminal("failed", str(error)))
             self.status.setText(f"Coherent beam not started: {error} Previous result retained.")
             return
         self.state_set.cancel()
@@ -1268,11 +1626,15 @@ class CoherentBeamPage(QWidget):
         self.status.setStyleSheet("")
         self._captured = captured
         self._request = request
+        self.timing_status.setText(
+            f"Captured tip emission time: {epoch!r} s | Field arrival time adds each mode's retained flight time. "
+            "This observation does not integrate a raster exposure.")
         self._observation_session = TipWaveObservationSession(captured, request)
         self._stale = False
         self.observation.mark_previous_calculation(
             "Previous calculation · a new calculation is running. The phase plate updates when a new plane completes.")
-        self.status.setText(f"Source ready | {summary['model']} | {summary['mode_count']} modes. Queued exact-Z calculation; field support is checked during execution.")
+        profile = "Exploratory preview; not accuracy qualified | " if request.column_exploratory_preview else ""
+        self.status.setText(profile + f"Source ready | {summary['model']} | {summary['mode_count']} modes. Queued exact-Z calculation; field support is checked during execution.")
         self._start_query()
 
     def invalidate_pair(self, message="Paired calculation cancelled; previous images are retained."):
@@ -1420,8 +1782,10 @@ class CoherentBeamPage(QWidget):
         worker.signals.solved.connect(self._solved)
         worker.signals.failed.connect(self._failed)
         worker.signals.progress.connect(self._progress)
+        worker.signals.progress_detail.connect(self._progress_detail)
         worker.signals.finished.connect(self._finished)
         self._worker = worker
+        self._progress_detail(self._generation, worker.progress_state)
         self._update_plane_positions()
         self.cancel_button.setEnabled(True)
         self.pool.start(worker)
@@ -1435,6 +1799,7 @@ class CoherentBeamPage(QWidget):
                      else self._target_z_mm)
         if z_mm != submitted:
             self.status.setText("Rejected wave result: executed Z differs from the requested observation plane.")
+            self._terminal_progress("failed", "Executed Z differs from the requested observation plane")
             return
         self._session_ready = True
         self._cache[z_mm] = (result, preview)
@@ -1450,6 +1815,10 @@ class CoherentBeamPage(QWidget):
         # in-flight query. Otherwise show useful progress with its true Z.
         current = self._cache.get(self._target_z_mm)
         self._display(*(current if current is not None else (result, preview)))
+        progress = getattr(self, "_progress_state", None)
+        if progress is not None and progress.parent_id is not None:
+            self._progress_state = replace(progress, pair_error=preview.comparison_error)
+        self._terminal_progress("succeeded", "Accepted coherent result")
 
     def _display(self, result, preview):
         self.result, self.preview = result, preview
@@ -1464,17 +1833,21 @@ class CoherentBeamPage(QWidget):
             # refreshes never reach this admission check.
             self.observation.clear_previous_calculation_notice()
         self.status.setStyleSheet("")
-        input_hint = ("Live tuning refreshes after edits settle; other input changes require Calculate."
+        from temsim.simulation_modes import is_unified
+        input_hint = (("Optical edits refresh particles and this wave after edits settle."
+                       if self._captured is not None and is_unified(self._captured) else
+                       "Live tuning refreshes after edits settle; other input changes require Calculate.")
                       if self.live_refresh_enabled else
                       "Source or instrument changes require Calculate.")
-        self.status.setText(f"Completed exact plane Z {result.checkpoint.plane_z_mm:.9g} mm in captured optics. "
+        preview_note = _coherent_preview_text(result.checkpoint)
+        self.status.setText(preview_note + f"Completed exact plane Z {result.checkpoint.plane_z_mm:.9g} mm in captured optics. "
             + (f"Updating requested Z {self._target_z_mm:.9g} mm automatically."
                if result.checkpoint.plane_z_mm != self._target_z_mm else
                "Move Z for automatic readout. " + input_hint))
         grids = "; ".join(f"{nx} × {ny}" for ny, nx in preview.grid_shapes)
         grid_text = (f"Displayed wave grid{'s' if len(preview.grid_shapes) > 1 else ''}: {grids} cells"
                      if grids else "Displayed wave grid: unavailable")
-        self.readout.setText(f"{_coherent_backend_text(result.checkpoint)} | {grid_text} | Density / µm² per tip electron | {preview.mode_count} modes | displayed probability {preview.probability:.8g} per tip electron | "
+        self.readout.setText(preview_note + f"{_coherent_backend_text(result.checkpoint)} | {grid_text} | Density / µm² per tip electron | {preview.mode_count} modes | displayed probability {preview.probability:.8g} per tip electron | "
             f"tip reference current {result.checkpoint.reference_current_a*1e9:.6g} nA | "
             f"{preview.density.shape[1]} × {preview.density.shape[0]} display bins; the executed wave grid is unchanged. Individual complex fields and phase references are preserved. Mixed modes add intensity, never a single aggregate phase.")
 
@@ -1488,6 +1861,7 @@ class CoherentBeamPage(QWidget):
     def _failed(self, generation, message):
         if self._closed or generation != self._generation:
             return
+        self._terminal_progress("failed", str(message))
         # The cursor may already request a newer plane. Attribute this error
         # to the submitted worker, never to the latest requested position.
         failed_plane = (f" at Z {self._worker.request.observation_z_mm:.9g} mm"
@@ -1506,9 +1880,25 @@ class CoherentBeamPage(QWidget):
                      if self.result is not None else "")
             self.status.setText(f"Requested Z {self._target_z_mm:.9g} mm{shown} | {message}")
 
+    @Slot(int, object)
+    def _progress_detail(self, generation, update):
+        if not self._closed and generation == self._generation:
+            previous = getattr(self, "_progress_state", None)
+            if previous is not None and previous.operation_id == update.operation_id and not previous.active:
+                return
+            self._progress_state = update
+            self.progress_detail.emit(update)
+
+    def _terminal_progress(self, status, message):
+        previous = getattr(self, "_progress_state", None)
+        if previous is not None and previous.active:
+            self._progress_state = previous.terminal(status, message)
+            self.progress_detail.emit(self._progress_state)
+
     @Slot(int)
     def _finished(self, generation):
         if generation == self._generation:
+            self._terminal_progress("cancelled", "Wave request ended without a new accepted result")
             self._worker = None
             self._update_plane_positions()
             self._update_cancel_enabled()

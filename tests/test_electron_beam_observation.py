@@ -143,6 +143,37 @@ def test_overlay_arrivals_sum_intensities_but_phase_selects_one_state(qtbot, vie
     assert preview.axial_bz_t == .1
 
 
+def test_preview_overlay_and_selected_phase_remain_locally_labelled(qtbot, view):
+    from test_coherent_result_labels import preview_profile
+    first, p1 = plane()
+    first = SimpleNamespace(checkpoint=replace(first.checkpoint,
+        record={'upstream': {'unified_numerical_profile': preview_profile()}}))
+    second, _ = plane()
+    second = SimpleNamespace(checkpoint=replace(second.checkpoint,
+        record={'unified_numerical_profile': {'exploratory_preview': False}}))
+    combined, preview = combine_intensity_previews(((first, p1, 1.), (second, p1, 3.)))
+    original = (first.checkpoint.digest, second.checkpoint.digest, preview.density.copy())
+    view.set_observation(combined, preview, 0)
+    assert 'Exploratory preview' in view.note.text()
+    assert '1 of 2 states use preview' in view.note.text()
+    show(view, 'wave_phase')
+    diagnostic_ready(qtbot, view)
+    assert 'Exploratory preview' in view.note.text()
+    assert 'not accuracy qualified' in view.diagnostics.summary.text()
+    assert 'Column cap 2048' in view.diagnostics.summary.text()
+    view.member.setCurrentIndex(1)
+    diagnostic_ready(qtbot, view)
+    assert 'Exploratory preview' in view.note.text()
+    assert 'Inspecting state 2: preview disabled' in view.note.text()
+    assert 'Exploratory preview' not in view.diagnostics.summary.text()
+    show(view, 'arrivals')
+    arrivals_ready(qtbot, view)
+    assert 'Exploratory preview' in view.note.text()
+    assert (first.checkpoint.digest, second.checkpoint.digest) == original[:2]
+    np.testing.assert_array_equal(preview.density, original[2])
+    assert combined.relative_weights == (.25, .75)
+
+
 def test_unknown_magnetic_state_does_not_claim_probability_flow(qtbot, view):
     result, preview = plane()
     view.set_observation(result, replace(preview, axial_bz_t=None), 0)

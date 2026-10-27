@@ -9,11 +9,6 @@ from temsim import input_io
 
 import numpy as np, math
 
-from temsim.physics.chromatic import (
-    configured_objective_chromatic_focal_mm,
-    objective_chromatic_kick_from_state,
-)
-
 from temsim.physics.core import (
     FIELD_SIGMA_CUTOFF,
     PropagationCheckpoints,
@@ -104,7 +99,12 @@ def _sample_to_stop_larmor_rotation_rad(state, stop_z_mm):
 
     sample_z_mm = float(state.sample.z_mm)
     stop_z_mm = float(stop_z_mm)
-    if equivalent_image_lenses_enabled(state):
+    from temsim.simulation_modes import is_thin, is_unified
+    if is_thin(state):
+        from temsim.physics.thin_optics import capture_thin_actions
+        return float(sum(action.rotation_rad for action in capture_thin_actions(state)
+                         if sample_z_mm < action.z_mm <= stop_z_mm))
+    if not is_unified(state) and equivalent_image_lenses_enabled(state):
         return float(sum(
             event.rotation_rad
             for event in equivalent_image_events(
@@ -119,6 +119,17 @@ def _sample_to_stop_larmor_rotation_rad(state, stop_z_mm):
         )) + 1,
     )
     z_mm = np.linspace(sample_z_mm, stop_z_mm, count)
+    if is_unified(state):
+        from temsim.physics.unified_field_runtime import get_unified_field_runtime
+        from scipy.constants import e, m_e, c
+        runtime=get_unified_field_runtime(state)
+        fields_at_axis=runtime.snapshot.sample(np.c_[np.zeros(count),np.zeros(count),z_mm*.001])
+        entrance=runtime.snapshot.sample(np.array([[0.,0.,runtime.start_z_m]]))["phi_v"][0]
+        kinetic=(state.beam_voltage_kv*1000+fields_at_axis["phi_v"]-entrance)*e
+        if np.any(kinetic<=0):
+            raise ValueError("Unified reference rotation leaves the positive-energy domain")
+        momentum=np.sqrt(kinetic*(kinetic+2*m_e*c*c))/c
+        return float(np.trapezoid(e*fields_at_axis["B_t"][:,2]/(2*momentum),z_mm*.001))
     magnetic_t = fields(z_mm, state)[0]
     charge_c, momentum, _ = electron(state)
     return float(
@@ -154,6 +165,19 @@ class Simulation:
     section_checkpoint: object | None = None
     material_section_cache: object | None = None
     completed_post_sections: tuple = ()
+
+    def __post_init__(self):
+        runtime = getattr(self.incident_plan, "unified_runtime", None)
+        if runtime is not None:
+            self.metrics.update(unified_runtime_digest=runtime.digest,
+                unified_field_digest=runtime.snapshot.numerical_digest,
+                unified_geometry_digest=runtime.geometry.digest,
+                emission_time_s=runtime.metadata.get("emission_time_s",0.),
+                dynamic_snapshot_digest=runtime.metadata.get("dynamic_snapshot_digest"),
+                unified_time_reference="Absolute laboratory time = emission_time_s + actual electron flight_time_s",
+                unified_source_contract=runtime.metadata["source_contract"],
+                unified_empirical_aberrations_applied=False,
+                unified_equivalent_image_maps_applied=False)
 
 
 def validate_flight_time_array(value, shape, label="Particle"):
@@ -328,6 +352,9 @@ def _merge_checkpoints(previous, suffix, resume_z_mm):
     new_energy = getattr(suffix, "kinetic_energy_ev", None)
     if old_energy is not None and new_energy is not None:
         arrays["kinetic_energy_ev"] = np.concatenate((np.asarray(old_energy)[keep], new_energy))
+    if previous.unified_state is not None or suffix.unified_state is not None:
+        from temsim.physics.unified_particle_restart import merge_unified_checkpoint_states
+        arrays["unified_state"] = merge_unified_checkpoint_states(previous, suffix, keep)
     return PropagationCheckpoints(**arrays)
 
 
@@ -343,6 +370,18 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
             resolved_layout=resolved_layout)
     from temsim.optics.electron_gun.source_policy import require_physical_gun_source
     require_physical_gun_source(s.electron_gun)
+    from temsim.simulation_modes import is_unified
+    if is_unified(s):
+        from temsim.physics.unified_field_runtime import unified_runtime_preflight
+        issues = unified_runtime_preflight(s)["issues"]
+        if issues:
+            raise ValueError("Finite-Field Optics: "+"; ".join(issues))
+        if not optical_only:
+            from temsim.specimen.source import specimen_is_vacuum
+            if not specimen_is_vacuum(s.sample):
+                raise ValueError(
+                    "Finite-Field Optics particle specimen transport is not yet connected "
+                    "to the shared potentials; use legacy execution for material calculations")
     # The low-level entry point is also public and is used directly by tests
     # and scripts, so it must enforce the same TOML-owned geometry contract as
     # the application-facing calculation pipeline.
@@ -355,7 +394,7 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
 
     ac_scan = getattr(s, "ac_deflector", None)
     if (
-        not optical_only and ac_scan is not None
+        not optical_only and not is_unified(s) and ac_scan is not None
         and bool(getattr(ac_scan, "enabled", False))
         and bool(getattr(ac_scan, "scan_enabled", False))
     ):
@@ -434,6 +473,17 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
     # Phase-only checkpoints do not contain collision clocks or path budgets.
     # Whole calculation products are reusable through their full signatures;
     # do not restart stochastic transport from an incomplete optical checkpoint.
+    unified_plan = getattr(incident_plan, "unified_runtime", None) is not None
+    unified_implementation = None
+    if unified_plan and source_matches:
+        from temsim.physics.unified_particle_restart import validate_unified_checkpoint
+        from temsim.calculation_manifest import solver_source_identity
+        try:
+            retained = validate_unified_checkpoint(previous_checkpoints, previous_plan)
+            unified_implementation = solver_source_identity()
+            source_matches = retained.implementation_digest == unified_implementation
+        except (AttributeError, TypeError, ValueError):
+            source_matches = False
     if incident_medium is not None:
         source_matches = False
     try:
@@ -455,6 +505,7 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
         and previous_plan is not None
         and previous_checkpoints is not None
         and previous_plan.signature == incident_plan.signature
+        and not unified_plan
     ):
         # Geometry coordinates are independent of aperture/wall clipping.  A
         # new Branch and new stop arrays are still built below.
@@ -477,7 +528,8 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
     else:
         common_nodes = (
             propagation_plan_common_prefix_nodes(
-                previous_plan, incident_plan
+                previous_plan, incident_plan, checkpoints=previous_checkpoints,
+                implementation_digest=unified_implementation,
             )
             if source_matches else 0
         )
@@ -505,7 +557,9 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
                     from temsim.physics.particle_sections import _prefix_matches
                     old_indices = np.flatnonzero(np.asarray(previous_plan.z_mm) == candidate_z)
                     candidate_safe = bool(old_indices.size and _prefix_matches(
-                        previous_plan, incident_plan, int(old_indices[-1]), current_index))
+                        previous_plan, incident_plan, int(old_indices[-1]), current_index,
+                        checkpoints=previous_checkpoints, checkpoint_row=old_checkpoint_row,
+                        implementation_digest=unified_implementation))
                 if candidate_safe:
                     resume = (
                         old_checkpoint_row, current_index, candidate_z
@@ -544,7 +598,8 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
             resume_energy = np.asarray(previous_checkpoints.kinetic_energy_ev[old_row])
             previous_incident = existing_simulation.incident
             unknown_stopped = ~np.isfinite(resume_energy) & ~np.asarray(previous_incident.alive, dtype=bool)
-            resume_phase = [np.where(unknown_stopped, np.nan, getattr(previous_checkpoints, name)[old_row])
+            resume_phase = [np.asarray(getattr(previous_checkpoints, name)[old_row]) if unified_plan else
+                            np.where(unknown_stopped, np.nan, getattr(previous_checkpoints, name)[old_row])
                             for name in ("x_m", "tx_rad", "y_m", "ty_rad")]
             suffix_result = execute_propagation_plan(
                 s, incident_plan, *resume_phase,
@@ -555,6 +610,7 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
                 return_flight_times=True,
                 initial_kinetic_energy_ev=resume_energy,
                 energy_output=energy_output,
+                unified_resume=(previous_checkpoints, old_row) if unified_plan else None,
             )
             (
                 z_suffix, X_suffix, TX_suffix, Y_suffix, TY_suffix,
@@ -572,6 +628,10 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
             incident_checkpoints = _merge_checkpoints(
                 previous_checkpoints, suffix_checkpoints, resume_z_mm
             )
+            if unified_plan:
+                from temsim.physics.unified_particle_restart import rebind_unified_stops
+                rebind_unified_stops(z_suffix, z)
+                z_column = z
             cache_mode = "checkpoint"
             reused_prefix_rows = int(np.count_nonzero(keep))
             reused_plan_nodes = int(start_index + 1)
@@ -589,11 +649,12 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
     keys=list(gun_trace.blocked_key)
     if incident_medium is not None:
         alive, blocked, keys = incident_medium.merge_stops(alive, blocked, keys)
-    alive,blocked,keys=_clip_aperture_segment(
-        s,z,X,Y,alive,blocked,keys
-    )
-
-    alive,blocked,keys=clip_column_wall(s,z,X,Y,alive,blocked,keys)
+    if getattr(incident_plan, "unified_runtime", None) is not None:
+        from temsim.physics.unified_field_particle import merge_unified_stops
+        alive,blocked,keys=merge_unified_stops(z_column,alive,blocked,keys)
+    else:
+        alive,blocked,keys=_clip_aperture_segment(s,z,X,Y,alive,blocked,keys)
+        alive,blocked,keys=clip_column_wall(s,z,X,Y,alive,blocked,keys)
 
     if incident_plan.mapped_fields:
         visible = ~np.isfinite(blocked)[None, :] | (z[:, None] <= blocked[None, :])
@@ -623,6 +684,13 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
         )
         if incident_checkpoints is not None else 0
     )
+    internal_checkpoint_bytes = 0
+    internal_checkpoint = getattr(incident_checkpoints, "unified_state", None)
+    if internal_checkpoint is not None:
+        from temsim.physics.unified_particle_restart import STATE_ARRAY_FIELDS
+        internal_checkpoint_bytes = sum(int(getattr(internal_checkpoint, name).nbytes)
+                                        for name in STATE_ARRAY_FIELDS)
+        retained_checkpoint_bytes += internal_checkpoint_bytes + incident_checkpoints.z_mm.nbytes
     segment_cache_metrics = {
         "mode": cache_mode,
         "hit": cache_mode != "none",
@@ -639,6 +707,7 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
         ),
         "checkpoint_count": retained_checkpoint_count,
         "checkpoint_retained_bytes": retained_checkpoint_bytes,
+        "checkpoint_internal_state_bytes": internal_checkpoint_bytes,
         "checkpoint_memory_budget_bytes": (
             INCIDENT_CHECKPOINT_MEMORY_BUDGET_BYTES
         ),
@@ -658,17 +727,6 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
     _,_,lam=electron(s)
 
     branches={}
-    chromatic_focal_mm = configured_objective_chromatic_focal_mm(s)
-
-    def branch_chromatic_kick(energy_offset_ev):
-        return objective_chromatic_kick_from_state(
-            s,
-            X[-1],
-            Y[-1],
-            energy_offset_ev,
-            resolved_focal_mm=chromatic_focal_mm,
-        )
-
     real_branch_weights_are_absolute = False
     real_interactions = None
     from temsim.specimen.source import specimen_is_vacuum
@@ -717,17 +775,28 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
     from temsim.physics.particle_sections import section_limits
     post_stop_z_mm = section_limits(s)[1]
     post_events = events_overlapping_interval(s, post_events, s.sample.z_mm, post_stop_z_mm)
-    if sample_is_vacuum and not optical_only:
+    if (sample_is_vacuum and not optical_only) or (optical_only and unified_plan):
         from temsim.physics.particle_sections import _trace_segment
-        cx, cy = branch_chromatic_kick(ENERGIES[-1]-s.beam_voltage_kv*1000)
         previous_post = next((item for item in saved_section.segments if item.name == "000"), None) if saved_section else None
-        post, _, _ = _trace_segment(s, "000", float(s.sample.z_mm), post_stop_z_mm,
-            (X[-1], TX[-1]+cx, Y[-1], TY[-1]+cy, np.where(alive, TIMES[-1], np.nan)),
+        if previous_post is None and existing_simulation is not None:
+            previous_post = next((item for item in existing_simulation.completed_post_sections
+                                  if item.name == "000"), None)
+        post, post_resume, post_hit = _trace_segment(s, "000", float(s.sample.z_mm), post_stop_z_mm,
+            (X[-1], TX[-1], Y[-1], TY[-1], np.where(alive, TIMES[-1], np.nan)),
             dE, emitted.weight, (incident.source_ray_id, incident.source_azimuth_rad),
             (alive, blocked, keys), post_events, previous_post, math.inf, initial_kicks=False,
-            initial_kinetic_energy_ev=ENERGIES[-1])
-        post.branch.interaction_kind = "vacuum"
-        post.branch.colour = _interaction_colour("vacuum")
+            initial_kinetic_energy_ev=ENERGIES[-1],
+            dependency_context="unified-optical-reference-v1" if optical_only else "",
+            preserve_existing_mesh=bool(optical_only))
+        post.branch.interaction_kind = "optical_reference" if optical_only else "vacuum"
+        post.branch.colour = _interaction_colour(post.branch.interaction_kind)
+        if optical_only:
+            post.branch.interaction_kick_x_rad = np.zeros(n)
+            post.branch.interaction_kick_y_rad = np.zeros(n)
+            optical_completed_z_mm = float(post_stop_z_mm)
+        segment_cache_metrics["downstream"] = {"hit": bool(post_hit),
+            "resume_z_mm": float(post_resume), "completed_z_mm": float(post_stop_z_mm),
+            "scope": post.branch.interaction_kind}
         branches["000"] = post.branch
         completed_post_sections.append(post)
         branch_specs = []
@@ -740,9 +809,14 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
         post_x=[];post_tx=[];post_y=[];post_ty=[];post_energy=[];post_times=[]
         for name,kick_x,kick_y,w,interaction_kind,energy_loss_ev in batch_specs:
             branch_energy_offset=ENERGIES[-1]-s.beam_voltage_kv*1000-float(energy_loss_ev)
-            chromatic_tx,chromatic_ty=branch_chromatic_kick(
-                branch_energy_offset
-            )
+            if is_unified(s):
+                # Unified optical references have no material energy event.
+                # Do not even capture unused legacy Cc/FEM providers here.
+                chromatic_tx, chromatic_ty = np.zeros_like(X[-1]), np.zeros_like(Y[-1])
+            else:
+                from temsim.physics.intrinsic_aberrations import specimen_chromatic_energy_change
+                chromatic_tx, chromatic_ty = specimen_chromatic_energy_change(
+                    s, X[-1], Y[-1], ENERGIES[-1], ENERGIES[-1]-float(energy_loss_ev), active_mask=alive)
             kick_x_array=np.broadcast_to(
                 np.asarray(kick_x,dtype=float),(n,)
             ).copy()
@@ -804,7 +878,12 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
             # Resolve detector and wall candidates, then keep the earliest
             # axial intercept. A later wall cannot hide an earlier detector.
             al,bl,ks=clip_recording_planes(s,zp,XP,YP,al,bl,ks)
-            al,bl,ks=clip_column_wall(s,zp,XP,YP,al,bl,ks)
+            from temsim.simulation_modes import is_unified
+            if is_unified(s):
+                from temsim.physics.unified_field_particle import merge_unified_stops
+                al,bl,ks=merge_unified_stops(zp,al,bl,ks,branch_slice)
+            else:
+                al,bl,ks=clip_column_wall(s,zp,XP,YP,al,bl,ks)
             visible = ~np.isfinite(bl)[None, :] | (zp[:, None] <= bl[None, :])
             if any(np.any(~np.isfinite(values) & visible) for values in (XP, TP, YP, TYP)):
                 raise ValueError("Non-finite outgoing trajectory before a physical stop; reduce the step or use time-domain transport")
@@ -836,91 +915,141 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
             }
         return Simulation(incident, branches, metrics, gun_waist=gun_waist,
                           gun_trace=gun_trace, incident_plan=incident_plan,
-                          incident_checkpoints=incident_checkpoints)
+                          incident_checkpoints=incident_checkpoints,
+                          completed_post_sections=tuple(completed_post_sections))
 
-    analysis_reference_key=None
-    from temsim.optics.direct_alignment import diffraction_transfer
-    if s.projector_mode == 'image':
-        analysis_stop_z=tem_projection_reference_plane_z(s)
-        sample_transfer=diffraction_transfer(s,analysis_stop_z)
+    if is_unified(s):
+        sample_transfer = None
+        metrics = {
+            'mode': s.projector_mode,
+            'canonical_transfer_status': 'unavailable',
+            'canonical_transfer_reason': (
+                'Legacy Image/Diffraction conjugate diagnostics are not qualified '
+                'for the unified potential executor; raw particle results remain available.'
+            ),
+            'projector_field_calibration': (),
+        }
+        transfer_metrics = {}
     else:
-        from temsim.optics.direct_alignment import (
-            diffraction_focus_depth_diagnostic,
-            diffraction_reference_plane,
+        analysis_reference_key=None
+        from temsim.optics.direct_alignment import diffraction_transfer
+        if s.projector_mode == 'image':
+            analysis_stop_z=tem_projection_reference_plane_z(s)
+            sample_transfer=diffraction_transfer(s,analysis_stop_z)
+        else:
+            from temsim.optics.direct_alignment import (
+                diffraction_focus_depth_diagnostic,
+                diffraction_reference_plane,
+            )
+            analysis_reference_key,analysis_stop_z=diffraction_reference_plane(s)
+            sample_transfer=diffraction_transfer(s,analysis_stop_z)
+        image_properties=linear_map_properties(sample_transfer.j_img)
+        diffraction_properties=linear_map_properties(
+            sample_transfer.j_diff_m_per_rad
         )
-        analysis_reference_key,analysis_stop_z=diffraction_reference_plane(s)
-        sample_transfer=diffraction_transfer(s,analysis_stop_z)
-    image_properties=linear_map_properties(sample_transfer.j_img)
-    diffraction_properties=linear_map_properties(
-        sample_transfer.j_diff_m_per_rad
-    )
-    image_larmor_rotation_rad = _sample_to_stop_larmor_rotation_rad(
-        s, analysis_stop_z
-    )
-    cosine = math.cos(-image_larmor_rotation_rad)
-    sine = math.sin(-image_larmor_rotation_rad)
-    derotation = np.array(((cosine, -sine), (sine, cosine)))
-    derotated_image = derotation @ sample_transfer.j_img
-    signed_image_magnification = float(
-        0.5 * np.trace(derotated_image)
-    )
-    reference_component=min(
-        (s.fluorescent_screen,s.camera),
-        key=lambda component: abs(
-            float(component.z_mm)-float(analysis_stop_z)
-        ),
-    )
-    recording_width_mm=float(getattr(
-        reference_component,
-        'width_mm',
-        getattr(reference_component,'outer_width_mm'),
-    ))
-    half=recording_width_mm/2
+        image_larmor_rotation_rad = _sample_to_stop_larmor_rotation_rad(
+            s, analysis_stop_z
+        )
+        cosine = math.cos(-image_larmor_rotation_rad)
+        sine = math.sin(-image_larmor_rotation_rad)
+        derotation = np.array(((cosine, -sine), (sine, cosine)))
+        derotated_image = derotation @ sample_transfer.j_img
+        signed_image_magnification = float(
+            0.5 * np.trace(derotated_image)
+        )
+        reference_component=min(
+            (s.fluorescent_screen,s.camera),
+            key=lambda component: abs(
+                float(component.z_mm)-float(analysis_stop_z)
+            ),
+        )
+        recording_width_mm=float(getattr(
+            reference_component,
+            'width_mm',
+            getattr(reference_component,'outer_width_mm'),
+        ))
+        half=recording_width_mm/2
 
-    if s.projector_mode=='image':
+        if s.projector_mode=='image':
 
-        plane_name='objective_image_plane'
-        plane_z=s.objective_image_plane_z_mm
-        plane_map=(
-            trace_transverse_transfer(s,plane_z,analysis_stop_z)
-            if plane_z is not None else None
-        )
-        relay_error=(
-            float(np.linalg.norm(plane_map.j_diff_m_per_rad,ord=2))
-            if plane_map is not None else math.inf
-        )
-        plane_magnification=(
-            linear_map_properties(plane_map.j_img).isotropic_scale
-            if plane_map is not None else 0.0
-        )
-        magnification=max(image_properties.isotropic_scale,1e-15)
-        metrics={'mode':'image','magnification':magnification,'object_full_m':recording_width_mm*1e-3/magnification,'relay_error':relay_error,'conjugate_plane':plane_name,'conjugate_plane_z_mm':plane_z,'conjugate_plane_magnification':plane_magnification}
+            plane_name='objective_image_plane'
+            plane_z=s.objective_image_plane_z_mm
+            plane_map=(
+                trace_transverse_transfer(s,plane_z,analysis_stop_z)
+                if plane_z is not None else None
+            )
+            relay_error=(
+                float(np.linalg.norm(plane_map.j_diff_m_per_rad,ord=2))
+                if plane_map is not None else math.inf
+            )
+            plane_magnification=(
+                linear_map_properties(plane_map.j_img).isotropic_scale
+                if plane_map is not None else 0.0
+            )
+            magnification=max(image_properties.isotropic_scale,1e-15)
+            metrics={'mode':'image','magnification':magnification,'object_full_m':recording_width_mm*1e-3/magnification,'relay_error':relay_error,'conjugate_plane':plane_name,'conjugate_plane_z_mm':plane_z,'conjugate_plane_magnification':plane_magnification}
 
-    else:
-        from temsim.optics.direct_alignment import (
-            projector_field_calibration_rows,
-        )
-        plane_name=(
-            analysis_reference_key
-            if analysis_reference_key is not None
-            else 'active_recording_plane'
-        )
-        plane_z=analysis_stop_z
-        relay_error=float(np.linalg.norm(sample_transfer.j_img,ord=2))
-        plane_magnification=image_properties.isotropic_scale
-        L=max(diffraction_properties.isotropic_scale,1e-15);mrad_half=half/L;metrics={'mode':'diffraction','effective_camera_length_m':L,'mrad_half':mrad_half,'g_half_inv_nm':mrad_half*1e-3/lam,'relay_error':relay_error,'conjugate_plane':plane_name,'conjugate_plane_z_mm':plane_z,'conjugate_plane_magnification':plane_magnification}
-        metrics['projector_field_calibration']=(
-            projector_field_calibration_rows(s)
-        )
-        if analysis_reference_key is not None:
-            focus_depth=diffraction_focus_depth_diagnostic(s)
-            metrics.update({
-                'diffraction_focus_depth_mm':focus_depth['full_depth_mm'],
-                'diffraction_best_focus_offset_mm':focus_depth['best_focus_offset_mm'],
-                'diffraction_best_focus_residual':focus_depth['best_residual'],
-                'diffraction_focus_tolerance':focus_depth['tolerance'],
-                'diffraction_focus_depth_model':focus_depth['model'],
-            })
+        else:
+            from temsim.optics.direct_alignment import (
+                projector_field_calibration_rows,
+            )
+            plane_name=(
+                analysis_reference_key
+                if analysis_reference_key is not None
+                else 'active_recording_plane'
+            )
+            plane_z=analysis_stop_z
+            relay_error=float(np.linalg.norm(sample_transfer.j_img,ord=2))
+            plane_magnification=image_properties.isotropic_scale
+            L=max(diffraction_properties.isotropic_scale,1e-15);mrad_half=half/L;metrics={'mode':'diffraction','effective_camera_length_m':L,'mrad_half':mrad_half,'g_half_inv_nm':mrad_half*1e-3/lam,'relay_error':relay_error,'conjugate_plane':plane_name,'conjugate_plane_z_mm':plane_z,'conjugate_plane_magnification':plane_magnification}
+            from temsim.simulation_modes import is_unified
+            metrics['projector_field_calibration']=(
+                () if is_unified(s) else projector_field_calibration_rows(s)
+            )
+            if analysis_reference_key is not None:
+                focus_depth=diffraction_focus_depth_diagnostic(s)
+                metrics.update({
+                    'diffraction_focus_depth_mm':focus_depth['full_depth_mm'],
+                    'diffraction_best_focus_offset_mm':focus_depth['best_focus_offset_mm'],
+                    'diffraction_best_focus_residual':focus_depth['best_residual'],
+                    'diffraction_focus_tolerance':focus_depth['tolerance'],
+                    'diffraction_focus_depth_model':focus_depth['model'],
+                })
+
+        transfer_metrics = {
+            'transfer_coordinate_order':('x','y','theta_x','theta_y'),
+            'transfer_analysis_plane_z_mm':analysis_stop_z,
+            'transfer_analysis_plane_key':(
+                analysis_reference_key
+            ),
+            'j_img':sample_transfer.j_img.tolist(),
+            'j_diff_m_per_rad':sample_transfer.j_diff_m_per_rad.tolist(),
+            'image_rotation_deg':image_properties.orientation_deg,
+            'image_larmor_rotation_deg':math.degrees(
+                image_larmor_rotation_rad
+            ),
+            'signed_image_magnification':signed_image_magnification,
+            'image_inversion':(
+                'inverted' if signed_image_magnification < 0.0 else 'upright'
+            ),
+            'diffraction_rotation_deg':diffraction_properties.orientation_deg,
+            'image_handedness':(
+                'mirrored' if image_properties.mirrored else 'preserved'
+            ),
+            'diffraction_handedness':(
+                'mirrored' if diffraction_properties.mirrored else 'preserved'
+            ),
+            'image_anisotropy_ratio':image_properties.anisotropy_ratio,
+            'diffraction_anisotropy_ratio':(
+                diffraction_properties.anisotropy_ratio
+            ),
+            'image_conjugacy_residual_m_per_rad':float(
+                np.linalg.norm(sample_transfer.j_diff_m_per_rad,ord=2)
+            ),
+            'diffraction_conjugacy_residual':float(
+                np.linalg.norm(sample_transfer.j_img,ord=2)
+            ),
+        }
 
     # A mechanically valid trace may still lose every ray before the sample
     # (for example a deliberately coarse diagnostic trace through a small
@@ -961,38 +1090,7 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
             branch.interaction_kind for branch in branches.values()
         )),
         'lambda_nm':lam,
-        'transfer_coordinate_order':('x','y','theta_x','theta_y'),
-        'transfer_analysis_plane_z_mm':analysis_stop_z,
-        'transfer_analysis_plane_key':(
-            analysis_reference_key
-        ),
-        'j_img':sample_transfer.j_img.tolist(),
-        'j_diff_m_per_rad':sample_transfer.j_diff_m_per_rad.tolist(),
-        'image_rotation_deg':image_properties.orientation_deg,
-        'image_larmor_rotation_deg':math.degrees(
-            image_larmor_rotation_rad
-        ),
-        'signed_image_magnification':signed_image_magnification,
-        'image_inversion':(
-            'inverted' if signed_image_magnification < 0.0 else 'upright'
-        ),
-        'diffraction_rotation_deg':diffraction_properties.orientation_deg,
-        'image_handedness':(
-            'mirrored' if image_properties.mirrored else 'preserved'
-        ),
-        'diffraction_handedness':(
-            'mirrored' if diffraction_properties.mirrored else 'preserved'
-        ),
-        'image_anisotropy_ratio':image_properties.anisotropy_ratio,
-        'diffraction_anisotropy_ratio':(
-            diffraction_properties.anisotropy_ratio
-        ),
-        'image_conjugacy_residual_m_per_rad':float(
-            np.linalg.norm(sample_transfer.j_diff_m_per_rad,ord=2)
-        ),
-        'diffraction_conjugacy_residual':float(
-            np.linalg.norm(sample_transfer.j_img,ord=2)
-        ),
+        **transfer_metrics,
         'sample_convergence_95_mrad':(
             sample_beam.convergence_95_mrad
             if sample_beam is not None else math.nan
@@ -1055,7 +1153,7 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
         c2c3_crossover=c2c3, corrector_crossovers=crossovers,
         gun_trace=gun_trace,
         sample_to_analysis_transfer=sample_transfer,
-        optical_transfers=optical_transfer_records(s),
+        optical_transfers=() if is_unified(s) else optical_transfer_records(s),
         real_interactions=real_interactions,
         incident_plan=incident_plan,
         incident_checkpoints=incident_checkpoints,

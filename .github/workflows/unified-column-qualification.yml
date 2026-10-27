@@ -1,0 +1,32 @@
+name: Controlled whole-column wave qualification
+
+# The complete independent convergence campaign is intentionally separate
+# from ordinary push/PR regression. No test or accuracy gate is skipped here.
+on:
+  workflow_dispatch:
+
+jobs:
+  column-wave-qualification:
+    runs-on: windows-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install the same CPU validation dependencies
+        run: |
+          python -m pip install -r requirements/validation-cpu-lock.txt -e ".[dev]"
+          if ($LASTEXITCODE -ne 0) { throw "Validation dependency installation failed" }
+          python -m pip check
+          if ($LASTEXITCODE -ne 0) { throw "Validation dependencies are inconsistent" }
+      - name: Run the complete controlled coherent campaign
+        run: python scripts/validate_classical_scope.py --scope column-wave-qualification --output outputs/agent-validation/column-wave-qualification --timeout-seconds 20400
+      - name: Retain successful or failed convergence evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: acceptance-column-wave-qualification
+          path: outputs/agent-validation/column-wave-qualification
+          if-no-files-found: error

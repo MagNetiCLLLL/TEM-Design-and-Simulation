@@ -13,6 +13,8 @@ from uuid import uuid4
 from PySide6.QtCore import QObject, QTimer, Slot
 
 from temsim.gui.job_coordinator import CoordinatedPool
+from temsim.gui.coherent_result_labels import coherent_preview_text
+from temsim.calculation_progress import CalculationProgress
 from temsim.immutable_json import json_digest
 from temsim.instrument_snapshot import capture_instrument_snapshot
 from temsim.physics.coherent_inputs import source_settings_from_state, wave_input_summary
@@ -71,6 +73,46 @@ class CoherentStateController(QObject):
 
     def _message(self, text):
         self.page.status.setText(text)
+
+    def _progress_keys(self):
+        return frozenset(self.row_keys[entry.id] for entry in self._entries()
+                         if entry.id in self.admitted_ids and entry.id in self.row_keys)
+
+    def _begin_progress(self, *, force=False):
+        keys = self._progress_keys()
+        target = self.page._target_z_mm
+        previous = getattr(self, "_progress_state", None)
+        if (not force and previous is not None
+                and getattr(self, "_progress_target", None) == target
+                and getattr(self, "_progress_members", None) == keys):
+            return
+        self._terminal_progress("cancelled", "Saved-state observation request changed")
+        self._progress_target, self._progress_members = target, keys
+        self._progress_state = CalculationProgress(f"coherent-states:{uuid4().hex}",
+            "Saved coherent states", "Preparing selected states",
+            stages_completed=0, stages_total=3 * len(keys) + 1)
+        self._accepted_state_progress()
+
+    def _accepted_state_progress(self):
+        progress = getattr(self, "_progress_state", None)
+        if progress is None or not progress.active:
+            return
+        completed = sum(self._progress_target in self.runs[key].cache
+                        for key in self._progress_members if key in self.runs)
+        self._progress_state = replace(progress, stages_completed=3 * completed,
+            completed=None, total=None, step="Preparing complete selected-state readout")
+        self.page.progress_detail.emit(self._progress_state)
+
+    def _terminal_progress(self, status, message):
+        progress = getattr(self, "_progress_state", None)
+        if progress is not None and progress.active:
+            self._progress_state = progress.terminal(status, message)
+            self.page.progress_detail.emit(self._progress_state)
+
+    def _rejected_progress(self, message):
+        self.page.progress_detail.emit(CalculationProgress(f"coherent-states-check:{uuid4().hex}",
+            "Saved coherent states", "Checking selected inputs", stages_completed=0,
+            stages_total=1).terminal("failed", message))
 
     def _capture(self):
         # The existing guard rejects unapplied source drafts. Capturing a row
@@ -170,6 +212,7 @@ class CoherentStateController(QObject):
         entries = self._entries()
         if not entries:
             self._message("Choose a state, or check states with positive weights, before Calculate beam.")
+            self._rejected_progress("Choose a state or states with positive weights")
             return
         try:
             state = self._state()
@@ -209,11 +252,13 @@ class CoherentStateController(QObject):
                 self.controls.set_status(identity, "Queued")
         except Exception as error:
             self._message(f"State calculation not started: {error}. Previous complete image retained.")
+            self._rejected_progress(str(error))
             return
         self.failed.clear()
         self.admitted_ids = {entry.id for entry in entries}
         self.active = True
         self._drop_unused_runs()
+        self._begin_progress(force=True)
         self._advance()
 
     def _drop_unused_runs(self):
@@ -280,34 +325,42 @@ class CoherentStateController(QObject):
         self.page._update_plane_positions()
         self.page._refresh_intensity()
         names = ", ".join(entry.name for entry in entries)
-        self._message(f"Completed {len(entries)} tip state(s) at Z {z_mm:.9g} mm: {names}.")
+        preview_note = coherent_preview_text(result)
+        self._message(preview_note + f"Completed {len(entries)} tip state(s) at Z {z_mm:.9g} mm: {names}.")
         self.page.readout.setText(
-            f"{len(entries)} independent tip states | Density / µm² per electron | "
+            preview_note + f"{len(entries)} independent tip states | Density / µm² per electron | "
             f"displayed probability {preview.probability:.8g} | relative weights normalized over shown states. "
             "Each state's complex fields and phase references are retained; there is no aggregate phase. "
             "Changing names, weights or visibility does not propagate waves.")
+        if (getattr(self, "_progress_target", None) == z_mm
+                and getattr(self, "_progress_members", None) == self._progress_keys()):
+            self._terminal_progress("succeeded", "Accepted complete selected-state readout")
         return True
 
     @Slot()
     def _advance(self):
         if self.closed or not self.active or not self.viewing_states() or self.worker is not None:
             return
+        self._begin_progress()
         if self._publish():
             return
         z_mm = self.page._target_z_mm
         for entry in self._entries():
             if entry.id not in self.admitted_ids:
                 self._message("A selected state needs Calculate beam before Z browsing.")
+                self._terminal_progress("failed", "Selected states require explicit calculation")
                 return
             key = self.row_keys.get(entry.id)
             run = self.runs.get(key)
             if run is None:
                 self._message("A selected state needs Calculate beam before Z browsing.")
+                self._terminal_progress("failed", "Selected states require explicit calculation")
                 return
             if z_mm in run.cache:
                 continue
             if (key, z_mm) in self.failed:
                 self._message(f"State {entry.name} failed at Z {z_mm:.9g} mm: {self.failed[key, z_mm]}. No partial overlay was published. Click Calculate beam to retry.")
+                self._terminal_progress("failed", self.failed[key, z_mm])
                 return
             from temsim.gui.coherent_beam import _WaveWorker
             self.generation += 1
@@ -317,8 +370,11 @@ class CoherentStateController(QObject):
             worker.signals.solved.connect(self._solved)
             worker.signals.failed.connect(self._failed)
             worker.signals.progress.connect(self._progress)
+            worker.signals.progress_detail.connect(self._progress_detail)
             worker.signals.finished.connect(self._finished)
             self.worker, self._job_key = worker, key
+            self._progress_worker_accepted = False
+            self._progress_detail(self.generation, worker.progress_state)
             self.controls.set_status(entry.id, f"Calculating Z {z_mm:.7g} mm")
             self.page.cancel_button.setEnabled(True)
             self.page._update_plane_positions()
@@ -343,6 +399,8 @@ class CoherentStateController(QObject):
             if key == self._job_key:
                 self.controls.set_status(identity, f"Ready Z {z_mm:.7g} mm")
         self._trim_cache()
+        self._progress_worker_accepted = True
+        self._accepted_state_progress()
         self._publish()
 
     def _trim_cache(self):
@@ -370,6 +428,7 @@ class CoherentStateController(QObject):
     def _failed(self, generation, message):
         if generation != self.generation or self.worker is None:
             return
+        self._terminal_progress("failed", str(message))
         z_mm = self.worker.request.observation_z_mm
         self.failed[self._job_key, z_mm] = message
         for identity, key in self.row_keys.items():
@@ -382,10 +441,25 @@ class CoherentStateController(QObject):
         if generation == self.generation and self.worker is not None:
             self._message(f"Saved tip states | calculating Z {self.worker.request.observation_z_mm:.9g} mm | {message}")
 
+    @Slot(int, object)
+    def _progress_detail(self, generation, update):
+        progress = getattr(self, "_progress_state", None)
+        if (self.closed or generation != self.generation or self.worker is None
+                or progress is None or not progress.active):
+            return
+        completed = sum(self._progress_target in self.runs[key].cache
+                        for key in self._progress_members if key in self.runs)
+        self._progress_state = replace(progress, step=update.step,
+            completed=update.completed, total=update.total, stage_name=update.stage_name,
+            stages_completed=3 * completed + min(update.stages_completed or 0, 2))
+        self.page.progress_detail.emit(self._progress_state)
+
     @Slot(int)
     def _finished(self, generation):
         if generation != self.generation:
             return
+        if not getattr(self, "_progress_worker_accepted", False):
+            self._terminal_progress("cancelled", "State request ended without an accepted result")
         self.worker = None
         self.page._update_cancel_enabled()
         self.page._update_plane_positions()
@@ -393,6 +467,7 @@ class CoherentStateController(QObject):
             self.timer.start(0)
 
     def cancel(self):
+        self._terminal_progress("cancelled", "Saved-state calculation cancelled")
         self.active = False
         self.generation += 1
         self.timer.stop()

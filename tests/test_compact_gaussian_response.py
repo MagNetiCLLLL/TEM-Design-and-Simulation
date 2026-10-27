@@ -114,13 +114,11 @@ def test_far_tail_polynomials_remain_finite_without_floating_warnings():
     np.testing.assert_array_equal(value.probability, np.zeros((1, 2)))
 
 
-@pytest.mark.parametrize('kind', ['broad', 'rotated', 'none', 'tiny_sigma', 'huge_sigma'])
+@pytest.mark.parametrize('kind', ['broad', 'none', 'tiny_sigma', 'huge_sigma'])
 def test_unsupported_domain_returns_none_for_existing_fallback(kind):
     points, spread = corners(), psf()
     if kind == 'broad':
         points *= 10
-    elif kind == 'rotated':
-        spread = psf(.6, .9, 17.)
     elif kind == 'none':
         spread = replace(spread, model='none')
     elif kind == 'tiny_sigma':

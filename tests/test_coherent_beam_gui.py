@@ -37,6 +37,42 @@ def preview():
                     1., 1, 160, ((4, 4),))
 
 
+def test_request_freezes_instrument_emission_epoch_without_changing_numerics(panel):
+    panel._state.simulation_time_s = -.125
+    first = panel._make_request()
+    assert first.tip_time_s == -.125
+    panel._state.simulation_time_s = .25
+    second = panel._make_request()
+    assert first.tip_time_s == -.125  # The old captured request does not follow a live edit.
+    assert second.tip_time_s == .25
+    assert replace(first, tip_time_s=second.tip_time_s) == second
+    panel._state.simulation_time_s = True
+    with pytest.raises(ValueError, match="emission time"):
+        panel._make_request()
+
+
+def test_captured_emission_time_is_shared_with_ray_readout_and_invalid_input_keeps_session(panel, qtbot, monkeypatch):
+    from temsim.gui.coherent_beam import CoherentBeamMirror
+    panel._state.simulation_time_s = -.125
+    panel.source_enabled.setChecked(True)
+    panel.apply_source()
+    captured, request, summary = panel.capture_calculation_inputs()
+    mirror = CoherentBeamMirror(panel)
+    qtbot.addWidget(mirror)
+    monkeypatch.setattr(panel.pool, "start", lambda _worker: None)
+    panel.start_captured_calculation(captured, request, summary)
+    worker = panel._worker
+    assert "-0.125 s" in panel.timing_status.text()
+    assert "flight time" in panel.timing_status.text()
+    assert "does not integrate a raster exposure" in panel.timing_status.text()
+    assert mirror.timing_status.text() == panel.timing_status.text()
+    assert mirror.timing_status.textInteractionFlags() & Qt.TextInteractionFlag.TextSelectableByMouse
+    with pytest.raises(ValueError, match="emission time"):
+        panel.start_captured_calculation(captured, replace(request, tip_time_s=np.nan), summary)
+    assert panel._worker is worker
+    assert panel._request is request
+
+
 class _GuiObservationSession:
     """Keep real GUI ownership while substituting only numerical execution."""
 
@@ -366,6 +402,157 @@ def test_gun_energy_step_budget_is_explicit_and_invalidates_session(panel, qtbot
     assert panel.result is previous
     assert panel._stale and not panel._session_ready
     assert panel._worker is None
+
+
+def test_driven_near_tip_step_is_independent_and_invalidates_captured_request(panel, qtbot):
+    from dataclasses import asdict
+    from temsim.immutable_json import json_digest
+    assert panel.gun_near_tip_step.value() == module.TipWaveRequest().gun.near_tip_maximum_step_nm == 50.
+    calculate(panel, qtbot)
+    previous, initial = panel.result, panel._make_request()
+    source_before = deepcopy(vars(panel._state.electron_gun.emitter))
+    panel.gun_near_tip_step.setValue(12.5)
+    request = panel._make_request()
+    assert request.gun.near_tip_maximum_step_nm == 12.5
+    assert replace(request.gun, near_tip_maximum_step_nm=50.) == initial.gun
+    assert replace(request, gun=initial.gun) == initial
+    assert json_digest(asdict(request)) != json_digest(asdict(initial))
+    assert vars(panel._state.electron_gun.emitter) == source_before
+    assert panel.result is previous and panel._stale and not panel._session_ready
+    assert panel._worker is None
+
+
+def _enable_unified_numeric_controls(panel, monkeypatch):
+    import temsim.physics.unified_field_runtime as runtime
+    monkeypatch.setattr(runtime, "unified_runtime_preflight", lambda _state: {"issues": []})
+    panel._state.simulation_mode = "unified"
+    panel.advanced.setChecked(True)
+    panel.update_simulation_mode(panel._state)
+
+
+def test_unified_column_numeric_controls_capture_only_the_selected_numerics(panel, qtbot, monkeypatch):
+    from dataclasses import asdict
+    from temsim.immutable_json import json_digest
+    assert panel.column_kinetic_order.currentData() == 4
+    assert not panel.column_support_projection.isChecked()
+    assert not panel.column_kinetic_order.isEnabled()
+    calculate(panel, qtbot)
+    previous, initial = panel.result, panel._make_request()
+    source_before = deepcopy(vars(panel._state.electron_gun.emitter))
+    _enable_unified_numeric_controls(panel, monkeypatch)
+    panel.column_kinetic_order.setCurrentIndex(panel.column_kinetic_order.findData(8))
+    panel.column_support_projection.setChecked(True)
+    for control, text in ((panel.support_l2_budget, "3e-7"),
+                          (panel.support_probability_budget, "2.5e-13")):
+        control.selectAll()
+        qtbot.keyClicks(control, text)
+    # Capture sees valid text immediately, including before focus/Return commit.
+    captured, request, _summary = panel.capture_calculation_inputs()
+    assert request.column_kinetic_order == 8
+    assert request.column_support_projection is True
+    assert request.wave_grid.maximum_accumulated_support_l2 == 3e-7
+    assert request.wave_grid.maximum_support_loss_fraction == 2.5e-13
+    assert replace(request, column_kinetic_order=4, column_support_projection=False,
+                   wave_grid=initial.wave_grid) == initial
+    assert json_digest(asdict(request)) != json_digest(asdict(initial))
+    assert vars(panel._state.electron_gun.emitter) == source_before
+    assert captured.electron_gun.emitter == panel._state.electron_gun.emitter
+    assert panel.result is previous and panel._stale and not panel._session_ready
+    assert panel._worker is None
+
+
+def test_unified_column_numeric_drafts_survive_compatibility_mode_switches(panel, monkeypatch):
+    _enable_unified_numeric_controls(panel, monkeypatch)
+    panel.column_kinetic_order.setCurrentIndex(panel.column_kinetic_order.findData(6))
+    panel.column_support_projection.setChecked(True)
+    panel.support_l2_budget.setText("0")
+    panel.support_probability_budget.setText("5e-324")
+    controls = (panel.column_kinetic_order, panel.column_support_projection,
+                panel.support_l2_budget, panel.support_probability_budget)
+    before = panel._make_request()
+    assert before.wave_grid.maximum_accumulated_support_l2 == 0.
+    assert before.wave_grid.maximum_support_loss_fraction == np.nextafter(0., 1.)
+    for mode in ("ideal", "custom", "analytical", "ideal_thin"):
+        panel._state.simulation_mode = mode
+        panel.update_simulation_mode(panel._state)
+        assert all(not control.isEnabled() for control in controls)
+        assert panel.column_kinetic_order.currentData() == 6
+        assert panel.column_support_projection.isChecked()
+        assert panel.support_l2_budget.text() == "0"
+        assert panel.support_probability_budget.text() == "5e-324"
+    _enable_unified_numeric_controls(panel, monkeypatch)
+    assert all(control.isEnabled() for control in controls)
+    assert panel._make_request() == before
+    assert "Zero in either budget disables projection" in panel.column_support_projection.toolTip()
+    assert "do not renormalize" in panel.support_l2_budget.toolTip()
+
+
+def test_unified_exponential_controls_invalidate_results_without_changing_optics(panel, qtbot, monkeypatch):
+    from dataclasses import asdict
+    from temsim.immutable_json import json_digest
+    assert panel.column_exponential_method.currentData() == "taylor"
+    assert not panel.column_exponential_method.isEnabled()
+    calculate(panel, qtbot)
+    previous, initial = panel.result, panel._make_request()
+    physical = deepcopy(panel._state)
+    _enable_unified_numeric_controls(panel, monkeypatch)
+    panel.column_exponential_method.setCurrentIndex(panel.column_exponential_method.findData("chebyshev"))
+    panel.column_chebyshev_group.setValue(16)
+    request = panel._make_request()
+    assert request.column_exponential_method == "chebyshev"
+    assert request.column_chebyshev_group == 16
+    assert replace(request, column_exponential_method="taylor", column_chebyshev_group=8) == initial
+    assert json_digest(asdict(request)) != json_digest(asdict(initial))
+    physical.simulation_mode = "unified"
+    assert panel._state == physical
+    assert panel.result is previous and panel._stale and not panel._session_ready
+    for mode in ("ideal", "ideal_thin"):
+        panel._state.simulation_mode = mode
+        panel.update_simulation_mode(panel._state)
+        assert not panel.column_exponential_method.isEnabled()
+        assert not panel.column_chebyshev_group.isEnabled()
+        assert panel.column_exponential_method.currentData() == "chebyshev"
+        assert panel.column_chebyshev_group.value() == 16
+        if mode == "ideal_thin":
+            with pytest.raises(ValueError, match="unavailable in Ideal Optics"):
+                panel._make_request()
+    _enable_unified_numeric_controls(panel, monkeypatch)
+    assert panel.column_exponential_method.isEnabled() and panel.column_chebyshev_group.isEnabled()
+    assert panel._make_request() == request
+
+
+def test_request_roundtrip_keeps_all_unexposed_wave_grid_numerics(panel):
+    from dataclasses import asdict
+    initial = panel._make_request()
+    retained = replace(initial.wave_grid, automatic_refinement=False,
+        specimen_phase_method="sampled", specimen_quadrature_factor=7,
+        maximum_posed_lens_phase_error_rad_per_m=.003,
+        maximum_spherical_obliquity_phase_error_rad=.004,
+        maximum_spectral_loss_fraction=3.25e-13,
+        multipole_spectral_tail_fraction=7.125e-15,
+        maximum_incoherent_mode_loss_probability=9.25e-12)
+    panel._request = replace(initial, wave_grid=retained)
+    assert asdict(panel._make_request().wave_grid) == asdict(retained)
+    panel.support_l2_budget.setText("1.2345678912345678e-9")
+    panel.support_probability_budget.setText("5.678912345678912e-15")
+    current = panel._make_request()
+    expected = replace(retained, maximum_accumulated_support_l2=1.2345678912345678e-9,
+                        maximum_support_loss_fraction=5.678912345678912e-15)
+    assert asdict(current.wave_grid) == asdict(expected)
+    assert replace(current, wave_grid=initial.wave_grid) == initial
+
+
+@pytest.mark.parametrize("text", ["", "1e", "nan", "inf", "-0.01", "0.10001", "1e-999"])
+def test_invalid_support_budget_cannot_submit_a_previous_value(panel, qtbot, monkeypatch, text):
+    calculate(panel, qtbot)
+    _enable_unified_numeric_controls(panel, monkeypatch)
+    old_result, old_request, old_state = panel.result, panel._request, deepcopy(panel._state)
+    panel.support_probability_budget.setText(text)
+    with pytest.raises(ValueError, match="Relative support probability budget"):
+        panel.capture_calculation_inputs()
+    assert panel.result is old_result and panel._request is old_request
+    assert panel._state == old_state
+    assert panel._worker is None and panel._stale
 
 
 def test_log_display_preserves_density_and_current_session(panel, qtbot):
@@ -829,6 +1016,44 @@ def test_advanced_budgets_only_change_numerics(panel):
     assert request.inelastic.method == "trajectories"
 
 
+def test_primary_wave_numerics_are_visible_and_independent_of_particle_sampling(panel):
+    panel._state.step_mm = .23
+    panel._state.electron_gun.emitter.ray_count = 4321
+    assert panel.advanced_body.isHidden()
+    for control in (panel.grid_pixels, panel.maximum_grid_pixels, panel.energy_samples,
+                    panel.column_step, panel.working_gib, panel.gpu_working_gib):
+        assert panel.numerical_settings.isAncestorOf(control)
+        assert control.isVisibleTo(panel)
+        assert not panel.advanced_body.isAncestorOf(control)
+    panel.show_numerical_settings()
+    panel.grid_pixels.setValue(192)
+    panel.maximum_grid_pixels.setValue(2048)
+    panel.energy_samples.setValue(5)
+    panel.column_step.setValue(.07)
+    request = panel._make_request()
+    assert (request.source.grid_pixels, request.wave_grid.maximum_pixels) == (192, 2048)
+    assert request.source.energy_samples == request.surface.energy_samples == 5
+    assert request.column_step_mm == .07
+    assert panel._state.step_mm == .23
+    assert panel._state.electron_gun.emitter.ray_count == 4321
+
+
+def test_thin_mode_rejects_wave_before_source_capture_without_switching(panel, monkeypatch):
+    panel._state.simulation_mode = "ideal_thin"
+    panel.update_simulation_mode(panel._state)
+    monkeypatch.setattr(module, "prepare_coherent_state", lambda *a: pytest.fail("No wave source capture in thin mode"))
+    with pytest.raises(ValueError, match="Select Finite-Field Optics"):
+        panel.capture_calculation_inputs()
+    with pytest.raises(ValueError, match="Select Finite-Field Optics"):
+        panel._make_request()
+    assert panel._state.simulation_mode == "ideal_thin"
+    assert "Select Finite-Field Optics" in panel.mode_status.text()
+    assert panel._worker is None
+    panel._state.simulation_mode = "ideal"
+    panel.update_simulation_mode(panel._state)
+    assert panel._make_request().source.grid_pixels == panel.grid_pixels.value()
+
+
 @pytest.mark.parametrize("policy", ["Auto", "CPU", "Numba CPU", "CUDA GPU", "Prefer GPU", "Require GPU"])
 def test_wave_request_uses_applied_toolbar_backend_policy(panel, policy):
     panel._state.acceleration_backend = policy
@@ -1033,6 +1258,28 @@ def test_worker_progress_is_throttled_and_cancelled_progress_suppressed(panel, m
     worker.event.set()
     worker._report_progress(100, 100, "Cancelled")
     assert len(messages) == 2
+
+
+@pytest.mark.parametrize("available", [True, False])
+def test_unified_readout_never_captures_a_legacy_magnetic_gauge(panel, qtbot, monkeypatch, available):
+    import temsim.physics.unified_wave_runtime as unified
+    expected = ColumnPlaneMagneticGauge(100., .321, ()) if available else None
+    records = []
+    def shared_gauge(checkpoint):
+        records.append(checkpoint)
+        return expected
+    def executed(_state, request, **_kwargs):
+        value = result(request.observation_z_mm)
+        value.checkpoint.record = {"unified_column_executed": True}
+        return value
+    monkeypatch.setattr(module, "simulate_tip_wave", executed)
+    monkeypatch.setattr(unified, "unified_checkpoint_magnetic_gauge", shared_gauge)
+    monkeypatch.setattr(module, "_plane_magnetic_gauge", lambda *_:
+        pytest.fail("A unified wave must not read a legacy field for probability flow"))
+    calculate(panel, qtbot)
+    assert records == [panel.result.checkpoint]
+    assert panel.preview.magnetic_gauge is expected
+    assert panel.preview.axial_bz_t is None
 
 
 def test_cache_limit_and_old_session_publication_guard(panel, qtbot):

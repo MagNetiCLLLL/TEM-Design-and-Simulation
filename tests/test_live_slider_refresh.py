@@ -10,6 +10,7 @@ from temsim.component_keys import OBJECTIVE_LENS
 from temsim.gui.interactive_calculation import InteractiveCalculationPage
 from temsim.gui.main_window import MainWindow
 from temsim.optics.column import default_state
+from temsim.simulation_modes import switch_mode
 
 
 @pytest.fixture
@@ -92,6 +93,8 @@ def test_live_edits_do_not_cancel_the_frame_in_flight(qtbot, monkeypatch, contro
 def test_new_model_edits_high_accuracy_and_errors_exit_live_queue_safely(
         qtbot, monkeypatch, next_action, controlled_solver_requests):
     window = MainWindow()
+    # Keep the historical queue contract independent of unified admission.
+    switch_mode(window.state, "ideal")
     qtbot.addWidget(window)
     window.preview_timer.stop()
     controlled_solver_requests(window)
@@ -233,8 +236,16 @@ def test_latest_particle_publication_refreshes_coherent_beam_once(
 
 
 def test_real_ray_frames_arrive_during_sustained_slider_motion(qtbot, monkeypatch):
-    """Use the real small-bundle solver; no specimen or high-accuracy solve."""
+    """Use a real static optical preview; raster calibration is a separate job."""
     window = MainWindow()
+    # This end-to-end timing regression qualifies the legacy preview solver.
+    # Unified actual-source transport has separate bounded-field coverage.
+    switch_mode(window.state, "ideal")
+    # Isolate continuous frame scheduling from automatic raster alignment,
+    # whose physical calibration has independent tests and no 30-second SLA.
+    # Keep the actual gun, column, numerical budget and rendering path.
+    window.state.ac_deflector.scan_enabled = False
+    window.state.descan_deflector.scan_enabled = False
     qtbot.addWidget(window)
     window.preview_timer.stop()
     errors = []

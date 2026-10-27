@@ -963,6 +963,8 @@ def simulate_elastic_point_transport(
     geometry = ElasticTransportGeometry.from_state(state)
     field_diagnostic = sample_axial_field_diagnostic(state)
     field_transport = SpecimenFieldTransport(state)
+    if field_transport.thin_mode:
+        field_transport.validate_material_geometry(geometry)
     rng = np.random.default_rng(random_seed)
     maximum_path_nm = 8.0 * geometry.transport_span_nm
     tracks: list[ElectronTrackSegment] = []
@@ -1009,6 +1011,10 @@ def simulate_elastic_point_transport(
             )
         energy_ev = float(ray.kinetic_energy_ev)
         start_z_nm = geometry.sample_top_nm - 8.0 * geometry.epsilon_nm
+        if field_transport.thin_mode and geometry.material_z_bounds_nm is None:
+            # No material owns a finite flight. Keep the executed sample-plane
+            # state instead of inventing a reverse flight through thin actions.
+            start_z_nm = 0.0
         reference_position_nm = np.asarray(
             (*ray.position_xy_nm, 0.0), dtype=float
         )

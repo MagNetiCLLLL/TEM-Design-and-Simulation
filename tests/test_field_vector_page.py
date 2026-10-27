@@ -81,6 +81,23 @@ def activate(qtbot, page):
     wait_sample(qtbot, page)
 
 
+@pytest.mark.parametrize("mode", ["ideal", "ideal_thin"])
+def test_display_distinguishes_finite_fields_from_thin_transport(qtbot, monkeypatch, mode):
+    page, scene, _ = setup_page(qtbot, monkeypatch)
+    page.update_snapshot(SimpleNamespace(beam_voltage_kv=200., simulation_mode=mode),
+                         prepared_scene="captured-B", result_reference="rays")
+    page.set_active(True)
+    wait_sample(qtbot, page)
+    assert scene.calls
+    text = page.details.toPlainText()
+    if mode == "ideal_thin":
+        assert "thin optical events" in text and "thin optical events" in page.status.text()
+        assert "Fields are read from propagation providers." not in text
+    else:
+        assert "Fields are read from propagation providers." in text
+        assert "thin optical events" not in page.status.text()
+
+
 def test_lazy_capture_and_fixed_detail_navigation_never_resamples(qtbot, monkeypatch):
     page, scene, captures = setup_page(qtbot, monkeypatch)
     page.auto_detail.setChecked(False)

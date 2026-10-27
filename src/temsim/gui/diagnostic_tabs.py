@@ -54,7 +54,6 @@ from temsim.component_names import (
 from temsim.diagnostics import (
     image_plane_rotation_records,
     lens_field_records,
-    optical_transfer_records,
     physical_layout_records,
     vacuum_bore_plot_points,
 )
@@ -5128,17 +5127,24 @@ class OpticalTransferView(QWidget):
             None,
         )
 
+    def _clear_current_result(self, message: str) -> None:
+        self._records = ()
+        self._current_mode = ""
+        self._current_wavelength_m = math.nan
+        self.target_plane.clear()
+        self.matrix_text.setPlainText("")
+        self.overview.clear()
+        self.capture_current.setEnabled(False)
+        self.heading.setText("Signed first-order optical transfer")
+        self.summary.setText(message)
+        self.summary.setToolTip(message)
+
     def display_result(self, result) -> None:
         state = getattr(result, "state_snapshot", None)
         if state is None:
-            self._records = ()
-            self.target_plane.clear()
-            self.matrix_text.setPlainText("")
-            self.overview.clear()
-            self.capture_current.setEnabled(False)
-            self.heading.setText("Signed first-order optical transfer")
-            self.summary.setText("No calculation state snapshot is available.")
+            self._clear_current_result("No calculation state snapshot is available.")
             return
+        metrics = getattr(result.simulation, "metrics", None) or {}
         records = tuple(
             getattr(result.simulation, "optical_transfers", ()) or ()
         )
@@ -5148,9 +5154,30 @@ class OpticalTransferView(QWidget):
             == SPECIMEN_CANONICAL_MOMENTUM
             for record in records
         )
-        # Earlier cached records used mechanical source slopes. Their plane
-        # labels do not establish the input basis inside a specimen field.
-        self._records = records if canonical_records else optical_transfer_records(state)
+        # Rendering consumes executed diagnostics only. Rebuilding a missing
+        # or historical mechanical-slope map here blocks live ray publication
+        # and can invoke a legacy solver for an incompatible execution mode.
+        if metrics.get("canonical_transfer_status") == "unavailable":
+            self._clear_current_result(
+                "Optical transfer unavailable: " + str(metrics.get(
+                    "canonical_transfer_reason", "This execution did not calculate a qualified canonical transfer.")))
+            return
+        if not canonical_records:
+            from temsim.simulation_modes import is_unified
+            quality = str(metrics.get("tuning_quality", getattr(state, "_tuning_quality", "")))
+            if is_unified(state):
+                message = ("Optical transfer unavailable: canonical Image/Diffraction diagnostics "
+                           "are not qualified for the unified potential executor. The calculated beam remains available.")
+            elif quality in {"Preview", "Medium"}:
+                message = (f"Optical transfer not calculated for {quality}. "
+                           "Run High accuracy with optical-transfer diagnostics to inspect J_img and J_diff.")
+            else:
+                message = ("No executed canonical optical-transfer records are available. "
+                           "Recalculate High accuracy with optical-transfer diagnostics; "
+                           "older mechanical-slope records are not displayed as canonical results.")
+            self._clear_current_result(message)
+            return
+        self._records = records
         self._current_mode = str(getattr(state, "projector_mode", ""))
         self._current_wavelength_m = (
             float(result.simulation.metrics.get("lambda_nm", math.nan))

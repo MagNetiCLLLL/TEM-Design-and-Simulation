@@ -59,7 +59,7 @@ def rebuild_optical_downstream(state, previous):
     """
     from temsim.physics.particle_sections import _trace_segment, section_limits
     from temsim.physics.instrument_magnetic import active_column_events
-    from temsim.physics.simulation import (
+    from temsim.physics.chromatic import (
         configured_objective_chromatic_focal_mm, objective_chromatic_kick_from_state,
     )
     from temsim.physics.optical_tuning import tuning_metrics
@@ -68,8 +68,14 @@ def rebuild_optical_downstream(state, previous):
                          for name in ("x_m", "tx_rad", "y_m", "ty_rad", "flight_time_s"))
     energy = np.asarray(cp.kinetic_energy_ev[-1], dtype=np.float64)
     offset = energy - float(state.beam_voltage_kv) * 1000.
-    cx, cy = objective_chromatic_kick_from_state(state, x, y, offset,
-        resolved_focal_mm=configured_objective_chromatic_focal_mm(state))
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        # Chromatic response belongs to the energy-dependent shared fields.
+        # An optical reference may not apply an additional empirical Cc kick.
+        cx, cy = np.zeros_like(x), np.zeros_like(y)
+    else:
+        cx, cy = objective_chromatic_kick_from_state(state, x, y, offset,
+            resolved_focal_mm=configured_objective_chromatic_focal_mm(state))
     start, stop = float(state.sample.z_mm), section_limits(state)[1]
     segment, _, _ = _trace_segment(state, "000", start, stop,
         (x, tx + cx, y, ty + cy, time), offset, incident.ray_weight,
@@ -90,6 +96,61 @@ def rebuild_optical_downstream(state, previous):
     # The segment is an optical reference, not an executed specimen exit.
     # Physical continuation after material is owned by specimen_exit segments.
     result.completed_post_sections = ()
+    return result
+
+
+def _calculate_unified_projected_stem(
+    state, simulation, *, existing_result, signatures, reusable, layout,
+    external, calculated, reused, progress, started, diffraction_sink,
+):
+    """Read out projected intensity without inventing material checkpoints.
+
+    The existing optical reference retains the executed source and its complete
+    clock/energy state. Conditional scattering responses are auxiliary detector
+    quadrature, not finite-volume specimen histories or EDS trajectories.
+    """
+    from temsim import simulation_pipeline as p
+    if diffraction_sink is not None:
+        raise ValueError("Unified projected particle STEM cannot supply a diffraction-wave sink")
+    # Only an exact matching readout may be reused. No material product from a
+    # legacy execution is transferred to this field-owned intensity closure.
+    frame = getattr(existing_result, "stem_scan", None)
+    if ("stem" in reusable and frame is not None
+            and (frame.metrics or {}).get("unified_potential_stem", False)):
+        reused.add("stem")
+    else:
+        from temsim.physics.transport_progress import transport_progress
+        with transport_progress(progress.detail):
+            frame = p.calculate_stem_scan_frame(
+                state, simulation, progress_callback=progress.update,
+                scan_calibrated=True,
+            )
+        calculated.add("stem")
+    progress.advance()
+    simulation = replace(simulation, metrics=dict(simulation.metrics,
+        workflow="stem", sample_scattering_applied=False,
+        sample_scattering_model="projected_detector_response_only",
+        unified_stem_scope="executed optical reference plus projected particle intensity response"))
+    result = p.CalculationResult(
+        simulation=simulation, energy_filter=None, state_snapshot=state,
+        layout=layout, assembly=state._resolved_assembly, stem_scan=frame,
+        signatures=signatures, workflow="stem", external_inputs=external,
+    )
+    progress.advance()
+    result.lens_crossovers = tuple(p.detect_all_lens_crossovers(
+        [simulation.incident, *simulation.branches.values()], state.lenses))
+    result.aperture_stops = p.aperture_stop_records(state)
+    calculated.add("diagnostics")
+    progress.advance()
+    p.assert_external_input_inventory_unchanged(state, external)
+    result.calculated_products = frozenset(calculated)
+    result.reused_products = frozenset(reused)
+    progress.advance()
+    result.performance = {
+        "workflow": "stem", "pipeline_seconds": perf_counter() - started,
+        "stages": tuple(progress.timings),
+        "timing_scope": "Projected particle STEM with shared potentials; excludes GUI painting",
+    }
     return result
 
 
@@ -117,10 +178,17 @@ def calculate_workflow(state, *, workflow, progress_callback=None,
     # Resolved mechanical coordinates and derived readbacks must be final
     # before validating or binding the executed input identity.
     layout = p.apply_physical_layout_to_state(state)
+    from temsim.simulation_modes import is_unified
     if any(component.enabled and component.scan_enabled
            for component in (state.ac_deflector, state.descan_deflector)):
-        from temsim.physics.scan_geometry import calibrate_scan_system
-        calibrate_scan_system(state)
+        if is_unified(state):
+            from temsim.physics.unified_scan_calibration import calibrate_unified_scan
+            from temsim.physics.transport_progress import transport_progress
+            with transport_progress(lambda label: report(0, 5, label)):
+                calibrate_unified_scan(state, maximum_step_mm=min(.2, float(state.step_mm)))
+        else:
+            from temsim.physics.scan_geometry import calibrate_scan_system
+            calibrate_scan_system(state)
     external = p.capture_external_input_identities(state)
     signatures = p.calculation_signatures(state)
     signatures = workflow_signatures(signatures, workflow)
@@ -198,6 +266,13 @@ def calculate_workflow(state, *, workflow, progress_callback=None,
             specimen_products_status="Zero incident electrons: no specimen or X-ray events")
     else:
         simulation.metrics["workflow_status"] = "calculated"
+    if is_unified(state) and workflow == "stem":
+        return _calculate_unified_projected_stem(
+            state, simulation, existing_result=existing_result,
+            signatures=signatures, reusable=reusable, layout=layout,
+            external=external, calculated=calculated, reused=reused,
+            progress=progress, started=started, diffraction_sink=diffraction_sink,
+        )
     material = workflow != "rays" and p.specimen_interactions_active(state.sample)
 
     previous_interactions = getattr(existing_result, "specimen_interactions", None)

@@ -242,7 +242,9 @@ def _stem_result(
             key: rng.poisson(np.maximum(expected[key], 0.0))
             for key in fractions
         }
-    probe_state = probe_state_from_simulation(state, simulation)
+    probe_state = (None if bool((metrics or {}).get("zero_illumination", False))
+                   and sample_illumination_absent(simulation, state)
+                   else probe_state_from_simulation(state, simulation))
     metadata = dict(metrics or {})
     if "detector_sampling" in metadata:
         # A sampling proposal belongs to this exact acquisition state, not a
@@ -1133,6 +1135,16 @@ def acquire_stem_scan(
     second time.
     """
 
+    if str(getattr(state, "simulation_mode", "")) == "unified":
+        from temsim.detector.unified_particle_stem import acquire_unified_projected_stem
+        return acquire_unified_projected_stem(
+            simulation, state, detector_keys=detector_keys,
+            pixels_x=pixels_x, pixels_y=pixels_y,
+            specimen_interactions=specimen_interactions,
+            observation_stop_z_mm=observation_stop_z_mm,
+            scan_calibrated=scan_calibrated, progress_callback=progress_callback,
+            diffraction_sink=diffraction_sink,
+        )
     active_mode = specimen_mode(state.sample)
     if sample_illumination_absent(simulation, state):
         if progress_callback is not None:

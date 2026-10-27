@@ -481,6 +481,12 @@ def _sample_boundary_paths(
     state = getattr(calculation_result, "state_snapshot", None)
     if state is None:
         return []
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        # The optical result remains valid. This optional specimen-local
+        # extrapolator has no unified material transport and must not replace
+        # the retained field model or prevent the ray result from displaying.
+        return []
     field_diagnostic = sample_axial_field_diagnostic(state)
     field_transport = SpecimenFieldTransport(state)
     length_nm = max(4.0 * float(scene.interacting_thickness_nm), 100.0)
@@ -618,7 +624,9 @@ def build_sample_interaction_scene(
                 "A cached state snapshot is required for the sample view."
             )
         specimen_scene = SpecimenScene.from_state(state)
-    field_diagnostic = sample_axial_field_diagnostic(state)
+    from temsim.simulation_modes import is_unified
+    unified = is_unified(state)
+    field_diagnostic = None if unified else sample_axial_field_diagnostic(state)
     simulation = getattr(calculation_result, "simulation", None)
     source_ids, source_angles = source_identity(
         getattr(simulation, "incident", None),
@@ -865,12 +873,12 @@ def build_sample_interaction_scene(
             )
             else ()
         ),
-        sample_axial_field_t=field_diagnostic.total_field_t,
-        sample_objective_field_t=field_diagnostic.objective_field_t,
-        sample_field_face_variation_t=field_diagnostic.face_variation_t,
-        sample_field_transport_model=field_diagnostic.transport_model,
+        sample_axial_field_t=float("nan") if unified else field_diagnostic.total_field_t,
+        sample_objective_field_t=float("nan") if unified else field_diagnostic.objective_field_t,
+        sample_field_face_variation_t=float("nan") if unified else field_diagnostic.face_variation_t,
+        sample_field_transport_model="unavailable" if unified else field_diagnostic.transport_model,
         sample_field_geometry_material_coupled=(
-            field_diagnostic.geometry_material_coupled
+            False if unified else field_diagnostic.geometry_material_coupled
         ),
         downstream_source=downstream_source,
     )
@@ -956,6 +964,12 @@ def _aberration_scope_text(calculation_result) -> str:
     state = getattr(calculation_result, "state_snapshot", None)
     if state is None:
         return ""
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        return ("Aberration scope: Finite-Field Optics column particles and waves use "
+                "the captured electromagnetic potentials and finite geometry. "
+                "No additional empirical Cs/Cc screens or equivalent Image lens "
+                "are applied in that column interval.")
     chromatic = (
         "enabled" if bool(getattr(state, "chromatic_aberration_enabled", False))
         else "disabled"
@@ -963,10 +977,11 @@ def _aberration_scope_text(calculation_result) -> str:
     return (
         "Aberration scope: geometric rays include continuous round-lens, "
         "stigmator/corrector multipole fields and each lens C3(Cs) once; "
-        f"objective Cc energy-dependent defocus is {chromatic}. Coherent "
+        f"declared additional lens Cc screens are {chromatic}. Coherent "
         "TEM/STEM wave imaging applies C1, A1, B2, A2, C3, S3, A3 and C5; "
-        "Cc is handled through energy-dependent defocus/temporal coherence, "
-        "not as a single-energy phase term."
+        "Particles and column wave modes share each declared Cc screen, using their "
+        "actual local energy. Physical field momentum dependence is retained; "
+        "mapped lenses receive no additional empirical Cc."
     )
 
 
@@ -1472,9 +1487,11 @@ class SampleInteractions3DPage(QWidget):
         )
         scene = self._scene
         state = getattr(self._calculation_result, "state_snapshot", None)
+        from temsim.simulation_modes import is_unified
+        unified = state is not None and is_unified(state)
         sample = getattr(state, "sample", None)
         detailed_available = bool(
-            sample is not None
+            not unified and sample is not None
             and not scene.specimen_is_vacuum
             and bool(getattr(sample, "eds_enabled", False))
         )
@@ -1513,13 +1530,18 @@ class SampleInteractions3DPage(QWidget):
         beam_text = _beam_model_diagnostic_text(self._calculation_result)
         if beam_text:
             parts.append(beam_text)
-        parts.append(
-            f"Specimen field: total Bz {scene.sample_axial_field_t:+.6g} T; "
-            f"Objective contribution {scene.sample_objective_field_t:+.6g} T; "
-            f"face-to-face ΔBz {scene.sample_field_face_variation_t:.3g} T. "
-            "Finite specimen flights use shared vector-field transport "
-            "with no magnetic energy change."
-        )
+        if unified:
+            parts.append("Finite-Field Optics: specimen-local material transport and "
+                         "extrapolated specimen paths are unavailable. Retained optical "
+                         "ray results remain available in Ray Diagram.")
+        else:
+            parts.append(
+                f"Specimen field: total Bz {scene.sample_axial_field_t:+.6g} T; "
+                f"Objective contribution {scene.sample_objective_field_t:+.6g} T; "
+                f"face-to-face ΔBz {scene.sample_field_face_variation_t:.3g} T. "
+                "Finite specimen flights use shared vector-field transport "
+                "with no magnetic energy change."
+            )
         aberration_text = _aberration_scope_text(self._calculation_result)
         if aberration_text:
             parts.append(aberration_text)

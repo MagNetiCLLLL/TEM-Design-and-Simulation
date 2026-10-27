@@ -1,8 +1,10 @@
-"""Finite-field entrance steering about one provenance-bound reference electron.
+"""Selected-model entrance steering about one provenance-bound reference electron.
 
 Positions are laboratory X/Y metres; tx/ty are mechanical slopes dx/dz,
 dy/dz, not canonical momenta. Tilt commands are projected-angle increments
-in radians. Every evaluation retains HP, Cs, finite/posed fields and stops.
+in radians. Every evaluation uses the selected column model and physical stops.
+Finite-field models retain their configured HP, Cs and posed fields; thin
+optics uses the same declared optical events as its particle propagation.
 This is an optical reference-electron calibration, not a beam-centroid or
 specimen-scattering measurement. Dynamic drives are frozen at the captured
 simulation time, exactly as the column's static particle propagation plan.
@@ -28,6 +30,15 @@ SCHEMA = "finite-entrance-steering-reference-electron-v1"
 SCOPE = ("One identified reference electron; full nonlinear optical fields and physical stops; "
          "mechanical slopes in laboratory X/Y. Raster/wobble held at the captured time; "
          "no finite-probe, time-varying-field or specimen-scattering qualification.")
+THIN_SCOPE = ("One identified reference electron; Ideal Optics thin optical events and physical stops; "
+              "mechanical slopes in laboratory X/Y. Raster/wobble held at the captured time; "
+              "no finite-thickness, empirical-aberration, finite-probe, time-varying-field "
+              "or specimen-scattering qualification.")
+
+
+def _scope(state):
+    from temsim.simulation_modes import is_thin
+    return THIN_SCOPE if is_thin(state) else SCOPE
 
 
 def _check_cancel(cancelled):
@@ -359,7 +370,7 @@ class BeamSteeringCalibrator:
             jacobian, condition = self._jacobian(self.initial_drives_mrad, callback)
             self._calibration = BeamSteeringCalibration(self.input_identity, self.target_z_mm,
                 tuple(baseline), tuple(tuple(row) for row in jacobian), condition,
-                self.initial_drives_mrad, backend, self.reference)
+                self.initial_drives_mrad, backend, self.reference, _scope(self._state))
         return self._calibration
 
     def solve(self, *, kind, x, y, cancelled=None, maximum_iterations=8,
@@ -388,7 +399,7 @@ class BeamSteeringCalibrator:
                 return BeamSteeringSolution(self.input_identity, self.target_z_mm,
                     calibration.baseline, tuple(target), tuple(phase), tuple(residual),
                     self.initial_drives_mrad, tuple(drives), condition, iteration, backend,
-                    self.reference, position_tolerance_m, slope_tolerance)
+                    self.reference, position_tolerance_m, slope_tolerance, calibration.scope)
             if iteration == maximum_iterations:
                 break
             if iteration:

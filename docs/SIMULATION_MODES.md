@@ -2,14 +2,16 @@
 
 The **Simulation** menu sits beside File and View. These choices select column
 lens physics, not the number of rays, integration step, CPU/GPU backend or the
-High accuracy product request. New desktop windows start in Ideal Optics;
+High accuracy product request. New desktop windows start in Finite-Field Optics;
 legacy states and operating profiles without this setting use Custom so their
 previous mixed models are not silently replaced.
 
 | Menu choice | Implemented behaviour |
 | --- | --- |
-| Ideal Optics | Parameterised finite column fields, configured spherical/chromatic aberrations and corrector multipoles. Actual particle and wave-mode energies are retained. Pole shape and magnetic materials are not used to solve the field. |
-| Analytical Field | The same parameterised field laws as Ideal Optics; retained for existing profiles. Registered spatial maps and geometry recipes are retained but inactive. |
+| Ideal Optics (`ideal_thin`) | Fast thin optical events and straight drifts. Native integrated strengths calibrate round lenses, stigmators, deflectors and hexapoles. No finite-thickness dynamics, material field solves, empirical aberration screens or coherent propagation. |
+| Finite-Field Optics (`unified`) | Shared immutable electromagnetic potentials and finite absorbing geometry for particles and coherent waves. Field-derived aberrations replace empirical residual actions and equivalent Image maps in the owned column interval. Explicit support gates apply. |
+| Parameterized fields (legacy, `ideal`) | Existing parameterised finite column fields, configured spherical/chromatic aberrations and corrector multipoles. Actual particle and wave-mode energies are retained. Pole shape and magnetic materials are not used to solve the field. |
+| Analytical Field | Compatibility profile within Finite-Field Optics, retaining the same parameterised laws. Registered spatial maps and geometry recipes are retained but inactive. |
 | Linear Geometry Field | All enabled column round lenses require explicit linear FEM recipes. Missing recipes or unsupported geometry fail; no automatic analytic fallback. |
 | Nonlinear Material Field | Explicit sourced B-H recipes, jointly solved static axisymmetric fields. No hysteresis or thermal feedback; unsupported/missing inputs fail. |
 | Coupled Multiphysics | Disabled. Circuit/thermal/structural feedback is not implemented. |
@@ -17,16 +19,16 @@ previous mixed models are not silently replaced.
 
 ## Model boundaries
 
-Ideal Optics means an idealised, parameterised magnetic-field description. It
+The legacy parameterized entry uses the existing magnetic-field description. It
 retains finite-length focusing, rotation, dipoles, quadrupoles, HP hexapoles,
 configured lens aberrations, physical apertures and detector interception.
 DPH therefore changes the trajectory inside HP, including the nonlinear effect
 of passing off-axis. It does not mean a perfectly corrected or aberration-free
 instrument. Explicit operator switches used by diagnostic comparisons still
-permit a separate linear reference; these do not define the Ideal menu mode.
+permit a separate linear reference; these do not define the new Ideal menu mode.
 
 Pole-piece shape, permeability and B-H saturation do not solve a magnetic
-boundary-value problem in Ideal or Analytical Field. Installed positions,
+boundary-value problem in the parameterized or compatibility field sources. Installed positions,
 lengths, field-profile parameters, alignment and physical obstructions still
 matter. Geometry/material modes select the field provider, not whether
 correctors are active. Both particle and wave propagation retain each state's
@@ -35,7 +37,7 @@ energy instead of silently replacing it with the nominal energy.
 The electron-gun calculation and Energy Filter's dedicated dispersive transport
 are not replaced by this column-lens selector. It does not switch TEM/STEM modes,
 enable wave imaging, change sample materials or erase scattering signals.
-Configured manual wave-aberration coefficients remain active in Ideal and
+Configured manual wave-aberration coefficients remain active in the legacy parameterized entry and
 Analytical Field. The existing Field-derived coefficient fitter requires a
 registered or generated spatial field map; it is unavailable in these two
 parameterised modes. An incompatible saved fit request is reported rather
@@ -44,11 +46,48 @@ does not switch to Custom or activate an inactive field map. Coefficients not
 fitted or measured stay labelled as such; choosing a model does not establish
 calibrated microscope performance.
 
-This definition replaces the earlier aberration-free Ideal mode on 10 October
-2026. Previously saved Ideal inputs now calculate with the new definition;
-previous results remain historical and cannot be reused as new calculations
-across a changed solver identity. No source or lens parameter migration is
-performed. Analytical Field retains its existing key for profile compatibility.
+The historical `ideal` key changed to these finite-field laws on 10 October
+2026. It is now displayed as Parameterized fields (legacy) and keeps those laws. The new
+Ideal Optics uses the distinct `ideal_thin` key; old files are never silently
+converted to thin lenses. Analytical Field also retains its existing key.
+
+Fresh windows select `unified`; saved files retain their original keys. This
+route preserves source, specimen and detector responsibilities while replacing
+column actions with the shared potential/geometry execution. Stored Cs/Cc,
+intrinsic residuals and equivalent-image settings are retained for legacy runs
+and are not added a second time. Field excitation, pose, effective thickness,
+apertures and retained-potential recipes control the new propagation.
+Changing a lens model recipe keeps `unified` selected and rechecks capability.
+
+The CPU coherent route includes actual static gun-tail acceleration and native
+axial scan coils. It evaluates the latter in an explicit retarded reference-
+wavefront approximation, retaining induced work and raw phase. Unknown domains,
+B-only maps, unqualified temporal drives and raster flybacks produce explicit
+errors. No numerical tolerance converts a nonzero gun tail into zero electric
+field. An exactly
+constant grounded-downstream potential has a separately recorded reference
+conversion with unchanged domain and executed kinetic energy. The source is
+always the executed gun wave. Source, sampling, memory and cumulative error gates
+remain active; the interface does not substitute a synthetic source or migrate
+to legacy execution. See [electric tails and native scanning](UNIFIED_DYNAMIC_EXECUTION.md)
+for the scope of the source-wavefront approximation and the separate material
+and acquisition limitations.
+
+The thin executor collapses each calibrated field integral to its placed
+reference plane. It retains signed magnetic rotation and actual-energy
+scaling, but not propagation inside an element, overlap dynamics or empirical
+Cs/Cc screens. Field widths can still change a calibrated integral at fixed
+peak strength; that is different from resolving thickness during transport.
+It uses exact straight drifts and event nodes, so the particle integration
+step does not create unnecessary free-space steps. Plot spacing and physical
+apertures still control observation nodes. Gas-collision transport and coherent
+propagation require Finite-Field Optics. The gun source and acceleration,
+specimen interactions and dedicated filter remain separate existing models.
+Finite-field operating presets can lose focus or transmission under this
+approximation; selecting a model never retunes their currents automatically.
+
+See [independent numerical inputs](CALCULATION_MODES_AND_NUMERICS.md) for the
+particle, coherent grid, energy and memory controls.
 
 ## Controls and state
 

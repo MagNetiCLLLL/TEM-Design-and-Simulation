@@ -253,6 +253,8 @@ def _wave_bores(state, start, stop):
 
 
 def _prepare_column(state, start, stop, maximum_step_mm, *, column_model="physical"):
+    from temsim.simulation_modes import require_coherent_mode
+    require_coherent_mode(state)
     from temsim.physics.ideal_column_reference import column_plan_for_model, validate_column_model
     validate_column_model(column_model)
     if not math.isfinite(stop) or stop <= start:
@@ -1392,14 +1394,17 @@ def _slice_prepared(prepared, first, last):
                  "solver_signature"):
         if hasattr(plan, name):
             values[name] = getattr(plan, name)
+    from temsim.physics.plan_contract import contract_for_slice
+    values["physics_contract"] = contract_for_slice(
+        getattr(plan, "physics_contract", None), float(plan.z_mm[first]), float(plan.z_mm[last]))
     # The checkpoint at the left boundary already contains its discrete
     # action. A lens at the right boundary belongs to this segment exactly once.
-    values["posed_spherical_kicks"] = tuple(
-        kick for kick in getattr(plan, "posed_spherical_kicks", ())
-        if plan.z_mm[first] < kick.z_mm <= plan.z_mm[last])
-    values["intrinsic_aberration_kicks"] = tuple(
-        kick for kick in getattr(plan, "intrinsic_aberration_kicks", ())
-        if plan.z_mm[first] < kick.z_mm <= plan.z_mm[last])
+    from temsim.physics.posed_aberrations import kick_indices
+    for name in ("posed_spherical_kicks", "intrinsic_aberration_kicks"):
+        events = getattr(plan, name, ())
+        nodes = {id(kick): index for index, kicks in kick_indices(events, plan.z_mm).items()
+                 for kick in kicks}
+        values[name] = tuple(kick for kick in events if first < nodes.get(id(kick), -1) <= last)
     values["signature"] = json_digest((plan.signature, first, last, values["hexapole_exit_nodes"]))
     sliced_stops = {i-first: value for i, value in stops.items() if first < i <= last}
     entrance_bores = [value for value in stops.get(first, ()) if isinstance(value, (_ParallelBore, PosedWaveBore))]

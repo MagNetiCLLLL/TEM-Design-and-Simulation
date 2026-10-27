@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 import math
+from numbers import Real
 
 import numpy as np
 
@@ -53,6 +54,29 @@ BOLTZMANN_CONSTANT_J_PER_K = 1.380649e-23
 VACUUM_PERMITTIVITY_F_PER_M = 8.8541878128e-12
 GAMMA_SHAPE_2_FWHM_FACTOR = 2.446386037
 _THERMIONIC_MODULE_PATH = "gun/Thermionic.toml"
+
+
+def _finite_parameter(value, name):
+    """Reject invalid physical inputs before clamping or unit conversion."""
+    if isinstance(value, (bool, np.bool_)) or not isinstance(value, Real):
+        raise ValueError(f"Thermionic {name} must be a finite real number.")
+    try:
+        numeric = float(value)
+    except (OverflowError, ValueError):
+        raise ValueError(f"Thermionic {name} must be a finite real number.") from None
+    if not math.isfinite(numeric):
+        raise ValueError(f"Thermionic {name} must be a finite real number.")
+    return numeric
+
+
+def _validated_ray_count(value):
+    if (
+        isinstance(value, (bool, np.bool_))
+        or not isinstance(value, (int, np.integer))
+        or value < 9
+    ):
+        raise ValueError("Thermionic ray count must be an integer of at least 9.")
+    return int(value)
 
 
 @dataclass
@@ -112,7 +136,7 @@ class ThermionicEmitter:
 
     @staticmethod
     def schottky_lowering_ev(field_v_per_m):
-        field = max(0.0, float(field_v_per_m))
+        field = max(0.0, _finite_parameter(field_v_per_m, "field_v_per_m"))
         return math.sqrt(
             ELEMENTARY_CHARGE_C
             * field
@@ -120,6 +144,7 @@ class ThermionicEmitter:
         )
 
     def temperature_limited_current_density_a_m2(self, field_v_per_m):
+        self.validate()
         lowering_ev = self.schottky_lowering_ev(field_v_per_m)
         effective_work_function_ev = max(
             0.0, float(self.work_function_ev) - lowering_ev
@@ -140,8 +165,8 @@ class ThermionicEmitter:
     def child_langmuir_current_density_a_m2(
         extraction_voltage_v, gap_m
     ):
-        voltage = max(0.0, float(extraction_voltage_v))
-        gap = max(float(gap_m), 1.0e-12)
+        voltage = max(0.0, _finite_parameter(extraction_voltage_v, "extraction_voltage_v"))
+        gap = max(_finite_parameter(gap_m, "gap_m"), 1.0e-12)
         return (
             (4.0 / 9.0)
             * VACUUM_PERMITTIVITY_F_PER_M
@@ -155,6 +180,7 @@ class ThermionicEmitter:
     def emission_diagnostics(
         self, cathode_field_v_per_m, extraction_voltage_v
     ):
+        self.validate()
         gap_m = float(self.cathode_anode_gap_mm) * 1.0e-3
         temperature_limited = (
             self.temperature_limited_current_density_a_m2(
@@ -229,8 +255,8 @@ class ThermionicEmitter:
         return "thermionic_cathode"
 
     def validate(self):
-        for attribute in ("work_function_ev", "vacuum_pa"):
-            if float(getattr(self, attribute)) < 0.0:
+        for attribute in ("work_function_ev", "vacuum_pa", "extraction_field_scale"):
+            if _finite_parameter(getattr(self, attribute), attribute) < 0.0:
                 raise ValueError(
                     f"{self.name} {attribute} must not be negative."
                 )
@@ -239,26 +265,20 @@ class ThermionicEmitter:
             "richardson_constant_a_cm2_k2",
             "emitting_radius_um",
             "cathode_anode_gap_mm",
+            "mechanical_length_mm",
+            "mechanical_outer_diameter_mm",
         ):
-            if float(getattr(self, attribute)) <= 0.0:
+            if _finite_parameter(getattr(self, attribute), attribute) <= 0.0:
                 raise ValueError(
                     f"{self.name} {attribute} must be positive."
                 )
-        if float(self.extraction_field_scale) < 0.0:
-            raise ValueError(
-                f"{self.name} extraction_field_scale must not be negative."
-            )
-        if int(self.ray_count) < 9:
-            raise ValueError("Thermionic ray count must be at least 9.")
-        if self.mechanical_length_mm <= 0.0:
-            raise ValueError("Thermionic cathode length must be positive.")
+        _finite_parameter(self.mechanical_center_from_tip_mm, "mechanical_center_from_tip_mm")
+        _validated_ray_count(self.ray_count)
         return self
 
     def emit(self, count: int | None = None) -> EmissionBundle:
         self.validate()
-        n = int(self.ray_count if count is None else count)
-        if n < 9:
-            raise ValueError("Thermionic emission requires at least 9 rays.")
+        n = _validated_ray_count(self.ray_count if count is None else count)
         u_r, u_phi, u_v, u_theta, u_normal = _halton_dimensions(
             n, (2, 3, 5, 7, 11)
         )
@@ -495,6 +515,7 @@ class ThermionicGun(FieldEmissionGun):
 
     @property
     def emission_diagnostics(self):
+        self.emitter.validate()
         return self.emitter.emission_diagnostics(
             self.cathode_extraction_field_v_per_m,
             self.cathode_extraction_voltage_v,

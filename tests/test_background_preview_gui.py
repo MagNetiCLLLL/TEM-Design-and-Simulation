@@ -66,6 +66,61 @@ def test_startup_preview_request_keeps_armed_stem_controls_uncomputed(window, mo
     assert all(item.image is None for item in page.detector_image_items.values())
 
 
+def test_actual_bounded_unified_result_publishes_without_legacy_diagnostics(window, qtbot, monkeypatch):
+    """Actual source/column output reaches the full window on admitted inputs."""
+    import numpy as np
+    import temsim.diagnostics as diagnostics
+    from temsim.optics import direct_alignment
+    from temsim.simulation_modes import switch_mode
+
+    state = window.state
+    switch_mode(state, "unified")
+    for item in (*state.deflectors, *state.stigmators, *state.corrector_elements):
+        if hasattr(item, "scan_enabled"):
+            item.scan_enabled = False
+        if hasattr(item, "wobble_enabled"):
+            item.wobble_enabled = False
+    state.acceleration_backend, state.acceleration_enabled = "CPU", False
+    state.step_mm = 1.
+    emitter = state.electron_gun.emitter
+    emitter.ray_count = 9
+    # Same separately declared bounded actual-source fixture as the particle
+    # qualification. Default-source domain rejection remains a separate test.
+    emitter.virtual_source_fwhm_nm = .5
+    emitter.angular_rms_mrad, emitter.angular_cutoff_mrad = .01, .03
+    lens_settings = tuple((lens.key, lens.percent, lens.cs_mm, lens.cc_mm) for lens in state.lenses)
+
+    def forbidden(*_args, **_kwargs):
+        pytest.fail("Unified result publication must not reconstruct legacy canonical optics")
+
+    monkeypatch.setattr(diagnostics, "optical_transfer_records", forbidden)
+    monkeypatch.setattr(direct_alignment, "canonical_transfers", forbidden)
+    errors, completed, updates = [], [], []
+    monkeypatch.setattr(window, "_show_error", errors.append)
+    window.calculations.result_ready.connect(lambda _quality, result, _duration: completed.append(result))
+    window.calculations.progress_detail.connect(updates.append)
+    # Use the actual request/controller path: a bare pipeline result has no
+    # controller-owned publication identity and must not bypass that guard.
+    window.run_high_accuracy()
+    qtbot.waitUntil(lambda: bool(completed) or bool(errors), timeout=60000)
+    assert not errors and len(completed) == 1
+    result = completed[0]
+    qtbot.waitUntil(lambda: bool(updates) and updates[-1].status == "succeeded", timeout=10000)
+
+    assert window.workspace._last_result is result
+    assert window.workspace._high_accuracy_result is result
+    assert window.workspace.plot.listDataItems()
+    assert "unavailable" in window.workspace.optical_transfer.summary.text().lower()
+    assert window.workspace.optical_transfer._records == ()
+    assert "completed" in window.status_label.text()
+    progress = window.calculation_progress
+    assert progress.overall.value() == progress.overall.maximum()
+    assert result.simulation.incident.alive.sum() == 9
+    np.testing.assert_array_equal(result.simulation.incident.ray_weight,
+                                  result.simulation.gun_trace.exit_bundle.weight)
+    assert tuple((lens.key, lens.percent, lens.cs_mm, lens.cc_mm) for lens in state.lenses) == lens_settings
+
+
 @pytest.mark.parametrize("window", [("gpu", False), ("Require GPU", False)], indirect=True)
 def test_backend_display_preserves_requested_policy_and_explicit_disabled_flag(window):
     requested = window.state.acceleration_backend
@@ -132,6 +187,150 @@ def test_loaded_ray_count_and_product_quadrature_are_displayed_without_mutation(
     window.high_rays.setValue(1000)
     assert window.high_rays.value() == emitter.ray_count == 105
     assert not changes
+
+
+@pytest.mark.parametrize("step", (.12345678901234566, 1e-6, 1e-12, float.fromhex("0x0.0000000000001p-1022")))
+@pytest.mark.parametrize("mode", ("ideal", "unified"))
+def test_restored_particle_step_reaches_prepared_request_without_rounding(window, monkeypatch, step, mode):
+    from threading import Event
+    from temsim.gui.calculation_request import CapturedCalculationRequest
+    from temsim.gui import calculation_controller
+    from temsim.instrument_snapshot import encode_instrument, decode_instrument
+    from temsim.simulation_modes import switch_mode
+
+    switch_mode(window.state, mode)
+    if mode == "unified":
+        # This request-preparation test explicitly selects a static column.
+        # Unsupported dynamic commands have separate admission regressions.
+        window.state.ac_deflector.scan_enabled = False
+        window.state.descan_deflector.scan_enabled = False
+    window.state.step_mm = step
+    window.state.acceleration_backend = "CPU"
+    window.state.acceleration_enabled = False
+    # Exercise the same graph restoration used by captured instrument state.
+    window.state = decode_instrument(encode_instrument(window.state))
+    changes, errors, prepared = [], [], []
+    monkeypatch.setattr(window, "schedule_preview", lambda *a, **k: changes.append((a, k)))
+    monkeypatch.setattr(window, "_show_error", errors.append)
+    # No trajectories are allocated: retain real request capture/preparation,
+    # but do not reject a preserved fine-step input on its estimated run cost.
+    monkeypatch.setattr(calculation_controller, "estimate_calculation_memory_bytes", lambda *a, **k: 0)
+    def submit(state, quality, count, captured_step, **options):
+        captured = CapturedCalculationRequest.capture(state, quality, count, captured_step,
+            workflow=options["workflow"])
+        prepared.append(captured.prepare(Event()))
+    monkeypatch.setattr(window.calculations, "submit_background", submit)
+    window._sync_step_selector()
+    assert window.state.step_mm == step and not changes
+    window.run_high_accuracy()
+    assert not errors and len(prepared) == 1
+    assert prepared[-1].step_mm == prepared[-1].snapshot.step_mm == step
+
+    # A deliberate edit replaces the restored value and becomes the sole
+    # authority used by the subsequent captured request.
+    window.high_step.setValue(.025)
+    window.run_high_accuracy()
+    assert not errors and len(prepared) == 2
+    assert window.state.step_mm == prepared[-1].step_mm == prepared[-1].snapshot.step_mm == .025
+
+
+@pytest.mark.parametrize("value", (0., -1., float("nan"), float("inf")))
+def test_invalid_particle_step_cannot_mutate_live_state(window, monkeypatch, value):
+    before = window.state.step_mm
+    changes, errors = [], []
+    monkeypatch.setattr(window, "schedule_preview", lambda *a, **k: changes.append((a, k)))
+    monkeypatch.setattr(window, "_show_error", errors.append)
+    window._high_step_changed(value)
+    assert window.state.step_mm == before
+    assert not changes and errors
+
+
+def test_fixed_cdf_population_is_not_replaced_by_the_particle_count_control(window, monkeypatch):
+    import numpy as np
+    from temsim.optics.electron_gun.emitter import EmissionCDFQuadrature
+    emitter = window.state.electron_gun.emitter
+    emitter.cdf_quadrature = EmissionCDFQuadrature.from_arrays(
+        np.full((9, 6), .5), np.full(9, 1/9))
+    emitter.ray_count = emitter.cdf_quadrature.total
+    emitter.validate()
+    original = emitter.cdf_quadrature
+    changes = []
+    monkeypatch.setattr(window, "schedule_preview", lambda *a, **k: changes.append((a, k)))
+    window._sync_ray_count_selector()
+    assert window.high_rays.value() == 9 and not window.high_rays.isEnabled()
+    window.high_rays.setValue(1000)
+    assert emitter.ray_count == window.high_rays.value() == 9
+    assert emitter.cdf_quadrature is original and not changes
+    emitter.validate()
+
+
+def test_sobol_count_is_validated_before_mutating_the_live_population(window, monkeypatch):
+    from temsim.optics.electron_gun.emitter import EmissionSampling
+    emitter = window.state.electron_gun.emitter
+    emitter.sampling = EmissionSampling()
+    emitter.ray_count = 4096
+    emitter.validate()
+    changes, errors = [], []
+    monkeypatch.setattr(window, "schedule_preview", lambda *a, **k: changes.append((a, k)))
+    monkeypatch.setattr(window, "_show_error", errors.append)
+    window._sync_ray_count_selector()
+    window.high_rays.setValue(5000)
+    assert emitter.ray_count == window.high_rays.value() == 4096
+    assert errors and not changes
+    emitter.validate()
+    window.high_rays.setValue(8192)
+    assert emitter.ray_count == window.high_rays.value() == 8192
+    assert changes == [(("ray_count",), {"automatic": False})]
+    emitter.validate()
+
+
+@pytest.mark.parametrize("text", ("1.2345678901234566e-6", "5e-324"))
+def test_typed_scientific_step_commits_before_request_without_focus_change(window, monkeypatch, qtbot, text):
+    calls = []
+    monkeypatch.setattr(window, "schedule_preview", lambda *a, **k: None)
+    monkeypatch.setattr(window.calculations, "submit_background", lambda *a, **k: calls.append((a, k)))
+    old = window.state.step_mm
+    window.high_step.lineEdit().selectAll()
+    qtbot.keyClicks(window.high_step.lineEdit(), text)
+    assert window.state.step_mm == old
+    window.run_high_accuracy()
+    assert calls[0][0][3] == window.state.step_mm == float(text)
+    assert window.high_step.value() == float(text)
+    assert window.high_step.text() == repr(float(text))
+
+
+def test_incomplete_step_text_cannot_submit_the_previous_value(window, monkeypatch, qtbot):
+    calls, errors = [], []
+    old = window.state.step_mm
+    monkeypatch.setattr(window, "_show_error", errors.append)
+    monkeypatch.setattr(window.calculations, "submit_background", lambda *a, **k: calls.append((a, k)))
+    window.high_step.lineEdit().selectAll()
+    qtbot.keyClicks(window.high_step.lineEdit(), "1e-")
+    window.run_high_accuracy()
+    assert not calls and errors
+    assert window.state.step_mm == old
+
+
+def test_typed_sobol_population_commits_only_complete_valid_counts(window, monkeypatch, qtbot):
+    from temsim.optics.electron_gun.emitter import EmissionSampling
+    emitter = window.state.electron_gun.emitter
+    emitter.sampling, emitter.ray_count = EmissionSampling(), 4096
+    calls, errors = [], []
+    monkeypatch.setattr(window, "schedule_preview", lambda *a, **k: None)
+    monkeypatch.setattr(window, "_show_error", errors.append)
+    monkeypatch.setattr(window.calculations, "submit_background", lambda *a, **k: calls.append((a, k)))
+    window._sync_ray_count_selector()
+    window.high_rays.lineEdit().selectAll()
+    qtbot.keyClicks(window.high_rays.lineEdit(), "8192")
+    assert emitter.ray_count == 4096 and not errors
+    window.run_high_accuracy()
+    assert calls[0][0][2] == emitter.ray_count == 8192
+    window.high_rays.lineEdit().selectAll()
+    qtbot.keyClicks(window.high_rays.lineEdit(), "5000")
+    window.run_high_accuracy()
+    assert len(calls) == 1 and errors
+    assert emitter.ray_count == 8192
+    emitter.validate()
 
 
 @pytest.mark.parametrize("quality", ["Preview", "Medium"])
@@ -237,6 +436,11 @@ def test_rejected_surface_image_keeps_applied_source_and_previous_result(window,
     from types import SimpleNamespace
     from temsim.gui.gun_source_dialog import GunSourceDialog
     from temsim.instrument_snapshot import capture_instrument_snapshot
+    from temsim.simulation_modes import switch_mode
+
+    # Exercise the legacy image-source gate, independently of unified-field
+    # product admission, which correctly rejects this workflow earlier.
+    switch_mode(window.state, "ideal")
 
     def apply(dialog):
         dialog.surface_enabled.setChecked(True)

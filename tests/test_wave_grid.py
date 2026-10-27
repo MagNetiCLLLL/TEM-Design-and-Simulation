@@ -269,3 +269,114 @@ def test_disabled_refinement_does_not_call_sampling_preparation():
     with pytest.raises(WaveSamplingError, match="strict unresolved"):
         apply_resolved_operator(gaussian(128), operator, prepare_retry=prepare,
                                 numerics=WaveGridNumerics(automatic_refinement=False))
+
+
+def test_mandatory_operator_resource_uses_smaller_resolved_candidate_before_allocation(monkeypatch):
+    import temsim.physics.wave_grid as grid
+    source = gaussian(128)
+    original = source.amplitude.copy()
+    visited, allocated = [], []
+    def operator(wave):
+        visited.append(wave.amplitude.shape)
+        if len(visited) == 1:
+            raise WaveSamplingError("same unresolved operator", 1.001)
+        return wave
+    def device_budget(shape):
+        if max(shape) > 150:
+            raise grid.WaveGridBudgetError("required device partition")
+    refine = grid.refine_plane_wave
+    def allocation(wave, shape, **kwargs):
+        allocated.append(shape)
+        return refine(wave, shape, **kwargs)
+    monkeypatch.setattr(grid, "refine_plane_wave", allocation)
+    output, rows = apply_resolved_operator(source, operator,
+        operator_resource_check=device_budget,
+        numerics=WaveGridNumerics(maximum_working_bytes=2**30))
+    assert visited == [(128, 128), (140, 140)]
+    assert allocated == [(140, 140)]
+    assert rows[0]["budget_limited_growth"] is True
+    assert rows[0]["resource_preferred_growth"] is False
+    expected = refine(source, (140, 140))
+    np.testing.assert_array_equal(output.amplitude, expected.amplitude)
+    np.testing.assert_array_equal(source.amplitude, original)
+
+
+@pytest.mark.parametrize("limit,expected", [(150, 140), (100, 160)])
+def test_optional_resource_preference_keeps_valid_fallback(limit, expected):
+    visited = []
+    def operator(wave):
+        visited.append(wave.amplitude.shape)
+        if len(visited) == 1:
+            raise WaveSamplingError("resolution requires a new candidate", 1.001)
+        return wave
+    output, rows = apply_resolved_operator(gaussian(128), operator,
+        preferred_resource_check=lambda shape: max(shape) <= limit)
+    assert visited == [(128, 128), (expected, expected)]
+    assert rows[0]["resource_preferred_growth"] is (limit == 150)
+    assert rows[0]["budget_limited_growth"] is False
+    assert output.probability == pytest.approx(1., abs=2e-14)
+
+
+def test_required_resource_and_cancellation_fail_before_any_operator_or_refinement(monkeypatch):
+    import temsim.physics.wave_grid as grid
+    source = gaussian(128)
+    def unavailable(shape):
+        raise grid.WaveGridBudgetError("required device partition")
+    def never(*args, **kwargs):
+        pytest.fail("no operator or grid allocation may follow rejected resources")
+    monkeypatch.setattr(grid, "refine_plane_wave", never)
+    with pytest.raises(grid.WaveGridBudgetError, match="device partition"):
+        apply_resolved_operator(source, never, operator_resource_check=unavailable)
+    with pytest.raises(InterruptedError):
+        apply_resolved_operator(source, never, operator_resource_check=never, cancelled=lambda: True)
+
+
+@pytest.mark.parametrize("error", [InterruptedError("stop"), ValueError("invalid device settings")])
+def test_additional_resource_errors_do_not_become_sampling_retries(error):
+    def check(shape):
+        raise error
+    with pytest.raises(type(error), match=str(error)):
+        apply_resolved_operator(gaussian(128), lambda _: pytest.fail("must not execute"),
+            operator_resource_check=check)
+
+
+@pytest.mark.parametrize("policy,enabled,expected", [("Require GPU", True, 70),
+    ("Auto", True, 70), ("Prefer GPU", True, 70), ("CUDA GPU", True, 70),
+    ("CPU", True, 80), ("Numba CPU", True, 80), ("Auto", False, 80)])
+def test_carrier_refinement_plans_host_and_residual_device_partitions_separately(monkeypatch, policy, enabled, expected):
+    from temsim.physics import potential_wave_carrier as carrier
+    import temsim.physics.wave_device as device
+    from test_potential_wave_carrier import _wave, _snapshot, ENERGY_EV
+    monkeypatch.setattr(device, "cupy_module", lambda: pytest.fail("numeric grid planning must not probe CUDA"))
+    source = _wave(n=64)
+    original = source.amplitude.copy()
+    visited = []
+    class ReachedAdmittedResidual(RuntimeError):
+        pass
+    def residual(snapshot, wave, *args, **kwargs):
+        visited.append(wave.amplitude.shape)
+        if len(visited) == 1:
+            raise WaveSamplingError("resolved-operator retry fixture", 1.001)
+        raise ReachedAdmittedResidual("candidate passed resource planning")
+    monkeypatch.setattr(carrier, "_residual", residual)
+    with pytest.raises(ReachedAdmittedResidual):
+        carrier.propagate_carrier_potential(_snapshot(), source, (0., 1e-6), energy_ev=ENERGY_EV,
+            residual_compute_backend=policy,
+            grid_numerics=WaveGridNumerics(maximum_working_bytes=2**30,
+                maximum_device_working_bytes=448*72*72, acceleration_enabled=enabled))
+    assert visited == [(64, 64), (expected, expected)]
+    np.testing.assert_array_equal(source.amplitude, original)
+
+
+def test_required_residual_grid_cannot_borrow_unused_host_memory():
+    from temsim.physics.potential_wave_carrier import _residual_grid_resource_checks
+    from temsim.physics.wave_grid import WaveGridBudgetError
+    numerics = WaveGridNumerics(maximum_working_bytes=2**30, maximum_device_working_bytes=448*70*70)
+    required, preferred = _residual_grid_resource_checks(numerics, "Require GPU")
+    assert preferred is None
+    required((70, 70))
+    with pytest.raises(WaveGridBudgetError, match="Required residual device budget exceeded"):
+        required((71, 71))
+    required, preferred = _residual_grid_resource_checks(numerics, "Auto")
+    assert required is None
+    assert preferred((70, 70)) and not preferred((71, 71))

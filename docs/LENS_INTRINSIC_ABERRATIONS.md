@@ -49,6 +49,46 @@ and must not be copied into intrinsic terms. Lenses using actual mapped magnetic
 of the same field; edited values remain saved for the native analytical model.
 System residual reports are observational only: they do not write back to lens inputs or apply another correction to the full-column wavefunction.
 
+### Declared additional chromatic coefficient
+
+When **chromatic aberration** is enabled, an explicit lens `cc_mm` adds the
+first-order residual focal perturbation
+
+\[
+\delta=(K-K_0)/K_0,\quad \Delta f=C_c\delta,\quad
+S_{Cc}(q)=\frac{C_c\delta}{2f^2}|q|^2,\quad
+\Delta\theta=\frac{C_c\delta}{f^2}q.
+\]
+
+Lengths in these equations use metres; the inputs remain in mm. `K0` is the
+nominal beam kinetic energy, and `K` is the actual local particle or wave-mode
+energy. The shared canonical event lives at the existing lens reference plane,
+uses its local optical coordinates, and is executed exactly once across
+checkpoints. The wave phase is `p_local S / hbar`; an entrance-momentum carrier
+therefore retains the existing `p_local / p_entrance` factor. Neither tilt nor
+defocus is subtracted from the displayed phase plate.
+
+This is an **additional empirical coefficient**, not a measured total Cc for
+the installed lens. Continuous field propagation already retains momentum
+dependence. Do not copy a field-derived total Cc into this additional input.
+Mapped lenses do not add this empirical screen. Zero Cc and a disabled control
+produce no screen; a missing coefficient is not automatically estimated into
+propagation. Only the historical objective fallback of 2 mm is retained when
+its Cc is absent. The first-order reference retains this per-mode quadratic
+defocus, as it retains ordinary C1 and energy-dependent focusing; it is not an
+achromatic reference.
+
+For particle material branches at a coincident, aligned lens/sample plane,
+the incoming action is already present. Reinjection adds only the change
+`Cc (K_out - K_in) / (K0 f^2)` to the radial slope coefficient. Vacuum and
+zero-loss branches add nothing. Finite specimens use the existing equivalent
+reference-plane matching approximation, not distributed Cc inside the material.
+Tilted coincident screens with material energy changes are explicitly rejected
+until a canonical energy-change bridge is implemented. Lenses away from the
+sample are never moved to it: their own events consume the energy at their
+actual reference planes. The coherent elastic column does not invent additional
+inelastic wave branches.
+
 First-order plane classification and finite scan responses include the new terms' effects on local first-order response, especially C1/A1.
 System residual diagnostics explicitly use a nominal first-order baseline without the new intrinsic terms, retaining measurable C1/A1 residuals.
 

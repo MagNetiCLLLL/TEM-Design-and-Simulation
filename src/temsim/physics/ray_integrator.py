@@ -165,10 +165,11 @@ def _parallel_rk4(
         charge_over_p = ELECTRON_CHARGE_C * inv_p
         time = initial_time_s[ray] if initial_time_s is not None else 0.
         for j in range(step_m.size + 1):
-            tx -= thin_power[j] * x
-            ty -= thin_power[j] * y
+            tx -= thin_power[j] * magnetic_scale**2 * x
+            ty -= thin_power[j] * magnetic_scale**2 * y
             if thin_rotation[j] != 0.0:
-                co, si = math.cos(thin_rotation[j]), math.sin(thin_rotation[j])
+                angle = thin_rotation[j] * magnetic_scale
+                co, si = math.cos(angle), math.sin(angle)
                 x, y = co * x - si * y, si * x + co * y
                 tx, ty = co * tx - si * ty, si * tx + co * ty
             tx += kickx[j]
@@ -256,10 +257,11 @@ def vectorised_rk4(
     T = np.empty((ns, nr), np.float64) if time is not None else None
     CT = np.empty((nc, nr), np.float64) if time is not None else None
     for j in range(step_m.size + 1):
-        tx = tx - thin_power[j] * x
-        ty = ty - thin_power[j] * y
+        tx = tx - thin_power[j] * magnetic_scale**2 * x
+        ty = ty - thin_power[j] * magnetic_scale**2 * y
         if thin_rotation[j] != 0.0:
-            co, si = math.cos(thin_rotation[j]), math.sin(thin_rotation[j])
+            angle = thin_rotation[j] * magnetic_scale
+            co, si = np.cos(angle), np.sin(angle)
             x, y = co * x - si * y, si * x + co * y
             tx, ty = co * tx - si * ty, si * tx + co * ty
         tx = tx + kickx[j]
@@ -331,10 +333,11 @@ def _build_cuda_kernels():
         magnetic_scale = reference_momentum[0] * inv_p
         charge_over_p = ELECTRON_CHARGE_C * inv_p
         for j in range(step_m.size + 1):
-            tx -= thin_power[j] * x
-            ty -= thin_power[j] * y
+            tx -= thin_power[j] * magnetic_scale**2 * x
+            ty -= thin_power[j] * magnetic_scale**2 * y
             if thin_rotation[j] != 0.0:
-                co, si = math.cos(thin_rotation[j]), math.sin(thin_rotation[j])
+                angle = thin_rotation[j] * magnetic_scale
+                co, si = math.cos(angle), math.sin(angle)
                 x, y = co * x - si * y, si * x + co * y
                 tx, ty = co * tx - si * ty, si * tx + co * ty
             tx += kickx[j]
@@ -386,10 +389,11 @@ def _build_cuda_kernels():
         charge_over_p = ELECTRON_CHARGE_C * inv_p
         saved, captured = 0, 0
         for j in range(step_m.size+1):
-            tx -= thin_power[j]*x
-            ty -= thin_power[j]*y
+            tx -= thin_power[j]*magnetic_scale**2*x
+            ty -= thin_power[j]*magnetic_scale**2*y
             if thin_rotation[j] != 0.:
-                co, si = math.cos(thin_rotation[j]), math.sin(thin_rotation[j])
+                angle = thin_rotation[j]*magnetic_scale
+                co, si = math.cos(angle), math.sin(angle)
                 x, y = co*x-si*y, si*x+co*y
                 tx, ty = co*tx-si*ty, si*tx+co*ty
             tx += kickx[j]

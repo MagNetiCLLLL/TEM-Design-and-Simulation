@@ -32,6 +32,7 @@ def column_model_record(model):
         "model_version": REFERENCE_MODEL_VERSION,
         "preserved": ["executed gun-exit modes", "per-mode energy dependence",
             "main-lens focusing and rotation", "intrinsic C1 defocus",
+            "declared additional Cc per-mode defocus",
             "quadrupoles and stigmators", "deflections and dynamic drives",
             "apertures and mechanical bores", "physical axial grid"],
         "removed": ["lens Cs", "posed spherical kicks", "intrinsic A1 and higher terms",
@@ -78,8 +79,10 @@ def column_plan_for_model(plan, model):
         array.flags.writeable = False
         zeros[name] = array
     policy = column_model_record(model)
+    from temsim.physics.plan_contract import contract_for_reference
     values = dict(**zeros, posed_spherical_kicks=(),
         intrinsic_aberration_kicks=tuple(intrinsic), hexapole_exit_nodes=(),
         solver_signature=repr((getattr(plan, "solver_signature", ""), REFERENCE_MODEL_VERSION)),
-        signature=json_digest((plan.signature, policy)))
+        signature=json_digest((plan.signature, policy)),
+        physics_contract=contract_for_reference(getattr(plan, "physics_contract", None)))
     return replace(plan, **values) if is_dataclass(plan) else SimpleNamespace(**{**vars(plan), **values})

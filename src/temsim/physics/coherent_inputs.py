@@ -298,6 +298,21 @@ def wave_input_summary(state, request):
               "grid_pixels": request.source.grid_pixels,
               "energy_samples": request.source.energy_samples,
               "observation_z_mm": getattr(request, "observation_z_mm", None)}
+    nominal_preview = request.source_nominal_energy_preview
+    if nominal_preview:
+        from temsim.simulation_modes import is_unified
+        if not is_unified(state):
+            result.update(status="SOURCE_UNSUPPORTED",
+                reason="Nominal-energy source preview is available only in unified Finite-Field Optics")
+            return freeze_json(result)
+        if surface is not None and surface.coherence is not None:
+            result.update(status="SOURCE_UNSUPPORTED",
+                reason="Nominal-energy preview is not implemented for the joint surface/gun source executor")
+            return freeze_json(result)
+        result.update(nominal_energy_preview=True,
+            nominal_emission_energy_ev=float(emitter.emission_energy_ev),
+            configured_energy_spread_fwhm_ev=float(emitter.energy_spread_fwhm_ev),
+            configured_energy_spread_integrated=False, high_accuracy_eligible=False)
     if surface is None:
         result.update(model="Gaussian-Schell tip boundary", inputs={name: getattr(emitter, name) for name in (
             "virtual_source_fwhm_nm", "emission_energy_ev", "minimum_kinetic_energy_ev",
@@ -311,7 +326,8 @@ def wave_input_summary(state, request):
                           "flat Gaussian launch cannot replace its geometry")
             return freeze_json(result)
         try:
-            emission = generate_tip_emission(state.electron_gun, request.source)
+            emission = generate_tip_emission(state.electron_gun, request.source,
+                **({"nominal_energy_preview": True} if nominal_preview else {}))
         except ValueError as error:
             result.update(status="SOURCE_UNSUPPORTED", reason=str(error))
             if hasattr(error, "report"):

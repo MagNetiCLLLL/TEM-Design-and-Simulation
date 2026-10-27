@@ -366,6 +366,10 @@ def test_empty_receiver_tiny_rotated_response_is_a_valid_zero(capture):
 def test_large_population_tiny_view_uses_bounded_physical_psf_grid(monkeypatch, rotation):
     import importlib
     module = importlib.import_module("temsim.detector.receiver_image")
+    grid_module = importlib.import_module("temsim.detector.gaussian_pixel_response")
+    # Exercise the bounded route even though duplicate hits now share exact
+    # integrals and may fit inside the default direct-quadrature budget.
+    monkeypatch.setattr(grid_module, "DIRECT_EVALUATION_BUDGET", 0)
     from temsim.detector.point_spread import DetectorPointSpread
     count = 100_000
     sigma_x, sigma_y = .12, .2
@@ -378,12 +382,12 @@ def test_large_population_tiny_view_uses_bounded_physical_psf_grid(monkeypatch, 
     weights = np.full(count, .2/count)
     edges = np.linspace(-1e-5, 1e-5, 513)
     calls = []
-    apply = module.apply_point_spread
+    apply = grid_module.apply_point_spread
     def bounded(values, *args, **kwargs):
         calls.append(values.shape)
         assert values.size < 120_000  # Independent of requested view pixel pitch.
         return apply(values, *args, **kwargs)
-    monkeypatch.setattr(module, "apply_point_spread", bounded)
+    monkeypatch.setattr(grid_module, "apply_point_spread", bounded)
     response, method, pitch = module._response_from_hits(positions, weights, edges, edges, psf)
     angle = np.deg2rad(rotation)
     centres = positions[[0, -1]]
@@ -436,3 +440,24 @@ def test_compact_response_exports_numeric_bound_and_physical_centroid(capture):
     assert numeric["total_weight"] == pytest.approx(image.metrics["intercepted_probability"])
     assert "floating-point" in numeric["bound_scope"]
     assert image.metrics["response_grid_pixel_size_mm"] is None
+
+
+def test_rotated_receiver_blur_loses_edge_response_without_altering_current(capture):
+    from scipy.special import ndtr
+    camera = capture.state_snapshot.recording_planes[1]
+    camera.point_spread_model = "gaussian"
+    camera.point_spread_sigma_x_mm, camera.point_spread_sigma_y_mm = .025, .020
+    camera.point_spread_rotation_deg = 45.
+    branch = capture.simulation.branches["post"]
+    branch.x[:, 0] = .998e-3
+    original_positions, original_weights = branch.x.copy(), branch.ray_weight.copy()
+    image = receiver_image(capture, CAMERA, pixels=128, exposure_s=.002)
+    sigma_x = np.sqrt((.025**2+.020**2)/2)
+    expected = .2*ndtr((1.-.998)/sigma_x)
+    assert image.ideal_probability.sum() == pytest.approx(.2)
+    assert image.response_probability.sum() == pytest.approx(expected, abs=3e-14)
+    assert image.current_pa == pytest.approx(.4)
+    assert image.expected_electrons.sum() == pytest.approx(expected*2e-12/1.602176634e-19*.002)
+    assert image.response_probability.sum() < image.ideal_probability.sum()
+    np.testing.assert_array_equal(branch.x, original_positions)
+    np.testing.assert_array_equal(branch.ray_weight, original_weights)

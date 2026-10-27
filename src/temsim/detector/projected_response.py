@@ -50,10 +50,19 @@ def _response_identity(state, incident, simulation, projection, distribution, st
                "inelastic": None if distribution is None else asdict(distribution),
                "stop": stop, "saved": saved,
                "quadrature": (DIRECT_RAY_LIMIT, POLAR_BIN_COUNT, AZIMUTH_SAMPLE_COUNT)}
+    if str(getattr(state, "simulation_mode", "")) == "unified":
+        from temsim.physics.unified_field_runtime import get_unified_field_runtime
+        from temsim.calculation_manifest import solver_source_identity
+        payload["unified_runtime"] = get_unified_field_runtime(state).digest
+        payload["implementation"] = solver_source_identity()
     digest = sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode())
     arrays = [np.array([(ray.source_ray_index, *ray.position_xy_nm, *ray.direction,
                         ray.kinetic_energy_ev, ray.weight) for ray in incident.rays])]
     arrays.extend(source_identity(simulation.incident))
+    for name in ("flight_time_s", "kinetic_energy_ev"):
+        values = getattr(simulation.incident, name, None)
+        if values is not None:
+            arrays.append(values)
     for element in projection.elements:
         arrays.extend((np.array([element.atomic_number]), element.energy_ev, element.cross_section_weights))
     for values in arrays:
@@ -173,7 +182,8 @@ def _angular_rows(rays, element, edges=None):
     return np.asarray(rows), np.asarray(angles), phi[keep], weights[keep]
 
 
-def _terminal(rays, rows, weights, thickness_nm, *, theta=None, phi=None):
+def _terminal(rays, rows, weights, thickness_nm, *, theta=None, phi=None,
+              projected_reference_plane=False):
     positions = np.array([(*rays[index].position_xy_nm, 0.0) for index in rows])
     directions = np.array([rays[index].direction for index in rows])
     scattered = theta is not None
@@ -192,9 +202,11 @@ def _terminal(rays, rows, weights, thickness_nm, *, theta=None, phi=None):
         event_count=np.full(count, int(scattered)),
         has_scattered=np.full(count, scattered),
         material_path_nm=np.full(count, thickness_nm),
-        # The thin projection has no executed event depth/time. Unknown is
-        # retained rather than advertising an invented material flight clock.
-        reference_time_offset_s=None,
+        # The shared-field adapter explicitly models an instantaneous screen
+        # at the executed specimen reference plane. Zero is additional time,
+        # never a replacement for the inherited incident arrival clock. The
+        # legacy adapter retains its historical unknown event-time value.
+        reference_time_offset_s=(np.zeros(count) if projected_reference_plane else None),
     )
 
 
@@ -300,6 +312,8 @@ def build_projected_responses(state, simulation, projection, real_interactions=N
     rows, angular energy mixture and the full inelastic distribution. Returned
     compact responses are detached copies; a consumer cannot alter the cache.
     """
+    from temsim.physics.optical_tuning import check_tuning_cancelled
+    check_tuning_cancelled(state)
     stop, saved = _observation_planes(state, stop_z_mm)
     incident = incident_rays_from_simulation(state, simulation)
     rays = incident.rays
@@ -320,14 +334,22 @@ def build_projected_responses(state, simulation, projection, real_interactions=N
     if not math.isfinite(thickness) or thickness < 0:
         raise ValueError("Projected material thickness must be finite and nonnegative")
     direct_rows, direct_weights = _direct_rows(rays)
-    terminals = [("direct", _terminal(rays, direct_rows, direct_weights, thickness)),
-                 ("vacuum", _terminal(rays, direct_rows, direct_weights, 0.0))]
+    unified = str(getattr(state, "simulation_mode", "")) == "unified"
+    terminals = [("direct", _terminal(rays, direct_rows, direct_weights, thickness,
+                                      projected_reference_plane=unified)),
+                 ("vacuum", _terminal(rays, direct_rows, direct_weights, 0.0,
+                                      projected_reference_plane=unified))]
     edges = _polar_edges(state, stop)
     for element in projection.elements:
         rows, theta, phi, weights = _angular_rows(rays, element, edges)
         terminals.append((f"Z{element.atomic_number}",
-                          _terminal(rays, rows, weights, thickness, theta=theta, phi=phi)))
+                          _terminal(rays, rows, weights, thickness, theta=theta, phi=phi,
+                                    projected_reference_plane=unified)))
     result = {}
+    trajectory_reuse = None
+    if unified:
+        from temsim.specimen.projected_trajectory_reuse import ProjectedTrajectoryReuse
+        trajectory_reuse = ProjectedTrajectoryReuse()
     for index, (key, terminal) in enumerate(terminals):
         if progress_callback is not None:
             progress_callback(index, len(terminals), f"Propagating projected {key} response")
@@ -338,12 +360,20 @@ def build_projected_responses(state, simulation, projection, real_interactions=N
             None if key == "vacuum" else real_interactions,
             save_z_mm=saved, stop_z_mm=stop,
             capture_sections=False, recording_interceptions=False,
+            projected_reference_plane=unified,
+            _projected_trajectory_reuse=trajectory_reuse,
         )
         result[key] = _compact_response(response, saved, key)
         result[key].metrics.update(response_cache_hit=False,
                                    response_cache_identity=identity or "",
                                    response_cache_scope="sample_downstream + actual incident + angular + inelastic")
+        if unified:
+            result[key].metrics.update(
+                flight_time_model="instantaneous zero-depth scattering at executed specimen reference plane; inherited arrival clock retained",
+                projected_reference_plane=True,
+            )
     if progress_callback is not None:
         progress_callback(len(terminals), len(terminals), "Projected responses complete")
+    check_tuning_cancelled(state)
     _store_responses(identity, result)
     return result

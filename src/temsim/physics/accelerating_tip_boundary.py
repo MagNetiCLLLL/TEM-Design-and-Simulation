@@ -315,7 +315,13 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
     numerics.validate()
     if cancelled():
         raise InterruptedError("Accelerating tip boundary cancelled")
-    expected = generate_tip_boundary_emission(state.electron_gun, emission.numerics)
+    # Reconstruct the exact declared source, including an explicit nominal
+    # energy approximation. The full digest still checks every physical input,
+    # source mode and approximation tag; a cached quadrature member cannot be
+    # relabelled as the new source. Missing/false tags keep the original path.
+    source_options = ({"nominal_energy_preview": True}
+                      if emission.record.get("nominal_energy_preview") is True else {})
+    expected = generate_tip_boundary_emission(state.electron_gun, emission.numerics, **source_options)
     if expected.digest != emission.digest:
         raise ValueError("Near-tip boundary does not belong to the captured physical source")
     canonical_electric = capture_instrument_electric_field(state)

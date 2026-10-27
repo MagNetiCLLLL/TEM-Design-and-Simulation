@@ -225,6 +225,7 @@ class _Calculations(QObject):
     result_ready = Signal(str, object, float)
     failed = Signal(str, str)
     progress_changed = Signal(str, int, int, str)
+    progress_detail = Signal(object)
 
     def __init__(self):
         super().__init__()
@@ -238,7 +239,189 @@ class _Calculations(QObject):
         pass
 
 
-def test_pair_hands_actual_particle_drives_to_wave_and_guards_them(qapp, monkeypatch):
+@pytest.mark.parametrize("value", [0., -0.25, 0.125, np.nextafter(0., 1.)])
+def test_emission_epoch_is_finite_signed_and_keeps_exact_float_identity(value):
+    from temsim.physics.emission_timing import resolve_emission_time_s, require_matching_emission_time
+    state = SimpleNamespace(simulation_time_s=value)
+    assert resolve_emission_time_s(state) == value
+    assert require_matching_emission_time(state, SimpleNamespace(tip_time_s=None)) == value
+    assert require_matching_emission_time(state, SimpleNamespace(tip_time_s=value)) == value
+    with pytest.raises(ValueError, match="same tip emission time"):
+        require_matching_emission_time(state, SimpleNamespace(tip_time_s=np.nextafter(value, np.inf)))
+
+
+@pytest.mark.parametrize("value", [True, np.bool_(False), "0", None, np.nan, np.inf, -np.inf])
+def test_emission_epoch_rejects_invalid_instrument_time(value):
+    from temsim.physics.emission_timing import resolve_emission_time_s
+    with pytest.raises(ValueError, match="finite real"):
+        resolve_emission_time_s(SimpleNamespace(simulation_time_s=value))
+    assert resolve_emission_time_s(SimpleNamespace()) == 0.
+
+
+def test_pair_rejects_other_epoch_before_capture_cancellation_or_dispatch(qapp, monkeypatch):
+    from temsim.gui import paired_beam_controller as pairing
+    state = SimpleNamespace(simulation_time_s=.125)
+    calculations = _Calculations()
+    controller = pairing.PairedBeamController(lambda: state, calculations=calculations)
+    controller.token = "retained-pair"
+    retained = object()
+    controller.context = retained
+    monkeypatch.setattr(pairing, "capture_instrument_snapshot", lambda *_:
+                        pytest.fail("A mismatched time must fail before capturing another pair"))
+    monkeypatch.setattr(calculations, "invalidate_pending", lambda **_:
+                        pytest.fail("An invalid new request must not cancel a valid old pair"))
+
+    with pytest.raises(ValueError, match="same tip emission time"):
+        controller.start(state, SimpleNamespace(tip_time_s=np.nextafter(.125, 1.)), {}, 9, .5)
+
+    assert controller.token == "retained-pair"
+    assert controller.context is retained
+    assert calculations.submissions == []
+
+
+def test_dynamic_pair_checks_executed_epoch_receipts_not_only_ui_values():
+    from temsim.gui.paired_beam_controller import BeamPairContext
+    state = _state()
+    state.simulation_time_s = -.125
+    snapshot = capture_instrument_snapshot(state)
+    record = {"dynamic_snapshot_digest": "d"*64, "emission_time_s": -.125}
+    result = SimpleNamespace(state_snapshot=state, simulation=SimpleNamespace(metrics=dict(record)))
+    context = BeamPairContext("pair", snapshot.physical_digest, result, False,
+        state.sample.z_mm, snapshot.digest, state_model_signature(state),
+        state.electron_gun.emitter.ray_count, state.step_mm,
+        preparation.scan_drive_identity(state), emission_time_s=-.125)
+    wave = SimpleNamespace(instrument_digest=snapshot.digest,
+        resolved_scan_identity=context.executed_scan_identity,
+        request=SimpleNamespace(tip_time_s=-.125), checkpoint=SimpleNamespace(record=dict(record)))
+    context.verify_particle()
+    context.verify_wave(wave)
+    for bad in (None, .125, np.nextafter(-.125, 0.)):
+        wave.checkpoint.record = {**record, "emission_time_s": bad}
+        with pytest.raises(ValueError, match="emission time"):
+            context.verify_wave(wave)
+        result.simulation.metrics = {**record, "emission_time_s": bad}
+        with pytest.raises(ValueError, match="emission time"):
+            context.verify_particle()
+    result.simulation.metrics = dict(record)
+    wave.checkpoint.record = {"dynamic_snapshot_digest": "d"*64}
+    with pytest.raises(ValueError, match="lost.*emission time"):
+        context.verify_wave(wave)
+    wave.checkpoint.record = dict(record)
+    wave.request = SimpleNamespace(tip_time_s=.125)
+    with pytest.raises(ValueError, match="request emission time"):
+        context.verify_wave(wave)
+
+
+def test_pair_reads_only_known_recording_wrappers_and_checks_the_actual_retained_beam():
+    from temsim.gui.paired_beam_controller import BeamPairContext
+    from temsim.detector.wave_readout import _apply_recording_stop
+    from temsim.physics.multiplane_wave import PlaneWave
+    from temsim.physics.tip_gun_wave import TipGunCheckpoint
+    from temsim.physics.wave_flux import BeamState, WaveMode
+    from temsim.immutable_json import thaw_json
+    state = _state()
+    snapshot = capture_instrument_snapshot(state)
+    identity = ("a"*64, "b"*64, "c"*64)
+    record = dict(zip(("unified_runtime_digest", "unified_field_digest", "unified_geometry_digest"), identity))
+    record.update(emission_time_s=.125, dynamic_snapshot_digest="d"*64, unified_executed_plane_z_m=.5)
+    plane = PlaneWave(np.full((16, 16), 1/16, complex), np.eye(2)*1e-6, np.zeros(2))
+    from temsim.optics.electron_gun.tip_coherence import TIP_REFERENCE
+    mode = WaveMode(plane, .37, TIP_REFERENCE, "mode", 300.)
+    original = TipGunCheckpoint(BeamState((mode,), TIP_REFERENCE), 500., 1e-9, record)
+    detector = SimpleNamespace(key="receiver", geometry="square", outer_width_mm=.004,
+                               inner_diameter_mm=0., readout_enabled=False)
+    transmitted = _apply_recording_stop(original, detector)
+    detector.outer_width_mm = .006
+    transmitted = _apply_recording_stop(transmitted, detector)
+    context = BeamPairContext("pair", snapshot.physical_digest, None, False,
+        state.sample.z_mm, snapshot.digest, state_model_signature(state),
+        state.electron_gun.emitter.ray_count, state.step_mm,
+        preparation.scan_drive_identity(state), identity, .125)
+    wave = SimpleNamespace(instrument_digest=snapshot.digest,
+        resolved_scan_identity=context.executed_scan_identity,
+        request=SimpleNamespace(tip_time_s=.125), checkpoint=transmitted)
+    context.verify_wave(wave)
+    assert 0 < transmitted.beam.total_weight < original.beam.total_weight
+    for mutation in ("unknown", "weight", "mode", "plane", "time", "field"):
+        bad = thaw_json(transmitted.record)
+        bad_plane = transmitted.plane_z_mm
+        if mutation == "unknown":
+            bad["schema"] = "untrusted-upstream-wrapper"
+        elif mutation == "weight":
+            bad["modes"][0]["transmitted_weight"] *= .5
+        elif mutation == "mode":
+            bad["modes"].append(dict(bad["modes"][0]))
+        elif mutation == "plane":
+            bad_plane = np.nextafter(bad_plane, np.inf)
+        elif mutation == "time":
+            bad["upstream"]["upstream"]["emission_time_s"] = .25
+        else:
+            bad["upstream"]["upstream"]["unified_field_digest"] = "e"*64
+        wave.checkpoint = replace(transmitted, record=bad, plane_z_mm=bad_plane)
+        with pytest.raises(ValueError):
+            context.verify_wave(wave)
+    # A valid unit-shape rounding residual must not invalidate an untouched
+    # transmitted beam or be silently clamped to zero by identity validation.
+    rounded = replace(original, beam=BeamState((replace(mode, plane=replace(
+        plane, amplitude=plane.amplitude*np.sqrt(1+1e-14))),), TIP_REFERENCE))
+    detector.centre_offset_x_mm = 10.
+    missed = _apply_recording_stop(rounded, detector)
+    residual = missed.record["modes"][0]["received_weight"]
+    assert residual < 0.
+    wave.checkpoint = missed
+    context.verify_wave(wave)
+    assert wave.checkpoint.record["modes"][0]["received_weight"] == residual
+    bad = thaw_json(missed.record)
+    bad["modes"][0]["received_weight"] = -.01
+    wave.checkpoint = replace(missed, record=bad)
+    with pytest.raises(ValueError, match="weights are invalid"):
+        context.verify_wave(wave)
+
+
+def test_unified_scan_captures_each_real_dwell_epoch_and_does_not_relabel_an_old_runtime(monkeypatch):
+    import temsim.physics.tip_wave_scan as scanning
+    from temsim.physics import compute_backend
+    from temsim.simulation_modes import switch_mode
+    from temsim.physics.emission_timing import require_matching_emission_time
+    state = _state()
+    switch_mode(state, "unified")
+    state.simulation_time_s = -.1
+    state.ac_deflector.scan_pixels_x = state.ac_deflector.scan_lines = 2
+    before = capture_instrument_snapshot(state)
+    seen = []
+    def calculate(working, request, **options):
+        assert request.wave_grid.compute_backend == "Require GPU"
+        assert require_matching_emission_time(working, request) == request.tip_time_s
+        captured = capture_instrument_snapshot(working)
+        seen.append((captured.digest, request.tip_time_s))
+        return SimpleNamespace(instrument_digest=captured.digest, request=request,
+            detector=SimpleNamespace(record={"detector": "screen", "response_weight": .25}))
+    monkeypatch.setattr(scanning, "simulate_tip_wave", calculate)
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability", lambda:
+        compute_backend.BackendCapability(True, "Substituted per-dwell dispatch"))
+    request = scanning.TipWaveRequest()
+    request = replace(request, wave_grid=replace(request.wave_grid, compute_backend="Require GPU"))
+    samples = list(scanning.simulate_tip_scan(state, request, use_cache=False))
+    assert len(samples) == len({identity for identity, _ in seen}) == 4
+    assert len({time for _, time in seen}) == 4
+    assert all(sample.scan_instrument_digest == before.digest for sample in samples)
+    assert capture_instrument_snapshot(state).digest == before.digest
+    accumulator = scanning.ScanResponseAccumulator()
+    for sample in samples:
+        accumulator.add(sample)
+    np.testing.assert_array_equal(accumulator.arrays()["response_per_tip_electron"], .25)
+    for key, value in (("dwell_instrument_digest", "f"*64),
+                       ("tip_time_s", samples[0].tip_time_s+.1)):
+        with pytest.raises(ValueError, match="captured"):
+            scanning.ScanResponseAccumulator().add(replace(samples[0], **{key: value}))
+    changed = scanning.ScanResponseAccumulator()
+    changed.add(samples[0])
+    with pytest.raises(ValueError, match="Instrument inputs changed"):
+        changed.add(replace(samples[1], scan_instrument_digest="f"*64))
+
+
+@pytest.mark.parametrize("override_numerics", [False, True])
+def test_pair_hands_actual_particle_drives_to_wave_and_guards_them(qapp, monkeypatch, override_numerics):
     from temsim.gui import paired_beam_controller as pairing
     import temsim.physics.scan_geometry as geometry
     state = _state()
@@ -249,13 +432,21 @@ def test_pair_hands_actual_particle_drives_to_wave_and_guards_them(qapp, monkeyp
     ready, errors = [], []
     controller.ready.connect(lambda *args: ready.append(args))
     controller.failed.connect(errors.append)
-    controller.start(state, object(), {}, state.electron_gun.emitter.ray_count, state.step_mm)
+    count = 9 if override_numerics else state.electron_gun.emitter.ray_count
+    step = 1. if override_numerics else state.step_mm
+    request = object()
+    controller.start(state, request, {}, count, step)
     executed = before.restore()
+    executed.electron_gun.emitter.ray_count = count
+    executed.step_mm = step
     _resolved_test_drives(executed)
     assert state_model_signature(state) == state_model_signature(executed)
     controller._particle_ready("High accuracy", SimpleNamespace(workflow="rays", state_snapshot=executed), .01)
     assert not errors and len(ready) == 1
     prepared, _, _, context, _ = ready[0]
+    assert ready[0][1] is request
+    assert prepared.electron_gun.emitter.ray_count == count
+    assert prepared.step_mm == step
     assert preparation.scan_drive_identity(prepared) == preparation.scan_drive_identity(executed)
     assert capture_instrument_snapshot(prepared).digest == context.instrument_identity
     assert controller.is_current()
@@ -297,6 +488,88 @@ def test_scan_drive_identity_detects_physical_host_and_timing_changes():
     original = preparation.scan_drive_identity(state)
     state.simulation_time_s = getattr(state, "simulation_time_s", 0.)+.1
     assert preparation.scan_drive_identity(state) != original
+
+
+def test_observed_backend_does_not_change_inputs_but_requested_backend_policy_does():
+    from temsim.physics.core import _record_active_backend
+    state = _state()
+    original = capture_instrument_snapshot(state)
+    _record_active_backend(state, "CPU", "Actual bounded diagnostic")
+    assert "Actual bounded diagnostic" in state.active_backend
+    assert capture_instrument_snapshot(state).digest == original.digest
+    from temsim.physics.compute_backend import BACKEND_CUDA
+    _record_active_backend(state, BACKEND_CUDA)
+    assert state.active_backend == f"{BACKEND_CUDA} (+ CPU auxiliaries)"
+    assert capture_instrument_snapshot(state).digest == original.digest
+    restored = capture_instrument_snapshot(state).restore()
+    assert restored.acceleration_backend == state.acceleration_backend
+    assert restored.acceleration_enabled == state.acceleration_enabled
+    for attribute, value in (("acceleration_backend", "Require GPU"), ("acceleration_enabled", True)):
+        changed = original.restore()
+        setattr(changed, attribute, value)
+        assert capture_instrument_snapshot(changed).digest != original.digest
+
+
+def test_unified_pair_requires_executed_field_and_geometry_identity():
+    """Synthetic receipts test the publication guard, not field accuracy."""
+    from temsim.gui.paired_beam_controller import BeamPairContext
+    from temsim.simulation_modes import switch_mode
+    state = _state()
+    switch_mode(state, "unified")
+    snapshot = capture_instrument_snapshot(state)
+    identity = ("a" * 64, "b" * 64, "c" * 64)
+    keys = ("unified_runtime_digest", "unified_field_digest", "unified_geometry_digest")
+    metrics = dict(zip(keys, identity))
+    result = SimpleNamespace(state_snapshot=state, simulation=SimpleNamespace(metrics=metrics))
+    context = BeamPairContext("pair", snapshot.physical_digest, result, False,
+        state.sample.z_mm, snapshot.digest, state_model_signature(state),
+        state.electron_gun.emitter.ray_count, state.step_mm,
+        preparation.scan_drive_identity(state), identity)
+    context.verify_particle()
+    wave = SimpleNamespace(instrument_digest=snapshot.digest,
+        resolved_scan_identity=context.executed_scan_identity,
+        checkpoint=SimpleNamespace(record=dict(metrics)))
+    context.verify_wave(wave)
+    for key in keys:
+        wave.checkpoint.record = {**metrics, key: "d" * 64}
+        with pytest.raises(ValueError, match="potentials or geometry"):
+            context.verify_wave(wave)
+    wave.checkpoint.record = {}
+    with pytest.raises(ValueError, match="potentials or geometry"):
+        context.verify_wave(wave)
+    metrics.pop("unified_geometry_digest")
+    with pytest.raises(ValueError, match="lacks executed"):
+        context.verify_particle()
+
+
+def test_unified_pair_uses_executed_particle_numerics_for_one_actual_runtime(qapp, monkeypatch):
+    """Real captures, substituted particle publication; no propagation claim."""
+    from temsim.gui import paired_beam_controller as pairing
+    from temsim.simulation_modes import switch_mode
+    from temsim.physics.unified_field_runtime import get_unified_field_runtime
+    state = _state()
+    switch_mode(state, "unified")
+    state.ac_deflector.scan_enabled = state.descan_deflector.scan_enabled = False
+    controller = pairing.PairedBeamController(lambda: state, calculations=_Calculations())
+    monkeypatch.setattr(pairing, "specimen_interactions_active", lambda _: False)
+    ready, errors = [], []
+    controller.ready.connect(lambda *args: ready.append(args))
+    controller.failed.connect(errors.append)
+    request = object()
+    controller.start(state, request, {}, 9, 1.)
+    executed = capture_instrument_snapshot(state).restore()
+    executed.electron_gun.emitter.ray_count, executed.step_mm = 9, 1.
+    runtime = get_unified_field_runtime(executed)
+    metrics = dict(zip(("unified_runtime_digest", "unified_field_digest", "unified_geometry_digest"),
+        (runtime.digest, runtime.snapshot.numerical_digest, runtime.geometry.digest)))
+    result = SimpleNamespace(workflow="rays", state_snapshot=executed,
+        simulation=SimpleNamespace(metrics=metrics))
+    controller._particle_ready("High accuracy", result, .01)
+    assert not errors and len(ready) == 1
+    prepared, wave_request, _, context, _ = ready[0]
+    assert wave_request is request
+    assert get_unified_field_runtime(prepared) is runtime
+    context.verify_particle()
 
 
 @pytest.mark.parametrize("execution", ("matched", "mismatch", "legacy"))

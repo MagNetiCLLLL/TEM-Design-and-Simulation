@@ -386,6 +386,15 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
     mode = simulation_mode
     profile = row.get("mechanical_profile")
     aperture = _is_aperture(row)
+    if mode == "unified" and field in {
+        "cs_mm", "cc_mm", "lens_intrinsic_aberrations", "aberration_model",
+        "probe_aberrations", "image_aberrations", "chromatic_aberration_enabled",
+        "equivalent_image_lenses_enabled",
+    }:
+        return _impact("inactive", "Replaced by shared-field propagation",
+                       "Saved empirical aberration coefficients and equivalent lens reductions are retained for legacy execution. "
+                       "Finite-Field Optics derives column aberrations from its shared potentials and actual electron energies; "
+                       "these residual actions are not added again.", effects=("operating",), results=())
     if kind == "runtime":
         if aperture and field in _APERTURE_RUNTIME:
             if field == "enabled" and row.get("key") in FIXED_APERTURE_KEYS:

@@ -17,7 +17,10 @@ from temsim.physics.column_wave import _prepare_column, _propagate_column, _comp
 from temsim.physics.gun_wave_transport import specimen_entrance_z_mm
 from temsim.physics.specimen_wave_transport import _propagate_specimen
 from temsim.physics.tip_gun_wave import GunWaveNumerics, build_tip_gun_checkpoint
-from temsim.physics.wave_grid import WaveGridNumerics
+from temsim.physics.wave_grid import (
+    EXPLORATORY_SUPPORT_L2_MAXIMUM, EXPLORATORY_SUPPORT_PROBABILITY_MAXIMUM,
+    WaveGridNumerics,
+)
 from temsim.physics.wave_execution import WaveExecutionOptions, InelasticWaveNumerics
 from temsim.physics.wave_checkpoint_store import ExecutedWaveStore
 from temsim.physics.surface_wave import SurfaceWaveNumerics
@@ -32,6 +35,8 @@ class TipWaveRequest:
     source: TipWaveNumerics = TipWaveNumerics()
     gun: GunWaveNumerics = GunWaveNumerics()
     column_step_mm: float = .5
+    column_kinetic_order: int = 4
+    column_support_projection: bool = False
     wave_grid: WaveGridNumerics = WaveGridNumerics(compute_backend="Require GPU")
     readout: WaveReadoutOptions = WaveReadoutOptions()
     detector_pixels: int = 512
@@ -47,8 +52,62 @@ class TipWaveRequest:
     acceptance_window: AcceptanceWindowNumerics = AcceptanceWindowNumerics()
     observation_z_mm: float | None = None
     column_model: str = "physical"
+    column_exponential_method: str = "taylor"
+    column_chebyshev_group: int = 8
+    column_weighted_resampling: bool = False
+    column_exploratory_preview: bool = False
+    column_preview_segment_resampling: bool = False
+    column_preview_phase_reselection: bool = False
+    source_nominal_energy_preview: bool = False
+    column_preview_pixels: int = 2048
+    column_preview_support_probability: float | None = None
+    column_preview_support_l2: float | None = None
 
     def validate(self):
+        from temsim.physics.potential_kinetic_expansion import validate_kinetic_order
+        validate_kinetic_order(self.column_kinetic_order)
+        from temsim.physics.potential_wave_policy import potential_wave_operator_policy
+        potential_wave_operator_policy({"residual_exponential_method": self.column_exponential_method,
+                                        "maximum_chebyshev_group": self.column_chebyshev_group})
+        if type(self.column_support_projection) is not bool:
+            raise ValueError("column_support_projection must be an explicit boolean")
+        if type(self.column_weighted_resampling) is not bool:
+            raise ValueError("column_weighted_resampling must be an explicit boolean")
+        if self.column_weighted_resampling and not self.column_support_projection:
+            raise ValueError("Weighted coherent resampling requires controlled support projection")
+        if type(self.column_exploratory_preview) is not bool:
+            raise ValueError("column_exploratory_preview must be an explicit boolean")
+        if type(self.column_preview_segment_resampling) is not bool:
+            raise ValueError("column_preview_segment_resampling must be an explicit boolean")
+        if self.column_preview_segment_resampling and not (
+                self.column_exploratory_preview and self.column_support_projection
+                and self.column_weighted_resampling and self.column_model == "physical"):
+            raise ValueError("Segment-start resampling requires physical exploratory preview with controlled support and weighted resampling")
+        if type(self.column_preview_phase_reselection) is not bool:
+            raise ValueError("column_preview_phase_reselection must be an explicit boolean")
+        if self.column_preview_phase_reselection and not self.column_preview_segment_resampling:
+            raise ValueError("Preview phase reselection requires explicit segment-start resampling")
+        if type(self.source_nominal_energy_preview) is not bool:
+            raise ValueError("source_nominal_energy_preview must be an explicit boolean")
+        if self.source_nominal_energy_preview and not (
+                self.column_exploratory_preview and self.column_model == "physical"
+                and self.source.energy_samples == 1):
+            raise ValueError("Nominal-energy source preview requires physical exploratory preview and exactly one energy sample")
+        if type(self.column_preview_pixels) is not int or not 32 <= self.column_preview_pixels <= 8192:
+            raise ValueError("column_preview_pixels must be an integer from 32 to 8192")
+        if self.column_exploratory_preview and not (self.column_support_projection and self.column_weighted_resampling):
+            raise ValueError("Exploratory preview requires controlled support and weighted coherent resampling")
+        preview_overrides = (self.column_preview_support_probability, self.column_preview_support_l2)
+        if any(value is not None for value in preview_overrides):
+            if not (self.column_exploratory_preview and self.column_support_projection
+                    and self.column_weighted_resampling and self.column_model == "physical"):
+                raise ValueError("Column preview support overrides require physical exploratory preview with controlled support and weighted resampling")
+            for name, value, maximum in (
+                    ("column_preview_support_probability", preview_overrides[0], EXPLORATORY_SUPPORT_PROBABILITY_MAXIMUM),
+                    ("column_preview_support_l2", preview_overrides[1], EXPLORATORY_SUPPORT_L2_MAXIMUM)):
+                if value is not None and (isinstance(value, bool) or not isinstance(value, Real)
+                        or not math.isfinite(value) or not 0 <= value <= maximum):
+                    raise ValueError(f"{name} must be finite and between zero and {maximum:g}, or None")
         from temsim.physics.ideal_column_reference import validate_column_model
         validate_column_model(self.column_model)
         if self.column_model != "physical" and self.stop == "tip_near_field":
@@ -68,6 +127,15 @@ class TipWaveRequest:
         self.radial_column.validate()
         self.acceptance_window.validate()
         self.source.validate(); self.gun.validate(); self.readout.validate(); self.wave_grid.validate()
+        if self.wave_grid.exploratory_support_budget:
+            raise ValueError("The gun wave_grid must keep strict support budgets; use column preview overrides")
+        if self.column_preview_phase_reselection:
+            probability = (self.wave_grid.maximum_support_loss_fraction if self.column_preview_support_probability is None
+                           else self.column_preview_support_probability)
+            l2 = (self.wave_grid.maximum_accumulated_support_l2 if self.column_preview_support_l2 is None
+                  else self.column_preview_support_l2)
+            if probability <= 0 or l2 <= 0:
+                raise ValueError("Preview phase reselection requires positive effective probability and complex L2 allowances")
         self.execution.validate(); self.inelastic.validate()
         if self.tip_time_s is not None and (isinstance(self.tip_time_s, bool) or not math.isfinite(self.tip_time_s)):
             raise ValueError("Tip emission time must be finite")
@@ -123,14 +191,22 @@ def require_tip_wave_cuda(request):
             "set radial_column.backend='cuda'. CPU execution is disabled for user wave jobs.")
     policy = require_coherent_cuda(request.wave_grid.compute_backend,
         acceleration_enabled=request.wave_grid.acceleration_enabled)
+    if request.wave_grid.compute_backend == policy:
+        return request
     return replace(request, wave_grid=replace(request.wave_grid, compute_backend=policy))
 
 
-def _find_observation_prefix(identity, minimum_z_mm, target_z_mm, store, *, segmented, cancelled):
+def _find_observation_prefix(identity, minimum_z_mm, target_z_mm, store, *, segmented, cancelled,
+                             completed_validator=None):
+    durable = (store.find_completed_plane(identity, minimum_z_mm, target_z_mm,
+        validate=completed_validator, cancelled=cancelled)
+        if segmented and completed_validator is not None else None)
     candidates = sorted((key for key in _OBSERVATION_PREFIXES
         if key[0] == identity and minimum_z_mm <= key[1] <= target_z_mm),
         key=lambda key: key[1], reverse=True)
     for key in candidates:
+        if durable is not None and durable.plane_z_mm >= key[1]:
+            return durable
         if cancelled():
             raise InterruptedError("Virtual-plane prefix lookup cancelled")
         cache_key, digest = _OBSERVATION_PREFIXES[key]
@@ -157,10 +233,11 @@ def _find_observation_prefix(identity, minimum_z_mm, target_z_mm, store, *, segm
         if not segmented:
             _STAGES.move_to_end(cache_key)
         return checkpoint
-    return None
+    return durable
 
 
-def _register_observation_prefix(identity, checkpoint, store, request, *, cancelled):
+def _register_observation_prefix(identity, checkpoint, store, request, *, cancelled,
+                                 completed_validator=None):
     key = (identity, checkpoint.plane_z_mm)
     digest = checkpoint.digest
     if cancelled():
@@ -171,6 +248,11 @@ def _register_observation_prefix(identity, checkpoint, store, request, *, cancel
             # Only a real committed execution can become a continuation.
             return
         cache_key = storage["key"]
+        if (completed_validator is not None
+                and checkpoint.record.get("schema") == "unified-source-column-v1"):
+            store.register_completed_plane(identity, checkpoint,
+                expected_mode_ids=tuple(row["mode_id"] for row in checkpoint.beam.modes.rows),
+                validate=completed_validator, cancelled=cancelled)
     else:
         cache_key = (store.dependency, "observation_plane", json_digest(key))
         _retain(cache_key, checkpoint, request.execution.maximum_ram_cache_bytes)
@@ -258,6 +340,19 @@ def _observation_stops(state, gun_exit_z_mm, target_z_mm, entrance_z_mm, exit_z_
     return ordered
 
 
+def _recording_stop_already_executed(checkpoint, detector_key):
+    """Distinguish a cached detector exit from its same-Z incident field.
+
+    Detector keys are unique in the unchanged captured instrument. Both
+    storage forms and their unified propagation stamps retain the executed
+    absorption receipt; a plane coordinate alone does not establish its side.
+    """
+    from temsim.physics.unified_wave_runtime import _recording_stop_ancestry
+    ancestor, stops = _recording_stop_ancestry(checkpoint.record)
+    return any(stop.get("detector") == detector_key for stop in (
+        *stops, *ancestor.get("unified_recording_stops", ())))
+
+
 def _retain(key, result, maximum_bytes=_MAXIMUM_CACHE_BYTES):
     size = sum(m.plane.amplitude.nbytes for m in result.beam.modes)
     if size > maximum_bytes:
@@ -325,6 +420,8 @@ This development product supports arrival-time scan coils and conditional
 material-model inelastic waves. Existing ray, EDS and resolved EELS products
 retain their established workflows and are not replaced by this entry point.
 """
+    from temsim.simulation_modes import require_coherent_mode
+    require_coherent_mode(state)
     request.validate()
     if cancelled():
         raise InterruptedError("Tip wave request cancelled")
@@ -414,17 +511,35 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
     # Admission and execution use the same immutable captured controls. Keep
     # plans only within this request and only reuse their exact endpoint grid;
     # a detector/material split must never borrow a larger interval's plan.
+    from temsim.simulation_modes import is_unified
+    unified = is_unified(working)
+    if request.source_nominal_energy_preview:
+        if not unified:
+            raise ValueError("Nominal-energy source preview is available only in unified Finite-Field Optics")
+        source_model = getattr(working.electron_gun.emitter, "surface_model", None)
+        if source_model is not None and source_model.coherence is not None:
+            raise ValueError("Nominal-energy preview is not implemented for the joint surface/gun source executor")
+    if (request.column_preview_segment_resampling or request.column_preview_phase_reselection) and not unified:
+        raise ValueError("Preview segment resampling is available only in unified Finite-Field Optics")
+    if (any(value is not None for value in
+            (request.column_preview_support_probability, request.column_preview_support_l2)) and not unified):
+        raise ValueError("Column preview support overrides are available only in unified Finite-Field Optics")
+    if request.column_weighted_resampling and not unified:
+        raise ValueError("Weighted coherent resampling is available only in unified Finite-Field Optics")
+    unified_wave = None
     prepared_columns = {}
     column_options = ({} if request.column_model == "physical"
                       else {"column_model": request.column_model})
 
     def admit_column(start, stop):
+        if unified_wave is not None:
+            return unified_wave.admit(start, stop)
         key = (float(start), float(stop))
         prepared = _prepare_column(working, start, stop, request.column_step_mm, **column_options)
         prepared_columns[key] = prepared
         return prepared
 
-    if bool(getattr(working, "equivalent_image_lenses_enabled", False)):
+    if not unified and bool(getattr(working, "equivalent_image_lenses_enabled", False)):
         raise ValueError("Only executed upstream caches may replace distributed optics")
     nano = getattr(working, "nanopulser", None)
     if nano is not None and nano.installed:
@@ -464,16 +579,56 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
         if end >= boundary:
             raise ValueError(f"The installed energy filter requires its coherent field operator at z={boundary:.9g} mm; "
                              f"the requested path to z={end:.9g} mm cannot skip it")
+    if unified:
+        from temsim.physics.unified_field_runtime import unified_runtime_preflight
+        admission = unified_runtime_preflight(working)
+        if admission["issues"]:
+            raise ValueError("Finite-Field Optics: "+"; ".join(admission["issues"]))
+    # Both routes resolve derived drives before capturing fields. The unified
+    # mode measures the actual shared-potential response; it never invokes the
+    # historical canonical/equivalent-image calibration. A paired execution
+    # reuses the verified particle calibration through the preparation cache.
     from temsim.physics.scan_preparation import prepare_scan_drives
-    prepare_scan_drives(working, instrument_digest, observation_stop_z_mm=end,
-                        session_cache=scan_preparation_cache)
+    from temsim.physics.transport_progress import transport_progress
+    from temsim.calculation_progress import LocalProgressLabel
+    def scan_progress(label):
+        if cancelled():
+            raise InterruptedError("Coherent scan calibration cancelled")
+        if progress_callback is not None:
+            local = getattr(label, "local_progress", None)
+            progress_callback(0 if local is None else local.completed,
+                0 if local is None or local.total is None else local.total, label)
+    def scan_cancelled():
+        if cancelled():
+            raise InterruptedError("Coherent scan calibration cancelled")
+        return False
+    original_cancelled = getattr(working, "_tuning_cancelled", None)
+    working._tuning_cancelled = scan_cancelled
+    try:
+        scan_progress(LocalProgressLabel("Resolving shared-potential scan calibration" if unified
+            else "Resolving scan controls", 0, None))
+        with transport_progress(scan_progress):
+            prepare_scan_drives(working, instrument_digest, observation_stop_z_mm=end,
+                                session_cache=scan_preparation_cache)
+    finally:
+        if original_cancelled is None:
+            vars(working).pop("_tuning_cancelled", None)
+        else:
+            working._tuning_cancelled = original_cancelled
+    if unified and request.stop != "gun_exit":
+        # Admit the real captured column before executing or reading a costly
+        # gun cache. Unsupported fields never switch to a replacement source
+        # or silently run the historical empirical column executor.
+        from temsim.physics.unified_wave_runtime import UnifiedPotentialWaveAdapter
+        unified_wave = UnifiedPotentialWaveAdapter(working, request, stop_z_mm=end)
     if request.stop not in ("plane", "gun_exit"):
         admit_column(gun_end, entrance)
         if target is not None:
             admit_column(working.sample.z_mm+working.sample.thickness_nm*.5e-6, target.z_mm)
     propagation_id = json_digest({"instrument": instrument_digest, "source": asdict(request.source),
                                  "gun": asdict(request.gun), "surface": asdict(request.surface),
-                                 "radial_gun": asdict(request.radial_gun)})
+                                 "radial_gun": asdict(request.radial_gun),
+                                 **({"source_nominal_energy_preview": True} if request.source_nominal_energy_preview else {})})
     store = ExecutedWaveStore(request.execution.cache_directory, propagation_id, request.execution.maximum_disk_cache_bytes)
     if request.execution.segmented:
         _STAGES.clear()
@@ -485,12 +640,21 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
     if request.stop == "plane":
         numerics = asdict(request)
         numerics.pop("observation_z_mm")
+        if not request.column_preview_phase_reselection:
+            numerics.pop("column_preview_phase_reselection")
+        if not request.source_nominal_energy_preview:
+            numerics.pop("source_nominal_energy_preview")
         observation_identity = json_digest({"tip_execution": propagation_id,
-            "request_without_observation_z": numerics, "tip_epoch_s": epoch})
+            "request_without_observation_z": numerics, "tip_epoch_s": epoch,
+            "unified_executor": None if unified_wave is None else unified_wave.identity})
     def remember_observation(checkpoint):
         if use_cache and observation_identity is not None:
             _register_observation_prefix(observation_identity, checkpoint, store, request,
-                                         cancelled=cancelled)
+                cancelled=cancelled, completed_validator=completed_validator)
+    completed_validator = (lambda checkpoint: unified_wave.column(checkpoint,
+        checkpoint.plane_z_mm, cancelled=cancelled)) if (
+            unified_wave is not None and request.column_weighted_resampling
+            and request.execution.segmented) else None
     def stage(name, producer, *, inputs=()):
         nonlocal cache_hit
         # Both branches consume the identical executed source. All downstream
@@ -498,6 +662,8 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
         if request.column_model != "physical" and name != "gun_exit":
             from temsim.physics.ideal_column_reference import column_model_record
             inputs = (*inputs, column_model_record(request.column_model))
+        if unified_wave is not None and name != "gun_exit":
+            inputs = (*inputs, unified_wave.identity)
         key = (propagation_id, name, json_digest(inputs))
         if cancelled():
             raise InterruptedError("Tip wave request cancelled")
@@ -525,7 +691,9 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
         from temsim.physics.wave_mode_support import (
             MODE_SUPPORT_SCHEMA, incoherent_mode_approximation, select_incoherent_modes,
         )
-        mode_budget = request.wave_grid.maximum_incoherent_mode_loss_probability
+        # Preview changes the column lattice, never removes source modes.
+        mode_budget = (0. if request.column_exploratory_preview else
+                       request.wave_grid.maximum_incoherent_mode_loss_probability)
         if incoherent_mode_approximation(upstream.record) is None:
             original = upstream
             upstream = stage("incoherent_mode_support", lambda: select_incoherent_modes(original,
@@ -535,6 +703,16 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
             # Includes resumed prefixes and material branches. The budget is
             # spent once on the complete gun mixture, not once per segment.
             upstream = select_incoherent_modes(upstream, maximum_loss_probability=mode_budget)
+        if unified_wave is not None:
+            result = stage("unified_column", lambda: unified_wave.column(upstream, stop,
+                cancelled=cancelled, progress_callback=progress_callback,
+                **({"store": store, "use_cache": use_cache, "verify": verify,
+                    "checkpoint_callback": remember_observation}
+                   if request.execution.segmented and request.column_weighted_resampling else {})),
+                inputs=(upstream.digest, float(stop), request.column_step_mm,
+                        request.wave_grid.column_identity()))
+            remember_observation(result)
+            return result
         # The executed gun is the only Cartesian-to-radial entry point.
         # Qualify all modes before the optional aperture-conditioned path;
         # nested acceptance calls must not retry a declined input mixture.
@@ -618,9 +796,11 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
             return checkpoint
         return build_tip_gun_checkpoint(working.electron_gun, source_numerics=request.source,
             numerics=request.gun, _column_state=working, use_cache=use_cache and not request.execution.segmented,
-            cancelled=cancelled, progress_callback=progress_callback)
+            cancelled=cancelled, progress_callback=progress_callback,
+            **({"nominal_energy_preview": True} if request.source_nominal_energy_preview else {}))
     prefix = (_find_observation_prefix(observation_identity, gun_end, end, store,
-        segmented=request.execution.segmented, cancelled=cancelled)
+        segmented=request.execution.segmented, cancelled=cancelled,
+        completed_validator=completed_validator)
         if use_cache and request.stop == "plane" else None)
     if request.stop == "plane":
         # A verified executed prefix already contains all upstream fields and
@@ -635,7 +815,8 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
         for lower, upper in spans:
             if upper > lower:
                 prepared = admit_column(lower, upper)
-                require_supported_column_wave_fields(working, lower, upper, prepared[0])
+                if unified_wave is None:
+                    require_supported_column_wave_fields(working, lower, upper, prepared[0])
     result = stage("gun_exit", compute_gun) if prefix is None else prefix
     if prefix is not None:
         cache_hit = True
@@ -645,7 +826,8 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
         remember_observation(result)
         def advance_column(upstream, stop):
             if float(stop) == upstream.plane_z_mm:
-                return upstream
+                return (unified_wave.column(upstream, float(stop), cancelled=cancelled,
+                            progress_callback=progress_callback) if unified_wave is not None else upstream)
             if request.execution.segmented:
                 result = column(upstream, float(stop))
             else:
@@ -664,7 +846,14 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
             if upstream.plane_z_mm < entrance:
                 upstream = advance_column(upstream, entrance)
             if upstream.plane_z_mm < exit_z:
-                if request.inelastic.method == "trajectories":
+                if unified_wave is not None:
+                    incident = upstream
+                    upstream = stage("unified_specimen_exit", lambda: unified_wave.specimen(incident,
+                        store=store, use_cache=use_cache, cancelled=cancelled,
+                        progress_callback=progress_callback),
+                        inputs=(incident.digest, asdict(request.inelastic),
+                                request.wave_grid.column_identity(), request.column_step_mm))
+                elif request.inelastic.method == "trajectories":
                     from temsim.physics.inelastic_wave import _propagate_inelastic_specimen
                     upstream = _propagate_inelastic_specimen(working, upstream, numerics=request.inelastic,
                         store=store, maximum_step_mm=request.column_step_mm, grid_numerics=request.wave_grid,
@@ -684,6 +873,9 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
         for plane in observation_stops:
             if float(plane.z_mm) < resume_z_mm:
                 continue  # Absorption at these devices is already executed.
+            if (float(plane.z_mm) == resume_z_mm
+                    and _recording_stop_already_executed(result, plane.key)):
+                continue  # Same-Z prefix is the transmitted side, not incident.
             result = advance_observation(result, float(plane.z_mm))
             incident = result
             if request.execution.segmented:
@@ -710,6 +902,12 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
         if SpecimenScene.from_state(working).is_vacuum:
             stop = working.sample.z_mm+working.sample.thickness_nm*.5e-6
             result = column(upstream, stop) if stop > upstream.plane_z_mm else upstream
+        elif unified_wave is not None:
+            result = stage("unified_specimen_exit", lambda: unified_wave.specimen(upstream,
+                store=store, use_cache=use_cache, cancelled=cancelled,
+                progress_callback=progress_callback),
+                inputs=(upstream.digest, asdict(request.inelastic),
+                        request.wave_grid.column_identity(), request.column_step_mm))
         elif request.inelastic.method == "trajectories":
             from temsim.physics.inelastic_wave import _propagate_inelastic_specimen
             result = _propagate_inelastic_specimen(working, upstream, numerics=request.inelastic,

@@ -48,8 +48,10 @@ def boundary(state, **kwargs):
         provenance="Explicit constant-potential local reference fixture", **kwargs)
 
 
-def test_finite_pair_calibration_matches_exact_forced_drift_and_does_not_edit_state(drift):
+@pytest.mark.parametrize("mode", ["ideal", "ideal_thin"])
+def test_selected_pair_calibration_matches_exact_forced_drift_and_does_not_edit_state(drift, mode):
     s = drift
+    s.simulation_mode = mode
     before = json_digest(encode_instrument(s))
     ref = boundary(s)
     target = s.beam_deflector.lower_surface_z_mm+10.
@@ -63,6 +65,7 @@ def test_finite_pair_calibration_matches_exact_forced_drift_and_does_not_edit_st
     assert json_digest(encode_instrument(s)) == before
     assert result.reference.phase_space == ref.phase_space
     assert result.condition_number < 20
+    assert result.scope == (steering.THIN_SCOPE if mode == "ideal_thin" else steering.SCOPE)
 
 
 @pytest.mark.parametrize("kind,command", [("tilt", (1e-3, -2e-3)), ("shift", (2e-6, -3e-6))])

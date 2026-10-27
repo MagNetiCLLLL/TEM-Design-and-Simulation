@@ -54,6 +54,33 @@ shutdown can wait for it without relying on pending GUI callbacks. Manual
 exports do not change the automatic pointer. An index-write failure is reported
 separately and does not invalidate the already calculated result or saved file.
 
+## Persistent AC/Descan response measurements
+
+Finite-Field Optics retains complete AC/Descan response measurements separately
+from particle-result archives. A later process can reuse these local derivative
+measurements when their executed field and geometry dependencies, observation
+planes, coil definitions, beam energy, integration nodes, perturbation and
+implementation remain compatible. The numerical runtime and dependency versions
+also participate in the identity. A component's nominal location alone does not
+prove that its field is irrelevant to a cached response.
+
+This cache does not store the user's final scan commands as a replacement for
+calibration. Current field of view, raster and constraint settings still pass
+through the existing drive solve and validation. An enclosing calibration only
+publishes its response after all drive checks succeed. Receipts distinguish
+fresh measurement, memory reuse and disk reuse while retaining the original
+measurement evidence. Particle positions, energies, weights and integration
+precision are not reduced by this optimization.
+
+The disposable `scan_response_cache_v1` directory is under local application
+storage. Records use lossless typed numeric data, checksums and atomic
+publication, with a maximum of 32 entries and 64 MiB in total (8 MiB per entry).
+Missing, corrupt, incompatible or unavailable storage causes fresh measurement.
+Tests can isolate this storage with `TEMSIM_SCAN_RESPONSE_CACHE_DIR`; an empty
+value disables disk persistence. Clearing this cache does not delete saved
+particle results. A change inside the measured field region can still require
+new calibration even when an upstream particle checkpoint remains reusable.
+
 ## Validation
 
 Relevant regression entry points:
@@ -62,6 +89,7 @@ Relevant regression entry points:
 $env:QT_QPA_PLATFORM = "offscreen"
 $env:PYTHONPATH = "src;tests"
 .venv\Scripts\python.exe -X utf8 -m pytest tests/test_automatic_result.py tests/test_automatic_result_worker.py tests/test_automatic_result_gui.py tests/test_result_files_gui.py tests/test_section_archiving_gui.py tests/test_acceptance_scopes.py
+.venv\Scripts\python.exe -X utf8 -m pytest tests/test_unified_scan_response_cache.py tests/test_unified_scan_persistence.py tests/test_unified_scan_calibration.py
 ```
 
 Tests cover atomic metadata, concurrent saves, stale requests, cancellation,

@@ -9,7 +9,6 @@ Z is the independent variable, so this solver covers forward column rays;
 turning trajectories must be handled by a time-domain particle solver.
 """
 
-import math
 import numpy as np
 
 from temsim.physics.ray_integrator import canonical_rk4_step, canonical_rk4_step_with_time
@@ -65,9 +64,11 @@ def vector_map_rk4(
     for j in range(step_m.size + 1):
         if cancel_check is not None and j % 64 == 0:
             cancel_check()
-        tx, ty = tx - thin_power[j] * x, ty - thin_power[j] * y
+        power = thin_power[j] * magnetic_scale**2
+        tx, ty = tx - power * x, ty - power * y
         if thin_rotation[j] != 0.0:
-            co, si = math.cos(thin_rotation[j]), math.sin(thin_rotation[j])
+            angle = thin_rotation[j] * magnetic_scale
+            co, si = xp.cos(angle), xp.sin(angle)
             x, y = co * x - si * y, si * x + co * y
             tx, ty = co * tx - si * ty, si * tx + co * ty
         tx, ty = tx + kickx[j], ty + kicky[j]

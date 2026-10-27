@@ -1,6 +1,7 @@
 """Numerical-tail error accounting; no claim of full-column qualification."""
 from dataclasses import replace
 import json
+import math
 
 import numpy as np
 import pytest
@@ -58,6 +59,27 @@ def test_disabled_empty_and_broad_fields_are_not_changed():
         field = replace(wave, amplitude=amplitude)
         result, record = compact_wave_support(field, maximum_loss_fraction=1e-6, wavelength_m=2e-12)
         assert result is field and record is None
+
+
+@pytest.mark.parametrize("tail", [(64, 127), (127, 64), (64, 0), (0, 64)])
+@pytest.mark.parametrize("spectral", [False, True])
+def test_sub_roundoff_budget_cannot_discard_a_resolved_small_tail(tail, spectral):
+    data = np.zeros((128, 128), complex)
+    data[64, 64], data[tail] = 1., 1e-11
+    if spectral:
+        data = np.fft.fftshift(np.fft.ifft2(np.fft.ifftshift(data), norm="ortho"))
+    wave = PlaneWave(data, np.eye(2)*1e-9, np.zeros(2))
+    budget = 1e-25
+    if spectral:
+        result, record = compact_wave_spectrum(wave, maximum_loss_fraction=budget)
+    else:
+        result, record = compact_wave_support(wave, maximum_loss_fraction=budget, wavelength_m=2e-12)
+    if record is None:
+        assert result is wave
+    else:
+        assert record["loss_fraction"] <= budget
+        assert record["absolute_probability_loss"] <= budget*record["input_probability"]
+        assert record["absolute_l2_error"] <= math.sqrt(budget*record["input_probability"])
 
 
 @pytest.mark.parametrize("fraction", [-1., .11, float("nan"), float("inf"), True])

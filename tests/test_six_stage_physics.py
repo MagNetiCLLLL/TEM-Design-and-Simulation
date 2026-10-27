@@ -19,11 +19,9 @@ def _constant_transport(field):
             return np.broadcast_to(field, np.asarray(positions).shape)
     transport = SpecimenFieldTransport.__new__(SpecimenFieldTransport)
     transport.origin_m = np.zeros(3)
-    transport.providers = (Provider(),)
-    # This synthetic context bypasses __init__, including its support snapshot.
-    transport._provider_supports = tuple(
-        (provider, *provider.field_support_mm()) for provider in transport.providers
-    )
+    # This synthetic graph bypasses capture and provides the current vector
+    # field protocol; it is not the removed per-lens provider tuple.
+    transport.magnetic_field = Provider()
     transport.spatial_step_nm = 100
     return transport
 

@@ -17,6 +17,9 @@ def instrument_graph():
     state = default_state()
     state.sample.wave_enabled = state.sample.stem_wave_enabled = False
     state.ac_deflector.scan_enabled = state.descan_deflector.scan_enabled = False
+    # Exercise a real wobble-to-raster transition without relying on a preset's
+    # current default. The previous capture must retain this explicit drive.
+    state.ac_deflector.wobble_enabled = True
     apply_request_numerics(state, "High accuracy", 3000, .1)
     return encode_instrument(state)
 

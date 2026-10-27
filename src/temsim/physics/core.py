@@ -68,6 +68,7 @@ class PropagationCheckpoints:
     ty_rad: np.ndarray
     flight_time_s: np.ndarray | None = None
     kinetic_energy_ev: np.ndarray | None = None
+    unified_state: object | None = None
 
     def __post_init__(self):
         z = np.asarray(self.z_mm)
@@ -95,6 +96,11 @@ class PropagationCheckpoints:
                 raise ValueError("Checkpoint kinetic energies must match rays and be positive or NaN")
             frozen = np.frombuffer(energy.tobytes(order="C"), dtype=energy.dtype).reshape(energy.shape)
             object.__setattr__(self, "kinetic_energy_ev", frozen)
+        if self.unified_state is not None:
+            from temsim.physics.unified_particle_restart import UnifiedParticleCheckpointState
+            if (type(self.unified_state) is not UnifiedParticleCheckpointState
+                    or self.unified_state.active.shape != shape):
+                raise ValueError("Unified checkpoint internal state must align with phase space")
 
 
 @dataclass(frozen=True, slots=True)
@@ -135,6 +141,34 @@ class AxialPropagationPlan:
     intrinsic_aberration_kicks: tuple = ()
     # Column-wave scheduling metadata; None permits supplied-plan fallback.
     hexapole_exit_nodes: tuple[int, ...] | None = None
+    # Detached P0 scene/ownership metadata. None identifies a hand-built or
+    # historical plan, never a newly captured production contract.
+    physics_contract: object | None = None
+    thin_actions: tuple = ()
+    unified_runtime: object | None = None
+
+    def __post_init__(self):
+        if str(self.solver_signature).startswith("unified-potential-rk4-v1:") and self.unified_runtime is None:
+            raise ValueError("Unified plans require their complete captured runtime")
+        if self.thin_actions:
+            from temsim.physics.thin_optics import ThinOpticalAction
+            if any(type(action) is not ThinOpticalAction for action in self.thin_actions):
+                raise ValueError("Thin plans require declared optical actions")
+            object.__setattr__(self, "thin_actions", tuple(self.thin_actions))
+        if self.physics_contract is not None:
+            from temsim.immutable_json import freeze_json
+            from temsim.physics.plan_contract import validate_plan_contract
+            validate_plan_contract(self.physics_contract)
+            object.__setattr__(self, "physics_contract", freeze_json(self.physics_contract))
+        if self.unified_runtime is not None:
+            from temsim.physics.unified_field_runtime import UnifiedFieldRuntime
+            runtime = self.unified_runtime
+            if type(runtime) is not UnifiedFieldRuntime or self.physics_contract is None:
+                raise ValueError("Unified plans require an immutable runtime and ownership contract")
+            expected = {"runtime": runtime.digest, "field": runtime.snapshot.numerical_digest,
+                        "geometry": runtime.geometry.digest}
+            if self.physics_contract.get("unified_capture") != expected:
+                raise ValueError("Unified plan ownership does not match executable fields and geometry")
 
 
 def _frozen_array(values, dtype=np.float64):
@@ -540,15 +574,8 @@ def _piecewise_endpoint_exact_axial_grid(
 
     start = float(z0)
     stop = float(z1)
-    boundaries = [
-        start,
-        *sorted({
-            float(value)
-            for value in interior_z_mm
-            if start < float(value) < stop
-        }),
-        stop,
-    ]
+    boundaries = [start, *sorted({float(value) for value in interior_z_mm
+                                  if start < float(value) < stop}), stop]
     segments = [
         _endpoint_exact_axial_grid(left, right, maximum_step_mm)[0]
         for left, right in zip(boundaries[:-1], boundaries[1:])
@@ -579,6 +606,102 @@ def build_propagation_plan(
     _diagnostic_dipole_fields=None,
 ):
     """Build the single global axial plan used by full and resumed traces."""
+
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        from temsim.physics.unified_field_particle import build_unified_plan
+        return build_unified_plan(state, z0, z1, events, save_z_mm=save_z_mm,
+            checkpoint_z_mm=checkpoint_z_mm, maximum_step_mm=maximum_step_mm,
+            particle_medium=particle_medium, diagnostic_dipoles=_diagnostic_dipole_fields)
+
+    if mode_key(state) == "ideal_thin":
+        from temsim.physics.thin_optics import build_thin_plan
+        return build_thin_plan(state, z0, z1, events,
+            include_hexapole=include_hexapole, save_z_mm=save_z_mm,
+            checkpoint_z_mm=checkpoint_z_mm, particle_medium=particle_medium,
+            diagnostic_dipoles=_diagnostic_dipole_fields)
+
+    return _build_parameterized_propagation_plan(
+        state, z0, z1, events,
+        include_spherical_aberration=include_spherical_aberration,
+        include_intrinsic_aberrations=include_intrinsic_aberrations,
+        include_hexapole=include_hexapole, save_z_mm=save_z_mm,
+        checkpoint_z_mm=checkpoint_z_mm, maximum_step_mm=maximum_step_mm,
+        particle_medium=particle_medium, medium_energy_ev=medium_energy_ev,
+        _diagnostic_dipole_fields=_diagnostic_dipole_fields)
+
+
+@dataclass(frozen=True, slots=True)
+class GunSourceSupport:
+    """Non-executable support evidence for the accelerating source owner.
+
+    No particle plan, field array or optical action is exposed. The source
+    solver separately samples its shared electric field and quadratic magnetic
+    coefficients; this description only retains inspected grid and identity.
+    """
+
+    z_mm: tuple[float, ...]
+    signature: str
+    record: object
+
+
+def capture_gun_source_support(state, start_mm, stop_mm, *, maximum_step_mm):
+    """Inspect only a bounded part of [tip, gun exit], without column execution.
+
+    This is not a back door to the parameterized column executor in unified
+    mode. Non-quadratic, mapped, impulsive or time-dependent overlaps require
+    a different source operator and fail before an accelerating wave is built.
+    """
+    from numbers import Real
+    from temsim.immutable_json import freeze_json, json_digest
+    from temsim.physics.instrument_magnetic import (
+        active_column_events, column_dipole_fields, events_overlapping_interval,
+    )
+    gun = getattr(state, "electron_gun", None)
+    values = (start_mm, stop_mm, maximum_step_mm)
+    if (gun is None or any(isinstance(v, (bool, np.bool_)) or not isinstance(v, Real)
+                          or not math.isfinite(v) for v in values)
+            or not 0. <= start_mm < stop_mm <= float(gun.exit_plane_z_mm)
+            or maximum_step_mm <= 0.):
+        raise ValueError("Gun support inspection must remain inside [tip, gun exit] with a positive step")
+    if math.ceil((stop_mm-start_mm)/min(float(state.step_mm), maximum_step_mm)) > 1_000_000:
+        raise ValueError("Gun support inspection exceeds one million grid steps")
+    for coil in column_dipole_fields(state):
+        if (coil.dynamic and coil.field_support_mm[0] < stop_mm
+                and coil.field_support_mm[1] > start_mm):
+            raise ValueError("Time-dependent column fields inside the accelerating gun require a joint source operator")
+    events = events_overlapping_interval(state, active_column_events(state), start_mm, stop_mm)
+    inspected = _build_parameterized_propagation_plan(
+        state, start_mm, stop_mm, events, maximum_step_mm=maximum_step_mm)
+    if (inspected.mapped_fields or inspected.intrinsic_aberration_kicks
+            or inspected.posed_spherical_kicks or any(np.any(getattr(inspected, name)) for name in (
+                "hex_normal_m3", "hex_skew_m3", "midpoint_hex_normal_m3", "midpoint_hex_skew_m3",
+                "cs_kick_m3", "thin_power_m1", "thin_rotation_rad", "kick_x_rad", "kick_y_rad"))):
+        raise ValueError("Non-quadratic column components inside the accelerating gun require a joint operator; they cannot be skipped")
+    grid = tuple(float(z) for z in inspected.z_mm)
+    record = freeze_json({
+        "schema": "accelerating-gun-support-v1", "executable": False,
+        "owner": "accelerating_gun_source", "interval_mm": (float(start_mm), float(stop_mm)),
+        "selected_column_mode": mode_key(state), "grid_mm": grid,
+        "inspected_parameterized_support_digest": inspected.signature,
+        "electric_field_identity": inspected.electric_field_identity,
+        "magnetic_scope": "existing quadratic gun operator; no high-order column qualification",
+        "optical_actions_executed": False,
+    })
+    return GunSourceSupport(grid, json_digest(record), record)
+
+
+def _build_parameterized_propagation_plan(
+    state, z0, z1, events=(), *, include_spherical_aberration=True,
+    include_intrinsic_aberrations=None, include_hexapole=True, save_z_mm=(),
+    checkpoint_z_mm=(), maximum_step_mm=None, particle_medium=False,
+    medium_energy_ev=None, _diagnostic_dipole_fields=None,
+):
+    """Capture the parameterized grid and actions without selecting an executor.
+
+    Source support inspection uses the bounded capture_gun_source_support
+    facade, which does not expose this executable internal representation.
+    """
 
     # Validate native hardware once before sampling any fields, not per ray or
     # integration substep. Analytic test providers retain their own contracts.
@@ -619,6 +742,8 @@ def build_propagation_plan(
         else:
             if getattr(field, "registration", None) is not None and any(float(row[0]) == field.event_z_mm for row in remaining_events):
                 raise ValueError(f"{field.key}: posed deflector event override does not match the captured physical coil drive")
+    from temsim.physics.plan_contract import reject_repeated_physical_events
+    reject_repeated_physical_events(dipoles, remaining_events)
     events = tuple(remaining_events)
     save_z_mm = tuple(save_z_mm)
     checkpoint_z_mm = tuple(checkpoint_z_mm)
@@ -654,9 +779,10 @@ def build_propagation_plan(
     # corresponding distributed image fields are also excluded below.
     image_lens_events = (equivalent_image_events(state,float(z0),float(z1))
                          if reduce_image_maps else ())
+    vector_providers = active_vector_providers(state)
     mapped_fields = tuple(
         freeze_vector_provider(provider)
-        for provider in active_vector_providers(state)
+        for provider in vector_providers
         if not (reduce_image_maps and provider.lens_key in IMAGE_LENS_KEYS)
         and provider.field_support_mm()[0] <= float(z1)
         and provider.field_support_mm()[1] >= float(z0)
@@ -674,11 +800,12 @@ def build_propagation_plan(
     dipoles = [field for field in dipoles if field.key not in posed_coil_keys]
     from temsim.physics.posed_aberrations import posed_spherical_kicks
     posed_cs = posed_spherical_kicks(state, float(z0), float(z1)) if include_spherical_aberration else ()
-    from temsim.physics.intrinsic_aberrations import capture_intrinsic_kicks
+    from temsim.physics.intrinsic_aberrations import capture_intrinsic_kicks, capture_chromatic_kicks
     include_intrinsic = (include_spherical_aberration if include_intrinsic_aberrations is None
                          else bool(include_intrinsic_aberrations))
     intrinsic = capture_intrinsic_kicks(state, float(z0), float(z1)) if include_intrinsic else ()
-    exact_z_mm = [event.z_mm for event in (*image_lens_events, *posed_cs, *intrinsic)]
+    intrinsic += capture_chromatic_kicks(state, float(z0), float(z1))
+    exact_z_mm = []
     if electric_field is not None:
         electric_z = getattr(electric_field.base_field, "z", ())
         exact_z_mm.extend(float(value)*1e3 for value in electric_z if z0 < float(value)*1e3 < z1)
@@ -718,6 +845,14 @@ def build_propagation_plan(
             if bool(getattr(lens, 'enabled', True))
             and spherical_aberration_mm(lens, state.beam_voltage_kv)
         )
+    # Reuse an existing physical node for a discrete plane differing only by
+    # coordinate-conversion roundoff. Keep all aperture/mechanical boundaries
+    # untouched: their original geometry is independently checked downstream.
+    anchors = np.asarray((z0, z1, *exact_z_mm), dtype=float)
+    for event in (*image_lens_events, *posed_cs, *intrinsic):
+        tolerance = 8*np.spacing(max(abs(event.z_mm), abs(z0), abs(z1), 1.))
+        if not np.any(abs(anchors-event.z_mm) <= tolerance):
+            exact_z_mm.append(event.z_mm)
     if particle_medium and ((z1-z0)/requested_step+len(exact_z_mm)+1 > state.vacuum_map.max_transport_nodes):
         raise ValueError("Particle / vacuum integration exceeds the configured node budget")
     zfull,step_mm=_piecewise_endpoint_exact_axial_grid(
@@ -832,7 +967,7 @@ def build_propagation_plan(
         bool(getattr(state, "acceleration_enabled", False)),
         str(getattr(state, "acceleration_backend", "Auto")),
         FIELD_SIGMA_CUTOFF,
-        'canonical-rk4-shared-electric-magnetic-energy-v8-intrinsic',
+        'canonical-rk4-shared-electric-magnetic-energy-v9-chromatic',
         mode_key(state),
         state.vacuum_map.signature() if particle_medium else "optical-map-no-medium",
     ))
@@ -859,6 +994,26 @@ def build_propagation_plan(
         contiguous = np.ascontiguousarray(values, dtype=np.float64)
         digest.update(contiguous.shape.__repr__().encode("ascii"))
         digest.update(contiguous.tobytes())
+    # Preserve the executed numerical identity independently of provenance.
+    # Both particle and wave consumers receive this same captured contract.
+    from temsim.physics.plan_contract import capture_plan_contract
+    from temsim.physics.lens_field_provider import MappedLensFieldProvider
+    diagnostics = getattr(state, "_field_provider_diagnostics", {})
+    provider_metadata = tuple({
+        "key": provider.lens_key,
+        "model_status": getattr(provider, "model_status", ""),
+        "is_mapped": isinstance(provider, MappedLensFieldProvider),
+        "joint_channels": tuple(diagnostics.get(provider.lens_key, {}).get("channels", ()))
+            if getattr(provider, "model_status", "") == "joint_nonlinear_field" else (),
+        "circuit_id": "joint_nonlinear" if getattr(provider, "model_status", "") == "joint_nonlinear_field" else None,
+    } for provider in vector_providers)
+    physics_contract = capture_plan_contract(
+        state, z_mm=zfull, numerical_digest=digest.hexdigest(), mapped_fields=mapped_fields,
+        mapped_keys=mapped_keys, dipoles=dipoles, events=events, image_events=image_lens_events,
+        posed_cs=posed_cs, intrinsic=intrinsic, include_spherical=include_spherical_aberration,
+        include_hexapole=include_hexapole, electric_field=electric_field,
+        provider_metadata=provider_metadata)
+    digest.update(physics_contract["digest"].encode("ascii"))
     return AxialPropagationPlan(
         z_mm=_frozen_array(zfull),
         step_m=_frozen_array(step_m),
@@ -892,13 +1047,27 @@ def build_propagation_plan(
         electric_field=electric_field,
         electric_field_identity=None if electric_field is None else electric_field.numerical_identity,
         electric_reference_invariant_ev=electric_reference,
+        physics_contract=physics_contract,
     )
 
 
-def propagation_plan_common_prefix_nodes(previous, current):
+def propagation_plan_common_prefix_nodes(previous, current, *, checkpoints=None, implementation_digest=None):
     """Return count of leading nodes whose actual optical actions are equal."""
 
     if previous is None or current is None:
+        return 0
+    if any(getattr(plan, "unified_runtime", None) is not None for plan in (previous, current)):
+        if checkpoints is None or implementation_digest is None:
+            return 0  # Historical phase-only checkpoints cannot restart mechanics.
+        from temsim.physics.unified_particle_restart import unified_prefix_matches
+        for row in range(len(checkpoints.z_mm)-1, -1, -1):
+            plane = checkpoints.z_mm[row]
+            old = np.flatnonzero(previous.z_mm == plane)
+            new = np.flatnonzero(current.z_mm == plane)
+            if old.size and new.size and unified_prefix_matches(previous, current,
+                    checkpoints, row, int(old[-1]), int(new[-1]),
+                    implementation_digest=implementation_digest):
+                return int(new[-1])+1
         return 0
     if any(plan.electric_field is not None and plan.electric_field_identity is None
            for plan in (previous, current)):
@@ -939,14 +1108,18 @@ def propagation_plan_common_prefix_nodes(previous, current):
         boundary = min(item.field_support_mm[0]
                        for item in (old,new) if item is not None)
         equal &= new_z[:count] < boundary
-    old_cs = {(type(item).__name__, item.lens_key): item for item in
-              (*previous.posed_spherical_kicks, *previous.intrinsic_aberration_kicks)}
-    new_cs = {(type(item).__name__, item.lens_key): item for item in
-              (*current.posed_spherical_kicks, *current.intrinsic_aberration_kicks)}
+    # One lens can own both static intrinsic terms and an energy-dependent
+    # Cc action. Preserve every event (and its order), never overwrite one.
+    def grouped_actions(plan):
+        result = {}
+        for item in (*plan.posed_spherical_kicks, *plan.intrinsic_aberration_kicks):
+            result.setdefault((type(item).__name__, item.lens_key), []).append(item)
+        return result
+    old_cs, new_cs = grouped_actions(previous), grouped_actions(current)
     for key in old_cs.keys() | new_cs.keys():
-        before, after = old_cs.get(key), new_cs.get(key)
+        before, after = old_cs.get(key, []), new_cs.get(key, [])
         if before != after:
-            boundary = min(item.z_mm for item in (before, after) if item is not None)
+            boundary = min(item.z_mm for item in (*before, *after))
             equal &= new_z[:count] < boundary
     for old, new in arrays:
         equal &= np.asarray(old[:count]) == np.asarray(new[:count])
@@ -981,7 +1154,7 @@ def execute_propagation_plan(
     defer_nonfinite_until_clipping=False,
     medium_transport=None,
     initial_time_s=None, return_flight_times=False,
-    initial_kinetic_energy_ev=None, energy_output=None,
+    initial_kinetic_energy_ev=None, energy_output=None, unified_resume=None,
 ):
     """Execute a complete plan or resume it from an after-action checkpoint.
 
@@ -992,6 +1165,26 @@ def execute_propagation_plan(
 
     from temsim.physics.optical_tuning import check_tuning_cancelled
     check_tuning_cancelled(state)
+    if isinstance(plan, GunSourceSupport):
+        raise TypeError("Gun source support is inspection metadata, not an executable column plan")
+    if str(plan.solver_signature).startswith("unified-potential-rk4-v1:"):
+        from temsim.physics.unified_field_particle import execute_unified_plan
+        return execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev,
+            start_index=start_index, include_initial_plane_kicks=include_initial_plane_kicks,
+            defer_nonfinite_until_clipping=defer_nonfinite_until_clipping,
+            medium_transport=medium_transport, initial_time_s=initial_time_s,
+            return_flight_times=return_flight_times, initial_kinetic_energy_ev=initial_kinetic_energy_ev,
+            energy_output=energy_output, unified_resume=unified_resume)
+    if unified_resume is not None:
+        raise ValueError("Unified internal restart state requires the unified executor")
+    if str(plan.solver_signature).startswith("ideal-thin-events-v1:"):
+        from temsim.physics.thin_optics import execute_thin_plan
+        return execute_thin_plan(state, plan, x, tx, y, ty, energy_offset_ev,
+            start_index=start_index, include_initial_plane_kicks=include_initial_plane_kicks,
+            defer_nonfinite_until_clipping=defer_nonfinite_until_clipping,
+            medium_transport=medium_transport, initial_time_s=initial_time_s,
+            return_flight_times=return_flight_times,
+            initial_kinetic_energy_ev=initial_kinetic_energy_ev, energy_output=energy_output)
     if (plan.electric_field_identity is not None or plan.electric_reference_invariant_ev is not None) and plan.electric_field is None:
         raise ValueError("This archived plan needs its captured electric field reconstructed before execution")
     from temsim.physics.electrostatic_column_transport import active_electric_field

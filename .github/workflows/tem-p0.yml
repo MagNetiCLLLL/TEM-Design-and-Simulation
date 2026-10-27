@@ -72,11 +72,11 @@ jobs:
             outputs/spec-acceptance-install
   feature-acceptance:
     runs-on: windows-latest
-    timeout-minutes: 60
+    timeout-minutes: ${{ matrix.scope == 'column-field-pilot' && 100 || 60 }}
     strategy:
       fail-fast: false
       matrix:
-        scope: [acceptance-policy, gun-fields, electron-execution, field-ui, lens-geometry, receiver-imaging, particle-continuation, performance-observation, coherent-development]
+        scope: [acceptance-policy, gun-fields, electron-execution, field-ui, lens-geometry, column-field-pilot, receiver-imaging, particle-continuation, performance-observation, coherent-development]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -105,8 +105,10 @@ jobs:
         # collection and report normal skips as NOT_RUN, never as GPU success.
         # The 1,292-case UI scope passed in ~1,224 s on one runner but reached
         # only 97% at 1,800 s on another. Retain every check with bounded
-        # runner headroom; the other scopes keep their existing 30-minute cap.
-        run: python scripts/validate_classical_scope.py --scope ${{ matrix.scope }} --output outputs/agent-validation/${{ matrix.scope }} --timeout-seconds ${{ matrix.scope == 'field-ui' && 2700 || 1800 }} --allow-gpu-skips
+        # runner headroom. The independent canonical column campaign has its
+        # own lane and 90-minute cap; ordinary scopes retain 30 minutes.
+        # Whole-wave convergence is an explicitly dispatched long workflow.
+        run: python scripts/validate_classical_scope.py --scope ${{ matrix.scope }} --output outputs/agent-validation/${{ matrix.scope }} --timeout-seconds ${{ matrix.scope == 'column-field-pilot' && 5400 || matrix.scope == 'field-ui' && 2700 || 1800 }} --allow-gpu-skips
       - name: Retain scope evidence even on failure
         if: always()
         uses: actions/upload-artifact@v4

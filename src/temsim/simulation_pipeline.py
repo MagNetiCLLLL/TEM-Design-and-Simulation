@@ -4,6 +4,7 @@ from dataclasses import dataclass, field, replace
 from time import perf_counter
 from types import SimpleNamespace
 from temsim import input_io
+from temsim.calculation_progress import StageProgress, StageProgressLabel
 
 from temsim.calculation_cache import calculation_signatures, matching_products
 from temsim.calculation_manifest import (
@@ -214,12 +215,17 @@ class _StageProgress:
         self.stage_started_at = self.started_at
         self.timings: list[dict[str, object]] = []
 
-    def _emit(self, position: int, label: str) -> None:
+    def _emit(self, position: int, label: str, *, local_completed=None, local_total=None) -> None:
         if self.callback is None:
             return
         self.position = max(self.position, min(max(position, 0), self.total))
         completed, total = _bounded_progress_position(self.position, self.total)
-        self.callback(completed, total, label)
+        # Legacy consumers retain their equal-slot position. New consumers
+        # receive actual local counts and completed stages independently.
+        metadata = StageProgress(min(self.index, len(self.stages)), max(len(self.stages), 1),
+            self.stages[self.index] if self.index < len(self.stages) else "Publication",
+            local_completed, local_total)
+        self.callback(completed, total, StageProgressLabel(label, metadata))
 
     def report(self) -> None:
         label = (
@@ -242,10 +248,18 @@ class _StageProgress:
     def detail(self, label: str) -> None:
         """Report a subtask without claiming an elapsed-time percentage."""
         if self.index < len(self.stages):
+            local = getattr(label, "local_progress", None)
+            if local is not None:
+                self.update(local.completed, local.total or 0, str(label))
+                return
             self._emit(self.position, f"Stage {self.index + 1}/{len(self.stages)} | {label}")
 
     def update(self, completed: int, total: int, label: str) -> None:
-        if self.callback is None or int(total) <= 0 or self.index >= len(self.stages):
+        if self.callback is None or self.index >= len(self.stages):
+            return
+        if int(total) <= 0:
+            self._emit(self.position, f"Stage {self.index + 1}/{len(self.stages)} | {label}",
+                local_completed=max(int(completed), 0))
             return
         total = int(total)
         completed = min(max(int(completed), 0), total)
@@ -256,8 +270,8 @@ class _StageProgress:
                     + min(round(self.subdivisions * fraction), self.subdivisions - 1))
         self._emit(position, (
             f"Stage {self.index + 1}/{len(self.stages)} | {label}"
-            f" | stage progress {100.0 * fraction:.1f}%"
-        ))
+            f" | step progress {100.0 * fraction:.1f}%"
+        ), local_completed=completed, local_total=total)
 
 
 def _geometric_specimen_transport_requested(state) -> bool:
@@ -398,8 +412,9 @@ def calculate(
     work therefore cannot partially mutate the previous complete result.
     """
 
-    from temsim.calculation_workflow import validate_workflow
+    from temsim.calculation_workflow import validate_workflow, admit_unified_product
     workflow = validate_workflow(workflow)
+    admit_unified_product(state, workflow)
     if workflow != "full":
         from temsim.simulation_workflow import calculate_workflow
         return calculate_workflow(state, workflow=workflow,
@@ -1099,7 +1114,8 @@ def calculate(
         aperture_stops = aperture_stop_records(state)
         calculated_products.add("diagnostics")
     from temsim.optics.aberrations import prepare_field_aberration_diagnostics
-    if any(getattr(state, f"{system}_aberrations", {}).get("mode") == "field_derived"
+    from temsim.simulation_modes import is_unified
+    if not is_unified(state) and any(getattr(state, f"{system}_aberrations", {}).get("mode") == "field_derived"
            for system in ("probe", "image")):
         report_current_stage_progress(0, 1, "Preparing field-derived aberration diagnostics")
         prepare_field_aberration_diagnostics(
@@ -1163,10 +1179,16 @@ def calculate_particle_section(state, target_z_mm=None, component_keys=(), *,
     from temsim.specimen.source import specimen_is_vacuum
     from temsim.specimen.elastic_transport import incident_rays_from_simulation
     from temsim.calculation_manifest import solver_source_identity
+    from temsim.simulation_modes import is_unified
 
     started = perf_counter()
     from temsim.physics.source_admission import admit_requested_wave_products
-    admit_requested_wave_products(state)
+    unified = is_unified(state)
+    if unified:
+        from temsim.calculation_workflow import admit_unified_product
+        admit_unified_product(state, "rays")
+    else:
+        admit_requested_wave_products(state)
     ensure_recording_system(state)
     ensure_energy_filter(state)
     ensure_corrector_structure(state)
@@ -1181,16 +1203,57 @@ def calculate_particle_section(state, target_z_mm=None, component_keys=(), *,
         raise ValueError(f"Particle section must lie within the straight-column interval {lower:g} to {upper:g} mm")
     # Raster commands are derived from the current lens state. Resolve them
     # before the reference particles consume any AC or descan kicks.
+    stage_times = []
+    timing_stage, timing_started = None, perf_counter()
+
+    def progress(stage, message, done=None, total=None):
+        nonlocal timing_stage, timing_started
+        check_tuning_cancelled(state)
+        if timing_stage is None or stage != timing_stage[0]:
+            now = perf_counter()
+            if timing_stage is not None:
+                stage_times.append({"stage": timing_stage[1], "seconds": now-timing_started})
+            timing_stage, timing_started = (stage, message), now
+        if progress_callback is not None:
+            known = total is not None and int(total) > 0
+            progress_callback(stage, 4, StageProgressLabel(message, StageProgress(stage, 4,
+                ("Column transport", "Specimen interactions", "Downstream transport",
+                 "Detector readout and diagnostics", "Publication")[stage],
+                min(max(int(done), 0), int(total)) if known else max(int(done), 0) if done is not None else None,
+                int(total) if known else None)))
+
+    from temsim.physics.transport_progress import transport_progress
+    def transport_detail(label):
+        local = getattr(label, "local_progress", None)
+        progress(0, label, getattr(local, "completed", None), getattr(local, "total", None))
+
+    progress(0, "Preparing particle column transport")
     scan_calibration = None
     if any(bool(component.enabled and component.scan_enabled)
            for component in (state.ac_deflector, state.descan_deflector)):
-        from temsim.physics.scan_geometry import calibrate_scan_system
-        scan_calibration = calibrate_scan_system(state, observation_stop_z_mm=target)
+        with transport_progress(transport_detail):
+            if unified:
+                from temsim.physics.unified_scan_calibration import calibrate_unified_scan
+                scan_calibration = calibrate_unified_scan(state, observation_stop_z_mm=target)
+            else:
+                from temsim.physics.scan_geometry import calibrate_scan_system
+                scan_calibration = calibrate_scan_system(state, observation_stop_z_mm=target)
     external_inputs = capture_external_input_identities(state)
     base_signatures = calculation_signatures(state)
     signatures = dict(base_signatures)
     sample_z = float(state.sample.z_mm)
     reaches_material = target > sample_z and not specimen_is_vacuum(state.sample)
+    if unified:
+        if reaches_material:
+            raise ValueError("Finite-Field Optics particle material transport is not yet connected to the shared potentials; use legacy execution for downstream specimen sections.")
+        if full_path and bool(getattr(state.energy_filter, "enabled", False)):
+            raise ValueError("Finite-Field Optics does not yet support dispersive Energy Filter transport; select an explicit straight-column plane or legacy execution.")
+        detectors = tuple(detector for detector in state.stem_detectors if detector.inserted)
+        if (acquire_stem and target > sample_z and detectors
+                and all(float(detector.z_mm) <= target for detector in detectors)
+                and state.ac_deflector.enabled and state.ac_deflector.scan_enabled
+                and getattr(state.sample, "stem_image_enabled", True)):
+            raise ValueError("Finite-Field Optics raster acquisition is not yet connected to the shared potentials; use legacy execution or a non-raster optical section.")
     if reaches_material and not specimen_interactions_active(state.sample):
         raise ValueError("Inserted specimen requires a configured physical structure before downstream particle transport")
     keys = tuple(str(key) for key in component_keys)
@@ -1207,26 +1270,13 @@ def calculate_particle_section(state, target_z_mm=None, component_keys=(), *,
     material_signature = scoped("specimen", base_signatures["elastic"], solver_source_identity())
     signatures["section_material"] = material_signature
     calculated, reused = set(), set()
-    stage_times = []
-    timing_stage, timing_started = None, perf_counter()
-
-    def progress(stage, message):
-        nonlocal timing_stage, timing_started
-        check_tuning_cancelled(state)
-        if timing_stage is None or stage != timing_stage[0]:
-            now = perf_counter()
-            if timing_stage is not None:
-                stage_times.append({"stage": timing_stage[1], "seconds": now-timing_started})
-            timing_stage, timing_started = (stage, message), now
-        if progress_callback is not None:
-            progress_callback(stage, 4, message)
-
     progress(0, "Transporting emitted electrons to the selected section")
     previous_simulation = getattr(existing_result, "simulation", None)
-    simulation = run_particle_section(state,
-        observation_stop_z_mm=min(target, sample_z) if reaches_material else target,
-        tuning_component_keys=keys, existing_simulation=previous_simulation,
-        resolved_layout=layout)
+    with transport_progress(transport_detail):
+        simulation = run_particle_section(state,
+            observation_stop_z_mm=min(target, sample_z) if reaches_material else target,
+            tuning_component_keys=keys, existing_simulation=previous_simulation,
+            resolved_layout=layout)
     calculated.add("column")
     if simulation.metrics.get("section_reused_prefix"):
         reused.add("incident_prefix")
@@ -1269,7 +1319,7 @@ def calculate_particle_section(state, target_z_mm=None, component_keys=(), *,
                 if cached_eds is None:
                     progress(1, "Updating EDS dose and spectral readout")
                     cached_eds = replay_material_eds(old_cache, base_signatures, state, bundle,
-                        progress_callback=(lambda done, total, label: progress(1, label)))
+                        progress_callback=(lambda done, total, label: progress(1, label, done, total)))
                     eds_response_replayed = cached_eds is not None
             retained = request.observables | (
                 {SpecimenObservable.CHARACTERISTIC_X_RAY} if cached_eds is not None else set())
@@ -1283,7 +1333,7 @@ def calculate_particle_section(state, target_z_mm=None, component_keys=(), *,
                 metrics={"dependency_signatures": base_signatures})
         interactions = run_specimen_interactions(state, simulation, request,
             existing_result=previous_interactions,
-            progress_callback=(lambda done, total, label: progress(1, label)))
+            progress_callback=(lambda done, total, label: progress(1, label, done, total)))
         (reused if cache_compatible else calculated).update(("elastic", "inelastic"))
         if cached_eds is not None:
             reused.add("eds_response" if eds_response_replayed else "eds")
@@ -1297,7 +1347,7 @@ def calculate_particle_section(state, target_z_mm=None, component_keys=(), *,
             interactions = run_specimen_interactions(state, simulation,
                 SpecimenInteractionRequest.eds_point(x_nm=point[0], y_nm=point[1]),
                 existing_result=interactions, detector_geometry=geometry,
-                progress_callback=(lambda done, total, label: progress(1, label)))
+                progress_callback=(lambda done, total, label: progress(1, label, done, total)))
             calculated.add("eds")
         progress(2, "Transporting scattered specimen electrons")
         if cache_compatible and old_cache.target_z_mm == target:
@@ -1317,7 +1367,7 @@ def calculate_particle_section(state, target_z_mm=None, component_keys=(), *,
                 existing_exit=old_cache.specimen_exit if cache_compatible else None,
                 tuning_component_keys=keys,
                 dependency_signature=signatures["sample_downstream"],
-                progress_callback=(lambda done, total, label: progress(2, label)))
+                progress_callback=(lambda done, total, label: progress(2, label, done, total)))
             calculated.add("sample_downstream")
         else:
             reused.add("sample_downstream")
@@ -1357,6 +1407,7 @@ def calculate_particle_section(state, target_z_mm=None, component_keys=(), *,
         section_full_path=full_path,
         section_scan_calibration_scope=("not_consumed" if scan_calibration is None
             else "auxiliary_reference_matrices_may_extend_beyond_particle_section"),
+        section_scan_calibration_receipt=getattr(state.ac_deflector, "_scan_execution_receipt", None),
         sample_scattering_applied=bool(reaches_material and not no_illumination),
         sample_scattering_model=("finite_geometry_elastic_x_inelastic_tensor_product"
             if reaches_material else "not_reached" if target <= sample_z else "vacuum"),
@@ -1381,7 +1432,7 @@ def calculate_particle_section(state, target_z_mm=None, component_keys=(), *,
             specimen_interactions=interactions, geometric_specimen_exit=specimen_exit,
             geometric_specimen_exit_signature=signatures["sample_downstream"],
             observation_stop_z_mm=target, scan_calibrated=True,
-            progress_callback=(lambda done, total, label: progress(3, label)))
+            progress_callback=(lambda done, total, label: progress(3, label, done, total)))
         calculated.add("stem_scan")
     energy_filter = None
     if full_path and bool(getattr(state.energy_filter, "enabled", False)):

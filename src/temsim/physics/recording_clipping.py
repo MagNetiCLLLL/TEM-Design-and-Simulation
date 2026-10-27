@@ -15,14 +15,18 @@ def clip_recording_planes(state,z,x,y,alive,blocked_z,blocked_key):
     z=np.asarray(z,float);alive=np.asarray(alive,bool).copy();blocked_z=np.asarray(blocked_z,float).copy();blocked_key=list(blocked_key)
     x=np.asarray(x,float);y=np.asarray(y,float)
     from temsim.physics.aperture_clipping import clip_posed_apertures, posed_aperture_registration
-    posed = [a for a in getattr(state, "apertures", [])
+    from temsim.simulation_modes import is_unified
+    # Unified transport already owns every finite aperture and bore. This
+    # stage owns receivers only, so an aperture must not be applied again.
+    apertures = () if is_unified(state) else getattr(state,"apertures",[])
+    posed = [a for a in apertures
              if getattr(a, "enabled", False) and getattr(a, "installed", True)
              and float(a.z_mm) >= float(state.sample.z_mm)
              and posed_aperture_registration(state, a) is not None]
     posed_keys = {a.key for a in posed}
     candidates = [
         (float(aperture.z_mm), 0, aperture)
-        for aperture in getattr(state, "apertures", [])
+        for aperture in apertures
         if (
             bool(getattr(aperture, "enabled", False))
             and bool(getattr(aperture, "installed", True))

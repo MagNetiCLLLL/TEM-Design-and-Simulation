@@ -224,8 +224,8 @@ def test_high_accuracy_pipeline_reports_completed_real_stages(monkeypatch):
         (0, 30_000, "Stage 1/3 | Preparing state and physical layout"),
         (10_000, 30_000, "Stage 2/3 | Tracing the electron column"),
         (20_000, 30_000, "Stage 3/3 | Finalising optical diagnostics"),
-        (29_900, 30_000, "Stage 3/3 | Recording specimen interaction events | stage progress 99.0%"),
-        (29_999, 30_000, "Stage 3/3 | Specimen interactions complete | stage progress 100.0%"),
+        (29_900, 30_000, "Stage 3/3 | Recording specimen interaction events | step progress 99.0%"),
+        (29_999, 30_000, "Stage 3/3 | Specimen interactions complete | step progress 100.0%"),
         (30_000, 30_000, "Complete"),
     ]
 
@@ -1026,13 +1026,13 @@ def test_high_accuracy_pipeline_maps_stem_batches_inside_stage(monkeypatch):
     assert result.stem_scan == "stem-frame"
     assert result.energy_filter is None
     assert received_specimen_interactions == [result.specimen_interactions]
-    nested = [item for item in progress if " | stage progress " in item[2]]
+    nested = [item for item in progress if " | step progress " in item[2]]
     assert nested == [
-        (29_900, 60_000, "Stage 3/6 | Recording specimen interaction events | stage progress 99.0%"),
-        (29_999, 60_000, "Stage 3/6 | Specimen interactions complete | stage progress 100.0%"),
-        (40_000, 60_000, "Stage 5/6 | Preparing STEM | stage progress 0.0%"),
-        (45_000, 60_000, "Stage 5/6 | STEM probes 16/32 | stage progress 50.0%"),
-        (49_999, 60_000, "Stage 5/6 | STEM detector frame complete | stage progress 100.0%"),
+        (29_900, 60_000, "Stage 3/6 | Recording specimen interaction events | step progress 99.0%"),
+        (29_999, 60_000, "Stage 3/6 | Specimen interactions complete | step progress 100.0%"),
+        (40_000, 60_000, "Stage 5/6 | Preparing STEM | step progress 0.0%"),
+        (45_000, 60_000, "Stage 5/6 | STEM probes 16/32 | step progress 50.0%"),
+        (49_999, 60_000, "Stage 5/6 | STEM detector frame complete | step progress 100.0%"),
     ]
     # Specimen ledger boundaries also consume cancellation; STEM still starts
     # at its own stage, after those newly forwarded local progress events.

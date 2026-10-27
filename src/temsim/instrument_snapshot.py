@@ -55,6 +55,7 @@ _PLAIN_TYPES = frozenset({
 # including extra parameters attached by the assembly/calibration loaders.
 _RUNTIME_NAMES = frozenset({
     "_trace_cache", "_trace_cache_key", "_active_backends_used",
+    "active_backend",  # Observed execution output; backend policy remains an input.
     "_closed_gun_field", "_continuous_gun_field",  # Rebuildable static field solutions, not source inputs.
     "_instrument_magnetic_field",  # Scoped execution field, reconstructed from captured hardware inputs.
     "_instrument_magnetic_identity",
@@ -68,6 +69,7 @@ _RUNTIME_NAMES = frozenset({
     "_objective_plane_signature", "_equivalent_image_calibration_cache",
     "_tuning_cancelled",  # Worker cancellation callback, never a physical input.
     "_last_ray_device_receipt",  # Timing only; copied to result performance.
+    "_scan_execution_receipt",  # Response evidence; resolved drive values remain captured inputs.
     "_archive_inputs", "_archive_resolver",  # Retained in the graph header; never encoded as a model object.
 })
 # Older pipeline revisions attached these outputs to State as well as keeping
@@ -194,7 +196,10 @@ def decode_instrument(graph, *, assets=None):
             if list(node["fields"]) != current_fields:
                 raise ValueError(f"Unsupported model schema for {node['type']}; only current fields are accepted")
             attributes = node["attributes"]
-            required_fields = set(current_fields)
+            # Declared output-only fields are intentionally absent from new
+            # input captures. Historical records may still contain them, but
+            # their presence must not become a prerequisite for restoration.
+            required_fields = set(current_fields).difference(_RUNTIME_NAMES)
             if cls.__name__ == "MagneticFieldMap":
                 required_fields.discard("_interpolators")
             if not required_fields.issubset(attributes):

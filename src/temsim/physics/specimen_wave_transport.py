@@ -363,9 +363,12 @@ def _with_material_refinement(state, checkpoint, execute, *, grid_numerics, canc
 
 def _propagate_specimen(state, checkpoint, *, maximum_step_mm=.5, maximum_checkpoint_bytes=8*1024**3,
                         grid_numerics=WaveGridNumerics(), tip_time_s=None, column_model="physical",
-                        cancelled=lambda: False, progress_callback=None):
+                        cancelled=lambda: False, progress_callback=None, column_propagator=None):
     from temsim.specimen.scene import SpecimenScene
     column_options = {} if column_model == "physical" else {"column_model": column_model}
+    transport = _propagate_column if column_propagator is None else column_propagator
+    if column_propagator is not None and column_model != "physical":
+        raise ValueError("An explicit specimen transport cannot also apply a legacy column reference")
     start = state.sample.z_mm-state.sample.thickness_nm*.5e-6
     stop = state.sample.z_mm+state.sample.thickness_nm*.5e-6
     if not math.isclose(checkpoint.plane_z_mm, start, abs_tol=1e-9, rel_tol=0):
@@ -373,7 +376,7 @@ def _propagate_specimen(state, checkpoint, *, maximum_step_mm=.5, maximum_checkp
     if stop == start:
         return checkpoint
     if SpecimenScene.from_state(state).is_vacuum:
-        return _propagate_column(state, checkpoint, stop, maximum_step_mm=maximum_step_mm,
+        return transport(state, checkpoint, stop, maximum_step_mm=maximum_step_mm,
             grid_numerics=grid_numerics, tip_time_s=tip_time_s, cancelled=cancelled,
             progress_callback=progress_callback, **column_options)
     return _with_material_refinement(state, checkpoint,
@@ -381,15 +384,20 @@ def _propagate_specimen(state, checkpoint, *, maximum_step_mm=.5, maximum_checkp
             maximum_step_mm=maximum_step_mm, maximum_checkpoint_bytes=maximum_checkpoint_bytes,
             grid_numerics=grid_numerics, tip_time_s=tip_time_s,
             cancelled=cancelled, progress_callback=progress_callback,
-            material=material, refinement_factor=factor, refinement_history=history, column_model=column_model),
+            material=material, refinement_factor=factor, refinement_history=history, column_model=column_model,
+            column_propagator=column_propagator),
         grid_numerics=grid_numerics, cancelled=cancelled, progress_callback=progress_callback)
 
 
 def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_checkpoint_bytes,
                         grid_numerics, tip_time_s, cancelled, progress_callback,
-                        material, refinement_factor, refinement_history, column_model="physical"):
+                        material, refinement_factor, refinement_history, column_model="physical",
+                        column_propagator=None):
     from temsim.physics.wave_imaging import interaction_constant_rad_per_v_angstrom
     column_options = {} if column_model == "physical" else {"column_model": column_model}
+    transport = _propagate_column if column_propagator is None else column_propagator
+    if column_propagator is not None and column_model != "physical":
+        raise ValueError("An explicit specimen transport cannot also apply a legacy column reference")
     from temsim.specimen.inelastic import real_inelastic_distribution
     start = state.sample.z_mm-state.sample.thickness_nm*.5e-6
     stop = state.sample.z_mm+state.sample.thickness_nm*.5e-6
@@ -426,6 +434,7 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
                 reference_mode_weight=parent_support["reference_mode_weight"]/len(configs),
                 probability_loss_per_tip_electron=parent_support["probability_loss_per_tip_electron"]/len(configs))
             initial_weight, current_z, slice_records = mode.weight_per_reference_electron, start, []
+            transport_context = {} if column_propagator is None else column_propagator.context(checkpoint.record, 1/len(configs))
             first_events = {key: 0. for key in ("real_plasmon", "real_ionisation", "real_other_inelastic", "effective_absorption")}
             column_loss, support_loss = 0., 0.
             mode, band_loss = _bandlimit_mode(mode, state.sample.wave_bandwidth_fraction, frame=bandwidth_frame, numerics=grid_numerics)
@@ -438,13 +447,16 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
                 band_loss += lost
                 local = TipGunCheckpoint(BeamState((mode,), checkpoint.beam.reference_plane), current_z,
                     checkpoint.reference_current_a, {"specimen_parent": checkpoint.digest, "configuration": config_index, "slice": i,
+                        **transport_context,
                         "support_error_by_mode": {mode.mode_id: support_ledger}})
                 next_z = stop if i == len(dzs)-1 else current_z+float(dz)*1e-7
-                transported = _propagate_column(state, local, next_z, maximum_step_mm=maximum_step_mm,
+                transported = transport(state, local, next_z, maximum_step_mm=maximum_step_mm,
                     grid_numerics=grid_numerics, tip_time_s=tip_time_s,
                     retained_bytes=resident_wave_bytes(checkpoint.beam)
                         +sum(m.plane.amplitude.nbytes for m in outputs)+sum(p.nbytes for p in configs),
                     cancelled=cancelled, **column_options)
+                if column_propagator is not None:
+                    transport_context = column_propagator.context(transported.record)
                 previous_support_loss = support_ledger["probability_loss_per_tip_electron"]
                 support_ledger = _previous_support_error(transported.record, mode.mode_id)
                 slice_support_loss = support_ledger["probability_loss_per_tip_electron"]-previous_support_loss
@@ -473,6 +485,7 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
                 raise ValueError("Specimen wave, physical losses, first events and numerical bandwidth did not conserve probability")
             records.append({"mode_id": mode.mode_id, "input_weight": initial_weight,
                 "output_weight": mode.weight_per_reference_electron, "regrid": grid_record,
+                **({} if column_propagator is None else {"column_transport_context": transport_context}),
                 "support_approximation": support_ledger,
                 "inelastic_material": {"key": distribution.material_key, "model": distribution.model,
                     "energy_kev": distribution.beam_energy_kev, "warnings": distribution.warnings,
@@ -491,6 +504,7 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
     return TipGunCheckpoint(BeamState(tuple(outputs), checkpoint.beam.reference_plane), stop, checkpoint.reference_current_a,
         {"schema": "executed-specimen-wave-v1", "upstream_digest": checkpoint.digest, "upstream": checkpoint.record,
          "potential": prepared.metrics, "modes": records, "branch": "coherent zero-loss with material-IMFP attenuation",
+         **({} if column_propagator is None else {"column_transport_identity": column_propagator.digest}),
          "material_grid_refinement": {"factor": refinement_factor, "attempts": refinement_history},
          "inelastic_phase": "UNDEFINED; removed probability recorded; energy-loss branches remain in the existing particle workflow",
          "integrator": "symmetric specimen phase / distributed column Hamiltonian / specimen phase",

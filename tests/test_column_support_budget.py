@@ -251,6 +251,41 @@ def _carrier_source():
     return replace(original, beam=replace(original.beam, modes=(mode,)))
 
 
+@pytest.mark.parametrize("backend", ("CPU", "Require GPU"))
+def test_optional_carrier_refinement_keeps_the_original_finite_mask_domain(backend):
+    from temsim.physics.multiplane_wave import reselect_phase_carrier, _input_boundary_probability
+    from temsim.physics.wave_device import device_scope, to_host
+    if backend == "Require GPU":
+        from test_wave_device import _cuda
+        xp = _cuda()
+    else:
+        xp = np
+    original = _resolved_non_gaussian_wave()
+    x, _ = original.coordinates_m()
+    masked = replace(original, amplitude=original.amplitude*(x < .2e-6))
+    numerics = WaveGridNumerics(compute_backend=backend, maximum_pixels=256)
+    with device_scope(backend, maximum_working_bytes=numerics.maximum_working_bytes):
+        wave = replace(masked, amplitude=xp.asarray(masked.amplitude))
+        before = to_host(wave.amplitude).copy()
+        result, rows = reselect_phase_carrier(wave, 1.968748899648993e-12,
+            grid_numerics=numerics)
+        # The resolved input edge is practically empty, but fixed-period
+        # interpolation of this hard mask populates it with sinc tails.
+        # This optional gauge must not turn those tails into a different
+        # finite physical input for subsequent domain expansion.
+        assert _input_boundary_probability(wave.amplitude) < wave.probability*1e-12
+        assert result is wave
+        assert rows[0]["method"] == "phase-carrier optimization not applied: unresolved refined input boundary"
+        assert rows[0]["attempted_shape"][0] > wave.amplitude.shape[0]
+        assert rows[0]["refined_boundary_probability"] > 1e-6
+        assert rows[0]["from_shape"] == rows[0]["to_shape"] == (64, 64)
+        np.testing.assert_array_equal(to_host(result.amplitude), before)
+        np.testing.assert_array_equal(result.basis_m, original.basis_m)
+        np.testing.assert_array_equal(result.origin_m, original.origin_m)
+        np.testing.assert_array_equal(result.curvature_m1, original.curvature_m1)
+        np.testing.assert_array_equal(result.tilt_rad, original.tilt_rad)
+
+
 @pytest.mark.parametrize('event,expected_checks', [('linear', 1), ('cs', 2), ('mask', 2)])
 def test_carrier_checks_follow_non_linear_changes_and_match_every_step_reference(monkeypatch, event, expected_checks):
     prepared = _quadratic_fixture(6)

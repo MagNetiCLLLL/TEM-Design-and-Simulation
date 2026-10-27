@@ -125,7 +125,7 @@ class ParameterDefinition:
         elif self.category == "calibration":
             status = "Saved calibration; consumed in held mode"
         elif self.component in _HEXAPOLE_KEYS:
-            status = "Active when enabled, including Ideal Optics; parameterised multipole field"
+            status = "Active when enabled; Finite-Field Optics resolves the field, Ideal Optics applies its integrated thin action"
         return (f"{self.label} | {self.category} | {self.unit or 'dimensionless'}\n{status}\n"
                 f"{self.description}\nSweep: {'eligible through existing validator' if self.sweep_eligible else 'not in the validated sweep pilot'}")
 
@@ -157,7 +157,9 @@ _HEXAPOLE_KEYS = frozenset(k for k in _CORRECTOR_KEYS if k.endswith("_hexapole")
 _QUADRUPOLE_KEYS = frozenset(k for k in _CORRECTOR_KEYS if k.endswith("_quadrupole"))
 _FIELD_LENGTH = ("Axial Gaussian FWHM of the effective field, not the material body length. "
                  "At fixed peak coefficient, a larger width increases the integrated field; "
-                 "the response at a later plane also depends on intervening optics.")
+                 "the response at a later plane also depends on intervening optics. "
+                 "Finite-Field Optics propagates through this profile. Ideal Optics uses the integrated coefficient "
+                 "to calibrate a plane kick and does not resolve propagation within the field thickness.")
 _STIGMATOR_RESPONSE = ("X/Y are two trace-free quadrupole bases in column coordinates, not separate X/Y round lenses. "
     "In the independent model, positive strength focuses along that basis and defocuses its perpendicular axis. "
     "Reversing a pure component exchanges these axes; with both channels active the result depends on their vector sum. "
@@ -319,7 +321,8 @@ def parameter_definition(component, name, *, lens=False):
                 "Rotation by 120 degrees repeats the pattern; 60 degrees reverses it. "
                 "Correction depends on the paired fields, relay optics and incident beam; more strength need not improve the probe or image. "
                 "Hold energy and relay optics fixed when comparing. The coefficient is not a magnetic gradient in T/m². "
-                "This switch controls this field only, not the relay lenses or apertures. Configured nonlinear action remains active, including Ideal Optics, which uses analytical parameterized fields.")
+                "This switch controls this field only, not the relay lenses or apertures. Finite-Field Optics uses the parameterized field; "
+                "Ideal Optics retains its integrated nonlinear plane kick without thickness or overlap dynamics.")
         elif name in {"strength_m2", "enabled"} and component in _QUADRUPOLE_KEYS:
             category, label = "operating", "Quadrupole " + label
             detail = ("Signed effective coefficient in theta_x' = -q*x, theta_y' = +q*y. Positive q focuses X and defocuses Y "

@@ -54,8 +54,15 @@ class _PrepareWorker(QRunnable):
                 from temsim.field_vector_scene import prepare_field_vector_scene
                 from temsim.cpu_resources import numerical_job
                 with numerical_job(1, cancelled=self.cancelled.is_set):
-                    result = prepare_field_vector_scene(self.state, magnetic_scene=self.magnetic_scene,
-                                                        z_limits_mm=self.z_limits_mm)
+                    from temsim.potential_field_vector_scene import PotentialFieldVectorScene
+                    if isinstance(self.magnetic_scene, PotentialFieldVectorScene):
+                        from temsim.physics.physical_scene import capture_physical_scene
+                        if capture_physical_scene(self.state).digest != self.magnetic_scene.snapshot.scene.digest:
+                            raise ValueError("Retained potential and displayed instrument inputs differ; use their matching captured state")
+                        result = self.magnetic_scene
+                    else:
+                        result = prepare_field_vector_scene(self.state, magnetic_scene=self.magnetic_scene,
+                                                            z_limits_mm=self.z_limits_mm)
                     from temsim.field_display_regions import build_field_display_regions
                     result = (result, build_field_display_regions(self.state, result.sources))
         except Exception as exc:
@@ -1128,6 +1135,9 @@ class FieldVectorPage(QWidget):
                            (("B", sample.magnetic_valid), ("E", sample.electric_valid), ("force", sample.force_valid)))
         self.status.setText(f"Current snapshot · {len(self.selected_source_keys)} selected sources · valid samples: {counts}. "
                             "Physical-envelope samples only. Unknown values remain unavailable; no extrapolation. Force uses the uniform test-electron settings above.")
+        from temsim.simulation_modes import is_thin
+        if is_thin(self._state):
+            self.status.setText(self.status.text() + " " + self._thin_field_note())
         if self.field_scope.currentData() == "component" and not self.selected_source_keys:
             self.status.setText(self.status.text() + " Selected component has no independent field source.")
         elif self.field_scope.currentData() == "component":
@@ -1246,11 +1256,19 @@ class FieldVectorPage(QWidget):
         if self._detail_dirty and self._active and not self._fields_stale and not self._detail_timer.isActive():
             self._detail_timer.start()
 
+    @staticmethod
+    def _thin_field_note():
+        return ("Ideal Optics propagates thin optical events. Displayed finite fields describe "
+                "their underlying parameterized sources, not distributed thin-mode transport.")
+
     def _update_details(self, *_args):
         if self._scene is None:
             return
         selected = set(self.selected_source_keys)
-        lines = ["Fields are read from propagation providers. Shared physical channels / joint magnetic circuits appear once.",
+        from temsim.simulation_modes import is_thin
+        field_scope = (self._thin_field_note() if is_thin(self._state) else
+                       "Fields are read from propagation providers.")
+        lines = [field_scope + " Shared physical channels / joint magnetic circuits appear once.",
                  "Bounds below are enclosing boxes only; validity also depends on each provider's bore, map and near-axis limits.",
                  "E and B are not added numerically. Electron force is q(E + v × B), using a uniform test velocity.", ""]
         lines.extend(str(note) for note in self._scene.notes)

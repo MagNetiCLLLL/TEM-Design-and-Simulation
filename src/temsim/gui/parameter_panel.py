@@ -122,7 +122,9 @@ class ParameterPanel(QWidget):
         self.lens_cc.setRange(0.0, 1.0e6)
         self.lens_cc.setSuffix(" mm")
         self.lens_cc.setToolTip(
-            "First-order chromatic coefficient used with Δf = Cc ΔE/E0."
+            "Additional first-order chromatic coefficient: Δf = Cc ΔE/E0. "
+            "Shared by particles and coherent modes when chromatic aberration is enabled. "
+            "Physical field momentum dependence is retained; mapped lenses do not add this screen."
         )
         self.lens_aberration_model = QComboBox()
         self.lens_aberration_model.addItem(

@@ -587,15 +587,18 @@ def test_short_drift_domain_extension_retains_full_finite_complex_field_and_anal
     coefficient = wave.amplitude[n//2, n//2]/(1+tail*np.exp(-np.dot(shift, shift)/(4*sigma*sigma)))
     complex_q = q+1j*lam/(4*np.pi*sigma*sigma)
     factor = 1+distance*complex_q
-    analytic = np.zeros(output.amplitude.shape, complex)
-    for centre, angular, weight in ((np.zeros(2), np.zeros(2), 1.), (shift, extra_tilt, tail)):
-        tilt = wave.tilt_rad+q*centre+angular
-        packet_centre = wave.origin_m+centre+distance*tilt
-        delta = output.coordinates_m()-packet_centre[:, None, None]
-        constant = q*np.dot(centre, centre)/2+np.dot(wave.tilt_rad+angular, centre)+distance*np.dot(tilt, tilt)/2
-        analytic += coefficient*weight/factor*np.exp(1j*np.pi/lam*complex_q/factor*np.sum(delta**2, axis=0)
-            +2j*np.pi/lam*(np.einsum('i,iyx->yx', tilt, delta)+constant))
-    analytic *= np.sqrt(abs(np.linalg.det(output.basis_m)/np.linalg.det(wave.basis_m)))
+    def analytic_solution(plane):
+        value = np.zeros(plane.amplitude.shape, complex)
+        for centre, angular, weight in ((np.zeros(2), np.zeros(2), 1.), (shift, extra_tilt, tail)):
+            tilt = wave.tilt_rad+q*centre+angular
+            packet_centre = wave.origin_m+centre+distance*tilt
+            delta = plane.coordinates_m()-packet_centre[:, None, None]
+            constant = q*np.dot(centre, centre)/2+np.dot(wave.tilt_rad+angular, centre)+distance*np.dot(tilt, tilt)/2
+            value += coefficient*weight/factor*np.exp(1j*np.pi/lam*complex_q/factor*np.sum(delta**2, axis=0)
+                +2j*np.pi/lam*(np.einsum('i,iyx->yx', tilt, delta)+constant))
+        return value*np.sqrt(abs(np.linalg.det(plane.basis_m)/np.linalg.det(wave.basis_m)))
+
+    analytic = analytic_solution(output)
     expanded = replace(wave, amplitude=np.zeros((512, 512), complex))
     input_local = expanded.coordinates_m()-expanded.origin_m[:, None, None]
     known_input = coefficient*(np.exp(-np.sum(input_local**2, axis=0)/(4*sigma*sigma))
@@ -614,8 +617,28 @@ def test_short_drift_domain_extension_retains_full_finite_complex_field_and_anal
     larger = propagate_plane_wave(replace(wave, amplitude=twice), drift(distance), np.zeros(4), lam,
         grid_numerics=WaveGridNumerics(maximum_pixels=2048))
     centre = larger.amplitude.shape[0]//2
-    np.testing.assert_allclose(output.full_amplitude(lam),
-        larger.full_amplitude(lam)[centre-m//2:centre+m//2, centre-m//2:centre+m//2], rtol=1e-9, atol=1e-12)
+    larger_full = larger.full_amplitude(lam)
+    assert np.linalg.norm(larger_full-analytic_solution(larger)) <= omitted+1e-11
+    embedded = np.zeros_like(larger_full)
+    embedded[centre-m//2:centre+m//2, centre-m//2:centre+m//2] = output.full_amplitude(lam)
+    # Runtime edge admission does not imply continuum convergence. Compare
+    # the full smallest-domain field using the independent analytic input
+    # omission bound, then retain the stricter per-cell convergence check
+    # between two explicit further domain refinements (2m and 4m).
+    assert np.linalg.norm(embedded-larger_full) <= 2*omitted+2e-11
+    four_times = np.zeros((4*m, 4*m), complex)
+    start = 2*m-n//2
+    four_times[start:start+n, start:start+n] = wave.amplitude
+    finest = propagate_plane_wave(replace(wave, amplitude=four_times), drift(distance), np.zeros(4), lam,
+        grid_numerics=WaveGridNumerics(maximum_pixels=2048))
+    centre = finest.amplitude.shape[0]//2
+    for field in ("basis_m", "origin_m", "curvature_m1", "tilt_rad"):
+        np.testing.assert_array_equal(getattr(larger, field), getattr(finest, field))
+    # The identical carrier is a pointwise unit-modulus multiplier, so this
+    # is exactly the same complex error on the common physical cells. Do not
+    # unfold it on the unused, much wider outer grid solely for comparison.
+    np.testing.assert_allclose(larger.amplitude,
+        finest.amplitude[centre-m:centre+m, centre-m:centre+m], rtol=1e-9, atol=1e-12)
     assert larger.probability == pytest.approx(wave.probability, abs=1e-12)
 
 

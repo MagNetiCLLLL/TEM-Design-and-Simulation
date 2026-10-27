@@ -95,7 +95,7 @@ which results the field can affect and why.
 | Check | Context or parameter support is not established. |
 | Unsupported | The current calculation does not implement the requested parameter route. |
 
-For coil ID/OD and magnetic material, Ideal Optics and Analytical Field retain
+For coil ID/OD and magnetic material, parameterized Finite-Field Optics and Analytical Field retain
 their existing field definitions. Linear Geometry Field and static Nonlinear
 Material Field consume supported original geometry through configured
 axisymmetric recipes. A custom imported map does not regenerate itself when
@@ -103,7 +103,7 @@ a coil is resized. Missing excitation, material or solver setup is explained
 instead of being treated as a successful geometry solve.
 
 One parameter can have several routes. A coil length can define both its
-magnetic source extent and the axial vacuum interval. Ideal mode can therefore
+magnetic source extent and the axial vacuum interval. Parameterized Finite-Field Optics can therefore
 use the vacuum interval while leaving magnetic geometry inactive. **Active**
 means a route exists, not that every edit must change a numerical result:
 overlapping narrower passages, operating settings and other constraints can
