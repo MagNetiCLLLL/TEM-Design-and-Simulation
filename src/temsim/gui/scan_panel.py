@@ -80,6 +80,15 @@ class ScanControlView(QWidget):
         self._fourdstem_physical_result = None
         self._stem_auto_range_pending = True
         self._updating = False
+        self._calibration_message = ""
+        self._calibration_pending_frame = False
+        from temsim.gui.scan_calibration_controller import ScanCalibrationController
+        self.scan_calibration = ScanCalibrationController(self)
+        self.scan_calibration.applied.connect(self._scan_calibration_applied)
+        self.scan_calibration.failed.connect(self._scan_calibration_failed)
+        self.scan_calibration.discarded.connect(self._scan_calibration_discarded)
+        self.scan_calibration.progress.connect(self._scan_calibration_progress)
+        self.scan_calibration.busy_changed.connect(self._scan_calibration_busy_changed)
         self._playback_started_s = 0.0
         self._playback_completed_rows = 0
         self._playback_timer = QTimer(self)
@@ -155,6 +164,10 @@ class ScanControlView(QWidget):
             "position-and-angle constraint at the selected observation plane. "
             "The lens settings are retained.")
         self.calibration_status = QLabel("Automatic coupling follows the active optics.")
+        self.cancel_calibration_button = QPushButton("Cancel calibration")
+        self.cancel_calibration_button.setObjectName("cancelScanCalibration")
+        self.cancel_calibration_button.setEnabled(False)
+        self.cancel_calibration_button.clicked.connect(self._cancel_scan_calibration)
         self.calibration_status.setWordWrap(True)
         self.calibration_status.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         self.calibration_status.setToolTip("Held calibration keeps physical coil drive ratios when optics change. Actual scan size and pattern motion may then differ from the requested field of view. Recalibrate explicitly when desired.")
@@ -164,6 +177,7 @@ class ScanControlView(QWidget):
         calibration_form.addRow("Descan constraint", self.descan_constraint)
         calibration_form.addRow(self.calibrate_hold_button)
         calibration_form.addRow(self.calibrate_descan_button)
+        calibration_form.addRow(self.cancel_calibration_button)
         calibration_form.addRow(self.calibration_status)
         self.scan_calibration_mode.currentIndexChanged.connect(lambda: self._scan_calibration_changed("calibration_mode", self.scan_calibration_mode.currentData()))
         self.scan_reference.currentIndexChanged.connect(lambda: self._scan_calibration_changed("scan_reference", self.scan_reference.currentData()))
@@ -468,7 +482,7 @@ class ScanControlView(QWidget):
             "Click again for another single scan. Run high-accuracy once first "
             "to prepare the particle result. Valid upstream results can be reused."
         )
-        self.calculation_bar.requested.connect(self.calculation_requested.emit)
+        self.calculation_bar.requested.connect(self._request_calculation)
         self.parameters_changed.connect(self.calculation_bar.mark_stale)
         parameters_layout.addWidget(self.calculation_bar)
         parameters_layout.addWidget(self.summary)
@@ -970,6 +984,9 @@ class ScanControlView(QWidget):
         """Bind all controls to the current live microscope state."""
 
         if state is not self._state:
+            self.scan_calibration.cancel()
+            self._calibration_message = ""
+            self._calibration_pending_frame = False
             self._set_playback_active(False)
             self._stem_frame = None
             self._stem_frame_context = None
@@ -981,6 +998,7 @@ class ScanControlView(QWidget):
             if not self._showing_bank_images():
                 self._clear_detector_images()
                 self._update_image_model_notice(None)
+        self.scan_calibration.invalidate_if_changed(state)
         self._state = state
         self._updating = True
         try:
@@ -1087,7 +1105,13 @@ class ScanControlView(QWidget):
         ac = self._state.ac_deflector
         if (ac.enabled and ac.scan_enabled
                 and bool(getattr(self._state.sample, "stem_image_enabled", True))):
-            self.calculation_requested.emit()
+            self._request_calculation()
+
+    def _request_calculation(self):
+        if self.scan_calibration.busy:
+            self._calibration_pending_frame = True
+            return
+        self.calculation_requested.emit()
 
     def _stem_particle_model_changed(self, _index: int) -> None:
         if self._updating or self._state is None:
@@ -1601,12 +1625,74 @@ class ScanControlView(QWidget):
             self.descan_target.addItem(f"Unavailable: {ds.descan_target_key}", ds.descan_target_key)
             index = self.descan_target.count() - 1
         self.descan_target.setCurrentIndex(index)
-        self.calibration_status.setText("Held drive: focus / pivot changes remain visible. FOV labels are requested values."
+        self.calibration_status.setText(self._calibration_message or (
+            "Held drive: focus / pivot changes remain visible. FOV labels are requested values."
             if ac.calibration_mode == "held" else "Automatic coupling follows the active optics.")
+        )
+
+    def _scan_calibration_progress(self, message):
+        self._calibration_message = message
+        self.calibration_status.setText(message)
+
+    def _scan_calibration_busy_changed(self, busy):
+        self.calibrate_hold_button.setEnabled(not busy)
+        self.calibrate_descan_button.setEnabled(not busy)
+        self.cancel_calibration_button.setEnabled(busy)
+
+    def _start_scan_calibration(self, operation="automatic"):
+        self._scan_calibration_progress("Calibrating scan drives in the background. Requested FOV is shown immediately.")
+        try:
+            self.scan_calibration.submit(self._state, operation)
+        except Exception:
+            self._scan_calibration_discarded("Scan calibration could not start; previous drives retained.")
+            raise
+
+    def _scan_calibration_applied(self, operation):
+        self._updating = True
+        try:
+            self._calibration_message = "Scan calibration updated."
+            self._sync_scan_calibration_controls()
+            self._sync_controls(self._state.ac_deflector, self.ac_controls)
+            self._sync_controls(self._state.descan_deflector, self.descan_controls)
+            self._update_fov_labels()
+        finally:
+            self._updating = False
+        parameter = {"hold": "captured", "descan": "descan_captured"}.get(operation, "updated")
+        self.parameters_changed.emit(f"scan_calibration.{parameter}")
+        if self._calibration_pending_frame:
+            self._calibration_pending_frame = False
+            self.calculation_requested.emit()
+
+    def _scan_calibration_failed(self, message):
+        self._calibration_pending_frame = False
+        self._scan_calibration_progress("Scan calibration failed; previous drives retained. " + message)
+        self.error.emit(message)
+
+    def _scan_calibration_discarded(self, message):
+        self._calibration_pending_frame = False
+        self._scan_calibration_progress(message)
+
+    def _cancel_scan_calibration(self):
+        self.scan_calibration.cancel()
+        self._scan_calibration_discarded("Scan calibration cancelled; previous drives retained.")
+
+    def shutdown(self, timeout_ms=3000):
+        self._calibration_pending_frame = False
+        self._playback_timer.stop()
+        return self.scan_calibration.shutdown(timeout_ms)
+
+    def closeEvent(self, event):
+        if self.shutdown():
+            super().closeEvent(event)
+        else:
+            event.ignore()
 
     def _scan_calibration_changed(self, field, value):
         if self._updating or self._state is None or value is None:
             return
+        self.scan_calibration.cancel()
+        self._calibration_message = ""
+        self._calibration_pending_frame = False
         target = self._state.descan_deflector if field in {"descan_target_key", "descan_constraint"} else self._state.ac_deflector
         previous = getattr(target, field)
         try:
@@ -1629,6 +1715,10 @@ class ScanControlView(QWidget):
         if self._state is None or self._updating:
             return
         try:
+            from temsim.simulation_modes import is_unified
+            if is_unified(self._state):
+                self._start_scan_calibration("hold")
+                return
             calibrate_scan_system(self._state, force=True, hold=True)
             self.parameters_changed.emit("scan_calibration.captured")
         except Exception as exc:
@@ -1645,6 +1735,10 @@ class ScanControlView(QWidget):
         if self._state is None or self._updating:
             return
         try:
+            from temsim.simulation_modes import is_unified
+            if is_unified(self._state):
+                self._start_scan_calibration("descan")
+                return
             recalibrate_descan_only(self._state)
             self.parameters_changed.emit("scan_calibration.descan_captured")
         except Exception as exc:
@@ -1685,8 +1779,14 @@ class ScanControlView(QWidget):
                 setattr(other, field, converted)
             if prefix == "ac" and field == "scan_enabled" and converted:
                 component.wobble_enabled = False
-            if (prefix == "descan" and field in {"enabled", "scan_enabled"}
-                    and converted and self._state.ac_deflector.calibration_mode == "held"):
+            restore_ac_only = (prefix == "descan" and field in {"enabled", "scan_enabled"}
+                               and converted and self._state.ac_deflector.calibration_mode == "held")
+            from temsim.simulation_modes import is_unified
+            if is_unified(self._state):
+                for part in components:
+                    part.validate()
+                self._start_scan_calibration("restore_ac" if restore_ac_only else "automatic")
+            elif restore_ac_only:
                 # Permit the explicit switch before Descan-only calibration.
                 # An AC-only or old-host record must remain non-executable
                 # until that separate action accepts a new downstream solve.

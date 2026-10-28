@@ -184,17 +184,20 @@ def test_invalid_or_unresolved_particle_evidence_cannot_pass(damage):
     assert not report["passed"] and report["failures"]
 
 
-def test_surface_size_is_reported_not_an_unrequested_acceptance_limit():
+def test_small_probe_and_independent_direct_focus_and_corrector_gates():
     phi = np.arange(16)*2*np.pi/16
-    statistics = transverse_beam_statistics(1e-5*np.cos(2*phi), 1e-5*np.sin(2*phi),
+    statistics = transverse_beam_statistics(1e-10*np.cos(2*phi), 1e-10*np.sin(2*phi),
         np.tan(.03)*np.cos(phi), np.tan(.03)*np.sin(phi), weights=np.ones(16))
-    measurement = SurfaceFocusMeasurement(100., statistics, 0., 1., (2e-5, 1.5e-5, 1e-5), .05, 16.)
-    assert statistics.radius_rms_m*1e9 > .2 and 2*statistics.radius_95_m*1e9 > .7
+    measurement = SurfaceFocusMeasurement(100., statistics, 0., 1., (2e-10, 1.5e-10, 1e-10), .05, 16.)
+    assert 2*statistics.radius_95_m*1e9 < .7
     corrector = {"waist_evidence_passed": True, "angle_matching_passed": False}
-    assert qualification.qualification_failures({"passed": True}, measurement, corrector, 30.) == []
-    assert qualification.qualification_failures({"passed": True}, measurement, corrector, 30.,
+    topology = {"passed": True, "direct_focus": {"status": "PASS"}}
+    assert qualification.qualification_failures(topology, measurement, corrector, 30.) == []
+    assert qualification.qualification_failures({"passed": True}, measurement, corrector, 30.) == [
+        "Direct Mini Condenser/objective focus topology failed or is unresolved"]
+    assert qualification.qualification_failures(topology, measurement, corrector, 30.,
         require_equal_crossover_angles=True) == ["Explicit equal-angle crossover calibration constraint failed"]
-    failures = qualification.qualification_failures({"passed": True}, measurement, {"waist_evidence_passed": False}, 30.)
+    failures = qualification.qualification_failures(topology, measurement, {"waist_evidence_passed": False}, 30.)
     assert failures == ["Executed internal and AC crossover evidence failed or is unresolved"]
 
 

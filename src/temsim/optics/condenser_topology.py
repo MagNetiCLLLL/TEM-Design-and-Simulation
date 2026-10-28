@@ -95,7 +95,11 @@ def requested_capture_planes(state, *, maximum_spacing_mm=1.0):
     pieces = [np.linspace(left, right, count+1)
               for left, right, count in zip(edges, edges[1:], counts)]
     # Explicit near-C3 planes make boundary waists visible on either side.
-    return tuple(map(float, np.unique(np.r_[*pieces, c3-guard, c3+guard])))
+    from temsim.optics.direct_focus_topology import requested_capture_planes as direct_planes
+    downstream = direct_planes(state, maximum_spacing_mm=maximum_spacing_mm)
+    from temsim.optics.waist_evidence import detector_for_state, FINITE, requested_corrector_planes
+    corrector = requested_corrector_planes(state) if detector_for_state(state) == FINITE else ()
+    return tuple(map(float, np.unique(np.r_[*pieces, c3-guard, c3+guard, downstream, corrector])))
 
 
 def _report(state):
@@ -144,7 +148,7 @@ def _strict_spatial_minima(checkpoints, weights, candidates):
     return accepted
 
 
-def evaluate(state, checkpoints, masks, weights, *, maximum_spacing_mm=1.0):
+def _evaluate_legacy(state, checkpoints, masks, weights, *, maximum_spacing_mm=1.0):
     """Evaluate actual checkpoints using one positive-current survivor cohort.
 
     Missing coverage, sparse samples, nonfinite data or fewer than five rays
@@ -254,11 +258,99 @@ def evaluate(state, checkpoints, masks, weights, *, maximum_spacing_mm=1.0):
         report["message"] = (" and ".join(messages)
             + " waist brackets still need executed two-dimensional minimum checkpoints")
         return report
+    from temsim.optics.direct_focus_topology import required_for_state, evaluate_for_state
+    if required_for_state(state):
+        try:
+            direct = evaluate_for_state(state, checkpoints, live_masks, weights,
+                                        maximum_spacing_mm=maximum_spacing_mm, waist_detector='legacy_point')
+        except (AttributeError, TypeError, ValueError, FloatingPointError) as error:
+            return _reject(report, "invalid_direct_focus_evidence", str(error))
+        report["direct_focus"] = direct
+        if not direct["passed"]:
+            report["refinement_planes_mm"] = direct["refinement_planes_mm"]
+            return _reject(report, "direct_focus_failed_or_unresolved", direct["message"],
+                           unresolved=direct["status"] != "FAIL")
     report.update(status="PASS", passed=True,
                   message=("C2-to-C3 and C3-to-ADL physical waists confirmed at the declared axial sampling"
                            if large_angle else
                            "C2-to-C3 physical waist confirmed; no C3-to-ADL waist found at the declared axial sampling"))
     return report
+
+
+def evaluate(state, checkpoints, masks, weights, *, maximum_spacing_mm=1.0,
+             waist_detector=None, source_ids=None):
+    """Select finite regions for unified Nanoprobe; preserve legacy diagnostics."""
+    from temsim.optics.waist_evidence import (FINITE, detector_for_state,
+        validate_detector, finite_interval, observed_aperture_losses,
+        corrector_evidence_for_state)
+    detector = validate_detector(detector_for_state(state) if waist_detector is None else waist_detector)
+    legacy = _evaluate_legacy(state, checkpoints, masks, weights, maximum_spacing_mm=maximum_spacing_mm)
+    if detector != FINITE:
+        return legacy
+    report = _report(state)
+    report.update(schema='condenser-finite-region-topology-v2', waist_detector=detector,
+                  legacy_point_diagnostic=legacy)
+    invalid={'invalid_checkpoint_arrays','invalid_geometry_or_checkpoints',
+             'inconsistent_survivor_masks','nonfinite_surviving_coordinates'}
+    if invalid.intersection(legacy['failures']):
+        return _reject(report,'invalid_finite_region_inputs',legacy['message'])
+    try:
+        (c2,c3,adl),guard,spacing = _sampling_geometry(state,maximum_spacing_mm)
+        z=np.asarray(checkpoints.z_mm,float)
+        if any(not np.any(np.isclose(z,p,atol=1e-9,rtol=0)) for p in (c2-guard,c2,c3,adl,adl+guard)):
+            return _reject(report,'missing_boundary_checkpoints','Missing exact condenser boundaries or guards')
+        large=requirement_for_state(state)==LARGE_ANGLE_REQUIREMENT
+        positive=np.asarray(weights)>0
+        all_live=np.asarray(masks)&positive[None,:]
+        if np.any(~all_live[:-1]&all_live[1:]):
+            return _reject(report,'inconsistent_survivor_masks','A stopped positive-current source particle reappears')
+        if source_ids is not None:
+            ids=np.asarray(source_ids)
+            if ids.shape!=np.asarray(weights).shape or ids.dtype.kind not in 'iu' or len(np.unique(ids))!=len(ids):
+                return _reject(report,'invalid_source_identities','Original source IDs must be unique integer identities matching the weights')
+        losses=observed_aperture_losses(state,checkpoints,masks,weights,source_ids)
+        report['population_change_evidence']=losses
+        from temsim.optics.beam_path_audit import crossover_candidates
+        actual_roots=crossover_candidates(checkpoints,np.asarray(masks),np.asarray(weights))
+        report['actual_adjacent_cohort_radial_candidates']=actual_roots
+        for key,left,right in (('c2_c3',c2,c3),('c3_adl',c3,adl)):
+            evidence=finite_interval(checkpoints,masks,weights,left,right,
+                maximum_spacing_mm=spacing,source_ids=source_ids,known_interceptions=losses)
+            report['intervals'][key]=dict(bounds_mm=[left,right],waists=evidence['regions'],
+                candidate_count=len(evidence['radial_candidates']),finite_region_evidence=evidence)
+        first,second=(report['intervals'][key]['finite_region_evidence'] for key in ('c2_c3','c3_adl'))
+        boundaries=[row for row in actual_roots if any(abs(row['z_mm']-p)<=_BOUNDARY_TOLERANCE_MM for p in (c2,c3,adl))]
+        if boundaries:
+            report['boundary_candidates']=boundaries
+            return _reject(report,'crossover_on_component_boundary','An actual adjacent-cohort radial bracket touches a condenser component boundary')
+        # Known interception cannot erase negative evidence at its boundary.
+        # These raw brackets use only original rays alive on both adjacent
+        # planes; they never supply a required positive finite-waist witness.
+        forbidden=[row for row in actual_roots if c3<row['z_mm']<adl]
+        if not large and (second['radial_candidates'] or forbidden):
+            report['forbidden_adjacent_cohort_candidates']=forbidden
+            return _reject(report,'forbidden_c3_adl_waist','An additional C3-to-ADL radial source waist is bracketed',unresolved=False)
+        if any(row['status']=='UNRESOLVED' for row in (first,second)):
+            return _reject(report,'unresolved_finite_condenser_evidence','Incomplete finite-region or physical interception evidence')
+        if not first['regions'] or (large and not second['regions']):
+            return _reject(report,'missing_required_finite_condenser_waist','Required actual two-dimensional source-image region is absent',unresolved=False)
+        from temsim.optics.direct_focus_topology import evaluate_for_state
+        direct=evaluate_for_state(state,checkpoints,masks,weights,
+            maximum_spacing_mm=maximum_spacing_mm,waist_detector=FINITE,source_ids=source_ids)
+        report['direct_focus']=direct
+        if not direct['passed']:
+            report['refinement_planes_mm']=direct['refinement_planes_mm']
+            return _reject(report,'direct_focus_failed_or_unresolved',direct['message'],unresolved=direct['status']!='FAIL')
+        # New qualification includes the actual central/AC source-image pattern.
+        corrector=corrector_evidence_for_state(state,checkpoints,masks,weights,source_ids)
+        report['corrector']=corrector
+        if not corrector['passed']:
+            return _reject(report,'unresolved_finite_corrector_evidence','Central TL and AC intervals each require one executed finite source-image region')
+        report.update(status='PASS',passed=True,
+            message='Required condenser, central and AC finite source-image regions confirmed; no extra direct-focus branch detected at bounded sampling')
+        return report
+    except (AttributeError,KeyError,TypeError,ValueError,FloatingPointError) as error:
+        return _reject(report,'unresolved_finite_region_evidence',str(error))
 
 
 def validate(state, *, step_mm=.05, maximum_spacing_mm=1.0):
@@ -276,7 +368,8 @@ def validate(state, *, step_mm=.05, maximum_spacing_mm=1.0):
         for attempt in range(3):
             gun, cp, masks = incident_checkpoints(state, planes, step_mm=step_mm)
             report = evaluate(state, cp, masks, gun.exit_bundle.weight,
-                              maximum_spacing_mm=maximum_spacing_mm)
+                              maximum_spacing_mm=maximum_spacing_mm,
+                              source_ids=getattr(gun.exit_bundle,'ray_id',None))
             report.update(integration_step_mm=float(step_mm), executions=attempt+1)
             extra = report["refinement_planes_mm"]
             if not extra or report["passed"] or attempt == 2:

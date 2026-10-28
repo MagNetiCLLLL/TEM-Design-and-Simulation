@@ -1895,6 +1895,7 @@ def _validate_condenser_production(
             )
             topology_report = evaluate(
                 state, checkpoints, masks, getattr(emitted, "weight", None),
+                **({'source_ids':np.asarray(emitted.ray_id)} if hasattr(emitted,'ray_id') else {}),
             )
             if (topology_report["status"] != "UNRESOLVED"
                     or not topology_report["refinement_planes_mm"]

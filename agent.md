@@ -12,6 +12,11 @@ This policy applies throughout the repository.
 - A tuned Nanoprobe working point must satisfy the selected C2-C3 and C3-ADL
   crossover requirements as well as convergence, focus and current criteria.
   Stored reference values or tests of another field model are not qualification.
+- For Finite-Field Nanoprobe tuning, Mini Condenser and Upper Objective must
+  focus directly onto the specimen upper surface. Reject a distinct additional
+  pre-specimen crossover; a small final probe does not make that branch valid.
+  Keep C2/C3 as the primary convergence-angle controls and distinguish the
+  final focus tolerance from an extra upstream waist.
 - Maintenance fixes must not silently retune lenses or refocus deliberate
   perturbations. Keep physical interception and absolute particle weights.
 

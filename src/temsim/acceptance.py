@@ -277,6 +277,8 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_unified_gun_exit.py",
                 "tests/test_unified_beam_path_audit.py",
                 "tests/test_finite_field_nanoprobe_qualification.py",
+                "tests/test_finite_field_probe_size_gate.py",
+                "tests/test_finite_waist_regions.py", "tests/test_finite_region_consumers.py",
                 "tests/test_pupil_acceptance.py", "tests/test_gun_diagnostic_rays.py",
                 "tests/test_crossover_acceptance.py",
                 "tests/test_gun_exact_observations.py", "tests/test_particle_count_convergence.py",
@@ -289,6 +291,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_unified_stem_workflow.py",
                 "tests/test_unified_wave_runtime.py", "tests/test_unified_direct_alignment.py",
                 "tests/test_unified_scan_calibration.py", "tests/test_unified_scan_controls.py",
+                "tests/test_scan_calibration_background.py",
                 "tests/test_dynamic_potential.py",
                 "tests/test_electric_wave_reference.py", "tests/test_retarded_wave.py",
                 "tests/test_gaussian_remote_domain.py", "tests/test_potential_wave_carrier_fft.py",
@@ -393,6 +396,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_beam_steering_calibration.py",)),
             "particle-continuation/PC-10": ("Normal and Large-angle Nanoprobe topology, mode persistence and independent focus acceptance", (
                 "tests/test_condenser_topology.py", "tests/test_nanoprobe_topology_alignment.py",
+                "tests/test_direct_focus_topology.py",
                 "tests/test_validate_nanoprobe_condenser.py", "tests/test_nanoprobe_ranges.py",
                 "tests/test_bcor_nanoprobe_integration.py", "tests/test_supplemental_crossover.py")),
             "particle-continuation/PC-11": ("Shared physical scene, effect ownership and seven-column numerical compatibility", (

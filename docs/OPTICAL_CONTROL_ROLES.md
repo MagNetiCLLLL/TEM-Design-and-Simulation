@@ -26,6 +26,15 @@ calibration changes scan-drive response matrices, not these illumination lens
 excitations. Descan remains a control channel on the existing shared
 Image/Diffraction physical deflector; it is not an extra magnetic element.
 
+For the current preset search, use C2 and C3 as the primary controls for the
+specimen convergence semi-angle. Use the Mini Condenser and Upper Objective
+combination to compensate focus at the specimen surface, with corrector
+entrance/output matching and aberration correction measured separately. Their
+physical coupling must be reported; it does not make Mini Condenser or Upper
+Objective the primary angle-fitting controls. During an aberration-only
+adjustment, hold C2/C3 fixed and check that a smaller probe was not obtained
+merely by reducing the convergence angle.
+
 ## Required crossover topology
 
 For C3 + Probe Corrector in STEM Nanoprobe:
@@ -56,6 +65,40 @@ the second crossover is sought between the upper and lower AC scan
 coils. Determine both from executed particle trajectories. A geometric midpoint,
 an interpolated candidate or a projected-ray intersection alone is insufficient.
 
+On 2026-10-28 the user confirmed keeping the Normal entrance while matching
+the corrector interior to the CEOS optical principle. Device names need not
+map one-to-one to the manufacturer's schematic. In physical terms, C3 is weak:
+there is no additional crossover between C3 and the next optical element.
+C3 remains active, and its field together with downstream fields forms the
+next crossover. Preserve its finite profile and overlapping fringes; weak
+excitation is neither zero field nor an independently acting thin-lens rule.
+
+The internal acceptance pattern is exactly one resolved, two-dimensional
+source-image waist between TL22 and TL21 and exactly one within the two AC
+scan-coil reference centers. Count and report all other actual waist brackets
+and unresolved intervals throughout the incident column. A matching total
+count alone is insufficient. This is an internal matching contract, not a
+claim that the full published upstream ray path or OEM absolute positions
+have been reproduced.
+
+The user's subsequent 2026-10-28 clarification makes the downstream branch
+mandatory: Mini Condenser and Upper Objective must focus directly onto the
+specimen upper surface, with no separate source-image crossover before that
+surface. A distinct additional waist between Mini Condenser and specimen is
+a rejection condition, even if the final spot is small. Resolve the final
+surface-focus bracket and numerical tolerance separately from an additional
+upstream waist. The older strong downstream branch with an extra crossover
+is historical diagnostic evidence, not an acceptable branch for new presets.
+
+With the current fixed geometry, 1208.15 mm is only the arithmetic midpoint
+of the TL22/TL21 reference centers. The core's unequal HP spacing and field
+lengths mean that this point is not a validated optical symmetry plane.
+Report the measured waist position, its difference from this midpoint, and
+its difference from the old Normal reference separately. Determine useful
+optical matching from actual finite-field transfer and aberration responses;
+do not silently impose 1208.15 mm as an OEM requirement. See the
+[CEOS reference audit](development/CEOS_PROBE_CORRECTOR_REFERENCE_2026-10-28.md).
+
 CEOS's [original optical diagram and accompanying text, Figure 2 and
 pp. 443-444](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf#page=3)
 place source images at the central transfer-doublet symmetry plane and near DP12.
@@ -83,15 +126,27 @@ the selected field ray in the CEOS diagram describe different conjugate-plane
 families. State the entrance/output reference planes, retained fringe fields
 and measured sample angle when assessing a front-focal-plane claim.
 
-The user clarified that the 30 mrad specimen target means the physical pupil /
-calibrated diffraction-disk edge semi-angle. Report alpha95 separately; do not
-substitute it or the maximum sampled particle angle for an unknown pupil edge.
-There is no prescribed transmitted-current limit. Report the absolute current
+For the new strength search requested on **2026-10-28**, the user explicitly
+selected **alpha95 = 30 mrad at the specimen upper surface** and **spatial
+D95 < 0.7 nm**. Both 95% statistics use the original positive-current weights
+that physically reach that plane: alpha95 is the angular containment semi-angle
+about the current-weighted chief direction; D95 is the spatial containment
+diameter about the current-weighted beam centroid. Report RMS size separately;
+the previous 0.2 nm candidate-screening value is not an additional user-selected
+acceptance limit. There is no prescribed transmitted-current limit. Report the absolute current
 and interception losses; neither acceptance filtering nor arbitrary current
-normalization is permitted. The existing alpha95-based fitters do not yet
-qualify this edge target. Follow the
+normalization is permitted.
+
+This latest selection supersedes the **2026-10-27 physical pupil-edge 30 mrad
+objective for new tuning**. Keep the physical pupil edge as a separate measured
+observable; do not infer it from alpha95 or the maximum sampled particle angle.
+Historical edge-acceptance reports retain their original definitions and do not
+qualify the new alpha95 working point. Follow the remaining topology, source,
+focus, current, convergence, and driven-scan requirements in the
 [optical acceptance contract](development/FINITE_FIELD_OPTICAL_ACCEPTANCE_CONTRACT_2026-10-27.md)
-before joint excitation and geometry tuning.
+before claiming joint qualification. The older alpha95 fitters still require
+those independent checks and must not silently impose their extra historical
+size/current gates on this user-selected specification.
 
 Use `scripts/measure_optical_acceptance.py` for the separate physical-pupil
 measurement and incident-column joint report. It brackets actual source-to-column

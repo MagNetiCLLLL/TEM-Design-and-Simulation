@@ -1,0 +1,443 @@
+{
+  "schema": "finite-field-direct-focus-diagnostic-evidence-v2",
+  "date": "2026-10-28",
+  "status": "NOT_QUALIFIED_D95_LIMIT_FAILED",
+  "installed_as_default": false,
+  "best_complete_physical_case": "first-focus-final-refined-v5",
+  "interpretation": "Historical fixed-source classical production observations of an unqualified candidate. This evidence document is not a loadable State or an operating preset.",
+  "requested_target": {
+    "alpha95_mrad": 30,
+    "d95_strict_upper_limit_nm": 0.7,
+    "direct_focus": "Mini Condenser and Upper Objective must focus directly at the specimen surface without an additional upstream source-image waist",
+    "minimum_transmission_fraction": null
+  },
+  "controls_percent": {
+    "condenser_lens_1": 51.666666666666664,
+    "condenser_lens_2": 16.36072125816475,
+    "condenser_lens_3": 9.207984804305022,
+    "adapter_lens": 10.0,
+    "probe_tl22_lens": 53.598805878845226,
+    "probe_tl21_lens": 59.586099311303876,
+    "probe_tl12_lens": 47.71164796252732,
+    "mini_condenser": 27.077837967886616,
+    "objective_lens": 29.293344328471793,
+    "diffraction_lens": 14.577617197168571,
+    "intermediate_lens": 0.035082657259397326,
+    "projector_lens_1": 32.1132572718703,
+    "projector_lens_2": 9.826874422815507
+  },
+  "probe_field_controls": {
+    "probe_dph2_deflector": {
+      "kick_x_mrad": 0.0,
+      "kick_y_mrad": 0.0
+    },
+    "probe_qph2_quadrupole": {
+      "strength_m2": 0.0
+    },
+    "probe_hp2_hexapole": {
+      "strength_m3": 5363281.502303811,
+      "orientation_rad": 0.0
+    },
+    "probe_dp22_deflector": {
+      "kick_x_mrad": 0.0,
+      "kick_y_mrad": 0.0
+    },
+    "probe_hpc_hexapole": {
+      "strength_m3": 192263.55172340476,
+      "orientation_rad": 0.7922207886133085
+    },
+    "probe_qpc_quadrupole": {
+      "strength_m2": 0.0
+    },
+    "probe_dp21_deflector": {
+      "kick_x_mrad": 0.0,
+      "kick_y_mrad": 0.0
+    },
+    "probe_dph1_deflector": {
+      "kick_x_mrad": 0.0,
+      "kick_y_mrad": 0.0
+    },
+    "probe_qph1_quadrupole": {
+      "strength_m2": 0.0
+    },
+    "probe_hp1_hexapole": {
+      "strength_m3": 4553866.896801527,
+      "orientation_rad": 0.01689758570469531
+    },
+    "probe_hpol_hexapole": {
+      "strength_m3": 479469.7461901968,
+      "orientation_rad": 0.3111380493101893
+    },
+    "probe_qpol_quadrupole": {
+      "strength_m2": 0.0
+    },
+    "probe_dp11_deflector": {
+      "kick_x_mrad": 0.0,
+      "kick_y_mrad": 0.0
+    },
+    "condenser_stigmator": {
+      "strength_x_percent": 0.0005030845145850119,
+      "strength_y_percent": 0.012000878806056787
+    }
+  },
+  "physical_geometry_and_apertures_changed": false,
+  "source_distribution_or_absolute_weights_refitted": false,
+  "cases": [
+    {
+      "label": "first-focus-auxiliary-refined-v4",
+      "maximum_integration_step_mm": 0.05,
+      "input_sha256": "61fefa2b5eed3fc395b18bd162bf36f15c67f4f4abea733f4f33739bd1eed34f",
+      "snapshot_digest": "4c76fcab7dfe612d138618a7da2e20a20f196c7d2a067078fe10d92c7e657ed0",
+      "solver_identity": "f34f2ff6f73532f29faa3652fd88dd902625bd248d2196e5d94c3f0b08c5cd21",
+      "source_population_identity": "4e3bac1af215cfe7b8589e64363541ba2039654fb01be49e8a5abee3017c0815",
+      "observations_sha256": "5000e63f194b2119a9bc94bab98bba4d8aa0473472d4659ed394e6e2c33967a9",
+      "original_report_sha256": "9a54360fe2e94b91d619eb9dff7ea694572508953bb1357a4ddf18ac900f5ec7",
+      "independent_audit_sha256": "fbd928295883a7e7a53c45e45aecf62f3787ca4f94394872071c5412d683c154",
+      "surface": {
+        "plane_z_mm": 1599.1999975,
+        "arriving_particles": 193,
+        "original_arriving_weight": 0.9999999999999998,
+        "transmission_fraction": 1.0,
+        "centroid_m": [
+          -3.908312731224281e-11,
+          3.1923032870844955e-12
+        ],
+        "chief_unit_direction": [
+          -8.209090179931173e-05,
+          0.0003588918251918938,
+          0.9999999322288685
+        ],
+        "alpha95_mrad": 29.99982139967654,
+        "spatial_d95_nm": 2.4350500599537037,
+        "spatial_rms_radius_nm": 0.6354231789199517,
+        "covariance_drift_waist_nm": -0.0005865562866835232,
+        "radial_variance_m2": 4.037626163087369e-19,
+        "current_a_using_declared_source_current": 1e-05
+      },
+      "local_radial_focus_offset_nm": -0.000586321500428765,
+      "physical_losses": [],
+      "original_source_ids": {
+        "first": 0,
+        "last": 192,
+        "count": 193,
+        "original_weight_each": 0.0051813471502590676
+      },
+      "elapsed_s": 253.66050370014273,
+      "controls_percent": {
+        "condenser_lens_1": 51.666666666666664,
+        "condenser_lens_2": 17.01336297034789,
+        "condenser_lens_3": 9.207984804305022,
+        "adapter_lens": 10.0,
+        "probe_tl22_lens": 54.598805878845226,
+        "probe_tl21_lens": 60.15427975382683,
+        "probe_tl12_lens": 48.05989991663068,
+        "mini_condenser": 30.077837967886616,
+        "objective_lens": 28.9681526921629,
+        "diffraction_lens": 14.577617197168571,
+        "intermediate_lens": 0.035082657259397326,
+        "projector_lens_1": 32.1132572718703,
+        "projector_lens_2": 9.826874422815507
+      },
+      "probe_field_controls": {
+        "probe_dph2_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_qph2_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_hp2_hexapole": {
+          "strength_m3": 5324484.721681681,
+          "orientation_rad": 0.0
+        },
+        "probe_dp22_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_hpc_hexapole": {
+          "strength_m3": 108637.64987919354,
+          "orientation_rad": -0.7788689933209049
+        },
+        "probe_qpc_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_dp21_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_dph1_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_qph1_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_hp1_hexapole": {
+          "strength_m3": 4553264.35812133,
+          "orientation_rad": 0.020103632255650893
+        },
+        "probe_hpol_hexapole": {
+          "strength_m3": 359327.2076402701,
+          "orientation_rad": 0.09378625673963004
+        },
+        "probe_qpol_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_dp11_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "condenser_stigmator": {
+          "strength_x_percent": -0.00224413192280108,
+          "strength_y_percent": 0.011032496475602165
+        }
+      }
+    },
+    {
+      "label": "first-focus-auxiliary-half-step-v1",
+      "maximum_integration_step_mm": 0.025,
+      "input_sha256": "61fefa2b5eed3fc395b18bd162bf36f15c67f4f4abea733f4f33739bd1eed34f",
+      "snapshot_digest": "9b3e4a126a74371021e28bd1a6e68a292bba56fedcec85291e179867269e0e67",
+      "solver_identity": "f34f2ff6f73532f29faa3652fd88dd902625bd248d2196e5d94c3f0b08c5cd21",
+      "source_population_identity": "4e3bac1af215cfe7b8589e64363541ba2039654fb01be49e8a5abee3017c0815",
+      "observations_sha256": "85e00ef3dc19ef3db2dac4f9586c461e82e4b448df39c016fff3ab9a455dbc81",
+      "original_report_sha256": "8b6a2f9a05271b9b95776e7ba0c13a2ef9a269122b8bb4bdb407400897e2f0d0",
+      "independent_audit_sha256": "99e06cfd8e65bd2640d6871867dd2a8f3d037fa478df4428d88fb43810349ce4",
+      "surface": {
+        "plane_z_mm": 1599.1999975,
+        "arriving_particles": 193,
+        "original_arriving_weight": 0.9999999999999998,
+        "transmission_fraction": 1.0,
+        "centroid_m": [
+          -3.9083014822758315e-11,
+          3.1925014410992147e-12
+        ],
+        "chief_unit_direction": [
+          -8.209090244687756e-05,
+          0.0003588918252060713,
+          0.9999999322288684
+        ],
+        "alpha95_mrad": 29.999821410000703,
+        "spatial_d95_nm": 2.4350160638340808,
+        "spatial_rms_radius_nm": 0.6354228958780704,
+        "covariance_drift_waist_nm": -0.001021115463219042,
+        "radial_variance_m2": 4.0376225660607314e-19,
+        "current_a_using_declared_source_current": 1e-05
+      },
+      "local_radial_focus_offset_nm": -0.0010208805035864985,
+      "physical_losses": [],
+      "original_source_ids": {
+        "first": 0,
+        "last": 192,
+        "count": 193,
+        "original_weight_each": 0.0051813471502590676
+      },
+      "elapsed_s": 349.2562920001801,
+      "controls_percent": {
+        "condenser_lens_1": 51.666666666666664,
+        "condenser_lens_2": 17.01336297034789,
+        "condenser_lens_3": 9.207984804305022,
+        "adapter_lens": 10.0,
+        "probe_tl22_lens": 54.598805878845226,
+        "probe_tl21_lens": 60.15427975382683,
+        "probe_tl12_lens": 48.05989991663068,
+        "mini_condenser": 30.077837967886616,
+        "objective_lens": 28.9681526921629,
+        "diffraction_lens": 14.577617197168571,
+        "intermediate_lens": 0.035082657259397326,
+        "projector_lens_1": 32.1132572718703,
+        "projector_lens_2": 9.826874422815507
+      },
+      "probe_field_controls": {
+        "probe_dph2_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_qph2_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_hp2_hexapole": {
+          "strength_m3": 5324484.721681681,
+          "orientation_rad": 0.0
+        },
+        "probe_dp22_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_hpc_hexapole": {
+          "strength_m3": 108637.64987919354,
+          "orientation_rad": -0.7788689933209049
+        },
+        "probe_qpc_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_dp21_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_dph1_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_qph1_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_hp1_hexapole": {
+          "strength_m3": 4553264.35812133,
+          "orientation_rad": 0.020103632255650893
+        },
+        "probe_hpol_hexapole": {
+          "strength_m3": 359327.2076402701,
+          "orientation_rad": 0.09378625673963004
+        },
+        "probe_qpol_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_dp11_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "condenser_stigmator": {
+          "strength_x_percent": -0.00224413192280108,
+          "strength_y_percent": 0.011032496475602165
+        }
+      }
+    },
+    {
+      "label": "first-focus-final-refined-v5",
+      "maximum_integration_step_mm": 0.05,
+      "input_sha256": "d296a6405a752a81f82b60217e21090c84a37d4767ca322f39297bb8d399b040",
+      "snapshot_digest": "3426a02837bdbd2f30ad657c15f9b4fd5cd6fab16b48fc1afe7a49edc871c907",
+      "solver_identity": "f34f2ff6f73532f29faa3652fd88dd902625bd248d2196e5d94c3f0b08c5cd21",
+      "source_population_identity": "4e3bac1af215cfe7b8589e64363541ba2039654fb01be49e8a5abee3017c0815",
+      "observations_sha256": "891f389d33aecce6bc8fc66dd61153e0fa2ef68b5aac3ae8b4382870f5e92a34",
+      "original_report_sha256": "80ec5e4aa86e63b88fc476dc0f5edc727f2743ea9baef0dfdbb3eac77bf5ba77",
+      "independent_audit_sha256": "82caad726bcb4301fe2dd89152bde57bbbcd1903709cfba3bc31e0620aa2f988",
+      "surface": {
+        "plane_z_mm": 1599.1999975,
+        "arriving_particles": 193,
+        "original_arriving_weight": 0.9999999999999998,
+        "transmission_fraction": 1.0,
+        "centroid_m": [
+          -3.414680479726493e-11,
+          -2.406748477319679e-13
+        ],
+        "chief_unit_direction": [
+          -9.278763985607159e-05,
+          0.00035369013947855185,
+          0.9999999331468673
+        ],
+        "alpha95_mrad": 29.99986562381447,
+        "spatial_d95_nm": 2.1995620643931644,
+        "spatial_rms_radius_nm": 0.5616579230528641,
+        "covariance_drift_waist_nm": 0.000516879863131518,
+        "radial_variance_m2": 3.1545962252805707e-19,
+        "current_a_using_declared_source_current": 1e-05
+      },
+      "local_radial_focus_offset_nm": 0.0005171143994258119,
+      "physical_losses": [],
+      "original_source_ids": {
+        "first": 0,
+        "last": 192,
+        "count": 193,
+        "original_weight_each": 0.0051813471502590676
+      },
+      "elapsed_s": 246.64325289987028,
+      "controls_percent": {
+        "condenser_lens_1": 51.666666666666664,
+        "condenser_lens_2": 16.36072125816475,
+        "condenser_lens_3": 9.207984804305022,
+        "adapter_lens": 10.0,
+        "probe_tl22_lens": 53.598805878845226,
+        "probe_tl21_lens": 59.586099311303876,
+        "probe_tl12_lens": 47.71164796252732,
+        "mini_condenser": 27.077837967886616,
+        "objective_lens": 29.293344328471793,
+        "diffraction_lens": 14.577617197168571,
+        "intermediate_lens": 0.035082657259397326,
+        "projector_lens_1": 32.1132572718703,
+        "projector_lens_2": 9.826874422815507
+      },
+      "probe_field_controls": {
+        "probe_dph2_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_qph2_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_hp2_hexapole": {
+          "strength_m3": 5363281.502303811,
+          "orientation_rad": 0.0
+        },
+        "probe_dp22_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_hpc_hexapole": {
+          "strength_m3": 192263.55172340476,
+          "orientation_rad": 0.7922207886133085
+        },
+        "probe_qpc_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_dp21_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_dph1_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "probe_qph1_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_hp1_hexapole": {
+          "strength_m3": 4553866.896801527,
+          "orientation_rad": 0.01689758570469531
+        },
+        "probe_hpol_hexapole": {
+          "strength_m3": 479469.7461901968,
+          "orientation_rad": 0.3111380493101893
+        },
+        "probe_qpol_quadrupole": {
+          "strength_m2": 0.0
+        },
+        "probe_dp11_deflector": {
+          "kick_x_mrad": 0.0,
+          "kick_y_mrad": 0.0
+        },
+        "condenser_stigmator": {
+          "strength_x_percent": 0.0005030845145850119,
+          "strength_y_percent": 0.012000878806056787
+        }
+      }
+    }
+  ],
+  "step_comparison": {
+    "cases_compared": [
+      "first-focus-auxiliary-refined-v4",
+      "first-focus-auxiliary-half-step-v1"
+    ],
+    "d95_change_nm": -3.399611962295879e-05,
+    "alpha95_change_mrad": 1.0324161081598504e-08,
+    "local_radial_focus_change_nm": -0.00043455900315773346,
+    "scope": "One step-halving comparison of the earlier auxiliary candidate at a fixed 193-particle source. The final candidate has no separate half-step run. This is not source-sampling convergence or a numerical error bound for other states"
+  },
+  "remaining_requirements": [
+    "Actual transmitted-current D95 strictly below 0.7 nm",
+    "Source-count convergence for the ultimately accepted working point",
+    "Numerical and finite-field representation checks appropriate to that working point",
+    "Driven scan and detector-image qualification at the requested sampling"
+  ],
+  "new_coherent_calculations_executed": false,
+  "cuda_capability": {
+    "date_utc": "2026-10-28",
+    "probe": "temsim.physics.compute_backend.coherent_cuda_capability",
+    "python": ".venv/Scripts/python.exe",
+    "available": true,
+    "detail": "CuPy 14.2.0; NVIDIA GeForce GTX 1060 3GB; 2.4 GiB free / 3.0 GiB; CUDA allocation and FFT verified",
+    "warning": "CUDA path could not be detected; the actual CUDA allocation and FFT nevertheless completed successfully",
+    "scope": "A bounded 2x2 complex128 device FFT only. No instrument preparation, coherent propagation, specimen calculation or scan was executed. Available memory is an observation at probe time, not a scan memory guarantee."
+  }
+}

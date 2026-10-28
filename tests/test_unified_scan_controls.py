@@ -4,7 +4,6 @@ The exact finite-dipole drift oracle isolates routing and drive algebra. It is
 not a qualification of a real column or a substitute for particle histories.
 """
 from copy import deepcopy
-from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -20,6 +19,9 @@ from test_unified_scan_calibration import _state, _drift_response
 @pytest.fixture
 def shared_responses(monkeypatch):
     calls = []
+    # No physical propagation runs in this fixture. Keep captured GUI jobs
+    # independent of concurrent source edits elsewhere in the checkout.
+    monkeypatch.setattr("temsim.calculation_manifest.solver_source_identity", lambda: "a"*64)
 
     def measured(state, targets, **kwargs):
         calls.append((tuple(targets), dict(kwargs)))
@@ -47,17 +49,15 @@ def _physical(state):
             deepcopy(vars(state.descan_deflector._physical_host)))
 
 
-def _view(state):
-    """Only presentation callbacks are replaced; public calibration is real."""
+def _view(state, qtbot):
+    """Use the real asynchronous page with only response measurements replaced."""
+    from temsim.gui.scan_panel import ScanControlView
     errors, changes = [], []
-    view = SimpleNamespace(_state=state, _updating=False,
-        error=SimpleNamespace(emit=errors.append),
-        parameters_changed=SimpleNamespace(emit=changes.append),
-        _sync_scan_calibration_controls=lambda: None,
-        _sync_controls=lambda *args: None, ac_controls={}, descan_controls={},
-        _component_for_prefix=lambda current, prefix:
-            current.ac_deflector if prefix == "ac" else current.descan_deflector,
-        _update_fov_labels=lambda: None)
+    view = ScanControlView()
+    qtbot.addWidget(view)
+    view.set_state(state)
+    view.error.connect(errors.append)
+    view.parameters_changed.connect(changes.append)
     return view, errors, changes
 
 
@@ -65,30 +65,34 @@ def _view(state):
     ("scan_pixel_size_nm", .022), ("scan_pixels_x", 96), ("scan_lines", 32),
     ("scan_frame_period_s", .2),
 ])
-def test_gui_scan_edits_update_shared_raster_and_field_owned_drives(shared_responses, field, value):
+def test_gui_scan_edits_update_shared_raster_and_field_owned_drives(shared_responses, field, value, qtbot):
     from temsim.gui.scan_panel import ScanControlView
     state = _state()
     physical = _physical(state)
-    view, errors, changes = _view(state)
+    view, errors, changes = _view(state, qtbot)
     ScanControlView._control_changed(view, "ac", field, value)
     assert errors == [] and changes == [f"ac.{field}"]
     assert getattr(state.ac_deflector, field) == getattr(state.descan_deflector, field) == value
+    qtbot.waitUntil(lambda: not view.scan_calibration.busy, timeout=10000)
+    assert not errors and changes[-1] == "scan_calibration.updated"
     assert len(shared_responses) == 1
     assert _physical(state) == physical
     assert state.ac_deflector._scan_execution_receipt["status"] == "executed_shared_potential_response"
 
 
-def test_gui_capture_and_descan_buttons_use_shared_fields(shared_responses):
+def test_gui_capture_and_descan_buttons_use_shared_fields(shared_responses, qtbot):
     from temsim.gui.scan_panel import ScanControlView
     state = _state()
     physical, host = _physical(state), state.descan_deflector._physical_host
-    view, errors, changes = _view(state)
+    view, errors, changes = _view(state, qtbot)
     ScanControlView._calibrate_and_hold(view)
+    qtbot.waitUntil(lambda: not view.scan_calibration.busy, timeout=10000)
     assert errors == [] and changes == ["scan_calibration.captured"]
     assert state.ac_deflector.calibration_mode == "held"
     first = validate_record(state.ac_deflector.calibration_record_json)
     assert first["descan_calibrated"] and first["descan_physical_host_key"] == host.key
     ScanControlView._calibrate_descan_only(view)
+    qtbot.waitUntil(lambda: not view.scan_calibration.busy, timeout=10000)
     assert errors == [] and changes[-1] == "scan_calibration.descan_captured"
     assert len(shared_responses) == 2
     assert state.descan_deflector._physical_host is host and _physical(state) == physical
@@ -99,16 +103,18 @@ def test_gui_capture_and_descan_buttons_use_shared_fields(shared_responses):
     assert state.ac_deflector._scan_execution_receipt["sample_position_relative_residual"] is None
 
 
-def test_held_fov_edits_rescale_without_measuring_or_refocusing(shared_responses):
+def test_held_fov_edits_rescale_without_measuring_or_refocusing(shared_responses, qtbot):
     from temsim.gui.scan_panel import ScanControlView
     state = _state()
     calibrate_scan_system(state, force=True, hold=True)
     ac_command = np.asarray(state.ac_deflector.scan_command_matrix_mrad).copy()
     ds_command = np.asarray(state.descan_deflector.scan_command_matrix_mrad).copy()
     record = state.ac_deflector.calibration_record_json
-    view, errors, changes = _view(state)
+    view, errors, changes = _view(state, qtbot)
     ScanControlView._control_changed(view, "ac", "scan_pixel_size_nm", .03)
     assert errors == [] and changes == ["ac.scan_pixel_size_nm"]
+    qtbot.waitUntil(lambda: not view.scan_calibration.busy, timeout=10000)
+    assert not errors
     assert len(shared_responses) == 1
     np.testing.assert_allclose(state.ac_deflector.scan_command_matrix_mrad, ac_command*1.5, rtol=1e-15)
     np.testing.assert_allclose(state.descan_deflector.scan_command_matrix_mrad, ds_command*1.5, rtol=1e-15)

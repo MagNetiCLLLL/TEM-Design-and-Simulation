@@ -110,7 +110,7 @@ def requested_corrector_crossover_planes(regions):
 
 def evaluate_corrector_crossovers(checkpoints, masks, weights, regions, *, source_current_a,
                                   source_ids=None, angle_relative_tolerance=.01,
-                                  require_equal_crossover_angles=False):
+                                  require_equal_crossover_angles=False,waist_detector='legacy_point'):
     """Observe two executed 2D waists on original particles and current weights.
 
     A common cohort must survive the complete central-to-AC observation span.
@@ -139,6 +139,13 @@ def evaluate_corrector_crossovers(checkpoints, masks, weights, regions, *, sourc
         return report
 
     try:
+        from temsim.optics.waist_evidence import (FINITE,validate_detector,finite_interval,
+            explicit_bracket_indices,support_on_bracket)
+        validate_detector(waist_detector)
+        report['waist_detector']=waist_detector
+        if waist_detector==FINITE:
+            report.update(schema='executed-corrector-finite-region-observation-v3',
+                scope='Executed finite source-image regions with explicit sides; no exact common stationary plane is asserted')
         requested_corrector_crossover_planes(regions)
         tolerance = float(angle_relative_tolerance)
         current = float(source_current_a)
@@ -197,6 +204,14 @@ def evaluate_corrector_crossovers(checkpoints, masks, weights, regions, *, sourc
             candidates = crossover_candidates(local, fixed, weight[common])
             waists = _strict_spatial_minima(local, weight[common],
                 measured_corrector_crossovers(local, fixed, weight[common], left, right))
+            legacy_waists=waists
+            finite_evidence=None
+            if waist_detector==FINITE:
+                finite_evidence=finite_interval(checkpoints,np.broadcast_to(common,alive.shape),weight,
+                    left,right,maximum_spacing_mm=region['maximum_spacing_mm'],source_ids=identities)
+                waists=finite_evidence['regions']
+                if finite_evidence['status']=='UNRESOLVED':
+                    report['failures'].append(f'unresolved_{name}_finite_region_evidence')
             rows = []
             for waist in waists:
                 index = int(np.searchsorted(z, waist["z_mm"]))
@@ -204,19 +219,26 @@ def evaluate_corrector_crossovers(checkpoints, masks, weights, regions, *, sourc
                 bracket = []
                 bracket_planes = (waist["bracket_mm"][0], waist["z_mm"], waist["bracket_mm"][1])
                 bracket_indices = np.searchsorted(z, bracket_planes)
-                actual_masks = alive[bracket_indices] & (weight > 0)
+                support_indices=np.arange(bracket_indices[0],bracket_indices[-1]+1) if waist_detector==FINITE else bracket_indices
+                actual_masks = alive[support_indices] & (weight > 0)
                 actual_support = dict(status="UNRESOLVED", executed_waists=[],
                     positive_current_membership_stable=bool(np.all(actual_masks == actual_masks[0])))
                 if not actual_support["positive_current_membership_stable"]:
                     report["failures"].append(f"unresolved_{name}_actual_waist_cohort_changed")
                 else:
                     actual_cohort = actual_masks[0]
-                    actual_cp = SimpleNamespace(z_mm=z[bracket_indices], **dict(zip(keys,
-                        (a[np.ix_(bracket_indices, actual_cohort)] for a in arrays))))
-                    actual_fixed = np.ones(actual_cp.x_m.shape, bool)
-                    actual_waists = _strict_spatial_minima(actual_cp, weight[actual_cohort],
-                        measured_corrector_crossovers(actual_cp, actual_fixed, weight[actual_cohort], left, right))
-                    supported = len(actual_waists) == 1 and actual_waists[0]["z_mm"] == waist["z_mm"]
+                    if waist_detector==FINITE:
+                        actual_support=support_on_bracket(checkpoints,alive,weight,waist,
+                            maximum_spacing_mm=region['maximum_spacing_mm'],source_ids=identities)
+                        actual_waists=actual_support['executed_waists']
+                        supported=actual_support['status']=='PASS'
+                    else:
+                        actual_cp = SimpleNamespace(z_mm=z[bracket_indices], **dict(zip(keys,
+                            (a[np.ix_(bracket_indices, actual_cohort)] for a in arrays))))
+                        actual_fixed = np.ones(actual_cp.x_m.shape, bool)
+                        actual_waists = _strict_spatial_minima(actual_cp, weight[actual_cohort],
+                            measured_corrector_crossovers(actual_cp, actual_fixed, weight[actual_cohort], left, right))
+                        supported = len(actual_waists) == 1 and actual_waists[0]["z_mm"] == waist["z_mm"]
                     actual_support.update(status="PASS" if supported else "FAIL", executed_waists=actual_waists,
                         source_ids=identities[actual_cohort].tolist(), original_weights=weight[actual_cohort].tolist())
                     if not supported:
@@ -235,7 +257,9 @@ def evaluate_corrector_crossovers(checkpoints, masks, weights, regions, *, sourc
                     executed_bracket=bracket, actual_waist_support=actual_support))
             report["intervals"][name] = dict(region, checkpoint_count=int(indices.size),
                 actual_maximum_spacing_mm=float(np.max(np.diff(z[indices]))),
-                interpolated_candidates_diagnostic_only=candidates, executed_waists=rows)
+                interpolated_candidates_diagnostic_only=candidates, executed_waists=rows,
+                legacy_point_executed_waists=legacy_waists if waist_detector==FINITE else None,
+                finite_region_evidence=finite_evidence)
             if len(rows) != 1:
                 report["failures"].append(f"missing_or_ambiguous_executed_{name}_2d_waist")
         if report["failures"]:
@@ -262,14 +286,38 @@ def evaluate_corrector_crossovers(checkpoints, masks, weights, regions, *, sourc
         return reject("unresolved_corrector_crossover_evidence")
 
 
+def validated_diameter_limit_nm(value):
+    """Validate a declared strict size bound before any expensive observation."""
+    try:
+        limit = float(value)
+    except (TypeError, ValueError) as error:
+        raise ValueError("Probe diameter limit must be finite and positive") from error
+    if isinstance(value, bool) or not math.isfinite(limit) or limit <= 0:
+        raise ValueError("Probe diameter limit must be finite and positive")
+    return limit
+
+
 def qualification_failures(topology, measurement, corrector, target_mrad, *,
-                           require_equal_crossover_angles=False):
-    """Apply requested topology, focus, angle and crossover gates; report size separately."""
+                           require_equal_crossover_angles=False, maximum_diameter95_nm=.7,
+                           crossover_chain=None):
+    """Apply declared topology, focus, angle, strict size and crossover gates."""
+    diameter_limit = validated_diameter_limit_nm(maximum_diameter95_nm)
     failures = []
+    if (corrector.get('waist_detector')=='finite_region'
+            and not (crossover_chain or {}).get('required_topology_satisfied_at_sampling',False)):
+        failures.append('Required source-image regions failed or have incomplete whole-capture evidence')
+    if (corrector.get('waist_detector')=='finite_region'
+            and (crossover_chain or {}).get('unattributed_population_change_count',0)):
+        failures.append('Unattributed physical interception remains unresolved in the incident capture')
     if not topology["passed"]:
         failures.append("Condenser topology failed or is unresolved")
+    if topology.get("direct_focus", {}).get("status") != "PASS":
+        failures.append("Direct Mini Condenser/objective focus topology failed or is unresolved")
     if not measurement.accepts(target_mrad):
         failures.append("Surface focus, convergence angle or effective sample support failed")
+    diameter = 2*measurement.statistics.radius_95_m*1e9
+    if not math.isfinite(diameter) or not 0 <= diameter < diameter_limit:
+        failures.append("Surface D95 must be strictly below the declared diameter limit")
     if not corrector.get("waist_evidence_passed", False):
         failures.append("Executed internal and AC crossover evidence failed or is unresolved")
     elif require_equal_crossover_angles and not corrector.get("angle_matching_passed", False):
@@ -278,7 +326,7 @@ def qualification_failures(topology, measurement, corrector, target_mrad, *,
 
 
 def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=.01,
-            require_equal_crossover_angles=False, output=None):
+            require_equal_crossover_angles=False, maximum_diameter95_nm=.7, output=None):
     from temsim.calculation_manifest import solver_source_identity
     from temsim.instrument_snapshot import capture_instrument_snapshot
     from temsim.optics.beam_path_audit import incident_checkpoints
@@ -287,10 +335,13 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
     from temsim.physics.beam_current import effective_source_current_a, column_current_limit_percent
     from temsim.physics.beam_statistics import transverse_beam_statistics
     from temsim.physics.particle_sections import _digest_arrays
+    from temsim.optics.crossover_acceptance import regions_for_state,evaluate_crossover_chain
+    from temsim.optics.waist_evidence import detector_for_state,observed_aperture_losses
     if not np.isfinite(corrector_angle_tolerance) or not 0 <= corrector_angle_tolerance < 1:
         raise ValueError("Corrector angle tolerance must be finite and between zero and one")
     if type(require_equal_crossover_angles) is not bool:
         raise ValueError("The optional equal-angle calibration requirement must be boolean")
+    maximum_diameter95_nm = validated_diameter_limit_nm(maximum_diameter95_nm)
     start = perf_counter()
     snapshot = capture_instrument_snapshot(state)
     topology_planes = condenser_topology.requested_capture_planes(state, maximum_spacing_mm=spacing_mm)
@@ -305,8 +356,14 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
     mechanical_ports = (adl.mechanical_center_from_tip_mm-adl.mechanical_length_mm/2,
                         tl1.mechanical_center_from_tip_mm+tl1.mechanical_length_mm/2)
     optical_ports = corrector_planes(state)
+    detector=detector_for_state(state)
+    chain_regions=regions_for_state(state)
+    chain_spacing=min(float(spacing_mm),.5)
+    chain_bounds=sorted({p for row in chain_regions.values() for p in row['bounds_mm']})
+    chain_planes=np.unique(np.r_[*[np.linspace(a,b,int(np.ceil((b-a)/chain_spacing))+1)
+        for a,b in zip(chain_bounds[:-1],chain_bounds[1:])]])
     planes = np.unique(np.r_[state.electron_gun.exit_plane_z_mm, topology_planes,
-                             crossover_planes, component_planes, focus_planes, mechanical_ports, optical_ports])
+                             crossover_planes, component_planes, focus_planes, mechanical_ports, optical_ports,chain_planes])
     print(f"Executing {state.electron_gun.emitter.ray_count} emitted particles, step {state.step_mm:g} mm", flush=True)
     gun, cp, masks = incident_checkpoints(state, planes, step_mm=state.step_mm)
     emitted = gun.exit_bundle
@@ -316,7 +373,7 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
     corrector = evaluate_corrector_crossovers(cp, masks, weights, corrector_regions,
         source_current_a=source_current, source_ids=np.asarray(emitted.ray_id),
         angle_relative_tolerance=corrector_angle_tolerance,
-        require_equal_crossover_angles=require_equal_crossover_angles)
+        require_equal_crossover_angles=require_equal_crossover_angles,waist_detector=detector)
     port_reports = {}
     for name, ports in [('mechanical_boundaries', mechanical_ports), ('static_eight_sigma_reference', optical_ports)]:
         rows = np.searchsorted(cp.z_mm, ports)
@@ -331,7 +388,8 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
             current_a=[float(source_current*weights[masks[i]].sum()/source_weight) for i in rows],
             alpha95_ratio=actual[1].convergence_95_mrad/actual[0].convergence_95_mrad,
             common_alpha95_ratio=matched[1].convergence_95_mrad/matched[0].convergence_95_mrad)
-    topology = condenser_topology.evaluate(state, cp, masks, weights, maximum_spacing_mm=spacing_mm)
+    topology = condenser_topology.evaluate(state, cp, masks, weights, maximum_spacing_mm=spacing_mm,
+        source_ids=np.asarray(emitted.ray_id))
     topology_history = [topology]
     for attempt in range(2):
         extra = topology["refinement_planes_mm"]
@@ -339,7 +397,8 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
             break
         topology_planes = tuple(sorted(set(topology_planes).union(extra)))
         _, topo_cp, topo_masks = incident_checkpoints(state, topology_planes, step_mm=state.step_mm)
-        topology = condenser_topology.evaluate(state, topo_cp, topo_masks, weights, maximum_spacing_mm=spacing_mm)
+        topology = condenser_topology.evaluate(state, topo_cp, topo_masks, weights, maximum_spacing_mm=spacing_mm,
+            source_ids=np.asarray(emitted.ray_id))
         topology_history.append(topology)
     surface_mask = masks[-1]
     indices = np.searchsorted(cp.z_mm, focus_planes)
@@ -363,9 +422,14 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
             current_a=source_current*weights[masks[i]].sum()/source_weight,
             mean_x_nm=row.mean_x_m*1e9, mean_y_nm=row.mean_y_m*1e9,
             ray_count=int(masks[i].sum())))
+    chain=evaluate_crossover_chain(cp,masks,weights,np.asarray(emitted.ray_id),
+        source_current_a=source_current,regions=chain_regions,maximum_spacing_mm=chain_spacing,
+        source_identity=source_identity,waist_detector=detector,
+        known_interceptions=observed_aperture_losses(state,cp,masks,weights,np.asarray(emitted.ray_id)))
     failures = qualification_failures(topology, measurement, corrector, target_mrad,
-        require_equal_crossover_angles=require_equal_crossover_angles)
-    result = dict(schema="unified-nanoprobe-qualification-v3", utc=datetime.now(timezone.utc).isoformat(),
+        require_equal_crossover_angles=require_equal_crossover_angles,
+        maximum_diameter95_nm=maximum_diameter95_nm,crossover_chain=chain)
+    result = dict(schema="unified-nanoprobe-qualification-v5", utc=datetime.now(timezone.utc).isoformat(),
         elapsed_s=perf_counter()-start, simulation_mode=state.simulation_mode,
         snapshot_digest=snapshot.digest, solver_identity=solver_source_identity(),
         rays=int(state.electron_gun.emitter.ray_count), step_mm=float(state.step_mm),
@@ -373,7 +437,8 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
         requirements=dict(executed_corrector_waists=True,
             equal_crossover_angles=require_equal_crossover_angles,
             angle_matching_role=corrector["angle_matching_role"],
-            fixed_surface_size_threshold=False),
+            fixed_surface_size_threshold=True,
+            maximum_diameter95_nm=maximum_diameter95_nm, size_comparison="strictly_less_than"),
         source=dict(emission_mean_ev=state.electron_gun.emitter.emission_energy_ev,
             energy_spread_fwhm_ev=state.electron_gun.emitter.energy_spread_fwhm_ev,
             emitted_current_a=state.electron_gun.emitted_current_a,
@@ -381,12 +446,17 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
             total_weight=source_weight, gun_exit_weight=float(weights[np.asarray(emitted.alive)].sum())),
         controls={x.key: float(x.percent) for x in state.lenses if x.enabled},
         topology=topology, topology_history=topology_history, surface=asdict(measurement),
-        corrector=corrector, supplementary_corrector_ports=port_reports,
+        corrector=corrector,crossover_chain=chain, supplementary_corrector_ports=port_reports,
         surface_size=dict(rms_radius_nm=stats[-1].radius_rms_m*1e9,
             current_diameter_95_nm=2*stats[-1].radius_95_m*1e9,
-            role="Reported observable; no fixed size threshold is part of this qualification"),
+            maximum_diameter95_nm=maximum_diameter95_nm,
+            comparison="strictly_less_than",
+            passed=bool(np.isfinite(stats[-1].radius_95_m) and 0 <= 2*stats[-1].radius_95_m*1e9 < maximum_diameter95_nm),
+            role="Declared strict specimen-current D95 bound; numerical convergence remains separate"),
         sample_current_a=float(source_current*transmitted.sum()/source_weight),
         envelope=envelope, failures=failures, fixed_sampling_pass=not failures,
+        qualification_scope='Declared required source-image intervals and specimen metrics; full inventory resolution is reported separately and no minimum transmission is imposed',
+        inventory_completely_resolved=chain['status']=='OBSERVED_AT_BOUNDED_SAMPLING',
         scope="Actual source and finite fields at the stated sampling; independent count and step convergence required")
     if capture_instrument_snapshot(state).digest != snapshot.digest:
         raise ValueError("Observation changed physical inputs")
@@ -411,6 +481,8 @@ def main():
     parser.add_argument("--target", type=float, default=30.,
         help="Legacy alpha95 target in mrad, NOT the physical pupil edge; use measure_optical_acceptance.py for edge acceptance")
     parser.add_argument("--spacing", type=float, default=1.)
+    parser.add_argument("--max-d95-nm", type=float, default=.7,
+        help="Strict specimen-current D95 upper bound in nm; default requires D95 < 0.7 nm")
     parser.add_argument("--corrector-angle-tolerance", type=float, default=.01,
                         help="Relative alpha95 tolerance between executed internal and AC crossovers")
     parser.add_argument("--require-equal-crossover-angles", action="store_true",
@@ -422,9 +494,14 @@ def main():
         parser.error("Use at least 16 rays and finite positive steps, target and spacing")
     if not np.isfinite(args.corrector_angle_tolerance) or not 0 <= args.corrector_angle_tolerance < 1:
         parser.error("Corrector angle tolerance must be finite and between zero and one")
+    try:
+        maximum_diameter95_nm = validated_diameter_limit_nm(args.max_d95_nm)
+    except ValueError as error:
+        parser.error(str(error))
     observe(configured_state(args.rays, args.step, args.candidate), spacing_mm=args.spacing,
             target_mrad=args.target, corrector_angle_tolerance=args.corrector_angle_tolerance,
-            require_equal_crossover_angles=args.require_equal_crossover_angles, output=args.output)
+            require_equal_crossover_angles=args.require_equal_crossover_angles,
+            maximum_diameter95_nm=maximum_diameter95_nm, output=args.output)
 
 
 if __name__ == "__main__":

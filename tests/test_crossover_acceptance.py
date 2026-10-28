@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from temsim.optics.crossover_acceptance import evaluate_crossover_chain
+from temsim.optics.crossover_acceptance import evaluate_crossover_chain, regions_for_state
 
 
 _spec = importlib.util.spec_from_file_location("compare_particle_optical_models",
@@ -32,6 +32,87 @@ def evaluate(cp, mask, weights, identities, **kwargs):
     return evaluate_crossover_chain(cp, mask, weights, identities, source_current_a=7e-9,
         regions={"test_interval": dict(bounds_mm=[0., 4.], requirement="required_2d_waist")},
         maximum_spacing_mm=1., **kwargs)
+
+
+@pytest.fixture(scope="module")
+def physical_regions():
+    """Use installed optical boundaries without tracing or applying a fit."""
+    from temsim.assembly_catalog import AssemblyCatalog
+    from temsim.optics.column import default_state
+    state = default_state()
+    catalog = AssemblyCatalog()
+    catalog.apply(state, catalog.default_selection())
+    for part in (*state.deflectors, *state.stigmators, *state.corrector_elements):
+        if hasattr(part, "scan_enabled"):
+            part.scan_enabled = False
+        if hasattr(part, "wobble_enabled"):
+            part.wobble_enabled = False
+    result = {}
+    for selected in ("normal", "large_angle"):
+        state.nanoprobe_range = selected
+        result[selected] = regions_for_state(state)
+    return result
+
+
+def synthetic_column(regions, waist_regions):
+    boundaries = sorted({z for row in regions.values() for z in row["bounds_mm"]})
+    roots = [sum(regions[key]["bounds_mm"])/2 for key in waist_regions]
+    z = np.unique(np.r_[np.arange(boundaries[0], boundaries[-1], .5), boundaries,
+                        [plane for root in roots for plane in (root-.01, root, root+.01)]])
+    # Two-dimensional analytic envelopes with consistent mechanical slopes.
+    # Only these supplied roots are waist candidates; no fields are evaluated.
+    polynomial = np.poly1d(np.poly(roots))
+    radius = polynomial(z)*1e-8
+    derivative = np.polyder(polynomial)(z)*1e-5  # dx/dz: metres per metre
+    phi = np.arange(16)*2*np.pi/16
+    cp = SimpleNamespace(z_mm=z,
+        x_m=radius[:, None]*np.cos(phi)+3e-6, y_m=radius[:, None]*np.sin(phi)-4e-6,
+        tx_rad=derivative[:, None]*np.cos(phi), ty_rad=derivative[:, None]*np.sin(phi))
+    return cp, np.ones(cp.x_m.shape, bool), np.ones(16), np.arange(16)
+
+
+@pytest.mark.parametrize("selected,waists,passed,c2_status,c3_status", [
+    ("normal", ("c2_to_c3",), True, "PASS_AT_BOUNDED_SAMPLING", "PASS_AT_BOUNDED_SAMPLING"),
+    ("large_angle", ("c2_to_c3",), False, "PASS_AT_BOUNDED_SAMPLING", "FAIL_MISSING_EXECUTED_2D_WAIST"),
+    ("normal", ("c2_to_c3", "c3_to_adl"), False, "PASS_AT_BOUNDED_SAMPLING", "FAIL_FORBIDDEN_WAIST"),
+    ("large_angle", ("c2_to_c3", "c3_to_adl"), True, "PASS_AT_BOUNDED_SAMPLING", "PASS_AT_BOUNDED_SAMPLING"),
+    ("normal", ("c3_to_adl",), False, "FAIL_MISSING_EXECUTED_2D_WAIST", "FAIL_FORBIDDEN_WAIST"),
+    ("large_angle", ("c3_to_adl",), False, "FAIL_MISSING_EXECUTED_2D_WAIST", "PASS_AT_BOUNDED_SAMPLING"),
+])
+def test_actual_component_intervals_require_the_selected_nanoprobe_topology(
+        physical_regions, selected, waists, passed, c2_status, c3_status):
+    regions = physical_regions[selected]
+    cp, masks, weights, identities = synthetic_column(regions, waists)
+    result = evaluate_crossover_chain(cp, masks, weights, identities,
+        source_current_a=7e-9, regions=regions)
+    assert result["status"] == "OBSERVED_AT_BOUNDED_SAMPLING"
+    assert result["required_topology_satisfied_at_sampling"] is passed
+    assert result["intervals"]["c2_to_c3"]["status"] == c2_status
+    assert result["intervals"]["c3_to_adl"]["status"] == c3_status
+    assert {row["region"] for row in result["executed_waists"]} == set(waists)
+
+
+@pytest.mark.parametrize("damage", ["missing_endpoint", "coverage_gap", "membership_change"])
+def test_topology_cannot_pass_when_the_large_angle_capture_is_unresolved(physical_regions, damage):
+    regions = physical_regions["large_angle"]
+    cp, masks, weights, identities = synthetic_column(regions, ("c2_to_c3", "c3_to_adl"))
+    if damage == "membership_change":
+        # A downstream loss must remain visible without erasing either waist.
+        masks[cp.z_mm > regions["c3_to_adl"]["bounds_mm"][1], 0] = False
+    else:
+        selected = np.ones(len(cp.z_mm), bool)
+        if damage == "missing_endpoint":
+            selected[0] = False
+        else:
+            left = regions["c3_to_adl"]["bounds_mm"][0]
+            selected[(cp.z_mm > left+1) & (cp.z_mm < left+3)] = False
+        cp = SimpleNamespace(**{key: value[selected] for key, value in vars(cp).items()})
+        masks = masks[selected]
+    result = evaluate_crossover_chain(cp, masks, weights, identities,
+        source_current_a=7e-9, regions=regions)
+    assert result["status"] == "UNRESOLVED"
+    assert not result["required_topology_satisfied_at_sampling"]
+    assert {row["region"] for row in result["executed_waists"]} == {"c2_to_c3", "c3_to_adl"}
 
 
 def test_executed_waist_keeps_chief_and_current_and_refuses_rank_two_map():

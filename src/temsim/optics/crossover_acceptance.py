@@ -43,11 +43,22 @@ def regions_for_state(state):
         raise ValueError("Crossover chain intervals must be ordered in the incident column")
     labels = ("gun_exit_to_c1", "c1_to_c2", "c2_to_c3", "c3_to_adl", "adl_to_tl22",
               "corrector_internal", "tl21_to_ac", "ac_pair", "ac_to_mini", "mini_to_specimen")
-    return {key: dict(bounds_mm=[float(left), float(right)], requirement=(
-        "required_2d_waist" if key == "c2_to_c3" else
-        "forbidden_converging_to_diverging_waist" if key == "c3_to_adl"
-        and getattr(state, "nanoprobe_range", "normal") == "normal" else "record_all_waists"))
+    from temsim.operating_modes import validate_nanoprobe_range
+    large_angle = validate_nanoprobe_range(getattr(state, "nanoprobe_range", "normal")) == "large_angle"
+    regions = {key: dict(bounds_mm=[float(left), float(right)], requirement=(
+        "required_2d_waist" if key == "c2_to_c3" or (key == "c3_to_adl" and large_angle) else
+        "forbidden_converging_to_diverging_waist" if key == "c3_to_adl" else "record_all_waists"))
         for key, left, right in zip(labels, boundaries[:-1], boundaries[1:])}
+    from temsim.optics.direct_focus_topology import (required_for_state, bounds_for_state,
+        REQUIREMENT, SURFACE_FOCUS_TOLERANCE_NM)
+    if required_for_state(state):
+        for key in ('corrector_internal','ac_pair'):
+            regions[key]['requirement']='exactly_one_2d_waist'
+        direct_start, direct_end = bounds_for_state(state)
+        regions["mini_to_specimen"].update(requirement=REQUIREMENT,
+            direct_focus_bounds_mm=[direct_start, direct_end],
+            surface_focus_tolerance_nm=SURFACE_FOCUS_TOLERANCE_NM)
+    return regions
 
 
 def _statistics(cp, index, cohort, weights, current):
@@ -107,7 +118,8 @@ def _phase_fit(cp, first, last, cohort, weights):
 
 
 def evaluate_crossover_chain(checkpoints, masks, weights, source_ids, *, source_current_a,
-                             regions, maximum_spacing_mm=.5, source_identity=None):
+                             regions, maximum_spacing_mm=.5, source_identity=None,
+                             waist_detector='legacy_point', known_interceptions=()):
     """Inspect every sampled incident interval without erasing pre-loss waists.
 
     All positive-current particles present on a stable three-plane bracket are
@@ -116,6 +128,10 @@ def evaluate_crossover_chain(checkpoints, masks, weights, source_ids, *, source_
     cannot manufacture waists, nor can downstream losses erase an earlier one.
     The caller must supply executed checkpoints, not interpolated plot history.
     """
+    from temsim.optics.waist_evidence import (FINITE, validate_detector, finite_interval,
+        explicit_bracket_indices, support_on_bracket)
+    validate_detector(waist_detector)
+    finite_mode = waist_detector == FINITE
     z = np.asarray(checkpoints.z_mm, float)
     arrays = [np.asarray(getattr(checkpoints, key), float) for key in _COORDINATES]
     live, weight, identities = np.asarray(masks), np.asarray(weights, float), np.asarray(source_ids)
@@ -150,6 +166,15 @@ def evaluate_crossover_chain(checkpoints, masks, weights, source_ids, *, source_
     actual_waists = []
     for low, high in zip(segments[:-1], segments[1:]):
         actual_waists.extend(_strict_waists(cp, live[low], weight, np.arange(low, high)))
+    legacy_waists=actual_waists
+    finite_reports={}
+    if finite_mode:
+        actual_waists=[]
+        for left,right,key in bounds:
+            evidence=finite_interval(cp,live,weight,left,right,maximum_spacing_mm=spacing,
+                source_ids=identities,known_interceptions=known_interceptions)
+            finite_reports[key]=evidence
+            actual_waists.extend(evidence['regions'])
     candidates = crossover_candidates(cp, live, weight)
     unresolved = []
     for candidate in candidates:
@@ -157,6 +182,7 @@ def evaluate_crossover_chain(checkpoints, masks, weights, source_ids, *, source_
                    for row in actual_waists):
             unresolved.append(candidate)
     intervals = {}
+    direct_focus = None
     for left, right, key in bounds:
         rows = [row for row in actual_waists if left < row["z_mm"] < right]
         roots = [row for row in candidates if left < row["z_mm"] < right]
@@ -166,18 +192,41 @@ def evaluate_crossover_chain(checkpoints, masks, weights, source_ids, *, source_
         cover = z[max(0, np.searchsorted(z, left)-1):min(len(z), np.searchsorted(z, right)+1)]
         covered = complete and cover.size >= 3 and cover[0] <= left and cover[-1] >= right
         covered = covered and np.max(np.diff(cover)) <= spacing+1e-9
+        if finite_mode:
+            covered = covered and finite_reports[key]['status']=='RESOLVED_AT_BOUNDED_SAMPLING'
         requirement = regions[key].get("requirement", "record_all_waists")
         status = "OBSERVED_AT_BOUNDED_SAMPLING" if covered else "UNRESOLVED_COVERAGE"
         if covered and requirement == "required_2d_waist":
             status = "PASS_AT_BOUNDED_SAMPLING" if rows else "FAIL_MISSING_EXECUTED_2D_WAIST"
+        elif covered and requirement == 'exactly_one_2d_waist':
+            status = 'PASS_AT_BOUNDED_SAMPLING' if len(rows)==1 else 'FAIL_MISSING_OR_AMBIGUOUS_2D_WAIST'
         elif covered and requirement == "forbidden_converging_to_diverging_waist":
             status = "FAIL_FORBIDDEN_WAIST" if roots else "PASS_AT_BOUNDED_SAMPLING"
+        if requirement == "direct_focus_without_extra_pre_specimen_waist":
+            from temsim.optics.direct_focus_topology import evaluate as evaluate_direct_focus
+            direct_bounds = regions[key]["direct_focus_bounds_mm"]
+            direct_focus = evaluate_direct_focus(cp, live, weight,
+                lower_z_mm=direct_bounds[0], surface_z_mm=direct_bounds[1],
+                surface_focus_tolerance_nm=regions[key]["surface_focus_tolerance_nm"],
+                maximum_spacing_mm=min(spacing, .5),waist_detector=waist_detector,source_ids=identities)
+            status = ("PASS_AT_BOUNDED_SAMPLING" if direct_focus["passed"] else
+                      "FAIL_FORBIDDEN_WAIST" if direct_focus["status"] == "FAIL" else
+                      "UNRESOLVED_DIRECT_FOCUS")
         intervals[key] = dict(bounds_mm=[left, right], requirement=requirement, status=status,
                               checkpoint_count=int(selected.size), waist_z_mm=[row["z_mm"] for row in rows])
+        if finite_mode:
+            intervals[key]['finite_region_evidence']=finite_reports[key]
     nodes = []
     for waist in actual_waists:
         index = int(np.searchsorted(z, waist["z_mm"]))
-        common_waist = _strict_waists(cp, common, weight, np.arange(index-1, index+2))
+        if finite_mode:
+            sides,inside=explicit_bracket_indices(cp,waist)
+            common_report=support_on_bracket(cp,np.broadcast_to(common,live.shape),weight,waist,
+                maximum_spacing_mm=spacing,source_ids=identities)
+            common_waist=common_report['status']=='PASS'
+        else:
+            sides=np.array([index-1,index,index+1])
+            common_waist = _strict_waists(cp, common, weight, np.arange(index-1, index+2))
         labels = [key for left, right, key in bounds if left < waist["z_mm"] < right]
         node = dict(waist, region=labels[0] if labels else "component_boundary", index=index,
                     actual=_statistics(cp, index, live[index], weight, current),
@@ -186,8 +235,11 @@ def evaluate_crossover_chain(checkpoints, masks, weights, source_ids, *, source_
                     common_2d_waist_at_same_bracket=bool(common_waist))
         node.update(source_current_fraction=node["actual"]["source_current_fraction"],
                     cohort="All positive-current particles present throughout the stable local bracket")
-        node["actual_three_planes"] = [_statistics(cp, i, live[i], weight, current)
-                                       for i in (index-1, index, index+1)]
+        node["actual_three_planes"] = [_statistics(cp, i, live[i], weight, current) for i in sides]
+        if finite_mode:
+            node['actual_bracket_planes']=node['actual_three_planes']
+            node['common_finite_region_support']=common_report
+            node['explicit_bracket_checkpoint_count']=len(inside)
         nodes.append(node)
     specimen = dict(region="specimen_entrance", z_mm=float(z[-1]), index=len(z)-1,
                     status="ENDPOINT_OBSERVATION_NOT_TWO_SIDED_WAIST",
@@ -208,17 +260,36 @@ def evaluate_crossover_chain(checkpoints, masks, weights, source_ids, *, source_
                     numerator/denominator if numerator is not None and denominator is not None and denominator > 0 else None)
             relation[label] = ratios
         relationships.append(relation)
-    return dict(schema="incident-crossover-chain-v1", source_population_identity=source_identity,
-                status=("OBSERVED_AT_BOUNDED_SAMPLING" if complete and gap_ok and not unresolved and not len(changes)
-                        else "UNRESOLVED"),
+    resolved = (complete and gap_ok and not unresolved and not len(changes)
+                and (direct_focus is None or direct_focus["status"] != "UNRESOLVED"))
+    if finite_mode:
+        resolved = resolved and all(row['status']=='RESOLVED_AT_BOUNDED_SAMPLING' for row in finite_reports.values())
+    required_ok=bool((complete and gap_ok if finite_mode else resolved) and all(
+        row['status']=='PASS_AT_BOUNDED_SAMPLING' for row in intervals.values()
+        if row['requirement']!='record_all_waists'))
+    loss_evidence=[]
+    if finite_mode:
+        for i in changes:
+            bracket=[float(z[i-1]),float(z[i])]
+            loss_evidence.append(next((row for row in known_interceptions
+                if row['bracket_mm']==bracket and row.get('status')=='CAPTURED_LOSS_SUPPORTED_BY_OPENING_GEOMETRY'),
+                dict(bracket_mm=bracket,status='UNATTRIBUTED_CAPTURED_LOSS')))
+    return dict(schema="incident-finite-region-chain-v2" if finite_mode else "incident-crossover-chain-v1", source_population_identity=source_identity,
+                waist_detector=waist_detector,
+                status="OBSERVED_AT_BOUNDED_SAMPLING" if resolved else "UNRESOLVED",
                 coverage=dict(start_mm=float(z[0]), end_mm=float(z[-1]), checkpoint_count=len(z),
                               maximum_gap_mm=float(np.max(np.diff(z))), requested_maximum_gap_mm=spacing,
                               complete_incident_interval=complete, spacing_satisfied=gap_ok,
                               population_change_intervals_mm=[[float(z[i-1]), float(z[i])] for i in changes]),
                 intervals=intervals, executed_waists=nodes, specimen=specimen, angular_relationships=relationships,
-                required_topology_satisfied_at_sampling=all(
-                    row["status"] == "PASS_AT_BOUNDED_SAMPLING" for row in intervals.values()
-                    if row["requirement"] != "record_all_waists"),
+                direct_focus=direct_focus,
+                # Keep observed pre-loss waists above, but an unresolved chain
+                # cannot qualify topology through a separate optimistic flag.
+                required_topology_satisfied_at_sampling=required_ok,
+                qualification_scope=('Required physical regions only; full inventory can remain unresolved after recorded interception. No minimum transmission is imposed.' if finite_mode else 'Legacy whole-inventory resolution'),
+                population_change_evidence=loss_evidence,
+                unattributed_population_change_count=sum(row['status']=='UNATTRIBUTED_CAPTURED_LOSS' for row in loss_evidence),
+                legacy_point_executed_waists=legacy_waists if finite_mode else None,
                 common_cohort=dict(source_ids=identities[common].tolist(), original_weights=weight[common].tolist(),
                                    current_a=current*float(weight[common].sum()/weight.sum())),
                 interpolated_candidates_diagnostic_only=candidates,

@@ -1,8 +1,33 @@
 # Optical acceptance before joint excitation and geometry tuning
 
+> Target update, 2026-10-28: the user explicitly selected specimen-surface
+> **alpha95 = 30 mrad** and **spatial D95 < 0.7 nm**, with no hard transmitted-
+> current lower bound, for the new preset search. This supersedes the physical
+> pupil-edge 30 mrad fitting objective below for new work. The physical edge
+> remains a separate diagnostic. The topology, original-weight current
+> accounting, field/source provenance, numerical convergence, and scan checks
+> remain applicable. Historical results below keep their original definitions.
+
+> Topology clarification, 2026-10-28: retain the Normal entrance, with the
+> C2-C3 crossover and no additional crossover from C3 to the next optical
+> element. C3 stays active; its finite field and the following optics jointly
+> form the next crossover. Require exactly one resolved two-dimensional
+> source-image waist between TL22/TL21 and one inside the AC coil pair, and
+> account for every other observed waist and unresolved interval. Component
+> naming need not match CEOS labels. The 1208.15 mm TL geometric midpoint is
+> not a verified optical symmetry plane or an OEM position specification.
+> Follow the [current physical control contract](../OPTICAL_CONTROL_ROLES.md).
+
+> Downstream clarification, 2026-10-28: Mini Condenser plus Upper Objective
+> must focus directly at the specimen upper surface. No distinct intermediate
+> crossover is allowed between Mini Condenser and that surface. The final
+> focus bracket and its numerical tolerance must be distinguished from an
+> additional upstream waist. A small final D95 does not waive this condition.
+
 Executed follow-up: [historical comparison, particle counts and crossover validation](FINITE_FIELD_PARTICLE_VALIDATION_2026-10-27.md).
-The contract below remains the acceptance definition; additional observations
-do not automatically promote a working point to qualified status.
+Subject to the target update above, the contract below remains the acceptance
+definition; additional observations do not automatically promote a working
+point to qualified status.
 
 Date: 2026-10-27. Scope: the current C3 + Probe Corrector assembly in
 Finite-Field Optics, STEM Nanoprobe Normal. This document defines the next
