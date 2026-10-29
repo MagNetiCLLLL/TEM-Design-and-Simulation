@@ -144,7 +144,7 @@ def test_high_accuracy_request_keeps_captured_geometry_and_all_lens_values(instr
     assert prepared.objective_lens.upper_b0_t == expected_field
     assert prepared.projector_lens_p1.z_mm == expected_z
     assert prepared.electron_gun.emitter.ray_count == 9
-    assert prepared.step_mm == 2.
+    assert prepared.step_mm == .05
     sync = CalculationController._calculation_snapshot(prepared, "High accuracy", 9, 2.)
     assert sync.objective_lens.upper_b0_t == expected_field
     assert sync.projector_lens_p1.z_mm == expected_z

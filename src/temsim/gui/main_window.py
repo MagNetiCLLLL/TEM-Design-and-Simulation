@@ -50,6 +50,7 @@ from temsim.design_explorer import (
     HighAccuracyRequest,
 )
 from temsim.gui.assembly_panel import AssemblyPanel
+from temsim.gui.calculation_request import HIGH_ACCURACY_MAXIMUM_STEP_MM
 from temsim.gui.calculation_controller import (
     CalculationController,
     estimate_calculation_memory_bytes,
@@ -810,6 +811,12 @@ class MainWindow(QMainWindow):
         toolbar.addWidget(QLabel("Step (mm)"))
         self.high_step = _ParticleStepInput()
         self.high_step.setObjectName("highAccuracyStep")
+        self.high_step.setToolTip(
+            "Requested maximum column integration step. High accuracy uses at most "
+            f"{HIGH_ACCURACY_MAXIMUM_STEP_MM:g} mm "
+            "and preserves finer values. Loaded settings remain unchanged. "
+            "This resolution policy does not replace a convergence check."
+        )
         # Display the selected startup or restored accuracy without replacing it.
         self._sync_step_selector()
         self.high_step.valueChanged.connect(self._high_step_changed)
@@ -852,6 +859,7 @@ class MainWindow(QMainWindow):
         high_button.setProperty("calculationAction", True)
         high_button.setToolTip(
             "Calculate classical particle trajectories using High-accuracy rays and Step. "
+            f"The applied maximum step is min(Step, {HIGH_ACCURACY_MAXIMUM_STEP_MM:g} mm); finer values are retained. "
             "Update Ray Diagram and retain the incident beam for Scanning Image, Sample "
             "and detector calculations. Then use Calculate on the corresponding page."
         )
@@ -2627,6 +2635,12 @@ class MainWindow(QMainWindow):
     def _calculation_ready(self, quality: str, result, duration: float, *, paired_token=None) -> None:
         if self.result_files.loading or self.result_files.hold_automatic_preview:
             return
+        numerical = (getattr(result, "performance", None) or {}).get("numerical_preparation", {})
+        if quality == "High accuracy" and numerical:
+            self.log_output.appendPlainText(
+                f"High accuracy numerical resolution: requested step {numerical['requested_step_mm']!r} mm; "
+                f"applied maximum step {numerical['applied_step_mm']!r} mm. "
+                "Working-point convergence requires independent refinement.")
         if self.paired_beams.token is not None and paired_token != self.paired_beams.token:
             self.workspace.coherent_beam.mark_inputs_stale()
         if quality not in ("Preview", "Medium") and getattr(result, "calculation_manifest", None) is not None:

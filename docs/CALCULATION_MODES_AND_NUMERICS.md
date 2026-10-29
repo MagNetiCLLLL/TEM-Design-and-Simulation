@@ -89,6 +89,22 @@ and numerical admission checks still apply. Explicit CDF tables also retain
 their fixed population; editable Sobol counts are validated before changing the
 source, including when a request is triggered before the editor loses focus.
 
+For new GUI **High accuracy** requests, the executed maximum step is
+`min(requested_step_mm, 0.05)`. The detached execution snapshot, memory estimate,
+cache identity and manifest all use that applied value. The original requested
+value remains visible and is recorded alongside the applied value in the result
+and job log. Preview, Medium, explicit offline experiments and historical
+restoration retain their own declared numerics. A step cap is an execution
+policy; refine the step and source count to establish working-point convergence.
+
+The shared-field particle executor retains complete history when it fits its
+2 GiB history budget. Otherwise production requests retain existing integration
+nodes at the requested display spacing, all scientific checkpoints, physical
+faces and receiver-adjacent nodes. Every integration step and original particle
+is still executed. If this retained history also exceeds the budget, the request
+is rejected. Plot-node waist markers remain sampling dependent; use explicitly
+executed observation planes for precise probe focus measurements.
+
 **Run high-accuracy once** continues to calculate trajectories and retain the
 incident beam used by Sample, Scanning Image and detector workflows. Numerical
 settings do not silently change the particle seed, readout selection or sampling

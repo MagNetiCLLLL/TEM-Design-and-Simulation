@@ -22,8 +22,15 @@ from hashlib import sha256
 from io import BytesIO
 import math
 from threading import RLock
+import warnings
 
 import numpy as np
+
+try:
+    from numba import njit, prange
+except ImportError:
+    njit = None
+    prange = range
 
 from temsim import input_io
 from temsim.immutable_json import freeze_json, json_digest
@@ -44,6 +51,12 @@ GAUSSIAN_RADIUS_SIGMA = 8.0
 MAX_CANDIDATE_SITES = 8_000_000
 MAX_PROJECTED_SITES = 2_000_000
 MAX_PAIR_EVALUATIONS = 100_000_000
+# The fused float64 kernel is over six times faster even on one CPU thread
+# in the bounded 102.4-million-pair benchmark. Its fivefold work allowance
+# retains an explicit runtime guard; the NumPy reference keeps its old limit.
+MAX_NATIVE_PAIR_EVALUATIONS = 500_000_000
+NATIVE_MIN_PAIRS = 131_072
+NATIVE_BLOCK_PAIRS = 2_000_000
 _MAP_CACHE_BYTES = 64 * 1024**2
 _MAP_CACHE = OrderedDict()
 _MAP_CACHE_SIZE = 0
@@ -187,18 +200,35 @@ def _projected_sites(contents, geometry, roi, chief_slopes):
             _readonly(np.concatenate(parts_w)), retained)
 
 
-def _gaussian_density(positions, occupancies, centres, covariance):
-    """Occupancy/area in nm^-2; exact Gaussian sum inside the declared ROI."""
-    if not len(positions):
-        return np.zeros(len(centres))
-    # Exact duplicate projected sites, e.g. one aligned atomic column, can be
-    # summed without changing the Gaussian at any scan position.
-    positions, inverse = np.unique(positions, axis=0, return_inverse=True)
-    weights = np.bincount(inverse, weights=occupancies, minlength=len(positions))
-    if len(positions) * len(centres) > MAX_PAIR_EVALUATIONS:
-        raise ValueError("Projected probe convolution exceeds its work budget; reduce scan pixels or material region.")
-    inverse_covariance = np.linalg.inv(covariance)
-    normalization = 1.0 / (2.0 * math.pi * math.sqrt(float(np.linalg.det(covariance))))
+def _gaussian_density_native_impl(positions, weights, centres, inverse, normalization):
+    """Full Gaussian sum, with no pair array, spatial cutoff or fast math.
+
+    Each pixel owns its compensated sum, so CPU scheduling does not change
+    reduction order. Parallelism follows the enclosing numerical-job budget.
+    """
+    result = np.empty(len(centres))
+    for i in prange(len(centres)):
+        total = 0.0
+        correction = 0.0
+        for j in range(len(positions)):
+            dx = centres[i, 0] - positions[j, 0]
+            dy = centres[i, 1] - positions[j, 1]
+            distance = ((dx * inverse[0, 0] + dy * inverse[1, 0]) * dx
+                        + (dx * inverse[0, 1] + dy * inverse[1, 1]) * dy)
+            value = math.exp(-0.5 * distance) * weights[j] - correction
+            combined = total + value
+            correction = (combined - total) - value
+            total = combined
+        result[i] = total * normalization
+    return result
+
+
+_gaussian_density_native = (njit(cache=True, fastmath=False, parallel=True)(
+    _gaussian_density_native_impl) if njit is not None else None)
+
+
+def _gaussian_density_numpy(positions, weights, centres, inverse_covariance, normalization):
+    """Original bounded NumPy reference, retaining the complete pair sum."""
     result = np.zeros(len(centres))
     block = max(1, min(256, 524_288 // len(positions)))
     for start in range(0, len(centres), block):
@@ -206,6 +236,70 @@ def _gaussian_density(positions, occupancies, centres, covariance):
         delta = centres[start:start + block, None, :] - positions[None, :, :]
         distance = np.einsum("...i,ij,...j->...", delta, inverse_covariance, delta)
         result[start:start + block] = np.exp(-0.5 * distance) @ weights * normalization
+    return result
+
+
+def _require_gaussian_work_budget(pairs, sites, pixels, *, native):
+    limit = MAX_NATIVE_PAIR_EVALUATIONS if native else MAX_PAIR_EVALUATIONS
+    if pairs > limit:
+        executor = "compiled CPU" if native else "NumPy CPU"
+        raise ValueError(
+            f"Projected probe convolution requires {pairs:,} atom-pixel pairs "
+            f"({sites:,} distinct projected sites x {pixels:,} scan points); "
+            f"the {executor} work budget is {limit:,}. "
+            "Reduce scan pixels or the material region. No atoms, probe tails "
+            "or scan pixels were removed."
+        )
+
+
+def _gaussian_density(positions, occupancies, centres, covariance, *, diagnostics=None):
+    """Occupancy/area in nm^-2; complete Gaussian sum inside the declared ROI."""
+    global _gaussian_density_native
+    _check_cancelled()
+    if not len(positions):
+        return np.zeros(len(centres))
+    # Only exactly equal XY positions share a weight. A small physical tilt
+    # must not be rounded away to reduce the atom count or computational cost.
+    positions, inverse = np.unique(positions, axis=0, return_inverse=True)
+    weights = np.bincount(inverse, weights=occupancies, minlength=len(positions))
+    pairs = len(positions) * len(centres)
+    native = _gaussian_density_native
+    use_native = native is not None and pairs >= NATIVE_MIN_PAIRS
+    _require_gaussian_work_budget(pairs, len(positions), len(centres), native=use_native)
+    inverse_covariance = np.linalg.inv(covariance)
+    normalization = 1.0 / (2.0 * math.pi * math.sqrt(float(np.linalg.det(covariance))))
+    executor = "numpy_direct"
+    result = None
+    if use_native:
+        result = np.empty(len(centres))
+        block = max(1, min(256, NATIVE_BLOCK_PAIRS // len(positions)))
+        for start in range(0, len(centres), block):
+            _check_cancelled()
+            try:
+                values = native(positions, weights, centres[start:start + block],
+                                inverse_covariance, normalization)
+            except Exception:
+                # Optional compilation/runtime failure cannot admit a large
+                # job to the slower reference or publish partial intensities.
+                _gaussian_density_native = None
+                warnings.warn("Compiled projected-probe convolution unavailable; "
+                              "using the bounded NumPy reference when admitted.",
+                              RuntimeWarning, stacklevel=2)
+                _require_gaussian_work_budget(pairs, len(positions), len(centres), native=False)
+                result = None
+                break
+            result[start:start + block] = values
+        if result is not None:
+            executor = "numba_direct_compensated"
+    if result is None:
+        result = _gaussian_density_numpy(positions, weights, centres, inverse_covariance, normalization)
+    _check_cancelled()
+    if diagnostics is not None:
+        diagnostics.update(executor=executor, distinct_projected_sites=len(positions),
+                           scan_points=len(centres), pair_evaluations=pairs,
+                           work_budget=(MAX_NATIVE_PAIR_EVALUATIONS if executor.startswith("numba")
+                                        else MAX_PAIR_EVALUATIONS),
+                           per_pixel_spatial_cutoff=False)
     return result
 
 
@@ -390,12 +484,16 @@ def _projected_optical_depth(state, simulation, scan_x_um, scan_y_um):
         atom_xy, atom_z, atom_weights, atom_count = _projected_sites(contents, geometry, roi, chief_slopes)
     total = np.zeros(x.shape)
     pending = []
+    convolution = []
     for z in sorted(set(int(z) for z in atom_z)):
         cross_sections = np.array([screened_rutherford_total_cross_section_cm2(z, energy)
                                    * 1e14 for energy in energy_ev])  # cm^2 -> nm^2
         mean_cross_section = float(energy_weights @ cross_sections)
         mask = atom_z == z
-        density = _gaussian_density(atom_xy[mask], atom_weights[mask], points, covariance).reshape(x.shape)
+        density_info = {"atomic_number": z}
+        density = _gaussian_density(atom_xy[mask], atom_weights[mask], points, covariance,
+                                    diagnostics=density_info).reshape(x.shape)
+        convolution.append(density_info)
         tau = density * mean_cross_section * path_factor
         total += tau
         pending.append((z, tau, mean_cross_section, energy_weights * cross_sections / mean_cross_section))
@@ -417,6 +515,7 @@ def _projected_optical_depth(state, simulation, scan_x_um, scan_y_um):
         "probe_model": "normalized Gaussian with executed sample-plane XY covariance; no fitted sharpening",
         "probe_sigma_principal_nm": np.sqrt(eigenvalues).tolist(),
         "probe_covariance_nm2": covariance.tolist(), "projected_atom_species_records": atom_count,
+        "probe_convolution": convolution,
         "cif_sha256": sha256(contents).hexdigest(), "gaussian_roi_radius_sigma": GAUSSIAN_RADIUS_SIGMA,
         "roi_omission": "atom centres beyond eight marginal standard deviations from all scan centres omitted; total optical-depth error also depends on omitted occupancy and cross section",
         "angular_model": "at least one elastic event represented by one screened Rutherford angle; not crystalline Bragg diffraction",

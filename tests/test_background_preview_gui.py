@@ -224,10 +224,12 @@ def test_restored_particle_step_reaches_prepared_request_without_rounding(window
     assert window.state.step_mm == step and not changes
     window.run_high_accuracy()
     assert not errors and len(prepared) == 1
-    assert prepared[-1].step_mm == prepared[-1].snapshot.step_mm == step
+    assert prepared[-1].step_mm == prepared[-1].snapshot.step_mm == min(step, .05)
+    assert window.state.step_mm == window.high_step.value() == step
+    assert prepared[-1].numerical_preparation["requested_step_mm"] == step
 
     # A deliberate edit replaces the restored value and becomes the sole
-    # authority used by the subsequent captured request.
+    # requested maximum used by the subsequent captured request.
     window.high_step.setValue(.025)
     window.run_high_accuracy()
     assert not errors and len(prepared) == 2

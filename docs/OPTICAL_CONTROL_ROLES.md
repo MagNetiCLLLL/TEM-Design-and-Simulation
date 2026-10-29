@@ -58,6 +58,18 @@ Record that change and its physical interception separately from a fixed-size
 Gun Lens perturbation. Keep the selected 100 um C2 aperture diameter and the
 source distribution fixed unless separately authorized.
 
+Later on 2026-10-29, the user explicitly authorized changes to the original
+electron-source emission parameters for probe-tail research. Keep the original
+source as a named comparison and prepare a new input snapshot for each source
+law. Start with isolated angular-distribution and energy-width controls, execute
+the complete new source, then report any separate lens compensation used to
+restore alpha95 and the native-D95 surface waist. Do not remove selected
+specimen-plane particles or present that deletion as a new source calculation.
+Narrowing the source angular distribution at unchanged emitted current and
+source size changes the assumed source brightness; distinguish this design
+assumption from physical aperture losses and from measured gun performance.
+The 100 um C2 aperture constraint and minimum source sampling still apply.
+
 The user selected sensitivity reporting without a pass/fail threshold for
 Gun Lens and C1 variations. Do not apply the previously proposed 1% angle
 variation or 1 nm perturbation-focus threshold as acceptance limits. This does

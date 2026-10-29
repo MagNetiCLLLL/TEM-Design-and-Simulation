@@ -31,6 +31,22 @@ sum to one; the latter is represented by an effective angular draw. The
 reported plural-event probability indicates the limitation of this closure.
 It does **not** execute plural elastic angular redistribution or channeling.
 
+Projected probe convolution retains every admitted atom-pixel pair. Larger
+maps use a fused float64 CPU kernel with compensated sums and the shared CPU
+thread budget. It removes temporary pair arrays, not atoms, scan points, probe
+tails or covariance terms. Exact duplicate projected XY sites share summed
+occupancy; small physical tilts are never rounded away. Cancellation is checked
+between bounded blocks. The result's `probe_convolution` records identify the
+executor, distinct sites, scan points and pair count for each element.
+
+The compiled path admits up to 500 million pairs per element. The NumPy
+reference retains its 100 million pair limit, including after a compilation
+failure; a larger job is rejected rather than silently sent to that slower
+path. These are computation guards, not particle counts or accuracy criteria.
+Independent atom-enumeration and retained-site limits still apply. A budget
+error reports the actual pair count and active executor. Neither pixel pitch
+nor specimen dimensions are changed automatically.
+
 Auxiliary angular responses retain executed incident positions, directions and
 energies, and run through the same downstream electric/magnetic transport,
 apertures, walls and optional vacuum. Recording surfaces then intercept current

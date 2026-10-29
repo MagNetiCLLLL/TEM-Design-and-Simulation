@@ -86,9 +86,12 @@ def build_unified_plan(state, z0, z1, events=(), *, save_z_mm=(), checkpoint_z_m
     if not np.isfinite(requested).all():
         raise ValueError("Unified observation planes must be finite")
     z = np.unique(np.r_[np.linspace(z0, z1, count+1), [v for v in requested if z0 <= v <= z1]])
-    # Keep every integration node for exact mechanical stop and detector views.
+    # Output retention is independent of the integration mesh. Explicit saves,
+    # checkpoints and physical faces remain exact even with sampled display history.
     cp = np.searchsorted(z, sorted(set((z0, z1, *(v for v in checkpoint_z_mm if z0 <= v <= z1)))))
+    save = np.searchsorted(z, sorted(set((z0, z1, *(v for v in requested if z0 <= v <= z1)))))
     numerical = json_digest({"runtime": runtime.digest, "z_mm": z.tolist(), "checkpoints": cp.tolist(),
+        "required_history_nodes": save.tolist(),
         "integrator": "gun-exit-observation" if gun_exit_observation else "Lorentz-RK4"})
     records = tuple(InteractionRecord(interaction_id=row.source_id, owner_id=row.owner_ids[0],
         effect_family="electromagnetic_potential", representation="field", interval_mm=(z0,z1),
@@ -97,6 +100,7 @@ def build_unified_plan(state, z0, z1, events=(), *, save_z_mm=(), checkpoint_z_m
     contract = _seal({"schema": SCHEMA, "mode": "unified", "interval_mm": (float(z0),float(z1)),
         "scene": runtime.snapshot.scene.to_dict(), "interactions": InteractionRegistry(records).to_dict(),
         "unified_capture": {"runtime":runtime.digest,"field":runtime.snapshot.numerical_digest,"geometry":runtime.geometry.digest},
+        "history_retention": {"required_indices":save.tolist()},
         "reference_planes_mm": {}, "numerical_digest": numerical,
         "scope": ("Executed gun-exit observation; no column field or mechanical action"
                   if gun_exit_observation else
@@ -135,8 +139,8 @@ def _contact(pieces, before, after):
 
 def _history_indices(state, plan, *, start_index=0, history_policy="full"):
     """Select exact output nodes without changing the executed integration mesh."""
-    if not isinstance(history_policy, str) or history_policy not in ("full", "checkpoints"):
-        raise ValueError("Unified history policy must be 'full' or 'checkpoints'")
+    if not isinstance(history_policy, str) or history_policy not in ("full", "checkpoints", "sampled"):
+        raise ValueError("Unified history policy must be 'full', 'checkpoints' or 'sampled'")
     z = np.asarray(plan.z_mm)
     if (isinstance(start_index, (bool, np.bool_)) or not isinstance(start_index, (int, np.integer))
             or not 0 <= start_index < len(z)):
@@ -145,6 +149,23 @@ def _history_indices(state, plan, *, start_index=0, history_policy="full"):
         return np.arange(start_index, len(z), dtype=np.int64)
     checkpoints = np.asarray(plan.checkpoint_index)
     retained = [int(start_index), len(z)-1, *checkpoints[checkpoints >= start_index]]
+    if history_policy == "sampled":
+        spacing = _positive_step_mm(getattr(state, "history_step_mm", 2.), "Unified display history step")
+        # Select existing nodes in axial bins anchored at the original plan
+        # start. This bounds allocation by the mesh size even for tiny spacing
+        # and gives restarted suffixes the same display nodes as a fresh run.
+        if spacing <= np.finfo(float).eps*max(float(z[-1]-z[0]), 1.):
+            display = np.arange(len(z), dtype=np.int64)
+        else:
+            bins = np.floor((z-z[0])/spacing)
+            display = np.flatnonzero(np.r_[True, bins[1:] != bins[:-1]])
+        # Keep the public full-history save_index contract: some diagnostic
+        # callers explicitly promote it to complete scientific checkpoints.
+        retention = (getattr(plan, "physics_contract", None) or {}).get("history_retention", {})
+        required = np.asarray(retention.get("required_indices",
+                                         getattr(plan, "save_index", ())), dtype=np.int64)
+        retained.extend(display[display >= start_index])
+        retained.extend(required[required >= start_index])
     # Receiver clipping follows propagation. Its exact physical plane must not
     # become an interpolation between sparse observation rows.
     for plane in getattr(state, "recording_planes", ()):
@@ -184,15 +205,25 @@ def unified_history_memory_bytes(state, plan, particle_count, *, start_index=0,
                + 32*len(retained) + 8*len(plan.z_mm[start_index:]) + 1024*checkpoints)
 
 
+def select_unified_history_policy(state, plan, particle_count, *, start_index=0):
+    """Keep full production history when it fits; otherwise use exact display nodes.
+
+    This does not relax the memory limit or change any integration/checkpoint
+    plane. The executor still rejects sampled output if its own budget fails.
+    """
+    full = unified_history_memory_bytes(state, plan, particle_count, start_index=start_index)
+    return "full" if full <= MAX_UNIFIED_HISTORY_BYTES else "sampled"
+
+
 def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, start_index=0,
         include_initial_plane_kicks=True, defer_nonfinite_until_clipping=False, medium_transport=None,
         initial_time_s=None, return_flight_times=False, initial_kinetic_energy_ev=None, energy_output=None,
         unified_resume=None, history_policy="full"):
-    """Execute every field/contact step; optionally retain exact checkpoints only.
+    """Execute every field/contact step with independently bounded output history.
 
-    The default keeps the complete plotting history. Sparse output is intended
-    for consumers that explicitly request exact observations, never as an
-    interchangeable arbitrary-plane plotting history.
+    The direct-call default remains full history. Production wrappers use
+    ``auto``: full history if it fits, otherwise exact sampled display nodes.
+    Explicit checkpoints and receiver-adjacent nodes are always retained.
     """
     from temsim.physics.core import PropagationCheckpoints, _frozen_array, _record_active_backend
     from temsim.physics.optical_tuning import check_tuning_cancelled
@@ -236,6 +267,9 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
     if times.shape!=energy.shape or np.isinf(times).any() or np.any(times<0):
         raise ValueError("Unified flight times must be nonnegative or unknown")
     z = np.asarray(plan.z_mm[start_index:],dtype=float)
+    requested_history_policy = history_policy
+    if history_policy == "auto":
+        history_policy = select_unified_history_policy(state, plan, len(current), start_index=start_index)
     history_index = _history_indices(state, plan, start_index=start_index,
                                     history_policy=history_policy)-start_index
     history_rows = np.full(len(z), -1, dtype=np.int64)
@@ -269,7 +303,8 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
         start_index=start_index, history_policy=history_policy)
     if required_bytes > MAX_UNIFIED_HISTORY_BYTES:
         raise ValueError(f"Unified particle history requires {required_bytes:,} bytes, exceeding the "
-                         f"{MAX_UNIFIED_HISTORY_BYTES:,}-byte numerical budget; use exact-checkpoint history or bounded source batches")
+                         f"{MAX_UNIFIED_HISTORY_BYTES:,}-byte numerical budget with {history_policy} history; "
+                         "use exact-checkpoint history or bounded source batches")
     raw_sample = _sampler(runtime.snapshot)
     contacts = compile_contact_geometry(runtime.geometry)
     swept_bounds = np.array(((0., 0., z[0]*.001), (0., 0., z[0]*.001))) if retained is None else retained["swept_bounds_m"]
@@ -424,7 +459,14 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
     _record_active_backend(state,"CPU")
     from temsim.physics.backend_execution import record_backend
     record_backend("column",getattr(state,"acceleration_backend","Auto"),"CPU",
-                   reason="Shared-potential Lorentz RK4 with captured mechanical boundaries",retried=False)
+                   reason="Shared-potential Lorentz RK4 with captured mechanical boundaries",retried=False,
+                   history_policy=history_policy, requested_history_policy=requested_history_policy,
+                   integration_nodes=len(z), retained_history_nodes=len(history_index),
+                   history_memory_bytes=required_bytes, history_budget_bytes=MAX_UNIFIED_HISTORY_BYTES,
+                   retained_history_maximum_gap_mm=float(np.max(np.diff(output_z), initial=0.)),
+                   history_scope="Exact retained integration nodes; plot-node waist markers remain sampling dependent",
+                   display_history_step_mm=(float(getattr(state, "history_step_mm", 2.))
+                                            if history_policy == "sampled" else None))
     state._last_ray_device_receipt=None
     result = (output_z,histories[:,:,0],histories[:,:,2],histories[:,:,1],histories[:,:,3])
     return (*result,clocks,cp) if return_flight_times else (*result,cp)

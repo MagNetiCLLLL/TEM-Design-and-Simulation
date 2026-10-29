@@ -71,8 +71,11 @@ from temsim.specimen.source import (
 from temsim.physics.optical_tuning import is_tuning_quality, prepare_tuning_snapshot
 from temsim.gui.calculation_request import (
     CapturedCalculationRequest,
+    HIGH_ACCURACY_MAXIMUM_STEP_MM,
     PreparationCancelled,
     reconstruct_calculation_state,
+    request_numerical_preparation,
+    resolve_request_step_mm,
 )
 
 
@@ -354,6 +357,7 @@ class CalculationWorker(QRunnable):
         section_request: dict | None = None,
         particle_tuning: bool = False,
         workflow: str = "full",
+        numerical_preparation: dict | None = None,
     ) -> None:
         super().__init__()
         self.generation = generation
@@ -372,6 +376,7 @@ class CalculationWorker(QRunnable):
         self.workflow = validate_workflow(workflow)
         self.artifact_store = artifact_store
         self.calculation_manifest = calculation_manifest
+        self.numerical_preparation = dict(numerical_preparation or {})
         if external_inputs is None:
             external_inputs = (calculation_manifest.external_inputs
                                if calculation_manifest is not None else
@@ -591,6 +596,8 @@ class CalculationWorker(QRunnable):
                 result.performance = dict(result.performance or {},
                     backend_stages=tuple(self.backend_evidence),
                     backend_scope="Last 256 stage calls in this worker, including exact internal reuse; not hardware qualification")
+                if self.numerical_preparation:
+                    result.performance["numerical_preparation"] = dict(self.numerical_preparation)
                 result.calculation_manifest = self.calculation_manifest
                 if result.wave_imaging is not None and self.calculation_manifest is not None:
                     from temsim.physics.wave_imaging import bind_wave_request_manifest
@@ -1238,7 +1245,7 @@ class CalculationController(QObject):
             state,
             selection=selection,
             ray_count=ray_count,
-            step_mm=step_mm,
+            step_mm=resolve_request_step_mm("High accuracy", step_mm),
         )
 
     @staticmethod
@@ -1543,6 +1550,7 @@ class CalculationController(QObject):
     ) -> HighAccuracyReusePlan:
         """Describe one request without mutating cache order or results."""
 
+        step_mm = resolve_request_step_mm("High accuracy", step_mm)
         request_signatures = calculation_signatures_for_request(
             state,
             ray_count=ray_count,
@@ -1830,6 +1838,7 @@ class CalculationController(QObject):
                 external_inputs=prepared.external_inputs,
                 generation=generation, estimate=prepared.memory_estimate, already_started=True,
                 calculation_manifest=prepared.calculation_manifest,
+                numerical_preparation=prepared.numerical_preparation,
             )
         except Exception as exc:
             self._accept_error(generation, quality, str(exc))
@@ -1858,6 +1867,8 @@ class CalculationController(QObject):
             raise ValueError("Particle live tuning requires Preview or Medium quality")
         from temsim.physics.optical_tuning import resolve_tuning_ray_count
         ray_count = resolve_tuning_ray_count(state,quality,ray_count)
+        numerical_preparation = request_numerical_preparation(quality, step_mm)
+        step_mm = numerical_preparation["applied_step_mm"]
         if quality == "High accuracy":
             from temsim.optics.model import State
             if isinstance(state, State):
@@ -1885,7 +1896,8 @@ class CalculationController(QObject):
                 f"{format_memory_size(estimate)}, above the "
                 f"{format_memory_size(HIGH_ACCURACY_MEMORY_BUDGET_BYTES)} "
                 "application budget for a 32 GiB workstation."
-                f"{wave_detail} Increase the integration step, or reduce the "
+                f"{wave_detail} Use a coarser step within the High accuracy maximum of "
+                f"{HIGH_ACCURACY_MAXIMUM_STEP_MM:g} mm, or reduce the "
                 "ray count, TEM wave grid, specimen thickness, or "
                 "frozen-phonon configuration count."
             )
@@ -1929,16 +1941,20 @@ class CalculationController(QObject):
             generation=generation, estimate=estimate,
             external_inputs=external_inputs,
             calculation_manifest=calculation_manifest,
+            numerical_preparation=numerical_preparation,
         )
 
     def _dispatch_prepared(
         self, snapshot, quality, ray_count, step_mm, *, model_signature,
         request_signatures, generation, estimate, already_started=False,
         external_inputs=None, calculation_manifest=None,
+        numerical_preparation=None,
     ) -> None:
         """GUI-thread-only cache lookup and dispatch for either request path."""
         if quality == "High accuracy" and calculation_manifest is None:
             raise ValueError("A complete working point is required before high-accuracy dispatch")
+        if numerical_preparation:
+            self._trace_request(generation, "numerical_preparation", **numerical_preparation)
         external_inputs = tuple(capture_external_input_identities(snapshot)
                                 if external_inputs is None else external_inputs)
         assert_external_input_inventory_unchanged(snapshot, external_inputs)
@@ -1980,6 +1996,8 @@ class CalculationController(QObject):
                 cache_hit=True,
                 calculated_products=frozenset(),
                 reused_products=frozenset(reused),
+                performance=dict(getattr(cached, "performance", None) or {},
+                                 numerical_preparation=dict(numerical_preparation or {})),
             )
             if not already_started:
                 self.started.emit(quality)
@@ -2092,6 +2110,7 @@ class CalculationController(QObject):
             section_request=section_request,
             particle_tuning=particle_tuning,
             workflow=workflow,
+            numerical_preparation=numerical_preparation,
         )
         from temsim.gui.job_coordinator import ResourceClaim
         worker.resource_claim = ResourceClaim(working_bytes=int(estimate))

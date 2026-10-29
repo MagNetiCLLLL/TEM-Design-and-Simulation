@@ -57,10 +57,38 @@ class TransverseBeamStatistics:
 def _weighted_quantile(
     values: np.ndarray, weights: np.ndarray, fraction: float
 ) -> float:
+    """Return a current-containment order statistic with a stable CDF boundary.
+
+    A sequential cumsum can miss an exact percentile by many ulps (for
+    example the 1900th of 2000 equal-current particles at 95%). Use it only
+    to propose an index, then verify prefix sums with accurate summation.
+    The target is relative to the supplied total, which may differ slightly
+    from one after normalization. One target ulp covers final rounding of
+    the fraction-times-total boundary; it is not a particle-weight tolerance.
+    """
+    if fraction == 1.0:
+        # Complete containment includes every positive-current packet, even
+        # when its current is smaller than one ulp of the accumulated total.
+        return float(np.max(values[weights > 0.0]))
     order = np.argsort(values)
-    cumulative = np.cumsum(weights[order])
-    index = int(np.searchsorted(cumulative, fraction, side="left"))
-    return float(values[order[min(index, values.size - 1)]])
+    ordered_weights = weights[order]
+    target = float(np.nextafter(fraction * math.fsum(ordered_weights), -np.inf))
+    cumulative = np.cumsum(ordered_weights)
+    index = min(int(np.searchsorted(cumulative, target, side="left")), values.size - 1)
+    prefix = math.fsum(ordered_weights[:index + 1])
+    previous = math.fsum(ordered_weights[:index])
+    if previous < target <= prefix or index == 0 and target <= prefix:
+        return float(values[order[index]])
+    # Only an ambiguous approximate boundary takes the accurate binary path.
+    # Binary search avoids repeatedly summing many near-zero-weight entries.
+    low, high = (index + 1, values.size - 1) if prefix < target else (0, index)
+    while low < high:
+        middle = (low + high) // 2
+        if math.fsum(ordered_weights[:middle + 1]) >= target:
+            high = middle
+        else:
+            low = middle + 1
+    return float(values[order[low]])
 
 
 def transverse_beam_statistics(

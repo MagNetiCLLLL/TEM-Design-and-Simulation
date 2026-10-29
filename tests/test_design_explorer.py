@@ -457,6 +457,7 @@ def test_describe_high_accuracy_reuse_does_not_change_lru_order():
 
 
 def test_fast_request_signatures_match_the_solver_snapshot():
+    from temsim.gui.calculation_request import resolve_request_step_mm
     state = default_state()
     state.simulation_time_s = 0.125
     snapshot = CalculationController._calculation_snapshot(
@@ -469,7 +470,7 @@ def test_fast_request_signatures_match_the_solver_snapshot():
     assert calculation_signatures_for_request(
         state,
         ray_count=15_000,
-        step_mm=0.1,
+        step_mm=resolve_request_step_mm("High accuracy", 0.1),
     ) == calculation_signatures(snapshot)
 
 

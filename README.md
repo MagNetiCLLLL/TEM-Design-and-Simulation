@@ -114,6 +114,11 @@ speed. The supplied SFEG illustration provides structural context; it does
 not specify dimensions or change the current cold-field-emitter model.
 
 High-accuracy particle calculations default to **3,000 rays**. The top toolbar's
+**Step (mm)** is a requested maximum: new GUI High accuracy jobs use at most
+**0.05 mm**, while preserving explicitly finer steps. Requested and applied
+values are recorded separately; restoring a saved result does not rewrite its
+original settings. This execution policy does not certify numerical convergence.
+The top toolbar's
 **Compute** control is the single CPU/GPU selection for all pages. For classical
 particles, **Auto** uses a usable GPU for supported operations, including small
 jobs, and otherwise uses CPU. New coherent jobs require CUDA under **Auto**,

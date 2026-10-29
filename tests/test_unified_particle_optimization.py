@@ -301,7 +301,8 @@ def test_final_restart_box_contains_every_sample_and_rejected_contact_query(monk
 
 
 @pytest.mark.parametrize("dynamic", [False, True])
-def test_checkpoint_storage_keeps_every_force_contact_and_complete_restart(monkeypatch, dynamic):
+@pytest.mark.parametrize("history_policy", ["checkpoints", "sampled"])
+def test_checkpoint_storage_keeps_every_force_contact_and_complete_restart(monkeypatch, dynamic, history_policy):
     """Storage cannot change field work, a later loss, or the reuse proof."""
     from temsim.physics.electric_potential_snapshot import ElectricPotentialSnapshot
     from temsim.physics.planar_gun_field import PlanarGunField
@@ -313,6 +314,7 @@ def test_checkpoint_storage_keeps_every_force_contact_and_complete_restart(monke
 
     state = parked_state()
     state.step_mm = .05
+    state.history_step_mm = .3
     iris = PosedWaveAperture("iris", 451., 451.1, .015, CoordinateRegistration())
     radius, axial = np.array([0., .02]), np.array([.449, .453])
     phi = np.broadcast_to(200000.+2e6*(axial-.45), (2, 2)).copy()
@@ -350,7 +352,7 @@ def test_checkpoint_storage_keeps_every_force_contact_and_complete_restart(monke
     counts.update(sample=0, contact=0)
     sparse = particle.execute_unified_plan(state, plan, *phase, initial_time_s=times,
         initial_kinetic_energy_ev=energy, return_flight_times=True, energy_output=sparse_energy,
-        history_policy="checkpoints")
+        history_policy=history_policy)
     assert counts == full_counts
     assert len(sparse[0]) < len(full[0])
     rows = np.searchsorted(full[0], sparse[0])
@@ -374,10 +376,11 @@ def test_checkpoint_storage_keeps_every_force_contact_and_complete_restart(monke
         *(getattr(cp, key)[row] for key in ("x_m", "tx_rad", "y_m", "ty_rad")),
         start_index=int(np.searchsorted(plan.z_mm, cp.z_mm[row])), unified_resume=(cp, row),
         initial_time_s=cp.flight_time_s[row], initial_kinetic_energy_ev=cp.kinetic_energy_ev[row],
-        return_flight_times=True, energy_output=resumed_energy, history_policy="checkpoints")
+        return_flight_times=True, energy_output=resumed_energy, history_policy=history_policy)
+    retained_start = np.searchsorted(sparse[0], cp.z_mm[row])
     for have, expected in zip(resumed[1:6], sparse[1:6]):
-        np.testing.assert_array_equal(have, expected[row:])
-    np.testing.assert_array_equal(resumed_energy[0], sparse_energy[0][row:])
+        np.testing.assert_array_equal(have, expected[retained_start:])
+    np.testing.assert_array_equal(resumed_energy[0], sparse_energy[0][retained_start:])
 
 
 def test_sparse_history_keeps_unrequested_receiver_plane_and_full_default(monkeypatch):

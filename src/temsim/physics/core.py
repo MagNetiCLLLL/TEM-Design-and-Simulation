@@ -1174,7 +1174,7 @@ def execute_propagation_plan(
             defer_nonfinite_until_clipping=defer_nonfinite_until_clipping,
             medium_transport=medium_transport, initial_time_s=initial_time_s,
             return_flight_times=return_flight_times, initial_kinetic_energy_ev=initial_kinetic_energy_ev,
-            energy_output=energy_output, unified_resume=unified_resume)
+            energy_output=energy_output, unified_resume=unified_resume, history_policy="auto")
     if unified_resume is not None:
         raise ValueError("Unified internal restart state requires the unified executor")
     if str(plan.solver_signature).startswith("ideal-thin-events-v1:"):

@@ -9,7 +9,8 @@ lightweight legacy previews may share its recursively frozen definition.
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
+import math
 from threading import Event
 from types import SimpleNamespace
 
@@ -23,6 +24,32 @@ from temsim.instrument_snapshot import encode_instrument, decode_instrument
 from temsim import input_io
 from temsim.job_events import job_stage
 from temsim.calculation_workflow import admit_workflow, validate_workflow, workflow_signatures
+
+
+HIGH_ACCURACY_MAXIMUM_STEP_MM = 0.05
+
+
+def resolve_request_step_mm(quality, requested_step_mm):
+    """Bound new GUI High accuracy jobs without modifying restored settings.
+
+    This is a numerical execution policy, not a convergence certificate for
+    every field or working point. Explicitly finer steps retain their value.
+    Offline calculations and archive restoration do not use this GUI policy.
+    """
+    step = float(requested_step_mm)
+    if not math.isfinite(step) or step <= 0:
+        raise ValueError("Particle integration step must be finite and positive")
+    return min(step, HIGH_ACCURACY_MAXIMUM_STEP_MM) if quality == "High accuracy" else step
+
+
+def request_numerical_preparation(quality, requested_step_mm):
+    """Describe the requested and applied resolution outside physical inputs."""
+    applied = resolve_request_step_mm(quality, requested_step_mm)
+    return dict(schema="gui-request-numerical-preparation-v1", quality=str(quality),
+        requested_step_mm=float(requested_step_mm), applied_step_mm=applied,
+        high_accuracy_maximum_step_mm=HIGH_ACCURACY_MAXIMUM_STEP_MM if quality == "High accuracy" else None,
+        changed=applied != float(requested_step_mm),
+        qualification="Execution resolution only; working-point convergence requires independent refinement")
 
 
 class PreparationCancelled(Exception):
@@ -50,7 +77,7 @@ def reconstruct_calculation_state(
 
 
 def apply_request_numerics(snapshot, quality, ray_count, step_mm):
-    """Change only the explicitly requested sampling, never optical controls."""
+    """Apply declared request resolution to a detached state, never optics."""
     from temsim.physics.optical_tuning import resolve_tuning_ray_count
     ray_count = resolve_tuning_ray_count(snapshot,quality,ray_count)
     emitter = getattr(snapshot.electron_gun, "emitter", None)
@@ -58,9 +85,9 @@ def apply_request_numerics(snapshot, quality, ray_count, step_mm):
         emitter.ray_count = int(ray_count)
     else:
         snapshot.electron_gun.ray_count = int(ray_count)
-    snapshot.step_mm = float(step_mm)
+    snapshot.step_mm = resolve_request_step_mm(quality, step_mm)
     snapshot.history_step_mm = max(
-        float(step_mm), 2.0 if quality == "Preview" else 0.5,
+        snapshot.step_mm, 2.0 if quality == "Preview" else 0.5,
     )
     return snapshot
 
@@ -75,6 +102,7 @@ class PreparedCalculationRequest:
     external_inputs: tuple[ExternalInputIdentity, ...] = ()
     calculation_manifest: object = None
     memory_estimate: int = 0
+    numerical_preparation: dict = field(default_factory=dict)
 
 
 @dataclass(frozen=True, slots=True)
@@ -178,6 +206,8 @@ class CapturedCalculationRequest:
         check_cancelled()
         from temsim.physics.backend_execution import classical_backend_preflight
         classical_backend_preflight(snapshot)
+        numerical_preparation = request_numerical_preparation(self.quality, self.step_mm)
+        applied_step_mm = snapshot.step_mm
         with job_stage("prepare_signatures", backend="CPU"):
             signatures = workflow_signatures(calculation_signatures(snapshot), self.workflow)
         check_cancelled()
@@ -188,15 +218,15 @@ class CapturedCalculationRequest:
             from temsim.calculation_manifest import capture_calculation_manifest
             admit_workflow(snapshot, self.workflow)
             check_cancelled()
-            estimate = estimate_calculation_memory_bytes(snapshot, self.quality, self.ray_count, self.step_mm,
+            estimate = estimate_calculation_memory_bytes(snapshot, self.quality, self.ray_count, applied_step_mm,
                                                         workflow=self.workflow)
             if estimate > HIGH_ACCURACY_MEMORY_BUDGET_BYTES:
                 raise ValueError("Requested calculation exceeds the configured working-memory budget; change numerical settings explicitly")
-            manifest = capture_calculation_manifest(snapshot, ray_count=self.ray_count, step_mm=self.step_mm)
+            manifest = capture_calculation_manifest(snapshot, ray_count=self.ray_count, step_mm=applied_step_mm)
             if self.workflow != "full":
                 manifest = replace(manifest, calculation_signatures=signatures)
             check_cancelled()
         return PreparedCalculationRequest(
-            snapshot, model_signature, signatures, self.ray_count, self.step_mm,
-            external_inputs, manifest, estimate,
+            snapshot, model_signature, signatures, self.ray_count, applied_step_mm,
+            external_inputs, manifest, estimate, numerical_preparation,
         )
