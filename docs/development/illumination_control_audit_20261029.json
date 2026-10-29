@@ -1,0 +1,1524 @@
+{
+  "schema": "temsim-illumination-control-investigation-v1",
+  "status": "NOT_QUALIFIED",
+  "defaults_changed": false,
+  "source_law_changed": false,
+  "aperture_design_authorized": true,
+  "reference_study_apertures_changed": false,
+  "sensitivity_acceptance_thresholds": null,
+  "software_tests": {
+    "unique_targeted_passes": 656,
+    "full_ci_verified": false,
+    "final_calibration_control_module_passes": 50
+  },
+  "gun_measurements": [
+    {
+      "name": "voltage-1p14",
+      "voltage_kv": 1.14,
+      "gun_lens_center_mm": 18.0,
+      "c1_after_current_ua": 10.0,
+      "c1_d95_um": 1.0461511764584115,
+      "c1_rmax_axis_um": 0.7585454789006043,
+      "gun_exit_alpha95_mrad": 0.00023881795987923103,
+      "survivors": 769,
+      "losses": []
+    },
+    {
+      "name": "voltage-1p20",
+      "voltage_kv": 1.2,
+      "gun_lens_center_mm": 18.0,
+      "c1_after_current_ua": 10.0,
+      "c1_d95_um": 1.1024666054441794,
+      "c1_rmax_axis_um": 0.7994550400024363,
+      "gun_exit_alpha95_mrad": 0.0003000181583038091,
+      "survivors": 769,
+      "losses": []
+    },
+    {
+      "name": "voltage-1p26",
+      "voltage_kv": 1.26,
+      "gun_lens_center_mm": 18.0,
+      "c1_after_current_ua": 10.0,
+      "c1_d95_um": 1.157379705152736,
+      "c1_rmax_axis_um": 0.8393667241848677,
+      "gun_exit_alpha95_mrad": 0.0003599123101079757,
+      "survivors": 769,
+      "losses": []
+    },
+    {
+      "name": "position-15",
+      "voltage_kv": 1.2,
+      "gun_lens_center_mm": 15.0,
+      "c1_after_current_ua": 10.0,
+      "c1_d95_um": 2.0233633156504176,
+      "c1_rmax_axis_um": 1.4679927439937468,
+      "gun_exit_alpha95_mrad": 0.0013369471887869334,
+      "survivors": 769,
+      "losses": []
+    },
+    {
+      "name": "position-16p5",
+      "voltage_kv": 1.2,
+      "gun_lens_center_mm": 16.5,
+      "c1_after_current_ua": 10.0,
+      "c1_d95_um": 1.590671238208403,
+      "c1_rmax_axis_um": 1.1537309379619327,
+      "gun_exit_alpha95_mrad": 0.00085137759189186,
+      "survivors": 769,
+      "losses": []
+    },
+    {
+      "name": "position-18",
+      "voltage_kv": 1.2,
+      "gun_lens_center_mm": 18.0,
+      "c1_after_current_ua": 10.0,
+      "c1_d95_um": 1.1024666054441794,
+      "c1_rmax_axis_um": 0.7994550400024363,
+      "gun_exit_alpha95_mrad": 0.0003000181583038091,
+      "survivors": 769,
+      "losses": []
+    }
+  ],
+  "isolated_column_measurements": [
+    {
+      "case": "baseline",
+      "source_count": 193,
+      "step_mm": 0.2,
+      "alpha95_mrad": 29.99986090363855,
+      "d95_nm": 2.209806562914547,
+      "current_a": 1e-05,
+      "observed_d95_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 1.7947189318777341,
+        "neighbour_bracket_mm": [
+          1599.2000075,
+          1599.2000175
+        ],
+        "neighbour_bracket_offset_nm": [
+          9.999999974752427,
+          19.999999949504854
+        ],
+        "observed_minimum_planes_mm": [
+          1599.2000125000002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.2000125000002,
+            1599.2000125000002
+          ]
+        ],
+        "representative_offset_nm": 15.000000075815478,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      }
+    },
+    {
+      "case": "c1-minus",
+      "source_count": 193,
+      "step_mm": 0.2,
+      "alpha95_mrad": 29.381806038852908,
+      "d95_nm": 2.3916818074371653,
+      "current_a": 1e-05,
+      "observed_d95_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 1.6646400992275852,
+        "neighbour_bracket_mm": [
+          1599.2000175,
+          1599.2000275
+        ],
+        "neighbour_bracket_offset_nm": [
+          19.999999949504854,
+          29.99999992425728
+        ],
+        "observed_minimum_planes_mm": [
+          1599.2000225000002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.2000225000002,
+            1599.2000225000002
+          ]
+        ],
+        "representative_offset_nm": 25.000000050567905,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      }
+    },
+    {
+      "case": "c1-plus",
+      "source_count": 193,
+      "step_mm": 0.2,
+      "alpha95_mrad": 30.176507348207654,
+      "d95_nm": 2.0392197867040456,
+      "current_a": 1e-05,
+      "observed_d95_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 1.9374900413776217,
+        "neighbour_bracket_mm": [
+          1599.2000125000002,
+          1599.2000225000002
+        ],
+        "neighbour_bracket_offset_nm": [
+          15.000000075815478,
+          25.000000050567905
+        ],
+        "observed_minimum_planes_mm": [
+          1599.2000175
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.2000175,
+            1599.2000175
+          ]
+        ],
+        "representative_offset_nm": 19.999999949504854,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      }
+    },
+    {
+      "case": "c2-minus",
+      "source_count": 193,
+      "step_mm": 0.2,
+      "alpha95_mrad": 29.211957055792933,
+      "d95_nm": 7.8106543483408055,
+      "current_a": 1e-05,
+      "observed_d95_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 2.9660778106678274,
+        "neighbour_bracket_mm": [
+          1599.2000925000002,
+          1599.2009975
+        ],
+        "neighbour_bracket_offset_nm": [
+          95.00000010120857,
+          999.9999999763531
+        ],
+        "observed_minimum_planes_mm": [
+          1599.2000975
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.2000975,
+            1599.2000975
+          ]
+        ],
+        "representative_offset_nm": 99.99999997489795,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      }
+    },
+    {
+      "case": "c2-plus",
+      "source_count": 193,
+      "step_mm": 0.2,
+      "alpha95_mrad": 30.79240380155192,
+      "d95_nm": 6.565259875538683,
+      "current_a": 1e-05,
+      "observed_d95_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 1.8912400901496667,
+        "neighbour_bracket_mm": [
+          1599.1989975000001,
+          1599.1999025
+        ],
+        "neighbour_bracket_offset_nm": [
+          -999.9999999763531,
+          -95.00000010120857
+        ],
+        "observed_minimum_planes_mm": [
+          1599.1998975000001
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.1998975000001,
+            1599.1998975000001
+          ]
+        ],
+        "representative_offset_nm": -99.99999997489795,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      }
+    },
+    {
+      "case": "c3-minus",
+      "source_count": 193,
+      "step_mm": 0.2,
+      "alpha95_mrad": 30.043585933437257,
+      "d95_nm": 4.5850473891002546,
+      "current_a": 1e-05,
+      "observed_d95_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 1.893120195154887,
+        "neighbour_bracket_mm": [
+          1599.2000625,
+          1599.2000725
+        ],
+        "neighbour_bracket_offset_nm": [
+          64.99999994957761,
+          74.99999992433004
+        ],
+        "observed_minimum_planes_mm": [
+          1599.2000675000002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.2000675000002,
+            1599.2000675000002
+          ]
+        ],
+        "representative_offset_nm": 70.00000005064066,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      }
+    },
+    {
+      "case": "c3-plus",
+      "source_count": 193,
+      "step_mm": 0.2,
+      "alpha95_mrad": 29.95571098223869,
+      "d95_nm": 2.9675937968993646,
+      "current_a": 1e-05,
+      "observed_d95_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 1.6559372496195375,
+        "neighbour_bracket_mm": [
+          1599.1999575000002,
+          1599.1999675000002
+        ],
+        "neighbour_bracket_offset_nm": [
+          -39.99999989900971,
+          -29.99999992425728
+        ],
+        "observed_minimum_planes_mm": [
+          1599.1999625
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.1999625,
+            1599.1999625
+          ]
+        ],
+        "representative_offset_nm": -35.00000002532033,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      }
+    }
+  ],
+  "focus_proposal": {
+    "objective_percent": 29.293371898678036,
+    "original_objective_percent": 29.293344328471793,
+    "source_count": 769,
+    "step_mm": 0.05,
+    "surface": {
+      "absolute_source_weight": 1.0000000000000002,
+      "alpha95_mrad": 29.76962874597388,
+      "centroid_x_m": 2.390691468871112e-11,
+      "centroid_y_m": -2.4808879760627973e-11,
+      "current_a": 1e-05,
+      "d50_nm": 0.7524620894409378,
+      "d90_nm": 1.2744807229823722,
+      "d95_nm": 2.1830343152307092,
+      "effective_rays": 769.0000000000008,
+      "offset_nm": 0.0,
+      "rms_radius_nm": 1.390131649326161,
+      "surviving_rays": 769,
+      "z_mm": 1599.1999975
+    },
+    "observed_d95_waist": {
+      "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+      "minimum": 2.1732764369007076,
+      "neighbour_bracket_mm": [
+        1599.1999971,
+        1599.1999975
+      ],
+      "neighbour_bracket_offset_nm": [
+        -0.40000008993956726,
+        0.0
+      ],
+      "observed_minimum_planes_mm": [
+        1599.1999973000002
+      ],
+      "plateau_intervals_mm": [
+        [
+          1599.1999973000002,
+          1599.1999973000002
+        ]
+      ],
+      "representative_offset_nm": -0.1999999312829459,
+      "status": "BOUNDED_OBSERVED_MINIMUM"
+    },
+    "numerical_convergence": "NOT_QUALIFIED",
+    "source_count_convergence": "NOT_QUALIFIED",
+    "original_source_weights_preserved": true,
+    "current_control_family_qualified": false
+  },
+  "scan_linear_observation": {
+    "z_mm": 1599.1999975,
+    "position_matrix_nm": [
+      [
+        0.6399999999999492,
+        1.801412911127076e-07
+      ],
+      [
+        -1.8014129112154914e-07,
+        0.6399999999999493
+      ]
+    ],
+    "mechanical_tilt_matrix_urad": [
+      [
+        4.061515697601024e-08,
+        -0.07205651050121895
+      ],
+      [
+        0.07205651050122165,
+        4.0615156552493764e-08
+      ]
+    ],
+    "canonical_angle_matrix_urad": [
+      [
+        2.0281801157837802e-08,
+        5.735049981983279e-15
+      ],
+      [
+        -5.359096393577928e-15,
+        2.0281801157837802e-08
+      ]
+    ],
+    "maximum_corner_mechanical_delta_tilt_urad": 0.10031105543299468,
+    "predicted_pixel_centre_points": [
+      {
+        "normalized_command": [
+          0.0,
+          0.0
+        ],
+        "shift_nm": [
+          0.0,
+          0.0
+        ],
+        "mechanical_delta_tilt_urad": [
+          0.0,
+          0.0
+        ],
+        "canonical_delta_angle_urad": [
+          0.0,
+          0.0
+        ],
+        "upper_physical_kick_urad": [
+          0.0,
+          0.0
+        ],
+        "lower_physical_kick_urad": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "normalized_command": [
+          0.984375,
+          0.0
+        ],
+        "shift_nm": [
+          0.6299999999999499,
+          -1.7732658344777495e-07
+        ],
+        "mechanical_delta_tilt_urad": [
+          3.998054514826008e-08,
+          0.07093062752464006
+        ],
+        "canonical_delta_angle_urad": [
+          1.9964898014746587e-08,
+          -5.275360512428273e-15
+        ],
+        "upper_physical_kick_urad": [
+          0.09464273073855563,
+          0.2591822606319934
+        ],
+        "lower_physical_kick_urad": [
+          -0.10501039415075235,
+          -0.29010602339056296
+        ]
+      },
+      {
+        "normalized_command": [
+          -0.984375,
+          0.0
+        ],
+        "shift_nm": [
+          -0.6299999999999499,
+          1.7732658344777495e-07
+        ],
+        "mechanical_delta_tilt_urad": [
+          -3.998054514826008e-08,
+          -0.07093062752464006
+        ],
+        "canonical_delta_angle_urad": [
+          -1.9964898014746587e-08,
+          5.275360512428273e-15
+        ],
+        "upper_physical_kick_urad": [
+          -0.09464273073855563,
+          -0.2591822606319934
+        ],
+        "lower_physical_kick_urad": [
+          0.10501039415075235,
+          0.29010602339056296
+        ]
+      },
+      {
+        "normalized_command": [
+          0.0,
+          0.984375
+        ],
+        "shift_nm": [
+          1.7732658343907155e-07,
+          0.62999999999995
+        ],
+        "mechanical_delta_tilt_urad": [
+          -0.0709306275246374,
+          3.998054473136105e-08
+        ],
+        "canonical_delta_angle_urad": [
+          5.64543982601479e-15,
+          1.9964898014746587e-08
+        ],
+        "upper_physical_kick_urad": [
+          -0.2591834597117402,
+          0.09464658424259095
+        ],
+        "lower_physical_kick_urad": [
+          0.29010801054901186,
+          -0.10501671430558882
+        ]
+      },
+      {
+        "normalized_command": [
+          0.0,
+          -0.984375
+        ],
+        "shift_nm": [
+          -1.7732658343907155e-07,
+          -0.62999999999995
+        ],
+        "mechanical_delta_tilt_urad": [
+          0.0709306275246374,
+          -3.998054473136105e-08
+        ],
+        "canonical_delta_angle_urad": [
+          -5.64543982601479e-15,
+          -1.9964898014746587e-08
+        ],
+        "upper_physical_kick_urad": [
+          0.2591834597117402,
+          -0.09464658424259095
+        ],
+        "lower_physical_kick_urad": [
+          -0.29010801054901186,
+          0.10501671430558882
+        ]
+      },
+      {
+        "normalized_command": [
+          0.984375,
+          0.984375
+        ],
+        "shift_nm": [
+          0.6300001773265335,
+          0.6299998226733666
+        ],
+        "mechanical_delta_tilt_urad": [
+          -0.07093058754409225,
+          0.0709306675051848
+        ],
+        "canonical_delta_angle_urad": [
+          1.9964903660186412e-08,
+          1.9964892739386073e-08
+        ],
+        "upper_physical_kick_urad": [
+          -0.16454072897318459,
+          0.3538288448745844
+        ],
+        "lower_physical_kick_urad": [
+          0.1850976163982595,
+          -0.3951227376961518
+        ]
+      },
+      {
+        "normalized_command": [
+          0.984375,
+          -0.984375
+        ],
+        "shift_nm": [
+          0.6299998226733666,
+          -0.6300001773265335
+        ],
+        "mechanical_delta_tilt_urad": [
+          0.07093066750518255,
+          0.07093058754409533
+        ],
+        "canonical_delta_angle_urad": [
+          1.996489236930676e-08,
+          -1.99649032901071e-08
+        ],
+        "upper_physical_kick_urad": [
+          0.35382619045029584,
+          0.16453567638940247
+        ],
+        "lower_physical_kick_urad": [
+          -0.39511840469976417,
+          -0.18508930908497415
+        ]
+      },
+      {
+        "normalized_command": [
+          -0.984375,
+          0.984375
+        ],
+        "shift_nm": [
+          -0.6299998226733666,
+          0.6300001773265335
+        ],
+        "mechanical_delta_tilt_urad": [
+          -0.07093066750518255,
+          -0.07093058754409533
+        ],
+        "canonical_delta_angle_urad": [
+          -1.996489236930676e-08,
+          1.99649032901071e-08
+        ],
+        "upper_physical_kick_urad": [
+          -0.35382619045029584,
+          -0.16453567638940247
+        ],
+        "lower_physical_kick_urad": [
+          0.39511840469976417,
+          0.18508930908497415
+        ]
+      },
+      {
+        "normalized_command": [
+          -0.984375,
+          -0.984375
+        ],
+        "shift_nm": [
+          -0.6300001773265335,
+          -0.6299998226733666
+        ],
+        "mechanical_delta_tilt_urad": [
+          0.07093058754409225,
+          -0.0709306675051848
+        ],
+        "canonical_delta_angle_urad": [
+          -1.9964903660186412e-08,
+          -1.9964892739386073e-08
+        ],
+        "upper_physical_kick_urad": [
+          0.16454072897318459,
+          -0.3538288448745844
+        ],
+        "lower_physical_kick_urad": [
+          -0.1850976163982595,
+          0.3951227376961518
+        ]
+      }
+    ],
+    "acceptance": "NOT_QUALIFIED: no finite-current mean-tilt tolerance, finite-amplitude test, shape/current or half-step check"
+  },
+  "retained_local_evidence": "E:\\tem_simulator_v2\\outputs\\illumination-control-20261029",
+  "evidence_scope": "Actual classical diagnostic runs; no coherent waves, specimen image, OEM calibration or qualified preset",
+  "c1_aperture_design": {
+    "radius_um": 0.3,
+    "source_count": 193,
+    "step_mm": 0.2,
+    "current_control_family_qualified": false,
+    "isolated_cases": [
+      {
+        "case": "base",
+        "surface": {
+          "absolute_source_weight": 0.6476683937823835,
+          "alpha95_mrad": 15.554154100746167,
+          "centroid_x_m": -1.3779521037547844e-11,
+          "centroid_y_m": -1.2047905153697999e-11,
+          "current_a": 6.476683937823837e-06,
+          "d50_nm": 0.7137060373536418,
+          "d90_nm": 1.0853722295565178,
+          "d95_nm": 1.190079613604182,
+          "effective_rays": 125.00000000000006,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.39124518552764215,
+          "surviving_rays": 125,
+          "z_mm": 1599.1999975
+        },
+        "observed_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.6604592592092048,
+          "neighbour_bracket_mm": [
+            1599.1999625,
+            1599.1999725
+          ],
+          "neighbour_bracket_offset_nm": [
+            -35.00000002532033,
+            -25.000000050567905
+          ],
+          "observed_minimum_planes_mm": [
+            1599.1999675000002
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.1999675000002,
+              1599.1999675000002
+            ]
+          ],
+          "representative_offset_nm": -29.99999992425728,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "losses": [
+          {
+            "component": "feg_c1_aperture",
+            "count": 68,
+            "current_a": 3.5233160621761674e-06,
+            "source_fraction": 0.3523316062176167
+          }
+        ],
+        "input_digest": "5ea784366ecacc3c9f038a7dfcf1a66efa5f5dfe322ffd55638b3a7d21acb181",
+        "report": "outputs\\illumination-control-20261029\\aperture-r0.3um-n193-h0.2-prepared\\base\\report.json",
+        "report_sha256": "539619a51c849cb98326b1ece9ec9e37bea15cef65dd2641923bf172ba9f73e0"
+      },
+      {
+        "case": "c1-minus",
+        "surface": {
+          "absolute_source_weight": 0.6476683937823835,
+          "alpha95_mrad": 15.172993236821188,
+          "centroid_x_m": -1.1134299623091046e-11,
+          "centroid_y_m": -1.0715583052394427e-11,
+          "current_a": 6.476683937823837e-06,
+          "d50_nm": 0.6489594014611949,
+          "d90_nm": 0.9901789035491394,
+          "d95_nm": 1.0410820835432162,
+          "effective_rays": 125.00000000000006,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.3435110761467507,
+          "surviving_rays": 125,
+          "z_mm": 1599.1999975
+        },
+        "observed_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.631427197164497,
+          "neighbour_bracket_mm": [
+            1599.1999675000002,
+            1599.1999775000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -29.99999992425728,
+            -19.999999949504854
+          ],
+          "observed_minimum_planes_mm": [
+            1599.1999725
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.1999725,
+              1599.1999725
+            ]
+          ],
+          "representative_offset_nm": -25.000000050567905,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "losses": [
+          {
+            "component": "feg_c1_aperture",
+            "count": 68,
+            "current_a": 3.5233160621761674e-06,
+            "source_fraction": 0.3523316062176167
+          }
+        ],
+        "input_digest": "355b5bca87c4eeff72c69a98531f91d5dcdc5303533555f3f321df099889a025",
+        "report": "outputs\\illumination-control-20261029\\aperture-r0.3um-n193-h0.2-prepared\\c1-minus\\report.json",
+        "report_sha256": "a31038d4feaa1d3ae9ebb775c15b9599be7b7e28afc906a9cd7904b5707a0707"
+      },
+      {
+        "case": "c1-plus",
+        "surface": {
+          "absolute_source_weight": 0.6476683937823835,
+          "alpha95_mrad": 15.759184166923353,
+          "centroid_x_m": -1.57807032917373e-11,
+          "centroid_y_m": -1.274159535298769e-11,
+          "current_a": 6.476683937823837e-06,
+          "d50_nm": 0.8035953289017688,
+          "d90_nm": 1.2266797464121628,
+          "d95_nm": 1.3436079797331517,
+          "effective_rays": 125.00000000000006,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.44068766015729266,
+          "surviving_rays": 125,
+          "z_mm": 1599.1999975
+        },
+        "observed_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.7241550410430591,
+          "neighbour_bracket_mm": [
+            1599.1999575000002,
+            1599.1999675000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -39.99999989900971,
+            -29.99999992425728
+          ],
+          "observed_minimum_planes_mm": [
+            1599.1999625
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.1999625,
+              1599.1999625
+            ]
+          ],
+          "representative_offset_nm": -35.00000002532033,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "losses": [
+          {
+            "component": "feg_c1_aperture",
+            "count": 68,
+            "current_a": 3.5233160621761674e-06,
+            "source_fraction": 0.3523316062176167
+          }
+        ],
+        "input_digest": "95a1b03100c18e9c148b825d83402ee85bd5433948243b49d9d6024a02595b68",
+        "report": "outputs\\illumination-control-20261029\\aperture-r0.3um-n193-h0.2-prepared\\c1-plus\\report.json",
+        "report_sha256": "59c3268f02aac85d1acf721cb31ff34b2c0f226c5488d699a966808f6f1b8f0e"
+      },
+      {
+        "case": "gun-minus",
+        "surface": {
+          "absolute_source_weight": 0.6943005181347152,
+          "alpha95_mrad": 15.509996135636635,
+          "centroid_x_m": -8.466849625882173e-12,
+          "centroid_y_m": -1.0416890681613193e-11,
+          "current_a": 6.943005181347153e-06,
+          "d50_nm": 0.7266812939855507,
+          "d90_nm": 1.0759578470787396,
+          "d95_nm": 1.2090621674682405,
+          "effective_rays": 134.00000000000006,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.3918398151313596,
+          "surviving_rays": 134,
+          "z_mm": 1599.1999975
+        },
+        "observed_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.6688976196107916,
+          "neighbour_bracket_mm": [
+            1599.1999675000002,
+            1599.1999775000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -29.99999992425728,
+            -19.999999949504854
+          ],
+          "observed_minimum_planes_mm": [
+            1599.1999725
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.1999725,
+              1599.1999725
+            ]
+          ],
+          "representative_offset_nm": -25.000000050567905,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "losses": [
+          {
+            "component": "feg_c1_aperture",
+            "count": 59,
+            "current_a": 3.0569948186528512e-06,
+            "source_fraction": 0.3056994818652851
+          }
+        ],
+        "input_digest": "2e158c956d20954727a9cb7c565504576495403aad5421d460745aa820f8bf9f",
+        "report": "outputs\\illumination-control-20261029\\aperture-r0.3um-n193-h0.2-prepared\\gun-minus\\report.json",
+        "report_sha256": "ca22876f88dfb87fb3491c5e06cb31eb63a05b01b1e683941906e7171b3fb4da"
+      },
+      {
+        "case": "gun-plus",
+        "surface": {
+          "absolute_source_weight": 0.6062176165803109,
+          "alpha95_mrad": 15.80337361301734,
+          "centroid_x_m": -1.9500472311034226e-11,
+          "centroid_y_m": -2.2146458322342253e-12,
+          "current_a": 6.062176165803111e-06,
+          "d50_nm": 0.7514304893099785,
+          "d90_nm": 1.1324545728789666,
+          "d95_nm": 1.194878511228062,
+          "effective_rays": 116.99999999999999,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.4007120694928064,
+          "surviving_rays": 117,
+          "z_mm": 1599.1999975
+        },
+        "observed_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.715169803888665,
+          "neighbour_bracket_mm": [
+            1599.1999675000002,
+            1599.1999775000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -29.99999992425728,
+            -19.999999949504854
+          ],
+          "observed_minimum_planes_mm": [
+            1599.1999725
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.1999725,
+              1599.1999725
+            ]
+          ],
+          "representative_offset_nm": -25.000000050567905,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "losses": [
+          {
+            "component": "feg_c1_aperture",
+            "count": 76,
+            "current_a": 3.937823834196893e-06,
+            "source_fraction": 0.3937823834196893
+          }
+        ],
+        "input_digest": "0c7c6335ebc761a84bc3d77965946a94b99579b374eeb1e6b3ec4a3503128f4e",
+        "report": "outputs\\illumination-control-20261029\\aperture-r0.3um-n193-h0.2-prepared\\gun-plus\\report.json",
+        "report_sha256": "b1be387b88f58402afb1092447b99042a9cee53395df328966d7afa64b1f8f23"
+      }
+    ],
+    "compensated_cases": [
+      {
+        "case": "base",
+        "surface": {
+          "absolute_source_weight": 0.6476683937823835,
+          "alpha95_mrad": 30.203923794887753,
+          "centroid_x_m": 8.232641443208467e-12,
+          "centroid_y_m": 5.208182560737043e-11,
+          "current_a": 6.476683937823837e-06,
+          "d50_nm": 0.8464179028453552,
+          "d90_nm": 1.7691416890203198,
+          "d95_nm": 2.6540959517651546,
+          "effective_rays": 125.00000000000006,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.7238242541957383,
+          "surviving_rays": 125,
+          "z_mm": 1599.1999975
+        },
+        "observed_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 2.3853698267796535,
+          "neighbour_bracket_mm": [
+            1599.1999775000002,
+            1599.1999875000001
+          ],
+          "neighbour_bracket_offset_nm": [
+            -19.999999949504854,
+            -9.999999974752427
+          ],
+          "observed_minimum_planes_mm": [
+            1599.1999825
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.1999825,
+              1599.1999825
+            ]
+          ],
+          "representative_offset_nm": -15.000000075815478,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "losses": [
+          {
+            "component": "feg_c1_aperture",
+            "count": 68,
+            "current_a": 3.5233160621761674e-06,
+            "source_fraction": 0.3523316062176167
+          }
+        ],
+        "input_digest": "2f8582f1e4ad785060e16ab46618ef1b8b6bb6bc33a413e7cd92a7b1deb26411",
+        "report": "outputs\\illumination-control-20261029\\aperture-r0.3um-n193-h0.2-prepared-joint-c2c3\\base\\report.json",
+        "report_sha256": "e2b9609f61b0f66656cbe1020e278e5ee425686b6b904c7924d2b69d50a5a55c"
+      }
+    ],
+    "nominal_sensitivity_cases": [
+      {
+        "case": "c1-minus",
+        "surface": {
+          "absolute_source_weight": 0.6476683937823835,
+          "alpha95_mrad": 29.415933342096196,
+          "centroid_x_m": -6.03509565843667e-12,
+          "centroid_y_m": 3.330746934072585e-11,
+          "current_a": 6.476683937823837e-06,
+          "d50_nm": 0.6269254348709116,
+          "d90_nm": 1.8895398555237417,
+          "d95_nm": 2.196789554507934,
+          "effective_rays": 125.00000000000006,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.5650577023980367,
+          "surviving_rays": 125,
+          "z_mm": 1599.1999975
+        },
+        "observed_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 2.0137639663213407,
+          "neighbour_bracket_mm": [
+            1599.2000125000002,
+            1599.2000225000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            15.000000075815478,
+            25.000000050567905
+          ],
+          "observed_minimum_planes_mm": [
+            1599.2000175
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.2000175,
+              1599.2000175
+            ]
+          ],
+          "representative_offset_nm": 19.999999949504854,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "losses": [
+          {
+            "component": "feg_c1_aperture",
+            "count": 68,
+            "current_a": 3.5233160621761674e-06,
+            "source_fraction": 0.3523316062176167
+          }
+        ],
+        "input_digest": "e5fd60f8792aaa4187bf9d437f5d137733dea4852fa8f55fa3d13b038aa6899f",
+        "report": "outputs\\illumination-control-20261029\\aperture-r0.3um-n193-h0.2-prepared-nominal-sensitivity\\c1-minus\\report.json",
+        "report_sha256": "de81a0677a2d168e5fffd2caffa6ddc24218fd1749a20230f033127db0a23797"
+      },
+      {
+        "case": "c1-plus",
+        "surface": {
+          "absolute_source_weight": 0.6476683937823835,
+          "alpha95_mrad": 30.340694401786475,
+          "centroid_x_m": 2.8713377105827392e-11,
+          "centroid_y_m": 5.783991159212513e-11,
+          "current_a": 6.476683937823837e-06,
+          "d50_nm": 0.7240319605751127,
+          "d90_nm": 2.03377887525909,
+          "d95_nm": 2.3411675057438766,
+          "effective_rays": 125.00000000000006,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.704171585208299,
+          "surviving_rays": 125,
+          "z_mm": 1599.1999975
+        },
+        "observed_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 2.2870363741496655,
+          "neighbour_bracket_mm": [
+            1599.1999975,
+            1599.2000025000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            0.0,
+            5.000000101063051
+          ],
+          "observed_minimum_planes_mm": [
+            1599.1999985000002
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.1999985000002,
+              1599.1999985000002
+            ]
+          ],
+          "representative_offset_nm": 1.0000001111620804,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "losses": [
+          {
+            "component": "feg_c1_aperture",
+            "count": 68,
+            "current_a": 3.5233160621761674e-06,
+            "source_fraction": 0.3523316062176167
+          }
+        ],
+        "input_digest": "89ba6d6e9f981fb24021c2263000af9aa5bd6e884c6e2bc106d8c7c00f760790",
+        "report": "outputs\\illumination-control-20261029\\aperture-r0.3um-n193-h0.2-prepared-nominal-sensitivity\\c1-plus\\report.json",
+        "report_sha256": "04a0a183126ece20aad52c6c3d0f6a3f8467cc65b162e16b318b0d370b073f55"
+      },
+      {
+        "case": "gun-minus",
+        "surface": {
+          "absolute_source_weight": 0.6943005181347152,
+          "alpha95_mrad": 29.7922178543079,
+          "centroid_x_m": 2.2476572090857817e-11,
+          "centroid_y_m": 2.196485018608014e-11,
+          "current_a": 6.943005181347153e-06,
+          "d50_nm": 0.6835465432961771,
+          "d90_nm": 2.10846027199647,
+          "d95_nm": 2.3724247958795313,
+          "effective_rays": 134.00000000000006,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.601213312907169,
+          "surviving_rays": 134,
+          "z_mm": 1599.1999975
+        },
+        "observed_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 2.3297651502444925,
+          "neighbour_bracket_mm": [
+            1599.1999975,
+            1599.2000025000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            0.0,
+            5.000000101063051
+          ],
+          "observed_minimum_planes_mm": [
+            1599.1999985000002
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.1999985000002,
+              1599.1999985000002
+            ]
+          ],
+          "representative_offset_nm": 1.0000001111620804,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "losses": [
+          {
+            "component": "feg_c1_aperture",
+            "count": 59,
+            "current_a": 3.0569948186528512e-06,
+            "source_fraction": 0.3056994818652851
+          }
+        ],
+        "input_digest": "85737c2000f02f54ceca0db809fdde5dab85fba9fd4aa822519af5c1044ea660",
+        "report": "outputs\\illumination-control-20261029\\aperture-r0.3um-n193-h0.2-prepared-nominal-sensitivity\\gun-minus\\report.json",
+        "report_sha256": "a34908aa39be8c5311919c0812cc4aaebc7146d95bfa06b0e58dbae42079a0fb"
+      },
+      {
+        "case": "gun-plus",
+        "surface": {
+          "absolute_source_weight": 0.6062176165803109,
+          "alpha95_mrad": 30.6467092600879,
+          "centroid_x_m": -1.2086090844987832e-11,
+          "centroid_y_m": 1.6959152065394706e-11,
+          "current_a": 6.062176165803111e-06,
+          "d50_nm": 0.7040886860915738,
+          "d90_nm": 1.8405027186783538,
+          "d95_nm": 2.71074768318134,
+          "effective_rays": 116.99999999999999,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.5810232252841151,
+          "surviving_rays": 117,
+          "z_mm": 1599.1999975
+        },
+        "observed_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 2.090362632718189,
+          "neighbour_bracket_mm": [
+            1599.2000075,
+            1599.2000175
+          ],
+          "neighbour_bracket_offset_nm": [
+            9.999999974752427,
+            19.999999949504854
+          ],
+          "observed_minimum_planes_mm": [
+            1599.2000125000002
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.2000125000002,
+              1599.2000125000002
+            ]
+          ],
+          "representative_offset_nm": 15.000000075815478,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "losses": [
+          {
+            "component": "feg_c1_aperture",
+            "count": 76,
+            "current_a": 3.937823834196893e-06,
+            "source_fraction": 0.3937823834196893
+          }
+        ],
+        "input_digest": "ad04fe7adddbe0c5ebeef7568ba6f61c26bc514fe5e7eecf1abe99ba09554263",
+        "report": "outputs\\illumination-control-20261029\\aperture-r0.3um-n193-h0.2-prepared-nominal-sensitivity\\gun-plus\\report.json",
+        "report_sha256": "8acfa8f4941d396cbfd64895d3b566a3a067c4213c3a690e9140e09f6998cfd6"
+      }
+    ]
+  },
+  "baseline_internal_waists": {
+    "source_count": 193,
+    "step_mm": 0.2,
+    "input_digest": "397424316f54475cfd6a3c0d02a05aef99da9538e4f1bb0893b46d7784a49a67",
+    "regions": {
+      "ac_exit_to_capture_end": {
+        "requirement": "record_all_waists",
+        "satisfied_at_sampling": true,
+        "bounds_mm": [
+          1412.5,
+          1420.0
+        ],
+        "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "count": 0,
+        "unresolved_count": 0,
+        "interpretation": "Finite 2D envelope regions; strict source-image conjugacy requires separate evidence"
+      },
+      "ac_pair": {
+        "requirement": "exactly_one_2d_waist",
+        "satisfied_at_sampling": true,
+        "bounds_mm": [
+          1387.5,
+          1412.5
+        ],
+        "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "count": 1,
+        "unresolved_count": 0,
+        "interpretation": "Finite 2D envelope regions; strict source-image conjugacy requires separate evidence"
+      },
+      "adl_to_tl22": {
+        "requirement": "record_all_waists",
+        "satisfied_at_sampling": true,
+        "bounds_mm": [
+          1088.2,
+          1166.35
+        ],
+        "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "count": 0,
+        "unresolved_count": 0,
+        "interpretation": "Finite 2D envelope regions; strict source-image conjugacy requires separate evidence"
+      },
+      "c1_to_c2": {
+        "requirement": "record_all_waists",
+        "satisfied_at_sampling": true,
+        "bounds_mm": [
+          500.0,
+          650.0
+        ],
+        "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "count": 1,
+        "unresolved_count": 0,
+        "interpretation": "Finite 2D envelope regions; strict source-image conjugacy requires separate evidence"
+      },
+      "c2_to_c3": {
+        "requirement": "required_2d_waist",
+        "satisfied_at_sampling": true,
+        "bounds_mm": [
+          650.0,
+          915.0
+        ],
+        "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "count": 1,
+        "unresolved_count": 0,
+        "interpretation": "Finite 2D envelope regions; strict source-image conjugacy requires separate evidence"
+      },
+      "c3_to_adl": {
+        "requirement": "forbidden_converging_to_diverging_waist",
+        "satisfied_at_sampling": true,
+        "bounds_mm": [
+          915.0,
+          1088.2
+        ],
+        "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "count": 0,
+        "unresolved_count": 0,
+        "interpretation": "Finite 2D envelope regions; strict source-image conjugacy requires separate evidence"
+      },
+      "corrector_internal": {
+        "requirement": "exactly_one_2d_waist",
+        "satisfied_at_sampling": true,
+        "bounds_mm": [
+          1166.35,
+          1249.95
+        ],
+        "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "count": 1,
+        "unresolved_count": 0,
+        "interpretation": "Finite 2D envelope regions; strict source-image conjugacy requires separate evidence"
+      },
+      "gun_exit_to_c1": {
+        "requirement": "record_all_waists",
+        "satisfied_at_sampling": true,
+        "bounds_mm": [
+          450.0,
+          500.0
+        ],
+        "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "count": 0,
+        "unresolved_count": 0,
+        "interpretation": "Finite 2D envelope regions; strict source-image conjugacy requires separate evidence"
+      },
+      "tl21_to_ac": {
+        "requirement": "record_all_waists",
+        "satisfied_at_sampling": true,
+        "bounds_mm": [
+          1249.95,
+          1387.5
+        ],
+        "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "count": 1,
+        "unresolved_count": 0,
+        "interpretation": "Finite 2D envelope regions; strict source-image conjugacy requires separate evidence"
+      }
+    },
+    "complete_ceos_conjugacy_qualified": false,
+    "applies_to_new_aperture_family": false
+  },
+  "scan_conjugacy": {
+    "status": "NOT_QUALIFIED",
+    "conclusion": "The local chief linearization has a source-image conjugate candidate near 1408.081 mm, not a measured finite-source image. D is not near zero on the measured AC grid, so these planes are not local pure-tilt-to-shift planes. The user only constrained the static output waist to this interval, not the mathematical scan pivot. A position-plus-tilt command here can correspond to pure virtual tilt at another downstream reference. This AC-only study therefore cannot reject the overall architecture. The separately recorded native downstream study finds the current combination's common pivot near 1584.32735 mm; finite-current scanning and numerical convergence remain separate evidence.",
+    "smallest_sampled_mechanical_D_singular_value": 10.949188664967712,
+    "qualification_limits": [
+      "Integration step 0.2 mm; no half-step or perturbation-amplitude convergence",
+      "Interpolated conjugate location is not a measured finite-source crossover",
+      "No finite-current scan shape, current, or mean-angle qualification",
+      "Applying this local chief map to the actual finite source predicts roughly 336 nm D95 versus 2.21 nm actual; strong nonlinear corrections prevent finite-source imaging inference from this map",
+      "No direct identification of this mathematical scanner plane with a CEOS schematic label"
+    ]
+  },
+  "local_evidence_sha256": {
+    "outputs\\illumination-control-20261029\\internal-waists-193-h02\\report.json": "1b75afb5ecafdcbe5c762e7b9339fd929173f9e79cb844ac011aff2ef7ec3616",
+    "outputs\\illumination-control-20261029\\internal-waists-193-h02\\source-association-audit.json": "c453878f864a63f3b6d5360972b2bf4b1484c97370a2da94be8f9dae0aa0de82",
+    "outputs\\illumination-control-20261029\\gun-controls\\voltage-axial-screen.json": "c9a7ce13a1c174c92497868f493d61744bf770a3fb3591d3f024b4c1508d31f0",
+    "outputs\\illumination-control-20261029\\c1-c2c3-proposal-screen.json": "29b0d9e1801805a022869866179a4aeb3549ffc868f957cce0b20230a6e161fa",
+    "outputs\\illumination-control-20261029\\scan-response\\ac-conjugacy-analysis.json": "e3aac24f556120fd5932a310fbbec56c4acef898196ddc3befb9eceedd9425a7"
+  },
+  "clipped_nominal_proposal": {
+    "qualification": "NOT_QUALIFIED",
+    "controls": {
+      "c2": 21.25079393298154,
+      "objective": 29.29337773651361
+    },
+    "c3_percent": 5.044564335771807,
+    "c1_aperture_radius_um": 0.3,
+    "source_count": 193,
+    "step_mm": 0.2,
+    "surface": {
+      "absolute_source_weight": 0.6476683937823835,
+      "alpha95_mrad": 30.000000029927502,
+      "centroid_x_m": 1.0142819104642245e-11,
+      "centroid_y_m": 5.135979647598539e-11,
+      "current_a": 6.476683937823837e-06,
+      "d50_nm": 0.7139017031933456,
+      "d90_nm": 2.059745215733427,
+      "d95_nm": 2.3337331961435552,
+      "effective_rays": 125.00000000000006,
+      "offset_nm": 0.0,
+      "rms_radius_nm": 0.6445875010266782,
+      "surviving_rays": 125,
+      "z_mm": 1599.1999975
+    },
+    "observed_d95_waist": {
+      "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+      "minimum": 2.298780745042666,
+      "neighbour_bracket_mm": [
+        1599.1999963,
+        1599.1999967000002
+      ],
+      "neighbour_bracket_offset_nm": [
+        -1.2000000424450263,
+        -0.7999999525054591
+      ],
+      "observed_minimum_planes_mm": [
+        1599.1999965
+      ],
+      "plateau_intervals_mm": [
+        [
+          1599.1999965,
+          1599.1999965
+        ]
+      ],
+      "representative_offset_nm": -1.0000001111620804,
+      "status": "BOUNDED_OBSERVED_MINIMUM"
+    },
+    "report_sha256": "099a68a7e1f9f87f8fe1c3f0ba841aa18945375937d2ff5e4216c9c2f3a5b2d0"
+  },
+  "clipped_nominal_source_count_check": {
+    "qualification": "NOT_QUALIFIED",
+    "source_count": 769,
+    "step_mm": 0.2,
+    "physical_controls_frozen": true,
+    "surface": {
+      "absolute_source_weight": 0.634590377113134,
+      "alpha95_mrad": 29.67924682141361,
+      "centroid_x_m": -1.3584479232938105e-12,
+      "centroid_y_m": 1.457404036027349e-11,
+      "current_a": 6.34590377113134e-06,
+      "d50_nm": 0.6739979036615132,
+      "d90_nm": 1.7165048792188646,
+      "d95_nm": 2.2646750988305673,
+      "effective_rays": 488.00000000000017,
+      "offset_nm": 0.0,
+      "rms_radius_nm": 0.5673509151938806,
+      "surviving_rays": 488,
+      "z_mm": 1599.1999975
+    },
+    "observed_d95_waist": {
+      "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+      "minimum": 2.0785905489823966,
+      "neighbour_bracket_mm": [
+        1599.2000043,
+        1599.2000047000001
+      ],
+      "neighbour_bracket_offset_nm": [
+        6.799999937356915,
+        7.200000027296483
+      ],
+      "observed_minimum_planes_mm": [
+        1599.2000045000002
+      ],
+      "plateau_intervals_mm": [
+        [
+          1599.2000045000002,
+          1599.2000045000002
+        ]
+      ],
+      "representative_offset_nm": 7.000000096013537,
+      "status": "BOUNDED_OBSERVED_MINIMUM"
+    },
+    "interpretation": "193 and 769 samples disagree; no source-count convergence claim",
+    "report_sha256": "afd4e6a6c9fad6961ab5a39c949e4441b9b0fc9a34f8b54ab73185530c126489"
+  },
+  "finite_current_scan9": {
+    "execution_status": "COMPLETE",
+    "elapsed_seconds": 278.9220000000205,
+    "points_completed": 9,
+    "qualification": "NOT_QUALIFIED",
+    "observed_ranges": {
+      "d95_nm": [
+        2.332535670693383,
+        2.3349281712680887
+      ],
+      "alpha95_mrad": [
+        29.999999761718414,
+        30.000000297696477
+      ],
+      "current_ua": [
+        6.476683937823837,
+        6.476683937823837
+      ],
+      "maximum_shift_error_norm_nm": 0.0005151011093073405,
+      "maximum_delta_mechanical_slope_norm_urad": 0.1003573780555467,
+      "maximum_delta_mechanical_unit_direction_tilt_norm_urad": 0.10035737332769146
+    },
+    "all_original_source_arrays_exact": true,
+    "compared_source_array_count": 14,
+    "size_acceptance": "NOT_APPLIED_NO_USER_CAP",
+    "report_sha256": "e78462533167bbf5b448924633db494b3c5bf9c825ae6cd9dfec74efd0b87c70"
+  },
+  "native_downstream_scan_pivot": {
+    "downstream_pivot": {
+      "status": "DIRECT_NATIVE_RESPONSE_SAMPLED",
+      "minimum_measured": {
+        "z_mm": 1584.32735,
+        "position_matrix_nm": [
+          [
+            -7.268721502532846e-08,
+            -4.253808725533957e-07
+          ],
+          [
+            4.253809321103998e-07,
+            -7.268718772836825e-08
+          ]
+        ],
+        "position_column_norms_nm": [
+          4.3154648490197545e-07,
+          4.3154642159812576e-07
+        ],
+        "position_frobenius_nm": 6.1029884698023e-07,
+        "mechanical_tilt_matrix_urad": [
+          [
+            0.009737613851862786,
+            0.06188624484882258
+          ],
+          [
+            -0.06188624484882894,
+            0.009737613851865326
+          ]
+        ],
+        "canonical_angle_matrix_urad": [
+          [
+            0.009737641955877924,
+            0.06188624003608683
+          ],
+          [
+            -0.06188624003609128,
+            0.009737641955877289
+          ]
+        ],
+        "mechanical_angle_singular_values_urad": [
+          0.06264765298889702,
+          0.06264765298889016
+        ],
+        "mechanical_angle_rank": 2,
+        "after_all_AC_coil_supports": true
+      },
+      "interpolation_proposal": {
+        "z_mm": 1584.3273568880156,
+        "interpolated_position_frobenius_nm": 7.0314075344817305e-09
+      },
+      "interpolation_is_independently_traced": false,
+      "measurement": "Actual combined driven chief positions after both finite AC fields have ended",
+      "same_plane_with_static_source_waist_required": false,
+      "restricted_to_AC_coil_region": false,
+      "tolerance_not_assigned": true,
+      "finite_source_waist_inferred": false
+    },
+    "exact_surface": {
+      "z_mm": 1599.1999975,
+      "position_matrix_nm": [
+        [
+          0.6399999999999492,
+          1.801414965725401e-07
+        ],
+        [
+          -1.80141496607616e-07,
+          0.6399999999999492
+        ]
+      ],
+      "position_column_norms_nm": [
+        0.6399999999999745,
+        0.6399999999999745
+      ],
+      "position_frobenius_nm": 0.9050966799187448,
+      "mechanical_tilt_matrix_urad": [
+        [
+          4.061524930260149e-08,
+          -0.07205659267916766
+        ],
+        [
+          0.07205659267916846,
+          4.061525057315091e-08
+        ]
+      ],
+      "canonical_angle_matrix_urad": [
+        [
+          2.02818477446499e-08,
+          5.2162009427593925e-15
+        ],
+        [
+          -6.696233853769897e-15,
+          2.0281848168166375e-08
+        ]
+      ],
+      "mechanical_angle_singular_values_urad": [
+        0.07205659267918024,
+        0.07205659267917877
+      ],
+      "mechanical_angle_rank": 2,
+      "after_all_AC_coil_supports": true
+    },
+    "corrected_interpretation": "Nonzero actual driven position inside the finite AC coils, and a nonzero equivalent position in a search restricted to their region, do not reject a downstream virtual scan pivot. Only the static source waist is constrained to the AC region.",
+    "scope": "Native local chief response only; no actual finite-current raster or new static-waist measurement",
+    "limits": [
+      "No perturbation-amplitude or integration-step convergence in this one run",
+      "No numerical tolerance imposed on the common two-axis pivot residual",
+      "Mean beam tilt, size, alpha95 and transmitted current require the separate finite-source scan observations"
+    ],
+    "report_sha256": "f1b2c217a3a3b96322cb23a279fc9c421f93a943676b944ce3a5ea5731ccee0b"
+  }
+}

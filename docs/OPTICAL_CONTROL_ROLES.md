@@ -10,8 +10,8 @@ imaging, convergence, aberrations and downstream focus.
 
 | Component | Intended role | Required interpretation |
 | --- | --- | --- |
-| Gun Lens | Control the current admitted to the column by changing how the gun beam passes through the gun aperture. | Calculate physical aperture interception and retain absolute source weights. Changing lens strength does not itself change the emitted current or justify renormalizing transmitted particles. |
-| C1 Lens | Control microscope **spot size** through source imaging/demagnification, and the current delivered below C1. | Spot size is the electron-microscope operating term. It is not the literal specimen-plane spot radius, a raster pixel size, or a claim that every vendor uses the same numbered scale. Preserve any existing scale; do not invent an index-to-current calibration. |
+| Gun Lens | Control the current admitted to the column through physical aperture interception, with C1-aperture clipping as the requested current-control mechanism. | Report gun-aperture and C1-aperture losses separately and retain absolute source weights. Changing lens strength does not itself change the emitted current or justify renormalizing transmitted particles. Check actual aperture filling before assuming there is current control. |
+| C1 Lens | Control microscope **spot size** through source imaging/demagnification, and the current delivered below C1. | In the requested Thermo Fisher convention, spot size is a dimensionless integer operating index, not a specimen-plane diameter or raster pixel size. Preserve any existing scale; a calibrated index may select coupled condenser settings, but no unmeasured index-to-current table may be invented. |
 | C2 and C3 | Jointly control probe convergence semi-angle in Nanoprobe mode. | Measure the executed beam at the specified specimen plane with the declared current-weighted angular statistic. A saved target or a single lens percentage is not a measurement. |
 | C3 | Select the Normal or Large angle optical branch through its excitation and resulting crossover topology. | C3 range selection is distinct from the Mini Condenser's Nanoprobe/Microprobe selection. Absolute excitation percentage alone does not establish the branch. |
 | Mini Condenser | Select the probe/illumination mode, Nanoprobe or Microprobe. | Preserve the current magnitude unless a deliberate tuning operation changes it. Existing mode-specific polarity rules remain in force. A change can require downstream focus revalidation. |
@@ -25,6 +25,74 @@ reference starting points, not independent guarantees for each role. AC/Descan
 calibration changes scan-drive response matrices, not these illumination lens
 excitations. Descan remains a control channel on the existing shared
 Image/Diffraction physical deflector; it is not an extra magnetic element.
+
+## Current-control families requested on 2026-10-29
+
+Joint illumination design must test a family of settings, not just one narrow
+probe. Gun Lens and C1/spot-size controls should change transmitted current
+while causing only small changes to specimen alpha95 and native-D95 waist
+position. Measure isolated control changes with other inputs frozen first.
+Then record any deliberate coupled compensation as a separate, explicitly
+calibrated family. Do not silently refocus an isolated perturbation or present
+a compensated response as passive optical insensitivity.
+
+Keep C2/C3 as the primary convergence-angle controls. Normal uses active weak
+C3 without a C3-to-ADL crossover; Large angle uses stronger C3 and the required
+additional crossover. Validate corrector internal source images independently.
+The corrector output source crossover should lie in the AC-coil region. The
+two-coil drive must provide an effective tilt that becomes a specimen shift
+through the Mini Condenser and Upper Objective combination. A static source
+waist and a driven virtual pivot are different observations. Report both,
+along with the actual mechanical mean
+incidence-angle change at the specimen upper surface. A canonical-angle target
+alone must not be described as measured mechanical telecentricity in a magnetic
+field. Do not impose the downstream edge of coil support as the pivot position.
+
+If excitation changes do not provide the requested Gun Lens current control,
+assess physical axial placement with the full electrostatic field, mechanical
+apertures and vacuum geometry updated consistently. Explicitly state whether
+the Gun Aperture stays fixed or moves with the electrode. Do not use a field
+offset alone to represent moving a metal electrode. On 2026-10-29 the user
+explicitly allowed the C1 aperture size as an additional design variable.
+Record that change and its physical interception separately from a fixed-size
+Gun Lens perturbation. Keep the selected 100 um C2 aperture diameter and the
+source distribution fixed unless separately authorized.
+
+The user selected sensitivity reporting without a pass/fail threshold for
+Gun Lens and C1 variations. Do not apply the previously proposed 1% angle
+variation or 1 nm perturbation-focus threshold as acceptance limits. This does
+not remove the separately declared nominal working-point focus requirement.
+The requested control families remain unqualified until their actual currents,
+angle changes and native D95 waist displacements have been reported.
+
+The AC common tilt centre must still match the downstream front focal plane.
+Two-coil position-plus-tilt compensation can produce small specimen angle
+changes without satisfying that condition. Report such compensation separately;
+it must not replace the original conjugacy check. Declare the coordinates of
+the local transfer map with blocks A, B, C and D. A canonical/Larmor
+front-focal relation requires D near zero and full-rank B in both directions;
+report the separate mechanical-angle response at the specimen. A claim of
+mechanically pure tilt-to-shift requires a small mechanical D residual, not
+just canonical cancellation. A source-image conjugate with B near zero is a
+different condition. Do not require B and D to vanish at the same input plane:
+that would make the transfer singular, and a measured finite-source waist
+does not impose that simultaneous condition. Finite-source and driven scan
+measurements remain necessary when nonlinear aberrations are significant.
+Only the static output waist is constrained to the AC-coil region. The user
+has not required the mathematical scan pivot to coincide with that waist or
+to lie between the physical coils. Search the relevant downstream transfer
+before rejecting a two-coil virtual pivot because it is absent inside the
+coils. In the objective immersion field, report canonical/Larmor and mechanical
+angular residuals separately; a canonical front-focal plane need not have an
+exactly zero mechanical-angle response.
+
+Thermo Fisher's [Krios training packet, pp. 13-15](https://cryoem.jhmi.edu/wp-content/uploads/2022/07/Krios-Customer-Packet.pdf#page=13)
+illustrates C1 source-image changes, aperture interception and condenser zoom.
+The primary [STEM experiment by Radic et al.](https://doi.org/10.1017/S143192762002440X)
+describes discrete spot numbers and coupled C1-C2 imaging: larger spot numbers
+reduce the maximum admitted current in the discussed FEI configuration.
+These sources support the operating interpretation, not an OEM calibration
+of this simulator or a universal current ratio between neighbouring indices.
 
 For the current preset search, use C2 and C3 as the primary controls for the
 specimen convergence semi-angle. Use the Mini Condenser and Upper Objective
@@ -197,6 +265,32 @@ The existing engineering placement budget is +/-1 nm. Report the actual
 executed bracket and its sampling resolution; refine the local observations
 before qualification. This is a numerical tolerance, not a claim to prove an
 exact real-number minimum at an exactly equal Z coordinate.
+
+## Minimum source sampling for subsequent physical tests
+
+On 2026-10-29 the user required **at least 1000 original positive-current
+source particles for all subsequent finite-source physical calculations**,
+including quick tests, sensitivity studies, tuning prescreens and finite-current
+scanning diagnostics. The usual starting count is **1024** when the selected
+source sampler supports it. Apply this rule even when an older script or
+candidate snapshot supplies a smaller count.
+
+Explicitly record any numerical count change in a new input snapshot. Preserve
+the source law, original weights and physical aperture interception; do not
+duplicate rays or add zero-current probes to meet the minimum. For explicit
+source tables, keep the declared count and table dimensions consistent.
+Report the actual emitted positive-current population, surviving population
+and effective weighted sample size separately. A clipped population can be
+smaller than the emitted count; increase the source budget when its statistical
+support is insufficient, without renormalizing the transmitted current.
+
+The 1000-particle minimum is an execution baseline, not a convergence claim.
+Further source-count refinement remains necessary before accepting the
+stability of native D95, alpha95, its focus position or transmitted current.
+Historical 193/769-particle results retain their original inputs and evidence
+limits; they are not sufficient sampling for new working-point qualification.
+Small chief-response measurements and pure-array/mocked software regressions
+are separate diagnostic categories and do not substitute for finite-source runs.
 
 ## Qualification boundary and this maintenance change
 

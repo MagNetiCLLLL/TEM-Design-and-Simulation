@@ -509,7 +509,8 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--rays", type=int, default=49)
+    parser.add_argument("--rays", type=int, default=1024,
+        help="Original source particles; new physical trials require at least 1000")
     parser.add_argument("--step", type=float, default=.05)
     parser.add_argument("--target", type=float, default=30.,
         help="Legacy alpha95 target in mrad, NOT the physical pupil edge; use measure_optical_acceptance.py for edge acceptance")

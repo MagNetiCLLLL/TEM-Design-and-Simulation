@@ -211,7 +211,7 @@ def prepare_objective_observations(state):
             "scope": "Only the four derived objective observation coordinates may change during preparation"}
 
 
-def make_state(rays=193, step=.2, seed=DEFAULT_SEED):
+def make_state(rays=1024, step=.2, seed=DEFAULT_SEED):
     from temsim.benchmark_suite import BenchmarkConfig, configured_state
     if type(rays) is not int or rays < 16 or not 0 < finite(step, "step") <= .2:
         raise ValueError("Use at least 16 source points and a positive step no larger than 0.2 mm")
@@ -827,7 +827,8 @@ def main(argv=None):
     parser.add_argument("mode", choices=("measure", "fit"))
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--seed", type=Path, default=DEFAULT_SEED)
-    parser.add_argument("--rays", type=int, default=193)
+    parser.add_argument("--rays", type=int, default=1024,
+        help="Original source particles; new physical trials require at least 1000")
     parser.add_argument("--step", type=float, default=.2, help="Maximum physical integration step in mm; proposal only")
     parser.add_argument("--controls", default=",".join(DEFAULT_CONTROLS),
                         help="Comma-separated controls; default 18. Optional existing quadrupoles: qph2,qpc,qph1,qpol")

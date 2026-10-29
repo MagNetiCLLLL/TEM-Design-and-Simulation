@@ -20,6 +20,27 @@ This policy applies throughout the repository.
 - Maintenance fixes must not silently retune lenses or refocus deliberate
   perturbations. Keep physical interception and absolute particle weights.
 
+## Minimum sampling for new physical trials
+
+- As requested on 2026-10-29, every new finite-source physical calculation,
+  including quick tests, sensitivity trials and tuning prescreens, must use
+  at least 1000 original positive-current source particles. Use 1024 as the
+  usual starting count when compatible with the selected source model.
+- Check the actual emitted population, not just a command-line default. Do not
+  count zero-current diagnostic rays, duplicate particles or artificial weight
+  changes toward this minimum. Preserve the physical source law.
+- When continuing a low-count candidate, explicitly prepare and record a new
+  numerical input snapshot. Do not silently change historical inputs/results.
+  Explicit source tables and structured sampling must remain internally valid.
+- Report the emitted, surviving and effective particle counts separately.
+  Physical aperture losses remain valid; increase source sampling if too few
+  particles reach the observation plane. Do not rescale or restore lost current.
+- The minimum is not proof of convergence. Compare increased source counts
+  before accepting probe size, convergence angle, focus or current stability.
+- Small chief-ray response calculations and pure-array/mocked software tests
+  may remain small because they do not measure a finite source. They must not
+  replace the required finite-source physical tests or qualify a working point.
+
 ## Temporary CUDA requirement for coherent calculations
 
 - Until the user explicitly lifts this restriction, new coherent wave
