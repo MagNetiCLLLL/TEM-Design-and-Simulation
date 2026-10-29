@@ -1096,7 +1096,19 @@ class ScanControlView(QWidget):
             if self._calibration_pending_frame == "automatic":
                 self._calibration_pending_frame = None
             self._set_playback_active(False)
+        calibration_error = None
+        operation = self.scan_calibration.pending_operation
+        if operation is not None and bool(enabled) != was_enabled:
+            # The complete input snapshot includes the readout switch. Replace
+            # that request without changing its operation or queued frame kind.
+            try:
+                self._start_scan_calibration(operation)
+            except Exception as exc:
+                calibration_error = str(exc)
         self.parameters_changed.emit("sample.stem_image_enabled")
+        if calibration_error is not None:
+            self.error.emit(calibration_error)
+            return
         if enabled and not was_enabled:
             self._request_enabled_frame()
 

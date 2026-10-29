@@ -114,6 +114,66 @@ def test_observer_preserves_aperture_loss_denominator(inputs):
     assert observed["observables"]["transmission"] == .75
 
 
+@pytest.fixture
+def downstream_stop_inputs(inputs):
+    state, result = inputs
+    branch = result.simulation.incident
+    branch.z = np.r_[branch.z, 10.0001]
+    for name in ("x", "y", "tx", "ty"):
+        values = getattr(branch, name)
+        setattr(branch, name, np.vstack([values, values[-1]]))
+    branch.alive[:8] = False
+    branch.blocked_z[:8] = 10.00005
+    branch.blocked_key[:8] = ["downstream-aperture"] * 8
+    return state, result
+
+
+@pytest.mark.parametrize("checkpoint", [True, False])
+def test_exact_surface_observables_include_particles_stopped_later(downstream_stop_inputs, checkpoint):
+    state, result = downstream_stop_inputs
+    if not checkpoint:
+        result.simulation.incident_checkpoints = None
+    observed = report.observe_calculation(state, result)
+    values = observed["observables"]
+    assert observed["population"]["status"] == "VALID"
+    assert observed["population"]["surviving_positive_current_rays"] == 24
+    assert values["status"] == "MEASURED"
+    assert values["plane_kind"] == "specimen_upper_surface"
+    assert values["plane_z_mm"] == 10.
+    assert values["current_a"] == pytest.approx(8e-12)
+    assert values["transmission"] == 1.
+    assert values["alpha95_mrad"] == pytest.approx(1e3*np.arctan(.002))
+    assert values["d95_nm"] == pytest.approx(.4)
+    assert values["rms_radius_nm"] == pytest.approx(.2)
+
+
+@pytest.mark.parametrize("damage", ["missing_stop", "future_stop", "alive_after_stop",
+                                    "nonfinite_before_stop", "checkpoint_before_stop",
+                                    "clock_before_stop", "energy_before_stop"])
+def test_plane_observation_rejects_invalid_downstream_stop_evidence(downstream_stop_inputs, damage):
+    state, result = downstream_stop_inputs
+    branch = result.simulation.incident
+    if damage == "missing_stop":
+        branch.blocked_z[0] = np.nan
+    elif damage == "future_stop":
+        branch.blocked_z[0] = 10.0002
+    elif damage == "alive_after_stop":
+        branch.alive[0] = True
+    elif damage == "nonfinite_before_stop":
+        branch.x[-2, 0] = np.nan
+    elif damage == "checkpoint_before_stop":
+        result.simulation.incident_checkpoints.x_m[-1, 0] = np.nan
+    else:
+        name = "flight_time_s" if damage == "clock_before_stop" else "kinetic_energy_ev"
+        values = np.full(branch.x.shape, 1e-9 if name == "flight_time_s" else 300000.)
+        values[-2, 0] = -1. if name == "flight_time_s" else 0.
+        setattr(branch, name, values)
+    observed = report.observe_calculation(state, result)
+    assert observed["population"]["status"] == "UNRESOLVED"
+    assert observed["observables"]["status"] == "NOT_EVALUATED"
+    assert report.compare_observations(observed, observed)["status"] != "PASS"
+
+
 @pytest.mark.parametrize("damage", ["missing_ids", "bad_ids", "weights", "nan_alive", "missing_source", "resurrection"])
 def test_incomplete_or_invalid_source_never_passes_repeatability(inputs, damage):
     state, result = inputs

@@ -81,6 +81,10 @@ class ScanCalibrationController(QObject):
     def busy(self):
         return self._request is not None
 
+    @property
+    def pending_operation(self):
+        return None if self._request is None else self._request[2]
+
     def _clear_request(self):
         was_busy = self.busy
         self._request = None

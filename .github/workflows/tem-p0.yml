@@ -76,7 +76,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scope: [acceptance-policy, gun-fields, electron-execution, field-ui, lens-geometry, column-field-pilot, receiver-imaging, particle-continuation, performance-observation, coherent-development]
+        scope: [acceptance-policy, gun-fields, electron-execution, field-ui, lens-geometry, probe-diagnostics, column-field-pilot, receiver-imaging, particle-continuation, performance-observation, coherent-development]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

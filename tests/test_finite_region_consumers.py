@@ -13,7 +13,7 @@ spec=spec_from_file_location('finite_consumer_qualification',Path(__file__).reso
 qualification=module_from_spec(spec);spec.loader.exec_module(qualification)
 
 
-def column(monkeypatch,step=.1,*,defocus_nm=0.,clipping=None):
+def column(monkeypatch,step=.1,*,defocus_nm=0.,clipping=None,source_harmonic=5):
     lens=lambda key,z:SimpleNamespace(key=key,z_mm=z,enabled=True,installed=True)
     state=SimpleNamespace(simulation_mode='unified',probe_mode='nano_probe',nanoprobe_range='normal',
         lenses=[lens(k,z) for k,z in [('condenser_lens_1',5.),('condenser_lens_2',10.),
@@ -31,8 +31,11 @@ def column(monkeypatch,step=.1,*,defocus_nm=0.,clipping=None):
     split=np.select([z<25,z<36,z<43],[.4,.4,.04],default=0.)
     tx=np.broadcast_to(.002*np.cos(phi),(len(z),32)).copy()
     ty=np.broadcast_to(.002*np.sin(phi),(len(z),32)).copy()
-    cp=SimpleNamespace(z_mm=z,x_m=(z-root+split/2)[:,None]*1e-3*tx+1e-11*np.cos(2*phi),
-        y_m=(z-root-split/2)[:,None]*1e-3*ty+1e-11*np.sin(2*phi),tx_rad=tx,ty_rad=ty)
+    # The default finite source spread is orthogonal to first-harmonic directions
+    # with the third-harmonic current weights below. A second harmonic would
+    # split the terminal X/Y waists by 1 nm despite zero radial covariance.
+    cp=SimpleNamespace(z_mm=z,x_m=(z-root+split/2)[:,None]*1e-3*tx+1e-11*np.cos(source_harmonic*phi),
+        y_m=(z-root-split/2)[:,None]*1e-3*ty+1e-11*np.sin(source_harmonic*phi),tx_rad=tx,ty_rad=ty)
     masks=np.ones(cp.x_m.shape,bool);weights=1+.2*np.cos(3*phi);ids=np.arange(32)+100
     if clipping is not None:
         plane=float(clipping)
@@ -78,6 +81,18 @@ def test_unified_nanoprobe_new_qualification_uses_finite_regions_at_all_sampling
     inventory=chain(data)
     assert inventory['required_topology_satisfied_at_sampling'],inventory['intervals']
     assert len([r for r in inventory['executed_waists'] if r['region']=='corrector_internal'])==1
+
+
+def test_radial_endpoint_cancellation_remains_unresolved_in_both_consumers(monkeypatch):
+    # Retain the original fixture as insufficient evidence, rather than calling
+    # its separated directional waists a proven extra two-dimensional crossover.
+    data=column(monkeypatch,source_harmonic=2)
+    topo,inventory=topology(data),chain(data)
+    assert not topo['passed'] and not inventory['required_topology_satisfied_at_sampling']
+    for report in (topo['direct_focus'],inventory['direct_focus']):
+        assert report['status']=='UNRESOLVED' and not report['passed']
+        assert any(row.get('reason')=='radial_stationarity_on_component_boundary'
+            for row in report['unresolved_candidates'])
 
 
 @pytest.mark.parametrize('plane',[2.,12.])

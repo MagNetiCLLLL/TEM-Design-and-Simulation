@@ -42,6 +42,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "mpmath>=1.3,<2",
     "pytest",
     "pytest-qt",
 ]

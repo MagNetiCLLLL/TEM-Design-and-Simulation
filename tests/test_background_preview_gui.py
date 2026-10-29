@@ -574,8 +574,11 @@ def test_arming_single_stem_frame_uses_existing_particle_seed_once(window, monke
     monkeypatch.setattr(window, "_show_error", errors.append)
     monkeypatch.setattr(window.calculations, "submit_background",
                         lambda *args, **kwargs: calls.append(kwargs))
-    monkeypatch.setattr("temsim.gui.scan_panel.calibrate_scan_system", lambda *_a, **_kw: None)
+    monkeypatch.setattr("temsim.calculation_manifest.solver_source_identity", lambda: "a"*64)
     page = window.workspace.scan_control
+    workers = []
+    # Capture detached calibration jobs; this routing test never runs transport.
+    monkeypatch.setattr(page.scan_calibration.pool, "start", workers.append)
     window.state.ac_deflector.scan_enabled = False
     window.state.sample.stem_image_enabled = False
     page.set_state(window.state)
@@ -583,6 +586,10 @@ def test_arming_single_stem_frame_uses_existing_particle_seed_once(window, monke
     window.workspace._high_accuracy_result = None
     page.ac_controls["scan_enabled"].setChecked(True)
     page.image_enabled.setChecked(True)
+    assert calls == [] and errors == []
+    assert len(workers) == 2
+    for worker in workers:
+        page.scan_calibration._accept_result(worker.generation, worker.snapshot.restore())
     assert calls == [] and len(errors) == 1
     assert "Run high-accuracy once" in errors[0]
 

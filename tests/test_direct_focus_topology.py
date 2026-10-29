@@ -106,6 +106,29 @@ def test_default_finite_terminal_gate_rejects_wide_region_despite_surface_focus(
     np.testing.assert_array_equal(weights, before[2])
 
 
+@pytest.mark.parametrize('depth_nm,split_nm', [(.9, 1.), (.9, 1.5), (.5, 1.2)])
+def test_unbounded_finite_terminal_region_cannot_pass_on_its_narrow_radial_bracket(depth_nm, split_nm):
+    from temsim.optics.direct_focus_topology import evaluate_for_state
+
+    state, cp, masks, weights = finite_terminal_drift(depth_nm, split_nm)
+    before = deepcopy((cp, masks, weights))
+    report = evaluate_for_state(state, cp, masks, weights)
+
+    assert not report['executed_waists']
+    assert report['terminal_candidates']
+    unresolved, = report['finite_region_evidence']['unresolved']
+    assert unresolved['reason'] == 'no_bounded_all_direction_covariance_growth_bracket'
+    assert report['status'] == 'UNRESOLVED' and not report['passed']
+    assert unresolved in report['unresolved_candidates']
+    assert report['refinement_planes_mm']
+    assert all(report['bounds_mm'][0] < z < report['bounds_mm'][1]
+               for z in report['refinement_planes_mm'])
+    for key, value in vars(cp).items():
+        np.testing.assert_array_equal(value, getattr(before[0], key))
+    np.testing.assert_array_equal(masks, before[1])
+    np.testing.assert_array_equal(weights, before[2])
+
+
 @pytest.mark.parametrize('depth_nm,split_nm,touches_boundary', [(.5, .2, False), (.6, .3, True)])
 def test_contained_finite_terminal_region_remains_accepted(depth_nm, split_nm, touches_boundary):
     from temsim.optics.direct_focus_topology import evaluate_for_state
@@ -126,6 +149,23 @@ def test_finite_terminal_endpoint_remains_a_separate_one_sided_observation():
     assert not report['executed_waists']
     assert report['finite_region_evidence']['status'] == 'UNRESOLVED'
     assert report['passed'] and report['surface_focus_qualified'] is False
+    assert not report['unresolved_candidates']
+
+
+def test_radial_endpoint_cancellation_is_not_a_common_one_sided_waist():
+    from temsim.optics.direct_focus_topology import evaluate_for_state
+    report = evaluate_for_state(*finite_terminal_drift(0., 2.))
+    assert not report['executed_waists']
+    assert report['status'] == 'UNRESOLVED' and not report['passed']
+    assert any(row.get('reason') == 'radial_stationarity_on_component_boundary'
+               for row in report['unresolved_candidates'])
+
+
+def test_entrance_boundary_stationarity_is_not_exempted_as_specimen_focus():
+    report = gate(drift(0.), waist_detector='finite_region')
+    assert report['status'] == 'UNRESOLVED' and not report['passed']
+    assert any(row.get('reason') == 'radial_stationarity_on_component_boundary'
+               for row in report['unresolved_candidates'])
 
 
 @pytest.mark.parametrize('damage',['missing_end','missing_guard','missing_window','wide_gap'])

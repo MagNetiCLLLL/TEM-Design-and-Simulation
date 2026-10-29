@@ -317,6 +317,56 @@ def test_automatic_frame_rechecks_enabled_state_after_calibration_callbacks(view
     assert applied == ["automatic"] and not errors and not requests
 
 
+@pytest.mark.parametrize("operation", ["automatic", "hold", "descan", "restore_ac"])
+def test_enabling_image_readout_restarts_calibration_and_requests_one_frame(view, monkeypatch, operation):
+    widget, errors, applied = view
+    state = widget._state
+    state.sample.stem_image_enabled = False
+    widget.set_state(state)
+    workers, requests = [], []
+    monkeypatch.setattr(widget.scan_calibration.pool, "start", workers.append)
+    widget.calculation_requested.connect(lambda: requests.append(drives(state)))
+    widget._start_scan_calibration(operation)
+    widget.image_enabled.setChecked(True)
+    assert len(workers) == 2 and not requests
+    old, latest = workers
+    assert latest.operation == operation
+    old_candidate = old.snapshot.restore()
+    old_candidate.ac_deflector.set_scan_command_matrix_mrad(np.eye(2)*.123)
+    widget.scan_calibration._accept_result(old.generation, old_candidate)
+    assert widget.scan_calibration.busy and not applied and not requests
+    candidate = latest.snapshot.restore()
+    assert candidate.sample.stem_image_enabled
+    candidate.ac_deflector.set_scan_command_matrix_mrad(np.eye(2)*.222)
+    widget.scan_calibration._accept_result(latest.generation, candidate)
+    assert not widget.scan_calibration.busy and not errors
+    assert applied == [operation] and len(requests) == 1
+    np.testing.assert_array_equal(requests[0][0], np.eye(2)*.222)
+
+
+@pytest.mark.parametrize("explicit", [False, True])
+@pytest.mark.parametrize("reenable", [False, True])
+def test_image_readout_switch_preserves_only_requested_frames(view, monkeypatch, explicit, reenable):
+    widget, errors, applied = view
+    state = widget._state
+    state.ac_deflector.scan_enabled = False
+    widget.set_state(state)
+    workers, requests = [], []
+    monkeypatch.setattr(widget.scan_calibration.pool, "start", workers.append)
+    widget.calculation_requested.connect(lambda: requests.append(state.sample.stem_image_enabled))
+    widget.ac_controls["scan_enabled"].setChecked(True)
+    if explicit:
+        widget.calculation_bar.requested.emit()
+    widget.image_enabled.setChecked(False)
+    if reenable:
+        widget.image_enabled.setChecked(True)
+    for worker in workers:
+        widget.scan_calibration._accept_result(worker.generation, worker.snapshot.restore())
+    assert not widget.scan_calibration.busy and not errors
+    assert applied == ["automatic"]
+    assert requests == ([reenable] if explicit or reenable else [])
+
+
 @pytest.mark.parametrize("changed", ["external", "implementation"])
 def test_changed_external_content_or_solver_rejects_completed_worker(view, qtbot, monkeypatch, tmp_path, changed):
     widget, errors, applied = view

@@ -295,14 +295,39 @@ def test_upstream_public_request_does_not_consume_scan_calibration(shared_respon
     assert shared_responses == [] and _values(state) == before
 
 
-def test_explicit_capture_can_prepare_disabled_raster_without_enabling_it(shared_responses):
+@pytest.mark.parametrize("explicit_stop", [False, True])
+def test_explicit_capture_can_prepare_disabled_raster_without_enabling_it(shared_responses, explicit_stop):
     state = _state()
     state.ac_deflector.scan_enabled = state.descan_deflector.scan_enabled = False
-    _, _, descan = calibrate_scan_system(state, force=True, hold=True)
+    stop = state.sample.lower_surface_z_mm if explicit_stop else None
+    _, _, descan = calibrate_scan_system(state, force=True, hold=True, observation_stop_z_mm=stop)
     assert descan is None and len(shared_responses) == 1
     assert not state.ac_deflector.scan_enabled and not state.descan_deflector.scan_enabled
     assert state.ac_deflector.calibration_mode == "held"
     assert validate_record(state.ac_deflector.calibration_record_json)["descan_calibrated"] is False
+
+
+def test_ordinary_downstream_request_skips_disabled_rasters(shared_responses):
+    state = _state()
+    state.ac_deflector.scan_enabled = state.descan_deflector.scan_enabled = False
+    before = _values(state)
+    assert calibrate_scan_system(state, observation_stop_z_mm=state.sample.lower_surface_z_mm) is None
+    assert shared_responses == [] and _values(state) == before
+
+
+@pytest.mark.parametrize("explicit_stop", [False, True])
+def test_explicit_capture_preserves_disabled_coil_cutoff_policy(shared_responses, explicit_stop):
+    state = _state()
+    state.ac_deflector.enabled = False
+    state.ac_deflector.scan_enabled = state.descan_deflector.scan_enabled = False
+    before = _values(state)
+    if explicit_stop:
+        assert calibrate_scan_system(state, force=True, hold=True,
+            observation_stop_z_mm=state.sample.lower_surface_z_mm) is None
+    else:
+        with pytest.raises(ValueError, match="physical AC coils"):
+            calibrate_scan_system(state, force=True, hold=True)
+    assert shared_responses == [] and _values(state) == before
 
 
 @pytest.mark.parametrize("mode", ["ideal", "custom", "ideal_thin", "analytical"])

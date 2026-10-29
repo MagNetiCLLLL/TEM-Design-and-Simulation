@@ -278,6 +278,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_unified_beam_path_audit.py",
                 "tests/test_finite_field_nanoprobe_qualification.py",
                 "tests/test_finite_field_probe_size_gate.py",
+                "tests/test_electric_potential_acceleration.py",
                 "tests/test_finite_waist_regions.py", "tests/test_finite_region_consumers.py",
                 "tests/test_pupil_acceptance.py", "tests/test_gun_diagnostic_rays.py",
                 "tests/test_crossover_acceptance.py",
@@ -330,6 +331,16 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_completed_wave_planes.py",
                 "tests/test_potential_weighted_resampling.py", "tests/test_potential_column_segments.py",
                 "tests/test_unified_weighted_resampling.py", "tests/test_coherent_weighted_resampling_gui.py")),
+        },
+    },
+    "probe-diagnostics": {
+        "description": "Bounded joint-probe search, field audit and native-waist evidence contracts",
+        "evidence_kind": "synthetic-and-mocked-probe-diagnostics-not-optical-qualification",
+        "criteria": {
+            "probe-diagnostics/PD-01": ("Physical control proposals and independent native-waist evidence", (
+                "tests/test_joint_probe_field_audit.py", "tests/test_joint_probe_solver.py",
+                "tests/test_validate_joint_probe.py", "tests/test_measure_probe_waist.py",
+                "tests/test_probe_waist_solver.py")),
         },
     },
     "column-field-pilot": {
@@ -416,6 +427,9 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_continuous_electron_response_benchmark.py",)),
             "performance-observation/PO-04": ("Particle identity, executed prefixes and bounded benchmark ownership", (
                 "tests/test_particle_benchmark.py",)),
+            "performance-observation/PO-05": ("Retained-plane accuracy, reproducible benchmarks and resumable experiment records", (
+                "tests/test_performance_accuracy.py", "tests/test_benchmark_suite.py",
+                "tests/test_benchmark_comparison.py", "tests/test_experiment_cli.py")),
         },
     },
     "acceptance-policy": {

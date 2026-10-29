@@ -295,6 +295,9 @@ def _population(simulation):
         if np.any(alive & ~source_arrays["alive"] & (weight > 0)):
             raise ValueError("A stopped source particle reappears at the incident endpoint")
         source_live = source_arrays["alive"] & (weight > 0)
+        endpoint_live = source_live & (np.isnan(blocked) | (z[-1] < blocked))
+        if np.any((alive != endpoint_live) & (weight > 0)):
+            raise ValueError("Incident endpoint survival disagrees with the source and physical stop ledger")
         if any(np.any(~np.isfinite(source_arrays[key][source_live])) for key in (*_PHASE, "energy_offset_ev")):
             raise ValueError("Executed current-carrying gun source is nonfinite")
         for name in ("flight_time_s", "kinetic_energy_ev"):
@@ -379,7 +382,9 @@ def _observations(state, simulation, data):
         arrays = [np.asarray(getattr(cp, key)) for key in _PHASE]
         if any(a.shape != masks.shape for a in arrays) or any(np.any(~np.isfinite(a[masks])) for a in arrays):
             raise ValueError("Captured phase is nonfinite or misaligned on current-carrying checkpoints")
-        alive = masks[i] & np.asarray(branch.alive, bool)
+        # A later stop does not remove current that reached this exact plane.
+        # Endpoint survival is checked against the physical stop ledger above.
+        alive = masks[i]
         if not alive.any():
             observables.update(status="NO_TRANSMISSION", current_a=0., transmission=0.,
                                plane_z_mm=end, plane_kind=plane_kind, basis=basis)

@@ -210,7 +210,12 @@ def particle_fixture(pair, workflow):
     from temsim.gui.calculation_request import apply_request_numerics
     state = apply_request_numerics(pair._snapshot.restore(), "High accuracy",
                                   pair._ray_count, pair._step_mm)
-    return SimpleNamespace(workflow=workflow, state_snapshot=state)
+    # Routing-only receipts stand in for the executed shared-field identities.
+    # They are never used as evidence of actual particle or wave propagation.
+    metrics = dict(unified_runtime_digest="a" * 64, unified_field_digest="b" * 64,
+                   unified_geometry_digest="c" * 64)
+    return SimpleNamespace(workflow=workflow, state_snapshot=state,
+                           simulation=SimpleNamespace(metrics=metrics))
 
 
 @pytest.mark.parametrize("with_specimen", [False, True])
@@ -247,9 +252,10 @@ def test_beam_button_with_classical_comparison_captures_once_and_continues_sampl
     context = waves[0][1]["pair_context"]
     assert context.token == pair.token
     assert context.physical_identity == original.physical_digest
-    assert context.instrument_identity == original.digest
+    executed = capture_instrument_snapshot(context.particle_result.state_snapshot)
+    assert context.instrument_identity == executed.digest
     assert context.particle_ray_count == 3000
-    assert capture_instrument_snapshot(waves[0][0][0]).digest == original.digest
+    assert capture_instrument_snapshot(waves[0][0][0]).digest == executed.digest
     assert published[0][1]["paired_token"] == context.token
     assert capture_instrument_snapshot(window.state).digest == original.digest
 
@@ -447,11 +453,12 @@ def test_curved_shared_pair_keeps_one_tip_geometry_and_energy_owner(window, monk
     assert len(submitted) == 1 and submitted[0][1]["workflow"] == "rays"
     particle_state = submitted[0][0][0]
     assert particle_state.electron_gun.emitter.surface_model.to_dict() == active.to_dict()
-    pair._particle_ready("High accuracy", particle_fixture(pair, "rays"), .25)
+    particles = particle_fixture(pair, "rays")
+    pair._particle_ready("High accuracy", particles, .25)
     assert len(waves) == 1
     wave_state = waves[0][0][0]
     assert wave_state.electron_gun.emitter.surface_model.to_dict() == active.to_dict()
-    assert capture_instrument_snapshot(wave_state).digest == captured.digest
+    assert capture_instrument_snapshot(wave_state).digest == capture_instrument_snapshot(particles.state_snapshot).digest
     assert capture_instrument_snapshot(window.state).digest == captured.digest
     assert "Geometric-optics" in waves[0][0][2]["particle_representation"]
 

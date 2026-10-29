@@ -264,7 +264,9 @@ def _calibrate_unified_scan(state, *, observation_stop_z_mm=None,
               or row.field_support_mm[0] < observation_stop_z_mm for key in row.drive_keys}
     consumed = {part.key for part in (ac, descan)
                 if shared_channel_enabled(part) and part.scan_enabled and part.key in active}
-    if observation_stop_z_mm is not None and not consumed:
+    # A bounded request still skips coils outside its observed domain. An
+    # explicit in-domain capture may prepare AC while its raster is off.
+    if observation_stop_z_mm is not None and not consumed and not (force and ac.key in active):
         return None
     if force:
         if not shared_channel_enabled(ac) or ac.key not in active:

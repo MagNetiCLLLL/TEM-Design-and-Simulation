@@ -48,6 +48,40 @@ def requested_capture_planes(state, *, maximum_spacing_mm=MAXIMUM_SPACING_MM):
         np.linspace(start, surface, count+1), surface-offsets_nm*1e-6])))
 
 
+def _only_surface_boundary_stationarity(checkpoints, masks, weights, start, end):
+    """Identify the one-sided sample endpoint exception from executed moments.
+
+    The finite observer reports boundary stationarity without naming its side.
+    Exempt only an actual common endpoint of both converging directions, never
+    entrance stationarity or cancellation between still-separated directions.
+    """
+    z = np.asarray(checkpoints.z_mm)
+    indices = np.flatnonzero((z >= start) & (z <= end))
+    if len(indices) < 3 or z[indices[0]] != start or z[indices[-1]] != end:
+        return False
+    indices = indices[[0, 1, -2, -1]]
+    live = masks[indices] & (weights > 0)[None, :]
+    if not np.all(live == live[0]):
+        return False
+    cohort = live[0]
+    w = weights[cohort] / weights[cohort].sum()
+    phase = np.stack([np.asarray(getattr(checkpoints, key))[np.ix_(indices, cohort)]
+                      for key in KEYS], axis=-1)
+    phase -= np.einsum('n,kni->ki', w, phase)[:, None, :]
+    r, t = phase[:, :, :2], phase[:, :, 2:]
+    R = np.einsum('n,kni,knj->kij', w, r, r)
+    C = np.einsum('n,kni,knj->kij', w, r, t)
+    T = np.einsum('n,kni,knj->kij', w, t, t)
+    eigenvalues = np.linalg.eigvalsh(.5 * (C + C.transpose(0, 2, 1)))
+    scale = np.sqrt(np.trace(R, axis1=1, axis2=2) * np.trace(T, axis1=1, axis2=2))
+    noise = 64 * np.finfo(float).eps * np.maximum.reduce([
+        np.max(abs(eigenvalues), axis=1), scale, np.full(4, np.finfo(float).tiny)])
+    trace = eigenvalues.sum(axis=1)
+    entrance_stationary = abs(trace[0]) <= 2 * noise[0] and trace[1] > 2 * noise[1]
+    return bool(not entrance_stationary and np.all(eigenvalues[-2] < -noise[-2])
+                and np.all(abs(eigenvalues[-1]) <= noise[-1]))
+
+
 def evaluate(checkpoints, masks, weights, *, lower_z_mm, surface_z_mm,
              surface_focus_tolerance_nm, maximum_spacing_mm=MAXIMUM_SPACING_MM,
              waist_detector='legacy_point',source_ids=None):
@@ -74,6 +108,7 @@ def evaluate(checkpoints, masks, weights, *, lower_z_mm, surface_z_mm,
         validate_detector(waist_detector)
         report['waist_detector']=waist_detector
         report['source_identity_basis']='original_source_ids' if source_ids is not None else 'checkpoint_column_indices'
+        finite_unresolved = []
         if waist_detector==FINITE:
             report['schema']='direct-focus-finite-region-topology-v2'
         start, end, tolerance, spacing = map(float, (lower_z_mm, surface_z_mm,
@@ -133,7 +168,12 @@ def evaluate(checkpoints, masks, weights, *, lower_z_mm, surface_z_mm,
             measured=finite['regions']
             # Endpoint focus is a separate one-sided observation. A terminal
             # stationary plane need not have a two-sided region past the sample.
-            # Raw radial brackets and interception still fail closed below.
+            endpoint_only = (any(row.get('reason') == 'radial_stationarity_on_component_boundary'
+                                 for row in finite['unresolved'])
+                and _only_surface_boundary_stationarity(checkpoints, alive, weight, start, end))
+            finite_unresolved = [row for row in finite['unresolved']
+                if not (row.get('reason') == 'radial_stationarity_on_component_boundary'
+                        and endpoint_only)]
         report.update(executed_waists=measured, radial_candidates=roots,
             maximum_observation_gap_mm=float(np.max(np.diff(local_z))),
             population_change_intervals_mm=[[float(local_z[i-1]),float(local_z[i])] for i in changes])
@@ -148,6 +188,7 @@ def evaluate(checkpoints, masks, weights, *, lower_z_mm, surface_z_mm,
         unresolved = ([row for row in measured
             if not terminal_start <= row['bracket_mm'][0] <= row['bracket_mm'][1] <= end]
             if waist_detector == FINITE else [])
+        unresolved.extend(finite_unresolved)
         for row in roots:
             left,right=map(float,row['bracket_mm'])
             if left >= terminal_start and right <= end:
@@ -155,8 +196,12 @@ def evaluate(checkpoints, masks, weights, *, lower_z_mm, surface_z_mm,
             else:
                 unresolved.append(row)
         for row in unresolved:
-            left,right=map(float,row['bracket_mm'])
-            root=float(row['z_mm'])
+            bracket = row.get('bracket_mm', row.get('radial_bracket_mm'))
+            root = row.get('z_mm', row.get('representative_z_mm'))
+            if bracket is None or root is None:
+                continue  # Invalid evidence still rejects even without a local bracket.
+            left,right=map(float,bracket)
+            root=float(root)
             delta=min(.01,(right-left)/8,(root-start)/4,(end-root)/4)
             if delta>0:
                 report['refinement_planes_mm'].extend([root-delta,root,root+delta])
