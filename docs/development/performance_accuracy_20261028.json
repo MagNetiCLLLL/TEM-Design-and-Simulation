@@ -1,0 +1,3280 @@
+{
+  "schema": "temsim-optimization-round-evidence-v1",
+  "date": "2026-10-28",
+  "scope": "Bounded 49-particle classical equivalence and timing; not source-count/step convergence or physical qualification",
+  "hardware": {
+    "cpu": "AMD Ryzen 9 9950X3D",
+    "cores": 16,
+    "logical_processors": 32
+  },
+  "comparison": {
+    "after_directory": "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\optimized-final",
+    "before_directory": "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\baseline-final",
+    "configuration": {
+      "budget_seconds": 1200.0,
+      "cases": [
+        "nanoprobe",
+        "continuation",
+        "scan_calibration",
+        "coherent"
+      ],
+      "cleanup_grace_seconds": 30.0,
+      "profile": false,
+      "rays": 49,
+      "reuse_repeats": 3,
+      "step_mm": 0.05,
+      "threads": 8,
+      "warm_repeats": 3
+    },
+    "cpu_resources": {
+      "continuation": {
+        "available_cpus": 32,
+        "blas_threads": 1,
+        "numba_threads": 8,
+        "numerical_jobs": 1,
+        "numerical_thread_budget": 8
+      },
+      "nanoprobe": {
+        "available_cpus": 32,
+        "blas_threads": 1,
+        "numba_threads": 8,
+        "numerical_jobs": 1,
+        "numerical_thread_budget": 8
+      },
+      "scan_calibration": {
+        "available_cpus": 32,
+        "blas_threads": 1,
+        "numba_threads": 8,
+        "numerical_jobs": 1,
+        "numerical_thread_budget": 8
+      }
+    },
+    "declarations": [
+      {
+        "after_reason": "Declared separately: coherent execution requires an explicitly scoped fixture and verified usable CUDA; no coherent calculation is requested by this suite",
+        "before_reason": "Declared separately: coherent execution requires an explicitly scoped fixture and verified usable CUDA; no coherent calculation is requested by this suite",
+        "case_id": "coherent",
+        "comparison": "NOT_EVALUATED",
+        "status": "NOT_RUN"
+      }
+    ],
+    "environments": {
+      "continuation": {
+        "after": {
+          "available_logical_cpus": 32,
+          "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "psutil": "7.2.2",
+          "python": "3.12.3",
+          "resource_environment": {
+            "MKL_NUM_THREADS": "1",
+            "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\8ef7e8eeea88589a3e394e762db5d32b79e48cf18151c62f3c03089d22b43f30",
+            "NUMBA_NUM_THREADS": "8",
+            "OMP_NUM_THREADS": "8",
+            "OMP_THREAD_LIMIT": "8",
+            "OPENBLAS_NUM_THREADS": "1",
+            "TEMSIM_CPU_THREADS": "8"
+          },
+          "versions": {
+            "PySide6": "6.8.3",
+            "llvmlite": "0.48.0",
+            "numba": "0.66.0",
+            "numpy": "2.4.6",
+            "psutil": "7.2.2",
+            "scipy": "1.18.0",
+            "threadpoolctl": "3.6.0"
+          }
+        },
+        "before": {
+          "available_logical_cpus": 32,
+          "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "psutil": "7.2.2",
+          "python": "3.12.3",
+          "resource_environment": {
+            "MKL_NUM_THREADS": "1",
+            "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\6d8404550f1b0251f93437fcf817ee37a73d6c5e0c170e5740ed43c85d7b3679",
+            "NUMBA_NUM_THREADS": "8",
+            "OMP_NUM_THREADS": "8",
+            "OMP_THREAD_LIMIT": "8",
+            "OPENBLAS_NUM_THREADS": "1",
+            "TEMSIM_CPU_THREADS": "8"
+          },
+          "versions": {
+            "PySide6": "6.8.3",
+            "llvmlite": "0.48.0",
+            "numba": "0.66.0",
+            "numpy": "2.4.6",
+            "psutil": "7.2.2",
+            "scipy": "1.18.0",
+            "threadpoolctl": "3.6.0"
+          }
+        }
+      },
+      "nanoprobe": {
+        "after": {
+          "available_logical_cpus": 32,
+          "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "psutil": "7.2.2",
+          "python": "3.12.3",
+          "resource_environment": {
+            "MKL_NUM_THREADS": "1",
+            "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\8ef7e8eeea88589a3e394e762db5d32b79e48cf18151c62f3c03089d22b43f30",
+            "NUMBA_NUM_THREADS": "8",
+            "OMP_NUM_THREADS": "8",
+            "OMP_THREAD_LIMIT": "8",
+            "OPENBLAS_NUM_THREADS": "1",
+            "TEMSIM_CPU_THREADS": "8"
+          },
+          "versions": {
+            "PySide6": "6.8.3",
+            "llvmlite": "0.48.0",
+            "numba": "0.66.0",
+            "numpy": "2.4.6",
+            "psutil": "7.2.2",
+            "scipy": "1.18.0",
+            "threadpoolctl": "3.6.0"
+          }
+        },
+        "before": {
+          "available_logical_cpus": 32,
+          "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "psutil": "7.2.2",
+          "python": "3.12.3",
+          "resource_environment": {
+            "MKL_NUM_THREADS": "1",
+            "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\6d8404550f1b0251f93437fcf817ee37a73d6c5e0c170e5740ed43c85d7b3679",
+            "NUMBA_NUM_THREADS": "8",
+            "OMP_NUM_THREADS": "8",
+            "OMP_THREAD_LIMIT": "8",
+            "OPENBLAS_NUM_THREADS": "1",
+            "TEMSIM_CPU_THREADS": "8"
+          },
+          "versions": {
+            "PySide6": "6.8.3",
+            "llvmlite": "0.48.0",
+            "numba": "0.66.0",
+            "numpy": "2.4.6",
+            "psutil": "7.2.2",
+            "scipy": "1.18.0",
+            "threadpoolctl": "3.6.0"
+          }
+        }
+      },
+      "scan_calibration": {
+        "after": {
+          "available_logical_cpus": 32,
+          "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "psutil": "7.2.2",
+          "python": "3.12.3",
+          "resource_environment": {
+            "MKL_NUM_THREADS": "1",
+            "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\8ef7e8eeea88589a3e394e762db5d32b79e48cf18151c62f3c03089d22b43f30",
+            "NUMBA_NUM_THREADS": "8",
+            "OMP_NUM_THREADS": "8",
+            "OMP_THREAD_LIMIT": "8",
+            "OPENBLAS_NUM_THREADS": "1",
+            "TEMSIM_CPU_THREADS": "8"
+          },
+          "versions": {
+            "PySide6": "6.8.3",
+            "llvmlite": "0.48.0",
+            "numba": "0.66.0",
+            "numpy": "2.4.6",
+            "psutil": "7.2.2",
+            "scipy": "1.18.0",
+            "threadpoolctl": "3.6.0"
+          }
+        },
+        "before": {
+          "available_logical_cpus": 32,
+          "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "psutil": "7.2.2",
+          "python": "3.12.3",
+          "resource_environment": {
+            "MKL_NUM_THREADS": "1",
+            "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\6d8404550f1b0251f93437fcf817ee37a73d6c5e0c170e5740ed43c85d7b3679",
+            "NUMBA_NUM_THREADS": "8",
+            "OMP_NUM_THREADS": "8",
+            "OMP_THREAD_LIMIT": "8",
+            "OPENBLAS_NUM_THREADS": "1",
+            "TEMSIM_CPU_THREADS": "8"
+          },
+          "versions": {
+            "PySide6": "6.8.3",
+            "llvmlite": "0.48.0",
+            "numba": "0.66.0",
+            "numpy": "2.4.6",
+            "psutil": "7.2.2",
+            "scipy": "1.18.0",
+            "threadpoolctl": "3.6.0"
+          }
+        }
+      }
+    },
+    "failures": [],
+    "inputs_and_implementations": {
+      "after": {
+        "continuation": {
+          "implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+          "physical_and_numerical_inputs_digest": "6210186ed058c1989f45db6c99de261d6141c93529f58a6b06754f979fe03efc",
+          "snapshot_digest": "933d2ce8a0233c27f0250e38bb006a686374145b45019b701aca470b893f0eef"
+        },
+        "nanoprobe": {
+          "implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+          "physical_and_numerical_inputs_digest": "6210186ed058c1989f45db6c99de261d6141c93529f58a6b06754f979fe03efc",
+          "snapshot_digest": "933d2ce8a0233c27f0250e38bb006a686374145b45019b701aca470b893f0eef"
+        },
+        "scan_calibration": {
+          "implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+          "physical_and_numerical_inputs_digest": "9323fc40f52a16200b7f07933758cddae0f2f858da22b432928c89c6237a4f63",
+          "snapshot_digest": "a91aa367680f857453d94c1d7f2f299589cb6758534f30bfc825317fb2a2c36d"
+        }
+      },
+      "before": {
+        "continuation": {
+          "implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+          "physical_and_numerical_inputs_digest": "6210186ed058c1989f45db6c99de261d6141c93529f58a6b06754f979fe03efc",
+          "snapshot_digest": "353489d731bc10e6bbdbf5db52d80a65be6d1ac2e0ef5fa2fac27580d39656ad"
+        },
+        "nanoprobe": {
+          "implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+          "physical_and_numerical_inputs_digest": "6210186ed058c1989f45db6c99de261d6141c93529f58a6b06754f979fe03efc",
+          "snapshot_digest": "353489d731bc10e6bbdbf5db52d80a65be6d1ac2e0ef5fa2fac27580d39656ad"
+        },
+        "scan_calibration": {
+          "implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+          "physical_and_numerical_inputs_digest": "9323fc40f52a16200b7f07933758cddae0f2f858da22b432928c89c6237a4f63",
+          "snapshot_digest": "5c25eb6eec7386373a255ddb25161d5962562a441fe25847beb863cce0db28c2"
+        }
+      }
+    },
+    "memory_scope": "No cross-process peak-memory claim; input suite RSS excludes descendants",
+    "numerical_convergence": "NOT_RUN",
+    "observer_compatibility": {
+      "continuation": {
+        "after": "temsim-performance-accuracy-observer-v3",
+        "before": "temsim-performance-accuracy-observer-v2",
+        "contract": "v2_to_v3_unchanged_plane",
+        "plane_kind": "section_terminal",
+        "scope": "No relaxation of input, array, plane-position or zero-tolerance observable comparison"
+      },
+      "nanoprobe": {
+        "after": "temsim-performance-accuracy-observer-v3",
+        "before": "temsim-performance-accuracy-observer-v2",
+        "contract": "v2_to_v3_unchanged_plane",
+        "plane_kind": "specimen_upper_surface",
+        "scope": "No relaxation of input, array, plane-position or zero-tolerance observable comparison"
+      }
+    },
+    "particle_comparison": {
+      "cases": {
+        "continuation": {
+          "failures": [],
+          "implementations": [
+            "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+            "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737"
+          ],
+          "metric_tolerances": {
+            "alpha95_mrad": {
+              "atol": 0.0,
+              "rtol": 0.0
+            },
+            "current_a": {
+              "atol": 0.0,
+              "rtol": 0.0
+            },
+            "d95_nm": {
+              "atol": 0.0,
+              "rtol": 0.0
+            },
+            "rms_radius_nm": {
+              "atol": 0.0,
+              "rtol": 0.0
+            }
+          },
+          "observables": {
+            "alpha95_mrad": {
+              "absolute_difference": 0.0,
+              "allowed_difference": 0.0,
+              "candidate": 0.00031068482076760474,
+              "passed": true,
+              "reference": 0.00031068482076760474
+            },
+            "current_a": {
+              "absolute_difference": 0.0,
+              "allowed_difference": 0.0,
+              "candidate": 1e-05,
+              "passed": true,
+              "reference": 1e-05
+            },
+            "d95_nm": {
+              "absolute_difference": 0.0,
+              "allowed_difference": 0.0,
+              "candidate": 1142.9742863516924,
+              "passed": true,
+              "reference": 1142.9742863516924
+            },
+            "rms_radius_nm": {
+              "absolute_difference": 0.0,
+              "allowed_difference": 0.0,
+              "candidate": 305.6610646913183,
+              "passed": true,
+              "reference": 305.6610646913183
+            }
+          },
+          "scope": "Same-input repeatability only; exact raw arrays required even with scalar tolerances; not physical or convergence qualification",
+          "status": "PASS"
+        },
+        "nanoprobe": {
+          "failures": [],
+          "implementations": [
+            "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+            "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737"
+          ],
+          "metric_tolerances": {
+            "alpha95_mrad": {
+              "atol": 0.0,
+              "rtol": 0.0
+            },
+            "current_a": {
+              "atol": 0.0,
+              "rtol": 0.0
+            },
+            "d95_nm": {
+              "atol": 0.0,
+              "rtol": 0.0
+            },
+            "rms_radius_nm": {
+              "atol": 0.0,
+              "rtol": 0.0
+            }
+          },
+          "observables": {
+            "alpha95_mrad": {
+              "absolute_difference": 0.0,
+              "allowed_difference": 0.0,
+              "candidate": 9.96935661178633,
+              "passed": true,
+              "reference": 9.96935661178633
+            },
+            "current_a": {
+              "absolute_difference": 0.0,
+              "allowed_difference": 0.0,
+              "candidate": 1e-05,
+              "passed": true,
+              "reference": 1e-05
+            },
+            "d95_nm": {
+              "absolute_difference": 0.0,
+              "allowed_difference": 0.0,
+              "candidate": 0.5555806898010609,
+              "passed": true,
+              "reference": 0.5555806898010609
+            },
+            "rms_radius_nm": {
+              "absolute_difference": 0.0,
+              "allowed_difference": 0.0,
+              "candidate": 0.1559004765887315,
+              "passed": true,
+              "reference": 0.1559004765887315
+            }
+          },
+          "scope": "Same-input repeatability only; exact raw arrays required even with scalar tolerances; not physical or convergence qualification",
+          "status": "PASS"
+        }
+      },
+      "performance": [
+        {
+          "accuracy_passed": true,
+          "after_median_seconds": 2.931847199999538,
+          "before_median_seconds": 2.7928604999997333,
+          "case_id": "continuation",
+          "phase": "cold",
+          "speedup": 0.9525941529286291
+        },
+        {
+          "accuracy_passed": true,
+          "after_median_seconds": 2.071121299999504,
+          "before_median_seconds": 2.633279499999844,
+          "case_id": "continuation",
+          "phase": "reuse",
+          "speedup": 1.271426980158272
+        },
+        {
+          "accuracy_passed": true,
+          "after_median_seconds": 2.3695256000009977,
+          "before_median_seconds": 2.92521140000008,
+          "case_id": "continuation",
+          "phase": "warm",
+          "speedup": 1.2345135245632495
+        },
+        {
+          "accuracy_passed": true,
+          "after_median_seconds": 43.079131499998766,
+          "before_median_seconds": 50.4061255000006,
+          "case_id": "nanoprobe",
+          "phase": "cold",
+          "speedup": 1.1700822125441883
+        },
+        {
+          "accuracy_passed": true,
+          "after_median_seconds": 3.209215499999118,
+          "before_median_seconds": 3.092034700000113,
+          "case_id": "nanoprobe",
+          "phase": "reuse",
+          "speedup": 0.9634861541709999
+        },
+        {
+          "accuracy_passed": true,
+          "after_median_seconds": 34.74736950000079,
+          "before_median_seconds": 45.160556999999244,
+          "case_id": "nanoprobe",
+          "phase": "warm",
+          "speedup": 1.2996827572803236
+        }
+      ],
+      "scope": "Same physical/numerical inputs and explicit budgets; implementation identities remain visible",
+      "status": "PASS"
+    },
+    "performance": [
+      {
+        "after_median_seconds": 64.41411999999946,
+        "before_median_seconds": 81.59625380000034,
+        "case_id": "scan_calibration",
+        "phase": "cold",
+        "speedup": 1.266744834828156
+      },
+      {
+        "after_median_seconds": 62.61138260000007,
+        "before_median_seconds": 79.3534067999999,
+        "case_id": "scan_calibration",
+        "phase": "warm",
+        "speedup": 1.2673958552705689
+      },
+      {
+        "after_median_seconds": 1.7300973999990674,
+        "before_median_seconds": 2.1353235999995377,
+        "case_id": "scan_calibration",
+        "phase": "reuse",
+        "speedup": 1.2342216108761788
+      },
+      {
+        "accuracy_passed": true,
+        "after_median_seconds": 2.931847199999538,
+        "before_median_seconds": 2.7928604999997333,
+        "case_id": "continuation",
+        "phase": "cold",
+        "speedup": 0.9525941529286291
+      },
+      {
+        "accuracy_passed": true,
+        "after_median_seconds": 2.071121299999504,
+        "before_median_seconds": 2.633279499999844,
+        "case_id": "continuation",
+        "phase": "reuse",
+        "speedup": 1.271426980158272
+      },
+      {
+        "accuracy_passed": true,
+        "after_median_seconds": 2.3695256000009977,
+        "before_median_seconds": 2.92521140000008,
+        "case_id": "continuation",
+        "phase": "warm",
+        "speedup": 1.2345135245632495
+      },
+      {
+        "accuracy_passed": true,
+        "after_median_seconds": 43.079131499998766,
+        "before_median_seconds": 50.4061255000006,
+        "case_id": "nanoprobe",
+        "phase": "cold",
+        "speedup": 1.1700822125441883
+      },
+      {
+        "accuracy_passed": true,
+        "after_median_seconds": 3.209215499999118,
+        "before_median_seconds": 3.092034700000113,
+        "case_id": "nanoprobe",
+        "phase": "reuse",
+        "speedup": 0.9634861541709999
+      },
+      {
+        "accuracy_passed": true,
+        "after_median_seconds": 34.74736950000079,
+        "before_median_seconds": 45.160556999999244,
+        "case_id": "nanoprobe",
+        "phase": "warm",
+        "speedup": 1.2996827572803236
+      }
+    ],
+    "physical_qualification": "UNRESOLVED",
+    "retained_physical_qualification": {
+      "after": "UNRESOLVED",
+      "before": "UNRESOLVED"
+    },
+    "scan_comparison": {
+      "input_identity": "9323fc40f52a16200b7f07933758cddae0f2f858da22b432928c89c6237a4f63",
+      "run_evidence": [
+        {
+          "cache_source": "computed",
+          "execution": {
+            "mode": "independent_processes",
+            "trace_count": 17,
+            "workers": 4
+          },
+          "matrices": {
+            "ac_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "4a2e165a05fa7b07d2c2eb75e9402b7ddbaa7ce0f4cb9d2b0d8ec3fecbeb41e0",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "ac_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "d3fd102c7a9dc37fdb62f2d72d93e63b7298b7999b7231b65eadd911bd2ed975",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            },
+            "descan_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "d151ec3a9352df0133640640b296f376728261503b57a9e2ba842e3d4756f6a1",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "descan_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "34175438514903c6f7aee241ca5363380c1d1858e80cf043ff6a4db2d573cc36",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            }
+          },
+          "phase": "cold",
+          "repeat": 0,
+          "sample_position_relative_residual": 1.2110552537223955e-17
+        },
+        {
+          "cache_source": "memory",
+          "execution": {
+            "mode": "independent_processes",
+            "trace_count": 17,
+            "workers": 4
+          },
+          "matrices": {
+            "ac_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "4a2e165a05fa7b07d2c2eb75e9402b7ddbaa7ce0f4cb9d2b0d8ec3fecbeb41e0",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "ac_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "d3fd102c7a9dc37fdb62f2d72d93e63b7298b7999b7231b65eadd911bd2ed975",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            },
+            "descan_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "d151ec3a9352df0133640640b296f376728261503b57a9e2ba842e3d4756f6a1",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "descan_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "34175438514903c6f7aee241ca5363380c1d1858e80cf043ff6a4db2d573cc36",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            }
+          },
+          "phase": "reuse",
+          "repeat": 0,
+          "sample_position_relative_residual": 1.2110552537223955e-17
+        },
+        {
+          "cache_source": "disk",
+          "execution": {
+            "mode": "independent_processes",
+            "trace_count": 17,
+            "workers": 4
+          },
+          "matrices": {
+            "ac_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "4a2e165a05fa7b07d2c2eb75e9402b7ddbaa7ce0f4cb9d2b0d8ec3fecbeb41e0",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "ac_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "d3fd102c7a9dc37fdb62f2d72d93e63b7298b7999b7231b65eadd911bd2ed975",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            },
+            "descan_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "d151ec3a9352df0133640640b296f376728261503b57a9e2ba842e3d4756f6a1",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "descan_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "34175438514903c6f7aee241ca5363380c1d1858e80cf043ff6a4db2d573cc36",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            }
+          },
+          "phase": "reuse",
+          "repeat": 1,
+          "sample_position_relative_residual": 1.2110552537223955e-17
+        },
+        {
+          "cache_source": "memory",
+          "execution": {
+            "mode": "independent_processes",
+            "trace_count": 17,
+            "workers": 4
+          },
+          "matrices": {
+            "ac_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "4a2e165a05fa7b07d2c2eb75e9402b7ddbaa7ce0f4cb9d2b0d8ec3fecbeb41e0",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "ac_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "d3fd102c7a9dc37fdb62f2d72d93e63b7298b7999b7231b65eadd911bd2ed975",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            },
+            "descan_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "d151ec3a9352df0133640640b296f376728261503b57a9e2ba842e3d4756f6a1",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "descan_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "34175438514903c6f7aee241ca5363380c1d1858e80cf043ff6a4db2d573cc36",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            }
+          },
+          "phase": "reuse",
+          "repeat": 2,
+          "sample_position_relative_residual": 1.2110552537223955e-17
+        },
+        {
+          "cache_source": "computed",
+          "execution": {
+            "mode": "independent_processes",
+            "trace_count": 17,
+            "workers": 4
+          },
+          "matrices": {
+            "ac_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "4a2e165a05fa7b07d2c2eb75e9402b7ddbaa7ce0f4cb9d2b0d8ec3fecbeb41e0",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "ac_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "d3fd102c7a9dc37fdb62f2d72d93e63b7298b7999b7231b65eadd911bd2ed975",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            },
+            "descan_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "d151ec3a9352df0133640640b296f376728261503b57a9e2ba842e3d4756f6a1",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "descan_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "34175438514903c6f7aee241ca5363380c1d1858e80cf043ff6a4db2d573cc36",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            }
+          },
+          "phase": "warm",
+          "repeat": 0,
+          "sample_position_relative_residual": 1.2110552537223955e-17
+        },
+        {
+          "cache_source": "computed",
+          "execution": {
+            "mode": "independent_processes",
+            "trace_count": 17,
+            "workers": 4
+          },
+          "matrices": {
+            "ac_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "4a2e165a05fa7b07d2c2eb75e9402b7ddbaa7ce0f4cb9d2b0d8ec3fecbeb41e0",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "ac_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "d3fd102c7a9dc37fdb62f2d72d93e63b7298b7999b7231b65eadd911bd2ed975",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            },
+            "descan_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "d151ec3a9352df0133640640b296f376728261503b57a9e2ba842e3d4756f6a1",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "descan_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "34175438514903c6f7aee241ca5363380c1d1858e80cf043ff6a4db2d573cc36",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            }
+          },
+          "phase": "warm",
+          "repeat": 1,
+          "sample_position_relative_residual": 1.2110552537223955e-17
+        },
+        {
+          "cache_source": "computed",
+          "execution": {
+            "mode": "independent_processes",
+            "trace_count": 17,
+            "workers": 4
+          },
+          "matrices": {
+            "ac_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "4a2e165a05fa7b07d2c2eb75e9402b7ddbaa7ce0f4cb9d2b0d8ec3fecbeb41e0",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "ac_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "d3fd102c7a9dc37fdb62f2d72d93e63b7298b7999b7231b65eadd911bd2ed975",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            },
+            "descan_command_mrad": {
+              "dtype": "<f8",
+              "nbytes": 32,
+              "sha256": "d151ec3a9352df0133640640b296f376728261503b57a9e2ba842e3d4756f6a1",
+              "shape": [
+                2,
+                2
+              ]
+            },
+            "descan_coupling": {
+              "dtype": "<f8",
+              "nbytes": 64,
+              "sha256": "34175438514903c6f7aee241ca5363380c1d1858e80cf043ff6a4db2d573cc36",
+              "shape": [
+                2,
+                2,
+                2
+              ]
+            }
+          },
+          "phase": "warm",
+          "repeat": 2,
+          "sample_position_relative_residual": 1.2110552537223955e-17
+        }
+      ],
+      "runs": 7,
+      "scope": "Exact local-response matrix/residual equivalence; not full emitted-beam qualification",
+      "status": "PASS"
+    },
+    "schema": "temsim-benchmark-suite-comparison-v1",
+    "scope": "Exact same-input equivalence and elapsed-time comparison; not convergence or physical qualification",
+    "status": "PASS"
+  },
+  "suites": {
+    "baseline-final": {
+      "suite_sha256": "a5deb6fba94337f996f2c868576cc871890a0379088e3a250e5fd871410eb7dc",
+      "configuration": {
+        "budget_seconds": 1200.0,
+        "cases": [
+          "nanoprobe",
+          "continuation",
+          "scan_calibration",
+          "coherent"
+        ],
+        "cleanup_grace_seconds": 30.0,
+        "profile": false,
+        "rays": 49,
+        "reuse_repeats": 3,
+        "step_mm": 0.05,
+        "threads": 8,
+        "warm_repeats": 3
+      },
+      "status": "COMPLETE",
+      "acceptance_status": "PASS",
+      "particle_repeatability": "PASS",
+      "cases": [
+        {
+          "case_id": "nanoprobe",
+          "status": "COMPLETE",
+          "input_identity": "353489d731bc10e6bbdbf5db52d80a65be6d1ac2e0ef5fa2fac27580d39656ad",
+          "implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+          "cpu_resources": {
+            "available_cpus": 32,
+            "blas_threads": 1,
+            "numba_threads": 8,
+            "numerical_jobs": 1,
+            "numerical_thread_budget": 8
+          },
+          "environment": {
+            "available_logical_cpus": 32,
+            "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+            "platform": "Windows-11-10.0.26200-SP0",
+            "psutil": "7.2.2",
+            "python": "3.12.3",
+            "resource_environment": {
+              "MKL_NUM_THREADS": "1",
+              "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\6d8404550f1b0251f93437fcf817ee37a73d6c5e0c170e5740ed43c85d7b3679",
+              "NUMBA_NUM_THREADS": "8",
+              "OMP_NUM_THREADS": "8",
+              "OMP_THREAD_LIMIT": "8",
+              "OPENBLAS_NUM_THREADS": "1",
+              "TEMSIM_CPU_THREADS": "8"
+            },
+            "versions": {
+              "PySide6": "6.8.3",
+              "llvmlite": "0.48.0",
+              "numba": "0.66.0",
+              "numpy": "2.4.6",
+              "psutil": "7.2.2",
+              "scipy": "1.18.0",
+              "threadpoolctl": "3.6.0"
+            }
+          },
+          "phases": {
+            "cold": {
+              "elapsed_seconds": [
+                50.4061255000006
+              ],
+              "median_seconds": 50.4061255000006,
+              "minimum_seconds": 50.4061255000006,
+              "maximum_seconds": 50.4061255000006,
+              "standard_deviation_seconds": 0.0,
+              "peak_worker_rss_bytes": [
+                346820608
+              ]
+            },
+            "warm": {
+              "elapsed_seconds": [
+                45.160556999999244,
+                45.90575759999956,
+                44.37046080000073
+              ],
+              "median_seconds": 45.160556999999244,
+              "minimum_seconds": 44.37046080000073,
+              "maximum_seconds": 45.90575759999956,
+              "standard_deviation_seconds": 0.6268716157395814,
+              "peak_worker_rss_bytes": [
+                466661376,
+                584323072,
+                586592256
+              ]
+            },
+            "reuse": {
+              "elapsed_seconds": [
+                3.092034700000113,
+                3.0749131000002308,
+                3.094452199999978
+              ],
+              "median_seconds": 3.092034700000113,
+              "minimum_seconds": 3.0749131000002308,
+              "maximum_seconds": 3.094452199999978,
+              "standard_deviation_seconds": 0.008697189339125793,
+              "peak_worker_rss_bytes": [
+                587059200,
+                588025856,
+                586608640
+              ]
+            }
+          },
+          "identity": {
+            "executed_implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+            "full_input_identity_scope": "Physical and numerical inputs plus external contents; implementation recorded separately",
+            "implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+            "implementation_basis": "Executed unified incident checkpoint",
+            "inputs_digest": "6210186ed058c1989f45db6c99de261d6141c93529f58a6b06754f979fe03efc",
+            "numerical_inputs": {
+              "0:temsim.optics.model:State:acceleration_backend": "Numba CPU",
+              "0:temsim.optics.model:State:history_step_mm": 0.5,
+              "0:temsim.optics.model:State:step_mm": 0.05,
+              "1060:temsim.optics.model:Sample:wave_frozen_phonon_configurations": 4,
+              "1060:temsim.optics.model:Sample:wave_frozen_phonon_seed": 100,
+              "1060:temsim.optics.model:Sample:wave_slice_thickness_angstrom": 2.0,
+              "523:temsim.optics.electron_gun.emitter:ColdFieldEmitter:ray_count": 49,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:drift_step_mm": 2.0,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:history_step_mm": 2.0,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:trace_step_mm": 0.2,
+              "992:temsim.optics.electron_gun.monochromator:WienMonochromatorAssembly:trace_step_mm": 0.05
+            },
+            "numerical_inputs_digest": "1dc6114be0b5fd7498d7526661653c33cd762afcf7e2c54d5c3de9fb3ce77b20",
+            "observer": "temsim-performance-accuracy-observer-v2",
+            "observer_implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+            "physical_identity_scope": "All captured inputs except the listed numerical controls; unknown fields remain bound",
+            "physical_inputs_digest": "953f5faebea4cbe44e16a854d8f830c621febefb57cb98f9ad6e95e5006d4407",
+            "status": "CAPTURED"
+          },
+          "observables": {
+            "alpha95_mrad": 9.96935661178633,
+            "angle_definition": "Current-weighted alpha95 relative to the chief direction; not a physical pupil edge",
+            "basis": "Exact full-precision incident checkpoint",
+            "current_a": 1e-05,
+            "d95_nm": 0.5555806898010609,
+            "effective_source_current_a": 1e-05,
+            "mean_tx_rad": -9.984292430735769e-05,
+            "mean_ty_rad": -5.379913421999062e-05,
+            "mean_x_m": 1.4373002205517659e-11,
+            "mean_y_m": 1.9525180694677312e-11,
+            "paraxial_waist_offset_nm": 0.0008252308756901077,
+            "plane_kind": "specimen_upper_surface",
+            "plane_z_mm": 1599.1999975,
+            "radius_definition": "Current-weighted transverse radius about the centroid; raw coordinates are unchanged",
+            "rms_radius_nm": 0.1559004765887315,
+            "status": "MEASURED",
+            "transmission": 1.0
+          },
+          "qualification": {
+            "numerical": {
+              "scope": "No independent numerical refinement is executed by this observer",
+              "status": "NOT_RUN"
+            },
+            "physical": {
+              "focus": {
+                "reason": "Three exact upstream focus planes are required; an extrapolated waist is diagnostic only",
+                "status": "NOT_EVALUATED"
+              },
+              "scope": "Independent target, size, focus and convergence acceptance remains required",
+              "status": "UNRESOLVED",
+              "topology": {
+                "candidates": [],
+                "failures": [
+                  "missing_boundary_checkpoints"
+                ],
+                "intervals": {},
+                "legacy_point_diagnostic": {
+                  "candidates": [],
+                  "failures": [
+                    "missing_boundary_checkpoints"
+                  ],
+                  "intervals": {
+                    "c2_c3": {
+                      "bounds_mm": [
+                        650.0,
+                        915.0
+                      ],
+                      "requirement": "at_least_one_executed_2d_waist",
+                      "waists": []
+                    },
+                    "c3_adl": {
+                      "bounds_mm": [
+                        915.0,
+                        1088.2
+                      ],
+                      "requirement": "no_converging_to_diverging_waist",
+                      "waists": []
+                    }
+                  },
+                  "message": "Missing exact component or boundary-guard checkpoints",
+                  "nanoprobe_range": "normal",
+                  "passed": false,
+                  "qualification": "Executed checkpoints at bounded axial sampling; not OEM qualification",
+                  "refinement_planes_mm": [],
+                  "requirement": "c2_c3_waist_no_c3_adl_waist",
+                  "schema": "condenser-topology-v1",
+                  "status": "UNRESOLVED"
+                },
+                "message": "Missing exact condenser boundaries or guards",
+                "nanoprobe_range": "normal",
+                "passed": false,
+                "qualification": "Executed checkpoints at bounded axial sampling; not OEM qualification",
+                "refinement_planes_mm": [],
+                "requirement": "c2_c3_waist_no_c3_adl_waist",
+                "schema": "condenser-finite-region-topology-v2",
+                "status": "UNRESOLVED",
+                "waist_detector": "finite_region"
+              }
+            }
+          },
+          "population": {
+            "checkpoint_fingerprints": {
+              "flight_time_s": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "5939852674c14acf40237ccc6aa4d3e806c8e87778eef9f4bfe324827ec4cadf",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "kinetic_energy_ev": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "c449d0bb547fe5083ac983f62b24340aec9b1ef3f0393c91386694ee8adff9eb",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "fe04ef32a7446d9232b0af9ed5fea858f6afe6ec98dd9c3dacda630be46b8d59",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "41e9c04191057e5779996fdd27b3578f2f5cfdcc78f3f5207250d8ab8d545ce9",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "f838d220f8c82f650534cb4d577f01dd33380302b0119b56fd9728e5b305bb54",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "dd67bf0ccf0afc54e09d288331c703b100ae40479a3bab5ff28d0cec7d85ffcd",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "z_mm": {
+                "bytes": 1848,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "45c6e0aab89d5122b9f0e0b67e48da1ae0035d4c0927d319831213e0b45eb445",
+                "shape": [
+                  231
+                ]
+              }
+            },
+            "energy_coverage": {
+              "column_start_z_mm": 450.0,
+              "proof": "Exact dtype and value match to executed gun history; exact column plan/checkpoint boundary",
+              "scope": "Gun-prefix kinetic energies were not retained; no interpolation or nominal-energy substitution",
+              "status": "PARTIAL_RETAINED",
+              "unknown_prefix_range_mm": [
+                0.0,
+                448.0
+              ],
+              "unknown_prefix_rows": 226
+            },
+            "fingerprints": {
+              "blocked_keys": {
+                "count": 49,
+                "encoding": "exact-json",
+                "sha256": "f4e42cdec4dc28e8283765836150bb0f213a0cb4bc908225c81ab4adcc3a0a1b"
+              },
+              "blocked_z_mm": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 49,
+                "sha256": "e29067cad3c9abed68112c3589c668a36afd94951859f55ccab9929819b96b04",
+                "shape": [
+                  49
+                ]
+              },
+              "flight_time_s": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "b43f2d4e6ab53f49dd27279099079cc9759cea9d12359947c858d35d572d2978",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "kinetic_energy_ev": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 11074,
+                "sha256": "47480db0711c20c04e5064bda11f581b6b617c93165de7737e655dd9090ca948",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "kinetic_energy_required": {
+                "bytes": 1150961,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "bfa40a2810d9ebea49682dd6ba3b67b5a4ac0b4b1141abeceeff6ec072cda1cc",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "observed_alive": {
+                "bytes": 1150961,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "c1fa8c9f7c01dd0aa620ca55ddb510bca1eca28c322a36fdd7c25ae91f598d3b",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "source_ids": {
+                "bytes": 392,
+                "dtype": "<i8",
+                "nonfinite_count": 0,
+                "sha256": "5b4e9c03793a35801808db20167213d180f23614abfa31821218ae56016aab3d",
+                "shape": [
+                  49
+                ]
+              },
+              "terminal_alive": {
+                "bytes": 49,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "814ef6fa4586c083faa4cebd3ab69aabb00ef07ae9d68f20f39497042f6cecdf",
+                "shape": [
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "09514efe6620f5377a625b2e2faa767f2de6e1d5a3729af0590855e1f631ba8b",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "16833093c3e97124cbd5f615bb50c1e7b87c8f57b76d430cfa3c20f094277b2e",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "weights": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "6d14ebc4a26a3eb5f71287635a9ffd6f4f945feb4ab33bf72484e6f4a7250879",
+                "shape": [
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "5cb9551cf100e716b35dcf3bc6386400bcf6cdb29d9add156acb50b62183f37b",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "3059ab85e225fd259d623e21807f348eae88ed68e596652451d1d3b387fd7839",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "z_mm": {
+                "bytes": 187912,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "302a06ac611139a63f0666a15c084dedf8707da2b957262abbc528e3f6658217",
+                "shape": [
+                  23489
+                ]
+              }
+            },
+            "issues": [],
+            "ray_count": 49,
+            "source_current_denominator": 0.9999999999999999,
+            "source_fingerprints": {
+              "alive": {
+                "bytes": 49,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "814ef6fa4586c083faa4cebd3ab69aabb00ef07ae9d68f20f39497042f6cecdf",
+                "shape": [
+                  49
+                ]
+              },
+              "energy_offset_ev": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "b0c124f2f577480614ff947c08e37cb1c1f374655f3098ae57137e3999a2c768",
+                "shape": [
+                  49
+                ]
+              },
+              "flight_time_s": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "3607775148e067fac280a5b1e91c501f4afcae63c8935a9c392d9d4128ab94e0",
+                "shape": [
+                  49
+                ]
+              },
+              "ray_id": {
+                "bytes": 392,
+                "dtype": "<i8",
+                "nonfinite_count": 0,
+                "sha256": "5b4e9c03793a35801808db20167213d180f23614abfa31821218ae56016aab3d",
+                "shape": [
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "ab395e4ab079f538f35d04d7cc368951afa6e450b02744b1c10e5f9495c2c129",
+                "shape": [
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "115f48bb93b30265fa5e3a4e0b3c94ab9cca4e52a31797cd0431d854333198fb",
+                "shape": [
+                  49
+                ]
+              },
+              "weight": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "6d14ebc4a26a3eb5f71287635a9ffd6f4f945feb4ab33bf72484e6f4a7250879",
+                "shape": [
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "8dc45554956c0099228109ff3dd273e808c149a9064a642b8e9d46f7eb0ff973",
+                "shape": [
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "a64e0f9e79dca8853d25d2ca67031936f7317932b423e3388d03a59ece28e0e5",
+                "shape": [
+                  49
+                ]
+              }
+            },
+            "source_identity_basis": "Executed gun exit IDs and original absolute weights; no renormalization",
+            "status": "VALID",
+            "surviving_positive_current_rays": 49,
+            "surviving_weight": 0.9999999999999999
+          }
+        },
+        {
+          "case_id": "continuation",
+          "status": "COMPLETE",
+          "input_identity": "353489d731bc10e6bbdbf5db52d80a65be6d1ac2e0ef5fa2fac27580d39656ad",
+          "implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+          "cpu_resources": {
+            "available_cpus": 32,
+            "blas_threads": 1,
+            "numba_threads": 8,
+            "numerical_jobs": 1,
+            "numerical_thread_budget": 8
+          },
+          "environment": {
+            "available_logical_cpus": 32,
+            "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+            "platform": "Windows-11-10.0.26200-SP0",
+            "psutil": "7.2.2",
+            "python": "3.12.3",
+            "resource_environment": {
+              "MKL_NUM_THREADS": "1",
+              "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\6d8404550f1b0251f93437fcf817ee37a73d6c5e0c170e5740ed43c85d7b3679",
+              "NUMBA_NUM_THREADS": "8",
+              "OMP_NUM_THREADS": "8",
+              "OMP_THREAD_LIMIT": "8",
+              "OPENBLAS_NUM_THREADS": "1",
+              "TEMSIM_CPU_THREADS": "8"
+            },
+            "versions": {
+              "PySide6": "6.8.3",
+              "llvmlite": "0.48.0",
+              "numba": "0.66.0",
+              "numpy": "2.4.6",
+              "psutil": "7.2.2",
+              "scipy": "1.18.0",
+              "threadpoolctl": "3.6.0"
+            }
+          },
+          "phases": {
+            "cold": {
+              "elapsed_seconds": [
+                2.7928604999997333
+              ],
+              "median_seconds": 2.7928604999997333,
+              "minimum_seconds": 2.7928604999997333,
+              "maximum_seconds": 2.7928604999997333,
+              "standard_deviation_seconds": 0.0,
+              "peak_worker_rss_bytes": [
+                253677568
+              ]
+            },
+            "warm": {
+              "elapsed_seconds": [
+                2.92521140000008,
+                3.081707700000152,
+                2.7724223000004713
+              ],
+              "median_seconds": 2.92521140000008,
+              "minimum_seconds": 2.7724223000004713,
+              "maximum_seconds": 3.081707700000152,
+              "standard_deviation_seconds": 0.1262682592496209,
+              "peak_worker_rss_bytes": [
+                266768384,
+                272535552,
+                272404480
+              ]
+            },
+            "reuse": {
+              "elapsed_seconds": [
+                2.6606173999998646,
+                2.633279499999844,
+                2.4905478000000585
+              ],
+              "median_seconds": 2.633279499999844,
+              "minimum_seconds": 2.4905478000000585,
+              "maximum_seconds": 2.6606173999998646,
+              "standard_deviation_seconds": 0.07456791669741528,
+              "peak_worker_rss_bytes": [
+                279584768,
+                281997312,
+                284286976
+              ]
+            }
+          },
+          "identity": {
+            "executed_implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+            "full_input_identity_scope": "Physical and numerical inputs plus external contents; implementation recorded separately",
+            "implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+            "implementation_basis": "Executed unified incident checkpoint",
+            "inputs_digest": "6210186ed058c1989f45db6c99de261d6141c93529f58a6b06754f979fe03efc",
+            "numerical_inputs": {
+              "0:temsim.optics.model:State:acceleration_backend": "Numba CPU",
+              "0:temsim.optics.model:State:history_step_mm": 0.5,
+              "0:temsim.optics.model:State:step_mm": 0.05,
+              "1060:temsim.optics.model:Sample:wave_frozen_phonon_configurations": 4,
+              "1060:temsim.optics.model:Sample:wave_frozen_phonon_seed": 100,
+              "1060:temsim.optics.model:Sample:wave_slice_thickness_angstrom": 2.0,
+              "523:temsim.optics.electron_gun.emitter:ColdFieldEmitter:ray_count": 49,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:drift_step_mm": 2.0,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:history_step_mm": 2.0,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:trace_step_mm": 0.2,
+              "992:temsim.optics.electron_gun.monochromator:WienMonochromatorAssembly:trace_step_mm": 0.05
+            },
+            "numerical_inputs_digest": "1dc6114be0b5fd7498d7526661653c33cd762afcf7e2c54d5c3de9fb3ce77b20",
+            "observer": "temsim-performance-accuracy-observer-v2",
+            "observer_implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+            "physical_identity_scope": "All captured inputs except the listed numerical controls; unknown fields remain bound",
+            "physical_inputs_digest": "953f5faebea4cbe44e16a854d8f830c621febefb57cb98f9ad6e95e5006d4407",
+            "status": "CAPTURED"
+          },
+          "observables": {
+            "alpha95_mrad": 0.00031068482076760474,
+            "angle_definition": "Current-weighted alpha95 relative to the chief direction; not a physical pupil edge",
+            "basis": "Exact validated section-terminal checkpoint; local beam statistics, specimen not reached",
+            "current_a": 1e-05,
+            "d95_nm": 1142.9742863516924,
+            "effective_source_current_a": 1e-05,
+            "mean_tx_rad": 1.4248421808337846e-09,
+            "mean_ty_rad": 3.0026562862791467e-09,
+            "mean_x_m": 3.5990305122075913e-09,
+            "mean_y_m": 5.420698811169213e-09,
+            "paraxial_waist_offset_nm": -1879336246.5025024,
+            "plane_kind": "section_terminal",
+            "plane_z_mm": 470.0,
+            "radius_definition": "Current-weighted transverse radius about the centroid; raw coordinates are unchanged",
+            "rms_radius_nm": 305.6610646913183,
+            "status": "MEASURED",
+            "transmission": 1.0
+          },
+          "qualification": {
+            "numerical": {
+              "scope": "No independent numerical refinement is executed by this observer",
+              "status": "NOT_RUN"
+            },
+            "physical": {
+              "focus": {
+                "reason": "The bounded section has not reached the specimen; local beam statistics do not qualify a specimen probe",
+                "status": "NOT_EVALUATED"
+              },
+              "scope": "Independent target, size, focus and convergence acceptance remains required",
+              "status": "UNRESOLVED",
+              "topology": {
+                "reason": "The bounded section has not reached the specimen; local beam statistics do not qualify a specimen probe",
+                "status": "NOT_EVALUATED"
+              }
+            }
+          },
+          "population": {
+            "checkpoint_fingerprints": {
+              "flight_time_s": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "c16d24d12b7f24f205df52215de4ce32938e83464ab6679b10fc01d9f21c5ad0",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "kinetic_energy_ev": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "6be0bc320548f70141df7c358e0cd4edeace1eb1893c37de0be6dd3705e5737f",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "5d69cc79c03fc45baa0df248a7f00d8f4e716531ad7a2dbf0582cb64eadf3f91",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "5977c13ce2ccf2722186a753579b9aa854b9840baa2aa4d4f961c3171eb96c39",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "fd2e3559df0b88aa85b630fde869fc066b6439da5b89577f412d6c6c83157fd4",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "1a0c849266ee3106f76992623a097be706dff7abe381452ee12623ba580a64c7",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "z_mm": {
+                "bytes": 40,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "f331671d9bd1f7732ecc628219c3a4d45d62e45798d357fd3515b48a9413c198",
+                "shape": [
+                  5
+                ]
+              }
+            },
+            "energy_coverage": {
+              "column_start_z_mm": 450.0,
+              "proof": "Exact dtype and value match to executed gun history; exact column plan/checkpoint boundary",
+              "scope": "Gun-prefix kinetic energies were not retained; no interpolation or nominal-energy substitution",
+              "status": "PARTIAL_RETAINED",
+              "unknown_prefix_range_mm": [
+                0.0,
+                448.0
+              ],
+              "unknown_prefix_rows": 226
+            },
+            "fingerprints": {
+              "blocked_keys": {
+                "count": 49,
+                "encoding": "exact-json",
+                "sha256": "f4e42cdec4dc28e8283765836150bb0f213a0cb4bc908225c81ab4adcc3a0a1b"
+              },
+              "blocked_z_mm": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 49,
+                "sha256": "e29067cad3c9abed68112c3589c668a36afd94951859f55ccab9929819b96b04",
+                "shape": [
+                  49
+                ]
+              },
+              "flight_time_s": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "fac8344ce9faa67485cd970ec4106f15666ddfbf2281919a2d0c514c5a1c67e0",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "kinetic_energy_ev": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 11074,
+                "sha256": "30859e152b49d60632df7954e0fcef443cb48d478662504ffb51b44db44faaf8",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "kinetic_energy_required": {
+                "bytes": 30723,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "154c93291bf3418eed2298452b8416c8cb07f20745ca96386e77aa920e373168",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "observed_alive": {
+                "bytes": 30723,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "ce83f7c78ebc2d50d6620ed6281202e4c3e37cf04b78d01f5c77300acfa3e680",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "source_ids": {
+                "bytes": 392,
+                "dtype": "<i8",
+                "nonfinite_count": 0,
+                "sha256": "5b4e9c03793a35801808db20167213d180f23614abfa31821218ae56016aab3d",
+                "shape": [
+                  49
+                ]
+              },
+              "terminal_alive": {
+                "bytes": 49,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "814ef6fa4586c083faa4cebd3ab69aabb00ef07ae9d68f20f39497042f6cecdf",
+                "shape": [
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "4d89a0c917f8270e60b6e03851970ad2f0ee97e4f41696a2a2d6f99c19ec42f8",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "db149dc993e3eb78e74104a0cd64ec5930f8ecc41f4b5acfe1f501cbd4ea9d37",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "weights": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "6d14ebc4a26a3eb5f71287635a9ffd6f4f945feb4ab33bf72484e6f4a7250879",
+                "shape": [
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "82e240ee61ddd8442650c72f2f0e858b29faf2f623851be178b16378b8c39a3a",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "cbdf4f0a763341f40905c75620e999504dbda7c91443f11b2d59e2bbf121a584",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "z_mm": {
+                "bytes": 5016,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "85960453fdb22f2f4adf716353c9420237cef9b9a2dfb227c4b7314ade69fff3",
+                "shape": [
+                  627
+                ]
+              }
+            },
+            "issues": [],
+            "ray_count": 49,
+            "source_current_denominator": 0.9999999999999999,
+            "source_fingerprints": {
+              "alive": {
+                "bytes": 49,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "814ef6fa4586c083faa4cebd3ab69aabb00ef07ae9d68f20f39497042f6cecdf",
+                "shape": [
+                  49
+                ]
+              },
+              "energy_offset_ev": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "b0c124f2f577480614ff947c08e37cb1c1f374655f3098ae57137e3999a2c768",
+                "shape": [
+                  49
+                ]
+              },
+              "flight_time_s": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "3607775148e067fac280a5b1e91c501f4afcae63c8935a9c392d9d4128ab94e0",
+                "shape": [
+                  49
+                ]
+              },
+              "ray_id": {
+                "bytes": 392,
+                "dtype": "<i8",
+                "nonfinite_count": 0,
+                "sha256": "5b4e9c03793a35801808db20167213d180f23614abfa31821218ae56016aab3d",
+                "shape": [
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "ab395e4ab079f538f35d04d7cc368951afa6e450b02744b1c10e5f9495c2c129",
+                "shape": [
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "115f48bb93b30265fa5e3a4e0b3c94ab9cca4e52a31797cd0431d854333198fb",
+                "shape": [
+                  49
+                ]
+              },
+              "weight": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "6d14ebc4a26a3eb5f71287635a9ffd6f4f945feb4ab33bf72484e6f4a7250879",
+                "shape": [
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "8dc45554956c0099228109ff3dd273e808c149a9064a642b8e9d46f7eb0ff973",
+                "shape": [
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "a64e0f9e79dca8853d25d2ca67031936f7317932b423e3388d03a59ece28e0e5",
+                "shape": [
+                  49
+                ]
+              }
+            },
+            "source_identity_basis": "Executed gun exit IDs and original absolute weights; no renormalization",
+            "status": "VALID",
+            "surviving_positive_current_rays": 49,
+            "surviving_weight": 0.9999999999999999
+          }
+        },
+        {
+          "case_id": "scan_calibration",
+          "status": "COMPLETE",
+          "input_identity": "5c25eb6eec7386373a255ddb25161d5962562a441fe25847beb863cce0db28c2",
+          "implementation": "3ed407a3e78f1130470a9d6bd064499b4d8a3dd0ef1acaa48690fec187be1c63",
+          "cpu_resources": {
+            "available_cpus": 32,
+            "blas_threads": 1,
+            "numba_threads": 8,
+            "numerical_jobs": 1,
+            "numerical_thread_budget": 8
+          },
+          "environment": {
+            "available_logical_cpus": 32,
+            "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+            "platform": "Windows-11-10.0.26200-SP0",
+            "psutil": "7.2.2",
+            "python": "3.12.3",
+            "resource_environment": {
+              "MKL_NUM_THREADS": "1",
+              "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\6d8404550f1b0251f93437fcf817ee37a73d6c5e0c170e5740ed43c85d7b3679",
+              "NUMBA_NUM_THREADS": "8",
+              "OMP_NUM_THREADS": "8",
+              "OMP_THREAD_LIMIT": "8",
+              "OPENBLAS_NUM_THREADS": "1",
+              "TEMSIM_CPU_THREADS": "8"
+            },
+            "versions": {
+              "PySide6": "6.8.3",
+              "llvmlite": "0.48.0",
+              "numba": "0.66.0",
+              "numpy": "2.4.6",
+              "psutil": "7.2.2",
+              "scipy": "1.18.0",
+              "threadpoolctl": "3.6.0"
+            }
+          },
+          "phases": {
+            "cold": {
+              "elapsed_seconds": [
+                81.59625380000034
+              ],
+              "median_seconds": 81.59625380000034,
+              "minimum_seconds": 81.59625380000034,
+              "maximum_seconds": 81.59625380000034,
+              "standard_deviation_seconds": 0.0,
+              "peak_worker_rss_bytes": [
+                199135232
+              ]
+            },
+            "warm": {
+              "elapsed_seconds": [
+                88.10541920000014,
+                79.3534067999999,
+                68.69828840000082
+              ],
+              "median_seconds": 79.3534067999999,
+              "minimum_seconds": 68.69828840000082,
+              "maximum_seconds": 88.10541920000014,
+              "standard_deviation_seconds": 7.935615883513455,
+              "peak_worker_rss_bytes": [
+                199819264,
+                200159232,
+                201154560
+              ]
+            },
+            "reuse": {
+              "elapsed_seconds": [
+                1.9376685000006546,
+                2.1353235999995377,
+                2.3578245999997307
+              ],
+              "median_seconds": 2.1353235999995377,
+              "minimum_seconds": 1.9376685000006546,
+              "maximum_seconds": 2.3578245999997307,
+              "standard_deviation_seconds": 0.1716279509491673,
+              "peak_worker_rss_bytes": [
+                201306112,
+                201338880,
+                200867840
+              ]
+            }
+          },
+          "scan": {
+            "matrices": {
+              "ac_command_mrad": {
+                "dtype": "<f8",
+                "nbytes": 32,
+                "sha256": "4a2e165a05fa7b07d2c2eb75e9402b7ddbaa7ce0f4cb9d2b0d8ec3fecbeb41e0",
+                "shape": [
+                  2,
+                  2
+                ]
+              },
+              "ac_coupling": {
+                "dtype": "<f8",
+                "nbytes": 64,
+                "sha256": "d3fd102c7a9dc37fdb62f2d72d93e63b7298b7999b7231b65eadd911bd2ed975",
+                "shape": [
+                  2,
+                  2,
+                  2
+                ]
+              },
+              "descan_command_mrad": {
+                "dtype": "<f8",
+                "nbytes": 32,
+                "sha256": "d151ec3a9352df0133640640b296f376728261503b57a9e2ba842e3d4756f6a1",
+                "shape": [
+                  2,
+                  2
+                ]
+              },
+              "descan_coupling": {
+                "dtype": "<f8",
+                "nbytes": 64,
+                "sha256": "34175438514903c6f7aee241ca5363380c1d1858e80cf043ff6a4db2d573cc36",
+                "shape": [
+                  2,
+                  2,
+                  2
+                ]
+              }
+            },
+            "sample_position_relative_residual": 1.2110552537223955e-17,
+            "execution": {
+              "mode": "independent_processes",
+              "workers": 4,
+              "trace_count": 17
+            }
+          }
+        },
+        {
+          "case_id": "coherent",
+          "status": "NOT_RUN",
+          "reason": "Declared separately: coherent execution requires an explicitly scoped fixture and verified usable CUDA; no coherent calculation is requested by this suite"
+        }
+      ]
+    },
+    "optimized-final": {
+      "suite_sha256": "a8404f80796c1cab505fd1743565865f239821fddcb68a1bdbeb7b1fac2aaba6",
+      "configuration": {
+        "budget_seconds": 1200.0,
+        "cases": [
+          "nanoprobe",
+          "continuation",
+          "scan_calibration",
+          "coherent"
+        ],
+        "cleanup_grace_seconds": 30.0,
+        "profile": false,
+        "rays": 49,
+        "reuse_repeats": 3,
+        "step_mm": 0.05,
+        "threads": 8,
+        "warm_repeats": 3
+      },
+      "status": "COMPLETE",
+      "acceptance_status": "PASS",
+      "particle_repeatability": "PASS",
+      "cases": [
+        {
+          "case_id": "nanoprobe",
+          "status": "COMPLETE",
+          "input_identity": "933d2ce8a0233c27f0250e38bb006a686374145b45019b701aca470b893f0eef",
+          "implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+          "cpu_resources": {
+            "available_cpus": 32,
+            "blas_threads": 1,
+            "numba_threads": 8,
+            "numerical_jobs": 1,
+            "numerical_thread_budget": 8
+          },
+          "environment": {
+            "available_logical_cpus": 32,
+            "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+            "platform": "Windows-11-10.0.26200-SP0",
+            "psutil": "7.2.2",
+            "python": "3.12.3",
+            "resource_environment": {
+              "MKL_NUM_THREADS": "1",
+              "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\8ef7e8eeea88589a3e394e762db5d32b79e48cf18151c62f3c03089d22b43f30",
+              "NUMBA_NUM_THREADS": "8",
+              "OMP_NUM_THREADS": "8",
+              "OMP_THREAD_LIMIT": "8",
+              "OPENBLAS_NUM_THREADS": "1",
+              "TEMSIM_CPU_THREADS": "8"
+            },
+            "versions": {
+              "PySide6": "6.8.3",
+              "llvmlite": "0.48.0",
+              "numba": "0.66.0",
+              "numpy": "2.4.6",
+              "psutil": "7.2.2",
+              "scipy": "1.18.0",
+              "threadpoolctl": "3.6.0"
+            }
+          },
+          "phases": {
+            "cold": {
+              "elapsed_seconds": [
+                43.079131499998766
+              ],
+              "median_seconds": 43.079131499998766,
+              "minimum_seconds": 43.079131499998766,
+              "maximum_seconds": 43.079131499998766,
+              "standard_deviation_seconds": 0.0,
+              "peak_worker_rss_bytes": [
+                348114944
+              ]
+            },
+            "warm": {
+              "elapsed_seconds": [
+                31.452301200000875,
+                34.74736950000079,
+                35.71244830000069
+              ],
+              "median_seconds": 34.74736950000079,
+              "minimum_seconds": 31.452301200000875,
+              "maximum_seconds": 35.71244830000069,
+              "standard_deviation_seconds": 1.8238453122001563,
+              "peak_worker_rss_bytes": [
+                468369408,
+                585768960,
+                586801152
+              ]
+            },
+            "reuse": {
+              "elapsed_seconds": [
+                3.0825010999997176,
+                3.714545900000303,
+                3.209215499999118
+              ],
+              "median_seconds": 3.209215499999118,
+              "minimum_seconds": 3.0825010999997176,
+              "maximum_seconds": 3.714545900000303,
+              "standard_deviation_seconds": 0.27302746738913886,
+              "peak_worker_rss_bytes": [
+                588566528,
+                589164544,
+                589053952
+              ]
+            }
+          },
+          "identity": {
+            "executed_implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+            "full_input_identity_scope": "Physical and numerical inputs plus external contents; implementation recorded separately",
+            "implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+            "implementation_basis": "Executed unified incident checkpoint",
+            "inputs_digest": "6210186ed058c1989f45db6c99de261d6141c93529f58a6b06754f979fe03efc",
+            "numerical_inputs": {
+              "0:temsim.optics.model:State:acceleration_backend": "Numba CPU",
+              "0:temsim.optics.model:State:history_step_mm": 0.5,
+              "0:temsim.optics.model:State:step_mm": 0.05,
+              "1060:temsim.optics.model:Sample:wave_frozen_phonon_configurations": 4,
+              "1060:temsim.optics.model:Sample:wave_frozen_phonon_seed": 100,
+              "1060:temsim.optics.model:Sample:wave_slice_thickness_angstrom": 2.0,
+              "523:temsim.optics.electron_gun.emitter:ColdFieldEmitter:ray_count": 49,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:drift_step_mm": 2.0,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:history_step_mm": 2.0,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:trace_step_mm": 0.2,
+              "992:temsim.optics.electron_gun.monochromator:WienMonochromatorAssembly:trace_step_mm": 0.05
+            },
+            "numerical_inputs_digest": "1dc6114be0b5fd7498d7526661653c33cd762afcf7e2c54d5c3de9fb3ce77b20",
+            "observer": "temsim-performance-accuracy-observer-v3",
+            "observer_implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+            "physical_identity_scope": "All captured inputs except the listed numerical controls; unknown fields remain bound",
+            "physical_inputs_digest": "953f5faebea4cbe44e16a854d8f830c621febefb57cb98f9ad6e95e5006d4407",
+            "status": "CAPTURED"
+          },
+          "observables": {
+            "alpha95_mrad": 9.96935661178633,
+            "angle_definition": "Current-weighted alpha95 relative to the chief direction; not a physical pupil edge",
+            "basis": "Exact full-precision incident checkpoint",
+            "current_a": 1e-05,
+            "d95_nm": 0.5555806898010609,
+            "effective_source_current_a": 1e-05,
+            "mean_tx_rad": -9.984292430735769e-05,
+            "mean_ty_rad": -5.379913421999062e-05,
+            "mean_x_m": 1.4373002205517659e-11,
+            "mean_y_m": 1.9525180694677312e-11,
+            "paraxial_waist_offset_nm": 0.0008252308756901077,
+            "plane_kind": "specimen_upper_surface",
+            "plane_z_mm": 1599.1999975,
+            "radius_definition": "Current-weighted transverse radius about the centroid; raw coordinates are unchanged",
+            "rms_radius_nm": 0.1559004765887315,
+            "status": "MEASURED",
+            "transmission": 1.0
+          },
+          "qualification": {
+            "numerical": {
+              "scope": "No independent numerical refinement is executed by this observer",
+              "status": "NOT_RUN"
+            },
+            "physical": {
+              "focus": {
+                "reason": "Three exact upstream focus planes are required; an extrapolated waist is diagnostic only",
+                "status": "NOT_EVALUATED"
+              },
+              "scope": "Independent target, size, focus and convergence acceptance remains required",
+              "status": "UNRESOLVED",
+              "topology": {
+                "candidates": [],
+                "failures": [
+                  "missing_boundary_checkpoints"
+                ],
+                "intervals": {},
+                "legacy_point_diagnostic": {
+                  "candidates": [],
+                  "failures": [
+                    "missing_boundary_checkpoints"
+                  ],
+                  "intervals": {
+                    "c2_c3": {
+                      "bounds_mm": [
+                        650.0,
+                        915.0
+                      ],
+                      "requirement": "at_least_one_executed_2d_waist",
+                      "waists": []
+                    },
+                    "c3_adl": {
+                      "bounds_mm": [
+                        915.0,
+                        1088.2
+                      ],
+                      "requirement": "no_converging_to_diverging_waist",
+                      "waists": []
+                    }
+                  },
+                  "message": "Missing exact component or boundary-guard checkpoints",
+                  "nanoprobe_range": "normal",
+                  "passed": false,
+                  "qualification": "Executed checkpoints at bounded axial sampling; not OEM qualification",
+                  "refinement_planes_mm": [],
+                  "requirement": "c2_c3_waist_no_c3_adl_waist",
+                  "schema": "condenser-topology-v1",
+                  "status": "UNRESOLVED"
+                },
+                "message": "Missing exact condenser boundaries or guards",
+                "nanoprobe_range": "normal",
+                "passed": false,
+                "qualification": "Executed checkpoints at bounded axial sampling; not OEM qualification",
+                "refinement_planes_mm": [],
+                "requirement": "c2_c3_waist_no_c3_adl_waist",
+                "schema": "condenser-finite-region-topology-v2",
+                "status": "UNRESOLVED",
+                "waist_detector": "finite_region"
+              }
+            }
+          },
+          "population": {
+            "checkpoint_fingerprints": {
+              "flight_time_s": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "5939852674c14acf40237ccc6aa4d3e806c8e87778eef9f4bfe324827ec4cadf",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "kinetic_energy_ev": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "c449d0bb547fe5083ac983f62b24340aec9b1ef3f0393c91386694ee8adff9eb",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "fe04ef32a7446d9232b0af9ed5fea858f6afe6ec98dd9c3dacda630be46b8d59",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "41e9c04191057e5779996fdd27b3578f2f5cfdcc78f3f5207250d8ab8d545ce9",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "f838d220f8c82f650534cb4d577f01dd33380302b0119b56fd9728e5b305bb54",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 90552,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "dd67bf0ccf0afc54e09d288331c703b100ae40479a3bab5ff28d0cec7d85ffcd",
+                "shape": [
+                  231,
+                  49
+                ]
+              },
+              "z_mm": {
+                "bytes": 1848,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "45c6e0aab89d5122b9f0e0b67e48da1ae0035d4c0927d319831213e0b45eb445",
+                "shape": [
+                  231
+                ]
+              }
+            },
+            "energy_coverage": {
+              "column_start_z_mm": 450.0,
+              "proof": "Exact dtype and value match to executed gun history; exact column plan/checkpoint boundary",
+              "scope": "Gun-prefix kinetic energies were not retained; no interpolation or nominal-energy substitution",
+              "status": "PARTIAL_RETAINED",
+              "unknown_prefix_range_mm": [
+                0.0,
+                448.0
+              ],
+              "unknown_prefix_rows": 226
+            },
+            "fingerprints": {
+              "blocked_keys": {
+                "count": 49,
+                "encoding": "exact-json",
+                "sha256": "f4e42cdec4dc28e8283765836150bb0f213a0cb4bc908225c81ab4adcc3a0a1b"
+              },
+              "blocked_z_mm": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 49,
+                "sha256": "e29067cad3c9abed68112c3589c668a36afd94951859f55ccab9929819b96b04",
+                "shape": [
+                  49
+                ]
+              },
+              "flight_time_s": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "b43f2d4e6ab53f49dd27279099079cc9759cea9d12359947c858d35d572d2978",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "kinetic_energy_ev": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 11074,
+                "sha256": "47480db0711c20c04e5064bda11f581b6b617c93165de7737e655dd9090ca948",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "kinetic_energy_required": {
+                "bytes": 1150961,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "bfa40a2810d9ebea49682dd6ba3b67b5a4ac0b4b1141abeceeff6ec072cda1cc",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "observed_alive": {
+                "bytes": 1150961,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "c1fa8c9f7c01dd0aa620ca55ddb510bca1eca28c322a36fdd7c25ae91f598d3b",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "source_ids": {
+                "bytes": 392,
+                "dtype": "<i8",
+                "nonfinite_count": 0,
+                "sha256": "5b4e9c03793a35801808db20167213d180f23614abfa31821218ae56016aab3d",
+                "shape": [
+                  49
+                ]
+              },
+              "terminal_alive": {
+                "bytes": 49,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "814ef6fa4586c083faa4cebd3ab69aabb00ef07ae9d68f20f39497042f6cecdf",
+                "shape": [
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "09514efe6620f5377a625b2e2faa767f2de6e1d5a3729af0590855e1f631ba8b",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "16833093c3e97124cbd5f615bb50c1e7b87c8f57b76d430cfa3c20f094277b2e",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "weights": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "6d14ebc4a26a3eb5f71287635a9ffd6f4f945feb4ab33bf72484e6f4a7250879",
+                "shape": [
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "5cb9551cf100e716b35dcf3bc6386400bcf6cdb29d9add156acb50b62183f37b",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 9207688,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "3059ab85e225fd259d623e21807f348eae88ed68e596652451d1d3b387fd7839",
+                "shape": [
+                  23489,
+                  49
+                ]
+              },
+              "z_mm": {
+                "bytes": 187912,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "302a06ac611139a63f0666a15c084dedf8707da2b957262abbc528e3f6658217",
+                "shape": [
+                  23489
+                ]
+              }
+            },
+            "issues": [],
+            "ray_count": 49,
+            "source_current_denominator": 0.9999999999999999,
+            "source_fingerprints": {
+              "alive": {
+                "bytes": 49,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "814ef6fa4586c083faa4cebd3ab69aabb00ef07ae9d68f20f39497042f6cecdf",
+                "shape": [
+                  49
+                ]
+              },
+              "energy_offset_ev": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "b0c124f2f577480614ff947c08e37cb1c1f374655f3098ae57137e3999a2c768",
+                "shape": [
+                  49
+                ]
+              },
+              "flight_time_s": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "3607775148e067fac280a5b1e91c501f4afcae63c8935a9c392d9d4128ab94e0",
+                "shape": [
+                  49
+                ]
+              },
+              "ray_id": {
+                "bytes": 392,
+                "dtype": "<i8",
+                "nonfinite_count": 0,
+                "sha256": "5b4e9c03793a35801808db20167213d180f23614abfa31821218ae56016aab3d",
+                "shape": [
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "ab395e4ab079f538f35d04d7cc368951afa6e450b02744b1c10e5f9495c2c129",
+                "shape": [
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "115f48bb93b30265fa5e3a4e0b3c94ab9cca4e52a31797cd0431d854333198fb",
+                "shape": [
+                  49
+                ]
+              },
+              "weight": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "6d14ebc4a26a3eb5f71287635a9ffd6f4f945feb4ab33bf72484e6f4a7250879",
+                "shape": [
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "8dc45554956c0099228109ff3dd273e808c149a9064a642b8e9d46f7eb0ff973",
+                "shape": [
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "a64e0f9e79dca8853d25d2ca67031936f7317932b423e3388d03a59ece28e0e5",
+                "shape": [
+                  49
+                ]
+              }
+            },
+            "source_identity_basis": "Executed gun exit IDs and original absolute weights; no renormalization",
+            "status": "VALID",
+            "surviving_positive_current_rays": 49,
+            "surviving_weight": 0.9999999999999999
+          }
+        },
+        {
+          "case_id": "continuation",
+          "status": "COMPLETE",
+          "input_identity": "933d2ce8a0233c27f0250e38bb006a686374145b45019b701aca470b893f0eef",
+          "implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+          "cpu_resources": {
+            "available_cpus": 32,
+            "blas_threads": 1,
+            "numba_threads": 8,
+            "numerical_jobs": 1,
+            "numerical_thread_budget": 8
+          },
+          "environment": {
+            "available_logical_cpus": 32,
+            "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+            "platform": "Windows-11-10.0.26200-SP0",
+            "psutil": "7.2.2",
+            "python": "3.12.3",
+            "resource_environment": {
+              "MKL_NUM_THREADS": "1",
+              "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\8ef7e8eeea88589a3e394e762db5d32b79e48cf18151c62f3c03089d22b43f30",
+              "NUMBA_NUM_THREADS": "8",
+              "OMP_NUM_THREADS": "8",
+              "OMP_THREAD_LIMIT": "8",
+              "OPENBLAS_NUM_THREADS": "1",
+              "TEMSIM_CPU_THREADS": "8"
+            },
+            "versions": {
+              "PySide6": "6.8.3",
+              "llvmlite": "0.48.0",
+              "numba": "0.66.0",
+              "numpy": "2.4.6",
+              "psutil": "7.2.2",
+              "scipy": "1.18.0",
+              "threadpoolctl": "3.6.0"
+            }
+          },
+          "phases": {
+            "cold": {
+              "elapsed_seconds": [
+                2.931847199999538
+              ],
+              "median_seconds": 2.931847199999538,
+              "minimum_seconds": 2.931847199999538,
+              "maximum_seconds": 2.931847199999538,
+              "standard_deviation_seconds": 0.0,
+              "peak_worker_rss_bytes": [
+                254459904
+              ]
+            },
+            "warm": {
+              "elapsed_seconds": [
+                2.4195270000000164,
+                2.3695256000009977,
+                2.3545176000006904
+              ],
+              "median_seconds": 2.3695256000009977,
+              "minimum_seconds": 2.3545176000006904,
+              "maximum_seconds": 2.4195270000000164,
+              "standard_deviation_seconds": 0.02779208951031342,
+              "peak_worker_rss_bytes": [
+                267128832,
+                271806464,
+                273895424
+              ]
+            },
+            "reuse": {
+              "elapsed_seconds": [
+                2.071121299999504,
+                2.073384299999816,
+                2.0632289000004675
+              ],
+              "median_seconds": 2.071121299999504,
+              "minimum_seconds": 2.0632289000004675,
+              "maximum_seconds": 2.073384299999816,
+              "standard_deviation_seconds": 0.004353074212463984,
+              "peak_worker_rss_bytes": [
+                278769664,
+                282451968,
+                282484736
+              ]
+            }
+          },
+          "identity": {
+            "executed_implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+            "full_input_identity_scope": "Physical and numerical inputs plus external contents; implementation recorded separately",
+            "implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+            "implementation_basis": "Executed unified incident checkpoint",
+            "inputs_digest": "6210186ed058c1989f45db6c99de261d6141c93529f58a6b06754f979fe03efc",
+            "numerical_inputs": {
+              "0:temsim.optics.model:State:acceleration_backend": "Numba CPU",
+              "0:temsim.optics.model:State:history_step_mm": 0.5,
+              "0:temsim.optics.model:State:step_mm": 0.05,
+              "1060:temsim.optics.model:Sample:wave_frozen_phonon_configurations": 4,
+              "1060:temsim.optics.model:Sample:wave_frozen_phonon_seed": 100,
+              "1060:temsim.optics.model:Sample:wave_slice_thickness_angstrom": 2.0,
+              "523:temsim.optics.electron_gun.emitter:ColdFieldEmitter:ray_count": 49,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:drift_step_mm": 2.0,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:history_step_mm": 2.0,
+              "991:temsim.optics.electron_gun.field_emission:FieldEmissionGun:trace_step_mm": 0.2,
+              "992:temsim.optics.electron_gun.monochromator:WienMonochromatorAssembly:trace_step_mm": 0.05
+            },
+            "numerical_inputs_digest": "1dc6114be0b5fd7498d7526661653c33cd762afcf7e2c54d5c3de9fb3ce77b20",
+            "observer": "temsim-performance-accuracy-observer-v3",
+            "observer_implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+            "physical_identity_scope": "All captured inputs except the listed numerical controls; unknown fields remain bound",
+            "physical_inputs_digest": "953f5faebea4cbe44e16a854d8f830c621febefb57cb98f9ad6e95e5006d4407",
+            "status": "CAPTURED"
+          },
+          "observables": {
+            "alpha95_mrad": 0.00031068482076760474,
+            "angle_definition": "Current-weighted alpha95 relative to the chief direction; not a physical pupil edge",
+            "basis": "Exact validated section-terminal checkpoint; local beam statistics, specimen not reached",
+            "current_a": 1e-05,
+            "d95_nm": 1142.9742863516924,
+            "effective_source_current_a": 1e-05,
+            "mean_tx_rad": 1.4248421808337846e-09,
+            "mean_ty_rad": 3.0026562862791467e-09,
+            "mean_x_m": 3.5990305122075913e-09,
+            "mean_y_m": 5.420698811169213e-09,
+            "paraxial_waist_offset_nm": -1879336246.5025024,
+            "plane_kind": "section_terminal",
+            "plane_z_mm": 470.0,
+            "radius_definition": "Current-weighted transverse radius about the centroid; raw coordinates are unchanged",
+            "rms_radius_nm": 305.6610646913183,
+            "status": "MEASURED",
+            "transmission": 1.0
+          },
+          "qualification": {
+            "numerical": {
+              "scope": "No independent numerical refinement is executed by this observer",
+              "status": "NOT_RUN"
+            },
+            "physical": {
+              "focus": {
+                "reason": "The bounded section has not reached the specimen; local beam statistics do not qualify a specimen probe",
+                "status": "NOT_EVALUATED"
+              },
+              "scope": "Independent target, size, focus and convergence acceptance remains required",
+              "status": "UNRESOLVED",
+              "topology": {
+                "reason": "The bounded section has not reached the specimen; local beam statistics do not qualify a specimen probe",
+                "status": "NOT_EVALUATED"
+              }
+            }
+          },
+          "population": {
+            "checkpoint_fingerprints": {
+              "flight_time_s": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "c16d24d12b7f24f205df52215de4ce32938e83464ab6679b10fc01d9f21c5ad0",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "kinetic_energy_ev": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "6be0bc320548f70141df7c358e0cd4edeace1eb1893c37de0be6dd3705e5737f",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "5d69cc79c03fc45baa0df248a7f00d8f4e716531ad7a2dbf0582cb64eadf3f91",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "5977c13ce2ccf2722186a753579b9aa854b9840baa2aa4d4f961c3171eb96c39",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "fd2e3559df0b88aa85b630fde869fc066b6439da5b89577f412d6c6c83157fd4",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 1960,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "1a0c849266ee3106f76992623a097be706dff7abe381452ee12623ba580a64c7",
+                "shape": [
+                  5,
+                  49
+                ]
+              },
+              "z_mm": {
+                "bytes": 40,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "f331671d9bd1f7732ecc628219c3a4d45d62e45798d357fd3515b48a9413c198",
+                "shape": [
+                  5
+                ]
+              }
+            },
+            "energy_coverage": {
+              "column_start_z_mm": 450.0,
+              "proof": "Exact dtype and value match to executed gun history; exact column plan/checkpoint boundary",
+              "scope": "Gun-prefix kinetic energies were not retained; no interpolation or nominal-energy substitution",
+              "status": "PARTIAL_RETAINED",
+              "unknown_prefix_range_mm": [
+                0.0,
+                448.0
+              ],
+              "unknown_prefix_rows": 226
+            },
+            "fingerprints": {
+              "blocked_keys": {
+                "count": 49,
+                "encoding": "exact-json",
+                "sha256": "f4e42cdec4dc28e8283765836150bb0f213a0cb4bc908225c81ab4adcc3a0a1b"
+              },
+              "blocked_z_mm": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 49,
+                "sha256": "e29067cad3c9abed68112c3589c668a36afd94951859f55ccab9929819b96b04",
+                "shape": [
+                  49
+                ]
+              },
+              "flight_time_s": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "fac8344ce9faa67485cd970ec4106f15666ddfbf2281919a2d0c514c5a1c67e0",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "kinetic_energy_ev": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 11074,
+                "sha256": "30859e152b49d60632df7954e0fcef443cb48d478662504ffb51b44db44faaf8",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "kinetic_energy_required": {
+                "bytes": 30723,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "154c93291bf3418eed2298452b8416c8cb07f20745ca96386e77aa920e373168",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "observed_alive": {
+                "bytes": 30723,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "ce83f7c78ebc2d50d6620ed6281202e4c3e37cf04b78d01f5c77300acfa3e680",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "source_ids": {
+                "bytes": 392,
+                "dtype": "<i8",
+                "nonfinite_count": 0,
+                "sha256": "5b4e9c03793a35801808db20167213d180f23614abfa31821218ae56016aab3d",
+                "shape": [
+                  49
+                ]
+              },
+              "terminal_alive": {
+                "bytes": 49,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "814ef6fa4586c083faa4cebd3ab69aabb00ef07ae9d68f20f39497042f6cecdf",
+                "shape": [
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "4d89a0c917f8270e60b6e03851970ad2f0ee97e4f41696a2a2d6f99c19ec42f8",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "db149dc993e3eb78e74104a0cd64ec5930f8ecc41f4b5acfe1f501cbd4ea9d37",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "weights": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "6d14ebc4a26a3eb5f71287635a9ffd6f4f945feb4ab33bf72484e6f4a7250879",
+                "shape": [
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "82e240ee61ddd8442650c72f2f0e858b29faf2f623851be178b16378b8c39a3a",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 245784,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "cbdf4f0a763341f40905c75620e999504dbda7c91443f11b2d59e2bbf121a584",
+                "shape": [
+                  627,
+                  49
+                ]
+              },
+              "z_mm": {
+                "bytes": 5016,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "85960453fdb22f2f4adf716353c9420237cef9b9a2dfb227c4b7314ade69fff3",
+                "shape": [
+                  627
+                ]
+              }
+            },
+            "issues": [],
+            "ray_count": 49,
+            "source_current_denominator": 0.9999999999999999,
+            "source_fingerprints": {
+              "alive": {
+                "bytes": 49,
+                "dtype": "|b1",
+                "nonfinite_count": 0,
+                "sha256": "814ef6fa4586c083faa4cebd3ab69aabb00ef07ae9d68f20f39497042f6cecdf",
+                "shape": [
+                  49
+                ]
+              },
+              "energy_offset_ev": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "b0c124f2f577480614ff947c08e37cb1c1f374655f3098ae57137e3999a2c768",
+                "shape": [
+                  49
+                ]
+              },
+              "flight_time_s": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "3607775148e067fac280a5b1e91c501f4afcae63c8935a9c392d9d4128ab94e0",
+                "shape": [
+                  49
+                ]
+              },
+              "ray_id": {
+                "bytes": 392,
+                "dtype": "<i8",
+                "nonfinite_count": 0,
+                "sha256": "5b4e9c03793a35801808db20167213d180f23614abfa31821218ae56016aab3d",
+                "shape": [
+                  49
+                ]
+              },
+              "tx_rad": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "ab395e4ab079f538f35d04d7cc368951afa6e450b02744b1c10e5f9495c2c129",
+                "shape": [
+                  49
+                ]
+              },
+              "ty_rad": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "115f48bb93b30265fa5e3a4e0b3c94ab9cca4e52a31797cd0431d854333198fb",
+                "shape": [
+                  49
+                ]
+              },
+              "weight": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "6d14ebc4a26a3eb5f71287635a9ffd6f4f945feb4ab33bf72484e6f4a7250879",
+                "shape": [
+                  49
+                ]
+              },
+              "x_m": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "8dc45554956c0099228109ff3dd273e808c149a9064a642b8e9d46f7eb0ff973",
+                "shape": [
+                  49
+                ]
+              },
+              "y_m": {
+                "bytes": 392,
+                "dtype": "<f8",
+                "nonfinite_count": 0,
+                "sha256": "a64e0f9e79dca8853d25d2ca67031936f7317932b423e3388d03a59ece28e0e5",
+                "shape": [
+                  49
+                ]
+              }
+            },
+            "source_identity_basis": "Executed gun exit IDs and original absolute weights; no renormalization",
+            "status": "VALID",
+            "surviving_positive_current_rays": 49,
+            "surviving_weight": 0.9999999999999999
+          }
+        },
+        {
+          "case_id": "scan_calibration",
+          "status": "COMPLETE",
+          "input_identity": "a91aa367680f857453d94c1d7f2f299589cb6758534f30bfc825317fb2a2c36d",
+          "implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+          "cpu_resources": {
+            "available_cpus": 32,
+            "blas_threads": 1,
+            "numba_threads": 8,
+            "numerical_jobs": 1,
+            "numerical_thread_budget": 8
+          },
+          "environment": {
+            "available_logical_cpus": 32,
+            "executable": "F:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+            "platform": "Windows-11-10.0.26200-SP0",
+            "psutil": "7.2.2",
+            "python": "3.12.3",
+            "resource_environment": {
+              "MKL_NUM_THREADS": "1",
+              "NUMBA_CACHE_DIR": "C:\\Users\\54019\\AppData\\Local\\temsim\\numba\\8ef7e8eeea88589a3e394e762db5d32b79e48cf18151c62f3c03089d22b43f30",
+              "NUMBA_NUM_THREADS": "8",
+              "OMP_NUM_THREADS": "8",
+              "OMP_THREAD_LIMIT": "8",
+              "OPENBLAS_NUM_THREADS": "1",
+              "TEMSIM_CPU_THREADS": "8"
+            },
+            "versions": {
+              "PySide6": "6.8.3",
+              "llvmlite": "0.48.0",
+              "numba": "0.66.0",
+              "numpy": "2.4.6",
+              "psutil": "7.2.2",
+              "scipy": "1.18.0",
+              "threadpoolctl": "3.6.0"
+            }
+          },
+          "phases": {
+            "cold": {
+              "elapsed_seconds": [
+                64.41411999999946
+              ],
+              "median_seconds": 64.41411999999946,
+              "minimum_seconds": 64.41411999999946,
+              "maximum_seconds": 64.41411999999946,
+              "standard_deviation_seconds": 0.0,
+              "peak_worker_rss_bytes": [
+                191107072
+              ]
+            },
+            "warm": {
+              "elapsed_seconds": [
+                58.9888858000013,
+                69.51630590000059,
+                62.61138260000007
+              ],
+              "median_seconds": 62.61138260000007,
+              "minimum_seconds": 58.9888858000013,
+              "maximum_seconds": 69.51630590000059,
+              "standard_deviation_seconds": 4.366883236445779,
+              "peak_worker_rss_bytes": [
+                200151040,
+                191807488,
+                201469952
+              ]
+            },
+            "reuse": {
+              "elapsed_seconds": [
+                1.67666459999964,
+                1.7300973999990674,
+                2.119848500000444
+              ],
+              "median_seconds": 1.7300973999990674,
+              "minimum_seconds": 1.67666459999964,
+              "maximum_seconds": 2.119848500000444,
+              "standard_deviation_seconds": 0.19753282520127705,
+              "peak_worker_rss_bytes": [
+                201146368,
+                200744960,
+                200491008
+              ]
+            }
+          },
+          "scan": {
+            "matrices": {
+              "ac_command_mrad": {
+                "dtype": "<f8",
+                "nbytes": 32,
+                "sha256": "4a2e165a05fa7b07d2c2eb75e9402b7ddbaa7ce0f4cb9d2b0d8ec3fecbeb41e0",
+                "shape": [
+                  2,
+                  2
+                ]
+              },
+              "ac_coupling": {
+                "dtype": "<f8",
+                "nbytes": 64,
+                "sha256": "d3fd102c7a9dc37fdb62f2d72d93e63b7298b7999b7231b65eadd911bd2ed975",
+                "shape": [
+                  2,
+                  2,
+                  2
+                ]
+              },
+              "descan_command_mrad": {
+                "dtype": "<f8",
+                "nbytes": 32,
+                "sha256": "d151ec3a9352df0133640640b296f376728261503b57a9e2ba842e3d4756f6a1",
+                "shape": [
+                  2,
+                  2
+                ]
+              },
+              "descan_coupling": {
+                "dtype": "<f8",
+                "nbytes": 64,
+                "sha256": "34175438514903c6f7aee241ca5363380c1d1858e80cf043ff6a4db2d573cc36",
+                "shape": [
+                  2,
+                  2,
+                  2
+                ]
+              }
+            },
+            "sample_position_relative_residual": 1.2110552537223955e-17,
+            "execution": {
+              "mode": "independent_processes",
+              "workers": 4,
+              "trace_count": 17
+            }
+          }
+        },
+        {
+          "case_id": "coherent",
+          "status": "NOT_RUN",
+          "reason": "Declared separately: coherent execution requires an explicitly scoped fixture and verified usable CUDA; no coherent calculation is requested by this suite"
+        }
+      ]
+    }
+  },
+  "memory_scope": "Worker RSS sampled every 20 ms; excludes scan children. VRAM not measured.",
+  "validation": [
+    {
+      "scope": "Integrated fields, continuation, scan, sweeps, CLI, reporting and previous repairs",
+      "passed": 458,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 774.19,
+      "junit_sha256": "f5c438466839797a68d745e27391a4f00172f65bee17cfbf52f44cb9aaee08c9"
+    },
+    {
+      "scope": "Final reference-plane observer and calculation performance",
+      "passed": 81,
+      "failed": 0,
+      "seconds": 4.94
+    },
+    {
+      "scope": "Final benchmark inventory, resources and comparator",
+      "passed": 92,
+      "failed": 0,
+      "seconds": 8.88
+    },
+    {
+      "scope": "Final CLI, sweep execution and experiment records",
+      "passed": 58,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 433.33
+    }
+  ],
+  "validation_count_note": "Suites overlap; counts must not be added as distinct tests.",
+  "profile": {
+    "source": "outputs/optimization-round-20261028/baseline/nanoprobe/profile.txt",
+    "scope": "Separate diagnostic cProfile pass; excluded from accepted before/after timings",
+    "profile_total_seconds": 61.336,
+    "unified_potential_sample_cumulative_seconds": 31.53,
+    "electric_snapshot_sample_cumulative_seconds": 11.943,
+    "bilinear_cumulative_seconds": 6.549,
+    "limitation": "Parent scan profile does not instrument scan child Python calls"
+  },
+  "kernel": {
+    "path": "src/temsim/physics/electric_potential_snapshot.py",
+    "before_sha256": "21ec61a139868106d9933db1aebe95ea0a13f05bd7f08aba708718d4883ced2c",
+    "after_sha256": "0a0195e036f93ce444e6d8141651a19405ca5ba3405bad468f1862ce65f147f7",
+    "arithmetic": "Float64, unchanged cell law and operation order, fastmath=False; original NumPy fallback retained"
+  },
+  "cli": {
+    "scope": "Actual bounded classical CLI lifecycle, not performance timing",
+    "commands": [
+      {
+        "arguments": [
+          "plan",
+          "--default-nanoprobe",
+          "--rays",
+          "49",
+          "--step-mm",
+          ".05",
+          "--axes",
+          "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\axes.json",
+          "--output",
+          "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\cli-final-plan.temexp"
+        ],
+        "exit_code": 0,
+        "qapplication_created": false
+      },
+      {
+        "arguments": [
+          "run",
+          "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\cli-final-plan.temexp",
+          "--output",
+          "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\cli-final-run.temexp",
+          "--timeout-seconds",
+          "600"
+        ],
+        "exit_code": 0,
+        "qapplication_created": false
+      },
+      {
+        "arguments": [
+          "resume",
+          "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\cli-final-run.temexp",
+          "--timeout-seconds",
+          "600"
+        ],
+        "exit_code": 0,
+        "qapplication_created": false
+      },
+      {
+        "arguments": [
+          "export",
+          "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\cli-final-run.temexp",
+          "--format",
+          "csv",
+          "--output",
+          "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\cli-final-report.csv"
+        ],
+        "exit_code": 0,
+        "qapplication_created": false
+      },
+      {
+        "arguments": [
+          "export",
+          "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\cli-final-run.temexp",
+          "--format",
+          "json",
+          "--output",
+          "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\cli-final-report.json"
+        ],
+        "exit_code": 0,
+        "qapplication_created": false
+      },
+      {
+        "arguments": [
+          "export",
+          "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\cli-final-run.temexp",
+          "--format",
+          "report",
+          "--output",
+          "F:\\tem_simulator_v2\\outputs\\optimization-round-20261028\\cli-final-report.txt"
+        ],
+        "exit_code": 0,
+        "qapplication_created": false
+      }
+    ],
+    "resume_calculator_calls": 0,
+    "completed_point_digest_before": "6f4955d7f5d0f85d40b3acb50d82eeb40d4656b48c8bc90246b7ea1aeb9b7266",
+    "completed_point_digest_after": "6f4955d7f5d0f85d40b3acb50d82eeb40d4656b48c8bc90246b7ea1aeb9b7266",
+    "status": "PASS",
+    "observables": {
+      "alpha95_mrad": 9.969356611795579,
+      "angle_definition": "Current-weighted alpha95 relative to the chief direction; not a physical pupil edge",
+      "basis": "Exact incident optical-reference checkpoint at sample.z_mm; not a specimen upper-surface focus or specimen-scattering measurement",
+      "current_a": 1e-05,
+      "d95_nm": 0.5773127894445536,
+      "effective_source_current_a": 1e-05,
+      "mean_tx_rad": -9.984285299120459e-05,
+      "mean_ty_rad": -5.379926658521624e-05,
+      "mean_x_m": 1.4123368473906899e-11,
+      "mean_y_m": 1.93906824420231e-11,
+      "paraxial_waist_offset_nm": -2.499173398447555,
+      "plane_kind": "sample_reference_plane",
+      "plane_z_mm": 1599.2,
+      "radius_definition": "Current-weighted transverse radius about the centroid; raw coordinates are unchanged",
+      "rms_radius_nm": 0.1564683455672042,
+      "status": "MEASURED",
+      "transmission": 1.0
+    },
+    "population_status": "VALID",
+    "qualification": {
+      "numerical": {
+        "scope": "No independent numerical refinement is executed by this observer",
+        "status": "NOT_RUN"
+      },
+      "physical": {
+        "focus": {
+          "reason": "The sample reference plane is an incident optical reference; specimen upper-surface focus, topology qualification and specimen scattering are not evaluated by these local statistics",
+          "status": "NOT_EVALUATED"
+        },
+        "scope": "Independent target, size, focus and convergence acceptance remains required",
+        "status": "UNRESOLVED",
+        "topology": {
+          "reason": "The sample reference plane is an incident optical reference; specimen upper-surface focus, topology qualification and specimen scattering are not evaluated by these local statistics",
+          "status": "NOT_EVALUATED"
+        }
+      }
+    }
+  }
+}

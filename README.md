@@ -199,6 +199,30 @@ of the application's display name, **TEM Design & Simulation**.
 
 [Project map](docs/PROJECT_MAP.md): files, features, UI, tests and refactoring candidates.
 
+## Headless experiments and benchmarks
+
+The experiment CLI plans, runs, resumes and exports parameter sweeps without
+opening the desktop interface. Each finished point is saved atomically with its
+inputs, execution identity and performance/accuracy observations. See
+[Experiment CLI](docs/EXPERIMENT_CLI.md) for recipe and axis examples.
+
+```powershell
+.venv\Scripts\python.exe -m temsim.experiment_cli --help
+.venv\Scripts\python.exe -m temsim.benchmark_suite --output outputs\benchmark-run --threads 4 --profile
+```
+
+The [unified benchmark suite](docs/UNIFIED_BENCHMARKS.md) measures bounded
+classical Nanoprobe transport, continuation and scan calibration, separating
+first-call, warm and reuse timings from preparation and archive I/O. Joint
+reports distinguish exact repeatability from numerical convergence and physical
+qualification. The default 49-particle run is a performance fixture, not a
+qualified production population. Coherent execution retains the temporary
+usable-CUDA requirement and is explicitly unrun by this suite.
+
+The [2026-10-28 performance and accuracy report](docs/development/PERFORMANCE_ACCURACY_2026-10-28.md)
+records the measured interpolation optimization, strict before/after equivalence,
+actual CLI lifecycle and remaining qualification limits.
+
 ## License
 
 TEM Design & Simulation is licensed under the **GNU General Public License,

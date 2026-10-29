@@ -81,7 +81,7 @@ class ScanControlView(QWidget):
         self._stem_auto_range_pending = True
         self._updating = False
         self._calibration_message = ""
-        self._calibration_pending_frame = False
+        self._calibration_pending_frame = None
         from temsim.gui.scan_calibration_controller import ScanCalibrationController
         self.scan_calibration = ScanCalibrationController(self)
         self.scan_calibration.applied.connect(self._scan_calibration_applied)
@@ -986,7 +986,7 @@ class ScanControlView(QWidget):
         if state is not self._state:
             self.scan_calibration.cancel()
             self._calibration_message = ""
-            self._calibration_pending_frame = False
+            self._calibration_pending_frame = None
             self._set_playback_active(False)
             self._stem_frame = None
             self._stem_frame_context = None
@@ -1093,6 +1093,8 @@ class ScanControlView(QWidget):
         was_enabled = bool(getattr(self._state.sample, "stem_image_enabled", True))
         self._state.sample.stem_image_enabled = bool(enabled)
         if not enabled:
+            if self._calibration_pending_frame == "automatic":
+                self._calibration_pending_frame = None
             self._set_playback_active(False)
         self.parameters_changed.emit("sample.stem_image_enabled")
         if enabled and not was_enabled:
@@ -1105,11 +1107,14 @@ class ScanControlView(QWidget):
         ac = self._state.ac_deflector
         if (ac.enabled and ac.scan_enabled
                 and bool(getattr(self._state.sample, "stem_image_enabled", True))):
-            self._request_calculation()
+            self._request_calculation(automatic=True)
 
-    def _request_calculation(self):
+    def _request_calculation(self, *, automatic=False):
         if self.scan_calibration.busy:
-            self._calibration_pending_frame = True
+            # An explicit Calculate request survives later raster switches and
+            # takes priority over the single frame requested by enabling scan.
+            if not automatic or self._calibration_pending_frame is None:
+                self._calibration_pending_frame = "automatic" if automatic else "explicit"
             return
         self.calculation_requested.emit()
 
@@ -1659,17 +1664,20 @@ class ScanControlView(QWidget):
             self._updating = False
         parameter = {"hold": "captured", "descan": "descan_captured"}.get(operation, "updated")
         self.parameters_changed.emit(f"scan_calibration.{parameter}")
-        if self._calibration_pending_frame:
-            self._calibration_pending_frame = False
-            self.calculation_requested.emit()
+        pending_frame = self._calibration_pending_frame
+        self._calibration_pending_frame = None
+        if pending_frame == "automatic":
+            self._request_enabled_frame()
+        elif pending_frame == "explicit":
+            self._request_calculation()
 
     def _scan_calibration_failed(self, message):
-        self._calibration_pending_frame = False
+        self._calibration_pending_frame = None
         self._scan_calibration_progress("Scan calibration failed; previous drives retained. " + message)
         self.error.emit(message)
 
     def _scan_calibration_discarded(self, message):
-        self._calibration_pending_frame = False
+        self._calibration_pending_frame = None
         self._scan_calibration_progress(message)
 
     def _cancel_scan_calibration(self):
@@ -1677,7 +1685,7 @@ class ScanControlView(QWidget):
         self._scan_calibration_discarded("Scan calibration cancelled; previous drives retained.")
 
     def shutdown(self, timeout_ms=3000):
-        self._calibration_pending_frame = False
+        self._calibration_pending_frame = None
         self._playback_timer.stop()
         return self.scan_calibration.shutdown(timeout_ms)
 
@@ -1692,7 +1700,7 @@ class ScanControlView(QWidget):
             return
         self.scan_calibration.cancel()
         self._calibration_message = ""
-        self._calibration_pending_frame = False
+        self._calibration_pending_frame = None
         target = self._state.descan_deflector if field in {"descan_target_key", "descan_constraint"} else self._state.ac_deflector
         previous = getattr(target, field)
         try:
@@ -1814,6 +1822,9 @@ class ScanControlView(QWidget):
                 self._updating = False
             self.error.emit(str(exc))
             return
+        if (prefix == "ac" and field in {"enabled", "scan_enabled"} and not converted
+                and self._calibration_pending_frame == "automatic"):
+            self._calibration_pending_frame = None
         self._updating = True
         try:
             self._sync_controls(

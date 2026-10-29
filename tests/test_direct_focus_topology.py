@@ -53,6 +53,81 @@ def test_terminal_candidate_requires_entire_bracket_inside_explicit_one_nm_windo
     assert gate((sparse,data[1][keep],data[2]))['passed']
 
 
+def finite_terminal_drift(depth_nm, split_nm):
+    """Analytical astigmatic drift with independently placed X/Y waists."""
+    end = 10.
+    z = np.unique(np.r_[np.arange(-.25, end, .25),
+        end-np.arange(0., 2.1, .1)*1e-6, end-.0002, end-.0001, end])
+    phi = np.arange(32)*2*np.pi/32
+    tx, ty = .002*np.cos(phi), .002*np.sin(phi)
+    root, split = end-depth_nm*1e-6, split_nm*1e-6
+    x = (z-root+split/2)[:, None]*1e-3*tx+1e-14*np.cos(2*phi)
+    y = (z-root-split/2)[:, None]*1e-3*ty+1e-14*np.sin(2*phi)
+    cp = SimpleNamespace(z_mm=z, x_m=x, y_m=y,
+        tx_rad=np.broadcast_to(tx, x.shape), ty_rad=np.broadcast_to(ty, x.shape))
+    state = SimpleNamespace(simulation_mode='unified', probe_mode='nano_probe',
+        mini_condenser=SimpleNamespace(enabled=True, installed=True,
+            mechanical_center_from_tip_mm=1., mechanical_length_mm=2.),
+        electron_gun=SimpleNamespace(exit_plane_z_mm=-1.),
+        sample=SimpleNamespace(upper_surface_z_mm=end))
+    return state, cp, np.ones(x.shape, bool), np.ones(len(phi))
+
+
+def test_default_finite_terminal_gate_rejects_wide_region_despite_surface_focus():
+    from temsim.optics.direct_focus_topology import evaluate_for_state
+    from temsim.optics.surface_probe_focus import SurfaceFocusMeasurement, local_waist_from_radii
+    from temsim.physics.beam_statistics import transverse_beam_statistics
+
+    state, cp, masks, weights = finite_terminal_drift(.9, .8)
+    before = deepcopy((cp, masks, weights))
+    planes = [10.-.0002, 10.-.0001, 10.]
+    rows = [transverse_beam_statistics(
+        *(getattr(cp, key)[i] for key in ('x_m', 'y_m', 'tx_rad', 'ty_rad')),
+        alive=masks[i], weights=weights) for i in np.searchsorted(cp.z_mm, planes)]
+    radii = tuple(row.radius_rms_m for row in rows)
+    offset, curvature = local_waist_from_radii(radii, 1e-7)
+    measurement = SurfaceFocusMeasurement(10., rows[-1], offset, curvature, radii, .05, 32.)
+    assert measurement.accepts(2.)
+    assert offset == pytest.approx(-.9, abs=1e-6)
+
+    report = evaluate_for_state(state, cp, masks, weights)
+    assert report['waist_detector'] == 'finite_region'
+    region, = report['executed_waists']
+    np.testing.assert_allclose(region['bracket_mm'], [9.9999983, 9.9999999], rtol=0, atol=1e-12)
+    assert report['terminal_candidates']  # The narrower radial bracket alone passes.
+    assert report['status'] == 'UNRESOLVED' and not report['passed']
+    assert region in report['unresolved_candidates']
+    assert report['refinement_planes_mm']
+    assert all(region['bracket_mm'][0] < z < region['bracket_mm'][1]
+               for z in report['refinement_planes_mm'])
+    for key, value in vars(cp).items():
+        np.testing.assert_array_equal(value, getattr(before[0], key))
+    np.testing.assert_array_equal(masks, before[1])
+    np.testing.assert_array_equal(weights, before[2])
+
+
+@pytest.mark.parametrize('depth_nm,split_nm,touches_boundary', [(.5, .2, False), (.6, .3, True)])
+def test_contained_finite_terminal_region_remains_accepted(depth_nm, split_nm, touches_boundary):
+    from temsim.optics.direct_focus_topology import evaluate_for_state
+    report = evaluate_for_state(*finite_terminal_drift(depth_nm, split_nm))
+    region, = report['executed_waists']
+    left, right = region['bracket_mm']
+    start, end = report['terminal_window_mm']
+    assert start <= left < right <= end
+    if touches_boundary:
+        assert left == start
+    assert report['status'] == 'PASS' and report['passed']
+    assert not report['unresolved_candidates']
+
+
+def test_finite_terminal_endpoint_remains_a_separate_one_sided_observation():
+    from temsim.optics.direct_focus_topology import evaluate_for_state
+    report = evaluate_for_state(*finite_terminal_drift(0., 0.))
+    assert not report['executed_waists']
+    assert report['finite_region_evidence']['status'] == 'UNRESOLVED'
+    assert report['passed'] and report['surface_focus_qualified'] is False
+
+
 @pytest.mark.parametrize('damage',['missing_end','missing_guard','missing_window','wide_gap'])
 def test_missing_or_sparse_execution_cannot_claim_absence(damage):
     cp,masks,weights=drift(10.)

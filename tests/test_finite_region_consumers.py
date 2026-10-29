@@ -133,7 +133,8 @@ def test_new_qualification_requires_explicit_chain_evidence(monkeypatch):
     data=column(monkeypatch)
     measurement=SimpleNamespace(accepts=lambda target:True,statistics=SimpleNamespace(radius_95_m=.2e-9))
     failures=qualification.qualification_failures(topology(data),measurement,corrector(data),30.)
-    assert failures==['Required source-image regions failed or have incomplete whole-capture evidence']
+    assert failures==['Required source-image regions failed or have incomplete whole-capture evidence',
+        'Direct Mini Condenser/objective focus topology failed or is unresolved']
 
 
 def test_missing_required_interval_planes_fail_closed(monkeypatch):

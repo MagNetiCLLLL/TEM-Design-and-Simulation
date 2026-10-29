@@ -1,0 +1,60 @@
+{
+  "schema": "temsim-controlled-injection-launch-v1",
+  "working_directory": "F:\\tem_simulator_v2",
+  "environment": {
+    "QT_QPA_PLATFORM": "offscreen",
+    "PYTHONPATH": "src",
+    "OMP_NUM_THREADS": "4",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "commands": [
+    [
+      ".venv/Scripts/python.exe",
+      "outputs/joint-probe-100um-30mrad-20261028/diagnostics/run_column_energy_diagnostic.py",
+      "--donor",
+      "outputs/joint-probe-100um-30mrad-20261028/seed769-native-d95-waist-h005",
+      "--output",
+      "outputs/probe-tail-attribution-20261028/poly-original-replay128-h005",
+      "--mode",
+      "original",
+      "--replay-batches",
+      "1",
+      "--threads",
+      "4",
+      "--budget-s",
+      "1800",
+      "--cancel-file",
+      "outputs/probe-tail-attribution-20261028/poly-original-replay128-h005.cancel"
+    ],
+    [
+      ".venv/Scripts/python.exe",
+      "outputs/joint-probe-100um-30mrad-20261028/diagnostics/run_column_energy_diagnostic.py",
+      "--donor",
+      "outputs/joint-probe-100um-30mrad-20261028/seed769-native-d95-waist-h005",
+      "--output",
+      "outputs/probe-tail-attribution-20261028/poly-phase-constant-k769-h005",
+      "--mode",
+      "constant",
+      "--constant-ev",
+      "300000.3",
+      "--threads",
+      "4",
+      "--budget-s",
+      "1800",
+      "--cancel-file",
+      "outputs/probe-tail-attribution-20261028/poly-phase-constant-k769-h005.cancel"
+    ]
+  ],
+  "low_cost_tests": {
+    "driver_passed": 29,
+    "comparison_passed": 4,
+    "physical_propagation_in_tests": false
+  },
+  "original_replay": {
+    "status": "EXACT_REPLAY",
+    "points": 128,
+    "elapsed_s": 47.22597200000018,
+    "scope": "All saved phase, energy, clock, survival, stops, source IDs, weights, z and integration mesh are bitwise equal for the first original batch; no full-source statistics are inferred from this batch."
+  }
+}

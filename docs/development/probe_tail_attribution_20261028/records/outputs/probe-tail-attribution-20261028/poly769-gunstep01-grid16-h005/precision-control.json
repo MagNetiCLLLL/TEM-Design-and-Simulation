@@ -1,0 +1,31 @@
+{
+  "type": "gun numerical precision, full-column response",
+  "baseline": "F:\\tem_simulator_v2\\outputs\\joint-probe-100um-30mrad-20261028\\seed769-native-d95-waist-h005",
+  "explicit_input_delta": [
+    {
+      "path": "/digest",
+      "before": "1aa8d4af9dd4129cf3bb38caf787bf643327e95217c36d3f51158fc5f06e3940",
+      "after": "792397a98f0d38253ab6918a31c352602e6fddbabdd422b7d02e5e920b470489"
+    },
+    {
+      "path": "/graph/nodes/991/attributes/trace_step_mm",
+      "before": 0.2,
+      "after": 0.1
+    }
+  ],
+  "emission_including_energy_exactly_equal": true,
+  "no_retuning": true,
+  "column_step_mm": 0.05,
+  "gun_step_mm": 0.1,
+  "cells_per_bore": 16,
+  "numerical_convergence": "Single declared comparison; not full qualification",
+  "executed_source_arrays_equal": {
+    "source_id": true,
+    "weights": true,
+    "emission_ray_id": true,
+    "emission_position_m": true,
+    "emission_direction": true,
+    "emission_normal": true
+  },
+  "id306_surface_radius_nm": 28.701850264586906
+}

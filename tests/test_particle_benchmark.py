@@ -91,9 +91,49 @@ def test_continuation_checks_executed_prefix_and_source_ancestry():
     before, after = _section([450., 460.]), _section([450., 455., 460., 470.])
     report = require_exact_prefix(before, after)
     assert report["exact"] and report["segments"][0]["through_z_mm"] == 460.
+    assert report["segments"][0]["kinetic_energy_status"] == "NOT_RETAINED"
     assert section_terminal_arrays(after)["z_mm"] == 470.
     after.simulation.section_checkpoint.segments[0].branch.ray_weight[0] += .01
     with pytest.raises(AssertionError, match="Retained source"):
+        require_exact_prefix(before, after)
+
+
+def _section_with_energy(z):
+    result = _section(z)
+    cp = result.simulation.section_checkpoint.segments[0].checkpoints
+    cp.kinetic_energy_ev = 300000. + cp.z_mm[:, None]*np.array([.1, .2])
+    return result
+
+
+def test_continuation_allows_terminal_energy_change_but_keeps_prefix_energy_exact():
+    before = _section_with_energy([450., 460.])
+    after = _section_with_energy([450., 455., 460., 470.])
+    after.simulation.section_checkpoint.segments[0].branch.energy_offset_ev += .25
+    report = require_exact_prefix(before, after)
+    assert report["exact"]
+    assert report["segments"][0]["kinetic_energy_status"] == "EXACT"
+
+
+def test_continuation_still_rejects_changed_original_gun_energy_offset():
+    before, after = _section_with_energy([450., 460.]), _section_with_energy([450., 460., 470.])
+    after.simulation.section_checkpoint.gun_trace.exit_bundle.energy_offset_ev[0] += .25
+    with pytest.raises(AssertionError, match="Executed gun prefix.*energy_offset_ev"):
+        require_exact_prefix(before, after)
+
+
+def test_continuation_rejects_changed_kinetic_energy_at_saved_prefix_plane():
+    before, after = _section_with_energy([450., 460.]), _section_with_energy([450., 460., 470.])
+    after.simulation.section_checkpoint.segments[0].checkpoints.kinetic_energy_ev[1, 0] += .25
+    with pytest.raises(AssertionError, match="Retained column prefix.*kinetic_energy_ev"):
+        require_exact_prefix(before, after)
+
+
+@pytest.mark.parametrize("remove_before", [True, False])
+def test_continuation_rejects_one_sided_missing_checkpoint_energy(remove_before):
+    before, after = _section_with_energy([450., 460.]), _section_with_energy([450., 460., 470.])
+    result = before if remove_before else after
+    del result.simulation.section_checkpoint.segments[0].checkpoints.kinetic_energy_ev
+    with pytest.raises(AssertionError, match="kinetic-energy availability"):
         require_exact_prefix(before, after)
 
 

@@ -49,6 +49,7 @@ gpu = [
     "cupy-cuda12x>=14,<15",
 ]
 atomistic = []
+benchmark = ["psutil>=7,<8"]
 
 [project.urls]
 Homepage = "https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation"
@@ -58,6 +59,7 @@ Issues = "https://github.com/MagNetiCLLLL/TEM-Design-and-Simulation/issues"
 [project.scripts]
 tem-design-simulation = "temsim.app:run"
 tem-design-simulation-recorder = "temsim.recorder.__main__:run"
+tem-design-simulation-experiment = "temsim.experiment_cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

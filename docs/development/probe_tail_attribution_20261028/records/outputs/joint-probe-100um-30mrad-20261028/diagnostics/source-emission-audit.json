@@ -1,0 +1,634 @@
+{
+  "schema": "temsim-source-emission-readonly-audit-v1",
+  "execution_scope": "Source emit reconstruction and archived-array statistics only; no propagation",
+  "code_files_sha256": {
+    "src/temsim/optics/electron_gun/emitter.py": "17c28421844516a2bea5eb934891bf9ec804bd9e1dcc068610a782103aaf5d38",
+    "src/temsim/physics/chromatic.py": "0fc8984ab45e7fe051c207d2304f9e7ecb462cacc8ac26d4eaf2fc5b82620c4f",
+    "src/temsim/physics/ray_identity.py": "c4ba575113b939ba3b69012858daee886a85374dff0cdf3953c732b5d80dd5c9",
+    "src/temsim/optics/electron_gun/tip_curvature.py": "f519308641aaeb1ccbd47b07c618a7dedd0b4c0b9aed18079adaba065e83b7aa"
+  },
+  "audit_script_sha256": "3c239e59f999d08e195033b59df557e6ceb0c6972bf5c5997582f835bfc9f6f3",
+  "cases": {
+    "193": {
+      "archive_directory": "outputs\\joint-probe-100um-30mrad-20261028\\seed193-h02-v2\\candidates\\trial-000001",
+      "input_digest": "a27f356457b0aac4e37041cf99e0bac083b5cc0388e61f51a05ba18685edb348",
+      "implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+      "raw_files_sha256": {
+        "inputs.json": "59b0549901069d0b2aa5adab438cf53078f16a5640c6442886d2313a630bea04",
+        "candidate.json": "6007a664fa9e8d97d14e52e46a1dd3f751a3a05bf56eebdd454a01ea224e1fff",
+        "particles.npz": "9592b369366d07b0da03eab80d3d727ed43562b5a8c1c1e16f11b7bbde1b85af"
+      },
+      "selected_arrays_sha256": {
+        "emission_position_m": "9480d15926b2c32adcc4de3e9d4170282feb59dc18143eeb7d7d3988f47c0cc3",
+        "emission_direction": "3b026569ca7f9e2c8a39877eae5696376d2ad37d723ffdb334be40ccf4ada63d",
+        "emission_ray_id": "08e94ec878141ceb06ad85f2b866860701a03feacb020c314da3a3fbaa5dfee8",
+        "emission_normal": "8ad8d902fca08e59f2e82625ca288d3729f37a13242c18072228ae278472ece3",
+        "source_ray_id": "08e94ec878141ceb06ad85f2b866860701a03feacb020c314da3a3fbaa5dfee8",
+        "weights": "96bf7793256743ba2bb162a31dad926d285926e42a412742c2e962444abb6297",
+        "gun_exit_kinetic_energy_ev": "792343d4813da07a0aecc18537c0d4bb416d9cee31090baee8d0fa671e0056f9",
+        "gun_exit_energy_offset_ev": "36e1d02665f5dd1e1f9f02aabccd931380028ef41f9d13d676c7ae7d434932e2"
+      },
+      "source_reconstruction_checks": {
+        "position_m": true,
+        "direction": true,
+        "ray_id": true,
+        "normal": true,
+        "source_ids_equal_emission_ids": true,
+        "weights_exact_one_over_count": true,
+        "all_source_ids_unique": true
+      },
+      "emitter_parameters": {
+        "mechanical_center_from_tip_mm": -0.5,
+        "mechanical_length_mm": 1.0,
+        "mechanical_outer_diameter_mm": 0.1751605932866515,
+        "name": "Cold Field Emission Tip",
+        "key": "feg_tip",
+        "tip_radius_nm": 100.0,
+        "tip_cone_half_angle_deg": 5.0,
+        "emitter_material": "W(310)",
+        "work_function_ev": 4.4,
+        "vacuum_pa": 1e-08,
+        "emission_current_na": 10000.0,
+        "emission_energy_ev": 0.3,
+        "minimum_kinetic_energy_ev": 0.01,
+        "virtual_source_fwhm_nm": 5.0,
+        "angular_rms_mrad": 1.0,
+        "angular_cutoff_mrad": 3.0,
+        "energy_spread_fwhm_ev": 0.3,
+        "young_decay_width_ev": 0.2,
+        "boersch_sigma_ev": 0.1,
+        "energy_half_range_ev": 1.0,
+        "ray_count": 193
+      },
+      "source_policy": "Legacy flat-tip six-dimensional Halton; no selected surface/Sobol/product/explicit-CDF/curvature model",
+      "launch_energy_evidence": "Reconstructed by emitter.emit from saved emitter parameters; initial kinetic energy is not a saved emission_reference array",
+      "launch_radius_nm": {
+        "min": 0.1868106318028524,
+        "p01": 0.31941523559231755,
+        "p05": 0.6706305320983214,
+        "p50": 2.4522712175482795,
+        "p90": 4.405734664551815,
+        "p95": 4.983950354471953,
+        "p99": 5.729605487493755,
+        "max": 5.984596143995539
+      },
+      "launch_slope_norm_mrad": {
+        "min": 0.0562757256083913,
+        "p01": 0.13715421487801713,
+        "p05": 0.3150377822555838,
+        "p50": 1.1612972721794208,
+        "p90": 2.078989443696377,
+        "p95": 2.3047808883300585,
+        "p99": 2.6153574480224147,
+        "max": 2.815051570638923
+      },
+      "launch_kinetic_ev": {
+        "min": 0.01489474845869787,
+        "p01": 0.0360560009853606,
+        "p05": 0.08612162640021985,
+        "p50": 0.30791468330022614,
+        "p90": 0.45658471248513877,
+        "p95": 0.49828319071424354,
+        "p99": 0.5717661985898168,
+        "max": 0.6509911198434013
+      },
+      "launch_kinetic_mean_ev": 0.3000000000000042,
+      "launch_kinetic_std_ev": 0.12739827004487717,
+      "kinetic_pearson_x_y_tx_ty": [
+        -0.03465923098390738,
+        0.030638770894446523,
+        -0.029471800468645358,
+        -0.0329000768383147
+      ],
+      "kinetic_pearson_radius_slope_norm": [
+        0.008709085993590425,
+        -0.0390737857862907
+      ],
+      "maximum_abs_gun_exit_minus_300keV_minus_reconstructed_launch_ev": 8.075599522427979e-09,
+      "inspected_nodes": [],
+      "archived_surface_metrics": {
+        "alpha95_mrad": 29.999860901010155,
+        "d90_nm": null,
+        "d95_nm": 2.210123155880366,
+        "rms_radius_nm": 0.5618020718083047,
+        "local_waist_nm": 0.1431588339264026,
+        "current_a": 1e-05
+      }
+    },
+    "769": {
+      "archive_directory": "outputs\\joint-probe-100um-30mrad-20261028\\seed769-h02\\candidates\\trial-000001",
+      "input_digest": "38126102de2622bfa47f23629e188add8daea0528733826ca9ec34d55f92e3ba",
+      "implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+      "raw_files_sha256": {
+        "inputs.json": "b3e6d5cb9a612287998f9948df3000854796b13c4ea6d1173d676bb24664e4e3",
+        "candidate.json": "7d7f50d76835b8451feeb4a51f63254b80d12df73b90c8bd675457dfc6d4dbc6",
+        "particles.npz": "1ebbba4bcc16a0e80526a172e436f163385375a110cbcb69f8c4d42756ceada0"
+      },
+      "selected_arrays_sha256": {
+        "emission_position_m": "1604c45fc7c69df6cbc0e43ac75b108a9be3dbcab9fb16bcedc201e282f3ca16",
+        "emission_direction": "e623f3ba95501d3b839e15ae001d6074b9bae1b9145a00562bb7126eab4f0140",
+        "emission_ray_id": "67845b60966e6d16a64b629647c121026abb69a1c1db0b4d6049e2f46d88a69c",
+        "emission_normal": "74a5c5f89027f6a39984f0b42a0b9cb338baf601496bd3030d460b3ce6dceffe",
+        "source_ray_id": "67845b60966e6d16a64b629647c121026abb69a1c1db0b4d6049e2f46d88a69c",
+        "weights": "71f52282a0034adfc0866f1b4771e926d1e9a6d825a00320f9e54220a5436ed7",
+        "gun_exit_kinetic_energy_ev": "d5b5888c1c96244e073a7fe18499437682119daa005c9db3d1015f0ba84022af",
+        "gun_exit_energy_offset_ev": "9f27b0b2ff835812657a09dc6a24b367519baa2ccdb1ff5f096a6f702a4b027e"
+      },
+      "source_reconstruction_checks": {
+        "position_m": true,
+        "direction": true,
+        "ray_id": true,
+        "normal": true,
+        "source_ids_equal_emission_ids": true,
+        "weights_exact_one_over_count": true,
+        "all_source_ids_unique": true
+      },
+      "emitter_parameters": {
+        "mechanical_center_from_tip_mm": -0.5,
+        "mechanical_length_mm": 1.0,
+        "mechanical_outer_diameter_mm": 0.1751605932866515,
+        "name": "Cold Field Emission Tip",
+        "key": "feg_tip",
+        "tip_radius_nm": 100.0,
+        "tip_cone_half_angle_deg": 5.0,
+        "emitter_material": "W(310)",
+        "work_function_ev": 4.4,
+        "vacuum_pa": 1e-08,
+        "emission_current_na": 10000.0,
+        "emission_energy_ev": 0.3,
+        "minimum_kinetic_energy_ev": 0.01,
+        "virtual_source_fwhm_nm": 5.0,
+        "angular_rms_mrad": 1.0,
+        "angular_cutoff_mrad": 3.0,
+        "energy_spread_fwhm_ev": 0.3,
+        "young_decay_width_ev": 0.2,
+        "boersch_sigma_ev": 0.1,
+        "energy_half_range_ev": 1.0,
+        "ray_count": 769
+      },
+      "source_policy": "Legacy flat-tip six-dimensional Halton; no selected surface/Sobol/product/explicit-CDF/curvature model",
+      "launch_energy_evidence": "Reconstructed by emitter.emit from saved emitter parameters; initial kinetic energy is not a saved emission_reference array",
+      "launch_radius_nm": {
+        "min": 0.0933375519455723,
+        "p01": 0.2909248062420504,
+        "p05": 0.6734462963716605,
+        "p50": 2.4730551474696565,
+        "p90": 4.448898750799987,
+        "p95": 5.005890405670213,
+        "p99": 5.853071995798948,
+        "max": 6.255430331174536
+      },
+      "launch_slope_norm_mrad": {
+        "min": 0.02515930048432402,
+        "p01": 0.13505591535322348,
+        "p05": 0.314618775240139,
+        "p50": 1.163972418297648,
+        "p90": 2.0922609387364965,
+        "p95": 2.355709741657317,
+        "p99": 2.7427879020885433,
+        "max": 2.9552816090066827
+      },
+      "launch_kinetic_ev": {
+        "min": 0.015120423579303433,
+        "p01": 0.03643319391641402,
+        "p05": 0.0836511446909907,
+        "p50": 0.30201734110670847,
+        "p90": 0.46540896222593403,
+        "p95": 0.5092406074840712,
+        "p99": 0.5948829771468589,
+        "max": 0.6625713594698878
+      },
+      "launch_kinetic_mean_ev": 0.29999999999997967,
+      "launch_kinetic_std_ev": 0.12739827004487747,
+      "kinetic_pearson_x_y_tx_ty": [
+        -0.012634952651770488,
+        0.005227993213790077,
+        -0.022020100909599553,
+        0.016676214781097258
+      ],
+      "kinetic_pearson_radius_slope_norm": [
+        -0.0036273285644579253,
+        -0.006111159644846513
+      ],
+      "maximum_abs_gun_exit_minus_300keV_minus_reconstructed_launch_ev": 1.1218267370605162e-08,
+      "inspected_nodes": [
+        {
+          "source_id": 303,
+          "halton_sequence_index": 321,
+          "cdf_coordinates_2_3_5_7_11_13": [
+            0.509765625,
+            0.3223593964334705,
+            0.3792,
+            0.9358600583090378,
+            0.24117205108940648,
+            0.7578516158397816
+          ],
+          "launch_xy_nm": [
+            -1.1043697496663925,
+            2.2593491101224084
+          ],
+          "launch_radius_nm": 2.514814296402247,
+          "launch_slopes_mrad": [
+            0.8918483097183252,
+            -0.38022855046233106
+          ],
+          "launch_slope_norm_mrad": 0.969519034436209,
+          "launch_kinetic_ev": 0.2603916809761762,
+          "launch_radius_empirical_percentile": 51.23537061118335,
+          "launch_slope_norm_empirical_percentile": 38.23146944083225,
+          "launch_kinetic_empirical_percentile": 37.581274382314696,
+          "gun_exit_kinetic_ev": 300000.2603916845,
+          "gun_exit_radius_um": 0.20469349548048352,
+          "gun_exit_radius_empirical_percentile": 40.442132639791936,
+          "c2_reference_radius_um": 7.695134490553292,
+          "surface_centered_radius_nm": 0.4338069000443721,
+          "surface_radius_empirical_percentile": 76.72301690507152,
+          "archived_absolute_weight": 0.0013003901170351106
+        },
+        {
+          "source_id": 304,
+          "halton_sequence_index": 322,
+          "cdf_coordinates_2_3_5_7_11_13": [
+            0.259765625,
+            0.6556927297668038,
+            0.5792,
+            0.09912536443148687,
+            0.33208114199849736,
+            0.8347746927628585
+          ],
+          "launch_xy_nm": [
+            -0.913769811812792,
+            -1.3572413188074806
+          ],
+          "launch_radius_nm": 1.6361782502095104,
+          "launch_slopes_mrad": [
+            1.0592880356359162,
+            0.7607589118723544
+          ],
+          "launch_slope_norm_mrad": 1.3041645848720962,
+          "launch_kinetic_ev": 0.32593388868493195,
+          "launch_radius_empirical_percentile": 26.137841352405722,
+          "launch_slope_norm_empirical_percentile": 58.12743823146944,
+          "launch_kinetic_empirical_percentile": 56.827048114434334,
+          "gun_exit_kinetic_ev": 300000.3259338963,
+          "gun_exit_radius_um": 0.30644927598263283,
+          "gun_exit_radius_empirical_percentile": 64.36931079323797,
+          "c2_reference_radius_um": 11.512365458164394,
+          "surface_centered_radius_nm": 0.19992280852427063,
+          "surface_radius_empirical_percentile": 23.5370611183355,
+          "archived_absolute_weight": 0.0013003901170351106
+        },
+        {
+          "source_id": 305,
+          "halton_sequence_index": 323,
+          "cdf_coordinates_2_3_5_7_11_13": [
+            0.759765625,
+            0.9890260631001371,
+            0.7792000000000001,
+            0.24198250728862972,
+            0.4229902329075883,
+            0.9116977696859355
+          ],
+          "launch_xy_nm": [
+            3.533888605006812,
+            -0.24405302750780655
+          ],
+          "launch_radius_nm": 3.5423058242947794,
+          "launch_slopes_mrad": [
+            0.08639926570260852,
+            1.7136574952036983
+          ],
+          "launch_slope_norm_mrad": 1.7158341539850996,
+          "launch_kinetic_ev": 0.3999900202541389,
+          "launch_radius_empirical_percentile": 76.20286085825748,
+          "launch_slope_norm_empirical_percentile": 78.15344603381014,
+          "launch_kinetic_empirical_percentile": 77.11313394018205,
+          "gun_exit_kinetic_ev": 300000.3999900193,
+          "gun_exit_radius_um": 0.4440799048992133,
+          "gun_exit_radius_empirical_percentile": 86.21586475942783,
+          "c2_reference_radius_um": 16.669838356427306,
+          "surface_centered_radius_nm": 0.6530912514467359,
+          "surface_radius_empirical_percentile": 87.25617685305592,
+          "archived_absolute_weight": 0.0013003901170351106
+        },
+        {
+          "source_id": 306,
+          "halton_sequence_index": 324,
+          "cdf_coordinates_2_3_5_7_11_13": [
+            0.134765625,
+            0.0054869684499314125,
+            0.9792000000000001,
+            0.38483965014577254,
+            0.5138993238166792,
+            0.9886208466090124
+          ],
+          "launch_xy_nm": [
+            1.1349499561902388,
+            0.03914363513403571
+          ],
+          "launch_radius_nm": 1.135624773958252,
+          "launch_slopes_mrad": [
+            -1.9692384812650945,
+            1.7396465018211895
+          ],
+          "launch_slope_norm_mrad": 2.6275977902628016,
+          "launch_kinetic_ev": 0.5531247687512802,
+          "launch_radius_empirical_percentile": 13.654096228868662,
+          "launch_slope_norm_empirical_percentile": 98.17945383615084,
+          "launch_kinetic_empirical_percentile": 97.78933680104032,
+          "gun_exit_kinetic_ev": 300000.5531247685,
+          "gun_exit_radius_um": 0.8016190268378126,
+          "gun_exit_radius_empirical_percentile": 100.0,
+          "c2_reference_radius_um": 30.100268325093374,
+          "surface_centered_radius_nm": 28.689369384728906,
+          "surface_radius_empirical_percentile": 100.0,
+          "archived_absolute_weight": 0.0013003901170351106
+        },
+        {
+          "source_id": 307,
+          "halton_sequence_index": 325,
+          "cdf_coordinates_2_3_5_7_11_13": [
+            0.634765625,
+            0.3388203017832647,
+            0.027200000000000002,
+            0.5276967930029155,
+            0.6048084147257701,
+            0.07146108329540282
+          ],
+          "launch_xy_nm": [
+            -1.5806518624137915,
+            2.5319991395781862
+          ],
+          "launch_radius_nm": 2.9848751988947315,
+          "launch_slopes_mrad": [
+            -0.22999462872332105,
+            -0.04043359963564378
+          ],
+          "launch_slope_norm_mrad": 0.23352174464292147,
+          "launch_kinetic_ev": 0.24562192517145834,
+          "launch_radius_empirical_percentile": 63.71911573472041,
+          "launch_slope_norm_empirical_percentile": 2.990897269180754,
+          "launch_kinetic_empirical_percentile": 33.55006501950585,
+          "gun_exit_kinetic_ev": 300000.24562192976,
+          "gun_exit_radius_um": 0.04593845583030141,
+          "gun_exit_radius_empirical_percentile": 2.600780234070221,
+          "c2_reference_radius_um": 1.718110537486662,
+          "surface_centered_radius_nm": 0.11806234675163095,
+          "surface_radius_empirical_percentile": 7.022106631989597,
+          "archived_absolute_weight": 0.0013003901170351106
+        },
+        {
+          "source_id": 308,
+          "halton_sequence_index": 326,
+          "cdf_coordinates_2_3_5_7_11_13": [
+            0.384765625,
+            0.672153635116598,
+            0.2272,
+            0.6705539358600583,
+            0.695717505634861,
+            0.14838416021847975
+          ],
+          "launch_xy_nm": [
+            -0.9762889273229418,
+            -1.8342250738345558
+          ],
+          "launch_radius_nm": 2.07786469508887,
+          "launch_slopes_mrad": [
+            -0.34150819137908994,
+            -0.6263551652258946
+          ],
+          "launch_slope_norm_mrad": 0.7134063623098513,
+          "launch_kinetic_ev": 0.2957295801895032,
+          "launch_radius_empirical_percentile": 38.751625487646294,
+          "launch_slope_norm_empirical_percentile": 23.016905071521457,
+          "launch_kinetic_empirical_percentile": 47.98439531859558,
+          "gun_exit_kinetic_ev": 300000.29572958197,
+          "gun_exit_radius_um": 0.15582806646019629,
+          "gun_exit_radius_empirical_percentile": 26.918075422626785,
+          "c2_reference_radius_um": 5.834526936516033,
+          "surface_centered_radius_nm": 0.19172425400959134,
+          "surface_radius_empirical_percentile": 21.196358907672302,
+          "archived_absolute_weight": 0.0013003901170351106
+        },
+        {
+          "source_id": 309,
+          "halton_sequence_index": 327,
+          "cdf_coordinates_2_3_5_7_11_13": [
+            0.884765625,
+            0.11659807956104251,
+            0.4272,
+            0.8134110787172011,
+            0.786626596543952,
+            0.22530723714155668
+          ],
+          "launch_xy_nm": [
+            3.2187683316907276,
+            2.8956813127145593
+          ],
+          "launch_radius_nm": 4.329600424738919,
+          "launch_slopes_mrad": [
+            0.4065199496848347,
+            -0.9657518947781681
+          ],
+          "launch_slope_norm_mrad": 1.0478240270958585,
+          "launch_kinetic_ev": 0.33639613700051424,
+          "launch_radius_empirical_percentile": 88.68660598179454,
+          "launch_slope_norm_empirical_percentile": 43.04291287386216,
+          "launch_kinetic_empirical_percentile": 59.81794538361509,
+          "gun_exit_kinetic_ev": 300000.33639613946,
+          "gun_exit_radius_um": 0.25041354262841864,
+          "gun_exit_radius_empirical_percentile": 51.88556566970091,
+          "c2_reference_radius_um": 9.409065760276363,
+          "surface_centered_radius_nm": 0.36409307798459956,
+          "surface_radius_empirical_percentile": 67.62028608582574,
+          "archived_absolute_weight": 0.0013003901170351106
+        }
+      ],
+      "archived_surface_metrics": {
+        "alpha95_mrad": 29.769611320671856,
+        "d90_nm": null,
+        "d95_nm": 2.5674131528292152,
+        "rms_radius_nm": 1.324426227424456,
+        "local_waist_nm": -12.515662041689865,
+        "current_a": 1e-05
+      }
+    },
+    "3073": {
+      "archive_directory": "outputs\\joint-probe-100um-30mrad-20261028\\joint22-trial47-n3073-h02\\candidates\\trial-000001",
+      "input_digest": "96f541bd57fd00c671571478712d04678b45fd7c058e0613ea35900320e8f4ff",
+      "implementation": "f83cdadcf327ec51561a4cc942aa8a93e5e456fce51d0c025f2ec3beef675737",
+      "raw_files_sha256": {
+        "inputs.json": "f2b2cf8640ce5856e49175b3108fd30791b344233b3749d51683a8114b330fa5",
+        "candidate.json": "d179bd5595386d16e0b3607a67f3a166b8abccf14435b7ebeaadcef7601de06b",
+        "particles.npz": "54eefdfc010128e461136a9676004e538b7da67fd7e03a2d04ce9211d4de31a5"
+      },
+      "selected_arrays_sha256": {
+        "emission_position_m": "028c9ff1e8e9d529695bae4861dd29f306c30467963ea8f87d6162d170b84c26",
+        "emission_direction": "fc775ebfb8c9ae75de49b78b92a6b4ff5f484cba12dbbdd090a1d0115be806d3",
+        "emission_ray_id": "0bf962759c781cc6746c2e41ee456323ea83c61098097ed7a9d1ee000b6c9eb8",
+        "emission_normal": "d7f3132dd48197910ef0748361e0424de2433bd0f7164d532fbf8d5904ec8d07",
+        "source_ray_id": "0bf962759c781cc6746c2e41ee456323ea83c61098097ed7a9d1ee000b6c9eb8",
+        "weights": "87b751da8fb9cc5bd99bfd5110a44db6e760838e189a19295cd56ac3ba6962a9",
+        "gun_exit_kinetic_energy_ev": "227041aac863515330bea0d45ef92476f9048e1028f8ba9622fd3eb741f52d95",
+        "gun_exit_energy_offset_ev": "02eac6a816987026c6b6212bdb1f09afede8d48908cf49ab55cbedeb67bb7160"
+      },
+      "source_reconstruction_checks": {
+        "position_m": true,
+        "direction": true,
+        "ray_id": true,
+        "normal": true,
+        "source_ids_equal_emission_ids": true,
+        "weights_exact_one_over_count": true,
+        "all_source_ids_unique": true
+      },
+      "emitter_parameters": {
+        "mechanical_center_from_tip_mm": -0.5,
+        "mechanical_length_mm": 1.0,
+        "mechanical_outer_diameter_mm": 0.1751605932866515,
+        "name": "Cold Field Emission Tip",
+        "key": "feg_tip",
+        "tip_radius_nm": 100.0,
+        "tip_cone_half_angle_deg": 5.0,
+        "emitter_material": "W(310)",
+        "work_function_ev": 4.4,
+        "vacuum_pa": 1e-08,
+        "emission_current_na": 10000.0,
+        "emission_energy_ev": 0.3,
+        "minimum_kinetic_energy_ev": 0.01,
+        "virtual_source_fwhm_nm": 5.0,
+        "angular_rms_mrad": 1.0,
+        "angular_cutoff_mrad": 3.0,
+        "energy_spread_fwhm_ev": 0.3,
+        "young_decay_width_ev": 0.2,
+        "boersch_sigma_ev": 0.1,
+        "energy_half_range_ev": 1.0,
+        "ray_count": 3073
+      },
+      "source_policy": "Legacy flat-tip six-dimensional Halton; no selected surface/Sobol/product/explicit-CDF/curvature model",
+      "launch_energy_evidence": "Reconstructed by emitter.emit from saved emitter parameters; initial kinetic energy is not a saved emission_reference array",
+      "launch_radius_nm": {
+        "min": 0.04666032210734894,
+        "p01": 0.2984630779495626,
+        "p05": 0.6758509676643033,
+        "p50": 2.4782607404988197,
+        "p90": 4.457712734991665,
+        "p95": 5.022032844671477,
+        "p99": 5.886809333197648,
+        "max": 6.3397283686705155
+      },
+      "launch_slope_norm_mrad": {
+        "min": 0.02515930048432402,
+        "p01": 0.14204120739100065,
+        "p05": 0.3188265587745354,
+        "p50": 1.1677212992139996,
+        "p90": 2.100133792005412,
+        "p95": 2.3630589749549906,
+        "p99": 2.7665153167468763,
+        "max": 2.9814737173610317
+      },
+      "launch_kinetic_ev": {
+        "min": 0.011138247940920332,
+        "p01": 0.036369776741148455,
+        "p05": 0.08594201430247717,
+        "p50": 0.3031589728030117,
+        "p90": 0.46230773297514055,
+        "p95": 0.505759078151647,
+        "p99": 0.6005068725140209,
+        "max": 0.7948374132900559
+      },
+      "launch_kinetic_mean_ev": 0.2999999999999868,
+      "launch_kinetic_std_ev": 0.12739827004487775,
+      "kinetic_pearson_x_y_tx_ty": [
+        -0.002457698819608038,
+        0.0009457704826470994,
+        -0.0014230497145166566,
+        -0.0002987348781751522
+      ],
+      "kinetic_pearson_radius_slope_norm": [
+        -0.00024293266583907134,
+        -0.0012821933131142243
+      ],
+      "maximum_abs_gun_exit_minus_300keV_minus_reconstructed_launch_ev": 1.0665194949410761e-08,
+      "inspected_nodes": [
+        {
+          "source_id": 306,
+          "halton_sequence_index": 324,
+          "cdf_coordinates_2_3_5_7_11_13": [
+            0.134765625,
+            0.0054869684499314125,
+            0.9792000000000001,
+            0.38483965014577254,
+            0.5138993238166792,
+            0.9886208466090124
+          ],
+          "launch_xy_nm": [
+            1.1349499561902388,
+            0.03914363513403571
+          ],
+          "launch_radius_nm": 1.135624773958252,
+          "launch_slopes_mrad": [
+            -1.9692384812650945,
+            1.7396465018211895
+          ],
+          "launch_slope_norm_mrad": 2.6275977902628016,
+          "launch_kinetic_ev": 0.5468170837933458,
+          "launch_radius_empirical_percentile": 13.504718516108039,
+          "launch_slope_norm_empirical_percentile": 97.98242759518386,
+          "launch_kinetic_empirical_percentile": 97.49430523917995,
+          "gun_exit_kinetic_ev": 300000.5468170876,
+          "gun_exit_radius_um": 0.7968662890646431,
+          "gun_exit_radius_empirical_percentile": 99.8372925479987,
+          "c2_reference_radius_um": 30.12439025438162,
+          "surface_centered_radius_nm": 26.087797017166487,
+          "surface_radius_empirical_percentile": 99.93491701919947,
+          "archived_absolute_weight": 0.0003254149040026033
+        }
+      ],
+      "archived_surface_metrics": {
+        "alpha95_mrad": 29.791869671575586,
+        "d90_nm": 2.480357700173942,
+        "d95_nm": 3.5333979697573534,
+        "rms_radius_nm": 1.6645417035326189,
+        "local_waist_nm": -5.1320059973469405,
+        "current_a": 1e-05
+      }
+    }
+  },
+  "source_count_refinement": [
+    {
+      "counts": [
+        193,
+        769
+      ],
+      "prefix_xy_slopes_identical": true,
+      "prefix_energies_identical": false,
+      "maximum_existing_node_energy_change_ev": 0.0036185060243269507,
+      "mean_existing_node_energy_change_ev": -0.001378066378717792
+    },
+    {
+      "counts": [
+        769,
+        3073
+      ],
+      "prefix_xy_slopes_identical": true,
+      "prefix_energies_identical": false,
+      "maximum_existing_node_energy_change_ev": 0.007065497544636923,
+      "mean_existing_node_energy_change_ev": -0.0023586791442130367
+    }
+  ],
+  "conclusions": [
+    "Projected positions and slopes use radial-cutoff Gaussian disks; the six-dimensional joint source is not an all-Gaussian or uniform distribution.",
+    "Energy combines an exponential term and logistic-like quantiles, then sample-dependent centering, RMS scaling and a bounded sigmoid map.",
+    "Changing N preserves old position/direction nodes but changes their kinetic energies through sample-dependent normalization.",
+    "No source ID permutation or weight alteration was found; saved emission arrays exactly match reconstruction.",
+    "Seed769 ID306 is at ordinary initial position radius but high initial slope norm and energy; its gun-exit radius is already the largest in that archive.",
+    "These observations do not establish whether the later tail is a correct physical field response, a numerical error, or both."
+  ],
+  "limitations": [
+    "The 3073 archive has trial47 optical controls, while 193/769 are original seeds. Downstream radii across these archives are not a fixed-optics convergence comparison.",
+    "Source-law parameters are identical apart from N; pure emitter reconstruction isolates source sampling from downstream controls.",
+    "Initial kinetic energy was reconstructed, not read from a separately saved launch-energy array. Agreement with archived gun-exit energy is supporting evidence.",
+    "Small pairwise sample correlations do not certify full joint-distribution independence or quadrature convergence.",
+    "No field-step, independent-source-rule, experimental-source or aberration attribution validation was performed."
+  ]
+}

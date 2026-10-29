@@ -1,0 +1,69 @@
+{
+  "schema": "temsim-probe-tail-attribution-plan-v1",
+  "status": "ATTRIBUTION_RECORDED_WITH_NUMERICAL_LIMITATIONS",
+  "scope": "Classical vacuum-probe controlled experiments; no specimen scattering or hardware qualification",
+  "current_target": {
+    "c2_aperture_diameter_um": 100,
+    "alpha95_mrad": 30,
+    "waist_metric": "Native original-current D95(z)",
+    "waist_reference": "Specimen upper surface",
+    "placement_tolerance_nm": 1,
+    "maximum_d95_nm": null,
+    "auxiliary_metrics": [
+      "D90",
+      "radial RMS",
+      "absolute current",
+      "physical pupil edge"
+    ]
+  },
+  "attribution_contract": {
+    "joint_fitting": "Held until attribution checks are interpreted",
+    "controls": "Fixed for causal comparisons; actual alpha95 reported without retuning",
+    "source_spatial_identity": "Retain complete positions, directions, IDs and original absolute weights",
+    "energy_controls": "Explicit physical counterfactuals, not numerical source-convergence tests",
+    "interception": "Retain all actual physical losses and original arrays",
+    "width_decomposition": "Do not subtract D95 values in quadrature to infer variance components"
+  },
+  "baseline": "../joint-probe-100um-30mrad-20261028/seed769-native-d95-waist-h005",
+  "sequence": [
+    "Full-source monochromatic emission at unchanged mean launch energy",
+    "Distinguish energy effects acquired in the gun from energy dependence downstream",
+    "Independent gun integration and fixed-geometry field-grid checks",
+    "Explicit round-lens field expansion sensitivity where supported",
+    "Resume joint physical tuning only after interpreting the tail evidence"
+  ],
+  "completed_observations": [
+    {
+      "name": "full_source_monochromatic",
+      "evidence": "mono769-h005/report.json"
+    },
+    {
+      "name": "downstream_energy_control",
+      "evidence": "energy-comparison-poly-constant-mono/comparison.json"
+    },
+    {
+      "name": "gun_step_and_electrode_grid",
+      "evidence": "gun-precision-full-column-comparison.json"
+    },
+    {
+      "name": "round_radial_orders_3_5_7",
+      "evidence": "round-radial-7-h005/successive-comparison.json"
+    },
+    {
+      "name": "initial_transverse_momentum",
+      "evidence": "launch-momentum-offline-v2/report.json"
+    },
+    {
+      "name": "native_local_linear_response",
+      "evidence": "native-local-linear17-h005/report.json"
+    }
+  ],
+  "qualification": "NOT_QUALIFIED",
+  "joint_fitting": "NOT_RESUMED",
+  "remaining_numerical_limits": {
+    "electrode_grid_waist": "20 to 24 cells shifts observed waist by 0.3 nm, above the existing 0.25 nm comparison budget",
+    "source_count_convergence": "NOT_EVALUATED",
+    "physical_or_OEM_validation": "NOT_ESTABLISHED"
+  },
+  "report": "../../docs/development/PROBE_TAIL_ATTRIBUTION_2026-10-28.md"
+}

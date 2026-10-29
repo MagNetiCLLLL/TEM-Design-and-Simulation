@@ -142,17 +142,24 @@ def evaluate(checkpoints, masks, weights, *, lower_z_mm, surface_z_mm,
             report['forbidden_waists']=forbidden
             return reject('executed_pre_specimen_waist_outside_focus_window',
                 'An executed two-dimensional waist precedes the allowed final focus window', definite=True)
-        unresolved=[]
+        # A narrow radial root does not bound the full two-dimensional waist.
+        # An overlapping finite region needs refinement unless both executed
+        # sides fit the terminal window; it is not a definite extra waist.
+        unresolved = ([row for row in measured
+            if not terminal_start <= row['bracket_mm'][0] <= row['bracket_mm'][1] <= end]
+            if waist_detector == FINITE else [])
         for row in roots:
             left,right=map(float,row['bracket_mm'])
             if left >= terminal_start and right <= end:
                 report['terminal_candidates'].append(row)
             else:
                 unresolved.append(row)
-                root=float(row['z_mm'])
-                delta=min(.01,(right-left)/8,(root-start)/4,(end-root)/4)
-                if delta>0:
-                    report['refinement_planes_mm'].extend([root-delta,root,root+delta])
+        for row in unresolved:
+            left,right=map(float,row['bracket_mm'])
+            root=float(row['z_mm'])
+            delta=min(.01,(right-left)/8,(root-start)/4,(end-root)/4)
+            if delta>0:
+                report['refinement_planes_mm'].extend([root-delta,root,root+delta])
         report['unresolved_candidates']=unresolved
         report['refinement_planes_mm']=sorted(set(report['refinement_planes_mm']))
         if len(changes) or unresolved:

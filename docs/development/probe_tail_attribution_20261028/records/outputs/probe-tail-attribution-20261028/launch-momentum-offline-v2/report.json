@@ -1,0 +1,664 @@
+{
+  "analysis_script_sha256": "d9714eff53fde6106c7f779cf5ca8aca84a15abe7b216c9e25a30c22efabac59",
+  "arrays_sha256": "12279428ec55fbef2f3eb0ef7b5f272156425bed87e6ca8088584e84a3740797",
+  "cases": {
+    "mono": {
+      "emitter_parameters": {
+        "angular_cutoff_mrad": 3.0,
+        "angular_rms_mrad": 1.0,
+        "boersch_sigma_ev": 0.1,
+        "emission_current_na": 10000.0,
+        "emission_energy_ev": 0.3,
+        "emitter_material": "W(310)",
+        "energy_half_range_ev": 1.0,
+        "energy_spread_fwhm_ev": 0.0,
+        "key": "feg_tip",
+        "mechanical_center_from_tip_mm": -0.5,
+        "mechanical_length_mm": 1.0,
+        "mechanical_outer_diameter_mm": 0.1751605932866515,
+        "minimum_kinetic_energy_ev": 0.01,
+        "name": "Cold Field Emission Tip",
+        "ray_count": 769,
+        "tip_cone_half_angle_deg": 5.0,
+        "tip_radius_nm": 100.0,
+        "vacuum_pa": 1e-08,
+        "virtual_source_fwhm_nm": 5.0,
+        "work_function_ev": 4.4,
+        "young_decay_width_ev": 0.2
+      },
+      "files_sha256": {
+        "inputs.json": "2482eeff723f92f4378b2c7faa6716138ba32c3852865dcba6c9d0b1c7de9585",
+        "particles.npz": "00f95909200dc2beeddf5f38d40ab44ad99695366df426e25428342ee24ae310",
+        "report.json": "74faa8f790e0e7f6df7679a50fb2ce14b0c1721db95f29d793bf54f45b751711"
+      },
+      "input_digest": "32b8d0bae3af70ef6c8f617250e7e44cf45845f610e4655bdd3961ac12e237c1",
+      "maximum_abs_exit_minus_nominal_minus_launch_ev": 9.12696124233392e-09,
+      "path": "F:\\tem_simulator_v2\\outputs\\probe-tail-attribution-20261028\\mono769-h005"
+    },
+    "poly": {
+      "emitter_parameters": {
+        "angular_cutoff_mrad": 3.0,
+        "angular_rms_mrad": 1.0,
+        "boersch_sigma_ev": 0.1,
+        "emission_current_na": 10000.0,
+        "emission_energy_ev": 0.3,
+        "emitter_material": "W(310)",
+        "energy_half_range_ev": 1.0,
+        "energy_spread_fwhm_ev": 0.3,
+        "key": "feg_tip",
+        "mechanical_center_from_tip_mm": -0.5,
+        "mechanical_length_mm": 1.0,
+        "mechanical_outer_diameter_mm": 0.1751605932866515,
+        "minimum_kinetic_energy_ev": 0.01,
+        "name": "Cold Field Emission Tip",
+        "ray_count": 769,
+        "tip_cone_half_angle_deg": 5.0,
+        "tip_radius_nm": 100.0,
+        "vacuum_pa": 1e-08,
+        "virtual_source_fwhm_nm": 5.0,
+        "work_function_ev": 4.4,
+        "young_decay_width_ev": 0.2
+      },
+      "files_sha256": {
+        "inputs.json": "36bf44ad881c3a103909a9beed2b79f0c7a2a1e0bf9a066b0b461be2c59ad025",
+        "particles.npz": "bfd56540b0816ef2437ff5104464351ebb40a513dccba99d6e876980afb5ce30",
+        "report.json": "bb2b5cc1302e47af0bd8a62dbc900dd9d7ee64a280f8be1339e07d129125d86f"
+      },
+      "input_digest": "1aa8d4af9dd4129cf3bb38caf787bf643327e95217c36d3f51158fc5f06e3940",
+      "maximum_abs_exit_minus_nominal_minus_launch_ev": 1.1218267370605162e-08,
+      "path": "F:\\tem_simulator_v2\\outputs\\joint-probe-100um-30mrad-20261028\\seed769-native-d95-waist-h005"
+    }
+  },
+  "code_files_sha256": {
+    "docs/COHERENT_BEAM.md": "32f408a07ff1598385d998756ae0a1919c6a97a1c97732a65115c450812c78f0",
+    "src/temsim/optics/electron_gun/emitter.py": "17c28421844516a2bea5eb934891bf9ec804bd9e1dcc068610a782103aaf5d38",
+    "src/temsim/optics/electron_gun/tracing.py": "af776603570f4e3e63f4cd198ea25a387165503157a3e83762dc7caa7baaf775",
+    "src/temsim/parameter_registry.py": "1fac49b5f099d9f77aa1615cee161819ee5669932c746114403d7ee20b2b700f",
+    "src/temsim/physics/chromatic.py": "0fc8984ab45e7fe051c207d2304f9e7ecb462cacc8ac26d4eaf2fc5b82620c4f",
+    "src/temsim/physics/core.py": "eb6356a159c7b2bda44b1988281d818d731870f9a5c844235783af2e0be33007",
+    "src/temsim/physics/first_order.py": "8c66b05e04511ee39c440deb0e8480c91b293bf817cd550d16651b2a6d5cac60",
+    "src/temsim/physics/relativistic_lorentz.py": "15b86def3f01328400f4df135fa81a11a9de9c618ec6c00f2dceff10d879b509",
+    "src/temsim/physics/unified_field_particle.py": "e45163e5fc36727ca47f8a3fa1052c3834f5c7b7017cc010aa3042a44bca2923"
+  },
+  "execution_scope": "Source emission reconstruction and saved-array linear algebra only; no fields or propagation",
+  "fits": {
+    "angle": {
+      "feature_mean": [
+        0.006512591131475402,
+        0.0003218535929977915,
+        0.0031896049709635175,
+        0.0020899071879407257
+      ],
+      "feature_scale": [
+        2.0675154362009076,
+        2.063237215799238,
+        0.7641022338639831,
+        0.7631139769775931
+      ],
+      "features": [
+        "x0_nm",
+        "y0_nm",
+        "launch_tx_mrad",
+        "launch_ty_mrad"
+      ],
+      "heldout": {
+        "gun_exit_tx_rad": {
+          "error_unit": "urad",
+          "maximum_abs_error": 0.20043637839905662,
+          "r_squared": 0.971659942490779,
+          "rms_error": 0.03107259647928998
+        },
+        "gun_exit_ty_rad": {
+          "error_unit": "urad",
+          "maximum_abs_error": 0.1701158801358019,
+          "r_squared": 0.9730754750522033,
+          "rms_error": 0.029907210868849895
+        },
+        "gun_exit_x_m": {
+          "error_unit": "nm",
+          "maximum_abs_error": 373.8462068312271,
+          "r_squared": 0.9727233826038589,
+          "rms_error": 57.26314580434242
+        },
+        "gun_exit_y_m": {
+          "error_unit": "nm",
+          "maximum_abs_error": 318.45848619716986,
+          "r_squared": 0.9742005182013251,
+          "rms_error": 55.119749034237074
+        }
+      },
+      "parameter_count_per_target": 5,
+      "per_case_heldout": {
+        "mono": {
+          "gun_exit_tx_rad": {
+            "error_unit": "urad",
+            "maximum_abs_error": 0.004756731496605409,
+            "r_squared": 0.9998580300169709,
+            "rms_error": 0.002193751902464043
+          },
+          "gun_exit_ty_rad": {
+            "error_unit": "urad",
+            "maximum_abs_error": 0.004898713849587533,
+            "r_squared": 0.9998086008442942,
+            "rms_error": 0.002518345533611886
+          },
+          "gun_exit_x_m": {
+            "error_unit": "nm",
+            "maximum_abs_error": 9.726801054895686,
+            "r_squared": 0.9998241214503878,
+            "rms_error": 4.599246217426534
+          },
+          "gun_exit_y_m": {
+            "error_unit": "nm",
+            "maximum_abs_error": 10.101630007377976,
+            "r_squared": 0.9997661563200299,
+            "rms_error": 5.253603769420473
+          }
+        },
+        "poly": {
+          "gun_exit_tx_rad": {
+            "error_unit": "urad",
+            "maximum_abs_error": 0.20043637839905662,
+            "r_squared": 0.9437419318410192,
+            "rms_error": 0.04388849458024282
+          },
+          "gun_exit_ty_rad": {
+            "error_unit": "urad",
+            "maximum_abs_error": 0.1701158801358019,
+            "r_squared": 0.9464784794387625,
+            "rms_error": 0.04222014281928761
+          },
+          "gun_exit_x_m": {
+            "error_unit": "nm",
+            "maximum_abs_error": 373.8462068312271,
+            "r_squared": 0.9455972252449075,
+            "rms_error": 80.85160894534039
+          },
+          "gun_exit_y_m": {
+            "error_unit": "nm",
+            "maximum_abs_error": 318.45848619716986,
+            "r_squared": 0.9485181237727378,
+            "rms_error": 77.77385881276875
+          }
+        }
+      },
+      "rank": 5,
+      "standardized_coefficient_by_target": [
+        [
+          -2.970752872445583e-11,
+          7.035964404667033e-10,
+          -5.287742192966666e-11,
+          3.747472593708024e-10
+        ],
+        [
+          -2.116473246195644e-09,
+          -3.451413872881625e-10,
+          -9.232471562107886e-09,
+          -1.9694410796236324e-10
+        ],
+        [
+          -1.196372175016558e-09,
+          -2.024332248035431e-09,
+          -6.487219705423414e-10,
+          -9.170487180823052e-09
+        ],
+        [
+          1.6885824687814956e-07,
+          3.5781494724147033e-10,
+          8.940074730004926e-08,
+          1.9345306576660532e-10
+        ],
+        [
+          3.6437766929239817e-10,
+          1.6818656914446207e-07,
+          1.969216112504409e-10,
+          8.904665557547172e-08
+        ]
+      ],
+      "training": {
+        "gun_exit_tx_rad": {
+          "error_unit": "urad",
+          "maximum_abs_error": 0.11227199725631536,
+          "r_squared": 0.9729730546644316,
+          "rms_error": 0.014956978139968196
+        },
+        "gun_exit_ty_rad": {
+          "error_unit": "urad",
+          "maximum_abs_error": 0.10546579550883951,
+          "r_squared": 0.9694477554294968,
+          "rms_error": 0.015895459654198696
+        },
+        "gun_exit_x_m": {
+          "error_unit": "nm",
+          "maximum_abs_error": 209.82892951072125,
+          "r_squared": 0.9740591363731471,
+          "rms_error": 27.555304572322786
+        },
+        "gun_exit_y_m": {
+          "error_unit": "nm",
+          "maximum_abs_error": 197.4588159090137,
+          "r_squared": 0.9705372926916384,
+          "rms_error": 29.30797085410055
+        }
+      },
+      "training_only_standardization": true,
+      "weighted_training_design_condition": 1.0297465060708015
+    },
+    "momentum": {
+      "feature_mean": [
+        0.006512591131475402,
+        0.0003218535929977915,
+        -6.634994479954346e-05,
+        0.002760587205467725
+      ],
+      "feature_scale": [
+        2.0675154362009076,
+        2.063237215799238,
+        0.672124496138696,
+        0.6706027473552875
+      ],
+      "features": [
+        "x0_nm",
+        "y0_nm",
+        "kinetic_px_over_fixed_p_ref_times_1e6",
+        "kinetic_py_over_fixed_p_ref_times_1e6"
+      ],
+      "heldout": {
+        "gun_exit_tx_rad": {
+          "error_unit": "urad",
+          "maximum_abs_error": 0.004639885224883462,
+          "r_squared": 0.9999686685436167,
+          "rms_error": 0.0010331597366598534
+        },
+        "gun_exit_ty_rad": {
+          "error_unit": "urad",
+          "maximum_abs_error": 0.004293892417532375,
+          "r_squared": 0.9999702493477819,
+          "rms_error": 0.0009941459181661168
+        },
+        "gun_exit_x_m": {
+          "error_unit": "nm",
+          "maximum_abs_error": 1.4539791055149316,
+          "r_squared": 0.9999991038077674,
+          "rms_error": 0.32823170937099455
+        },
+        "gun_exit_y_m": {
+          "error_unit": "nm",
+          "maximum_abs_error": 1.310320971175948,
+          "r_squared": 0.999999160158599,
+          "rms_error": 0.3144853217055672
+        }
+      },
+      "parameter_count_per_target": 5,
+      "per_case_heldout": {
+        "mono": {
+          "gun_exit_tx_rad": {
+            "error_unit": "urad",
+            "maximum_abs_error": 0.0009096838944535982,
+            "r_squared": 0.9999927962823363,
+            "rms_error": 0.0004941599982448523
+          },
+          "gun_exit_ty_rad": {
+            "error_unit": "urad",
+            "maximum_abs_error": 0.0009756758124249617,
+            "r_squared": 0.9999922566236867,
+            "rms_error": 0.0005065362045610734
+          },
+          "gun_exit_x_m": {
+            "error_unit": "nm",
+            "maximum_abs_error": 0.3535454651474762,
+            "r_squared": 0.9999996944469476,
+            "rms_error": 0.19170062788358214
+          },
+          "gun_exit_y_m": {
+            "error_unit": "nm",
+            "maximum_abs_error": 0.37506876805062905,
+            "r_squared": 0.999999678572785,
+            "rms_error": 0.19477616881127466
+          }
+        },
+        "poly": {
+          "gun_exit_tx_rad": {
+            "error_unit": "urad",
+            "maximum_abs_error": 0.004639885224883462,
+            "r_squared": 0.9999447804068953,
+            "rms_error": 0.0013750069014535028
+          },
+          "gun_exit_ty_rad": {
+            "error_unit": "urad",
+            "maximum_abs_error": 0.004293892417532375,
+            "r_squared": 0.9999483540823548,
+            "rms_error": 0.0013115156448481905
+          },
+          "gun_exit_x_m": {
+            "error_unit": "nm",
+            "maximum_abs_error": 1.4539791055149316,
+            "r_squared": 0.9999985126125491,
+            "rms_error": 0.42275640662472574
+          },
+          "gun_exit_y_m": {
+            "error_unit": "nm",
+            "maximum_abs_error": 1.310320971175948,
+            "r_squared": 0.9999986393748155,
+            "rms_error": 0.39983031300754324
+          }
+        }
+      },
+      "rank": 5,
+      "standardized_coefficient_by_target": [
+        [
+          -2.970752872445583e-11,
+          7.035964404667032e-10,
+          -5.2877421929666656e-11,
+          3.7474725937080235e-10
+        ],
+        [
+          -2.744582273888095e-09,
+          -4.467339792512317e-12,
+          -9.566153136521531e-09,
+          -1.4893288281058832e-11
+        ],
+        [
+          -5.087893218540289e-12,
+          -2.7398726776237516e-09,
+          -1.72062181896739e-11,
+          -9.549482919992434e-09
+        ],
+        [
+          1.7111494181392077e-07,
+          1.0190736852349599e-12,
+          9.065419544508376e-08,
+          3.2983468301514367e-12
+        ],
+        [
+          1.0214557101871704e-12,
+          1.7072996662781553e-07,
+          3.304159689769585e-12,
+          9.045755211693997e-08
+        ]
+      ],
+      "training": {
+        "gun_exit_tx_rad": {
+          "error_unit": "urad",
+          "maximum_abs_error": 0.004703709275484645,
+          "r_squared": 0.9999692265140961,
+          "rms_error": 0.0005047004877429374
+        },
+        "gun_exit_ty_rad": {
+          "error_unit": "urad",
+          "maximum_abs_error": 0.0038203963088227575,
+          "r_squared": 0.9999671230587133,
+          "rms_error": 0.0005214314634114378
+        },
+        "gun_exit_x_m": {
+          "error_unit": "nm",
+          "maximum_abs_error": 1.4206217356977173,
+          "r_squared": 0.9999991260260651,
+          "rms_error": 0.15994189626819302
+        },
+        "gun_exit_y_m": {
+          "error_unit": "nm",
+          "maximum_abs_error": 1.1986644423514243,
+          "r_squared": 0.9999990644936194,
+          "rms_error": 0.16514780364980822
+        }
+      },
+      "training_only_standardization": true,
+      "weighted_training_design_condition": 1.0346616060940343
+    }
+  },
+  "formulas": {
+    "momentum": "p(K) = sqrt((K e)*(K e + 2 m_e c^2))/c; p_vector = p(K)*direction/norm(direction)",
+    "nature": "Kinetic/mechanical momentum only. Vector potential at launch is not evaluated; no canonical-momentum claim.",
+    "reference_kinetic_energy_ev": 300000.3,
+    "reference_momentum_kg_m_s": 3.3656268773301235e-22,
+    "source_angular_semantics": "angular_rms_mrad is each-axis Gaussian local slope scale before radial cutoff at the physical emitting tip; not accelerated-exit divergence",
+    "source_width_semantics": "virtual_source_fwhm_nm is the prescribed projected emission footprint at the physical tip, not a measured virtual-source diameter"
+  },
+  "id306_and_naive_scaling": {
+    "exact_relativistic_momentum_ratio": 1.3578474457110365,
+    "held_out": true,
+    "heldout_predictions": {
+      "angle": {
+        "mono": {
+          "actual_phase_xy_m_tx_ty_rad": [
+            -4.4206755875338527e-07,
+            3.891427268316523e-07,
+            -2.3815970483332003e-07,
+            2.0556766698167964e-07
+          ],
+          "maximum_abs_position_error_nm": 6.640315985150659,
+          "maximum_abs_slope_error_urad": 0.0032193937931571984,
+          "position_error_nm": [
+            5.8047834078359335,
+            -6.640315985150659
+          ],
+          "position_error_norm_nm": 8.819824646473121,
+          "predicted_phase_xy_m_tx_ty_rad": [
+            -4.3626277534554934e-07,
+            3.8250241084650164e-07,
+            -2.3543184892999807e-07,
+            2.0234827318852245e-07
+          ],
+          "slope_error_norm_urad": 0.004219679398332009,
+          "slope_error_urad": [
+            0.002727855903321966,
+            -0.0032193937931571984
+          ]
+        },
+        "poly": {
+          "actual_phase_xy_m_tx_ty_rad": [
+            -6.014551833712113e-07,
+            5.29947852702796e-07,
+            -3.2674818050322624e-07,
+            2.8382837934664116e-07
+          ],
+          "maximum_abs_position_error_nm": 165.19240802566193,
+          "maximum_abs_slope_error_urad": 0.09131633157322817,
+          "position_error_nm": [
+            165.19240802566193,
+            -147.44544185629434
+          ],
+          "position_error_norm_nm": 221.42423081838774,
+          "predicted_phase_xy_m_tx_ty_rad": [
+            -4.3626277534554934e-07,
+            3.8250241084650164e-07,
+            -2.3543184892999807e-07,
+            2.0234827318852245e-07
+          ],
+          "slope_error_norm_urad": 0.12238333265412427,
+          "slope_error_urad": [
+            0.09131633157322817,
+            -0.08148010615811871
+          ]
+        }
+      },
+      "momentum": {
+        "mono": {
+          "actual_phase_xy_m_tx_ty_rad": [
+            -4.4206755875338527e-07,
+            3.891427268316523e-07,
+            -2.3815970483332003e-07,
+            2.0556766698167964e-07
+          ],
+          "maximum_abs_position_error_nm": 0.24390123192828525,
+          "maximum_abs_slope_error_urad": 0.0006291059961926258,
+          "position_error_nm": [
+            -0.24390123192828525,
+            0.21703630643283595
+          ],
+          "position_error_norm_nm": 0.3264851746192207,
+          "predicted_phase_xy_m_tx_ty_rad": [
+            -4.4231145998531356e-07,
+            3.8935976313808514e-07,
+            -2.3878881082951266e-07,
+            2.0612943660330774e-07
+          ],
+          "slope_error_norm_urad": 0.0008434212839558226,
+          "slope_error_urad": [
+            -0.0006291059961926258,
+            0.0005617696216280943
+          ]
+        },
+        "poly": {
+          "actual_phase_xy_m_tx_ty_rad": [
+            -6.014551833712113e-07,
+            5.29947852702796e-07,
+            -3.2674818050322624e-07,
+            2.8382837934664116e-07
+          ],
+          "maximum_abs_position_error_nm": 1.4043660244683016,
+          "maximum_abs_slope_error_urad": 0.0043936185887498876,
+          "position_error_nm": [
+            1.4043660244683016,
+            -1.2376489658036633
+          ],
+          "position_error_norm_nm": 1.8719024796275525,
+          "predicted_phase_xy_m_tx_ty_rad": [
+            -6.00050817346743e-07,
+            5.287102037369923e-07,
+            -3.2235456191447636e-07,
+            2.799586878959121e-07
+          ],
+          "slope_error_norm_urad": 0.00585477550613633,
+          "slope_error_urad": [
+            0.0043936185887498876,
+            -0.0038696914507290333
+          ]
+        }
+      }
+    },
+    "launch_kinetic_mono_ev": 0.3,
+    "launch_kinetic_poly_ev": 0.5531247687512802,
+    "observed_gun_exit_radius_ratio": 1.3611109994538888,
+    "observed_gun_exit_slope_norm_ratio": 1.3757067949143604,
+    "position_naive_p_scaled_mono_relative_vector_error": {
+      "max": 0.15017325355386074,
+      "mean": 0.004921043474173292,
+      "min": 0.00010675056089161991,
+      "p50": 0.0022297804956493985,
+      "p95": 0.017409762655907244,
+      "p99": 0.04630369854673225,
+      "std": 0.010359442068654266
+    },
+    "slope_naive_p_scaled_mono_relative_vector_error": {
+      "max": 0.5429707124229556,
+      "mean": 0.030304307095328144,
+      "min": 0.000432726390007683,
+      "p50": 0.013561333431489188,
+      "p95": 0.12162904763994568,
+      "p99": 0.29653539737143836,
+      "std": 0.053884607621996074
+    },
+    "source_id": 306,
+    "sqrt_energy_ratio": 1.3578472775577282
+  },
+  "limitations": [
+    "A better held-out linear fit is not a proof of a focal chromatic aberration coefficient or of numerical convergence.",
+    "Actual gun fields include focusing; the ideal longitudinal-acceleration reference is not substituted into transport.",
+    "Energy changes both launch momentum and the subsequent trajectory. These effects cannot be additively apportioned by this regression.",
+    "At low energy with independent direction and fixed mean K, E[p_perp^2] is approximately proportional to E[K]; energy spread alone need not enlarge the RMS emittance. It does reshape conditional momentum and tails.",
+    "The source law is prescribed rather than a self-consistent microscopic field-emission, space-charge or experimentally calibrated source model."
+  ],
+  "qualification": "EXPLANATORY_OFFLINE_FIT_NOT_PHYSICAL_ATTRIBUTION",
+  "schema": "temsim-launch-momentum-offline-v1",
+  "source_moments": {
+    "mono": {
+      "area_scope": "Mechanical momentum covariance at emission, not a canonical emittance invariant or a measured source brightness",
+      "axes": {
+        "x": {
+          "kinetic_normalized_rms_area_m": 2.1770496588647974e-15,
+          "normalized_momentum_kurtosis": 2.7856433604128368,
+          "rms_momentum_kg_m_s": 2.8806598002921375e-28
+        },
+        "y": {
+          "kinetic_normalized_rms_area_m": 2.164761919403306e-15,
+          "normalized_momentum_kurtosis": 2.76791810905384,
+          "rms_momentum_kg_m_s": 2.8657260312484307e-28
+        }
+      },
+      "ideal_pure_longitudinal_acceleration_slope_norm_mrad": {
+        "max": 0.00259840229439266,
+        "mean": 0.0010775480251531816,
+        "min": 2.2121164142545527e-05,
+        "p50": 0.0010234150788249897,
+        "p95": 0.0020712379234557837,
+        "p99": 0.0024115707515711643,
+        "std": 0.0005444877543466098
+      },
+      "ideal_scope": "Kinematic reference only: assume no transverse force, p_x/y conserved, 300 keV longitudinal energy gain; this is not the actual gun field model",
+      "launch_energy_std_over_mean": 1.8503717077085946e-16,
+      "launch_kinetic_ev": {
+        "max": 0.3,
+        "mean": 0.29999999999999993,
+        "min": 0.3,
+        "p50": 0.3,
+        "p95": 0.3,
+        "p99": 0.3,
+        "std": 5.5511151231257815e-17
+      },
+      "launch_transverse_momentum_norm_kg_m_s": {
+        "max": 8.745252600094673e-28,
+        "mean": 3.626624595065714e-28,
+        "min": 7.445158459598258e-30,
+        "p50": 3.4444332959565082e-28,
+        "p95": 6.971014024513265e-28,
+        "p99": 8.116447338047512e-28,
+        "std": 1.8325426204015167e-28
+      }
+    },
+    "poly": {
+      "area_scope": "Mechanical momentum covariance at emission, not a canonical emittance invariant or a measured source brightness",
+      "axes": {
+        "x": {
+          "kinetic_normalized_rms_area_m": 2.175878313296892e-15,
+          "normalized_momentum_kurtosis": 3.1708207582230004,
+          "rms_momentum_kg_m_s": 2.879257510227371e-28
+        },
+        "y": {
+          "kinetic_normalized_rms_area_m": 2.1598178558195283e-15,
+          "normalized_momentum_kurtosis": 3.1518645969127554,
+          "rms_momentum_kg_m_s": 2.85917738711758e-28
+        }
+      },
+      "ideal_pure_longitudinal_acceleration_slope_norm_mrad": {
+        "max": 0.0031370219679105935,
+        "mean": 0.0010474277958766422,
+        "min": 2.271535881416755e-05,
+        "p50": 0.0009689745971767872,
+        "p95": 0.002158766994504842,
+        "p99": 0.00260739284039407,
+        "std": 0.0005970368619960343
+      },
+      "ideal_scope": "Kinematic reference only: assume no transverse force, p_x/y conserved, 300 keV longitudinal energy gain; this is not the actual gun field model",
+      "launch_energy_std_over_mean": 0.4246609001496203,
+      "launch_kinetic_ev": {
+        "max": 0.6625713594698878,
+        "mean": 0.29999999999997967,
+        "min": 0.015120423579303433,
+        "p50": 0.30201734110670847,
+        "p95": 0.5092406074840712,
+        "p99": 0.5948829771468589,
+        "std": 0.12739827004487744
+      },
+      "launch_transverse_momentum_norm_kg_m_s": {
+        "max": 1.055805091487088e-27,
+        "mean": 3.5252513550913017e-28,
+        "min": 7.645142470656597e-30,
+        "p50": 3.2612074908163353e-28,
+        "p95": 7.265607001541721e-28,
+        "p99": 8.775516093080869e-28,
+        "std": 2.009403821976435e-28
+      }
+    }
+  },
+  "split": {
+    "fixed_before_fitting": true,
+    "heldout_id306": true,
+    "heldout_rows": 308,
+    "rule": "source_id % 5 == 1 is held out; both poly/mono partners stay together",
+    "training_rows": 1230,
+    "unique_heldout_ids": 154,
+    "unique_train_ids": 615
+  }
+}

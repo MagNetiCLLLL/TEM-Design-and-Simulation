@@ -1,0 +1,73 @@
+{
+  "status": "COMPLETE",
+  "elapsed_s": 186.65991719999874,
+  "prior_and_donor_unchanged": true,
+  "new_column_orders": [
+    7
+  ],
+  "source306_surface_radius_nm": 28.734593521174897,
+  "results": [
+    {
+      "order": 3,
+      "surface_d95_nm": 2.5628741978639082,
+      "surface_d90_nm": 1.4961544016477122,
+      "alpha95_mrad": 29.769615693917522,
+      "rms_radius_nm": 1.324697037951025,
+      "current_a": 1e-05,
+      "surviving_rays": 769,
+      "minimum_d95_nm": 2.17137093975567,
+      "waist_offset_nm": 15.50000001770968,
+      "waist_bracket_offset_nm": [
+        15.39999993838137,
+        15.600000097037992
+      ]
+    },
+    {
+      "order": 5,
+      "surface_d95_nm": 2.5587461795901048,
+      "surface_d90_nm": 1.4940616437954066,
+      "alpha95_mrad": 29.769609374106807,
+      "rms_radius_nm": 1.3265296730277973,
+      "current_a": 1e-05,
+      "surviving_rays": 769,
+      "minimum_d95_nm": 2.1699518740434205,
+      "waist_offset_nm": 15.39999993838137,
+      "waist_bracket_offset_nm": [
+        15.300000086426735,
+        15.50000001770968
+      ]
+    },
+    {
+      "order": 7,
+      "surface_d95_nm": 2.5587444780337223,
+      "surface_d90_nm": 1.4940610230904057,
+      "alpha95_mrad": 29.769609372483703,
+      "rms_radius_nm": 1.3265313793356872,
+      "current_a": 1e-05,
+      "surviving_rays": 769,
+      "minimum_d95_nm": 2.169949039866634,
+      "waist_offset_nm": 15.39999993838137,
+      "waist_bracket_offset_nm": [
+        15.300000086426735,
+        15.50000001770968
+      ]
+    }
+  ],
+  "change5to7": {
+    "maximum_relative_d95_change": 2.6064734188757654e-06,
+    "observed_minimum_offset_delta_nm": 0.0,
+    "scope": "Same original source and integration mesh; field truncation sensitivity, not OEM validation",
+    "surface_d95_delta_nm": -1.7015563824607227e-06
+  },
+  "raw5to7": {
+    "maximum_raw_xy_shift_nm": 0.0004028208723261466,
+    "maximum_shift_source_id": 306,
+    "maximum_shift_z_mm": 1580.0,
+    "maximum_surface_raw_xy_shift_nm": 3.9807225349239154e-05,
+    "same_absolute_weights": true,
+    "same_actual_population": true,
+    "same_ids": true,
+    "scope": "Raw laboratory coordinates on actual common survivors; no centering/rescaling/reweighting"
+  },
+  "interpretation": "Successive native engineering radial expansion comparison at fixed full source and mesh; no OEM validation or unique aberration attribution"
+}

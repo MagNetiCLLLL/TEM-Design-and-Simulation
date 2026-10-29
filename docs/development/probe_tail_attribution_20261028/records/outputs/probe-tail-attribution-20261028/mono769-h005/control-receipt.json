@@ -1,0 +1,45 @@
+{
+  "type": "physical source-energy control",
+  "baseline": "F:\\tem_simulator_v2\\outputs\\joint-probe-100um-30mrad-20261028\\seed769-native-d95-waist-h005",
+  "explicit_input_delta": [
+    {
+      "path": "/digest",
+      "before": "1aa8d4af9dd4129cf3bb38caf787bf643327e95217c36d3f51158fc5f06e3940",
+      "after": "32b8d0bae3af70ef6c8f617250e7e44cf45845f610e4655bdd3961ac12e237c1"
+    },
+    {
+      "path": "/graph/nodes/523/attributes/energy_spread_fwhm_ev",
+      "before": 0.3,
+      "after": 0.0
+    }
+  ],
+  "source_spatial_identity_equal": true,
+  "original_source_hashes": {
+    "x_m": "3131d5186b32aadd2dd6e20ef2e48362c5deb3bac6a9aa48b16b69e31508d6cf",
+    "y_m": "8de246b9c5ff36ec37ec8c6de2a5ba79d2d40a884c46bc67891b1971ef19d7e3",
+    "tx_rad": "4bc16688d2f88e5c20900898ffebce4c36171efb6ab002042be373940eb9aff1",
+    "ty_rad": "a0730fcfbe0b55a451019f5a2d8ddaf4f01a518d2eccb95c78e0f7d6a33808dc",
+    "weight": "71f52282a0034adfc0866f1b4771e926d1e9a6d825a00320f9e54220a5436ed7",
+    "ray_id": "67845b60966e6d16a64b629647c121026abb69a1c1db0b4d6049e2f46d88a69c"
+  },
+  "mean_launch_kinetic_energy_ev": 0.3,
+  "no_retuning": true,
+  "no_size_acceptance_cap": true,
+  "interpretation": "Whole gun+column energy effect; does not isolate downstream magnetic chromaticity",
+  "executed_source_arrays_equal": {
+    "source_id": true,
+    "weights": true,
+    "emission_ray_id": true,
+    "emission_position_m": true,
+    "emission_direction": true,
+    "emission_normal": true
+  },
+  "gun_exit_energy_ev": {
+    "minimum": 300000.29999999714,
+    "maximum": 300000.3000000091,
+    "mean": 300000.30000000325,
+    "std": 2.074827709460231e-09
+  },
+  "observer_archive_matches": true,
+  "id306_surface_radius_nm": 3.5674955900961933
+}

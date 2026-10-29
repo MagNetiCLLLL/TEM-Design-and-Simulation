@@ -1,6 +1,9 @@
 # Preserve the original scientific reference CIF bytes.
 configs/reference_samples/*.cif -text
 
+# Keep the scientific evidence byte-identical, including original CRLF endings.
+docs/development/probe_tail_attribution_20261028/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
 # Preserve upstream license bytes and their inventory SHA-256 checksums.
 /LICENSE -text
 /licenses/*.txt -text

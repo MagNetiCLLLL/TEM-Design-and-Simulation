@@ -18,6 +18,11 @@ from hashlib import sha256
 
 import numpy as np
 
+try:
+    from numba import njit
+except ImportError:
+    njit = None
+
 from temsim.immutable_json import canonical_json_bytes, freeze_json, thaw_json
 from .axis_field_interpolation import _evaluate
 from .axis_regular_potential import AxisRegularPotential
@@ -313,7 +318,12 @@ class ElectricPotentialSnapshot:
             return {"phi_v": np.full(p.shape[:-1], m["continuation"]["value_v"]),
                     "E_v_per_m": np.zeros_like(p)}
         if m["basis"] == _BILINEAR:
-            phi, electric = _bilinear(q, r, z, a["voltage"])
+            # Domain checks above already evaluated the same NumPy hypot.
+            # Continuation changes only Z, so this radius remains exact.
+            if _bilinear_native is None:
+                phi, electric = _bilinear(q, r, z, a["voltage"])
+            else:
+                phi, electric = _bilinear_native(q, radius, r, z, a["voltage"])
         else:
             # The existing stateless scalar evaluator retains cut triangles and
             # regular-axis cells without reconstructing a mutable provider.
@@ -350,7 +360,7 @@ class ElectricPotentialSnapshot:
 
 
 def _bilinear(p, r, z, voltage):
-    """Native planar arithmetic, retaining scalar/batch boundary conventions."""
+    """NumPy reference/fallback with the original planar arithmetic."""
     radius = np.hypot(p[:, 0], p[:, 1])
     i = np.clip(np.searchsorted(r, radius, side="right")-1, 0, len(r)-2)
     j = np.clip(np.searchsorted(z, p[:, 2], side="right")-1, 0, len(z)-2)
@@ -364,6 +374,34 @@ def _bilinear(p, r, z, voltage):
     electric[:, :2] = -2*p[:, :2]*derivative_s[:, None]
     electric[:, 2] = -(top-bottom)/dz
     return phi, electric
+
+
+def _bilinear_native_impl(p, radius, r, z, voltage):
+    """Fuse per-point work without changing cells or float64 operation order.
+
+    The caller retains admission and continuation. In particular, radius is
+    the existing NumPy hypot result, not a replacement scalar hypot. There
+    are no cross-particle reductions, fitted coefficients or field cutoffs.
+    """
+    phi = np.empty(len(p), dtype=np.float64)
+    electric = np.empty_like(p)
+    for index in range(len(p)):
+        i = min(max(np.searchsorted(r, radius[index], side="right")-1, 0), len(r)-2)
+        j = min(max(np.searchsorted(z, p[index, 2], side="right")-1, 0), len(z)-2)
+        ds, dz = r[i+1]**2-r[i]**2, z[j+1]-z[j]
+        u, v = (radius[index]**2-r[i]**2)/ds, (p[index, 2]-z[j])/dz
+        a, b, c, d = voltage[i, j], voltage[i+1, j], voltage[i, j+1], voltage[i+1, j+1]
+        bottom, top = a+u*(b-a), c+u*(d-c)
+        phi[index] = bottom+v*(top-bottom)
+        derivative_s = ((1-v)*(b-a)+v*(d-c))/ds
+        electric[index, 0] = -2*p[index, 0]*derivative_s
+        electric[index, 1] = -2*p[index, 1]*derivative_s
+        electric[index, 2] = -(top-bottom)/dz
+    return phi, electric
+
+
+_bilinear_native = (njit(cache=True, fastmath=False, error_model="numpy")(_bilinear_native_impl)
+                    if njit is not None else None)
 
 
 __all__ = ("ElectricPotentialSnapshot",)

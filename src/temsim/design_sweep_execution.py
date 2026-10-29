@@ -605,14 +605,31 @@ def execute_parameter_sweep(
     calculator: Callable[..., CalculationResult] = calculate,
     maximum_points: int = MAX_EXECUTABLE_SWEEP_POINTS,
     resume: SweepExecutionResult | None = None,
+    point_completed_callback: Callable[[SweepExecutionResult], None] | None = None,
+    point_observer: Callable[[object, CalculationResult], Mapping] | None = None,
+    point_observer_identity: str | None = None,
 ) -> SweepExecutionResult:
     """Execute a bounded sweep through the production calculation pipeline.
 
     Cancellation is cooperative and is checked before every point and on every
     inner solver progress callback.  A cancelled in-flight point is discarded;
     only complete point observations are returned.
+
+    Optional observers add read-only evidence to each successful point. Their
+    declared version/configuration identity participates in resume validation.
+    A completion callback receives scalar checkpoints after successful or
+    failed points, before later points begin. Callback failures propagate, so
+    a failed checkpoint write never silently continues an unsaved experiment.
     """
 
+    if point_completed_callback is not None and not callable(point_completed_callback):
+        raise TypeError("Point completion callback must be callable")
+    if point_observer is None:
+        if point_observer_identity is not None:
+            raise ValueError("An observer identity requires a point observer")
+    elif (not callable(point_observer) or not isinstance(point_observer_identity, str)
+          or not point_observer_identity.strip()):
+        raise ValueError("A point observer requires a nonempty version/configuration identity")
     if sweep.recipe_digest != recipe.digest:
         raise ValueError("Sweep was not planned from this design recipe")
     total = len(sweep.points)
@@ -664,6 +681,8 @@ def execute_parameter_sweep(
         sweep_kind=sweep.kind, assumptions=sweep.assumptions,
         axes=sweep.axes, points=[dict(index=p.index, coordinates=p.coordinates, state_digest=p.state_digest) for p in sweep.points],
         tolerance_rules=tuple(tolerance_rules), geometry_archive=base_archive["digest"] if base_archive else None)
+    if point_observer is not None:
+        execution_inputs["point_observer_identity"] = point_observer_identity
     execution_identity = json_digest(execution_inputs)
     retained = {}
     if resume is not None:
@@ -681,9 +700,41 @@ def execute_parameter_sweep(
     observations: list[MetricObservation] = []
     assessments: list[PointToleranceAssessment] = []
     cancelled = False
+    derived_metric_keys = {
+        f"sensitivity_abs/{definition.key}/{axis.path}"
+        for definition in SWEEP_METRICS for axis in sweep.axes
+    }
+
+    def measured_observation(row: SweepPointExecution) -> MetricObservation:
+        # Completed records retain local derivatives for exports and tolerance
+        # assessment. Re-fitting them on resume would introduce extra derived
+        # outputs that were absent from the original measured response surface.
+        return MetricObservation(row.point_index, {
+            key: value for key, value in row.metrics.items()
+            if key not in derived_metric_keys
+        })
 
     def cancellation_requested() -> bool:
         return bool(cancel_requested is not None and cancel_requested())
+
+    def publish_point_checkpoint() -> None:
+        if point_completed_callback is None:
+            return
+        assert_external_inputs_unchanged(baseline_manifest)
+        # Previously verified points beyond the current loop boundary remain
+        # durable even if this resumed run stops while replaying its prefix.
+        complete = dict(retained)
+        complete.update((row.point_index, row) for row in point_results)
+        rows = tuple(complete[index] for index in sorted(complete))
+        point_completed_callback(SweepExecutionResult(
+            recipe_digest=recipe.digest, point_results=rows, sensitivities=(),
+            tolerances=tuple(PointToleranceAssessment(row.point_index,
+                evaluate_tolerances(row.metrics, tolerance_rules)) for row in rows),
+            metric_definitions=SWEEP_METRICS, cancelled=False,
+            sweep_axes=tuple(sweep.axes),
+            analysis_notes=("Completed-point checkpoint; the sweep may still be incomplete. Sensitivity analysis is deferred.",),
+            execution_inputs=execution_inputs, execution_identity=execution_identity,
+        ))
 
     for point in sweep.points:
         if cancellation_requested():
@@ -694,13 +745,14 @@ def execute_parameter_sweep(
             row = retained[point.index]
             point_results.append(row)
             if row.status == "COMPLETE":
-                observations.append(MetricObservation(row.point_index, row.metrics))
+                observations.append(measured_observation(row))
             assessments.append(PointToleranceAssessment(row.point_index, evaluate_tolerances(row.metrics, tolerance_rules)))
             if progress_callback is not None:
                 progress_callback(SweepProgress(point.index, len(point_results), total, 1, 1, "Verified retained point"))
             continue
         started = perf_counter()
-        state, signatures, manifest = None, {}, None
+        duration = None
+        state, signatures, manifest, geometry = None, {}, None, ""
         evidence = {}
         try:
             if sweep.kind == "geometry":
@@ -798,6 +850,37 @@ def execute_parameter_sweep(
                 if existing is not None:
                     kwargs["existing_result"] = existing
                 result = calculator(state, **kwargs)
+            if point_observer is not None and cancellation_requested():
+                raise SweepExecutionCancelled()
+            if not isinstance(result, CalculationResult):
+                raise TypeError("Sweep calculator did not return CalculationResult")
+            metrics = extract_sweep_metrics(result)
+            geometry = resolved_assembly_geometry_fingerprint(state)
+            request_signature = str((result.signatures or {}).get("request", ""))
+            calculated_products = tuple(sorted(result.calculated_products))
+            reused_products = tuple(sorted(result.reused_products))
+            duration = perf_counter() - started
+            if point_observer is not None:
+                from temsim.instrument_snapshot import encode_instrument
+                observation_started = perf_counter()
+                before_observation = json_digest(encode_instrument(state))
+                observed = point_observer(state, result)
+                if json_digest(encode_instrument(state)) != before_observation:
+                    raise ValueError("Point observer changed the captured instrument inputs")
+                if not isinstance(observed, Mapping):
+                    raise TypeError("Point observer must return a mapping of evidence")
+                evidence = dict(evidence, point_observer=freeze_json(observed),
+                                observer_duration_s=perf_counter() - observation_started)
+                if cancellation_requested():
+                    raise SweepExecutionCancelled()
+            row = SweepPointExecution(
+                point_index=point.index, coordinates=point.coordinates,
+                state_digest=point.state_digest, geometry_fingerprint=geometry,
+                request_signature=request_signature, metrics=metrics,
+                calculated_products=calculated_products, reused_products=reused_products,
+                duration_s=duration, complete_cache_hit=bool(result.cache_hit), evidence=evidence,
+            )
+            cache.put(result)
         except SweepExecutionCancelled:
             cancelled = True
             break
@@ -807,18 +890,16 @@ def execute_parameter_sweep(
                 break
             assert_external_inputs_unchanged(baseline_manifest)
             row = SweepPointExecution(point.index, point.coordinates, point.state_digest,
-                resolved_assembly_geometry_fingerprint(state) if state is not None else "", str(signatures.get("request", "")), {}, (), (),
-                perf_counter() - started, status="FAILED", failure_reason=f"{type(exc).__name__}: {exc}",
+                geometry, str(signatures.get("request", "")), {}, (), (),
+                perf_counter() - started if duration is None else duration,
+                status="FAILED", failure_reason=f"{type(exc).__name__}: {exc}",
                 evidence=dict(evidence, failure_evidence=getattr(exc, "evidence", {})))
             point_results.append(row)
             assessments.append(PointToleranceAssessment(point.index, evaluate_tolerances({}, tolerance_rules)))
+            publish_point_checkpoint()
             if progress_callback is not None:
                 progress_callback(SweepProgress(point.index, len(point_results), total, 1, 1, "Point failed; reason retained"))
             continue
-        if not isinstance(result, CalculationResult):
-            raise TypeError("Sweep calculator did not return CalculationResult")
-        duration = perf_counter() - started
-        cache.put(result)
         if manifest is not None:
             expected_incident = str(
                 manifest.calculation_signatures.get("incident", "")
@@ -831,29 +912,13 @@ def execute_parameter_sweep(
                 except Exception:
                     pass
 
-        metrics = extract_sweep_metrics(result)
         observations.append(MetricObservation(point.index, metrics))
         assessments.append(PointToleranceAssessment(
             point.index,
             evaluate_tolerances(metrics, tolerance_rules),
         ))
-        point_results.append(SweepPointExecution(
-            point_index=point.index,
-            coordinates=point.coordinates,
-            state_digest=point.state_digest,
-            geometry_fingerprint=(
-                resolved_assembly_geometry_fingerprint(state)
-            ),
-            request_signature=str(
-                (result.signatures or {}).get("request", "")
-            ),
-            metrics=metrics,
-            calculated_products=tuple(sorted(result.calculated_products)),
-            reused_products=tuple(sorted(result.reused_products)),
-            duration_s=duration,
-            complete_cache_hit=bool(result.cache_hit),
-            evidence=evidence,
-        ))
+        point_results.append(row)
+        publish_point_checkpoint()
         if progress_callback is not None:
             progress_callback(SweepProgress(
                 point.index,
@@ -870,7 +935,7 @@ def execute_parameter_sweep(
         known = {row.point_index for row in point_results}
         point_results.extend(row for index, row in retained.items() if index not in known)
         point_results.sort(key=lambda row: row.point_index)
-        observations = [MetricObservation(row.point_index, row.metrics) for row in point_results if row.status == "COMPLETE"]
+        observations = [measured_observation(row) for row in point_results if row.status == "COMPLETE"]
     definitions = SWEEP_METRICS
     if not cancelled:
         from temsim.experiment_records import with_local_sensitivities

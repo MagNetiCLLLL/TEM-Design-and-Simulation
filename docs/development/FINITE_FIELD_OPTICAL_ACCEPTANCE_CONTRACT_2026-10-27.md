@@ -1,8 +1,19 @@
 # Optical acceptance before joint excitation and geometry tuning
 
+> Later clarification, 2026-10-28: for the current probe target, both width
+> and waist position use **native D95**. Require D95(z)'s observed minimum
+> at the specimen upper surface (declared numerical placement budget) and
+> report its actual size. The latest instruction removes the former
+> D95(surface) < 0.7 nm hard limit. RMS and covariance-waist estimates are auxiliary
+> diagnostics, not focus or convergence gates for this target. Earlier
+> mixed-metric reports remain historical evidence. See the
+> [unified D95 waist definition](../OPTICAL_CONTROL_ROLES.md#unified-d95-probe-waist-definition).
+
 > Target update, 2026-10-28: the user explicitly selected specimen-surface
-> **alpha95 = 30 mrad** and **spatial D95 < 0.7 nm**, with no hard transmitted-
-> current lower bound, for the new preset search. This supersedes the physical
+> **alpha95 = 30 mrad**, **100 um C2 aperture diameter**, and the **D95 waist
+> at the sample**, with no hard D95 size cap or transmitted-current lower
+> bound. Energy, gun precision and field-model attribution precede resuming
+> joint tuning. This supersedes the physical
 > pupil-edge 30 mrad fitting objective below for new work. The physical edge
 > remains a separate diagnostic. The topology, original-weight current
 > accounting, field/source provenance, numerical convergence, and scan checks

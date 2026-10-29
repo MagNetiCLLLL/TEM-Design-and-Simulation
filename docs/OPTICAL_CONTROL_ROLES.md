@@ -126,9 +126,11 @@ the selected field ray in the CEOS diagram describe different conjugate-plane
 families. State the entrance/output reference planes, retained fringe fields
 and measured sample angle when assessing a front-focal-plane claim.
 
-For the new strength search requested on **2026-10-28**, the user explicitly
-selected **alpha95 = 30 mrad at the specimen upper surface** and **spatial
-D95 < 0.7 nm**. Both 95% statistics use the original positive-current weights
+For the strength search requested on **2026-10-28**, the current target is
+**alpha95 = 30 mrad at the specimen upper surface**, a **100 um C2 aperture
+diameter**, and the **native D95 waist at that surface**. The user's latest
+instruction removes the earlier D95 < 0.7 nm hard limit. Report and minimize
+D95 without imposing an undeclared size cap. Both 95% statistics use the original positive-current weights
 that physically reach that plane: alpha95 is the angular containment semi-angle
 about the current-weighted chief direction; D95 is the spatial containment
 diameter about the current-weighted beam centroid. Report RMS size separately;
@@ -155,6 +157,46 @@ filling and current quantiles separately. Its reference-source, nominal-energy
 boundary is not a complete mixed-energy finite-source or scan qualification.
 The older `qualify_finite_field_nanoprobe.py --target` remains an explicitly
 labelled alpha95 diagnostic and must not certify a 30 mrad aperture-edge target.
+
+## Unified D95 probe-waist definition
+
+The user's subsequent 2026-10-28 clarification requires a consistent size and
+focus definition. For the current 100 um C2 / 30 mrad alpha95 probe target,
+the specimen probe waist is the minimum of **native current-weighted D95(z)**,
+and that minimum must lie at the specimen upper surface within the declared
+numerical placement tolerance. The latest instruction removes the former
+0.7 nm size limit; no default absolute D95 acceptance cap applies. Report the
+actual D95, D90 and RMS separately. Any future optional size cap must be
+explicitly selected and recorded, never silently inherited from old reports.
+
+Before resuming joint tuning, perform the requested monochromatic-source
+control and distinguish source-energy effects, gun numerical precision and
+field-model sensitivity. Hold physical controls fixed during attribution and
+report the actual alpha95 in every control experiment. Do not silently retune
+an energy/control experiment to 30 mrad; retain 30 mrad as the subsequent
+working-point target. Changing the source energy law is a declared physical
+control experiment, not fixed-source numerical convergence.
+
+Do not substitute an RMS minimum, an RMS covariance-waist estimate, a smoothed
+quantile, or a fitted parabolic vertex for this D95-waist condition. Earlier
+mixed RMS-focus/D95-size searches are historical proposals, not qualification
+under the clarified definition. RMS focus and RMS convergence are no longer
+hard gates for this probe target; numerical convergence must instead check
+native D95, its observed minimum-plane bracket, alpha95 and actual current.
+
+Determine D95(z) from actual unified-field propagation at explicitly saved
+planes and each plane's complete actual positive-current population. Preserve
+all original source IDs, weights, energies and contact records. A minimum at
+a scan boundary, an unresolved plateau or competing minimum, or a nearby
+population change cannot certify a continuous optical waist. A scan extending
+past the sample reference plane is a vacuum-probe optical diagnostic; it does
+not validate specimen scattering. Upstream conjugacy/topology observations
+remain separate evidence and do not prove the specimen D95-waist location.
+
+The existing engineering placement budget is +/-1 nm. Report the actual
+executed bracket and its sampling resolution; refine the local observations
+before qualification. This is a numerical tolerance, not a claim to prove an
+exact real-number minimum at an exactly equal Z coordinate.
 
 ## Qualification boundary and this maintenance change
 

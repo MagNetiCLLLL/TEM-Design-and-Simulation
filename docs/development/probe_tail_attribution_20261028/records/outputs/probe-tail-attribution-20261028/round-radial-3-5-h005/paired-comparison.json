@@ -1,0 +1,67 @@
+{
+  "schema": "temsim-round-radial-paired-comparison-v1",
+  "status": "COMPLETE",
+  "qualification": "NATIVE_ENGINEERING_RADIAL_SENSITIVITY_ONLY",
+  "source_input_unchanged": true,
+  "baseline_exact": true,
+  "stage_results": [
+    {
+      "order": 3,
+      "elapsed_s": 236.3850773999984,
+      "surface_d95_nm": 2.5628741978639082,
+      "surface_d90_nm": 1.4961544016477122,
+      "surface_rms_radius_nm": 1.324697037951025,
+      "alpha95_mrad": 29.769615693917522,
+      "current_a": 1e-05,
+      "surviving_rays": 769,
+      "minimum_d95_nm": 2.17137093975567,
+      "waist_offset_nm": 15.50000001770968,
+      "waist_bracket_offset_nm": [
+        15.39999993838137,
+        15.600000097037992
+      ],
+      "change_from_order3": null
+    },
+    {
+      "order": 5,
+      "elapsed_s": 183.03008620000037,
+      "surface_d95_nm": 2.5587461795901048,
+      "surface_d90_nm": 1.4940616437954066,
+      "surface_rms_radius_nm": 1.3265296730277973,
+      "alpha95_mrad": 29.769609374106807,
+      "current_a": 1e-05,
+      "surviving_rays": 769,
+      "minimum_d95_nm": 2.1699518740434205,
+      "waist_offset_nm": 15.39999993838137,
+      "waist_bracket_offset_nm": [
+        15.300000086426735,
+        15.50000001770968
+      ],
+      "change_from_order3": {
+        "maximum_relative_d95_change": 0.004342551043618248,
+        "observed_minimum_offset_delta_nm": -0.10000007932831068,
+        "scope": "Same original source and integration mesh; field truncation sensitivity, not OEM validation",
+        "surface_d95_delta_nm": -0.004128018273803491
+      }
+    }
+  ],
+  "paired_raw": {
+    "common_checkpoint_count": 479,
+    "same_source_ids": true,
+    "same_raw_weights": true,
+    "same_active_mask": true,
+    "same_terminal_alive": true,
+    "same_stop_planes": true,
+    "same_stop_keys": true,
+    "maximum_raw_xy_shift_nm": 0.757486635738649,
+    "maximum_raw_xy_shift_source_id": 306,
+    "maximum_raw_xy_shift_z_mm": 1580.0,
+    "surface_maximum_raw_xy_shift_nm": 0.03995645447811278,
+    "source306_surface_raw_xy_shift_nm": 0.03995645447811278,
+    "scope": "Raw laboratory XY differences before centering, scaling or any reweighting",
+    "source306_surface_radius_nm": {
+      "3": 28.694650101047255,
+      "5": 28.734553777433874
+    }
+  }
+}

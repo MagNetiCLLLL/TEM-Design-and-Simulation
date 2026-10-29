@@ -311,7 +311,20 @@ def qualification_failures(topology, measurement, corrector, target_mrad, *,
         failures.append('Unattributed physical interception remains unresolved in the incident capture')
     if not topology["passed"]:
         failures.append("Condenser topology failed or is unresolved")
-    if topology.get("direct_focus", {}).get("status") != "PASS":
+    if corrector.get('waist_detector') == 'finite_region':
+        # An unresolved upstream condenser interval can omit its convenience
+        # direct-focus summary. Only the whole-capture finite proof is binding.
+        direct_focus = (crossover_chain or {}).get('direct_focus')
+        direct_focus = direct_focus if isinstance(direct_focus, dict) else {}
+        direct_focus_passed = (
+            direct_focus.get('schema') == 'direct-focus-finite-region-topology-v2'
+            and direct_focus.get('requirement') == 'direct_focus_without_extra_pre_specimen_waist'
+            and direct_focus.get('status') == 'PASS'
+            and direct_focus.get('passed') is True
+            and direct_focus.get('failures') == [])
+    else:
+        direct_focus_passed = topology.get("direct_focus", {}).get("status") == "PASS"
+    if not direct_focus_passed:
         failures.append("Direct Mini Condenser/objective focus topology failed or is unresolved")
     if not measurement.accepts(target_mrad):
         failures.append("Surface focus, convergence angle or effective sample support failed")
@@ -325,8 +338,25 @@ def qualification_failures(topology, measurement, corrector, target_mrad, *,
     return failures
 
 
+def validated_extra_capture_planes(state, values):
+    """Normalize explicit physical observation coordinates without moving them."""
+    try:
+        values = tuple(values)
+    except TypeError as error:
+        raise ValueError("Extra capture planes must be finite physical coordinates") from error
+    if any(isinstance(value, (bool, np.bool_))
+           or not isinstance(value, (int, float, np.integer, np.floating))
+           or not np.isfinite(value) for value in values):
+        raise ValueError("Extra capture planes must be finite physical coordinates")
+    lower, upper = float(state.electron_gun.exit_plane_z_mm), float(state.sample.upper_surface_z_mm)
+    if any(not lower <= value <= upper for value in values):
+        raise ValueError("Extra capture planes must lie between gun exit and specimen upper surface")
+    return tuple(sorted(set(map(float, values))))
+
+
 def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=.01,
-            require_equal_crossover_angles=False, maximum_diameter95_nm=.7, output=None):
+            require_equal_crossover_angles=False, maximum_diameter95_nm=.7,
+            extra_capture_planes_mm=(), output=None):
     from temsim.calculation_manifest import solver_source_identity
     from temsim.instrument_snapshot import capture_instrument_snapshot
     from temsim.optics.beam_path_audit import incident_checkpoints
@@ -342,6 +372,7 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
     if type(require_equal_crossover_angles) is not bool:
         raise ValueError("The optional equal-angle calibration requirement must be boolean")
     maximum_diameter95_nm = validated_diameter_limit_nm(maximum_diameter95_nm)
+    extra_capture_planes_mm = validated_extra_capture_planes(state, extra_capture_planes_mm)
     start = perf_counter()
     snapshot = capture_instrument_snapshot(state)
     topology_planes = condenser_topology.requested_capture_planes(state, maximum_spacing_mm=spacing_mm)
@@ -363,7 +394,8 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
     chain_planes=np.unique(np.r_[*[np.linspace(a,b,int(np.ceil((b-a)/chain_spacing))+1)
         for a,b in zip(chain_bounds[:-1],chain_bounds[1:])]])
     planes = np.unique(np.r_[state.electron_gun.exit_plane_z_mm, topology_planes,
-                             crossover_planes, component_planes, focus_planes, mechanical_ports, optical_ports,chain_planes])
+                             crossover_planes, component_planes, focus_planes, mechanical_ports, optical_ports,
+                             chain_planes, extra_capture_planes_mm])
     print(f"Executing {state.electron_gun.emitter.ray_count} emitted particles, step {state.step_mm:g} mm", flush=True)
     gun, cp, masks = incident_checkpoints(state, planes, step_mm=state.step_mm)
     emitted = gun.exit_bundle
@@ -395,7 +427,7 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
         extra = topology["refinement_planes_mm"]
         if topology["passed"] or not extra:
             break
-        topology_planes = tuple(sorted(set(topology_planes).union(extra)))
+        topology_planes = tuple(sorted(set(topology_planes).union(extra, extra_capture_planes_mm)))
         _, topo_cp, topo_masks = incident_checkpoints(state, topology_planes, step_mm=state.step_mm)
         topology = condenser_topology.evaluate(state, topo_cp, topo_masks, weights, maximum_spacing_mm=spacing_mm,
             source_ids=np.asarray(emitted.ray_id))
@@ -434,6 +466,7 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
         snapshot_digest=snapshot.digest, solver_identity=solver_source_identity(),
         rays=int(state.electron_gun.emitter.ray_count), step_mm=float(state.step_mm),
         target_mrad=target_mrad, maximum_checkpoint_spacing_mm=spacing_mm,
+        extra_capture_planes_mm=list(extra_capture_planes_mm),
         requirements=dict(executed_corrector_waists=True,
             equal_crossover_angles=require_equal_crossover_angles,
             angle_matching_role=corrector["angle_matching_role"],
@@ -481,6 +514,8 @@ def main():
     parser.add_argument("--target", type=float, default=30.,
         help="Legacy alpha95 target in mrad, NOT the physical pupil edge; use measure_optical_acceptance.py for edge acceptance")
     parser.add_argument("--spacing", type=float, default=1.)
+    parser.add_argument("--extra-capture-z-mm", type=float, action="append", default=[],
+        help="Additional exact physical checkpoint in mm; repeat for multiple coordinates")
     parser.add_argument("--max-d95-nm", type=float, default=.7,
         help="Strict specimen-current D95 upper bound in nm; default requires D95 < 0.7 nm")
     parser.add_argument("--corrector-angle-tolerance", type=float, default=.01,
@@ -501,7 +536,8 @@ def main():
     observe(configured_state(args.rays, args.step, args.candidate), spacing_mm=args.spacing,
             target_mrad=args.target, corrector_angle_tolerance=args.corrector_angle_tolerance,
             require_equal_crossover_angles=args.require_equal_crossover_angles,
-            maximum_diameter95_nm=maximum_diameter95_nm, output=args.output)
+            maximum_diameter95_nm=maximum_diameter95_nm,
+            extra_capture_planes_mm=args.extra_capture_z_mm, output=args.output)
 
 
 if __name__ == "__main__":

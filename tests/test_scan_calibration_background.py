@@ -223,6 +223,100 @@ def test_stem_request_waits_for_complete_calibration(view, qtbot, monkeypatch):
     np.testing.assert_array_equal(requests[0][0], np.eye(2)*.222)
 
 
+@pytest.mark.parametrize("disable_descan", [False, True])
+def test_disabling_scan_cancels_automatic_frame_and_reenabling_requests_once(view, qtbot, monkeypatch, disable_descan):
+    widget, errors, applied = view
+    state = widget._state
+    state.ac_deflector.scan_enabled = False
+    widget.set_state(state)
+    entered, release = Event(), Event()
+    requests = []
+    widget.calculation_requested.connect(lambda: requests.append(
+        (state.ac_deflector.scan_enabled, state.descan_deflector.scan_enabled)))
+
+    def measure(candidate, observations, **kwargs):
+        entered.set()
+        assert release.wait(10)
+        return _drift_response(candidate, observations, **kwargs)
+
+    monkeypatch.setattr(unified_scan_calibration, "measure_scan_responses", measure)
+    try:
+        widget.ac_controls["scan_enabled"].setChecked(True)
+        qtbot.waitUntil(entered.is_set, timeout=10000)
+        widget.ac_controls["scan_enabled"].setChecked(False)
+        if disable_descan:
+            widget.descan_controls["scan_enabled"].setChecked(False)
+        assert not requests
+    finally:
+        release.set()
+    qtbot.waitUntil(lambda: not widget.scan_calibration.busy, timeout=10000)
+    assert not requests and not errors
+    assert applied == ["automatic"]
+
+    widget.ac_controls["scan_enabled"].setChecked(True)
+    qtbot.waitUntil(lambda: not widget.scan_calibration.busy, timeout=10000)
+    assert requests == [(True, not disable_descan)] and not errors
+    assert applied == ["automatic", "automatic"]
+
+
+@pytest.mark.parametrize("request_timing", ["before_disable", "after_disable"])
+def test_explicit_calculate_survives_disabling_both_rasters(view, qtbot, monkeypatch, request_timing):
+    widget, errors, applied = view
+    state = widget._state
+    state.ac_deflector.scan_enabled = False
+    widget.set_state(state)
+    entered, release = Event(), Event()
+    requests = []
+    widget.calculation_requested.connect(lambda: requests.append(
+        (state.ac_deflector.scan_enabled, state.descan_deflector.scan_enabled)))
+
+    def solve(candidate, **kwargs):
+        entered.set()
+        assert release.wait(10)
+
+    monkeypatch.setattr(controller, "calibrate_scan_system", solve)
+    try:
+        widget.ac_controls["scan_enabled"].setChecked(True)
+        qtbot.waitUntil(entered.is_set, timeout=10000)
+        if request_timing == "before_disable":
+            widget.calculation_bar.requested.emit()
+        widget.ac_controls["scan_enabled"].setChecked(False)
+        widget.descan_controls["scan_enabled"].setChecked(False)
+        if request_timing == "after_disable":
+            widget.calculation_bar.requested.emit()
+        assert not requests
+    finally:
+        release.set()
+    qtbot.waitUntil(lambda: not widget.scan_calibration.busy, timeout=10000)
+    assert requests == [(False, False)] and not errors
+    assert applied == ["automatic"]
+
+
+@pytest.mark.parametrize("disabled", ["ac_host", "ac_raster", "image_readout"])
+def test_automatic_frame_rechecks_enabled_state_after_calibration_callbacks(view, qtbot, monkeypatch, disabled):
+    widget, errors, applied = view
+    state = widget._state
+    state.ac_deflector.scan_enabled = False
+    widget.set_state(state)
+    requests = []
+    widget.calculation_requested.connect(lambda: requests.append(True))
+    monkeypatch.setattr(controller, "calibrate_scan_system", lambda candidate, **kwargs: None)
+
+    def disable_after_commit(parameter):
+        if parameter == "scan_calibration.updated":
+            target, field = {
+                "ac_host": (state.ac_deflector, "enabled"),
+                "ac_raster": (state.ac_deflector, "scan_enabled"),
+                "image_readout": (state.sample, "stem_image_enabled"),
+            }[disabled]
+            setattr(target, field, False)
+
+    widget.parameters_changed.connect(disable_after_commit)
+    widget.ac_controls["scan_enabled"].setChecked(True)
+    qtbot.waitUntil(lambda: not widget.scan_calibration.busy, timeout=10000)
+    assert applied == ["automatic"] and not errors and not requests
+
+
 @pytest.mark.parametrize("changed", ["external", "implementation"])
 def test_changed_external_content_or_solver_rejects_completed_worker(view, qtbot, monkeypatch, tmp_path, changed):
     widget, errors, applied = view

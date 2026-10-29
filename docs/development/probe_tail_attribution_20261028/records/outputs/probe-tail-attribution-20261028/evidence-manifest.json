@@ -1,0 +1,607 @@
+{
+  "schema": "temsim-tail-investigation-evidence-v1",
+  "qualification": "NOT_QUALIFIED",
+  "job_statuses": {
+    "mono769-h005": "COMPLETE",
+    "poly-original-replay128-h005": "COMPLETE",
+    "poly-phase-constant-k769-h005": "COMPLETE",
+    "gun-step769": "COMPLETE",
+    "gun-grid769": "COMPLETE",
+    "poly769-gunstep01-grid16-h005": "COMPLETE",
+    "poly769-gunstep01-grid20-h005": "COMPLETE",
+    "poly769-gunstep01-grid24-h005": "COMPLETE",
+    "round-radial-3-5-h005": "COMPLETE",
+    "round-radial-7-h005": "COMPLETE",
+    "native-local-linear17-h005": "COMPLETE"
+  },
+  "files": {
+    "compare_gun_precision_profiles.py": {
+      "bytes": 8784,
+      "sha256": "e9809e13df0f90a442ca4b4c8fe6641aa38099ac148e2d9e77ecf641a58d43ae"
+    },
+    "energy-comparison-poly-constant-mono\\analysis-source.py": {
+      "bytes": 9472,
+      "sha256": "2d736adb7accf0a4296c4760b8c70fdcc7832137238b8cd37bf78f9d62181505"
+    },
+    "energy-comparison-poly-constant-mono\\comparison.json": {
+      "bytes": 877796,
+      "sha256": "0b2ce1da0884a98966d4449de7416229ed3f32a9e0fb6afd4980a75205dc4bba"
+    },
+    "energy-comparison-poly-constant-mono\\comparison.md": {
+      "bytes": 1704,
+      "sha256": "8fd6941c99afa799e7c2bb919dc01898356a004b576429800d96932b82599680"
+    },
+    "energy-controls-plot-provenance.json": {
+      "bytes": 433,
+      "sha256": "b03325540ebc9ddf4af71bdd64263566050d5c1c2fa92189f2661110a850fbd3"
+    },
+    "energy-controls.png": {
+      "bytes": 238318,
+      "sha256": "ef8db001e0281090b2da92900b42b4a8a8a61c8e01533e10210c20e4a1b585aa"
+    },
+    "energy-controls.svg": {
+      "bytes": 145039,
+      "sha256": "dbdaf0bf39eb0cc51ddd2a4ed322bb71032f83fc637d4e8a000f94fcbfb5ad84"
+    },
+    "gun-grid769\\checksums.json": {
+      "bytes": 1677,
+      "sha256": "0b85c740ce4d29b17ab610a502546662e414cecff39719b7950f0df76654e327"
+    },
+    "gun-grid769\\fine-grid16-repeat.json": {
+      "bytes": 611,
+      "sha256": "fd41eaad294a68d30bee32ac4cbeb08129556869f5943d742c55bc4b0c9d6edd"
+    },
+    "gun-grid769\\grid-16\\field.json": {
+      "bytes": 35963,
+      "sha256": "68689b2ff8375041ead64776ff1756bc499d2a8b92d401c4cbc4ad4d364b4b91"
+    },
+    "gun-grid769\\grid-16\\inputs.json": {
+      "bytes": 2021654,
+      "sha256": "9b700288a5d2dff12f45f52db22da7c4418844c525789dd3caf24c1ffb20c4fc"
+    },
+    "gun-grid769\\grid-16\\launch.npz": {
+      "bytes": 69593,
+      "sha256": "d63cdac4a95cebca1e91ff3adba2dc9a534fa82c747df9b6998c0b3db5ea29e9"
+    },
+    "gun-grid769\\grid-16\\particles.npz": {
+      "bytes": 16263612,
+      "sha256": "e2d35b92bef5dc6f75b236079913d53fb9419402399fd654cecf81d32572870e"
+    },
+    "gun-grid769\\grid-16\\receipt.json": {
+      "bytes": 43063,
+      "sha256": "bf09bbdb8c3f2ccb4b329c542676ab61a49aec0a1dbe3416af5282c311ab5963"
+    },
+    "gun-grid769\\grid-20\\field.json": {
+      "bytes": 35947,
+      "sha256": "24a532f5ec090bc19c6ff33313f1a2b4b26e71d1e2fc55344505d14e1b8d5ef7"
+    },
+    "gun-grid769\\grid-20\\inputs.json": {
+      "bytes": 2021654,
+      "sha256": "f4d387526116cbe2235350ec5a00f82279a21d59b34a99530f44a05ade386da9"
+    },
+    "gun-grid769\\grid-20\\launch.npz": {
+      "bytes": 69593,
+      "sha256": "d63cdac4a95cebca1e91ff3adba2dc9a534fa82c747df9b6998c0b3db5ea29e9"
+    },
+    "gun-grid769\\grid-20\\particles.npz": {
+      "bytes": 15907396,
+      "sha256": "562c78abb9aac4701cc9cb6054a71576dda6605004a80797736e32aff4e077e8"
+    },
+    "gun-grid769\\grid-20\\receipt.json": {
+      "bytes": 43168,
+      "sha256": "504b2e9961c4ed750568b2e67cf59465fc049ab1b8020d4b09767e104bf8c67b"
+    },
+    "gun-grid769\\grid-24\\field.json": {
+      "bytes": 35948,
+      "sha256": "a0fbff4bd24e3d5410b343b62c85b3f91a7cb14ace7c78bbef61a9bf32f32e4a"
+    },
+    "gun-grid769\\grid-24\\inputs.json": {
+      "bytes": 2021654,
+      "sha256": "c1b99ba93d6d983610ac9d9a8930f336690c3c89c9d49247ae93f7a54802d4fc"
+    },
+    "gun-grid769\\grid-24\\launch.npz": {
+      "bytes": 69593,
+      "sha256": "d63cdac4a95cebca1e91ff3adba2dc9a534fa82c747df9b6998c0b3db5ea29e9"
+    },
+    "gun-grid769\\grid-24\\particles.npz": {
+      "bytes": 15659560,
+      "sha256": "fecb00b0ed4833ab5b99de7dbcd9a0439c628327f992674a60ac061f7135d6c0"
+    },
+    "gun-grid769\\grid-24\\receipt.json": {
+      "bytes": 43172,
+      "sha256": "0b13b86ded41a956d9a065488a8546be5ee2bf53e858d61a68c5ed68504bd701"
+    },
+    "gun-grid769\\grid16-to24-phase-comparison.json": {
+      "bytes": 22553,
+      "sha256": "e0b65cc45270ce93a5ac87c725259f0c1731b41f0c66c83d5777c86bd9a49e71"
+    },
+    "gun-grid769\\offline-phase-comparison.json": {
+      "bytes": 142902,
+      "sha256": "a890733285a6f4c71bee35837dd611db69bc7ab012cca6f3fd935f32b007c3a8"
+    },
+    "gun-grid769\\original-inputs.json": {
+      "bytes": 2021654,
+      "sha256": "b3e6d5cb9a612287998f9948df3000854796b13c4ea6d1173d676bb24664e4e3"
+    },
+    "gun-grid769\\report.json": {
+      "bytes": 217754,
+      "sha256": "d74f5e3bbab5bcbc749949931f2eb9968b828785ffc30ba61c23e9611a31ec10"
+    },
+    "gun-precision-full-column-comparison.json": {
+      "bytes": 2279143,
+      "sha256": "31c2fe342cdd9914b57ad5f1f65ecc7a38f7ce20b4315353fd9edb27a04cc650"
+    },
+    "gun-precision-full-column-readout.txt": {
+      "bytes": 3778,
+      "sha256": "8aca4d990e2de0051231e761c5c613ce8d735397d3905d42a14fea31526878f8"
+    },
+    "gun-step-grid-readout.txt": {
+      "bytes": 5525,
+      "sha256": "4da3b9b968b6ee0fd5914e72a939ab68501e8c097899d13c69a7e7e6d1b6c1be"
+    },
+    "gun-step769\\checksums.json": {
+      "bytes": 1104,
+      "sha256": "bf7e7269440873f6c3973af0567fefd4eb294c0ba0e86d112b97c66facd5462c"
+    },
+    "gun-step769\\exact-observer-replay.json": {
+      "bytes": 7073,
+      "sha256": "d4a3f0faac9906c08f750a1b8606f9cafa5885d4baca3c41ad68dcf0057bf6a7"
+    },
+    "gun-step769\\offline-phase-comparison.json": {
+      "bytes": 87690,
+      "sha256": "df65edfa75d1e818f92973f142262e726550ed2c1cbf374612f5cc44fedb095a"
+    },
+    "gun-step769\\original-inputs.json": {
+      "bytes": 2021654,
+      "sha256": "b3e6d5cb9a612287998f9948df3000854796b13c4ea6d1173d676bb24664e4e3"
+    },
+    "gun-step769\\report.json": {
+      "bytes": 134385,
+      "sha256": "ceae708c6770229e94452df8ed69e32647e6a730a16492c8a09e386f3d867bcf"
+    },
+    "gun-step769\\step-1\\field.json": {
+      "bytes": 35963,
+      "sha256": "06bee24f9342e794ed0047b1136893ae4b592d207f04ffcbd44f0ce30f50b6cc"
+    },
+    "gun-step769\\step-1\\inputs.json": {
+      "bytes": 2021654,
+      "sha256": "b3e6d5cb9a612287998f9948df3000854796b13c4ea6d1173d676bb24664e4e3"
+    },
+    "gun-step769\\step-1\\launch.npz": {
+      "bytes": 69593,
+      "sha256": "d63cdac4a95cebca1e91ff3adba2dc9a534fa82c747df9b6998c0b3db5ea29e9"
+    },
+    "gun-step769\\step-1\\particles.npz": {
+      "bytes": 19285896,
+      "sha256": "7b1950a47e7cdcca1c91fc9f2ab1fb5028ce5d067410a3d3efa5a8891d4e2354"
+    },
+    "gun-step769\\step-1\\receipt.json": {
+      "bytes": 42929,
+      "sha256": "ee538596e92ce09ba92285129c26f1600ea934058f30a4e5ef0d27d8bb75f3d6"
+    },
+    "gun-step769\\step-2\\field.json": {
+      "bytes": 35963,
+      "sha256": "06bee24f9342e794ed0047b1136893ae4b592d207f04ffcbd44f0ce30f50b6cc"
+    },
+    "gun-step769\\step-2\\inputs.json": {
+      "bytes": 2021654,
+      "sha256": "9b700288a5d2dff12f45f52db22da7c4418844c525789dd3caf24c1ffb20c4fc"
+    },
+    "gun-step769\\step-2\\launch.npz": {
+      "bytes": 69593,
+      "sha256": "d63cdac4a95cebca1e91ff3adba2dc9a534fa82c747df9b6998c0b3db5ea29e9"
+    },
+    "gun-step769\\step-2\\particles.npz": {
+      "bytes": 16263612,
+      "sha256": "e2d35b92bef5dc6f75b236079913d53fb9419402399fd654cecf81d32572870e"
+    },
+    "gun-step769\\step-2\\receipt.json": {
+      "bytes": 43072,
+      "sha256": "dbfc99b0216d914a236ef528f0fa86d60398158f4a28a82bb6e664d9883e9283"
+    },
+    "investigation.json": {
+      "bytes": 2883,
+      "sha256": "1c68a0ad65c5965827e6c9ebf0d1a8302aaf66b5988f71908f691ef86c3c1859"
+    },
+    "launch-momentum-offline\\analysis-source.py": {
+      "bytes": 13207,
+      "sha256": "c14484303c7da5de96ee2b6aaaf479bc50fe1c7d3c7969a46c40968b97e5856b"
+    },
+    "launch-momentum-offline\\arrays.npz": {
+      "bytes": 223699,
+      "sha256": "12279428ec55fbef2f3eb0ef7b5f272156425bed87e6ca8088584e84a3740797"
+    },
+    "launch-momentum-offline\\report.json": {
+      "bytes": 20269,
+      "sha256": "534f4295490fbdd10204dbb9358e04d200019116f9535021bbce9b78345349ae"
+    },
+    "launch-momentum-offline-v2\\analysis-source.py": {
+      "bytes": 22197,
+      "sha256": "d9714eff53fde6106c7f779cf5ca8aca84a15abe7b216c9e25a30c22efabac59"
+    },
+    "launch-momentum-offline-v2\\arrays.npz": {
+      "bytes": 223699,
+      "sha256": "12279428ec55fbef2f3eb0ef7b5f272156425bed87e6ca8088584e84a3740797"
+    },
+    "launch-momentum-offline-v2\\report.json": {
+      "bytes": 24264,
+      "sha256": "3433403a6b055a9a18a036e8c8cdd889c9c834978885435534f03068fd1a7a55"
+    },
+    "launch-momentum-offline-v2\\report.md": {
+      "bytes": 6884,
+      "sha256": "964bfa77227f0f42d7d6b42b13e386806ea81c5df8297abbc2848edae14d7110"
+    },
+    "mono769-h005\\checksums.json": {
+      "bytes": 260,
+      "sha256": "0c7a7f88aca98f14818aeeceda68454e39c01f80b31d63b24125f9bbd7677102"
+    },
+    "mono769-h005\\control-receipt.json": {
+      "bytes": 1781,
+      "sha256": "93e2aff80bfe0ee98f4f3f7d23d7b0097362fe8eafead4c3d39e27451ee9af43"
+    },
+    "mono769-h005\\inputs.json": {
+      "bytes": 2021655,
+      "sha256": "2482eeff723f92f4378b2c7faa6716138ba32c3852865dcba6c9d0b1c7de9585"
+    },
+    "mono769-h005\\measure_probe_waist.py": {
+      "bytes": 30985,
+      "sha256": "4bd0fe8def6d92e2c72ea36c9070f9df79f29dd69da1c1f051cd18146cb10006"
+    },
+    "mono769-h005\\particles.npz": {
+      "bytes": 20244034,
+      "sha256": "00f95909200dc2beeddf5f38d40ab44ad99695366df426e25428342ee24ae310"
+    },
+    "mono769-h005\\report.json": {
+      "bytes": 3817713,
+      "sha256": "74faa8f790e0e7f6df7679a50fb2ce14b0c1721db95f29d793bf54f45b751711"
+    },
+    "mono769-h005\\run_monochromatic_control.py": {
+      "bytes": 5067,
+      "sha256": "8c8a3587861ecea6233bd4139c4495a437004ee4fcbbec148da50eafa0c41112"
+    },
+    "native-local-linear17-analysis\\comparison.png": {
+      "bytes": 143786,
+      "sha256": "0c3632842d35b51ca9ed2df1640eebcf171c3f26c55ba47f766ca7d05bfaaa94"
+    },
+    "native-local-linear17-analysis\\summary-source.py": {
+      "bytes": 7106,
+      "sha256": "efb8850e6c287f8dc262e5597b70659838df2fe7d828e9ecf65424b5eb731795"
+    },
+    "native-local-linear17-analysis\\summary.md": {
+      "bytes": 4090,
+      "sha256": "0a58dee7cb03a93f385e7d8ab442103e8c7247768d323b54a85a9699e817046f"
+    },
+    "native-local-linear17-analysis-v2\\comparison.png": {
+      "bytes": 143786,
+      "sha256": "0c3632842d35b51ca9ed2df1640eebcf171c3f26c55ba47f766ca7d05bfaaa94"
+    },
+    "native-local-linear17-analysis-v2\\summary-source.py": {
+      "bytes": 7459,
+      "sha256": "f5516ddaa3aadc7af3019e882f458d0fe3c6f9f2b4e15ac2be8628d8877c9534"
+    },
+    "native-local-linear17-analysis-v2\\summary.md": {
+      "bytes": 4090,
+      "sha256": "0a58dee7cb03a93f385e7d8ab442103e8c7247768d323b54a85a9699e817046f"
+    },
+    "native-local-linear17-h005\\calibration-probes.npz": {
+      "bytes": 405171,
+      "sha256": "14d02713c8b8e0d5233df61541b3c1032819948ad5afc6449348f9bb254f4a0a"
+    },
+    "native-local-linear17-h005\\checksums.json": {
+      "bytes": 559,
+      "sha256": "edda3863c5d644ce959b13571aaf4921831edab6a6ff2f9447b8c66b67dbdb63"
+    },
+    "native-local-linear17-h005\\driver-source.py": {
+      "bytes": 16914,
+      "sha256": "2a4ede818aea1ed59abed9d2b54888140e856024ab3f3939f13668b4eec2eba2"
+    },
+    "native-local-linear17-h005\\inputs.json": {
+      "bytes": 2021655,
+      "sha256": "36bf44ad881c3a103909a9beed2b79f0c7a2a1e0bf9a066b0b461be2c59ad025"
+    },
+    "native-local-linear17-h005\\mathematical-predictions.npz": {
+      "bytes": 31753579,
+      "sha256": "50d661f9565b5cf2c1d6cf76339eff5e92a63978e0ae4834a3bb70e9ba424adb"
+    },
+    "native-local-linear17-h005\\reference-and-source.npz": {
+      "bytes": 31434,
+      "sha256": "1b496434a50626841df3bc301828f61c2b59427fbec6da1cb51d3bf783a2999f"
+    },
+    "native-local-linear17-h005\\report.json": {
+      "bytes": 404248,
+      "sha256": "0f2cfdab00c7741eb04d7d7f5d545ccc601bb02f7f5785fbe613b9d67bbde654"
+    },
+    "plot_energy_controls.py": {
+      "bytes": 3153,
+      "sha256": "1dac746743ed168bc65905c09d1241f9e41ce8bcd62510ecb1fdd540376e7b44"
+    },
+    "poly-original-replay128-h005\\batch-001\\particles.npz": {
+      "bytes": 2277823,
+      "sha256": "53b578cb32d9d8869ce8a17318269c02ca4cb3aed14519bd2ce0c97929403706"
+    },
+    "poly-original-replay128-h005\\batch-001\\receipt.json": {
+      "bytes": 20851,
+      "sha256": "42c9e645126ea27313b5bbd096834623f11a8a7fb4c7e2916edcf837e8e10204"
+    },
+    "poly-original-replay128-h005\\checksums.json": {
+      "bytes": 638,
+      "sha256": "7c060c3f7bc98e4b4e1a4fff7b15b3aca00593fc333589cc7edca271232b7d48"
+    },
+    "poly-original-replay128-h005\\donor-inputs.json": {
+      "bytes": 2021655,
+      "sha256": "36bf44ad881c3a103909a9beed2b79f0c7a2a1e0bf9a066b0b461be2c59ad025"
+    },
+    "poly-original-replay128-h005\\driver-source.py": {
+      "bytes": 23864,
+      "sha256": "dff210c98f43746d4d70716f022bd5f432ee9bd2dea54d47ac94d9b8c3700e81"
+    },
+    "poly-original-replay128-h005\\injection.npz": {
+      "bytes": 14710,
+      "sha256": "b79f571290c517b9090178e8f4ef1e7fb77d0d4ce774e2899e5cf61d0f9e22a2"
+    },
+    "poly-original-replay128-h005\\particles.npz": {
+      "bytes": 2277823,
+      "sha256": "f86dd9f965c734581a547348ea7de7bc1bc574729c061bc6a4e0e3e67f80065f"
+    },
+    "poly-original-replay128-h005\\report.json": {
+      "bytes": 32136,
+      "sha256": "bd36280cfbdc4cd5dade9352cd69f23fee56fb6d8024c0a156d2140ba9658169"
+    },
+    "poly-phase-constant-k769-h005\\batch-001\\particles.npz": {
+      "bytes": 2232406,
+      "sha256": "b62d909cfe392e452124841d48db0587f64807bafd3d42c92ec37e76e34839d0"
+    },
+    "poly-phase-constant-k769-h005\\batch-001\\receipt.json": {
+      "bytes": 20383,
+      "sha256": "86b41bb4bca4a797075db47a1726393587c0cc010ed6e7bb30e58924fc07b4d5"
+    },
+    "poly-phase-constant-k769-h005\\batch-002\\particles.npz": {
+      "bytes": 2233027,
+      "sha256": "485f8b41c077a02a7efe473a831feaf3a871da2f5bc5e84a026a735ec44dac38"
+    },
+    "poly-phase-constant-k769-h005\\batch-002\\receipt.json": {
+      "bytes": 20385,
+      "sha256": "c9fa0b649c4cda724b0e99f902b6cd29ef6db60aa33541198298c2e12a3b427f"
+    },
+    "poly-phase-constant-k769-h005\\batch-003\\particles.npz": {
+      "bytes": 2232957,
+      "sha256": "6c67f6abf18b925a8582af3e8dee0a35809471ea692152aeed1cb2f161e63e9c"
+    },
+    "poly-phase-constant-k769-h005\\batch-003\\receipt.json": {
+      "bytes": 20385,
+      "sha256": "6720be80f8497e66dae6943b450bd89a95edddbc5a6f3bbd277bb58c0e5057b6"
+    },
+    "poly-phase-constant-k769-h005\\batch-004\\particles.npz": {
+      "bytes": 2232370,
+      "sha256": "8401b91997ed191fa32e2e0518d85741473b009314af21e59dd8797148df62a9"
+    },
+    "poly-phase-constant-k769-h005\\batch-004\\receipt.json": {
+      "bytes": 20385,
+      "sha256": "9edc52c72c02fcfecf5e5800c065b4195442227101ccbe137e868f03b544f03d"
+    },
+    "poly-phase-constant-k769-h005\\batch-005\\particles.npz": {
+      "bytes": 2232158,
+      "sha256": "c89113a0162d00f6ef735682dc1a582be1971ead60014e1f470f096a40084203"
+    },
+    "poly-phase-constant-k769-h005\\batch-005\\receipt.json": {
+      "bytes": 20385,
+      "sha256": "3df7619d2a90ca6e5be93c89213559ad452b09ef007a2dbf8ce02afc7c40d7d3"
+    },
+    "poly-phase-constant-k769-h005\\batch-006\\particles.npz": {
+      "bytes": 2232652,
+      "sha256": "5d160d9744186dbaf4b202e1d8f97f3f7d42943b11f18d855732c3aaa5fc93f2"
+    },
+    "poly-phase-constant-k769-h005\\batch-006\\receipt.json": {
+      "bytes": 20385,
+      "sha256": "ff8de33c5b17688dae4e73255a2d9c5291c4e76098e68458f21181d738c22c99"
+    },
+    "poly-phase-constant-k769-h005\\batch-007\\particles.npz": {
+      "bytes": 164793,
+      "sha256": "7e45e29743f0fac8e8a80f7ea8be5277ae874cccda64a5f70e43eb449a77ef41"
+    },
+    "poly-phase-constant-k769-h005\\batch-007\\receipt.json": {
+      "bytes": 20385,
+      "sha256": "15a1f8641e12b364407d7f76aa5675807e994a78d90739fe8d9504ccbb3afe86"
+    },
+    "poly-phase-constant-k769-h005\\checksums.json": {
+      "bytes": 1808,
+      "sha256": "eddc8a27ef747c9ed2c239a760b0a265c4e41a97a8b220138a23f20907338ff7"
+    },
+    "poly-phase-constant-k769-h005\\donor-inputs.json": {
+      "bytes": 2021655,
+      "sha256": "36bf44ad881c3a103909a9beed2b79f0c7a2a1e0bf9a066b0b461be2c59ad025"
+    },
+    "poly-phase-constant-k769-h005\\driver-source.py": {
+      "bytes": 23864,
+      "sha256": "dff210c98f43746d4d70716f022bd5f432ee9bd2dea54d47ac94d9b8c3700e81"
+    },
+    "poly-phase-constant-k769-h005\\injection.npz": {
+      "bytes": 6486,
+      "sha256": "a5789ad198592d5b3c2076d7f74abe64bbed0ed0e2d9839b6ab587f1388ff194"
+    },
+    "poly-phase-constant-k769-h005\\particles.npz": {
+      "bytes": 13023874,
+      "sha256": "b614b72898f5e0a831bab93e68b723347d097acb3444638969c8b0228fbc7fa5"
+    },
+    "poly-phase-constant-k769-h005\\report.json": {
+      "bytes": 3169886,
+      "sha256": "ce65344192fe7da64b2dc9937beaf763f313a8251fc9dfc19214a379854660a6"
+    },
+    "poly769-gunstep01-grid16-h005\\checksums.json": {
+      "bytes": 260,
+      "sha256": "133a15aa2f72fed0e612158edf7b33e646b7364b49fa6e226a95b3ce0fb04a23"
+    },
+    "poly769-gunstep01-grid16-h005\\inputs.json": {
+      "bytes": 2021655,
+      "sha256": "11e8af268634b587ac996eaa202c2548e2679dc476325696d3eb4eae22b35d3a"
+    },
+    "poly769-gunstep01-grid16-h005\\measure_probe_waist.py": {
+      "bytes": 30985,
+      "sha256": "4bd0fe8def6d92e2c72ea36c9070f9df79f29dd69da1c1f051cd18146cb10006"
+    },
+    "poly769-gunstep01-grid16-h005\\particles.npz": {
+      "bytes": 19838267,
+      "sha256": "e2fe77ff488de233ce47ef46a5c12020a84e5ad8a92f590d032428757afaba43"
+    },
+    "poly769-gunstep01-grid16-h005\\precision-control.json": {
+      "bytes": 1037,
+      "sha256": "8e547a182bf8214ee3dc060151d897d91fccfe145e16a338621dccc94de461b7"
+    },
+    "poly769-gunstep01-grid16-h005\\report.json": {
+      "bytes": 3178741,
+      "sha256": "f7185bc0e89f31b5cec4560e4e61c2c0d159eebf7ff10c6ac7737d055f130e9a"
+    },
+    "poly769-gunstep01-grid16-h005\\run_gun_refined_probe.py": {
+      "bytes": 4298,
+      "sha256": "ee30e573d3564fb3ff6bef16027348862164c1dbc56c60849c706d74af754137"
+    },
+    "poly769-gunstep01-grid20-h005\\checksums.json": {
+      "bytes": 260,
+      "sha256": "a58a0406bbc406c11bdb426fe64de0f40cad6ba6a600795cfb3301e5177a6ba9"
+    },
+    "poly769-gunstep01-grid20-h005\\inputs.json": {
+      "bytes": 2021655,
+      "sha256": "deb2372fa6b997d0eac60aa1f7a494480eaa1acf557be8a5faf49d0d6d551d1e"
+    },
+    "poly769-gunstep01-grid20-h005\\measure_probe_waist.py": {
+      "bytes": 30985,
+      "sha256": "4bd0fe8def6d92e2c72ea36c9070f9df79f29dd69da1c1f051cd18146cb10006"
+    },
+    "poly769-gunstep01-grid20-h005\\particles.npz": {
+      "bytes": 19885085,
+      "sha256": "b6fd5d13261fe9b15d51f4f128e9eff9143f06fc98f932b9e7db2f0319fe3c5d"
+    },
+    "poly769-gunstep01-grid20-h005\\precision-control.json": {
+      "bytes": 1164,
+      "sha256": "00ac515b3a424b628ab8c4decfb404b9f96e621b096e257db6e5dd9242a916db"
+    },
+    "poly769-gunstep01-grid20-h005\\report.json": {
+      "bytes": 3178874,
+      "sha256": "ad568e813c3ef5371694e55e35d5c0867397e8a0109dd066c05cd6ad700ac729"
+    },
+    "poly769-gunstep01-grid20-h005\\run_gun_refined_probe.py": {
+      "bytes": 4298,
+      "sha256": "ee30e573d3564fb3ff6bef16027348862164c1dbc56c60849c706d74af754137"
+    },
+    "poly769-gunstep01-grid24-h005\\checksums.json": {
+      "bytes": 260,
+      "sha256": "fc2d8dcb35695ba8397f2b2f742c6c06f4d64108ab8c68552dc23ae0abf129d8"
+    },
+    "poly769-gunstep01-grid24-h005\\inputs.json": {
+      "bytes": 2021655,
+      "sha256": "ebcb8a4e7fa77586cea99ff6123d97224d290df29d4bf9aebbf971f37d556049"
+    },
+    "poly769-gunstep01-grid24-h005\\measure_probe_waist.py": {
+      "bytes": 30985,
+      "sha256": "4bd0fe8def6d92e2c72ea36c9070f9df79f29dd69da1c1f051cd18146cb10006"
+    },
+    "poly769-gunstep01-grid24-h005\\particles.npz": {
+      "bytes": 19854960,
+      "sha256": "31c25b1ca6da7d357232b6e0e854544b55e38e676e417ef76ef3b66342c8a27b"
+    },
+    "poly769-gunstep01-grid24-h005\\precision-control.json": {
+      "bytes": 1164,
+      "sha256": "0ffd57d2ad2dd5449deb6c042dc159d40507f0afae4b27298db2d3936afad0ae"
+    },
+    "poly769-gunstep01-grid24-h005\\report.json": {
+      "bytes": 3178884,
+      "sha256": "2bc8f96aa6706636b82aaee77b31db5e78ec61b8b8864e12d4656f6fbff0d214"
+    },
+    "poly769-gunstep01-grid24-h005\\run_gun_refined_probe.py": {
+      "bytes": 4298,
+      "sha256": "ee30e573d3564fb3ff6bef16027348862164c1dbc56c60849c706d74af754137"
+    },
+    "round-radial-3-5-h005\\driver-source.py": {
+      "bytes": 20236,
+      "sha256": "e4592d3f9e7b8f08d64b281a63dd5f0fe197cbf3087d33422d86b54faf88f26f"
+    },
+    "round-radial-3-5-h005\\inputs.json": {
+      "bytes": 2021655,
+      "sha256": "36bf44ad881c3a103909a9beed2b79f0c7a2a1e0bf9a066b0b461be2c59ad025"
+    },
+    "round-radial-3-5-h005\\order-3\\field-audit.json": {
+      "bytes": 43602,
+      "sha256": "3f64f5a36e4d77db863da4a125d806a503166dec4a8ae6c3991cb754e7fcfb8a"
+    },
+    "round-radial-3-5-h005\\order-3\\particles.npz": {
+      "bytes": 19839398,
+      "sha256": "c354a478a94261b86f58ed23fa1c955d6ff1eaf4721ebd28024ceb6c5fe85ba5"
+    },
+    "round-radial-3-5-h005\\order-3\\report.json": {
+      "bytes": 3003371,
+      "sha256": "b45bf42868d20b15e98af966aa0ca5282d99208b68162a37daf14e670bd609c3"
+    },
+    "round-radial-3-5-h005\\order-3\\runtime.json": {
+      "bytes": 8656504,
+      "sha256": "bc7782bbb7225b3d6bcf090ba5e52c7020625ed01188cc46c27178207473a28f"
+    },
+    "round-radial-3-5-h005\\order-5\\field-audit.json": {
+      "bytes": 43588,
+      "sha256": "fd0e2ca7d96023186872e850d617516a1aa0583c0ad1f8075394f5f02b52069e"
+    },
+    "round-radial-3-5-h005\\order-5\\particles.npz": {
+      "bytes": 19839064,
+      "sha256": "a435557e137efe2dd3173e930e5eb6eaf16d4e9db297fe38bb1fab635637984f"
+    },
+    "round-radial-3-5-h005\\order-5\\report.json": {
+      "bytes": 3002411,
+      "sha256": "2a5ea8be0c9490e16f6357c92994c21a05c4c11a26741fa63d390564299d9b21"
+    },
+    "round-radial-3-5-h005\\order-5\\runtime.json": {
+      "bytes": 8656880,
+      "sha256": "35c664fc1d709eb1d1a5948432d4c2c1a823dae4acf8014b67b493d7cec8eb38"
+    },
+    "round-radial-3-5-h005\\paired-comparison.json": {
+      "bytes": 2334,
+      "sha256": "6c636fdd01d9de854807b317fd48eefb2d6a1ce1c8117200c293a07354d6800f"
+    },
+    "round-radial-3-5-h005\\report.json": {
+      "bytes": 7583107,
+      "sha256": "1a77f9e6b6c275536d9cceb181daf965a472ade1d5da98c3b75da8af1bdba5e3"
+    },
+    "round-radial-7-h005\\checksums.json": {
+      "bytes": 627,
+      "sha256": "3b7410b6d89bd42cf91909088e9542c6fe0cc1a147bbcfc23a3f3c5f0c488398"
+    },
+    "round-radial-7-h005\\dependency-driver-source.py": {
+      "bytes": 20236,
+      "sha256": "e4592d3f9e7b8f08d64b281a63dd5f0fe197cbf3087d33422d86b54faf88f26f"
+    },
+    "round-radial-7-h005\\driver-source.py": {
+      "bytes": 11524,
+      "sha256": "169fc68a1b721cbb22feb6c280858c405eb0e8e7e5de3f06fec97e4de668f312"
+    },
+    "round-radial-7-h005\\field-audit.json": {
+      "bytes": 43588,
+      "sha256": "c274ad10a998d76dd719cf25b24c0ca24ecc0a5ffaa86b0a228646bdd16c1fb1"
+    },
+    "round-radial-7-h005\\inputs.json": {
+      "bytes": 2021655,
+      "sha256": "36bf44ad881c3a103909a9beed2b79f0c7a2a1e0bf9a066b0b461be2c59ad025"
+    },
+    "round-radial-7-h005\\particles.npz": {
+      "bytes": 19838985,
+      "sha256": "19b78c2633a9e4839f0519c7a266390b404765fec647dfdceed627ebefebd9ec"
+    },
+    "round-radial-7-h005\\report.json": {
+      "bytes": 3005210,
+      "sha256": "2d0bd3c3e5219d35c56047dc5f8887c0446af8445075c6138abcf41a0e641569"
+    },
+    "round-radial-7-h005\\runtime.json": {
+      "bytes": 8656880,
+      "sha256": "42a941a14a791e60167b662257e802e255133c411bcf50c06d9a1165236aba5b"
+    },
+    "round-radial-7-h005\\successive-comparison.json": {
+      "bytes": 2463,
+      "sha256": "289c894b9e06d63810e08c919f4b5b50e9b7c813ad0cd21e91336a2a829670da"
+    },
+    "run_gun_refined_probe.py": {
+      "bytes": 4298,
+      "sha256": "ee30e573d3564fb3ff6bef16027348862164c1dbc56c60849c706d74af754137"
+    },
+    "run_monochromatic_control.py": {
+      "bytes": 5067,
+      "sha256": "8c8a3587861ecea6233bd4139c4495a437004ee4fcbbec148da50eafa0c41112"
+    }
+  }
+}

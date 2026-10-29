@@ -172,13 +172,26 @@ def require_exact_prefix(previous, continued):
             raise AssertionError("Continuation omitted an executed checkpoint plane")
         before_values = {name: getattr(segment.checkpoints, name) for name in CHECKPOINT_FIELDS}
         after_values = {name: np.asarray(getattr(after.checkpoints, name))[indices] for name in CHECKPOINT_FIELDS}
+        before_energy = getattr(segment.checkpoints, "kinetic_energy_ev", None)
+        after_energy = getattr(after.checkpoints, "kinetic_energy_ev", None)
+        if (before_energy is None) != (after_energy is None):
+            raise AssertionError("Continuation changed retained checkpoint kinetic-energy availability")
+        if before_energy is not None:
+            before_values["kinetic_energy_ev"] = before_energy
+            after_values["kinetic_energy_ev"] = np.asarray(after_energy)[indices]
         require_exact_arrays(before_values, after_values, "Retained column prefix")
-        for name in ("source_ray_id", "ray_weight", "energy_offset_ev"):
+        # Branch energy_offset_ev is the terminal kinetic energy relative to
+        # nominal energy, so continued electric work may change it. Original
+        # gun-exit offsets remain bound by gun_arrays above; retained column
+        # energy is compared at the same prefix checkpoints instead.
+        for name in ("source_ray_id", "ray_weight"):
             require_exact_arrays({name: getattr(segment.branch, name)},
                                  {name: getattr(after.branch, name)}, "Retained source")
         rows.append({"name": segment.name, "checkpoint_planes": len(indices),
-                     "through_z_mm": float(segment.checkpoints.z_mm[-1]), "exact": True})
-    return {"exact": True, "segments": rows}
+                     "through_z_mm": float(segment.checkpoints.z_mm[-1]), "exact": True,
+                     "kinetic_energy_status": "EXACT" if before_energy is not None else "NOT_RETAINED"})
+    return {"exact": True, "segments": rows,
+            "energy_scope": "Original gun-exit energy offsets are exact; column kinetic energies are exact at retained prefix checkpoints when present. Older records without checkpoint energy do not establish that comparison."}
 
 
 def continuation_planes(state, span_mm=10.):

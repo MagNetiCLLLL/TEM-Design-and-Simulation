@@ -201,6 +201,70 @@ def test_small_probe_and_independent_direct_focus_and_corrector_gates():
     assert failures == ["Executed internal and AC crossover evidence failed or is unresolved"]
 
 
+def finite_direct_focus_inputs():
+    measurement = SimpleNamespace(accepts=lambda _: True,
+        statistics=SimpleNamespace(radius_95_m=.2e-9))
+    corrector = dict(waist_detector="finite_region", waist_evidence_passed=True)
+    topology = dict(passed=True, direct_focus=dict(status="PASS"))
+    chain = dict(required_topology_satisfied_at_sampling=True,
+        unattributed_population_change_count=0,
+        direct_focus=dict(schema="direct-focus-finite-region-topology-v2",
+            requirement="direct_focus_without_extra_pre_specimen_waist",
+            status="PASS", passed=True, failures=[]))
+    return topology, measurement, corrector, chain
+
+
+def test_finite_direct_focus_is_independent_of_unresolved_condenser_summary():
+    topology, measurement, corrector, chain = finite_direct_focus_inputs()
+    topology = dict(passed=False, status="UNRESOLVED")
+    chain["required_topology_satisfied_at_sampling"] = False
+    assert qualification.qualification_failures(topology, measurement, corrector, 30.,
+        crossover_chain=chain) == [
+            "Required source-image regions failed or have incomplete whole-capture evidence",
+            "Condenser topology failed or is unresolved"]
+
+
+@pytest.mark.parametrize("evidence", [None, {}, "PASS",
+    dict(schema="direct-focus-topology-v1", status="PASS", passed=True, failures=[])])
+def test_finite_direct_focus_missing_or_unknown_authority_cannot_fall_back(evidence):
+    topology, measurement, corrector, chain = finite_direct_focus_inputs()
+    chain["direct_focus"] = evidence
+    assert qualification.qualification_failures(topology, measurement, corrector, 30.,
+        crossover_chain=chain) == [
+            "Direct Mini Condenser/objective focus topology failed or is unresolved"]
+    del chain["direct_focus"]
+    assert qualification.qualification_failures(topology, measurement, corrector, 30.,
+        crossover_chain=chain)
+
+
+@pytest.mark.parametrize("key,value", [("passed", False), ("passed", 1),
+    ("status", "UNRESOLVED"), ("status", "FAIL"), ("status", "UNKNOWN"),
+    ("schema", None), ("requirement", None), ("failures", ["unresolved"]), ("failures", None)])
+def test_finite_direct_focus_contradiction_or_unresolved_cannot_pass(key, value):
+    topology, measurement, corrector, chain = finite_direct_focus_inputs()
+    chain["direct_focus"][key] = value
+    assert qualification.qualification_failures(topology, measurement, corrector, 30.,
+        crossover_chain=chain) == [
+            "Direct Mini Condenser/objective focus topology failed or is unresolved"]
+
+
+def test_finite_authoritative_focus_pass_preserves_other_physical_failures():
+    topology, measurement, corrector, chain = finite_direct_focus_inputs()
+    del topology["direct_focus"]
+    assert qualification.qualification_failures(topology, measurement, corrector, 30.,
+        crossover_chain=chain) == []
+    measurement.statistics.radius_95_m = .35e-9
+    measurement.accepts = lambda _: False
+    corrector["waist_evidence_passed"] = False
+    chain["unattributed_population_change_count"] = 1
+    assert qualification.qualification_failures(topology, measurement, corrector, 30.,
+        crossover_chain=chain) == [
+            "Unattributed physical interception remains unresolved in the incident capture",
+            "Surface focus, convergence angle or effective sample support failed",
+            "Surface D95 must be strictly below the declared diameter limit",
+            "Executed internal and AC crossover evidence failed or is unresolved"]
+
+
 @pytest.mark.parametrize("region,spacing", [("central", 1.01), ("ac", .101)])
 def test_declared_spacing_cannot_relax_required_coverage(region, spacing):
     declared = regions()
@@ -273,3 +337,102 @@ def test_optional_calibration_requirement_cannot_be_a_truthy_string():
     report = evaluate(*drift_pair(), require_equal_crossover_angles="false")
     assert not report["passed"] and not report["waist_evidence_passed"]
     assert report["failures"] == ["invalid_checkpoint_arrays_or_parameters"]
+
+
+@pytest.fixture
+def capture_observer(monkeypatch):
+    """Run report assembly on synthetic checkpoints, without any transport."""
+    import temsim.instrument_snapshot as snapshots
+    import temsim.calculation_manifest as manifest
+    import temsim.optics.beam_path_audit as beam_audit
+    import temsim.optics.condenser_topology as condenser
+    import temsim.optics.crossover_acceptance as acceptance
+    import temsim.optics.waist_evidence as waists
+    import temsim.physics.beam_current as current
+    state = SimpleNamespace(simulation_mode="unified", step_mm=.05,
+        electron_gun=SimpleNamespace(exit_plane_z_mm=0., emitted_current_a=1e-9,
+            emitter=SimpleNamespace(ray_count=16, emission_energy_ev=.5, energy_spread_fwhm_ev=.3)),
+        sample=SimpleNamespace(upper_surface_z_mm=10.),
+        lenses=[SimpleNamespace(key=key, enabled=True, z_mm=z, percent=1.,
+            mechanical_center_from_tip_mm=z, mechanical_length_mm=2.)
+            for key, z in (("adapter_lens", 3.), ("probe_tl12_lens", 7.))])
+    snapshot = SimpleNamespace(digest="unchanged-state")
+    monkeypatch.setattr(snapshots, "capture_instrument_snapshot", lambda _: snapshot)
+    monkeypatch.setattr(manifest, "solver_source_identity", lambda: {"source": "synthetic"})
+    monkeypatch.setattr(current, "effective_source_current_a", lambda _: 1e-9)
+    monkeypatch.setattr(current, "column_current_limit_percent", lambda _: 100.)
+    monkeypatch.setattr(condenser, "requested_capture_planes", lambda *a, **k: (0., 2., 4., 6., 8., 10.))
+    monkeypatch.setattr(qualification, "corrector_crossover_regions", lambda _: {})
+    monkeypatch.setattr(qualification, "requested_corrector_crossover_planes", lambda _: (4., 6.))
+    monkeypatch.setattr(qualification, "corrector_planes", lambda _: (3., 7.))
+    monkeypatch.setattr(qualification, "evaluate_corrector_crossovers", lambda *a, **k:
+        dict(waist_detector="finite_region", waist_evidence_passed=True, angle_matching_role="diagnostic"))
+    monkeypatch.setattr(waists, "detector_for_state", lambda _: "finite_region")
+    monkeypatch.setattr(waists, "observed_aperture_losses", lambda *a: [])
+    monkeypatch.setattr(acceptance, "regions_for_state", lambda _: {"full": {"bounds_mm": (0., 10.)}})
+    chain = finite_direct_focus_inputs()[-1]
+    chain["status"] = "OBSERVED_AT_BOUNDED_SAMPLING"
+    monkeypatch.setattr(acceptance, "evaluate_crossover_chain", lambda *a, **k: chain)
+    topology_calls = []
+    def topology(*args, **kwargs):
+        topology_calls.append(args[1].z_mm.copy())
+        index = len(topology_calls)
+        return dict(passed=index == 3, status="PASS" if index == 3 else "UNRESOLVED",
+            refinement_planes_mm=[1.1] if index == 1 else [1.2] if index == 2 else [])
+    monkeypatch.setattr(condenser, "evaluate", topology)
+    calls = []
+    phi = np.arange(16) * 2*np.pi/16
+    x, y, tx, ty = 1e-10*np.cos(phi), 1e-10*np.sin(phi), .03*np.cos(phi), .03*np.sin(phi)
+    emitted = SimpleNamespace(x_m=x, y_m=y, tx_rad=tx, ty_rad=ty,
+        flight_time_s=np.zeros(16), energy_offset_ev=np.zeros(16), weight=np.ones(16),
+        alive=np.ones(16, bool), ray_id=np.arange(16))
+    def capture(state, planes, **kwargs):
+        z = np.asarray(planes)
+        calls.append(z.copy())
+        cp = SimpleNamespace(z_mm=z, x_m=np.tile(x, (len(z), 1)), y_m=np.tile(y, (len(z), 1)),
+            tx_rad=np.tile(tx, (len(z), 1)), ty_rad=np.tile(ty, (len(z), 1)),
+            flight_time_s=np.zeros((len(z), 16)), kinetic_energy_ev=np.full((len(z), 16), 300000.))
+        return SimpleNamespace(exit_bundle=emitted), cp, np.ones((len(z), 16), bool)
+    monkeypatch.setattr(beam_audit, "incident_checkpoints", capture)
+    return state, calls
+
+
+def test_extra_capture_planes_are_exact_in_initial_capture_and_every_refinement(capture_observer):
+    state, calls = capture_observer
+    extras = (7.651, 7.649, 7.651)
+    report = qualification.observe(state, extra_capture_planes_mm=extras)
+    assert len(calls) == 3
+    assert report["extra_capture_planes_mm"] == [7.649, 7.651]
+    for planes in calls:
+        assert np.all(np.diff(planes) > 0)
+        assert all(np.count_nonzero(planes == value) == 1 for value in set(extras))
+    assert 1.1 in calls[1] and 1.1 in calls[2] and 1.2 in calls[2]
+    assert report["snapshot_digest"] == "unchanged-state"
+
+
+def test_default_capture_planes_and_refinement_sets_are_unchanged(capture_observer):
+    state, calls = capture_observer
+    report = qualification.observe(state)
+    expected = np.unique(np.r_[np.arange(0., 10.1, .5), 9.9998, 9.9999])
+    np.testing.assert_array_equal(calls[0], expected)
+    np.testing.assert_array_equal(calls[1], np.array([0., 1.1, 2., 4., 6., 8., 10.]))
+    np.testing.assert_array_equal(calls[2], np.array([0., 1.1, 1.2, 2., 4., 6., 8., 10.]))
+    assert report["extra_capture_planes_mm"] == []
+
+
+@pytest.mark.parametrize("values", [None, [True], [np.bool_(True)], ["1"], [[1.]],
+    [float("nan")], [float("inf")], [-.01], [10.01]])
+def test_invalid_extra_capture_planes_cannot_start_transport(capture_observer, values):
+    state, calls = capture_observer
+    with pytest.raises(ValueError, match="Extra capture planes"):
+        qualification.observe(state, extra_capture_planes_mm=values)
+    assert not calls
+
+
+def test_extra_capture_normalization_preserves_exact_boundary_values(capture_observer):
+    state, calls = capture_observer
+    below = np.nextafter(7.65, 0.)
+    above = np.nextafter(7.65, np.inf)
+    assert qualification.validated_extra_capture_planes(state,
+        [10., 0., above, below, 7.65, below]) == (0., below, 7.65, above, 10.)
+    assert not calls
