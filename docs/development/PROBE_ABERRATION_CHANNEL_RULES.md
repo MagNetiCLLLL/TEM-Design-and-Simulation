@@ -1,10 +1,18 @@
-# Probe-corrector channel rules at the R2 working point
+# Probe-corrector channel rules and physical-drive qualification
 
-These rules apply to the 300 kV, Normal Nanoprobe, two-main-hexapole assembly
-at the specimen entrance of the R2-width-placed working point. A channel in
-this table is a real excitation in the unified particle field. A fitted
-aberration is an observable of the whole column. Multiple excitations can
-contribute to the same observable, with different directions and side effects.
+The historical response table below applies to the 300 kV, Normal Nanoprobe,
+two-main-hexapole assembly at the specimen entrance of the R2-width-placed
+working point. Its channels are perturbations of the unified model field;
+they are not all verified independent windings or supplies. A fitted aberration
+is an observable of the whole column. Multiple excitations can contribute to
+the same observable, with different directions and side effects.
+
+The [fixed-axis A5 continuation](probe_a5_physical_20261101/README.md) supersedes
+any interpretation of the table as a hardware control map. Main-hexapole
+normal/skew directions can require changing a fixed installation angle;
+HPC/HPol hosts and electrical quadratures remain unverified. The upper-only
+objective experiment is not an independent ordinary supply. Use the qualified
+subset below for continuation from the accepted A5 point.
 
 ## Control selection
 
@@ -140,3 +148,34 @@ regression are maintained in the repository.
 ## Physical drive audit
 
 The subsequent [stage 2 inventory](probe_stage12_20261101/README.md#step-2-drive-inventory) distinguishes these mathematical perturbation directions from verified winding or supply freedoms. Use it before registering a direction as a physical channel.
+
+### Current fixed-axis A5 rule
+
+- Use HP1/HP2 scalar strength with both installation angles frozen, together
+  with TL22/TL21/TL12 and ADL for matching. Use the installed Mini Condenser
+  scalar and shared Objective scalar for physical focus placement. The latter
+  scales both objective lobes; do not label it an independent upper-lens drive.
+- These eight installed scalar excitations have eight distinguishable sampled
+  field responses. After exact linear protection of C1, A2, C3 and alpha95,
+  the measured local A5 response has two resolved components. Adding Mini
+  improves their scaled singular-value ratio from about 474 to 18.4. This
+  depends on the documented diagnostic steps and does not establish OEM
+  winding calibration or a large-range independent A5 knob.
+- Re-measure the native finite-source crossover after every candidate.
+  Preserving pencil C1 does not preserve the RMS waist after other
+  aberrations change. Explicit shared-Objective compensation is permissible;
+  image-plane refocus is not a measurement of that compensation.
+- The executed coupled candidate reduces A5 by only about 0.30% and outer
+  sixth-harmonic current by about 3.54%, while protecting A2/C3 within 5 pm
+  at 30 mrad and retaining the original current. D4/C5 changes are about
+  28.7/24.3 pm, and the inner threefold tail and D95/RMS focus separation
+  increase. It is a review candidate, not an accepted independent-A5
+  correction. The original accepted A5 input remains authoritative.
+- Keep all source IDs/weights, angle, transmission, radial-shell harmonics,
+  inner threefold current and per-order coefficients in the acceptance record.
+  A six-lobed current image alone cannot identify A5 or exclude D4/C5 coupling.
+
+[Drive audit](probe_a5_physical_20261101/driver-audit.json) |
+[Measured response](probe_a5_physical_20261101/protected-response.json) |
+[Outcome](probe_a5_physical_20261101/outcome.json) |
+[Every executed image](probe_a5_physical_20261101/IMAGE_HISTORY.md)

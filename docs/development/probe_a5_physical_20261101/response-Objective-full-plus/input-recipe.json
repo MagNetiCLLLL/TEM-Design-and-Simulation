@@ -1,0 +1,11 @@
+{
+  "baseline_input": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "baseline_package": "docs/development/probe_stage12_20261101/inputs/portable-probe.temwp",
+  "changes": {
+    "Objective": 1.0
+  },
+  "expected_input": "d0b7b24bbc4804d8b2d4e54b07a017ce0c0423c85d04df8e3d485eaf6eed7adb",
+  "full_snapshot_local": "outputs\\probe-a5-physical-20261101\\response-Objective-full-plus\\snapshot.json",
+  "maximum_step_mm": 0.05,
+  "restoration": "load_baseline followed by the registered scalar apply function"
+}

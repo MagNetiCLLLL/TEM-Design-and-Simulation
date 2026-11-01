@@ -1,0 +1,161 @@
+{
+  "baseline": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "baseline_limitation": "The accepted auxiliary fields remain present and frozen, not hardware-certified",
+  "drivers": [
+    {
+      "availability": "SUPPORTED_SCALAR_MODEL_EXCITATION",
+      "changed_sources": [
+        "probe_hp1_hexapole"
+      ],
+      "channel": "HP1",
+      "component": "probe_hp1_hexapole",
+      "coordinate": "strength_m3",
+      "host_status": "installed model body",
+      "step": 1000.0,
+      "unit": "m^-3",
+      "value": 4726099.002271331,
+      "winding_current_calibration": "UNVERIFIED"
+    },
+    {
+      "availability": "SUPPORTED_SCALAR_MODEL_EXCITATION",
+      "changed_sources": [
+        "probe_hp2_hexapole"
+      ],
+      "channel": "HP2",
+      "component": "probe_hp2_hexapole",
+      "coordinate": "strength_m3",
+      "host_status": "installed model body",
+      "step": 1000.0,
+      "unit": "m^-3",
+      "value": 5418120.656511155,
+      "winding_current_calibration": "UNVERIFIED"
+    },
+    {
+      "availability": "SUPPORTED_SCALAR_MODEL_EXCITATION",
+      "changed_sources": [
+        "probe_tl22_lens"
+      ],
+      "channel": "TL22",
+      "component": "probe_tl22_lens",
+      "coordinate": "percent",
+      "host_status": "installed model body",
+      "step": 0.001,
+      "unit": "percentage point",
+      "value": 53.3170922421232,
+      "winding_current_calibration": "UNVERIFIED"
+    },
+    {
+      "availability": "SUPPORTED_SCALAR_MODEL_EXCITATION",
+      "changed_sources": [
+        "probe_tl21_lens"
+      ],
+      "channel": "TL21",
+      "component": "probe_tl21_lens",
+      "coordinate": "percent",
+      "host_status": "installed model body",
+      "step": 0.001,
+      "unit": "percentage point",
+      "value": 59.79782356208784,
+      "winding_current_calibration": "UNVERIFIED"
+    },
+    {
+      "availability": "SUPPORTED_SCALAR_MODEL_EXCITATION",
+      "changed_sources": [
+        "probe_tl12_lens"
+      ],
+      "channel": "TL12",
+      "component": "probe_tl12_lens",
+      "coordinate": "percent",
+      "host_status": "installed model body",
+      "step": 0.001,
+      "unit": "percentage point",
+      "value": 47.85166852554716,
+      "winding_current_calibration": "UNVERIFIED"
+    },
+    {
+      "availability": "SUPPORTED_SCALAR_MODEL_EXCITATION",
+      "changed_sources": [
+        "adapter_lens"
+      ],
+      "channel": "ADL",
+      "component": "adapter_lens",
+      "coordinate": "percent",
+      "host_status": "installed model body",
+      "step": 0.001,
+      "unit": "percentage point",
+      "value": 9.996971739260768,
+      "winding_current_calibration": "UNVERIFIED"
+    },
+    {
+      "availability": "SUPPORTED_SCALAR_MODEL_EXCITATION",
+      "changed_sources": [
+        "objective_lens"
+      ],
+      "channel": "Objective",
+      "component": "objective_lens",
+      "coordinate": "percent",
+      "host_status": "installed model body",
+      "step": 2e-05,
+      "unit": "percentage point",
+      "value": 29.29343672860418,
+      "winding_current_calibration": "UNVERIFIED"
+    },
+    {
+      "availability": "SUPPORTED_SCALAR_MODEL_EXCITATION",
+      "changed_sources": [
+        "mini_condenser"
+      ],
+      "channel": "Mini",
+      "component": "mini_condenser",
+      "coordinate": "percent",
+      "host_status": "installed model body",
+      "step": 0.0001,
+      "unit": "percentage point",
+      "value": 27.077837967886616,
+      "winding_current_calibration": "UNVERIFIED"
+    }
+  ],
+  "excluded": [
+    "independent HP normal/skew",
+    "unverified auxiliary hosts",
+    "upper-only supply",
+    "virtual DP12"
+  ],
+  "frozen": [
+    "all hexapole orientations",
+    "HPC",
+    "HPol",
+    "all quadrupoles",
+    "all dipoles",
+    "C2/C3",
+    "Mini Condenser mode and polarity",
+    "upper/lower objective shape and relative amplitude"
+  ],
+  "original_baseline": "4e3d3a67260f7127d4198184f891624480988a6147798e0ab5deeec0d765e61d",
+  "qualification": "Installed model excitation audit; not OEM electrical or magnetostatic qualification",
+  "sampled_field_rank": {
+    "column_norms": [
+      1.1665745342332222e-08,
+      1.1665745342334776e-08,
+      2.3819443572278375e-05,
+      2.2363224754890083e-05,
+      2.471083179674587e-05,
+      5.391454210336773e-06,
+      2.2324409955544747e-06,
+      2.021789317797026e-06
+    ],
+    "normalized_singular_values": [
+      1.0017973513469494,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.9999999999999997,
+      0.9999999999999994,
+      0.998199412359193
+    ],
+    "rank": 8,
+    "relative_threshold": 1e-08
+  },
+  "schema": "conservative-scalar-drive-audit-v1"
+}

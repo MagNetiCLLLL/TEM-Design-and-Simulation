@@ -1,0 +1,11 @@
+{
+  "baseline_input": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "baseline_package": "docs/development/probe_stage12_20261101/inputs/portable-probe.temwp",
+  "changes": {
+    "Mini": -0.5
+  },
+  "expected_input": "a157a9f54a7b6e755b41c5b549287d357b2c97f8a2b06182b598493cf80ff5de",
+  "full_snapshot_local": "outputs\\probe-a5-physical-20261101\\response-Mini-half-minus\\snapshot.json",
+  "maximum_step_mm": 0.05,
+  "restoration": "load_baseline followed by the registered scalar apply function"
+}

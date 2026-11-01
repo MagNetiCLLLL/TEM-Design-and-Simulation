@@ -1,0 +1,85 @@
+{
+  "a5_fraction": [
+    0.9990043335900134,
+    0.9990026835801463
+  ],
+  "all_scalar_and_probe_gates": false,
+  "collateral_vector_pm": {
+    "A1": 0.3874755047812695,
+    "A2": 1.6139189019150717,
+    "A3": 9.687293154742225e-07,
+    "A4": 0.00019660105665979973,
+    "A5": 0.8188952077833376,
+    "B2": 3.660899455036807e-05,
+    "B4": 0.0007802855745772798,
+    "C1": 4.655398745663431,
+    "C3": 2.8407732253491926,
+    "C5": 30.96476878817855,
+    "C52": 0.0019167734190235594,
+    "C54": 0.00011086847637188069,
+    "D4": 25.002873344255914,
+    "S3": 0.010550842838727403
+  },
+  "final_qualification": "PENDING_INTEGRATION_AND_TOPOLOGY",
+  "focus_compensation_scope": "C1 may change through explicit physical drives",
+  "gates": {
+    "a2_protected": true,
+    "a5_improvement": false,
+    "angle": true,
+    "c3_protected": true,
+    "core_current": true,
+    "d95": false,
+    "fixed_population": true,
+    "inner_threefold_preserved": false,
+    "native_focus": false,
+    "original_transmission": true,
+    "other_aberrations_protected": false,
+    "outer_current": false,
+    "outer_shells": true,
+    "outer_sixfold_improvement": false,
+    "rms": true
+  },
+  "max_collateral_pm": 30.96476878817855,
+  "measured": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 29.739597470186823,
+    "centroid_x_m": -6.199181154937397e-12,
+    "centroid_y_m": 1.4062008507601046e-12,
+    "core_50pm_a": 2.3600000000000003e-06,
+    "current_a": 1e-05,
+    "d50_nm": 0.6095104370252326,
+    "d90_nm": 2.097190719923458,
+    "d95_nm": 2.516364988204808,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": 0.0,
+    "rms_radius_nm": 1.6865133382204107,
+    "surviving_rays": 2000,
+    "threefold_tail": {
+      "annular_current_a": 5.529999999999997e-06,
+      "annulus_nm": [
+        0.1,
+        1.0
+      ],
+      "harmonic_current_a": 1.1741252006406804e-07,
+      "normalized_m3": 0.021231920445581934,
+      "outside_1nm_current_a": 1.219999999999999e-06,
+      "shell_edges_nm": [
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "shell_harmonic_currents_a": [
+        4.030243086005149e-08,
+        6.980879051563065e-08,
+        1.8317478762194387e-08,
+        1.5004256571961127e-07
+      ],
+      "shell_harmonic_sum_a": 2.784712658574878e-07
+    },
+    "z_mm": 1599.1999975
+  },
+  "name": "native-requested-small",
+  "waist_offset_nm": 0.7000001005508238
+}

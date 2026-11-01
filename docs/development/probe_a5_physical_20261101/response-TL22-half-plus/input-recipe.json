@@ -1,0 +1,11 @@
+{
+  "baseline_input": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "baseline_package": "../probe_stage12_20261101/inputs/portable-probe.temwp",
+  "changes": {
+    "TL22": 0.5
+  },
+  "expected_input": "a034fb9b58518a469ed79b0d8ba4807a93c8c5d342c8bdc11252244cd3d29ee0",
+  "full_snapshot_local": "outputs\\probe-a5-physical-20261101\\response-TL22-half-plus\\snapshot.json",
+  "maximum_step_mm": 0.05,
+  "restoration": "load_baseline followed by the registered scalar apply function"
+}

@@ -1,0 +1,171 @@
+{
+  "accepted_working_point": "unchanged original A5 baseline",
+  "archive_trials": 41,
+  "baseline": {
+    "a5_mm": 33.468392916619386,
+    "a5_quarter_mm": 33.47066142490326,
+    "alpha95_mrad": 29.77701008610638,
+    "core_50pm_ua": 2.33,
+    "d95_nm": 2.5023020930788786,
+    "image": "baseline/incident-probe.png",
+    "inner_m3_ua": 0.09911716567315657,
+    "name": "baseline",
+    "outer_current_ua": 1.199999999999999,
+    "outer_m6_ua": 0.5084456921016085,
+    "outer_shell_m6_sum_ua": 0.7203083944645307,
+    "particles": 2000,
+    "rms_minus_d95_z_nm": -23.600000076839933,
+    "rms_radius_nm": 1.709906702873224,
+    "step_mm": 0.05,
+    "transmitted_ua": 10.0,
+    "waist_offset_nm": -0.10000007932831068
+  },
+  "candidate": "native-mid-polished",
+  "candidate_fine": {
+    "a5_mm": 33.36833811502368,
+    "a5_quarter_mm": 33.37056106480913,
+    "alpha95_mrad": 29.764821212037702,
+    "core_50pm_ua": 2.365,
+    "d95_nm": 2.49533746656035,
+    "image": "native-mid-polished-fine/incident-probe.png",
+    "inner_m3_ua": 0.10960698378184756,
+    "name": "native-mid-polished-fine",
+    "outer_current_ua": 1.174999999999999,
+    "outer_m6_ua": 0.49046214553903694,
+    "outer_shell_m6_sum_ua": 0.6997138772585746,
+    "particles": 2000,
+    "rms_minus_d95_z_nm": -26.20000009301293,
+    "rms_radius_nm": 1.6979555973812421,
+    "step_mm": 0.025,
+    "transmitted_ua": 10.0,
+    "waist_offset_nm": 0.0
+  },
+  "candidate_measured": {
+    "a5_mm": 33.36833811238358,
+    "a5_quarter_mm": 33.3705773733512,
+    "alpha95_mrad": 29.764821201204835,
+    "core_50pm_ua": 2.365,
+    "d95_nm": 2.4953503609147685,
+    "image": "native-mid-polished/incident-probe.png",
+    "inner_m3_ua": 0.10961102719909269,
+    "name": "native-mid-polished",
+    "outer_current_ua": 1.174999999999999,
+    "outer_m6_ua": 0.4904622145014745,
+    "outer_shell_m6_sum_ua": 0.6997121358816291,
+    "particles": 2000,
+    "rms_minus_d95_z_nm": -26.20000009301293,
+    "rms_radius_nm": 1.6979558337416225,
+    "step_mm": 0.05,
+    "transmitted_ua": 10.0,
+    "waist_offset_nm": 0.0
+  },
+  "candidate_package_sha256": "9be41e5ac5c97a055768818af6598cdcd661651ff3b04d4c424ad6c223a765cb",
+  "driver_changes": [
+    {
+      "baseline": 4726099.002271331,
+      "candidate": 4714958.0224493025,
+      "change": -11140.979822028205,
+      "channel": "HP1",
+      "coordinate": "strength_m3",
+      "unit": "m^-3"
+    },
+    {
+      "baseline": 5418120.656511155,
+      "candidate": 5407229.331548381,
+      "change": -10891.324962774546,
+      "channel": "HP2",
+      "coordinate": "strength_m3",
+      "unit": "m^-3"
+    },
+    {
+      "baseline": 53.3170922421232,
+      "candidate": 53.30996297614034,
+      "change": -0.007129265982860752,
+      "channel": "TL22",
+      "coordinate": "percent",
+      "unit": "percentage point"
+    },
+    {
+      "baseline": 59.79782356208784,
+      "candidate": 59.79228016693306,
+      "change": -0.005543395154780918,
+      "channel": "TL21",
+      "coordinate": "percent",
+      "unit": "percentage point"
+    },
+    {
+      "baseline": 47.85166852554716,
+      "candidate": 47.82775323312425,
+      "change": -0.02391529242291528,
+      "channel": "TL12",
+      "coordinate": "percent",
+      "unit": "percentage point"
+    },
+    {
+      "baseline": 9.996971739260768,
+      "candidate": 9.954971739260769,
+      "change": -0.042,
+      "channel": "ADL",
+      "coordinate": "percent",
+      "unit": "percentage point"
+    },
+    {
+      "baseline": 29.29343672860418,
+      "candidate": 29.295874992301094,
+      "change": 0.0024382636969125116,
+      "channel": "Objective",
+      "coordinate": "percent",
+      "unit": "percentage point"
+    },
+    {
+      "baseline": 27.077837967886616,
+      "candidate": 27.0579933171575,
+      "change": -0.019844650729116446,
+      "channel": "Mini",
+      "coordinate": "percent",
+      "unit": "percentage point"
+    }
+  ],
+  "failed_strict_gates": [
+    "other_aberrations_protected",
+    "a5_improvement",
+    "inner_threefold_preserved"
+  ],
+  "implementation_sha256": {
+    "scripts\\calibrate_physical_a5.py": "0e301783ae68af3b1c027d1cc57ffaa667eb1a1f6ff417677a66ce2045246256",
+    "scripts\\design_native_a5.py": "3081d22cecec6043e3eb92e5c80c3f05597b4e9972216c62f7ac35be0008b739",
+    "scripts\\polish_native_a5.py": "ef4b233903a1b97a2caab786c8d6b2a565580d165969c767159b9b11954c1275",
+    "scripts\\report_physical_a5.py": "dda71b059820d319cebebaa74d820c4e0db47bdb06da4d241b31639ebbb1186b"
+  },
+  "input_package_restore_exact": true,
+  "limitations": [
+    "D4/C5 coupling exceeds the independent-A5 budget",
+    "Inner threefold tail increases",
+    "D95/RMS focus separation increases",
+    "No verified winding-current map or independent OEM supply rank",
+    "No source-population convergence or coherent/atomic-image validation",
+    "Local search is not a global feasibility proof"
+  ],
+  "original_source": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+  "requested_scope_measured_checks": {
+    "a2_protected": true,
+    "a5_decreases_both_pupils_and_steps": true,
+    "angle": true,
+    "c3_protected": true,
+    "core_current": true,
+    "d95": true,
+    "fixed_population": true,
+    "native_focus": true,
+    "normal_topology": true,
+    "original_transmission": true,
+    "outer_current": true,
+    "outer_shells": true,
+    "outer_sixfold_improvement": true,
+    "rms": true
+  },
+  "requested_scope_pass": true,
+  "schema": "physical-a5-study-outcome-v1",
+  "scope_note": "1% A5 and 5 pm all-other-term gates are investigator study targets, not requirements supplied by the user. Their failures remain visible.",
+  "status": "COUPLED_REVIEW_CANDIDATE_NOT_ACCEPTED",
+  "strict_study_pass": false
+}

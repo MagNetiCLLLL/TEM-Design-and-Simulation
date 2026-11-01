@@ -1,0 +1,302 @@
+{
+  "baseline_surface_exact": {
+    "alive": true,
+    "flight_time_s": true,
+    "kinetic_energy_ev": true,
+    "tx_rad": true,
+    "ty_rad": true,
+    "x_m": true,
+    "y_m": true
+  },
+  "completed_trials": 41,
+  "schema": "fixed-source-recipe-verification-v1",
+  "trials": [
+    {
+      "current_weights_exact": true,
+      "input_digest": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "baseline"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "b01d2dc48056cc03ecb0840cf7685ddc1fbd48e656fe7de6930e01a951605773",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "baseline-fine"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "987b2478eedc44cdb0f26098a1c877251b89fdc9fa879428600b780495dd7f30",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "candidate-a5"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "d68b93acfc0b538b2b861cd782940bc0f29ecfa3f86c5701a89c04b32aff28ea",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "native-mid-focused"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "25974b1148dcf6d50a2067aa1ed84615cf09d66eeff36730239f761d75a1a50b",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "native-mid-polished"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "8d1a7852d798d9ba16eaa0bc94580447017019d7fe92e7a58736f3392f0a0c98",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "native-mid-polished-fine"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "8a7361a0edeff4b00ef227b51052e2208324734bab60f43e1bb1359f2400d242",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "native-requested-mid"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "0ad3efffbd3df87c5f8ff057d7a289de1d4e4783220df0e310960bf73770120d",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "native-requested-small"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "5f590e243c0cb0969c533cb40557941c34fae0a64468b97d0bc49366b95bbd82",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "native-small-focused"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "f996f6972b6c14940020e46b2c3fde2873b83cbd1aece95b92255713f2aee9ba",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-ADL-full-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "5ef675d0e091166d0eec8f8ee6f0a5f769f7973bdd965852f0f59b93cc3b0d72",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-ADL-full-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "b44a6b0c5a8807390fa5ecf3fee611244f33a13f997e335372d8bf02ad8e414d",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-ADL-half-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "98f79f97f257ea46614074d10895553d9cf4413f9acaca697dc11f8b88bb5be8",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-ADL-half-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "016998574a80430fc3d64bd86479017a00d03115d365777243fc6ff91919696c",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-HP1-full-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "4a16a06d2e572de040bdad239921476df4db132995de2ca6bb6b7c7b5e515cc0",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-HP1-full-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "657073c35290eb9bea3bf4c02416d4a709bdcfcd2dda3f52ee6a6b55b3186426",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-HP1-half-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "7d602ef1f8a702325da823faa6e2a29d933d799480abca2d07b84d9781f403b4",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-HP1-half-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "e3e8a6d12d37c98cb81f3d159b747d9a52da6c48211a385b665ea11c9baddcb4",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-HP2-full-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "3665677479fecacf95187a48d144f453f0b76057b4b73cb99a57b9260b12d752",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-HP2-full-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "b12417b2089dfc6706cc4327540941d17762d416df500e7edbb154e8663658b9",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-HP2-half-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "6b5698fcf2923b0884bdaab07f2a436c3b5a0beed2591537355f00ec4d4c8158",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-HP2-half-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "5bb9cf1d0bb0fa6355e956f05fead539a60ef8318002d501fb6492ecf3292a25",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-Mini-full-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "3f36dc574727537a40dee7c2f77e7a025fee9a005d65ebb8ee8eaf548e41ac20",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-Mini-full-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "a157a9f54a7b6e755b41c5b549287d357b2c97f8a2b06182b598493cf80ff5de",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-Mini-half-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "a1880094166669570f18824f40d01f7e9ed66df136041231a2ec581e113cc1be",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-Mini-half-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "cfbc6c4b6ad896a11a64a25c7de9c0a44636834e99384bcbbd6ec5004a0f8250",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-Objective-full-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "d0b7b24bbc4804d8b2d4e54b07a017ce0c0423c85d04df8e3d485eaf6eed7adb",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-Objective-full-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "95257edb08d543a9ece3e47988fa7c863e1cc739c6052fe1ef5e2f5f6c65908c",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-Objective-half-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "dc9809fbece684fc8425f3534fcfdea46ac09da92c254295d61ac6b97eeee6ac",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-Objective-half-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "abc6b92db34ded43bdbeae9f4aa658a3850a424026afeca0ce644c597d9ea163",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL12-full-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "ede27f6f4144d205ede048bcf2dd8f4d3bb330559cfe724b35cda9abfabac961",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL12-full-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "9bcb1ba420cfd686cfa0841fb36e8ddef1f29497859d91b0e037a7a1aec26549",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL12-half-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "ebb4f39570f64266b59294e5b7c0c9c7ce95fd125db547494ff45d13d5706242",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL12-half-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "029434dce6af08f5c198286fa6e159f1ae6a94bfec3a087a0a2bc957e4d2d5ed",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL21-full-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "0f3ea1f45ffd21bb4c6ffab310537407bf120216ab569e8c6b91e005e2259532",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL21-full-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "73cb35b6ba86ee6b9780f78b95339712014d65878cfc17ccc216517e1cf17458",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL21-half-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "fe8e1d5322c3fc7148f7c4deed4512e8c791a61e672a3ee954ef533a759372f8",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL21-half-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "e34a0253bb7258f70c621c99a2265dd1525e8ee98c83eb85a47b5f54ea77a631",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL22-full-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "99f7835b8b63fc4c50cf632e5ab887b0222e7e2119c1d2ea8e1519d6e224dd11",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL22-full-plus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "115c43f2d3ade18864745635af258d597e89aba8e2b8af0a3623c4e6d69f01ba",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL22-half-minus"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "a034fb9b58518a469ed79b0d8ba4807a93c8c5d342c8bdc11252244cd3d29ee0",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "response-TL22-half-plus"
+    }
+  ]
+}

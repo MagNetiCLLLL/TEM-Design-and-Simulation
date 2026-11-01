@@ -1,0 +1,11 @@
+{
+  "baseline_input": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "baseline_package": "docs/development/probe_stage12_20261101/inputs/portable-probe.temwp",
+  "changes": {
+    "ADL": 1.0
+  },
+  "expected_input": "5ef675d0e091166d0eec8f8ee6f0a5f769f7973bdd965852f0f59b93cc3b0d72",
+  "full_snapshot_local": "outputs\\probe-a5-physical-20261101\\response-ADL-full-plus\\snapshot.json",
+  "maximum_step_mm": 0.05,
+  "restoration": "load_baseline followed by the registered scalar apply function"
+}

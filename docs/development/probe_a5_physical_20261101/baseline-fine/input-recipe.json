@@ -1,0 +1,9 @@
+{
+  "baseline_input": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "baseline_package": "docs/development/probe_stage12_20261101/inputs/portable-probe.temwp",
+  "changes": {},
+  "expected_input": "b01d2dc48056cc03ecb0840cf7685ddc1fbd48e656fe7de6930e01a951605773",
+  "full_snapshot_local": "outputs\\probe-a5-physical-20261101\\baseline-fine\\snapshot.json",
+  "maximum_step_mm": 0.025,
+  "restoration": "load_baseline followed by the registered scalar apply function"
+}

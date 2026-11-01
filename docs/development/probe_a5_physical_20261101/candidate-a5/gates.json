@@ -1,0 +1,83 @@
+{
+  "a5_fraction": [
+    0.9984422151713933,
+    0.9984425958425184
+  ],
+  "all_scalar_and_probe_gates": false,
+  "collateral_vector_pm": {
+    "A1": 0.05410183687134079,
+    "A2": 4.863775184048437,
+    "A3": 1.0070140245222906e-06,
+    "A4": 3.987640517218659e-05,
+    "A5": 1.266918859910718,
+    "B2": 0.0001161203260748457,
+    "B4": 0.00015515403292288521,
+    "C1": 1.478800901678522,
+    "C3": 5.108281508357943,
+    "C5": 5.001069962342507,
+    "C52": 0.0002927424923386048,
+    "C54": 5.899250292585965e-05,
+    "D4": 5.008721760988314,
+    "S3": 0.0013239992809970002
+  },
+  "final_qualification": "PENDING_INTEGRATION_AND_TOPOLOGY",
+  "gates": {
+    "a2_protected": true,
+    "a5_improvement": false,
+    "angle": true,
+    "c3_protected": false,
+    "core_current": true,
+    "d95": true,
+    "fixed_population": true,
+    "native_focus": false,
+    "original_transmission": true,
+    "other_aberrations_protected": false,
+    "outer_current": true,
+    "outer_shells": true,
+    "outer_sixfold_improvement": true,
+    "rms": false
+  },
+  "max_collateral_pm": 5.108281508357943,
+  "measured": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 29.793180759438957,
+    "centroid_x_m": -6.210488238676236e-12,
+    "centroid_y_m": 1.5181995321323094e-12,
+    "core_50pm_a": 2.3400000000000005e-06,
+    "current_a": 1e-05,
+    "d50_nm": 0.611540204889319,
+    "d90_nm": 2.07411566080745,
+    "d95_nm": 2.495049914528628,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": 0.0,
+    "rms_radius_nm": 1.7197610533305576,
+    "surviving_rays": 2000,
+    "threefold_tail": {
+      "annular_current_a": 5.594999999999997e-06,
+      "annulus_nm": [
+        0.1,
+        1.0
+      ],
+      "harmonic_current_a": 1.1981049988804964e-07,
+      "normalized_m3": 0.02141385163325285,
+      "outside_1nm_current_a": 1.1949999999999987e-06,
+      "shell_edges_nm": [
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "shell_harmonic_currents_a": [
+        3.731055556833745e-08,
+        6.127119108719507e-08,
+        1.4058454577249804e-08,
+        1.4114117882718688e-07
+      ],
+      "shell_harmonic_sum_a": 2.537813800599692e-07
+    },
+    "z_mm": 1599.1999975
+  },
+  "name": "candidate-a5",
+  "waist_offset_nm": -0.4999999418942025
+}

@@ -1,0 +1,11 @@
+{
+  "baseline_input": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "baseline_package": "docs/development/probe_stage12_20261101/inputs/portable-probe.temwp",
+  "changes": {
+    "HP2": 1.0
+  },
+  "expected_input": "3665677479fecacf95187a48d144f453f0b76057b4b73cb99a57b9260b12d752",
+  "full_snapshot_local": "outputs\\probe-a5-physical-20261101\\response-HP2-full-plus\\snapshot.json",
+  "maximum_step_mm": 0.05,
+  "restoration": "load_baseline followed by the registered scalar apply function"
+}

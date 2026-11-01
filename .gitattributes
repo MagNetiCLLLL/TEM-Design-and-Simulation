@@ -3,6 +3,14 @@ configs/reference_samples/*.cif -text
 
 # Preserve the accepted probe inputs, original particle weights and evidence hashes.
 docs/development/probe_stage12_20261101/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+docs/development/probe_a5_physical_20261101/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+
+# Preserve the byte hashes recorded by the fixed-source A5 study.
+scripts/calibrate_physical_a5.py -text
+scripts/design_native_a5.py -text
+scripts/polish_native_a5.py -text
+scripts/report_physical_a5.py -text
+tests/test_physical_a5_calibration.py -text
 
 # Retain the source bytes of the accepted optical snapshot, including its EOF.
 src/temsim/gui/crossover_survey_view.py whitespace=-blank-at-eof,blank-at-eol,space-before-tab,cr-at-eol

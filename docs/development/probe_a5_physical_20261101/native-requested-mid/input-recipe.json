@@ -1,0 +1,18 @@
+{
+  "baseline_input": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "baseline_package": "docs/development/probe_stage12_20261101/inputs/portable-probe.temwp",
+  "changes": {
+    "ADL": -39.99999999999999,
+    "HP1": -11.583431101259963,
+    "HP2": -11.351955586485401,
+    "Mini": -200.00000000000006,
+    "Objective": 123.91318484562557,
+    "TL12": -24.782846483545377,
+    "TL21": -5.649682268104252,
+    "TL22": -7.290833379692867
+  },
+  "expected_input": "8a7361a0edeff4b00ef227b51052e2208324734bab60f43e1bb1359f2400d242",
+  "full_snapshot_local": "outputs\\probe-a5-physical-20261101\\native-requested-mid\\snapshot.json",
+  "maximum_step_mm": 0.05,
+  "restoration": "load_baseline followed by the registered scalar apply function"
+}
