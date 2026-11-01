@@ -1,0 +1,878 @@
+{
+  "controls_applied_to_baseline": false,
+  "dp12": {
+    "command_mapping": "AC X/Y command is distributed over the existing upper and lower scan coils",
+    "independent_supply": false,
+    "part_present": true,
+    "role": "virtual reference",
+    "runtime_field_sources": [
+      "ac_deflector:0",
+      "ac_deflector:1"
+    ]
+  },
+  "duplicate_magnetic_sources": false,
+  "field_digest": "b267db0d3c17a5c842a6e95bc66b520456ebeb3937530bf4b9665d4b1e84a6cb",
+  "geometry_digest": "05b92b8bc0932a86a295bd8c683bd165836c6821ba4da6a7605462ceafc96cf5",
+  "ideal_example_scope": "Demonstrates that six equally spaced single-family poles do not prove two quadratures",
+  "ideal_six_equal_poles_m3_rank": 1,
+  "input_digest": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "mini_condenser": {
+    "installed": true,
+    "optical_equivalence_to_tl11": "NOT_VERIFIED_BY_STAGE_2",
+    "separate_probe_tl11": false
+  },
+  "model_field_rank": {
+    "column_norms": [
+      1.735886794984968e-08,
+      1.7358867949834945e-08,
+      1.4287057260955175e-08,
+      1.4287057260955154e-08,
+      1.2170152719152515e-08,
+      1.2170152719152937e-08,
+      1.2170152719152856e-08,
+      1.2170152719152914e-08,
+      3.421087076626609e-05,
+      3.2119056062294843e-05,
+      3.7244331083050344e-05,
+      8.124295983948606e-06,
+      2.379932814247061e-06,
+      7.825172783934612e-08,
+      7.825172783934612e-08,
+      7.825172783934613e-08,
+      7.825172783934613e-08,
+      2.625822226164267e-06,
+      2.6258222261642662e-06,
+      2.6258222261642667e-06,
+      2.6258222261642675e-06,
+      2.625822226164268e-06,
+      2.625822226164268e-06,
+      2.625822226164266e-06,
+      2.6258222261642662e-06,
+      2.6258222261642662e-06,
+      2.6258222261642662e-06,
+      1.1023561746925692e-08,
+      1.1023561746925692e-08
+    ],
+    "normalized_singular_values": [
+      1.000679521701035,
+      1.0006795217010136,
+      1.0000000000000329,
+      1.0000000000000187,
+      1.0000000000000022,
+      1.0000000000000009,
+      1.0000000000000007,
+      1.0000000000000004,
+      1.0000000000000002,
+      1.0000000000000002,
+      1.0000000000000002,
+      1.0,
+      0.9999999999999999,
+      0.9999999999999999,
+      0.9999999999999999,
+      0.9999999999999999,
+      0.9999999999999998,
+      0.9999999999999998,
+      0.9999999999999997,
+      0.9999999999999997,
+      0.9999999999999997,
+      0.9999999999999997,
+      0.9999999999999996,
+      0.9999999999999993,
+      0.9999999999999898,
+      0.9999999999999815,
+      0.9999999999999742,
+      0.9993200162351525,
+      0.999320016235134
+    ],
+    "rank": 29,
+    "relative_threshold": 1e-08
+  },
+  "new_aberrations_tuned": false,
+  "original_input_digest": "4e3d3a67260f7127d4198184f891624480988a6147798e0ab5deeec0d765e61d",
+  "particle_propagation": false,
+  "physical_electrical_rank": "NOT_IDENTIFIABLE_FROM_AVAILABLE_RECORDS",
+  "physical_supply_count": null,
+  "production_channels": [
+    {
+      "channel": "HP1_normal",
+      "component": "probe_hp1_hexapole",
+      "coordinate": "normal",
+      "electrical_rank": null,
+      "evidence": "Two effective harmonics from strength and orientation; independent winding quadratures unverified",
+      "field_sources": [
+        "probe_hp1_hexapole"
+      ],
+      "host_status": "module component",
+      "limits": {
+        "maximum_strength_m3": 1000000000.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 2.8477391438821826e-13,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "orientation_rad",
+        "strength_m3"
+      ],
+      "step": 1000.0,
+      "unit": "m^-3",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "HP1_skew",
+      "component": "probe_hp1_hexapole",
+      "coordinate": "skew",
+      "electrical_rank": null,
+      "evidence": "Two effective harmonics from strength and orientation; independent winding quadratures unverified",
+      "field_sources": [
+        "probe_hp1_hexapole"
+      ],
+      "host_status": "module component",
+      "limits": {
+        "maximum_strength_m3": 1000000000.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 1.956581972783484e-12,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "orientation_rad",
+        "strength_m3"
+      ],
+      "step": 1000.0,
+      "unit": "m^-3",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "HP2_normal",
+      "component": "probe_hp2_hexapole",
+      "coordinate": "normal",
+      "electrical_rank": null,
+      "evidence": "Two effective harmonics from strength and orientation; independent winding quadratures unverified",
+      "field_sources": [
+        "probe_hp2_hexapole"
+      ],
+      "host_status": "module component",
+      "limits": {
+        "maximum_strength_m3": 1000000000.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 6.203066998884685e-13,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "orientation_rad",
+        "strength_m3"
+      ],
+      "step": 1000.0,
+      "unit": "m^-3",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "HP2_skew",
+      "component": "probe_hp2_hexapole",
+      "coordinate": "skew",
+      "electrical_rank": null,
+      "evidence": "Two effective harmonics from strength and orientation; independent winding quadratures unverified",
+      "field_sources": [
+        "probe_hp2_hexapole"
+      ],
+      "host_status": "module component",
+      "limits": {
+        "maximum_strength_m3": 1000000000.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 2.718943378724591e-13,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "orientation_rad",
+        "strength_m3"
+      ],
+      "step": 1000.0,
+      "unit": "m^-3",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "HPC_normal",
+      "component": "probe_hpc_hexapole",
+      "coordinate": "normal",
+      "electrical_rank": null,
+      "evidence": "Two effective harmonics from strength and orientation; independent winding quadratures unverified",
+      "field_sources": [
+        "probe_hpc_hexapole"
+      ],
+      "host_status": "unverified",
+      "limits": {
+        "maximum_strength_m3": 1000000000.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 3.427440154084632e-14,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "orientation_rad",
+        "strength_m3"
+      ],
+      "step": 1000.0,
+      "unit": "m^-3",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "HPC_skew",
+      "component": "probe_hpc_hexapole",
+      "coordinate": "skew",
+      "electrical_rank": null,
+      "evidence": "Two effective harmonics from strength and orientation; independent winding quadratures unverified",
+      "field_sources": [
+        "probe_hpc_hexapole"
+      ],
+      "host_status": "unverified",
+      "limits": {
+        "maximum_strength_m3": 1000000000.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 4.739130971155559e-14,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "orientation_rad",
+        "strength_m3"
+      ],
+      "step": 1000.0,
+      "unit": "m^-3",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "HPol_normal",
+      "component": "probe_hpol_hexapole",
+      "coordinate": "normal",
+      "electrical_rank": null,
+      "evidence": "Two effective harmonics from strength and orientation; independent winding quadratures unverified",
+      "field_sources": [
+        "probe_hpol_hexapole"
+      ],
+      "host_status": "unverified",
+      "limits": {
+        "maximum_strength_m3": 1000000000.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 7.723166124993863e-14,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "orientation_rad",
+        "strength_m3"
+      ],
+      "step": 1000.0,
+      "unit": "m^-3",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "HPol_skew",
+      "component": "probe_hpol_hexapole",
+      "coordinate": "skew",
+      "electrical_rank": null,
+      "evidence": "Two effective harmonics from strength and orientation; independent winding quadratures unverified",
+      "field_sources": [
+        "probe_hpol_hexapole"
+      ],
+      "host_status": "unverified",
+      "limits": {
+        "maximum_strength_m3": 1000000000.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 3.825849375614633e-14,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "orientation_rad",
+        "strength_m3"
+      ],
+      "step": 1000.0,
+      "unit": "m^-3",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "TL22",
+      "component": "probe_tl22_lens",
+      "coordinate": "percent",
+      "electrical_rank": null,
+      "evidence": "Single effective excitation scale; ampere-to-field transfer unavailable",
+      "field_sources": [
+        "probe_tl22_lens"
+      ],
+      "host_status": "module component",
+      "limits": {
+        "max_percent": 100.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 1.4445093227642876e-11,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "cc_mm",
+        "cs_mm",
+        "enabled",
+        "normalise_profile_peak",
+        "percent",
+        "polarity"
+      ],
+      "step": 0.001,
+      "unit": "percentage point",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "TL21",
+      "component": "probe_tl21_lens",
+      "coordinate": "percent",
+      "electrical_rank": null,
+      "evidence": "Single effective excitation scale; ampere-to-field transfer unavailable",
+      "field_sources": [
+        "probe_tl21_lens"
+      ],
+      "host_status": "module component",
+      "limits": {
+        "max_percent": 100.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 1.808557950186793e-11,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "cc_mm",
+        "cs_mm",
+        "enabled",
+        "normalise_profile_peak",
+        "percent",
+        "polarity"
+      ],
+      "step": 0.001,
+      "unit": "percentage point",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "TL12",
+      "component": "probe_tl12_lens",
+      "coordinate": "percent",
+      "electrical_rank": null,
+      "evidence": "Single effective excitation scale; ampere-to-field transfer unavailable",
+      "field_sources": [
+        "probe_tl12_lens"
+      ],
+      "host_status": "module component",
+      "limits": {
+        "max_percent": 100.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 8.36874628513832e-12,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "cc_mm",
+        "cs_mm",
+        "enabled",
+        "normalise_profile_peak",
+        "percent",
+        "polarity"
+      ],
+      "step": 0.001,
+      "unit": "percentage point",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "ADL",
+      "component": "adapter_lens",
+      "coordinate": "percent",
+      "electrical_rank": null,
+      "evidence": "Single effective excitation scale; ampere-to-field transfer unavailable",
+      "field_sources": [
+        "adapter_lens"
+      ],
+      "host_status": "module component",
+      "limits": {
+        "max_percent": 100.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 3.3694190576226647e-12,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "cc_mm",
+        "cs_mm",
+        "enabled",
+        "normalise_profile_peak",
+        "percent",
+        "polarity"
+      ],
+      "step": 0.001,
+      "unit": "percentage point",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "UpperOL",
+      "component": "objective_lens",
+      "coordinate": "upper_field_equivalent",
+      "electrical_rank": null,
+      "evidence": "Model calibration amplitude; separate upper-objective supply unverified",
+      "field_sources": [
+        "objective_lens"
+      ],
+      "host_status": "module component",
+      "limits": {
+        "max_percent": 100.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 3.832634690954198e-10,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "cc_mm",
+        "cs_mm",
+        "enabled",
+        "percent",
+        "polarity"
+      ],
+      "step": 2e-05,
+      "unit": "equivalent percentage point",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "QPH1",
+      "component": "probe_qph1_quadrupole",
+      "coordinate": "strength_m2",
+      "electrical_rank": null,
+      "evidence": "One fixed-axis scalar field; independent skew drive absent from this model",
+      "field_sources": [
+        "probe_qph1_quadrupole"
+      ],
+      "host_status": "unverified",
+      "limits": {
+        "maximum_strength_m2": 300.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 2.1928684508304411e-16,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "strength_m2"
+      ],
+      "step": 0.25,
+      "unit": "m^-2",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "QPH2",
+      "component": "probe_qph2_quadrupole",
+      "coordinate": "strength_m2",
+      "electrical_rank": null,
+      "evidence": "One fixed-axis scalar field; independent skew drive absent from this model",
+      "field_sources": [
+        "probe_qph2_quadrupole"
+      ],
+      "host_status": "unverified",
+      "limits": {
+        "maximum_strength_m2": 300.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 5.2384701625086275e-17,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "strength_m2"
+      ],
+      "step": 0.25,
+      "unit": "m^-2",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "QPC",
+      "component": "probe_qpc_quadrupole",
+      "coordinate": "strength_m2",
+      "electrical_rank": null,
+      "evidence": "One fixed-axis scalar field; independent skew drive absent from this model",
+      "field_sources": [
+        "probe_qpc_quadrupole"
+      ],
+      "host_status": "unverified",
+      "limits": {
+        "maximum_strength_m2": 300.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 2.5512074319745837e-17,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "strength_m2"
+      ],
+      "step": 0.25,
+      "unit": "m^-2",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "QPol",
+      "component": "probe_qpol_quadrupole",
+      "coordinate": "strength_m2",
+      "electrical_rank": null,
+      "evidence": "One fixed-axis scalar field; independent skew drive absent from this model",
+      "field_sources": [
+        "probe_qpol_quadrupole"
+      ],
+      "host_status": "unverified",
+      "limits": {
+        "maximum_strength_m2": 300.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 5.0833281811185583e-17,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "effective_length_mm",
+        "enabled",
+        "strength_m2"
+      ],
+      "step": 0.25,
+      "unit": "m^-2",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "DPH1_x",
+      "component": "probe_dph1_deflector",
+      "coordinate": "kick_x_mrad",
+      "electrical_rank": null,
+      "evidence": "Modelled X/Y coil insert; electrical connectivity and ampere calibration unverified",
+      "field_sources": [
+        "probe_dph1_deflector:0"
+      ],
+      "host_status": "modelled",
+      "limits": {
+        "maximum_kick_mrad": 100.0
+      },
+      "modelled_host": "probe_dph1_coils",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 4.5081670761308285e-17,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "kick_x_mrad",
+        "kick_y_mrad"
+      ],
+      "step": 0.001,
+      "unit": "mrad",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "DPH1_y",
+      "component": "probe_dph1_deflector",
+      "coordinate": "kick_y_mrad",
+      "electrical_rank": null,
+      "evidence": "Modelled X/Y coil insert; electrical connectivity and ampere calibration unverified",
+      "field_sources": [
+        "probe_dph1_deflector:0"
+      ],
+      "host_status": "modelled",
+      "limits": {
+        "maximum_kick_mrad": 100.0
+      },
+      "modelled_host": "probe_dph1_coils",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 7.163589548922576e-17,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "kick_x_mrad",
+        "kick_y_mrad"
+      ],
+      "step": 0.001,
+      "unit": "mrad",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "DPH2_x",
+      "component": "probe_dph2_deflector",
+      "coordinate": "kick_x_mrad",
+      "electrical_rank": null,
+      "evidence": "Modelled X/Y coil insert; electrical connectivity and ampere calibration unverified",
+      "field_sources": [
+        "probe_dph2_deflector:0"
+      ],
+      "host_status": "modelled",
+      "limits": {
+        "maximum_kick_mrad": 100.0
+      },
+      "modelled_host": "probe_dph2_coils",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 8.189492186626896e-17,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "kick_x_mrad",
+        "kick_y_mrad"
+      ],
+      "step": 0.001,
+      "unit": "mrad",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "DPH2_y",
+      "component": "probe_dph2_deflector",
+      "coordinate": "kick_y_mrad",
+      "electrical_rank": null,
+      "evidence": "Modelled X/Y coil insert; electrical connectivity and ampere calibration unverified",
+      "field_sources": [
+        "probe_dph2_deflector:0"
+      ],
+      "host_status": "modelled",
+      "limits": {
+        "maximum_kick_mrad": 100.0
+      },
+      "modelled_host": "probe_dph2_coils",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 1.2383683966216867e-16,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "kick_x_mrad",
+        "kick_y_mrad"
+      ],
+      "step": 0.001,
+      "unit": "mrad",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "DP11_x",
+      "component": "probe_dp11_deflector",
+      "coordinate": "kick_x_mrad",
+      "electrical_rank": null,
+      "evidence": "Modelled X/Y coil insert; electrical connectivity and ampere calibration unverified",
+      "field_sources": [
+        "probe_dp11_deflector:0"
+      ],
+      "host_status": "modelled",
+      "limits": {
+        "maximum_kick_mrad": 100.0
+      },
+      "modelled_host": "probe_dp11_coils",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 2.1309448394666063e-17,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "kick_x_mrad",
+        "kick_y_mrad"
+      ],
+      "step": 0.001,
+      "unit": "mrad",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "DP11_y",
+      "component": "probe_dp11_deflector",
+      "coordinate": "kick_y_mrad",
+      "electrical_rank": null,
+      "evidence": "Modelled X/Y coil insert; electrical connectivity and ampere calibration unverified",
+      "field_sources": [
+        "probe_dp11_deflector:0"
+      ],
+      "host_status": "modelled",
+      "limits": {
+        "maximum_kick_mrad": 100.0
+      },
+      "modelled_host": "probe_dp11_coils",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 1.832242732765261e-17,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "kick_x_mrad",
+        "kick_y_mrad"
+      ],
+      "step": 0.001,
+      "unit": "mrad",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "DP21_x",
+      "component": "probe_dp21_deflector",
+      "coordinate": "kick_x_mrad",
+      "electrical_rank": null,
+      "evidence": "Modelled X/Y coil insert; electrical connectivity and ampere calibration unverified",
+      "field_sources": [
+        "probe_dp21_deflector:0"
+      ],
+      "host_status": "modelled",
+      "limits": {
+        "maximum_kick_mrad": 100.0
+      },
+      "modelled_host": "probe_dp21_coils",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 8.298215200972285e-17,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "kick_x_mrad",
+        "kick_y_mrad"
+      ],
+      "step": 0.001,
+      "unit": "mrad",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "DP21_y",
+      "component": "probe_dp21_deflector",
+      "coordinate": "kick_y_mrad",
+      "electrical_rank": null,
+      "evidence": "Modelled X/Y coil insert; electrical connectivity and ampere calibration unverified",
+      "field_sources": [
+        "probe_dp21_deflector:0"
+      ],
+      "host_status": "modelled",
+      "limits": {
+        "maximum_kick_mrad": 100.0
+      },
+      "modelled_host": "probe_dp21_coils",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 1.4054540418488538e-16,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "kick_x_mrad",
+        "kick_y_mrad"
+      ],
+      "step": 0.001,
+      "unit": "mrad",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "DP22_x",
+      "component": "probe_dp22_deflector",
+      "coordinate": "kick_x_mrad",
+      "electrical_rank": null,
+      "evidence": "Modelled X/Y coil insert; electrical connectivity and ampere calibration unverified",
+      "field_sources": [
+        "probe_dp22_deflector:0"
+      ],
+      "host_status": "modelled",
+      "limits": {
+        "maximum_kick_mrad": 100.0
+      },
+      "modelled_host": "probe_dp22_coils",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 1.9782598162003267e-17,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "kick_x_mrad",
+        "kick_y_mrad"
+      ],
+      "step": 0.001,
+      "unit": "mrad",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "DP22_y",
+      "component": "probe_dp22_deflector",
+      "coordinate": "kick_y_mrad",
+      "electrical_rank": null,
+      "evidence": "Modelled X/Y coil insert; electrical connectivity and ampere calibration unverified",
+      "field_sources": [
+        "probe_dp22_deflector:0"
+      ],
+      "host_status": "modelled",
+      "limits": {
+        "maximum_kick_mrad": 100.0
+      },
+      "modelled_host": "probe_dp22_coils",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 1.9878670973474003e-17,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "kick_x_mrad",
+        "kick_y_mrad"
+      ],
+      "step": 0.001,
+      "unit": "mrad",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "CStig_x",
+      "component": "condenser_stigmator",
+      "coordinate": "strength_x_percent",
+      "electrical_rank": null,
+      "evidence": "Two declared field axes; winding and supply map unavailable",
+      "field_sources": [
+        "condenser_stigmator"
+      ],
+      "host_status": "module component",
+      "limits": {
+        "max_strength_m2": 300.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 1.5420342732234978e-16,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "length_mm",
+        "max_strength_m2",
+        "strength_x_percent",
+        "strength_y_percent"
+      ],
+      "step": 0.01,
+      "unit": "percentage point",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    },
+    {
+      "channel": "CStig_y",
+      "component": "condenser_stigmator",
+      "coordinate": "strength_y_percent",
+      "electrical_rank": null,
+      "evidence": "Two declared field axes; winding and supply map unavailable",
+      "field_sources": [
+        "condenser_stigmator"
+      ],
+      "host_status": "module component",
+      "limits": {
+        "max_strength_m2": 300.0
+      },
+      "modelled_host": "",
+      "optical_reference_host": "",
+      "plus_minus_even_to_odd_ratio": 3.3412402250403424e-16,
+      "resolution": "NOT_DECLARED",
+      "runtime_editable_fields": [
+        "enabled",
+        "length_mm",
+        "max_strength_m2",
+        "strength_x_percent",
+        "strength_y_percent"
+      ],
+      "step": 0.01,
+      "unit": "percentage point",
+      "winding_to_ampere_calibration": "NOT_AVAILABLE"
+    }
+  ],
+  "schema": "probe-drive-audit-v1"
+}

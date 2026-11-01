@@ -31,6 +31,7 @@ from temsim.optics.aberrations import (
 )
 from temsim.physics.beam_statistics import branch_sample_statistics
 from temsim.gui.job_coordinator import CoordinatedPool, ResourceClaim
+from temsim.gui.crossover_survey_view import CrossoverSurveyView
 from temsim.optics.actual_probe_diagnostics import calculate_actual_probe_diagnostic, SCOPE
 from temsim.optics.system_residual_aberrations import measure_system_residual, SCOPE as RESIDUAL_SCOPE
 
@@ -251,6 +252,8 @@ class AberrationComparisonView(QWidget):
         residual_scope.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         residual_layout.addWidget(residual_scope)
         self.pages.addTab(self.residual_page, "System residual")
+        self.crossover_page = CrossoverSurveyView()
+        self.pages.addTab(self.crossover_page, "Crossover Cs")
         layout = QVBoxLayout(self)
         layout.addWidget(self.pages)
         self._refresh_probe_summary()
@@ -283,6 +286,8 @@ class AberrationComparisonView(QWidget):
 
     def _refresh_probe_summary(self) -> None:
         self.pages.setTabVisible(1, str(self.fixed_system or self.system.currentData()) == "probe")
+        self.pages.setTabVisible(self.pages.indexOf(self.crossover_page),
+                                 str(self.fixed_system or self.system.currentData()) == "probe")
         self.probe_summary.setVisible(
             str(self.fixed_system or self.system.currentData()) == "probe"
         )
@@ -555,6 +560,9 @@ class AberrationComparisonView(QWidget):
                 f"Unmapped lenses: {', '.join(diagnostics.get('unmapped_round_lenses', ()))}. "
                 f"Not implemented: {', '.join(diagnostics.get('unimplemented_terms', ()))}."
             )
+        elif diagnostics.get("status") == "UNSUPPORTED_LEGACY_FLAG_COMPARISON":
+            detail_text = diagnostics["diagnostic_scope"]
+            self.summary.setText(detail_text)
         else:
             ratio = float(diagnostics["c3_residual_ratio"])
             rms_before = float(diagnostics["ray_error_rms_before"]) * 1.0e9

@@ -318,3 +318,103 @@ the stored lens strengths, change apertures, alter source sampling or change the
 integration accuracy. They preserve these control roles and make reference
 claims explicit. A separate optical qualification is still required before
 declaring the present finite-field preset compliant with the topology contract.
+
+## Fixed-target geometric probe correction
+
+For the particle-only atomic imaging study requested on 2026-11-01, select the
+specimen upper surface as both entrance and target. Compare absolute current
+inside a fixed, axis-centered 50 pm radius with D50 and D95 about the actual
+current centroid. The disk has a 100 pm diameter. Its mean current density is
+the enclosed current divided by its area. The finite sample does not define a
+pointwise maximum current density without specifying a spatial estimator.
+Maintain the 100 um C2 aperture, the Normal Nanoprobe branch, 30 mrad alpha95
+and the reference transmitted current. Record measured angle and losses for
+every branch. Use the actual electrodes, lenses and finite hexapoles.
+
+Retain the historical D95-waist and RMS observations and their separate
+executed brackets. The fixed-target concentration study has its own selection
+criteria. A narrow D95 at another plane cannot qualify the target. A brighter
+core with a wider D95 is an explicit performance tradeoff. Report the best
+observed core-current and diameter planes independently and check source-count
+and integration-step sensitivity before assigning a preferred working point.
+
+Use `scripts/measure_crossover_cs.py` with a complete vacuum instrument
+snapshot for an independent geometric pencil and finite-source waist survey.
+Each coefficient belongs to its named plane, incident reference family, angular
+chart and fitted pupil radius. A local crossover value includes all preceding
+fields. Evaluate HP1/HP2 attribution by changing their real excitations and
+retaining the common input and target. Intervals without a resolved 2D waist,
+intercepted pencils and failed holdouts carry no accepted coefficient. The
+gun-to-exit accelerating region requires its own valid emission-angle chart.
+
+### Joint central-current and D95 calibration
+
+The subsequent particle-calibration request selects D95 as the primary
+diameter. At fixed specimen entrance and fixed optical axis, maximize the
+absolute current in the 50 pm disk and minimize the native D95. D50 is
+reported for context. Keep the emitted source, its absolute weights and the
+Normal Nanoprobe branch, impose 29.7–30.3 mrad alpha95 and preserve
+transmitted current. State the numerical search domain when comparing
+operating points.
+
+In a constant-control through-focus scan, report all executed planes that
+attain the disk-current maximum and all that attain the D95 minimum. Check
+the target's membership in each set. Record the fractional performance loss
+separately if they do not coincide. A 1% near-focus allowance on each
+observable describes engineering proximity only. Refine both the integration
+step and observation grid, and repeat with more original particles before
+claiming robust placement.
+
+Use the absolute separation between bounded RMS-radius and D95 minima as a
+secondary objective among competitive settings. Report its signed value and
+the difference interval from the native brackets. No zero-separation gate
+applies. An unbounded minimum or changing population cannot support a precise
+longitudinal displacement. The separation alone does not identify Cs. The
+reference-pencil response to the physical main sextupoles is a separate
+measurement.
+
+The CLI `scripts/probe_correction_assessment.py` defaults to this D95 focus
+criterion. Pass `--diameter d50` to reproduce the earlier D50 focus policy.
+
+### Fixed-source HP tuning
+
+For the current HP drive calibration, compare all candidate settings using
+the same 2,000 original positive-current source particles. Keep IDs, weights,
+initial phase space, energy and clocks identical. Use main-pair off/on and
+small paired-strength perturbations to measure effective negative specimen
+Cs. Report D95 and absolute central current on the fixed surface alongside
+the coefficient. Do not increase particle count as a substitute for tuning
+excitation or treat a fitted zero total C3 as a probe-performance pass.
+
+### Mini Condenser and Objective joint focus
+
+During corrector adjustment, find the freely located finite two-dimensional
+waist downstream of the Mini Condenser in the complete combined magnetic
+field. Measure D95, RMS radius and fixed-axis 50 pm disk current at that
+waist and separately at the physical specimen entrance. Record the radial
+bracket, directional extent, through-focus extrema, convergence angle and
+absolute transmitted current. A separate bounded waist upstream of the
+intended image invalidates direct placement on this branch.
+
+Use the measured placement error to change objective excitation, propagate
+the same physical source again, and relocate the waist after every optical
+change. The installed operating control drives both objective lobes.
+Experiments changing only the upper field amplitude must be labeled as
+detached model perturbations. The command
+`scripts/measure_probe_crossover.py TRIAL REPORT.json` observes a completed
+fixed-source calibration trial using its own verified original checkpoint.
+An ambiguous or unbounded region gives an inconclusive result.
+
+For targeted adjustments from the 300 kV R2 particle working point, use the
+[probe-corrector channel rules and signed coupling matrix](development/PROBE_ABERRATION_CHANNEL_RULES.md).
+Each proposed control combination requires a new propagated measurement at
+the working point, including the protected aberrations and the native probe.
+
+### Probe image preservation
+
+For the staged probe-corrector work, archive each generated current image
+with a distinct stage name, its raw absolute-current kernel, source and input
+identities, sample-plane metrics and crossover evidence. Append an image
+history entry and retain earlier images. Curated evidence belongs in the
+repository for Git delivery. See the
+[stage 1 and 2 archive](development/probe_stage12_20261101/README.md).

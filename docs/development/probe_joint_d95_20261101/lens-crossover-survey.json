@@ -1,0 +1,602 @@
+{
+  "schema": "unified-crossover-geometric-cs-v1",
+  "input_digest": "89cd9d307e6fbc1690722d08d1861f0abeef2fe0fffbf3f01e9104c1240aa312",
+  "pupil": {
+    "curvature_m1": 0.531522971740788,
+    "holdout_budget_nm": 0.01,
+    "launch_z_mm": 450.0,
+    "nominal_energy_ev": 300000.0,
+    "radii_um": [
+      0.55,
+      0.1375
+    ]
+  },
+  "qualification": "NOT_QUALIFIED",
+  "lens_intervals": [
+    {
+      "upstream_reference": "gun exit",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        450.0,
+        500.0
+      ],
+      "regions": [],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "condenser_lens_1",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        500.0,
+        650.0
+      ],
+      "regions": [
+        {
+          "bracket_mm": [
+            502.9923489379253,
+            503.99220457826357
+          ],
+          "z_mm": 503.4922767580945,
+          "geometric_aberrations": {
+            "z_mm": 503.4922767580945,
+            "pencils": [
+              {
+                "c3_mm": 3.536606739371674,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "positive",
+                "status": "MEASURED_AT_FIXED_STEP"
+              },
+              {
+                "c3_mm": 3.5366073823511033,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "positive",
+                "status": "MEASURED_AT_FIXED_STEP"
+              }
+            ]
+          },
+          "probe_statistics": {
+            "z_mm": 503.4922767580945,
+            "offset_nm": -1095707720.7419057,
+            "d50_nm": 23.38658848374034,
+            "d90_nm": 46.4275123471908,
+            "d95_nm": 52.543288087728925,
+            "rms_radius_nm": 14.721906882991613,
+            "alpha95_mrad": 0.1072752400124011,
+            "centroid_x_m": -1.6792098085374074e-11,
+            "centroid_y_m": -1.9517199761044478e-11,
+            "current_a": 1e-05,
+            "absolute_source_weight": 1.0000000000000004,
+            "surviving_rays": 2000,
+            "effective_rays": 2000.000000000003,
+            "core_50pm_current_a": 0.0
+          }
+        }
+      ],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "condenser_lens_2",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        650.0,
+        915.0
+      ],
+      "regions": [
+        {
+          "bracket_mm": [
+            695.4645597030316,
+            696.4644153433698
+          ],
+          "z_mm": 695.9644875232007,
+          "geometric_aberrations": {
+            "z_mm": 695.9644875232007,
+            "pencils": [
+              {
+                "c3_mm": 586.8197846924216,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "positive",
+                "status": "MEASURED_AT_FIXED_STEP"
+              },
+              {
+                "c3_mm": 586.8197900905151,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "positive",
+                "status": "MEASURED_AT_FIXED_STEP"
+              }
+            ]
+          },
+          "probe_statistics": {
+            "z_mm": 695.9644875232007,
+            "offset_nm": -903235509.9767995,
+            "d50_nm": 14.860181804353997,
+            "d90_nm": 29.508888679639515,
+            "d95_nm": 33.490232133336775,
+            "rms_radius_nm": 9.361060557476707,
+            "alpha95_mrad": 0.3044527374034805,
+            "centroid_x_m": 1.2979987982738273e-11,
+            "centroid_y_m": -9.920996675164615e-12,
+            "current_a": 1e-05,
+            "absolute_source_weight": 1.0000000000000004,
+            "surviving_rays": 2000,
+            "effective_rays": 2000.000000000003,
+            "core_50pm_current_a": 0.0
+          }
+        }
+      ],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "condenser_lens_3",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        915.0,
+        1088.2
+      ],
+      "regions": [],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "adapter_lens",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        1088.2,
+        1166.35
+      ],
+      "regions": [],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "probe_tl22_lens",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        1166.35,
+        1249.95
+      ],
+      "regions": [
+        {
+          "bracket_mm": [
+            1210.8901422973809,
+            1211.8899979377193
+          ],
+          "z_mm": 1211.3900701175498,
+          "geometric_aberrations": {
+            "z_mm": 1211.3900701175498,
+            "pencils": [
+              {
+                "c3_mm": null,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "unresolved",
+                "status": "INCONCLUSIVE"
+              },
+              {
+                "c3_mm": -182772.63070353278,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "negative",
+                "status": "MEASURED_AT_FIXED_STEP"
+              }
+            ]
+          },
+          "probe_statistics": {
+            "z_mm": 1211.3900701175498,
+            "offset_nm": -387809927.3824503,
+            "d50_nm": 9522.204152686176,
+            "d90_nm": 37420.15048831478,
+            "d95_nm": 48065.602016810175,
+            "rms_radius_nm": 11168.87678522823,
+            "alpha95_mrad": 2.954812923255905,
+            "centroid_x_m": 3.8196094186770464e-08,
+            "centroid_y_m": -1.4069383541745762e-08,
+            "current_a": 1e-05,
+            "absolute_source_weight": 1.0000000000000004,
+            "surviving_rays": 2000,
+            "effective_rays": 2000.000000000003,
+            "core_50pm_current_a": 0.0
+          }
+        }
+      ],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "probe_tl21_lens",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        1249.95,
+        1366.3
+      ],
+      "regions": [
+        {
+          "bracket_mm": [
+            1299.3773664673129,
+            1301.3770777479892
+          ],
+          "z_mm": 1300.377222107651,
+          "geometric_aberrations": {
+            "z_mm": 1300.377222107651,
+            "pencils": [
+              {
+                "c3_mm": null,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "unresolved",
+                "status": "INCONCLUSIVE"
+              },
+              {
+                "c3_mm": null,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "unresolved",
+                "status": "INCONCLUSIVE"
+              }
+            ]
+          },
+          "probe_statistics": {
+            "z_mm": 1300.377222107651,
+            "offset_nm": -298822775.39234906,
+            "d50_nm": 99212.90177071815,
+            "d90_nm": 196453.47129835194,
+            "d95_nm": 223262.1821603668,
+            "rms_radius_nm": 62581.206874776464,
+            "alpha95_mrad": 0.35171245283011465,
+            "centroid_x_m": 1.0241540950905277e-07,
+            "centroid_y_m": -4.892517444547008e-08,
+            "current_a": 1e-05,
+            "absolute_source_weight": 1.0000000000000004,
+            "surviving_rays": 2000,
+            "effective_rays": 2000.000000000003,
+            "core_50pm_current_a": 0.0
+          }
+        }
+      ],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "probe_tl12_lens",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        1366.3,
+        1522.5
+      ],
+      "regions": [
+        {
+          "bracket_mm": [
+            1407.861703444009,
+            1408.8615590843474
+          ],
+          "z_mm": 1408.3616312641782,
+          "geometric_aberrations": {
+            "z_mm": 1408.3616312641782,
+            "pencils": [
+              {
+                "c3_mm": null,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "unresolved",
+                "status": "INCONCLUSIVE"
+              },
+              {
+                "c3_mm": -98951.6792853983,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "negative",
+                "status": "MEASURED_AT_FIXED_STEP"
+              }
+            ]
+          },
+          "probe_statistics": {
+            "z_mm": 1408.3616312641782,
+            "offset_nm": -190838366.23582193,
+            "d50_nm": 312.4710558517764,
+            "d90_nm": 1196.0714340986322,
+            "d95_nm": 2161.1527863619813,
+            "rms_radius_nm": 572.5868839034703,
+            "alpha95_mrad": 2.670285647406004,
+            "centroid_x_m": 1.8882670476745877e-09,
+            "centroid_y_m": -3.571833667786664e-10,
+            "current_a": 1e-05,
+            "absolute_source_weight": 1.0000000000000004,
+            "surviving_rays": 2000,
+            "effective_rays": 2000.000000000003,
+            "core_50pm_current_a": 0.0
+          }
+        }
+      ],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "mini_condenser",
+      "status": "UNRESOLVED",
+      "bounds_mm": [
+        1522.5,
+        1599.2
+      ],
+      "regions": [],
+      "unresolved": [
+        {
+          "basin_directional_sign_transitions": [
+            {
+              "converging_to_diverging": 1,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 0,
+              "transition_brackets_mm": [
+                [
+                  1599.1999995,
+                  1599.2
+                ]
+              ]
+            },
+            {
+              "converging_to_diverging": 1,
+              "diverging_to_converging": 1,
+              "eigenvalue_order": 1,
+              "transition_brackets_mm": [
+                [
+                  1569.8383171787998,
+                  1570.3382449989688
+                ],
+                [
+                  1599.1999950000002,
+                  1599.1999955
+                ]
+              ]
+            }
+          ],
+          "radial_bracket_mm": [
+            1599.1999970000002,
+            1599.1999975
+          ],
+          "radial_root_interpolated_mm": 1599.1999974601815,
+          "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+          "reason": "no_bounded_all_direction_covariance_growth_bracket",
+          "representative_z_mm": 1599.1999975,
+          "search_basin_mm": [
+            1569.8383171787998,
+            1599.2
+          ]
+        }
+      ]
+    },
+    {
+      "upstream_reference": "objective_lens",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        1599.2,
+        1896.9
+      ],
+      "regions": [],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "diffraction_lens",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        1896.9,
+        2066.9
+      ],
+      "regions": [
+        {
+          "bracket_mm": [
+            1950.2833883274902,
+            1951.2832439678284
+          ],
+          "z_mm": 1950.7833161476592,
+          "geometric_aberrations": {
+            "z_mm": 1950.7833161476592,
+            "pencils": [
+              {
+                "c3_mm": null,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "unresolved",
+                "status": "INCONCLUSIVE"
+              },
+              {
+                "c3_mm": 610112.1176687559,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "positive",
+                "status": "MEASURED_AT_FIXED_STEP"
+              }
+            ]
+          },
+          "probe_statistics": {
+            "z_mm": 1950.7833161476592,
+            "offset_nm": 351583318.6476591,
+            "d50_nm": 781.5140619554484,
+            "d90_nm": 944.8185757583409,
+            "d95_nm": 2250.7400216049373,
+            "rms_radius_nm": 792.0687730597854,
+            "alpha95_mrad": 1.6018743143693874,
+            "centroid_x_m": 4.799355567303138e-10,
+            "centroid_y_m": 2.3478896375885174e-09,
+            "current_a": 1e-05,
+            "absolute_source_weight": 1.0000000000000004,
+            "surviving_rays": 2000,
+            "effective_rays": 2000.000000000003,
+            "core_50pm_current_a": 0.0
+          }
+        }
+      ],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "intermediate_lens",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        2066.9,
+        2246.9
+      ],
+      "regions": [],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "projector_lens_1",
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "bounds_mm": [
+        2246.9,
+        2449.4
+      ],
+      "regions": [
+        {
+          "bracket_mm": [
+            2327.728892555166,
+            2328.7287481955045
+          ],
+          "z_mm": 2328.228820375335,
+          "geometric_aberrations": {
+            "z_mm": 2328.228820375335,
+            "pencils": [
+              {
+                "c3_mm": null,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "unresolved",
+                "status": "INCONCLUSIVE"
+              },
+              {
+                "c3_mm": 5053.080615245631,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "positive",
+                "status": "MEASURED_AT_FIXED_STEP"
+              }
+            ]
+          },
+          "probe_statistics": {
+            "z_mm": 2328.228820375335,
+            "offset_nm": 729028822.875335,
+            "d50_nm": 426.266760405167,
+            "d90_nm": 1891.1217449323156,
+            "d95_nm": 2627.669126248797,
+            "rms_radius_nm": 628.6700708546111,
+            "alpha95_mrad": 5.828657148860305,
+            "centroid_x_m": 1.3448278117466398e-09,
+            "centroid_y_m": -1.155322020922708e-09,
+            "current_a": 1e-05,
+            "absolute_source_weight": 1.0000000000000004,
+            "surviving_rays": 2000,
+            "effective_rays": 2000.000000000003,
+            "core_50pm_current_a": 0.0
+          }
+        }
+      ],
+      "unresolved": []
+    },
+    {
+      "upstream_reference": "projector_lens_2",
+      "status": "UNRESOLVED",
+      "bounds_mm": null,
+      "regions": [],
+      "unresolved": [
+        {
+          "bracket_mm": [
+            2593.690492885131,
+            2594.1904207053
+          ],
+          "reason": "unattributed_population_change"
+        },
+        {
+          "bracket_mm": [
+            2803.660177356156,
+            2804.160105176325
+          ],
+          "reason": "unattributed_population_change"
+        },
+        {
+          "bracket_mm": [
+            2873.6500721798307,
+            2874.15
+          ],
+          "reason": "unattributed_population_change"
+        },
+        {
+          "bounds_mm": [
+            2874.15,
+            2874.15
+          ],
+          "reason": "insufficient_stable_segment"
+        }
+      ]
+    },
+    {
+      "upstream_reference": "Mini Condenser + Objective (joint field)",
+      "status": "ADAPTIVELY_RESOLVED_COMBINED_FIELD",
+      "bounds_mm": [
+        1522.5,
+        1602.55
+      ],
+      "regions": [
+        {
+          "bracket_mm": [
+            1599.1999925,
+            1599.2000023
+          ],
+          "z_mm": 1599.1999975,
+          "geometric_aberrations": {
+            "z_mm": 1599.1999975,
+            "pencils": [
+              {
+                "c3_mm": -0.18282890226043047,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "negative",
+                "status": "MEASURED_AT_FIXED_STEP"
+              },
+              {
+                "c3_mm": -0.1869426268559679,
+                "chart": "laboratory outgoing mechanical slopes about chief",
+                "scope": "Cumulative single-point geometric response; full linear term retained",
+                "sign_at_fixed_step": "negative",
+                "status": "MEASURED_AT_FIXED_STEP"
+              }
+            ]
+          },
+          "probe_statistics": {
+            "absolute_source_weight": 1.0000000000000004,
+            "alpha95_mrad": 29.749047030650008,
+            "centroid_x_m": -6.9084343878642454e-12,
+            "centroid_y_m": -1.1372744362116801e-12,
+            "core_50pm_a": 1.5749999999999997e-06,
+            "current_a": 1e-05,
+            "d50_nm": 0.6870362397436733,
+            "d90_nm": 2.2920934824900323,
+            "d95_nm": 2.7009834472999716,
+            "effective_rays": 2000.000000000003,
+            "offset_from_surface_nm": 0.0,
+            "rms_radius_nm": 1.9012631508954618,
+            "surviving_rays": 2000,
+            "z_mm": 1599.1999975
+          }
+        }
+      ],
+      "unresolved": []
+    }
+  ],
+  "target_aberrations": {
+    "z_mm": 1599.1999975,
+    "pencils": [
+      {
+        "c3_mm": -0.18282890226043047,
+        "chart": "laboratory outgoing mechanical slopes about chief",
+        "scope": "Cumulative single-point geometric response; full linear term retained",
+        "sign_at_fixed_step": "negative",
+        "status": "MEASURED_AT_FIXED_STEP"
+      },
+      {
+        "c3_mm": -0.1869426268559679,
+        "chart": "laboratory outgoing mechanical slopes about chief",
+        "scope": "Cumulative single-point geometric response; full linear term retained",
+        "sign_at_fixed_step": "negative",
+        "status": "MEASURED_AT_FIXED_STEP"
+      }
+    ]
+  },
+  "source_original_count": 2000,
+  "raw_report": "outputs\\probe-joint-d95-20261101\\placed-A-column\\report.json",
+  "source_weights_sha256": "43b9e0dcf5be09e4ccdd2cff1cecbefd16cac83fcc7b66c0e7fa8a2bacbe6a4e"
+}

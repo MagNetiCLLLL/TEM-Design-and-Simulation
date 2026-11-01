@@ -1,0 +1,23 @@
+{
+  "test_count": 162,
+  "failures": 0,
+  "errors": 0,
+  "scope": "Targeted software regressions",
+  "legacy_fixture_note": "test_portable_inputs.py included its pre-existing nine-ray physical archive fixture. This fixture is separate from the 2000-particle reproduction and does not support optical acceptance.",
+  "production_original_source_count": 2000,
+  "source_resampling_for_production": false,
+  "full_qualification_claimed": false,
+  "final_targeted_tests": {
+    "count": 152,
+    "failures": 0,
+    "errors": 0,
+    "physical_source_generation": false
+  },
+  "clean_git_checkout": {
+    "surface_arrays_exact": true,
+    "image_pixels_exact": true,
+    "newline_only_solver_files": 437,
+    "record": "step01-clean-checkout/reproduction.json"
+  },
+  "legacy_fixture_scope": "The separate earlier archive regression included an existing nine-ray source example; no result from it is used for probe reproduction or optical acceptance."
+}

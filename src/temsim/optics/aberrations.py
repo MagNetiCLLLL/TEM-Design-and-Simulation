@@ -236,6 +236,10 @@ def _corrector_trace_ratio(state, system: str) -> tuple[float, float, float, str
 
     from temsim.physics.core import propagate
     from temsim.physics.instrument_magnetic import active_column_events, events_overlapping_interval
+    from temsim.simulation_modes import is_unified
+
+    if is_unified(state):
+        raise ValueError("Unified corrector comparison requires distinct physical excitation snapshots")
 
     # Corrector calibration is sensitive to coarse axial integration.  A
     # shallow diagnostic copy preserves the user's state while enforcing the
@@ -376,6 +380,22 @@ def effective_aberration_comparison(state, system: str) -> tuple[EffectiveAberra
     if mode != "manual":
         raise ValueError("Aberration mode must be manual or field_derived")
     before = _configured_system_set(state, system)
+    from temsim.simulation_modes import is_unified
+    if is_unified(state):
+        source = "Unified field on/off comparison requires distinct physical excitation snapshots"
+        after = replace(before, correction_state="not measured", source=source)
+        result = before, after, {
+            "diagnostic_population": "none", "inherits_upstream_beam": False,
+            "c3_residual_ratio": None, "ray_error_rms_before": None,
+            "ray_error_rms_after": None, "ray_error_rms_unit": "m", "source": source,
+            "inferred_coefficients": (), "unimplemented_terms": UNIMPLEMENTED_TERMS,
+            "coefficient_status": {name: "configured only; unified response unmeasured"
+                                   for name, _, _ in SYSTEM_COEFFICIENT_ROWS},
+            "unmeasured_coefficients": tuple(name for name, _, _ in SYSTEM_COEFFICIENT_ROWS),
+            "diagnostic_scope": source, "status": "UNSUPPORTED_LEGACY_FLAG_COMPARISON",
+        }
+        cache[system] = (signature, result)
+        return result
     ratio, rms_before, rms_after, source = _corrector_trace_ratio(state, system)
     after = replace(
         before,

@@ -34,6 +34,36 @@ def analyze(arrays, planes, **kwargs):
     return waist.analyze_scan(arrays, planes, surface_z_mm=100., source_current_a=1e-9, **kwargs)
 
 
+def test_moving_waist_profile_keeps_surface_reference_and_fixed_current_disk(monkeypatch):
+    import sys
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / "scripts"))
+    from measure_probe_crossover import _local_grid, _native_profile
+
+    # A local observation window can lie entirely upstream of the target.
+    target = 100.
+    waist_z = target - 120e-6
+    z = _local_grid(waist_z, target, 1., .1)
+    center = np.argmin(abs(z - waist_z))
+    assert z[-1] < target and z[center] == waist_z
+    offset = (z - z[center]) * 1e6
+    count = 20
+    slopes = np.tile([.1, -.1], count // 2)
+    x_m = (.04 + offset[:, None] * slopes) * 1e-9
+    state = SimpleNamespace(z_mm=z, x_m=x_m, y_m=np.zeros_like(x_m),
+        tx_rad=np.broadcast_to(slopes, x_m.shape), ty_rad=np.zeros_like(x_m),
+        flight_time_s=np.ones_like(x_m), kinetic_energy_ev=np.full_like(x_m, 300000.))
+    alive = np.ones_like(x_m, dtype=bool)
+    alive[:, -2:] = False
+    stats, rows = _native_profile(state, alive, np.ones(count), np.arange(count),
+                                  z, z[center], target, 10e-6)
+    assert stats["d95_waist"]["observed_minimum_planes_mm"] == [waist_z]
+    assert rows[center]["offset_from_surface_nm"] == pytest.approx(-120.)
+    assert rows[center]["core_50pm_a"] == pytest.approx(9e-6)
+    assert rows[center]["surviving_rays"] == 18
+    assert rows[center + 5]["core_50pm_a"] == pytest.approx(4.5e-6)
+    assert rows[center + 5]["current_a"] == pytest.approx(9e-6)
+
+
 def test_d95_waist_acceptance_does_not_require_rms_minimum_at_surface():
     arrays, planes = synthetic()
     before = deepcopy(arrays)
@@ -317,6 +347,8 @@ def production_adapter(monkeypatch):
     monkeypatch.setattr(sections, "gun_dependency_signature", lambda _: "source-signature")
     monkeypatch.setattr(sections, "_events", lambda _: ())
     n = 7
+    value.electron_gun.emitter = SimpleNamespace(ray_count=n)
+    monkeypatch.setattr(waist, "MIN_ORIGINAL_POSITIVE", n)
     original = np.arange(n, dtype=float)
     e = SimpleNamespace(x_m=original*1e-9, y_m=-original*1e-9, tx_rad=original*.001,
         ty_rad=-original*.001, flight_time_s=original*1e-12, energy_offset_ev=original*.01,
@@ -527,3 +559,26 @@ def test_profile_zero_current_trial_keeps_raw_evidence_without_hiding_invalid_in
         assert result.report["qualification"] == "PROPOSAL_ONLY"
         assert result.arrays["alive"] is raw["alive"]
         assert result.report["input_digest"] == Snapshot(value).digest
+
+
+def test_separation_requires_two_bounded_single_minima_and_stable_current():
+    arrays, planes = synthetic()
+    assert analyze(arrays,planes)["waist_separation"]["resolved_delta_z_nm"] is None
+    arrays, planes = synthetic(halo=False)
+    separation = analyze(arrays,planes)["waist_separation"]
+    assert separation["resolved_delta_z_nm"] == 0.
+    np.testing.assert_allclose(separation["difference_bracket_nm"], [-2.,2.], atol=1e-6)
+    arrays["alive"][-1,0] = False
+    assert analyze(arrays,planes)["waist_separation"]["resolved_delta_z_nm"] is None
+
+
+def test_physical_scan_rejects_under_count_or_zero_current_support(production_adapter, monkeypatch):
+    state, emitted, _, calls, _ = production_adapter
+    monkeypatch.setattr(waist, "MIN_ORIGINAL_POSITIVE", 1000)
+    with pytest.raises(ValueError, match="at least 1000"):
+        waist.execute_scan(state, np.array([99.99, 100., 100.01]), lambda: False)
+    state.electron_gun.emitter.ray_count = 1000
+    emitted.weight[-1] = 0.
+    with pytest.raises(ValueError, match="Fewer than 1000"):
+        waist.execute_scan(state, np.array([99.99, 100., 100.01]), lambda: False)
+    assert not calls

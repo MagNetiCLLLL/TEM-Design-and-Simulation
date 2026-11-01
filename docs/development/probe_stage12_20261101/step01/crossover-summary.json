@@ -1,0 +1,401 @@
+{
+  "at_crossover": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 29.777010086106287,
+    "centroid_x_m": -6.171734184712419e-12,
+    "centroid_y_m": 1.4803286096624195e-12,
+    "core_50pm_a": 2.3200000000000002e-06,
+    "current_a": 1e-05,
+    "d50_nm": 0.616930407146863,
+    "d90_nm": 2.0815588316860567,
+    "d95_nm": 2.5070750919470024,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": -0.10000007932831068,
+    "rms_radius_nm": 1.7099057935476631,
+    "surviving_rays": 2000,
+    "threefold_tail": {
+      "annular_current_a": 5.624999999999997e-06,
+      "annulus_nm": [
+        0.1,
+        1.0
+      ],
+      "harmonic_current_a": 1.034389681754459e-07,
+      "normalized_m3": 0.01838914989785706,
+      "outside_1nm_current_a": 1.204999999999999e-06,
+      "shell_edges_nm": [
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "shell_harmonic_currents_a": [
+        4.2079983311399065e-08,
+        7.75274453210838e-08,
+        1.6431352882349976e-08,
+        1.3141363284168428e-07
+      ],
+      "shell_harmonic_sum_a": 2.674524143565171e-07
+    },
+    "z_mm": 1599.1999974
+  },
+  "at_specimen": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 29.77701008610638,
+    "centroid_x_m": -6.173309090959698e-12,
+    "centroid_y_m": 1.4828595129286493e-12,
+    "core_50pm_a": 2.33e-06,
+    "current_a": 1e-05,
+    "d50_nm": 0.6144610400838795,
+    "d90_nm": 2.0770968610154648,
+    "d95_nm": 2.5023020930788786,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": 0.0,
+    "rms_radius_nm": 1.709906702873224,
+    "surviving_rays": 2000,
+    "threefold_tail": {
+      "annular_current_a": 5.604999999999997e-06,
+      "annulus_nm": [
+        0.1,
+        1.0
+      ],
+      "harmonic_current_a": 9.911716567315657e-08,
+      "normalized_m3": 0.017683704848020808,
+      "outside_1nm_current_a": 1.199999999999999e-06,
+      "shell_edges_nm": [
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "shell_harmonic_currents_a": [
+        3.935023611678668e-08,
+        7.606081067084547e-08,
+        2.0989094061639018e-08,
+        1.3043150630598273e-07
+      ],
+      "shell_harmonic_sum_a": 2.668316471552539e-07
+    },
+    "z_mm": 1599.1999975
+  },
+  "core_best": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 29.777010086112043,
+    "centroid_x_m": -6.272528068715201e-12,
+    "centroid_y_m": 1.6423059762803619e-12,
+    "core_50pm_a": 2.4749999999999996e-06,
+    "current_a": 1e-05,
+    "d50_nm": 0.45055757049490036,
+    "d90_nm": 1.8107962169745315,
+    "d95_nm": 2.251825030433374,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": 6.299999995462713,
+    "rms_radius_nm": 1.7132302161319757,
+    "surviving_rays": 2000,
+    "z_mm": 1599.2000038
+  },
+  "core_peak_planes": [
+    1599.2000038
+  ],
+  "d95_best": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 29.77701008612752,
+    "centroid_x_m": -6.543412787317043e-12,
+    "centroid_y_m": 2.077619425529679e-12,
+    "core_50pm_a": 9.55e-07,
+    "current_a": 1e-05,
+    "d50_nm": 0.293296539758834,
+    "d90_nm": 1.1931586411827728,
+    "d95_nm": 1.6206202328711894,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": 23.499999997511622,
+    "rms_radius_nm": 1.7545098890111992,
+    "surviving_rays": 2000,
+    "z_mm": 1599.200021
+  },
+  "executed_field_digest": "b267db0d3c17a5c842a6e95bc66b520456ebeb3937530bf4b9665d4b1e84a6cb",
+  "input_digest": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "membership_stable": true,
+  "original_positive_count": 2000,
+  "original_report": "F:\\tem_simulator_v2\\outputs\\probe-stage12-20261101\\step01-replay\\report.json",
+  "particle_file_sha256": "40d8782b7fe4dcd3fc23f818b19b32a31adaad09c282b655cb44ac26ed4df2c7",
+  "refinement": [
+    {
+      "finite_2d_bracket_mm": [
+        1599.1999915000001,
+        1599.2000035
+      ],
+      "observed_planes": 1089,
+      "radial_bracket_mm": [
+        1599.1999955,
+        1599.1999975
+      ],
+      "round": 1,
+      "waist_z_mm": 1599.1999975
+    },
+    {
+      "finite_2d_bracket_mm": [
+        1599.1999921000001,
+        1599.2000026
+      ],
+      "observed_planes": 1887,
+      "radial_bracket_mm": [
+        1599.1999973000002,
+        1599.1999974
+      ],
+      "round": 2,
+      "waist_z_mm": 1599.1999974
+    }
+  ],
+  "rms_best": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 29.777010086106287,
+    "centroid_x_m": -6.171734184712419e-12,
+    "centroid_y_m": 1.4803286096624195e-12,
+    "core_50pm_a": 2.3200000000000002e-06,
+    "current_a": 1e-05,
+    "d50_nm": 0.616930407146863,
+    "d90_nm": 2.0815588316860567,
+    "d95_nm": 2.5070750919470024,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": -0.10000007932831068,
+    "rms_radius_nm": 1.7099057935476631,
+    "surviving_rays": 2000,
+    "threefold_tail": {
+      "annular_current_a": 5.624999999999997e-06,
+      "annulus_nm": [
+        0.1,
+        1.0
+      ],
+      "harmonic_current_a": 1.034389681754459e-07,
+      "normalized_m3": 0.01838914989785706,
+      "outside_1nm_current_a": 1.204999999999999e-06,
+      "shell_edges_nm": [
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "shell_harmonic_currents_a": [
+        4.2079983311399065e-08,
+        7.75274453210838e-08,
+        1.6431352882349976e-08,
+        1.3141363284168428e-07
+      ],
+      "shell_harmonic_sum_a": 2.674524143565171e-07
+    },
+    "z_mm": 1599.1999974
+  },
+  "schema": "unified-mini-objective-crossover-v1",
+  "search_interval_mm": [
+    1522.5,
+    1602.55
+  ],
+  "separation": {
+    "definition": "z_RMS minus z_D95, executed planes",
+    "difference_bracket_nm": [
+      -23.80000000812288,
+      -23.399999918183312
+    ],
+    "resolved_delta_z_nm": -23.600000076839933,
+    "zero_excluded_from_bracket": true
+  },
+  "source_count": 2000,
+  "source_current_a": 1e-05,
+  "source_identity": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+  "status": "MEASURED",
+  "surface_repeat_max_position_change_nm": 3.4904144079681023e-06,
+  "surface_z_mm": 1599.1999975,
+  "target_in_2d_bracket": true,
+  "waist": {
+    "basin_directional_sign_transitions": [
+      {
+        "converging_to_diverging": 1,
+        "diverging_to_converging": 0,
+        "eigenvalue_order": 0,
+        "transition_brackets_mm": [
+          [
+            1599.1999999000002,
+            1599.2
+          ]
+        ]
+      },
+      {
+        "converging_to_diverging": 1,
+        "diverging_to_converging": 0,
+        "eigenvalue_order": 1,
+        "transition_brackets_mm": [
+          [
+            1599.1999947000002,
+            1599.1999948
+          ]
+        ]
+      }
+    ],
+    "bracket_covariance_eigenvalues_m_rad": [
+      [
+        -1.096551081496054e-12,
+        -3.7148091168577046e-13
+      ],
+      [
+        -3.586957568145492e-13,
+        3.603790643664703e-13
+      ],
+      [
+        3.652152311133877e-13,
+        1.0784530194626753e-12
+      ]
+    ],
+    "bracket_covariance_growth_m2": [
+      [
+        5.887022417008031e-23,
+        7.712777475910151e-21
+      ],
+      [
+        3.39307313465214e-23,
+        7.48189767184651e-21
+      ]
+    ],
+    "bracket_mm": [
+      1599.1999921000001,
+      1599.2000026
+    ],
+    "bracket_position_covariances_m2": [
+      [
+        [
+          1.5489569562889199e-18,
+          2.79122076068484e-19
+        ],
+        [
+          2.79122076068484e-19,
+          1.3825925142190259e-18
+        ]
+      ],
+      [
+        [
+          1.5484557127636994e-18,
+          2.7733596574731024e-19
+        ],
+        [
+          2.773359657473103e-19,
+          1.375322110044166e-18
+        ]
+      ],
+      [
+        [
+          1.5555208834950335e-18,
+          2.7562421017679105e-19
+        ],
+        [
+          2.7562421017679105e-19,
+          1.375772767716025e-18
+        ]
+      ]
+    ],
+    "bracket_rms_radius_nm": [
+      1.7121768222084848,
+      1.7099057935476638,
+      1.7121021147148492
+    ],
+    "bracket_symmetric_position_slope_covariances_m_rad": [
+      [
+        [
+          -4.140624812970495e-13,
+          -1.7047415005882355e-13
+        ],
+        [
+          -1.7047415005882355e-13,
+          -1.0539695118847748e-12
+        ]
+      ],
+      [
+        [
+          3.194882248375309e-13,
+          -1.6652781258646365e-13
+        ],
+        [
+          -1.6652781258646365e-13,
+          -3.178049172856099e-13
+        ]
+      ],
+      [
+        [
+          1.0391983975963516e-12,
+          -1.626559385468488e-13
+        ],
+        [
+          -1.626559385468488e-13,
+          4.0446985297971137e-13
+        ]
+      ]
+    ],
+    "directional_sign_transitions": [
+      {
+        "converging_to_diverging": 1,
+        "diverging_to_converging": 0,
+        "eigenvalue_order": 0,
+        "transition_brackets_mm": [
+          [
+            1599.1999999000002,
+            1599.2
+          ]
+        ]
+      },
+      {
+        "converging_to_diverging": 1,
+        "diverging_to_converging": 0,
+        "eigenvalue_order": 1,
+        "transition_brackets_mm": [
+          [
+            1599.1999947000002,
+            1599.1999948
+          ]
+        ]
+      }
+    ],
+    "directional_transition_span_mm": [
+      1599.1999947000002,
+      1599.2
+    ],
+    "exact_common_stationary_plane_claimed": false,
+    "executed_indices": [
+      789,
+      842,
+      894
+    ],
+    "finite_region_span_mm": 1.049999991664663e-05,
+    "kind": "current-weighted finite two-dimensional source-image region",
+    "observation_bounds_mm": [
+      1598.0751552795032,
+      1600.0639751552794
+    ],
+    "radial_bracket_mm": [
+      1599.1999973000002,
+      1599.1999974
+    ],
+    "radial_root_interpolated_mm": 1599.1999973939298,
+    "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+    "ray_count": 2000,
+    "representative_slope_covariance_rad2": [
+      [
+        0.00013840573463687277,
+        7.445197860247787e-07
+      ],
+      [
+        7.44519786024779e-07,
+        0.00013889899876070813
+      ]
+    ],
+    "representative_z_mm": 1599.1999974,
+    "rms_radius_nm": 1.7099057935476638,
+    "search_basin_mm": [
+      1598.0751552795032,
+      1600.0639751552794
+    ],
+    "source_current_fraction": 1.0,
+    "status": "EXECUTED_FINITE_2D_WAIST_REGION",
+    "z_mm": 1599.1999974
+  }
+}

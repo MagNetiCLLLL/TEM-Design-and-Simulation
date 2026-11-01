@@ -1,0 +1,150 @@
+{
+  "at_crossover": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 29.777010086106287,
+    "centroid_x_m": -6.171734184712419e-12,
+    "centroid_y_m": 1.4803286096624195e-12,
+    "core_50pm_a": 2.3200000000000002e-06,
+    "current_a": 1e-05,
+    "d50_nm": 0.616930407146863,
+    "d90_nm": 2.0815588316860567,
+    "d95_nm": 2.5070750919470024,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": -0.10000007932831068,
+    "rms_radius_nm": 1.7099057935476631,
+    "surviving_rays": 2000,
+    "threefold_tail": {
+      "annular_current_a": 5.624999999999997e-06,
+      "annulus_nm": [
+        0.1,
+        1.0
+      ],
+      "harmonic_current_a": 1.034389681754459e-07,
+      "normalized_m3": 0.01838914989785706,
+      "outside_1nm_current_a": 1.204999999999999e-06,
+      "shell_edges_nm": [
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "shell_harmonic_currents_a": [
+        4.2079983311399065e-08,
+        7.75274453210838e-08,
+        1.6431352882349976e-08,
+        1.3141363284168428e-07
+      ],
+      "shell_harmonic_sum_a": 2.674524143565171e-07
+    },
+    "z_mm": 1599.1999974
+  },
+  "at_specimen": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 29.77701008610638,
+    "centroid_x_m": -6.173309090959698e-12,
+    "centroid_y_m": 1.4828595129286493e-12,
+    "core_50pm_a": 2.33e-06,
+    "current_a": 1e-05,
+    "d50_nm": 0.6144610400838795,
+    "d90_nm": 2.0770968610154648,
+    "d95_nm": 2.5023020930788786,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": 0.0,
+    "rms_radius_nm": 1.709906702873224,
+    "surviving_rays": 2000,
+    "threefold_tail": {
+      "annular_current_a": 5.604999999999997e-06,
+      "annulus_nm": [
+        0.1,
+        1.0
+      ],
+      "harmonic_current_a": 9.911716567315657e-08,
+      "normalized_m3": 0.017683704848020808,
+      "outside_1nm_current_a": 1.199999999999999e-06,
+      "shell_edges_nm": [
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "shell_harmonic_currents_a": [
+        3.935023611678668e-08,
+        7.606081067084547e-08,
+        2.0989094061639018e-08,
+        1.3043150630598273e-07
+      ],
+      "shell_harmonic_sum_a": 2.668316471552539e-07
+    },
+    "z_mm": 1599.1999975
+  },
+  "controls_changed": false,
+  "current_pixels_exact": true,
+  "field_identity_preserved": true,
+  "full_source_reemission": false,
+  "image": "incident-probe.png",
+  "image_sha256": "a01e0c56109cb1809efdb062ec0b64613b57c910f2d7889507ddb3e37f41522a",
+  "input_digest": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "max_absolute_surface_differences": {
+    "flight_time_s": 0.0,
+    "kinetic_energy_ev": 0.0,
+    "tx_rad": 0.0,
+    "ty_rad": 0.0,
+    "x_m": 0.0,
+    "y_m": 0.0
+  },
+  "membership_exact": true,
+  "original_input_digest": "4e3d3a67260f7127d4198184f891624480988a6147798e0ab5deeec0d765e61d",
+  "original_specimen": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 29.77701008610638,
+    "centroid_x_m": -6.173309090959698e-12,
+    "centroid_y_m": 1.4828595129286493e-12,
+    "core_50pm_a": 2.33e-06,
+    "current_a": 1e-05,
+    "d50_nm": 0.6144610400838795,
+    "d90_nm": 2.0770968610154648,
+    "d95_nm": 2.5023020930788786,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": 0.0,
+    "rms_radius_nm": 1.709906702873224,
+    "surviving_rays": 2000,
+    "threefold_tail": {
+      "annular_current_a": 5.604999999999997e-06,
+      "annulus_nm": [
+        0.1,
+        1.0
+      ],
+      "harmonic_current_a": 9.911716567315657e-08,
+      "normalized_m3": 0.017683704848020808,
+      "outside_1nm_current_a": 1.199999999999999e-06,
+      "shell_edges_nm": [
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "shell_harmonic_currents_a": [
+        3.935023611678668e-08,
+        7.606081067084547e-08,
+        2.0989094061639018e-08,
+        1.3043150630598273e-07
+      ],
+      "shell_harmonic_sum_a": 2.668316471552539e-07
+    },
+    "z_mm": 1599.1999975
+  },
+  "portable_archive": true,
+  "radial_bracket_mm": [
+    1599.1999973000002,
+    1599.1999974
+  ],
+  "revision": "23768e90433330f52f0802bf4f8930ba7c9fa5bf",
+  "schema": "unchanged-probe-replay-v1",
+  "source_count": 2000,
+  "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+  "source_ids_exact": true,
+  "utc": "2026-11-01T14:36:33.242038+00:00"
+}

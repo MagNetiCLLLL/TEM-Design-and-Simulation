@@ -1,0 +1,101 @@
+{
+  "schema": "probe-long-lived-reference-v1",
+  "original_input_digest": "4e3d3a67260f7127d4198184f891624480988a6147798e0ab5deeec0d765e61d",
+  "portable_input_digest": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+  "planes": {
+    "E": {
+      "z_mm": 1070.0,
+      "definition": "Declared complete corrector boundary; total overlapping field remains active"
+    },
+    "X": {
+      "z_mm": 1379.0,
+      "definition": "Declared complete corrector boundary; total overlapping field remains active"
+    },
+    "E_core": {
+      "z_mm": 1126.6656050955414,
+      "definition": "Earliest main-hexapole observation plane"
+    },
+    "HP_planes": [
+      {
+        "label": "HP2 Hexapole field entrance",
+        "z_mm": 1126.6656050955414,
+        "component_key": "probe_hp2_hexapole"
+      },
+      {
+        "label": "HP2 Hexapole centre",
+        "z_mm": 1144.5,
+        "component_key": "probe_hp2_hexapole"
+      },
+      {
+        "label": "HP2 Hexapole field exit",
+        "z_mm": 1162.3343949044586,
+        "component_key": "probe_hp2_hexapole"
+      },
+      {
+        "label": "HP1 Hexapole field entrance",
+        "z_mm": 1271.1260084925689,
+        "component_key": "probe_hp1_hexapole"
+      },
+      {
+        "label": "HP1 Hexapole centre",
+        "z_mm": 1300.85,
+        "component_key": "probe_hp1_hexapole"
+      },
+      {
+        "label": "HP1 Hexapole field exit",
+        "z_mm": 1330.573991507431,
+        "component_key": "probe_hp1_hexapole"
+      }
+    ],
+    "S_in": {
+      "z_mm": 1599.1999975
+    },
+    "S_target": {
+      "z_mm": 1599.1999975
+    },
+    "S_center": {
+      "z_mm": 1599.2
+    },
+    "S_bottom": {
+      "z_mm": 1599.2000025
+    },
+    "AC_reference_planes_mm": [
+      1387.5,
+      1412.5
+    ]
+  },
+  "pupil": {
+    "kind": "Virtual laboratory angular chart at S_in",
+    "coordinate": "Outgoing mechanical slopes relative to fixed accepted chief",
+    "angle_coordinate": "tan(theta); coefficients remain in this chart",
+    "normalization_radius": 0.03013285597664682,
+    "baseline_chief_xy_slopes": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "nominal_energy_ev": 300000.0,
+    "launch_z_mm": 450.0,
+    "launch_radii_um": [
+      0.55,
+      0.1375
+    ],
+    "curvature_m1": 0.531522971740788,
+    "independent_current": false,
+    "fixed_linear_intercept_from_slopes_m": [
+      [
+        1.849589374576562e-08,
+        -2.7650236549747915e-09
+      ],
+      [
+        -2.7650281734754773e-09,
+        1.4275394006102386e-08
+      ]
+    ],
+    "linear_map_scope": "2D axial reference family; not an arbitrary 4D first-order transfer map",
+    "reference_pencil_sha256": "7b18c1601bd8e40cbdee01644241152b0a6011ae6c1a65bf086934823e495d1a"
+  },
+  "reference_id": "eb28a2681f88ae033d2dc74fac2c0fdf88bf5e6bfd8ea210137c04b7f6e69acb"
+}

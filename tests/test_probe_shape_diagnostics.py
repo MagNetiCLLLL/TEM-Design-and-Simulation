@@ -119,6 +119,8 @@ def test_optical_edits_invalidate_aberration_cache(diagnostic_state, parameter):
 
 def test_probe_view_shows_measured_shape_without_false_a2_zero(qtbot, diagnostic_state):
     state, _calls = diagnostic_state
+    # The worker prepares the model. Refreshing a GUI must not trace reference rays.
+    aberrations.effective_aberration_comparison(state, "probe")
     triangle = np.exp(2j * np.pi * np.arange(3) / 3.0) * 1.0e-9
     branch = SimpleNamespace(
         x=triangle.real[None, :], y=triangle.imag[None, :],

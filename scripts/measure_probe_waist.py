@@ -27,6 +27,7 @@ for directory in (ROOT / "src", ROOT / "scripts"):
 SCHEMA = "temsim-native-d95-waist-observation-v1"
 PHASE = ("x_m", "y_m", "tx_rad", "ty_rad", "flight_time_s", "kinetic_energy_ev")
 MAX_PLANES = 10001
+MIN_ORIGINAL_POSITIVE = 1000
 
 
 def finite(value, label):
@@ -148,6 +149,8 @@ def execute_scan(state, planes, cancelled, *, batch_size=128, _cache=None):
     if not specimen_is_vacuum(state.sample):
         raise ValueError("This vacuum-probe diagnostic requires an already-vacuum specimen state")
     require_physical_gun_source(state.electron_gun)
+    if state.electron_gun.emitter.ray_count < MIN_ORIGINAL_POSITIVE:
+        raise ValueError("Physical trials require at least 1000 original positive-current particles")
     issues = unified_runtime_preflight(state)["issues"]
     if issues:
         raise ValueError("Unsupported physical inputs: " + "; ".join(issues))
@@ -172,6 +175,9 @@ def execute_scan(state, planes, cancelled, *, batch_size=128, _cache=None):
             or len(np.unique(ids)) != len(ids) or np.any(ids < 0)
             or not np.isfinite(weights).all() or np.any(weights < 0) or not weights.sum() > 0):
         raise ValueError("Invalid original source weights or unique IDs")
+    emitted_positive = int(np.count_nonzero(weights > 0))
+    if emitted_positive < MIN_ORIGINAL_POSITIVE:
+        raise ValueError("Fewer than 1000 original positive-current particles were emitted")
     initial = tuple(np.asarray(getattr(e, key)) for key in ("x_m", "tx_rad", "y_m", "ty_rad", "flight_time_s"))
     offsets = np.asarray(e.energy_offset_ev)
     kinetic = float(state.electron_gun.nominal_exit_energy_ev)+offsets
@@ -235,6 +241,7 @@ def execute_scan(state, planes, cancelled, *, batch_size=128, _cache=None):
     emission_hashes = {key: _array_hash(value) for key, value in arrays.items()
         if key.startswith("emission_") or key in ("weights", "source_id")}
     return arrays, dict(status="COMPLETE", source_current_a=current, source_points=len(weights),
+        emitted_positive_current_points=emitted_positive,
         gun_dependency_signature=signature, input_digest=original.digest,
         gun_reused=gun_reused, column_prefix_reused=any(row["prefix_reused"] for row in receipts),
         actual_trace_batches=len(receipts),
@@ -328,6 +335,19 @@ def observed_minimum(z, values, surface):
         interpretation="Smallest observed value; no claim of an exact continuous argmin")
 
 
+def waist_separation(rms, d95, *, stable, support):
+    """Difference of native waist positions with their actual neighbour bounds."""
+    pair = (rms, d95)
+    bounded = stable and support and all(item["status"] == "BOUNDED_OBSERVED_MINIMUM" for item in pair)
+    single = bounded and all(len(item["observed_minimum_planes_mm"]) == 1 for item in pair)
+    rb, db = (item["neighbour_bracket_offset_nm"] for item in pair)
+    return dict(definition="z_RMS minus z_D95, executed planes",
+        resolved_delta_z_nm=(rms["representative_offset_nm"]-d95["representative_offset_nm"]
+                             if single else None),
+        difference_bracket_nm=[rb[0]-db[1], rb[1]-db[0]] if bounded else None,
+        zero_excluded_from_bracket=(rb[0] > db[1] or rb[1] < db[0]) if bounded else None)
+
+
 def analyze_scan(arrays, planes, *, surface_z_mm, source_current_a, placement_tolerance_nm=1., max_d95_nm=None):
     """Compute native quantiles on each actual positive-current population."""
     from temsim.physics.beam_statistics import transverse_beam_statistics, _weighted_quantile
@@ -342,6 +362,10 @@ def analyze_scan(arrays, planes, *, surface_z_mm, source_current_a, placement_to
         raise ValueError("Invalid original checkpoint population")
     if np.any(~alive[:-1] & alive[1:] & (weights > 0)[None, :]):
         raise ValueError("A stopped positive-current source particle reappeared")
+    planes = np.asarray(planes)
+    if (planes.ndim != 1 or not planes.size or not np.isfinite(planes).all()
+            or np.any(np.diff(planes) <= 0)):
+        raise ValueError("Through-focus observations must be finite, distinct and ordered")
     if any(np.count_nonzero(z == value) != 1 for value in planes):
         raise ValueError("Missing exact through-focus checkpoint")
     current = finite(source_current_a, "Source current")
@@ -387,6 +411,7 @@ def analyze_scan(arrays, planes, *, surface_z_mm, source_current_a, placement_to
     unresolved = not bounded or (not placement and not (right < low or left > high)) or not support
     passed = placement and size and support
     return dict(planes=rows, surface=surface, d95_waist=d95, rms_waist_diagnostic=rms,
+        waist_separation=waist_separation(rms, d95, stable=stable, support=support),
         positive_current_membership_stable=stable,
         focus_definition="Native D95(z) discrete minimum about each actual current-weighted centroid",
         surface_gate=dict(status="BOUNDED_D95_WAIST_AT_SURFACE" if passed else "UNRESOLVED" if unresolved else "FAIL",

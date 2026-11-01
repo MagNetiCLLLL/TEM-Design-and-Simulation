@@ -1,6 +1,12 @@
 # Preserve the original scientific reference CIF bytes.
 configs/reference_samples/*.cif -text
 
+# Preserve the accepted probe inputs, original particle weights and evidence hashes.
+docs/development/probe_stage12_20261101/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+
+# Retain the source bytes of the accepted optical snapshot, including its EOF.
+src/temsim/gui/crossover_survey_view.py whitespace=-blank-at-eof,blank-at-eol,space-before-tab,cr-at-eol
+
 # Keep the scientific evidence byte-identical, including original CRLF endings.
 docs/development/probe_tail_attribution_20261028/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 

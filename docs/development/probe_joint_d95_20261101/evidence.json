@@ -1,0 +1,3201 @@
+{
+  "schema": "fixed-original-source-hp-calibration-v1",
+  "fixed_count": 2000,
+  "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+  "eligible_original_current_a": 1e-05,
+  "selection": "round2-placed-A-2000",
+  "surface_mm": 1599.1999975,
+  "selected": {
+    "name": "round2-placed-A-2000",
+    "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round2-placed-A-2000",
+    "count": 2000,
+    "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+    "input_digest": "89cd9d307e6fbc1690722d08d1861f0abeef2fe0fffbf3f01e9104c1240aa312",
+    "step_mm": 0.05,
+    "alpha95_mrad": 29.74904703045604,
+    "current_ua": 10.0,
+    "core_ua": 1.5749999999999997,
+    "d95_nm": 2.700971298442641,
+    "d90_nm": 2.29210060040411,
+    "d50_nm": 0.6870412106119447,
+    "rms_radius_nm": 1.9012631506182835,
+    "surviving": 2000,
+    "effective": 2000.000000000003,
+    "profile_refined": false,
+    "z_core_offsets_nm": [
+      2.6000000161729986
+    ],
+    "z_d95_offsets_nm": [
+      23.199999986900366
+    ],
+    "z_rms_offsets_nm": [
+      0.0
+    ],
+    "q_bracket_nm": [
+      2.499999936844688,
+      2.7000000955013093
+    ],
+    "d95_bracket_nm": [
+      23.099999907572055,
+      23.300000066228677
+    ],
+    "rms_bracket_nm": [
+      -0.10000007932831068,
+      0.10000007932831068
+    ],
+    "waist_difference_nm": -23.199999986900366,
+    "difference_interval_nm": [
+      -23.400000145556987,
+      -22.999999828243745
+    ],
+    "target_core_fraction": 0.9752321981424148,
+    "target_d95_ratio": 1.3766914104163852,
+    "exact_joint_focus": false,
+    "near_joint_focus": false,
+    "transmission_preserved": true,
+    "angle_feasible": true,
+    "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+    "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+    "global_optimum_proven": false
+  },
+  "reference": {
+    "name": "B0",
+    "folder": "F:\\tem_simulator_v2\\outputs\\probe-calibration-20261101\\B0",
+    "count": 2000,
+    "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+    "input_digest": "1ddd89b285cfb63c281b08e868a5cf6c0b1985a68598df783eac2adad8101c78",
+    "step_mm": 0.05,
+    "alpha95_mrad": 30.000060722317507,
+    "current_ua": 10.0,
+    "core_ua": 0.04999999999999999,
+    "d95_nm": 2.090008160138114,
+    "d90_nm": 1.3024493285831686,
+    "d50_nm": 0.7747303667573333,
+    "rms_radius_nm": 1.9504415120672556,
+    "surviving": 2000,
+    "effective": 2000.000000000003,
+    "profile_refined": true,
+    "z_core_offsets_nm": [
+      -60.99999995967664
+    ],
+    "z_d95_offsets_nm": [
+      0.0
+    ],
+    "z_rms_offsets_nm": [
+      -35.99999990910874
+    ],
+    "q_bracket_nm": [
+      -62.00000007083872,
+      -60.00000007588824
+    ],
+    "d95_bracket_nm": [
+      -0.10000007932831068,
+      0.10000007932831068
+    ],
+    "rms_bracket_nm": [
+      -37.00000002027082,
+      -35.00000002532033
+    ],
+    "waist_difference_nm": -35.99999990910874,
+    "difference_interval_nm": [
+      -37.10000009959913,
+      -34.89999994599202
+    ],
+    "target_core_fraction": 0.0353356890459364,
+    "target_d95_ratio": 1.0,
+    "exact_joint_focus": false,
+    "near_joint_focus": false,
+    "transmission_preserved": true,
+    "angle_feasible": true,
+    "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+    "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+    "global_optimum_proven": false
+  },
+  "previous_balanced": {
+    "name": "Copt-balanced",
+    "folder": "F:\\tem_simulator_v2\\outputs\\probe-calibration-20261101\\Copt-balanced",
+    "count": 2000,
+    "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+    "input_digest": "80c6f9146cd0c3825015988296d1c2935dd3c01738673873c0088154edfb6e8e",
+    "step_mm": 0.05,
+    "alpha95_mrad": 29.99572017544308,
+    "current_ua": 10.0,
+    "core_ua": 1.4149999999999996,
+    "d95_nm": 1.9919537995923893,
+    "d90_nm": 1.4490990951732214,
+    "d50_nm": 0.3646434531584601,
+    "rms_radius_nm": 2.2250159552899573,
+    "surviving": 2000,
+    "effective": 2000.000000000003,
+    "profile_refined": true,
+    "z_core_offsets_nm": [
+      -7.3999999585794285
+    ],
+    "z_d95_offsets_nm": [
+      0.0
+    ],
+    "z_rms_offsets_nm": [
+      -25.60000007179042
+    ],
+    "q_bracket_nm": [
+      -7.500000037907739,
+      -7.300000106624793
+    ],
+    "d95_bracket_nm": [
+      -0.10000007932831068,
+      0.10000007932831068
+    ],
+    "rms_bracket_nm": [
+      -25.699999923745054,
+      -25.499999992462108
+    ],
+    "waist_difference_nm": -25.60000007179042,
+    "difference_interval_nm": [
+      -25.800000003073364,
+      -25.399999913133797
+    ],
+    "target_core_fraction": 0.7927170868347337,
+    "target_d95_ratio": 1.0,
+    "exact_joint_focus": false,
+    "near_joint_focus": false,
+    "transmission_preserved": true,
+    "angle_feasible": true,
+    "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+    "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+    "global_optimum_proven": false
+  },
+  "actual_controls": {
+    "hp1_m3": 4634567.145354286,
+    "hp2_m3": 5347687.020149909,
+    "hp1_angle_rad": 0.01891965740868938,
+    "hp2_angle_rad": 0.0,
+    "objective_percent": 29.29343672860418,
+    "relays": {
+      "probe_tl22_lens": 53.507098505266406,
+      "probe_tl21_lens": 59.70530351895806
+    },
+    "auxiliary": {
+      "probe_hpc_hexapole": 165829.97069096175,
+      "probe_hpol_hexapole": 507068.4443192765
+    }
+  },
+  "field_sweep": {
+    "H0": {
+      "cs_mm": [
+        6.486817630924583,
+        6.4868211408130865,
+        6.486821154387264
+      ],
+      "radii_um": [
+        0.55,
+        0.1375,
+        0.034375
+      ],
+      "fields_changed": [
+        "probe_hp1_hexapole",
+        "probe_hp2_hexapole"
+      ],
+      "field_digest": "54032651ea3baf04142f9035f3287664d37261332a0242d94d5325318340ed60",
+      "d95_nm": 391.13115581633826,
+      "core_ua": 0.02499999999999999,
+      "alpha95_mrad": 29.593107339176324,
+      "boundaries": "UNRESOLVED_BOUNDARY_MINIMUM"
+    },
+    "weak": {
+      "cs_mm": [
+        -0.14225722825822373,
+        -0.1463018710796875,
+        -0.14631829006336455
+      ],
+      "radii_um": [
+        0.55,
+        0.1375,
+        0.034375
+      ],
+      "fields_changed": [
+        "probe_hp1_hexapole",
+        "probe_hp2_hexapole"
+      ],
+      "field_digest": "06d6099aebff2353c0fd923960328a615ce29adbf49498c2a4142fe75f5045b2",
+      "d95_nm": 2.411450027493739,
+      "core_ua": 2.105,
+      "alpha95_mrad": 29.74668954877472,
+      "boundaries": "BOUNDED_OBSERVED_MINIMUM"
+    },
+    "H1": {
+      "cs_mm": [
+        -0.155562459092266,
+        -0.15962915047264592,
+        -0.15964566197880367
+      ],
+      "radii_um": [
+        0.55,
+        0.1375,
+        0.034375
+      ],
+      "fields_changed": [],
+      "field_digest": "376a3e52fdd35a603b1ffd781c6ffc764281378c9f8f2a969778d6fa85707f07",
+      "d95_nm": 2.0093929566469573,
+      "core_ua": 2.115,
+      "alpha95_mrad": 29.747351278770697,
+      "boundaries": "BOUNDED_OBSERVED_MINIMUM"
+    },
+    "strong": {
+      "cs_mm": [
+        -0.16888096508329062,
+        -0.17296980429648925,
+        -0.17298640098602006
+      ],
+      "radii_um": [
+        0.55,
+        0.1375,
+        0.034375
+      ],
+      "fields_changed": [
+        "probe_hp1_hexapole",
+        "probe_hp2_hexapole"
+      ],
+      "field_digest": "4545d11b34c44de0f5cc6367eed1c9a41f87dad2a5c3859af323fdcfad9f81a8",
+      "d95_nm": 2.231216706441979,
+      "core_ua": 2.035,
+      "alpha95_mrad": 29.748013402417346,
+      "boundaries": "BOUNDED_OBSERVED_MINIMUM"
+    },
+    "null": {
+      "cs_mm": [
+        4.293917497854394e-06,
+        -0.003809416288679202,
+        -0.003824894972992402
+      ],
+      "radii_um": [
+        0.55,
+        0.1375,
+        0.034375
+      ],
+      "fields_changed": [
+        "probe_hp1_hexapole",
+        "probe_hp2_hexapole"
+      ],
+      "field_digest": "770cbda72b62ebb25996c59ad61ab4aacd51d4f7891072fb7d860741fbb5b9bf",
+      "d95_nm": 9.264876105581168,
+      "core_ua": 1.2999999999999998,
+      "alpha95_mrad": 29.739597368710236,
+      "boundaries": "BOUNDED_OBSERVED_MINIMUM"
+    }
+  },
+  "pareto_among_observed_feasible_near_focus": [
+    "hp-bright-fixed2000",
+    "hp-joint-fixed2000",
+    "hp-tail-fixed2000"
+  ],
+  "current_kernel": {
+    "path": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round2-placed-A-2000\\target-current.npz",
+    "pitch_nm": 0.02,
+    "outside_current_a": 1.3499999999999995e-07
+  },
+  "scope": "Measured 2000-particle relative optical performance. Physical field accuracy and atomic image resolution remain unqualified.",
+  "all_fixed_population_trials": [
+    {
+      "name": "B0",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-calibration-20261101\\B0",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "1ddd89b285cfb63c281b08e868a5cf6c0b1985a68598df783eac2adad8101c78",
+      "step_mm": 0.05,
+      "alpha95_mrad": 30.000060722317507,
+      "current_ua": 10.0,
+      "core_ua": 0.04999999999999999,
+      "d95_nm": 2.090008160138114,
+      "d90_nm": 1.3024493285831686,
+      "d50_nm": 0.7747303667573333,
+      "rms_radius_nm": 1.9504415120672556,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": true,
+      "z_core_offsets_nm": [
+        -60.99999995967664
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -35.99999990910874
+      ],
+      "q_bracket_nm": [
+        -62.00000007083872,
+        -60.00000007588824
+      ],
+      "d95_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "rms_bracket_nm": [
+        -37.00000002027082,
+        -35.00000002532033
+      ],
+      "waist_difference_nm": -35.99999990910874,
+      "difference_interval_nm": [
+        -37.10000009959913,
+        -34.89999994599202
+      ],
+      "target_core_fraction": 0.0353356890459364,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "Copt-balanced",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-calibration-20261101\\Copt-balanced",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "80c6f9146cd0c3825015988296d1c2935dd3c01738673873c0088154edfb6e8e",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.99572017544308,
+      "current_ua": 10.0,
+      "core_ua": 1.4149999999999996,
+      "d95_nm": 1.9919537995923893,
+      "d90_nm": 1.4490990951732214,
+      "d50_nm": 0.3646434531584601,
+      "rms_radius_nm": 2.2250159552899573,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": true,
+      "z_core_offsets_nm": [
+        -7.3999999585794285
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -25.60000007179042
+      ],
+      "q_bracket_nm": [
+        -7.500000037907739,
+        -7.300000106624793
+      ],
+      "d95_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "rms_bracket_nm": [
+        -25.699999923745054,
+        -25.499999992462108
+      ],
+      "waist_difference_nm": -25.60000007179042,
+      "difference_interval_nm": [
+        -25.800000003073364,
+        -25.399999913133797
+      ],
+      "target_core_fraction": 0.7927170868347337,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "peak-at-surface",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-calibration-20261101\\peak-at-surface",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "787bb0e674e35d8841f044ad95712ff4e8375c55b4481459d76a9a3ab507b128",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.99571393320201,
+      "current_ua": 10.0,
+      "core_ua": 1.7799999999999996,
+      "d95_nm": 2.2188285014370996,
+      "d90_nm": 1.7232732663796726,
+      "d50_nm": 0.5189271132119777,
+      "rms_radius_nm": 2.204225862895307,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        7.500000037907739
+      ],
+      "z_rms_offsets_nm": [
+        -17.99999995455437
+      ],
+      "q_bracket_nm": [
+        -0.4999999418942025,
+        0.4999999418942025
+      ],
+      "d95_bracket_nm": [
+        7.000000096013537,
+        7.999999979801942
+      ],
+      "rms_bracket_nm": [
+        -18.49999989644857,
+        -17.500000012660166
+      ],
+      "waist_difference_nm": -25.499999992462108,
+      "difference_interval_nm": [
+        -26.499999876250513,
+        -24.500000108673703
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.1138928071698517,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "Copt-focus",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-calibration-20261101\\Copt-focus",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "25101bd83866da40c2bb1a6d198dac622b5d476543290a357ffa3cec90992752",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.995492579078043,
+      "current_ua": 10.0,
+      "core_ua": 1.4399999999999995,
+      "d95_nm": 1.9646099199808085,
+      "d90_nm": 1.4505257465678223,
+      "d50_nm": 0.38440910032039327,
+      "rms_radius_nm": 2.238785020684312,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -7.999999979801942
+      ],
+      "z_d95_offsets_nm": [
+        -0.4999999418942025
+      ],
+      "z_rms_offsets_nm": [
+        -29.99999992425728
+      ],
+      "q_bracket_nm": [
+        -15.000000075815478,
+        -3.999999989900971
+      ],
+      "d95_bracket_nm": [
+        -1.0000001111620804,
+        0.0
+      ],
+      "rms_bracket_nm": [
+        -50.00000010113581,
+        -15.000000075815478
+      ],
+      "waist_difference_nm": -29.49999998236308,
+      "difference_interval_nm": [
+        -50.00000010113581,
+        -13.999999964653398
+      ],
+      "target_core_fraction": 0.8323699421965317,
+      "target_d95_ratio": 1.0000747124993379,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "a1-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\a1-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "4b535aaafa3e8d827462afadc5ac0ba1e5fee989fb055bb9f322c7a342c299ac",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.995260658770533,
+      "current_ua": 10.0,
+      "core_ua": 1.6749999999999996,
+      "d95_nm": 2.048144024777481,
+      "d90_nm": 1.6014019901563168,
+      "d50_nm": 0.5393687943544435,
+      "rms_radius_nm": 2.2678067833471443,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        0.25000008463393897
+      ],
+      "z_rms_offsets_nm": [
+        -23.499999997511622
+      ],
+      "q_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "d95_bracket_nm": [
+        0.0,
+        0.4999999418942025
+      ],
+      "rms_bracket_nm": [
+        -23.75000008214556,
+        -23.249999912877684
+      ],
+      "waist_difference_nm": -23.75000008214556,
+      "difference_interval_nm": [
+        -24.250000024039764,
+        -23.249999912877684
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.0017181918278355,
+      "exact_joint_focus": false,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "cs-null-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\cs-null-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "ead9b2df4f07ab4caf09e3ccd246f3f5eb1fcc3eed874171583676dd2a17651a",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.739597368710236,
+      "current_ua": 10.0,
+      "core_ua": 1.2999999999999998,
+      "d95_nm": 9.264876105581168,
+      "d90_nm": 5.076384876993282,
+      "d50_nm": 0.49547644729402257,
+      "rms_radius_nm": 3.4487514331938693,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -9.999999974752427
+      ],
+      "z_d95_offsets_nm": [
+        -95.99999998499698
+      ],
+      "z_rms_offsets_nm": [
+        -99.99999997489795
+      ],
+      "q_bracket_nm": [
+        -10.250000059386366,
+        -9.749999890118488
+      ],
+      "d95_bracket_nm": [
+        -97.99999997994746,
+        -93.99999999004649
+      ],
+      "rms_bracket_nm": [
+        -99.99999997489795,
+        -97.99999997994746
+      ],
+      "waist_difference_nm": null,
+      "difference_interval_nm": null,
+      "target_core_fraction": 0.9386281588447655,
+      "target_d95_ratio": 2.3702798537731753,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "d1-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\d1-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "cf201c020f7ca35b4cb5624be47070edfb6b6a93fbc78a63bef693950a2679aa",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.994828388166518,
+      "current_ua": 10.0,
+      "core_ua": 1.7599999999999996,
+      "d95_nm": 2.0538395026725684,
+      "d90_nm": 1.5239151585603008,
+      "d50_nm": 0.4994779133036686,
+      "rms_radius_nm": 2.2941704624332004,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        1.249999968422344,
+        1.500000053056283
+      ],
+      "z_d95_offsets_nm": [
+        0.25000008463393897
+      ],
+      "z_rms_offsets_nm": [
+        -25.499999992462108
+      ],
+      "q_bracket_nm": [
+        1.0000001111620804,
+        1.7499999103165464
+      ],
+      "d95_bracket_nm": [
+        0.0,
+        0.4999999418942025
+      ],
+      "rms_bracket_nm": [
+        -25.750000077096047,
+        -25.24999990782817
+      ],
+      "waist_difference_nm": -25.750000077096047,
+      "difference_interval_nm": [
+        -26.25000001899025,
+        -25.24999990782817
+      ],
+      "target_core_fraction": 0.9971671388101983,
+      "target_d95_ratio": 1.005516282146772,
+      "exact_joint_focus": false,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "drive-off-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\drive-off-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "f36ee6c24dbdb1c6f85f9bc85a602022fe224262a16a9bfc2058f821e0030374",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.593107339176324,
+      "current_ua": 10.0,
+      "core_ua": 0.02499999999999999,
+      "d95_nm": 391.13115581633826,
+      "d90_nm": 268.99611183438157,
+      "d50_nm": 39.070493122049285,
+      "rms_radius_nm": 91.98785694583769,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -93.99999999004649,
+        -91.999999995096,
+        -90.00000000014552,
+        -88.00000000519503,
+        -86.00000001024455,
+        -84.00000001529406,
+        -19.75000009224459,
+        -19.50000000761065,
+        -19.249999922976713,
+        -19.00000006571645,
+        -18.74999998108251,
+        -18.49999989644857,
+        -18.250000039188308,
+        -17.99999995455437,
+        -17.750000097294105,
+        -17.500000012660166,
+        -17.249999928026227,
+        -17.000000070765964,
+        -16.749999986132025,
+        -16.499999901498086,
+        -16.250000044237822,
+        -15.999999959603883,
+        -15.75000010234362,
+        -15.50000001770968,
+        -15.249999933075742,
+        -15.000000075815478,
+        -14.74999999118154,
+        -14.4999999065476,
+        -14.250000049287337,
+        -13.999999964653398,
+        -13.750000107393134,
+        -13.500000022759195,
+        -13.249999938125256,
+        -13.000000080864993,
+        -12.749999996231054,
+        -12.499999911597115,
+        -12.250000054336851,
+        -11.999999969702912,
+        -11.750000112442649,
+        -11.50000002780871,
+        -11.249999943174771,
+        -11.000000085914508,
+        -10.750000001280569,
+        -10.49999991664663,
+        -10.250000059386366,
+        -9.999999974752427,
+        -9.749999890118488,
+        -9.500000032858225,
+        -9.249999948224286,
+        -9.000000090964022,
+        -8.750000006330083,
+        -8.499999921696144,
+        -8.25000006443588,
+        -7.999999979801942,
+        -7.749999895168003,
+        -7.500000037907739,
+        -7.2499999532738,
+        -7.000000096013537,
+        -6.750000011379598,
+        -6.499999926745659,
+        -6.250000069485395,
+        -5.999999984851456,
+        -5.749999900217517,
+        -5.500000042957254,
+        -5.249999958323315,
+        -5.000000101063051,
+        -4.750000016429112,
+        -4.499999931795173,
+        -4.25000007453491,
+        -3.999999989900971,
+        -3.749999905267032,
+        -3.5000000480067683,
+        -3.2499999633728294,
+        -3.000000106112566,
+        -2.750000021478627,
+        -2.499999936844688,
+        -2.2500000795844244,
+        -1.9999999949504854,
+        -1.7499999103165464,
+        -1.500000053056283,
+        -1.249999968422344,
+        -1.0000001111620804,
+        -0.7500000265281415,
+        -0.4999999418942025
+      ],
+      "z_d95_offsets_nm": [
+        -99.99999997489795
+      ],
+      "z_rms_offsets_nm": [
+        -99.99999997489795
+      ],
+      "q_bracket_nm": [
+        -95.99999998499698,
+        -0.25000008463393897
+      ],
+      "d95_bracket_nm": [
+        -99.99999997489795,
+        -97.99999997994746
+      ],
+      "rms_bracket_nm": [
+        -99.99999997489795,
+        -97.99999997994746
+      ],
+      "waist_difference_nm": null,
+      "difference_interval_nm": null,
+      "target_core_fraction": 0.8333333333333334,
+      "target_d95_ratio": 1.0135378926748955,
+      "exact_joint_focus": null,
+      "near_joint_focus": null,
+      "transmission_preserved": true,
+      "angle_feasible": false,
+      "core_extremum_status": "UNRESOLVED_MULTIPLE_MINIMA",
+      "d95_extremum_status": "UNRESOLVED_BOUNDARY_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "drive-strong-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\drive-strong-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "02f02fcbb989fac3f200e664a211c7429bf15ff346f5df39426da41ff42c3368",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.748013402417346,
+      "current_ua": 10.0,
+      "core_ua": 2.035,
+      "d95_nm": 2.231216706441979,
+      "d90_nm": 1.7893970170242823,
+      "d50_nm": 0.48343061879888993,
+      "rms_radius_nm": 2.0249269051064016,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        9.000000090964022
+      ],
+      "z_rms_offsets_nm": [
+        -14.250000049287337
+      ],
+      "q_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "d95_bracket_nm": [
+        8.750000006330083,
+        9.249999948224286
+      ],
+      "rms_bracket_nm": [
+        -14.4999999065476,
+        -13.999999964653398
+      ],
+      "waist_difference_nm": -23.25000014025136,
+      "difference_interval_nm": [
+        -23.749999854771886,
+        -22.74999997098348
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.1274807149134485,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "drive-weak-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\drive-weak-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "05188d02ea5cd7e539b2dab74e0a7bae56ad361b3c568a2f517c7ea0ebc24560",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.74668954877472,
+      "current_ua": 10.0,
+      "core_ua": 2.105,
+      "d95_nm": 2.411450027493739,
+      "d90_nm": 1.2966149735501964,
+      "d50_nm": 0.3602585962490001,
+      "rms_radius_nm": 2.18252887463487,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -0.7500000265281415
+      ],
+      "z_d95_offsets_nm": [
+        -7.749999895168003
+      ],
+      "z_rms_offsets_nm": [
+        -29.750000066997018
+      ],
+      "q_bracket_nm": [
+        -1.0000001111620804,
+        -0.4999999418942025
+      ],
+      "d95_bracket_nm": [
+        -7.999999979801942,
+        -7.500000037907739
+      ],
+      "rms_bracket_nm": [
+        -29.99999992425728,
+        -29.49999998236308
+      ],
+      "waist_difference_nm": -22.000000171829015,
+      "difference_interval_nm": [
+        -22.499999886349542,
+        -21.500000002561137
+      ],
+      "target_core_fraction": 0.9700460829493088,
+      "target_d95_ratio": 1.1354218595889067,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "hp-bright-fixed2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\hp-bright-fixed2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "fb953d53439d6b85760329639451132418d3d4f9b498b712b6b0407a27fb07d7",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.74726766906689,
+      "current_ua": 10.0,
+      "core_ua": 2.1350000000000002,
+      "d95_nm": 2.0046611115501847,
+      "d90_nm": 1.4896028193885358,
+      "d50_nm": 0.42242252823159104,
+      "rms_radius_nm": 2.1085805344658564,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -22.499999886349542
+      ],
+      "q_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "d95_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "rms_bracket_nm": [
+        -22.599999965677853,
+        -22.400000034394907
+      ],
+      "waist_difference_nm": -22.499999886349542,
+      "difference_interval_nm": [
+        -22.700000045006163,
+        -22.299999955066596
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": true,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "hp-joint-fixed2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\hp-joint-fixed2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "c167510ab8424df3218191e8908ef7b022a0a8107a768f13d24a82d023f871f4",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.74739374178381,
+      "current_ua": 10.0,
+      "core_ua": 2.035,
+      "d95_nm": 1.9870788837902413,
+      "d90_nm": 1.5512552982880825,
+      "d50_nm": 0.4298163542305092,
+      "rms_radius_nm": 2.088303840927782,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -21.09999991262157
+      ],
+      "q_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "d95_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "rms_bracket_nm": [
+        -21.19999999194988,
+        -21.000000060666935
+      ],
+      "waist_difference_nm": -21.09999991262157,
+      "difference_interval_nm": [
+        -21.30000007127819,
+        -20.899999981338624
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": true,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "hp-tail-fixed2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\hp-tail-fixed2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "a0ec890ea887cca0ff40138ba8fc3d83b66a83fa1b3e8ad9a595e1a49ef21d71",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.747446035049876,
+      "current_ua": 10.0,
+      "core_ua": 1.92,
+      "d95_nm": 1.9798699994311832,
+      "d90_nm": 1.54592381162514,
+      "d50_nm": 0.4524135107786523,
+      "rms_radius_nm": 2.0754330160247942,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -20.499999891399057
+      ],
+      "q_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "d95_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "rms_bracket_nm": [
+        -20.599999970727367,
+        -20.40000003944442
+      ],
+      "waist_difference_nm": -20.499999891399057,
+      "difference_interval_nm": [
+        -20.700000050055678,
+        -20.29999996011611
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": true,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "hp1-balance-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\hp1-balance-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "792aac10a99c8948a8e1f11c7b1164bb672722147c5b8f9d76ea28628fd67553",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.747640882280912,
+      "current_ua": 10.0,
+      "core_ua": 1.65,
+      "d95_nm": 2.117678983513112,
+      "d90_nm": 1.566306146286562,
+      "d50_nm": 0.44941871522882715,
+      "rms_radius_nm": 2.0585557184012333,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -4.499999931795173
+      ],
+      "z_d95_offsets_nm": [
+        3.5000000480067683
+      ],
+      "z_rms_offsets_nm": [
+        -21.000000060666935
+      ],
+      "q_bracket_nm": [
+        -4.750000016429112,
+        -4.25000007453491
+      ],
+      "d95_bracket_nm": [
+        3.2499999633728294,
+        3.749999905267032
+      ],
+      "rms_bracket_nm": [
+        -21.249999917927198,
+        -20.749999976032996
+      ],
+      "waist_difference_nm": -24.500000108673703,
+      "difference_interval_nm": [
+        -24.99999982319423,
+        -23.999999939405825
+      ],
+      "target_core_fraction": 0.9322033898305085,
+      "target_d95_ratio": 1.0182591974265136,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "hp1-orientation-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\hp1-orientation-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "c0deddfdd6e2fbfac3b3a4d49b88a0158199edc8aa32b23b03a5e7b139bb4b89",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.74788311170293,
+      "current_ua": 10.0,
+      "core_ua": 2.2150000000000003,
+      "d95_nm": 2.9707057407188024,
+      "d90_nm": 1.971152578172399,
+      "d50_nm": 0.38986106935288134,
+      "rms_radius_nm": 2.149436423357263,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -1.9999999949504854,
+        -1.7499999103165464
+      ],
+      "z_d95_offsets_nm": [
+        9.249999948224286
+      ],
+      "z_rms_offsets_nm": [
+        -21.750000087195076
+      ],
+      "q_bracket_nm": [
+        -2.2500000795844244,
+        -1.500000053056283
+      ],
+      "d95_bracket_nm": [
+        9.000000090964022,
+        9.500000032858225
+      ],
+      "rms_bracket_nm": [
+        -21.99999994445534,
+        -21.500000002561137
+      ],
+      "waist_difference_nm": -31.00000003541936,
+      "difference_interval_nm": [
+        -31.499999977313564,
+        -30.50000009352516
+      ],
+      "target_core_fraction": 0.9736263736263737,
+      "target_d95_ratio": 1.0450173815785815,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "j0-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\j0-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "d40d9d8ed39a131d2f269496d8238645da69c3b86f9af1a0b08cc06534afdccf",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.747351278770697,
+      "current_ua": 10.0,
+      "core_ua": 2.115,
+      "d95_nm": 2.0093929566469573,
+      "d90_nm": 1.497663490085684,
+      "d50_nm": 0.4257981576129778,
+      "rms_radius_nm": 2.0989552627920713,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": true,
+      "z_core_offsets_nm": [
+        0.10000007932831068,
+        0.3000000106112566
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -21.99999994445534
+      ],
+      "q_bracket_nm": [
+        0.0,
+        0.40000008993956726
+      ],
+      "d95_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "rms_bracket_nm": [
+        -22.10000002378365,
+        -21.900000092500704
+      ],
+      "waist_difference_nm": -21.99999994445534,
+      "difference_interval_nm": [
+        -22.20000010311196,
+        -21.800000013172394
+      ],
+      "target_core_fraction": 0.9976415094339622,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": false,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_MULTIPLE_MINIMA",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "j0-step-fine",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\j0-step-fine",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "5ecdf314e93494ad0e81f8377bfef33f9c7dee29e580f29a9dda6947f63c56f9",
+      "step_mm": 0.025,
+      "alpha95_mrad": 29.74735129224295,
+      "current_ua": 10.0,
+      "core_ua": 2.115,
+      "d95_nm": 2.009360632667369,
+      "d90_nm": 1.4976370068645979,
+      "d50_nm": 0.4257953504085487,
+      "rms_radius_nm": 2.09895663787958,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -21.99999994445534
+      ],
+      "q_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "d95_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "rms_bracket_nm": [
+        -22.25000002908928,
+        -21.750000087195076
+      ],
+      "waist_difference_nm": -21.99999994445534,
+      "difference_interval_nm": [
+        -22.500000113723218,
+        -21.500000002561137
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": true,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "j7-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\j7-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "78ddfa53303d626b601c0cec3f1eaeb494662bb62b9b0ab0681389c8c3c44682",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.770814415905456,
+      "current_ua": 10.0,
+      "core_ua": 1.765,
+      "d95_nm": 2.0426595073025533,
+      "d90_nm": 1.61192379743991,
+      "d50_nm": 0.5001878800753178,
+      "rms_radius_nm": 2.0899087475855174,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": true,
+      "z_core_offsets_nm": [
+        0.1999999312829459,
+        0.40000008993956726
+      ],
+      "z_d95_offsets_nm": [
+        -1.2000000424450263
+      ],
+      "z_rms_offsets_nm": [
+        -20.250000034138793
+      ],
+      "q_bracket_nm": [
+        0.10000007932831068,
+        0.4999999418942025
+      ],
+      "d95_bracket_nm": [
+        -1.249999968422344,
+        -1.0999999631167157
+      ],
+      "rms_bracket_nm": [
+        -20.29999996011611,
+        -20.200000108161476
+      ],
+      "waist_difference_nm": -19.049999991693767,
+      "difference_interval_nm": [
+        -19.199999996999395,
+        -18.95000013973913
+      ],
+      "target_core_fraction": 0.9915730337078652,
+      "target_d95_ratio": 1.0050403240298698,
+      "exact_joint_focus": false,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_MULTIPLE_MINIMA",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "null-ol-d95-final-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\null-ol-d95-final-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "cd97d03f3d3854f96d0acd604f909780eb58a9dc34b3c5b104a23f3409e39c7c",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.739518563845355,
+      "current_ua": 10.0,
+      "core_ua": 0.02499999999999999,
+      "d95_nm": 3.8944673198589754,
+      "d90_nm": 3.307274614261973,
+      "d50_nm": 1.8639504417698252,
+      "rms_radius_nm": 2.9141160313174606,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        84.00000001529406
+      ],
+      "z_d95_offsets_nm": [
+        -0.10000007932831068
+      ],
+      "z_rms_offsets_nm": [
+        -16.599999980826396
+      ],
+      "q_bracket_nm": [
+        82.00000002034358,
+        86.00000001024455
+      ],
+      "d95_bracket_nm": [
+        -0.1999999312829459,
+        0.0
+      ],
+      "rms_bracket_nm": [
+        -16.700000060154707,
+        -16.499999901498086
+      ],
+      "waist_difference_nm": -16.499999901498086,
+      "difference_interval_nm": [
+        -16.700000060154707,
+        -16.29999997021514
+      ],
+      "target_core_fraction": 0.01824817518248175,
+      "target_d95_ratio": 1.000350571423074,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "null-ol-middle-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\null-ol-middle-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "c2af398a63a75a648021e7f2e4d29535f1867a54e5c2de27524ed9fc4ab22466",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.739556109728632,
+      "current_ua": 10.0,
+      "core_ua": 0.07999999999999996,
+      "d95_nm": 6.441383389324083,
+      "d90_nm": 2.7618767837913136,
+      "d50_nm": 0.9175914980964128,
+      "rms_radius_nm": 3.0794678902820998,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        39.99999989900971
+      ],
+      "z_d95_offsets_nm": [
+        -46.00000011123484
+      ],
+      "z_rms_offsets_nm": [
+        -62.00000007083872
+      ],
+      "q_bracket_nm": [
+        37.99999990405922,
+        41.999999893960194
+      ],
+      "d95_bracket_nm": [
+        -48.000000106185325,
+        -43.99999988891068
+      ],
+      "rms_bracket_nm": [
+        -64.00000006578921,
+        -60.00000007588824
+      ],
+      "waist_difference_nm": -15.999999959603883,
+      "difference_interval_nm": [
+        -20.00000017687853,
+        -11.999999969702912
+      ],
+      "target_core_fraction": 0.058181818181818175,
+      "target_d95_ratio": 1.6479402837636705,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "null-ol-surface-core-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\null-ol-surface-core-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "7d730f5fb78aa6c6679a6779e7ba9973ebca34ea35982ec2e9eb319fc1f4ddf8",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.739589116933235,
+      "current_ua": 10.0,
+      "core_ua": 1.3799999999999994,
+      "d95_nm": 8.690314041905218,
+      "d90_nm": 4.582098188342728,
+      "d50_nm": 0.4501350162299832,
+      "rms_radius_nm": 3.361698366282429,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        -86.00000001024455
+      ],
+      "z_rms_offsets_nm": [
+        -99.99999997489795
+      ],
+      "q_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "d95_bracket_nm": [
+        -88.00000000519503,
+        -84.00000001529406
+      ],
+      "rms_bracket_nm": [
+        -99.99999997489795,
+        -97.99999997994746
+      ],
+      "waist_difference_nm": null,
+      "difference_interval_nm": null,
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 2.2232884760716787,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "null-ol-surface-d95-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\null-ol-surface-d95-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "0f0ed77a41269c1f60bff9d45a0ebe71df9bfb50550d5617466e21103d1a5f70",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.739518151252195,
+      "current_ua": 10.0,
+      "core_ua": 0.02499999999999999,
+      "d95_nm": 3.9087164726340724,
+      "d90_nm": 3.3184489562659607,
+      "d50_nm": 1.8786229336286133,
+      "rms_radius_nm": 2.9133396472794093,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        86.00000001024455
+      ],
+      "z_d95_offsets_nm": [
+        0.4999999418942025
+      ],
+      "z_rms_offsets_nm": [
+        -15.999999959603883
+      ],
+      "q_bracket_nm": [
+        84.00000001529406,
+        88.00000000519503
+      ],
+      "d95_bracket_nm": [
+        0.25000008463393897,
+        0.7500000265281415
+      ],
+      "rms_bracket_nm": [
+        -16.250000044237822,
+        -15.75000010234362
+      ],
+      "waist_difference_nm": -16.499999901498086,
+      "difference_interval_nm": [
+        -17.000000070765964,
+        -16.00000018697756
+      ],
+      "target_core_fraction": 0.01818181818181818,
+      "target_d95_ratio": 1.0036595341429115,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "null-shared-cross-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\null-shared-cross-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "35b00ca4645e5d66de535abcc6a9849f198edaba5659f1fd92ec988bdd1b27a1",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.73950486573692,
+      "current_ua": 10.0,
+      "core_ua": 0.01999999999999999,
+      "d95_nm": 4.355738123317532,
+      "d90_nm": 3.8184109859221644,
+      "d50_nm": 2.273662922929646,
+      "rms_radius_nm": 2.9010068632051524,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        99.99999997489795
+      ],
+      "z_d95_offsets_nm": [
+        16.499999901498086
+      ],
+      "z_rms_offsets_nm": [
+        0.0
+      ],
+      "q_bracket_nm": [
+        97.99999997994746,
+        99.99999997489795
+      ],
+      "d95_bracket_nm": [
+        16.40000004954345,
+        16.599999980826396
+      ],
+      "rms_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "waist_difference_nm": -16.499999901498086,
+      "difference_interval_nm": [
+        -16.700000060154707,
+        -16.29999997021514
+      ],
+      "target_core_fraction": 0.014925373134328353,
+      "target_d95_ratio": 1.1188549751184498,
+      "exact_joint_focus": null,
+      "near_joint_focus": null,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_BOUNDARY_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "null-upper-core-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\null-upper-core-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "45a3d1524fe192bcedc17c8e6dbc4596a8c7a6834ad78bc906dcd675c9efa6f1",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.739589723993344,
+      "current_ua": 10.0,
+      "core_ua": 1.3849999999999996,
+      "d95_nm": 8.69018248158901,
+      "d90_nm": 4.58198339882096,
+      "d50_nm": 0.4501958749104402,
+      "rms_radius_nm": 3.3616797616673817,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        -86.00000001024455
+      ],
+      "z_rms_offsets_nm": [
+        -99.99999997489795
+      ],
+      "q_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "d95_bracket_nm": [
+        -88.00000000519503,
+        -84.00000001529406
+      ],
+      "rms_bracket_nm": [
+        -99.99999997489795,
+        -97.99999997994746
+      ],
+      "waist_difference_nm": null,
+      "difference_interval_nm": null,
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 2.2233310795551975,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "null-upper-cross-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\null-upper-cross-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "272c2a967a618762959a0595a42211bba1c0cbc2a019efa440234893d6940eb2",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.739511670968497,
+      "current_ua": 10.0,
+      "core_ua": 0.01999999999999999,
+      "d95_nm": 4.356880352786031,
+      "d90_nm": 3.819326772497067,
+      "d50_nm": 2.274385374725567,
+      "rms_radius_nm": 2.901020000876043,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        99.99999997489795
+      ],
+      "z_d95_offsets_nm": [
+        16.599999980826396
+      ],
+      "z_rms_offsets_nm": [
+        0.0
+      ],
+      "q_bracket_nm": [
+        97.99999997994746,
+        99.99999997489795
+      ],
+      "d95_bracket_nm": [
+        16.499999901498086,
+        16.700000060154707
+      ],
+      "rms_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "waist_difference_nm": -16.599999980826396,
+      "difference_interval_nm": [
+        -16.800000139483018,
+        -16.399999822169775
+      ],
+      "target_core_fraction": 0.014925373134328353,
+      "target_d95_ratio": 1.1192027057357714,
+      "exact_joint_focus": null,
+      "near_joint_focus": null,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_BOUNDARY_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "null-upper-d95-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\null-upper-d95-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "4ce5520c45d3915f00389917f872888670ae47c9805716b9984a59f3ffd09a78",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.739523979092482,
+      "current_ua": 10.0,
+      "core_ua": 0.02499999999999999,
+      "d95_nm": 3.907430706532744,
+      "d90_nm": 3.3193109987904656,
+      "d50_nm": 1.8791156259500814,
+      "rms_radius_nm": 2.9133165943844586,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        86.00000001024455
+      ],
+      "z_d95_offsets_nm": [
+        0.4999999418942025
+      ],
+      "z_rms_offsets_nm": [
+        -15.999999959603883
+      ],
+      "q_bracket_nm": [
+        84.00000001529406,
+        88.00000000519503
+      ],
+      "d95_bracket_nm": [
+        0.25000008463393897,
+        0.7500000265281415
+      ],
+      "rms_bracket_nm": [
+        -16.250000044237822,
+        -15.75000010234362
+      ],
+      "waist_difference_nm": -16.499999901498086,
+      "difference_interval_nm": [
+        -17.000000070765964,
+        -16.00000018697756
+      ],
+      "target_core_fraction": 0.018050541516245487,
+      "target_d95_ratio": 1.0036675148724865,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "p1-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\p1-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "0497ec0eab77b8f20b392aa2f66c0c24983302114ac7d8865121a1f324eeec09",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.994947310910614,
+      "current_ua": 10.0,
+      "core_ua": 1.785,
+      "d95_nm": 2.0005748638867593,
+      "d90_nm": 1.5194742451771674,
+      "d50_nm": 0.48656824938151694,
+      "rms_radius_nm": 2.278602715902896,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": true,
+      "z_core_offsets_nm": [
+        0.0,
+        0.10000007932831068,
+        0.1999999312829459
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -25.000000050567905
+      ],
+      "q_bracket_nm": [
+        -0.10000007932831068,
+        0.3000000106112566
+      ],
+      "d95_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "rms_bracket_nm": [
+        -25.09999990252254,
+        -24.899999971239595
+      ],
+      "waist_difference_nm": -25.000000050567905,
+      "difference_interval_nm": [
+        -25.19999998185085,
+        -24.799999891911284
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": true,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "p1-fine",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\p1-fine",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "c846c109679e0095467a422f317fd947b24fec26a068238d83656889edf81298",
+      "step_mm": 0.025,
+      "alpha95_mrad": 29.99494732416361,
+      "current_ua": 10.0,
+      "core_ua": 1.785,
+      "d95_nm": 2.0006093755813694,
+      "d90_nm": 1.5194485797276789,
+      "d50_nm": 0.48655109734258406,
+      "rms_radius_nm": 2.2786041892651503,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -25.000000050567905
+      ],
+      "q_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "d95_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "rms_bracket_nm": [
+        -25.24999990782817,
+        -24.749999965933966
+      ],
+      "waist_difference_nm": -25.000000050567905,
+      "difference_interval_nm": [
+        -25.499999992462108,
+        -24.499999881300027
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": true,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "placed-A-step025",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\placed-A-step025",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "55e71043067c8b114fbc603ae98e0e96e669cd37ffc334c56ec868ad9f7272fd",
+      "step_mm": 0.025,
+      "alpha95_mrad": 29.74904704393301,
+      "current_ua": 10.0,
+      "core_ua": 1.5749999999999997,
+      "d95_nm": 2.7009999731963217,
+      "d90_nm": 2.292086156833479,
+      "d50_nm": 0.6870246509399979,
+      "rms_radius_nm": 1.9012629455363954,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        2.6000000161729986
+      ],
+      "z_d95_offsets_nm": [
+        23.199999986900366
+      ],
+      "z_rms_offsets_nm": [
+        0.0
+      ],
+      "q_bracket_nm": [
+        2.499999936844688,
+        2.7000000955013093
+      ],
+      "d95_bracket_nm": [
+        23.099999907572055,
+        23.300000066228677
+      ],
+      "rms_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "waist_difference_nm": -23.199999986900366,
+      "difference_interval_nm": [
+        -23.400000145556987,
+        -22.999999828243745
+      ],
+      "target_core_fraction": 0.9752321981424148,
+      "target_d95_ratio": 1.3767037794842505,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "r1-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\r1-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "0f3b00d20fb38435fd401e7ea929bf744932e79b565a2d3e021e246da0c55945",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.975178599960618,
+      "current_ua": 10.0,
+      "core_ua": 1.6949999999999996,
+      "d95_nm": 2.051230540615991,
+      "d90_nm": 1.5622262762339398,
+      "d50_nm": 0.5226272102921029,
+      "rms_radius_nm": 2.258472885679187,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -0.4999999418942025,
+        -0.25000008463393897,
+        0.25000008463393897,
+        0.4999999418942025
+      ],
+      "z_d95_offsets_nm": [
+        -0.7500000265281415
+      ],
+      "z_rms_offsets_nm": [
+        -23.999999939405825
+      ],
+      "q_bracket_nm": [
+        -0.7500000265281415,
+        0.7500000265281415
+      ],
+      "d95_bracket_nm": [
+        -1.0000001111620804,
+        -0.4999999418942025
+      ],
+      "rms_bracket_nm": [
+        -24.250000024039764,
+        -23.75000008214556
+      ],
+      "waist_difference_nm": -23.249999912877684,
+      "difference_interval_nm": [
+        -23.75000008214556,
+        -22.74999997098348
+      ],
+      "target_core_fraction": 0.9970588235294118,
+      "target_d95_ratio": 1.0082412499905675,
+      "exact_joint_focus": false,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_MULTIPLE_MINIMA",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "r3-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\r3-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "f4a46b07b1dc289118b9305db75a2761851771a0a4927ef320213eb22bb8f967",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.882764621481137,
+      "current_ua": 10.0,
+      "core_ua": 1.9400000000000002,
+      "d95_nm": 2.131761736682621,
+      "d90_nm": 1.5437456700227241,
+      "d50_nm": 0.5030614908498517,
+      "rms_radius_nm": 2.231244608304055,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        3.999999989900971,
+        4.25000007453491
+      ],
+      "z_d95_offsets_nm": [
+        -1.9999999949504854
+      ],
+      "z_rms_offsets_nm": [
+        -23.249999912877684
+      ],
+      "q_bracket_nm": [
+        3.749999905267032,
+        4.499999931795173
+      ],
+      "d95_bracket_nm": [
+        -2.2500000795844244,
+        -1.7499999103165464
+      ],
+      "rms_bracket_nm": [
+        -23.499999997511622,
+        -23.00000005561742
+      ],
+      "waist_difference_nm": -21.249999917927198,
+      "difference_interval_nm": [
+        -21.750000087195076,
+        -20.749999976032996
+      ],
+      "target_core_fraction": 0.9463414634146342,
+      "target_d95_ratio": 1.015652809425794,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round1-shape-A-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round1-shape-A-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "fa6a3458287bc6f0a180c200fcc889332471f81a37cd061cd858d7f9da0f8b63",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.74905157034534,
+      "current_ua": 10.0,
+      "core_ua": 1.5549999999999997,
+      "d95_nm": 2.532568776678954,
+      "d90_nm": 2.0668900152791636,
+      "d50_nm": 0.5643564305312612,
+      "rms_radius_nm": 1.903503303440822,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -2.900000026784255
+      ],
+      "z_d95_offsets_nm": [
+        17.699999943943112
+      ],
+      "z_rms_offsets_nm": [
+        -5.500000042957254
+      ],
+      "q_bracket_nm": [
+        -3.000000106112566,
+        -2.7999999474559445
+      ],
+      "d95_bracket_nm": [
+        17.600000091988477,
+        17.800000023271423
+      ],
+      "rms_bracket_nm": [
+        -5.599999894911889,
+        -5.399999963628943
+      ],
+      "waist_difference_nm": -23.199999986900366,
+      "difference_interval_nm": [
+        -23.399999918183312,
+        -23.00000005561742
+      ],
+      "target_core_fraction": 0.9628482972136222,
+      "target_d95_ratio": 1.2908563377248663,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round1-shape-B-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round1-shape-B-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "3fbf95690d9cf62fbef1140a3cf4b9e295c65588a62d82e61ecb692a1c2bd9f1",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.7486628725848,
+      "current_ua": 10.0,
+      "core_ua": 1.865,
+      "d95_nm": 2.4955366720319314,
+      "d90_nm": 2.054763415582273,
+      "d50_nm": 0.536071551375446,
+      "rms_radius_nm": 1.958331267802758,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.3000000106112566,
+        0.4999999418942025
+      ],
+      "z_d95_offsets_nm": [
+        15.800000028320937
+      ],
+      "z_rms_offsets_nm": [
+        -7.200000027296483
+      ],
+      "q_bracket_nm": [
+        0.1999999312829459,
+        0.6000000212225132
+      ],
+      "d95_bracket_nm": [
+        15.699999948992627,
+        15.900000107649248
+      ],
+      "rms_bracket_nm": [
+        -7.300000106624793,
+        -7.099999947968172
+      ],
+      "waist_difference_nm": -23.00000005561742,
+      "difference_interval_nm": [
+        -23.20000021427404,
+        -22.7999998969608
+      ],
+      "target_core_fraction": 0.9867724867724867,
+      "target_d95_ratio": 1.2758973638347633,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_MULTIPLE_MINIMA",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round1-shape-C-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round1-shape-C-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "17a97f8f05eec384bf7b305dd163a79457bbf350801d6be20284e2617d7b395c",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.748949472715722,
+      "current_ua": 10.0,
+      "core_ua": 1.8349999999999997,
+      "d95_nm": 2.5948015920049454,
+      "d90_nm": 2.1596326583124115,
+      "d50_nm": 0.5560878508879377,
+      "rms_radius_nm": 1.9332819988841023,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -3.5000000480067683,
+        0.6000000212225132,
+        0.7000001005508238,
+        0.9000000318337698
+      ],
+      "z_d95_offsets_nm": [
+        20.499999891399057
+      ],
+      "z_rms_offsets_nm": [
+        -4.300000000512227
+      ],
+      "q_bracket_nm": [
+        -3.5999998999614036,
+        1.0000001111620804
+      ],
+      "d95_bracket_nm": [
+        20.40000003944442,
+        20.599999970727367
+      ],
+      "rms_bracket_nm": [
+        -4.400000079840538,
+        -4.199999921183917
+      ],
+      "waist_difference_nm": -24.799999891911284,
+      "difference_interval_nm": [
+        -25.000000050567905,
+        -24.599999960628338
+      ],
+      "target_core_fraction": 0.981283422459893,
+      "target_d95_ratio": 1.329302331059436,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_MULTIPLE_MINIMA",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round2-placed-A-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round2-placed-A-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "89cd9d307e6fbc1690722d08d1861f0abeef2fe0fffbf3f01e9104c1240aa312",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.74904703045604,
+      "current_ua": 10.0,
+      "core_ua": 1.5749999999999997,
+      "d95_nm": 2.700971298442641,
+      "d90_nm": 2.29210060040411,
+      "d50_nm": 0.6870412106119447,
+      "rms_radius_nm": 1.9012631506182835,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        2.6000000161729986
+      ],
+      "z_d95_offsets_nm": [
+        23.199999986900366
+      ],
+      "z_rms_offsets_nm": [
+        0.0
+      ],
+      "q_bracket_nm": [
+        2.499999936844688,
+        2.7000000955013093
+      ],
+      "d95_bracket_nm": [
+        23.099999907572055,
+        23.300000066228677
+      ],
+      "rms_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "waist_difference_nm": -23.199999986900366,
+      "difference_interval_nm": [
+        -23.400000145556987,
+        -22.999999828243745
+      ],
+      "target_core_fraction": 0.9752321981424148,
+      "target_d95_ratio": 1.3766914104163852,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round2-placed-B-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round2-placed-B-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "60ed314e82f38404249a794425cf8f5f601021d93fbf576f5bb72bb3d57dc36d",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.74865692952959,
+      "current_ua": 10.0,
+      "core_ua": 1.7199999999999995,
+      "d95_nm": 2.7450697045498322,
+      "d90_nm": 2.3220339872868925,
+      "d50_nm": 0.7089759090130524,
+      "rms_radius_nm": 1.9546348745367674,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        7.500000037907739,
+        7.699999969190685
+      ],
+      "z_d95_offsets_nm": [
+        23.00000005561742
+      ],
+      "z_rms_offsets_nm": [
+        0.0
+      ],
+      "q_bracket_nm": [
+        7.3999999585794285,
+        7.800000048518996
+      ],
+      "d95_bracket_nm": [
+        22.89999997628911,
+        23.099999907572055
+      ],
+      "rms_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "waist_difference_nm": -23.00000005561742,
+      "difference_interval_nm": [
+        -23.199999986900366,
+        -22.7999998969608
+      ],
+      "target_core_fraction": 0.9100529100529099,
+      "target_d95_ratio": 1.4034975344626386,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_MULTIPLE_MINIMA",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round2-placed-C-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round2-placed-C-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "0b5554a40c744c84654b086d1d9ef5c63c0b5ac121db6f488dd0d3a5362fce33",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.748945923358363,
+      "current_ua": 10.0,
+      "core_ua": 1.8549999999999998,
+      "d95_nm": 2.7562991726142565,
+      "d90_nm": 2.321590145012893,
+      "d50_nm": 0.6657878745062464,
+      "rms_radius_nm": 1.9319498091742227,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.7999999525054591,
+        4.900000021734741,
+        5.000000101063051,
+        5.200000032345997
+      ],
+      "z_d95_offsets_nm": [
+        24.799999891911284
+      ],
+      "z_rms_offsets_nm": [
+        0.0
+      ],
+      "q_bracket_nm": [
+        0.7000001005508238,
+        5.300000111674308
+      ],
+      "d95_bracket_nm": [
+        24.70000003995665,
+        24.899999971239595
+      ],
+      "rms_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "waist_difference_nm": -24.799999891911284,
+      "difference_interval_nm": [
+        -25.000000050567905,
+        -24.599999960628338
+      ],
+      "target_core_fraction": 0.9919786096256684,
+      "target_d95_ratio": 1.4120354105831137,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_MULTIPLE_MINIMA",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round3-overlap-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round3-overlap-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "5d2cf96f119f5b5e6cbd48d459af34ccd03108d8d5ba01f5faff2f07d26018b4",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.748192597997114,
+      "current_ua": 10.0,
+      "core_ua": 0.4099999999999999,
+      "d95_nm": 6.863960921334964,
+      "d90_nm": 5.382110910405537,
+      "d50_nm": 1.7747675647476993,
+      "rms_radius_nm": 2.47590962774674,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -21.19999999194988,
+        -21.09999991262157,
+        -21.000000060666935
+      ],
+      "z_d95_offsets_nm": [
+        -20.499999891399057
+      ],
+      "z_rms_offsets_nm": [
+        -21.000000060666935
+      ],
+      "q_bracket_nm": [
+        -21.30000007127819,
+        -20.899999981338624
+      ],
+      "d95_bracket_nm": [
+        -20.599999970727367,
+        -20.40000003944442
+      ],
+      "rms_bracket_nm": [
+        -21.09999991262157,
+        -20.899999981338624
+      ],
+      "waist_difference_nm": -0.5000001692678779,
+      "difference_interval_nm": [
+        -0.6999998731771484,
+        -0.3000000106112566
+      ],
+      "target_core_fraction": 0.8817204301075269,
+      "target_d95_ratio": 1.0045685723034006,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round3-shape-D-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round3-shape-D-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "c682aefa15d1ec9b0aef24c8ce71e5857830d0172d2aef55e36c1495bc5c2106",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.741515696023896,
+      "current_ua": 10.0,
+      "core_ua": 0.0049999999999999975,
+      "d95_nm": 7.059833149543975,
+      "d90_nm": 4.777630504702265,
+      "d50_nm": 2.591193961226795,
+      "rms_radius_nm": 2.8126778656198295,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -99.99999997489795
+      ],
+      "z_d95_offsets_nm": [
+        -97.99999997994746
+      ],
+      "z_rms_offsets_nm": [
+        -99.99999997489795
+      ],
+      "q_bracket_nm": [
+        -99.99999997489795,
+        -97.99999997994746
+      ],
+      "d95_bracket_nm": [
+        -99.99999997489795,
+        -95.99999998499698
+      ],
+      "rms_bracket_nm": [
+        -99.99999997489795,
+        -97.99999997994746
+      ],
+      "waist_difference_nm": null,
+      "difference_interval_nm": null,
+      "target_core_fraction": 0.012499999999999995,
+      "target_d95_ratio": 3.536693436000583,
+      "exact_joint_focus": null,
+      "near_joint_focus": null,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_BOUNDARY_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round3-shape-E-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round3-shape-E-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "5f927fd12520e2680c14ffda523adf08357f9baca2b2e308d1e16a6b967a9b4c",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.74884732556974,
+      "current_ua": 10.0,
+      "core_ua": 0.01999999999999999,
+      "d95_nm": 7.713145424506787,
+      "d90_nm": 6.937827232405561,
+      "d50_nm": 3.4122310968841174,
+      "rms_radius_nm": 2.598157314733607,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        99.99999997489795
+      ],
+      "z_d95_offsets_nm": [
+        99.99999997489795
+      ],
+      "z_rms_offsets_nm": [
+        99.99999997489795
+      ],
+      "q_bracket_nm": [
+        97.99999997994746,
+        99.99999997489795
+      ],
+      "d95_bracket_nm": [
+        97.99999997994746,
+        99.99999997489795
+      ],
+      "rms_bracket_nm": [
+        97.99999997994746,
+        99.99999997489795
+      ],
+      "waist_difference_nm": null,
+      "difference_interval_nm": null,
+      "target_core_fraction": 0.015624999999999993,
+      "target_d95_ratio": 2.663781237328767,
+      "exact_joint_focus": null,
+      "near_joint_focus": null,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_BOUNDARY_MINIMUM",
+      "d95_extremum_status": "UNRESOLVED_BOUNDARY_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round3-shorter-gap-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round3-shorter-gap-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "6a41ba4db5a2b01f8b32bd569b7e2919bb42c5a680dedbbf749068db68a716a0",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.74842554975132,
+      "current_ua": 10.0,
+      "core_ua": 1.8549999999999998,
+      "d95_nm": 2.795552519625997,
+      "d90_nm": 2.3690117517101488,
+      "d50_nm": 0.6405651076668981,
+      "rms_radius_nm": 1.9971529379679713,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        3.5000000480067683,
+        3.5999998999614036
+      ],
+      "z_d95_offsets_nm": [
+        17.500000012660166
+      ],
+      "z_rms_offsets_nm": [
+        -2.499999936844688
+      ],
+      "q_bracket_nm": [
+        3.3999999686784577,
+        3.6999999792897142
+      ],
+      "d95_bracket_nm": [
+        17.399999933331856,
+        17.600000091988477
+      ],
+      "rms_bracket_nm": [
+        -2.6000000161729986,
+        -2.4000000848900527
+      ],
+      "waist_difference_nm": -19.999999949504854,
+      "difference_interval_nm": [
+        -20.200000108161476,
+        -19.80000001822191
+      ],
+      "target_core_fraction": 0.8983050847457625,
+      "target_d95_ratio": 1.2586951136283198,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round4-overlap-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round4-overlap-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "cfb4f328fae98afbe48d479851d043e8ce595a4aa8702a154bbd11a08dcba28e",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.748175264402327,
+      "current_ua": 10.0,
+      "core_ua": 0.46499999999999997,
+      "d95_nm": 6.852648395054844,
+      "d90_nm": 6.003400404522668,
+      "d50_nm": 1.8189178381380067,
+      "rms_radius_nm": 2.451183132188782,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -0.1999999312829459,
+        -0.10000007932831068,
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        0.4999999418942025
+      ],
+      "z_rms_offsets_nm": [
+        0.0
+      ],
+      "q_bracket_nm": [
+        -0.3000000106112566,
+        0.10000007932831068
+      ],
+      "d95_bracket_nm": [
+        0.40000008993956726,
+        0.6000000212225132
+      ],
+      "rms_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "waist_difference_nm": -0.4999999418942025,
+      "difference_interval_nm": [
+        -0.7000001005508238,
+        -0.3000000106112566
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.0029196794007198,
+      "exact_joint_focus": false,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round4-placed-D-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round4-placed-D-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "98f7b2c93fe5f064c8741a7ddf11620457a4566633e1ece04492e426276b7f30",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.741412541396695,
+      "current_ua": 10.0,
+      "core_ua": 1.7049999999999998,
+      "d95_nm": 2.7337124235524604,
+      "d90_nm": 2.301451888967702,
+      "d50_nm": 0.683316374416087,
+      "rms_radius_nm": 1.8928895990112022,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -0.1999999312829459
+      ],
+      "z_d95_offsets_nm": [
+        23.69999992879457
+      ],
+      "z_rms_offsets_nm": [
+        0.0
+      ],
+      "q_bracket_nm": [
+        -0.3000000106112566,
+        -0.10000007932831068
+      ],
+      "d95_bracket_nm": [
+        23.600000076839933,
+        23.80000000812288
+      ],
+      "rms_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "waist_difference_nm": -23.69999992879457,
+      "difference_interval_nm": [
+        -23.90000008745119,
+        -23.499999997511622
+      ],
+      "target_core_fraction": 0.9941690962099126,
+      "target_d95_ratio": 1.3769520530195896,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round4-placed-E-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round4-placed-E-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "e423a48b6f15190fdee3540c933be4d8c72251274f704ba90928fc6e854c9a94",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.748933416888157,
+      "current_ua": 10.0,
+      "core_ua": 1.4349999999999996,
+      "d95_nm": 2.7463742719296964,
+      "d90_nm": 2.3417323875469815,
+      "d50_nm": 0.7385697264841717,
+      "rms_radius_nm": 1.9332674080741161,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        3.5000000480067683
+      ],
+      "z_d95_offsets_nm": [
+        28.80000010918593
+      ],
+      "z_rms_offsets_nm": [
+        0.0
+      ],
+      "q_bracket_nm": [
+        3.3999999686784577,
+        3.5999998999614036
+      ],
+      "d95_bracket_nm": [
+        28.70000002985762,
+        28.899999961140566
+      ],
+      "rms_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "waist_difference_nm": -28.80000010918593,
+      "difference_interval_nm": [
+        -29.000000040468876,
+        -28.59999995052931
+      ],
+      "target_core_fraction": 0.9318181818181818,
+      "target_d95_ratio": 1.3697528888623383,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "round4-shorter-gap-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\round4-shorter-gap-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "31e97227826f0a79c7092c15edf3a71f320e77e57569f97cecbd71e33f42ba4d",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.748423486204896,
+      "current_ua": 10.0,
+      "core_ua": 1.6949999999999996,
+      "d95_nm": 2.9204790702209555,
+      "d90_nm": 2.4624350898848557,
+      "d50_nm": 0.7118399138150245,
+      "rms_radius_nm": 1.9967008557555808,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        5.999999984851456,
+        6.100000064179767
+      ],
+      "z_d95_offsets_nm": [
+        19.999999949504854
+      ],
+      "z_rms_offsets_nm": [
+        0.0
+      ],
+      "q_bracket_nm": [
+        5.899999905523146,
+        6.199999916134402
+      ],
+      "d95_bracket_nm": [
+        19.90000009755022,
+        20.100000028833165
+      ],
+      "rms_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "waist_difference_nm": -19.999999949504854,
+      "difference_interval_nm": [
+        -20.200000108161476,
+        -19.80000001822191
+      ],
+      "target_core_fraction": 0.8208232445520579,
+      "target_d95_ratio": 1.314942236081971,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "s0-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\s0-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "445b63acb02fbd4f0b4c170d3e039ae5e2ab21263bce82879ce116e9c8c85053",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.994919449436715,
+      "current_ua": 10.0,
+      "core_ua": 1.6749999999999996,
+      "d95_nm": 2.0446212975299467,
+      "d90_nm": 1.5988777238295995,
+      "d50_nm": 0.5392059501181287,
+      "rms_radius_nm": 2.2679696437982666,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": true,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        0.10000007932831068
+      ],
+      "z_rms_offsets_nm": [
+        -23.499999997511622
+      ],
+      "q_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "d95_bracket_nm": [
+        0.0,
+        0.1999999312829459
+      ],
+      "rms_bracket_nm": [
+        -23.600000076839933,
+        -23.399999918183312
+      ],
+      "waist_difference_nm": -23.600000076839933,
+      "difference_interval_nm": [
+        -23.80000000812288,
+        -23.399999918183312
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.0001850236216057,
+      "exact_joint_focus": false,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "s0-fine",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\s0-fine",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "a6058a41afb178eb3d3a83a76950b5e0e8e2908f0c5a3a37b0ea011a02ebcfd4",
+      "step_mm": 0.025,
+      "alpha95_mrad": 29.994919462689385,
+      "current_ua": 10.0,
+      "core_ua": 1.6749999999999996,
+      "d95_nm": 2.0445879518252266,
+      "d90_nm": 1.5988669748043756,
+      "d50_nm": 0.5391902734736631,
+      "rms_radius_nm": 2.267971030798786,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -23.499999997511622
+      ],
+      "q_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "d95_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "rms_bracket_nm": [
+        -23.75000008214556,
+        -23.249999912877684
+      ],
+      "waist_difference_nm": -23.499999997511622,
+      "difference_interval_nm": [
+        -24.0000001667795,
+        -22.999999828243745
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": true,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "s2-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\s2-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "07ab1f032cd6adb56a74a3eff687edcd7b8f96710ce5cdbea7a9cd0861cfa445",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.994925213826942,
+      "current_ua": 10.0,
+      "core_ua": 1.7399999999999995,
+      "d95_nm": 1.9835945214303,
+      "d90_nm": 1.5171819893818457,
+      "d50_nm": 0.4882297162623736,
+      "rms_radius_nm": 2.2790388769466685,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": true,
+      "z_core_offsets_nm": [
+        -1.3999999737279722,
+        -1.0999999631167157
+      ],
+      "z_d95_offsets_nm": [
+        -0.10000007932831068
+      ],
+      "z_rms_offsets_nm": [
+        -25.399999913133797
+      ],
+      "q_bracket_nm": [
+        -1.500000053056283,
+        -1.0000001111620804
+      ],
+      "d95_bracket_nm": [
+        -0.1999999312829459,
+        0.0
+      ],
+      "rms_bracket_nm": [
+        -25.499999992462108,
+        -25.300000061179162
+      ],
+      "waist_difference_nm": -25.299999833805487,
+      "difference_interval_nm": [
+        -25.499999992462108,
+        -25.100000129896216
+      ],
+      "target_core_fraction": 0.9971346704871059,
+      "target_d95_ratio": 1.0017844680095582,
+      "exact_joint_focus": false,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_MULTIPLE_MINIMA",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "selected-step-fine",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\selected-step-fine",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "5ae694d9f8dd0b6bc499f0e284c9c80aa07e9d456d83048119511a26dbfc55c0",
+      "step_mm": 0.025,
+      "alpha95_mrad": 29.747393755256223,
+      "current_ua": 10.0,
+      "core_ua": 2.035,
+      "d95_nm": 1.9870487814788826,
+      "d90_nm": 1.551228051588688,
+      "d50_nm": 0.4298052683979605,
+      "rms_radius_nm": 2.0883051481615293,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        0.0
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -21.09999991262157
+      ],
+      "q_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "d95_bracket_nm": [
+        -0.10000007932831068,
+        0.10000007932831068
+      ],
+      "rms_bracket_nm": [
+        -21.19999999194988,
+        -21.000000060666935
+      ],
+      "waist_difference_nm": -21.09999991262157,
+      "difference_interval_nm": [
+        -21.30000007127819,
+        -20.899999981338624
+      ],
+      "target_core_fraction": 1.0,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": true,
+      "near_joint_focus": true,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "tl21-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\tl21-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "f064b5501926cbdd61c7e1cab8aafb8189672ce22b1d074c71cccd35a7522427",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.99502872924419,
+      "current_ua": 10.0,
+      "core_ua": 1.1800000000000002,
+      "d95_nm": 2.186070839505667,
+      "d90_nm": 1.3650430433828609,
+      "d50_nm": 0.3077064005904005,
+      "rms_radius_nm": 2.250932886295884,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -9.999999974752427
+      ],
+      "z_d95_offsets_nm": [
+        -3.999999989900971
+      ],
+      "z_rms_offsets_nm": [
+        -29.99999992425728
+      ],
+      "q_bracket_nm": [
+        -11.999999969702912,
+        -7.999999979801942
+      ],
+      "d95_bracket_nm": [
+        -5.999999984851456,
+        -1.9999999949504854
+      ],
+      "rms_bracket_nm": [
+        -31.999999919207767,
+        -27.999999929306796
+      ],
+      "waist_difference_nm": -25.99999993435631,
+      "difference_interval_nm": [
+        -29.99999992425728,
+        -21.99999994445534
+      ],
+      "target_core_fraction": 0.6501377410468321,
+      "target_d95_ratio": 1.0601560969315609,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "tl22-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\tl22-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "08df069645829cbf1060b8c1a0d55f46c325412cb8518708d6ead82f5bec9689",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.995803693317452,
+      "current_ua": 10.0,
+      "core_ua": 0.9299999999999999,
+      "d95_nm": 2.0675448421678944,
+      "d90_nm": 1.2970696205347794,
+      "d50_nm": 0.32882136837410325,
+      "rms_radius_nm": 2.2386437233380727,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        -13.999999964653398
+      ],
+      "z_d95_offsets_nm": [
+        -3.999999989900971
+      ],
+      "z_rms_offsets_nm": [
+        -29.99999992425728
+      ],
+      "q_bracket_nm": [
+        -15.999999959603883,
+        -11.999999969702912
+      ],
+      "d95_bracket_nm": [
+        -5.999999984851456,
+        -1.9999999949504854
+      ],
+      "rms_bracket_nm": [
+        -31.999999919207767,
+        -27.999999929306796
+      ],
+      "waist_difference_nm": -25.99999993435631,
+      "difference_interval_nm": [
+        -29.99999992425728,
+        -21.99999994445534
+      ],
+      "target_core_fraction": 0.5422740524781341,
+      "target_d95_ratio": 1.0436249818874965,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "u1-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\u1-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "7f01bc3f50348288369e61fe04e8464a5f662cb95c963013c76070747088f8c1",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.876211993223983,
+      "current_ua": 10.0,
+      "core_ua": 1.8349999999999997,
+      "d95_nm": 2.0324891719752687,
+      "d90_nm": 1.5526876044444067,
+      "d50_nm": 0.49129038521203683,
+      "rms_radius_nm": 2.192719828932606,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        2.499999936844688
+      ],
+      "z_d95_offsets_nm": [
+        0.0
+      ],
+      "z_rms_offsets_nm": [
+        -22.499999886349542
+      ],
+      "q_bracket_nm": [
+        2.2500000795844244,
+        2.750000021478627
+      ],
+      "d95_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "rms_bracket_nm": [
+        -22.74999997098348,
+        -22.25000002908928
+      ],
+      "waist_difference_nm": -22.499999886349542,
+      "difference_interval_nm": [
+        -23.00000005561742,
+        -21.99999994445534
+      ],
+      "target_core_fraction": 0.9892183288409704,
+      "target_d95_ratio": 1.0,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    },
+    {
+      "name": "u6-2000",
+      "folder": "F:\\tem_simulator_v2\\outputs\\probe-joint-d95-20261101\\u6-2000",
+      "count": 2000,
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "input_digest": "cae13c7453d04c3320549eaf0af38f151bb3c839407e1310b81d66abc5dcdcaf",
+      "step_mm": 0.05,
+      "alpha95_mrad": 29.760212131571304,
+      "current_ua": 10.0,
+      "core_ua": 1.9699999999999998,
+      "d95_nm": 2.29244713410306,
+      "d90_nm": 1.7649921547502183,
+      "d50_nm": 0.5316648517273023,
+      "rms_radius_nm": 2.1459996684697242,
+      "surviving": 2000,
+      "effective": 2000.000000000003,
+      "profile_refined": false,
+      "z_core_offsets_nm": [
+        5.249999958323315,
+        5.500000042957254,
+        5.749999900217517,
+        7.2499999532738
+      ],
+      "z_d95_offsets_nm": [
+        3.749999905267032
+      ],
+      "z_rms_offsets_nm": [
+        -18.250000039188308
+      ],
+      "q_bracket_nm": [
+        5.000000101063051,
+        7.500000037907739
+      ],
+      "d95_bracket_nm": [
+        3.5000000480067683,
+        3.999999989900971
+      ],
+      "rms_bracket_nm": [
+        -18.49999989644857,
+        -17.99999995455437
+      ],
+      "waist_difference_nm": -21.99999994445534,
+      "difference_interval_nm": [
+        -22.499999886349542,
+        -21.500000002561137
+      ],
+      "target_core_fraction": 0.9016018306636153,
+      "target_d95_ratio": 1.0140587503918592,
+      "exact_joint_focus": false,
+      "near_joint_focus": false,
+      "transmission_preserved": true,
+      "angle_feasible": true,
+      "core_extremum_status": "UNRESOLVED_MULTIPLE_MINIMA",
+      "d95_extremum_status": "BOUNDED_OBSERVED_MINIMUM",
+      "global_optimum_proven": false
+    }
+  ]
+}

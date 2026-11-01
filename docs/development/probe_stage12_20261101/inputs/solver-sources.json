@@ -1,0 +1,2902 @@
+{
+  "schema": "solver-byte-provenance-v1",
+  "scope": "Installed src/temsim Python sources",
+  "files": {
+    "__init__.py": {
+      "raw_sha256": "8b39bfcba1f697ddf23b5dc925d5acb73dd679e3dedd4673585a051f813f2c91",
+      "lf_sha256": "c15e17abb2e2c7c8095ef021fb4cf4337afc1bf3a307eedd64005aa5bbe54a0a"
+    },
+    "_build.py": {
+      "raw_sha256": "66147c2596f5adbba4b4aa7807bc22e56a3d6efcf0a2d9aa256ff9963f444951",
+      "lf_sha256": "66147c2596f5adbba4b4aa7807bc22e56a3d6efcf0a2d9aa256ff9963f444951"
+    },
+    "acceptance.py": {
+      "raw_sha256": "9328b46531ebb139a95556461583f5c3acbeaac2c95d62b55f5ddf3675ca90ce",
+      "lf_sha256": "6d0473490253618cadab90c174c6b74f8bfb00319cc778fa07d200ff9e727053"
+    },
+    "acceptance_gpu.py": {
+      "raw_sha256": "0ace7c27a91473a8a40d64a287652c0bb5a00db94c7ce98c29a80ded42ea2c10",
+      "lf_sha256": "f89c54e26a5a163c4b2aeb516bac7716ccd432e414d4aa423d527ea3975b907f"
+    },
+    "acceptance_pytest.py": {
+      "raw_sha256": "e30d8b7f4b2fb6f1317b168bdbce620bac217acd08bc3bd74f1699baf9c91768",
+      "lf_sha256": "e30d8b7f4b2fb6f1317b168bdbce620bac217acd08bc3bd74f1699baf9c91768"
+    },
+    "alignment_constraints.py": {
+      "raw_sha256": "c1b3d9317f988a2d1917aa41de208ed0b7a23e1ba5874bb6316f02a48900028b",
+      "lf_sha256": "100f2f84c29886ed6e6cda2fc54c35de697436947f98b774d8d2c7743816fbc9"
+    },
+    "alignment_transaction.py": {
+      "raw_sha256": "84ec75ecfc2f209506acdd6e4444105dc4607663043be3637cb33cb427ab3ecd",
+      "lf_sha256": "101e356fee46a92034a928c1484bcb1e4af60c7a54b4e9c7a8e1acf5fdf9ee1a"
+    },
+    "app.py": {
+      "raw_sha256": "44255e411bad6971f17143cf86d42a866a34541310aa903cd70a181ddce2353d",
+      "lf_sha256": "edad95c4562807802f06d7c72fa0ab13ae0af26799d13f505bd3e4a979be3571"
+    },
+    "artifact_store.py": {
+      "raw_sha256": "c8b4bd0af171263fe09be628916fe67f59fa99071c3a8ca56f0dfd6ba5f10d05",
+      "lf_sha256": "e16c1a460a66172ed30eb470cb287555d46f2bf72212338c29ef2c814d71ef15"
+    },
+    "assembly_catalog.py": {
+      "raw_sha256": "52601336e76ddf3078d5f7cc6fe594a9bdc3989db3d3ace7440c92f958bb329c",
+      "lf_sha256": "3641a82d544dbf244ba8b2dded45cb15a5eb2a8ab3ff08cd8ceca7355b2480fb"
+    },
+    "assembly_model_3d.py": {
+      "raw_sha256": "0dcab314e08bcea4d33a05c6ada2945b81f5b0e7cbc12207a405b4c9c9c38325",
+      "lf_sha256": "3eb2e859260f52edb52b63ff8e0775c0e00827cfb86e841ded9e48a4827d9a7c"
+    },
+    "assembly_navigation.py": {
+      "raw_sha256": "cd97f546388b095cfac9361236ba4af6a2491e6dec3a9a57815697b506361691",
+      "lf_sha256": "932ae8817a76bb8638078b7e8e06eb18c7139a32e1811248285c06a1c5a64f50"
+    },
+    "assembly_optical_visibility.py": {
+      "raw_sha256": "94c16886bae2cbe9184611cc7acf318922d2da091c96fbb673c91aa0254e9a1b",
+      "lf_sha256": "d52d619daa44fdde5fe7a9ba79f2e1a1ab2f3f66182c50a46e62082ca26a28a8"
+    },
+    "assembly_section.py": {
+      "raw_sha256": "8cca0f37ef9c712d06d93a60955bf6506a1c6ca1fd21b64d2fe3bb8da099be29",
+      "lf_sha256": "4c3b73738b65cc5e5e1476861eeeb5e0c28dddc641321e324a3f8a441aa706fd"
+    },
+    "assembly_structure.py": {
+      "raw_sha256": "bb143590444cd11630187161049f21bc0810e1650232976f8be023af411a3a97",
+      "lf_sha256": "2a51451d7116d69072c8f9605847f28491c414350039625111959439a3cafbd3"
+    },
+    "automatic_result.py": {
+      "raw_sha256": "2d773a00d4374e5aa6648ae4d911e85cb2f76dda6305b7762deef21966af3813",
+      "lf_sha256": "2d773a00d4374e5aa6648ae4d911e85cb2f76dda6305b7762deef21966af3813"
+    },
+    "beam_alignment.py": {
+      "raw_sha256": "565e6523fc5238672c927ae10598a4d77456777496680dde0f4384f29b44b497",
+      "lf_sha256": "a13b54e54b5fb0162d4d3768075861af28d086963ee9c3cea40f5d0048cc66e3"
+    },
+    "benchmark_suite.py": {
+      "raw_sha256": "b816d8d1b065c9d50b416533ead14d49b7c0e25bfe8126d3d564f32d0ddacb48",
+      "lf_sha256": "b816d8d1b065c9d50b416533ead14d49b7c0e25bfe8126d3d564f32d0ddacb48"
+    },
+    "branding.py": {
+      "raw_sha256": "b269ff56f0f255b4e43186eb51d9808dcd977d241b7c50449f95973ca223a21d",
+      "lf_sha256": "c51b5fa5abc4336dff000309805349a88e62989b292373d48c63e71c18b21699"
+    },
+    "cache_memory.py": {
+      "raw_sha256": "d00c149f20f59b922a08bfdf3f7b357e100c60b60611c806b119b0a0a109fc2e",
+      "lf_sha256": "d00c149f20f59b922a08bfdf3f7b357e100c60b60611c806b119b0a0a109fc2e"
+    },
+    "cache_preferences.py": {
+      "raw_sha256": "9cdd2cbf536af04f1602e8d3efefb841d1f4da545449ce03691291c63cfc1f72",
+      "lf_sha256": "1a88f23602e81ab0184d41e19cd2526845f2dcbe9be1c91c614f584d64e3b4d2"
+    },
+    "cad_adapter_lens_hardware.py": {
+      "raw_sha256": "c82fa77bc9f04c2bb455b7130f504861133381bf6e2302d81562fc66089b77d2",
+      "lf_sha256": "c82fa77bc9f04c2bb455b7130f504861133381bf6e2302d81562fc66089b77d2"
+    },
+    "cad_aperture_support.py": {
+      "raw_sha256": "41fc97071a0624db7c09eba5f1729d4451a7b5defbb2d17ce573bed185d21080",
+      "lf_sha256": "41fc97071a0624db7c09eba5f1729d4451a7b5defbb2d17ce573bed185d21080"
+    },
+    "cad_assembly_edit.py": {
+      "raw_sha256": "849e06e123f8a344ebbeb634529fb871ad3213bfe5d4c840c06361e0513a5c05",
+      "lf_sha256": "849e06e123f8a344ebbeb634529fb871ad3213bfe5d4c840c06361e0513a5c05"
+    },
+    "cad_assembly_validation.py": {
+      "raw_sha256": "fa2f6b9cced924b9f3624121f6d555769b42554944c68e3f156b7aabe404fb96",
+      "lf_sha256": "fa2f6b9cced924b9f3624121f6d555769b42554944c68e3f156b7aabe404fb96"
+    },
+    "cad_auxiliary.py": {
+      "raw_sha256": "174368935920b4fca6fbabd4d8c9afeeef6cfe8f55cf58c332bb1b4763858f8c",
+      "lf_sha256": "174368935920b4fca6fbabd4d8c9afeeef6cfe8f55cf58c332bb1b4763858f8c"
+    },
+    "cad_c3_lens_hardware.py": {
+      "raw_sha256": "24ccb87e01d900356551a3f73a1449427eae143d143e94531cda99be2bd9b7ff",
+      "lf_sha256": "24ccb87e01d900356551a3f73a1449427eae143d143e94531cda99be2bd9b7ff"
+    },
+    "cad_catalog.py": {
+      "raw_sha256": "3206a1fc5f15df3661799df8b54fb6ef1bf2a15acb2233124f5315b1d2460f10",
+      "lf_sha256": "3206a1fc5f15df3661799df8b54fb6ef1bf2a15acb2233124f5315b1d2460f10"
+    },
+    "cad_condenser_cartridge.py": {
+      "raw_sha256": "23d6b1912ece3e683baad01f46cfb31d9f20e274717610141572d7b955367d77",
+      "lf_sha256": "23d6b1912ece3e683baad01f46cfb31d9f20e274717610141572d7b955367d77"
+    },
+    "cad_detectors.py": {
+      "raw_sha256": "e5dc89097557b1973c37e3d225c29056c71cdc32b0777bf18df4045c1251fb0e",
+      "lf_sha256": "e5dc89097557b1973c37e3d225c29056c71cdc32b0777bf18df4045c1251fb0e"
+    },
+    "cad_edit_validation.py": {
+      "raw_sha256": "6e1d2a844e60be204aca6e9c0cb418d71dc4cb8977e413abe58370b179436bfb",
+      "lf_sha256": "6e1d2a844e60be204aca6e9c0cb418d71dc4cb8977e413abe58370b179436bfb"
+    },
+    "cad_export_worker.py": {
+      "raw_sha256": "c2d9bb091426fc687d2af308b895a70f3bef2990001ed0fd9e1bae164d7987b0",
+      "lf_sha256": "6dec0d7dbf0a81b1dfaf4165f9a513c0cc421bf666422442caef70e7c68b38e2"
+    },
+    "cad_features.py": {
+      "raw_sha256": "cc2dc1f11f12d97522ac1f06db3e70f440d1f5aed9af49b4d533936c3629a5d3",
+      "lf_sha256": "cc2dc1f11f12d97522ac1f06db3e70f440d1f5aed9af49b4d533936c3629a5d3"
+    },
+    "cad_geometry.py": {
+      "raw_sha256": "a825e414dadacabcab81d9216bc6cc7a029ab08f707304f0c69ea383788b6ab3",
+      "lf_sha256": "0c616264c042bbfdbd4a4d3c3714100b7352e966d03f3011e137928e96236362"
+    },
+    "cad_geometry_worker.py": {
+      "raw_sha256": "7f3dcd4fd83d7dd2d62358d8070adfac94217a3ff0b1c181f2b7ae23678fbb03",
+      "lf_sha256": "e989f4ec68b7af17a8dac6595ddbe11fe52abd03a2305e70aaccf4cdb81fcbfe"
+    },
+    "cad_gun_stigmator.py": {
+      "raw_sha256": "cdfcd2ada42730114332ee0b2f55a4465deecea835571401b726408d186ce0f8",
+      "lf_sha256": "cdfcd2ada42730114332ee0b2f55a4465deecea835571401b726408d186ce0f8"
+    },
+    "cad_kernel.py": {
+      "raw_sha256": "522124bfa15d22d1d0d4590424106202f37c95bfdb2be5d50c599ffb38f3f308",
+      "lf_sha256": "522124bfa15d22d1d0d4590424106202f37c95bfdb2be5d50c599ffb38f3f308"
+    },
+    "cad_mesh.py": {
+      "raw_sha256": "65d4651abe140d80b4ce0d024282588b5d9dc748bf43efeaffa6565f22d03011",
+      "lf_sha256": "c7f455775af976f9efce27251a38af209a768251915824ceefcb6d1b2e697afa"
+    },
+    "cad_multipoles.py": {
+      "raw_sha256": "f3232a1d97c07bda449a272b99461c5f29af58a9595ae6e82b2fc907fcc780cc",
+      "lf_sha256": "72c5740dae706db7547b3b683b90c9fb253fdad55b896d6795eba815433e8f13"
+    },
+    "cad_objective_sleeves.py": {
+      "raw_sha256": "7d55e565d828200c36e6606b400e77c98299b101535d104f3f67b08a19fa73ca",
+      "lf_sha256": "314fc472bb775187ba5a0d3ce616e409ed4b7016c7bffafa9b53431dcfd8af64"
+    },
+    "cad_objective_upper_hardware.py": {
+      "raw_sha256": "23056100c03e43d7fe9fa0e454db8063293da69b6ed8bcac406fa2e195001cc6",
+      "lf_sha256": "739f70ae20a070b05a3726ce0d49bb8a2cc89d9c2e76b2448931dfe37b4e4b9c"
+    },
+    "cad_optical_binding.py": {
+      "raw_sha256": "77a9febe7a0ae03f678cf26f06ea8e4be708a6b3c9cad26cd590a5778e723bd2",
+      "lf_sha256": "77a9febe7a0ae03f678cf26f06ea8e4be708a6b3c9cad26cd590a5778e723bd2"
+    },
+    "cad_probe_hexapole_support.py": {
+      "raw_sha256": "4c64da0891cf9864e2fbd52fae0a0bd6c792fe9ef93e5d69b992beaa00905aea",
+      "lf_sha256": "4c64da0891cf9864e2fbd52fae0a0bd6c792fe9ef93e5d69b992beaa00905aea"
+    },
+    "cad_probe_transfer_lens_hardware.py": {
+      "raw_sha256": "6972829f62b057a9ee70ee7bfbdbba8ae1fd4ff71114d8abc063967ee683da19",
+      "lf_sha256": "6972829f62b057a9ee70ee7bfbdbba8ae1fd4ff71114d8abc063967ee683da19"
+    },
+    "cad_recording_planes.py": {
+      "raw_sha256": "e2f8930ec979a543ce55578518fd6a3e93e487b023d267c7ac0fc9057563025f",
+      "lf_sha256": "e2f8930ec979a543ce55578518fd6a3e93e487b023d267c7ac0fc9057563025f"
+    },
+    "cad_round_lens_end_hardware.py": {
+      "raw_sha256": "673f92809dda51882d5f9ca75825a8fbb5c865d56244be5e7dff16b01498a07a",
+      "lf_sha256": "673f92809dda51882d5f9ca75825a8fbb5c865d56244be5e7dff16b01498a07a"
+    },
+    "cad_round_lenses.py": {
+      "raw_sha256": "33fb07fbf674e2f0a10c21e4456f50bbc9fdcbf4603b1e78ce6ff055dbf13bab",
+      "lf_sha256": "33fb07fbf674e2f0a10c21e4456f50bbc9fdcbf4603b1e78ce6ff055dbf13bab"
+    },
+    "cad_runtime.py": {
+      "raw_sha256": "b14ab22de4f1d3d53ecb5f7567eea8f25df0b24818d79527341fab1e19420876",
+      "lf_sha256": "9160985a2fcfdfc02c5a04d8d62452998c8d652dbe4c764075d23f88f1d7962b"
+    },
+    "cad_stage_holder.py": {
+      "raw_sha256": "e3093595595072aec6f557c2b88bef3a3aee78046321c813153bc39b7f4d5249",
+      "lf_sha256": "e3093595595072aec6f557c2b88bef3a3aee78046321c813153bc39b7f4d5249"
+    },
+    "cad_step.py": {
+      "raw_sha256": "ce3243013c777c836b65d9feb07ee62b8383a288d12e30b9844550a6a9ef78d0",
+      "lf_sha256": "ce3243013c777c836b65d9feb07ee62b8383a288d12e30b9844550a6a9ef78d0"
+    },
+    "cad_stigmator_support.py": {
+      "raw_sha256": "1b3dafa9dbbffccd4c5647db9c7981a04508b8af666732d5d3c4c183d8bf6129",
+      "lf_sha256": "1b3dafa9dbbffccd4c5647db9c7981a04508b8af666732d5d3c4c183d8bf6129"
+    },
+    "cad_tl22_lens_hardware.py": {
+      "raw_sha256": "eca35b4c2002fa0abc2727732247ed7556c6747d6172d80c925430e46381a8a8",
+      "lf_sha256": "eca35b4c2002fa0abc2727732247ed7556c6747d6172d80c925430e46381a8a8"
+    },
+    "cad_vacuum_tube.py": {
+      "raw_sha256": "c80b8d670378658b38b4c1117c0e66710805a7ffa7f64742ea056e5f14bb79b8",
+      "lf_sha256": "82a27b1114346cec79450baae611248ed3af3327c7c189bcc51e87cef51a8109"
+    },
+    "calculation_cache.py": {
+      "raw_sha256": "466d203d023063fd3b1e420bb0cd313c968a5658e82983c5f6f8a2fb79c56520",
+      "lf_sha256": "fc12f09b2d9fad0608e2c99139213c7441976a4348ae3fbe91501cb025122aff"
+    },
+    "calculation_manifest.py": {
+      "raw_sha256": "5b845fc7ead1eac63ede2f280fe35ed4f9b3c4efbdc7ecd52d6856a68ebebc90",
+      "lf_sha256": "2312111b451a4473fa7944633e14a7d84984c0a7865c81ee5748531099920b4a"
+    },
+    "calculation_performance.py": {
+      "raw_sha256": "da282458a2d782b0ae7d3be2500268d7fdc5b16ea7737cdf7619a884ad0a862f",
+      "lf_sha256": "da282458a2d782b0ae7d3be2500268d7fdc5b16ea7737cdf7619a884ad0a862f"
+    },
+    "calculation_progress.py": {
+      "raw_sha256": "3364469fd23b6b4cbf0b2294648c3cab90b404824408ccfeca0c9e3b8f3589e3",
+      "lf_sha256": "3364469fd23b6b4cbf0b2294648c3cab90b404824408ccfeca0c9e3b8f3589e3"
+    },
+    "calculation_workflow.py": {
+      "raw_sha256": "f067eb579a39cdd076089012a3b77a1ba5662024535cf779d5ee776b15b53e80",
+      "lf_sha256": "27dd30dd021731e00369bfef06e299d4b0eb77efc140d0bc238c8a92fb378540"
+    },
+    "cell_geometry.py": {
+      "raw_sha256": "29cff20aeeb6c6d5f945d622a8bf2647f873a59e81372723029f811ae17f178d",
+      "lf_sha256": "29cff20aeeb6c6d5f945d622a8bf2647f873a59e81372723029f811ae17f178d"
+    },
+    "checkpoint_observables.py": {
+      "raw_sha256": "f5ac747effb9301ffe998edaf0568a4b20eeb014ff06f8c5d4921457fcf883f3",
+      "lf_sha256": "f5ac747effb9301ffe998edaf0568a4b20eeb014ff06f8c5d4921457fcf883f3"
+    },
+    "column/__init__.py": {
+      "raw_sha256": "fa86843b06be96b7bcf74cbb1895da6a51d24e67dc59123f90d33710112c258f",
+      "lf_sha256": "2506f9b67add4c030bd4a7dc54753fb1bb070bb51e9c4c65ad1cb5d03a44fce2"
+    },
+    "column/builder.py": {
+      "raw_sha256": "9c59ee446d4076590c3abcbccd33fecd47e2b2960012242494bd6d140155356c",
+      "lf_sha256": "0996e6643dcd16644a9199f54cd48d5573cae81933a48be35b7798777838a4e0"
+    },
+    "column/layout.py": {
+      "raw_sha256": "1598a158ba7755014fc7f4f448c09690d2aa69e2cfb49a1f5289a820ac717830",
+      "lf_sha256": "c6a473f7bcbdf5f2d3bacec4b23cf8c17b9306818d15a1821d889d8b81aa6d86"
+    },
+    "column/module_assembly.py": {
+      "raw_sha256": "7b7610340d30aee95c4a7998f9579e4f36a5ab0b08d3bd64d7decb3c244e0856",
+      "lf_sha256": "ca43ebde18e11613c130808122f6ee794dab6efc32196541c0342ef249f1e99e"
+    },
+    "column/state_layout.py": {
+      "raw_sha256": "a9ccd9dd7af85507f681f62049122ab3cd2d4031bd41a5dc74b97f3a84971733",
+      "lf_sha256": "c88dcda818dd83ec08f39838da6258ee10a475e0b8c0d8367c60a14a642c058a"
+    },
+    "component_keys.py": {
+      "raw_sha256": "a3b24b18fd2d42d8ded0d6ee1cc3b10325309b517060e47b093542c9d1ed3505",
+      "lf_sha256": "1f96cbe4b884edf470f142af8bd814559b281ca1142b5390f5e2356fa0d7ec68"
+    },
+    "component_names.py": {
+      "raw_sha256": "69d5d4f89d0846016a4150834d03885307606b15d16bb02fa72eca1899c16328",
+      "lf_sha256": "b2f60dad48e3cbd36209a3991f143b9840065fa8c9bfbd5dd04a6c2621b5db6c"
+    },
+    "component_operations.py": {
+      "raw_sha256": "dfe83cb8d6fbb3bc8a1ca0bdb7f278345abda4ab9229175b5daaab4704365f76",
+      "lf_sha256": "dfe83cb8d6fbb3bc8a1ca0bdb7f278345abda4ab9229175b5daaab4704365f76"
+    },
+    "component_persistence.py": {
+      "raw_sha256": "e15bffb1f2b55ff8c859d3433cd44e1c2bb27128c7691db02a510b27e98d43ce",
+      "lf_sha256": "204417c84feb2b335fbf19c469ddba5663373b540ddbe5ce9c4b448423404926"
+    },
+    "component_representation.py": {
+      "raw_sha256": "5b314d017e7f98f4b1c6cba1b40809665b3ae6e64dfbbce1ca96c019093b6abd",
+      "lf_sha256": "16648b18b9da1b907bcc9185e8d212a2b9a778c74030b5513cddeb0a347ef8b8"
+    },
+    "configuration.py": {
+      "raw_sha256": "a0b822b690298685b7b1f6cc0c38e8b94f3a501b9493db6c8293066aa4419cb3",
+      "lf_sha256": "fd7c2eaab83a93c1da9134e81012f9f63b017b88654b7b99e58f95c3fc912a09"
+    },
+    "corrector_model_3d.py": {
+      "raw_sha256": "706fd0fa080a2a9b2b7d49835acbe67bbc3d1cdf07594c3d3cbf36754ca94eaa",
+      "lf_sha256": "706fd0fa080a2a9b2b7d49835acbe67bbc3d1cdf07594c3d3cbf36754ca94eaa"
+    },
+    "cpu_resources.py": {
+      "raw_sha256": "09dac55bc71e00a6f2ef237dceb4f1305db98ecdd4880d32eb1c493fc26ead66",
+      "lf_sha256": "09dac55bc71e00a6f2ef237dceb4f1305db98ecdd4880d32eb1c493fc26ead66"
+    },
+    "deflector_support_geometry.py": {
+      "raw_sha256": "f6bfa872d54b27458b3b96bc02e0369e8e8024638f781f651b1868daab3ad922",
+      "lf_sha256": "f6bfa872d54b27458b3b96bc02e0369e8e8024638f781f651b1868daab3ad922"
+    },
+    "design_experiments.py": {
+      "raw_sha256": "089ef7008944016444a002ff5505fae5c41c0529a40c8a015f27cfd908a35a9e",
+      "lf_sha256": "089ef7008944016444a002ff5505fae5c41c0529a40c8a015f27cfd908a35a9e"
+    },
+    "design_explorer.py": {
+      "raw_sha256": "70cd2ddd6e35f6e0b439a199e3723e6833ccedd9c3e1d0ffb94090cc225808b6",
+      "lf_sha256": "25053f2723fbe5584b2aa62c4329c5673840426ad61b50d784250b7fbbfce0a1"
+    },
+    "design_sweep_execution.py": {
+      "raw_sha256": "c3c26aa5253d14de36a2d57d2adc05a832d8c8984428ea6b35d28d16934639e5",
+      "lf_sha256": "af3905eaab23ccabe1ad1d80cbcbe10097bbc56dde7c1db88b7d947b8d16602d"
+    },
+    "detector/__init__.py": {
+      "raw_sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "lf_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    "detector/camera.py": {
+      "raw_sha256": "8a65275a1c0c2690d72a60c6265320ac008ac3010f9e55814f67a13bdb2007c8",
+      "lf_sha256": "4a287295d792bd401e034a131c8c6dac3299542c947924a3cc1b6d933bc53508"
+    },
+    "detector/compact_gaussian_response.py": {
+      "raw_sha256": "139cdb0962186a79c56439cb30668ca855961af05860de7acc802f201df6afba",
+      "lf_sha256": "63e6ad86290abbe1002537082172a324210f5c582b0e73493d870535c949820c"
+    },
+    "detector/eds_atomic.py": {
+      "raw_sha256": "8e5ab7154a4a754de77ea21fbcf60f5d52f2c7366516af8048e04f04b8fd048b",
+      "lf_sha256": "96897eeff1e793a73be4e33e2f996d1ed23b5fab7d53cf39171b3f07c7109186"
+    },
+    "detector/eds_geometry.py": {
+      "raw_sha256": "04e6af171a4b289b2322072fe97d17a9cbd0a0d3a77e9ab4d1280e169b8836e9",
+      "lf_sha256": "4f88f9891cb763ecb4e125ec46447f10aba3519fa1569371a87e7f0c97e570f1"
+    },
+    "detector/eds_line_library.py": {
+      "raw_sha256": "a9440f292a685485239134e0c8b429f70369b74fe19376e4757e833322a4c10b",
+      "lf_sha256": "a9440f292a685485239134e0c8b429f70369b74fe19376e4757e833322a4c10b"
+    },
+    "detector/eds_photon_transport.py": {
+      "raw_sha256": "8b2a525dc5a108460630291790885f234eecf68ca0e2bbbf8e7a7579f365395a",
+      "lf_sha256": "8b2a525dc5a108460630291790885f234eecf68ca0e2bbbf8e7a7579f365395a"
+    },
+    "detector/eds_response.py": {
+      "raw_sha256": "9178095a26768494d9975501a9f2ac5f8df4bba0cb86df3ecae718b60a5f1cae",
+      "lf_sha256": "9178095a26768494d9975501a9f2ac5f8df4bba0cb86df3ecae718b60a5f1cae"
+    },
+    "detector/eds_signal.py": {
+      "raw_sha256": "50f315df68f9d06c89be9ceebec573ee7de300abf92679c8670767b3f984d013",
+      "lf_sha256": "5595c065729f895de6510d5a0cb583f89d3aa73b017d6577e0210646bc9e2d58"
+    },
+    "detector/eels_forward.py": {
+      "raw_sha256": "6c42f2d5bf6ca6c8be8463b8ef00247a870777d2cdc91eb435f97390578617be",
+      "lf_sha256": "9f48df50aa4001d615eac6e77b1979816a7bee5ba83996eda8a83a0c05ccfb19"
+    },
+    "detector/fluorescent_screen.py": {
+      "raw_sha256": "0dc7fb4b53573ed66de3f6e22143337fd2cc2cc4f21e4d94050e90c957c53632",
+      "lf_sha256": "59f30f2600177117e00c25859c9a820abaebd387522956ccfcbebfb05d32528b"
+    },
+    "detector/gaussian_pixel_response.py": {
+      "raw_sha256": "9b110c6c57298de34b1ca1bbf98542f4c3ebbb46f5cadf35f3835233abf89306",
+      "lf_sha256": "9b110c6c57298de34b1ca1bbf98542f4c3ebbb46f5cadf35f3835233abf89306"
+    },
+    "detector/input_controls.py": {
+      "raw_sha256": "fd3e9ec5c1b878656072ed0baab91a78447521f074a51cac3113fb3f41dd6409",
+      "lf_sha256": "5631f8b9ecaaa4dde34e8940a01ccff75a09e5d6761a880538562c7b3ecdf6a8"
+    },
+    "detector/particle_readout.py": {
+      "raw_sha256": "e52f9b3a5cdd13eae0bfcc3a96bb6405937b7ababdb5ec18016c793942db2b5c",
+      "lf_sha256": "e52f9b3a5cdd13eae0bfcc3a96bb6405937b7ababdb5ec18016c793942db2b5c"
+    },
+    "detector/plane_image.py": {
+      "raw_sha256": "9e704a349e121dbaa9b9cbb892e2392380e872a45ddec9d6d298957782c16e57",
+      "lf_sha256": "9e704a349e121dbaa9b9cbb892e2392380e872a45ddec9d6d298957782c16e57"
+    },
+    "detector/point_spread.py": {
+      "raw_sha256": "a3b76ef08e57c0d2d52954c290d808390b3915cd38e2ca7c115717b4d95ef087",
+      "lf_sha256": "a3b76ef08e57c0d2d52954c290d808390b3915cd38e2ca7c115717b4d95ef087"
+    },
+    "detector/projected_response.py": {
+      "raw_sha256": "93403e34f3c73b869265945cd3684f8b8374e3ddc0aeababafa5fdad579e2587",
+      "lf_sha256": "93403e34f3c73b869265945cd3684f8b8374e3ddc0aeababafa5fdad579e2587"
+    },
+    "detector/projected_stem.py": {
+      "raw_sha256": "82a1ce2e27153297cd29e0de2d72d2b389b3afa08a615ddc928b6c289c428c4b",
+      "lf_sha256": "c28b05eed442ea8989a264bb0af648faccaebf862c3a8a003a5224eec830d766"
+    },
+    "detector/receiver_image.py": {
+      "raw_sha256": "0301bb8900b51b358943591d1d0b7fc774b6fd593a801ebe1e322dbb7ac5705d",
+      "lf_sha256": "f61d3d850a569e0715e3ae657bb68fb511923dc131012cfd2d2c46c316489f3d"
+    },
+    "detector/receiver_scan.py": {
+      "raw_sha256": "da898999762a45d5ba717fadc68ca9cd421283d0470956d0dfcff97702322ccb",
+      "lf_sha256": "7225a4a6063f0e40e4168686ee714433ddb0b83409d7928cd5ac4940a5715c6e"
+    },
+    "detector/recording_system.py": {
+      "raw_sha256": "0705b5a49845a822185945d46c37219bb585e33e82b29a475232d4c255ce7129",
+      "lf_sha256": "75af749b70fceccf53c7b31b8710eef990aead4f2840b41facbfc7740c6d39f7"
+    },
+    "detector/stem_detector.py": {
+      "raw_sha256": "6bde7826c2d720c73911782293cc5a2a0c950379a9a2f0a4ada8c67cc3a52262",
+      "lf_sha256": "9b53df644bb790adc600a6c2a8a139bc3cab40488a3d4499e02e942cf2027181"
+    },
+    "detector/stem_signal.py": {
+      "raw_sha256": "43340a90f7088c14a40255eaf310a5da03ec72549b9e9b56da6d3dd3ad2ba8f8",
+      "lf_sha256": "f09352261841954bbf05e3fc0e1bd7276f30706168a8cb859c08e77f4de4f972"
+    },
+    "detector/unified_particle_stem.py": {
+      "raw_sha256": "cc49cd6bc5b0cd80812c45d7a66a40a57ab1575e18c51ac30fdd932c4bf34400",
+      "lf_sha256": "cc49cd6bc5b0cd80812c45d7a66a40a57ab1575e18c51ac30fdd932c4bf34400"
+    },
+    "detector/wave_readout.py": {
+      "raw_sha256": "69b8af1504ad558717896060a10f5c67eabc538b4b02632367109485acae3507",
+      "lf_sha256": "69b8af1504ad558717896060a10f5c67eabc538b4b02632367109485acae3507"
+    },
+    "diagnostic_electron_record.py": {
+      "raw_sha256": "ee58c4e86ad2a896561a85534eda1111009784ec87e3bb0bf50c690ce601c2f3",
+      "lf_sha256": "ee58c4e86ad2a896561a85534eda1111009784ec87e3bb0bf50c690ce601c2f3"
+    },
+    "diagnostic_execution_identity.py": {
+      "raw_sha256": "7845fe6d0c3b37a6bb1e866c4a524e7f4d8c4042d7f90c0268beb7e099d46c04",
+      "lf_sha256": "7845fe6d0c3b37a6bb1e866c4a524e7f4d8c4042d7f90c0268beb7e099d46c04"
+    },
+    "diagnostic_field_identity.py": {
+      "raw_sha256": "a851e5213682710cfe509e52f6c28ec072f192b2b131975b6cc3cc55bc0eb582",
+      "lf_sha256": "a851e5213682710cfe509e52f6c28ec072f192b2b131975b6cc3cc55bc0eb582"
+    },
+    "diagnostic_gun_comparison.py": {
+      "raw_sha256": "69dd1f0dca507e7daea38b235a3445f61c26a8026ae1822835aa426c0cf535e6",
+      "lf_sha256": "69dd1f0dca507e7daea38b235a3445f61c26a8026ae1822835aa426c0cf535e6"
+    },
+    "diagnostics.py": {
+      "raw_sha256": "99b212b94a2ada43938b897f91486751a47e071a745de9eb8e026c97501beb98",
+      "lf_sha256": "539f69d002860524081441a08a3218433887a889890d88a49deaafd23f4df38d"
+    },
+    "dimension_audit.py": {
+      "raw_sha256": "53c855c9029f7d5605c8319a4816bedaf7723a73156e2d080185c6be7ee16ffb",
+      "lf_sha256": "d007e5f5cbae843dbaf62eaec68e5d2e3c1f08bf9ffcfc133d611e7650aa9dea"
+    },
+    "dimension_edit_policy.py": {
+      "raw_sha256": "c1e144c8ba4db183b0955f92a7fa5eeae3797b943683eba3bbe9af5ec1a961dc",
+      "lf_sha256": "c1e144c8ba4db183b0955f92a7fa5eeae3797b943683eba3bbe9af5ec1a961dc"
+    },
+    "electron_diagnostic_session.py": {
+      "raw_sha256": "416a8418cbfc647c682de8162e4b50c9b52979a2d86b8c0d40d8e5603050a2e4",
+      "lf_sha256": "a8683f47766a6069283540afd16e5cb76e4f70e153c5073e7a8684b1372a3710"
+    },
+    "electron_execution_diagnostics.py": {
+      "raw_sha256": "c837d251ad619a573686190415cbf51aef600fcee59b0f87f059152edd98d3af",
+      "lf_sha256": "c837d251ad619a573686190415cbf51aef600fcee59b0f87f059152edd98d3af"
+    },
+    "electron_execution_performance.py": {
+      "raw_sha256": "e00123e412262a8fe39a3e892a801f71ce594bd13fb2998f05ea1751ece09abf",
+      "lf_sha256": "e00123e412262a8fe39a3e892a801f71ce594bd13fb2998f05ea1751ece09abf"
+    },
+    "electron_execution_protocol.py": {
+      "raw_sha256": "5e4bb2bfa983f681dd269da5bf8388e1fb29858ca971ab4ee9bbacf8357b6438",
+      "lf_sha256": "5e4bb2bfa983f681dd269da5bf8388e1fb29858ca971ab4ee9bbacf8357b6438"
+    },
+    "energy_filter_model_3d.py": {
+      "raw_sha256": "d5d6de192f43eb4784b3aa8c97ba2b2a1f5c1d5f00c9d9bfeb99432597b62363",
+      "lf_sha256": "d5d6de192f43eb4784b3aa8c97ba2b2a1f5c1d5f00c9d9bfeb99432597b62363"
+    },
+    "excitation_calibration.py": {
+      "raw_sha256": "5da6924f3d6df444991e6ca927ae201d233cb5774e55a1c4d86b92a2634999cc",
+      "lf_sha256": "bff0f307af15ade3440aa431aea9a243d53c664f9833bf066bd34e4c5d4bd1b9"
+    },
+    "execution_evidence.py": {
+      "raw_sha256": "a9e47710c73bdde14ba788d8038d1a27cc9ba6c2e3a300efec1c54978f6bbe2a",
+      "lf_sha256": "81bee1ef8d8199d7e639ebfe290ea96ebdf140f96799f6c78bba74d2eb3e3890"
+    },
+    "experiment_cli.py": {
+      "raw_sha256": "0cf8489a4405092547134156b24749490a2d3d8d3b93674b697538a4086aa51f",
+      "lf_sha256": "0cf8489a4405092547134156b24749490a2d3d8d3b93674b697538a4086aa51f"
+    },
+    "experiment_records.py": {
+      "raw_sha256": "07e487f645f4814d0385001219c1c22c775dd65d1361e464937b59608b41a48b",
+      "lf_sha256": "1784a8fa215b78dcccd9d534cba0a2b4f188cf290c8f66b60c3ceffe77b10909"
+    },
+    "field_density_texture.py": {
+      "raw_sha256": "ac541b85b3ebcc0e18fb500c81293eed15211ece518611a2cbdbc3dc10274625",
+      "lf_sha256": "d0a9e8ee654ca4a1804a4c031729fc96c941eda85c4a67b773d60cc915610397"
+    },
+    "field_display_regions.py": {
+      "raw_sha256": "ec28ee844a4020a23ee780f2c3170a3e267751973a7ed1705c55797d30864179",
+      "lf_sha256": "27a68dde099620a2e0456270b7b6330235a707e7a6c056067e040afe87370a47"
+    },
+    "field_section_sampling.py": {
+      "raw_sha256": "4ea4620bbc5bfbd277c96abeb63cd444550dbb543211e853f2702c0a19826345",
+      "lf_sha256": "00d2f95c2dd1822d570a40c8fd5d0236120b63f72c46d6febd76eeb3c4a9e936"
+    },
+    "field_vector_geometry.py": {
+      "raw_sha256": "7066139011591cc0e4f12a9f63b10cb80539c1697d03cc0610a786db55522aac",
+      "lf_sha256": "75bb097bb1469bd8a8f3ccbcf5e48dd6568954f7c7df9744268d623712c63963"
+    },
+    "field_vector_scene.py": {
+      "raw_sha256": "7a592057e4a7bfe7993757deec79dac5810608ee9d2f69e771fe3361885707e1",
+      "lf_sha256": "c02945fb1cbb63296459302b5d69a330a119f7dd3817d07b63f4986d54826da1"
+    },
+    "geometry_effects.py": {
+      "raw_sha256": "cd5d14eb0cd75d0815a00f360e49436d25e643542598a51fd20fa6e58ce7b0d1",
+      "lf_sha256": "58d6dde98158f85e1c052eb5dbb90bae7387b8abac46ce168a642c7f115f4fd8"
+    },
+    "geometry_experiments.py": {
+      "raw_sha256": "c70084d9f72e49779e6dafc23a1f2caeb6ca15d656b6da9be2647c1b901009f8",
+      "lf_sha256": "538eee0dd51f716cddafeac1206cceb9af8e149befff57a6e324def470669c8c"
+    },
+    "gui/__init__.py": {
+      "raw_sha256": "31edfe5c4db0c1a3fa05fcc49daa92a0827a402d4904134edf1b48d5d3c233d9",
+      "lf_sha256": "31edfe5c4db0c1a3fa05fcc49daa92a0827a402d4904134edf1b48d5d3c233d9"
+    },
+    "gui/aberration_dialog.py": {
+      "raw_sha256": "143346f71ce7979184dfeac885e45b62130eb9fdc9a6224a0d9f7b381e1f239d",
+      "lf_sha256": "bb920ac64c44117f74a2915689c4c53d6c79aaab5a9ce21adfa3de94e12bdaa2"
+    },
+    "gui/aberration_view.py": {
+      "raw_sha256": "f6cdc236a435d5141ef2046fc8c2a9c5d1816858c1e68a6bdde587db20a4a070",
+      "lf_sha256": "44d80cae983af36a1a1c6ea2e8d048d294cbc332205e9ab9d064ede72977bdb2"
+    },
+    "gui/accelerator_gap_overlay.py": {
+      "raw_sha256": "0f0b6dd4fcb6befbc6f63d3840e78c8483756374e0bef97f24f636b28960fc03",
+      "lf_sha256": "435bc84cec2ef391af7489f7c1375a996c3cc88a3d8374bb5e5c112d539632cb"
+    },
+    "gui/aligned_control_table.py": {
+      "raw_sha256": "e5cf9a43d2e82a03e0e2d856c5f7b3967ebb2be14d0b286c27367df8d562bc73",
+      "lf_sha256": "e5cf9a43d2e82a03e0e2d856c5f7b3967ebb2be14d0b286c27367df8d562bc73"
+    },
+    "gui/alignment_constraints.py": {
+      "raw_sha256": "8bcb11bb6fd14b4d67966a6086d3331644e6488847bc4e92e4b1c9fcd74e2d64",
+      "lf_sha256": "e8fec7fc615d8ca8be32dbdd022ffbc7ef76036dc006b4a79d77343e0ab068d9"
+    },
+    "gui/assembly_geometry_cache.py": {
+      "raw_sha256": "3f66618691101a8b1ec41f03d74c17e7d2fc2cf8918eeb8915fabec656acd293",
+      "lf_sha256": "8721bc0799888291140b33e968fbaa7e80ed722b41d765fcfb8f58bd0599438a"
+    },
+    "gui/assembly_model_page.py": {
+      "raw_sha256": "d52abe6fe63a459a00566bbc24d645ea8a1b7829e5a1c0ed6e92d246234547ab",
+      "lf_sha256": "b1f71aeb6af9a2ae0d46339c595505b4d0163fe97b853440782ec6d1904b3d22"
+    },
+    "gui/assembly_panel.py": {
+      "raw_sha256": "9e9ed40245ea50654fb5d1814fb7f5612b5d3e8eae786ddf0d10cb02cb24e2ca",
+      "lf_sha256": "6eb9b1000f5c712144de61ef32032330054db13b0aff450d9b1dc040be7ed677"
+    },
+    "gui/assembly_section_page.py": {
+      "raw_sha256": "e38815f7f4048bd58e67e742acd329ed7a1c1849cae05199b6791b79687b9552",
+      "lf_sha256": "a8fb59e0f10eda96cc09bb85163b2f90ef4584797b8f62d241dca2496c6619c5"
+    },
+    "gui/assembly_structure_tree.py": {
+      "raw_sha256": "0da54538beada0066f577cba0a0bad6451fee5dd0233cc20d0af1d9d2d038d8f",
+      "lf_sha256": "0dcb99dff1941eb54bc3f189d37e474e4d29688b792c2d925dac2b9f178607f9"
+    },
+    "gui/beam_alignment.py": {
+      "raw_sha256": "49fd80ff4916350ab5a61683e00b0bf3388505980f69fda1ab1d9b0f5af6ff96",
+      "lf_sha256": "52ff58386438d1e0e61424c8b3b21bb63d21e49bcefc247c0838dbac7c355283"
+    },
+    "gui/beam_analysis.py": {
+      "raw_sha256": "1c2aa9b29da3d0d45878e5baa6e2a19ff2235ac3a37d442f16c2853a363ced4d",
+      "lf_sha256": "4dfc3ce25be13739c2d94f00a2c32e7c1f7483d4518bf105f9f90af5c4a8885b"
+    },
+    "gui/beam_colours.py": {
+      "raw_sha256": "1b31ae04a711ede92552e9e7bfae37e51965966f1975fa96568b7bfff7ba3417",
+      "lf_sha256": "1b31ae04a711ede92552e9e7bfae37e51965966f1975fa96568b7bfff7ba3417"
+    },
+    "gui/beam_display_source.py": {
+      "raw_sha256": "fc59a0387da53c84299cf6a79aa87733f44d0117997340ce1f103b68a3af284c",
+      "lf_sha256": "fc59a0387da53c84299cf6a79aa87733f44d0117997340ce1f103b68a3af284c"
+    },
+    "gui/beam_plane_data.py": {
+      "raw_sha256": "214e28037d8f42be78f84456f0b31970532f9f60a058bbe27356b5993ab2f6b8",
+      "lf_sha256": "214e28037d8f42be78f84456f0b31970532f9f60a058bbe27356b5993ab2f6b8"
+    },
+    "gui/beam_spot_data.py": {
+      "raw_sha256": "00d92b41eb1076c861a8c30cb2fc806a572ee9c865158a09b5a9841c96e03a7c",
+      "lf_sha256": "00d92b41eb1076c861a8c30cb2fc806a572ee9c865158a09b5a9841c96e03a7c"
+    },
+    "gui/beam_steering.py": {
+      "raw_sha256": "d0d97b01dce959e19856a143f454562e913bb580b765b87a1cd11ac046dc875e",
+      "lf_sha256": "d0d97b01dce959e19856a143f454562e913bb580b765b87a1cd11ac046dc875e"
+    },
+    "gui/beam_tof_analysis.py": {
+      "raw_sha256": "3a5548f26ffef3dc4286fd9a9a01807582279a7bcf8102aa56775c7a8dcb3000",
+      "lf_sha256": "3a5548f26ffef3dc4286fd9a9a01807582279a7bcf8102aa56775c7a8dcb3000"
+    },
+    "gui/beam_tracking_modes.py": {
+      "raw_sha256": "e28592888452eefa7fbe4408e9ac9551125e65b9f8c83e41a3c12ffca944043a",
+      "lf_sha256": "e28592888452eefa7fbe4408e9ac9551125e65b9f8c83e41a3c12ffca944043a"
+    },
+    "gui/cache_settings.py": {
+      "raw_sha256": "a213cea2a5ebea7cf2bb681886dc9359aea8f2be852858214e7a0e0244ace4a2",
+      "lf_sha256": "c4084f7a1b84e854663b75e229c082131d1582e903bf0591036b0a1c4eb83dc6"
+    },
+    "gui/cad_export.py": {
+      "raw_sha256": "fbfe71da52580a25ec83d54e63e74ccc68ea5ea1540cde20bfe5d24a8b4f8f54",
+      "lf_sha256": "1ce376ba1c69c21131f66f1dd6ccc898c9175d132626f79a56b28c330230ef4f"
+    },
+    "gui/cad_geometry_job.py": {
+      "raw_sha256": "8dea8492d0c20987393b3f0e5552915dc09c34a9b0c4697c9ccee1d975e8e657",
+      "lf_sha256": "05616febce860f5abf51fc69bf0880220f967d896d9079cbe3bec05e2ec1098d"
+    },
+    "gui/cad_gpu_renderer.py": {
+      "raw_sha256": "cde08ce716da721e5347596b1f93649175e64b4851cff83ac17b35dff139bd90",
+      "lf_sha256": "cde08ce716da721e5347596b1f93649175e64b4851cff83ac17b35dff139bd90"
+    },
+    "gui/cad_step_import.py": {
+      "raw_sha256": "00a2fb9fea6930f92e230b7810dcd9f09214f10a5e02ca627d727bb92861dfc8",
+      "lf_sha256": "00a2fb9fea6930f92e230b7810dcd9f09214f10a5e02ca627d727bb92861dfc8"
+    },
+    "gui/calculate_setup.py": {
+      "raw_sha256": "2b12821e2b74d334bf7a880c5070c962891ce3992d2f8e43a7e90f09157a4b9b",
+      "lf_sha256": "53e4405a61da6fa17dae9032015ef941af489a38719a58f51e47f1815228422b"
+    },
+    "gui/calculation_controller.py": {
+      "raw_sha256": "614e96db58818cb66400535072320c706f5b687b8878995fb3ca8b027fd70155",
+      "lf_sha256": "7cc15c94c8f21e9bd4f24614c0b0dde8d8e619f9f44a51a3e6a897eeb409254f"
+    },
+    "gui/calculation_progress.py": {
+      "raw_sha256": "d112785b81a6fb566c7084585d4ba69dcbeca22266c11daeb23ef2199e91f937",
+      "lf_sha256": "d112785b81a6fb566c7084585d4ba69dcbeca22266c11daeb23ef2199e91f937"
+    },
+    "gui/calculation_request.py": {
+      "raw_sha256": "40bcb325e9ac4ab7edef4eadf46f22926b7c8b00bb5d0f6e56b82d1350f37c7c",
+      "lf_sha256": "def7dcc710ee7b82df5607b6a837bfbc377a8f728082b20bd5adb6b9387c8acf"
+    },
+    "gui/calculation_timing_view.py": {
+      "raw_sha256": "6e4fd5357427c891f8e50365ee48260cbf8d7ddf74c4d82fd23ff234c9abcb51",
+      "lf_sha256": "6e4fd5357427c891f8e50365ee48260cbf8d7ddf74c4d82fd23ff234c9abcb51"
+    },
+    "gui/cell_environment_editor.py": {
+      "raw_sha256": "24f7fbd06bb14df676fd5fd74b62184cb216844a7b0ca590783d5b7adb566859",
+      "lf_sha256": "d451757133c2c2a6c3b93746738aa016462ea61ea85949eafc2a0a7195d67d2a"
+    },
+    "gui/cell_layout_overlay.py": {
+      "raw_sha256": "737257fa0f2224adeea369c001fa8d3d120e9dd67a545e0f1697a2eae9ced236",
+      "lf_sha256": "737257fa0f2224adeea369c001fa8d3d120e9dd67a545e0f1697a2eae9ced236"
+    },
+    "gui/coherent_beam.py": {
+      "raw_sha256": "10f520f862b42e9bc5eafd6c0da13cbf504c6fe27b093a51fd026be2d9cd005c",
+      "lf_sha256": "11baccb3b29d75945bfd1b5584e42178ac090a526e6e4bad758d24d220157d66"
+    },
+    "gui/coherent_result_labels.py": {
+      "raw_sha256": "938d8895e492e27a8d7fd0d10d9b38a8ccbaa488bff1004cd23d482e36b9c20c",
+      "lf_sha256": "938d8895e492e27a8d7fd0d10d9b38a8ccbaa488bff1004cd23d482e36b9c20c"
+    },
+    "gui/coherent_state_controller.py": {
+      "raw_sha256": "89c2ac1611bf2d0bdb1be80eec2f8dea94927bd67e698e6d83963de555145336",
+      "lf_sha256": "4e454359b1f573a9993feca39fedfa83908d9615edd57015a0236715e3243353"
+    },
+    "gui/coherent_state_list.py": {
+      "raw_sha256": "2c41c58d3e188f91ec6108bdfc38c5969d2e9568daba0d0eaeaf25e67c3dd0df",
+      "lf_sha256": "2c41c58d3e188f91ec6108bdfc38c5969d2e9568daba0d0eaeaf25e67c3dd0df"
+    },
+    "gui/compact_status_label.py": {
+      "raw_sha256": "0cde95e81ab65f8daaf9ce9fcee2aee760e83c370dbeaadd3d9f8911777c55d8",
+      "lf_sha256": "cff59a9409263fb7171ea167286ef675045c6b76d3caae20d5de9a42f3e3ea87"
+    },
+    "gui/component_dialog.py": {
+      "raw_sha256": "75100ffc8a7ea46825963a96c7264b93b6d698143e037f41fb21c428e4809ca7",
+      "lf_sha256": "7dce9761c1dd85d514082a57113f0ae68d9808a13a852732968d8b09c179e3b2"
+    },
+    "gui/condenser_scan_design.py": {
+      "raw_sha256": "abc6dc904233a0e19d09fb3bfd73d9115ed18e75e217e31ad545ca0dd9c4b135",
+      "lf_sha256": "ee8a8c077d119a080fc6caec3199d6b57912e2685c602fa45a936b8ae80ec9a6"
+    },
+    "gui/conjugate_plane_context.py": {
+      "raw_sha256": "1e167fe7c7703f314ca230098085a8ea44479977de669eb888435a456ed69a66",
+      "lf_sha256": "1e167fe7c7703f314ca230098085a8ea44479977de669eb888435a456ed69a66"
+    },
+    "gui/conjugate_plane_overlay.py": {
+      "raw_sha256": "3588aa97bfdcf4a071c15907f65fed8b9f17885c25c2bcb577550317b6781639",
+      "lf_sha256": "3588aa97bfdcf4a071c15907f65fed8b9f17885c25c2bcb577550317b6781639"
+    },
+    "gui/conjugate_plane_panel.py": {
+      "raw_sha256": "3382fe67398cbf573ee1801e698de8363ded6fa2edfb9197b0851eb851066b42",
+      "lf_sha256": "29d4f55670bfbed1e52f0e08e48e40b8876c24d737e39fb5acce17e02a53155f"
+    },
+    "gui/corrector_channels.py": {
+      "raw_sha256": "7235dcbe164044727ea68f4c5d4592d0b6323dd56fd11bf70ab8f1257b5407d9",
+      "lf_sha256": "7235dcbe164044727ea68f4c5d4592d0b6323dd56fd11bf70ab8f1257b5407d9"
+    },
+    "gui/crossover_survey_view.py": {
+      "raw_sha256": "1f4a017afa921abdc160ec6698853ab29174091246f9f8bcda8ae2867ee4320f",
+      "lf_sha256": "e6b6ae7c2b20fb6af552389fb82d8b12d43a0889fceefc127f324729cacf500e"
+    },
+    "gui/current_page_tabs.py": {
+      "raw_sha256": "b38b35aca59daad6236eadf4395a1368df81a115fa63e67d5eea0a06a18a5391",
+      "lf_sha256": "646d8bd74e6c39b3ecaf1a5d8966631cfcde293d81d110d4a9357b2e31aeeea6"
+    },
+    "gui/design_explorer.py": {
+      "raw_sha256": "4903060637e43e6c425c260cd2dc2a8ebb6aa7a5ff11839e580005913e118580",
+      "lf_sha256": "fcdde3b654ada38e969363dc27fbdf27b1b74394e6e23212cfa6a9dfa3254eb6"
+    },
+    "gui/design_sweep_controller.py": {
+      "raw_sha256": "a4812286f464bd8112032e0778f302f76cd9bbe95046438ec192cdc944b9855e",
+      "lf_sha256": "d5f409133db3630b6598c743cd07e4f6d02ae7b4e5d9bfd0fbf24d9b239f5c72"
+    },
+    "gui/diagnostic_tabs.py": {
+      "raw_sha256": "4c032d6fe324e9a61881e9afe906df0289b19cc010b07609550a72cbfd5a57b3",
+      "lf_sha256": "1a0d6c083c95aaf2c2f23caad148ee0dd8f75350d29411d798a0c7560da3881d"
+    },
+    "gui/dimension_audit.py": {
+      "raw_sha256": "0b6351ca6ca7cde398ab19bebeb28be5526c60da254d9c8b30c0388f8a7af6e8",
+      "lf_sha256": "658ee96781853dd05f0e477dac4f6f693123b1b584e97d6af43d0d2daf1dc672"
+    },
+    "gui/direct_alignment_controller.py": {
+      "raw_sha256": "0d0f3acda76357024e45dd6fe27b5d7a97ced4b72811846e4b30aa67d4253605",
+      "lf_sha256": "8c5868da04d9b871e2de3488ddf095d837faa358c4f86b593074e28f8cd91268"
+    },
+    "gui/direct_alignment_panel.py": {
+      "raw_sha256": "0ef8280c057f0654639335ee35d80e38a6ec5cad2331e9b6ed0eb21e865c21b7",
+      "lf_sha256": "9ca587197438b654f3746ab1c3ae0bd9c2f037788d10f563e6faff337ff54626"
+    },
+    "gui/eds_panel.py": {
+      "raw_sha256": "7e5599ced4103c447fd7ddd66890f32c03720311ff05db4703ba7aa6c7190ed6",
+      "lf_sha256": "0cb2a51aae10deab9d68e2e6f0d55940bd8135c01daf65a5b461982de0e93a4f"
+    },
+    "gui/eds_peak_labels.py": {
+      "raw_sha256": "641381f08d96d1a6c8ae68d6d4acc17f8826280ebf0409e6a48343a4f82ded69",
+      "lf_sha256": "641381f08d96d1a6c8ae68d6d4acc17f8826280ebf0409e6a48343a4f82ded69"
+    },
+    "gui/electron_beam_observation.py": {
+      "raw_sha256": "70c06e68e9d2d426fa662a411923385e6a35e907b613005d2232d4b07d7fe025",
+      "lf_sha256": "70c06e68e9d2d426fa662a411923385e6a35e907b613005d2232d4b07d7fe025"
+    },
+    "gui/electron_display_geometry.py": {
+      "raw_sha256": "7b6e67c6df5e2f8c97f653d8997aec8f67dba01417f1705ccba6c18d570e9cbb",
+      "lf_sha256": "7b6e67c6df5e2f8c97f653d8997aec8f67dba01417f1705ccba6c18d570e9cbb"
+    },
+    "gui/electron_session_actions.py": {
+      "raw_sha256": "bcbc964387404a5d55799292747e302ec53fa5f5955937dd2168c91fc6e7361d",
+      "lf_sha256": "b67a5f8dac6622aab8d8ee9461c9e1d04841ae1dc87c4fa4aee38282f6cfa7d6"
+    },
+    "gui/emission_source_data.py": {
+      "raw_sha256": "782d21a45fefaf92161da4c27ead388a50c31339f350952d23512985ee3d0913",
+      "lf_sha256": "782d21a45fefaf92161da4c27ead388a50c31339f350952d23512985ee3d0913"
+    },
+    "gui/emission_source_plot.py": {
+      "raw_sha256": "34d5674dbab1d0a6eb0b2c5f5c3eeeb0e8d0cc1047b84abd76990229ae1d8fd2",
+      "lf_sha256": "34d5674dbab1d0a6eb0b2c5f5c3eeeb0e8d0cc1047b84abd76990229ae1d8fd2"
+    },
+    "gui/energy_filter_outputs.py": {
+      "raw_sha256": "2009ae22eff49c21c8c8fd91fb0759fddb24a3735d6a0252011e92c643c07dd0",
+      "lf_sha256": "3386b8bebb1f551e1d24d1cbb0e010736a6e101fbd532332611851a36331025f"
+    },
+    "gui/excitation_dialog.py": {
+      "raw_sha256": "7f492c8f033cbe15c7f82a2169e79300c42d4ec70fe0e05eaf598bdc93c5417f",
+      "lf_sha256": "0ebd806c6fbf91478b056f461a044c81afd44e857c8c0b0c23ccb5f4c5048b50"
+    },
+    "gui/experiment_tools.py": {
+      "raw_sha256": "7d2935ae18539ebc356740d52a38aa410d9b48d5ddd91ab5ab8530294f38f0ba",
+      "lf_sha256": "d41526593a7a86d3c893538fc0df690478e7d3d054e42ce1523574794ff849c3"
+    },
+    "gui/field_vector_canvas.py": {
+      "raw_sha256": "74e50aa91697ff01933f1449c97b9eff443090bc3362b023339b62d9a261a299",
+      "lf_sha256": "fb1225f5a1362f5d3b6b57c16c617289e91e2f145e34713a5654c926a3b3dd11"
+    },
+    "gui/field_vector_page.py": {
+      "raw_sha256": "e81e3c34c6767095e3a4f4a30ec82050a8a899f0bd7dff0f0f22a7a46360f5f4",
+      "lf_sha256": "f78d2d78c98b44e2166cd5cfcf7aa5af125f3c327fd9406a08ac2d8aaeadbcfc"
+    },
+    "gui/filter_plane_data.py": {
+      "raw_sha256": "8014e0dd4b3eba7d54d75c5e47325fedefb37e587452d16612ff7f2081474087",
+      "lf_sha256": "8014e0dd4b3eba7d54d75c5e47325fedefb37e587452d16612ff7f2081474087"
+    },
+    "gui/flight_time_colours.py": {
+      "raw_sha256": "275c7374c8c24253a306e4c71d7e6a9769812940e40290cc3c26f4d406836220",
+      "lf_sha256": "275c7374c8c24253a306e4c71d7e6a9769812940e40290cc3c26f4d406836220"
+    },
+    "gui/garbage_collection.py": {
+      "raw_sha256": "9a1919379179ffbc4b46858b42a5b7e5dd787cb3c104655c20a742fe8043e5da",
+      "lf_sha256": "246e2fa7d87dac6c69109ca16d1bd41b17ae279b1a34b9c11b0cde2506d4233e"
+    },
+    "gui/geometry_experiments.py": {
+      "raw_sha256": "7308464231c6909a6d861277863cbcc1aa6ecadf6470d6b2c46696df4eb95def",
+      "lf_sha256": "7090d5da8ccf6587325808fea6044b6f761afc8c83b22a254f7b1a06a39dc404"
+    },
+    "gui/gun_source_dialog.py": {
+      "raw_sha256": "fe1a03a7f6f921828637f9ed124d47db93c6a466f5c5d4fd03aed839601c5b2a",
+      "lf_sha256": "fd03a7210c1261a413bad2e329bdd3ad660c41d02a00da280d51bf0d65bef54d"
+    },
+    "gui/hardware_tuning_panel.py": {
+      "raw_sha256": "f4564db6c8ac0f36e082b857ea373709581d0a185937d92f6e626b8e44d6e58b",
+      "lf_sha256": "f4564db6c8ac0f36e082b857ea373709581d0a185937d92f6e626b8e44d6e58b"
+    },
+    "gui/help_content.py": {
+      "raw_sha256": "b75a42eddb657d845f71b2398eb6c524e9ea986ff1ac263fe2cd541db527a2ad",
+      "lf_sha256": "8aec93cace3479afff6c456a1cffbdd8cc392446430231cdc7906d072d3a2921"
+    },
+    "gui/help_page.py": {
+      "raw_sha256": "90171b911a9210fb51c837a113a6de45cfc6f24b32ceaf960958be4536933ec7",
+      "lf_sha256": "90171b911a9210fb51c837a113a6de45cfc6f24b32ceaf960958be4536933ec7"
+    },
+    "gui/illumination_dialog.py": {
+      "raw_sha256": "f127d53c10d9f6a8804d5163a592694cbc490ed3c283f8efc244ec5bfb236956",
+      "lf_sha256": "f127d53c10d9f6a8804d5163a592694cbc490ed3c283f8efc244ec5bfb236956"
+    },
+    "gui/input_policy.py": {
+      "raw_sha256": "120e869cafc2c65f9f5c80c40672cccdf01cfc3d0a1ea8b5d32ca12dac754289",
+      "lf_sha256": "148378f0115c5c7beac09689c2fc598a2bfb842fda148bcbf97a7fa7fa6e17a0"
+    },
+    "gui/instrument_configuration_dialog.py": {
+      "raw_sha256": "70fd54e920daf31ad99cd13672190fd3aaf5a845b315c724fafe04bba5e17253",
+      "lf_sha256": "5c65b2430a6584a5ac2b14239c1ce522227ded1d92a4dee58d422dfe31ecb91d"
+    },
+    "gui/instrument_recorder.py": {
+      "raw_sha256": "34ee6821fe108c4ca8b4ca78c61fbc854e17c2e377ce78a8f282537cbae2cef3",
+      "lf_sha256": "c01062af0da9d2182a0812a34e926e0308bca9631d96f9a0eeef42434f396d9d"
+    },
+    "gui/instrument_tree.py": {
+      "raw_sha256": "cd008037cb9d0b587537664ecd6d4ab4a7577ad41d20319848232a8c0f5edcf5",
+      "lf_sha256": "29edab51f0061ea5bf54469148379b0c046f3c8c33d9414dbe185ebd3eb3376f"
+    },
+    "gui/interactive_calculation.py": {
+      "raw_sha256": "d3bbcb042c0357ada0f4a5eee72f4c9dedff1e43d07ae034f54b29df28ef9f66",
+      "lf_sha256": "1441521d9f0a67f79c9208ba3d116f57653d5ec66e4ac0908d944ddaa5e2be5d"
+    },
+    "gui/interactive_controller.py": {
+      "raw_sha256": "0fadd191c9b5886b6b306cbf71e11aa8f7345ea4e19a0923c8f946cc6852691a",
+      "lf_sha256": "abab9194d034038c9a4f1b1a9463b012c18191ccdb39dfd324541967dae96637"
+    },
+    "gui/job_coordinator.py": {
+      "raw_sha256": "a05e3ace35de24cf369fd566836736f81167b11a677d3ca7dc509fd3d882bff9",
+      "lf_sha256": "d3c2a342cc84b5b9cb1089b51482beb9583c2caa882f02f48a2dacb3a498e785"
+    },
+    "gui/lens_aberration_editor.py": {
+      "raw_sha256": "f0d796ee52b3aea6939674e508ae0f3281ecbda6dbf6c7af6cdc12c0eb7fdaed",
+      "lf_sha256": "f0d796ee52b3aea6939674e508ae0f3281ecbda6dbf6c7af6cdc12c0eb7fdaed"
+    },
+    "gui/live_beam_refresh.py": {
+      "raw_sha256": "ffc8568c330054c61834aaf7e0ccda54d6ba6c8f758ce95f70b98ecb003d34fc",
+      "lf_sha256": "ffc8568c330054c61834aaf7e0ccda54d6ba6c8f758ce95f70b98ecb003d34fc"
+    },
+    "gui/magnetic_field_3d.py": {
+      "raw_sha256": "132ab3e79718a1e76e4ec6067a51668f1af217d18dcf11b17ca2aa10dcc74ede",
+      "lf_sha256": "0ffcabb0a076f834f23fc903513c2ef923237dea51da1df25387fa57e7178d04"
+    },
+    "gui/magnetic_field_canvas.py": {
+      "raw_sha256": "9d6fbfc6ba5f6e506991ac725d4ca795601a5f0e5f602b33f4fab74e762b8ecb",
+      "lf_sha256": "0ecf0474cb5def4aecc69e7383a2fb0a9d3ba650c06205296db9ef2360166db4"
+    },
+    "gui/magnetic_test_electron.py": {
+      "raw_sha256": "8829e23c61979f242a34de73d5a390fc092bdd46330c1807d283d8d548d9ca1c",
+      "lf_sha256": "4bad28932004c06a0d1102cff87d4efe74ab6115595330874daf3f7b708f6e6e"
+    },
+    "gui/magnetic_validation.py": {
+      "raw_sha256": "99745f3d9fa2fc481403a26eccd1fec1c1a6e6c8182c6e36e29d2e869a9d3299",
+      "lf_sha256": "8c4884a7489bf0d435823a6ed0d1489012913806ac24c905b30ac46e1f662623"
+    },
+    "gui/main_window.py": {
+      "raw_sha256": "d792f540da781753090b26727872bf7b2aedd56a438cac1de73fb976c13c1113",
+      "lf_sha256": "bc8090a82170c34f52664a72e6c1f2e9b760ddf4a598f5a3552ff01ef9bd57f9"
+    },
+    "gui/mechanical_overlap_panel.py": {
+      "raw_sha256": "a11c0fe0bfaa7ca2f392707794524ff781dc8efe9ebe3c50a3da411a5a71d00e",
+      "lf_sha256": "a11c0fe0bfaa7ca2f392707794524ff781dc8efe9ebe3c50a3da411a5a71d00e"
+    },
+    "gui/model_inspector.py": {
+      "raw_sha256": "be25dec6f84edddf65c2c3b17505021a8c2528b08acfeba74f2f37400f5fe115",
+      "lf_sha256": "5eb847b81bc98f56cec69aad52b7be35805c1c576c54f97426bccf7c0143e150"
+    },
+    "gui/operating_preset_controller.py": {
+      "raw_sha256": "45173a37d44d29d4d24b1178b5afae7e77f665a8429e4896c2f73d0d915077a0",
+      "lf_sha256": "447cf250c56b46efd18b05838a727be8273c6c462609c2544e71e81ca6a92c2e"
+    },
+    "gui/optical_transfer_overview.py": {
+      "raw_sha256": "f8d4c8bd5bbf77ab4a4e85b7ee08e1eb2d02afaa7db1b6428c73aa423b3e4f17",
+      "lf_sha256": "f8d4c8bd5bbf77ab4a4e85b7ee08e1eb2d02afaa7db1b6428c73aa423b3e4f17"
+    },
+    "gui/page_calculation.py": {
+      "raw_sha256": "4af25ca1978b7e7c8d3845fdcdea6e592b992eb45d5277d172c03f2210763bce",
+      "lf_sha256": "4af25ca1978b7e7c8d3845fdcdea6e592b992eb45d5277d172c03f2210763bce"
+    },
+    "gui/paired_beam_controller.py": {
+      "raw_sha256": "185157948a6da4f97e660b7a4ca132813cec6e88e875c0f14c4918b3864bd69f",
+      "lf_sha256": "185157948a6da4f97e660b7a4ca132813cec6e88e875c0f14c4918b3864bd69f"
+    },
+    "gui/parameter_panel.py": {
+      "raw_sha256": "f47d1118222f85e6e9c9d07b6c07d5bb53632f6bd5b7d2df3c200dc7e3f17269",
+      "lf_sha256": "836193009a4a0a36b1e791090c93fa811d764db7262f9802c9df87f806d538b8"
+    },
+    "gui/part_feature_dialog.py": {
+      "raw_sha256": "a27695b101e08dcb504f9fafcb80c8a4b1101dd32fb3f246f563e95181701a08",
+      "lf_sha256": "27267a182d3a58867647a419c8cbb40af91c690e5eb28e1401e798696d3dc393"
+    },
+    "gui/part_geometry_editor.py": {
+      "raw_sha256": "de986562d6675908c2f3324e5f98985cf77b11534d7eae5a4176077c379b251b",
+      "lf_sha256": "598daf303fc19b0b4275a13b6eb41248bbf78dad2a0344be5849b0dec6986c33"
+    },
+    "gui/part_model_editor.py": {
+      "raw_sha256": "258d136f1113e83755e47bb69a4e03ce5aab5298eb2b0cc78f79aaeed588673b",
+      "lf_sha256": "0991f1adfc88bcb8188e43f53df7773bc50bca1d948a5aa3c951fae7c4bdc94e"
+    },
+    "gui/part_model_view.py": {
+      "raw_sha256": "47f9de9ce14d3eabbc645b111961da170d0ac18e934fa1bc2d34088c352ca142",
+      "lf_sha256": "964c7ddb2d13b4edbd61accfb12e9fea5be309b439de7d0a0862362eeaf81e1c"
+    },
+    "gui/plane_cutoff_events.py": {
+      "raw_sha256": "17fe19c65cddd8b2acfd9b7441666ad0e02d4900861eb6806d08d7a1ea0e79cd",
+      "lf_sha256": "17fe19c65cddd8b2acfd9b7441666ad0e02d4900861eb6806d08d7a1ea0e79cd"
+    },
+    "gui/plane_equations.py": {
+      "raw_sha256": "de51c172317245a74304f40256c6536337639db7036bfcd6ea72246281311a4f",
+      "lf_sha256": "de51c172317245a74304f40256c6536337639db7036bfcd6ea72246281311a4f"
+    },
+    "gui/plane_hardware_geometry.py": {
+      "raw_sha256": "99b41ca35ae00adb9a6758f03e4d90f907e5e66873b8ae26f2e7ba7baf1aef2b",
+      "lf_sha256": "99b41ca35ae00adb9a6758f03e4d90f907e5e66873b8ae26f2e7ba7baf1aef2b"
+    },
+    "gui/plane_hardware_overlay.py": {
+      "raw_sha256": "c2c695ff4af058f9c8ed74f807ced24bf3a67f06700d4a6fa09747122fe10ffa",
+      "lf_sha256": "a80cc268a456a1b4773a8cdf0769bd6c707a7937f9fd7f6cc30771435ef8fcea"
+    },
+    "gui/projection_angle_controls.py": {
+      "raw_sha256": "b6598ced00695a33edabf790fcf445fd56f6d57d33c5d66c889cb7af80429c6d",
+      "lf_sha256": "b6598ced00695a33edabf790fcf445fd56f6d57d33c5d66c889cb7af80429c6d"
+    },
+    "gui/qualification_dialog.py": {
+      "raw_sha256": "c6059687335a62e70db21a428de8c092827be91d8b4fa02b045b4591a468d532",
+      "lf_sha256": "c6059687335a62e70db21a428de8c092827be91d8b4fa02b045b4591a468d532"
+    },
+    "gui/ray_calculation_extent.py": {
+      "raw_sha256": "ed4d002063a74655afa0364d4ad3f6eb609647f96712b38ff1acdb85605ce200",
+      "lf_sha256": "ed4d002063a74655afa0364d4ad3f6eb609647f96712b38ff1acdb85605ce200"
+    },
+    "gui/ray_curve_item.py": {
+      "raw_sha256": "fc940a519cb156c212fc4044afa619a4fba6e1c0fae099ee6a1ba9bf25265098",
+      "lf_sha256": "fc940a519cb156c212fc4044afa619a4fba6e1c0fae099ee6a1ba9bf25265098"
+    },
+    "gui/ray_curve_simplification.py": {
+      "raw_sha256": "fd00108156cd25e686f93a49c753963eb7615722dbfbd3a1c634b5fdc5e1bfa6",
+      "lf_sha256": "fd00108156cd25e686f93a49c753963eb7615722dbfbd3a1c634b5fdc5e1bfa6"
+    },
+    "gui/ray_datum_markers.py": {
+      "raw_sha256": "54cd3111927240999bbdc477425d812bb507e0f04230b91422dbf9e432227667",
+      "lf_sha256": "54cd3111927240999bbdc477425d812bb507e0f04230b91422dbf9e432227667"
+    },
+    "gui/ray_extent_data.py": {
+      "raw_sha256": "aa5a2771afd2c2c49d458cfb876751ce82fc532f59780862d055ca384572581d",
+      "lf_sha256": "aa5a2771afd2c2c49d458cfb876751ce82fc532f59780862d055ca384572581d"
+    },
+    "gui/ray_flight_time_colours.py": {
+      "raw_sha256": "be3d201872ae7204cff626765cb3d79ca8b6d484f99af13fa409084cfc69d1e6",
+      "lf_sha256": "be3d201872ae7204cff626765cb3d79ca8b6d484f99af13fa409084cfc69d1e6"
+    },
+    "gui/ray_scalar_colours.py": {
+      "raw_sha256": "86f116d3cf28967fc9fd917092a481b5a5148cb64c34cb7fa961c8817a7b8d24",
+      "lf_sha256": "86f116d3cf28967fc9fd917092a481b5a5148cb64c34cb7fa961c8817a7b8d24"
+    },
+    "gui/ray_scene.py": {
+      "raw_sha256": "9908fa5df6643b0255ff52553949e1445096c7925fe0d00c474b4245f7259f8f",
+      "lf_sha256": "9908fa5df6643b0255ff52553949e1445096c7925fe0d00c474b4245f7259f8f"
+    },
+    "gui/receiver_imaging.py": {
+      "raw_sha256": "80cc6278eb7fe51baa0dfdf3bdf413bf19204538aeccf81e5fe0b09fa5075aff",
+      "lf_sha256": "090d3e91e7f020c8ef7f02e9cad1d4b7f215005c188aa934589751e40e766980"
+    },
+    "gui/result_files.py": {
+      "raw_sha256": "78ab89515a03b20a79df5de81b2bf7a74db3864ee7b3c8c2fb0eb049f87fdcbd",
+      "lf_sha256": "488e2d6ecf4e61444bdf8198768a080e4570dd21def969d532c69ad0d2f8d7c4"
+    },
+    "gui/result_readout.py": {
+      "raw_sha256": "f646f2e5615dfab0a29234fa11290c272fa58f21f01246793e065c2fe5aca5a4",
+      "lf_sha256": "6b6c28fc9fbb97f2d54b6eb62c85de505a2abe581ba9312f3952caac829a3851"
+    },
+    "gui/sample_display_source.py": {
+      "raw_sha256": "8eca30c303b9a8f8dc8ff4e8a284edcce1e5601d3ec65c89965e1bbbf9571acc",
+      "lf_sha256": "2b948b548043f61287916590126762d1f095dc8070bc2021737436e1d242b7de"
+    },
+    "gui/sample_interactions_3d.py": {
+      "raw_sha256": "7217ebea234df6df70951d7f1e04e2ce0e2dc47a4851ce03f2831be612089647",
+      "lf_sha256": "38ba5519bc2364f07c31259192a0cb1822ea8e087d73b9b223ec001e1a44a78d"
+    },
+    "gui/sample_panel.py": {
+      "raw_sha256": "3e8667efce9861e058d3bf38d595ee37a0a8852ea7805ab0299a481db4570d05",
+      "lf_sha256": "a339e663707d2b320e3bf4b136c21b6c63bd58ec5f9bdd88318bee47a3cd59aa"
+    },
+    "gui/sample_projection.py": {
+      "raw_sha256": "a83d008e8d24e8b5dfc9dff4656bc57bba295e44e8e3065bf5abc0d2a78822ec",
+      "lf_sha256": "a83d008e8d24e8b5dfc9dff4656bc57bba295e44e8e3065bf5abc0d2a78822ec"
+    },
+    "gui/sample_scene_labels.py": {
+      "raw_sha256": "01c7ea39e56bbdfc589674c56a76d7952b46cb116be952964b013de8ac8362b5",
+      "lf_sha256": "01c7ea39e56bbdfc589674c56a76d7952b46cb116be952964b013de8ac8362b5"
+    },
+    "gui/sampling_panel.py": {
+      "raw_sha256": "770c21c599e354b311f40cf96e7e4affc411ebd67c9db28c4c5bd6f89ed569f5",
+      "lf_sha256": "0a07ddd98fcf8c9dd4f8148680bf5207d6ab27570ffc0bccbf5b895dcd93bc56"
+    },
+    "gui/scan_calibration_controller.py": {
+      "raw_sha256": "29e011ea07df872c9c8db530270125b203775be436b457e6682cc3c3da980e62",
+      "lf_sha256": "e8146f6f0178a34bf549e2bed52b5f5a553eb24aa9a6d0156272f118d4b68694"
+    },
+    "gui/scan_panel.py": {
+      "raw_sha256": "0c6d6a9dd5df550951d9281a36e145ff46c737cd8972c118114d47de6ec2226c",
+      "lf_sha256": "c421f083d85876dfe06789ddd0b68b0230f7d195a23e6dc5d007d243c34eed13"
+    },
+    "gui/scientific_equipment_names.py": {
+      "raw_sha256": "2f515fda9d5f06222035e611b88dbfedb6e1a6e5a5de0464966def2b67a81af6",
+      "lf_sha256": "2f515fda9d5f06222035e611b88dbfedb6e1a6e5a5de0464966def2b67a81af6"
+    },
+    "gui/selected_plane_readout.py": {
+      "raw_sha256": "e8c4074d7c08cc8f09f31aa8bf5aee31d607bd7fef6db00321a4d74ae9ab792e",
+      "lf_sha256": "e8c4074d7c08cc8f09f31aa8bf5aee31d607bd7fef6db00321a4d74ae9ab792e"
+    },
+    "gui/simulation_menu.py": {
+      "raw_sha256": "8996a08b4426e9971882207cfa8cacdb525dbc0f491e481a6f854cad42bd3a90",
+      "lf_sha256": "8996a08b4426e9971882207cfa8cacdb525dbc0f491e481a6f854cad42bd3a90"
+    },
+    "gui/subassembly_dialog.py": {
+      "raw_sha256": "79ed6831c0e3cbe7c23efb341a22c7eb04e94a4c8f6ba61d66445d4c3d8695f4",
+      "lf_sha256": "6951660f368e3d9c7c20be93738c2c52dde0b4eefc173c7d4e35e063b4d9cdd9"
+    },
+    "gui/surface_wave_dialog.py": {
+      "raw_sha256": "b64386362ce5cd3ad8d87f66a85f8cd652fac80c000b5ffa503eadbd82dd883c",
+      "lf_sha256": "3cfa0b3fa20d44272d5f33ac9516096fc57592bd9fec72b6a35ac86d1b6cc680"
+    },
+    "gui/test_electron_types.py": {
+      "raw_sha256": "ea66b6ff13520c004bc123b4d3cee12b41e73abd0cdd4e716739a85ad9179be2",
+      "lf_sha256": "ea66b6ff13520c004bc123b4d3cee12b41e73abd0cdd4e716739a85ad9179be2"
+    },
+    "gui/tip_geometry_preview.py": {
+      "raw_sha256": "6dbaf41f24211f9d0b626fca170fa98a075381358f1c95271b985109a06168c4",
+      "lf_sha256": "cde0e9d5b3b6cbd3d8bcb6040ac088df4d9fc185a6acc9d241e545a713364ab1"
+    },
+    "gui/transport_adjustment_readout.py": {
+      "raw_sha256": "9048cfcc1da9c65c82c0dfc26b437276f793093a88e94d7446b1e946a61324a3",
+      "lf_sha256": "9048cfcc1da9c65c82c0dfc26b437276f793093a88e94d7446b1e946a61324a3"
+    },
+    "gui/transverse_plot_layout.py": {
+      "raw_sha256": "61996615f2d6b77287d94a71e84ca187be1e603835c2853a3a1c69d4fadbc0db",
+      "lf_sha256": "61996615f2d6b77287d94a71e84ca187be1e603835c2853a3a1c69d4fadbc0db"
+    },
+    "gui/transverse_projection.py": {
+      "raw_sha256": "100f5a8b2a5ff9decd41099720b0800e81da26d0c05c0405d0b01cec52181438",
+      "lf_sha256": "100f5a8b2a5ff9decd41099720b0800e81da26d0c05c0405d0b01cec52181438"
+    },
+    "gui/vacuum_axial_view.py": {
+      "raw_sha256": "053b6ab5f7b183cc990b1fc5cf5b58e67e40017b88e0dd60618872cd34a3a7e0",
+      "lf_sha256": "a7bfa4e2eef95afe6e36f37d7eed5e3cc6b6b23a6ac9214b5bb8ef40f8cabcb2"
+    },
+    "gui/vacuum_map_page.py": {
+      "raw_sha256": "d7374dfb226e5bde7ddb7c9358ed8c399a615fcf3e07fe6d1cd22b9ea2e349eb",
+      "lf_sha256": "778494ed98cb846cf34badafd276741d05b84d36469b3d026b99ea299c3a3081"
+    },
+    "gui/vacuum_pumping_editor.py": {
+      "raw_sha256": "6939ab4764be002c01b0a365993a8ac76fc4049fe345632cfa64dd270b84028a",
+      "lf_sha256": "c095c9382dbd0b475d13c93486068a4b6867f2c9721fa01dc1580c96f0de79e5"
+    },
+    "gui/vacuum_pumping_overlay.py": {
+      "raw_sha256": "79e1df8b1f04c89a801aa70e0254c64609d551a1a304e2e8c41d14ed31e83e0a",
+      "lf_sha256": "0c9fdd5931fa65468adf71ae38bdbdc97231fa22326ce154fe58af41d7f00336"
+    },
+    "gui/virtual_electron_panel.py": {
+      "raw_sha256": "44b5db9441457910715e257f526b3a88fe05330a1a140baf87b4a6579a9bbaab",
+      "lf_sha256": "44b5db9441457910715e257f526b3a88fe05330a1a140baf87b4a6579a9bbaab"
+    },
+    "gui/visualization.py": {
+      "raw_sha256": "5dcde6fcf49ab1948cbcfd75a65ab9855ab11d16af49e45f274e0bd39d19c255",
+      "lf_sha256": "be7020db84db1039bdfdbf30d723bb60bc7d9a079cac2b9bf8e0e8fa91800306"
+    },
+    "gui/wave_beam_analysis.py": {
+      "raw_sha256": "65054a087977982dfc4949a2406d8c653c6108ed58b635fe586c713710fbe092",
+      "lf_sha256": "65054a087977982dfc4949a2406d8c653c6108ed58b635fe586c713710fbe092"
+    },
+    "gui/wavefront_comparison.py": {
+      "raw_sha256": "1fc6fa009de10310cf44f693ecd0657ded4d28520779c1b99a90751d21ef143b",
+      "lf_sha256": "54008ccc83d82382ce9dd314a151ae1c648b621162d37df94b85ffde3ff9eccb"
+    },
+    "gui/working_point_loader.py": {
+      "raw_sha256": "f36f058b21940348f55a8ee61af0c8fdfab4ec9c9b7f511fa2ed3823a1398352",
+      "lf_sha256": "239fccfabd48b85e2b79b7767248276f4b2a651cb17c0194371443fdcb61f52b"
+    },
+    "gui/working_point_panel.py": {
+      "raw_sha256": "ba4e01aa3cb57334fc4c474641f27197a201220ce25439784ea28539a5716688",
+      "lf_sha256": "d4c031ea0efd21c2558ae0fd453fb578ef0181c7f59c9d8b6b70fd44f22ca300"
+    },
+    "gui/workspace_layouts.py": {
+      "raw_sha256": "e1495b90aa22a0d6e3e28238d08541f461de0257065e15c3993b15b137a99882",
+      "lf_sha256": "86125f696067be51d530080bb860015962a4f806b0f57bd40823e6420e045b7e"
+    },
+    "hardware_tuning.py": {
+      "raw_sha256": "fceeb00d3f695bf2ed16db4ba489ac1a6600a1a8a2c67c1c1e5cfc13b0388709",
+      "lf_sha256": "fceeb00d3f695bf2ed16db4ba489ac1a6600a1a8a2c67c1c1e5cfc13b0388709"
+    },
+    "hardware_tuning_feedback.py": {
+      "raw_sha256": "6e819b714eaf6c421e85c8157c15852b110e8d9aeae5e01831289c5d3403bfa7",
+      "lf_sha256": "a9474a8b06fa406c2ef3e28fbb698491184c62defff56459ad41874796a0c97b"
+    },
+    "illumination_apply.py": {
+      "raw_sha256": "a92f3b0fef5d6405ab762aa8f701ff44fa1e211fe0b9aac81e30435a760dd4f1",
+      "lf_sha256": "485177ce362f27a8a216e3aae05037139b2f2188657554516d1eaeb5ffb2b2c5"
+    },
+    "immutable_json.py": {
+      "raw_sha256": "4ccd4354c27ba217ef2974d02390fb6183f79f491a7861835703e02198a93ff4",
+      "lf_sha256": "4ccd4354c27ba217ef2974d02390fb6183f79f491a7861835703e02198a93ff4"
+    },
+    "input_array_validation.py": {
+      "raw_sha256": "49a967379463613a7cffad38352c25bc1e094ffd069824058dad2000a1d4ba39",
+      "lf_sha256": "d183f64bd5b0b07c76ac4d15008c427e96b14206260c18760848d04ac7f1f0d4"
+    },
+    "input_assets.py": {
+      "raw_sha256": "3e9796a4bb91cf90033b2964423b1d871bc8e01ef9593e7505210b6141dcdadd",
+      "lf_sha256": "18608c7bdc2653a5423f1e0fdd18e43f42706ddf93956d8f07bb459a0742a91f"
+    },
+    "input_design.py": {
+      "raw_sha256": "47918684e04681e12c30bf9a9c9a25ce004c3c3aadf4a09e87ff5787c9a986ca",
+      "lf_sha256": "d80456a3f7520fac4a03a53c034227be466aae8b7b7304faee1681006bbed02a"
+    },
+    "input_io.py": {
+      "raw_sha256": "ed94ac841e36c8de748da0b4591ba82409021e5863ee49ea696e0d27288347c0",
+      "lf_sha256": "8036a52c3446ac68610274b0b77beb27487e060a8bee457dae27cf7f2b557617"
+    },
+    "instrument_configuration.py": {
+      "raw_sha256": "c1539e19e8bce16367f31ed051789f623b3b385f45999b800b01ddea135a8947",
+      "lf_sha256": "a80568803365a95965fddf1c173a4ac4671d84c247c074db096d40f43a9d4ccb"
+    },
+    "instrument_snapshot.py": {
+      "raw_sha256": "a933e14ee3874ad75bcdb34f4f3cdafb45f993d5a22fa9eeeabbf5b464bc507e",
+      "lf_sha256": "5468022cb0269dd41f98f64ead1270893f5f05f41ec38679db6d001e42ea2bc1"
+    },
+    "interactive_calculation.py": {
+      "raw_sha256": "936d3bc2582ab8acf1eea57f720145fe8316c2c48adb6f95fc67844693c90620",
+      "lf_sha256": "694ba8338e64661742a92cebf6d63cd41ad975edcf77a988d0481a76a04032e4"
+    },
+    "job_events.py": {
+      "raw_sha256": "eee002d4b76cae62f14f7312835dc4c356e12f7365b787f50b73ed02e6c93464",
+      "lf_sha256": "eee002d4b76cae62f14f7312835dc4c356e12f7365b787f50b73ed02e6c93464"
+    },
+    "lens_pose.py": {
+      "raw_sha256": "ed651c12e405817003af8242637825bf1c583cf52058dfd2bbf8873ce969dbcb",
+      "lf_sha256": "da9c05033d0bde7a674600d81cb512940b20e193d8698344cfcdb7c8b15df86c"
+    },
+    "magnetic_circuits.py": {
+      "raw_sha256": "aebb8aecd708d460b3d9a172d67a64faaa065c26c717d9f3b0625bb32d53a408",
+      "lf_sha256": "3c85c64e646446fe420fa37bfc8610d26a2cbe5ae8fdd19c2349ee75fd7bcc77"
+    },
+    "magnetic_field_lines.py": {
+      "raw_sha256": "503a99ad5f66557def98a4056dfb81a59a03b87fe34a30d19159e8d9904af4dc",
+      "lf_sha256": "503a99ad5f66557def98a4056dfb81a59a03b87fe34a30d19159e8d9904af4dc"
+    },
+    "magnetic_field_scene.py": {
+      "raw_sha256": "3371b2872a13720a6a386fbd0b39e35c8f4f1f792dc6214544d37211c5291f45",
+      "lf_sha256": "e0efd5107307b1f9597038f580a86112adff6df0ebf9fa6265756730b98751b9"
+    },
+    "magnetic_geometry.py": {
+      "raw_sha256": "c67068b9c0384dda542d5eeb03e96dba88140437ae0dd22371a8ac0921d2d9eb",
+      "lf_sha256": "c67068b9c0384dda542d5eeb03e96dba88140437ae0dd22371a8ac0921d2d9eb"
+    },
+    "magnetic_materials.py": {
+      "raw_sha256": "dcbc6ac7306a3a11277ca0d0696e84ca16a779247d7e0b47a97ea6e6b51bd6dd",
+      "lf_sha256": "2c9548b37c4f3fc98eda0a0eeafc19e56f8b6caf83ca0dbec3b668f1936ac5a0"
+    },
+    "magnetic_test_particle.py": {
+      "raw_sha256": "9c92511b27e0cda4df0d30a36f3f2559c70f41a13454b375e71eec1d0acf272e",
+      "lf_sha256": "9c92511b27e0cda4df0d30a36f3f2559c70f41a13454b375e71eec1d0acf272e"
+    },
+    "magnetic_validation.py": {
+      "raw_sha256": "e55ca4e13c8aacd38ca9c2f8ed1cbb13993cd990264bbe45e110e9fe05d3b4b7",
+      "lf_sha256": "fee60a0c4597bbbc781f020258799dbe88e8598c20d3872068f560dbdad145a6"
+    },
+    "manifest_editor.py": {
+      "raw_sha256": "9d31fafba159d3ddb0ddc7e976b841e6b8150925490a947fe246cfc120d5c7d9",
+      "lf_sha256": "0b5173911ff9e649dc578d46ae8ccee3019f07e09fc945ab0690da183cd28c2c"
+    },
+    "mechanical_axis.py": {
+      "raw_sha256": "32127ff660a252409b051de266c90815a1961d52f24ea094fa1049771a99d8a9",
+      "lf_sha256": "32127ff660a252409b051de266c90815a1961d52f24ea094fa1049771a99d8a9"
+    },
+    "mechanical_dimension_bindings.py": {
+      "raw_sha256": "e0a663809827ca185238686189328b190239465a6a1f351f3fcc4e0400836633",
+      "lf_sha256": "e0a663809827ca185238686189328b190239465a6a1f351f3fcc4e0400836633"
+    },
+    "mechanical_profiles.py": {
+      "raw_sha256": "d6981a10df89deb23940b0cefe3aaf792856765885977a14b57839ccd74d625a",
+      "lf_sha256": "d6981a10df89deb23940b0cefe3aaf792856765885977a14b57839ccd74d625a"
+    },
+    "module_manifest.py": {
+      "raw_sha256": "268840086ab268bafd1dba0682f3549baecb40eec998ceb56d2096f1d160e20e",
+      "lf_sha256": "268840086ab268bafd1dba0682f3549baecb40eec998ceb56d2096f1d160e20e"
+    },
+    "numba_cache.py": {
+      "raw_sha256": "ec75a6bea9c5e40de230a971202a9856fd932df362e9f264b3d8f7c577bf7b91",
+      "lf_sha256": "ec75a6bea9c5e40de230a971202a9856fd932df362e9f264b3d8f7c577bf7b91"
+    },
+    "operating_modes.py": {
+      "raw_sha256": "844b355e4cbb06ce2e0c4d916e3fecb195e9ddef4f2b1644997c8a153d0d6e81",
+      "lf_sha256": "c90c35ea9cab0e1287affe3aed353d5baa78b01fc7a8eb325d159f4811b6ac8c"
+    },
+    "optics/__init__.py": {
+      "raw_sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "lf_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    "optics/aberration_basis.py": {
+      "raw_sha256": "826bde1fa98f935d37d09b2d47cc573bd679e08e896b5a718352454aa9be0b83",
+      "lf_sha256": "abe737e166a48ef065b141df574a5904949174a3b89210b77859bae753ab8521"
+    },
+    "optics/aberration_validation.py": {
+      "raw_sha256": "cf4962dc86e4054a90107f405eef4e9e40c5b256e402dfef41ec9272fd59f9ec",
+      "lf_sha256": "ae879aab167c039451afc3cb8e7267129edfa986c28990f8306e38360df0f355"
+    },
+    "optics/aberrations.py": {
+      "raw_sha256": "7c928f0237c0a41a3905d5eedfba7f9056825f0784cdbf79cc52fa7d72f5dbcc",
+      "lf_sha256": "be71863026a552f8bb9dbbb82329e3a9b5723d149ba7ce09f408241a01d1aeac"
+    },
+    "optics/ac_deflector.py": {
+      "raw_sha256": "4ffad66db0cab4d0ae99b256f3f5051f5079d7b180f7156029886ad04f7659ee",
+      "lf_sha256": "9ac0e528b92af12645969cdaeff00eb98ccd08f6774eaa94c41920f83963b37f"
+    },
+    "optics/actual_probe_diagnostics.py": {
+      "raw_sha256": "80699bed474d4687b84ac1beb98cf4474fc223102e98dc8430b512b1647b171a",
+      "lf_sha256": "80699bed474d4687b84ac1beb98cf4474fc223102e98dc8430b512b1647b171a"
+    },
+    "optics/aperture_policy.py": {
+      "raw_sha256": "342a14b14cad93aac5d7c87774664481b002747aa2fd913d173688a8bc9494bf",
+      "lf_sha256": "342a14b14cad93aac5d7c87774664481b002747aa2fd913d173688a8bc9494bf"
+    },
+    "optics/assembly_illumination.py": {
+      "raw_sha256": "2d7aaf3f5247b29be701d7dac95b518ce11cddf981c0c99d818ae18b47ea1a1a",
+      "lf_sha256": "470aad0d2981ec0fdde53c9e1e2032b925ef2cf1e49507216cd78bcf30d291ac"
+    },
+    "optics/beam_deflector.py": {
+      "raw_sha256": "88c9238cef2f2c70f24c533044b5b9c934ce626e62e024626d04a8ca4a0f1873",
+      "lf_sha256": "88c9238cef2f2c70f24c533044b5b9c934ce626e62e024626d04a8ca4a0f1873"
+    },
+    "optics/beam_path_audit.py": {
+      "raw_sha256": "933474ba845dda00a647c08fc693c7e49dbfd9948210a7b00b98ae153dc5476b",
+      "lf_sha256": "1fc4a41eb5c25a4ab71992c84514fa5fff42e30140e49517a0c693a0e9a5b9b7"
+    },
+    "optics/calibration_beam.py": {
+      "raw_sha256": "cd1df317899c5f816270a556e0584e304aff38e0e3b31e0b9c37fe60749f48f7",
+      "lf_sha256": "9a4e688749c870fda44cce0f89d1f5a9cae7420dc413a2f17b19003809fd3eab"
+    },
+    "optics/column.py": {
+      "raw_sha256": "8065c608c8ce79b584d56ec0f9d8000a227a6b1465b1bca425051e43f989551e",
+      "lf_sha256": "3c3f7c8639e0f2517fa9feaf78cd9746e74b572acec452d1c7cdbe6d9be2a49f"
+    },
+    "optics/component_position.py": {
+      "raw_sha256": "2b8d68706804d3306f48878316d2b986e03de7c07c389cc87674b64d09140a4f",
+      "lf_sha256": "278eab40aa4fc4f94170e2d140270a3f736a0dc6ae5c124e15d6c06bfa0c35d4"
+    },
+    "optics/condenser_aperture.py": {
+      "raw_sha256": "e803bf4626a22848735425a7df3a83fb4ac7789fa43421b8e283ec596585ae66",
+      "lf_sha256": "e803bf4626a22848735425a7df3a83fb4ac7789fa43421b8e283ec596585ae66"
+    },
+    "optics/condenser_deflector.py": {
+      "raw_sha256": "f4ab96d8b0f9356fba23ae572aba8ea7230774d2cdd4f55108862734d8cc708b",
+      "lf_sha256": "f4ab96d8b0f9356fba23ae572aba8ea7230774d2cdd4f55108862734d8cc708b"
+    },
+    "optics/condenser_lens.py": {
+      "raw_sha256": "39157270ac9f9a901578f51048defdae4e105f8ef816411760bf2e89c0662d32",
+      "lf_sha256": "c996910e0f3addcac48a4b045493ac7d55c88564cb663fa533160cc6cbf86923"
+    },
+    "optics/condenser_objective_design.py": {
+      "raw_sha256": "e7aaeac9a1a88b360fdc0fa62912a6a3b098ed5e50e8dacfba106fe88ac64f27",
+      "lf_sha256": "e7aaeac9a1a88b360fdc0fa62912a6a3b098ed5e50e8dacfba106fe88ac64f27"
+    },
+    "optics/condenser_recalibration.py": {
+      "raw_sha256": "7fdc92ccaa732dda114cb7608214d0dab46b7e25c16d11072f73c2a1733029c2",
+      "lf_sha256": "dae7c17f79bb80e0a331a7fa2f8c1409d9844a2ebfe4f337d1ddaf78c0bfa140"
+    },
+    "optics/condenser_stigmator.py": {
+      "raw_sha256": "b4c2a5986d51bcad118b093a99996246d2ef5cc87c0c05a40c406d5e0f8cd645",
+      "lf_sha256": "b4c2a5986d51bcad118b093a99996246d2ef5cc87c0c05a40c406d5e0f8cd645"
+    },
+    "optics/condenser_topology.py": {
+      "raw_sha256": "84af95c578ee47a9b762ab6d7b6e82c0ea2b8eedf0641cfdeef2fa7d02fb3eec",
+      "lf_sha256": "773198f0a71a60bf7aa46d3ca941f6d1803049ee11197f5b95a64c155fbe0daa"
+    },
+    "optics/corrector_channels.py": {
+      "raw_sha256": "304c5872ab78dffb2fcf333e30901b5a54ef29486007412f15becbdd2ab32f89",
+      "lf_sha256": "304c5872ab78dffb2fcf333e30901b5a54ef29486007412f15becbdd2ab32f89"
+    },
+    "optics/corrector_structure.py": {
+      "raw_sha256": "2e8d91b5241fcbe516a424c2ee87a3e238c64863f2c1eaf784dd8cd9a53ba2dd",
+      "lf_sha256": "8a5560a59fe30c30e2173f3ceadfea4f156e64f40fc5099df92db1a0af7d95c3"
+    },
+    "optics/crossover_aberrations.py": {
+      "raw_sha256": "04c79ff8d36d77fab909bfbdafe99d2e06a82f4492ae531baf5d25876fb4afe6",
+      "lf_sha256": "2e2ecad1cf344708dd57fb5dd0f0067e0d70e7e809d1205e59c8e4d9fd5b9138"
+    },
+    "optics/crossover_acceptance.py": {
+      "raw_sha256": "d59e47bce6302c24af81d17e1bedb69f3589dbd1357c70bd54b3fda0c89c0c72",
+      "lf_sha256": "654a9f4205f4e16a4d208c33e92ab9a58133ccaec20101d8acc5878fd66a38c0"
+    },
+    "optics/descan_deflector.py": {
+      "raw_sha256": "0f863a5e6ab20b15d9f92ae6052aabcd5d42d1994d861bd1b3813ee1555ac805",
+      "lf_sha256": "c8970f578c67200ace8c5da48e35c28ebc58565724ffa48960cef78c96e079ad"
+    },
+    "optics/diffraction_lens.py": {
+      "raw_sha256": "2f9c89783e7f6e8296213e22e5fef4463e5b7868b44cad370c04b598a8deecdb",
+      "lf_sha256": "03ad3ffa19f4e5ad2510b7533df6dd34b679b5787452a1a38059b2bfa4e51f94"
+    },
+    "optics/diffraction_stigmator.py": {
+      "raw_sha256": "6c3fda721d62308e306de52a31507996a3b1b5271c990ca19dd952b96b332d47",
+      "lf_sha256": "d487eab81a79fc44f2f2f8f2d915ef93f18b82498a658abfac1545ac3dd6f676"
+    },
+    "optics/direct_alignment.py": {
+      "raw_sha256": "ccbdcfb1403e4b5aa682da03c0f07e802cec277a709a046f0044b483971cb1e0",
+      "lf_sha256": "803c33689cfad17d5ae68c92f57ffcc088ad8c087142355eb3849f0a737c75ac"
+    },
+    "optics/direct_alignment_precalibration.py": {
+      "raw_sha256": "0b2ed7a65c9b7713e39ba72b4a8b80416ffa904fe1c97d95b8c2c47cf7437f89",
+      "lf_sha256": "0b2ed7a65c9b7713e39ba72b4a8b80416ffa904fe1c97d95b8c2c47cf7437f89"
+    },
+    "optics/direct_focus_topology.py": {
+      "raw_sha256": "5ebab82804245ba94691bcbf4bc8973ce9c55988bf2e713e203ffbc714a8ed28",
+      "lf_sha256": "8cb109bfa8465c4456ec1024d4fe9660d3fa396c262d763bb3a341e7865ad656"
+    },
+    "optics/electron_gun/__init__.py": {
+      "raw_sha256": "9567b3ba761be9d849f560aa9e100a58b0b6995ce0f20f53f01ec6393cc3d221",
+      "lf_sha256": "9567b3ba761be9d849f560aa9e100a58b0b6995ce0f20f53f01ec6393cc3d221"
+    },
+    "optics/electron_gun/alignment.py": {
+      "raw_sha256": "10ef8507e2c641571b7cd63b27d3fe97403e85a1bb0526556d20766c4cfde85f",
+      "lf_sha256": "708a142d36aa8873b76fe8ac004eee0c134b107b52188a6a472cd93eff41d1d8"
+    },
+    "optics/electron_gun/aperture.py": {
+      "raw_sha256": "84116cbecea87fdcc1492ffd6e7687ba047b8dd6b0a0324c8cbec1afdde34114",
+      "lf_sha256": "de837d6a83db58cba9b4ffbb662de0eb862a2db1dc1b049c847f2fd982e1a69b"
+    },
+    "optics/electron_gun/base.py": {
+      "raw_sha256": "d2a8e29fa63addb6b0c83c4d30888ddc5f3a5ccb97678f99b7de24acd8cfef54",
+      "lf_sha256": "c6bba4b99fdf0b784b375e3cc9c4cae23435eb7677580727da60347f21ab1eb4"
+    },
+    "optics/electron_gun/effective_source.py": {
+      "raw_sha256": "b408f41cdba7b85cd3a98195bd31a33a53958fa7027a2f9ffc724b9f84432bd7",
+      "lf_sha256": "a9bd71e24754d60b6abf43636414fa1d2659e704dbf72b6db6bb1c313624a6f9"
+    },
+    "optics/electron_gun/electrostatic.py": {
+      "raw_sha256": "83617ba3f0f5a4a130a0fc70bf6b96a067160635687dcd5d813151d33042e91a",
+      "lf_sha256": "f1b0dd41f0639c23cb9ad06c7a6159636e03870879d101850a5e44ae7a6e6a4a"
+    },
+    "optics/electron_gun/emitter.py": {
+      "raw_sha256": "17c28421844516a2bea5eb934891bf9ec804bd9e1dcc068610a782103aaf5d38",
+      "lf_sha256": "1fbdce4178fefd9a1d7b0cd708f7f57213a037cd1824d9986b92974dda913696"
+    },
+    "optics/electron_gun/field_emission.py": {
+      "raw_sha256": "e04bcba84363da210afcc68705ec5c045034ec909a941edd337ade66ee0a6287",
+      "lf_sha256": "f2c38b18129533aa18751af6fa15522e6662d147985bd805ef0cbc4f5c384b34"
+    },
+    "optics/electron_gun/monochromator.py": {
+      "raw_sha256": "f3f7a8ba37afe52f1a9d91e951fe59811cd54e73602d28e76aef04160177676d",
+      "lf_sha256": "5033ad8c2bb6c667168478f39b752c3b763915ae0ef25c11769a008ab9d23ee0"
+    },
+    "optics/electron_gun/observations.py": {
+      "raw_sha256": "3d0fb7d66d9b45bdc4626c88cffb0b9fc8f36ef31bb0fd768c9f94aece14e346",
+      "lf_sha256": "3d0fb7d66d9b45bdc4626c88cffb0b9fc8f36ef31bb0fd768c9f94aece14e346"
+    },
+    "optics/electron_gun/profile_controls.py": {
+      "raw_sha256": "a99199b0075ca43b6ad8e3d777b8efe94b8e935c3c38977fdf5ed595620dc8c3",
+      "lf_sha256": "a99199b0075ca43b6ad8e3d777b8efe94b8e935c3c38977fdf5ed595620dc8c3"
+    },
+    "optics/electron_gun/source.py": {
+      "raw_sha256": "93aee024888d6b3e8ce36724abb0e0e8e0291bd9d012cc561425c76e2402e1f9",
+      "lf_sha256": "23498eec71cf3f582dd33239803cd3f62fcf892a8fdc75b7da8e7e895cc9f484"
+    },
+    "optics/electron_gun/source_policy.py": {
+      "raw_sha256": "b0b8c3e25fb49452c08163abaa1bae73ed199765c18bc4e42b5646e334ea6327",
+      "lf_sha256": "5e36508422368fd89408852170af3713b26abc4b27095c7112b9bde099af9ec4"
+    },
+    "optics/electron_gun/thermionic.py": {
+      "raw_sha256": "3dbb12d0bc373542f7e6a6133ea8fd2feb445697491761562fd2db53a713e5d7",
+      "lf_sha256": "272e1d8de5bcba97a760dbd95801378ebb3970b8b64c99376154542582614d4c"
+    },
+    "optics/electron_gun/tip_assembly.py": {
+      "raw_sha256": "0bf270514eba66d83f807b1f04e5730441a5de0a1a380a1a771ef1f47463590d",
+      "lf_sha256": "6bf16206da101b65652a2686374628639baedcd5be0f403633758e80748fdde0"
+    },
+    "optics/electron_gun/tip_coherence.py": {
+      "raw_sha256": "97a9f1f4474033f49a1b9631d658561caec78cd38cf404d34449d993ec605817",
+      "lf_sha256": "57b6b3e70eaf79f8dac8550b3f899d05c9c26d25a098e31f9e6a977547dee687"
+    },
+    "optics/electron_gun/tip_curvature.py": {
+      "raw_sha256": "f519308641aaeb1ccbd47b07c618a7dedd0b4c0b9aed18079adaba065e83b7aa",
+      "lf_sha256": "f519308641aaeb1ccbd47b07c618a7dedd0b4c0b9aed18079adaba065e83b7aa"
+    },
+    "optics/electron_gun/tip_edit.py": {
+      "raw_sha256": "dcf17f56d49b67bbd617110379496d977299284bc1f5bbd319bf0c18e7c42f2d",
+      "lf_sha256": "c554a868fef66c2e8a2f6acd59067e91c45731a908f73374b66597fd7c73a41d"
+    },
+    "optics/electron_gun/tip_joint_sampling.py": {
+      "raw_sha256": "801fa9fb21f08bfc3c90e705d38989fd0b677b9707da751526fda1050e88e784",
+      "lf_sha256": "801fa9fb21f08bfc3c90e705d38989fd0b677b9707da751526fda1050e88e784"
+    },
+    "optics/electron_gun/tip_patch.py": {
+      "raw_sha256": "c9d092c65491d8e144effc5b2b880efd66a264c705716aa7d96589b8d8ba3aa6",
+      "lf_sha256": "c9d092c65491d8e144effc5b2b880efd66a264c705716aa7d96589b8d8ba3aa6"
+    },
+    "optics/electron_gun/tip_sampling.py": {
+      "raw_sha256": "323caa0f035d08548181549009a9b67e7d24a18e1b18bf59424a196d98ebf3e6",
+      "lf_sha256": "14431ac0161fbb0975fbe4fb6fb0797d30b3be5b6a69f5b1c86de187db568a07"
+    },
+    "optics/electron_gun/tip_source_domain.py": {
+      "raw_sha256": "5bb09f1b4e144f3109c0eeb4a8ed8e9a6c5ac4fea46bc672443afcada94353a1",
+      "lf_sha256": "5bb09f1b4e144f3109c0eeb4a8ed8e9a6c5ac4fea46bc672443afcada94353a1"
+    },
+    "optics/electron_gun/tip_surface.py": {
+      "raw_sha256": "cecd75680221e0025d6fe153e4383034a180d380d8963e31f3848627d14e3d41",
+      "lf_sha256": "b18018d4e02e0f5544f7ec41f45ae2daac0497eb07d33127d489e87b6e2dd610"
+    },
+    "optics/electron_gun/tracing.py": {
+      "raw_sha256": "af776603570f4e3e63f4cd198ea25a387165503157a3e83762dc7caa7baaf775",
+      "lf_sha256": "6f78c2097101bcc737f7d7e0a8ab7375bde3a22cd619a7a2988433e7b4606758"
+    },
+    "optics/electron_gun/validation.py": {
+      "raw_sha256": "74b330c8721dce2f975065990cf6001c9e0be5eacedcc0d5624ec00ce2b7f56e",
+      "lf_sha256": "74b330c8721dce2f975065990cf6001c9e0be5eacedcc0d5624ec00ce2b7f56e"
+    },
+    "optics/energy_filter.py": {
+      "raw_sha256": "5a73d4450713c1d8bcbcf28cecd0d78941240863227e2695f2fe29da38998f12",
+      "lf_sha256": "bf01b192949de92e64feec8367594c7b96b4da17a576c07ffa4337ebd23e809f"
+    },
+    "optics/energy_filter_detector.py": {
+      "raw_sha256": "d83406672819c7b8351fe9889fd8873c2aa8c41faf22ac889293c04b39c68e38",
+      "lf_sha256": "836ddc3b7d72762ab91a931f35c0a6bb8e1010e33694e0e902c95861b8d9f2a1"
+    },
+    "optics/energy_filter_entrance_aperture.py": {
+      "raw_sha256": "d420fd3186df5d8ce230b8b5e289d9def725e142c3beb7a4c51bafe7c464b168",
+      "lf_sha256": "95eb7e8b0bf25a38dbbb036496f2e48c68471c112ded3af8b5977f9b2f4300ed"
+    },
+    "optics/energy_filter_m12.py": {
+      "raw_sha256": "e909844aab4145200a24de3ec7627b810b8b556476c686cfca5012939909118f",
+      "lf_sha256": "a91531da58136f0093111e6cc5c640ba2fbec7d922b29b57bb91849dee349818"
+    },
+    "optics/energy_filter_metrics.py": {
+      "raw_sha256": "66af566ea7fc2b823a782036756da09b2e008fa3eee9110d885127302280d7c7",
+      "lf_sha256": "66af566ea7fc2b823a782036756da09b2e008fa3eee9110d885127302280d7c7"
+    },
+    "optics/energy_filter_optimizer.py": {
+      "raw_sha256": "c3cdd10fdf6580839ad6c93f04e4608072bcc9a394605f6acfcf8e51c032ed60",
+      "lf_sha256": "dd2fea164c4774d720991fc52a79f6c766d8ebda586ffd7a698ef0557442032e"
+    },
+    "optics/energy_filter_raytrace.py": {
+      "raw_sha256": "1752bffdc8c2d63db76199f95df73a133567a1b86a58309ac767ce4317d61b0a",
+      "lf_sha256": "8eedc73684956c8aea6d864ad544c3e2c1c701e1656cbd8a4c701844486dd86d"
+    },
+    "optics/energy_filter_sector.py": {
+      "raw_sha256": "66a4215d640a1b230bb0d8aea9452dcea0042dac79c762db58ddb285c298bc94",
+      "lf_sha256": "f339708977d0f094a66bd3238d29f4391f5ac326d49d079777a2569918fc0bb0"
+    },
+    "optics/energy_filter_slit.py": {
+      "raw_sha256": "e3f5b18018e547ebaf867ce107cab7c2112c44a64130a4ebaac6b9f989dfb729",
+      "lf_sha256": "4a780be864430b02704b41bce46659e59935361e7fe007ed31b84365b87520b3"
+    },
+    "optics/energy_filter_validation.py": {
+      "raw_sha256": "dc5b0187c0a823685661b6c06a503a52f842ea51bfc07b291d080708ae2e0b72",
+      "lf_sha256": "dc5b0187c0a823685661b6c06a503a52f842ea51bfc07b291d080708ae2e0b72"
+    },
+    "optics/equivalent_image_lenses.py": {
+      "raw_sha256": "fcdeb7af5b7b8e920f2a3da090d393c06c243b93622a5ffab35352a1b4dec7ad",
+      "lf_sha256": "897c0a241f2144674cb3797b832b706213a4671d64255b19da1ce4e234ebddab"
+    },
+    "optics/excitation_policy.py": {
+      "raw_sha256": "12850e2440704b997c3206b76b90423da2d3cadd376c33cfe63a31fa3554365b",
+      "lf_sha256": "12850e2440704b997c3206b76b90423da2d3cadd376c33cfe63a31fa3554365b"
+    },
+    "optics/field_aberrations.py": {
+      "raw_sha256": "55ef7234575285832145354e606694c2810d5ddc71c09fe06b65fd25eb628777",
+      "lf_sha256": "8056f30bc96bd87e2960285dcd612d6de0fb792a0e218dad08d4da41ffb501ff"
+    },
+    "optics/field_hardware_binding.py": {
+      "raw_sha256": "c69c0c719256c84e4582ee4cc8b9527159e79a9c1704f5a235339f65540d8510",
+      "lf_sha256": "c69c0c719256c84e4582ee4cc8b9527159e79a9c1704f5a235339f65540d8510"
+    },
+    "optics/gun_matching.py": {
+      "raw_sha256": "aec655e1dac210ded25258386421519bcf7eb10d0146d0ce1d3e48fe69fd6397",
+      "lf_sha256": "1f0e136f1de73a433acc319f96c390739e378eebd2a8c3e64d1b6a2ef09054f8"
+    },
+    "optics/hexapole.py": {
+      "raw_sha256": "c6bdece42bb74f8cac4affa45eb5c581dea42b8151c0e1ac96e107ab788c154a",
+      "lf_sha256": "41e5f6db3233e516e6eaac863248edc4eef69db7bf988f35453bc1ac7a7763c2"
+    },
+    "optics/illumination_checkpoint.py": {
+      "raw_sha256": "499bff5cadf23ceb7fa989b547f2ae63bb866eaa59bbd90a4c18a04c0017a15c",
+      "lf_sha256": "357ae048c529debd3cb7e96bae7cd586fb1dac9ee8daa57ce978c31980c570b5"
+    },
+    "optics/illumination_current.py": {
+      "raw_sha256": "55a08c3b49b986bc5fb8a534be739c590c255e3026dc0895b83cc8dd344b8db3",
+      "lf_sha256": "3f8be15b1d7617a8300f3203efbfb2b13883d6e012ad65406a894e41388372ad"
+    },
+    "optics/illumination_search.py": {
+      "raw_sha256": "84307a13be1d27f2c3f7dbd934e76bc6eee98244786fd2fd97c507948fb55e62",
+      "lf_sha256": "9ba855eb2ea3bbdee9b3e334bc9aa71e2e038b5d185354db85714158b712cda7"
+    },
+    "optics/image_corrector.py": {
+      "raw_sha256": "f6f2115126016bd89c6f558300612b1a7591174f2667e72f5a8e16b5871e2275",
+      "lf_sha256": "08b21ca1fb579e803f494f7e6c31fec6651ee0c6435d8b77b511266c1162bbf2"
+    },
+    "optics/image_diffraction_deflector.py": {
+      "raw_sha256": "219165925aa8f5782c0758f00b78d953c65fe4e10ce71b7a49be262dd8d4fd2d",
+      "lf_sha256": "219165925aa8f5782c0758f00b78d953c65fe4e10ce71b7a49be262dd8d4fd2d"
+    },
+    "optics/intermediate_lens.py": {
+      "raw_sha256": "15c50b797f4119c493575627eb91451e19a8cc006bf95262ec1644b1a3807b22",
+      "lf_sha256": "556ad3cb4037f9f138d341c0adb0e6077e549f598d0c5d04e8844ab766b241cd"
+    },
+    "optics/intrinsic_aberrations.py": {
+      "raw_sha256": "95ab153d2a62ba3b0faafef6e39a63f85e2c9a9adcb64252b1ad01649522d38f",
+      "lf_sha256": "95ab153d2a62ba3b0faafef6e39a63f85e2c9a9adcb64252b1ad01649522d38f"
+    },
+    "optics/lens_focal_length.py": {
+      "raw_sha256": "6232ecbc1054bac49df2f88c287b3258661e19474589ee9d78578f5612a5c255",
+      "lf_sha256": "706d655c494f418ae55a0bc148dc2e4efc0c31c39232a3ce3fadba0f0a086e5c"
+    },
+    "optics/magnetic_lens_aberration.py": {
+      "raw_sha256": "efaf3798430013afa1261d7160d753739d14396c0b025ea7d19d69b648493a5a",
+      "lf_sha256": "efaf3798430013afa1261d7160d753739d14396c0b025ea7d19d69b648493a5a"
+    },
+    "optics/magnification_controller.py": {
+      "raw_sha256": "96cceddb420add6551df37c606ef0c4413081366420b251229ae7a73d584b337",
+      "lf_sha256": "96cceddb420add6551df37c606ef0c4413081366420b251229ae7a73d584b337"
+    },
+    "optics/mini_condenser.py": {
+      "raw_sha256": "9f57beead3d3039514d2336c2b3a78f3f1b5660addb07379fa2877e796e2a239",
+      "lf_sha256": "9f57beead3d3039514d2336c2b3a78f3f1b5660addb07379fa2877e796e2a239"
+    },
+    "optics/model.py": {
+      "raw_sha256": "2ff60aeaa491f8309062d9ed623ed02d25afc40b4b7d1d756cd84c33f6fa953d",
+      "lf_sha256": "c1a4afc65202fb0a369855188f4f6cf7dc7ea55059eeb81c17f4dd7b7e32bc2c"
+    },
+    "optics/nanopulser.py": {
+      "raw_sha256": "efd748e65f1d4ab599999ff8c10416cd78b3bc9e7ca85a09f2be5d9e167a66fd",
+      "lf_sha256": "332f4516a143dd3c5954eabc8669cac194d4f75f4c6b7c08b27eaf7c2647d99d"
+    },
+    "optics/objective_aperture.py": {
+      "raw_sha256": "0c13c98f3f4881c2936e6b479d1a27943482ac9dbb142fe3b60e33a769fdfb3c",
+      "lf_sha256": "0c13c98f3f4881c2936e6b479d1a27943482ac9dbb142fe3b60e33a769fdfb3c"
+    },
+    "optics/objective_lens.py": {
+      "raw_sha256": "54182999efabec03bbb410e5a3632e1da92b2d032e32e82b79ff58b0f706b73f",
+      "lf_sha256": "150ac94e89b9d090520b722097d35be3687b601bb4daade6ed50fff821464ac3"
+    },
+    "optics/objective_stigmator.py": {
+      "raw_sha256": "fea5ddd37ce8eaa8dd8c874cfde8f2b5f30c641e52e364c0a06b10494104b596",
+      "lf_sha256": "fea5ddd37ce8eaa8dd8c874cfde8f2b5f30c641e52e364c0a06b10494104b596"
+    },
+    "optics/paired_deflector.py": {
+      "raw_sha256": "51721a170eec5d9eed80a936e2772ca6928a5a4a02f5668ad259d10718c55f23",
+      "lf_sha256": "e4190089368942a5ef69cd6b4f4e5a335040b57e756b85b7e6e55ad56a2e496e"
+    },
+    "optics/probe_calibration.py": {
+      "raw_sha256": "666a6fcb2bdca5e635549d3c8b64ef189352d033709bd7e899216554c771508d",
+      "lf_sha256": "a24ad4dc4db20bfb5300e86d1a63abfa4ae64ffd05d9e7dc89e8e8bcdf7b5e4b"
+    },
+    "optics/probe_corrector.py": {
+      "raw_sha256": "6915bc920cb082152f1c74cdcac8171a29f6b2c8400233bc82cb1b79fce8ac86",
+      "lf_sha256": "1ae513c73862bacda43d4c7f59d03bd02f3cc8224a655a3c2741fc17ce31e2c2"
+    },
+    "optics/projector_lens_p1.py": {
+      "raw_sha256": "5507fc0d9dd381bddca9c6240b77d142cddf2a371f70a9949bdb20dec763b45d",
+      "lf_sha256": "4bf3ea801045882fffdac263c9b1817e16d94b5b6d37189b8762867f30d1d536"
+    },
+    "optics/projector_lens_p2.py": {
+      "raw_sha256": "3057a16face0b8a398e1d315227937336ba2ad7e0fbc5f8668649099e89cf047",
+      "lf_sha256": "b39869ed50134723c7f3d07f96030c37a5cb3a373a21f5476b5c874835fa948f"
+    },
+    "optics/projector_reference.py": {
+      "raw_sha256": "59437e4fab0513cae38cb22abb9bf60d42250844fe6f292d54772a68cb1d2f53",
+      "lf_sha256": "59437e4fab0513cae38cb22abb9bf60d42250844fe6f292d54772a68cb1d2f53"
+    },
+    "optics/pupil_acceptance.py": {
+      "raw_sha256": "82df4dd9fb8736d88d095bcc0090264005285c3bbeebc5d52d4319d732fe86e2",
+      "lf_sha256": "82df4dd9fb8736d88d095bcc0090264005285c3bbeebc5d52d4319d732fe86e2"
+    },
+    "optics/quadrupole.py": {
+      "raw_sha256": "d5ddf5f28602c6bc7a8dee16ceaad8e56c3025c5260dd21363b31db2fb85ec95",
+      "lf_sha256": "6729d03598d5fce14d68b5ded6746ac61e889bc40a58d41a539bdafa2a4611da"
+    },
+    "optics/round_lens.py": {
+      "raw_sha256": "b2046debf012cbbcd06030dad63b7f557ce08bfa6146410d64e9f92b0e68ac7a",
+      "lf_sha256": "ded7853ef889b069ad141f61c1ac5949e1aba951703b6ed674c3ac149ee28e75"
+    },
+    "optics/scan_coil_design.py": {
+      "raw_sha256": "3aa2bf136dc039ec45ba518422fb7cef2bf07011fd490ccbf97f01d5ea3611e2",
+      "lf_sha256": "3aa2bf136dc039ec45ba518422fb7cef2bf07011fd490ccbf97f01d5ea3611e2"
+    },
+    "optics/selected_area_aperture.py": {
+      "raw_sha256": "1c78a440b28fe77a977d94edd51770db367374941067a61ad5f7100aca3c96ce",
+      "lf_sha256": "1c78a440b28fe77a977d94edd51770db367374941067a61ad5f7100aca3c96ce"
+    },
+    "optics/selected_area_downstream.py": {
+      "raw_sha256": "d7e489aa0efecd5f7dc57eac5f5680b341cb7c9e6cfc1d7eb7ad146dfaabf19a",
+      "lf_sha256": "d7e489aa0efecd5f7dc57eac5f5680b341cb7c9e6cfc1d7eb7ad146dfaabf19a"
+    },
+    "optics/shared_deflectors.py": {
+      "raw_sha256": "28bc9853283b7885a7e33c170446001657cd18abb24a78a340fcb49e848aa789",
+      "lf_sha256": "d6358011ae5210fd5148f99a32bc5e05fa839ed5b8a92a7788867c9101bd4a66"
+    },
+    "optics/single_plane_deflector.py": {
+      "raw_sha256": "2f32d42d16c5bb25ffc5ed15b09c64f33f95c519692c64ed3e77cdb35f8ebf13",
+      "lf_sha256": "d9d1a9ea81d8219204d68224a13341ef8f04add447d8f6a27272e44f62a0d3b2"
+    },
+    "optics/stigmator_field.py": {
+      "raw_sha256": "4c356f440f4e3cdc4b2dde9a393323238ce65dc7a42f71d014fa86b4bcac2067",
+      "lf_sha256": "4c356f440f4e3cdc4b2dde9a393323238ce65dc7a42f71d014fa86b4bcac2067"
+    },
+    "optics/stigmator_hardware.py": {
+      "raw_sha256": "b6ead3789bffe669849b57b52115520afb039e6fe3e0f921e6239b3fddd8b16b",
+      "lf_sha256": "9fcd954deb4306ef2b9a39c97dbecacde009f469fe329fde237c474510e1a035"
+    },
+    "optics/surface_probe_focus.py": {
+      "raw_sha256": "07ab2e7e34997c7b94154b198fc827a3ae7ac6c37b47e24b1feaa6bc89c9e7b8",
+      "lf_sha256": "07ab2e7e34997c7b94154b198fc827a3ae7ac6c37b47e24b1feaa6bc89c9e7b8"
+    },
+    "optics/system_residual_aberrations.py": {
+      "raw_sha256": "68c46b77f3e1a38e3a405e955266e615dd3e39cbb91210499c063a685de4660e",
+      "lf_sha256": "a905877c83e67a4b1e47be1c558572687ef2fc33703c8eaa8c36fca79450043c"
+    },
+    "optics/tip_curvature_comparison.py": {
+      "raw_sha256": "393e8d6db0d37bc878a886b5494d71d6395b624596e05dad415c7822eb394b9c",
+      "lf_sha256": "393e8d6db0d37bc878a886b5494d71d6395b624596e05dad415c7822eb394b9c"
+    },
+    "optics/transport_matching.py": {
+      "raw_sha256": "da12ee3323754d7ad3ffe9e821a4741fe4c76a77c4fa2c5614cd23ecc5eb42b3",
+      "lf_sha256": "20a0afe2d53a36a467b0d1bb3315374e834d848aadb717db08305852b49bd823"
+    },
+    "optics/twelve_pole_element.py": {
+      "raw_sha256": "099ec327f120a5b8161966e3a1f8e0fb25c563d292c286a4eca2552584f85c3b",
+      "lf_sha256": "099ec327f120a5b8161966e3a1f8e0fb25c563d292c286a4eca2552584f85c3b"
+    },
+    "optics/upper_objective_package.py": {
+      "raw_sha256": "48517b35f13f74e916a1cc461bbdb8afa2f92d790cc6b72cbd4a1e38ca9dd9bf",
+      "lf_sha256": "48517b35f13f74e916a1cc461bbdb8afa2f92d790cc6b72cbd4a1e38ca9dd9bf"
+    },
+    "optics/waist_evidence.py": {
+      "raw_sha256": "3d598421b71d10c4c8436e39072d21388368904e876f528cf0cbb59db4b191e5",
+      "lf_sha256": "c888eb2f8163480f7884bebb60c726d51304ad8233151aa332fda89d8ef2466d"
+    },
+    "ordinary_deflector_geometry.py": {
+      "raw_sha256": "14a0443e490e4d57c96b605dc718c35185a389f6a5c1784274cb226273856694",
+      "lf_sha256": "14a0443e490e4d57c96b605dc718c35185a389f6a5c1784274cb226273856694"
+    },
+    "parameter_impact.py": {
+      "raw_sha256": "9c68a4c649b7a86bc3ee0d799ff598d6d75f25b58466cc3760b38f35f2fa1689",
+      "lf_sha256": "4b2c5e1be711e000b8d0d827778f992e2f5fdde640cf18bb5d78badb3ec46f8c"
+    },
+    "parameter_registry.py": {
+      "raw_sha256": "1fac49b5f099d9f77aa1615cee161819ee5669932c746114403d7ee20b2b700f",
+      "lf_sha256": "b810d1001eacbd09dfcd9f35005620577283eb1327e7d1346fc79d23ee28cb1d"
+    },
+    "parameter_semantics.py": {
+      "raw_sha256": "e2e239b2ab635bfded5f44ecef612beafe27e51758650afe3b3281a34e61142d",
+      "lf_sha256": "9072144cc3d14d2ee09ef6266c0a28ac701cc8eeb7b99fdc81b408aadf5c42b8"
+    },
+    "part_geometry.py": {
+      "raw_sha256": "9866e83d2977190ab5668623c64a80a5db99868fb264a1900500979dda59cddf",
+      "lf_sha256": "a1610e928872f570656f1f1a79def2fcf1ee1d11b20628879cfe58a5a97aa1a8"
+    },
+    "part_materials.py": {
+      "raw_sha256": "278c2dd8fb3659eeae0941cd8cfabc60559cbfeac407a1b14da365e6e05e5987",
+      "lf_sha256": "825acf309a9c685f4dd6cadfdbe5553f9ae07976110f0d4f434da1c753e8090a"
+    },
+    "part_model_3d.py": {
+      "raw_sha256": "310ea220a3d36ab1a87ff3ff5f9161982a9c2e5533b62d6991312e58fb97cab2",
+      "lf_sha256": "29feab1564965b612b6840466d397d676a24aaab1189a0e5ea8b1c948a4b9883"
+    },
+    "part_model_apertures.py": {
+      "raw_sha256": "0927a2465b754ab8505d2249afa716731087cd37b644368eefafed25797f50a4",
+      "lf_sha256": "fb886f85221b1383d8d6c13368ac8786e08b40734b10003142e089c337d2c2e4"
+    },
+    "part_model_document.py": {
+      "raw_sha256": "012a0d0b7c9dec1ea65d7323e3be02174b35eb3f674663de12fccf956f6ad010",
+      "lf_sha256": "012a0d0b7c9dec1ea65d7323e3be02174b35eb3f674663de12fccf956f6ad010"
+    },
+    "part_model_features.py": {
+      "raw_sha256": "6cf87da54ef16ee6dee1e112a9460335ab239e066e97ec7e7a82190bb5e776e4",
+      "lf_sha256": "b7cb00e20ca6c891ef7f2d3189d689314b27537446a4103ea2bd75d69e0dac7b"
+    },
+    "particle_benchmark.py": {
+      "raw_sha256": "4ffb410c88e986c53a3032a622bd91fb1d6e235fc66c19a75348ca6fbf3901fc",
+      "lf_sha256": "4ffb410c88e986c53a3032a622bd91fb1d6e235fc66c19a75348ca6fbf3901fc"
+    },
+    "particle_section_io.py": {
+      "raw_sha256": "f756a88f222ed6d8fea46db69423881c998cf21410d4fa691908648b36bf4bcf",
+      "lf_sha256": "3e6c4269c9d5b816db473bb491f36c2dd8615f327b82b4b0e35433ec8d98cb2d"
+    },
+    "paths.py": {
+      "raw_sha256": "65408ddd735c3d9469a8603ec2652841cb001cc89a163d5b9ea5634e127b8b99",
+      "lf_sha256": "65408ddd735c3d9469a8603ec2652841cb001cc89a163d5b9ea5634e127b8b99"
+    },
+    "performance_accuracy.py": {
+      "raw_sha256": "45402a651e6e8a87c5b798f088fd8bfa53ce574cee799a1fe790def4f3f54605",
+      "lf_sha256": "75ee87d42530fcda20d6e36acaa5f61a7948722507a206c4b7613438ef62647a"
+    },
+    "physics/__init__.py": {
+      "raw_sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "lf_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    "physics/accelerating_tip_boundary.py": {
+      "raw_sha256": "2cf59f67aa8b90e753bce3dd89f6397fdaca5b4e8097f97a6d9fcd5b8cf24edf",
+      "lf_sha256": "04bc7da1afe9e056e7929b34148cfe2d157a03c8dc7963a08ea7a7c48a5124d8"
+    },
+    "physics/acceleration.py": {
+      "raw_sha256": "e5d324244510cc771c681c8ba191581267d66d91d0f1e07b4dcdae23c281f043",
+      "lf_sha256": "ab8eca973058eabb064e4b5f71b783cde3083b0f9fce61267e26251a5762baf2"
+    },
+    "physics/adaptive_scattering.py": {
+      "raw_sha256": "653ae35fb262baf08ca10cd0a58cc3520189bd1c5f60a8c817d0540520ea2873",
+      "lf_sha256": "653ae35fb262baf08ca10cd0a58cc3520189bd1c5f60a8c817d0540520ea2873"
+    },
+    "physics/affine_cell_histogram.py": {
+      "raw_sha256": "c9e5784026a5696627db31058a52c3677c38c2498e87c2f18244304ec683f767",
+      "lf_sha256": "c9e5784026a5696627db31058a52c3677c38c2498e87c2f18244304ec683f767"
+    },
+    "physics/all_lens_crossovers.py": {
+      "raw_sha256": "334ec11257ea3119d774a0d2ea883a6e28a213c1782274989296cbf02f82826e",
+      "lf_sha256": "480e8b2d0e5614258a2fcd2f348b59b08ed156beba92e881062f5a8a5fc1af48"
+    },
+    "physics/analytic_gun_field.py": {
+      "raw_sha256": "1f19617c157009b536bd45ab3c0011e9f058498fd5fe10dd202bce9680751b84",
+      "lf_sha256": "1f19617c157009b536bd45ab3c0011e9f058498fd5fe10dd202bce9680751b84"
+    },
+    "physics/analytic_particle_batch.py": {
+      "raw_sha256": "96ff0e5b0a7815a198ae02a4ac290ffbb9e2258ebb834b7128b1b7048465c987",
+      "lf_sha256": "96ff0e5b0a7815a198ae02a4ac290ffbb9e2258ebb834b7128b1b7048465c987"
+    },
+    "physics/analytic_particle_step.py": {
+      "raw_sha256": "dfa5a1e391d1fcfb4bb15cec755b0d87243a6f97c6df6cf27d14e17416f1c016",
+      "lf_sha256": "f8e4f3771e429bda5e58c45cb0fcf00ecb540e3f7c4c9a025aa9bfd525ffabdc"
+    },
+    "physics/analytic_potential.py": {
+      "raw_sha256": "5c7b6b3d4eb95aa698d83bd494b462b1c89ce4fd08db38e27ad561a1a2e88c9f",
+      "lf_sha256": "5c7b6b3d4eb95aa698d83bd494b462b1c89ce4fd08db38e27ad561a1a2e88c9f"
+    },
+    "physics/analytic_potential_domain.py": {
+      "raw_sha256": "37d364ee5985f5869de95918f760931ef6c5804c00836bded9fc0b1056f8fe61",
+      "lf_sha256": "37d364ee5985f5869de95918f760931ef6c5804c00836bded9fc0b1056f8fe61"
+    },
+    "physics/aperture_clipping.py": {
+      "raw_sha256": "ef2822b69fd14bea6ebe0ef33eddf7c8fca5a4491f7d3b93ade5a5329cdf7978",
+      "lf_sha256": "45d41ce8b7b8ff3e8b2a0080161efe5840b3b3e8476bc2b9ee79aa5a68b50cfb"
+    },
+    "physics/axial_mesh_seed.py": {
+      "raw_sha256": "7e6e982b61d0d876f959d8462489c920daa7933f85f2ac55ff9accc121716a71",
+      "lf_sha256": "7e6e982b61d0d876f959d8462489c920daa7933f85f2ac55ff9accc121716a71"
+    },
+    "physics/axis_field_interpolation.py": {
+      "raw_sha256": "48ba31febbfa0801a349c983bc04de414e28d52b22b04a3468cb5d5275e9fb40",
+      "lf_sha256": "48ba31febbfa0801a349c983bc04de414e28d52b22b04a3468cb5d5275e9fb40"
+    },
+    "physics/axis_regular_potential.py": {
+      "raw_sha256": "220993bd1487751402aa6c8c0ab56c8697a9cc2cc0c3dd32155fa0eaaded67d5",
+      "lf_sha256": "220993bd1487751402aa6c8c0ab56c8697a9cc2cc0c3dd32155fa0eaaded67d5"
+    },
+    "physics/axisymmetric_cut_field.py": {
+      "raw_sha256": "32ae7fb03e20b154dcf67e3ea6561b981b6ea3bc90c7fe3f4bb13f39644dfd72",
+      "lf_sha256": "32ae7fb03e20b154dcf67e3ea6561b981b6ea3bc90c7fe3f4bb13f39644dfd72"
+    },
+    "physics/axisymmetric_magnetostatics.py": {
+      "raw_sha256": "9f6a24c7dbc907b7cac3923c9fdc70348b6aa01077726a13833f9249ce3add27",
+      "lf_sha256": "7c97a7b3fb458ce8bc2fa627969168adc42c1d365d49ee0701be78d18d19f323"
+    },
+    "physics/axisymmetric_potential.py": {
+      "raw_sha256": "f871032bbf975b1f511afc19e7852d33e276643bf6f0fcd4a59e8a58080b004b",
+      "lf_sha256": "f871032bbf975b1f511afc19e7852d33e276643bf6f0fcd4a59e8a58080b004b"
+    },
+    "physics/backend_execution.py": {
+      "raw_sha256": "6c2bc899df14924395c58184f7175218a845ebd8249ac05a3c7d4b91b6b58661",
+      "lf_sha256": "6c2bc899df14924395c58184f7175218a845ebd8249ac05a3c7d4b91b6b58661"
+    },
+    "physics/beam_comparison.py": {
+      "raw_sha256": "213ece2898a0c6df8ac58d8dacf56ef7a2165073ab64f145f75a6d7532527447",
+      "lf_sha256": "213ece2898a0c6df8ac58d8dacf56ef7a2165073ab64f145f75a6d7532527447"
+    },
+    "physics/beam_current.py": {
+      "raw_sha256": "92b675c1ae97258e2584b05743a306621ce2e3e59178716ae98ea79b2adba788",
+      "lf_sha256": "97281e5f718b64d007481aca048070eae4e0322b1b1efa3427f7f99189b6565f"
+    },
+    "physics/beam_observation.py": {
+      "raw_sha256": "36b333647ce520a022d90d6e4b4ddf874c5199df4bc6046e57adf59c834ca2ac",
+      "lf_sha256": "d0b27988ddc3cea584f7667a982ada115f8aa5cb6be9de1bb2cf931c03ba7dfd"
+    },
+    "physics/beam_statistics.py": {
+      "raw_sha256": "06e267ff5f40a3aee9d7adfe33a570cf9b85d9b199ed219f23b95461dcd3e666",
+      "lf_sha256": "f1a675d17fa5196fb8e01f10f5c2355a62289fba0136ac3bf9ef48483b20d38d"
+    },
+    "physics/beam_steering_calibration.py": {
+      "raw_sha256": "325b13da30924e96738c523d45e619695ef17f88c5b33f10d18ffcdd30fcf584",
+      "lf_sha256": "325b13da30924e96738c523d45e619695ef17f88c5b33f10d18ffcdd30fcf584"
+    },
+    "physics/beam_waist.py": {
+      "raw_sha256": "111fc2a11f2ac37b5476cc9a5ce6e0bff706cdd3b6b44ed603569bcb228a4a93",
+      "lf_sha256": "9976c6a80b3f3045f0daaf2598ff5fa629091a92e7075bbe4514e20a7dd53b2c"
+    },
+    "physics/bounded_optical_design.py": {
+      "raw_sha256": "ae5bcfdf085920f102ebb99441f2e7c7f6f61e74f8c5b19c80299763966e22ec",
+      "lf_sha256": "ae5bcfdf085920f102ebb99441f2e7c7f6f61e74f8c5b19c80299763966e22ec"
+    },
+    "physics/camera_wave.py": {
+      "raw_sha256": "799c7c2aff4027c26b7d981da537f7202333698a22b085e95c541b0a5050d063",
+      "lf_sha256": "6827a8328c284e06536e933561e59bf90560be1e8dc75862f9e46d08350256ed"
+    },
+    "physics/canonical_action.py": {
+      "raw_sha256": "44a729f252ab906d19db64f74e29a87b3929985b51b8af0ab287ed5b3644bb2a",
+      "lf_sha256": "44a729f252ab906d19db64f74e29a87b3929985b51b8af0ab287ed5b3644bb2a"
+    },
+    "physics/canonical_phase.py": {
+      "raw_sha256": "8f9dde6ed8299aff5a32bfe3e463859cdc6f11f85e7b393f20d4c480155fe5d6",
+      "lf_sha256": "5292adcd5f2fbaec031d5bd78e25c40f3bbf5adc7c27c9d136f165e2df8232c2"
+    },
+    "physics/carrier_subspaces.py": {
+      "raw_sha256": "c91233b1c82e2730688dbcff61b0da28a04f09e1a533d7b587ab2ec995ee5c15",
+      "lf_sha256": "c91233b1c82e2730688dbcff61b0da28a04f09e1a533d7b587ab2ec995ee5c15"
+    },
+    "physics/cartesian_radial_handoff.py": {
+      "raw_sha256": "77db6eca72101e0d2bfe359dcf426eb4f71f74e32ea590c52052611b75b7a59d",
+      "lf_sha256": "9d61dfc0e9974e9aa460fedd1a2e0a1aa2a77514c6c4e050248c2a6b2ddc8280"
+    },
+    "physics/chromatic.py": {
+      "raw_sha256": "0fc8984ab45e7fe051c207d2304f9e7ecb462cacc8ac26d4eaf2fc5b82620c4f",
+      "lf_sha256": "4063964729848d6c299325b2f05f9e2244ad77346be2780a1f1dd6b12b334b15"
+    },
+    "physics/closed_gun_field.py": {
+      "raw_sha256": "c7f4d0ca934ea61a07065b64766b65ea9259582773e21a5046aced63264f03ae",
+      "lf_sha256": "c7f4d0ca934ea61a07065b64766b65ea9259582773e21a5046aced63264f03ae"
+    },
+    "physics/coherent_inputs.py": {
+      "raw_sha256": "5c121407b7d85a30e6870c7ac0a6037af3ba7794a39b9d9925b90487b2c6d867",
+      "lf_sha256": "5c121407b7d85a30e6870c7ac0a6037af3ba7794a39b9d9925b90487b2c6d867"
+    },
+    "physics/coherent_state_set.py": {
+      "raw_sha256": "5faf3f8b214b356397f16f23c16d874c107e39da12d79ebf0714835ac63ca420",
+      "lf_sha256": "5faf3f8b214b356397f16f23c16d874c107e39da12d79ebf0714835ac63ca420"
+    },
+    "physics/column_acceptance_window.py": {
+      "raw_sha256": "d891d532421b77e38c068c495681013edcb6ab968166b719d7fa11d2fdaf5378",
+      "lf_sha256": "181046ee22ff6f44b1e5cbbd51644a72b8c3cc46b68950744b7043f98fba4c48"
+    },
+    "physics/column_wall.py": {
+      "raw_sha256": "16d2df5ca6f6179327cdbe1c6fa99c15ac95a74174a820a4f5ab1c88b50e9d59",
+      "lf_sha256": "378a7d213f49883932ba202584172442174711532b9cfc7339da11f027e0b437"
+    },
+    "physics/column_wave.py": {
+      "raw_sha256": "bcfc20ed7f96ca80d6d1ce144cd942a1aeb80ab602b707cd16ce18b3ca7b067e",
+      "lf_sha256": "f052f85f5c99f757272cad78d5855093256b489d4f903af80c208b3e7884c535"
+    },
+    "physics/compiled_magnetic_field.py": {
+      "raw_sha256": "5f0fd5d99e952c29b4ea686ab93018dc3ad48f9271b8d909c593e887350efcb1",
+      "lf_sha256": "b0e5e3e8da39cc42896c2254d8010791d260fc58dad04b7cc8bba1fe87632adb"
+    },
+    "physics/completed_particle_section.py": {
+      "raw_sha256": "2d1a29f28ccbc499663f681e07f0918a67f9ca7c5a383561d74ee6ad9884ddaf",
+      "lf_sha256": "2d1a29f28ccbc499663f681e07f0918a67f9ca7c5a383561d74ee6ad9884ddaf"
+    },
+    "physics/compute_backend.py": {
+      "raw_sha256": "9dfe876683e2c8fd1752308e8c53edd0e019cc0bef7acfe44080e90dcd7e2df5",
+      "lf_sha256": "9ba33507dd9ea6374ab04daa860c39990a514874fd46b44eafc54660c79c8e00"
+    },
+    "physics/condensed_wave_boundary.py": {
+      "raw_sha256": "495435f408fa31d092235b95ed2757ae16edcf2c0a8296d4dd00967d08832e05",
+      "lf_sha256": "495435f408fa31d092235b95ed2757ae16edcf2c0a8296d4dd00967d08832e05"
+    },
+    "physics/conjugate_planes.py": {
+      "raw_sha256": "420a7d0d16763c0329ca4279fbee014926b61edd99151b498c678f735b0f171c",
+      "lf_sha256": "420a7d0d16763c0329ca4279fbee014926b61edd99151b498c678f735b0f171c"
+    },
+    "physics/continuous_curvature_conductor.py": {
+      "raw_sha256": "07c04d53b43284b0b3550810a9e324de8bbbbbf003970a5c0fe6b7a25c02653f",
+      "lf_sha256": "07c04d53b43284b0b3550810a9e324de8bbbbbf003970a5c0fe6b7a25c02653f"
+    },
+    "physics/continuous_gun_field.py": {
+      "raw_sha256": "8becd46218b60ba4d5507443cfaa44fce79348ae2f976e077683feb99f4bdae8",
+      "lf_sha256": "8becd46218b60ba4d5507443cfaa44fce79348ae2f976e077683feb99f4bdae8"
+    },
+    "physics/core.py": {
+      "raw_sha256": "9a7f9197c0a1a2b2b8572b32a5a93700db40cd56119754e41782bcc9254526fc",
+      "lf_sha256": "c3dd40af2b146255c8b379ee1f54cdb79459cfcf0820640b5150e716da02b360"
+    },
+    "physics/corrector_crossovers.py": {
+      "raw_sha256": "aa833b97002bd5c203480c44da61bc8729e113ee7b0f310c2049ebdda376c3ab",
+      "lf_sha256": "93fe2c08d7f805eee88d2fbff434d01034699738885b1ac58e66161a33ecdb65"
+    },
+    "physics/coupled_low_energy.py": {
+      "raw_sha256": "6873dfde54e4785d0aafe03d25a654dd9db33df59ca428a54b8a48a718dccddd",
+      "lf_sha256": "6873dfde54e4785d0aafe03d25a654dd9db33df59ca428a54b8a48a718dccddd"
+    },
+    "physics/covariant_boundary.py": {
+      "raw_sha256": "135095717295e0faad715dcbecdf3b008f5d9c6698fae94d4c490de697c88e69",
+      "lf_sha256": "135095717295e0faad715dcbecdf3b008f5d9c6698fae94d4c490de697c88e69"
+    },
+    "physics/cpu_angular_spectrum.py": {
+      "raw_sha256": "6130866f9ba4f68db3da490ba79cd91bc3a6928a7e9ed69f7de7676a0560c4b9",
+      "lf_sha256": "eedcf9707600cc7bd5694e7c8c0530a82413a6829544fd173400b216fc9d6bd5"
+    },
+    "physics/crossovers.py": {
+      "raw_sha256": "b9e9991b3216f688dd4e1ecea66d91e73da63a563ac6f9a712c6f7c08e0ff02c",
+      "lf_sha256": "a0c025a53152a95aa053ab3d24d0cb83c976e8961ed215cd9ed70452ba04ba83"
+    },
+    "physics/cuda_multislice_plan.py": {
+      "raw_sha256": "b9c8926d3c99d4350c8f9e66fdc09f55b0706e36ed89ca3874bad4c1efffefab",
+      "lf_sha256": "ac7b3c70e240a2cdd009ad30d13fe991e58111714126d48e64bf88b5b77ced08"
+    },
+    "physics/dark_field_geometry.py": {
+      "raw_sha256": "f3e5d9e1d287cede1bc706a375f1c52e114b26cb168a30f45a88350445843cad",
+      "lf_sha256": "e0d9d54e7b41d10cd72aea916ee839323c28024a6435416362d0ec23bab1c43c"
+    },
+    "physics/descan_phase_space.py": {
+      "raw_sha256": "15e6acd50d964d1c5f20a8b27b957ac9c0a330ec477ea3cfc2e3901a367af474",
+      "lf_sha256": "15e6acd50d964d1c5f20a8b27b957ac9c0a330ec477ea3cfc2e3901a367af474"
+    },
+    "physics/diffraction_memory.py": {
+      "raw_sha256": "d54537829db99dd6687d68c974fb95c26a1eea32d1f523fa78a35715fb7f6d00",
+      "lf_sha256": "5051af1f45fab1b4b69bfe050a9e0e4c72423799a40d609566429ee5f3412e4d"
+    },
+    "physics/discrete_gradient.py": {
+      "raw_sha256": "651cdd6e7fa931df74a515b79f568d185d0c98354089c0da1c226ac802a29600",
+      "lf_sha256": "651cdd6e7fa931df74a515b79f568d185d0c98354089c0da1c226ac802a29600"
+    },
+    "physics/dynamic_potential.py": {
+      "raw_sha256": "672e54657117e46b358e565cacd30aa2128206dcb5a7386aa27ffe7d902c8e9b",
+      "lf_sha256": "672e54657117e46b358e565cacd30aa2128206dcb5a7386aa27ffe7d902c8e9b"
+    },
+    "physics/electric_potential_snapshot.py": {
+      "raw_sha256": "0a0195e036f93ce444e6d8141651a19405ca5ba3405bad468f1862ce65f147f7",
+      "lf_sha256": "0a0195e036f93ce444e6d8141651a19405ca5ba3405bad468f1862ce65f147f7"
+    },
+    "physics/electric_wave_reference.py": {
+      "raw_sha256": "f14fdcf9df9c7141054574529463bcf9d8da00083cf6b96d2177d21faacb9894",
+      "lf_sha256": "f14fdcf9df9c7141054574529463bcf9d8da00083cf6b96d2177d21faacb9894"
+    },
+    "physics/electrode_mesh.py": {
+      "raw_sha256": "635d38c0c165601aef11f9f6990458e4b774f1e7b1649b10149820dc61242b64",
+      "lf_sha256": "635d38c0c165601aef11f9f6990458e4b774f1e7b1649b10149820dc61242b64"
+    },
+    "physics/electron_detection.py": {
+      "raw_sha256": "2c15215e56a33c03a22cc174656207f21fa48b5196ff8919153e045dce396fbe",
+      "lf_sha256": "2c15215e56a33c03a22cc174656207f21fa48b5196ff8919153e045dce396fbe"
+    },
+    "physics/electrostatic_column_transport.py": {
+      "raw_sha256": "72ba2d671b5fa4dbdcfe1554fce7ee1cc1466c5997e1efbe6092c86f84f7a5f2",
+      "lf_sha256": "beaa098d5ba8933cfa6964bec85863ef847e94c1e7275e3659d0f4444a946743"
+    },
+    "physics/electrostatic_wave_channels.py": {
+      "raw_sha256": "6d6d6be5b57f382240852f014336378c3955f38c1cc3a03f5e2959e5ffe09462",
+      "lf_sha256": "6d6d6be5b57f382240852f014336378c3955f38c1cc3a03f5e2959e5ffe09462"
+    },
+    "physics/embedded_wave_chunks.py": {
+      "raw_sha256": "226a6c5a4cf28107e160d7d978778129e59f793519fc6a6977872fda6b57e9fb",
+      "lf_sha256": "226a6c5a4cf28107e160d7d978778129e59f793519fc6a6977872fda6b57e9fb"
+    },
+    "physics/emission_timing.py": {
+      "raw_sha256": "71526a188f1216eb3808983d238740fc06b0b509f8e870ad28966f56af6e45c2",
+      "lf_sha256": "71526a188f1216eb3808983d238740fc06b0b509f8e870ad28966f56af6e45c2"
+    },
+    "physics/finite_multipole_field.py": {
+      "raw_sha256": "6d080b21c4b924e36ccc7e7e24c44b71637ad6fb6c72eb10bedfceb699f47035",
+      "lf_sha256": "6d080b21c4b924e36ccc7e7e24c44b71637ad6fb6c72eb10bedfceb699f47035"
+    },
+    "physics/finite_scan_response.py": {
+      "raw_sha256": "357754479b5380238e88b7841026d0bb1fb451d0693e3a3280a9e34b5c1b023f",
+      "lf_sha256": "357754479b5380238e88b7841026d0bb1fb451d0693e3a3280a9e34b5c1b023f"
+    },
+    "physics/finite_waist_regions.py": {
+      "raw_sha256": "0bc1b8a67671d4d0d09e6e3d1d03aa8a62d7dede24ea38ab0c10fb4e8bc7e60a",
+      "lf_sha256": "7260c312eb22851ba9015e70769a1d9dbb2b2dab8e28e5ee97804fcb1fc55339"
+    },
+    "physics/first_order.py": {
+      "raw_sha256": "8c66b05e04511ee39c440deb0e8480c91b293bf817cd550d16651b2a6d5cac60",
+      "lf_sha256": "88c75057b2c98376149d6779f00aa2c5a5f0ac042f0aca65320daca3083a4be2"
+    },
+    "physics/flight_time.py": {
+      "raw_sha256": "72d76448bfcc85b36356ddae967ce20ce1cae3c3eda8f226348324cae307660e",
+      "lf_sha256": "72d76448bfcc85b36356ddae967ce20ce1cae3c3eda8f226348324cae307660e"
+    },
+    "physics/fourdstem.py": {
+      "raw_sha256": "51ce66b735a1a25cb3f8e5371c15af2eee29d6c3ac08a364145be7547a424267",
+      "lf_sha256": "58a53fe38600b53bd8da2f818155fdbf3041f549d8f585227cf94fc379aa9ca7"
+    },
+    "physics/fourdstem_workflow.py": {
+      "raw_sha256": "487cd1342a8d8f43ca09f480a340390c01f55c552ed748293072dbeb21ae9e17",
+      "lf_sha256": "6d8b92e3c3b2bd576d39b159824cbe800a76eb9882b1d79a8b4882c8d1b9fa05"
+    },
+    "physics/galerkin_potential.py": {
+      "raw_sha256": "767dcb9f2f64f26b06b1278fa3b1f258122ba6e4f85ac50ee6c3d2c3df11b629",
+      "lf_sha256": "767dcb9f2f64f26b06b1278fa3b1f258122ba6e4f85ac50ee6c3d2c3df11b629"
+    },
+    "physics/gaussian_remote_domain.py": {
+      "raw_sha256": "2b41609eee4e104db512af86d59da56511034d3c57d39e2362ada6a5a123fa83",
+      "lf_sha256": "2b41609eee4e104db512af86d59da56511034d3c57d39e2362ada6a5a123fa83"
+    },
+    "physics/global_embedded_refinement.py": {
+      "raw_sha256": "9f540646cf3d5ea99953ece0c4ba84dff7bc128eaa5cc9a7fe1e1a97173333ca",
+      "lf_sha256": "9f540646cf3d5ea99953ece0c4ba84dff7bc128eaa5cc9a7fe1e1a97173333ca"
+    },
+    "physics/grounded_particle_step.py": {
+      "raw_sha256": "2f121b476fdaadceef06874a653be9a7c40cf468deeacf68acf1ab02b5baf9bc",
+      "lf_sha256": "e52d41b00aaa3af5c9eb320c736de1eca070a36392d64b6c33d3adf447caf480"
+    },
+    "physics/grounded_tip_field.py": {
+      "raw_sha256": "0e2825f1119dfef3bf50110f42d2ae24992d966b6467b3b9d8f6490b2c768867",
+      "lf_sha256": "6d007bf35389a89e1f98e23c9f88a662c3fd84b6858e1c44af357eb7efc6c7ec"
+    },
+    "physics/gun_field_environment.py": {
+      "raw_sha256": "1d6bfd471b5a8d49d7306b859f5a8d080e799dc507c7de3466069bd84e68c05d",
+      "lf_sha256": "1d6bfd471b5a8d49d7306b859f5a8d080e799dc507c7de3466069bd84e68c05d"
+    },
+    "physics/gun_magnetic_potential.py": {
+      "raw_sha256": "21c3df1032adc9ccde9b93035f9e6c3bf3606300a1383f059d5409e49f0c7a5d",
+      "lf_sha256": "21c3df1032adc9ccde9b93035f9e6c3bf3606300a1383f059d5409e49f0c7a5d"
+    },
+    "physics/gun_transport_domain.py": {
+      "raw_sha256": "9d9eead34bbc8ba0abc9ff7baf84fe18864f565e6d5856a0aea713f59659fa1c",
+      "lf_sha256": "9d9eead34bbc8ba0abc9ff7baf84fe18864f565e6d5856a0aea713f59659fa1c"
+    },
+    "physics/gun_wave_cache.py": {
+      "raw_sha256": "697c3153ef44aad3af9be60732a31e6302013b51747adc5231effa81c8972316",
+      "lf_sha256": "a394a2df0e08093e27893a71719fb9cc2acee0853d64662a0a0b1d5ba273f6f7"
+    },
+    "physics/gun_wave_transport.py": {
+      "raw_sha256": "068607e806f3db3239e6fed12f11b82ebe09591ec6c18b2c6f7d74da4a5f3e4d",
+      "lf_sha256": "343cbb3974b925d7b216f239c32a806f0a561c9fe1c1eff3792cf8143dcc248f"
+    },
+    "physics/high_order_round_lens.py": {
+      "raw_sha256": "c643334e543b947461137cf0c212980d76c809011763df66765084d863cc2274",
+      "lf_sha256": "c643334e543b947461137cf0c212980d76c809011763df66765084d863cc2274"
+    },
+    "physics/ideal_column_reference.py": {
+      "raw_sha256": "d91aeddc51ae44ce730dceb626c0c8b990c8f63b68642eed3af0707ecbfae3f3",
+      "lf_sha256": "d91aeddc51ae44ce730dceb626c0c8b990c8f63b68642eed3af0707ecbfae3f3"
+    },
+    "physics/illumination.py": {
+      "raw_sha256": "cb7692045b460791edafc3275560e13dc680b663d20a0b702cd1f97c200607bd",
+      "lf_sha256": "c945fac011ceb77aba1ddd33b323ce5fc1f680fc2e2b91477dc868d064ae2c4d"
+    },
+    "physics/immutable_wave_checks.py": {
+      "raw_sha256": "42cac25b4851382d195f7af252027643d6546cb257ed70f168543d10f8d39a7f",
+      "lf_sha256": "42cac25b4851382d195f7af252027643d6546cb257ed70f168543d10f8d39a7f"
+    },
+    "physics/incremental_scattering_load.py": {
+      "raw_sha256": "1a58b7b2eae78beb0d11e6d5af3fe848ec9fbe9d79ba58b3719cc062a1e0d64b",
+      "lf_sha256": "1a58b7b2eae78beb0d11e6d5af3fe848ec9fbe9d79ba58b3719cc062a1e0d64b"
+    },
+    "physics/inelastic_wave.py": {
+      "raw_sha256": "6c6f9c35befdac180757f4aa094ad6e32edce35859ca8764c0923ada18007ffd",
+      "lf_sha256": "2af50c37593b6d11050efa0d371e7bbe962070c73fa677c909a0c22e1ae79dd0"
+    },
+    "physics/instrument_electric.py": {
+      "raw_sha256": "66273455555d19682e0c24f7538d41f9b8121ff2b085649e8a9e3504f67c347a",
+      "lf_sha256": "66273455555d19682e0c24f7538d41f9b8121ff2b085649e8a9e3504f67c347a"
+    },
+    "physics/instrument_magnetic.py": {
+      "raw_sha256": "63ff943a8c1bd6aecd040c55b2fd12583c1e01f8a84b542a09c71e497af85e46",
+      "lf_sha256": "96761bfd9bfe4f3f60b08bc2a713bda5e030a79de7927e560c4f79f726d2d74a"
+    },
+    "physics/interaction_budget.py": {
+      "raw_sha256": "b81035a71b9c68e07c4703fa55ef12b769ef20b74ff97a19a2a68bcce581f6e1",
+      "lf_sha256": "9746e1d7185b12e3b59422b6020947eb992d3fd9d540172dc7848a4bf36a154e"
+    },
+    "physics/interaction_registry.py": {
+      "raw_sha256": "b96670b46c68875e02eb8845bd2b7945a3216565411ad7f6f8323f2b04d190f4",
+      "lf_sha256": "b96670b46c68875e02eb8845bd2b7945a3216565411ad7f6f8323f2b04d190f4"
+    },
+    "physics/intrinsic_aberrations.py": {
+      "raw_sha256": "35bc8e530e9d95331666d6279d7d2607476d1cd2a91243daa3483f4a21995ac7",
+      "lf_sha256": "35bc8e530e9d95331666d6279d7d2607476d1cd2a91243daa3483f4a21995ac7"
+    },
+    "physics/intrinsic_particle_gpu.py": {
+      "raw_sha256": "ffac46e9f61117e80c0c3e95061bab92380bf0cd37dca23003dad5c701833731",
+      "lf_sha256": "ffac46e9f61117e80c0c3e95061bab92380bf0cd37dca23003dad5c701833731"
+    },
+    "physics/joint_boundary_assembly.py": {
+      "raw_sha256": "bad5e6a4bafd27794979e95b77d1edf6355832722efaf7a19f39ab44d039975f",
+      "lf_sha256": "bad5e6a4bafd27794979e95b77d1edf6355832722efaf7a19f39ab44d039975f"
+    },
+    "physics/lens_field_provider.py": {
+      "raw_sha256": "45a435667ad0b774a0d421bd522ae23f916b9b06c72bd8a7007d97de124cab71",
+      "lf_sha256": "7d3d29189eac4f03a85fc9a69afeb618c42d628e46b491e2984098ded2648bcc"
+    },
+    "physics/liouville_wave.py": {
+      "raw_sha256": "8a026d904d1eb04530892e325865a4e6f14d7d84c9ae898ddba786fb9b89491c",
+      "lf_sha256": "8a026d904d1eb04530892e325865a4e6f14d7d84c9ae898ddba786fb9b89491c"
+    },
+    "physics/low_energy_boundary.py": {
+      "raw_sha256": "be579b64e1b6a34f564a9529977d3d147374c5a3938d832752d961f20dc556a0",
+      "lf_sha256": "be579b64e1b6a34f564a9529977d3d147374c5a3938d832752d961f20dc556a0"
+    },
+    "physics/magnus_scattering.py": {
+      "raw_sha256": "2c44c05349f2ccec243901a9e99a71c2ed3531f7726923b00c4dc7d98cd89caf",
+      "lf_sha256": "2c44c05349f2ccec243901a9e99a71c2ed3531f7726923b00c4dc7d98cd89caf"
+    },
+    "physics/magnus_sixth.py": {
+      "raw_sha256": "f907fb8fb82d72ac61f8413f522ff211ded64fb07e732bce8a8bcf72886041ae",
+      "lf_sha256": "f907fb8fb82d72ac61f8413f522ff211ded64fb07e732bce8a8bcf72886041ae"
+    },
+    "physics/modal_covariant_slab.py": {
+      "raw_sha256": "eb1393c759c28db486e535ca46d2d644dcd1645f6c28566b980bc7fbc5b823dd",
+      "lf_sha256": "eb1393c759c28db486e535ca46d2d644dcd1645f6c28566b980bc7fbc5b823dd"
+    },
+    "physics/multiplane_wave.py": {
+      "raw_sha256": "af57320b80425154a336d089fda506af2ae301a8238b891283cafd8e77a35b04",
+      "lf_sha256": "8f59eb4be494dd059bf918cb9eeebdb6046e650ce082270ba27c735bb9874686"
+    },
+    "physics/multipole_field.py": {
+      "raw_sha256": "0b243604bd31c793701f205fcce2f01c3c5ff585a271d2a309082f4c365bc4a6",
+      "lf_sha256": "0b243604bd31c793701f205fcce2f01c3c5ff585a271d2a309082f4c365bc4a6"
+    },
+    "physics/multipole_wave.py": {
+      "raw_sha256": "3d3feb3223464dfa4822345f1f4a17f4456fab5b747ede658692caf16a86ebd8",
+      "lf_sha256": "9f542a59665dd51755b03d253806b94669b184ac6277da124afe9b8ba6b38630"
+    },
+    "physics/multislice.py": {
+      "raw_sha256": "affd77bf3075b34d5856b7cd83ef683f40f40187daf51ac443c5ce58568dc817",
+      "lf_sha256": "6dbbef9de9f550789cdfb8796bc6233f97fb1de86e00ff6057d63ab57af5c07d"
+    },
+    "physics/nonlinear_circuits.py": {
+      "raw_sha256": "fbb2115301c277ab273e88dd0421333ec569e7f05cc2b4bdeca43f63feec86c5",
+      "lf_sha256": "5f125f3b5c3d706fa8696eb63e28b6ae30057577646080d8ea4ef2963a9bb0fe"
+    },
+    "physics/nonlinear_magnetostatics.py": {
+      "raw_sha256": "2a9e82dac07b9e4b2fc792a68678d67ce4ab3242451ba76107d77a7490187c44",
+      "lf_sha256": "2a9e82dac07b9e4b2fc792a68678d67ce4ab3242451ba76107d77a7490187c44"
+    },
+    "physics/objective_aperture.py": {
+      "raw_sha256": "59df03f12c3d8cc972b10d5ab417929d1c6a2c60802bf967be49e8a659171d4c",
+      "lf_sha256": "2781917a25c8cc45a187f81a778d0df1597dab38e56f72d9a0c201f5710d36fb"
+    },
+    "physics/occupied_axial_refinement.py": {
+      "raw_sha256": "17508f62832ee77a02e66011fbf0e5bff79e5c007945d308165daa3a3abcafa8",
+      "lf_sha256": "17508f62832ee77a02e66011fbf0e5bff79e5c007945d308165daa3a3abcafa8"
+    },
+    "physics/occupied_tree_certificate.py": {
+      "raw_sha256": "53e33f99d0a86b24d7b32bfdb43f243a6870071ced0de707d0755e709ea6ec6d",
+      "lf_sha256": "53e33f99d0a86b24d7b32bfdb43f243a6870071ced0de707d0755e709ea6ec6d"
+    },
+    "physics/occupied_wave_processes.py": {
+      "raw_sha256": "6c31b0ba45ffb6d5674291fb05285edde58642784bff79e01b176c2faf228a85",
+      "lf_sha256": "6c31b0ba45ffb6d5674291fb05285edde58642784bff79e01b176c2faf228a85"
+    },
+    "physics/optical_tuning.py": {
+      "raw_sha256": "2ea5e723e845e34e4887d485e666d57c37e2c8906ba151525b83ceb56ed8312c",
+      "lf_sha256": "9bc45253413d73a050750c7d55b4994d31da431040b943bbffdad741d096ace4"
+    },
+    "physics/particle_energy.py": {
+      "raw_sha256": "fc66d3ab658dfab9b7a9ebdbeb06a469d35437a92b861f3053cf8942dcbe4812",
+      "lf_sha256": "fc66d3ab658dfab9b7a9ebdbeb06a469d35437a92b861f3053cf8942dcbe4812"
+    },
+    "physics/particle_gpu_reference.py": {
+      "raw_sha256": "5312361725b4649ba8cc6720ea09f46c8874c59f43d96fbaf113688732ee851e",
+      "lf_sha256": "5312361725b4649ba8cc6720ea09f46c8874c59f43d96fbaf113688732ee851e"
+    },
+    "physics/particle_sections.py": {
+      "raw_sha256": "0b3663aebf53be107666bc1560c46a1d52e6f5512d5e8fa573e14b74106edfe6",
+      "lf_sha256": "81b8d1c0dab53dd0a2d19e17d84bedf7232afeae7dcfb487023012ea589b1e97"
+    },
+    "physics/patent_gun_reference.py": {
+      "raw_sha256": "df3f710f980b9cbeef9c8a538bc575d62bdb29de191c7dcbc3a235aa75a068ef",
+      "lf_sha256": "df3f710f980b9cbeef9c8a538bc575d62bdb29de191c7dcbc3a235aa75a068ef"
+    },
+    "physics/phase_space_statistics.py": {
+      "raw_sha256": "417e664c3f35ca1889ff8f037026a476b4015f00bf349d7ea5660f00cb6c7db0",
+      "lf_sha256": "417e664c3f35ca1889ff8f037026a476b4015f00bf349d7ea5660f00cb6c7db0"
+    },
+    "physics/physical_scene.py": {
+      "raw_sha256": "962c2b39c61ba5da35900bd00c5701c8f5bb8c56d3c16477cf566e5695524aeb",
+      "lf_sha256": "962c2b39c61ba5da35900bd00c5701c8f5bb8c56d3c16477cf566e5695524aeb"
+    },
+    "physics/plan_contract.py": {
+      "raw_sha256": "49a826ef581e02f5a8fb25f0bf0a50c4a892ecb53b7fbd1ca0ddb84f14b0e7f0",
+      "lf_sha256": "49a826ef581e02f5a8fb25f0bf0a50c4a892ecb53b7fbd1ca0ddb84f14b0e7f0"
+    },
+    "physics/planar_gun_field.py": {
+      "raw_sha256": "25a4a1fa65d58f31d250276daaad7ceedd8d1f6d5fab88d7f2b09fd3ebe6785d",
+      "lf_sha256": "25a4a1fa65d58f31d250276daaad7ceedd8d1f6d5fab88d7f2b09fd3ebe6785d"
+    },
+    "physics/planar_tip_boundary.py": {
+      "raw_sha256": "18e4198bfae5ae27f1fb9c274ea7bb4ea6cf48381a6bf051f1dcf35216cec50f",
+      "lf_sha256": "18e4198bfae5ae27f1fb9c274ea7bb4ea6cf48381a6bf051f1dcf35216cec50f"
+    },
+    "physics/posed_aberration_wave.py": {
+      "raw_sha256": "beabfc1d524790133d77149e2bcd647fc4dfd36b020ac3b7546a3fad48d3cb6b",
+      "lf_sha256": "beabfc1d524790133d77149e2bcd647fc4dfd36b020ac3b7546a3fad48d3cb6b"
+    },
+    "physics/posed_aberrations.py": {
+      "raw_sha256": "93c497ea60fc520712f4153f74bb2d57a329a2aa971e4d3394e21e50a3f6f05e",
+      "lf_sha256": "75dc57e3a69539477f833130cfd4bc4c3b2213a1c65d9c9d24daaf5974b910f5"
+    },
+    "physics/posed_column_fields.py": {
+      "raw_sha256": "e4728b46735a8a3e51d61540e35dc41d32497f6cf4e0aa82b784d5e264a1fb95",
+      "lf_sha256": "e4728b46735a8a3e51d61540e35dc41d32497f6cf4e0aa82b784d5e264a1fb95"
+    },
+    "physics/posed_lens_wave.py": {
+      "raw_sha256": "c094711e20b68dce5ef3d4cd63043c038d2e357b3647107109128bad3bab4b98",
+      "lf_sha256": "c094711e20b68dce5ef3d4cd63043c038d2e357b3647107109128bad3bab4b98"
+    },
+    "physics/posed_multipole_wave.py": {
+      "raw_sha256": "96c15fcd0769a2710c4d47f6a23cfffa0e5ca79c091f5e0f16243806bfe61aec",
+      "lf_sha256": "96c15fcd0769a2710c4d47f6a23cfffa0e5ca79c091f5e0f16243806bfe61aec"
+    },
+    "physics/posed_wave_aperture.py": {
+      "raw_sha256": "e2ad97e1c1e800d3d07b3ca6280da239c9fca465b7af7d8e0aef8f8da1bee25f",
+      "lf_sha256": "e2ad97e1c1e800d3d07b3ca6280da239c9fca465b7af7d8e0aef8f8da1bee25f"
+    },
+    "physics/posed_wave_hardware.py": {
+      "raw_sha256": "54182d500416f0877f87e6be8fe6b592e850af1e7178944921c14d86775c4b4e",
+      "lf_sha256": "54182d500416f0877f87e6be8fe6b592e850af1e7178944921c14d86775c4b4e"
+    },
+    "physics/potential_aberrations.py": {
+      "raw_sha256": "f51e94ed0cc8cedf01bc6578523f053c8e317c78f150a23088c25cfea5e6b170",
+      "lf_sha256": "32faa45c8f40bc18e35adf60ee3cc9b82ffae6db2652073ab98682fcf2d25c44"
+    },
+    "physics/potential_capabilities.py": {
+      "raw_sha256": "0834ab979288b0ab639823450afb8f92dcc8b3b9bee7bb46cd100c7908efc312",
+      "lf_sha256": "0834ab979288b0ab639823450afb8f92dcc8b3b9bee7bb46cd100c7908efc312"
+    },
+    "physics/potential_capture.py": {
+      "raw_sha256": "4e77c5d9d750e642eadcfabf4d6353079e15c0b68f037667363cdabcaf340c8b",
+      "lf_sha256": "4e77c5d9d750e642eadcfabf4d6353079e15c0b68f037667363cdabcaf340c8b"
+    },
+    "physics/potential_column_segments.py": {
+      "raw_sha256": "bf2457c8c37080d253c0f1e909287e5f34ecfb40488b7039265c711f50adb539",
+      "lf_sha256": "bf2457c8c37080d253c0f1e909287e5f34ecfb40488b7039265c711f50adb539"
+    },
+    "physics/potential_geometry.py": {
+      "raw_sha256": "906daa75b1539c1c9668007a61cc392cc91ada605aafb833a79515d4dd627819",
+      "lf_sha256": "68c4c143cb85965b55708ebf89b39daa35cf580d0505f019ce0370f35351183c"
+    },
+    "physics/potential_kinetic_expansion.py": {
+      "raw_sha256": "a6c23b198edfceebc024f3c2d831fc7734839970c6fd6c31be399d47bc832c20",
+      "lf_sha256": "a6c23b198edfceebc024f3c2d831fc7734839970c6fd6c31be399d47bc832c20"
+    },
+    "physics/potential_material_phase_budget.py": {
+      "raw_sha256": "37cc6a13586462b129f998218b1c412fc8f529dd781fb51397b051ff0fced68a",
+      "lf_sha256": "533ffd387e8faccfdb8c132f02b96aeb29b94b00ed09825359d392f1d29db7fd"
+    },
+    "physics/potential_native_sampler.py": {
+      "raw_sha256": "926eb12b75a40fc8319419a8a8233d044bc8f8256b9d3e1237da19ee7fe7f23f",
+      "lf_sha256": "926eb12b75a40fc8319419a8a8233d044bc8f8256b9d3e1237da19ee7fe7f23f"
+    },
+    "physics/potential_phase_budget.py": {
+      "raw_sha256": "4cc6bd96aaea0d11231a50ccd7feeffd9a0ae467db0e089c40ae7057dc5b918d",
+      "lf_sha256": "4cc6bd96aaea0d11231a50ccd7feeffd9a0ae467db0e089c40ae7057dc5b918d"
+    },
+    "physics/potential_plane_sampler.py": {
+      "raw_sha256": "48985cb42773aa583274d7443e41a3e6952978169511a33a206bb7a51a2ed8e8",
+      "lf_sha256": "48985cb42773aa583274d7443e41a3e6952978169511a33a206bb7a51a2ed8e8"
+    },
+    "physics/potential_ray.py": {
+      "raw_sha256": "d6809e02e3f25700949649c90e2e2079d28b02eec9a453b3cf20705631220ea7",
+      "lf_sha256": "d6809e02e3f25700949649c90e2e2079d28b02eec9a453b3cf20705631220ea7"
+    },
+    "physics/potential_representation_estimates.py": {
+      "raw_sha256": "b138526492222602ed6b3bdcc2c1f9fef28e216d25bda4b706a125042a8500dc",
+      "lf_sha256": "b138526492222602ed6b3bdcc2c1f9fef28e216d25bda4b706a125042a8500dc"
+    },
+    "physics/potential_segment_resampling.py": {
+      "raw_sha256": "1c2662d915bd7d26184106477229f0fa4fb6b8d28ea8f8ef2276050a6a1d6140",
+      "lf_sha256": "1c2662d915bd7d26184106477229f0fa4fb6b8d28ea8f8ef2276050a6a1d6140"
+    },
+    "physics/potential_snapshot.py": {
+      "raw_sha256": "46d0c4f612c041d287141d78c74da42f365811b8af65d657e51c129b6fa17477",
+      "lf_sha256": "46d0c4f612c041d287141d78c74da42f365811b8af65d657e51c129b6fa17477"
+    },
+    "physics/potential_specimen_transport.py": {
+      "raw_sha256": "fd3164778910be5fd183e6c4223f5e09f205629e5d89a25981a6f47b677f34ca",
+      "lf_sha256": "b4bc35f0c25be1e5f94ec151ceb491f03fb3565abe0ccf648a1e25d9bfe736e8"
+    },
+    "physics/potential_support_lineage.py": {
+      "raw_sha256": "569b5f8becbe00510b30ed9b47750a1a53d4fcee29cfc9df41cad885ab572203",
+      "lf_sha256": "569b5f8becbe00510b30ed9b47750a1a53d4fcee29cfc9df41cad885ab572203"
+    },
+    "physics/potential_wave.py": {
+      "raw_sha256": "f9fbecc60361b6f1558bd39a084fef1dee6de679d8d2acd8d1def51465aeb153",
+      "lf_sha256": "f9fbecc60361b6f1558bd39a084fef1dee6de679d8d2acd8d1def51465aeb153"
+    },
+    "physics/potential_wave_carrier.py": {
+      "raw_sha256": "49508cbdd771a13028068cba792e67ed6ab4289c4a596841250a5cb53ad29fad",
+      "lf_sha256": "c66467458ecb5c6cc9e6fd21f4a4b3bf0f0bacf227f775692c13eedc3e5a51bc"
+    },
+    "physics/potential_wave_chebyshev.py": {
+      "raw_sha256": "9a408a91f2fb5849f73281a1e42946eff778fa6eb23e59ea16b4a300092045ed",
+      "lf_sha256": "9a408a91f2fb5849f73281a1e42946eff778fa6eb23e59ea16b4a300092045ed"
+    },
+    "physics/potential_wave_device.py": {
+      "raw_sha256": "3c8194749f048bbb0388a38e4b0ace9c7b9464bdd89e1f965b9dfd32ab6f3aa6",
+      "lf_sha256": "3c8194749f048bbb0388a38e4b0ace9c7b9464bdd89e1f965b9dfd32ab6f3aa6"
+    },
+    "physics/potential_wave_observation.py": {
+      "raw_sha256": "299e362af9b5efd373d65de5a7cc6cf2053b004b879d7d40900cb76c6e938eca",
+      "lf_sha256": "299e362af9b5efd373d65de5a7cc6cf2053b004b879d7d40900cb76c6e938eca"
+    },
+    "physics/potential_wave_policy.py": {
+      "raw_sha256": "95ebba83b4ce35cc91b5ec5c48603f12ae9880e10069631797cb791835730743",
+      "lf_sha256": "95ebba83b4ce35cc91b5ec5c48603f12ae9880e10069631797cb791835730743"
+    },
+    "physics/potential_wave_resampling.py": {
+      "raw_sha256": "3db07526f72ba589f49afa23068f8a32399a08436fe82b0fe3dba0922e3b5fa3",
+      "lf_sha256": "3db07526f72ba589f49afa23068f8a32399a08436fe82b0fe3dba0922e3b5fa3"
+    },
+    "physics/potential_wave_support.py": {
+      "raw_sha256": "b3d8d5720a6f659f192c880c3ba4b1ed3f82efd6ec910bcc8f14a1b7fb2384c3",
+      "lf_sha256": "b3d8d5720a6f659f192c880c3ba4b1ed3f82efd6ec910bcc8f14a1b7fb2384c3"
+    },
+    "physics/prepared_specimen_cache.py": {
+      "raw_sha256": "a63de661057545c6a9bfb58e8483bf0f59c80e4762cfd7c403c95efb6acd8f2d",
+      "lf_sha256": "cb31c3c5cc17f13d1e178d385fe79ec59f7f9a6a20acc53d090fe987b9511343"
+    },
+    "physics/probe_state.py": {
+      "raw_sha256": "0dcedc38d317b4c19eae0c80654c24e61b542846021653af1016357de585ed48",
+      "lf_sha256": "0dcedc38d317b4c19eae0c80654c24e61b542846021653af1016357de585ed48"
+    },
+    "physics/quadratic_axisymmetric_fem.py": {
+      "raw_sha256": "26caa6dd0801293a30e2c4f3ff5354b3ec5dc7ee77029da38f7ced9bbf5a0a5f",
+      "lf_sha256": "26caa6dd0801293a30e2c4f3ff5354b3ec5dc7ee77029da38f7ced9bbf5a0a5f"
+    },
+    "physics/qualified_field_reduction.py": {
+      "raw_sha256": "b64b3f548a7e814fa5bba4d16aeae93d338da76eee1f435a350e05bec121de3d",
+      "lf_sha256": "b64b3f548a7e814fa5bba4d16aeae93d338da76eee1f435a350e05bec121de3d"
+    },
+    "physics/quartic_radial_phase.py": {
+      "raw_sha256": "e65f9107a3e99c8934312da377be859f9e979f897342023a90799f5d8881fe25",
+      "lf_sha256": "e65f9107a3e99c8934312da377be859f9e979f897342023a90799f5d8881fe25"
+    },
+    "physics/radial_cartesian_handoff.py": {
+      "raw_sha256": "379071649d0cdf96635fc1c25bc991e0b685efffe5169212070cba42b1db031b",
+      "lf_sha256": "379071649d0cdf96635fc1c25bc991e0b685efffe5169212070cba42b1db031b"
+    },
+    "physics/radial_column_wave.py": {
+      "raw_sha256": "16e4f869e15aa7ec91dede4367b740b1b1c67534075cbdacbd84e5da2392d092",
+      "lf_sha256": "5a25f066a9add0eb6a67f2705be2226d4e83734092f81e95743da3c84b41c25b"
+    },
+    "physics/radial_coordinates.py": {
+      "raw_sha256": "1e0209bdb5b4e98874441ef1d2f862a50d86b7d77fd5614823e664a4ad0151aa",
+      "lf_sha256": "1e0209bdb5b4e98874441ef1d2f862a50d86b7d77fd5614823e664a4ad0151aa"
+    },
+    "physics/radial_current_projection.py": {
+      "raw_sha256": "a6ecdba12536c480887ee0f98792a36a21c59a2ed383b7ca2b8ad85d3a274e36",
+      "lf_sha256": "a6ecdba12536c480887ee0f98792a36a21c59a2ed383b7ca2b8ad85d3a274e36"
+    },
+    "physics/radial_fftlog.py": {
+      "raw_sha256": "124df9677d7f56d517b039b9511e5c067d3426e0e429306daae5e5fb9fcaa4bf",
+      "lf_sha256": "124df9677d7f56d517b039b9511e5c067d3426e0e429306daae5e5fb9fcaa4bf"
+    },
+    "physics/radial_gun_wave.py": {
+      "raw_sha256": "657fb096cf3454d52a95ac8e7d191d60744ff29fc2dfe3ae594b4807f591d9b8",
+      "lf_sha256": "657fb096cf3454d52a95ac8e7d191d60744ff29fc2dfe3ae594b4807f591d9b8"
+    },
+    "physics/radial_integral_kernel.py": {
+      "raw_sha256": "31ca5c5bc5ba0e60800f97cdaee435f1161ee769159d958533029b377393858d",
+      "lf_sha256": "31ca5c5bc5ba0e60800f97cdaee435f1161ee769159d958533029b377393858d"
+    },
+    "physics/radial_mask_ledger.py": {
+      "raw_sha256": "0725bc5be14db08f9231ad105dc8c3c612de96887b7aaaa1292202a39036983a",
+      "lf_sha256": "0725bc5be14db08f9231ad105dc8c3c612de96887b7aaaa1292202a39036983a"
+    },
+    "physics/radial_phase_fem.py": {
+      "raw_sha256": "b95ab0bf5094d3a36f02f0b105e7738dd633ba55cba47da07a2a3b05f1cf0c6a",
+      "lf_sha256": "b95ab0bf5094d3a36f02f0b105e7738dd633ba55cba47da07a2a3b05f1cf0c6a"
+    },
+    "physics/radial_potential_batch.py": {
+      "raw_sha256": "1c9bf09484908ea44975d8de8c30a863a59b188651ada6ab5069be136fc12c61",
+      "lf_sha256": "1c9bf09484908ea44975d8de8c30a863a59b188651ada6ab5069be136fc12c61"
+    },
+    "physics/radial_wave_observables.py": {
+      "raw_sha256": "fdb59193a23749896ae766d8d9645f98b44a6bb32fa4346690c0046556773c02",
+      "lf_sha256": "fdb59193a23749896ae766d8d9645f98b44a6bb32fa4346690c0046556773c02"
+    },
+    "physics/ray_device_cache.py": {
+      "raw_sha256": "f1f674d77e9894d7a4baaa2bf19c2d31e1af4b1b57b018cffa7ca8138b4f280f",
+      "lf_sha256": "e1be1d610858d33015ccf2434e49a6dfbb04256b443228b6d152a3b32bcdabc5"
+    },
+    "physics/ray_identity.py": {
+      "raw_sha256": "c4ba575113b939ba3b69012858daee886a85374dff0cdf3953c732b5d80dd5c9",
+      "lf_sha256": "c4ba575113b939ba3b69012858daee886a85374dff0cdf3953c732b5d80dd5c9"
+    },
+    "physics/ray_integrator.py": {
+      "raw_sha256": "3b46348d2d7db4547e6f20e8ec814c84eb91b6488bceb8396a48f7ad7d422627",
+      "lf_sha256": "1ae02b3feafaa365f111402dcab88608046ae7f652919b40c7c4a1ed70e16745"
+    },
+    "physics/record_plane.py": {
+      "raw_sha256": "2fb523ee365dfa968bcee39ac80b47cd0bd8033f112ea1f449a04a77e7fcac38",
+      "lf_sha256": "983180da1ee96f4e826ac304e305326a9f17e2a38599f3a8609c806e3c7ad452"
+    },
+    "physics/recording_clipping.py": {
+      "raw_sha256": "6779ce9a5e6b5f50d801ec79e9ebb47572da69ee6b0273af61e8bf25212a205c",
+      "lf_sha256": "1a42641f4d3af23c3c7e5b02824f8120549f581bd55c04f60e867f12b7d8aac7"
+    },
+    "physics/recording_stop.py": {
+      "raw_sha256": "0a43b93f1ebeb972df56fc97d6a1ad3ace14464397c6267fe06ea8c8b6f67f10",
+      "lf_sha256": "150948e9317183864c2b6c8fc3c2dd6cc3d6aeeb5569859dc72c0299e68ec1cb"
+    },
+    "physics/reference_benchmarks.py": {
+      "raw_sha256": "0a882da99dde9c47c681f906b8388819593d24a289fd4e4498ea5f9dc8fb1651",
+      "lf_sha256": "8f2a031281fd3d5c140f60e32cb008e8e97ebebbb701d93e6eac97a04ca97d31"
+    },
+    "physics/refinement_progress.py": {
+      "raw_sha256": "39ab1041445c4051c5e67fc6644a98dc0224b4a2e03bacc42f81c3d5f5dd2114",
+      "lf_sha256": "39ab1041445c4051c5e67fc6644a98dc0224b4a2e03bacc42f81c3d5f5dd2114"
+    },
+    "physics/regular_axisymmetric_magnetic_potential.py": {
+      "raw_sha256": "b3334db032edaf4dbbac83d6f06c3d680c4246ed94af12d094aaebdeaad809d9",
+      "lf_sha256": "b3334db032edaf4dbbac83d6f06c3d680c4246ed94af12d094aaebdeaad809d9"
+    },
+    "physics/relativistic_lorentz.py": {
+      "raw_sha256": "15b86def3f01328400f4df135fa81a11a9de9c618ec6c00f2dceff10d879b509",
+      "lf_sha256": "15b86def3f01328400f4df135fa81a11a9de9c618ec6c00f2dceff10d879b509"
+    },
+    "physics/residual_medium.py": {
+      "raw_sha256": "eb95cd62d21ec0345ed67613a353dd425eee47cdcd62a1a361eb5cb9d3909f7b",
+      "lf_sha256": "4bc4a393944d05ed89bafc846b3f34fd2d69424e180ed76e263e7aca09efc588"
+    },
+    "physics/retarded_wave.py": {
+      "raw_sha256": "2b4d62c30d16f6adf38053e2f0c41dbc71774448f20bce905f03c43a5201c7f6",
+      "lf_sha256": "2b4d62c30d16f6adf38053e2f0c41dbc71774448f20bce905f03c43a5201c7f6"
+    },
+    "physics/round_column_checkpoint.py": {
+      "raw_sha256": "0b1be4c0dcaffdca1afa5575177cba481987256d45d6b7c5e1c56e5e34c02211",
+      "lf_sha256": "a34b7978587a2a76562d37878884b47a00ef3fc062e22ecd41ebc6e6ac9d59cb"
+    },
+    "physics/round_lens_aberration_benchmark.py": {
+      "raw_sha256": "02132f374b89f07297cf4137c5b78066842de27ede3e2f30c7a3c5f13d4f4882",
+      "lf_sha256": "02132f374b89f07297cf4137c5b78066842de27ede3e2f30c7a3c5f13d4f4882"
+    },
+    "physics/scan_calibration.py": {
+      "raw_sha256": "227c96eeb04ed738567c3def5b3d5e360b3bc95a436f9996c8e247e9aed44c18",
+      "lf_sha256": "dd18a31ab70956b31cabec5b958bfd9c4d0c61f50b94df0b8f4b4b8d87e66526"
+    },
+    "physics/scan_geometry.py": {
+      "raw_sha256": "ac59deae1c05b7022f3e9ddfb449b3d5f46dfe0f8604f50057d066944eae8960",
+      "lf_sha256": "21c25e5c71f894bbc5b70b62ff9ef1d46d49aa0526ec09b5f4769a918675302d"
+    },
+    "physics/scan_preparation.py": {
+      "raw_sha256": "635b1a4ac66db1f12dfc4d473072edbe91734109211fdfdb416a8de53b0d47b6",
+      "lf_sha256": "635b1a4ac66db1f12dfc4d473072edbe91734109211fdfdb416a8de53b0d47b6"
+    },
+    "physics/scattering_load.py": {
+      "raw_sha256": "193e6f9d3b73c2ae5958585f4b83958c390cf293226793b00a5975a075a2722b",
+      "lf_sha256": "193e6f9d3b73c2ae5958585f4b83958c390cf293226793b00a5975a075a2722b"
+    },
+    "physics/selected_plane.py": {
+      "raw_sha256": "4e26cf55116cda8d0cc0a54c004b479b0059a4603d286acd2fed5ba8c7dd0f8a",
+      "lf_sha256": "202c731037cdcade2290343798c21e95be3450eb19ae0edea2351be5c9a642d2"
+    },
+    "physics/simulation.py": {
+      "raw_sha256": "d43547ffd2682981f7966cb1efb1933384ab5e3f5d2e7aaa481443103f8363e7",
+      "lf_sha256": "3036e41f5cb656d5f7938b01515fb777789f34801781b6c21a19498298014e64"
+    },
+    "physics/source_admission.py": {
+      "raw_sha256": "69fd564cd8f4eb16c2915bd87a7859d197ac25a02a0ff1fc70edb2d3be824353",
+      "lf_sha256": "cccb3f42f50db9d242f7033ca197bca831f3ddbfaed53900c68eb959b88d41dd"
+    },
+    "physics/spatial_embedded_mesh.py": {
+      "raw_sha256": "bf503be1fab5b6e3b9b686d560fbad99de63cbe6b5b6841fd41bf952a3a051a2",
+      "lf_sha256": "bf503be1fab5b6e3b9b686d560fbad99de63cbe6b5b6841fd41bf952a3a051a2"
+    },
+    "physics/spatial_embedded_refinement.py": {
+      "raw_sha256": "845f59e93feebca1953aba6d85b5c52b1d81c853322ef99cba902a365b9f7326",
+      "lf_sha256": "845f59e93feebca1953aba6d85b5c52b1d81c853322ef99cba902a365b9f7326"
+    },
+    "physics/specimen_wave_channels.py": {
+      "raw_sha256": "e8fda61b3adb8d60937814ae6ab7fbd396120d7f5365c120271440c0cbaf615c",
+      "lf_sha256": "1e5deec8d9a1cb92b63e8109d5beca05159bc53aa2c721c0e9dced86cee61625"
+    },
+    "physics/specimen_wave_transport.py": {
+      "raw_sha256": "6ad66f70484530e9e5cdbb24b4b23149389ded1448a859cfa49674da38174921",
+      "lf_sha256": "d44deafbb66559fab7d2f57d18d2a935d478e7d6102326fd72ff15d9c314d2aa"
+    },
+    "physics/static_energy_lorentz.py": {
+      "raw_sha256": "98a30feb5ce51f4ddd22d1c4c576b477b37669a389f1b3e505bb4e7ef72c32f3",
+      "lf_sha256": "c9b1805f58f3a5828ecc519d544fd24d42905d5630dafd0ec43963728454171b"
+    },
+    "physics/stem_batching.py": {
+      "raw_sha256": "d1d880781ba9d4f675c0e721dd8ec989a47c6a5f100da6813705d1b1b7345ae1",
+      "lf_sha256": "d1d880781ba9d4f675c0e721dd8ec989a47c6a5f100da6813705d1b1b7345ae1"
+    },
+    "physics/stem_cuda_pipeline.py": {
+      "raw_sha256": "a620d7ebf4b01a88c7d7d14d09cf20242e64ad9c7c69a32248222abccc46a214",
+      "lf_sha256": "aec6fda4db90d48f472c09140ef009ab468b703ced716d47cc1aa3dfd01c1eac"
+    },
+    "physics/stem_sampling.py": {
+      "raw_sha256": "28e3d6a41793050c6aa3de2997768875fb85c7512b877d28c0e765aa434d8b60",
+      "lf_sha256": "0873ca1ab646d9cdb64904b472d9dec8e8cfd74210c520d6404589d691800662"
+    },
+    "physics/stem_wave_imaging.py": {
+      "raw_sha256": "53b160aa1ce6149a591412add07477db2925b92b5959e811856beae9eab02592",
+      "lf_sha256": "b963dc111cf06337af29294dcf6dad4829cf0e584e583e219e57827aeb1a15a6"
+    },
+    "physics/surface_gun_wave.py": {
+      "raw_sha256": "97ac6d11eaf59ab3a2e7abad6889cd81e7bd07737dcfd542eeb02bb62421a541",
+      "lf_sha256": "13b372315c917cc157b45031a0201ee046c2dec7ffc0d54eead8b0ea3965938f"
+    },
+    "physics/surface_mode_cache.py": {
+      "raw_sha256": "d099576ebe6a68bba6716fe1bc301130be00e0136b2c3446a7214dfa9448b412",
+      "lf_sha256": "d099576ebe6a68bba6716fe1bc301130be00e0136b2c3446a7214dfa9448b412"
+    },
+    "physics/surface_wave.py": {
+      "raw_sha256": "2ce0e24175b95e2b0e95e955e3ecfa1aee51dc3790f2dc91d6c057a8ad2501bd",
+      "lf_sha256": "f84aaadbe6da3c4619ed13f5750578a6dde78352d78a74e06c41a4b8e6c28847"
+    },
+    "physics/surface_wave_export.py": {
+      "raw_sha256": "0699a61c7b740017b4fe57ac5eaa054a47e74b181a9cf65520bf668bfeb53a85",
+      "lf_sha256": "0699a61c7b740017b4fe57ac5eaa054a47e74b181a9cf65520bf668bfeb53a85"
+    },
+    "physics/thin_optics.py": {
+      "raw_sha256": "8028f6dbb881ad27761907e19175ba368207173d0a7197e653e8e7a335ecc8fb",
+      "lf_sha256": "8028f6dbb881ad27761907e19175ba368207173d0a7197e653e8e7a335ecc8fb"
+    },
+    "physics/tip_gun_wave.py": {
+      "raw_sha256": "1f184967cc18b830498168b2f8ff4043dcc6d287fcc9b802051d901505d44fa9",
+      "lf_sha256": "6ba7a11eb9d7de4a8422fb9d6840ab43ef082087628d08098495dc34b8c6e1ae"
+    },
+    "physics/tip_wave_pipeline.py": {
+      "raw_sha256": "f6de85802e4c5e39fcad3547fd2cb4ab180a1d58e5ceb1554c2b0434d77ea836",
+      "lf_sha256": "292a93009042bf1478785ee095872293be936be03aa394c15c23efa662beeb0f"
+    },
+    "physics/tip_wave_scan.py": {
+      "raw_sha256": "beeef70952604157abdc562886aa38caed05d198f2a65c6576ee4b3f0e72bcf6",
+      "lf_sha256": "6ea6f2f330d9669b293e03179c7dc35676e62be20d825a654a2a317c642c87c4"
+    },
+    "physics/transport_progress.py": {
+      "raw_sha256": "6f7922a55ff9e20b29b78869908598204be23a1a65c33893709fefc78cabad53",
+      "lf_sha256": "6f7922a55ff9e20b29b78869908598204be23a1a65c33893709fefc78cabad53"
+    },
+    "physics/unified_field_particle.py": {
+      "raw_sha256": "0104c90f0580e912b5b14690b55319eaa36de41bf656136106856861e3f523d0",
+      "lf_sha256": "1aa6b53b2f758ee2a42ed0f995c716b55d3d692fe89970eba15139a39a32fa78"
+    },
+    "physics/unified_field_runtime.py": {
+      "raw_sha256": "dc747197513f2ac3b30db10dab1270bb472ca47f65408d122c2c558635868751",
+      "lf_sha256": "dc747197513f2ac3b30db10dab1270bb472ca47f65408d122c2c558635868751"
+    },
+    "physics/unified_particle_contacts.py": {
+      "raw_sha256": "d9dd52f35484839ae059a6416fb27369d328ceefb9e5c7a7a3020963ffc052e5",
+      "lf_sha256": "d9dd52f35484839ae059a6416fb27369d328ceefb9e5c7a7a3020963ffc052e5"
+    },
+    "physics/unified_particle_restart.py": {
+      "raw_sha256": "4cc0e4f8e5f792e55ea591d978e83721bd4a736e27aa80266f317db9cf61e531",
+      "lf_sha256": "4cc0e4f8e5f792e55ea591d978e83721bd4a736e27aa80266f317db9cf61e531"
+    },
+    "physics/unified_potential_sampler.py": {
+      "raw_sha256": "c614800a194dae00bb9d78c629fe048f8080a98d9c57ae377a03d996491db289",
+      "lf_sha256": "c614800a194dae00bb9d78c629fe048f8080a98d9c57ae377a03d996491db289"
+    },
+    "physics/unified_scan_cache.py": {
+      "raw_sha256": "7247cc44d29d54a2fc39ce7cbda19246959b51a930eaea8e3c53f6a43600df7c",
+      "lf_sha256": "7247cc44d29d54a2fc39ce7cbda19246959b51a930eaea8e3c53f6a43600df7c"
+    },
+    "physics/unified_scan_calibration.py": {
+      "raw_sha256": "a5489fe7d4fdf2b1c0a5a40cb286f5d16d5d106a973c81e2522b207f7ae02f82",
+      "lf_sha256": "642bd8454292de87abd11fe18b8d480dd3a5d176745f968a259a824ab84fcae5"
+    },
+    "physics/unified_scan_disk.py": {
+      "raw_sha256": "923aa906a7c4e3c9a48cd1f8cb6583407f860e2a079e7bd164bf6fb99e6bb77f",
+      "lf_sha256": "923aa906a7c4e3c9a48cd1f8cb6583407f860e2a079e7bd164bf6fb99e6bb77f"
+    },
+    "physics/unified_scan_parallel.py": {
+      "raw_sha256": "bf1ba836a04d1d943d0eb5c5f98d7488da1bcd061565a37e9a3e88b45e492e78",
+      "lf_sha256": "5fbe698ec811cbfa577256c6611048f4251f2e8a2af073abfcc4558837440af0"
+    },
+    "physics/unified_spatial_dependencies.py": {
+      "raw_sha256": "66d205263ef311b58018e880ea119e88eef5ccbbde35b1abcc4d171a74c9ecb5",
+      "lf_sha256": "66d205263ef311b58018e880ea119e88eef5ccbbde35b1abcc4d171a74c9ecb5"
+    },
+    "physics/unified_wave_runtime.py": {
+      "raw_sha256": "ae72b956936fb3d89e32062049ce466ef80fe0f1c5088725ab1fd7945521de7b",
+      "lf_sha256": "549a5196e0c37e793aa86b8088013abef61befa94de094defbeb1e2045e6f721"
+    },
+    "physics/unified_wave_support.py": {
+      "raw_sha256": "c59f7be219096ec0b6c65fa3e917aa5451c37c0d61000805da00a4033f29e291",
+      "lf_sha256": "c59f7be219096ec0b6c65fa3e917aa5451c37c0d61000805da00a4033f29e291"
+    },
+    "physics/vector_field_transport.py": {
+      "raw_sha256": "77a663058e807a0c37fad1ef7d2567985ce20e12a0e0c6a723ec4edc610d888f",
+      "lf_sha256": "36a75bbd401c729f9a799e08574594c3e6586f72e3960a681b2ab576b5373852"
+    },
+    "physics/wave_aperture_edge.py": {
+      "raw_sha256": "0f164e41f185cc299c678fc404ee8e8570ef8d39b0c2b2655a61bd51168f62f8",
+      "lf_sha256": "0f164e41f185cc299c678fc404ee8e8570ef8d39b0c2b2655a61bd51168f62f8"
+    },
+    "physics/wave_aperture_sampling.py": {
+      "raw_sha256": "92bcdf268ffe744260a34eb49571aa6e1458631a0b238bcd9dac7d32e572aec8",
+      "lf_sha256": "a096d4122e82ff56226bdd4a3af5ecc26eb26b129c2daeb771b5af65b89919a0"
+    },
+    "physics/wave_checkpoint_store.py": {
+      "raw_sha256": "673ac450dc91b281ba9b11d01f20e48c193fc6a576d8e12060f570ddf64824c4",
+      "lf_sha256": "80ce33105ef5ec7c4ec4749d4fcd4c2ae55ae2771e9bb3574f82801cd6ad0f12"
+    },
+    "physics/wave_device.py": {
+      "raw_sha256": "1132e88dcd55c2c7b230582e9f48ed3805b55441881dabd8f84c228b1a803abb",
+      "lf_sha256": "1132e88dcd55c2c7b230582e9f48ed3805b55441881dabd8f84c228b1a803abb"
+    },
+    "physics/wave_execution.py": {
+      "raw_sha256": "737e6b2c7d405e35c3c072a52a09568d9f02bb2d4c94b93bf5c1860b4db94aa1",
+      "lf_sha256": "31513753954078226a030b3bd357ab3ba1c5cb28afe66013a9a4ad47ba9f9f8e"
+    },
+    "physics/wave_export.py": {
+      "raw_sha256": "dd9bd5163450f9bd81f810d8f7e2ab5bfdacc89473317ac9f8df3eb9dd4ecac8",
+      "lf_sha256": "120e266a8536d4da9dfdfd6eb6729a906448c0d50cf3b7d00eac9b6bfb821165"
+    },
+    "physics/wave_fft.py": {
+      "raw_sha256": "8622c86c942c9acd79ad88204cd430f3ce16014c037ccf2ae7d09147cc6347dd",
+      "lf_sha256": "a7f0e1031befa7d0c5e1494a610f62ade02a4bc3d00da8afd48f59b75e84d86e"
+    },
+    "physics/wave_field_admission.py": {
+      "raw_sha256": "bbf69333b22f1ea10e030962d6820c0de819c97dc4139a7c8c4c0793c42a9883",
+      "lf_sha256": "bbf69333b22f1ea10e030962d6820c0de819c97dc4139a7c8c4c0793c42a9883"
+    },
+    "physics/wave_flux.py": {
+      "raw_sha256": "1bfbcff78f2a85550d0fc5776398e04d3961a91763d58e586de48a343cffbea4",
+      "lf_sha256": "25c5db76c78d276bbe740519c2fc51717ef7804d7d246b964b49082d8f7e51c4"
+    },
+    "physics/wave_following_chart.py": {
+      "raw_sha256": "f9e0a47a6fe15cd3ababc605cc30208ecc6df7e8617a3a90c6a67f943581aada",
+      "lf_sha256": "f9e0a47a6fe15cd3ababc605cc30208ecc6df7e8617a3a90c6a67f943581aada"
+    },
+    "physics/wave_grid.py": {
+      "raw_sha256": "aad1ff28708887cc44c2077eb6f9aa2ad30eaf02d6878c4366d933a8e6686232",
+      "lf_sha256": "abeafd6708d4c34b8422c185dbc82415e426ff51d10f57183ddd429f11a1d4f1"
+    },
+    "physics/wave_imaging.py": {
+      "raw_sha256": "4b477d1ed0a73e091c582b2fa788c26b2025175543f42dfd68169ff75559fdea",
+      "lf_sha256": "5d34e0596eba54e1634814b617c5b2b47963c2fc613b07586a087398ef9c6017"
+    },
+    "physics/wave_magnetic_residual.py": {
+      "raw_sha256": "2be0eefb70dbaf04111c13c6c98978eba6c6bd2b00a46062fc46eece1078e570",
+      "lf_sha256": "2be0eefb70dbaf04111c13c6c98978eba6c6bd2b00a46062fc46eece1078e570"
+    },
+    "physics/wave_mode_support.py": {
+      "raw_sha256": "1dec9baa50e85e5cbd3667df737e1a49f2acbbe19cd5c125c058019e29aadb89",
+      "lf_sha256": "1dec9baa50e85e5cbd3667df737e1a49f2acbbe19cd5c125c058019e29aadb89"
+    },
+    "physics/wave_observables.py": {
+      "raw_sha256": "4598a1c2f3148fc62a86e60b17330770cef6992f318885656f6318b721e3c990",
+      "lf_sha256": "4598a1c2f3148fc62a86e60b17330770cef6992f318885656f6318b721e3c990"
+    },
+    "physics/wave_plane_observables.py": {
+      "raw_sha256": "b31d0e424e4b18fd95f190bb3a8a89b1a6a97460b8bf1397b62531f6a8d125fa",
+      "lf_sha256": "b31d0e424e4b18fd95f190bb3a8a89b1a6a97460b8bf1397b62531f6a8d125fa"
+    },
+    "physics/wave_process_packets.py": {
+      "raw_sha256": "f237ee093dbec65aa5662365e1f9b7805be962cd02843d2dbe89370f2c8931d2",
+      "lf_sha256": "f237ee093dbec65aa5662365e1f9b7805be962cd02843d2dbe89370f2c8931d2"
+    },
+    "physics/wave_reference.py": {
+      "raw_sha256": "be64a5b25bfadce1e44c02e1135429561d46b4a4b592e510f5cacdd51bb60d15",
+      "lf_sha256": "f0d8adbc1a121892ae8dbea9eebc5cbe83e5e6dfb972fc25e37ed394880abaaf"
+    },
+    "physics/wave_sampling.py": {
+      "raw_sha256": "bfffa44650ddf5a7078f4375411defc21cb34e1b674be97af1ad43c4180f22b8",
+      "lf_sha256": "bfffa44650ddf5a7078f4375411defc21cb34e1b674be97af1ad43c4180f22b8"
+    },
+    "physics/wave_support.py": {
+      "raw_sha256": "e46b3747d3fd3e0943216487c5d3956b705ae819a01ef76e4ffb4e897702e646",
+      "lf_sha256": "e46b3747d3fd3e0943216487c5d3956b705ae819a01ef76e4ffb4e897702e646"
+    },
+    "physics/wavefront_comparison.py": {
+      "raw_sha256": "5ad1995c18a318f184bca6b1256cdef7508857cc214e1dfc8efe0b7ac9980c50",
+      "lf_sha256": "5ad1995c18a318f184bca6b1256cdef7508857cc214e1dfc8efe0b7ac9980c50"
+    },
+    "pole_geometry.py": {
+      "raw_sha256": "d2d7a4e879b05af5bcb3049af8ed4c259a2cb8aaa350c906a32b8f865a64da25",
+      "lf_sha256": "f580fee8cbcb4d577a42ec2962a06f91c569fdb0f4c93e607617321b9c91ed88"
+    },
+    "potential_field_vector_scene.py": {
+      "raw_sha256": "1c7b39eb79fccc74517093e131aa9455f51f4b954cf42f4216a8bee97ef8c613",
+      "lf_sha256": "1c7b39eb79fccc74517093e131aa9455f51f4b954cf42f4216a8bee97ef8c613"
+    },
+    "probe_hexapole_geometry.py": {
+      "raw_sha256": "cfdbfc7a7559d1e9fa33f56d3c840db12044707da06627a4a8251e9817414b3d",
+      "lf_sha256": "cfdbfc7a7559d1e9fa33f56d3c840db12044707da06627a4a8251e9817414b3d"
+    },
+    "profile_io.py": {
+      "raw_sha256": "809f8e7d2e0e7e80f29979275d635e92139a2a9841c19fff77fbb6e93f3c410e",
+      "lf_sha256": "89cc63d5810471d2c8cda414e84d9af47f93fb5b8479a912e0985f6eca427d99"
+    },
+    "recorder/__init__.py": {
+      "raw_sha256": "9107eeed1a8ac344843b64155584eb69bcb4ad21d7735f1d89890041d44eeb5f",
+      "lf_sha256": "9107eeed1a8ac344843b64155584eb69bcb4ad21d7735f1d89890041d44eeb5f"
+    },
+    "recorder/__main__.py": {
+      "raw_sha256": "743ebb953c78d95dbfce90ec0d24487a84fdc28bc44e4327cde5750a168d4aac",
+      "lf_sha256": "743ebb953c78d95dbfce90ec0d24487a84fdc28bc44e4327cde5750a168d4aac"
+    },
+    "recorder/backend.py": {
+      "raw_sha256": "1ba8495a6c58a3224fe406457452f9e262cf173694b86a943858f28f4495bcfe",
+      "lf_sha256": "1ba8495a6c58a3224fe406457452f9e262cf173694b86a943858f28f4495bcfe"
+    },
+    "recorder/frame_metadata.py": {
+      "raw_sha256": "06a638b8e021213a006852b0e8ca8ad4450758ee65f8555a324e61eafc4cdb95",
+      "lf_sha256": "06a638b8e021213a006852b0e8ca8ad4450758ee65f8555a324e61eafc4cdb95"
+    },
+    "recorder/paths.py": {
+      "raw_sha256": "5f1645390225415bb97c8a6744a4f12e635c34403995c0c2bcb678c547afdb09",
+      "lf_sha256": "5f1645390225415bb97c8a6744a4f12e635c34403995c0c2bcb678c547afdb09"
+    },
+    "recorder/records.py": {
+      "raw_sha256": "f8ccfc4f29a33c1a8039e79abecece88d321c16b22341d71b0936a5aab498d8e",
+      "lf_sha256": "f8ccfc4f29a33c1a8039e79abecece88d321c16b22341d71b0936a5aab498d8e"
+    },
+    "recorder/snapshot.py": {
+      "raw_sha256": "e174ed2589043e51a80e5107209b23646a3803a4e5e99c178485a30bfae30feb",
+      "lf_sha256": "e174ed2589043e51a80e5107209b23646a3803a4e5e99c178485a30bfae30feb"
+    },
+    "result_library.py": {
+      "raw_sha256": "b9df20dfd515cdc7b37b24c85e28e5565e6fd3584a0f5b771e7f9f70f9cd415b",
+      "lf_sha256": "b9df20dfd515cdc7b37b24c85e28e5565e6fd3584a0f5b771e7f9f70f9cd415b"
+    },
+    "runtime_parameters.py": {
+      "raw_sha256": "a9ff9c98a2564c25b1ede7aa9370994402e4c40c3418b402debed7c4070af360",
+      "lf_sha256": "bb3587682aca5e4460a71e4eed9d4efbd57ee13ea5088b7608663677b62b8763"
+    },
+    "sampling_convergence.py": {
+      "raw_sha256": "b57cc0a6bac3f7454350c37977a49264b5494c5c52acf6dff42edad1d679ae43",
+      "lf_sha256": "284221dea0aad4b0659861d085e2339d786bb5b2ae41baed1c790349ff6826ac"
+    },
+    "sampling_diagnostics.py": {
+      "raw_sha256": "6d6aacc1df1d69ad5a34f9bd5f711966c88164084282d95a3b9da9ee7b174726",
+      "lf_sha256": "a55a555bf1e9359b131e6371ce0d7586535ea42e0196a52369ff73ea66976c95"
+    },
+    "sampling_qualification.py": {
+      "raw_sha256": "0c0012cb3f8be37738daef858b1242065caead7ef0c9c672f831f032db908836",
+      "lf_sha256": "0c0012cb3f8be37738daef858b1242065caead7ef0c9c672f831f032db908836"
+    },
+    "shared_tip.py": {
+      "raw_sha256": "33c01399318a3f7eb80fba4c0a8cbc4ea8573724a968fc78d589c5b7b3b0530c",
+      "lf_sha256": "54b5fe284a4f15f767fec8c0329606e4614a9dff38b5f6dbb477d66b3db80e38"
+    },
+    "simulation_modes.py": {
+      "raw_sha256": "1022e56f6580039992e6c7971debfcf2340afa62653b75a0021b201f031ffd36",
+      "lf_sha256": "275949a45c2a89d2acdb54a9c44bfb03643ca37a04d2357142c2b6262ec10717"
+    },
+    "simulation_pipeline.py": {
+      "raw_sha256": "110954348a6bbb1dc48f0473d701b43ed55e55c513c2ff85b209507cbef6ca5f",
+      "lf_sha256": "cda55e0e919e7221ecb619f5245f1856330964a199ca30c520bed65ba2f11ad8"
+    },
+    "simulation_workflow.py": {
+      "raw_sha256": "f5a884c97264d1256d529df34e8e5b5622bfc8d55ab6b995838d53ef7725f172",
+      "lf_sha256": "5ce48b9472c2abe7503121e9ba3dc2cd4c62e536e408e9946ce697d8a99b9cab"
+    },
+    "specimen/__init__.py": {
+      "raw_sha256": "376411646ca56dfedd667a478763013b49e88eaff0ff3d2423161ac61a8efaa0",
+      "lf_sha256": "0b7520aad865a58968dbbee8a0807e335b122a97ce0a6fc4ddb65ef42a87c283"
+    },
+    "specimen/atomistic.py": {
+      "raw_sha256": "bf239d3f6c9b328110fe1ac620c22c1900aeb0373d90d6378149d380a3e390bd",
+      "lf_sha256": "0ecea9d8e831df78122487a9ce427278db4c7ddec24fab14b8f1150bc0763b47"
+    },
+    "specimen/axial_field_transport.py": {
+      "raw_sha256": "66058f2cc30effdb3f953bf2ee235e29cb47b370ed26a078fe250ae4bdd27638",
+      "lf_sha256": "66058f2cc30effdb3f953bf2ee235e29cb47b370ed26a078fe250ae4bdd27638"
+    },
+    "specimen/cif_io.py": {
+      "raw_sha256": "685e6bf1b94f986558af1776d882a1bf8adbff48f518393582afde71d8bf3364",
+      "lf_sha256": "3f6c07d9a2e7c3b52e5a2944a3b076389018abd64827b5fb878e635c72acede3"
+    },
+    "specimen/display_cache.py": {
+      "raw_sha256": "559cc1bcf84850764fc7bd84eb433451cf0644e0c30f05e8cd893021b31f84bb",
+      "lf_sha256": "81105d44a0c1360fe04a98ab9e0f0ca884bb91a094a5c0bf0c4f0c1311a13038"
+    },
+    "specimen/downstream_transport.py": {
+      "raw_sha256": "2e784c67fd7122284de63d73274a5b525fd55d366bf81cdbae2a404df18b0105",
+      "lf_sha256": "47cd309f3ec53ea3e542f171aa149c6846678e00fa7dfb5320fa54ab2783fa1a"
+    },
+    "specimen/elastic_transport.py": {
+      "raw_sha256": "3b12d886127f1806d728150833e5e24d8b65bd639a9c5ce7ef661d8dad1320f3",
+      "lf_sha256": "70950a7546877b602e155467cf0d9ac2406b9df6474a1a370014bb0ddff64427"
+    },
+    "specimen/envelope.py": {
+      "raw_sha256": "4271454c9b28cb7cdabbf2c131cb1f71b5a95b4e4df1886be8356a925af14965",
+      "lf_sha256": "4271454c9b28cb7cdabbf2c131cb1f71b5a95b4e4df1886be8356a925af14965"
+    },
+    "specimen/geometry.py": {
+      "raw_sha256": "39d996450106698c172cd9ea821321a84b87b8d2991a41bc9f92c096dd9dacbf",
+      "lf_sha256": "ad72288dd710273f780571f59f4461f80c2691d8ed72ee7a88f3f7d592d9e6c3"
+    },
+    "specimen/inelastic.py": {
+      "raw_sha256": "2367a6bb46f280fa108bafdb5a4f0679f589a7ea916f22e7d4ee28a70416de5e",
+      "lf_sha256": "22d8899bf946420643dfe0782e5e6a3e1c01af7245515db993324821435dca7a"
+    },
+    "specimen/interaction_engine.py": {
+      "raw_sha256": "85dc13a59b012161e7e464651c68365477d5be8e52f8fa91a9c2397c13ebd788",
+      "lf_sha256": "a461d9038c8fa5ad17f5e93a5d96fbae888ecd871d5617ab3bb936069500104a"
+    },
+    "specimen/interaction_types.py": {
+      "raw_sha256": "f76d30b403706701674f4ae552b083dfa130e4ebc853530fa529515a4917c0f0",
+      "lf_sha256": "18e364bc051a8d669e9b466f89855038a2ce78f7e2be947b0b1b02fa51b8ac37"
+    },
+    "specimen/overlap_sampling.py": {
+      "raw_sha256": "256a49b1e860e3150afc15b4eb4a260bd6f75734fcbf8e22831ebb776e72feed",
+      "lf_sha256": "052615241a5bc46e848efc8681fb775b487979ab4d02b2f0b632fdcd90df1a42"
+    },
+    "specimen/presets.py": {
+      "raw_sha256": "70777c018c13ed71c062fb87d56666a0988ece0c47a58476bd3c391c4e1112a4",
+      "lf_sha256": "5d092170c5d23ac2c69c8c92d7104e2010ecb0afbb8bbe5a602670b6c69a8c54"
+    },
+    "specimen/projected_scattering.py": {
+      "raw_sha256": "0bb54cb10e1bd86a3b09c8cb0ebe7d3371fe02fe1ed1f2e456c7194f50c6cbac",
+      "lf_sha256": "0bb54cb10e1bd86a3b09c8cb0ebe7d3371fe02fe1ed1f2e456c7194f50c6cbac"
+    },
+    "specimen/projected_trajectory_reuse.py": {
+      "raw_sha256": "ded35c36299bb2a4be3ba9777000e9259c4672f90e41a7b791910cca84e8258b",
+      "lf_sha256": "ded35c36299bb2a4be3ba9777000e9259c4672f90e41a7b791910cca84e8258b"
+    },
+    "specimen/rutherford.py": {
+      "raw_sha256": "165431df36a224c3f8dfe1df0cfc3a76f75b746bf75df929bbb810e5b28b1929",
+      "lf_sha256": "51e60c41243f75c1cac2898a323f3c186070642ca8280a56a3d46b382a14c5c6"
+    },
+    "specimen/sample_region.py": {
+      "raw_sha256": "b027ca805fdd3d6114a424efd0f55475c4542a3b2e8e1e150453da0a6ac369cb",
+      "lf_sha256": "b027ca805fdd3d6114a424efd0f55475c4542a3b2e8e1e150453da0a6ac369cb"
+    },
+    "specimen/scene.py": {
+      "raw_sha256": "37d5882bd7d6df691c14a0fb57b813e395993ad75301940b1b0bf3e94ebae0ac",
+      "lf_sha256": "d76c74eab07e70617482206b07367ea3c6a7bed995bd01a5261d5c38650277ce"
+    },
+    "specimen/source.py": {
+      "raw_sha256": "d79f7deda743b52fa38eff7111f333223612bdbf2e45190bedb0054b0fe8b07e",
+      "lf_sha256": "4e2959381543f99fac749105cf8c8466a91cd55a90f4d74f5e1437657246f776"
+    },
+    "specimen/support.py": {
+      "raw_sha256": "b6a91f58522343195da465575133e9a347f93caab2ed7a0d5c324aa0b9bb5da0",
+      "lf_sha256": "1808366b732bf7816bd991339aab33f98a8ad208b9e6bc5d22fcae572d518206"
+    },
+    "specimen/vector_field_transport.py": {
+      "raw_sha256": "ad97bd86216538d7d8deca71d5e6a4ee26153fe3bd8b54a4e4732fe3122526da",
+      "lf_sha256": "e9475244377440be258100a23f692ae54c7f9ec86ff19e74063901bdbef3a1ad"
+    },
+    "specimen/virtual.py": {
+      "raw_sha256": "6fc8da86ca2d51783df229a5226e5aa7e312e6efa4afd0207fff638d63382d09",
+      "lf_sha256": "6fc8da86ca2d51783df229a5226e5aa7e312e6efa4afd0207fff638d63382d09"
+    },
+    "state.py": {
+      "raw_sha256": "6e351df18c52fba8a3d226980defb50f0cf21aea8dac4b748c8a89755d5ec5d2",
+      "lf_sha256": "e9ca6f911379e6426dfd1c0d93b0cfb6ff71c3f4b27fd6ba359819e37a82e4ec"
+    },
+    "step_assets.py": {
+      "raw_sha256": "c7bdd382ca04bc19057f4c5d6d66afc6966e45613167333eac47397d467d336a",
+      "lf_sha256": "c7bdd382ca04bc19057f4c5d6d66afc6966e45613167333eac47397d467d336a"
+    },
+    "stigmator_alignment.py": {
+      "raw_sha256": "082384d4b4f3709bd224102fc8f670727d9bd220818343630016b44e34c32d6a",
+      "lf_sha256": "8217c1e0fc0d459dd1c7f9777b8fe833ec906fd633200a24025f64643fc06494"
+    },
+    "subassemblies.py": {
+      "raw_sha256": "0024f363585bf91672c81e7bd31c15b8e4fb041ab0b74a1cc9cf29c92a8101e9",
+      "lf_sha256": "c3bf35079e932c8973b943afb06d63dbd1376654d08136fa40dec1dd5e49cad4"
+    },
+    "test_electron_column.py": {
+      "raw_sha256": "bf1a4fd09066e235792c618d12c3863768f7f47f040fa03eef8606c8dd79756d",
+      "lf_sha256": "bf1a4fd09066e235792c618d12c3863768f7f47f040fa03eef8606c8dd79756d"
+    },
+    "test_electron_compiled.py": {
+      "raw_sha256": "e12126731c21fd35ee3808c24037a7812cff57b697e5222093af44a75187d149",
+      "lf_sha256": "e9e86b74393f27c77e84f3b85a913054eb4c2c18ce32b7cc4646a5c8bc71d4d5"
+    },
+    "test_electron_compiled_laws.py": {
+      "raw_sha256": "97e1c6169b537f8ddf1429a63be3092333e754943e5ee060fea0498ebc5d25a5",
+      "lf_sha256": "fd05f49d0e52e6a43a6ec4bd4c7664c20f6840aed31b5c029cdda1026e441328"
+    },
+    "test_electron_execution.py": {
+      "raw_sha256": "6e6c945272de3e8ff349686c0b5ebba3477a6ecd794bf9555cddd32547583b37",
+      "lf_sha256": "6e6c945272de3e8ff349686c0b5ebba3477a6ecd794bf9555cddd32547583b37"
+    },
+    "test_electron_intercepts.py": {
+      "raw_sha256": "d8566ee176b3273b5957fc8604e7af37f02f7af0b4e489333f23bb174a8ef7d7",
+      "lf_sha256": "d8566ee176b3273b5957fc8604e7af37f02f7af0b4e489333f23bb174a8ef7d7"
+    },
+    "test_electron_sampling.py": {
+      "raw_sha256": "05ed83e47a34f7f40a115240f1d8541db95f6a9335fa14e4b7f90d92baed9089",
+      "lf_sha256": "05ed83e47a34f7f40a115240f1d8541db95f6a9335fa14e4b7f90d92baed9089"
+    },
+    "test_electron_scene.py": {
+      "raw_sha256": "dfd47e75e8895b7026a4b9dae7510be9719b5a43e7f79e62730ccfb3c788746a",
+      "lf_sha256": "c623fbe1acdd6a9b9b93bcd9306b90575a1a1d731e9f8f4c6c1760d34601b790"
+    },
+    "tip_emission_view.py": {
+      "raw_sha256": "9d0aaf29b1ede364038874232992d79b9f7b5d109fdafb101fdffd0052033a36",
+      "lf_sha256": "418ad3ae7da8f2859d3dfeec4836b017e6bb6072013b03614f4784c044276096"
+    },
+    "tip_model_3d.py": {
+      "raw_sha256": "009a41217ea59a2b9190f5b189a5c994948f3c1087b3cfe1faf266ae55d6e8ba",
+      "lf_sha256": "cea7dc07c6a79333c1ebe0ca8cbb4c4c46e441fbb5f9086972daf1ebc268a76d"
+    },
+    "topology_evidence.py": {
+      "raw_sha256": "df4424bae984a984cebb95fa07e6affdfff7f0217512d06a38057e60606a6ea1",
+      "lf_sha256": "659cde2a4d01afddcab0a05f6e9339122194d8135f82ab1f884e9f165459193d"
+    },
+    "vacuum.py": {
+      "raw_sha256": "1830a082909f6ae0098337fc9b14c2a6c25ac18b3d0c81988739c22ba8656720",
+      "lf_sha256": "e977c70a2e14252e4d68a25d7bcf0ac813d30469f03278edaa96cae8a3741cbf"
+    },
+    "vacuum_pumping.py": {
+      "raw_sha256": "86c77afbf01b9d3b55fe6d01f1b2b1d34052c04528cffc28e8ad1fdccce7bc0f",
+      "lf_sha256": "36a2e89cf5fa3787265902d4e8525a5ded07ddb2ccf9aa96adefa4970148c9c7"
+    },
+    "validation_process.py": {
+      "raw_sha256": "e7b56d60a10bdca661e9a7143e04bbc2a0a8ff80b7c0d7f20b792c702b0cba10",
+      "lf_sha256": "e7b56d60a10bdca661e9a7143e04bbc2a0a8ff80b7c0d7f20b792c702b0cba10"
+    },
+    "working_point.py": {
+      "raw_sha256": "c4b0992b8c5243507cd37b5ce081257dfa66d2a0d47361e4a789a886e631686d",
+      "lf_sha256": "0f6d3164fbaf6ab310cdcc427abc968f2886529b313763b74696d34d76d38c7c"
+    },
+    "working_point_archive.py": {
+      "raw_sha256": "f775ffa1e1cea04ee3eaa1c0f80b880bf01e9b74e682705e87a7bd40b395804a",
+      "lf_sha256": "8a346d0a0c3a5e7bc8b6f32c1cea3d8fffa81d21c3e618f95c02d11a0fc9b885"
+    },
+    "working_point_evidence.py": {
+      "raw_sha256": "4596f671ad6ee2897390d5d7e25fb8f19238db13d1145d8cb02178c534ace251",
+      "lf_sha256": "924597ab96849d93a0d5f25f9a1fa10e1dd702794bc0cc3209183e08720e99d1"
+    },
+    "working_point_export.py": {
+      "raw_sha256": "f858f276e29bc5dc0d8cee0b9b45ea041d998ed7311ac85c3ebfcd6dc97c1649",
+      "lf_sha256": "022e4893a8dbad6021605bd111a30876e92aa20b19cb6b15cc7eec826ada1f00"
+    }
+  }
+}

@@ -1,0 +1,2095 @@
+{
+  "schema": "coupled-calibration-summary-v1",
+  "units": "nm for distances unless indicated; microamperes for absolute current columns named uA",
+  "original_positive_count": 2000,
+  "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+  "primary_setting": "placed-A",
+  "observed": {
+    "hp-strong": {
+      "tag": "hp-strong",
+      "trial": "drive-strong-2000",
+      "waist_offset_nm": -14.199999895936344,
+      "radial_bracket_nm": [
+        -14.3,
+        -14.2
+      ],
+      "finite_2d_region_nm": [
+        -18.9,
+        -9.7
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 2.772644022627227,
+      "crossover_rms_radius_nm": 2.011011883635282,
+      "crossover_core_uA": 1.185,
+      "surface_d95_nm": 2.231206389041633,
+      "surface_rms_radius_nm": 2.0249273035115336,
+      "surface_core_uA": 2.035,
+      "alpha95_mrad": 29.748013402611384,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 8.900000011635711,
+      "d95_min_nm": 1.9756004707141306,
+      "rms_min_z_offset_nm": -14.199999895936344,
+      "core_peak_uA": 2.035,
+      "core_peak_z_offsets_nm": [
+        0.0
+      ],
+      "rms_minus_d95_nm": -23.099999907572055,
+      "difference_bounds_nm": [
+        -23.300000066228677,
+        -22.89999997628911
+      ],
+      "input_digest": "02f02fcbb989fac3f200e664a211c7429bf15ff346f5df39426da41ff42c3368",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "4545d11b34c44de0f5cc6367eed1c9a41f87dad2a5c3859af323fdcfad9f81a8",
+      "native_grid_replay_max_error_nm": 3.4834117723277872e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-hp-strong.json",
+      "settings_relative_to_balanced": [
+        0.0012843905009718437,
+        0.0002456749710243409,
+        0.002048130140385624,
+        0.020746493517494788,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999775000002,
+            1599.1999895000001
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1999815000001,
+            1599.1999835000001
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999835000001
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999786000001,
+            1599.1999878000001
+          ],
+          "observed_planes": 1888,
+          "radial_bracket_mm": [
+            1599.1999832000001,
+            1599.1999833000002
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999833000002
+        }
+      ]
+    },
+    "hp-weak": {
+      "tag": "hp-weak",
+      "trial": "drive-weak-2000",
+      "waist_offset_nm": -29.699999913646025,
+      "radial_bracket_nm": [
+        -29.7,
+        -29.6
+      ],
+      "finite_2d_region_nm": [
+        -34.0,
+        -25.3
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 2.7574282037940714,
+      "crossover_rms_radius_nm": 2.125981765492871,
+      "crossover_core_uA": 0.31999999999999984,
+      "surface_d95_nm": 2.4114570109224487,
+      "surface_rms_radius_nm": 2.1825296461412873,
+      "surface_core_uA": 2.105,
+      "alpha95_mrad": 29.74668954896855,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": -9.600000112186535,
+      "d95_min_nm": 2.1224555687545483,
+      "rms_min_z_offset_nm": -29.699999913646025,
+      "core_peak_uA": 2.165,
+      "core_peak_z_offsets_nm": [
+        -0.8,
+        -0.7
+      ],
+      "rms_minus_d95_nm": -20.09999980145949,
+      "difference_bounds_nm": [
+        -20.29999996011611,
+        -19.90000009755022
+      ],
+      "input_digest": "05188d02ea5cd7e539b2dab74e0a7bae56ad361b3c568a2f517c7ea0ebc24560",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "06d6099aebff2353c0fd923960328a615ce29adbf49498c2a4142fe75f5045b2",
+      "native_grid_replay_max_error_nm": 3.4883481585897714e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-hp-weak.json",
+      "settings_relative_to_balanced": [
+        -0.0007161777118173118,
+        0.0002456749710243409,
+        0.002048130140385624,
+        0.020746493517494788,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999635000002,
+            1599.1999735000002
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1999675000002,
+            1599.1999695000002
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999675000002
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999635000002,
+            1599.1999722
+          ],
+          "observed_planes": 1945,
+          "radial_bracket_mm": [
+            1599.1999678000002,
+            1599.1999679
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999678000002
+        }
+      ]
+    },
+    "j0": {
+      "tag": "j0",
+      "trial": "j0-2000",
+      "waist_offset_nm": -21.99999994445534,
+      "radial_bracket_nm": [
+        -22.0,
+        -21.9
+      ],
+      "finite_2d_region_nm": [
+        -26.4,
+        -17.4
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 2.745643551004561,
+      "crossover_rms_radius_nm": 2.066913463947989,
+      "crossover_core_uA": 0.64,
+      "surface_d95_nm": 2.00938296119759,
+      "surface_rms_radius_nm": 2.0989558562142765,
+      "surface_core_uA": 2.115,
+      "alpha95_mrad": 29.747351278964523,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 0.0,
+      "d95_min_nm": 2.00938296119759,
+      "rms_min_z_offset_nm": -21.99999994445534,
+      "core_peak_uA": 2.12,
+      "core_peak_z_offsets_nm": [
+        0.1,
+        0.3
+      ],
+      "rms_minus_d95_nm": -21.99999994445534,
+      "difference_bounds_nm": [
+        -22.20000010311196,
+        -21.800000013172394
+      ],
+      "input_digest": "d40d9d8ed39a131d2f269496d8238645da69c3b86f9af1a0b08cc06534afdccf",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "376a3e52fdd35a603b1ffd781c6ffc764281378c9f8f2a969778d6fa85707f07",
+      "native_grid_replay_max_error_nm": 3.487953649869841e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-j0.json",
+      "settings_relative_to_balanced": [
+        0.000284106394577223,
+        0.0002456749710243409,
+        0.002048130140385624,
+        0.020746493517494788,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999695000002,
+            1599.1999815000001
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1999755000002,
+            1599.1999775000002
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999755000002
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999711,
+            1599.1999801000002
+          ],
+          "observed_planes": 1869,
+          "radial_bracket_mm": [
+            1599.1999755000002,
+            1599.1999756
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999755000002
+        }
+      ]
+    },
+    "joint": {
+      "tag": "joint",
+      "trial": "hp-joint-fixed2000",
+      "waist_offset_nm": -21.09999991262157,
+      "radial_bracket_nm": [
+        -21.1,
+        -21.0
+      ],
+      "finite_2d_region_nm": [
+        -25.5,
+        -16.5
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 2.769182872898717,
+      "crossover_rms_radius_nm": 2.058692301314735,
+      "crossover_core_uA": 0.7499999999999998,
+      "surface_d95_nm": 1.987068213664584,
+      "surface_rms_radius_nm": 2.088304412606614,
+      "surface_core_uA": 2.035,
+      "alpha95_mrad": 29.747393741977753,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 0.0,
+      "d95_min_nm": 1.987068213664584,
+      "rms_min_z_offset_nm": -21.09999991262157,
+      "core_peak_uA": 2.035,
+      "core_peak_z_offsets_nm": [
+        0.0
+      ],
+      "rms_minus_d95_nm": -21.09999991262157,
+      "difference_bounds_nm": [
+        -21.30000007127819,
+        -20.899999981338624
+      ],
+      "input_digest": "c167510ab8424df3218191e8908ef7b022a0a8107a768f13d24a82d023f871f4",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "a52b3b7590466d237cbc69b36e28e43b241ae1deb55c1b5f0e8902abc705eec2",
+      "native_grid_replay_max_error_nm": 3.48738951775081e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-joint.json",
+      "settings_relative_to_balanced": [
+        0.00044129479357124524,
+        0.0002461089852731994,
+        0.002039919536043925,
+        0.020736933759317067,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999715000002,
+            1599.1999835000001
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1999755000002,
+            1599.1999775000002
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999755000002
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999720000001,
+            1599.1999810000002
+          ],
+          "observed_planes": 1869,
+          "radial_bracket_mm": [
+            1599.1999764000002,
+            1599.1999765
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999764000002
+        }
+      ]
+    },
+    "null-origin": {
+      "tag": "null-origin",
+      "trial": "cs-null-2000",
+      "waist_offset_nm": -112.10000002392917,
+      "radial_bracket_nm": [
+        -112.1,
+        -112.0
+      ],
+      "finite_2d_region_nm": [
+        -115.4,
+        -108.7
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 4.356068817336557,
+      "crossover_rms_radius_nm": 2.9011894282544897,
+      "crossover_core_uA": 0.01999999999999999,
+      "surface_d95_nm": 9.264888101819379,
+      "surface_rms_radius_nm": 3.4487532798908878,
+      "surface_core_uA": 1.2999999999999998,
+      "alpha95_mrad": 29.7395973689041,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": -95.59999989505741,
+      "d95_min_nm": 3.893520809955842,
+      "rms_min_z_offset_nm": -112.10000002392917,
+      "core_peak_uA": 1.3849999999999996,
+      "core_peak_z_offsets_nm": [
+        -10.1,
+        -10.0
+      ],
+      "rms_minus_d95_nm": -16.50000012887176,
+      "difference_bounds_nm": [
+        -16.700000060154707,
+        -16.29999997021514
+      ],
+      "input_digest": "ead9b2df4f07ab4caf09e3ccd246f3f5eb1fcc3eed874171583676dd2a17651a",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "4634eab822fc1150876ad9bd66f1e8c10f60bc39217f079f0eca761e89f1379c",
+      "native_grid_replay_max_error_nm": 3.4809759927992734e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-null-origin.json",
+      "settings_relative_to_balanced": [
+        -0.011474462516720574,
+        0.0002456749710243409,
+        0.002048130140385624,
+        0.020746493517494788,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1998815000002,
+            1599.1998895000002
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1998835000002,
+            1599.1998855000002
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1998855000002
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1998821000002,
+            1599.1998888
+          ],
+          "observed_planes": 2384,
+          "radial_bracket_mm": [
+            1599.1998854,
+            1599.1998855000002
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1998854
+        }
+      ]
+    },
+    "null-round": {
+      "tag": "null-round",
+      "trial": "null-ol-d95-final-2000",
+      "waist_offset_nm": -16.599999980826396,
+      "radial_bracket_nm": [
+        -16.6,
+        -16.5
+      ],
+      "finite_2d_region_nm": [
+        -19.9,
+        -13.2
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 4.355775719529008,
+      "crossover_rms_radius_nm": 2.9010339017983897,
+      "crossover_core_uA": 0.01999999999999999,
+      "surface_d95_nm": 3.8944789917277056,
+      "surface_rms_radius_nm": 2.914116359358418,
+      "surface_core_uA": 0.02499999999999999,
+      "alpha95_mrad": 29.739518564039173,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": -0.10000007932831068,
+      "d95_min_nm": 3.893094401890149,
+      "rms_min_z_offset_nm": -16.599999980826396,
+      "core_peak_uA": 1.3849999999999996,
+      "core_peak_z_offsets_nm": [
+        85.4
+      ],
+      "rms_minus_d95_nm": -16.499999901498086,
+      "difference_bounds_nm": [
+        -16.700000060154707,
+        -16.29999997021514
+      ],
+      "input_digest": "cd97d03f3d3854f96d0acd604f909780eb58a9dc34b3c5b104a23f3409e39c7c",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "a7485b09523356c70071eaa09d5faf5a1e9ae4e7eedf4747129deef86be65395",
+      "native_grid_replay_max_error_nm": 3.4804442780280585e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-null-round.json",
+      "settings_relative_to_balanced": [
+        -0.011474462516720574,
+        7.903604619333601e-05,
+        0.002048130140385624,
+        0.020746493517494788,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999755000002,
+            1599.1999855000001
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1999795000002,
+            1599.1999815000001
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999815000001
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999776,
+            1599.1999843
+          ],
+          "observed_planes": 2383,
+          "radial_bracket_mm": [
+            1599.1999809000001,
+            1599.1999810000002
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999809000001
+        }
+      ]
+    },
+    "null-shared-final": {
+      "tag": "null-shared-final",
+      "trial": "null-shared-cross-2000",
+      "waist_offset_nm": 0.0,
+      "radial_bracket_nm": [
+        0.0,
+        0.1
+      ],
+      "finite_2d_region_nm": [
+        -3.3,
+        3.4
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 4.355731428572395,
+      "crossover_rms_radius_nm": 2.901006867087194,
+      "crossover_core_uA": 0.01999999999999999,
+      "surface_d95_nm": 4.355731428572395,
+      "surface_rms_radius_nm": 2.901006867087194,
+      "surface_core_uA": 0.01999999999999999,
+      "alpha95_mrad": 29.739504865907882,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 16.499999901498086,
+      "d95_min_nm": 3.8930262209621493,
+      "rms_min_z_offset_nm": 0.0,
+      "core_peak_uA": 1.3849999999999996,
+      "core_peak_z_offsets_nm": [
+        102.0
+      ],
+      "rms_minus_d95_nm": -16.499999901498086,
+      "difference_bounds_nm": [
+        -16.700000060154707,
+        -16.29999997021514
+      ],
+      "input_digest": "35b00ca4645e5d66de535abcc6a9849f198edaba5659f1fd92ec988bdd1b27a1",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "341962efd5361ac1bd848ab57ab0edeb9f33fff281bdd4788e43fa3b65954a81",
+      "native_grid_replay_max_error_nm": 3.4806649786476695e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-null-shared-final.json",
+      "settings_relative_to_balanced": [
+        -0.011474462516720574,
+        5.0070536792800734e-05,
+        0.002048130140385624,
+        0.020746493517494788,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999935000001,
+            1599.2000015
+          ],
+          "observed_planes": 1089,
+          "radial_bracket_mm": [
+            1599.1999975,
+            1599.1999995
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999975
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999942000002,
+            1599.2000009
+          ],
+          "observed_planes": 2382,
+          "radial_bracket_mm": [
+            1599.1999975,
+            1599.1999976000002
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999975
+        }
+      ]
+    },
+    "null-upper-final": {
+      "tag": "null-upper-final",
+      "trial": "null-upper-cross-2000",
+      "waist_offset_nm": 0.0,
+      "radial_bracket_nm": [
+        0.0,
+        0.1
+      ],
+      "finite_2d_region_nm": [
+        -3.2,
+        3.4
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 4.356873658097477,
+      "crossover_rms_radius_nm": 2.901020004416445,
+      "crossover_core_uA": 0.01999999999999999,
+      "surface_d95_nm": 4.356873658097477,
+      "surface_rms_radius_nm": 2.901020004416445,
+      "surface_core_uA": 0.01999999999999999,
+      "alpha95_mrad": 29.73951167113948,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 16.599999980826396,
+      "d95_min_nm": 3.8928510073948965,
+      "rms_min_z_offset_nm": 0.0,
+      "core_peak_uA": 1.3849999999999996,
+      "core_peak_z_offsets_nm": [
+        102.1
+      ],
+      "rms_minus_d95_nm": -16.599999980826396,
+      "difference_bounds_nm": [
+        -16.800000139483018,
+        -16.399999822169775
+      ],
+      "input_digest": "272c2a967a618762959a0595a42211bba1c0cbc2a019efa440234893d6940eb2",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "4540734f2b7993c562070bbef1a5a9747784c5e5ebcf994d0f15665a4840d051",
+      "native_grid_replay_max_error_nm": 3.4808003542072258e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-null-upper-final.json",
+      "settings_relative_to_balanced": [
+        -0.011474462516720574,
+        0.0002456749710243409,
+        0.002048130140385624,
+        0.020746493517494788,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": {
+        "equivalent_upper_percent": 29.29308409517663,
+        "full_terms_after": [
+          [
+            0.02331754685798838,
+            1.5738500000000002,
+            0.0216
+          ],
+          [
+            0.2124487602616719,
+            1.5978500000000002,
+            0.013200000000000002
+          ],
+          [
+            0.02331754685798838,
+            1.6218500000000002,
+            0.0216
+          ],
+          [
+            0.02331783519652881,
+            1.57655,
+            0.0216
+          ],
+          [
+            0.21245138734615135,
+            1.60055,
+            0.013200000000000002
+          ],
+          [
+            0.02331783519652881,
+            1.62455,
+            0.0216
+          ]
+        ],
+        "full_terms_before": [
+          [
+            0.02331783519652881,
+            1.5738500000000002,
+            0.0216
+          ],
+          [
+            0.21245138734615135,
+            1.5978500000000002,
+            0.013200000000000002
+          ],
+          [
+            0.02331783519652881,
+            1.6218500000000002,
+            0.0216
+          ],
+          [
+            0.02331783519652881,
+            1.57655,
+            0.0216
+          ],
+          [
+            0.21245138734615135,
+            1.60055,
+            0.013200000000000002
+          ],
+          [
+            0.02331783519652881,
+            1.62455,
+            0.0216
+          ]
+        ],
+        "new_upper_peak_t": 0.8844430631268514,
+        "original_upper_peak_t": 0.884453999912932,
+        "scope": "Detached upper-field-only experiment using the existing upper magnetic amplitude; not an independent installed operating knob",
+        "shared_percent": 29.293446325610393,
+        "unchanged_lower_peak_t": 0.884453999912932,
+        "upper_term_count": 3
+      },
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999935000001,
+            1599.2000015
+          ],
+          "observed_planes": 1089,
+          "radial_bracket_mm": [
+            1599.1999975,
+            1599.1999995
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999975
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999943,
+            1599.2000009
+          ],
+          "observed_planes": 2382,
+          "radial_bracket_mm": [
+            1599.1999975,
+            1599.1999976000002
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999975
+        }
+      ]
+    },
+    "null-upper": {
+      "tag": "null-upper",
+      "trial": "null-upper-d95-2000",
+      "waist_offset_nm": -16.100000038932194,
+      "radial_bracket_nm": [
+        -16.1,
+        -16.0
+      ],
+      "finite_2d_region_nm": [
+        -19.3,
+        -12.7
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 4.356752645189406,
+      "crossover_rms_radius_nm": 2.901044335705888,
+      "crossover_core_uA": 0.01999999999999999,
+      "surface_d95_nm": 3.9074429045871586,
+      "surface_rms_radius_nm": 2.9133169123626135,
+      "surface_core_uA": 0.02499999999999999,
+      "alpha95_mrad": 29.739523979286435,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 0.4999999418942025,
+      "d95_min_nm": 3.89316418312839,
+      "rms_min_z_offset_nm": -16.100000038932194,
+      "core_peak_uA": 1.3849999999999996,
+      "core_peak_z_offsets_nm": [
+        86.0
+      ],
+      "rms_minus_d95_nm": -16.599999980826396,
+      "difference_bounds_nm": [
+        -16.799999912109342,
+        -16.40000004954345
+      ],
+      "input_digest": "4ce5520c45d3915f00389917f872888670ae47c9805716b9984a59f3ffd09a78",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "d449a43a10612006dd3f9b271ea786fdb3c8439e522acfbcb6ec4a8bfe826fed",
+      "native_grid_replay_max_error_nm": 3.4813865530364534e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-null-upper.json",
+      "settings_relative_to_balanced": [
+        -0.011474462516720574,
+        0.0002456749710243409,
+        0.002048130140385624,
+        0.020746493517494788,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": {
+        "equivalent_upper_percent": 29.293136119351445,
+        "full_terms_after": [
+          [
+            0.02331758826967893,
+            1.5738500000000002,
+            0.0216
+          ],
+          [
+            0.21244913756818581,
+            1.5978500000000002,
+            0.013200000000000002
+          ],
+          [
+            0.02331758826967893,
+            1.6218500000000002,
+            0.0216
+          ],
+          [
+            0.02331783519652881,
+            1.57655,
+            0.0216
+          ],
+          [
+            0.21245138734615135,
+            1.60055,
+            0.013200000000000002
+          ],
+          [
+            0.02331783519652881,
+            1.62455,
+            0.0216
+          ]
+        ],
+        "full_terms_before": [
+          [
+            0.02331783519652881,
+            1.5738500000000002,
+            0.0216
+          ],
+          [
+            0.21245138734615135,
+            1.5978500000000002,
+            0.013200000000000002
+          ],
+          [
+            0.02331783519652881,
+            1.6218500000000002,
+            0.0216
+          ],
+          [
+            0.02331783519652881,
+            1.57655,
+            0.0216
+          ],
+          [
+            0.21245138734615135,
+            1.60055,
+            0.013200000000000002
+          ],
+          [
+            0.02331783519652881,
+            1.62455,
+            0.0216
+          ]
+        ],
+        "new_upper_peak_t": 0.8844446338873891,
+        "original_upper_peak_t": 0.884453999912932,
+        "scope": "Detached upper-field-only experiment using the existing upper magnetic amplitude; not an independent installed operating knob",
+        "shared_percent": 29.293446325610393,
+        "unchanged_lower_peak_t": 0.884453999912932,
+        "upper_term_count": 3
+      },
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999775000002,
+            1599.1999855000001
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1999795000002,
+            1599.1999815000001
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999815000001
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999782,
+            1599.1999848
+          ],
+          "observed_planes": 2383,
+          "radial_bracket_mm": [
+            1599.1999814,
+            1599.1999815000001
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999814
+        }
+      ]
+    },
+    "placed-A-step025": {
+      "tag": "placed-A-step025",
+      "trial": "placed-A-step025",
+      "waist_offset_nm": 0.0,
+      "radial_bracket_nm": [
+        -0.1,
+        0.0
+      ],
+      "finite_2d_region_nm": [
+        -5.0,
+        4.8
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 2.7010006232546524,
+      "crossover_rms_radius_nm": 1.9012629457345234,
+      "crossover_core_uA": 1.5749999999999997,
+      "surface_d95_nm": 2.7010006232546524,
+      "surface_rms_radius_nm": 1.9012629457345234,
+      "surface_core_uA": 1.5749999999999997,
+      "alpha95_mrad": 29.749047043940003,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 23.199999986900366,
+      "d95_min_nm": 1.9619329406806965,
+      "rms_min_z_offset_nm": 0.0,
+      "core_peak_uA": 1.6149999999999998,
+      "core_peak_z_offsets_nm": [
+        2.6
+      ],
+      "rms_minus_d95_nm": -23.199999986900366,
+      "difference_bounds_nm": [
+        -23.400000145556987,
+        -22.999999828243745
+      ],
+      "input_digest": "55e71043067c8b114fbc603ae98e0e96e669cd37ffc334c56ec868ad9f7272fd",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "f1306bc9ddbfd121afadc6ca7b411f3cec3a917d8c52cd56d4c499cd368ca151",
+      "native_grid_replay_max_error_nm": 9.60164008720566e-08,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-placed-A-step025.json",
+      "settings_relative_to_balanced": [
+        0.0022408935181494893,
+        0.00023607796481161608,
+        0.002046094402188542,
+        0.02096568515264785,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999915000001,
+            1599.2000035
+          ],
+          "observed_planes": 1089,
+          "radial_bracket_mm": [
+            1599.1999955,
+            1599.1999975
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999975
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999925,
+            1599.2000023
+          ],
+          "observed_planes": 1887,
+          "radial_bracket_mm": [
+            1599.1999974,
+            1599.1999975
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999975
+        }
+      ]
+    },
+    "placed-A": {
+      "tag": "placed-A",
+      "trial": "round2-placed-A-2000",
+      "waist_offset_nm": 0.0,
+      "radial_bracket_nm": [
+        -0.1,
+        0.0
+      ],
+      "finite_2d_region_nm": [
+        -5.0,
+        4.8
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 2.7009834472999716,
+      "crossover_rms_radius_nm": 1.9012631508954618,
+      "crossover_core_uA": 1.5749999999999997,
+      "surface_d95_nm": 2.7009834472999716,
+      "surface_rms_radius_nm": 1.9012631508954618,
+      "surface_core_uA": 1.5749999999999997,
+      "alpha95_mrad": 29.749047030650008,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 23.199999986900366,
+      "d95_min_nm": 1.9619361168135754,
+      "rms_min_z_offset_nm": 0.0,
+      "core_peak_uA": 1.6149999999999998,
+      "core_peak_z_offsets_nm": [
+        2.6
+      ],
+      "rms_minus_d95_nm": -23.199999986900366,
+      "difference_bounds_nm": [
+        -23.400000145556987,
+        -22.999999828243745
+      ],
+      "input_digest": "89cd9d307e6fbc1690722d08d1861f0abeef2fe0fffbf3f01e9104c1240aa312",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "f1306bc9ddbfd121afadc6ca7b411f3cec3a917d8c52cd56d4c499cd368ca151",
+      "native_grid_replay_max_error_nm": 3.4843760077442446e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-placed-A.json",
+      "settings_relative_to_balanced": [
+        0.0022408935181494893,
+        0.00023607796481161608,
+        0.002046094402188542,
+        0.02096568515264785,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999915000001,
+            1599.2000035
+          ],
+          "observed_planes": 1089,
+          "radial_bracket_mm": [
+            1599.1999955,
+            1599.1999975
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999975
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999925,
+            1599.2000023
+          ],
+          "observed_planes": 1887,
+          "radial_bracket_mm": [
+            1599.1999974,
+            1599.1999975
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999975
+        }
+      ]
+    },
+    "placed-B": {
+      "tag": "placed-B",
+      "trial": "round2-placed-B-2000",
+      "waist_offset_nm": 0.0,
+      "radial_bracket_nm": [
+        -0.1,
+        0.0
+      ],
+      "finite_2d_region_nm": [
+        -4.8,
+        4.7
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 2.745057734970333,
+      "crossover_rms_radius_nm": 1.9546348741600406,
+      "crossover_core_uA": 1.7199999999999995,
+      "surface_d95_nm": 2.745057734970333,
+      "surface_rms_radius_nm": 1.9546348741600406,
+      "surface_core_uA": 1.7199999999999995,
+      "alpha95_mrad": 29.748656929723573,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 23.00000005561742,
+      "d95_min_nm": 1.955869671524987,
+      "rms_min_z_offset_nm": 0.0,
+      "core_peak_uA": 1.89,
+      "core_peak_z_offsets_nm": [
+        7.5,
+        7.7
+      ],
+      "rms_minus_d95_nm": -23.00000005561742,
+      "difference_bounds_nm": [
+        -23.199999986900366,
+        -22.7999998969608
+      ],
+      "input_digest": "60ed314e82f38404249a794425cf8f5f601021d93fbf576f5bb72bb3d57dc36d",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "17c390187601f649e7241f0e523ac5da71aa4fbeb9e4134e259b4e02ac873c81",
+      "native_grid_replay_max_error_nm": 3.48218926645156e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-placed-B.json",
+      "settings_relative_to_balanced": [
+        0.002169796661999568,
+        0.00023311161748726888,
+        0.00204889747760568,
+        0.020777604912875614,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999915000001,
+            1599.2000035
+          ],
+          "observed_planes": 1089,
+          "radial_bracket_mm": [
+            1599.1999955,
+            1599.1999975
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999975
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999927000002,
+            1599.2000022000002
+          ],
+          "observed_planes": 1887,
+          "radial_bracket_mm": [
+            1599.1999974,
+            1599.1999975
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999975
+        }
+      ]
+    },
+    "placed-C": {
+      "tag": "placed-C",
+      "trial": "round2-placed-C-2000",
+      "waist_offset_nm": 0.0,
+      "radial_bracket_nm": [
+        -0.1,
+        0.0
+      ],
+      "finite_2d_region_nm": [
+        -4.8,
+        4.8
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 2.756288257410662,
+      "crossover_rms_radius_nm": 1.9319498082369215,
+      "crossover_core_uA": 1.8549999999999998,
+      "surface_d95_nm": 2.756288257410662,
+      "surface_rms_radius_nm": 1.9319498082369215,
+      "surface_core_uA": 1.8549999999999998,
+      "alpha95_mrad": 29.748945923552267,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 24.799999891911284,
+      "d95_min_nm": 1.952007776481056,
+      "rms_min_z_offset_nm": 0.0,
+      "core_peak_uA": 1.8699999999999999,
+      "core_peak_z_offsets_nm": [
+        0.8,
+        4.9,
+        5.0,
+        5.2
+      ],
+      "rms_minus_d95_nm": -24.799999891911284,
+      "difference_bounds_nm": [
+        -25.000000050567905,
+        -24.599999960628338
+      ],
+      "input_digest": "0b5554a40c744c84654b086d1d9ef5c63c0b5ac121db6f488dd0d3a5362fce33",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "95b194788a480c622dda506c28ee48117e1859b05a5cdf88b249139c2fd311d2",
+      "native_grid_replay_max_error_nm": 3.4832751247073387e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-placed-C.json",
+      "settings_relative_to_balanced": [
+        0.0025353169029203038,
+        0.00023817185713391917,
+        0.002052032081864085,
+        0.02079220572154772,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999915000001,
+            1599.2000035
+          ],
+          "observed_planes": 1089,
+          "radial_bracket_mm": [
+            1599.1999955,
+            1599.1999975
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999975
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999927000002,
+            1599.2000023
+          ],
+          "observed_planes": 1887,
+          "radial_bracket_mm": [
+            1599.1999974,
+            1599.1999975
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999975
+        }
+      ]
+    },
+    "placed-D": {
+      "tag": "placed-D",
+      "trial": "round4-placed-D-2000",
+      "waist_offset_nm": 0.0,
+      "radial_bracket_nm": [
+        -0.1,
+        0.0
+      ],
+      "finite_2d_region_nm": [
+        -5.2,
+        5.0
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 2.733721030084705,
+      "crossover_rms_radius_nm": 1.8928895991223844,
+      "crossover_core_uA": 1.7049999999999998,
+      "surface_d95_nm": 2.733721030084705,
+      "surface_rms_radius_nm": 1.8928895991223844,
+      "surface_core_uA": 1.7049999999999998,
+      "alpha95_mrad": 29.7414125415906,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 23.69999992879457,
+      "d95_min_nm": 1.9853341911071594,
+      "rms_min_z_offset_nm": 0.0,
+      "core_peak_uA": 1.7149999999999996,
+      "core_peak_z_offsets_nm": [
+        -0.2
+      ],
+      "rms_minus_d95_nm": -23.69999992879457,
+      "difference_bounds_nm": [
+        -23.90000008745119,
+        -23.499999997511622
+      ],
+      "input_digest": "98f7b2c93fe5f064c8741a7ddf11620457a4566633e1ece04492e426276b7f30",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "ca160c49b2a202e6fc91fd4b467ab612529a8704bf4e1905216f4315e206d219",
+      "native_grid_replay_max_error_nm": 3.486905013070985e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-placed-D.json",
+      "settings_relative_to_balanced": [
+        0.00310350001711579,
+        1.7964188908810828e-05,
+        0.001943261713120364,
+        0.020823059653996223,
+        -0.0659997569824428,
+        0.06740829255851365,
+        -0.08703025680355664,
+        0.12281614203193861
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999915000001,
+            1599.2000035
+          ],
+          "observed_planes": 1089,
+          "radial_bracket_mm": [
+            1599.1999955,
+            1599.1999975
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999975
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999923,
+            1599.2000025000002
+          ],
+          "observed_planes": 1887,
+          "radial_bracket_mm": [
+            1599.1999974,
+            1599.1999975
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999975
+        }
+      ]
+    },
+    "placed-E": {
+      "tag": "placed-E",
+      "trial": "round4-placed-E-2000",
+      "waist_offset_nm": 0.0,
+      "radial_bracket_nm": [
+        0.0,
+        0.1
+      ],
+      "finite_2d_region_nm": [
+        -4.5,
+        4.5
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 2.7463685010086185,
+      "crossover_rms_radius_nm": 1.9332674061748225,
+      "crossover_core_uA": 1.4349999999999996,
+      "surface_d95_nm": 2.7463685010086185,
+      "surface_rms_radius_nm": 1.9332674061748225,
+      "surface_core_uA": 1.4349999999999996,
+      "alpha95_mrad": 29.748933417059156,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 28.80000010918593,
+      "d95_min_nm": 2.005007965275069,
+      "rms_min_z_offset_nm": 0.0,
+      "core_peak_uA": 1.5399999999999996,
+      "core_peak_z_offsets_nm": [
+        3.5
+      ],
+      "rms_minus_d95_nm": -28.80000010918593,
+      "difference_bounds_nm": [
+        -29.000000040468876,
+        -28.59999995052931
+      ],
+      "input_digest": "e423a48b6f15190fdee3540c933be4d8c72251274f704ba90928fc6e854c9a94",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "ce5e6db0460bf88133a5f31ab575412fc20a62a83d6019d1f36549494b4e8e5e",
+      "native_grid_replay_max_error_nm": 3.4833395422848524e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-placed-E.json",
+      "settings_relative_to_balanced": [
+        0.0018959894033874214,
+        0.0004180720993449327,
+        0.0016831301374735108,
+        0.0200390005706923,
+        -0.20865036503756076,
+        0.09094298991716028,
+        -0.09632072158891442,
+        0.11705822409865417
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999915000001,
+            1599.2000035
+          ],
+          "observed_planes": 1089,
+          "radial_bracket_mm": [
+            1599.1999975,
+            1599.1999995
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999975
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999930000002,
+            1599.200002
+          ],
+          "observed_planes": 1906,
+          "radial_bracket_mm": [
+            1599.1999975,
+            1599.1999976000002
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999975
+        }
+      ]
+    },
+    "placed-overlap": {
+      "tag": "placed-overlap",
+      "trial": "round4-overlap-2000",
+      "waist_offset_nm": 0.0,
+      "radial_bracket_nm": [
+        0.0,
+        0.1
+      ],
+      "finite_2d_region_nm": [
+        -5.3,
+        5.4
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 6.852643380296762,
+      "crossover_rms_radius_nm": 2.4511831285995704,
+      "crossover_core_uA": 0.46499999999999997,
+      "surface_d95_nm": 6.852643380296762,
+      "surface_rms_radius_nm": 2.4511831285995704,
+      "surface_core_uA": 0.46499999999999997,
+      "alpha95_mrad": 29.74817526457327,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 0.4999999418942025,
+      "d95_min_nm": 6.832694099955383,
+      "rms_min_z_offset_nm": 0.0,
+      "core_peak_uA": 0.46499999999999997,
+      "core_peak_z_offsets_nm": [
+        -0.2,
+        -0.1,
+        0.0
+      ],
+      "rms_minus_d95_nm": -0.4999999418942025,
+      "difference_bounds_nm": [
+        -0.7000001005508238,
+        -0.3000000106112566
+      ],
+      "input_digest": "cfb4f328fae98afbe48d479851d043e8ce595a4aa8702a154bbd11a08dcba28e",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "f742eb51bb9fc0ee90c27aac9e240212673de4800d7773e0a1cb5cfe364eb7db",
+      "native_grid_replay_max_error_nm": 3.4833270834965386e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-placed-overlap.json",
+      "settings_relative_to_balanced": [
+        -0.0015645576420428853,
+        0.00019943485036155164,
+        0.0018479504355436952,
+        0.022406368357484663,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999915000001,
+            1599.2000035
+          ],
+          "observed_planes": 1089,
+          "radial_bracket_mm": [
+            1599.1999975,
+            1599.1999995
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999975
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999922,
+            1599.2000029
+          ],
+          "observed_planes": 1659,
+          "radial_bracket_mm": [
+            1599.1999975,
+            1599.1999976000002
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999975
+        }
+      ]
+    },
+    "placed-shorter-gap": {
+      "tag": "placed-shorter-gap",
+      "trial": "round4-shorter-gap-2000",
+      "waist_offset_nm": 0.0,
+      "radial_bracket_nm": [
+        -0.1,
+        0.0
+      ],
+      "finite_2d_region_nm": [
+        -4.7,
+        4.5
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 2.9204668344745923,
+      "crossover_rms_radius_nm": 1.9967008560553254,
+      "crossover_core_uA": 1.6949999999999996,
+      "surface_d95_nm": 2.9204668344745923,
+      "surface_rms_radius_nm": 1.9967008560553254,
+      "surface_core_uA": 1.6949999999999996,
+      "alpha95_mrad": 29.748423486398792,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 19.999999949504854,
+      "d95_min_nm": 2.2210044587902575,
+      "rms_min_z_offset_nm": 0.0,
+      "core_peak_uA": 2.065,
+      "core_peak_z_offsets_nm": [
+        6.0,
+        6.1
+      ],
+      "rms_minus_d95_nm": -19.999999949504854,
+      "difference_bounds_nm": [
+        -20.200000108161476,
+        -19.80000001822191
+      ],
+      "input_digest": "31e97227826f0a79c7092c15edf3a71f320e77e57569f97cecbd71e33f42ba4d",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "7194c121f6ce4843d8c75203611acb48c36bc8ad38a4ec713022e49abe82ce82",
+      "native_grid_replay_max_error_nm": 3.482771334965225e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-placed-shorter-gap.json",
+      "settings_relative_to_balanced": [
+        0.002157112031258679,
+        0.00023171568940464905,
+        0.0020498799668423264,
+        0.020656464211410652,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999915000001,
+            1599.2000035
+          ],
+          "observed_planes": 1089,
+          "radial_bracket_mm": [
+            1599.1999955,
+            1599.1999975
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999975
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999928,
+            1599.200002
+          ],
+          "observed_planes": 1849,
+          "radial_bracket_mm": [
+            1599.1999974,
+            1599.1999975
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999975
+        }
+      ]
+    },
+    "shape-A": {
+      "tag": "shape-A",
+      "trial": "round1-shape-A-2000",
+      "waist_offset_nm": -5.500000042957254,
+      "radial_bracket_nm": [
+        -5.6,
+        -5.5
+      ],
+      "finite_2d_region_nm": [
+        -10.5,
+        -0.7
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 2.700990862661209,
+      "crossover_rms_radius_nm": 1.9012702421269694,
+      "crossover_core_uA": 1.5749999999999997,
+      "surface_d95_nm": 2.5325735826751345,
+      "surface_rms_radius_nm": 1.9035034675175075,
+      "surface_core_uA": 1.5549999999999997,
+      "alpha95_mrad": 29.74905157053925,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 17.699999943943112,
+      "d95_min_nm": 1.9619359827806593,
+      "rms_min_z_offset_nm": -5.500000042957254,
+      "core_peak_uA": 1.6149999999999998,
+      "core_peak_z_offsets_nm": [
+        -2.9
+      ],
+      "rms_minus_d95_nm": -23.199999986900366,
+      "difference_bounds_nm": [
+        -23.399999918183312,
+        -23.00000005561742
+      ],
+      "input_digest": "fa6a3458287bc6f0a180c200fcc889332471f81a37cd061cd858d7f9da0f8b63",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "ed53e3c4141a11dd9c472abe619db4921fa94f914c9e71f7322c0c55a55f524f",
+      "native_grid_replay_max_error_nm": 3.4824278014427702e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-shape-A.json",
+      "settings_relative_to_balanced": [
+        0.0022408935181494893,
+        0.0002456749710243409,
+        0.002046094402188542,
+        0.02096568515264785,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999875000001,
+            1599.1999975
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1999915000001,
+            1599.1999935000001
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999915000001
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999870000002,
+            1599.1999968
+          ],
+          "observed_planes": 1888,
+          "radial_bracket_mm": [
+            1599.1999919000002,
+            1599.199992
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.199992
+        }
+      ]
+    },
+    "shape-B": {
+      "tag": "shape-B",
+      "trial": "round1-shape-B-2000",
+      "waist_offset_nm": -7.200000027296483,
+      "radial_bracket_nm": [
+        -7.3,
+        -7.2
+      ],
+      "finite_2d_region_nm": [
+        -12.0,
+        -2.5
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 2.745051444824009,
+      "crossover_rms_radius_nm": 1.9546440949333586,
+      "crossover_core_uA": 1.7199999999999995,
+      "surface_d95_nm": 2.495549662308802,
+      "surface_rms_radius_nm": 1.9583314758636328,
+      "surface_core_uA": 1.865,
+      "alpha95_mrad": 29.748662872778727,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 15.800000028320937,
+      "d95_min_nm": 1.9558989137024978,
+      "rms_min_z_offset_nm": -7.200000027296483,
+      "core_peak_uA": 1.89,
+      "core_peak_z_offsets_nm": [
+        0.3,
+        0.5
+      ],
+      "rms_minus_d95_nm": -23.00000005561742,
+      "difference_bounds_nm": [
+        -23.20000021427404,
+        -22.7999998969608
+      ],
+      "input_digest": "3fbf95690d9cf62fbef1140a3cf4b9e295c65588a62d82e61ecb692a1c2bd9f1",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "6d766b91692e9fc371366c34fc340ec7efcbdd220875d10c06725eff392c5ecc",
+      "native_grid_replay_max_error_nm": 3.48287405577262e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-shape-B.json",
+      "settings_relative_to_balanced": [
+        0.002169796661999568,
+        0.0002456749710243409,
+        0.00204889747760568,
+        0.020777604912875614,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999855000001,
+            1599.1999975
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1999895000001,
+            1599.1999915000001
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999895000001
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999855000001,
+            1599.1999950000002
+          ],
+          "observed_planes": 1907,
+          "radial_bracket_mm": [
+            1599.1999902,
+            1599.1999903
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999903
+        }
+      ]
+    },
+    "shape-C": {
+      "tag": "shape-C",
+      "trial": "round1-shape-C-2000",
+      "waist_offset_nm": -4.300000000512227,
+      "radial_bracket_nm": [
+        -4.4,
+        -4.3
+      ],
+      "finite_2d_region_nm": [
+        -9.1,
+        0.5
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 2.75629504990442,
+      "crossover_rms_radius_nm": 1.9319552377337037,
+      "crossover_core_uA": 1.8549999999999998,
+      "surface_d95_nm": 2.5948136194764744,
+      "surface_rms_radius_nm": 1.9332821240223912,
+      "surface_core_uA": 1.8349999999999997,
+      "alpha95_mrad": 29.748949472909736,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 20.499999891399057,
+      "d95_min_nm": 1.9520060792404668,
+      "rms_min_z_offset_nm": -4.300000000512227,
+      "core_peak_uA": 1.8699999999999999,
+      "core_peak_z_offsets_nm": [
+        -3.5,
+        0.6,
+        0.7,
+        0.9
+      ],
+      "rms_minus_d95_nm": -24.799999891911284,
+      "difference_bounds_nm": [
+        -25.000000050567905,
+        -24.599999960628338
+      ],
+      "input_digest": "17a97f8f05eec384bf7b305dd163a79457bbf350801d6be20284e2617d7b395c",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "8c9cb116dead203a543d5140bb6612caccd75d002a6af0402679e724a99bb845",
+      "native_grid_replay_max_error_nm": 3.4826861233796197e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-shape-C.json",
+      "settings_relative_to_balanced": [
+        0.0025353169029203038,
+        0.0002456749710243409,
+        0.002052032081864085,
+        0.02079220572154772,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999875000001,
+            1599.1999995
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1999915000001,
+            1599.1999935000001
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999935000001
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999884000002,
+            1599.199998
+          ],
+          "observed_planes": 1888,
+          "radial_bracket_mm": [
+            1599.1999931,
+            1599.1999932
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999932
+        }
+      ]
+    },
+    "shape-D": {
+      "tag": "shape-D",
+      "trial": "round3-shape-D-2000",
+      "waist_offset_nm": -125.00000002546585,
+      "radial_bracket_nm": [
+        -125.1,
+        -125.0
+      ],
+      "finite_2d_region_nm": [
+        -130.2,
+        -120.0
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 2.7346609486735565,
+      "crossover_rms_radius_nm": 1.8930504694998738,
+      "crossover_core_uA": 1.7049999999999998,
+      "surface_d95_nm": 7.0598441538050425,
+      "surface_rms_radius_nm": 2.8126803843844383,
+      "surface_core_uA": 0.0049999999999999975,
+      "alpha95_mrad": 29.74151569621787,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": -101.30000009667128,
+      "d95_min_nm": 1.9853282055156827,
+      "rms_min_z_offset_nm": -125.00000002546585,
+      "core_peak_uA": 1.7099999999999997,
+      "core_peak_z_offsets_nm": [
+        -125.1
+      ],
+      "rms_minus_d95_nm": -23.69999992879457,
+      "difference_bounds_nm": [
+        -23.90000008745119,
+        -23.499999997511622
+      ],
+      "input_digest": "c682aefa15d1ec9b0aef24c8ce71e5857830d0172d2aef55e36c1495bc5c2106",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "a48e6de58de7d6b3de975894370fcff5c3db3ef4ff84e15eeb64dc9b4c8fe0f6",
+      "native_grid_replay_max_error_nm": 3.4867521473600538e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-shape-D.json",
+      "settings_relative_to_balanced": [
+        0.00310350001711579,
+        0.00023607796481161608,
+        0.001943261713120364,
+        0.020823059653996223,
+        -0.0659997569824428,
+        0.06740829255851365,
+        -0.08703025680355664,
+        0.12281614203193861
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1998675000002,
+            1599.1998795000002
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1998715000002,
+            1599.1998735000002
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1998715000002
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1998673,
+            1599.1998775000002
+          ],
+          "observed_planes": 1889,
+          "radial_bracket_mm": [
+            1599.1998724,
+            1599.1998725
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1998725
+        }
+      ]
+    },
+    "shape-E": {
+      "tag": "shape-E",
+      "trial": "round3-shape-E-2000",
+      "waist_offset_nm": 104.29999997541017,
+      "radial_bracket_nm": [
+        104.3,
+        104.4
+      ],
+      "finite_2d_region_nm": [
+        99.8,
+        108.8
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 2.746164018830599,
+      "crossover_rms_radius_nm": 1.933132111179352,
+      "crossover_core_uA": 1.4399999999999995,
+      "surface_d95_nm": 7.7131376557913125,
+      "surface_rms_radius_nm": 2.5981557175999144,
+      "surface_core_uA": 0.01999999999999999,
+      "alpha95_mrad": 29.748847325740766,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 133.1000000845961,
+      "d95_min_nm": 2.004869385730805,
+      "rms_min_z_offset_nm": 104.29999997541017,
+      "core_peak_uA": 1.5349999999999997,
+      "core_peak_z_offsets_nm": [
+        107.0,
+        107.1,
+        107.8,
+        107.9,
+        108.8,
+        108.9
+      ],
+      "rms_minus_d95_nm": -28.80000010918593,
+      "difference_bounds_nm": [
+        -29.000000040468876,
+        -28.59999995052931
+      ],
+      "input_digest": "5f927fd12520e2680c14ffda523adf08357f9baca2b2e308d1e16a6b967a9b4c",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "4e9bdd2def0d921ee8cd9612cd53025c3d733f65a37ce5601dbc78302e580f63",
+      "native_grid_replay_max_error_nm": 3.4826508069148123e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-shape-E.json",
+      "settings_relative_to_balanced": [
+        0.0018959894033874214,
+        0.00023607796481161608,
+        0.0016831301374735108,
+        0.0200390005706923,
+        -0.20865036503756076,
+        0.09094298991716028,
+        -0.09632072158891442,
+        0.11705822409865417
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.2000975,
+            1599.2001075
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.2001015,
+            1599.2001035
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.2001015
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.2000973000002,
+            1599.2001063
+          ],
+          "observed_planes": 1908,
+          "radial_bracket_mm": [
+            1599.2001018,
+            1599.2001019000002
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.2001018
+        }
+      ]
+    },
+    "shape-overlap": {
+      "tag": "shape-overlap",
+      "trial": "round3-overlap-2000",
+      "waist_offset_nm": -21.000000060666935,
+      "radial_bracket_nm": [
+        -21.0,
+        -20.9
+      ],
+      "finite_2d_region_nm": [
+        -26.3,
+        -15.6
+      ],
+      "surface_in_region": false,
+      "crossover_d95_nm": 6.852687112900058,
+      "crossover_rms_radius_nm": 2.4512061573991297,
+      "crossover_core_uA": 0.46499999999999997,
+      "surface_d95_nm": 6.8639604603069655,
+      "surface_rms_radius_nm": 2.4759101045588596,
+      "surface_core_uA": 0.4099999999999999,
+      "alpha95_mrad": 29.748192598190926,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": -20.499999891399057,
+      "d95_min_nm": 6.832737734270725,
+      "rms_min_z_offset_nm": -21.000000060666935,
+      "core_peak_uA": 0.46499999999999997,
+      "core_peak_z_offsets_nm": [
+        -21.2,
+        -21.1,
+        -21.0
+      ],
+      "rms_minus_d95_nm": -0.5000001692678779,
+      "difference_bounds_nm": [
+        -0.6999998731771484,
+        -0.3000000106112566
+      ],
+      "input_digest": "5d2cf96f119f5b5e6cbd48d459af34ccd03108d8d5ba01f5faff2f07d26018b4",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "b64cf05c03f87145bd734b829ffda43da23b1f07f3b0fe2ba2c8b5d39465fd8e",
+      "native_grid_replay_max_error_nm": 3.4827789601885735e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-shape-overlap.json",
+      "settings_relative_to_balanced": [
+        -0.0015645576420428853,
+        0.00023607796481161608,
+        0.0018479504355436952,
+        0.022406368357484663,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999695000002,
+            1599.1999815000001
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1999755000002,
+            1599.1999775000002
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999775000002
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999712000002,
+            1599.1999819
+          ],
+          "observed_planes": 1680,
+          "radial_bracket_mm": [
+            1599.1999765,
+            1599.1999766000001
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999765
+        }
+      ]
+    },
+    "shape-shorter-gap": {
+      "tag": "shape-shorter-gap",
+      "trial": "round3-shorter-gap-2000",
+      "waist_offset_nm": -2.499999936844688,
+      "radial_bracket_nm": [
+        -2.6,
+        -2.5
+      ],
+      "finite_2d_region_nm": [
+        -7.2,
+        2.0
+      ],
+      "surface_in_region": true,
+      "crossover_d95_nm": 2.9204644441016803,
+      "crossover_rms_radius_nm": 1.996704022916738,
+      "crossover_core_uA": 1.6949999999999996,
+      "surface_d95_nm": 2.7955402600383414,
+      "surface_rms_radius_nm": 1.9971530092356056,
+      "surface_core_uA": 1.8549999999999998,
+      "alpha95_mrad": 29.748425549945335,
+      "transmitted_uA": 10.0,
+      "survivors": 2000,
+      "effective_particles": 2000.000000000003,
+      "d95_min_z_offset_nm": 17.500000012660166,
+      "d95_min_nm": 2.2210028541473976,
+      "rms_min_z_offset_nm": -2.499999936844688,
+      "core_peak_uA": 2.065,
+      "core_peak_z_offsets_nm": [
+        3.5,
+        3.6
+      ],
+      "rms_minus_d95_nm": -19.999999949504854,
+      "difference_bounds_nm": [
+        -20.200000108161476,
+        -19.80000001822191
+      ],
+      "input_digest": "6a41ba4db5a2b01f8b32bd569b7e2919bb42c5a680dedbbf749068db68a716a0",
+      "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+      "field_digest": "51ca3b60c502aa7323d85573c13b653631a186897bf920698336787e9e2eb44b",
+      "native_grid_replay_max_error_nm": 3.483324587854836e-06,
+      "full_record": "outputs\\probe-joint-d95-20261101\\cross-shape-shorter-gap.json",
+      "settings_relative_to_balanced": [
+        0.002157112031258679,
+        0.00023607796481161608,
+        0.0020498799668423264,
+        0.020656464211410652,
+        -0.13748617871405505,
+        0.057560875004888795,
+        -0.09170737357881768,
+        0.11920420765418809
+      ],
+      "upper_only": null,
+      "refinement": [
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999895000001,
+            1599.1999995
+          ],
+          "observed_planes": 1090,
+          "radial_bracket_mm": [
+            1599.1999935000001,
+            1599.1999955
+          ],
+          "round": 1,
+          "waist_z_mm": 1599.1999955
+        },
+        {
+          "finite_2d_bracket_mm": [
+            1599.1999903,
+            1599.1999995
+          ],
+          "observed_planes": 1850,
+          "radial_bracket_mm": [
+            1599.1999949,
+            1599.1999950000002
+          ],
+          "round": 2,
+          "waist_z_mm": 1599.1999950000002
+        }
+      ]
+    }
+  }
+}

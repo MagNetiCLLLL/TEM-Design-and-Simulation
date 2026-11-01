@@ -1,0 +1,35 @@
+{
+  "schema": "probe-image-history-v1",
+  "policy": "Every generated probe figure gets a distinct stage path and raw current kernel; no overwrites",
+  "stages": [
+    {
+      "stage": "step01",
+      "purpose": "unchanged accepted A5 replay",
+      "image": "step01/incident-probe.png",
+      "current": "step01/current.npz",
+      "reference_id": "eb28a2681f88ae033d2dc74fac2c0fdf88bf5e6bfd8ea210137c04b7f6e69acb",
+      "input_digest": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+      "source_count": 2000,
+      "image_sha256": "a01e0c56109cb1809efdb062ec0b64613b57c910f2d7889507ddb3e37f41522a",
+      "current_sha256": "651dc8cee25c3cb1d52d956a47f29a7a80c67bbe175d6584df0f4def74e3e6e5"
+    },
+    {
+      "stage": "step02",
+      "purpose": "detached field drive audit",
+      "same_physical_working_point": true,
+      "related_image": "step01/incident-probe.png",
+      "new_probe_propagation": false
+    },
+    {
+      "stage": "step01-clean-checkout",
+      "purpose": "Fresh replay from staged clean Git checkout",
+      "image": "step01-clean-checkout/incident-probe.png",
+      "current": "step01-clean-checkout/current.npz",
+      "reference_id": "eb28a2681f88ae033d2dc74fac2c0fdf88bf5e6bfd8ea210137c04b7f6e69acb",
+      "input_digest": "6fcae5799da799a95a76d3c7a766650650b769edced71604e76d5a43720d088b",
+      "source_count": 2000,
+      "image_sha256": "a01e0c56109cb1809efdb062ec0b64613b57c910f2d7889507ddb3e37f41522a",
+      "current_sha256": "651dc8cee25c3cb1d52d956a47f29a7a80c67bbe175d6584df0f4def74e3e6e5"
+    }
+  ]
+}
