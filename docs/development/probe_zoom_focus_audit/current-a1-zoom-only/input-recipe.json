@@ -1,0 +1,23 @@
+{
+  "baseline_input": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "baseline_package": "docs/development/probe_stage12_20261101/inputs/portable-probe.temwp",
+  "changes": {
+    "ADL": -799.9998708231669,
+    "C2": -1942.0070415799273,
+    "C3lens": 2761.6725686565183,
+    "HP1": 31.076657223316847,
+    "HP2": 17.469352792629504,
+    "Mini": -3999.999999264912,
+    "Objective": 1622.027226447988,
+    "TL12": -195.50820656967588,
+    "TL21": 51.42456857030065,
+    "TL22": 55.75209833164711,
+    "strength_x_percent": -0.0005030845310265202,
+    "strength_y_percent": -0.012000878802770813
+  },
+  "expected_input": "eed91e73d702d99c2e5e5618aa75ab64abbcbfc8cbd34672ef6775af0733c8a1",
+  "full_snapshot_local": "outputs\\probe-zoom-focus-audit\\current-a1-zoom-only\\snapshot.json",
+  "matched_parent": "7938487c424d14ceb1c985da6fb6ee6b775fc77da1bf078f1ed5d494718a6eb3",
+  "maximum_step_mm": 0.05,
+  "restoration": "Restore portable baseline, call check_probe_zoom20.configure(), correct_joint_probe_a1.apply_trim(state, changes), then set state.step_mm."
+}

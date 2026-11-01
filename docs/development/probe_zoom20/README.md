@@ -5,6 +5,10 @@ first source image after ADL moves by 0.275 mm. Switching the two main
 hexapoles off at each focused setting measures their signed contribution
 to geometric spherical aberration. Both comparisons give about −6.640 mm.
 The 30 mrad reference retains a brighter central core on the specimen.
+Here “focused” refers to the finite two-dimensional envelope waist. The
+[final-stage focus audit](../probe_zoom_focus_audit/README.md) traces the
+same imaged probe through its brightest-core and minimum-D95 planes and
+quantifies the effect of this choice on the surface current.
 The focused [20 mrad working point](zoom-focused/zoom-inputs.temwp) restores
 the verified optical inputs. Halving the integration step from 0.05 to
 0.025 mm reproduced the measured waist offset and 50 pm disk current.

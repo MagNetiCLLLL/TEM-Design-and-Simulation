@@ -1,0 +1,296 @@
+{
+  "archived_positions_sha256": "e1331c9dc8297c1940e199dc89114a6e24917e0eb551c4b9f25049c46d5825db",
+  "core_max_a": 4.175e-06,
+  "example_core_plane": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 19.985241212703098,
+    "centroid_x_m": -3.724938764792464e-13,
+    "centroid_y_m": -1.2655476780848916e-12,
+    "core_50pm_a": 4.175e-06,
+    "current_a": 1e-05,
+    "d50_nm": 0.15173492114832063,
+    "d90_nm": 1.3742350895715068,
+    "d95_nm": 1.786770417929747,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": -28.05000008265779,
+    "rms_radius_nm": 0.3734219647808955,
+    "surviving_rays": 2000,
+    "z_mm": 1599.19996945
+  },
+  "input_digest": "5328e7cd4398a7059fc0bb1bfe70bad8ef6b981f16ed7a7fcad975ed34462783",
+  "maximal_core_offsets_nm": [
+    -28.05
+  ],
+  "maximum_surface_repeat_error_nm": 1.0913711196632123e-07,
+  "minimum_d95": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 19.98524121270137,
+    "centroid_x_m": -6.5720685925498e-13,
+    "centroid_y_m": -7.116846006100353e-13,
+    "core_50pm_a": 5.950000000000001e-07,
+    "current_a": 1e-05,
+    "d50_nm": 0.33272331810058325,
+    "d90_nm": 0.5215309564450249,
+    "d95_nm": 0.6000053237495458,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": 3.5000000480067683,
+    "rms_radius_nm": 0.2062597190480809,
+    "surviving_rays": 2000,
+    "z_mm": 1599.2000010000002
+  },
+  "minimum_rms": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 19.98524121270155,
+    "centroid_x_m": -6.26073232607241e-13,
+    "centroid_y_m": -7.722495658629501e-13,
+    "core_50pm_a": 7.199999999999998e-07,
+    "current_a": 1e-05,
+    "d50_nm": 0.29840529013899286,
+    "d90_nm": 0.49358466468540124,
+    "d95_nm": 0.6901902813202077,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": 0.049999925977317616,
+    "rms_radius_nm": 0.20266813024326633,
+    "surviving_rays": 2000,
+    "z_mm": 1599.19999755
+  },
+  "reference_upper_surface_mm": 1599.1999975,
+  "sampling_nm": 0.05,
+  "source_current_a": 1e-05,
+  "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+  "source_to_entrance_count": 2000,
+  "surface": {
+    "absolute_source_weight": 1.0000000000000004,
+    "alpha95_mrad": 19.985241212701553,
+    "centroid_x_m": -6.256220229770095e-13,
+    "centroid_y_m": -7.731273152625763e-13,
+    "core_50pm_a": 7.199999999999998e-07,
+    "current_a": 1e-05,
+    "d50_nm": 0.2978515816205756,
+    "d90_nm": 0.4936929018014541,
+    "d95_nm": 0.6920883366800129,
+    "effective_rays": 2000.000000000003,
+    "offset_from_surface_nm": 0.0,
+    "rms_radius_nm": 0.20266934722576255,
+    "surviving_rays": 2000,
+    "threefold_tail": {
+      "annular_current_a": 7.4499999999999964e-06,
+      "annulus_nm": [
+        0.1,
+        1.0
+      ],
+      "harmonic_current_a": 9.191821263193459e-08,
+      "normalized_m3": 0.012338015118380487,
+      "outside_1nm_current_a": 9.999999999999995e-09,
+      "shell_edges_nm": [
+        0.1,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "shell_harmonic_currents_a": [
+        4.943624709544701e-08,
+        3.456728763790557e-08,
+        4.732794358017154e-08,
+        2.0950421153069763e-08
+      ],
+      "shell_harmonic_sum_a": 1.522818994665939e-07
+    },
+    "z_mm": 1599.1999975
+  },
+  "two_dimensional_waist": {
+    "basin_directional_sign_transitions": [
+      {
+        "converging_to_diverging": 1,
+        "diverging_to_converging": 0,
+        "eigenvalue_order": 0,
+        "transition_brackets_mm": [
+          [
+            1599.2000008500002,
+            1599.2000009
+          ]
+        ]
+      },
+      {
+        "converging_to_diverging": 1,
+        "diverging_to_converging": 0,
+        "eigenvalue_order": 1,
+        "transition_brackets_mm": [
+          [
+            1599.1999942000002,
+            1599.1999942500001
+          ]
+        ]
+      }
+    ],
+    "bracket_covariance_eigenvalues_m_rad": [
+      [
+        -6.22602459638151e-13,
+        -2.0681380823134736e-13
+      ],
+      [
+        -2.06907439203404e-13,
+        2.0508577596070295e-13
+      ],
+      [
+        2.0877907872844115e-13,
+        6.169939179227045e-13
+      ]
+    ],
+    "bracket_covariance_growth_m2": [
+      [
+        1.1505404507860952e-23,
+        5.516226741040213e-21
+      ],
+      [
+        1.2460784659279206e-23,
+        5.466815852911314e-21
+      ]
+    ],
+    "bracket_mm": [
+      1599.1999909,
+      1599.2000042000002
+    ],
+    "bracket_position_covariances_m2": [
+      [
+        [
+          2.1414470704619255e-20,
+          3.3217577045409513e-21
+        ],
+        [
+          3.3217577045409513e-21,
+          2.5187632457230358e-20
+        ]
+      ],
+      [
+        [
+          2.053180827399122e-20,
+          1.3126379706785704e-21
+        ],
+        [
+          1.3126379706785707e-21,
+          2.0542562742310317e-20
+        ]
+      ],
+      [
+        [
+          2.5148213872734767e-20,
+          -6.660590449152204e-22
+        ],
+        [
+          -6.660590449152206e-22,
+          2.1405433781137364e-20
+        ]
+      ]
+    ],
+    "bracket_rms_radius_nm": [
+      0.21587520274883268,
+      0.20266813024326624,
+      0.21576294318967779
+    ],
+    "bracket_symmetric_position_slope_covariances_m_rad": [
+      [
+        [
+          -2.730974667887916e-13,
+          -1.522053534214514e-13
+        ],
+        [
+          -1.522053534214514e-13,
+          -5.563188010807067e-13
+        ]
+      ],
+      [
+        [
+          1.4036627018472168e-13,
+          -1.4991792034507162e-13
+        ],
+        [
+          -1.4991792034507162e-13,
+          -1.4218793342742275e-13
+        ]
+      ],
+      [
+        [
+          5.538300244796317e-13,
+          -1.4763048861891536e-13
+        ],
+        [
+          -1.4763048861891536e-13,
+          2.7194297217151396e-13
+        ]
+      ]
+    ],
+    "directional_sign_transitions": [
+      {
+        "converging_to_diverging": 1,
+        "diverging_to_converging": 0,
+        "eigenvalue_order": 0,
+        "transition_brackets_mm": [
+          [
+            1599.2000008500002,
+            1599.2000009
+          ]
+        ]
+      },
+      {
+        "converging_to_diverging": 1,
+        "diverging_to_converging": 0,
+        "eigenvalue_order": 1,
+        "transition_brackets_mm": [
+          [
+            1599.1999942000002,
+            1599.1999942500001
+          ]
+        ]
+      }
+    ],
+    "directional_transition_span_mm": [
+      1599.1999942000002,
+      1599.2000009
+    ],
+    "exact_common_stationary_plane_claimed": false,
+    "executed_indices": [
+      669,
+      802,
+      935
+    ],
+    "finite_region_span_mm": 1.330000009147625e-05,
+    "kind": "current-weighted finite two-dimensional source-image region",
+    "observation_bounds_mm": [
+      1599.1999575000002,
+      1599.2000375
+    ],
+    "radial_bracket_mm": [
+      1599.19999755,
+      1599.1999976000002
+    ],
+    "radial_root_interpolated_mm": 1599.1999975646377,
+    "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+    "ray_count": 2000,
+    "representative_slope_covariance_rad2": [
+      [
+        6.217496210522605e-05,
+        3.4394293860581423e-07
+      ],
+      [
+        3.4394293860581433e-07,
+        6.22753516549385e-05
+      ]
+    ],
+    "representative_z_mm": 1599.19999755,
+    "rms_radius_nm": 0.20266813024326624,
+    "search_basin_mm": [
+      1599.1999575000002,
+      1599.2000375
+    ],
+    "source_current_fraction": 1.0,
+    "status": "EXECUTED_FINITE_2D_WAIST_REGION",
+    "z_mm": 1599.19999755
+  },
+  "used_verified_mini_cache": true,
+  "window_nm": [
+    -40,
+    40
+  ]
+}
