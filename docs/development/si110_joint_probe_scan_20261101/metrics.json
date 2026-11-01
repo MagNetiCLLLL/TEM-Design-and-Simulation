@@ -1,0 +1,180 @@
+{
+  "probe": "docs/development/probe_joint_20261101/extend-joint-01-focus1",
+  "input_digest": "28a3643f3ea3e27538d78ee8fdc1cebdf19b42802bd0c3733be314b2bf3af53e",
+  "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f",
+  "surface_sha256": "eec94f0387c858beb6d58c76a9c5997ec9bb47477809b32f92bb837fb256f732",
+  "current_sha256": "480ab78065de1f1603f6c78557183688a3ef8d4051567d9f6448b58e5ddb4f50",
+  "cif": "tests/fixtures/cif/Si.cif",
+  "cif_sha256": "944c5c81df5d813d051f96102eb9be37fac4b7647c2a9d1492d6333122be42c7",
+  "specimen_preset_sha256": "6fc39ec0296e10d631a209ec4f0b2c2e87ef854cfe752d8eb3def5725763e4c6",
+  "original": 2000,
+  "surviving": 2000,
+  "effective": 1999.9999999999973,
+  "incident_a": 9.999999999999992e-06,
+  "entrance_z_mm": 1599.1999975,
+  "incident_alpha95_mrad": 29.71914067168986,
+  "max_incident_axis_angle_mrad": 48.4394824826504,
+  "incident_d95_nm": 2.4464835215747773,
+  "energy_range_ev": [
+    300000.01116353966,
+    300000.7960430766
+  ],
+  "scan_pixels_yx": [
+    64,
+    64
+  ],
+  "pixel_nm": 0.02,
+  "field_width_nm": 1.28,
+  "axes_uvw": [
+    [
+      1,
+      -1,
+      0
+    ],
+    [
+      0,
+      0,
+      -1
+    ],
+    [
+      1,
+      1,
+      0
+    ]
+  ],
+  "lateral_boundary": "infinite periodic crystal; all original probe tails included",
+  "thickness_nm": 5.0,
+  "periods_xyz_nm": [
+    0.384927886058828,
+    0.544370237,
+    0.384927886058828
+  ],
+  "oriented_cell_sites_xyz_nm": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.40827767775,
+      0.192463943029414
+    ],
+    [
+      0.192463943029414,
+      0.13609255925,
+      0.0
+    ],
+    [
+      0.192463943029414,
+      0.2721851185,
+      0.192463943029414
+    ]
+  ],
+  "slab_sites_per_lateral_repeat": 50,
+  "projected_sites_xy_nm": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.40827767775
+    ],
+    [
+      0.192463943029414,
+      0.13609255925
+    ],
+    [
+      0.192463943029414,
+      0.2721851185
+    ]
+  ],
+  "atomic_thermal_sigma_nm": 0.0085,
+  "detector": "ideal exit-angle masks about fixed laboratory +z; stage raster",
+  "model": "classical straight-path atomic-density elastic screen with compound Poisson angular redistribution",
+  "coherent": false,
+  "shot_noise": false,
+  "max_ray_optical_depth": 3.7312373744763394,
+  "max_poisson_order": 26,
+  "max_omitted_poisson_mass": 6.988005032780608e-15,
+  "legendre_degrees": [
+    512,
+    768
+  ],
+  "quadrature_orders": [
+    1024,
+    1536
+  ],
+  "max_conditional_angular_change": 9.199332767773072e-08,
+  "max_detector_refinement_change_a": 1.3157394756504147e-15,
+  "max_pixel_current_balance_error_a": 1.1011428314305904e-19,
+  "periodic_translation_max_tau_error": 8.315570454442422e-14,
+  "independent_cartesian_max_tau_error": 1.4988010832439613e-14,
+  "native_line": {
+    "x_nm": 0.01,
+    "cif_y_nm": [
+      -0.1360925592499999,
+      0.0
+    ],
+    "cif_pair_nm": 0.1360925592499999,
+    "df_native_peak_y_nm": [
+      -0.15,
+      -0.01
+    ],
+    "df_native_spacing_nm": 0.13999999999999999,
+    "df_peak_na": [
+      84.02313940806891,
+      90.19544182285917
+    ],
+    "df_saddle_y_nm": -0.07,
+    "df_saddle_na": 41.385597608149475
+  },
+  "max_plural_incident_fraction": 0.02409672288101458,
+  "vacuum_window_a": [
+    5.889999999999949e-06,
+    0.0,
+    4.109999999999966e-06,
+    0.0
+  ],
+  "windows_mrad": [
+    [
+      0.0,
+      15.0
+    ],
+    [
+      50.0,
+      150.0
+    ],
+    [
+      15.0,
+      50.0
+    ],
+    [
+      150.0,
+      3141.592653589793
+    ]
+  ],
+  "specimen_current_a_by_window": {
+    "bf": {
+      "min": 5.546132389081821e-06,
+      "mean": 5.818607121712377e-06,
+      "max": 5.882375501995564e-06
+    },
+    "df": {
+      "min": 1.6425438499401643e-08,
+      "mean": 3.481901223432964e-08,
+      "max": 9.715179009565906e-08
+    },
+    "gap": {
+      "min": 4.0925822866305075e-06,
+      "mean": 4.142620725498986e-06,
+      "max": 4.344219139492515e-06
+    },
+    "beyond_df": {
+      "min": 1.6461374737471027e-09,
+      "mean": 3.953140554229901e-09,
+      "max": 1.2496681329929067e-08
+    }
+  }
+}
