@@ -1,0 +1,33 @@
+{
+  "centre_mm": 1451.5,
+  "coordinate_names": [
+    "strength_x_percent",
+    "strength_y_percent"
+  ],
+  "field_model": "normal_skew",
+  "field_rank": {
+    "column_norms": [
+      1.1023561746925702e-06,
+      1.1023561746925694e-06
+    ],
+    "normalized_singular_values": [
+      0.9999999999999991,
+      0.999999999999999
+    ],
+    "rank": 2,
+    "relative_threshold": 1e-08
+  },
+  "field_response_cosine": 5.2203492412945904e-17,
+  "field_scale_m2": 300.0,
+  "host": "condenser_stigmator",
+  "parent_input": "28a3643f3ea3e27538d78ee8fdc1cebdf19b42802bd0c3733be314b2bf3af53e",
+  "reference_percent": [
+    0.0005030845145850119,
+    0.012000878806056787
+  ],
+  "scope": "Installed simulator field coordinates. Independent hardware supply currents and DAC calibration are unverified.",
+  "winding_axis_deg": [
+    0.0,
+    45.0
+  ]
+}

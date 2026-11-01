@@ -50,6 +50,14 @@ documented separately. [Müller et al., 2006, pp. 451–453](https://www.ceos-gm
 · [Simulator A1/A2 controls](../corrector_channels.md)
 · [Photographed service-control inventory](../probe_corrector_reference.md#additional-dcorprime-reference)
 
+At the 29.72 mrad joint setting, the measured normal/skew condenser
+stigmator response has rank two and condition number 1.00 in the signed
+specimen-plane A1 chart. Measure both columns on the active state and solve
+the two signed equations together, since each modeled drive changes
+both coefficient components. Monitor C3, both A5 components and the native
+core angular moments separately. The [focused A1 experiment](probe_a1_trim/README.md)
+records the measured pair, protected terms, intermediate move and field identities.
+
 ## Verified A5 adjustment
 
 The sole aberration target was the sixfold term. At the physical specimen

@@ -144,7 +144,11 @@ def coefficient_vector(fit):
     return np.asarray(values)
 
 
-def run_trial(name, changes, *, step_mm=.05, focus=True):
+def run_trial(name, changes, *, step_mm=.05, focus=True, image_focus_tolerance_nm=None):
+    if image_focus_tolerance_nm is not None and (
+        not focus or not np.isfinite(image_focus_tolerance_nm) or image_focus_tolerance_nm < 0
+    ):
+        raise ValueError("A focus-gated image requires through-focus measurement and a finite tolerance")
     started = time.monotonic()
     folder, archive = WORK/name, ARCHIVE/name
     folder.mkdir(parents=True, exist_ok=False)
@@ -195,7 +199,6 @@ def run_trial(name, changes, *, step_mm=.05, focus=True):
     kernel = target_current_kernel(arrays, target, reference["source_current_a"], **{
         key: reference["render"][key] for key in ("pitch_nm", "pixels")})
     _npz(archive/"current.npz", kernel)
-    render_current(kernel, reference["render"], archive/"incident-probe.png")
     _npz(archive/"surface.npz", dict({key: arrays[key][at] for key in PHASE},
         alive=arrays["alive"][at], source_id=source["source_id"], weights=source["weights"]))
     diagnostic = np.column_stack([getattr(cp, key)[at, n:] for key in PHASE[:4]])
@@ -213,6 +216,11 @@ def run_trial(name, changes, *, step_mm=.05, focus=True):
         _, rows = _native_profile(physical, arrays["alive"], source["weights"], source["source_id"],
                                   [target], target, target, reference["source_current_a"])
         observed = dict(status="NOT_REQUESTED_FOR_ISOLATED_RESPONSE", at_specimen=rows[0])
+    if image_focus_tolerance_nm is not None:
+        if (observed["status"] != "MEASURED" or not observed["target_in_2d_bracket"]
+                or abs(observed["at_crossover"]["offset_from_surface_nm"]) > image_focus_tolerance_nm):
+            raise ValueError(f"Specimen image withheld at {name}: the measured waist is outside the focus gate")
+    render_current(kernel, reference["render"], archive/"incident-probe.png")
     summary = dict(schema="fixed-axis-a5-trial-v1", name=name, utc=datetime.now(timezone.utc).isoformat(),
         baseline_input=baseline.digest, input_digest=identity.digest, controls=changes,
         source_digest=reference["emitted_identity_digest"], source_hashes=reference["source_sha256"],
