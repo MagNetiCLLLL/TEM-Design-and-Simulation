@@ -41,13 +41,45 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def load_probe():
-    report = json.loads((PROBE / "result.json").read_text())
-    if sha(PROBE / "surface.npz") != SURFACE_HASH or report["input_digest"] != INPUT_ID:
+def verified_focus(probe, report):
+    receipt_path = probe / "through-focus.json"
+    if report.get("crossover_status") != "MEASURED" or not receipt_path.is_file():
+        raise ValueError("A measured through-focus observation is required before imaging")
+    observation = json.loads(receipt_path.read_text())
+    coarse = observation["coarse_region"]
+    waist = observation["at_crossover"]
+    if (not report["field_audit"]["passed"]
+            or observation["executed_field_digest"] != report["field_audit"]["identities"]["potential_digest"]
+            or observation["input_digest"] != report["input_digest"]
+            or observation["source_identity"] != report["source_digest"]
+            or observation["status"] != "MEASURED" or not observation["membership_stable"]
+            or not observation["target_in_2d_bracket"] or coarse["unresolved"]
+            or not (observation["waist"]["bracket_mm"][0] <= observation["surface_z_mm"]
+                    <= observation["waist"]["bracket_mm"][1])
+            or len(coarse["regions"]) != 1 or abs(waist["offset_from_surface_nm"]) > .25
+            or waist["surviving_rays"] != 2000 or report["at_crossover"] != waist
+            or report["at_specimen"] != observation["at_specimen"]):
+        raise ValueError("The Mini Condenser / Objective two-dimensional waist must be verified at the entrance before imaging")
+    return dict(waist_offset_nm=waist["offset_from_surface_nm"],
+                focus_tolerance_nm=.25, observed_region_count=len(coarse["regions"]),
+                through_focus_sha256=sha(probe/"through-focus.json"))
+
+
+def load_probe(probe=PROBE):
+    report = json.loads((probe / "result.json").read_text())
+    if probe == PROBE:
+        surface_hash, input_id = SURFACE_HASH, INPUT_ID
+    else:
+        pin = json.loads((probe / "scan-input.json").read_text())
+        surface_hash, input_id = pin["surface_sha256"], pin["input_digest"]
+        if sha(probe/"current.npz") != pin["current_sha256"]:
+            raise ValueError("The admitted current array changed")
+    if sha(probe / "surface.npz") != surface_hash or report["input_digest"] != input_id:
         raise ValueError("The selected reference changed")
-    with np.load(PROBE / "surface.npz", allow_pickle=False) as p:
+    report["focus_verification"] = verified_focus(probe,report)
+    with np.load(probe / "surface.npz", allow_pickle=False) as p:
         phase = {k: p[k] for k in p.files}
-    with np.load(PROBE / "current.npz", allow_pickle=False) as p:
+    with np.load(probe / "current.npz", allow_pickle=False) as p:
         currents = p["particle_current_a"]
         np.testing.assert_array_equal(p["surviving_source_ids"], phase["source_id"])
         np.testing.assert_array_equal(p["xy_nm"], np.stack((phase["x_m"], phase["y_m"]), axis=1)*1e9)
@@ -193,7 +225,7 @@ def collect(depths, current, table):
     return frames, multiple
 
 
-def render(folder, coords, frames):
+def render(folder, coords, frames, angle):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -223,7 +255,7 @@ def render(folder, coords, frames):
     fig, axes = plt.subplots(1,2,figsize=(9.9,4.6),layout="constrained")
     for k,ax in enumerate(axes):
         panel(fig,ax,k)
-    fig.suptitle("Si [110]   |   5 nm   ·   300 kV   ·   29.72 mrad incident probe\n"
+    fig.suptitle(f"Si [110]   |   5 nm   ·   300 kV   ·   {angle:.2f} mrad incident probe\n"
                  "Classical elastic scan   ·   virtual exit-angle detectors", fontsize=13)
     fig.savefig(folder/"bf-df.png",dpi=180)
     plt.close(fig)
@@ -236,16 +268,17 @@ def central_line(folder, coords, maps, basis, repeat):
     projected_pair = np.sort((same_x+.5*repeat[1])%repeat[1]-.5*repeat[1])
     separation = np.diff(projected_pair).item()
     df = maps[1,:,ix]
+    np.savetxt(folder/"native-profile.csv", np.column_stack((coords,maps[0,:,ix],df)),
+               delimiter=",",header="y_nm,bf_current_A,df_current_A",comments="")
     peaks = []
     for y in projected_pair:
         indices = np.flatnonzero(np.abs(coords-y) < .25*separation)
         k = indices[np.argmax(df[indices])]
-        assert k > indices[0] and k < indices[-1] and df[k] > max(df[k-1],df[k+1])
+        if k == indices[0] or k == indices[-1] or df[k] <= max(df[k-1],df[k+1]):
+            return dict(x_nm=float(coords[ix]), cif_pair_nm=separation, resolved_native_peaks=False)
         peaks.append(k)
     valley = peaks[0] + np.argmin(df[peaks[0]:peaks[1]+1])
     assert peaks[0] < valley < peaks[1]
-    np.savetxt(folder/"native-profile.csv", np.column_stack((coords,maps[0,:,ix],df)),
-               delimiter=",",header="y_nm,bf_current_A,df_current_A",comments="")
     return dict(x_nm=float(coords[ix]), cif_y_nm=projected_pair.tolist(),
                 cif_pair_nm=separation, df_native_peak_y_nm=coords[peaks].tolist(),
                 df_native_spacing_nm=float(coords[peaks[1]]-coords[peaks[0]]),
@@ -255,10 +288,15 @@ def central_line(folder, coords, maps, basis, repeat):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=OUT)
-    folder = parser.parse_args().output
+    parser.add_argument("--probe", type=Path, default=PROBE)
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
+    probe = args.probe.resolve()
+    folder = args.output or (OUT if probe == PROBE else probe/"si110-scan")
+    if probe != PROBE and folder.resolve() == OUT:
+        raise ValueError("Use a separate scan directory for the comparison probe")
+    p, current, parent = load_probe(probe)
     folder.mkdir(exist_ok=True, parents=True)
-    p, current, parent = load_probe()
     repeat, basis, sites = lattice()
     sigma = tomllib.loads(PRESET.read_text())["atomistic"]["thermal_sigma_angstrom"]*.1
     coords = (np.arange(PIXELS)-(PIXELS-1)/2)*PITCH
@@ -308,13 +346,14 @@ def main():
     np.savez_compressed(folder/"scan.npz", x_nm=coords, y_nm=coords, bf_a=maps[0], df_a=maps[1],
         gap_15_to_50_a=maps[2], other_150mrad_to_pi_a=maps[3], plural_a=plural.reshape(PIXELS,PIXELS),
         vacuum_window_a=vacuum[0], windows_mrad=np.array(RANGES), incident_current_a=current.sum())
-    render(folder,coords,maps)
+    render(folder,coords,maps,parent["at_specimen"]["alpha95_mrad"])
     line = central_line(folder,coords,maps,basis,repeat)
     import tifffile
     for k,name in enumerate(("bf","df")):
         np.testing.assert_array_equal(tifffile.imread(folder/f"{name}.tiff"), maps[k])
-    metrics = dict(probe=PROBE.relative_to(ROOT).as_posix(), input_digest=INPUT_ID, source_digest=parent["source_digest"],
-        surface_sha256=SURFACE_HASH, current_sha256=sha(PROBE/"current.npz"), cif=CIF.relative_to(ROOT).as_posix(),
+    metrics = dict(probe=probe.relative_to(ROOT).as_posix(), input_digest=parent["input_digest"], source_digest=parent["source_digest"],
+        focus_verification=parent["focus_verification"],
+        surface_sha256=sha(probe/"surface.npz"), current_sha256=sha(probe/"current.npz"), cif=CIF.relative_to(ROOT).as_posix(),
         cif_sha256=sha(CIF), specimen_preset_sha256=sha(PRESET), original=len(current), surviving=int(p["alive"].sum()),
         effective=float(current.sum()**2/(current@current)), incident_a=float(current.sum()), entrance_z_mm=parent["at_specimen"]["z_mm"],
         incident_alpha95_mrad=parent["at_specimen"]["alpha95_mrad"], max_incident_axis_angle_mrad=float(np.arccos(mu.min())*1000),

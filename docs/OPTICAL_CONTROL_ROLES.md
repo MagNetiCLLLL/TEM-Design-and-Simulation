@@ -115,6 +115,16 @@ Objective the primary angle-fitting controls. During an aberration-only
 adjustment, hold C2/C3 fixed and check that a smaller probe was not obtained
 merely by reducing the convergence angle.
 
+For a C2/C3 zoom comparison, measure the moving C2-to-C3 source image
+and the first downstream source image formed with C3 and ADL energized.
+Report their axial displacements separately. Keep the corrector drives fixed
+while changing the condenser pair, then use the installed shared Objective
+drive to place the final Mini Condenser / Objective waist at the sample
+entrance. Verify this placement before comparing specimen images. An
+on/off pair for the main hexapoles at each setting measures their signed
+C3 contribution. Report this coefficient separately from the probe current
+and spot size, which can change with semiangle. See the [20 mrad comparison](development/probe_zoom20/README.md).
+
 ## Required crossover topology
 
 For C3 + Probe Corrector in STEM Nanoprobe:

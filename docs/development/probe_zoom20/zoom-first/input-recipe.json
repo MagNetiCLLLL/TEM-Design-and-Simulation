@@ -1,0 +1,20 @@
+{
+  "baseline_input": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "baseline_package": "docs/development/probe_stage12_20261101/inputs/portable-probe.temwp",
+  "changes": {
+    "ADL": -799.9998708231669,
+    "C2": -1942.0070415799273,
+    "C3lens": 2761.6725686565183,
+    "HP1": 31.076657223316847,
+    "HP2": 17.469352792629504,
+    "Mini": -3999.999999264912,
+    "Objective": 1622.027226447988,
+    "TL12": -195.50820656967588,
+    "TL21": 51.42456857030065,
+    "TL22": 55.75209833164711
+  },
+  "expected_input": "2f6129faa188c1a1edd38b60eaa6ce0a24e2358b2c5e22f99d04073fe524b34b",
+  "full_snapshot_local": "outputs\\probe-zoom20\\zoom-first\\snapshot.json",
+  "maximum_step_mm": 0.05,
+  "restoration": "Restore the portable baseline via load_baseline, call check_probe_zoom20.configure and apply_drives(state, changes), then set state.step_mm to maximum_step_mm."
+}

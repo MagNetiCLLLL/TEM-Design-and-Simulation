@@ -1,0 +1,264 @@
+{
+  "coarse_spacing_mm": 0.5,
+  "controls": {
+    "ADL": -799.9998708231669,
+    "C2": -0.0,
+    "C3lens": 0.0,
+    "HP1": 31.076657223316847,
+    "HP2": 17.469352792629504,
+    "Mini": -3999.999999264912,
+    "Objective": 1622.027226447988,
+    "TL12": -195.50820656967588,
+    "TL21": 51.42456857030065,
+    "TL22": 55.75209833164711
+  },
+  "input_digest": "28a3643f3ea3e27538d78ee8fdc1cebdf19b42802bd0c3733be314b2bf3af53e",
+  "intervals": {
+    "ac_upper to ac_lower": {
+      "regions": [
+        {
+          "observation": {
+            "absolute_source_weight": 1.0000000000000004,
+            "alpha95_mrad": 2.6447079036325127,
+            "centroid_x_m": 1.356657693222232e-09,
+            "centroid_y_m": -4.919672912530678e-10,
+            "core_50pm_a": 0.0,
+            "current_a": 1e-05,
+            "d50_nm": 650.3014058392607,
+            "d90_nm": 787.0819746305666,
+            "d95_nm": 1135.488383410981,
+            "effective_rays": 2000.000000000003,
+            "offset_from_surface_nm": 0.0,
+            "rms_radius_nm": 492.9374592071734,
+            "surviving_rays": 2000,
+            "threefold_tail": {
+              "annular_current_a": 0.0,
+              "annulus_nm": [
+                0.1,
+                1.0
+              ],
+              "harmonic_current_a": 0.0,
+              "normalized_m3": null,
+              "outside_1nm_current_a": 9.999999999999992e-06,
+              "shell_edges_nm": [
+                0.1,
+                0.25,
+                0.5,
+                0.75,
+                1.0
+              ],
+              "shell_harmonic_currents_a": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "shell_harmonic_sum_a": 0.0
+            },
+            "z_mm": 1408.745
+          },
+          "radial_bracket_mm": [
+            1408.745,
+            1408.75
+          ],
+          "two_dimensional_bracket_mm": [
+            1408.735,
+            1408.76
+          ],
+          "z_mm": 1408.745
+        }
+      ],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "adapter_lens to probe_tl22_lens": {
+      "regions": [],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "condenser_lens_2 to condenser_lens_3": {
+      "regions": [
+        {
+          "observation": {
+            "absolute_source_weight": 1.0000000000000004,
+            "alpha95_mrad": 0.3044527373865688,
+            "centroid_x_m": -1.6169307029496098e-13,
+            "centroid_y_m": 1.073414769385847e-13,
+            "core_50pm_a": 2.754999999999999e-06,
+            "current_a": 1e-05,
+            "d50_nm": 0.15055755568262402,
+            "d90_nm": 0.2984591818188439,
+            "d95_nm": 0.34688638356270673,
+            "effective_rays": 2000.000000000003,
+            "offset_from_surface_nm": 0.0,
+            "rms_radius_nm": 0.09598057252409713,
+            "surviving_rays": 2000,
+            "threefold_tail": {
+              "annular_current_a": 3.1449999999999987e-06,
+              "annulus_nm": [
+                0.1,
+                1.0
+              ],
+              "harmonic_current_a": 3.9359295370214206e-08,
+              "normalized_m3": 0.012514879291006111,
+              "outside_1nm_current_a": 0.0,
+              "shell_edges_nm": [
+                0.1,
+                0.25,
+                0.5,
+                0.75,
+                1.0
+              ],
+              "shell_harmonic_currents_a": [
+                4.1606757343872866e-08,
+                2.602945395763627e-09,
+                0.0,
+                0.0
+              ],
+              "shell_harmonic_sum_a": 4.420970273963649e-08
+            },
+            "z_mm": 696.02
+          },
+          "radial_bracket_mm": [
+            696.015,
+            696.02
+          ],
+          "two_dimensional_bracket_mm": [
+            696.015,
+            696.025
+          ],
+          "z_mm": 696.02
+        }
+      ],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "condenser_lens_3 to adapter_lens": {
+      "regions": [],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "probe_tl12_lens to ac_upper": {
+      "regions": [],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "probe_tl21_lens to probe_tl12_lens": {
+      "regions": [
+        {
+          "observation": {
+            "absolute_source_weight": 1.0000000000000004,
+            "alpha95_mrad": 0.435455269267726,
+            "centroid_x_m": 1.0219057072823226e-07,
+            "centroid_y_m": -4.813364215592528e-08,
+            "core_50pm_a": 0.0,
+            "current_a": 1e-05,
+            "d50_nm": 98302.3026115489,
+            "d90_nm": 194881.25507530203,
+            "d95_nm": 220966.96252939026,
+            "effective_rays": 2000.000000000003,
+            "offset_from_surface_nm": 0.0,
+            "rms_radius_nm": 62014.40587666185,
+            "surviving_rays": 2000,
+            "threefold_tail": {
+              "annular_current_a": 0.0,
+              "annulus_nm": [
+                0.1,
+                1.0
+              ],
+              "harmonic_current_a": 0.0,
+              "normalized_m3": null,
+              "outside_1nm_current_a": 9.999999999999992e-06,
+              "shell_edges_nm": [
+                0.1,
+                0.25,
+                0.5,
+                0.75,
+                1.0
+              ],
+              "shell_harmonic_currents_a": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "shell_harmonic_sum_a": 0.0
+            },
+            "z_mm": 1299.1543998130712
+          },
+          "radial_bracket_mm": [
+            1299.1494000010744,
+            1299.1543998130712
+          ],
+          "two_dimensional_bracket_mm": [
+            1298.459425945522,
+            1299.7993755606526
+          ],
+          "z_mm": 1299.1543998130712
+        }
+      ],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "probe_tl22_lens to probe_tl21_lens": {
+      "regions": [
+        {
+          "observation": {
+            "absolute_source_weight": 1.0000000000000004,
+            "alpha95_mrad": 2.940774384835078,
+            "centroid_x_m": 3.873718947054173e-08,
+            "centroid_y_m": -1.3974446015513645e-08,
+            "core_50pm_a": 0.0,
+            "current_a": 1e-05,
+            "d50_nm": 9664.697251117801,
+            "d90_nm": 38383.785352313615,
+            "d95_nm": 48846.07478776443,
+            "effective_rays": 2000.000000000003,
+            "offset_from_surface_nm": 0.0,
+            "rms_radius_nm": 11419.635389641826,
+            "surviving_rays": 2000,
+            "threefold_tail": {
+              "annular_current_a": 0.0,
+              "annulus_nm": [
+                0.1,
+                1.0
+              ],
+              "harmonic_current_a": 0.0,
+              "normalized_m3": null,
+              "outside_1nm_current_a": 9.999999999999992e-06,
+              "shell_edges_nm": [
+                0.1,
+                0.25,
+                0.5,
+                0.75,
+                1.0
+              ],
+              "shell_harmonic_currents_a": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "shell_harmonic_sum_a": 0.0
+            },
+            "z_mm": 1211.4485985029464
+          },
+          "radial_bracket_mm": [
+            1211.4436056696927,
+            1211.4485985029464
+          ],
+          "two_dimensional_bracket_mm": [
+            1211.368713170887,
+            1211.5184981684981
+          ],
+          "z_mm": 1211.4485985029464
+        }
+      ],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    }
+  },
+  "original_count": 2000,
+  "refined_spacing_mm": 0.005,
+  "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f"
+}

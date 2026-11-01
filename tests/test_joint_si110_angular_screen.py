@@ -10,6 +10,22 @@ from scan_joint_probe_si110 import RANGES, cap_single, event_responses
 from temsim.specimen.elastic_transport import screened_rutherford_parameter
 
 
+def test_unfocused_source_is_rejected_even_when_surface_current_is_complete(tmp_path):
+    import json
+    import pytest
+    from scan_joint_probe_si110 import PROBE, verified_focus
+    report = json.loads((PROBE/"result.json").read_text())
+    evidence = json.loads((PROBE/"through-focus.json").read_text())
+    assert verified_focus(PROBE,report)["observed_region_count"] == 1
+    assert evidence["at_crossover"]["surviving_rays"] == 2000
+    # Keep the nominal current, source identity and recorded surface array.
+    # Change the through-focus measurement to an upstream waist.
+    evidence["at_crossover"]["offset_from_surface_nm"] = -20.
+    (tmp_path/"through-focus.json").write_text(json.dumps(evidence))
+    with pytest.raises(ValueError,match="waist must be verified"):
+        verified_focus(tmp_path,report)
+
+
 def test_two_collision_transfer_matches_independent_direction_integral():
     # Integrate over the first physical scattering rotation; no Legendre series
     # or angular moment powers enter the reference calculation.

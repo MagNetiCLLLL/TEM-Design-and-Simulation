@@ -1,0 +1,28 @@
+{
+  "checked_trials": [
+    "baseline-hp-zero",
+    "zoom-first",
+    "zoom-focused",
+    "zoom-focused-fine",
+    "zoom-hp-zero"
+  ],
+  "fine_minus_coarse": {
+    "alpha95_mrad": 6.433090504742722e-09,
+    "core_50pm_a": 0.0,
+    "crossover_offset_nm": 0.0,
+    "current_a": 0.0,
+    "d95_nm": -1.026012761573547e-05,
+    "rms_radius_nm": -4.5722262254077606e-08
+  },
+  "limits": {
+    "alpha95_mrad": 0.001,
+    "core_50pm_a": 5e-09,
+    "crossover_offset_nm": 0.25,
+    "current_a": 1e-15,
+    "d95_nm": 0.001,
+    "rms_radius_nm": 0.001
+  },
+  "original_source_ids_weights_and_survival_verified": true,
+  "package_sha256": "1abcc83862dbd98e3b7355ab2c1853431efad5760aaac5d6ed1e0361b1234de4",
+  "restored_input_digest": "5328e7cd4398a7059fc0bb1bfe70bad8ef6b981f16ed7a7fcad975ed34462783"
+}

@@ -1,0 +1,264 @@
+{
+  "coarse_spacing_mm": 0.5,
+  "controls": {
+    "ADL": -799.9998708231669,
+    "C2": -1942.0070415799273,
+    "C3lens": 2761.6725686565183,
+    "HP1": 31.076657223316847,
+    "HP2": 17.469352792629504,
+    "Mini": -3999.999999264912,
+    "Objective": 1624.066226447988,
+    "TL12": -195.50820656967588,
+    "TL21": 51.42456857030065,
+    "TL22": 55.75209833164711
+  },
+  "input_digest": "5328e7cd4398a7059fc0bb1bfe70bad8ef6b981f16ed7a7fcad975ed34462783",
+  "intervals": {
+    "ac_upper to ac_lower": {
+      "regions": [
+        {
+          "observation": {
+            "absolute_source_weight": 1.0000000000000004,
+            "alpha95_mrad": 1.7752450165432334,
+            "centroid_x_m": 4.134092695653574e-10,
+            "centroid_y_m": -1.855760051008911e-10,
+            "core_50pm_a": 0.0,
+            "current_a": 1e-05,
+            "d50_nm": 202.9066948819472,
+            "d90_nm": 245.74128670579776,
+            "d95_nm": 347.41251347599217,
+            "effective_rays": 2000.000000000003,
+            "offset_from_surface_nm": 0.0,
+            "rms_radius_nm": 152.5298744234624,
+            "surviving_rays": 2000,
+            "threefold_tail": {
+              "annular_current_a": 0.0,
+              "annulus_nm": [
+                0.1,
+                1.0
+              ],
+              "harmonic_current_a": 0.0,
+              "normalized_m3": null,
+              "outside_1nm_current_a": 9.999999999999992e-06,
+              "shell_edges_nm": [
+                0.1,
+                0.25,
+                0.5,
+                0.75,
+                1.0
+              ],
+              "shell_harmonic_currents_a": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "shell_harmonic_sum_a": 0.0
+            },
+            "z_mm": 1408.49
+          },
+          "radial_bracket_mm": [
+            1408.485,
+            1408.49
+          ],
+          "two_dimensional_bracket_mm": [
+            1408.48,
+            1408.495
+          ],
+          "z_mm": 1408.49
+        }
+      ],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "adapter_lens to probe_tl22_lens": {
+      "regions": [],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "condenser_lens_2 to condenser_lens_3": {
+      "regions": [
+        {
+          "observation": {
+            "absolute_source_weight": 1.0000000000000004,
+            "alpha95_mrad": 0.22241232869842845,
+            "centroid_x_m": 2.30407907769396e-13,
+            "centroid_y_m": -2.4686810503510736e-13,
+            "core_50pm_a": 6.899999999999997e-07,
+            "current_a": 1e-05,
+            "d50_nm": 0.3391382495555343,
+            "d90_nm": 0.6701252066091167,
+            "d95_nm": 0.7635934787047578,
+            "effective_rays": 2000.000000000003,
+            "offset_from_surface_nm": 0.0,
+            "rms_radius_nm": 0.2140234244855912,
+            "surviving_rays": 2000,
+            "threefold_tail": {
+              "annular_current_a": 7.649999999999996e-06,
+              "annulus_nm": [
+                0.1,
+                1.0
+              ],
+              "harmonic_current_a": 3.042498936684192e-08,
+              "normalized_m3": 0.003977122793051233,
+              "outside_1nm_current_a": 0.0,
+              "shell_edges_nm": [
+                0.1,
+                0.25,
+                0.5,
+                0.75,
+                1.0
+              ],
+              "shell_harmonic_currents_a": [
+                4.4662151371223483e-08,
+                2.205050824487071e-08,
+                1.0876169710951724e-08,
+                0.0
+              ],
+              "shell_harmonic_sum_a": 7.758882932704592e-08
+            },
+            "z_mm": 713.28
+          },
+          "radial_bracket_mm": [
+            713.28,
+            713.285
+          ],
+          "two_dimensional_bracket_mm": [
+            713.275,
+            713.285
+          ],
+          "z_mm": 713.28
+        }
+      ],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "condenser_lens_3 to adapter_lens": {
+      "regions": [],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "probe_tl12_lens to ac_upper": {
+      "regions": [],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "probe_tl21_lens to probe_tl12_lens": {
+      "regions": [
+        {
+          "observation": {
+            "absolute_source_weight": 1.0000000000000004,
+            "alpha95_mrad": 0.15717578968727527,
+            "centroid_x_m": 6.385068461461292e-08,
+            "centroid_y_m": -3.783400231536601e-08,
+            "core_50pm_a": 0.0,
+            "current_a": 1e-05,
+            "d50_nm": 66200.32329756573,
+            "d90_nm": 131312.39556226652,
+            "d95_nm": 149653.00908082354,
+            "effective_rays": 2000.000000000003,
+            "offset_from_surface_nm": 0.0,
+            "rms_radius_nm": 41722.44444098061,
+            "surviving_rays": 2000,
+            "threefold_tail": {
+              "annular_current_a": 0.0,
+              "annulus_nm": [
+                0.1,
+                1.0
+              ],
+              "harmonic_current_a": 0.0,
+              "normalized_m3": null,
+              "outside_1nm_current_a": 9.999999999999992e-06,
+              "shell_edges_nm": [
+                0.1,
+                0.25,
+                0.5,
+                0.75,
+                1.0
+              ],
+              "shell_harmonic_currents_a": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "shell_harmonic_sum_a": 0.0
+            },
+            "z_mm": 1300.7221411964654
+          },
+          "radial_bracket_mm": [
+            1300.7221411964654,
+            1300.7271403132713
+          ],
+          "two_dimensional_bracket_mm": [
+            1299.7123196016555,
+            1301.6469778055732
+          ],
+          "z_mm": 1300.7221411964654
+        }
+      ],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    },
+    "probe_tl22_lens to probe_tl21_lens": {
+      "regions": [
+        {
+          "observation": {
+            "absolute_source_weight": 1.0000000000000004,
+            "alpha95_mrad": 1.9695260288126328,
+            "centroid_x_m": 1.867938673390919e-08,
+            "centroid_y_m": -3.4448424844597337e-09,
+            "core_50pm_a": 0.0,
+            "current_a": 1e-05,
+            "d50_nm": 4411.376193912293,
+            "d90_nm": 17304.6147367605,
+            "d95_nm": 22400.61987142861,
+            "effective_rays": 2000.000000000003,
+            "offset_from_surface_nm": 0.0,
+            "rms_radius_nm": 5180.322620912293,
+            "surviving_rays": 2000,
+            "threefold_tail": {
+              "annular_current_a": 0.0,
+              "annulus_nm": [
+                0.1,
+                1.0
+              ],
+              "harmonic_current_a": 0.0,
+              "normalized_m3": null,
+              "outside_1nm_current_a": 9.999999999999992e-06,
+              "shell_edges_nm": [
+                0.1,
+                0.25,
+                0.5,
+                0.75,
+                1.0
+              ],
+              "shell_harmonic_currents_a": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "shell_harmonic_sum_a": 0.0
+            },
+            "z_mm": 1211.7232043319
+          },
+          "radial_bracket_mm": [
+            1211.7182114986463,
+            1211.7232043319
+          ],
+          "two_dimensional_bracket_mm": [
+            1211.6632903328555,
+            1211.7781254976908
+          ],
+          "z_mm": 1211.7232043319
+        }
+      ],
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": []
+    }
+  },
+  "original_count": 2000,
+  "refined_spacing_mm": 0.005,
+  "source_digest": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f"
+}
