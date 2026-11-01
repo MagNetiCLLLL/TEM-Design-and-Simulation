@@ -4,6 +4,10 @@ configs/reference_samples/*.cif -text
 # Preserve the accepted probe inputs, original particle weights and evidence hashes.
 docs/development/probe_stage12_20261101/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
 docs/development/probe_a5_physical_20261101/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+docs/development/probe_joint_20261101/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+scripts/optimize_joint_probe.py -text
+scripts/report_joint_probe.py -text
+tests/test_joint_probe_search.py -text
 
 # Preserve the byte hashes recorded by the fixed-source A5 study.
 scripts/calibrate_physical_a5.py -text

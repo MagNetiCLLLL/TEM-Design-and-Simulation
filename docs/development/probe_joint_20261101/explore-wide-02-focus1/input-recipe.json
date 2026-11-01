@@ -1,0 +1,18 @@
+{
+  "baseline_input": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+  "baseline_package": "docs/development/probe_stage12_20261101/inputs/portable-probe.temwp",
+  "changes": {
+    "ADL": 299.9999053553946,
+    "HP1": 50.804380631511926,
+    "HP2": 39.82075013182094,
+    "Mini": -872.3840866508311,
+    "Objective": 214.83290506785522,
+    "TL12": -27.330557447059423,
+    "TL21": 54.358067016370356,
+    "TL22": 61.81828971601897
+  },
+  "expected_input": "b37a39da13431b210c799a06e44e64923d723ef04feedb0f524e94d8bff424e9",
+  "full_snapshot_local": "outputs\\probe-joint-20261101\\explore-wide-02-focus1\\snapshot.json",
+  "maximum_step_mm": 0.05,
+  "restoration": "load_baseline followed by the registered scalar apply function"
+}

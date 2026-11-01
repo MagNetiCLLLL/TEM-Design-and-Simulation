@@ -179,3 +179,29 @@ The subsequent [stage 2 inventory](probe_stage12_20261101/README.md#step-2-drive
 [Measured response](probe_a5_physical_20261101/protected-response.json) |
 [Outcome](probe_a5_physical_20261101/outcome.json) |
 [Every executed image](probe_a5_physical_20261101/IMAGE_HISTORY.md)
+
+### Authorized joint C3/C5/A5 search
+
+The subsequent [joint probe search](probe_joint_20261101/README.md) permits
+controlled aberration coupling and evaluates the actual current distribution.
+Its objective is increased fixed-axis core current together with reduced D95,
+RMS and shell-resolved threefold/sixfold tails. The preceding 5 pm all-other-term
+budget qualified an isolated A5 knob; it is not a permanent constraint on the
+new joint optimization. All coefficients remain measured and reported.
+
+Use the same eight registered scalar drives and keep source, apertures, field
+profiles, angles of the multipoles, C2/C3 condenser lenses and auxiliary drives
+fixed. C3 as an aberration coefficient is distinct from the C3 condenser lens.
+After every candidate, find the real Mini/Objective crossover, execute the
+required shared-Objective placement and then compare native specimen images.
+Refresh the response near a new operating region; the initial linear response
+does not predict finite coupled moves accurately.
+
+An improvement in sixfold current does not by itself mean the A5 coefficient
+decreased. Similarly, the central 50 pm disk current is an integrated current,
+not the maximum image-pixel value. Retain both geometric coefficients and
+full-cohort current measurements, including the far-angle source members
+outside the reference pencil's approximately 30 mrad fitting domain.
+
+[Joint measured outcome](probe_joint_20261101/outcome.json) |
+[All joint-search images](probe_joint_20261101/IMAGE_HISTORY.md)

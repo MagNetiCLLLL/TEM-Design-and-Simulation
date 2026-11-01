@@ -1,0 +1,42 @@
+{
+  "input_digest": "89d9dcb12e5979140d18e4b5e18fb16f9f944bf3530693049c85d2bf664c09ed",
+  "intervals": {
+    "ac_upper to ac_lower": {
+      "actual": 1,
+      "expected": 1,
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": [],
+      "waist_z_mm": [
+        1408.5
+      ]
+    },
+    "condenser_lens_2 to condenser_lens_3": {
+      "actual": 1,
+      "expected": 1,
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": [],
+      "waist_z_mm": [
+        696.0
+      ]
+    },
+    "condenser_lens_3 to adapter_lens": {
+      "actual": 0,
+      "expected": 0,
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": [],
+      "waist_z_mm": []
+    },
+    "probe_tl22_lens to probe_tl21_lens": {
+      "actual": 1,
+      "expected": 1,
+      "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+      "unresolved": [],
+      "waist_z_mm": [
+        1211.6333333333332
+      ]
+    }
+  },
+  "original_particles": 2000,
+  "passed": true,
+  "source": "6681f23f4bb6ed1db9e4cc59ef1151d37e063ad813e836437f07e75eeeaa0c7f"
+}

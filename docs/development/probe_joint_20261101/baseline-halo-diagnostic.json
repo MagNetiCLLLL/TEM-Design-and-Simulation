@@ -1,0 +1,20 @@
+{
+  "source_particles": 2000,
+  "radii_nm": {
+    "0.5": 0.30723301186282576,
+    "0.9": 1.0385529948141874,
+    "0.95": 1.251155552791204,
+    "0.99": 5.136420450450053,
+    "1": 41.068480180861954
+  },
+  "slope_angle_mrad": {
+    "0.5": 13.16513097638684,
+    "0.9": 26.272155546659196,
+    "0.95": 29.78580316070723,
+    "0.99": 37.41545491023354,
+    "1": 48.645623009799955
+  },
+  "outside_3nm_particles": 26,
+  "outside_3nm_rms_square_fraction": 0.8776130556326827,
+  "scope": "Read-only full-cohort diagnostic; no removal or reweighting; mechanical slope norms"
+}

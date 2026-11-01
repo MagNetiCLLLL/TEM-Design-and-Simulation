@@ -1,0 +1,67 @@
+{
+  "center": "explore-wide-01-focus1",
+  "holdouts": [
+    {
+      "name": "baseline",
+      "normalized_distance": 4.454798199973469,
+      "position_holdout_rms_nm": 0.1787474926893848
+    },
+    {
+      "name": "explore-small-01",
+      "normalized_distance": 2.9887512848831728,
+      "position_holdout_rms_nm": 0.0020643815007793443
+    },
+    {
+      "name": "explore-small-01-focus1",
+      "normalized_distance": 2.989457337197914,
+      "position_holdout_rms_nm": 0.002675404115069019
+    },
+    {
+      "name": "explore-small-02",
+      "normalized_distance": 3.0052868987815393,
+      "position_holdout_rms_nm": 0.022263116472201902
+    },
+    {
+      "name": "explore-small-02-focus1",
+      "normalized_distance": 3.0060563018294966,
+      "position_holdout_rms_nm": 0.023007650157400247
+    },
+    {
+      "name": "explore-small-03",
+      "normalized_distance": 2.961631579584535,
+      "position_holdout_rms_nm": 0.036539966779765405
+    },
+    {
+      "name": "explore-small-03-focus1",
+      "normalized_distance": 2.9622025468071564,
+      "position_holdout_rms_nm": 0.03601920807248806
+    },
+    {
+      "name": "explore-wide-01",
+      "normalized_distance": 0.009513941473613159,
+      "position_holdout_rms_nm": 0.0022100022614582916
+    }
+  ],
+  "observations": [
+    "baseline",
+    "explore-small-01",
+    "explore-small-01-focus1",
+    "explore-small-02",
+    "explore-small-02-focus1",
+    "explore-small-03",
+    "explore-small-03-focus1",
+    "explore-wide-01"
+  ],
+  "retained_secant_rank": 2,
+  "scope": "Truncated local secant update; discarded directions retain the original measured Jacobian; prediction only, not a physical-rank qualification",
+  "singular_values": [
+    2.5110578405548987,
+    0.20224154723846893,
+    0.021175780934099057,
+    0.008612607756707094,
+    0.000981050303863694,
+    5.981703256069979e-17,
+    5.3039264448608517e-17,
+    6.156893917547849e-18
+  ]
+}

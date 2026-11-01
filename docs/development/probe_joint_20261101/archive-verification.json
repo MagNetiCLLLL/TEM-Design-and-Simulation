@@ -1,0 +1,218 @@
+{
+  "baseline_surface_exact": {
+    "alive": true,
+    "flight_time_s": true,
+    "kinetic_energy_ev": true,
+    "tx_rad": true,
+    "ty_rad": true,
+    "x_m": true,
+    "y_m": true
+  },
+  "completed_trials": 29,
+  "schema": "fixed-source-recipe-verification-v1",
+  "trials": [
+    {
+      "current_weights_exact": true,
+      "input_digest": "c6440aae8f88257e0e679b0c0e165acf5f330d826fbb9cca3df89b39901e38eb",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "baseline"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "72afa19bb0f1fe551c1e86f89c99609cac823cf4f898c2a6d40de9be7cfb3f20",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "expand-wide-01"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "c72a1a9114110c740bb7a73ae965f0bcb20cbfc3187a9c5f10769cbefdb3fd7d",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "expand-wide-01-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "e0de4a56113dd3bc575d9d5028841cfc4d77941749dea6f2fb4537433cece21d",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "expand-wide-02"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "8fc4b516be69c93008d702387cceb82d3b63b295e26857aedeaf47a2e33e018e",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "expand-wide-02-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "7c4b61e3be07dc1bb5b315032301194256843fa684f432903c06692a8f4a4f45",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "explore-small-01"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "3618c7e99c3fffc2752291b5c8ca4765b92c01877826b56e3bb7a8eed57ecc9f",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "explore-small-01-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "6928cc5bed67ca78f2b233869a5d55490d61094f152f333514ad5a6b359edfbe",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "explore-small-02"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "1b81adb17147d5a41f7752abc6b5332749f5613bd71d7661d2346b2f9e079332",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "explore-small-02-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "b5f331c33434bdf844d9b73f0e740749ce4607b6cabaa21209ad3ff11b8ba967",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "explore-small-03"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "5b3960255b6d52da1f768e87bd243124406801c094fe2add677ca9ba7586f917",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "explore-small-03-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "2896fb7fc817b9c7ba9693e0c0714f6b3d07dd6c0fbc57758e482977ea2a37b1",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "explore-wide-01"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "61fe2fbe3d86e5e1c93d8e244a478731b67de955f814c3552a8daa466eb35908",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "explore-wide-01-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "8211527432a372ba39a3dc0a75902b85ecfb03b77aa6adb2a4e1c7600681f148",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "explore-wide-02"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "b37a39da13431b210c799a06e44e64923d723ef04feedb0f524e94d8bff424e9",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "explore-wide-02-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "3b2689cfe5966529702656104fe84ad30ab1a834c75b2f1f02d88054c815f360",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "extend-joint-01"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "28a3643f3ea3e27538d78ee8fdc1cebdf19b42802bd0c3733be314b2bf3af53e",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "extend-joint-01-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "4412e59c01b6f919f43497dd65703cfe91f16d692d691aef792d5990b55ccd9a",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "extend-joint-01-focus1-fine"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "f21c307338d8ec10e8e6b965409a5dc689a3c6acf7fff0f20af6835b8335a53b",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "extend-joint-02"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "a874b001f8e5f2a9fc478a8d9f84a08d8395b709ca3f3936df0080fa04b8b27e",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "extend-joint-02-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "5c9fd40ef13f1d582acbf107d7bb843b5144cc5fbf4b6910adcd93c7d4085809",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "refine-small-01"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "54c8da3c4199c898d63827835f2843e1429eb0c99cbd7d6fcb52971cb1fa5590",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "refine-small-01-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "35aacb157614bb4d29d023c9c8043440cb7ceab5c5cf574c34153a29457f0d07",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "refine-small-02"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "cf6ed5cf2e7d7fbd60dfc21aa3617f08f2f22705fd46d931cde5543c4afdde9d",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "refine-small-02-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "ca71e1e1c14bb2f53ea10b46d8633684e2e52ea0100fdaee35a59e2ac63cbd07",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "refine-wide-01"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "89d9dcb12e5979140d18e4b5e18fb16f9f944bf3530693049c85d2bf664c09ed",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "refine-wide-01-focus1"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "8654588d4305c0ab00ab2a555472617fcfab109b53d83b3930ba72fc2783d934",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "refine-wide-01-focus1-fine"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "d066c960df67d5568be595a25e6928338fe056195a579ae8ad06f52beb18e809",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "refine-wide-02"
+    },
+    {
+      "current_weights_exact": true,
+      "input_digest": "9cb9059a317d02757ac09ae371b39ac35a7fc5fbe9b4002b9cfc6cc35066103c",
+      "input_recipe_exact": true,
+      "original_population_exact": true,
+      "trial": "refine-wide-02-focus1"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "center": "expand-wide-02-focus1",
+  "holdouts": [
+    {
+      "name": "expand-wide-01",
+      "normalized_distance": 0.5785158801118011,
+      "position_holdout_rms_nm": 0.002028981057860421
+    },
+    {
+      "name": "expand-wide-01-focus1",
+      "normalized_distance": 0.5830975019792943,
+      "position_holdout_rms_nm": 0.005518569761038614
+    },
+    {
+      "name": "expand-wide-02",
+      "normalized_distance": 0.011726678420048302,
+      "position_holdout_rms_nm": 0.0031193109555686417
+    },
+    {
+      "name": "explore-wide-01",
+      "normalized_distance": 4.606035756992374,
+      "position_holdout_rms_nm": 0.0698156450954091
+    },
+    {
+      "name": "explore-wide-01-focus1",
+      "normalized_distance": 4.609214320432082,
+      "position_holdout_rms_nm": 0.07242366528990399
+    },
+    {
+      "name": "refine-wide-01",
+      "normalized_distance": 3.873041902429979,
+      "position_holdout_rms_nm": 0.03053874907106917
+    },
+    {
+      "name": "refine-wide-01-focus1",
+      "normalized_distance": 3.8734207460941836,
+      "position_holdout_rms_nm": 0.030233227029610517
+    },
+    {
+      "name": "refine-wide-02",
+      "normalized_distance": 3.8884787539548236,
+      "position_holdout_rms_nm": 0.03095286603727188
+    },
+    {
+      "name": "refine-wide-02-focus1",
+      "normalized_distance": 3.888900121257986,
+      "position_holdout_rms_nm": 0.030617297221008047
+    }
+  ],
+  "observations": [
+    "expand-wide-01",
+    "expand-wide-01-focus1",
+    "expand-wide-02",
+    "explore-wide-01",
+    "explore-wide-01-focus1",
+    "refine-wide-01",
+    "refine-wide-01-focus1",
+    "refine-wide-02",
+    "refine-wide-02-focus1"
+  ],
+  "retained_secant_rank": 2,
+  "scope": "Truncated local secant update; discarded directions retain the original measured Jacobian; prediction only, not a physical-rank qualification",
+  "singular_values": [
+    2.389419886950114,
+    0.6753671940301136,
+    0.012911908574313409,
+    0.0022127639970571994,
+    0.0002517264917983564,
+    1.0505744874596128e-16,
+    4.070134360293887e-17,
+    1.1212744346314113e-18
+  ]
+}

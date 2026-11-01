@@ -1,0 +1,79 @@
+{
+  "center": "explore-small-03-focus1",
+  "holdouts": [
+    {
+      "name": "baseline",
+      "normalized_distance": 1.5836815191088813,
+      "position_holdout_rms_nm": 0.18005184139276176
+    },
+    {
+      "name": "explore-small-01",
+      "normalized_distance": 0.2052944759049073,
+      "position_holdout_rms_nm": 0.000533792837862614
+    },
+    {
+      "name": "explore-small-01-focus1",
+      "normalized_distance": 0.20614118016116673,
+      "position_holdout_rms_nm": 0.0006242341569958812
+    },
+    {
+      "name": "explore-small-02",
+      "normalized_distance": 0.3003647107303616,
+      "position_holdout_rms_nm": 0.0006328503336380003
+    },
+    {
+      "name": "explore-small-02-focus1",
+      "normalized_distance": 0.3012479237516243,
+      "position_holdout_rms_nm": 0.0005797389269465008
+    },
+    {
+      "name": "explore-small-03",
+      "normalized_distance": 0.002055320012788229,
+      "position_holdout_rms_nm": 0.0004641886299951845
+    },
+    {
+      "name": "explore-wide-01",
+      "normalized_distance": 2.9648626464527053,
+      "position_holdout_rms_nm": 0.0022818192301878103
+    },
+    {
+      "name": "explore-wide-01-focus1",
+      "normalized_distance": 2.9622025468071564,
+      "position_holdout_rms_nm": 0.002423412473239498
+    },
+    {
+      "name": "explore-wide-02",
+      "normalized_distance": 4.079726300836955,
+      "position_holdout_rms_nm": 0.0011178722452908985
+    },
+    {
+      "name": "explore-wide-02-focus1",
+      "normalized_distance": 4.079487166192144,
+      "position_holdout_rms_nm": 0.0011257764740639665
+    }
+  ],
+  "observations": [
+    "baseline",
+    "explore-small-01",
+    "explore-small-01-focus1",
+    "explore-small-02",
+    "explore-small-02-focus1",
+    "explore-small-03",
+    "explore-wide-01",
+    "explore-wide-01-focus1",
+    "explore-wide-02",
+    "explore-wide-02-focus1"
+  ],
+  "retained_secant_rank": 4,
+  "scope": "Truncated local secant update; discarded directions retain the original measured Jacobian; prediction only, not a physical-rank qualification",
+  "singular_values": [
+    1.8144271414182442,
+    1.0084492112202499,
+    0.5724721777175501,
+    0.08622725297107828,
+    0.003819832164324375,
+    0.0027346739214722704,
+    1.0393260831936387e-16,
+    2.0563731492736003e-17
+  ]
+}
