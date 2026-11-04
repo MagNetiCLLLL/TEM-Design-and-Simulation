@@ -58,6 +58,7 @@ SHARED_DEFLECTOR_READ_ONLY_FIELDS = SHARED_DEFLECTOR_GEOMETRY_FIELDS | {
     "mechanical_profile", "model_3d", "material_regions",
     "offset_x_mm", "offset_y_mm", "offset_z_mm",
     "rotation_x_mrad", "rotation_y_mrad", "rotation_z_mrad",
+    "assembly_azimuth_deg", "field_azimuth_error_deg",
 }
 
 

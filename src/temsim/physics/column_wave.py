@@ -283,7 +283,7 @@ def _prepare_column(state, start, stop, maximum_step_mm, *, column_model="physic
     hexapole_supports = []
     for component in getattr(state, "corrector_elements", ()):
         if (not getattr(component, "enabled", False)
-                or getattr(component, "strength_m3", None) == 0.
+                or (getattr(component, "strength_m3", None) == 0. and not getattr(component, "skew_strength_m3", 0.))
                 or not (hasattr(component, "hexapole_strength_components_m3")
                         or hasattr(component, "hexapole_strength_m3"))):
             continue

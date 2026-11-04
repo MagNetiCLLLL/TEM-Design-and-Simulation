@@ -222,9 +222,9 @@ def capture_posed_column_fields(state, *, include_hexapole=True, time_s=None, ar
             continue
         from temsim.test_electron_compiled_laws import multipole_is_supported, _MULTIPOLES
         supported = multipole_is_supported(component)
-        if include_aligned and not supported:
-            # B-COR HP3 uses this exact unchanged Gaussian law, but extending
-            # P1 capture must not broaden legacy compiled-backend admission.
+        if not supported:
+            # B-COR HP3 uses this exact unchanged Gaussian law for both aligned
+            # diagnostics and placed fields. Keep legacy compiled admission separate.
             from temsim.optics.hexapole import HexapoleComponent
             from temsim.optics.image_corrector import ImageCorrectorHp3HexapoleComponent
             supported = (type(component) is ImageCorrectorHp3HexapoleComponent and all(
@@ -242,6 +242,8 @@ def capture_posed_column_fields(state, *, include_hexapole=True, time_s=None, ar
         elif hasattr(component, "quadrupole_strength_m2"):
             strength = float(component.quadrupole_strength_m2(np.asarray(z)))
             terms = ((2, 0, -.5*ratio*strength), (0, 2, .5*ratio*strength))
+            if getattr(component, "skew_strength_m2", 0.):
+                terms += ((1, 1, -ratio*float(component.skew_quadrupole_strength_m2(z))),)
             width = float(component.effective_length_mm)/2.355
         elif hasattr(component, "hexapole_strength_components_m3"):
             if not include_hexapole:

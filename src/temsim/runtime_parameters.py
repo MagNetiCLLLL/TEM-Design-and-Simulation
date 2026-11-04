@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from copy import copy
+from dataclasses import dataclass, field, replace
 import math
 from typing import Any
 from temsim.component_keys import FIXED_APERTURE_KEYS
@@ -121,6 +122,7 @@ class RuntimeTarget:
     label: str
     obj: object
     hidden_parameters: frozenset[str] = frozenset()
+    alignment_peer: object | None = field(default=None, compare=False, repr=False)
 
 
 @dataclass(frozen=True, slots=True)
@@ -202,6 +204,11 @@ def runtime_targets(state) -> dict[str, RuntimeTarget]:
             key = getattr(element, "key", None)
             if key:
                 add(str(key), element)
+    dp12 = targets.get("probe_dp12_scan_deflector")
+    ac = targets.get("ac_deflector")
+    if getattr(state, "probe_corrector_installed", False) and dp12 and ac:
+        targets[dp12.key] = replace(dp12, alignment_peer=ac.obj)
+        targets[ac.key] = replace(ac, alignment_peer=dp12.obj)
     return targets
 
 
@@ -227,6 +234,9 @@ def shared_runtime_geometry_owner(key: str, name: str, *, obj=None) -> str:
 
 def editable_parameters(target: RuntimeTarget) -> tuple[RuntimeParameter, ...]:
     if getattr(target.obj, "KIND", None) == "virtual_layout":
+        if target.key == "probe_dp12_scan_deflector":
+            return tuple(RuntimeParameter(name, getattr(target.obj, name))
+                         for name in ("enabled", "alignment_x_mrad", "alignment_y_mrad"))
         return ()
     result = []
     if (hasattr(target.obj, "curvature_nm_inv") and target.obj.surface_model is None
@@ -274,7 +284,8 @@ def convert_runtime_value(old_value: Any, text: str) -> object:
 
 
 def validate_runtime_assignment(
-    target: RuntimeTarget, name: str, value: object, *, validate_source_geometry=True
+    target: RuntimeTarget, name: str, value: object, *, validate_source_geometry=True,
+    validate_coupled_drives=True,
 ) -> object:
     """Type-check and domain-check one profile/runtime assignment."""
 
@@ -325,7 +336,6 @@ def validate_runtime_assignment(
     if validate_source_geometry and hasattr(target.obj, "curvature_nm_inv") and name in {
         "curvature_nm_inv", "virtual_source_fwhm_nm", "angular_cutoff_mrad"
     }:
-        from copy import copy
         candidate = copy(target.obj)
         setattr(candidate, name, converted)
         candidate.validate()
@@ -530,11 +540,20 @@ def validate_runtime_assignment(
             raise ValueError(
                 f"{target.key}.{name} must be between 0 and {maximum:g}"
             )
+    if target.key == "probe_dp12_scan_deflector" and name in ("alignment_x_mrad", "alignment_y_mrad"):
+        if abs(converted) > target.obj.maximum_kick_mrad:
+            raise ValueError("DP12 alignment drive exceeds its angular limit")
     from temsim.optics.hexapole import HexapoleComponent
     from temsim.optics.quadrupole import QuadrupoleComponent
-    if isinstance(target.obj, (HexapoleComponent, QuadrupoleComponent)):
-        from copy import copy
+    if validate_coupled_drives and isinstance(target.obj, (HexapoleComponent, QuadrupoleComponent)):
         candidate = copy(target.obj)
         setattr(candidate, name, converted)
         candidate.validate()
+    if validate_coupled_drives and target.alignment_peer is not None:
+        candidate = copy(target.obj)
+        setattr(candidate, name, converted)
+        dp12, ac = ((candidate, target.alignment_peer) if target.key == "probe_dp12_scan_deflector"
+                    else (target.alignment_peer, candidate))
+        if dp12.enabled and ac.enabled and (dp12.alignment_x_mrad or dp12.alignment_y_mrad):
+            ac.validate_coil_limits(dp12.coil_bias_mrad(ac))
     return converted

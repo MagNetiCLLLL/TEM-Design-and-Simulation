@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import math
 from typing import ClassVar
 
@@ -111,19 +111,20 @@ class QuadrupoleComponent(TipReferencedPosition):
             )
         return self
 
-    def quadrupole_strength_m2(self, z_mm):
-        """Return signed +x focusing strength; y receives the negative."""
-
+    def _envelope(self, z_mm):
         z = np.asarray(z_mm, dtype=float)
         if not self.enabled:
             return np.zeros_like(z)
         sigma_mm = self.effective_length_mm / 2.355
         if not math.isfinite(sigma_mm) or sigma_mm <= 0.0:
             raise ValueError(f"{self.name} effective length must be finite and positive.")
-        envelope = np.exp(
+        return np.exp(
             -0.5 * ((z - self.z_mm) / sigma_mm) ** 2
         )
-        return float(self.strength_m2) * envelope
+
+    def quadrupole_strength_m2(self, z_mm):
+        """Return signed +x focusing strength; y receives the negative."""
+        return float(self.strength_m2) * self._envelope(z_mm)
 
     def draw_layout(self):
         return {
@@ -151,9 +152,27 @@ class QuadrupoleComponent(TipReferencedPosition):
         }
 
 
+@dataclass
+class TwoAxisQuadrupole(QuadrupoleComponent):
+    """Two electrical field bases at one optical station, 45 degrees apart."""
+
+    skew_strength_m2: float = field(default=0.0, metadata={"omit_zero_drive": True})
+
+    def skew_quadrupole_strength_m2(self, z_mm):
+        return float(self.skew_strength_m2) * self._envelope(z_mm)
+
+    def validate(self):
+        super().validate()
+        if (isinstance(self.skew_strength_m2, (bool, np.bool_))
+                or not math.isfinite(self.skew_strength_m2)
+                or math.hypot(self.strength_m2, self.skew_strength_m2) > self.maximum_strength_m2):
+            raise ValueError(f"{self.name} normal/skew field must be finite and within its strength limit")
+        return self
+
+
 def restore_quadrupole(component, values):
     values = dict(values)
-    allowed = QuadrupoleComponent.__dataclass_fields__
+    allowed = component.__dataclass_fields__
     object.__setattr__(component, "_position_coupling_ready", False)
     for attribute, value in values.items():
         if attribute in allowed:

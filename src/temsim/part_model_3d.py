@@ -573,7 +573,7 @@ def part_dimension_specs(document, part_key, *, runtime_values=None):
         path = ("parts", part_key, "plate_thickness_mm")
         meaning = describe_parameter(part, path, by_key=by_key)
         specs += (DimensionSpec(path, meaning.label, 0., "mm", reason=meaning.description, meaning=meaning),)
-    from temsim.lens_pose import physical_pose_values, supports_physical_lens_pose, inherits_parent_lens_pose, column_pose_kind, PHYSICAL_POSE_FIELDS
+    from temsim.lens_pose import pose_control_values, pose_control_label, supports_physical_lens_pose, inherits_parent_lens_pose, column_pose_kind, PHYSICAL_POSE_FIELDS
     host_key = bound_field_owner(part, "rotation_x_mrad")
     pose_owner, seen = by_key.get(host_key, part), set()
     while pose_owner is not None and not supports_physical_lens_pose(pose_owner):
@@ -585,8 +585,8 @@ def part_dimension_specs(document, part_key, *, runtime_values=None):
         seen.add(pose_owner["key"])
         pose_owner = by_key.get(pose_owner.get("parent_key"))
     if pose_owner is not None:
-        values = physical_pose_values(pose_owner)
-        pose_names = set(values)
+        values = pose_control_values(pose_owner)
+        pose_names = set(PHYSICAL_POSE_FIELDS)
         # Canonical placement controls exist even for old files with no saved
         # pose; omit the old CAD controls to avoid two competing edit surfaces.
         if pose_owner is part:
@@ -594,10 +594,8 @@ def part_dimension_specs(document, part_key, *, runtime_values=None):
                 len(spec.path) > 4 and spec.path[2:4] == ("model_3d", "transform")
                 and spec.path[4] in {"offset_mm", "rotation_deg"}))
         prefix = "Physical host: " if host_key else ("Parent lens: " if pose_owner is not part else "")
-        specs += tuple(DimensionSpec(("parts", pose_owner["key"], name), prefix +
-            ("Position " + name[7].upper() + " offset" if name.startswith("offset_")
-             else "Optical tilt about " + name[9].upper()),
-            float(value), "mrad" if name.endswith("_mrad") else "mm")
+        specs += tuple(DimensionSpec(("parts", pose_owner["key"], name), prefix + pose_control_label(name)[0],
+            float(value), pose_control_label(name)[1])
             for name, value in values.items())
     if part.get("tip_particle_model"):
         from temsim.tip_model_3d import tip_dimension_overrides

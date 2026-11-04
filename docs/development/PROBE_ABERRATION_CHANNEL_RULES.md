@@ -1,5 +1,10 @@
 # Probe-corrector channel rules and physical-drive qualification
 
+The [current probe service controls](../corrector_channels.md#probe-service-inputs)
+include the A2 upper/lower hardware routes, independent auxiliary quadratures
+and static DP12 steering on the AC coils. The measurements below predate
+these added drive directions.
+
 The historical response table below applies to the 300 kV, Normal Nanoprobe,
 two-main-hexapole assembly at the specimen entrance of the R2-width-placed
 working point. Its channels are perturbations of the unified model field;

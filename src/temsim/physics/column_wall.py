@@ -97,7 +97,7 @@ def _partition_vacuum_segments_uncached(state, segments):
                  for part in module.parts}
     pose_rows.update({part.key: part.data for part in parts})
     if not any(any(value != 0. for name, value in physical_pose_values(row).items()
-                   if name.startswith("offset_"))
+                   if name.startswith("offset_") or name == "assembly_azimuth_deg")
                for row in pose_rows.values() if supports_physical_lens_pose(row)):
         return tuple(segments), ()
     stationary, placed, registrations = [], [], {}

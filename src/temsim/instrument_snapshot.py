@@ -151,8 +151,14 @@ def encode_instrument(state, *, asset_store=None) -> Mapping:
         if isinstance(value, tuple):
             node["items"] = [encode(v) for v in value]
         else:
-            node["fields"] = [f.name for f in fields(value)] if is_dataclass(value) else []
-            names = _attribute_names(value)
+            declared = fields(value) if is_dataclass(value) else ()
+            # A newly available, unused corrector drive has exactly the old
+            # physical state. Preserve the old graph, including its digest.
+            omitted = {f.name for f in declared if f.metadata.get("omit_zero_drive")
+                       and type(getattr(value, f.name)) is float
+                       and getattr(value, f.name).hex() == (0.).hex()}
+            node["fields"] = [f.name for f in declared if f.name not in omitted]
+            names = [k for k in _attribute_names(value) if k not in omitted]
             if type_key == "temsim.optics.model:State":
                 names = [k for k in names if k not in _STATE_PRODUCT_NAMES]
             node["attributes"] = {k: encode(getattr(value, k)) for k in names}
@@ -192,7 +198,10 @@ def decode_instrument(graph, *, assets=None):
                 result = tuple.__new__(cls, (decode(v) for v in node["items"]))
                 restored[index] = result
                 return result
-            current_fields = [f.name for f in fields(cls)] if is_dataclass(cls) else []
+            declared = fields(cls) if is_dataclass(cls) else ()
+            missing_drives = {f.name for f in declared if f.metadata.get("omit_zero_drive")
+                              and f.name not in node["fields"] and f.name not in node["attributes"]}
+            current_fields = [f.name for f in declared if f.name not in missing_drives]
             if list(node["fields"]) != current_fields:
                 raise ValueError(f"Unsupported model schema for {node['type']}; only current fields are accepted")
             attributes = node["attributes"]
@@ -208,6 +217,8 @@ def decode_instrument(graph, *, assets=None):
                 raise ValueError("Invalid working-point attribute")
             result = object.__new__(cls)
             restored[index] = result
+            for name in missing_drives:
+                object.__setattr__(result, name, 0.0)
             for k, v in attributes.items():
                 if isinstance(getattr(cls, k, None), property) or callable(getattr(cls, k, None)):
                     raise ValueError("Working-point attributes cannot invoke model methods or setters")
@@ -278,6 +289,13 @@ def decode_instrument(graph, *, assets=None):
     if result.energy_filter.enabled is not bool(result.energy_filter_installed):
         raise ValueError("Energy filter participation must match its assembly installation")
     from temsim.optics.model import Stigmator
+    from temsim.optics.probe_corrector import Dp12ScanDeflectorComponent
+    if hasattr(result, "probe_service_gains"):
+        from temsim.optics.probe_service import validated_service_settings
+        validated_service_settings(result.probe_service_gains)
+    if hasattr(result, "probe_service_percent"):
+        from temsim.optics.probe_service import validated_percent_settings
+        validated_percent_settings(result.probe_service_percent)
     from temsim.optics.ac_deflector import AcDeflectorComponent
     from temsim.optics.descan_deflector import DescanDeflectorComponent
     from temsim.component_keys import AC_DEFLECTOR, DESCAN_DEFLECTOR
@@ -287,7 +305,7 @@ def decode_instrument(graph, *, assets=None):
     from temsim.optics.hexapole import HexapoleComponent
     from temsim.optics.quadrupole import QuadrupoleComponent
     for component in restored.values():
-        if isinstance(component, (HexapoleComponent, QuadrupoleComponent)):
+        if isinstance(component, (HexapoleComponent, QuadrupoleComponent, Dp12ScanDeflectorComponent)):
             component.validate()
         if isinstance(component, Sample) and any(
             name in vars(component) for name in (

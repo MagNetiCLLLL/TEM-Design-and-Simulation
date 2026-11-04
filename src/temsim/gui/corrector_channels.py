@@ -80,8 +80,10 @@ class CorrectorChannelControls(QWidget):
         self._worker = self._calibration = self._identity = None
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 3, 0, 3)
-        layout.addWidget(_text("A1 / A2 coarse and fine channels"))
+        layout.addWidget(_text("Numerical A1 / A2 coefficient fit"))
         layout.addWidget(_text(
+            "The probe fit holds installation angles fixed and uses intrinsic electrical outputs. Use the Probe service inputs tab "
+            "for AT_A1 and the upper/lower AT_A2 controls. "
             "Calibrate the current optical model, then apply a relative aberration change. "
             "Coarse and fine use different physical drives. Field length and propagation "
             "remain active; coupled changes in spherical aberration are measured. "

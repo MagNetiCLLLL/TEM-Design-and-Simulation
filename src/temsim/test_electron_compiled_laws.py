@@ -30,7 +30,7 @@ from temsim.optics.model import Stigmator
 from temsim.optics.condenser_stigmator import CondenserStigmatorComponent
 from temsim.optics.objective_stigmator import ObjectiveStigmatorComponent
 from temsim.optics.diffraction_stigmator import DiffractionStigmatorComponent
-from temsim.optics.quadrupole import QuadrupoleComponent
+from temsim.optics.quadrupole import QuadrupoleComponent, TwoAxisQuadrupole
 from temsim.optics.hexapole import HexapoleComponent
 from temsim.optics.electron_gun.alignment import GunDeflector, GunStigmator
 
@@ -71,9 +71,10 @@ _MULTIPOLES = {}
 for base, concrete, names in (
     (Stigmator, (Stigmator, CondenserStigmatorComponent, ObjectiveStigmatorComponent,
                  DiffractionStigmatorComponent), ('quadrupole_tensor_m2',)),
-    (QuadrupoleComponent, (QuadrupoleComponent, Qph2QuadrupoleComponent, QpcQuadrupoleComponent,
-        Qph1QuadrupoleComponent, QpolQuadrupoleComponent, ImageCorrectorQpolQuadrupoleComponent,
-        ImageCorrectorDstgQuadrupoleComponent), ('quadrupole_strength_m2',)),
+    (QuadrupoleComponent, (QuadrupoleComponent, ImageCorrectorQpolQuadrupoleComponent,
+        ImageCorrectorDstgQuadrupoleComponent), ('quadrupole_strength_m2', '_envelope')),
+    (TwoAxisQuadrupole, (Qph2QuadrupoleComponent, QpcQuadrupoleComponent, Qph1QuadrupoleComponent,
+        QpolQuadrupoleComponent), ('quadrupole_strength_m2', 'skew_quadrupole_strength_m2', '_envelope')),
     (HexapoleComponent, (HexapoleComponent, Hp2HexapoleComponent, HpcHexapoleComponent,
         Hp1HexapoleComponent, HpolHexapoleComponent, ImageCorrectorHpolHexapoleComponent,
         ImageCorrectorHp1HexapoleComponent, ImageCorrectorHp2HexapoleComponent),

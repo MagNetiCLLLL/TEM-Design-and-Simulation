@@ -193,6 +193,10 @@ def _parameters(state, upper_z_mm, lower_z_mm, target, pivot_step_mm,
         raise ValueError("Scan FOV must have two finite positive extents")
     kick_limit = _positive(ac.maximum_kick_mrad, "Physical coil kick limit (mrad)")
     static = np.asarray(ac.coil_kicks_mrad(ac.kick_x_mrad, ac.kick_y_mrad), dtype=float)
+    from temsim.physics.instrument_magnetic import active_dp12_bias
+    bias = active_dp12_bias(state, ac)
+    if bias is not None:
+        static += bias
     if static.shape != (2, 2) or not np.isfinite(static).all():
         raise ValueError("Static physical coil kicks must form a finite 2x2 array")
     return upper, lower, sample, step, maximum_step_mm, limit, tolerance, count, fov, kick_limit, static

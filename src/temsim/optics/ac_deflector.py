@@ -389,30 +389,30 @@ class AcDeflectorComponent:
             self.maximum_kick_mrad
         ):
             raise ValueError("AC Scan Coil drive exceeds its limit.")
-        active_x_mrad = abs(float(self.kick_x_mrad))
-        active_y_mrad = abs(float(self.kick_y_mrad))
-        if self.scan_enabled:
-            scan_matrix = self.scan_command_matrix_mrad
-            active_x_mrad += sum(abs(float(value)) for value in scan_matrix[0])
-            active_y_mrad += sum(abs(float(value)) for value in scan_matrix[1])
-        elif self.wobble_enabled:
-            active_x_mrad += abs(float(self.wobble_amplitude_x_mrad))
-            active_y_mrad += abs(float(self.wobble_amplitude_y_mrad))
-        maximum_foil_drives = tuple(
-            abs(float(matrix[row][0])) * active_x_mrad
-            + abs(float(matrix[row][1])) * active_y_mrad
-            for matrix in self.coil_kick_matrices()
-            for row in range(2)
-        )
-        if max(maximum_foil_drives, default=0.0) > float(
-            self.maximum_kick_mrad
-        ):
-            raise ValueError(
-                "AC upper/lower coil drive exceeds its individual limit."
-            )
+        self.validate_coil_limits()
         if self.active_installation not in {"probe", "standalone"}:
             raise ValueError("AC Scan Coil installation is invalid.")
         return self
+
+    def validate_coil_limits(self, bias_mrad=None):
+        """Check the two physical stations across the raster or wobble envelope."""
+        swing_x = swing_y = 0.
+        if self.scan_enabled:
+            scan_matrix = self.scan_command_matrix_mrad
+            swing_x, swing_y = (sum(map(abs, row)) for row in scan_matrix)
+        elif self.wobble_enabled:
+            swing_x, swing_y = abs(self.wobble_amplitude_x_mrad), abs(self.wobble_amplitude_y_mrad)
+        for station, matrix in enumerate(self.coil_kick_matrices()):
+            for axis, (gx, gy) in enumerate(matrix):
+                if bias_mrad is None:
+                    # Preserve the manual scan command's independent-axis envelope.
+                    maximum = (abs(gx) * (abs(self.kick_x_mrad) + swing_x)
+                               + abs(gy) * (abs(self.kick_y_mrad) + swing_y))
+                else:
+                    static = gx * self.kick_x_mrad + gy * self.kick_y_mrad + bias_mrad[station][axis]
+                    maximum = abs(static) + abs(gx) * swing_x + abs(gy) * swing_y
+                if not isfinite(maximum) or maximum > self.maximum_kick_mrad:
+                    raise ValueError("AC upper/lower coil drive exceeds its individual limit.")
 
     def apply_optical_position(self):
         return self

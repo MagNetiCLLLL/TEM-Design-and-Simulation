@@ -93,7 +93,7 @@ def _clone_working_point(state):
 
 def _components(state):
     result = {}
-    for name in ("corrector_elements", "deflectors", "stigmators"):
+    for name in ("corrector_elements", "deflectors", "stigmators", "lenses"):
         for component in getattr(state, name, ()):
             key = str(component.key)
             if key in result and result[key] is not component:
@@ -102,13 +102,41 @@ def _components(state):
     return result
 
 
+def _probe_fit_specs(components, channel):
+    """Fit electrical outputs with every probe installation angle held fixed."""
+    from temsim.optics.probe_service import OUTPUTS
+    groups = {
+        "a1_coarse": ("DP21x", "DP21y", "DP22x", "DP22y"),
+        "a1_fine": ("QPolx", "QPoly"),
+        "a2_coarse": ("HP1", "HP2", "TL21", "TL22"),
+        "a2_fine": ("HPolx", "HPoly"),
+    }
+    steps = {"mrad": .001, "m⁻²": .25, "m⁻³": 1000., "% excitation": .001}
+    specs = []
+    for name in groups[channel]:
+        output = OUTPUTS[name]
+        item = components.get(output.component)
+        if item is None or not item.enabled or not getattr(item, "_layout_installed", True):
+            raise ValueError(f"Channel requires installed, enabled hardware: {output.component}")
+        field, _ = output.fields[0]
+        limit = float(getattr(item, output.limit_field))
+        if not np.isfinite(limit) or limit <= 0:
+            raise ValueError(f"Invalid physical drive limit: {output.component}")
+        minimum = 0. if field == "percent" else -limit
+        specs.append(ControlSpec(output.component, field, output.unit, minimum, limit,
+                                 min(steps[output.unit], limit*.001)))
+    return tuple(specs)
+
+
 def channel_control_specs(state, system, channel):
     """Describe independent physical drives, with finite calibration steps."""
     if system not in {"probe", "image"} or channel not in CHANNELS:
         raise ValueError("Select probe/image and an A1/A2 coarse/fine channel")
     components = _components(state)
+    if system == "probe":
+        return _probe_fit_specs(components, channel)
     if channel == "a1_fine":
-        keys = ["condenser_stigmator" if system == "probe" else "objective_stigmator"]
+        keys = ["objective_stigmator"]
     elif channel == "a1_coarse":
         keys = [f"{system}_dph{i}_deflector" for i in (1, 2)]
     elif channel == "a2_coarse":
@@ -117,8 +145,7 @@ def channel_control_specs(state, system, channel):
         if third in components and getattr(components[third], "_layout_installed", True):
             keys.append(third)
     else:
-        keys = (["probe_hpc_hexapole", "probe_hpol_hexapole"] if system == "probe"
-                else ["image_hpol_hexapole"])
+        keys = ["image_hpol_hexapole"]
     specs = []
     for key in keys:
         item = components.get(key)

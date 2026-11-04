@@ -353,6 +353,10 @@ def skew_quadrupole_field(z, state, *, exclude_mapped_keys=()):
         if stig.enabled:
             _, _, value = stig.quadrupole_tensor_m2(z)
             skew += np.where(_support_mask(z, stig), value, 0.0)
+    for component in getattr(state, "corrector_elements", ()):
+        if (getattr(component, "skew_strength_m2", 0.) and component.enabled
+                and component.key not in exclude_mapped_keys):
+            skew += np.where(_support_mask(z, component), component.skew_quadrupole_strength_m2(z), 0.)
     from temsim.physics.instrument_magnetic import gun_paraxial_fields
     skew += gun_paraxial_fields(state, z)[4]
     return skew

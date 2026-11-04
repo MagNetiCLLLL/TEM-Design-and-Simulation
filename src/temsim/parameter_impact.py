@@ -334,10 +334,11 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
     if physical_pose:
         field_only = column_pose_kind(row) == "field"
         aperture_pose = _is_aperture(row)
-        optical_tilt = (field.startswith("rotation_") or
+        optical_tilt = (field == "field_azimuth_error_deg" or field.startswith("rotation_") or
                         (field == "model_3d" and path[4] == "rotation_deg"))
         if optical_tilt:
             return _impact("active" if connected else "unknown",
+                           "Field azimuth error" if field == "field_azimuth_error_deg" else
                            "Optical aperture tilt" if aperture_pose else "Optical-axis tilt",
                            physical_pose_description(row) + ("" if aperture_pose else
                                " Field strength is prescribed by excitation, not inferred from winding thickness."),

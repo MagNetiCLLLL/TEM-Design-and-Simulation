@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import ClassVar
 
 import numpy as np
@@ -40,10 +40,10 @@ from temsim.optics.single_plane_deflector import (
     restore_single_plane_deflector,
 )
 from temsim.optics.quadrupole import (
-    QuadrupoleComponent,
+    TwoAxisQuadrupole,
     restore_quadrupole,
 )
-from temsim.optics.hexapole import HexapoleComponent, restore_hexapole
+from temsim.optics.hexapole import HexapoleComponent, TwoAxisHexapole, restore_hexapole
 from temsim.optics.round_lens import (
     TipReferencedRoundLensBehavior,
     RoundLensComponent,
@@ -565,7 +565,7 @@ class Qph2QuadrupoleDefinition:
 
 
 @dataclass
-class Qph2QuadrupoleComponent(QuadrupoleComponent):
+class Qph2QuadrupoleComponent(TwoAxisQuadrupole):
     EXPECTED_KEY: ClassVar[str] = PROBE_QPH2_QUADRUPOLE
 
 
@@ -576,7 +576,7 @@ class QpcQuadrupoleDefinition(Qph2QuadrupoleDefinition):
 
 
 @dataclass
-class QpcQuadrupoleComponent(QuadrupoleComponent):
+class QpcQuadrupoleComponent(TwoAxisQuadrupole):
     EXPECTED_KEY: ClassVar[str] = PROBE_QPC_QUADRUPOLE
 
 
@@ -587,7 +587,7 @@ class Qph1QuadrupoleDefinition(Qph2QuadrupoleDefinition):
 
 
 @dataclass
-class Qph1QuadrupoleComponent(QuadrupoleComponent):
+class Qph1QuadrupoleComponent(TwoAxisQuadrupole):
     EXPECTED_KEY: ClassVar[str] = PROBE_QPH1_QUADRUPOLE
 
 
@@ -598,7 +598,7 @@ class QpolQuadrupoleDefinition(Qph2QuadrupoleDefinition):
 
 
 @dataclass
-class QpolQuadrupoleComponent(QuadrupoleComponent):
+class QpolQuadrupoleComponent(TwoAxisQuadrupole):
     EXPECTED_KEY: ClassVar[str] = PROBE_QPOL_QUADRUPOLE
 
 
@@ -686,7 +686,7 @@ class HpcHexapoleDefinition(Hp2HexapoleDefinition):
 
 
 @dataclass
-class HpcHexapoleComponent(HexapoleComponent):
+class HpcHexapoleComponent(TwoAxisHexapole):
     EXPECTED_KEY: ClassVar[str] = PROBE_HPC_HEXAPOLE
 
 
@@ -708,7 +708,7 @@ class HpolHexapoleDefinition(Hp2HexapoleDefinition):
 
 
 @dataclass
-class HpolHexapoleComponent(HexapoleComponent):
+class HpolHexapoleComponent(TwoAxisHexapole):
     EXPECTED_KEY: ClassVar[str] = PROBE_HPOL_HEXAPOLE
 
 
@@ -863,6 +863,9 @@ class Dp12ScanDeflectorDefinition:
 
 @dataclass
 class Dp12ScanDeflectorComponent(PairedDeflectorComponent):
+    alignment_x_mrad: float = field(default=0.0, metadata={"omit_zero_drive": True})
+    alignment_y_mrad: float = field(default=0.0, metadata={"omit_zero_drive": True})
+
     EXPECTED_KEY: ClassVar[str] = PROBE_DP12_SCAN_DEFLECTOR
     OWNER: ClassVar[str] = "probe_corrector"
     KIND: ClassVar[str] = "virtual_layout"
@@ -870,6 +873,11 @@ class Dp12ScanDeflectorComponent(PairedDeflectorComponent):
     INTERACTION_KIND: ClassVar[str] = "none"
 
     def validate(self):
+        commands = (self.alignment_x_mrad, self.alignment_y_mrad)
+        if (any(isinstance(v, (bool, np.bool_)) or not np.isfinite(v) for v in commands)
+                or not np.isfinite(self.maximum_kick_mrad) or self.maximum_kick_mrad <= 0
+                or max(map(abs, commands)) > self.maximum_kick_mrad):
+            raise ValueError("DP12 alignment drive must be finite and within its angular limit")
         if self.key != self.EXPECTED_KEY:
             raise ValueError("DP12 virtual layout key is not canonical.")
         if self.mechanical_center_from_tip_mm < 0.0:
@@ -884,6 +892,17 @@ class Dp12ScanDeflectorComponent(PairedDeflectorComponent):
 
     def kick_events(self):
         return ()
+
+    def coil_bias_mrad(self, host):
+        """Match net angle and first axial moment at DP12 in a field-free drift."""
+        self.validate()
+        upper, lower = float(host.upper_z_mm), float(host.lower_z_mm)
+        reference = .5 * (self.upper_z_mm + self.lower_z_mm)
+        if not np.isfinite((upper, lower, reference)).all() or lower <= upper:
+            raise ValueError("DP12 needs two distinct, ordered AC coil planes")
+        lower_share = (reference - upper) / (lower - upper)
+        return tuple((share * self.alignment_x_mrad, share * self.alignment_y_mrad)
+                     for share in (1.0 - lower_share, lower_share))
 
     def draw_ray_overlay(self):
         return {

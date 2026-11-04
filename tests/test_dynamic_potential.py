@@ -271,13 +271,18 @@ def test_dynamic_particle_induction_work_matches_independent_momentum_ode(monkey
     np.testing.assert_allclose(result[5][-1,0],reference[5],rtol=1e-12)
 
 
-def test_native_normal_four_dynamic_physical_coils_match_original_time_laws():
+@pytest.mark.parametrize("dp12_bias", [False, True], ids=["scan-only", "scan-with-dp12"])
+def test_native_normal_four_dynamic_physical_coils_match_original_time_laws(dp12_bias):
     from temsim.optics.column import default_state
     from temsim.operating_modes import apply_condenser_mode
     from temsim.physics.unified_field_runtime import capture_unified_field_runtime,UnifiedFieldRuntime
     from temsim.physics.posed_column_fields import capture_posed_column_fields
     state=default_state();state.simulation_mode="unified"
     apply_condenser_mode(state,"nano_probe")
+    if dp12_bias:
+        from temsim.optics.probe_service import apply_probe_service
+        apply_probe_service(state, "AT_B2.x", delta_percent=.03)
+        apply_probe_service(state, "AT_B2fine.y", delta_percent=-.02)
     runtime=capture_unified_field_runtime(state)
     assert len(runtime.snapshot.dynamic_coils)==4
     assert {coil.source_id.split(":")[0] for coil in runtime.snapshot.dynamic_coils}=={"ac_deflector","image_diffraction_deflector"}

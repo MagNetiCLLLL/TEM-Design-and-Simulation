@@ -77,6 +77,18 @@ def _component_kick_events(component, time_s):
     return (), False
 
 
+def active_dp12_bias(state, host):
+    """Static service bias on the two AC coils, in mrad per physical station."""
+    if not getattr(state, "probe_corrector_installed", False):
+        return None
+    channel = next((c for c in getattr(state, "deflectors", ())
+                    if c.key == "probe_dp12_scan_deflector"), None)
+    if (channel is None or not channel.enabled or not getattr(channel, "_layout_installed", True)
+            or not (channel.alignment_x_mrad or channel.alignment_y_mrad)):
+        return None
+    return channel.coil_bias_mrad(host)
+
+
 @input_io.using_state_inputs
 def column_deflector_drives(state, *, time_s=None):
     """Resolve logical commands once per physical deflector host and foil."""
@@ -99,6 +111,13 @@ def column_deflector_drives(state, *, time_s=None):
             continue
         drive_keys = [key]
         dynamic = bool(getattr(component, "scan_enabled", False) or getattr(component, "wobble_enabled", False))
+        if key == "ac_deflector":
+            bias = active_dp12_bias(state, component)
+            if bias is not None:
+                component.validate_coil_limits(bias)
+                events = tuple((z, dx + bx*1e-3, dy + by*1e-3)
+                               for (z, dx, dy), (bx, by) in zip(events, bias, strict=True))
+                drive_keys.append("probe_dp12_scan_deflector")
         for channel_key, host_key in SHARED_DEFLECTOR_HOSTS.items():
             channel = by_key.get(channel_key)
             if host_key != key or channel is None or not bool(getattr(channel, "enabled", False)):

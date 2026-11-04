@@ -364,13 +364,24 @@ def test_historical_illumination_dialog_is_read_only(qtbot):
 def test_persisted_seed_has_exact_working_point_and_frozen_diagnostics(instrument, tmp_path):
     from temsim.artifact_store import INCIDENT_SEED_CODEC
     from temsim.physics.simulation import run
-    instrument.electron_gun.emitter.ray_count = 9
+    instrument.electron_gun.emitter.ray_count = 1024
+    emission = instrument.electron_gun.emit()
+    positive = emission.weight > 0
+    assert instrument.electron_gun.emitted_current_a > 0
+    assert np.count_nonzero(positive) >= 1000
+    assert np.unique(emission.ray_id[positive]).size == np.count_nonzero(positive)
     # Keep the ordinary column step; a 5 mm step is too coarse for the strong
     # installed lenses. This checks persistence, not gun/column acceptance.
     instrument.step_mm = .2
     instrument.history_step_mm = 5.
     manifest = capture_calculation_manifest(instrument)
     simulation = run(instrument)
+    np.testing.assert_array_equal(simulation.gun_trace.exit_bundle.ray_id, emission.ray_id)
+    np.testing.assert_array_equal(simulation.incident.ray_weight, emission.weight)
+    surviving = emission.weight[positive & simulation.incident.alive]
+    effective = surviving.sum()**2 / np.dot(surviving, surviving) if surviving.size else 0.
+    print(f"Persistence trial original positive-current particles {np.count_nonzero(positive)}, "
+          f"sample survivors {surviving.size}, effective particles {effective:.8g}")
     store = ArtifactStore(tmp_path / "cache", quota_bytes=100_000_000)
     store.put_incident_simulation_seed(manifest, simulation)
     bundle = store.get_array_bundle(manifest, product_key="incident",

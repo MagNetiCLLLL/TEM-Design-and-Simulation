@@ -165,11 +165,16 @@ def test_lens_placement_distinguishes_optical_tilt_from_hardware_translation(pag
     assert dialog.include_children.isChecked() and not dialog.include_children.isEnabled()
     dialog.pose_values["offset_x_mm"].setText("0.04")
     dialog.pose_values["rotation_y_mrad"].setText("-1.5")
-    assert "optical tilt XYZ (mrad)" in dialog.summary.text()
-    assert "mechanical envelopes do not rotate" in dialog.summary.text()
+    dialog.pose_values["assembly_azimuth_deg"].setText("27")
+    dialog.pose_values["field_azimuth_error_deg"].setText("0.3")
+    assert "Optical tilt XY (mrad)" in dialog.summary.text()
+    assert "Assembly azimuth 27 deg" in dialog.summary.text()
+    assert "Field azimuth error 0.3 deg" in dialog.summary.text()
     _confirm(qtbot, page, dialog)
     assert page.session.part(key)["offset_x_mm"] == 0.04
     assert page.session.part(key)["rotation_y_mrad"] == -1.5
+    assert page.session.part(key)["assembly_azimuth_deg"] == 27.
+    assert page.session.part(key)["field_azimuth_error_deg"] == .3
     assert page.session.path.read_bytes() == source_bytes
     page.undo()
     assert page.session.document == before

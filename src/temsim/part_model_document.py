@@ -301,7 +301,7 @@ class PartModelDocument:
         if not supports_physical_lens_pose(part):
             raise ValueError("Edit a supported main-column component, or the physical host of a shared channel")
         if not isinstance(values, Mapping) or set(values) - set(PHYSICAL_POSE_FIELDS):
-            raise ValueError("Choose component offsets in mm or rotations in mrad")
+            raise ValueError("Choose component offsets in mm, azimuths in degrees or optical tilts in mrad")
         values = {field: cls._finite_dimension(value) for field, value in values.items()}
         migrate_legacy_lens_pose(part)
         part.update(values)

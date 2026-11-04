@@ -20,7 +20,8 @@ _GEOMETRY = (
     "vacuum_inner_diameter_mm",
 )
 _POSE = ("offset_x_mm", "offset_y_mm", "offset_z_mm",
-         "rotation_x_mrad", "rotation_y_mrad", "rotation_z_mrad")
+         "rotation_x_mrad", "rotation_y_mrad", "rotation_z_mrad",
+         "assembly_azimuth_deg", "field_azimuth_error_deg")
 
 
 def field_hardware_host_key(part):

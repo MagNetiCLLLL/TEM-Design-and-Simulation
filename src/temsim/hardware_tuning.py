@@ -60,9 +60,13 @@ TWO_FOLD = (ENABLED, TunableField("strength_x_percent", "Normal channel", "%"),
             TunableField("strength_y_percent", "Skew channel", "%"))
 KICKS = (ENABLED, TunableField("kick_x_mrad", "Static X command", "mrad"),
          TunableField("kick_y_mrad", "Static Y command", "mrad"))
-QUADRUPOLE = (ENABLED, TunableField("strength_m2", "Effective quadrupole coefficient", "m⁻²"))
+QUADRUPOLE = (ENABLED, TunableField("strength_m2", "Normal quadrupole field", "m⁻²"),
+              TunableField("skew_strength_m2", "Skew quadrupole field", "m⁻²"))
 HEXAPOLE = (ENABLED, TunableField("strength_m3", "Effective hexapole coefficient", "m⁻³"),
-            TunableField("orientation_rad", "Orientation", "rad"))
+            TunableField("orientation_rad", "Internal field basis angle", "rad"))
+TRIM_HEXAPOLE = (ENABLED, TunableField("strength_m3", "Normal hexapole field", "m⁻³"),
+                 TunableField("skew_strength_m3", "Skew hexapole field", "m⁻³"),
+                 TunableField("orientation_rad", "Internal field basis angle", "rad"))
 
 # These are selectors, not persisted component identities or new components.
 GUN_SELECTORS = {"gun.deflector": "deflector", "gun.stigmator": "stigmator",
@@ -97,17 +101,20 @@ _PROBE_BINDINGS = tuple(TuningBinding(key, label, fields) for key, label, fields
     ("probe_hp2_hexapole", "Upper main hexapole", HEXAPOLE),
     ("probe_tl22_lens", "Upper transfer lens", EXCITATION),
     ("probe_dp22_deflector", "Upper transfer deflector", KICKS),
-    ("probe_hpc_hexapole", "Intermediate trim hexapole", HEXAPOLE),
+    ("probe_hpc_hexapole", "HPC intermediate trim hexapole", TRIM_HEXAPOLE),
     ("probe_qpc_quadrupole", "Intermediate trim quadrupole", QUADRUPOLE),
     ("probe_dp21_deflector", "Lower transfer deflector", KICKS),
     ("probe_tl21_lens", "Lower transfer lens", EXCITATION),
     ("probe_dph1_deflector", "Lower corrector steering deflector", KICKS),
     ("probe_qph1_quadrupole", "Lower corrector quadrupole", QUADRUPOLE),
     ("probe_hp1_hexapole", "Lower main hexapole", HEXAPOLE),
-    ("probe_hpol_hexapole", "Exit trim hexapole", HEXAPOLE),
+    ("probe_hpol_hexapole", "HPol exit trim hexapole", TRIM_HEXAPOLE),
     ("probe_qpol_quadrupole", "Exit trim quadrupole", QUADRUPOLE),
     ("probe_dp11_deflector", "Exit steering deflector", KICKS),
     ("probe_tl12_lens", "Exit relay lens", EXCITATION),
+    ("probe_dp12_scan_deflector", "DP12 static alignment on AC coils",
+     (ENABLED, TunableField("alignment_x_mrad", "DP12 x", "mrad"),
+      TunableField("alignment_y_mrad", "DP12 y", "mrad"))),
 ))
 
 TUNING_TASKS = (
@@ -162,13 +169,12 @@ TUNING_TASKS = (
                   "location. Corrector hexapoles remain separate hardware controls; a "
                   "hexapole drive is not a calibrated specimen-plane aberration coefficient.", ())
       for prefix, label in (("condenser", "Condenser"), ("objective", "Objective"))),
-    TuningTask("probe_corrector", "Hexapole probe corrector", "Corrector",
-               "Manual controls of the installed composite corrector. Coefficients are "
-               "those of the effective field model, not measured coil currents or individual "
-               "wave-aberration targets. No automatic correction is performed.", _PROBE_BINDINGS),
-    TuningTask("corrector_channels", "A1 / A2 coarse and fine", "Corrector",
-               "Measure and apply local aberration changes through existing physical drives. "
-               "Different coarse/fine drive groups are calibrated from the current optical model.", ()),
+    TuningTask("probe_corrector", "Probe outputs · maximum and percent", "Corrector",
+               "Set individual outputs as a percentage of their installed model maximum. "
+               "Electrical field bases are local to the component and follow its installation frame.", _PROBE_BINDINGS),
+    TuningTask("corrector_channels", "Probe service channels (C1–A3)", "Corrector",
+               "Adjust intrinsic output percentages with a separately enabled learning matrix. "
+               "The second tab fits A1/A2 coefficient targets with fixed probe installation angles.", ()),
     TuningTask("scan_static", "Scan deflector static controls", "Scanning",
                "Adjust the static drive and pair coupling of the physical scan deflector. "
                "Raster timing, dynamic drive and calibration remain in Scanning Parameters.",
@@ -224,7 +230,7 @@ def resolve_task(state, task: TuningTask | str) -> tuple[ResolvedTuningBinding, 
         elif not bool(getattr(target.obj, "_layout_installed", True)):
             target = None
             notice = "Unavailable: this hardware is not installed in the current column layout."
-        elif getattr(target.obj, "KIND", None) == "virtual_layout":
+        elif getattr(target.obj, "KIND", None) == "virtual_layout" and key != "probe_dp12_scan_deflector":
             target = None
             notice = "Unavailable: this is a layout marker with no physical drive."
         if target is None:

@@ -182,12 +182,9 @@ def _meaning(part, path, by_key):
             "The same thickness value controls the nominal 3D plate and effective tilted ray/wave interception. "
             "Optical tilt does not rotate the plate's mechanical envelope; "
             "the zero-length placement reference and schematic display thickness are not substitutes.")
-    from temsim.lens_pose import PHYSICAL_POSE_FIELDS, supports_physical_lens_pose, physical_pose_description
+    from temsim.lens_pose import PHYSICAL_POSE_FIELDS, supports_physical_lens_pose, physical_pose_description, pose_control_label
     if field in PHYSICAL_POSE_FIELDS and supports_physical_lens_pose(part):
-        if field.startswith("rotation_"):
-            label = "Optical tilt " + field.split("_")[1].upper()
-        else:
-            label = "Position offset " + field.split("_")[1].upper()
+        label, _unit = pose_control_label(field)
         return label, "placement", physical_pose_description(part)
     if field == "model_3d":
         name = next((str(item) for item in reversed(path[3:]) if isinstance(item, str)), "model")

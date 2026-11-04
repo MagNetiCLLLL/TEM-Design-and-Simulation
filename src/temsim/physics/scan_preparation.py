@@ -79,6 +79,10 @@ def scan_drive_identity(state, *, emission_time_s=None):
             effective_thickness_mm=component.effective_thickness_mm,
             coil_kick_matrices=component.coil_kick_matrices(),
             scan_command_matrix_mrad=component.scan_command_matrix_mrad))
+    from temsim.physics.instrument_magnetic import active_dp12_bias
+    bias = active_dp12_bias(state, state.ac_deflector)
+    if bias is not None:
+        rows[0]["dp12_coil_bias_mrad"] = bias
     epoch = (getattr(state, "simulation_time_s", 0.)
              if emission_time_s is None else emission_time_s)
     from temsim.simulation_modes import is_unified

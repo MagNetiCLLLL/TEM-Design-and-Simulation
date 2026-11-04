@@ -601,9 +601,13 @@ def _source_field_inputs(source, original_provider, reference):
         from temsim.optics.hexapole import HexapoleComponent
         if isinstance(component, QuadrupoleComponent):
             names = ("enabled", "z_mm", "effective_length_mm", "strength_m2")
+            if getattr(component, "skew_strength_m2", 0.):
+                names += ("skew_strength_m2",)
             family = "quadrupole"
         elif isinstance(component, HexapoleComponent):
             names = ("enabled", "z_mm", "effective_length_mm", "strength_m3", "orientation_rad")
+            if getattr(component, "skew_strength_m3", 0.):
+                names += ("skew_strength_m3",)
             family = "hexapole"
         else:
             names = ("enabled", "z_mm", "length_mm", "field_model", "max_strength_m2",
@@ -733,11 +737,11 @@ def _extra_sources(state, z_clip, notes):
             ) or (
                 isinstance(component, QuadrupoleComponent)
                 and type(component).quadrupole_strength_m2 is QuadrupoleComponent.quadrupole_strength_m2
-                and component.strength_m2 == 0.
+                and component.strength_m2 == 0. and not getattr(component, "skew_strength_m2", 0.)
             ) or (
                 isinstance(component, HexapoleComponent)
                 and type(component).hexapole_strength_components_m3 is HexapoleComponent.hexapole_strength_components_m3
-                and component.strength_m3 == 0.
+                and component.strength_m3 == 0. and not getattr(component, "skew_strength_m3", 0.)
             )
             from temsim.test_electron_compiled_laws import multipole_is_supported
             known_zero = known_zero and multipole_is_supported(component)

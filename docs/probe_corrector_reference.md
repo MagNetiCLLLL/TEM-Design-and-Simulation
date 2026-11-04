@@ -1,7 +1,7 @@
 # Probe-corrector reference and validation
 
-The current simulator's physical A1/A2 coarse/fine controls, finite-thickness
-semantics and usage are described in [Physical channel calibration](corrector_channels.md).
+The simulator's service inputs, model units and separate inverse fit are
+described in [Corrector service controls and aberration fitting](corrector_channels.md).
 
 The user-supplied photographs of an older **Probe Corrector DCOR (Service)**
 interface are references for separating hardware channels, calibrated controls,
@@ -88,8 +88,9 @@ DP21/DP22 flank the transfer doublet and DP11 precedes TL12 at their existing
 model positions. The main HP and round-lens positions and strengths are not
 changed by this reconstruction.
 
-QPH1/QPH2, HPC/QPC and HPol/QPol remain channel-only records with unverified
-physical hosts. DP12 remains a virtual alignment reference. The classification
+QPH1/QPH2, HPC/QPC and HPol/QPol remain field channels with unverified
+physical hosts. Each has two independent model field bases. DP12 is a virtual
+alignment reference whose static drive acts through the two AC coils. The classification
 does not remove their optical fields or imply the absence of real hardware.
 Existing unlinked channel envelopes remain compatibility metadata rather than
 independent material bodies, vacuum walls or FEM iron.
@@ -337,6 +338,79 @@ This reference addition does not change the current simulator geometry,
 300 kV calibration, field settings or correction algorithm. In
 particular, QPC/HPC labels alone do not justify adding field sources or
 assigning their physical parameters.
+
+## DCORPRIME at 300 kV: axial aberrations through third order
+
+This map uses the operator's perturbation notes and service captures in
+`TEM_simulator_material/Corrector_channel_relationship`. The captures show
+`STEM@300KV`. Read each row from the target aberration to the service input,
+then to the displayed outputs and their optical roles. The notes record which
+currents moved. A coefficient change at the specimen would require a paired
+aberration measurement. For A2, the operator uses the filename suffixes
+`AT_A2x` and `AT_A2y` to identify the upper and lower service inputs.
+Each input selects a distinct hardware adjustment. Suffixes in output names
+such as `DP22x` and `HPoly` retain their instrument meanings.
+
+The operator clarified that `will change` describes intrinsic control, while
+`affect` and every incidental small change describe corrector-learning
+compensation for imperfections. The readback table below retains both kinds
+of observed change. The [current control model](corrector_channels.md)
+separates them and uses model maxima and percentages, with learning off by
+default. Recorded current ratios remain source evidence.
+
+The seven rows cover monochromatic, on-axis geometrical aberrations. C1 and
+C3 are scalars. Each other aberration coefficient has two signed components.
+How an A2 service adjustment projects onto those components remains unmeasured. Chromatic and
+off-axis coefficients require different observations. The order and names
+follow [Müller et al., Table 1](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf#page=6).
+
+HP1/HP2 denote the main hexapoles. DPH1/DPH2 are alignment dipole channels
+associated with those stages. QPH1/QPH2 denote their quadrupole trims.
+QPol and HPol are the quadrupole and hexapole stigmator functions. QPC is a
+separately labelled quadrupole channel. The service currents identify optical
+functions more precisely than they identify individual windings or housings.
+[Published element roles, Fig. 2](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf#page=3)
+
+| Order and target | Recorded service input | Physical parts and output channels | Evidence and limits |
+| --- | --- | --- | --- |
+| 1 · C1, defocus | No dedicated `AT_C1` is visible. `TL2SymFoc` is a focus-related relay adjustment. | Transfer lenses TL12, TL21, TL22 and adapter lens ADL move with DP21x/y and DP22x/y. | Note 7 records the outputs. The C1 values in the screenshot log have no paired control settings. The contribution of the microscope focus drive and the C1 gain of this relay adjustment are unresolved. |
+| 1 · A1, twofold astigmatism | `AT_A1` and `AT_A1fine` | Coarse x uses the DP21x/DP22x deflector pair with beam shift BShx/y and beam tilt BTltx/y. Fine x uses the quadrupole stigmator output QPolx with small DP11x/y changes. | Notes 10–11 identify both routes. The coarse DP22x endpoint has a sign discrepancy. Both y inputs have named camera frames, but their output assignments were not recorded. |
+| 2 · B2, axial coma | `AT_B2` and `AT_B2fine` | x addresses DP12x and y addresses DP12y, the two components of the DP12 beam-deflection function. | Notes 17–18 report the same outputs and amplitude for coarse and fine in the test. Only coarse B2 has named camera frames. The data do not identify the physical winding that implements DP12 or establish equality beyond the tested setting. |
+| 2 · A2, threefold astigmatism | `AT_A2` and `AT_A2fine` | The upper coarse input changes the main hexapoles HP1/HP2 in opposite directions, with both stages' DPHx/y and a small QPH1x change. The lower coarse input changes the transfer lenses TL21/TL22 in opposite directions, with DP22x/y. The upper fine input changes HPolx with small QPoly coupling. The lower fine input changes HPoly with QPolx coupling. | Notes 13–14 give the two coarse adjustments and their distinct display increments. Note 16 identifies the fine outputs. Its absolute HPolx decimal disagrees with the PNG reference. |
+| 3 · C3, spherical aberration | `AT_C3` is the single field photographed. The corresponding note is headed `AT_C2`. | Candidate assignment to simultaneous excitation changes of the main hexapoles HP1/HP2, with DPH1x/y, DPH2x/y and small QPH1/2 changes. | Note 22 and the UI disagree on the name. Paired-hexapole correction is physically consistent with C3. Attribution of this particular observation to `AT_C3`, relative current signs and gains remain unverified. |
+| 3 · S3, twofold star aberration | `AT_S3` | QPolx is the named quadrupole output. The note also records small dipole changes (`DP1/2xy`), beam shift BShx/y and beam tilt BTltx/y. | Note 24 gives no per-input breakdown or specific DP winding. Assignment of the second component to QPoly by symmetry would be speculative. |
+| 3 · A3, fourfold astigmatism | `AT_A3C` | The upper input chiefly changes quadrupole channel QPCx with a small DP21y change. The operator also saw smaller DP22y, DP21x and DP22x changes. | Notes 20–21 cover the upper field only. A visible Ronchigram change was reported when the deflectors responded. This does not isolate the A3 coefficient or identify a separate octupole or the lower field's output. |
+
+**Current readings that distinguish the routes.** All values below are
+displayed currents in mA. A filename suffix counts units of the last
+displayed digit for that particular input. For example, `+9` denotes
++0.009 mA on the upper `AT_A2` input and +0.09 mA on the lower input. B2 and B2fine show
+six decimal places, so the B2 filename `+30` denotes +0.000030 mA.
+
+| Service step | Recorded before and after | Interpretation |
+| --- | --- | --- |
+| `AT_A2` upper input +0.009 | HP1 96.803 → 96.812. HP2 101.070 → 101.060. DPH1x 2.6391 → 2.6389 and DPH1y 15.6227 → 15.6241. DPH2x 5.7088 → 5.7084 and DPH2y 8.1518 → 8.1511. | The HP1 and local DPH1 increments also occur in the independent `HP1_P` note. The upper A2 input additionally engages the second hexapole stage. |
+| `AT_A2` lower input +0.09 | TL21 1312.51 → 1312.60. TL22 1322.00 → 1321.92. DP22x −9.701 → −9.706 and DP22y 3.518 → 3.516. | The two lens changes match the recorded `TL2asym` step. The separate `TL2sym` step increases *both* lens currents. |
+| `AT_A1x` +0.009 | DP21x 22.933 → 22.942. The note prints DP22x −9.701 → +9.692. At the same step the separate `DP2sym` note gives −9.701 → −9.692. | The operator describes similar DP behavior with added beam shift/tilt. The DP22x sign for A1 remains open. |
+| `AT_A2fine` upper field +0.009 | The note gives HPolx −0.4017 → −0.4007 and QPoly −21.032 → −21.031. The full reference PNG shows HPolx −4.017. | Retain the channel identities. The records do not establish a common HPolx baseline or a transferable slope. |
+
+**How to trace the evidence.** The note numbers are physical line numbers
+in `correctorchanneltest.txt`, counting blank lines. `service_alignment_tools.PNG`
+supplies spelling, input count and precision. `original.PNG` shows the full
+service and total-output panels. `initial_total_output.PNG` has a different
+baseline, including HPolx/y. The sixteen remaining PNGs exercise higher-order
+or aperture-distortion controls. They show that coils can participate in
+several tools, but do not supply missing low-order perturbation readbacks.
+The 50 FluCam `.emi` acquisitions include original/reference frames and
+named A1, A2, B2 and component perturbations. Their filenames associate an
+image with an input. No paired current table or fitted coefficient was
+identified in those records. Archive labels and source values are preserved.
+
+The simulator's service tab separates intrinsic outputs from optional learning
+and exposes unresolved weights explicitly. Its A2 upper and lower inputs retain
+their distinct hardware. The numerical probe A1/A2 fit holds mount angles
+fixed. See the [operating instructions](corrector_channels.md)
+and the [historical simulated response study](development/PROBE_ABERRATION_CHANNEL_RULES.md).
 
 ## Inspecting a calculated probe
 

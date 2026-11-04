@@ -136,12 +136,11 @@ class ComponentDialog(QDialog):
         self.center = QLineEdit(format(float(self.part.get("local_center_z_mm", 0)), ".15g"))
         self.center.setObjectName("componentCenterZ")
         form.addRow("Centre Z (mm)", self.center)
-        from temsim.lens_pose import physical_pose_values, supports_physical_lens_pose, physical_pose_description, column_pose_kind
+        from temsim.lens_pose import pose_control_values, pose_control_label, supports_physical_lens_pose, physical_pose_description, column_pose_kind
         self.pose_values = {}
         if action == "place" and supports_physical_lens_pose(self.part):
-            for field, value in physical_pose_values(self.part).items():
-                unit = "mrad" if field.endswith("_mrad") else "mm"
-                label = ("Optical tilt " if unit == "mrad" else "Offset ") + field.split("_")[1].upper()
+            for field, value in pose_control_values(self.part).items():
+                label, unit = pose_control_label(field)
                 editor = QLineEdit(format(value, ".15g"))
                 editor.setObjectName("component_" + field)
                 editor.setToolTip(physical_pose_description(self.part))
@@ -337,10 +336,15 @@ class ComponentDialog(QDialog):
                 pose = values["physical_pose"]
                 position += ("\nPhysical lens offset XYZ (mm): " + ", ".join(
                     f"{pose['offset_' + axis + '_mm']:.9g}" for axis in "xyz") +
-                    "; optical tilt XYZ (mrad): " + ", ".join(
-                    f"{pose['rotation_' + axis + '_mrad']:.9g}" for axis in "xyz") +
-                    ". Offsets move the optical model and owned hardware. "
-                    "Optical tilt rotates the field/effective reference only; mechanical envelopes do not rotate.")
+                    ". Optical tilt XY (mrad): " + ", ".join(
+                    f"{pose['rotation_' + axis + '_mrad']:.9g}" for axis in "xy") +
+                    f". Assembly azimuth {pose['assembly_azimuth_deg']:.9g} deg.")
+                if "field_azimuth_error_deg" in pose:
+                    position += (f" Field azimuth error {pose['field_azimuth_error_deg']:.9g} deg. "
+                                 "Field error rotates the transverse field basis.")
+                if pose.get("rotation_z_mrad", 0.):
+                    position += f" Legacy optical Z rotation {pose['rotation_z_mrad']:.9g} mrad."
+                position += " Assembly azimuth rotates owned material and fields together."
             parent = next((part for part in self._target_parts if part["key"] == values["parent_key"]), None)
             if parent is not None:
                 position += (f"\nParent {parent.get('name', parent['key'])}: local Z "

@@ -172,6 +172,12 @@ def save_profile(path: str | Path, state, selection: AssemblySelection) -> None:
             "multipoles": [serialise_energy_filter_m12(element)
                            for element in state.energy_filter.multipoles],
         }
+    if getattr(state, "probe_service_gains", None):
+        from temsim.optics.probe_service import validated_service_settings
+        document["probe_service_gains"] = validated_service_settings(state.probe_service_gains)
+    if getattr(state, "probe_service_percent", None):
+        from temsim.optics.probe_service import validated_percent_settings
+        document["probe_service_percent"] = validated_percent_settings(state.probe_service_percent)
     _atomic_write_profile(Path(path), document)
 
 
@@ -217,7 +223,8 @@ def read_profile(path: str | Path) -> tuple[AssemblySelection, dict]:
     if type(format_version) is not int or format_version != PROFILE_FORMAT_VERSION:
         raise ValueError(f"Unsupported operating-profile format {format_version!r}; expected {PROFILE_FORMAT_VERSION}")
     unknown = set(document) - {"format_version", "assembly", "devices", "none_values",
-        "vacuum_map", "simulation_model", "gun_source_model", "sample_model", "energy_filter_model", "gun_controls"}
+        "vacuum_map", "simulation_model", "gun_source_model", "sample_model", "energy_filter_model", "gun_controls",
+        "probe_service_gains", "probe_service_percent"}
     if unknown:
         raise ValueError(f"Unknown operating-profile tables: {', '.join(sorted(unknown))}")
     assembly = document.get("assembly")
@@ -269,7 +276,28 @@ def read_profile(path: str | Path) -> tuple[AssemblySelection, dict]:
     simulation = values.get("simulation")
     if isinstance(simulation, dict):
         values["simulation"] = {"nanoprobe_range": "normal", **simulation}
+        # Loading a complete older instrument must neutralize drives introduced
+        # after it was saved, even if the current working point uses them.
+        for name in ("qph1", "qph2", "qpc", "qpol"):
+            row = values.get(f"probe_{name}_quadrupole")
+            if isinstance(row, dict):
+                row.setdefault("skew_strength_m2", 0.)
+        for name in ("hpc", "hpol"):
+            row = values.get(f"probe_{name}_hexapole")
+            if isinstance(row, dict):
+                row.setdefault("skew_strength_m3", 0.)
+        if "probe_hp1_hexapole" in values:
+            row = values.setdefault("probe_dp12_scan_deflector", {})
+            if isinstance(row, dict):
+                row.setdefault("alignment_x_mrad", 0.)
+                row.setdefault("alignment_y_mrad", 0.)
     values[_PROFILE_VERSION_KEY] = format_version
+    from temsim.optics.probe_service import validated_service_settings
+    if "probe_service_gains" in document or (isinstance(simulation, dict) and "probe_hp1_hexapole" in values):
+        values["__probe_service_gains__"] = validated_service_settings(document.get("probe_service_gains", {}))
+    from temsim.optics.probe_service import validated_percent_settings
+    if "probe_service_percent" in document or (isinstance(simulation, dict) and "probe_hp1_hexapole" in values):
+        values["__probe_service_percent__"] = validated_percent_settings(document.get("probe_service_percent", {}))
     for table, target in (("vacuum_map", "__vacuum_map__"),
                          ("simulation_model", _SIMULATION_MODEL_KEY),
                          ("gun_source_model", _GUN_SOURCE_MODEL_KEY),
@@ -364,6 +392,12 @@ def apply_profile_values(state, values: dict) -> None:
     if not isinstance(values, dict):
         raise ValueError("Operating profile devices must be a table")
     values = dict(values)
+    from temsim.optics.probe_service import validated_service_settings
+    service_gains = validated_service_settings(values.pop("__probe_service_gains__",
+                                                           getattr(state, "probe_service_gains", {})))
+    from temsim.optics.probe_service import validated_percent_settings
+    service_percent = validated_percent_settings(values.pop("__probe_service_percent__",
+                                                              getattr(state, "probe_service_percent", {})))
     image_initialized = _validated_image_initialized_keys(values.pop(
         _IMAGE_INITIALIZED_KEY, state.image_corrector_initialized_keys))
     image_enabled = _validated_image_enabled_preferences(values.pop(_IMAGE_ENABLED_KEY, {}))
@@ -499,7 +533,7 @@ def apply_profile_values(state, values: dict) -> None:
             # Coupled tip inputs are validated together below, against the
             # incoming model/width, never against partially restored values.
             converted = validate_runtime_assignment(target, name, value,
-                                                     validate_source_geometry=False)
+                                                     validate_source_geometry=False, validate_coupled_drives=False)
             if key == "simulation" and name == "acceleration_backend":
                 from temsim.physics.compute_backend import validate_backend_selection
                 converted = validate_backend_selection(converted)
@@ -541,12 +575,33 @@ def apply_profile_values(state, values: dict) -> None:
         _apply_sample_model(candidate_sample, sample_model)
     # Scan and wobble are a coupled constraint: checking individual fields
     # against the old object would permit an invalid simultaneous enable.
+    from temsim.optics.hexapole import HexapoleComponent
+    from temsim.optics.quadrupole import QuadrupoleComponent
+    multipoles = {}
+    for obj, name, value in pending:
+        if isinstance(obj, (HexapoleComponent, QuadrupoleComponent)):
+            if obj.key not in multipoles:
+                multipoles[obj.key] = copy(obj)
+            setattr(multipoles[obj.key], name, value)
+    for component in multipoles.values():
+        component.validate()
+    dp12_target = targets.get("probe_dp12_scan_deflector")
+    dp12 = None
+    if dp12_target is not None:
+        dp12 = copy(dp12_target.obj)
+        for obj, name, value in pending:
+            if obj is dp12_target.obj:
+                setattr(dp12, name, value)
+        dp12.validate()
     for pair in (state.ac_deflector, state.descan_deflector):
         candidate_pair = copy(pair)
         for obj, name, value in pending:
             if obj is pair:
                 setattr(candidate_pair, name, value)
         candidate_pair.validate()
+        if (dp12 is not None and pair is state.ac_deflector and state.probe_corrector_installed and candidate_pair.enabled
+                and dp12.enabled and (dp12.alignment_x_mrad or dp12.alignment_y_mrad)):
+            candidate_pair.validate_coil_limits(dp12.coil_bias_mrad(candidate_pair))
     filter_candidate = _filter_controls_candidate(state, values, targets, pending, filter_model)
     candidate_sample.virtual_interactions = []
     candidate_sample.virtual_regions = []
@@ -581,6 +636,14 @@ def apply_profile_values(state, values: dict) -> None:
             vars(original).update(vars(candidate))
     vars(state.sample).update(vars(candidate_sample))
     state.vacuum_map = vacuum_candidate
+    if service_gains:
+        state.probe_service_gains = service_gains
+    elif hasattr(state, "probe_service_gains"):
+        del state.probe_service_gains
+    if service_percent != validated_percent_settings({}):
+        state.probe_service_percent = service_percent
+    elif hasattr(state, "probe_service_percent"):
+        del state.probe_service_percent
     state.simulation_mode = selected_mode
     state.simulation_mode_profiles = model_profiles
     for name in MODEL_SETTINGS:

@@ -181,8 +181,11 @@ def derive_field_aberrations(state, system):
                    "hardware_operating_point": [
                        {"key": item.key, **{field: getattr(item, field) for field in
                            ("z_mm", "enabled", "percent", "polarity", "strength_m2", "strength_m3",
-                            "orientation_rad", "kick_x_mrad", "kick_y_mrad") if hasattr(item, field)}}
-                       for item in (*state.lenses, *getattr(state, "corrector_elements", ()))],
+                            "skew_strength_m2", "skew_strength_m3", "orientation_rad", "kick_x_mrad",
+                            "kick_y_mrad", "alignment_x_mrad", "alignment_y_mrad", "upper_x_mrad",
+                            "upper_y_mrad", "lower_x_mrad", "lower_y_mrad") if hasattr(item, field)}}
+                       for item in (*state.lenses, *getattr(state, "corrector_elements", ()),
+                                    *getattr(state, "deflectors", ()))],
                    "inferred_coefficients": tuple(term for term, _, _ in SYSTEM_COEFFICIENT_ROWS if term != "C1"),
                    "unmeasured_coefficients": (), "unimplemented_terms": UNIMPLEMENTED_TERMS,
                    "fit_rms_m": rms, "fit_condition_number": condition,

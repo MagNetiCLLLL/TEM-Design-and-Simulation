@@ -1851,6 +1851,12 @@ class State:
                 for item in payload.get(collection, ())
             ]
         payload["sample"] = strip_position_fields(payload["sample"], "sample")
+        if getattr(self, "probe_service_gains", None):
+            from temsim.optics.probe_service import validated_service_settings
+            payload["probe_service_gains"] = validated_service_settings(self.probe_service_gains)
+        if getattr(self, "probe_service_percent", None):
+            from temsim.optics.probe_service import validated_percent_settings
+            payload["probe_service_percent"] = validated_percent_settings(self.probe_service_percent)
         if input_io.archive_payload(self) is not None:
             from temsim.immutable_json import thaw_json
             payload["archive_inputs"] = thaw_json(input_io.archive_payload(self))
@@ -2723,4 +2729,10 @@ class State:
         state.sync_objective()
         from temsim.column.state_layout import apply_physical_layout_to_state
         apply_physical_layout_to_state(state, assembly=resolved_assembly, assembly_root=assembly_root)
+        if "probe_service_gains" in d:
+            from temsim.optics.probe_service import validated_service_settings
+            state.probe_service_gains = validated_service_settings(d["probe_service_gains"])
+        if "probe_service_percent" in d:
+            from temsim.optics.probe_service import validated_percent_settings
+            state.probe_service_percent = validated_percent_settings(d["probe_service_percent"])
         return state

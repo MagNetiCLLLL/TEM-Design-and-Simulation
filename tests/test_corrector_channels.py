@@ -57,6 +57,34 @@ def _candidate(state, calibration, scale=.1):
     return channels.prepare_channel_change(state, calibration, delta)
 
 
+@pytest.mark.parametrize("channel", ["a1_fine", "a2_fine"])
+def test_probe_electrical_fit_preserves_local_mount_angle(physical, channel, monkeypatch):
+    from temsim.optics.probe_corrector import create_qpol_quadrupole, create_hpol_hexapole
+
+    element = create_qpol_quadrupole() if channel == "a1_fine" else create_hpol_hexapole()
+    element.z_mm = 2.
+    element.effective_length_mm = .2
+    if channel == "a2_fine":
+        element.orientation_rad = .19
+    physical.corrector_elements = [element]
+    physical.stigmators = []
+    physical.sample.z_mm = 4.
+    physical.electron_gun = SimpleNamespace(exit_plane_z_mm=0.)
+    # Constant potential isolates the actual multipole response of this local
+    # diagnostic pupil from the full instrument gun and source population.
+    monkeypatch.setattr("temsim.physics.instrument_electric.capture_instrument_electric_field", lambda state:
+        SimpleNamespace(gun_snapshot=state.electron_gun, base_field=SimpleNamespace(z=()),
+            numerical_identity="constant-potential probe multipole fixture",
+            potential_rise_v_at_global_positions=lambda points: np.zeros(len(points)),
+            is_constant_on_interval=lambda *_: True))
+    calibration = channels.calibrate_channel(physical, "probe", channel, semiangle_mrad=5., maximum_step_mm=.025)
+    candidate = _candidate(physical, calibration)
+    channels.apply_channel_change(physical, candidate)
+    assert all(c["field"] != "orientation_rad" for c in candidate.control_changes)
+    if channel == "a2_fine":
+        assert element.orientation_rad == .19
+
+
 def _coarse_state():
     state = _state()
     for index, (position, strength) in enumerate(((1.5, 1e8), (2.5, 7e7)), 1):

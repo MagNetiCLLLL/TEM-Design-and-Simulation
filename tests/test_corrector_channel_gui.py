@@ -135,9 +135,40 @@ def test_hardware_panel_exposes_channels_and_refreshes_raw_controls(qtbot):
     qtbot.addWidget(panel)
     panel.set_state(default_state())
     panel.select_task("corrector_channels")
-    assert not panel.corrector_channels.isHidden()
+    assert not panel.channel_tabs.isHidden()
+    assert panel.channel_tabs.currentWidget() is panel.probe_service
+    service = panel.probe_service
+    service.delta_percent.setValue(.09)
+    assert not service.learning_enabled.isChecked()
+    service.input.setCurrentIndex(service.input.findData("AT_A2.lower"))
+    assert "probe_tl21_lens.percent" in service.preview.toPlainText()
+    assert "hexapole" not in service.preview.toPlainText()
+    assert "probe_dp22_deflector" not in service.preview.toPlainText()
+    signals = []
+    panel.runtime_changed.connect(signals.append)
+    with qtbot.waitSignal(panel.runtime_changed):
+        service.apply.click()
+    assert signals == ["corrector_channels.service_drives"]
+    service.tool.setCurrentText("TL2SymFoc")
+    assert not service.apply.isEnabled()
+    service.gains.item(0, 4).setText(".1")
+    assert service.apply.isEnabled()
     assert panel._host.isHidden()
+    panel.channel_tabs.setCurrentWidget(panel.corrector_channels)
+    assert not panel.corrector_channels.isHidden()
     panel.select_task("probe_corrector")
-    assert panel.corrector_channels.isHidden()
-    assert not panel._host.isHidden()
+    assert panel.channel_tabs.isHidden()
+    assert panel._host.isHidden()
+    assert not panel.probe_outputs.isHidden()
+    raw = panel.probe_outputs
+    raw.output.setCurrentText("QPoly")
+    assert raw.maximum.text().startswith("300")
+    raw.percent.setValue(10.)
+    raw.apply.click()
+    assert "10%" in raw.current.text()
+    from temsim.optics.probe_service import set_probe_output_percent
+    set_probe_output_percent(panel._state, "QPoly", percent=5.)
+    raw.refresh()
+    assert raw.percent.value() == 5.
+    assert not raw.apply.isEnabled()
     assert panel.shutdown()

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import math
 from typing import ClassVar
 
@@ -146,6 +146,11 @@ class HexapoleComponent(TipReferencedPosition):
         )
         amplitude = float(self.strength_m3) * envelope
         phase = 3.0 * float(self.orientation_rad)
+        skew = getattr(self, "skew_strength_m3", 0.)
+        if skew:
+            orthogonal = float(skew) * envelope
+            cosine, sine = math.cos(phase), math.sin(phase)
+            return amplitude * cosine - orthogonal * sine, amplitude * sine + orthogonal * cosine
         return amplitude * math.cos(phase), amplitude * math.sin(phase)
 
     def draw_layout(self):
@@ -175,9 +180,24 @@ class HexapoleComponent(TipReferencedPosition):
         }
 
 
+@dataclass
+class TwoAxisHexapole(HexapoleComponent):
+    """Auxiliary field bases 30 degrees apart in the installed element frame."""
+
+    skew_strength_m3: float = field(default=0.0, metadata={"omit_zero_drive": True})
+
+    def validate(self):
+        super().validate()
+        if (isinstance(self.skew_strength_m3, (bool, np.bool_))
+                or not math.isfinite(self.skew_strength_m3)
+                or math.hypot(self.strength_m3, self.skew_strength_m3) > self.maximum_strength_m3):
+            raise ValueError(f"{self.name} normal/skew field must be finite and within its strength limit")
+        return self
+
+
 def restore_hexapole(component, values):
     values = dict(values)
-    allowed = HexapoleComponent.__dataclass_fields__
+    allowed = component.__dataclass_fields__
     object.__setattr__(component, "_position_coupling_ready", False)
     for attribute, value in values.items():
         if attribute in allowed:

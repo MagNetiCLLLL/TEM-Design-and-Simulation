@@ -7,13 +7,14 @@ import math
 from PySide6.QtCore import Qt, QSignalBlocker, Signal
 from PySide6.QtWidgets import (
     QCheckBox, QFormLayout, QGroupBox, QLabel, QLayout, QLineEdit, QScrollArea,
-    QPushButton, QSizePolicy, QSplitter, QToolButton, QTreeWidget, QTreeWidgetItem,
+    QPushButton, QSizePolicy, QSplitter, QTabWidget, QToolButton, QTreeWidget, QTreeWidgetItem,
     QVBoxLayout, QWidget,
 )
 
 from temsim.gui.input_policy import WheelSafeComboBox, WheelSafeDoubleSpinBox
 from temsim.gui.beam_steering import BeamSteeringControls
 from temsim.gui.corrector_channels import CorrectorChannelControls
+from temsim.gui.probe_service import ProbeServiceControls, ProbeOutputControls
 from temsim.hardware_tuning import TUNING_TASKS, resolve_task
 from temsim.hardware_tuning_feedback import (
     baseline_difference, captured_hardware_values, observe_retained_beam, recorded_waists,
@@ -169,7 +170,16 @@ class HardwareTuningPanel(QWidget):
         content_layout.addWidget(self.steering)
         self.corrector_channels = CorrectorChannelControls()
         self.corrector_channels.runtime_changed.connect(self._steering_applied)
-        content_layout.addWidget(self.corrector_channels)
+        self.probe_service = ProbeServiceControls()
+        self.probe_service.runtime_changed.connect(self._steering_applied)
+        self.channel_tabs = QTabWidget()
+        self.channel_tabs.addTab(self.probe_service, "Probe service inputs")
+        self.channel_tabs.addTab(self.corrector_channels, "Model A1/A2 coefficient fit")
+        self.channel_tabs.currentChanged.connect(lambda *_: self.probe_service.refresh())
+        content_layout.addWidget(self.channel_tabs)
+        self.probe_outputs = ProbeOutputControls()
+        self.probe_outputs.runtime_changed.connect(self._steering_applied)
+        content_layout.addWidget(self.probe_outputs)
         self._hardware_label = _label("Current applied hardware controls")
         content_layout.addWidget(self._hardware_label)
         content_layout.addWidget(self._host)
@@ -185,10 +195,11 @@ class HardwareTuningPanel(QWidget):
         for widget in (self.title, self.context, self.description, self.status):
             right_layout.addWidget(widget)
         right_layout.addWidget(self.scroll, 1)
-        right_layout.addWidget(_label(
+        self.footer = _label(
             "Edit a value and press Enter or leave the field. Changes update the "
             "current instrument and follow the existing calculation settings."
-        ))
+        )
+        right_layout.addWidget(self.footer)
 
         self.splitter = QSplitter(Qt.Orientation.Horizontal)
         self.splitter.setObjectName("hardwareTuningSplitter")
@@ -244,6 +255,8 @@ class HardwareTuningPanel(QWidget):
         self._state = state
         self.steering.set_state(state)
         self.corrector_channels.set_state(state)
+        self.probe_service.set_state(state)
+        self.probe_outputs.set_state(state)
         self.refresh_values()
 
     def showEvent(self, event):
@@ -258,9 +271,16 @@ class HardwareTuningPanel(QWidget):
         self.description.setText(task.description)
         self.steering.setVisible(task.key in {"beam_tilt", "beam_shift"})
         is_channel = task.key == "corrector_channels"
-        self.corrector_channels.setVisible(is_channel)
-        self._hardware_label.setVisible(not is_channel)
-        self._host.setVisible(not is_channel)
+        is_probe_outputs = task.key == "probe_corrector"
+        self.channel_tabs.setVisible(is_channel)
+        self.probe_outputs.setVisible(is_probe_outputs)
+        self.footer.setVisible(not (is_channel or is_probe_outputs))
+        if is_channel:
+            self.probe_service.refresh()
+        if is_probe_outputs:
+            self.probe_outputs.refresh()
+        self._hardware_label.setVisible(not (is_channel or is_probe_outputs))
+        self._host.setVisible(not (is_channel or is_probe_outputs))
         if task.key in {"beam_tilt", "beam_shift"}:
             self.steering.set_kind("tilt" if task.key == "beam_tilt" else "shift")
         self.context.setText(
@@ -369,6 +389,10 @@ class HardwareTuningPanel(QWidget):
         self._revision = int(revision)
         self.steering.set_revision(revision)
         self.corrector_channels.set_revision(revision)
+        if self.selected_key == "corrector_channels":
+            self.probe_service.refresh()
+        if self.selected_key == "probe_corrector":
+            self.probe_outputs.refresh()
         self._refresh_feedback()
 
     def _steering_applied(self, parameter):

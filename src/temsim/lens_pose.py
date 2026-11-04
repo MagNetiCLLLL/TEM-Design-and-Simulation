@@ -1,10 +1,11 @@
 """Main-column placement and optical-axis misalignment.
 
-Offsets use mm, right-handed Euler angles use mrad, in Rz @ Ry @ Rx order.
-Translations place both hardware and optics. Rotations tilt the optical model
-about its unposed mechanical centre, without rotating material CAD or bores.
-Parent optical transforms are applied outside the child's optical transform.
-Shape, mechanical interference and excitation stay separate from optical tilt.
+Offsets use mm. Assembly azimuth uses degrees about column +Z and rotates
+owned material and fields. Field azimuth error uses degrees in the transverse
+field plane. Existing optical X/Y tilts and legacy Z rotation use mrad.
+The field transform is Rz(assembly) @ Rz(legacy) @ Ry(tilt) @ Rx(tilt) @ Rz(error).
+The material transform is Rz(assembly). Positive azimuth turns +X toward +Y.
+Explicitly owned children inherit the corresponding parent transform.
 """
 import math
 from dataclasses import dataclass
@@ -16,6 +17,7 @@ import numpy as np
 PHYSICAL_POSE_FIELDS = (
     "offset_x_mm", "offset_y_mm", "offset_z_mm",
     "rotation_x_mrad", "rotation_y_mrad", "rotation_z_mrad",
+    "assembly_azimuth_deg", "field_azimuth_error_deg",
 )
 _PROFILES = frozenset({"magnetic_lens_assembly", "magnetic_lens_housing"})
 
@@ -78,9 +80,33 @@ def physical_pose_description(part):
                    "This idealised optical tilt does not model a mechanically tilted hole. ")
     else:
         subject = "Component position moves both its field and owned hardware. "
-    return subject + ("Optical tilts are right-handed X, then Y, then Z about the component centre, in mrad. "
-                      "They represent optical-axis imperfections; material envelopes and mechanical bores "
-                      "do not rotate. Excitation and material dimensions are unchanged.")
+    return subject + (
+        "Assembly azimuth rotates owned CAD, windings, bores and fields about column +Z, "
+        "with zero along column +X and positive toward +Y. Field azimuth error adds an "
+        "in-plane field rotation. Both azimuths use degrees. Optical X/Y tilts use mrad "
+        "about the transverse diameter axes. A saved legacy Z rotation keeps its original Euler order.")
+
+
+def pose_control_label(name):
+    if name == "assembly_azimuth_deg":
+        return "Assembly azimuth about column Z", "deg"
+    if name == "field_azimuth_error_deg":
+        return "Mechanical azimuth error (field only)", "deg"
+    if name == "rotation_z_mrad":
+        return "Legacy optical Z rotation", "mrad"
+    if name.startswith("rotation_"):
+        return "Optical tilt " + name.split("_")[1].upper(), "mrad"
+    return "Position offset " + name.split("_")[1].upper(), "mm"
+
+
+def pose_control_values(part):
+    """Expose distinct azimuth/tilt controls and any nonzero legacy Z value."""
+    values = physical_pose_values(part)
+    if values["rotation_z_mrad"] == 0.:
+        del values["rotation_z_mrad"]
+    if "aperture" in str(part.get("key", "")):
+        del values["field_azimuth_error_deg"]
+    return values
 
 
 def inherits_parent_lens_pose(part):
@@ -141,8 +167,11 @@ def physical_pose_values(part):
     if len(offset) != 3 or len(angles) != 3:
         raise ValueError("Component placement requires three offsets and rotations")
     legacy = tuple(offset) + tuple(_finite(v, "rotation_deg") * math.pi / 180.0 * 1000.0 for v in angles)
-    return {name: _finite(part.get(name, value), name)
-            for name, value in zip(PHYSICAL_POSE_FIELDS, legacy)}
+    values = {name: _finite(part.get(name, value), name)
+              for name, value in zip(PHYSICAL_POSE_FIELDS, (*legacy, 0., 0.))}
+    if "aperture" in str(part.get("key", "")) and values["field_azimuth_error_deg"]:
+        raise ValueError("Apertures use assembly azimuth and optical plane tilt; field azimuth error requires a field source")
+    return values
 
 
 def validate_physical_lens_pose(part):
@@ -186,7 +215,7 @@ def effective_part_transform_mm(part, by_key):
 
 
 def mechanical_part_transform_mm(part, by_key):
-    """Shared assembly translations, without optical-axis rotation of solids.
+    """Shared assembly translations and azimuth of material and physical bores.
 
     Explicit shape edits of CAD-only parts are handled by the CAD shape code;
     this helper describes canonical column placement and its inherited offsets.
@@ -196,6 +225,7 @@ def mechanical_part_transform_mm(part, by_key):
 
 def _part_transform_mm(part, by_key, *, optical_tilt):
     rotation, translation = np.eye(3), np.zeros(3)
+    field_error = None
     seen = set()
     current = part
     from temsim.component_representation import SHARED_DEFLECTOR_HOSTS
@@ -213,8 +243,15 @@ def _part_transform_mm(part, by_key, *, optical_tilt):
         seen.add(key)
         if supports_physical_lens_pose(current):
             values = physical_pose_values(current)
-            local_r = (rotation_matrix_mrad([values[name] for name in PHYSICAL_POSE_FIELDS[3:]])
-                       if optical_tilt else np.eye(3))
+            azimuth = values["assembly_azimuth_deg"]
+            if field_error is None:
+                field_error = values["field_azimuth_error_deg"]
+            local_r = rotation_matrix_mrad((0., 0., math.radians(azimuth)*1000.))
+            if optical_tilt:
+                tilt = rotation_matrix_mrad([values[name] for name in PHYSICAL_POSE_FIELDS[3:6]])
+                # Assembly rotation is about column Z; field error below is
+                # about the already tilted local field axis.
+                local_r = local_r @ tilt
             centre = np.array((0.0, 0.0, float(current.get("local_center_z_mm", 0.0))))
             local_t = centre - local_r @ centre + np.array([values[name] for name in PHYSICAL_POSE_FIELDS[:3]])
             translation = local_r @ translation + local_t
@@ -223,6 +260,10 @@ def _part_transform_mm(part, by_key, *, optical_tilt):
             break
         parent = current.get("parent_key")
         current = by_key.get(parent) if parent else None
+    if optical_tilt and field_error:
+        # Rotate this source's transverse basis at its placed axis. A parent's
+        # field error cannot displace or rotate an independently driven child.
+        rotation = rotation @ rotation_matrix_mrad((0., 0., math.radians(field_error)*1000.))
     return rotation, translation
 
 
@@ -257,8 +298,8 @@ class ComponentDatums:
 def component_datums_mm(part, assembly_or_state):
     """Read main-column datums from an AssemblyPart and its captured context.
 
-    Mechanical centres use CAD placement (translations); optical references
-    use field registration (translations and optical-axis tilt). Both read the
+    Mechanical centres use CAD placement (translation and assembly azimuth);
+    optical references additionally use axis tilt and field azimuth error. Both read the
     same captured module origin and ownership. ``assembly_or_state`` is a
     resolved assembly or a state carrying it.
     This does not mutate geometry or excitation, inspect mesh bounds, or infer
