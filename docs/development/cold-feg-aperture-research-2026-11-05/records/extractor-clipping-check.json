@@ -1,0 +1,38 @@
+{
+  "scope": "Pure clipping-helper coordinate arrays; no source emission, field solve or physical transport.",
+  "git_head": "04e1d5682dab6a5392b542f139f4efeeaccc33c5",
+  "profile": "configs/instruments/gun/FEG.toml",
+  "bore_diameter_mm": 4.0,
+  "extent_mm": [
+    6.0,
+    10.0
+  ],
+  "cases": [
+    {
+      "r_mm": 1.9,
+      "z_mm": 8.0,
+      "passed": true,
+      "blocked_key": ""
+    },
+    {
+      "r_mm": 2.1,
+      "z_mm": 8.0,
+      "passed": false,
+      "blocked_key": "feg_extractor"
+    },
+    {
+      "r_mm": 2.1,
+      "z_mm": 5.0,
+      "passed": true,
+      "blocked_key": ""
+    },
+    {
+      "r_mm": 2.1,
+      "z_mm": 11.0,
+      "passed": true,
+      "blocked_key": ""
+    }
+  ],
+  "passed": true,
+  "limit": "Does not qualify continuous wall contact, transmitted current or energy filtering."
+}

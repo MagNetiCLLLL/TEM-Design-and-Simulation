@@ -1,0 +1,116 @@
+{
+  "scope": "Classical default gun only; unchanged controls and source; no physical qualification",
+  "source_commit": "04e1d5682dab6a5392b542f139f4efeeaccc33c5",
+  "emitted_positive_particles": 3000,
+  "source_current_A": 1e-05,
+  "flat_source": true,
+  "source_fwhm_nm": 5.0,
+  "angular_sigma_mrad": 1.0,
+  "launch_energy_eV": 0.3,
+  "elapsed_seconds": 170.3432842000002,
+  "planes": [
+    {
+      "key": "feg_dpa_aperture",
+      "z_mm": 24.0,
+      "before": {
+        "positive_particles": 3000,
+        "effective_particles": 2999.9999999999964,
+        "current_A": 1.0000000000000003e-05,
+        "centroid_m": [
+          -2.5774483623948523e-10,
+          -4.4153755045972186e-10
+        ],
+        "centered_D95_m": 1.3461714087161697e-06,
+        "centered_rms_radius_m": 3.7867897824883827e-07,
+        "axis_centered_envelope_diameter_m": 2.136335862915278e-06
+      },
+      "after": {
+        "positive_particles": 3000,
+        "effective_particles": 2999.9999999999964,
+        "current_A": 1.0000000000000003e-05,
+        "centroid_m": [
+          -2.5774483623948523e-10,
+          -4.4153755045972186e-10
+        ],
+        "centered_D95_m": 1.3461714087161697e-06,
+        "centered_rms_radius_m": 3.7867897824883827e-07,
+        "axis_centered_envelope_diameter_m": 2.136335862915278e-06
+      },
+      "working_hole_diameter_m": 0.004,
+      "D95_to_hole_diameter": 0.0003365428521790424
+    },
+    {
+      "key": "feg_c1_aperture",
+      "z_mm": 445.0,
+      "before": {
+        "positive_particles": 3000,
+        "effective_particles": 2999.9999999999964,
+        "current_A": 1.0000000000000003e-05,
+        "centroid_m": [
+          -2.128177629483084e-10,
+          -3.574390541173875e-10
+        ],
+        "centered_D95_m": 1.0973670683330742e-06,
+        "centered_rms_radius_m": 3.0745445972255515e-07,
+        "axis_centered_envelope_diameter_m": 1.7438536728345862e-06
+      },
+      "after": {
+        "positive_particles": 3000,
+        "effective_particles": 2999.9999999999964,
+        "current_A": 1.0000000000000003e-05,
+        "centroid_m": [
+          -2.128177629483084e-10,
+          -3.574390541173875e-10
+        ],
+        "centered_D95_m": 1.0973670683330742e-06,
+        "centered_rms_radius_m": 3.0745445972255515e-07,
+        "axis_centered_envelope_diameter_m": 1.7438536728345862e-06
+      },
+      "working_hole_diameter_m": 0.004,
+      "D95_to_hole_diameter": 0.00027434176708326854
+    },
+    {
+      "key": "feg_c1_aperture:exit",
+      "z_mm": 450.0,
+      "before": {
+        "positive_particles": 3000,
+        "effective_particles": 2999.9999999999964,
+        "current_A": 1.0000000000000003e-05,
+        "centroid_m": [
+          -2.134125378759608e-10,
+          -3.583821882036711e-10
+        ],
+        "centered_D95_m": 1.1002318840521102e-06,
+        "centered_rms_radius_m": 3.082734660836962e-07,
+        "axis_centered_envelope_diameter_m": 1.748569015528669e-06
+      },
+      "after": {
+        "positive_particles": 3000,
+        "effective_particles": 2999.9999999999964,
+        "current_A": 1.0000000000000003e-05,
+        "centroid_m": [
+          -2.134125378759608e-10,
+          -3.583821882036711e-10
+        ],
+        "centered_D95_m": 1.1002318840521102e-06,
+        "centered_rms_radius_m": 3.082734660836962e-07,
+        "axis_centered_envelope_diameter_m": 1.748569015528669e-06
+      }
+    }
+  ],
+  "exit": {
+    "positive_particles": 3000,
+    "effective_particles": 2999.9999999999964,
+    "current_A": 1.0000000000000003e-05,
+    "centroid_m": [
+      -2.134125378759608e-10,
+      -3.583821882036711e-10
+    ],
+    "centered_D95_m": 1.1002318840521102e-06,
+    "centered_rms_radius_m": 3.082734660836962e-07,
+    "axis_centered_envelope_diameter_m": 1.748569015528669e-06
+  },
+  "blocked": {
+    "": 3000
+  }
+}

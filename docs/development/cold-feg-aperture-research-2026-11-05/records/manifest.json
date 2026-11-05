@@ -1,0 +1,71 @@
+{
+  "schema": "cold-feg-aperture-research-checkpoint-v1",
+  "date": "2026-11-05",
+  "simulator_baseline_commit": "04e1d5682dab6a5392b542f139f4efeeaccc33c5",
+  "research_note": "../../../references/cold-feg-aperture-research-2026-11-05.md",
+  "current_decision": "Keep extraction anode and separate gun aperture distinct. Direct reinterpretation of the existing strip as an intermediate anode is withdrawn; its electrical connection and potential remain unresolved.",
+  "preservation": "The four historical records are byte-identical to the original research artifacts. Original input root paths remain in the archived snapshot.",
+  "records": [
+    {
+      "file": "conducting-aperture-audit.json",
+      "bytes": 27420,
+      "sha256": "fe5217273fd5acb328bca7f75d35f89305db0f9163e739f7953d5e196d8de709",
+      "origin": "historical artifact preserved unchanged"
+    },
+    {
+      "file": "default-gun-planes.npz",
+      "bytes": 146011,
+      "sha256": "35a35b294336e232204b5a4c9e12db53884a3da1e469092bb072478f28d8bdc1",
+      "origin": "historical artifact preserved unchanged"
+    },
+    {
+      "file": "default-gun-summary.json",
+      "bytes": 3923,
+      "sha256": "bc135163f9110e2879c91ba8275cb86d075dce665451f60d2486451f8ad5e916",
+      "origin": "historical artifact preserved unchanged"
+    },
+    {
+      "file": "default-input-snapshot.json.gz",
+      "bytes": 91956,
+      "sha256": "8dbd60ab42c95bf87c1c349f05eea3cd624dc9a0cae1394f05aa837dd7b6bc13",
+      "origin": "historical artifact preserved unchanged"
+    },
+    {
+      "file": "extractor-clipping-check.json",
+      "bytes": 859,
+      "sha256": "1d8b9ef3144de1d4be4422373998192bc0646fb20d6aee86411a07510bf51ba1",
+      "origin": "pure coordinate-array check executed for this checkpoint"
+    }
+  ],
+  "validation": {
+    "historical_payload_integrity": true,
+    "positive_source_entries": 3000,
+    "unique_source_ids": 3000,
+    "all_saved_planes_transmitted": 3000,
+    "positive_weights_preserved": true,
+    "cached_audit_recheck_core_fields_match": [
+      "baseline_request_sha256",
+      "baseline_request",
+      "aperture_runtime",
+      "dependency_checks",
+      "cached_field_samples",
+      "front_back_difference_v",
+      "radial_2mm_to_3mm_difference_v",
+      "boundary_fixture",
+      "boundary_array_checks"
+    ],
+    "extractor_coordinate_checks_passed": 4,
+    "new_source_emission": false,
+    "new_particle_transport": false,
+    "new_field_solve": false,
+    "new_coherent_calculation": false,
+    "script_syntax_checked": true
+  },
+  "limits": [
+    "The historical 3000-particle run is a default-model diagnostic, not OEM or convergence qualification.",
+    "The cached-field aperture samples diagnose an omitted conductor, not its correct operating potential.",
+    "The boundary-array annulus uses synthetic geometry and potential.",
+    "The field cache itself is not included; the reproducer requires an existing matching cache.",
+    "No third-party source documents or figure copies are redistributed."
+  ]
+}

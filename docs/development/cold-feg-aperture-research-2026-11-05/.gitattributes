@@ -1,0 +1,4 @@
+# Preserve archived record bytes and their SHA-256 hashes across platforms.
+records/* -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+records/*.npz binary
+records/*.gz binary

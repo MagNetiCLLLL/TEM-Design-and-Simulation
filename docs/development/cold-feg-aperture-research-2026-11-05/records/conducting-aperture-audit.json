@@ -1,0 +1,937 @@
+{
+  "scope": "Read-only field-input and cached-field audit; boundary-array fixture only. No source particles, trajectories, coherent calculations or new field solutions.",
+  "git_head": "04e1d5682dab6a5392b542f139f4efeeaccc33c5",
+  "baseline_request_sha256": "e26f42fd100dc49d4a856edea4423ae79cdce04847a97fdd866d306d6fe7ff4a",
+  "baseline_request": {
+    "schema": "closed-classical-gun-electrostatics-v1",
+    "potential_reference": "rise_relative_to_original_tip_v",
+    "source_admission": "flat_classical_tip_only",
+    "rings": [
+      {
+        "key": "extractor",
+        "start_m": 0.006,
+        "stop_m": 0.01,
+        "inner_m": 0.002,
+        "outer_m": 0.01,
+        "potential_rise_v": 4000.0
+      },
+      {
+        "key": "electrostatic_lens",
+        "start_m": 0.014000000000000002,
+        "stop_m": 0.022000000000000002,
+        "inner_m": 0.004,
+        "outer_m": 0.03,
+        "potential_rise_v": 5200.0
+      },
+      {
+        "key": "accelerator:0",
+        "start_m": 0.0415,
+        "stop_m": 0.0425,
+        "inner_m": 0.005,
+        "outer_m": 0.15,
+        "potential_rise_v": 33600.0
+      },
+      {
+        "key": "accelerator:1",
+        "start_m": 0.07705555555555556,
+        "stop_m": 0.07805555555555556,
+        "inner_m": 0.005,
+        "outer_m": 0.15,
+        "potential_rise_v": 63200.0
+      },
+      {
+        "key": "accelerator:2",
+        "start_m": 0.11261111111111112,
+        "stop_m": 0.11361111111111112,
+        "inner_m": 0.005,
+        "outer_m": 0.15,
+        "potential_rise_v": 92800.0
+      },
+      {
+        "key": "accelerator:3",
+        "start_m": 0.1481666666666667,
+        "stop_m": 0.1491666666666667,
+        "inner_m": 0.005,
+        "outer_m": 0.15,
+        "potential_rise_v": 122400.0
+      },
+      {
+        "key": "accelerator:4",
+        "start_m": 0.18372222222222223,
+        "stop_m": 0.18472222222222223,
+        "inner_m": 0.005,
+        "outer_m": 0.15,
+        "potential_rise_v": 152000.0
+      },
+      {
+        "key": "accelerator:5",
+        "start_m": 0.21927777777777777,
+        "stop_m": 0.22027777777777777,
+        "inner_m": 0.005,
+        "outer_m": 0.15,
+        "potential_rise_v": 181600.0
+      },
+      {
+        "key": "accelerator:6",
+        "start_m": 0.25483333333333336,
+        "stop_m": 0.25583333333333336,
+        "inner_m": 0.005,
+        "outer_m": 0.15,
+        "potential_rise_v": 211200.0
+      },
+      {
+        "key": "accelerator:7",
+        "start_m": 0.2903888888888889,
+        "stop_m": 0.2913888888888889,
+        "inner_m": 0.005,
+        "outer_m": 0.15,
+        "potential_rise_v": 240800.0
+      },
+      {
+        "key": "accelerator:8",
+        "start_m": 0.3259444444444445,
+        "stop_m": 0.3269444444444445,
+        "inner_m": 0.005,
+        "outer_m": 0.15,
+        "potential_rise_v": 270400.0
+      },
+      {
+        "key": "accelerator:9",
+        "start_m": 0.3615,
+        "stop_m": 0.3625,
+        "inner_m": 0.005,
+        "outer_m": 0.15,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet:8",
+        "start_m": 0.37,
+        "stop_m": 0.398,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet:9",
+        "start_m": 0.398,
+        "stop_m": 0.422,
+        "inner_m": 0.005,
+        "outer_m": 0.00525,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet:10",
+        "start_m": 0.422,
+        "stop_m": 0.427,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet:11",
+        "start_m": 0.427,
+        "stop_m": 0.439,
+        "inner_m": 0.005,
+        "outer_m": 0.00525,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet:12",
+        "start_m": 0.439,
+        "stop_m": 0.444,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet:13",
+        "start_m": 0.444,
+        "stop_m": 0.446,
+        "inner_m": 0.003,
+        "outer_m": 0.0032500000000000003,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet:14",
+        "start_m": 0.446,
+        "stop_m": 0.45,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet:15",
+        "start_m": 0.45,
+        "stop_m": 0.55,
+        "inner_m": 0.0028799999999999997,
+        "outer_m": 0.0096,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet_joint:0",
+        "start_m": 0.398,
+        "stop_m": 0.398,
+        "inner_m": 0.0025,
+        "outer_m": 0.00525,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet_joint:1",
+        "start_m": 0.422,
+        "stop_m": 0.422,
+        "inner_m": 0.0025,
+        "outer_m": 0.00525,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet_joint:2",
+        "start_m": 0.427,
+        "stop_m": 0.427,
+        "inner_m": 0.0025,
+        "outer_m": 0.00525,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet_joint:3",
+        "start_m": 0.439,
+        "stop_m": 0.439,
+        "inner_m": 0.0025,
+        "outer_m": 0.00525,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet_joint:4",
+        "start_m": 0.444,
+        "stop_m": 0.444,
+        "inner_m": 0.0025,
+        "outer_m": 0.0032500000000000003,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet_joint:5",
+        "start_m": 0.446,
+        "stop_m": 0.446,
+        "inner_m": 0.0025,
+        "outer_m": 0.0032500000000000003,
+        "potential_rise_v": 300000.0
+      },
+      {
+        "key": "grounded_outlet_joint:6",
+        "start_m": 0.45,
+        "stop_m": 0.45,
+        "inner_m": 0.0025,
+        "outer_m": 0.0096,
+        "potential_rise_v": 300000.0
+      }
+    ],
+    "high_tension_v": 300000.0,
+    "extraction_v": 4000.0,
+    "domain": {
+      "entrance_m": 0.0,
+      "exit_m": 0.55,
+      "gun_exit_m": 0.45,
+      "outer_radius_m": 0.3
+    },
+    "boundary_conditions": {
+      "cathode": {
+        "type": "planar_equipotential",
+        "rise_v": 0.0,
+        "extent": "entire_radial_domain_at_z_zero",
+        "material_extension": "z_below_zero_is_constant_potential_conductor_for_interception"
+      },
+      "exit": {
+        "type": "uniform_dirichlet",
+        "rise_v": 300000.0,
+        "location": "numerical_cut_inside_continuing_grounded_liner"
+      },
+      "radial_outer": "natural_zero_normal_derivative",
+      "axis": "axisymmetric_regular",
+      "metal": "annular_dirichlet",
+      "grounded_liner": "physical_shells_and_radial_step_faces_at_ground"
+    },
+    "limitations": [
+      "The flat source uses an idealised full-domain planar cathode, not a nanometre emission patch.",
+      "Annular electrode contours use current mechanical bore, thickness and outer dimensions.",
+      "Grounding the downstream liner is an explicit simulator electrical design, not measured wiring.",
+      "Radial joints between stepped liner shells are idealised zero-thickness grounded faces.",
+      "No space charge, image charge, insulators or tunnelling-current prediction.",
+      "Magnetic controls, aperture absorption and any installed monochromator remain separate required operations.",
+      "Field evaluation is strict inside the solved domain; no analytic fallback or energy reset."
+    ],
+    "numerics": {
+      "cells_per_bore": 16,
+      "outer_radius_factor": 2.0,
+      "exit_extension_mm": 100.0,
+      "mesh": "electrode-local-and-grounded-liner-face-graded-v2",
+      "interpolation": "bilinear-radius-squared-and-z-v1",
+      "linear_residual_tolerance": 1e-09,
+      "maximum_vertices": 1500000,
+      "grounded_liner_face_refinement_bores": 2.0,
+      "grounded_liner_axial_cells_per_bore": 8.0
+    },
+    "implementation_sha256": {
+      "planar_gun_field.py": "25a4a1fa65d58f31d250276daaad7ceedd8d1f6d5fab88d7f2b09fd3ebe6785d",
+      "axisymmetric_cut_field.py": "32ae7fb03e20b154dcf67e3ea6561b981b6ea3bc90c7fe3f4bb13f39644dfd72",
+      "cpu_resources.py": "09dac55bc71e00a6f2ef237dceb4f1305db98ecdd4880d32eb1c493fc26ead66",
+      "electrode_mesh.py": "635d38c0c165601aef11f9f6990458e4b774f1e7b1649b10149820dc61242b64",
+      "closed_gun_field.py": "c7f4d0ca934ea61a07065b64766b65ea9259582773e21a5046aced63264f03ae",
+      "grounded_tip_field.py": "0e2825f1119dfef3bf50110f42d2ae24992d966b6467b3b9d8f6490b2c768867"
+    },
+    "libraries": {
+      "numpy": "2.4.6",
+      "scipy": "1.18.0"
+    },
+    "model_status": "classical_planar_cathode_with_explicit_grounded_outlet",
+    "grounded_liner": [
+      {
+        "key": "grounded_outlet:8",
+        "start_m": 0.37,
+        "stop_m": 0.398,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275
+      },
+      {
+        "key": "grounded_outlet:9",
+        "start_m": 0.398,
+        "stop_m": 0.422,
+        "inner_m": 0.005,
+        "outer_m": 0.00525
+      },
+      {
+        "key": "grounded_outlet:10",
+        "start_m": 0.422,
+        "stop_m": 0.427,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275
+      },
+      {
+        "key": "grounded_outlet:11",
+        "start_m": 0.427,
+        "stop_m": 0.439,
+        "inner_m": 0.005,
+        "outer_m": 0.00525
+      },
+      {
+        "key": "grounded_outlet:12",
+        "start_m": 0.439,
+        "stop_m": 0.444,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275
+      },
+      {
+        "key": "grounded_outlet:13",
+        "start_m": 0.444,
+        "stop_m": 0.446,
+        "inner_m": 0.003,
+        "outer_m": 0.0032500000000000003
+      },
+      {
+        "key": "grounded_outlet:14",
+        "start_m": 0.446,
+        "stop_m": 0.45,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275
+      },
+      {
+        "key": "grounded_outlet:15",
+        "start_m": 0.45,
+        "stop_m": 1.5345,
+        "inner_m": 0.0028799999999999997,
+        "outer_m": 0.0096
+      },
+      {
+        "key": "grounded_outlet:16",
+        "start_m": 1.5345,
+        "stop_m": 1.5965,
+        "inner_m": 0.0028799999999999997,
+        "outer_m": 0.00313
+      },
+      {
+        "key": "grounded_outlet:17",
+        "start_m": 1.5965,
+        "stop_m": 1.59919995,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275
+      },
+      {
+        "key": "grounded_outlet:18",
+        "start_m": 1.59919995,
+        "stop_m": 1.59920005,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275
+      },
+      {
+        "key": "grounded_outlet:19",
+        "start_m": 1.59920005,
+        "stop_m": 1.5997000000000001,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275
+      },
+      {
+        "key": "grounded_outlet:20",
+        "start_m": 1.5997000000000001,
+        "stop_m": 1.6017000000000001,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275
+      },
+      {
+        "key": "grounded_outlet:21",
+        "start_m": 1.6017000000000001,
+        "stop_m": 1.6019,
+        "inner_m": 0.0025,
+        "outer_m": 0.00275
+      },
+      {
+        "key": "grounded_outlet:22",
+        "start_m": 1.6019,
+        "stop_m": 1.6639000000000002,
+        "inner_m": 0.0028799999999999997,
+        "outer_m": 0.00313
+      },
+      {
+        "key": "grounded_outlet:23",
+        "start_m": 1.6639000000000002,
+        "stop_m": 1.6802000000000001,
+        "inner_m": 0.0028799999999999997,
+        "outer_m": 0.00313
+      },
+      {
+        "key": "grounded_outlet:24",
+        "start_m": 1.6802000000000001,
+        "stop_m": 1.8094000000000001,
+        "inner_m": 0.0028799999999999997,
+        "outer_m": 0.00313
+      },
+      {
+        "key": "grounded_outlet:25",
+        "start_m": 1.8094000000000001,
+        "stop_m": 1.8144000000000002,
+        "inner_m": 0.0028799999999999997,
+        "outer_m": 0.00313
+      },
+      {
+        "key": "grounded_outlet:26",
+        "start_m": 1.8144000000000002,
+        "stop_m": 1.8344,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:27",
+        "start_m": 1.8344,
+        "stop_m": 1.8444,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:28",
+        "start_m": 1.8444,
+        "stop_m": 1.8469000000000002,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:29",
+        "start_m": 1.8469000000000002,
+        "stop_m": 1.8519,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:30",
+        "start_m": 1.8519,
+        "stop_m": 1.8629000000000002,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:31",
+        "start_m": 1.8629000000000002,
+        "stop_m": 1.8949,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:32",
+        "start_m": 1.8949,
+        "stop_m": 1.8989,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:33",
+        "start_m": 1.8989,
+        "stop_m": 1.9309,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:34",
+        "start_m": 1.9309,
+        "stop_m": 1.9419000000000002,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:35",
+        "start_m": 1.9419000000000002,
+        "stop_m": 1.9469,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:36",
+        "start_m": 1.9469,
+        "stop_m": 1.9519000000000002,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:37",
+        "start_m": 1.9519000000000002,
+        "stop_m": 1.9859000000000002,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:38",
+        "start_m": 1.9859000000000002,
+        "stop_m": 2.0369,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:39",
+        "start_m": 2.0369,
+        "stop_m": 2.0639000000000003,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:40",
+        "start_m": 2.0639000000000003,
+        "stop_m": 2.0699,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:41",
+        "start_m": 2.0699,
+        "stop_m": 2.0969,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:42",
+        "start_m": 2.0969,
+        "stop_m": 2.1479,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:43",
+        "start_m": 2.1479,
+        "stop_m": 2.1819,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:44",
+        "start_m": 2.1819,
+        "stop_m": 2.1869,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:45",
+        "start_m": 2.1869,
+        "stop_m": 2.1929000000000003,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:46",
+        "start_m": 2.1929000000000003,
+        "stop_m": 2.2159,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:47",
+        "start_m": 2.2159,
+        "stop_m": 2.2444,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:48",
+        "start_m": 2.2444,
+        "stop_m": 2.2494,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:49",
+        "start_m": 2.2494,
+        "stop_m": 2.2779000000000003,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:50",
+        "start_m": 2.2779000000000003,
+        "stop_m": 2.3009,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:51",
+        "start_m": 2.3009,
+        "stop_m": 2.3069,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:52",
+        "start_m": 2.3069,
+        "stop_m": 2.3119,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:53",
+        "start_m": 2.3119,
+        "stop_m": 2.3684000000000003,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:54",
+        "start_m": 2.3684000000000003,
+        "stop_m": 2.4144,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:55",
+        "start_m": 2.4144,
+        "stop_m": 2.4459,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:56",
+        "start_m": 2.4459,
+        "stop_m": 2.4529,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:57",
+        "start_m": 2.4529,
+        "stop_m": 2.4844,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:58",
+        "start_m": 2.4844,
+        "stop_m": 2.5304,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:59",
+        "start_m": 2.5304,
+        "stop_m": 2.5869,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:60",
+        "start_m": 2.5869,
+        "stop_m": 2.59415,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:61",
+        "start_m": 2.59415,
+        "stop_m": 2.59465,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:62",
+        "start_m": 2.59465,
+        "stop_m": 2.71415,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:63",
+        "start_m": 2.71415,
+        "stop_m": 2.7146500000000002,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:64",
+        "start_m": 2.7146500000000002,
+        "stop_m": 2.8041500000000004,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:65",
+        "start_m": 2.8041500000000004,
+        "stop_m": 2.80465,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:66",
+        "start_m": 2.80465,
+        "stop_m": 2.87415,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:67",
+        "start_m": 2.87415,
+        "stop_m": 2.8746500000000004,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:68",
+        "start_m": 2.8746500000000004,
+        "stop_m": 2.98665,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      },
+      {
+        "key": "grounded_outlet:69",
+        "start_m": 2.98665,
+        "stop_m": 2.98715,
+        "inner_m": 0.01,
+        "outer_m": 0.010750000000000001
+      }
+    ],
+    "ground_assignment": {
+      "reference": "simulator_electrical_model_design",
+      "ground_potential_rise_v": 300000.0,
+      "start": "accelerator_mechanical_downstream_face",
+      "extent": "connected_resolved_vacuum_liner_through_downstream_column_tube",
+      "step_joints": "zero_thickness_grounded_radial_faces",
+      "upstream_apertures": "not_assigned_electrical_potentials"
+    },
+    "required_composition": "ordinary_apertures_magnetic_components_and_installed_monochromator"
+  },
+  "aperture_runtime": {
+    "name": "Gun Aperture",
+    "key": "feg_dpa_aperture",
+    "mechanical_center_from_tip_mm": 24.0,
+    "mechanical_length_mm": 2.0,
+    "mechanical_outer_diameter_mm": 35.0,
+    "mechanical_bore_diameter_mm": 6.0,
+    "plate_thickness_mm": 0.2,
+    "radius_mm": 2.0,
+    "maximum_radius_mm": 3.0,
+    "offset_x_mm": 0.0,
+    "offset_y_mm": 0.0,
+    "enabled": true,
+    "colour": "#8e24aa",
+    "field_center_offset_mm": 0.0,
+    "_manifest_source_file": "gun/FEG.toml",
+    "_manifest_part_key": "feg_dpa_aperture",
+    "_manifest_definition_id": "gun/FEG.toml::parts[feg_dpa_aperture]"
+  },
+  "dependency_checks": [
+    {
+      "parameter": "radius_mm",
+      "original": 2.0,
+      "changed": 1.0,
+      "field_request_unchanged": true
+    },
+    {
+      "parameter": "plate_thickness_mm",
+      "original": 0.2,
+      "changed": 0.4,
+      "field_request_unchanged": true
+    },
+    {
+      "parameter": "mechanical_center_from_tip_mm",
+      "original": 24.0,
+      "changed": 24.5,
+      "field_request_unchanged": true
+    },
+    {
+      "parameter": "offset_x_mm",
+      "original": 0.0,
+      "changed": 0.1,
+      "field_request_unchanged": true
+    },
+    {
+      "parameter": "enabled",
+      "original": true,
+      "changed": false,
+      "field_request_unchanged": true
+    }
+  ],
+  "baseline_field_report": {
+    "boundary_conditions": {
+      "axis": "axisymmetric_regular",
+      "cathode": {
+        "extent": "entire_radial_domain_at_z_zero",
+        "material_extension": "z_below_zero_is_constant_potential_conductor_for_interception",
+        "rise_v": 0.0,
+        "type": "planar_equipotential"
+      },
+      "exit": {
+        "location": "numerical_cut_inside_continuing_grounded_liner",
+        "rise_v": 300000.0,
+        "type": "uniform_dirichlet"
+      },
+      "grounded_liner": "physical_shells_and_radial_step_faces_at_ground",
+      "metal": "annular_dirichlet",
+      "radial_outer": "natural_zero_normal_derivative"
+    },
+    "cache_hit": true,
+    "cpu_resources": {
+      "available_cpus": 32,
+      "blas_threads": 1,
+      "numba_threads": 1,
+      "numerical_jobs": 1,
+      "numerical_thread_budget": 1
+    },
+    "elements": 841360,
+    "grid_shape": [
+      261,
+      1619
+    ],
+    "limitations": [
+      "The flat source uses an idealised full-domain planar cathode, not a nanometre emission patch.",
+      "Annular electrode contours use current mechanical bore, thickness and outer dimensions.",
+      "Grounding the downstream liner is an explicit simulator electrical design, not measured wiring.",
+      "Radial joints between stepped liner shells are idealised zero-thickness grounded faces.",
+      "No space charge, image charge, insulators or tunnelling-current prediction.",
+      "Magnetic controls, aperture absorption and any installed monochromator remain separate required operations.",
+      "Field evaluation is strict inside the solved domain; no analytic fallback or energy reset."
+    ],
+    "linear_residual": 1.3581787546475728e-15,
+    "load_seconds": 0.014360500001203036,
+    "maximum_axial_cell_m": 0.008337250019668119,
+    "minimum_axial_cell_m": 0.00012121212121211922,
+    "minimum_radial_cell_m": 6.499999999999995e-05,
+    "model_status": "classical_planar_cathode_with_explicit_grounded_outlet",
+    "potential_reference": "rise_relative_to_original_tip_v",
+    "request_sha256": "e26f42fd100dc49d4a856edea4423ae79cdce04847a97fdd866d306d6fe7ff4a",
+    "schema": "closed-classical-gun-electrostatics-v1",
+    "solve_seconds": 1.3503125000024738,
+    "vertices": 422559,
+    "cache_path": "C:\\Users\\54019\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\TEMSimulator\\cache\\gun-fields\\e26f42fd100dc49d4a856edea4423ae79cdce04847a97fdd866d306d6fe7ff4a.npz",
+    "cache_bytes": 2921592
+  },
+  "cached_field_samples": [
+    {
+      "xyz_mm": [
+        2.5,
+        0.0,
+        23.9
+      ],
+      "potential_rise_v": 8523.754588732994,
+      "electric_v_per_m": [
+        161707.36369958465,
+        0.0,
+        -1258618.2059920905
+      ]
+    },
+    {
+      "xyz_mm": [
+        2.5,
+        0.0,
+        24.0
+      ],
+      "potential_rise_v": 8650.381080931964,
+      "electric_v_per_m": [
+        152252.24973705798,
+        0.0,
+        -1283470.032984178
+      ]
+    },
+    {
+      "xyz_mm": [
+        2.5,
+        0.0,
+        24.1
+      ],
+      "potential_rise_v": 8778.728084230386,
+      "electric_v_per_m": [
+        143722.23925857944,
+        0.0,
+        -1283470.032984178
+      ]
+    },
+    {
+      "xyz_mm": [
+        2.0,
+        0.0,
+        24.0
+      ],
+      "potential_rise_v": 8721.838818692448,
+      "electric_v_per_m": [
+        129885.2192613923,
+        0.0,
+        -1245195.1777919184
+      ]
+    },
+    {
+      "xyz_mm": [
+        3.0,
+        0.0,
+        24.0
+      ],
+      "potential_rise_v": 8569.781240145843,
+      "electric_v_per_m": [
+        164464.8430177448,
+        0.0,
+        -1329727.815656439
+      ]
+    },
+    {
+      "xyz_mm": [
+        0.0,
+        0.0,
+        24.0
+      ],
+      "potential_rise_v": 8857.215354794384,
+      "electric_v_per_m": [
+        0.0,
+        0.0,
+        -1180948.529698917
+      ]
+    }
+  ],
+  "front_back_difference_v": 254.97349549739192,
+  "radial_2mm_to_3mm_difference_v": -152.05757854660442,
+  "baseline_sample_limit": "Numerical values diagnose the omitted conductor in this default model. No mesh convergence or real-device calibration is claimed.",
+  "boundary_fixture": {
+    "key": "audit_annular_plate_fixture",
+    "start_m": 0.0239,
+    "stop_m": 0.0241,
+    "inner_m": 0.002,
+    "outer_m": 0.006,
+    "potential_rise_v": 5200.0
+  },
+  "boundary_fixture_limit": "The 6 mm outer radius is a synthetic array-test dimension, not a measured or recommended aperture outline. No potential solution was calculated for this fixture.",
+  "boundary_array_checks": {
+    "front_face_present": true,
+    "back_face_present": true,
+    "inner_wall_present": true,
+    "metal_nodes_fixed": true,
+    "metal_voltage_matches": true,
+    "hole_nodes_free": true,
+    "field_identity_changes": true
+  }
+}

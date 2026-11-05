@@ -5,6 +5,11 @@ dimensional input. The sources below support construction principles, not the
 claim that these files reproduce a specific manufacturer's complete machine.
 Mechanical reconstruction does not recalibrate fields or change ray/wave inputs.
 
+The [2026-11-05 cold-FEG aperture research checkpoint](cold-feg-aperture-research-2026-11-05.md)
+distinguishes the extractor opening from the separate gun aperture and records
+the unresolved electrical connection of the latter. Similar placement in a
+patent does not establish that the existing strip is an intermediate anode.
+
 The final adoption rules are in [CAD_DETAIL_POLICY.md](CAD_DETAIL_POLICY.md).
 In particular, this model does not acquire twelve physical Wien/filter poles
 from an alternative patent, new blanker/quadrupole support bodies, or extra

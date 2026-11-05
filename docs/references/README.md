@@ -25,3 +25,9 @@ commits or remote copies. Cleaning previously uploaded history requires a
 separate, coordinated operation. Before another checkout pulls a commit that
 removes previously tracked reference files, back up that checkout's reading
 copies outside the repository; pulling the removal can delete those copies.
+
+## Research checkpoints
+
+- [Cold field emission gun apertures and electrical boundaries](cold-feg-aperture-research-2026-11-05.md):
+  book and manufacturer evidence, the distinction between the extractor and
+  separate gun aperture, preserved numerical diagnostics, and unresolved wiring.
