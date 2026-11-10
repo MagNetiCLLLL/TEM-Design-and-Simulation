@@ -1,0 +1,201 @@
+{
+  "executed_vacuum_input_digest": "e18f4f63f48672c50b846ea194f393661bcc6baa57e826f05af7df548c84bb4d",
+  "controls": {
+    "condenser_lens_1": {
+      "percent": 51.666666666666664,
+      "enabled": true
+    },
+    "condenser_lens_2": {
+      "percent": 10.561,
+      "enabled": true
+    },
+    "condenser_lens_3": {
+      "percent": 33.6,
+      "enabled": true
+    },
+    "adapter_lens": {
+      "percent": 9.196971868437602,
+      "enabled": true
+    },
+    "probe_tl22_lens": {
+      "percent": 53.37284434045485,
+      "enabled": true
+    },
+    "probe_tl21_lens": {
+      "percent": 59.84924813065814,
+      "enabled": true
+    },
+    "probe_tl12_lens": {
+      "percent": 47.656160318977484,
+      "enabled": true
+    },
+    "mini_condenser": {
+      "percent": 26.678337967960122,
+      "enabled": true
+    },
+    "objective_lens": {
+      "percent": 29.3264011126,
+      "enabled": true
+    },
+    "diffraction_lens": {
+      "percent": 14.577617197168571,
+      "enabled": true
+    },
+    "intermediate_lens": {
+      "percent": 0.035082657259397326,
+      "enabled": true
+    },
+    "projector_lens_1": {
+      "percent": 32.1132572718703,
+      "enabled": true
+    },
+    "projector_lens_2": {
+      "percent": 9.826874422815507,
+      "enabled": true
+    },
+    "image_tl11_lens": {
+      "percent": 47.222628953204506,
+      "enabled": false
+    },
+    "image_tl12_lens": {
+      "percent": 72.246157404236,
+      "enabled": false
+    },
+    "image_tl21_lens": {
+      "percent": 60.00013477251599,
+      "enabled": false
+    },
+    "image_tl22_lens": {
+      "percent": 60.00017182617688,
+      "enabled": false
+    },
+    "image_adapter_lens": {
+      "percent": 48.97736117372686,
+      "enabled": false
+    },
+    "probe_dph2_deflector": {
+      "enabled": true
+    },
+    "probe_qph2_quadrupole": {
+      "strength_m2": 0.0,
+      "enabled": true
+    },
+    "probe_hp2_hexapole": {
+      "strength_m3": 5435590.009303784,
+      "orientation_rad": -0.0030891905933732033,
+      "enabled": true
+    },
+    "probe_dp22_deflector": {
+      "enabled": true
+    },
+    "probe_hpc_hexapole": {
+      "strength_m3": -147238.6192393926,
+      "skew_strength_m3": 45758.8185899953,
+      "orientation_rad": 0.0,
+      "enabled": true
+    },
+    "probe_qpc_quadrupole": {
+      "strength_m2": 0.0,
+      "enabled": true
+    },
+    "probe_dp21_deflector": {
+      "enabled": true
+    },
+    "probe_dph1_deflector": {
+      "enabled": true
+    },
+    "probe_qph1_quadrupole": {
+      "strength_m2": 0.0,
+      "enabled": true
+    },
+    "probe_hp1_hexapole": {
+      "strength_m3": 4757175.659494648,
+      "orientation_rad": 0.022552001988667456,
+      "enabled": true
+    },
+    "probe_hpol_hexapole": {
+      "strength_m3": 538357.98745518,
+      "skew_strength_m3": 312562.20966020937,
+      "orientation_rad": 0.0,
+      "enabled": true
+    },
+    "probe_qpol_quadrupole": {
+      "strength_m2": 0.0,
+      "enabled": true
+    },
+    "probe_dp11_deflector": {
+      "enabled": true
+    },
+    "ac_deflector": {
+      "enabled": true
+    },
+    "descan_deflector": {
+      "enabled": true
+    },
+    "image_hpol_hexapole": {
+      "strength_m3": 0.0,
+      "orientation_rad": 0.0,
+      "enabled": false
+    },
+    "image_qpol_quadrupole": {
+      "strength_m2": 0.0,
+      "enabled": false
+    },
+    "image_dp11_deflector": {
+      "enabled": false
+    },
+    "image_dp12_deflector": {
+      "enabled": false
+    },
+    "image_dph1_deflector": {
+      "enabled": false
+    },
+    "image_hp1_hexapole": {
+      "strength_m3": 24905024.4,
+      "orientation_rad": 0.0,
+      "enabled": false
+    },
+    "image_dp21_deflector": {
+      "enabled": false
+    },
+    "image_dp22_deflector": {
+      "enabled": false
+    },
+    "image_dph2_deflector": {
+      "enabled": false
+    },
+    "image_hp2_hexapole": {
+      "strength_m3": 14929764.170818225,
+      "orientation_rad": -2.00126792,
+      "enabled": false
+    },
+    "image_ish_deflector": {
+      "enabled": false
+    },
+    "image_dsh_deflector": {
+      "enabled": false
+    },
+    "image_dstg_quadrupole": {
+      "strength_m2": 0.0,
+      "enabled": false
+    },
+    "image_sad_plane": {
+      "enabled": false
+    },
+    "condenser_stigmator": {
+      "strength_x_percent": 0.0005030845145850119,
+      "strength_y_percent": 0.012000878806056787,
+      "enabled": true
+    },
+    "objective_stigmator": {
+      "strength_x_percent": 0.0,
+      "strength_y_percent": 0.0,
+      "enabled": true
+    },
+    "diffraction_stigmator": {
+      "strength_x_percent": 0.0,
+      "strength_y_percent": 0.0,
+      "enabled": true
+    }
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "schema": "saved-scientific-artifacts-v1",
+  "executed_solver_revision": "65f1e8c4a1c890de241f36697ed190e352022912",
+  "files": {
+    "README.md": {
+      "kind": "curated report",
+      "archive_sha256": "cb5876878c36380d28ed59b4daddbe0787b9de289260130a4b1b83d4189e41b6",
+      "archive_bytes": 11033,
+      "hash_mode": "canonical LF text"
+    },
+    "extractor/comparison-n1024.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "6abd9f769832a8ad325f88a01a6fa914194ba49d8aa65a2923d8bbe0bf43e899",
+      "archive_sha256": "6e1bdba4b2978f2a0853da0f0304f7f8859058f5d73ae85ba32ae594cc1993d8",
+      "archive_bytes": 24499,
+      "hash_mode": "canonical LF text"
+    },
+    "extractor/comparison-n1024.png": {
+      "kind": "executed evidence",
+      "source_sha256": "18b7c95d1fe40d7921cd0217dc6d54b36e9b0cfb97aa39b81534f3b5788f0dda",
+      "archive_sha256": "18b7c95d1fe40d7921cd0217dc6d54b36e9b0cfb97aa39b81534f3b5788f0dda",
+      "archive_bytes": 215982,
+      "hash_mode": "raw bytes"
+    },
+    "extractor/new-n1024/axis_field.npz": {
+      "kind": "executed evidence",
+      "source_sha256": "12a5a8a9f1b8b7f464adc55996cc834fe3a9f9ec4fa9c80fbba5f845d8701732",
+      "archive_sha256": "12a5a8a9f1b8b7f464adc55996cc834fe3a9f9ec4fa9c80fbba5f845d8701732",
+      "archive_bytes": 23606,
+      "hash_mode": "raw bytes"
+    },
+    "extractor/new-n1024/gun_exit.npz": {
+      "kind": "executed gun exit and emission array subset",
+      "source_sha256": "eb5516ba6c878f20549637a434d42c8e4553af1840f9de152220c75fced93e9e",
+      "archive_sha256": "67a936e9741ff0b42eff3c6ec62e946ff56189e11f2bcd86a1f2090fffc2a82c",
+      "archive_bytes": 93883,
+      "hash_mode": "raw bytes"
+    },
+    "extractor/new-n1024/receipt.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "c895a89da6a880a65bc82e7fa3c65e736ad13c13d09dd03e98386a830e639f7e",
+      "archive_sha256": "d2ee8d562ec87c795de2ef5c3abbb899f83825a06671e1cd325e4275e1612ed9",
+      "archive_bytes": 11610,
+      "hash_mode": "canonical LF text"
+    },
+    "extractor/new-n2048/axis_field.npz": {
+      "kind": "executed evidence",
+      "source_sha256": "12a5a8a9f1b8b7f464adc55996cc834fe3a9f9ec4fa9c80fbba5f845d8701732",
+      "archive_sha256": "12a5a8a9f1b8b7f464adc55996cc834fe3a9f9ec4fa9c80fbba5f845d8701732",
+      "archive_bytes": 23606,
+      "hash_mode": "raw bytes"
+    },
+    "extractor/new-n2048/gun_exit.npz": {
+      "kind": "executed gun exit and emission array subset",
+      "source_sha256": "56bdb638abe57e10134d0e453a08c6fa224b696abe6e8351c3d856a9c3e9f3c9",
+      "archive_sha256": "2a4656ba9b2698a1abb0c5798809f93e2cf64d3c04bdb449b0898f509c5c0655",
+      "archive_bytes": 182180,
+      "hash_mode": "raw bytes"
+    },
+    "extractor/new-n2048/receipt.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "4dad09b0d917d4dd70ba0ebe71afe148344883a34067a1c8bc06dcf7c01682ae",
+      "archive_sha256": "63924de115edce0bcb1511249c18b178a7ce2e295842eefae14cbf89306a9f52",
+      "archive_bytes": 11624,
+      "hash_mode": "canonical LF text"
+    },
+    "extractor/old-n1024/axis_field.npz": {
+      "kind": "executed evidence",
+      "source_sha256": "a65b014e0cd818654683c940522ba75eae5585df0df9e0cdba40b4710abdea8c",
+      "archive_sha256": "a65b014e0cd818654683c940522ba75eae5585df0df9e0cdba40b4710abdea8c",
+      "archive_bytes": 23413,
+      "hash_mode": "raw bytes"
+    },
+    "extractor/old-n1024/gun_exit.npz": {
+      "kind": "executed gun exit and emission array subset",
+      "source_sha256": "fcfb4f58554e2bba55f2c6aa18be5b60d2556fb3ce384380478aa1877efe76b2",
+      "archive_sha256": "8dfa1a07e3955e87947d6b9fa35f9aa2cba825b8c6f6dad4acf10859e1efa10f",
+      "archive_bytes": 94315,
+      "hash_mode": "raw bytes"
+    },
+    "extractor/old-n1024/receipt.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "74bd424f9b0b2cf54a73636988d437b014f4a0a761e90c8ce8af6fb6c16e68ee",
+      "archive_sha256": "e6e276b1c843f577c6b85cc92e97240c235447d92828d0a5a39c1aa157a075a0",
+      "archive_bytes": 11587,
+      "hash_mode": "canonical LF text"
+    },
+    "extractor/source-refinement-n1024-n2048.json": {
+      "kind": "executed evidence",
+      "source_sha256": "08fba81cfba10892cf652e7cb0e9cdc54de6bd70e0acc62ee39f7c09239d1415",
+      "archive_sha256": "c179d9963f5a0c9a6981785a217a5d337d33642beb2bd75448f2860627d56156",
+      "archive_bytes": 3350,
+      "hash_mode": "canonical LF text"
+    },
+    "focus-comparison.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "5bce9022589ac8d861902907b7af187b38e99bcb63110ffe776cc6ce5ab92624",
+      "archive_sha256": "992a1ea868ab94500343f79c230a135d3cb9ab7f57b4249c6697d1b883adf32c",
+      "archive_bytes": 65843,
+      "hash_mode": "canonical LF text"
+    },
+    "focus-comparison.png": {
+      "kind": "executed evidence",
+      "source_sha256": "66b1be5199b2571e0a0cc0d40a1e032b58b8799eb5c0ea168cb17db1560241f4",
+      "archive_sha256": "66b1be5199b2571e0a0cc0d40a1e032b58b8799eb5c0ea168cb17db1560241f4",
+      "archive_bytes": 247183,
+      "hash_mode": "raw bytes"
+    },
+    "focus/historical-axis-n1024-s020/mechanical-comparison.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "3266a895ddf3ac8cbf42d7a167cd5ee408385e2ed4be84fdfc886d99ca7ef000",
+      "archive_sha256": "a072929da2439148a1d6b95f301ac2d15aab6d8bb9d709677042caa32798bdaa",
+      "archive_bytes": 184301,
+      "hash_mode": "canonical LF text"
+    },
+    "focus/historical-axis-n1024-s020/report.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "d623e591101213e98d3084b22c60452606b20f7803dd4a06f836acd571982212",
+      "archive_sha256": "8f735de3663966a7e1bbc136fec8dc10644b5bf1b7f0aa1df2cfae437cdfce3e",
+      "archive_bytes": 99870,
+      "hash_mode": "canonical LF text"
+    },
+    "focus/historical-axis-n1024-s020/trial-00/report.json": {
+      "kind": "executed evidence",
+      "source_sha256": "958591ca7b0848ab6bec150a0305aee18e313fda1aa79e12a59a53de59cac603",
+      "archive_sha256": "958591ca7b0848ab6bec150a0305aee18e313fda1aa79e12a59a53de59cac603",
+      "archive_bytes": 901796,
+      "hash_mode": "canonical LF text"
+    },
+    "focus/historical-axis-n1024-s020/trial-01/report.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "6a18e0c55edec2244b9c4b7cd2cc2f445b0df1ee9384482309d0d24f36fb5339",
+      "archive_sha256": "79a39ef16f119c49bb480bdb52fb4d7003f398c3a23757136abe35652af28df9",
+      "archive_bytes": 902225,
+      "hash_mode": "canonical LF text"
+    },
+    "focus/historical-axis-n2048-s005/report.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "0fe20ef7ce4e537f1064b98c1cfea7190c4c425ead092b68f0cd4805baa8c8f6",
+      "archive_sha256": "88e2df41c8cdfe4d15244628a167fc31fb9c2c1bdfc762538bc071c6499a1192",
+      "archive_bytes": 60809,
+      "hash_mode": "canonical LF text"
+    },
+    "focus/historical-axis-n2048-s005/trial-00/report.json": {
+      "kind": "executed evidence",
+      "source_sha256": "f3b2f2369e88a1ea8ccecc734765aecff6dc8d2884ba9a64f14fa636ed0c4b71",
+      "archive_sha256": "f3b2f2369e88a1ea8ccecc734765aecff6dc8d2884ba9a64f14fa636ed0c4b71",
+      "archive_bytes": 1319168,
+      "hash_mode": "canonical LF text"
+    },
+    "focus/historical-axis-n2048-s005/trial-00/surface-phase.npz": {
+      "kind": "executed native phase observations within 10 nm of the upper surface and original stop ledger",
+      "source_sha256": "738ba95a7609ea80a84c734c2b2ebfd907bfa2e79e5c875062ba27d0ba37ab39",
+      "archive_sha256": "0059b28ab1bd4e212e28058bf8a943f1210702b9c36a774f85e4d4ffe48e5b09",
+      "archive_bytes": 2391189,
+      "hash_mode": "raw bytes"
+    },
+    "focus/historical-axis-n2048-s010/report.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "766c5884b7a54c71f7e4923abb28963ef08af27c2af5a61fa70aea3e1f0af9ac",
+      "archive_sha256": "a9795e466f9d4cebcbfe17b16541ce4c55c14f50cc89993aae07071d8575766a",
+      "archive_bytes": 101904,
+      "hash_mode": "canonical LF text"
+    },
+    "focus/historical-axis-n2048-s010/trial-00/report.json": {
+      "kind": "executed evidence",
+      "source_sha256": "9a435aa9d14249de65fd24dfa70220dd6f141e62d8d4ead4a776264511a72b49",
+      "archive_sha256": "9a435aa9d14249de65fd24dfa70220dd6f141e62d8d4ead4a776264511a72b49",
+      "archive_bytes": 1319291,
+      "hash_mode": "canonical LF text"
+    },
+    "focus/historical-axis-n2048-s010/trial-01/report.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "84ed2792d4d10f2c5967d573d247a16eb44123ebbce0aa8c2e4e87b6f706fd50",
+      "archive_sha256": "631b0db248bd7b56138301461495763da59f579549bf13bc907690d42cdbb55d",
+      "archive_bytes": 1319463,
+      "hash_mode": "canonical LF text"
+    },
+    "focus/historical-axis-n2048-s010/trial-01/surface-phase.npz": {
+      "kind": "executed native phase observations within 10 nm of the upper surface and original stop ledger",
+      "source_sha256": "e8fdf245b660ce347ee37a2af0d31e1624aea1c0eac0ddfffc8c2229a1a28093",
+      "archive_sha256": "23fd973c3b07a4abd92a30a072fa6c97e30f3d1947b959059b68523cecb092cf",
+      "archive_bytes": 2391092,
+      "hash_mode": "raw bytes"
+    },
+    "focus/historical-axis-same-source-step-comparison.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "9b242139a8c728d9ac956090ffa1cc494d4763961fe199ca909407b3a1959087",
+      "archive_sha256": "d717c89feefa5b2652f50c46fab12c352b9cd9aee1eaba56a878a6d1aaccb9ff",
+      "archive_bytes": 26531,
+      "hash_mode": "canonical LF text"
+    },
+    "focus/hpol-n1024-s020/report.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "d9ef24610b9f3893a9cd6d5d8fe17bf76da5e9edee9c6537761fecf149118634",
+      "archive_sha256": "ef601fffc9dc2f9ed6b66a85752464e0d1899a84b414b692a13f3980d6423cdd",
+      "archive_bytes": 102533,
+      "hash_mode": "canonical LF text"
+    },
+    "focus/zoom30-n1024-s020/report.json": {
+      "kind": "executed report with portable path labels",
+      "source_sha256": "c9e6ee3b8afb8b0c49783bd0845620254074bd6b46e1bc102d7a7525721f7b0d",
+      "archive_sha256": "94ab6dce08e99b1d55aa2529e45878a756a05e6a8a4559724cee6db7df3a1621",
+      "archive_bytes": 100549,
+      "hash_mode": "canonical LF text"
+    },
+    "historical-corrector-zoom-response.json": {
+      "kind": "executed evidence",
+      "source_sha256": "7ae06582253351e4e54c75ee489a6fd711d5f26a2a2cb22351a1d16bfb4c462d",
+      "archive_sha256": "b1da17cb04d296f079719eb91c14bf4cfffd85c81ef0cc30e4edf0599ed1478a",
+      "archive_bytes": 8352,
+      "hash_mode": "canonical LF text"
+    },
+    "normal-nanoprobe-si110.controls.json": {
+      "kind": "executed evidence",
+      "source_sha256": "b96e49bcb14e3b3ba6affb80f94b84f8be4d71225bb312ebd5d51281424a08e0",
+      "archive_sha256": "5cca07ca0d6a7caf129fad9d6280a435c76f66047020098b9f38d65941140c57",
+      "archive_bytes": 4600,
+      "hash_mode": "canonical LF text"
+    },
+    "normal-nanoprobe-si110.toml": {
+      "kind": "portable candidate profile",
+      "source_sha256": "f2f885a8a1d75b4f6e926b959a8dbf5fc96e2926bf47b3c583bfd5552bb45adb",
+      "archive_sha256": "d62cb8f1da101eae9088f45ce76b51237ce3822ca24f2d2eea4dd727c9df5477",
+      "archive_bytes": 24246,
+      "hash_mode": "canonical LF text"
+    }
+  }
+}

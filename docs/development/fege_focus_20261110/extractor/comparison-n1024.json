@@ -1,0 +1,742 @@
+{
+  "status": "COMPLETE",
+  "paired_original_positive_current_points": 1024,
+  "exact_launch_match": true,
+  "non_extractor_electrostatic_request_match": true,
+  "extraction_voltage_v": 4000.0,
+  "high_tension_v": 300000.0,
+  "field_model": "classical_planar_cathode_with_explicit_grounded_outlet",
+  "field_planes": [
+    {
+      "z_mm": 0.0,
+      "old": {
+        "phi_rise_v": 0.0,
+        "ez_v_per_m": -653696.5415196772,
+        "ex_at_x2um_v_per_m": -0.0
+      },
+      "new": {
+        "phi_rise_v": 0.0,
+        "ez_v_per_m": -5282432.053205038,
+        "ex_at_x2um_v_per_m": -0.0
+      }
+    },
+    {
+      "z_mm": 0.3,
+      "old": {
+        "phi_rise_v": 196.10501905552434,
+        "ez_v_per_m": -653653.3306599213,
+        "ex_at_x2um_v_per_m": -0.28129683867882704
+      },
+      "new": {
+        "phi_rise_v": 1577.637309964295,
+        "ez_v_per_m": -5208500.560619288,
+        "ex_at_x2um_v_per_m": -672.494378313422
+      }
+    },
+    {
+      "z_mm": 0.75,
+      "old": {
+        "phi_rise_v": 490.20702498582807,
+        "ez_v_per_m": -653366.98884813,
+        "ex_at_x2um_v_per_m": -0.8053850064025028
+      },
+      "new": {
+        "phi_rise_v": 3619.961889727585,
+        "ez_v_per_m": -2682711.1300614877,
+        "ex_at_x2um_v_per_m": -14048.403175324202
+      }
+    },
+    {
+      "z_mm": 1.3,
+      "old": {
+        "phi_rise_v": 849.4181272453222,
+        "ez_v_per_m": -652693.0933634918,
+        "ex_at_x2um_v_per_m": -1.865172620484373
+      },
+      "new": {
+        "phi_rise_v": 3997.6947066169173,
+        "ez_v_per_m": -23206.364721321712,
+        "ex_at_x2um_v_per_m": -215.33711495250463
+      }
+    },
+    {
+      "z_mm": 6.0,
+      "old": {
+        "phi_rise_v": 3617.577722584,
+        "ez_v_per_m": -340298.68178299116,
+        "ex_at_x2um_v_per_m": -218.90259001473896
+      },
+      "new": {
+        "phi_rise_v": 4123.04070834354,
+        "ez_v_per_m": -64063.15307440671,
+        "ex_at_x2um_v_per_m": 20.021356999989628
+      }
+    },
+    {
+      "z_mm": 8.0,
+      "old": {
+        "phi_rise_v": 3972.9706916396503,
+        "ez_v_per_m": -68495.07890027229,
+        "ex_at_x2um_v_per_m": -36.72828418237623
+      },
+      "new": {
+        "phi_rise_v": 4291.727957969919,
+        "ez_v_per_m": -101784.12484318014,
+        "ex_at_x2um_v_per_m": 16.797270265776064
+      }
+    },
+    {
+      "z_mm": 10.0,
+      "old": {
+        "phi_rise_v": 4140.580266195617,
+        "ez_v_per_m": -141109.98755114755,
+        "ex_at_x2um_v_per_m": 75.18683820799924
+      },
+      "new": {
+        "phi_rise_v": 4525.904874744434,
+        "ez_v_per_m": -128896.12867386534,
+        "ex_at_x2um_v_per_m": 7.867909727352012
+      }
+    },
+    {
+      "z_mm": 18.0,
+      "old": {
+        "phi_rise_v": 5360.84743082669,
+        "ez_v_per_m": -145670.52905202206,
+        "ex_at_x2um_v_per_m": 51.623217849526554
+      },
+      "new": {
+        "phi_rise_v": 5375.348005281699,
+        "ez_v_per_m": -137569.2483366255,
+        "ex_at_x2um_v_per_m": 59.683906346559525
+      }
+    },
+    {
+      "z_mm": 100.0,
+      "old": {
+        "phi_rise_v": 82866.40920593325,
+        "ez_v_per_m": -849114.0985289891,
+        "ex_at_x2um_v_per_m": -0.5741686078342998
+      },
+      "new": {
+        "phi_rise_v": 82866.40918091562,
+        "ez_v_per_m": -849114.0931256699,
+        "ex_at_x2um_v_per_m": -0.5741683645102812
+      }
+    },
+    {
+      "z_mm": 450.0,
+      "old": {
+        "phi_rise_v": 300000.000000003,
+        "ez_v_per_m": 4.6566128730768717e-07,
+        "ex_at_x2um_v_per_m": 1.4901161193847656e-08
+      },
+      "new": {
+        "phi_rise_v": 300000.00000002753,
+        "ez_v_per_m": 2.793967723846123e-06,
+        "ex_at_x2um_v_per_m": 9.5367431640625e-07
+      }
+    }
+  ],
+  "particle_planes": [
+    {
+      "z_mm": 0.75,
+      "matched_current_particles": 1024,
+      "old": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 9.108609681937391e-07,
+        "d95_m": 3.1535144833111835e-06,
+        "alpha_rms_rad": 0.0006218588316346222,
+        "alpha95_rad": 0.0010715242327522126,
+        "centroid_m": [
+          -5.461388273036882e-09,
+          -3.0722488563152072e-09
+        ],
+        "z_mm": 0.75,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 490.50702515288486
+      },
+      "new": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 3.35155837592806e-07,
+        "d95_m": 1.1570680257297884e-06,
+        "alpha_rms_rad": 0.00028426276759649827,
+        "alpha95_rad": 0.0004898983538143457,
+        "centroid_m": [
+          -2.0222072214717324e-09,
+          -1.150294815896791e-09
+        ],
+        "z_mm": 0.75,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 3620.262284258897
+      },
+      "paired_position_shift_rms_m": 5.75731528521257e-07,
+      "paired_slope_shift_rms_rad": 0.0003376053974155766,
+      "maximum_displacement_id": 325
+    },
+    {
+      "z_mm": 1.3,
+      "matched_current_particles": 1024,
+      "old": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 1.2062218606773274e-06,
+        "d95_m": 4.171372833331289e-06,
+        "alpha_rms_rad": 0.0004726401082665747,
+        "alpha95_rad": 0.0008143630203225083,
+        "centroid_m": [
+          -7.24107299672957e-09,
+          -4.074684449748596e-09
+        ],
+        "z_mm": 1.3,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 849.7181279238
+      },
+      "new": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 5.128478792366778e-07,
+        "d95_m": 1.7689267102110101e-06,
+        "alpha_rms_rad": 0.00033696389353857865,
+        "alpha95_rad": 0.0005808220351452634,
+        "centroid_m": [
+          -3.093489274562885e-09,
+          -1.7557064694196157e-09
+        ],
+        "z_mm": 1.3,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 3997.9947207767123
+      },
+      "paired_position_shift_rms_m": 6.93403146190617e-07,
+      "paired_slope_shift_rms_rad": 0.00013568625394223073,
+      "maximum_displacement_id": 325
+    },
+    {
+      "z_mm": 10.0,
+      "matched_current_particles": 1024,
+      "old": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 3.930705280075058e-06,
+        "d95_m": 1.3562212065519079e-05,
+        "alpha_rms_rad": 0.00030072466145302613,
+        "alpha95_rad": 0.0005183980563104104,
+        "centroid_m": [
+          -2.3653610586946534e-08,
+          -1.3318463725622582e-08
+        ],
+        "z_mm": 10.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 4140.879975764259
+      },
+      "new": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 3.3433867379785866e-06,
+        "d95_m": 1.15267319508993e-05,
+        "alpha_rms_rad": 0.00030236719934891276,
+        "alpha95_rad": 0.000521164236123004,
+        "centroid_m": [
+          -2.0159113455711215e-08,
+          -1.1402801785962597e-08
+        ],
+        "z_mm": 10.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 4526.204852756046
+      },
+      "paired_position_shift_rms_m": 5.874390427079758e-07,
+      "paired_slope_shift_rms_rad": 1.8669770035765632e-06,
+      "maximum_displacement_id": 607
+    },
+    {
+      "z_mm": 18.0,
+      "matched_current_particles": 1024,
+      "old": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 6.143810240441862e-06,
+        "d95_m": 2.1192177375294767e-05,
+        "alpha_rms_rad": 0.00026471471957671016,
+        "alpha95_rad": 0.0004563190415671891,
+        "centroid_m": [
+          -3.69836408518649e-08,
+          -2.082519086037358e-08
+        ],
+        "z_mm": 18.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 5361.146943655728
+      },
+      "new": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 5.687133185153059e-06,
+        "d95_m": 1.9606257208817557e-05,
+        "alpha_rms_rad": 0.00027474139681104746,
+        "alpha95_rad": 0.0004735508675418011,
+        "centroid_m": [
+          -3.428989515879242e-08,
+          -1.9390756103974207e-08
+        ],
+        "z_mm": 18.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 5375.647522662181
+      },
+      "paired_position_shift_rms_m": 4.570293408007222e-07,
+      "paired_slope_shift_rms_rad": 1.005834909539289e-05,
+      "maximum_displacement_id": 607
+    },
+    {
+      "z_mm": 24.0,
+      "matched_current_particles": 1024,
+      "old": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 6.887946591199495e-06,
+        "d95_m": 2.3756537441424197e-05,
+        "alpha_rms_rad": 3.1136847066162006e-05,
+        "alpha95_rad": 5.385920755457605e-05,
+        "centroid_m": [
+          -4.146821372143453e-08,
+          -2.335072742105704e-08
+        ],
+        "z_mm": 24.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 8996.459159773494
+      },
+      "new": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 6.522972619374923e-06,
+        "d95_m": 2.2487242577380295e-05,
+        "alpha_rms_rad": 1.0535897657619067e-05,
+        "alpha95_rad": 1.8199805549879405e-05,
+        "centroid_m": [
+          -3.93288570381419e-08,
+          -2.2238435067820856e-08
+        ],
+        "z_mm": 24.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 8996.953034071641
+      },
+      "paired_position_shift_rms_m": 3.655242982531752e-07,
+      "paired_slope_shift_rms_rad": 2.0601885905666617e-05,
+      "maximum_displacement_id": 607
+    },
+    {
+      "z_mm": 100.0,
+      "matched_current_particles": 1024,
+      "old": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 5.680215040063639e-06,
+        "d95_m": 1.957871144995681e-05,
+        "alpha_rms_rad": 5.584556534079613e-06,
+        "alpha95_rad": 9.688429290768684e-06,
+        "centroid_m": [
+          -3.422310535952916e-08,
+          -1.9271840441936863e-08
+        ],
+        "z_mm": 100.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 82866.70921056488
+      },
+      "new": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 6.082172462456217e-06,
+        "d95_m": 2.0964782281233773e-05,
+        "alpha_rms_rad": 1.3229447633282737e-06,
+        "alpha95_rad": 2.2841990080369525e-06,
+        "centroid_m": [
+          -3.665679326484894e-08,
+          -2.0715263089703785e-08
+        ],
+        "z_mm": 100.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 82866.70918622594
+      },
+      "paired_position_shift_rms_m": 4.0234464747335474e-07,
+      "paired_slope_shift_rms_rad": 6.907319073601242e-06,
+      "maximum_displacement_id": 325
+    },
+    {
+      "z_mm": 445.0,
+      "matched_current_particles": 1024,
+      "old": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 4.909280346585382e-06,
+        "d95_m": 1.689239452010055e-05,
+        "alpha_rms_rad": 1.5649329045251458e-06,
+        "alpha95_rad": 2.7002510911888087e-06,
+        "centroid_m": [
+          -2.9639105504112332e-08,
+          -1.6691989213448506e-08
+        ],
+        "z_mm": 445.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 300000.299999998
+      },
+      "new": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 6.902118832211142e-06,
+        "d95_m": 2.378507450302663e-05,
+        "alpha_rms_rad": 6.259353985983303e-06,
+        "alpha95_rad": 1.0779318286809308e-05,
+        "centroid_m": [
+          -4.156884740832864e-08,
+          -2.346589845824348e-08
+        ],
+        "z_mm": 445.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 300000.3000000182
+      },
+      "paired_position_shift_rms_m": 1.9930093375366743e-06,
+      "paired_slope_shift_rms_rad": 4.69493225758183e-06,
+      "maximum_displacement_id": 325
+    },
+    {
+      "z_mm": 450.0,
+      "matched_current_particles": 1024,
+      "old": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 4.917103778400454e-06,
+        "d95_m": 1.691895545870117e-05,
+        "alpha_rms_rad": 1.5649329043979418e-06,
+        "alpha95_rad": 2.7002510910144173e-06,
+        "centroid_m": [
+          -2.9687087958815178e-08,
+          -1.671903187334965e-08
+        ],
+        "z_mm": 450.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 300000.2999999989
+      },
+      "new": {
+        "count": 1024,
+        "weight_sum": 1.0,
+        "current_a": 1e-05,
+        "effective_count": 1024.0,
+        "radial_rms_m": 6.9334155521529945e-06,
+        "d95_m": 2.389286768556585e-05,
+        "alpha_rms_rad": 6.259353988242079e-06,
+        "alpha95_rad": 1.077931829060071e-05,
+        "centroid_m": [
+          -4.175705528769892e-08,
+          -2.357190617744043e-08
+        ],
+        "z_mm": 450.0,
+        "crossing_count": 1024,
+        "mean_kinetic_energy_ev": 300000.30000002804
+      },
+      "paired_position_shift_rms_m": 2.01648354311388e-06,
+      "paired_slope_shift_rms_rad": 4.69493225996815e-06,
+      "maximum_displacement_id": 325
+    }
+  ],
+  "emitted_phase": {
+    "radial_rms_m": 2.995383200504978e-09,
+    "d95_m": 1.047840252558959e-08,
+    "alpha_rms_rad": 0.02949144319485429,
+    "alpha95_rad": 0.05451449609992896
+  },
+  "old": {
+    "contour": {
+      "start_mm": 6.0,
+      "end_mm": 10.0,
+      "bore_diameter_mm": 4.0,
+      "outer_diameter_mm": 20.0,
+      "counterbore_depth_mm": 0.0,
+      "counterbore_diameter_mm": 0.0
+    },
+    "scope": "classical prescribed outgoing flux; no coherent phase or tunnelling prediction",
+    "emitted_current_a": 1e-05,
+    "gun_exit": {
+      "count": 1024,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 1024.0,
+      "radial_rms_m": 4.917103778400454e-06,
+      "d95_m": 1.691895545870117e-05,
+      "alpha_rms_rad": 1.5649329043979418e-06,
+      "alpha95_rad": 2.7002510910144173e-06,
+      "centroid_m": [
+        -2.9687087958815178e-08,
+        -1.671903187334965e-08
+      ]
+    },
+    "losses": {},
+    "field_report": {
+      "boundary_conditions": {
+        "axis": "axisymmetric_regular",
+        "cathode": {
+          "extent": "entire_radial_domain_at_z_zero",
+          "material_extension": "z_below_zero_is_constant_potential_conductor_for_interception",
+          "rise_v": 0.0,
+          "type": "planar_equipotential"
+        },
+        "exit": {
+          "location": "numerical_cut_inside_continuing_grounded_liner",
+          "rise_v": 300000.0,
+          "type": "uniform_dirichlet"
+        },
+        "grounded_liner": "physical_shells_and_radial_step_faces_at_ground",
+        "metal": "annular_dirichlet",
+        "radial_outer": "natural_zero_normal_derivative"
+      },
+      "cache_hit": false,
+      "cpu_resources": {
+        "available_cpus": 12,
+        "blas_threads": 1,
+        "numba_threads": 1,
+        "numerical_jobs": 1,
+        "numerical_thread_budget": 1
+      },
+      "elements": 1436160,
+      "limitations": [
+        "The flat source uses an idealised full-domain planar cathode, not a nanometre emission patch.",
+        "Annular electrode contours use current mechanical bore, thickness and outer dimensions.",
+        "Grounding the downstream liner is an explicit simulator electrical design, not measured wiring.",
+        "Radial joints between stepped liner shells are idealised zero-thickness grounded faces.",
+        "No space charge, image charge, dielectric polarization or tunnelling-current prediction.",
+        "Magnetic controls, aperture absorption and any installed monochromator remain separate required operations.",
+        "Field evaluation is strict inside the solved domain; no analytic fallback or energy reset."
+      ],
+      "linear_residual": 2.037268131971359e-15,
+      "load_seconds": 0.0,
+      "maximum_axial_cell_m": 0.10302791397559308,
+      "minimum_axial_cell_m": 1.0000000005838672e-07,
+      "minimum_radial_cell_m": 6.499999999999995e-05,
+      "model_status": "classical_planar_cathode_with_explicit_grounded_outlet",
+      "request_sha256": "c88c366ae6a68f7ce0ad3ea3b6690d13d6f8e9ac752308347e7ff785913ceb17",
+      "solve_seconds": 5.211666600313038,
+      "vertices": 721152,
+      "schema": "closed-classical-gun-electrostatics-v1",
+      "potential_reference": "rise_relative_to_original_tip_v",
+      "grid_shape": [
+        256,
+        2817
+      ],
+      "cache_path": "runtime-cache/gun-fields/c88c366ae6a68f7ce0ad3ea3b6690d13d6f8e9ac752308347e7ff785913ceb17.npz",
+      "cache_bytes": 4398411
+    },
+    "gun_exit_curvature": {
+      "radial_position_angle_covariance_m_rad": 7.693727156117763e-12,
+      "radial_wavefront_curvature_per_m": 0.3182130835016683,
+      "free_drift_waist_offset_m": -3.1415598397564284,
+      "interpretation": "Positive curvature indicates outward position-angle correlation at the exit"
+    },
+    "gun_exit_energy": {
+      "mean_kinetic_energy_ev": 300000.2999999989,
+      "rms_spread_ev": 0.12739826996368533,
+      "gaussian_equivalent_fwhm_ev": 0.29999999981275055
+    },
+    "gun_history_waist_estimates": {
+      "scope": "Zero of radial position-angle covariance interpolated on stored gun history; not an exact-plane measurement",
+      "candidates": [
+        {
+          "z_mm": 362.5151725664726,
+          "radial_rms_m": 4.784980601884627e-06,
+          "d95_m": 1.6470633568264363e-05,
+          "alpha_rms_rad": 3.506661112074467e-07,
+          "alpha95_rad": 6.077015928809638e-07,
+          "observed_bracket_mm": [
+            362.0,
+            364.0
+          ]
+        }
+      ],
+      "unresolved_emission_brackets_mm": [
+        [
+          0.0,
+          2.0
+        ]
+      ]
+    },
+    "gun_exit_energy_maximum_error_ev": 1.2165401130914688e-08,
+    "largest_exit_radius": {
+      "radius_m": 1.1901768935268745e-05,
+      "ray_id": 607,
+      "next_largest_radius_m": 1.1848718182865274e-05,
+      "emission_radius_m": 3.235579930580368e-10,
+      "emission_angle_rad": 0.05950903143486921,
+      "emission_kinetic_energy_ev": 0.3155063287829052,
+      "descending_emission_angle_rank": 35,
+      "descending_emission_transverse_momentum_rank": 1,
+      "weight": 0.0009765625
+    },
+    "extractor_exit_clearance": {
+      "z_mm": 10.0,
+      "surviving_count": 1024,
+      "throat_radius_m": 0.002,
+      "maximum_radius_from_axis_m": 9.53038329341855e-06
+    }
+  },
+  "new": {
+    "contour": {
+      "start_mm": 0.30000000000000004,
+      "end_mm": 1.3,
+      "bore_diameter_mm": 0.5,
+      "outer_diameter_mm": 20.0,
+      "counterbore_depth_mm": 0.45,
+      "counterbore_diameter_mm": 4.0
+    },
+    "scope": "classical prescribed outgoing flux; no coherent phase or tunnelling prediction",
+    "emitted_current_a": 1e-05,
+    "gun_exit": {
+      "count": 1024,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 1024.0,
+      "radial_rms_m": 6.9334155521529945e-06,
+      "d95_m": 2.389286768556585e-05,
+      "alpha_rms_rad": 6.259353988242079e-06,
+      "alpha95_rad": 1.077931829060071e-05,
+      "centroid_m": [
+        -4.175705528769892e-08,
+        -2.357190617744043e-08
+      ]
+    },
+    "losses": {},
+    "field_report": {
+      "boundary_conditions": {
+        "axis": "axisymmetric_regular",
+        "cathode": {
+          "extent": "entire_radial_domain_at_z_zero",
+          "material_extension": "z_below_zero_is_constant_potential_conductor_for_interception",
+          "rise_v": 0.0,
+          "type": "planar_equipotential"
+        },
+        "exit": {
+          "location": "numerical_cut_inside_continuing_grounded_liner",
+          "rise_v": 300000.0,
+          "type": "uniform_dirichlet"
+        },
+        "grounded_liner": "physical_shells_and_radial_step_faces_at_ground",
+        "metal": "annular_dirichlet",
+        "radial_outer": "natural_zero_normal_derivative"
+      },
+      "cache_hit": false,
+      "cpu_resources": {
+        "available_cpus": 12,
+        "blas_threads": 1,
+        "numba_threads": 1,
+        "numerical_jobs": 1,
+        "numerical_thread_budget": 1
+      },
+      "elements": 1815840,
+      "limitations": [
+        "The flat source uses an idealised full-domain planar cathode, not a nanometre emission patch.",
+        "Annular electrode contours use current mechanical bore, thickness and outer dimensions.",
+        "Grounding the downstream liner is an explicit simulator electrical design, not measured wiring.",
+        "Radial joints between stepped liner shells are idealised zero-thickness grounded faces.",
+        "No space charge, image charge, dielectric polarization or tunnelling-current prediction.",
+        "Magnetic controls, aperture absorption and any installed monochromator remain separate required operations.",
+        "Field evaluation is strict inside the solved domain; no analytic fallback or energy reset."
+      ],
+      "linear_residual": 2.037268131971359e-15,
+      "load_seconds": 0.0,
+      "maximum_axial_cell_m": 0.10302791397559308,
+      "minimum_axial_cell_m": 1.0000000005838672e-07,
+      "minimum_radial_cell_m": 1.4705882352940985e-05,
+      "model_status": "classical_planar_cathode_with_explicit_grounded_outlet",
+      "request_sha256": "34aa4214de8ed871d3a08d2a72b5cbd07fa36ccf4df228dd8b3496030e1000e6",
+      "solve_seconds": 6.6428395002149045,
+      "vertices": 911143,
+      "schema": "closed-classical-gun-electrostatics-v1",
+      "potential_reference": "rise_relative_to_original_tip_v",
+      "grid_shape": [
+        313,
+        2911
+      ],
+      "cache_path": "runtime-cache/gun-fields/34aa4214de8ed871d3a08d2a72b5cbd07fa36ccf4df228dd8b3496030e1000e6.npz",
+      "cache_bytes": 5349497
+    },
+    "gun_exit_curvature": {
+      "radial_position_angle_covariance_m_rad": 4.339863327371193e-11,
+      "radial_wavefront_curvature_per_m": 0.9027792993540161,
+      "free_drift_waist_offset_m": -1.1076869176850035,
+      "interpretation": "Positive curvature indicates outward position-angle correlation at the exit"
+    },
+    "gun_exit_energy": {
+      "mean_kinetic_energy_ev": 300000.30000002804,
+      "rms_spread_ev": 0.12739827026133588,
+      "gaussian_equivalent_fwhm_ev": 0.300000000513664
+    },
+    "gun_history_waist_estimates": {
+      "scope": "Zero of radial position-angle covariance interpolated on stored gun history; not an exact-plane measurement",
+      "candidates": [
+        {
+          "z_mm": 45.14269760026572,
+          "radial_rms_m": 5.985021273798708e-06,
+          "d95_m": 2.063167087559358e-05,
+          "alpha_rms_rad": 1.009600821425096e-06,
+          "alpha95_rad": 1.7492857675619622e-06,
+          "observed_bracket_mm": [
+            44.0,
+            46.0
+          ]
+        }
+      ],
+      "unresolved_emission_brackets_mm": [
+        [
+          0.0,
+          2.0
+        ]
+      ]
+    },
+    "gun_exit_energy_maximum_error_ev": 1.5774276107549667e-08,
+    "largest_exit_radius": {
+      "radius_m": 1.6699115452224533e-05,
+      "ray_id": 607,
+      "next_largest_radius_m": 1.668642970385908e-05,
+      "emission_radius_m": 3.235579930580368e-10,
+      "emission_angle_rad": 0.05950903143486921,
+      "emission_kinetic_energy_ev": 0.3155063287829052,
+      "descending_emission_angle_rank": 35,
+      "descending_emission_transverse_momentum_rank": 1,
+      "weight": 0.0009765625
+    },
+    "extractor_exit_clearance": {
+      "z_mm": 1.3,
+      "surviving_count": 1024,
+      "throat_radius_m": 0.00025,
+      "maximum_radius_from_axis_m": 1.2431281764422716e-06
+    }
+  },
+  "new_vs_old_maximum_exit_radius_relative_change": 0.4030784451494196
+}

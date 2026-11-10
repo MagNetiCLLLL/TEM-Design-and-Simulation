@@ -1,0 +1,113 @@
+{
+  "status": "COMPLETE",
+  "same_installed_electrostatic_field": true,
+  "count_order": [
+    1024,
+    2048
+  ],
+  "launch": {
+    "1024": {
+      "d95_m": 1.047840252558959e-08,
+      "radius_rms_m": 2.995383200504978e-09,
+      "alpha_rms_rad": 0.02949144319485429,
+      "alpha95_rad": 0.05451449609992896,
+      "mean_energy_offset_ev": 1.1586109675831846e-14,
+      "energy_rms_spread_ev": 0.12739827004487705
+    },
+    "2048": {
+      "d95_m": 1.037847322661466e-08,
+      "radius_rms_m": 2.997494977789927e-09,
+      "alpha_rms_rad": 0.029799810670151815,
+      "alpha95_rad": 0.055037461303803714,
+      "mean_energy_offset_ev": 1.829114117113395e-14,
+      "energy_rms_spread_ev": 0.12739827004487714
+    }
+  },
+  "matched_id_launch_overlap": {
+    "x_m": {
+      "bitwise_equal": true,
+      "different_count": 0,
+      "maximum_absolute_change": 0.0,
+      "rms_change": 0.0
+    },
+    "y_m": {
+      "bitwise_equal": true,
+      "different_count": 0,
+      "maximum_absolute_change": 0.0,
+      "rms_change": 0.0
+    },
+    "tx_rad": {
+      "bitwise_equal": false,
+      "different_count": 1024,
+      "maximum_absolute_change": 0.0003524708316356845,
+      "rms_change": 4.047257342967423e-05
+    },
+    "ty_rad": {
+      "bitwise_equal": false,
+      "different_count": 1024,
+      "maximum_absolute_change": 0.00034683794026227344,
+      "rms_change": 4.207928746917928e-05
+    },
+    "weight": {
+      "bitwise_equal": false,
+      "different_count": 1024,
+      "maximum_absolute_change": 0.00048828125,
+      "rms_change": 0.00048828125
+    },
+    "ray_id": {
+      "bitwise_equal": true,
+      "different_count": 0,
+      "maximum_absolute_change": 0.0,
+      "rms_change": 0.0
+    },
+    "energy_offset_ev": {
+      "bitwise_equal": false,
+      "different_count": 1024,
+      "maximum_absolute_change": 0.0030683361059744563,
+      "rms_change": 0.0014616888951091544
+    }
+  },
+  "source_count_notes": "The Halton nodes are nested. Finite-sample energy moment matching changes energy offsets and the energy-dependent ray angles. Each count was independently propagated from the tip.",
+  "gun_exit": {
+    "1024": {
+      "count": 1024,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 1024.0,
+      "radial_rms_m": 6.9334155521529945e-06,
+      "d95_m": 2.389286768556585e-05,
+      "alpha_rms_rad": 6.259353988242079e-06,
+      "alpha95_rad": 1.077931829060071e-05,
+      "centroid_m": [
+        -4.175705528769892e-08,
+        -2.357190617744043e-08
+      ]
+    },
+    "2048": {
+      "count": 2048,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 2048.0,
+      "radial_rms_m": 6.939487901553253e-06,
+      "d95_m": 2.41802996006819e-05,
+      "alpha_rms_rad": 6.2656893529797566e-06,
+      "alpha95_rad": 1.0922581235259094e-05,
+      "centroid_m": [
+        -2.3229404877733414e-08,
+        -5.888724812124863e-09
+      ]
+    }
+  },
+  "losses": {
+    "1024": {},
+    "2048": {}
+  },
+  "input_digests": {
+    "1024": "428925cf8cd24c034ea5c93301589090596d8c5da8a1cfae8d7e3b44b1e95553",
+    "2048": "8dac5603cad637ab9ec2b96e79e7650af57c6762007d3a4b411a4115b6b2ecbd"
+  },
+  "gun_dependency_signatures": {
+    "1024": "4c360b42866a48ce4f10a24a482e6674102c0b83566f90219bcfbd56b9eb3505",
+    "2048": "87a001d618c6aab19b3cc2699138c63e2f6aadf9d82b4bb0b448bbd51d789509"
+  }
+}

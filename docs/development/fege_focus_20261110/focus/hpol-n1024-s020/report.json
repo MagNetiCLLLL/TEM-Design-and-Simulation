@@ -1,0 +1,3070 @@
+{
+  "convergence_target_alpha95_mrad": 30.0,
+  "cpu_receipt": {
+    "available_cpus": 12,
+    "blas_threads": 1,
+    "numba_threads": 2,
+    "numerical_jobs": 1,
+    "numerical_thread_budget": 2
+  },
+  "driver_sha256": "bba54ffb669818650918005bb351d7527cbfaae4061019ba18baaf55f1f15653",
+  "elapsed_seconds": 386.2377626001835,
+  "focus_offsets_nm": [
+    -15000.000000100044,
+    -14799.999999922875,
+    -14599.999999973079,
+    -14400.000000023283,
+    -14200.000000073487,
+    -13999.999999896318,
+    -13799.999999946522,
+    -13599.999999996726,
+    -13400.00000004693,
+    -13200.000000097134,
+    -12999.999999919964,
+    -12799.999999970169,
+    -12600.000000020373,
+    -12400.000000070577,
+    -12199.999999893407,
+    -11999.999999943611,
+    -11799.999999993815,
+    -11600.00000004402,
+    -11400.000000094224,
+    -11199.999999917054,
+    -10999.999999967258,
+    -10800.000000017462,
+    -10600.000000067666,
+    -10399.999999890497,
+    -10199.999999940701,
+    -9999.999999990905,
+    -9800.00000004111,
+    -9600.000000091313,
+    -9399.999999914144,
+    -9199.999999964348,
+    -9000.000000014552,
+    -8800.000000064756,
+    -8599.999999887586,
+    -8399.99999993779,
+    -8199.999999987995,
+    -8000.000000038199,
+    -7800.000000088403,
+    -7599.999999911233,
+    -7399.999999961437,
+    -7200.0000000116415,
+    -7000.000000061846,
+    -6800.00000011205,
+    -6599.99999993488,
+    -6399.999999985084,
+    -6200.000000035288,
+    -6000.0000000854925,
+    -5799.999999908323,
+    -5599.999999958527,
+    -5400.000000008731,
+    -5200.000000058935,
+    -5000.000000109139,
+    -4799.99999993197,
+    -4599.999999982174,
+    -4400.000000032378,
+    -4200.000000082582,
+    -3999.9999999054126,
+    -3799.9999999556167,
+    -3600.0000000058208,
+    -3400.000000056025,
+    -3200.000000106229,
+    -2999.9999999290594,
+    -2799.9999999792635,
+    -2600.0000000294676,
+    -2500.0000000545697,
+    -2480.000000105065,
+    -2459.9999999281863,
+    -2439.9999999786814,
+    -2420.0000000291766,
+    -2400.0000000796717,
+    -2379.999999902793,
+    -2359.9999999532884,
+    -2340.0000000037835,
+    -2320.0000000542786,
+    -2300.000000104774,
+    -2279.9999999278953,
+    -2259.9999999783904,
+    -2240.0000000288856,
+    -2220.0000000793807,
+    -2199.999999902502,
+    -2179.9999999529973,
+    -2160.0000000034925,
+    -2140.0000000539876,
+    -2120.0000001044828,
+    -2099.999999927604,
+    -2079.9999999780994,
+    -2060.0000000285945,
+    -2040.0000000790897,
+    -2019.9999999022111,
+    -1999.9999999527063,
+    -1980.0000000032014,
+    -1960.0000000536966,
+    -1940.0000001041917,
+    -1919.9999999273132,
+    -1899.9999999778083,
+    -1880.0000000283035,
+    -1860.0000000787986,
+    -1839.99999990192,
+    -1819.9999999524152,
+    -1800.0000000029104,
+    -1780.0000000534055,
+    -1760.0000001039007,
+    -1739.9999999270221,
+    -1719.9999999775173,
+    -1700.0000000280124,
+    -1680.0000000785076,
+    -1659.999999901629,
+    -1639.9999999521242,
+    -1620.0000000026193,
+    -1600.0000000531145,
+    -1580.0000001036096,
+    -1559.999999926731,
+    -1539.9999999772263,
+    -1520.0000000277214,
+    -1500.0000000782165,
+    -1479.999999901338,
+    -1459.9999999518332,
+    -1440.0000000023283,
+    -1420.0000000528235,
+    -1400.0000001033186,
+    -1379.99999992644,
+    -1359.9999999769352,
+    -1340.0000000274304,
+    -1320.0000000779255,
+    -1299.999999901047,
+    -1279.9999999515421,
+    -1260.0000000020373,
+    -1240.0000000525324,
+    -1220.0000001030276,
+    -1199.999999926149,
+    -1179.9999999766442,
+    -1160.0000000271393,
+    -1140.0000000776345,
+    -1119.999999900756,
+    -1099.999999951251,
+    -1080.0000000017462,
+    -1060.0000000522414,
+    -1040.0000001027365,
+    -1019.999999925858,
+    -999.9999999763531,
+    -980.0000000268483,
+    -960.0000000773434,
+    -939.9999999004649,
+    -919.99999995096,
+    -900.0000000014552,
+    -880.0000000519503,
+    -860.0000001024455,
+    -839.999999925567,
+    -819.9999999760621,
+    -800.0000000265572,
+    -780.0000000770524,
+    -759.9999999001739,
+    -739.999999950669,
+    -720.0000000011642,
+    -700.0000000516593,
+    -680.0000001021544,
+    -659.9999999252759,
+    -639.9999999757711,
+    -620.0000000262662,
+    -600.0000000767614,
+    -579.9999998998828,
+    -559.999999950378,
+    -540.0000000008731,
+    -520.0000000513683,
+    -500.0000001018634,
+    -479.9999999249849,
+    -459.99999997548,
+    -440.00000002597517,
+    -420.0000000764703,
+    -399.9999998995918,
+    -379.99999995008693,
+    -360.0000000005821,
+    -340.0000000510772,
+    -320.00000010157237,
+    -299.99999992469384,
+    -279.999999975189,
+    -260.00000002568413,
+    -250.0000000509317,
+    -248.00000005598122,
+    -246.00000006103073,
+    -244.00000006608025,
+    -242.00000007112976,
+    -240.00000007617928,
+    -238.0000000812288,
+    -236.0000000862783,
+    -234.00000009132782,
+    -232.00000009637733,
+    -230.00000010142685,
+    -228.00000010647636,
+    -226.00000011152588,
+    -223.99999988920172,
+    -221.99999989425123,
+    -219.99999989930075,
+    -217.99999990435026,
+    -215.99999990939978,
+    -213.9999999144493,
+    -211.9999999194988,
+    -209.99999992454832,
+    -207.99999992959783,
+    -205.99999993464735,
+    -203.99999993969686,
+    -201.99999994474638,
+    -199.9999999497959,
+    -197.9999999548454,
+    -195.99999995989492,
+    -193.99999996494444,
+    -191.99999996999395,
+    -189.99999997504347,
+    -187.99999998009298,
+    -185.9999999851425,
+    -183.999999990192,
+    -181.99999999524152,
+    -180.00000000029104,
+    -178.00000000534055,
+    -176.00000001039007,
+    -174.00000001543958,
+    -172.0000000204891,
+    -170.0000000255386,
+    -168.00000003058813,
+    -166.00000003563764,
+    -164.00000004068715,
+    -162.00000004573667,
+    -160.00000005078618,
+    -158.0000000558357,
+    -156.0000000608852,
+    -154.00000006593473,
+    -152.00000007098424,
+    -150.00000007603376,
+    -148.00000008108327,
+    -146.0000000861328,
+    -144.0000000911823,
+    -142.00000009623182,
+    -140.00000010128133,
+    -138.00000010633084,
+    -136.00000011138036,
+    -133.9999998890562,
+    -131.9999998941057,
+    -129.99999989915523,
+    -127.99999990420474,
+    -125.99999990925426,
+    -123.99999991430377,
+    -121.99999991935329,
+    -119.9999999244028,
+    -117.99999992945231,
+    -115.99999993450183,
+    -113.99999993955134,
+    -111.99999994460086,
+    -109.99999994965037,
+    -107.99999995469989,
+    -105.9999999597494,
+    -103.99999996479892,
+    -101.99999996984843,
+    -99.99999997489795,
+    -97.99999997994746,
+    -95.99999998499698,
+    -93.99999999004649,
+    -91.999999995096,
+    -90.00000000014552,
+    -88.00000000519503,
+    -86.00000001024455,
+    -84.00000001529406,
+    -82.00000002034358,
+    -80.00000002539309,
+    -78.0000000304426,
+    -76.00000003549212,
+    -74.00000004054164,
+    -72.00000004559115,
+    -70.00000005064066,
+    -68.00000005569018,
+    -66.0000000607397,
+    -64.00000006578921,
+    -62.00000007083872,
+    -60.00000007588824,
+    -58.00000008093775,
+    -56.00000008598727,
+    -54.00000009103678,
+    -52.000000096086296,
+    -50.00000010113581,
+    -48.000000106185325,
+    -46.00000011123484,
+    -43.99999988891068,
+    -41.999999893960194,
+    -39.99999989900971,
+    -37.99999990405922,
+    -35.99999990910874,
+    -33.99999991415825,
+    -31.999999919207767,
+    -29.99999992425728,
+    -27.999999929306796,
+    -25.99999993435631,
+    -23.999999939405825,
+    -21.99999994445534,
+    -19.999999949504854,
+    -17.99999995455437,
+    -15.999999959603883,
+    -13.999999964653398,
+    -11.999999969702912,
+    -9.999999974752427,
+    -7.999999979801942,
+    -7.749999895168003,
+    -7.500000037907739,
+    -7.2499999532738,
+    -7.000000096013537,
+    -6.750000011379598,
+    -6.499999926745659,
+    -6.250000069485395,
+    -5.999999984851456,
+    -5.749999900217517,
+    -5.500000042957254,
+    -5.249999958323315,
+    -5.000000101063051,
+    -4.750000016429112,
+    -4.499999931795173,
+    -4.25000007453491,
+    -3.999999989900971,
+    -3.749999905267032,
+    -3.5000000480067683,
+    -3.2499999633728294,
+    -3.000000106112566,
+    -2.750000021478627,
+    -2.499999936844688,
+    -2.2500000795844244,
+    -1.9999999949504854,
+    -1.7499999103165464,
+    -1.500000053056283,
+    -1.249999968422344,
+    -1.0000001111620804,
+    -0.7500000265281415,
+    -0.4999999418942025,
+    -0.25000008463393897,
+    0.0,
+    0.1999999312829459,
+    0.25000008463393897,
+    0.3999998625658918,
+    0.4999999418942025,
+    0.7500000265281415,
+    1.0000001111620804,
+    1.249999968422344,
+    1.500000053056283,
+    1.7499999103165464,
+    1.9999999949504854,
+    2.2500000795844244,
+    2.499999936844688,
+    2.750000021478627,
+    3.000000106112566,
+    3.2499999633728294,
+    3.5000000480067683,
+    3.749999905267032,
+    3.999999989900971,
+    4.25000007453491,
+    4.499999931795173,
+    4.750000016429112,
+    5.000000101063051,
+    5.249999958323315,
+    5.500000042957254,
+    5.749999900217517,
+    5.999999984851456,
+    6.250000069485395,
+    6.499999926745659,
+    6.750000011379598,
+    7.000000096013537,
+    7.2499999532738,
+    7.500000037907739,
+    7.749999895168003,
+    7.999999979801942,
+    9.999999974752427,
+    11.999999969702912,
+    13.999999964653398,
+    15.999999959603883,
+    17.99999995455437,
+    19.999999949504854,
+    21.99999994445534,
+    23.999999939405825,
+    25.99999993435631,
+    27.999999929306796,
+    29.99999992425728,
+    31.999999919207767,
+    33.99999991415825,
+    35.99999990910874,
+    37.99999990405922,
+    39.99999989900971,
+    41.999999893960194,
+    43.99999988891068,
+    46.00000011123484,
+    48.000000106185325,
+    50.00000010113581,
+    52.000000096086296,
+    54.00000009103678,
+    56.00000008598727,
+    58.00000008093775,
+    60.00000007588824,
+    62.00000007083872,
+    64.00000006578921,
+    66.0000000607397,
+    68.00000005569018,
+    70.00000005064066,
+    72.00000004559115,
+    74.00000004054164,
+    76.00000003549212,
+    78.0000000304426,
+    80.00000002539309,
+    82.00000002034358,
+    84.00000001529406,
+    86.00000001024455,
+    88.00000000519503,
+    90.00000000014552,
+    91.999999995096,
+    93.99999999004649,
+    95.99999998499698,
+    97.99999997994746,
+    99.99999997489795,
+    101.99999996984843,
+    103.99999996479892,
+    105.9999999597494,
+    107.99999995469989,
+    109.99999994965037,
+    111.99999994460086,
+    113.99999993955134,
+    115.99999993450183,
+    117.99999992945231,
+    119.9999999244028,
+    121.99999991935329,
+    123.99999991430377,
+    125.99999990925426,
+    127.99999990420474,
+    129.99999989915523,
+    131.9999998941057,
+    133.9999998890562,
+    136.00000011138036,
+    138.00000010633084,
+    140.00000010128133,
+    142.00000009623182,
+    144.0000000911823,
+    146.0000000861328,
+    148.00000008108327,
+    150.00000007603376,
+    152.00000007098424,
+    154.00000006593473,
+    156.0000000608852,
+    158.0000000558357,
+    160.00000005078618,
+    162.00000004573667,
+    164.00000004068715,
+    166.00000003563764,
+    168.00000003058813,
+    170.0000000255386,
+    172.0000000204891,
+    174.00000001543958,
+    176.00000001039007,
+    178.00000000534055,
+    180.00000000029104,
+    181.99999999524152,
+    183.999999990192,
+    185.9999999851425,
+    187.99999998009298,
+    189.99999997504347,
+    191.99999996999395,
+    193.99999996494444,
+    195.99999995989492,
+    197.9999999548454,
+    199.9999999497959,
+    201.99999994474638,
+    203.99999993969686,
+    205.99999993464735,
+    207.99999992959783,
+    209.99999992454832,
+    211.9999999194988,
+    213.9999999144493,
+    215.99999990939978,
+    217.99999990435026,
+    219.99999989930075,
+    221.99999989425123,
+    223.99999988920172,
+    226.00000011152588,
+    228.00000010647636,
+    230.00000010142685,
+    232.00000009637733,
+    234.00000009132782,
+    236.0000000862783,
+    238.0000000812288,
+    240.00000007617928,
+    242.00000007112976,
+    244.00000006608025,
+    246.00000006103073,
+    248.00000005598122,
+    250.0000000509317,
+    260.00000002568413,
+    279.999999975189,
+    299.99999992469384,
+    320.00000010157237,
+    340.0000000510772,
+    360.0000000005821,
+    379.99999995008693,
+    399.9999998995918,
+    420.0000000764703,
+    440.00000002597517,
+    459.99999997548,
+    479.9999999249849,
+    500.0000001018634,
+    520.0000000513683,
+    540.0000000008731,
+    559.999999950378,
+    579.9999998998828,
+    600.0000000767614,
+    620.0000000262662,
+    639.9999999757711,
+    659.9999999252759,
+    680.0000001021544,
+    700.0000000516593,
+    720.0000000011642,
+    739.999999950669,
+    759.9999999001739,
+    780.0000000770524,
+    800.0000000265572,
+    819.9999999760621,
+    839.999999925567,
+    860.0000001024455,
+    880.0000000519503,
+    900.0000000014552,
+    919.99999995096,
+    939.9999999004649,
+    960.0000000773434,
+    980.0000000268483,
+    999.9999999763531,
+    1019.999999925858,
+    1040.0000001027365,
+    1060.0000000522414,
+    1080.0000000017462,
+    1099.999999951251,
+    1119.999999900756,
+    1140.0000000776345,
+    1160.0000000271393,
+    1179.9999999766442,
+    1199.999999926149,
+    1220.0000001030276,
+    1240.0000000525324,
+    1260.0000000020373,
+    1279.9999999515421,
+    1299.999999901047,
+    1320.0000000779255,
+    1340.0000000274304,
+    1359.9999999769352,
+    1379.99999992644,
+    1400.0000001033186,
+    1420.0000000528235,
+    1440.0000000023283,
+    1459.9999999518332,
+    1479.999999901338,
+    1500.0000000782165,
+    1520.0000000277214,
+    1539.9999999772263,
+    1559.999999926731,
+    1580.0000001036096,
+    1600.0000000531145,
+    1620.0000000026193,
+    1639.9999999521242,
+    1659.999999901629,
+    1680.0000000785076,
+    1700.0000000280124,
+    1719.9999999775173,
+    1739.9999999270221,
+    1760.0000001039007,
+    1780.0000000534055,
+    1800.0000000029104,
+    1819.9999999524152,
+    1839.99999990192,
+    1860.0000000787986,
+    1880.0000000283035,
+    1899.9999999778083,
+    1919.9999999273132,
+    1940.0000001041917,
+    1960.0000000536966,
+    1980.0000000032014,
+    1999.9999999527063,
+    2019.9999999022111,
+    2040.0000000790897,
+    2060.0000000285945,
+    2079.9999999780994,
+    2099.999999927604,
+    2120.0000001044828,
+    2140.0000000539876,
+    2160.0000000034925,
+    2179.9999999529973,
+    2199.999999902502,
+    2220.0000000793807,
+    2240.0000000288856,
+    2259.9999999783904,
+    2279.9999999278953,
+    2300.000000104774,
+    2320.0000000542786,
+    2340.0000000037835,
+    2359.9999999532884,
+    2379.999999902793,
+    2400.0000000796717,
+    2420.0000000291766,
+    2439.9999999786814,
+    2459.9999999281863,
+    2480.000000105065,
+    2500.0000000545697,
+    2600.0000000294676,
+    2799.9999999792635,
+    2999.9999999290594,
+    3200.000000106229,
+    3400.000000056025,
+    3600.0000000058208,
+    3799.9999999556167,
+    3999.9999999054126,
+    4200.000000082582,
+    4400.000000032378,
+    4599.999999982174,
+    4799.99999993197,
+    5000.000000109139,
+    5200.000000058935,
+    5400.000000008731,
+    5599.999999958527,
+    5799.999999908323,
+    6000.0000000854925,
+    6200.000000035288,
+    6399.999999985084,
+    6599.99999993488,
+    6800.00000011205,
+    7000.000000061846,
+    7200.0000000116415,
+    7399.999999961437,
+    7599.999999911233,
+    7800.000000088403,
+    8000.000000038199,
+    8199.999999987995,
+    8399.99999993779,
+    8599.999999887586,
+    8800.000000064756,
+    9000.000000014552,
+    9199.999999964348,
+    9399.999999914144,
+    9600.000000091313,
+    9800.00000004111,
+    9999.999999990905,
+    10199.999999940701,
+    10399.999999890497,
+    10600.000000067666,
+    10800.000000017462,
+    10999.999999967258,
+    11199.999999917054,
+    11400.000000094224,
+    11600.00000004402,
+    11799.999999993815,
+    11999.999999943611,
+    12199.999999893407,
+    12400.000000070577,
+    12600.000000020373,
+    12799.999999970169,
+    12999.999999919964,
+    13200.000000097134,
+    13400.00000004693,
+    13599.999999996726,
+    13799.999999946522,
+    13999.999999896318,
+    14200.000000073487,
+    14400.000000023283,
+    14599.999999973079,
+    14799.999999922875,
+    15000.000000100044
+  ],
+  "focus_only_controls": [
+    "mini_condenser",
+    "objective_lens"
+  ],
+  "git_head": "65f1e8c4a1c890de241f36697ed190e352022912",
+  "gun_cache": "extractor/new-n1024",
+  "objective_diagnostic_slope_nm_per_percentage_point": -572942.1967990099,
+  "objective_focus_baseline": {
+    "mini_condenser": 26.678337967960122,
+    "objective_lens": 29.330812063631367
+  },
+  "optical_control_seeds": [
+    {
+      "changes": [
+        {
+          "after": 10.5375,
+          "before": 10.023591227782362,
+          "field": "percent",
+          "key": "condenser_lens_2"
+        },
+        {
+          "after": 34.1,
+          "before": 57.318027667934224,
+          "field": "percent",
+          "key": "condenser_lens_3"
+        },
+        {
+          "after": -68274901.06363559,
+          "before": -95186800.58440503,
+          "field": "strength_m3",
+          "key": "probe_hpc_hexapole"
+        },
+        {
+          "after": 14186078.221680742,
+          "before": 38077295.73462795,
+          "field": "skew_strength_m3",
+          "key": "probe_hpc_hexapole"
+        },
+        {
+          "after": 3289968.9153843517,
+          "before": 4757175.659494648,
+          "field": "strength_m3",
+          "key": "probe_hp1_hexapole"
+        },
+        {
+          "after": 3968383.265193488,
+          "before": 5435590.009303784,
+          "field": "strength_m3",
+          "key": "probe_hp2_hexapole"
+        },
+        {
+          "after": 1137767.192516823,
+          "before": 622514.6243779856,
+          "field": "strength_m3",
+          "key": "probe_hpol_hexapole"
+        },
+        {
+          "after": 416238.0411365714,
+          "before": 0.0,
+          "field": "skew_strength_m3",
+          "key": "probe_hpol_hexapole"
+        },
+        {
+          "after": 26.678337967960122,
+          "before": 26.677837967960123,
+          "field": "percent",
+          "key": "mini_condenser"
+        },
+        {
+          "after": 29.330812063631367,
+          "before": 29.326494404518797,
+          "field": "percent",
+          "key": "objective_lens"
+        }
+      ],
+      "path": "corrector-hpol-candidate.json",
+      "sha256": "8332c7f40b901a159860e8783d859d29dfee3a0ecc22d5f5389503f03ad7c90f"
+    }
+  ],
+  "placement_tolerance_nm": 1.0,
+  "prefix_search_upper_z_mm": 1422.65,
+  "qualification": "EXPLORATORY",
+  "requested_step_mm": 0.2,
+  "requested_trials": 3,
+  "sample_upper_surface_z_mm": 1599.1999998000001,
+  "scope": "Classical unified vacuum-side focus at the exact sample upper surface",
+  "source_input_changes": {
+    "archived_step_mm": 0.05,
+    "cif_path_after": "",
+    "cif_path_before": "tests/fixtures/cif/Si.cif",
+    "executed_step_mm": 0.2,
+    "specimen_mode_after": "vacuum",
+    "specimen_mode_before": "atomic"
+  },
+  "status": "COMPLETE",
+  "step_and_source_convergence": "NOT_EVALUATED",
+  "trials": [
+    {
+      "absolute_current_balance_residual_a": 0.0,
+      "aperture_plane_phase": {
+        "condenser_aperture_2": {
+          "alpha95_mrad": 0.747054507686543,
+          "count": 459,
+          "current_a": 4.482421875e-06,
+          "d95_nm": 96005.69217738416,
+          "radial_covariance_m_rad": -1.7740036150066118e-08,
+          "rms_angle_mrad": 0.5253990380328886,
+          "rms_radius_nm": 33764.87720318246,
+          "rms_tangent_drift_offset_nm": 64265196.88643519,
+          "source_current_fraction": 0.4482421875
+        },
+        "condenser_aperture_3": {
+          "alpha95_mrad": 0.25642520687383863,
+          "count": 459,
+          "current_a": 4.482421875e-06,
+          "d95_nm": 176974.43121619703,
+          "radial_covariance_m_rad": 1.1225461148369399e-08,
+          "rms_angle_mrad": 0.18038213230390787,
+          "rms_radius_nm": 62231.55844201036,
+          "rms_tangent_drift_offset_nm": -344998450.9653656,
+          "source_current_fraction": 0.4482421875
+        }
+      },
+      "controls": {
+        "mini_condenser": 26.678337967960122,
+        "objective_lens": 29.330812063631367
+      },
+      "execution": {
+        "checkpoint_rows": 3163,
+        "column_prefix_reused": false,
+        "column_resume_z_mm": 450.0,
+        "emitted_positive_current_points": 1024,
+        "field_audit": {
+          "c2_aperture": {
+            "actual_boundary_radius_mm": 0.05,
+            "diameter_mm": 0.1,
+            "enabled": true,
+            "event_z_mm": [
+              764.9,
+              764.9,
+              764.9,
+              765.1,
+              765.1,
+              765.1
+            ],
+            "host_key": "condenser_aperture_2",
+            "inserted": true,
+            "installed": true,
+            "key": "condenser_aperture_2",
+            "local_end_z_mm": 765.1,
+            "local_start_z_mm": 764.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 0.05,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "field_ownership": {
+            "duplicate_ownership": false,
+            "metadata": {
+              "dynamic_snapshot_digest": null,
+              "electric_policy": "retained native phi and E plus -partial_t(A); no tolerance-based tail deletion",
+              "emission_time_s": 0.0,
+              "empirical_aberrations_applied": false,
+              "equivalent_image_maps_applied": false,
+              "geometry_owner": "unified captured finite boundaries",
+              "qualification": "native engineering fields with explicit domains; not OEM field calibration",
+              "round_radial_order": 3,
+              "round_remote_domain_policy": "gaussian-binary64-remote-roundoff-v1",
+              "saved_legacy_terms": "preserved in instrument input identity; inactive in this field-owned interval",
+              "source_contract": "executed physical gun exit; no synthetic source substitution",
+              "time_policy": "actual emission epoch plus flight time; native raster flyback requires explicit temporal admission"
+            },
+            "natural_field_aberrations_retained": true,
+            "required_magnetic_owners": {
+              "ac_deflector": [
+                "ac_deflector:0",
+                "ac_deflector:1"
+              ],
+              "adapter_lens": [
+                "adapter_lens"
+              ],
+              "beam_deflector": [
+                "beam_deflector:0",
+                "beam_deflector:1"
+              ],
+              "condenser_deflector": [
+                "condenser_deflector:0",
+                "condenser_deflector:1"
+              ],
+              "condenser_lens_1": [
+                "condenser_lens_1"
+              ],
+              "condenser_lens_2": [
+                "condenser_lens_2"
+              ],
+              "condenser_lens_3": [
+                "condenser_lens_3"
+              ],
+              "condenser_stigmator": [
+                "condenser_stigmator"
+              ],
+              "diffraction_lens": [
+                "diffraction_lens"
+              ],
+              "diffraction_stigmator": [
+                "diffraction_stigmator"
+              ],
+              "image_diffraction_deflector": [
+                "image_diffraction_deflector:0",
+                "image_diffraction_deflector:1"
+              ],
+              "intermediate_lens": [
+                "intermediate_lens"
+              ],
+              "mini_condenser": [
+                "mini_condenser"
+              ],
+              "objective_lens": [
+                "objective_lens"
+              ],
+              "objective_stigmator": [
+                "objective_stigmator"
+              ],
+              "probe_dp11_deflector": [
+                "probe_dp11_deflector:0"
+              ],
+              "probe_dp21_deflector": [
+                "probe_dp21_deflector:0"
+              ],
+              "probe_dp22_deflector": [
+                "probe_dp22_deflector:0"
+              ],
+              "probe_dph1_deflector": [
+                "probe_dph1_deflector:0"
+              ],
+              "probe_dph2_deflector": [
+                "probe_dph2_deflector:0"
+              ],
+              "probe_hp1_hexapole": [
+                "probe_hp1_hexapole"
+              ],
+              "probe_hp2_hexapole": [
+                "probe_hp2_hexapole"
+              ],
+              "probe_hpc_hexapole": [
+                "probe_hpc_hexapole"
+              ],
+              "probe_hpol_hexapole": [
+                "probe_hpol_hexapole"
+              ],
+              "probe_qpc_quadrupole": [
+                "probe_qpc_quadrupole"
+              ],
+              "probe_qph1_quadrupole": [
+                "probe_qph1_quadrupole"
+              ],
+              "probe_qph2_quadrupole": [
+                "probe_qph2_quadrupole"
+              ],
+              "probe_qpol_quadrupole": [
+                "probe_qpol_quadrupole"
+              ],
+              "probe_tl12_lens": [
+                "probe_tl12_lens"
+              ],
+              "probe_tl21_lens": [
+                "probe_tl21_lens"
+              ],
+              "probe_tl22_lens": [
+                "probe_tl22_lens"
+              ],
+              "projector_lens_1": [
+                "projector_lens_1"
+              ],
+              "projector_lens_2": [
+                "projector_lens_2"
+              ]
+            },
+            "selected_auxiliaries": [
+              "condenser_stigmator",
+              "objective_stigmator",
+              "diffraction_stigmator",
+              "probe_dph2_deflector",
+              "probe_qph2_quadrupole",
+              "probe_hp2_hexapole",
+              "probe_dp22_deflector",
+              "probe_hpc_hexapole",
+              "probe_qpc_quadrupole",
+              "probe_dp21_deflector",
+              "probe_dph1_deflector",
+              "probe_qph1_quadrupole",
+              "probe_hp1_hexapole",
+              "probe_hpol_hexapole",
+              "probe_qpol_quadrupole",
+              "probe_dp11_deflector",
+              "ac_deflector",
+              "condenser_deflector",
+              "beam_deflector",
+              "image_diffraction_deflector"
+            ],
+            "selected_round_lenses": [
+              "condenser_lens_1",
+              "condenser_lens_2",
+              "condenser_lens_3",
+              "adapter_lens",
+              "probe_tl22_lens",
+              "probe_tl21_lens",
+              "probe_tl12_lens",
+              "mini_condenser",
+              "objective_lens",
+              "diffraction_lens",
+              "intermediate_lens",
+              "projector_lens_1",
+              "projector_lens_2"
+            ],
+            "sources": [
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_lens_1"
+                ],
+                "potential_digest": "0f7214ad4dd1bc6721358bbbdb396ae661265c40ec09475da28a77c2f174c7b6",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "condenser_lens_1"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_lens_2"
+                ],
+                "potential_digest": "a60d5302ec172f4bee795a1370c1bb16bfbdc6b16646b9353276c83be9022871",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "condenser_lens_2"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_lens_3"
+                ],
+                "potential_digest": "9edeec1f22b2114d6ff5fa7727178ff1e12e007b053a9c02062bf9f6e52f7a55",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "condenser_lens_3"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "adapter_lens"
+                ],
+                "potential_digest": "580c1b7c5ef2f25ca73121222536f8cf4942b91d2c6d83366c94a19cb8d17888",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "adapter_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_tl22_lens"
+                ],
+                "potential_digest": "41487e358bb08228a5e902c2ba28c76213a1c72c3f8390c070424cfbfd4768f0",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "probe_tl22_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_tl21_lens"
+                ],
+                "potential_digest": "3e5cd8101db6a7af84ff5af19554c3072b0720f232cdfff6f7b8c22bda0009d9",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "probe_tl21_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_tl12_lens"
+                ],
+                "potential_digest": "18509a37cf972c681f03cf424249e6b5ca704741d6cbcf34fd9cf6ad5648724a",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "probe_tl12_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "mini_condenser"
+                ],
+                "potential_digest": "a514ed49819136831d59d06069a5913f6c4cfdac810d38ee475ff404c35518ed",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "mini_condenser"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "objective_lens"
+                ],
+                "potential_digest": "2740968f6e2e2113dfef210143ed0ef4a6c4229ff98206a7f59c8dffc4174ab4",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "objective_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "diffraction_lens"
+                ],
+                "potential_digest": "c7d03b2582b9cf88f452e7638f094400cf66bbbccbc4f525a400c327ff6b4a7a",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "diffraction_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "intermediate_lens"
+                ],
+                "potential_digest": "ecc1bba582098e79354a5ff29651775f6beb11f7d4f4be3b2896762dec88f5b6",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "intermediate_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "projector_lens_1"
+                ],
+                "potential_digest": "efc7e4be872c5dc44109d8cdebe296fefe36d176bdb0001044df2b5e4f02ba45",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "projector_lens_1"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "projector_lens_2"
+                ],
+                "potential_digest": "93faf66072c8e00e73e9ca4c3395ad4f5e3b64d36708cbd08c5345077b9ff4b0",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "projector_lens_2"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_stigmator"
+                ],
+                "potential_digest": "e815b15fa251624274c36190f2b5910906200136b0c9705b561b534280b7172b",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "condenser_stigmator"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "objective_stigmator"
+                ],
+                "potential_digest": "2d08f8cc23b6d39cd356961365f349511f8e26cedb7fe0ca17b49896df5da676",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "objective_stigmator"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "diffraction_stigmator"
+                ],
+                "potential_digest": "dea5eb76d8ac6cc1eb3b911a7c40e82eb87653feb3723dde135c32b42337c8cc",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "diffraction_stigmator"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_qph2_quadrupole"
+                ],
+                "potential_digest": "eee396c331b40578985ef86d347a014f7332307d290db9a5210dc0193388f22a",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_qph2_quadrupole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_hp2_hexapole"
+                ],
+                "potential_digest": "284d6220dc860fccf176a345a5828fbccd8a6a013d0924dfbff84e3983aa6f1a",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_hp2_hexapole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_hpc_hexapole"
+                ],
+                "potential_digest": "97001324fa903b370e3eb0fa2c38ca673e15cd70d7f53737f6e20339ee00b640",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_hpc_hexapole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_qpc_quadrupole"
+                ],
+                "potential_digest": "62f56a25402e50d9e9d6c229d58d874070a610cf569891e3bf97667b02e5a8b7",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_qpc_quadrupole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_qph1_quadrupole"
+                ],
+                "potential_digest": "b2fc828ef7e0779816b9c66bc36b61410cc953f910fe56befb168b5e296c66c1",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_qph1_quadrupole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_hp1_hexapole"
+                ],
+                "potential_digest": "b7585cbd65eece0bd1b9714fb8df58ec00df15e6a64ed97ef7029d44e49aa070",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_hp1_hexapole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_hpol_hexapole"
+                ],
+                "potential_digest": "91764057a55f2bf34fcdbe2dda7fe56ba09330dc626856eebee4122855e0edb5",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_hpol_hexapole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_qpol_quadrupole"
+                ],
+                "potential_digest": "b81d09f67243d04ee2858afa0c63ffb772b6c87eeedfbe5a7beb523b2d4b7e63",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_qpol_quadrupole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_dph2_deflector:0"
+                ],
+                "potential_digest": "d8d743920187c1d18af3f7cc4d77ce9002ed49c20fd40d82428802197d1f2174",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_dph2_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_dp22_deflector:0"
+                ],
+                "potential_digest": "ed100a996d68fddb1f31a7f3bd25b1975616a711e2534b5e5d4ebe5fe2baa2a4",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_dp22_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_dp21_deflector:0"
+                ],
+                "potential_digest": "fae67a2bf3e8dc1f81a6c43df4f5bd0a5d28149a7208bb529b68300ea052bc12",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_dp21_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_dph1_deflector:0"
+                ],
+                "potential_digest": "0cb9b9a74e7f718d553e19724ba154fdaa3a2a3ee991fb20a19fe70039410b3b",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_dph1_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_dp11_deflector:0"
+                ],
+                "potential_digest": "da4b886aa9d5e3c37eeef0b17c64a62361745a0126a5b5a1d0b4fa1f6986c008",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_dp11_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "ac_deflector:0"
+                ],
+                "potential_digest": "47d1a3afa359900172d83fe00818143bdd25c03d8e22eadc6646429e4a5bcfe4",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "ac_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "ac_deflector:1"
+                ],
+                "potential_digest": "130fcecd99fc0cdc3c012287abc847fe79c12ccc95f830c996dd6b4407c02ee9",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "ac_deflector:1"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_deflector:0"
+                ],
+                "potential_digest": "dc087baaafd82231d539b388f1f1539f68d564473bf0dd04efcbd1c1bfb629c9",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "condenser_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_deflector:1"
+                ],
+                "potential_digest": "ea7555dab8d804765304c651b42dc492749ebeefb3d3bde11fa076578bff7e23",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "condenser_deflector:1"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "beam_deflector:0"
+                ],
+                "potential_digest": "cea6a1931b38fec39655f807d5471e6cd84f84cf87bdb1b78512a2ae14f35154",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "beam_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "beam_deflector:1"
+                ],
+                "potential_digest": "cac65b6bc04db0fb12d409ac0eb4d3f8619a4800e3ef489a1fb14779b54620fe",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "beam_deflector:1"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "image_diffraction_deflector:0"
+                ],
+                "potential_digest": "f5cb0f202f9456e05dfe40d8d20566bccee1adde71217edd91deb454a07c3317",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "image_diffraction_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "image_diffraction_deflector:1"
+                ],
+                "potential_digest": "cf1c8747fa0101fef7b82b733744eb9acf5783bfeefbd3dc332147b4e8db9e5d",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "image_diffraction_deflector:1"
+              },
+              {
+                "kind": "electric",
+                "owner_ids": [
+                  "instrument_electric"
+                ],
+                "potential_digest": "893c54f3217dae82fe3cc828e31c237d837238fd8136f0c772a90fc1d4678c33",
+                "potential_type": "ElectricPotentialSnapshot",
+                "source_id": "instrument_electric"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "feg_deflector"
+                ],
+                "potential_digest": "5b0b406a386a34271a8c920f6ff67ff32103f7b6456a834ab24df85f8df80e7c",
+                "potential_type": "GunMagneticPotential",
+                "source_id": "feg_deflector"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "feg_stigmator"
+                ],
+                "potential_digest": "08ed3409f01d559379d06b444d3ad8a735a73837f666317cdfb6c3c4bcbf3806",
+                "potential_type": "GunMagneticPotential",
+                "source_id": "feg_stigmator"
+              }
+            ]
+          },
+          "identities": {
+            "geometry_digest": "a0ac7fce6e1d95f221231addae4ed7e92b7e1da8d36257e149c0255f29b23dc4",
+            "input_digest": "f9da5798e4524c728b72ac79c146b9a0c9f376978ba10ca49d5074f43c3bd9d2",
+            "plan_signature": "1cf0347fb150df2f6c7be734f80cd65f1c5fa530ff4cadfdb12a2d3df301b949",
+            "potential_digest": "225ab5addf5e1a4aa1399e13b598af6bb896844f76e9a6d7319e1a07bd417721",
+            "runtime_digest": "98f11a631c7626d888b1a27e2bd75b4d0fc9fe962851d3d87089915cf8836eb5"
+          },
+          "passed": true,
+          "plan_actions": {
+            "additional_arrays": {
+              "cs_kick_m3": {
+                "count": 8958,
+                "nonzero_count": 0
+              },
+              "kick_x_rad": {
+                "count": 8958,
+                "nonzero_count": 0
+              },
+              "kick_y_rad": {
+                "count": 8958,
+                "nonzero_count": 0
+              },
+              "thin_power_m1": {
+                "count": 8958,
+                "nonzero_count": 0
+              },
+              "thin_rotation_rad": {
+                "count": 8958,
+                "nonzero_count": 0
+              }
+            },
+            "additional_lists": {
+              "intrinsic_aberration_kicks": 0,
+              "mapped_fields": 0,
+              "posed_spherical_kicks": 0,
+              "thin_actions": 0
+            },
+            "extra_electric_provider": false,
+            "interaction_count": 40,
+            "interval_mm": [
+              450.0,
+              1599.2149998000002
+            ],
+            "legacy_input_coefficients": "Preserved; inactive in this field-owned interval",
+            "node_count": 8958
+          },
+          "schema": "temsim-extended-probe-field-audit-v1",
+          "scope": "Executed extended column field/action ownership; specimen material interactions omitted",
+          "status": "PASS"
+        },
+        "gun_dependency_signature": "4c360b42866a48ce4f10a24a482e6674102c0b83566f90219bcfbd56b9eb3505",
+        "gun_input_digest": "428925cf8cd24c034ea5c93301589090596d8c5da8a1cfae8d7e3b44b1e95553",
+        "gun_reused": true,
+        "implementation": "18561a608ecf87ad9b9b85502723c35755b35eea3429dc150a7e751e6d6b20de",
+        "input_digest": "f9da5798e4524c728b72ac79c146b9a0c9f376978ba10ca49d5074f43c3bd9d2",
+        "integration_mesh_sha256": "594eb32a49c1cc67c57a21d49a05bfeacb8fc7afe59e6c31d4b380ff682d6a98",
+        "integration_nodes": 8958,
+        "original_source_count": 1024,
+        "source_current_a": 1e-05,
+        "source_identity_sha256": "f6c2c5a3e04c3261f85696a5cd90d0cac108517fafb9ce299f3f0bb88b59628b",
+        "verified_search_boundary_z_mm": 1422.65
+      },
+      "focus": {
+        "d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 516.0261979210479,
+          "neighbour_bracket_mm": [
+            1599.2003798,
+            1599.2004198000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            379.99999995008693,
+            420.0000000764703
+          ],
+          "observed_minimum_planes_mm": [
+            1599.2003998
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.2003998,
+              1599.2003998
+            ]
+          ],
+          "representative_offset_nm": 399.9999998995918,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "focus_definition": "Native D95(z) discrete minimum about each actual current-weighted centroid",
+        "positive_current_membership_stable": true,
+        "rms_waist_diagnostic": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 114.12001437957797,
+          "neighbour_bracket_mm": [
+            1599.1992198,
+            1599.1992598000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -780.0000000770524,
+            -739.999999950669
+          ],
+          "observed_minimum_planes_mm": [
+            1599.1992398000002
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.1992398000002,
+              1599.1992398000002
+            ]
+          ],
+          "representative_offset_nm": -759.9999999001739,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "smallest_observed_local_minima": [
+          {
+            "d95_nm": 516.0261979210479,
+            "offset_nm": 399.9999998995918,
+            "z_mm": 1599.2003998
+          },
+          {
+            "d95_nm": 516.0750355221345,
+            "offset_nm": -39.99999989900971,
+            "z_mm": 1599.1999598000002
+          },
+          {
+            "d95_nm": 517.6546626835656,
+            "offset_nm": -780.0000000770524,
+            "z_mm": 1599.1992198
+          },
+          {
+            "d95_nm": 517.7042105304758,
+            "offset_nm": -1459.9999999518332,
+            "z_mm": 1599.1985398000002
+          },
+          {
+            "d95_nm": 517.98991385735,
+            "offset_nm": 1479.999999901338,
+            "z_mm": 1599.2014798
+          },
+          {
+            "d95_nm": 518.8274457306596,
+            "offset_nm": 25.99999993435631,
+            "z_mm": 1599.2000258
+          },
+          {
+            "d95_nm": 519.027115090352,
+            "offset_nm": 919.99999995096,
+            "z_mm": 1599.2009198
+          },
+          {
+            "d95_nm": 520.0152048444722,
+            "offset_nm": 260.00000002568413,
+            "z_mm": 1599.2002598000001
+          }
+        ],
+        "surface": {
+          "absolute_source_weight": 0.4482421875,
+          "alpha95_mrad": 29.192327489426145,
+          "centroid_x_m": -2.0626373061464195e-09,
+          "centroid_y_m": -6.353623359130092e-10,
+          "current_a": 4.482421875e-06,
+          "d50_nm": 103.24116613140252,
+          "d90_nm": 406.9383571025308,
+          "d95_nm": 518.0274315723607,
+          "effective_rays": 458.99999999999966,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 115.13968507592938,
+          "surviving_rays": 459,
+          "z_mm": 1599.1999998000001
+        },
+        "surface_gate": {
+          "maximum_d95_nm": null,
+          "passed": false,
+          "placement_passed": false,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "FAIL",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "waist_separation": {
+          "definition": "z_RMS minus z_D95, executed planes",
+          "difference_bracket_nm": [
+            -1200.0000001535227,
+            -1119.999999900756
+          ],
+          "resolved_delta_z_nm": -1159.9999997997656,
+          "zero_excluded_from_bracket": true
+        }
+      },
+      "gun_exit_current_a": 1e-05,
+      "incident_current_a": 1e-05,
+      "index": 0,
+      "observations_sha256": "f36f81b876282c6d251bcc9a6abc104929f32bc893828d9b4569513ef98f923b",
+      "per_stage_losses": {
+        "condenser_aperture_2": {
+          "count": 565,
+          "current_a": 5.5175781250000005e-06
+        }
+      },
+      "proposal": null,
+      "seconds": 105.71879760036245,
+      "surface": {
+        "alpha95_error_from_target_mrad": -0.8076725105738554,
+        "alpha95_mrad": 29.192327489426145,
+        "count": 459,
+        "current_a": 4.482421875e-06,
+        "d95_nm": 518.0274315723607,
+        "fixed_optical_axis_50pm_current_a": 0.0,
+        "fixed_optical_axis_50pm_positive_count": 0,
+        "radial_covariance_m_rad": 3.070968622553926e-10,
+        "rms_angle_mrad": 20.08001117122039,
+        "rms_radius_nm": 115.13968507592938,
+        "rms_tangent_drift_offset_nm": -761.3461711458945,
+        "source_current_fraction": 0.4482421875,
+        "surface_tail_original_rays": [
+          {
+            "centroid_radius_nm": 391.16978629622474,
+            "native_surface_neighbourhood": [
+              {
+                "optical_axis_radius_nm": 390.88767285644127,
+                "slope_angle_from_axis_mrad": 31.44979254017139,
+                "z_mm": 1599.19999955
+              },
+              {
+                "optical_axis_radius_nm": 390.8800927802065,
+                "slope_angle_from_axis_mrad": 31.44979254017139,
+                "z_mm": 1599.1999998000001
+              },
+              {
+                "optical_axis_radius_nm": 390.8740287274112,
+                "slope_angle_from_axis_mrad": 31.44979254017139,
+                "z_mm": 1599.2
+              }
+            ],
+            "source_current_a": 9.765625e-09,
+            "source_id": 1009
+          },
+          {
+            "centroid_radius_nm": 388.84913394311695,
+            "native_surface_neighbourhood": [
+              {
+                "optical_axis_radius_nm": 387.3569050879945,
+                "slope_angle_from_axis_mrad": 31.748923781272122,
+                "z_mm": 1599.19999955
+              },
+              {
+                "optical_axis_radius_nm": 387.34995345889473,
+                "slope_angle_from_axis_mrad": 31.748923781272122,
+                "z_mm": 1599.1999998000001
+              },
+              {
+                "optical_axis_radius_nm": 387.34439218312656,
+                "slope_angle_from_axis_mrad": 31.748923781272122,
+                "z_mm": 1599.2
+              }
+            ],
+            "source_current_a": 9.765625e-09,
+            "source_id": 516
+          },
+          {
+            "centroid_radius_nm": 373.3720865641116,
+            "native_surface_neighbourhood": [
+              {
+                "optical_axis_radius_nm": 375.39570091974446,
+                "slope_angle_from_axis_mrad": 31.186645491933792,
+                "z_mm": 1599.19999955
+              },
+              {
+                "optical_axis_radius_nm": 375.38827259144426,
+                "slope_angle_from_axis_mrad": 31.186645491933792,
+                "z_mm": 1599.1999998000001
+              },
+              {
+                "optical_axis_radius_nm": 375.3823299397324,
+                "slope_angle_from_axis_mrad": 31.186645491933792,
+                "z_mm": 1599.2
+              }
+            ],
+            "source_current_a": 9.765625e-09,
+            "source_id": 158
+          },
+          {
+            "centroid_radius_nm": 355.72937629873536,
+            "native_surface_neighbourhood": [
+              {
+                "optical_axis_radius_nm": 354.38700633632004,
+                "slope_angle_from_axis_mrad": 31.746336464748484,
+                "z_mm": 1599.19999955
+              },
+              {
+                "optical_axis_radius_nm": 354.3807055997538,
+                "slope_angle_from_axis_mrad": 31.746336464748484,
+                "z_mm": 1599.1999998000001
+              },
+              {
+                "optical_axis_radius_nm": 354.3756650581024,
+                "slope_angle_from_axis_mrad": 31.746336464748484,
+                "z_mm": 1599.2
+              }
+            ],
+            "source_current_a": 9.765625e-09,
+            "source_id": 41
+          },
+          {
+            "centroid_radius_nm": 349.91527190504047,
+            "native_surface_neighbourhood": [
+              {
+                "optical_axis_radius_nm": 352.06207087829677,
+                "slope_angle_from_axis_mrad": 31.89266930488633,
+                "z_mm": 1599.19999955
+              },
+              {
+                "optical_axis_radius_nm": 352.0559189211227,
+                "slope_angle_from_axis_mrad": 31.89266930488633,
+                "z_mm": 1599.1999998000001
+              },
+              {
+                "optical_axis_radius_nm": 352.0509974082892,
+                "slope_angle_from_axis_mrad": 31.89266930488633,
+                "z_mm": 1599.2
+              }
+            ],
+            "source_current_a": 9.765625e-09,
+            "source_id": 438
+          }
+        ]
+      },
+      "terminal_current_a": 4.482421875e-06,
+      "topology_summary": {
+        "ac_lower to mini_condenser": {
+          "actual_population": {
+            "centers_mm": [],
+            "expected_regions": 0,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "expected_regions": 0,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "ac_upper to ac_lower": {
+          "actual_population": {
+            "centers_mm": [
+              1408.95
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1408.95
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1408.95
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1408.95
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "adapter_lens to probe_tl22_lens": {
+          "actual_population": {
+            "centers_mm": [],
+            "expected_regions": null,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "expected_regions": null,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "condenser_lens_2 to condenser_lens_3": {
+          "actual_population": {
+            "centers_mm": [
+              829.5
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              829.5
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              829.5
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              829.5
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "condenser_lens_3 to adapter_lens": {
+          "actual_population": {
+            "centers_mm": [],
+            "expected_regions": 0,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "expected_regions": 0,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "mini_condenser to specimen_entrance": {
+          "actual_population": {
+            "centers_mm": [
+              1599.1992398000002
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1599.1992398000002
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1599.1992398000002
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1599.1992398000002
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "probe_tl12_lens to ac_upper": {
+          "actual_population": {
+            "centers_mm": [],
+            "expected_regions": null,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "expected_regions": null,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "probe_tl21_lens to probe_tl12_lens": {
+          "actual_population": {
+            "centers_mm": [
+              1297.8881974248927
+            ],
+            "expected_regions": null,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1297.8881974248927
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1297.8881974248927
+            ],
+            "expected_regions": null,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1297.8881974248927
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "probe_tl22_lens to probe_tl21_lens": {
+          "actual_population": {
+            "centers_mm": [
+              1211.6333333333332
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1211.6333333333332
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1211.6333333333332
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1211.6333333333332
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        }
+      }
+    },
+    {
+      "absolute_current_balance_residual_a": 0.0,
+      "aperture_plane_phase": {
+        "condenser_aperture_2": {
+          "alpha95_mrad": 0.7588392624844154,
+          "count": 466,
+          "current_a": 4.55078125e-06,
+          "d95_nm": 96097.49325834631,
+          "radial_covariance_m_rad": -1.7981552157583364e-08,
+          "rms_angle_mrad": 0.532865391623091,
+          "rms_radius_nm": 33745.013659765864,
+          "rms_tangent_drift_offset_nm": 63327454.685973726,
+          "source_current_fraction": 0.455078125
+        },
+        "condenser_aperture_3": {
+          "alpha95_mrad": 0.2625470521298846,
+          "count": 466,
+          "current_a": 4.55078125e-06,
+          "d95_nm": 181581.53054089565,
+          "radial_covariance_m_rad": 1.1756227621193306e-08,
+          "rms_angle_mrad": 0.18440190081775085,
+          "rms_radius_nm": 63753.2889945911,
+          "rms_tangent_drift_offset_nm": -345730095.01677245,
+          "source_current_fraction": 0.455078125
+        }
+      },
+      "controls": {
+        "mini_condenser": 26.678337967960122,
+        "objective_lens": 29.33161022680709
+      },
+      "execution": {
+        "checkpoint_rows": 3163,
+        "column_prefix_reused": false,
+        "column_resume_z_mm": 450.0,
+        "emitted_positive_current_points": 1024,
+        "field_audit": {
+          "c2_aperture": {
+            "actual_boundary_radius_mm": 0.05,
+            "diameter_mm": 0.1,
+            "enabled": true,
+            "event_z_mm": [
+              764.9,
+              764.9,
+              764.9,
+              765.1,
+              765.1,
+              765.1
+            ],
+            "host_key": "condenser_aperture_2",
+            "inserted": true,
+            "installed": true,
+            "key": "condenser_aperture_2",
+            "local_end_z_mm": 765.1,
+            "local_start_z_mm": 764.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 0.05,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "field_ownership": {
+            "duplicate_ownership": false,
+            "metadata": {
+              "dynamic_snapshot_digest": null,
+              "electric_policy": "retained native phi and E plus -partial_t(A); no tolerance-based tail deletion",
+              "emission_time_s": 0.0,
+              "empirical_aberrations_applied": false,
+              "equivalent_image_maps_applied": false,
+              "geometry_owner": "unified captured finite boundaries",
+              "qualification": "native engineering fields with explicit domains; not OEM field calibration",
+              "round_radial_order": 3,
+              "round_remote_domain_policy": "gaussian-binary64-remote-roundoff-v1",
+              "saved_legacy_terms": "preserved in instrument input identity; inactive in this field-owned interval",
+              "source_contract": "executed physical gun exit; no synthetic source substitution",
+              "time_policy": "actual emission epoch plus flight time; native raster flyback requires explicit temporal admission"
+            },
+            "natural_field_aberrations_retained": true,
+            "required_magnetic_owners": {
+              "ac_deflector": [
+                "ac_deflector:0",
+                "ac_deflector:1"
+              ],
+              "adapter_lens": [
+                "adapter_lens"
+              ],
+              "beam_deflector": [
+                "beam_deflector:0",
+                "beam_deflector:1"
+              ],
+              "condenser_deflector": [
+                "condenser_deflector:0",
+                "condenser_deflector:1"
+              ],
+              "condenser_lens_1": [
+                "condenser_lens_1"
+              ],
+              "condenser_lens_2": [
+                "condenser_lens_2"
+              ],
+              "condenser_lens_3": [
+                "condenser_lens_3"
+              ],
+              "condenser_stigmator": [
+                "condenser_stigmator"
+              ],
+              "diffraction_lens": [
+                "diffraction_lens"
+              ],
+              "diffraction_stigmator": [
+                "diffraction_stigmator"
+              ],
+              "image_diffraction_deflector": [
+                "image_diffraction_deflector:0",
+                "image_diffraction_deflector:1"
+              ],
+              "intermediate_lens": [
+                "intermediate_lens"
+              ],
+              "mini_condenser": [
+                "mini_condenser"
+              ],
+              "objective_lens": [
+                "objective_lens"
+              ],
+              "objective_stigmator": [
+                "objective_stigmator"
+              ],
+              "probe_dp11_deflector": [
+                "probe_dp11_deflector:0"
+              ],
+              "probe_dp21_deflector": [
+                "probe_dp21_deflector:0"
+              ],
+              "probe_dp22_deflector": [
+                "probe_dp22_deflector:0"
+              ],
+              "probe_dph1_deflector": [
+                "probe_dph1_deflector:0"
+              ],
+              "probe_dph2_deflector": [
+                "probe_dph2_deflector:0"
+              ],
+              "probe_hp1_hexapole": [
+                "probe_hp1_hexapole"
+              ],
+              "probe_hp2_hexapole": [
+                "probe_hp2_hexapole"
+              ],
+              "probe_hpc_hexapole": [
+                "probe_hpc_hexapole"
+              ],
+              "probe_hpol_hexapole": [
+                "probe_hpol_hexapole"
+              ],
+              "probe_qpc_quadrupole": [
+                "probe_qpc_quadrupole"
+              ],
+              "probe_qph1_quadrupole": [
+                "probe_qph1_quadrupole"
+              ],
+              "probe_qph2_quadrupole": [
+                "probe_qph2_quadrupole"
+              ],
+              "probe_qpol_quadrupole": [
+                "probe_qpol_quadrupole"
+              ],
+              "probe_tl12_lens": [
+                "probe_tl12_lens"
+              ],
+              "probe_tl21_lens": [
+                "probe_tl21_lens"
+              ],
+              "probe_tl22_lens": [
+                "probe_tl22_lens"
+              ],
+              "projector_lens_1": [
+                "projector_lens_1"
+              ],
+              "projector_lens_2": [
+                "projector_lens_2"
+              ]
+            },
+            "selected_auxiliaries": [
+              "condenser_stigmator",
+              "objective_stigmator",
+              "diffraction_stigmator",
+              "probe_dph2_deflector",
+              "probe_qph2_quadrupole",
+              "probe_hp2_hexapole",
+              "probe_dp22_deflector",
+              "probe_hpc_hexapole",
+              "probe_qpc_quadrupole",
+              "probe_dp21_deflector",
+              "probe_dph1_deflector",
+              "probe_qph1_quadrupole",
+              "probe_hp1_hexapole",
+              "probe_hpol_hexapole",
+              "probe_qpol_quadrupole",
+              "probe_dp11_deflector",
+              "ac_deflector",
+              "condenser_deflector",
+              "beam_deflector",
+              "image_diffraction_deflector"
+            ],
+            "selected_round_lenses": [
+              "condenser_lens_1",
+              "condenser_lens_2",
+              "condenser_lens_3",
+              "adapter_lens",
+              "probe_tl22_lens",
+              "probe_tl21_lens",
+              "probe_tl12_lens",
+              "mini_condenser",
+              "objective_lens",
+              "diffraction_lens",
+              "intermediate_lens",
+              "projector_lens_1",
+              "projector_lens_2"
+            ],
+            "sources": [
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_lens_1"
+                ],
+                "potential_digest": "0f7214ad4dd1bc6721358bbbdb396ae661265c40ec09475da28a77c2f174c7b6",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "condenser_lens_1"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_lens_2"
+                ],
+                "potential_digest": "f71b4c78b74c97b45b658a8e895709c3819e2a3559320b81982ae1f3ddfead67",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "condenser_lens_2"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_lens_3"
+                ],
+                "potential_digest": "13594dcac1eb8980a27e5f2bf2eac2a332ae176e9addf0b76ed8381b3d9506b1",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "condenser_lens_3"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "adapter_lens"
+                ],
+                "potential_digest": "580c1b7c5ef2f25ca73121222536f8cf4942b91d2c6d83366c94a19cb8d17888",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "adapter_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_tl22_lens"
+                ],
+                "potential_digest": "41487e358bb08228a5e902c2ba28c76213a1c72c3f8390c070424cfbfd4768f0",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "probe_tl22_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_tl21_lens"
+                ],
+                "potential_digest": "3e5cd8101db6a7af84ff5af19554c3072b0720f232cdfff6f7b8c22bda0009d9",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "probe_tl21_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_tl12_lens"
+                ],
+                "potential_digest": "18509a37cf972c681f03cf424249e6b5ca704741d6cbcf34fd9cf6ad5648724a",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "probe_tl12_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "mini_condenser"
+                ],
+                "potential_digest": "a514ed49819136831d59d06069a5913f6c4cfdac810d38ee475ff404c35518ed",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "mini_condenser"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "objective_lens"
+                ],
+                "potential_digest": "db63b9ea80b9e5c22252c357ab4ca88e35e380d09f9a3042361cc7bb65d56c4c",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "objective_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "diffraction_lens"
+                ],
+                "potential_digest": "c7d03b2582b9cf88f452e7638f094400cf66bbbccbc4f525a400c327ff6b4a7a",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "diffraction_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "intermediate_lens"
+                ],
+                "potential_digest": "ecc1bba582098e79354a5ff29651775f6beb11f7d4f4be3b2896762dec88f5b6",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "intermediate_lens"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "projector_lens_1"
+                ],
+                "potential_digest": "efc7e4be872c5dc44109d8cdebe296fefe36d176bdb0001044df2b5e4f02ba45",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "projector_lens_1"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "projector_lens_2"
+                ],
+                "potential_digest": "93faf66072c8e00e73e9ca4c3395ad4f5e3b64d36708cbd08c5345077b9ff4b0",
+                "potential_type": "HighOrderRoundLensPotential",
+                "source_id": "projector_lens_2"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_stigmator"
+                ],
+                "potential_digest": "e815b15fa251624274c36190f2b5910906200136b0c9705b561b534280b7172b",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "condenser_stigmator"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "objective_stigmator"
+                ],
+                "potential_digest": "2d08f8cc23b6d39cd356961365f349511f8e26cedb7fe0ca17b49896df5da676",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "objective_stigmator"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "diffraction_stigmator"
+                ],
+                "potential_digest": "dea5eb76d8ac6cc1eb3b911a7c40e82eb87653feb3723dde135c32b42337c8cc",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "diffraction_stigmator"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_qph2_quadrupole"
+                ],
+                "potential_digest": "eee396c331b40578985ef86d347a014f7332307d290db9a5210dc0193388f22a",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_qph2_quadrupole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_hp2_hexapole"
+                ],
+                "potential_digest": "284d6220dc860fccf176a345a5828fbccd8a6a013d0924dfbff84e3983aa6f1a",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_hp2_hexapole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_hpc_hexapole"
+                ],
+                "potential_digest": "97001324fa903b370e3eb0fa2c38ca673e15cd70d7f53737f6e20339ee00b640",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_hpc_hexapole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_qpc_quadrupole"
+                ],
+                "potential_digest": "62f56a25402e50d9e9d6c229d58d874070a610cf569891e3bf97667b02e5a8b7",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_qpc_quadrupole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_qph1_quadrupole"
+                ],
+                "potential_digest": "b2fc828ef7e0779816b9c66bc36b61410cc953f910fe56befb168b5e296c66c1",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_qph1_quadrupole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_hp1_hexapole"
+                ],
+                "potential_digest": "b7585cbd65eece0bd1b9714fb8df58ec00df15e6a64ed97ef7029d44e49aa070",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_hp1_hexapole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_hpol_hexapole"
+                ],
+                "potential_digest": "91764057a55f2bf34fcdbe2dda7fe56ba09330dc626856eebee4122855e0edb5",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_hpol_hexapole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_qpol_quadrupole"
+                ],
+                "potential_digest": "b81d09f67243d04ee2858afa0c63ffb772b6c87eeedfbe5a7beb523b2d4b7e63",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_qpol_quadrupole"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_dph2_deflector:0"
+                ],
+                "potential_digest": "d8d743920187c1d18af3f7cc4d77ce9002ed49c20fd40d82428802197d1f2174",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_dph2_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_dp22_deflector:0"
+                ],
+                "potential_digest": "ed100a996d68fddb1f31a7f3bd25b1975616a711e2534b5e5d4ebe5fe2baa2a4",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_dp22_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_dp21_deflector:0"
+                ],
+                "potential_digest": "fae67a2bf3e8dc1f81a6c43df4f5bd0a5d28149a7208bb529b68300ea052bc12",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_dp21_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_dph1_deflector:0"
+                ],
+                "potential_digest": "0cb9b9a74e7f718d553e19724ba154fdaa3a2a3ee991fb20a19fe70039410b3b",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_dph1_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "probe_dp11_deflector:0"
+                ],
+                "potential_digest": "da4b886aa9d5e3c37eeef0b17c64a62361745a0126a5b5a1d0b4fa1f6986c008",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "probe_dp11_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "ac_deflector:0"
+                ],
+                "potential_digest": "47d1a3afa359900172d83fe00818143bdd25c03d8e22eadc6646429e4a5bcfe4",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "ac_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "ac_deflector:1"
+                ],
+                "potential_digest": "130fcecd99fc0cdc3c012287abc847fe79c12ccc95f830c996dd6b4407c02ee9",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "ac_deflector:1"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_deflector:0"
+                ],
+                "potential_digest": "dc087baaafd82231d539b388f1f1539f68d564473bf0dd04efcbd1c1bfb629c9",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "condenser_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "condenser_deflector:1"
+                ],
+                "potential_digest": "ea7555dab8d804765304c651b42dc492749ebeefb3d3bde11fa076578bff7e23",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "condenser_deflector:1"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "beam_deflector:0"
+                ],
+                "potential_digest": "cea6a1931b38fec39655f807d5471e6cd84f84cf87bdb1b78512a2ae14f35154",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "beam_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "beam_deflector:1"
+                ],
+                "potential_digest": "cac65b6bc04db0fb12d409ac0eb4d3f8619a4800e3ef489a1fb14779b54620fe",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "beam_deflector:1"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "image_diffraction_deflector:0"
+                ],
+                "potential_digest": "f5cb0f202f9456e05dfe40d8d20566bccee1adde71217edd91deb454a07c3317",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "image_diffraction_deflector:0"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "image_diffraction_deflector:1"
+                ],
+                "potential_digest": "cf1c8747fa0101fef7b82b733744eb9acf5783bfeefbd3dc332147b4e8db9e5d",
+                "potential_type": "AnalyticPotentialDomain",
+                "source_id": "image_diffraction_deflector:1"
+              },
+              {
+                "kind": "electric",
+                "owner_ids": [
+                  "instrument_electric"
+                ],
+                "potential_digest": "893c54f3217dae82fe3cc828e31c237d837238fd8136f0c772a90fc1d4678c33",
+                "potential_type": "ElectricPotentialSnapshot",
+                "source_id": "instrument_electric"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "feg_deflector"
+                ],
+                "potential_digest": "5b0b406a386a34271a8c920f6ff67ff32103f7b6456a834ab24df85f8df80e7c",
+                "potential_type": "GunMagneticPotential",
+                "source_id": "feg_deflector"
+              },
+              {
+                "kind": "magnetic",
+                "owner_ids": [
+                  "feg_stigmator"
+                ],
+                "potential_digest": "08ed3409f01d559379d06b444d3ad8a735a73837f666317cdfb6c3c4bcbf3806",
+                "potential_type": "GunMagneticPotential",
+                "source_id": "feg_stigmator"
+              }
+            ]
+          },
+          "identities": {
+            "geometry_digest": "bc63225bb583a9ac9038bce26f5b72e02e335976e177b71a822bc2e3215a9f40",
+            "input_digest": "a0b0cf698620ce1fb5812b309f84d7ddd378c60019cf427a7563bc8a58680295",
+            "plan_signature": "992cdb732052822caa01a963beacd33374491ce741116304263fd6f3b4b38344",
+            "potential_digest": "065e3dafe47dfdb1922699661053bda5bf6c927acfd90e5f22320d00acd00d35",
+            "runtime_digest": "042c647e38e2eec3e8ed9af3b5984e0e300f7ffbb89d79d3289a43a7924937b2"
+          },
+          "passed": true,
+          "plan_actions": {
+            "additional_arrays": {
+              "cs_kick_m3": {
+                "count": 8958,
+                "nonzero_count": 0
+              },
+              "kick_x_rad": {
+                "count": 8958,
+                "nonzero_count": 0
+              },
+              "kick_y_rad": {
+                "count": 8958,
+                "nonzero_count": 0
+              },
+              "thin_power_m1": {
+                "count": 8958,
+                "nonzero_count": 0
+              },
+              "thin_rotation_rad": {
+                "count": 8958,
+                "nonzero_count": 0
+              }
+            },
+            "additional_lists": {
+              "intrinsic_aberration_kicks": 0,
+              "mapped_fields": 0,
+              "posed_spherical_kicks": 0,
+              "thin_actions": 0
+            },
+            "extra_electric_provider": false,
+            "interaction_count": 40,
+            "interval_mm": [
+              450.0,
+              1599.2149998000002
+            ],
+            "legacy_input_coefficients": "Preserved; inactive in this field-owned interval",
+            "node_count": 8958
+          },
+          "schema": "temsim-extended-probe-field-audit-v1",
+          "scope": "Executed extended column field/action ownership; specimen material interactions omitted",
+          "status": "PASS"
+        },
+        "gun_dependency_signature": "4c360b42866a48ce4f10a24a482e6674102c0b83566f90219bcfbd56b9eb3505",
+        "gun_input_digest": "428925cf8cd24c034ea5c93301589090596d8c5da8a1cfae8d7e3b44b1e95553",
+        "gun_reused": true,
+        "implementation": "18561a608ecf87ad9b9b85502723c35755b35eea3429dc150a7e751e6d6b20de",
+        "input_digest": "a0b0cf698620ce1fb5812b309f84d7ddd378c60019cf427a7563bc8a58680295",
+        "integration_mesh_sha256": "594eb32a49c1cc67c57a21d49a05bfeacb8fc7afe59e6c31d4b380ff682d6a98",
+        "integration_nodes": 8958,
+        "original_source_count": 1024,
+        "source_current_a": 1e-05,
+        "source_identity_sha256": "f6c2c5a3e04c3261f85696a5cd90d0cac108517fafb9ce299f3f0bb88b59628b",
+        "verified_search_boundary_z_mm": 450.0
+      },
+      "focus": {
+        "d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 562.5087111312188,
+          "neighbour_bracket_mm": [
+            1599.1978598,
+            1599.1978998000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -2140.0000000539876,
+            -2099.999999927604
+          ],
+          "observed_minimum_planes_mm": [
+            1599.1978798
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.1978798,
+              1599.1978798
+            ]
+          ],
+          "representative_offset_nm": -2120.0000001044828,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "focus_definition": "Native D95(z) discrete minimum about each actual current-weighted centroid",
+        "positive_current_membership_stable": true,
+        "rms_waist_diagnostic": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 126.07782886596084,
+          "neighbour_bracket_mm": [
+            1599.1986798,
+            1599.1987198000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -1320.0000000779255,
+            -1279.9999999515421
+          ],
+          "observed_minimum_planes_mm": [
+            1599.1986998000002
+          ],
+          "plateau_intervals_mm": [
+            [
+              1599.1986998000002,
+              1599.1986998000002
+            ]
+          ],
+          "representative_offset_nm": -1299.999999901047,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "smallest_observed_local_minima": [
+          {
+            "d95_nm": 562.5087111312188,
+            "offset_nm": -2120.0000001044828,
+            "z_mm": 1599.1978798
+          },
+          {
+            "d95_nm": 562.7574904462372,
+            "offset_nm": -299.99999992469384,
+            "z_mm": 1599.1996998000002
+          },
+          {
+            "d95_nm": 563.3237939450113,
+            "offset_nm": -226.00000011152588,
+            "z_mm": 1599.1997738
+          },
+          {
+            "d95_nm": 565.3268698183583,
+            "offset_nm": -620.0000000262662,
+            "z_mm": 1599.1993798
+          },
+          {
+            "d95_nm": 565.7018100944407,
+            "offset_nm": 7.999999979801942,
+            "z_mm": 1599.2000078
+          },
+          {
+            "d95_nm": 567.4171697463104,
+            "offset_nm": 279.999999975189,
+            "z_mm": 1599.2002798
+          },
+          {
+            "d95_nm": 571.0815401478008,
+            "offset_nm": -1880.0000000283035,
+            "z_mm": 1599.1981198
+          },
+          {
+            "d95_nm": 571.6511117603162,
+            "offset_nm": -1620.0000000026193,
+            "z_mm": 1599.1983798
+          }
+        ],
+        "surface": {
+          "absolute_source_weight": 0.455078125,
+          "alpha95_mrad": 29.68493864786893,
+          "centroid_x_m": -2.293227929772917e-09,
+          "centroid_y_m": -1.119767691245887e-10,
+          "current_a": 4.55078125e-06,
+          "d50_nm": 119.64622384370445,
+          "d90_nm": 453.47490395212566,
+          "d95_nm": 566.1748432297104,
+          "effective_rays": 466.00000000000017,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 128.8618321430199,
+          "surviving_rays": 466,
+          "z_mm": 1599.1999998000001
+        },
+        "surface_gate": {
+          "maximum_d95_nm": null,
+          "passed": false,
+          "placement_passed": false,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "FAIL",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "waist_separation": {
+          "definition": "z_RMS minus z_D95, executed planes",
+          "difference_bracket_nm": [
+            779.9999998496787,
+            860.0000001024455
+          ],
+          "resolved_delta_z_nm": 820.0000002034358,
+          "zero_excluded_from_bracket": true
+        }
+      },
+      "gun_exit_current_a": 1e-05,
+      "incident_current_a": 1e-05,
+      "index": 1,
+      "observations_sha256": "30d9fbfa22f9d31ec7e89e8e1ebec22ea38104240b18023fb56f8942f0e11480",
+      "per_stage_losses": {
+        "condenser_aperture_2": {
+          "count": 558,
+          "current_a": 5.449218750000001e-06
+        }
+      },
+      "proposal": {
+        "changes": [
+          {
+            "after": 10.5505,
+            "before": 10.5375,
+            "field": "percent",
+            "key": "condenser_lens_2"
+          },
+          {
+            "after": 33.84,
+            "before": 34.1,
+            "field": "percent",
+            "key": "condenser_lens_3"
+          },
+          {
+            "after": -68274901.06363559,
+            "before": -68274901.06363559,
+            "field": "strength_m3",
+            "key": "probe_hpc_hexapole"
+          },
+          {
+            "after": 14186078.221680742,
+            "before": 14186078.221680742,
+            "field": "skew_strength_m3",
+            "key": "probe_hpc_hexapole"
+          },
+          {
+            "after": 3289968.9153843517,
+            "before": 3289968.9153843517,
+            "field": "strength_m3",
+            "key": "probe_hp1_hexapole"
+          },
+          {
+            "after": 3968383.265193488,
+            "before": 3968383.265193488,
+            "field": "strength_m3",
+            "key": "probe_hp2_hexapole"
+          },
+          {
+            "after": 1137767.192516823,
+            "before": 1137767.192516823,
+            "field": "strength_m3",
+            "key": "probe_hpol_hexapole"
+          },
+          {
+            "after": 416238.0411365714,
+            "before": 416238.0411365714,
+            "field": "skew_strength_m3",
+            "key": "probe_hpol_hexapole"
+          },
+          {
+            "after": 26.678337967960122,
+            "before": 26.678337967960122,
+            "field": "percent",
+            "key": "mini_condenser"
+          },
+          {
+            "after": 29.33161022680709,
+            "before": 29.330812063631367,
+            "field": "percent",
+            "key": "objective_lens"
+          }
+        ],
+        "origin": "focus/hpol-inbox/trial-01.json",
+        "sha256": "d2c70f6dc4b9641e241793cf4761622662f96454d16351340c3d8dc3eba70b7c"
+      },
+      "seconds": 103.24926610011607,
+      "surface": {
+        "alpha95_error_from_target_mrad": -0.315061352131071,
+        "alpha95_mrad": 29.68493864786893,
+        "count": 466,
+        "current_a": 4.55078125e-06,
+        "d95_nm": 566.1748432297104,
+        "fixed_optical_axis_50pm_current_a": 0.0,
+        "fixed_optical_axis_50pm_positive_count": 0,
+        "radial_covariance_m_rad": 5.477101925084739e-10,
+        "rms_angle_mrad": 20.552644121181952,
+        "rms_radius_nm": 128.8618321430199,
+        "rms_tangent_drift_offset_nm": -1296.1109222494294,
+        "source_current_fraction": 0.455078125,
+        "surface_tail_original_rays": [
+          {
+            "centroid_radius_nm": 404.4173898144327,
+            "native_surface_neighbourhood": [
+              {
+                "optical_axis_radius_nm": 402.5847979655101,
+                "slope_angle_from_axis_mrad": 32.70594011696782,
+                "z_mm": 1599.19999955
+              },
+              {
+                "optical_axis_radius_nm": 402.57824201924194,
+                "slope_angle_from_axis_mrad": 32.705940116967824,
+                "z_mm": 1599.1999998000001
+              },
+              {
+                "optical_axis_radius_nm": 402.5729973052108,
+                "slope_angle_from_axis_mrad": 32.70594011696782,
+                "z_mm": 1599.2
+              }
+            ],
+            "source_current_a": 9.765625e-09,
+            "source_id": 916
+          },
+          {
+            "centroid_radius_nm": 404.0227719450353,
+            "native_surface_neighbourhood": [
+              {
+                "optical_axis_radius_nm": 402.09363332435834,
+                "slope_angle_from_axis_mrad": 32.24944115251992,
+                "z_mm": 1599.19999955
+              },
+              {
+                "optical_axis_radius_nm": 402.08663392389235,
+                "slope_angle_from_axis_mrad": 32.24944115251992,
+                "z_mm": 1599.1999998000001
+              },
+              {
+                "optical_axis_radius_nm": 402.08103443243186,
+                "slope_angle_from_axis_mrad": 32.24944115251992,
+                "z_mm": 1599.2
+              }
+            ],
+            "source_current_a": 9.765625e-09,
+            "source_id": 516
+          },
+          {
+            "centroid_radius_nm": 403.41032066644874,
+            "native_surface_neighbourhood": [
+              {
+                "optical_axis_radius_nm": 403.6704740464747,
+                "slope_angle_from_axis_mrad": 31.944555127652638,
+                "z_mm": 1599.19999955
+              },
+              {
+                "optical_axis_radius_nm": 403.662790668206,
+                "slope_angle_from_axis_mrad": 31.944555127652638,
+                "z_mm": 1599.1999998000001
+              },
+              {
+                "optical_axis_radius_nm": 403.6566439742193,
+                "slope_angle_from_axis_mrad": 31.944555127652638,
+                "z_mm": 1599.2
+              }
+            ],
+            "source_current_a": 9.765625e-09,
+            "source_id": 1009
+          },
+          {
+            "centroid_radius_nm": 385.7297344321533,
+            "native_surface_neighbourhood": [
+              {
+                "optical_axis_radius_nm": 387.62081154789473,
+                "slope_angle_from_axis_mrad": 31.676840055024734,
+                "z_mm": 1599.19999955
+              },
+              {
+                "optical_axis_radius_nm": 387.61328835183934,
+                "slope_angle_from_axis_mrad": 31.676840055024734,
+                "z_mm": 1599.1999998000001
+              },
+              {
+                "optical_axis_radius_nm": 387.6072698065335,
+                "slope_angle_from_axis_mrad": 31.676840055024734,
+                "z_mm": 1599.2
+              }
+            ],
+            "source_current_a": 9.765625e-09,
+            "source_id": 158
+          },
+          {
+            "centroid_radius_nm": 372.0047821626567,
+            "native_surface_neighbourhood": [
+              {
+                "optical_axis_radius_nm": 373.1188764539714,
+                "slope_angle_from_axis_mrad": 27.535415288772604,
+                "z_mm": 1599.19999955
+              },
+              {
+                "optical_axis_radius_nm": 373.12576056548806,
+                "slope_angle_from_axis_mrad": 27.535415288772608,
+                "z_mm": 1599.1999998000001
+              },
+              {
+                "optical_axis_radius_nm": 373.13126785473503,
+                "slope_angle_from_axis_mrad": 27.535415288772604,
+                "z_mm": 1599.2
+              }
+            ],
+            "source_current_a": 9.765625e-09,
+            "source_id": 620
+          }
+        ]
+      },
+      "terminal_current_a": 4.55078125e-06,
+      "topology_summary": {
+        "ac_lower to mini_condenser": {
+          "actual_population": {
+            "centers_mm": [],
+            "expected_regions": 0,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "expected_regions": 0,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "ac_upper to ac_lower": {
+          "actual_population": {
+            "centers_mm": [
+              1408.95
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1408.95
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1408.95
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1408.95
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "adapter_lens to probe_tl22_lens": {
+          "actual_population": {
+            "centers_mm": [],
+            "expected_regions": null,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "expected_regions": null,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "condenser_lens_2 to condenser_lens_3": {
+          "actual_population": {
+            "centers_mm": [
+              828.5
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              828.5
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              828.5
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              828.5
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "condenser_lens_3 to adapter_lens": {
+          "actual_population": {
+            "centers_mm": [],
+            "expected_regions": 0,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "expected_regions": 0,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "mini_condenser to specimen_entrance": {
+          "actual_population": {
+            "centers_mm": [
+              1599.1986998000002
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1599.1986998000002
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1599.1986998000002
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1599.1986998000002
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "probe_tl12_lens to ac_upper": {
+          "actual_population": {
+            "centers_mm": [],
+            "expected_regions": null,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "expected_regions": null,
+            "observed_regions": 0,
+            "radial_candidates_mm": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "probe_tl21_lens to probe_tl12_lens": {
+          "actual_population": {
+            "centers_mm": [
+              1298.8869098712446
+            ],
+            "expected_regions": null,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1298.8869098712446
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1298.8869098712446
+            ],
+            "expected_regions": null,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1298.8869098712446
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        },
+        "probe_tl22_lens to probe_tl21_lens": {
+          "actual_population": {
+            "centers_mm": [
+              1211.6333333333332
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1211.6333333333332
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1211.6333333333332
+            ],
+            "expected_regions": 1,
+            "observed_regions": 1,
+            "radial_candidates_mm": [
+              1211.6333333333332
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING"
+          }
+        }
+      }
+    }
+  ],
+  "utc": "2026-11-10T16:46:51.161246+00:00",
+  "window_nm": 15000.0
+}
