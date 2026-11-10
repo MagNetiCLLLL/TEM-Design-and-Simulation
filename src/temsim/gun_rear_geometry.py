@@ -96,8 +96,8 @@ def capture_rear_parts(assembly):
     return tuple(rows)
 
 
-def rear_electrode_request(gun, geometry):
-    """Actual conductor rows for curved fields; flat fields explicitly omit them."""
+def rear_electrode_request(gun, geometry, *, continuous_cathode=False):
+    """Resolve exposed conductor boundaries for the selected cathode geometry."""
     from temsim.physics.gun_field_environment import ensure_gun_field_environment
     if getattr(gun, "type_key", None) == "cold_feg":
         ensure_gun_field_environment(gun)
@@ -105,7 +105,7 @@ def rear_electrode_request(gun, geometry):
     ht, ext = gun.accelerator.high_tension_kv*1000., gun.extractor.voltage_kv*1000.
     lens = gun.electrostatic_lens.potential_rise_from_tip_v(ext/1000., ht/1000.)
     base = {"tip": 0., "extractor": ext, "gun_lens": lens, "ground": ht}
-    rings, connected = [], []
+    rings, connected, embedded = [], [], []
     for row in rows:
         if row["role"] == "insulator":
             continue
@@ -114,6 +114,14 @@ def rear_electrode_request(gun, geometry):
             start, stop, inner, outer = (row[k]*1e-3 for k in ("start_mm", "stop_mm", "inner_mm", "outer_mm"))
             if start < -geometry.shank_length_um*1e-6-1e-14:
                 raise ValueError("Rear gun conductor lies outside the selected curved-tip back domain")
+            # The legacy near-flat cap can envelop the entire rear assembly.
+            # Same-potential metal wholly inside the cap adds no vacuum boundary.
+            # Distinct biases and partially exposed EEE overlaps still fail.
+            if continuous_cathode and voltage == 0. and float(geometry.radius_m(stop)) >= outer:
+                embedded.append(row["key"])
+                if row["role"] == "cathode_holder":
+                    connected.append(row["key"])
+                continue
             if row["role"] == "emitter_enclosure_electrode" and float(geometry.radius_m(start)) >= inner:
                 raise ValueError("EEE bore must clear the physical tip shank")
             if row["role"] == "cathode_holder":
@@ -122,9 +130,15 @@ def rear_electrode_request(gun, geometry):
                 connected.append(row["key"])
             rings.append({"key": row["key"], "start_m": start, "stop_m": stop,
                           "inner_m": inner, "outer_m": outer, "potential_rise_v": voltage})
+    if geometry is None:
+        status = "omitted_by_infinite_planar_cathode"
+    elif embedded and not rings:
+        status = "embedded_in_continuous_cathode"
+    else:
+        status = "active_curved_conductors"
     return {"tip_origin_z_mm": 0., "parts": [dict(row) for row in rows], "rings": rings,
-            "tip_connected_keys": connected,
-            "field_status": "active_curved_conductors" if geometry is not None else "omitted_by_infinite_planar_cathode",
+            "tip_connected_keys": connected, "embedded_tip_electrode_keys": embedded,
+            "field_status": status,
             "insulators": "geometry_and_interception_only_no_dielectric_polarization"}
 
 

@@ -22,19 +22,20 @@ def surface_gun(reference="extractor", monochromator=False):
     gun.emitter.surface_model = model_from_part(module_manifest.part_data("gun/FEG.toml", "feg_tip"))
     gun.electrostatic_lens.voltage_reference = reference
     gun.extractor.voltage_kv = 4.5
-    gun.electrostatic_lens.voltage_kv = 1.1
+    # Express a legal positive tip-relative rise in each voltage reference.
+    gun.electrostatic_lens.voltage_kv = -294.4 if reference == "ground" else 1.1
     return gun
 
 
-@pytest.mark.parametrize("reference,expected_rise", [("tip", 1100.), ("extractor", 5600.), ("ground", 301100.)])
+@pytest.mark.parametrize("reference,expected_rise", [("tip", 1100.), ("extractor", 5600.), ("ground", 5600.)])
 @pytest.mark.parametrize("curvature", [0., 1e-8])
 @pytest.mark.parametrize("monochromator", [False, True])
 def test_legal_surface_switch_retains_physical_electrode_potentials_and_round_trips(reference, expected_rise, curvature, monochromator):
     gun = surface_gun(reference, monochromator)
     model = gun.emitter.surface_model
+    before_request = field_request(gun)
     before = gun.to_dict()
     before_graph = encode_instrument(gun)
-    before_request = field_request(gun)
     original_cache = object()
     gun._trace_cache = original_cache
     gun._trace_cache_key = "prior calculated state"
@@ -43,16 +44,19 @@ def test_legal_surface_switch_retains_physical_electrode_potentials_and_round_tr
     assert off.uses_geometry_electric_field
     assert off.to_dict()["integrator"]["method"] == "static_discrete_gradient"
     request = continuous_field_request(off) if curvature else closed_field_request(off)
-    # The closed field also contains the grounded outlet liner and optional
-    # Wien housing. Compare the same gun electrodes, not those extra domains.
-    by_key = {row["key"]: row for row in request["rings"]}
-    electrode_keys = ["extractor", "electrostatic_lens", *(
-        f"accelerator:{index}" for index in range(len(gun.accelerator.stages)))]
-    actual = [[by_key[key][name] for name in
-               ("start_m", "stop_m", "inner_m", "outer_m", "potential_rise_v")]
-              for key in electrode_keys]
-    np.testing.assert_array_equal(actual, [row[1:] for row in before_request["rings"]])
-    assert by_key["electrostatic_lens"]["potential_rise_v"] == expected_rise
+    # Compare every piece of each front electrode, including the recess and
+    # throat of the extractor. Rear boundaries depend on the cathode model.
+    electrode_keys = {"extractor", "electrostatic_lens", *(
+        f"accelerator:{index}" for index in range(len(gun.accelerator.stages)))}
+    fields = ("key", "start_m", "stop_m", "inner_m", "outer_m", "potential_rise_v")
+    actual = [tuple(row[name] for name in fields) for row in request["rings"] if row["key"] in electrode_keys]
+    role_keys = {gun.extractor.key: "extractor", gun.electrostatic_lens.key: "electrostatic_lens"}
+    expected = [(role_keys.get(key, key), *values) for key, *values in before_request["rings"]
+                if role_keys.get(key, key) in electrode_keys]
+    assert [row[0] for row in actual] == [row[0] for row in expected]
+    np.testing.assert_array_equal([row[1:] for row in actual], [row[1:] for row in expected])
+    lens, = (row for row in actual if row[0] == "electrostatic_lens")
+    assert lens[-1] == pytest.approx(expected_rise)
     assert off.electrostatic_lens.voltage_reference == reference
     for key, component in before["components"].items():
         if key != gun.emitter.key:
@@ -97,7 +101,7 @@ def test_invalid_off_transition_is_rejected_by_both_entry_points_without_mutatio
         expected = "voltage reference"
     elif invalid == "electrode_geometry":
         gun.extractor.mechanical_clear_bore_diameter_mm = gun.extractor.mechanical_outer_diameter_mm
-        expected = "electrode geometry"
+        expected = "Extractor requires positive thickness"
     else:
         # The surface source does not use this stored continuous-source law.
         # It becomes active when surface emission is turned off.

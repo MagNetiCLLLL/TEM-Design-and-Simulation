@@ -99,7 +99,7 @@ def test_unknown_aperture_implementation_does_not_get_transport_identity(monkeyp
     scene = scene_from(monkeypatch, tiny_field(closed_field_request(gun)), apertures=(aperture,))
     assert scene.physical_identity and scene.numerical_identity
     assert scene.transport_identity is None
-    assert scene.diagnostic_segment_stop((.001, 0., 0.), (.001, 0., .2)) == (.5, "aperture:custom")
+    assert scene.diagnostic_segment_stop((.0002, 0., 0.), (.0002, 0., .2)) == (.5, "aperture:custom")
 
 
 def test_unknown_magnetic_or_custom_electric_identity_does_not_prevent_existing_execution(monkeypatch, gun):

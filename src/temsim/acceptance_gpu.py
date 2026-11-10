@@ -6,6 +6,13 @@ allows GPU skips. Policy/emulation tests are deliberately not included.
 """
 
 GPU_TEST_FUNCTIONS = {
+    "test_hybrid_semiclassical.py": (
+        "test_cuda_array_operator_matches_fresnel_reference",
+        "test_uniform_magnetic_field_matches_paraxial_gaussian_solution",
+    ),
+    "test_probe_service.py": (
+        "test_cuda_fixed_mount_skew_winding_matches_rotated_hexapole_wave",
+    ),
     "test_completed_wave_planes.py": (
         "test_public_changed_target_reuses_committed_intermediate_after_session_restart",
     ),
@@ -324,6 +331,7 @@ def is_gpu_unavailable_reason(reason: str) -> bool:
         return False
     return reason in {
         "CUDA device unavailable", "NOT_RUN: actual CUDA device unavailable",
+        "CUDA disabled by CUDA_VISIBLE_DEVICES",
         "Optional real CUDA device unavailable",
         "CUDA hardware is unavailable",
         "No CUDA hardware", "CuPy CUDA backend unavailable", "No CUDA device",

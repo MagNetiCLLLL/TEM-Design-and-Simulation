@@ -51,17 +51,22 @@ class GunSourceDialog(QDialog):
         layout = QVBoxLayout(self)
         note = QLabel(
             "Tip apex is Z=0; rear hardware uses negative Z. Curvature is adjustable here and in Live tuning; 0 is flat. "
-            "Flat keeps an infinite planar cathode and omits rear electric effects. Curved fields include the EEE and cathode holder."
+            "Flat uses an infinite planar cathode. Curved fields include exposed rear electrodes."
         )
         note.setWordWrap(True)
         note.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(note)
         from temsim.extractor_geometry import ExtractorContour
-        acceptance = ExtractorContour.from_component(gun.extractor).straight_ray_acceptance()
-        self.extractor_acceptance = QLabel(
-            f"Extractor geometric half-angle from tip apex: {acceptance['half_angle_deg']:.3f}° "
-            f"(limiting face Z={acceptance['limiting_z_mm']:g} mm). "
-            "Straight rays without fields only. Actual launch-angle acceptance depends on position, energy and electrode voltages.")
+        try:
+            acceptance = ExtractorContour.from_component(gun.extractor).straight_ray_acceptance()
+        except ValueError as exc:
+            acceptance_text = f"Extractor geometry requires correction. {exc}"
+        else:
+            acceptance_text = (
+                f"Extractor geometric half-angle from tip apex: {acceptance['half_angle_deg']:.3f}° "
+                f"(limiting face Z={acceptance['limiting_z_mm']:g} mm). "
+                "Straight rays without fields only. Actual acceptance depends on launch position, energy and electrode voltages.")
+        self.extractor_acceptance = QLabel(acceptance_text)
         self.extractor_acceptance.setWordWrap(True)
         self.extractor_acceptance.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(self.extractor_acceptance)

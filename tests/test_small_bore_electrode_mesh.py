@@ -27,7 +27,8 @@ def test_tiny_bore_preserves_faces_and_local_resolution_with_bounded_growth(buil
         assert request == original
         assert sizes[-1] < MAX_VERTICES
         assert np.all(np.diff(r) > 0) and np.all(np.diff(z) > 0)
-        ring = request["rings"][0]
+        ring = min((row for row in request["rings"] if row["key"] == "extractor"),
+                   key=lambda row: row["inner_m"])
         assert ring["inner_m"] == diameter*.5e-3
         for row in request["rings"]:
             assert row["inner_m"] in r and row["outer_m"] in r
@@ -50,7 +51,7 @@ def test_closed_small_bore_field_keeps_equipotentials_and_strict_domain():
     field = closed.build_closed_gun_field(gun, cells_per_bore=4)
     assert field.report["linear_residual"] <= 1e-9
     assert field.report["vertices"] < MAX_VERTICES
-    assert field.request["rings"][0]["inner_m"] == 5e-10
+    assert min(row["inner_m"] for row in field.request["rings"] if row["key"] == "extractor") == 5e-10
     for ring in field.request["rings"]:
         if ring["start_m"] == ring["stop_m"]:
             continue
@@ -95,7 +96,7 @@ def test_grounded_refinement_rejects_unrepresentable_counts_before_integer_conve
             [("extractor", 1e-300, 2e-300, 1e-300, .01, 4000.)], 8)
 
 
-@pytest.mark.parametrize("cells,expected_shape", [(0, (1030, 2765)), (8, (1055, 3208)), (64, (1523, 8077))])
+@pytest.mark.parametrize("cells,expected_shape", [(0, (1033, 2773)), (8, (1078, 3384)), (64, (1865, 10137))])
 def test_supported_surface_resolution_above_closed_field_budget_still_constructs_axes(monkeypatch, cells, expected_shape):
     """Capture immediately before tensor allocation; do not run a large FEM."""
     from dataclasses import replace
@@ -119,7 +120,7 @@ def test_supported_surface_resolution_above_closed_field_budget_still_constructs
     monkeypatch.setattr(np, "meshgrid", capture)
     with pytest.raises(Captured):
         grounded.GroundedTipField(request)
-    assert tuple(map(len, axes)) == expected_shape  # Existing supported HEAD grids.
+    assert tuple(map(len, axes)) == expected_shape  # Current recessed extractor and rear conductors.
     r, z = axes
     assert len(r)*len(z) > MAX_VERTICES
     assert np.isfinite(r).all() and np.isfinite(z).all()

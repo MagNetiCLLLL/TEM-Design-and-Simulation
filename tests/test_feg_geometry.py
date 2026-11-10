@@ -311,6 +311,22 @@ def test_continuous_curvature_uses_the_same_rear_electrodes(state):
     assert any(r["key"] == "feg_emitter_enclosure" for r in request["rings"])
 
 
+def test_weak_curvature_retains_rear_hardware_and_rejects_conflicting_bias(state):
+    gun = state.electron_gun
+    gun.emitter.curvature_nm_inv = 1e-8
+    request = closed_field_request(gun)
+    rear = request["rear_gun"]
+    assert request["cathode_geometry"]["apex_radius_nm"] == 1e8
+    assert rear["field_status"] == "embedded_in_continuous_cathode"
+    assert set(rear["embedded_tip_electrode_keys"]) == {"feg_emitter_enclosure", "feg_cathode_holder"}
+    assert {part["key"] for part in rear["parts"]} == {
+        "feg_emitter_enclosure", "feg_cathode_holder", "feg_rear_insulator"}
+    assert not rear["rings"]
+    gun._gun_rear_parts[0]["bias_kv"] = .25
+    with pytest.raises(ValueError, match="EEE bore"):
+        closed_field_request(gun)
+
+
 
 def test_static_eee_bias_changes_vacuum_field_with_other_electrodes_fixed(state):
     gun = state.electron_gun

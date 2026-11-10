@@ -478,8 +478,10 @@ def _gpu_skip_receipt():
     return receipt, node
 
 
-def test_cpu_lane_may_report_reviewed_gpu_absence_without_claiming_gpu_success():
+@pytest.mark.parametrize("reason", ["CUDA device unavailable", "CUDA disabled by CUDA_VISIBLE_DEVICES"])
+def test_cpu_lane_may_report_reviewed_gpu_absence_without_claiming_gpu_success(reason):
     receipt, node = _gpu_skip_receipt()
+    receipt["skip_reasons"][node] = f"Skipped: {reason}"
     assert evaluate("classical", receipt)["exit_code"] == 1
     report = evaluate("classical", receipt, allow_gpu_skips=True)
     assert report["exit_code"] == 0

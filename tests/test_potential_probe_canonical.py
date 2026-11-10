@@ -17,6 +17,7 @@ from temsim.instrument_snapshot import encode_instrument, decode_instrument
 from temsim.immutable_json import json_digest
 from temsim.optics.aberration_basis import CARTESIAN_NAMES, predict_displacement_m
 from temsim.optics.corrector_channels import CHANNELS, channel_control_specs, _control_values, _set_controls
+from temsim.physics.analytic_potential_domain import AnalyticPotentialDomain
 from temsim.physics.potential_aberrations import (
     canonical_coordinates, capture_canonical_pupil, measure_canonical_aberrations,
     fit_canonical_intercepts,
@@ -132,12 +133,18 @@ def _continued_candidate(state, original, reference, baseline, changed_keys):
     altered = {row.source_id for row in snapshot.contributions if row.potential.digest != before[row.source_id]}
     assert altered and all(any(source == key or source.startswith(key+":") for key in changed_keys)
                            for source in altered), altered
-    def faces(captured):
-        return [row.potential.base.field.native_support_mm[0]*.001 for row in captured.contributions
-                if row.source_id in altered]
-    first_effect = min(faces(original)+faces(snapshot))
+    # Only a documented compact exterior can certify a reusable prefix.
+    # Round Gaussian lenses extend over the full traced interval.
+    affected_potentials = [row.potential for captured in (original, snapshot)
+                           for row in captured.contributions if row.source_id in altered]
+    first_effect = min(
+        potential.base.field.field_support_mm[0] * 1e-3
+        if isinstance(potential, AnalyticPotentialDomain) and potential.to_metadata()["known_zero_exterior"]
+        else -np.inf
+        for potential in affected_potentials
+    )
     saved_z = baseline["nominal_trajectory_z_m"]
-    index = int(np.flatnonzero(saved_z < first_effect)[-1])
+    index = max(0, int(np.searchsorted(saved_z, first_effect)) - 1)
     start = saved_z[index]
     run_nodes = np.unique(np.r_[start, nodes[nodes > start]])
     run_stops = tuple((int(np.flatnonzero(run_nodes == nodes[node])[0]), x, y, radius)
@@ -155,6 +162,34 @@ def _continued_candidate(state, original, reference, baseline, changed_keys):
     fitted["snapshot_digest"] = snapshot.numerical_digest
     fitted["changed_source_ids"] = sorted(altered)
     return fitted
+
+
+def test_changed_gaussian_lens_replays_from_the_entrance(monkeypatch):
+    from dataclasses import replace
+    from types import SimpleNamespace
+    from test_high_order_round_lens import gaussian_lens
+
+    lens = gaussian_lens(axial_domain="gaussian_all_z")
+    before = SimpleNamespace(contributions=(SimpleNamespace(source_id=lens.source_id, potential=lens),))
+    after = SimpleNamespace(contributions=(SimpleNamespace(
+        source_id=lens.source_id, potential=replace(lens, radial_order=7)),))
+    nodes = np.array([-.2, -.1, .0, .1])
+    phase = np.arange(16.).reshape(4, 1, 4)
+    baseline = {"nominal_trajectory_z_m": nodes, "nominal_trajectory_xy_slopes": phase}
+    monkeypatch.setattr(__name__ + "._capture", lambda _: (after, nodes, ()))
+
+    class ReplayedEntrance(Exception):
+        pass
+
+    def trace(snapshot, entrance, run_nodes, **_):
+        assert snapshot is after
+        np.testing.assert_array_equal(entrance, phase[0])
+        np.testing.assert_array_equal(run_nodes, nodes)
+        raise ReplayedEntrance
+
+    monkeypatch.setattr(__name__ + ".trace_potential_rays", trace)
+    with pytest.raises(ReplayedEntrance):
+        _continued_candidate(None, before, {"energy_ev": 300000.}, baseline, (lens.source_id,))
 
 
 @lru_cache(maxsize=2)
@@ -189,10 +224,11 @@ def _response(mode):
 
 
 @pytest.mark.parametrize("mode", MODES)
-def test_actual_four_channels_keep_all_fourteen_drives_and_cross_coupling(mode, record_testsuite_property):
+def test_actual_four_channels_keep_all_twelve_drives_and_cross_coupling(mode, record_testsuite_property):
     state, snapshot, reference, baseline = _qualified(mode)
     specs, base, steps, rows, full, half, intercept = _response(mode)
-    assert len(specs) == 14 and half.shape == (15, 14)
+    assert len({(spec.key, spec.field) for spec in specs}) == len(specs) == 12
+    assert half.shape == (len(CARTESIAN_NAMES), 12)
     assert np.isfinite(half).all()
     pupil = np.asarray(reference["holdout_reference_pupil"])
     change = np.array([np.linalg.norm(predict_displacement_m(pupil, column))
@@ -200,8 +236,9 @@ def test_actual_four_channels_keep_all_fourteen_drives_and_cross_coupling(mode, 
     response = np.array([np.linalg.norm(predict_displacement_m(pupil, column))
                         for column in (half*steps).T])
     channels, offset = {}, 0
-    for channel in CHANNELS:
+    for channel, expected_count in zip(CHANNELS, (4, 2, 4, 2)):
         count = len(channel_control_specs(state, "probe", channel))
+        assert count == expected_count
         target = [CARTESIAN_NAMES.index(name) for name in
                   (("A1_x", "A1_y") if channel.startswith("a1") else ("A2_x", "A2_y"))]
         matrix = half[np.ix_(target, range(offset, offset+count))]*steps[offset:offset+count]
@@ -219,7 +256,7 @@ def test_actual_four_channels_keep_all_fourteen_drives_and_cross_coupling(mode, 
         "per_step_image_response_norm_m": response.tolist(), "channels": channels,
         "max_gradient_holdout_rms_m": max(v["gradient_holdout_rms_m"] for row in rows for v in row),
         "calibration_applied_to_hardware": False, "OEM_assignment": False}
-    record_testsuite_property("actual_canonical_14_drive_response_"+mode, json.dumps(evidence))
+    record_testsuite_property("actual_canonical_12_drive_response_"+mode, json.dumps(evidence))
     assert np.all(response > 0.), evidence
     assert np.max(change) < 1e-9, evidence
     assert evidence["max_gradient_holdout_rms_m"] < 1e-9, evidence

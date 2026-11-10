@@ -296,11 +296,15 @@ def _downstream(state, runtime, particles, stop_mm, request, *, start_z_mm=None)
 
 def simulate_hybrid(state, request: HybridRequest, *, cancelled=lambda: False, progress_callback=None):
     """Public CUDA-gated workflow. No arbitrary source arrays or phase guesses."""
-    request.validate()
     from temsim.physics.compute_backend import require_coherent_cuda
-    require_coherent_cuda(request.wave.wave_grid.compute_backend)
+    from temsim.physics.tip_wave_pipeline import require_tip_wave_cuda, simulate_tip_wave
+
+    wave_request = replace(request.wave, stop="gun_exit" if request.coherent_start_z_mm is None else "plane",
+        observation_z_mm=request.coherent_start_z_mm)
+    request = replace(request, wave=require_tip_wave_cuda(wave_request))
     require_coherent_cuda(getattr(state, "acceleration_backend", "Auto"),
         acceleration_enabled=getattr(state, "acceleration_enabled", True))
+    request.validate()
     import cupy as cp
     from temsim.simulation_modes import is_unified
     if not is_unified(state):
@@ -346,10 +350,7 @@ def simulate_hybrid(state, request: HybridRequest, *, cancelled=lambda: False, p
         progress_callback(0, 1, "Tracing the original positive-current gun population")
     gun_trace = trace_source_to_exit(working, count=request.source_particles)
     source = _source_count(gun_trace)
-    from temsim.physics.tip_wave_pipeline import simulate_tip_wave
-    wave_request = replace(request.wave, stop="gun_exit" if request.coherent_start_z_mm is None else "plane",
-        observation_z_mm=request.coherent_start_z_mm)
-    initial = simulate_tip_wave(working, wave_request, cancelled=cancelled, progress_callback=progress_callback).checkpoint
+    initial = simulate_tip_wave(working, request.wave, cancelled=cancelled, progress_callback=progress_callback).checkpoint
     runtime.require_state(working)
     incident = _column(initial, runtime, request, xp=cp, cancelled=cancelled, progress_callback=progress_callback)
     outgoing = _material(working, incident, runtime, request, cancelled=cancelled, progress_callback=progress_callback)

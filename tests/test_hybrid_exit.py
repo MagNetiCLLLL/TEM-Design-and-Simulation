@@ -58,6 +58,25 @@ def test_cuda_guard_precedes_source_or_field_work(monkeypatch):
         simulate_hybrid(object(), HybridRequest("Camera", HybridGrid(500., 32, 20.)))
 
 
+@pytest.mark.parametrize("setting", ["gun", "radial_column", "wave_grid"])
+def test_explicit_cpu_wave_settings_are_rejected_before_hybrid_preparation(monkeypatch, setting):
+    from temsim.physics import compute_backend
+
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+                        lambda: compute_backend.BackendCapability(True, "mock CUDA device"))
+    monkeypatch.setattr("temsim.instrument_snapshot.capture_instrument_snapshot",
+                        lambda *_: pytest.fail("Rejected wave request reached instrument capture"))
+    request = HybridRequest("camera", HybridGrid(500., 32, 20.))
+    cpu_settings = {
+        "gun": replace(request.wave.gun, compute_backend="CPU"),
+        "radial_column": replace(request.wave.radial_column, backend="cpu"),
+        "wave_grid": replace(request.wave.wave_grid, acceleration_enabled=False),
+    }
+    wave = replace(request.wave, **{setting: cpu_settings[setting]})
+    with pytest.raises(compute_backend.GPUExecutionError, match="Coherent calculations currently require"):
+        simulate_hybrid(object(), replace(request, wave=wave))
+
+
 def test_original_count_cannot_be_satisfied_by_duplicates_or_exit_resampling():
     from types import SimpleNamespace
     def trace(ids):

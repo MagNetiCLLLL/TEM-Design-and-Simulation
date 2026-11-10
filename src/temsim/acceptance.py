@@ -343,6 +343,25 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_probe_waist_solver.py")),
         },
     },
+    "instrument-regressions": {
+        "description": "FEG geometry, coupled controls and hybrid calculation regressions",
+        "evidence_kind": "geometry-operator-and-software-contracts",
+        "criteria": {
+            "instrument-regressions/IR-01": ("Physical gun, shared coil limits, pose and request handling", (
+                "tests/test_feg_geometry.py", "tests/test_ac_dp12_shared_limits.py",
+                "tests/test_column_azimuth.py", "tests/test_high_accuracy_step_policy.py",
+                "tests/test_unified_sampled_history.py")),
+            "instrument-regressions/IR-02": ("Probe response, beam statistics and assembly studies", (
+                "tests/test_assembly_error_study.py", "tests/test_assembly_error_study_gui.py",
+                "tests/test_beam_quantile_boundary.py", "tests/test_crossover_aberrations.py",
+                "tests/test_joint_probe_search.py", "tests/test_joint_si110_angular_screen.py",
+                "tests/test_physical_a5_calibration.py", "tests/test_probe_baseline_reproduction.py",
+                "tests/test_probe_channel_response.py", "tests/test_probe_service.py")),
+            "instrument-regressions/IR-03": ("Hybrid admission, diffraction and projected specimen density", (
+                "tests/test_hybrid_exit.py", "tests/test_hybrid_pipeline.py",
+                "tests/test_hybrid_semiclassical.py", "tests/test_projected_gaussian_density.py")),
+        },
+    },
     "column-field-pilot": {
         "description": "Actual static C3 and Probe canonical response qualification",
         "evidence_kind": "controlled-canonical-pupil-and-frozen-field-convergence",

@@ -153,7 +153,7 @@ def test_curved_requests_bind_geometry_and_do_not_admit_a_planar_substitution(cu
     with pytest.raises(ValueError, match="curved"):
         build_closed_gun_field(curved_gun)
     for name, value in (("curvature_nm_inv", 0.02), ("tip_cone_half_angle_deg", 6.0),
-                        ("mechanical_length_mm", 1.2)):
+                        ("mechanical_length_mm", 7.2)):
         changed = copy.deepcopy(curved_gun)
         setattr(changed.emitter, name, value)
         assert request_digest(continuous_field_request(changed)) != request_digest(original)

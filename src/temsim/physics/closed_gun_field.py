@@ -212,7 +212,7 @@ def closed_field_request(gun, *, liner_segments=None,
         request["implementation_sha256"]["continuous_curvature_conductor.py"] = hashlib.sha256(
             Path(inspect.getfile(type(conductor))).read_bytes()).hexdigest()
     from temsim.gun_rear_geometry import rear_electrode_request
-    rear = rear_electrode_request(gun, conductor)
+    rear = rear_electrode_request(gun, conductor, continuous_cathode=conductor is not None)
     request["rear_gun"] = rear
     request["rings"].extend(rear["rings"])
     if max(row["outer_m"] for row in request["rings"]) >= request["domain"]["outer_radius_m"]:

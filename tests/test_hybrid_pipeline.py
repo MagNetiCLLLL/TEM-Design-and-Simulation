@@ -30,7 +30,7 @@ def test_hybrid_binds_gun_environment_before_immutable_capture(monkeypatch):
     state = default_state()
     state.simulation_mode = "unified"
     before = capture_instrument_snapshot(state).digest
-    monkeypatch.setattr("temsim.physics.compute_backend.require_coherent_cuda", lambda *a, **k: None)
+    monkeypatch.setattr("temsim.physics.compute_backend.require_coherent_cuda", lambda *a, **k: "Require GPU")
     monkeypatch.setitem(sys.modules, "cupy", np)
     def capture(working, **kwargs):
         assert hasattr(working.electron_gun, "_vacuum_regions")
@@ -54,7 +54,7 @@ def test_dynamic_scan_is_rejected_before_emission_without_freezing(monkeypatch):
     state = default_state()
     state.simulation_mode = "unified"
     before = capture_instrument_snapshot(state).digest
-    monkeypatch.setattr("temsim.physics.compute_backend.require_coherent_cuda", lambda *a, **k: None)
+    monkeypatch.setattr("temsim.physics.compute_backend.require_coherent_cuda", lambda *a, **k: "Require GPU")
     monkeypatch.setitem(sys.modules, "cupy", np)
     dynamic = SimpleNamespace(dynamic_coils=(
         SimpleNamespace(drives=(SimpleNamespace(key="ac_deflector"),)),

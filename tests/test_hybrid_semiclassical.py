@@ -79,8 +79,9 @@ def test_frame_cancellation_and_memory_are_explicit():
 def test_cuda_array_operator_matches_fresnel_reference():
     """Bounded GPU mathematical operator; no finite-source instrument trial."""
     from temsim.physics.compute_backend import coherent_cuda_capability, require_coherent_cuda
-    if not coherent_cuda_capability().available:
-        pytest.skip("CUDA operator validation requires an available device")
+    capability = coherent_cuda_capability()
+    if not capability.available:
+        pytest.skip(capability.detail)
     require_coherent_cuda("Require GPU")
     import cupy as cp
     from scipy.constants import h
@@ -101,8 +102,9 @@ def test_uniform_magnetic_field_matches_paraxial_gaussian_solution():
     """Bounded operator comparison with the analytic solenoid oscillator."""
     from scipy.constants import e, hbar
     from temsim.physics.compute_backend import coherent_cuda_capability, require_coherent_cuda
-    if not coherent_cuda_capability().available:
-        pytest.skip("CUDA operator validation requires an available device")
+    capability = coherent_cuda_capability()
+    if not capability.available:
+        pytest.skip(capability.detail)
     require_coherent_cuda("Require GPU")
     import cupy as cp
     initial = gaussian_mode(n=96)
