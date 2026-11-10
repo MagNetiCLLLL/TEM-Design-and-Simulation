@@ -636,7 +636,6 @@ def _apply_operating_mode_pair(
             state.condenser_aperture_3.maximum_radius_mm
         )
 
-    state.electron_gun.electrostatic_lens.voltage_kv = 1.2
     state.sync_objective()
     if bool(getattr(getattr(state, "nanopulser", None), "installed", False)):
         from temsim.optics.condenser_recalibration import (
@@ -693,8 +692,6 @@ def apply_operating_mode_pair(
         (state, "illumination_mode", state.illumination_mode),
         (state, "nanoprobe_range", state.nanoprobe_range),
         (state, "projector_mode", state.projector_mode),
-        (state.electron_gun.electrostatic_lens, "voltage_kv",
-         state.electron_gun.electrostatic_lens.voltage_kv),
         (state.condenser_aperture_3, "radius_mm", state.condenser_aperture_3.radius_mm),
     ))
     for device in (*getattr(state, "stem_detectors", ()),
