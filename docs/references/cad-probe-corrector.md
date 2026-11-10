@@ -66,7 +66,7 @@ The table describes current material-model coverage; “modelled” does not mea
 | DP11 | 4 windings, currently between HP1 and TL12 | Adds the same five passive regions; retains separate material components and a separate STEP |
 | ADL / TL22 / TL21 / TL12 | Each unit contains upper/lower pole shoes, an annular excitation winding, return yoke and housing | Already follows other round lenses' material-subpart format; not redesigned this round |
 | QPH1/2, HPC/QPC, HPol/QPol | Optical channels exist; actual coil hosts remain unconfirmed | No independent material solids; names cannot establish pole counts or justify independent iron cores |
-| DP12 | Virtual alignment reference | No extra deflector material solid; the downstream AC scan coil is another modelled component |
+| DP12 | CEOS control/reference alias of the AC Scan Coil, confirmed by the user on 2026-11-07 | One physical AC scan-coil host; the DP12 software reference adds no duplicate material solid |
 
 The 20 original copper windings in the five DPH/DP groups remain unchanged. The main hexapole stage's 66-solid assembly and checks are historical baselines. Adding 5 passive regions per group increases the recipe from 66 to 91 solids; old checks cannot validate the additions.
 

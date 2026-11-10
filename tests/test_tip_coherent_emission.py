@@ -39,6 +39,52 @@ def test_tip_is_explicit_and_never_uses_exit_voltage(gun):
         generate_tip_emission(gun, numerics)
 
 
+def test_length_modes_reconstruct_mutual_coherence_and_keep_absolute_weights(gun):
+    """An independent cross-spectral-density sum checks the physical length."""
+    gun.emitter.coherence = TipCoherence(transverse_coherence_length_nm=5.)
+    numerics = TipWaveNumerics(grid_pixels=256, energy_samples=1,
+        mode_tail_tolerance=1e-10, maximum_modes=1024)
+    emission = generate_tip_emission(gun, numerics)
+    modes = tuple(emission.modes())
+    i, j = (128, 128), (128, 135)
+    mutual = sum(m.weight_per_reference_electron*m.plane.amplitude[i]
+                 *m.plane.amplitude[j].conjugate() for m in modes)
+    intensities = [sum(m.weight_per_reference_electron*abs(m.plane.amplitude[index])**2
+                      for m in modes) for index in (i, j)]
+    separation = (j[1]-i[1])*modes[0].plane.basis_m[0, 0]
+    expected = math.exp(-.5*(separation/5e-9)**2)
+    assert abs(mutual)/math.sqrt(np.prod(intensities)) == pytest.approx(expected, abs=3e-10)
+    assert sum(m.weight_per_reference_electron for m in modes) == pytest.approx(
+        1-emission.record["omitted_probability"], abs=2e-14)
+    row = emission.record["energy_modes"][0]
+    gun.emitter.emission_energy_ev = 8.
+    other = generate_tip_emission(gun, numerics).record["energy_modes"][0]
+    assert row["eigenvalue_ratio"] == pytest.approx(other["eigenvalue_ratio"], abs=2e-16)
+    assert other["incoherent_angle_rms_mrad"] < row["incoherent_angle_rms_mrad"]
+    assert emission.reference_current_a == gun.emitter.emitted_current_a
+
+
+@pytest.mark.parametrize("value", [0., -1., True, np.inf, np.nan])
+def test_invalid_transverse_coherence_length_is_rejected(value):
+    with pytest.raises(ValueError):
+        TipCoherence(transverse_coherence_length_nm=value).validate()
+
+
+def test_length_parameterisation_keeps_energy_bound_and_rejects_conflicts():
+    from temsim.optics.electron_gun.tip_source_domain import validate_tip_geometric_domain
+    with pytest.raises(ValueError, match="not both"):
+        TipCoherence(transverse_coherence_length_nm=20., incoherent_angle_rms_mrad=1.).validate()
+    source = FieldEmissionGun()
+    source.emitter.coherence = TipCoherence(boundary_model=DRIVEN_GAUSSIAN_SCHELL,
+        transverse_coherence_length_nm=20.)
+    report = validate_tip_geometric_domain(source.emitter)
+    assert report["minimum_evaluated_energy_ev"] == source.emitter.minimum_kinetic_energy_ev
+    assert report["support_radius_over_p"] < 1
+    source.emitter.coherence = replace(source.emitter.coherence, transverse_coherence_length_nm=1.)
+    with pytest.raises(ValueError, match="forward support"):
+        validate_tip_geometric_domain(source.emitter)
+
+
 def test_complex_tip_boundary_definition_does_not_admit_impossible_rays():
     from temsim.optics.electron_gun.tip_source_domain import (
         TipSourceDomainError, inspect_tip_source_domain, validate_tip_boundary,

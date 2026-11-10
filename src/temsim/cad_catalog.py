@@ -25,6 +25,10 @@ def part_solids(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
     from temsim.cad_objective_sleeves import sleeve_solids
     from temsim.cad_objective_upper_hardware import objective_upper_hardware_solids
+    from temsim.gun_rear_geometry import rear_gun_solids
+    values = rear_gun_solids(part)
+    if values is not None:
+        return values
     if non_material_role(part):
         return ()
     values = tube_solids(part)
@@ -64,6 +68,10 @@ def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.cad_tl22_lens_hardware import tl22_lens_hardware_solids
     from temsim.cad_objective_sleeves import sleeve_solids
     from temsim.cad_objective_upper_hardware import objective_upper_hardware_solids
+    from temsim.gun_rear_geometry import rear_gun_solids
+    values = rear_gun_solids(part)
+    if values is not None:
+        return values
     values = tube_solids(part)
     if values is not None:
         return values

@@ -123,6 +123,7 @@ def test_tip_entry_passes_strict_policy_to_substituted_execution(fake_cuda, monk
         pipeline.TipWaveRequest().wave_grid, compute_backend="Prefer GPU"))
     executed = pipeline.simulate_tip_wave(object(), original)
     assert executed.wave_grid.compute_backend == "Require GPU"
+    assert executed.gun.compute_backend == "Require GPU"
     assert executed.radial_column.backend == "cuda"
     assert original.wave_grid.compute_backend == "Prefer GPU"
     assert original.radial_column.backend == "cuda"
@@ -139,6 +140,12 @@ def test_explicit_cpu_radial_request_is_not_silently_rewritten(monkeypatch):
     with pytest.raises(backend.GPUExecutionError, match="CUDA radial transforms"):
         pipeline.require_tip_wave_cuda(request)
     assert request.radial_column.backend == "cpu"
+
+
+def test_explicit_cpu_gun_request_is_rejected(fake_cuda):
+    request = pipeline.TipWaveRequest(gun=replace(pipeline.TipWaveRequest().gun, compute_backend="CPU"))
+    with pytest.raises(backend.GPUExecutionError, match="Enable acceleration"):
+        pipeline.require_tip_wave_cuda(request)
 
 
 @pytest.mark.parametrize("entry", ["tem", "stem", "reprojection"])

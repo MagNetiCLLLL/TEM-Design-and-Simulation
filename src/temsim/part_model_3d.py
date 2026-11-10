@@ -349,6 +349,7 @@ def _legacy_part_meshes(part, by_key, count, aperture_index=0, runtime=None):
                 or part.get("mechanical_tl22_end_structure")
                 or part.get("mechanical_transfer_end_structure")
                 or part.get("hexapole_support_profile")
+                or part.get("rear_gun_role")
                 or part.get("branch_path_only") or part.get("mechanical_profile") in {
                 "transverse_eds_detector_array", "objective_electronics_sleeve"}):
             from temsim.cad_mesh import annotate_material_faces

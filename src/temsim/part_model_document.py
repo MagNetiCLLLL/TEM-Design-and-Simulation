@@ -35,8 +35,10 @@ def _validate_internal_details(parts, geometry=None):
     from temsim.cad_tl22_lens_hardware import validate_tl22_lens_hardware
     from temsim.cad_objective_upper_hardware import validate_objective_upper_hardware
     from temsim.cad_probe_hexapole_support import validate_hexapole_support
+    from temsim.gun_rear_geometry import rear_part_dimensions
     by_key = {part["key"]: part for part in parts}
     for part in parts:
+        rear_part_dimensions(part)
         validate_gun_electrode_geometry(part)
         validate_pole_face_land_geometry(part)
         validate_detector_footprint(part)
@@ -245,6 +247,8 @@ class PartModelDocument:
                 candidate_document = reflow(self.document, updated, self.path, owners=self._subassembly_owners)
                 candidate_document = resolve_field_hardware_parts(candidate_document)
                 _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+                from temsim.gun_rear_geometry import validate_rear_gun_document
+                validate_rear_gun_document(candidate_document)
                 self.document = candidate_document
                 self._remember()
                 return

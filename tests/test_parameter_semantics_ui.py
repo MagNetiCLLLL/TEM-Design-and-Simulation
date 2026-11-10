@@ -1,5 +1,4 @@
 """Unified meaning/impact explanations preserve the actual parameter editors."""
-
 from copy import deepcopy
 from types import SimpleNamespace
 
@@ -244,3 +243,27 @@ def test_physical_layout_selection_uses_same_semantics_without_plot_or_signal_ch
     assert view._highlight is highlight
     assert view.plot.getViewBox().viewRange() == limits
     assert emitted == []
+
+
+def test_control_panel_explains_and_edits_column_directions(qtbot):
+    from dataclasses import replace
+    from temsim.assembly_catalog import AssemblyCatalog
+    from temsim.optics.column import default_state
+    from temsim.runtime_parameters import runtime_targets
+    state = default_state()
+    catalog = AssemblyCatalog()
+    catalog.apply(state, replace(catalog.default_selection(), recording="Energy Filter",
+                                 beam_blanker="Electrostatic beam blanker"))
+    targets = runtime_targets(state)
+    panel = ParameterPanel()
+    qtbot.addWidget(panel)
+    for key, field, value, phrase in (("nanopulser_deflector", "azimuth_deg", 90., "column +X"),
+                                     ("energy_filter", "alignment_x_mrad", .12, "column +X"),
+                                     ("energy_filter", "alignment_y_mrad", -.34, "column +Y")):
+        target = targets[key]
+        panel.set_context(target.label, target, None, (), None)
+        widget = panel._quick_widgets[field]
+        assert phrase in widget.toolTip()
+        with qtbot.waitSignal(panel.runtime_changed):
+            widget.setValue(value)
+        assert getattr(target.obj, field) == pytest.approx(value)

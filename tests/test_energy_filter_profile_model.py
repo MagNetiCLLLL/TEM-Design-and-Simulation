@@ -1,4 +1,6 @@
 """Profiles retain all executed filter excitation and independent references."""
+import tomli_w
+from temsim.energy_filter_coordinates import ENTRANCE_COORDINATE_CONVENTION
 from copy import deepcopy
 from dataclasses import replace
 import tomllib
@@ -146,3 +148,26 @@ def test_profile_writer_rejects_installation_mismatch_before_overwriting(tmp_pat
     with pytest.raises(ValueError, match="energy_filter.enabled"):
         save_profile(path, state, selection)
     assert path.read_text(encoding="utf-8") == "existing profile"
+
+
+def test_filter_profile_roundtrip_and_untagged_migration_keep_physical_alignment(tmp_path):
+    state, selection = configured_filter()
+    state.energy_filter.alignment_x_mrad = .23
+    state.energy_filter.alignment_y_mrad = -.17
+    path = tmp_path / "filter.toml"
+    save_profile(path, state, selection)
+    document = tomllib.loads(path.read_text(encoding="utf-8"))
+    assert document["coordinate_conventions"]["energy_filter_entrance"] == ENTRANCE_COORDINATE_CONVENTION
+    _, values = read_profile(path)
+    assert values["energy_filter"]["alignment_x_mrad"] == .23
+    document.pop("coordinate_conventions")
+    path.write_text(tomli_w.dumps(document), encoding="utf-8")
+    original = path.read_bytes()
+    _, values = read_profile(path)
+    assert path.read_bytes() == original
+    apply_profile_values(state, values)
+    assert state.energy_filter.alignment_x_mrad == -.23
+    assert state.energy_filter.alignment_y_mrad == -.17
+    save_profile(path, state, selection)
+    _, values = read_profile(path)
+    assert values["energy_filter"]["alignment_x_mrad"] == -.23

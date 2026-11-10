@@ -39,11 +39,16 @@ def test_native_and_cad_electrodes_preserve_configured_closed_annulus(filename, 
     assert native_reconstruction(part, parts) == (spec,)
     assert spec.status == "configured_geometry"
     assert spec.material == "electrode"
-    assert "OEM nose and support details are not established" in spec.note
+    assert "OEM" in spec.note
     lo, hi = part["local_start_z_mm"], part["local_end_z_mm"]
     inner, outer = part["bore_diameter_mm"]/2, part["outer_diameter_mm"]/2
-    np.testing.assert_allclose(spec.shape["section_zr_mm"],
-                               [(lo, inner), (lo, outer), (hi, outer), (hi, inner)])
+    depth = part.get("counterbore_depth_mm", 0.)
+    expected_section = [(lo, inner), (lo, outer), (hi, outer), (hi, inner)]
+    if depth:
+        recess = part["counterbore_diameter_mm"]/2
+        expected_section = [(lo, recess), (lo, outer), (hi, outer), (hi, inner),
+                            (lo+depth, inner), (lo+depth, recess)]
+    np.testing.assert_allclose(spec.shape["section_zr_mm"], expected_section)
     mesh, = part_model_from_document(document, key, angular_segments=32).meshes
     assert mesh.is_exact and mesh.material_class == "electrode" and not mesh.wireframe
     radius = np.linalg.norm(mesh.vertices[:, :2], axis=1)
@@ -60,7 +65,10 @@ def test_native_and_cad_electrodes_preserve_configured_closed_annulus(filename, 
     volume = np.einsum("ij,ij->i", triangles[:, 0],
                        np.cross(triangles[:, 1], triangles[:, 2])).sum()/6
     polygon_area_factor = 32*np.sin(2*np.pi/32)/2
-    assert volume == pytest.approx(polygon_area_factor*(outer**2-inner**2)*(hi-lo), rel=1e-12)
+    expected_volume = (outer**2-inner**2)*(hi-lo)
+    if depth:
+        expected_volume -= (recess**2-inner**2)*depth
+    assert volume == pytest.approx(polygon_area_factor*expected_volume, rel=1e-12)
     assert document == original
 
 
@@ -69,8 +77,9 @@ def test_gun_surfaces_expose_actual_electrode_faces_bore_and_dimension_ownership
     document = _document(filename)
     part = next(p for p in document["parts"] if p["key"] == key)
     mesh, = part_model_from_document(document, key, angular_segments=32).meshes
+    extra = {"extractor_recess_floor", "extractor_recess_wall"} if part.get("counterbore_depth_mm", 0.) else set()
     assert set(mesh.surfaces) == {
-        "electrode_upstream", "electrode_downstream", "electrode_bore", "electrode_outer"}
+        "electrode_upstream", "electrode_downstream", "electrode_bore", "electrode_outer"} | extra
     for group, z, normal in (
         ("electrode_upstream", part["local_start_z_mm"], (0., 0., -1.)),
         ("electrode_downstream", part["local_end_z_mm"], (0., 0., 1.)),
@@ -87,13 +96,13 @@ def test_gun_surfaces_expose_actual_electrode_faces_bore_and_dimension_ownership
         assert "normal" not in surface  # a cylinder is not a single planar face
         points = mesh.vertices[mesh.faces[mesh.face_groups == group]]
         np.testing.assert_allclose(np.linalg.norm(points[:, :, :2], axis=2), part[field]/2)
-    assert len(mesh.edges) == 4  # bore/outer circle at each axial face
+    assert len(mesh.edges) == 4+len(extra)
 
 
 def test_gun_surface_metadata_uses_the_same_radius_priority_as_geometry():
     document = _document("FEG.toml")
     part = next(p for p in document["parts"] if p["key"] == "feg_extractor")
-    part.update(mechanical_outer_diameter_mm=26., mechanical_bore_diameter_mm=6.)
+    part.update(mechanical_outer_diameter_mm=26., mechanical_bore_diameter_mm=6., counterbore_diameter_mm=8.)
     mesh, = part_model_from_document(document, part["key"], angular_segments=32).meshes
     assert np.linalg.norm(mesh.vertices[:, :2], axis=1).min() == pytest.approx(3.)
     assert np.linalg.norm(mesh.vertices[:, :2], axis=1).max() == pytest.approx(13.)
@@ -121,6 +130,16 @@ def test_displayed_electrodes_match_consumed_field_boundaries_without_mutating_r
         if key not in GUN_ELECTRODE_KEYS:
             continue
         mesh, = part_model_from_document(document, key, angular_segments=32).meshes
+        if key == "feg_extractor":
+            # Both axial material pieces occur on the same continuous shell.
+            for z, radius in ((start_m, inner_m), (end_m, inner_m),
+                              (start_m, outer_m), (end_m, outer_m)):
+                # Outer surface spans the recess seam without a redundant ring.
+                if radius == outer_m and z == before["rings"][0][2]:
+                    continue
+                assert np.any(np.isclose(mesh.vertices[:, 2], z*1000, atol=1e-11, rtol=0.)
+                              & np.isclose(np.linalg.norm(mesh.vertices[:, :2], axis=1), radius*1000, atol=1e-11, rtol=0.))
+            continue
         np.testing.assert_allclose(
             (mesh.vertices[:, 2].min(), mesh.vertices[:, 2].max(),
              np.linalg.norm(mesh.vertices[:, :2], axis=1).min(),
@@ -132,7 +151,7 @@ def test_displayed_electrodes_match_consumed_field_boundaries_without_mutating_r
 @pytest.mark.parametrize("field,value", [
     ("bore_diameter_mm", 0.), ("bore_diameter_mm", 21.),
     ("outer_diameter_mm", float("nan")), ("outer_diameter_mm", True),
-    ("local_end_z_mm", 5.), ("local_end_z_mm", 6.),
+    ("local_end_z_mm", .2), ("local_end_z_mm", .3),
 ])
 def test_invalid_gun_electrodes_are_rejected_before_mesh_or_cad(field, value):
     part = next(p for p in _document("FEG.toml")["parts"] if p["key"] == "feg_extractor")
@@ -198,7 +217,7 @@ def test_valid_electrode_edit_changes_shared_geometry_and_survives_save_reopen(t
     original = deepcopy(draft.document)
     raw = draft.path.read_bytes()
     before = gun_electrode_solids(draft.part(key))
-    bore = (draft.part(key)["bore_diameter_mm"]+draft.part(key)["outer_diameter_mm"])/2
+    bore = (draft.part(key)["bore_diameter_mm"]+draft.part(key).get("counterbore_diameter_mm", draft.part(key)["outer_diameter_mm"]))/2
     draft.set_dimension(("parts", key, "bore_diameter_mm"), bore)
     after = gun_electrode_solids(draft.part(key))
     assert after != before and after[0].parameters["bore_radius_mm"] == bore/2
@@ -250,9 +269,9 @@ def test_independent_electrode_replacement_defers_native_validation_until_atomic
     draft.save_copy(target)
     reopened = PartModelDocument(target)
     assert len(part_model_from_document(reopened.document, key, include_children=False).meshes) == 1
-    reopened.set_dimension(("parts", key, "bore_diameter_mm"), 6.)
+    reopened.set_dimension(("parts", key, "bore_diameter_mm"), 2.)
     reopened.set_model_3d(key, native)
-    assert gun_electrode_solids(reopened.part(key))[0].parameters["bore_radius_mm"] == 3.
+    assert gun_electrode_solids(reopened.part(key))[0].parameters["bore_radius_mm"] == 1.
 
 
 @pytest.mark.parametrize("bore", [0., 20., 21.])

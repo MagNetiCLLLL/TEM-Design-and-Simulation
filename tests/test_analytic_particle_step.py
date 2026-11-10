@@ -11,6 +11,22 @@ from temsim.physics.relativistic_lorentz import (
 )
 
 
+def historical_analytic_geometry(value):
+    """Explicit pre-recess numerical fixture, independent of new module defaults."""
+    value.extractor.counterbore_depth_mm = 0.
+    value.extractor.counterbore_diameter_mm = 0.
+    value.extractor.mechanical_center_from_tip_mm = 8.
+    value.extractor.mechanical_length_mm = 4.
+    value.extractor.mechanical_clear_bore_diameter_mm = 4.
+    value.extractor.transition_start_mm = .05
+    value.extractor.transition_end_mm = 6.
+    value.electrostatic_lens.voltage_kv = 1.2
+    value.electrostatic_lens.voltage_reference = "extractor"
+    value.accelerator.voltage_start_reference = "extractor"
+    value.emitter.surface_model = None
+    return value
+
+
 def analytic_gun_fixture():
     # Mathematical regression fixture for the historical analytic kernel.
     # Production cold FEGs now use the coupled electrode field.
@@ -26,9 +42,7 @@ def analytic_gun_fixture():
             return FegElectrostaticField(self.emitter, self.extractor,
                                          self.electrostatic_lens, self.accelerator)
 
-    value = AnalyticGunFixture()
-    value.emitter.surface_model = None
-    return value
+    return historical_analytic_geometry(AnalyticGunFixture())
 
 
 @pytest.fixture

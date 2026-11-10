@@ -76,6 +76,9 @@ def _runtime_dependencies(parts, runtime_values):
     dependencies = []
     for part in parts:
         row = part.data
+        if row.get("mechanical_profile") == "electrostatic_parallel_plates":
+            dependencies.append((part.key, "azimuth_deg", _document_value(
+                values.get(part.key, {}).get("azimuth_deg", 0.))))
         if row.get("tip_particle_model"):
             dependencies.append((part.key, _document_value(values.get(part.key, {}).get("tip_surface_model", "saved"))))
         if (supports_energy_filter_part(row) and row.get("mechanical_profile") == "xo_energy_slit_assembly"

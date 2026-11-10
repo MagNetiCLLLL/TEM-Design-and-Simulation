@@ -1,4 +1,7 @@
 """Small geometric checks; no field integration, coherent solve or GPU."""
+from temsim.energy_filter_coordinates import (
+    column_to_filter_vectors, entrance_phase_space_vectors, filter_to_column_vectors,
+)
 from collections import Counter
 from copy import deepcopy
 from pathlib import Path
@@ -425,3 +428,19 @@ def test_picked_branch_feature_returns_to_component_cad_axes(document, key, kind
     np.testing.assert_allclose(feature["center_mm"], expected_center, rtol=0, atol=1e-12)
     assert feature["axis"] == expected_axis
     assert feature["depth_mm"] == pytest.approx(expected_depth)
+
+
+def test_filter_entry_and_mounted_cad_use_one_proper_column_frame(document):
+    F = np.asarray(FILTER_TO_COLUMN_ROTATION)
+    position, direction = entrance_phase_space_vectors([.002, -.003], [.004, -.005], [.006, -.007], [.008, -.009])
+    np.testing.assert_array_equal(position, [[0., .004, -.002], [0., -.005, .003]])
+    np.testing.assert_array_equal(direction, [[1., .008, -.006], [1., -.009, .007]])
+    np.testing.assert_array_equal(filter_to_column_vectors(position), [[.002, .004, 0.], [-.003, -.005, 0.]])
+    np.testing.assert_array_equal(filter_to_column_vectors(direction), [[.006, .008, 1.], [-.007, -.009, 1.]])
+    np.testing.assert_array_equal(column_to_filter_vectors(filter_to_column_vectors(direction)), direction)
+    parts = {p["key"]: p for p in document["parts"]}
+    for number in range(1, 11):
+        part = parts[f"energy_filter_multipole_{number:02d}"]
+        _, frame = energy_filter_frame_mm(part, parts)
+        expected = np.eye(3) if number <= 3 else np.array([[0., 0., 1.], [0., 1., 0.], [-1., 0., 0.]])
+        np.testing.assert_allclose(F @ frame, expected, atol=1e-15)

@@ -1,0 +1,1502 @@
+{
+  "schema": "physical-feg-hybrid-validation-v1",
+  "status": "COMPLETED_DECLARED_SCOPE",
+  "utc": "2026-11-09T23:10:11.083086+00:00",
+  "stage": "CLASSICAL_COLUMN",
+  "requested_source_particles": 2048,
+  "source_assumption": "Explicit uncalibrated Gaussian-Schell tip coherence length; physical geometry, width, current and energy retained",
+  "lens_retuning": true,
+  "aperture_withdrawal": false,
+  "receiver_withdrawal": true,
+  "qualification": "Development validation; not a measured or OEM FEG reconstruction",
+  "acquisition": {
+    "mode": "stationary",
+    "control_changes": [
+      {
+        "key": "ac_deflector",
+        "control": "scan_enabled",
+        "before": true,
+        "after": false
+      },
+      {
+        "key": "descan_deflector",
+        "control": "scan_enabled",
+        "before": true,
+        "after": false
+      },
+      {
+        "key": "condenser_lens_1",
+        "control": "percent",
+        "before": 90.0,
+        "after": 51.666666666666664,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "condenser_lens_2",
+        "control": "percent",
+        "before": 35.0,
+        "after": 10.023591227782362,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "condenser_lens_3",
+        "control": "percent",
+        "before": 55.0,
+        "after": 57.318027667934224,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "adapter_lens",
+        "control": "percent",
+        "before": 42.0,
+        "after": 9.196971868437602,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_tl22_lens",
+        "control": "percent",
+        "before": 60.0,
+        "after": 53.37284434045485,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_tl21_lens",
+        "control": "percent",
+        "before": 60.0,
+        "after": 59.84924813065814,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_tl12_lens",
+        "control": "percent",
+        "before": 60.0,
+        "after": 47.656160318977484,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "mini_condenser",
+        "control": "percent",
+        "before": 43.88646617222637,
+        "after": 26.677837967960123,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "objective_lens",
+        "control": "percent",
+        "before": 30.42591940608605,
+        "after": 29.326494404518797,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "diffraction_lens",
+        "control": "percent",
+        "before": 26.495,
+        "after": 14.577617197168571,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "intermediate_lens",
+        "control": "percent",
+        "before": 40.0,
+        "after": 0.035082657259397326,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "projector_lens_1",
+        "control": "percent",
+        "before": 30.0,
+        "after": 32.1132572718703,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "projector_lens_2",
+        "control": "percent",
+        "before": 30.0,
+        "after": 9.826874422815507,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_qph2_quadrupole",
+        "control": "strength_m2",
+        "before": 0.0,
+        "after": 0.0,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_hp2_hexapole",
+        "control": "strength_m3",
+        "before": 508073.49,
+        "after": 5435590.009303784,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_hpc_hexapole",
+        "control": "strength_m3",
+        "before": 0.0,
+        "after": -95186800.58440503,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_hpc_hexapole",
+        "control": "skew_strength_m3",
+        "before": 0.0,
+        "after": 38077295.73462795,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_qpc_quadrupole",
+        "control": "strength_m2",
+        "before": 0.0,
+        "after": 0.0,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_qph1_quadrupole",
+        "control": "strength_m2",
+        "before": 0.0,
+        "after": 0.0,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_hp1_hexapole",
+        "control": "strength_m3",
+        "before": 302372.3317133547,
+        "after": 4757175.659494648,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_hpol_hexapole",
+        "control": "strength_m3",
+        "before": 0.0,
+        "after": 622514.6243779856,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_hpol_hexapole",
+        "control": "skew_strength_m3",
+        "before": 0.0,
+        "after": 0.0,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "probe_qpol_quadrupole",
+        "control": "strength_m2",
+        "before": 0.0,
+        "after": 0.0,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "condenser_stigmator",
+        "control": "strength_x_percent",
+        "before": 0.0,
+        "after": 0.0005030845145850119,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "condenser_stigmator",
+        "control": "strength_y_percent",
+        "before": 0.0,
+        "after": 0.012000878806056787,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "objective_stigmator",
+        "control": "strength_x_percent",
+        "before": 0.0,
+        "after": 0.0,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "objective_stigmator",
+        "control": "strength_y_percent",
+        "before": 0.0,
+        "after": 0.0,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "diffraction_stigmator",
+        "control": "strength_x_percent",
+        "before": 0.0,
+        "after": 0.0,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "diffraction_stigmator",
+        "control": "strength_y_percent",
+        "before": 0.0,
+        "after": 0.0,
+        "origin": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus-proposal.json"
+      },
+      {
+        "key": "haadf",
+        "control": "inserted",
+        "before": true,
+        "after": false
+      },
+      {
+        "key": "flu_screen",
+        "control": "inserted",
+        "before": true,
+        "after": false
+      },
+      {
+        "key": "df",
+        "control": "inserted",
+        "before": true,
+        "after": false
+      },
+      {
+        "key": "bf",
+        "control": "inserted",
+        "before": true,
+        "after": false
+      }
+    ],
+    "dynamic_fields_frozen": false
+  },
+  "source_definition": {
+    "boundary_model": "driven_gaussian_schell",
+    "current_definition": "Incident injection at the physical tip; net escaping wave current is computed after reflection",
+    "current_na": 10000.0,
+    "emission_fwhm_nm": 5.0,
+    "energy_law": {
+      "boersch_sigma_ev": 0.1,
+      "half_range_ev": 1.0,
+      "young_decay_width_ev": 0.2
+    },
+    "energy_spread_definition": "Existing positive energy law, RMS-equivalent FWHM",
+    "energy_spread_fwhm_ev": 0.3,
+    "geometry": {
+      "curvature_nm_inv": 0.0,
+      "tip_cone_half_angle_deg": 5.0,
+      "tip_radius_nm": 100.0
+    },
+    "mean_kinetic_energy_ev": 0.3,
+    "minimum_kinetic_energy_ev": 0.01,
+    "model": "gaussian-schell-tip-boundary",
+    "origin": "physical tip before extraction and acceleration",
+    "particle_representation": "Geometric-optics phase-gradient rays of the same spatial injection and energy law; not an exact quantum Wigner distribution",
+    "phase": {
+      "boundary_model": "driven_gaussian_schell",
+      "curvature_x_m1": 0.0,
+      "curvature_xy_m1": 0.0,
+      "curvature_y_m1": 0.0,
+      "incoherent_angle_rms_mrad": 0.0,
+      "offset_x_nm": 0.0,
+      "offset_y_nm": 0.0,
+      "tilt_x_mrad": 0.0,
+      "tilt_y_mrad": 0.0,
+      "transverse_coherence_length_nm": 20.0
+    },
+    "reference_id": "physical-feg-tip-emitted-electron",
+    "schema": "physical-tip-source-description-v1",
+    "scope": "Published source input description, not an executed beam or image qualification",
+    "wave_representation": "Driven complex Gaussian-Schell boundary with a normal Robin injection condition",
+    "width_definition": "Intensity FWHM at the physical tip plane"
+  },
+  "sample": {
+    "inserted": true,
+    "mode": "atomic",
+    "z_mm": 1599.2,
+    "thickness_nm": 0.4
+  },
+  "receivers": [
+    {
+      "key": "haadf",
+      "z_mm": 2594.15,
+      "inserted": false
+    },
+    {
+      "key": "flu_screen",
+      "z_mm": 2714.15,
+      "inserted": false
+    },
+    {
+      "key": "df",
+      "z_mm": 2804.15,
+      "inserted": false
+    },
+    {
+      "key": "bf",
+      "z_mm": 2874.15,
+      "inserted": false
+    },
+    {
+      "key": "camera",
+      "z_mm": 2986.6499999999996,
+      "inserted": true
+    }
+  ],
+  "source_wave_preflight": {
+    "boundary": {
+      "emission_fwhm_nm": 5.0,
+      "injection_condition": "Normal Robin drive at the physical tip; reflection and escaping flux are solved, not prescribed downstream",
+      "near_field_policy": "Retain non-propagating transverse support in the complex boundary; never turn it into rays",
+      "normalization": "Boundary mode L2; physical injected flux must be established by the boundary solver",
+      "phase_convention": "Curvature in inverse metres; historical tilt_mrad is transverse phase gradient divided by local wave number",
+      "physical_boundary_status": "DEFINED",
+      "reference_plane": "physical FEG tip before extraction",
+      "schema": "gaussian-schell-tip-driven-boundary-v1",
+      "scope": "Tip boundary definition only; not transport, ray admission or image acceptance"
+    },
+    "emission_boundary": "After tunnelling, before extraction/acceleration",
+    "energy_convergence": "NOT_VALIDATED",
+    "energy_law": "Existing positive Young/Boersch quantile law; equal-weight energy samples",
+    "energy_modes": [
+      {
+        "diffraction_rms_mrad": 116.95131870936976,
+        "eigenvalue_ratio": 0.011023922274205173,
+        "energy_ev": 0.15446428292939432,
+        "ground_sigma_m": 2.1000249655391402e-09,
+        "incoherent_angle_rms_mrad": 24.832326138074954,
+        "modes_per_axis": 4,
+        "omitted_probability": 2.9537556306600794e-08,
+        "sigma_m": 2.1233045007200476e-09,
+        "transverse_coherence_length_nm": 19.999999999999996,
+        "uncorrelated_total_rms_mrad": 119.55858551057008
+      },
+      {
+        "diffraction_rms_mrad": 86.74183450022858,
+        "eigenvalue_ratio": 0.011023922274205173,
+        "energy_ev": 0.2807896268269683,
+        "ground_sigma_m": 2.1000249655391402e-09,
+        "incoherent_angle_rms_mrad": 18.417932759504883,
+        "modes_per_axis": 4,
+        "omitted_probability": 2.9537556306600794e-08,
+        "sigma_m": 2.1233045007200476e-09,
+        "transverse_coherence_length_nm": 20.0,
+        "uncorrelated_total_rms_mrad": 88.6756229163274
+      },
+      {
+        "diffraction_rms_mrad": 67.42348879184944,
+        "eigenvalue_ratio": 0.011023922274205173,
+        "energy_ev": 0.4647460902436836,
+        "ground_sigma_m": 2.1000249655391402e-09,
+        "incoherent_angle_rms_mrad": 14.316059720598158,
+        "modes_per_axis": 4,
+        "omitted_probability": 2.9537556306600794e-08,
+        "sigma_m": 2.1233045007200476e-09,
+        "transverse_coherence_length_nm": 20.0,
+        "uncorrelated_total_rms_mrad": 68.92660159030315
+      }
+    ],
+    "injected_flux_status": "REQUIRES_BOUNDARY_SOLVER",
+    "mode_count": 48,
+    "model": "circular Gaussian-Schell at FEG tip",
+    "omitted_probability": 2.9537556306600794e-08,
+    "particle_domain": {
+      "maximum_momentum_std_over_p": 0.0975958768812602,
+      "mean_transverse_momentum_over_p": 0.0,
+      "minimum_evaluated_energy_ev": 0.01,
+      "nonforward_probability_upper_bound": 1.5932434311285644e-23,
+      "quantum_diffraction": "Retained by complex wave boundary, not added to geometric ray momenta",
+      "reference_plane": "physical FEG tip before extraction",
+      "representation": "Geometric-optics phase-gradient rays; not an exact quantum Wigner distribution",
+      "schema": "gaussian-tip-geometric-forward-v1",
+      "scope": "Geometric particle admission only; no paraxial-wave or propagation qualification",
+      "support_radius_over_p": 0.5923785251830274,
+      "tail_policy": "No clipping or renormalisation; every emitted ray is checked for forward support",
+      "tail_probability_budget": 1e-08
+    },
+    "physical_calibration": "USER_DEFINED_TIP_NOT_MEASURED",
+    "physical_source": {
+      "boundary_model": "driven_gaussian_schell",
+      "current_definition": "Incident injection at the physical tip; net escaping wave current is computed after reflection",
+      "current_na": 10000.0,
+      "emission_fwhm_nm": 5.0,
+      "energy_law": {
+        "boersch_sigma_ev": 0.1,
+        "half_range_ev": 1.0,
+        "young_decay_width_ev": 0.2
+      },
+      "energy_spread_definition": "Existing positive energy law, RMS-equivalent FWHM",
+      "energy_spread_fwhm_ev": 0.3,
+      "geometry": {
+        "curvature_nm_inv": 0.0,
+        "tip_cone_half_angle_deg": 5.0,
+        "tip_radius_nm": 100.0
+      },
+      "mean_kinetic_energy_ev": 0.3,
+      "minimum_kinetic_energy_ev": 0.01,
+      "model": "gaussian-schell-tip-boundary",
+      "origin": "physical tip before extraction and acceleration",
+      "particle_representation": "Geometric-optics phase-gradient rays of the same spatial injection and energy law; not an exact quantum Wigner distribution",
+      "phase": {
+        "boundary_model": "driven_gaussian_schell",
+        "curvature_x_m1": 0.0,
+        "curvature_xy_m1": 0.0,
+        "curvature_y_m1": 0.0,
+        "incoherent_angle_rms_mrad": 0.0,
+        "offset_x_nm": 0.0,
+        "offset_y_nm": 0.0,
+        "tilt_x_mrad": 0.0,
+        "tilt_y_mrad": 0.0,
+        "transverse_coherence_length_nm": 20.0
+      },
+      "reference_id": "physical-feg-tip-emitted-electron",
+      "schema": "physical-tip-source-description-v1",
+      "scope": "Published source input description, not an executed beam or image qualification",
+      "wave_representation": "Driven complex Gaussian-Schell boundary with a normal Robin injection condition",
+      "width_definition": "Intensity FWHM at the physical tip plane"
+    },
+    "plane_z_mm": 0.0,
+    "reference_id": "physical-feg-tip-emitted-electron",
+    "representation": "Driven complex boundary; non-propagating support is not a ray ensemble",
+    "schema": "physical-tip-driven-gaussian-boundary-v1",
+    "source_domain": {
+      "maximum_momentum_std_over_p": 0.4698885205802865,
+      "mean_transverse_momentum_over_p": 0.0,
+      "minimum_evaluated_energy_ev": 0.01,
+      "nonforward_probability_upper_bound": 0.10387762457230741,
+      "paraxial_generator_relative_error_bound": null,
+      "paraxial_generator_relative_error_budget": 0.01,
+      "reference_plane": "physical FEG tip before extraction",
+      "schema": "gaussian-tip-forward-paraxial-v1",
+      "scope": "Source-domain bound only; not propagation or image acceptance",
+      "support_radius_over_p": 2.85208635566071,
+      "tail_policy": "No truncation or renormalisation; outside-region phase accuracy is not qualified",
+      "tail_probability_budget": 1e-08
+    },
+    "spatial_coherence_definition": {
+      "degree_magnitude": "exp(-separation_m^2/(2*transverse_coherence_length_m^2))",
+      "energy_mixture": "Independent energy components; temporal coherence is governed by the retained energy law",
+      "parameterisation": "fixed_length",
+      "phase": "Deterministic wavefront tilt and curvature multiply the mutual intensity by exp(i*(phase1-phase2))",
+      "plane": "Physical tip z=0, before extraction"
+    }
+  },
+  "runtime_digest": "351947933a28b31e687a5421bcd16af4f8fd695c259bcf661434fa69d02e1603",
+  "field_digest": "f3c2f5ed4b526d777561e1eb2507815ecb93b04e9a031fa6ab2015fd34a2087d",
+  "geometry_digest": "f7358b641a98c1c14ddd16dae6fa9b00658402daa6950f8658f7334dc1578776",
+  "field_providers": [
+    {
+      "source_id": "condenser_lens_1",
+      "kind": "magnetic",
+      "owner_ids": [
+        "condenser_lens_1"
+      ]
+    },
+    {
+      "source_id": "condenser_lens_2",
+      "kind": "magnetic",
+      "owner_ids": [
+        "condenser_lens_2"
+      ]
+    },
+    {
+      "source_id": "condenser_lens_3",
+      "kind": "magnetic",
+      "owner_ids": [
+        "condenser_lens_3"
+      ]
+    },
+    {
+      "source_id": "adapter_lens",
+      "kind": "magnetic",
+      "owner_ids": [
+        "adapter_lens"
+      ]
+    },
+    {
+      "source_id": "probe_tl22_lens",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_tl22_lens"
+      ]
+    },
+    {
+      "source_id": "probe_tl21_lens",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_tl21_lens"
+      ]
+    },
+    {
+      "source_id": "probe_tl12_lens",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_tl12_lens"
+      ]
+    },
+    {
+      "source_id": "mini_condenser",
+      "kind": "magnetic",
+      "owner_ids": [
+        "mini_condenser"
+      ]
+    },
+    {
+      "source_id": "objective_lens",
+      "kind": "magnetic",
+      "owner_ids": [
+        "objective_lens"
+      ]
+    },
+    {
+      "source_id": "diffraction_lens",
+      "kind": "magnetic",
+      "owner_ids": [
+        "diffraction_lens"
+      ]
+    },
+    {
+      "source_id": "intermediate_lens",
+      "kind": "magnetic",
+      "owner_ids": [
+        "intermediate_lens"
+      ]
+    },
+    {
+      "source_id": "projector_lens_1",
+      "kind": "magnetic",
+      "owner_ids": [
+        "projector_lens_1"
+      ]
+    },
+    {
+      "source_id": "projector_lens_2",
+      "kind": "magnetic",
+      "owner_ids": [
+        "projector_lens_2"
+      ]
+    },
+    {
+      "source_id": "condenser_stigmator",
+      "kind": "magnetic",
+      "owner_ids": [
+        "condenser_stigmator"
+      ]
+    },
+    {
+      "source_id": "objective_stigmator",
+      "kind": "magnetic",
+      "owner_ids": [
+        "objective_stigmator"
+      ]
+    },
+    {
+      "source_id": "diffraction_stigmator",
+      "kind": "magnetic",
+      "owner_ids": [
+        "diffraction_stigmator"
+      ]
+    },
+    {
+      "source_id": "probe_qph2_quadrupole",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_qph2_quadrupole"
+      ]
+    },
+    {
+      "source_id": "probe_hp2_hexapole",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_hp2_hexapole"
+      ]
+    },
+    {
+      "source_id": "probe_hpc_hexapole",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_hpc_hexapole"
+      ]
+    },
+    {
+      "source_id": "probe_qpc_quadrupole",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_qpc_quadrupole"
+      ]
+    },
+    {
+      "source_id": "probe_qph1_quadrupole",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_qph1_quadrupole"
+      ]
+    },
+    {
+      "source_id": "probe_hp1_hexapole",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_hp1_hexapole"
+      ]
+    },
+    {
+      "source_id": "probe_hpol_hexapole",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_hpol_hexapole"
+      ]
+    },
+    {
+      "source_id": "probe_qpol_quadrupole",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_qpol_quadrupole"
+      ]
+    },
+    {
+      "source_id": "probe_dph2_deflector:0",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_dph2_deflector:0"
+      ]
+    },
+    {
+      "source_id": "probe_dp22_deflector:0",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_dp22_deflector:0"
+      ]
+    },
+    {
+      "source_id": "probe_dp21_deflector:0",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_dp21_deflector:0"
+      ]
+    },
+    {
+      "source_id": "probe_dph1_deflector:0",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_dph1_deflector:0"
+      ]
+    },
+    {
+      "source_id": "probe_dp11_deflector:0",
+      "kind": "magnetic",
+      "owner_ids": [
+        "probe_dp11_deflector:0"
+      ]
+    },
+    {
+      "source_id": "ac_deflector:0",
+      "kind": "magnetic",
+      "owner_ids": [
+        "ac_deflector:0"
+      ]
+    },
+    {
+      "source_id": "ac_deflector:1",
+      "kind": "magnetic",
+      "owner_ids": [
+        "ac_deflector:1"
+      ]
+    },
+    {
+      "source_id": "condenser_deflector:0",
+      "kind": "magnetic",
+      "owner_ids": [
+        "condenser_deflector:0"
+      ]
+    },
+    {
+      "source_id": "condenser_deflector:1",
+      "kind": "magnetic",
+      "owner_ids": [
+        "condenser_deflector:1"
+      ]
+    },
+    {
+      "source_id": "beam_deflector:0",
+      "kind": "magnetic",
+      "owner_ids": [
+        "beam_deflector:0"
+      ]
+    },
+    {
+      "source_id": "beam_deflector:1",
+      "kind": "magnetic",
+      "owner_ids": [
+        "beam_deflector:1"
+      ]
+    },
+    {
+      "source_id": "image_diffraction_deflector:0",
+      "kind": "magnetic",
+      "owner_ids": [
+        "image_diffraction_deflector:0"
+      ]
+    },
+    {
+      "source_id": "image_diffraction_deflector:1",
+      "kind": "magnetic",
+      "owner_ids": [
+        "image_diffraction_deflector:1"
+      ]
+    },
+    {
+      "source_id": "instrument_electric",
+      "kind": "electric",
+      "owner_ids": [
+        "instrument_electric"
+      ]
+    },
+    {
+      "source_id": "feg_deflector",
+      "kind": "magnetic",
+      "owner_ids": [
+        "feg_deflector"
+      ]
+    },
+    {
+      "source_id": "feg_stigmator",
+      "kind": "magnetic",
+      "owner_ids": [
+        "feg_stigmator"
+      ]
+    }
+  ],
+  "geometry_piece_count": 104,
+  "source_counts": {
+    "emitted_count": 2048,
+    "positive_current_count": 2048,
+    "gun_exit_surviving_count": 2048,
+    "effective_emitted_count": 2048.0,
+    "emitted_weight": 1.0,
+    "gun_exit_weight": 1.0,
+    "effective_gun_exit_count": 2048.0,
+    "scope": "Executed classical gun reference; coherent quadrature packets and exit samples are separate populations"
+  },
+  "reference_current_a": 1e-05,
+  "emitted": {
+    "surviving_positive_count": 2048,
+    "effective_count": 2048.0,
+    "weight_per_emitted_electron": 1.0,
+    "current_a": 1e-05
+  },
+  "gun_exit": {
+    "surviving_positive_count": 2048,
+    "effective_count": 2048.0,
+    "weight_per_emitted_electron": 1.0,
+    "current_a": 1e-05
+  },
+  "gun_losses": {},
+  "planes": [
+    {
+      "key": "specimen_entrance",
+      "z_mm": 1599.1999998000001,
+      "surviving_positive_count": 556,
+      "effective_count": 556.0,
+      "weight_per_emitted_electron": 0.271484375,
+      "current_a": 2.7148437500000003e-06,
+      "phase_space": {
+        "status": "OBSERVED_WITHOUT_REFOCUS",
+        "centroid_m": [
+          6.564764148411479e-13,
+          -1.6509451725633196e-11
+        ],
+        "d95_m": 8.902996005979684e-09,
+        "radial_rms_m": 2.0960457309263734e-09,
+        "alpha95_rad": 0.007806722526340273,
+        "centroid_core50pm_original_weight": 0.015625,
+        "centroid_core500pm_original_weight": 0.10302734375
+      }
+    },
+    {
+      "key": "haadf",
+      "z_mm": 2594.15,
+      "surviving_positive_count": 556,
+      "effective_count": 556.0,
+      "weight_per_emitted_electron": 0.271484375,
+      "current_a": 2.7148437500000003e-06,
+      "phase_space": {
+        "status": "OBSERVED_WITHOUT_REFOCUS",
+        "centroid_m": [
+          1.428450242223649e-06,
+          9.698331037228735e-07
+        ],
+        "d95_m": 0.0007458488690772436,
+        "radial_rms_m": 0.00026526731784682267,
+        "alpha95_rad": 0.0012870182530219602,
+        "centroid_core50pm_original_weight": 0.0,
+        "centroid_core500pm_original_weight": 0.0
+      }
+    },
+    {
+      "key": "flu_screen",
+      "z_mm": 2714.15,
+      "surviving_positive_count": 556,
+      "effective_count": 556.0,
+      "weight_per_emitted_electron": 0.271484375,
+      "current_a": 2.7148437500000003e-06,
+      "phase_space": {
+        "status": "OBSERVED_WITHOUT_REFOCUS",
+        "centroid_m": [
+          2.021336305043211e-06,
+          1.372311164969812e-06
+        ],
+        "d95_m": 0.00105538060231432,
+        "radial_rms_m": 0.00037536362881968326,
+        "alpha95_rad": 0.0012870182513939007,
+        "centroid_core50pm_original_weight": 0.0,
+        "centroid_core500pm_original_weight": 0.0
+      }
+    },
+    {
+      "key": "df",
+      "z_mm": 2804.15,
+      "surviving_positive_count": 556,
+      "effective_count": 556.0,
+      "weight_per_emitted_electron": 0.271484375,
+      "current_a": 2.7148437500000003e-06,
+      "phase_space": {
+        "status": "OBSERVED_WITHOUT_REFOCUS",
+        "centroid_m": [
+          2.46600085144937e-06,
+          1.674169710405867e-06
+        ],
+        "d95_m": 0.0012875294019168598,
+        "radial_rms_m": 0.0004579358619024971,
+        "alpha95_rad": 0.0012870182489384142,
+        "centroid_core50pm_original_weight": 0.0,
+        "centroid_core500pm_original_weight": 0.0
+      }
+    },
+    {
+      "key": "bf",
+      "z_mm": 2874.15,
+      "surviving_positive_count": 556,
+      "effective_count": 556.0,
+      "weight_per_emitted_electron": 0.271484375,
+      "current_a": 2.7148437500000003e-06,
+      "phase_space": {
+        "status": "OBSERVED_WITHOUT_REFOCUS",
+        "centroid_m": [
+          2.811851053226083e-06,
+          1.908948578599015e-06
+        ],
+        "d95_m": 0.0014680895791086,
+        "radial_rms_m": 0.0005221587097246693,
+        "alpha95_rad": 0.0012870182473587223,
+        "centroid_core50pm_original_weight": 0.0,
+        "centroid_core500pm_original_weight": 0.0
+      }
+    },
+    {
+      "key": "camera",
+      "z_mm": 2986.6499999999996,
+      "surviving_positive_count": 556,
+      "effective_count": 556.0,
+      "weight_per_emitted_electron": 0.271484375,
+      "current_a": 2.7148437500000003e-06,
+      "phase_space": {
+        "status": "OBSERVED_WITHOUT_REFOCUS",
+        "centroid_m": [
+          3.3676817333802184e-06,
+          2.2862717596188755e-06
+        ],
+        "d95_m": 0.0017582755777868105,
+        "radial_rms_m": 0.0006253740006765804,
+        "alpha95_rad": 0.0012870182455458153,
+        "centroid_core50pm_original_weight": 0.0,
+        "centroid_core500pm_original_weight": 0.0
+      }
+    }
+  ],
+  "interceptions": {
+    "camera": {
+      "surviving_positive_count": 556,
+      "effective_count": 556.0,
+      "weight_per_emitted_electron": 0.271484375,
+      "current_a": 2.7148437500000003e-06
+    },
+    "condenser_aperture_2": {
+      "surviving_positive_count": 1492,
+      "effective_count": 1492.0,
+      "weight_per_emitted_electron": 0.728515625,
+      "current_a": 7.2851562500000005e-06
+    }
+  },
+  "remaining": {
+    "surviving_positive_count": 0,
+    "effective_count": 0.0,
+    "weight_per_emitted_electron": 0.0,
+    "current_a": 0.0
+  },
+  "focus_profile": [
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        7.799569544982875e-12,
+        -1.7712563140097253e-11
+      ],
+      "d95_m": 1.0474951112469212e-08,
+      "radial_rms_m": 2.3670468908278527e-09,
+      "alpha95_rad": 0.007806722526340234,
+      "centroid_core50pm_original_weight": 0.00048828125,
+      "centroid_core500pm_original_weight": 0.064453125,
+      "z_mm": 1599.1997998000002,
+      "offset_nm": -199.9999999497959
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        7.442416178808135e-12,
+        -1.7652399920674198e-11
+      ],
+      "d95_m": 1.0327814878736254e-08,
+      "radial_rms_m": 2.341708330371981e-09,
+      "alpha95_rad": 0.007806722526340238,
+      "centroid_core50pm_original_weight": 0.0009765625,
+      "centroid_core500pm_original_weight": 0.0703125,
+      "z_mm": 1599.1998098000001,
+      "offset_nm": -189.99999997504347
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        7.085262677006725e-12,
+        -1.759223750641079e-11
+      ],
+      "d95_m": 1.0180694959817855e-08,
+      "radial_rms_m": 2.3174292417290154e-09,
+      "alpha95_rad": 0.007806722526340242,
+      "centroid_core50pm_original_weight": 0.0009765625,
+      "centroid_core500pm_original_weight": 0.07470703125,
+      "z_mm": 1599.1998198000001,
+      "offset_nm": -180.00000000029104
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        6.7281090395804254e-12,
+        -1.7532075897307274e-11
+      ],
+      "d95_m": 1.0033592073374292e-08,
+      "radial_rms_m": 2.2942432610863084e-09,
+      "alpha95_rad": 0.007806722526340245,
+      "centroid_core50pm_original_weight": 0.00048828125,
+      "centroid_core500pm_original_weight": 0.078125,
+      "z_mm": 1599.1998298,
+      "offset_nm": -170.0000000255386
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        6.370955266531155e-12,
+        -1.7471915093363943e-11
+      ],
+      "d95_m": 9.886506979692944e-09,
+      "radial_rms_m": 2.272183851802433e-09,
+      "alpha95_rad": 0.007806722526340249,
+      "centroid_core50pm_original_weight": 0.00048828125,
+      "centroid_core500pm_original_weight": 0.0830078125,
+      "z_mm": 1599.1998398,
+      "offset_nm": -160.00000005078618
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        6.013801357860699e-12,
+        -1.7411755094581194e-11
+      ],
+      "d95_m": 9.739781844593255e-09,
+      "radial_rms_m": 2.251284130552301e-09,
+      "alpha95_rad": 0.007806722526340251,
+      "centroid_core50pm_original_weight": 0.00048828125,
+      "centroid_core500pm_original_weight": 0.0859375,
+      "z_mm": 1599.1998498,
+      "offset_nm": -150.00000007603376
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        5.65664730564041e-12,
+        -1.7351595899623478e-11
+      ],
+      "d95_m": 9.595166056601767e-09,
+      "radial_rms_m": 2.2315766801528877e-09,
+      "alpha95_rad": 0.007806722526340254,
+      "centroid_core50pm_original_weight": 0.00146484375,
+      "centroid_core500pm_original_weight": 0.08544921875,
+      "z_mm": 1599.1998598,
+      "offset_nm": -140.00000010128133
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        5.299493117802564e-12,
+        -1.7291437509826914e-11
+      ],
+      "d95_m": 9.450696819344576e-09,
+      "radial_rms_m": 2.2130933526032744e-09,
+      "alpha95_rad": 0.007806722526340256,
+      "centroid_core50pm_original_weight": 0.001953125,
+      "centroid_core500pm_original_weight": 0.08837890625,
+      "z_mm": 1599.1998698000002,
+      "offset_nm": -129.99999989915523
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        4.9423388022793316e-12,
+        -1.7231279926527615e-11
+      ],
+      "d95_m": 9.30638096104573e-09,
+      "radial_rms_m": 2.1958650600387e-09,
+      "alpha95_rad": 0.007806722526340258,
+      "centroid_core50pm_original_weight": 0.00244140625,
+      "centroid_core500pm_original_weight": 0.09326171875,
+      "z_mm": 1599.1998798000002,
+      "offset_nm": -119.9999999244028
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        4.585184351142211e-12,
+        -1.717112314839004e-11
+      ],
+      "d95_m": 9.432831593623318e-09,
+      "radial_rms_m": 2.179921558495982e-09,
+      "alpha95_rad": 0.007806722526340261,
+      "centroid_core50pm_original_weight": 0.0029296875,
+      "centroid_core500pm_original_weight": 0.09326171875,
+      "z_mm": 1599.1998898000002,
+      "offset_nm": -109.99999994965037
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        4.228029764392945e-12,
+        -1.7110967175414543e-11
+      ],
+      "d95_m": 9.322234479740096e-09,
+      "radial_rms_m": 2.165291228732873e-09,
+      "alpha95_rad": 0.0078067225263402625,
+      "centroid_core50pm_original_weight": 0.00341796875,
+      "centroid_core500pm_original_weight": 0.095703125,
+      "z_mm": 1599.1998998000001,
+      "offset_nm": -99.99999997489795
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        3.870875042033333e-12,
+        -1.7050812007601394e-11
+      ],
+      "d95_m": 9.208882181108927e-09,
+      "radial_rms_m": 2.1520008536232003e-09,
+      "alpha95_rad": 0.007806722526340265,
+      "centroid_core50pm_original_weight": 0.0068359375,
+      "centroid_core500pm_original_weight": 0.09619140625,
+      "z_mm": 1599.1999098000001,
+      "offset_nm": -90.00000000014552
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        3.5137201761348112e-12,
+        -1.6990657643615243e-11
+      ],
+      "d95_m": 9.074667769991112e-09,
+      "radial_rms_m": 2.1400753973704918e-09,
+      "alpha95_rad": 0.007806722526340267,
+      "centroid_core50pm_original_weight": 0.0087890625,
+      "centroid_core500pm_original_weight": 0.09716796875,
+      "z_mm": 1599.1999198,
+      "offset_nm": -80.00000002539309
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        3.1565651825600723e-12,
+        -1.6930504086127748e-11
+      ],
+      "d95_m": 9.062136779778396e-09,
+      "radial_rms_m": 2.1295377913545707e-09,
+      "alpha95_rad": 0.0078067225263402686,
+      "centroid_core50pm_original_weight": 0.0126953125,
+      "centroid_core500pm_original_weight": 0.10009765625,
+      "z_mm": 1599.1999298,
+      "offset_nm": -70.00000005064066
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        2.7994100533804268e-12,
+        -1.6870351333803513e-11
+      ],
+      "d95_m": 9.20849410611336e-09,
+      "radial_rms_m": 2.120408726618625e-09,
+      "alpha95_rad": 0.00780672252634027,
+      "centroid_core50pm_original_weight": 0.021484375,
+      "centroid_core500pm_original_weight": 0.10205078125,
+      "z_mm": 1599.1999398,
+      "offset_nm": -60.00000007588824
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        2.44225478859774e-12,
+        -1.6810199386642917e-11
+      ],
+      "d95_m": 9.215960416600835e-09,
+      "radial_rms_m": 2.1127064622824467e-09,
+      "alpha95_rad": 0.007806722526340271,
+      "centroid_core50pm_original_weight": 0.03076171875,
+      "centroid_core500pm_original_weight": 0.10302734375,
+      "z_mm": 1599.1999498,
+      "offset_nm": -50.00000010113581
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        2.085099380283386e-12,
+        -1.6750048243310546e-11
+      ],
+      "d95_m": 9.092035313447997e-09,
+      "radial_rms_m": 2.106446649654001e-09,
+      "alpha95_rad": 0.007806722526340271,
+      "centroid_core50pm_original_weight": 0.03564453125,
+      "centroid_core500pm_original_weight": 0.10498046875,
+      "z_mm": 1599.1999598000002,
+      "offset_nm": -39.99999989900971
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        1.7279438443000283e-12,
+        -1.6689897906478057e-11
+      ],
+      "d95_m": 8.967207547271671e-09,
+      "radial_rms_m": 2.1016421782261385e-09,
+      "alpha95_rad": 0.007806722526340272,
+      "centroid_core50pm_original_weight": 0.0361328125,
+      "centroid_core500pm_original_weight": 0.10546875,
+      "z_mm": 1599.1999698000002,
+      "offset_nm": -29.99999992425728
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        1.3707881647886343e-12,
+        -1.6629748373474426e-11
+      ],
+      "d95_m": 8.982652253881452e-09,
+      "radial_rms_m": 2.0983030446658293e-09,
+      "alpha95_rad": 0.007806722526340273,
+      "centroid_core50pm_original_weight": 0.03515625,
+      "centroid_core500pm_original_weight": 0.10498046875,
+      "z_mm": 1599.1999798000002,
+      "offset_nm": -19.999999949504854
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        1.0136323576118963e-12,
+        -1.6569599646971266e-11
+      ],
+      "d95_m": 8.993244844828408e-09,
+      "radial_rms_m": 2.096436250956796e-09,
+      "alpha95_rad": 0.007806722526340273,
+      "centroid_core50pm_original_weight": 0.02392578125,
+      "centroid_core500pm_original_weight": 0.1044921875,
+      "z_mm": 1599.1999898000001,
+      "offset_nm": -9.999999974752427
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        6.564764148411479e-13,
+        -1.6509451725633196e-11
+      ],
+      "d95_m": 8.902996005979684e-09,
+      "radial_rms_m": 2.0960457309263734e-09,
+      "alpha95_rad": 0.007806722526340273,
+      "centroid_core50pm_original_weight": 0.015625,
+      "centroid_core500pm_original_weight": 0.10302734375,
+      "z_mm": 1599.1999998000001,
+      "offset_nm": 0.0
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        2.993203364782939e-13,
+        -1.6449304609460466e-11
+      ],
+      "d95_m": 8.989089711729845e-09,
+      "radial_rms_m": 2.0971323092929934e-09,
+      "alpha95_rad": 0.007806722526340273,
+      "centroid_core50pm_original_weight": 0.01025390625,
+      "centroid_core500pm_original_weight": 0.103515625,
+      "z_mm": 1599.2000098,
+      "offset_nm": 9.999999974752427
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -5.7835877474938e-14,
+        -1.638915829845354e-11
+      ],
+      "d95_m": 9.093294566626222e-09,
+      "radial_rms_m": 2.0996936928903303e-09,
+      "alpha95_rad": 0.007806722526340273,
+      "centroid_core50pm_original_weight": 0.0078125,
+      "centroid_core500pm_original_weight": 0.1015625,
+      "z_mm": 1599.2000198,
+      "offset_nm": 19.999999949504854
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -4.1499222701667835e-13,
+        -1.6329012792612646e-11
+      ],
+      "d95_m": 9.086773032259888e-09,
+      "radial_rms_m": 2.1037244947908988e-09,
+      "alpha95_rad": 0.007806722526340272,
+      "centroid_core50pm_original_weight": 0.0048828125,
+      "centroid_core500pm_original_weight": 0.10107421875,
+      "z_mm": 1599.2000298,
+      "offset_nm": 29.99999992425728
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -7.721487200756364e-13,
+        -1.6268868090602593e-11
+      ],
+      "d95_m": 9.118203207643233e-09,
+      "radial_rms_m": 2.1092162907872544e-09,
+      "alpha95_rad": 0.007806722526340271,
+      "centroid_core50pm_original_weight": 0.00439453125,
+      "centroid_core500pm_original_weight": 0.09912109375,
+      "z_mm": 1599.2000398,
+      "offset_nm": 39.99999989900971
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -1.129305348719475e-12,
+        -1.620872419375922e-11
+      ],
+      "d95_m": 9.116873383781315e-09,
+      "radial_rms_m": 2.1161577062386524e-09,
+      "alpha95_rad": 0.00780672252634027,
+      "centroid_core50pm_original_weight": 0.00390625,
+      "centroid_core500pm_original_weight": 0.09521484375,
+      "z_mm": 1599.2000498000002,
+      "offset_nm": 50.00000010113581
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -1.4864621050159414e-12,
+        -1.6148581103418265e-11
+      ],
+      "d95_m": 9.197061844314426e-09,
+      "radial_rms_m": 2.124534532121847e-09,
+      "alpha95_rad": 0.007806722526340269,
+      "centroid_core50pm_original_weight": 0.00244140625,
+      "centroid_core500pm_original_weight": 0.0947265625,
+      "z_mm": 1599.2000598000002,
+      "offset_nm": 60.00000007588824
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -1.8436189968936924e-12,
+        -1.6088438818244596e-11
+      ],
+      "d95_m": 9.230939553906536e-09,
+      "radial_rms_m": 2.1343298675274046e-09,
+      "alpha95_rad": 0.0078067225263402686,
+      "centroid_core50pm_original_weight": 0.00244140625,
+      "centroid_core500pm_original_weight": 0.091796875,
+      "z_mm": 1599.2000698000002,
+      "offset_nm": 70.00000005064066
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -2.2007760243508506e-12,
+        -1.6028297338238396e-11
+      ],
+      "d95_m": 9.14674516547611e-09,
+      "radial_rms_m": 2.145524284038071e-09,
+      "alpha95_rad": 0.007806722526340267,
+      "centroid_core50pm_original_weight": 0.0009765625,
+      "centroid_core500pm_original_weight": 0.0888671875,
+      "z_mm": 1599.2000798000001,
+      "offset_nm": 80.00000002539309
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -2.5579331873856887e-12,
+        -1.5968156663400143e-11
+      ],
+      "d95_m": 9.241258893358932e-09,
+      "radial_rms_m": 2.1580960099380525e-09,
+      "alpha95_rad": 0.007806722526340265,
+      "centroid_core50pm_original_weight": 0.00146484375,
+      "centroid_core500pm_original_weight": 0.08740234375,
+      "z_mm": 1599.2000898000001,
+      "offset_nm": 90.00000000014552
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -2.915090493926852e-12,
+        -1.5908016792394648e-11
+      ],
+      "d95_m": 9.297344986484964e-09,
+      "radial_rms_m": 2.1720211299541485e-09,
+      "alpha95_rad": 0.007806722526340263,
+      "centroid_core50pm_original_weight": 0.0009765625,
+      "centroid_core500pm_original_weight": 0.0859375,
+      "z_mm": 1599.2000998,
+      "offset_nm": 99.99999997489795
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -3.2722479281115246e-12,
+        -1.5847877727893078e-11
+      ],
+      "d95_m": 9.311466589838822e-09,
+      "radial_rms_m": 2.1872737947703975e-09,
+      "alpha95_rad": 0.007806722526340261,
+      "centroid_core50pm_original_weight": 0.00048828125,
+      "centroid_core500pm_original_weight": 0.08349609375,
+      "z_mm": 1599.2001098,
+      "offset_nm": 109.99999994965037
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -3.6294054978683546e-12,
+        -1.5787739468560227e-11
+      ],
+      "d95_m": 9.379087709635452e-09,
+      "radial_rms_m": 2.203826441067061e-09,
+      "alpha95_rad": 0.007806722526340259,
+      "centroid_core50pm_original_weight": 0.00048828125,
+      "centroid_core500pm_original_weight": 0.080078125,
+      "z_mm": 1599.2001198,
+      "offset_nm": 119.9999999244028
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -3.9865632031956465e-12,
+        -1.572760201439646e-11
+      ],
+      "d95_m": 9.399273569372796e-09,
+      "radial_rms_m": 2.2216500120716514e-09,
+      "alpha95_rad": 0.007806722526340256,
+      "centroid_core50pm_original_weight": 0.00048828125,
+      "centroid_core500pm_original_weight": 0.07568359375,
+      "z_mm": 1599.2001298,
+      "offset_nm": 129.99999989915523
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -4.3437210520219305e-12,
+        -1.566746536406679e-11
+      ],
+      "d95_m": 9.538983657668653e-09,
+      "radial_rms_m": 2.2407141800376047e-09,
+      "alpha95_rad": 0.007806722526340254,
+      "centroid_core50pm_original_weight": 0.0009765625,
+      "centroid_core500pm_original_weight": 0.07080078125,
+      "z_mm": 1599.2001398000002,
+      "offset_nm": 140.00000010128133
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -4.70087902848448e-12,
+        -1.560732952024216e-11
+      ],
+      "d95_m": 9.594775371117327e-09,
+      "radial_rms_m": 2.2609875629951693e-09,
+      "alpha95_rad": 0.007806722526340251,
+      "centroid_core50pm_original_weight": 0.00048828125,
+      "centroid_core500pm_original_weight": 0.064453125,
+      "z_mm": 1599.2001498000002,
+      "offset_nm": 150.00000007603376
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -5.058037148442505e-12,
+        -1.5547194480252245e-11
+      ],
+      "d95_m": 9.733839985792511e-09,
+      "radial_rms_m": 2.2824379400943608e-09,
+      "alpha95_rad": 0.007806722526340248,
+      "centroid_core50pm_original_weight": 0.0,
+      "centroid_core500pm_original_weight": 0.05859375,
+      "z_mm": 1599.2001598000002,
+      "offset_nm": 160.00000005078618
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -5.415195396033089e-12,
+        -1.5487060246767973e-11
+      ],
+      "d95_m": 9.873002293320589e-09,
+      "radial_rms_m": 2.30503245169849e-09,
+      "alpha95_rad": 0.007806722526340244,
+      "centroid_core50pm_original_weight": 0.0,
+      "centroid_core500pm_original_weight": 0.05126953125,
+      "z_mm": 1599.2001698000001,
+      "offset_nm": 170.0000000255386
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -5.772353779185015e-12,
+        -1.5426926818454246e-11
+      ],
+      "d95_m": 1.0012258223104324e-08,
+      "radial_rms_m": 2.328737795698872e-09,
+      "alpha95_rad": 0.007806722526340241,
+      "centroid_core50pm_original_weight": 0.00048828125,
+      "centroid_core500pm_original_weight": 0.0439453125,
+      "z_mm": 1599.2001798000001,
+      "offset_nm": 180.00000000029104
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -6.129512297896416e-12,
+        -1.5366794195311474e-11
+      ],
+      "d95_m": 1.0151603922317833e-08,
+      "radial_rms_m": 2.3535204064510464e-09,
+      "alpha95_rad": 0.007806722526340237,
+      "centroid_core50pm_original_weight": 0.00048828125,
+      "centroid_core500pm_original_weight": 0.03857421875,
+      "z_mm": 1599.2001898,
+      "offset_nm": 189.99999997504347
+    },
+    {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        -6.486670952165499e-12,
+        -1.5306662377339903e-11
+      ],
+      "d95_m": 1.0291035744394017e-08,
+      "radial_rms_m": 2.3793466226629813e-09,
+      "alpha95_rad": 0.007806722526340233,
+      "centroid_core50pm_original_weight": 0.0,
+      "centroid_core500pm_original_weight": 0.03369140625,
+      "z_mm": 1599.2001998,
+      "offset_nm": 199.9999999497959
+    }
+  ],
+  "absolute_weight_balance_residual": 0.0,
+  "classical_status": "EXECUTED_PHYSICAL_CONFIGURATION_NOT_YET_QUALIFIED",
+  "classical_material_interaction": "Not evaluated; this is the geometric field/geometry reference for the coherent material calculation",
+  "integration_nodes": 50862,
+  "retained_history_nodes": 1429,
+  "elapsed_s": 259.8909999999996
+}

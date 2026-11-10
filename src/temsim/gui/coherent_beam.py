@@ -653,6 +653,13 @@ class CoherentBeamPage(QWidget):
         preflight_layout.addWidget(self.preflight_details)
         self.preflight_group.setVisible(False)
         self.angle_rms = _double(0., 0., 1e4, " mrad", 15)
+        self.coherence_length_enabled = QCheckBox("Specify transverse coherence length")
+        self.coherence_length = _double(20., 1e-6, 1e9, " nm", 12)
+        self.coherence_length.setToolTip(
+            "Physical tip Z = 0: |mu(d)| = exp(-d^2 / (2 L^2)). "
+            "A fixed L sets energy-dependent incoherent angular RMS. "
+            "The displayed initial value is a model assumption, not a measured FEG calibration.")
+        self.coherence_length_caption = QLabel("Tip transverse coherence length")
         self.surface_mean = _double(.3, 1e-9, 1e6, " eV", 15)
         self.surface_rms = _double(.1, 0., 1e6, " eV", 15)
         self.angle_caption = QLabel("Incoherent angular RMS")
@@ -687,6 +694,8 @@ class CoherentBeamPage(QWidget):
                 ("Wavefront tilt X", self.tip_tilt_x), ("Wavefront tilt Y", self.tip_tilt_y)):
             tip_form.addRow(caption, control)
         source_form = QFormLayout()
+        source_form.addRow(self.coherence_length_enabled)
+        source_form.addRow(self.coherence_length_caption, self.coherence_length)
         source_form.addRow(self.angle_caption, self.angle_rms)
         source_form.addRow(self.mean_caption, self.surface_mean)
         source_form.addRow(self.rms_caption, self.surface_rms)
@@ -737,6 +746,12 @@ class CoherentBeamPage(QWidget):
         self.gun_near_tip_step = _double(default_request.gun.near_tip_maximum_step_nm,
                                         .000001, 1000000., " nm", 6)
         self.gun_near_tip_step.setToolTip("Maximum axial step for the driven near-tip boundary solver. Refine this independently when increasing the source grid; evanescent channels and error checks remain active. This does not change the source or the gun field step.")
+        self.gun_near_tip_end = _double(default_request.gun.near_tip_end_z_nm,
+                                       .000001, 1000000., " nm", 6)
+        self.gun_near_tip_end.setToolTip("Numerical end of the non-paraxial tip solve, measured from tip Z = 0. The propagated field must pass the continuation angle and phase-error checks.")
+        self.gun_near_tip_radius = _double(default_request.gun.near_tip_transverse_radius_um,
+                                          .000001, 1000000., " um", 6)
+        self.gun_near_tip_radius.setToolTip("Numerical transverse half-width used to check the field approximation. The executed wave must independently satisfy the outside-domain probability limit.")
         self.column_kinetic_order = QComboBox()
         for order in (2, 4, 6, 8):
             self.column_kinetic_order.addItem(str(order), order)
@@ -860,6 +875,8 @@ class CoherentBeamPage(QWidget):
                 ("Gun field step", self.gun_step), ("Gun bore sampling step", self.gun_bore_step),
                 ("Gun energy change per step", self.gun_energy_step),
                 ("Driven near-tip maximum step", self.gun_near_tip_step),
+                ("Driven near-tip end Z", self.gun_near_tip_end),
+                ("Driven near-tip checked radius", self.gun_near_tip_radius),
                 ("Steps per segment", self.segment_steps),
                 ("RAM cache limit", self.ram_cache_gib),
                 ("Disk cache limit", self.disk_cache_gib)):
@@ -955,9 +972,11 @@ class CoherentBeamPage(QWidget):
         self.z_range_max.valueChanged.connect(self._sync_z_slider)
         self.source_enabled.toggled.connect(self._mark_source_draft)
         self.tip_boundary.currentIndexChanged.connect(self._mark_source_draft)
+        self.coherence_length_enabled.toggled.connect(self._show_source_controls)
+        self.coherence_length_enabled.toggled.connect(self._mark_source_draft)
         self.apply_source_button.clicked.connect(self.apply_source)
         self.intensity_scale.currentIndexChanged.connect(self._refresh_intensity)
-        for control in (self.angle_rms, self.surface_mean, self.surface_rms,
+        for control in (self.angle_rms, self.coherence_length, self.surface_mean, self.surface_rms,
                         self.tip_fwhm, self.tip_energy, self.tip_minimum_energy, self.tip_energy_spread,
                         self.tip_offset_x, self.tip_offset_y,
                         self.tip_curvature_x, self.tip_curvature_xy, self.tip_curvature_y,
@@ -966,6 +985,7 @@ class CoherentBeamPage(QWidget):
         for control in (self.grid_pixels, self.maximum_grid_pixels, self.energy_samples,
                         self.material_trajectories, self.column_step,
                         self.gun_step, self.gun_bore_step, self.gun_energy_step, self.gun_near_tip_step,
+                        self.gun_near_tip_end, self.gun_near_tip_radius,
                         self.segment_steps, self.working_gib, self.gpu_working_gib,
                         self.ram_cache_gib, self.disk_cache_gib):
             control.valueChanged.connect(self.mark_inputs_stale)
@@ -1101,6 +1121,11 @@ class CoherentBeamPage(QWidget):
 
     def _show_source_controls(self):
         surface = self._source_model == "surface"
+        self.coherence_length_enabled.setVisible(not surface)
+        use_length = self.coherence_length_enabled.isChecked()
+        for control in (self.coherence_length_caption, self.coherence_length):
+            control.setVisible(not surface and use_length)
+        self.angle_rms.setEnabled(not use_length)
         self.source_enabled.setText("Constant-phase surface emission" if surface else "Gaussian-Schell emission")
         self.gaussian_inputs.setVisible(not surface)
         self.tip_boundary.setVisible(not surface)
@@ -1138,7 +1163,8 @@ class CoherentBeamPage(QWidget):
             self.source_enabled.blockSignals(False)
             self.source_enabled.setEnabled(False)
             self.gaussian_inputs.hide()
-            for control in (self.angle_caption, self.angle_rms, self.mean_caption,
+            for control in (self.coherence_length_enabled, self.coherence_length_caption,
+                            self.coherence_length, self.angle_caption, self.angle_rms, self.mean_caption,
                             self.surface_mean, self.rms_caption, self.surface_rms):
                 control.hide()
             self.source_info.setText(str(error))
@@ -1162,6 +1188,13 @@ class CoherentBeamPage(QWidget):
         self.apply_source_button.setEnabled(True)
         if surface is None:
             if not preserve_draft:
+                self.coherence_length_enabled.blockSignals(True)
+                self.coherence_length_enabled.setChecked(settings.transverse_coherence_length_nm is not None)
+                self.coherence_length_enabled.blockSignals(False)
+                self.coherence_length.blockSignals(True)
+                if settings.transverse_coherence_length_nm is not None:
+                    self.coherence_length.setValue(settings.transverse_coherence_length_nm)
+                self.coherence_length.blockSignals(False)
                 self.tip_boundary.blockSignals(True)
                 self.tip_boundary.setCurrentIndex(self.tip_boundary.findData(settings.boundary_model))
                 self.tip_boundary.blockSignals(False)
@@ -1180,7 +1213,8 @@ class CoherentBeamPage(QWidget):
                     (self.angle_rms, "incoherent_angle_rms_mrad")):
                 if not preserve_draft:
                     control.blockSignals(True)
-                    control.setValue(getattr(settings, field))
+                    value = getattr(settings, field)
+                    control.setValue(0. if value is None else value)
                     control.blockSignals(False)
             self.source_info.setText(
                 f"Planar Gaussian boundary | emission FWHM {emitter.virtual_source_fwhm_nm:g} nm | "
@@ -1226,6 +1260,7 @@ class CoherentBeamPage(QWidget):
                     "This supported axisymmetric boundary has constant surface phase. "
                     "Mean energy and RMS are editable physical inputs, not fixed acceptance values.")
             self._set_default_energy_samples(1 if settings.surface_energy_rms_ev == 0. else 9)
+        self._show_source_controls()
         self._loaded_source_settings = settings
         self._loaded_source_values = loaded_values if preserve_draft else asdict(self._draft_settings())
         if preserve_draft:
@@ -1450,7 +1485,8 @@ class CoherentBeamPage(QWidget):
                 surface_edge_phase_rad=self._surface_edge_phase_rad)
         return TipEmissionSettings(enabled=self.source_enabled.isChecked(),
             boundary_model=self.tip_boundary.currentData(),
-            incoherent_angle_rms_mrad=self.angle_rms.value(),
+            incoherent_angle_rms_mrad=None if self.coherence_length_enabled.isChecked() else self.angle_rms.value(),
+            transverse_coherence_length_nm=self.coherence_length.value() if self.coherence_length_enabled.isChecked() else None,
             tip_fwhm_nm=self.tip_fwhm.value(), tip_mean_energy_ev=self.tip_energy.value(),
             tip_minimum_energy_ev=self.tip_minimum_energy.value(),
             tip_energy_spread_fwhm_ev=self.tip_energy_spread.value(),
@@ -1494,6 +1530,8 @@ class CoherentBeamPage(QWidget):
                         bore_step_mm=self.gun_bore_step.value(),
                         maximum_fractional_energy_change=self.gun_energy_step.value()/100.,
                         near_tip_maximum_step_nm=self.gun_near_tip_step.value(),
+                        near_tip_end_z_nm=self.gun_near_tip_end.value(),
+                        near_tip_transverse_radius_um=self.gun_near_tip_radius.value(),
                         maximum_checkpoint_bytes=working),
             radial_gun=replace(default.radial_gun, maximum_working_bytes=working),
             column_step_mm=self.column_step.value(),

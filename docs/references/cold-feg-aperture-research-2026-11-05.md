@@ -3,6 +3,12 @@
 Research checkpoint: 2026-11-05. Simulator baseline:
 `04e1d5682dab6a5392b542f139f4efeeaccc33c5`.
 
+The geometry and voltage table below records that historical baseline. See
+the [2026-11-07 FEI-inspired extractor implementation](fei-cold-feg-extractor-2026-11-07.md)
+for the new recessed extractor and explicit accelerator-divider connection.
+The separate downstream Gun Aperture's unresolved electrical assignment is
+unchanged by that implementation.
+
 The extractor already intercepts electrons outside its own opening. The separate
 `feg_dpa_aperture` also intercepts electrons, but has no assigned electrical
 potential in the current gun field model. These are different components. The

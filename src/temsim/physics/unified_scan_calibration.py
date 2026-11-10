@@ -15,6 +15,7 @@ from temsim.immutable_json import json_digest, thaw_json
 from temsim.optics.shared_deflectors import shared_channel_enabled
 from temsim.physics.scan_calibration import (
     held, restore_held, sample_reference_z_mm, validate_descan_shared_peaks, capture_record,
+    validate_ac_shared_peaks,
 )
 
 
@@ -315,6 +316,7 @@ def _calibrate_unified_scan(state, *, observation_stop_z_mm=None,
             residual = float(np.linalg.norm(response@command-desired)/np.linalg.norm(desired))
             ac.set_scan_command_matrix_mrad(command*1e3, residual)
             ac.validate()
+            validate_ac_shared_peaks(state)
         synchronize_scan_raster(ac, descan)
         result = None
         if target is not None:

@@ -240,6 +240,9 @@ def _module_vacuum_segments(module, origin, resolved_parts):
 
     module_start = origin + module.entrance_z_mm
     module_end = origin + module.exit_z_mm
+    if module.type == "gun":
+        # Extend physical hardware upstream while leaving the source port at 0.
+        module_start = min(module_start, origin+float(module.geometry["parts_start_z_mm"]))
     # Field/control planes retain their numerical coordinates, but neither
     # their legacy envelopes nor their bore metadata define a vacuum wall.
     parts = [part for part in resolved_parts
@@ -259,6 +262,20 @@ def _module_vacuum_segments(module, origin, resolved_parts):
         if not module_start < module_end <= origin + module.exit_z_mm:
             raise ValueError("Energy Filter inlet must terminate the module vacuum span")
     breakpoints = {float(module_start), float(module_end)}
+    from temsim.extractor_geometry import resolved_extractor_contour
+    extractor_profiles = {part.key: contour for part in parts
+                          if (contour := resolved_extractor_contour(part)) is not None}
+    for contour in extractor_profiles.values():
+        breakpoints.add(contour.aperture_plane_mm)
+
+    def bore_at(part, position):
+        if part.data.get("rear_gun_role"):
+            return float(part.data["bore_diameter_mm"])
+        contour = extractor_profiles.get(part.key)
+        if contour is not None:
+            return (contour.counterbore_diameter_mm if position < contour.aperture_plane_mm
+                    else contour.bore_diameter_mm)
+        return float(part.data["vacuum_inner_diameter_mm"])
     continuous_tube = _module_continuous_vacuum_tube(module, origin)
     if continuous_tube is not None:
         tube_start, tube_end, _tube_inner, _tube_outer = continuous_tube
@@ -291,11 +308,11 @@ def _module_vacuum_segments(module, origin, resolved_parts):
             owner = min(
                 active,
                 key=lambda part: (
-                    float(part.data["vacuum_inner_diameter_mm"]),
+                    bore_at(part, midpoint),
                     float(part.length_mm),
                 ),
             )
-            diameter = float(owner.data["vacuum_inner_diameter_mm"])
+            diameter = bore_at(owner, midpoint)
             key = owner.key
             name = owner.name
         else:
@@ -790,6 +807,11 @@ def apply_module_assembly(
 
 
 def _absolute_part_value(part, local_key):
+    if local_key == "optical_reference_local_z_mm" and part.data.get("counterbore_depth_mm", 0.):
+        from temsim.extractor_geometry import resolved_extractor_contour
+        contour = resolved_extractor_contour(part)
+        if contour is not None:
+            return contour.aperture_plane_mm
     return (
         float(part.center_z_mm)
         + float(part.data[local_key])

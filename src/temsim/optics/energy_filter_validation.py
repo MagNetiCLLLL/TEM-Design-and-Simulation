@@ -95,16 +95,16 @@ def validate_energy_filter_boris_reference(
     slit_distance_m = float(
         energy_filter.energy_slit.distance_from_sector_exit_m
     )
-    direction = np.array([
-        1.0,
+    from temsim.energy_filter_coordinates import entrance_phase_space_vectors
+    position, direction = entrance_phase_space_vectors(
+        0., 0., float(energy_filter.alignment_x_mrad) * 1.0e-3,
         float(energy_filter.alignment_y_mrad) * 1.0e-3,
-        float(energy_filter.alignment_x_mrad) * 1.0e-3,
-    ])
+    )
     momentum = momentum_from_kinetic_energy_ev(
         float(state.beam_voltage_kv) * 1000.0,
         direction,
     )
-    initial = RelativisticPhaseSpace(np.zeros(3), momentum)
+    initial = RelativisticPhaseSpace(position, momentum)
     speed = float(
         np.linalg.norm(velocity_from_momentum_m_per_s(momentum))
     )

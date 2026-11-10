@@ -13,13 +13,11 @@ from numbers import Integral
 
 import numpy as np
 
+from temsim.energy_filter_coordinates import FILTER_TO_COLUMN_ROTATION
 from temsim.part_model_3d import _annulus, _mesh, _number, revolve_section
 
 
-# Proper rotation: branch +X -> column +Z, branch -Z -> column +X.
-# This acts on filter Cartesian coordinates. The ray tracer's historical
-# entrance transverse-x -> filter +Z convention is deliberately not changed.
-FILTER_TO_COLUMN_ROTATION = ((0., 0., -1.), (0., 1., 0.), (1., 0., 0.))
+# The solver entrance and CAD share this proper column/branch mounting.
 _PROFILES = frozenset({
     "tapered_sector_prism", "energy_filter_multipole_carrier",
     "xo_energy_slit_assembly", "electrostatic_quadrupole",
@@ -352,7 +350,7 @@ def energy_filter_meshes(part, by_key, count, runtime=None, aperture_index=0):
         meshes, notes = strip_meshes(part, count, runtime, aperture_index)
         # The existing strip is expressed in column-local XYZ. Undo the source
         # datum and inverse-mount it, preserving the current entrance aperture
-        # and historical entrance-ray transverse signs in the main assembly.
+        # and column X/Y entrance-ray coordinates in the main assembly.
         inverse = np.asarray(FILTER_TO_COLUMN_ROTATION).T
         datum = energy_filter_origin_mm(by_key)
         return tuple(rigid_mesh(mesh, inverse, inverse @ (0., 0., -datum)) for mesh in meshes), notes

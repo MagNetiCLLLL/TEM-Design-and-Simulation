@@ -30,6 +30,23 @@ def _edit(view, identity, text):
 
 def _assert_control_geometry(view):
     """Test actual settled rectangles, including controls below the viewport."""
+    if view.selected_key == "probe_corrector":
+        # This task now exposes maximum/percentage controls. Its generic
+        # runtime groups remain hidden and are not the operator's interface.
+        page = view.probe_outputs
+        assert page.isVisibleTo(view) and not view._host.isVisibleTo(view)
+        form = page.layout().itemAt(1).layout()
+        for editor in (page.output, page.percent, page.enabled, page.apply):
+            assert editor.isVisibleTo(view)
+            assert editor.height() >= editor.minimumSizeHint().height()
+            assert page.contentsRect().contains(editor.geometry())
+        for editor in (page.output, page.percent):
+            label = form.labelForField(editor)
+            assert label.contentsRect().width() >= max(
+                label.fontMetrics().horizontalAdvance(word) for word in label.text().split())
+            assert not label.geometry().intersects(editor.geometry())
+        assert page.maximum.text() and page.current.text()
+        return
     groups = [box for box in view.findChildren(QGroupBox) if box.isVisibleTo(view)]
     assert groups
     previous_bottom = -1
@@ -295,7 +312,7 @@ def test_compact_parameter_labels_and_group_bodies_retain_readable_geometry(pane
     if task == "probe_corrector":
         assert panel.scroll.widget().height() > panel.scroll.viewport().height()
         assert panel.scroll.verticalScrollBar().maximum() > 0
-        last = list(panel.editors.values())[-1]
+        last = panel.probe_outputs.apply
         panel.scroll.ensureWidgetVisible(last)
         qtbot.wait(20)
         _assert_control_geometry(panel)

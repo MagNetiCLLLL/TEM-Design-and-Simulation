@@ -25,11 +25,15 @@ def test_electrode_voltage_reference_is_not_a_focusing_multiplier(surface_state,
     gun.extractor.voltage_kv = 4.5
     gun.electrostatic_lens.voltage_kv = 1.1
     gun.electrostatic_lens.voltage_reference = reference
+    # Independent lens gauge test, including a lens above lab ground; the
+    # legacy divider remains connected to the extractor in this fixture.
+    gun.accelerator.voltage_start_reference = "extractor"
     request = field_request(gun)
-    assert request["rings"][1][-1] == pytest.approx(rise)
-    assert request["rings"][1][-1]-request["high_tension_v"] == pytest.approx(ground)
+    lens_ring = next(row for row in request["rings"] if row[0] == gun.electrostatic_lens.key)
+    assert lens_ring[-1] == pytest.approx(rise)
+    assert lens_ring[-1]-request["high_tension_v"] == pytest.approx(ground)
     assert request["gun_lens_voltage_reference"] == reference
-    assert request["rings"][-1][-1] == 300000.
+    assert next(row for row in request["rings"] if row[0] == "accelerator:9")[-1] == 300000.
 
 
 def test_invalid_reference_fails_before_field_solve(surface_state):
@@ -48,10 +52,10 @@ def test_cache_and_saved_gun_require_reference_without_injected_defaults(surface
     from temsim.optics.electron_gun.field_emission import field_emission_gun_from_dict
     gun = surface_state.electron_gun
     before = gun._cache_key(9)
-    gun.electrostatic_lens.voltage_reference = "tip"
+    gun.electrostatic_lens.voltage_reference = "extractor"
     assert gun._cache_key(9) != before
     saved = gun.to_dict()
-    assert field_emission_gun_from_dict(saved).electrostatic_lens.voltage_reference == "tip"
+    assert field_emission_gun_from_dict(saved).electrostatic_lens.voltage_reference == "extractor"
     saved["components"][gun.electrostatic_lens.key].pop("voltage_reference")
     with pytest.raises(ValueError, match="requires explicit voltage_reference"):
         field_emission_gun_from_dict(saved)

@@ -102,7 +102,7 @@ def add_source_support_probes(bundle, emitter):
         sigma = emitter.virtual_source_fwhm_nm / np.sqrt(8*np.log(2))*1e-9
         quantum = (0. if coherence.boundary_model == "driven_gaussian_schell" else
                    float(wavelength_m(emitter.emission_energy_ev))/(4*np.pi*sigma))
-        angle = 3*np.hypot(quantum, coherence.incoherent_angle_rms_mrad*1e-3)
+        angle = 3*np.hypot(quantum, coherence.incoherent_angle_rms_rad(emitter.emission_energy_ev))
         xy = radius*np.array((np.cos(phi), np.sin(phi)))
         xy = np.column_stack((xy, np.zeros(2)))
         momentum = angle*np.array((np.cos(phi+phase), np.sin(phi+phase)))

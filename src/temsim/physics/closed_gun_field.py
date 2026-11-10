@@ -195,7 +195,7 @@ def closed_field_request(gun, *, liner_segments=None,
         "Annular electrode contours use current mechanical bore, thickness and outer dimensions.",
         "Grounding the downstream liner is an explicit simulator electrical design, not measured wiring.",
         "Radial joints between stepped liner shells are idealised zero-thickness grounded faces.",
-        "No space charge, image charge, insulators or tunnelling-current prediction.",
+        "No space charge, image charge, dielectric polarization or tunnelling-current prediction.",
         "Magnetic controls, aperture absorption and any installed monochromator remain separate required operations.",
         "Field evaluation is strict inside the solved domain; no analytic fallback or energy reset."]
     request["boundary_conditions"]["cathode"]["material_extension"] = "z_below_zero_is_constant_potential_conductor_for_interception"
@@ -211,6 +211,12 @@ def closed_field_request(gun, *, liner_segments=None,
         request["limitations"][0] = "Continuous curvature uses the original spherical cap and tangent-cone conductor; emitted positions are not moved."
         request["implementation_sha256"]["continuous_curvature_conductor.py"] = hashlib.sha256(
             Path(inspect.getfile(type(conductor))).read_bytes()).hexdigest()
+    from temsim.gun_rear_geometry import rear_electrode_request
+    rear = rear_electrode_request(gun, conductor)
+    request["rear_gun"] = rear
+    request["rings"].extend(rear["rings"])
+    if max(row["outer_m"] for row in request["rings"]) >= request["domain"]["outer_radius_m"]:
+        raise ValueError("Rear gun electrodes exceed the padded radial field domain")
     paths = (Path(__file__), Path(inspect.getfile(merge_axis_nodes)))
     request["implementation_sha256"].update({p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in paths})
     return request

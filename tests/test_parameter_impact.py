@@ -124,7 +124,7 @@ def test_isolated_coil_extent_changes_the_real_vacuum_profile_without_magnetic_f
                 mechanical_profile="magnetic_excitation_coil", vacuum_inner_diameter_mm=4,
                 local_start_z_mm=10, local_center_z_mm=15, local_end_z_mm=20, length_mm=10,
                 mechanical_inner_diameter_mm=6, mechanical_outer_diameter_mm=8)
-    module = SimpleNamespace(key="test", entrance_z_mm=0, exit_z_mm=30,
+    module = SimpleNamespace(key="test", type="column", entrance_z_mm=0, exit_z_mm=30,
                              geometry={"vacuum_drift_inner_diameter_mm": 10})
 
     def bore_at(z, row):

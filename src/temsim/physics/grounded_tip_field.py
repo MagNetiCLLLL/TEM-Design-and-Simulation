@@ -4,7 +4,8 @@ Boundary-conforming axisymmetric finite elements; metals are Dirichlet.
 The numerical radial/back boundaries are insulating (zero normal derivative),
 not extra grounded electrodes. The exit boundary and final accelerator ring
 are grounded. No charge density, image potential or tunnelling is included.
-Electrode contours are reference annuli, not a claim about an OEM gun.
+Electrode contours are configured piecewise annuli, including the declared
+extractor recess; undisclosed dimensions are not a claim about an OEM gun.
 """
 from __future__ import annotations
 
@@ -35,11 +36,18 @@ def field_request(gun):
     lens_potential = gun.electrostatic_lens.potential_rise_from_tip_v(ext/1000,ht/1000)
     for component, potential in ((gun.extractor, ext),
             (gun.electrostatic_lens, lens_potential)):
+        if component is gun.extractor:
+            from temsim.extractor_geometry import ExtractorContour
+            for start, stop, inner, outer in ExtractorContour.from_component(component).annuli_mm:
+                rings.append((component.key, start*1e-3, stop*1e-3, inner*1e-3, outer*1e-3, potential))
+            continue
         center = float(component.mechanical_center_from_tip_mm)*1e-3
         half = float(component.mechanical_length_mm)*.5e-3
         rings.append((component.key, center-half, center+half,
                       float(component.mechanical_clear_bore_diameter_mm)*.5e-3,
                       float(component.mechanical_outer_diameter_mm)*.5e-3, potential))
+    from temsim.optics.electron_gun.electrostatic import accelerator_potential_rises_v
+    stage_voltages = accelerator_potential_rises_v(gun.accelerator, ext/1000., lens_potential)
     for index, stage in enumerate(gun.accelerator.stages):
         center = float(stage.center_from_tip_mm)*1e-3
         half = getattr(gun.accelerator, "_electrode_thickness_mm",
@@ -47,14 +55,20 @@ def field_request(gun):
         rings.append((f"accelerator:{index}", center-half, center+half,
                       float(gun.accelerator.mechanical_clear_bore_diameter_mm)*.5e-3,
                       float(gun.accelerator.mechanical_outer_diameter_mm)*.5e-3,
-                      ext + stage.voltage_fraction*(ht-ext)))
+                      stage_voltages[index]))
     # Offsets/soft field windows are legacy analytic parameters, not electrode
     # locations. Moving metal now changes the field through its boundary.
+    from temsim.gun_rear_geometry import rear_electrode_request
+    rear = rear_electrode_request(gun, model.geometry)
+    rings.extend((r["key"], r["start_m"], r["stop_m"], r["inner_m"], r["outer_m"], r["potential_rise_v"])
+                 for r in rear["rings"])
     return {"schema": "axisymmetric-grounded-feg-laplace-v2",
+            "rear_gun": rear,
             "potential_interpolation": "conforming-cut-axis-regular-radius-squared-z-v3",
             "mesh_generation": "tip-graded-electrode-local-v3",
             "geometry": asdict(model.geometry), "numerics": asdict(model.field_numerics),
             "gun_lens_voltage_reference": gun.electrostatic_lens.voltage_reference,
+            "accelerator_voltage_start_reference": getattr(gun.accelerator, "voltage_start_reference", "extractor"),
             "rings": rings, "high_tension_v": ht, "exit_m": gun.exit_plane_z_mm*1e-3}
 
 
@@ -259,7 +273,7 @@ class GroundedTipField:
             raise ValueError("Invalid grounded gun boundary")
         for key, start, stop, inner, outer, potential in rings:
             if (not np.all(np.isfinite([start, stop, inner, outer, potential]))
-                    or not 0 < start < stop < end or not 0 < inner < outer):
+                    or not -geometry.shank_length_um*1e-6 <= start < stop < end or not 0 < inner < outer):
                 raise ValueError(f"Invalid conductor boundary: {key}")
         radius = geometry.apex_radius_nm*1e-9
         step = radius/numerics.apex_cells_per_radius
@@ -281,14 +295,23 @@ class GroundedTipField:
         tip = (zz <= 0) & (rr <= geometry.radius_m(zz))
         fixed = tip.copy()
         rise = np.zeros_like(rr)
+        metal_owner = np.full(rr.shape, "", dtype=object)
+        metal_owner[tip] = "tip"
+        tip_connected = request.get("rear_gun", {}).get("tip_connected_keys", ())
         for key, start, stop, inner, outer, potential in rings:
             metal = (zz >= start) & (zz <= stop) & (rr >= inner) & (rr <= outer)
-            if np.any(metal & fixed):
+            # The two adjacent pieces of a recessed extractor share one
+            # conducting face and potential. Distinct electrodes cannot touch.
+            common = (metal_owner == key) & (rise == potential)
+            if key in tip_connected and potential == 0.:
+                common |= (metal_owner == "tip") & (rise == 0.)
+            if np.any(metal & fixed & ~common):
                 raise ValueError(f"Overlapping electrode boundaries: {key}")
             if not np.any(metal):
                 raise ValueError(f"Grid did not resolve electrode {key}")
             fixed |= metal
             rise[metal] = potential
+            metal_owner[metal] = key
         fixed[:, -1] = True
         rise[:, -1] = ht
         from temsim.physics.axisymmetric_cut_field import AxisymmetricCutField
@@ -306,8 +329,10 @@ class GroundedTipField:
         # axis. Electric field remains the derivative of this SAME potential.
         self.report = {"schema": request["schema"], "potential_reference": "final_anode_ground_0V",
             "tip_potential_v": -ht, "extractor_potential_v": -ht+rings[0][-1],
-            "gun_lens_potential_v": -ht+rings[1][-1],
+            "gun_lens_potential_v": -ht+next(row[-1] for row in rings if row[0] == "feg_electrostatic_lens"),
             "gun_lens_voltage_reference": request.get("gun_lens_voltage_reference", "extractor"),
+            "accelerator_voltage_start_reference": request.get("accelerator_voltage_start_reference", "extractor"),
+            "rear_gun": request.get("rear_gun", {}),
             "final_anode_potential_v": 0., "grid_shape": list(rr.shape),
             "elements": self._fem.element_count, "vertices": self._fem.vertex_count,
             "linear_residual": residual, "space_charge": "neglected",
@@ -320,7 +345,7 @@ class GroundedTipField:
             "electrode_cells_per_bore": numerics.electrode_cells_per_bore,
             "electrode_corner_cells": numerics.electrode_corner_cells,
             "maximum_axis_core_radius_m": float(np.max(self._regular.radius_m)),
-            "boundary_model": "reference annuli; insulating radial/back boundary; grounded exit plane",
+            "boundary_model": "configured piecewise annuli; insulating radial/back boundary; grounded exit plane",
             "convergence": "not_certified_by_linear_residual"}
         for array in (self.r, self.z, self.rise):
             array.setflags(write=False)

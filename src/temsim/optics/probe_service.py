@@ -323,6 +323,31 @@ def apply_probe_service(state, key, *, delta_percent, intrinsic=None, learning=N
     return changes
 
 
+def preview_probe_output_deltas(state, deltas_percent):
+    """Validate simultaneous output increments, including shared coil limits.
+
+    Values are percentage points of the installed maxima. This batch boundary
+    preserves vector limits when several service routes share a physical drive.
+    It neither changes service gains nor enables learning.
+    """
+    if not isinstance(deltas_percent, Mapping):
+        raise ValueError("Output increments must be a mapping")
+    values = {}
+    for name, delta in deltas_percent.items():
+        if name not in OUTPUTS:
+            raise ValueError(f"Unknown probe output {name}")
+        values[name] = _number(delta, name)
+    values = {name: value for name, value in values.items() if value}
+    return _prepare_outputs(state, values)[1] if values else ()
+
+
+def apply_probe_output_deltas(state, deltas_percent):
+    """Apply a prevalidated simultaneous electrical move; retain service data."""
+    changes = preview_probe_output_deltas(state, deltas_percent)
+    _commit(runtime_targets(state), changes, expected=None)
+    return changes
+
+
 def preview_probe_output(state, name, *, percent):
     value = _number(percent, "Output setting (%)")
     if abs(value) > 100:

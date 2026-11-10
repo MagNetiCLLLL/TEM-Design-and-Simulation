@@ -18,10 +18,12 @@ import math
 import numpy as np
 
 from temsim.immutable_json import freeze_json, json_digest, thaw_json
+from temsim.energy_filter_coordinates import ENTRANCE_COORDINATE_CONVENTION
 from temsim import input_io
 
 SNAPSHOT_SCHEMA = "complete-working-point-v1"
 ASSET_SNAPSHOT_SCHEMA = "complete-working-point-assets-v2"
+_COORDINATE_CONVENTIONS = {"energy_filter_entrance": ENTRANCE_COORDINATE_CONVENTION}
 # Deliberately bounded to parameter/assembly models, never GUI, IO or workers.
 _MODEL_MODULES = (
     "column.layout", "column.module_assembly",
@@ -166,7 +168,8 @@ def encode_instrument(state, *, asset_store=None) -> Mapping:
 
     root = encode(state)
     graph = {"schema": ASSET_SNAPSHOT_SCHEMA if asset_store is not None else SNAPSHOT_SCHEMA,
-             "root": root, "nodes": nodes}
+             "root": root, "nodes": nodes,
+             "coordinate_conventions": dict(_COORDINATE_CONVENTIONS)}
     if input_io.archive_payload(state) is not None:
         graph["archived_inputs"] = input_io.archive_payload(state)
     return freeze_json(graph)
@@ -178,6 +181,9 @@ def decode_instrument(graph, *, assets=None):
         raise ValueError("Unsupported working-point schema; historical viewing only")
     if graph.get("schema") == ASSET_SNAPSHOT_SCHEMA and assets is None:
         raise ValueError("This working point requires its pinned input assets")
+    tagged_coordinates = "coordinate_conventions" in graph
+    if tagged_coordinates and graph["coordinate_conventions"] != _COORDINATE_CONVENTIONS:
+        raise ValueError("Unsupported working-point coordinates; historical viewing only")
     registry, nodes, restored = _model_types(), graph["nodes"], {}
     array_aliases = {}
 
@@ -304,7 +310,15 @@ def decode_instrument(graph, *, assets=None):
     from temsim.optics.electron_gun.tip_curvature import validate_curvature
     from temsim.optics.hexapole import HexapoleComponent
     from temsim.optics.quadrupole import QuadrupoleComponent
+    from temsim.optics.energy_filter import EnergyFilterSystem
     for component in restored.values():
+        if (isinstance(component, EnergyFilterSystem) and not tagged_coordinates
+                and component.alignment_x_mrad != 0.):
+            # Both entrance conventions existed in untagged object graphs.
+            # Unlike profiles, an exact snapshot must not guess or flip inputs.
+            raise ValueError("Unversioned Energy Filter entrance X alignment is ambiguous; "
+                             "historical viewing only. Load an operating profile or capture "
+                             "a new working point with explicit column coordinates.")
         if isinstance(component, (HexapoleComponent, QuadrupoleComponent, Dp12ScanDeflectorComponent)):
             component.validate()
         if isinstance(component, Sample) and any(
@@ -333,6 +347,11 @@ def decode_instrument(graph, *, assets=None):
     # Exact current graphs restore without injected defaults or aliases.
     reencoded = encode_instrument(result,
         asset_store=assets if graph.get("schema") == ASSET_SNAPSHOT_SCHEMA else None)
+    if not tagged_coordinates:
+        # Zero X alignment is identical in both conventions. Compare every
+        # original value, omitting only the newly supplied coordinate metadata.
+        reencoded = dict(reencoded)
+        reencoded.pop("coordinate_conventions")
     if json_digest(reencoded) != json_digest(graph):
         raise ValueError("Working-point restoration did not preserve every captured value")
     return result

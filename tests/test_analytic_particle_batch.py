@@ -4,7 +4,7 @@ from threading import Event
 import numpy as np
 import pytest
 
-from test_analytic_particle_step import analytic_gun_fixture, _phase
+from test_analytic_particle_step import analytic_gun_fixture, historical_analytic_geometry, _phase
 from temsim.optics.electron_gun import tracing
 from temsim.optics.electron_gun.electrostatic import FegElectrostaticField
 from temsim.optics.electron_gun.field_emission import FieldEmissionGun
@@ -29,8 +29,7 @@ def gun():
         patch.setattr(FieldEmissionGun, "base_electric_field", property(
             lambda self: FegElectrostaticField(self.emitter, self.extractor,
                                                self.electrostatic_lens, self.accelerator)))
-        value = FieldEmissionGun()
-        value.emitter.surface_model = None
+        value = historical_analytic_geometry(FieldEmissionGun())
         yield value
 
 

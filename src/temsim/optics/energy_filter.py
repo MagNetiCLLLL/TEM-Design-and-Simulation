@@ -144,6 +144,7 @@ class EnergyFilterSystem:
     m12_housing_geometry_source: str = _manifest_geometry_text(
         "m12_housing_geometry_source"
     )
+    # Entrance alignment is in the fixed column transverse frame.
     alignment_x_mrad: float=0.0
     alignment_y_mrad: float=0.0
     voltage_reference_kv: object=300.0
@@ -460,6 +461,8 @@ def serialise_energy_filter(energy_filter):
         reference_voltage,
     )
     data = asdict(energy_filter)
+    from temsim.energy_filter_coordinates import ENTRANCE_COORDINATE_CONVENTION
+    data["entrance_coordinate_convention"] = ENTRANCE_COORDINATE_CONVENTION
     for field in module_manifest.ENERGY_FILTER_GEOMETRY_FIELDS:
         data.pop(field, None)
     for field in module_manifest.ENERGY_FILTER_MECHANICAL_METADATA_FIELDS:
@@ -499,6 +502,10 @@ def energy_filter_from_dict(values, source_voltage_kv):
     }
     if not isinstance(values, dict):
         raise ValueError("Energy filter requires a complete current record.")
+    from temsim.energy_filter_coordinates import restore_entrance_alignment
+    values = dict(values)
+    convention = values.pop("entrance_coordinate_convention", None)
+    values = restore_entrance_alignment(values, convention)
     missing = expected - values.keys()
     unknown = values.keys() - expected
     if missing or unknown:

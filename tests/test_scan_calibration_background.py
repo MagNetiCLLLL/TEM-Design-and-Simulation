@@ -465,6 +465,36 @@ def test_install_failure_restores_all_scan_values_and_shared_host(view, qtbot, m
     assert state.descan_deflector._physical_host is host
 
 
+@pytest.mark.parametrize("result_source", ["calibration", "worker_result"])
+def test_shared_ac_dp12_overload_never_applies_background_result(view, qtbot, monkeypatch, result_source):
+    from temsim.optics.probe_service import set_probe_output_percent
+
+    widget, errors, applied = view
+    state = widget._state
+    ac = state.ac_deflector
+    ac.set_pure_shift_coupling(-np.eye(2))
+    ac.set_scan_command_matrix_mrad(np.eye(2)*.1)
+    ac.scan_pixel_size_nm = 50000. / ac.scan_pixels_x
+    set_probe_output_percent(state, "DP12x", percent=87.)
+    widget.set_state(state)
+    before = controller.encode_instrument(state)
+    host = state.descan_deflector._physical_host
+
+    if result_source == "worker_result":
+        def invalid_result(candidate, **kwargs):
+            candidate.ac_deflector.set_scan_command_matrix_mrad(np.eye(2)*2.)
+            candidate.ac_deflector._scan_execution_receipt = {"scope": "Rejected worker fixture"}
+            candidate.descan_deflector.scan_pixels_x += 1
+        monkeypatch.setattr(controller, "calibrate_scan_system", invalid_result)
+
+    widget.calibrate_hold_button.click()
+    qtbot.waitUntil(lambda: not widget.scan_calibration.busy, timeout=10000)
+    assert len(errors) == 1 and "DP12" in errors[0] and "coil limit" in errors[0]
+    assert not applied
+    assert controller.encode_instrument(state) == before
+    assert state.descan_deflector._physical_host is host
+
+
 def test_main_window_close_waits_for_scan_cancellation(qtbot, monkeypatch, tmp_path):
     from PySide6.QtCore import QSettings
     from temsim.gui import main_window as shell, interactive_calculation, instrument_configuration_dialog

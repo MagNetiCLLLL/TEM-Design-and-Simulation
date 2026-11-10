@@ -49,6 +49,7 @@ INTERNAL_FIELDS = frozenset({
     "zero_loss_offset_m",
 })
 TOML_OWNED_FIELDS = frozenset({
+    "counterbore_depth_mm", "counterbore_diameter_mm", "voltage_start_reference",
     "channel_x_angle_deg", "channel_y_angle_deg",
     "a_mm",
     "b0_t",

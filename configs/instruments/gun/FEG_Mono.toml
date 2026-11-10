@@ -32,7 +32,7 @@ gun_field_exit_extension_mm = 100.0
 # The crossed-field housing shares the gun-lens electrode bias. Transverse
 # Wien electric/magnetic drives remain independently controlled.
 wien_housing_voltage_reference = "gun_lens"
-parts_start_z_mm = -1.0
+parts_start_z_mm = -6.0
 parts_end_z_mm = 496.0
 
 [[parts]]
@@ -43,13 +43,13 @@ name = "Cold Field Emission Tip"
 tip_definition_file = "../../sources/FEG_tip.toml"
 tip_surface_reference_file = "sources/cold_feg_tip.toml"
 branch = "common"
-local_start_z_mm = -1.0
-local_center_z_mm = -0.5
+local_start_z_mm = -6.0
+local_center_z_mm = -3.0
 local_end_z_mm = 0.0
-length_mm = 1.0
+length_mm = 6.0
 vacuum_inner_diameter_mm = 5
 optical_reference_local_z_mm = 0.0
-outer_diameter_mm = 0.1751605932866515
+outer_diameter_mm = 1.0500472285458915
 # Fresh installations use Flat tip; shared definition is authoritative.
 default_tip_emission = "flat_tip"
 # Optional curved particle tip definition. Curvature = 1/tip_radius_nm (nm^-1).
@@ -82,14 +82,28 @@ order = 2
 key = "feg_extractor"
 name = "Extractor"
 branch = "common"
-local_start_z_mm = 6.0
-local_center_z_mm = 8.0
-local_end_z_mm = 10.0
-length_mm = 4.0
-vacuum_inner_diameter_mm = 4
-optical_reference_local_z_mm = 8.0
+local_start_z_mm = 0.30
+local_center_z_mm = 0.80
+local_end_z_mm = 1.30
+length_mm = 1.0
+vacuum_inner_diameter_mm = 0.50
+optical_reference_local_z_mm = 0.75
 outer_diameter_mm = 20.0
-bore_diameter_mm = 4.0
+bore_diameter_mm = 0.50
+# FEI US8736170B1 Fig. 5: ~0.75 mm tip/extractor spacing and ~0.45 mm
+# tip-facing recess depth. Interpret spacing at the small-hole entrance.
+# Bore, recess diameter, overall thickness and outer diameter are engineering
+# assumptions, not dimensions disclosed by FEI. Normal-emission adaptation;
+# EEE is modelled below; cleaning filament and backscattering are omitted.
+counterbore_depth_mm = 0.45
+counterbore_diameter_mm = 4.0
+extractor_geometry_source = "https://patents.google.com/patent/US8736170B1/en"
+parameter_metadata.counterbore_depth_mm = { source_kind = "documented", source_note = "US8736170B1, Fig. 5 description: approximately 0.45 mm tip-facing depression." }
+parameter_metadata.bore_diameter_mm = { source_kind = "estimated", source_note = "0.50 mm engineering initial value; FEI patent does not specify the through-hole diameter." }
+parameter_metadata.counterbore_diameter_mm = { source_kind = "estimated", source_note = "4.0 mm engineering initial value; FEI patent does not specify the recess diameter." }
+parameter_metadata.length_mm = { source_kind = "estimated", source_note = "1.0 mm engineering plate thickness, leaving a 0.55 mm aperture web." }
+parameter_metadata.outer_diameter_mm = { source_kind = "estimated", source_note = "20 mm retained simulator envelope; not an FEI dimension." }
+parameter_metadata.optical_reference_local_z_mm = { source_kind = "estimated", source_note = "Interpret the patent's approximate 0.75 mm tip-to-extractor distance at the recess floor / small-hole entrance." }
 default_voltage_kv = 4.0
 
 [[parts]]
@@ -105,9 +119,10 @@ vacuum_inner_diameter_mm = 8
 optical_reference_local_z_mm = 18.0
 outer_diameter_mm = 60.0
 bore_diameter_mm = 8.0
-default_voltage_kv = 1.2
-# Historical additive convention, not an OEM voltage-reference calibration.
-default_voltage_reference = "extractor"
+default_voltage_kv = 5.2
+# Preserve the previous 5.2 kV rise, with an independent tip-referenced control.
+# This voltage and the downstream geometry are simulator choices, not FEI data.
+default_voltage_reference = "tip"
 
 [[parts]]
 order = 5
@@ -147,6 +162,8 @@ accelerator_electrode_stack_evidence_status = "user_supplied_side_view_topology_
 accelerator_electrode_stack_evidence_source = "User-supplied accelerator side-view photograph, 2026-08-30; confirms repeated external ring-stage appearance without an OEM scale or material calibration."
 default_high_tension_kv = 300.0
 electrode_thickness_mm = 1.0
+# Divider fractions span gun-lens potential to the final grounded anode.
+voltage_start_reference = "gun_lens"
 
 [[parts]]
 order = 4
@@ -276,3 +293,66 @@ mechanical_overlap_group = "feg_c1_selection_assembly"
 mechanical_overlap_role = "member"
 mechanical_overlap_reason = "Co-located slit-blade envelope inside the C1 aperture mechanism."
 parent_key = "feg_c1_aperture"
+
+# Rear hardware: axisymmetric normal-emission adaptation of FEI Fig. 5.
+# The patent specifies ~1.5 mm protrusion and 1.8-2.2 mm facing gap only.
+# Other dimensions and the normal-emission EEE wiring below are assumptions.
+# Negative Z is behind the tip; the source reference remains exactly Z=0.
+[[parts]]
+order = 100
+key = "feg_emitter_enclosure"
+name = "Emitter Enclosure Electrode (EEE)"
+branch = "common"
+mechanical_only = true
+rear_gun_role = "emitter_enclosure_electrode"
+local_start_z_mm = -1.8
+local_center_z_mm = -1.65
+optical_reference_local_z_mm = -1.65
+local_end_z_mm = -1.5
+length_mm = 0.3
+vacuum_inner_diameter_mm = 0.6
+bore_diameter_mm = 0.6
+outer_diameter_mm = 20.0
+rear_voltage_reference = "tip"
+rear_bias_kv = 0.0
+parameter_metadata.local_end_z_mm = { source_kind = "documented", source_note = "US8736170B1 Fig. 5: approximately 1.5 mm needle protrusion ahead of EEE." }
+parameter_metadata.bore_diameter_mm = { source_kind = "estimated", source_note = "Engineering clearance around the configured tip shank; not an FEI dimension." }
+parameter_metadata.length_mm = { source_kind = "estimated", source_note = "Engineering electrode thickness; not specified by the patent." }
+parameter_metadata.outer_diameter_mm = { source_kind = "estimated", source_note = "Axisymmetric engineering envelope; not an FEI dimension." }
+parameter_metadata.rear_voltage_reference = { source_kind = "estimated", source_note = "Assumed normal-emission tip connection. Patent cleaning biases do not establish normal-emission EEE wiring." }
+
+[[parts]]
+order = 101
+key = "feg_cathode_holder"
+name = "Cathode Support Collar"
+branch = "common"
+mechanical_only = true
+rear_gun_role = "cathode_holder"
+local_start_z_mm = -5.0
+local_center_z_mm = -4.5
+optical_reference_local_z_mm = -4.5
+local_end_z_mm = -4.0
+length_mm = 1.0
+vacuum_inner_diameter_mm = 0.6
+bore_diameter_mm = 0.6
+outer_diameter_mm = 3.0
+rear_voltage_reference = "tip"
+rear_bias_kv = 0.0
+parameter_metadata.length_mm = { source_kind = "estimated", source_note = "Axisymmetric contacting cathode support, not a reconstruction of the patent V-shaped flashing filament and pins." }
+
+[[parts]]
+order = 102
+key = "feg_rear_insulator"
+name = "Rear Gun Insulator"
+branch = "common"
+mechanical_only = true
+rear_gun_role = "insulator"
+local_start_z_mm = -6.0
+local_center_z_mm = -5.5
+optical_reference_local_z_mm = -5.5
+local_end_z_mm = -5.0
+length_mm = 1.0
+vacuum_inner_diameter_mm = 2.0
+bore_diameter_mm = 2.0
+outer_diameter_mm = 20.0
+parameter_metadata.length_mm = { source_kind = "estimated", source_note = "Axisymmetric engineering seat; geometry and interception only, no dielectric polarization or charging model." }

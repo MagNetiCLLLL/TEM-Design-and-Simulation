@@ -12,6 +12,47 @@ from temsim.physics.tip_gun_wave import GunWaveNumerics
 from temsim.physics.wave_grid import WaveGridNumerics, WaveMemoryBudgetError
 
 
+def test_cuda_robin_operator_matches_cpu_with_evanescent_channels():
+    """Small scalar operator equivalence, not a finite-source physical run."""
+    from temsim.physics.compute_backend import coherent_cuda_capability
+    if not coherent_cuda_capability().available:
+        pytest.skip("Usable CUDA is unavailable")
+    import cupy as cp
+    from temsim.physics.accelerating_tip_boundary import scalar_robin_transport
+    transverse = np.linspace(0., 9e18, 64).reshape(8, 8)
+    args = (np.array([1e18, 4e18, 12e18]), np.array([.1, .2, .1])*1e-9, 16e18)
+    expected = scalar_robin_transport(*args, transverse, 1e9)
+    actual = scalar_robin_transport(*args, cp.asarray(transverse), 1e9)
+    for left, right in zip(expected[:3], actual[:3]):
+        assert isinstance(right, cp.ndarray)
+        np.testing.assert_allclose(cp.asnumpy(right), left, rtol=2e-13, atol=2e-13)
+    assert actual[3]["maximum_slab_current_residual"] < 1e-12
+
+
+def test_cuda_gun_map_and_interception_match_cpu_operator():
+    """A sampled canonical map and real aperture mask, without source tracing."""
+    from temsim.physics.compute_backend import coherent_cuda_capability
+    if not coherent_cuda_capability().available:
+        pytest.skip("Usable CUDA is unavailable")
+    from temsim.optics.electron_gun.field_emission import FieldEmissionGun
+    from temsim.physics.multiplane_wave import PlaneWave
+    from temsim.physics.tip_gun_wave import _execute_gun_segments, GunWaveNumerics
+    coordinates = (np.arange(64)-32)*6.25e-8
+    amplitude = np.exp(-(coordinates[:, None]**2+coordinates[None, :]**2)/(4*(2e-7)**2))
+    amplitude /= np.linalg.norm(amplitude)
+    plane = PlaneWave(amplitude.astype(complex), np.eye(2)*6.25e-8, np.zeros(2))
+    gun = FieldEmissionGun()
+    gun.dpa_aperture.radius_mm = .0002
+    matrix = np.block([[np.eye(2), np.eye(2)*1e-6], [np.zeros((2, 2)), np.eye(2)]])
+    segments = [(gun.dpa_aperture.z_mm, matrix, np.zeros(4), {})]
+    cpu = _execute_gun_segments(gun, plane, segments, 300000., .3,
+        numerics=GunWaveNumerics(compute_backend="CPU"))
+    gpu = _execute_gun_segments(gun, plane, segments, 300000., .3,
+        numerics=GunWaveNumerics(compute_backend="Require GPU"))
+    np.testing.assert_allclose(gpu[0].amplitude, cpu[0].amplitude, rtol=1e-12, atol=1e-13)
+    assert 0 < gpu[0].probability < 1
+    assert gpu[1][0]["lost_probability"] == pytest.approx(cpu[1][0]["lost_probability"], abs=2e-14)
+
 def source():
     axis = np.arange(32)-16
     y, x = np.meshgrid(axis, axis, indexing="ij")
@@ -94,6 +135,13 @@ def test_padding_is_a_numerical_control_not_an_emission_width():
     assert AcceleratingTipNumerics().source_padding_factor == 2
     assert GunWaveNumerics().near_tip_source_padding_factor == 2
     assert replace(AcceleratingTipNumerics(), source_padding_factor=4).validate().source_padding_factor == 4
+
+
+@pytest.mark.parametrize("name", ["near_tip_end_z_nm", "near_tip_transverse_radius_um"])
+@pytest.mark.parametrize("value", [0., -1., float("nan"), float("inf"), True])
+def test_near_tip_domain_controls_reject_nonphysical_numeric_values(name, value):
+    with pytest.raises(ValueError, match=name):
+        replace(GunWaveNumerics(), **{name: value}).validate()
 
 
 def test_robin_budget_includes_caller_arrays_before_operator_invocation(monkeypatch):

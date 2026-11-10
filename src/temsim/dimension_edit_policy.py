@@ -10,6 +10,14 @@ def dimension_reference_reason(part, field):
     profile = part.get("mechanical_profile", "")
     native = part.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing"
     from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
+    if part.get("rear_gun_role") and field == "vacuum_inner_diameter_mm":
+        return "Rear hardware clearance follows bore_diameter_mm shared by CAD, interception and curved-tip electrode boundaries."
+    if template == "feg_extractor" and field == "vacuum_inner_diameter_mm":
+        return ("Retained minimum-passage reference. Extractor clearance follows bore_diameter_mm "
+                "and, when present, counterbore_diameter_mm / counterbore_depth_mm, shared with the conducting contour.")
+    if template == "feg_extractor" and part.get("counterbore_depth_mm", 0.) and field == "optical_reference_local_z_mm":
+        return ("Retained reference marker. The extraction aperture entrance is derived from "
+                "local_start_z_mm + counterbore_depth_mm in layout and transport; edit those physical dimensions.")
     if native:
         if field == "length_mm" and "stage_centers_z_mm" in part and "electrode_thickness_mm" in part:
             return ("Accelerator installation allocation only. The material is defined by "

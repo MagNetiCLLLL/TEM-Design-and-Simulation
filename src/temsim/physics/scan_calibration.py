@@ -109,6 +109,24 @@ def capture_record(state, *, descan_calibrated: bool, ac_angle_target=None):
     return encoded
 
 
+def validate_ac_shared_peaks(state):
+    """Check the single AC/DP12 coil pair after resolving scan or pivot drives."""
+    from temsim.physics.instrument_magnetic import active_dp12_bias
+
+    ac = state.ac_deflector
+    if not shared_channel_enabled(ac):
+        return
+    bias = active_dp12_bias(state, ac)
+    try:
+        ac.validate_coil_limits(bias)
+    except ValueError as exc:
+        if bias is None:
+            raise
+        raise ValueError(
+            "AC scan/wobble plus DP12 alignment exceeds the shared physical coil limit"
+        ) from exc
+
+
 def validate_descan_shared_peaks(state):
     """Check every raster corner after summing the shared host alignment.
 
@@ -159,6 +177,7 @@ def restore_held(state, *, restore_descan=True):
             "ac_angle_target", "legacy_unknown"))
         ac.set_scan_command_matrix_mrad(command)
         ac.validate()
+        validate_ac_shared_peaks(state)
         if restore_descan:
             descan.set_image_plane_coupling(record["descan_ratio"],
                 target_key=record["target_key"], target_z_mm=record["target_z_mm"])

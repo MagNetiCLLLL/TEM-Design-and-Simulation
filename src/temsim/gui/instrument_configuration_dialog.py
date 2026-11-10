@@ -179,9 +179,11 @@ class InstrumentConfigurationDialog(QDialog):
 
     def _show_preview(self, state):
         from temsim.energy_filter_model_3d import energy_filter_render_values
+        from temsim.optics.nanopulser import nanopulser_render_values
         self._assembly = state._resolved_assembly
         runtime = dict(self.review.assembly_3d._runtime_values)
-        for key, values in energy_filter_render_values(state).items():
+        geometry_values = {**energy_filter_render_values(state), **nanopulser_render_values(state)}
+        for key, values in geometry_values.items():
             runtime[key] = {**runtime.get(key, {}), **values}
         self.review.set_assembly(self._assembly, runtime)
         self.review.display_result(SimpleNamespace(assembly=self._assembly,

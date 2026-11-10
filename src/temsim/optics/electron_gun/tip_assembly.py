@@ -180,6 +180,8 @@ def complete_tip_updates(document, updates):
 def validate_electrical_defaults(parts):
     by_key = {part["key"]: part for part in parts}
     for part in parts:
+        if "voltage_start_reference" in part and part["voltage_start_reference"] not in {"extractor", "gun_lens"}:
+            raise ValueError("Accelerator voltage start reference must be extractor or gun_lens")
         if "default_voltage_reference" in part and part["default_voltage_reference"] not in {"tip", "extractor", "ground"}:
             raise ValueError("Gun-lens voltage reference must be tip, extractor or ground")
         if "electrode_thickness_mm" in part:
@@ -206,3 +208,12 @@ def validate_electrical_defaults(parts):
         ht = by_key["feg_accelerator"].get("default_high_tension_kv", 300.)
         if not ext < ht:
             raise ValueError("Extraction voltage must be smaller than the final accelerating voltage")
+        if by_key["feg_accelerator"].get("voltage_start_reference", "extractor") == "gun_lens":
+            lens = by_key.get("feg_electrostatic_lens")
+            if lens is None:
+                raise ValueError("Gun-lens-connected accelerator requires a gun lens")
+            voltage = lens.get("default_voltage_kv", 1.2)
+            reference = lens.get("default_voltage_reference", "extractor")
+            rise = voltage + {"tip": 0., "extractor": ext, "ground": ht}[reference]
+            if not 0 <= rise < ht:
+                raise ValueError("Accelerator divider start must lie between tip and final-anode ground")

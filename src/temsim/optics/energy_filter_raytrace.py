@@ -472,6 +472,9 @@ def trace_energy_filter_batch(
 ):
     """Trace one ray population, retaining elapsed clocks from its entrance.
 
+    Entrance X/Y offsets and slopes, including alignment controls, use the
+    fixed column frame. Stored trajectories use the mounted branch Cartesian
+    frame; exit dispersive/non-dispersive values use its local beam frame.
     Boundary clocks use the same accepted-step crossing fraction as position;
     no displayed path length or reference-trajectory time is substituted.
     """
@@ -500,21 +503,11 @@ def trace_energy_filter_batch(
     if np.any(kinetic_energy_ev <= 0.0):
         raise ValueError("Energy Filter ray energy must be positive.")
 
-    directions = np.column_stack(
-        (
-            np.ones(ray_count),
-            ty_rad
-            + float(energy_filter.alignment_y_mrad) * 1.0e-3,
-            tx_rad
-            + float(energy_filter.alignment_x_mrad) * 1.0e-3,
-        )
-    )
-    position = np.column_stack(
-        (
-            np.zeros(ray_count),
-            y_mm * 1.0e-3,
-            x_mm * 1.0e-3,
-        )
+    from temsim.energy_filter_coordinates import entrance_phase_space_vectors
+    position, directions = entrance_phase_space_vectors(
+        x_mm * 1.0e-3, y_mm * 1.0e-3,
+        tx_rad + float(energy_filter.alignment_x_mrad) * 1.0e-3,
+        ty_rad + float(energy_filter.alignment_y_mrad) * 1.0e-3,
     )
     momentum = momentum_from_kinetic_energy_ev(
         kinetic_energy_ev,

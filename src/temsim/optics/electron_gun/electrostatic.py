@@ -64,6 +64,8 @@ class ExtractorElectrode:
     transition_start_mm: float = 0.05
     transition_end_mm: float = 6.0
     field_center_offset_mm: float = 0.0
+    counterbore_depth_mm: float = 0.0
+    counterbore_diameter_mm: float = 0.0
 
     def __post_init__(self):
         object.__setattr__(self, "_position_coupling_ready", True)
@@ -94,6 +96,8 @@ class ExtractorElectrode:
 
     @property
     def optical_reference_from_tip_mm(self):
+        if self.counterbore_depth_mm:
+            return self.mechanical_center_from_tip_mm-.5*self.mechanical_length_mm+self.counterbore_depth_mm
         return self.mechanical_center_from_tip_mm + self.field_center_offset_mm
 
     @property
@@ -113,6 +117,8 @@ class ExtractorElectrode:
         return tuple(self.voltage_kv * 1000.0 * value for value in values)
 
     def validate(self, *, grounded=False):
+        from temsim.extractor_geometry import ExtractorContour
+        ExtractorContour.from_component(self)
         if not 0.0 <= self.voltage_kv <= 20.0:
             raise ValueError("Extractor voltage must lie between 0 and 20 kV.")
         if not grounded and self.transition_end_mm <= self.transition_start_mm:
@@ -122,7 +128,9 @@ class ExtractorElectrode:
         return self
 
     def draw_layout(self):
-        return _draw_body(self, "electrode")
+        return {**_draw_body(self, "electrode"),
+                "counterbore_depth_mm": self.counterbore_depth_mm,
+                "counterbore_diameter_mm": self.counterbore_diameter_mm}
 
 
 @dataclass
@@ -225,6 +233,9 @@ class AcceleratorColumn:
     key: str = FEG_ACCELERATOR
     high_tension_kv: float = 300.0
     field_center_offset_mm: float = 0.0
+    # Old saved assemblies retain their extractor-connected divider. New FEI
+    # adaptations explicitly connect the first divider node to the gun lens.
+    voltage_start_reference: str = "extractor"
 
     def __post_init__(self):
         object.__setattr__(self, "_position_coupling_ready", True)
@@ -279,6 +290,8 @@ class AcceleratorColumn:
         return tuple(result)
 
     def validate(self, *, grounded=False):
+        if self.voltage_start_reference not in {"extractor", "gun_lens"}:
+            raise ValueError("Accelerator voltage start reference must be extractor or gun_lens")
         if not 30.0 <= self.high_tension_kv <= 300.0:
             raise ValueError(
                 "Electron-gun high tension must lie between 30 and 300 kV."
@@ -301,6 +314,15 @@ class AcceleratorColumn:
             raise ValueError("Final accelerator stage must have voltage fraction 1.")
         return self
 
+    def stage_potential_rises_v(self, extraction_kv, gun_lens_rise_v):
+        """Absolute electrode rises from the tip; final stage is lab ground.
+
+        Extraction is part of the total high tension, never an extra energy
+        gain added to it. A fraction spans the selected divider start to HT.
+        """
+        self.validate(grounded=True)
+        return accelerator_potential_rises_v(self, extraction_kv, gun_lens_rise_v)
+
     def draw_layout(self):
         values = _draw_body(self, "accelerator_stack")
         values["stage_centers_from_tip_mm"] = [
@@ -309,10 +331,30 @@ class AcceleratorColumn:
         return values
 
 
+def accelerator_potential_rises_v(accelerator, extraction_kv, gun_lens_rise_v):
+    """Resolve the electrical divider, including old standalone records."""
+    reference = getattr(accelerator, "voltage_start_reference", "extractor")
+    if reference not in {"extractor", "gun_lens"}:
+        raise ValueError("Accelerator voltage start reference must be extractor or gun_lens")
+    end = float(accelerator.high_tension_kv)*1000.
+    start = float(extraction_kv)*1000. if reference == "extractor" else float(gun_lens_rise_v)
+    if not np.isfinite(end) or not np.isfinite(start) or not 0 <= start < end:
+        raise ValueError("Accelerator divider start must lie between tip and final-anode ground")
+    fractions = np.asarray([stage.voltage_fraction for stage in accelerator.stages], dtype=float)
+    if (not len(fractions) or not np.isfinite(fractions).all() or fractions[0] <= 0.
+            or np.any(np.diff(fractions) <= 0.) or fractions[-1] != 1.):
+        raise ValueError("Accelerator fractions must increase strictly from above zero to exactly one")
+    return tuple(end if stage.voltage_fraction == 1. else
+                 start+float(stage.voltage_fraction)*(end-start) for stage in accelerator.stages)
+
+
 class FegElectrostaticField:
     """Superposed axisymmetric potential expanded through radial order r²."""
 
     def __init__(self, emitter, extractor, electrostatic_lens, accelerator):
+        if (getattr(extractor, "counterbore_depth_mm", 0.)
+                or getattr(accelerator, "voltage_start_reference", "extractor") != "extractor"):
+            raise ValueError("Counterbored extractors and gun-lens-connected dividers require the joint geometry field")
         self.emitter = emitter
         self.extractor = extractor
         self.electrostatic_lens = electrostatic_lens

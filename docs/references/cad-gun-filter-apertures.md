@@ -10,6 +10,13 @@ distinguishes the extractor opening from the separate gun aperture and records
 the unresolved electrical connection of the latter. Similar placement in a
 patent does not establish that the existing strip is an intermediate anode.
 
+The [2026-11-07 FEI-inspired implementation](fei-cold-feg-extractor-2026-11-07.md)
+adds a recessed extractor and negative-Z EEE, cathode support and insulator.
+Rear dimensions and EEE wiring are explicitly marked engineering assumptions.
+Tip apex remains Z=0; rear conductors affect Curved fields, while the default
+Flat approximation omits rear electric effects. Insulator polarization and the
+patent's non-axisymmetric flashing/cleaning hardware remain outside the model.
+
 The final adoption rules are in [CAD_DETAIL_POLICY.md](CAD_DETAIL_POLICY.md).
 In particular, this model does not acquire twelve physical Wien/filter poles
 from an alternative patent, new blanker/quadrupole support bodies, or extra
@@ -67,6 +74,12 @@ dimensional limits, and [the multipole ledger](cad-multipoles.md) for the
 distinction between physical pole count and driven field harmonics.
 
 ## Gun electrode display audit, 2026-10-20
+
+The FEG extractor was subsequently changed to a shared recessed conductor in
+the [2026-11-07 FEI adaptation](fei-cold-feg-extractor-2026-11-07.md). That
+change adds two selectable recess surfaces and changes actual field and
+interception geometry. The description below records the earlier display-only
+audit; its unchanged-dimensions statement does not describe the new defaults.
 
 The native display previously showed the saved FEG extractor, electrostatic
 gun lens and thermionic Wehnelt/gun lens as unspecified envelopes even though

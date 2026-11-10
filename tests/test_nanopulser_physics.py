@@ -88,13 +88,18 @@ def test_open_or_zero_voltage_transmits_pupil_but_stop_remains(blanked, voltage_
 
 def test_uninstalled_device_does_not_change_propagation_or_clip():
     state = _drift_state(installed=False, blanked=True)
-    inactive_plan = core.build_propagation_plan(state, 0.0, 100.0)
-    z, x, _tx, y, _ty, _checkpoints = _trace(state)
+    inactive = _trace(state)
+    z, x, _tx, y, _ty, _checkpoints = inactive
     alive, _, _ = clip_segment(state, z, x, y)
     assert np.all(alive)
     del state.nanopulser
-    baseline_plan = core.build_propagation_plan(state, 0.0, 100.0)
-    assert inactive_plan.signature == baseline_plan.signature
+    baseline = _trace(state)
+    # Scene provenance may retain an uninstalled device. Compare actual
+    # transport instead of requiring identical metadata/cache identities.
+    for present, absent in zip(inactive[:5], baseline[:5]):
+        np.testing.assert_array_equal(present, absent)
+    baseline_alive, _, _ = clip_segment(state, baseline[0], baseline[1], baseline[3])
+    np.testing.assert_array_equal(baseline_alive, alive)
 
 
 def test_rotation_and_post_blanker_segment_do_not_reapply_impulse():

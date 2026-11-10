@@ -587,6 +587,8 @@ class PartModelEditorPage(QWidget):
         runtime = self._runtime_values if whole_assembly else self._model_runtime_values()
         dependencies = []
         for key, part in parts.items():
+            if key in keys and part.get("mechanical_profile") == "electrostatic_parallel_plates":
+                dependencies.append((key, "azimuth_deg", deepcopy(runtime.get(key, {}).get("azimuth_deg", 0.))))
             if key in keys and part.get("tip_particle_model"):
                 tip = runtime.get(key, {})
                 dependencies.append((key, deepcopy(tip.get("tip_surface_model", "saved")),

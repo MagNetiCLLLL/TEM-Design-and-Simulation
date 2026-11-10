@@ -44,17 +44,22 @@ class GunWaveNumerics:
     maximum_fractional_energy_change: float = 0.05
     near_tip_source_padding_factor: int = 2
     near_tip_maximum_step_nm: float = 50.0
+    compute_backend: str = "Auto"
+    near_tip_end_z_nm: float = 4000.0
+    near_tip_transverse_radius_um: float = 10.0
 
     def validate(self):
-        near_step = self.near_tip_maximum_step_nm
-        try:
-            valid_near_step = (isinstance(near_step, Real)
-                and not isinstance(near_step, (bool, np.bool_))
-                and math.isfinite(float(near_step)) and near_step > 0)
-        except (OverflowError, TypeError, ValueError):
-            valid_near_step = False
-        if not valid_near_step:
-            raise ValueError("Gun near_tip_maximum_step_nm must be a positive finite real number")
+        from temsim.physics.wave_device import normalise_backend
+        normalise_backend(self.compute_backend)
+        for name in ("near_tip_maximum_step_nm", "near_tip_end_z_nm", "near_tip_transverse_radius_um"):
+            value = getattr(self, name)
+            try:
+                valid = (isinstance(value, Real) and not isinstance(value, (bool, np.bool_))
+                    and math.isfinite(float(value)) and value > 0)
+            except (OverflowError, TypeError, ValueError):
+                valid = False
+            if not valid:
+                raise ValueError(f"Gun {name} must be a positive finite real number")
         for name in ("field_step_mm", "bore_step_mm"):
             value = getattr(self, name)
             if isinstance(value, bool) or not math.isfinite(value) or value <= 0:
@@ -389,7 +394,11 @@ def _energy_transport(gun, z, mask_planes, coefficients, launch_energy, cancelle
 
 
 def _mask_plane(gun, wave, z_mm, prior, column_apertures=()):
-    xy = wave.coordinates_m()*1e3
+    from temsim.physics.wave_device import array_module, to_host
+    xp = array_module(wave.amplitude)
+    # Mechanical aperture interfaces consume real host coordinates; the
+    # complex amplitude and its mask application stay on the selected device.
+    xy = to_host(wave.coordinates_m())*1e3
     rows = []
     for component in gun.bore_components:
         half = .5*component.mechanical_length_mm
@@ -399,7 +408,7 @@ def _mask_plane(gun, wave, z_mm, prior, column_apertures=()):
             mask = np.hypot(xy[0], xy[1]) < radius
             before = wave.probability
             if not np.all(mask):
-                wave = replace(wave, amplitude=np.where(mask, wave.amplitude, 0j))
+                wave = replace(wave, amplitude=xp.where(xp.asarray(mask), wave.amplitude, 0j))
             loss = prior*(before-wave.probability)
             if loss > 0:
                 rows.append({"component": component.key, "z_mm": z_mm, "lost_probability": loss, "kind": "body_bore"})
@@ -423,7 +432,7 @@ def _mask_plane(gun, wave, z_mm, prior, column_apertures=()):
                     if gap_m < 2*cell_x:
                         raise ValueError(f"C1 monochromator slit is undersampled (gap {gap_m*1e6:.6g} um, cell width {cell_x*1e6:.6g} um); increase the tip wave grid before computing its transmission")
             before = wave.probability
-            wave = replace(wave, amplitude=np.where(mask, wave.amplitude, 0j))
+            wave = replace(wave, amplitude=xp.where(xp.asarray(mask), wave.amplitude, 0j))
             rows.append({"component": aperture.key, "z_mm": z_mm, "kind": aperture.interaction_kind,
                          "incoming_probability": prior*before, "outgoing_probability": prior*wave.probability,
                          "lost_probability": prior*(before-wave.probability)})
@@ -443,7 +452,7 @@ def _mask_plane(gun, wave, z_mm, prior, column_apertures=()):
         if mask.shape != wave.amplitude.shape:
             raise ValueError("Column aperture mask has the wrong shape inside the gun")
         before = wave.probability
-        wave = replace(wave, amplitude=np.where(mask, wave.amplitude, 0j))
+        wave = replace(wave, amplitude=xp.where(xp.asarray(mask), wave.amplitude, 0j))
         rows.append({"component": aperture.key, "z_mm": z_mm, "kind": "column_aperture",
                      "incoming_probability": prior*before, "outgoing_probability": prior*wave.probability,
                      "lost_probability": prior*(before-wave.probability)})
@@ -471,6 +480,19 @@ def _require_resolved_gun_circle(wave, radius_mm, component, z_mm):
 
 def _execute_gun_segments(gun, wave, segments, energy_ev, prior, *, numerics,
                           retained_bytes=0, column_apertures=(), cancelled=lambda: False):
+    from temsim.physics.wave_device import device_scope, to_host
+    with device_scope(numerics.compute_backend, maximum_working_bytes=numerics.maximum_checkpoint_bytes,
+            work_items=wave.amplitude.size, required_bytes=retained_bytes+wave.amplitude.nbytes*8) as device:
+        wave = replace(wave, amplitude=device.xp.asarray(wave.amplitude))
+        result, losses, sampling = _execute_gun_segments_on_device(gun, wave, segments, energy_ev, prior,
+            numerics=numerics, retained_bytes=retained_bytes, column_apertures=column_apertures,
+            cancelled=cancelled)
+        sampling.insert(0, {"stage": "gun_wave_device", **device.evidence()})
+        return replace(result, amplitude=to_host(result.amplitude)), losses, sampling
+
+
+def _execute_gun_segments_on_device(gun, wave, segments, energy_ev, prior, *, numerics,
+                          retained_bytes=0, column_apertures=(), cancelled=lambda: False):
     """Execute the existing canonical gun maps with bounded output sampling.
 
     In particular, a narrow natural Collins output needs zero extension of
@@ -480,7 +502,7 @@ def _execute_gun_segments(gun, wave, segments, energy_ev, prior, *, numerics,
     """
     from temsim.physics.wave_grid import WaveGridNumerics
     grid_numerics = WaveGridNumerics(maximum_working_bytes=numerics.maximum_checkpoint_bytes,
-                                    compute_backend="cpu")
+                                    compute_backend=numerics.compute_backend)
     losses, sampling = [], []
     wavelength = float(wavelength_m(energy_ev))
     for plane, matrix, offset, phase in segments:
@@ -571,7 +593,9 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
         from temsim.physics.accelerating_tip_boundary import AcceleratingTipNumerics
         near_numerics = AcceleratingTipNumerics(maximum_working_bytes=numerics.maximum_checkpoint_bytes,
             source_padding_factor=numerics.near_tip_source_padding_factor,
-            maximum_step_nm=numerics.near_tip_maximum_step_nm)
+            maximum_step_nm=numerics.near_tip_maximum_step_nm,
+            end_z_nm=numerics.near_tip_end_z_nm,
+            transverse_radius_um=numerics.near_tip_transverse_radius_um)
     start_z_mm = 0. if near_numerics is None else near_numerics.end_z_nm*1e-9*1e3
     _require_supported_gun_fields(working)
     estimated_bytes = (emission.record["mode_count"]+8)*source_numerics.grid_pixels**2*16
@@ -645,7 +669,10 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
     auxiliary = {}
     if driven:
         from temsim.physics.accelerating_tip_boundary import execute_accelerating_tip
+        from temsim.physics.wave_grid import WaveGridNumerics
         near = execute_accelerating_tip(column, emission, electric, numerics=near_numerics,
+            grid_numerics=WaveGridNumerics(compute_backend=numerics.compute_backend,
+                maximum_working_bytes=numerics.maximum_checkpoint_bytes),
             cancelled=cancelled, progress_callback=progress_callback)
         if near.plane_z_mm != float(z[0]):
             raise ValueError("Executed near-tip endpoint does not match the gun continuation face")
@@ -717,7 +744,7 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
         "physics": ("Two-way scalar driven Tip boundary followed by an executed second-order paraxial continuation in the installed fields"
                     if driven else "Stationary scalar second-order paraxial Hamiltonian in the installed solved gun electric field and captured magnetic components"),
         "integrator": "Energy-refined symmetric potential kick / variable-momentum drift / potential kick",
-        "sampling_policy": "Budgeted CPU canonical propagation; preserve full Collins output period and resolve narrow output grids before masks",
+        "sampling_policy": "Budgeted canonical propagation with per-mode device evidence; preserve full Collins output period and resolve narrow output grids before masks",
         "current_reference": "Physical tip emission before all gun losses",
         "limitations": ["After the bounded non-paraxial prefix, higher-order/non-paraxial gun dynamics are not included" if driven
                          else "Higher-order/non-paraxial gun dynamics not included in this operator",

@@ -318,10 +318,13 @@ class LayoutResult(tuple):
             if FEG_TIP in components
             else THERMIONIC_CATHODE
         )
-        return (
-            components[source_key].local_s_center_mm
-            - components["sample"].local_s_center_mm
-        )
+        source = components[source_key]
+        reference = source.local_s_center_mm
+        if source_key == FEG_TIP:
+            # Sample-centred s increases upstream. The source is the downstream
+            # tip apex, not the centre of its arbitrarily long rear shank.
+            reference -= .5*(source.mechanical.end_s_mm-source.mechanical.start_s_mm)
+        return reference-components["sample"].local_s_center_mm
 
 
 @dataclass(frozen=True)
@@ -2953,8 +2956,8 @@ class _SourceReferencedAxisComponent:
 def _resolve_physical_mechanical_axis(configuration, component_keys, *, optional=False):
     """Check installed axial packages, resolving channels to their material hosts.
 
-    Positions are relative to the source mechanical centre, not an effective
-    optical plane. Native coil inserts use their full material extent, including
+    Positions are relative to the tip apex (thermal sources keep their cathode
+    reference). Native coil inserts use their full material extent, including
     insulation/end covers; their optical allocation is not a solid. Replacement
     CAD models retain their declared installation envelope, without reviving
     inactive winding parameters. Explicitly nested inserts remain in placements
@@ -2970,8 +2973,8 @@ def _resolve_physical_mechanical_axis(configuration, component_keys, *, optional
     if assembly is None:
         assembly = resolve_module_assembly(configuration)
     parts = {part.key: part for part in assembly.parts}
-    source_z = next(parts[key].center_z_mm for key in (FEG_TIP, THERMIONIC_CATHODE)
-                    if key in parts)
+    source_z = (parts[FEG_TIP].end_z_mm if FEG_TIP in parts
+                else parts[THERMIONIC_CATHODE].center_z_mm)
     physical = {}
     for key in component_keys:
         if optional and key not in parts:
@@ -3016,7 +3019,7 @@ def _resolve_physical_mechanical_axis(configuration, component_keys, *, optional
 
 
 def resolve_objective_entrance_mechanical_axis(configuration=None):
-    """Diagnose the entrance package relative to the source mechanical centre."""
+    """Diagnose the entrance package relative to the source reference plane."""
 
     if configuration is None:
         configuration = LayoutConfiguration()

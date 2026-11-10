@@ -1,0 +1,170 @@
+{
+  "schema": "physical-hybrid-probe-comparison-v1",
+  "trials": [
+    {
+      "directory": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus2048",
+      "source_count": 2048,
+      "specimen_count": 556,
+      "current_a": 2.7148437500000003e-06,
+      "d95_nm": 8.902996005979684,
+      "rms_nm": 2.0960457309263734,
+      "alpha95_mrad": 7.806722526340273,
+      "minimum_observed_d95_nm": 8.902996005979684,
+      "d95_minimum_offset_nm": 0.0,
+      "rms_minimum_offset_nm": 0.0,
+      "centroid_core50pm_current_a": 1.5625e-07,
+      "centroid_core500pm_current_a": 1.0302734375000002e-06,
+      "absolute_weight_balance_residual": 0.0
+    },
+    {
+      "directory": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\surface-focus4096",
+      "source_count": 4096,
+      "specimen_count": 1114,
+      "current_a": 2.7197265625e-06,
+      "d95_nm": 9.184977771468942,
+      "rms_nm": 2.1131464981468886,
+      "alpha95_mrad": 7.829198154576187,
+      "minimum_observed_d95_nm": 9.117213954978721,
+      "d95_minimum_offset_nm": 60.00000007588824,
+      "rms_minimum_offset_nm": 9.999999974752427,
+      "centroid_core50pm_current_a": 1.8310546875e-07,
+      "centroid_core500pm_current_a": 1.0107421875000001e-06,
+      "absolute_weight_balance_residual": 0.0,
+      "topology": {
+        "condenser_lens_2 to condenser_lens_3": {
+          "actual_population": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [
+              875.0
+            ],
+            "unresolved": []
+          },
+          "specimen_surviving_cohort": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [
+              875.0
+            ],
+            "unresolved": []
+          }
+        },
+        "condenser_lens_3 to adapter_lens": {
+          "actual_population": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          },
+          "specimen_surviving_cohort": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          }
+        },
+        "adapter_lens to probe_tl22_lens": {
+          "actual_population": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          },
+          "specimen_surviving_cohort": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          }
+        },
+        "probe_tl22_lens to probe_tl21_lens": {
+          "actual_population": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [
+              1212.0
+            ],
+            "unresolved": []
+          },
+          "specimen_surviving_cohort": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [
+              1212.0
+            ],
+            "unresolved": []
+          }
+        },
+        "probe_tl21_lens to probe_tl12_lens": {
+          "actual_population": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          },
+          "specimen_surviving_cohort": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          }
+        },
+        "probe_tl12_lens to ac_upper": {
+          "actual_population": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          },
+          "specimen_surviving_cohort": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          }
+        },
+        "ac_upper to ac_lower": {
+          "actual_population": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [
+              1408.3
+            ],
+            "unresolved": []
+          },
+          "specimen_surviving_cohort": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [
+              1408.3
+            ],
+            "unresolved": []
+          }
+        },
+        "ac_lower to mini_condenser": {
+          "actual_population": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          },
+          "specimen_surviving_cohort": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          }
+        },
+        "mini_condenser to specimen_entrance": {
+          "actual_population": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          },
+          "specimen_surviving_cohort": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "waists_z_mm": [],
+            "unresolved": []
+          }
+        }
+      }
+    }
+  ],
+  "last_pair_relative_changes": {
+    "current_a": 0.0017985611510790633,
+    "d95_nm": 0.031672682465527915,
+    "rms_nm": 0.008158584981329266,
+    "alpha95_mrad": 0.002879009489587991
+  },
+  "scope": "Executed geometric reference; source coherence and full wave propagation require independent evaluation",
+  "notes": [
+    "Every trial retains original absolute source weights and physical interception",
+    "D95 and RMS minima are distinct sampled observations, not interpolated exact foci",
+    "50 pm and 500 pm core currents use apertures centered on the measured centroid; no bright-core fit or refocus",
+    "20 nm tip coherence is an explicit unmeasured source assumption"
+  ]
+}

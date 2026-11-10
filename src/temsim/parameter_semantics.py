@@ -64,6 +64,12 @@ _COMPOSITE_UNITS = (("electrons_per_nm2_s", "electrons/(nm² s)"),
                     ("na", "nA"), ("pa", "Pa"), ("mt", "mT"),
                     ("t", "T"), ("a", "A"))
 _FRIENDLY = {
+    "rear_gun_role": "Rear gun component role",
+    "rear_voltage_reference": "Rear electrode voltage reference",
+    "rear_bias_kv": "Rear electrode voltage relative to reference",
+    "counterbore_depth_mm": "Extractor recess depth",
+    "counterbore_diameter_mm": "Extractor recess diameter",
+    "voltage_start_reference": "Accelerator divider start electrode",
     "mechanical_inner_diameter_mm": "Material inner diameter",
     "mechanical_outer_diameter_mm": "Material outer diameter",
     "mechanical_bore_diameter_mm": "Existing bore diameter",
@@ -135,8 +141,32 @@ def _meaning(part, path, by_key):
     field = str(relative[0]) if relative else ""
     label = _label(field, ("parts", "", *relative))
     profile = part.get("mechanical_profile", "")
+    if field in {"rear_voltage_reference", "rear_bias_kv"}:
+        return label, "operating", (
+            "Explicit rear-electrode connection: tip, extractor, gun_lens or ground, plus bias in kV. "
+            "Conductors participate in curved-tip fields; the Flat infinite cathode omits them. "
+            "EEE wiring is an editable engineering assumption; a contacting holder must stay at tip potential.")
+    if field == "rear_gun_role":
+        return label, "physical", (
+            "Rear axisymmetric hardware at negative Z; the tip apex remains Z=0. "
+            "EEE and holder enter curved-tip electrostatics. Insulators provide geometry and interception only.")
+    if field in {"counterbore_depth_mm", "counterbore_diameter_mm"}:
+        return label, "physical", (
+            "Tip-facing extractor recess. The small-hole entrance is start Z plus recess depth; "
+            "the remaining thickness is the aperture web. The same contour sets CAD, the conducting "
+            "electrostatic boundary and electron interception; no angular cutoff is imposed.")
+    if field == "voltage_start_reference":
+        return label, "operating", (
+            "Electrode connected to the accelerator divider start: gun_lens or extractor. "
+            "Stage fractions interpolate from this potential to the final anode at ground; "
+            "high tension is the total tip-to-ground voltage, including extraction.")
     from temsim.dimension_edit_policy import dimension_reference_reason
     if reason := dimension_reference_reason(part, field):
+        if part.get("geometry_template_key", part.get("key")) == "feg_extractor":
+            if field == "optical_reference_local_z_mm":
+                return "Extraction plane reference", "placement", reason
+            if field == "vacuum_inner_diameter_mm":
+                return "Extractor minimum-passage reference", "vacuum", reason
         if field == "length_mm":
             reference_label = ("Mechanism envelope length" if part.get("aperture_plate_form") == "perforated_strip" else
                 "Installation/field allocation length" if profile in DEFLECTOR_COIL_PROFILES and "winding_axial_length_mm" in part else
@@ -169,6 +199,22 @@ def _meaning(part, path, by_key):
             return label, "placement", "Module-local entrance/exit connection reference coordinate."
         return label, "unknown", "Module/document parameter; its material meaning is not established by the part geometry rules."
     if path and path[0] == "runtime":
+        key = str(part.get("key", path[1] if len(path) > 1 else ""))
+        if key == "nanopulser_deflector" and field == "azimuth_deg":
+            return "Plate / field azimuth about column Z", "placement", (
+                "Shared mechanical plate and electric-deflection azimuth. Zero points along column +X; "
+                "positive angles turn toward +Y about +Z. Rotates CAD and the integrated field together; "
+                "not a field-only error or an optical-axis tilt.")
+        if key == "nanopulser_deflector" and field == "voltage_v":
+            return "Positive minus negative plate voltage", "operating", (
+                "Potential of the local +X plate minus the local -X plate. Positive voltage deflects "
+                "electrons toward local +X, rotated by the shared column azimuth.")
+        if key == "energy_filter" and field in {"alignment_x_mrad", "alignment_y_mrad"}:
+            axis = "X" if field == "alignment_x_mrad" else "Y"
+            return f"Entrance alignment: column {axis}", "operating", (
+                f"Added entrance slope toward column +{axis}, in mrad. Column +Z is downstream. "
+                "The CAD and field solver share a proper branch rotation; exit local X is dispersive "
+                "and maps to column -Z after a 90-degree bend, while local Y remains column +Y.")
         return label, "operating", "Current operating state or limit. It is separate from the saved mechanical body dimensions."
     if path and path[0] == "derived" and field == "radial_thickness_mm":
         return "Radial thickness", "physical" if profile in _ANNULAR else "unknown", (

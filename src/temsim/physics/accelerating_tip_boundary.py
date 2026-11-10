@@ -113,61 +113,63 @@ def scalar_robin_transport(axial_k2_m2, widths_m, exit_k2_m2, transverse_k2_m2,
     Individual unresolved slabs are rejected. Slabs use only
     decaying exponentials, never exponentially growing transfer matrices.
     """
-    axial = np.asarray(axial_k2_m2, float)
-    widths = np.asarray(widths_m, float)
-    transverse = np.asarray(transverse_k2_m2, float)
+    from temsim.physics.wave_device import array_module
+    xp = array_module(transverse_k2_m2)
+    axial = xp.asarray(axial_k2_m2, float)
+    widths = xp.asarray(widths_m, float)
+    transverse = xp.asarray(transverse_k2_m2, float)
     kappa = normal_k_per_m
     if (axial.ndim != 1 or widths.shape != axial.shape or not len(axial)
-            or not np.isfinite(axial).all() or np.any(axial <= 0)
-            or not np.isfinite(widths).all() or np.any(widths <= 0)
-            or transverse.ndim != 2 or not np.isfinite(transverse).all() or np.any(transverse < 0)
+            or not xp.isfinite(axial).all() or xp.any(axial <= 0)
+            or not xp.isfinite(widths).all() or xp.any(widths <= 0)
+            or transverse.ndim != 2 or not xp.isfinite(transverse).all() or xp.any(transverse < 0)
             or not math.isfinite(exit_k2_m2) or exit_k2_m2 <= 0
             or not math.isfinite(kappa) or kappa <= 0):
         raise ValueError("Scalar near-tip layers require positive finite energies, widths and admittance")
-    exit_k = np.sqrt((exit_k2_m2-transverse).astype(complex))
+    exit_k = xp.sqrt((exit_k2_m2-transverse).astype(complex))
     reflection = (kappa-exit_k)/(kappa+exit_k)
-    log_transmission = np.log(1+reflection)
+    log_transmission = xp.log(1+reflection)
     worst, lowest_log, mixed_layers = 0., 0., 0
     for index in range(len(widths)-1, -1, -1):
         if cancelled():
             raise InterruptedError("Non-paraxial angular transport cancelled")
         values = axial[index]-transverse
-        k = np.sqrt(values.astype(complex))
+        k = xp.sqrt(values.astype(complex))
         phase = k*widths[index]
         attenuation = abs(phase.imag)
-        pos, neg = np.exp(1j*phase-attenuation), np.exp(-1j*phase-attenuation)
+        pos, neg = xp.exp(1j*phase-attenuation), xp.exp(-1j*phase-attenuation)
         cosine = (pos+neg)/2
-        sine_over_k = np.empty_like(k)
+        sine_over_k = xp.empty_like(k)
         small = abs(phase) < 1e-4
-        sine_over_k[small] = widths[index]*np.exp(-attenuation[small])*(1-phase[small]**2/6+phase[small]**4/120)
-        np.divide(pos-neg, 2j*k, out=sine_over_k, where=~small)
+        sine_over_k[small] = widths[index]*xp.exp(-attenuation[small])*(1-phase[small]**2/6+phase[small]**4/120)
+        sine_over_k[~small] = (pos[~small]-neg[~small])/(2j*k[~small])
         denominator = cosine-.5j*(kappa+values/kappa)*sine_over_k
         r = .5j*(values/kappa-kappa)*sine_over_k/denominator
-        log_t = -attenuation-np.log(denominator)
+        log_t = -attenuation-xp.log(denominator)
         lowest_log = min(lowest_log, float(log_t.real.min()))
-        if lowest_log < math.log(np.finfo(float).tiny):
+        if lowest_log < math.log(xp.finfo(float).tiny):
             raise ValueError("Near-tip slab needs finer axial steps to retain evanescent transmission")
-        t = np.exp(log_t)
-        error = max(float(np.max(abs(abs(r)**2+abs(t)**2-1))),
-                    float(np.max(abs(2*np.real(r.conj()*t)))))
+        t = xp.exp(log_t)
+        error = max(float(xp.max(abs(abs(r)**2+abs(t)**2-1))),
+                    float(xp.max(abs(2*xp.real(r.conj()*t)))))
         worst = max(worst, error)
         if worst > 1e-9:
             raise ValueError("Near-tip angular slab failed current conservation")
         denominator = 1-r*reflection
-        if not np.isfinite(denominator).all() or np.any(denominator == 0):
+        if not xp.isfinite(denominator).all() or xp.any(denominator == 0):
             raise ValueError("Near-tip reflected load is singular or non-finite")
-        log_gain = log_t-np.log(denominator)
-        gain = np.exp(log_gain)
+        log_gain = log_t-xp.log(denominator)
+        gain = xp.exp(log_gain)
         log_transmission += log_gain
         reflection = r+t*reflection*gain
-        if not np.isfinite(reflection).all() or not np.isfinite(log_transmission).all():
+        if not xp.isfinite(reflection).all() or not xp.isfinite(log_transmission).all():
             raise ValueError("Near-tip reflected load became non-finite")
-        mixed_layers += int(np.any(values < 0))
+        mixed_layers += int(xp.any(values < 0))
     return log_transmission, reflection, exit_k, {
         "maximum_slab_current_residual": worst, "minimum_slab_log_transmission": lowest_log,
         "layers_with_evanescent_channels": mixed_layers,
         "minimum_complete_log_transmission": float(log_transmission.real.min()),
-        "logarithmic_channels_below_float_range": int(np.count_nonzero(log_transmission.real < math.log(np.finfo(float).tiny))),
+        "logarithmic_channels_below_float_range": int(xp.count_nonzero(log_transmission.real < math.log(xp.finfo(float).tiny))),
         "method": "two-way reflection embedding of exact scalar constant-potential slabs",
     }
 
@@ -204,6 +206,8 @@ def _zero_extend_tip_source(full, factor, *, grid_numerics, retained_bytes=0,
     admits zero extension; it is not a bound on unknown continuum exterior
     probability. No represented source probability is discarded.
     """
+    from temsim.physics.wave_device import array_module
+    xp = array_module(full)
     from temsim.physics.multiplane_wave import _input_boundary_probability
     if type(factor) is not int or not 1 <= factor <= 16:
         raise ValueError("source_padding_factor must be an integer from 1 to 16")
@@ -215,7 +219,7 @@ def _zero_extend_tip_source(full, factor, *, grid_numerics, retained_bytes=0,
     # ordinary FFT. Reserve its scratch before enlarging the source at all.
     required = grid_numerics.check(shape, retained_bytes=retained_bytes+full.nbytes,
                                   working_bytes_per_pixel=512)
-    probability = float(np.sum(abs(full)**2))
+    probability = float(xp.sum(abs(full)**2))
     boundary = _input_boundary_probability(full)
     if factor > 1 and boundary > max(1e-30, probability*1e-12):
         raise ValueError("Near-tip source zero extension needs a resolved input domain: "
@@ -224,10 +228,10 @@ def _zero_extend_tip_source(full, factor, *, grid_numerics, retained_bytes=0,
     if factor > 1:
         if cancelled():
             raise InterruptedError("Near-tip source quadrature refinement cancelled")
-        padded = np.zeros(shape, dtype=complex)
+        padded = xp.zeros(shape, dtype=complex)
         first_y, first_x = shape[0]//2-original[0]//2, shape[1]//2-original[1]//2
         padded[first_y:first_y+original[0], first_x:first_x+original[1]] = full
-    output_probability = float(np.sum(abs(padded)**2))
+    output_probability = float(xp.sum(abs(padded)**2))
     if not math.isclose(probability, output_probability, rel_tol=1e-14, abs_tol=1e-15):
         raise ValueError("Near-tip source zero extension changed represented probability")
     return padded, {"method": "finite-complex-source-zero-extension-before-angular-transport",
@@ -252,7 +256,9 @@ def _spectral_to_plane(coefficients, kxy, input_basis, origin, wavelength, quadr
     length = 1e-3
     ny, nx = coefficients.shape
     dual_basis = length*wavelength*np.linalg.inv(input_basis).T@np.diag((1/nx, 1/ny))
-    envelope = coefficients*np.exp(-1j*quadratic_phase*np.sum(kxy**2, axis=0))
+    from temsim.physics.wave_device import array_module
+    xp = array_module(coefficients)
+    envelope = coefficients*xp.exp(-1j*quadratic_phase*xp.sum(kxy**2, axis=0))
     # The original spatial offset is the Fourier phase exp(-i k.x0).
     dual = PlaneWave(envelope, dual_basis, np.zeros(2),
         np.eye(2)*(2*quadratic_phase*k0/length**2), -np.asarray(origin)/length)
@@ -297,6 +303,22 @@ def _publish_accelerating_tip(modes, amplitudes, derivatives, logs, energies,
 
 def execute_accelerating_tip(state, emission, electric, *, numerics=AcceleratingTipNumerics(),
                              grid_numerics=None, cancelled=lambda: False, progress_callback=None):
+    """Execute under one declared device policy; no implicit CPU retry."""
+    from temsim.physics.wave_grid import WaveGridNumerics
+    from temsim.physics.wave_device import device_scope
+    grid = grid_numerics or WaveGridNumerics(maximum_working_bytes=numerics.maximum_working_bytes)
+    grid = replace(grid, maximum_working_bytes=min(grid.maximum_working_bytes, numerics.maximum_working_bytes))
+    pixels = emission.numerics.grid_pixels*numerics.source_padding_factor
+    with device_scope(grid.compute_backend, maximum_working_bytes=grid.maximum_working_bytes,
+            work_items=pixels**2, required_bytes=pixels**2*512,
+            acceleration_enabled=grid.acceleration_enabled) as device:
+        return _execute_accelerating_tip(state, emission, electric, numerics=numerics,
+            grid_numerics=grid, cancelled=cancelled, progress_callback=progress_callback,
+            xp=device.xp, backend_evidence=device.evidence())
+
+
+def _execute_accelerating_tip(state, emission, electric, *, numerics,
+                             grid_numerics, cancelled, progress_callback, xp, backend_evidence):
     """Run the captured tip boundary, retaining source weights and flux losses.
 
     ``emission`` must have been generated from this captured state's active
@@ -312,6 +334,7 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
     from temsim.physics.tip_gun_wave import GunWaveNumerics, _momentum_velocity, _refine_energy_grid
     from temsim.physics.wave_grid import WaveGridNumerics
     from temsim.physics.wave_reference import AxialWaveReference
+    from temsim.physics.wave_device import to_host
     numerics.validate()
     if cancelled():
         raise InterruptedError("Accelerating tip boundary cancelled")
@@ -373,17 +396,21 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
         _, velocity = _momentum_velocity(kinetic[:-1])
         transverse_error = float(np.sum(e/(hbar*velocity)*variation[:-1]*dz))
         if transverse_error > numerics.maximum_transverse_phase_error_rad:
-            raise ValueError(f"Near-tip transverse electric phase estimate {transverse_error:.6g} exceeds its explicit numerical budget; a coupled transverse solve is required")
-        full = mode.plane.full_amplitude(float(wavelength_m(original_energy)))
+            raise ValueError(f"Near-tip transverse electric phase estimate {transverse_error:.6g} rad "
+                f"exceeds its explicit numerical budget {numerics.maximum_transverse_phase_error_rad:.6g} rad "
+                f"(endpoint {numerics.end_z_nm:g} nm, checked radius {numerics.transverse_radius_um:g} um); "
+                "a coupled transverse solve or an independently admissible smaller numerical domain is required")
+        device_plane = replace(mode.plane, amplitude=xp.asarray(mode.plane.amplitude))
+        full = device_plane.full_amplitude(float(wavelength_m(original_energy)))
         retained = (sum(a.nbytes for group in (amplitudes, derivatives, logs) for a in group)
                     +sum(previous.plane.amplitude.nbytes for previous in modes))
         full, source_sampling = _zero_extend_tip_source(full, numerics.source_padding_factor,
             grid_numerics=grid_numerics, retained_bytes=retained, cancelled=cancelled)
         ny, nx = full.shape
-        fy, fx = np.meshgrid(np.fft.fftshift(np.fft.fftfreq(ny)), np.fft.fftshift(np.fft.fftfreq(nx)), indexing="ij")
-        kxy = 2*np.pi*np.einsum("ij,jyx->iyx", np.linalg.inv(mode.plane.basis_m).T, np.stack((fx, fy)))
-        transverse = np.sum(kxy*kxy, axis=0)
-        source = np.fft.fftshift(np.fft.fft2(np.fft.ifftshift(full), norm="ortho"))
+        fy, fx = xp.meshgrid(xp.fft.fftshift(xp.fft.fftfreq(ny)), xp.fft.fftshift(xp.fft.fftfreq(nx)), indexing="ij")
+        kxy = 2*np.pi*xp.einsum("ij,jyx->iyx", xp.asarray(np.linalg.inv(mode.plane.basis_m).T), xp.stack((fx, fy)))
+        transverse = xp.sum(kxy*kxy, axis=0)
+        source = xp.fft.fftshift(xp.fft.fft2(xp.fft.ifftshift(full), norm="ortho"))
         normal_k = math.sqrt(float(_wave_number_squared(original_energy)))
         axial_k2 = _wave_number_squared(kinetic)
         # These caller arrays remain resident throughout the two-way solve.
@@ -399,23 +426,23 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
         # Floating fields cannot represent amplitudes below tiny. Keep the
         # exact computed logarithmic transfer alongside the input spectrum;
         # no such channel is erased from the retained boundary state.
-        transmitted = np.exp(log_transmitted)
+        transmitted = xp.exp(log_transmitted)
         field = transmitted*incident
         derivative = 1j*exit_k*field
         flux = exit_k.real*abs(field)**2
-        if not np.isfinite(field).all() or not np.isfinite(derivative).all() or not np.isfinite(flux).all():
+        if not xp.isfinite(field).all() or not xp.isfinite(derivative).all() or not xp.isfinite(flux).all():
             raise ValueError("Near-tip output field or normal current became non-finite")
-        returned = float(normal_k*np.sum(abs(reflected*incident)**2))
+        returned = float(normal_k*xp.sum(abs(reflected*incident)**2))
         output = float(flux.sum())
-        input_flux = float(np.sum(abs(source)**2))
+        input_flux = float(xp.sum(abs(source)**2))
         balance = abs(input_flux-returned-output)
         if balance > 1e-8*input_flux or output <= 0:
             raise ValueError("Near-tip source/reflection/output current did not close")
         q2 = transverse/axial_k2[-1]
-        errors = np.where(q2 < 1, .5*(1-np.sqrt(np.maximum(0., 1-q2))), np.inf)
-        incompatible = float(np.sum(flux[errors > numerics.maximum_paraxial_generator_error]))
-        evanescent_norm = float(np.sum(abs(field[exit_k.real == 0])**2))
-        total_trace_norm = float(np.sum(abs(field)**2))
+        errors = xp.where(q2 < 1, .5*(1-xp.sqrt(xp.maximum(0., 1-q2))), np.inf)
+        incompatible = float(xp.sum(flux[errors > numerics.maximum_paraxial_generator_error]))
+        evanescent_norm = float(xp.sum(abs(field[exit_k.real == 0])**2))
+        total_trace_norm = float(xp.sum(abs(field)**2))
         if (incompatible > numerics.angular_tail_tolerance*output
                 or evanescent_norm > numerics.angular_tail_tolerance*total_trace_norm):
             raise ValueError("Executed near-tip field is not yet admissible for paraxial continuation; increase its executed endpoint")
@@ -425,7 +452,7 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
         quadratic_phase = -.5*float(np.sum(dz/np.sqrt(axial_k2[:-1])))
         # Unit flux shape is a factorisation. The weight below retains all
         # reflected current; it never restores output to the incident weight.
-        spectral_flux = np.sqrt(exit_k.real)*field/math.sqrt(output)*np.exp(-1j*action/hbar)
+        spectral_flux = xp.sqrt(exit_k.real)*field/math.sqrt(output)*np.exp(-1j*action/hbar)
         # The angular state remains resident while its spatial chart is
         # evaluated. Reserve it, as well as earlier energy modes, before any
         # output-grid refinement can allocate a second large work buffer.
@@ -437,14 +464,15 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
             mode.plane.origin_m, float(wavelength_m(float(kinetic[-1]))), quadratic_phase,
             grid_numerics, cancelled, retained_bytes=chart_retained)
         positions = plane.coordinates_m()
-        outside = float(np.sum(abs(plane.amplitude[(abs(positions[0]) > radius_m)
+        outside = float(xp.sum(abs(plane.amplitude[(abs(positions[0]) > radius_m)
                          | (abs(positions[1]) > radius_m)])**2))
         if outside > numerics.angular_tail_tolerance:
             raise ValueError(f"Executed near-tip field exceeds the checked transverse domain (outside fraction {outside:.6g}, radius {radius_m*1e6:.6g} um, transverse phase estimate {transverse_error:.6g} rad); increase its numerical radius")
-        modes.append(replace(mode, plane=plane, energy_kev=float(kinetic[-1])*1e-3,
+        modes.append(replace(mode, plane=replace(plane, amplitude=to_host(plane.amplitude)), energy_kev=float(kinetic[-1])*1e-3,
             weight_per_reference_electron=mode.weight_per_reference_electron*output,
             axial_reference=AxialWaveReference(elapsed, action)))
-        amplitudes.append(field); derivatives.append(derivative); logs.append(log_transmitted); energies.append(original_energy)
+        amplitudes.append(to_host(field)); derivatives.append(to_host(derivative))
+        logs.append(to_host(log_transmitted)); energies.append(original_energy)
         rows.append({"mode_id": mode.mode_id, "tip_energy_ev": original_energy,
             "endpoint_axial_energy_ev": float(kinetic[-1]), "injected_fraction": input_flux,
             "reflected_fraction": returned, "transmitted_fraction": output,
@@ -459,7 +487,7 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
         # Only the explicitly retained boundary arrays survive into the next
         # energy mode. Otherwise loop locals keep the previous angular work
         # buffers alive while a new mode allocates its own scratch.
-        del full, fy, fx, kxy, transverse, source, log_transmitted, reflected, exit_k
+        del device_plane, full, fy, fx, kxy, transverse, source, log_transmitted, reflected, exit_k
         del incident, transmitted, field, derivative, flux, q2, errors, spectral_flux, positions, plane
     if graph_id != json_digest(encode_instrument(state)) or implementation != solver_source_identity():
         raise ValueError("Captured source, fields or solver changed during near-tip execution")
@@ -472,6 +500,7 @@ def execute_accelerating_tip(state, emission, electric, *, numerics=Accelerating
             "magnetic_identity": magnetic.numerical_identity, "hardware_signature": hardware,
             "implementation": implementation, "numerics": asdict(numerics),
             "wave_grid_numerics": asdict(grid_numerics),
+            "backend": backend_evidence,
             "source_numerics": asdict(emission.numerics), "z_edges_mm": edges.tolist(),
             "modes": rows, "termination": "outgoing local load; verified small-angle continuation",
             "transverse_approximation": "axial potential plus a recorded first-order transverse phase error estimate; not a rigorous coupled scattering bound",

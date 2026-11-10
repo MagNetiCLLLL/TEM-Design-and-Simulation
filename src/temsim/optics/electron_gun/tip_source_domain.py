@@ -64,10 +64,12 @@ def validate_tip_geometric_domain(emitter):
     sigma = float(emitter.virtual_source_fwhm_nm)*1e-9/math.sqrt(8*math.log(2))
     if not math.isfinite(sigma) or sigma <= 0:
         raise ValueError("Tip geometric source requires positive finite spatial width")
+    energy = float(emitter.minimum_kinetic_energy_ev if emitter.energy_spread_fwhm_ev > 0
+                   else emitter.emission_energy_ev)
     with np.errstate(over="ignore", invalid="ignore"):
         correlated = sigma*p.curvature
         covariance = correlated@correlated.T
-        covariance += np.eye(2)*np.square(p.incoherent_angle_rms_mrad*1e-3)
+        covariance += np.eye(2)*np.square(p.incoherent_angle_rms_rad(energy))
     if not np.all(np.isfinite(covariance)):
         raise ValueError("Tip geometric source covariance exceeds the finite numerical range")
     std_bound = math.sqrt(max(float(np.linalg.eigvalsh(covariance)[-1]), 0.))
@@ -79,6 +81,7 @@ def validate_tip_geometric_domain(emitter):
         "schema": GEOMETRIC_DOMAIN_SCHEMA,
         "reference_plane": "physical FEG tip before extraction",
         "representation": "Geometric-optics phase-gradient rays; not an exact quantum Wigner distribution",
+        "minimum_evaluated_energy_ev": energy,
         "mean_transverse_momentum_over_p": centre,
         "maximum_momentum_std_over_p": std_bound,
         "support_radius_over_p": radius,
@@ -123,7 +126,7 @@ def inspect_tip_source_domain(emitter):
         # Multiply in NumPy so extreme finite inputs produce a checked
         # non-finite covariance rather than an uncategorised OverflowError.
         correlated = sigma*p.curvature
-        covariance = np.eye(2)*(np.square(quantum)+np.square(p.incoherent_angle_rms_mrad*1e-3))
+        covariance = np.eye(2)*(np.square(quantum)+np.square(p.incoherent_angle_rms_rad(energy)))
         covariance += correlated@correlated.T
     if not np.all(np.isfinite(covariance)):
         raise ValueError("Tip source domain covariance exceeds the finite numerical range")

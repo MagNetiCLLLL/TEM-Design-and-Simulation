@@ -89,11 +89,19 @@ model positions. The main HP and round-lens positions and strengths are not
 changed by this reconstruction.
 
 QPH1/QPH2, HPC/QPC and HPol/QPol remain field channels with unverified
-physical hosts. Each has two independent model field bases. DP12 is a virtual
-alignment reference whose static drive acts through the two AC coils. The classification
+physical hosts. Each has two independent model field bases. The classification
 does not remove their optical fields or imply the absence of real hardware.
 Existing unlinked channel envelopes remain compatibility metadata rather than
 independent material bodies, vacuum walls or FEM iron.
+
+The user confirmed on 2026-11-07 that DP12 is the CEOS name for the same AC
+Scan Coil hardware used in the system without a probe corrector. The physical
+host is `ac_deflector`; `probe_dp12_scan_deflector` retains a virtual software
+reference and CEOS alignment controls for that host. Its static drive acts
+through the two AC coils, alongside their scan or wobble drive. There is one
+physical coil assembly, with shared geometry, pose and output limits. The
+current drive-distribution coefficients remain a modelling choice; this
+hardware identification does not supply measured winding gains or positions.
 
 ### DPH structure evidence and modelling boundary
 
@@ -375,7 +383,7 @@ functions more precisely than they identify individual windings or housings.
 | --- | --- | --- | --- |
 | 1 · C1, defocus | No dedicated `AT_C1` is visible. `TL2SymFoc` is a focus-related relay adjustment. | Transfer lenses TL12, TL21, TL22 and adapter lens ADL move with DP21x/y and DP22x/y. | Note 7 records the outputs. The C1 values in the screenshot log have no paired control settings. The contribution of the microscope focus drive and the C1 gain of this relay adjustment are unresolved. |
 | 1 · A1, twofold astigmatism | `AT_A1` and `AT_A1fine` | Coarse x uses the DP21x/DP22x deflector pair with beam shift BShx/y and beam tilt BTltx/y. Fine x uses the quadrupole stigmator output QPolx with small DP11x/y changes. | Notes 10–11 identify both routes. The coarse DP22x endpoint has a sign discrepancy. Both y inputs have named camera frames, but their output assignments were not recorded. |
-| 2 · B2, axial coma | `AT_B2` and `AT_B2fine` | x addresses DP12x and y addresses DP12y, the two components of the DP12 beam-deflection function. | Notes 17–18 report the same outputs and amplitude for coarse and fine in the test. Only coarse B2 has named camera frames. The data do not identify the physical winding that implements DP12 or establish equality beyond the tested setting. |
+| 2 · B2, axial coma | `AT_B2` and `AT_B2fine` | x addresses DP12x and y addresses DP12y, the CEOS alignment controls for the AC Scan Coil hardware. | Notes 17–18 report the same outputs and amplitude for coarse and fine in the test. Only coarse B2 has named camera frames. The user confirmed the DP12/AC hardware identity on 2026-11-07. The recordings do not establish coarse/fine equality beyond the tested setting or measured coil-distribution gains. |
 | 2 · A2, threefold astigmatism | `AT_A2` and `AT_A2fine` | The upper coarse input changes the main hexapoles HP1/HP2 in opposite directions, with both stages' DPHx/y and a small QPH1x change. The lower coarse input changes the transfer lenses TL21/TL22 in opposite directions, with DP22x/y. The upper fine input changes HPolx with small QPoly coupling. The lower fine input changes HPoly with QPolx coupling. | Notes 13–14 give the two coarse adjustments and their distinct display increments. Note 16 identifies the fine outputs. Its absolute HPolx decimal disagrees with the PNG reference. |
 | 3 · C3, spherical aberration | `AT_C3` is the single field photographed. The corresponding note is headed `AT_C2`. | Candidate assignment to simultaneous excitation changes of the main hexapoles HP1/HP2, with DPH1x/y, DPH2x/y and small QPH1/2 changes. | Note 22 and the UI disagree on the name. Paired-hexapole correction is physically consistent with C3. Attribution of this particular observation to `AT_C3`, relative current signs and gains remain unverified. |
 | 3 · S3, twofold star aberration | `AT_S3` | QPolx is the named quadrupole output. The note also records small dipole changes (`DP1/2xy`), beam shift BShx/y and beam tilt BTltx/y. | Note 24 gives no per-input breakdown or specific DP winding. Assignment of the second component to QPoly by symmetry would be speculative. |

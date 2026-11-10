@@ -55,17 +55,17 @@ def test_field_free_clock_matches_relativistic_velocity_at_each_physical_plane(s
     offsets = np.array([0., -100_000.])
     batch = tracing.trace_energy_filter_batch(state, [.1, -.1], [.05, -.05], tx, ty, offsets)
     momentum = momentum_from_kinetic_energy_ev(state.beam_voltage_kv * 1000. + offsets,
-        np.column_stack((np.ones(2), ty, tx)))
+        np.column_stack((np.ones(2), ty, -tx)))
     vx = velocity_from_momentum_m_per_s(momentum)[:, 0]
     for distance, prefix in ((.001, "slit"), (.002, "output"), (.003, "eels")):
         times = getattr(batch, prefix + "_time_s")
         assert times.dtype == np.float64
         np.testing.assert_allclose(times, distance / vx, rtol=4e-15, atol=1e-25)
         np.testing.assert_allclose(getattr(batch, prefix + "_dispersive_m"),
-            -(np.array([.1, -.1]) * .001 + tx * distance), atol=2e-18)
+            np.array([.1, -.1]) * .001 + tx * distance, atol=2e-18)
         np.testing.assert_allclose(getattr(batch, prefix + "_non_dispersive_m"),
             np.array([.05, -.05]) * .001 + ty * distance, atol=2e-18)
-        np.testing.assert_allclose(getattr(batch, prefix + "_tx_rad"), -tx, atol=2e-16)
+        np.testing.assert_allclose(getattr(batch, prefix + "_tx_rad"), tx, atol=2e-16)
         np.testing.assert_allclose(getattr(batch, prefix + "_ty_rad"), ty, atol=2e-16)
     assert batch.time_s[0] == 0.
     assert batch.time_s.shape == (len(batch.positions_m),)
@@ -83,6 +83,40 @@ def test_slit_absorption_has_a_slit_clock_but_no_later_arrivals(straight_filter)
     assert np.isfinite(batch.eels_time_s[0])
     assert np.isnan(batch.output_time_s[1]) and np.isnan(batch.eels_time_s[1])
     assert batch.stop_key[1] == "energy_filter_slit"
+
+
+@pytest.mark.parametrize("sign", [-1., 1.])
+def test_column_alignment_offsets_and_slopes_reach_matching_detector_axes(straight_filter, sign):
+    """A straight field-free chief ray must retain column X/Y signs."""
+    from temsim.energy_filter_coordinates import filter_to_column_vectors
+    ef = straight_filter.energy_filter
+    ef.alignment_x_mrad, ef.alignment_y_mrad = sign * 2., sign * -3.
+    x0, y0, tx, ty = sign * .1, sign * -.05, sign * .004, sign * .005
+    batch = tracing.trace_energy_filter_batch(straight_filter, [x0], [y0], [tx], [ty], [0.])
+    np.testing.assert_allclose(filter_to_column_vectors(batch.positions_m[0])[0], [x0 * .001, y0 * .001, 0.], atol=1e-18)
+    sx, sy = tx + ef.alignment_x_mrad * .001, ty + ef.alignment_y_mrad * .001
+    for distance, plane in ((.001, "slit"), (.002, "output"), (.003, "eels")):
+        np.testing.assert_allclose(getattr(batch, plane + "_dispersive_m"), [x0 * .001 + sx * distance], atol=1e-18)
+        np.testing.assert_allclose(getattr(batch, plane + "_non_dispersive_m"), [y0 * .001 + sy * distance], atol=1e-18)
+        np.testing.assert_allclose(getattr(batch, plane + "_tx_rad"), [sx], atol=1e-16)
+        np.testing.assert_allclose(getattr(batch, plane + "_ty_rad"), [sy], atol=1e-16)
+
+
+def test_adaptive_reference_uses_the_same_column_alignment_as_boris(straight_filter, monkeypatch):
+    from temsim.optics import energy_filter_validation as validation
+    monkeypatch.setattr(validation, "ensure_energy_filter", lambda state: None)
+    monkeypatch.setattr(validation, "magnetic_field_from_energy_filter", tracing.magnetic_field_from_energy_filter)
+    straight_filter.energy_filter.alignment_x_mrad = .2
+    straight_filter.energy_filter.alignment_y_mrad = -.3
+    straight_filter.energy_filter.prism_fringe_mm = .001
+    report = validation.validate_energy_filter_boris_reference(straight_filter)
+    assert report.boris_dispersive_um == pytest.approx(.2, abs=1e-12)
+    # The reference solver requests a 1 pm absolute position tolerance.
+    assert report.adaptive_dispersive_um == pytest.approx(.2, abs=1e-6)
+    assert report.adaptive_non_dispersive_um == pytest.approx(-.3, abs=1e-6)
+    assert abs(report.dispersive_error_nm) < 1e-3
+    assert abs(report.non_dispersive_error_nm) < 1e-3
+    assert abs(report.direction_error_urad) < 1e-8
 
 
 def test_output_camera_absorbs_only_intercepted_rays_and_eels_misses_still_arrive(straight_filter):

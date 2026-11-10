@@ -1,0 +1,57 @@
+Traceback (most recent call last):
+  File "F:\tem_simulator_v2\scripts\validate_physical_hybrid.py", line 461, in main
+    hybrid(state, args, report)
+  File "F:\tem_simulator_v2\scripts\validate_physical_hybrid.py", line 344, in hybrid
+    result = simulate_hybrid(state, request, progress_callback=progress,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\hybrid_pipeline.py", line 352, in simulate_hybrid
+    initial = simulate_tip_wave(working, wave_request, cancelled=cancelled, progress_callback=progress_callback).checkpoint
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\tip_wave_pipeline.py", line 434, in simulate_tip_wave
+    return _execute_tip_wave(working, request, snapshot, snapshot.digest, use_cache=use_cache,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\tip_wave_pipeline.py", line 891, in _execute_tip_wave
+    result = advance_observation(result, end)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\tip_wave_pipeline.py", line 847, in advance_observation
+    return advance_column(upstream, stop)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\tip_wave_pipeline.py", line 834, in advance_column
+    result = column(upstream, float(stop))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\tip_wave_pipeline.py", line 709, in column
+    result = stage("unified_column", lambda: unified_wave.column(upstream, stop,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\tip_wave_pipeline.py", line 681, in stage
+    result = producer()
+             ^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\tip_wave_pipeline.py", line 709, in <lambda>
+    result = stage("unified_column", lambda: unified_wave.column(upstream, stop,
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\unified_wave_runtime.py", line 656, in column
+    output, = observe_potential_geometry_checkpoint(self.snapshot, self.runtime.geometry,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\potential_geometry.py", line 585, in observe_potential_geometry_checkpoint
+    outputs = [observe_potential_mode(snapshot, mode, z, (upper,),
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\potential_wave_observation.py", line 338, in observe_potential_mode
+    for observation in observe_potential_plane(snapshot, mode.plane, start_z_m, observation_z_m,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\potential_wave_observation.py", line 217, in observe_potential_plane
+    current, record = propagate_carrier_potential(executed_snapshot, current, selected, energy_ev=energy_ev,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\potential_wave_carrier.py", line 1497, in propagate_carrier_potential
+    result, record = residual(result, middle, distance/2, reference, lower, upper, upper)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\potential_wave_carrier.py", line 1343, in residual
+    output, refinements = apply_resolved_operator(current, apply, numerics=numerics,
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\wave_grid.py", line 644, in apply_resolved_operator
+    output = operator(wave)
+             ^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\potential_wave_carrier.py", line 1243, in apply
+    output, record = _residual(snapshot, candidate, middle, half_distance, reference, wavelength,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\src\temsim\physics\potential_wave_carrier.py", line 733, in _residual
+    raise ValueError("Carrier kinetic truncation exceeds its declared phase budget")
+ValueError: Carrier kinetic truncation exceeds its declared phase budget

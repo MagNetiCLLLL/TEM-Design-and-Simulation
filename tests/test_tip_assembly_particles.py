@@ -78,7 +78,7 @@ def test_tip_copy_is_independent_positioned_solid_without_second_emitter():
     target.set_dimension(("parts", "spare_tip", "tip_radius_nm"), 200)
     assert source.part("feg_tip")["tip_radius_nm"] == 100
     mesh = part_model_from_document(target.document, "spare_tip").meshes[0]
-    assert mesh.vertices[:, 2].max() == pytest.approx(50.5)
+    assert mesh.vertices[:, 2].max() == pytest.approx(50.+source.part("feg_tip")["length_mm"]/2)
     assert {component.key for component in FieldEmissionGun().components}.isdisjoint({"spare_tip"})
 
 
@@ -169,7 +169,8 @@ def test_historical_source_without_surface_field_is_not_converted():
     payload["components"]["feg_tip"].pop("surface_model", None)
     restored = field_emission_gun_from_dict(payload)
     assert restored.emitter.surface_model is None
-    assert restored.to_dict()["integrator"]["method"] == "boris"
+    # Source preservation does not restore the retired cold-FEG ramp field.
+    assert restored.to_dict()["integrator"]["method"] == "static_discrete_gradient"
 
 
 def test_editor_density_and_energy_law_apply_only_valid_draft(qtbot):

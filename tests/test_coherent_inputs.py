@@ -44,6 +44,32 @@ def test_other_gun_family_is_rejected_without_feg_defaults():
     assert state.electron_gun.to_dict() == before
 
 
+def test_coherence_length_survives_transaction_profile_and_switch(tmp_path):
+    from temsim.assembly_catalog import AssemblyCatalog
+    from temsim.profile_io import save_profile, read_profile, apply_profile_values
+    state = default_state()
+    current = state.electron_gun.emitter.emitted_current_a
+    state.electron_gun = candidate_tip_emission(state, TipEmissionSettings(enabled=True,
+        boundary_model=DRIVEN_GAUSSIAN_SCHELL, transverse_coherence_length_nm=20.))
+    settings = source_settings_from_state(state)
+    assert settings.transverse_coherence_length_nm == 20.
+    assert settings.incoherent_angle_rms_mrad is None
+    assert candidate_tip_emission(state, settings).to_dict() == state.electron_gun.to_dict()
+    path = tmp_path/"length.toml"
+    catalog = AssemblyCatalog()
+    save_profile(path, state, catalog.default_selection())
+    selection, values = read_profile(path)
+    restored = default_state()
+    catalog.apply(restored, selection)
+    apply_profile_values(restored, values)
+    assert source_settings_from_state(restored) == settings
+    assert restored.electron_gun.emitter.emitted_current_a == current
+    restored.electron_gun = candidate_tip_emission(restored,
+        TipEmissionSettings(enabled=True, incoherent_angle_rms_mrad=1.))
+    assert restored.electron_gun.emitter.coherence.transverse_coherence_length_nm is None
+    save_profile(tmp_path/"angle.toml", restored, selection)
+
+
 def test_historical_example_is_not_used_as_a_runtime_default():
     settings = idealised_diffraction_tip_settings()
     assert not settings.enabled

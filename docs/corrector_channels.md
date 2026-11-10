@@ -1,5 +1,10 @@
 # Corrector service controls and aberration fitting
 
+For detached error injection, fixed-reference aberration comparisons and
+electrical correction headroom, see [Assembly error studies](assembly_error_studies.md).
+The **Assembly error study** tab reuses these intrinsic/learning routes and
+does not fit or apply a new learning matrix.
+
 ## Probe service inputs
 
 Open **Hardware Tuning → Corrector → Probe service channels (C1–A3)**.
@@ -42,6 +47,13 @@ Select a physical output, read its model maximum and set its percentage.
 Multipole and deflector percentages are signed. Lens excitation is positive.
 The normal/skew vector retains the existing peak-magnitude limit, and the
 physical coil limits apply to summed scan and DP12 drives.
+
+Scan calibration, held-record restoration and worker/cache result installation
+check that combined drive before accepting it. An over-limit result is rejected
+and the previous calibrated drives and records are retained. Alignment is not
+clipped or rescaled to make a scan fit. A complete calibration checks its final
+coil ratios and scan amplitude together; a standalone pivot adjustment checks
+the resulting drive against the retained amplitude.
 
 Profiles and working points preserve the physical outputs and the new
 `probe_service_percent` settings. Historical `probe_service_gains` count
@@ -118,16 +130,26 @@ components have separate meanings.
 
 ## Shared deflection hardware
 
-DP12 has no local field at its virtual plane. The model distributes a static
-angular increment between the two finite AC coils. For upper and lower coil
+The user confirmed on 2026-11-07 that, for this instrument, the AC Scan Coil
+used without a probe corrector is the same physical hardware called DP12 in
+the CEOS probe-corrector system. `ac_deflector` represents that single physical
+host; `probe_dp12_scan_deflector` is its CEOS control/reference alias. The
+alias adds no winding, material body or independent magnetic field. Scan and
+alignment inputs must share the host's geometry, pose and physical drive limits.
+
+DP12's additional software reference is virtual; the AC scan hardware it
+controls is physical. The current model distributes a static angular increment
+between the two finite AC coils. For upper and lower coil
 centres `zu`, `zl` and virtual reference `zr`, the lower fraction is
 `(zr - zu) / (zl - zu)` and the upper fraction is its complement.
 This preserves angle and first axial moment in a field-free drift. The
 propagator uses the actual coil positions, lengths and other column fields.
 Raster and wobble commands superpose on the same two physical fields.
 The upstream BSh/BTlt outputs use difference and sum modes on the existing
-beam deflector. These are explicit engineering choices. Separate OEM winding
-geometry, gains and specimen-plane shift or tilt purity remain unmeasured.
+beam deflector. These numerical distribution rules remain engineering choices;
+the user's confirmation establishes the DP12/AC hardware identity, not those
+coefficients. OEM winding geometry, gains and specimen-plane shift or tilt
+purity remain unmeasured.
 
 ### Historical count-interface verification
 

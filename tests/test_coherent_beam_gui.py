@@ -37,6 +37,21 @@ def preview():
                     1., 1, 160, ((4, 4),))
 
 
+def test_coherence_length_control_loads_and_switches_without_overwriting(panel):
+    from temsim.optics.electron_gun.tip_coherence import TipCoherence, DRIVEN_GAUSSIAN_SCHELL
+    panel._state.electron_gun.emitter.coherence = TipCoherence(
+        boundary_model=DRIVEN_GAUSSIAN_SCHELL, transverse_coherence_length_nm=20.1234567890123)
+    panel.set_state(panel._state, reset_source=True)
+    assert panel.coherence_length_enabled.isChecked()
+    assert not panel.angle_rms.isEnabled()
+    assert panel._settings().transverse_coherence_length_nm == 20.1234567890123
+    panel.coherence_length_enabled.setChecked(False)
+    panel.angle_rms.setValue(1.)
+    settings = panel._settings()
+    assert settings.transverse_coherence_length_nm is None
+    assert settings.incoherent_angle_rms_mrad == 1.
+
+
 def test_request_freezes_instrument_emission_epoch_without_changing_numerics(panel):
     panel._state.simulation_time_s = -.125
     first = panel._make_request()
@@ -417,6 +432,24 @@ def test_driven_near_tip_step_is_independent_and_invalidates_captured_request(pa
     assert replace(request.gun, near_tip_maximum_step_nm=50.) == initial.gun
     assert replace(request, gun=initial.gun) == initial
     assert json_digest(asdict(request)) != json_digest(asdict(initial))
+    assert vars(panel._state.electron_gun.emitter) == source_before
+    assert panel.result is previous and panel._stale and not panel._session_ready
+    assert panel._worker is None
+
+
+@pytest.mark.parametrize("control,field,value", [
+    ("gun_near_tip_end", "near_tip_end_z_nm", 1000.),
+    ("gun_near_tip_radius", "near_tip_transverse_radius_um", .4),
+])
+def test_near_tip_domain_controls_invalidate_only_the_numerical_request(panel, qtbot, control, field, value):
+    calculate(panel, qtbot)
+    previous, initial = panel.result, panel._make_request()
+    source_before = deepcopy(vars(panel._state.electron_gun.emitter))
+    getattr(panel, control).setValue(value)
+    request = panel._make_request()
+    assert getattr(request.gun, field) == value
+    assert replace(request.gun, **{field: getattr(initial.gun, field)}) == initial.gun
+    assert replace(request, gun=initial.gun) == initial
     assert vars(panel._state.electron_gun.emitter) == source_before
     assert panel.result is previous and panel._stale and not panel._session_ready
     assert panel._worker is None

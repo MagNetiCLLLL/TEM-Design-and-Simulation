@@ -182,7 +182,8 @@ class EnergyFilterView(QWidget):
             else "Curvilinear Energy Filter branch"
         )
         self.summary.setToolTip(
-            "The branch is drawn in its own curvilinear X-Z frame; "
+            "The branch uses column Z from its entrance horizontally and negative column X vertically. "
+            "Local transverse X follows the bend; local Y remains column Y. "
             "public topology is separated from adjustable non-OEM geometry."
         )
         self.summary.setWordWrap(True)
@@ -196,8 +197,8 @@ class EnergyFilterView(QWidget):
         header.addWidget(self.fit_all)
         self.plot = pg.PlotWidget(background="#050816")
         self.plot.setObjectName("energyFilterInternalPlot")
-        self.plot.setLabel("bottom", "Global branch X", units="mm")
-        self.plot.setLabel("left", "Global branch Z", units="mm")
+        self.plot.setLabel("bottom", "Column Z from filter entrance", units="mm")
+        self.plot.setLabel("left", "Negative column X", units="mm")
         self.plot.showGrid(x=True, y=True, alpha=0.16)
         view_box = self.plot.getViewBox()
         view_box.setAspectLocked(False)
@@ -3645,7 +3646,9 @@ class PhysicalLayoutView(QWidget):
             self.energy_filter_structure.display_result(result)
             self._filter_structure_pending = False
         from temsim.energy_filter_model_3d import energy_filter_render_values
-        branch_values = energy_filter_render_values(getattr(result, "state_snapshot", None))
+        from temsim.optics.nanopulser import nanopulser_render_values
+        snapshot = getattr(result, "state_snapshot", None)
+        branch_values = {**energy_filter_render_values(snapshot), **nanopulser_render_values(snapshot)}
         if branch_values:
             runtime = dict(self.assembly_3d._runtime_values)
             for key, values in branch_values.items():

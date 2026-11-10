@@ -43,7 +43,7 @@ def test_design_package_restores_geometry_sampling_and_controls_without_cached_r
     for key,z in [('feg_extractor',2.1),('feg_electrostatic_lens',12.),
                   ('feg_accelerator',218.),('feg_dpa_aperture',18.)]:
         assert restored._resolved_assembly.part(key).center_z_mm == pytest.approx(z)
-    assert original.electron_gun.electrostatic_lens.voltage_reference == 'extractor'
+    assert original.electron_gun.electrostatic_lens.voltage_reference == 'tip'
 
 
 def test_input_package_rejects_an_empty_label():

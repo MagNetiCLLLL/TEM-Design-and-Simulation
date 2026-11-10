@@ -1,0 +1,130 @@
+{
+  "schema": "physical-feg-hybrid-round-status-v1",
+  "saved_utc": "2026-11-10T00:02:25.030948+00:00",
+  "status": "PARTIAL_CLASSICAL_NANOPROBE_AND_CUDA_GUN_COMPLETE_GLOBAL_HYBRID_RESOURCE_BLOCKED",
+  "completed": [
+    "2048 and 4096 original-source geometric references",
+    "0.05 to 0.025 mm axial step comparison",
+    "48 physical gun wave modes on CUDA",
+    "Three result images and reproducible input/evidence archive"
+  ],
+  "incomplete": [
+    "Complete coherent incident column",
+    "Physical-FEG Si[110] specimen diffraction",
+    "Wave-derived exit population and actual camera result"
+  ],
+  "attempts": [
+    {
+      "name": "global-hybrid4096",
+      "status": "INTERRUPTED_FOR_NUMERICAL_STRATEGY_CHANGE",
+      "elapsed_s": null,
+      "error_type": null,
+      "error": null,
+      "last_progress": {
+        "done": 48,
+        "total": 0,
+        "message": "Unified coherent boundary steps at Z 473.70625 mm; adaptive total not yet known",
+        "utc": "2026-11-09T23:30:56.545313+00:00"
+      },
+      "kinetic_order": 4,
+      "exponential_method": "taylor",
+      "support_projection": true,
+      "weighted_resampling": true,
+      "preview_segment_resampling": false
+    },
+    {
+      "name": "global-hybrid4096-resampled",
+      "status": "CANCELLED",
+      "elapsed_s": 364.6869999999999,
+      "error_type": "InterruptedError",
+      "error": "Carrier potential propagation cancelled",
+      "last_progress": {
+        "done": 48,
+        "total": 0,
+        "message": "Unified coherent boundary steps at Z 473.70625 mm; adaptive total not yet known",
+        "utc": "2026-11-09T23:37:48.310994+00:00"
+      },
+      "kinetic_order": 4,
+      "exponential_method": "chebyshev",
+      "support_projection": true,
+      "weighted_resampling": true,
+      "preview_segment_resampling": true
+    },
+    {
+      "name": "global-hybrid4096-compact",
+      "status": "FAILED",
+      "elapsed_s": 172.70300000000134,
+      "error_type": "ValueError",
+      "error": "Carrier kinetic truncation exceeds its declared phase budget",
+      "last_progress": {
+        "done": 87,
+        "total": 0,
+        "message": "Unified coherent boundary steps at Z 492.980556 mm; adaptive total not yet known",
+        "utc": "2026-11-09T23:41:37.250603+00:00"
+      },
+      "kinetic_order": 4,
+      "exponential_method": "chebyshev",
+      "support_projection": true,
+      "weighted_resampling": false,
+      "preview_segment_resampling": false
+    },
+    {
+      "name": "global-hybrid4096-compact-k8",
+      "status": "FAILED",
+      "elapsed_s": 1027.125,
+      "error_type": "WaveGridBudgetError",
+      "error": "Required residual device budget exceeded: grid=(7840, 7840), estimated device working bytes=27536588800; maximum_device_working_bytes=25769803776. The optical operator was not applied.",
+      "last_progress": {
+        "done": 110,
+        "total": 0,
+        "message": "Unified coherent boundary steps at Z 504.406018 mm; adaptive total not yet known",
+        "utc": "2026-11-09T23:58:31.505596+00:00"
+      },
+      "kinetic_order": 8,
+      "exponential_method": "chebyshev",
+      "support_projection": true,
+      "weighted_resampling": false,
+      "preview_segment_resampling": false
+    }
+  ],
+  "blocker": {
+    "stage": "First column mode near C1; no full column mode mixture committed",
+    "last_reported_z_mm": 504.406018,
+    "note": "The throttled progress location is not an exact failure plane or a resumable checkpoint",
+    "failure": "WaveSamplingError at the Nyquist guard followed by WaveGridBudgetError",
+    "requested_grid": [
+      9216,
+      9216
+    ],
+    "requested_device_bytes": 38050725888,
+    "bounded_retry_grid": [
+      7840,
+      7840
+    ],
+    "bounded_retry_device_bytes": 27536588800,
+    "configured_device_working_bytes": 25769803776,
+    "thresholds_relaxed": false,
+    "optical_operator_on_unadmitted_grid_applied": false
+  },
+  "restart": {
+    "plane_z_mm": 450.0,
+    "complete_mode_count": 48,
+    "checkpoint_digest": "b87b8a6692ae52ba61ad2f200c7971960f3b5a915f8ef2c0478c97d5f3278cf7",
+    "local_wave_cache": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\global-hybrid4096\\wave_cache",
+    "large_complex_arrays_uploaded_to_git": false,
+    "scope": "Only completed dependency-checked gun modes are a restart source; partial column progress is not one"
+  },
+  "final_numerical_options": [
+    "--column-exponential-method",
+    "chebyshev",
+    "--column-spatial-compaction",
+    "--column-kinetic-order",
+    "8"
+  ],
+  "scientific_limits": [
+    "20 nm tip coherence is assumed, not measured",
+    "Geometric reference is not a coherent specimen/detector image",
+    "Source-count D95 variation is 3.17 percent; no atomic-resolution or full convergence claim",
+    "No local independent-cell substitution, downstream replacement source or current restoration"
+  ]
+}

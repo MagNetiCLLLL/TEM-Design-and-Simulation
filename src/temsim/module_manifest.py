@@ -738,6 +738,8 @@ def stage_manifest_text(text, updates, *, validate=True, source_path=None):
 
 
 def validate_document(document):
+    from temsim.gun_rear_geometry import validate_rear_gun_document
+    validate_rear_gun_document(document)
     from temsim.cad_auxiliary import validate_gun_electrode_geometry
     from temsim.pole_geometry import validate_pole_face_land_geometry
     from temsim.ordinary_deflector_geometry import validate_ordinary_deflector_part

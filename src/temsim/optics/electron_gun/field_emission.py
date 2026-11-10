@@ -81,6 +81,7 @@ _TOML_GEOMETRY_COMPONENT_KEYS = frozenset((
     THERMIONIC_C1_APERTURE,
 ))
 _TOML_GEOMETRY_ATTRIBUTES = frozenset((
+    "counterbore_depth_mm", "counterbore_diameter_mm", "voltage_start_reference",
     "mechanical_center_from_tip_mm",
     "mechanical_length_mm",
     "mechanical_outer_diameter_mm",
@@ -170,6 +171,12 @@ def _apply_electrical_defaults(component, part):
     """Apply a changed TOML default, retaining runtime edits on geometry reload."""
     if isinstance(component, AcceleratorColumn) and "electrode_thickness_mm" in part:
         component._electrode_thickness_mm = float(part["electrode_thickness_mm"])
+    if isinstance(component, AcceleratorColumn):
+        component.voltage_start_reference = part.get("voltage_start_reference", "extractor")
+    if isinstance(component, ExtractorElectrode):
+        from temsim.extractor_geometry import COUNTERBORE_FIELDS
+        for name in COUNTERBORE_FIELDS:
+            setattr(component, name, float(part.get(name, 0.)))
     for field, attribute in (("default_voltage_kv", "voltage_kv"),
                              ("default_high_tension_kv", "high_tension_kv"),
                              ("default_voltage_reference", "voltage_reference")):
@@ -793,7 +800,7 @@ class FieldEmissionGun:
         payload = self.to_dict()
         # Profiles defer geometry to TOML; executed caches must retain it.
         # Hard stops and alignment coils also matter outside the field solve.
-        payload["trace_geometry_schema"] = "physical-aperture-separate-exit-v2"
+        payload["trace_geometry_schema"] = "physical-aperture-separate-exit-extractor-and-rear-chords-v4"
         instrument_field = getattr(self, "_instrument_magnetic_field", None)
         payload["magnetic_transport_scope"] = (
             {"kind": "captured-instrument-field-trial-envelope-v2",

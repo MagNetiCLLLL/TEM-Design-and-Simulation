@@ -112,15 +112,23 @@ def planar_field_request(gun, *, cathode_boundary, cells_per_bore=8,
     lens_v = lens.potential_rise_from_tip_v(ext/1000., ht/1000.)
     for key, component, potential in (("extractor", gun.extractor, ext),
                                      ("electrostatic_lens", lens, lens_v)):
-        add_ring(key, component.mechanical_center_from_tip_mm,
-                 component.mechanical_length_mm,
-                 component.mechanical_clear_bore_diameter_mm,
-                 component.mechanical_outer_diameter_mm, potential)
+        if key == "extractor":
+            from temsim.extractor_geometry import ExtractorContour
+            for start, stop, inner, outer in ExtractorContour.from_component(component).annuli_mm:
+                add_ring(key, (start+stop)/2, stop-start, 2*inner, 2*outer, potential)
+                rings[-1].update(start_m=start*1e-3, stop_m=stop*1e-3)
+        else:
+            add_ring(key, component.mechanical_center_from_tip_mm,
+                     component.mechanical_length_mm,
+                     component.mechanical_clear_bore_diameter_mm,
+                     component.mechanical_outer_diameter_mm, potential)
     accelerator = gun.accelerator
     thickness = getattr(accelerator, "_electrode_thickness_mm", None)
     if thickness is None:
         raise ValueError("Actual accelerator electrode thickness is required")
     previous_center, previous_fraction = -math.inf, 0.
+    from temsim.optics.electron_gun.electrostatic import accelerator_potential_rises_v
+    stage_voltages = accelerator_potential_rises_v(accelerator, ext/1000., lens_v)
     for index, stage in enumerate(accelerator.stages):
         center, fraction = float(stage.center_from_tip_mm), float(stage.voltage_fraction)
         if (not math.isfinite(center) or not math.isfinite(fraction)
@@ -128,12 +136,15 @@ def planar_field_request(gun, *, cathode_boundary, cells_per_bore=8,
             raise ValueError("Accelerator positions and voltage fractions must increase strictly")
         add_ring(f"accelerator:{index}", center, thickness,
                  accelerator.mechanical_clear_bore_diameter_mm,
-                 accelerator.mechanical_outer_diameter_mm, ext+fraction*(ht-ext))
+                 accelerator.mechanical_outer_diameter_mm, stage_voltages[index])
         previous_center, previous_fraction = center, fraction
     if previous_fraction != 1.:
         raise ValueError("The final accelerator stage must have voltage fraction exactly one")
     for index, left in enumerate(rings):
         for right in rings[index+1:]:
+            if left["key"] == right["key"] and left["potential_rise_v"] == right["potential_rise_v"]:
+                # Adjacent pieces of one counterbored equipotential conductor.
+                continue
             if (max(left["start_m"], right["start_m"]) <= min(left["stop_m"], right["stop_m"])
                     and max(left["inner_m"], right["inner_m"]) <= min(left["outer_m"], right["outer_m"])):
                 raise ValueError("Overlapping or touching annular electrodes")
@@ -145,6 +156,7 @@ def planar_field_request(gun, *, cathode_boundary, cells_per_bore=8,
         "potential_reference": "rise_relative_to_original_tip_v",
         "source_admission": "flat_classical_tip_only",
         "rings": rings, "high_tension_v": ht, "extraction_v": ext,
+        "accelerator_voltage_start_reference": getattr(accelerator, "voltage_start_reference", "extractor"),
         "domain": {"entrance_m": 0., "exit_m": end,
                    "gun_exit_m": gun_exit, "outer_radius_m": outer_radius},
         "boundary_conditions": {
@@ -155,7 +167,7 @@ def planar_field_request(gun, *, cathode_boundary, cells_per_bore=8,
             "axis": "axisymmetric_regular", "metal": "annular_dirichlet"},
         "limitations": [
             "The idealised full-domain planar cathode is not the emitter's nanometre emission patch or cone envelope.",
-            "Reference annuli use component bore/outer dimensions and thickness, not independently verified electrode contours.",
+            "Piecewise annuli follow configured electrode contours, including an extractor recess when declared; undisclosed dimensions remain engineering assumptions.",
             "No space charge, image charge, insulator or tunnelling-current calculation.",
             "Aperture interception and magnetic transport remain separate required particle operations.",
             "A small linear residual does not certify mesh or boundary convergence or a complete gun."],

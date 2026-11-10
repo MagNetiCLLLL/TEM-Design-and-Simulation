@@ -1,0 +1,154 @@
+{
+  "schema": "saved-scientific-artifacts-v1",
+  "saved_utc": "2026-11-10T00:02:51.532195+00:00",
+  "files": {
+    "coherent_attempts/global-hybrid4096/hybrid_progress.json": {
+      "bytes": 178,
+      "sha256": "d22336d567dd67d397252a6df638b96945da3d1e34cfe72a87652f3598ef6f3a"
+    },
+    "coherent_attempts/global-hybrid4096/report.json": {
+      "bytes": 51276,
+      "sha256": "37f1f9f9c24eb8c0bdca1723d9efdd6f7300ac6fcf5a471d1e0fdb337c7c5083"
+    },
+    "coherent_attempts/global-hybrid4096-compact/failure.txt": {
+      "bytes": 4711,
+      "sha256": "84a43f3b7de1abe39337eb738a0af3848a99b2c9b80f398acf343a985033ff41"
+    },
+    "coherent_attempts/global-hybrid4096-compact/hybrid_progress.json": {
+      "bytes": 179,
+      "sha256": "e00069d1db6e040feddc118b0c1fa860896e0ad3a70c59b1e7d138c4405ae976"
+    },
+    "coherent_attempts/global-hybrid4096-compact/report.json": {
+      "bytes": 50819,
+      "sha256": "1acfea57c04bfa6a916a2340d50f0b044fc28065dcc09fd386db78342b14d83c"
+    },
+    "coherent_attempts/global-hybrid4096-compact-k8/failure.txt": {
+      "bytes": 7756,
+      "sha256": "8e09b53e42a17c9525d2f56ec3afd11c0ae647bed99f22cdf7471a263f877ef1"
+    },
+    "coherent_attempts/global-hybrid4096-compact-k8/hybrid_progress.json": {
+      "bytes": 180,
+      "sha256": "172e045c7666b8231beebb069057aa38d55cdfc4b92a1bd8b0c406581563b2e4"
+    },
+    "coherent_attempts/global-hybrid4096-compact-k8/report.json": {
+      "bytes": 50942,
+      "sha256": "489a52c69bda8123c042b21bb9c8703b66cbbc4dc4134a83055d2066a6168a4b"
+    },
+    "coherent_attempts/global-hybrid4096-resampled/failure.txt": {
+      "bytes": 5054,
+      "sha256": "0d92ff60ce951f0d4a6026106a12c3b8a5591a6c2bb7760d1e012af136f5eb93"
+    },
+    "coherent_attempts/global-hybrid4096-resampled/hybrid_progress.json": {
+      "bytes": 178,
+      "sha256": "7de0ddd3a9358b4ab387a0a8b2170c1e39c26b0dde13005410e5638e1464583d"
+    },
+    "coherent_attempts/global-hybrid4096-resampled/report.json": {
+      "bytes": 50803,
+      "sha256": "8198ab99037a01eaf21d1d50b15ca62f44bffc49f5cd176603ecddb576a43763"
+    },
+    "column_current.png": {
+      "bytes": 138821,
+      "sha256": "594d600effc065bd4166c7849e2d4d84f0f2b1f516544c64dd0207c75c233f45"
+    },
+    "comparison.json": {
+      "bytes": 5852,
+      "sha256": "7d4145e34270e95f8331677ef1cc890b1c3fec8dc33fbf23276315539d59231c"
+    },
+    "execution_status.json": {
+      "bytes": 5013,
+      "sha256": "1b180ae727082b362bc146b5ef309788c992e51a128e8300bade48385364d6d0"
+    },
+    "gun_wave.json": {
+      "bytes": 490,
+      "sha256": "f89b5ce54d7e9e2350ffdcd7b5b495d0f4ae274fd686454ba84d96837b3841a6"
+    },
+    "gun_wave.png": {
+      "bytes": 120718,
+      "sha256": "433a4c7737431d64391d0e7a7b3115e82b8d18cec5081ef30fb97cf77cd1fad0"
+    },
+    "gun_wave_checkpoint.json": {
+      "bytes": 2602295,
+      "sha256": "1818701766420a208b7799e38ae0cfa86ca0f625f5fab0f7f3f6fe3e9f302299"
+    },
+    "optical-controls.json": {
+      "bytes": 2699,
+      "sha256": "abd3a000ea98cf73eb4a66f2c5f5a04d2800d682249bb5e4a23f0a5523d586dc"
+    },
+    "probe_validation.png": {
+      "bytes": 195716,
+      "sha256": "427b135925474f09abd6df8363c8c55c91fa61dbc7fe8461f147146aaaed0fde"
+    },
+    "README.md": {
+      "bytes": 9376,
+      "sha256": "e480067c6581ab05a30d9d04c111acd57015f6b4dbd4a603fbf5685ccc46a526"
+    },
+    "step_comparison.json": {
+      "bytes": 2504,
+      "sha256": "d9c852f546b27fe20f6116559e89cbcf55b8e28d5f43a8fd10706483bcaa19b6"
+    },
+    "surface-focus2048/input.toml": {
+      "bytes": 24262,
+      "sha256": "0e34468096665cd7e45d4d0d24459456ff7d0ac2672c243a3280aa74ee3ef5dc"
+    },
+    "surface-focus2048/instrument.json": {
+      "bytes": 2135443,
+      "sha256": "3c0730d46ce7a38f972905a007c24476ac1e792de9162692df4a6013269cadb3"
+    },
+    "surface-focus2048/original_source.npz": {
+      "bytes": 167111,
+      "sha256": "1f6eb72b2a5bc9d0d2c37ffb6554cdabaf2e6dfc32bbe504dd13e4c2ced50b7d"
+    },
+    "surface-focus2048/report.json": {
+      "bytes": 49781,
+      "sha256": "7ee94b6ad02352a76e0119b1915b979915eb5f7aa346e25580decacdc4300b6f"
+    },
+    "surface-focus2048/specimen_plane.npz": {
+      "bytes": 86695,
+      "sha256": "2317ad21374f0cb26c379c97b22bc3d1851654423b87d279abd87bf2d28c0d7f"
+    },
+    "surface-focus4096/input.toml": {
+      "bytes": 24262,
+      "sha256": "6c741dfeabe461978dc1406861fd11103bdd5b9f6268bf9125d4fa263adc25f7"
+    },
+    "surface-focus4096/instrument.json": {
+      "bytes": 2135443,
+      "sha256": "976ad83029adc0b81a0c3fce5a2c08aac2b9921de9730e62ece6c843d07f2b0e"
+    },
+    "surface-focus4096/original_source.npz": {
+      "bytes": 335937,
+      "sha256": "1b6bcbd799cfbbce05945e22bed0648efba21a6702eea62822bb02145dfece68"
+    },
+    "surface-focus4096/report.json": {
+      "bytes": 49851,
+      "sha256": "559798533438d3a1fcdd23716d7997c495ca9571cb5a784cd4cb9fd8b8bd9dc4"
+    },
+    "surface-focus4096/specimen_plane.npz": {
+      "bytes": 170617,
+      "sha256": "2de3fc24cdc7a20786e91698a58036b928300f40abcead8de5d9ee8eaee07d05"
+    },
+    "surface-focus4096/topology.json": {
+      "bytes": 1236121,
+      "sha256": "e90532b24e1853eb99fbde110862c6632e25f000682b2deef16fa8bc70382516"
+    },
+    "surface-step0025-2048/input.toml": {
+      "bytes": 24263,
+      "sha256": "60b770c35ce2de82a2e48db9b4f352dd7ceaedea8be37ac81b15837ac7adf8c0"
+    },
+    "surface-step0025-2048/instrument.json": {
+      "bytes": 2135444,
+      "sha256": "d2871c91c594669e1376d4e56520416d272519e4202363c7cd448e4b550a7fa4"
+    },
+    "surface-step0025-2048/original_source.npz": {
+      "bytes": 167111,
+      "sha256": "1f6eb72b2a5bc9d0d2c37ffb6554cdabaf2e6dfc32bbe504dd13e4c2ced50b7d"
+    },
+    "surface-step0025-2048/report.json": {
+      "bytes": 49782,
+      "sha256": "ba51c9436baec67222ca110a9828958085d45b80a2137e138d3c0a747c4a560f"
+    },
+    "upstream_topology.json": {
+      "bytes": 474580,
+      "sha256": "9bdf6d89eb896a13d581dc48641c0feb6bd7ab47c77c189ce8a4298072f6b0ed"
+    }
+  }
+}

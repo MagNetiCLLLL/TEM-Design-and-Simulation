@@ -1,4 +1,5 @@
 """Current filter state is explicit; no former two-carrier reconstruction."""
+from temsim.energy_filter_coordinates import ENTRANCE_COORDINATE_CONVENTION
 from copy import deepcopy
 from dataclasses import replace
 
@@ -7,6 +8,9 @@ import pytest
 
 from temsim.assembly_catalog import AssemblyCatalog
 from temsim.component_keys import ENERGY_FILTER_MULTIPOLE_KEYS
+from temsim.immutable_json import json_digest, thaw_json
+from temsim.input_assets import InputAssetStore
+from temsim.instrument_snapshot import decode_instrument, encode_instrument
 from temsim.optics.column import default_state
 from temsim.optics.energy_filter import (
     energy_filter_from_dict, serialise_energy_filter, ensure_energy_filter,
@@ -14,15 +18,18 @@ from temsim.optics.energy_filter import (
 from temsim.runtime_parameters import RuntimeTarget, editable_parameters, runtime_targets
 
 
+@pytest.fixture
 def filter_state():
     state = default_state()
     catalog = AssemblyCatalog()
     catalog.apply(state, replace(catalog.default_selection(), recording="Energy Filter"))
+    state.energy_filter.alignment_x_mrad = .23
+    state.energy_filter.alignment_y_mrad = -.17
     return state
 
 
-def test_current_filter_roundtrip_preserves_nondefault_state_without_reconfiguration():
-    state = filter_state()
+def test_current_filter_roundtrip_preserves_nondefault_state_without_reconfiguration(filter_state):
+    state = filter_state
     ef = state.energy_filter
     ef.energy_slit.inserted = True
     ef.energy_slit.gap_m = 11e-6
@@ -80,28 +87,31 @@ def test_current_filter_roundtrip_preserves_nondefault_state_without_reconfigura
     lambda p: p["camera_deflector"].update(active_strip=2.5),
     lambda p: p["zebra_detector"].update(unknown=1),
 ])
-def test_incomplete_or_retired_filter_records_are_rejected(change):
-    state = filter_state()
+def test_incomplete_or_retired_filter_records_are_rejected(change, filter_state):
+    state = filter_state
     payload = serialise_energy_filter(state.energy_filter)
     change(payload)
     with pytest.raises(ValueError):
         energy_filter_from_dict(payload, state.beam_voltage_kv)
 
 
-def test_installed_filter_cannot_be_disabled_as_a_transport_bypass():
-    state = filter_state()
+def test_installed_filter_cannot_be_disabled_as_a_transport_bypass(filter_state):
+    state = filter_state
     state.energy_filter.enabled = False
     with pytest.raises(ValueError, match="physical installation"):
         ensure_energy_filter(state)
     assert state.energy_filter.enabled is False
 
 
-def test_virtual_layout_and_filter_installation_have_no_phantom_editable_controls():
-    state = filter_state()
+def test_logical_dp12_and_filter_installation_expose_only_supported_controls(filter_state):
+    state = filter_state
     targets = runtime_targets(state)
     virtual = [target for target in targets.values() if getattr(target.obj, "KIND", "") == "virtual_layout"]
     assert virtual
-    assert all(editable_parameters(target) == () for target in virtual)
+    assert "probe_dp12_scan_deflector" in {target.key for target in virtual}
+    for target in virtual:
+        expected = {"enabled", "alignment_x_mrad", "alignment_y_mrad"} if target.key == "probe_dp12_scan_deflector" else set()
+        assert {p.name for p in editable_parameters(target)} == expected
     fields = {p.name for p in editable_parameters(targets["energy_filter"])}
     assert "enabled" not in fields
     assert "optical_integration_enabled" not in fields
@@ -110,9 +120,9 @@ def test_virtual_layout_and_filter_installation_have_no_phantom_editable_control
     assert {"kick_x_mrad", "kick_y_mrad", "upper_coil_gain", "scan_enabled"} <= fields
 
 
-def test_complete_current_state_retains_filter_operating_choices():
+def test_complete_current_state_retains_filter_operating_choices(filter_state):
     from temsim.optics.model import State
-    state = filter_state()
+    state = filter_state
     state.energy_filter.fast_shutter.open = False
     state.energy_filter.fast_shutter.enabled = False
     state.energy_filter.energy_slit.inserted = True
@@ -124,9 +134,9 @@ def test_complete_current_state_retains_filter_operating_choices():
     assert restored.to_dict()["energy_filter"] == payload["energy_filter"]
 
 
-def test_slit_owns_window_requests_and_physical_configuration():
+def test_slit_owns_window_requests_and_physical_configuration(filter_state):
     from temsim.optics.energy_filter import configure_energy_slit_from_software
-    state = filter_state()
+    state = filter_state
     ef = state.energy_filter
     ef.slit_width_ev = 17.
     ef.selected_loss_ev = 33.
@@ -151,3 +161,81 @@ def test_slit_inverse_energy_window_uses_displacement_units_and_offset(dispersio
     assert slit.derived_centre_loss_ev == pytest.approx(41.)
     assert slit.derived_width_ev == pytest.approx(7.)
     assert slit.centre_m == pytest.approx(zero_offset + dispersion * 41e-6)
+
+
+def test_filter_record_marks_coordinates_and_migrates_legacy_alignment_once(filter_state):
+    state = filter_state
+    current = serialise_energy_filter(state.energy_filter)
+    assert current["entrance_coordinate_convention"] == ENTRANCE_COORDINATE_CONVENTION
+    restored = energy_filter_from_dict(current, state.beam_voltage_kv)
+    assert restored.alignment_x_mrad == .23
+    legacy = deepcopy(current)
+    legacy.pop("entrance_coordinate_convention")
+    original = deepcopy(legacy)
+    restored = energy_filter_from_dict(legacy, state.beam_voltage_kv)
+    assert restored.alignment_x_mrad == -.23
+    assert restored.alignment_y_mrad == -.17
+    assert legacy == original
+    reloaded = energy_filter_from_dict(serialise_energy_filter(restored), state.beam_voltage_kv)
+    assert reloaded.alignment_x_mrad == -.23
+    bad = {**current, "entrance_coordinate_convention": "unknown"}
+    with pytest.raises(ValueError, match="coordinates"):
+        energy_filter_from_dict(bad, state.beam_voltage_kv)
+
+
+@pytest.fixture(params=[False, True], ids=["inline", "assets"])
+def filter_graph(request, filter_state):
+    lease = InputAssetStore(budget_bytes=1024**2).capture() if request.param else None
+    filter_state.extra_input_array = np.arange(8192, dtype=float)
+    filter_state.extra_input_alias = filter_state.extra_input_array
+    try:
+        yield thaw_json(encode_instrument(filter_state, asset_store=lease)), lease
+    finally:
+        if lease is not None:
+            lease.close()
+
+
+def test_complete_snapshot_keeps_column_alignment_and_input_assets(filter_graph):
+    graph, assets = filter_graph
+    assert graph["coordinate_conventions"] == {"energy_filter_entrance": ENTRANCE_COORDINATE_CONVENTION}
+    before = json_digest(graph)
+    restored = decode_instrument(graph, assets=assets)
+    assert restored.energy_filter.alignment_x_mrad == .23
+    assert restored.energy_filter.alignment_y_mrad == -.17
+    np.testing.assert_array_equal(restored.extra_input_array, np.arange(8192, dtype=float))
+    if assets is not None:
+        assert restored.extra_input_array is restored.extra_input_alias
+    assert json_digest(encode_instrument(restored, asset_store=assets)) == before
+    assert json_digest(graph) == before
+
+
+@pytest.mark.parametrize("alignment_x,installed", [(0., True), (.23, True), (.23, False)])
+def test_untagged_graph_requires_unambiguous_filter_alignment(filter_graph, alignment_x, installed):
+    graph, assets = filter_graph
+    graph.pop("coordinate_conventions", None)
+    node = next(node for node in graph["nodes"] if node["type"] == "temsim.optics.energy_filter:EnergyFilterSystem")
+    node["attributes"]["alignment_x_mrad"] = alignment_x
+    node["attributes"]["enabled"] = installed
+    graph["nodes"][graph["root"]["ref"]]["attributes"]["energy_filter_installed"] = installed
+    before = json_digest(graph)
+    if alignment_x:
+        with pytest.raises(ValueError, match="Unversioned Energy Filter entrance X alignment"):
+            decode_instrument(graph, assets=assets)
+    else:
+        restored = decode_instrument(graph, assets=assets)
+        assert restored.energy_filter.alignment_x_mrad == 0.
+        assert restored.energy_filter.alignment_y_mrad == -.17
+        tagged = thaw_json(encode_instrument(restored, asset_store=assets))
+        assert tagged.pop("coordinate_conventions") == {"energy_filter_entrance": ENTRANCE_COORDINATE_CONVENTION}
+        assert json_digest(tagged) == before
+    assert json_digest(graph) == before
+
+
+@pytest.mark.parametrize("conventions", [{}, None, {"energy_filter_entrance": "unknown"}])
+def test_complete_graph_rejects_unknown_or_incomplete_coordinates(filter_graph, conventions):
+    graph, assets = filter_graph
+    graph["coordinate_conventions"] = conventions
+    before = json_digest(graph)
+    with pytest.raises(ValueError, match="working-point coordinates"):
+        decode_instrument(graph, assets=assets)
+    assert json_digest(graph) == before

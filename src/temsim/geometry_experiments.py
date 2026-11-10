@@ -44,56 +44,91 @@ def validate_optimization(document):
 
 @input_io.using_state_inputs
 def candidate_state(recipe, point, sweep, base_archive, *, cancelled=lambda: False):
-    from temsim.design_sweep_execution import rebuild_recipe_state, _runtime_operating_values, _prepare_high_accuracy_request, restore_operating_values
+    from temsim.design_sweep_execution import rebuild_recipe_state, _prepare_high_accuracy_request
+    state, selection = rebuild_recipe_state(recipe)
+    _prepare_high_accuracy_request(state, recipe)
+    settings = sweep.assumptions
+    value = point.coordinates[sweep.axes[0].path]
+    state, evidence = prepare_geometry_changes(state, selection, (
+        (settings["module"], settings["part"], settings["dimension"], value),), base_archive,
+        cancelled=cancelled)
+    evidence["controls"] = settings["controls"]
+    if settings.get("optimization"):
+        try:
+            state, alignment = optimize_candidate(state, settings["optimization"], cancelled=cancelled)
+        except Exception as exc:
+            exc.evidence = dict(evidence, alignment=getattr(exc, "evidence", {}))
+            raise
+        evidence["alignment"] = alignment
+    from temsim.design_sweep_execution import _runtime_operating_values
+    from temsim.instrument_snapshot import capture_instrument_snapshot
+    evidence["operating_controls"] = _runtime_operating_values(state)
+    evidence["candidate_input_identity"] = capture_instrument_snapshot(state).digest
+    return state, selection, evidence
+
+
+def prepare_geometry_changes(state, selection, changes, base_archive, *, cancelled=lambda: False):
+    """Edit a private state's archived geometry through the existing part editor.
+
+    ``changes`` contains (module, part, dimension, absolute_value) rows. Callers
+    must supply a detached state. All edits are assembled together, preserving
+    captured operating controls. No live definition file is written.
+    """
+    from temsim.design_sweep_execution import _runtime_operating_values, restore_operating_values
     from temsim.assembly_catalog import AssemblyCatalog
     from temsim.part_model_document import PartModelDocument
     from temsim.column.state_layout import apply_physical_layout_to_state
     from temsim.calculation_manifest import capture_external_input_identities
     from temsim.instrument_snapshot import capture_instrument_snapshot
 
-    state, selection = rebuild_recipe_state(recipe)
-    _prepare_high_accuracy_request(state, recipe)
+    changes = tuple(changes)
+    if not changes:
+        raise ValueError("Provide at least one geometry change")
     before = _runtime_operating_values(state)
-    settings = sweep.assumptions
     resolved = state._resolved_assembly
     paths = dict(resolved.selected_module_paths)
-    module = settings["module"]
-    module = "project_and_recording_system" if module == "recording" else module
-    if module not in paths:
-        raise ValueError("The selected module is not installed in the captured assembly")
-    path = Path(resolved.root) / paths[module]
     input_io.bind_archive(state, base_archive)
+    drafts = {}
     with input_io.input_scope(state):
-        draft = PartModelDocument(path)
-        value = point.coordinates[sweep.axes[0].path]
-        draft.set_dimension(("parts", settings["part"], settings["dimension"]), value)
-        text = draft.independent_copy_text()
+        for module, key, dimension, value in changes:
+            if cancelled():
+                raise RuntimeError("Geometry experiment cancelled")
+            module = "project_and_recording_system" if module == "recording" else module
+            if module not in paths:
+                raise ValueError("The selected module is not installed in the captured assembly")
+            path = Path(resolved.root) / paths[module]
+            if path not in drafts:
+                drafts[path] = PartModelDocument(path)
+            drafts[path].set_dimension(("parts", key, dimension), value)
     payload = thaw_json(base_archive)
-    original = input_io.archive_for(base_archive).original_path(path)
-    row = next((r for r in payload["files"] if Path(r["path"]) == original), None)
-    if row is None:
-        raise ValueError("Candidate module is missing from the input archive")
-    content = text.encode("utf-8")
-    row.update(content_hex=content.hex(), sha256=sha256(content).hexdigest())
+    modules = []
+    for path, draft in drafts.items():
+        original = input_io.archive_for(base_archive).original_path(path)
+        row = next((r for r in payload["files"] if Path(r["path"]) == original), None)
+        if row is None:
+            raise ValueError("Candidate module is missing from the input archive")
+        text = draft.independent_copy_text()
+        content = text.encode("utf-8")
+        row.update(content_hex=content.hex(), sha256=sha256(content).hexdigest())
+        modules.append(dict(candidate_module=str(original), candidate_toml=text,
+                            candidate_toml_sha256=row["sha256"]))
     payload["digest"] = json_digest({k: v for k, v in payload.items() if k != "digest"})
     input_io.bind_archive(state, payload)
     # Tip curvature is derived from the edited radius, not an independent
     # operating control to restore over TOML geometry.
-    if settings["part"] == "feg_tip" and settings["dimension"] == "tip_radius_nm":
+    if any(key == "feg_tip" and dimension == "tip_radius_nm" for _, key, dimension, _ in changes):
         for parameters in before.values():
             parameters.pop("curvature_nm_inv", None)
-    stigmator = next((item for item in state.stigmators
-                      if item.key == settings["part"]), None)
-    changes_stigmator_width = (stigmator is not None
-                              and settings["dimension"] == "effective_length_mm")
-    if changes_stigmator_width:
+    widths = {key for _, key, dimension, _ in changes if dimension == "effective_length_mm"}
+    stigmators = [item for item in state.stigmators if item.key in widths]
+    for stigmator in stigmators:
         # This candidate explicitly varies the field width. Restoring the
         # captured runtime override would cancel the requested geometry axis.
         before.get(stigmator.key, {}).pop("length_mm", None)
     with input_io.input_scope(state):
         catalog = AssemblyCatalog(root=resolved.root)
         candidate = catalog.apply(state, selection, preserve_operating_parameters=True)
-        if changes_stigmator_width:
+        for stigmator in stigmators:
             # A candidate equal to the original TOML default still replaces
             # a different runtime override; no default-change detection fires.
             stigmator.length_mm = float(candidate.part(stigmator.key).data["effective_length_mm"])
@@ -107,20 +142,13 @@ def candidate_state(recipe, point, sweep, base_archive, *, cancelled=lambda: Fal
             raise ValueError("Candidate geometry cannot preserve captured operating controls: " + "; ".join(differences))
         # Never treat an imported map's mismatch as permission to fall back.
         fields = validate_active_fields(state)
-        evidence = dict(candidate_module=str(original), candidate_toml=text, candidate_toml_sha256=row["sha256"],
-            archive_identity=state._archive_resolver.identity, controls=settings["controls"],
+        evidence = dict(**(modules[0] if len(modules) == 1 else {}), candidate_modules=modules,
+            archive_identity=state._archive_resolver.identity, controls="Fixed-control comparison",
             field_dependencies=fields, external_inputs=capture_external_input_identities(state),
             numerical_status="NOT_RUN", validation="Existing component graph, module clearances and assembled physical layout")
-        if settings.get("optimization"):
-            try:
-                state, alignment = optimize_candidate(state, settings["optimization"], cancelled=cancelled)
-            except Exception as exc:
-                exc.evidence = dict(evidence, alignment=getattr(exc, "evidence", {}))
-                raise
-            evidence["alignment"] = alignment
         evidence["operating_controls"] = _runtime_operating_values(state)
         evidence["candidate_input_identity"] = capture_instrument_snapshot(state).digest
-    return state, selection, evidence
+    return state, evidence
 
 
 def validate_active_fields(state):

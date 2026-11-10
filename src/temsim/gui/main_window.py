@@ -882,6 +882,7 @@ class MainWindow(QMainWindow):
         self.workspace.coherent_beam.cancel()
         self.workspace.hardware_tuning.steering.cancel()
         self.workspace.hardware_tuning.corrector_channels.cancel()
+        self.workspace.hardware_tuning.assembly_error_study.cancel()
         from temsim.gui.aberration_view import AberrationComparisonView
         for view in self.findChildren(AberrationComparisonView):
             view.cancel_actual_diagnostic()

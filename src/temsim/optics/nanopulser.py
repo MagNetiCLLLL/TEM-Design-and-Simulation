@@ -11,6 +11,29 @@ from __future__ import annotations
 from dataclasses import dataclass
 import math
 
+import numpy as np
+
+
+def blanker_rotation(azimuth_deg):
+    """Plate/field basis: local +X turns toward column +Y about column +Z.
+
+    The angle rotates the actual plate pair and its integrated electric
+    action together. It is neither a field-only error nor a diameter tilt.
+    """
+    angle = math.radians(float(azimuth_deg))
+    if not math.isfinite(angle):
+        raise ValueError("Blanker assembly azimuth must be finite")
+    c, s = math.cos(angle), math.sin(angle)
+    return np.array(((c, -s, 0.), (s, c, 0.), (0., 0., 1.)))
+
+
+def nanopulser_render_values(state):
+    """Capture the installed plate orientation for standalone CAD views."""
+    blanker = getattr(state, "nanopulser", None)
+    if blanker is None or not blanker.installed:
+        return {}
+    return {"nanopulser_deflector": {"azimuth_deg": float(blanker.azimuth_deg)}}
+
 
 ELECTRON_REST_ENERGY_EV = (
     9.1093837015e-31 * 299792458.0**2 / 1.602176634e-19
@@ -52,7 +75,7 @@ class NanoPulser:
     installed: bool = False
     blanked: bool = False
     voltage_v: float = 500.0
-    azimuth_deg: float = 0.0
+    azimuth_deg: float = 0.0  # Shared plate and field azimuth about column +Z.
     z_mm: float = 20.0
     stop_z_mm: float = 60.0
     plate_length_mm: float = 10.0
@@ -150,10 +173,10 @@ class NanoPulser:
         )
         if abs(angle) > 0.1:
             raise ValueError("Electrostatic beam blanker deflection exceeds the 100 mrad paraxial range")
-        azimuth = math.radians(float(self.azimuth_deg))
+        axis = blanker_rotation(self.azimuth_deg)[:, 0]
         return ((
-            float(self.z_mm), angle * math.cos(azimuth),
-            angle * math.sin(azimuth),
+            float(self.z_mm), angle * float(axis[0]),
+            angle * float(axis[1]),
         ),)
 
     def to_dict(self):

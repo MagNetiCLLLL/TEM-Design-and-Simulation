@@ -11,7 +11,9 @@ from threading import Lock
 
 from temsim.immutable_json import json_digest
 from temsim.optics.shared_deflectors import shared_channel_enabled
-from temsim.physics.scan_calibration import SCAN_CALIBRATION_MODEL, ac_angle_target
+from temsim.physics.scan_calibration import (
+    SCAN_CALIBRATION_MODEL, ac_angle_target, validate_ac_shared_peaks,
+)
 
 
 _PREPARED = OrderedDict()
@@ -48,9 +50,20 @@ def _resolved_values(state):
 
 
 def _install_values(state, values):
-    for component, saved in zip(_components(state), values):
-        for name, value in saved.items():
-            object.__setattr__(component, name, deepcopy(value))
+    # Worker and cached results must fit the target's complete physical drive,
+    # including DP12 alignment. Keep both objects and shared hosts on rejection.
+    components = _components(state)
+    snapshots = [dict(vars(component)) for component in components]
+    try:
+        for component, saved in zip(components, values):
+            for name, value in saved.items():
+                object.__setattr__(component, name, deepcopy(value))
+        validate_ac_shared_peaks(state)
+    except Exception:
+        for component, snapshot in zip(components, snapshots):
+            vars(component).clear()
+            vars(component).update(snapshot)
+        raise
 
 
 def copy_resolved_scan_drives(source, target):

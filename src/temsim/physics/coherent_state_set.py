@@ -39,7 +39,8 @@ def _mask_emission_inputs(emitter):
         emitter.energy_spread_fwhm_ev = .1
         if emitter.coherence is not None:
             emitter.coherence = replace(emitter.coherence,
-                incoherent_angle_rms_mrad=0., curvature_x_m1=0., curvature_xy_m1=0.,
+                incoherent_angle_rms_mrad=0., transverse_coherence_length_nm=None,
+                curvature_x_m1=0., curvature_xy_m1=0.,
                 curvature_y_m1=0., offset_x_nm=0., offset_y_nm=0.,
                 tilt_x_mrad=0., tilt_y_mrad=0.)
     else:

@@ -280,8 +280,8 @@ def test_electrostatic_blanker_has_declared_material_reconstruction_and_editable
         assert np.linalg.norm(mesh.vertices[:, :2], axis=1).max() <= part["mechanical_outer_diameter_mm"] / 2 + 1e-10
         if mesh.region.startswith("electrode_"):
             sign = -1 if mesh.region.endswith("negative") else 1
-            assert (sign * mesh.vertices[:, 1]).min() == pytest.approx(part["plate_gap_mm"] / 2)
-            assert np.ptp(mesh.vertices[:, 1]) > 0
+            assert (sign * mesh.vertices[:, 0]).min() == pytest.approx(part["plate_gap_mm"] / 2)
+            assert np.ptp(mesh.vertices[:, 0]) > 0
     assert model.notes
     assert "plate_gap_mm" in {field.path[-1] for field in model.fields}
 

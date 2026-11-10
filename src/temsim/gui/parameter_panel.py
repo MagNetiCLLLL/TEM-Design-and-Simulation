@@ -698,8 +698,13 @@ class ParameterPanel(QWidget):
         if getattr(target, "key", None) == "nanopulser_deflector":
             return (
                 ("blanked", "Blanked (static)", 1.0, ""),
-                ("voltage_v", "Plate voltage difference", 1.0, " V"),
-                ("azimuth_deg", "Deflection azimuth", 1.0, "°"),
+                ("voltage_v", "Positive minus negative plate voltage", 1.0, " V"),
+                ("azimuth_deg", "Plate / field azimuth about column Z", 1.0, "°"),
+            )
+        if getattr(target, "key", None) == "energy_filter":
+            return (
+                ("alignment_x_mrad", "Entrance alignment: column X", 1.0, " mrad"),
+                ("alignment_y_mrad", "Entrance alignment: column Y", 1.0, " mrad"),
             )
         if hasattr(obj, "beam_blanked") and hasattr(obj, "upper_field_x_mt"):
             return (("beam_blanked", "Blank beam", 1.0, ""),)
@@ -875,6 +880,12 @@ class ParameterPanel(QWidget):
                     )
                 )
             widget.setObjectName(f"quick_{name}")
+            if self._runtime_target.key in {"nanopulser_deflector", "energy_filter"}:
+                from temsim.parameter_semantics import describe_parameter
+                widget.setToolTip(describe_parameter(
+                    {"key": self._runtime_target.key},
+                    ("runtime", self._runtime_target.key, name),
+                ).description)
             if name == "beam_blanked":
                 widget.setToolTip(
                     "Blank the beam using these gun tilt coils. "

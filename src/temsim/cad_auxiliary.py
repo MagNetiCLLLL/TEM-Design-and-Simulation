@@ -7,7 +7,7 @@ They do not replace or tune the electron-optical model.
 from dataclasses import replace
 import math
 import numpy as np
-from temsim.cad_geometry import SolidSpec, annulus, box, difference, sector, transformed
+from temsim.cad_geometry import SolidSpec, annulus, box, difference, sector, transformed, revolve
 
 GUN_SOURCE = "https://patents.google.com/patent/US9548182B2/en"
 WIEN_SOURCE = "https://patents.google.com/patent/US6844548B2/en"
@@ -62,6 +62,10 @@ def validate_gun_electrode_geometry(part):
             or not all(math.isfinite(value) for value in (start, end, inner, outer))
             or not (start < end and 0 < inner < outer)):
         raise ValueError("Gun electrode requires positive length and 0 < bore < outer radius")
+    if part.get("geometry_template_key", part.get("key")) == "feg_extractor":
+        from temsim.extractor_geometry import ExtractorContour
+        ExtractorContour(start, end, 2*inner, 2*outer,
+                         part.get("counterbore_depth_mm", 0.), part.get("counterbore_diameter_mm", 0.))
     return start, end, inner, outer
 
 
@@ -73,6 +77,20 @@ def gun_electrode_solids(part):
     if dimensions is None:
         return None
     start, end, inner, outer = dimensions
+    if part.get("geometry_template_key", part.get("key")) == "feg_extractor" and part.get("counterbore_depth_mm", 0.):
+        from temsim.extractor_geometry import ExtractorContour, FEI_EXTRACTOR_SOURCE
+        contour = ExtractorContour(start, end, 2*inner, 2*outer,
+                                   part["counterbore_depth_mm"], part["counterbore_diameter_mm"])
+        return (SolidSpec(part["key"], "body", "electrode", revolve(contour.section_zr_mm),
+            (FEI_EXTRACTOR_SOURCE,), "configured_geometry",
+            "FEI-inspired counterbored extractor. Recess and aperture share the field and interception contour. "
+            "Undisclosed dimensions are explicit engineering assumptions, not OEM measurements.",
+            parameters={"upstream_face_z_mm": start, "downstream_face_z_mm": end,
+                        "bore_radius_mm": inner, "outer_radius_mm": outer,
+                        "counterbore_depth_mm": contour.counterbore_depth_mm,
+                        "counterbore_diameter_mm": contour.counterbore_diameter_mm,
+                        "aperture_plane_z_mm": contour.aperture_plane_mm,
+                        "aperture_web_thickness_mm": contour.aperture_web_thickness_mm}),)
     return (SolidSpec(
         part["key"], "body", "electrode", annulus(start, end, inner, outer),
         (GUN_SOURCE,), "configured_geometry",
@@ -84,7 +102,7 @@ def gun_electrode_solids(part):
 
 
 def annotate_gun_electrode_faces(mesh, part):
-    """Keep four physical boundaries selectable with their actual dimension paths."""
+    """Keep electrode faces and recess boundaries selectable by dimension."""
     if not _is_gun_electrode(part):
         return mesh
     from temsim.part_model_features import _decorate, _normal_data, _paths
@@ -115,6 +133,23 @@ def annotate_gun_electrode_faces(mesh, part):
         "electrode_outer": {"label": "Outer electrode surface", "kind": "outer",
                            "parameter_paths": outer},
     }
+    if part.get("geometry_template_key", part.get("key")) == "feg_extractor" and part.get("counterbore_depth_mm", 0.):
+        from temsim.extractor_geometry import ExtractorContour
+        contour = ExtractorContour.from_part(part)
+        # A finite-width string array would truncate the new surface names.
+        groups = groups.astype(object)
+        floor = (groups == "electrode_upstream") & np.isclose(centers[:, 2], contour.aperture_plane_mm, rtol=0., atol=1e-10)
+        wall = (groups == "electrode_bore") & (centers[:, 2] < contour.aperture_plane_mm-1e-10)
+        groups[floor], groups[wall] = "extractor_recess_floor", "extractor_recess_wall"
+        recess = _paths(part, ("counterbore_depth_mm", "counterbore_diameter_mm"))
+        surfaces["electrode_upstream"]["parameter_paths"] = (
+            *_paths(part, ("local_start_z_mm", "counterbore_diameter_mm")), *outer)
+        surfaces.update({
+            "extractor_recess_floor": {"label": "Extraction aperture entrance / recess floor", "kind": "cap",
+                                       "parameter_paths": (*recess, *inner, *_paths(part, ("local_start_z_mm",)))},
+            "extractor_recess_wall": {"label": "Tip-facing counterbore wall", "kind": "inner",
+                                      "parameter_paths": recess},
+        })
     return _decorate(mesh, groups, surfaces, normals=normals)
 
 
@@ -279,6 +314,9 @@ def filter_solids(part, by_key, runtime=None, aperture_index=0):
 
 def auxiliary_solids(part, by_key, runtime=None, aperture_index=0):
     if part.get("mechanical_profile")=="electrostatic_parallel_plates":
+        from temsim.optics.nanopulser import blanker_rotation
+        azimuth = float((runtime or {}).get("azimuth_deg", 0.))
+        rotation = blanker_rotation(azimuth)
         gap,length=float(part["plate_gap_mm"]),float(part["plate_length_mm"])
         center=float(part["local_center_z_mm"]); _,outer=_radii(part)
         thickness=min(1.,(outer-gap/2)*.1)
@@ -286,11 +324,12 @@ def auxiliary_solids(part, by_key, runtime=None, aperture_index=0):
             raise ValueError("Electrostatic plates require positive gap, length and radial space")
         width=1.8*math.sqrt((outer*.9)**2-(gap/2+thickness)**2)
         items=[]
-        for name,y in (("electrode_negative",-gap/2-thickness/2),("electrode_positive",gap/2+thickness/2)):
-            items.append(SolidSpec(part["key"],name,"electrode",box((0.,y,center),(width,thickness,length)),
+        for name,x in (("electrode_negative",-gap/2-thickness/2),("electrode_positive",gap/2+thickness/2)):
+            shape = transformed(box((x,0.,center),(thickness,width,length)), rotation=rotation.tolist())
+            items.append(SolidSpec(part["key"],name,"electrode",shape,
                 ("https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/iliad-ultra-datasheet-ds0510.pdf",),
-                note="Electrostatic blanker: configured plate gap and length; finite width/thickness reconstructed inside the retained envelope.",
-                parameters={"plate_width_mm":width,"plate_thickness_mm":thickness,"plate_gap_mm":gap}))
+                note="Electrostatic blanker: local +X points toward the positive plate. Plate and field azimuth share the column frame; width/thickness are reconstructed inside the retained envelope.",
+                parameters={"plate_width_mm":width,"plate_thickness_mm":thickness,"plate_gap_mm":gap,"assembly_azimuth_deg":azimuth}))
         return tuple(items)
     for build in (filter_solids,):
         value=build(part,by_key,runtime,aperture_index)

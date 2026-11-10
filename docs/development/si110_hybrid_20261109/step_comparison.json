@@ -1,0 +1,79 @@
+{
+  "source_particles": 2048,
+  "coarse_step_mm": 0.05,
+  "fine_step_mm": 0.025,
+  "coarse": {
+    "key": "specimen_entrance",
+    "z_mm": 1599.1999998000001,
+    "surviving_positive_count": 556,
+    "effective_count": 556.0,
+    "weight_per_emitted_electron": 0.271484375,
+    "current_a": 2.7148437500000003e-06,
+    "phase_space": {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        6.564764148411479e-13,
+        -1.6509451725633196e-11
+      ],
+      "d95_m": 8.902996005979684e-09,
+      "radial_rms_m": 2.0960457309263734e-09,
+      "alpha95_rad": 0.007806722526340273,
+      "centroid_core50pm_original_weight": 0.015625,
+      "centroid_core500pm_original_weight": 0.10302734375
+    }
+  },
+  "fine": {
+    "key": "specimen_entrance",
+    "z_mm": 1599.1999998000001,
+    "surviving_positive_count": 556,
+    "effective_count": 556.0,
+    "weight_per_emitted_electron": 0.271484375,
+    "current_a": 2.7148437500000003e-06,
+    "phase_space": {
+      "status": "OBSERVED_WITHOUT_REFOCUS",
+      "centroid_m": [
+        6.564572829983713e-13,
+        -1.6509433436039105e-11
+      ],
+      "d95_m": 8.903006750403856e-09,
+      "radial_rms_m": 2.0960457254500755e-09,
+      "alpha95_rad": 0.007806722526618031,
+      "centroid_core50pm_original_weight": 0.015625,
+      "centroid_core500pm_original_weight": 0.10302734375
+    }
+  },
+  "relative_changes": {
+    "d95_m": 1.2068324151144375e-06,
+    "radial_rms_m": -2.6126805724744487e-09,
+    "alpha95_rad": 3.557931648064492e-11
+  },
+  "fine_d95_minimum": {
+    "status": "OBSERVED_WITHOUT_REFOCUS",
+    "centroid_m": [
+      6.564572829983713e-13,
+      -1.6509433436039105e-11
+    ],
+    "d95_m": 8.903006750403856e-09,
+    "radial_rms_m": 2.0960457254500755e-09,
+    "alpha95_rad": 0.007806722526618031,
+    "centroid_core50pm_original_weight": 0.015625,
+    "centroid_core500pm_original_weight": 0.10302734375,
+    "z_mm": 1599.1999998000001,
+    "offset_nm": 0.0
+  },
+  "fine_rms_minimum": {
+    "status": "OBSERVED_WITHOUT_REFOCUS",
+    "centroid_m": [
+      6.564572829983713e-13,
+      -1.6509433436039105e-11
+    ],
+    "d95_m": 8.903006750403856e-09,
+    "radial_rms_m": 2.0960457254500755e-09,
+    "alpha95_rad": 0.007806722526618031,
+    "centroid_core50pm_original_weight": 0.015625,
+    "centroid_core500pm_original_weight": 0.10302734375,
+    "z_mm": 1599.1999998000001,
+    "offset_nm": 0.0
+  },
+  "current_difference_a": 0.0
+}

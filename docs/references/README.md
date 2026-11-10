@@ -28,6 +28,16 @@ copies outside the repository; pulling the removal can delete those copies.
 
 ## Research checkpoints
 
+- [Ronchigram methods and TEM simulator integration](ronchigram-method-integration-2026-11-09.md):
+  source-checked method review, executed-wave integration, pupil and detector
+  ownership, probe-quality definitions, and preservation of intrinsic versus
+  learning controls. This is an implementation design, not an executed model.
+
+- [FEI-inspired recessed extractor implementation](fei-cold-feg-extractor-2026-11-07.md):
+  shared conductor/interception geometry, patent dimensions versus assumptions,
+  tip-relative electrode potentials, accelerator divider, negative-Z rear
+  hardware, Flat/Curved field scope, angular clearance and validation limits.
+
 - [Cold field emission gun apertures and electrical boundaries](cold-feg-aperture-research-2026-11-05.md):
   book and manufacturer evidence, the distinction between the extractor and
   separate gun aperture, preserved numerical diagnostics, and unresolved wiring.

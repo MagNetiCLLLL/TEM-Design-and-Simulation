@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 import numpy as np
 from temsim.physics.scan_calibration import (
     held, restore_held, sample_reference_z_mm, capture_record, ac_angle_target,
-    AUTOMATIC_AC_ANGLE_TARGET, validate_descan_shared_peaks,
+    AUTOMATIC_AC_ANGLE_TARGET, validate_descan_shared_peaks, validate_ac_shared_peaks,
 )
 from temsim.optics.direct_alignment import canonical_source_basis
 from temsim.optics.shared_deflectors import shared_channel_enabled
@@ -146,7 +146,7 @@ def _angle_rows(state, sample_z_mm, responses, target):
     return upper[2:] - g @ upper[:2], lower[2:] - g @ lower[:2]
 
 
-def calibrate_ac_pure_shift(state, *, _coil_responses=None):
+def calibrate_ac_pure_shift(state, *, _coil_responses=None, _defer_shared_limits=False):
     """Couple finite AC fields for fixed specimen canonical direction.
 
     Mechanical slope increments remain G @ dr inside the objective field.
@@ -180,6 +180,8 @@ def calibrate_ac_pure_shift(state, *, _coil_responses=None):
         component.set_pure_shift_coupling(lower_from_upper, residual)
         object.__setattr__(component, "_pure_shift_angle_target", AUTOMATIC_AC_ANGLE_TARGET)
         component.validate()
+        if not _defer_shared_limits:
+            validate_ac_shared_peaks(state)
     except Exception:
         component.__dict__.clear()
         component.__dict__.update(snapshot)
@@ -369,7 +371,9 @@ def _calibrate_ac_scan_scale(state):
     # instead of trusting a component-local flag from an earlier optical state.
     coil_responses = _coil_phase_responses(
         state, component, sample_reference_z_mm(state), with_reference=True)
-    calibrate_ac_pure_shift(state, _coil_responses=coil_responses)
+    # This transaction replaces the ratio and amplitude together. Check their
+    # final combined drive, not the new ratio with the obsolete scan amplitude.
+    calibrate_ac_pure_shift(state, _coil_responses=coil_responses, _defer_shared_limits=True)
     upper_map, lower_map = _coil_kick_matrices(component)
     response_m_per_rad = coil_responses[0][:2] @ upper_map + coil_responses[1][:2] @ lower_map
     condition = float(np.linalg.cond(response_m_per_rad))
@@ -403,6 +407,7 @@ def _calibrate_ac_scan_scale(state):
             residual,
         )
         component.validate()
+        validate_ac_shared_peaks(state)
     except Exception:
         object.__setattr__(
             component,

@@ -1,0 +1,96 @@
+{
+  "qualification": "UNQUALIFIED_NATIVE_D95_FOCUS_PROPOSAL",
+  "seed": "F:\\tem_simulator_v2\\outputs\\si110-global-hybrid-2026-11-09\\nanoprobe-focus2048-v2",
+  "observed_native_minimum_offset_nm": 80.00000002539309,
+  "diagnostic_focus_response_nm_per_percent": -572567.3751965541,
+  "diagnostic_count": 13,
+  "diagnostic_current_a": 0.0,
+  "mechanical_pose_changed": false,
+  "controls": {
+    "condenser_lens_1": {
+      "percent": 51.666666666666664
+    },
+    "condenser_lens_2": {
+      "percent": 10.023591227782362
+    },
+    "condenser_lens_3": {
+      "percent": 57.318027667934224
+    },
+    "adapter_lens": {
+      "percent": 9.196971868437602
+    },
+    "probe_tl22_lens": {
+      "percent": 53.37284434045485
+    },
+    "probe_tl21_lens": {
+      "percent": 59.84924813065814
+    },
+    "probe_tl12_lens": {
+      "percent": 47.656160318977484
+    },
+    "mini_condenser": {
+      "percent": 26.677837967960123
+    },
+    "objective_lens": {
+      "percent": 29.326494404518797
+    },
+    "diffraction_lens": {
+      "percent": 14.577617197168571
+    },
+    "intermediate_lens": {
+      "percent": 0.035082657259397326
+    },
+    "projector_lens_1": {
+      "percent": 32.1132572718703
+    },
+    "projector_lens_2": {
+      "percent": 9.826874422815507
+    },
+    "probe_dph2_deflector": {},
+    "probe_qph2_quadrupole": {
+      "strength_m2": 0.0
+    },
+    "probe_hp2_hexapole": {
+      "strength_m3": 5435590.009303784
+    },
+    "probe_dp22_deflector": {},
+    "probe_hpc_hexapole": {
+      "strength_m3": -95186800.58440503,
+      "skew_strength_m3": 38077295.73462795
+    },
+    "probe_qpc_quadrupole": {
+      "strength_m2": 0.0
+    },
+    "probe_dp21_deflector": {},
+    "probe_dph1_deflector": {},
+    "probe_qph1_quadrupole": {
+      "strength_m2": 0.0
+    },
+    "probe_hp1_hexapole": {
+      "strength_m3": 4757175.659494648
+    },
+    "probe_hpol_hexapole": {
+      "strength_m3": 622514.6243779856,
+      "skew_strength_m3": 0.0
+    },
+    "probe_qpol_quadrupole": {
+      "strength_m2": 0.0
+    },
+    "probe_dp11_deflector": {},
+    "ac_deflector": {},
+    "descan_deflector": {},
+    "condenser_stigmator": {
+      "strength_x_percent": 0.0005030845145850119,
+      "strength_y_percent": 0.012000878806056787
+    },
+    "objective_stigmator": {
+      "strength_x_percent": 0.0,
+      "strength_y_percent": 0.0
+    },
+    "diffraction_stigmator": {
+      "strength_x_percent": 0.0,
+      "strength_y_percent": 0.0
+    }
+  },
+  "proposal_note": "One small response-based adjustment from the executed 2048-source native D95 scan; fresh source/count validation required"
+}

@@ -180,7 +180,7 @@ def test_default_electrodes_use_actual_voltages_and_keep_shared_closed_field():
         f"accelerator:{index}" for index in range(10)}
     assert by_key["extractor"]["potential_rise_v"] == 4000.0
     assert by_key["electrostatic_lens"]["potential_rise_v"] == 5200.0
-    expected = 4000.0 + np.arange(1, 11) / 10 * (300000.0 - 4000.0)
+    expected = 5200.0 + np.arange(1, 11) / 10 * (300000.0 - 5200.0)
     np.testing.assert_allclose(
         [by_key[f"accelerator:{i}"]["potential_rise_v"] for i in range(10)],
         expected, rtol=0, atol=1e-9)

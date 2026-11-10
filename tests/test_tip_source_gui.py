@@ -172,6 +172,21 @@ def test_tip_phase_selector_remains_available_when_disabled(state, qtbot):
     assert all(edit.isVisibleTo(dialog) for edit in dialog.coherence_inputs.values())
 
 
+def test_tip_editor_coherence_length_is_explicit_and_preserves_current(state, qtbot):
+    dialog = GunSourceDialog(state.electron_gun, instrument_state=state)
+    qtbot.addWidget(dialog)
+    before = capture_instrument_snapshot(state).digest
+    dialog.coherence_enabled.setChecked(True)
+    dialog.coherence_length_enabled.setChecked(True)
+    dialog.coherence_length.setText("20")
+    assert not dialog.coherence_inputs["incoherent_angle_rms_mrad"].isEnabled()
+    dialog.accept()
+    assert dialog.result() == dialog.DialogCode.Accepted, dialog.error.text()
+    assert dialog.value()["coherence"].transverse_coherence_length_nm == 20.
+    assert dialog.value()["emission_current_na"] == state.electron_gun.emitter.emission_current_na
+    assert capture_instrument_snapshot(state).digest == before
+
+
 def test_existing_shared_gaussian_source_edits_use_the_same_domain_guard(state, qtbot):
     from temsim.optics.electron_gun.tip_coherence import TipCoherence
     emitter = state.electron_gun.emitter

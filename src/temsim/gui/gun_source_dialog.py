@@ -50,11 +50,21 @@ class GunSourceDialog(QDialog):
         self.resize(680, 760)
         layout = QVBoxLayout(self)
         note = QLabel(
-            "Tip emission settings. Curvature is adjustable here and in Live tuning; 0 is flat."
+            "Tip apex is Z=0; rear hardware uses negative Z. Curvature is adjustable here and in Live tuning; 0 is flat. "
+            "Flat keeps an infinite planar cathode and omits rear electric effects. Curved fields include the EEE and cathode holder."
         )
         note.setWordWrap(True)
         note.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(note)
+        from temsim.extractor_geometry import ExtractorContour
+        acceptance = ExtractorContour.from_component(gun.extractor).straight_ray_acceptance()
+        self.extractor_acceptance = QLabel(
+            f"Extractor geometric half-angle from tip apex: {acceptance['half_angle_deg']:.3f}° "
+            f"(limiting face Z={acceptance['limiting_z_mm']:g} mm). "
+            "Straight rays without fields only. Actual launch-angle acceptance depends on position, energy and electrode voltages.")
+        self.extractor_acceptance.setWordWrap(True)
+        self.extractor_acceptance.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        layout.addWidget(self.extractor_acceptance)
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         panel = QWidget()
@@ -265,12 +275,25 @@ class GunSourceDialog(QDialog):
         self.coherence_description = description
         form.addRow(description)
         parameters = gun.emitter.coherence or TipCoherence()
+        self.coherence_length_enabled = QCheckBox("Specify transverse coherence length")
+        self.coherence_length_enabled.setChecked(parameters.transverse_coherence_length_nm is not None)
+        self.coherence_length = QLineEdit("" if parameters.transverse_coherence_length_nm is None
+            else str(parameters.transverse_coherence_length_nm))
+        self.coherence_length.setPlaceholderText("Enter a positive length at the tip")
+        self.coherence_length.setToolTip(
+            "At the physical tip Z = 0: |mu(d)| = exp(-d^2 / (2 L^2)). "
+            "L is the separation at which correlation falls to exp(-1/2). "
+            "It replaces incoherent angular RMS; each energy uses its own wavelength. "
+            "This is a model input unless independently measured. Energy spread controls temporal coherence.")
+        form.addRow(self.coherence_length_enabled)
+        form.addRow("Transverse coherence length (nm)", self.coherence_length)
         self.coherence_inputs = {}
         for key, label in self.coherence_fields:
             edit = QLineEdit(str(getattr(parameters, key)))
             self.coherence_inputs[key] = edit
             form.addRow(label, edit)
         self.coherence_enabled.toggled.connect(self._sync_fields)
+        self.coherence_length_enabled.toggled.connect(self._sync_fields)
         self.surface_enabled.toggled.connect(self._sync_fields)
         self.surface_coherent.toggled.connect(self._surface_coherence_changed)
         self.wave_options.toggled.connect(self._sync_fields)
@@ -311,6 +334,11 @@ class GunSourceDialog(QDialog):
         for edit in self.coherence_inputs.values():
             edit.setEnabled(enabled)
             self.analytic_tip_form.setRowVisible(edit, enabled)
+        use_length = self.coherence_length_enabled.isChecked()
+        self.analytic_tip_form.setRowVisible(self.coherence_length_enabled, enabled)
+        self.analytic_tip_form.setRowVisible(self.coherence_length, enabled and use_length)
+        self.coherence_length.setEnabled(enabled and use_length)
+        self.coherence_inputs["incoherent_angle_rms_mrad"].setEnabled(enabled and not use_length)
         self.coherence_description.setVisible(enabled)
         self.tip_boundary.setEnabled(enabled)
         self.analytic_tip_form.setRowVisible(self.tip_boundary, enabled)
@@ -547,13 +575,18 @@ class GunSourceDialog(QDialog):
             ht, ext = self._gun.accelerator.high_tension_kv, self._gun.extractor.voltage_kv
             lens = self._gun.electrostatic_lens
             lens_ground_kv = lens.potential_rise_from_tip_v(ext,ht)/1000-ht
+            stages = self._gun.accelerator.stage_potential_rises_v(ext, (lens_ground_kv+ht)*1000)
             self.surface_voltage.setText(f"Final anode 0 V | Tip {-ht:g} kV | Extractor {-ht+ext:g} kV\n"
-                f"Gun lens {lens_ground_kv:g} kV | control relative to {lens.voltage_reference}")
+                f"Gun lens {lens_ground_kv:g} kV | control relative to {lens.voltage_reference}\n"
+                f"Accelerator divider starts at {self._gun.accelerator.voltage_start_reference}; "
+                f"first ring {stages[0]/1000-ht:g} kV, final ring {stages[-1]/1000-ht:g} kV")
             self.surface_voltage.setToolTip(
                 "Displayed electrode potentials are relative to final-anode ground. "
                 "Extraction is relative to the tip. Gun-lens voltage_reference is set on the lens: "
                 "tip, extractor or ground. Changing this reference changes the physical field; "
                 "a microscope's displayed lens voltage is not necessarily ground-referenced. "
+                "The accelerator divider spans its selected start electrode to ground. "
+                "Extraction is included in the total high tension, not added again. "
                 "Radial focusing and axial acceleration follow the same joint electrostatic potential.")
         except (TypeError, ValueError) as error:
             self.surface_derived.setText(str(error))
@@ -598,8 +631,11 @@ class GunSourceDialog(QDialog):
                 setattr(candidate, key, value)
             candidate.curvature_model = self._curvature_model
             values["curvature_model"] = candidate.curvature_model
-            candidate.coherence = (TipCoherence(boundary_model=self.tip_boundary.currentData(),
-                                   **{key: float(edit.text()) for key, edit in self.coherence_inputs.items()})
+            phase = {key: float(edit.text()) for key, edit in self.coherence_inputs.items()}
+            if self.coherence_enabled.isChecked() and self.coherence_length_enabled.isChecked():
+                phase.update(transverse_coherence_length_nm=float(self.coherence_length.text()),
+                             incoherent_angle_rms_mrad=0.)
+            candidate.coherence = (TipCoherence(boundary_model=self.tip_boundary.currentData(), **phase)
                                    if self.coherence_enabled.isChecked() else None)
             candidate.validate()
             values["coherence"] = candidate.coherence

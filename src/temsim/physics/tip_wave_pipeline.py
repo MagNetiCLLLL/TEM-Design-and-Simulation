@@ -191,9 +191,11 @@ def require_tip_wave_cuda(request):
             "set radial_column.backend='cuda'. CPU execution is disabled for user wave jobs.")
     policy = require_coherent_cuda(request.wave_grid.compute_backend,
         acceleration_enabled=request.wave_grid.acceleration_enabled)
-    if request.wave_grid.compute_backend == policy:
+    gun_policy = require_coherent_cuda(request.gun.compute_backend)
+    if request.wave_grid.compute_backend == policy and request.gun.compute_backend == gun_policy:
         return request
-    return replace(request, wave_grid=replace(request.wave_grid, compute_backend=policy))
+    return replace(request, wave_grid=replace(request.wave_grid, compute_backend=policy),
+                   gun=replace(request.gun, compute_backend=gun_policy))
 
 
 def _find_observation_prefix(identity, minimum_z_mm, target_z_mm, store, *, segmented, cancelled,

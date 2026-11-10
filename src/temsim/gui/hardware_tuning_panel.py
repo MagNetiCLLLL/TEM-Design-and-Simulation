@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
 from temsim.gui.input_policy import WheelSafeComboBox, WheelSafeDoubleSpinBox
 from temsim.gui.beam_steering import BeamSteeringControls
 from temsim.gui.corrector_channels import CorrectorChannelControls
+from temsim.gui.assembly_error_study import AssemblyErrorStudyControls
 from temsim.gui.probe_service import ProbeServiceControls, ProbeOutputControls
 from temsim.hardware_tuning import TUNING_TASKS, resolve_task
 from temsim.hardware_tuning_feedback import (
@@ -175,6 +176,8 @@ class HardwareTuningPanel(QWidget):
         self.channel_tabs = QTabWidget()
         self.channel_tabs.addTab(self.probe_service, "Probe service inputs")
         self.channel_tabs.addTab(self.corrector_channels, "Model A1/A2 coefficient fit")
+        self.assembly_error_study = AssemblyErrorStudyControls()
+        self.channel_tabs.addTab(self.assembly_error_study, "Assembly error study")
         self.channel_tabs.currentChanged.connect(lambda *_: self.probe_service.refresh())
         content_layout.addWidget(self.channel_tabs)
         self.probe_outputs = ProbeOutputControls()
@@ -255,6 +258,7 @@ class HardwareTuningPanel(QWidget):
         self._state = state
         self.steering.set_state(state)
         self.corrector_channels.set_state(state)
+        self.assembly_error_study.set_state(state)
         self.probe_service.set_state(state)
         self.probe_outputs.set_state(state)
         self.refresh_values()
@@ -389,6 +393,7 @@ class HardwareTuningPanel(QWidget):
         self._revision = int(revision)
         self.steering.set_revision(revision)
         self.corrector_channels.set_revision(revision)
+        self.assembly_error_study.set_revision(revision)
         if self.selected_key == "corrector_channels":
             self.probe_service.refresh()
         if self.selected_key == "probe_corrector":
@@ -403,7 +408,8 @@ class HardwareTuningPanel(QWidget):
     def shutdown(self):
         steering = self.steering.shutdown()
         channels = self.corrector_channels.shutdown()
-        return steering and channels
+        assembly = self.assembly_error_study.shutdown()
+        return steering and channels and assembly
 
     def select_result(self, key):
         index = self.result_selection.findData(key)

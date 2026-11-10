@@ -59,18 +59,45 @@ class TipCoherence:
     # Missing historical fields keep their original forward-Wigner semantics.
     # A driven boundary is a different, explicitly selected source model.
     boundary_model: str = FORWARD_GAUSSIAN_SCHELL
+    # Optional alternative to angular RMS, defined at the physical tip plane:
+    # |mu(r1,r2;E)| = exp(-|r1-r2|^2 / (2*length^2)). The same length applies
+    # to every energy, so its incoherent momentum variance is energy dependent.
+    transverse_coherence_length_nm: float | None = None
 
     def validate(self):
         if not isinstance(self.boundary_model, str) or self.boundary_model not in TIP_BOUNDARY_MODELS:
             raise ValueError("Unknown Tip boundary model")
         for name, value in asdict(self).items():
-            if name == "boundary_model":
+            if name == "boundary_model" or (name == "transverse_coherence_length_nm" and value is None):
                 continue
             if isinstance(value, bool) or not isinstance(value, Real) or not math.isfinite(float(value)):
                 raise ValueError(f"Tip coherence {name} must be finite")
         if self.incoherent_angle_rms_mrad < 0:
             raise ValueError("Tip incoherent angular RMS must be non-negative")
+        if self.transverse_coherence_length_nm is not None:
+            if self.transverse_coherence_length_nm <= 0:
+                raise ValueError("Transverse coherence length must be positive")
+            if self.incoherent_angle_rms_mrad != 0:
+                raise ValueError("Specify transverse coherence length or incoherent angular RMS, not both")
         return self
+
+    def incoherent_angle_rms_rad(self, energy_ev):
+        """Per-axis canonical momentum RMS / p; never a geometric cutoff."""
+        if self.transverse_coherence_length_nm is None:
+            return np.full_like(np.asarray(energy_ev, dtype=float), self.incoherent_angle_rms_mrad*1e-3)
+        return wavelength_m(energy_ev)/(2*math.pi*self.transverse_coherence_length_nm*1e-9)
+
+    def degree_of_coherence(self, separation_m, energy_ev):
+        """Magnitude of the tip mutual coherence, separate from mean phase."""
+        separation = np.asarray(separation_m, dtype=float)
+        if not np.isfinite(separation).all():
+            raise ValueError("Coherence separations must be finite")
+        inverse_length = 2*math.pi*self.incoherent_angle_rms_rad(energy_ev)/wavelength_m(energy_ev)
+        return np.exp(-.5*np.square(separation*inverse_length))
+
+    def to_dict(self):
+        """Omit an absent optional length, including for historical TOML files."""
+        return {key: value for key, value in asdict(self).items() if value is not None}
 
     @property
     def curvature(self):
@@ -214,7 +241,7 @@ def tip_covariance(emitter, energy_ev):
     p = _require_emitter(emitter)
     sigma = float(emitter.virtual_source_fwhm_nm) * 1e-9 / math.sqrt(8 * math.log(2))
     quantum_angle = float(wavelength_m(energy_ev)) / (4 * math.pi * sigma)
-    angle2 = quantum_angle**2 + (p.incoherent_angle_rms_mrad * 1e-3)**2
+    angle2 = quantum_angle**2 + float(p.incoherent_angle_rms_rad(energy_ev))**2
     position = np.eye(2) * sigma**2
     cross = position @ p.curvature
     covariance = np.block([[position, cross], [cross.T, np.eye(2)*angle2 + p.curvature@cross]])
@@ -247,8 +274,9 @@ def tip_particle_samples(emitter, count):
     normal = np.array([ndtri(u) for u in _halton_dimensions(n, (2, 3, 5, 7))])
     energies = tip_energy_samples(emitter, n)
     sigma = float(emitter.virtual_source_fwhm_nm) * 1e-9 / math.sqrt(8 * math.log(2))
-    angle = (p.incoherent_angle_rms_mrad*1e-3 if driven else
-             np.hypot(wavelength_m(energies)/(4*np.pi*sigma), p.incoherent_angle_rms_mrad*1e-3))
+    incoherent = p.incoherent_angle_rms_rad(energies)
+    angle = (incoherent if driven else
+             np.hypot(wavelength_m(energies)/(4*np.pi*sigma), incoherent))
     xy = sigma * normal[:2]
     slope = p.curvature @ xy + angle * normal[2:]
     xy += np.array((p.offset_x_nm, p.offset_y_nm))[:, None] * 1e-9
@@ -272,7 +300,8 @@ def _mode_row(emitter, energy, numerics):
     if not math.isfinite(sigma) or sigma <= 0:
         raise ValueError("Tip spatial width is outside the representable SI range")
     quantum = float(wavelength_m(energy))/(4*math.pi*sigma)
-    occupation = math.hypot(1., p.incoherent_angle_rms_mrad*1e-3/quantum)
+    incoherent = float(p.incoherent_angle_rms_rad(energy))
+    occupation = math.hypot(1., incoherent/quantum)
     if not math.isfinite(occupation):
         raise ValueError("Tip phase-space extent exceeds the coherent-mode budget")
     ratio = (occupation-1)/(occupation+1)
@@ -291,6 +320,9 @@ def _mode_row(emitter, energy, numerics):
             "omitted_probability": tail, "sigma_m": sigma,
             "ground_sigma_m": sigma/math.sqrt(occupation), "eigenvalue_ratio": ratio,
             "diffraction_rms_mrad": quantum*1e3,
+            "incoherent_angle_rms_mrad": incoherent*1e3,
+            "transverse_coherence_length_nm": (None if incoherent == 0 else
+                float(wavelength_m(energy))/(2*math.pi*incoherent)*1e9),
             "uncorrelated_total_rms_mrad": quantum*occupation*1e3}
 
 
@@ -386,7 +418,7 @@ def _generate_tip_emission(gun, numerics, *, driven_boundary, nominal_energy_pre
         "emission_current_na", "emission_energy_ev", "minimum_kinetic_energy_ev",
         "virtual_source_fwhm_nm", "energy_spread_fwhm_ev", "young_decay_width_ev",
         "boersch_sigma_ev", "energy_half_range_ev")}
-    parameters["coherence"] = asdict(emitter.coherence)
+    parameters["coherence"] = emitter.coherence.to_dict()
     record = {
         "schema": "physical-tip-mutual-intensity-v2", "plane_z_mm": 0.,
         "source_domain": source_domain,
@@ -396,6 +428,13 @@ def _generate_tip_emission(gun, numerics, *, driven_boundary, nominal_energy_pre
         "energy_law": "Existing positive Young/Boersch quantile law; equal-weight energy samples",
         "energy_convergence": "NOT_VALIDATED", "emission_boundary": "After tunnelling, before extraction/acceleration",
         "physical_calibration": "USER_DEFINED_TIP_NOT_MEASURED"}
+    record["spatial_coherence_definition"] = {
+        "plane": "Physical tip z=0, before extraction",
+        "degree_magnitude": "exp(-separation_m^2/(2*transverse_coherence_length_m^2))",
+        "parameterisation": "fixed_length" if emitter.coherence.transverse_coherence_length_nm is not None else "fixed_incoherent_angle",
+        "energy_mixture": "Independent energy components; temporal coherence is governed by the retained energy law",
+        "phase": "Deterministic wavefront tilt and curvature multiply the mutual intensity by exp(i*(phase1-phase2))",
+    }
     if driven_boundary:
         record.update(
             schema="physical-tip-driven-gaussian-boundary-v1",

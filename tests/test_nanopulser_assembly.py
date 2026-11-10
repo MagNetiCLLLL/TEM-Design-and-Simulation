@@ -1,3 +1,8 @@
+from types import SimpleNamespace
+import numpy as np
+from temsim.assembly_model_3d import assembly_model_fingerprint
+from temsim.optics.nanopulser import NanoPulser
+from temsim.part_model_3d import part_model_from_document
 from dataclasses import replace
 from pathlib import Path
 import shutil
@@ -150,3 +155,52 @@ def test_blanker_manifest_rejects_an_upstream_stop_and_oem_dimension_claim():
     document["module"]["geometry_status"] = "manufacturer_documented"
     with pytest.raises(ValueError, match="non-OEM"):
         module_manifest.validate_document(document)
+
+
+@pytest.fixture
+def blanker_document():
+    return module_manifest.read_document(INSTRUMENT_CONFIG_ROOT / "beam_blanker/ElectrostaticBeamBlanker.toml")
+
+
+
+@pytest.mark.parametrize("azimuth,axis", [(0., (1., 0., 0.)), (90., (0., 1., 0.)),
+                                         (180., (-1., 0., 0.)), (-45., (2**-.5, -2**-.5, 0.))])
+def test_actual_plate_faces_and_signed_kicks_share_column_direction(blanker_document, azimuth, axis):
+    key = "nanopulser_deflector"
+    part = next(p for p in blanker_document["parts"] if p["key"] == key)
+    axis = np.array(axis)
+    model = part_model_from_document(blanker_document, key, include_children=False,
+        runtime_values={key: {"azimuth_deg": azimuth}}, angular_segments=12)
+    assert len(model.meshes) == 2
+    for mesh in model.meshes:
+        sign = -1 if mesh.region == "electrode_negative" else 1
+        projection = sign * (mesh.vertices @ axis)
+        assert projection.min() == pytest.approx(part["plate_gap_mm"] / 2., abs=1e-12)
+        assert np.ptp(mesh.vertices[:, 2]) == pytest.approx(part["plate_length_mm"])
+    positive = NanoPulser(installed=True, blanked=True, azimuth_deg=azimuth)
+    kick = np.array((*positive.kick_events(300.)[0][1:], 0.))
+    np.testing.assert_allclose(kick / np.linalg.norm(kick), axis, atol=1e-15)
+    negative = replace(positive, voltage_v=-positive.voltage_v)
+    np.testing.assert_allclose(negative.kick_events(300.)[0][1:], -kick[:2], atol=1e-16)
+    assert replace(positive, blanked=False).kick_events(300.) == ()
+
+
+
+def test_blanker_angle_invalidates_assembly_and_selected_part_geometry(blanker_document):
+    from temsim.gui.part_model_editor import PartModelEditorPage
+    key = "nanopulser_deflector"
+    # Only inspect dependency capture; no GUI painting or field calculation.
+    page = SimpleNamespace(session=SimpleNamespace(document=blanker_document),
+        _selected_key=key, scope=SimpleNamespace(currentData=lambda: "part"),
+        _runtime_values={key: {"azimuth_deg": 0.}}, _aperture_index=0)
+    page._model_runtime_values = lambda: page._runtime_values
+    first = PartModelEditorPage._runtime_mesh_dependencies(page)
+    page._runtime_values[key]["azimuth_deg"] = 90.
+    assert PartModelEditorPage._runtime_mesh_dependencies(page) != first
+
+    catalog = AssemblyCatalog()
+    state = default_state()
+    assembly = catalog.apply(state, replace(catalog.default_selection(), beam_blanker="Electrostatic beam blanker"))
+    before = assembly_model_fingerprint(assembly, {key: {"azimuth_deg": 0., "voltage_v": 500.}})
+    assert assembly_model_fingerprint(assembly, {key: {"azimuth_deg": 90., "voltage_v": 500.}}) != before
+    assert assembly_model_fingerprint(assembly, {key: {"azimuth_deg": 0., "voltage_v": -500.}}) == before

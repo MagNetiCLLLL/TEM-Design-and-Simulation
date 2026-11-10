@@ -272,6 +272,9 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
         return _impact("unknown", "Source part not connected", "The parameter's source part is unavailable; its physical route needs verification.")
     from temsim.dimension_edit_policy import dimension_reference_reason
     if kind == "parts" and (reason := dimension_reference_reason(row, field)):
+        if row.get("geometry_template_key", row.get("key")) == "feg_extractor" and field in {
+                "optical_reference_local_z_mm", "vacuum_inner_diameter_mm"}:
+            return _impact("inactive", "Derived extractor reference", reason, effects=("display",))
         if _wall_effect(row, field):
             return _impact("active", "Vacuum allocation; no material resizing",
                            reason + " This saved axial allocation still bounds the separate vacuum-ID segment; "
@@ -358,6 +361,23 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
         return _impact("active", "Accelerator conducting boundary",
                        "Each ring's thickness enters the connected tip-to-anode electrostatic boundary and field cache identity for the curved-tip particle source.",
                        effects=("geometry", "electric_field"), results=("ray_transport", "beam_transmission"))
+    if connected and kind == "parts" and row.get("rear_gun_role") and field in {
+            "rear_voltage_reference", "rear_bias_kv", "bore_diameter_mm", "outer_diameter_mm",
+            "length_mm", "local_start_z_mm", "local_end_z_mm", "local_center_z_mm"}:
+        return _impact("active", "Rear gun geometry and electrical connection",
+                       "Negative-Z hardware keeps the tip origin fixed. The same annular dimensions enter CAD and "
+                       "interception; conducting surfaces and explicit voltage ties enter Curved fields. Flat omits "
+                       "rear electric effects. Insulator polarization is not solved.",
+                       effects=("geometry", "electric_field", "beam_clearance"),
+                       results=("3d_preview", "ray_transport", "beam_transmission"))
+    if connected and kind == "parts" and row.get("key") == "feg_extractor" and field in {"counterbore_depth_mm", "counterbore_diameter_mm"}:
+        return _impact("active", "Extractor recess and aperture",
+                       "The shared metal contour changes CAD, the joint electrostatic boundary and physical electron interception.",
+                       effects=("geometry", "electric_field", "beam_clearance"), results=("3d_preview", "ray_transport", "beam_transmission"))
+    if connected and kind == "parts" and row.get("key") == "feg_accelerator" and field == "voltage_start_reference":
+        return _impact("active", "Accelerator divider connection",
+                       "Connect the divider start to the selected electrode; the final anode stays at ground and high tension includes extraction.",
+                       effects=("electric_field",), results=("ray_transport", "beam_transmission"))
     if connected and kind == "parts" and field in {"default_voltage_kv", "default_high_tension_kv"} and row.get("key") in {
             "feg_extractor", "feg_electrostatic_lens", "feg_accelerator"}:
         return _impact("active", "Electrode voltage default",
@@ -397,6 +417,15 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
                        "Finite-Field Optics derives column aberrations from its shared potentials and actual electron energies; "
                        "these residual actions are not added again.", effects=("operating",), results=())
     if kind == "runtime":
+        if row.get("key") == "nanopulser_deflector" and field == "azimuth_deg":
+            return _impact("active", "Shared plate and deflection direction",
+                           "Rotates both CAD electrodes and the integrated electric kick about column +Z; zero is column +X, positive toward +Y. "
+                           "The blanker retains its static kick/stop approximation.",
+                           effects=("display", "geometry", "operating"), results=("3d_preview", "physical_layout", "ray_transport"))
+        if row.get("key") == "energy_filter" and field in {"alignment_x_mrad", "alignment_y_mrad"}:
+            return _impact("active", "Column-frame entrance alignment",
+                           "Adds the named column X/Y entrance slope before the shared proper rotation into the filter field frame.",
+                           effects=("operating",), results=("ray_transport", "beam_transmission"))
         if aperture and field in _APERTURE_RUNTIME:
             if field == "enabled" and row.get("key") in FIXED_APERTURE_KEYS:
                 return _impact("inactive", "Fixed aperture cannot retract",

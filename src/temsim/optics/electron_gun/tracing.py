@@ -1439,6 +1439,31 @@ def _clip_body_bores(
         new_position[active, 0], new_position[active, 1]
     ) * 1000.0
     for component in gun.bore_components:
+        if component is gun.extractor:
+            from types import SimpleNamespace
+            from temsim.extractor_geometry import ExtractorContour
+            from temsim.physics.column_wall import _posed_bore_stop_fractions
+            from temsim.physics.lens_field_provider import CoordinateRegistration
+            contour = ExtractorContour.from_component(component)
+            previous_z = previous_position[active, 2]*1000.
+            candidates = active[alive[active] & (np.maximum(previous_z, z_mm) >= contour.start_mm)
+                                & (np.minimum(previous_z, z_mm) <= contour.end_mm)]
+            if not len(candidates):
+                continue
+            fractions = np.full(len(candidates), np.inf)
+            for start, stop, inner, _outer in contour.annuli_mm:
+                segment = SimpleNamespace(start_z_mm=start, end_z_mm=stop, inner_diameter_mm=2*inner)
+                hits = _posed_bore_stop_fractions(previous_position[candidates]*1000.,
+                    new_position[candidates]*1000., segment, CoordinateRegistration())
+                fractions = np.minimum(fractions, np.where(np.isfinite(hits), hits, np.inf))
+            rejected = np.isfinite(fractions)
+            indices = candidates[rejected]
+            alive[indices] = False
+            blocked_z[indices] = (previous_position[indices, 2]+fractions[rejected]*(
+                new_position[indices, 2]-previous_position[indices, 2]))*1000.
+            for index in indices:
+                blocked_key[index] = component.key
+            continue
         half_length = 0.5 * component.mechanical_length_mm
         inside = np.abs(
             z_mm - component.mechanical_center_from_tip_mm
@@ -1453,6 +1478,24 @@ def _clip_body_bores(
                 alive[index] = False
                 blocked_z[index] = z_mm[local_index]
                 blocked_key[index] = component.key
+
+    from temsim.gun_rear_geometry import annulus_contact_fractions
+    for row in getattr(gun, "_gun_rear_parts", ()):
+        previous_z = previous_position[active, 2]*1000.
+        candidates = active[(np.maximum(previous_z, z_mm) >= row["start_mm"])
+                            & (np.minimum(previous_z, z_mm) <= row["stop_mm"])]
+        if not len(candidates):
+            continue
+        p, q = previous_position[candidates]*1000., new_position[candidates]*1000.
+        fractions = annulus_contact_fractions(p, q, row)
+        prior = np.divide(blocked_z[candidates]-p[:, 2], q[:, 2]-p[:, 2],
+                          out=np.full(len(candidates), np.inf), where=q[:, 2] != p[:, 2])
+        rejected = np.isfinite(fractions) & (alive[candidates] | ~np.isfinite(prior) | (fractions < prior))
+        indices = candidates[rejected]
+        alive[indices] = False
+        blocked_z[indices] = p[rejected, 2]+fractions[rejected]*(q[rejected, 2]-p[rejected, 2])
+        for index in indices:
+            blocked_key[index] = row["key"]
 
 
 def _clip_grounded_liner(rows, previous, current, eligible, alive, blocked_z, blocked_key):

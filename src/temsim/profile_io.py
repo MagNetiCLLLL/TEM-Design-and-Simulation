@@ -15,6 +15,7 @@ from typing import Union, get_args, get_origin, get_type_hints
 import tomli_w
 
 from temsim.assembly_catalog import AssemblySelection
+from temsim.energy_filter_coordinates import ENTRANCE_COORDINATE_CONVENTION
 from temsim.runtime_parameters import (
     SAMPLE_SOURCE_FIELDS,
     editable_parameters,
@@ -118,6 +119,9 @@ def save_profile(path: str | Path, state, selection: AssemblySelection) -> None:
             devices[key] = values
     document = {
         "format_version": PROFILE_FORMAT_VERSION,
+        "coordinate_conventions": {
+            "energy_filter_entrance": ENTRANCE_COORDINATE_CONVENTION,
+        },
         "assembly": {
             "gun": selection.gun,
             "column": selection.column,
@@ -133,7 +137,7 @@ def save_profile(path: str | Path, state, selection: AssemblySelection) -> None:
             "representation": getattr(state.electron_gun, "source_representation", "classical_particles"),
             **({"effective": asdict(state.electron_gun.effective_source)}
                if getattr(state.electron_gun, "effective_source", None) is not None else {}),
-            **({"tip_coherence": asdict(state.electron_gun.emitter.coherence)}
+            **({"tip_coherence": state.electron_gun.emitter.coherence.to_dict()}
                if getattr(state.electron_gun.emitter, "coherence", None) is not None else {}),
             **({"surface_model": state.electron_gun.emitter.surface_model.to_dict()}
                if getattr(state.electron_gun.emitter, "surface_model", None) is not None else {}),
@@ -224,7 +228,7 @@ def read_profile(path: str | Path) -> tuple[AssemblySelection, dict]:
         raise ValueError(f"Unsupported operating-profile format {format_version!r}; expected {PROFILE_FORMAT_VERSION}")
     unknown = set(document) - {"format_version", "assembly", "devices", "none_values",
         "vacuum_map", "simulation_model", "gun_source_model", "sample_model", "energy_filter_model", "gun_controls",
-        "probe_service_gains", "probe_service_percent"}
+        "probe_service_gains", "probe_service_percent", "coordinate_conventions"}
     if unknown:
         raise ValueError(f"Unknown operating-profile tables: {', '.join(sorted(unknown))}")
     assembly = document.get("assembly")
@@ -240,6 +244,15 @@ def read_profile(path: str | Path) -> tuple[AssemblySelection, dict]:
     if not isinstance(devices, dict):
         raise ValueError("Operating profile devices must be a table")
     values = dict(devices)
+    from temsim.energy_filter_coordinates import restore_entrance_alignment
+    conventions = document.get("coordinate_conventions", {})
+    if not isinstance(conventions, dict) or set(conventions) - {"energy_filter_entrance"}:
+        raise ValueError("Unknown operating-profile coordinate conventions")
+    convention = conventions.get("energy_filter_entrance")
+    # Validate even when the selected profile has no filter control row.
+    restore_entrance_alignment({}, convention)
+    if isinstance(values.get("energy_filter"), dict):
+        values["energy_filter"] = restore_entrance_alignment(values["energy_filter"], convention)
     if "image_corrector_initialized_keys" in assembly:
         values[_IMAGE_INITIALIZED_KEY] = _validated_image_initialized_keys(
             assembly["image_corrector_initialized_keys"])

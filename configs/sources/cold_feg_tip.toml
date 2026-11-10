@@ -14,7 +14,7 @@ apex_radius_nm = 100.0
 # Physical curvature radius R. The emitting patch has a separate polar angle;
 # its projected diameter and surface arc length are DERIVED, not source inputs.
 cone_half_angle_deg = 5.0
-shank_length_um = 1000.0
+shank_length_um = 6000.0
 
 [emission]
 # Prescribed outgoing flux at the tip surface, not a Fowler-Nordheim prediction.

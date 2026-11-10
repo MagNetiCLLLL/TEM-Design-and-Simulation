@@ -143,6 +143,8 @@ def _independent_bore_constraints(assembly, reduced_segments, bore_parts):
         reference = module_parts[0]
         origin = float(reference.center_z_mm)-float(reference.data["local_center_z_mm"])
         lower, upper = origin+module.entrance_z_mm, origin+module.exit_z_mm
+        if module.type == "gun":
+            lower = min(lower, origin+float(module.geometry["parts_start_z_mm"]))
         filter_entrance = next((part for part in module_parts if part.key == ENERGY_FILTER_ENTRANCE_APERTURE), None)
         if filter_entrance is not None:
             upper = float(filter_entrance.center_z_mm)
@@ -156,10 +158,19 @@ def _independent_bore_constraints(assembly, reduced_segments, bore_parts):
                     "C1/C2 to upper objective continuous vacuum tube", start, end, diameter))
     for part in bore_parts:
         lower, upper = bounds.get(part.module_key, (-np.inf, np.inf))
+        from temsim.extractor_geometry import resolved_extractor_contour
+        contour = resolved_extractor_contour(part)
+        if contour is not None:
+            for start, end, inner, _outer in contour.annuli_mm:
+                start, end = max(start, lower), min(end, upper)
+                if end > start:
+                    segments.append(VacuumBoreSegment(part.key, part.name, start, end, 2*inner))
+            continue
         start, end = max(float(part.start_z_mm), lower), min(float(part.end_z_mm), upper)
         if end > start:
             segments.append(VacuumBoreSegment(part.key, getattr(part, "name", part.key),
-                start, end, float(part.data["vacuum_inner_diameter_mm"])))
+                start, end, float(part.data["bore_diameter_mm"] if part.data.get("rear_gun_role")
+                                  else part.data["vacuum_inner_diameter_mm"])))
     unique = {}
     for segment in segments:
         identity = (getattr(segment, "key", ""), segment.start_z_mm,

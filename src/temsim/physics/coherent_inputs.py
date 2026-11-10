@@ -27,6 +27,7 @@ class TipEmissionSettings:
     enabled: bool = False
     boundary_model: str | None = None
     incoherent_angle_rms_mrad: float | None = None
+    transverse_coherence_length_nm: float | None = None
     surface_mean_energy_ev: float | None = None
     surface_energy_rms_ev: float | None = None
     surface_edge_phase_rad: float | None = None
@@ -58,6 +59,11 @@ class TipEmissionSettings:
                 raise ValueError(f"Tip parameter {name} must be finite")
         if self.incoherent_angle_rms_mrad is not None and self.incoherent_angle_rms_mrad < 0:
             raise ValueError("Tip incoherent angular RMS must be non-negative")
+        if self.transverse_coherence_length_nm is not None:
+            if self.transverse_coherence_length_nm <= 0:
+                raise ValueError("Transverse coherence length must be positive")
+            if self.incoherent_angle_rms_mrad not in (None, 0.):
+                raise ValueError("Specify coherence length or angular RMS, not both")
         if self.surface_mean_energy_ev is not None and self.surface_mean_energy_ev <= 0:
             raise ValueError("Tip mean energy must be positive")
         if self.surface_energy_rms_ev is not None and self.surface_energy_rms_ev < 0:
@@ -144,7 +150,9 @@ def source_settings_from_state(state):
     values.update({control: getattr(draft, field) for control, field in _TIP_PHASE})
     return TipEmissionSettings(enabled=phase is not None,
         boundary_model=draft.boundary_model,
-        incoherent_angle_rms_mrad=draft.incoherent_angle_rms_mrad, **values)
+        incoherent_angle_rms_mrad=(draft.incoherent_angle_rms_mrad
+            if draft.transverse_coherence_length_nm is None else None),
+        transverse_coherence_length_nm=draft.transverse_coherence_length_nm, **values)
 
 
 def candidate_tip_emission(state, settings):
@@ -179,6 +187,10 @@ def candidate_tip_emission(state, settings):
             if getattr(settings, control) is not None}
         if settings.incoherent_angle_rms_mrad is not None:
             phase["incoherent_angle_rms_mrad"] = float(settings.incoherent_angle_rms_mrad)
+            phase["transverse_coherence_length_nm"] = None
+        if settings.transverse_coherence_length_nm is not None:
+            phase["transverse_coherence_length_nm"] = float(settings.transverse_coherence_length_nm)
+            phase["incoherent_angle_rms_mrad"] = 0.
         if settings.boundary_model is not None:
             phase["boundary_model"] = settings.boundary_model
         values["coherence"] = (replace(previous or TipCoherence(), **phase).validate()
@@ -188,7 +200,7 @@ def candidate_tip_emission(state, settings):
             raise ValueError("Gaussian boundary model cannot replace a physical surface reservoir")
         if any(value is not None for name, value in asdict(settings).items() if name.startswith("tip_")):
             raise ValueError("Gaussian tip edits cannot replace a physical surface reservoir")
-        if settings.incoherent_angle_rms_mrad is not None:
+        if settings.incoherent_angle_rms_mrad is not None or settings.transverse_coherence_length_nm is not None:
             raise ValueError("Gaussian angular coherence cannot replace a physical surface reservoir")
         from temsim.optics.electron_gun.tip_surface import SharedSurfaceCoherence
         coherence = surface.coherence

@@ -86,6 +86,8 @@ def bind_gun_field_environment(gun, assembly):
     gun._gun_field_cells_per_bore = int(settings["gun_field_cells_per_bore"])
     gun._gun_field_exit_extension_mm = float(settings["gun_field_exit_extension_mm"])
     gun._wien_housing_voltage_reference = settings.get("wien_housing_voltage_reference")
+    from temsim.gun_rear_geometry import capture_rear_parts
+    gun._gun_rear_parts = capture_rear_parts(assembly)
     if gun.monochromator_installed and gun._wien_housing_voltage_reference != "gun_lens":
         raise ValueError("Installed Wien housing requires an explicit gun-lens electrical reference")
 
