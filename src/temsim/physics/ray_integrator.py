@@ -112,10 +112,22 @@ def canonical_rk4_step(
 @register_jitable(inline="always")
 def _rk4_flight_increment(h, inverse_speed, ax, ay, bx, by, cx, cy, dx, dy):
     """Integrate dt/dz from the mechanical slopes at the executed RK stages."""
+    if not (math.isfinite(ax) and math.isfinite(ay) and math.isfinite(bx)
+            and math.isfinite(by) and math.isfinite(cx) and math.isfinite(cy)
+            and math.isfinite(dx) and math.isfinite(dy)):
+        return math.nan
+    # A finite escaped slope can overflow when squared before aperture clipping.
     return h*inverse_speed*(
-        (1.+ax*ax+ay*ay)**.5 + 2.*(1.+bx*bx+by*by)**.5
-        + 2.*(1.+cx*cx+cy*cy)**.5 + (1.+dx*dx+dy*dy)**.5
-    )/6.
+        math.hypot(1., math.hypot(ax, ay))/6.
+        + math.hypot(1., math.hypot(bx, by))/3.
+        + math.hypot(1., math.hypot(cx, cy))/3.
+        + math.hypot(1., math.hypot(dx, dy))/6.)
+
+
+def mechanical_path_norm(tx, ty, *, xp=np):
+    """Stable ds/dz; an invalid phase carries an unknown clock."""
+    return xp.where(xp.isfinite(tx) & xp.isfinite(ty),
+                    xp.hypot(1., xp.hypot(tx, ty)), xp.nan)
 
 
 def canonical_rk4_step_with_time(
@@ -130,8 +142,10 @@ def canonical_rk4_step_with_time(
         hn0, hnm, hn1, hs0, hsm, hs1, kxy0, kxym, kxy1,
         magnetic_scale, fx0, fxm, fx1, fy0, fym, fy1,
     )
-    elapsed = _rk4_flight_increment(h, inverse_speed, values[4], values[5],
-        values[6], values[7], values[8], values[9], values[10], values[11])
+    elapsed = h*inverse_speed*(mechanical_path_norm(values[4], values[5])/6.
+        + mechanical_path_norm(values[6], values[7])/3.
+        + mechanical_path_norm(values[8], values[9])/3.
+        + mechanical_path_norm(values[10], values[11])/6.)
     return values[0], values[1], values[2], values[3], elapsed
 
 

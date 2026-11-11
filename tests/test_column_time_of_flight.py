@@ -1,6 +1,7 @@
 """Time-of-flight fixtures use explicit test origins, never downstream sources."""
 
 from types import SimpleNamespace
+from dataclasses import replace
 
 import numpy as np
 import pytest
@@ -32,6 +33,28 @@ def _propagate(state, source, **kwargs):
     return core.propagate(state, 1500., 1505., *source,
                           include_spherical_aberration=False, include_hexapole=False,
                           checkpoint_z_mm=(1502., 1505.), return_checkpoints=True, **kwargs)
+
+
+@pytest.mark.parametrize("backend", (core.BACKEND_CPU, core.BACKEND_NUMBA))
+def test_finite_extreme_slope_clock_and_invalid_phase_are_distinct(monkeypatch, backend):
+    """Pure numerical stress, not a physical source or paraxial qualification."""
+    if backend == core.BACKEND_NUMBA and not NUMBA_AVAILABLE:
+        pytest.skip("Numba optional")
+    state = _state(monkeypatch)
+    state.step_mm = 1.
+    monkeypatch.setattr(core, "choose_ray_backend", lambda *_a, **_k: (backend, None))
+    plan = core.build_propagation_plan(state, 0., 1.,
+        include_spherical_aberration=False, include_hexapole=False)
+    plan = replace(plan, z_mm=np.array([0., 1e-162]), step_m=np.array([1e-165]),
+                   save_index=np.array([0, 1]), checkpoint_index=np.array([0, 1]))
+    source = np.zeros(2), np.array([1e160, np.inf]), np.zeros(2), np.zeros(2)
+    with np.errstate(over="ignore", invalid="ignore"):
+        result = core.execute_propagation_plan(state, plan, *source,
+            initial_time_s=np.zeros(2), return_flight_times=True,
+            defer_nonfinite_until_clipping=True)
+    clock = result[-1].flight_time_s[-1]
+    assert clock[0] == pytest.approx(1e-5/_speed(300000.), rel=2e-14)
+    assert np.isnan(clock[1])
 
 
 @pytest.mark.parametrize("mode", ["custom", "ideal"])

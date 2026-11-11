@@ -55,6 +55,25 @@ def test_axial_electric_acceleration_compresses_angle_and_keeps_actual_energy():
     np.testing.assert_array_equal(energy[-1],points.kinetic_energy_ev[-1])
 
 
+@pytest.mark.parametrize('backend', ['CPU', 'Numba CPU'])
+def test_finite_extreme_slope_does_not_overflow_the_clock_norm(backend):
+    """Numerical stress fixture, not a finite-source or paraxial qualification."""
+    if backend == 'Numba CPU' and not core.NUMBA_AVAILABLE:
+        pytest.skip('No Numba')
+    state, plan = fixture(gradient=0.)
+    state.acceleration_backend = backend
+    state.acceleration_enabled = backend != 'CPU'
+    # A tiny axial span keeps positions bounded while squaring the finite
+    # slope would overflow. The geometric path length remains representable.
+    plan = replace(plan, z_mm=np.array([0., 1e-162]), step_m=np.array([1e-165]),
+                   save_index=np.array([0, 1]), checkpoint_index=np.array([0, 1]))
+    with np.errstate(over='ignore', invalid='ignore'):
+        actual, _ = trace(state, plan, tx=1e160)
+    expected = 1e-5 / _momentum_speed(300000.)[1]
+    assert np.isfinite(actual[-1].flight_time_s).all()
+    assert actual[-1].flight_time_s[-1, 0] == pytest.approx(expected, rel=2e-14)
+
+
 @pytest.mark.parametrize('mode',['analytical','ideal'])
 def test_electric_cutoff_resume_uses_actual_energy_in_each_mode(mode):
     state,plan=fixture(mode=mode,radial=2e7)

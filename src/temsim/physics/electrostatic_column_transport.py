@@ -128,7 +128,9 @@ def _scalar_derivative(x, px, y, py, z, index, di, coefficients, forcing,
     dpy = -(reference_p*ky+b*b/p)*y-reference_p*kxy*x-(b/p)*px+reference_p*(hn*hv-hs*hu)
     dpx += -Q*forcing[1,di]+Q*ex/speed
     dpy += Q*forcing[0,di]+Q*ey/speed
-    return tx, dpx, ty, dpy, math.sqrt(1.+tx*tx+ty*ty)/actual_speed
+    clock_rate = (math.hypot(1., math.hypot(tx, ty))/actual_speed
+                  if math.isfinite(tx) and math.isfinite(ty) else math.nan)
+    return tx, dpx, ty, dpy, clock_rate
 
 
 @register_jitable
@@ -353,7 +355,11 @@ def _vector_reference(inputs, z, electric, energy, optical_invariant, initial_ti
                 fy+=p*acceleration[:,1]
             derivatives=xp.stack((ux,-(ref[0]*kx[index]+b[index]**2/p)*xx-ref[0]*kxy[index]*yy+(b[index]/p)*py-ref[0]*(hn[index]*hu+hs[index]*hv)+fx,
                                   uy,-(ref[0]*ky[index]+b[index]**2/p)*yy-ref[0]*kxy[index]*xx-(b[index]/p)*px+ref[0]*(hn[index]*hv-hs[index]*hu)+fy))
-            return derivatives,xp.sqrt(1.+ux*ux+uy*uy)/va
+            # Squaring a finite escaped slope can overflow before clipping.
+            # Invalid phase carries an unknown clock, never an infinite one.
+            clock_rate = xp.where(xp.isfinite(ux) & xp.isfinite(uy),
+                                  xp.hypot(1., xp.hypot(ux, uy))/va, xp.nan)
+            return derivatives,clock_rate
         h=step[j]
         ka,ta=derivative(initial,a,d,np.nextafter(z[j],z[j+1]))
         kb,tb=derivative(initial+.5*h*ka,mid,d+1,.5*(z[j]+z[j+1]))

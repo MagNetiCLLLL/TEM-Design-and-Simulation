@@ -11,7 +11,9 @@ turning trajectories must be handled by a time-domain particle solver.
 
 import numpy as np
 
-from temsim.physics.ray_integrator import canonical_rk4_step, canonical_rk4_step_with_time
+from temsim.physics.ray_integrator import (
+    canonical_rk4_step, canonical_rk4_step_with_time, mechanical_path_norm,
+)
 
 
 def magnetic_slope_derivative(fields, positions, slopes, charge_over_p, *, xp=np):
@@ -162,10 +164,10 @@ def vector_map_rk4(
         k4 = derivative(initial+h*k3, 2, zc)
         if time is not None:
             time += h*inverse_speed*(
-                xp.sqrt(1.+k1[0]**2+k1[2]**2)
-                + 2.*xp.sqrt(1.+k2[0]**2+k2[2]**2)
-                + 2.*xp.sqrt(1.+k3[0]**2+k3[2]**2)
-                + xp.sqrt(1.+k4[0]**2+k4[2]**2))/6.
+                mechanical_path_norm(k1[0], k1[2], xp=xp)/6.
+                + mechanical_path_norm(k2[0], k2[2], xp=xp)/3.
+                + mechanical_path_norm(k3[0], k3[2], xp=xp)/3.
+                + mechanical_path_norm(k4[0], k4[2], xp=xp)/6.)
         xx, px, yy, py = initial + h*(k1+2*k2+2*k3+k4)/6.0
         x, tx, y, ty = xx, px+g[2]*yy, yy, py-g[2]*xx
         if step_operator is not None:
