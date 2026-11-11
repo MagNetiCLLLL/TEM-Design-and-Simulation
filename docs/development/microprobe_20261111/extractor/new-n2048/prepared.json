@@ -1,0 +1,24 @@
+{
+  "status": "PREPARED",
+  "gun_dependency_signature": "9d1e6987713f21965d1bc36454336e3abfe4ac499b1a7b444d3a17656be7547b",
+  "input_digest": "9f4f11f1055c7bdaa4be27bf2506c30ceff9f82f8a2e6f0befde195c1dbe8b0f",
+  "input_profile": "E:\\tem_simulator_v2\\docs\\development\\fege_focus_20261110\\normal-nanoprobe-si110.toml",
+  "extractor": {
+    "start_mm": 0.30000000000000004,
+    "end_mm": 1.3,
+    "bore_diameter_mm": 0.5,
+    "outer_diameter_mm": 20.0,
+    "counterbore_depth_mm": 0.45,
+    "counterbore_diameter_mm": 4.0
+  },
+  "launch_sha256": {
+    "x_m": "38a2143397026f329f45eb9701cca7bf849670696f820e18d305e11c8e0df752",
+    "y_m": "f9af14d775723158f45d400b3246b7803218edb459e5c22feaa4b2c51d691a1b",
+    "tx_rad": "aae12e0216be24762c564d7762749f394bc9b3132f5c0b011a85040b32602b9a",
+    "ty_rad": "6e507c620e1a266f9e7e16151871550aa3419a9a159b6563aac83131630cfb17",
+    "weight": "f77a53eb85ab24f45e305de5bc3c326779264d2008e98416faa0994a1075e3ac",
+    "ray_id": "44fc69e8582909e88f9ef917aef3e97f4b272c8299d3918ca1d1f5c5cf576550",
+    "energy_offset_ev": "26478115a9f98588cdd19f913d8c0c8d3d63de75c6ea342cb46f7fd9de0a92fa"
+  },
+  "count": 2048
+}

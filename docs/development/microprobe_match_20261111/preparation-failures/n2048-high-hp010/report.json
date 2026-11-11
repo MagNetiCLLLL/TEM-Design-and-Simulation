@@ -1,0 +1,22 @@
+{
+  "control_seeds": [],
+  "driver_sha256": "e0fa771845fc725c5fbf97b1071681d9e8bd68c71590d95cd3002b5c29e6f714",
+  "elapsed_seconds": 1.816368700005114,
+  "error": "ValueError: Invalid physical optical drive: probe_hpc_hexapole.orientation_rad",
+  "git_head": "c95f350c54713ff391a827e688846e2a5b3d1e7d",
+  "gun_cache": "E:\\tem_simulator_v2\\outputs\\microprobe-20261111\\extractor\\new-n2048",
+  "qualification": "EXPLORATORY",
+  "requested_step_mm": 0.1,
+  "reused_focus_driver_sha256": "4e6d46cde63562e600fcf5a367456bc2b3af9637a8655e6a1365b217c2f19630",
+  "scope": "Classical Microprobe illumination in current combined finite fields",
+  "status": "ERROR",
+  "step_and_source_convergence": "NOT_EVALUATED",
+  "trials": [],
+  "utc": "2026-11-11T11:30:15.348119+00:00",
+  "vacuum_optical_observation": {
+    "cif_path_before": "E:\\tem_simulator_v2\\tests\\fixtures\\cif\\Si.cif",
+    "sample_upper_surface_z_mm": 1599.1999998000001,
+    "specimen_mode_after": "vacuum",
+    "specimen_mode_before": "atomic"
+  }
+}

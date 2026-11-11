@@ -1,0 +1,558 @@
+{
+  "angle_note": "Mechanical direction cone about the current-weighted chief, not canonical slope",
+  "scope": "Postprocessing of completed native classical observations; no new propagation",
+  "size_note": "RMS is a weighted second-moment radius; D95 is twice the weighted 95% containment radius",
+  "source_count_note": "Original positive source count is separate from surviving and effective counts",
+  "topology_note": "A region representative is a native mesh point; retain its bracket as resolution",
+  "trials": [
+    {
+      "axial_d95_range_um": [
+        0.9939400161752865,
+        0.9984978808935179
+      ],
+      "axial_d95_span_relative_to_surface": 0.004574873033740564,
+      "controls": {
+        "ac_deflector": {},
+        "adapter_lens": {
+          "percent": 9.196971868437602
+        },
+        "condenser_lens_1": {
+          "percent": 51.666666666666664
+        },
+        "condenser_lens_2": {
+          "percent": 10.144329168429879
+        },
+        "condenser_lens_3": {
+          "percent": 60.30852278005429
+        },
+        "descan_deflector": {},
+        "diffraction_lens": {
+          "percent": 14.577617197168571
+        },
+        "intermediate_lens": {
+          "percent": 0.035082657259397326
+        },
+        "mini_condenser": {
+          "percent": 26.678337967960122
+        },
+        "objective_lens": {
+          "percent": 29.3264011126
+        },
+        "probe_dp11_deflector": {},
+        "probe_dp21_deflector": {},
+        "probe_dp22_deflector": {},
+        "probe_dph1_deflector": {},
+        "probe_dph2_deflector": {},
+        "probe_hp1_hexapole": {
+          "orientation_rad": 0.022552001988667456,
+          "strength_m3": 4757175.659494648
+        },
+        "probe_hp2_hexapole": {
+          "orientation_rad": -0.0030891905933732033,
+          "strength_m3": 5435590.009303784
+        },
+        "probe_hpc_hexapole": {
+          "orientation_rad": 0.0,
+          "skew_strength_m3": 45758.8185899953,
+          "strength_m3": -147238.6192393926
+        },
+        "probe_hpol_hexapole": {
+          "orientation_rad": 0.0,
+          "skew_strength_m3": 312562.20966020937,
+          "strength_m3": 538357.98745518
+        },
+        "probe_qpc_quadrupole": {},
+        "probe_qph1_quadrupole": {},
+        "probe_qph2_quadrupole": {},
+        "probe_qpol_quadrupole": {},
+        "probe_tl12_lens": {
+          "percent": 47.656160318977484
+        },
+        "probe_tl21_lens": {
+          "percent": 59.84924813065814
+        },
+        "probe_tl22_lens": {
+          "percent": 53.37284434045485
+        },
+        "projector_lens_1": {
+          "percent": 32.1132572718703
+        },
+        "projector_lens_2": {
+          "percent": 9.826874422815507
+        }
+      },
+      "emitted_positive_current_points": 1024,
+      "index": 0,
+      "input_digest": "7a1a170739fbe8a74f145b5c205bad186ed4dc26050fc340053e11c37eda3352",
+      "observations_sha256": "56e0c1b5896a51c15b2e440886b9f1e9291223c719ca34b828c4f0baa43ee1c4",
+      "original_source_count": 1024,
+      "original_source_current_a": 1e-05,
+      "per_stage_losses": {
+        "condenser_aperture_2": {
+          "count": 717,
+          "current_a": 7.001953125e-06
+        }
+      },
+      "source_identity_sha256": "f6c2c5a3e04c3261f85696a5cd90d0cac108517fafb9ce299f3f0bb88b59628b",
+      "surface": {
+        "alpha95_mrad": 0.05746971285722156,
+        "alpha99_mrad": 0.058976360804772414,
+        "alpha_rms_mrad": 0.04023008540817179,
+        "angular_definition": "Mechanical direction about the current-weighted chief direction",
+        "centroid_xy_um": [
+          -0.005179184952833786,
+          -0.002138155440498749
+        ],
+        "chief_angle_from_axis_mrad": 0.0006739409825359145,
+        "chief_slope_xy_mrad": [
+          0.0003719498484634017,
+          -0.0005620051229033984
+        ],
+        "count": 307,
+        "current_a": 2.9980468750000002e-06,
+        "current_definition": "Absolute original source weight reaching this actual plane",
+        "d50_um": 0.6974417871425629,
+        "d90_um": 0.9645210579536003,
+        "d95_containment_disk_area_um2": 0.779569163057152,
+        "d95_um": 0.9962822322316403,
+        "effective_count": 307.0,
+        "maximum_sampled_angle_mrad": 0.059667199513947326,
+        "mechanical_rms_slope_axes_mrad": [
+          0.028363555459980955,
+          0.0285301331234859
+        ],
+        "mechanical_slope_covariance_rad2": [
+          [
+            8.044912783314154e-10,
+            -1.4298194486944818e-11
+          ],
+          [
+            -1.4298194486944817e-11,
+            8.139684960438273e-10
+          ]
+        ],
+        "offset_from_surface_um": 0.0,
+        "radial_position_angle_correlation": -0.14013571573547248,
+        "radial_position_angle_covariance_m_rad": -1.989065266373042e-12,
+        "radial_rms_um": 0.3528167887274598,
+        "radial_wavefront_curvature_per_m": -15.979035003785944,
+        "rms_tangent_waist_offset_mm": 1.228986532668605,
+        "source_current_fraction": 0.2998046875,
+        "spatial_covariance_eigenvalues_m2": [
+          6.117650264364244e-14,
+          6.330318376431455e-14
+        ],
+        "spatial_covariance_m2": [
+          [
+            6.287252457689815e-14,
+            8.546387702510904e-16
+          ],
+          [
+            8.546387702510909e-16,
+            6.160716183105886e-14
+          ]
+        ],
+        "spatial_rms_axis_ratio": 1.0172330306104838,
+        "spatial_rms_principal_axes_um": [
+          0.2473388417609382,
+          0.25160123959216607
+        ],
+        "z_mm": 1599.1999998000001
+      },
+      "surface_tails": {
+        "finite_positive_phases": true,
+        "largest_centroid_radii": [
+          {
+            "centroid_radius_um": 0.515637750791324,
+            "mechanical_angle_mrad": 0.059544544247528884,
+            "original_source_current_a": 9.765625e-09,
+            "phase_xy_um_slopes_mrad": [
+              0.5098299263000029,
+              0.023315829860410968,
+              -0.014902270059317508,
+              0.056990153515749896
+            ],
+            "source_id": 148
+          },
+          {
+            "centroid_radius_um": 0.5133519011607501,
+            "mechanical_angle_mrad": 0.059667199513947326,
+            "original_source_current_a": 9.765625e-09,
+            "phase_xy_um_slopes_mrad": [
+              0.4698552065644386,
+              -0.19674674030039493,
+              0.010823012049097741,
+              0.058182781922081546
+            ],
+            "source_id": 64
+          },
+          {
+            "centroid_radius_um": 0.5113947732519301,
+            "mechanical_angle_mrad": 0.05943252001163402,
+            "original_source_current_a": 9.765625e-09,
+            "phase_xy_um_slopes_mrad": [
+              -0.16245206435649476,
+              0.4844724234760251,
+              -0.051073282049586693,
+              -0.03032124836246598
+            ],
+            "source_id": 368
+          },
+          {
+            "centroid_radius_um": 0.5088419891817184,
+            "mechanical_angle_mrad": 0.0586809663570962,
+            "original_source_current_a": 9.765625e-09,
+            "phase_xy_um_slopes_mrad": [
+              -0.22794067456208358,
+              -0.4596285801506518,
+              0.05723563311908545,
+              -0.01505260019730008
+            ],
+            "source_id": 111
+          },
+          {
+            "centroid_radius_um": 0.5085518276421361,
+            "mechanical_angle_mrad": 0.058563410010240256,
+            "original_source_current_a": 9.765625e-09,
+            "phase_xy_um_slopes_mrad": [
+              0.2622770773787615,
+              -0.434679609104503,
+              0.04247508387976039,
+              0.04014424875244146
+            ],
+            "source_id": 540
+          }
+        ],
+        "largest_mechanical_angles": [
+          {
+            "centroid_radius_um": 0.5133519011607501,
+            "mechanical_angle_mrad": 0.059667199513947326,
+            "original_source_current_a": 9.765625e-09,
+            "phase_xy_um_slopes_mrad": [
+              0.4698552065644386,
+              -0.19674674030039493,
+              0.010823012049097741,
+              0.058182781922081546
+            ],
+            "source_id": 64
+          },
+          {
+            "centroid_radius_um": 0.515637750791324,
+            "mechanical_angle_mrad": 0.059544544247528884,
+            "original_source_current_a": 9.765625e-09,
+            "phase_xy_um_slopes_mrad": [
+              0.5098299263000029,
+              0.023315829860410968,
+              -0.014902270059317508,
+              0.056990153515749896
+            ],
+            "source_id": 148
+          },
+          {
+            "centroid_radius_um": 0.5113947732519301,
+            "mechanical_angle_mrad": 0.05943252001163402,
+            "original_source_current_a": 9.765625e-09,
+            "phase_xy_um_slopes_mrad": [
+              -0.16245206435649476,
+              0.4844724234760251,
+              -0.051073282049586693,
+              -0.03032124836246598
+            ],
+            "source_id": 368
+          },
+          {
+            "centroid_radius_um": 0.5078847966260526,
+            "mechanical_angle_mrad": 0.05897636080477242,
+            "original_source_current_a": 9.765625e-09,
+            "phase_xy_um_slopes_mrad": [
+              -0.47962163013870973,
+              -0.1833875219219679,
+              0.0332297348150144,
+              -0.04953727550716509
+            ],
+            "source_id": 425
+          },
+          {
+            "centroid_radius_um": 0.5057353966551059,
+            "mechanical_angle_mrad": 0.05878625830868935,
+            "original_source_current_a": 9.765625e-09,
+            "phase_xy_um_slopes_mrad": [
+              -0.05762091742384464,
+              0.500870945993398,
+              -0.05549017617682272,
+              -0.0188717579820221
+            ],
+            "source_id": 138
+          }
+        ],
+        "maximum_angle_to_alpha95_ratio": 1.0382373000920542,
+        "maximum_centroid_radius_um": 0.515637750791324,
+        "maximum_mechanical_angle_mrad": 0.059667199513947326,
+        "maximum_radius_to_r95_ratio": 1.0351238516746646,
+        "no_particles_deleted_or_reweighted": true
+      },
+      "topology": {
+        "ac_lower to mini_condenser": {
+          "actual_population": {
+            "regions": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "regions": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "ac_upper to ac_lower": {
+          "actual_population": {
+            "regions": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "regions": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "adapter_lens to probe_tl22_lens": {
+          "actual_population": {
+            "regions": [
+              {
+                "bracket_mm": [
+                  1160.48875,
+                  1164.39625
+                ],
+                "current_phase_space": {
+                  "alpha95_mrad": 0.1067150529413577,
+                  "count": 307,
+                  "current_a": 2.9980468750000002e-06,
+                  "d95_nm": 223.21254222892858,
+                  "radial_covariance_m_rad": 4.9900887599134194e-12,
+                  "rms_angle_mrad": 0.07542382568237602,
+                  "rms_radius_nm": 66.99775444327362,
+                  "rms_tangent_drift_offset_nm": -877184.9142205892,
+                  "source_current_fraction": 0.2998046875
+                },
+                "representative_z_mm": 1162.4424999999999
+              }
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "regions": [
+              {
+                "bracket_mm": [
+                  1160.48875,
+                  1164.39625
+                ],
+                "current_phase_space": {
+                  "alpha95_mrad": 0.1067150529413577,
+                  "count": 307,
+                  "current_a": 2.9980468750000002e-06,
+                  "d95_nm": 223.21254222892858,
+                  "radial_covariance_m_rad": 4.9900887599134194e-12,
+                  "rms_angle_mrad": 0.07542382568237602,
+                  "rms_radius_nm": 66.99775444327362,
+                  "rms_tangent_drift_offset_nm": -877184.9142205892,
+                  "source_current_fraction": 0.2998046875
+                },
+                "representative_z_mm": 1162.4424999999999
+              }
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "condenser_lens_2 to condenser_lens_3": {
+          "actual_population": {
+            "regions": [
+              {
+                "bracket_mm": [
+                  861.203007518797,
+                  865.0
+                ],
+                "current_phase_space": {
+                  "alpha95_mrad": 0.4968091379754829,
+                  "count": 307,
+                  "current_a": 2.9980468750000002e-06,
+                  "d95_nm": 696.5209821933289,
+                  "radial_covariance_m_rad": 8.573296395641966e-11,
+                  "rms_angle_mrad": 0.3516145628040974,
+                  "rms_radius_nm": 243.8362164393917,
+                  "rms_tangent_drift_offset_nm": -693448.2896375876,
+                  "source_current_fraction": 0.2998046875
+                },
+                "representative_z_mm": 863.1954887218045
+              }
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "regions": [
+              {
+                "bracket_mm": [
+                  861.203007518797,
+                  865.0
+                ],
+                "current_phase_space": {
+                  "alpha95_mrad": 0.4968091379754829,
+                  "count": 307,
+                  "current_a": 2.9980468750000002e-06,
+                  "d95_nm": 696.5209821933289,
+                  "radial_covariance_m_rad": 8.573296395641966e-11,
+                  "rms_angle_mrad": 0.3516145628040974,
+                  "rms_radius_nm": 243.8362164393917,
+                  "rms_tangent_drift_offset_nm": -693448.2896375876,
+                  "source_current_fraction": 0.2998046875
+                },
+                "representative_z_mm": 863.1954887218045
+              }
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "condenser_lens_3 to adapter_lens": {
+          "actual_population": {
+            "regions": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "regions": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "mini_condenser to specimen_entrance": {
+          "actual_population": {
+            "regions": [
+              {
+                "bracket_mm": [
+                  1581.5769229230768,
+                  1585.0
+                ],
+                "current_phase_space": {
+                  "alpha95_mrad": 0.046265891468037786,
+                  "count": 307,
+                  "current_a": 2.9980468750000002e-06,
+                  "d95_nm": 167.17698107365325,
+                  "radial_covariance_m_rad": 1.0170442060001116e-12,
+                  "rms_angle_mrad": 0.03329019253097541,
+                  "rms_radius_nm": 38.638570352291794,
+                  "rms_tangent_drift_offset_nm": -917713.7016291288,
+                  "source_current_fraction": 0.2998046875
+                },
+                "representative_z_mm": 1583.5461536871794
+              }
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "regions": [
+              {
+                "bracket_mm": [
+                  1581.5769229230768,
+                  1585.0
+                ],
+                "current_phase_space": {
+                  "alpha95_mrad": 0.046265891468037786,
+                  "count": 307,
+                  "current_a": 2.9980468750000002e-06,
+                  "d95_nm": 167.17698107365325,
+                  "radial_covariance_m_rad": 1.0170442060001116e-12,
+                  "rms_angle_mrad": 0.03329019253097541,
+                  "rms_radius_nm": 38.638570352291794,
+                  "rms_tangent_drift_offset_nm": -917713.7016291288,
+                  "source_current_fraction": 0.2998046875
+                },
+                "representative_z_mm": 1583.5461536871794
+              }
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "probe_tl12_lens to ac_upper": {
+          "actual_population": {
+            "regions": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "regions": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "probe_tl21_lens to probe_tl12_lens": {
+          "actual_population": {
+            "regions": [
+              {
+                "bracket_mm": [
+                  1315.0271186440677,
+                  1318.971186440678
+                ],
+                "current_phase_space": {
+                  "alpha95_mrad": 0.12688436684729185,
+                  "count": 307,
+                  "current_a": 2.9980468750000002e-06,
+                  "d95_nm": 277.26221059672514,
+                  "radial_covariance_m_rad": 7.854914911497768e-12,
+                  "rms_angle_mrad": 0.08980061040809906,
+                  "rms_radius_nm": 87.90265105310202,
+                  "rms_tangent_drift_offset_nm": -974053.7085902697,
+                  "source_current_fraction": 0.2998046875
+                },
+                "representative_z_mm": 1316.999152542373
+              }
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "regions": [
+              {
+                "bracket_mm": [
+                  1315.0271186440677,
+                  1318.971186440678
+                ],
+                "current_phase_space": {
+                  "alpha95_mrad": 0.12688436684729185,
+                  "count": 307,
+                  "current_a": 2.9980468750000002e-06,
+                  "d95_nm": 277.26221059672514,
+                  "radial_covariance_m_rad": 7.854914911497768e-12,
+                  "rms_angle_mrad": 0.08980061040809906,
+                  "rms_radius_nm": 87.90265105310202,
+                  "rms_tangent_drift_offset_nm": -974053.7085902697,
+                  "source_current_fraction": 0.2998046875
+                },
+                "representative_z_mm": 1316.999152542373
+              }
+            ],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "probe_tl22_lens to probe_tl21_lens": {
+          "actual_population": {
+            "regions": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "regions": [],
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        }
+      }
+    }
+  ]
+}

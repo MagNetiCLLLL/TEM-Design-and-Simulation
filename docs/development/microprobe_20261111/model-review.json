@@ -1,0 +1,549 @@
+{
+  "schema": "microprobe-static-model-review-v1",
+  "created_utc": "2026-11-11T09:56:16.511823+00:00",
+  "scope": "Read-only model review, existing-result comparisons and pure-array postanalysis; no new particle or coherent propagation",
+  "qualification": "NEAR_PARALLEL_ILLUMINATION_EVIDENCE_ONLY_NOT_JOINT_CORRECTOR_QUALIFICATION",
+  "sign_convention": {
+    "project_microprobe_polarity": 1,
+    "project_nanoprobe_polarity": -1,
+    "live_mini_magnitude_percent": 26.678337967960122,
+    "objective_percent": 29.3264011126,
+    "electron_charge_c": -1.602176634e-19,
+    "mode_change_behavior": "set_probe_mode flips the Mini polarity while retaining its current live magnitude; it does not load a fitted mode preset",
+    "interpretation": "These signs describe the project field orientation, not verified OEM winding or supply labels",
+    "diagnostic_formula": "g=q*Bz/(2*p); ux=tx-g*y; uy=ty+g*x"
+  },
+  "measured_mini_objective_overlap": {
+    "method": "Static axial engineering-profile field samples of the current saved Nano profile; only Mini and coupled Objective contributions are included",
+    "observation_interval_mm": [
+      1492.5,
+      1599.1999998000001
+    ],
+    "sample_points": 2001,
+    "mini_center_mm": 1522.5,
+    "mini_width_a_mm": 8.0,
+    "objective_upper_field_center_mm": 1597.8500000000001,
+    "objective_lower_field_center_mm": 1600.55,
+    "objective_upper_and_lower_width_a_mm": 24.0,
+    "nano_signed_normalized_overlap": -0.007928173349035108,
+    "nano_integral_b_squared_t2_mm": 3.024827479480681,
+    "micro_integral_b_squared_t2_mm": 3.0424107399555953,
+    "relative_integral_power_change_percent": 0.5812979614273184,
+    "objective_bz_at_mini_center_t": 0.002404075906073946,
+    "nano_mini_bz_at_objective_upper_center_t": -1.0792845546923073e-21,
+    "nano_mini_bz_at_sample_upper_surface_t": -1.8356513089225762e-22,
+    "objective_bz_at_sample_upper_surface_t": 0.4735527569638535,
+    "interpretation": "Weak normalized profile overlap makes the polarity-only focusing-power change small; the isolated-solenoid B-squared approximation cannot establish a Nano-to-Micro focus/parallel transition",
+    "limitations": "Finite integration interval and one axial engineering-field profile, not an independent magnetostatic or OEM field validation"
+  },
+  "historical_micro_targets": {
+    "status": "HISTORICAL_TARGETS_AND_CALIBRATION_ONLY_NOT_CURRENT_ACHIEVEMENT_OR_NEW_USER_ACCEPTANCE",
+    "direct_alignment_d95_range_um": [
+      0.75,
+      2.2
+    ],
+    "alpha95_upper_bound_mrad": 0.3,
+    "alpha99_upper_bound_mrad": 0.5,
+    "radial_curvature_absolute_upper_bound_per_m": 25.0,
+    "historical_reference_d95_um": 2.000144359227293,
+    "historical_reference_alpha95_mrad": 0.2651068659322133,
+    "historical_mini_magnitude_percent": 43.88646617222637,
+    "historical_objective_percent": 68.9801,
+    "historical_model": "custom",
+    "historical_source_count": 3000,
+    "interpretation": "Do not use a historical preset seed or its calibrated area range as qualification of this new FEG/unified-field optical state"
+  },
+  "contract_scope": {
+    "nanoprobe": "The C2-C3/C3-ADL Normal/Large angle table explicitly applies to C3 + Probe Corrector in STEM Nanoprobe. The October CEOS interior matching and direct specimen focus were documented in that Normal/Nano context.",
+    "microprobe": "topology_evidence.py selects a separately authorized historical TEM/Micro six-waist target, explicitly distinct from Nano; it must not be silently replaced by Nano acceptance or declared satisfied by a small specimen angle.",
+    "shared_obligation": "An active corrector is not jointly qualified by a near-parallel specimen beam alone. Retain and report its actual source-image waists, conjugacies, clipping and aberration response.",
+    "micro_exact_ceos_scope": "This review does not infer a newly approved exact Micro waist-position contract from the earlier Nano discussion. The current results demonstrate changed conjugacies and need an explicit Micro matching study.",
+    "micro_focus": "Near-parallel illumination is assessed at the fixed specimen upper surface; that surface need not be the native minimum-D95 focus used to qualify Nano."
+  },
+  "exact_full_input_comparisons": [
+    {
+      "reference": "trial-00",
+      "candidate": "trial-01",
+      "reference_snapshot_sha256": "663e695354fd75d2d56526a1d1e2513b9e8961986965733338b1d4e5665e3c2c",
+      "candidate_snapshot_sha256": "d44bc0961ca222e18588b541b6c6bea126dd274826173f5a2283a63f6cd37538",
+      "comparison": "Exact recursive comparison of the complete serialized snapshot, including graph, source, external-input pins and implementation",
+      "differences": [
+        {
+          "path": "$.digest",
+          "before": "5ffecdd3acf40701d8fab40fc97c87bf6eb62bfb91207563d8fcdc34b9bbca65",
+          "after": "88dc3ffae30265df6838b99759ff7f5a9edde839132703a7689c83fda558594c"
+        },
+        {
+          "path": "$.graph.nodes[27].attributes.percent",
+          "before": 10.561,
+          "after": 10.144329168429879
+        },
+        {
+          "path": "$.graph.nodes[37].attributes.percent",
+          "before": 33.6,
+          "after": 60.30852278005429
+        }
+      ],
+      "unexpected_differences": [],
+      "unchanged_outside_c2_c3_and_expected_snapshot_digest": true,
+      "graph_node_components": {
+        "27": "condenser_lens_2",
+        "37": "condenser_lens_3"
+      }
+    },
+    {
+      "reference": "trial-00",
+      "candidate": "trial-02",
+      "reference_snapshot_sha256": "663e695354fd75d2d56526a1d1e2513b9e8961986965733338b1d4e5665e3c2c",
+      "candidate_snapshot_sha256": "cf4f08c45d0eca09cb8c43be01dead4bc2bdcbe73e42d0b5afab9093eb501161",
+      "comparison": "Exact recursive comparison of the complete serialized snapshot, including graph, source, external-input pins and implementation",
+      "differences": [
+        {
+          "path": "$.digest",
+          "before": "5ffecdd3acf40701d8fab40fc97c87bf6eb62bfb91207563d8fcdc34b9bbca65",
+          "after": "8dfe0e1cc7e13630bc28107357707e43e25370d4ca10613927108ad1b13fb1b5"
+        },
+        {
+          "path": "$.graph.nodes[27].attributes.percent",
+          "before": 10.561,
+          "after": 10.480573060650656
+        },
+        {
+          "path": "$.graph.nodes[37].attributes.percent",
+          "before": 33.6,
+          "after": 50.291779250624366
+        }
+      ],
+      "unexpected_differences": [],
+      "unchanged_outside_c2_c3_and_expected_snapshot_digest": true,
+      "graph_node_components": {
+        "27": "condenser_lens_2",
+        "37": "condenser_lens_3"
+      }
+    }
+  ],
+  "measured_trials": {
+    "trial-00": {
+      "report_path": "outputs/microprobe-20261111/column/n1024-step020/trial-00/report.json",
+      "report_sha256": "df6a6d51a9f4f16924eb6613a41aaf52d7556ebe457d3df4ccd50cb6f66c8041",
+      "input_digest": "5ffecdd3acf40701d8fab40fc97c87bf6eb62bfb91207563d8fcdc34b9bbca65",
+      "c2_percent": 10.561,
+      "c3_percent": 33.6,
+      "original_positive_current_particles": 1024,
+      "specimen_positive_current_particles": 473,
+      "d95_um": 6.211649491867267,
+      "rms_radius_um": 2.169970266910053,
+      "mechanical_alpha95_mrad": 28.730327171426733,
+      "mechanical_angle_rms_mrad": 20.013352129571537,
+      "specimen_current_a": 4.619140625000001e-06,
+      "measured_waist_intervals": {
+        "probe_tl22_lens to probe_tl21_lens": {
+          "actual_population": {
+            "centers_mm": [
+              1212.1309523809523
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1212.1309523809523
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "ac_upper to ac_lower": {
+          "actual_population": {
+            "centers_mm": [
+              1408.75
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1408.75
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "adapter_lens to probe_tl22_lens": {
+          "actual_population": {
+            "centers_mm": [],
+            "count": 0,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "count": 0,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "probe_tl21_lens to probe_tl12_lens": {
+          "actual_population": {
+            "centers_mm": [
+              1299.250847457627
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1299.250847457627
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "mini_condenser to specimen_entrance": {
+          "actual_population": {
+            "centers_mm": [
+              1599.0999998000002
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1599.0999998000002
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        }
+      }
+    },
+    "trial-01": {
+      "report_path": "outputs/microprobe-20261111/column/n1024-step020/trial-01/report.json",
+      "report_sha256": "65141299fa4d249c626d1ad74b99e91f3d92f36650fe489a532a12c16a7a6a21",
+      "input_digest": "88dc3ffae30265df6838b99759ff7f5a9edde839132703a7689c83fda558594c",
+      "c2_percent": 10.144329168429879,
+      "c3_percent": 60.30852278005429,
+      "original_positive_current_particles": 1024,
+      "specimen_positive_current_particles": 307,
+      "d95_um": 0.9962822650306148,
+      "rms_radius_um": 0.35281679999703514,
+      "mechanical_alpha95_mrad": 0.057469233594575626,
+      "mechanical_angle_rms_mrad": 0.04022977299731463,
+      "specimen_current_a": 2.9980468750000002e-06,
+      "measured_waist_intervals": {
+        "probe_tl22_lens to probe_tl21_lens": {
+          "actual_population": {
+            "centers_mm": [],
+            "count": 0,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "count": 0,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "ac_upper to ac_lower": {
+          "actual_population": {
+            "centers_mm": [],
+            "count": 0,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "count": 0,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "adapter_lens to probe_tl22_lens": {
+          "actual_population": {
+            "centers_mm": [
+              1162.4424999999999
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1162.4424999999999
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "probe_tl21_lens to probe_tl12_lens": {
+          "actual_population": {
+            "centers_mm": [
+              1316.999152542373
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1316.999152542373
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "mini_condenser to specimen_entrance": {
+          "actual_population": {
+            "centers_mm": [
+              1583.5461536871794
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1583.5461536871794
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        }
+      }
+    },
+    "trial-02": {
+      "report_path": "outputs/microprobe-20261111/column/n1024-step020/trial-02/report.json",
+      "report_sha256": "7cced3c76e33f5cdbc034bd4441123caabba7f5255d32fe288e526acac464434",
+      "input_digest": "8dfe0e1cc7e13630bc28107357707e43e25370d4ca10613927108ad1b13fb1b5",
+      "c2_percent": 10.480573060650656,
+      "c3_percent": 50.291779250624366,
+      "original_positive_current_particles": 1024,
+      "specimen_positive_current_particles": 436,
+      "d95_um": 2.2100975522612707,
+      "rms_radius_um": 0.7748864484547786,
+      "mechanical_alpha95_mrad": 0.1250741260278995,
+      "mechanical_angle_rms_mrad": 0.0876378216655656,
+      "specimen_current_a": 4.2578125e-06,
+      "measured_waist_intervals": {
+        "probe_tl22_lens to probe_tl21_lens": {
+          "actual_population": {
+            "centers_mm": [],
+            "count": 0,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "count": 0,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "ac_upper to ac_lower": {
+          "actual_population": {
+            "centers_mm": [],
+            "count": 0,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [],
+            "count": 0,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "adapter_lens to probe_tl22_lens": {
+          "actual_population": {
+            "centers_mm": [
+              1162.4424999999999
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1162.4424999999999
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "probe_tl21_lens to probe_tl12_lens": {
+          "actual_population": {
+            "centers_mm": [
+              1316.999152542373
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1316.999152542373
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        },
+        "mini_condenser to specimen_entrance": {
+          "actual_population": {
+            "centers_mm": [
+              1583.5461536871794
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          },
+          "sample_surviving_cohort": {
+            "centers_mm": [
+              1583.5461536871794
+            ],
+            "count": 1,
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "unresolved": []
+          }
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "polarity_only": "trial-00 retains the central and AC waists but reaches the specimen with strong radial divergence; Mini sign reversal alone is insufficient at these settings.",
+    "c2c3_parallel_family": "trial-01 and trial-02 achieve small specimen mechanical angles by changing only C2/C3. Their old central and AC source-image waists move out of the Nano comparison intervals.",
+    "cause": "With a fixed corrector transfer map, C2/C3 changes the incoming position-angle covariance and source conjugates. Two controls used to set specimen diameter and curvature generally leave insufficient independent freedoms to hold multiple internal waist locations.",
+    "feasibility_limit": "This degree-of-freedom argument and bounded candidates do not prove that the complete column has no solution. Restoring internal conjugacies may require explicit ADL/TL22/TL21/TL12 or Mini/Objective tuning and full finite-source validation.",
+    "current": "Current differences are physical aperture interception with unchanged emitted source and original weights; no current renormalization is justified."
+  },
+  "rotation_postanalysis": {
+    "reference": "outputs/microprobe-20261111/column/n1024-step020/trial-01/rotation-analysis.json",
+    "mechanical_alpha95_mrad": 0.057469233594575626,
+    "mechanical_angle_rms_mrad": 0.04022977299731463,
+    "mechanical_radial_slope_rms_mrad": 0.006053480494569764,
+    "mechanical_tangential_slope_rms_mrad": 0.039771723771339085,
+    "native_gauge_paraxial_surrogate_alpha95_mrad": 0.011761408961904946,
+    "native_gauge_tangential_slope_rms_mrad": 0.00020661230735596154,
+    "local_native_slope_maximum_difference_rad": 9.57878411847181e-15,
+    "interpretation": "Most mechanical angular spread of the one-micrometre candidate is sample-field Larmor rotation; a small radial curvature alone would not have established this.",
+    "canonical_limit": "Canonical increment angles depend on the chosen gauge and paraxial momentum normalization. They are descriptive diagnostics, not a universal physical zero-angle acceptance target."
+  },
+  "why_not_jointly_qualified": [
+    "The measured scalar illumination family does not retain the two Nano corrector comparison waists; an alternative Micro corrector matching has not been demonstrated.",
+    "The independent historical Micro six-waist target is not established by these changed crossover intervals.",
+    "No corrected aberration/conjugacy or driven AC tilt-to-shift validation accompanies this static area-angle family.",
+    "These 1024-source, 0.20-mm-step results alone do not establish source-count and integration-step convergence.",
+    "Only a bounded parameter family was explored; neither a global optimum nor impossibility of a better joint solution is established."
+  ],
+  "focus_and_current_limits": [
+    "The reported free-space RMS tangent-waist offset is not a transported focal position inside the approximately 0.474-T specimen field.",
+    "The finite local axial window shows slow illumination-size change, not a long-distance collimation or minimum-D95 focus certificate.",
+    "D95 and alpha95 contain 95 percent of actual specimen current about its centroid and chief direction respectively; RMS moments include the whole positive-current population and are not equivalent containment statistics.",
+    "Magnetic profiles and corrector channels are engineering models rather than validated OEM field maps."
+  ],
+  "source_file_references": [
+    {
+      "path": "src/temsim/optics/mini_condenser.py",
+      "line": 132,
+      "sha256": "804dc1569f9e2d7d486e34d94171037a2fc23bfbf838f6bd30c059fda74fe678",
+      "scope": "Signed excitation, live-magnitude preservation and Micro-positive/Nano-negative selection"
+    },
+    {
+      "path": "src/temsim/physics/ray_integrator.py",
+      "line": 1,
+      "sha256": "3b46348d2d7db4547e6f20e8ec814c84eb91b6488bceb8396a48f7ad7d422627",
+      "scope": "Signed canonical transform with electron q<0: ux=tx-g*y and uy=ty+g*x"
+    },
+    {
+      "path": "src/temsim/optics/direct_alignment.py",
+      "line": 160,
+      "sha256": "ccbdcfb1403e4b5aa682da03c0f07e802cec277a709a046f0044b483971cb1e0",
+      "scope": "Canonical-to-mechanical local basis and specified gauge/finite-field limitations"
+    },
+    {
+      "path": "src/temsim/optics/direct_alignment.py",
+      "line": 1335,
+      "sha256": "ccbdcfb1403e4b5aa682da03c0f07e802cec277a709a046f0044b483971cb1e0",
+      "scope": "C2/C3 Micro area and curvature optimization with an angle penalty"
+    },
+    {
+      "path": "src/temsim/optics/assembly_illumination.py",
+      "line": 111,
+      "sha256": "2d7aaf3f5247b29be701d7dac95b518ce11cddf981c0c99d818ae18b47ea1a1a",
+      "scope": "Historical preset seeding can overwrite the current optical settings"
+    },
+    {
+      "path": "src/temsim/optics/assembly_illumination.py",
+      "line": 147,
+      "sha256": "2d7aaf3f5247b29be701d7dac95b518ce11cddf981c0c99d818ae18b47ea1a1a",
+      "scope": "Generic assembly fitter chooses C2/Objective when Mini is installed"
+    },
+    {
+      "path": "src/temsim/optics/condenser_objective_design.py",
+      "line": 1,
+      "sha256": "0ee52718af60f44426972671c1211052fde7e29c02141435cd75653b0598995b",
+      "scope": "Installed-column opposite-polarity overlap diagnostics and non-qualification limits"
+    },
+    {
+      "path": "src/temsim/topology_evidence.py",
+      "line": 35,
+      "sha256": "df4424bae984a984cebb95fa07e6affdfff7f0217512d06a38057e60606a6ea1",
+      "scope": "TEM uses an independent authorized Micro topology reference; STEM uses the Nano reference"
+    },
+    {
+      "path": "configs/operating_modes/illumination_targets.toml",
+      "line": 20,
+      "sha256": "cdc180643b91d8917fef613ff8ff6da0021667c7f808360e0de1f102c39f97ac",
+      "scope": "Historical Micro scalar targets and independently authorized six-waist reference"
+    },
+    {
+      "path": "configs/operating_modes/catalog.toml",
+      "line": 23,
+      "sha256": "ae331edda334ac2cb86cb3062004b9722024a883d0e8b4963f43bf556619be43",
+      "scope": "Historical Micro calibration uses another Mini/Objective working point and the custom field model"
+    },
+    {
+      "path": "configs/operating_modes/catalog.toml",
+      "line": 125,
+      "sha256": "ae331edda334ac2cb86cb3062004b9722024a883d0e8b4963f43bf556619be43",
+      "scope": "Historical Micro area direct-alignment range and operating bounds"
+    },
+    {
+      "path": "docs/OPTICAL_CONTROL_ROLES.md",
+      "line": 128,
+      "sha256": "e00efa914212eab26677b99e2c2349e0f716ea2eebc1a0842adeef1d89faec02",
+      "scope": "Nano branch table, corrector matching discussion and distinct measurement obligations"
+    },
+    {
+      "path": "docs/development/CEOS_PROBE_CORRECTOR_REFERENCE_2026-10-28.md",
+      "line": 51,
+      "sha256": "911e9edc087f4d5ded714146314bda914b5f3563b98a5c85f82b7a7694f8bc50",
+      "scope": "Normal entrance and corrector-interior comparison adopted in the Nano focusing context"
+    },
+    {
+      "path": "docs/development/fege_focus_20261110/normal-nanoprobe-si110.toml",
+      "line": 1,
+      "sha256": "d62cb8f1da101eae9088f45ce76b51237ce3822ca24f2d2eea4dd727c9df5477",
+      "scope": "Current Nano candidate used as the optical starting point"
+    },
+    {
+      "path": "outputs/microprobe-20261111/analyze_micro_rotation.py",
+      "line": 1,
+      "sha256": "8e10fdbdf319a83688b78365aaa91bdc2a9fadd865e2422e0c95b5d355ca3a19",
+      "scope": "Independent saved-particle rotation, per-axis vergence and emittance postanalysis"
+    }
+  ]
+}

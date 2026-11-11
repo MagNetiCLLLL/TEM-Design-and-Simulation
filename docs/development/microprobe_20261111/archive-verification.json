@@ -1,0 +1,47 @@
+{
+  "scope": "Pure-array archival identity and statistic checks; no physical retracing",
+  "checks": [
+    {
+      "profile": "microprobe-0p75um-si110.toml",
+      "status": "PASS",
+      "source_positive_count": 2048,
+      "source_ids_and_original_weights": "BITWISE_IDENTICAL",
+      "arrivals": 571,
+      "recomputed": {
+        "d95_um": 0.7490873483841832,
+        "radial_rms_um": 0.26582309113252767,
+        "alpha95_mrad": 0.04399512041646672,
+        "alpha_rms_mrad": 0.03065804220146244,
+        "current_a": 2.7880859375000003e-06
+      }
+    },
+    {
+      "profile": "microprobe-1p00um-si110.toml",
+      "status": "PASS",
+      "source_positive_count": 2048,
+      "source_ids_and_original_weights": "BITWISE_IDENTICAL",
+      "arrivals": 618,
+      "recomputed": {
+        "d95_um": 0.9975813211668486,
+        "radial_rms_um": 0.35218262195040273,
+        "alpha95_mrad": 0.05742702467205885,
+        "alpha_rms_mrad": 0.040159901975603464,
+        "current_a": 3.0175781250000003e-06
+      }
+    },
+    {
+      "profile": "microprobe-2p20um-si110.toml",
+      "status": "PASS",
+      "source_positive_count": 2048,
+      "source_ids_and_original_weights": "BITWISE_IDENTICAL",
+      "arrivals": 865,
+      "recomputed": {
+        "d95_um": 2.1981426855088944,
+        "radial_rms_um": 0.7681845800482129,
+        "alpha95_mrad": 0.12454538322291286,
+        "alpha_rms_mrad": 0.08686509792305801,
+        "current_a": 4.223632812500001e-06
+      }
+    }
+  ]
+}

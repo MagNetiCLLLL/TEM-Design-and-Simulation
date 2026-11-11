@@ -1,0 +1,259 @@
+{
+  "scope": "Native complete-source comparisons; no retracing or current renormalization",
+  "step_oneum": {
+    "source_count": 1024,
+    "old_step_mm": 0.2,
+    "new_step_mm": 0.1,
+    "metrics": {
+      "d95_um": {
+        "before": 0.9709893340757406,
+        "after": 0.970986950584207,
+        "relative_change": -2.454704135179675e-06
+      },
+      "radial_rms_um": {
+        "before": 0.34776606518426845,
+        "after": 0.3477652331909526,
+        "relative_change": -2.392393620764821e-06
+      },
+      "alpha95_mrad": {
+        "before": 0.06348231979886565,
+        "after": 0.06348254231347177,
+        "relative_change": 3.505142956772289e-06
+      },
+      "alpha_rms_mrad": {
+        "before": 0.04021570809615156,
+        "after": 0.04021585644728028,
+        "relative_change": 3.6888851580041404e-06
+      },
+      "current_a": {
+        "before": 2.333984375e-06,
+        "after": 2.333984375e-06,
+        "relative_change": 0.0
+      }
+    }
+  },
+  "sampling_oneum": {
+    "step_mm": 0.1,
+    "old_positive_count": 1024,
+    "new_positive_count": 2048,
+    "nested_source": false,
+    "metrics": {
+      "d95_um": {
+        "before": 0.970986950584207,
+        "after": 0.969117771242415,
+        "relative_change": -0.001925030342238232
+      },
+      "radial_rms_um": {
+        "before": 0.3477652331909526,
+        "after": 0.3463752778887261,
+        "relative_change": -0.003996820755981956
+      },
+      "alpha95_mrad": {
+        "before": 0.06348254231347177,
+        "after": 0.06254935971481364,
+        "relative_change": -0.014699830294290117
+      },
+      "alpha_rms_mrad": {
+        "before": 0.04021585644728028,
+        "after": 0.040109401856371976,
+        "relative_change": -0.002647080040377947
+      },
+      "current_a": {
+        "before": 2.333984375e-06,
+        "after": 2.3437500000000002e-06,
+        "relative_change": 0.004184100418409997
+      }
+    }
+  },
+  "combined_source_and_step": {
+    "old_count": 1024,
+    "new_count": 2048,
+    "old_step_mm": 0.2,
+    "new_step_mm": 0.1,
+    "low": {
+      "d95_um": {
+        "before": 0.7534865033285453,
+        "after": 0.7577541674165607,
+        "relative_change": 0.00566388922583605
+      },
+      "radial_rms_um": {
+        "before": 0.2715076802267594,
+        "after": 0.27045586792451815,
+        "relative_change": -0.0038739688739662936
+      },
+      "alpha95_mrad": {
+        "before": 0.0465462122902117,
+        "after": 0.04711956250223679,
+        "relative_change": 0.012317870430579969
+      },
+      "alpha_rms_mrad": {
+        "before": 0.031118759814308356,
+        "after": 0.031115002026764812,
+        "relative_change": -0.00012075634009733882
+      },
+      "current_a": {
+        "before": 2.3046875e-06,
+        "after": 2.314453125e-06,
+        "relative_change": 0.004237288135593209
+      }
+    },
+    "middle": {
+      "d95_um": {
+        "before": 1.468123849908357,
+        "after": 1.4852206160354828,
+        "relative_change": 0.011645315978071613
+      },
+      "radial_rms_um": {
+        "before": 0.5259784670154495,
+        "after": 0.5258125500528041,
+        "relative_change": -0.0003154444013399038
+      },
+      "alpha95_mrad": {
+        "before": 0.10440045090035542,
+        "after": 0.10283237319085145,
+        "relative_change": -0.015019836561823041
+      },
+      "alpha_rms_mrad": {
+        "before": 0.062451069996238284,
+        "after": 0.06258786108952674,
+        "relative_change": 0.002190372291406728
+      },
+      "current_a": {
+        "before": 2.490234375e-06,
+        "after": 2.5146484375e-06,
+        "relative_change": 0.009803921568627416
+      }
+    },
+    "high": {
+      "d95_um": {
+        "before": 2.195262157202387,
+        "after": 2.1736192620311128,
+        "relative_change": -0.009858911428991202
+      },
+      "radial_rms_um": {
+        "before": 0.7713756867042256,
+        "after": 0.7659631871546311,
+        "relative_change": -0.007016684143520191
+      },
+      "alpha95_mrad": {
+        "before": 0.1715399043780122,
+        "after": 0.17068429781806815,
+        "relative_change": -0.004987798979172786
+      },
+      "alpha_rms_mrad": {
+        "before": 0.09713768472321509,
+        "after": 0.09669188572690135,
+        "relative_change": -0.004589351677302123
+      },
+      "current_a": {
+        "before": 2.7246093750000004e-06,
+        "after": 2.7197265625e-06,
+        "relative_change": -0.0017921146953405742
+      }
+    }
+  },
+  "finite_source_steering": [
+    {
+      "command": "shift_x_50nm",
+      "original_positive_count": 2048,
+      "actual_displacement_nm": [
+        49.99996337391157,
+        -1.8277297596843572e-05
+      ],
+      "target_displacement_nm": [
+        50.0,
+        0.0
+      ],
+      "displacement_error_nm": [
+        -3.662608843058024e-05,
+        -1.8277297596843572e-05
+      ],
+      "mechanical_mean_angle_change_mrad": [
+        9.199870392988144e-09,
+        -5.0380176476482776e-09
+      ],
+      "mechanical_angle_change_norm_mrad": 1.0489005532737377e-08,
+      "width_and_angle_comparison": {
+        "d95_um": {
+          "before": 0.969117771242415,
+          "after": 0.9691177755800597,
+          "relative_change": 4.475869452846837e-09
+        },
+        "radial_rms_um": {
+          "before": 0.3463752778887261,
+          "after": 0.3463752784782541,
+          "relative_change": 1.701992324854018e-09
+        },
+        "alpha95_mrad": {
+          "before": 0.06254935971481364,
+          "after": 0.06254935836546323,
+          "relative_change": -2.1572569508521156e-08
+        },
+        "alpha_rms_mrad": {
+          "before": 0.040109401856371976,
+          "after": 0.04010940196739509,
+          "relative_change": 2.7680071568170206e-09
+        },
+        "current_a": {
+          "before": 2.3437500000000002e-06,
+          "after": 2.3437500000000002e-06,
+          "relative_change": 0.0
+        }
+      },
+      "source_arrivals": 480,
+      "current_a": 2.3437500000000002e-06,
+      "beam_statistics_about_actual_weighted_chief": true
+    },
+    {
+      "command": "shift_y_50nm",
+      "original_positive_count": 2048,
+      "actual_displacement_nm": [
+        1.828190660023519e-05,
+        49.99996337074934
+      ],
+      "target_displacement_nm": [
+        0.0,
+        50.0
+      ],
+      "displacement_error_nm": [
+        1.828190660023519e-05,
+        -3.6629250658393175e-05
+      ],
+      "mechanical_mean_angle_change_mrad": [
+        5.037170163686472e-09,
+        9.201725052683822e-09
+      ],
+      "mechanical_angle_change_norm_mrad": 1.0490225317080767e-08,
+      "width_and_angle_comparison": {
+        "d95_um": {
+          "before": 0.969117771242415,
+          "after": 0.9691177708551798,
+          "relative_change": -3.995750397223219e-10
+        },
+        "radial_rms_um": {
+          "before": 0.3463752778887261,
+          "after": 0.34637527786265293,
+          "relative_change": -7.527423129261024e-11
+        },
+        "alpha95_mrad": {
+          "before": 0.06254935971481364,
+          "after": 0.06254935937417377,
+          "relative_change": -5.445936812620289e-09
+        },
+        "alpha_rms_mrad": {
+          "before": 0.040109401856371976,
+          "after": 0.04010940178238683,
+          "relative_change": -1.8445835969771451e-09
+        },
+        "current_a": {
+          "before": 2.3437500000000002e-06,
+          "after": 2.3437500000000002e-06,
+          "relative_change": 0.0
+        }
+      },
+      "source_arrivals": 480,
+      "current_a": 2.3437500000000002e-06,
+      "beam_statistics_about_actual_weighted_chief": true
+    }
+  ]
+}

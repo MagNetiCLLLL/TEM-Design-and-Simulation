@@ -1,0 +1,290 @@
+{
+  "status": "COMPLETE",
+  "scope": "Classical physical-gun source for a Microprobe configuration at the existing Mini Condenser magnitude",
+  "arm": "new",
+  "elapsed_seconds": 220.45814090000204,
+  "input_digest": "9f4f11f1055c7bdaa4be27bf2506c30ceff9f82f8a2e6f0befde195c1dbe8b0f",
+  "gun_dependency_signature": "9d1e6987713f21965d1bc36454336e3abfe4ac499b1a7b444d3a17656be7547b",
+  "implementation": "49aed5b67606f738bd69b39a9c093583b0e1a7569d55b387ee6c5a3ea9cfabf8",
+  "extractor": {
+    "start_mm": 0.30000000000000004,
+    "end_mm": 1.3,
+    "bore_diameter_mm": 0.5,
+    "outer_diameter_mm": 20.0,
+    "counterbore_depth_mm": 0.45,
+    "counterbore_diameter_mm": 4.0
+  },
+  "geometrical_acceptance": {
+    "model": "on_axis_straight_rays_without_fields",
+    "origin_z_mm": 0.0,
+    "half_angle_deg": 10.885527054658738,
+    "full_cone_angle_deg": 21.771054109317475,
+    "limiting_z_mm": 1.3,
+    "limiting_radius_mm": 0.25,
+    "entrance_half_angle_deg": 18.43494882292201,
+    "boundary": "grazing_metal_is_intercepted",
+    "field_acceptance": "requires_launch_position_energy_and_field_transport"
+  },
+  "reference_current_a": 1e-05,
+  "emitted_positive_current_points": 2048,
+  "gun_exit": {
+    "count": 2048,
+    "weight_sum": 1.0,
+    "current_a": 1e-05,
+    "effective_count": 2048.0,
+    "radial_rms_m": 6.939487901553253e-06,
+    "d95_m": 2.41802996006819e-05,
+    "alpha_rms_rad": 6.2656893529797566e-06,
+    "alpha95_rad": 1.0922581235259094e-05,
+    "centroid_m": [
+      -2.3229404877733414e-08,
+      -5.888724812124863e-09
+    ]
+  },
+  "losses": {},
+  "physical_interception_balance_a": 0.0,
+  "planes": [
+    {
+      "count": 2048,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 2048.0,
+      "radial_rms_m": 3.354125134622481e-07,
+      "d95_m": 1.1647854683185853e-06,
+      "alpha_rms_rad": 0.0002844796359125812,
+      "alpha95_rad": 0.0004956145595620184,
+      "centroid_m": [
+        -1.1244532630565128e-09,
+        -2.8962061852135825e-10
+      ],
+      "z_mm": 0.75,
+      "crossing_count": 2048,
+      "mean_kinetic_energy_ev": 3620.2622848491173
+    },
+    {
+      "count": 2048,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 2048.0,
+      "radial_rms_m": 5.132401351553957e-07,
+      "d95_m": 1.784109654870605e-06,
+      "alpha_rms_rad": 0.00033722094108390395,
+      "alpha95_rad": 0.0005871471665175937,
+      "centroid_m": [
+        -1.720209228867813e-09,
+        -4.410389487048855e-10
+      ],
+      "z_mm": 1.3,
+      "crossing_count": 2048,
+      "mean_kinetic_energy_ev": 3997.994720797866
+    },
+    {
+      "count": 2048,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 2048.0,
+      "radial_rms_m": 3.345944395203326e-06,
+      "d95_m": 1.1648498771030553e-05,
+      "alpha_rms_rad": 0.0003025992664443084,
+      "alpha95_rad": 0.0005268881645779733,
+      "centroid_m": [
+        -1.1210802651059626e-08,
+        -2.8546018576059723e-09
+      ],
+      "z_mm": 10.0,
+      "crossing_count": 2048,
+      "mean_kinetic_energy_ev": 4526.204852723183
+    },
+    {
+      "count": 2048,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 2048.0,
+      "radial_rms_m": 5.6914969492696854e-06,
+      "d95_m": 1.9816597289862163e-05,
+      "alpha_rms_rad": 0.0002749591750638657,
+      "alpha95_rad": 0.00047875877901623013,
+      "centroid_m": [
+        -1.906934403342104e-08,
+        -4.853155236455599e-09
+      ],
+      "z_mm": 18.0,
+      "crossing_count": 2048,
+      "mean_kinetic_energy_ev": 5375.647521938676
+    },
+    {
+      "count": 2048,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 2048.0,
+      "radial_rms_m": 6.528017282918911e-06,
+      "d95_m": 2.2730214577674034e-05,
+      "alpha_rms_rad": 1.053794567866985e-05,
+      "alpha95_rad": 1.8297938953999717e-05,
+      "centroid_m": [
+        -2.1871886070724123e-08,
+        -5.565588972603324e-09
+      ],
+      "z_mm": 24.0,
+      "crossing_count": 2048,
+      "mean_kinetic_energy_ev": 8996.953031748653
+    },
+    {
+      "count": 2048,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 2048.0,
+      "radial_rms_m": 6.087095027636459e-06,
+      "d95_m": 2.1200296545845284e-05,
+      "alpha_rms_rad": 1.326008029312874e-06,
+      "alpha95_rad": 2.3059616038287914e-06,
+      "centroid_m": [
+        -2.0388045448103373e-08,
+        -5.181118410284883e-09
+      ],
+      "z_mm": 100.0,
+      "crossing_count": 2048,
+      "mean_kinetic_energy_ev": 82866.70918623435
+    },
+    {
+      "count": 2048,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 2048.0,
+      "radial_rms_m": 6.908159503190182e-06,
+      "d95_m": 2.4071033500334756e-05,
+      "alpha_rms_rad": 6.265689350713778e-06,
+      "alpha95_rad": 1.0922581231410827e-05,
+      "centroid_m": [
+        -2.3124661847775257e-08,
+        -5.862304849993876e-09
+      ],
+      "z_mm": 445.0,
+      "crossing_count": 2048,
+      "mean_kinetic_energy_ev": 300000.3000000192
+    },
+    {
+      "count": 2048,
+      "weight_sum": 1.0,
+      "current_a": 1e-05,
+      "effective_count": 2048.0,
+      "radial_rms_m": 6.939487901553253e-06,
+      "d95_m": 2.41802996006819e-05,
+      "alpha_rms_rad": 6.2656893529797566e-06,
+      "alpha95_rad": 1.0922581235259094e-05,
+      "centroid_m": [
+        -2.3229404877733414e-08,
+        -5.888724812124863e-09
+      ],
+      "z_mm": 450.0,
+      "crossing_count": 2048,
+      "mean_kinetic_energy_ev": 300000.3000000293
+    }
+  ],
+  "launch_sha256": {
+    "x_m": "38a2143397026f329f45eb9701cca7bf849670696f820e18d305e11c8e0df752",
+    "y_m": "f9af14d775723158f45d400b3246b7803218edb459e5c22feaa4b2c51d691a1b",
+    "tx_rad": "aae12e0216be24762c564d7762749f394bc9b3132f5c0b011a85040b32602b9a",
+    "ty_rad": "6e507c620e1a266f9e7e16151871550aa3419a9a159b6563aac83131630cfb17",
+    "weight": "f77a53eb85ab24f45e305de5bc3c326779264d2008e98416faa0994a1075e3ac",
+    "ray_id": "44fc69e8582909e88f9ef917aef3e97f4b272c8299d3918ca1d1f5c5cf576550",
+    "energy_offset_ev": "26478115a9f98588cdd19f913d8c0c8d3d63de75c6ea342cb46f7fd9de0a92fa"
+  },
+  "source_sha256": {
+    "gun_z_mm": "8b077d562069c75856683d5f8df56158c988183a0bf22fd3f275b944d4d65012",
+    "gun_x_m": "d83805ae63158d4c15fcdb34fda3792553f965ef30cff40f6082156166fbddc7",
+    "gun_y_m": "c964a5111b1f43a8453993429517e11731313a35f2ab2075ebe10cdeffe07ad8",
+    "gun_tx_rad": "ae75df98f0fa4d7390186ae245a59930cb89a2edf0e3b79d59b3472f7bf05cbe",
+    "gun_ty_rad": "75091af72a0f2fd4541cc216dc086f169d21907afd04ca1efadc52635c2daf93",
+    "gun_flight_time_s": "c291b302f865d8259ce60e5f156915be207a1f9f71ec6c8989075fe20dab0eb7",
+    "gun_blocked_z_mm": "39d8c1e4cb164908e783b8c33c709dc92bc74d07204841e4486076cabaf72b5d",
+    "gun_blocked_key": "c55a8063b230299a6c33d3f6d84b200e7dd9699f0afaf779bc8976e2be88ae9f",
+    "gun_exit_x_m": "5b2ed625cd905cb55340f03f39618704e7db438356a0f33e4c8d1904c6be5daf",
+    "gun_exit_y_m": "5442f87844bf6d90a66f75f35bf6f80a236f3ebc9c1f1278c72733070a96887e",
+    "gun_exit_tx_rad": "e6053ee993d6d00d7d3dcc72badd065a11ee6af51dcf3c35c3d5fc27c7a2b663",
+    "gun_exit_ty_rad": "02ea46695013cc567dd69b133a54afaffbc4a5bc0982bcdfb1e7e1709110e9eb",
+    "gun_exit_flight_time_s": "d603c7a8047d4ffbe6ef678cca71d13a5d796dc9101cf89f56ae02dc4f21bd5e",
+    "gun_exit_energy_offset_ev": "f462b802cc4a977d188764173a24f1c10d1e636f0f38fc438cc9570b041de2a9",
+    "gun_exit_weight": "f77a53eb85ab24f45e305de5bc3c326779264d2008e98416faa0994a1075e3ac",
+    "gun_exit_ray_id": "44fc69e8582909e88f9ef917aef3e97f4b272c8299d3918ca1d1f5c5cf576550",
+    "gun_exit_alive": "fae4c3c6b3cf005b8c6dddad39228e1260a26f805c08c9a92c7be22dfdfa82be",
+    "emission_ray_id": "44fc69e8582909e88f9ef917aef3e97f4b272c8299d3918ca1d1f5c5cf576550",
+    "emission_position_m": "2f0f1dfc322e2a8d9c0356c61318beb67a4f0fd7b223e65c059e9fadfce27034",
+    "emission_direction": "76ba2bf24921043d2cacd367250bd338723d2b385777a12f53cacec40390a1a0",
+    "emission_normal": "e1e6cb15c55dc1ff7cd71f42879f8a4872f683060784119d7fd669e4b552aea8",
+    "source_id": "44fc69e8582909e88f9ef917aef3e97f4b272c8299d3918ca1d1f5c5cf576550",
+    "weights": "f77a53eb85ab24f45e305de5bc3c326779264d2008e98416faa0994a1075e3ac",
+    "source_energy_offset_ev": "f462b802cc4a977d188764173a24f1c10d1e636f0f38fc438cc9570b041de2a9"
+  },
+  "electrostatic_model": {
+    "model": "closed-classical-gun-electrostatics-v1",
+    "surface_mesh_displacement_m": null,
+    "potential_reference": "work_relative_to_executed_emission_positions",
+    "exit_energy_status": "verified",
+    "transmitted_particle_count": 2048,
+    "minimum_exit_kinetic_energy_ev": 300000.0111367715,
+    "maximum_exit_kinetic_energy_ev": 300000.7967626743,
+    "minimum_expected_exit_kinetic_energy_ev": 300000.0111367656,
+    "maximum_expected_exit_kinetic_energy_ev": 300000.7967626708,
+    "maximum_exit_energy_error_ev": 1.594889909029007e-08,
+    "exit_energy_error_budget_ev": 0.001,
+    "accelerating_voltage_kv": 300.0,
+    "extraction_voltage_kv": 4.0,
+    "electrostatic_field": {
+      "boundary_conditions": {
+        "axis": "axisymmetric_regular",
+        "cathode": {
+          "extent": "entire_radial_domain_at_z_zero",
+          "material_extension": "z_below_zero_is_constant_potential_conductor_for_interception",
+          "rise_v": 0.0,
+          "type": "planar_equipotential"
+        },
+        "exit": {
+          "location": "numerical_cut_inside_continuing_grounded_liner",
+          "rise_v": 300000.0,
+          "type": "uniform_dirichlet"
+        },
+        "grounded_liner": "physical_shells_and_radial_step_faces_at_ground",
+        "metal": "annular_dirichlet",
+        "radial_outer": "natural_zero_normal_derivative"
+      },
+      "cache_bytes": 5349497,
+      "cache_hit": true,
+      "cache_path": "C:\\Users\\Royal_Gray\\AppData\\Local\\TEMSimulator\\cache\\gun-fields\\34aa4214de8ed871d3a08d2a72b5cbd07fa36ccf4df228dd8b3496030e1000e6.npz",
+      "cpu_resources": {
+        "available_cpus": 12,
+        "blas_threads": 1,
+        "numba_threads": 1,
+        "numerical_jobs": 1,
+        "numerical_thread_budget": 1
+      },
+      "elements": 1815840,
+      "grid_shape": [
+        313,
+        2911
+      ],
+      "limitations": [
+        "The flat source uses an idealised full-domain planar cathode, not a nanometre emission patch.",
+        "Annular electrode contours use current mechanical bore, thickness and outer dimensions.",
+        "Grounding the downstream liner is an explicit simulator electrical design, not measured wiring.",
+        "Radial joints between stepped liner shells are idealised zero-thickness grounded faces.",
+        "No space charge, image charge, dielectric polarization or tunnelling-current prediction.",
+        "Magnetic controls, aperture absorption and any installed monochromator remain separate required operations.",
+        "Field evaluation is strict inside the solved domain; no analytic fallback or energy reset."
+      ],
+      "linear_residual": 2.037268131971359e-15,
+      "load_seconds": 0.06698519999918062,
+      "maximum_axial_cell_m": 0.10302791397559308,
+      "minimum_axial_cell_m": 1.0000000005838672e-07,
+      "minimum_radial_cell_m": 1.4705882352940985e-05,
+      "model_status": "classical_planar_cathode_with_explicit_grounded_outlet",
+      "potential_reference": "rise_relative_to_original_tip_v",
+      "request_sha256": "34aa4214de8ed871d3a08d2a72b5cbd07fa36ccf4df228dd8b3496030e1000e6",
+      "schema": "closed-classical-gun-electrostatics-v1",
+      "solve_seconds": 6.6428395002149045,
+      "vertices": 911143
+    },
+    "launch_boundary": null,
+    "scope": "classical prescribed outgoing flux; no coherent phase or tunnelling prediction"
+  }
+}

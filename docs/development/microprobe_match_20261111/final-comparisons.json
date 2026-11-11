@@ -1,0 +1,144 @@
+{
+  "scope": "Physical controls, with no restored clipping or altered source current",
+  "hexapole_amplitude_control": {
+    "original_source_count": 2048,
+    "fraction_of_inherited_amplitudes": 0.1,
+    "same_upstream_controls": true,
+    "same_current": true,
+    "before_unresolved": {
+      "probe_hp2_hexapole to probe_tl22_lens": [
+        {
+          "basin_directional_sign_transitions": [
+            {
+              "converging_to_diverging": 0,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 0,
+              "transition_brackets_mm": []
+            },
+            {
+              "converging_to_diverging": 0,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 1,
+              "transition_brackets_mm": []
+            }
+          ],
+          "radial_bracket_mm": [
+            1145.0,
+            1145.4931818181817
+          ],
+          "radial_root_interpolated_mm": 1145.4529386971294,
+          "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+          "reason": "no_bounded_all_direction_covariance_growth_bracket",
+          "representative_z_mm": 1145.4931818181817,
+          "search_basin_mm": [
+            1144.5,
+            1152.4454545454546
+          ]
+        }
+      ],
+      "probe_tl21_lens to probe_hp1_hexapole": [
+        {
+          "basin_directional_sign_transitions": [
+            {
+              "converging_to_diverging": 0,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 0,
+              "transition_brackets_mm": []
+            },
+            {
+              "converging_to_diverging": 1,
+              "diverging_to_converging": 1,
+              "eigenvalue_order": 1,
+              "transition_brackets_mm": [
+                [
+                  1265.9186274509805,
+                  1266.4176470588236
+                ],
+                [
+                  1278.3941176470587,
+                  1278.8931372549018
+                ]
+              ]
+            }
+          ],
+          "radial_bracket_mm": [
+            1290.370588235294,
+            1290.8696078431371
+          ],
+          "radial_root_interpolated_mm": 1290.8018922901433,
+          "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+          "reason": "no_bounded_all_direction_covariance_growth_bracket",
+          "representative_z_mm": 1290.8696078431371,
+          "search_basin_mm": [
+            1262.4254901960785,
+            1300.85
+          ]
+        }
+      ]
+    },
+    "after_unresolved": {},
+    "metrics": {
+      "d95_um": {
+        "before": 2.195008755363711,
+        "after": 2.176031587002348,
+        "relative_change": -0.008645600303411327
+      },
+      "radial_rms_um": {
+        "before": 0.7737059100054273,
+        "after": 0.7723178930866014,
+        "relative_change": -0.001793985157507949
+      },
+      "alpha95_mrad": {
+        "before": 0.17242461594386554,
+        "after": 0.12476564156335383,
+        "relative_change": -0.2764047007999574
+      },
+      "alpha_rms_mrad": {
+        "before": 0.09799455288343407,
+        "after": 0.08735175962505025,
+        "relative_change": -0.10860596783418752
+      },
+      "current_a": {
+        "before": 2.7294921875e-06,
+        "after": 2.7294921875e-06,
+        "relative_change": 0.0
+      }
+    }
+  },
+  "final_nominal_count_control": {
+    "before_count": 1024,
+    "after_count": 2048,
+    "step_mm": 0.1,
+    "same_optical_drives": true,
+    "metrics": {
+      "d95_um": {
+        "before": 0.97060222052867,
+        "after": 0.9705348773003107,
+        "relative_change": -6.938293250813299e-05
+      },
+      "radial_rms_um": {
+        "before": 0.34747835132877475,
+        "after": 0.34615684837766225,
+        "relative_change": -0.00380312311848785
+      },
+      "alpha95_mrad": {
+        "before": 0.05479048610699985,
+        "after": 0.05489412799584211,
+        "relative_change": 0.0018916037474070446
+      },
+      "alpha_rms_mrad": {
+        "before": 0.03930364011495327,
+        "after": 0.03916047075549334,
+        "relative_change": -0.0036426488498570997
+      },
+      "current_a": {
+        "before": 2.333984375e-06,
+        "after": 2.3437500000000002e-06,
+        "relative_change": 0.004184100418409997
+      }
+    }
+  },
+  "step_scope": "The separate comparisons.json integration refinement belongs to inherited hexapole drives, not a new final-family step test",
+  "final_full_aberration_qualification": "NOT_RUN",
+  "final_full_raster_qualification": "NOT_RUN"
+}

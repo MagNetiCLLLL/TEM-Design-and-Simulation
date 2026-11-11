@@ -17,14 +17,84 @@ imaging, convergence, aberrations and downstream focus.
 | Mini Condenser | Select the probe/illumination mode, Nanoprobe or Microprobe. | Preserve the current magnitude unless a deliberate tuning operation changes it. Existing mode-specific polarity rules remain in force. A change can require downstream focus revalidation. |
 | Mini Condenser and Objective | Jointly form the probe. | Account for both fields, their geometry, and the incoming beam. Do not infer a focused probe from a mode label. |
 | Objective | Control whether the probe is focused on the specimen. | Evaluate focus at the actual specimen entrance/reference plane and report which plane is used. Preserve defocus when the user deliberately perturbs a lens. |
-| Probe Corrector | Correct aberrations while maintaining the required optical conjugacies. | Compare the executed source-image waist between TL22 and TL21 with the executed waist between the two AC scan coils, but do not assume equal semi-angles. Whole-corrector mechanical faces and fringe-field reference planes are supplementary observations. Report actual transmitted populations and a common surviving cohort with original weights. |
-| AC Scan / DP12 | The same physical scan-coil assembly, named DP12 by CEOS in the probe-corrected system (user confirmation, 2026-11-07). | Its common tilt centre is to coincide with the front focal plane of the downstream Mini Condenser plus Upper Objective combination, converting a beam tilt into a probe shift at the specimen. Keep this distinct from the upstream C3 Lens. The software control/reference alias adds no separate physical field; scan and alignment drives share the physical coil limits. |
+| Probe Corrector | Correct aberrations while maintaining the required optical conjugacies. | For the specified STEM Nanoprobe branch, compare the executed source-image waist between TL22 and TL21 with the executed waist between the two AC scan coils, but do not assume equal semi-angles. Microprobe requires its own source-image and pupil-plane survey. Whole-corrector mechanical faces and fringe-field reference planes are supplementary observations. Report actual transmitted populations and a common surviving cohort with original weights. |
+| AC Scan / DP12 | The same physical scan-coil assembly, named DP12 by CEOS in the probe-corrected system (user confirmation, 2026-11-07). | For the specified STEM Nanoprobe branch, its common tilt centre is to coincide with the front focal plane of the downstream Mini Condenser plus Upper Objective combination, converting a beam tilt into a probe shift at the specimen. In Microprobe, measure the two-coil mechanical shift/tilt response independently; a static source waist need not lie within the coils. Keep this distinct from the upstream C3 Lens. The software control/reference alias adds no separate physical field; scan and alignment drives share the physical coil limits. |
 
 The stored presets can assign several controls together. Their values are
 reference starting points, not independent guarantees for each role. AC/Descan
 calibration changes scan-drive response matrices, not these illumination lens
 excitations. Descan remains a control channel on the existing shared
 Image/Diffraction physical deflector; it is not an extra magnetic element.
+
+## Microprobe basic tuning requested on 2026-11-11
+
+Start from the current, explicitly identified instrument configuration. Reverse
+the Mini Condenser polarity relative to Nanoprobe while preserving its current
+magnitude for the initial comparison. The software's wiring convention is
+positive for Microprobe and negative for Nanoprobe; these signed values are not
+an OEM current-sign calibration. Keep this mode selection distinct from the
+C3 Normal/Large angle branch.
+
+Use C2 and C3 jointly to change the specimen-plane illumination diameter while
+retaining approximately parallel incident electrons. Initially keep C1, Mini
+magnitude, Objective, corrector drives, source law and physical apertures fixed.
+Report any subsequent adjustment to them as a separate design step. Do not
+replace this starting point with a historical Microprobe preset implicitly.
+
+Measure native current-weighted D95, RMS radius, mechanical alpha95 and angular
+RMS at the actual specimen upper surface. Quantify the local axial change of
+the illumination area and distinguish radial vergence from azimuthal rotation
+in the Objective immersion field. A small canonical-angle residual or zero
+radial curvature alone does not establish mechanical parallelism. Microprobe
+parallel illumination does not require a Nanoprobe-sized waist at the specimen.
+
+Recheck the internal corrector source images when C2/C3 change. The existing
+precise CEOS-matching contract below concerns STEM Nanoprobe; a Microprobe
+illumination candidate does not inherit that qualification or the historical
+Microprobe crossover baseline merely because its area and angle are suitable.
+Keep a basic parallel-illumination candidate distinct from a fully matched
+corrector operating preset. The initial measured family is recorded in the
+[Microprobe study](development/microprobe_20261111/README.md).
+
+The subsequent [Microprobe conjugacy study](development/microprobe_match_20261111/README.md)
+uses mode-specific source-image counts and independent native pupil/steering
+measurements. A parallel TEM source image upstream of the specimen is distinct
+from the direct-to-specimen Nanoprobe focus requirement. A source-image waist,
+an aperture conjugate, and a driven virtual pivot are different optical objects.
+Do not impose either the Nanoprobe AC-waist rule or a historical Microprobe
+reference count on a newly measured Microprobe family. Distinguish bounded
+two-dimensional source images from radial-only caustics and retain unresolved
+directional evidence explicitly. Matching paraxial conjugacy does not establish
+complete hexapole aberration correction.
+
+### Probe corrector in conventional TEM illumination
+
+Qualify the present nearly parallel TEM family by its incident illumination:
+diameter, mechanical angular distribution, spatial uniformity, local direction,
+physical interception and shift/tilt response. The pre-specimen probe corrector
+acts on the illumination/probe-forming channel; a post-specimen image corrector
+acts on the TEM imaging channel. See the manufacturer descriptions of
+[DCOR/ASCOR](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor)
+and [CETCOR](https://www.ceos-gmbh.de/en/produkte/temcorrectors/cetcor).
+
+There is no established universal TEM hexapole excitation ratio for this model.
+The measured 10% family is an empirical illumination candidate, not an OEM
+setting or proof of active spherical-aberration cancellation. Do not reject a
+conventional TEM illumination point solely because it lacks STEM Nanoprobe
+aberration qualification. Conversely, acceptable D95 and alpha95 do not prove
+uniform illumination or cancellation of nonlinear aberrations. FEI's
+[multipole-corrector disclosure](https://patents.google.com/patent/US20210159044A1/en)
+identifies unequal hexapole excitations, beam radii and asymmetric transfer
+optics as possible sources of uncancelled aberrations.
+
+The [Cooper et al. holography experiment](https://doi.org/10.1063/1.3195088)
+did not use its installed probe corrector, but also used a special Lorentz lens
+configuration with the objective and third condenser lens off. This is not a
+universal ordinary-TEM prescription. A statement that a corrector was not used
+does not specify that every adapter/transfer lens was de-energized. Preserve
+the physical relay and distinguish fixed-control multipole comparisons from
+separately retuned illumination candidates. New finite-source comparisons must
+retain at least 1000 original positive-current particles and all absolute losses.
 
 ## Current-control families requested on 2026-10-29
 

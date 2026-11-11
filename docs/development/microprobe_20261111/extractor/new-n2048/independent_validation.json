@@ -1,0 +1,38 @@
+{
+  "status": "VERIFIED",
+  "loader": "outputs/fege-focus-20261110/focus/run_focus.py:load_executed_gun",
+  "input_digest": "9f4f11f1055c7bdaa4be27bf2506c30ceff9f82f8a2e6f0befde195c1dbe8b0f",
+  "implementation": "49aed5b67606f738bd69b39a9c093583b0e1a7569d55b387ee6c5a3ea9cfabf8",
+  "gun_dependency_signature": "9d1e6987713f21965d1bc36454336e3abfe4ac499b1a7b444d3a17656be7547b",
+  "original_positive_count": 2048,
+  "exit_survivors": 2048,
+  "gun_exit_count_comparison": {
+    "radial_rms_m": {
+      "n1024": 6.9334155521529945e-06,
+      "n2048": 6.939487901553253e-06,
+      "relative_change": 0.0008758092392677774
+    },
+    "d95_m": {
+      "n1024": 2.389286768556585e-05,
+      "n2048": 2.41802996006819e-05,
+      "relative_change": 0.012030030003041148
+    },
+    "alpha_rms_rad": {
+      "n1024": 6.259353988242079e-06,
+      "n2048": 6.2656893529797566e-06,
+      "relative_change": 0.0010121435454166772
+    },
+    "alpha95_rad": {
+      "n1024": 1.077931829060071e-05,
+      "n2048": 1.0922581235259094e-05,
+      "relative_change": 0.013290538491966153
+    },
+    "current_a": {
+      "n1024": 1e-05,
+      "n2048": 1e-05,
+      "relative_change": 0.0
+    }
+  },
+  "source_nesting_file": "source_nesting.json",
+  "snapshot_diff_file": "snapshot_count_diff.json"
+}

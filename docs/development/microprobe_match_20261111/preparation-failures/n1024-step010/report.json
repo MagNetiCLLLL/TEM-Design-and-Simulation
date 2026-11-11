@@ -1,0 +1,83 @@
+{
+  "control_seeds": [
+    {
+      "changes": [
+        {
+          "after": 51.666666666666664,
+          "before": 51.666666666666664,
+          "field": "percent",
+          "key": "condenser_lens_1"
+        },
+        {
+          "after": 9.86647905743041,
+          "before": 10.561,
+          "field": "percent",
+          "key": "condenser_lens_2"
+        },
+        {
+          "after": 87.60069383703541,
+          "before": 33.6,
+          "field": "percent",
+          "key": "condenser_lens_3"
+        },
+        {
+          "after": 8.579822332681758,
+          "before": 9.196971868437602,
+          "field": "percent",
+          "key": "adapter_lens"
+        },
+        {
+          "after": 49.98112411580294,
+          "before": 53.37284434045485,
+          "field": "percent",
+          "key": "probe_tl22_lens"
+        },
+        {
+          "after": 61.41616138298823,
+          "before": 59.84924813065814,
+          "field": "percent",
+          "key": "probe_tl21_lens"
+        },
+        {
+          "after": 18.63937523368841,
+          "before": 47.656160318977484,
+          "field": "percent",
+          "key": "probe_tl12_lens"
+        },
+        {
+          "after": 26.678337967960122,
+          "before": 26.678337967960122,
+          "field": "percent",
+          "key": "mini_condenser"
+        },
+        {
+          "after": 29.3264011126,
+          "before": 29.3264011126,
+          "field": "percent",
+          "key": "objective_lens"
+        }
+      ],
+      "path": "E:\\tem_simulator_v2\\outputs\\microprobe-match-20261111\\column\\initial-controls.json",
+      "sha256": "f90dc799ca05dcd245e43697f303ae7fc86f6f29ad83194b3a686091680264e8"
+    }
+  ],
+  "driver_sha256": "e0fa771845fc725c5fbf97b1071681d9e8bd68c71590d95cd3002b5c29e6f714",
+  "elapsed_seconds": 4.073470299998007,
+  "error": "AttributeError: 'CondenserLensComponent' object has no attribute 'percent'",
+  "git_head": "c95f350c54713ff391a827e688846e2a5b3d1e7d",
+  "gun_cache": "E:\\tem_simulator_v2\\outputs\\microprobe-20261111\\extractor\\new-n1024",
+  "qualification": "EXPLORATORY",
+  "requested_step_mm": 0.1,
+  "reused_focus_driver_sha256": "4e6d46cde63562e600fcf5a367456bc2b3af9637a8655e6a1365b217c2f19630",
+  "scope": "Classical Microprobe illumination in current combined finite fields",
+  "status": "ERROR",
+  "step_and_source_convergence": "NOT_EVALUATED",
+  "trials": [],
+  "utc": "2026-11-11T10:50:10.255944+00:00",
+  "vacuum_optical_observation": {
+    "cif_path_before": "E:\\tem_simulator_v2\\tests\\fixtures\\cif\\Si.cif",
+    "sample_upper_surface_z_mm": 1599.1999998000001,
+    "specimen_mode_after": "vacuum",
+    "specimen_mode_before": "atomic"
+  }
+}

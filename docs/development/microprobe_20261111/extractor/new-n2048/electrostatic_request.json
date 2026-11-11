@@ -1,0 +1,1239 @@
+{
+  "accelerator_voltage_start_reference": "gun_lens",
+  "boundary_conditions": {
+    "axis": "axisymmetric_regular",
+    "cathode": {
+      "extent": "entire_radial_domain_at_z_zero",
+      "material_extension": "z_below_zero_is_constant_potential_conductor_for_interception",
+      "rise_v": 0.0,
+      "type": "planar_equipotential"
+    },
+    "exit": {
+      "location": "numerical_cut_inside_continuing_grounded_liner",
+      "rise_v": 300000.0,
+      "type": "uniform_dirichlet"
+    },
+    "grounded_liner": "physical_shells_and_radial_step_faces_at_ground",
+    "metal": "annular_dirichlet",
+    "radial_outer": "natural_zero_normal_derivative"
+  },
+  "domain": {
+    "entrance_m": 0.0,
+    "exit_m": 2.98715,
+    "gun_exit_m": 0.45,
+    "outer_radius_m": 0.3
+  },
+  "extraction_v": 4000.0,
+  "ground_assignment": {
+    "extent": "connected_resolved_vacuum_liner_through_downstream_column_tube",
+    "ground_potential_rise_v": 300000.0,
+    "reference": "simulator_electrical_model_design",
+    "start": "accelerator_mechanical_downstream_face",
+    "step_joints": "zero_thickness_grounded_radial_faces",
+    "upstream_apertures": "not_assigned_electrical_potentials"
+  },
+  "grounded_liner": [
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:14",
+      "outer_m": 0.00275,
+      "start_m": 0.37,
+      "stop_m": 0.398
+    },
+    {
+      "inner_m": 0.005,
+      "key": "grounded_outlet:15",
+      "outer_m": 0.00525,
+      "start_m": 0.398,
+      "stop_m": 0.422
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:16",
+      "outer_m": 0.00275,
+      "start_m": 0.422,
+      "stop_m": 0.427
+    },
+    {
+      "inner_m": 0.005,
+      "key": "grounded_outlet:17",
+      "outer_m": 0.00525,
+      "start_m": 0.427,
+      "stop_m": 0.439
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:18",
+      "outer_m": 0.00275,
+      "start_m": 0.439,
+      "stop_m": 0.444
+    },
+    {
+      "inner_m": 0.003,
+      "key": "grounded_outlet:19",
+      "outer_m": 0.0032500000000000003,
+      "start_m": 0.444,
+      "stop_m": 0.446
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:20",
+      "outer_m": 0.00275,
+      "start_m": 0.446,
+      "stop_m": 0.45
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:21",
+      "outer_m": 0.0096,
+      "start_m": 0.45,
+      "stop_m": 1.5345
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:22",
+      "outer_m": 0.00313,
+      "start_m": 1.5345,
+      "stop_m": 1.5965
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:23",
+      "outer_m": 0.00275,
+      "start_m": 1.5965,
+      "stop_m": 1.59919995
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:24",
+      "outer_m": 0.00275,
+      "start_m": 1.59919995,
+      "stop_m": 1.59920005
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:25",
+      "outer_m": 0.00275,
+      "start_m": 1.59920005,
+      "stop_m": 1.5997000000000001
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:26",
+      "outer_m": 0.00275,
+      "start_m": 1.5997000000000001,
+      "stop_m": 1.6017000000000001
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:27",
+      "outer_m": 0.00275,
+      "start_m": 1.6017000000000001,
+      "stop_m": 1.6019
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:28",
+      "outer_m": 0.00313,
+      "start_m": 1.6019,
+      "stop_m": 1.6639000000000002
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:29",
+      "outer_m": 0.00313,
+      "start_m": 1.6639000000000002,
+      "stop_m": 1.6802000000000001
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:30",
+      "outer_m": 0.00313,
+      "start_m": 1.6802000000000001,
+      "stop_m": 1.8094000000000001
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:31",
+      "outer_m": 0.00313,
+      "start_m": 1.8094000000000001,
+      "stop_m": 1.8144000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:32",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.8144000000000002,
+      "stop_m": 1.8344
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:33",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.8344,
+      "stop_m": 1.8444
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:34",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.8444,
+      "stop_m": 1.8469000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:35",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.8469000000000002,
+      "stop_m": 1.8519
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:36",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.8519,
+      "stop_m": 1.8629000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:37",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.8629000000000002,
+      "stop_m": 1.8949
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:38",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.8949,
+      "stop_m": 1.8989
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:39",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.8989,
+      "stop_m": 1.9309
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:40",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.9309,
+      "stop_m": 1.9419000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:41",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.9419000000000002,
+      "stop_m": 1.9469
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:42",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.9469,
+      "stop_m": 1.9519000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:43",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.9519000000000002,
+      "stop_m": 1.9859000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:44",
+      "outer_m": 0.010750000000000001,
+      "start_m": 1.9859000000000002,
+      "stop_m": 2.0369
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:45",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.0369,
+      "stop_m": 2.0639000000000003
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:46",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.0639000000000003,
+      "stop_m": 2.0699
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:47",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.0699,
+      "stop_m": 2.0969
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:48",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.0969,
+      "stop_m": 2.1479
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:49",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.1479,
+      "stop_m": 2.1819
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:50",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.1819,
+      "stop_m": 2.1869
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:51",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.1869,
+      "stop_m": 2.1929000000000003
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:52",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.1929000000000003,
+      "stop_m": 2.2159
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:53",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.2159,
+      "stop_m": 2.2444
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:54",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.2444,
+      "stop_m": 2.2494
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:55",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.2494,
+      "stop_m": 2.2779000000000003
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:56",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.2779000000000003,
+      "stop_m": 2.3009
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:57",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.3009,
+      "stop_m": 2.3069
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:58",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.3069,
+      "stop_m": 2.3119
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:59",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.3119,
+      "stop_m": 2.3684000000000003
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:60",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.3684000000000003,
+      "stop_m": 2.4144
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:61",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.4144,
+      "stop_m": 2.4459
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:62",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.4459,
+      "stop_m": 2.4529
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:63",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.4529,
+      "stop_m": 2.4844
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:64",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.4844,
+      "stop_m": 2.5304
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:65",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.5304,
+      "stop_m": 2.5869
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:66",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.5869,
+      "stop_m": 2.59415
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:67",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.59415,
+      "stop_m": 2.59465
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:68",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.59465,
+      "stop_m": 2.71415
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:69",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.71415,
+      "stop_m": 2.7146500000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:70",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.7146500000000002,
+      "stop_m": 2.8041500000000004
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:71",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.8041500000000004,
+      "stop_m": 2.80465
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:72",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.80465,
+      "stop_m": 2.87415
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:73",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.87415,
+      "stop_m": 2.8746500000000004
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:74",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.8746500000000004,
+      "stop_m": 2.98665
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:75",
+      "outer_m": 0.010750000000000001,
+      "start_m": 2.98665,
+      "stop_m": 2.98715
+    }
+  ],
+  "high_tension_v": 300000.0,
+  "implementation_sha256": {
+    "axisymmetric_cut_field.py": "fd224e27681212dd272d61bd2bf429e0c0a4a340395879e3633e73ca7724a32d",
+    "closed_gun_field.py": "a2b00e292b11601d1bc43bfc577a26a625d0af6bf4770b1a56a42396d5679e25",
+    "cpu_resources.py": "ca1321edf2d740c7e00b956f9a4ade693877b723adc4cdad821a1cf05618e1f7",
+    "electrode_mesh.py": "f3f57ffd6bd4d788fbe43d0f529b85e8a69e617703a2b4f697afc1206641045e",
+    "grounded_tip_field.py": "9bbc637f40742a2235b6bdd0b9ae4e56d13b72222b9b1ee293c64d6d8e9d6f9e",
+    "planar_gun_field.py": "69b3e23a759daf950a9c2a6cd57d1ecfeb261cf730e1d21d3d4d804544b5ebd2"
+  },
+  "libraries": {
+    "numpy": "2.4.6",
+    "scipy": "1.18.0"
+  },
+  "limitations": [
+    "The flat source uses an idealised full-domain planar cathode, not a nanometre emission patch.",
+    "Annular electrode contours use current mechanical bore, thickness and outer dimensions.",
+    "Grounding the downstream liner is an explicit simulator electrical design, not measured wiring.",
+    "Radial joints between stepped liner shells are idealised zero-thickness grounded faces.",
+    "No space charge, image charge, dielectric polarization or tunnelling-current prediction.",
+    "Magnetic controls, aperture absorption and any installed monochromator remain separate required operations.",
+    "Field evaluation is strict inside the solved domain; no analytic fallback or energy reset."
+  ],
+  "model_status": "classical_planar_cathode_with_explicit_grounded_outlet",
+  "numerics": {
+    "cells_per_bore": 16,
+    "exit_extension_mm": 2537.15,
+    "grounded_liner_axial_cells_per_bore": 8.0,
+    "grounded_liner_face_refinement_bores": 2.0,
+    "interpolation": "bilinear-radius-squared-and-z-v1",
+    "linear_residual_tolerance": 1e-09,
+    "maximum_vertices": 1500000,
+    "mesh": "electrode-local-and-grounded-liner-face-graded-v2",
+    "outer_radius_factor": 2.0
+  },
+  "potential_reference": "rise_relative_to_original_tip_v",
+  "rear_gun": {
+    "embedded_tip_electrode_keys": [],
+    "field_status": "omitted_by_infinite_planar_cathode",
+    "insulators": "geometry_and_interception_only_no_dielectric_polarization",
+    "parts": [
+      {
+        "bias_kv": 0.0,
+        "inner_mm": 0.3,
+        "key": "feg_emitter_enclosure",
+        "outer_mm": 10.0,
+        "role": "emitter_enclosure_electrode",
+        "start_mm": -1.8,
+        "stop_mm": -1.5,
+        "voltage_reference": "tip"
+      },
+      {
+        "bias_kv": 0.0,
+        "inner_mm": 0.3,
+        "key": "feg_cathode_holder",
+        "outer_mm": 1.5,
+        "role": "cathode_holder",
+        "start_mm": -5.0,
+        "stop_mm": -4.0,
+        "voltage_reference": "tip"
+      },
+      {
+        "bias_kv": null,
+        "inner_mm": 1.0,
+        "key": "feg_rear_insulator",
+        "outer_mm": 10.0,
+        "role": "insulator",
+        "start_mm": -6.0,
+        "stop_mm": -5.0,
+        "voltage_reference": null
+      }
+    ],
+    "rings": [],
+    "tip_connected_keys": [],
+    "tip_origin_z_mm": 0.0
+  },
+  "required_composition": "ordinary_apertures_magnetic_components_and_installed_monochromator",
+  "rings": [
+    {
+      "inner_m": 0.002,
+      "key": "extractor",
+      "outer_m": 0.01,
+      "potential_rise_v": 4000.0,
+      "start_m": 0.00030000000000000003,
+      "stop_m": 0.00075
+    },
+    {
+      "inner_m": 0.00025,
+      "key": "extractor",
+      "outer_m": 0.01,
+      "potential_rise_v": 4000.0,
+      "start_m": 0.00075,
+      "stop_m": 0.0013000000000000002
+    },
+    {
+      "inner_m": 0.004,
+      "key": "electrostatic_lens",
+      "outer_m": 0.03,
+      "potential_rise_v": 5200.0,
+      "start_m": 0.014000000000000002,
+      "stop_m": 0.022000000000000002
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:0",
+      "outer_m": 0.15,
+      "potential_rise_v": 34680.0,
+      "start_m": 0.0415,
+      "stop_m": 0.0425
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:1",
+      "outer_m": 0.15,
+      "potential_rise_v": 64160.0,
+      "start_m": 0.07705555555555556,
+      "stop_m": 0.07805555555555556
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:2",
+      "outer_m": 0.15,
+      "potential_rise_v": 93640.0,
+      "start_m": 0.11261111111111112,
+      "stop_m": 0.11361111111111112
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:3",
+      "outer_m": 0.15,
+      "potential_rise_v": 123120.0,
+      "start_m": 0.1481666666666667,
+      "stop_m": 0.1491666666666667
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:4",
+      "outer_m": 0.15,
+      "potential_rise_v": 152600.0,
+      "start_m": 0.18372222222222223,
+      "stop_m": 0.18472222222222223
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:5",
+      "outer_m": 0.15,
+      "potential_rise_v": 182080.0,
+      "start_m": 0.21927777777777777,
+      "stop_m": 0.22027777777777777
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:6",
+      "outer_m": 0.15,
+      "potential_rise_v": 211560.0,
+      "start_m": 0.25483333333333336,
+      "stop_m": 0.25583333333333336
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:7",
+      "outer_m": 0.15,
+      "potential_rise_v": 241040.0,
+      "start_m": 0.2903888888888889,
+      "stop_m": 0.2913888888888889
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:8",
+      "outer_m": 0.15,
+      "potential_rise_v": 270520.0,
+      "start_m": 0.3259444444444445,
+      "stop_m": 0.3269444444444445
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:9",
+      "outer_m": 0.15,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.3615,
+      "stop_m": 0.3625
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:14",
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.37,
+      "stop_m": 0.398
+    },
+    {
+      "inner_m": 0.005,
+      "key": "grounded_outlet:15",
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.398,
+      "stop_m": 0.422
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:16",
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.422,
+      "stop_m": 0.427
+    },
+    {
+      "inner_m": 0.005,
+      "key": "grounded_outlet:17",
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.427,
+      "stop_m": 0.439
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:18",
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.439,
+      "stop_m": 0.444
+    },
+    {
+      "inner_m": 0.003,
+      "key": "grounded_outlet:19",
+      "outer_m": 0.0032500000000000003,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.444,
+      "stop_m": 0.446
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:20",
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.446,
+      "stop_m": 0.45
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:21",
+      "outer_m": 0.0096,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.45,
+      "stop_m": 1.5345
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:22",
+      "outer_m": 0.00313,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.5345,
+      "stop_m": 1.5965
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:23",
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.5965,
+      "stop_m": 1.59919995
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:24",
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.59919995,
+      "stop_m": 1.59920005
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:25",
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.59920005,
+      "stop_m": 1.5997000000000001
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:26",
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.5997000000000001,
+      "stop_m": 1.6017000000000001
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet:27",
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.6017000000000001,
+      "stop_m": 1.6019
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:28",
+      "outer_m": 0.00313,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.6019,
+      "stop_m": 1.6639000000000002
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:29",
+      "outer_m": 0.00313,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.6639000000000002,
+      "stop_m": 1.6802000000000001
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:30",
+      "outer_m": 0.00313,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.6802000000000001,
+      "stop_m": 1.8094000000000001
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet:31",
+      "outer_m": 0.00313,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.8094000000000001,
+      "stop_m": 1.8144000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:32",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.8144000000000002,
+      "stop_m": 1.8344
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:33",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.8344,
+      "stop_m": 1.8444
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:34",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.8444,
+      "stop_m": 1.8469000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:35",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.8469000000000002,
+      "stop_m": 1.8519
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:36",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.8519,
+      "stop_m": 1.8629000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:37",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.8629000000000002,
+      "stop_m": 1.8949
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:38",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.8949,
+      "stop_m": 1.8989
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:39",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.8989,
+      "stop_m": 1.9309
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:40",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.9309,
+      "stop_m": 1.9419000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:41",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.9419000000000002,
+      "stop_m": 1.9469
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:42",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.9469,
+      "stop_m": 1.9519000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:43",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.9519000000000002,
+      "stop_m": 1.9859000000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:44",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.9859000000000002,
+      "stop_m": 2.0369
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:45",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.0369,
+      "stop_m": 2.0639000000000003
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:46",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.0639000000000003,
+      "stop_m": 2.0699
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:47",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.0699,
+      "stop_m": 2.0969
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:48",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.0969,
+      "stop_m": 2.1479
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:49",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.1479,
+      "stop_m": 2.1819
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:50",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.1819,
+      "stop_m": 2.1869
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:51",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.1869,
+      "stop_m": 2.1929000000000003
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:52",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.1929000000000003,
+      "stop_m": 2.2159
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:53",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.2159,
+      "stop_m": 2.2444
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:54",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.2444,
+      "stop_m": 2.2494
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:55",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.2494,
+      "stop_m": 2.2779000000000003
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:56",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.2779000000000003,
+      "stop_m": 2.3009
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:57",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.3009,
+      "stop_m": 2.3069
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:58",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.3069,
+      "stop_m": 2.3119
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:59",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.3119,
+      "stop_m": 2.3684000000000003
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:60",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.3684000000000003,
+      "stop_m": 2.4144
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:61",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.4144,
+      "stop_m": 2.4459
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:62",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.4459,
+      "stop_m": 2.4529
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:63",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.4529,
+      "stop_m": 2.4844
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:64",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.4844,
+      "stop_m": 2.5304
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:65",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.5304,
+      "stop_m": 2.5869
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:66",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.5869,
+      "stop_m": 2.59415
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:67",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.59415,
+      "stop_m": 2.59465
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:68",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.59465,
+      "stop_m": 2.71415
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:69",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.71415,
+      "stop_m": 2.7146500000000002
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:70",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.7146500000000002,
+      "stop_m": 2.8041500000000004
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:71",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.8041500000000004,
+      "stop_m": 2.80465
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:72",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.80465,
+      "stop_m": 2.87415
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:73",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.87415,
+      "stop_m": 2.8746500000000004
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:74",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.8746500000000004,
+      "stop_m": 2.98665
+    },
+    {
+      "inner_m": 0.01,
+      "key": "grounded_outlet:75",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 2.98665,
+      "stop_m": 2.98715
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet_joint:0",
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.398,
+      "stop_m": 0.398
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet_joint:1",
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.422,
+      "stop_m": 0.422
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet_joint:2",
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.427,
+      "stop_m": 0.427
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet_joint:3",
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.439,
+      "stop_m": 0.439
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet_joint:4",
+      "outer_m": 0.0032500000000000003,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.444,
+      "stop_m": 0.444
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet_joint:5",
+      "outer_m": 0.0032500000000000003,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.446,
+      "stop_m": 0.446
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet_joint:6",
+      "outer_m": 0.0096,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.45,
+      "stop_m": 0.45
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet_joint:7",
+      "outer_m": 0.0096,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.5345,
+      "stop_m": 1.5345
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet_joint:8",
+      "outer_m": 0.00313,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.5965,
+      "stop_m": 1.5965
+    },
+    {
+      "inner_m": 0.0025,
+      "key": "grounded_outlet_joint:13",
+      "outer_m": 0.00313,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.6019,
+      "stop_m": 1.6019
+    },
+    {
+      "inner_m": 0.0028799999999999997,
+      "key": "grounded_outlet_joint:17",
+      "outer_m": 0.010750000000000001,
+      "potential_rise_v": 300000.0,
+      "start_m": 1.8144000000000002,
+      "stop_m": 1.8144000000000002
+    }
+  ],
+  "schema": "closed-classical-gun-electrostatics-v1",
+  "source_admission": "flat_classical_tip_only"
+}

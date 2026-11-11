@@ -1,0 +1,562 @@
+{
+  "scope": "Postanalysis of complete unchanged native observations",
+  "input_digest": "a22ab54375c51bd779413813e280aa9c6db0a37987c6a717889ec18a72b4140b",
+  "original_positive_count": 1024,
+  "surface": {
+    "z_mm": 1599.1999998000001,
+    "rms_radius_um": 0.34747835132877475,
+    "d95_um": 0.97060222052867,
+    "alpha95_mrad": 0.05479048610699985,
+    "alpha_rms_mrad": 0.03930364011495327,
+    "count": 239,
+    "effective_count": 239.0,
+    "current_a": 2.333984375e-06,
+    "centroid_xy_um": [
+      -0.0010875537102130399,
+      0.00931614981805476
+    ],
+    "mean_slopes_mrad": [
+      -0.0010178202618902838,
+      -0.00025819084118096103
+    ]
+  },
+  "actual_waist_count": 4,
+  "waists": [
+    {
+      "interval": "condenser_lens_1 to condenser_lens_2",
+      "population": "actual_population",
+      "observed_region_bracket_mm": [
+        503.24999999999955,
+        503.25999999999954
+      ],
+      "rms_minimum": {
+        "z_mm": 503.25499999999954,
+        "rms_radius_um": 0.0020619971941498324,
+        "d95_um": 0.007080033188647753,
+        "alpha95_mrad": 2.364734185555054,
+        "alpha_rms_mrad": 1.3724611646980942,
+        "count": 1024,
+        "effective_count": 1024.0,
+        "current_a": 1e-05,
+        "centroid_xy_um": [
+          1.0460172286276955e-05,
+          -8.757383371505138e-06
+        ],
+        "mean_slopes_mrad": [
+          -0.007400297647623665,
+          0.005942635028625495
+        ]
+      },
+      "d95_minimum": {
+        "z_mm": 503.25499999999954,
+        "rms_radius_um": 0.0020619971941498324,
+        "d95_um": 0.007080033188647753,
+        "alpha95_mrad": 2.364734185555054,
+        "alpha_rms_mrad": 1.3724611646980942,
+        "count": 1024,
+        "effective_count": 1024.0,
+        "current_a": 1e-05,
+        "centroid_xy_um": [
+          1.0460172286276955e-05,
+          -8.757383371505138e-06
+        ],
+        "mean_slopes_mrad": [
+          -0.007400297647623665,
+          0.005942635028625495
+        ]
+      },
+      "rms_native_bracket_mm": [
+        503.24999999999955,
+        503.25499999999954,
+        503.25999999999954
+      ],
+      "d95_native_bracket_mm": [
+        503.24999999999955,
+        503.25499999999954,
+        503.25999999999954
+      ],
+      "d95_search_resolved": true,
+      "d95_minus_rms_z_um": 0.0
+    },
+    {
+      "interval": "condenser_lens_1 to condenser_lens_2",
+      "population": "sample_surviving_cohort",
+      "observed_region_bracket_mm": [
+        503.24999999999955,
+        503.25999999999954
+      ],
+      "rms_minimum": {
+        "z_mm": 503.25499999999954,
+        "rms_radius_um": 0.000749274915293228,
+        "d95_um": 0.0021209910876238305,
+        "alpha95_mrad": 0.6916964240057618,
+        "alpha_rms_mrad": 0.49303837251213684,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          -1.6678278123347458e-05,
+          9.516238414991613e-06
+        ],
+        "mean_slopes_mrad": [
+          0.011536394780163927,
+          -0.006875138760676152
+        ]
+      },
+      "d95_minimum": {
+        "z_mm": 503.25499999999954,
+        "rms_radius_um": 0.000749274915293228,
+        "d95_um": 0.0021209910876238305,
+        "alpha95_mrad": 0.6916964240057618,
+        "alpha_rms_mrad": 0.49303837251213684,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          -1.6678278123347458e-05,
+          9.516238414991613e-06
+        ],
+        "mean_slopes_mrad": [
+          0.011536394780163927,
+          -0.006875138760676152
+        ]
+      },
+      "rms_native_bracket_mm": [
+        503.24999999999955,
+        503.25499999999954,
+        503.25999999999954
+      ],
+      "d95_native_bracket_mm": [
+        503.24999999999955,
+        503.25499999999954,
+        503.25999999999954
+      ],
+      "d95_search_resolved": true,
+      "d95_minus_rms_z_um": 0.0
+    },
+    {
+      "interval": "condenser_lens_2 to condenser_lens_3",
+      "population": "actual_population",
+      "observed_region_bracket_mm": [
+        893.5099999999993,
+        893.5199999999993
+      ],
+      "rms_minimum": {
+        "z_mm": 893.5149999999993,
+        "rms_radius_um": 0.001614380113039606,
+        "d95_um": 0.004537261309077679,
+        "alpha95_mrad": 0.37456521587291014,
+        "alpha_rms_mrad": 0.26698140122215136,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          -3.158730216710979e-05,
+          -4.1030718226737956e-05
+        ],
+        "mean_slopes_mrad": [
+          -0.005381926468700149,
+          -0.004891049266315221
+        ]
+      },
+      "d95_minimum": {
+        "z_mm": 893.5149999999993,
+        "rms_radius_um": 0.001614380113039606,
+        "d95_um": 0.004537261309077679,
+        "alpha95_mrad": 0.37456521587291014,
+        "alpha_rms_mrad": 0.26698140122215136,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          -3.158730216710979e-05,
+          -4.1030718226737956e-05
+        ],
+        "mean_slopes_mrad": [
+          -0.005381926468700149,
+          -0.004891049266315221
+        ]
+      },
+      "rms_native_bracket_mm": [
+        893.5099999999993,
+        893.5149999999993,
+        893.5199999999993
+      ],
+      "d95_native_bracket_mm": [
+        893.5099999999993,
+        893.5149999999993,
+        893.5199999999993
+      ],
+      "d95_search_resolved": true,
+      "d95_minus_rms_z_um": 0.0
+    },
+    {
+      "interval": "condenser_lens_2 to condenser_lens_3",
+      "population": "sample_surviving_cohort",
+      "observed_region_bracket_mm": [
+        893.5099999999993,
+        893.5199999999993
+      ],
+      "rms_minimum": {
+        "z_mm": 893.5149999999993,
+        "rms_radius_um": 0.001614380113039606,
+        "d95_um": 0.004537261309077679,
+        "alpha95_mrad": 0.37456521587291014,
+        "alpha_rms_mrad": 0.26698140122215136,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          -3.158730216710979e-05,
+          -4.1030718226737956e-05
+        ],
+        "mean_slopes_mrad": [
+          -0.005381926468700149,
+          -0.004891049266315221
+        ]
+      },
+      "d95_minimum": {
+        "z_mm": 893.5149999999993,
+        "rms_radius_um": 0.001614380113039606,
+        "d95_um": 0.004537261309077679,
+        "alpha95_mrad": 0.37456521587291014,
+        "alpha_rms_mrad": 0.26698140122215136,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          -3.158730216710979e-05,
+          -4.1030718226737956e-05
+        ],
+        "mean_slopes_mrad": [
+          -0.005381926468700149,
+          -0.004891049266315221
+        ]
+      },
+      "rms_native_bracket_mm": [
+        893.5099999999993,
+        893.5149999999993,
+        893.5199999999993
+      ],
+      "d95_native_bracket_mm": [
+        893.5099999999993,
+        893.5149999999993,
+        893.5199999999993
+      ],
+      "d95_search_resolved": true,
+      "d95_minus_rms_z_um": 0.0
+    },
+    {
+      "interval": "mini_condenser to specimen_entrance",
+      "population": "actual_population",
+      "observed_region_bracket_mm": [
+        1583.4199998404276,
+        1583.4999998404294
+      ],
+      "rms_minimum": {
+        "z_mm": 1583.4549998404284,
+        "rms_radius_um": 0.014698056068245568,
+        "d95_um": 0.05575205542919581,
+        "alpha95_mrad": 0.04589894782685732,
+        "alpha_rms_mrad": 0.033339243737983325,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          0.0005738958028383242,
+          0.0002992479104222513
+        ],
+        "mean_slopes_mrad": [
+          0.000847321826323902,
+          0.00022062470955148093
+        ]
+      },
+      "d95_minimum": {
+        "z_mm": 1583.3249998404256,
+        "rms_radius_um": 0.015343310133710241,
+        "d95_um": 0.04615968745464145,
+        "alpha95_mrad": 0.04589407450860222,
+        "alpha_rms_mrad": 0.033338982387067666,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          0.00046350682041500024,
+          0.0002714758695562475
+        ],
+        "mean_slopes_mrad": [
+          0.0008509246491892468,
+          0.00020665981533624108
+        ]
+      },
+      "rms_native_bracket_mm": [
+        1583.4499998404283,
+        1583.4549998404284,
+        1583.4599998404285
+      ],
+      "d95_native_bracket_mm": [
+        1583.3199998404255,
+        1583.3249998404256,
+        1583.3299998404257
+      ],
+      "d95_search_resolved": true,
+      "d95_minus_rms_z_um": -130.00000000283762
+    },
+    {
+      "interval": "mini_condenser to specimen_entrance",
+      "population": "sample_surviving_cohort",
+      "observed_region_bracket_mm": [
+        1583.4199998404276,
+        1583.4999998404294
+      ],
+      "rms_minimum": {
+        "z_mm": 1583.4549998404284,
+        "rms_radius_um": 0.014698056068245568,
+        "d95_um": 0.05575205542919581,
+        "alpha95_mrad": 0.04589894782685732,
+        "alpha_rms_mrad": 0.033339243737983325,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          0.0005738958028383242,
+          0.0002992479104222513
+        ],
+        "mean_slopes_mrad": [
+          0.000847321826323902,
+          0.00022062470955148093
+        ]
+      },
+      "d95_minimum": {
+        "z_mm": 1583.3249998404256,
+        "rms_radius_um": 0.015343310133710241,
+        "d95_um": 0.04615968745464145,
+        "alpha95_mrad": 0.04589407450860222,
+        "alpha_rms_mrad": 0.033338982387067666,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          0.00046350682041500024,
+          0.0002714758695562475
+        ],
+        "mean_slopes_mrad": [
+          0.0008509246491892468,
+          0.00020665981533624108
+        ]
+      },
+      "rms_native_bracket_mm": [
+        1583.4499998404283,
+        1583.4549998404284,
+        1583.4599998404285
+      ],
+      "d95_native_bracket_mm": [
+        1583.3199998404255,
+        1583.3249998404256,
+        1583.3299998404257
+      ],
+      "d95_search_resolved": true,
+      "d95_minus_rms_z_um": -130.00000000283762
+    },
+    {
+      "interval": "probe_tl22_lens to probe_tl21_lens",
+      "population": "actual_population",
+      "observed_region_bracket_mm": [
+        1213.8082497013309,
+        1213.8232497013312
+      ],
+      "rms_minimum": {
+        "z_mm": 1213.813249701331,
+        "rms_radius_um": 0.007273355164284938,
+        "d95_um": 0.02793700947349401,
+        "alpha95_mrad": 0.1723568210700523,
+        "alpha_rms_mrad": 0.12327310967081971,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          2.869733855214403e-06,
+          0.00023933102954643834
+        ],
+        "mean_slopes_mrad": [
+          0.00099499665962119,
+          0.003196170262702799
+        ]
+      },
+      "d95_minimum": {
+        "z_mm": 1213.7882497013304,
+        "rms_radius_um": 0.007963768478644058,
+        "d95_um": 0.022438917806031213,
+        "alpha95_mrad": 0.17235682107024214,
+        "alpha_rms_mrad": 0.1232731096708206,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          -2.200518275628691e-05,
+          0.00015942677229080832
+        ],
+        "mean_slopes_mrad": [
+          0.00099499665980511,
+          0.003196170262647616
+        ]
+      },
+      "rms_native_bracket_mm": [
+        1213.8082497013309,
+        1213.813249701331,
+        1213.818249701331
+      ],
+      "d95_native_bracket_mm": [
+        1213.7832497013303,
+        1213.7882497013304,
+        1213.7932497013142
+      ],
+      "d95_search_resolved": true,
+      "d95_minus_rms_z_um": -25.000000000545697
+    },
+    {
+      "interval": "probe_tl22_lens to probe_tl21_lens",
+      "population": "sample_surviving_cohort",
+      "observed_region_bracket_mm": [
+        1213.8082497013309,
+        1213.8232497013312
+      ],
+      "rms_minimum": {
+        "z_mm": 1213.813249701331,
+        "rms_radius_um": 0.007273355164284938,
+        "d95_um": 0.02793700947349401,
+        "alpha95_mrad": 0.1723568210700523,
+        "alpha_rms_mrad": 0.12327310967081971,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          2.869733855214403e-06,
+          0.00023933102954643834
+        ],
+        "mean_slopes_mrad": [
+          0.00099499665962119,
+          0.003196170262702799
+        ]
+      },
+      "d95_minimum": {
+        "z_mm": 1213.7882497013304,
+        "rms_radius_um": 0.007963768478644058,
+        "d95_um": 0.022438917806031213,
+        "alpha95_mrad": 0.17235682107024214,
+        "alpha_rms_mrad": 0.1232731096708206,
+        "count": 239,
+        "effective_count": 239.0,
+        "current_a": 2.333984375e-06,
+        "centroid_xy_um": [
+          -2.200518275628691e-05,
+          0.00015942677229080832
+        ],
+        "mean_slopes_mrad": [
+          0.00099499665980511,
+          0.003196170262647616
+        ]
+      },
+      "rms_native_bracket_mm": [
+        1213.8082497013309,
+        1213.813249701331,
+        1213.818249701331
+      ],
+      "d95_native_bracket_mm": [
+        1213.7832497013303,
+        1213.7882497013304,
+        1213.7932497013142
+      ],
+      "d95_search_resolved": true,
+      "d95_minus_rms_z_um": -25.000000000545697
+    }
+  ],
+  "ordered_nearest_component_intervals": [
+    [
+      "between",
+      [
+        "condenser_lens_1"
+      ],
+      [
+        "condenser_lens_2"
+      ]
+    ],
+    [
+      "between",
+      [
+        "condenser_deflector"
+      ],
+      [
+        "condenser_lens_3"
+      ]
+    ],
+    [
+      "between",
+      [
+        "probe_hpc_hexapole"
+      ],
+      [
+        "probe_qpc_quadrupole"
+      ]
+    ],
+    [
+      "between",
+      [
+        "mini_condenser"
+      ],
+      [
+        "objective_lens",
+        "sample"
+      ]
+    ]
+  ],
+  "current_losses": {
+    "condenser_aperture_2": {
+      "count": 785,
+      "current_a": 7.666015625000001e-06
+    }
+  },
+  "current_balance_residual_a": 0.0,
+  "tail_original_ids": [
+    {
+      "source_id": 938,
+      "radius_um": 0.5001277728250576,
+      "absolute_axis_radius_um": 0.4966429736271335,
+      "angle_mrad": 0.05820206171465766,
+      "original_current_a": 9.765625e-09
+    },
+    {
+      "source_id": 844,
+      "radius_um": 0.49942127866456343,
+      "absolute_axis_radius_um": 0.49405952096724365,
+      "angle_mrad": 0.058040246732175,
+      "original_current_a": 9.765625e-09
+    },
+    {
+      "source_id": 599,
+      "radius_um": 0.4954165818364143,
+      "absolute_axis_radius_um": 0.49132114125342885,
+      "angle_mrad": 0.05715932705172957,
+      "original_current_a": 9.765625e-09
+    },
+    {
+      "source_id": 704,
+      "radius_um": 0.4933997478501126,
+      "absolute_axis_radius_um": 0.49009990702339534,
+      "angle_mrad": 0.056610404705729846,
+      "original_current_a": 9.765625e-09
+    },
+    {
+      "source_id": 778,
+      "radius_um": 0.4929586862250151,
+      "absolute_axis_radius_um": 0.49450650483170944,
+      "angle_mrad": 0.056116407875558105,
+      "original_current_a": 9.765625e-09
+    }
+  ],
+  "max_radius_to_r95": 1.0305514705141448,
+  "max_angle_to_alpha95": 1.0622658393830522,
+  "minimum_definition": "RMS radius and D95 minima reported separately on actual native planes",
+  "d95_search": "Entire optical interval when it has one resolved RMS source-image region; otherwise a local 0.75 mm neighborhood",
+  "actual_observations_sha256": "c1f1a03dccec88fea081619a0619480ba1c9375d417bb59341a0f7c9931b388a"
+}

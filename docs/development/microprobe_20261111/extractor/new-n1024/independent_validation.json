@@ -1,0 +1,107 @@
+{
+  "status": "VERIFIED",
+  "loader": "outputs/fege-focus-20261110/focus/run_focus.py:load_executed_gun",
+  "input_digest": "61e60475edb60d3b4cc0d20dca0275d2a01af84ccd095797512c8bd49ae9dfa5",
+  "implementation": "49aed5b67606f738bd69b39a9c093583b0e1a7569d55b387ee6c5a3ea9cfabf8",
+  "gun_dependency_signature": "8a2edb1cb8910a39bb555b33b77d769a6ccbc7aa5751b0e2ecf7270fe940bd69",
+  "original_positive_count": 1024,
+  "exit_survivors": 1024,
+  "prior_source_comparison": {
+    "gun_z_mm": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_x_m": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_y_m": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_tx_rad": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_ty_rad": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_flight_time_s": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_blocked_z_mm": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": null
+    },
+    "gun_blocked_key": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": null
+    },
+    "gun_exit_x_m": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_exit_y_m": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_exit_tx_rad": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_exit_ty_rad": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_exit_flight_time_s": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_exit_energy_offset_ev": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_exit_weight": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_exit_ray_id": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "gun_exit_alive": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": null
+    },
+    "emission_ray_id": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "emission_position_m": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "emission_direction": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "emission_normal": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "source_id": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "weights": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "source_energy_offset_ev": {
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0
+    }
+  }
+}

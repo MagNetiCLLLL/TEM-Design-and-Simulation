@@ -1,0 +1,550 @@
+{
+  "scope": "Final selection is explicit; rejected exploratory points and failed preparations are not qualification",
+  "candidates": [
+    {
+      "run": "n1024-first",
+      "index": 0,
+      "selected": false,
+      "d95_um": 0.9709893340757406,
+      "alpha95_mrad": 0.06348231979886565,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 1024,
+      "source_identity": "f6c2c5a3e04c3261f85696a5cd90d0cac108517fafb9ce299f3f0bb88b59628b",
+      "input_digest": "5e54d9e8af49bb8513a8985826d01f4c1a9e5ca137bf43206412c2fbd1e0637d"
+    },
+    {
+      "run": "n1024-first",
+      "index": 1,
+      "selected": false,
+      "d95_um": 1.468123849908357,
+      "alpha95_mrad": 0.10440045090035542,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 1024,
+      "source_identity": "f6c2c5a3e04c3261f85696a5cd90d0cac108517fafb9ce299f3f0bb88b59628b",
+      "input_digest": "16c9575ed4c0ee5861a9d6c00aa3e5d8ff08a522a3f0a69906af48f16686bd1d"
+    },
+    {
+      "run": "n1024-first",
+      "index": 2,
+      "selected": false,
+      "d95_um": 2.2133139609613215,
+      "alpha95_mrad": 0.17369677599014252,
+      "size_angle_in_domain": false,
+      "unresolved_actual_population": {
+        "probe_hp2_hexapole to probe_tl22_lens": [
+          {
+            "basin_directional_sign_transitions": [
+              {
+                "converging_to_diverging": 0,
+                "diverging_to_converging": 0,
+                "eigenvalue_order": 0,
+                "transition_brackets_mm": []
+              },
+              {
+                "converging_to_diverging": 0,
+                "diverging_to_converging": 0,
+                "eigenvalue_order": 1,
+                "transition_brackets_mm": []
+              }
+            ],
+            "radial_bracket_mm": [
+              1145.0,
+              1145.4931818181817
+            ],
+            "radial_root_interpolated_mm": 1145.3404243550171,
+            "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+            "reason": "no_bounded_all_direction_covariance_growth_bracket",
+            "representative_z_mm": 1145.4931818181817,
+            "search_basin_mm": [
+              1144.5,
+              1152.4454545454546
+            ]
+          }
+        ],
+        "probe_tl21_lens to probe_hp1_hexapole": [
+          {
+            "basin_directional_sign_transitions": [
+              {
+                "converging_to_diverging": 1,
+                "diverging_to_converging": 1,
+                "eigenvalue_order": 0,
+                "transition_brackets_mm": [
+                  [
+                    1294.362745098039,
+                    1294.8617647058823
+                  ],
+                  [
+                    1300.0,
+                    1300.3509803921568
+                  ]
+                ]
+              },
+              {
+                "converging_to_diverging": 1,
+                "diverging_to_converging": 1,
+                "eigenvalue_order": 1,
+                "transition_brackets_mm": [
+                  [
+                    1266.9166666666667,
+                    1267.4156862745099
+                  ],
+                  [
+                    1285.0,
+                    1285.3803921568626
+                  ]
+                ]
+              }
+            ],
+            "radial_bracket_mm": [
+              1289.8715686274509,
+              1290.0
+            ],
+            "radial_root_interpolated_mm": 1289.9429135055086,
+            "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+            "reason": "no_bounded_all_direction_covariance_growth_bracket",
+            "representative_z_mm": 1290.0,
+            "search_basin_mm": [
+              1262.4254901960785,
+              1300.85
+            ]
+          }
+        ]
+      },
+      "original_positive_count": 1024,
+      "source_identity": "f6c2c5a3e04c3261f85696a5cd90d0cac108517fafb9ce299f3f0bb88b59628b",
+      "input_digest": "da3a481f1793c6c7e6fc2d1d191019c6068082aeff22caa5a1753fe29e886b5c"
+    },
+    {
+      "run": "n1024-first",
+      "index": 3,
+      "selected": false,
+      "d95_um": 0.7241972628672195,
+      "alpha95_mrad": 0.04566838773372658,
+      "size_angle_in_domain": false,
+      "unresolved_actual_population": {},
+      "original_positive_count": 1024,
+      "source_identity": "f6c2c5a3e04c3261f85696a5cd90d0cac108517fafb9ce299f3f0bb88b59628b",
+      "input_digest": "0b8232898d17507749914e0ebd393e5fd33425e0362e088b45d643e7eaaad3ba"
+    },
+    {
+      "run": "n1024-first",
+      "index": 4,
+      "selected": false,
+      "d95_um": 0.7534865033285453,
+      "alpha95_mrad": 0.0465462122902117,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 1024,
+      "source_identity": "f6c2c5a3e04c3261f85696a5cd90d0cac108517fafb9ce299f3f0bb88b59628b",
+      "input_digest": "55b319b0e156f9d539e55898eba18453bc9c4a3db2dbbb5c1a5dba2e60c6a704"
+    },
+    {
+      "run": "n1024-first",
+      "index": 5,
+      "selected": false,
+      "d95_um": 2.195262157202387,
+      "alpha95_mrad": 0.1715399043780122,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {
+        "probe_hp2_hexapole to probe_tl22_lens": [
+          {
+            "basin_directional_sign_transitions": [
+              {
+                "converging_to_diverging": 0,
+                "diverging_to_converging": 0,
+                "eigenvalue_order": 0,
+                "transition_brackets_mm": []
+              },
+              {
+                "converging_to_diverging": 0,
+                "diverging_to_converging": 0,
+                "eigenvalue_order": 1,
+                "transition_brackets_mm": []
+              }
+            ],
+            "radial_bracket_mm": [
+              1145.0,
+              1145.4931818181817
+            ],
+            "radial_root_interpolated_mm": 1145.4058234414326,
+            "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+            "reason": "no_bounded_all_direction_covariance_growth_bracket",
+            "representative_z_mm": 1145.4931818181817,
+            "search_basin_mm": [
+              1144.5,
+              1152.4454545454546
+            ]
+          }
+        ],
+        "probe_tl21_lens to probe_hp1_hexapole": [
+          {
+            "basin_directional_sign_transitions": [
+              {
+                "converging_to_diverging": 1,
+                "diverging_to_converging": 1,
+                "eigenvalue_order": 0,
+                "transition_brackets_mm": [
+                  [
+                    1295.0,
+                    1295.3607843137254
+                  ],
+                  [
+                    1299.3529411764705,
+                    1299.8519607843136
+                  ]
+                ]
+              },
+              {
+                "converging_to_diverging": 1,
+                "diverging_to_converging": 1,
+                "eigenvalue_order": 1,
+                "transition_brackets_mm": [
+                  [
+                    1266.9166666666667,
+                    1267.4156862745099
+                  ],
+                  [
+                    1285.0,
+                    1285.3803921568626
+                  ]
+                ]
+              }
+            ],
+            "radial_bracket_mm": [
+              1290.0,
+              1290.370588235294
+            ],
+            "radial_root_interpolated_mm": 1290.1027893844023,
+            "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+            "reason": "no_bounded_all_direction_covariance_growth_bracket",
+            "representative_z_mm": 1290.0,
+            "search_basin_mm": [
+              1262.4254901960785,
+              1300.85
+            ]
+          }
+        ]
+      },
+      "original_positive_count": 1024,
+      "source_identity": "f6c2c5a3e04c3261f85696a5cd90d0cac108517fafb9ce299f3f0bb88b59628b",
+      "input_digest": "50acae27d83c1b667b42214f3bda73e729f452b3608b7638c35121b9dadc6961"
+    },
+    {
+      "run": "n1024-hp010-nominal",
+      "index": 0,
+      "selected": false,
+      "d95_um": 0.97060222052867,
+      "alpha95_mrad": 0.05479048610699985,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 1024,
+      "source_identity": "f6c2c5a3e04c3261f85696a5cd90d0cac108517fafb9ce299f3f0bb88b59628b",
+      "input_digest": "a22ab54375c51bd779413813e280aa9c6db0a37987c6a717889ec18a72b4140b"
+    },
+    {
+      "run": "n1024-step010-v2",
+      "index": 0,
+      "selected": false,
+      "d95_um": 0.970986950584207,
+      "alpha95_mrad": 0.06348254231347177,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 1024,
+      "source_identity": "f6c2c5a3e04c3261f85696a5cd90d0cac108517fafb9ce299f3f0bb88b59628b",
+      "input_digest": "88b472b19dd8c4ac19e525a90130caeefe07444730ca554cb25d560ff47af464"
+    },
+    {
+      "run": "n2048-endpoints-v2",
+      "index": 0,
+      "selected": false,
+      "d95_um": 0.7517048902208009,
+      "alpha95_mrad": 0.046650776967949496,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "f3eb69e905e5d91fd3c548e05b8a59f8b6983b105236ee2c6795c5a3a2a0ef06"
+    },
+    {
+      "run": "n2048-endpoints-v2",
+      "index": 1,
+      "selected": false,
+      "d95_um": 2.195008755363711,
+      "alpha95_mrad": 0.17242461594386554,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {
+        "probe_hp2_hexapole to probe_tl22_lens": [
+          {
+            "basin_directional_sign_transitions": [
+              {
+                "converging_to_diverging": 0,
+                "diverging_to_converging": 0,
+                "eigenvalue_order": 0,
+                "transition_brackets_mm": []
+              },
+              {
+                "converging_to_diverging": 0,
+                "diverging_to_converging": 0,
+                "eigenvalue_order": 1,
+                "transition_brackets_mm": []
+              }
+            ],
+            "radial_bracket_mm": [
+              1145.0,
+              1145.4931818181817
+            ],
+            "radial_root_interpolated_mm": 1145.4529386971294,
+            "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+            "reason": "no_bounded_all_direction_covariance_growth_bracket",
+            "representative_z_mm": 1145.4931818181817,
+            "search_basin_mm": [
+              1144.5,
+              1152.4454545454546
+            ]
+          }
+        ],
+        "probe_tl21_lens to probe_hp1_hexapole": [
+          {
+            "basin_directional_sign_transitions": [
+              {
+                "converging_to_diverging": 0,
+                "diverging_to_converging": 0,
+                "eigenvalue_order": 0,
+                "transition_brackets_mm": []
+              },
+              {
+                "converging_to_diverging": 1,
+                "diverging_to_converging": 1,
+                "eigenvalue_order": 1,
+                "transition_brackets_mm": [
+                  [
+                    1265.9186274509805,
+                    1266.4176470588236
+                  ],
+                  [
+                    1278.3941176470587,
+                    1278.8931372549018
+                  ]
+                ]
+              }
+            ],
+            "radial_bracket_mm": [
+              1290.370588235294,
+              1290.8696078431371
+            ],
+            "radial_root_interpolated_mm": 1290.8018922901433,
+            "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+            "reason": "no_bounded_all_direction_covariance_growth_bracket",
+            "representative_z_mm": 1290.8696078431371,
+            "search_basin_mm": [
+              1262.4254901960785,
+              1300.85
+            ]
+          }
+        ]
+      },
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "26bafa9a322b9bb6c17c9ff7dbbfebc82d3af948f5727cdefc3fea91f6318019"
+    },
+    {
+      "run": "n2048-final-hp010-endpoints",
+      "index": 0,
+      "selected": true,
+      "d95_um": 0.7551222242217145,
+      "alpha95_mrad": 0.04313093729106337,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "bc77fd604c3f6e842898a250c5a23baa373c4a4b15057046ec15364b57bdf414"
+    },
+    {
+      "run": "n2048-final-hp010-endpoints",
+      "index": 1,
+      "selected": true,
+      "d95_um": 2.196379770950599,
+      "alpha95_mrad": 0.12562874818999814,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "60308a934e802cf0eccf1cdc32d454ec4119413117ecb165dc662be10241f10a"
+    },
+    {
+      "run": "n2048-high-hp010-v2",
+      "index": 0,
+      "selected": false,
+      "d95_um": 2.176031587002348,
+      "alpha95_mrad": 0.12476564156335383,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "6cad3c10dbd58c4399135a2ff01001dfb85bfd8bf7f6b207f774b24911f22e55"
+    },
+    {
+      "run": "n2048-hp010-family",
+      "index": 0,
+      "selected": false,
+      "d95_um": 0.7493125865016377,
+      "alpha95_mrad": 0.042812944713340344,
+      "size_angle_in_domain": false,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "546df2049ed33e52f32ae8e25fb77c88fad87ef3bb2d450678468cb0215c8bcf"
+    },
+    {
+      "run": "n2048-hp010-family",
+      "index": 1,
+      "selected": true,
+      "d95_um": 0.9705348773003107,
+      "alpha95_mrad": 0.05489412799584211,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "147cdb948218c3a67f25131f22054a738e57687ba266b4486aa4b6e9cfe7bdd3"
+    },
+    {
+      "run": "n2048-hp010-family",
+      "index": 2,
+      "selected": true,
+      "d95_um": 1.48869075560324,
+      "alpha95_mrad": 0.08411497926064627,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "870933b4a237b08745bfd4df5c78e2473272dcef6ef8a4efd4a1eedee24898b6"
+    },
+    {
+      "run": "n2048-step010",
+      "index": 0,
+      "selected": false,
+      "d95_um": 0.969117771242415,
+      "alpha95_mrad": 0.06254935971481364,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "f75839706f35051b205246b912f779b27ae74a1b78733332487f266a7d215abe"
+    },
+    {
+      "run": "n2048-step010",
+      "index": 1,
+      "selected": false,
+      "d95_um": 0.7577541674165607,
+      "alpha95_mrad": 0.04711956250223679,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "d36a9576febb70c6a18fbfd84b362e5ed54c43bb7e0ae1223f741ed7312eb190"
+    },
+    {
+      "run": "n2048-step010",
+      "index": 2,
+      "selected": false,
+      "d95_um": 1.4852206160354828,
+      "alpha95_mrad": 0.10283237319085145,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "80294f5dc31e4b2854761be7697fcb8b3200f0e75c762c3dbf891024340c402c"
+    },
+    {
+      "run": "n2048-step010",
+      "index": 3,
+      "selected": false,
+      "d95_um": 2.1736192620311128,
+      "alpha95_mrad": 0.17068429781806815,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {
+        "probe_hp2_hexapole to probe_tl22_lens": [
+          {
+            "basin_directional_sign_transitions": [
+              {
+                "converging_to_diverging": 0,
+                "diverging_to_converging": 0,
+                "eigenvalue_order": 0,
+                "transition_brackets_mm": []
+              },
+              {
+                "converging_to_diverging": 1,
+                "diverging_to_converging": 0,
+                "eigenvalue_order": 1,
+                "transition_brackets_mm": [
+                  [
+                    1144.5,
+                    1144.9965909090909
+                  ]
+                ]
+              }
+            ],
+            "radial_bracket_mm": [
+              1145.9897727272728,
+              1146.4863636363636
+            ],
+            "radial_root_interpolated_mm": 1146.3779596110062,
+            "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+            "reason": "no_bounded_all_direction_covariance_growth_bracket",
+            "representative_z_mm": 1146.4863636363636,
+            "search_basin_mm": [
+              1144.5,
+              1151.9488636363635
+            ]
+          }
+        ]
+      },
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "3e05e6b461458acd9df3721e8fe364620e1555b95868771c2ca99ce87ea7ff10"
+    },
+    {
+      "run": "n2048-step010",
+      "index": 4,
+      "selected": false,
+      "d95_um": 0.9691177755800597,
+      "alpha95_mrad": 0.06254935836546323,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "217889a3f07dd9f13fa6ead14e0b5cd57f9843e102c13fa6177b9b1371bc1156"
+    },
+    {
+      "run": "n2048-step010",
+      "index": 5,
+      "selected": false,
+      "d95_um": 0.9691177708551798,
+      "alpha95_mrad": 0.06254935937417377,
+      "size_angle_in_domain": true,
+      "unresolved_actual_population": {},
+      "original_positive_count": 2048,
+      "source_identity": "0f9644a6e536544d6eeb9a651777063afef7b1fdc3e0f19c6ee61fb33d7cc441",
+      "input_digest": "6ffd0a09747a321be6a461eae776ed0176d07569f31d3c72090d73e660e54bc2"
+    }
+  ],
+  "preparation_failures": [
+    {
+      "run": "n1024-step010",
+      "error": "AttributeError: 'CondenserLensComponent' object has no attribute 'percent'",
+      "receipt": "preparation-failures/n1024-step010/report.json"
+    },
+    {
+      "run": "n2048-endpoints",
+      "error": "ValueError: Unified particle history requires 2,253,990,928 bytes, exceeding the 2,147,483,648-byte numerical budget with sampled history; use exact-checkpoint history or bounded source batches",
+      "receipt": "preparation-failures/n2048-endpoints/report.json"
+    },
+    {
+      "run": "n2048-high-hp010",
+      "error": "ValueError: Invalid physical optical drive: probe_hpc_hexapole.orientation_rad",
+      "receipt": "preparation-failures/n2048-high-hp010/report.json"
+    }
+  ]
+}

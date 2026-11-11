@@ -1,0 +1,78 @@
+{
+  "status": "VERIFIED",
+  "scope": "Independent retained-array verification; no propagation, clipping or retuning",
+  "profiles": [
+    {
+      "profile": "microprobe-matched-0p75um-si110.toml",
+      "source_ids_and_absolute_weights_equal": true,
+      "gun_exit_transverse_phase_and_clock_bitwise_equal": true,
+      "gun_exit_maximum_energy_roundtrip_error_ev": 5.820766091346741e-11,
+      "gun_exit_energy_roundtrip_within_one_ulp": true,
+      "terminal_interceptions_preserved": true,
+      "metrics": {
+        "d95_um": 0.7551222242217144,
+        "radial_rms_um": 0.27032209394964074,
+        "alpha95_mrad": 0.04313093729106337,
+        "alpha_rms_mrad": 0.03071377564330386,
+        "count": 474,
+        "effective_count": 474.0,
+        "current_a": 2.314453125e-06
+      },
+      "phase_sha256": "37a109404461fc0c08cbfd5dddaa0b4e238ed0d4c82f2ab7ef1a43f55579a161"
+    },
+    {
+      "profile": "microprobe-matched-0p97um-si110.toml",
+      "source_ids_and_absolute_weights_equal": true,
+      "gun_exit_transverse_phase_and_clock_bitwise_equal": true,
+      "gun_exit_maximum_energy_roundtrip_error_ev": 5.820766091346741e-11,
+      "gun_exit_energy_roundtrip_within_one_ulp": true,
+      "terminal_interceptions_preserved": true,
+      "metrics": {
+        "d95_um": 0.9705348773003107,
+        "radial_rms_um": 0.34615684837766225,
+        "alpha95_mrad": 0.05489412799584211,
+        "alpha_rms_mrad": 0.03916047075549334,
+        "count": 480,
+        "effective_count": 480.0,
+        "current_a": 2.3437500000000002e-06
+      },
+      "phase_sha256": "632d0322ac38db92aa1d372cfa8aa148a5bd0a15f0872c094292abafecf03d16"
+    },
+    {
+      "profile": "microprobe-matched-1p49um-si110.toml",
+      "source_ids_and_absolute_weights_equal": true,
+      "gun_exit_transverse_phase_and_clock_bitwise_equal": true,
+      "gun_exit_maximum_energy_roundtrip_error_ev": 5.820766091346741e-11,
+      "gun_exit_energy_roundtrip_within_one_ulp": true,
+      "terminal_interceptions_preserved": true,
+      "metrics": {
+        "d95_um": 1.48869075560324,
+        "radial_rms_um": 0.5252693476916545,
+        "alpha95_mrad": 0.08411497926064627,
+        "alpha_rms_mrad": 0.05932060370330948,
+        "count": 515,
+        "effective_count": 515.0,
+        "current_a": 2.5146484375e-06
+      },
+      "phase_sha256": "ce275380fa3b9cd015b3429ef4ac65c883863f005743ee6b477718943694ef30"
+    },
+    {
+      "profile": "microprobe-matched-2p19um-si110.toml",
+      "source_ids_and_absolute_weights_equal": true,
+      "gun_exit_transverse_phase_and_clock_bitwise_equal": true,
+      "gun_exit_maximum_energy_roundtrip_error_ev": 5.820766091346741e-11,
+      "gun_exit_energy_roundtrip_within_one_ulp": true,
+      "terminal_interceptions_preserved": true,
+      "metrics": {
+        "d95_um": 2.196379770950599,
+        "radial_rms_um": 0.7790259363284168,
+        "alpha95_mrad": 0.12562874818999817,
+        "alpha_rms_mrad": 0.08809353794770185,
+        "count": 560,
+        "effective_count": 560.0,
+        "current_a": 2.7343750000000004e-06
+      },
+      "phase_sha256": "3a51e375a5e5a2d2bcb502a0bfba75f60281eaf8a9e3d2e70bde35f3ddba0d50"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "family_comparison_count_and_step": {
+    "new_source_count": 2048,
+    "new_step_mm": 0.1,
+    "old_source_count": 1024,
+    "old_step_mm": 0.2,
+    "relative_changes": {
+      "oneum": {
+        "alpha95_mrad": -0.0007344612043121979,
+        "alpha_rms_mrad": -0.0017367988060938977,
+        "current_a": 0.006514657980456029,
+        "d95_um": 0.0013039037046331803,
+        "radial_rms_um": -0.001797471227667491
+      },
+      "threequarterum": {
+        "alpha95_mrad": 0.00012747753061481681,
+        "alpha_rms_mrad": -0.0025141735649822916,
+        "current_a": 0.00528169014084523,
+        "d95_um": 0.0006424243202665103,
+        "radial_rms_um": -0.0025854229203355894
+      },
+      "twopointtwoum": {
+        "alpha95_mrad": -0.004227435535857249,
+        "alpha_rms_mrad": -0.00881724040855758,
+        "current_a": -0.008027522935779685,
+        "d95_um": -0.0054092032001685775,
+        "radial_rms_um": -0.008648839349210569
+      }
+    }
+  },
+  "scope": "Comparison of executed physical Microprobe observations; no retracing or source reweighting",
+  "source_refinement_oneum": {
+    "nested_phase_population": false,
+    "new_positive_source_count": 2048,
+    "old_positive_source_count": 1024,
+    "relative_changes": {
+      "alpha95_mrad": -0.0007427944745218573,
+      "alpha_rms_mrad": -0.0017445509214372157,
+      "current_a": 0.006514657980456029,
+      "d95_um": 0.0013039366689280296,
+      "radial_rms_um": -0.0017974393433611846
+    },
+    "step_mm": 0.1
+  },
+  "step_refinement_oneum": {
+    "new_step_mm": 0.1,
+    "old_step_mm": 0.2,
+    "relative_changes": {
+      "alpha95_mrad": 8.339464717899148e-06,
+      "alpha_rms_mrad": 7.765662937586626e-06,
+      "current_a": 0.0,
+      "d95_um": -3.292136740995488e-08,
+      "radial_rms_um": -3.1941719713657335e-08
+    },
+    "source_count": 1024
+  }
+}

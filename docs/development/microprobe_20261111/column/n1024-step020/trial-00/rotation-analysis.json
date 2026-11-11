@@ -1,0 +1,701 @@
+{
+  "schema": "microprobe-saved-phase-rotation-analysis-v1",
+  "status": "COMPLETE_POSTANALYSIS",
+  "physical_qualification": "NOT_ADDED",
+  "formula_checks": {
+    "electron_charge_c": -1.602176634e-19,
+    "basis_round_trip": "PASS",
+    "pure_larmor_removal": "PASS",
+    "formula": "ux=tx-g*y; uy=ty+g*x; g=q*Bz/(2*p)"
+  },
+  "inputs": {
+    "observations.npz": {
+      "path": "E:\\tem_simulator_v2\\outputs\\microprobe-20261111\\column\\n1024-step020\\trial-00\\observations.npz",
+      "sha256": "055a39e41d220d6b7a54c411a1331b644fdf0b1c0df50dcab7491d0cd49163d0"
+    },
+    "inputs.json": {
+      "path": "E:\\tem_simulator_v2\\outputs\\microprobe-20261111\\column\\n1024-step020\\trial-00\\inputs.json",
+      "sha256": "663e695354fd75d2d56526a1d1e2513b9e8961986965733338b1d4e5665e3c2c"
+    },
+    "input.toml": {
+      "path": "E:\\tem_simulator_v2\\outputs\\microprobe-20261111\\column\\n1024-step020\\trial-00\\input.toml",
+      "sha256": "454c0ce12d5d7ee2ceb6ba97e30cd355071204df835efcf259370ba0a0f4a3a1"
+    },
+    "report.json": {
+      "path": "E:\\tem_simulator_v2\\outputs\\microprobe-20261111\\column\\n1024-step020\\trial-00\\report.json",
+      "sha256": "df6a6d51a9f4f16924eb6613a41aaf52d7556ebe457d3df4ccd50cb6f66c8041"
+    }
+  },
+  "script_sha256": "51a0d1b64fa0d7b1fad584206fd6d934ee15359ab1cb143ffbf44c09d88708dc",
+  "executed_input_digest": "5ffecdd3acf40701d8fab40fc97c87bf6eb62bfb91207563d8fcdc34b9bbca65",
+  "source_count": 1024,
+  "original_positive_current_count": 1024,
+  "source_current_a": 1e-05,
+  "original_weight_sum": 1.0,
+  "magnetic_snapshot_digest": "55227ee010c3453e50ee68a89455fbb37f6fa7faff9d7c9f86fbb8020d457185",
+  "magnetic_sources": [
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "adapter_lens",
+    "probe_tl22_lens",
+    "probe_tl21_lens",
+    "probe_tl12_lens",
+    "mini_condenser",
+    "objective_lens",
+    "diffraction_lens",
+    "intermediate_lens",
+    "projector_lens_1",
+    "projector_lens_2",
+    "condenser_stigmator",
+    "objective_stigmator",
+    "diffraction_stigmator",
+    "probe_qph2_quadrupole",
+    "probe_hp2_hexapole",
+    "probe_hpc_hexapole",
+    "probe_qpc_quadrupole",
+    "probe_qph1_quadrupole",
+    "probe_hp1_hexapole",
+    "probe_hpol_hexapole",
+    "probe_qpol_quadrupole",
+    "probe_dph2_deflector:0",
+    "probe_dp22_deflector:0",
+    "probe_dp21_deflector:0",
+    "probe_dph1_deflector:0",
+    "probe_dp11_deflector:0",
+    "ac_deflector:0",
+    "ac_deflector:1",
+    "condenser_deflector:0",
+    "condenser_deflector:1",
+    "beam_deflector:0",
+    "beam_deflector:1",
+    "image_diffraction_deflector:0",
+    "image_diffraction_deflector:1",
+    "feg_deflector",
+    "feg_stigmator"
+  ],
+  "magnetic_capture": "Production static magnetic adapters only; no electric-field solve or particle propagation",
+  "reference_surface_mm": 1599.1999998000001,
+  "surface": {
+    "z_mm": 1599.1999998000001,
+    "positive_current_count": 473,
+    "effective_count": 473.0,
+    "original_current_weight": 0.4619140625,
+    "current_a": 4.619140625000001e-06,
+    "field": {
+      "chief_B_t": [
+        2.7893272108627673e-15,
+        1.6804001264674746e-15,
+        0.47355275696396515
+      ],
+      "axis_B_t": [
+        0.0,
+        0.0,
+        0.4735527569638537
+      ],
+      "sampled_Bz_range_t": [
+        0.4735527569738601,
+        0.47355276314488737
+      ],
+      "chief_A_t_m": [
+        1.672818486419001e-09,
+        -2.7767423064955975e-09,
+        0.0
+      ],
+      "signed_g_per_m_range": [
+        -112.71534724432048,
+        -112.71519861649578
+      ],
+      "mean_g_per_m": -112.71528154670891
+    },
+    "mechanical": {
+      "mean_xy_m": [
+        -1.1727277544737051e-08,
+        -7.064972009217936e-09
+      ],
+      "mean_slopes": [
+        -0.00010723086464196747,
+        -6.67421458760568e-05
+      ],
+      "covariance_xy_tx_ty": [
+        [
+          2.372240182289336e-12,
+          -3.400570046400688e-14,
+          2.1884654108002686e-08,
+          -4.755016514403906e-11
+        ],
+        [
+          -3.4005700464006876e-14,
+          2.3365307769843493e-12,
+          -5.785479972654042e-10,
+          2.1548469381655814e-08
+        ],
+        [
+          2.1884654108002686e-08,
+          -5.785479972654042e-10,
+          0.00020192405003086658,
+          -2.8815353403305505e-06
+        ],
+        [
+          -4.7550165144039304e-11,
+          2.1548469381655814e-08,
+          -2.8815353403305514e-06,
+          0.0001987601242090288
+        ]
+      ],
+      "per_axis_position_slope_covariance_m_rad": [
+        2.1884654108002686e-08,
+        2.1548469381655814e-08
+      ],
+      "per_axis_scalar_vergence_per_m": [
+        9225.311278086036,
+        9222.420519308294
+      ],
+      "fitted_vergence_matrix_per_m": [
+        [
+          9223.686151219437,
+          -113.36897054482911
+        ],
+        [
+          112.18097846673575,
+          9224.053193180634
+        ]
+      ],
+      "symmetric_vergence_eigenvalues_per_m": [
+        9223.247971914752,
+        9224.49137248532
+      ],
+      "radial_vergence_per_m": 9223.876859867045,
+      "tangential_rotation_per_m": 112.767819185512,
+      "radial_angle": {
+        "mean_mrad": 18.687462698585215,
+        "rms_mrad": 20.01560110911788,
+        "absolute95_mrad": 28.736097180408983
+      },
+      "tangential_angle": {
+        "mean_mrad": 0.22861766993914306,
+        "rms_mrad": 0.24471714401393585,
+        "absolute95_mrad": 0.351131873855941
+      },
+      "zero_radius_residual_angle_second_moment_rad2": 0.0,
+      "geometric_projected_rms_emittance_xy_m_rad": [
+        2.725065630496922e-10,
+        2.6947125907941925e-10
+      ],
+      "geometric_rms_4d_volume_m2_rad2": 2.9537200609756408e-21,
+      "geometric_rms_4d_equivalent_emittance_m_rad": 5.4348137603561364e-11,
+      "rms_slope_mrad": 20.017097048270895,
+      "radius_rms_um": 2.169970266910053,
+      "diameter95_um": 6.211649491867267,
+      "decomposition_check": "PASS",
+      "physical_direction_statistics": {
+        "surviving_rays": 473,
+        "surviving_fraction": 1.0,
+        "mean_x_m": -1.1727277544737012e-08,
+        "mean_y_m": -7.06497200921794e-09,
+        "mean_tx_rad": -0.00010723166650898597,
+        "mean_ty_rad": -6.673054077983518e-05,
+        "convergence_rms_rad": 0.020013352129571536,
+        "convergence_95_rad": 0.028730327171426734,
+        "convergence_99_rad": 0.029566281296406198,
+        "convergence_edge_rad": 0.029963190888653596,
+        "radius_rms_m": 2.169970266910053e-06,
+        "radius_95_m": 3.105824745933634e-06,
+        "radius_99_m": 3.195993546266143e-06,
+        "radial_position_angle_covariance_m_rad": 4.343312348965851e-08,
+        "radial_wavefront_curvature_per_m": 9223.876859867049,
+        "waist_offset_m": -0.00010839740194889704,
+        "twofold_moment": 0.016313406316281597,
+        "threefold_moment": 0.04176395689361252
+      }
+    },
+    "local_symmetric_gauge": {
+      "mean_xy_m": [
+        -1.1727277544737051e-08,
+        -7.064972009217936e-09
+      ],
+      "mean_slopes": [
+        -0.00010723086329469345,
+        -6.674214578265393e-05
+      ],
+      "covariance_xy_tx_ty": [
+        [
+          2.372240182289336e-12,
+          -3.400570046400688e-14,
+          2.1880821144454152e-08,
+          -3.149378864638536e-10
+        ],
+        [
+          -3.4005700464006876e-14,
+          2.3365307769843493e-12,
+          -3.1518526990926407e-10,
+          2.1552302345204357e-08
+        ],
+        [
+          2.1880821144454152e-08,
+          -3.1518526990926397e-10,
+          0.0002018233126070019,
+          -2.91899644730621e-06
+        ],
+        [
+          -3.149378864638538e-10,
+          2.155230234520436e-08,
+          -2.918996447306211e-06,
+          0.00019880098217835515
+        ]
+      ],
+      "per_axis_position_slope_covariance_m_rad": [
+        2.1880821144454152e-08,
+        2.155230234520436e-08
+      ],
+      "per_axis_scalar_vergence_per_m": [
+        9223.695521141544,
+        9224.060970008239
+      ],
+      "fitted_vergence_matrix_per_m": [
+        [
+          9223.686150627855,
+          -0.6536877288531338
+        ],
+        [
+          -0.5343036093735756,
+          9224.053193792033
+        ]
+      ],
+      "symmetric_vergence_eigenvalues_per_m": [
+        9223.247972100551,
+        9224.491372319337
+      ],
+      "radial_vergence_per_m": 9223.876859867049,
+      "tangential_rotation_per_m": 0.0525367335871255,
+      "radial_angle": {
+        "mean_mrad": 18.687462698587485,
+        "rms_mrad": 20.015601109117885,
+        "absolute95_mrad": 28.73609717916089
+      },
+      "tangential_angle": {
+        "mean_mrad": 8.141849889438869e-05,
+        "rms_mrad": 0.002650667052528955,
+        "absolute95_mrad": 0.006055087230651915
+      },
+      "zero_radius_residual_angle_second_moment_rad2": 0.0,
+      "geometric_projected_rms_emittance_xy_m_rad": [
+        5.511745168205436e-11,
+        5.363744347600701e-11
+      ],
+      "geometric_rms_4d_volume_m2_rad2": 2.9537200424414833e-21,
+      "geometric_rms_4d_equivalent_emittance_m_rad": 5.434813743304809e-11,
+      "rms_slope_mrad": 20.01560128463187,
+      "radius_rms_um": 2.169970266910053,
+      "diameter95_um": 6.211649491867267,
+      "decomposition_check": "PASS",
+      "alpha95_paraxial_surrogate_mrad": 28.72826253401971,
+      "alpha_rms_paraxial_surrogate_mrad": 20.011857201831585
+    },
+    "native_gauge_increment": {
+      "mean_xy_m": [
+        -1.1727277544737051e-08,
+        -7.064972009217936e-09
+      ],
+      "mean_slopes": [
+        -0.00010723086329908818,
+        -6.674214577886685e-05
+      ],
+      "covariance_xy_tx_ty": [
+        [
+          2.372240182289336e-12,
+          -3.400570046400688e-14,
+          2.188082114442986e-08,
+          -3.149378875699376e-10
+        ],
+        [
+          -3.4005700464006876e-14,
+          2.3365307769843493e-12,
+          -3.1518526882508863e-10,
+          2.1552302345228617e-08
+        ],
+        [
+          2.188082114442986e-08,
+          -3.1518526882508863e-10,
+          0.0002018233126065521,
+          -2.918996447508328e-06
+        ],
+        [
+          -3.149378875699374e-10,
+          2.1552302345228617e-08,
+          -2.918996447508327e-06,
+          0.00019880098217880422
+        ]
+      ],
+      "per_axis_position_slope_covariance_m_rad": [
+        2.188082114442986e-08,
+        2.1552302345228617e-08
+      ],
+      "per_axis_scalar_vergence_per_m": [
+        9223.695521131305,
+        9224.06097001862
+      ],
+      "fitted_vergence_matrix_per_m": [
+        [
+          9223.686150624266,
+          -0.6536872648946542
+        ],
+        [
+          -0.5343040755832303,
+          9224.05319379563
+        ]
+      ],
+      "symmetric_vergence_eigenvalues_per_m": [
+        9223.24797209842,
+        9224.491372321476
+      ],
+      "radial_vergence_per_m": 9223.876859867041,
+      "tangential_rotation_per_m": 0.05253626844262368,
+      "radial_angle": {
+        "mean_mrad": 18.68746269858748,
+        "rms_mrad": 20.015601109117874,
+        "absolute95_mrad": 28.736097179159188
+      },
+      "tangential_angle": {
+        "mean_mrad": 8.141766456327458e-05,
+        "rms_mrad": 0.0026506669906161038,
+        "absolute95_mrad": 0.006055085289871345
+      },
+      "zero_radius_residual_angle_second_moment_rad2": 0.0,
+      "geometric_projected_rms_emittance_xy_m_rad": [
+        5.511745164655909e-11,
+        5.3637443509939185e-11
+      ],
+      "geometric_rms_4d_volume_m2_rad2": 2.9537200425822278e-21,
+      "geometric_rms_4d_equivalent_emittance_m_rad": 5.434813743434293e-11,
+      "rms_slope_mrad": 20.015601284631853,
+      "radius_rms_um": 2.169970266910053,
+      "diameter95_um": 6.211649491867267,
+      "decomposition_check": "PASS",
+      "alpha95_paraxial_surrogate_mrad": 28.7282625340184,
+      "alpha_rms_paraxial_surrogate_mrad": 20.011857201831567,
+      "maximum_local_vs_native_slope_difference_rad": 2.3715862263590204e-12
+    },
+    "offset_from_surface_um": 0.0
+  },
+  "axial_observations": [
+    {
+      "z_mm": 1599.1999998000001,
+      "positive_current_count": 473,
+      "effective_count": 473.0,
+      "original_current_weight": 0.4619140625,
+      "current_a": 4.619140625000001e-06,
+      "field": {
+        "chief_B_t": [
+          2.7893272108627673e-15,
+          1.6804001264674746e-15,
+          0.47355275696396515
+        ],
+        "axis_B_t": [
+          0.0,
+          0.0,
+          0.4735527569638537
+        ],
+        "sampled_Bz_range_t": [
+          0.4735527569738601,
+          0.47355276314488737
+        ],
+        "chief_A_t_m": [
+          1.672818486419001e-09,
+          -2.7767423064955975e-09,
+          0.0
+        ],
+        "signed_g_per_m_range": [
+          -112.71534724432048,
+          -112.71519861649578
+        ],
+        "mean_g_per_m": -112.71528154670891
+      },
+      "mechanical": {
+        "mean_xy_m": [
+          -1.1727277544737051e-08,
+          -7.064972009217936e-09
+        ],
+        "mean_slopes": [
+          -0.00010723086464196747,
+          -6.67421458760568e-05
+        ],
+        "covariance_xy_tx_ty": [
+          [
+            2.372240182289336e-12,
+            -3.400570046400688e-14,
+            2.1884654108002686e-08,
+            -4.755016514403906e-11
+          ],
+          [
+            -3.4005700464006876e-14,
+            2.3365307769843493e-12,
+            -5.785479972654042e-10,
+            2.1548469381655814e-08
+          ],
+          [
+            2.1884654108002686e-08,
+            -5.785479972654042e-10,
+            0.00020192405003086658,
+            -2.8815353403305505e-06
+          ],
+          [
+            -4.7550165144039304e-11,
+            2.1548469381655814e-08,
+            -2.8815353403305514e-06,
+            0.0001987601242090288
+          ]
+        ],
+        "per_axis_position_slope_covariance_m_rad": [
+          2.1884654108002686e-08,
+          2.1548469381655814e-08
+        ],
+        "per_axis_scalar_vergence_per_m": [
+          9225.311278086036,
+          9222.420519308294
+        ],
+        "fitted_vergence_matrix_per_m": [
+          [
+            9223.686151219437,
+            -113.36897054482911
+          ],
+          [
+            112.18097846673575,
+            9224.053193180634
+          ]
+        ],
+        "symmetric_vergence_eigenvalues_per_m": [
+          9223.247971914752,
+          9224.49137248532
+        ],
+        "radial_vergence_per_m": 9223.876859867045,
+        "tangential_rotation_per_m": 112.767819185512,
+        "radial_angle": {
+          "mean_mrad": 18.687462698585215,
+          "rms_mrad": 20.01560110911788,
+          "absolute95_mrad": 28.736097180408983
+        },
+        "tangential_angle": {
+          "mean_mrad": 0.22861766993914306,
+          "rms_mrad": 0.24471714401393585,
+          "absolute95_mrad": 0.351131873855941
+        },
+        "zero_radius_residual_angle_second_moment_rad2": 0.0,
+        "geometric_projected_rms_emittance_xy_m_rad": [
+          2.725065630496922e-10,
+          2.6947125907941925e-10
+        ],
+        "geometric_rms_4d_volume_m2_rad2": 2.9537200609756408e-21,
+        "geometric_rms_4d_equivalent_emittance_m_rad": 5.4348137603561364e-11,
+        "rms_slope_mrad": 20.017097048270895,
+        "radius_rms_um": 2.169970266910053,
+        "diameter95_um": 6.211649491867267,
+        "decomposition_check": "PASS",
+        "physical_direction_statistics": {
+          "surviving_rays": 473,
+          "surviving_fraction": 1.0,
+          "mean_x_m": -1.1727277544737012e-08,
+          "mean_y_m": -7.06497200921794e-09,
+          "mean_tx_rad": -0.00010723166650898597,
+          "mean_ty_rad": -6.673054077983518e-05,
+          "convergence_rms_rad": 0.020013352129571536,
+          "convergence_95_rad": 0.028730327171426734,
+          "convergence_99_rad": 0.029566281296406198,
+          "convergence_edge_rad": 0.029963190888653596,
+          "radius_rms_m": 2.169970266910053e-06,
+          "radius_95_m": 3.105824745933634e-06,
+          "radius_99_m": 3.195993546266143e-06,
+          "radial_position_angle_covariance_m_rad": 4.343312348965851e-08,
+          "radial_wavefront_curvature_per_m": 9223.876859867049,
+          "waist_offset_m": -0.00010839740194889704,
+          "twofold_moment": 0.016313406316281597,
+          "threefold_moment": 0.04176395689361252
+        }
+      },
+      "local_symmetric_gauge": {
+        "mean_xy_m": [
+          -1.1727277544737051e-08,
+          -7.064972009217936e-09
+        ],
+        "mean_slopes": [
+          -0.00010723086329469345,
+          -6.674214578265393e-05
+        ],
+        "covariance_xy_tx_ty": [
+          [
+            2.372240182289336e-12,
+            -3.400570046400688e-14,
+            2.1880821144454152e-08,
+            -3.149378864638536e-10
+          ],
+          [
+            -3.4005700464006876e-14,
+            2.3365307769843493e-12,
+            -3.1518526990926407e-10,
+            2.1552302345204357e-08
+          ],
+          [
+            2.1880821144454152e-08,
+            -3.1518526990926397e-10,
+            0.0002018233126070019,
+            -2.91899644730621e-06
+          ],
+          [
+            -3.149378864638538e-10,
+            2.155230234520436e-08,
+            -2.918996447306211e-06,
+            0.00019880098217835515
+          ]
+        ],
+        "per_axis_position_slope_covariance_m_rad": [
+          2.1880821144454152e-08,
+          2.155230234520436e-08
+        ],
+        "per_axis_scalar_vergence_per_m": [
+          9223.695521141544,
+          9224.060970008239
+        ],
+        "fitted_vergence_matrix_per_m": [
+          [
+            9223.686150627855,
+            -0.6536877288531338
+          ],
+          [
+            -0.5343036093735756,
+            9224.053193792033
+          ]
+        ],
+        "symmetric_vergence_eigenvalues_per_m": [
+          9223.247972100551,
+          9224.491372319337
+        ],
+        "radial_vergence_per_m": 9223.876859867049,
+        "tangential_rotation_per_m": 0.0525367335871255,
+        "radial_angle": {
+          "mean_mrad": 18.687462698587485,
+          "rms_mrad": 20.015601109117885,
+          "absolute95_mrad": 28.73609717916089
+        },
+        "tangential_angle": {
+          "mean_mrad": 8.141849889438869e-05,
+          "rms_mrad": 0.002650667052528955,
+          "absolute95_mrad": 0.006055087230651915
+        },
+        "zero_radius_residual_angle_second_moment_rad2": 0.0,
+        "geometric_projected_rms_emittance_xy_m_rad": [
+          5.511745168205436e-11,
+          5.363744347600701e-11
+        ],
+        "geometric_rms_4d_volume_m2_rad2": 2.9537200424414833e-21,
+        "geometric_rms_4d_equivalent_emittance_m_rad": 5.434813743304809e-11,
+        "rms_slope_mrad": 20.01560128463187,
+        "radius_rms_um": 2.169970266910053,
+        "diameter95_um": 6.211649491867267,
+        "decomposition_check": "PASS",
+        "alpha95_paraxial_surrogate_mrad": 28.72826253401971,
+        "alpha_rms_paraxial_surrogate_mrad": 20.011857201831585
+      },
+      "native_gauge_increment": {
+        "mean_xy_m": [
+          -1.1727277544737051e-08,
+          -7.064972009217936e-09
+        ],
+        "mean_slopes": [
+          -0.00010723086329908818,
+          -6.674214577886685e-05
+        ],
+        "covariance_xy_tx_ty": [
+          [
+            2.372240182289336e-12,
+            -3.400570046400688e-14,
+            2.188082114442986e-08,
+            -3.149378875699376e-10
+          ],
+          [
+            -3.4005700464006876e-14,
+            2.3365307769843493e-12,
+            -3.1518526882508863e-10,
+            2.1552302345228617e-08
+          ],
+          [
+            2.188082114442986e-08,
+            -3.1518526882508863e-10,
+            0.0002018233126065521,
+            -2.918996447508328e-06
+          ],
+          [
+            -3.149378875699374e-10,
+            2.1552302345228617e-08,
+            -2.918996447508327e-06,
+            0.00019880098217880422
+          ]
+        ],
+        "per_axis_position_slope_covariance_m_rad": [
+          2.188082114442986e-08,
+          2.1552302345228617e-08
+        ],
+        "per_axis_scalar_vergence_per_m": [
+          9223.695521131305,
+          9224.06097001862
+        ],
+        "fitted_vergence_matrix_per_m": [
+          [
+            9223.686150624266,
+            -0.6536872648946542
+          ],
+          [
+            -0.5343040755832303,
+            9224.05319379563
+          ]
+        ],
+        "symmetric_vergence_eigenvalues_per_m": [
+          9223.24797209842,
+          9224.491372321476
+        ],
+        "radial_vergence_per_m": 9223.876859867041,
+        "tangential_rotation_per_m": 0.05253626844262368,
+        "radial_angle": {
+          "mean_mrad": 18.68746269858748,
+          "rms_mrad": 20.015601109117874,
+          "absolute95_mrad": 28.736097179159188
+        },
+        "tangential_angle": {
+          "mean_mrad": 8.141766456327458e-05,
+          "rms_mrad": 0.0026506669906161038,
+          "absolute95_mrad": 0.006055085289871345
+        },
+        "zero_radius_residual_angle_second_moment_rad2": 0.0,
+        "geometric_projected_rms_emittance_xy_m_rad": [
+          5.511745164655909e-11,
+          5.3637443509939185e-11
+        ],
+        "geometric_rms_4d_volume_m2_rad2": 2.9537200425822278e-21,
+        "geometric_rms_4d_equivalent_emittance_m_rad": 5.434813743434293e-11,
+        "rms_slope_mrad": 20.015601284631853,
+        "radius_rms_um": 2.169970266910053,
+        "diameter95_um": 6.211649491867267,
+        "decomposition_check": "PASS",
+        "alpha95_paraxial_surrogate_mrad": 28.7282625340184,
+        "alpha_rms_paraxial_surrogate_mrad": 20.011857201831567,
+        "maximum_local_vs_native_slope_difference_rad": 2.3715862263590204e-12
+      },
+      "offset_from_surface_um": 0.0
+    }
+  ],
+  "original_terminal_stops": {
+    "condenser_aperture_2": {
+      "count": 551,
+      "original_weight": 0.5380859375
+    }
+  },
+  "limitations": [
+    "Mechanical angles use actual saved directions and the current-weighted chief ray.",
+    "Canonical increments use a specified gauge and paraxial normalization; they are not mechanical electron directions or a universal zero-angle criterion.",
+    "The local symmetric-gauge transform uses chief Bz and centroid-relative positions; the native-potential variant retains transverse and nonlinear A variation.",
+    "Slopes approximate transverse momentum divided by total momentum. Exact finite-angle canonical momenta and a shared reference-momentum symplectic chart require a separate analysis.",
+    "Per-axis projected RMS emittance changes with coupling, gauge and aperture interception. The 4D covariance volume is a descriptive moment, not a D95 acceptance bound.",
+    "Radial vergence can vanish while opposite axis vergences, tangential rotation, emittance or tails leave substantial angular spread.",
+    "These saved observations do not refine source count, integration step, field calibration or the native D95 axial-minimum bracket.",
+    "No source particle, original weight, physical stop or executed receipt was changed."
+  ]
+}

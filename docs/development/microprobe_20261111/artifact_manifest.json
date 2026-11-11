@@ -1,0 +1,522 @@
+{
+  "scope": "Selected archival evidence; original full trajectories remain at recorded local paths",
+  "files": {
+    "extractor/new-n1024/input.toml": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n1024\\input.toml",
+      "sha256": "7f013f59712fac146b4190c2b359a73427fe55e74a9740152c9dd139e61cf32b",
+      "bytes": 24269
+    },
+    "extractor/new-n1024/receipt.json": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n1024\\receipt.json",
+      "sha256": "7cd3ae17b31ec02f7df727a560b237631f61b23832151590b6b26e4a114800cd",
+      "bytes": 12012
+    },
+    "extractor/new-n1024/launch.npz": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n1024\\launch.npz",
+      "sha256": "5470dca23d42a86b1531322eaea067af08af76bc029433427059669a035997ff",
+      "bytes": 38485
+    },
+    "extractor/new-n1024/prepared.json": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n1024\\prepared.json",
+      "sha256": "8a2c9312124ead1e1dbbfbb5ca4cc63eefae7b6f3930962edf2750b5ac18920c",
+      "bytes": 1172
+    },
+    "extractor/new-n1024/axis_field.npz": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n1024\\axis_field.npz",
+      "sha256": "12a5a8a9f1b8b7f464adc55996cc834fe3a9f9ec4fa9c80fbba5f845d8701732",
+      "bytes": 23606
+    },
+    "extractor/new-n1024/electrostatic_request.json": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n1024\\electrostatic_request.json",
+      "sha256": "8dd75cfa2413ad8a044c7b5be55632a038c573ffa6eb447e8e7319e58d1454da",
+      "bytes": 32853
+    },
+    "extractor/new-n1024/independent_validation.json": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n1024\\independent_validation.json",
+      "sha256": "03d0d714c042220fdf725361a3b29f83fcd1a03aa4e5fbbe230d8af9b3f3ec0b",
+      "bytes": 3014
+    },
+    "extractor/new-n1024/inputs.json.gz": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n1024\\inputs.json",
+      "uncompressed": {
+        "sha256": "33c826ade1fbc0d82bb2c3d68e679f7ae537e4d81b1e8cb964d9722be417009d",
+        "bytes": 2136481
+      },
+      "sha256": "80d7a2f0cb349deb3672a88764bd82f23c13a20598dbbac1c0216c0e6a54d5ff",
+      "bytes": 149774
+    },
+    "extractor/new-n2048/input.toml": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n2048\\input.toml",
+      "sha256": "c8ce9904b23f5b980f1fb9de1f3a7a6153c45153c8456368263f62c3cfec5749",
+      "bytes": 24269
+    },
+    "extractor/new-n2048/receipt.json": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n2048\\receipt.json",
+      "sha256": "b5ef8779de921150ea89ba9a6c9ec2f86c212f79a33a8926614ff98ec3a01b12",
+      "bytes": 12012
+    },
+    "extractor/new-n2048/launch.npz": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n2048\\launch.npz",
+      "sha256": "2b8b8e5dba06c321852ee97e10983d54d523dc84226c0e81fe0f196ba84599bd",
+      "bytes": 74383
+    },
+    "extractor/new-n2048/prepared.json": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n2048\\prepared.json",
+      "sha256": "bed3aaee4d038eeddf318a83a2a6d0cab797edb7514a0544c6c8631ad099d1ed",
+      "bytes": 1172
+    },
+    "extractor/new-n2048/axis_field.npz": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n2048\\axis_field.npz",
+      "sha256": "12a5a8a9f1b8b7f464adc55996cc834fe3a9f9ec4fa9c80fbba5f845d8701732",
+      "bytes": 23606
+    },
+    "extractor/new-n2048/electrostatic_request.json": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n2048\\electrostatic_request.json",
+      "sha256": "8dd75cfa2413ad8a044c7b5be55632a038c573ffa6eb447e8e7319e58d1454da",
+      "bytes": 32853
+    },
+    "extractor/new-n2048/independent_validation.json": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n2048\\independent_validation.json",
+      "sha256": "100c9fe8423f6c4812b361579e39fcae794357ccc083d7fc499f3a62aadd70dd",
+      "bytes": 1315
+    },
+    "extractor/new-n2048/source_nesting.json": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n2048\\source_nesting.json",
+      "sha256": "298804e71a11ff679c500b836a1809013592308f4a304e5d2bea6e5d2f819dc4",
+      "bytes": 1046
+    },
+    "extractor/new-n2048/snapshot_count_diff.json": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n2048\\snapshot_count_diff.json",
+      "sha256": "4c23d3a60eed4ccca5a2771deb4a2b79c51b7af38a8f8f83683521ce30e2b3ac",
+      "bytes": 299
+    },
+    "extractor/new-n2048/inputs.json.gz": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\new-n2048\\inputs.json",
+      "uncompressed": {
+        "sha256": "7e768e5b9c0b7c6e04da79010de6ce7ce30b62183571eb03369fe3c281ad3b7b",
+        "bytes": 2136481
+      },
+      "sha256": "b2e7349ea9cb2ed1d158bd2a00c207cdf7d78a0b397badd85cd9c957ee5da638",
+      "bytes": 149773
+    },
+    "column/n1024-step020/report.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\report.json",
+      "sha256": "fd5e9de00f37f3bfb87572d9d63bb54691e65af157c984e5e0ddaff085c9a6b1",
+      "bytes": 240980
+    },
+    "column/n1024-step020/family-audit.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\family-audit.json",
+      "sha256": "375b766c69475ee5ffdaf8cb5a4361fc8a237e07c515bbf6779d2b352f00965d",
+      "bytes": 81171
+    },
+    "column/n1024-step020/trial-00/input.toml": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-00\\input.toml",
+      "sha256": "454c0ce12d5d7ee2ceb6ba97e30cd355071204df835efcf259370ba0a0f4a3a1",
+      "bytes": 24218
+    },
+    "column/n1024-step020/trial-00/report.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-00\\report.json",
+      "sha256": "df6a6d51a9f4f16924eb6613a41aaf52d7556ebe457d3df4ccd50cb6f66c8041",
+      "bytes": 549817
+    },
+    "column/n1024-step020/trial-00/rotation-analysis.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-00\\rotation-analysis.json",
+      "sha256": "6b62b48645e5266ce06e5d0c0e2389d22e46a02deff1e3b54a20dd0bfa2436c8",
+      "bytes": 23732
+    },
+    "column/n1024-step020/trial-00/inputs.json.gz": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-00\\inputs.json",
+      "uncompressed": {
+        "sha256": "663e695354fd75d2d56526a1d1e2513b9e8961986965733338b1d4e5665e3c2c",
+        "bytes": 2061741
+      },
+      "sha256": "aecada8c2ce3b3f4cd20edc829d5085cfe6117dec4781b7e3c7cb289c476e798",
+      "bytes": 146733
+    },
+    "column/n1024-step020/trial-01/input.toml": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-01\\input.toml",
+      "sha256": "cd357ac981cd49a4c4d8c37779cd3c8b9c84b34b72d2d8e77f3c90a2ccca7a1c",
+      "bytes": 24243
+    },
+    "column/n1024-step020/trial-01/report.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-01\\report.json",
+      "sha256": "65141299fa4d249c626d1ad74b99e91f3d92f36650fe489a532a12c16a7a6a21",
+      "bytes": 421808
+    },
+    "column/n1024-step020/trial-01/rotation-analysis.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-01\\rotation-analysis.json",
+      "sha256": "d9b77c07d7aadf1e213d0139945a08539632d81b36800827774c7196f976d367",
+      "bytes": 104908
+    },
+    "column/n1024-step020/trial-01/inputs.json.gz": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-01\\inputs.json",
+      "uncompressed": {
+        "sha256": "d44bc0961ca222e18588b541b6c6bea126dd274826173f5a2283a63f6cd37538",
+        "bytes": 2061766
+      },
+      "sha256": "37ba139258a479eba6e6a5e158e9e00b49e6f0ca8580fb0f8b44a79ce8f4096e",
+      "bytes": 146748
+    },
+    "column/n1024-step020/trial-02/input.toml": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-02\\input.toml",
+      "sha256": "8db5d8db062498c4ced4b5f4c499858adaba6e17d00d9cdea54d27660fc3bb6b",
+      "bytes": 24244
+    },
+    "column/n1024-step020/trial-02/report.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-02\\report.json",
+      "sha256": "7cced3c76e33f5cdbc034bd4441123caabba7f5255d32fe288e526acac464434",
+      "bytes": 510300
+    },
+    "column/n1024-step020/trial-02/inputs.json.gz": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-02\\inputs.json",
+      "uncompressed": {
+        "sha256": "cf4f08c45d0eca09cb8c43be01dead4bc2bdcbe73e42d0b5afab9093eb501161",
+        "bytes": 2061767
+      },
+      "sha256": "ad3c98988444cdbb1dd66ed910a389bdb88f8b1c3109c10c8226ef6af5f50afb",
+      "bytes": 146750
+    },
+    "column/n1024-step020/trial-03/input.toml": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-03\\input.toml",
+      "sha256": "c4dee863fc4ef45be7bb01b3c46c46f144a857500dc91f9c5c4024cfc977f8d3",
+      "bytes": 24242
+    },
+    "column/n1024-step020/trial-03/report.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-03\\report.json",
+      "sha256": "e46be0b3e074a5ecf78bfa7b8e81ab2db1337fa193c326c48686f9344f2d46a9",
+      "bytes": 406169
+    },
+    "column/n1024-step020/trial-03/inputs.json.gz": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-03\\inputs.json",
+      "uncompressed": {
+        "sha256": "a1bd781b07ec63a162223817d78cc29e177869734667342fe353b1a929e88e19",
+        "bytes": 2061765
+      },
+      "sha256": "c6904739e080d726e4d09dbcea4bb9e23fd743990f2f4ff84a33a73bef8ecdff",
+      "bytes": 146750
+    },
+    "column/n1024-step010-oneum/report.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step010-oneum\\report.json",
+      "sha256": "c02b777b72d255154ef973187efafbe631488aef7943aaf2cbec7ba9195a9423",
+      "bytes": 73799
+    },
+    "column/n1024-step010-oneum/family-audit.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step010-oneum\\family-audit.json",
+      "sha256": "aa855c6fddd486bbb65ed0dad3cdbb0584b89700dcd742ed7b902817c75ec336",
+      "bytes": 20386
+    },
+    "column/n1024-step010-oneum/trial-00/input.toml": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step010-oneum\\trial-00\\input.toml",
+      "sha256": "8f46a995a603fbcbf29ef2e45027df589d2ca05f637fa5c7e44db5e3f722a198",
+      "bytes": 24243
+    },
+    "column/n1024-step010-oneum/trial-00/report.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step010-oneum\\trial-00\\report.json",
+      "sha256": "5b9e3f99111f03e97d959fefbe6f5aa3e12ce4b09bfb98278f556276569a473a",
+      "bytes": 421579
+    },
+    "column/n1024-step010-oneum/trial-00/inputs.json.gz": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n1024-step010-oneum\\trial-00\\inputs.json",
+      "uncompressed": {
+        "sha256": "1218676698645bad342f8f60bbe67109fc560d1c0ceaee503db91116c91abc10",
+        "bytes": 2061766
+      },
+      "sha256": "6ed01a0c2de52733632aef2b3f352ab1cbaed46f55d15068768bc8c0d6e7acf2",
+      "bytes": 146748
+    },
+    "column/n2048-step010/report.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\report.json",
+      "sha256": "33f3f94866c883abe9c08161ab0ab8bfab9f2623cff8993e712ea9606f87e73e",
+      "bytes": 185939
+    },
+    "column/n2048-step010/family-audit.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\family-audit.json",
+      "sha256": "9804231d2b1fd8a1094ae9508845528b29d873abca82ef48c144d57607a151d4",
+      "bytes": 20411
+    },
+    "column/n2048-step010/trial-00/input.toml": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-00\\input.toml",
+      "sha256": "dd3d0dc58a3cd80ac9283d859486ae24c446d2ea68e82a575be65739eef59be4",
+      "bytes": 24243
+    },
+    "column/n2048-step010/trial-00/report.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-00\\report.json",
+      "sha256": "a01f7a21fde8de7e08325f8f48faf760c60231bd24c233e29b00d9ea5bf5b9c8",
+      "bytes": 724623
+    },
+    "column/n2048-step010/trial-00/rotation-analysis.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-00\\rotation-analysis.json",
+      "sha256": "4dbb3484c7b62d905b5a7e33cc7a6c85966a32fbe84d5e2717ad042cb9a953f3",
+      "bytes": 104841
+    },
+    "column/n2048-step010/trial-00/inputs.json.gz": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-00\\inputs.json",
+      "uncompressed": {
+        "sha256": "282158387597c3fdabc628b78ffae86965b36737d8f84fab6d9b3a5b6e020bac",
+        "bytes": 2061766
+      },
+      "sha256": "41627fd791a95ca10f76f64296afd99e30fde0cf861f67d17c2bb96594aea350",
+      "bytes": 146747
+    },
+    "column/n2048-step010/trial-01/input.toml": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-01\\input.toml",
+      "sha256": "8d5b6ee03ed7aeda157388d635e5f1710270d823f7dc4806a58a210d12c0a772",
+      "bytes": 24244
+    },
+    "column/n2048-step010/trial-01/report.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-01\\report.json",
+      "sha256": "de095290da9f61daa89d59d7468982d3daef6bc253c022ae6a2e03b2f5a5e0af",
+      "bytes": 901583
+    },
+    "column/n2048-step010/trial-01/rotation-analysis.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-01\\rotation-analysis.json",
+      "sha256": "c341d8f2aa03e6f6467ca9fc43b978a54d88ba9f177b70813bc5df7c87b0b39f",
+      "bytes": 104799
+    },
+    "column/n2048-step010/trial-01/inputs.json.gz": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-01\\inputs.json",
+      "uncompressed": {
+        "sha256": "cd781c973f3c1d1a79437fff88f713df78fd8f0e5ede7dd316c97eadb1503673",
+        "bytes": 2061767
+      },
+      "sha256": "f5825e11525dd225b1dd8fa805b502d88245068aa19749cf4d445da36cc5c747",
+      "bytes": 146749
+    },
+    "column/n2048-step010/trial-02/input.toml": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-02\\input.toml",
+      "sha256": "4447b4058c1b23583f451269f0e6533d6074c5f9b2c1a89a72e921d833723268",
+      "bytes": 24242
+    },
+    "column/n2048-step010/trial-02/report.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-02\\report.json",
+      "sha256": "a013b017277194598a48316d4c411fb0ccaaf354fa705debc3e28abf8f1a93f8",
+      "bytes": 691654
+    },
+    "column/n2048-step010/trial-02/rotation-analysis.json": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-02\\rotation-analysis.json",
+      "sha256": "e15cc74d672559977742a8897733eaebb2c65f89bbe7ada68491dc4b2d8c6ad1",
+      "bytes": 104672
+    },
+    "column/n2048-step010/trial-02/inputs.json.gz": {
+      "original_path": "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-02\\inputs.json",
+      "uncompressed": {
+        "sha256": "7d598fb1cb3bc2f42688ba5730f0ffe6558f1094bc4436dc05c315ce79c71ef8",
+        "bytes": 2061765
+      },
+      "sha256": "d670e3cd8a45dfe1e9cedc194a500cff5d78a6ec5a1627f1905fe6705188549d",
+      "bytes": 146747
+    },
+    "model-review.json": {
+      "original_path": "outputs\\microprobe-20261111\\model-review.json",
+      "sha256": "d2fe801fb7c2593c3146e7beaeddcf62b3e2391a0fb56a9a9d3188a9dab389b8",
+      "bytes": 24312
+    },
+    "paraxial-proposals.json": {
+      "original_path": "outputs\\microprobe-20261111\\paraxial-proposals.json",
+      "sha256": "371b1137e5639c81109f48d7d77f4fb1195462565e2dad9d0e4f33cc3765a35f",
+      "bytes": 17537
+    },
+    "drivers/run_micro_gun.py": {
+      "original_path": "outputs\\microprobe-20261111\\extractor\\run_micro_gun.py",
+      "sha256": "43ad8e40e00b46b22b224c2237ca745377974ee4ecd381327db394cb4a2cc221",
+      "bytes": 14479
+    },
+    "drivers/run_microprobe.py": {
+      "original_path": "outputs\\microprobe-20261111\\column\\run_microprobe.py",
+      "sha256": "e0fa771845fc725c5fbf97b1071681d9e8bd68c71590d95cd3002b5c29e6f714",
+      "bytes": 16222
+    },
+    "drivers/audit_family.py": {
+      "original_path": "outputs\\microprobe-20261111\\column\\audit_family.py",
+      "sha256": "fe69df942f42a2a64c71c18092666cb59acc5a00f716576e1fb97121d8560880",
+      "bytes": 5273
+    },
+    "drivers/analyze_micro_rotation.py": {
+      "original_path": "outputs\\microprobe-20261111\\analyze_micro_rotation.py",
+      "sha256": "8e10fdbdf319a83688b78365aaa91bdc2a9fadd865e2422e0c95b5d355ca3a19",
+      "bytes": 16603
+    },
+    "drivers/propose_microprobe.py": {
+      "original_path": "outputs\\microprobe-20261111\\propose_microprobe.py",
+      "sha256": "b12528939d75bbc0d111b46a99ecbf8a20b266529f83c70accaa0637846cada2",
+      "bytes": 7637
+    },
+    "drivers/run_focus.py": {
+      "original_path": "outputs\\fege-focus-20261110\\focus\\run_focus.py",
+      "sha256": "4e6d46cde63562e600fcf5a367456bc2b3af9637a8655e6a1365b217c2f19630",
+      "bytes": 33925
+    },
+    "column/n1024-step010-oneum/trial-00/sample-neighborhood.npz": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "c45db28dd06b02adf499008dfc3499a689a433f412421b7d05b90355fdb9f85e",
+      "bytes": 217835
+    },
+    "column/n1024-step020/trial-00/sample-neighborhood.npz": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "75028d2319470b4a03a9497f89ff0885780c87423d2f24e20d40642b5482aaee",
+      "bytes": 254934
+    },
+    "column/n1024-step020/trial-01/sample-neighborhood.npz": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "998cecb8cafb35aa731e32927d7f24d3f3661cda4f36ed6a50cff4a6a9470279",
+      "bytes": 198827
+    },
+    "column/n1024-step020/trial-02/sample-neighborhood.npz": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "53220ec6b3ccbb670bc857b57dbebcce410589b2df38f72e4426b012985df02a",
+      "bytes": 239863
+    },
+    "column/n1024-step020/trial-03/sample-neighborhood.npz": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "56d68660054f9156557ae84d9be139ac162b1fa3fa65ca1416a42fd8de03ac18",
+      "bytes": 191476
+    },
+    "column/n2048-step010/trial-00/sample-neighborhood.npz": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "65ec138993a6aea9ba20e7720ec6aea7ea4c3e39930d972640ee5231a641a749",
+      "bytes": 372822
+    },
+    "column/n2048-step010/trial-01/sample-neighborhood.npz": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "2c5652e9ff5610cca845994805f8d6153fe70f6b86cefee1c3d0c548227a8440",
+      "bytes": 451430
+    },
+    "column/n2048-step010/trial-02/sample-neighborhood.npz": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "6a75bfe262be2691bfdf5d8d54f4151d2120a35410918d6bbba662c354b1eb82",
+      "bytes": 357457
+    },
+    "extractor/new-n1024/gun_exit_and_emission.npz": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "98417caee2ba8acd637c63102ffaa0f82fe1bfa9742d147d9547f9e9a76a7c48",
+      "bytes": 87547
+    },
+    "extractor/new-n2048/gun_exit_and_emission.npz": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "9be6164aacd97333e57129c146f652a11bdb885c0ebbd7f295db4aeb4bf44ca3",
+      "bytes": 170344
+    },
+    "microprobe-0p75um-si110.toml": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "a0d9f17233b72600ef10ddd6ca0ed8f8e963b9cadcefc6ac650f974d5253ecaa",
+      "bytes": 25577
+    },
+    "microprobe-1p00um-si110.toml": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "2bd8a3dbf8fd13121990b63530b425dcf574f19a6759e8148d9cd935b9f57aac",
+      "bytes": 25578
+    },
+    "microprobe-2p20um-si110.toml": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "240c87535241cfb71f4f3513e16b3adbf6e5f77c90c04d08d77aeb788f9aae61",
+      "bytes": 25579
+    },
+    "results.json": {
+      "generated_from": "Recorded complete physical observations",
+      "sha256": "da306696150b3ee48be6d0b1d88b9d008ebeabd343f8ec0d786c3624550eca9a",
+      "bytes": 99924
+    },
+    "archive-verification.json": {
+      "generated_from": "Completed Microprobe study and offline checks",
+      "sha256": "aaac0f8653ffe4445a40013088074cb3786018848290127e0a1d99f043c0a62a",
+      "bytes": 1528
+    },
+    "convergence-comparison.json": {
+      "generated_from": "Completed Microprobe study and offline checks",
+      "sha256": "34f4c4ee8a8055e4f5bb841445c98d729dda0f107fac3c80293db7e76587ae2b",
+      "bytes": 1898
+    },
+    "drivers/finalize_study.py": {
+      "generated_from": "Completed Microprobe study and offline checks",
+      "sha256": "ca7079591ad9788f635ded3e27eff4cf16d8a6aaffdb9ab0e0433439b30f39c0",
+      "bytes": 10403,
+      "original_path": "outputs/microprobe-20261111/finalize_study.py"
+    },
+    "drivers/plot_study.py": {
+      "generated_from": "Completed Microprobe study and offline checks",
+      "sha256": "cd5bc0d01b94bd243fd2e3a4331e555da03136a0f63ee1f65f2d5f573972975f",
+      "bytes": 3781,
+      "original_path": "outputs/microprobe-20261111/plot_study.py"
+    },
+    "drivers/verify_candidate_profile.py": {
+      "generated_from": "Completed Microprobe study and offline checks",
+      "sha256": "17a3f1d36f26ba38e5dea67482fc87fdf902736b22822ebca087ea86ab29b975",
+      "bytes": 5733,
+      "original_path": "outputs/microprobe-20261111/verify_candidate_profile.py"
+    },
+    "illumination-family.png": {
+      "generated_from": "Completed Microprobe study and offline checks",
+      "sha256": "406cedb644e38fd36ae47c60948dbf8116b4bd75d24083675d55ce986f02b222",
+      "bytes": 432958
+    },
+    "profile-verification.json": {
+      "generated_from": "Completed Microprobe study and offline checks",
+      "sha256": "6d7bb8fe1d05cea8658fe4f5cfa84a14cae183aee631ce7dc07eca137cdda997",
+      "bytes": 1921
+    },
+    "drivers/verify_archive.py": {
+      "generated_from": "Completed Microprobe study and offline checks",
+      "sha256": "8c0a0d910c02c0384644ee8caab269f540c09818e656ba26843592e7d313e7d1",
+      "bytes": 4240,
+      "original_path": "outputs/microprobe-20261111/verify_archive.py"
+    },
+    "drivers/verify_archived_family.py": {
+      "generated_from": "Completed Microprobe study and offline checks",
+      "sha256": "c291a549876fcfbda3ed9f287cae6f9996da4348a27d25a82d42b006c0f8c248",
+      "bytes": 7221,
+      "original_path": "outputs/microprobe-20261111/verify_archived_family.py"
+    },
+    "profile-family-verification.json": {
+      "generated_from": "Completed Microprobe study and offline checks",
+      "sha256": "46ec8e2edf64499ebe01ed9ec00f30f470b7d7093f82d879217b58aec48ffba9",
+      "bytes": 8658
+    },
+    "README.md": {
+      "generated_from": "Completed Microprobe study and offline checks",
+      "sha256": "4befdbc64963124932681ab9d507b4daff74825a30b4d84f2da17aa8bb43f3a9",
+      "bytes": 12085
+    }
+  },
+  "original_full_files": {
+    "outputs\\microprobe-20261111\\extractor\\new-n1024\\source.npz": {
+      "sha256": "eb5516ba6c878f20549637a434d42c8e4553af1840f9de152220c75fced93e9e",
+      "bytes": 8483893
+    },
+    "outputs\\microprobe-20261111\\extractor\\new-n2048\\source.npz": {
+      "sha256": "56bdb638abe57e10134d0e453a08c6fa224b696abe6e8351c3d856a9c3e9f3c9",
+      "bytes": 16982992
+    },
+    "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-00\\observations.npz": {
+      "sha256": "055a39e41d220d6b7a54c411a1331b644fdf0b1c0df50dcab7491d0cd49163d0",
+      "bytes": 19941604
+    },
+    "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-01\\observations.npz": {
+      "sha256": "b02fc49e5bbd1db6641da071b94eb8d73aae0334c926a07fae82662244fea212",
+      "bytes": 14135624
+    },
+    "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-02\\observations.npz": {
+      "sha256": "ae659f4131f3158e6201fbca5953b97b55b3566c771b9d75742e5a28ab19f420",
+      "bytes": 18832297
+    },
+    "outputs\\microprobe-20261111\\column\\n1024-step020\\trial-03\\observations.npz": {
+      "sha256": "064b060aec83be0858a1a66874bf5b2de2be65be4d5feeaf0e68b0aab79c0e2b",
+      "bytes": 13293760
+    },
+    "outputs\\microprobe-20261111\\column\\n1024-step010-oneum\\trial-00\\observations.npz": {
+      "sha256": "56e0c1b5896a51c15b2e440886b9f1e9291223c719ca34b828c4f0baa43ee1c4",
+      "bytes": 14155107
+    },
+    "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-00\\observations.npz": {
+      "sha256": "1d6687837e6df140c823a2f01f77c71f9bc846352d1a90a329543ca2bcf07cfd",
+      "bytes": 28684179
+    },
+    "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-01\\observations.npz": {
+      "sha256": "a08d9ad043d041b5e0650b6016cc759f70842f9be7202cf2dcf9676c9ca714e6",
+      "bytes": 37755271
+    },
+    "outputs\\microprobe-20261111\\column\\n2048-step010\\trial-02\\observations.npz": {
+      "sha256": "961b26ed34bcb943eebca51cf24f3ad85308586a51ee5e06ae9daa8209eaca1e",
+      "bytes": 26962937
+    }
+  }
+}

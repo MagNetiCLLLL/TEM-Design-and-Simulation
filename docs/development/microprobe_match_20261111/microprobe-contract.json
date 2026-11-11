@@ -1,0 +1,41 @@
+{
+  "scope": "This measured fixed-geometry/source family only",
+  "requested_d95_um": [
+    0.75,
+    2.2
+  ],
+  "maximum_alpha95_mrad": 0.3,
+  "source_waist_definition": "Executed current-weighted two-dimensional RMS region; D95 minima separate",
+  "source_absolute_interval_mm": [
+    450.0,
+    1599.1999998000001
+  ],
+  "source_waist_count": 4,
+  "source_image_intervals": [
+    "C1-C2",
+    "C2-C3",
+    "TL22-TL21 (between DP22 and DP21)",
+    "Mini Condenser-Upper Objective"
+  ],
+  "ac_interval": "No static source-image waist required or observed in this Microprobe family",
+  "historical_six_waist_reference": "Retained as historical data; not a qualification gate for this new family",
+  "architecture": "Literature-guided model design, not a published CEOS Microprobe current table",
+  "profile_hashes": {
+    "microprobe-matched-0p75um-si110.toml": {
+      "sha256": "6867c010c78808587466366a42fafe1b54d36410d4a96378e0d07f4b4e7ded0c",
+      "bytes": 25589
+    },
+    "microprobe-matched-0p97um-si110.toml": {
+      "sha256": "1cddc15938cb540faca01ff7681a9add89a537679a1b3cbe1045c923da25a46d",
+      "bytes": 25589
+    },
+    "microprobe-matched-1p49um-si110.toml": {
+      "sha256": "e67ab61a125c9441628b3007ed7f219f82184d705e9aace768919294b66ff85f",
+      "bytes": 25590
+    },
+    "microprobe-matched-2p19um-si110.toml": {
+      "sha256": "103851fc71aab16b3c3b3fdb524604faca75fc4dc279673d9054e4c503354472",
+      "bytes": 25592
+    }
+  }
+}

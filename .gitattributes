@@ -5,6 +5,13 @@ configs/reference_samples/*.cif -text
 docs/development/probe_stage12_20261101/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
 docs/development/probe_a5_physical_20261101/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
 docs/development/probe_joint_20261101/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+
+# Preserve the exact bytes used by the Microprobe source and observation hashes.
+docs/development/microprobe_20261111/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+docs/development/microprobe_match_20261111/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+# Generated SVG path whitespace belongs to the hashed observation artifacts.
+docs/development/microprobe_match_20261111/beam-envelopes.svg -whitespace
+docs/development/microprobe_match_20261111/illumination-footprints.svg -whitespace
 scripts/optimize_joint_probe.py -text
 scripts/report_joint_probe.py -text
 tests/test_joint_probe_search.py -text

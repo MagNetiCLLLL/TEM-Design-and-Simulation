@@ -1,0 +1,45 @@
+{
+  "status": "PREPARED_COMPARISON",
+  "original_positive_count_1024": 1024,
+  "original_positive_count_2048": 2048,
+  "launch_columns": {
+    "x_m": {
+      "prefix_equal": true,
+      "same_ids_equal": true
+    },
+    "y_m": {
+      "prefix_equal": true,
+      "same_ids_equal": true
+    },
+    "tx_rad": {
+      "prefix_equal": false,
+      "same_ids_equal": false
+    },
+    "ty_rad": {
+      "prefix_equal": false,
+      "same_ids_equal": false
+    },
+    "weight": {
+      "prefix_equal": false,
+      "same_ids_equal": false
+    },
+    "ray_id": {
+      "prefix_equal": true,
+      "same_ids_equal": true
+    },
+    "energy_offset_ev": {
+      "prefix_equal": false,
+      "same_ids_equal": false
+    }
+  },
+  "phase_columns": [
+    "x_m",
+    "y_m",
+    "tx_rad",
+    "ty_rad",
+    "energy_offset_ev"
+  ],
+  "complete_phase_rows_shared": 0,
+  "nested_phase_population": false,
+  "normalization_note": "Each population retains its native emission weights; no subset or weights were changed."
+}
