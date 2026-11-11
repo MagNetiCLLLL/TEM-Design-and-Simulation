@@ -80,14 +80,17 @@ def test_actual_bounded_unified_result_publishes_without_legacy_diagnostics(wind
             item.scan_enabled = False
         if hasattr(item, "wobble_enabled"):
             item.wobble_enabled = False
-    state.acceleration_backend, state.acceleration_enabled = "CPU", False
+    # Compile supported source stages for this actual 1024-particle check;
+    # the unified column still uses its reference CPU implementation.
+    state.acceleration_backend, state.acceleration_enabled = "Numba CPU", True
     state.step_mm = 1.
     emitter = state.electron_gun.emitter
-    emitter.ray_count = 9
+    emitter.ray_count = 1024
     # Same separately declared bounded actual-source fixture as the particle
     # qualification. Default-source domain rejection remains a separate test.
     emitter.virtual_source_fwhm_nm = .5
     emitter.angular_rms_mrad, emitter.angular_cutoff_mrad = .01, .03
+    window._sync_ray_count_selector()
     lens_settings = tuple((lens.key, lens.percent, lens.cs_mm, lens.cc_mm) for lens in state.lenses)
 
     def forbidden(*_args, **_kwargs):
@@ -102,7 +105,7 @@ def test_actual_bounded_unified_result_publishes_without_legacy_diagnostics(wind
     # Use the actual request/controller path: a bare pipeline result has no
     # controller-owned publication identity and must not bypass that guard.
     window.run_high_accuracy()
-    qtbot.waitUntil(lambda: bool(completed) or bool(errors), timeout=60000)
+    qtbot.waitUntil(lambda: bool(completed) or bool(errors), timeout=900000)
     assert not errors and len(completed) == 1
     result = completed[0]
     qtbot.waitUntil(lambda: bool(updates) and updates[-1].status == "succeeded", timeout=10000)
@@ -115,7 +118,13 @@ def test_actual_bounded_unified_result_publishes_without_legacy_diagnostics(wind
     assert "completed" in window.status_label.text()
     progress = window.calculation_progress
     assert progress.overall.value() == progress.overall.maximum()
-    assert result.simulation.incident.alive.sum() == 9
+    emitted = result.simulation.gun_trace.exit_bundle
+    positive = emitted.weight > 0
+    assert np.count_nonzero(positive) == 1024
+    assert np.unique(emitted.ray_id[positive]).size == 1024
+    assert result.simulation.incident.x.shape[1] == 1024
+    # A larger original population can resolve real aperture-tail losses.
+    assert np.any(result.simulation.incident.alive & (result.simulation.incident.ray_weight > 0))
     np.testing.assert_array_equal(result.simulation.incident.ray_weight,
                                   result.simulation.gun_trace.exit_bundle.weight)
     assert tuple((lens.key, lens.percent, lens.cs_mm, lens.cc_mm) for lens in state.lenses) == lens_settings
@@ -149,7 +158,7 @@ def test_toolbar_owns_persisted_particle_population_and_preview_remains_local(wi
     assert changes[-1] == ("step_mm", {"automatic": False})
     snapshot = decode_instrument(encode_instrument(window.state))
     apply_request_numerics(snapshot, "Preview", 49, 1.)
-    assert snapshot.electron_gun.ray_count == 49
+    assert snapshot.electron_gun.ray_count >= 1024
     assert snapshot.step_mm == 1.
     assert window.high_step.value() == window.state.step_mm == 0.02
     assert window.state.electron_gun.ray_count == window.high_rays.value() == 4000

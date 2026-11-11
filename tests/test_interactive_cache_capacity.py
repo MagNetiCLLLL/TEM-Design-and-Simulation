@@ -66,7 +66,8 @@ def test_tuning_cache_never_reuses_different_request(change):
     if change == "quality":
         quality = "Medium"
     elif change == "rays":
-        rays = 53
+        from temsim.physics.optical_tuning import TUNING_PROFILES
+        rays = TUNING_PROFILES["Preview"].rays + 4
     elif change == "step":
         step = .75
     elif change == "aperture":

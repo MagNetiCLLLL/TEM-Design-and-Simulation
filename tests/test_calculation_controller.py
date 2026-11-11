@@ -1201,7 +1201,8 @@ def test_preview_runs_off_the_gui_thread(qtbot):
     assert gui_ticks
     quality, result, duration = results[0]
     assert quality == "Preview"
-    assert result.simulation.incident.x.shape[1] == 25
+    assert result.simulation.incident.x.shape[1] == result.state_snapshot.electron_gun.ray_count
+    assert sum(result.simulation.gun_trace.exit_bundle.weight > 0) >= 1000
     assert "000" in result.simulation.branches
     assert {
         branch.interaction_kind

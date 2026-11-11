@@ -350,7 +350,7 @@ ACCEPTANCE_SCOPES = {
             "instrument-regressions/IR-01": ("Physical gun, shared coil limits, pose and request handling", (
                 "tests/test_feg_geometry.py", "tests/test_ac_dp12_shared_limits.py",
                 "tests/test_column_azimuth.py", "tests/test_high_accuracy_step_policy.py",
-                "tests/test_unified_sampled_history.py")),
+                "tests/test_unified_sampled_history.py", "tests/test_tuning_source_budget.py")),
             "instrument-regressions/IR-02": ("Probe response, beam statistics and assembly studies", (
                 "tests/test_assembly_error_study.py", "tests/test_assembly_error_study_gui.py",
                 "tests/test_beam_quantile_boundary.py", "tests/test_crossover_aberrations.py",

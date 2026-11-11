@@ -83,6 +83,7 @@ from temsim.physics.compute_backend import (
     BACKEND_CHOICES,
     BACKEND_CPU,
 )
+from temsim.physics.optical_tuning import MINIMUM_TUNING_SOURCE_PARTICLES, TUNING_PROFILES
 from temsim.runtime_parameters import editable_parameters, runtime_targets
 from temsim.simulation_modes import MODE_BY_KEY, mode_key, mode_display_label, switch_mode, promote_custom_mode, is_unified
 from temsim.gui.simulation_menu import SimulationMenu
@@ -192,8 +193,8 @@ class MainWindow(QMainWindow):
     SETTINGS_GEOMETRY = "main_window/geometry"
     SETTINGS_STATE = "main_window/state"
     SETTINGS_LIVE_TUNING_LAYOUT = "main_window/live_tuning_layout_initialized"
-    PREVIEW_RAYS = 49
-    PREVIEW_STEP_MM = 1.0
+    PREVIEW_RAYS = TUNING_PROFILES["Preview"].rays
+    PREVIEW_STEP_MM = TUNING_PROFILES["Preview"].step_mm
     INITIAL_PREVIEW_DELAY_MS = 50
     PREVIEW_DEBOUNCE_MS = 250
     DESIGN_EXPLORER_DEBOUNCE_MS = 200
@@ -793,7 +794,12 @@ class MainWindow(QMainWindow):
         self.tuning_quality.setObjectName("tuningQuality")
         self.tuning_quality.addItem("Preview: fast rays", "Preview")
         self.tuning_quality.addItem("Medium: sampled beam", "Medium")
-        self.tuning_quality.setToolTip("Live edits update particle rays and current-pixel signals. An already calculated coherent beam refreshes after edits settle and the latest ray frame completes. Medium adds internal samples and zero-current support probes; explicit Tip quadrature retains its complete population. High accuracy is a separate calculation.")
+        self.tuning_quality.setToolTip(
+            "Live edits update particle rays and current-pixel signals. Preview and Medium each require "
+            f"at least {MINIMUM_TUNING_SOURCE_PARTICLES} original positive-current particles. "
+            "Zero-current support probes are additional when used. Explicit Tip CDF and product "
+            "quadratures retain their complete populations and weights. An already calculated coherent "
+            "beam refreshes after edits settle and the latest ray frame completes. High accuracy is a separate calculation.")
         self.tuning_quality.currentIndexChanged.connect(self._tuning_quality_changed)
         toolbar.addWidget(self.tuning_quality)
         toolbar.addSeparator()
@@ -2425,7 +2431,8 @@ class MainWindow(QMainWindow):
             if cdf is not None else
             "Derived from the complete Tip position × direction × energy quadrature. "
             "Change its factors to change this population." if quadrature is not None else
-            "Particle samples for Ray Diagram and page calculations. Preview uses its own smaller captured population.")
+            "Particle samples for Ray Diagram and page calculations. Preview and Medium use separate "
+            f"captured budgets with at least {MINIMUM_TUNING_SOURCE_PARTICLES} original positive-current particles.")
 
     def _high_ray_count_changed(self, count: int) -> None:
         emitter = getattr(self.state.electron_gun, "emitter", self.state.electron_gun)
@@ -2534,7 +2541,6 @@ class MainWindow(QMainWindow):
                 f"Preview deferred until {operation} finishes"
             )
             return
-        from temsim.physics.optical_tuning import TUNING_PROFILES
         profile = TUNING_PROFILES[str(self.tuning_quality.currentData())]
         self.preview_timer.stop()
         if self._interactive_preview_in_flight():

@@ -1,8 +1,8 @@
 """Numerical budgets for optical diagnostics and physical particle tuning.
 
-X/Y are metres, slopes radians and axial positions millimetres. Medium
-tuning adds zero-current support probes unless the source has an explicit
-product quadrature, whose complete weighted population is retained unchanged.
+X/Y are metres, slopes radians and axial positions millimetres. Physical
+previews retain at least 1000 original positive-current source particles.
+Fixed source tables retain their complete nodes and original weights.
 An envelope is a display guide, not a reconstructed electron distribution.
 """
 from dataclasses import dataclass
@@ -17,9 +17,12 @@ class TuningProfile:
     boundary_probes: int = 0
 
 
+MINIMUM_TUNING_SOURCE_PARTICLES = 1000
+DEFAULT_TUNING_SOURCE_PARTICLES = 1024
+
 TUNING_PROFILES = {
-    "Preview": TuningProfile("Preview", 49, 1.0),
-    "Medium": TuningProfile("Medium", 193, .25, 33),
+    "Preview": TuningProfile("Preview", DEFAULT_TUNING_SOURCE_PARTICLES, 1.0),
+    "Medium": TuningProfile("Medium", DEFAULT_TUNING_SOURCE_PARTICLES, .25, 33),
 }
 
 
@@ -27,24 +30,45 @@ def is_tuning_quality(quality):
     return str(quality) in TUNING_PROFILES
 
 
-def resolve_tuning_ray_count(state, quality, requested):
-    """Keep all selected source strata, including in a small optical preview.
+def _tuning_support_probes(emitter, profile):
+    from temsim.optics.electron_gun.emitter import ColdFieldEmitter
+    if not isinstance(emitter, ColdFieldEmitter) or any(
+            getattr(emitter, name, None) is not None
+            for name in ("cdf_quadrature", "quadrature", "sampling")):
+        return 0, 0
+    if emitter.surface_model is not None:
+        return 0, 33 if profile.quality == "Medium" else 1
+    return profile.boundary_probes, 0
 
-    High accuracy uses its explicit user budget. Explicit product quadratures
-    keep all their factors and samples; ordinary sources retain the existing
-    49/193-ray defaults. Support probes carry no source current.
+
+def resolve_tuning_ray_count(state, quality, requested):
+    """Resolve a total budget without counting zero-current probes as electrons.
+
+    Repeated request preparation returns the same count. Fixed quadratures
+    require enough original positive-current nodes and keep their full table.
     """
     if quality not in TUNING_PROFILES:
         return int(requested)
     emitter = getattr(state.electron_gun, "emitter", None)
+    cdf = getattr(emitter, "cdf_quadrature", None)
     quadrature = getattr(emitter, "quadrature", None)
-    if quadrature is not None:
-        return int(quadrature.validate().total)
-    model = getattr(emitter, "surface_model", None)
-    if model is None or model.emission.spatial_sampling != "apex_stratified_v1":
-        return int(requested)
-    minimum = 81 if model.emission.angular_sampling.startswith("tangent_stratified_") else 9
-    return max(int(requested),minimum+(33 if quality == "Medium" else 1))
+    if cdf is not None or quadrature is not None:
+        table = (cdf if cdf is not None else quadrature).validate()
+        positive = sum(weight > 0. for weight in cdf.weights) if cdf is not None else table.total
+        if positive < MINIMUM_TUNING_SOURCE_PARTICLES:
+            raise ValueError(
+                f"{quality} requires at least {MINIMUM_TUNING_SOURCE_PARTICLES} original "
+                f"positive-current source particles; the selected quadrature has {positive}. "
+                "Configure a complete source table with enough positive-current nodes."
+            )
+        return int(table.total)
+    sampling = getattr(emitter, "sampling", None)
+    if sampling is not None:
+        sampling.validate()
+        count = max(int(requested), DEFAULT_TUNING_SOURCE_PARTICLES)
+        return sampling.validate_count(1 << (count - 1).bit_length())
+    probes = sum(_tuning_support_probes(emitter, TUNING_PROFILES[quality]))
+    return max(int(requested), DEFAULT_TUNING_SOURCE_PARTICLES + probes)
 
 
 def check_tuning_cancelled(state):
@@ -55,16 +79,17 @@ def check_tuning_cancelled(state):
 
 def prepare_tuning_snapshot(state, quality, *, particle_signals=False):
     profile = TUNING_PROFILES[quality]
+    emitter = getattr(state.electron_gun, "emitter", None)
+    owner = emitter if emitter is not None else state.electron_gun
+    count = resolve_tuning_ray_count(state, quality, owner.ray_count)
+    boundary_probes, surface_probes = _tuning_support_probes(emitter, profile)
+    owner.ray_count = count
     state._optical_tuning = not particle_signals
     state._particle_tuning = bool(particle_signals)
     state._tuning_quality = quality
-    emitter = getattr(state.electron_gun, "emitter", None)
     if emitter is not None:
-        # A product quadrature is an indivisible weighted population. Replacing
-        # its samples with probes would change its factors and physical weights.
-        product = getattr(emitter, "quadrature", None) is not None
-        emitter._tuning_boundary_probes = 0 if product else profile.boundary_probes
-        emitter._tuning_surface_probes = 0 if product else (33 if quality == "Medium" else 1)
+        emitter._tuning_boundary_probes = boundary_probes
+        emitter._tuning_surface_probes = surface_probes
     # The legacy optical diagnostic omits raster and material observables.
     # Physical particle tuning preserves raster, elastic/inelastic scattering
     # and independently selected EDS. Live tuning does not request wave products.

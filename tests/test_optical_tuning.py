@@ -40,19 +40,21 @@ def test_medium_support_probes_preserve_weighted_source_distribution(curved):
             module_manifest.part_data("gun/FEG.toml", "feg_tip"))
     p = TUNING_PROFILES["Medium"]
     s = CalculationController._calculation_snapshot(source, "Medium", p.rays, p.step_mm)
-    original = s.electron_gun.emitter.emit(160 if curved else None)
+    interior = s.electron_gun.emitter.ray_count - p.boundary_probes
+    assert interior >= 1000
+    original = s.electron_gun.emitter.emit(interior if curved else None)
     prepare_tuning_snapshot(s, "Medium")
     sampled = s.electron_gun.emitter.emit()
     assert sampled.weight.sum() == pytest.approx(1.)
-    assert np.count_nonzero(sampled.weight == 0) == 33
+    assert np.count_nonzero(sampled.weight == 0) == p.boundary_probes
     for name in ("x_m", "y_m", "tx_rad", "ty_rad", "energy_offset_ev"):
-        np.testing.assert_array_equal(getattr(sampled, name)[:160], getattr(original, name)[:160])
-    radii = np.hypot(sampled.tx_rad[160:-1], sampled.ty_rad[160:-1])
+        np.testing.assert_array_equal(getattr(sampled, name)[:interior], getattr(original, name)[:interior])
+    radii = np.hypot(sampled.tx_rad[interior:-1], sampled.ty_rad[interior:-1])
     if curved:
-        normal = sampled.surface_position_m[160:-1].copy()
+        normal = sampled.surface_position_m[interior:-1].copy()
         radius = s.electron_gun.emitter.surface_model.geometry.apex_radius_nm*1e-9
         normal[:, 2] += radius
-        np.testing.assert_allclose(sampled.surface_direction[160:-1], normal/radius, atol=1e-14)
+        np.testing.assert_allclose(sampled.surface_direction[interior:-1], normal/radius, atol=1e-14)
     else:
         np.testing.assert_allclose(radii, s.electron_gun.emitter.angular_cutoff_mrad*1e-3)
     assert not hasattr(source.electron_gun.emitter, "_tuning_boundary_probes")
@@ -100,10 +102,11 @@ def test_live_objective_edit_updates_rays_and_reuses_only_valid_prefix():
     controller.pool.start = workers.append
     controller.result_ready.connect(lambda _q, r, _t: results.append(r))
     state = default_state()
-    controller.submit(state, "Preview", 49, 1.)
+    profile = TUNING_PROFILES["Preview"]
+    controller.submit(state, "Preview", profile.rays, profile.step_mm)
     workers[-1].run()
     state.objective_lens.percent += .1
-    controller.submit(state, "Preview", 49, 1.)
+    controller.submit(state, "Preview", profile.rays, profile.step_mm)
     workers[-1].run()
     assert len(results) == 2
     assert results[1].state_snapshot.objective_lens.percent == state.objective_lens.percent
@@ -139,16 +142,29 @@ def test_support_guide_respects_rotation_and_physical_stops():
 
 @pytest.mark.parametrize("tuning_flag", ("_optical_tuning", "_particle_tuning"))
 def test_serial_tuning_kernel_matches_numpy_and_falls_back(monkeypatch, tuning_flag):
+    from dataclasses import replace
     from temsim.physics import core
+    from temsim.simulation_modes import switch_mode
     if not core.NUMBA_AVAILABLE:
         pytest.skip("Numba unavailable")
     state = default_state()
+    # This parity/fallback check owns the legacy serial kernel. The default
+    # Finite-Field mode dispatches to a separate shared-potential executor.
+    switch_mode(state, "ideal")
     for part in (*state.lenses, *state.stigmators, *state.corrector_elements):
         part.enabled = False
     state.step_mm = .1
     state.history_step_mm = .2
+    # Backend discovery and its small-bundle threshold have separate coverage.
+    # Select the two kernels explicitly for this deterministic parity check.
+    monkeypatch.setattr(core, "choose_ray_backend", lambda _requested, *, acceleration_enabled, ray_count:
+                        (core.BACKEND_NUMBA if acceleration_enabled else core.BACKEND_CPU, None))
     monkeypatch.setattr(core, "fields", lambda z, _s: (np.full_like(z, .1), np.zeros_like(z), np.zeros_like(z)))
     plan = core.build_propagation_plan(state, 1500., 1503., checkpoint_z_mm=(1503.,))
+    # This synthetic magnetic-kernel fixture must not dispatch through the
+    # separately tested physical gun's electric-potential executor.
+    plan = replace(plan, electric_field=None, electric_field_identity=None,
+                   electric_reference_invariant_ev=None)
     source = tuple(np.array(v) for v in ([2e-6, -1e-6], [.001, -.002], [-1e-6, 3e-6], [.002, .001]))
     state.acceleration_enabled = False
     reference = core.execute_propagation_plan(state, plan, *source)

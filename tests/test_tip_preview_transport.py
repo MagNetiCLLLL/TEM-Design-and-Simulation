@@ -9,7 +9,8 @@ def test_classical_surface_tip_axis_probe_traverses_full_column():
     from temsim.assembly_catalog import AssemblyCatalog
     from temsim.gui.main_window import MainWindow
     from temsim.simulation_modes import switch_mode
-    from temsim.physics.optical_tuning import prepare_tuning_snapshot
+    from temsim.physics.optical_tuning import TUNING_PROFILES, prepare_tuning_snapshot
+    from temsim.gui.calculation_request import apply_request_numerics
     from temsim.physics.simulation import run
     s = default_state()
     catalog = AssemblyCatalog()
@@ -24,8 +25,12 @@ def test_classical_surface_tip_axis_probe_traverses_full_column():
     s.electron_gun.emitter.surface_model = model_from_part(s._resolved_assembly.part("feg_tip").data)
     assert s.electron_gun.emitter.surface_model.coherence is None
     switch_mode(s, "ideal")
-    s.electron_gun.emitter.ray_count = 49
-    s.step_mm = 1.
+    profile = TUNING_PROFILES["Preview"]
+    apply_request_numerics(s, profile.quality, profile.rays, profile.step_mm)
+    # Exercise the complete original population on the compiled CPU path.
+    # This changes neither the physical source nor the integration step.
+    s.acceleration_enabled = True
+    s.acceleration_backend = "Numba CPU"
     prepare_tuning_snapshot(s, "Preview")
     result = run(s, optical_only=True)
     emitted = result.gun_trace.exit_bundle
@@ -33,8 +38,10 @@ def test_classical_surface_tip_axis_probe_traverses_full_column():
     assert emitted.weight.sum() == pytest.approx(1.)
     assert result.incident.alive[-1]
     assert result.metrics["sample_support_probe_survivors"] == 1
-    assert result.metrics["sample_beam_surviving_rays"] == 0
-    assert result.metrics["sample_beam_surviving_fraction"] == 0.
+    positive = result.incident.alive & (result.incident.ray_weight > 0)
+    assert result.metrics["sample_beam_surviving_rays"] == np.count_nonzero(positive)
+    assert result.metrics["sample_beam_surviving_fraction"] == pytest.approx(
+        result.incident.ray_weight[positive].sum())
     downstream = result.branches["000"]
     assert downstream.blocked_key[-1] == "bf"
     assert downstream.blocked_z[-1] == pytest.approx(next(d.z_mm for d in s.stem_detectors if d.key == "bf"))

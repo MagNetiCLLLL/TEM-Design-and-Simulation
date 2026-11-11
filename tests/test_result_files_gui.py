@@ -1,6 +1,6 @@
 """Result-file UI restores executed data without submitting a new calculation.
 
-The shared 49-ray fixture executes once; file-open, startup and rollback tests
+The shared Preview source fixture executes once; file-open, startup and rollback tests
 then forbid transport and calculation dispatch. They exercise real Qt views.
 """
 import numpy as np

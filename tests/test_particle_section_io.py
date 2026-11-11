@@ -47,10 +47,12 @@ def executed_section():
     from temsim.optics.column import default_state
     from temsim.gui.calculation_controller import CalculationController, CalculationWorker
     from temsim.calculation_cache import calculation_signatures, state_model_signature
+    from temsim.physics.optical_tuning import TUNING_PROFILES
     source = default_state()
     source.sample.inserted = False  # This fixture exercises vacuum column continuation.
     source.sample.wave_enabled = source.sample.stem_wave_enabled = False
-    snapshot = CalculationController._calculation_snapshot(source, "Preview", 49, 2.)
+    profile = TUNING_PROFILES["Preview"]
+    snapshot = CalculationController._calculation_snapshot(source, "Preview", profile.rays, 2.)
     request = {"target_z_mm": float(snapshot.sample.z_mm) + 30.,
                "component_keys": ("objective_lens",)}
     worker = CalculationWorker(1, "Preview", snapshot, section_request=request,
@@ -176,7 +178,7 @@ def test_automatic_archive_is_atomic_deduplicated_and_self_describing(executed_s
     restored = load_section_result(path)
     assert restored.section_archive_info["identity"] == section_archive_identity(executed_section)
     assert restored.section_archive_info["target_z_mm"] == executed_section.simulation.metrics["section_target_z_mm"]
-    assert restored.section_archive_info["particle_count"] == 49
+    assert restored.section_archive_info["particle_count"] == executed_section.state_snapshot.electron_gun.ray_count
     assert restored.section_archive_info["quality"] == "Preview"
     assert restored.section_archive_info["saved_at_utc"]
     assert restored.section_archive_info["resumable_through_z_mm"] >= restored.state_snapshot.sample.z_mm

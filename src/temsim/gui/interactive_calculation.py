@@ -21,6 +21,7 @@ from temsim.interactive_calculation import (
     CalculationRange, InteractivePlan, available_controls, validate_plan,
     LIVE_CONTROL_GROUPS,
 )
+from temsim.physics.optical_tuning import TUNING_PROFILES, resolve_tuning_ray_count
 
 
 _SPLITTER_SETTINGS_KEY = "interactive_calculation/control_splitter"
@@ -96,7 +97,8 @@ class InteractiveCalculationPage(QWidget):
         self.pages.addTab(self.calculation_page, "Calculation")
         layout.addWidget(self.pages)
         form = QVBoxLayout(left)
-        self.tuning_quality = _label("Live tuning: Preview (49 rays). Change quality in the toolbar.")
+        self.tuning_quality = _label("")
+        self.set_tuning_quality("Preview")
         form.addWidget(self.tuning_quality)
         self.capture = QPushButton("Capture current settings")
         self.capture.clicked.connect(self.capture_requested)
@@ -691,7 +693,7 @@ class InteractiveCalculationPage(QWidget):
         self.invalidate_section_result("Choose the end plane. Participating range components are optional.")
         self.live_table.sync_draft()
         self.build.setEnabled(True)
-        self.capture_info.setText(f"Final calculation: {state.electron_gun.ray_count:,} rays | step {state.step_mm:g} mm. Live tuning uses a small ray bundle.")
+        self.capture_info.setText(f"Final calculation: {state.electron_gun.ray_count:,} rays | step {state.step_mm:g} mm. Live tuning uses the Preview or Medium budget selected in the toolbar.")
         self.status.setText("New settings captured. Previous bank remains available until a replacement completes.")
         self._mark_readout_previous("New settings captured")
         # Named planes are refreshed with widget signals blocked. Publish the
@@ -699,12 +701,15 @@ class InteractiveCalculationPage(QWidget):
         self.section_changed.emit()
 
     def set_tuning_quality(self, quality):
-        from temsim.physics.optical_tuning import TUNING_PROFILES, resolve_tuning_ray_count
         p = TUNING_PROFILES[quality]
         self._tuning_quality_name = quality
         state = getattr(self,"source_state",None)
-        rays = p.rays if state is None else resolve_tuning_ray_count(state,quality,p.rays)
-        self.tuning_quality.setText(f"Live tuning: {quality} ({rays} rays). Change quality in the toolbar.")
+        try:
+            rays = p.rays if state is None else resolve_tuning_ray_count(state,quality,p.rays)
+        except ValueError as error:
+            self.tuning_quality.setText(f"Live tuning: {quality} unavailable. {error}")
+            return
+        self.tuning_quality.setText(f"Live tuning: {quality} ({rays:,} total particles). Change quality in the toolbar.")
 
     def start_live_tuning(self):
         try:

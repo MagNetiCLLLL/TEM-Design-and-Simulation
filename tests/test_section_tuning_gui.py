@@ -70,6 +70,21 @@ def test_section_is_opt_in_and_named_planes_follow_backend_limits(section_page, 
     assert flags & Qt.TextInteractionFlag.TextSelectableByKeyboard
 
 
+def test_low_population_quadrature_can_be_captured_with_preview_unavailable(section_page):
+    from temsim.optics.electron_gun.emitter import EmissionQuadrature
+    state = default_state()
+    emitter = state.electron_gun.emitter
+    emitter.quadrature = EmissionQuadrature(3, 3, 3)
+    emitter.ray_count = emitter.quadrature.total
+    section_page.set_source(state)
+    assert "Preview unavailable" in section_page.tuning_quality.text()
+    assert "1000" in section_page.tuning_quality.text()
+    assert emitter.ray_count == 27
+    section_page.set_tuning_quality("Medium")
+    assert "Medium unavailable" in section_page.tuning_quality.text()
+    assert emitter.quadrature.total == emitter.ray_count == 27
+
+
 def test_named_plane_and_custom_z_remain_in_sync_without_changing_state(section_page, qtbot):
     page = section_page
     state = default_state()
