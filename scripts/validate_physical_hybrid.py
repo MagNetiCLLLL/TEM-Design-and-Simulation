@@ -178,6 +178,9 @@ def classical(state, args, report):
     from temsim.physics.recording_clipping import clip_recording_planes
     from temsim.physics.transport_progress import transport_progress
 
+    current = state.electron_gun.emitted_current_a
+    if not np.isfinite(current) or current <= 0:
+        raise ValueError("Physical trials require a finite positive source current")
     detector = next(p for p in state.recording_planes if p.key == args.detector and p.inserted)
     runtime = capture_unified_field_runtime(state, stop_z_m=detector.z_mm*.001)
     write_report(args.output/"instrument.json", capture_instrument_snapshot(state).to_dict())

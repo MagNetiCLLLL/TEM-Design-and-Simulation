@@ -8,6 +8,7 @@ from pathlib import Path
 import tempfile
 import tomllib
 from copy import copy, deepcopy
+from dataclasses import replace
 from functools import lru_cache
 from types import UnionType
 from typing import Union, get_args, get_origin, get_type_hints
@@ -581,6 +582,21 @@ def apply_profile_values(state, values: dict) -> None:
             candidate_emitter.cdf_quadrature = prepared_gun_controls.tip_cdf_quadrature
     if candidate_emitter is not None:
         candidate_emitter.validate()
+        gun = state.electron_gun
+        electrodes = (gun.extractor, gun.electrostatic_lens, gun.accelerator)
+        voltage_updates = [(obj, name, value) for obj, name, value in pending
+                           if any(obj is electrode for electrode in electrodes)]
+        if voltage_updates:
+            from temsim.optics.electron_gun.electrostatic import validate_feg_electrode_voltages
+            candidates = {id(electrode): copy(electrode) for electrode in electrodes}
+            for obj, name, value in voltage_updates:
+                setattr(candidates[id(obj)], name, value)
+            extractor, lens, accelerator = (candidates[id(electrode)] for electrode in electrodes)
+            if prepared_gun_controls is not None:
+                accelerator.stages = [replace(stage, voltage_fraction=fraction, soft_edge_mm=edge)
+                                      for stage, (fraction, edge) in zip(accelerator.stages,
+                                          prepared_gun_controls.stage_values, strict=True)]
+            validate_feg_electrode_voltages(extractor, lens, accelerator)
     for obj, name, value in pending:
         if obj is state.sample:
             setattr(candidate_sample, name, value)

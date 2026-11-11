@@ -132,6 +132,26 @@ def test_tip_entry_passes_strict_policy_to_substituted_execution(fake_cuda, monk
             executed.wave_grid.compute_backend)
 
 
+@pytest.mark.parametrize("policy,enabled", [("CPU", True), ("Auto", False)])
+@pytest.mark.parametrize("entry", ["single", "observation", "scan", "reference"])
+def test_tip_entries_respect_explicit_instrument_cpu_policy(monkeypatch, entry, policy, enabled):
+    from temsim.physics import tip_wave_scan
+    monkeypatch.setattr(backend, "coherent_cuda_capability",
+        lambda: pytest.fail("Explicit CPU must be rejected before probing CUDA"))
+    state = SimpleNamespace(acceleration_backend=policy, acceleration_enabled=enabled)
+    request = pipeline.TipWaveRequest(stop="plane", observation_z_mm=1.)
+    with pytest.raises(backend.GPUExecutionError, match="Enable acceleration"):
+        if entry == "single":
+            pipeline.simulate_tip_wave(state, request)
+        elif entry == "observation":
+            pipeline.TipWaveObservationSession(state, request).observe(2.)
+        elif entry == "scan":
+            next(tip_wave_scan.simulate_tip_scan(state, request))
+        else:
+            actual = pipeline.TipWaveResult(SimpleNamespace(plane_z_mm=1.), None, request, False, "synthetic")
+            pipeline.simulate_ideal_reference(state, actual)
+
+
 def test_explicit_cpu_radial_request_is_not_silently_rewritten(monkeypatch):
     monkeypatch.setattr(backend, "coherent_cuda_capability",
         lambda: pytest.fail("An explicit CPU radial request must not probe CUDA"))
@@ -146,6 +166,41 @@ def test_explicit_cpu_gun_request_is_rejected(fake_cuda):
     request = pipeline.TipWaveRequest(gun=replace(pipeline.TipWaveRequest().gun, compute_backend="CPU"))
     with pytest.raises(backend.GPUExecutionError, match="Enable acceleration"):
         pipeline.require_tip_wave_cuda(request)
+
+
+@pytest.mark.parametrize("entry", ["near_field", "surface_gun"])
+@pytest.mark.parametrize("selection", ["Auto", "CPU"])
+def test_public_surface_entries_gate_before_preparation(no_cuda, monkeypatch, entry, selection):
+    from temsim.physics import surface_gun_wave, surface_wave
+    monkeypatch.setattr(surface_wave, "_compute_surface_wave",
+        lambda *_args, **_kwargs: pytest.fail("CUDA admission must precede near-field preparation"))
+    monkeypatch.setattr(surface_gun_wave, "prepare_surface_problem",
+        lambda *_args, **_kwargs: pytest.fail("CUDA admission must precede coupled boundary preparation"))
+    calculate = (surface_wave.compute_surface_wave if entry == "near_field"
+                 else surface_gun_wave.build_surface_gun_checkpoint)
+    with pytest.raises(backend.GPUExecutionError, match="CPU fallback"):
+        calculate(object(), compute_backend=selection)
+
+
+def test_standalone_surface_gun_prepares_normalized_private_geometry(fake_cuda, monkeypatch):
+    from temsim.instrument_snapshot import encode_instrument
+    from temsim.optics.electron_gun.field_emission import FieldEmissionGun
+    from temsim.optics.electron_gun.tip_surface import SurfaceCoherence, load_tip_surface_reference
+    from temsim.physics import surface_gun_wave
+    gun = FieldEmissionGun()
+    gun.emitter.surface_model = replace(load_tip_surface_reference(), coherence=SurfaceCoherence())
+    original = encode_instrument(gun)
+
+    def inspect(working, *_args, **_kwargs):
+        assert working is not gun
+        assert working._grounded_outlet_liner_segments
+        assert working.emitter.surface_model == gun.emitter.surface_model
+        raise InterruptedError("Private geometry verified")
+
+    monkeypatch.setattr(surface_gun_wave, "prepare_surface_problem", inspect)
+    with pytest.raises(InterruptedError, match="Private geometry verified"):
+        surface_gun_wave.build_surface_gun_checkpoint(gun)
+    assert encode_instrument(gun) == original
 
 
 @pytest.mark.parametrize("entry", ["tem", "stem", "reprojection"])
@@ -217,4 +272,32 @@ def test_cli_requires_cuda_before_loading_an_instrument(no_cuda, monkeypatch, tm
     output = tmp_path/"unstarted"
     with pytest.raises(backend.GPUExecutionError, match="synthetic missing CuPy CUDA"):
         cli.main(["--profile", str(tmp_path/"unused.toml"), "--output", str(output)])
+    assert not output.exists()
+
+
+@pytest.mark.parametrize("entry", ["trace", "hybrid"])
+def test_coherent_clis_reject_explicit_cpu_loaded_from_profile(fake_cuda, monkeypatch, tmp_path, entry):
+    from temsim.assembly_catalog import AssemblyCatalog
+    from temsim.optics.column import default_state
+    from temsim.profile_io import save_profile
+    catalog = AssemblyCatalog()
+    state = default_state()
+    catalog.apply(state, catalog.default_selection())
+    state.acceleration_backend = "CPU"
+    profile, output = tmp_path/"cpu.toml", tmp_path/"unstarted"
+    save_profile(profile, state, catalog.default_selection())
+    args = ["--profile", str(profile), "--output", str(output)]
+    if entry == "trace":
+        spec = importlib.util.spec_from_file_location("profile_cuda_admission_cli",
+            Path(__file__).parents[1]/"scripts"/"trace_tip_wave.py")
+        cli = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cli)
+        name = "simulate_tip_wave"
+    else:
+        from temsim import hybrid_cli as cli
+        args.extend(["--detector", "camera", "--sample-width-nm", "40"])
+        name = "simulate_hybrid"
+    monkeypatch.setattr(cli, name, lambda *args, **kwargs: pytest.fail("CPU profile reached execution"))
+    with pytest.raises(backend.GPUExecutionError, match="Enable acceleration"):
+        cli.main(args)
     assert not output.exists()

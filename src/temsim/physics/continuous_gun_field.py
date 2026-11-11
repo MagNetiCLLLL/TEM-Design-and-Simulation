@@ -79,13 +79,30 @@ def mesh_axes(request):
             return np.linspace(0.0, end, max(3, nodes))
         return np.r_[0.0, np.geomspace(minimum, end, nodes - 1)]
 
-    r = merge_axis_nodes(r, geometric_axis(r[-1], count), boundaries=[0.0, r[-1]])
-    z = merge_axis_nodes(z, np.r_[-geometric_axis(-geometry.back_z_m, max(32, count // 2))[::-1],
-                                   geometric_axis(z[-1], count)],
-                         boundaries=[geometry.back_z_m, 0.0, z[-1]])
-    if len(r) * len(z) > MAX_VERTICES:
+    radial_tip = geometric_axis(r[-1], count)
+    axial_tip = np.r_[-geometric_axis(-geometry.back_z_m, max(32, count // 2))[::-1],
+                      geometric_axis(z[-1], count)]
+    radial_faces = [0.0, r[-1]]
+    axial_faces = [geometry.back_z_m, 0.0, z[-1]]
+    radial = merge_axis_nodes(r, radial_tip, boundaries=radial_faces)
+    axial = merge_axis_nodes(z, axial_tip, boundaries=axial_faces)
+    if len(radial) * len(axial) <= MAX_VERTICES:
+        return radial, axial
+
+    # The graded tip mesh extends through the column, where the electrode
+    # mesh can already be finer. Omit redundant overlay nodes before rejecting
+    # the budget. Preserve the base electrode mesh and exact physical faces.
+    def finer_nodes(base, tip):
+        cells = np.clip(np.searchsorted(base, tip) - 1, 0, len(base) - 2)
+        spacing = np.diff(tip)
+        local_spacing = np.minimum(np.r_[np.inf, spacing], np.r_[spacing, np.inf])
+        return tip[local_spacing < np.diff(base)[cells]]
+
+    radial = merge_axis_nodes(r, finer_nodes(r, radial_tip), boundaries=radial_faces)
+    axial = merge_axis_nodes(z, finer_nodes(z, axial_tip), boundaries=axial_faces)
+    if len(radial) * len(axial) > MAX_VERTICES:
         raise ValueError("Continuous gun mesh exceeds its vertex budget")
-    return r, z
+    return radial, axial
 
 
 def _boundary_arrays(request, r, z, geometry):

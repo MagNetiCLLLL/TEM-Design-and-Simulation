@@ -10,7 +10,9 @@ from math import sqrt
 import numpy as np
 from temsim.physics.relativistic_lorentz import ELEMENTARY_CHARGE_C as Q, ELECTRON_MASS_KG as M, SPEED_OF_LIGHT_M_PER_S as C
 from temsim.physics.compiled_magnetic_field import compiled_magnetic_field
-from temsim.test_electron_sampling import step_cell_index
+from temsim.test_electron_sampling import (
+    diagnostic_linear_axial_field, limit_time_at_axial_face, step_cell_index,
+)
 from temsim.physics.discrete_gradient import (
     discrete_gradient_update, ITERATION_TOLERANCE, MAXIMUM_ITERATIONS,
     NORMALIZED_MOMENTUM_FLOOR, dot3, norm3,
@@ -26,21 +28,16 @@ def prepare_compiled_fields(scene):
     if njit is None:
         return None
     from temsim.test_electron_scene import TestElectronScene
-    from temsim.physics.closed_gun_field import ClosedGunField
-    if type(scene) is not TestElectronScene or type(scene.electric_base) is not ClosedGunField:
+    base = diagnostic_linear_axial_field(scene)
+    if base is None:
         return None
-    for name in ('diagnostic_fields_at_global_position', 'diagnostic_position_is_valid', 'diagnostic_spatial_step_m'):
+    for name in ('diagnostic_position_is_valid', 'diagnostic_spatial_step_m'):
         if getattr(getattr(scene, name), '__func__', None) is not getattr(TestElectronScene, name):
             return None
-    if getattr(scene.electric_base.interpolate, '__func__', None) is not ClosedGunField.interpolate:
-        return None
-    if getattr(scene.electric_provider, 'wien_field', None) is not None:
-        return None
     from temsim.physics.compiled_magnetic_field import prepare_compiled_magnetic_sources
     magnetic = prepare_compiled_magnetic_sources(scene.magnetic_scene._sources)
     if magnetic is None:
         return None
-    base = scene.electric_base
     packed = (np.ascontiguousarray(base.r),np.ascontiguousarray(base.z),np.ascontiguousarray(base.voltage),
               np.ascontiguousarray(scene.diagnostic_bounds_m),*magnetic)
     for array in packed:
@@ -207,6 +204,7 @@ def compiled_block(data,sampling,intercepts,unsupported,x,u,b,e,phi,elapsed,dist
     """Execute a bounded block of accepted states; Python owns progress/cancellation."""
     rows = np.empty((block_steps,9))
     count,status = 0,0
+    _,axial_grid,voltage,_,_,_ = data
     path_tolerance = max(max_path*2e-12,position_tol*.01)
     for _ in range(block_steps):
         remaining = max_path-distance
@@ -232,6 +230,7 @@ def compiled_block(data,sampling,intercepts,unsupported,x,u,b,e,phi,elapsed,dist
         if rotation_field>0.:
             dt = min(dt,.05*sqrt(1.+dot3(u,u))*M/(Q*magnetic_norm))
         dt = _curved_step(x,velocity,acceleration_bound,min(dt,suggested_dt),sampling[1])
+        dt = limit_time_at_axial_face(x,u,b,phi,axial_grid,voltage[0],dt)
         accepted = False
         pending_stop,last_failure = -1,5
         for attempt in range(64):

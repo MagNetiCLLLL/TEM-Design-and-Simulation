@@ -182,6 +182,10 @@ def main(argv=None):
     selection, values = read_profile(args.profile)
     catalog.apply(state, selection)
     apply_profile_values(state, values)
+    if not args.describe:
+        from temsim.physics.compute_backend import validate_coherent_cuda_policy
+        validate_coherent_cuda_policy(state.acceleration_backend,
+            acceleration_enabled=state.acceleration_enabled)
     source_numerics = TipWaveNumerics(grid_pixels=args.grid, energy_samples=args.energy_samples,
         mode_tail_tolerance=args.mode_tail, maximum_modes=args.maximum_modes).validate()
     numerics = GunWaveNumerics(field_step_mm=args.field_step_mm, bore_step_mm=args.bore_step_mm,

@@ -147,7 +147,7 @@ per-position errors cannot be combined as independent scan noise.
 """
     if cancelled():
         raise InterruptedError("Physical wave scan cancelled")
-    request = require_tip_wave_cuda(request)
+    request = require_tip_wave_cuda(request, state=state)
     snapshot = capture_instrument_snapshot(state)
     working = snapshot.restore()
     from temsim.simulation_modes import is_unified

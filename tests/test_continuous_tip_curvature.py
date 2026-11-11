@@ -316,26 +316,40 @@ def test_profile_geometry_reload_and_partial_controls_preserve_explicit_choices(
     assert tip.curvature_nm_inv == 0
 
 
-def test_full_preview_pipeline_uses_curvature_and_keeps_sample_signals_out():
+def test_full_preview_pipeline_uses_curvature_and_keeps_sample_signals_out(record_property):
     from temsim.optics.column import default_state
     from temsim.gui.calculation_controller import CalculationController, CalculationWorker
     from temsim.physics.optical_tuning import TUNING_PROFILES
     state = default_state()
+    count = 1024
     frames = []
     for k in (0, 1e-5):
         state.electron_gun.emitter.curvature_nm_inv = k
         profile = TUNING_PROFILES["Preview"]
-        snapshot = CalculationController._calculation_snapshot(state, "Preview", profile.rays, profile.step_mm)
+        snapshot = CalculationController._calculation_snapshot(state, "Preview", count, profile.step_mm)
         worker = CalculationWorker(1, "Preview", snapshot)
         errors = []
         worker.signals.result.connect(lambda generation, quality, frame, duration: frames.append(frame))
         worker.signals.error.connect(lambda *args: errors.append(args))
         worker.run()
-        assert not errors
+        assert not errors, errors
     assert len(frames) == 2
     assert not np.array_equal(frames[0].simulation.incident.x, frames[1].simulation.incident.x)
     assert frames[1].state_snapshot.electron_gun.emitter.curvature_nm_inv == 1e-5
     assert frames[1].stem_scan is None and frames[1].wave_imaging is None
+    for frame in frames:
+        trace = frame.simulation.gun_trace
+        weights = trace.exit_bundle.weight
+        assert trace.emitted_current_a > 0
+        assert np.count_nonzero(weights > 0) == count
+        assert len(np.unique(trace.emission_reference["ray_id"])) == count
+        curvature = frame.state_snapshot.electron_gun.emitter.curvature_nm_inv
+        record_property(f"curvature_{curvature:g}_emitted", count)
+        for plane, alive in (("gun_exit", trace.exit_bundle.alive), ("incident_end", frame.simulation.incident.alive)):
+            surviving = weights[alive & (weights > 0)]
+            record_property(f"curvature_{curvature:g}_{plane}_surviving", len(surviving))
+            record_property(f"curvature_{curvature:g}_{plane}_effective",
+                            float(surviving.sum() ** 2 / (surviving @ surviving)) if surviving.size else 0.)
 
 
 def test_main_window_curvature_edits_use_existing_preview_scheduler(qtbot, monkeypatch, tmp_path):

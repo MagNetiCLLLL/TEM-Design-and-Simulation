@@ -36,6 +36,7 @@ from temsim.physics.discrete_gradient import (
     discrete_gradient_update, ITERATION_TOLERANCE, MAXIMUM_ITERATIONS,
     NORMALIZED_MOMENTUM_FLOOR, dot3, norm3,
 )
+from temsim.test_electron_sampling import diagnostic_linear_axial_field, limit_time_at_axial_face
 
 
 @dataclass(frozen=True)
@@ -548,6 +549,7 @@ def _trace_electromagnetic_electron(scene, settings, cancelled, progress=None, p
             except Exception as error:
                 if not sampler.compilation_fallback(error):
                     raise
+    axial_field = diagnostic_linear_axial_field(scene)
     p0, _ = electron_momentum_and_speed(settings.kinetic_energy_ev)
     theta, phi = radians(settings.polar_angle_deg), radians(settings.azimuth_angle_deg)
     u = p0/(ELECTRON_MASS_KG*SPEED_OF_LIGHT_M_PER_S)*np.array((sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta)))
@@ -594,6 +596,8 @@ def _trace_electromagnetic_electron(scene, settings, cancelled, progress=None, p
             dt = min(dt, .05*sqrt(1.+dot3(u, u))*ELECTRON_MASS_KG/(ELEMENTARY_CHARGE_C*magnetic_norm))
         dt = min(dt, suggested_dt)
         dt = sampler.curved_support_step(x, velocity, acceleration_bound, dt)
+        if axial_field is not None:
+            dt = limit_time_at_axial_face(x, u, fields[0], fields[2], axial_field.z, axial_field.voltage[0], dt)
         accepted = False
         pending_stop = None
         last_failure = "numerical_limit"

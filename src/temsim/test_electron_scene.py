@@ -313,11 +313,10 @@ class TestElectronScene:
                 face = float(z[iz+1] if direction[2] > 0. else z[iz])
                 into_next = .5*float(z[following+1]-z[following])
                 step = min(step, (abs(face-point[2])+into_next)/abs(direction[2]))
-            # Do not pin an accelerating particle to the exact next cell face:
-            # a shorter accepted time step would approach it asymptotically.
-            # A lookahead reaches at most halfway into a finer adjacent cell;
-            # its tiny spacing must not constrain the entire preceding cell.
-            # Step-doubling then resolves field changes across the face.
+            # Let this spatial estimate extend into the next cell so it does
+            # not approach a face asymptotically. The time-domain pusher caps
+            # exact axial motion at its finite arrival time. Other directions
+            # use step-doubling to resolve the bounded crossing.
         return step
 
     def _tip_intercept(self, start, end):

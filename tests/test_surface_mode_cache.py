@@ -12,9 +12,10 @@ from temsim.physics.radial_gun_wave import RadialGunNumerics
 from temsim.physics.surface_wave import SurfaceWaveNumerics
 from temsim.physics.wave_checkpoint_store import ExecutedWaveStore
 from test_wave_detector_readout import checkpoint
+from test_tip_wave_pipeline import coherent_cuda
 
 
-def test_actual_completed_energy_resumes_without_reexecuting_it_or_losing_phase(tmp_path, monkeypatch):
+def test_actual_completed_energy_resumes_without_reexecuting_it_or_losing_phase(tmp_path, monkeypatch, coherent_cuda):
     import temsim.physics.surface_gun_wave as module
     gun = default_state().electron_gun
     gun.emitter.surface_model = replace(load_tip_surface_reference(), coherence=SurfaceCoherence())

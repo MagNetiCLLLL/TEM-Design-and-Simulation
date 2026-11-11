@@ -636,12 +636,14 @@ class GunSourceDialog(QDialog):
                 setattr(candidate, key, value)
             candidate.curvature_model = self._curvature_model
             values["curvature_model"] = candidate.curvature_model
-            phase = {key: float(edit.text()) for key, edit in self.coherence_inputs.items()}
-            if self.coherence_enabled.isChecked() and self.coherence_length_enabled.isChecked():
-                phase.update(transverse_coherence_length_nm=float(self.coherence_length.text()),
-                             incoherent_angle_rms_mrad=0.)
-            candidate.coherence = (TipCoherence(boundary_model=self.tip_boundary.currentData(), **phase)
-                                   if self.coherence_enabled.isChecked() else None)
+            candidate.coherence = None
+            if self.coherence_enabled.isChecked():
+                use_length = self.coherence_length_enabled.isChecked()
+                phase = {key: float(edit.text()) for key, edit in self.coherence_inputs.items()
+                         if not use_length or key != "incoherent_angle_rms_mrad"}
+                if use_length:
+                    phase["transverse_coherence_length_nm"] = float(self.coherence_length.text())
+                candidate.coherence = TipCoherence(boundary_model=self.tip_boundary.currentData(), **phase)
             candidate.validate()
             values["coherence"] = candidate.coherence
             values["surface_model"] = None

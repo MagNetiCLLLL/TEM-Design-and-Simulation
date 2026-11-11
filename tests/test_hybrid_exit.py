@@ -79,14 +79,29 @@ def test_explicit_cpu_wave_settings_are_rejected_before_hybrid_preparation(monke
 
 def test_original_count_cannot_be_satisfied_by_duplicates_or_exit_resampling():
     from types import SimpleNamespace
-    def trace(ids):
-        return SimpleNamespace(emission_reference={"ray_id": ids}, exit_bundle=SimpleNamespace(
+    def trace(ids, current_a=1e-9):
+        return SimpleNamespace(emitted_current_a=current_a, emission_reference={"ray_id": ids}, exit_bundle=SimpleNamespace(
             weight=np.ones(len(ids))/len(ids), alive=np.ones(len(ids), bool)))
     with pytest.raises(ValueError, match="1000"):
         _source_count(trace(np.arange(999)))
     with pytest.raises(ValueError, match="duplicate"):
         _source_count(trace(np.zeros(1024)))
+    with pytest.raises(ValueError, match="only 0 original positive-current particles"):
+        _source_count(trace(np.arange(1024), 0.))
     assert _source_count(trace(np.arange(1024)))["positive_current_count"] == 1024
+
+
+def test_zero_source_current_rejects_hybrid_before_capture(monkeypatch):
+    from types import SimpleNamespace
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+                        lambda: compute_backend.BackendCapability(True, "mock CUDA device"))
+    monkeypatch.setattr("temsim.instrument_snapshot.capture_instrument_snapshot",
+                        lambda *_: pytest.fail("Zero current reached instrument capture"))
+    state = SimpleNamespace(simulation_mode="unified", electron_gun=SimpleNamespace(emitted_current_a=0.))
+    request = HybridRequest("camera", HybridGrid(500., 32, 20.))
+    with pytest.raises(ValueError, match="finite positive source current"):
+        simulate_hybrid(state, request)
 
 
 def test_physical_exit_window_is_independent_of_lattice_refinement():

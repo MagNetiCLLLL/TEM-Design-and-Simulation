@@ -485,8 +485,10 @@ def test_unified_column_numeric_controls_capture_only_the_selected_numerics(pane
     assert request.column_support_projection is True
     assert request.wave_grid.maximum_accumulated_support_l2 == 3e-7
     assert request.wave_grid.maximum_support_loss_fraction == 2.5e-13
+    assert request.gun.compute_backend == request.wave_grid.compute_backend == "Require GPU"
     assert replace(request, column_kinetic_order=4, column_support_projection=False,
-                   wave_grid=initial.wave_grid) == initial
+                   wave_grid=initial.wave_grid,
+                   gun=replace(request.gun, compute_backend=initial.gun.compute_backend)) == initial
     assert json_digest(asdict(request)) != json_digest(asdict(initial))
     assert vars(panel._state.electron_gun.emitter) == source_before
     assert captured.electron_gun.emitter == panel._state.electron_gun.emitter

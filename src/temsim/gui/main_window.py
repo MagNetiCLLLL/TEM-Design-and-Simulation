@@ -12,6 +12,7 @@ from temsim.gui.input_policy import (
 from pathlib import Path
 from dataclasses import replace
 from copy import copy
+from zipfile import BadZipFile
 from temsim import input_io
 
 import numpy as np
@@ -198,8 +199,9 @@ class MainWindow(QMainWindow):
     PREVIEW_DEBOUNCE_MS = 250
     DESIGN_EXPLORER_DEBOUNCE_MS = 200
 
-    def __init__(self, parent: QWidget | None = None) -> None:
+    def __init__(self, parent: QWidget | None = None, *, startup_working_point: Path | None = None) -> None:
         super().__init__(parent)
+        self._startup_working_point = startup_working_point
         install_numeric_input_policy()
         self.setObjectName("mainWindow")
         self.setWindowTitle(WINDOW_TITLE)
@@ -207,7 +209,8 @@ class MainWindow(QMainWindow):
         self.setDockNestingEnabled(True)
 
         from temsim.gui.result_files import ResultFiles
-        self.result_files = ResultFiles(self)
+        startup_settings = QSettings() if startup_working_point is not None else None
+        self.result_files = ResultFiles(self, startup_settings=startup_settings)
 
         self.catalog = AssemblyCatalog()
         self.selection = self.catalog.default_selection()
@@ -523,14 +526,34 @@ class MainWindow(QMainWindow):
         self.result_files.refresh_actions()
         if self.result_files.hold_automatic_preview:
             QTimer.singleShot(0, self.result_files.start)
-        else:
+        elif not self._install_startup_working_point():
             self.preview_timer.start(self.INITIAL_PREVIEW_DELAY_MS)
+
+    def _install_startup_working_point(self) -> bool:
+        if self._startup_working_point is None:
+            return False
+        from temsim.working_point import WorkingPointCheckpoint
+
+        try:
+            point = WorkingPointCheckpoint.read_package(
+                self._startup_working_point, maximum_unpacked_bytes=16 * 1024**2
+            )
+            if not point.is_input_design:
+                raise ValueError("The startup working point must contain inputs only")
+            self._install_working_point(point.compatible_state(), point)
+        except (BadZipFile, KeyError, OSError, TypeError, ValueError, RuntimeError) as exc:
+            self.log_output.appendPlainText(f"Default working point unavailable: {exc}")
+            return False
+        self.status_label.setText("Default Nanoprobe working point loaded. Ready to calculate.")
+        return True
 
     def _resume_default_startup(self, reason: str) -> None:
         """Recover an unavailable automatic snapshot using ordinary startup inputs."""
         if self.result_files._closed:
             return
         self.log_output.appendPlainText("Automatic result could not be restored: " + str(reason))
+        if self._install_startup_working_point():
+            return
         try:
             state = default_state()
             selection = self.catalog.default_selection()

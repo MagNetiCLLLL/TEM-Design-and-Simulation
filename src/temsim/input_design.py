@@ -1,8 +1,13 @@
 """Portable input-only designs; never authorizes reuse of historical results."""
 from hashlib import sha256
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 from temsim.immutable_json import thaw_json
+
+
+def _archive_path(value):
+    windows_path = PureWindowsPath(value)
+    return windows_path if windows_path.is_absolute() else PurePosixPath(value)
 
 
 def restore_input_design(snapshot):
@@ -28,16 +33,17 @@ def restore_input_design(snapshot):
             require_physical_gun_source(result.electron_gun)
         return result
 
-    catalog = next((Path(row["path"]) for row in snapshot.external_inputs
+    catalog = next((_archive_path(row["path"]) for row in snapshot.external_inputs
                     if row["role"] == "assembly:catalog"), None)
     old_root = (catalog.parent.parent if catalog is not None
                 and catalog.name == "catalog.toml" and catalog.parent.name == "instruments" else None)
     replacements = {}
     for row in snapshot.external_inputs:
-        original = Path(row["path"])
-        target = original
-        if old_root is not None and original.is_relative_to(old_root):
-            target = CONFIG_ROOT / original.relative_to(old_root)
+        original = _archive_path(row["path"])
+        target = Path(row["path"])
+        in_config_root = old_root is not None and original.is_relative_to(old_root)
+        if in_config_root:
+            target = CONFIG_ROOT.joinpath(*original.relative_to(old_root).parts)
         try:
             content = target.read_bytes()
         except OSError as exc:
@@ -49,13 +55,13 @@ def restore_input_design(snapshot):
                          and content.replace(b"\r\n", b"\n") == archived.replace(b"\r\n", b"\n"))
             if not same_text:
                 raise ValueError(f"Changed {row['role']}: {target}; input design cannot be applied")
-        if target != original:
-            replacements[str(original)] = str(target)
+        if in_config_root and target != original:
+            replacements[row["path"]] = str(target)
             # Directory references in the object graph (notably assembly.root)
             # are portable only when backed by these verified external files.
             for parent in original.parents:
                 if parent == old_root or parent.is_relative_to(old_root):
-                    replacements[str(parent)] = str(CONFIG_ROOT / parent.relative_to(old_root))
+                    replacements[str(parent)] = str(CONFIG_ROOT.joinpath(*parent.relative_to(old_root).parts))
 
     def rebase(value):
         if isinstance(value, str):

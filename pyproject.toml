@@ -77,6 +77,7 @@ bdist_wheel = "temsim._build.FreshWheel"
 
 [tool.setuptools.data-files]
 "." = ["requirements-cad.txt"]
+"profiles" = ["profiles/default-nanoprobe.temwp"]
 "configs/environments" = ["configs/environments/*.toml"]
 "configs/sources" = ["configs/sources/*.toml"]
 "configs/subassemblies" = ["configs/subassemblies/*.toml"]

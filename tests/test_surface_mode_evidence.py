@@ -5,9 +5,10 @@ import json
 import numpy as np
 import pytest
 from threadpoolctl import threadpool_limits
+from test_tip_wave_pipeline import coherent_cuda
 
 
-def test_actual_energy_outputs_survive_later_interruption_and_keep_full_state(tmp_path):
+def test_actual_energy_outputs_survive_later_interruption_and_keep_full_state(tmp_path, coherent_cuda):
     from temsim.optics.column import default_state
     from temsim.optics.electron_gun.tip_surface import load_tip_surface_reference, SurfaceCoherence
     from temsim.physics.surface_gun_wave import build_surface_gun_checkpoint

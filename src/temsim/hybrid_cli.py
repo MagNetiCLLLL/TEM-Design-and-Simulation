@@ -77,6 +77,8 @@ def main(argv=None):
     args = parser().parse_args(argv)
     if args.output.exists():
         raise ValueError("Output directory already exists; choose a new destination")
+    from temsim.physics.compute_backend import require_coherent_cuda, validate_coherent_cuda_policy
+    require_coherent_cuda()
     from temsim.assembly_catalog import AssemblyCatalog
     from temsim.optics.column import default_state
     from temsim.profile_io import read_profile, apply_profile_values
@@ -86,6 +88,8 @@ def main(argv=None):
     catalog = AssemblyCatalog()
     catalog.apply(state, catalog.normalise_selection(selection))
     apply_profile_values(state, values)
+    validate_coherent_cuda_policy(state.acceleration_backend,
+        acceleration_enabled=state.acceleration_enabled)
     apply_physical_layout_to_state(state)
     wave = TipWaveRequest(stop="gun_exit")
     wave = replace(wave, source=replace(wave.source, grid_pixels=args.source_grid_pixels),

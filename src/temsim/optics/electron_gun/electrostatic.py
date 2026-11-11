@@ -348,6 +348,14 @@ def accelerator_potential_rises_v(accelerator, extraction_kv, gun_lens_rise_v):
                  start+float(stage.voltage_fraction)*(end-start) for stage in accelerator.stages)
 
 
+def validate_feg_electrode_voltages(extractor, lens, accelerator):
+    """Validate pending geometry-field controls in the same electrical gauge."""
+    extractor.validate(grounded=True)
+    extraction_kv = extractor.voltage_kv
+    lens_rise_v = lens.potential_rise_from_tip_v(extraction_kv, accelerator.high_tension_kv)
+    accelerator.stage_potential_rises_v(extraction_kv, lens_rise_v)
+
+
 class FegElectrostaticField:
     """Superposed axisymmetric potential expanded through radial order r²."""
 

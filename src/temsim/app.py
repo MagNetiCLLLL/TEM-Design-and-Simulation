@@ -12,6 +12,7 @@ from PySide6.QtWidgets import QApplication
 from temsim.branding import APP_NAME, ORGANIZATION_NAME, application_settings
 from temsim.gui.main_window import MainWindow
 from temsim.gui.input_policy import install_numeric_input_policy
+from temsim.paths import project_root
 
 
 _CHECKBOX_ASSET_ROOT = (
@@ -167,6 +168,7 @@ def create_application(argv: Sequence[str] | None = None) -> QApplication:
 
 def run(argv: Sequence[str] | None = None) -> int:
     application = create_application(argv)
-    window = MainWindow()
+    startup_working_point = project_root() / "profiles" / "default-nanoprobe.temwp"
+    window = MainWindow(startup_working_point=startup_working_point)
     window.show()
     return application.exec()
