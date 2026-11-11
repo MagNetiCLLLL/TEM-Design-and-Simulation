@@ -1,12 +1,13 @@
-"""Explicit tip-origin wave development, independent of particle results.
+"""Physical tip-origin wave sessions and exact observation planes.
 
-The page owns captured sessions and exact observation-plane results. Moving Z
-never defines a source or interpolates a complex field. Mixed modes contribute
-intensities; their individual complex fields remain in the executed checkpoint.
+Transverse Beam can use the applied instrument captured by an accepted
+particle result. Each observation runs from that captured source at exact Z.
+Mixed modes contribute intensities, with individual complex fields preserved.
 """
 
 from collections import OrderedDict
 from collections.abc import Mapping
+from copy import copy
 from dataclasses import asdict, dataclass, replace
 from decimal import Decimal, InvalidOperation
 import json
@@ -125,6 +126,14 @@ def _wave_read_session_bytes(request):
                request.execution.maximum_ram_cache_bytes//4)
 
 
+def _check_initial_wave_memory(summary, request):
+    initial_bytes = summary.get("minimum_initial_wave_bytes") or 0
+    if initial_bytes > request.wave_grid.maximum_working_bytes:
+        raise MemoryError(f"Initial complete mode fields need at least {initial_bytes} bytes, "
+            f"above the selected working limit {request.wave_grid.maximum_working_bytes}. "
+            "Increase the numerical working budget; no source modes were removed.")
+
+
 @dataclass(frozen=True)
 class _Preview:
     density: np.ndarray
@@ -224,7 +233,7 @@ def _plane_magnetic_gauge(state, z_mm):
 
 class _WaveWorker(QRunnable):
     def __init__(self, generation, session, state, request, event, retained=(), *, observer=None,
-                 pair_context=None):
+                 pair_context=None, plane_only=False):
         super().__init__()
         self.generation = generation
         self.session = session
@@ -233,6 +242,7 @@ class _WaveWorker(QRunnable):
         self.event = event
         self.observer = observer
         self.pair_context = pair_context
+        self.plane_only = plane_only
         # Inventory roots only: these executed displays are never supplied as
         # a replacement source to simulate_tip_wave.
         self.existing_result = (retained+((pair_context,) if pair_context is not None else ())
@@ -289,9 +299,8 @@ class _WaveWorker(QRunnable):
             else:
                 result = self.observer.observe(self.request.observation_z_mm,
                     cancelled=self.event.is_set, progress_callback=self._report_progress)
-            self._report_stage(1, "Building intensity and phase readout")
-            preview = _intensity_preview(result.checkpoint, cancelled=self.event.is_set,
-                                         include_moments=self.pair_context is not None)
+            self._report_stage(1, "Reading observation-plane fields" if self.plane_only
+                               else "Building intensity and phase readout")
             # Probability current needs the executed magnetic state, not the
             # live instrument which may have changed while this job ran.
             unified_column = getattr(result.checkpoint, "record", {}).get("unified_column_executed", False)
@@ -302,8 +311,17 @@ class _WaveWorker(QRunnable):
                 gauge = _plane_magnetic_gauge(self.state, result.checkpoint.plane_z_mm)
                 from temsim.physics.wave_plane_observables import checkpoint_magnetic_gauge
                 gauge = checkpoint_magnetic_gauge(gauge, result.checkpoint)
-            preview = replace(preview, magnetic_gauge=gauge,
-                axial_bz_t=None if unified_column or gauge is None or gauge.fields else gauge.aligned_bz_t)
+            axial_bz_t = None if unified_column or gauge is None or gauge.fields else gauge.aligned_bz_t
+            if self.plane_only:
+                # Transverse Beam has its own readout worker. Avoid reading
+                # every mode here just to construct a second intensity map.
+                if not self.event.is_set():
+                    self._report_stage(2, "Publishing coherent plane")
+                    self.signals.solved.emit(self.generation, self.session, result, (axial_bz_t, gauge))
+                return
+            preview = _intensity_preview(result.checkpoint, cancelled=self.event.is_set,
+                                         include_moments=self.pair_context is not None)
+            preview = replace(preview, magnetic_gauge=gauge, axial_bz_t=axial_bz_t)
             if self.pair_context is not None and not self.event.is_set():
                 context = self.pair_context
                 try:
@@ -335,6 +353,16 @@ class _WaveWorker(QRunnable):
                 release_device_memory()
             finally:
                 self.signals.finished.emit(self.generation)
+
+
+@dataclass
+class _TransverseWaveSession:
+    particle_result: object
+    state: object
+    request: TipWaveRequest
+    observer: TipWaveObservationSession
+    z_mm: float
+    completed: tuple | None = None
 
 
 class _ObservableLabel(QLabel):
@@ -532,6 +560,8 @@ class CoherentBeamPage(QWidget):
     paired_calculation_requested = Signal()
     pair_invalidated = Signal()
     progress_detail = Signal(object)
+    transverse_wave_ready = Signal(object, object, object)
+    transverse_wave_failed = Signal(float, str)
     _SCOPE = (
         "Development: physical tip → extraction → acceleration → installed column → exact Z. "
         "Ideal vacuum (no gas scattering/attenuation); fields and hardware absorption remain active. "
@@ -568,6 +598,10 @@ class CoherentBeamPage(QWidget):
         self._energy_samples_edited = False
         self._target_z_mm = 1.
         self._pair_context = None
+        self._transverse_session = None
+        self._transverse_worker = None
+        self._transverse_generation = 0
+        self._transverse_progress = None
 
         self.calculate_button = QPushButton("Calculate beam")
         self.calculate_button.setObjectName("calculateElectronBeam")
@@ -964,6 +998,10 @@ class CoherentBeamPage(QWidget):
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self._start_query)
+        self._transverse_pool = CoordinatedPool(self, coordinator=self.pool.coordinator)
+        self._transverse_timer = QTimer(self)
+        self._transverse_timer.setSingleShot(True)
+        self._transverse_timer.timeout.connect(self._start_transverse_query)
         self.calculate_button.clicked.connect(self.calculate)
         self.cancel_button.clicked.connect(self.cancel)
         self.target_z.valueChanged.connect(self._z_changed)
@@ -1385,6 +1423,7 @@ class CoherentBeamPage(QWidget):
         states = getattr(self, "state_set", None)
         paired_busy = bool(self.paired_busy_provider and self.paired_busy_provider())
         self.cancel_button.setEnabled(self._worker is not None
+            or self._transverse_worker is not None
             or (states is not None and states.worker is not None) or paired_busy)
 
     @Slot()
@@ -1495,7 +1534,7 @@ class CoherentBeamPage(QWidget):
             tip_curvature_y_m1=self.tip_curvature_y.value(),
             tip_tilt_x_mrad=self.tip_tilt_x.value(), tip_tilt_y_mrad=self.tip_tilt_y.value())
 
-    def _make_request(self, state=None):
+    def _make_request(self, state=None, *, observation_z_mm=None, use_applied_tip=False):
         from temsim.simulation_modes import is_unified
 
         default = TipWaveRequest()
@@ -1509,6 +1548,14 @@ class CoherentBeamPage(QWidget):
             require_coherent_mode(state)
         compute_backend = getattr(state, "acceleration_backend", "Auto")
         preview = is_unified(state) and self.column_exploratory_preview.isChecked()
+        nominal_energy = preview and self.source_nominal_energy_preview.isChecked()
+        energy_samples = self.energy_samples.value()
+        if use_applied_tip and not self._energy_samples_edited and not nominal_energy:
+            applied_tip = source_settings_from_state(state)
+            energy_width = applied_tip.surface_energy_rms_ev
+            if energy_width is None:
+                energy_width = applied_tip.tip_energy_spread_fwhm_ev
+            energy_samples = 1 if energy_width == 0. else 9
         if preview:
             # Visible preview edits belong only to propagation after the real
             # gun. Retain the exact strict draft captured before activation.
@@ -1520,11 +1567,12 @@ class CoherentBeamPage(QWidget):
         else:
             strict_l2 = _support_budget(self.support_l2_budget, "Relative support L2 budget")
             strict_probability = _support_budget(self.support_probability_budget, "Relative support probability budget")
-        return replace(default, stop="plane", observation_z_mm=self._target_z_mm,
+        return replace(default, stop="plane", observation_z_mm=(
+            self._target_z_mm if observation_z_mm is None else observation_z_mm),
             tip_time_s=resolve_emission_time_s(state),
             source=replace(default.source, grid_pixels=self.grid_pixels.value(),
-                           energy_samples=self.energy_samples.value()),
-            surface=replace(default.surface, energy_samples=self.energy_samples.value(),
+                           energy_samples=energy_samples),
+            surface=replace(default.surface, energy_samples=energy_samples,
                             maximum_working_bytes=working),
             gun=replace(default.gun, field_step_mm=self.gun_step.value(),
                         bore_step_mm=self.gun_bore_step.value(),
@@ -1542,7 +1590,7 @@ class CoherentBeamPage(QWidget):
             column_weighted_resampling=(is_unified(state) and self.column_support_projection.isChecked()
                                         and self.column_weighted_resampling.isChecked()),
             column_exploratory_preview=preview,
-            source_nominal_energy_preview=(preview and self.source_nominal_energy_preview.isChecked()),
+            source_nominal_energy_preview=nominal_energy,
             column_preview_segment_resampling=(preview and self.column_support_projection.isChecked()
                 and self.column_weighted_resampling.isChecked() and self.column_preview_segment_resampling.isChecked()),
             column_preview_phase_reselection=(preview and self.column_support_projection.isChecked()
@@ -1583,11 +1631,7 @@ class CoherentBeamPage(QWidget):
             summary = wave_input_summary(captured, request)
             if summary["status"] != "SOURCE_READY":
                 raise ValueError(summary.get("reason", "Coherent tip inputs are not ready"))
-            initial_bytes = summary.get("minimum_initial_wave_bytes") or 0
-            if initial_bytes > request.wave_grid.maximum_working_bytes:
-                raise MemoryError(f"Initial complete mode fields need at least {initial_bytes} bytes, "
-                    f"above the selected working limit {request.wave_grid.maximum_working_bytes}. "
-                    "Increase the numerical working budget; no source modes were removed.")
+            _check_initial_wave_memory(summary, request)
         except Exception as error:
             self.progress_detail.emit(CalculationProgress(
                 f"coherent-check:{uuid4().hex}", "Coherent beam", "Checking captured inputs",
@@ -1602,6 +1646,136 @@ class CoherentBeamPage(QWidget):
             raise
         self._show_source_check(summary, settings)
         return captured, request, summary
+
+    def request_transverse_wave(self, particle_result, z_mm):
+        """Use the accepted particle result's applied instrument at exact Z."""
+        if self._closed:
+            return
+        if isinstance(z_mm, bool) or not isinstance(z_mm, Real) or not math.isfinite(z_mm):
+            self.release_transverse_wave()
+            self.transverse_wave_failed.emit(float("nan"), "A coherent observation needs a finite Z.")
+            return
+        z_mm = float(z_mm)
+        particle_state = getattr(particle_result, "state_snapshot", None)
+        session = self._transverse_session
+        if session is None or session.particle_result is not particle_result:
+            self.release_transverse_wave()
+            try:
+                if particle_state is None:
+                    raise ValueError("The current particle result has no captured instrument settings.")
+                from temsim.physics.compute_backend import BACKEND_REQUIRE_GPU
+                # The toolbar setting belongs to the particle run. This
+                # separate calculation requests CUDA on its own copy.
+                wave_inputs = copy(particle_state)
+                wave_inputs.acceleration_backend = BACKEND_REQUIRE_GPU
+                wave_inputs.acceleration_enabled = True
+                request = self._make_request(wave_inputs, observation_z_mm=z_mm, use_applied_tip=True)
+                request = require_tip_wave_cuda(request, state=wave_inputs)
+                captured = prepare_coherent_state(wave_inputs)
+                summary = wave_input_summary(captured, request)
+                if summary["status"] != "SOURCE_READY":
+                    raise ValueError(summary.get("reason", "Coherent tip inputs are not ready"))
+                _check_initial_wave_memory(summary, request)
+                session = _TransverseWaveSession(particle_result, captured, request,
+                    TipWaveObservationSession(captured, request), z_mm)
+            except Exception as error:
+                self.transverse_wave_failed.emit(z_mm, str(error))
+                return
+            self._transverse_session = session
+        session.z_mm = z_mm
+        if session.completed is not None and session.completed[0].plane_z_mm == z_mm:
+            self.transverse_wave_ready.emit(*session.completed)
+        elif self._transverse_worker is None and not self._transverse_timer.isActive():
+            self._transverse_timer.start(self.QUERY_INTERVAL_MS)
+
+    @property
+    def transverse_wave_readout_budget(self):
+        session = self._transverse_session
+        return 512*1024**2 if session is None else session.request.maximum_readout_bytes
+
+    @Slot()
+    def release_transverse_wave(self):
+        """Cancel queued/running inline queries without affecting other wave views."""
+        self._transverse_timer.stop()
+        self._transverse_session = None
+        worker, self._transverse_worker = self._transverse_worker, None
+        if worker is not None:
+            worker.event.set()
+            self._transverse_pool.clear()
+        self._end_transverse_progress("cancelled", "Transverse Beam request cancelled")
+        self._update_cancel_enabled()
+
+    @Slot()
+    def _start_transverse_query(self):
+        session = self._transverse_session
+        if self._closed or session is None or self._transverse_worker is not None:
+            return
+        if session.completed is not None and session.completed[0].plane_z_mm == session.z_mm:
+            return
+        self._transverse_generation += 1
+        request = replace(session.request, observation_z_mm=session.z_mm)
+        worker = _WaveWorker(self._transverse_generation, -self._transverse_generation,
+                             session.state, request, Event(), observer=session.observer, plane_only=True)
+        worker.signals.solved.connect(self._transverse_solved)
+        worker.signals.failed.connect(self._transverse_failed)
+        worker.signals.progress_detail.connect(self._transverse_progressed)
+        worker.signals.finished.connect(self._transverse_finished)
+        self._transverse_worker = worker
+        self._update_cancel_enabled()
+        self._transverse_progressed(worker.generation, worker.progress_state)
+        if self._transverse_worker is worker:
+            self._transverse_pool.start(worker)
+
+    @Slot(int, int, object, object)
+    def _transverse_solved(self, generation, _session, result, fields):
+        worker = self._transverse_worker
+        if worker is None or generation != worker.generation:
+            return
+        checkpoint = result.checkpoint
+        if checkpoint.plane_z_mm != worker.request.observation_z_mm:
+            self._transverse_failed(generation, "Executed Z differs from the requested observation plane.")
+            return
+        self._end_transverse_progress("succeeded", "Completed coherent plane")
+        session = self._transverse_session
+        if self._transverse_worker is worker and session.z_mm == checkpoint.plane_z_mm:
+            session.completed = (checkpoint, *fields)
+            self.transverse_wave_ready.emit(*session.completed)
+
+    @Slot(int, str)
+    def _transverse_failed(self, generation, message):
+        worker = self._transverse_worker
+        if worker is None or generation != worker.generation:
+            return
+        self._end_transverse_progress("failed", message)
+        session = self._transverse_session
+        if self._transverse_worker is worker and session.z_mm == worker.request.observation_z_mm:
+            self.transverse_wave_failed.emit(session.z_mm, message)
+
+    @Slot(int, object)
+    def _transverse_progressed(self, generation, update):
+        worker = self._transverse_worker
+        if worker is not None and generation == worker.generation:
+            self._transverse_progress = update
+            self.progress_detail.emit(update)
+
+    def _end_transverse_progress(self, status, message):
+        progress, self._transverse_progress = self._transverse_progress, None
+        if progress is not None:
+            self.progress_detail.emit(progress.terminal(status, message))
+
+    @Slot(int)
+    def _transverse_finished(self, generation):
+        worker = self._transverse_worker
+        if worker is None or generation != worker.generation:
+            return
+        self._transverse_worker = None
+        self._end_transverse_progress("cancelled", "Wave request ended without a new accepted result")
+        self._update_cancel_enabled()
+        session = self._transverse_session
+        if session is not None and session.z_mm != worker.request.observation_z_mm:
+            # The completed query may have published a reusable upstream
+            # prefix. Only the newest still-requested Z gets another job.
+            self._transverse_timer.start(0)
 
     @Slot()
     def calculate(self):
@@ -1744,7 +1918,8 @@ class CoherentBeamPage(QWidget):
 
     def _retained_wave_roots(self):
         """Keep idle wave products visible to all shared calculation owners."""
-        return self.result, self.preview, self._cache, self._captured, self._pair_context, self._observation_session
+        return (self.result, self.preview, self._cache, self._captured, self._pair_context,
+                self._observation_session, self._transverse_session)
 
     def _update_plane_positions(self):
         worker = self._worker
@@ -1949,6 +2124,10 @@ class CoherentBeamPage(QWidget):
     def cancel(self):
         if self._closed:
             return
+        session = self._transverse_session
+        if self._transverse_timer.isActive() or self._transverse_worker is not None:
+            self.release_transverse_wave()
+            self.transverse_wave_failed.emit(session.z_mm, "Coherent wave calculation cancelled.")
         self.invalidate_pair()
         self.state_set.cancel()
         self._cancel_request()
@@ -1959,12 +2138,14 @@ class CoherentBeamPage(QWidget):
 
     def shutdown(self, msecs=3000):
         if not self._closed:
+            self.release_transverse_wave()
             self._cancel_request()
             self._closed = True
             self._observation_session = None
         states_finished = self.state_set.shutdown(msecs)
         observations_finished = self.observation.shutdown(msecs)
-        return self.pool.waitForDone(msecs) and states_finished and observations_finished
+        transverse_finished = self._transverse_pool.waitForDone(msecs)
+        return self.pool.waitForDone(msecs) and states_finished and observations_finished and transverse_finished
 
     def closeEvent(self, event):
         if self.shutdown():

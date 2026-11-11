@@ -206,6 +206,8 @@ class _ViewWorker(QRunnable):
 
 
 class WaveBeamAnalysis(QObject):
+    intensity_prepared = Signal()
+    intensity_failed = Signal(str)
     MODES = (("Beam intensity / current", "wave_current"),
              ("Probability flow direction", "wave_flow"),
              ("Canonical angular distribution", "wave_angles"),
@@ -221,7 +223,6 @@ class WaveBeamAnalysis(QObject):
         self.checkpoint, self.bz = checkpoint, None if axial_bz_t is None else float(axial_bz_t)
         self.magnetic_gauge = magnetic_gauge
         self.maximum_working_bytes = maximum_working_bytes
-        self.saved_mode, self.saved_colour = analysis.mode, analysis.colour_combo.currentData()
         self.ranges = {}
         self.mode = "wave_current"
         self._hover = None
@@ -230,6 +231,7 @@ class WaveBeamAnalysis(QObject):
         self.flow_current_pA = None
         self.display_records = ()
         self._active = True
+        self._preparing_intensity = False
         self._generation = 0
         self._pending_key = self._cached_key = None
         self._data = None
@@ -243,8 +245,15 @@ class WaveBeamAnalysis(QObject):
     def _retained_roots(self):
         return self.checkpoint, self._data
 
+    def prepare_intensity(self):
+        """Derive the first image while the particle view remains visible."""
+        self._preparing_intensity = True
+        self._submit(("wave_current", None, self.owner._projection_angle_deg, None))
+
     def activate(self):
         a = self.analysis
+        self._preparing_intensity = False
+        self.saved_mode, self.saved_colour = a.mode, a.colour_combo.currentData()
         a.set_wave_visibility(True)
         self.owner.snapshot_status.hide()
         for combo in (a.mode_combo, a.colour_combo):
@@ -272,7 +281,7 @@ class WaveBeamAnalysis(QObject):
         self.owner.plot.setAspectLocked(True)
         self.redraw()
 
-    def deactivate(self):
+    def discard(self):
         self._active = False
         # A replacement checkpoint can arrive while FFT or disk loading is
         # unwinding. The coordinator, not a closing view, owns this retired
@@ -280,6 +289,10 @@ class WaveBeamAnalysis(QObject):
         self.setParent(self.pool.coordinator)
         self._cancel_pending()
         self._data = None
+        self._dispose_when_idle()
+
+    def deactivate(self):
+        self.discard()
         a = self.analysis
         for combo in (a.mode_combo, a.colour_combo):
             combo.blockSignals(True)
@@ -298,7 +311,6 @@ class WaveBeamAnalysis(QObject):
         a.colour_combo.setToolTip("Source colour follows ancestry; interaction colour follows the recorded channel.")
         a._update_controls()
         self.owner.plot.setAspectLocked(a.mode in a.EQUAL_UNIT_MODES)
-        self._dispose_when_idle()
 
     @Slot()
     def _dispose_when_idle(self):
@@ -355,13 +367,21 @@ class WaveBeamAnalysis(QObject):
             return
         self._cached_key, self._data = self._pending_key, result
         self._pending_key, self.busy = None, False
-        self.redraw()
+        if not self._preparing_intensity:
+            self.redraw()
+        elif self._cached_key[2] == self.owner._projection_angle_deg:
+            self.intensity_prepared.emit()
+        else:
+            self.prepare_intensity()
 
     @Slot(int, str)
     def _failed(self, generation, message):
         if not self._active or generation != self._generation:
             return
-        self._ready(generation, {"error": message})
+        if self._preparing_intensity:
+            self.intensity_failed.emit(message)
+        else:
+            self._ready(generation, {"error": message})
 
     @Slot(int)
     def _finished(self, generation):

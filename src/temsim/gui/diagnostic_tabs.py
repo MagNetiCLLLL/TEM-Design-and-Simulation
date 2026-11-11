@@ -4351,6 +4351,8 @@ class TransverseBeamView(QWidget):
 
     plot_sizes_changed = Signal()
     colour_quantity_changed = Signal(str)
+    coherent_wave_requested = Signal(float)
+    coherent_wave_disabled = Signal()
     MAX_DISPLAY_RAYS = 2_000
     CENTRE_DIRECTION_TOLERANCE_M = 1.0e-15
     DEFAULT_HALF_RANGE_DISPLAY = 1.0
@@ -4360,10 +4362,12 @@ class TransverseBeamView(QWidget):
     METRES_TO_DISPLAY = 1.0e6
     MILLIMETRES_TO_DISPLAY = 1.0e3
 
-    def __init__(self, parent=None) -> None:
+    def __init__(self, parent=None, *, coherent_switch: bool = False) -> None:
         super().__init__(parent)
         self._result = None
         self._plane_z_mm = None
+        self._coherent_requested_z = None
+        self._preparing_coherent_wave = None
         self._scatter = None
         self._inputs_stale = False
         self._focused_component_key = None
@@ -4390,6 +4394,20 @@ class TransverseBeamView(QWidget):
         self.snapshot_status.setWordWrap(True)
         self.snapshot_status.setStyleSheet("color: #fbbf24;")
         self.snapshot_status.hide()
+        self.coherent_wave_toggle = QPushButton("Coherent wave", self)
+        self.coherent_wave_toggle.setObjectName("transverseCoherentWave")
+        self.coherent_wave_toggle.setCheckable(True)
+        self.coherent_wave_toggle.setStyleSheet(BUTTON_STYLE)
+        self.coherent_wave_toggle.setToolTip(
+            "Calculate and show coherent wave intensity at the selected plane. "
+            "Click again to return to the particle display."
+        )
+        self.coherent_wave_toggle.setVisible(coherent_switch)
+        self.coherent_wave_status = QLabel()
+        self.coherent_wave_status.setObjectName("transverseCoherentWaveStatus")
+        self.coherent_wave_status.setTextFormat(Qt.TextFormat.PlainText)
+        self.coherent_wave_status.setWordWrap(True)
+        self.coherent_wave_status.hide()
         self.fit_beam = QPushButton("Fit beam")
         self.fit_beam.setStyleSheet(BUTTON_STYLE)
         self.fit_beam.setToolTip(
@@ -4436,7 +4454,7 @@ class TransverseBeamView(QWidget):
         )
         self.initial_beam_heading.setWordWrap(True)
         for label in (self.heading, self.summary, self.initial_beam_heading,
-                      self.snapshot_status):
+                      self.snapshot_status, self.coherent_wave_status):
             label.setTextInteractionFlags(
                 Qt.TextInteractionFlag.TextSelectableByMouse
                 | Qt.TextInteractionFlag.TextSelectableByKeyboard
@@ -4490,6 +4508,7 @@ class TransverseBeamView(QWidget):
         from temsim.gui.plane_hardware_overlay import PlaneHardwareOverlay
 
         self.hardware = PlaneHardwareOverlay(self)
+        self.coherent_wave_toggle.toggled.connect(self._coherent_wave_toggled)
 
     def plot_size_state(self):
         return self.plot_layout.state()
@@ -4653,7 +4672,20 @@ class TransverseBeamView(QWidget):
 
     def mark_inputs_stale(self) -> None:
         self._inputs_stale = True
-        self._update_snapshot_status()
+        wave_visible = self.analysis.wave is not None
+        if self.coherent_wave_toggle.isChecked():
+            self._request_selected_wave()
+        if wave_visible and self.analysis.wave is None:
+            self._redraw()
+        else:
+            self._update_snapshot_status()
+
+    def invalidate_coherent_wave(self) -> None:
+        """Retire the wave when a particle calculation is published again."""
+        if self._coherent_requested_z is not None:
+            self._coherent_requested_z = None
+            self._deactivate_wave()
+            self.coherent_wave_disabled.emit()
 
     def _update_snapshot_status(self) -> None:
         stale = (self._inputs_stale and self._result is not None
@@ -4665,9 +4697,12 @@ class TransverseBeamView(QWidget):
         self.snapshot_status.setVisible(stale)
 
     def display_result(self, result, *, focus=None, inputs_stale=False) -> None:
-        if self.analysis.wave is not None:
-            wave, self.analysis.wave = self.analysis.wave, None
-            wave.deactivate()
+        wave_enabled = self.coherent_wave_toggle.isChecked()
+        if not wave_enabled:
+            self._deactivate_wave()
+        elif result is not self._result and result is not None and not inputs_stale:
+            self._coherent_requested_z = None
+            self._deactivate_wave()
         self.analysis.invalidate()
         self.hardware.invalidate()
         self._result = result
@@ -4682,7 +4717,95 @@ class TransverseBeamView(QWidget):
                 self.focus_z(value, redraw=False)
         if self._plane_z_mm is None and result is not None:
             self._plane_z_mm = float(result.simulation.incident.z[-1])
+        if wave_enabled:
+            self._request_selected_wave()
         self._redraw()
+
+    def _deactivate_wave(self) -> None:
+        if self._preparing_coherent_wave is not None:
+            wave, self._preparing_coherent_wave = self._preparing_coherent_wave, None
+            wave.discard()
+        if self.analysis.wave is not None:
+            wave, self.analysis.wave = self.analysis.wave, None
+            wave.deactivate()
+
+    def _set_coherent_wave_status(self, message: str) -> None:
+        self.coherent_wave_status.setText(message)
+        self.coherent_wave_status.setVisible(bool(message))
+
+    def _coherent_wave_toggled(self, enabled: bool) -> None:
+        if enabled:
+            self._request_selected_wave()
+        else:
+            self._coherent_requested_z = None
+            self._deactivate_wave()
+            self._set_coherent_wave_status("")
+            self.coherent_wave_disabled.emit()
+        self._redraw()
+
+    def _request_selected_wave(self) -> None:
+        z_mm = self._plane_z_mm
+        if self._result is None or self._inputs_stale or z_mm is None:
+            self.invalidate_coherent_wave()
+            self._set_coherent_wave_status("Waiting for a current particle result.")
+        elif self._coherent_requested_z != z_mm:
+            self._coherent_requested_z = z_mm
+            self._deactivate_wave()
+            self.set_coherent_wave_pending(z_mm)
+            self.coherent_wave_requested.emit(z_mm)
+
+    def _matches_coherent_request(self, z_mm: float) -> bool:
+        return (
+            self.coherent_wave_toggle.isChecked()
+            and self._result is not None
+            and not self._inputs_stale
+            and z_mm == self._coherent_requested_z == self._plane_z_mm
+        )
+
+    def set_coherent_wave_pending(self, z_mm: float) -> None:
+        if self._matches_coherent_request(z_mm):
+            self._set_coherent_wave_status(f"Calculating coherent wave at Z {z_mm:.12g} mm…")
+
+    def set_coherent_wave_failed(self, z_mm: float, message: str) -> None:
+        if self._matches_coherent_request(z_mm):
+            self._deactivate_wave()
+            self._set_coherent_wave_status(f"Coherent wave unavailable at Z {z_mm:.12g} mm. {message}")
+            self._redraw()
+
+    def accept_coherent_wave(self, checkpoint, *, axial_bz_t, magnetic_gauge=None,
+                             maximum_working_bytes=512*1024**2) -> bool:
+        z_mm = float(checkpoint.plane_z_mm)
+        if not self._matches_coherent_request(z_mm):
+            return False
+        from temsim.gui.wave_beam_analysis import WaveBeamAnalysis
+
+        self._deactivate_wave()
+        try:
+            wave = WaveBeamAnalysis(self.analysis, checkpoint, axial_bz_t,
+                                    maximum_working_bytes, magnetic_gauge=magnetic_gauge)
+        except ValueError as error:
+            self.set_coherent_wave_failed(z_mm, str(error))
+            return False
+        self._preparing_coherent_wave = wave
+        wave.intensity_prepared.connect(self._show_prepared_coherent_wave)
+        wave.intensity_failed.connect(self._fail_coherent_readout)
+        self._set_coherent_wave_status(f"Preparing coherent wave display at Z {z_mm:.12g} mm…")
+        wave.prepare_intensity()
+        return True
+
+    def _show_prepared_coherent_wave(self) -> None:
+        wave, self._preparing_coherent_wave = self._preparing_coherent_wave, None
+        z_mm = float(wave.checkpoint.plane_z_mm)
+        if self._matches_coherent_request(z_mm):
+            self.analysis.wave = wave
+            wave.activate()
+            self._set_coherent_wave_status(f"Coherent wave at Z {z_mm:.12g} mm.")
+        else:
+            wave.discard()
+
+    def _fail_coherent_readout(self, message: str) -> None:
+        z_mm = float(self._preparing_coherent_wave.checkpoint.plane_z_mm)
+        self.set_coherent_wave_failed(z_mm, f"Could not display wave intensity. {message}")
 
     def display_wave_checkpoint(self, checkpoint, *, axial_bz_t, magnetic_gauge=None,
                                 maximum_working_bytes=512*1024**2):
@@ -4738,6 +4861,8 @@ class TransverseBeamView(QWidget):
             return
         changed = self._plane_z_mm != float(z_mm)
         self._plane_z_mm = float(z_mm)
+        if redraw and changed and self.coherent_wave_toggle.isChecked():
+            self._request_selected_wave()
         if redraw and (changed or force_redraw) and (self._result is not None or self.analysis.wave is not None):
             self._redraw()
 

@@ -516,6 +516,18 @@ the record cannot convert it into a new particle source.
 5. After changing source, hardware, specimen or numerical settings, press
    **Calculate beam** again to establish a new captured session.
 
+### Coherent wave in Transverse Beam
+
+After a particle **Preview** or **High accuracy** run, open **Ray Diagram →
+Beam analysis → Classical rays** to show Transverse Beam. Select a Z plane and
+enable **Coherent wave**. The CUDA wave
+calculation uses the applied tip, optics and specimen captured by the displayed
+particle run, with the wave numerical controls from **Electron beam**. The
+particle count applies to the particle run. Moving the cursor requests the new
+exact plane. The particle view remains available while the wave is pending or
+when the selected plane cannot be calculated. Disable **Coherent wave** to
+return to the particle view.
+
 ### Observations of the same calculated beam
 
 The observation selector changes the readout without running propagation again:
