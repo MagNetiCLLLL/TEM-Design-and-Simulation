@@ -1,0 +1,522 @@
+{
+  "schema": "nanoprobe-crossover-topology-v1",
+  "status": "PRESERVED_AT_BOUNDED_SAMPLING",
+  "same_reference_geometry": true,
+  "same_resolved_relations": true,
+  "cohorts": {
+    "actual": {
+      "status": "PRESERVED_AT_BOUNDED_SAMPLING",
+      "same_resolved_relations": true,
+      "reference": [
+        {
+          "component_interval": [
+            "between",
+            [
+              "condenser_lens_1"
+            ],
+            [
+              "condenser_lens_2"
+            ]
+          ],
+          "lens_keys": [
+            "condenser_lens_1"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "condenser_deflector"
+            ],
+            [
+              "condenser_lens_3"
+            ]
+          ],
+          "lens_keys": [
+            "condenser_lens_3"
+          ],
+          "side": "upstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "probe_hpc_hexapole"
+            ],
+            [
+              "probe_qpc_quadrupole"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl21_lens"
+          ],
+          "side": "upstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "probe_dph1_deflector",
+              "probe_hp1_hexapole"
+            ],
+            [
+              "probe_hpol_hexapole"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl21_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "ac_deflector"
+            ],
+            [
+              "ac_lower"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl12_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "on",
+            [
+              "specimen_entrance",
+              "objective_lens",
+              "sample",
+              "specimen_exit"
+            ]
+          ],
+          "lens_keys": [
+            "objective_lens"
+          ],
+          "side": "upstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "diffraction_lens"
+            ],
+            [
+              "intermediate_lens"
+            ]
+          ],
+          "lens_keys": [
+            "diffraction_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "projector_lens_1"
+            ],
+            [
+              "projector_lens_2"
+            ]
+          ],
+          "lens_keys": [
+            "projector_lens_1"
+          ],
+          "side": "downstream"
+        }
+      ],
+      "candidate": [
+        {
+          "component_interval": [
+            "between",
+            [
+              "condenser_lens_1"
+            ],
+            [
+              "condenser_lens_2"
+            ]
+          ],
+          "lens_keys": [
+            "condenser_lens_1"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "condenser_deflector"
+            ],
+            [
+              "condenser_lens_3"
+            ]
+          ],
+          "lens_keys": [
+            "condenser_lens_3"
+          ],
+          "side": "upstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "probe_hpc_hexapole"
+            ],
+            [
+              "probe_qpc_quadrupole"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl21_lens"
+          ],
+          "side": "upstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "probe_dph1_deflector",
+              "probe_hp1_hexapole"
+            ],
+            [
+              "probe_hpol_hexapole"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl21_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "ac_deflector"
+            ],
+            [
+              "ac_lower"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl12_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "on",
+            [
+              "specimen_entrance",
+              "objective_lens",
+              "sample",
+              "specimen_exit"
+            ]
+          ],
+          "lens_keys": [
+            "objective_lens"
+          ],
+          "side": "upstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "diffraction_lens"
+            ],
+            [
+              "intermediate_lens"
+            ]
+          ],
+          "lens_keys": [
+            "diffraction_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "projector_lens_1"
+            ],
+            [
+              "projector_lens_2"
+            ]
+          ],
+          "lens_keys": [
+            "projector_lens_1"
+          ],
+          "side": "downstream"
+        }
+      ],
+      "reference_unresolved": [],
+      "candidate_unresolved": []
+    },
+    "downstream": {
+      "status": "PRESERVED_AT_BOUNDED_SAMPLING",
+      "same_resolved_relations": true,
+      "reference": [
+        {
+          "component_interval": [
+            "between",
+            [
+              "diffraction_lens"
+            ],
+            [
+              "intermediate_lens"
+            ]
+          ],
+          "lens_keys": [
+            "diffraction_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "projector_lens_1"
+            ],
+            [
+              "projector_lens_2"
+            ]
+          ],
+          "lens_keys": [
+            "projector_lens_1"
+          ],
+          "side": "downstream"
+        }
+      ],
+      "candidate": [
+        {
+          "component_interval": [
+            "between",
+            [
+              "diffraction_lens"
+            ],
+            [
+              "intermediate_lens"
+            ]
+          ],
+          "lens_keys": [
+            "diffraction_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "projector_lens_1"
+            ],
+            [
+              "projector_lens_2"
+            ]
+          ],
+          "lens_keys": [
+            "projector_lens_1"
+          ],
+          "side": "downstream"
+        }
+      ],
+      "reference_unresolved": [],
+      "candidate_unresolved": []
+    },
+    "incident": {
+      "status": "PRESERVED_AT_BOUNDED_SAMPLING",
+      "same_resolved_relations": true,
+      "reference": [
+        {
+          "component_interval": [
+            "between",
+            [
+              "condenser_lens_1"
+            ],
+            [
+              "condenser_lens_2"
+            ]
+          ],
+          "lens_keys": [
+            "condenser_lens_1"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "condenser_deflector"
+            ],
+            [
+              "condenser_lens_3"
+            ]
+          ],
+          "lens_keys": [
+            "condenser_lens_3"
+          ],
+          "side": "upstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "probe_hpc_hexapole"
+            ],
+            [
+              "probe_qpc_quadrupole"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl21_lens"
+          ],
+          "side": "upstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "probe_dph1_deflector",
+              "probe_hp1_hexapole"
+            ],
+            [
+              "probe_hpol_hexapole"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl21_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "ac_deflector"
+            ],
+            [
+              "ac_lower"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl12_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "on",
+            [
+              "specimen_entrance",
+              "objective_lens",
+              "sample",
+              "specimen_exit"
+            ]
+          ],
+          "lens_keys": [
+            "objective_lens"
+          ],
+          "side": "upstream"
+        }
+      ],
+      "candidate": [
+        {
+          "component_interval": [
+            "between",
+            [
+              "condenser_lens_1"
+            ],
+            [
+              "condenser_lens_2"
+            ]
+          ],
+          "lens_keys": [
+            "condenser_lens_1"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "condenser_deflector"
+            ],
+            [
+              "condenser_lens_3"
+            ]
+          ],
+          "lens_keys": [
+            "condenser_lens_3"
+          ],
+          "side": "upstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "probe_hpc_hexapole"
+            ],
+            [
+              "probe_qpc_quadrupole"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl21_lens"
+          ],
+          "side": "upstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "probe_dph1_deflector",
+              "probe_hp1_hexapole"
+            ],
+            [
+              "probe_hpol_hexapole"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl21_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "between",
+            [
+              "ac_deflector"
+            ],
+            [
+              "ac_lower"
+            ]
+          ],
+          "lens_keys": [
+            "probe_tl12_lens"
+          ],
+          "side": "downstream"
+        },
+        {
+          "component_interval": [
+            "on",
+            [
+              "specimen_entrance",
+              "objective_lens",
+              "sample",
+              "specimen_exit"
+            ]
+          ],
+          "lens_keys": [
+            "objective_lens"
+          ],
+          "side": "upstream"
+        }
+      ],
+      "reference_unresolved": [],
+      "candidate_unresolved": []
+    }
+  }
+}

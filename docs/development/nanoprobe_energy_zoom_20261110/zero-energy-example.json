@@ -1,0 +1,150 @@
+{
+  "status": "VERIFIED_FRESH_16384_PARTICLE_10_NM_SI110_CUDA_EXAMPLE",
+  "operating_point": {
+    "voltage_kV": 300,
+    "configured_source_energy_FWHM_eV": 0.0,
+    "classical_maximum_step_mm": 0.025,
+    "fresh_execution_input_digest": "7077feaa3d50efd677488958460f8d3547075178a90d64dc7477583cc81057b1",
+    "historical_equivalent_working_point_digest": "8e0f38d1ba30928c88917be7e081457777e2c38a327612b5ec0b09797514b5ce",
+    "field_digest": "f89d8db5853dd8c63404e12e309aa928e9dc016ae6db664da2b508c271302265",
+    "absorbing_geometry_digest": "807c81e11638214758fe5e2706fda3f894f7161b614c3f96162d5e529cfd70c0"
+  },
+  "classical": {
+    "gun_seconds": 124.79843980000078,
+    "column_seconds": 182.68407320000188,
+    "emitted": {
+      "current_ua": 10.0,
+      "effective": 16384.0,
+      "positive": 16384
+    },
+    "gun_exit": {
+      "current_ua": 10.0,
+      "effective": 16384.0,
+      "positive": 16384
+    },
+    "sample_upper_surface": {
+      "absolute_source_weight": 0.312255859375,
+      "alpha95_mrad": 12.874246417198304,
+      "centroid_x_m": -3.062025314387773e-14,
+      "centroid_y_m": -9.884317964683636e-15,
+      "core_50pm_a": 3.1225585937500002e-06,
+      "current_a": 3.1225585937500002e-06,
+      "d50_nm": 0.011374428138362072,
+      "d90_nm": 0.02522873523968191,
+      "d95_nm": 0.031515710446005936,
+      "effective_rays": 5116.000000000003,
+      "offset_from_surface_nm": 0.0,
+      "rms_radius_nm": 0.00813693844548351,
+      "surviving_rays": 5116,
+      "threefold_tail": {
+        "annular_current_a": 0.0,
+        "annulus_nm": [
+          0.1,
+          1.0
+        ],
+        "harmonic_current_a": 0.0,
+        "normalized_m3": null,
+        "outside_1nm_current_a": 0.0,
+        "shell_edges_nm": [
+          0.1,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "shell_harmonic_currents_a": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shell_harmonic_sum_a": 0.0
+      },
+      "z_mm": 1599.1999998000001
+    },
+    "sample_upper_surface_population": {
+      "current_ua": 3.12255859375,
+      "effective": 5116.0,
+      "positive": 5116
+    },
+    "native_D95_waist_offset_nm": -0.12500004231696948,
+    "RMS_waist_offset_nm": 0.0
+  },
+  "coherent": {
+    "scope": "Single midpoint probe. Near-specimen reconstruction with 10 pm RMS modeled source-image mixing.",
+    "CUDA": "CuPy 14.1.1; NVIDIA GeForce RTX 5090; 17.9 GiB free / 31.8 GiB; CUDA allocation and FFT verified",
+    "seconds": 39.0766145000016,
+    "mode_count": 19,
+    "retained_incident_current_a": 3.1225525462158083e-06,
+    "fitted_phase_source": "Independent matched A2/D4 pupil calibration",
+    "sample_surface_D95_nm": 0.13006262779235842,
+    "observed_waist_offset_nm": 0.0,
+    "observed_waist_bracket_nm": [
+      -0.125,
+      0.125
+    ],
+    "handoff_offsets_nm": [
+      -5.0,
+      -2.0
+    ],
+    "handoff_consistency": {
+      "surface_D95_relative_change": 0.0,
+      "waist_offset_change_nm": 0.0,
+      "passed": true
+    },
+    "material": "Elastic, static Si[110], 10 nm",
+    "physical_slices": 800,
+    "grid_yx": [
+      1536,
+      1536
+    ],
+    "exit_z_mm": 1599.2000098000003,
+    "downstream_observation_z_mm": 1599.2000148000004,
+    "exit_channels_a": {
+      "bf": 2.727508881990506e-06,
+      "adf": 2.781016531633234e-08,
+      "gap": 3.616063023705225e-07,
+      "outer": 4.97563895881112e-09,
+      "band_loss": 6.515575796367524e-10
+    },
+    "exit_diffraction_relative_l1_from_historical_identical_geometry": 4.127425642536911e-07,
+    "downstream_padding_relative_l1_central_nm": 4.8559794418958106e-08
+  },
+  "artifacts": {
+    "inputs": {
+      "path": "outputs/transverse-large-particle-example-20261110/default-nanoprobe-input.temwp",
+      "sha256": "e247ed00f49790cf5273575249d34f12d68b141e67568f366c380b55fe847d10",
+      "bytes": 131795
+    },
+    "classical_receipt": {
+      "path": "outputs/transverse-large-particle-example-20261110/default-n16384/report.json",
+      "sha256": "629a1a589d963d9b4000edd7f39225fb77306010a82020f030c221268962c531",
+      "bytes": 3718595
+    },
+    "source_archive": {
+      "path": "outputs/transverse-large-particle-example-20261110/source-16384/source.npz",
+      "sha256": "ec6029e99ea45177e84306640e2ffd3d2e763f7a81f93288f4c83d50961dc314",
+      "bytes": 1256335
+    },
+    "coherent_receipt": {
+      "path": "outputs/transverse-large-particle-example-20261110/cuda-si110-single-position/report.json",
+      "sha256": "52b166d32e39e1a99368bd1debf2a94302d9ace2111cd9db4cc51ed316c95076",
+      "bytes": 15530
+    },
+    "figure": {
+      "path": "outputs/transverse-large-particle-example-20261110/cuda-si110-single-position/coherent-selected-plane.png",
+      "sha256": "83e7cbd99cb1c2564d5de3bbcb66ab7385aab3497f43ab6068cae9f0b9f76554",
+      "bytes": 467825
+    },
+    "classical_runner": {
+      "path": "outputs/transverse-large-particle-example-20261110/trace_example.py",
+      "sha256": "54e8469340a2f755262f847f386502c885246fc930a5386bfa2b718bb4b2e7be",
+      "bytes": 21591
+    },
+    "coherent_runner": {
+      "path": "outputs/transverse-large-particle-example-20261110/coherent_example.py",
+      "sha256": "af3d816df537ec9cc47582668e1fe2b9601efe48008b38b20a4731e2bdede869",
+      "bytes": 13156
+    }
+  }
+}

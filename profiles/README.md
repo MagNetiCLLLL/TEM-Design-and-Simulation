@@ -3,15 +3,19 @@
 ## Default Nanoprobe working point
 
 [Default Nanoprobe](default-nanoprobe.temwp) is the fresh desktop startup
-working point. It records the 300 kV Normal Nanoprobe after the A1, D4 and A5
-trim, with zero configured source energy FWHM, 16,384 original source
-particles and a 0.025 mm maximum integration step. It can also be restored
-through **Working Points > Import... > Restore working point**.
+working point. It records the retuned 300 kV Normal Nanoprobe with a
+0.300 eV source energy FWHM, approximately 13.30 mrad particle α95,
+16,384 original source particles and a 0.025 mm maximum integration step.
+It can also be restored through **Working Points > Import... > Restore
+working point**. See the [focus and crossover verification](../docs/development/nanoprobe_energy_zoom_20261110/README.md).
 
 The package contains instrument inputs. It starts ready for an explicit
 calculation. Select **Default Nanoprobe working point** in the **Startup
 result** menu to open these inputs while continuing automatic particle result
 saves. Named startup results and automatic restoration remain available.
+
+The [zero-FWHM Nanoprobe reference](feg-nanoprobe-300kv-zero-fwhm-20261110.temwp)
+preserves the preceding 300 kV working point and its A1, D4 and A5 trim.
 
 ## Previous 0.300 eV Nanoprobe initial state
 

@@ -275,7 +275,7 @@ def test_default_nanoprobe_startup_preserves_automatic_saves_and_named_priority(
     assert actual.graph == expected.graph and actual.external_inputs == expected.external_inputs
     assert window._active_working_checkpoint.digest == point.digest
     assert window.high_rays.value() == 16384 and window.high_step.value() == 0.025
-    assert window.state.electron_gun.emitter.energy_spread_fwhm_ev == 0.0
+    assert window.state.electron_gun.emitter.energy_spread_fwhm_ev == 0.3
     assert not window.preview_timer.isActive() and window.workspace._last_result is None
     assert not errors
     window.close()
