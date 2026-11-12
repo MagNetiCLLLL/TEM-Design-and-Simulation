@@ -1,0 +1,394 @@
+{
+  "initial-strong-1024": [
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\catalog.toml",
+      "role": "assembly:catalog",
+      "sha256": "6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870",
+      "available": true,
+      "trial": "initial-strong-1024",
+      "archive_path": "manifest-inputs/6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870/catalog.toml",
+      "bytes": 2675
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\column\\C2.toml",
+      "role": "assembly:column",
+      "sha256": "5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce",
+      "available": true,
+      "trial": "initial-strong-1024",
+      "archive_path": "manifest-inputs/5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce/C2.toml",
+      "bytes": 40718
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\gun\\FEG.toml",
+      "role": "assembly:gun",
+      "sha256": "8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d",
+      "available": true,
+      "trial": "initial-strong-1024",
+      "archive_path": "manifest-inputs/8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d/FEG.toml",
+      "bytes": 13683
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\project_and_recording_system\\NoEnergyFilter.toml",
+      "role": "assembly:project_and_recording_system",
+      "sha256": "52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f",
+      "available": true,
+      "trial": "initial-strong-1024",
+      "archive_path": "manifest-inputs/52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f/NoEnergyFilter.toml",
+      "bytes": 40980
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\subassemblies\\sample_stage.toml",
+      "role": "assembly:subassembly",
+      "sha256": "625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9",
+      "available": true,
+      "trial": "initial-strong-1024",
+      "archive_path": "manifest-inputs/625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9/sample_stage.toml",
+      "bytes": 4636
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\sources\\FEG_tip.toml",
+      "role": "assembly:tip_definition",
+      "sha256": "4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a",
+      "available": true,
+      "trial": "initial-strong-1024",
+      "archive_path": "manifest-inputs/4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a/FEG_tip.toml",
+      "bytes": 2469
+    }
+  ],
+  "initial-weak-1024": [
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\catalog.toml",
+      "role": "assembly:catalog",
+      "sha256": "6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870",
+      "available": true,
+      "trial": "initial-weak-1024",
+      "archive_path": "manifest-inputs/6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870/catalog.toml",
+      "bytes": 2675
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\column\\C2.toml",
+      "role": "assembly:column",
+      "sha256": "5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce",
+      "available": true,
+      "trial": "initial-weak-1024",
+      "archive_path": "manifest-inputs/5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce/C2.toml",
+      "bytes": 40718
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\gun\\FEG.toml",
+      "role": "assembly:gun",
+      "sha256": "8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d",
+      "available": true,
+      "trial": "initial-weak-1024",
+      "archive_path": "manifest-inputs/8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d/FEG.toml",
+      "bytes": 13683
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\project_and_recording_system\\NoEnergyFilter.toml",
+      "role": "assembly:project_and_recording_system",
+      "sha256": "52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f",
+      "available": true,
+      "trial": "initial-weak-1024",
+      "archive_path": "manifest-inputs/52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f/NoEnergyFilter.toml",
+      "bytes": 40980
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\subassemblies\\sample_stage.toml",
+      "role": "assembly:subassembly",
+      "sha256": "625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9",
+      "available": true,
+      "trial": "initial-weak-1024",
+      "archive_path": "manifest-inputs/625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9/sample_stage.toml",
+      "bytes": 4636
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\sources\\FEG_tip.toml",
+      "role": "assembly:tip_definition",
+      "sha256": "4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a",
+      "available": true,
+      "trial": "initial-weak-1024",
+      "archive_path": "manifest-inputs/4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a/FEG_tip.toml",
+      "bytes": 2469
+    }
+  ],
+  "initial-transmission-1024": [
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\catalog.toml",
+      "role": "assembly:catalog",
+      "sha256": "6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870",
+      "available": true,
+      "trial": "initial-transmission-1024",
+      "archive_path": "manifest-inputs/6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870/catalog.toml",
+      "bytes": 2675
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\column\\C2.toml",
+      "role": "assembly:column",
+      "sha256": "5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce",
+      "available": true,
+      "trial": "initial-transmission-1024",
+      "archive_path": "manifest-inputs/5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce/C2.toml",
+      "bytes": 40718
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\gun\\FEG.toml",
+      "role": "assembly:gun",
+      "sha256": "8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d",
+      "available": true,
+      "trial": "initial-transmission-1024",
+      "archive_path": "manifest-inputs/8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d/FEG.toml",
+      "bytes": 13683
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\project_and_recording_system\\NoEnergyFilter.toml",
+      "role": "assembly:project_and_recording_system",
+      "sha256": "52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f",
+      "available": true,
+      "trial": "initial-transmission-1024",
+      "archive_path": "manifest-inputs/52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f/NoEnergyFilter.toml",
+      "bytes": 40980
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\subassemblies\\sample_stage.toml",
+      "role": "assembly:subassembly",
+      "sha256": "625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9",
+      "available": true,
+      "trial": "initial-transmission-1024",
+      "archive_path": "manifest-inputs/625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9/sample_stage.toml",
+      "bytes": 4636
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\sources\\FEG_tip.toml",
+      "role": "assembly:tip_definition",
+      "sha256": "4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a",
+      "available": true,
+      "trial": "initial-transmission-1024",
+      "archive_path": "manifest-inputs/4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a/FEG_tip.toml",
+      "bytes": 2469
+    }
+  ],
+  "proposal-focus-2048": [
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\catalog.toml",
+      "role": "assembly:catalog",
+      "sha256": "6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870",
+      "available": true,
+      "trial": "proposal-focus-2048",
+      "archive_path": "manifest-inputs/6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870/catalog.toml",
+      "bytes": 2675
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\column\\C2.toml",
+      "role": "assembly:column",
+      "sha256": "5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce",
+      "available": true,
+      "trial": "proposal-focus-2048",
+      "archive_path": "manifest-inputs/5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce/C2.toml",
+      "bytes": 40718
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\gun\\FEG.toml",
+      "role": "assembly:gun",
+      "sha256": "8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d",
+      "available": true,
+      "trial": "proposal-focus-2048",
+      "archive_path": "manifest-inputs/8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d/FEG.toml",
+      "bytes": 13683
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\project_and_recording_system\\NoEnergyFilter.toml",
+      "role": "assembly:project_and_recording_system",
+      "sha256": "52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f",
+      "available": true,
+      "trial": "proposal-focus-2048",
+      "archive_path": "manifest-inputs/52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f/NoEnergyFilter.toml",
+      "bytes": 40980
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\subassemblies\\sample_stage.toml",
+      "role": "assembly:subassembly",
+      "sha256": "625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9",
+      "available": true,
+      "trial": "proposal-focus-2048",
+      "archive_path": "manifest-inputs/625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9/sample_stage.toml",
+      "bytes": 4636
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\sources\\FEG_tip.toml",
+      "role": "assembly:tip_definition",
+      "sha256": "4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a",
+      "available": true,
+      "trial": "proposal-focus-2048",
+      "archive_path": "manifest-inputs/4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a/FEG_tip.toml",
+      "bytes": 2469
+    }
+  ],
+  "primary-4096": [
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\catalog.toml",
+      "role": "assembly:catalog",
+      "sha256": "6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870",
+      "available": true,
+      "trial": "primary-4096",
+      "archive_path": "manifest-inputs/6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870/catalog.toml",
+      "bytes": 2675
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\column\\C2.toml",
+      "role": "assembly:column",
+      "sha256": "5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce",
+      "available": true,
+      "trial": "primary-4096",
+      "archive_path": "manifest-inputs/5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce/C2.toml",
+      "bytes": 40718
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\gun\\FEG.toml",
+      "role": "assembly:gun",
+      "sha256": "8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d",
+      "available": true,
+      "trial": "primary-4096",
+      "archive_path": "manifest-inputs/8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d/FEG.toml",
+      "bytes": 13683
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\project_and_recording_system\\NoEnergyFilter.toml",
+      "role": "assembly:project_and_recording_system",
+      "sha256": "52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f",
+      "available": true,
+      "trial": "primary-4096",
+      "archive_path": "manifest-inputs/52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f/NoEnergyFilter.toml",
+      "bytes": 40980
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\subassemblies\\sample_stage.toml",
+      "role": "assembly:subassembly",
+      "sha256": "625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9",
+      "available": true,
+      "trial": "primary-4096",
+      "archive_path": "manifest-inputs/625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9/sample_stage.toml",
+      "bytes": 4636
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\sources\\FEG_tip.toml",
+      "role": "assembly:tip_definition",
+      "sha256": "4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a",
+      "available": true,
+      "trial": "primary-4096",
+      "archive_path": "manifest-inputs/4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a/FEG_tip.toml",
+      "bytes": 2469
+    }
+  ],
+  "step-4096": [
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\catalog.toml",
+      "role": "assembly:catalog",
+      "sha256": "6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870",
+      "available": true,
+      "trial": "step-4096",
+      "archive_path": "manifest-inputs/6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870/catalog.toml",
+      "bytes": 2675
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\column\\C2.toml",
+      "role": "assembly:column",
+      "sha256": "5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce",
+      "available": true,
+      "trial": "step-4096",
+      "archive_path": "manifest-inputs/5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce/C2.toml",
+      "bytes": 40718
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\gun\\FEG.toml",
+      "role": "assembly:gun",
+      "sha256": "8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d",
+      "available": true,
+      "trial": "step-4096",
+      "archive_path": "manifest-inputs/8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d/FEG.toml",
+      "bytes": 13683
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\project_and_recording_system\\NoEnergyFilter.toml",
+      "role": "assembly:project_and_recording_system",
+      "sha256": "52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f",
+      "available": true,
+      "trial": "step-4096",
+      "archive_path": "manifest-inputs/52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f/NoEnergyFilter.toml",
+      "bytes": 40980
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\subassemblies\\sample_stage.toml",
+      "role": "assembly:subassembly",
+      "sha256": "625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9",
+      "available": true,
+      "trial": "step-4096",
+      "archive_path": "manifest-inputs/625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9/sample_stage.toml",
+      "bytes": 4636
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\sources\\FEG_tip.toml",
+      "role": "assembly:tip_definition",
+      "sha256": "4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a",
+      "available": true,
+      "trial": "step-4096",
+      "archive_path": "manifest-inputs/4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a/FEG_tip.toml",
+      "bytes": 2469
+    }
+  ],
+  "source-reference-2048": [
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\catalog.toml",
+      "role": "assembly:catalog",
+      "sha256": "6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870",
+      "available": true,
+      "trial": "source-reference-2048",
+      "archive_path": "manifest-inputs/6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870/catalog.toml",
+      "bytes": 2675
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\column\\C2.toml",
+      "role": "assembly:column",
+      "sha256": "5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce",
+      "available": true,
+      "trial": "source-reference-2048",
+      "archive_path": "manifest-inputs/5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce/C2.toml",
+      "bytes": 40718
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\gun\\FEG.toml",
+      "role": "assembly:gun",
+      "sha256": "8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d",
+      "available": true,
+      "trial": "source-reference-2048",
+      "archive_path": "manifest-inputs/8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d/FEG.toml",
+      "bytes": 13683
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\instruments\\project_and_recording_system\\NoEnergyFilter.toml",
+      "role": "assembly:project_and_recording_system",
+      "sha256": "52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f",
+      "available": true,
+      "trial": "source-reference-2048",
+      "archive_path": "manifest-inputs/52adbe417354bc8e1d044031f3ba6db7f531ac7e56a5bcb9f26e8be0ead63c7f/NoEnergyFilter.toml",
+      "bytes": 40980
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\subassemblies\\sample_stage.toml",
+      "role": "assembly:subassembly",
+      "sha256": "625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9",
+      "available": true,
+      "trial": "source-reference-2048",
+      "archive_path": "manifest-inputs/625faf673d55412081313b21396b3efc0c6719f903f4d737531ad908a6ed8ca9/sample_stage.toml",
+      "bytes": 4636
+    },
+    {
+      "path": "E:\\tem_simulator_v2\\configs\\sources\\FEG_tip.toml",
+      "role": "assembly:tip_definition",
+      "sha256": "4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a",
+      "available": true,
+      "trial": "source-reference-2048",
+      "archive_path": "manifest-inputs/4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a/FEG_tip.toml",
+      "bytes": 2469
+    }
+  ]
+}

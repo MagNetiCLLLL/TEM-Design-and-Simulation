@@ -225,3 +225,107 @@ def test_shared_host_body_bore_is_not_an_extra_optical_plate(fixture):
     host.pieces = (body,)
     with pytest.raises(ValueError, match="finite C2 aperture"):
         audit_module.audit(state, plan)
+
+
+def _set_expected_aperture(fixture, diameter_mm):
+    from dataclasses import replace
+    state, plan = fixture
+    state.apertures[0].diameter_mm = diameter_mm
+    state.apertures[0].radius_mm = diameter_mm*.5
+    runtime = plan.unified_runtime
+    host = runtime.geometry.boundaries[0]
+    host.pieces = (replace(host.pieces[0], radius_mm=diameter_mm*.5),)
+    runtime.source_identity = audit_module.capture_instrument_snapshot(state).digest
+    return state, plan
+
+
+def test_explicit_70um_audit_checks_state_native_plate_and_full_ownership(fixture):
+    """Synthetic plan and native mask operations; no finite-source transport."""
+    state, plan = _set_expected_aperture(fixture, .070)
+    before = deepcopy(state)
+    report = audit_module.audit(state, plan, expected_c2_diameter_mm=.070)
+    assert report["passed"]
+    assert report["c2_aperture"]["expected_diameter_mm"] == .070
+    assert report["c2_aperture"]["actual_boundary_radius_mm"] == .035
+    assert report["identities"]["geometry_digest"] == plan.unified_runtime.geometry.digest
+    assert report["plan_actions"]["interaction_count"] == 3
+    plate = plan.unified_runtime.geometry.boundaries[0].pieces[0]
+    np.testing.assert_array_equal(plate.transmission_mask(np.array([.034, .036]), np.zeros(2), 3.5),
+                                  [True, False])
+    assert state == before
+    with pytest.raises(ValueError, match="C2 diameter"):
+        audit_module.audit(state, plan)  # No inference from the current opening.
+
+
+@pytest.mark.parametrize("damage", ["state_diameter", "state_radius", "captured_plate", "stale_plan", "missing_owner"])
+def test_explicit_diameter_does_not_weaken_geometry_state_or_plan_checks(fixture, damage):
+    from dataclasses import replace
+    state, plan = _set_expected_aperture(fixture, .070)
+    runtime = plan.unified_runtime
+    if damage == "state_diameter":
+        state.apertures[0].diameter_mm = .100
+    elif damage == "state_radius":
+        state.apertures[0].radius_mm = .05
+    elif damage == "captured_plate":
+        host = runtime.geometry.boundaries[0]
+        host.pieces = (replace(host.pieces[0], radius_mm=.05),)
+    elif damage == "stale_plan":
+        runtime.source_identity = "old-100um-state"
+    else:
+        runtime.snapshot.contributions = runtime.snapshot.contributions[1:]
+        plan.physics_contract["interactions"]["records"] = plan.physics_contract["interactions"]["records"][1:]
+    with pytest.raises(ValueError):
+        audit_module.audit(state, plan, expected_c2_diameter_mm=.070)
+
+
+@pytest.mark.parametrize("expected", [0., -.07, np.nan, np.inf, True, None])
+def test_expected_diameter_must_be_explicit_positive_and_finite(fixture, expected):
+    state, plan = fixture
+    with pytest.raises(ValueError, match="Expected C2 diameter"):
+        audit_module.audit(state, plan, expected_c2_diameter_mm=expected)
+
+
+def test_real_two_condenser_70um_opening_matches_native_contact_and_component_mask(monkeypatch):
+    """Capture mechanics and test array masks without emitting or transporting a source."""
+    from dataclasses import replace
+    from temsim.assembly_catalog import AssemblyCatalog
+    from temsim.optics.column import default_state
+    from temsim.optics.electron_gun.emitter import ColdFieldEmitter
+    from temsim.optics.electron_gun import source
+    from temsim.physics.aperture_clipping import _transmits
+    from temsim.physics.posed_wave_aperture import PosedWaveAperture
+    from temsim.physics.potential_geometry import capture_potential_geometry
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("Static geometry validation must not emit or transport particles")
+
+    monkeypatch.setattr(ColdFieldEmitter, "emit", forbidden)
+    monkeypatch.setattr(source, "trace_source_to_exit", forbidden)
+    state = default_state()
+    catalog = AssemblyCatalog()
+    catalog.apply(state, replace(catalog.default_selection(), column="C2", recording="No Energy Filter"))
+    physical = {part.key for part in state._resolved_assembly.parts}
+    assert {"condenser_lens_1", "condenser_lens_2"} <= physical
+    assert "condenser_lens_3" not in physical
+    aperture = state.condenser_aperture_2
+    aperture.diameter_um = 70.
+    assert aperture.diameter_mm == .070 and aperture.radius_mm == .035
+    start = float(state.electron_gun.exit_plane_z_mm)
+    stop = float(state.sample.upper_surface_z_mm)
+    geometry = capture_potential_geometry(state, start*1e-3, stop*1e-3)
+    report = audit_module._c2_geometry(aperture, NS(geometry=geometry), start, stop,
+                                      expected_c2_diameter_mm=.070)
+    assert report["actual_boundary_radius_mm"] == .035
+    plate, = (piece for host in geometry.boundaries for piece in host.pieces
+              if piece.key == aperture.key and type(piece) is PosedWaveAperture)
+    assert plate.local_end_z_mm-plate.local_start_z_mm == pytest.approx(aperture.plate_thickness_mm)
+    x, y = np.array([.034, .036]), np.zeros(2)
+    expected = np.array([True, False])
+    np.testing.assert_array_equal(_transmits(aperture, x, y), expected)
+    np.testing.assert_array_equal(plate.transmission_mask(x, y, aperture.z_mm), expected)
+    before = np.column_stack((x, y, np.full(2, plate.local_start_z_mm-.1)))
+    after = np.column_stack((x, y, np.full(2, plate.local_end_z_mm+.1)))
+    contacts = plate.first_contact_fraction(before, after)
+    assert np.isinf(contacts[0]) and 0. < contacts[1] < 1.
+    with pytest.raises(ValueError, match="operating opening"):
+        audit_module._c2_geometry(aperture, NS(geometry=geometry), start, stop)

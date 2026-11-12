@@ -23,6 +23,7 @@ from temsim.gui.instrument_tree import InstrumentTree, OPTICAL_FILTERS
 from temsim.gui.input_policy import WheelSafeComboBox as QComboBox
 from temsim.operating_modes import (
     compatible_modes,
+    condenser_mode_key,
     load_operating_mode_catalog,
     mode_by_key,
 )
@@ -266,6 +267,8 @@ class AssemblyPanel(QWidget):
 
     def set_selection(self, selection: AssemblySelection) -> None:
         selection = self.catalog.normalise_selection(selection)
+        self._operating_column_name = selection.column
+        self._has_c3_hardware = bool(self.catalog._by_name(self.catalog.columns, selection.column).properties["c3_lens"])
         from temsim.instrument_configuration import InstrumentUnits
         units = InstrumentUnits.from_selection(self.catalog, selection)
         names = ["Cold FEG" if units.source == "cold_feg" else "Thermionic"]
@@ -296,6 +299,8 @@ class AssemblyPanel(QWidget):
         """Populate only modes compatible with the selected assembly."""
 
         selection = self.catalog.normalise_selection(selection)
+        self._operating_column_name = selection.column
+        self._has_c3_hardware = bool(self.catalog._by_name(self.catalog.columns, selection.column).properties["c3_lens"])
         if simulation_mode is not None:
             catalog = load_operating_mode_catalog(simulation_mode)
             if catalog.direct_alignments != self.operating_mode_catalog.direct_alignments:
@@ -327,7 +332,7 @@ class AssemblyPanel(QWidget):
             probe_items.append(("Nanoprobe", "nano_probe"))
         range_items = [(label, key) for label, key in (
             ("Normal", "nano_probe"), ("Large angle", "nano_probe_large_angle"))
-            if key in nano_modes]
+            if self._has_c3_hardware and key in nano_modes]
         references = {mode.key: mode.targets.get("achieved_convergence_sem_angle_mrad")
                       for mode in condenser_modes}
         angles = "; ".join(f"{label}: {float(references[key]):.3g} mrad"
@@ -383,15 +388,15 @@ class AssemblyPanel(QWidget):
     def selected_condenser_mode_key(self) -> str | None:
         """Return the complete pending preset key without changing live optics."""
         key = self.probe_mode.currentData()
-        return self.nanoprobe_range_combo.currentData() if key == "nano_probe" else key
+        if key == "nano_probe" and getattr(self, "_has_c3_hardware", True):
+            return self.nanoprobe_range_combo.currentData()
+        return key
 
     def set_operating_mode_status(self, text: str) -> None:
         self.operating_mode_status.setText(text)
 
     def set_direct_alignment_state(self, state) -> None:
-        condenser = ("micro_probe" if state.illumination_mode == "TEM" else
-                     "nano_probe_large_angle" if getattr(state, "nanoprobe_range", "normal") == "large_angle"
-                     else "nano_probe")
+        condenser = condenser_mode_key(state)
         self._image_focus_modes = (condenser, "imaging" if state.projector_mode == "image" else "diffraction")
         self._update_image_focus_button()
         available_modes = {
@@ -431,8 +436,9 @@ class AssemblyPanel(QWidget):
     def _update_operating_mode_description(self, _index: int = -1) -> None:
         self._update_image_focus_button()
         nano_selected = self.probe_mode.currentData() == "nano_probe"
-        self.nanoprobe_range_combo.setVisible(nano_selected)
-        self.nanoprobe_range_label.setVisible(nano_selected)
+        show_range = nano_selected and getattr(self, "_has_c3_hardware", True)
+        self.nanoprobe_range_combo.setVisible(show_range)
+        self.nanoprobe_range_label.setVisible(show_range)
         condenser_key = self.selected_condenser_mode_key()
         projector_key = self.projector_mode.currentData()
         alignment_panel = getattr(self, "direct_alignment_panel", None)
@@ -445,9 +451,9 @@ class AssemblyPanel(QWidget):
             self.operating_mode_status.setToolTip("")
             return
         condenser = mode_by_key(
-            condenser_key, self.operating_mode_catalog
+            condenser_key, self.operating_mode_catalog, column_name=self._operating_column_name
         )
-        projector = (mode_by_key(projector_key, self.operating_mode_catalog)
+        projector = (mode_by_key(projector_key, self.operating_mode_catalog, column_name=self._operating_column_name)
                      if projector_key is not None else None)
         retained = condenser.calibration_status.startswith("retained_not_recomputed_")
         self.apply_operating_mode_button.setText(
@@ -466,10 +472,15 @@ class AssemblyPanel(QWidget):
                 "diffraction reference plane"
             ),
         }.get(str(plane), str(plane))
-        if condenser.key in {"nano_probe", "nano_probe_large_angle"}:
+        if condenser.key in {"nano_probe", "nano_probe_large_angle"} and self._has_c3_hardware:
             illumination_note = (
                 "Convergence: C2 + C3 + C2 aperture; "
                 "probe focus: Mini Condenser + Objective; corrector matching also matters."
+            )
+        elif condenser.key == "nano_probe":
+            illumination_note = (
+                "Two-condenser C1 + C2 hardware; no C3 or Normal/Large angle branches. "
+                "Probe focus: Mini Condenser + Objective."
             )
         else:
             illumination_note = (
@@ -478,13 +489,15 @@ class AssemblyPanel(QWidget):
             )
         devices = condenser.devices
         c2 = float(devices["condenser_lens_2"]["percent"])
-        c3 = float(devices["condenser_lens_3"]["percent"])
+        c3_text = (f"C3 {float(devices['condenser_lens_3']['percent']):.2f}% | "
+                   if self._has_c3_hardware and "condenser_lens_3" in devices else "")
         objective = float(devices["objective_lens"]["percent"])
         aperture_values = condenser.apertures["condenser_aperture_2"]
         aperture_um = float(aperture_values["diameter_mm"]) * 1000.0
+        angle_text = f"{float(angle):.3f} mrad" if angle is not None else "unmeasured"
         detail_text = (
-            f"Preset reference sample semi-angle: {float(angle):.3f} mrad. "
-            f"C2 {c2:.2f}%, C3 {c3:.2f}%, C2 aperture "
+            f"Preset reference sample semi-angle: {angle_text}. "
+            f"C2 {c2:.2f}% | {c3_text}C2 aperture "
             f"diameter {aperture_um:.0f} µm, Objective focus {objective:.1f}%. "
             f"{illumination_note} Projection conjugate: {plane_label}. "
             "These are stored reference values, not measurements of the current beam. "
@@ -496,8 +509,8 @@ class AssemblyPanel(QWidget):
         )
         self.operating_mode_status.setText(
             ("Stored reference; recalibration pending | " if retained else "Stored reference | ")
-            + (f"{self.nanoprobe_range_combo.currentText()} | " if nano_selected else "")
-            + f"{float(angle):.3f} mrad | C2 {c2:.2f}% | C3 {c3:.2f}% | "
+            + (f"{self.nanoprobe_range_combo.currentText()} | " if show_range else "")
+            + f"{angle_text} | C2 {c2:.2f}% | {c3_text}"
             f"C2 aperture {aperture_um:.0f} µm | Objective {objective:.1f}% | "
             f"{plane_label}"
         )

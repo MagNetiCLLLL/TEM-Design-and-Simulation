@@ -12,6 +12,11 @@ docs/development/microprobe_match_20261111/** -text whitespace=blank-at-eol,spac
 # Generated SVG path whitespace belongs to the hashed observation artifacts.
 docs/development/microprobe_match_20261111/beam-envelopes.svg -whitespace
 docs/development/microprobe_match_20261111/illumination-footprints.svg -whitespace
+# Keep the measured two-condenser inputs and native phase evidence byte-identical.
+docs/development/two_condenser_nanoprobe_20261112/** -text whitespace=-blank-at-eof,blank-at-eol,space-before-tab,cr-at-eol
+docs/development/two_condenser_nanoprobe_20261112/*.svg -whitespace
+docs/development/two_condenser_10mrad_20261112/** -text whitespace=-blank-at-eof,blank-at-eol,space-before-tab,cr-at-eol
+docs/development/two_condenser_10mrad_20261112/*.svg -whitespace
 scripts/optimize_joint_probe.py -text
 scripts/report_joint_probe.py -text
 tests/test_joint_probe_search.py -text

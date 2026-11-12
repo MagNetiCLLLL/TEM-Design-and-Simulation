@@ -1,0 +1,634 @@
+{
+  "schema": "two-condenser-observation-archive-v1",
+  "scope": "Classical incident-probe measurements; no automatic final qualification",
+  "primary_input": {
+    "trial": "final-current-2048",
+    "profile": "two-condenser-nanoprobe-diffraction.toml",
+    "snapshot": "trials/final-current-2048/inputs.json.gz",
+    "profile_scope": "Complete measured vacuum diagnostic input; source, specimen insertion and raster flags are not an application-wide settings replacement"
+  },
+  "trials": [
+    {
+      "label": "baseline-1024",
+      "original_directory": "outputs/two-condenser-20261112/initial-n1024-s010/trial-00",
+      "measurements": {
+        "absolute_current_balance_residual_a": 0.0,
+        "alpha95_mrad": 2.2388824532712808,
+        "angular_rms_mrad": 1.2608778554712914,
+        "controls": {
+          "condenser_lens_1": 90.0,
+          "condenser_lens_2": 35.0,
+          "mini_condenser": 10.0,
+          "objective_lens": 30.42591940608605
+        },
+        "d95_nm": 2994.5572492108663,
+        "effective_count": 1024.0,
+        "elapsed_s": 137.86435850002454,
+        "emitted_current_transmission": 1.0,
+        "observations_sha256": "3743f4c09aae7af8a7210c3bc574e4c1365e1fad9070708a974e3f37982384de",
+        "physical_losses": {},
+        "rms_radius_nm": 843.226216921366,
+        "rms_tangent_waist_offset_nm": -666712.1967207423,
+        "sample_current_a": 1e-05,
+        "scope": "True C1+C2; vacuum incident probe; original absolute weights; no coherent or projector calibration",
+        "status": "COMPLETED_CLASSICAL_TWO_CONDENSER_OBSERVATION",
+        "surface_z_mm": 1025.1999975,
+        "surviving_positive_count": 1024
+      },
+      "native_focus": {
+        "d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 87.07536015061326,
+          "neighbour_bracket_mm": [
+            1024.4999975,
+            1024.5999975000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -700000.0000000455,
+            -599999.9999999091
+          ],
+          "observed_minimum_planes_mm": [
+            1024.5499975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1024.5499975,
+              1024.5499975
+            ]
+          ],
+          "representative_offset_nm": -650000.0000000909,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "focus_definition": "Native D95(z) discrete minimum about each actual current-weighted centroid",
+        "positive_current_membership_stable": true,
+        "rms_waist_diagnostic": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 24.51693195400688,
+          "neighbour_bracket_mm": [
+            1024.4999975,
+            1024.5999975000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -700000.0000000455,
+            -599999.9999999091
+          ],
+          "observed_minimum_planes_mm": [
+            1024.5499975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1024.5499975,
+              1024.5499975
+            ]
+          ],
+          "representative_offset_nm": -650000.0000000909,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "surface": {
+          "absolute_source_weight": 1.0,
+          "alpha95_mrad": 2.2388824532712808,
+          "centroid_x_m": 3.843731384825678e-09,
+          "centroid_y_m": -6.620639740002194e-10,
+          "current_a": 1e-05,
+          "d50_nm": 1336.579363220241,
+          "d90_nm": 2661.871678690528,
+          "d95_nm": 2994.5572492108663,
+          "effective_rays": 1024.0,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 843.226216921366,
+          "surviving_rays": 1024,
+          "z_mm": 1025.1999975
+        },
+        "surface_gate": {
+          "maximum_d95_nm": null,
+          "passed": false,
+          "placement_passed": false,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "FAIL",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "waist_separation": {
+          "definition": "z_RMS minus z_D95, executed planes",
+          "difference_bracket_nm": [
+            -100000.00000013644,
+            100000.00000013644
+          ],
+          "resolved_delta_z_nm": 0.0,
+          "zero_excluded_from_bracket": false
+        }
+      },
+      "report_path": "trials/baseline-1024/report.json"
+    },
+    {
+      "label": "final-coarse-2048",
+      "original_directory": "outputs/two-condenser-20261112/final-n2048-s010/trial-00",
+      "measurements": {
+        "absolute_current_balance_residual_a": 0.0,
+        "alpha95_mrad": 2.1998215424226295,
+        "angular_rms_mrad": 1.2407767086691417,
+        "controls": {
+          "condenser_lens_1": 90.0,
+          "condenser_lens_2": 35.0,
+          "mini_condenser": 10.0,
+          "objective_lens": 29.223518226455024
+        },
+        "d95_nm": 0.04286370477331085,
+        "direct_surface_focus": {
+          "final_2d_waist_inside_surface_observation_window": true,
+          "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+          "native_d95_surface_gate": true,
+          "observed_final_field_2d_waists": 1,
+          "passed": true,
+          "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support",
+          "status": "BOUNDED_DIRECT_SURFACE_FOCUS"
+        },
+        "effective_count": 2048.0,
+        "elapsed_s": 263.1241890999954,
+        "emitted_current_transmission": 1.0,
+        "observations_sha256": "b243e6031463a6d45b3478067c777195c64dee07b7f2731d411dedc35bc55311",
+        "observer_sha256": {
+          "scripts\\measure_probe_waist.py": "31665b5fe0274d3f82535af0eb2f71610d3a6d4b373b67bcd49c4888838c6efb",
+          "scripts\\study_two_condenser_nanoprobe.py": "2f8192b4d0e4a673514acc8fe452df95389f48920f4add74ffdbbebc0b50b06c"
+        },
+        "physical_losses": {},
+        "rms_radius_nm": 0.01501004978363381,
+        "rms_tangent_waist_offset_nm": -0.3267595072760387,
+        "sample_current_a": 1e-05,
+        "scope": "True C1+C2; vacuum incident probe; original absolute weights; no coherent or projector calibration",
+        "status": "COMPLETED_CLASSICAL_TWO_CONDENSER_OBSERVATION",
+        "surface_z_mm": 1025.1999975,
+        "surviving_positive_count": 2048
+      },
+      "native_focus": {
+        "d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.04286370477331085,
+          "neighbour_bracket_mm": [
+            1025.19999725,
+            1025.1999977500002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -0.25000008463393897,
+            0.25000008463393897
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999975,
+              1025.1999975
+            ]
+          ],
+          "representative_offset_nm": 0.0,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "focus_definition": "Native D95(z) discrete minimum about each actual current-weighted centroid",
+        "positive_current_membership_stable": true,
+        "rms_waist_diagnostic": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.01500487544321578,
+          "neighbour_bracket_mm": [
+            1025.1999970000002,
+            1025.1999975
+          ],
+          "neighbour_bracket_offset_nm": [
+            -0.4999999418942025,
+            0.0
+          ],
+          "observed_minimum_planes_mm": [
+            1025.19999725
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.19999725,
+              1025.19999725
+            ]
+          ],
+          "representative_offset_nm": -0.25000008463393897,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "surface": {
+          "absolute_source_weight": 1.0,
+          "alpha95_mrad": 2.1998215424226295,
+          "centroid_x_m": 5.646880433349644e-15,
+          "centroid_y_m": 6.800391706600245e-14,
+          "current_a": 1e-05,
+          "d50_nm": 0.01645149915617003,
+          "d90_nm": 0.033685094236601106,
+          "d95_nm": 0.04286370477331085,
+          "effective_rays": 2048.0,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.01501004978363381,
+          "surviving_rays": 2048,
+          "z_mm": 1025.1999975
+        },
+        "surface_gate": {
+          "maximum_d95_nm": null,
+          "passed": true,
+          "placement_passed": true,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "BOUNDED_D95_WAIST_AT_SURFACE",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "waist_separation": {
+          "definition": "z_RMS minus z_D95, executed planes",
+          "difference_bracket_nm": [
+            -0.7500000265281415,
+            0.25000008463393897
+          ],
+          "resolved_delta_z_nm": -0.25000008463393897,
+          "zero_excluded_from_bracket": false
+        }
+      },
+      "report_path": "trials/final-coarse-2048/report.json"
+    },
+    {
+      "label": "final-fine-1024",
+      "original_directory": "outputs/two-condenser-20261112/final-n2048-s005/trial-01",
+      "measurements": {
+        "absolute_current_balance_residual_a": 0.0,
+        "alpha95_mrad": 2.199618486514701,
+        "angular_rms_mrad": 1.2387654601703315,
+        "controls": {
+          "condenser_lens_1": 90.0,
+          "condenser_lens_2": 35.0,
+          "mini_condenser": 10.0,
+          "objective_lens": 29.223518226455024
+        },
+        "d95_nm": 0.04244494020547517,
+        "direct_surface_focus": {
+          "final_2d_waist_inside_surface_observation_window": true,
+          "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+          "native_d95_surface_gate": true,
+          "observed_final_field_2d_waists": 1,
+          "passed": true,
+          "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support",
+          "status": "BOUNDED_DIRECT_SURFACE_FOCUS"
+        },
+        "effective_count": 1024.0,
+        "elapsed_s": 180.90460670000175,
+        "emitted_current_transmission": 1.0,
+        "observations_sha256": "673a5922ce2145bac299e283d5fbb89b1bd73cec2398b2009fc850a2e2479b17",
+        "observer_sha256": {
+          "scripts\\measure_probe_waist.py": "31665b5fe0274d3f82535af0eb2f71610d3a6d4b373b67bcd49c4888838c6efb",
+          "scripts\\study_two_condenser_nanoprobe.py": "2f8192b4d0e4a673514acc8fe452df95389f48920f4add74ffdbbebc0b50b06c"
+        },
+        "physical_losses": {},
+        "rms_radius_nm": 0.014792591659265742,
+        "rms_tangent_waist_offset_nm": -0.22681782286311863,
+        "sample_current_a": 1e-05,
+        "scope": "True C1+C2; vacuum incident probe; original absolute weights; no coherent or projector calibration",
+        "status": "COMPLETED_CLASSICAL_TWO_CONDENSER_OBSERVATION",
+        "surface_z_mm": 1025.1999975,
+        "surviving_positive_count": 1024
+      },
+      "native_focus": {
+        "d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.04244494020547517,
+          "neighbour_bracket_mm": [
+            1025.19999725,
+            1025.1999977500002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -0.25000008463393897,
+            0.25000008463393897
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999975,
+              1025.1999975
+            ]
+          ],
+          "representative_offset_nm": 0.0,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "focus_definition": "Native D95(z) discrete minimum about each actual current-weighted centroid",
+        "positive_current_membership_stable": true,
+        "rms_waist_diagnostic": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.014789950847493937,
+          "neighbour_bracket_mm": [
+            1025.1999970000002,
+            1025.1999975
+          ],
+          "neighbour_bracket_offset_nm": [
+            -0.4999999418942025,
+            0.0
+          ],
+          "observed_minimum_planes_mm": [
+            1025.19999725
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.19999725,
+              1025.19999725
+            ]
+          ],
+          "representative_offset_nm": -0.25000008463393897,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "surface": {
+          "absolute_source_weight": 1.0,
+          "alpha95_mrad": 2.199618486514701,
+          "centroid_x_m": 1.7176879810576084e-13,
+          "centroid_y_m": 1.3406375950889167e-14,
+          "current_a": 1e-05,
+          "d50_nm": 0.016393143882025805,
+          "d90_nm": 0.03373300149344749,
+          "d95_nm": 0.04244494020547517,
+          "effective_rays": 1024.0,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.014792591659265742,
+          "surviving_rays": 1024,
+          "z_mm": 1025.1999975
+        },
+        "surface_gate": {
+          "maximum_d95_nm": null,
+          "passed": true,
+          "placement_passed": true,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "BOUNDED_D95_WAIST_AT_SURFACE",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "waist_separation": {
+          "definition": "z_RMS minus z_D95, executed planes",
+          "difference_bracket_nm": [
+            -0.7500000265281415,
+            0.25000008463393897
+          ],
+          "resolved_delta_z_nm": -0.25000008463393897,
+          "zero_excluded_from_bracket": false
+        }
+      },
+      "report_path": "trials/final-fine-1024/report.json"
+    },
+    {
+      "label": "final-before-gui-2048",
+      "original_directory": "outputs/two-condenser-20261112/final-n2048-s005/trial-00",
+      "measurements": {
+        "absolute_current_balance_residual_a": 0.0,
+        "alpha95_mrad": 2.199839365590863,
+        "angular_rms_mrad": 1.2407867451198265,
+        "controls": {
+          "condenser_lens_1": 90.0,
+          "condenser_lens_2": 35.0,
+          "mini_condenser": 10.0,
+          "objective_lens": 29.223518226455024
+        },
+        "d95_nm": 0.04284650472211823,
+        "direct_surface_focus": {
+          "final_2d_waist_inside_surface_observation_window": true,
+          "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+          "native_d95_surface_gate": true,
+          "observed_final_field_2d_waists": 1,
+          "passed": true,
+          "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support",
+          "status": "BOUNDED_DIRECT_SURFACE_FOCUS"
+        },
+        "effective_count": 2048.0,
+        "elapsed_s": 301.6890100000019,
+        "emitted_current_transmission": 1.0,
+        "observations_sha256": "725891c651e5fd059267cb9cf5dcd1c7824adfb1c24ffd1543d6b435511824b9",
+        "observer_sha256": {
+          "scripts\\measure_probe_waist.py": "31665b5fe0274d3f82535af0eb2f71610d3a6d4b373b67bcd49c4888838c6efb",
+          "scripts\\study_two_condenser_nanoprobe.py": "2f8192b4d0e4a673514acc8fe452df95389f48920f4add74ffdbbebc0b50b06c"
+        },
+        "physical_losses": {},
+        "rms_radius_nm": 0.015011119643661652,
+        "rms_tangent_waist_offset_nm": -0.3471845516213084,
+        "sample_current_a": 1e-05,
+        "scope": "True C1+C2; vacuum incident probe; original absolute weights; no coherent or projector calibration",
+        "status": "COMPLETED_CLASSICAL_TWO_CONDENSER_OBSERVATION",
+        "surface_z_mm": 1025.1999975,
+        "surviving_positive_count": 2048
+      },
+      "native_focus": {
+        "d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.04284650472211823,
+          "neighbour_bracket_mm": [
+            1025.19999725,
+            1025.1999977500002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -0.25000008463393897,
+            0.25000008463393897
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999975,
+              1025.1999975
+            ]
+          ],
+          "representative_offset_nm": 0.0,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "focus_definition": "Native D95(z) discrete minimum about each actual current-weighted centroid",
+        "positive_current_membership_stable": true,
+        "rms_waist_diagnostic": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.015005421695510366,
+          "neighbour_bracket_mm": [
+            1025.1999970000002,
+            1025.1999975
+          ],
+          "neighbour_bracket_offset_nm": [
+            -0.4999999418942025,
+            0.0
+          ],
+          "observed_minimum_planes_mm": [
+            1025.19999725
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.19999725,
+              1025.19999725
+            ]
+          ],
+          "representative_offset_nm": -0.25000008463393897,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "surface": {
+          "absolute_source_weight": 1.0,
+          "alpha95_mrad": 2.199839365590863,
+          "centroid_x_m": 5.692475773597256e-15,
+          "centroid_y_m": 6.805001284726508e-14,
+          "current_a": 1e-05,
+          "d50_nm": 0.01645247880117258,
+          "d90_nm": 0.03365241762438815,
+          "d95_nm": 0.04284650472211823,
+          "effective_rays": 2048.0,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.015011119643661652,
+          "surviving_rays": 2048,
+          "z_mm": 1025.1999975
+        },
+        "surface_gate": {
+          "maximum_d95_nm": null,
+          "passed": true,
+          "placement_passed": true,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "BOUNDED_D95_WAIST_AT_SURFACE",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "waist_separation": {
+          "definition": "z_RMS minus z_D95, executed planes",
+          "difference_bracket_nm": [
+            -0.7500000265281415,
+            0.25000008463393897
+          ],
+          "resolved_delta_z_nm": -0.25000008463393897,
+          "zero_excluded_from_bracket": false
+        }
+      },
+      "report_path": "trials/final-before-gui-2048/report.json"
+    },
+    {
+      "label": "final-current-2048",
+      "original_directory": "outputs/two-condenser-20261112/current-n2048-s005/trial-00",
+      "measurements": {
+        "absolute_current_balance_residual_a": 0.0,
+        "alpha95_mrad": 2.199839365590863,
+        "angular_rms_mrad": 1.2407867451198265,
+        "controls": {
+          "condenser_lens_1": 90.0,
+          "condenser_lens_2": 35.0,
+          "mini_condenser": 10.0,
+          "objective_lens": 29.223518226455024
+        },
+        "d95_nm": 0.04284650472211823,
+        "direct_surface_focus": {
+          "final_2d_waist_inside_surface_observation_window": true,
+          "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+          "native_d95_surface_gate": true,
+          "observed_final_field_2d_waists": 1,
+          "passed": true,
+          "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support",
+          "status": "BOUNDED_DIRECT_SURFACE_FOCUS"
+        },
+        "effective_count": 2048.0,
+        "elapsed_s": 298.35711099999025,
+        "emitted_current_transmission": 1.0,
+        "observations_sha256": "725891c651e5fd059267cb9cf5dcd1c7824adfb1c24ffd1543d6b435511824b9",
+        "observer_sha256": {
+          "scripts\\measure_probe_waist.py": "31665b5fe0274d3f82535af0eb2f71610d3a6d4b373b67bcd49c4888838c6efb",
+          "scripts\\study_two_condenser_nanoprobe.py": "2f8192b4d0e4a673514acc8fe452df95389f48920f4add74ffdbbebc0b50b06c"
+        },
+        "physical_losses": {},
+        "rms_radius_nm": 0.015011119643661652,
+        "rms_tangent_waist_offset_nm": -0.3471845516213084,
+        "sample_current_a": 1e-05,
+        "scope": "True C1+C2; vacuum incident probe; original absolute weights; no coherent or projector calibration",
+        "status": "COMPLETED_CLASSICAL_TWO_CONDENSER_OBSERVATION",
+        "surface_z_mm": 1025.1999975,
+        "surviving_positive_count": 2048
+      },
+      "native_focus": {
+        "d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.04284650472211823,
+          "neighbour_bracket_mm": [
+            1025.19999725,
+            1025.1999977500002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -0.25000008463393897,
+            0.25000008463393897
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999975,
+              1025.1999975
+            ]
+          ],
+          "representative_offset_nm": 0.0,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "focus_definition": "Native D95(z) discrete minimum about each actual current-weighted centroid",
+        "positive_current_membership_stable": true,
+        "rms_waist_diagnostic": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.015005421695510366,
+          "neighbour_bracket_mm": [
+            1025.1999970000002,
+            1025.1999975
+          ],
+          "neighbour_bracket_offset_nm": [
+            -0.4999999418942025,
+            0.0
+          ],
+          "observed_minimum_planes_mm": [
+            1025.19999725
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.19999725,
+              1025.19999725
+            ]
+          ],
+          "representative_offset_nm": -0.25000008463393897,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "surface": {
+          "absolute_source_weight": 1.0,
+          "alpha95_mrad": 2.199839365590863,
+          "centroid_x_m": 5.692475773597256e-15,
+          "centroid_y_m": 6.805001284726508e-14,
+          "current_a": 1e-05,
+          "d50_nm": 0.01645247880117258,
+          "d90_nm": 0.03365241762438815,
+          "d95_nm": 0.04284650472211823,
+          "effective_rays": 2048.0,
+          "offset_nm": 0.0,
+          "rms_radius_nm": 0.015011119643661652,
+          "surviving_rays": 2048,
+          "z_mm": 1025.1999975
+        },
+        "surface_gate": {
+          "maximum_d95_nm": null,
+          "passed": true,
+          "placement_passed": true,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "BOUNDED_D95_WAIST_AT_SURFACE",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "waist_separation": {
+          "definition": "z_RMS minus z_D95, executed planes",
+          "difference_bracket_nm": [
+            -0.7500000265281415,
+            0.25000008463393897
+          ],
+          "resolved_delta_z_nm": -0.25000008463393897,
+          "zero_excluded_from_bracket": false
+        }
+      },
+      "report_path": "trials/final-current-2048/report.json"
+    }
+  ]
+}

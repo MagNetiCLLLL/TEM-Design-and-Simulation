@@ -1,0 +1,1658 @@
+{
+  "additional_checks": {
+    "driver_audit_waist_compile": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "calculation_scope": "Classical particles only. No coherent execution. Static/mocked tests and zero-current projector pencils do not qualify a finite source.",
+  "catalog_sha256": "ec5e38739f37bde29fa630ac0d7b60fcf61e862f0c69aba6f7f2c5e51cf9d02b",
+  "current_unique_test_counts": {
+    "passed": 274
+  },
+  "focus_scope": "Fixed 4096-particle D95 surface placement checked at 0.05/0.1 mm; 2048-particle reference fails surface placement by 16 nm. No continuous-source nanometre error bound.",
+  "junit": [
+    {
+      "cases": [
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_actual_actions_not_inactive_legacy_coefficients",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_missing_plan_builds_only_on_restored_inputs",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_bad_input_aperture_rejected[diameter_mm-0.09]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_bad_input_aperture_rejected[radius_mm-0.04]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_bad_input_aperture_rejected[enabled-False]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_bad_input_aperture_rejected[installed-False]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_bad_input_aperture_rejected[inserted-False]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_wrong_execution_model_rejected[legacy]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_wrong_execution_model_rejected[coherent_source]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_wrong_execution_model_rejected[coherent_sample]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_actual_additional_array_rejected[cs_kick_m3]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_actual_additional_array_rejected[thin_power_m1]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_actual_additional_array_rejected[thin_rotation_rad]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_actual_additional_array_rejected[kick_x_rad]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_actual_additional_array_rejected[kick_y_rad]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_actual_additional_list_rejected[posed_spherical_kicks]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_actual_additional_list_rejected[intrinsic_aberration_kicks]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_actual_additional_list_rejected[thin_actions]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_actual_additional_list_rejected[mapped_fields]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_missing_or_contradictory_runtime_evidence_fails_closed[missing_flag]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_missing_or_contradictory_runtime_evidence_fails_closed[active_empirical]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_missing_or_contradictory_runtime_evidence_fails_closed[extra_electric]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_missing_or_contradictory_runtime_evidence_fails_closed[stale_state]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_missing_or_contradictory_runtime_evidence_fails_closed[wrong_surface]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_missing_or_contradictory_runtime_evidence_fails_closed[bad_radius]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_missing_or_contradictory_runtime_evidence_fails_closed[missing_aperture]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_missing_or_contradictory_runtime_evidence_fails_closed[missing_owner]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_missing_or_contradictory_runtime_evidence_fails_closed[duplicate_owner]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_missing_or_contradictory_runtime_evidence_fails_closed[empirical_interaction]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_private_construction_cannot_silently_retune",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_logical_deflector_requires_every_actual_coil[False]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_logical_deflector_requires_every_actual_coil[True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_shared_host_body_bore_is_not_an_extra_optical_plate",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_explicit_70um_audit_checks_state_native_plate_and_full_ownership",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_explicit_diameter_does_not_weaken_geometry_state_or_plan_checks[state_diameter]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_explicit_diameter_does_not_weaken_geometry_state_or_plan_checks[state_radius]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_explicit_diameter_does_not_weaken_geometry_state_or_plan_checks[captured_plate]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_explicit_diameter_does_not_weaken_geometry_state_or_plan_checks[stale_plan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_explicit_diameter_does_not_weaken_geometry_state_or_plan_checks[missing_owner]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_expected_diameter_must_be_explicit_positive_and_finite[0.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_expected_diameter_must_be_explicit_positive_and_finite[-0.07]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_expected_diameter_must_be_explicit_positive_and_finite[nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_expected_diameter_must_be_explicit_positive_and_finite[inf]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_expected_diameter_must_be_explicit_positive_and_finite[True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_expected_diameter_must_be_explicit_positive_and_finite[None]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_joint_probe_field_audit",
+          "name": "test_real_two_condenser_70um_opening_matches_native_contact_and_component_mask",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_moving_waist_profile_keeps_surface_reference_and_fixed_current_disk",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_d95_waist_acceptance_does_not_require_rms_minimum_at_surface",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_default_has_no_size_cap_and_keeps_native_surface_waist_requirement",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_explicit_size_cap_is_strict_and_does_not_change_measurements",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_optional_size_cap_rejects_invalid_values[0.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_optional_size_cap_rejects_invalid_values[-1.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_optional_size_cap_rejects_invalid_values[nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_optional_size_cap_rejects_invalid_values[inf]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_optional_size_cap_rejects_invalid_values[True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_optional_size_cap_rejects_invalid_values[1]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_boundary_and_displaced_minima_cannot_pass[5.0-UNRESOLVED_BOUNDARY_MINIMUM]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_boundary_and_displaced_minima_cannot_pass[3.0-BOUNDED_OBSERVED_MINIMUM]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_coarse_bracket_crossing_tolerance_requires_actual_refinement",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_plateau_and_disjoint_equal_minima_are_reported_without_interpolation",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_actual_population_changes_remain_visible_and_cannot_qualify",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_active_positive_particle_is_never_silently_filtered[x_m-nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_active_positive_particle_is_never_silently_filtered[y_m-nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_active_positive_particle_is_never_silently_filtered[tx_rad-nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_active_positive_particle_is_never_silently_filtered[ty_rad-nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_active_positive_particle_is_never_silently_filtered[flight_time_s-nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_active_positive_particle_is_never_silently_filtered[kinetic_energy_ev-nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_active_positive_particle_is_never_silently_filtered[kinetic_energy_ev-0.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_active_positive_particle_is_never_silently_filtered[flight_time_s--0.1]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_zero_current_and_physically_stopped_placeholders_remain_raw_but_not_current",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_original_nonuniform_weights_use_native_left_quantile",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_reappearing_particle_and_nearest_instead_of_exact_plane_are_rejected",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_default_planes_include_all_exact_physical_references",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_or_excessive_scan_is_rejected[kwargs0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_or_excessive_scan_is_rejected[kwargs1]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_or_excessive_scan_is_rejected[kwargs2]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_or_excessive_scan_is_rejected[kwargs3]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_or_excessive_scan_is_rejected[kwargs4]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_or_excessive_scan_is_rejected[kwargs5]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_or_excessive_scan_is_rejected[kwargs6]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_or_excessive_scan_is_rejected[kwargs7]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_or_excessive_scan_is_rejected[kwargs8]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_invalid_or_excessive_scan_is_rejected[kwargs9]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_success_preserves_state_raw_data_full_snapshot_and_provenance",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_explicit_cap_is_recorded_by_measurement_without_changing_raw_output",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_failure_evidence_is_saved_without_claiming_qualification[receipt]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_failure_evidence_is_saved_without_claiming_qualification[mutation]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_failure_evidence_is_saved_without_claiming_qualification[missing_audit]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_failure_evidence_is_saved_without_claiming_qualification[nonfinite]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_failure_evidence_is_saved_without_claiming_qualification[cancel]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_new_output_only_and_precancelled_job_never_executes",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_cli_requires_complete_snapshot_before_execution",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_production_adapter_preserves_complete_source_batches_and_exact_mesh",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_production_adapter_rejects_changed_source_or_inexact_batch_mesh[weights]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_production_adapter_rejects_changed_source_or_inexact_batch_mesh[ids]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_production_adapter_rejects_changed_source_or_inexact_batch_mesh[mesh]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_production_adapter_rejects_changed_source_or_inexact_batch_mesh[missing_plane]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_production_adapter_does_not_disable_coherent_or_material_inputs",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_source_and_prefix_cache_uses_production_signature_and_prior_segments",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_profile_evaluator_executes_one_actual_profile_and_preserves_seed",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_extended_audit_checks_the_actual_extended_plan_not_surface_proxy[0.1]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_extended_audit_checks_the_actual_extended_plan_not_surface_proxy[0.07]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_profile_zero_current_trial_keeps_raw_evidence_without_hiding_invalid_inputs[all_stopped]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_profile_zero_current_trial_keeps_raw_evidence_without_hiding_invalid_inputs[late_stopped]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_profile_zero_current_trial_keeps_raw_evidence_without_hiding_invalid_inputs[live_nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_profile_zero_current_trial_keeps_raw_evidence_without_hiding_invalid_inputs[live_bad_energy]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_profile_zero_current_trial_keeps_raw_evidence_without_hiding_invalid_inputs[duplicate_id]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_separation_requires_two_bounded_single_minima_and_stable_current",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_measure_probe_waist",
+          "name": "test_physical_scan_rejects_under_count_or_zero_current_support",
+          "status": "passed"
+        }
+      ],
+      "path": "outputs\\two-condenser-20261112\\explicit-aperture-regression.xml",
+      "sha256": "1de1d675fe22cfb29459501170e649d2f3f8a631b2d16881cd96875770295412"
+    },
+    {
+      "cases": [
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_two_condenser_reference_replaces_controls_and_all_measured_claims",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_two_condenser_microprobe_needs_its_own_separate_reference",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_two_condenser_application_preserves_gun_and_projector_only_preserves_defocus",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_two_condenser_and_three_condenser_presets_cannot_cross_hardware_boundaries[C2-None-nano_probe_large_angle]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_two_condenser_and_three_condenser_presets_cannot_cross_hardware_boundaries[C2-C3 + Probe Corrector-nano_probe]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_two_condenser_and_three_condenser_presets_cannot_cross_hardware_boundaries[C3 + Probe Corrector-C2-nano_probe]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_legacy_c2_c3_off_label_migrates_without_retuning_or_recreating_c3",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_switching_off_installed_c3_retains_three_condenser_hardware",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_two_condenser_override_rejects_inherited_or_absent_hardware_records[missing_targets]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_two_condenser_override_rejects_inherited_or_absent_hardware_records[missing_apertures]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_two_condenser_override_rejects_inherited_or_absent_hardware_records[c3_control]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_two_condenser_override_rejects_inherited_or_absent_hardware_records[large_angle]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_two_condenser_gui_exposes_one_nanoprobe_without_range_or_phantom_c3",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_current_c2_nanoprobe_diffraction_pair_uses_its_own_projector_and_preserves_incident_edits",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_current_c2_gui_discloses_70um_fixed_4096_scope_and_unconverged_source_sampling",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_unified_normal_uses_focused_controls_with_an_independent_qualification_record",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_legacy_models_keep_their_stored_normal_preset[custom]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_legacy_models_keep_their_stored_normal_preset[ideal]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_legacy_models_keep_their_stored_normal_preset[analytical]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_legacy_models_keep_their_stored_normal_preset[ideal_thin]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_normal_large_angle_normal_and_repeated_application_restore_the_focused_preset",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_finite_field_preset_keeps_a_manually_selected_cm_magnitude",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_catalog_application_never_claims_a_new_illumination_measurement[unified]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_catalog_application_never_claims_a_new_illumination_measurement[custom]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_catalog_application_never_claims_a_new_illumination_measurement[ideal]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_catalog_application_never_claims_a_new_illumination_measurement[analytical]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_catalog_application_never_claims_a_new_illumination_measurement[ideal_thin]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_explicit_catalog_wins_over_the_field_model",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_model_switch_does_not_apply_a_preset_or_restore_shelved_currents",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_finite_field_operating_defaults",
+          "name": "test_failed_projector_application_rolls_back_the_resolved_finite_field_preset",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_confirmed_targets_use_upper_surface_and_current_weighted_quantiles",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_all_supported_assemblies_are_audited_without_assumed_equivalence",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seeds_preserve_gun_downstream_optics_and_installed_hardware[nano_probe-C2]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seeds_preserve_gun_downstream_optics_and_installed_hardware[nano_probe-C3]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seeds_preserve_gun_downstream_optics_and_installed_hardware[nano_probe-C3 + Probe Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seeds_preserve_gun_downstream_optics_and_installed_hardware[nano_probe-C3 + Image Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seeds_preserve_gun_downstream_optics_and_installed_hardware[nano_probe-C3 + Probe Corrector + Image Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seeds_preserve_gun_downstream_optics_and_installed_hardware[micro_probe-C2]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seeds_preserve_gun_downstream_optics_and_installed_hardware[micro_probe-C3]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seeds_preserve_gun_downstream_optics_and_installed_hardware[micro_probe-C3 + Probe Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seeds_preserve_gun_downstream_optics_and_installed_hardware[micro_probe-C3 + Image Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seeds_preserve_gun_downstream_optics_and_installed_hardware[micro_probe-C3 + Probe Corrector + Image Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seed_aperture_is_independent_for_two_condenser_hardware[C2-False-0.07]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seed_aperture_is_independent_for_two_condenser_hardware[C3 + Probe Corrector-False-0.12]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_seed_aperture_is_independent_for_two_condenser_hardware[C3 + Probe Corrector-True-0.12]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_two_condenser_calibration_keeps_preset_or_later_explicit_aperture[None-0.07]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_two_condenser_calibration_keeps_preset_or_later_explicit_aperture[0.08-0.08]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_insufficient_current_is_not_a_valid_fit_residual",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_target_file_is_authoritative_and_rejects_invalid_values",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_failed_budget_is_detached_and_counts_real_jacobian_probes",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_fine_validation_cannot_publish_an_unresolved_candidate",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_diameter_gate_distinguishes_installed_corrector[C3 + Probe Corrector-0.9-True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_diameter_gate_distinguishes_installed_corrector[C3 + Probe Corrector-1.0-False]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_diameter_gate_distinguishes_installed_corrector[C3-2.0-True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_diameter_gate_distinguishes_installed_corrector[C3-10.0-True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_diameter_gate_distinguishes_installed_corrector[C2-10.1-False]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_branch_search_keeps_searching_when_corrected_probe_is_too_large",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_invalid_physical_aperture_candidate_is_rejected_without_mutating_input[0.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_invalid_physical_aperture_candidate_is_rejected_without_mutating_input[-1.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_invalid_physical_aperture_candidate_is_rejected_without_mutating_input[nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_invalid_physical_aperture_candidate_is_rejected_without_mutating_input[inf]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_failed_physical_traces_also_consume_the_calibration_budget",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_historical_presets_are_visibly_distinguished_from_new_targets[False]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_historical_presets_are_visibly_distinguished_from_new_targets[True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_candidate_polarity_is_detached_and_reported_for_exact_replay",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_mode_calibration_cannot_override_fixed_cm_magnitude_or_mode_sign",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_invalid_polarity_rejected_before_transport[0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_invalid_polarity_rejected_before_transport[2]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_invalid_polarity_rejected_before_transport[-2]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_invalid_polarity_rejected_before_transport[nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_illumination",
+          "name": "test_focus_fit_aims_at_centre_not_first_point_inside_acceptance",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_condenser_mode_helper_preserves_observer_compatibility[attributes0-nano_probe]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_condenser_mode_helper_preserves_observer_compatibility[attributes1-nano_probe_large_angle]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_condenser_mode_helper_preserves_observer_compatibility[attributes2-micro_probe]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_condenser_mode_helper_preserves_observer_compatibility[attributes3-nano_probe_large_angle]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_condenser_mode_helper_preserves_observer_compatibility[attributes4-nano_probe_large_angle]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_condenser_mode_helper_preserves_observer_compatibility[attributes5-nano_probe]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_condenser_mode_helper_preserves_observer_compatibility[attributes6-nano_probe]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_condenser_mode_helper_preserves_observer_compatibility[attributes7-nano_probe_large_angle]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_condenser_mode_helper_preserves_observer_compatibility[attributes8-micro_probe]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_condenser_mode_helper_preserves_observer_compatibility[attributes9-nano_probe]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_condenser_mode_helper_preserves_observer_compatibility[attributes10-]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_range_switch_keeps_cm_magnitude_and_microprobe_retains_selected_range",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_failed_range_switch_restores_controls_and_selected_range[False]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_failed_range_switch_restores_controls_and_selected_range[True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_range_and_custom_controls_round_trip_without_applying_presets[STEM]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_range_and_custom_controls_round_trip_without_applying_presets[TEM]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_previous_state_defaults_to_normal_without_changing_optics",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_invalid_range_is_rejected_in_state_and_profile[large]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_invalid_range_is_rejected_in_state_and_profile[]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_invalid_range_is_rejected_in_state_and_profile[None]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_invalid_range_is_rejected_in_state_and_profile[True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_profile_range_round_trip_and_legacy_default_preserve_live_values",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_large_angle_blanker_recalibration_uses_nanoprobe_alignment",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_large_angle_blanker_refines_focus_and_reports_waist",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_large_angle_assembly_target_uses_probe_focus_and_preserves_mode",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_large_angle_does_not_reuse_normal_full_column_topology_reference",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_shared_alignments_support_both_nanoprobe_ranges[column_transport]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_shared_alignments_support_both_nanoprobe_ranges[beam_centre_direction]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_ranges",
+          "name": "test_shared_alignments_support_both_nanoprobe_ranges[condenser_twofold_shape]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_range_gui",
+          "name": "test_range_selector_keeps_two_probe_modes_and_only_emits_on_apply",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_range_gui",
+          "name": "test_unified_reference_discloses_fixed_source_and_unqualified_limits",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_range_gui",
+          "name": "test_pending_range_disables_every_alignment_and_reverting_restores_it",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_range_gui",
+          "name": "test_applied_large_range_uses_shared_alignment_and_preserves_busy_gating",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_range_gui",
+          "name": "test_range_visibility_and_catalog_reload_preserve_pending_branch",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_range_gui",
+          "name": "test_reloaded_state_restores_the_full_selected_preset[nano_probe-normal]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_range_gui",
+          "name": "test_reloaded_state_restores_the_full_selected_preset[nano_probe_large_angle-large_angle]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_range_gui",
+          "name": "test_microprobe_state_restores_remembered_nanoprobe_range",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_nanoprobe_range_gui",
+          "name": "test_window_applies_large_range_then_switches_only_projector",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_manual_mode_edit_preserves_analytic_mode_and_inactive_maps[ideal]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_manual_mode_edit_preserves_analytic_mode_and_inactive_maps[analytical]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_field_fit_is_disabled_and_rejected_without_mutating_analytic_state[ideal]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_field_fit_is_disabled_and_rejected_without_mutating_analytic_state[analytical]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_coefficient_dialog_preserves_analytic_mode_and_inactive_maps[ideal]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_coefficient_dialog_preserves_analytic_mode_and_inactive_maps[analytical]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_model_controls_are_explicit_serializable_and_do_not_solve",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_field_fit_is_reused_by_detached_snapshot_and_display",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_stigmator_hardware_readout_shows_current_shared_controls_without_mutation",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_stigmator_hardware_readout_follows_changed_assembly",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_invalid_stigmator_readout_clears_stale_rows_but_keeps_other_inspector_tabs",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_lens_selector_and_model_rows_follow_physical_c2_installation",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_model_inspector",
+          "name": "test_lens_inspector_keeps_installed_c3_when_only_its_excitation_is_off",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_input_archive",
+          "name": "test_catalog_cache_isolates_live_and_distinct_captured_presets[False]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_input_archive",
+          "name": "test_catalog_cache_isolates_live_and_distinct_captured_presets[True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_selection_state",
+          "name": "test_selection_and_summary_update_without_requesting_configuration",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_selection_state",
+          "name": "test_reloading_catalog_keeps_selected_hardware_and_compatible_modes",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_selection_state",
+          "name": "test_catalog_reload_does_not_retain_presets_for_an_unsupported_column",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_selection_state",
+          "name": "test_invalid_selection_does_not_partially_replace_displayed_state[False]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_assembly_selection_state",
+          "name": "test_invalid_selection_does_not_partially_replace_displayed_state[True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_startup_magnitude_has_one_authoritative_configuration",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_column_startup_default_and_geometry_reload_preserve_live_cm[C2-10.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_column_startup_default_and_geometry_reload_preserve_live_cm[C3-10.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_column_startup_default_and_geometry_reload_preserve_live_cm[C3 + Probe Corrector-43.88646617222637]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_column_startup_default_and_geometry_reload_preserve_live_cm[C3 + Image Corrector-10.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_column_startup_default_and_geometry_reload_preserve_live_cm[C3 + Probe Corrector + Image Corrector-10.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_mode_round_trip_reverses_finite_field_without_changing_magnitude[10.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_mode_round_trip_reverses_finite_field_without_changing_magnitude[37.25]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_mode_round_trip_reverses_finite_field_without_changing_magnitude[90.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_public_mode_application_preserves_live_cm_magnitude_and_other_presets",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_historical_mode_definition_cannot_restore_old_cm_drive[micro_probe-35.0-1]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_historical_mode_definition_cannot_restore_old_cm_drive[nano_probe-41.5570797718--1]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_assembly_seed_uses_same_signed_cm_control[C2]",
+          "status": "failure"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_assembly_seed_uses_same_signed_cm_control[C3]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_assembly_seed_uses_same_signed_cm_control[C3 + Probe Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_assembly_seed_uses_same_signed_cm_control[C3 + Image Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_assembly_seed_uses_same_signed_cm_control[C3 + Probe Corrector + Image Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_signed_cm_survives_profile_and_snapshot_round_trip[-67.125]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_signed_cm_survives_profile_and_snapshot_round_trip[67.125]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_invalid_signed_drive_is_rejected_without_partial_mutation[0.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_invalid_signed_drive_is_rejected_without_partial_mutation[nan]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_invalid_signed_drive_is_rejected_without_partial_mutation[inf]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_invalid_signed_drive_is_rejected_without_partial_mutation[-101.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_invalid_signed_drive_is_rejected_without_partial_mutation[True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_zero_or_disabled_cm_is_not_silently_treated_as_nanoprobe[False]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_zero_or_disabled_cm_is_not_silently_treated_as_nanoprobe[True]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_recording_compatibility",
+          "name": "test_recording_variants_share_projector_fields_and_upstream_reference_planes[C2]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_recording_compatibility",
+          "name": "test_recording_variants_share_projector_fields_and_upstream_reference_planes[C3]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_recording_compatibility",
+          "name": "test_recording_variants_share_projector_fields_and_upstream_reference_planes[C3 + Probe Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_recording_compatibility",
+          "name": "test_shared_projector_modes_are_explicitly_available_for_each_recording_module[imaging-No Energy Filter]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_recording_compatibility",
+          "name": "test_shared_projector_modes_are_explicitly_available_for_each_recording_module[imaging-Energy Filter]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_recording_compatibility",
+          "name": "test_shared_projector_modes_are_explicitly_available_for_each_recording_module[diffraction-No Energy Filter]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_recording_compatibility",
+          "name": "test_shared_projector_modes_are_explicitly_available_for_each_recording_module[diffraction-Energy Filter]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_recording_compatibility",
+          "name": "test_saved_recording_choice_survives_no_filter_startup_default[No Energy Filter]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_recording_compatibility",
+          "name": "test_saved_recording_choice_survives_no_filter_startup_default[Energy Filter]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_operating_mode_recording_compatibility",
+          "name": "test_main_window_starts_with_default_unfiltered_recording",
+          "status": "passed"
+        }
+      ],
+      "path": "outputs\\two-condenser-10mrad-20261112\\final-mode-regressions.xml",
+      "sha256": "35319213688aac5ab6d3113f39266eb7cc6180f1e8e6a8d51f3de2606108dafe"
+    },
+    {
+      "cases": [
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_assembly_seed_uses_same_signed_cm_control[C2]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_assembly_seed_uses_same_signed_cm_control[C3]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_assembly_seed_uses_same_signed_cm_control[C3 + Probe Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_assembly_seed_uses_same_signed_cm_control[C3 + Image Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_assembly_seed_uses_same_signed_cm_control[C3 + Probe Corrector + Image Corrector]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_mode_round_trip_reverses_finite_field_without_changing_magnitude[10.0]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_mode_round_trip_reverses_finite_field_without_changing_magnitude[37.25]",
+          "status": "passed"
+        },
+        {
+          "classname": "tests.test_mini_condenser_modes",
+          "name": "test_mode_round_trip_reverses_finite_field_without_changing_magnitude[90.0]",
+          "status": "passed"
+        }
+      ],
+      "path": "outputs\\two-condenser-10mrad-20261112\\final-mode-targeted.xml",
+      "sha256": "f389407035bda65b82020cb006ff4c645da06d0bb2e6ac8f2c9efaefb5773c08"
+    }
+  ],
+  "observer_sha256": "0b36940c8af23a88e7b1c91754609d6ef93dedb1a8134e58b1b3e3098bd3d6af",
+  "physical_trials": [
+    {
+      "alpha95_mrad": 10.208348956860162,
+      "alpha95_requirement": {
+        "achieved_mrad": 10.208348956860162,
+        "definition": "95% of actual specimen current about its weighted chief direction",
+        "minimum_mrad": 10.0,
+        "passed": true
+      },
+      "d95_nm": 3.0091257123052166,
+      "direct_surface_focus": {
+        "final_2d_waist_inside_surface_observation_window": true,
+        "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "native_d95_surface_gate": true,
+        "observed_final_field_2d_waists": 1,
+        "passed": true,
+        "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support",
+        "status": "BOUNDED_DIRECT_SURFACE_FOCUS"
+      },
+      "effective": 3890.0,
+      "emitted_positive": 4096,
+      "implementation": "8862d211bd0ee8fcd6c07c3d744fb20b900667c1f91f84eda5c23cc0bea56dc5",
+      "rms_radius_nm": 1.2262831750529444,
+      "surviving_positive": 3890,
+      "trial": "focused4096-s005"
+    },
+    {
+      "alpha95_mrad": 10.208348940595702,
+      "alpha95_requirement": {
+        "achieved_mrad": 10.208348940595702,
+        "definition": "95% of actual specimen current about its weighted chief direction",
+        "minimum_mrad": 10.0,
+        "passed": true
+      },
+      "d95_nm": 3.0092458968875557,
+      "direct_surface_focus": {
+        "final_2d_waist_inside_surface_observation_window": true,
+        "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "native_d95_surface_gate": true,
+        "observed_final_field_2d_waists": 1,
+        "passed": true,
+        "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support",
+        "status": "BOUNDED_DIRECT_SURFACE_FOCUS"
+      },
+      "effective": 3890.0,
+      "emitted_positive": 4096,
+      "implementation": "8862d211bd0ee8fcd6c07c3d744fb20b900667c1f91f84eda5c23cc0bea56dc5",
+      "rms_radius_nm": 1.226308726070305,
+      "surviving_positive": 3890,
+      "trial": "final4096-s010"
+    },
+    {
+      "alpha95_mrad": 10.3680661966818,
+      "alpha95_requirement": {
+        "achieved_mrad": 10.3680661966818,
+        "definition": "95% of actual specimen current about its weighted chief direction",
+        "minimum_mrad": 10.0,
+        "passed": true
+      },
+      "d95_nm": 3.4712105719113726,
+      "direct_surface_focus": {
+        "final_2d_waist_inside_surface_observation_window": true,
+        "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "native_d95_surface_gate": false,
+        "observed_final_field_2d_waists": 1,
+        "passed": false,
+        "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support",
+        "status": "UNRESOLVED_OR_NOT_AT_SURFACE"
+      },
+      "effective": 1950.0,
+      "emitted_positive": 2048,
+      "implementation": "8862d211bd0ee8fcd6c07c3d744fb20b900667c1f91f84eda5c23cc0bea56dc5",
+      "rms_radius_nm": 1.2503001734074635,
+      "surviving_positive": 1950,
+      "trial": "reference2048-s005"
+    }
+  ],
+  "regression_follow_up": "The broad batch retained one obsolete C2 Microprobe-seed expectation. The same testcase was corrected to require side-effect-free rejection without a C2 Microprobe calibration; the targeted repeat supersedes it. No solver or physical control changed.",
+  "saved_inputs": {
+    "dependency_pinned_derivative": {
+      "derivative_digest": "b06484b2c5cf7878f1fa961edc6d19adc3dc4ce7a97ef603d58b6df380f5fc10",
+      "derivative_path": "portable-focused4096-inputs.json",
+      "inventory_count": 42,
+      "inventory_scope": "Newly captured current configuration tree overlaid with every exact dependency byte from the original snapshot. Extra support files and runtime were captured now, not retroactively attributed to the trial.",
+      "original_digest": "bb9e7582e86d10e3e5b36ec49a74d3416ea9e80926ac40fc18098ff81a6bbe0f",
+      "qualification": "INPUTS_ONLY_DERIVATIVE_NO_NEW_PHYSICAL_RESULT",
+      "runtime_identity": "Recorded at derivative creation; not retroactively attributed to original trial.",
+      "status": "PASS"
+    },
+    "observer_sha256": "15737261f0a2b7b7de39a66f5cb7dcba37f8e7ca0c6739c040dc88ffd524bfe3",
+    "operating_profile_round_trip": {
+      "observed": {
+        "aperture_diameter_mm": 0.07,
+        "aperture_enabled": true,
+        "column_mode": "two_condenser",
+        "count": 4096,
+        "hardware": "two_condenser",
+        "lenses": {
+          "adapter_lens": {
+            "enabled": false,
+            "percent": 42.0,
+            "polarity": 1
+          },
+          "condenser_lens_1": {
+            "enabled": true,
+            "percent": 52.5,
+            "polarity": 1
+          },
+          "condenser_lens_2": {
+            "enabled": true,
+            "percent": 17.75,
+            "polarity": 1
+          },
+          "condenser_lens_3": {
+            "enabled": false,
+            "percent": 55.0,
+            "polarity": 1
+          },
+          "diffraction_lens": {
+            "enabled": true,
+            "percent": 13.59281212137673,
+            "polarity": 1
+          },
+          "image_adapter_lens": {
+            "enabled": false,
+            "percent": 48.97736117372686,
+            "polarity": 1
+          },
+          "image_tl11_lens": {
+            "enabled": false,
+            "percent": 47.222628953204506,
+            "polarity": -1
+          },
+          "image_tl12_lens": {
+            "enabled": false,
+            "percent": 72.246157404236,
+            "polarity": 1
+          },
+          "image_tl21_lens": {
+            "enabled": false,
+            "percent": 60.00013477251599,
+            "polarity": 1
+          },
+          "image_tl22_lens": {
+            "enabled": false,
+            "percent": 60.00017182617688,
+            "polarity": -1
+          },
+          "intermediate_lens": {
+            "enabled": true,
+            "percent": 8.51783304453163,
+            "polarity": 1
+          },
+          "mini_condenser": {
+            "enabled": true,
+            "percent": 10.0,
+            "polarity": -1
+          },
+          "objective_lens": {
+            "enabled": true,
+            "percent": 29.292665862003528,
+            "polarity": 1
+          },
+          "probe_tl12_lens": {
+            "enabled": false,
+            "percent": 60.0,
+            "polarity": 1
+          },
+          "probe_tl21_lens": {
+            "enabled": false,
+            "percent": 60.0,
+            "polarity": 1
+          },
+          "probe_tl22_lens": {
+            "enabled": false,
+            "percent": 60.0,
+            "polarity": -1
+          },
+          "projector_lens_1": {
+            "enabled": true,
+            "percent": 32.1132572718703,
+            "polarity": 1
+          },
+          "projector_lens_2": {
+            "enabled": true,
+            "percent": 9.826874422815507,
+            "polarity": 1
+          }
+        },
+        "receivers": {
+          "camera": false,
+          "flu_screen": false
+        },
+        "sample_inserted": false,
+        "source_current_a": 1e-05,
+        "step_mm": 0.05,
+        "upper_surface_z_mm": 1025.1999975
+      },
+      "selection": "AssemblySelection(gun='FEG', column='C2', recording='No Energy Filter', beam_blanker='None')",
+      "status": "PASS"
+    },
+    "original_snapshot_restore": {
+      "digest_equal": true,
+      "status": "PASS"
+    },
+    "relative_surface_d95_difference": {
+      "source_2048_relative_to_4096": 0.15356116818800647,
+      "step_010_relative_to_005": 3.994003369411914e-05
+    },
+    "scope": "Read-only restoration and profile checks; no emitter invocation or particle calculation.",
+    "source_implementation": "8862d211bd0ee8fcd6c07c3d744fb20b900667c1f91f84eda5c23cc0bea56dc5",
+    "source_snapshot_digest": "bb9e7582e86d10e3e5b36ec49a74d3416ea9e80926ac40fc18098ff81a6bbe0f"
+  },
+  "source_sampling_convergence": "NOT_CONVERGED",
+  "source_weights": "Original IDs and absolute weights retained; C2 interception is physical current loss."
+}

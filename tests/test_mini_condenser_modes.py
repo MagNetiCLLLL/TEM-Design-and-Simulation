@@ -112,6 +112,14 @@ def test_assembly_seed_uses_same_signed_cm_control(column):
     AssemblyCatalog().apply(state, AssemblySelection("FEG", column, "No Energy Filter"))
     state.mini_condenser.signed_excitation_percent = -48.125
     for mode, sign in (("micro_probe", 1), ("nano_probe", -1)):
+        if column == "C2" and mode == "micro_probe":
+            # C2 owns only an independent Nanoprobe reference. A missing
+            # Microprobe preset must not inherit the three-condenser values.
+            before = state.to_dict()
+            with pytest.raises(ValueError, match="no independent C2"):
+                seed_illumination(state, mode)
+            assert state.to_dict() == before
+            continue
         seed_illumination(state, mode)
         assert state.mini_condenser.signed_excitation_percent == sign * 48.125
 

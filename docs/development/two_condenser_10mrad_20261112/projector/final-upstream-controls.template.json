@@ -1,0 +1,13 @@
+{
+  "ready": false,
+  "case_name": "weak-c2-final-exact",
+  "projector_reference_case": "weak-c2-provisional",
+  "controls_percent": {
+    "condenser_lens_1": 52.5,
+    "condenser_lens_2": 17.75,
+    "mini_condenser": 10.0,
+    "objective_lens": null
+  },
+  "c2_aperture_diameter_mm": 0.07,
+  "note": "Fill the parent-confirmed exact Objective, then set ready=true. This observer never emits source particles."
+}

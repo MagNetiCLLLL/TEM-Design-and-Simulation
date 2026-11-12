@@ -1,0 +1,610 @@
+{
+  "scope": "Independent two-condenser zero-current projector reference. Source emitter is forbidden. Not a finite-source, finite-angle, specimen/detector-signal or wave qualification.",
+  "source_plane": "specimen upper surface",
+  "source_z_mm": 1025.1999975,
+  "reference_z_mm": 2140.15,
+  "upper_controls_percent": {
+    "condenser_lens_1": 90.0,
+    "condenser_lens_2": 35.0,
+    "mini_condenser": 10.0,
+    "objective_lens": 29.2235172
+  },
+  "original_projector_percent": {
+    "diffraction_lens": 14.577617197168571,
+    "intermediate_lens": 0.035082657259397326,
+    "projector_lens_1": 32.1132572718703,
+    "projector_lens_2": 9.826874422815507
+  },
+  "projector_percent": {
+    "diffraction_lens": 13.589999609390503,
+    "intermediate_lens": 8.532044964017839,
+    "projector_lens_1": 32.1132572718703,
+    "projector_lens_2": 9.826874422815507
+  },
+  "receiver_insertion": {
+    "haadf": true,
+    "df": true,
+    "bf": true,
+    "flu_screen": false,
+    "camera": false
+  },
+  "proposal_model": "Axisymmetric Larmor RK4 on sampled Bz from the same captured static potential; constant 300 keV; no legacy fitted imaging map.",
+  "proposal_axial_maximum_step_mm": 0.04999775795999639,
+  "proposal_source_B_t_by_unit_percent": {
+    "diffraction_lens": 7.413114747371974e-156,
+    "intermediate_lens": 4.9534133731377155e-248
+  },
+  "baseline_axial_matrix": [
+    [
+      -5.1498664957699605,
+      0.06786530412955626
+    ],
+    [
+      -27.38944764703796,
+      0.16676028305051147
+    ]
+  ],
+  "axis_solutions": [
+    {
+      "drives": [
+        13.589999609390503,
+        8.532044964017839
+      ],
+      "target_signed_B_m": 0.05,
+      "residual": 1.9284637054854095e-13,
+      "matrix": [
+        [
+          1.6697797658449254e-13,
+          0.04999999999999518
+        ],
+        [
+          -20.000000000002302,
+          0.12129682612908299
+        ]
+      ],
+      "nfev": 123
+    },
+    {
+      "drives": [
+        1.0000000454095457e-05,
+        14.931297060890357
+      ],
+      "target_signed_B_m": -0.05,
+      "residual": 1.328557973848603,
+      "matrix": [
+        [
+          -0.0007856279263589181,
+          0.016427887078121543
+        ],
+        [
+          -60.874057353723636,
+          0.040910198175893364
+        ]
+      ],
+      "nfev": 111
+    },
+    {
+      "drives": [
+        1.0000194304690578e-05,
+        14.931297060678492
+      ],
+      "target_signed_B_m": -0.05,
+      "residual": 1.3285579738485922,
+      "matrix": [
+        [
+          -0.0007856210247262014,
+          0.016427887078325053
+        ],
+        [
+          -60.874057335780385,
+          0.04091019817642438
+        ]
+      ],
+      "nfev": 76
+    },
+    {
+      "drives": [
+        19.281062737021834,
+        23.431033740919432
+      ],
+      "target_signed_B_m": -0.05,
+      "residual": 4.0652033925921693e-13,
+      "matrix": [
+        [
+          4.0641838852661927e-13,
+          -0.049999999999999545
+        ],
+        [
+          19.99999999999884,
+          -0.14545007151497755
+        ]
+      ],
+      "nfev": 27
+    }
+  ],
+  "selected_axis_solution": {
+    "drives": [
+      13.589999609390503,
+      8.532044964017839
+    ],
+    "target_signed_B_m": 0.05,
+    "residual": 1.9284637054854095e-13,
+    "matrix": [
+      [
+        1.6697797658449254e-13,
+        0.04999999999999518
+      ],
+      [
+        -20.000000000002302,
+        0.12129682612908299
+      ]
+    ],
+    "nfev": 123
+  },
+  "state_physical_digest": "b774664f7d68b2eb229cb33ab9fad24f8921c7b09fc540d671fa8fbf7215953e",
+  "runs": [
+    {
+      "maximum_step_mm": 0.1,
+      "actual_uniform_step_bound_mm": 0.1,
+      "difference_scale": 1.0,
+      "position_increment_m": 1e-10,
+      "mechanical_slope_increment_rad": 1e-07,
+      "elapsed_s": 25.591348600020865,
+      "all_pencils_reach_reference": true,
+      "blocked_key": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "canonical_to_mechanical_basis": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -112.31991868196032,
+          1.0,
+          0.0
+        ],
+        [
+          112.31991868196032,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "mechanical_jacobian": [
+        [
+          -5.030005330935899,
+          -2.49769026239038,
+          -0.0222372827751566,
+          0.044782845526082034
+        ],
+        [
+          2.49769026239038,
+          -5.030005330935899,
+          -0.044782845526082034,
+          -0.0222372827751566
+        ],
+        [
+          -3.30756032900665,
+          -23.972376164390358,
+          -0.053946235488332925,
+          0.10864033889725562
+        ],
+        [
+          23.972376164390358,
+          -3.30756032900665,
+          -0.10864033889725562,
+          -0.053946235488332925
+        ]
+      ],
+      "canonical_jacobian": [
+        [
+          2.3690042524001241e-07,
+          -4.6937703398463765e-07,
+          -0.0222372827751566,
+          0.044782845526082034
+        ],
+        [
+          4.6937703398463765e-07,
+          2.3690042524001241e-07,
+          -0.044782845526082034,
+          -0.0222372827751566
+        ],
+        [
+          8.894913701513712,
+          -17.913139381142923,
+          -0.053946235488332925,
+          0.10864033889725562
+        ],
+        [
+          17.913139381142923,
+          8.894913701513712,
+          -0.10864033889725562,
+          -0.053946235488332925
+        ]
+      ],
+      "canonical_position_residual_norm": 5.257723951588885e-07,
+      "effective_camera_length_m": 0.04999999998635201,
+      "camera_length_singular_values_m": [
+        0.04999999998635202,
+        0.04999999998635202
+      ],
+      "camera_length_relative_error_to_50mm": 2.7295987692355084e-10,
+      "receipt": {
+        "coil_perturbations_rad": {},
+        "empirical_aberrations_applied": false,
+        "field_digest": "1ab9fb39f086d12e770e77a9e84a8ccd91ca1ccbd5acede690d4216cd8b8a2ec",
+        "geometry_digest": "ce550d0e91b96c397b1f332a9b71558aa24d1e669dc282558d61e9e35e798521",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 0.0001,
+        "parent_runtime_digest": "da8f256b50493e12bbfba5bfdce1076a55da0f900f055bc84c6e632b0efdddb6",
+        "runtime_digest": "da8f256b50493e12bbfba5bfdce1076a55da0f900f055bc84c6e632b0efdddb6",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "a1796409118743f66da66a91fc4b66afe65fc650d24f2be2cae2270b0af182fc",
+        "swept_bounds_m": [
+          [
+            -4.478284552608203e-09,
+            -4.478284552608203e-09,
+            1.0251999975000001
+          ],
+          [
+            4.478284552608203e-09,
+            4.478284552608203e-09,
+            2.14015
+          ]
+        ]
+      },
+      "diffraction_rotation_deg": -116.40706703630498
+    },
+    {
+      "maximum_step_mm": 0.05,
+      "actual_uniform_step_bound_mm": 0.05,
+      "difference_scale": 1.0,
+      "position_increment_m": 1e-10,
+      "mechanical_slope_increment_rad": 1e-07,
+      "elapsed_s": 49.67058919998817,
+      "all_pencils_reach_reference": true,
+      "blocked_key": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "canonical_to_mechanical_basis": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -112.31991868196032,
+          1.0,
+          0.0
+        ],
+        [
+          112.31991868196032,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "mechanical_jacobian": [
+        [
+          -5.030005351829964,
+          -2.497690219144219,
+          -0.022237282684715514,
+          0.044782845533849855
+        ],
+        [
+          2.497690219144219,
+          -5.030005351829964,
+          -0.044782845533849855,
+          -0.022237282684715514
+        ],
+        [
+          -3.3075603811895964,
+          -23.972376063421585,
+          -0.053946235249580476,
+          0.1086403386136232
+        ],
+        [
+          23.972376063421585,
+          -3.3075603811895964,
+          -0.1086403386136232,
+          -0.053946235249580476
+        ]
+      ],
+      "canonical_jacobian": [
+        [
+          2.1687884113054562e-07,
+          -4.3628920844258545e-07,
+          -0.022237282684715514,
+          0.044782845533849855
+        ],
+        [
+          4.3628920844258545e-07,
+          2.1687884113054562e-07,
+          -0.044782845533849855,
+          -0.022237282684715514
+        ],
+        [
+          8.894913617473195,
+          -17.913139306990804,
+          -0.053946235249580476,
+          0.1086403386136232
+        ],
+        [
+          17.913139306990804,
+          8.894913617473195,
+          -0.1086403386136232,
+          -0.053946235249580476
+        ]
+      ],
+      "canonical_position_residual_norm": 4.872214128438797e-07,
+      "effective_camera_length_m": 0.049999999953086044,
+      "camera_length_singular_values_m": [
+        0.049999999953086044,
+        0.049999999953086044
+      ],
+      "camera_length_relative_error_to_50mm": 9.382791210654773e-10,
+      "receipt": {
+        "coil_perturbations_rad": {},
+        "empirical_aberrations_applied": false,
+        "field_digest": "1ab9fb39f086d12e770e77a9e84a8ccd91ca1ccbd5acede690d4216cd8b8a2ec",
+        "geometry_digest": "ce550d0e91b96c397b1f332a9b71558aa24d1e669dc282558d61e9e35e798521",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "da8f256b50493e12bbfba5bfdce1076a55da0f900f055bc84c6e632b0efdddb6",
+        "runtime_digest": "da8f256b50493e12bbfba5bfdce1076a55da0f900f055bc84c6e632b0efdddb6",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "a1796409118743f66da66a91fc4b66afe65fc650d24f2be2cae2270b0af182fc",
+        "swept_bounds_m": [
+          [
+            -4.478284553384985e-09,
+            -4.478284553384985e-09,
+            1.0251999975000001
+          ],
+          [
+            4.478284553384985e-09,
+            4.478284553384985e-09,
+            2.14015
+          ]
+        ]
+      },
+      "diffraction_rotation_deg": -116.40706693952222
+    },
+    {
+      "maximum_step_mm": 0.05,
+      "actual_uniform_step_bound_mm": 0.05,
+      "difference_scale": 0.5,
+      "position_increment_m": 5e-11,
+      "mechanical_slope_increment_rad": 5e-08,
+      "elapsed_s": 49.59870499998215,
+      "all_pencils_reach_reference": true,
+      "blocked_key": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "canonical_to_mechanical_basis": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -112.31991868196032,
+          1.0,
+          0.0
+        ],
+        [
+          112.31991868196032,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "mechanical_jacobian": [
+        [
+          -5.030005351831318,
+          -2.49769021914119,
+          -0.02223728268471609,
+          0.044782845533849536
+        ],
+        [
+          2.49769021914119,
+          -5.030005351831318,
+          -0.044782845533849536,
+          -0.02223728268471609
+        ],
+        [
+          -3.3075603811928853,
+          -23.972376063414224,
+          -0.05394623524958214,
+          0.10864033861362314
+        ],
+        [
+          23.972376063414224,
+          -3.3075603811928853,
+          -0.10864033861362314,
+          -0.05394623524958214
+        ]
+      ],
+      "canonical_jacobian": [
+        [
+          2.1687745169533804e-07,
+          -4.362861146218771e-07,
+          -0.02223728268471609,
+          0.044782845533849536
+        ],
+        [
+          4.362861146218771e-07,
+          2.1687745169533804e-07,
+          -0.044782845533849536,
+          -0.02223728268471609
+        ],
+        [
+          8.8949136174699,
+          -17.913139306983258,
+          -0.05394623524958214,
+          0.10864033861362314
+        ],
+        [
+          17.913139306983258,
+          8.8949136174699,
+          -0.10864033861362314,
+          -0.05394623524958214
+        ]
+      ],
+      "canonical_position_residual_norm": 4.872180239540789e-07,
+      "effective_camera_length_m": 0.049999999953086,
+      "camera_length_singular_values_m": [
+        0.049999999953086016,
+        0.04999999995308601
+      ],
+      "camera_length_relative_error_to_50mm": 9.38280009243897e-10,
+      "receipt": {
+        "coil_perturbations_rad": {},
+        "empirical_aberrations_applied": false,
+        "field_digest": "1ab9fb39f086d12e770e77a9e84a8ccd91ca1ccbd5acede690d4216cd8b8a2ec",
+        "geometry_digest": "ce550d0e91b96c397b1f332a9b71558aa24d1e669dc282558d61e9e35e798521",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "da8f256b50493e12bbfba5bfdce1076a55da0f900f055bc84c6e632b0efdddb6",
+        "runtime_digest": "da8f256b50493e12bbfba5bfdce1076a55da0f900f055bc84c6e632b0efdddb6",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "a1796409118743f66da66a91fc4b66afe65fc650d24f2be2cae2270b0af182fc",
+        "swept_bounds_m": [
+          [
+            -2.2391422766924766e-09,
+            -2.2391422766924766e-09,
+            1.0251999975000001
+          ],
+          [
+            2.2391422766924766e-09,
+            2.2391422766924766e-09,
+            2.14015
+          ]
+        ]
+      },
+      "diffraction_rotation_deg": -116.40706693952299
+    }
+  ],
+  "status": "UNIFIED_DIFFERENTIAL_REFERENCE_ONLY",
+  "all_differential_checks_pass": true,
+  "source_controls_unchanged": true,
+  "suggested_column_mode_override": {
+    "calibration_status": "computed_unified_c2_zero_current_diffraction_reference",
+    "calibration_reference": "Independent C1+C2 Nanoprobe diffraction differential reference at the recorded Objective and specimen upper surface. D/I jointly matched with P1/P2 held fixed. Verified by production unified zero-current pencil responses at 0.1 and 0.05 mm and half increments; source emission forbidden. No finite-source, finite-angle, detector-signal, wave or experimental qualification.",
+    "devices": {
+      "diffraction_lens": {
+        "percent": 13.589999609390503
+      },
+      "intermediate_lens": {
+        "percent": 8.532044964017839
+      },
+      "projector_lens_1": {
+        "percent": 32.1132572718703
+      },
+      "projector_lens_2": {
+        "percent": 9.826874422815507
+      }
+    },
+    "apertures": {},
+    "targets": {
+      "conjugate_plane": "mode_dependent_diffraction_reference_plane",
+      "reference_surface": "stem_main_screen",
+      "calibration_model": "unified",
+      "calibration_scope": "zero_current_differential_pencils_only",
+      "source_plane": "specimen_upper_surface",
+      "source_z_mm": 1025.1999975,
+      "reference_z_mm": 2140.15,
+      "objective_excitation_percent": 29.2235172,
+      "target_effective_camera_length_m": 0.05,
+      "achieved_effective_camera_length_m": 0.049999999953086,
+      "achieved_diffraction_conjugacy_residual": 4.872180239540789e-07,
+      "validation_step_mm": 0.05,
+      "finite_source_qualification": "NOT_TESTED",
+      "finite_angle_qualification": "NOT_TESTED",
+      "wave_qualification": "NOT_TESTED",
+      "calibrated_illumination": "nanoprobe",
+      "diagnostic_pencil_count": 9,
+      "validation_steps_mm": [
+        0.1,
+        0.05
+      ],
+      "diagnostic_position_steps_m": [
+        1e-10,
+        5e-11
+      ],
+      "diagnostic_angle_steps_rad": [
+        1e-07,
+        5e-08
+      ]
+    },
+    "compatible_recording_systems": [
+      "No Energy Filter"
+    ]
+  },
+  "proposal_axis_potential_min_v": 299999.99999996903,
+  "proposal_axis_potential_max_v": 300000.0000000847,
+  "proposal_axis_potential_variation_v": 1.1565862223505974e-07,
+  "phase_space_order": [
+    "x_m",
+    "y_m",
+    "mechanical_dx_dz",
+    "mechanical_dy_dz"
+  ],
+  "canonical_input_order": [
+    "x_m",
+    "y_m",
+    "canonical_px_over_p",
+    "canonical_py_over_p"
+  ],
+  "no_finite_source_population_was_created": true,
+  "no_current_weighted_statistics_can_be_inferred": true
+}

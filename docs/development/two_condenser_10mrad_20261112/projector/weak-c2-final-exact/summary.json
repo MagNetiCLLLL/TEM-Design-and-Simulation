@@ -1,0 +1,22 @@
+{
+  "status": "PASS_EXACT_FINAL_PROJECTOR_DIFFERENTIAL_REFERENCE",
+  "objective_excitation_percent": 29.292665862003528,
+  "projector_percent": {
+    "diffraction_lens": 13.59281212137673,
+    "intermediate_lens": 8.51783304453163,
+    "projector_lens_1": 32.1132572718703,
+    "projector_lens_2": 9.826874422815507
+  },
+  "c2_aperture_diameter_mm": 0.07,
+  "maximum_step_mm": 0.05,
+  "diagnostic_pencils": 9,
+  "emitter_calls": 0,
+  "all_pencils_reach_reference": true,
+  "canonical_position_residual_norm": 9.383691362701095e-06,
+  "effective_camera_length_m": 0.049999980468229094,
+  "camera_length_relative_error_to_50mm": 3.906354181237859e-07,
+  "source_focus_alpha_current_rms_d95": "NOT_MEASURED_BY_ZERO_CURRENT_OBSERVER; SEE_SEPARATE_FINITE_SOURCE_RECORDS",
+  "nearby_step_and_half_increment_record": "../weak-c2-provisional/proposal.json",
+  "prepared_snapshot": "final-exact-inputs.json.gz",
+  "prepared_profile": "final-exact-input.toml"
+}

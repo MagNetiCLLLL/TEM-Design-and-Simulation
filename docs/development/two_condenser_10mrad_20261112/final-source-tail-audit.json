@@ -1,0 +1,541 @@
+{
+  "schema": "temsim-70um-source-tail-audit-v2",
+  "scope": "Read-only source/tail audit of explicitly selected complete 70 um trials.",
+  "new_physical_traces": 0,
+  "trials": [
+    {
+      "trial": "focused4096-s005",
+      "evidence_sha256": {
+        "report.json": "dfdeb2f19e4aa7b0301c9db125e9fcf56168efcd3d6a45594555ec069ccca398",
+        "observations.npz": "bebd4fe0ea3dc7c5eb1db36bb6d1c33e37b73fca957bd264a1d5637d731a2b32",
+        "inputs.json": "59c833059ae280a28d895e8b5d82a9363e502f6b9f8bcb59f55d499f5fdf3359",
+        "input.toml": "c22f391abdd79193d59befc994e773fc6e6b3139e27c4af62f4498b51809503d"
+      },
+      "controls": {
+        "condenser_lens_1": 52.5,
+        "condenser_lens_2": 17.75,
+        "mini_condenser": 10.0,
+        "objective_lens": 29.292665862003528
+      },
+      "emitted_positive_count": 4096,
+      "original_columns": 4096,
+      "unique_original_ids": 4096,
+      "ids_equal_emission_reference": true,
+      "zero_current_count": 0,
+      "original_weight_sum": 1.0,
+      "weight_minimum": 0.000244140625,
+      "weight_maximum": 0.000244140625,
+      "equal_original_positive_weight": 0.000244140625,
+      "each_positive_weight_matches_original_equal_weight": true,
+      "retained_current_not_renormalized": true,
+      "gun_exit_positive_survivors": 4096,
+      "sample_positive_survivors": 3890,
+      "sample_effective_count": 3890.0,
+      "source_current_a": 1e-05,
+      "sample_current_a": 9.497070312500001e-06,
+      "transmission": 0.94970703125,
+      "c2_intercepted_count": 206,
+      "c2_intercepted_original_current_a": 5.029296875e-07,
+      "other_interceptions": [],
+      "absolute_current_balance_residual_a": -2.117582368135751e-22,
+      "stopped_particle_resurrections": 0,
+      "c2_aperture": {
+        "diameter_um": 70.0,
+        "radius_um": 35.0,
+        "installed": true,
+        "enabled": true,
+        "inserted": true,
+        "exact_observation_mm": 765.0,
+        "surviving_plane_count": 3892,
+        "maximum_surviving_axis_radius_um": 34.98976580823277,
+        "interpretation": "The full-source ledger labels rejected original packets at the physical aperture; sample packet weights retain their original 1/N values."
+      },
+      "sample": {
+        "z_mm": 1025.1999975,
+        "alpha95_mrad": 10.208348956860162,
+        "angular_rms_mrad": 5.9178383081731205,
+        "angular_target_at_least_10mrad": true,
+        "d95_nm": 3.0091257123052166,
+        "rms_radius_nm": 1.2262831750529444,
+        "native_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 3.0091257123052166,
+          "neighbour_bracket_mm": [
+            1025.19999725,
+            1025.1999977500002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -0.25000008463393897,
+            0.25000008463393897
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999975,
+              1025.1999975
+            ]
+          ],
+          "representative_offset_nm": 0.0,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_rms_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 1.1503113263621896,
+          "neighbour_bracket_mm": [
+            1025.2000675000002,
+            1025.2000715000001
+          ],
+          "neighbour_bracket_offset_nm": [
+            70.00000005064066,
+            74.00000004054164
+          ],
+          "observed_minimum_planes_mm": [
+            1025.2000695000002
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.2000695000002,
+              1025.2000695000002
+            ]
+          ],
+          "representative_offset_nm": 72.00000004559115,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_surface_focus_gate": {
+          "maximum_d95_nm": null,
+          "passed": true,
+          "placement_passed": true,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "BOUNDED_D95_WAIST_AT_SURFACE",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "surface_focus_passed_as_reported": true,
+        "source_audit_claims_final_operating_point_pass": false,
+        "interpretation": "This audit reports source, current, angle, tails and the completed report focus gate. It does not assess final combined optical qualification."
+      },
+      "tail": {
+        "maximum_radius_over_second_largest": 1.0007142472802748,
+        "maximum_radius_over_d95_radius": 2.422442533881037,
+        "largest_packet_radial_second_moment_fraction": 0.0022708920922739797,
+        "records": [
+          {
+            "source_id": 1481,
+            "original_source_weight": 0.000244140625,
+            "sample_current_a": 2.44140625e-09,
+            "sample_centroid_radius_nm": 3.6447170576416146,
+            "sample_axis_radius_nm": 3.6432118755395506,
+            "sample_mechanical_angle_from_axis_mrad": 11.548983308718672,
+            "fraction_sample_radial_second_moment": 0.0022708920922739797,
+            "sample_kinetic_energy_ev": 300000.2304981732,
+            "c2_aperture_axis_radius_um": 34.79590024348074,
+            "emission_polar_angle_mrad": 2.8586906225677944,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          },
+          {
+            "source_id": 1281,
+            "original_source_weight": 0.000244140625,
+            "sample_current_a": 2.44140625e-09,
+            "sample_centroid_radius_nm": 3.6421156864181445,
+            "sample_axis_radius_nm": 3.643243876469097,
+            "sample_mechanical_angle_from_axis_mrad": 11.564448049699937,
+            "fraction_sample_radial_second_moment": 0.002267651607446918,
+            "sample_kinetic_energy_ev": 300000.29928054236,
+            "c2_aperture_axis_radius_um": 34.84248911952098,
+            "emission_polar_angle_mrad": 2.5168251964888295,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          },
+          {
+            "source_id": 2671,
+            "original_source_weight": 0.000244140625,
+            "sample_current_a": 2.44140625e-09,
+            "sample_centroid_radius_nm": 3.6350647785026773,
+            "sample_axis_radius_nm": 3.6335116586488696,
+            "sample_mechanical_angle_from_axis_mrad": 11.584797500654304,
+            "fraction_sample_radial_second_moment": 0.0022588800432299804,
+            "sample_kinetic_energy_ev": 300000.41533209424,
+            "c2_aperture_axis_radius_um": 34.90380323724521,
+            "emission_polar_angle_mrad": 2.0963145030935415,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          },
+          {
+            "source_id": 3421,
+            "original_source_weight": 0.000244140625,
+            "sample_current_a": 2.44140625e-09,
+            "sample_centroid_radius_nm": 3.624291769234865,
+            "sample_axis_radius_nm": 3.6227833127494655,
+            "sample_mechanical_angle_from_axis_mrad": 11.569668030210034,
+            "fraction_sample_radial_second_moment": 0.0022455108863240563,
+            "sample_kinetic_energy_ev": 300000.3768915545,
+            "c2_aperture_axis_radius_um": 34.858242866931185,
+            "emission_polar_angle_mrad": 2.0979470236130875,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          }
+        ],
+        "observed_interpretation": "The largest-radius packets have ordinary equal source weights, finite directions and neighboring packets of similar radius. They are not a single artificially low-weight outlier. No tail is discarded."
+      }
+    },
+    {
+      "trial": "final4096-s010",
+      "evidence_sha256": {
+        "report.json": "2a2eaa08195921ae4a4c6a3be2d1ea1031216d7cb5c645bbce0e99ad426812c4",
+        "observations.npz": "84c3977f4453c36ed239a658c0c53061ba62b0b3d23bd9bfb179263756a83a07",
+        "inputs.json": "50104ff890bdc3f3e3074b55a73016875643a4885992d3841009ae8c3e3e4e5e",
+        "input.toml": "a11b6f116ce0eba0a83abaed65e216b89110ad7c2d487256f1f2a2b1292bb9d4"
+      },
+      "controls": {
+        "condenser_lens_1": 52.5,
+        "condenser_lens_2": 17.75,
+        "mini_condenser": 10.0,
+        "objective_lens": 29.292665862003528
+      },
+      "emitted_positive_count": 4096,
+      "original_columns": 4096,
+      "unique_original_ids": 4096,
+      "ids_equal_emission_reference": true,
+      "zero_current_count": 0,
+      "original_weight_sum": 1.0,
+      "weight_minimum": 0.000244140625,
+      "weight_maximum": 0.000244140625,
+      "equal_original_positive_weight": 0.000244140625,
+      "each_positive_weight_matches_original_equal_weight": true,
+      "retained_current_not_renormalized": true,
+      "gun_exit_positive_survivors": 4096,
+      "sample_positive_survivors": 3890,
+      "sample_effective_count": 3890.0,
+      "source_current_a": 1e-05,
+      "sample_current_a": 9.497070312500001e-06,
+      "transmission": 0.94970703125,
+      "c2_intercepted_count": 206,
+      "c2_intercepted_original_current_a": 5.029296875e-07,
+      "other_interceptions": [],
+      "absolute_current_balance_residual_a": -2.117582368135751e-22,
+      "stopped_particle_resurrections": 0,
+      "c2_aperture": {
+        "diameter_um": 70.0,
+        "radius_um": 35.0,
+        "installed": true,
+        "enabled": true,
+        "inserted": true,
+        "exact_observation_mm": 765.0,
+        "surviving_plane_count": 3892,
+        "maximum_surviving_axis_radius_um": 34.98976578906144,
+        "interpretation": "The full-source ledger labels rejected original packets at the physical aperture; sample packet weights retain their original 1/N values."
+      },
+      "sample": {
+        "z_mm": 1025.1999975,
+        "alpha95_mrad": 10.208348940595702,
+        "angular_rms_mrad": 5.9178382987422795,
+        "angular_target_at_least_10mrad": true,
+        "d95_nm": 3.0092458968875557,
+        "rms_radius_nm": 1.226308726070305,
+        "native_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 3.0092458968875557,
+          "neighbour_bracket_mm": [
+            1025.19999725,
+            1025.1999977500002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -0.25000008463393897,
+            0.25000008463393897
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999975,
+              1025.1999975
+            ]
+          ],
+          "representative_offset_nm": 0.0,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_rms_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 1.150311243202255,
+          "neighbour_bracket_mm": [
+            1025.2000675000002,
+            1025.2000715000001
+          ],
+          "neighbour_bracket_offset_nm": [
+            70.00000005064066,
+            74.00000004054164
+          ],
+          "observed_minimum_planes_mm": [
+            1025.2000695000002
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.2000695000002,
+              1025.2000695000002
+            ]
+          ],
+          "representative_offset_nm": 72.00000004559115,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_surface_focus_gate": {
+          "maximum_d95_nm": null,
+          "passed": true,
+          "placement_passed": true,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "BOUNDED_D95_WAIST_AT_SURFACE",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "surface_focus_passed_as_reported": true,
+        "source_audit_claims_final_operating_point_pass": false,
+        "interpretation": "This audit reports source, current, angle, tails and the completed report focus gate. It does not assess final combined optical qualification."
+      },
+      "tail": {
+        "maximum_radius_over_second_largest": 1.0007143255168098,
+        "maximum_radius_over_d95_radius": 2.422250101888635,
+        "largest_packet_radial_second_moment_fraction": 0.002270618071061157,
+        "records": [
+          {
+            "source_id": 1481,
+            "original_source_weight": 0.000244140625,
+            "sample_current_a": 2.44140625e-09,
+            "sample_centroid_radius_nm": 3.644573090171919,
+            "sample_axis_radius_nm": 3.643067881982008,
+            "sample_mechanical_angle_from_axis_mrad": 11.548983290284438,
+            "fraction_sample_radial_second_moment": 0.002270618071061157,
+            "sample_kinetic_energy_ev": 300000.2304981732,
+            "c2_aperture_axis_radius_um": 34.79590022435059,
+            "emission_polar_angle_mrad": 2.8586906225677944,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          },
+          {
+            "source_id": 1281,
+            "original_source_weight": 0.000244140625,
+            "sample_current_a": 2.44140625e-09,
+            "sample_centroid_radius_nm": 3.641971536971565,
+            "sample_axis_radius_nm": 3.6430996924534456,
+            "sample_mechanical_angle_from_axis_mrad": 11.564448031240058,
+            "fraction_sample_radial_second_moment": 0.002267377622722602,
+            "sample_kinetic_energy_ev": 300000.29928054236,
+            "c2_aperture_axis_radius_um": 34.842489100338206,
+            "emission_polar_angle_mrad": 2.5168251964888295,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          },
+          {
+            "source_id": 2671,
+            "original_source_weight": 0.000244140625,
+            "sample_current_a": 2.44140625e-09,
+            "sample_centroid_radius_nm": 3.6349204273002202,
+            "sample_axis_radius_nm": 3.633367243003059,
+            "sample_mechanical_angle_from_axis_mrad": 11.584797482170583,
+            "fraction_sample_radial_second_moment": 0.0022586065207851856,
+            "sample_kinetic_energy_ev": 300000.41533209424,
+            "c2_aperture_axis_radius_um": 34.903803218092946,
+            "emission_polar_angle_mrad": 2.0963145030935415,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          },
+          {
+            "source_id": 3421,
+            "original_source_weight": 0.000244140625,
+            "sample_current_a": 2.44140625e-09,
+            "sample_centroid_radius_nm": 3.6241476074600882,
+            "sample_axis_radius_nm": 3.6226390694531565,
+            "sample_mechanical_angle_from_axis_mrad": 11.56966801180545,
+            "fraction_sample_radial_second_moment": 0.002245238687359633,
+            "sample_kinetic_energy_ev": 300000.3768915545,
+            "c2_aperture_axis_radius_um": 34.858242847945135,
+            "emission_polar_angle_mrad": 2.0979470236130875,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          }
+        ],
+        "observed_interpretation": "The largest-radius packets have ordinary equal source weights, finite directions and neighboring packets of similar radius. They are not a single artificially low-weight outlier. No tail is discarded."
+      }
+    },
+    {
+      "trial": "reference2048-s005",
+      "evidence_sha256": {
+        "report.json": "0ca8bd7fafcec2b3e293dd4bac8ad010bad9fc685edb69e4934f87648fac0ca6",
+        "observations.npz": "67202e16855fe2b64bc33ab045dc239d6b81f96d830a211087d5483f2c7f5832",
+        "inputs.json": "e79ee8eb7cd0381940991c59a9e744c9e7f210ea9296b4fa5623b47f00782fff",
+        "input.toml": "71d07eb61c560370a59dd2064ca54eceec205539445147556b36ac90e27bbedd"
+      },
+      "controls": {
+        "condenser_lens_1": 52.5,
+        "condenser_lens_2": 17.75,
+        "mini_condenser": 10.0,
+        "objective_lens": 29.292665862003528
+      },
+      "emitted_positive_count": 2048,
+      "original_columns": 2048,
+      "unique_original_ids": 2048,
+      "ids_equal_emission_reference": true,
+      "zero_current_count": 0,
+      "original_weight_sum": 1.0,
+      "weight_minimum": 0.00048828125,
+      "weight_maximum": 0.00048828125,
+      "equal_original_positive_weight": 0.00048828125,
+      "each_positive_weight_matches_original_equal_weight": true,
+      "retained_current_not_renormalized": true,
+      "gun_exit_positive_survivors": 2048,
+      "sample_positive_survivors": 1950,
+      "sample_effective_count": 1950.0,
+      "source_current_a": 1e-05,
+      "sample_current_a": 9.521484375e-06,
+      "transmission": 0.9521484375,
+      "c2_intercepted_count": 98,
+      "c2_intercepted_original_current_a": 4.785156250000001e-07,
+      "other_interceptions": [],
+      "absolute_current_balance_residual_a": 7.411538288475128e-22,
+      "stopped_particle_resurrections": 0,
+      "c2_aperture": {
+        "diameter_um": 70.0,
+        "radius_um": 35.0,
+        "installed": true,
+        "enabled": true,
+        "inserted": true,
+        "exact_observation_mm": 765.0,
+        "surviving_plane_count": 1952,
+        "maximum_surviving_axis_radius_um": 34.97464829180201,
+        "interpretation": "The full-source ledger labels rejected original packets at the physical aperture; sample packet weights retain their original 1/N values."
+      },
+      "sample": {
+        "z_mm": 1025.1999975,
+        "alpha95_mrad": 10.3680661966818,
+        "angular_rms_mrad": 5.9437748715947905,
+        "angular_target_at_least_10mrad": true,
+        "d95_nm": 3.4712105719113726,
+        "rms_radius_nm": 1.2503001734074635,
+        "native_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 3.197922952915442,
+          "neighbour_bracket_mm": [
+            1025.1999795000002,
+            1025.1999835000001
+          ],
+          "neighbour_bracket_offset_nm": [
+            -17.99999995455437,
+            -13.999999964653398
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999815000001
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999815000001,
+              1025.1999815000001
+            ]
+          ],
+          "representative_offset_nm": -15.999999959603883,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_rms_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 1.1885588737335715,
+          "neighbour_bracket_mm": [
+            1025.2000615000002,
+            1025.2000655000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            64.00000006578921,
+            68.00000005569018
+          ],
+          "observed_minimum_planes_mm": [
+            1025.2000635000002
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.2000635000002,
+              1025.2000635000002
+            ]
+          ],
+          "representative_offset_nm": 66.0000000607397,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_surface_focus_gate": {
+          "maximum_d95_nm": null,
+          "passed": false,
+          "placement_passed": false,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "FAIL",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "surface_focus_passed_as_reported": false,
+        "source_audit_claims_final_operating_point_pass": false,
+        "interpretation": "This audit reports source, current, angle, tails and the completed report focus gate. It does not assess final combined optical qualification."
+      },
+      "tail": {
+        "maximum_radius_over_second_largest": 1.0025397878067166,
+        "maximum_radius_over_d95_radius": 2.1101459122514887,
+        "largest_packet_radial_second_moment_fraction": 0.004400111764991861,
+        "records": [
+          {
+            "source_id": 1281,
+            "original_source_weight": 0.00048828125,
+            "sample_current_a": 4.8828125e-09,
+            "sample_centroid_radius_nm": 3.6623803994414676,
+            "sample_axis_radius_nm": 3.665601391613464,
+            "sample_mechanical_angle_from_axis_mrad": 11.576988608185621,
+            "fraction_sample_radial_second_moment": 0.004400111764991861,
+            "sample_kinetic_energy_ev": 300000.30011032434,
+            "c2_aperture_axis_radius_um": 34.880271717466535,
+            "emission_polar_angle_mrad": 2.5168251964888295,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          },
+          {
+            "source_id": 1481,
+            "original_source_weight": 0.00048828125,
+            "sample_current_a": 4.8828125e-09,
+            "sample_centroid_radius_nm": 3.6531022947765064,
+            "sample_axis_radius_nm": 3.64596630589079,
+            "sample_mechanical_angle_from_axis_mrad": 11.55054119128592,
+            "fraction_sample_radial_second_moment": 0.004377845926193887,
+            "sample_kinetic_energy_ev": 300000.23065502377,
+            "c2_aperture_axis_radius_um": 34.800594027679395,
+            "emission_polar_angle_mrad": 2.8586906225677944,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          },
+          {
+            "source_id": 2031,
+            "original_source_weight": 0.00048828125,
+            "sample_current_a": 4.8828125e-09,
+            "sample_centroid_radius_nm": 3.607188557518698,
+            "sample_axis_radius_nm": 3.6167007460328264,
+            "sample_mechanical_angle_from_axis_mrad": 11.547261620516089,
+            "fraction_sample_radial_second_moment": 0.0042684922293180026,
+            "sample_kinetic_energy_ev": 300000.28886050935,
+            "c2_aperture_axis_radius_um": 34.79071447365199,
+            "emission_polar_angle_mrad": 2.5350852856615087,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          },
+          {
+            "source_id": 1526,
+            "original_source_weight": 0.00048828125,
+            "sample_current_a": 4.8828125e-09,
+            "sample_centroid_radius_nm": 3.600276411102836,
+            "sample_axis_radius_nm": 3.6031832315933796,
+            "sample_mechanical_angle_from_axis_mrad": 11.552817049373207,
+            "fraction_sample_radial_second_moment": 0.004252149210717524,
+            "sample_kinetic_energy_ev": 300000.3483709753,
+            "c2_aperture_axis_radius_um": 34.80746012733125,
+            "emission_polar_angle_mrad": 2.2558801479488406,
+            "status": "Surviving original positive-current packet with the same weight as every other emission; not a zero-current or low-weight probe"
+          }
+        ],
+        "observed_interpretation": "The largest-radius packets have ordinary equal source weights, finite directions and neighboring packets of similar radius. They are not a single artificially low-weight outlier. No tail is discarded."
+      }
+    }
+  ],
+  "definitions": {
+    "d95": "Diameter containing 95 percent of the actual specimen-plane current about its current-weighted centroid.",
+    "rms_radius": "Square root of the weighted mean squared centroid radius using all actual surviving original positive-current packets.",
+    "transmission": "Sum of surviving original weights relative to the unchanged emitted original-current total; no rescaling after clipping."
+  },
+  "overall_status": "COMPLETED_ORIGINAL_SOURCE_AND_TAIL_ARRAY_AUDIT; FINAL_OPERATING_POINT_QUALIFICATION_NOT_ASSESSED"
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "two-condenser-10mrad-controlled-numerical-comparison-v1",
+  "scope": "Postprocessing of completed physical trials, no source refocus or propagation",
+  "trials": {
+    "focused4096-s005": {
+      "report_sha256": "dfdeb2f19e4aa7b0301c9db125e9fcf56168efcd3d6a45594555ec069ccca398",
+      "input_digest": "bb9e7582e86d10e3e5b36ec49a74d3416ea9e80926ac40fc18098ff81a6bbe0f",
+      "implementation": "8862d211bd0ee8fcd6c07c3d744fb20b900667c1f91f84eda5c23cc0bea56dc5",
+      "checkpoint_population_budget": 4096,
+      "emitted_positive_count": 4096,
+      "native_surface_focus_passed": true
+    },
+    "final4096-s010": {
+      "report_sha256": "2a2eaa08195921ae4a4c6a3be2d1ea1031216d7cb5c645bbce0e99ad426812c4",
+      "input_digest": "7e70b368947a27c3ea8cf1499b161e036b5dc3d0391f597be37b6275b7bdf942",
+      "implementation": "8862d211bd0ee8fcd6c07c3d744fb20b900667c1f91f84eda5c23cc0bea56dc5",
+      "checkpoint_population_budget": 4096,
+      "emitted_positive_count": 4096,
+      "native_surface_focus_passed": true
+    },
+    "reference2048-s005": {
+      "report_sha256": "0ca8bd7fafcec2b3e293dd4bac8ad010bad9fc685edb69e4934f87648fac0ca6",
+      "input_digest": "f6d9a4e6fbf8b51d04f30bd36024ef63f57b786ad7408407e1f2c906327824c6",
+      "implementation": "8862d211bd0ee8fcd6c07c3d744fb20b900667c1f91f84eda5c23cc0bea56dc5",
+      "checkpoint_population_budget": 4096,
+      "emitted_positive_count": 2048,
+      "native_surface_focus_passed": false
+    }
+  },
+  "common_controls": true,
+  "common_requested_planes": true,
+  "common_focus_planes": true,
+  "common_executed_checkpoints": true,
+  "common_checkpoint_population_budget": true,
+  "common_geometry_digest": true,
+  "step_change_coarse_to_fine_percent": {
+    "d95_nm": -0.003993843855143453,
+    "rms_radius_nm": -0.002083571356659153,
+    "alpha95_mrad": 1.5932508645732923e-07,
+    "angular_rms_mrad": 1.5936294506246895e-07,
+    "sample_current_a": 0.0
+  },
+  "source_change_2048_to_4096_percent": {
+    "d95_nm": -13.311922455678493,
+    "rms_radius_nm": -1.9208985862223082,
+    "alpha95_mrad": -1.540472801695214,
+    "angular_rms_mrad": -0.43636517166254496,
+    "sample_current_a": -0.2564102564102444
+  },
+  "native_d95_minimum_offset_nm": {
+    "focused4096-s005": 0.0,
+    "final4096-s010": 0.0,
+    "reference2048-s005": -15.999999959603883
+  },
+  "interpretation": "The 4096-particle point is calibrated at fixed controls. Small step sensitivity is observed at that population. The 2048-particle fixed-control reference fails the 1 nm native placement criterion, so source-count or continuum focus convergence is not established. The +/-0.25 nm observation neighbours are a discrete grid bracket for the calibrated sample, not a continuum error bound.",
+  "4096_step_original_source_sha256_identical": true,
+  "potential_digests": {
+    "focused4096-s005": "729d2f7e4d8d8155012d86696db024505d84ccdd0f49bf94d66945930070f9c2",
+    "final4096-s010": "729d2f7e4d8d8155012d86696db024505d84ccdd0f49bf94d66945930070f9c2",
+    "reference2048-s005": "f0a81c9168d813014eb806bc9b08ba53a59c36e409e0204acdb202f238a323a8"
+  }
+}

@@ -489,7 +489,8 @@ def test_profile_evaluator_executes_one_actual_profile_and_preserves_seed(execut
     np.testing.assert_array_equal(calls[0][1], 100.+np.array([-20., -5., -1., 0., 1., 5., 20.])*1e-6)
 
 
-def test_extended_audit_checks_the_actual_extended_plan_not_surface_proxy(monkeypatch):
+@pytest.mark.parametrize("expected_diameter_mm", [.100, .070])
+def test_extended_audit_checks_the_actual_extended_plan_not_surface_proxy(monkeypatch, expected_diameter_mm):
     import audit_joint_probe_fields as audit
     import temsim.physics.unified_field_runtime as runtimes
     value = state()
@@ -506,21 +507,28 @@ def test_extended_audit_checks_the_actual_extended_plan_not_surface_proxy(monkey
     runtime = Runtime()
     plan = SimpleNamespace(unified_runtime=runtime, z_mm=np.array([0., 100., 100.0001]),
         checkpoint_index=np.array([0, 1, 2]), signature="extended-plan")
-    monkeypatch.setattr(audit, "_inputs", lambda state: ("physical-aperture", 0., 100.))
+    expected_calls = []
+    monkeypatch.setattr(audit, "_inputs", lambda state, *, expected_c2_diameter_mm:
+        expected_calls.append(expected_c2_diameter_mm) or ("physical-aperture", 0., 100.))
     monkeypatch.setattr(audit, "_plan_actions", lambda p, r, start, stop:
         called.append((p, r, start, stop)) or {"interval_mm": [start, stop]})
     monkeypatch.setattr(audit, "_field_ownership", lambda s, r: {"actual_runtime": r.digest})
-    monkeypatch.setattr(audit, "_c2_geometry", lambda a, r, start, stop: {"actual_boundary_radius_mm": .05})
-    result = waist.audit_extended_plan(value, plan, 100.0001)
+    monkeypatch.setattr(audit, "_c2_geometry", lambda a, r, start, stop, *, expected_c2_diameter_mm:
+        expected_calls.append(expected_c2_diameter_mm) or {"actual_boundary_radius_mm": expected_c2_diameter_mm*.5})
+    # The old call form must retain 100 um; 70 um is an explicit new contract.
+    options = {} if expected_diameter_mm == .100 else {"expected_c2_diameter_mm": expected_diameter_mm}
+    result = waist.audit_extended_plan(value, plan, 100.0001, **options)
     assert result["passed"] and called == [(plan, runtime, 0., 100.0001)]
+    assert expected_calls == [expected_diameter_mm, expected_diameter_mm]
+    assert result["c2_aperture"]["actual_boundary_radius_mm"] == expected_diameter_mm*.5
     assert result["identities"]["plan_signature"] == "extended-plan"
     plan.checkpoint_index = np.array([0, 2])
     with pytest.raises(ValueError, match="exact surface"):
-        waist.audit_extended_plan(value, plan, 100.0001)
+        waist.audit_extended_plan(value, plan, 100.0001, **options)
     plan.checkpoint_index = np.array([0, 1, 2])
     runtime.source_identity = "different-physical-state"
     with pytest.raises(ValueError, match="original inputs"):
-        waist.audit_extended_plan(value, plan, 100.0001)
+        waist.audit_extended_plan(value, plan, 100.0001, **options)
 
 
 @pytest.mark.parametrize("damage", ["all_stopped", "late_stopped", "live_nan", "live_bad_energy", "duplicate_id"])

@@ -1,0 +1,46 @@
+{
+  "working_point_status": "PROVISIONAL_UPSTREAM_OBJECTIVE",
+  "upper_controls_percent": {
+    "condenser_lens_1": 52.5,
+    "condenser_lens_2": 17.75,
+    "mini_condenser": 10.0,
+    "objective_lens": 29.29264
+  },
+  "c2_aperture_diameter_mm": 0.07,
+  "projector_percent": {
+    "diffraction_lens": 13.59281212137673,
+    "intermediate_lens": 8.51783304453163,
+    "projector_lens_1": 32.1132572718703,
+    "projector_lens_2": 9.826874422815507
+  },
+  "all_differential_checks_pass": true,
+  "diagnostic_emitter_calls": 0,
+  "source_focus_and_alpha95_qualification": "SEPARATE_FINITE_SOURCE_STUDY_NOT_MEASURED_HERE",
+  "pending": "One new production unified 0.05 mm nine-pencil verification at the final exact upstream Objective; do not relabel these measurements as that final point.",
+  "runs": [
+    {
+      "maximum_step_mm": 0.1,
+      "difference_scale": 1.0,
+      "all_pencils_reach_reference": true,
+      "canonical_position_residual_norm": 5.264760677006083e-07,
+      "effective_camera_length_m": 0.049999999965520764,
+      "camera_length_relative_error_to_50mm": 6.895847226573437e-10
+    },
+    {
+      "maximum_step_mm": 0.05,
+      "difference_scale": 1.0,
+      "all_pencils_reach_reference": true,
+      "canonical_position_residual_norm": 4.87967588280672e-07,
+      "effective_camera_length_m": 0.0499999999339482,
+      "camera_length_relative_error_to_50mm": 1.3210360583215675e-09
+    },
+    {
+      "maximum_step_mm": 0.05,
+      "difference_scale": 0.5,
+      "all_pencils_reach_reference": true,
+      "canonical_position_residual_norm": 4.879651740218119e-07,
+      "effective_camera_length_m": 0.04999999993394798,
+      "camera_length_relative_error_to_50mm": 1.321040499213666e-09
+    }
+  ]
+}

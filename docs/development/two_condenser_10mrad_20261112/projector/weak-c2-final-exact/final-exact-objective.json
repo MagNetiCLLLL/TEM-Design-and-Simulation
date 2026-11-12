@@ -1,0 +1,239 @@
+{
+  "status": "FINAL_EXACT_OBJECTIVE_UNIFIED_DIFFERENTIAL_REFERENCE_ONLY",
+  "scope": "Nine zero-current differential pencils, emitter forbidden. No finite-source population or current-weighted beam metrics were generated.",
+  "configuration": "FEG / physical C1+C2 / No Energy Filter / Nanoprobe / Diffraction",
+  "upper_controls_percent": {
+    "condenser_lens_1": 52.5,
+    "condenser_lens_2": 17.75,
+    "mini_condenser": 10.0,
+    "objective_lens": 29.292665862003528
+  },
+  "c2_aperture_diameter_mm": 0.07,
+  "projector_percent": {
+    "diffraction_lens": 13.59281212137673,
+    "intermediate_lens": 8.51783304453163,
+    "projector_lens_1": 32.1132572718703,
+    "projector_lens_2": 9.826874422815507
+  },
+  "source_plane": "specimen upper surface",
+  "source_z_mm": 1025.1999975,
+  "reference_z_mm": 2140.15,
+  "energy_ev": 300000.0,
+  "diagnostic_clock_s": 0.0,
+  "maximum_step_mm": 0.05,
+  "position_increment_m": 1e-10,
+  "mechanical_slope_increment_rad": 1e-07,
+  "receiver_insertion": {
+    "haadf": true,
+    "df": true,
+    "bf": true,
+    "flu_screen": false,
+    "camera": false
+  },
+  "canonical_to_mechanical_basis": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -112.58568997978352,
+      1.0,
+      0.0
+    ],
+    [
+      112.58568997978352,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "mechanical_jacobian": [
+    [
+      -5.053893629646987,
+      -2.479310063484196,
+      -0.02202146329133934,
+      0.04488934396191912
+    ],
+    [
+      2.479310063484196,
+      -5.053893629646987,
+      -0.04488934396191912,
+      -0.02202146329133934
+    ],
+    [
+      -3.3721285682931743,
+      -23.931299536032004,
+      -0.053075374128256615,
+      0.10819075435782814
+    ],
+    [
+      23.931299536032004,
+      -3.3721285682931743,
+      -0.10819075435782814,
+      -0.053075374128256615
+    ]
+  ],
+  "canonical_jacobian": [
+    [
+      4.133045505981105e-06,
+      -8.424464281835406e-06,
+      -0.02202146329133934,
+      0.04488934396191912
+    ],
+    [
+      8.424464281835406e-06,
+      4.133045505981105e-06,
+      -0.04488934396191912,
+      -0.02202146329133934
+    ],
+    [
+      8.808602160516179,
+      -17.955771918867082,
+      -0.053075374128256615,
+      0.10819075435782814
+    ],
+    [
+      17.955771918867082,
+      8.808602160516179,
+      -0.10819075435782814,
+      -0.053075374128256615
+    ]
+  ],
+  "canonical_position_residual_norm": 9.383691362701095e-06,
+  "effective_camera_length_m": 0.049999980468229094,
+  "camera_length_relative_error_to_50mm": 3.906354181237859e-07,
+  "camera_length_singular_values_m": [
+    0.049999980468229094,
+    0.04999998046822909
+  ],
+  "all_pencils_reach_reference": true,
+  "blocked_key": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "elapsed_s": 46.227171300008195,
+  "receipt": {
+    "coil_perturbations_rad": {},
+    "empirical_aberrations_applied": false,
+    "field_digest": "bb10fdd52bfa7f945ba0bc1fc869439a30fc838871d6a70754d0619391b6fd67",
+    "geometry_digest": "46bc8d3863938d6abd2f8e47831634ee6ee4e8cf6cad3ef5eab950ccc4dad509",
+    "history_policy": "exact_checkpoints",
+    "maximum_step_m": 5e-05,
+    "parent_runtime_digest": "f4f0008f7ceddc478cd3b8ee3a3557d838c3aec6751f8b413297c9c360a2ac0d",
+    "runtime_digest": "f4f0008f7ceddc478cd3b8ee3a3557d838c3aec6751f8b413297c9c360a2ac0d",
+    "scope": "Supplied differential phase-space probes; not an electron source",
+    "source_identity": "3cf9647797683eaa2d8fb7ee563e726ec6a5ff8ab257357c82ed49e70aa85080",
+    "swept_bounds_m": [
+      [
+        -4.488934396191911e-09,
+        -4.488934396191911e-09,
+        1.0251999975000001
+      ],
+      [
+        4.488934396191911e-09,
+        4.488934396191911e-09,
+        2.14015
+      ]
+    ]
+  },
+  "input_snapshot_digest": "3cf9647797683eaa2d8fb7ee563e726ec6a5ff8ab257357c82ed49e70aa85080",
+  "input_physical_digest": "8e54c42c426f668ff9828d2abc71af6006c8b00415a173f400b65d0b8ee7b988",
+  "source_controls_unchanged": true,
+  "emitter_calls": 0,
+  "no_finite_source_population_was_created": true,
+  "input_snapshot": "final-exact-inputs.json.gz",
+  "input_profile": "final-exact-input.toml",
+  "artifacts": {
+    "verify_final_exact.py": {
+      "sha256": "f2bcf3505e1ee5450ba9304fb734a3b019e247cc3fd1fd27528763ff757ffb57",
+      "bytes": 8261
+    },
+    "final-exact-inputs.json.gz": {
+      "sha256": "c902cc29c6b8a1cd0af2a6e24324c448eb145ffef030996b8a96cdc9f524416c",
+      "bytes": 109630
+    },
+    "final-exact-input.toml": {
+      "sha256": "c22f391abdd79193d59befc994e773fc6e6b3139e27c4af62f4498b51809503d",
+      "bytes": 25760
+    },
+    "upstream-controls.json": {
+      "sha256": "123bd2dfe8caad62f1f9ac7446423c71cb2ef024b41285ba6f1e9ac737201fa3",
+      "bytes": 499
+    }
+  },
+  "nearby_validation_record": "../weak-c2-provisional/proposal.json",
+  "suggested_column_mode_override": {
+    "calibration_status": "computed_unified_c2_zero_current_diffraction_reference",
+    "calibration_reference": "Independent C1+C2 Nanoprobe diffraction differential reference at exact Objective 29.292665862003528% and the specimen upper surface, with 70 um physical C2 aperture. D/I were jointly matched with P1/P2 held fixed. Production unified nine-pencil verification used 0.05 mm at this exact point. Independent 0.1/0.05 mm and half-increment checks belong to nearby Objective 29.29264%, as recorded separately. Source emission was forbidden; no finite-source, finite-angle, detector-signal, wave or experimental qualification.",
+    "compatible_recording_systems": [
+      "No Energy Filter"
+    ],
+    "devices": {
+      "diffraction_lens": {
+        "percent": 13.59281212137673
+      },
+      "intermediate_lens": {
+        "percent": 8.51783304453163
+      },
+      "projector_lens_1": {
+        "percent": 32.1132572718703
+      },
+      "projector_lens_2": {
+        "percent": 9.826874422815507
+      }
+    },
+    "apertures": {},
+    "targets": {
+      "conjugate_plane": "mode_dependent_diffraction_reference_plane",
+      "reference_surface": "stem_main_screen",
+      "calibration_model": "unified",
+      "calibration_scope": "zero_current_differential_pencils_only",
+      "source_plane": "specimen_upper_surface",
+      "source_z_mm": 1025.1999975,
+      "reference_z_mm": 2140.15,
+      "objective_excitation_percent": 29.292665862003528,
+      "target_effective_camera_length_m": 0.05,
+      "achieved_effective_camera_length_m": 0.049999980468229094,
+      "achieved_diffraction_conjugacy_residual": 9.383691362701095e-06,
+      "validation_step_mm": 0.05,
+      "validation_steps_mm": [
+        0.05
+      ],
+      "diagnostic_pencil_count": 9,
+      "c2_aperture_diameter_um": 70.0,
+      "finite_source_qualification": "NOT_TESTED",
+      "finite_angle_qualification": "NOT_TESTED",
+      "wave_qualification": "NOT_TESTED",
+      "camera_length_relative_error": 3.906354181237859e-07,
+      "diagnostic_position_steps_m": [
+        1e-10
+      ],
+      "diagnostic_angle_steps_rad": [
+        1e-07
+      ],
+      "exact_working_point_validation_step_mm": 0.05,
+      "nearby_step_refinement_objective_excitation_percent": 29.29264,
+      "nearby_step_refinement_steps_mm": [
+        0.1,
+        0.05
+      ],
+      "nearby_half_increment_check": true
+    }
+  }
+}

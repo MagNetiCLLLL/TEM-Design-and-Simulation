@@ -14,6 +14,8 @@ default_excitation_percent = 10.0
 control_convention = "Microprobe positive; Nanoprobe negative; equal magnitude. Optical off never means zero current. OEM channel mapping remains uncalibrated."
 
 [mini_condenser_control.column_startup_excitation_percent]
+# The true two-condenser column has its own downstream focus relay.
+"column/C2.toml" = 10.0
 # Both default probe modes were checked only for this column's relay geometry.
 "column/C3_ProbeCorrector.toml" = 43.88646617222637
 # The combined B-COR column retains these incident optics and CM working point.
@@ -88,6 +90,74 @@ calibration_reference = "Finite-Field Optics Normal Nanoprobe working point meas
 # Qualification targets replace the legacy record rather than inheriting it.
 devices = { condenser_lens_2 = { percent = 13.899040164772698 }, condenser_lens_3 = { percent = 15.68823681182136 }, objective_lens = { percent = 68.97810600833917 }, probe_hp2_hexapole = { strength_m3 = 4371028.449290636 }, probe_hp1_hexapole = { strength_m3 = 2616320.416243901, orientation_rad = -0.042012393991127016 } }
 targets = { beam_character = "convergent_probe", target_convergence_sem_angle_mrad = 10.0, achieved_convergence_sem_angle_mrad = 9.969356824092644, achieved_waist_offset_nm = 0.00010365583357023215, c2_aperture_diameter_um = 100.0, achieved_geometric_rms_radius_nm = 0.15583139548095873, achieved_geometric_diameter_95_nm = 0.5556896185055661, achieved_transmission_fraction = 1.0, calibration_ray_count = 49, calibration_step_mm = 0.05, validation_step_mm = 0.025, step_waist_difference_nm = 0.028652420493146722, calibration_cm_excitation_percent = 43.88646617222637, calibration_backend = "CPU", calibration_model = "unified", sampling_convergence = "NOT_TESTED", topology_qualification = "NOT_TESTED", qualification_scope = "fixed_source_budget_and_two_integration_steps" }
+
+[column_mode_overrides.C2.nano_probe]
+calibration_status = "computed_300kv_unified_two_condenser_fixed_4096_sampling_sensitive"
+calibration_reference = "Physical C1+C2 Nanoprobe with a 70 um C2 aperture, Mini -10% and the actual 5 nm specimen upper surface. At the fixed 4096-particle source budget, alpha95 is 10.20835 mrad, surface D95 is 3.00913 nm, and 3890 particles transmit 94.9707% of the original 10 uA. Native D95 minimum is at the upper surface with a +/-0.25 nm observed bracket at both 0.1 and 0.05 mm maximum steps; RMS minimum is 72 nm downstream. One resolved final waist across complete Mini/Objective support, without an extra upstream last-stage crossover. Source sampling is NOT converged: identical controls and mesh with 2048 particles move the D95 minimum 16 nm upstream and give 3.47121 nm surface D95. The observed bracket is not a continuous-source focus-error bound. All original IDs and absolute weights are retained, including physical aperture losses. Geometric fixed-source reference only, not coherent resolution or OEM performance. Edited source, Mini magnitude or geometry requires revalidation. See docs/development/two_condenser_10mrad_20261112/README.md."
+
+[column_mode_overrides.C2.nano_probe.devices.condenser_lens_1]
+percent = 52.5
+
+[column_mode_overrides.C2.nano_probe.devices.condenser_lens_2]
+percent = 17.75
+
+[column_mode_overrides.C2.nano_probe.devices.mini_condenser]
+field_polarity = -1
+
+[column_mode_overrides.C2.nano_probe.devices.objective_lens]
+percent = 29.292665862003528
+
+[column_mode_overrides.C2.nano_probe.apertures.condenser_aperture_2]
+enabled = true
+diameter_mm = 0.07
+
+[column_mode_overrides.C2.nano_probe.targets]
+beam_character = "convergent_probe"
+condenser_topology = "physical_c1_c2_only"
+calibration_model = "unified"
+calibration_cm_excitation_percent = 10.0
+calibration_sample_thickness_nm = 5.0
+calibration_source = "current_default_classical_particles_without_tip_coherence"
+source_virtual_fwhm_nm = 5.0
+source_angular_rms_mrad = 1.0
+source_angular_cutoff_mrad = 3.0
+specimen_upper_surface_z_mm = 1025.1999975
+minimum_convergence_sem_angle_mrad = 10.0
+achieved_convergence_sem_angle_mrad = 10.208348956860162
+achieved_angular_rms_mrad = 5.9178383081731205
+achieved_geometric_rms_radius_nm = 1.2262831750529444
+achieved_geometric_diameter_95_nm = 3.0091257123052166
+achieved_native_d95_waist_offset_nm = 0.0
+achieved_native_d95_waist_bracket_nm = [
+    -0.25000008463393897,
+    0.25000008463393897,
+]
+achieved_native_rms_waist_offset_nm = 72.00000004559115
+achieved_native_rms_waist_bracket_nm = [70.0, 74.0]
+achieved_transmission_fraction = 0.94970703125
+achieved_sample_current_a = 9.497070312500001e-06
+calibration_ray_count = 4096
+surviving_positive_count = 3890
+effective_sample_count = 3890.0
+calibration_step_mm = 0.05
+compared_steps_mm = [
+    0.1,
+    0.05,
+]
+source_comparison_counts = [
+    2048,
+    4096,
+]
+native_focus_spacing_nm = 0.25
+source_comparison_surface_d95_nm = 3.4712105719113726
+source_comparison_native_d95_waist_offset_nm = -15.999999959603883
+source_comparison_direct_surface_focus_passed = false
+source_count_relative_d95_difference = 0.15356116818800647
+integration_step_relative_d95_difference = 0.00003994003369411914
+sampling_convergence = "NOT_CONVERGED"
+qualification_scope = "fixed_4096_source_and_two_integration_steps_not_continuous_source_focus_accuracy"
+coherent_resolution_qualification = "NOT_TESTED"
+c2_aperture_diameter_um = 70.0
 
 [[crossover_constraints]]
 key = "c1_c2_interlens"
@@ -168,3 +238,61 @@ constraint = "sample_to_main_screen_A_zero"
 calibration_status = "canonical_larmor_live_coupled_solve_full_transfer_validation_non_oem"
 calibration_reference = "D/I/P1/P2 are solved together for one camera length at the mode reference plane: the TOML-owned main fluorescent screen in STEM and the active recording stop in TEM. The optimiser and production validator both use the full specimen-canonical laboratory-frame 4x4 transfer at 0.025 mm; the deterministic TEM branch seeds cover 0.005-2.5 m. Axially ordered HAADF, DF and BF retain distinct physical Z transfers. This is an engineering model, not an OEM lens-current table."
 targets = { maximum_relative_error = 0.03, maximum_diffraction_conjugacy_residual = 0.001, maximum_numerical_spread = 0.01, optimiser_step_mm = 0.025, validation_step_mm = 0.025, maximum_continuation_ratio = 2.0, maximum_continuation_stages = 10, precalculation_interpolation = "log_target_linear_strength_seed_full_validation", preset_camera_lengths = [0.005, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5], preset_branch_ids = ["camera_length", "camera_length", "camera_length", "camera_length", "camera_length", "camera_length", "camera_length"], preset_vectors = [[16.32115954, 98.38564830, 48.82683138, 24.62908381], [14.64526109578748, 0.01586898291823792, 27.179426927557408, 14.987915959343525], [14.4149455, 0.00120650723, 34.0234814, 9.88514595], [19.63904162, 19.63010251, 0.77162651, 46.12967606], [19.4676207, 19.9226047, 0.0153893906, 65.2384486], [13.50512151, 5.63031688, 63.99418341, 50.20615765], [13.48846756, 5.68013548, 64.05715196, 88.74046240]] }
+
+[column_mode_overrides.C2.diffraction]
+calibration_status = "computed_unified_c2_zero_current_diffraction_reference"
+calibration_reference = "Independent C1+C2 Nanoprobe diffraction differential reference at exact Objective 29.292665862003528% and the specimen upper surface, with 70 um physical C2 aperture. D/I were jointly matched with P1/P2 held fixed. Production unified nine-pencil verification used 0.05 mm at this exact point. Independent 0.1/0.05 mm and half-increment checks belong to nearby Objective 29.29264%, as recorded separately. Source emission was forbidden; no finite-source, finite-angle, detector-signal, wave or experimental qualification."
+compatible_recording_systems = [
+    "No Energy Filter",
+]
+
+[column_mode_overrides.C2.diffraction.devices.diffraction_lens]
+percent = 13.59281212137673
+
+[column_mode_overrides.C2.diffraction.devices.intermediate_lens]
+percent = 8.51783304453163
+
+[column_mode_overrides.C2.diffraction.devices.projector_lens_1]
+percent = 32.1132572718703
+
+[column_mode_overrides.C2.diffraction.devices.projector_lens_2]
+percent = 9.826874422815507
+
+[column_mode_overrides.C2.diffraction.apertures]
+
+[column_mode_overrides.C2.diffraction.targets]
+conjugate_plane = "mode_dependent_diffraction_reference_plane"
+reference_surface = "stem_main_screen"
+calibration_model = "unified"
+calibration_scope = "zero_current_differential_pencils_only"
+source_plane = "specimen_upper_surface"
+source_z_mm = 1025.1999975
+reference_z_mm = 2140.15
+objective_excitation_percent = 29.292665862003528
+target_effective_camera_length_m = 0.05
+achieved_effective_camera_length_m = 0.049999980468229094
+achieved_diffraction_conjugacy_residual = 9.383691362701095e-06
+validation_step_mm = 0.05
+finite_source_qualification = "NOT_TESTED"
+finite_angle_qualification = "NOT_TESTED"
+wave_qualification = "NOT_TESTED"
+calibrated_illumination = "nanoprobe"
+diagnostic_pencil_count = 9
+c2_aperture_diameter_um = 70.0
+validation_steps_mm = [
+    0.05,
+]
+diagnostic_position_steps_m = [
+    1e-10,
+]
+diagnostic_angle_steps_rad = [
+    1e-07,
+]
+camera_length_relative_error = 3.906354181237859e-07
+exact_working_point_validation_step_mm = 0.05
+nearby_step_refinement_objective_excitation_percent = 29.29264
+nearby_step_refinement_steps_mm = [
+    0.1,
+    0.05,
+]
+nearby_half_increment_check = true

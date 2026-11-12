@@ -1768,7 +1768,8 @@ class State:
             "energy_filter_installed":getattr(self,"energy_filter_installed",False),
             "energy_filter":serialise_energy_filter(self.energy_filter),
 
-            "column_mode":getattr(self,"column_mode","three_lens"),
+            "column_mode":("two_condenser" if self.layout_c3_hardware == "two_condenser"
+                           else getattr(self,"column_mode","three_lens")),
 
             "layout_c3_hardware":getattr(self,"layout_c3_hardware","three_condenser"),
 
@@ -2530,6 +2531,8 @@ class State:
         state.probe_corrector_installed=d.get("probe_corrector_installed",True)
         state.image_corrector_installed=d.get("image_corrector_installed",False)
         if state.layout_c3_hardware == "two_condenser":
+            # Older C2 profiles used the C3-off label for absent hardware.
+            state.column_mode = "two_condenser"
             state.corrector_mode = "no_corrector"
             state.probe_corrector_installed = False
             state.image_corrector_installed = False

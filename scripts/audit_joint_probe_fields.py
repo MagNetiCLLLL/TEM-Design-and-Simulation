@@ -53,7 +53,14 @@ def _finite(value, name):
     return result
 
 
-def _inputs(state):
+def _expected_c2_diameter(value):
+    diameter = _finite(value, "Expected C2 diameter")
+    _require(diameter > 0., "Expected C2 diameter must be positive")
+    return diameter
+
+
+def _inputs(state, *, expected_c2_diameter_mm=.100):
+    expected = _expected_c2_diameter(expected_c2_diameter_mm)
     _require(is_unified(state), "Joint probe audit requires unified field optics")
     gun = state.electron_gun
     _require(gun.source_representation == "classical_particles", "A physical classical_particles source is required")
@@ -64,8 +71,10 @@ def _inputs(state):
     aperture = apertures[0]
     for name in ("installed", "enabled", "inserted"):
         _require(getattr(aperture, name, True) is True, f"C2 aperture must be {name}")
-    _require(_finite(aperture.diameter_mm, "C2 diameter") == .100, "C2 diameter must be exactly 0.100 mm")
-    _require(_finite(aperture.radius_mm, "C2 radius") == .050, "C2 actual radius must be exactly 0.050 mm")
+    _require(_finite(aperture.diameter_mm, "C2 diameter") == expected,
+        f"C2 diameter must be exactly {expected:.12g} mm")
+    _require(_finite(aperture.radius_mm, "C2 radius") == expected*.5,
+        f"C2 actual radius must be exactly {expected*.5:.12g} mm")
     start = _finite(gun.exit_plane_z_mm, "Physical gun exit")
     end = _finite(state.sample.upper_surface_z_mm, "Specimen upper surface")
     _require(start < end, "The specimen upper surface must follow the physical gun exit")
@@ -155,7 +164,11 @@ def _field_ownership(state, runtime):
         "natural_field_aberrations_retained": True}
 
 
-def _c2_geometry(aperture, runtime, start, end):
+def _c2_geometry(aperture, runtime, start, end, *, expected_c2_diameter_mm=.100):
+    expected = _expected_c2_diameter(expected_c2_diameter_mm)
+    _require(_finite(aperture.diameter_mm, "C2 diameter") == expected
+        and _finite(aperture.radius_mm, "C2 radius") == expected*.5,
+        "C2 operating opening does not match the expected audit diameter")
     inventory = [row for row in runtime.geometry.aperture_inventory if row["key"] == C2_KEY]
     _require(len(inventory) == 1 and all(inventory[0][key] is True for key in ("installed", "enabled", "inserted")),
         "The actual runtime did not capture an inserted C2 aperture")
@@ -165,12 +178,13 @@ def _c2_geometry(aperture, runtime, start, end):
         if piece.key == C2_KEY and type(piece) is PosedWaveAperture]
     _require(len(pieces) == 1, "Exactly one actual finite C2 aperture boundary is required")
     host, piece = pieces[0]
-    _require(type(piece) is PosedWaveAperture and piece.radius_mm == .050,
-        "The actual C2 boundary must have a 0.050 mm circular radius")
+    _require(type(piece) is PosedWaveAperture and piece.radius_mm == expected*.5,
+        f"The actual C2 boundary must have a {expected*.5:.12g} mm circular radius")
     faces = piece.event_z_mm()
     _require(len(faces) >= 2 and min(faces) > start and max(faces) < end,
         "The physical C2 plate must lie inside the audited incident interval")
-    return {"key": C2_KEY, "diameter_mm": float(aperture.diameter_mm), "radius_mm": float(aperture.radius_mm),
+    return {"key": C2_KEY, "expected_diameter_mm": expected,
+        "diameter_mm": float(aperture.diameter_mm), "radius_mm": float(aperture.radius_mm),
         "actual_boundary_radius_mm": float(piece.radius_mm), "installed": True, "enabled": True, "inserted": True,
         "host_key": host.host_key, "local_start_z_mm": float(piece.local_start_z_mm),
         "local_end_z_mm": float(piece.local_end_z_mm), "event_z_mm": [float(v) for v in faces],
@@ -191,14 +205,16 @@ def _controls(state):
     return result
 
 
-def audit(state, plan=None) -> dict:
+def audit(state, plan=None, *, expected_c2_diameter_mm=.100) -> dict:
     """Prove model/action/geometry ownership; never retune or propagate.
 
     A supplied plan must describe the entire physical gun-exit to sample-upper-
     surface interval and be bound to exactly these current instrument inputs.
-    Missing evidence is a ValueError, never a passing incomplete audit.
+    Missing evidence is a ValueError, never a passing incomplete audit. The
+    historical 100 um contract remains the default. An explicit expected
+    diameter changes the audit requirement only, never physical inputs.
     """
-    aperture, start, end = _inputs(state)
+    aperture, start, end = _inputs(state, expected_c2_diameter_mm=expected_c2_diameter_mm)
     original = capture_instrument_snapshot(state)
     mode = "provided_executed_plan" if plan is not None else "private_production_plan_construction"
     work = state
@@ -206,7 +222,7 @@ def audit(state, plan=None) -> dict:
         work = original.restore()
         _require(capture_instrument_snapshot(work).digest == original.digest,
             "Restoring inputs changed their identity; refusing silent normalization")
-        aperture, start, end = _inputs(work)
+        aperture, start, end = _inputs(work, expected_c2_diameter_mm=expected_c2_diameter_mm)
         plan = build_propagation_plan(work, start, end, active_column_events(work))
     runtime = getattr(plan, "unified_runtime", None)
     _require(type(runtime) is UnifiedFieldRuntime, "An exact captured unified field runtime is required")
@@ -214,7 +230,8 @@ def audit(state, plan=None) -> dict:
     _require(runtime.source_identity == original.digest, "Plan source identity differs from the original inputs")
     actions = _plan_actions(plan, runtime, start, end)
     ownership = _field_ownership(work, runtime)
-    c2 = _c2_geometry(aperture, runtime, start, end)
+    c2 = _c2_geometry(aperture, runtime, start, end,
+        expected_c2_diameter_mm=expected_c2_diameter_mm)
     gun = work.electron_gun
     source = {"source_representation": gun.source_representation,
         "beam_voltage_kv": _finite(work.beam_voltage_kv, "Beam voltage"),

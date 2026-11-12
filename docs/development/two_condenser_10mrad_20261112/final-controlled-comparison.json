@@ -1,0 +1,939 @@
+{
+  "schema": "temsim-final-two-condenser-controlled-comparison-v1",
+  "scope": "Read-only controlled final source/step comparisons; no new physics execution.",
+  "new_trajectories": 0,
+  "new_fields_solved": 0,
+  "evidence_sha256": {
+    "focused4096-s005": {
+      "report.json": "dfdeb2f19e4aa7b0301c9db125e9fcf56168efcd3d6a45594555ec069ccca398",
+      "observations.npz": "bebd4fe0ea3dc7c5eb1db36bb6d1c33e37b73fca957bd264a1d5637d731a2b32",
+      "inputs.json": "59c833059ae280a28d895e8b5d82a9363e502f6b9f8bcb59f55d499f5fdf3359",
+      "input.toml": "c22f391abdd79193d59befc994e773fc6e6b3139e27c4af62f4498b51809503d",
+      "request.json": "3bbfb79155122fa8e15087b69970d05bfc909abce70f73822daa1f70a413825e"
+    },
+    "final4096-s010": {
+      "report.json": "2a2eaa08195921ae4a4c6a3be2d1ea1031216d7cb5c645bbce0e99ad426812c4",
+      "observations.npz": "84c3977f4453c36ed239a658c0c53061ba62b0b3d23bd9bfb179263756a83a07",
+      "inputs.json": "50104ff890bdc3f3e3074b55a73016875643a4885992d3841009ae8c3e3e4e5e",
+      "input.toml": "a11b6f116ce0eba0a83abaed65e216b89110ad7c2d487256f1f2a2b1292bb9d4",
+      "request.json": "12006e9e8c872cf80770cf1774a99125c50a6eb5e2167affa5d32ef510c88f75"
+    },
+    "reference2048-s005": {
+      "report.json": "0ca8bd7fafcec2b3e293dd4bac8ad010bad9fc685edb69e4934f87648fac0ca6",
+      "observations.npz": "67202e16855fe2b64bc33ab045dc239d6b81f96d830a211087d5483f2c7f5832",
+      "inputs.json": "e79ee8eb7cd0381940991c59a9e744c9e7f210ea9296b4fa5623b47f00782fff",
+      "input.toml": "71d07eb61c560370a59dd2064ca54eceec205539445147556b36ac90e27bbedd",
+      "request.json": "a1251a754857fb445532c317157774497563bc7410846fe9cb525912085461b0"
+    }
+  },
+  "cases": {
+    "focused4096-s005": {
+      "emitted_original_positive_count": 4096,
+      "unique_original_ids": 4096,
+      "zero_current_count": 0,
+      "original_weight_sum": 1.0,
+      "each_original_positive_weight": 0.000244140625,
+      "original_equal_weights_verified": true,
+      "surviving_positive_count": 3890,
+      "effective_count": 3890.0,
+      "transmission": 0.94970703125,
+      "source_current_a": 1e-05,
+      "sample_current_a": 9.497070312500001e-06,
+      "physical_loss_ledger": {
+        "condenser_aperture_2": {
+          "count": 206,
+          "current_a": 5.029296875e-07
+        }
+      },
+      "absolute_current_balance_residual_a": -2.117582368135751e-22,
+      "no_stopped_particle_resurrection": true,
+      "controls": {
+        "condenser_lens_1": 52.5,
+        "condenser_lens_2": 17.75,
+        "mini_condenser": 10.0,
+        "objective_lens": 29.292665862003528
+      },
+      "surface_z_mm": 1025.1999975,
+      "statistics": {
+        "d95_nm": 3.0091257123052166,
+        "rms_radius_nm": 1.2262831750529444,
+        "alpha95_mrad": 10.208348956860162,
+        "angular_rms_mrad": 5.9178383081731205
+      },
+      "report_statistics_reproduced_from_arrays": {
+        "d95_nm": true,
+        "rms_radius_nm": true,
+        "alpha95_mrad": true,
+        "angular_rms_mrad": true
+      },
+      "native_d95_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 3.0091257123052166,
+        "neighbour_bracket_mm": [
+          1025.19999725,
+          1025.1999977500002
+        ],
+        "neighbour_bracket_offset_nm": [
+          -0.25000008463393897,
+          0.25000008463393897
+        ],
+        "observed_minimum_planes_mm": [
+          1025.1999975
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.1999975,
+            1025.1999975
+          ]
+        ],
+        "representative_offset_nm": 0.0,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      },
+      "native_rms_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 1.1503113263621896,
+        "neighbour_bracket_mm": [
+          1025.2000675000002,
+          1025.2000715000001
+        ],
+        "neighbour_bracket_offset_nm": [
+          70.00000005064066,
+          74.00000004054164
+        ],
+        "observed_minimum_planes_mm": [
+          1025.2000695000002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.2000695000002,
+            1025.2000695000002
+          ]
+        ],
+        "representative_offset_nm": 72.00000004559115,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      },
+      "native_surface_focus_gate": {
+        "maximum_d95_nm": null,
+        "passed": true,
+        "placement_passed": true,
+        "placement_tolerance_nm": 1.0,
+        "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+        "size_cap_applied": false,
+        "status": "BOUNDED_D95_WAIST_AT_SURFACE",
+        "strict_surface_d95_passed": null,
+        "support_passed": true
+      },
+      "direct_surface_focus_as_reported": {
+        "final_2d_waist_inside_surface_observation_window": true,
+        "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "native_d95_surface_gate": true,
+        "observed_final_field_2d_waists": 1,
+        "passed": true,
+        "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support",
+        "status": "BOUNDED_DIRECT_SURFACE_FOCUS"
+      },
+      "topology": {
+        "C1 to C2": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              503.0
+            ],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              503.0
+            ],
+            "unresolved": []
+          }
+        },
+        "C2 to Mini": {
+          "actual": {
+            "status": "UNRESOLVED",
+            "region_centers_mm": [
+              687.9364548494983
+            ],
+            "unresolved": [
+              {
+                "bounds_mm": [
+                  765.0,
+                  765.0
+                ],
+                "reason": "insufficient_stable_segment"
+              }
+            ]
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              687.9364548494983
+            ],
+            "unresolved": []
+          }
+        },
+        "Final combined field through focus": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              1025.2000695000002
+            ],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              1025.2000695000002
+            ],
+            "unresolved": []
+          }
+        },
+        "Mini to surface": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          }
+        },
+        "gun exit to C1": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          }
+        }
+      },
+      "largest_radius_original_particles": [
+        {
+          "source_id": 1481,
+          "original_weight": 0.000244140625,
+          "sample_centroid_radius_nm": 3.6447170576416146,
+          "current_a": 2.44140625e-09,
+          "fraction_radial_second_moment": 0.0022708920922739797,
+          "angle_from_axis_mrad": 11.548983308718672
+        },
+        {
+          "source_id": 1281,
+          "original_weight": 0.000244140625,
+          "sample_centroid_radius_nm": 3.6421156864181445,
+          "current_a": 2.44140625e-09,
+          "fraction_radial_second_moment": 0.002267651607446918,
+          "angle_from_axis_mrad": 11.564448049699937
+        },
+        {
+          "source_id": 2671,
+          "original_weight": 0.000244140625,
+          "sample_centroid_radius_nm": 3.6350647785026773,
+          "current_a": 2.44140625e-09,
+          "fraction_radial_second_moment": 0.0022588800432299804,
+          "angle_from_axis_mrad": 11.584797500654304
+        }
+      ],
+      "mesh": {
+        "integration_nodes": 13731,
+        "checkpoints": 2213,
+        "integration_z_sha256": "0ad0e84047054c0b1f1b6df10e2d0bae2337a506e123acff6cc6d48a26eb48bf",
+        "checkpoint_z_sha256": "0fd87184901d10ba5e11627034119a02a267bb9730eb2b6761603d1dc1ab6f59"
+      },
+      "identities": {
+        "geometry_digest": "46bc8d3863938d6abd2f8e47831634ee6ee4e8cf6cad3ef5eab950ccc4dad509",
+        "input_digest": "bb9e7582e86d10e3e5b36ec49a74d3416ea9e80926ac40fc18098ff81a6bbe0f",
+        "plan_signature": "33aae0a3828b27e3b499e233bffd78fd44784015fdf72ec75df18507d64ee18c",
+        "potential_digest": "729d2f7e4d8d8155012d86696db024505d84ccdd0f49bf94d66945930070f9c2",
+        "runtime_digest": "b5a94a4184e1d7e2582362824037f72ea1684679873bcb27b28b725cbe60004f"
+      }
+    },
+    "final4096-s010": {
+      "emitted_original_positive_count": 4096,
+      "unique_original_ids": 4096,
+      "zero_current_count": 0,
+      "original_weight_sum": 1.0,
+      "each_original_positive_weight": 0.000244140625,
+      "original_equal_weights_verified": true,
+      "surviving_positive_count": 3890,
+      "effective_count": 3890.0,
+      "transmission": 0.94970703125,
+      "source_current_a": 1e-05,
+      "sample_current_a": 9.497070312500001e-06,
+      "physical_loss_ledger": {
+        "condenser_aperture_2": {
+          "count": 206,
+          "current_a": 5.029296875e-07
+        }
+      },
+      "absolute_current_balance_residual_a": -2.117582368135751e-22,
+      "no_stopped_particle_resurrection": true,
+      "controls": {
+        "condenser_lens_1": 52.5,
+        "condenser_lens_2": 17.75,
+        "mini_condenser": 10.0,
+        "objective_lens": 29.292665862003528
+      },
+      "surface_z_mm": 1025.1999975,
+      "statistics": {
+        "d95_nm": 3.0092458968875557,
+        "rms_radius_nm": 1.226308726070305,
+        "alpha95_mrad": 10.208348940595702,
+        "angular_rms_mrad": 5.9178382987422795
+      },
+      "report_statistics_reproduced_from_arrays": {
+        "d95_nm": true,
+        "rms_radius_nm": true,
+        "alpha95_mrad": true,
+        "angular_rms_mrad": true
+      },
+      "native_d95_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 3.0092458968875557,
+        "neighbour_bracket_mm": [
+          1025.19999725,
+          1025.1999977500002
+        ],
+        "neighbour_bracket_offset_nm": [
+          -0.25000008463393897,
+          0.25000008463393897
+        ],
+        "observed_minimum_planes_mm": [
+          1025.1999975
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.1999975,
+            1025.1999975
+          ]
+        ],
+        "representative_offset_nm": 0.0,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      },
+      "native_rms_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 1.150311243202255,
+        "neighbour_bracket_mm": [
+          1025.2000675000002,
+          1025.2000715000001
+        ],
+        "neighbour_bracket_offset_nm": [
+          70.00000005064066,
+          74.00000004054164
+        ],
+        "observed_minimum_planes_mm": [
+          1025.2000695000002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.2000695000002,
+            1025.2000695000002
+          ]
+        ],
+        "representative_offset_nm": 72.00000004559115,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      },
+      "native_surface_focus_gate": {
+        "maximum_d95_nm": null,
+        "passed": true,
+        "placement_passed": true,
+        "placement_tolerance_nm": 1.0,
+        "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+        "size_cap_applied": false,
+        "status": "BOUNDED_D95_WAIST_AT_SURFACE",
+        "strict_surface_d95_passed": null,
+        "support_passed": true
+      },
+      "direct_surface_focus_as_reported": {
+        "final_2d_waist_inside_surface_observation_window": true,
+        "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "native_d95_surface_gate": true,
+        "observed_final_field_2d_waists": 1,
+        "passed": true,
+        "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support",
+        "status": "BOUNDED_DIRECT_SURFACE_FOCUS"
+      },
+      "topology": {
+        "C1 to C2": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              503.0
+            ],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              503.0
+            ],
+            "unresolved": []
+          }
+        },
+        "C2 to Mini": {
+          "actual": {
+            "status": "UNRESOLVED",
+            "region_centers_mm": [
+              687.9364548494983
+            ],
+            "unresolved": [
+              {
+                "bounds_mm": [
+                  765.0,
+                  765.0
+                ],
+                "reason": "insufficient_stable_segment"
+              }
+            ]
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              687.9364548494983
+            ],
+            "unresolved": []
+          }
+        },
+        "Final combined field through focus": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              1025.2000695000002
+            ],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              1025.2000695000002
+            ],
+            "unresolved": []
+          }
+        },
+        "Mini to surface": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          }
+        },
+        "gun exit to C1": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          }
+        }
+      },
+      "largest_radius_original_particles": [
+        {
+          "source_id": 1481,
+          "original_weight": 0.000244140625,
+          "sample_centroid_radius_nm": 3.644573090171919,
+          "current_a": 2.44140625e-09,
+          "fraction_radial_second_moment": 0.002270618071061157,
+          "angle_from_axis_mrad": 11.548983290284438
+        },
+        {
+          "source_id": 1281,
+          "original_weight": 0.000244140625,
+          "sample_centroid_radius_nm": 3.641971536971565,
+          "current_a": 2.44140625e-09,
+          "fraction_radial_second_moment": 0.002267377622722602,
+          "angle_from_axis_mrad": 11.564448031240058
+        },
+        {
+          "source_id": 2671,
+          "original_weight": 0.000244140625,
+          "sample_centroid_radius_nm": 3.6349204273002202,
+          "current_a": 2.44140625e-09,
+          "fraction_radial_second_moment": 0.0022586065207851856,
+          "angle_from_axis_mrad": 11.584797482170583
+        }
+      ],
+      "mesh": {
+        "integration_nodes": 7979,
+        "checkpoints": 2213,
+        "integration_z_sha256": "e3df089e0431e13afd274c4e5661662b131b86979db333119a20f9b94d1d6a74",
+        "checkpoint_z_sha256": "0fd87184901d10ba5e11627034119a02a267bb9730eb2b6761603d1dc1ab6f59"
+      },
+      "identities": {
+        "geometry_digest": "46bc8d3863938d6abd2f8e47831634ee6ee4e8cf6cad3ef5eab950ccc4dad509",
+        "input_digest": "7e70b368947a27c3ea8cf1499b161e036b5dc3d0391f597be37b6275b7bdf942",
+        "plan_signature": "9cf831568d45d3fc3a648ed1ae157ca961b2d33615ac5d16198bc6f61c208b99",
+        "potential_digest": "729d2f7e4d8d8155012d86696db024505d84ccdd0f49bf94d66945930070f9c2",
+        "runtime_digest": "2d218b18b6c91026003a8e98c15d921426b5b734891bde664291b405601a577b"
+      }
+    },
+    "reference2048-s005": {
+      "emitted_original_positive_count": 2048,
+      "unique_original_ids": 2048,
+      "zero_current_count": 0,
+      "original_weight_sum": 1.0,
+      "each_original_positive_weight": 0.00048828125,
+      "original_equal_weights_verified": true,
+      "surviving_positive_count": 1950,
+      "effective_count": 1950.0,
+      "transmission": 0.9521484375,
+      "source_current_a": 1e-05,
+      "sample_current_a": 9.521484375e-06,
+      "physical_loss_ledger": {
+        "condenser_aperture_2": {
+          "count": 98,
+          "current_a": 4.785156250000001e-07
+        }
+      },
+      "absolute_current_balance_residual_a": 7.411538288475128e-22,
+      "no_stopped_particle_resurrection": true,
+      "controls": {
+        "condenser_lens_1": 52.5,
+        "condenser_lens_2": 17.75,
+        "mini_condenser": 10.0,
+        "objective_lens": 29.292665862003528
+      },
+      "surface_z_mm": 1025.1999975,
+      "statistics": {
+        "d95_nm": 3.4712105719113726,
+        "rms_radius_nm": 1.2503001734074635,
+        "alpha95_mrad": 10.3680661966818,
+        "angular_rms_mrad": 5.9437748715947905
+      },
+      "report_statistics_reproduced_from_arrays": {
+        "d95_nm": true,
+        "rms_radius_nm": true,
+        "alpha95_mrad": true,
+        "angular_rms_mrad": true
+      },
+      "native_d95_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 3.197922952915442,
+        "neighbour_bracket_mm": [
+          1025.1999795000002,
+          1025.1999835000001
+        ],
+        "neighbour_bracket_offset_nm": [
+          -17.99999995455437,
+          -13.999999964653398
+        ],
+        "observed_minimum_planes_mm": [
+          1025.1999815000001
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.1999815000001,
+            1025.1999815000001
+          ]
+        ],
+        "representative_offset_nm": -15.999999959603883,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      },
+      "native_rms_waist": {
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+        "minimum": 1.1885588737335715,
+        "neighbour_bracket_mm": [
+          1025.2000615000002,
+          1025.2000655000002
+        ],
+        "neighbour_bracket_offset_nm": [
+          64.00000006578921,
+          68.00000005569018
+        ],
+        "observed_minimum_planes_mm": [
+          1025.2000635000002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.2000635000002,
+            1025.2000635000002
+          ]
+        ],
+        "representative_offset_nm": 66.0000000607397,
+        "status": "BOUNDED_OBSERVED_MINIMUM"
+      },
+      "native_surface_focus_gate": {
+        "maximum_d95_nm": null,
+        "passed": false,
+        "placement_passed": false,
+        "placement_tolerance_nm": 1.0,
+        "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+        "size_cap_applied": false,
+        "status": "FAIL",
+        "strict_surface_d95_passed": null,
+        "support_passed": true
+      },
+      "direct_surface_focus_as_reported": {
+        "final_2d_waist_inside_surface_observation_window": true,
+        "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "native_d95_surface_gate": false,
+        "observed_final_field_2d_waists": 1,
+        "passed": false,
+        "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support",
+        "status": "UNRESOLVED_OR_NOT_AT_SURFACE"
+      },
+      "topology": {
+        "C1 to C2": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              503.0
+            ],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              503.0
+            ],
+            "unresolved": []
+          }
+        },
+        "C2 to Mini": {
+          "actual": {
+            "status": "UNRESOLVED",
+            "region_centers_mm": [
+              687.9364548494983
+            ],
+            "unresolved": [
+              {
+                "bounds_mm": [
+                  765.0,
+                  765.0
+                ],
+                "reason": "insufficient_stable_segment"
+              }
+            ]
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              687.9364548494983
+            ],
+            "unresolved": []
+          }
+        },
+        "Final combined field through focus": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              1025.2000635000002
+            ],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [
+              1025.2000635000002
+            ],
+            "unresolved": []
+          }
+        },
+        "Mini to surface": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          }
+        },
+        "gun exit to C1": {
+          "actual": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          },
+          "sample_survivors": {
+            "status": "RESOLVED_AT_BOUNDED_SAMPLING",
+            "region_centers_mm": [],
+            "unresolved": []
+          }
+        }
+      },
+      "largest_radius_original_particles": [
+        {
+          "source_id": 1281,
+          "original_weight": 0.00048828125,
+          "sample_centroid_radius_nm": 3.6623803994414676,
+          "current_a": 4.8828125e-09,
+          "fraction_radial_second_moment": 0.004400111764991861,
+          "angle_from_axis_mrad": 11.576988608185621
+        },
+        {
+          "source_id": 1481,
+          "original_weight": 0.00048828125,
+          "sample_centroid_radius_nm": 3.6531022947765064,
+          "current_a": 4.8828125e-09,
+          "fraction_radial_second_moment": 0.004377845926193887,
+          "angle_from_axis_mrad": 11.55054119128592
+        },
+        {
+          "source_id": 2031,
+          "original_weight": 0.00048828125,
+          "sample_centroid_radius_nm": 3.607188557518698,
+          "current_a": 4.8828125e-09,
+          "fraction_radial_second_moment": 0.0042684922293180026,
+          "angle_from_axis_mrad": 11.547261620516089
+        }
+      ],
+      "mesh": {
+        "integration_nodes": 13731,
+        "checkpoints": 2213,
+        "integration_z_sha256": "0ad0e84047054c0b1f1b6df10e2d0bae2337a506e123acff6cc6d48a26eb48bf",
+        "checkpoint_z_sha256": "0fd87184901d10ba5e11627034119a02a267bb9730eb2b6761603d1dc1ab6f59"
+      },
+      "identities": {
+        "geometry_digest": "46bc8d3863938d6abd2f8e47831634ee6ee4e8cf6cad3ef5eab950ccc4dad509",
+        "input_digest": "f6d9a4e6fbf8b51d04f30bd36024ef63f57b786ad7408407e1f2c906327824c6",
+        "plan_signature": "7377aa1608b9b523a925f2a6aa75ecc509c93a1ca40682368b9a880a566d9a71",
+        "potential_digest": "f0a81c9168d813014eb806bc9b08ba53a59c36e409e0204acdb202f238a323a8",
+        "runtime_digest": "d4787c649be83a26da80b6f48645711378a0a32c2f6317d9f0d44f9bcd62a302"
+      }
+    }
+  },
+  "common_source_law": {
+    "tip_parameters_excluding_count": {
+      "angular_cutoff_mrad": 3.0,
+      "angular_rms_mrad": 1.0,
+      "boersch_sigma_ev": 0.1,
+      "curvature_nm_inv": 0.0,
+      "emission_current_na": 10000.0,
+      "emission_energy_ev": 0.3,
+      "emitter_material": "W(310)",
+      "energy_half_range_ev": 1.0,
+      "energy_spread_fwhm_ev": 0.3,
+      "minimum_kinetic_energy_ev": 0.01,
+      "tip_cone_half_angle_deg": 5.0,
+      "tip_radius_nm": 100.0,
+      "vacuum_pa": 1e-08,
+      "virtual_source_fwhm_nm": 5.0,
+      "work_function_ev": 4.4,
+      "young_decay_width_ev": 0.2
+    },
+    "source_model": {
+      "representation": "classical_particles"
+    },
+    "gun_controls": {
+      "accelerator_stages": [
+        {
+          "voltage_fraction": 0.1,
+          "soft_edge_mm": 4.0
+        },
+        {
+          "voltage_fraction": 0.2,
+          "soft_edge_mm": 4.0
+        },
+        {
+          "voltage_fraction": 0.3,
+          "soft_edge_mm": 4.0
+        },
+        {
+          "voltage_fraction": 0.4,
+          "soft_edge_mm": 4.0
+        },
+        {
+          "voltage_fraction": 0.5,
+          "soft_edge_mm": 4.0
+        },
+        {
+          "voltage_fraction": 0.6,
+          "soft_edge_mm": 4.0
+        },
+        {
+          "voltage_fraction": 0.7,
+          "soft_edge_mm": 4.0
+        },
+        {
+          "voltage_fraction": 0.8,
+          "soft_edge_mm": 4.0
+        },
+        {
+          "voltage_fraction": 0.9,
+          "soft_edge_mm": 4.0
+        },
+        {
+          "voltage_fraction": 1.0,
+          "soft_edge_mm": 4.0
+        }
+      ],
+      "tip_quadrature": {}
+    },
+    "gun_voltage_inputs": {
+      "feg_electrostatic_lens": {
+        "voltage_kv": 5.2,
+        "voltage_reference": "tip"
+      },
+      "feg_extractor": {
+        "voltage_kv": 4.0
+      },
+      "feg_accelerator": {
+        "high_tension_kv": 300.0
+      }
+    }
+  },
+  "source_law_equal_except_count": true,
+  "fine4096_vs_coarse4096": {
+    "exact_original_source_array_equalities": {
+      "weights": true,
+      "source_id": true,
+      "source_azimuth_rad": true,
+      "emission_ray_id": true,
+      "emission_position_m": true,
+      "emission_direction": true,
+      "emission_normal": true,
+      "gun_exit_x_m": true,
+      "gun_exit_y_m": true,
+      "gun_exit_tx_rad": true,
+      "gun_exit_ty_rad": true,
+      "gun_exit_flight_time_s": true,
+      "gun_exit_alive": true,
+      "gun_exit_checkpoint_kinetic_energy_ev": true,
+      "sample_alive_membership": true
+    },
+    "comparison_denominator": "final4096-s010",
+    "changes": {
+      "d95_nm": {
+        "primary": 3.0091257123052166,
+        "reference": 3.0092458968875557,
+        "delta": -0.00012018458233908902,
+        "relative_delta_percent": -0.003993843855146406,
+        "denominator": "reference"
+      },
+      "rms_radius_nm": {
+        "primary": 1.2262831750529444,
+        "reference": 1.226308726070305,
+        "delta": -2.5551017360569972e-05,
+        "relative_delta_percent": -0.0020835713566556744,
+        "denominator": "reference"
+      },
+      "alpha95_mrad": {
+        "primary": 10.208348956860162,
+        "reference": 10.208348940595702,
+        "delta": 1.6264460001025327e-08,
+        "relative_delta_percent": 1.5932507887094447e-07,
+        "denominator": "reference"
+      },
+      "angular_rms_mrad": {
+        "primary": 5.9178383081731205,
+        "reference": 5.9178382987422795,
+        "delta": 9.430840997026735e-09,
+        "relative_delta_percent": 1.5936293830520978e-07,
+        "denominator": "reference"
+      }
+    },
+    "observed_interpretation": "The exact same 4096 original source and identical controls retain the same pupil membership and native D95 observation minimum at the surface under both integration steps."
+  },
+  "fine4096_vs_fine2048": {
+    "exact_mesh_equalities": {
+      "integration_z_mm": true,
+      "z_mm": true
+    },
+    "exact_request_equalities": {
+      "controls": true,
+      "checkpoint_population_budget": true,
+      "focus_planes_mm": true,
+      "requested_planes_mm": true,
+      "topology_intervals": true,
+      "step": true
+    },
+    "comparison_denominator": "reference2048-s005",
+    "changes": {
+      "d95_nm": {
+        "primary": 3.0091257123052166,
+        "reference": 3.4712105719113726,
+        "delta": -0.462084859606156,
+        "relative_delta_percent": -13.311922455678497,
+        "denominator": "reference"
+      },
+      "rms_radius_nm": {
+        "primary": 1.2262831750529444,
+        "reference": 1.2503001734074635,
+        "delta": -0.024016998354519092,
+        "relative_delta_percent": -1.920898586222313,
+        "denominator": "reference"
+      },
+      "alpha95_mrad": {
+        "primary": 10.208348956860162,
+        "reference": 10.3680661966818,
+        "delta": -0.15971723982163866,
+        "relative_delta_percent": -1.540472801695215,
+        "denominator": "reference"
+      },
+      "angular_rms_mrad": {
+        "primary": 5.9178383081731205,
+        "reference": 5.9437748715947905,
+        "delta": -0.025936563421669945,
+        "relative_delta_percent": -0.43636517166254707,
+        "denominator": "reference"
+      },
+      "sample_current_a": {
+        "primary": 9.497070312500001e-06,
+        "reference": 9.521484375e-06,
+        "delta": -2.4414062499999005e-08,
+        "relative_delta_percent": -0.25641025641024595,
+        "denominator": "reference"
+      }
+    },
+    "sampling_convergence": "NOT_ESTABLISHED",
+    "reference2048_surface_focus_passed": false,
+    "observed_interpretation": "At identical controls and exact integration/checkpoint meshes, the 2048 source has native D95 focus at -16 nm and fails the surface gate. Neither source-size nor continuous-source focus convergence is claimed."
+  },
+  "field_identity_analysis": {
+    "recorded_provider_lists_exactly_equal": true,
+    "provider_count": 20,
+    "recorded_numerical_potential_digest_same_for_4096_steps": true,
+    "recorded_numerical_potential_digest_same_for_4096_and_2048": false,
+    "scene_count_diagnostic_sha256": "6cc7f996b6713ba8b62187ddd66fd8e730ce8636f2908bd0c89dfe6208a592df",
+    "scene_count_diagnostic": {
+      "scope": "Read-only restoration and scene metadata capture; no fields solved and no trajectories executed",
+      "scene_payload_differences": [
+        [
+          ".gun_inputs.attributes.emitter.attributes.ray_count",
+          4096,
+          2048
+        ]
+      ],
+      "scenes": {
+        "focused4096-s005": {
+          "digest": "bc854b2e986420ae0d1f9209c1457573c653ac0b9cb664a4af062a0d8de7096f",
+          "geometry_digest": "55e0b9c31b553ae58d40c8ed7466f6d29e6fea16a87e3cb8ce54e9b089bd6442",
+          "default_static_gauge_digest": "60fdfcbf719e4e2511dcd2a3f0e88f29f1d43a6e4efa8f9eee29490546bf7443",
+          "reconstructed_physical_digest": "e7e019e55080065e680d3489c4b9696c2a5e2e15a1d8443b6a18a5b46a4adcd5",
+          "reconstructed_numerical_digest": "729d2f7e4d8d8155012d86696db024505d84ccdd0f49bf94d66945930070f9c2",
+          "executed_numerical_digest": "729d2f7e4d8d8155012d86696db024505d84ccdd0f49bf94d66945930070f9c2",
+          "reconstruction_matches_executed": true
+        },
+        "reference2048-s005": {
+          "digest": "497483bf77fe9f591bdeb8ab2f59d345f89cc306cd4b4fddcf71498cb0eab57f",
+          "geometry_digest": "55e0b9c31b553ae58d40c8ed7466f6d29e6fea16a87e3cb8ce54e9b089bd6442",
+          "default_static_gauge_digest": "60fdfcbf719e4e2511dcd2a3f0e88f29f1d43a6e4efa8f9eee29490546bf7443",
+          "reconstructed_physical_digest": "d55b1a14b2656ba5936abcd3e5e3d281a65ecf1825e0a57cd02265b291eafbc1",
+          "reconstructed_numerical_digest": "f0a81c9168d813014eb806bc9b08ba53a59c36e409e0204acdb202f238a323a8",
+          "executed_numerical_digest": "f0a81c9168d813014eb806bc9b08ba53a59c36e409e0204acdb202f238a323a8",
+          "reconstruction_matches_executed": true
+        }
+      }
+    },
+    "conclusion": "The only restored scene payload difference is emitter.ray_count. Using each scene identity, the identical recorded 20-provider identities and the default static gauge exactly reconstructs both executed aggregate numerical digests. This explains the count-dependent aggregate identity without a difference in recorded provider representations.",
+    "limitation": "No independent byte-by-byte comparison of reconstructed field coefficient buffers was performed; no fields were re-solved or new field queries executed."
+  },
+  "final_scope": "Observed 4096-particle native D95 focus at the specimen surface, alpha95 above 10 mrad, and a bounded direct final focus gate under two integration steps. RMS-waist position is a distinct +72 nm diagnostic. The 2048 reference fails focus, so there is no finite-source sampling-convergence claim. Upstream actual-population topology retains a local aperture-membership unresolved segment where reported."
+}

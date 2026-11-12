@@ -1,0 +1,42 @@
+{
+  "schema": "complete-source-surface-excerpt-v1",
+  "original_directory": "outputs/two-condenser-20261112/matched-n2048-s005/trial-00",
+  "original_files": {
+    "report.json": {
+      "original_path": "outputs/two-condenser-20261112/matched-n2048-s005/trial-00/report.json",
+      "sha256": "3dbfc631b60af05bf9f0222ccf8f1f0f8f623d011ce0b405656261480aac1925",
+      "bytes": 989363
+    },
+    "request.json": {
+      "original_path": "outputs/two-condenser-20261112/matched-n2048-s005/trial-00/request.json",
+      "sha256": "619cd276e2e43c44f5f88928fa68f23e3ca1a9b58e8a46c78ee3e91f937b3ea7",
+      "bytes": 47368
+    },
+    "input.toml": {
+      "original_path": "outputs/two-condenser-20261112/matched-n2048-s005/trial-00/input.toml",
+      "sha256": "17fcad2efb553bae86bf30fbd587bc10cbd3c8df3cffde23eee56063fc54efb3",
+      "bytes": 25763
+    },
+    "inputs.json": {
+      "original_path": "outputs/two-condenser-20261112/matched-n2048-s005/trial-00/inputs.json",
+      "sha256": "276e41f151f06f7cd1bd5f3e2cc739b62b39dd60ca0e435f73a9d674cc2cbf18",
+      "bytes": 1433209
+    },
+    "observations.npz": {
+      "original_path": "outputs/two-condenser-20261112/matched-n2048-s005/trial-00/observations.npz",
+      "sha256": "74d4078d146e0517b949691e203ea2e6e0e446ab3921fc222aeffe35430921ec",
+      "bytes": 166268633
+    }
+  },
+  "selected_checkpoint_rows": [
+    0,
+    2071
+  ],
+  "selected_planes_mm": [
+    450.0,
+    1025.1999975
+  ],
+  "original_positive_count": 2048,
+  "all_original_ids_weights_and_launch_exit_arrays_retained": true,
+  "scope": "Original source integrity and sample-surface tail evidence only; not a complete through-focus or global-topology array."
+}

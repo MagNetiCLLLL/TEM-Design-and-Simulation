@@ -758,8 +758,17 @@ class CondenserSystem:
     def apply_mode(self, mode):
         """Apply condenser excitation topology without duplicating components."""
 
-        if mode not in ("three_lens", "two_lens_c3_off"):
+        if mode not in ("three_lens", "two_lens_c3_off", "two_condenser"):
             raise ValueError(f"Unknown column mode: {mode}")
+        two_condenser = getattr(self.state, "layout_c3_hardware", "three_condenser") == "two_condenser"
+        if two_condenser:
+            if mode != "two_condenser":
+                raise ValueError("The two-condenser assembly has no C3; install three-condenser hardware to select a C3 excitation mode")
+            self.state.column_mode = mode
+            self.state.layout_c3_excited = False
+            return self
+        if mode == "two_condenser":
+            raise ValueError("Select the physical two-condenser assembly; switching C3 off retains three-condenser hardware")
         previous = getattr(self.state, "column_mode", "three_lens")
         if previous == mode:
             return self
@@ -789,6 +798,7 @@ class CondenserSystem:
             c3.enabled = False
             c2.percent = compensated
             self.state.column_mode = mode
+            self.state.layout_c3_excited = False
             return self
 
         saved = getattr(self.state, "_three_lens_strengths", {})
@@ -798,4 +808,5 @@ class CondenserSystem:
                 component.lens.percent, component.lens.enabled = value
         self.condenser_lens_3.lens.enabled = True
         self.state.column_mode = mode
+        self.state.layout_c3_excited = True
         return self

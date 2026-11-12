@@ -63,6 +63,12 @@ def test_seeds_preserve_gun_downstream_optics_and_installed_hardware(column, mod
     downstream = [(l.key, l.percent, l.enabled) for l in s.lenses if l.z_mm > s.sample.z_mm]
     enabled = {l.key: l.enabled for l in s.lenses}
     positions = [(p.key, p.start_z_mm, p.end_z_mm) for p in s._resolved_assembly.parts]
+    if column == 'C2' and mode == 'micro_probe':
+        before = s.to_dict()
+        with pytest.raises(ValueError, match='no independent C2'):
+            seed_illumination(s, mode)
+        assert s.to_dict() == before
+        return
     seed_illumination(s, mode)
     assert s.electron_gun.to_dict() == gun_before
     assert downstream == [(l.key, l.percent, l.enabled) for l in s.lenses if l.z_mm > s.sample.z_mm]
@@ -71,6 +77,67 @@ def test_seeds_preserve_gun_downstream_optics_and_installed_hardware(column, mod
     keys = variable_lenses(s, mode)
     assert all(enabled[k] for k in keys)
     assert keys == ('condenser_lens_2', 'objective_lens')
+
+
+@pytest.mark.parametrize('column,c3_off,expected_mm', [
+    ('C2', False, .07),
+    ('C3 + Probe Corrector', False, .12),
+    ('C3 + Probe Corrector', True, .12),
+])
+def test_seed_aperture_is_independent_for_two_condenser_hardware(monkeypatch, column, c3_off, expected_mm):
+    """Synthetic preset metadata only; no source emission or propagation."""
+    import temsim.optics.assembly_illumination as module
+    from temsim.optics.electron_gun.emitter import ColdFieldEmitter
+    monkeypatch.setattr(ColdFieldEmitter, 'emit', lambda *_a, **_k:
+                        pytest.fail('A seed must not emit a finite source'))
+    state = default_state()
+    AssemblyCatalog().apply(state, AssemblySelection('FEG', column, 'No Energy Filter'))
+    if c3_off:
+        state.condenser_lens_3.lens.enabled = False
+        state.layout_c3_excited = False
+        state.column_mode = 'two_lens_c3_off'
+    definition = module.mode_by_key('nano_probe', column_name='C2' if column == 'C2' else None)
+    definition = replace(definition, apertures={
+        'condenser_aperture_2': {'enabled': True, 'diameter_mm': .07}})
+    monkeypatch.setattr(module, 'mode_by_key', lambda *_a, **_k: definition)
+    gun = state.electron_gun.to_dict()
+    enabled = {lens.key: lens.enabled for lens in state.lenses}
+    seed_illumination(state, 'nano_probe')
+    assert state.condenser_aperture_2.diameter_mm == pytest.approx(expected_mm)
+    assert state.electron_gun.to_dict() == gun
+    assert {lens.key: lens.enabled for lens in state.lenses} == enabled
+
+
+@pytest.mark.parametrize('explicit_mm,expected_mm', [(None, .07), (.08, .08)])
+def test_two_condenser_calibration_keeps_preset_or_later_explicit_aperture(monkeypatch, explicit_mm, expected_mm):
+    """Stop at checkpoint setup; no finite source or fitted point is created."""
+    import temsim.optics.assembly_illumination as module
+    import temsim.optics.illumination_checkpoint as checkpoint
+    from temsim.optics.electron_gun.emitter import ColdFieldEmitter
+    monkeypatch.setattr(ColdFieldEmitter, 'emit', lambda *_a, **_k:
+                        pytest.fail('This configuration test must not emit a source'))
+    state = default_state()
+    AssemblyCatalog().apply(state, AssemblySelection('FEG', 'C2', 'No Energy Filter'))
+    definition = module.mode_by_key('nano_probe', column_name='C2')
+    definition = replace(definition, apertures={
+        'condenser_aperture_2': {'enabled': True, 'diameter_mm': .07}})
+    monkeypatch.setattr(module, 'mode_by_key', lambda *_a, **_k: definition)
+
+    class ConfigurationObserved(RuntimeError):
+        pass
+
+    class StopBeforeSource:
+        def __init__(self, candidate, *_args, **_kwargs):
+            assert candidate.condenser_aperture_2.diameter_mm == pytest.approx(expected_mm)
+            assert candidate.electron_gun.emitter.ray_count == 1024
+            raise ConfigurationObserved('Aperture observed before any source execution')
+
+    monkeypatch.setattr(checkpoint, 'IlluminationCheckpoint', StopBeforeSource)
+    before = state.to_dict()
+    with pytest.raises(ConfigurationObserved):
+        module.calibrate_illumination(state, 'nano_probe', rays=1024,
+                                      maximum_evaluations=1, c2_aperture_mm=explicit_mm)
+    assert state.to_dict() == before
 
 
 def test_insufficient_current_is_not_a_valid_fit_residual():

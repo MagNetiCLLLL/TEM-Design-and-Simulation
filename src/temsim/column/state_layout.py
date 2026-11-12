@@ -510,6 +510,9 @@ def apply_physical_layout_to_state(
     )
     state.layout_c3_hardware = configuration.c3_hardware.value
     state.layout_c3_excited = configuration.c3_excited
+    # Missing C3 hardware and an installed, de-energized C3 are distinct.
+    state.column_mode = ("two_condenser" if configuration.c3_hardware is C3Hardware.TWO_CONDENSER
+                         else "three_lens" if configuration.c3_excited else "two_lens_c3_off")
 
     layout = build_optics_layout(configuration)
     lenses = _by_key(state.lenses)

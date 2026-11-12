@@ -421,9 +421,12 @@ class DirectAlignmentPanel(QWidget):
             (key for key in ("imaging", "diffraction") if key in active_modes),
             None,
         )
+        from temsim.operating_modes import has_two_condenser_hardware
+        two_condenser = has_two_condenser_hardware(self._state)
         if active_probe and active_projector:
+            probe_label = "Nanoprobe" if two_condenser and active_probe == "nano_probe" else _MODE_LABELS[active_probe]
             mode_text = (
-                f"Applied: {_MODE_LABELS[active_probe]} + "
+                f"Applied: {probe_label} + "
                 f"{_MODE_LABELS[active_projector]}."
             )
         else:
@@ -445,6 +448,9 @@ class DirectAlignmentPanel(QWidget):
         for control in self._controls.values():
             required_modes = set(control.definition.active_mode_keys)
             mode_active = bool(required_modes & active_modes)
+            if two_condenser and "condenser_lens_3" in control.definition.devices:
+                # A C2/C3 live solve is not a two-condenser calibration.
+                mode_active = False
             control.group.setVisible(mode_active)
             mode_available = (
                 self._available_mode_keys is None

@@ -14,7 +14,7 @@ CORRECTOR_MODES = (
 
 ENERGY_FILTER_MODES = ("energy_filter", "no_energy_filter")
 
-COLUMN_MODES = ("three_lens", "two_lens_c3_off")
+COLUMN_MODES = ("three_lens", "two_lens_c3_off", "two_condenser")
 
 
 def canonical_corrector_mode(mode):

@@ -1,0 +1,2678 @@
+{
+  "schema": "temsim-two-condenser-original-source-audit-v1",
+  "scope": "Analyze completed original-source observations without new particle tracing.",
+  "new_particle_traces_executed": 0,
+  "observations": [
+    {
+      "directory": "outputs/two-condenser-20261112/initial-n1024-s010/trial-00",
+      "status": "COMPLETED_ARRAY_AUDIT_NO_NEW_TRACING",
+      "evidence_sha256": {
+        "report.json": "2db73a74d2273ba5778ce8737a03f1a7bba5a5af3f53e3fd4f8a32838a714825",
+        "observations.npz": "3743f4c09aae7af8a7210c3bc574e4c1365e1fad9070708a974e3f37982384de",
+        "input.toml": "f323d7264d6444958e4bf46a0f76e3d02943adb6115a88aec1e42166ff735561",
+        "inputs.json": "6304dea5479b4f411e59c4ebbf8a5db6085d879009e01e76e586acb0675e6fdd"
+      },
+      "original_source": {
+        "count": 1024,
+        "positive_count": 1024,
+        "unique_id_count": 1024,
+        "zero_current_count": 0,
+        "weight_sum": 1.0,
+        "weight_minimum": 0.0009765625,
+        "weight_maximum": 0.0009765625,
+        "exact_equal_weight_population": true,
+        "emission_ids_match_original_source_ids": true,
+        "gun_exit_surviving_count": 1024,
+        "specimen_surviving_count": 1024,
+        "effective_count": 1024.0,
+        "source_current_a": 1e-05,
+        "sample_current_a": 1e-05,
+        "reported_transmission": 1.0,
+        "per_stage_physical_losses": {},
+        "no_unlabeled_stop": true,
+        "stopped_particle_resurrections": 0
+      },
+      "gun_exit_phase": {
+        "rms_radius_m": 3.78752510165589e-07,
+        "maximum_axis_centered_radius_m": 1.0605092416625873e-06,
+        "rms_mechanical_slope_rad": 3.4175931889647286e-07,
+        "radial_curvature_per_m": 0.9019933437720762
+      },
+      "source_emission": {
+        "spatial_rms_axes_nm": [
+          2.066644149600594,
+          2.066515300564627
+        ],
+        "direction_transverse_rms_axes_mrad": [
+          0.9714094885507776,
+          0.9708508838454425
+        ],
+        "maximum_polar_angle_mrad": 2.9552730055478897
+      },
+      "c2_aperture": {
+        "actual_plane_mm": 765.0,
+        "physical_radius_um": 50.0,
+        "maximum_actual_axis_radius_um": 13.17838722315,
+        "maximum_radial_fill_fraction": 0.26356774446299996,
+        "radial_clearance_um": 36.82161277685,
+        "native_geometry_audit": {
+          "actual_boundary_radius_mm": 0.05,
+          "diameter_mm": 0.1,
+          "enabled": true,
+          "event_z_mm": [
+            764.9,
+            764.9,
+            764.9,
+            765.1,
+            765.1,
+            765.1
+          ],
+          "host_key": "condenser_aperture_2",
+          "inserted": true,
+          "installed": true,
+          "key": "condenser_aperture_2",
+          "local_end_z_mm": 765.1,
+          "local_start_z_mm": 764.9,
+          "origin_global_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radius_mm": 0.05,
+          "rotation_local_to_global": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "interpretation": "Complete source rays remain well within the inserted 50 um-radius aperture at its exact observation; production finite-boundary interception reports no stopped source particles."
+      },
+      "surface": {
+        "controls": {
+          "condenser_lens_1": 90.0,
+          "condenser_lens_2": 35.0,
+          "mini_condenser": 10.0,
+          "objective_lens": 30.42591940608605
+        },
+        "z_mm": 1025.1999975,
+        "d95_nm": 2994.5572492108663,
+        "rms_radius_nm": 843.226216921366,
+        "alpha95_mrad": 2.2388824532712808,
+        "angular_rms_mrad": 1.2608778554712914,
+        "native_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 87.07536015061326,
+          "neighbour_bracket_mm": [
+            1024.4999975,
+            1024.5999975000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -700000.0000000455,
+            -599999.9999999091
+          ],
+          "observed_minimum_planes_mm": [
+            1024.5499975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1024.5499975,
+              1024.5499975
+            ]
+          ],
+          "representative_offset_nm": -650000.0000000909,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_rms_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 24.51693195400688,
+          "neighbour_bracket_mm": [
+            1024.4999975,
+            1024.5999975000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            -700000.0000000455,
+            -599999.9999999091
+          ],
+          "observed_minimum_planes_mm": [
+            1024.5499975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1024.5499975,
+              1024.5499975
+            ]
+          ],
+          "representative_offset_nm": -650000.0000000909,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_focus_gate": {
+          "maximum_d95_nm": null,
+          "passed": false,
+          "placement_passed": false,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "FAIL",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "maximum_centroid_radius_nm": 2361.031229557746,
+        "maximum_radius_over_d95_radius": 1.5768816777037282,
+        "maximum_radius_over_second_largest": 1.0636301942305195,
+        "outermost_five_percent_packet_fraction_radial_second_moment": 0.21452940340854185,
+        "d95_definition": "Diameter containing 95% of actual specimen-plane current about its current-weighted centroid; not an angle or an emitted-current cutoff.",
+        "rms_definition": "Square root of the current-weighted mean squared centroid radius using all surviving positive-current particles."
+      },
+      "largest_radius_particles": [
+        {
+          "source_id": 981,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 2361.031229557746,
+          "surface_optical_axis_radius_nm": 2361.6309332812148,
+          "fraction_surface_radial_second_moment": 0.007656235875724971,
+          "surface_kinetic_energy_ev": 300000.5315930361,
+          "surface_energy_deviation_from_current_mean_ev": 0.23159298830432817,
+          "emission_position_nm": [
+            4.492196880850731,
+            0.4011455448620641,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.8859537334473124,
+          "gun_exit_axis_radius_um": 1.0607801078224088,
+          "c2_aperture_axis_radius_um": 13.17838722315,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.214754968929329e-08,
+              "mechanical_angle_from_axis_mrad": 0.3028884874807008,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.1713877561843755e-06,
+              "mechanical_angle_from_axis_mrad": 0.1423205764604015,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.317838722315e-05,
+              "mechanical_angle_from_axis_mrad": 0.12566290513138734,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.619973707601018e-05,
+              "mechanical_angle_from_axis_mrad": 0.35248843868102414,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 2.3616309332812148e-06,
+              "mechanical_angle_from_axis_mrad": 3.5311188883027924,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 826,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 2219.785826281312,
+          "surface_optical_axis_radius_nm": 2223.5013561118194,
+          "fraction_surface_radial_second_moment": 0.006767589216871234,
+          "surface_kinetic_energy_ev": 300000.7077045519,
+          "surface_energy_deviation_from_current_mean_ev": 0.40770450414856896,
+          "emission_position_nm": [
+            -1.259752107626948,
+            -0.6168881599033966,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.34081746347052,
+          "gun_exit_axis_radius_um": 0.9986447100473105,
+          "c2_aperture_axis_radius_um": 12.407864958142072,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.026981024845751e-08,
+              "mechanical_angle_from_axis_mrad": 0.28513137400496497,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.1028831189997852e-06,
+              "mechanical_angle_from_axis_mrad": 0.13400946122200819,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2407864958142072e-05,
+              "mechanical_angle_from_axis_mrad": 0.11831538274373192,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.4083154245713165e-05,
+              "mechanical_angle_from_axis_mrad": 0.3318778026546234,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 2.2235013561118196e-06,
+              "mechanical_angle_from_axis_mrad": 3.3246551637302884,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 956,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 2209.023095646324,
+          "surface_optical_axis_radius_nm": 2208.532614304295,
+          "fraction_surface_radial_second_moment": 0.006702122395330787,
+          "surface_kinetic_energy_ev": 300000.5283207709,
+          "surface_energy_deviation_from_current_mean_ev": 0.22832072310848162,
+          "emission_position_nm": [
+            -1.132729799005921,
+            -2.0150741805463364,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.739653559565771,
+          "gun_exit_axis_radius_um": 0.9923739347126593,
+          "c2_aperture_axis_radius_um": 12.324198395099971,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.0060075310472264e-08,
+              "mechanical_angle_from_axis_mrad": 0.28345214297545085,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.0955059415733932e-06,
+              "mechanical_angle_from_axis_mrad": 0.13310444151638276,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2324198395099971e-05,
+              "mechanical_angle_from_axis_mrad": 0.11751829958450001,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.385346270272944e-05,
+              "mechanical_angle_from_axis_mrad": 0.32964154556946273,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 2.208532614304295e-06,
+              "mechanical_angle_from_axis_mrad": 3.302251375593446,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 306,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 2171.311784190538,
+          "surface_optical_axis_radius_nm": 2173.23238652231,
+          "fraction_surface_radial_second_moment": 0.006475245227872934,
+          "surface_kinetic_energy_ev": 300000.5503310514,
+          "surface_energy_deviation_from_current_mean_ev": 0.25033100362634286,
+          "emission_position_nm": [
+            1.1349499561902388,
+            0.03914363513403571,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.627591743072858,
+          "gun_exit_axis_radius_um": 0.9763723344861064,
+          "c2_aperture_axis_radius_um": 12.127274517399565,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.9581385671618167e-08,
+              "mechanical_angle_from_axis_mrad": 0.2788554912122408,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.077982785855032e-06,
+              "mechanical_angle_from_axis_mrad": 0.1309822571493561,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2127274517399565e-05,
+              "mechanical_angle_from_axis_mrad": 0.11564029437331824,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.3312489662029174e-05,
+              "mechanical_angle_from_axis_mrad": 0.3243736211917401,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 2.1732323865223103e-06,
+              "mechanical_angle_from_axis_mrad": 3.249481574224421,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 331,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 2146.0021400022415,
+          "surface_optical_axis_radius_nm": 2144.7394473775594,
+          "fraction_surface_radial_second_moment": 0.006325169136579169,
+          "surface_kinetic_energy_ev": 300000.48635811236,
+          "surface_energy_deviation_from_current_mean_ev": 0.18635806458769366,
+          "emission_position_nm": [
+            -2.2399496305759348,
+            -2.544479545037061,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.73475663534406,
+          "gun_exit_axis_radius_um": 0.9633044614239114,
+          "c2_aperture_axis_radius_um": 11.968285633879828,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.9196196164784786e-08,
+              "mechanical_angle_from_axis_mrad": 0.2750721467688771,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.0638167739890364e-06,
+              "mechanical_angle_from_axis_mrad": 0.1292696685782361,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.196828563387983e-05,
+              "mechanical_angle_from_axis_mrad": 0.11412384123528614,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.287568765009661e-05,
+              "mechanical_angle_from_axis_mrad": 0.3201200632715762,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 2.1447394473775595e-06,
+              "mechanical_angle_from_axis_mrad": 3.2068730856354604,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 706,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 2071.9178455615743,
+          "surface_optical_axis_radius_nm": 2075.7860937662135,
+          "fraction_surface_radial_second_moment": 0.005895992247208312,
+          "surface_kinetic_energy_ev": 300000.46585461654,
+          "surface_energy_deviation_from_current_mean_ev": 0.165854568767827,
+          "emission_position_nm": [
+            -1.2101799515667815,
+            -0.4286939326495147,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.6930540332474324,
+          "gun_exit_axis_radius_um": 0.9322239008337397,
+          "c2_aperture_axis_radius_um": 11.583565847990357,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.8258843104100433e-08,
+              "mechanical_angle_from_axis_mrad": 0.26615553419543625,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.0296059569153473e-06,
+              "mechanical_angle_from_axis_mrad": 0.12510531322637647,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.1583565847990357e-05,
+              "mechanical_angle_from_axis_mrad": 0.11045516265779326,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.181886868681385e-05,
+              "mechanical_angle_from_axis_mrad": 0.30982968944058054,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 2.0757860937662137e-06,
+              "mechanical_angle_from_axis_mrad": 3.103784347845741,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 431,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 1956.041800600764,
+          "surface_optical_axis_radius_nm": 1953.1122540563529,
+          "fraction_surface_radial_second_moment": 0.005254944148743725,
+          "surface_kinetic_energy_ev": 300000.4309800665,
+          "surface_energy_deviation_from_current_mean_ev": 0.13098001870093867,
+          "emission_position_nm": [
+            2.3943730871211804,
+            -0.8134994218113849,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.647019638542336,
+          "gun_exit_axis_radius_um": 0.8772451436250056,
+          "c2_aperture_axis_radius_um": 10.899078578317331,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.6587733637178226e-08,
+              "mechanical_angle_from_axis_mrad": 0.25049715255603894,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 9.687790257421177e-07,
+              "mechanical_angle_from_axis_mrad": 0.11771981591389322,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.0899078578317332e-05,
+              "mechanical_angle_from_axis_mrad": 0.10392839651913281,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 2.9938682776475573e-05,
+              "mechanical_angle_from_axis_mrad": 0.2915213848943579,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.953112254056353e-06,
+              "mechanical_angle_from_axis_mrad": 2.920381222118366,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 56,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 1937.3995098030784,
+          "surface_optical_axis_radius_nm": 1940.7561857363858,
+          "fraction_surface_radial_second_moment": 0.005155255719634599,
+          "surface_kinetic_energy_ev": 300000.4393076128,
+          "surface_energy_deviation_from_current_mean_ev": 0.1393075649975799,
+          "emission_position_nm": [
+            0.17941435630486877,
+            -1.844540898543988,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.591102380867335,
+          "gun_exit_axis_radius_um": 0.8715675038659129,
+          "c2_aperture_axis_radius_um": 10.830152215306144,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.6421005286313806e-08,
+              "mechanical_angle_from_axis_mrad": 0.24882812805846458,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 9.626359201834895e-07,
+              "mechanical_angle_from_axis_mrad": 0.11696528098669584,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.0830152215306145e-05,
+              "mechanical_angle_from_axis_mrad": 0.1032709484767685,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 2.974931240413197e-05,
+              "mechanical_angle_from_axis_mrad": 0.2896777239919106,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.9407561857363858e-06,
+              "mechanical_angle_from_axis_mrad": 2.9019081504107263,
+              "alive": true
+            }
+          ]
+        }
+      ],
+      "descriptive_regression": {
+        "scope": "Read-only regression of existing observed complex transverse positions on mechanical angle; no ray removal, retuning, current renormalization or new transport.",
+        "inference": "The strong cubic-angle association and additional energy dependence support a reproducible nonlinear/dispersion tail. This is not an isolated-lens aberration calibration or a causal perturbation experiment.",
+        "fits": {
+          "linear_angle": {
+            "fraction_position_variance_explained": 0.9999999996850928,
+            "coefficients": {
+              "angle": {
+                "real": 0.0006667121967207426,
+                "imaginary": -5.2300944697157514e-05
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.14859750816040485
+          },
+          "linear_and_cubic_angle": {
+            "fraction_position_variance_explained": 0.9999999999599108,
+            "coefficients": {
+              "angle": {
+                "real": 0.0006666968224021183,
+                "imaginary": -5.229844742485441e-05
+              },
+              "angle_times_squared_magnitude": {
+                "real": 0.004445064956220588,
+                "imaginary": -0.0007220181831735318
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.006785808779949243
+          },
+          "linear_and_energy_angle": {
+            "fraction_position_variance_explained": 0.999999999697226,
+            "coefficients": {
+              "angle": {
+                "real": 0.000666711135262939,
+                "imaginary": -5.230077493689282e-05
+              },
+              "angle_times_energy_deviation_ev": {
+                "real": 1.936051503485536e-08,
+                "imaginary": -3.0963512123354867e-09
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.13636667860092277
+          },
+          "linear_cubic_and_energy_angle": {
+            "fraction_position_variance_explained": 0.9999999999889374,
+            "coefficients": {
+              "angle": {
+                "real": 0.0006666958783844357,
+                "imaginary": -5.2298292331745785e-05
+              },
+              "angle_times_squared_magnitude": {
+                "real": 0.005263172915405487,
+                "imaginary": -0.0008564255241725383
+              },
+              "angle_times_energy_deviation_ev": {
+                "real": -3.439257365227168e-08,
+                "imaginary": 5.65037208466013e-09
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.004194656270434133
+          }
+        }
+      }
+    },
+    {
+      "directory": "outputs/two-condenser-20261112/initial-n1024-s010/trial-01",
+      "status": "COMPLETED_ARRAY_AUDIT_NO_NEW_TRACING",
+      "evidence_sha256": {
+        "report.json": "2c62283f7c39fa51f949bdb8278f5c15a7337f33caf7ee78706751597c4e2014",
+        "observations.npz": "05535d4a4435084eb51481e9931e2604b1877eb0a4aed9b16cbd72f32368787d",
+        "input.toml": "4225d48758daedbea88fcf040e27dfe2e72469c75e605bfe05c4884231d5b3ab",
+        "inputs.json": "e53568fc5d1d13d0a242ac505c89d4078c470861bc4f839836f3df45747f08c8"
+      },
+      "original_source": {
+        "count": 1024,
+        "positive_count": 1024,
+        "unique_id_count": 1024,
+        "zero_current_count": 0,
+        "weight_sum": 1.0,
+        "weight_minimum": 0.0009765625,
+        "weight_maximum": 0.0009765625,
+        "exact_equal_weight_population": true,
+        "emission_ids_match_original_source_ids": true,
+        "gun_exit_surviving_count": 1024,
+        "specimen_surviving_count": 1024,
+        "effective_count": 1024.0,
+        "source_current_a": 1e-05,
+        "sample_current_a": 1e-05,
+        "reported_transmission": 1.0,
+        "per_stage_physical_losses": {},
+        "no_unlabeled_stop": true,
+        "stopped_particle_resurrections": 0
+      },
+      "gun_exit_phase": {
+        "rms_radius_m": 3.78752510165589e-07,
+        "maximum_axis_centered_radius_m": 1.0605092416625873e-06,
+        "rms_mechanical_slope_rad": 3.4175931889647286e-07,
+        "radial_curvature_per_m": 0.9019933437720762
+      },
+      "source_emission": {
+        "spatial_rms_axes_nm": [
+          2.066644149600594,
+          2.066515300564627
+        ],
+        "direction_transverse_rms_axes_mrad": [
+          0.9714094885507776,
+          0.9708508838454425
+        ],
+        "maximum_polar_angle_mrad": 2.9552730055478897
+      },
+      "c2_aperture": {
+        "actual_plane_mm": 765.0,
+        "physical_radius_um": 50.0,
+        "maximum_actual_axis_radius_um": 13.17838722315,
+        "maximum_radial_fill_fraction": 0.26356774446299996,
+        "radial_clearance_um": 36.82161277685,
+        "native_geometry_audit": {
+          "actual_boundary_radius_mm": 0.05,
+          "diameter_mm": 0.1,
+          "enabled": true,
+          "event_z_mm": [
+            764.9,
+            764.9,
+            764.9,
+            765.1,
+            765.1,
+            765.1
+          ],
+          "host_key": "condenser_aperture_2",
+          "inserted": true,
+          "installed": true,
+          "key": "condenser_aperture_2",
+          "local_end_z_mm": 765.1,
+          "local_start_z_mm": 764.9,
+          "origin_global_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radius_mm": 0.05,
+          "rotation_local_to_global": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "interpretation": "Complete source rays remain well within the inserted 50 um-radius aperture at its exact observation; production finite-boundary interception reports no stopped source particles."
+      },
+      "surface": {
+        "controls": {
+          "condenser_lens_1": 90.0,
+          "condenser_lens_2": 35.0,
+          "mini_condenser": 10.0,
+          "objective_lens": 29.223522826455024
+        },
+        "z_mm": 1025.1999975,
+        "d95_nm": 0.04783013923465399,
+        "rms_radius_nm": 0.015205610270339478,
+        "alpha95_mrad": 2.1995997159091747,
+        "angular_rms_mrad": 1.238754896872245,
+        "native_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.04783013923465399,
+          "neighbour_bracket_mm": [
+            1025.1499975000002,
+            1025.2
+          ],
+          "neighbour_bracket_offset_nm": [
+            -49999.999999954525,
+            2.499999936844688
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999975,
+              1025.1999975
+            ]
+          ],
+          "representative_offset_nm": 0.0,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_rms_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.015205610270339478,
+          "neighbour_bracket_mm": [
+            1025.1499975000002,
+            1025.2
+          ],
+          "neighbour_bracket_offset_nm": [
+            -49999.999999954525,
+            2.499999936844688
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999975
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999975,
+              1025.1999975
+            ]
+          ],
+          "representative_offset_nm": 0.0,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_focus_gate": {
+          "maximum_d95_nm": null,
+          "passed": false,
+          "placement_passed": false,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "UNRESOLVED",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "maximum_centroid_radius_nm": 0.1564369031769678,
+        "maximum_radius_over_d95_radius": 6.541352614906285,
+        "maximum_radius_over_second_largest": 1.3323604794210304,
+        "outermost_five_percent_packet_fraction_radial_second_moment": 0.70573624973308,
+        "d95_definition": "Diameter containing 95% of actual specimen-plane current about its current-weighted centroid; not an angle or an emitted-current cutoff.",
+        "rms_definition": "Square root of the current-weighted mean squared centroid radius using all surviving positive-current particles."
+      },
+      "largest_radius_particles": [
+        {
+          "source_id": 981,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 0.1564369031769678,
+          "surface_optical_axis_radius_nm": 0.15651660209475596,
+          "fraction_surface_radial_second_moment": 0.10336434416406991,
+          "surface_kinetic_energy_ev": 300000.5315930361,
+          "surface_energy_deviation_from_current_mean_ev": 0.23159298830432817,
+          "emission_position_nm": [
+            4.492196880850731,
+            0.4011455448620641,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.8859537334473124,
+          "gun_exit_axis_radius_um": 1.0607801078224088,
+          "c2_aperture_axis_radius_um": 13.17838722315,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.214754968929329e-08,
+              "mechanical_angle_from_axis_mrad": 0.3028884874807008,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.1713877561843755e-06,
+              "mechanical_angle_from_axis_mrad": 0.1423205764604015,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.317838722315e-05,
+              "mechanical_angle_from_axis_mrad": 0.12566290513138734,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.6199531452680905e-05,
+              "mechanical_angle_from_axis_mrad": 0.3532712242440832,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.5651660209475595e-10,
+              "mechanical_angle_from_axis_mrad": 3.4691630258704915,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 956,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 0.11741334690814796,
+          "surface_optical_axis_radius_nm": 0.11733590165345338,
+          "fraction_surface_radial_second_moment": 0.05822738269906987,
+          "surface_kinetic_energy_ev": 300000.5283207709,
+          "surface_energy_deviation_from_current_mean_ev": 0.22832072310848162,
+          "emission_position_nm": [
+            -1.132729799005921,
+            -2.0150741805463364,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.739653559565771,
+          "gun_exit_axis_radius_um": 0.9923739347126593,
+          "c2_aperture_axis_radius_um": 12.324198395099971,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.0060075310472264e-08,
+              "mechanical_angle_from_axis_mrad": 0.28345214297545085,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.0955059415733932e-06,
+              "mechanical_angle_from_axis_mrad": 0.13310444151638276,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2324198395099971e-05,
+              "mechanical_angle_from_axis_mrad": 0.11751829958450001,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.385327040660096e-05,
+              "mechanical_angle_from_axis_mrad": 0.33037359494279983,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.1733590165345339e-10,
+              "mechanical_angle_from_axis_mrad": 3.24431114084401,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 331,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 0.11041771935463011,
+          "surface_optical_axis_radius_nm": 0.11042042425433012,
+          "fraction_surface_radial_second_moment": 0.05149557106020991,
+          "surface_kinetic_energy_ev": 300000.48635811236,
+          "surface_energy_deviation_from_current_mean_ev": 0.18635806458769366,
+          "emission_position_nm": [
+            -2.2399496305759348,
+            -2.544479545037061,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.73475663534406,
+          "gun_exit_axis_radius_um": 0.9633044614239114,
+          "c2_aperture_axis_radius_um": 11.968285633879828,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.9196196164784786e-08,
+              "mechanical_angle_from_axis_mrad": 0.2750721467688771,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.0638167739890364e-06,
+              "mechanical_angle_from_axis_mrad": 0.1292696685782361,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.196828563387983e-05,
+              "mechanical_angle_from_axis_mrad": 0.11412384123528614,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.287550090785282e-05,
+              "mechanical_angle_from_axis_mrad": 0.3208309693306515,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.1042042425433011e-10,
+              "mechanical_angle_from_axis_mrad": 3.150606327370978,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 306,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 0.1078858868274572,
+          "surface_optical_axis_radius_nm": 0.10792165446492556,
+          "fraction_surface_radial_second_moment": 0.04916110148467187,
+          "surface_kinetic_energy_ev": 300000.5503310514,
+          "surface_energy_deviation_from_current_mean_ev": 0.25033100362634286,
+          "emission_position_nm": [
+            1.1349499561902388,
+            0.03914363513403571,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.627591743072858,
+          "gun_exit_axis_radius_um": 0.9763723344861064,
+          "c2_aperture_axis_radius_um": 12.127274517399565,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.9581385671618167e-08,
+              "mechanical_angle_from_axis_mrad": 0.2788554912122408,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.077982785855032e-06,
+              "mechanical_angle_from_axis_mrad": 0.1309822571493561,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2127274517399565e-05,
+              "mechanical_angle_from_axis_mrad": 0.11564029437331824,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.331230043873068e-05,
+              "mechanical_angle_from_axis_mrad": 0.3250939725124089,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.0792165446492556e-10,
+              "mechanical_angle_from_axis_mrad": 3.192467214038924,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 826,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 0.1029730078940631,
+          "surface_optical_axis_radius_nm": 0.10315953735460597,
+          "fraction_surface_radial_second_moment": 0.044785675707497904,
+          "surface_kinetic_energy_ev": 300000.7077045519,
+          "surface_energy_deviation_from_current_mean_ev": 0.40770450414856896,
+          "emission_position_nm": [
+            -1.259752107626948,
+            -0.6168881599033966,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.34081746347052,
+          "gun_exit_axis_radius_um": 0.9986447100473105,
+          "c2_aperture_axis_radius_um": 12.407864958142072,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.026981024845751e-08,
+              "mechanical_angle_from_axis_mrad": 0.28513137400496497,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.1028831189997852e-06,
+              "mechanical_angle_from_axis_mrad": 0.13400946122200819,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2407864958142072e-05,
+              "mechanical_angle_from_axis_mrad": 0.11831538274373192,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.4082960645033055e-05,
+              "mechanical_angle_from_axis_mrad": 0.3326148187664499,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.0315953735460596e-10,
+              "mechanical_angle_from_axis_mrad": 3.2663218055958834,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 706,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 0.09881105755884964,
+          "surface_optical_axis_radius_nm": 0.0989796980756489,
+          "fraction_surface_radial_second_moment": 0.041238553964098444,
+          "surface_kinetic_energy_ev": 300000.46585461654,
+          "surface_energy_deviation_from_current_mean_ev": 0.165854568767827,
+          "emission_position_nm": [
+            -1.2101799515667815,
+            -0.4286939326495147,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.6930540332474324,
+          "gun_exit_axis_radius_um": 0.9322239008337397,
+          "c2_aperture_axis_radius_um": 11.583565847990357,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.8258843104100433e-08,
+              "mechanical_angle_from_axis_mrad": 0.26615553419543625,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.0296059569153473e-06,
+              "mechanical_angle_from_axis_mrad": 0.12510531322637647,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.1583565847990357e-05,
+              "mechanical_angle_from_axis_mrad": 0.11045516265779326,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.181868794746913e-05,
+              "mechanical_angle_from_axis_mrad": 0.31051774298122947,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 9.89796980756489e-11,
+              "mechanical_angle_from_axis_mrad": 3.0493263529453576,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 431,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 0.07911649055376606,
+          "surface_optical_axis_radius_nm": 0.07894298048891026,
+          "fraction_surface_radial_second_moment": 0.026437863895619276,
+          "surface_kinetic_energy_ev": 300000.4309800665,
+          "surface_energy_deviation_from_current_mean_ev": 0.13098001870093867,
+          "emission_position_nm": [
+            2.3943730871211804,
+            -0.8134994218113849,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.647019638542336,
+          "gun_exit_axis_radius_um": 0.8772451436250056,
+          "c2_aperture_axis_radius_um": 10.899078578317331,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.6587733637178226e-08,
+              "mechanical_angle_from_axis_mrad": 0.25049715255603894,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 9.687790257421177e-07,
+              "mechanical_angle_from_axis_mrad": 0.11771981591389322,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.0899078578317332e-05,
+              "mechanical_angle_from_axis_mrad": 0.10392839651913281,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 2.9938512716914132e-05,
+              "mechanical_angle_from_axis_mrad": 0.2921687811121383,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 7.894298048891026e-11,
+              "mechanical_angle_from_axis_mrad": 2.86914115862091,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 56,
+          "original_weight": 0.0009765625,
+          "current_a": 9.765625e-09,
+          "surface_centroid_radius_nm": 0.07651993515834103,
+          "surface_optical_axis_radius_nm": 0.07670128301607844,
+          "fraction_surface_radial_second_moment": 0.024730991031521043,
+          "surface_kinetic_energy_ev": 300000.4393076128,
+          "surface_energy_deviation_from_current_mean_ev": 0.1393075649975799,
+          "emission_position_nm": [
+            0.17941435630486877,
+            -1.844540898543988,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.591102380867335,
+          "gun_exit_axis_radius_um": 0.8715675038659129,
+          "c2_aperture_axis_radius_um": 10.830152215306144,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.6421005286313806e-08,
+              "mechanical_angle_from_axis_mrad": 0.24882812805846458,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 9.626359201834895e-07,
+              "mechanical_angle_from_axis_mrad": 0.11696528098669584,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.0830152215306145e-05,
+              "mechanical_angle_from_axis_mrad": 0.1032709484767685,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 2.9749143420234177e-05,
+              "mechanical_angle_from_axis_mrad": 0.29032102541425475,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 7.670128301607844e-11,
+              "mechanical_angle_from_axis_mrad": 2.8509922092175564,
+              "alive": true
+            }
+          ]
+        }
+      ],
+      "descriptive_regression": {
+        "scope": "Read-only regression of existing observed complex transverse positions on mechanical angle; no ray removal, retuning, current renormalization or new transport.",
+        "inference": "The strong cubic-angle association and additional energy dependence support a reproducible nonlinear/dispersion tail. This is not an isolated-lens aberration calibration or a causal perturbation experiment.",
+        "fits": {
+          "linear_angle": {
+            "fraction_position_variance_explained": 0.05397699927569044,
+            "coefficients": {
+              "angle": {
+                "real": 2.851809788612927e-09,
+                "imaginary": 8.212257201565327e-12
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.14654917107514184
+          },
+          "linear_and_cubic_angle": {
+            "fraction_position_variance_explained": 0.8742744310391004,
+            "coefficients": {
+              "angle": {
+                "real": -1.2767476179389757e-08,
+                "imaginary": -4.661452809436779e-12
+              },
+              "angle_times_squared_magnitude": {
+                "real": 0.00467863048450609,
+                "imaginary": 3.856215465262341e-06
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.00687645224207119
+          },
+          "linear_and_energy_angle": {
+            "fraction_position_variance_explained": 0.08808221709368536,
+            "coefficients": {
+              "angle": {
+                "real": 1.8057667771841173e-09,
+                "imaginary": 1.3200966527880364e-12
+              },
+              "angle_times_energy_deviation_ev": {
+                "real": 1.9079357661325936e-08,
+                "imaginary": 1.2570993231892984e-10
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.13485500681996224
+          },
+          "linear_cubic_and_energy_angle": {
+            "fraction_position_variance_explained": 0.9647678814571006,
+            "coefficients": {
+              "angle": {
+                "real": -1.3747913675151268e-08,
+                "imaginary": -1.4818973436513224e-12
+              },
+              "angle_times_squared_magnitude": {
+                "real": 0.0055589201958370854,
+                "imaginary": 1.0014389239353703e-06
+              },
+              "angle_times_energy_deviation_ev": {
+                "real": -3.5719414246729385e-08,
+                "imaginary": 1.1583793897502838e-10
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.00427096277010115
+          }
+        }
+      }
+    },
+    {
+      "directory": "outputs/two-condenser-20261112/fine-n2048-s010/trial-00",
+      "status": "COMPLETED_ARRAY_AUDIT_NO_NEW_TRACING",
+      "evidence_sha256": {
+        "report.json": "12f864e723af78d190181c0ac2999b37c6ac83b13b61c89ecb43b4ac2893c61a",
+        "observations.npz": "2ec4deab32fad1c8fbe84995db996525c5566951608608a7c8e9497bd0404278",
+        "input.toml": "3a5ca18be31b5ab6be9df360a96ba1c2df66618f05898d0620dccb57e4ac61f3",
+        "inputs.json": "5dfc51436a06c16eeed6057325ff946db8ec3f6cad2f620c298458615496c58e"
+      },
+      "original_source": {
+        "count": 2048,
+        "positive_count": 2048,
+        "unique_id_count": 2048,
+        "zero_current_count": 0,
+        "weight_sum": 1.0,
+        "weight_minimum": 0.00048828125,
+        "weight_maximum": 0.00048828125,
+        "exact_equal_weight_population": true,
+        "emission_ids_match_original_source_ids": true,
+        "gun_exit_surviving_count": 2048,
+        "specimen_surviving_count": 2048,
+        "effective_count": 2048.0,
+        "source_current_a": 1e-05,
+        "sample_current_a": 1e-05,
+        "reported_transmission": 1.0,
+        "per_stage_physical_losses": {},
+        "no_unlabeled_stop": true,
+        "stopped_particle_resurrections": 0
+      },
+      "gun_exit_phase": {
+        "rms_radius_m": 3.793706131355624e-07,
+        "maximum_axis_centered_radius_m": 1.0687860824557564e-06,
+        "rms_mechanical_slope_rad": 3.423195225030296e-07,
+        "radial_curvature_per_m": 0.9020006371216394
+      },
+      "source_emission": {
+        "spatial_rms_axes_nm": [
+          2.0687035049958427,
+          2.066798605873239
+        ],
+        "direction_transverse_rms_axes_mrad": [
+          0.9726085941817254,
+          0.9726690283842738
+        ],
+        "maximum_polar_angle_mrad": 2.9725320483006983
+      },
+      "c2_aperture": {
+        "actual_plane_mm": 765.0,
+        "physical_radius_um": 50.0,
+        "maximum_actual_axis_radius_um": 13.273674495840185,
+        "maximum_radial_fill_fraction": 0.2654734899168037,
+        "radial_clearance_um": 36.72632550415981,
+        "native_geometry_audit": {
+          "actual_boundary_radius_mm": 0.05,
+          "diameter_mm": 0.1,
+          "enabled": true,
+          "event_z_mm": [
+            764.9,
+            764.9,
+            764.9,
+            765.1,
+            765.1,
+            765.1
+          ],
+          "host_key": "condenser_aperture_2",
+          "inserted": true,
+          "installed": true,
+          "key": "condenser_aperture_2",
+          "local_end_z_mm": 765.1,
+          "local_start_z_mm": 764.9,
+          "origin_global_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radius_mm": 0.05,
+          "rotation_local_to_global": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "interpretation": "Complete source rays remain well within the inserted 50 um-radius aperture at its exact observation; production finite-boundary interception reports no stopped source particles."
+      },
+      "surface": {
+        "controls": {
+          "condenser_lens_1": 90.0,
+          "condenser_lens_2": 35.0,
+          "mini_condenser": 10.0,
+          "objective_lens": 29.223522826455024
+        },
+        "z_mm": 1025.1999975,
+        "d95_nm": 0.04975698001318781,
+        "rms_radius_nm": 0.015451141986056422,
+        "alpha95_mrad": 2.1998216991236665,
+        "angular_rms_mrad": 1.2407767970540848,
+        "native_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.042822288492945726,
+          "neighbour_bracket_mm": [
+            1025.1999942500001,
+            1025.19999475
+          ],
+          "neighbour_bracket_offset_nm": [
+            -3.2499999633728294,
+            -2.750000021478627
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999945
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999945,
+              1025.1999945
+            ]
+          ],
+          "representative_offset_nm": -3.000000106112566,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_rms_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.015004613398272262,
+          "neighbour_bracket_mm": [
+            1025.1999942500001,
+            1025.19999475
+          ],
+          "neighbour_bracket_offset_nm": [
+            -3.2499999633728294,
+            -2.750000021478627
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999945
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999945,
+              1025.1999945
+            ]
+          ],
+          "representative_offset_nm": -3.000000106112566,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_focus_gate": {
+          "maximum_d95_nm": null,
+          "passed": false,
+          "placement_passed": false,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "FAIL",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "maximum_centroid_radius_nm": 0.15835616671292616,
+        "maximum_radius_over_d95_radius": 6.36518400718672,
+        "maximum_radius_over_second_largest": 1.0202729773449322,
+        "outermost_five_percent_packet_fraction_radial_second_moment": 0.7124938474693662,
+        "d95_definition": "Diameter containing 95% of actual specimen-plane current about its current-weighted centroid; not an angle or an emitted-current cutoff.",
+        "rms_definition": "Square root of the current-weighted mean squared centroid radius using all surviving positive-current particles."
+      },
+      "largest_radius_particles": [
+        {
+          "source_id": 1606,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.15835616671292616,
+          "surface_optical_axis_radius_nm": 0.1583732498070261,
+          "fraction_surface_radial_second_moment": 0.05128836345772454,
+          "surface_kinetic_energy_ev": 300000.54372831684,
+          "surface_energy_deviation_from_current_mean_ev": 0.2437282707542181,
+          "emission_position_nm": [
+            -0.9427733063558321,
+            0.28298578944338304,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.8930740511179693,
+          "gun_exit_axis_radius_um": 1.068647150554356,
+          "c2_aperture_axis_radius_um": 13.273674495840185,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.2377920318630265e-08,
+              "mechanical_angle_from_axis_mrad": 0.3051989028936478,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.1798825274923487e-06,
+              "mechanical_angle_from_axis_mrad": 0.1433606766290629,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.3273674495840186e-05,
+              "mechanical_angle_from_axis_mrad": 0.12657182129396147,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.646133003209173e-05,
+              "mechanical_angle_from_axis_mrad": 0.35582582281869235,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.583732498070261e-10,
+              "mechanical_angle_from_axis_mrad": 3.4942534040341284,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 981,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.1552096058890222,
+          "surface_optical_axis_radius_nm": 0.15528249993282925,
+          "fraction_surface_radial_second_moment": 0.04927039830174516,
+          "surface_kinetic_energy_ev": 300000.5289975474,
+          "surface_energy_deviation_from_current_mean_ev": 0.22899750131182373,
+          "emission_position_nm": [
+            4.492196880850731,
+            0.4011455448620641,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.8859537334473124,
+          "gun_exit_axis_radius_um": 1.0579958124508593,
+          "c2_aperture_axis_radius_um": 13.143963624696287,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.20636925258677e-08,
+              "mechanical_angle_from_axis_mrad": 0.3020904321038558,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.1683262898107031e-06,
+              "mechanical_angle_from_axis_mrad": 0.14194870574517432,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.3143963624696287e-05,
+              "mechanical_angle_from_axis_mrad": 0.1253346379089822,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.610497008021008e-05,
+              "mechanical_angle_from_axis_mrad": 0.3523483872351093,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.5528249993282924e-10,
+              "mechanical_angle_from_axis_mrad": 3.4601007317824086,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 1356,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.12523548769895168,
+          "surface_optical_axis_radius_nm": 0.1251618084651941,
+          "fraction_surface_radial_second_moment": 0.03207773561186321,
+          "surface_kinetic_energy_ev": 300000.4670434279,
+          "surface_energy_deviation_from_current_mean_ev": 0.16704338183626533,
+          "emission_position_nm": [
+            -1.1364270112905557,
+            2.1203781123730807,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.827039918463916,
+          "gun_exit_axis_radius_um": 0.9853420067909759,
+          "c2_aperture_axis_radius_um": 12.245732683085379,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.987605972985777e-08,
+              "mechanical_angle_from_axis_mrad": 0.2812780395154569,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.0884409460276305e-06,
+              "mechanical_angle_from_axis_mrad": 0.13225481568742936,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2245732683085378e-05,
+              "mechanical_angle_from_axis_mrad": 0.11676899578839008,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.3637533898759875e-05,
+              "mechanical_angle_from_axis_mrad": 0.32826802976791813,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.251618084651941e-10,
+              "mechanical_angle_from_axis_mrad": 3.2236342744618645,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 956,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.11655996260112186,
+          "surface_optical_axis_radius_nm": 0.11648678916724205,
+          "fraction_surface_radial_second_moment": 0.027787385083956385,
+          "surface_kinetic_energy_ev": 300000.5260425144,
+          "surface_energy_deviation_from_current_mean_ev": 0.22604246833361685,
+          "emission_position_nm": [
+            -1.132729799005921,
+            -2.0150741805463364,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.739653559565771,
+          "gun_exit_axis_radius_um": 0.9900295844814679,
+          "c2_aperture_axis_radius_um": 12.295226201022533,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.998950707964669e-08,
+              "mechanical_angle_from_axis_mrad": 0.2827799647737796,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.0929291746876687e-06,
+              "mechanical_angle_from_axis_mrad": 0.13279145637110132,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2295226201022533e-05,
+              "mechanical_angle_from_axis_mrad": 0.11724201608288015,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.377368373302691e-05,
+              "mechanical_angle_from_axis_mrad": 0.32959689982558965,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.1648678916724204e-10,
+              "mechanical_angle_from_axis_mrad": 3.2366839486858776,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 1981,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.1099841881525086,
+          "surface_optical_axis_radius_nm": 0.11003067340511043,
+          "fraction_surface_radial_second_moment": 0.024740552141311847,
+          "surface_kinetic_energy_ev": 300000.47081992734,
+          "surface_energy_deviation_from_current_mean_ev": 0.17081988125573844,
+          "emission_position_nm": [
+            -3.2714112724590465,
+            3.8704029753954776,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.8331738469738554,
+          "gun_exit_axis_radius_um": 0.9651610202281817,
+          "c2_aperture_axis_radius_um": 11.985400483219511,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.923276317992847e-08,
+              "mechanical_angle_from_axis_mrad": 0.27572354312360764,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.065398857032177e-06,
+              "mechanical_angle_from_axis_mrad": 0.12946039251365796,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.198540048321951e-05,
+              "mechanical_angle_from_axis_mrad": 0.1142877747034091,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.2922648056855006e-05,
+              "mechanical_angle_from_axis_mrad": 0.32129107021179404,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.1003067340511043e-10,
+              "mechanical_angle_from_axis_mrad": 3.1551262261568516,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 331,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.10949190228304823,
+          "surface_optical_axis_radius_nm": 0.1095664344415047,
+          "fraction_surface_radial_second_moment": 0.024519571888415605,
+          "surface_kinetic_energy_ev": 300000.48396647646,
+          "surface_energy_deviation_from_current_mean_ev": 0.18396643036976457,
+          "emission_position_nm": [
+            -2.2399496305759348,
+            -2.544479545037061,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.73475663534406,
+          "gun_exit_axis_radius_um": 0.960850778197625,
+          "c2_aperture_axis_radius_um": 11.937907936021176,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.9122159453892407e-08,
+              "mechanical_angle_from_axis_mrad": 0.27436966151715686,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.061115556687007e-06,
+              "mechanical_angle_from_axis_mrad": 0.12894152841462417,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.1937907936021175e-05,
+              "mechanical_angle_from_axis_mrad": 0.11383416131503281,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.2792054539044376e-05,
+              "mechanical_angle_from_axis_mrad": 0.3200166084980304,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.095664344415047e-10,
+              "mechanical_angle_from_axis_mrad": 3.1426092549857514,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 306,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.10724769567583867,
+          "surface_optical_axis_radius_nm": 0.10717731414735358,
+          "fraction_surface_radial_second_moment": 0.02352473935129932,
+          "surface_kinetic_energy_ev": 300000.5480326581,
+          "surface_energy_deviation_from_current_mean_ev": 0.2480326120276004,
+          "emission_position_nm": [
+            1.1349499561902388,
+            0.03914363513403571,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.627591743072858,
+          "gun_exit_axis_radius_um": 0.9741751900405841,
+          "c2_aperture_axis_radius_um": 12.100106187220417,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.9515196510297176e-08,
+              "mechanical_angle_from_axis_mrad": 0.27822583286363217,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.075566613062705e-06,
+              "mechanical_angle_from_axis_mrad": 0.13068876795157028,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2100106187220417e-05,
+              "mechanical_angle_from_axis_mrad": 0.11538121473724598,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.323766933631461e-05,
+              "mechanical_angle_from_axis_mrad": 0.32436564007061897,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.0717731414735358e-10,
+              "mechanical_angle_from_axis_mrad": 3.1853149441819384,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 826,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.10244633000803667,
+          "surface_optical_axis_radius_nm": 0.10245900524645836,
+          "fraction_surface_radial_second_moment": 0.021465533702743067,
+          "surface_kinetic_energy_ev": 300000.7047085843,
+          "surface_energy_deviation_from_current_mean_ev": 0.40470853820443153,
+          "emission_position_nm": [
+            -1.259752107626948,
+            -0.6168881599033966,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.34081746347052,
+          "gun_exit_axis_radius_um": 0.9963849366168074,
+          "c2_aperture_axis_radius_um": 12.3799344640343,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.0201770950152704e-08,
+              "mechanical_angle_from_axis_mrad": 0.28448356951899395,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.1003990437167556e-06,
+              "mechanical_angle_from_axis_mrad": 0.13370773261955587,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.23799344640343e-05,
+              "mechanical_angle_from_axis_mrad": 0.11804903359218678,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.400623562041712e-05,
+              "mechanical_angle_from_axis_mrad": 0.33186605135869346,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.0245900524645836e-10,
+              "mechanical_angle_from_axis_mrad": 3.2589688634645877,
+              "alive": true
+            }
+          ]
+        }
+      ],
+      "descriptive_regression": {
+        "scope": "Read-only regression of existing observed complex transverse positions on mechanical angle; no ray removal, retuning, current renormalization or new transport.",
+        "inference": "The strong cubic-angle association and additional energy dependence support a reproducible nonlinear/dispersion tail. This is not an isolated-lens aberration calibration or a causal perturbation experiment.",
+        "fits": {
+          "linear_angle": {
+            "fraction_position_variance_explained": 0.056968584293681124,
+            "coefficients": {
+              "angle": {
+                "real": 2.9722416355894415e-09,
+                "imaginary": 1.1792840958981284e-12
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.147969036818186
+          },
+          "linear_and_cubic_angle": {
+            "fraction_position_variance_explained": 0.8772701439972282,
+            "coefficients": {
+              "angle": {
+                "real": -1.2868858788049918e-08,
+                "imaginary": -1.1559102375453104e-11
+              },
+              "angle_times_squared_magnitude": {
+                "real": 0.0047204438259286444,
+                "imaginary": 3.7958750442141766e-06
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.0018810530854058817
+          },
+          "linear_and_energy_angle": {
+            "fraction_position_variance_explained": 0.0869467640215491,
+            "coefficients": {
+              "angle": {
+                "real": 1.9885648385295343e-09,
+                "imaginary": -2.6790152700154247e-12
+              },
+              "angle_times_energy_deviation_ev": {
+                "real": 1.8191855925341122e-08,
+                "imaginary": 7.135435784530353e-11
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.13591148257131902
+          },
+          "linear_cubic_and_energy_angle": {
+            "fraction_position_variance_explained": 0.965991205451393,
+            "coefficients": {
+              "angle": {
+                "real": -1.378855814652216e-08,
+                "imaginary": -1.0398778644220027e-11
+              },
+              "angle_times_squared_magnitude": {
+                "real": 0.0055692228631828815,
+                "imaginary": 2.72502678230477e-06
+              },
+              "angle_times_energy_deviation_ev": {
+                "real": -3.566841128062902e-08,
+                "imaginary": 4.5000470733220275e-11
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.0008425827874186327
+          }
+        }
+      }
+    },
+    {
+      "directory": "outputs/two-condenser-20261112/fine-n2048-s010/trial-01",
+      "status": "COMPLETED_ARRAY_AUDIT_NO_NEW_TRACING",
+      "evidence_sha256": {
+        "report.json": "33ec4ce141615ce5585b7977cf57d88f6bc261d26c335246d782fc0b50bbedd0",
+        "observations.npz": "794c089d8ac20c4ac3ab4b9da2271f5a1c787c580a366a375edb515bf65af5c1",
+        "input.toml": "b2da95a829293ff7f01b9ed134aa0e33f4e8f890c029f3bed4a48c248586dfb9",
+        "inputs.json": "4e0b34ba31c8c5b2d47f39cc0563fb404b31baacc47b96e7cfb45c7e7f4cea35"
+      },
+      "original_source": {
+        "count": 2048,
+        "positive_count": 2048,
+        "unique_id_count": 2048,
+        "zero_current_count": 0,
+        "weight_sum": 1.0,
+        "weight_minimum": 0.00048828125,
+        "weight_maximum": 0.00048828125,
+        "exact_equal_weight_population": true,
+        "emission_ids_match_original_source_ids": true,
+        "gun_exit_surviving_count": 2048,
+        "specimen_surviving_count": 2048,
+        "effective_count": 2048.0,
+        "source_current_a": 1e-05,
+        "sample_current_a": 1e-05,
+        "reported_transmission": 1.0,
+        "per_stage_physical_losses": {},
+        "no_unlabeled_stop": true,
+        "stopped_particle_resurrections": 0
+      },
+      "gun_exit_phase": {
+        "rms_radius_m": 3.793706131355624e-07,
+        "maximum_axis_centered_radius_m": 1.0687860824557564e-06,
+        "rms_mechanical_slope_rad": 3.423195225030296e-07,
+        "radial_curvature_per_m": 0.9020006371216394
+      },
+      "source_emission": {
+        "spatial_rms_axes_nm": [
+          2.0687035049958427,
+          2.066798605873239
+        ],
+        "direction_transverse_rms_axes_mrad": [
+          0.9726085941817254,
+          0.9726690283842738
+        ],
+        "maximum_polar_angle_mrad": 2.9725320483006983
+      },
+      "c2_aperture": {
+        "actual_plane_mm": 765.0,
+        "physical_radius_um": 50.0,
+        "maximum_actual_axis_radius_um": 13.273674495840185,
+        "maximum_radial_fill_fraction": 0.2654734899168037,
+        "radial_clearance_um": 36.72632550415981,
+        "native_geometry_audit": {
+          "actual_boundary_radius_mm": 0.05,
+          "diameter_mm": 0.1,
+          "enabled": true,
+          "event_z_mm": [
+            764.9,
+            764.9,
+            764.9,
+            765.1,
+            765.1,
+            765.1
+          ],
+          "host_key": "condenser_aperture_2",
+          "inserted": true,
+          "installed": true,
+          "key": "condenser_aperture_2",
+          "local_end_z_mm": 765.1,
+          "local_start_z_mm": 764.9,
+          "origin_global_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radius_mm": 0.05,
+          "rotation_local_to_global": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "interpretation": "Complete source rays remain well within the inserted 50 um-radius aperture at its exact observation; production finite-boundary interception reports no stopped source particles."
+      },
+      "surface": {
+        "controls": {
+          "condenser_lens_1": 90.0,
+          "condenser_lens_2": 35.0,
+          "mini_condenser": 10.0,
+          "objective_lens": 29.223516026455023
+        },
+        "z_mm": 1025.1999975,
+        "d95_nm": 0.04330230336314867,
+        "rms_radius_nm": 0.01504968817450084,
+        "alpha95_mrad": 2.199821467478635,
+        "angular_rms_mrad": 1.240776666398072,
+        "native_d95_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.042893053853412653,
+          "neighbour_bracket_mm": [
+            1025.1999985000002,
+            1025.1999990000002
+          ],
+          "neighbour_bracket_offset_nm": [
+            1.0000001111620804,
+            1.500000053056283
+          ],
+          "observed_minimum_planes_mm": [
+            1025.19999875
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.19999875,
+              1025.19999875
+            ]
+          ],
+          "representative_offset_nm": 1.249999968422344,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_rms_waist": {
+          "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+          "minimum": 0.01500476705989068,
+          "neighbour_bracket_mm": [
+            1025.1999982500001,
+            1025.19999875
+          ],
+          "neighbour_bracket_offset_nm": [
+            0.7500000265281415,
+            1.249999968422344
+          ],
+          "observed_minimum_planes_mm": [
+            1025.1999985000002
+          ],
+          "plateau_intervals_mm": [
+            [
+              1025.1999985000002,
+              1025.1999985000002
+            ]
+          ],
+          "representative_offset_nm": 1.0000001111620804,
+          "status": "BOUNDED_OBSERVED_MINIMUM"
+        },
+        "native_focus_gate": {
+          "maximum_d95_nm": null,
+          "passed": false,
+          "placement_passed": false,
+          "placement_tolerance_nm": 1.0,
+          "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+          "size_cap_applied": false,
+          "status": "UNRESOLVED",
+          "strict_surface_d95_passed": null,
+          "support_passed": true
+        },
+        "maximum_centroid_radius_nm": 0.144689354452161,
+        "maximum_radius_over_d95_radius": 6.682755567931068,
+        "maximum_radius_over_second_largest": 1.021127952155408,
+        "outermost_five_percent_packet_fraction_radial_second_moment": 0.5460522705451565,
+        "d95_definition": "Diameter containing 95% of actual specimen-plane current about its current-weighted centroid; not an angle or an emitted-current cutoff.",
+        "rms_definition": "Square root of the current-weighted mean squared centroid radius using all surviving positive-current particles."
+      },
+      "largest_radius_particles": [
+        {
+          "source_id": 1606,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.144689354452161,
+          "surface_optical_axis_radius_nm": 0.14470823490151427,
+          "fraction_surface_radial_second_moment": 0.045132376514531336,
+          "surface_kinetic_energy_ev": 300000.54372831684,
+          "surface_energy_deviation_from_current_mean_ev": 0.2437282707542181,
+          "emission_position_nm": [
+            -0.9427733063558321,
+            0.28298578944338304,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.8930740511179693,
+          "gun_exit_axis_radius_um": 1.068647150554356,
+          "c2_aperture_axis_radius_um": 13.273674495840185,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.2377920318630265e-08,
+              "mechanical_angle_from_axis_mrad": 0.3051989028936478,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.1798825274923487e-06,
+              "mechanical_angle_from_axis_mrad": 0.1433606766290629,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.3273674495840186e-05,
+              "mechanical_angle_from_axis_mrad": 0.12657182129396147,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.646133003091869e-05,
+              "mechanical_angle_from_axis_mrad": 0.3558258272783451,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.4470823490151428e-10,
+              "mechanical_angle_from_axis_mrad": 3.4942530360830846,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 981,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.14169561625137098,
+          "surface_optical_axis_radius_nm": 0.14175694079788717,
+          "fraction_surface_radial_second_moment": 0.04328404832817695,
+          "surface_kinetic_energy_ev": 300000.5289975474,
+          "surface_energy_deviation_from_current_mean_ev": 0.22899750131182373,
+          "emission_position_nm": [
+            4.492196880850731,
+            0.4011455448620641,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.8859537334473124,
+          "gun_exit_axis_radius_um": 1.0579958124508593,
+          "c2_aperture_axis_radius_um": 13.143963624696287,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.20636925258677e-08,
+              "mechanical_angle_from_axis_mrad": 0.3020904321038558,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.1683262898107031e-06,
+              "mechanical_angle_from_axis_mrad": 0.14194870574517432,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.3143963624696287e-05,
+              "mechanical_angle_from_axis_mrad": 0.1253346379089822,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.610497007904854e-05,
+              "mechanical_angle_from_axis_mrad": 0.35234839165117604,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.4175694079788718e-10,
+              "mechanical_angle_from_axis_mrad": 3.460100367427717,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 1356,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.11261734789335505,
+          "surface_optical_axis_radius_nm": 0.11255521343345089,
+          "fraction_surface_radial_second_moment": 0.027341707680885976,
+          "surface_kinetic_energy_ev": 300000.4670434279,
+          "surface_energy_deviation_from_current_mean_ev": 0.16704338183626533,
+          "emission_position_nm": [
+            -1.1364270112905557,
+            2.1203781123730807,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.827039918463916,
+          "gun_exit_axis_radius_um": 0.9853420067909759,
+          "c2_aperture_axis_radius_um": 12.245732683085379,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.987605972985777e-08,
+              "mechanical_angle_from_axis_mrad": 0.2812780395154569,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.0884409460276305e-06,
+              "mechanical_angle_from_axis_mrad": 0.13225481568742936,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2245732683085378e-05,
+              "mechanical_angle_from_axis_mrad": 0.11676899578839008,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.363753389767766e-05,
+              "mechanical_angle_from_axis_mrad": 0.32826803388218934,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.1255521343345089e-10,
+              "mechanical_angle_from_axis_mrad": 3.2236339350075283,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 956,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.10389176593435161,
+          "surface_optical_axis_radius_nm": 0.10383016530950749,
+          "fraction_surface_radial_second_moment": 0.023268977591300363,
+          "surface_kinetic_energy_ev": 300000.5260425144,
+          "surface_energy_deviation_from_current_mean_ev": 0.22604246833361685,
+          "emission_position_nm": [
+            -1.132729799005921,
+            -2.0150741805463364,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.739653559565771,
+          "gun_exit_axis_radius_um": 0.9900295844814679,
+          "c2_aperture_axis_radius_um": 12.295226201022533,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.998950707964669e-08,
+              "mechanical_angle_from_axis_mrad": 0.2827799647737796,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.0929291746876687e-06,
+              "mechanical_angle_from_axis_mrad": 0.13279145637110132,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2295226201022533e-05,
+              "mechanical_angle_from_axis_mrad": 0.11724201608288015,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.377368373194033e-05,
+              "mechanical_angle_from_axis_mrad": 0.3295969039565116,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 1.0383016530950749e-10,
+              "mechanical_angle_from_axis_mrad": 3.2366836078573344,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 1981,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.09766685388555597,
+          "surface_optical_axis_radius_nm": 0.09770292866592742,
+          "fraction_surface_radial_second_moment": 0.020564087393107805,
+          "surface_kinetic_energy_ev": 300000.47081992734,
+          "surface_energy_deviation_from_current_mean_ev": 0.17081988125573844,
+          "emission_position_nm": [
+            -3.2714112724590465,
+            3.8704029753954776,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.8331738469738554,
+          "gun_exit_axis_radius_um": 0.9651610202281817,
+          "c2_aperture_axis_radius_um": 11.985400483219511,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.923276317992847e-08,
+              "mechanical_angle_from_axis_mrad": 0.27572354312360764,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.065398857032177e-06,
+              "mechanical_angle_from_axis_mrad": 0.12946039251365796,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.198540048321951e-05,
+              "mechanical_angle_from_axis_mrad": 0.1142877747034091,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.292264805579596e-05,
+              "mechanical_angle_from_axis_mrad": 0.3212910742386244,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 9.770292866592742e-11,
+              "mechanical_angle_from_axis_mrad": 3.1551258939165114,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 331,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.09721799956831088,
+          "surface_optical_axis_radius_nm": 0.09728254442439763,
+          "fraction_surface_radial_second_moment": 0.02037550613092092,
+          "surface_kinetic_energy_ev": 300000.48396647646,
+          "surface_energy_deviation_from_current_mean_ev": 0.18396643036976457,
+          "emission_position_nm": [
+            -2.2399496305759348,
+            -2.544479545037061,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.73475663534406,
+          "gun_exit_axis_radius_um": 0.960850778197625,
+          "c2_aperture_axis_radius_um": 11.937907936021176,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.9122159453892407e-08,
+              "mechanical_angle_from_axis_mrad": 0.27436966151715686,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.061115556687007e-06,
+              "mechanical_angle_from_axis_mrad": 0.12894152841462417,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.1937907936021175e-05,
+              "mechanical_angle_from_axis_mrad": 0.11383416131503281,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.279205453798927e-05,
+              "mechanical_angle_from_axis_mrad": 0.32001661250888747,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 9.728254442439762e-11,
+              "mechanical_angle_from_axis_mrad": 3.1426089240634325,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 306,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.09478262123748503,
+          "surface_optical_axis_radius_nm": 0.09472075223711696,
+          "fraction_surface_radial_second_moment": 0.019367451393349708,
+          "surface_kinetic_energy_ev": 300000.5480326581,
+          "surface_energy_deviation_from_current_mean_ev": 0.2480326120276004,
+          "emission_position_nm": [
+            1.1349499561902388,
+            0.03914363513403571,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.627591743072858,
+          "gun_exit_axis_radius_um": 0.9741751900405841,
+          "c2_aperture_axis_radius_um": 12.100106187220417,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 2.9515196510297176e-08,
+              "mechanical_angle_from_axis_mrad": 0.27822583286363217,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.075566613062705e-06,
+              "mechanical_angle_from_axis_mrad": 0.13068876795157028,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.2100106187220417e-05,
+              "mechanical_angle_from_axis_mrad": 0.11538121473724598,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.3237669335245283e-05,
+              "mechanical_angle_from_axis_mrad": 0.32436564413598057,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 9.472075223711696e-11,
+              "mechanical_angle_from_axis_mrad": 3.1853146087626087,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "source_id": 826,
+          "original_weight": 0.00048828125,
+          "current_a": 4.8828125e-09,
+          "surface_centroid_radius_nm": 0.08970758306325124,
+          "surface_optical_axis_radius_nm": 0.08971409359301914,
+          "fraction_surface_radial_second_moment": 0.01734895643167654,
+          "surface_kinetic_energy_ev": 300000.7047085843,
+          "surface_energy_deviation_from_current_mean_ev": 0.40470853820443153,
+          "emission_position_nm": [
+            -1.259752107626948,
+            -0.6168881599033966,
+            0.0
+          ],
+          "emission_mechanical_angle_mrad": 2.34081746347052,
+          "gun_exit_axis_radius_um": 0.9963849366168074,
+          "c2_aperture_axis_radius_um": 12.3799344640343,
+          "observed_checkpoints": [
+            {
+              "z_mm": 500.0,
+              "axis_radius_m": 3.0201770950152704e-08,
+              "mechanical_angle_from_axis_mrad": 0.28448356951899395,
+              "alive": true
+            },
+            {
+              "z_mm": 650.0,
+              "axis_radius_m": 1.1003990437167556e-06,
+              "mechanical_angle_from_axis_mrad": 0.13370773261955587,
+              "alive": true
+            },
+            {
+              "z_mm": 765.0,
+              "axis_radius_m": 1.23799344640343e-05,
+              "mechanical_angle_from_axis_mrad": 0.11804903359218678,
+              "alive": true
+            },
+            {
+              "z_mm": 948.5,
+              "axis_radius_m": 3.400623561932305e-05,
+              "mechanical_angle_from_axis_mrad": 0.33186605551805815,
+              "alive": true
+            },
+            {
+              "z_mm": 1025.1999975,
+              "axis_radius_m": 8.971409359301914e-11,
+              "mechanical_angle_from_axis_mrad": 3.2589685202891996,
+              "alive": true
+            }
+          ]
+        }
+      ],
+      "descriptive_regression": {
+        "scope": "Read-only regression of existing observed complex transverse positions on mechanical angle; no ray removal, retuning, current renormalization or new transport.",
+        "inference": "The strong cubic-angle association and additional energy dependence support a reproducible nonlinear/dispersion tail. This is not an isolated-lens aberration calibration or a causal perturbation experiment.",
+        "fits": {
+          "linear_angle": {
+            "fraction_position_variance_explained": 0.0059865400976181204,
+            "coefficients": {
+              "angle": {
+                "real": -9.384713146744663e-10,
+                "imaginary": 1.1801730091313238e-12
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.14796902410453583
+          },
+          "linear_and_cubic_angle": {
+            "fraction_position_variance_explained": 0.8706351052809758,
+            "coefficients": {
+              "angle": {
+                "real": -1.6779572010586236e-08,
+                "imaginary": -1.1572132505594011e-11
+              },
+              "angle_times_squared_magnitude": {
+                "real": 0.00472044490120924,
+                "imaginary": 3.800023540105627e-06
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.0018810531536591684
+          },
+          "linear_and_energy_angle": {
+            "fraction_position_variance_explained": 0.037585382913948084,
+            "coefficients": {
+              "angle": {
+                "real": -1.9221479354054736e-09,
+                "imaginary": -2.6789913543142134e-12
+              },
+              "angle_times_energy_deviation_ev": {
+                "real": 1.819185266437007e-08,
+                "imaginary": 7.137035487863583e-11
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.13591147324711378
+          },
+          "linear_cubic_and_energy_angle": {
+            "fraction_position_variance_explained": 0.9641526138956508,
+            "coefficients": {
+              "angle": {
+                "real": -1.7699271504556876e-08,
+                "imaginary": -1.0412616466006262e-11
+              },
+              "angle_times_squared_magnitude": {
+                "real": 0.005569224242268669,
+                "imaginary": 2.72992046134872e-06
+              },
+              "angle_times_energy_deviation_ev": {
+                "real": -3.566841653555501e-08,
+                "imaginary": 4.4969146281812117e-11
+              }
+            },
+            "maximum_radius_particle_fit_residual_nm": 0.0008425828590534969
+          }
+        }
+      }
+    }
+  ],
+  "same_population_optical_trial_comparisons": [
+    {
+      "reference": "initial-n1024-s010/trial-00",
+      "comparison": "initial-n1024-s010/trial-01",
+      "exact_array_equality": {
+        "weights": true,
+        "source_id": true,
+        "emission_ray_id": true,
+        "emission_position_m": true,
+        "emission_direction": true,
+        "emission_normal": true,
+        "gun_exit_x_m": true,
+        "gun_exit_y_m": true,
+        "gun_exit_tx_rad": true,
+        "gun_exit_ty_rad": true,
+        "gun_exit_flight_time_s": true,
+        "gun_exit_alive": true
+      }
+    },
+    {
+      "reference": "fine-n2048-s010/trial-00",
+      "comparison": "fine-n2048-s010/trial-01",
+      "exact_array_equality": {
+        "weights": true,
+        "source_id": true,
+        "emission_ray_id": true,
+        "emission_position_m": true,
+        "emission_direction": true,
+        "emission_normal": true,
+        "gun_exit_x_m": true,
+        "gun_exit_y_m": true,
+        "gun_exit_tx_rad": true,
+        "gun_exit_ty_rad": true,
+        "gun_exit_flight_time_s": true,
+        "gun_exit_alive": true
+      }
+    }
+  ],
+  "source_model_comparison": {
+    "current_profile": "initial-n1024-s010/trial-01/input.toml",
+    "historical_profile": "outputs/microprobe-20261111/extractor/new-n2048/input.toml",
+    "historical_file_sha256": {
+      "outputs/microprobe-20261111/extractor/new-n2048/input.toml": "c8ce9904b23f5b980f1fb9de1f3a7a6153c45153c8456368263f62c3cfec5749",
+      "outputs/microprobe-20261111/extractor/new-n2048/source.npz": "56bdb638abe57e10134d0e453a08c6fa224b696abe6e8351c3d856a9c3e9f3c9",
+      "outputs/microprobe-20261111/extractor/new-n2048/launch.npz": "2b8b8e5dba06c321852ee97e10983d54d523dc84226c0e81fe0f196ba84599bd"
+    },
+    "current_source_model": {
+      "representation": "classical_particles"
+    },
+    "historical_source_model": {
+      "representation": "classical_particles",
+      "tip_coherence": {
+        "incoherent_angle_rms_mrad": 0.0,
+        "curvature_x_m1": 0.0,
+        "curvature_xy_m1": 0.0,
+        "curvature_y_m1": 0.0,
+        "offset_x_nm": 0.0,
+        "offset_y_nm": 0.0,
+        "tilt_x_mrad": 0.0,
+        "tilt_y_mrad": 0.0,
+        "boundary_model": "driven_gaussian_schell",
+        "transverse_coherence_length_nm": 20.0
+      }
+    },
+    "gun_voltage_records": {
+      "feg_electrostatic_lens": {
+        "current": {
+          "voltage_kv": 5.2,
+          "voltage_reference": "tip"
+        },
+        "historical": {
+          "voltage_kv": 5.2,
+          "voltage_reference": "tip"
+        },
+        "exact_match": true
+      },
+      "feg_extractor": {
+        "current": {
+          "voltage_kv": 4.0
+        },
+        "historical": {
+          "voltage_kv": 4.0
+        },
+        "exact_match": true
+      },
+      "feg_accelerator": {
+        "current": {
+          "high_tension_kv": 300.0
+        },
+        "historical": {
+          "high_tension_kv": 300.0
+        },
+        "exact_match": true
+      }
+    },
+    "historical_gun_exit_phase": {
+      "rms_radius_m": 6.9394879015532525e-06,
+      "maximum_axis_centered_radius_m": 1.672023361823794e-05,
+      "rms_mechanical_slope_rad": 6.26568935314006e-06,
+      "radial_curvature_per_m": 0.9029023187298264
+    },
+    "historical_actual_launch": {
+      "launch_slope_rms_axes_mrad": [
+        20.915200905136864,
+        21.278065088077334
+      ],
+      "maximum_launch_polar_angle_mrad": 195.52865148182357
+    },
+    "observed_difference": "The historical profile explicitly uses driven_gaussian_schell with a 20 nm transverse coherence length; the current actual default is classical_particles without that Tip coherence boundary. Actual historical launch slopes are about 21 mrad per axis, versus about 0.971 mrad transverse direction per axis now. Gun voltages are identical.",
+    "interpretation": "The old 6.939 um RMS gun-exit source and its predicted aperture filling are not the currently executed 0.379 um RMS source. Historical curvature was used only as a zero-current focusing proposal and must not qualify current source width, current or aberrations.",
+    "source_code_references": [
+      "src/temsim/optics/electron_gun/emitter.py:414",
+      "src/temsim/optics/electron_gun/tip_coherence.py:86",
+      "src/temsim/optics/electron_gun/tip_coherence.py:277"
+    ]
+  },
+  "conclusions": {
+    "original_source_integrity": "All completed observations retain unique original IDs, positive equal weights, original emission IDs and full physical transmission. Same-count optical trials preserve exact emission and gun-exit arrays.",
+    "current_transmission": "100% transmission is supported by actual original-current accounting and a C2 pupil maximum near 13.3 um inside the real 50 um-radius inserted aperture; it was not created by rejecting or renormalizing tails.",
+    "tails": "The focused 1024 population contains a consequential high-angle tail: its largest particle contributes about 10% of the radial second moment. At 2048 particles a second comparably large tail is resolved, arguing against a single corrupt or isolated packet.",
+    "statistical_distinction": "D95 can exclude an outer current tail that still strongly influences RMS radius and RMS-waist position. Both native waist diagnostics must remain separate.",
+    "limits": "These are classical geometrical particle statistics; no coherent diffraction-limited probe size or wave-resolution qualification is claimed."
+  }
+}

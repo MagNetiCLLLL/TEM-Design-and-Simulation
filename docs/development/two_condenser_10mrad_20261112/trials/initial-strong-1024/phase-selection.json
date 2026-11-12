@@ -1,0 +1,47 @@
+{
+  "original_observations": {
+    "path": "outputs/two-condenser-10mrad-20261112/initial-n1024-s010/trial-00/observations.npz",
+    "sha256": "e0df160303624b9ca1d6d2b5cc77faad1c9e5b4c9bb4319247eeb3a441196be4",
+    "bytes": 7580047
+  },
+  "original_checkpoint_count": 220,
+  "selected_checkpoint_count": 13,
+  "selected_original_indexes": [
+    0,
+    117,
+    142,
+    161,
+    162,
+    163,
+    164,
+    166,
+    167,
+    169,
+    170,
+    194,
+    219
+  ],
+  "selected_planes_mm": [
+    450.0,
+    1025.1949975,
+    1025.1974975,
+    1025.1993975,
+    1025.1994975,
+    1025.1995975000002,
+    1025.1996975000002,
+    1025.1998975000001,
+    1025.1999975,
+    1025.2000025,
+    1025.2000975,
+    1025.2024975000002,
+    1025.2049975000002
+  ],
+  "original_focus_checkpoint_count": 103,
+  "selected_focus_checkpoint_count": 12,
+  "focus_selection": "Executed D95/RMS minimum and neighbour-bracket rows, exact surface, original endpoints and representative defocus rows; all native scalar focus observations remain in the byte-preserved report",
+  "source_particle_count": 1024,
+  "original_positive_count": 1024,
+  "weights_and_ids_unchanged": true,
+  "scope": "All original particles at selected exact native observations; topology moments cover every original checkpoint; this is not the complete original trajectory array.",
+  "topology_moment_order": "x_m,y_m,tx_rad,ty_rad; population-centered covariance with original current weights normalized only for statistics"
+}

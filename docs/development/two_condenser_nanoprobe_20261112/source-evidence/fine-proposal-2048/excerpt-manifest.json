@@ -1,0 +1,42 @@
+{
+  "schema": "complete-source-surface-excerpt-v1",
+  "original_directory": "outputs/two-condenser-20261112/fine-n2048-s010/trial-00",
+  "original_files": {
+    "report.json": {
+      "original_path": "outputs/two-condenser-20261112/fine-n2048-s010/trial-00/report.json",
+      "sha256": "12f864e723af78d190181c0ac2999b37c6ac83b13b61c89ecb43b4ac2893c61a",
+      "bytes": 1001948
+    },
+    "request.json": {
+      "original_path": "outputs/two-condenser-20261112/fine-n2048-s010/trial-00/request.json",
+      "sha256": "3c2d8c38a42c823889097614ca1c3bad2980b59220117a468e232f50385ce534",
+      "bytes": 47337
+    },
+    "input.toml": {
+      "original_path": "outputs/two-condenser-20261112/fine-n2048-s010/trial-00/input.toml",
+      "sha256": "3a5ca18be31b5ab6be9df360a96ba1c2df66618f05898d0620dccb57e4ac61f3",
+      "bytes": 25760
+    },
+    "inputs.json": {
+      "original_path": "outputs/two-condenser-20261112/fine-n2048-s010/trial-00/inputs.json",
+      "sha256": "5dfc51436a06c16eeed6057325ff946db8ec3f6cad2f620c298458615496c58e",
+      "bytes": 1433208
+    },
+    "observations.npz": {
+      "original_path": "outputs/two-condenser-20261112/fine-n2048-s010/trial-00/observations.npz",
+      "sha256": "2ec4deab32fad1c8fbe84995db996525c5566951608608a7c8e9497bd0404278",
+      "bytes": 166238416
+    }
+  },
+  "selected_checkpoint_rows": [
+    0,
+    2071
+  ],
+  "selected_planes_mm": [
+    450.0,
+    1025.1999975
+  ],
+  "original_positive_count": 2048,
+  "all_original_ids_weights_and_launch_exit_arrays_retained": true,
+  "scope": "Original source integrity and sample-surface tail evidence only; not a complete through-focus or global-topology array."
+}

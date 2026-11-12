@@ -1,0 +1,126 @@
+{
+  "nano_probe": {
+    "calibration_status": "computed_300kv_unified_two_condenser_nanoprobe",
+    "calibration_reference": "Independent physical C1+C2 Nanoprobe at Mini -10% and the actual 5 nm specimen upper surface. Objective reduced from the uncalibrated module default and refined with original 1024/2048-particle unified finite-field trials. Native D95 minimum is at the upper surface with a +/-0.25 nm observed bracket at both 0.1 and 0.05 mm maximum steps; RMS minimum is 0.25 nm upstream. One resolved final waist across complete Mini/Objective support, without an extra upstream last-stage crossover. All original positive-current particles and weights survive. Geometric incident-probe qualification only, not coherent resolution or OEM performance. Edited source, Mini magnitude or geometry requires revalidation. See docs/development/two_condenser_nanoprobe_20261112/README.md.",
+    "devices": {
+      "condenser_lens_1": {
+        "percent": 90.0
+      },
+      "condenser_lens_2": {
+        "percent": 35.0
+      },
+      "mini_condenser": {
+        "field_polarity": -1
+      },
+      "objective_lens": {
+        "percent": 29.223518226455024
+      }
+    },
+    "apertures": {
+      "condenser_aperture_2": {
+        "enabled": true,
+        "diameter_mm": 0.1
+      }
+    },
+    "targets": {
+      "beam_character": "convergent_probe",
+      "condenser_topology": "physical_c1_c2_only",
+      "calibration_model": "unified",
+      "calibration_cm_excitation_percent": 10.0,
+      "calibration_sample_thickness_nm": 5.0,
+      "calibration_source": "current_default_classical_particles_without_tip_coherence",
+      "source_virtual_fwhm_nm": 5.0,
+      "source_angular_rms_mrad": 1.0,
+      "source_angular_cutoff_mrad": 3.0,
+      "specimen_upper_surface_z_mm": 1025.1999975,
+      "achieved_convergence_sem_angle_mrad": 2.199839365590863,
+      "achieved_angular_rms_mrad": 1.2407867451198265,
+      "achieved_geometric_rms_radius_nm": 0.015011119643661652,
+      "achieved_geometric_diameter_95_nm": 0.04284650472211823,
+      "achieved_native_d95_waist_offset_nm": 0.0,
+      "achieved_native_d95_waist_bracket_nm": [
+        -0.25000008463393897,
+        0.25000008463393897
+      ],
+      "achieved_native_rms_waist_offset_nm": -0.25000008463393897,
+      "achieved_transmission_fraction": 1.0,
+      "achieved_sample_current_a": 1e-05,
+      "calibration_ray_count": 2048,
+      "surviving_positive_count": 2048,
+      "effective_sample_count": 2048.0,
+      "calibration_step_mm": 0.05,
+      "compared_steps_mm": [
+        0.1,
+        0.05
+      ],
+      "source_comparison_counts": [
+        1024,
+        2048
+      ],
+      "native_focus_spacing_nm": 0.25,
+      "source_count_relative_d95_difference": 0.009460833604643781,
+      "integration_step_relative_d95_difference": -0.0004012730883525828,
+      "qualification_scope": "current_default_source_bounded_native_D95_and_direct_last_field_focus",
+      "coherent_resolution_qualification": "NOT_TESTED",
+      "c2_aperture_diameter_um": 100.0
+    }
+  },
+  "diffraction": {
+    "calibration_status": "computed_unified_c2_zero_current_diffraction_reference",
+    "calibration_reference": "Independent C1+C2 Nanoprobe diffraction differential reference at exact Objective 29.223518226455024% and the specimen upper surface. D/I were jointly matched with P1/P2 held fixed. Production unified nine-pencil verification used 0.05 mm at this exact final point. Independent 0.1/0.05 mm and half-increment checks belong to nearby Objective 29.2235172%, as recorded separately. Source emission was forbidden; no finite-source, finite-angle, detector-signal, wave or experimental qualification.",
+    "devices": {
+      "diffraction_lens": {
+        "percent": 13.589999609390503
+      },
+      "intermediate_lens": {
+        "percent": 8.532044964017839
+      },
+      "projector_lens_1": {
+        "percent": 32.1132572718703
+      },
+      "projector_lens_2": {
+        "percent": 9.826874422815507
+      }
+    },
+    "apertures": {},
+    "targets": {
+      "conjugate_plane": "mode_dependent_diffraction_reference_plane",
+      "reference_surface": "stem_main_screen",
+      "calibration_model": "unified",
+      "calibration_scope": "zero_current_differential_pencils_only",
+      "source_plane": "specimen_upper_surface",
+      "source_z_mm": 1025.1999975,
+      "reference_z_mm": 2140.15,
+      "objective_excitation_percent": 29.223518226455024,
+      "target_effective_camera_length_m": 0.05,
+      "achieved_effective_camera_length_m": 0.049999999174983316,
+      "achieved_diffraction_conjugacy_residual": 8.392709698605317e-07,
+      "validation_step_mm": 0.05,
+      "finite_source_qualification": "NOT_TESTED",
+      "finite_angle_qualification": "NOT_TESTED",
+      "wave_qualification": "NOT_TESTED",
+      "calibrated_illumination": "nanoprobe",
+      "diagnostic_pencil_count": 9,
+      "validation_steps_mm": [
+        0.05
+      ],
+      "diagnostic_position_steps_m": [
+        1e-10
+      ],
+      "diagnostic_angle_steps_rad": [
+        1e-07
+      ],
+      "camera_length_relative_error": 1.6500333765989694e-08,
+      "exact_working_point_validation_step_mm": 0.05,
+      "nearby_step_refinement_objective_excitation_percent": 29.2235172,
+      "nearby_step_refinement_steps_mm": [
+        0.1,
+        0.05
+      ],
+      "nearby_half_increment_check": true
+    },
+    "compatible_recording_systems": [
+      "No Energy Filter"
+    ]
+  }
+}

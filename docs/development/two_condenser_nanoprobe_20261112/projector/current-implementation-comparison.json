@@ -1,0 +1,23 @@
+{
+  "previous_record": "final-exact-objective.json",
+  "current_record": "final-current-implementation-objective.json",
+  "previous_implementation_identity": "88c438d56d0aba72a14cc3f1954d17bc2b5e61a0c3a5edb02a9b96431a1ebf92",
+  "current_implementation_identity": "ae4a58e6354b4a8f7a162bb33ce2c167b41a69f4dcc9e218c8c8dcf7bb70faa0",
+  "implementation_identity_changed": true,
+  "bitwise_equal_arrays": {
+    "canonical_to_mechanical_basis": true,
+    "mechanical_jacobian": true,
+    "canonical_jacobian": true
+  },
+  "bitwise_equal_scalar_results": {
+    "canonical_position_residual_norm": true,
+    "effective_camera_length_m": true,
+    "camera_length_relative_error_to_50mm": true
+  },
+  "captured_field_digest_equal": true,
+  "captured_geometry_digest_equal": true,
+  "explicit_profile_bytes_equal": true,
+  "original_record_sha256": "996be5c5d41ff625d78666b67931ed26a0a0218340da2323c023aed6526d63f3",
+  "current_record_sha256": "ac3927f84cc9bf4c75d45eeadb1b938df22e7ea9cd2a6f9e25d4b03ab3529e10",
+  "scope": "Current source implementation and final catalog independently revalidated once; old evidence unchanged."
+}

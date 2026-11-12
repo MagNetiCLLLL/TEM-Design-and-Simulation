@@ -1,0 +1,2079 @@
+{
+  "absolute_current_balance_residual_a": 7.411538288475128e-22,
+  "alpha95_mrad": 10.313303122249309,
+  "alpha95_requirement": {
+    "achieved_mrad": 10.313303122249309,
+    "definition": "95% of actual specimen current about its weighted chief direction",
+    "minimum_mrad": 10.0,
+    "passed": true
+  },
+  "angular_rms_mrad": 5.940558617681631,
+  "controls": {
+    "condenser_lens_1": 52.5,
+    "condenser_lens_2": 17.75,
+    "mini_condenser": 10.0,
+    "objective_lens": 29.293391565317982
+  },
+  "d95_nm": 11.987113528917705,
+  "effective_count": 975.0,
+  "elapsed_s": 125.25377979999757,
+  "emitted_current_transmission": 0.9521484375,
+  "execution": {
+    "active_lens_owners": [
+      "condenser_lens_1",
+      "condenser_lens_2",
+      "mini_condenser",
+      "objective_lens",
+      "diffraction_lens",
+      "intermediate_lens",
+      "projector_lens_1",
+      "projector_lens_2"
+    ],
+    "checkpoint_rows": 220,
+    "column_hardware": "two_condenser",
+    "column_mode": "two_condenser",
+    "emitted_count": 1024,
+    "emitted_positive_count": 1024,
+    "expected_c2_diameter_mm": 0.07,
+    "field_audit": {
+      "c2_aperture": {
+        "actual_boundary_radius_mm": 0.035,
+        "diameter_mm": 0.07,
+        "enabled": true,
+        "event_z_mm": [
+          764.9,
+          764.9,
+          764.9,
+          765.1,
+          765.1,
+          765.1
+        ],
+        "expected_diameter_mm": 0.07,
+        "host_key": "condenser_aperture_2",
+        "inserted": true,
+        "installed": true,
+        "key": "condenser_aperture_2",
+        "local_end_z_mm": 765.1,
+        "local_start_z_mm": 764.9,
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "radius_mm": 0.035,
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "field_ownership": {
+        "duplicate_ownership": false,
+        "metadata": {
+          "dynamic_snapshot_digest": null,
+          "electric_policy": "retained native phi and E plus -partial_t(A); no tolerance-based tail deletion",
+          "emission_time_s": 0.0,
+          "empirical_aberrations_applied": false,
+          "equivalent_image_maps_applied": false,
+          "geometry_owner": "unified captured finite boundaries",
+          "qualification": "native engineering fields with explicit domains; not OEM field calibration",
+          "round_radial_order": 3,
+          "round_remote_domain_policy": "gaussian-binary64-remote-roundoff-v1",
+          "saved_legacy_terms": "preserved in instrument input identity; inactive in this field-owned interval",
+          "source_contract": "executed physical gun exit; no synthetic source substitution",
+          "time_policy": "actual emission epoch plus flight time; native raster flyback requires explicit temporal admission"
+        },
+        "natural_field_aberrations_retained": true,
+        "required_magnetic_owners": {
+          "ac_deflector": [
+            "ac_deflector:0",
+            "ac_deflector:1"
+          ],
+          "beam_deflector": [
+            "beam_deflector:0",
+            "beam_deflector:1"
+          ],
+          "condenser_lens_1": [
+            "condenser_lens_1"
+          ],
+          "condenser_lens_2": [
+            "condenser_lens_2"
+          ],
+          "condenser_stigmator": [
+            "condenser_stigmator"
+          ],
+          "diffraction_lens": [
+            "diffraction_lens"
+          ],
+          "diffraction_stigmator": [
+            "diffraction_stigmator"
+          ],
+          "image_diffraction_deflector": [
+            "image_diffraction_deflector:0",
+            "image_diffraction_deflector:1"
+          ],
+          "intermediate_lens": [
+            "intermediate_lens"
+          ],
+          "mini_condenser": [
+            "mini_condenser"
+          ],
+          "objective_lens": [
+            "objective_lens"
+          ],
+          "objective_stigmator": [
+            "objective_stigmator"
+          ],
+          "projector_lens_1": [
+            "projector_lens_1"
+          ],
+          "projector_lens_2": [
+            "projector_lens_2"
+          ]
+        },
+        "selected_auxiliaries": [
+          "condenser_stigmator",
+          "objective_stigmator",
+          "diffraction_stigmator",
+          "ac_deflector",
+          "beam_deflector",
+          "image_diffraction_deflector"
+        ],
+        "selected_round_lenses": [
+          "condenser_lens_1",
+          "condenser_lens_2",
+          "mini_condenser",
+          "objective_lens",
+          "diffraction_lens",
+          "intermediate_lens",
+          "projector_lens_1",
+          "projector_lens_2"
+        ],
+        "sources": [
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "condenser_lens_1"
+            ],
+            "potential_digest": "535ce68d21152f1906b990adf4595f57660b744fd3603ac6bdccb79ffcb0032e",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "condenser_lens_1"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "condenser_lens_2"
+            ],
+            "potential_digest": "19f0d656437077d681f854fa49fcbc6c8d3c8f8eae37e27dc29e548f183f5a61",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "condenser_lens_2"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "mini_condenser"
+            ],
+            "potential_digest": "282fa2be9b397097dc7eaf2e743d35c6141c0d5cedc13552fcd8364af87e28de",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "mini_condenser"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "objective_lens"
+            ],
+            "potential_digest": "a61652401aaebe14a019b9269747af4a782f1a3afc31ebb9795b0a2e9b899bf0",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "objective_lens"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "diffraction_lens"
+            ],
+            "potential_digest": "cd766271fcd5859f010293a4010ab6e9135488699bb37831e7f775cc04e5cdd5",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "diffraction_lens"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "intermediate_lens"
+            ],
+            "potential_digest": "fdefe9462c760d24b4a01dec5d8f37b6b6937395baa9b0962598ad057531df8e",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "intermediate_lens"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "projector_lens_1"
+            ],
+            "potential_digest": "e8726d5d849564d3ac315b4cd4ca22cbd28b5be8428d0062514dc254c3245692",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "projector_lens_1"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "projector_lens_2"
+            ],
+            "potential_digest": "8ead81464f0bfa4a24210329875a0739c6c45ef3a79c4aec339ed129727d52ff",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "projector_lens_2"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "condenser_stigmator"
+            ],
+            "potential_digest": "a05ef2e8d53f181c9da81bfb102eefc2ca5a0cc65edef13c80b1f3677b83e60f",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "condenser_stigmator"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "objective_stigmator"
+            ],
+            "potential_digest": "c348ec06106fbfbcf7abcd8756964c30f20cd7f880dd48185771fcde00026a08",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "objective_stigmator"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "diffraction_stigmator"
+            ],
+            "potential_digest": "750b337acce242a6a2e84a7302b6cda11ef4f75c9571822e7670a9ba5ef0b6f0",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "diffraction_stigmator"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "ac_deflector:0"
+            ],
+            "potential_digest": "536ae4c079ede9d972e3db3483984f1c64cde256531e21ed8c66714bf6ad2441",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "ac_deflector:0"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "ac_deflector:1"
+            ],
+            "potential_digest": "723ada3a45eb2478e7a699372f356f5a500f415c176f2ea1f8d3569935bedf9a",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "ac_deflector:1"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "beam_deflector:0"
+            ],
+            "potential_digest": "02bd131e3a0a9c403903be5539d649a237b86f70f9cac3092b12a6b8a102d653",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "beam_deflector:0"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "beam_deflector:1"
+            ],
+            "potential_digest": "4a7ccea5a7317db11b124ba6731e7c53c0778f1ca419a5898fd0acf3c450f20e",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "beam_deflector:1"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "image_diffraction_deflector:0"
+            ],
+            "potential_digest": "e60b8780079a8f34d0b12673d2a7ec1327ea7a2c1bb76c7d058c658d6f84ed76",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "image_diffraction_deflector:0"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "image_diffraction_deflector:1"
+            ],
+            "potential_digest": "4ef6d9d4d70af54c0c48d70d2d838b6dce85750a8603198feae2eb8dd5acd8c6",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "image_diffraction_deflector:1"
+          },
+          {
+            "kind": "electric",
+            "owner_ids": [
+              "instrument_electric"
+            ],
+            "potential_digest": "d67b9e9e4ed3b49fd94abe075f083ccd012ed0874c45bb5799ad1bc8aea987da",
+            "potential_type": "ElectricPotentialSnapshot",
+            "source_id": "instrument_electric"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "feg_deflector"
+            ],
+            "potential_digest": "5b0b406a386a34271a8c920f6ff67ff32103f7b6456a834ab24df85f8df80e7c",
+            "potential_type": "GunMagneticPotential",
+            "source_id": "feg_deflector"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "feg_stigmator"
+            ],
+            "potential_digest": "08ed3409f01d559379d06b444d3ad8a735a73837f666317cdfb6c3c4bcbf3806",
+            "potential_type": "GunMagneticPotential",
+            "source_id": "feg_stigmator"
+          }
+        ]
+      },
+      "identities": {
+        "geometry_digest": "8e8de812d7202f65317ca6516a96708df9196aad55bfde42c47d4043e58d2732",
+        "input_digest": "785a7939fb13ff9b732862e68c3475b998e8ef0b75f3317eb8fda99887d50715",
+        "plan_signature": "ace4cf2c4578b76f5bbb52c08ed853ab10e95c8a362fd2bd4eea99432ec18d90",
+        "potential_digest": "6f367127b1a614c806f24a7c515b605494ddc79386c7dde3a1299bc409e3cf54",
+        "runtime_digest": "4d697eabe30ac4c71f1200a53dbe6751fab958bf314b0510f9176ec2a4dfb6e4"
+      },
+      "passed": true,
+      "plan_actions": {
+        "additional_arrays": {
+          "cs_kick_m3": {
+            "count": 5986,
+            "nonzero_count": 0
+          },
+          "kick_x_rad": {
+            "count": 5986,
+            "nonzero_count": 0
+          },
+          "kick_y_rad": {
+            "count": 5986,
+            "nonzero_count": 0
+          },
+          "thin_power_m1": {
+            "count": 5986,
+            "nonzero_count": 0
+          },
+          "thin_rotation_rad": {
+            "count": 5986,
+            "nonzero_count": 0
+          }
+        },
+        "additional_lists": {
+          "intrinsic_aberration_kicks": 0,
+          "mapped_fields": 0,
+          "posed_spherical_kicks": 0,
+          "thin_actions": 0
+        },
+        "extra_electric_provider": false,
+        "interaction_count": 20,
+        "interval_mm": [
+          450.0,
+          1025.2049975000002
+        ],
+        "legacy_input_coefficients": "Preserved; inactive in this field-owned interval",
+        "node_count": 5986
+      },
+      "schema": "temsim-extended-probe-field-audit-v1",
+      "scope": "Executed extended column field/action ownership; specimen material interactions omitted",
+      "status": "PASS"
+    },
+    "gun_dependency_signature": "f7f0f1ff119dffc6919ed610736eb5dbc340c5e15176d1cae1cab351db45c271",
+    "gun_exit_positive_count": 1024,
+    "gun_reused": false,
+    "implementation": "8862d211bd0ee8fcd6c07c3d744fb20b900667c1f91f84eda5c23cc0bea56dc5",
+    "initial_dependency_signature": "66cad4af0b791c096e18462a0e26578e5ad2b7a1563dbb50db615c149aad508f",
+    "input_digest": "785a7939fb13ff9b732862e68c3475b998e8ef0b75f3317eb8fda99887d50715",
+    "integration_nodes": 5986,
+    "original_source_sha256": {
+      "emission_direction": "713473d485b718f20317841a17996c14a3fb74caeee556228a1669acac9720d7",
+      "emission_normal": "c2dbdd1d27d52ed3b1b996fe81412ecac5815265f8bfebc4c4b5993064ccc6cd",
+      "emission_position_m": "df6f435c42331faacc8443848096024857b452a65c6a52d7f6c232cdb6dbc067",
+      "emission_ray_id": "f892dc137b3d860b59ddedb6a875380d6169c3b06ef0d613735b482a5a61ca48",
+      "gun_exit_alive": "62825fc12fe00a2018422d1f9ce1542a15b408f140ed688a8b15e67769a545d4",
+      "gun_exit_flight_time_s": "3e7eef01547b2ab58ff2cb34a73b1e400366a09e3e23200c9ea39c6bef5d031d",
+      "gun_exit_tx_rad": "f9e51fd8214e2ef1cda1b280013692cab0f31e36eb3ca35f769cb319d2c44d00",
+      "gun_exit_ty_rad": "08e64790f94b300eac2a457e7cb2f9b2fc0c03bee9cfdf7fef47bbfe1063ba60",
+      "gun_exit_x_m": "7e6cbecaa05d1eb12280d880e7b8904439d3a62564def8c9e493261eac68b64e",
+      "gun_exit_y_m": "93d224aeb24e58e840906fca1a5196eb0e3dd0df7a19b28f10616e62876cd8fa",
+      "source_azimuth_rad": "90b5eb0113c16e5e80ae8b77e8d689c9a1c39825e9c0bf535270caf7dcdbf6ff",
+      "source_id": "f892dc137b3d860b59ddedb6a875380d6169c3b06ef0d613735b482a5a61ca48",
+      "weights": "751a9af5bc8e4b67192640dcf62c34e7e4856ea63508a734ef2a76ae1e912b7c"
+    },
+    "recording_receivers": {
+      "camera": {
+        "inserted": false
+      },
+      "flu_screen": {
+        "inserted": false
+      }
+    },
+    "reference_current_a": 1e-05
+  },
+  "native_focus": {
+    "d95_waist": {
+      "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+      "minimum": 3.7361821232499555,
+      "neighbour_bracket_mm": [
+        1025.1994975,
+        1025.1996975000002
+      ],
+      "neighbour_bracket_offset_nm": [
+        -500.0000001018634,
+        -299.99999992469384
+      ],
+      "observed_minimum_planes_mm": [
+        1025.1995975000002
+      ],
+      "plateau_intervals_mm": [
+        [
+          1025.1995975000002,
+          1025.1995975000002
+        ]
+      ],
+      "representative_offset_nm": -399.9999998995918,
+      "status": "BOUNDED_OBSERVED_MINIMUM"
+    },
+    "focus_definition": "Native D95(z) discrete minimum about each actual current-weighted centroid",
+    "planes": [
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122581988,
+        "centroid_x_m": 5.892924045265731e-11,
+        "centroid_y_m": -1.1053309415032663e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 48.48577752929538,
+        "d90_nm": 84.86866565368891,
+        "d95_nm": 91.22451826035244,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -5000.000000109139,
+        "rms_radius_nm": 27.638648004236103,
+        "surviving_rays": 975,
+        "z_mm": 1025.1949975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122575338,
+        "centroid_x_m": 5.7659035620895936e-11,
+        "centroid_y_m": -1.0807474250755837e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 47.49055567166057,
+        "d90_nm": 82.99498861587955,
+        "d95_nm": 89.16470855820465,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -4899.999999906868,
+        "rms_radius_nm": 27.045143206050064,
+        "surviving_rays": 975,
+        "z_mm": 1025.1950975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122568689,
+        "centroid_x_m": 5.638877543052124e-11,
+        "centroid_y_m": -1.0561641946844904e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 46.49533380810468,
+        "d90_nm": 81.12131156759743,
+        "d95_nm": 87.10489884497825,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -4799.99999993197,
+        "rms_radius_nm": 26.451663726538232,
+        "surviving_rays": 975,
+        "z_mm": 1025.1951975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122562042,
+        "centroid_x_m": 5.511845988217765e-11,
+        "centroid_y_m": -1.0315812503424567e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 45.50011193876043,
+        "d90_nm": 79.24763450908354,
+        "d95_nm": 85.04508912095062,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -4699.999999957072,
+        "rms_radius_nm": 25.858211309301186,
+        "surviving_rays": 975,
+        "z_mm": 1025.1952975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312255539,
+        "centroid_x_m": 5.3848088979329754e-11,
+        "centroid_y_m": -1.0069985921165326e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 44.50489006597096,
+        "d90_nm": 77.37395744473962,
+        "d95_nm": 82.98527939097451,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -4599.999999982174,
+        "rms_radius_nm": 25.264787862990584,
+        "surviving_rays": 975,
+        "z_mm": 1025.1953975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122548737,
+        "centroid_x_m": 5.2577662716979975e-11,
+        "centroid_y_m": -9.824162199100146e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 43.50966818545053,
+        "d90_nm": 75.50028036648658,
+        "d95_nm": 80.92546964618337,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -4500.000000007276,
+        "rms_radius_nm": 24.671395475709307,
+        "surviving_rays": 975,
+        "z_mm": 1025.1954975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122542084,
+        "centroid_x_m": 5.130718110141393e-11,
+        "centroid_y_m": -9.57834133844539e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 42.51444630175349,
+        "d90_nm": 73.62660328288742,
+        "d95_nm": 78.86565989600751,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -4400.000000032378,
+        "rms_radius_nm": 24.07803644680955,
+        "surviving_rays": 975,
+        "z_mm": 1025.1955975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122535434,
+        "centroid_x_m": 5.003664412763375e-11,
+        "centroid_y_m": -9.332523338234063e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 41.519224410595655,
+        "d90_nm": 71.75292618586396,
+        "d95_nm": 76.80585013158482,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -4300.00000005748,
+        "rms_radius_nm": 23.48471330234297,
+        "surviving_rays": 975,
+        "z_mm": 1025.1956975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312252878,
+        "centroid_x_m": 4.876605179910431e-11,
+        "centroid_y_m": -9.086708199136625e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 40.52400251432329,
+        "d90_nm": 69.87924907981974,
+        "d95_nm": 74.74604035777683,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -4200.000000082582,
+        "rms_radius_nm": 22.89142883430913,
+        "surviving_rays": 975,
+        "z_mm": 1025.1957975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122522132,
+        "centroid_x_m": 4.749540411929095e-11,
+        "centroid_y_m": -8.840895921823612e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 39.528780615283665,
+        "d90_nm": 68.00557196915904,
+        "d95_nm": 72.68623057944828,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -4100.000000107684,
+        "rms_radius_nm": 22.2981861315123,
+        "surviving_rays": 975,
+        "z_mm": 1025.1958975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122515476,
+        "centroid_x_m": 4.622470108037364e-11,
+        "centroid_y_m": -8.595086504782222e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 38.53355870698587,
+        "d90_nm": 66.1318948416451,
+        "d95_nm": 70.62642078317245,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -3999.9999999054126,
+        "rms_radius_nm": 21.704988614799912,
+        "surviving_rays": 975,
+        "z_mm": 1025.1959975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122508824,
+        "centroid_x_m": 4.495394269146076e-11,
+        "centroid_y_m": -8.349279949774536e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 37.53833679619937,
+        "d90_nm": 64.2582177100045,
+        "d95_nm": 68.56661098296885,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -3899.9999999305146,
+        "rms_radius_nm": 21.111840097556247,
+        "surviving_rays": 975,
+        "z_mm": 1025.1960975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122502173,
+        "centroid_x_m": 4.368312895319705e-11,
+        "centroid_y_m": -8.103476256925218e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 36.54311488306556,
+        "d90_nm": 62.384540574483495,
+        "d95_nm": 66.50680117914057,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -3799.9999999556167,
+        "rms_radius_nm": 20.518744829358184,
+        "surviving_rays": 975,
+        "z_mm": 1025.1961975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122495517,
+        "centroid_x_m": 4.241225986058302e-11,
+        "centroid_y_m": -7.857675425267306e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 35.54789296330793,
+        "d90_nm": 60.51086342700866,
+        "d95_nm": 64.44699136284859,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -3699.9999999807187,
+        "rms_radius_nm": 19.92570756269531,
+        "surviving_rays": 975,
+        "z_mm": 1025.1962975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122488866,
+        "centroid_x_m": 4.114133541990649e-11,
+        "centroid_y_m": -7.611877456017053e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 34.55267104149124,
+        "d90_nm": 58.637186276149365,
+        "d95_nm": 62.38718154355496,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -3600.0000000058208,
+        "rms_radius_nm": 19.33273363827994,
+        "surviving_rays": 975,
+        "z_mm": 1025.1963975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122482209,
+        "centroid_x_m": 3.987035562616814e-11,
+        "centroid_y_m": -7.366082348207551e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 33.55744911334314,
+        "d90_nm": 56.76275538296063,
+        "d95_nm": 60.32737171243423,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -3500.000000030923,
+        "rms_radius_nm": 18.739829066579553,
+        "surviving_rays": 975,
+        "z_mm": 1025.1964975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122475558,
+        "centroid_x_m": 3.859932048283386e-11,
+        "centroid_y_m": -7.120290102509207e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 32.56222718122343,
+        "d90_nm": 54.88660540665884,
+        "d95_nm": 58.26756187439067,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -3400.000000056025,
+        "rms_radius_nm": 18.147000647098434,
+        "surviving_rays": 975,
+        "z_mm": 1025.1965975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122468906,
+        "centroid_x_m": 3.73282299933706e-11,
+        "centroid_y_m": -6.874500719592467e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 31.567005247494848,
+        "d90_nm": 53.010455427586855,
+        "d95_nm": 56.20775203433871,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -3300.000000081127,
+        "rms_radius_nm": 17.554256096727297,
+        "surviving_rays": 975,
+        "z_mm": 1025.1966975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312246225,
+        "centroid_x_m": 3.6057084152777816e-11,
+        "centroid_y_m": -6.628714198490427e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 30.57178330789415,
+        "d90_nm": 51.13430543765315,
+        "d95_nm": 54.1479421834838,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -3200.000000106229,
+        "rms_radius_nm": 16.961604205748433,
+        "surviving_rays": 975,
+        "z_mm": 1025.1967975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122455597,
+        "centroid_x_m": 3.4785882961699804e-11,
+        "centroid_y_m": -6.38293053932776e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 29.57656136258182,
+        "d90_nm": 49.258155437098296,
+        "d95_nm": 52.088132322193296,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -3099.9999999039574,
+        "rms_radius_nm": 16.369055038999406,
+        "surviving_rays": 975,
+        "z_mm": 1025.1968975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122448943,
+        "centroid_x_m": 3.3514626429248736e-11,
+        "centroid_y_m": -6.137149743866352e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 28.581339418352634,
+        "d90_nm": 47.382005438661,
+        "d95_nm": 50.02832246457314,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -2999.9999999290594,
+        "rms_radius_nm": 15.776620175459005,
+        "surviving_rays": 975,
+        "z_mm": 1025.1969975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122442289,
+        "centroid_x_m": 3.224331454760119e-11,
+        "centroid_y_m": -5.891371810593598e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 27.586117468747986,
+        "d90_nm": 45.50585543008512,
+        "d95_nm": 47.96851259730833,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -2899.9999999541615,
+        "rms_radius_nm": 15.184312990242054,
+        "surviving_rays": 975,
+        "z_mm": 1025.1970975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122435634,
+        "centroid_x_m": 3.0971947323047365e-11,
+        "centroid_y_m": -5.645596740725619e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 26.590895518365173,
+        "d90_nm": 43.629705419944635,
+        "d95_nm": 45.90870272997838,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -2799.9999999792635,
+        "rms_radius_nm": 14.592149034166633,
+        "surviving_rays": 975,
+        "z_mm": 1025.1971975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312242898,
+        "centroid_x_m": 2.970052475058592e-11,
+        "centroid_y_m": -5.399824533295601e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 25.59567356297013,
+        "d90_nm": 41.75355540015074,
+        "d95_nm": 43.84889285390016,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -2700.0000000043656,
+        "rms_radius_nm": 14.000146479248947,
+        "surviving_rays": 975,
+        "z_mm": 1025.1972975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122422328,
+        "centroid_x_m": 2.8429046833684176e-11,
+        "centroid_y_m": -5.1540551889738924e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 24.60045160496793,
+        "d90_nm": 39.877405375113234,
+        "d95_nm": 41.78908297415162,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -2600.0000000294676,
+        "rms_radius_nm": 13.40832670579897,
+        "surviving_rays": 975,
+        "z_mm": 1025.1973975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122415668,
+        "centroid_x_m": 2.7157513575810298e-11,
+        "centroid_y_m": -4.908288708430855e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 23.60522964677529,
+        "d90_nm": 38.00125534924314,
+        "d95_nm": 39.729273095861195,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -2500.0000000545697,
+        "rms_radius_nm": 12.81671503561922,
+        "surviving_rays": 975,
+        "z_mm": 1025.1974975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122409016,
+        "centroid_x_m": 2.588592497196208e-11,
+        "centroid_y_m": -4.662525090699697e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 22.610007684193633,
+        "d90_nm": 36.12510531445534,
+        "d95_nm": 37.65788434598161,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -2400.0000000796717,
+        "rms_radius_nm": 12.225341678001111,
+        "surviving_rays": 975,
+        "z_mm": 1025.1975975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122402361,
+        "centroid_x_m": 2.4614281025607562e-11,
+        "centroid_y_m": -4.416764336450752e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 21.614785719671378,
+        "d90_nm": 34.24895527516429,
+        "d95_nm": 35.58360969719133,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -2300.000000104774,
+        "rms_radius_nm": 11.634242975415077,
+        "surviving_rays": 975,
+        "z_mm": 1025.1976975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122395707,
+        "centroid_x_m": 2.3342581737391466e-11,
+        "centroid_y_m": -4.171006445808664e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 20.61956375346882,
+        "d90_nm": 32.37280523162104,
+        "d95_nm": 33.509335046745825,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -2199.999999902502,
+        "rms_radius_nm": 11.043463030806565,
+        "surviving_rays": 975,
+        "z_mm": 1025.1977975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122389051,
+        "centroid_x_m": 2.2070827107958502e-11,
+        "centroid_y_m": -3.9252514188980575e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 19.624341785873444,
+        "d90_nm": 30.496655184079906,
+        "d95_nm": 31.461398333799618,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -2099.999999927604,
+        "rms_radius_nm": 10.453055890793536,
+        "surviving_rays": 975,
+        "z_mm": 1025.1978975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122382399,
+        "centroid_x_m": 2.0799017140777445e-11,
+        "centroid_y_m": -3.679499256389234e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 18.63195848810144,
+        "d90_nm": 28.6205051369654,
+        "d95_nm": 29.35558027577286,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -1999.9999999527063,
+        "rms_radius_nm": 9.863088505790026,
+        "surviving_rays": 975,
+        "z_mm": 1025.1979975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122375745,
+        "centroid_x_m": 1.9527151830845197e-11,
+        "centroid_y_m": -3.43374995731546e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 17.641727372402464,
+        "d90_nm": 26.744355082210216,
+        "d95_nm": 27.202664912269977,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -1899.9999999778083,
+        "rms_radius_nm": 9.27364480215966,
+        "surviving_rays": 975,
+        "z_mm": 1025.1980975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312236909,
+        "centroid_x_m": 1.8255231181630468e-11,
+        "centroid_y_m": -3.18800352234704e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 16.651496281292566,
+        "d90_nm": 24.79209612358252,
+        "d95_nm": 25.119556401522637,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -1800.0000000029104,
+        "rms_radius_nm": 8.684831409987043,
+        "surviving_rays": 975,
+        "z_mm": 1025.1981975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122362438,
+        "centroid_x_m": 1.6983255196602518e-11,
+        "centroid_y_m": -2.942259952154256e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 15.661265222183902,
+        "d90_nm": 22.78727500588199,
+        "d95_nm": 23.066039659442367,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -1700.0000000280124,
+        "rms_radius_nm": 8.096785844355873,
+        "surviving_rays": 975,
+        "z_mm": 1025.1982975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122355782,
+        "centroid_x_m": 1.5711223870757645e-11,
+        "centroid_y_m": -2.696519245770404e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 14.666911885799749,
+        "d90_nm": 20.84687325770904,
+        "d95_nm": 21.0760116366642,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -1600.0000000531145,
+        "rms_radius_nm": 7.509688478638445,
+        "surviving_rays": 975,
+        "z_mm": 1025.1983975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122349126,
+        "centroid_x_m": 1.4439137207565052e-11,
+        "centroid_y_m": -2.450781403865755e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 13.674739378512875,
+        "d90_nm": 18.888552402600766,
+        "d95_nm": 19.152236368563923,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -1500.0000000782165,
+        "rms_radius_nm": 6.923780524954519,
+        "surviving_rays": 975,
+        "z_mm": 1025.1984975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122342472,
+        "centroid_x_m": 1.3166995210494365e-11,
+        "centroid_y_m": -2.205046427110588e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 12.685500760230665,
+        "d90_nm": 17.093720170092894,
+        "d95_nm": 17.285878484728656,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -1400.0000001033186,
+        "rms_radius_nm": 6.339391781922767,
+        "surviving_rays": 975,
+        "z_mm": 1025.1985975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122335817,
+        "centroid_x_m": 1.1894797871716376e-11,
+        "centroid_y_m": -1.9593143139925852e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 11.691171828407107,
+        "d90_nm": 15.30126082488278,
+        "d95_nm": 15.483105057765329,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -1299.999999901047,
+        "rms_radius_nm": 5.7569849072024235,
+        "surviving_rays": 975,
+        "z_mm": 1025.1986975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122329165,
+        "centroid_x_m": 1.0622545200350418e-11,
+        "centroid_y_m": -1.7135850662732768e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 10.702510597329981,
+        "d90_nm": 13.626899317990963,
+        "d95_nm": 13.76758701657543,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -1199.999999926149,
+        "rms_radius_nm": 5.177228793643533,
+        "surviving_rays": 975,
+        "z_mm": 1025.1987975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122322509,
+        "centroid_x_m": 9.350237197041965e-12,
+        "centroid_y_m": -1.4678586840772553e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 9.513601837836257,
+        "d90_nm": 12.008690256911576,
+        "d95_nm": 12.097542680239783,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -1099.999999951251,
+        "rms_radius_nm": 4.601125562636611,
+        "surviving_rays": 975,
+        "z_mm": 1025.1988975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122315853,
+        "centroid_x_m": 8.07787385678591e-12,
+        "centroid_y_m": -1.2221351664378878e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 8.332539677793939,
+        "d90_nm": 10.447822643172135,
+        "d95_nm": 10.523763392343763,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -999.9999999763531,
+        "rms_radius_nm": 4.030242000655191,
+        "surviving_rays": 975,
+        "z_mm": 1025.1989975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122309199,
+        "centroid_x_m": 6.8054551858778415e-12,
+        "centroid_y_m": -9.764145145710087e-12,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 7.168633115759531,
+        "d90_nm": 8.940199949519137,
+        "d95_nm": 9.010067241176094,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -900.0000000014552,
+        "rms_radius_nm": 3.467157398821696,
+        "surviving_rays": 975,
+        "z_mm": 1025.1990975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122302543,
+        "centroid_x_m": 5.532981179312224e-12,
+        "centroid_y_m": -7.306967275100095e-12,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 6.010856189689965,
+        "d90_nm": 7.507542824849088,
+        "d95_nm": 7.561399532195892,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -800.0000000265572,
+        "rms_radius_nm": 2.9163926278225,
+        "surviving_rays": 975,
+        "z_mm": 1025.1991975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122295892,
+        "centroid_x_m": 4.260451840559599e-12,
+        "centroid_y_m": -4.849818059251035e-12,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 4.956887567604154,
+        "d90_nm": 6.1480347071165085,
+        "d95_nm": 6.211806635671358,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -700.0000000516593,
+        "rms_radius_nm": 2.3864926545090692,
+        "surviving_rays": 975,
+        "z_mm": 1025.1992975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122289236,
+        "centroid_x_m": 2.987867173090918e-12,
+        "centroid_y_m": -2.3926975048648017e-12,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 3.96758198998706,
+        "d90_nm": 4.9122075326988615,
+        "d95_nm": 4.958825635457321,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -600.0000000767614,
+        "rms_radius_nm": 1.8950419849550515,
+        "surviving_rays": 975,
+        "z_mm": 1025.1993975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312228258,
+        "centroid_x_m": 1.7152271719000806e-12,
+        "centroid_y_m": 6.439439772439343e-14,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 3.0851460545103553,
+        "d90_nm": 3.7816391328814705,
+        "d95_nm": 3.821042012468156,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -500.0000001018634,
+        "rms_radius_nm": 1.4808297523651834,
+        "surviving_rays": 975,
+        "z_mm": 1025.1994975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122275926,
+        "centroid_x_m": 4.4253183763199547e-13,
+        "centroid_y_m": 2.5214576472703657e-12,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 2.2743593039994274,
+        "d90_nm": 2.760205685916397,
+        "d95_nm": 3.7361821232499555,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -399.9999998995918,
+        "rms_radius_nm": 1.224893908744439,
+        "surviving_rays": 975,
+        "z_mm": 1025.1995975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312226927,
+        "centroid_x_m": -8.302188205899542e-13,
+        "centroid_y_m": 4.97849222615993e-12,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 1.544408991760844,
+        "d90_nm": 3.1941639425961674,
+        "d95_nm": 5.798913638888821,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -299.99999992469384,
+        "rms_radius_nm": 1.23032886819883,
+        "surviving_rays": 975,
+        "z_mm": 1025.1996975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122262617,
+        "centroid_x_m": -2.1030248105984027e-12,
+        "centroid_y_m": 7.435498149514367e-12,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 0.9164493973714316,
+        "d90_nm": 5.067840757187614,
+        "d95_nm": 7.861646515258206,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -199.9999999497959,
+        "rms_radius_nm": 1.4942854017735934,
+        "surviving_rays": 975,
+        "z_mm": 1025.1997975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122255961,
+        "centroid_x_m": -3.3758861260955957e-12,
+        "centroid_y_m": 9.892475405176427e-12,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 0.39995587026693874,
+        "d90_nm": 6.941517816404541,
+        "d95_nm": 9.924379896869791,
+        "effective_rays": 974.999999999999,
+        "offset_nm": -99.99999997489795,
+        "rms_radius_nm": 1.9125648481061979,
+        "surviving_rays": 975,
+        "z_mm": 1025.1998975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122249309,
+        "centroid_x_m": -4.648802772088689e-12,
+        "centroid_y_m": 1.2349424002811388e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 1.265633747150077,
+        "d90_nm": 8.815194969281828,
+        "d95_nm": 11.987113528917705,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 0.0,
+        "rms_radius_nm": 2.405983258109368,
+        "surviving_rays": 975,
+        "z_mm": 1025.1999975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122249144,
+        "centroid_x_m": -4.680626396906724e-12,
+        "centroid_y_m": 1.2410847350081453e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 1.2907150346687994,
+        "d90_nm": 8.86203689844061,
+        "d95_nm": 12.0386818714246,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 2.499999936844688,
+        "rms_radius_nm": 2.4188985584981753,
+        "surviving_rays": 975,
+        "z_mm": 1025.2
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312224898,
+        "centroid_x_m": -4.712450056304121e-12,
+        "centroid_y_m": 1.2472270679436032e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 1.3157963407873474,
+        "d90_nm": 8.908878827623866,
+        "d95_nm": 12.09025021401333,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 4.999999873689376,
+        "rms_radius_nm": 2.431835969306603,
+        "surviving_rays": 975,
+        "z_mm": 1025.2000025
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122242656,
+        "centroid_x_m": -5.921774745105966e-12,
+        "centroid_y_m": 1.4806343935717702e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 2.2635523325894606,
+        "d90_nm": 10.688872163892993,
+        "d95_nm": 14.04984729771913,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 99.99999997489795,
+        "rms_radius_nm": 2.936910328689974,
+        "surviving_rays": 975,
+        "z_mm": 1025.2000975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122236002,
+        "centroid_x_m": -7.194802041675165e-12,
+        "centroid_y_m": 1.7263235197194155e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 3.260293923087883,
+        "d90_nm": 12.562549376666677,
+        "d95_nm": 16.11258114532664,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 199.9999999497959,
+        "rms_radius_nm": 3.4882610007729147,
+        "surviving_rays": 975,
+        "z_mm": 1025.2001975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312222935,
+        "centroid_x_m": -8.467884666804138e-12,
+        "centroid_y_m": 1.9720097796905642e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 4.25161451502193,
+        "d90_nm": 14.436226606466796,
+        "d95_nm": 18.175315051641455,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 299.99999992469384,
+        "rms_radius_nm": 4.0517061893084465,
+        "surviving_rays": 975,
+        "z_mm": 1025.2002975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122222694,
+        "centroid_x_m": -9.74102261702064e-12,
+        "centroid_y_m": 2.2176931728150938e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 5.243329939393495,
+        "d90_nm": 16.30990384391253,
+        "d95_nm": 20.238048994646395,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 399.9999998995918,
+        "rms_radius_nm": 4.622825648283805,
+        "surviving_rays": 975,
+        "z_mm": 1025.2003975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312221604,
+        "centroid_x_m": -1.101421589167909e-11,
+        "centroid_y_m": 2.463373698968415e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 6.235047685826516,
+        "d90_nm": 18.18358108583725,
+        "d95_nm": 22.300782963259138,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 500.0000001018634,
+        "rms_radius_nm": 5.199090939467366,
+        "surviving_rays": 975,
+        "z_mm": 1025.2004975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122209387,
+        "centroid_x_m": -1.2287464490133859e-11,
+        "centroid_y_m": 2.7090513580259518e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 7.2267667979647765,
+        "d90_nm": 20.05725833016884,
+        "d95_nm": 24.36351695006193,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 600.0000000767614,
+        "rms_radius_nm": 5.778962874848178,
+        "surviving_rays": 975,
+        "z_mm": 1025.2005975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122202731,
+        "centroid_x_m": -1.3560768408911893e-11,
+        "centroid_y_m": 2.954726149317611e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 8.218486778799589,
+        "d90_nm": 21.930935571301724,
+        "d95_nm": 26.42625094529119,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 700.0000000516593,
+        "rms_radius_nm": 6.361455249452137,
+        "surviving_rays": 975,
+        "z_mm": 1025.2006975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122196075,
+        "centroid_x_m": -1.4834127653022058e-11,
+        "centroid_y_m": 3.200398073809842e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 9.210207350989494,
+        "d90_nm": 23.80461281649176,
+        "d95_nm": 28.488984954349366,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 800.0000000265572,
+        "rms_radius_nm": 6.945908836890696,
+        "surviving_rays": 975,
+        "z_mm": 1025.2007975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122189422,
+        "centroid_x_m": -1.6107542218991427e-11,
+        "centroid_y_m": 3.446067130832553e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 10.2019283400908,
+        "d90_nm": 25.67829006075509,
+        "d95_nm": 30.55171896984261,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 900.0000000014552,
+        "rms_radius_nm": 7.531867094476197,
+        "surviving_rays": 975,
+        "z_mm": 1025.2008975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122182766,
+        "centroid_x_m": -1.7381012103346425e-11,
+        "centroid_y_m": 3.6917333197156856e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 11.193649632655394,
+        "d90_nm": 27.551967299267236,
+        "d95_nm": 32.61445298502273,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 999.9999999763531,
+        "rms_radius_nm": 8.119004245636516,
+        "surviving_rays": 975,
+        "z_mm": 1025.2009975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122176112,
+        "centroid_x_m": -1.8654537311096648e-11,
+        "centroid_y_m": 3.93739664142564e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 12.18537115801597,
+        "d90_nm": 29.425644539793577,
+        "d95_nm": 34.67718700733571,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 1099.999999951251,
+        "rms_radius_nm": 8.707081809767043,
+        "surviving_rays": 975,
+        "z_mm": 1025.2010975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312216946,
+        "centroid_x_m": -1.992811783876858e-11,
+        "centroid_y_m": 4.183057095292351e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 13.177092861461,
+        "d90_nm": 31.299321777694402,
+        "d95_nm": 36.739921030813264,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 1199.999999926149,
+        "rms_radius_nm": 9.295921310346406,
+        "surviving_rays": 975,
+        "z_mm": 1025.2011975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122162804,
+        "centroid_x_m": -2.1201753682888253e-11,
+        "centroid_y_m": 4.4287146806457945e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 14.168990410008815,
+        "d90_nm": 33.17299900838462,
+        "d95_nm": 38.80265504972667,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 1299.999999901047,
+        "rms_radius_nm": 9.885386588693812,
+        "surviving_rays": 975,
+        "z_mm": 1025.2012975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312215615,
+        "centroid_x_m": -2.24754448512941e-11,
+        "centroid_y_m": 4.674369398997794e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 15.161658216481644,
+        "d90_nm": 35.04667624396079,
+        "d95_nm": 40.86538907684705,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 1400.0000001033186,
+        "rms_radius_nm": 10.475372008345893,
+        "surviving_rays": 975,
+        "z_mm": 1025.2013975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122149497,
+        "centroid_x_m": -2.3749191332027493e-11,
+        "centroid_y_m": 4.9200212480419406e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 16.154326125736006,
+        "d90_nm": 36.9203534674265,
+        "d95_nm": 42.92812309302027,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 1500.0000000782165,
+        "rms_radius_nm": 11.06579436874261,
+        "surviving_rays": 975,
+        "z_mm": 1025.2014975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122142843,
+        "centroid_x_m": -2.502299313292712e-11,
+        "centroid_y_m": 5.165670229290036e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 17.146994125307888,
+        "d90_nm": 38.79403069093081,
+        "d95_nm": 44.99085711125839,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 1600.0000000531145,
+        "rms_radius_nm": 11.65658727836007,
+        "surviving_rays": 975,
+        "z_mm": 1025.2015975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122136187,
+        "centroid_x_m": -2.6296850250518834e-11,
+        "centroid_y_m": 5.4113163420720614e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 18.139662198064816,
+        "d90_nm": 40.667707909998626,
+        "d95_nm": 47.05359112633461,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 1700.0000000280124,
+        "rms_radius_nm": 12.24769711330106,
+        "surviving_rays": 975,
+        "z_mm": 1025.2016975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312212953,
+        "centroid_x_m": -2.757076268132769e-11,
+        "centroid_y_m": 5.6569595857180266e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 19.132330329946367,
+        "d90_nm": 42.54138512016842,
+        "d95_nm": 49.11632513308685,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 1800.0000000029104,
+        "rms_radius_nm": 12.8390800984267,
+        "surviving_rays": 975,
+        "z_mm": 1025.2017975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122122875,
+        "centroid_x_m": -2.884473043036505e-11,
+        "centroid_y_m": 5.902599961194261e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 20.124998515819048,
+        "d90_nm": 44.41506232947064,
+        "d95_nm": 51.17905914014519,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 1899.9999999778083,
+        "rms_radius_nm": 13.430700153765166,
+        "surviving_rays": 975,
+        "z_mm": 1025.2018975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312211622,
+        "centroid_x_m": -3.0118753494156204e-11,
+        "centroid_y_m": 6.148237467830742e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 21.117666745707304,
+        "d90_nm": 46.288739533463044,
+        "d95_nm": 53.24179314244085,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 1999.9999999527063,
+        "rms_radius_nm": 14.022527271455631,
+        "surviving_rays": 975,
+        "z_mm": 1025.2019975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122109563,
+        "centroid_x_m": -3.139283186922591e-11,
+        "centroid_y_m": 6.393872104957503e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 22.110335011008623,
+        "d90_nm": 48.1624167277103,
+        "d95_nm": 55.304527134938915,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 2099.999999927604,
+        "rms_radius_nm": 14.614536294465784,
+        "surviving_rays": 975,
+        "z_mm": 1025.2020975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312210291,
+        "centroid_x_m": -3.266696556058594e-11,
+        "centroid_y_m": 6.639503873540851e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 23.103003310811015,
+        "d90_nm": 50.03609392026389,
+        "d95_nm": 57.36726112637282,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 2199.999999902502,
+        "rms_radius_nm": 15.206705979851833,
+        "surviving_rays": 975,
+        "z_mm": 1025.2021975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122096258,
+        "centroid_x_m": -3.394115456476123e-11,
+        "centroid_y_m": 6.885132772910778e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 24.095671638446,
+        "d90_nm": 51.90977110669867,
+        "d95_nm": 59.4299951117584,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 2300.000000104774,
+        "rms_radius_nm": 15.79901826061079,
+        "surviving_rays": 975,
+        "z_mm": 1025.2022975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.3133031220896,
+        "centroid_x_m": -3.5215398881105384e-11,
+        "centroid_y_m": 7.130758802942771e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 25.090025149398734,
+        "d90_nm": 53.78344828675369,
+        "d95_nm": 61.4927290907108,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 2400.0000000796717,
+        "rms_radius_nm": 16.391457678232893,
+        "surviving_rays": 975,
+        "z_mm": 1025.2023975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122082946,
+        "centroid_x_m": -3.648969850897253e-11,
+        "centroid_y_m": 7.37638196351224e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 26.084455699097667,
+        "d90_nm": 55.657125460171166,
+        "d95_nm": 63.5554630628612,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 2500.0000000545697,
+        "rms_radius_nm": 16.984010928003784,
+        "surviving_rays": 975,
+        "z_mm": 1025.2024975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122076288,
+        "centroid_x_m": -3.7764053444886065e-11,
+        "centroid_y_m": 7.622002253949309e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 27.07888625064389,
+        "d90_nm": 57.53080262253554,
+        "d95_nm": 65.61819702327406,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 2600.0000000294676,
+        "rms_radius_nm": 17.576666495629254,
+        "surviving_rays": 975,
+        "z_mm": 1025.2025975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122069636,
+        "centroid_x_m": -3.9038463693859325e-11,
+        "centroid_y_m": 7.867619675220153e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 28.073316807545407,
+        "d90_nm": 59.404479781914674,
+        "d95_nm": 67.68093098076584,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 2700.0000000043656,
+        "rms_radius_nm": 18.16941437102327,
+        "surviving_rays": 975,
+        "z_mm": 1025.2026975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312206298,
+        "centroid_x_m": -4.031292925241617e-11,
+        "centroid_y_m": 8.113234226654875e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 29.067747366793018,
+        "d90_nm": 61.27815693389714,
+        "d95_nm": 69.7436649304222,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 2799.9999999792635,
+        "rms_radius_nm": 18.76224580398689,
+        "surviving_rays": 975,
+        "z_mm": 1025.2027975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122056324,
+        "centroid_x_m": -4.1587450117080394e-11,
+        "centroid_y_m": 8.358845907583552e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 30.06217792546683,
+        "d90_nm": 63.15183407407307,
+        "d95_nm": 71.80639886733717,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 2899.9999999541615,
+        "rms_radius_nm": 19.355153115032138,
+        "surviving_rays": 975,
+        "z_mm": 1025.2028975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122049666,
+        "centroid_x_m": -4.286202629286517e-11,
+        "centroid_y_m": 8.604454718972389e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 31.056608487346235,
+        "d90_nm": 65.02551121051523,
+        "d95_nm": 73.86913280035246,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 2999.9999999290594,
+        "rms_radius_nm": 19.948129540540766,
+        "surviving_rays": 975,
+        "z_mm": 1025.2029975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312204301,
+        "centroid_x_m": -4.413665777346382e-11,
+        "centroid_y_m": 8.850060659606118e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 32.051039047441655,
+        "d90_nm": 66.89918833465589,
+        "d95_nm": 75.93186671999528,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 3099.9999999039574,
+        "rms_radius_nm": 20.54116909217869,
+        "surviving_rays": 975,
+        "z_mm": 1025.2030975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122036354,
+        "centroid_x_m": -4.541134456672102e-11,
+        "centroid_y_m": 9.095663730996252e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 33.04546961185779,
+        "d90_nm": 68.77286545873041,
+        "d95_nm": 77.99460063969923,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 3200.000000106229,
+        "rms_radius_nm": 21.134266459432887,
+        "surviving_rays": 975,
+        "z_mm": 1025.2031975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122029696,
+        "centroid_x_m": -4.6686086663499094e-11,
+        "centroid_y_m": 9.341263931382221e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 34.03990017349683,
+        "d90_nm": 70.64654257001258,
+        "d95_nm": 80.05733454542131,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 3300.000000081127,
+        "rms_radius_nm": 21.727416903669383,
+        "surviving_rays": 975,
+        "z_mm": 1025.2032975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122023036,
+        "centroid_x_m": -4.796088406315126e-11,
+        "centroid_y_m": 9.586861260639498e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 35.034330731924655,
+        "d90_nm": 72.52021966825822,
+        "d95_nm": 82.12006843686336,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 3400.000000056025,
+        "rms_radius_nm": 22.320616193074244,
+        "surviving_rays": 975,
+        "z_mm": 1025.2033975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312201638,
+        "centroid_x_m": -4.923573677069197e-11,
+        "centroid_y_m": 9.832455719734227e-11,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 36.02876129115734,
+        "d90_nm": 74.39389676154454,
+        "d95_nm": 84.1828023228911,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 3500.000000030923,
+        "rms_radius_nm": 22.91386053634585,
+        "surviving_rays": 975,
+        "z_mm": 1025.2034975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122009724,
+        "centroid_x_m": -5.051064478264399e-11,
+        "centroid_y_m": 1.0078047307996564e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 37.023191848616115,
+        "d90_nm": 76.26757384546825,
+        "d95_nm": 86.24553619863283,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 3600.0000000058208,
+        "rms_radius_nm": 23.507146520936022,
+        "surviving_rays": 975,
+        "z_mm": 1025.2035975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303122003067,
+        "centroid_x_m": -5.1785608095529584e-11,
+        "centroid_y_m": 1.0323636024756607e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 38.01762240174786,
+        "d90_nm": 78.14125091562646,
+        "d95_nm": 88.30827005921978,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 3699.9999999807187,
+        "rms_radius_nm": 24.10047106996041,
+        "surviving_rays": 975,
+        "z_mm": 1025.2036975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303121996405,
+        "centroid_x_m": -5.306062671436434e-11,
+        "centroid_y_m": 1.0569221870980508e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 39.01205295464597,
+        "d90_nm": 80.01492798009805,
+        "d95_nm": 90.37100391352605,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 3799.9999999556167,
+        "rms_radius_nm": 24.693831405878633,
+        "surviving_rays": 975,
+        "z_mm": 1025.2037975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303121989748,
+        "centroid_x_m": -5.4335700632838666e-11,
+        "centroid_y_m": 1.081480484545315e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 40.006483502591124,
+        "d90_nm": 81.88860503032062,
+        "d95_nm": 92.43373775210735,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 3899.9999999305146,
+        "rms_radius_nm": 25.287225006658506,
+        "surviving_rays": 975,
+        "z_mm": 1025.2038975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312198309,
+        "centroid_x_m": -5.5610829855968885e-11,
+        "centroid_y_m": 1.1060384949140536e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 41.000914049713465,
+        "d90_nm": 83.76228207437379,
+        "d95_nm": 94.49647158384198,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 3999.9999999054126,
+        "rms_radius_nm": 25.88064958645593,
+        "surviving_rays": 975,
+        "z_mm": 1025.2039975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312197643,
+        "centroid_x_m": -5.6886014383108154e-11,
+        "centroid_y_m": 1.1305962181918222e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 41.99534459574216,
+        "d90_nm": 85.63595911201665,
+        "d95_nm": 96.55920540844973,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 4100.000000107684,
+        "rms_radius_nm": 26.47410306185843,
+        "surviving_rays": 975,
+        "z_mm": 1025.2040975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303121969769,
+        "centroid_x_m": -5.8161254205114965e-11,
+        "centroid_y_m": 1.155153654202574e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 42.989775133795504,
+        "d90_nm": 87.50963613052743,
+        "d95_nm": 98.62193921191128,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 4200.000000082582,
+        "rms_radius_nm": 27.067583528110543,
+        "surviving_rays": 975,
+        "z_mm": 1025.2041975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303121963111,
+        "centroid_x_m": -5.943654932983726e-11,
+        "centroid_y_m": 1.179710803097449e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 43.98420567025218,
+        "d90_nm": 89.38331314214697,
+        "d95_nm": 100.68467300768997,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 4300.00000005748,
+        "rms_radius_nm": 27.66108925140415,
+        "surviving_rays": 975,
+        "z_mm": 1025.2042975000002
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303121956451,
+        "centroid_x_m": -6.071189975379665e-11,
+        "centroid_y_m": 1.2042676648094664e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 44.978636202669094,
+        "d90_nm": 91.25699014247479,
+        "d95_nm": 102.74740679092953,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 4400.000000032378,
+        "rms_radius_nm": 28.254618638593815,
+        "surviving_rays": 975,
+        "z_mm": 1025.2043975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303121949788,
+        "centroid_x_m": -6.198730547351396e-11,
+        "centroid_y_m": 1.2288242392716473e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 45.9730667286126,
+        "d90_nm": 93.13066712711056,
+        "d95_nm": 104.81014055677493,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 4500.000000007276,
+        "rms_radius_nm": 28.848170227469375,
+        "surviving_rays": 975,
+        "z_mm": 1025.2044975000001
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.31330312194313,
+        "centroid_x_m": -6.32627664940062e-11,
+        "centroid_y_m": 1.253380526580594e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 46.967497252281696,
+        "d90_nm": 95.00434410413538,
+        "d95_nm": 106.87287431411269,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 4599.999999982174,
+        "rms_radius_nm": 29.441742677523504,
+        "surviving_rays": 975,
+        "z_mm": 1025.2045975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303121936466,
+        "centroid_x_m": -6.453828280896224e-11,
+        "centroid_y_m": 1.277936526614803e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 47.961927769050654,
+        "d90_nm": 96.8780210649889,
+        "d95_nm": 108.93560805350951,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 4699.999999957072,
+        "rms_radius_nm": 30.035334749100976,
+        "surviving_rays": 975,
+        "z_mm": 1025.2046975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303121929804,
+        "centroid_x_m": -6.581385442339914e-11,
+        "centroid_y_m": 1.302492239470876e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 48.956358283132815,
+        "d90_nm": 98.75169801775255,
+        "d95_nm": 110.99834178385376,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 4799.99999993197,
+        "rms_radius_nm": 30.628945303667646,
+        "surviving_rays": 975,
+        "z_mm": 1025.2047975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303121923145,
+        "centroid_x_m": -6.708948133383805e-11,
+        "centroid_y_m": 1.3270476650818336e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 49.95078879212341,
+        "d90_nm": 100.62537495802663,
+        "d95_nm": 113.06107550029388,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 4899.999999906868,
+        "rms_radius_nm": 31.222573285480088,
+        "surviving_rays": 975,
+        "z_mm": 1025.2048975
+      },
+      {
+        "absolute_source_weight": 0.9521484375,
+        "alpha95_mrad": 10.313303121916478,
+        "centroid_x_m": -6.83651635396318e-11,
+        "centroid_y_m": 1.3516028034352313e-10,
+        "current_a": 9.521484375e-06,
+        "d50_nm": 50.94521929583126,
+        "d90_nm": 102.49905188557207,
+        "d95_nm": 115.12380920255933,
+        "effective_rays": 974.999999999999,
+        "offset_nm": 5000.000000109139,
+        "rms_radius_nm": 31.816217718771437,
+        "surviving_rays": 975,
+        "z_mm": 1025.2049975000002
+      }
+    ],
+    "positive_current_membership_stable": true,
+    "rms_waist_diagnostic": {
+      "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+      "minimum": 1.224893908744439,
+      "neighbour_bracket_mm": [
+        1025.1994975,
+        1025.1996975000002
+      ],
+      "neighbour_bracket_offset_nm": [
+        -500.0000001018634,
+        -299.99999992469384
+      ],
+      "observed_minimum_planes_mm": [
+        1025.1995975000002
+      ],
+      "plateau_intervals_mm": [
+        [
+          1025.1995975000002,
+          1025.1995975000002
+        ]
+      ],
+      "representative_offset_nm": -399.9999998995918,
+      "status": "BOUNDED_OBSERVED_MINIMUM"
+    },
+    "surface": {
+      "absolute_source_weight": 0.9521484375,
+      "alpha95_mrad": 10.313303122249309,
+      "centroid_x_m": -4.648802772088689e-12,
+      "centroid_y_m": 1.2349424002811388e-11,
+      "current_a": 9.521484375e-06,
+      "d50_nm": 1.265633747150077,
+      "d90_nm": 8.815194969281828,
+      "d95_nm": 11.987113528917705,
+      "effective_rays": 974.999999999999,
+      "offset_nm": 0.0,
+      "rms_radius_nm": 2.405983258109368,
+      "surviving_rays": 975,
+      "z_mm": 1025.1999975
+    },
+    "surface_gate": {
+      "maximum_d95_nm": null,
+      "passed": false,
+      "placement_passed": false,
+      "placement_tolerance_nm": 1.0,
+      "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+      "size_cap_applied": false,
+      "status": "FAIL",
+      "strict_surface_d95_passed": null,
+      "support_passed": true
+    },
+    "waist_separation": {
+      "definition": "z_RMS minus z_D95, executed planes",
+      "difference_bracket_nm": [
+        -200.00000017716957,
+        200.00000017716957
+      ],
+      "resolved_delta_z_nm": 0.0,
+      "zero_excluded_from_bracket": false
+    }
+  },
+  "observations_sha256": "87d58cd645f0b9aac462af50f61a3e171a554d17b411610a4bc46388820f98f4",
+  "observer_sha256": {
+    "scripts\\measure_probe_waist.py": "4005fd1ef980825d6a104113edacccc66190de9e4982b12e0adb9eec26007bc2",
+    "scripts\\study_two_condenser_nanoprobe.py": "ab71d3c9d09fa68606697ee9621430a9409deb982c118a92b712a12337ea0b4f"
+  },
+  "physical_losses": {
+    "condenser_aperture_2": {
+      "count": 49,
+      "current_a": 4.785156250000001e-07
+    }
+  },
+  "rms_radius_nm": 2.405983258109368,
+  "rms_tangent_waist_offset_nm": -351.8905298081764,
+  "sample_current_a": 9.521484375e-06,
+  "scope": "True C1+C2; vacuum incident probe; original absolute weights; no coherent or projector calibration",
+  "status": "COMPLETED_CLASSICAL_TWO_CONDENSER_OBSERVATION",
+  "surface_z_mm": 1025.1999975,
+  "surviving_positive_count": 975
+}

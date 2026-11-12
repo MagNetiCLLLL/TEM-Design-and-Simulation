@@ -1,0 +1,30 @@
+{
+  "scope": "Read-only restoration and scene metadata capture; no fields solved and no trajectories executed",
+  "scene_payload_differences": [
+    [
+      ".gun_inputs.attributes.emitter.attributes.ray_count",
+      4096,
+      2048
+    ]
+  ],
+  "scenes": {
+    "focused4096-s005": {
+      "digest": "bc854b2e986420ae0d1f9209c1457573c653ac0b9cb664a4af062a0d8de7096f",
+      "geometry_digest": "55e0b9c31b553ae58d40c8ed7466f6d29e6fea16a87e3cb8ce54e9b089bd6442",
+      "default_static_gauge_digest": "60fdfcbf719e4e2511dcd2a3f0e88f29f1d43a6e4efa8f9eee29490546bf7443",
+      "reconstructed_physical_digest": "e7e019e55080065e680d3489c4b9696c2a5e2e15a1d8443b6a18a5b46a4adcd5",
+      "reconstructed_numerical_digest": "729d2f7e4d8d8155012d86696db024505d84ccdd0f49bf94d66945930070f9c2",
+      "executed_numerical_digest": "729d2f7e4d8d8155012d86696db024505d84ccdd0f49bf94d66945930070f9c2",
+      "reconstruction_matches_executed": true
+    },
+    "reference2048-s005": {
+      "digest": "497483bf77fe9f591bdeb8ab2f59d345f89cc306cd4b4fddcf71498cb0eab57f",
+      "geometry_digest": "55e0b9c31b553ae58d40c8ed7466f6d29e6fea16a87e3cb8ce54e9b089bd6442",
+      "default_static_gauge_digest": "60fdfcbf719e4e2511dcd2a3f0e88f29f1d43a6e4efa8f9eee29490546bf7443",
+      "reconstructed_physical_digest": "d55b1a14b2656ba5936abcd3e5e3d281a65ecf1825e0a57cd02265b291eafbc1",
+      "reconstructed_numerical_digest": "f0a81c9168d813014eb806bc9b08ba53a59c36e409e0204acdb202f238a323a8",
+      "executed_numerical_digest": "f0a81c9168d813014eb806bc9b08ba53a59c36e409e0204acdb202f238a323a8",
+      "reconstruction_matches_executed": true
+    }
+  }
+}

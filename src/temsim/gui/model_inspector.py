@@ -175,13 +175,26 @@ class ModelInspectorPage(QWidget):
         self.lens.currentIndexChanged.connect(self._load_field)
         self.aberration_system.currentIndexChanged.connect(self._load_mode)
 
+    @staticmethod
+    def _installed_lenses(state):
+        """Show installed hardware, including an installed de-energized C3."""
+        assembly = getattr(state, "_resolved_assembly", None)
+        if assembly is not None:
+            keys = {part.key for part in assembly.parts}
+        else:
+            layout = getattr(state, "_resolved_optics_layout", None)
+            if layout is None:
+                return tuple(state.lenses)
+            keys = {component.key for component in layout}
+        return tuple(lens for lens in state.lenses if lens.key in keys)
+
     def set_state(self, state):
         self._state = state
         self.gun_source_button.setEnabled(state.electron_gun.type_key == "cold_feg")
         selected = self.lens.currentData()
         self.lens.blockSignals(True)
         self.lens.clear()
-        for lens in state.lenses:
+        for lens in self._installed_lenses(state):
             self.lens.addItem(lens.name, lens.key)
         self.lens.setCurrentIndex(max(self.lens.findData(selected), 0))
         self.lens.blockSignals(False)
@@ -195,7 +208,7 @@ class ModelInspectorPage(QWidget):
         self.tip_editor_requested.emit()
 
     def _load_field(self):
-        if self._state is None:
+        if self._state is None or self.lens.currentData() is None:
             return
         row = self._state.lens_field_map_descriptors.get(self.lens.currentData(), {})
         reference = self._material_defaults["linear_material_reference"]
@@ -438,7 +451,8 @@ class ModelInspectorPage(QWidget):
                 item = QTableWidgetItem(value)
                 item.setToolTip(detail)
                 self.circuit_table.setItem(row, column, item)
-        for lens in self._state.lenses:
+        installed = self._installed_lenses(self._state)
+        for lens in installed:
             descriptor = self._state.lens_field_map_descriptors.get(lens.key, {})
             if selected_mode in {"ideal", "analytical"}:
                 evidence = "Parameterized analytic field"
@@ -468,6 +482,8 @@ class ModelInspectorPage(QWidget):
         diagnostics = self._completed_diagnostics if selected_mode == self._completed_mode else {}
         from temsim.physics.lens_field_provider import lens_geometry_binding, _fingerprint
         for key, diagnostic in diagnostics.items():
+            if key not in {lens.key for lens in installed}:
+                continue
             if (diagnostic.get("geometry_fingerprint") != lens_geometry_binding(self._state, key).geometry_fingerprint
                     or diagnostic.get("descriptor_fingerprint") != _fingerprint(self._state.lens_field_map_descriptors.get(key))):
                 continue

@@ -12,8 +12,8 @@ imaging, convergence, aberrations and downstream focus.
 | --- | --- | --- |
 | Gun Lens | Control the current admitted to the column through physical aperture interception, with C1-aperture clipping as the requested current-control mechanism. | Report gun-aperture and C1-aperture losses separately and retain absolute source weights. Changing lens strength does not itself change the emitted current or justify renormalizing transmitted particles. Check actual aperture filling before assuming there is current control. |
 | C1 Lens | Control microscope **spot size** through source imaging/demagnification, and the current delivered below C1. | In the requested Thermo Fisher convention, spot size is a dimensionless integer operating index, not a specimen-plane diameter or raster pixel size. Preserve any existing scale; a calibrated index may select coupled condenser settings, but no unmeasured index-to-current table may be invented. |
-| C2 and C3 | Jointly control probe convergence semi-angle in Nanoprobe mode. | Measure the executed beam at the specified specimen plane with the declared current-weighted angular statistic. A saved target or a single lens percentage is not a measurement. |
-| C3 | Select the Normal or Large angle optical branch through its excitation and resulting crossover topology. | C3 range selection is distinct from the Mini Condenser's Nanoprobe/Microprobe selection. Absolute excitation percentage alone does not establish the branch. |
+| C2 and C3, when installed | Jointly control probe convergence semi-angle in three-condenser Nanoprobe mode. | A physical two-condenser column instead uses its actual C1/C2 illumination system; do not require or synthesize a missing C3. Measure the executed beam at the specified specimen plane with the declared current-weighted angular statistic. A saved target or a single lens percentage is not a measurement. |
+| C3 | Select the Normal or Large angle optical branch in hardware that contains C3. | A physical two-condenser column has neither branch. C3 range selection is distinct from the Mini Condenser's Nanoprobe/Microprobe selection. Absolute excitation percentage alone does not establish the branch. |
 | Mini Condenser | Select the probe/illumination mode, Nanoprobe or Microprobe. | Preserve the current magnitude unless a deliberate tuning operation changes it. Existing mode-specific polarity rules remain in force. A change can require downstream focus revalidation. |
 | Mini Condenser and Objective | Jointly form the probe. | Account for both fields, their geometry, and the incoming beam. Do not infer a focused probe from a mode label. |
 | Objective | Control whether the probe is focused on the specimen. | Evaluate focus at the actual specimen entrance/reference plane and report which plane is used. Preserve defocus when the user deliberately perturbs a lens. |
@@ -25,6 +25,58 @@ reference starting points, not independent guarantees for each role. AC/Descan
 calibration changes scan-drive response matrices, not these illumination lens
 excitations. Descan remains a control channel on the existing shared
 Image/Diffraction physical deflector; it is not an extra magnetic element.
+
+## Physical two-condenser Nanoprobe requested on 2026-11-12
+
+The `C2` assembly is a distinct physical column with C1 and C2 as its only
+main condenser lenses. Its installed Mini Condenser and Objective remain
+downstream focusing components. This assembly has no C3 lens, C3 aperture,
+Adapter Lens or probe-corrector relay/multipoles in its resolved layout.
+Disabled compatibility objects in a saved software state do not represent
+installed hardware and must not contribute a field or mechanical stop.
+
+This configuration has one Nanoprobe illumination branch. Normal and Large
+angle are C3-dependent choices and are not applicable to it. A retained range
+value from a three-condenser state must not select a second two-condenser
+Nanoprobe preset, re-enable absent hardware or block the valid mode pair.
+Keep physical two-condenser installation separate from disabling excitation
+on an installed C3 in a three-condenser column. In particular, the latter's
+C2 compensation and saved C3 strengths do not define this assembly.
+
+Match the incident optics using only installed elements. C1 retains its
+source/current and dimensionless microscope spot-size roles; C2 controls the
+incident convergence in conjunction with the actual upstream source image.
+Adjust the Mini Condenser and Upper Objective fields deliberately to focus
+directly on the specimen upper surface. A separate bounded source-image waist
+between Mini Condenser and that surface invalidates the direct-focus branch.
+Do not impose a C2-to-C3 waist, a C3-to-ADL condition, corrector-internal waist
+counts or a corrector-exit crossover in the AC coils when those components
+are absent. Any driven AC shift/tilt assessment remains a separate measurement
+of the installed scan coils and downstream combined field.
+
+Use an assembly-specific Nanoprobe working point. A three-condenser or
+probe-corrected preset is at most a declared search seed, not a calibrated
+two-condenser default. Diffraction is an independent downstream projector
+selection; its lens strengths cannot establish or repair incident probe focus.
+Apply a C2 Nanoprobe/Diffraction pair only through compatible installed
+devices, preserving source law, absolute weights and physical interception.
+
+The initial focus-only request introduced no numerical convergence-angle or
+probe-size pass threshold. The subsequent request on 2026-11-12 requires
+current-weighted alpha95 of at least 10 mrad, with a 70 um default C2 aperture
+diameter for this two-condenser Nanoprobe working point. Keep the earlier
+2.2 mrad, 100 um input as a historical comparison, not a qualifying high-angle
+default. Change installed condenser working points explicitly; retain the
+source distribution and absolute aperture losses. Do not obtain the larger
+angle by silently broadening emission or counting zero-current support rays.
+
+Report the actual current-weighted alpha95, angular RMS, native
+D95, RMS radius, absolute current and source/surviving/effective populations.
+Locate the native D95 minimum and RMS minimum independently in executed
+through-focus observations; an RMS covariance estimate alone does not certify
+D95 placement. Use the actual sample centre and active thickness to determine
+the upper surface, rather than a historical module coordinate. The common
+minimum source budget and numerical refinement rules below still apply.
 
 ## Microprobe basic tuning requested on 2026-11-11
 
@@ -217,6 +269,11 @@ recentering the beam, changing source weights, or silently refocusing each
 member of an independent lens-perturbation experiment.
 
 ## Corrector crossover comparison
+
+The corrector-specific locations and C3 branch requirements in this section
+apply to the installed three-condenser probe-corrected assembly. They do not
+add missing hardware or crossover requirements to a physical C1/C2 column;
+the direct Mini Condenser-to-specimen focus requirement still applies there.
 
 The user clarified the two comparison locations on 2026-10-27. The Normal-mode
 C3-to-ADL interval must remain free of crossovers. The next downstream

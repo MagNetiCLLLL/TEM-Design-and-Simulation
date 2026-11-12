@@ -16,7 +16,9 @@ from threadpoolctl import threadpool_limits
 
 from temsim.assembly_catalog import AssemblySelection
 from temsim.instrument_snapshot import capture_instrument_snapshot
-from temsim.operating_modes import mode_by_key, _apply_values, is_nanoprobe_mode
+from temsim.operating_modes import (
+    mode_by_key, _apply_values, is_nanoprobe_mode, has_two_condenser_hardware,
+)
 from temsim.optics.surface_probe_focus import measure_surface_focus, surface_z_mm
 from temsim.optics.illumination_current import aperture_gate, current_gate, set_calibration_flux
 
@@ -115,7 +117,7 @@ def seed_illumination(state, mode_key):
     Source, gun voltages, downstream lenses and geometry remain unchanged.
     """
     from temsim.runtime_parameters import runtime_targets
-    mode = mode_by_key(mode_key)
+    mode = mode_by_key(mode_key, column_name="C2" if has_two_condenser_hardware(state) else None)
     targets = runtime_targets(state)
     end = surface_z_mm(state)
     installed = {c.key for c in state._resolved_optics_layout
@@ -133,9 +135,10 @@ def seed_illumination(state, mode_key):
         devices[key] = dict(values)
     apertures = {k: dict(v) for k, v in mode.apertures.items()
                  if k in installed and k in targets}
-    if is_nanoprobe_mode(mode_key) and "condenser_aperture_2" in apertures:
-        # Historical 100 um / 25 mrad pupil is a seed, not a 30 mrad
-        # calibration. The physical 120 um opening is traced and clipped.
+    if (is_nanoprobe_mode(mode_key) and not has_two_condenser_hardware(state)
+            and "condenser_aperture_2" in apertures):
+        # Retain the historical three-condenser exploration pupil. A true C2
+        # assembly keeps its own preset diameter rather than inheriting 120 um.
         apertures["condenser_aperture_2"]["diameter_mm"] = .12
     _apply_values(state, replace(mode, devices=devices, apertures=apertures))
     state.illumination_mode = "STEM" if is_nanoprobe_mode(mode_key) else "TEM"

@@ -1,0 +1,135 @@
+{
+  "dependency_pinned_derivative": {
+    "derivative_digest": "b06484b2c5cf7878f1fa961edc6d19adc3dc4ce7a97ef603d58b6df380f5fc10",
+    "derivative_path": "portable-focused4096-inputs.json",
+    "inventory_count": 42,
+    "inventory_scope": "Newly captured current configuration tree overlaid with every exact dependency byte from the original snapshot. Extra support files and runtime were captured now, not retroactively attributed to the trial.",
+    "original_digest": "bb9e7582e86d10e3e5b36ec49a74d3416ea9e80926ac40fc18098ff81a6bbe0f",
+    "qualification": "INPUTS_ONLY_DERIVATIVE_NO_NEW_PHYSICAL_RESULT",
+    "runtime_identity": "Recorded at derivative creation; not retroactively attributed to original trial.",
+    "status": "PASS"
+  },
+  "observer_sha256": "15737261f0a2b7b7de39a66f5cb7dcba37f8e7ca0c6739c040dc88ffd524bfe3",
+  "operating_profile_round_trip": {
+    "observed": {
+      "aperture_diameter_mm": 0.07,
+      "aperture_enabled": true,
+      "column_mode": "two_condenser",
+      "count": 4096,
+      "hardware": "two_condenser",
+      "lenses": {
+        "adapter_lens": {
+          "enabled": false,
+          "percent": 42.0,
+          "polarity": 1
+        },
+        "condenser_lens_1": {
+          "enabled": true,
+          "percent": 52.5,
+          "polarity": 1
+        },
+        "condenser_lens_2": {
+          "enabled": true,
+          "percent": 17.75,
+          "polarity": 1
+        },
+        "condenser_lens_3": {
+          "enabled": false,
+          "percent": 55.0,
+          "polarity": 1
+        },
+        "diffraction_lens": {
+          "enabled": true,
+          "percent": 13.59281212137673,
+          "polarity": 1
+        },
+        "image_adapter_lens": {
+          "enabled": false,
+          "percent": 48.97736117372686,
+          "polarity": 1
+        },
+        "image_tl11_lens": {
+          "enabled": false,
+          "percent": 47.222628953204506,
+          "polarity": -1
+        },
+        "image_tl12_lens": {
+          "enabled": false,
+          "percent": 72.246157404236,
+          "polarity": 1
+        },
+        "image_tl21_lens": {
+          "enabled": false,
+          "percent": 60.00013477251599,
+          "polarity": 1
+        },
+        "image_tl22_lens": {
+          "enabled": false,
+          "percent": 60.00017182617688,
+          "polarity": -1
+        },
+        "intermediate_lens": {
+          "enabled": true,
+          "percent": 8.51783304453163,
+          "polarity": 1
+        },
+        "mini_condenser": {
+          "enabled": true,
+          "percent": 10.0,
+          "polarity": -1
+        },
+        "objective_lens": {
+          "enabled": true,
+          "percent": 29.292665862003528,
+          "polarity": 1
+        },
+        "probe_tl12_lens": {
+          "enabled": false,
+          "percent": 60.0,
+          "polarity": 1
+        },
+        "probe_tl21_lens": {
+          "enabled": false,
+          "percent": 60.0,
+          "polarity": 1
+        },
+        "probe_tl22_lens": {
+          "enabled": false,
+          "percent": 60.0,
+          "polarity": -1
+        },
+        "projector_lens_1": {
+          "enabled": true,
+          "percent": 32.1132572718703,
+          "polarity": 1
+        },
+        "projector_lens_2": {
+          "enabled": true,
+          "percent": 9.826874422815507,
+          "polarity": 1
+        }
+      },
+      "receivers": {
+        "camera": false,
+        "flu_screen": false
+      },
+      "sample_inserted": false,
+      "source_current_a": 1e-05,
+      "step_mm": 0.05,
+      "upper_surface_z_mm": 1025.1999975
+    },
+    "selection": "AssemblySelection(gun='FEG', column='C2', recording='No Energy Filter', beam_blanker='None')",
+    "status": "PASS"
+  },
+  "original_snapshot_restore": {
+    "digest_equal": true,
+    "status": "PASS"
+  },
+  "relative_surface_d95_difference": {
+    "source_2048_relative_to_4096": 0.15356116818800647,
+    "step_010_relative_to_005": 3.994003369411914e-05
+  },
+  "scope": "Read-only restoration and profile checks; no emitter invocation or particle calculation.",
+  "source_implementation": "8862d211bd0ee8fcd6c07c3d744fb20b900667c1f91f84eda5c23cc0bea56dc5",
+  "source_snapshot_digest": "bb9e7582e86d10e3e5b36ec49a74d3416ea9e80926ac40fc18098ff81a6bbe0f"
+}

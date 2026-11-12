@@ -1,0 +1,313 @@
+{
+  "scope": "Zero-current differential pencils only; no emitter invocation, finite-source transport, specimen scattering, detector signal or wave qualification.",
+  "configuration": "FEG / physical C1+C2 / No Energy Filter / Nanoprobe / Diffraction",
+  "source_plane": "specimen upper surface",
+  "source_z_mm": 1025.1999975,
+  "catalog_source_plane_z_mm": 1025.2,
+  "reference_plane": "TOML main-screen camera-length reference, retracted in Nanoprobe",
+  "reference_z_mm": 2140.15,
+  "controls_percent": {
+    "condenser_lens_1": 90.0,
+    "condenser_lens_2": 35.0,
+    "mini_condenser": 10.0,
+    "objective_lens": 29.223516026455023
+  },
+  "projector_percent": {
+    "diffraction_lens": 14.577617197168571,
+    "intermediate_lens": 0.035082657259397326,
+    "projector_lens_1": 32.1132572718703,
+    "projector_lens_2": 9.826874422815507
+  },
+  "receiver_insertion": {
+    "haadf": true,
+    "df": true,
+    "bf": true,
+    "flu_screen": false,
+    "camera": false
+  },
+  "input_energy_ev": 300000.0,
+  "input_diagnostic_clock_s": 0.0,
+  "position_increment_m": 1e-10,
+  "mechanical_slope_increment_rad": 1e-07,
+  "source_A_t_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_A_gradient_t": [
+    [
+      0.0,
+      -0.23594570178198723
+    ],
+    [
+      0.23594570178198723,
+      0.0
+    ]
+  ],
+  "canonical_to_mechanical_basis": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -112.31991417146709,
+      1.0,
+      0.0
+    ],
+    [
+      112.31991417146709,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "input_physical_digest": "73d71732a91e719d61e9e89a814ba1cbe24d70baad04898fad6a89922f667585",
+  "runs": [
+    {
+      "maximum_step_mm": 0.2,
+      "elapsed_s": 25.369412300002296,
+      "all_pencils_reach_reference": true,
+      "blocked_key": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "blocked_z_mm": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ],
+      "mechanical_jacobian": [
+        [
+          -1.475597739585381,
+          -9.080096729804657,
+          -0.04941207990770389,
+          0.04652038806434826
+        ],
+        [
+          9.080096729804657,
+          -1.475597739585381,
+          -0.04652038806434826,
+          -0.04941207990770389
+        ],
+        [
+          7.102587238010901,
+          -32.412448006341755,
+          -0.12141657500191902,
+          0.1143110389876534
+        ],
+        [
+          32.412448006341755,
+          7.102587238010901,
+          -0.1143110389876534,
+          -0.12141657500191902
+        ]
+      ],
+      "canonical_jacobian": [
+        [
+          3.7495682550255576,
+          -3.5301361555376825,
+          -0.04941207990770389,
+          0.04652038806434826
+        ],
+        [
+          3.5301361555376825,
+          3.7495682550255576,
+          -0.04652038806434826,
+          -0.04941207990770389
+        ],
+        [
+          19.94199332595536,
+          -18.774948723132713,
+          -0.12141657500191902,
+          0.1143110389876534
+        ],
+        [
+          18.774948723132713,
+          19.94199332595536,
+          -0.1143110389876534,
+          -0.12141657500191902
+        ]
+      ],
+      "canonical_position_residual_norm": 5.149866345423906,
+      "effective_camera_length_m": 0.0678653088585241,
+      "camera_length_singular_values_m": [
+        0.0678653088585241,
+        0.0678653088585241
+      ],
+      "camera_length_relative_error_to_50mm": 0.35730617717048196,
+      "chief_reference_phase": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "receipt": {
+        "coil_perturbations_rad": {},
+        "empirical_aberrations_applied": false,
+        "field_digest": "c73f20bd3f6e90e3aed464458267590f7f0242a2988fa406e403ca6a9e728550",
+        "geometry_digest": "89284d10c0e5b3dcf907f7c6e84af7e996f312a9da46e9a5feccb006b765858e",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 0.0002,
+        "parent_runtime_digest": "877831e54f987489a341bf710c40be020506dcaecd2be125469d06e5ba690388",
+        "runtime_digest": "877831e54f987489a341bf710c40be020506dcaecd2be125469d06e5ba690388",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "0052852a7236fcbe202d9c711470042afd27729e546462dcc88117ec150b3664",
+        "swept_bounds_m": [
+          [
+            -4.9412079907703885e-09,
+            -4.9412079907703885e-09,
+            1.0251999975000001
+          ],
+          [
+            4.9412079907703885e-09,
+            4.9412079907703885e-09,
+            2.14015
+          ]
+        ]
+      },
+      "actual_uniform_step_bound_mm": 0.1
+    },
+    {
+      "maximum_step_mm": 0.1,
+      "elapsed_s": 26.338525400002254,
+      "all_pencils_reach_reference": true,
+      "blocked_key": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "blocked_z_mm": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ],
+      "mechanical_jacobian": [
+        [
+          -1.475597739585381,
+          -9.080096729804657,
+          -0.04941207990770389,
+          0.04652038806434826
+        ],
+        [
+          9.080096729804657,
+          -1.475597739585381,
+          -0.04652038806434826,
+          -0.04941207990770389
+        ],
+        [
+          7.102587238010901,
+          -32.412448006341755,
+          -0.12141657500191902,
+          0.1143110389876534
+        ],
+        [
+          32.412448006341755,
+          7.102587238010901,
+          -0.1143110389876534,
+          -0.12141657500191902
+        ]
+      ],
+      "canonical_jacobian": [
+        [
+          3.7495682550255576,
+          -3.5301361555376825,
+          -0.04941207990770389,
+          0.04652038806434826
+        ],
+        [
+          3.5301361555376825,
+          3.7495682550255576,
+          -0.04652038806434826,
+          -0.04941207990770389
+        ],
+        [
+          19.94199332595536,
+          -18.774948723132713,
+          -0.12141657500191902,
+          0.1143110389876534
+        ],
+        [
+          18.774948723132713,
+          19.94199332595536,
+          -0.1143110389876534,
+          -0.12141657500191902
+        ]
+      ],
+      "canonical_position_residual_norm": 5.149866345423906,
+      "effective_camera_length_m": 0.0678653088585241,
+      "camera_length_singular_values_m": [
+        0.0678653088585241,
+        0.0678653088585241
+      ],
+      "camera_length_relative_error_to_50mm": 0.35730617717048196,
+      "chief_reference_phase": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "receipt": {
+        "coil_perturbations_rad": {},
+        "empirical_aberrations_applied": false,
+        "field_digest": "c73f20bd3f6e90e3aed464458267590f7f0242a2988fa406e403ca6a9e728550",
+        "geometry_digest": "89284d10c0e5b3dcf907f7c6e84af7e996f312a9da46e9a5feccb006b765858e",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 0.0001,
+        "parent_runtime_digest": "877831e54f987489a341bf710c40be020506dcaecd2be125469d06e5ba690388",
+        "runtime_digest": "877831e54f987489a341bf710c40be020506dcaecd2be125469d06e5ba690388",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "0052852a7236fcbe202d9c711470042afd27729e546462dcc88117ec150b3664",
+        "swept_bounds_m": [
+          [
+            -4.9412079907703885e-09,
+            -4.9412079907703885e-09,
+            1.0251999975000001
+          ],
+          [
+            4.9412079907703885e-09,
+            4.9412079907703885e-09,
+            2.14015
+          ]
+        ]
+      },
+      "actual_uniform_step_bound_mm": 0.1
+    }
+  ],
+  "source_controls_unchanged": true,
+  "status": "DIAGNOSTIC_ONLY_NOT_A_PROJECTOR_QUALIFICATION",
+  "step_comparison_limit": "The 0.2 and 0.1 mm requested limits were both capped at the state step of 0.1 mm; these baseline repeats are not independent mesh refinement."
+}

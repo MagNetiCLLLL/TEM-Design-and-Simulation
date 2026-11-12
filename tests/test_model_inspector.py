@@ -224,3 +224,63 @@ def test_invalid_stigmator_readout_clears_stale_rows_but_keeps_other_inspector_t
     page.refresh()
     assert page.stigmator_table.rowCount() == 3
     assert "readout unavailable" not in page.stigmator_note.text()
+
+
+def test_lens_selector_and_model_rows_follow_physical_c2_installation(qtbot, monkeypatch):
+    from temsim.assembly_catalog import AssemblyCatalog, AssemblySelection
+    from temsim.optics.electron_gun.emitter import ColdFieldEmitter
+    from temsim.physics import lens_field_provider
+    from temsim.simulation_modes import mode_key
+
+    def forbidden(*_args, **_kwargs):
+        pytest.fail("Inspecting installed hardware must not emit source particles")
+
+    monkeypatch.setattr(ColdFieldEmitter, "emit", forbidden)
+    state = default_state()
+    page = ModelInspectorPage()
+    qtbot.addWidget(page)
+    page.set_state(state)
+    page.lens.setCurrentIndex(page.lens.findData("condenser_lens_3"))
+    AssemblyCatalog().apply(state, AssemblySelection("FEG", "C2", "No Energy Filter"))
+    installed = {part.key for part in state._resolved_assembly.parts}
+    expected = {lens.key for lens in state.lenses if lens.key in installed}
+    absent = {lens.key: lens.name for lens in state.lenses if lens.key not in installed}
+    assert "condenser_lens_3" in absent and "adapter_lens" in absent
+    before = deepcopy(state.to_dict())
+
+    original_binding = lens_field_provider.lens_geometry_binding
+
+    def installed_binding(current, key):
+        assert key in installed, "A previous assembly's field diagnostic must be ignored"
+        return original_binding(current, key)
+
+    monkeypatch.setattr(lens_field_provider, "lens_geometry_binding", installed_binding)
+    page._completed_mode = mode_key(state)
+    page._completed_diagnostics = {"condenser_lens_3": {}}
+    page.set_state(state)
+    assert {page.lens.itemData(i) for i in range(page.lens.count())} == expected
+    assert page.lens.currentData() in expected
+    names = {page.table.item(i, 0).text() for i in range(page.table.rowCount())}
+    assert not names.intersection(absent.values())
+    assert state.to_dict() == before
+
+
+def test_lens_inspector_keeps_installed_c3_when_only_its_excitation_is_off(qtbot, monkeypatch):
+    from temsim.optics.electron_gun.emitter import ColdFieldEmitter
+
+    def forbidden(*_args, **_kwargs):
+        pytest.fail("Inspecting a de-energized lens must not emit source particles")
+
+    monkeypatch.setattr(ColdFieldEmitter, "emit", forbidden)
+    state = default_state()
+    state.condenser_system.apply_mode("two_lens_c3_off")
+    c3 = next(lens for lens in state.lenses if lens.key == "condenser_lens_3")
+    assert not c3.enabled and state.layout_c3_hardware == "three_condenser"
+    assert c3.key in {part.key for part in state._resolved_assembly.parts}
+    before = deepcopy(state.to_dict())
+    page = ModelInspectorPage()
+    qtbot.addWidget(page)
+    page.set_state(state)
+    assert page.lens.findData(c3.key) >= 0
+    assert c3.name in {page.table.item(i, 0).text() for i in range(page.table.rowCount())}
+    assert state.to_dict() == before

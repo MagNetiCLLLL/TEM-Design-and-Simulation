@@ -104,13 +104,18 @@ def _array_hash(value):
     return sha256(str((a.dtype.str, a.shape)).encode()+a.tobytes()).hexdigest()
 
 
-def audit_extended_plan(state, plan, stop):
-    """Audit the actual extended interval with the existing action/owner rules."""
+def audit_extended_plan(state, plan, stop, *, expected_c2_diameter_mm=.100):
+    """Audit actual ownership and the explicitly required C2 opening.
+
+    The default remains the historical 100 um contract. Supplying another
+    expected diameter never changes the state's aperture or captured geometry.
+    """
     from temsim.instrument_snapshot import capture_instrument_snapshot
     from temsim.physics.unified_field_runtime import UnifiedFieldRuntime
     from audit_joint_probe_fields import _inputs, _plan_actions, _field_ownership, _c2_geometry
     before = capture_instrument_snapshot(state)
-    aperture, start, surface = _inputs(state)
+    aperture, start, surface = _inputs(state,
+        expected_c2_diameter_mm=expected_c2_diameter_mm)
     runtime = plan.unified_runtime
     if type(runtime) is not UnifiedFieldRuntime or stop <= surface:
         raise ValueError("An extended production unified runtime is required")
@@ -120,7 +125,8 @@ def audit_extended_plan(state, plan, stop):
     result = dict(schema="temsim-extended-probe-field-audit-v1", status="PASS", passed=True,
         plan_actions=_plan_actions(plan, runtime, start, stop),
         field_ownership=_field_ownership(state, runtime),
-        c2_aperture=_c2_geometry(aperture, runtime, start, stop),
+        c2_aperture=_c2_geometry(aperture, runtime, start, stop,
+            expected_c2_diameter_mm=expected_c2_diameter_mm),
         identities=dict(input_digest=before.digest, runtime_digest=runtime.digest,
             potential_digest=runtime.snapshot.numerical_digest, geometry_digest=runtime.geometry.digest,
             plan_signature=plan.signature),

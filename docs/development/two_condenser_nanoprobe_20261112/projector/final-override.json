@@ -1,0 +1,58 @@
+{
+  "calibration_status": "computed_unified_c2_zero_current_diffraction_reference",
+  "calibration_reference": "Independent C1+C2 Nanoprobe diffraction differential reference at exact Objective 29.223518226455024% and the specimen upper surface. D/I were jointly matched with P1/P2 held fixed. Production unified nine-pencil verification used 0.05 mm at this exact final point. Independent 0.1/0.05 mm and half-increment checks belong to nearby Objective 29.2235172%, as recorded separately. Source emission was forbidden; no finite-source, finite-angle, detector-signal, wave or experimental qualification.",
+  "devices": {
+    "diffraction_lens": {
+      "percent": 13.589999609390503
+    },
+    "intermediate_lens": {
+      "percent": 8.532044964017839
+    },
+    "projector_lens_1": {
+      "percent": 32.1132572718703
+    },
+    "projector_lens_2": {
+      "percent": 9.826874422815507
+    }
+  },
+  "apertures": {},
+  "targets": {
+    "conjugate_plane": "mode_dependent_diffraction_reference_plane",
+    "reference_surface": "stem_main_screen",
+    "calibration_model": "unified",
+    "calibration_scope": "zero_current_differential_pencils_only",
+    "source_plane": "specimen_upper_surface",
+    "source_z_mm": 1025.1999975,
+    "reference_z_mm": 2140.15,
+    "objective_excitation_percent": 29.223518226455024,
+    "target_effective_camera_length_m": 0.05,
+    "achieved_effective_camera_length_m": 0.049999999174983316,
+    "achieved_diffraction_conjugacy_residual": 8.392709698605317e-07,
+    "validation_step_mm": 0.05,
+    "finite_source_qualification": "NOT_TESTED",
+    "finite_angle_qualification": "NOT_TESTED",
+    "wave_qualification": "NOT_TESTED",
+    "calibrated_illumination": "nanoprobe",
+    "diagnostic_pencil_count": 9,
+    "validation_steps_mm": [
+      0.05
+    ],
+    "diagnostic_position_steps_m": [
+      1e-10
+    ],
+    "diagnostic_angle_steps_rad": [
+      1e-07
+    ],
+    "camera_length_relative_error": 1.6500333765989694e-08,
+    "exact_working_point_validation_step_mm": 0.05,
+    "nearby_step_refinement_objective_excitation_percent": 29.2235172,
+    "nearby_step_refinement_steps_mm": [
+      0.1,
+      0.05
+    ],
+    "nearby_half_increment_check": true
+  },
+  "compatible_recording_systems": [
+    "No Energy Filter"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "ready": true,
+  "case_name": "weak-c2-final-exact",
+  "projector_reference_case": "weak-c2-provisional",
+  "controls_percent": {
+    "condenser_lens_1": 52.5,
+    "condenser_lens_2": 17.75,
+    "mini_condenser": 10.0,
+    "objective_lens": 29.292665862003528
+  },
+  "c2_aperture_diameter_mm": 0.07,
+  "configured_source_particles_not_emitted": 4096,
+  "note": "Exact final parent-controlled point. Nine zero-current pencils only; configured source particles are never emitted."
+}

@@ -1,0 +1,1126 @@
+{
+  "absolute_current_balance_residual_a": 0.0,
+  "alpha95_mrad": 2.1995997159091747,
+  "angular_rms_mrad": 1.238754896872245,
+  "controls": {
+    "condenser_lens_1": 90.0,
+    "condenser_lens_2": 35.0,
+    "mini_condenser": 10.0,
+    "objective_lens": 29.223522826455024
+  },
+  "d95_nm": 0.04783013923465399,
+  "effective_count": 1024.0,
+  "elapsed_s": 32.0017450999876,
+  "emitted_current_transmission": 1.0,
+  "execution": {
+    "checkpoint_rows": 160,
+    "emitted_count": 1024,
+    "emitted_positive_count": 1024,
+    "field_audit": {
+      "c2_aperture": {
+        "actual_boundary_radius_mm": 0.05,
+        "diameter_mm": 0.1,
+        "enabled": true,
+        "event_z_mm": [
+          764.9,
+          764.9,
+          764.9,
+          765.1,
+          765.1,
+          765.1
+        ],
+        "host_key": "condenser_aperture_2",
+        "inserted": true,
+        "installed": true,
+        "key": "condenser_aperture_2",
+        "local_end_z_mm": 765.1,
+        "local_start_z_mm": 764.9,
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "radius_mm": 0.05,
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "field_ownership": {
+        "duplicate_ownership": false,
+        "metadata": {
+          "dynamic_snapshot_digest": null,
+          "electric_policy": "retained native phi and E plus -partial_t(A); no tolerance-based tail deletion",
+          "emission_time_s": 0.0,
+          "empirical_aberrations_applied": false,
+          "equivalent_image_maps_applied": false,
+          "geometry_owner": "unified captured finite boundaries",
+          "qualification": "native engineering fields with explicit domains; not OEM field calibration",
+          "round_radial_order": 3,
+          "round_remote_domain_policy": "gaussian-binary64-remote-roundoff-v1",
+          "saved_legacy_terms": "preserved in instrument input identity; inactive in this field-owned interval",
+          "source_contract": "executed physical gun exit; no synthetic source substitution",
+          "time_policy": "actual emission epoch plus flight time; native raster flyback requires explicit temporal admission"
+        },
+        "natural_field_aberrations_retained": true,
+        "required_magnetic_owners": {
+          "ac_deflector": [
+            "ac_deflector:0",
+            "ac_deflector:1"
+          ],
+          "beam_deflector": [
+            "beam_deflector:0",
+            "beam_deflector:1"
+          ],
+          "condenser_lens_1": [
+            "condenser_lens_1"
+          ],
+          "condenser_lens_2": [
+            "condenser_lens_2"
+          ],
+          "condenser_stigmator": [
+            "condenser_stigmator"
+          ],
+          "diffraction_lens": [
+            "diffraction_lens"
+          ],
+          "diffraction_stigmator": [
+            "diffraction_stigmator"
+          ],
+          "image_diffraction_deflector": [
+            "image_diffraction_deflector:0",
+            "image_diffraction_deflector:1"
+          ],
+          "intermediate_lens": [
+            "intermediate_lens"
+          ],
+          "mini_condenser": [
+            "mini_condenser"
+          ],
+          "objective_lens": [
+            "objective_lens"
+          ],
+          "objective_stigmator": [
+            "objective_stigmator"
+          ],
+          "projector_lens_1": [
+            "projector_lens_1"
+          ],
+          "projector_lens_2": [
+            "projector_lens_2"
+          ]
+        },
+        "selected_auxiliaries": [
+          "condenser_stigmator",
+          "objective_stigmator",
+          "diffraction_stigmator",
+          "ac_deflector",
+          "beam_deflector",
+          "image_diffraction_deflector"
+        ],
+        "selected_round_lenses": [
+          "condenser_lens_1",
+          "condenser_lens_2",
+          "mini_condenser",
+          "objective_lens",
+          "diffraction_lens",
+          "intermediate_lens",
+          "projector_lens_1",
+          "projector_lens_2"
+        ],
+        "sources": [
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "condenser_lens_1"
+            ],
+            "potential_digest": "20f3a2468745fc982dd4668f7f3d84e72fbf12f84faae67757e4c133f8777dda",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "condenser_lens_1"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "condenser_lens_2"
+            ],
+            "potential_digest": "7da7e0f989fef6bc5d6f5a668ef8d62645d99282c1a48d8d072fe0779d6dd5b6",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "condenser_lens_2"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "mini_condenser"
+            ],
+            "potential_digest": "282fa2be9b397097dc7eaf2e743d35c6141c0d5cedc13552fcd8364af87e28de",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "mini_condenser"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "objective_lens"
+            ],
+            "potential_digest": "35600848c6b2a47a882456349055708a5d8f8c14745463927fc98e384b94bd7a",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "objective_lens"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "diffraction_lens"
+            ],
+            "potential_digest": "665110166c9700a976319c88dda264903347f84c1064f334fe6809244ff8c337",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "diffraction_lens"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "intermediate_lens"
+            ],
+            "potential_digest": "772e073fe75e03aab068e9e243039d33a149518a724e0cd2459c1e9324e7a09b",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "intermediate_lens"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "projector_lens_1"
+            ],
+            "potential_digest": "e8726d5d849564d3ac315b4cd4ca22cbd28b5be8428d0062514dc254c3245692",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "projector_lens_1"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "projector_lens_2"
+            ],
+            "potential_digest": "8ead81464f0bfa4a24210329875a0739c6c45ef3a79c4aec339ed129727d52ff",
+            "potential_type": "HighOrderRoundLensPotential",
+            "source_id": "projector_lens_2"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "condenser_stigmator"
+            ],
+            "potential_digest": "a05ef2e8d53f181c9da81bfb102eefc2ca5a0cc65edef13c80b1f3677b83e60f",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "condenser_stigmator"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "objective_stigmator"
+            ],
+            "potential_digest": "c348ec06106fbfbcf7abcd8756964c30f20cd7f880dd48185771fcde00026a08",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "objective_stigmator"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "diffraction_stigmator"
+            ],
+            "potential_digest": "750b337acce242a6a2e84a7302b6cda11ef4f75c9571822e7670a9ba5ef0b6f0",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "diffraction_stigmator"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "ac_deflector:0"
+            ],
+            "potential_digest": "536ae4c079ede9d972e3db3483984f1c64cde256531e21ed8c66714bf6ad2441",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "ac_deflector:0"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "ac_deflector:1"
+            ],
+            "potential_digest": "723ada3a45eb2478e7a699372f356f5a500f415c176f2ea1f8d3569935bedf9a",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "ac_deflector:1"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "beam_deflector:0"
+            ],
+            "potential_digest": "02bd131e3a0a9c403903be5539d649a237b86f70f9cac3092b12a6b8a102d653",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "beam_deflector:0"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "beam_deflector:1"
+            ],
+            "potential_digest": "4a7ccea5a7317db11b124ba6731e7c53c0778f1ca419a5898fd0acf3c450f20e",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "beam_deflector:1"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "image_diffraction_deflector:0"
+            ],
+            "potential_digest": "e60b8780079a8f34d0b12673d2a7ec1327ea7a2c1bb76c7d058c658d6f84ed76",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "image_diffraction_deflector:0"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "image_diffraction_deflector:1"
+            ],
+            "potential_digest": "4ef6d9d4d70af54c0c48d70d2d838b6dce85750a8603198feae2eb8dd5acd8c6",
+            "potential_type": "AnalyticPotentialDomain",
+            "source_id": "image_diffraction_deflector:1"
+          },
+          {
+            "kind": "electric",
+            "owner_ids": [
+              "instrument_electric"
+            ],
+            "potential_digest": "d67b9e9e4ed3b49fd94abe075f083ccd012ed0874c45bb5799ad1bc8aea987da",
+            "potential_type": "ElectricPotentialSnapshot",
+            "source_id": "instrument_electric"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "feg_deflector"
+            ],
+            "potential_digest": "5b0b406a386a34271a8c920f6ff67ff32103f7b6456a834ab24df85f8df80e7c",
+            "potential_type": "GunMagneticPotential",
+            "source_id": "feg_deflector"
+          },
+          {
+            "kind": "magnetic",
+            "owner_ids": [
+              "feg_stigmator"
+            ],
+            "potential_digest": "08ed3409f01d559379d06b444d3ad8a735a73837f666317cdfb6c3c4bcbf3806",
+            "potential_type": "GunMagneticPotential",
+            "source_id": "feg_stigmator"
+          }
+        ]
+      },
+      "identities": {
+        "geometry_digest": "722961b184edb005940a7a64d8059a2a451915d75990b752fc209f7d670ceb9b",
+        "input_digest": "1aa36966b489104ec70cb06e599610693192c70a8f43f5b4b06fd68f9fddc454",
+        "plan_signature": "8d4e542d4bcc0d3fc5368d437f101f4db9a5c0ef86d241beba6f67c389862c39",
+        "potential_digest": "b1d840957afee0be64ce3e787f6514f11a40995ad1960abdab645477212b7236",
+        "runtime_digest": "ccae3e555f82234f4564ed5455ef97357fca243c2102871ac8cc278f0db3bc46"
+      },
+      "passed": true,
+      "plan_actions": {
+        "additional_arrays": {
+          "cs_kick_m3": {
+            "count": 5936,
+            "nonzero_count": 0
+          },
+          "kick_x_rad": {
+            "count": 5936,
+            "nonzero_count": 0
+          },
+          "kick_y_rad": {
+            "count": 5936,
+            "nonzero_count": 0
+          },
+          "thin_power_m1": {
+            "count": 5936,
+            "nonzero_count": 0
+          },
+          "thin_rotation_rad": {
+            "count": 5936,
+            "nonzero_count": 0
+          }
+        },
+        "additional_lists": {
+          "intrinsic_aberration_kicks": 0,
+          "mapped_fields": 0,
+          "posed_spherical_kicks": 0,
+          "thin_actions": 0
+        },
+        "extra_electric_provider": false,
+        "interaction_count": 20,
+        "interval_mm": [
+          450.0,
+          1026.1999975
+        ],
+        "legacy_input_coefficients": "Preserved; inactive in this field-owned interval",
+        "node_count": 5936
+      },
+      "schema": "temsim-extended-probe-field-audit-v1",
+      "scope": "Executed extended column field/action ownership; specimen material interactions omitted",
+      "status": "PASS"
+    },
+    "gun_dependency_signature": "fa66b4dba938671a22b0da73191dbc0ca3399594a60170db04f87cbc2a72d5fd",
+    "gun_exit_positive_count": 1024,
+    "gun_reused": true,
+    "implementation": "88c438d56d0aba72a14cc3f1954d17bc2b5e61a0c3a5edb02a9b96431a1ebf92",
+    "input_digest": "1aa36966b489104ec70cb06e599610693192c70a8f43f5b4b06fd68f9fddc454",
+    "integration_nodes": 5936,
+    "reference_current_a": 1e-05
+  },
+  "native_focus": {
+    "d95_waist": {
+      "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+      "minimum": 0.04783013923465399,
+      "neighbour_bracket_mm": [
+        1025.1499975000002,
+        1025.2
+      ],
+      "neighbour_bracket_offset_nm": [
+        -49999.999999954525,
+        2.499999936844688
+      ],
+      "observed_minimum_planes_mm": [
+        1025.1999975
+      ],
+      "plateau_intervals_mm": [
+        [
+          1025.1999975,
+          1025.1999975
+        ]
+      ],
+      "representative_offset_nm": 0.0,
+      "status": "BOUNDED_OBSERVED_MINIMUM"
+    },
+    "focus_definition": "Native D95(z) discrete minimum about each actual current-weighted centroid",
+    "planes": [
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199565089662266,
+        "centroid_x_m": -5.31764468038745e-09,
+        "centroid_y_m": 2.1003549967175807e-09,
+        "current_a": 1e-05,
+        "d50_nm": 1959.4174161018107,
+        "d90_nm": 3902.2716469561897,
+        "d95_nm": 4389.963520914962,
+        "effective_rays": 1024.0,
+        "offset_nm": -1000000.0,
+        "rms_radius_nm": 1236.1536745697535,
+        "surviving_rays": 1024,
+        "z_mm": 1024.1999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199571494899065,
+        "centroid_x_m": -5.063888768998595e-09,
+        "centroid_y_m": 1.9674048717410117e-09,
+        "current_a": 1e-05,
+        "d50_nm": 1861.8274630719184,
+        "d90_nm": 3707.9163860691515,
+        "d95_nm": 4171.31802109272,
+        "effective_rays": 1024.0,
+        "offset_nm": -950000.0000000455,
+        "rms_radius_nm": 1174.586090281737,
+        "surviving_rays": 1024,
+        "z_mm": 1024.2499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199576969742031,
+        "centroid_x_m": -4.808661499258553e-09,
+        "centroid_y_m": 1.8372999930472893e-09,
+        "current_a": 1e-05,
+        "d50_nm": 1764.1790550988726,
+        "d90_nm": 3513.4447092892415,
+        "d95_nm": 3952.541556061383,
+        "effective_rays": 1024.0,
+        "offset_nm": -900000.0000000909,
+        "rms_radius_nm": 1112.9816280076045,
+        "surviving_rays": 1024,
+        "z_mm": 1024.2999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995816082806035,
+        "centroid_x_m": -4.551994218511867e-09,
+        "centroid_y_m": 1.7100580179920977e-09,
+        "current_a": 1e-05,
+        "d50_nm": 1666.4752322704041,
+        "d90_nm": 3318.8626711133124,
+        "d95_nm": 3733.6409370041674,
+        "effective_rays": 1024.0,
+        "offset_nm": -849999.9999999091,
+        "rms_radius_nm": 1051.3422056823583,
+        "surviving_rays": 1024,
+        "z_mm": 1024.3499975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995854997739324,
+        "centroid_x_m": -4.293918523784993e-09,
+        "centroid_y_m": 1.5856961888287637e-09,
+        "current_a": 1e-05,
+        "d50_nm": 1568.7190405697784,
+        "d90_nm": 3124.176337779444,
+        "d95_nm": 3514.6229883128995,
+        "effective_rays": 1024.0,
+        "offset_nm": -799999.9999999545,
+        "rms_radius_nm": 989.6697449603901,
+        "surviving_rays": 1024,
+        "z_mm": 1024.3999975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995887286088376,
+        "centroid_x_m": -4.034466255472929e-09,
+        "centroid_y_m": 1.4642313286868334e-09,
+        "current_a": 1e-05,
+        "d50_nm": 1470.9135315496953,
+        "d90_nm": 2929.391786617497,
+        "d95_nm": 3295.494546857405,
+        "effective_rays": 1024.0,
+        "offset_nm": -750000.0,
+        "rms_radius_nm": 927.9661710097572,
+        "surviving_rays": 1024,
+        "z_mm": 1024.4499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995913742600255,
+        "centroid_x_m": -3.773669490976386e-09,
+        "centroid_y_m": 1.345679837669513e-09,
+        "current_a": 1e-05,
+        "d50_nm": 1373.0617620137587,
+        "d90_nm": 2734.515105414744,
+        "d95_nm": 3076.262461271857,
+        "effective_rays": 1024.0,
+        "offset_nm": -700000.0000000455,
+        "rms_radius_nm": 866.2334123112407,
+        "surviving_rays": 1024,
+        "z_mm": 1024.4999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199593511252575,
+        "centroid_x_m": -3.511560538256076e-09,
+        "centroid_y_m": 1.2300576890537873e-09,
+        "current_a": 1e-05,
+        "d50_nm": 1275.1667936921306,
+        "d90_nm": 2539.5523917699225,
+        "d95_nm": 2856.9335912280953,
+        "effective_rays": 1024.0,
+        "offset_nm": -650000.0000000909,
+        "rms_radius_nm": 804.473400453736,
+        "surviving_rays": 1024,
+        "z_mm": 1024.5499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995952091267044,
+        "centroid_x_m": -3.2481719293259054e-09,
+        "centroid_y_m": 1.1173804256042288e-09,
+        "current_a": 1e-05,
+        "d50_nm": 1177.2316929188141,
+        "d90_nm": 2344.5097524505168,
+        "d95_nm": 2637.514806712592,
+        "effective_rays": 1024.0,
+        "offset_nm": -599999.9999999091,
+        "rms_radius_nm": 742.6880699306803,
+        "surviving_rays": 1024,
+        "z_mm": 1024.5999975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995965324048607,
+        "centroid_x_m": -2.9835364136741813e-09,
+        "centroid_y_m": 1.0076631559958102e-09,
+        "current_a": 1e-05,
+        "d50_nm": 1079.2595303058456,
+        "d90_nm": 2149.3933027439034,
+        "d95_nm": 2418.0129872964976,
+        "effective_rays": 1024.0,
+        "offset_nm": -549999.9999999545,
+        "rms_radius_nm": 680.8793579345429,
+        "surviving_rays": 1024,
+        "z_mm": 1024.6499975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199597540561146,
+        "centroid_x_m": -2.717686951619759e-09,
+        "centroid_y_m": 9.00920551349448e-10,
+        "current_a": 1e-05,
+        "d50_nm": 981.2533804162014,
+        "d90_nm": 1954.2091658059196,
+        "d95_nm": 2198.435021402793,
+        "effective_rays": 1024.0,
+        "offset_nm": -500000.0,
+        "rms_radius_nm": 619.0492041505257,
+        "surviving_rays": 1024,
+        "z_mm": 1024.6999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.19959828799312,
+        "centroid_x_m": -2.450656707618141e-09,
+        "centroid_y_m": 7.971668418866119e-10,
+        "current_a": 1e-05,
+        "d50_nm": 883.2163214402682,
+        "d90_nm": 1758.9634720165382,
+        "d95_nm": 1978.7878055814442,
+        "effective_rays": 1024.0,
+        "offset_nm": -450000.00000004546,
+        "rms_radius_nm": 557.1995505525516,
+        "surviving_rays": 1024,
+        "z_mm": 1024.7499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995988239959767,
+        "centroid_x_m": -2.1824790434915624e-09,
+        "centroid_y_m": 6.964158136927103e-10,
+        "current_a": 1e-05,
+        "d50_nm": 785.1514348655061,
+        "d90_nm": 1563.662358321968,
+        "d95_nm": 1759.078243769278,
+        "effective_rays": 1024.0,
+        "offset_nm": -400000.0000000909,
+        "rms_radius_nm": 495.3323411950261,
+        "surviving_rays": 1024,
+        "z_mm": 1024.7999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199599192739118,
+        "centroid_x_m": -1.913187511612277e-09,
+        "centroid_y_m": 5.986808056015677e-10,
+        "current_a": 1e-05,
+        "d50_nm": 687.0618051493706,
+        "d90_nm": 1368.3119675832522,
+        "d95_nm": 1539.3132465571694,
+        "effective_rays": 1024.0,
+        "offset_nm": -349999.9999999091,
+        "rms_radius_nm": 433.4495220068038,
+        "surviving_rays": 1024,
+        "z_mm": 1024.8499975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995994332451554,
+        "centroid_x_m": -1.6428158480368372e-09,
+        "centroid_y_m": 5.039747061996082e-10,
+        "current_a": 1e-05,
+        "d50_nm": 588.9505193938403,
+        "d90_nm": 1172.9184479280314,
+        "d95_nm": 1319.499730460795,
+        "effective_rays": 1024.0,
+        "offset_nm": -299999.99999995454,
+        "rms_radius_nm": 371.5530405864735,
+        "surviving_rays": 1024,
+        "z_mm": 1024.8999975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199599579371336,
+        "centroid_x_m": -1.3713979655647333e-09,
+        "centroid_y_m": 4.1230995094072907e-10,
+        "current_a": 1e-05,
+        "d50_nm": 490.82066701116776,
+        "d90_nm": 977.4879520847915,
+        "d95_nm": 1099.644617171683,
+        "effective_rays": 1024.0,
+        "offset_nm": -250000.0,
+        "rms_radius_nm": 309.6448459928548,
+        "surviving_rays": 1024,
+        "z_mm": 1024.9499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995996597934404,
+        "centroid_x_m": -1.0989679467692386e-09,
+        "centroid_y_m": 3.236985193894327e-10,
+        "current_a": 1e-05,
+        "d50_nm": 392.67533939752934,
+        "d90_nm": 782.026636732719,
+        "d95_nm": 879.7548328258298,
+        "effective_rays": 1024.0,
+        "offset_nm": -200000.00000004546,
+        "rms_radius_nm": 247.7268885425264,
+        "surviving_rays": 1024,
+        "z_mm": 1024.9999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995996979921055,
+        "centroid_x_m": -8.255600369740684e-10,
+        "centroid_y_m": 2.3815193258238287e-10,
+        "current_a": 1e-05,
+        "d50_nm": 294.517629604373,
+        "d90_nm": 586.5406618465654,
+        "d95_nm": 659.8373072667442,
+        "effective_rays": 1024.0,
+        "offset_nm": -150000.00000009095,
+        "rms_radius_nm": 185.80111961273687,
+        "surviving_rays": 1024,
+        "z_mm": 1025.0499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995997122416426,
+        "centroid_x_m": -5.51208637173262e-10,
+        "centroid_y_m": 1.5568125050841975e-10,
+        "current_a": 1e-05,
+        "d50_nm": 196.35063200677138,
+        "d90_nm": 391.036190033722,
+        "d95_nm": 439.8989732998852,
+        "effective_rays": 1024.0,
+        "offset_nm": -99999.99999990905,
+        "rms_radius_nm": 123.86949147317726,
+        "surviving_rays": 1024,
+        "z_mm": 1025.0999975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995997156013276,
+        "centroid_x_m": -2.759482969243751e-10,
+        "centroid_y_m": 7.62970697166493e-11,
+        "current_a": 1e-05,
+        "d50_nm": 98.17901807626224,
+        "d90_nm": 195.51938588799382,
+        "d95_nm": 219.9467659671799,
+        "effective_rays": 1024.0,
+        "offset_nm": -49999.999999954525,
+        "rms_radius_nm": 61.933957373699485,
+        "surviving_rays": 1024,
+        "z_mm": 1025.1499975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995997159091747,
+        "centroid_x_m": 1.862928117119889e-13,
+        "centroid_y_m": 9.521044161325748e-15,
+        "current_a": 1e-05,
+        "d50_nm": 0.01348410240490755,
+        "d90_nm": 0.031002166347206827,
+        "d95_nm": 0.04783013923465399,
+        "effective_rays": 1024.0,
+        "offset_nm": 0.0,
+        "rms_radius_nm": 0.015205610270339478,
+        "surviving_rays": 1024,
+        "z_mm": 1025.1999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995997159091796,
+        "centroid_x_m": 2.0012081852483434e-13,
+        "centroid_y_m": 5.7842494399781456e-15,
+        "current_a": 1e-05,
+        "d50_nm": 0.010864240042929964,
+        "d90_nm": 0.03401015808094835,
+        "d95_nm": 0.05939141455294528,
+        "effective_rays": 1024.0,
+        "offset_nm": 2.499999936844688,
+        "rms_radius_nm": 0.01620746957367688,
+        "surviving_rays": 1024,
+        "z_mm": 1025.2
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199599715909184,
+        "centroid_x_m": 2.1394882743626263e-13,
+        "centroid_y_m": 2.0474624844672916e-15,
+        "current_a": 1e-05,
+        "d50_nm": 0.009514600189872381,
+        "d90_nm": 0.04294451117711963,
+        "d95_nm": 0.07039696120602441,
+        "effective_rays": 1024.0,
+        "offset_nm": 4.999999873689376,
+        "rms_radius_nm": 0.017701271704355884,
+        "surviving_rays": 1024,
+        "z_mm": 1025.2000025
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199599715778207,
+        "centroid_x_m": 2.771603068679822e-10,
+        "centroid_y_m": -7.317173253118367e-11,
+        "current_a": 1e-05,
+        "d50_nm": 98.17513115495807,
+        "d90_nm": 195.52655527785626,
+        "d95_nm": 219.9715222058353,
+        "effective_rays": 1024.0,
+        "offset_nm": 49999.999999954525,
+        "rms_radius_nm": 61.94102265663021,
+        "surviving_rays": 1024,
+        "z_mm": 1025.2499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199599712595177,
+        "centroid_x_m": 5.549387931007454e-10,
+        "centroid_y_m": -1.4323749791177245e-10,
+        "current_a": 1e-05,
+        "d50_nm": 196.34832135519653,
+        "d90_nm": 391.043359069512,
+        "d95_nm": 439.9237283938666,
+        "effective_rays": 1024.0,
+        "offset_nm": 99999.99999990905,
+        "rms_radius_nm": 123.87655642202897,
+        "surviving_rays": 1024,
+        "z_mm": 1025.2999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.19959969852185,
+        "centroid_x_m": 8.33486679653232e-10,
+        "centroid_y_m": -2.1017905377571383e-10,
+        "current_a": 1e-05,
+        "d50_nm": 294.5153192543642,
+        "d90_nm": 586.5478302922038,
+        "d95_nm": 659.8620604529428,
+        "effective_rays": 1024.0,
+        "offset_nm": 150000.00000009095,
+        "rms_radius_nm": 185.80818400457105,
+        "surviving_rays": 1024,
+        "z_mm": 1025.3499975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995996604987273,
+        "centroid_x_m": 1.1127687822545767e-09,
+        "centroid_y_m": -2.739881523469354e-10,
+        "current_a": 1e-05,
+        "d50_nm": 392.6730294696289,
+        "d90_nm": 782.0338043520762,
+        "d95_nm": 879.7795833411511,
+        "effective_rays": 1024.0,
+        "offset_nm": 200000.00000004546,
+        "rms_radius_nm": 247.73395215451416,
+        "surviving_rays": 1024,
+        "z_mm": 1025.3999975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995995802512747,
+        "centroid_x_m": 1.392749811549997e-09,
+        "centroid_y_m": -3.346570210386638e-10,
+        "current_a": 1e-05,
+        "d50_nm": 490.8183576258428,
+        "d90_nm": 977.4951186416895,
+        "d95_nm": 1099.6693642530756,
+        "effective_rays": 1024.0,
+        "offset_nm": 250000.0,
+        "rms_radius_nm": 309.65190860219406,
+        "surviving_rays": 1024,
+        "z_mm": 1025.4499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995994342986283,
+        "centroid_x_m": 1.673394380444982e-09,
+        "centroid_y_m": -3.921783639666322e-10,
+        "current_a": 1e-05,
+        "d50_nm": 588.9482106714499,
+        "d90_nm": 1172.9256131862057,
+        "d95_nm": 1319.524473345235,
+        "effective_rays": 1024.0,
+        "offset_nm": 299999.99999995454,
+        "rms_radius_nm": 371.5601019703755,
+        "surviving_rays": 1024,
+        "z_mm": 1025.4999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199599193964805,
+        "centroid_x_m": 1.954667011491059e-09,
+        "centroid_y_m": -4.465453633382354e-10,
+        "current_a": 1e-05,
+        "d50_nm": 687.0594972101467,
+        "d90_nm": 1368.3191313063421,
+        "d95_nm": 1539.3379844816754,
+        "effective_rays": 1024.0,
+        "offset_nm": 349999.9999999091,
+        "rms_radius_nm": 433.4565819424962,
+        "surviving_rays": 1024,
+        "z_mm": 1025.5499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199598825392338,
+        "centroid_x_m": 2.236532144282086e-09,
+        "centroid_y_m": -4.977516807107236e-10,
+        "current_a": 1e-05,
+        "d50_nm": 785.14912782953,
+        "d90_nm": 1563.6695202734988,
+        "d95_nm": 1759.102975970922,
+        "effective_rays": 1024.0,
+        "offset_nm": 400000.0000000909,
+        "rms_radius_nm": 495.3393994597553,
+        "surviving_rays": 1024,
+        "z_mm": 1025.5999975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995982895584008,
+        "centroid_x_m": 2.5189541428634376e-09,
+        "centroid_y_m": -5.45791458119825e-10,
+        "current_a": 1e-05,
+        "d50_nm": 883.2140154274485,
+        "d90_nm": 1758.970631959905,
+        "d95_nm": 1978.8125312973584,
+        "effective_rays": 1024.0,
+        "offset_nm": 450000.00000004546,
+        "rms_radius_nm": 557.2066069235856,
+        "surviving_rays": 1024,
+        "z_mm": 1025.6499975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199597542293374,
+        "centroid_x_m": 2.8018973031817337e-09,
+        "centroid_y_m": -5.906593190835424e-10,
+        "current_a": 1e-05,
+        "d50_nm": 981.2510755462499,
+        "d90_nm": 1954.2163235043695,
+        "d95_nm": 2198.459739870179,
+        "effective_rays": 1024.0,
+        "offset_nm": 500000.0,
+        "rms_radius_nm": 619.0562584051564,
+        "surviving_rays": 1024,
+        "z_mm": 1025.6999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199596534301849,
+        "centroid_x_m": 3.0853258605250313e-09,
+        "centroid_y_m": -6.323503694722428e-10,
+        "current_a": 1e-05,
+        "d50_nm": 1079.2572266982593,
+        "d90_nm": 2149.4004579605257,
+        "d95_nm": 2418.0376977526403,
+        "effective_rays": 1024.0,
+        "offset_nm": 549999.9999999545,
+        "rms_radius_nm": 680.8864098500916,
+        "surviving_rays": 1024,
+        "z_mm": 1025.7499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199595211186046,
+        "centroid_x_m": 3.3692039969808734e-09,
+        "centroid_y_m": -6.708601982506494e-10,
+        "current_a": 1e-05,
+        "d50_nm": 1177.2293906928408,
+        "d90_nm": 2344.5169049482056,
+        "d95_nm": 2637.539508394849,
+        "effective_rays": 1024.0,
+        "offset_nm": 599999.9999999091,
+        "rms_radius_nm": 742.6951192844941,
+        "surviving_rays": 1024,
+        "z_mm": 1025.7999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.19959351347164,
+        "centroid_x_m": 3.653495848915083e-09,
+        "centroid_y_m": -7.061848780916422e-10,
+        "current_a": 1e-05,
+        "d50_nm": 1275.1644929667566,
+        "d90_nm": 2539.5595413113792,
+        "d95_nm": 2856.958283373922,
+        "effective_rays": 1024.0,
+        "offset_nm": 650000.0000000909,
+        "rms_radius_nm": 804.4804470231967,
+        "surviving_rays": 1024,
+        "z_mm": 1025.8499975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995913766359663,
+        "centroid_x_m": 3.93816551443944e-09,
+        "centroid_y_m": -7.383209658578073e-10,
+        "current_a": 1e-05,
+        "d50_nm": 1373.0594629076822,
+        "d90_nm": 2734.5222517624543,
+        "d95_nm": 3076.287143118811,
+        "effective_rays": 1024.0,
+        "offset_nm": 700000.0000000455,
+        "rms_radius_nm": 866.2404558737654,
+        "surviving_rays": 1024,
+        "z_mm": 1025.8999975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995887311385904,
+        "centroid_x_m": 4.223177060896326e-09,
+        "centroid_y_m": -7.672655029549313e-10,
+        "current_a": 1e-05,
+        "d50_nm": 1470.9112341813047,
+        "d90_nm": 2929.398929533711,
+        "d95_nm": 3295.519217643154,
+        "effective_rays": 1024.0,
+        "offset_nm": 750000.0,
+        "rms_radius_nm": 927.9732113428014,
+        "surviving_rays": 1024,
+        "z_mm": 1025.9499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995855024542195,
+        "centroid_x_m": 4.508494532343745e-09,
+        "centroid_y_m": -7.930160155553301e-10,
+        "current_a": 1e-05,
+        "d50_nm": 1568.7167450571274,
+        "d90_nm": 3124.1834770261626,
+        "d95_nm": 3514.647647275228,
+        "effective_rays": 1024.0,
+        "offset_nm": 799999.9999999545,
+        "rms_radius_nm": 989.6767818414497,
+        "surviving_rays": 1024,
+        "z_mm": 1025.9999975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199581611107936,
+        "centroid_x_m": 4.794081957034504e-09,
+        "centroid_y_m": -8.15570514690784e-10,
+        "current_a": 1e-05,
+        "d50_nm": 1666.4729387316236,
+        "d90_nm": 3318.869806453132,
+        "d95_nm": 3733.665583381957,
+        "effective_rays": 1024.0,
+        "offset_nm": 849999.9999999091,
+        "rms_radius_nm": 1051.349238889248,
+        "surviving_rays": 1024,
+        "z_mm": 1026.0499975
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995769727127072,
+        "centroid_x_m": 5.079903354892129e-09,
+        "centroid_y_m": -8.349274962160875e-10,
+        "current_a": 1e-05,
+        "d50_nm": 1764.1767636504137,
+        "d90_nm": 3513.4518404818828,
+        "d95_nm": 3952.5661890907327,
+        "effective_rays": 1024.0,
+        "offset_nm": 900000.0000000909,
+        "rms_radius_nm": 1112.9886573173637,
+        "surviving_rays": 1024,
+        "z_mm": 1026.0999975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.199571498009183,
+        "centroid_x_m": 5.36592274498598e-09,
+        "centroid_y_m": -8.51085940643352e-10,
+        "current_a": 1e-05,
+        "d50_nm": 1861.8251738311328,
+        "d90_nm": 3707.923512876629,
+        "d95_nm": 4171.342640012789,
+        "effective_rays": 1024.0,
+        "offset_nm": 950000.0000000455,
+        "rms_radius_nm": 1174.5931154722766,
+        "surviving_rays": 1024,
+        "z_mm": 1026.1499975000002
+      },
+      {
+        "absolute_source_weight": 1.0,
+        "alpha95_mrad": 2.1995650929077155,
+        "centroid_x_m": 5.652104152999434e-09,
+        "centroid_y_m": -8.640453128470214e-10,
+        "current_a": 1e-05,
+        "d50_nm": 1959.4151291856267,
+        "d90_nm": 3902.2787691401995,
+        "d95_nm": 4389.9881249650625,
+        "effective_rays": 1024.0,
+        "offset_nm": 1000000.0,
+        "rms_radius_nm": 1236.1606954190377,
+        "surviving_rays": 1024,
+        "z_mm": 1026.1999975
+      }
+    ],
+    "positive_current_membership_stable": true,
+    "rms_waist_diagnostic": {
+      "interpretation": "Smallest observed value; no claim of an exact continuous argmin",
+      "minimum": 0.015205610270339478,
+      "neighbour_bracket_mm": [
+        1025.1499975000002,
+        1025.2
+      ],
+      "neighbour_bracket_offset_nm": [
+        -49999.999999954525,
+        2.499999936844688
+      ],
+      "observed_minimum_planes_mm": [
+        1025.1999975
+      ],
+      "plateau_intervals_mm": [
+        [
+          1025.1999975,
+          1025.1999975
+        ]
+      ],
+      "representative_offset_nm": 0.0,
+      "status": "BOUNDED_OBSERVED_MINIMUM"
+    },
+    "surface": {
+      "absolute_source_weight": 1.0,
+      "alpha95_mrad": 2.1995997159091747,
+      "centroid_x_m": 1.862928117119889e-13,
+      "centroid_y_m": 9.521044161325748e-15,
+      "current_a": 1e-05,
+      "d50_nm": 0.01348410240490755,
+      "d90_nm": 0.031002166347206827,
+      "d95_nm": 0.04783013923465399,
+      "effective_rays": 1024.0,
+      "offset_nm": 0.0,
+      "rms_radius_nm": 0.015205610270339478,
+      "surviving_rays": 1024,
+      "z_mm": 1025.1999975
+    },
+    "surface_gate": {
+      "maximum_d95_nm": null,
+      "passed": false,
+      "placement_passed": false,
+      "placement_tolerance_nm": 1.0,
+      "rms_and_d90_role": "Diagnostic only; no acceptance gate",
+      "size_cap_applied": false,
+      "status": "UNRESOLVED",
+      "strict_surface_d95_passed": null,
+      "support_passed": true
+    },
+    "waist_separation": {
+      "definition": "z_RMS minus z_D95, executed planes",
+      "difference_bracket_nm": [
+        -50002.49999989137,
+        50002.49999989137
+      ],
+      "resolved_delta_z_nm": 0.0,
+      "zero_excluded_from_bracket": false
+    }
+  },
+  "observations_sha256": "05535d4a4435084eb51481e9931e2604b1877eb0a4aed9b16cbd72f32368787d",
+  "physical_losses": {},
+  "rms_radius_nm": 0.015205610270339478,
+  "rms_tangent_waist_offset_nm": -2.8518097886129246,
+  "sample_current_a": 1e-05,
+  "scope": "True C1+C2; vacuum incident probe; original absolute weights; no coherent or projector calibration",
+  "status": "COMPLETED_CLASSICAL_TWO_CONDENSER_OBSERVATION",
+  "surface_z_mm": 1025.1999975,
+  "surviving_positive_count": 1024
+}

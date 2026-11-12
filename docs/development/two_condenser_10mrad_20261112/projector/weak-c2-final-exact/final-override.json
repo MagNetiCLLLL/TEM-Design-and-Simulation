@@ -1,0 +1,59 @@
+{
+  "calibration_status": "computed_unified_c2_zero_current_diffraction_reference",
+  "calibration_reference": "Independent C1+C2 Nanoprobe diffraction differential reference at exact Objective 29.292665862003528% and the specimen upper surface, with 70 um physical C2 aperture. D/I were jointly matched with P1/P2 held fixed. Production unified nine-pencil verification used 0.05 mm at this exact point. Independent 0.1/0.05 mm and half-increment checks belong to nearby Objective 29.29264%, as recorded separately. Source emission was forbidden; no finite-source, finite-angle, detector-signal, wave or experimental qualification.",
+  "compatible_recording_systems": [
+    "No Energy Filter"
+  ],
+  "devices": {
+    "diffraction_lens": {
+      "percent": 13.59281212137673
+    },
+    "intermediate_lens": {
+      "percent": 8.51783304453163
+    },
+    "projector_lens_1": {
+      "percent": 32.1132572718703
+    },
+    "projector_lens_2": {
+      "percent": 9.826874422815507
+    }
+  },
+  "apertures": {},
+  "targets": {
+    "conjugate_plane": "mode_dependent_diffraction_reference_plane",
+    "reference_surface": "stem_main_screen",
+    "calibration_model": "unified",
+    "calibration_scope": "zero_current_differential_pencils_only",
+    "source_plane": "specimen_upper_surface",
+    "source_z_mm": 1025.1999975,
+    "reference_z_mm": 2140.15,
+    "objective_excitation_percent": 29.292665862003528,
+    "target_effective_camera_length_m": 0.05,
+    "achieved_effective_camera_length_m": 0.049999980468229094,
+    "achieved_diffraction_conjugacy_residual": 9.383691362701095e-06,
+    "validation_step_mm": 0.05,
+    "validation_steps_mm": [
+      0.05
+    ],
+    "diagnostic_pencil_count": 9,
+    "c2_aperture_diameter_um": 70.0,
+    "finite_source_qualification": "NOT_TESTED",
+    "finite_angle_qualification": "NOT_TESTED",
+    "wave_qualification": "NOT_TESTED",
+    "camera_length_relative_error": 3.906354181237859e-07,
+    "diagnostic_position_steps_m": [
+      1e-10
+    ],
+    "diagnostic_angle_steps_rad": [
+      1e-07
+    ],
+    "exact_working_point_validation_step_mm": 0.05,
+    "nearby_step_refinement_objective_excitation_percent": 29.29264,
+    "nearby_step_refinement_steps_mm": [
+      0.1,
+      0.05
+    ],
+    "nearby_half_increment_check": true,
+    "calibrated_illumination": "nanoprobe"
+  }
+}

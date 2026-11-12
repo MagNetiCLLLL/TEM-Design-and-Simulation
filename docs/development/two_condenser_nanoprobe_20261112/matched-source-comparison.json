@@ -1,0 +1,99 @@
+{
+  "scope": "Read-only comparison of completed original-source observations; no new transport",
+  "reference": "initial-n1024-s010/trial-00",
+  "comparison": "matched-n1024-s010/trial-00",
+  "arrays": {
+    "weights": {
+      "exact_equal": true,
+      "shape": [
+        1024
+      ]
+    },
+    "source_id": {
+      "exact_equal": true,
+      "shape": [
+        1024
+      ]
+    },
+    "emission_ray_id": {
+      "exact_equal": true,
+      "shape": [
+        1024
+      ]
+    },
+    "emission_position_m": {
+      "exact_equal": true,
+      "shape": [
+        1024,
+        3
+      ]
+    },
+    "emission_direction": {
+      "exact_equal": true,
+      "shape": [
+        1024,
+        3
+      ]
+    },
+    "emission_normal": {
+      "exact_equal": true,
+      "shape": [
+        1024,
+        3
+      ]
+    },
+    "gun_exit_x_m": {
+      "exact_equal": true,
+      "shape": [
+        1024
+      ]
+    },
+    "gun_exit_y_m": {
+      "exact_equal": true,
+      "shape": [
+        1024
+      ]
+    },
+    "gun_exit_tx_rad": {
+      "exact_equal": true,
+      "shape": [
+        1024
+      ]
+    },
+    "gun_exit_ty_rad": {
+      "exact_equal": true,
+      "shape": [
+        1024
+      ]
+    },
+    "gun_exit_flight_time_s": {
+      "exact_equal": true,
+      "shape": [
+        1024
+      ]
+    },
+    "gun_exit_alive": {
+      "exact_equal": true,
+      "shape": [
+        1024
+      ]
+    }
+  },
+  "all_twelve_exactly_equal": true,
+  "gun_dependency_signatures": {
+    "initial-n1024-s010": "fa66b4dba938671a22b0da73191dbc0ca3399594a60170db04f87cbc2a72d5fd",
+    "matched-n1024-s010": "fa66b4dba938671a22b0da73191dbc0ca3399594a60170db04f87cbc2a72d5fd"
+  },
+  "evidence_sha256": {
+    "initial-n1024-s010": {
+      "report.json": "2db73a74d2273ba5778ce8737a03f1a7bba5a5af3f53e3fd4f8a32838a714825",
+      "observations.npz": "3743f4c09aae7af8a7210c3bc574e4c1365e1fad9070708a974e3f37982384de",
+      "input.toml": "f323d7264d6444958e4bf46a0f76e3d02943adb6115a88aec1e42166ff735561"
+    },
+    "matched-n1024-s010": {
+      "report.json": "7dfc901ea1c4fc37506e3100c87abc0b48430ca0cdef4818ac7cc125f1e2b36d",
+      "observations.npz": "09d4d8d1d7f56c84548da0cb3a5354680b5d2dbaa68d0525099f4770c6182123",
+      "input.toml": "4d0d8e04656b2f5f42c027e4a8caa5f270bc35977db206fc95e14dd33fdb4983"
+    }
+  }
+}

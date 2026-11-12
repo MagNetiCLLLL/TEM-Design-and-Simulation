@@ -307,7 +307,7 @@ class AssemblyCatalog:
         state.image_corrector_design = str(column.properties.get("image_corrector_design", "cetcor"))
         state.layout_c3_hardware = "three_condenser" if has_c3 else "two_condenser"
         state.layout_c3_excited = has_c3
-        state.column_mode = "three_lens" if has_c3 else "two_lens_c3_off"
+        state.column_mode = "three_lens" if has_c3 else "two_condenser"
 
         has_filter = bool(recording.properties["energy_filter"])
         state.energy_filter_mode = "energy_filter" if has_filter else "no_energy_filter"

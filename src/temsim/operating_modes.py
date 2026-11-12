@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import math
 from pathlib import Path
 from temsim import input_io
@@ -18,6 +18,21 @@ MINI_CONDENSER_MODE_CONTROL_SCHEMA = "signed_equal_magnitude_v1"
 def is_nanoprobe_mode(key: str) -> bool:
     """Both Nanoprobe ranges use a focused probe and negative CM polarity."""
     return key in {"nano_probe", "nano_probe_large_angle"}
+
+
+def has_two_condenser_hardware(state) -> bool:
+    """C1+C2 hardware is distinct from an installed, switched-off C3."""
+    return getattr(state, "layout_c3_hardware", "three_condenser") == "two_condenser"
+
+
+def _operating_column_name(state, requested):
+    if has_two_condenser_hardware(state):
+        if requested not in (None, "C2"):
+            raise ValueError("The installed two-condenser hardware requires the C2 operating reference")
+        return "C2"
+    if requested == "C2":
+        raise ValueError("The C2 operating reference requires physical two-condenser hardware")
+    return requested
 
 
 def validate_nanoprobe_range(value: str) -> str:
@@ -37,6 +52,8 @@ def condenser_mode_key(state) -> str:
     if mode not in {"micro_probe", "nano_probe", "nano_probe_large_angle"}:
         mode = {"TEM": "micro_probe", "STEM": "nano_probe"}.get(
             str(getattr(state, "illumination_mode", "")).upper(), "")
+    if is_nanoprobe_mode(mode) and has_two_condenser_hardware(state):
+        return "nano_probe"
     if mode == "nano_probe":
         selected = validate_nanoprobe_range(getattr(state, "nanoprobe_range", "normal"))
         return "nano_probe_large_angle" if selected == "large_angle" else mode
@@ -137,6 +154,7 @@ class OperatingModeCatalog:
     crossover_constraints: tuple[CrossoverConstraint, ...]
     direct_alignments: tuple[DirectAlignmentDefinition, ...]
     source_path: Path
+    column_overrides: dict[str, dict[str, OperatingModeDefinition]] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -227,8 +245,8 @@ def load_operating_mode_catalog(simulation_mode: str | None = None) -> Operating
             devices[key].update(values)
         resolved_rows.append({**item, **override, "devices": devices})
 
-    modes = tuple(
-        OperatingModeDefinition(
+    def definition(item):
+        return OperatingModeDefinition(
             key=str(item["key"]),
             name=str(item["name"]),
             family=str(item["family"]),
@@ -256,14 +274,44 @@ def load_operating_mode_catalog(simulation_mode: str | None = None) -> Operating
                 item.get("calibration_reference", "")
             ),
         )
-        for item in resolved_rows
-    )
+
+    modes = tuple(definition(item) for item in resolved_rows)
     mode_keys = [mode.key for mode in modes]
     if len(set(mode_keys)) != len(mode_keys):
         raise ValueError(f"{path}: duplicate operating-mode key")
     if {mode.family for mode in modes} - {"condenser", "projector"}:
         raise ValueError(f"{path}: unsupported operating-mode family")
-    for mode in modes:
+    column_overrides = {}
+    override_document = document.get("column_mode_overrides", {})
+    if not isinstance(override_document, dict):
+        raise ValueError(f"{path}: column mode overrides must be a table")
+    base_rows = {str(item["key"]): item for item in resolved_rows}
+    for column_name, column_rows in override_document.items():
+        if not isinstance(column_rows, dict) or set(column_rows) - set(base_rows):
+            raise ValueError(f"{path}: column override references an unknown operating mode")
+        resolved = {}
+        for key, override in column_rows.items():
+            required = {"devices", "apertures", "targets", "calibration_status", "calibration_reference"}
+            allowed = required | {"compatible_recording_systems", "name"}
+            if not isinstance(override, dict) or set(override) - allowed or not required <= set(override):
+                raise ValueError(f"{path}: column override requires its own complete controls and qualification record")
+            for group in ("devices", "apertures", "targets"):
+                if not isinstance(override[group], dict):
+                    raise ValueError(f"{path}: column override {group} must be a table")
+            if column_name == "C2":
+                if key == "nano_probe_large_angle":
+                    raise ValueError(f"{path}: two-condenser Nanoprobe has no Normal/Large angle branches")
+                forbidden = {"condenser_lens_3", "adapter_lens"}
+                if (forbidden.intersection(override["devices"])
+                        or any(str(device).startswith("probe_") for device in override["devices"])
+                        or "condenser_aperture_3" in override["apertures"]):
+                    raise ValueError(f"{path}: C2 controls cannot reference absent C3 or probe-corrector hardware")
+            # Entire tables replace the other assembly's controls and evidence.
+            resolved[key] = definition({**base_rows[key], **override,
+                                        "compatible_columns": [str(column_name)]})
+        column_overrides[str(column_name)] = resolved
+    definitions = (*modes, *(mode for values in column_overrides.values() for mode in values.values()))
+    for mode in definitions:
         for key, values in mode.devices.items():
             if "percent" in values:
                 percent = float(values["percent"])
@@ -439,16 +487,22 @@ def load_operating_mode_catalog(simulation_mode: str | None = None) -> Operating
                 f"{path}: {definition.key} calibration reference is empty"
             )
     return OperatingModeCatalog(
-        modes, constraints, direct_alignments, path
+        modes, constraints, direct_alignments, path, column_overrides
     )
 
 
 def mode_by_key(
-    key: str, catalog: OperatingModeCatalog | None = None
+    key: str, catalog: OperatingModeCatalog | None = None, *, column_name: str | None = None
 ) -> OperatingModeDefinition:
     catalog = catalog or load_operating_mode_catalog()
+    override = catalog.column_overrides.get(str(column_name), {}).get(str(key))
+    if override is not None:
+        return override
     try:
-        return next(mode for mode in catalog.modes if mode.key == str(key))
+        mode = next(mode for mode in catalog.modes if mode.key == str(key))
+        if column_name == "C2" and mode.family == "condenser":
+            raise ValueError(f"{mode.name} has no independent C2 operating reference")
+        return mode
     except StopIteration as exc:
         choices = ", ".join(mode.key for mode in catalog.modes)
         raise KeyError(f"Unknown operating mode {key!r}; choices: {choices}") from exc
@@ -499,7 +553,10 @@ def compatible_modes(
 
     return tuple(
         mode
-        for mode in catalog.modes
+        for original in catalog.modes
+        if (matches(original.compatible_columns, column_name)
+            or original.key in catalog.column_overrides.get(column_name, {}))
+        for mode in (mode_by_key(original.key, catalog, column_name=column_name),)
         if mode.family == family
         and matches(mode.compatible_columns, column_name)
         and matches(mode.compatible_recording_systems, recording_name)
@@ -567,8 +624,9 @@ def _apply_operating_mode_pair(
     """Apply one independently selectable illumination/projector preset pair."""
 
     catalog = catalog or load_operating_mode_catalog()
-    condenser = mode_by_key(condenser_key, catalog)
-    projector = mode_by_key(projector_key, catalog) if projector_key is not None else None
+    column_name = _operating_column_name(state, column_name)
+    condenser = mode_by_key(condenser_key, catalog, column_name=column_name)
+    projector = mode_by_key(projector_key, catalog, column_name=column_name) if projector_key is not None else None
     if condenser.family != "condenser" or (projector is not None and projector.family != "projector"):
         raise ValueError("A mode pair requires one condenser and one projector mode")
 
@@ -667,6 +725,7 @@ def apply_operating_mode_pair(
     if catalog is None:
         from temsim.simulation_modes import mode_key
         catalog = load_operating_mode_catalog(mode_key(state))
+    column_name = _operating_column_name(state, column_name)
     arguments = dict(
         column_name=column_name, recording_name=recording_name, catalog=catalog,
     )
@@ -677,7 +736,7 @@ def apply_operating_mode_pair(
     for key in (condenser_key, projector_key):
         if key is None:
             continue
-        definition = mode_by_key(key, catalog)
+        definition = mode_by_key(key, catalog, column_name=column_name)
         for group in (definition.devices, definition.apertures):
             for device_key, values in group.items():
                 obj = targets[device_key].obj
@@ -737,7 +796,8 @@ def apply_projector_mode(
     The Objective, physical tip, receiver insertion and held scan record stay
     owned by the current working point. Image callers should run asynchronously.
     """
-    projector = mode_by_key(projector_key, catalog or load_operating_mode_catalog())
+    column_name = _operating_column_name(state, column_name)
+    projector = mode_by_key(projector_key, catalog or load_operating_mode_catalog(), column_name=column_name)
     if projector.family != "projector" or projector.key not in {"imaging", "diffraction"}:
         raise ValueError("A projector switch requires Image or Diffraction")
     for selected, supported, label in (

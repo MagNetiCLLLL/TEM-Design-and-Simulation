@@ -1,0 +1,45 @@
+{
+  "calibration_status": "computed_unified_c2_zero_current_diffraction_reference",
+  "calibration_reference": "Independent C1+C2 Nanoprobe diffraction differential reference at the recorded Objective and specimen upper surface. D/I jointly matched with P1/P2 held fixed. Verified by production unified zero-current pencil responses at 0.1 and 0.05 mm and half increments; source emission forbidden. No finite-source, finite-angle, detector-signal, wave or experimental qualification.",
+  "compatible_recording_systems": [
+    "No Energy Filter"
+  ],
+  "devices": {
+    "diffraction_lens": {
+      "percent": 13.59281212137673
+    },
+    "intermediate_lens": {
+      "percent": 8.51783304453163
+    },
+    "projector_lens_1": {
+      "percent": 32.1132572718703
+    },
+    "projector_lens_2": {
+      "percent": 9.826874422815507
+    }
+  },
+  "apertures": {},
+  "targets": {
+    "conjugate_plane": "mode_dependent_diffraction_reference_plane",
+    "reference_surface": "stem_main_screen",
+    "calibration_model": "unified",
+    "calibration_scope": "zero_current_differential_pencils_only",
+    "source_plane": "specimen_upper_surface",
+    "source_z_mm": 1025.1999975,
+    "reference_z_mm": 2140.15,
+    "objective_excitation_percent": 29.29264,
+    "target_effective_camera_length_m": 0.05,
+    "achieved_effective_camera_length_m": 0.04999999993394798,
+    "achieved_diffraction_conjugacy_residual": 4.879651740218119e-07,
+    "validation_step_mm": 0.05,
+    "validation_steps_mm": [
+      0.1,
+      0.05
+    ],
+    "diagnostic_pencil_count": 9,
+    "c2_aperture_diameter_um": 70.0,
+    "finite_source_qualification": "NOT_TESTED",
+    "finite_angle_qualification": "NOT_TESTED",
+    "wave_qualification": "NOT_TESTED"
+  }
+}
