@@ -27,9 +27,6 @@ def workspace(panel, qtbot, monkeypatch):
     monkeypatch.setattr(view, "_update_interaction_detail", lambda: None)
     monkeypatch.setattr(view.selected_plane_readout, "select_z", lambda _z: None)
     view.show()
-    panel.source_enabled.setChecked(True)
-    panel.apply_source()
-    monkeypatch.setattr(coherent_beam, "prepare_coherent_state", deepcopy)
     yield view
     view.transverse_beam.coherent_wave_toggle.setChecked(False)
     assert view.selected_plane_readout.shutdown()
@@ -43,7 +40,7 @@ def completed_wave(z_mm):
 
 def recorded_particles(panel, **kwargs):
     rays = ray_result(**kwargs)
-    rays.state_snapshot.electron_gun = deepcopy(panel._state.electron_gun)
+    rays.state_snapshot.electron_gun = deepcopy(panel.accepted.state_snapshot.electron_gun)
     rays.state_snapshot.simulation_time_s = 1.25e-9
     return rays
 
@@ -58,12 +55,12 @@ def test_transverse_wave_follows_selected_plane_and_restores_particles(
         workspace, panel, qtbot, monkeypatch, quality, count):
     calls = []
 
-    def solve(_state, request, **_kwargs):
-        calls.append((request.observation_z_mm, request.tip_time_s,
+    def solve(_state, _source, request, **_kwargs):
+        calls.append((request.observation_z_mm, getattr(_state, "simulation_time_s", 0.),
                       request.wave_grid.compute_backend, QThread.currentThread() == panel.thread()))
         return completed_wave(request.observation_z_mm)
 
-    monkeypatch.setattr(coherent_beam, "simulate_tip_wave", solve)
+    monkeypatch.setattr(coherent_beam, "simulate_mixed_wave", solve)
     rays = recorded_particles(panel, count=count, stops=False)
     rays.state_snapshot.acceleration_backend = "CPU"
     rays.state_snapshot.acceleration_enabled = False
@@ -108,7 +105,7 @@ def test_transverse_wave_rejects_obsolete_planes_and_falls_back_on_failure(
     started = Event()
     first_z, second_z = 11.25, 12.25
 
-    def solve(_state, request, **_kwargs):
+    def solve(_state, _source, request, **_kwargs):
         if request.observation_z_mm == first_z:
             started.set()
             if not release.wait(5):
@@ -116,7 +113,7 @@ def test_transverse_wave_rejects_obsolete_planes_and_falls_back_on_failure(
             return completed_wave(first_z)
         raise RuntimeError("Synthetic propagation failure")
 
-    monkeypatch.setattr(coherent_beam, "simulate_tip_wave", solve)
+    monkeypatch.setattr(coherent_beam, "simulate_mixed_wave", solve)
     workspace.display_result(recorded_particles(panel), "Preview", calculation_scope="rays")
     workspace.jump_to_ray_position(first_z, activate_tab=False)
     transverse = workspace.transverse_beam
@@ -162,11 +159,11 @@ def test_transverse_wave_requires_usable_cuda_before_starting_job(workspace, pan
 def test_transverse_wave_restarts_at_same_z_after_republication(workspace, panel, qtbot, monkeypatch):
     calls = []
 
-    def solve(_state, request, **_kwargs):
-        calls.append(request.tip_time_s)
+    def solve(_state, _source, request, **_kwargs):
+        calls.append(getattr(_state, "simulation_time_s", 0.))
         return completed_wave(request.observation_z_mm)
 
-    monkeypatch.setattr(coherent_beam, "simulate_tip_wave", solve)
+    monkeypatch.setattr(coherent_beam, "simulate_mixed_wave", solve)
     rays = recorded_particles(panel)
     workspace.display_result(rays, "Preview", calculation_scope="rays")
     z_mm = 11.25
@@ -188,8 +185,8 @@ def test_transverse_wave_keeps_particles_when_intensity_readout_fails(
         workspace, panel, qtbot, monkeypatch):
     from temsim.gui import wave_beam_analysis
 
-    monkeypatch.setattr(coherent_beam, "simulate_tip_wave",
-                        lambda _state, request, **_kwargs: completed_wave(request.observation_z_mm))
+    monkeypatch.setattr(coherent_beam, "simulate_mixed_wave",
+                        lambda _state, _source, request, **_kwargs: completed_wave(request.observation_z_mm))
 
     def fail_readout(_request, _cancel_event):
         raise MemoryError("Synthetic intensity readout failure")
@@ -205,3 +202,116 @@ def test_transverse_wave_keeps_particles_when_intensity_readout_fails(
     assert transverse.analysis.wave is None
     assert transverse._scatter is not None
     assert transverse.analysis.display_combo.currentData() == "particles"
+
+
+@pytest.mark.parametrize("quality", ["Preview", "High accuracy"])
+def test_transverse_numerical_edits_retire_wave_and_recapture_applied_source(
+        workspace, panel, qtbot, monkeypatch, quality):
+    calls = []
+
+    def solve(state, _source, request, **_kwargs):
+        calls.append((request.source.source_image_rms_pm,
+                      state.electron_gun.emitter.energy_spread_fwhm_ev))
+        return completed_wave(request.observation_z_mm)
+
+    monkeypatch.setattr(coherent_beam, "simulate_mixed_wave", solve)
+    rays = recorded_particles(panel)
+    applied_width = rays.state_snapshot.electron_gun.emitter.energy_spread_fwhm_ev
+    workspace.display_result(rays, quality, calculation_scope="rays")
+    workspace.jump_to_ray_position(11.25, activate_tab=False)
+    transverse = workspace.transverse_beam
+    transverse.coherent_wave_toggle.setChecked(True)
+    qtbot.waitUntil(lambda: displayed_at(transverse, 11.25), timeout=5000)
+    old_endpoint = panel._source_controls["source_image_rms_pm"].value()
+    assert calls == [(old_endpoint, applied_width)]
+
+    panel._source_controls["source_image_rms_pm"].setValue(old_endpoint / 2.)
+    assert panel._transverse_session is None
+    assert transverse.analysis.wave is None
+    assert transverse._scatter is not None
+    assert "inputs changed" in transverse.coherent_wave_status.text()
+    qtbot.wait(2 * panel.QUERY_INTERVAL_MS)
+    assert len(calls) == 1
+
+    # A source editor draft must never replace the accepted particle source.
+    panel._state.electron_gun.emitter.energy_spread_fwhm_ev = applied_width + .1
+    transverse.coherent_wave_toggle.setChecked(False)
+    transverse.coherent_wave_toggle.setChecked(True)
+    qtbot.waitUntil(lambda: displayed_at(transverse, 11.25), timeout=5000)
+    assert calls == [(old_endpoint, applied_width), (old_endpoint / 2., applied_width)]
+    assert rays.state_snapshot.electron_gun.emitter.energy_spread_fwhm_ev == applied_width
+
+
+def test_transverse_numerical_edit_cancels_running_wave_and_rejects_late_result(
+        workspace, panel, qtbot, monkeypatch):
+    started, release = Event(), Event()
+    calls = []
+
+    def solve(_state, _source, request, **_kwargs):
+        calls.append(request.source.source_image_rms_pm)
+        if len(calls) == 1:
+            started.set()
+            if not release.wait(5):
+                raise RuntimeError("Test fixture did not release the obsolete observation")
+        return completed_wave(request.observation_z_mm)
+
+    monkeypatch.setattr(coherent_beam, "simulate_mixed_wave", solve)
+    workspace.display_result(recorded_particles(panel), "Preview", calculation_scope="rays")
+    workspace.jump_to_ray_position(11.25, activate_tab=False)
+    transverse = workspace.transverse_beam
+    transverse.coherent_wave_toggle.setChecked(True)
+    try:
+        qtbot.waitUntil(started.is_set, timeout=5000)
+        worker = panel._transverse_worker
+        old_endpoint = worker.request.source.source_image_rms_pm
+        panel._source_controls["source_image_rms_pm"].setValue(old_endpoint / 2.)
+        assert worker.event.is_set()
+        assert panel._transverse_worker is None and panel._transverse_session is None
+        worker.signals.solved.emit(worker.generation, worker.session,
+                                   completed_wave(11.25), (.125, None))
+        assert transverse.analysis.wave is None
+        assert transverse._scatter is not None
+    finally:
+        release.set()
+
+    workspace.axial_cursor_item.setValue(12.25)
+    qtbot.waitUntil(lambda: displayed_at(transverse, 12.25), timeout=5000)
+    assert calls == [old_endpoint, old_endpoint / 2.]
+
+
+def test_transverse_numerical_edit_retires_pending_intensity_readout(
+        workspace, panel, qtbot, monkeypatch):
+    from temsim.gui import wave_beam_analysis
+
+    started, release = Event(), Event()
+    derive = wave_beam_analysis._derive_view
+
+    def delayed_readout(request, cancel_event):
+        started.set()
+        if not release.wait(5):
+            raise RuntimeError("Test fixture did not release the obsolete readout")
+        return derive(request, cancel_event)
+
+    monkeypatch.setattr(coherent_beam, "simulate_mixed_wave",
+                        lambda _state, _source, request, **_kwargs: completed_wave(request.observation_z_mm))
+    monkeypatch.setattr(wave_beam_analysis, "_derive_view", delayed_readout)
+    workspace.display_result(recorded_particles(panel), "High accuracy", calculation_scope="rays")
+    workspace.jump_to_ray_position(11.25, activate_tab=False)
+    transverse = workspace.transverse_beam
+    transverse.coherent_wave_toggle.setChecked(True)
+    try:
+        qtbot.waitUntil(started.is_set, timeout=5000)
+        preparing = transverse._preparing_coherent_wave
+        assert preparing is not None and transverse.analysis.wave is None
+        panel._source_controls["source_image_rms_pm"].setValue(panel._source_controls["source_image_rms_pm"].value() / 2.)
+        assert not preparing._active
+        assert transverse._preparing_coherent_wave is None
+        assert transverse._scatter is not None
+        assert "inputs changed" in transverse.coherent_wave_status.text()
+    finally:
+        release.set()
+
+    qtbot.waitUntil(lambda: not preparing.pool.coordinator.has_owner(preparing.pool), timeout=5000)
+    assert transverse.analysis.wave is None
+    assert transverse._preparing_coherent_wave is None
+    assert transverse._scatter is not None

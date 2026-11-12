@@ -264,6 +264,8 @@ _CACHE = OrderedDict()
 
 def compute_surface_wave(gun, numerics=SurfaceWaveNumerics(), *, use_cache=True, compute_backend="Auto",
                          cancelled=lambda: False, progress_callback=None):
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     from temsim.physics.compute_backend import require_coherent_cuda
     _cancel(cancelled)
     policy = require_coherent_cuda(compute_backend)
@@ -411,7 +413,7 @@ def _compute_surface_wave(gun, numerics, *, use_cache, cancelled, progress_callb
         tuple(modes), model.current_na*1e-9, freeze_json({
             "schema": "executed-coherent-tip-near-field-v1", "identity": identity,
             "source": model.to_dict(), "grounded_field": boundary, "implementation": implementation,
-            "wave_boundary_backend": "CuPy CUDA sparse QR",
+            "wave_boundary_backend": "CuPy CUDA cuDSS reusable LU",
             "numerics": asdict(numerics), "estimated_working_bytes": estimated,
             "equation": "axisymmetric stationary scalar Schrodinger; nonrelativistic vacuum, no space charge",
             "phase": "Per-energy complex fields; different energies are incoherent; no aggregate phase",

@@ -1,5 +1,11 @@
 # Actual and ideal-lens wavefront comparison
 
+> **Retired Tip-origin execution.** The Tip-to-observation calculation described below
+> is retained as historical documentation and evidence, not an executable workflow.
+> New work uses [particle transport and near-specimen mixed coherence](MIXED_COHERENCE.md).
+> Existing inputs, numeric results and archives remain unchanged and readable;
+> Tip-origin propagation and continuation are rejected before CUDA or cache reuse.
+
 The Electron beam workspace can compare an executed coherent wave with an
 ideal-lens reference at the same observation plane. This feature is layered on
 the B-COR / Nanoprobe integration in local merge `8b1f409`; it does not change

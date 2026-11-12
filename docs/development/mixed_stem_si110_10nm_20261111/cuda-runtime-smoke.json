@@ -1,0 +1,27 @@
+{
+  "scope": "Small CUDA allocation, FFT and Hermitian eigensolver availability only; not a finite-source, probe, specimen or scan calculation",
+  "started_utc": "2026-11-11T22:04:49.464341+00:00",
+  "cupy_version": "14.2.0",
+  "device": "NVIDIA GeForce RTX 5090",
+  "free_total_bytes_before": [
+    32488030208,
+    34190458880
+  ],
+  "status": "PASS_RUNTIME_ONLY",
+  "allocation_shape": [
+    64,
+    64
+  ],
+  "fft_maximum_absolute_error": 1.831026719408895e-15,
+  "eigh_shape": [
+    4,
+    4
+  ],
+  "eigh_relative_residual": 1.7789884145429982e-16,
+  "eigh_orthogonality_error": 6.834194068346388e-16,
+  "free_total_bytes_after": [
+    32420921344,
+    34190458880
+  ],
+  "elapsed_s": 0.6722955999994156
+}

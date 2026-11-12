@@ -10,7 +10,6 @@ from temsim.physics.wave_grid import (
     EXPLORATORY_SUPPORT_L2_MAXIMUM, EXPLORATORY_SUPPORT_PROBABILITY_MAXIMUM,
     STRICT_SUPPORT_BUDGET_MAXIMUM, WaveGridNumerics,
 )
-from test_coherent_beam_gui import panel, _enable_unified_numeric_controls
 
 
 def _preview(**options):
@@ -87,64 +86,15 @@ def test_gun_grid_remains_strict_even_when_only_column_overrides_are_active():
 
 
 @pytest.mark.parametrize("mode", ["ideal", "custom", "analytical", "ideal_thin"])
-def test_nonunified_override_rejection_precedes_any_source_or_cache_access(mode):
+def test_retired_tip_override_rejection_precedes_any_source_or_cache_access(mode):
     request = _preview(column_preview_support_l2=.5).validate()
-    # No gun, specimen, cache, or snapshot fields exist: the mode guard must
+    # No gun, specimen, cache, or snapshot fields exist: the retired guard must
     # reject before any such execution prerequisite is read.
-    with pytest.raises(ValueError, match="only in unified Finite-Field Optics"):
+    with pytest.raises(ValueError, match="physical Tip has been retired"):
         _execute_tip_wave(SimpleNamespace(simulation_mode=mode), request, None, "unexecuted",
             use_cache=False, cancelled=lambda: False, progress_callback=None)
 
 
-def test_gui_preview_edits_only_column_overrides_and_restores_exact_strict_text(panel, monkeypatch):
-    _enable_unified_numeric_controls(panel, monkeypatch)
-    panel.support_l2_budget.setText("1.2345678912345678e-4")
-    panel.support_probability_budget.setText("4.321987654321e-8")
-    panel.column_step.setValue(.625)
-    panel.column_support_projection.setChecked(True)
-    panel.column_weighted_resampling.setChecked(False)
-    baseline = panel._make_request()
-    strict_text = (panel.support_l2_budget.text(), panel.support_probability_budget.text())
-    panel.column_exploratory_preview.setChecked(True)
-    request = panel._make_request()
-    assert request.column_preview_support_probability == .01 and request.column_preview_support_l2 == .5
-    assert request.column_step_mm == 2.
-    assert request.wave_grid == baseline.wave_grid and request.wave_grid.exploratory_support_budget is False
-    for name in ("source", "surface", "gun", "radial_gun"):
-        assert getattr(request, name) == getattr(baseline, name)
-    panel.support_l2_budget.setText("0.3141592653589793")
-    panel.support_probability_budget.setText("0.02")
-    edited = panel._make_request()
-    assert edited.column_preview_support_l2 == .3141592653589793
-    assert edited.column_preview_support_probability == .02
-    assert edited.wave_grid == baseline.wave_grid
-    panel.support_l2_budget.setText("4")
-    panel.support_probability_budget.setText("0.5")
-    wider = panel._make_request().validate()
-    assert wider.column_preview_support_l2 == 4.
-    assert wider.column_preview_support_probability == .5
-    assert wider.wave_grid == baseline.wave_grid
-    assert wider.source == baseline.source and wider.gun == baseline.gun
-    for widget, value in ((panel.support_l2_budget, "4.000000000000001"),
-                          (panel.support_probability_budget, "0.5000000000000001"),
-                          (panel.support_probability_budget, "1")):
-        previous = widget.text()
-        widget.setText(value)
-        with pytest.raises(ValueError, match="Preview support"):
-            panel._make_request()
-        widget.setText(previous)
-    panel.column_exploratory_preview.setChecked(False)
-    assert (panel.support_l2_budget.text(), panel.support_probability_budget.text()) == strict_text
-    assert panel._make_request() == baseline
-    assert "not a phase-error certificate" in panel.support_l2_budget.toolTip()
-    assert "up to 4" in panel.support_l2_budget.toolTip()
-    assert "representation estimates" in panel.support_l2_budget.toolTip()
-    assert "up to 0.5" in panel.support_probability_budget.toolTip()
-    assert "do not certify accuracy" in panel.column_exploratory_preview.toolTip()
-    assert "column-only" in panel.column_exploratory_preview.toolTip()
-    panel.support_l2_budget.setText("0.5")
-    with pytest.raises(ValueError, match="between zero and 0.1"):
-        panel._make_request()
 
 
 def test_wider_fresh_column_uses_new_limits_without_changing_fields_or_source(tmp_path):

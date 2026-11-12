@@ -11,6 +11,7 @@ import pytest
 
 from temsim.physics import compute_backend as backend
 from temsim.physics import tip_wave_pipeline as pipeline
+from temsim.physics.retired_tip_wave import RetiredTipCoherentWorkflow
 
 
 @pytest.fixture
@@ -92,7 +93,7 @@ def test_tip_entries_reject_before_snapshot_or_preparation(no_cuda, monkeypatch,
     monkeypatch.setattr(pipeline, "capture_instrument_snapshot", forbidden)
     monkeypatch.setattr(pipeline, "_execute_tip_wave", forbidden)
     state = object()
-    with pytest.raises(backend.GPUExecutionError, match="synthetic missing CuPy CUDA"):
+    with pytest.raises(RetiredTipCoherentWorkflow, match="retired"):
         if entry == "single":
             pipeline.simulate_tip_wave(state)
         elif entry == "observation":
@@ -109,27 +110,19 @@ def test_tip_entries_reject_before_snapshot_or_preparation(no_cuda, monkeypatch,
             pipeline.simulate_ideal_reference(state, actual)
 
 
-def test_tip_entry_passes_strict_policy_to_substituted_execution(fake_cuda, monkeypatch):
-    working = object()
-    snapshot = SimpleNamespace(restore=lambda: working, digest="synthetic")
-    monkeypatch.setattr(pipeline, "capture_instrument_snapshot", lambda state: snapshot)
-    from temsim.physics import wave_device
-    monkeypatch.setattr(wave_device, "release_device_memory", lambda: None)
-    def execute(state, request, *_args, **_kwargs):
-        assert state is working
-        return request
-    monkeypatch.setattr(pipeline, "_execute_tip_wave", execute)
+def test_legacy_request_policy_conversion_is_data_only(fake_cuda):
     original = pipeline.TipWaveRequest(wave_grid=replace(
         pipeline.TipWaveRequest().wave_grid, compute_backend="Prefer GPU"))
-    executed = pipeline.simulate_tip_wave(object(), original)
-    assert executed.wave_grid.compute_backend == "Require GPU"
-    assert executed.gun.compute_backend == "Require GPU"
-    assert executed.radial_column.backend == "cuda"
+    admitted = pipeline.require_tip_wave_cuda(original)
+    assert admitted.wave_grid.compute_backend == "Require GPU"
+    assert admitted.gun.compute_backend == "Require GPU"
+    assert admitted.radial_column.backend == "cuda"
     assert original.wave_grid.compute_backend == "Prefer GPU"
-    assert original.radial_column.backend == "cuda"
+    with pytest.raises(RetiredTipCoherentWorkflow):
+        pipeline.simulate_tip_wave(object(), admitted)
     with pytest.raises(backend.GPUExecutionError, match="out_of_memory"):
         backend.gpu_retry_reason(backend.GPUExecutionError("out_of_memory", "synthetic"),
-            executed.wave_grid.compute_backend)
+            admitted.wave_grid.compute_backend)
 
 
 @pytest.mark.parametrize("policy,enabled", [("CPU", True), ("Auto", False)])
@@ -140,7 +133,7 @@ def test_tip_entries_respect_explicit_instrument_cpu_policy(monkeypatch, entry, 
         lambda: pytest.fail("Explicit CPU must be rejected before probing CUDA"))
     state = SimpleNamespace(acceleration_backend=policy, acceleration_enabled=enabled)
     request = pipeline.TipWaveRequest(stop="plane", observation_z_mm=1.)
-    with pytest.raises(backend.GPUExecutionError, match="Enable acceleration"):
+    with pytest.raises(RetiredTipCoherentWorkflow, match="retired"):
         if entry == "single":
             pipeline.simulate_tip_wave(state, request)
         elif entry == "observation":
@@ -178,11 +171,11 @@ def test_public_surface_entries_gate_before_preparation(no_cuda, monkeypatch, en
         lambda *_args, **_kwargs: pytest.fail("CUDA admission must precede coupled boundary preparation"))
     calculate = (surface_wave.compute_surface_wave if entry == "near_field"
                  else surface_gun_wave.build_surface_gun_checkpoint)
-    with pytest.raises(backend.GPUExecutionError, match="CPU fallback"):
+    with pytest.raises(RetiredTipCoherentWorkflow, match="retired"):
         calculate(object(), compute_backend=selection)
 
 
-def test_standalone_surface_gun_prepares_normalized_private_geometry(fake_cuda, monkeypatch):
+def test_standalone_surface_gun_retires_before_touching_geometry(fake_cuda, monkeypatch):
     from temsim.instrument_snapshot import encode_instrument
     from temsim.optics.electron_gun.field_emission import FieldEmissionGun
     from temsim.optics.electron_gun.tip_surface import SurfaceCoherence, load_tip_surface_reference
@@ -190,15 +183,9 @@ def test_standalone_surface_gun_prepares_normalized_private_geometry(fake_cuda, 
     gun = FieldEmissionGun()
     gun.emitter.surface_model = replace(load_tip_surface_reference(), coherence=SurfaceCoherence())
     original = encode_instrument(gun)
-
-    def inspect(working, *_args, **_kwargs):
-        assert working is not gun
-        assert working._grounded_outlet_liner_segments
-        assert working.emitter.surface_model == gun.emitter.surface_model
-        raise InterruptedError("Private geometry verified")
-
-    monkeypatch.setattr(surface_gun_wave, "prepare_surface_problem", inspect)
-    with pytest.raises(InterruptedError, match="Private geometry verified"):
+    monkeypatch.setattr(surface_gun_wave, "prepare_surface_problem",
+        lambda *_a, **_k: pytest.fail("Retired work prepared gun geometry"))
+    with pytest.raises(RetiredTipCoherentWorkflow):
         surface_gun_wave.build_surface_gun_checkpoint(gun)
     assert encode_instrument(gun) == original
 
@@ -243,24 +230,24 @@ def test_completed_wave_readout_does_not_require_or_probe_cuda(monkeypatch):
 
 
 def test_gui_checks_cuda_before_capture_but_configuration_capture_is_allowed(no_cuda, monkeypatch):
-    from temsim.gui import coherent_beam
+    from temsim.gui import coherent_beam as gui
     calls = []
-    state = SimpleNamespace()
-    monkeypatch.setattr(coherent_beam, "prepare_coherent_state",
-        lambda state, settings: calls.append("capture") or state)
-    monkeypatch.setattr(coherent_beam, "wave_input_summary",
-        lambda *_: {"status": "SOURCE_READY"})
-    owner = SimpleNamespace(_settings=lambda: object(), state_provider=None, _state=state,
-        _make_request=lambda *_: pipeline.TipWaveRequest(), result=object(),
-        _show_source_check=lambda *a: None,
-        progress_detail=SimpleNamespace(emit=lambda *_: None),
-        status=SimpleNamespace(setStyleSheet=lambda *_: None, setText=lambda *_: None))
+    state = SimpleNamespace(simulation_mode="unified", sample=SimpleNamespace(z_mm=1605., thickness_nm=10.))
+    particle_result = SimpleNamespace(state_snapshot=state)
+    monkeypatch.setattr(gui, "capture_instrument_snapshot",
+        lambda state: calls.append("capture") or SimpleNamespace(restore=lambda: state))
+    request = gui.MixedWaveRequest(observation_z_mm=1605.)
+    owner = SimpleNamespace(particle_result_provider=lambda: particle_result, _target_z_mm=1605.,
+        _make_request=lambda *_a, **_k: request, result=object())
+    owner._capture_particle_inputs = lambda *a, **k: gui.CoherentBeamPage._capture_particle_inputs(owner, *a, **k)
+    previous = owner.result
     with pytest.raises(backend.GPUExecutionError):
-        coherent_beam.CoherentBeamPage.capture_calculation_inputs(owner)
+        gui.CoherentBeamPage.capture_calculation_inputs(owner)
     assert calls == []
-    captured, _, _ = coherent_beam.CoherentBeamPage.capture_calculation_inputs(owner, for_execution=False)
+    captured, returned_request, summary = gui.CoherentBeamPage.capture_calculation_inputs(owner, for_execution=False)
     assert captured is state and calls == ["capture"]
-    assert owner.result is not None
+    assert returned_request is request and summary["status"] == "PARTICLE_SNAPSHOT_READY"
+    assert owner.result is previous
 
 
 def test_cli_requires_cuda_before_loading_an_instrument(no_cuda, monkeypatch, tmp_path):
@@ -270,7 +257,7 @@ def test_cli_requires_cuda_before_loading_an_instrument(no_cuda, monkeypatch, tm
     spec.loader.exec_module(cli)
     monkeypatch.setattr(cli, "default_state", lambda: pytest.fail("No instrument should be prepared"))
     output = tmp_path/"unstarted"
-    with pytest.raises(backend.GPUExecutionError, match="synthetic missing CuPy CUDA"):
+    with pytest.raises(RetiredTipCoherentWorkflow, match="retired"):
         cli.main(["--profile", str(tmp_path/"unused.toml"), "--output", str(output)])
     assert not output.exists()
 
@@ -298,6 +285,6 @@ def test_coherent_clis_reject_explicit_cpu_loaded_from_profile(fake_cuda, monkey
         args.extend(["--detector", "camera", "--sample-width-nm", "40"])
         name = "simulate_hybrid"
     monkeypatch.setattr(cli, name, lambda *args, **kwargs: pytest.fail("CPU profile reached execution"))
-    with pytest.raises(backend.GPUExecutionError, match="Enable acceleration"):
+    with pytest.raises(RetiredTipCoherentWorkflow, match="retired"):
         cli.main(args)
     assert not output.exists()

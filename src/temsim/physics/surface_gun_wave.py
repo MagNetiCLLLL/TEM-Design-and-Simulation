@@ -65,7 +65,7 @@ def solve_joint_boundary(problem, energy, load, frame, *, cancelled=lambda: Fals
     boundary = coo_matrix((load.input_admittance.ravel(),
         (np.repeat(ids, count), np.tile(ids, count))), shape=reduced.shape).tocsc()
     linear_record = {"method": "direct-coupled-sparse-solve",
-        "sparse_backend": "SciPy SuperLU" if compute_backend == "CPU" else "CuPy CUDA sparse QR"}
+        "sparse_backend": "SciPy SuperLU" if compute_backend == "CPU" else "CuPy CUDA cuDSS reusable LU"}
     if condensation_cache is None:
         reduced -= boundary
         from temsim.physics.sparse_wave_device import sparse_wave_solver
@@ -109,6 +109,8 @@ def build_surface_gun_checkpoint(gun, *, surface=SurfaceWaveNumerics.joint_gun()
     Disabling reuse does not disable mandatory history writes to the supplied
     execution store. Direct diagnostics may instead consume _mode_completed.
     """
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     if type(_reuse_energy_cache) is not bool:
         raise ValueError("Energy-cache reuse must be a boolean")
     if cancelled():

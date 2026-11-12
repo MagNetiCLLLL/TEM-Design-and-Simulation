@@ -1175,6 +1175,8 @@ class VisualizationWorkspace(QWidget):
         self.hardware_tuning = HardwareTuningPanel()
         from temsim.gui.coherent_beam import CoherentBeamPage, CoherentBeamMirror
         self.coherent_beam = CoherentBeamPage()
+        self.coherent_beam.particle_result_provider = lambda: (
+            self._last_result if not self.transverse_beam._inputs_stale else None)
         self.transverse_beam.coherent_wave_requested.connect(
             lambda z_mm: self.coherent_beam.request_transverse_wave(self._last_result, z_mm)
         )
@@ -2267,6 +2269,25 @@ class VisualizationWorkspace(QWidget):
         if not preserve_playback:
             self._scan_playback_active = False
             self._scan_playback_time_s = None
+
+    def publish_mixed_stem(self, acquisition, frame, diffraction):
+        """Publish an explicitly captured mixed frame outside particle image caches."""
+        from temsim.gui.mixed_stem_adapter import wrap_mixed_stem_result
+        wrapper = wrap_mixed_stem_result(acquisition, frame)
+        self._mixed_stem_acquisition = acquisition
+        self._mixed_stem_display_result = wrapper
+        self.display_result(wrapper, "Mixed coherent CUDA", calculation_scope="stem")
+        self.scan_control.display_mixed_diffraction(diffraction)
+        self.scan_control.export_mixed_scan.setEnabled(True)
+        return wrapper
+
+    def publish_saved_mixed_stem(self, acquisition, frame, diffraction, *, directory):
+        """Display a checked saved scan without publishing a particle result."""
+        if getattr(acquisition, "particle_result", None) is not None:
+            raise ValueError("Use normal publication for an acquisition with executed ray history")
+        self.scan_control.display_saved_mixed(frame, diffraction,
+            state_snapshot=acquisition.state_snapshot, directory=directory)
+        self._saved_mixed_acquisition = acquisition
 
     def _publish_scan_control_result(
         self, result, *, complete=False, explicit_calculation=False
@@ -4364,6 +4385,7 @@ class VisualizationWorkspace(QWidget):
         self._pending_ray_focus.clear()
         self._presented_ray_panels.clear()
         self._last_result = self._preview_result = self._high_accuracy_result = None
+        self._saved_mixed_acquisition = None
         self.selected_plane_readout.clear()
         self.conjugate_planes.clear()
         self._last_quality = ""
@@ -4431,6 +4453,7 @@ class VisualizationWorkspace(QWidget):
         self._ray_emission_data = None
         self._ray_flight_time_colours.invalidate()
         self.transverse_beam.invalidate_coherent_wave()
+        self.coherent_beam.particle_result_published(result)
         self.transverse_beam.analysis.tof.invalidate()
         self._ray_display_cache_bytes = 0
         self._ray_display_cache_result = result

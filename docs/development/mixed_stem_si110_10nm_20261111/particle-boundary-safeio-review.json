@@ -1,0 +1,15 @@
+{
+  "status": "PASS_CLASSICAL_DATA_ONLY",
+  "scope": "Safe load, writer and re-load of completed original classical data; no new particle or coherent propagation",
+  "original_positive_count": 16384,
+  "handoff_count": 5192,
+  "source_digest": "d3b65fd9ced99db9cec14f5cd3fde47be2f9deebef69bea629f531be99adfe6d",
+  "source_input_digest": "6c25a765596b7f56ba855061af2667ce5642ca9eae0a90db5061ba5ab4199d17",
+  "source_generation_implementation": "1e4ca761c78affa80d90f24fa3d2fe2a69d202a6d7779f6d2e73a66ccb7ca9e8",
+  "all_source_original_gun_emission_arrays_unchanged": true,
+  "complete_snapshot_unchanged": true,
+  "source_archive_sha256": "1dee66cf1571a9eea467b245d9d5ef6af29d6e13d976bb6e334c381c86968a0d",
+  "source_io_module_sha256": "7959e3f704e737ce2934a4b39c0a890dda559cf55e2806e2b7ce03e03be1e863",
+  "roundtrip_path": "F:\\tem_simulator_v2\\outputs\\mixed-stem-si110-10nm-20261111\\validated-boundary-roundtrip-review",
+  "original_bundle_checksums_sha256": "426d9c0f54c27df78094d7292bc6d07ea82e7c6780e1da8c9f5c8d7dfb63b52e"
+}

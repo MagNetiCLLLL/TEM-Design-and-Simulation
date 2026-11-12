@@ -83,17 +83,17 @@ def test_cuda_condensed_boundary_matches_cpu_reference(coherent_cuda, monkeypatc
         for actual in (direct, condensed):
             np.testing.assert_allclose(actual[0], expected[0], atol=1e-11, rtol=1e-11)
             np.testing.assert_allclose(actual[1], expected[1], atol=1e-11, rtol=1e-11)
-            assert actual[2]["boundary_linear_solve"]["sparse_backend"] == "CuPy CUDA sparse QR"
+            assert actual[2]["boundary_linear_solve"]["sparse_backend"] == sparse_wave_device.CUDA_SPARSE_BACKEND
             assert actual[2]["linear_residual"] < 1e-12
             assert actual[2]["balance_error"] < 1e-8
         assert condensed[2]["boundary_linear_solve"]["cache_hit"] is (index > 0)
 
-    from cupyx.scipy.sparse import linalg
+    from nvmath.sparse.advanced import DirectSolver
 
     def fail_cuda(*_args):
         raise RuntimeError("Synthetic CUDA sparse failure")
 
-    monkeypatch.setattr(linalg, "spsolve", fail_cuda)
+    monkeypatch.setattr(DirectSolver, "factorize", fail_cuda)
     with pytest.raises(RuntimeError, match="Synthetic CUDA sparse failure"):
         solve_joint_boundary(problem, energy, loads[0], frame, compute_backend="Require GPU")
 

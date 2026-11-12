@@ -580,7 +580,7 @@ def test_coherent_worker_only_compares_matching_executed_scan_drives(qapp, monke
     import temsim.gui.beam_plane_data as plane_data
     import temsim.physics.beam_comparison as comparison
     from temsim.gui.paired_beam_controller import BeamPairContext
-    from temsim.physics.tip_wave_pipeline import TipWaveRequest, TipWaveResult
+    from temsim.physics.mixed_wave_pipeline import MixedWaveRequest, MixedWaveResult
     state = _state()
     _resolved_test_drives(state)
     snapshot = capture_instrument_snapshot(state)
@@ -589,12 +589,11 @@ def test_coherent_worker_only_compares_matching_executed_scan_drives(qapp, monke
         SimpleNamespace(state_snapshot=state), False, state.sample.z_mm,
         snapshot.digest, state_model_signature(state), state.electron_gun.emitter.ray_count,
         state.step_mm, drive_identity)
-    request = TipWaveRequest(stop="plane", observation_z_mm=float(state.sample.z_mm))
+    request = MixedWaveRequest(stop="plane", observation_z_mm=float(state.sample.z_mm))
     values = {} if execution == "legacy" else {
         "resolved_scan_identity": drive_identity if execution == "matched" else "other-drive"}
-    result = TipWaveResult(SimpleNamespace(plane_z_mm=state.sample.z_mm), None,
-                           request, False, snapshot.digest, **values)
-    monkeypatch.setattr(gui, "simulate_tip_wave", lambda *_a, **_k: result)
+    result = MixedWaveResult(SimpleNamespace(plane_z_mm=state.sample.z_mm),
+                             request, False, snapshot.digest, **values)
     monkeypatch.setattr(gui, "_intensity_preview", lambda *_a, **_k:
         gui._Preview(np.ones((2, 2)), np.zeros((2, 2)), 1., 1, 32))
     monkeypatch.setattr(gui, "_plane_magnetic_gauge", lambda *_: None)
@@ -602,7 +601,8 @@ def test_coherent_worker_only_compares_matching_executed_scan_drives(qapp, monke
     monkeypatch.setattr(plane_data, "sample_beam_plane", lambda *_:
         (sampled.append(1), SimpleNamespace())[1])
     monkeypatch.setattr(comparison, "compare_beam_planes", lambda *_: {"guard_fixture": True})
-    worker = gui._WaveWorker(1, 1, state, request, Event(), pair_context=context)
+    worker = gui._WaveWorker(1, 1, state, request, Event(), pair_context=context,
+        observer=SimpleNamespace(observe=lambda *_a, **_k: result))
     solved, failures = [], []
     worker.signals.solved.connect(lambda *args: solved.append(args))
     worker.signals.failed.connect(lambda *args: failures.append(args))

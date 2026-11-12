@@ -1,0 +1,73 @@
+{
+  "scope": "Synthetic numerical CUDA operator comparison only; no finite-source physical trial",
+  "before_file": "outputs\\mixed-stem-si110-10nm-20261111\\operators-before-resident-fusion.py",
+  "cases": [
+    {
+      "field": false,
+      "blocks": 1,
+      "detector_max_abs": 3.3306690738754696e-16,
+      "loss_max_abs": 3.3306690738754696e-16,
+      "rawpattern_l1": 8.199435941743575e-16,
+      "edge_max_abs": 1.6653345369377348e-16,
+      "weighted_edge_max_abs": 4.163336342344337e-17,
+      "old_ledger_residual": 2.7755575615628914e-17,
+      "new_ledger_residual": 2.7755575615628914e-17
+    },
+    {
+      "field": false,
+      "blocks": 2,
+      "detector_max_abs": 3.3306690738754696e-16,
+      "loss_max_abs": 3.3306690738754696e-16,
+      "rawpattern_l1": 8.199435941743575e-16,
+      "edge_max_abs": 1.6653345369377348e-16,
+      "weighted_edge_max_abs": 4.163336342344337e-17,
+      "old_ledger_residual": 2.7755575615628914e-17,
+      "new_ledger_residual": 2.7755575615628914e-17
+    },
+    {
+      "field": false,
+      "blocks": 4,
+      "detector_max_abs": 3.3306690738754696e-16,
+      "loss_max_abs": 3.3306690738754696e-16,
+      "rawpattern_l1": 8.199435941743575e-16,
+      "edge_max_abs": 1.6653345369377348e-16,
+      "weighted_edge_max_abs": 4.163336342344337e-17,
+      "old_ledger_residual": 2.7755575615628914e-17,
+      "new_ledger_residual": 2.7755575615628914e-17
+    },
+    {
+      "field": true,
+      "blocks": 1,
+      "detector_max_abs": 3.0531133177191805e-16,
+      "loss_max_abs": 3.3306690738754696e-16,
+      "rawpattern_l1": 9.743070489115039e-16,
+      "edge_max_abs": 1.1102230246251565e-16,
+      "weighted_edge_max_abs": 5.551115123125783e-17,
+      "old_ledger_residual": 1.6369735136856356e-07,
+      "new_ledger_residual": 1.6369735136856356e-07
+    },
+    {
+      "field": true,
+      "blocks": 2,
+      "detector_max_abs": 2.498001805406602e-16,
+      "loss_max_abs": 2.498001805406602e-16,
+      "rawpattern_l1": 7.966698906194413e-16,
+      "edge_max_abs": 1.1102230246251565e-16,
+      "weighted_edge_max_abs": 4.85722573273506e-17,
+      "old_ledger_residual": 4.094048267067052e-08,
+      "new_ledger_residual": 4.0940482642914944e-08
+    },
+    {
+      "field": true,
+      "blocks": 4,
+      "detector_max_abs": 1.942890293094024e-16,
+      "loss_max_abs": 2.498001805406602e-16,
+      "rawpattern_l1": 6.780263154067468e-16,
+      "edge_max_abs": 2.220446049250313e-16,
+      "weighted_edge_max_abs": 2.7755575615628914e-17,
+      "old_ledger_residual": 1.0237607622753941e-08,
+      "new_ledger_residual": 1.0237607678265093e-08
+    }
+  ],
+  "passed": true
+}

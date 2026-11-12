@@ -99,7 +99,10 @@ def prepare_geometry_changes(state, selection, changes, base_archive, *, cancell
             path = Path(resolved.root) / paths[module]
             if path not in drafts:
                 drafts[path] = PartModelDocument(path)
-            drafts[path].set_dimension(("parts", key, dimension), value)
+            if key == "sample" and dimension == "local_center_z_mm":
+                drafts[path].place_component(key, value, include_children=False)
+            else:
+                drafts[path].set_dimension(("parts", key, dimension), value)
     payload = thaw_json(base_archive)
     modules = []
     for path, draft in drafts.items():
@@ -114,6 +117,19 @@ def prepare_geometry_changes(state, selection, changes, base_archive, *, cancell
                             candidate_toml_sha256=row["sha256"]))
     payload["digest"] = json_digest({k: v for k, v in payload.items() if k != "digest"})
     input_io.bind_archive(state, payload)
+    # Only an explicit sample-placement edit chooses a new entrance. A
+    # generic catalog reload never infers placement from incoming geometry.
+    for path, draft in drafts.items():
+        if any(key == "sample" for _, key, _, _ in changes):
+            try:
+                sample_part = draft.part("sample")
+            except StopIteration:
+                continue
+            previous = resolved.part("sample")
+            target = float(sample_part["local_center_z_mm"])+(previous.center_z_mm-float(previous.data["local_center_z_mm"]))
+            if not math.isclose(target, float(state.sample.z_mm), rel_tol=0,
+                                abs_tol=4*math.ulp(float(state.sample.z_mm))):
+                state.sample.z_mm = target
     # Tip curvature is derived from the edited radius, not an independent
     # operating control to restore over TOML geometry.
     if any(key == "feg_tip" and dimension == "tip_radius_nm" for _, key, dimension, _ in changes):

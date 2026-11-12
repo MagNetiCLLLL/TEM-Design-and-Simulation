@@ -209,7 +209,8 @@ def select_unified_history_policy(state, plan, particle_count, *, start_index=0)
     """Keep full production history when it fits; otherwise use exact display nodes.
 
     This does not relax the memory limit or change any integration/checkpoint
-    plane. The executor still rejects sampled output if its own budget fails.
+    plane. Production execution partitions the source if sampled history also
+    exceeds the execution-slice budget.
     """
     full = unified_history_memory_bytes(state, plan, particle_count, start_index=start_index)
     return "full" if full <= MAX_UNIFIED_HISTORY_BYTES else "sampled"
@@ -302,6 +303,14 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
     required_bytes = unified_history_memory_bytes(state, plan, len(current),
         start_index=start_index, history_policy=history_policy)
     if required_bytes > MAX_UNIFIED_HISTORY_BYTES:
+        if requested_history_policy == "auto":
+            from temsim.physics.unified_particle_batches import execute_unified_batches
+            return execute_unified_batches(state, plan, (x, tx, y, ty), energy_offset_ev,
+                start_index=start_index, include_initial_plane_kicks=include_initial_plane_kicks,
+                defer_nonfinite_until_clipping=defer_nonfinite_until_clipping,
+                initial_time_s=initial_time_s, return_flight_times=return_flight_times,
+                initial_kinetic_energy_ev=initial_kinetic_energy_ev, energy_output=energy_output,
+                unified_resume=unified_resume, history_policy=history_policy)
         raise ValueError(f"Unified particle history requires {required_bytes:,} bytes, exceeding the "
                          f"{MAX_UNIFIED_HISTORY_BYTES:,}-byte numerical budget with {history_policy} history; "
                          "use exact-checkpoint history or bounded source batches")

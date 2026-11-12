@@ -10,8 +10,19 @@ from temsim.optics.electron_gun.field_emission import FieldEmissionGun, field_em
 from temsim.optics.electron_gun.tip_coherence import (
     DRIVEN_GAUSSIAN_SCHELL, FORWARD_GAUSSIAN_SCHELL,
     TipCoherence, TipWaveNumerics, describe_physical_tip_source,
-    generate_tip_boundary_emission, generate_tip_emission, tip_covariance, wavelength_m,
+    _generate_tip_emission, tip_covariance, wavelength_m,
 )
+
+
+def _mathematical_tip_emission(gun, numerics=TipWaveNumerics(), **kwargs):
+    """Private source-array mathematics; the public Tip producer is retired."""
+    driven = getattr(gun.emitter.coherence, "boundary_model", None) == DRIVEN_GAUSSIAN_SCHELL
+    return _generate_tip_emission(gun, numerics, driven_boundary=driven, **kwargs)
+
+
+def _mathematical_driven_emission(gun, numerics=TipWaveNumerics(), **kwargs):
+    """Private boundary-array mathematics without physical propagation."""
+    return _generate_tip_emission(gun, numerics, driven_boundary=True, **kwargs)
 
 
 @pytest.fixture
@@ -27,16 +38,16 @@ def gun():
 
 def test_tip_is_explicit_and_never_uses_exit_voltage(gun):
     numerics = TipWaveNumerics(energy_samples=1)
-    emitted = generate_tip_emission(gun, numerics)
+    emitted = _mathematical_tip_emission(gun, numerics)
     gun.accelerator.high_tension_kv = 200.
-    assert generate_tip_emission(gun, numerics).digest == emitted.digest
+    assert _mathematical_tip_emission(gun, numerics).digest == emitted.digest
     mode, = tuple(emitted.modes())
     assert mode.energy_kev == pytest.approx(.004)
     assert emitted.record["plane_z_mm"] == 0.
     assert emitted.reference_current_a == gun.emitter.emitted_current_a
     gun.emitter.coherence = None
     with pytest.raises(ValueError, match="explicitly"):
-        generate_tip_emission(gun, numerics)
+        _mathematical_tip_emission(gun, numerics)
 
 
 def test_length_modes_reconstruct_mutual_coherence_and_keep_absolute_weights(gun):
@@ -44,7 +55,7 @@ def test_length_modes_reconstruct_mutual_coherence_and_keep_absolute_weights(gun
     gun.emitter.coherence = TipCoherence(transverse_coherence_length_nm=5.)
     numerics = TipWaveNumerics(grid_pixels=256, energy_samples=1,
         mode_tail_tolerance=1e-10, maximum_modes=1024)
-    emission = generate_tip_emission(gun, numerics)
+    emission = _mathematical_tip_emission(gun, numerics)
     modes = tuple(emission.modes())
     i, j = (128, 128), (128, 135)
     mutual = sum(m.weight_per_reference_electron*m.plane.amplitude[i]
@@ -58,7 +69,7 @@ def test_length_modes_reconstruct_mutual_coherence_and_keep_absolute_weights(gun
         1-emission.record["omitted_probability"], abs=2e-14)
     row = emission.record["energy_modes"][0]
     gun.emitter.emission_energy_ev = 8.
-    other = generate_tip_emission(gun, numerics).record["energy_modes"][0]
+    other = _mathematical_tip_emission(gun, numerics).record["energy_modes"][0]
     assert row["eigenvalue_ratio"] == pytest.approx(other["eigenvalue_ratio"], abs=2e-16)
     assert other["incoherent_angle_rms_mrad"] < row["incoherent_angle_rms_mrad"]
     assert emission.reference_current_a == gun.emitter.emitted_current_a
@@ -97,10 +108,10 @@ def test_complex_tip_boundary_definition_does_not_admit_impossible_rays():
     assert boundary["physical_boundary_status"] == "DEFINED"
     assert report["support_radius_over_p"] > 1.
     with pytest.raises(TipSourceDomainError):
-        generate_tip_emission(source)
+        _mathematical_tip_emission(source)
     with pytest.raises(TipSourceDomainError):
         source.emit(33)
-    emission = generate_tip_boundary_emission(source)
+    emission = _mathematical_driven_emission(source)
     assert emission.record["schema"] == "physical-tip-driven-gaussian-boundary-v1"
     assert emission.record["source_domain"] == report
     assert emission.record["injected_flux_status"] == "REQUIRES_BOUNDARY_SOLVER"
@@ -114,8 +125,8 @@ def test_explicit_driven_boundary_keeps_every_mode_and_the_same_source(gun):
     numerics = TipWaveNumerics(grid_pixels=256, energy_samples=1,
                               mode_tail_tolerance=1e-9, maximum_modes=1024)
     before = gun.to_dict()
-    paraxial = generate_tip_emission(gun, numerics)
-    driven = generate_tip_boundary_emission(gun, numerics)
+    paraxial = _mathematical_tip_emission(gun, numerics)
+    driven = _mathematical_driven_emission(gun, numerics)
     assert driven.parameters == paraxial.parameters
     assert driven.record["energy_modes"] == paraxial.record["energy_modes"]
     assert driven.record["physical_source"] == describe_physical_tip_source(gun.emitter)
@@ -150,7 +161,7 @@ def test_driven_planar_boundary_cannot_replace_curved_tip_geometry(gun):
     gun.emitter.curvature_nm_inv = .001
     before = gun.to_dict()
     with pytest.raises(ValueError, match="Continuous curvature requires classical tip emission"):
-        generate_tip_boundary_emission(gun)
+        _mathematical_driven_emission(gun)
     assert gun.to_dict() == before
 
 
@@ -159,12 +170,12 @@ def test_driven_boundary_does_not_invent_a_paraxial_bound_at_zero_energy_floor()
     source.emitter.coherence = TipCoherence()
     source.emitter.minimum_kinetic_energy_ev = 0.
     before = source.to_dict()
-    emitted = generate_tip_boundary_emission(source)
+    emitted = _mathematical_driven_emission(source)
     assert emitted.record["source_domain"]["status"] == "BOUND_UNAVAILABLE"
     assert all(row["energy_ev"] > 0. for row in emitted.record["energy_modes"])
     assert emitted.parameters["minimum_kinetic_energy_ev"] == 0.
     with pytest.raises(ValueError, match="finite and positive"):
-        generate_tip_emission(source)
+        _mathematical_tip_emission(source)
     assert source.to_dict() == before
 
 
@@ -172,7 +183,7 @@ def test_driven_boundary_does_not_invent_a_paraxial_bound_at_zero_energy_floor()
 def test_modes_reconstruct_full_quantum_covariance_and_preserve_tail(gun, incoherent):
     gun.emitter.coherence = TipCoherence(incoherent_angle_rms_mrad=incoherent,
         curvature_x_m1=2e6, curvature_xy_m1=1e6, curvature_y_m1=-1e6)
-    emission = generate_tip_emission(gun, TipWaveNumerics(grid_pixels=256, energy_samples=1,
+    emission = _mathematical_tip_emission(gun, TipWaveNumerics(grid_pixels=256, energy_samples=1,
                                                         mode_tail_tolerance=1e-9, maximum_modes=1024))
     modes = tuple(emission.modes())
     wavelength = float(wavelength_m(gun.emitter.emission_energy_ev))
@@ -223,7 +234,7 @@ def test_driven_boundary_particles_are_geometric_rays_of_the_same_tip_distributi
     assert np.all(bundle.energy_offset_ev+source.emitter.emission_energy_ev > 0.)
     assert bundle.weight.sum() == pytest.approx(1.)
     np.testing.assert_allclose(xy.mean(axis=1), np.array((3., -2.))*1e-9, atol=1e-11)
-    emission = generate_tip_emission(source)
+    emission = _mathematical_tip_emission(source)
     assert emission.record["schema"] == "physical-tip-driven-gaussian-boundary-v1"
     assert emission.parameters["coherence"]["boundary_model"] == DRIVEN_GAUSSIAN_SCHELL
     assert emission.record["physical_source"]["boundary_model"] == DRIVEN_GAUSSIAN_SCHELL
@@ -234,7 +245,7 @@ def test_driven_particle_energy_samples_equal_wave_energy_samples_without_width_
     source = FieldEmissionGun()
     source.emitter.coherence = TipCoherence(boundary_model=DRIVEN_GAUSSIAN_SCHELL)
     bundle = source.emit(33)
-    emission = generate_tip_emission(source, TipWaveNumerics(energy_samples=33))
+    emission = _mathematical_tip_emission(source, TipWaveNumerics(energy_samples=33))
     np.testing.assert_array_equal(
         np.array([row["energy_ev"] for row in emission.record["energy_modes"]]),
         bundle.energy_offset_ev+source.emitter.emission_energy_ev)
@@ -257,7 +268,7 @@ def test_driven_geometric_distribution_rejects_nonforward_phase_without_clipping
     with pytest.raises(ValueError, match="geometric.*forward support"):
         source.emit(33)
     with pytest.raises(ValueError, match="geometric.*forward support"):
-        generate_tip_emission(source)
+        _mathematical_tip_emission(source)
     assert source.to_dict() == before
 
 
@@ -269,17 +280,17 @@ def test_historical_phase_record_stays_forward_and_explicit_driven_round_trips()
     old = field_emission_gun_from_dict(historical)
     assert old.emitter.coherence.boundary_model == FORWARD_GAUSSIAN_SCHELL
     with pytest.raises(ValueError, match="non-paraxial"):
-        generate_tip_emission(old)
+        _mathematical_tip_emission(old)
     source.emitter.coherence = TipCoherence(boundary_model=DRIVEN_GAUSSIAN_SCHELL)
     new = field_emission_gun_from_dict(source.to_dict())
     assert new.emitter.coherence.boundary_model == DRIVEN_GAUSSIAN_SCHELL
-    assert generate_tip_emission(new).digest == generate_tip_emission(source).digest
+    assert _mathematical_tip_emission(new).digest == _mathematical_tip_emission(source).digest
 
 
 def test_existing_energy_spread_and_current_are_retained(gun):
     gun.emitter.energy_spread_fwhm_ev = .3
     gun.emitter.coherence = TipCoherence(incoherent_angle_rms_mrad=1.)
-    source = generate_tip_emission(gun, TipWaveNumerics(energy_samples=33))
+    source = _mathematical_tip_emission(gun, TipWaveNumerics(energy_samples=33))
     energies = np.array([row["energy_ev"] for row in source.record["energy_modes"]])
     assert energies.mean() == pytest.approx(gun.emitter.emission_energy_ev, abs=1e-10)
     assert energies.std() == pytest.approx(.3/2.354820045, abs=1e-10)
@@ -288,15 +299,15 @@ def test_existing_energy_spread_and_current_are_retained(gun):
     np.testing.assert_array_equal(energies, bundle.energy_offset_ev+gun.emitter.emission_energy_ev)
     assert source.reference_current_a == gun.emitted_current_a
     with pytest.raises(ValueError, match="discard"):
-        generate_tip_emission(gun, TipWaveNumerics(energy_samples=1))
+        _mathematical_tip_emission(gun, TipWaveNumerics(energy_samples=1))
 
 
 def test_no_silent_mode_budget_or_sampling_fallback(gun):
     gun.emitter.coherence = TipCoherence(incoherent_angle_rms_mrad=1000.)
     with pytest.raises(ValueError, match="budget|maximum_modes"):
-        generate_tip_emission(gun, TipWaveNumerics(energy_samples=1, maximum_modes=1))
+        _mathematical_tip_emission(gun, TipWaveNumerics(energy_samples=1, maximum_modes=1))
     gun.emitter.coherence = TipCoherence()
-    emission = generate_tip_emission(gun, TipWaveNumerics(energy_samples=1, grid_pixels=32))
+    emission = _mathematical_tip_emission(gun, TipWaveNumerics(energy_samples=1, grid_pixels=32))
     with pytest.raises(ValueError, match="undersampled"):
         tuple(emission.modes())
 

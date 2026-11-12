@@ -1,5 +1,11 @@
 # Measured coherent propagation performance improvements (2026-10-11)
 
+> **Retired Tip-origin execution.** The Tip-to-observation calculation described below
+> is retained as historical documentation and evidence, not an executable workflow.
+> New work uses [particle transport and near-specimen mixed coherence](MIXED_COHERENCE.md).
+> Existing inputs, numeric results and archives remain unchanged and readable;
+> Tip-origin propagation and continuation are rejected before CUDA or cache reuse.
+
 This work first measured fixed inputs, then changed wave storage, radial GPU data residency, and checkpoint readout.
 It did not change the electron source, lens/deflector/aperture strengths, sampling grids, error thresholds, or numerical precision.
 The shared CPU/GPU settings at the top remain in use; no calculation buttons or device selectors were added.

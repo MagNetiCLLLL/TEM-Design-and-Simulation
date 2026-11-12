@@ -1,0 +1,23 @@
+{
+  "status": "VERIFIED_CURRENT_ARCHIVE_REPLAY",
+  "original_positive_particles": 16384,
+  "surviving_positive_particles": 5192,
+  "upper_surface_z_mm": 1599.1999998000001,
+  "all_exact_phase_arrays_bitwise_equal": true,
+  "maximum_absolute_differences": {
+    "x_m": 0.0,
+    "y_m": 0.0,
+    "tx_rad": 0.0,
+    "ty_rad": 0.0,
+    "ray_id": 0.0,
+    "weight": 0.0,
+    "kinetic_energy_ev": 0.0,
+    "flight_time_s": 0.0,
+    "canonical_frequency_shift_inv_angstrom": 0.0
+  },
+  "source_input_digest_at_initial_execution": "fc46bf49b52cf2bedadfaeee630298b544c9f6a0138c34d3fb081122549d7e76",
+  "source_input_digest_after_archive_restore": "6c25a765596b7f56ba855061af2667ce5642ca9eae0a90db5061ba5ab4199d17",
+  "snapshot_scope": "Archive restoration explicitly marks particle tuning; original phase, energies, clocks, weights and canonical correction are compared directly",
+  "solver_identity": "1e4ca761c78affa80d90f24fa3d2fe2a69d202a6d7779f6d2e73a66ccb7ca9e8",
+  "coherent_propagation_executed": false
+}

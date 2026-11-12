@@ -1,0 +1,47 @@
+--- prior-wheel/temsim/gui/scan_panel.py
++++ current-source/temsim/gui/scan_panel.py
+@@ -1226,6 +1226,8 @@
+             raise ValueError("The saved mixed view needs an explicitly read-only acquisition")
+         self._set_playback_active(False)
+         self._set_stem_frame(frame, state_snapshot=state_snapshot, explicit_calculation=True)
++        self.detector_playback_summary.setText(
++            self._stem_frame_summary("Saved mixed frame loaded; read-only"))
+         self.display_mixed_diffraction(diffraction)
+         self.saved_mixed_notice.setText(
+             f"Saved mixed acquisition · read-only · {directory}\n"
+@@ -2993,20 +2995,24 @@
+         frame = self._stem_frame if frame is None else frame
+         metrics = getattr(frame, "metrics", None) or {}
+         model = str(metrics.get("model", "detector signal"))
++        mixed = model == "near_specimen_mixed_coherent_cuda"
++        if mixed:
++            model = "Mixed coherent BF/ADF"
+         values = []
+         report = frame_sampling_report(metrics)
+         for key in STEM_DETECTOR_KEYS:
+             signal = frame.detector_signals.get(key)
+             if signal is not None:
++                label = "ADF" if mixed and key == "haadf" else key.upper()
+                 status = (report or {}).get("detectors", {}).get(key, {}).get("status")
+                 if report is not None and not report.get("illumination_covered", True):
+-                    values.append(f"{key.upper()} invalid (illumination undersampled)")
++                    values.append(f"{label} invalid (illumination undersampled)")
+                     continue
+                 if status == "outside" and not metrics.get("rutherford_tail_enabled"):
+-                    values.append(f"{key.upper()} not simulated (outside grid)")
++                    values.append(f"{label} not simulated (outside grid)")
+                     continue
+                 values.append(
+-                    f"{key.upper()} mean fraction {float(signal.fraction):.5g} "
++                    f"{label} mean fraction {float(signal.fraction):.5g} "
+                     f"({float(signal.current_pa):.5g} pA)"
+                     + (f" [{status} band]" if status and status != "full" else "")
+                 )
+--- prior-wheel/temsim/physics/particle_wave_source.py
++++ current-source/temsim/physics/particle_wave_source.py
+@@ -571,5 +571,3 @@
+                                               progress_callback=progress_callback)
+     finally:
+         release_device_memory()
+-
+-

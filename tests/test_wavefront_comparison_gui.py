@@ -195,27 +195,6 @@ def test_capture_provider_rejection_never_propagates(view, backend):
     assert not backend.propagation and "unavailable" in view.status.text()
 
 
-def test_page_context_provider_uses_owned_current_or_saved_capture_only():
-    actual = actual_result()
-    captured = object()
-    states = SimpleNamespace(admitted_ids=set(), row_keys={}, runs={})
-    page = SimpleNamespace(_closed=False, _target_z_mm=1500., _stale=False,
-        _captured=captured, _cache=OrderedDict(((1500., (actual, None)),)), state_set=states,
-        state_provider=lambda: pytest.fail("Never read live instrument inputs"))
-    assert CoherentBeamPage._reference_state_for_result(page, actual) is captured
-    page._cache.clear()
-    saved_capture = object()
-    states.admitted_ids = {"saved"}
-    states.row_keys = {"saved": "run"}
-    states.runs = {"run": SimpleNamespace(state=saved_capture, instrument_identity="captured",
-        cache={1500.: (actual, None)})}
-    assert CoherentBeamPage._reference_state_for_result(page, actual) is saved_capture
-    states.admitted_ids.clear()
-    with pytest.raises(ValueError, match="admitted captured inputs"):
-        CoherentBeamPage._reference_state_for_result(page, actual)
-    page._target_z_mm = 1501.
-    with pytest.raises(ValueError, match="exact-Z"):
-        CoherentBeamPage._reference_state_for_result(page, actual)
 
 
 def test_observation_overlay_computes_only_selected_member(qtbot, backend):

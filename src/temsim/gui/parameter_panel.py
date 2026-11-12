@@ -88,6 +88,7 @@ class ParameterPanel(QWidget):
         self.setObjectName("parameterPanel")
         self.setMinimumWidth(380)
         self._runtime_target = None
+        self._runtime_state = None
         self._manifest_target = None
         self._manifest_fields = ()
         self._updating = False
@@ -497,12 +498,13 @@ class ParameterPanel(QWidget):
         manifest_target,
         manifest_fields,
         anchor_record,
-        *, geometry_parent=None,
+        *, geometry_parent=None, state=None,
     ) -> None:
         self._updating = True
         try:
             self.title.setText(label)
             self._runtime_target = runtime_target
+            self._runtime_state = state
             self._manifest_target = manifest_target
             self._manifest_fields = tuple(manifest_fields)
             self._geometry_parent = geometry_parent
@@ -931,7 +933,7 @@ class ParameterPanel(QWidget):
                 )
                 obj.configure_energy_window(centre_loss_ev, width_ev)
             else:
-                setattr(obj, name, converted)
+                self._assign_runtime_value(name, converted)
             self.runtime_changed.emit(name)
             self._updating = True
             self._load_runtime()
@@ -964,6 +966,20 @@ class ParameterPanel(QWidget):
         return tuple(p for p in parameters if p.name != "ray_count"
                      and not (target_key == "simulation" and p.name == "step_mm"))
 
+    def _sample_thickness_context(self):
+        return (self._runtime_state is not None and self._runtime_target is not None
+            and self._runtime_target.key == "sample"
+            and self._runtime_target.obj is self._runtime_state.sample)
+
+    def _assign_runtime_value(self, name, value):
+        if self._runtime_target.key == "sample" and name == "thickness_nm":
+            if not self._sample_thickness_context():
+                raise ValueError("Edit specimen thickness on the Sample page with a live instrument context")
+            from temsim.specimen.axial_geometry import set_sample_thickness
+            set_sample_thickness(self._runtime_state, float(value))
+        else:
+            setattr(self._runtime_target.obj, name, value)
+
     def _load_runtime(self) -> None:
         parameters = self._runtime_parameters()
         self.runtime_table.setRowCount(len(parameters))
@@ -982,6 +998,10 @@ class ParameterPanel(QWidget):
                     surface_source=getattr(self._runtime_target.obj, "surface_model", None) is not None)
                 name.setToolTip(tooltip)
                 value.setToolTip(tooltip)
+            if (self._runtime_target.key == "sample" and parameter.name == "thickness_nm"
+                    and not self._sample_thickness_context()):
+                value.setFlags(value.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                value.setToolTip("Edit thickness on the Sample page; a live instrument context is required to retain the fixed upper surface.")
             self.runtime_table.setItem(row, 0, name)
             self.runtime_table.setItem(row, 1, value)
 
@@ -1287,9 +1307,9 @@ class ParameterPanel(QWidget):
                 obj.configure_energy_window(centre_loss_ev, width_ev)
                 value = getattr(obj, name)
             else:
-                setattr(self._runtime_target.obj, name, value)
-            item.setData(Qt.ItemDataRole.UserRole, value)
+                self._assign_runtime_value(name, value)
             self._updating = True
+            item.setData(Qt.ItemDataRole.UserRole, value)
             self._load_lens_controls()
             self._load_quick_controls()
             self._updating = False

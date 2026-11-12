@@ -1,0 +1,106 @@
+{
+  "scope": "Static layout arithmetic only; no arrays, particles, propagation or CUDA allocated",
+  "whole_disk_atoms": 38610,
+  "patterns": 2,
+  "base_tiles_xy": [
+    8,
+    10
+  ],
+  "enlarged_tiles_xy": [
+    10,
+    12
+  ],
+  "padded_tiles_xy": [
+    20,
+    26
+  ],
+  "full_physical_atom_bbox_and_roi_padding_minimum_angstrom": 20,
+  "continuous_image_to_discrete_projection_stability": "Multiply full-cell uniform image bound by padded Nx*Ny",
+  "plans": [
+    {
+      "base_pixels": 1760,
+      "slices": 400,
+      "enlarged_roi_yx": [
+        2112,
+        2200
+      ],
+      "padded_grid_yx": [
+        4576,
+        4400
+      ],
+      "finite_output_GiB": 6.923675537109375,
+      "declared_device_builder_scratch_GiB": 10.200881958007812,
+      "gpu_builder_host_stage_GiB": 7.073688507080078,
+      "fits_host48": true,
+      "fits_device24": true
+    },
+    {
+      "base_pixels": 1920,
+      "slices": 800,
+      "enlarged_roi_yx": [
+        2304,
+        2400
+      ],
+      "padded_grid_yx": [
+        4992,
+        4800
+      ],
+      "finite_output_GiB": 16.4794921875,
+      "declared_device_builder_scratch_GiB": 12.139892578125,
+      "gpu_builder_host_stage_GiB": 16.65802001953125,
+      "fits_host48": true,
+      "fits_device24": true
+    },
+    {
+      "base_pixels": 2080,
+      "slices": 1600,
+      "enlarged_roi_yx": [
+        2496,
+        2600
+      ],
+      "padded_grid_yx": [
+        5408,
+        5200
+      ],
+      "finite_output_GiB": 38.6810302734375,
+      "declared_device_builder_scratch_GiB": 14.247512817382812,
+      "gpu_builder_host_stage_GiB": 38.89055252075195,
+      "fits_host48": true,
+      "fits_device24": true
+    },
+    {
+      "base_pixels": 2160,
+      "slices": 1600,
+      "enlarged_roi_yx": [
+        2592,
+        2700
+      ],
+      "padded_grid_yx": [
+        5616,
+        5400
+      ],
+      "finite_output_GiB": 41.713714599609375,
+      "declared_device_builder_scratch_GiB": 15.364551544189453,
+      "gpu_builder_host_stage_GiB": 41.939663887023926,
+      "fits_host48": true,
+      "fits_device24": true
+    },
+    {
+      "base_pixels": 2400,
+      "slices": 3200,
+      "enlarged_roi_yx": [
+        2880,
+        3000
+      ],
+      "padded_grid_yx": [
+        6240,
+        6000
+      ],
+      "finite_output_GiB": 102.996826171875,
+      "declared_device_builder_scratch_GiB": 18.968582153320312,
+      "gpu_builder_host_stage_GiB": 103.27577590942383,
+      "fits_host48": false,
+      "fits_device24": true
+    }
+  ]
+}

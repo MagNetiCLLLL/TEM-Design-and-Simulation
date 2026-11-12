@@ -1,4 +1,4 @@
-"""Run the explicit development hybrid workflow from an existing instrument profile."""
+"""Retired Tip-origin hybrid CLI; use python -m temsim.mixed_wave_cli --help."""
 from __future__ import annotations
 
 import argparse
@@ -75,6 +75,8 @@ def save_result(result, destination):
 
 def main(argv=None):
     args = parser().parse_args(argv)
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     if args.output.exists():
         raise ValueError("Output directory already exists; choose a new destination")
     from temsim.physics.compute_backend import require_coherent_cuda, validate_coherent_cuda_policy

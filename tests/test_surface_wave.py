@@ -76,7 +76,7 @@ def test_actual_tip_near_field_preserves_complex_fields_flux_and_exact_cache(coh
     original = encode_instrument(gun)
     numerical = SurfaceWaveNumerics(radial_nodes=33, axial_nodes=65, energy_samples=1)
     result = compute_surface_wave(gun, numerical)
-    assert result.record["wave_boundary_backend"] == "CuPy CUDA sparse QR"
+    assert result.record["wave_boundary_backend"] == "CuPy CUDA cuDSS reusable LU"
     assert encode_instrument(gun) == original
     assert result.modes[0].amplitude.shape == (33, 65)
     assert np.iscomplexobj(result.modes[0].amplitude)

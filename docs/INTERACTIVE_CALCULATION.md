@@ -90,6 +90,12 @@ Nonlinear/FEM field solves and the first JIT compilation can still be slow.
 
 ### Electron beam during Live tuning
 
+> **Retired Tip-origin execution.** The Tip-to-observation calculation described below
+> is retained as historical documentation and evidence, not an executable workflow.
+> New work uses [particle transport and near-specimen mixed coherence](MIXED_COHERENCE.md).
+> Existing inputs, numeric results and archives remain unchanged and readable;
+> Tip-origin propagation and continuation are rejected before CUDA or cache reuse.
+
 First use **Calculate beam** in **Electron beam** to obtain a successful wave
 result. Subsequent Live slider edits retain that image as previous data, cancel
 obsolete wave work, and wait until edits have settled for 300 ms and the latest

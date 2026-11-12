@@ -257,7 +257,7 @@ class PotentialMaterialTransport:
 def propagate_potential_specimen(state, checkpoint, snapshot, *, store,
         inelastic_numerics=InelasticWaveNumerics(), grid_numerics=WaveGridNumerics(),
         maximum_step_mm=.001, operator_options=None, cancelled=lambda: False,
-        progress_callback=None, use_cache=True, geometry=None):
+        progress_callback=None, use_cache=True, geometry=None, observation_z_mm=None):
     """Execute existing finite multislice/material histories with new fields.
 
     Static electric and magnetic fields may overlap the finite material and are executed
@@ -291,11 +291,14 @@ def propagate_potential_specimen(state, checkpoint, snapshot, *, store,
         raise ValueError("Finite material handoff requires an inserted nonzero-thickness specimen")
     if not scene.support_grid.material.is_vacuum:
         raise ValueError("Non-vacuum holder support requires a separately admitted material boundary executor")
-    quaternion = np.asarray(scene.orientation_quaternion_wxyz)
-    if not np.array_equal(abs(quaternion), [1., 0., 0., 0.]):
-        raise ValueError("Potential material handoff currently requires an untilted axial specimen slab")
+    # Crystal orientation rotates the lattice inside the lab-Z envelope; it
+    # does not tilt the physical slab faces used by this transport.
     start = state.sample.z_mm-state.sample.thickness_nm*.5e-6
     stop = state.sample.z_mm+state.sample.thickness_nm*.5e-6
+    if observation_z_mm is not None:
+        if (isinstance(observation_z_mm, (bool, np.bool_)) or not np.isfinite(observation_z_mm)
+                or not start < observation_z_mm <= stop):
+            raise ValueError("Material observation must lie after its entrance and within the physical slab")
     if kinetic_prefix and checkpoint.plane_z_mm == (start*.001)*1000.:
         record = stamp_material_kinetic_plane(thaw_json(checkpoint.record), start)
         checkpoint = replace(checkpoint, plane_z_mm=start, record=record)
@@ -328,7 +331,8 @@ def propagate_potential_specimen(state, checkpoint, snapshot, *, store,
         if json_digest(encode_instrument(state)) != initial_graph:
             raise ValueError("Specimen inputs changed during potential propagation")
         inputs._verify_external_inputs(state)
-    transport = PotentialMaterialTransport(snapshot, (start, stop), inputs.digest,
+    execution_stop = stop if observation_z_mm is None else float(observation_z_mm)
+    transport = PotentialMaterialTransport(snapshot, (start, execution_stop), inputs.digest,
         {} if operator_options is None else operator_options, geometry)
     # Query the actual incoming grid and both faces before expensive atomistic
     # preparation. Every subsequently refined slice/grid is checked again by
@@ -341,10 +345,12 @@ def propagate_potential_specimen(state, checkpoint, snapshot, *, store,
         tip_time_s=None, cancelled=cancelled, progress_callback=progress_callback,
         column_propagator=transport)
     if inelastic_numerics.method == "trajectories":
+        if observation_z_mm is not None and observation_z_mm != stop:
+            raise ValueError("Partial material observations currently require the coherent zero-loss branch")
         result = _propagate_inelastic_specimen(state, checkpoint, numerics=inelastic_numerics,
             store=store, verify=verify, use_cache=use_cache, **options)
     else:
-        result = _propagate_specimen(state, checkpoint, **options)
+        result = _propagate_specimen(state, checkpoint, observation_z_mm=observation_z_mm, **options)
     verify()
     record = thaw_json(result.record)
     if kinetic_prefix:

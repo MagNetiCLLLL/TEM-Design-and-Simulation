@@ -1,4 +1,5 @@
 """Execute the reference coherent surface through the round column prefix.
+Tip-origin coherent execution is retired; use python -m temsim.mixed_wave_cli --help.
 
 Numerical development evidence, not full TEM/STEM acceptance. No optical
 settings, historical profiles or source widths are tuned by this driver.
@@ -87,6 +88,8 @@ def main(argv=None):
     p.add_argument("--refine-pilot-charts", action="store_true",
                    help="Also refine unpublished coordinate-selection pilots; the final physical solve is always checked")
     args = p.parse_args(argv)
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     from temsim.physics.compute_backend import require_coherent_cuda
     execution_policy = require_coherent_cuda(args.radial_backend)
     from temsim.physics.axial_mesh_seed import read_mesh_seed

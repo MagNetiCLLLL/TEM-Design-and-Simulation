@@ -184,7 +184,7 @@ def test_transport_callback_reports_real_step_counts_without_parsing_text():
 
 def test_wave_worker_keeps_readout_and_publication_after_solver_completion(monkeypatch):
     import temsim.gui.coherent_beam as module
-    monkeypatch.setattr(module, "_wave_resource_claim", lambda *_args: None)
+    monkeypatch.setattr(module, "_wave_resource_claim", lambda *_args, **_kwargs: None)
     request = SimpleNamespace(observation_z_mm=12.)
     worker = module._WaveWorker(1, 1, object(), request, Event())
     updates = []

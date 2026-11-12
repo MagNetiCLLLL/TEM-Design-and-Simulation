@@ -2468,7 +2468,10 @@ def _validate_eds_detector_geometry(parts):
         )
 
     tolerance = 1.0e-9
-    sample_z = float(sample["local_center_z_mm"])
+    upper_pole, lower_pole = by_key.get("objective_upper_pole"), by_key.get("objective_lower_pole")
+    reference_z = (0.5*(float(upper_pole["local_end_z_mm"])+float(lower_pole["local_start_z_mm"]))
+                   if upper_pole is not None and lower_pole is not None
+                   else float(sample["local_center_z_mm"]))
     detector_positions = tuple(
         float(detector[field])
         for field in (
@@ -2479,11 +2482,11 @@ def _validate_eds_detector_geometry(parts):
     )
     if (
         abs(float(detector["length_mm"])) > tolerance
-        or any(abs(value - sample_z) > tolerance for value in detector_positions)
+        or any(abs(value - reference_z) > tolerance for value in detector_positions)
     ):
         raise ValueError(
             "EDS aggregate must remain a zero-thickness off-axis "
-            "marker at the sample plane"
+            "marker at the fixed Objective pole-gap centre"
         )
 
     geometry = EDSDetectorArrayGeometry.from_part_data(detector)
@@ -2618,8 +2621,8 @@ def _validate_stage_holder_geometry(by_key):
             or holder.get("mechanical_profile") != "side_entry_sample_holder"
             or holder.get("axial_vacuum_context_only") is not True):
         raise ValueError("Side-entry holder must belong to the stage and not define an axial vacuum wall")
-    if abs(number(holder, "local_center_z_mm", positive=False)-float(sample["local_center_z_mm"])) > tolerance:
-        raise ValueError("Side-entry holder must be centred on the sample plane")
+    if abs(number(holder, "local_center_z_mm", positive=False)-float(stage["local_center_z_mm"])) > tolerance:
+        raise ValueError("Side-entry holder must be centred on the fixed sample stage")
     intervals, diameters = {}, {}
     for name in ("stage_port", "stage_flange", "stage_body"):
         start, end = (number(stage, name+suffix) for suffix in ("_start_x_mm", "_end_x_mm"))
@@ -2671,6 +2674,10 @@ def _validate_stage_holder_geometry(by_key):
         raise ValueError("Holder seat must fit and support the sample above its smaller beam opening")
     if thickness >= float(stage["length_mm"]):
         raise ValueError("Holder tip must leave clearance in the objective pole gap")
+    holder_center = number(holder, "local_center_z_mm", positive=False)
+    if (float(sample["local_start_z_mm"]) < holder_center-thickness/2-tolerance
+            or float(sample["local_end_z_mm"]) > holder_center+thickness/2+tolerance):
+        raise ValueError("Sample axial envelope must remain inside the fixed holder tip")
     if (abs(number(holder, "holder_tip_start_x_mm", positive=False)+width/2) > tolerance
             or abs(number(holder, "holder_tip_end_x_mm")-shaft_start) > tolerance):
         raise ValueError("Holder tip must cover the sample axis and meet the shaft")
@@ -2742,13 +2749,16 @@ def _validate_objective_assembly(parts):
         + float(lower_pole["local_start_z_mm"])
     )
     sample_center = float(sample["local_center_z_mm"])
-    if abs(sample_center - gap_center) > tolerance:
+    if (float(sample["local_start_z_mm"]) < float(upper_pole["local_end_z_mm"])-tolerance
+            or float(sample["local_end_z_mm"]) > float(lower_pole["local_start_z_mm"])+tolerance
+            or float(sample["local_start_z_mm"]) < float(stage["local_start_z_mm"])-tolerance
+            or float(sample["local_end_z_mm"]) > float(stage["local_end_z_mm"])+tolerance):
         raise ValueError(
-            "The symmetric objective sample must remain centered in the pole gap"
+            "The sample axial envelope must remain inside the fixed stage and Objective pole gap"
         )
     if (
         stage.get("mechanical_profile") != "transverse_goniometer"
-        or abs(float(stage["local_center_z_mm"]) - sample_center)
+        or abs(float(stage["local_center_z_mm"]) - gap_center)
         > tolerance
         or abs(
             float(stage["local_start_z_mm"])
@@ -2761,7 +2771,7 @@ def _validate_objective_assembly(parts):
     ):
         raise ValueError(
             "The transverse sample goniometer must cross the Objective pole "
-            "gap at the sample plane"
+            "gap at its fixed centre"
         )
 
     lens_start = float(lens["local_start_z_mm"])
@@ -2790,16 +2800,16 @@ def _validate_objective_assembly(parts):
         raise ValueError("The symmetric objective upper and lower yokes must be symmetric")
     if (
         abs(
-            (sample_center - yoke_ranges[0][0])
-            - (yoke_ranges[1][1] - sample_center)
+            (gap_center - yoke_ranges[0][0])
+            - (yoke_ranges[1][1] - gap_center)
         ) > tolerance
         or abs(
-            (sample_center - yoke_ranges[0][1])
-            - (yoke_ranges[1][0] - sample_center)
+            (gap_center - yoke_ranges[0][1])
+            - (yoke_ranges[1][0] - gap_center)
         ) > tolerance
     ):
         raise ValueError(
-            "The symmetric objective yoke ranges must mirror about the sample"
+            "The symmetric objective yoke ranges must mirror about the pole-gap centre"
         )
 
     for field in (
@@ -2818,11 +2828,11 @@ def _validate_objective_assembly(parts):
     upper_reference = float(lens["upper_field_reference_local_z_mm"])
     lower_reference = float(lens["lower_field_reference_local_z_mm"])
     if abs(
-        (sample_center - upper_reference)
-        - (lower_reference - sample_center)
+        (gap_center - upper_reference)
+        - (lower_reference - gap_center)
     ) > tolerance:
         raise ValueError(
-            "The symmetric objective field references must be symmetric about the sample"
+            "The symmetric objective field references must be symmetric about the pole-gap centre"
         )
     if float(lens["upper_peak_field_t"]) != float(
         lens["lower_peak_field_t"]

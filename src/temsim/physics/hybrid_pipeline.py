@@ -299,6 +299,8 @@ def _downstream(state, runtime, particles, stop_mm, request, *, start_z_mm=None)
 
 def simulate_hybrid(state, request: HybridRequest, *, cancelled=lambda: False, progress_callback=None):
     """Public CUDA-gated workflow. No arbitrary source arrays or phase guesses."""
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     from temsim.physics.tip_wave_pipeline import require_tip_wave_cuda, simulate_tip_wave
 
     wave_request = replace(request.wave, stop="gun_exit" if request.coherent_start_z_mm is None else "plane",

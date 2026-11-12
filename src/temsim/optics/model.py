@@ -235,6 +235,11 @@ class Sample:
 
     thickness_nm: float = 5.0
 
+    # None is the exact legacy snapshot state. New captures initialize this
+    # metadata from the actually stored centre/thickness without moving it.
+    upper_surface_reference_z_mm: float | None = field(default=None, metadata={"omit_none": True})
+    lattice_reference_thickness_nm: float | None = field(default=None, metadata={"omit_none": True})
+
     # Finite specimen envelope in the laboratory sample plane.  The beam
     # travels along +Z; X/Y dimensions and the scan origin are independent of
     # the instrument-owned axial sample position.  The default is a standard
@@ -477,13 +482,60 @@ class Sample:
 
     virtual_probe_convolution_enabled: bool = True
 
+    def __post_init__(self):
+        self.ensure_upper_surface_reference()
+
+    def ensure_upper_surface_reference(self):
+        if getattr(self, "lattice_reference_thickness_nm", None) is None:
+            object.__setattr__(self, "lattice_reference_thickness_nm", float(self.thickness_nm))
+        reference = getattr(self, "upper_surface_reference_z_mm", None)
+        if reference is None:
+            reference = float(self.z_mm)-float(self.thickness_nm)*.5e-6
+            object.__setattr__(self, "upper_surface_reference_z_mm", reference)
+        if not math.isfinite(reference):
+            raise ValueError("The fixed specimen upper surface must be finite")
+        expected = reference+float(self.thickness_nm)*.5e-6
+        tolerance = 4*math.ulp(float(self.z_mm))
+        if not math.isclose(float(self.z_mm), expected, rel_tol=0, abs_tol=tolerance):
+            raise ValueError("The specimen centre and fixed upper-surface reference are inconsistent")
+        return float(reference)
+
+    def __setattr__(self, name, value):
+        if name == "thickness_nm":
+            value = float(value)
+            if not math.isfinite(value) or value < 0:
+                raise ValueError("Specimen thickness must be finite and nonnegative")
+            if "thickness_nm" in vars(self):
+                upper = self.ensure_upper_surface_reference()
+                object.__setattr__(self, name, value)
+                object.__setattr__(self, "z_mm", upper+value*.5e-6)
+                return
+        elif name == "z_mm":
+            value = float(value)
+            if not math.isfinite(value):
+                raise ValueError("Specimen centre must be finite")
+            if "thickness_nm" in vars(self):
+                # Explicit placement chooses a new reference. Layout-owned
+                # synchronization bypasses this setter with its saved anchor.
+                object.__setattr__(self, "upper_surface_reference_z_mm", value-self.thickness_nm*.5e-6)
+        elif name == "upper_surface_reference_z_mm" and value is not None:
+            value = float(value)
+            if not math.isfinite(value):
+                raise ValueError("The fixed specimen upper surface must be finite")
+        elif name == "lattice_reference_thickness_nm" and value is not None:
+            value = float(value)
+            if not math.isfinite(value) or value < 0:
+                raise ValueError("The initial specimen lattice thickness must be finite and nonnegative")
+        object.__setattr__(self, name, value)
+
     @property
     def upper_surface_z_mm(self):
-        return self.z_mm - self.thickness_nm * 0.5e-6
+        reference = getattr(self, "upper_surface_reference_z_mm", None)
+        return self.z_mm-self.thickness_nm*.5e-6 if reference is None else float(reference)
 
     @property
     def lower_surface_z_mm(self):
-        return self.z_mm + self.thickness_nm * 0.5e-6
+        return self.upper_surface_z_mm+self.thickness_nm*1e-6
 
 
 @dataclass
@@ -1972,12 +2024,20 @@ class State:
                 or any(key.startswith("virtual_") for key in sample_data)
                 or sample_data.get("specimen_mode") == "virtual"):
             raise ValueError("Legacy specimen inputs are unsupported; use the current physical specimen model")
-        # The selected assembly TOML is
-        # authoritative; only specimen properties survive deserialisation.
-        sample_z_mm = _DEFAULT_SAMPLE_Z_MM
         sample_thickness_nm = float(
             sample_data.get("thickness_nm", 5.0)
         )
+        # The fixed entrance owns specimen placement. Older records without
+        # it retain their actually stored centre or captured assembly centre.
+        if sample_data.get("upper_surface_reference_z_mm") is not None:
+            sample_z_mm = float(sample_data["upper_surface_reference_z_mm"])+sample_thickness_nm*.5e-6
+        elif "z_mm" in sample_data:
+            sample_z_mm = float(sample_data["z_mm"])
+        elif resolved_assembly is not None:
+            sample_z_mm = float(resolved_assembly.part("sample").center_z_mm)
+        else:
+            sample_z_mm = _DEFAULT_SAMPLE_Z_MM
+        sample_data["z_mm"] = sample_z_mm
         lens_rows = d.get("lenses", [])
         corrector_mode_for_load = canonical_corrector_mode(
             d.get("corrector_mode", "probe_corrector")

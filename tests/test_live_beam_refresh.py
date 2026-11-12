@@ -25,7 +25,7 @@ def live(qtbot, monkeypatch):
     calls = []
     monkeypatch.setattr(page, "calculate", lambda: calls.append(
         (state.objective_lens.percent, page._target_z_mm,
-         state.acceleration_backend, page.state_list.display_mode())))
+         state.acceleration_backend)))
     yield state, page, refresh, calls
     refresh.cancel()
     page.shutdown()
@@ -47,7 +47,7 @@ def test_waits_for_successful_particle_frame_and_uses_latest_inputs(live, qtbot)
     page.set_selected_z(1605.)
     refresh.particle_ready()
     qtbot.waitUntil(lambda: len(calls) == 1)
-    assert calls == [(68., 1605., "Require GPU", "current")]
+    assert calls == [(68., 1605., "Require GPU")]
     assert not refresh.pending
     refresh.particle_ready()
     qtbot.wait(40)
@@ -68,12 +68,12 @@ def test_completed_ray_frame_does_not_bypass_edit_settle_interval(live, qtbot):
     assert calls[0][0] == 68.
 
 
-@pytest.mark.parametrize("action", ["draft", "cancel", "explicit", "mode", "close"])
+@pytest.mark.parametrize("action", ["numeric", "cancel", "explicit", "close"])
 def test_user_actions_supersede_pending_live_refresh(live, qtbot, action):
     _, page, refresh, calls = live
     edit(live, 68.)
-    if action == "draft":
-        page.tip_offset_x.setValue(.125)
+    if action == "numeric":
+        page._source_controls["source_image_rms_pm"].setValue(12.)
     elif action == "cancel":
         page.cancel_button.setEnabled(True)
         page.cancel_button.click()
@@ -83,26 +83,24 @@ def test_user_actions_supersede_pending_live_refresh(live, qtbot, action):
         page.calculate_button.clicked.disconnect()
         page.calculate_button.clicked.connect(refresh.cancel)
         page.calculate_button.click()
-    elif action == "mode":
-        page.state_list.mode.setCurrentIndex(page.state_list.mode.findData("overlay"))
     else:
         page.shutdown()
     refresh.particle_ready()
     qtbot.waitUntil(lambda: not refresh.pending, timeout=1000)
     assert calls == []
     assert not refresh.pending
-    if action == "draft":
-        assert page.tip_offset_x.value() == .125
+    if action == "numeric":
+        assert page._source_controls["source_image_rms_pm"].value() == 12.
 
 
-def test_preexisting_unapplied_draft_never_arms_refresh(live, qtbot):
+def test_preexisting_numerical_edit_does_not_arm_refresh(live, qtbot):
     _, page, refresh, calls = live
-    page.tip_offset_x.setValue(.125)
+    page._source_controls["source_image_rms_pm"].setValue(12.)
     edit(live, 68.)
     refresh.particle_ready()
     qtbot.wait(45)
     assert not refresh.pending and calls == []
-    assert page.tip_offset_x.value() == .125
+    assert page._source_controls["source_image_rms_pm"].value() == 12.
 
 
 def test_particle_only_use_does_not_start_a_first_coherent_calculation(live, qtbot):
@@ -129,15 +127,6 @@ def test_explicit_first_wave_in_flight_restarts_with_latest_optics(live, qtbot):
     qtbot.waitUntil(lambda: len(calls) == 1)
     assert calls[0][0] == 68.
 
-
-def test_active_saved_state_display_uses_existing_state_calculation_action(live, qtbot):
-    _, page, refresh, calls = live
-    page.state_list.mode.setCurrentIndex(page.state_list.mode.findData("overlay"))
-    page.state_set.active = True
-    edit(live, 68.)
-    refresh.particle_ready()
-    qtbot.waitUntil(lambda: len(calls) == 1)
-    assert calls[0][-1] == "overlay"
 
 
 def test_blocked_or_failed_work_cannot_trigger_a_wave(live, qtbot):

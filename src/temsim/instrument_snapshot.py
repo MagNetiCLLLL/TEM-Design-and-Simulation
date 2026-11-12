@@ -159,6 +159,7 @@ def encode_instrument(state, *, asset_store=None) -> Mapping:
             omitted = {f.name for f in declared if f.metadata.get("omit_zero_drive")
                        and type(getattr(value, f.name)) is float
                        and getattr(value, f.name).hex() == (0.).hex()}
+            omitted.update(f.name for f in declared if f.metadata.get("omit_none") and getattr(value, f.name) is None)
             node["fields"] = [f.name for f in declared if f.name not in omitted]
             names = [k for k in _attribute_names(value) if k not in omitted]
             if type_key == "temsim.optics.model:State":
@@ -207,7 +208,9 @@ def decode_instrument(graph, *, assets=None):
             declared = fields(cls) if is_dataclass(cls) else ()
             missing_drives = {f.name for f in declared if f.metadata.get("omit_zero_drive")
                               and f.name not in node["fields"] and f.name not in node["attributes"]}
-            current_fields = [f.name for f in declared if f.name not in missing_drives]
+            missing_optional = {f.name for f in declared if f.metadata.get("omit_none")
+                                and f.name not in node["fields"] and f.name not in node["attributes"]}
+            current_fields = [f.name for f in declared if f.name not in missing_drives|missing_optional]
             if list(node["fields"]) != current_fields:
                 raise ValueError(f"Unsupported model schema for {node['type']}; only current fields are accepted")
             attributes = node["attributes"]
@@ -225,6 +228,8 @@ def decode_instrument(graph, *, assets=None):
             restored[index] = result
             for name in missing_drives:
                 object.__setattr__(result, name, 0.0)
+            for name in missing_optional:
+                object.__setattr__(result, name, None)
             for k, v in attributes.items():
                 if isinstance(getattr(cls, k, None), property) or callable(getattr(cls, k, None)):
                     raise ValueError("Working-point attributes cannot invoke model methods or setters")
@@ -477,6 +482,11 @@ def capture_instrument_snapshot(state) -> InstrumentSnapshot:
     from temsim.calculation_manifest import (
         capture_external_input_identities, solver_source_identity,
     )
+    # A new capture records the reference explicitly. Exact historical graph
+    # decoding above remains metadata-free and never repositions the sample.
+    sample = getattr(state, "sample", None)
+    if sample is not None and hasattr(sample, "ensure_upper_surface_reference"):
+        sample.ensure_upper_surface_reference()
     graph = encode_instrument(state)
     dependencies = []
     for identity in capture_external_input_identities(state):

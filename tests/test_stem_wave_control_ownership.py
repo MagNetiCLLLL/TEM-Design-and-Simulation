@@ -1,5 +1,6 @@
-"""The STEM wave switch has one UI owner and retains its saved-state contract."""
+"""Retired STEM requests require explicit clearing; historical inputs stay readable."""
 
+from copy import deepcopy
 from unittest.mock import Mock
 
 import pytest
@@ -45,7 +46,13 @@ def test_stem_wave_toggle_has_only_scanning_image_owner(wave_panels):
     ]
     assert toggles == [scan_view.wave_scan_enabled]
     assert not hasattr(sample_page, "stem_wave_enabled")
-    assert scan_view.wave_scan_enabled.text() == "Coherent STEM wave imaging (paused)"
+    assert scan_view.wave_scan_enabled.isHidden()
+    assert not scan_view.wave_scan_enabled.isEnabled()
+    assert scan_view.enable_wave_images.isHidden()
+    assert scan_view.clear_retired_wave_request.isHidden()
+    assert "Electron beam" in scan_view.mixed_wave_location.text()
+    assert "Transverse beam" in scan_view.mixed_wave_location.text()
+    assert "paused" not in scan_view.wave_image_action_note.text().lower()
     assert scan_view.image_enabled.isChecked()
     assert sample_page.findChild(QCheckBox, "sampleTemWaveEnabled") is sample_page.tem_wave_enabled
     assert sample_page.findChild(QGroupBox, "sampleWaveControls").title() == "Wave imaging settings"
@@ -56,22 +63,37 @@ def test_stem_wave_toggle_has_only_scanning_image_owner(wave_panels):
 
 
 @pytest.mark.parametrize("enabled", [False, True])
-def test_scanning_toggle_updates_shared_field_and_emits_once(wave_panels, enabled):
+def test_retired_request_changes_only_after_explicit_clear(wave_panels, enabled):
     sample_page, scan_view = wave_panels
     state = default_state()
-    state.sample.stem_wave_enabled = not enabled
+    state.sample.stem_wave_enabled = enabled
     sample_page.set_state(state)
     scan_view.set_state(state)
-    scan_changes = []
-    sample_changes = []
+    before = deepcopy(state.to_dict())
+    scan_changes, sample_changes, requests = [], [], []
     scan_view.parameters_changed.connect(scan_changes.append)
     sample_page.parameters_changed.connect(sample_changes.append)
+    scan_view.calculation_requested.connect(lambda: requests.append(1))
 
-    scan_view.wave_scan_enabled.setChecked(enabled)
+    assert scan_view.wave_scan_enabled.isHidden()
+    assert scan_view.enable_wave_images.isHidden()
+    assert scan_view.clear_retired_wave_request.isHidden() is (not enabled)
+    scan_view.wave_scan_enabled.click()
+    scan_view.enable_wave_images.click()
+    assert state.to_dict() == before and scan_changes == []
 
-    assert state.sample.stem_wave_enabled is enabled
-    assert scan_changes == ["sample.stem_wave_enabled"]
-    assert sample_changes == []
+    scan_view.clear_retired_wave_request.click()
+    expected = deepcopy(before)
+    expected["sample"]["stem_wave_enabled"] = False
+    assert state.to_dict() == expected
+    assert scan_changes == (["sample.stem_wave_enabled"] if enabled else [])
+    assert sample_changes == requests == []
+    assert scan_view.clear_retired_wave_request.isHidden()
+    assert not scan_view.wave_scan_enabled.isChecked()
+    scan_view.clear_retired_wave_request.click()
+    assert scan_changes == (["sample.stem_wave_enabled"] if enabled else [])
+    scan_view._request_calculation()
+    assert requests == [1]  # The normal particle scan action remains available.
 
 
 @pytest.mark.parametrize("enabled", [False, True])
@@ -92,6 +114,8 @@ def test_panel_refresh_preserves_stem_request_without_emitting(wave_panels, enab
         scan_view.set_state(state)
         assert state.sample.stem_wave_enabled is enabled
         assert scan_view.wave_scan_enabled.isChecked() is enabled
+        assert scan_view.wave_scan_enabled.isHidden()
+        assert scan_view.clear_retired_wave_request.isHidden() is (not enabled)
 
     assert state.sample.wave_grid_pixels == 64
     assert state.sample.wave_slice_thickness_angstrom == pytest.approx(1.5)
@@ -122,11 +146,18 @@ def test_operating_profile_restores_stem_request_to_sole_toggle(
     assert loaded_selection == selection
     assert restored.sample.stem_wave_enabled is enabled
     assert scan_view.wave_scan_enabled.isChecked() is enabled
+    assert scan_view.wave_scan_enabled.isHidden()
+    assert scan_view.clear_retired_wave_request.isHidden() is (not enabled)
     assert scan_changes == []
+    original_bytes = path.read_bytes()
+    scan_view.clear_retired_wave_request.click()
+    assert not restored.sample.stem_wave_enabled
+    assert path.read_bytes() == original_bytes
+    assert state.sample.stem_wave_enabled is enabled
 
 
 @pytest.mark.parametrize("illumination", ["TEM", "STEM"])
-def test_new_wave_requests_stay_paused_in_both_illumination_modes(
+def test_retired_wave_actions_cannot_start_new_requests_in_both_modes(
     wave_panels, illumination
 ):
     sample_page, scan_view = wave_panels
@@ -137,7 +168,11 @@ def test_new_wave_requests_stay_paused_in_both_illumination_modes(
     scan_view.set_state(state)
 
     assert not scan_view.wave_scan_enabled.isEnabled()
+    assert scan_view.wave_scan_enabled.isHidden()
+    assert scan_view.enable_wave_images.isHidden()
+    assert not scan_view.enable_wave_images.isEnabled()
     scan_view.wave_scan_enabled.click()
+    scan_view.enable_wave_images.click()
 
     assert state.sample.stem_wave_enabled is False
     assert not sample_page.tem_wave_enabled.isEnabled()

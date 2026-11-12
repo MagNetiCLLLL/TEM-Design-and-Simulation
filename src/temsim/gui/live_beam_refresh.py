@@ -25,8 +25,7 @@ class LiveBeamRefresh(QObject):
 
     def _identity(self):
         page = self.page
-        return (page._generation, page.state_set.generation,
-                page.state_list.display_mode())
+        return page._generation
 
     @property
     def pending(self):
@@ -36,11 +35,8 @@ class LiveBeamRefresh(QObject):
         """Invalidate normal displays, retaining only an eligible Live refresh."""
         page = self.page
         continuing = self.pending and self._token == self._identity()
-        if page.state_set.viewing_states():
-            calculated = page.state_set.active and page.result is not None
-        else:
-            calculated = (not page._stale and (page._worker is not None
-                          or (page.result is not None and page._session_ready)))
+        calculated = (not page._stale and (page._worker is not None
+                      or (page.result is not None and page._session_ready)))
         eligible = continuing or calculated
         # set_state cancels old wave work and preserves the previous image.
         # Draft edits, explicit Cancel, or other input changes alter identity.
@@ -74,8 +70,8 @@ class LiveBeamRefresh(QObject):
             self.cancel()
             return
         self.cancel()
-        # Uses current Z, selected saved states, numerical budgets and the
-        # single global backend. Source admission/draft checks remain intact.
+        # The latest accepted particle snapshot owns source and optics.
+        # The page retains the selected plane and mixed-wave numerical inputs.
         self.page.calculate()
 
     def cancel(self, *_args):

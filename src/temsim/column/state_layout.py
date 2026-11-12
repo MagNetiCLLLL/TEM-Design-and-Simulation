@@ -214,6 +214,8 @@ def layout_configuration_from_state(
     assembly=None,
 ):
     """Translate persisted topology selections into layout configuration."""
+    if assembly is None and assembly_root is None:
+        assembly = getattr(state, "_resolved_assembly", None)
     from temsim.optics.image_corrector import ensure_image_corrector_design
     ensure_image_corrector_design(state)
     hardware = C3Hardware(getattr(state, "layout_c3_hardware", "three_condenser"))
@@ -490,6 +492,10 @@ def apply_physical_layout_to_state(
         assembly_root=assembly_root,
         assembly=assembly,
     )
+    # A fixed-entrance thickness edit may have materialized an updated private
+    # sample part while configuration was assembled. Reuse that exact result
+    # throughout this refresh instead of applying the stale incoming assembly.
+    assembly = configuration.resolved_assembly
     if not preserve_operating_parameters:
         # Explicit installation starts from this column's calibrated default.
         # Ordinary layout refreshes and restored states retain the one live CM

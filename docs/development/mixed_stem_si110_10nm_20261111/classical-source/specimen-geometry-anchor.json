@@ -1,0 +1,155 @@
+{
+  "schema": "detached-sample-geometry-anchor-v1",
+  "status": "VERIFIED_STATIC_GEOMETRY",
+  "created_utc": "2026-11-11T22:50:37.492537+00:00",
+  "default_profile_sha256": "4d8e068166a9b03176e9a83167ba72f8743645241866d778b1d7b7fb8de277fc",
+  "fixed_upper_surface_z_mm": 1599.1999998000001,
+  "desired_sample_center_z_mm": 1599.2000048000002,
+  "actual_sample_center_after_physical_layout_z_mm": 1599.2000048000002,
+  "actual_upper_surface_after_physical_layout_z_mm": 1599.1999998000001,
+  "axial_comparison_four_ulp_tolerance_mm": 9.094947017729282e-13,
+  "sample_part_translation_mm": 4.800000169780105e-06,
+  "sample_part_field_changes": {
+    "local_center_z_mm": {
+      "before": 1149.2,
+      "after": 1149.2000048000002
+    },
+    "local_end_z_mm": {
+      "before": 1149.2000500000001,
+      "after": 1149.2000548000003
+    },
+    "local_start_z_mm": {
+      "before": 1149.19995,
+      "after": 1149.1999548000001
+    },
+    "optical_reference_local_z_mm": {
+      "before": 1149.2,
+      "after": 1149.2000048000002
+    }
+  },
+  "all_non_sample_absolute_parts_unchanged": true,
+  "all_lens_controls_unchanged": true,
+  "derived_objective_sample_readbacks": {
+    "objective_lens": {
+      "upper_field_center_above_sample_mm": {
+        "before": 1.349999999999909,
+        "after": 1.3500048000000788
+      },
+      "sample_axial_offset_mm": {
+        "before": 0.0,
+        "after": 4.800000169780105e-06
+      }
+    },
+    "diffraction_lens": {
+      "standalone_mechanical_center_below_sample_mm": {
+        "before": 297.70000000000005,
+        "after": 297.6999951999999
+      }
+    }
+  },
+  "field_samples_m": [
+    [
+      0.0,
+      0.0,
+      1.5972000000000002
+    ],
+    [
+      0.0,
+      0.0,
+      1.5991999900000002
+    ],
+    [
+      0.0,
+      0.0,
+      1.5992000000000002
+    ],
+    [
+      0.0,
+      0.0,
+      1.5992000100000001
+    ],
+    [
+      0.0,
+      0.0,
+      1.6012000000000002
+    ],
+    [
+      1e-09,
+      0.0,
+      1.5972000000000002
+    ],
+    [
+      1e-09,
+      0.0,
+      1.5991999900000002
+    ],
+    [
+      1e-09,
+      0.0,
+      1.5992000000000002
+    ],
+    [
+      1e-09,
+      0.0,
+      1.5992000100000001
+    ],
+    [
+      1e-09,
+      0.0,
+      1.6012000000000002
+    ],
+    [
+      0.0,
+      -2e-09,
+      1.5972000000000002
+    ],
+    [
+      0.0,
+      -2e-09,
+      1.5991999900000002
+    ],
+    [
+      0.0,
+      -2e-09,
+      1.5992000000000002
+    ],
+    [
+      0.0,
+      -2e-09,
+      1.5992000100000001
+    ],
+    [
+      0.0,
+      -2e-09,
+      1.6012000000000002
+    ]
+  ],
+  "field_sample_maximum_absolute_difference": {
+    "phi_v": 1.682201400399208e-08,
+    "E_v_per_m": 1.8424290872489525e-05,
+    "A_t_m": 0.0,
+    "B_t": 0.0
+  },
+  "archive_original_column_sha256": "67e292968fb3703d3a6b7063c7886ca2fad2bc0928c292cb5e86393eb2d43261",
+  "archive_candidate_column_sha256": "396b7ea3746941874aebcc87f3556d4fc468d5ceac3e3a17b2aaf6ae45a05b85",
+  "archive_digest": "17fec72c172618cbb205a2489766bcdd8970c51ecc82b9af5d2b4da1d40c6d2e",
+  "caller_state_unchanged": true,
+  "default_profile_bytes_unchanged": true,
+  "restore_and_physical_layout_preserve_anchor": true,
+  "gun_dependency_signature_before": "3209c2bafb44132ff5b8e425d58ea55f78bceb63edfa60b00cbbfa62f1aa8a4a",
+  "gun_dependency_signature_after": "714af3273b0d7a7e62c1633334c366322958d6789724c9fb81c71b75b3d0d830",
+  "gun_dependency_signature_equal": false,
+  "incident_signature_before": "715a9b4972e3257723b52fe9742de3714ed392295b417c005bf127260ffbd4cb",
+  "incident_signature_after": "119adfe8dcc185ae0b78bd9c94787cd1daf5d4de109b4fcc62d7264120f2b0ab",
+  "incident_signature_equal": false,
+  "reuse_scope": "Signatures are not rewritten; only the normal executed-prefix/restart validator may authorize continuation",
+  "scope": "Static geometry and fixed-coordinate field samples only; no particle or coherent calculation",
+  "geometry_validation": {
+    "archive_identity": "17fec72c172618cbb205a2489766bcdd8970c51ecc82b9af5d2b4da1d40c6d2e",
+    "controls": "Fixed-control comparison",
+    "field_dependencies": {},
+    "numerical_status": "NOT_RUN",
+    "validation": "Existing component graph, module clearances and assembled physical layout",
+    "candidate_input_identity": "fc46bf49b52cf2bedadfaeee630298b544c9f6a0138c34d3fb081122549d7e76"
+  }
+}

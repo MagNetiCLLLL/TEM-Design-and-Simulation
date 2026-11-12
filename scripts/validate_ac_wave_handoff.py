@@ -1,4 +1,5 @@
 """Continue an actual committed aperture field under explicitly pinned code changes.
+Tip-origin checkpoint continuation is retired; use python -m temsim.mixed_wave_cli --help.
 
 This is a conditional downstream diagnostic, not a replay of the old producer
 under a new identity. Its complex boundary stays in the original immutable store.
@@ -256,6 +257,9 @@ def main(argv=None):
     parser.add_argument('--positions',nargs='+')
     parser.add_argument('--prepare-only',action='store_true')
     args=parser.parse_args(argv)
+    if args.pin_patches or not args.prepare_only:
+        from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+        reject_retired_tip_coherent_workflow()
     if args.pin_patches:
         print(json.dumps(pin_changes(args.producer.resolve(),args.pin_patches),indent=2));return
     if args.cache_key is None or args.output is None:

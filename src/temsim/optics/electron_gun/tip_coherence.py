@@ -460,6 +460,8 @@ def _generate_tip_emission(gun, numerics, *, driven_boundary, nominal_energy_pre
 
 def generate_tip_emission(gun, numerics=TipWaveNumerics(), *, nominal_energy_preview=False):
     """Generate modes under the Tip's explicitly published boundary model."""
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     if getattr(getattr(gun.emitter, "coherence", None), "boundary_model", None) == DRIVEN_GAUSSIAN_SCHELL:
         return generate_tip_boundary_emission(gun, numerics, nominal_energy_preview=nominal_energy_preview)
     return _generate_tip_emission(gun, numerics, driven_boundary=False,
@@ -476,5 +478,7 @@ def generate_tip_boundary_emission(gun, numerics=TipWaveNumerics(), *, nominal_e
     this opt-in function does not change the Tip's published model. Production
     selection requires boundary_model='driven_gaussian_schell' on the Tip.
     """
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     return _generate_tip_emission(gun, numerics, driven_boundary=True,
                                   nominal_energy_preview=nominal_energy_preview)

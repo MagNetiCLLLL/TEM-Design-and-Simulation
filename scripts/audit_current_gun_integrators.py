@@ -1,4 +1,5 @@
 """Re-execute the current tip/gun and compare local CF4/CF6 operators.
+Tip-origin coherent execution is retired; use python -m temsim.mixed_wave_cli --help.
 
 The first energy is solved with its complete physical reflected load. The
 diagnostic observes that solved state's incoming ports and continuous chart;
@@ -68,6 +69,8 @@ def main():
     local.add_argument("--audit-planes-nm", type=float, nargs="+", default=(100., 300., 400., 1000.))
     local.add_argument("--audit-subdivisions", type=int, nargs="+", default=(1, 4, 16, 64, 256))
     choices, driver_arguments = local.parse_known_args(sys.argv[1:])
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     if (any(not np.isfinite(v) or v <= 0 for v in choices.audit_planes_nm)
             or any(v <= 0 for v in choices.audit_subdivisions)
             or list(choices.audit_subdivisions) != sorted(set(choices.audit_subdivisions))):

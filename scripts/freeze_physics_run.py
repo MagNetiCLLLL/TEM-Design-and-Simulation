@@ -1,4 +1,5 @@
 """Run a development physics driver against a verified copy of its inputs.
+Tip-origin coherent execution is retired; use python -m temsim.mixed_wave_cli --help.
 
 Long reference calculations must not consume source edits made during the run.
 The copied code/configuration is retained with a manifest; it is not a new
@@ -58,6 +59,8 @@ def main():
     parser.add_argument("--driver", choices=("inspect_surface_column", "trace_tip_wave", "audit_current_gun_integrators"), required=True)
     parser.add_argument("arguments", nargs=argparse.REMAINDER)
     args = parser.parse_args()
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     root = Path(__file__).resolve().parents[1]
     snapshot = args.snapshot.resolve()
     manifest = freeze(root, snapshot)

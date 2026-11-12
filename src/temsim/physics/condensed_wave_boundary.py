@@ -11,7 +11,7 @@ import numpy as np
 from scipy.linalg import solve
 from scipy.sparse import csc_matrix
 
-from temsim.physics.sparse_wave_device import sparse_wave_solver
+from temsim.physics.sparse_wave_device import CUDA_SPARSE_BACKEND, sparse_wave_solver
 from temsim.physics.wave_device import device_scope
 from temsim.physics.wave_execution import check_available_memory
 
@@ -40,7 +40,8 @@ class CondensedBoundary:
         returning = matrix[inner:, :inner]
         self.response = np.empty((inner, boundary_size), dtype=complex)
         with sparse_wave_solver(interior, compute_backend=compute_backend,
-                                maximum_working_bytes=maximum_working_bytes) as solve_interior:
+                                maximum_working_bytes=maximum_working_bytes,
+                                rhs_columns=min(8, boundary_size)) as solve_interior:
             if cancelled():
                 raise InterruptedError("Condensed wave boundary cancelled")
             self.driven = solve_interior(rhs[:inner])
@@ -102,5 +103,5 @@ def solve_cached_boundary(matrix, rhs, admittance, cache, *, tolerance=1e-9,
     value, residual = system.solve(admittance, tolerance=tolerance, cancelled=cancelled,
                                   maximum_working_bytes=maximum_working_bytes)
     return value, {"method": "exact-interior-schur-full-reconstruction-v1", "cache_hit": hit,
-                   "sparse_backend": "SciPy SuperLU" if compute_backend == "CPU" else "CuPy CUDA sparse QR",
+                   "sparse_backend": "SciPy SuperLU" if compute_backend == "CPU" else CUDA_SPARSE_BACKEND,
                    "matrix_rhs_digest": digest, "linear_residual": residual}

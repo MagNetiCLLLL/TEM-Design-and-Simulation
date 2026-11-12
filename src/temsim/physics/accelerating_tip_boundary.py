@@ -304,6 +304,8 @@ def _publish_accelerating_tip(modes, amplitudes, derivatives, logs, energies,
 def execute_accelerating_tip(state, emission, electric, *, numerics=AcceleratingTipNumerics(),
                              grid_numerics=None, cancelled=lambda: False, progress_callback=None):
     """Execute under one declared device policy; no implicit CPU retry."""
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     from temsim.physics.wave_grid import WaveGridNumerics
     from temsim.physics.wave_device import device_scope
     grid = grid_numerics or WaveGridNumerics(maximum_working_bytes=numerics.maximum_working_bytes)

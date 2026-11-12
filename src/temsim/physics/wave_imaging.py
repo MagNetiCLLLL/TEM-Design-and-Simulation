@@ -65,6 +65,7 @@ from temsim.specimen.geometry import (
     quaternion_to_matrix,
 )
 from temsim.specimen.scene import SpecimenScene
+from temsim.specimen.lattice_reference import lattice_phase_for_sample, lattice_translation_z_angstrom
 
 
 @dataclass(frozen=True)
@@ -582,6 +583,7 @@ def _prepared_specimen_identity(
                 "structure_available", "cif_path", "preset_key", "wave_template_key",
                 "envelope_shape", "centre_xy_nm", "size_xy_nm", "thickness_nm",
                 "orientation_quaternion_wxyz",
+                "lattice_reference_thickness_nm",
             )
         },
         "sample_parameters": parameters,
@@ -840,6 +842,7 @@ def _prepare_specimen_potentials_uncached(
                     roi_centre_nm[0] * 10.0,
                     roi_centre_nm[1] * 10.0,
                 ),
+                lattice_translation_z_angstrom=lattice_translation_z_angstrom(scene),
                 thermal_sigma_by_element_angstrom=dict(
                     getattr(
                         state.sample,
@@ -912,6 +915,7 @@ def _prepare_specimen_potentials_uncached(
                     ),
                     "atomistic_source_kind": ensemble.source_kind,
                     "atomistic_source_path": ensemble.source_path,
+                    "lattice_phase": lattice_phase_for_sample(scene),
                     "specimen_rotation_deg_xyz": (
                         ensemble.rotation_deg_xyz
                     ),

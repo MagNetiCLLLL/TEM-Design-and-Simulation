@@ -7,7 +7,6 @@ import pytest
 
 from test_background_preview_gui import window
 from test_coherent_beam_gui import panel
-from test_coherent_state_controller import page, _two_states, _calculate
 from temsim.calculation_progress import CalculationProgress, callback_progress
 
 
@@ -236,48 +235,16 @@ def test_main_window_pair_wave_hook_counts_readout_and_terminal_once(window):
 
 
 def test_coherent_input_rejection_replaces_previous_success_progress(panel, monkeypatch):
-    import pytest
-    import temsim.gui.coherent_beam as module
     updates = []
     panel.progress_detail.connect(updates.append)
-    panel._progress_state = CalculationProgress("old-wave", "Coherent beam", "Done",
+    panel._progress_state = CalculationProgress("old-wave", "Mixed wave", "Done",
         stages_completed=3, stages_total=3, status="succeeded")
-    monkeypatch.setattr(module, "prepare_coherent_state", lambda *_args:
-                        (_ for _ in ()).throw(ValueError("Unsupported field model")))
-    with pytest.raises(ValueError, match="Unsupported field model"):
-        panel.capture_calculation_inputs()
+    panel.particle_result_provider = lambda: None
+    panel.calculate()
     assert updates[-1].status == "failed"
     assert updates[-1].operation_id != "old-wave"
     assert updates[-1].stages_completed == 0
     assert panel._worker is None
-
-
-def test_saved_state_overall_completes_only_after_all_states_and_overlay_accept(page, qtbot):
-    _two_states(page)
-    updates = []
-    page.progress_detail.connect(updates.append)
-    _calculate(page, qtbot)
-    owner = [item for item in updates if item.operation == "Saved coherent states"]
-    assert owner
-    assert {item.stages_total for item in owner} == {7}
-    assert any(item.stages_completed == 3 and item.active for item in owner)
-    assert any(item.stages_completed == 6 and item.active for item in owner)
-    assert owner[-1].status == "succeeded" and owner[-1].stages_completed == 7
-    assert all(item.active for item in owner[:-1])
-
-
-def test_saved_state_failure_retains_completed_member_and_ignores_late_progress(page, qtbot):
-    _two_states(page)
-    page.execution.fail = lambda energy, _z: energy == 5.
-    updates = []
-    page.progress_detail.connect(updates.append)
-    page.state_list.mode.setCurrentIndex(page.state_list.mode.findData("overlay"))
-    page.calculate_button.click()
-    qtbot.waitUntil(lambda: bool(updates) and updates[-1].status == "failed", timeout=10000)
-    last = updates[-1]
-    assert last.stages_completed == 3 and last.stages_total == 7
-    page.state_set._progress_detail(page.state_set.generation - 1, replace(last, status="running"))
-    assert updates[-1] is last
 
 
 def test_accepted_wave_retains_pair_identity_failure_in_its_terminal_progress(panel, monkeypatch):
@@ -289,7 +256,8 @@ def test_accepted_wave_retains_pair_identity_failure_in_its_terminal_progress(pa
     context = SimpleNamespace(token="pair-token", instrument_identity="captured-pair",
         verify_particle=lambda: None, verify_wave=wrong_identity)
     request = panel._make_request()
-    worker = module._WaveWorker(1, 1, panel._state, request, Event(), pair_context=context)
+    worker = module._WaveWorker(1, 1, panel._state, request, Event(), pair_context=context,
+        observer=module._AcceptedParticleObserver(panel.accepted, panel._state, request))
     panel._generation = panel._session = 1
     panel._request, panel._worker, panel._stale = request, worker, False
     panel._progress_state = worker.progress_state

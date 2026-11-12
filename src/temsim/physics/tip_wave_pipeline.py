@@ -391,6 +391,8 @@ class TipWaveObservationSession:
         self.__lock = threading.Lock()
 
     def observe(self, z_mm, *, cancelled=lambda: False, progress_callback=None):
+        from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+        reject_retired_tip_coherent_workflow()
         request = replace(self.__request, observation_z_mm=z_mm).validate()
         if cancelled():
             raise InterruptedError("Tip wave observation cancelled")
@@ -427,6 +429,8 @@ This development product supports arrival-time scan coils and conditional
 material-model inelastic waves. Existing ray, EDS and resolved EELS products
 retain their established workflows and are not replaced by this entry point.
 """
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     from temsim.simulation_modes import require_coherent_mode
     require_coherent_mode(state)
     request.validate()
@@ -479,6 +483,8 @@ def simulate_ideal_reference(state, actual_result, *, use_cache=True,
     mixture or a replacement for material scattering. Shared gun cache keys
     and verified source ancestry prevent two unrelated fields being compared.
     """
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     if cancelled():
         raise InterruptedError("Ideal wavefront reference cancelled")
     if not isinstance(actual_result, TipWaveResult):
@@ -512,6 +518,8 @@ def simulate_ideal_reference(state, actual_result, *, use_cache=True,
 def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cache,
                       cancelled, progress_callback, scan_preparation_cache=None):
     """Execute from privately captured controls, never a replacement beam."""
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     def verify():
         snapshot.verify_current_inputs(working)
 

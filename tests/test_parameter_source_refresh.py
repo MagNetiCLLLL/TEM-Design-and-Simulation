@@ -141,9 +141,10 @@ def test_main_window_save_and_intermediate_results_keep_dimension_status_honest(
         incident=SimpleNamespace(x=np.zeros((1, 1))),
         section_checkpoint=SimpleNamespace(gun_trace=SimpleNamespace(z_mm=np.array([0., 450.])))))
 
-    def publish_extent(result, quality):
+    def publish_extent(result, quality, *, calculation_scope=None):
         # Presentation-only checkpoint metadata; physical continuation is
         # validated separately. Reset freshness as publishing a new frame does.
+        assert calculation_scope == "full"
         window.workspace._last_result = result
         window.workspace._last_quality = quality
         window.workspace._ray_extent_stale = False

@@ -199,7 +199,7 @@ def _source_provenance_only(record):
     original = record
     if record.get("schema") == "executed-incoherent-mode-support-v1":
         record = record.get("upstream", {})
-    if record.get("schema") != "executed-tip-gun-v1":
+    if record.get("schema") not in ("executed-tip-gun-v1", "particle-wave-source-v1"):
         return False
     execution_keys = ("unified_wave_identity", "unified_mode_contexts", "potential_geometry",
         "kinetic_phase_ledger", "electric_wave_history", "support_ledger",
@@ -385,8 +385,8 @@ class UnifiedPotentialWaveAdapter:
             if stop_z_mm > entrance and not scene.is_vacuum:
                 if not scene.support_grid.material.is_vacuum:
                     raise ValueError("Unified coherent propagation requires a separately admitted non-vacuum holder executor")
-                if not np.array_equal(abs(np.asarray(scene.orientation_quaternion_wxyz)), [1., 0., 0., 0.]):
-                    raise ValueError("Unified coherent material propagation currently requires an untilted axial specimen slab")
+                # Lattice orientation is independent of the lab-Z slab faces.
+                # The atomistic preparation applies the captured crystal rotation.
         self.runtime = get_unified_field_runtime(state) if runtime is None else runtime
         self.runtime.require_state(state)
         from temsim.physics.emission_timing import require_matching_emission_time
@@ -530,7 +530,9 @@ class UnifiedPotentialWaveAdapter:
         return replace(output, record=record)
 
     def _entrance(self, checkpoint, mode, *, source_digest=None):
-        if _source_provenance_only(checkpoint.record):
+        fresh_source = _source_provenance_only(checkpoint.record)
+        local_mixed_boundary = fresh_source and checkpoint.record.get("schema") == "particle-wave-source-v1"
+        if fresh_source:
             context = {"schema": "unified-executed-source-mode-v1",
                 "source_checkpoint_digest": checkpoint.digest if source_digest is None else source_digest,
                 "source_mode_id": mode.mode_id,
@@ -566,7 +568,22 @@ class UnifiedPotentialWaveAdapter:
         if context.get("kinetic_phase_ledger") is None:
             if "unified_wave_identity" in context:
                 raise ValueError("Unified continuation lost its cumulative kinetic phase budget")
-            context["kinetic_phase_ledger"] = KineticPhaseLedger(.01).to_dict()
+            kinetic = KineticPhaseLedger(.01)
+            if local_mixed_boundary:
+                kinetic = kinetic.require(self.snapshot.numerical_digest,
+                    mode.energy_kev*1000., self.kinetic_order, checkpoint.plane_z_mm*.001)
+            context["kinetic_phase_ledger"] = kinetic.to_dict()
+        if local_mixed_boundary:
+            from temsim.physics.electric_wave_reference import (
+                electric_rows, ElectrostaticWaveReference, ElectricWaveHistory,
+            )
+            if electric_rows(self.snapshot):
+                history = ElectricWaveHistory(ElectrostaticWaveReference.capture(
+                    self.snapshot, checkpoint.plane_z_mm*.001, mode.energy_kev*1000.))
+                context["electric_wave_history"] = history.to_dict()
+                context["energy_reference_scope"] = (
+                    "New near-specimen wave boundary initialized from executed particle kinetic energy; "
+                    "upstream particle energy and time remain in the immutable source record")
         # Near-tip traces belong to the unchanged original source checkpoint.
         # Field propagation consumes this mode, not copies of those traces.
         return replace(checkpoint, beam=BeamState((mode,), checkpoint.beam.reference_plane),
@@ -694,10 +711,15 @@ class UnifiedPotentialWaveAdapter:
             z_m = upper_m
         return current
 
-    def specimen(self, checkpoint, *, store, use_cache, cancelled=lambda: False, progress_callback=None):
+    def specimen(self, checkpoint, *, store, use_cache, cancelled=lambda: False, progress_callback=None,
+                 observation_z_mm=None):
         self.runtime.require_state(self.state)
         from temsim.physics.potential_specimen_transport import propagate_potential_specimen
         stop = self.state.sample.z_mm+self.state.sample.thickness_nm*.5e-6
+        if observation_z_mm is not None:
+            if not checkpoint.plane_z_mm < observation_z_mm <= stop:
+                raise ValueError("Specimen observation must be inside the captured physical slab")
+            stop = float(observation_z_mm)
         options = self._options(checkpoint.plane_z_mm, stop)
         modes, contexts, receipts = [], {}, []
         for mode in checkpoint.beam.modes:
@@ -706,7 +728,8 @@ class UnifiedPotentialWaveAdapter:
                 inelastic_numerics=self.request.inelastic, grid_numerics=self.material_grid,
                 maximum_step_mm=self.request.column_step_mm, operator_options=options,
                 geometry=self.runtime.geometry, use_cache=use_cache,
-                cancelled=cancelled, progress_callback=progress_callback)
+                cancelled=cancelled, progress_callback=progress_callback,
+                observation_z_mm=observation_z_mm)
             modes.extend(result.beam.modes)
             receipts.append(thaw_json(result.record))
             for row in result.record["modes"]:

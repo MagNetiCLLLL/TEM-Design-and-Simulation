@@ -221,23 +221,27 @@ def test_fixed_fraction_constant_remains_uniform_at_its_actual_brightness(view):
     assert "fixed fraction scale" in view.detector_contrast_labels["bf"].text()
 
 
-def test_unqualified_wave_action_preserves_setting_and_retained_image(view, qtbot):
+def test_retired_actions_are_hidden_and_preserve_setting_and_retained_image(view, qtbot):
     view._state.sample.stem_wave_enabled = False
     view.set_state(view._state)
-    assert "coherent imaging paused" in view.image_model_notice.text()
+    assert "Particles or Mixed coherent CUDA" in view.image_model_notice.text()
+    assert "Electron beam" in view.wave_image_action_note.text()
     frame = _frame()
     view._set_stem_frame(frame)
     view._state.sample.thickness_nm += 1.
     view.mark_stem_frame_stale()
     assert "selected CIF not used" in view.image_model_notice.text()
-    qtbot.waitUntil(view.enable_wave_images.isVisible)
+    assert view.enable_wave_images.isHidden()
+    assert view.wave_scan_enabled.isHidden()
     changes = []
     view.parameters_changed.connect(changes.append)
     before = frame.fractions["bf"].copy()
     view.enable_wave_images.click()
     assert changes == []
     assert not view._state.sample.stem_wave_enabled and not view.wave_scan_enabled.isChecked()
-    assert "not qualified" in view.wave_image_action_note.text()
+    assert "Electron beam" in view.wave_image_action_note.text()
+    assert "Transverse beam" in view.wave_image_action_note.text()
+    assert "paused" not in view.wave_image_action_note.text().lower()
     assert "Resume refresh" not in view.wave_image_action_note.text()
     assert view._stem_frame is frame and view._stem_frame_stale
     np.testing.assert_array_equal(view.detector_image_items["bf"].image, before.T)
@@ -297,3 +301,28 @@ def test_stale_notice_retains_displayed_model_information(view):
     assert "inputs changed" in view.image_model_notice.text()
     assert "Material particle preview" in view.image_model_notice.text()
     assert "CIF atomic contrast not calculated" in view.image_model_notice.text()
+
+
+def test_explicit_clear_preserves_historical_wave_frame_and_method(view):
+    from copy import deepcopy
+    view._state.sample.stem_wave_enabled = True
+    view.set_state(view._state)
+    frame = _frame(model="multislice_angle_resolved")
+    original_metrics = deepcopy(frame.metrics)
+    original_arrays = {key: values.copy() for key, values in frame.fractions.items()}
+    view._set_stem_frame(frame)
+    before = deepcopy(view._state.to_dict())
+    changes, requested = [], []
+    view.parameters_changed.connect(changes.append)
+    view.calculation_requested.connect(lambda: requested.append(1))
+    assert not view.clear_retired_wave_request.isHidden()
+    assert "retired STEM wave request" in view.wave_image_action_note.text()
+    view.clear_retired_wave_request.click()
+    before["sample"]["stem_wave_enabled"] = False
+    assert view._state.to_dict() == before
+    assert changes == ["sample.stem_wave_enabled"] and requested == []
+    assert view._stem_frame is frame and frame.metrics == original_metrics
+    assert "Specimen image" in view.image_model_notice.text()
+    for key, values in frame.fractions.items():
+        np.testing.assert_array_equal(values, original_arrays[key])
+        np.testing.assert_array_equal(view.detector_image_items[key].image, values.T)

@@ -175,6 +175,8 @@ def build_planar_tip_boundary(state, numerics=PlanarTipBoundaryNumerics(), *,
     The periodic transverse box and local outgoing termination must be
     converged independently before using this kernel in a full coupled solve.
     """
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     from temsim.calculation_manifest import solver_source_identity
     from temsim.instrument_snapshot import encode_instrument
     from temsim.optics.electron_gun.tip_coherence import (

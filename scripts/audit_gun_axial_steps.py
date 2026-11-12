@@ -1,4 +1,5 @@
 """Observe local axial errors without replacing any executed gun operator.
+Tip-origin coherent execution is retired; use python -m temsim.mixed_wave_cli --help.
 
 The archived physical settings and numerical budget are re-executed from the
 tip. A complete first-energy pilot (including every gun aperture and reflected
@@ -105,6 +106,8 @@ def main(argv=None):
     parser.add_argument("--timeout", type=float, default=600.)
     parser.add_argument("--occupied-waves", action="store_true")
     args = parser.parse_args(argv)
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     from temsim.physics.compute_backend import require_coherent_cuda
     require_coherent_cuda()
     args.output.mkdir(parents=True, exist_ok=False)

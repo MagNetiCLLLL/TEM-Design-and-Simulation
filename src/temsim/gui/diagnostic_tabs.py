@@ -4399,8 +4399,9 @@ class TransverseBeamView(QWidget):
         self.coherent_wave_toggle.setCheckable(True)
         self.coherent_wave_toggle.setStyleSheet(BUTTON_STYLE)
         self.coherent_wave_toggle.setToolTip(
-            "Calculate and show coherent wave intensity at the selected plane. "
-            "Click again to return to the particle display."
+            "Use the accepted particles to start a mixed wave at the specimen entrance, "
+            "then propagate on CUDA to the selected downstream plane. Upstream planes show "
+            "particles only. Click again to return to particles; Tip-origin waves are retired."
         )
         self.coherent_wave_toggle.setVisible(coherent_switch)
         self.coherent_wave_status = QLabel()
