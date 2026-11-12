@@ -18,6 +18,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from importlib.metadata import version
 import math
+from numbers import Real
 from pathlib import Path
 from temsim import input_io
 
@@ -156,6 +157,7 @@ def build_equilibrium_atoms(
     specimen_envelope_shape="rectangle",
     specimen_centre_xy_angstrom=(0.0, 0.0),
     calculation_roi_centre_xy_angstrom=(0.0, 0.0),
+    lattice_translation_z_angstrom: float = 0.,
 ):
     """Build an orthogonal, +Z-oriented, commensurate ASE supercell.
 
@@ -164,6 +166,11 @@ def build_equilibrium_atoms(
     number of oriented unit cells.  The caller reports the small realised-size
     difference instead of straining the lattice or introducing a seam.
     """
+
+    if (isinstance(lattice_translation_z_angstrom, (bool, np.bool_))
+            or not isinstance(lattice_translation_z_angstrom, Real)
+            or not math.isfinite(lattice_translation_z_angstrom)):
+        raise ValueError("Lattice phase translation must be a finite real angstrom scalar")
 
     if str(cif_path).strip():
         return build_cif_equilibrium_atoms(
@@ -178,6 +185,7 @@ def build_equilibrium_atoms(
             calculation_roi_centre_xy_angstrom=(
                 calculation_roi_centre_xy_angstrom
             ),
+            lattice_translation_z_angstrom=lattice_translation_z_angstrom,
         )
 
     specimen_centre = np.asarray(specimen_centre_xy_angstrom, dtype=float)
@@ -269,6 +277,10 @@ def build_equilibrium_atoms(
     # wrapping changes only its periodic representation, not the cell/strain.
     if np.any(offset_xy != 0.0):
         atoms.positions[:, :2] -= offset_xy
+    if lattice_translation_z_angstrom != 0.:
+        if not math.isfinite(lattice_translation_z_angstrom):
+            raise ValueError("Lattice phase translation must be finite")
+        atoms.positions[:, 2] += lattice_translation_z_angstrom
     atoms.wrap(eps=1.0e-12)
     return atoms, tuple(float(value) for value in lengths)
 
@@ -406,8 +418,14 @@ def build_cif_equilibrium_atoms(
     specimen_envelope_shape="rectangle",
     specimen_centre_xy_angstrom=(0.0, 0.0),
     calculation_roi_centre_xy_angstrom=(0.0, 0.0),
+    lattice_translation_z_angstrom: float = 0.,
 ):
-    """Load a CIF and crop a finite sample inside the calculation ROI."""
+    """Load a CIF and crop a finite sample inside the calculation ROI.
+
+    The declared phase translation acts along laboratory Z after rotation,
+    before enumeration bounds and specimen cropping. Zero retains the exact
+    old centred-site construction; the source CIF and cell are unchanged.
+    """
 
     abtem, Atoms, *_ = _require_backend()
     from temsim.specimen.cif_io import read_cif_atoms
@@ -507,8 +525,16 @@ def build_cif_equilibrium_atoms(
         )
     physical_half = 0.5 * physical_target
     tolerance = 1.0e-9
+    if (isinstance(lattice_translation_z_angstrom, (bool, np.bool_))
+            or not isinstance(lattice_translation_z_angstrom, Real)
+            or not math.isfinite(lattice_translation_z_angstrom)):
+        raise ValueError("Lattice phase translation must be a finite real angstrom scalar")
+    shift = float(lattice_translation_z_angstrom)
+    phase = np.array((0., 0., shift))
 
     def keep_sites(rotated):
+        if shift != 0.:
+            rotated = rotated+phase
         physical_keep = np.all(np.abs(rotated) <= physical_half + tolerance, axis=1)
         if envelope_shape == "disk":
             physical_keep &= np.sum((rotated[:, :2] / physical_half[:2])**2, axis=1) <= 1.0
@@ -519,7 +545,10 @@ def build_cif_equilibrium_atoms(
 
     lower = np.r_[intersection_min - specimen_centre, -physical_half[2]] - tolerance
     upper = np.r_[intersection_max - specimen_centre, physical_half[2]] + tolerance
-    rotated, numbers = _finite_lattice_sites(unit, periods, rotation, lower, upper, keep_sites)
+    rotated, numbers = _finite_lattice_sites(unit, periods, rotation,
+        lower if shift == 0. else lower-phase, upper if shift == 0. else upper-phase, keep_sites)
+    if shift != 0.:
+        rotated = rotated+phase
     local_xy = rotated[:, :2] + specimen_centre - roi_centre
     atoms = Atoms(
         numbers=numbers,
@@ -605,6 +634,7 @@ def build_atomistic_potential_ensemble(
     thermal_sigma_by_element_angstrom=None,
     thermal_sigma_source: str = "",
     max_potential_bytes: int = MAX_ATOMISTIC_POTENTIAL_BYTES,
+    lattice_translation_z_angstrom: float = 0.,
 ) -> AtomisticPotentialEnsemble:
     """Build static or frozen-phonon finite-projection potential slices."""
 
@@ -656,6 +686,7 @@ def build_atomistic_potential_ensemble(
         calculation_roi_centre_xy_angstrom=(
             calculation_roi_centre_xy_angstrom
         ),
+        lattice_translation_z_angstrom=lattice_translation_z_angstrom,
     )
     per_atom_sigma = None
     if frozen_phonon_enabled and element_sigma:

@@ -5,6 +5,7 @@ from scipy.sparse import csc_matrix
 from scipy.sparse.linalg import spsolve
 
 from temsim.physics.condensed_wave_boundary import solve_cached_boundary
+from test_tip_wave_pipeline import coherent_cuda
 
 
 def fixture():
@@ -51,6 +52,50 @@ def test_memory_and_cancellation_cannot_return_an_incomplete_wave():
         solve_cached_boundary(matrix, rhs, 1j*np.eye(8), {}, maximum_working_bytes=1)
     with pytest.raises(InterruptedError):
         solve_cached_boundary(matrix, rhs, 1j*np.eye(8), {}, cancelled=lambda: True)
+
+
+def test_cuda_condensed_boundary_matches_cpu_reference(coherent_cuda, monkeypatch):
+    from types import SimpleNamespace
+    from temsim.physics import sparse_wave_device
+    from temsim.physics.surface_gun_wave import solve_joint_boundary
+    from temsim.physics.surface_wave import KINETIC_NM2_PER_EV, fem_volume, structured_mesh
+    radial_nodes, axial_nodes = 17, 13
+    points, triangles, edges, _ = structured_mesh(np.linspace(0., 2., radial_nodes),
+        np.zeros(radial_nodes), 1., axial_nodes)
+    potential = np.zeros(len(points))
+    drive = np.zeros(len(points), complex)
+    drive[::axial_nodes] = 1.+.2j
+    problem = dict(points=points, triangles=triangles, edges=edges, potential=potential, drive=drive,
+                   matrices=fem_volume(points, triangles, potential))
+    frame = {"initial_width_nm": .2, "initial_curvature_per_nm": 0.}
+    energy = .3
+    kappa = np.sqrt(energy*KINETIC_NM2_PER_EV)
+    loads = [SimpleNamespace(kappa=kappa, input_admittance=1j*kappa*factor*np.eye(3))
+             for factor in (.8, 1.2)]
+    reference = [solve_joint_boundary(problem, energy, load, frame) for load in loads]
+    monkeypatch.setattr(sparse_wave_device, "splu",
+        lambda *_args: pytest.fail("Strict CUDA must not call SuperLU"))
+    cache = {}
+    for index, (load, expected) in enumerate(zip(loads, reference)):
+        direct = solve_joint_boundary(problem, energy, load, frame, compute_backend="Require GPU")
+        condensed = solve_joint_boundary(problem, energy, load, frame, condensation_cache=cache,
+                                         compute_backend="Require GPU")
+        for actual in (direct, condensed):
+            np.testing.assert_allclose(actual[0], expected[0], atol=1e-11, rtol=1e-11)
+            np.testing.assert_allclose(actual[1], expected[1], atol=1e-11, rtol=1e-11)
+            assert actual[2]["boundary_linear_solve"]["sparse_backend"] == sparse_wave_device.CUDA_SPARSE_BACKEND
+            assert actual[2]["linear_residual"] < 1e-12
+            assert actual[2]["balance_error"] < 1e-8
+        assert condensed[2]["boundary_linear_solve"]["cache_hit"] is (index > 0)
+
+    from nvmath.sparse.advanced import DirectSolver
+
+    def fail_cuda(*_args):
+        raise RuntimeError("Synthetic CUDA sparse failure")
+
+    monkeypatch.setattr(DirectSolver, "factorize", fail_cuda)
+    with pytest.raises(RuntimeError, match="Synthetic CUDA sparse failure"):
+        solve_joint_boundary(problem, energy, loads[0], frame, compute_backend="Require GPU")
 
 
 def test_actual_tip_and_full_round_gun_match_direct_boundary_solution(monkeypatch):

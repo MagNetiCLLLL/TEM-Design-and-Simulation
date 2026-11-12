@@ -1,8 +1,32 @@
 """Portable input-only designs; never authorizes reuse of historical results."""
 from hashlib import sha256
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 from temsim.immutable_json import thaw_json
+
+
+def _archive_path(value):
+    windows_path = PureWindowsPath(value)
+    return windows_path if windows_path.is_absolute() else PurePosixPath(value)
+
+
+def _bundled_specimen_path(value, archived_config_root):
+    """Resolve the original built-in silicon reference after relocation."""
+    from temsim.paths import BUNDLED_SI_CIF
+
+    if str(value).replace("\\", "/") in {
+        "tests/fixtures/cif/Si.cif", "configs/specimens/Si.cif",
+    }:
+        return BUNDLED_SI_CIF
+    if archived_config_root is not None:
+        original = _archive_path(value)
+        known = (
+            archived_config_root / "specimens" / "Si.cif",
+            archived_config_root.parent / "tests" / "fixtures" / "cif" / "Si.cif",
+        )
+        if original in known:
+            return BUNDLED_SI_CIF
+    return None
 
 
 def restore_input_design(snapshot):
@@ -28,16 +52,19 @@ def restore_input_design(snapshot):
             require_physical_gun_source(result.electron_gun)
         return result
 
-    catalog = next((Path(row["path"]) for row in snapshot.external_inputs
+    catalog = next((_archive_path(row["path"]) for row in snapshot.external_inputs
                     if row["role"] == "assembly:catalog"), None)
     old_root = (catalog.parent.parent if catalog is not None
                 and catalog.name == "catalog.toml" and catalog.parent.name == "instruments" else None)
     replacements = {}
     for row in snapshot.external_inputs:
-        original = Path(row["path"])
-        target = original
-        if old_root is not None and original.is_relative_to(old_root):
-            target = CONFIG_ROOT / original.relative_to(old_root)
+        original = _archive_path(row["path"])
+        target = Path(row["path"])
+        in_config_root = old_root is not None and original.is_relative_to(old_root)
+        if in_config_root:
+            target = CONFIG_ROOT.joinpath(*original.relative_to(old_root).parts)
+        if row["role"] == "specimen:cif":
+            target = _bundled_specimen_path(row["path"], old_root) or target
         try:
             content = target.read_bytes()
         except OSError as exc:
@@ -50,12 +77,13 @@ def restore_input_design(snapshot):
             if not same_text:
                 raise ValueError(f"Changed {row['role']}: {target}; input design cannot be applied")
         if target != original:
-            replacements[str(original)] = str(target)
+            replacements[row["path"]] = str(target)
             # Directory references in the object graph (notably assembly.root)
             # are portable only when backed by these verified external files.
-            for parent in original.parents:
-                if parent == old_root or parent.is_relative_to(old_root):
-                    replacements[str(parent)] = str(CONFIG_ROOT / parent.relative_to(old_root))
+            if in_config_root:
+                for parent in original.parents:
+                    if parent == old_root or parent.is_relative_to(old_root):
+                        replacements[str(parent)] = str(CONFIG_ROOT.joinpath(*parent.relative_to(old_root).parts))
 
     def rebase(value):
         if isinstance(value, str):
@@ -67,6 +95,16 @@ def restore_input_design(snapshot):
         return value
 
     result = decode_instrument(rebase(thaw_json(snapshot.graph)))
+    sample = getattr(result, "sample", None)
+    if sample is not None:
+        structure = _bundled_specimen_path(sample.cif_path, old_root)
+        if structure is not None:
+            if not structure.is_file():
+                raise ValueError(f"Bundled silicon structure is unavailable: {structure}")
+            sample.cif_path = str(structure)
+        # An active input-only design adopts explicit entrance metadata from
+        # its actual saved geometry. Historical result graphs remain untouched.
+        sample.ensure_upper_surface_reference()
     illumination_config(result)
     result.electron_gun.validate()
     return result

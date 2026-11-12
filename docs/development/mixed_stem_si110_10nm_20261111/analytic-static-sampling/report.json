@@ -1,0 +1,429 @@
+{
+  "status": "PASS_ACTUAL_CIF_STATIC_SAMPLING",
+  "scope": "Actual translated Si primitive potential arrays only; no particles, waves, scan or CUDA execution",
+  "production_module": "F:\\tem_simulator_v2\\src\\temsim\\physics\\finite_lobato_fourier.py",
+  "production_sha256_at_import": "4df13ed87516a971c0eb043be83c8fb9691ac9629b7d43d3baa55dd45b1d914f",
+  "production_sha256_after": "4df13ed87516a971c0eb043be83c8fb9691ac9629b7d43d3baa55dd45b1d914f",
+  "repeat_angstrom_xyz": [
+    7.698557721176563,
+    5.4437023700000005,
+    7.698557721176562
+  ],
+  "actual_original_CIF_crystal_proof": {
+    "proof": "Integer CIF lattice translations along all laboratory axes; exact tiled potential checked separately",
+    "rectangular_repeat_angstrom_xyz": [
+      7.698557721176563,
+      5.4437023700000005,
+      7.698557721176562
+    ],
+    "rectangular_basis_atoms": 16,
+    "original_cell_atoms": 8,
+    "original_cell_volume_angstrom3": 161.3181071283582,
+    "basis_common_offset_angstrom_xyz": [
+      5.329070518200751e-15,
+      2.0872192862952943e-14,
+      2.692109424273781e-09
+    ],
+    "basis_rounding_error_bound_angstrom_xyz": [
+      2.695382401394551e-13,
+      2.708705077690053e-13,
+      2.7753184591675623e-13
+    ],
+    "basis_original_rounding_displacement_max_angstrom_xyz": [
+      1.4210854715202004e-14,
+      3.108624468950438e-14,
+      2.6921260776191502e-09
+    ],
+    "basis_registration_floating_floor_angstrom": 2.6065645594245385e-13,
+    "basis_registration_raw_site_count": 5832,
+    "basis_registration_scope": "Measured periodic signed differences from original unrounded CIF sites; common numerical offset restored by the analytic builder, remaining per-site error charged",
+    "orientation_quaternion_wxyz": [
+      0.27059805007309856,
+      -0.27059805007309856,
+      -0.6532814824381884,
+      -0.6532814824381883
+    ]
+  },
+  "cases": [
+    {
+      "key": "n1920-nz2",
+      "grid_yx": [
+        2,
+        192,
+        240
+      ],
+      "translation_x_angstrom": 0.0,
+      "dc_v_angstrom": 1375.3264573931694,
+      "array_sha256": "088b5b3af4d514b8b64fc1a495da93eb2a8a6f4816cece922114ff932378cea2",
+      "potential_error": {
+        "rounding_phase_bound_rad": 8.052158280813139e-07,
+        "registration_phase_bound_rad": 3.715282821305155e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 8.423686562943654e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.684738022173684e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    },
+    {
+      "key": "n1920-nz4",
+      "grid_yx": [
+        4,
+        192,
+        240
+      ],
+      "translation_x_angstrom": 0.0,
+      "dc_v_angstrom": 1375.3264575150279,
+      "array_sha256": "ad04b3148423041acdf6029698052d312234ea0572e48e739cb556e4d83d5080",
+      "potential_error": {
+        "rounding_phase_bound_rad": 7.395786331077182e-07,
+        "registration_phase_bound_rad": 3.715282821305155e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 7.767314613207698e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.5534635259533025e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    },
+    {
+      "key": "n1920-nz2-halfgrid",
+      "grid_yx": [
+        2,
+        192,
+        240
+      ],
+      "translation_x_angstrom": 0.01603866191911784,
+      "dc_v_angstrom": 1375.3264576329125,
+      "array_sha256": "cedbd6f33b032919f1b1170bb7a2196d47e523f7830e283f6c942c9e6b86e864",
+      "potential_error": {
+        "rounding_phase_bound_rad": 5.071441947049661e-07,
+        "registration_phase_bound_rad": 3.715282821305155e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 5.442970229180177e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.0885943420952845e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    },
+    {
+      "key": "n2080-nz2",
+      "grid_yx": [
+        2,
+        208,
+        260
+      ],
+      "translation_x_angstrom": 0.0,
+      "dc_v_angstrom": 1375.3264578858775,
+      "array_sha256": "7d6f207d84b85f9e0e610e047cba8a86a819333e5dd7691f9bd4f766bbd17490",
+      "potential_error": {
+        "rounding_phase_bound_rad": 8.052852319908101e-07,
+        "registration_phase_bound_rad": 4.044783771099246e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 8.457330697018025e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.6914668546680302e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    },
+    {
+      "key": "n2080-nz4",
+      "grid_yx": [
+        4,
+        208,
+        260
+      ],
+      "translation_x_angstrom": 0.0,
+      "dc_v_angstrom": 1375.3264578841847,
+      "array_sha256": "544431ef910da2b3ed7eebd78e1d92d5f9382f8928263afedec49cdc0907829f",
+      "potential_error": {
+        "rounding_phase_bound_rad": 7.423189022116239e-07,
+        "registration_phase_bound_rad": 4.044783771099246e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 7.827667399226163e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.5655340925690019e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    },
+    {
+      "key": "n2080-nz2-halfgrid",
+      "grid_yx": [
+        2,
+        208,
+        260
+      ],
+      "translation_x_angstrom": 0.014804918694570313,
+      "dc_v_angstrom": 1375.326457682728,
+      "array_sha256": "81e72ed6588f00d681bcd9723c081ca1819a816e14a067e903440e4f87990bb9",
+      "potential_error": {
+        "rounding_phase_bound_rad": 5.601089017686909e-07,
+        "registration_phase_bound_rad": 4.044783771099246e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 6.005567394796833e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.201113839627764e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    },
+    {
+      "key": "n2160-nz2",
+      "grid_yx": [
+        2,
+        216,
+        270
+      ],
+      "translation_x_angstrom": 0.0,
+      "dc_v_angstrom": 1375.3264577297844,
+      "array_sha256": "330b9d01cd674c26ce5055895938d60f352c358e94392a902a708ebcf5d65da7",
+      "potential_error": {
+        "rounding_phase_bound_rad": 8.058605917657007e-07,
+        "registration_phase_bound_rad": 4.2095455602921477e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 8.479560473686222e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.6959128137667026e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    },
+    {
+      "key": "n2160-nz4",
+      "grid_yx": [
+        4,
+        216,
+        270
+      ],
+      "translation_x_angstrom": 0.0,
+      "dc_v_angstrom": 1375.3264577733473,
+      "array_sha256": "f216653061623512e84cc18a6ba61bff7cf3dfd1d003c22f1be3b6aef86fb28d",
+      "potential_error": {
+        "rounding_phase_bound_rad": 7.958006028137183e-07,
+        "registration_phase_bound_rad": 4.2095455602921477e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 8.378960584166398e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.6757928189030842e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    },
+    {
+      "key": "n2160-nz2-halfgrid",
+      "grid_yx": [
+        2,
+        216,
+        270
+      ],
+      "translation_x_angstrom": 0.01425658837254919,
+      "dc_v_angstrom": 1375.3264577297844,
+      "array_sha256": "97544269c54256a4e16b08628f70b0e8ee48a9c50d329953dddc450a835a4625",
+      "potential_error": {
+        "rounding_phase_bound_rad": 8.058606012625154e-07,
+        "registration_phase_bound_rad": 4.2095455602921477e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 8.479560568654369e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.6959128327603481e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    },
+    {
+      "key": "n2240-nz2",
+      "grid_yx": [
+        2,
+        224,
+        280
+      ],
+      "translation_x_angstrom": 0.0,
+      "dc_v_angstrom": 1375.3264579641575,
+      "array_sha256": "c23e25fb36f7bccaeb80c467ee34d6a012ade81c1936a10acd21b21a6bc95a35",
+      "potential_error": {
+        "rounding_phase_bound_rad": 8.062446358326939e-07,
+        "registration_phase_bound_rad": 4.374313410143586e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 8.499877699341298e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.6999762623474685e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    },
+    {
+      "key": "n2240-nz4",
+      "grid_yx": [
+        4,
+        224,
+        280
+      ],
+      "translation_x_angstrom": 0.0,
+      "dc_v_angstrom": 1375.326457632318,
+      "array_sha256": "58c2fecb538037ceb0e026e26180bec6c59a55dfa98d1a7ac4e3140a52e8c9d2",
+      "potential_error": {
+        "rounding_phase_bound_rad": 7.971510587783502e-07,
+        "registration_phase_bound_rad": 4.374313410143586e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 8.408941928797861e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.6817890928626158e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    },
+    {
+      "key": "n2240-nz2-halfgrid",
+      "grid_yx": [
+        2,
+        224,
+        280
+      ],
+      "translation_x_angstrom": 0.013747424502101006,
+      "dc_v_angstrom": 1375.3264574488815,
+      "array_sha256": "f9a84941ecbe9a990fe2ab56301ce0f45b35d9a5094f8c5f95a36b71ac53302f",
+      "potential_error": {
+        "rounding_phase_bound_rad": 6.181351357012229e-07,
+        "registration_phase_bound_rad": 4.374313410143586e-08,
+        "periodic_image_phase_bound_rad": 0.0,
+        "total_phase_bound_rad": 6.618782698026588e-07,
+        "detector_absolute_error_bound_per_incident_weight": 1.3237569776881616e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons"
+      },
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "common_basis_offset_restored_angstrom_xyz": null,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged"
+    }
+  ],
+  "common_q_to_n2240_nz4": {
+    "n1920-nz2": {
+      "maximum_common_q_error_over_reference_dc": 6.389555157328102e-10,
+      "common_q_complex_relative_l2": 8.290762680873324e-09,
+      "dc_relative_difference": 1.738848600436578e-10
+    },
+    "n1920-nz4": {
+      "maximum_common_q_error_over_reference_dc": 6.782093414946457e-10,
+      "common_q_complex_relative_l2": 7.0078782762576705e-09,
+      "dc_relative_difference": 8.528159093098858e-11
+    },
+    "n2080-nz2": {
+      "maximum_common_q_error_over_reference_dc": 8.652036747965622e-10,
+      "common_q_complex_relative_l2": 7.875505394074115e-09,
+      "dc_relative_difference": 1.8436338913539996e-10
+    },
+    "n2080-nz4": {
+      "maximum_common_q_error_over_reference_dc": 5.649884551169897e-10,
+      "common_q_complex_relative_l2": 7.29287239020687e-09,
+      "dc_relative_difference": 1.8313239094005883e-10
+    },
+    "n2160-nz2": {
+      "maximum_common_q_error_over_reference_dc": 6.789646729465091e-10,
+      "common_q_complex_relative_l2": 8.174744858563059e-09,
+      "dc_relative_difference": 7.086786844095134e-11
+    },
+    "n2160-nz4": {
+      "maximum_common_q_error_over_reference_dc": 5.143506063635867e-10,
+      "common_q_complex_relative_l2": 6.568295272119641e-09,
+      "dc_relative_difference": 1.025425133834439e-10
+    },
+    "n2240-nz2": {
+      "maximum_common_q_error_over_reference_dc": 5.519096106336522e-10,
+      "common_q_complex_relative_l2": 6.9082419455060095e-09,
+      "dc_relative_difference": 2.4128077131292514e-10
+    },
+    "n2240-nz4": {
+      "maximum_common_q_error_over_reference_dc": 0.0,
+      "common_q_complex_relative_l2": 0.0,
+      "dc_relative_difference": 0.0
+    }
+  },
+  "same_grid_z_additivity": {
+    "1920": {
+      "maximum_common_q_error_over_reference_dc": 7.223273163462078e-10,
+      "common_q_complex_relative_l2": 9.386537936161243e-09,
+      "dc_relative_difference": 8.860326912022546e-11
+    },
+    "2080": {
+      "maximum_common_q_error_over_reference_dc": 6.609167840261628e-10,
+      "common_q_complex_relative_l2": 8.961395484032789e-09,
+      "dc_relative_difference": 1.2309981951157041e-12
+    },
+    "2160": {
+      "maximum_common_q_error_over_reference_dc": 6.113131608879511e-10,
+      "common_q_complex_relative_l2": 8.912636005640288e-09,
+      "dc_relative_difference": 3.167464493924457e-11
+    },
+    "2240": {
+      "maximum_common_q_error_over_reference_dc": 5.519096106336522e-10,
+      "common_q_complex_relative_l2": 6.9082419455060095e-09,
+      "dc_relative_difference": 2.4128077131292514e-10
+    }
+  },
+  "half_pixel_translation_covariance": {
+    "1920": {
+      "maximum_common_q_error_over_reference_dc": 1.0216111264804454e-09,
+      "common_q_complex_relative_l2": 1.2558694125888748e-08,
+      "dc_relative_difference": 1.7431718082078832e-10
+    },
+    "2080": {
+      "maximum_common_q_error_over_reference_dc": 1.0079572555263507e-09,
+      "common_q_complex_relative_l2": 9.74620563400304e-09,
+      "dc_relative_difference": 1.4771019465526637e-10
+    },
+    "2160": {
+      "maximum_common_q_error_over_reference_dc": 9.004991521317366e-10,
+      "common_q_complex_relative_l2": 1.0270607097134792e-08,
+      "dc_relative_difference": 0.0
+    },
+    "2240": {
+      "maximum_common_q_error_over_reference_dc": 6.940150134043764e-10,
+      "common_q_complex_relative_l2": 9.663284928790943e-09,
+      "dc_relative_difference": 3.746572599509204e-10
+    }
+  },
+  "tolerances": {
+    "maximum_error_over_reference_dc": 5e-07,
+    "complex_relative_l2": 1e-06
+  },
+  "nyquist_policy": "Explicit real Hermitian projection; compared q<=8/A lies strictly below every represented Nyquist edge",
+  "elapsed_s": 21.121396200000163
+}

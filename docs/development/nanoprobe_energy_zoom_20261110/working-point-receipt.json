@@ -1,0 +1,20 @@
+{
+  "output": "profiles/default-nanoprobe.temwp",
+  "selection": {
+    "gun": "FEG",
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "beam_blanker": "None"
+  },
+  "input_digest": "5344c01bd06a81b6d1635d4680d3e2ce2a7d0831fd94b1076d1520e74c7ed259",
+  "package_digest": "2c252049d55a51a21acb933d0b14576c71ad9e6285f471bed0f89eb7c6eaf910",
+  "exact_unified_runtime_digest": "4e954d8d1139b3f2929f78a5daa5982fb1515f1b89c8abcd84e68261a09ba836",
+  "exact_unified_field_digest": "3bd559276e652b87eb28baef399ae8ff8c3c6a29c4321075cd5a15f931a528c0",
+  "exact_unified_geometry_digest": "fac44d395baa55e867e1decdbd95f8a56a173f14e83890f9c7b46152ae6b3b40",
+  "exact_gun_source_signature": "ab9cec4e4f4d77a74de1f3c071c45e4219304fe393fea79d3418e7233b632bca",
+  "exact_probe_control_count": 23,
+  "specimen_surface_z_mm": 1599.1999998000001,
+  "scope": "Exact input-only working point, verified with the original dependencies and installed solver.",
+  "package_sha256": "4d8e068166a9b03176e9a83167ba72f8743645241866d778b1d7b7fb8de277fc",
+  "zero_FWHM_reference_sha256": "e247ed00f49790cf5273575249d34f12d68b141e67568f366c380b55fe847d10"
+}

@@ -21,6 +21,9 @@ from temsim.particle_section_io import section_archive_summary
 from temsim.result_library import ResultLibrary
 
 
+STARTUP_WORKING_POINT_KEY = "startup/prefer_default_working_point"
+
+
 def format_data_size(value):
     """File-sized units; sub-GiB result packages must not display as zero."""
     size = float(value)
@@ -33,9 +36,11 @@ def format_data_size(value):
 class ResultFiles(QObject):
     """Own file intent; the calculation controller owns bounded background IO."""
 
-    def __init__(self, window):
+    def __init__(self, window, *, startup_settings=None):
         super().__init__(window)
         self.window = window
+        self._startup_settings = startup_settings
+        prefer_working_point = self._prefer_startup_working_point()
         self.library = None
         self.startup_error = None
         self.automatic_store = None
@@ -52,13 +57,13 @@ class ResultFiles(QObject):
         if self.startup_error is None:
             try:
                 self.automatic_store = AutomaticResult(root)
-                if self.startup_entry is None and self.automatic_store.enabled():
+                if self.startup_entry is None and not prefer_working_point and self.automatic_store.enabled():
                     self.startup_entry = self.automatic_store.entry()
                     self.automatic_startup = self.startup_entry is not None
             except (OSError, ValueError) as exc:
                 self.automatic_startup_error = str(exc)
         self.hold_automatic_preview = (self.startup_entry is not None or self.startup_error is not None
-                                       or self.automatic_startup_error is not None)
+                                       or (self.automatic_startup_error is not None and not prefer_working_point))
         self.loading = self.hold_automatic_preview
         self._loading_token = None
         self._installed_load_token = None
@@ -67,6 +72,18 @@ class ResultFiles(QObject):
         self._saving = {}
         self._disabled_widgets = []
         self._closed = False
+
+    def _prefer_startup_working_point(self):
+        return self._startup_settings is not None and self._startup_settings.value(
+            STARTUP_WORKING_POINT_KEY, True, type=bool
+        )
+
+    def _set_startup_working_point_preference(self, preferred):
+        if self._startup_settings is not None:
+            self._startup_settings.setValue(STARTUP_WORKING_POINT_KEY, preferred)
+            self._startup_settings.sync()
+            if self._startup_settings.status().value != 0:
+                raise OSError("Unable to save the startup working-point preference")
 
     def install_actions(self, menu):
         window = self.window
@@ -159,14 +176,16 @@ class ResultFiles(QObject):
             for submenu in (self.saved_menu, self.startup_menu):
                 submenu.addAction("Library unavailable — index was not changed").setEnabled(False)
             return
-        none = self.startup_menu.addAction("None — start with standard settings")
+        prefer_working_point = self._prefer_startup_working_point()
+        none = self.startup_menu.addAction("Default Nanoprobe working point" if self._startup_settings is not None
+                                           else "None — start with standard settings")
         none.setCheckable(True)
         try:
             automatic_enabled = self.automatic_store is not None and self.automatic_store.enabled()
             automatic_error = self.automatic_startup_error if self.automatic_store is None else None
         except (OSError, ValueError) as exc:
             automatic_enabled, automatic_error = False, str(exc)
-        none.setChecked(selected is None and not automatic_enabled)
+        none.setChecked(selected is None and (prefer_working_point or not automatic_enabled))
         self.startup_actions.addAction(none)
         none.triggered.connect(lambda: self.set_startup(None))
         if not entries:
@@ -183,7 +202,7 @@ class ResultFiles(QObject):
             action.triggered.connect(lambda _checked=False, identity=entry["id"]: self.set_startup(identity))
         automatic = self.startup_menu.addAction("Automatic — last completed particle result")
         automatic.setCheckable(True)
-        automatic.setChecked(selected is None and automatic_enabled)
+        automatic.setChecked(selected is None and not prefer_working_point and automatic_enabled)
         automatic.setToolTip(automatic_error or
             "Restore the last automatically saved particle result and its calculated settings without recalculation. "
             "Uncalculated edits and coherent waves are not included. Invalid or incompatible automatic files fall back to standard startup.")
@@ -194,12 +213,18 @@ class ResultFiles(QObject):
     def set_startup(self, identity):
         try:
             self.library.set_startup(identity)
-            if identity is None and self.automatic_store is not None:
-                self.automatic_store.set_enabled(False)
+            if identity is None:
+                if self._startup_settings is not None:
+                    self._set_startup_working_point_preference(True)
+                elif self.automatic_store is not None:
+                    self.automatic_store.set_enabled(False)
             self.refresh_menus()
+            cleared = ("Default Nanoprobe working point selected for startup."
+                       if self._startup_settings is not None
+                       else "Startup result cleared; current settings are unchanged.")
             self.window.status_label.setText(
                 "Startup result saved; current settings and calculations are unchanged."
-                if identity is not None else "Startup result cleared; current settings are unchanged.")
+                if identity is not None else cleared)
         except (OSError, ValueError) as exc:
             self._error(str(exc))
 
@@ -207,6 +232,7 @@ class ResultFiles(QObject):
         try:
             self.automatic_store.set_enabled(True)
             self.library.set_startup(None)
+            self._set_startup_working_point_preference(False)
             self.refresh_menus()
             self.window.status_label.setText(
                 "Automatic startup enabled: restore the last completed particle result and its calculated settings.")

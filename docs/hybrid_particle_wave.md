@@ -1,5 +1,11 @@
 # Hybrid particle and wave transport
 
+> **Retired Tip-origin execution.** The Tip-to-observation calculation described below
+> is retained as historical documentation and evidence, not an executable workflow.
+> New work uses [particle transport and near-specimen mixed coherence](MIXED_COHERENCE.md).
+> Existing inputs, numeric results and archives remain unchanged and readable;
+> Tip-origin propagation and continuation are rejected before CUDA or cache reuse.
+
 This opt-in development workflow uses the existing reduced-action ray integrator
 to propagate declared coherent modes, executes the configured finite specimen
 as a wave, and samples weighted outgoing particles for the physical receivers.

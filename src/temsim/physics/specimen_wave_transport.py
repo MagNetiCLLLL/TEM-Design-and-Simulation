@@ -270,9 +270,15 @@ def _prepare_material_grid(state, checkpoint, *, refinement_factor=1, grid_numer
     # interpolating an already sampled potential cannot recover its detail.
     reference_pixels = state.sample.wave_grid_pixels or preset.pixels
     reference_fov = state.sample.wave_field_of_view_angstrom or preset.field_of_view_angstrom
-    base_pixels = max(reference_pixels, math.ceil(fov*1e10*reference_pixels/reference_fov))
-    if base_pixels > reference_pixels:
-        base_pixels += base_pixels % 2
+    # The saved grid describes a physical sampling density on its saved FOV,
+    # not a minimum pixel count for every smaller local coherent ROI. Retain
+    # that density AND the complete incoming reciprocal Nyquist rectangle.
+    # The inverse-basis row sums also cover rotated/sheared incoming lattices.
+    reference_density = reference_pixels/(reference_fov*1e-10)
+    incoming_density = max(float(np.max(np.sum(abs(np.linalg.inv(mode.plane.basis_m).T), axis=1)))
+                           for mode in checkpoint.beam.modes)
+    base_pixels = math.ceil(fov*max(reference_density, incoming_density))
+    base_pixels += base_pixels % 2
     quadrature_factor = grid_numerics.specimen_quadrature_factor if grid_numerics.specimen_phase_method == "galerkin" else 1
     requested_pixels = int(base_pixels*refinement_factor*quadrature_factor)
     pixels = _material_fft_pixels(requested_pixels, quadrature_factor)
@@ -307,6 +313,11 @@ def _prepare_material_grid(state, checkpoint, *, refinement_factor=1, grid_numer
             "field_of_view_m": fov,
             "requested_sampling_m": fov/requested_pixels,
             "executed_sampling_m": fov/pixels,
+            "reference_pixels": int(reference_pixels),
+            "reference_field_of_view_angstrom": float(reference_fov),
+            "reference_wave_sampling_density_per_m": float(reference_density),
+            "incoming_wave_sampling_density_per_m": float(incoming_density),
+            "sampling_policy": "Local ROI retains configured physical pitch and the complete incoming reciprocal Nyquist rectangle",
             "fft_rounding": "upward even wave grid; physical domain unchanged",
         }})
     if prepared.metrics.get("atomistic_fallback_reason"):
@@ -363,7 +374,8 @@ def _with_material_refinement(state, checkpoint, execute, *, grid_numerics, canc
 
 def _propagate_specimen(state, checkpoint, *, maximum_step_mm=.5, maximum_checkpoint_bytes=8*1024**3,
                         grid_numerics=WaveGridNumerics(), tip_time_s=None, column_model="physical",
-                        cancelled=lambda: False, progress_callback=None, column_propagator=None):
+                        cancelled=lambda: False, progress_callback=None, column_propagator=None,
+                        observation_z_mm=None):
     from temsim.specimen.scene import SpecimenScene
     column_options = {} if column_model == "physical" else {"column_model": column_model}
     transport = _propagate_column if column_propagator is None else column_propagator
@@ -371,6 +383,11 @@ def _propagate_specimen(state, checkpoint, *, maximum_step_mm=.5, maximum_checkp
         raise ValueError("An explicit specimen transport cannot also apply a legacy column reference")
     start = state.sample.z_mm-state.sample.thickness_nm*.5e-6
     stop = state.sample.z_mm+state.sample.thickness_nm*.5e-6
+    if observation_z_mm is not None:
+        if (isinstance(observation_z_mm, (bool, np.bool_)) or not np.isfinite(observation_z_mm)
+                or not start <= observation_z_mm <= stop):
+            raise ValueError("Specimen observation must lie between its unchanged physical faces")
+        stop = float(observation_z_mm)
     if not math.isclose(checkpoint.plane_z_mm, start, abs_tol=1e-9, rel_tol=0):
         raise ValueError("Specimen interaction needs the wave at the actual upper face")
     if stop == start:
@@ -385,14 +402,14 @@ def _propagate_specimen(state, checkpoint, *, maximum_step_mm=.5, maximum_checkp
             grid_numerics=grid_numerics, tip_time_s=tip_time_s,
             cancelled=cancelled, progress_callback=progress_callback,
             material=material, refinement_factor=factor, refinement_history=history, column_model=column_model,
-            column_propagator=column_propagator),
+            column_propagator=column_propagator, observation_z_mm=observation_z_mm),
         grid_numerics=grid_numerics, cancelled=cancelled, progress_callback=progress_callback)
 
 
 def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_checkpoint_bytes,
                         grid_numerics, tip_time_s, cancelled, progress_callback,
                         material, refinement_factor, refinement_history, column_model="physical",
-                        column_propagator=None):
+                        column_propagator=None, observation_z_mm=None):
     from temsim.physics.wave_imaging import interaction_constant_rad_per_v_angstrom
     column_options = {} if column_model == "physical" else {"column_model": column_model}
     transport = _propagate_column if column_propagator is None else column_propagator
@@ -401,6 +418,8 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
     from temsim.specimen.inelastic import real_inelastic_distribution
     start = state.sample.z_mm-state.sample.thickness_nm*.5e-6
     stop = state.sample.z_mm+state.sample.thickness_nm*.5e-6
+    if observation_z_mm is not None:
+        stop = float(observation_z_mm)
     scene, prepared, x, y, dzs = material
     configs = prepared.potential_configurations_v_angstrom
     wave_x, wave_y = _material_wave_axes(x, y, grid_numerics)
@@ -440,7 +459,18 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
             mode, band_loss = _bandlimit_mode(mode, state.sample.wave_bandwidth_fraction, frame=bandwidth_frame, numerics=grid_numerics)
             sigma = interaction_constant_rad_per_v_angstrom(mode.energy_kev)
             for i, dz in enumerate(dzs):
-                projected = potential[i] if potential.ndim == 3 else potential*dz/sum(dzs)
+                if current_z >= stop:
+                    break
+                original_dz = float(dz)
+                physical_bottom = state.sample.z_mm+state.sample.thickness_nm*.5e-6
+                nominal_next_z = (physical_bottom if i == len(dzs)-1
+                                  else current_z+original_dz*1e-7)
+                next_z = min(stop, nominal_next_z)
+                # Preserve the original slice arithmetic for complete slices.
+                # Subtracting large lab-Z coordinates would degrade a thin dz.
+                dz = (stop-current_z)*1e7 if stop < nominal_next_z else original_dz
+                projected = (potential[i]*(dz/original_dz) if potential.ndim == 3
+                             else potential*dz/sum(dzs))
                 mode, phase_before = _material_phase(mode, projected, x, y, sigma, .5,
                     numerics=grid_numerics, cancelled=cancelled)
                 mode, lost = _bandlimit_mode(mode, state.sample.wave_bandwidth_fraction, frame=bandwidth_frame, numerics=grid_numerics)
@@ -449,7 +479,6 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
                     checkpoint.reference_current_a, {"specimen_parent": checkpoint.digest, "configuration": config_index, "slice": i,
                         **transport_context,
                         "support_error_by_mode": {mode.mode_id: support_ledger}})
-                next_z = stop if i == len(dzs)-1 else current_z+float(dz)*1e-7
                 transported = transport(state, local, next_z, maximum_step_mm=maximum_step_mm,
                     grid_numerics=grid_numerics, tip_time_s=tip_time_s,
                     retained_bytes=resident_wave_bytes(checkpoint.beam)
@@ -474,6 +503,8 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
                 mode, lost = _bandlimit_mode(mode, state.sample.wave_bandwidth_fraction, frame=bandwidth_frame, numerics=grid_numerics)
                 band_loss += lost
                 slice_records.append({"slice": i, "z_mm": next_z, "column": transported.record["modes"],
+                                      "executed_slice_thickness_angstrom": float(dz),
+                                      "original_slice_fraction": float(dz/original_dz),
                                       "phase_before": phase_before, "phase_after": phase_after,
                                       "numerical_support_loss": slice_support_loss,
                                       "inelastic_absorption_removed_weight": channel_record["removed_weight"],
@@ -509,6 +540,9 @@ def _propagate_specimen_attempt(state, checkpoint, *, maximum_step_mm, maximum_c
          "inelastic_phase": "UNDEFINED; removed probability recorded; energy-loss branches remain in the existing particle workflow",
          "integrator": "symmetric specimen phase / distributed column Hamiltonian / specimen phase",
          "specimen_phase_method": grid_numerics.specimen_phase_method,
+         "physical_specimen_upper_z_mm": start,
+         "physical_specimen_lower_z_mm": state.sample.z_mm+state.sample.thickness_nm*.5e-6,
+         "observation_z_mm": stop,
          "numerical_bandwidth_frame": bandwidth_frame,
          "bandwidth_policy": "Galerkin retains the analytical carrier and projects residual Fourier frequencies: physical U P U†, a numerical moving-basis cutoff, not a laboratory angular aperture. Sampled phase retains the laboratory projection with checked carrier expansion. Numerical loss is recorded; independent basis and potential-grid convergence remain required.",
          "validation_status": "DEVELOPMENT"})

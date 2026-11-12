@@ -1,4 +1,5 @@
 """Replay a prepared physical checkpoint with experimental coherent Gaussian packets.
+Tip-origin checkpoint continuation is retired; use python -m temsim.mixed_wave_cli --help.
 
 This CPU diagnostic approximates cubic/quartic actions locally, avoiding a full
 Cartesian grid through a strong corrector. It is NOT the application wave solver
@@ -121,6 +122,8 @@ def main():
     parser.add_argument('--stop-z-mm',type=float)
     parser.add_argument('--maximum-working-mib',type=int,default=1024)
     args=parser.parse_args()
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     case_root=args.case_directory
     prepared=json.loads((case_root/'outcome-all.json').read_text(encoding='utf-8'))
     metadata=json.loads((case_root/'metadata.json').read_text(encoding='utf-8'))

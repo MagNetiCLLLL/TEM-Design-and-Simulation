@@ -181,21 +181,25 @@ _OBSERVATION_PREFIXES = OrderedDict()
 _MAXIMUM_OBSERVATION_PREFIXES = 512
 
 
-def require_tip_wave_cuda(request):
+def require_tip_wave_cuda(request, *, state=None):
     """Check user execution before capture and forbid downstream CPU fallback."""
-    from temsim.physics.compute_backend import GPUExecutionError, require_coherent_cuda
+    from temsim.physics.compute_backend import (
+        GPUExecutionError, require_coherent_cuda, validate_coherent_cuda_policy,
+    )
     request.validate()
     if request.radial_column.backend != "cuda":
         raise GPUExecutionError("required",
             "Coherent calculations currently require CUDA radial transforms; "
             "set radial_column.backend='cuda'. CPU execution is disabled for user wave jobs.")
+    validate_coherent_cuda_policy(getattr(state, "acceleration_backend", "Auto"),
+        acceleration_enabled=getattr(state, "acceleration_enabled", True))
+    validate_coherent_cuda_policy(request.gun.compute_backend)
     policy = require_coherent_cuda(request.wave_grid.compute_backend,
         acceleration_enabled=request.wave_grid.acceleration_enabled)
-    gun_policy = require_coherent_cuda(request.gun.compute_backend)
-    if request.wave_grid.compute_backend == policy and request.gun.compute_backend == gun_policy:
+    if request.wave_grid.compute_backend == policy and request.gun.compute_backend == policy:
         return request
     return replace(request, wave_grid=replace(request.wave_grid, compute_backend=policy),
-                   gun=replace(request.gun, compute_backend=gun_policy))
+                   gun=replace(request.gun, compute_backend=policy))
 
 
 def _find_observation_prefix(identity, minimum_z_mm, target_z_mm, store, *, segmented, cancelled,
@@ -280,7 +284,7 @@ def _surface_segment(state, request, snapshot, *, use_cache, cancelled, progress
     guard_signature = guard_surface_column(state, n, prepare_column=_prepare_column)
     cached = tuple(_CACHE.values()) if use_cache else ()
     result = compute_surface_wave(state.electron_gun, n, use_cache=use_cache,
-        cancelled=cancelled, progress_callback=progress_callback)
+        compute_backend=request.gun.compute_backend, cancelled=cancelled, progress_callback=progress_callback)
     hit = any(result is old for old in cached)
     from temsim.immutable_json import freeze_json
     result = replace(result, record=freeze_json({**result.record,
@@ -387,13 +391,16 @@ class TipWaveObservationSession:
         self.__lock = threading.Lock()
 
     def observe(self, z_mm, *, cancelled=lambda: False, progress_callback=None):
+        from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+        reject_retired_tip_coherent_workflow()
         request = replace(self.__request, observation_z_mm=z_mm).validate()
         if cancelled():
             raise InterruptedError("Tip wave observation cancelled")
-        request = require_tip_wave_cuda(request)
         if not self.__lock.acquire(blocking=False):
             raise RuntimeError("Only one observation may execute in a coherent session at a time")
         try:
+            state = self.__pending_state if self.__snapshot is None else self.__working
+            request = require_tip_wave_cuda(request, state=state)
             if self.__snapshot is None:
                 snapshot = capture_instrument_snapshot(self.__pending_state)
                 working = snapshot.restore()
@@ -422,12 +429,14 @@ This development product supports arrival-time scan coils and conditional
 material-model inelastic waves. Existing ray, EDS and resolved EELS products
 retain their established workflows and are not replaced by this entry point.
 """
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     from temsim.simulation_modes import require_coherent_mode
     require_coherent_mode(state)
     request.validate()
     if cancelled():
         raise InterruptedError("Tip wave request cancelled")
-    request = require_tip_wave_cuda(request)
+    request = require_tip_wave_cuda(request, state=state)
     snapshot = capture_instrument_snapshot(state)
     working = snapshot.restore()
     try:
@@ -474,6 +483,8 @@ def simulate_ideal_reference(state, actual_result, *, use_cache=True,
     mixture or a replacement for material scattering. Shared gun cache keys
     and verified source ancestry prevent two unrelated fields being compared.
     """
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     if cancelled():
         raise InterruptedError("Ideal wavefront reference cancelled")
     if not isinstance(actual_result, TipWaveResult):
@@ -483,7 +494,7 @@ def simulate_ideal_reference(state, actual_result, *, use_cache=True,
         raise ValueError("Calculate a physical beam at an exact observation plane first")
     if actual_result.checkpoint.plane_z_mm != actual_request.observation_z_mm:
         raise ValueError("Actual wave does not belong to its requested exact observation plane")
-    actual_request = require_tip_wave_cuda(actual_request)
+    actual_request = require_tip_wave_cuda(actual_request, state=state)
     snapshot = capture_instrument_snapshot(state)
     if snapshot.digest != actual_result.instrument_digest:
         raise ValueError("Source or instrument changed since the actual beam; recalculate it before comparison")
@@ -507,6 +518,8 @@ def simulate_ideal_reference(state, actual_result, *, use_cache=True,
 def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cache,
                       cancelled, progress_callback, scan_preparation_cache=None):
     """Execute from privately captured controls, never a replacement beam."""
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     def verify():
         snapshot.verify_current_inputs(working)
 
@@ -788,7 +801,7 @@ def _execute_tip_wave(working, request, snapshot, instrument_digest, *, use_cach
                 maximum_working_bytes=request.gun.maximum_checkpoint_bytes)
             checkpoint, near = build_surface_gun_checkpoint(working.electron_gun, surface=request.surface,
                 radial=radial, grid_pixels=request.source.grid_pixels, column_state=working,
-                cancelled=cancelled, progress_callback=progress_callback,
+                compute_backend=request.gun.compute_backend, cancelled=cancelled, progress_callback=progress_callback,
                 _energy_cache=store, _reuse_energy_cache=use_cache)
             side = float(checkpoint.record["unresolved_side_fraction"])
             if side > request.surface.flux_tolerance:

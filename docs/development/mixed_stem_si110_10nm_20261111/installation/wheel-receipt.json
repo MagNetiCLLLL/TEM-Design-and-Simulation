@@ -1,0 +1,89 @@
+{
+  "status": "PASS_WHEEL_AND_ISOLATED_INSTALL",
+  "verified_at_utc": "2026-11-12T02:28:53.242883+00:00",
+  "wheel": "F:\\tem_simulator_v2\\outputs\\mixed-stem-si110-10nm-20261111\\final-wheel-delivery\\wheels\\tem_design_simulation-0.1.0-py3-none-any.whl",
+  "wheel_sha256": "f3089b16cfdccb8689e1e250890cfa0c3da6a7cdc743b3da9d8ec4ba653acd92",
+  "wheel_bytes": 4352489,
+  "build_command": "python -m build --wheel --no-isolation (FreshWheel)",
+  "production_python_file_count": 759,
+  "production_python_bytes_all_match_source": true,
+  "source_python_inventory_sha256": "9e4be4200d6d06cf8d88388548de74f3ee431a06d1b923c2f50dd9b6e7a695f2",
+  "required_new_module_entries": [
+    "temsim/physics/finite_lobato_fourier.py",
+    "temsim/physics/material_slice_storage.py",
+    "temsim/specimen/lattice_reference.py",
+    "temsim/specimen/axial_geometry.py",
+    "temsim/physics/mixed_stem_material.py",
+    "temsim/physics/mixed_stem_scan.py",
+    "temsim/physics/particle_wave_source_io.py",
+    "temsim/physics/wave_input_compatibility.py",
+    "temsim/mixed_stem_workflow.py",
+    "temsim/mixed_stem_cli.py"
+  ],
+  "bundled_Si_entry": "tem_design_simulation-0.1.0.data/data/configs/specimens/Si.cif",
+  "bundled_Si_sha256": "944c5c81df5d813d051f96102eb9be37fac4b7647c2a9d1492d6333122be42c7",
+  "raw_default_profile_sha256": "4d8e068166a9b03176e9a83167ba72f8743645241866d778b1d7b7fb8de277fc",
+  "metadata_sha256": "a9e85c41564f8d006b83b715477e7cec33aaf0530269bdf48899ad483bc97d57",
+  "requirements": [
+    "Requires-Dist: abtem==1.0.10",
+    "Requires-Dist: ase<4,>=3.29",
+    "Requires-Dist: cloudpickle<4,>=3.1",
+    "Requires-Dist: imageio<3,>=2.37",
+    "Requires-Dist: matplotlib",
+    "Requires-Dist: manifold3d<4,>=3.5.1",
+    "Requires-Dist: numba",
+    "Requires-Dist: numpy",
+    "Requires-Dist: pyqtgraph",
+    "Requires-Dist: PyOpenGL<4,>=3.1.7",
+    "Requires-Dist: pillow<13,>=11",
+    "Requires-Dist: PySide6==6.8.3",
+    "Requires-Dist: scipy",
+    "Requires-Dist: threadpoolctl<4,>=3.6",
+    "Requires-Dist: tomli-w",
+    "Requires-Dist: tifffile<2027,>=2025",
+    "Requires-Dist: xraylib==4.3.0",
+    "Requires-Dist: mpmath<2,>=1.3; extra == \"dev\"",
+    "Requires-Dist: pytest; extra == \"dev\"",
+    "Requires-Dist: pytest-qt; extra == \"dev\"",
+    "Requires-Dist: cupy-cuda12x[ctk]<15,>=14.2; extra == \"gpu\"",
+    "Requires-Dist: nvmath-python<1.1,>=1.0; extra == \"gpu\"",
+    "Requires-Dist: nvidia-cudss-cu12<0.9,>=0.8; extra == \"gpu\"",
+    "Requires-Dist: cuda-bindings<13,>=12.9.2; extra == \"gpu\"",
+    "Requires-Dist: psutil<8,>=7; extra == \"benchmark\""
+  ],
+  "isolated_prefix": "F:\\tem_simulator_v2\\outputs\\mixed-stem-si110-10nm-20261111\\final-wheel-delivery\\venv",
+  "foreign_working_directory": "C:\\Users\\54019\\AppData\\Local\\Temp\\temsim-analytic-final-wheel-bwdvdlnp",
+  "runtime_dependency_environment_unchanged": true,
+  "UI_and_EOF_formatting_changes_from_previous_wheel": {
+    "previous_wheel_sha256": "47eadc8427572679fac2add3009d6fc0d96e40b2dbeff2da01f50ee73ff1fbd8",
+    "changed_production_files": [
+      {
+        "file": "temsim/gui/scan_panel.py",
+        "previous_sha256": "c63e5f566496f7a1fc09a9837ada1668f533e3b41026096d8dd137dd4d57c94a",
+        "current_sha256": "4b502b33b20f450d2d9a1fe53819035c99744dab3bdf812cd57bcf1760615ef2"
+      },
+      {
+        "file": "temsim/physics/particle_wave_source.py",
+        "previous_sha256": "8de800afd6cbf9ad1076e658a5fa52189a76b594daad09a23a844e0ca916d2fd",
+        "current_sha256": "0b64b1958f0a9dcdca9faf020e35119576532b6a744e2cebf629d8db7f22de54"
+      }
+    ],
+    "unchanged_production_file_count": 757,
+    "UI_change": "Saved mixed-frame banner and readable Mixed coherent BF/ADF / ADF summary only",
+    "physics_file_formatting": {
+      "file": "temsim/physics/particle_wave_source.py",
+      "previous_bytes": 34849,
+      "current_bytes": 34847,
+      "difference": "Only two final newline bytes removed",
+      "bytes_equal_except_EOF_newlines": true,
+      "complete_AST_including_locations_equal_to_prior_wheel": true,
+      "executed_frozen_file": "F:\\tem_simulator_v2\\outputs\\mixed-stem-si110-10nm-20261111\\frozen-exact-lobato-wave\\temsim\\physics\\particle_wave_source.py",
+      "executed_frozen_file_sha256": "8de800afd6cbf9ad1076e658a5fa52189a76b594daad09a23a844e0ca916d2fd",
+      "complete_AST_including_locations_equal_to_executed_frozen": true,
+      "AST_dump_sha256": "6837818c399904685b24fb2098d429e2fdea391b7944f7b5bb2753b260a5dc5f",
+      "physical_numerics_unchanged": true
+    },
+    "patch": "F:\\tem_simulator_v2\\outputs\\mixed-stem-si110-10nm-20261111\\final-wheel-delivery\\source-ui-diff.patch"
+  },
+  "scope": "Wheel build/install and byte inventory only; no physical calculation"
+}

@@ -1,4 +1,5 @@
 """Record an actual FEG/full-column current baseline and optional hybrid trial.
+Tip-origin coherent execution is retired; use python -m temsim.mixed_wave_cli --help.
 
 Explicit optical proposals are recorded and require fresh validation. There
 is no source replacement, current renormalisation, or aperture withdrawal.
@@ -178,6 +179,9 @@ def classical(state, args, report):
     from temsim.physics.recording_clipping import clip_recording_planes
     from temsim.physics.transport_progress import transport_progress
 
+    current = state.electron_gun.emitted_current_a
+    if not np.isfinite(current) or current <= 0:
+        raise ValueError("Physical trials require a finite positive source current")
     detector = next(p for p in state.recording_planes if p.key == args.detector and p.inserted)
     runtime = capture_unified_field_runtime(state, stop_z_m=detector.z_mm*.001)
     write_report(args.output/"instrument.json", capture_instrument_snapshot(state).to_dict())
@@ -421,6 +425,9 @@ def main(argv=None):
     parser.add_argument("--cancel-file", type=Path,
         help="Creating this file requests cancellation at the next checked operator boundary")
     args = parser.parse_args(argv)
+    if args.hybrid:
+        from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+        reject_retired_tip_coherent_workflow()
     if args.column_segment_resampling and args.column_spatial_compaction:
         parser.error("Select either segment spectral resampling or step-boundary spatial compaction")
     if args.source_particles < 1000:

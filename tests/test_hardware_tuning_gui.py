@@ -144,6 +144,25 @@ def test_enable_toggle_updates_actual_lens_and_availability_message(panel):
     assert changed == ["condenser_lens_1.enabled"] * 2
 
 
+def test_flat_feg_gun_lens_edit_checks_the_live_divider(panel):
+    panel.select_task("gun_extraction")
+    gun = panel._state.electron_gun
+    assert gun.emitter.surface_model is None
+    assert gun.electrostatic_lens.voltage_reference == "tip"
+    identity = (gun.electrostatic_lens.key, "voltage_kv")
+    changes = []
+    panel.runtime_changed.connect(changes.append)
+
+    _edit(panel, identity, "5.3")
+    assert gun.electrostatic_lens.voltage_kv == 5.3
+    assert changes == ["feg_electrostatic_lens.voltage_kv"]
+
+    _edit(panel, identity, str(gun.accelerator.high_tension_kv + 1))
+    assert gun.electrostatic_lens.voltage_kv == 5.3
+    assert changes == ["feg_electrostatic_lens.voltage_kv"]
+    assert "divider start" in panel.status.text()
+
+
 @pytest.mark.parametrize("period", ["0", "-0.25"])
 def test_nonpositive_wobble_period_rejects_without_mutating_component(panel, period):
     panel.select_task("beam_wobble")

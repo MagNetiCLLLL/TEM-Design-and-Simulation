@@ -580,12 +580,15 @@ class HardwareTuningPanel(QWidget):
             validate = getattr(candidate, "validate", None)
             if validate is not None:
                 gun = self._state.electron_gun
-                surface = getattr(gun.emitter, "surface_model", None) is not None
-                electrode = any(target.obj is obj for obj in (
-                    gun.extractor, gun.electrostatic_lens,
-                ))
-                if surface and electrode:
-                    validate(grounded=True)
+                is_extractor = target.obj is gun.extractor
+                is_gun_lens = target.obj is gun.electrostatic_lens
+                if gun.uses_geometry_electric_field and (is_extractor or is_gun_lens):
+                    from temsim.optics.electron_gun.electrostatic import validate_feg_electrode_voltages
+                    validate_feg_electrode_voltages(
+                        candidate if is_extractor else gun.extractor,
+                        candidate if is_gun_lens else gun.electrostatic_lens,
+                        gun.accelerator,
+                    )
                 else:
                     validate()
             setattr(target.obj, field.name, value)

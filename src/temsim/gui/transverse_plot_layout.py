@@ -29,6 +29,7 @@ class TransversePlotLayout(QObject):
         self.button.clicked.connect(self.open_dialog)
         toolbar = QHBoxLayout()
         toolbar.addStretch(1)
+        toolbar.addWidget(owner.coherent_wave_toggle)
         toolbar.addWidget(self.button)
 
         self.content = QWidget()
@@ -58,6 +59,7 @@ class TransversePlotLayout(QObject):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(4)
         layout.addLayout(toolbar)
+        layout.addWidget(owner.coherent_wave_status)
         layout.addWidget(self.scroll, 1)
         self._height_timer = QTimer(owner)
         self._height_timer.setSingleShot(True)

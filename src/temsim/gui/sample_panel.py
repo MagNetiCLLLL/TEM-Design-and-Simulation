@@ -523,6 +523,7 @@ class SampleSceneView(QWidget):
             if self.opengl_available:
                 delta = target_rotation @ self._base_rotation.T
                 centre = np.asarray(snapshot.centre_nm, dtype=float)
+                centre = centre+np.asarray((0.,0.,getattr(snapshot,"lattice_translation_z_nm",0.)))
                 transform = np.eye(4)
                 transform[:3, :3] = delta
                 transform[:3, 3] = centre - delta @ centre
@@ -627,7 +628,8 @@ class SampleSceneView(QWidget):
         if not positions.size:
             return positions
         current = np.asarray(snapshot.orientation_matrix, dtype=float)
-        return positions @ current @ np.asarray(target_rotation, dtype=float).T
+        phase = np.asarray((0.,0.,getattr(snapshot,"lattice_translation_z_nm",0.)))
+        return (positions-phase) @ current @ np.asarray(target_rotation, dtype=float).T+phase
 
     def _display_gl(self, snapshot, target_rotation):
         cx, cy, cz = snapshot.centre_nm
@@ -874,7 +876,9 @@ class SamplePage(QWidget):
             control = QDoubleSpinBox()
             control.setObjectName(f"sample_{field}")
             control.setDecimals(6)
-            control.setRange(minimum, maximum)
+            # Invalid thickness is rejected by the atomic geometry edit rather
+            # than silently becoming the spin box's smallest positive value.
+            control.setRange(-maximum if field == "thickness_nm" else minimum, maximum)
             control.setSuffix(suffix)
             control.setKeyboardTracking(False)
             control.valueChanged.connect(
@@ -884,6 +888,24 @@ class SamplePage(QWidget):
             identity_form.addRow(label_widget, control)
             self.scalar_controls[field] = control
             self.scalar_labels[field] = label_widget
+        self.scalar_controls["thickness_nm"].setToolTip(
+            "Keep the upper surface fixed and extend the specimen along +Z. "
+            "A thickness that does not fit the holder is rejected; lens settings are retained.")
+        self.upper_surface_position = QLabel()
+        self.upper_surface_position.setObjectName("sampleUpperSurfaceFixed")
+        self.downstream_surface_position = QLabel()
+        self.downstream_surface_position.setObjectName("sampleDownstreamSurface")
+        for label in (self.upper_surface_position, self.downstream_surface_position):
+            label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse
+                | Qt.TextInteractionFlag.TextSelectableByKeyboard)
+        self.upper_surface_position.setToolTip("Laboratory Z of the fixed entrance surface; thickness changes do not move it.")
+        self.downstream_surface_position.setToolTip("Laboratory Z of the downstream surface; +Z follows the electron beam.")
+        identity_form.addRow("Upper surface (fixed)", self.upper_surface_position)
+        identity_form.addRow("Downstream surface", self.downstream_surface_position)
+        axial_note = QLabel("Thickness grows downstream (+Z) from the fixed upper surface.")
+        axial_note.setWordWrap(True)
+        axial_note.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        identity_form.addRow(axial_note)
         controls_layout.addWidget(identity)
 
         real = QGroupBox("Crystal structure — CIF / MCIF")
@@ -1395,6 +1417,7 @@ class SamplePage(QWidget):
             self.envelope_shape.setCurrentIndex(max(shape_index, 0))
             for field, control in self.scalar_controls.items():
                 control.setValue(float(getattr(sample, field)))
+            self._update_surface_positions()
             self.cif_path.setText(str(sample.cif_path))
             for controls, values in (
                 (self.zone_controls[1], sample.zone_axis_uvw),
@@ -1456,6 +1479,26 @@ class SamplePage(QWidget):
     def _set_scalar(self, name, value):
         if self._updating or self._state is None:
             return
+        if name == "thickness_nm":
+            previous = float(self._state.sample.thickness_nm)
+            try:
+                from temsim.specimen.axial_geometry import set_sample_thickness
+                if not math.isfinite(float(value)) or float(value) <= 0.:
+                    raise ValueError("Specimen thickness must be finite and positive.")
+                if float(value) == previous:
+                    return
+                set_sample_thickness(self._state, float(value))
+            except Exception as error:
+                self._updating = True
+                try:
+                    self.scalar_controls[name].setValue(previous)
+                finally:
+                    self._updating = False
+                self._update_surface_positions()
+                self.error.emit(str(error))
+                return
+            self._changed("sample.thickness_nm")
+            return
         if name in {"size_x_nm", "size_y_nm", "thickness_nm"} and value <= 0.0:
             self.error.emit(f"{name} must be positive.")
             return
@@ -1472,6 +1515,15 @@ class SamplePage(QWidget):
             finally:
                 self._updating = False
         self._changed(f"sample.{name}")
+
+    def _update_surface_positions(self):
+        if self._state is None:
+            self.upper_surface_position.clear()
+            self.downstream_surface_position.clear()
+            return
+        sample = self._state.sample
+        self.upper_surface_position.setText(f"{float(sample.upper_surface_z_mm):.17g} mm")
+        self.downstream_surface_position.setText(f"{float(sample.lower_surface_z_mm):.17g} mm")
 
     def _envelope_shape_changed(self):
         if self._updating or self._state is None:
@@ -1687,6 +1739,7 @@ class SamplePage(QWidget):
         dialog.exec()
 
     def _changed(self, name):
+        self._update_surface_positions()
         self._refresh_inelastic_summary()
         self._refresh_tail_summary()
         self.refresh_snapshot()

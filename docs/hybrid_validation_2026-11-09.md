@@ -1,5 +1,11 @@
 # Hybrid development validation — 9 November 2026
 
+> **Retired Tip-origin execution.** The Tip-to-observation calculation described below
+> is retained as historical documentation and evidence, not an executable workflow.
+> New work uses [particle transport and near-specimen mixed coherence](MIXED_COHERENCE.md).
+> Existing inputs, numeric results and archives remain unchanged and readable;
+> Tip-origin propagation and continuation are rejected before CUDA or cache reuse.
+
 Status: **executed ideal-source development workflow**, including real Si
 material propagation, local diffraction, weighted exit sampling and the
 existing particle integrator/physical camera receiver. This is not physical

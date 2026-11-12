@@ -87,3 +87,22 @@ def test_partial_profile_without_gun_controls_retains_current_quadrature_and_sta
     before = capture_gun_profile_controls(state.electron_gun)
     apply_profile_values(state, {"objective_lens": {"percent": 13.5}})
     assert capture_gun_profile_controls(state.electron_gun) == before
+
+
+def test_profile_validates_feg_voltage_changes_together_before_applying():
+    state, _ = configured()
+    gun = state.electron_gun
+    gun.accelerator.high_tension_kv = 200.
+    before = deepcopy(state.to_dict())
+    controls = {
+        "objective_lens": {"percent": 13.5},
+        gun.electrostatic_lens.key: {"voltage_reference": "ground", "voltage_kv": -250.},
+    }
+    with pytest.raises(ValueError, match="divider start"):
+        apply_profile_values(state, controls)
+    assert state.to_dict() == before
+
+    apply_profile_values(state, {**controls, gun.accelerator.key: {"high_tension_kv": 300.}})
+    assert gun.electrostatic_lens.voltage_reference == "ground"
+    assert gun.electrostatic_lens.voltage_kv == -250.
+    assert gun.accelerator.high_tension_kv == 300.

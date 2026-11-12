@@ -59,6 +59,9 @@ class ScanControlView(QWidget):
     playback_active_changed = Signal(bool)
     df_geometry_requested = Signal(object)
     calculation_requested = Signal()
+    mixed_method_changed = Signal()
+    export_mixed_scan_requested = Signal()
+    load_mixed_scan_requested = Signal()
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -71,6 +74,7 @@ class ScanControlView(QWidget):
         self._bank_readout = None
         self._bank_display_context = None
         self._wave_action_needed = True
+        self._mixed_diffraction = None
         self._bank_pending_message = ""
         self._images_have_frame = False
         self._rendered_image_frame = None
@@ -208,6 +212,18 @@ class ScanControlView(QWidget):
         self.image_enabled.setObjectName("stemImageEnabled")
         self.image_enabled.toggled.connect(self._image_readout_changed)
         controls_layout.addWidget(self.image_enabled)
+        method_row = QHBoxLayout()
+        method_row.addWidget(QLabel("Signal method"))
+        self.stem_scan_method = QComboBox()
+        self.stem_scan_method.setObjectName("stemScanMethod")
+        self.stem_scan_method.addItem("Particles", "particles")
+        self.stem_scan_method.addItem("Mixed coherent CUDA", "mixed_coherent_cuda")
+        self.stem_scan_method.setToolTip(
+            "Mixed coherent CUDA uses actual particles near the specimen and shared Electron beam source settings. "
+            "BF/ADF are ideal specimen-exit angle windows, not installed detector stations.")
+        self.stem_scan_method.currentIndexChanged.connect(self._scan_method_changed)
+        method_row.addWidget(self.stem_scan_method, 1)
+        controls_layout.addLayout(method_row)
         particle_model_row = QHBoxLayout()
         particle_model_row.addWidget(QLabel("Particle model"))
         self.stem_particle_model = QComboBox()
@@ -223,18 +239,29 @@ class ScanControlView(QWidget):
         self.stem_particle_model.currentIndexChanged.connect(self._stem_particle_model_changed)
         particle_model_row.addWidget(self.stem_particle_model, 1)
         controls_layout.addLayout(particle_model_row)
-        self.wave_scan_enabled = QCheckBox(
-            "Coherent STEM wave imaging (paused)"
-        )
+        self.wave_scan_enabled = QCheckBox("Retired STEM wave request")
         self.wave_scan_enabled.setObjectName("stemWaveScanEnabled")
         self.wave_scan_enabled.setToolTip(
-            "Coherent tip-to-column imaging is paused. Historical settings remain readable. "
-            "Calculate STEM does not enable a coherent source."
+            "Historical request value only. New mixed-wave observations use "
+            "Electron beam or Transverse beam."
         )
-        self.wave_scan_enabled.toggled.connect(
-            self._wave_scan_model_changed
-        )
+        self.wave_scan_enabled.setEnabled(False)
+        self.wave_scan_enabled.hide()
         controls_layout.addWidget(self.wave_scan_enabled)
+        self.clear_retired_wave_request = QPushButton("Use particle scan")
+        self.clear_retired_wave_request.setObjectName("clearRetiredStemWaveRequest")
+        self.clear_retired_wave_request.setToolTip(
+            "Clear only this configuration's retired STEM wave request. "
+            "Captured wave frames and optical settings are unchanged; no scan starts.")
+        self.clear_retired_wave_request.clicked.connect(self._clear_retired_wave_request)
+        self.clear_retired_wave_request.hide()
+        controls_layout.addWidget(self.clear_retired_wave_request)
+        self.mixed_wave_location = QLabel(
+            "Particle scanning is available here. For mixed-coherence wave observations, "
+            "use Electron beam or Transverse beam.")
+        self.mixed_wave_location.setWordWrap(True)
+        self.mixed_wave_location.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        controls_layout.addWidget(self.mixed_wave_location)
         fourdstem_group = QGroupBox("4D-STEM diffraction cube")
         fourdstem_group.setObjectName("stemFourDSTEMGroup")
         fourdstem_form = QFormLayout(fourdstem_group)
@@ -639,17 +666,37 @@ class ScanControlView(QWidget):
             "padding: 6px;"
         )
         detector_layout.addWidget(self.image_model_notice)
+        self.saved_mixed_notice = QLabel()
+        self.saved_mixed_notice.setObjectName("savedMixedStemNotice")
+        self.saved_mixed_notice.setWordWrap(True)
+        self.saved_mixed_notice.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.saved_mixed_notice.hide()
+        detector_layout.addWidget(self.saved_mixed_notice)
         model_action_row = QHBoxLayout()
-        self.enable_wave_images = QPushButton("Enable CIF wave imaging")
+        self.enable_wave_images = QPushButton("Retired STEM wave action")
         self.enable_wave_images.setObjectName("stemEnableCifWaveImages")
         self.enable_wave_images.setToolTip(
-            "Coherent tip-to-column imaging is paused. "
-            "Click Calculate STEM separately; the displayed frame remains unchanged."
+            "This historical action cannot enable new wave calculations. "
+            "Use Electron beam or Transverse beam for mixed-wave observations."
         )
-        self.enable_wave_images.clicked.connect(lambda: self.wave_scan_enabled.setChecked(True))
-        self.wave_image_action_note = QLabel("Then click Calculate STEM to calculate specimen contrast.")
+        self.enable_wave_images.setEnabled(False)
+        self.enable_wave_images.hide()
+        self.wave_image_action_note = QLabel(
+            "Mixed-coherence wave observations are available in Electron beam and Transverse beam.")
         self.wave_image_action_note.setWordWrap(True)
         model_action_row.addWidget(self.enable_wave_images)
+        self.export_mixed_scan = QPushButton("Export mixed scan…")
+        self.export_mixed_scan.setObjectName("exportMixedStemScan")
+        self.export_mixed_scan.setEnabled(False)
+        self.export_mixed_scan.setToolTip("Export the retained mixed acquisition to a new directory. Existing results are never overwritten.")
+        self.export_mixed_scan.clicked.connect(self.export_mixed_scan_requested)
+        model_action_row.addWidget(self.export_mixed_scan)
+        self.load_mixed_scan = QPushButton("Load mixed scan…")
+        self.load_mixed_scan.setObjectName("loadMixedStemScan")
+        self.load_mixed_scan.setToolTip(
+            "Read a checked mixed-scan export directory. No CUDA calculation, ray history or working point is created.")
+        self.load_mixed_scan.clicked.connect(self.load_mixed_scan_requested)
+        model_action_row.addWidget(self.load_mixed_scan)
         model_action_row.addWidget(self.wave_image_action_note, 1)
         detector_layout.addLayout(model_action_row)
         interpretation = QLabel(
@@ -677,6 +724,7 @@ class ScanControlView(QWidget):
         self.detector_image_views = {}
         self.detector_image_items = {}
         self.detector_geometry_labels = {}
+        self.detector_title_labels = {}
         self.detector_sampling_labels = {}
         self.detector_contrast_labels = {}
         for key in STEM_DETECTOR_KEYS:
@@ -684,6 +732,7 @@ class ScanControlView(QWidget):
             panel_layout = QVBoxLayout(panel)
             panel_layout.setContentsMargins(0, 0, 0, 0)
             label = QLabel(key.upper())
+            self.detector_title_labels[key] = label
             label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             geometry_label = QLabel(
                 "Detector geometry and collection angle available after "
@@ -785,6 +834,25 @@ class ScanControlView(QWidget):
         self.result_tabs.addTab(geometry_page, "Geometry")
         self.result_tabs.addTab(detector_page, "Images")
         self.result_tabs.addTab(fourdstem_page, "4D-STEM")
+        self.exit_diffraction_page = QWidget()
+        diffraction_layout = QVBoxLayout(self.exit_diffraction_page)
+        self.exit_diffraction_summary = QLabel("Calculate Mixed coherent CUDA to inspect a selected-position exit diffraction pattern.")
+        self.exit_diffraction_summary.setWordWrap(True)
+        self.exit_diffraction_summary.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        diffraction_layout.addWidget(self.exit_diffraction_summary)
+        self.exit_diffraction_scale = QComboBox()
+        self.exit_diffraction_scale.addItems(("Log intensity", "Linear intensity"))
+        self.exit_diffraction_scale.currentIndexChanged.connect(self._render_mixed_diffraction)
+        diffraction_layout.addWidget(self.exit_diffraction_scale)
+        self.exit_diffraction_view = pg.PlotWidget(background="#050816")
+        self.exit_diffraction_view.setLabel("bottom", "Spatial frequency X", units="1/Å")
+        self.exit_diffraction_view.setLabel("left", "Spatial frequency Y", units="1/Å")
+        self.exit_diffraction_view.getViewBox().setAspectLocked(True)
+        self.exit_diffraction_image = pg.ImageItem()
+        self.exit_diffraction_image.setLookupTable(pg.colormap.get("viridis").getLookupTable())
+        self.exit_diffraction_view.addItem(self.exit_diffraction_image)
+        diffraction_layout.addWidget(self.exit_diffraction_view, 1)
+        self.result_tabs.addTab(self.exit_diffraction_page, "Exit diffraction")
 
         self.content_splitter = QSplitter(Qt.Orientation.Horizontal)
         self.content_splitter.setObjectName("scanContentSplitter")
@@ -1019,7 +1087,7 @@ class ScanControlView(QWidget):
             self.wave_scan_enabled.setChecked(
                 bool(getattr(state.sample, "stem_wave_enabled", False))
             )
-            self.wave_scan_enabled.setEnabled(self.wave_scan_enabled.isChecked())
+            self.wave_scan_enabled.setEnabled(False)
             self.fourdstem_enabled.setChecked(bool(getattr(
                 state.sample, "stem_fourdstem_enabled", False
             )))
@@ -1139,25 +1207,106 @@ class ScanControlView(QWidget):
         self._state.sample.stem_particle_model = model
         self.parameters_changed.emit("sample.stem_particle_model")
 
-    def _wave_scan_model_changed(self, enabled: bool) -> None:
+    def mixed_coherent_selected(self) -> bool:
+        return self.stem_scan_method.currentData() == "mixed_coherent_cuda"
+
+    def _scan_method_changed(self, *_args) -> None:
+        self.stem_particle_model.setEnabled(not self.mixed_coherent_selected())
+        self.mark_stem_frame_stale()
+        self._update_wave_image_action()
+        self.mixed_method_changed.emit()
+
+    def display_mixed_diffraction(self, diffraction) -> None:
+        self._mixed_diffraction = diffraction
+        self._render_mixed_diffraction()
+
+    def display_saved_mixed(self, frame, diffraction, *, state_snapshot, directory) -> None:
+        """Inspect stored images without replacing live controls or ray results."""
+        if not (getattr(frame, "metrics", None) or {}).get("read_only_saved_acquisition"):
+            raise ValueError("The saved mixed view needs an explicitly read-only acquisition")
+        self._set_playback_active(False)
+        self._set_stem_frame(frame, state_snapshot=state_snapshot, explicit_calculation=True)
+        self.detector_playback_summary.setText(
+            self._stem_frame_summary("Saved mixed frame loaded; read-only"))
+        self.display_mixed_diffraction(diffraction)
+        self.saved_mixed_notice.setText(
+            f"Saved mixed acquisition · read-only · {directory}\n"
+            "Images use the saved input snapshot. Live controls, ray history and working points remain unchanged.")
+        compatibility = (frame.metrics or {}).get("saved_input_compatibility") or {}
+        if compatibility.get("metadata_migrations"):
+            self.saved_mixed_notice.setText(self.saved_mixed_notice.text()
+                + "\nFixed-surface metadata was initialized for display; original inputs and source records are unchanged.")
+        self.saved_mixed_notice.show()
+        self.result_tabs.setCurrentIndex(1)
+        self.calculation_bar.status.setText("Loaded saved mixed scan for read-only inspection; no ray history loaded.")
+
+    def _render_mixed_diffraction(self, *_args) -> None:
+        data = self._mixed_diffraction
+        if data is None:
+            self.exit_diffraction_image.clear()
+            self.exit_diffraction_summary.setText(
+                "Calculate Mixed coherent CUDA to inspect a selected-position exit diffraction pattern.")
+            return
+        values = data.probability
+        maximum = max(float(values.max()), np.finfo(float).tiny)
+        display = (np.log1p(1000.*values/maximum)/np.log1p(1000.)
+                   if self.exit_diffraction_scale.currentIndex() == 0 else values)
+        self.exit_diffraction_image.setImage(display.T, autoLevels=False,
+            levels=(0., 1. if self.exit_diffraction_scale.currentIndex() == 0 else maximum))
+        fx, fy = data.frequency_x_inv_angstrom, data.frequency_y_inv_angstrom
+        dx = float(fx[0, 1]-fx[0, 0])
+        dy = float(fy[1, 0]-fy[0, 0])
+        self.exit_diffraction_image.setRect(QRectF(float(fx.min())-.5*dx,
+            float(fy.min())-.5*dy, values.shape[1]*dx, values.shape[0]*dy))
+        self.exit_diffraction_view.autoRange()
+        position = data.position_nm
+        selected = ("Position not recorded" if position is None else
+                    "Selected specimen position " + ", ".join(f"{float(v):.6g}" for v in position) + " nm")
+        if getattr(data, "read_only_saved_acquisition", False):
+            selected = "Saved read-only pattern | " + selected
+        if self._stem_frame_stale:
+            selected = "Previous pattern | inputs changed | " + selected
+        self.exit_diffraction_summary.setText(selected + " | " + data.reference
+            + ". This is one resident exit pattern, not a raster average or a 4D-STEM cube.")
+
+    def _clear_retired_wave_request(self) -> None:
+        """Explicitly remove the live retired request without changing saved frames."""
         if self._updating or self._state is None:
             return
-        self._state.sample.stem_wave_enabled = bool(enabled)
-        self.wave_scan_enabled.setEnabled(bool(enabled))
+        if not bool(getattr(self._state.sample, "stem_wave_enabled", False)):
+            return
+        self._state.sample.stem_wave_enabled = False
+        self.wave_scan_enabled.setChecked(False)
         self._update_wave_image_action()
         self.parameters_changed.emit("sample.stem_wave_enabled")
 
     def _update_wave_image_action(self) -> None:
         sample = getattr(self._state, "sample", None)
-        enabled = bool(getattr(sample, "stem_wave_enabled", False))
-        self.enable_wave_images.setVisible(self._wave_action_needed)
-        self.wave_image_action_note.setVisible(self._wave_action_needed)
+        retired_requested = bool(getattr(sample, "stem_wave_enabled", False))
+        self.wave_scan_enabled.hide()
+        self.wave_scan_enabled.setEnabled(False)
+        self.enable_wave_images.hide()
         self.enable_wave_images.setEnabled(False)
-        self.enable_wave_images.setText("Coherent imaging paused")
-        note = "Classical tip particles are active. Coherent tip-to-column imaging is not qualified; historical images remain viewable."
+        self.clear_retired_wave_request.setVisible(retired_requested)
+        self.clear_retired_wave_request.setEnabled(retired_requested)
+        mixed = self.mixed_coherent_selected()
+        self.clear_retired_wave_request.setText("Clear retired wave request" if mixed else "Use particle scan")
+        note = ("This configuration contains a retired STEM wave request. Click "
+                + self.clear_retired_wave_request.text() + " to clear it before a new scan. "
+                if retired_requested else "")
+        if mixed:
+            note += ("Mixed coherent CUDA: rigid specimen-plane probe translation. BF 0–15 mrad and "
+                "ADF 50–150 mrad are ideal exit-angle windows, not installed detector stations. "
+                "Coherence settings are shared with Electron beam.")
+        else:
+            note += ("Calculate STEM uses particle scanning. Choose Mixed coherent CUDA for a mixed-wave raster; "
+                     "Electron beam and Transverse beam retain single-plane wave observations.")
+        self.mixed_wave_location.setText(note)
+        note += " Historical frames retain their captured method."
         if self._showing_bank_images():
             note += " The bank image retains its captured settings."
         self.wave_image_action_note.setText(note)
+        self.wave_image_action_note.show()
 
     def _sync_fourdstem_control_state(self) -> None:
         capture_enabled = self.fourdstem_enabled.isChecked()
@@ -2087,6 +2236,10 @@ class ScanControlView(QWidget):
         elif complete:
             self._stem_frame = None
             self._stem_frame_context = None
+            self.display_mixed_diffraction(None)
+            self.export_mixed_scan.setEnabled(False)
+            self.saved_mixed_notice.hide()
+            self.image_source.setItemText(self.image_source.findData("current"), "Current calculation")
             if not self._showing_bank_images():
                 self._clear_detector_images()
                 self._update_image_model_notice(None)
@@ -2250,6 +2403,7 @@ class ScanControlView(QWidget):
         if self._stem_frame is None:
             return
         self._stem_frame_stale = True
+        self._render_mixed_diffraction()
         self.match_detector_sampling.setEnabled(False)
         self._set_playback_active(False)
         if self._showing_bank_images():
@@ -2336,6 +2490,14 @@ class ScanControlView(QWidget):
     def _set_stem_frame(self, frame, *, state_snapshot=None, explicit_calculation=False) -> None:
         self._validate_stem_frame(frame)
         new_pass = frame is not self._stem_frame or explicit_calculation
+        mixed_pattern = (getattr(frame, "metrics", None) or {}).get("mixed_exit_diffraction")
+        saved = bool((getattr(frame, "metrics", None) or {}).get("read_only_saved_acquisition"))
+        self.saved_mixed_notice.hide()
+        self.image_source.setItemText(self.image_source.findData("current"),
+            "Saved mixed scan (read-only)" if saved else "Current calculation")
+        self._stem_frame_stale = False
+        self.display_mixed_diffraction(None if mixed_pattern is None else SimpleNamespace(**mixed_pattern))
+        self.export_mixed_scan.setEnabled(False)
         if new_pass and self._playback_timer.isActive():
             self._playback_timer.stop()
             self.playback_active_changed.emit(False)
@@ -2365,11 +2527,13 @@ class ScanControlView(QWidget):
             self._wave_action_needed = True
             self._update_wave_image_action()
             self.image_model_notice.setText(
-                "No STEM frame | Click Calculate STEM · coherent imaging paused"
+                "No STEM frame | Select Particles or Mixed coherent CUDA, then Calculate STEM"
             )
             self.image_model_notice.setToolTip(
                 "Enable the AC raster, then click Calculate STEM on this page. "
-                "Current calculations use classical particles; atomic wave contrast is paused."
+                "Mixed coherent CUDA uses the current Electron beam source settings "
+                "and ideal specimen-exit BF/ADF windows. Single-plane mixed-wave "
+                "observations remain available in Electron beam or Transverse beam."
             )
             return
         metrics = getattr(frame, "metrics", None) or {}
@@ -2424,7 +2588,7 @@ class ScanControlView(QWidget):
                 + ("CIF-derived material composition and density may enter finite-particle transport; "
                    "the CIF lattice is not propagated at each scan pixel. " if material_transport
                    else "The selected CIF structure is not used by this geometry preview. ")
-                + f"{cif_note} Coherent atomic-contrast imaging is currently paused.{scale}"
+                + f"{cif_note} This particle preview does not calculate coherent lattice contrast.{scale}"
             )
             text = (
                 ("Material particle preview | CIF atomic contrast not calculated" if material_transport
@@ -2438,6 +2602,16 @@ class ScanControlView(QWidget):
             colour = (
                 "color: #92400e; background: #fffbeb; border: 1px solid #f59e0b;"
             )
+        elif model == "near_specimen_mixed_coherent_cuda":
+            text = "Mixed coherent CUDA | ideal exit-angle BF / ADF" + compact_scale
+            detail_text = ("Actual particle-conditioned mixed modes propagated through the selected specimen. "
+                "The raster rigidly translates the specimen-plane probe. BF 0–15 mrad and ADF 50–150 mrad "
+                "are ideal exit-angle windows; installed detector stations and scan-coil waveforms are not retraced. "
+                "Intensities and currents retain the original emitted-source reference. " + scale)
+            if metrics.get("read_only_saved_acquisition"):
+                text = "Saved acquisition | read-only | " + text
+                detail_text += " Loaded images are independent of the live controls. No ray history or working point was reconstructed."
+            colour = "color: #166534; background: #f0fdf4; border: 1px solid #22c55e;"
         elif model == "projected_atomic_scattering":
             text = "Projected-atom scattering approximation" + compact_scale
             detail_text = (
@@ -2695,6 +2869,18 @@ class ScanControlView(QWidget):
         )
 
     def _update_detector_geometry_labels(self, frame, *, bank=False) -> None:
+        metrics = getattr(frame, "metrics", None) or {}
+        mixed = metrics.get("model") == "near_specimen_mixed_coherent_cuda"
+        for key, title in self.detector_title_labels.items():
+            title.setText("ADF" if mixed and key == "haadf" else key.upper())
+        if mixed:
+            windows = metrics.get("ideal_exit_angle_detectors_mrad", {})
+            for key, label in self.detector_geometry_labels.items():
+                window = windows.get(key)
+                label.setText("Not requested for this mixed scan" if window is None else
+                    f"Ideal exit-angle window {window[0]:g}–{window[1]:g} mrad")
+                label.setToolTip("Virtual angular diagnostic at the specimen exit. No installed detector-station current or conjugacy is claimed.")
+            return
         image_state = self._image_context(frame, bank=bank)
         detectors = {
             str(detector.key): detector
@@ -2809,20 +2995,24 @@ class ScanControlView(QWidget):
         frame = self._stem_frame if frame is None else frame
         metrics = getattr(frame, "metrics", None) or {}
         model = str(metrics.get("model", "detector signal"))
+        mixed = model == "near_specimen_mixed_coherent_cuda"
+        if mixed:
+            model = "Mixed coherent BF/ADF"
         values = []
         report = frame_sampling_report(metrics)
         for key in STEM_DETECTOR_KEYS:
             signal = frame.detector_signals.get(key)
             if signal is not None:
+                label = "ADF" if mixed and key == "haadf" else key.upper()
                 status = (report or {}).get("detectors", {}).get(key, {}).get("status")
                 if report is not None and not report.get("illumination_covered", True):
-                    values.append(f"{key.upper()} invalid (illumination undersampled)")
+                    values.append(f"{label} invalid (illumination undersampled)")
                     continue
                 if status == "outside" and not metrics.get("rutherford_tail_enabled"):
-                    values.append(f"{key.upper()} not simulated (outside grid)")
+                    values.append(f"{label} not simulated (outside grid)")
                     continue
                 values.append(
-                    f"{key.upper()} mean fraction {float(signal.fraction):.5g} "
+                    f"{label} mean fraction {float(signal.fraction):.5g} "
                     f"({float(signal.current_pa):.5g} pA)"
                     + (f" [{status} band]" if status and status != "full" else "")
                 )

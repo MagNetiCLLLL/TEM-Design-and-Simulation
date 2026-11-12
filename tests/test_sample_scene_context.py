@@ -249,7 +249,11 @@ def test_gl_renderer_contract_keeps_finite_outline_in_lab_frame(fallback_scene, 
     np.testing.assert_allclose(local.min(axis=0), [127, -248, -5], rtol=0, atol=1e-12)
     np.testing.assert_allclose(local.max(axis=0), [139, -232, 5], rtol=0, atol=1e-12)
     np.testing.assert_allclose(subset.max(axis=0) - subset.min(axis=0), snapshot.atom_display_size_nm)
-    expected_atoms = snapshot.atom_positions_nm @ np.asarray(snapshot.orientation_matrix) @ draft.T
+    # The added downstream slab changes the local lattice offset. Draft
+    # rotations change the crystal about that fixed lab-frame phase origin.
+    phase_origin = np.asarray((0.,0.,snapshot.lattice_translation_z_nm))
+    expected_atoms = ((snapshot.atom_positions_nm-phase_origin)
+        @ np.asarray(snapshot.orientation_matrix) @ draft.T+phase_origin)
     expected_atoms[:, :2] += centre[:2]
     np.testing.assert_allclose(atoms[0][0], expected_atoms, rtol=0, atol=1e-12)
     np.testing.assert_array_equal(atoms[0][1], snapshot.atomic_numbers)

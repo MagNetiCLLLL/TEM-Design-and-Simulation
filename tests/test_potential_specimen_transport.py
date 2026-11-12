@@ -454,21 +454,44 @@ def test_zero_loss_branch_uses_real_material_attenuation_with_same_potential(tmp
         assert not row["column_transport_context"]["material_kinetic_history"]["completed_energy_segments"]
 
 
-@pytest.mark.parametrize("case", ("dynamic", "support", "tilt", "entrance"))
+@pytest.mark.parametrize("case", ("dynamic", "support", "entrance"))
 def test_unadmitted_material_field_geometry_rejects_before_atom_preparation(tmp_path, monkeypatch, case):
     state, entrance = _fixture()
     snapshot = _snapshot(state, dynamic=case == "dynamic")
     if case == "support":
         state.sample.eds_support_material_key = "copper"
-    if case == "tilt":
-        from temsim.specimen.geometry import quaternion_from_euler_xyz_deg
-        state.sample.specimen_orientation_quaternion_wxyz = quaternion_from_euler_xyz_deg((1., 0., 0.))
     if case == "entrance":
         entrance = replace(entrance, plane_z_mm=np.nextafter(entrance.plane_z_mm, np.inf))
     monkeypatch.setattr("temsim.physics.specimen_wave_transport._prepare_material_grid",
         lambda *args, **kwargs: pytest.fail("Unadmitted case reached potential preparation"))
     with pytest.raises(ValueError):
         _run(state, entrance, snapshot, tmp_path)
+
+
+def test_crystal_orientation_reaches_atom_preparation_with_unchanged_lab_faces(tmp_path, monkeypatch):
+    """Crystal rotation changes lattice coordinates, not the axial slab faces."""
+    from temsim.specimen.geometry import quaternion_from_euler_xyz_deg
+    state, entrance = _fixture()
+    orientation = quaternion_from_euler_xyz_deg((35., 45., 0.))
+    state.sample.specimen_orientation_quaternion_wxyz = orientation
+    centre, thickness = state.sample.z_mm, state.sample.thickness_nm
+    snapshot = _snapshot(state)
+
+    class PreparedAtoms(RuntimeError):
+        pass
+
+    def prepare(captured_state, checkpoint, **kwargs):
+        assert captured_state.sample.z_mm == centre
+        assert captured_state.sample.thickness_nm == thickness
+        np.testing.assert_array_equal(captured_state.sample.specimen_orientation_quaternion_wxyz, orientation)
+        assert checkpoint.plane_z_mm == centre - thickness * .5e-6
+        raise PreparedAtoms("Mocked atom preparation reached; no wave propagation")
+
+    monkeypatch.setattr("temsim.physics.specimen_wave_transport._prepare_material_grid", prepare)
+    with pytest.raises(PreparedAtoms, match="Mocked atom preparation reached"):
+        _run(state, entrance, snapshot, tmp_path)
+    assert state.sample.z_mm == centre and state.sample.thickness_nm == thickness
+    np.testing.assert_array_equal(state.sample.specimen_orientation_quaternion_wxyz, orientation)
 
 
 def test_material_cannot_silently_discard_a_malformed_cumulative_kinetic_ledger(tmp_path, monkeypatch):

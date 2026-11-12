@@ -15,7 +15,7 @@ from temsim.optics.electron_gun.tip_coherence import TIP_REFERENCE
 from temsim.physics.beam_comparison import _WavePlaneMoments, wave_plane_moments
 from temsim.physics.multiplane_wave import PlaneWave
 from temsim.physics.tip_gun_wave import TipGunCheckpoint
-from temsim.physics.tip_wave_pipeline import TipWaveRequest
+from temsim.physics.mixed_wave_pipeline import MixedWaveRequest
 from temsim.physics.wave_checkpoint_store import ExecutedWaveStore, wave_read_session
 from temsim.physics.wave_flux import BeamState, WaveMode
 import temsim.physics.wave_checkpoint_store as store_module
@@ -187,7 +187,7 @@ def test_read_session_budget_validation(budget):
 
 def test_gui_read_session_budget_is_bounded_and_reserved():
     from types import SimpleNamespace
-    request = TipWaveRequest()
+    request = MixedWaveRequest()
     state = SimpleNamespace(electron_gun=SimpleNamespace(emitter=SimpleNamespace(surface_model=None)))
     assert _wave_read_session_bytes(request) == 128*1024**2
     low = replace(request, maximum_readout_bytes=1024,
@@ -218,7 +218,6 @@ def test_paired_worker_uses_single_stream_for_preview_and_comparison_and_release
         for mode in checkpoint.beam.modes:
             del mode
         return SimpleNamespace(checkpoint=checkpoint)
-    monkeypatch.setattr(gui, "simulate_tip_wave", solve)
     monkeypatch.setattr(gui, "_plane_magnetic_gauge", lambda *_: None)
     plane = SimpleNamespace(z_mm=checkpoint.plane_z_mm,
         x_m=np.array((-1., 1.))*1e-9, y_m=np.array((0., 0.)),
@@ -227,12 +226,13 @@ def test_paired_worker_uses_single_stream_for_preview_and_comparison_and_release
         ray_count=2, provenance="Incident")
     monkeypatch.setattr(plane_data, "sample_beam_plane", lambda *_: plane)
     # Zero retention tests the same path used by modes larger than the cap.
-    request = TipWaveRequest(stop="plane", observation_z_mm=checkpoint.plane_z_mm,
+    request = MixedWaveRequest(stop="plane", observation_z_mm=checkpoint.plane_z_mm,
                              maximum_readout_bytes=1)
     event = Event()
     if cancelled:
         event.set()
-    worker = gui._WaveWorker(1, 1, state, request, event, pair_context=context)
+    worker = gui._WaveWorker(1, 1, state, request, event, pair_context=context,
+        observer=SimpleNamespace(observe=lambda *_args, **_kwargs: solve()))
     solved, failed, finished = [], [], []
     worker.signals.solved.connect(lambda *args: solved.append(args))
     worker.signals.failed.connect(lambda *args: failed.append(args))

@@ -1,0 +1,82 @@
+{
+  "schema": "detached-entrance-anchored-si110-v1",
+  "status": "PURE_GEOMETRY_VERIFIED",
+  "created_utc": "2026-11-11T22:50:25.141927+00:00",
+  "original_default_profile_sha256": "4d8e068166a9b03176e9a83167ba72f8743645241866d778b1d7b7fb8de277fc",
+  "original_cif": "F:\\tem_simulator_v2\\configs\\specimens\\Si.cif",
+  "original_cif_sha256": "944c5c81df5d813d051f96102eb9be37fac4b7647c2a9d1492d6333122be42c7",
+  "translated_cif": "F:\\tem_simulator_v2\\outputs\\mixed-stem-si110-10nm-20261111\\anchored-source\\Si110_10nm_entrance_anchored.cif",
+  "translated_cif_sha256": "e55aea3dcd96d74e295e529195365216bc1c22716c87bf763c254bbde8148a98",
+  "original_unit_cell_angstrom": [
+    [
+      5.44370237,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      5.44370237,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      5.44370237
+    ]
+  ],
+  "atoms_per_unit_cell": 8,
+  "all_sites_fully_occupied": true,
+  "cell_and_atomic_numbers_preserved": true,
+  "old_thickness_nm": 0.4,
+  "new_thickness_nm": 10.0,
+  "old_sample_center_z_mm": 1599.2,
+  "new_sample_center_z_mm": 1599.2000048000002,
+  "upper_surface_z_mm": 1599.1999998000001,
+  "lower_surface_z_mm": 1599.2000098000003,
+  "requested_center_shift_nm": 4.8,
+  "represented_lab_center_shift_nm": 4.800000169780105,
+  "local_lattice_phase_reference_depth_nm": 0.2,
+  "translation_lab_angstrom": [
+    0.0,
+    0.0,
+    -48.0
+  ],
+  "translation_crystal_angstrom": [
+    -33.94112549695429,
+    -33.941125496954285,
+    2.1316282072803006e-14
+  ],
+  "crystal_to_lab_rotation": [
+    [
+      -0.7071067811865479,
+      0.7071067811865478,
+      -1.1102230246251565e-16
+    ],
+    [
+      1.1102230246251565e-16,
+      -2.220446049250313e-16,
+      1.0000000000000002
+    ],
+    [
+      0.7071067811865478,
+      0.7071067811865477,
+      -4.440892098500626e-16
+    ]
+  ],
+  "orientation_quaternion_preserved": true,
+  "upper_surface_unchanged": true,
+  "all_non_sample_inputs_unchanged": true,
+  "caller_state_unchanged": true,
+  "step_mm": 0.025,
+  "history_step_mm": 2.0,
+  "source_energy_FWHM_eV": 0.3,
+  "original_source_particle_count": 16384,
+  "geometry_tolerance_angstrom": 5e-08,
+  "scope": "Static input geometry only; no particle, potential-slice or coherent propagation executed",
+  "comparison_roi_width_angstrom": 40.0,
+  "original_thin_atoms_in_roi": 461,
+  "new_atoms_in_original_thin_depth": 461,
+  "total_10nm_atoms_in_roi": 7904,
+  "maximum_bidirectional_site_error_angstrom": 4.4298316057654415e-14,
+  "original_thin_slab_atomic_positions_preserved": true
+}

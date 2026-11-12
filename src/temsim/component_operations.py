@@ -259,6 +259,17 @@ def placed_component_document(document, key, center_z_mm, *, include_children=Tr
     delta = center - _number(original["local_center_z_mm"], "Original centre")
     candidate["parts"] = [translated_component(row, delta) if row["key"] in selected else row
                           for row in candidate["parts"]]
+    if key == "sample":
+        # The movable foil is not the mechanical datum of the fixed pole-gap
+        # stage. Preserve a historical sample-anchored stage at its existing
+        # physical origin when placing the foil independently.
+        from temsim.subassemblies import resolved_origins
+        origins = resolved_origins(document)
+        for entry in candidate.get("subassemblies", ()):
+            placement = entry["placement"]
+            if (entry["key"] == "sample_stage" and placement["mode"] == "anchor"
+                    and placement["reference_part"] == key):
+                entry["placement"] = {"mode": "fixed", "origin_z_mm": origins[entry["key"]]}
     return candidate, selected
 
 

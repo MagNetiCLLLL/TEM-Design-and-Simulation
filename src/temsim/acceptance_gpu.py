@@ -69,6 +69,19 @@ GPU_TEST_FUNCTIONS = {
         "test_viewer_runs_without_replacing_instrument_state_and_keeps_failed_result",
         "test_cli_executes_and_exports_coherent_near_field",
     ),
+    "test_surface_wave.py": (
+        "test_actual_tip_near_field_preserves_complex_fields_flux_and_exact_cache",
+        "test_cuda_driven_boundary_matches_cpu_reference",
+    ),
+    "test_condensed_wave_boundary.py": (
+        "test_cuda_condensed_boundary_matches_cpu_reference",
+    ),
+    "test_surface_mode_cache.py": (
+        "test_actual_completed_energy_resumes_without_reexecuting_it_or_losing_phase",
+    ),
+    "test_surface_mode_evidence.py": (
+        "test_actual_energy_outputs_survive_later_interruption_and_keep_full_state",
+    ),
     "test_ideal_reference_pipeline.py": (
         "test_reference_shares_gun_but_never_reuses_physical_plane_prefix",
         "test_recomputed_identical_gun_is_independent_of_storage_location",

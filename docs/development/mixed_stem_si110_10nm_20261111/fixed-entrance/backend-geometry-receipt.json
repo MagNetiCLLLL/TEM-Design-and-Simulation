@@ -1,0 +1,53 @@
+{
+  "status": "PASS_STATIC_GEOMETRY_ONLY",
+  "scope": "No particle or coherent propagation; no default profile or CIF edited",
+  "default_profile_sha256": "4d8e068166a9b03176e9a83167ba72f8743645241866d778b1d7b7fb8de277fc",
+  "active_default": {
+    "centre_z_mm": 1599.2,
+    "thickness_nm": 0.4,
+    "upper_z_mm": 1599.1999998000001,
+    "lattice_reference_thickness_nm": 0.4
+  },
+  "thickness_edits": [
+    {
+      "old_thickness_nm": 0.4,
+      "new_thickness_nm": 10.0,
+      "upper_surface_z_mm": 1599.1999998000001,
+      "lower_surface_z_mm": 1599.2000098,
+      "sample_center_z_mm": 1599.2000048000002,
+      "policy": "Fixed upper surface; thickness changes extend only the downstream face"
+    },
+    {
+      "old_thickness_nm": 10.0,
+      "new_thickness_nm": 20.0,
+      "upper_surface_z_mm": 1599.1999998000001,
+      "lower_surface_z_mm": 1599.2000198,
+      "sample_center_z_mm": 1599.2000098,
+      "policy": "Fixed upper surface; thickness changes extend only the downstream face"
+    },
+    {
+      "old_thickness_nm": 20.0,
+      "new_thickness_nm": 0.2,
+      "upper_surface_z_mm": 1599.1999998000001,
+      "lower_surface_z_mm": 1599.2,
+      "sample_center_z_mm": 1599.1999999000002,
+      "policy": "Fixed upper surface; thickness changes extend only the downstream face"
+    },
+    {
+      "old_thickness_nm": 0.2,
+      "new_thickness_nm": 0.4,
+      "upper_surface_z_mm": 1599.1999998000001,
+      "lower_surface_z_mm": 1599.2000002000002,
+      "sample_center_z_mm": 1599.2,
+      "policy": "Fixed upper surface; thickness changes extend only the downstream face"
+    }
+  ],
+  "upper_reference_float_preserved_exactly": true,
+  "all_non_sample_absolute_parts_unchanged": true,
+  "lens_controls_and_absolute_positions_unchanged": true,
+  "catalog_reload_and_snapshot_restore_preserve_upper": true,
+  "backend_new_static_cases": 20,
+  "latest_executed_suite": "outputs/mixed-stem-si110-10nm-20261111/sample-thickness-default-final-tests-v2.xml",
+  "suite_cases": 24,
+  "suite_breakdown": "20 new axial-reference cases plus 4 built-in specimen portability cases; execution counts are not added to overlapping prior suites"
+}

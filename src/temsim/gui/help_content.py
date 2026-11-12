@@ -302,52 +302,51 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
     HelpTopic(
         "coherent_beam",
         "Electron beam and phase plates",
-        "Calculate a captured coherent Tip state and inspect intensity, phase and probability flow.",
-        ("coherence", "Apply tip parameters", "Calculate beam", "Beam observation",
-         "phase plate", "wavefront", "tilt", "defocus", "sampling", "previous calculation",
-         "mode", "Z", "arrivals", "piston", "reference"),
+        "Continue accepted particles as a declared mixed wave near the specimen.",
+        ("coherence", "Calculate mixed wave", "Coherent wave", "Beam observation",
+         "phase plate", "mixed state", "specimen entrance", "sampling", "previous calculation",
+         "mode", "Z", "arrivals", "CUDA", "particles"),
         """
-        <p><b>Where:</b> <b>Electron beam</b>; its observation is also available under
-        <b>Ray Diagram → Beam observation</b>.</p>
-        <p>Select <b>Finite-Field Optics</b> in Simulation. The directly visible
-        <b>Coherent numerical settings</b> controls the initial and maximum grid,
-        energy samples, column step and working memory independently of particle
-        count. Physical source width and coherence remain source parameters.</p>
+        <p><b>Where:</b> <b>Electron beam</b>, <b>Ray Diagram → Beam observation</b>,
+        or the <b>Coherent wave</b> switch in <b>Transverse beam</b>.</p>
         <ol>
-          <li>Review <b>Tip parameters</b>, choose a supported emission/coherence
-          model and click <b>Apply tip parameters</b>. This applies the source edit
-          without starting propagation.</li>
-          <li>Select the current Tip, a saved emission state or an intensity overlay.
-          Set the observation Z, then click <b>Calculate beam</b>.</li>
-          <li>Use <b>Observe</b> to select Intensity, Electron arrivals, Beam current,
-          Phase plate, Probability flow, Angular distribution or Interactions.</li>
-          <li>For Phase plate, select one coherent mode. For a state overlay,
-          first choose the member with <b>Inspect state</b>.</li>
+          <li>Calculate particles with <b>Preview</b> or <b>High accuracy</b>.
+          A new physical handoff requires at least 1000 original positive-current
+          source particles. Aperture losses remain part of the result.</li>
+          <li>Choose a plane at the specimen entrance or downstream. Turn on
+          <b>Coherent wave</b> in Transverse beam, or use <b>Calculate mixed wave</b>
+          in Electron beam. A usable CUDA device is required.</li>
+          <li>Use <b>Observe</b> to inspect intensity, simulated electron arrivals,
+          current, one mode's phase, probability flow, angles or interactions.</li>
+          <li>Move Z to request another exact observation from the same mixed state.
+          Turn off <b>Coherent wave</b> to return to the recorded particle display.</li>
         </ol>
-        <h3>Read the result</h3>
-        <p><b>Phase plate</b> shows the actual single-mode transverse wavefront,
-        wrapped to [-π, π] radians. Tilt, defocus, aberrations and the inherited
-        constant phase remain. It is a wave observation, not an inserted hardware
-        phase plate. Independent modes add intensities; they have no single mixture phase.</p>
-        <p>Changing supported Z requests an exact plane from the captured calculation.
-        Cached compatible planes can be reused. This is not interpolation between
-        pictures. Arbitrary planes inside the gun or material may be unsupported.</p>
-        <p><b>Previous calculation</b> means the display belongs to earlier inputs.
-        After edits, wait for a new completed result or use Calculate beam.
-        Failure or cancellation can leave the previous complete observation visible.</p>
-        <p>Wrapped colours alone do not establish adequate phase sampling.
-        Fine fringes can remain unresolved even when an intensity or phase image is
-        displayed. Check sampling limits and numerical convergence; the default
-        Tip-to-image chain is not fully qualified.</p>
-        <p>Electron arrivals are a simulated exposure of the calculated probabilities.
-        Probability-flow arrows show local current directions, not measured trajectories.</p>
-        <h3>Compare with an ideal lens reference</h3>
-        <p>Choose <b>Wavefront comparison</b>, then <b>Compute reference</b> for an
-        additional calculation. The reference retains focusing and first-order
-        transport while removing the supported lens-aberration terms. Compare the
-        matching mode at the same Z. <b>Remove constant phase offset</b> changes
-        the difference view only. This comparison does not certify removal of
-        energy-spread effects and does not include longitudinal/time phase.</p>
+        <h3>What supplies the wave</h3>
+        <p>The accepted particle snapshot owns the source, lens settings, particle
+        identities, absolute weights, energies and arrival times. The program uses
+        an exact solver checkpoint at the specimen upper surface, continuing a
+        retained upstream checkpoint when necessary. Display interpolation is not
+        used as the physical handoff. It does not emit a replacement source or
+        restore current lost at apertures.</p>
+        <p>A declared Gaussian mixed-state model assigns local coherence near the
+        specimen. The source-image RMS and quadrature controls describe that model;
+        classical trajectories do not determine unique relative source phases.
+        Independent modes add intensity. They have no single combined phase.</p>
+        <p>Planes upstream of the handoff show particles only. New Tip-origin wave
+        calculations and saved Tip-state wave replays have been retired. Historical
+        wave results remain readable.</p>
+        <h3>Settings and cancellation</h3>
+        <p>Mixed-wave numerical settings control the wave grid, retained modes,
+        propagation step and memory independently of particle sampling. Changing
+        these settings cancels the current wave request and requires a new explicit
+        calculation. Instrument edits require updated particles before a new handoff.</p>
+        <p>Requested, calculating and displayed Z are separate. Compatible completed
+        planes can be reused; the program does not interpolate between wave images.
+        Cancel or failure can retain a previous complete observation with its original Z.</p>
+        <p><b>Phase plate</b> shows one executed mode's wrapped transverse phase.
+        It is an observation, not inserted hardware. Changing the intensity scale,
+        observation type or simulated exposure does not change the propagated fields.
+        A displayed image alone does not establish source, grid or slice convergence.</p>
         """,
     ),
     HelpTopic(

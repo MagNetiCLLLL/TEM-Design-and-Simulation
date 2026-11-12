@@ -34,10 +34,9 @@ The simulator does not currently provide autonomous microscope control.
   aperture losses remain visible; old calculations are marked after input edits.
 - Ray Diagram conjugate-plane searches from a pinned Z, with magnification,
   rotation and separate point-image / line-focus diagnostics.
-- **Calculate beam** on the **Electron beam** page for a captured Tip and
-  instrument state, with intensity, simulated electron arrivals, per-mode phase
-  and probability-flow observations, cached exact-Z planes and named
-  emission-state intensity overlays.
+- Physical particle transport through the gun and column, followed by explicit
+  mixed-coherence propagation near the specimen, with per-mode intensity,
+  phase and diffraction observations. Historical Tip-wave archives remain readable.
 - Small-angle installation offsets/tilts of post-gun lenses, deflectors,
   stigmators, corrector fields and circular apertures, using shared ray/wave
   geometry and fields. Finite tilted aperture plates need declared thickness;
@@ -55,34 +54,22 @@ quick-start workflows, beam and phase views, corrector controls and saved result
 Use **Ctrl+F** in Help to search all topic text. Help can stay open beside the
 simulator and its text can be selected and copied.
 
-The **Electron beam** page has its own **Calculate beam** button. The top
-**Run high-accuracy once** button prepares classical particle results for Ray
-Diagram and the specimen/detector pages. Apply supported Tip emission/phase
-parameters explicitly; opening the page or calculating never enables a source
-model or applies a draft.
-New coherent calculations temporarily require a usable CUDA device, driver
-and CuPy backend. They stop before propagation when CUDA is unavailable or CPU
-execution is selected, and do not fall back to CPU after a CUDA failure.
-Classical particles, input editing and reading completed results remain
-available on CPU-only computers.
-The default tip-to-image chain and arbitrary Z within the gun or material are
-not yet qualified. See [electron-beam inputs and limits](docs/COHERENT_BEAM.md).
-Models target physical mechanisms and qualitative parameter trends, rather than
-a calibrated commercial instrument or a fully validated microscope.
+New coherent work begins with an executed particle beam and introduces an
+explicit mixed-coherence model near the specimen. Keep the applied lens,
+corrector, source-energy and aperture settings, then calculate Preview or High
+accuracy particles before the local coherent stage. Independent modes contribute
+intensities; each mode retains its own complex phase and absolute weight.
 
-Choose the current Tip, a saved state or an intensity overlay on **Electron
-beam**, then press **Calculate beam**. Switch observation views without
-propagating again. Electron arrivals sample the calculated screen probabilities,
-including electrons that do not reach that screen; phase belongs to one coherent
-mode, and probability-flow arrows show local current directions rather than
-measured electron trajectories.
-For a same-input classical comparison, enable **Compare classical rays** under
-the advanced settings before Calculate beam. **Update rays** remains a fast
-particle preview; **Run high-accuracy once** (also available as **Simulation →
-Calculate classical rays**) prepares the classical Ray Diagram and the incident
-beam required by Scanning Image and the specimen/detector page calculations.
-Those pages reuse compatible executed particle states. Tab changes do not
-calculate. Live tuning retains its cutoff and continuation controls.
+Coherent propagation from the physical Tip and its old command-line workflows
+are retired. Completed historical waves remain readable, but cannot resume the
+Tip-origin calculation. See [the current mixed-coherence workflow](docs/MIXED_COHERENCE.md)
+and `python -m temsim.mixed_wave_cli --help` for the current command-line entry.
+
+New coherent calculations require usable CUDA, a driver and CuPy. They reject
+explicit CPU execution and do not retry on CPU after CUDA failure. Classical
+particles, input editing and reading completed results remain available without
+CUDA. Local coherence and phase are declared model assumptions, not a recovered
+Tip-to-specimen quantum phase or a calibrated commercial microscope.
 
 In **Ray Diagram**, select an axial Z and open **Conjugate planes**. Click
 **Find conjugate planes** to pin that reference and search the captured optics.
@@ -135,18 +122,31 @@ numerical settings: **Ideal Optics** uses fast thin optical events,
 potentials and geometry, with explicit source and solver support gates,
 and **Coupled Multiphysics** is reserved for future development. Existing saved
 `ideal` profiles keep their finite-field behavior. Particle count and step remain
-in the toolbar; **Coherent settings** opens the separate wave grid, energy,
-step and memory inputs. See [calculation models and numerical controls](docs/CALCULATION_MODES_AND_NUMERICS.md)
+in the toolbar; **Coherent settings** opens the local mixed-state, wave-grid,
+propagation-step and memory inputs. See [calculation models and numerical controls](docs/CALCULATION_MODES_AND_NUMERICS.md)
 and [shared-field execution and qualification boundaries](docs/UNIFIED_FIELD_EXECUTION.md).
-The [coherent UI route](docs/UNIFIED_WAVE_UI_ROUTE.md) documents admitted sources
-and fields; [calculation progress](docs/CALCULATION_PROGRESS.md) explains the
+The [mixed-coherence workflow](docs/MIXED_COHERENCE.md) documents the local handoff
+and its assumptions; [calculation progress](docs/CALCULATION_PROGRESS.md) explains the
 separate current-step and completed-stage indicators.
 
-Standard startup uses the tuned **Finite-Field Optics / Nanoprobe** default
-(approximately 10 mrad alpha95), with a 0.05 mm high-accuracy integration step.
-Saved-result startup retains the saved inputs. The
+Without a saved startup result, the desktop uses the ordinary **FEG / C3 +
+Probe Corrector** assembly and its **Finite-Field Optics / Nanoprobe** preset,
+with 3,000 source particles and a 0.05 mm maximum integration step. It does not
+automatically import a separate working-point package. The selected particle
+count and integration step remain visible; saved-result startup retains its
+captured inputs. The
 [default calibration report](docs/development/FINITE_FIELD_NANOPROBE_DEFAULT_2026-10-27.md)
 records the controls, fixed-particle validation limits and how to reload them.
+
+The physical **C2** two-condenser assembly is a separate choice. For its accepted
+10 mrad Nanoprobe/Diffraction working point, explicitly open the
+[captured C2 profile](docs/development/two_condenser_10mrad_20261112/projector/weak-c2-final-exact/final-exact-input.toml).
+This preserves C1/C2, Mini Condenser and Objective controls and keeps absent C3,
+Adapter Lens and probe-corrector hardware out of the calculation. For the C2
+mixed-scan experiment, explicitly select 16,384 original particles, retain the
+0.300 eV source FWHM, and set Si[110] thickness to 10 nm in **Sample**; thickness
+edits keep the upper surface fixed and extend downstream. Do not reload another
+assembly or apply a C3 preset after loading the accepted C2 inputs.
 
 For CIF-dependent HAADF/BF/DF projected image workflows, **Finite-Field Optics**
 uses the shared finite-field particle executor. First run **Run high-accuracy once**
@@ -156,9 +156,28 @@ approximation)** in Scanning Image, set the scan pixel size and click
 the executed probe footprint and physical downstream detector acceptance.
 It estimates thin-sample independent-atom contrast; BF/DF do not include Bragg
 interference or channeling. A broad probe or coarse sampling still removes
-atomic detail. **Material particle paths** retains the finite-volume particle
-transport readout. Auto contrast changes display limits only; actual intensity
+atomic detail. **Material particle paths** is a separate compatibility-model
+readout; Finite-Field Optics rejects that unmigrated acquisition explicitly.
+Auto contrast changes display limits only; actual intensity
 ranges remain visible. Loading a CIF does not enable coherent imaging.
+
+For mixed coherent BF/ADF acquisition, select **Mixed coherent CUDA** in
+**Scanning Image** and click **Calculate STEM (single frame)**. This route
+prepares the selected physical particles when necessary, introduces the current
+**Electron beam** local coherence settings at the specimen upper face, and
+propagates the mixed density through the imported specimen. **Exit diffraction**
+shows a retained scan-position pattern. BF 0–15 mrad and ADF 50–150 mrad are
+explicit ideal specimen-exit Fourier windows, independent of the installed
+downstream detector geometry. The original source-current denominator and losses
+are retained. See [mixed coherent STEM scope and validation](docs/MIXED_STEM_SCAN.md).
+Use **Load mixed scan...** to inspect an exported acquisition without running
+CUDA or replacing the current optical controls. Saved BF/ADF currents and the
+selected diffraction pattern are read with their original checksums.
+
+Changing specimen thickness keeps its upper surface fixed and adds material
+along +Z. The crystal reference also stays fixed, preserving the original
+entrance lattice termination. An explicit specimen placement establishes a
+new upper-surface reference; thickness changes do not move the holder or poles.
 
 The Sample page starts with **Vacuum sample**. To add material, import your own
 **CIF / MCIF**, set its dimensions and orientation, then click **Calculate

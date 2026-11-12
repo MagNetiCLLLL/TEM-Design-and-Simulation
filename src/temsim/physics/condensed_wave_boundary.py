@@ -10,8 +10,9 @@ import math
 import numpy as np
 from scipy.linalg import solve
 from scipy.sparse import csc_matrix
-from scipy.sparse.linalg import splu
 
+from temsim.physics.sparse_wave_device import CUDA_SPARSE_BACKEND, sparse_wave_solver
+from temsim.physics.wave_device import device_scope
 from temsim.physics.wave_execution import check_available_memory
 
 
@@ -23,7 +24,7 @@ def system_identity(matrix, rhs, boundary_size):
 
 
 class CondensedBoundary:
-    def __init__(self, matrix, rhs, boundary_size, *, maximum_working_bytes, cancelled):
+    def __init__(self, matrix, rhs, boundary_size, *, maximum_working_bytes, cancelled, compute_backend):
         total, inner = len(rhs), len(rhs)-boundary_size
         # Conservative array/factor allowance, not an assurance of LU fill.
         required = 16*(12*matrix.nnz+4*total*boundary_size+128*total)
@@ -31,21 +32,24 @@ class CondensedBoundary:
             raise MemoryError("Condensed wave boundary exceeds its numerical working-memory budget")
         check_available_memory(required)
         self.required_bytes = required
+        self.compute_backend = compute_backend
         if cancelled():
             raise InterruptedError("Condensed wave boundary cancelled")
         interior = matrix[:inner, :inner].tocsc()
         coupling = matrix[:inner, inner:]
         returning = matrix[inner:, :inner]
-        factor = splu(interior)
-        if cancelled():
-            raise InterruptedError("Condensed wave boundary cancelled")
         self.response = np.empty((inner, boundary_size), dtype=complex)
-        self.driven = factor.solve(rhs[:inner])
-        for start in range(0, boundary_size, 8):
+        with sparse_wave_solver(interior, compute_backend=compute_backend,
+                                maximum_working_bytes=maximum_working_bytes,
+                                rhs_columns=min(8, boundary_size)) as solve_interior:
             if cancelled():
                 raise InterruptedError("Condensed wave boundary cancelled")
-            stop = min(boundary_size, start+8)
-            self.response[:, start:stop] = factor.solve(coupling[:, start:stop].toarray(order="F"))
+            self.driven = solve_interior(rhs[:inner])
+            for start in range(0, boundary_size, 8):
+                if cancelled():
+                    raise InterruptedError("Condensed wave boundary cancelled")
+                stop = min(boundary_size, start+8)
+                self.response[:, start:stop] = solve_interior(coupling[:, start:stop].toarray(order="F"))
         self.schur = matrix[inner:, inner:].toarray()-returning@self.response
         self.rhs = rhs[inner:]-returning@self.driven
         # No LU factor is retained once the exact interior response is known.
@@ -53,10 +57,16 @@ class CondensedBoundary:
         self.original_rhs = rhs.copy()
         self.boundary_size = boundary_size
 
-    def solve(self, admittance, *, tolerance, cancelled):
+    def solve(self, admittance, *, tolerance, cancelled, maximum_working_bytes):
         if cancelled():
             raise InterruptedError("Condensed wave boundary cancelled")
-        trace = solve(self.schur-admittance, self.rhs, check_finite=False)
+        matrix = self.schur-admittance
+        if self.compute_backend == "CPU":
+            trace = solve(matrix, self.rhs, check_finite=False)
+        else:
+            with device_scope("Require GPU", maximum_working_bytes=maximum_working_bytes) as device:
+                cp = device.xp
+                trace = cp.asnumpy(cp.linalg.solve(cp.asarray(matrix), cp.asarray(self.rhs)))
         field = np.r_[self.driven-self.response@trace, trace]
         defect = self.matrix@field-self.original_rhs
         defect[-self.boundary_size:] -= admittance@trace
@@ -67,7 +77,7 @@ class CondensedBoundary:
 
 
 def solve_cached_boundary(matrix, rhs, admittance, cache, *, tolerance=1e-9,
-                          maximum_working_bytes=8*1024**3, cancelled=lambda: False):
+                          maximum_working_bytes=8*1024**3, cancelled=lambda: False, compute_backend="CPU"):
     """A single-entry, exact-matrix cache; changed source/field RHS invalidates it."""
     matrix, rhs, admittance = csc_matrix(matrix, dtype=complex), np.asarray(rhs, complex), np.asarray(admittance, complex)
     count = len(admittance)
@@ -79,15 +89,19 @@ def solve_cached_boundary(matrix, rhs, admittance, cache, *, tolerance=1e-9,
         raise ValueError("Condensed boundary residual tolerance must be finite and in (0, 1e-4]")
     if cancelled():
         raise InterruptedError("Condensed wave boundary cancelled")
-    key = system_identity(matrix, rhs, count)
+    digest = system_identity(matrix, rhs, count)
+    key = (digest, compute_backend)
     system = cache.get(key)
     hit = system is not None
     if system is None:
         cache.clear()  # Release the previous energy's response before allocation.
-        system = CondensedBoundary(matrix, rhs, count, maximum_working_bytes=maximum_working_bytes, cancelled=cancelled)
+        system = CondensedBoundary(matrix, rhs, count, maximum_working_bytes=maximum_working_bytes,
+                                   cancelled=cancelled, compute_backend=compute_backend)
         cache[key] = system
     elif type(maximum_working_bytes) is not int or system.required_bytes > maximum_working_bytes:
         raise MemoryError("Cached condensed boundary exceeds the requested working-memory budget")
-    value, residual = system.solve(admittance, tolerance=tolerance, cancelled=cancelled)
+    value, residual = system.solve(admittance, tolerance=tolerance, cancelled=cancelled,
+                                  maximum_working_bytes=maximum_working_bytes)
     return value, {"method": "exact-interior-schur-full-reconstruction-v1", "cache_hit": hit,
-                   "matrix_rhs_digest": key, "linear_residual": residual}
+                   "sparse_backend": "SciPy SuperLU" if compute_backend == "CPU" else CUDA_SPARSE_BACKEND,
+                   "matrix_rhs_digest": digest, "linear_residual": residual}

@@ -1,0 +1,31 @@
+{
+  "previous_wheel_sha256": "47eadc8427572679fac2add3009d6fc0d96e40b2dbeff2da01f50ee73ff1fbd8",
+  "changed_production_files": [
+    {
+      "file": "temsim/gui/scan_panel.py",
+      "previous_sha256": "c63e5f566496f7a1fc09a9837ada1668f533e3b41026096d8dd137dd4d57c94a",
+      "current_sha256": "4b502b33b20f450d2d9a1fe53819035c99744dab3bdf812cd57bcf1760615ef2"
+    },
+    {
+      "file": "temsim/physics/particle_wave_source.py",
+      "previous_sha256": "8de800afd6cbf9ad1076e658a5fa52189a76b594daad09a23a844e0ca916d2fd",
+      "current_sha256": "0b64b1958f0a9dcdca9faf020e35119576532b6a744e2cebf629d8db7f22de54"
+    }
+  ],
+  "unchanged_production_file_count": 757,
+  "UI_change": "Saved mixed-frame banner and readable Mixed coherent BF/ADF / ADF summary only",
+  "physics_file_formatting": {
+    "file": "temsim/physics/particle_wave_source.py",
+    "previous_bytes": 34849,
+    "current_bytes": 34847,
+    "difference": "Only two final newline bytes removed",
+    "bytes_equal_except_EOF_newlines": true,
+    "complete_AST_including_locations_equal_to_prior_wheel": true,
+    "executed_frozen_file": "F:\\tem_simulator_v2\\outputs\\mixed-stem-si110-10nm-20261111\\frozen-exact-lobato-wave\\temsim\\physics\\particle_wave_source.py",
+    "executed_frozen_file_sha256": "8de800afd6cbf9ad1076e658a5fa52189a76b594daad09a23a844e0ca916d2fd",
+    "complete_AST_including_locations_equal_to_executed_frozen": true,
+    "AST_dump_sha256": "6837818c399904685b24fb2098d429e2fdea391b7944f7b5bb2753b260a5dc5f",
+    "physical_numerics_unchanged": true
+  },
+  "patch": "F:\\tem_simulator_v2\\outputs\\mixed-stem-si110-10nm-20261111\\final-wheel-delivery\\source-ui-diff.patch"
+}

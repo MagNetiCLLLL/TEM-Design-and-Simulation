@@ -19,7 +19,6 @@ import math
 import numpy as np
 from scipy.constants import e, hbar, m_e
 from scipy.sparse import coo_matrix
-from scipy.sparse.linalg import splu
 
 from temsim.immutable_json import freeze_json, json_digest
 
@@ -205,7 +204,8 @@ def robin_port(points, edges, kinetic_ev):
 
 def solve_driven_wave(points, triangles, edges, potential, energy_ev, incident_amplitude,
                       *, matrices=None, linear_tolerance=1e-9, flux_tolerance=1e-8,
-                      top_load=None, cancelled=lambda: False):
+                      top_load=None, cancelled=lambda: False, compute_backend="CPU",
+                      maximum_working_bytes=8*1024**3):
     """One fixed-energy *incoming* reservoir mode, including reflected flux.
 
     Boundary: dn psi = i*k*psi - 2*i*k*a at the tip; dn psi=i*k*psi
@@ -240,9 +240,11 @@ def solve_driven_wave(points, triangles, edges, potential, energy_ev, incident_a
         matrix -= top_load if name == "top" and top_load is not None else 1j*port
     rhs = -2j*(ports["source"]@a)
     _cancel(cancelled)
-    factor = splu(matrix.tocsc())
-    _cancel(cancelled)  # SuperLU itself has no cooperative cancellation hook
-    psi = factor.solve(rhs)
+    from temsim.physics.sparse_wave_device import sparse_wave_solver
+    with sparse_wave_solver(matrix, compute_backend=compute_backend,
+                            maximum_working_bytes=maximum_working_bytes) as solve:
+        _cancel(cancelled)
+        psi = solve(rhs)
     error = np.linalg.norm(matrix@psi-rhs)/max(np.linalg.norm(rhs), np.finfo(float).tiny)
     if not np.all(np.isfinite(psi)) or not math.isfinite(error) or error > linear_tolerance:
         raise ValueError(f"Near-field linear residual {error:.3g} exceeds {linear_tolerance:.3g}")
@@ -260,10 +262,15 @@ def solve_driven_wave(points, triangles, edges, potential, energy_ev, incident_a
 _CACHE = OrderedDict()
 
 
-def compute_surface_wave(gun, numerics=SurfaceWaveNumerics(), *, use_cache=True,
+def compute_surface_wave(gun, numerics=SurfaceWaveNumerics(), *, use_cache=True, compute_backend="Auto",
                          cancelled=lambda: False, progress_callback=None):
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
+    from temsim.physics.compute_backend import require_coherent_cuda
+    _cancel(cancelled)
+    policy = require_coherent_cuda(compute_backend)
     return _compute_surface_wave(gun, numerics, use_cache=use_cache,
-        cancelled=cancelled, progress_callback=progress_callback)
+        cancelled=cancelled, progress_callback=progress_callback, compute_backend=policy)
 
 
 def prepare_surface_problem(gun, numerics=SurfaceWaveNumerics(), *, cancelled=lambda: False):
@@ -301,7 +308,8 @@ def guard_surface_column(state, numerics, *, prepare_column=None):
     return plan.signature
 
 
-def _compute_surface_wave(gun, numerics, *, use_cache, cancelled, progress_callback, problem_only=False):
+def _compute_surface_wave(gun, numerics, *, use_cache, cancelled, progress_callback, problem_only=False,
+                          compute_backend=None):
     """Compute only the tip-adjacent segment from physical inputs, never an exit source."""
     from temsim.calculation_manifest import solver_source_identity
     from temsim.instrument_snapshot import encode_instrument
@@ -309,6 +317,7 @@ def _compute_surface_wave(gun, numerics, *, use_cache, cancelled, progress_callb
     from temsim.physics.wave_execution import check_available_memory
     numerics.validate()
     _cancel(cancelled)
+    original_digest = json_digest(encode_instrument(gun))
     working = deepcopy(gun)
     working.validate()
     model = getattr(working.emitter, "surface_model", None)
@@ -326,18 +335,31 @@ def _compute_surface_wave(gun, numerics, *, use_cache, cancelled, progress_callb
         raise MemoryError(f"Coherent near field needs {count} nodes and an estimated {estimated} working bytes; increase the declared budget or revise numerical resolution")
     check_available_memory(estimated)
     boundary = field_request(working)
-    if numerics.exit_height_nm*1e-9 >= min(row[1] for row in boundary["rings"]):
-        raise ValueError("Near-field domain reaches an electrode; that conductor cannot be skipped")
+    r = np.linspace(0, extent, numerics.radial_nodes)
+    # Stable cap height, avoiding R-sqrt(R^2-r^2) cancellation near the axis.
+    radius = geometry.apex_radius_nm
+    bottom = -r*r/(radius+np.sqrt(radius**2-r*r))
+    exit_m, extent_m = numerics.exit_height_nm*1e-9, extent*1e-9
+    for _, start_m, stop_m, inner_m, outer_m, _ in boundary["rings"]:
+        # Keep this near-field operator upstream of downstream electrodes.
+        # Rear annuli may span the tip plane but still clear the full mesh.
+        if 0 <= start_m <= exit_m:
+            raise ValueError("Near-field domain reaches an electrode; that conductor cannot be skipped")
+        if start_m < 0 and inner_m <= extent_m:
+            edge = min(extent, outer_m*1e9)
+            edge_bottom_m = -edge**2/(radius+math.sqrt(radius**2-edge**2))*1e-9
+            if stop_m >= edge_bottom_m:
+                raise ValueError("Near-field domain reaches an electrode; that conductor cannot be skipped")
     implementation = solver_source_identity()
-    identity = json_digest({"gun": encode_instrument(working), "numerics": asdict(numerics),
-                            "field": boundary, "implementation": implementation})
+    working_graph = encode_instrument(working)
+    working_digest = json_digest(working_graph)
+    identity = json_digest({"gun": working_graph, "numerics": asdict(numerics),
+                            "field": boundary, "implementation": implementation,
+                            "compute_backend": compute_backend})
     if use_cache and identity in _CACHE:
         _cancel(cancelled)
         _CACHE.move_to_end(identity)
         return _CACHE[identity]
-    r = np.linspace(0, extent, numerics.radial_nodes)
-    # Stable cap height, avoiding R-sqrt(R^2-r^2) cancellation near the axis.
-    bottom = -r*r/(geometry.apex_radius_nm+np.sqrt(geometry.apex_radius_nm**2-r*r))
     for aperture in (working.dpa_aperture, working.c1_aperture):
         if aperture.enabled and bottom.min()*1e-6 <= aperture.z_mm <= numerics.exit_height_nm*1e-6:
             raise ValueError("Near-field domain reaches a gun aperture; its wave boundary cannot be skipped")
@@ -380,15 +402,18 @@ def _compute_surface_wave(gun, numerics, *, use_cache, cancelled, progress_callb
             progress_callback(index, len(energies), "Coherent tip near field")
         psi, flux = solve_driven_wave(points, triangles, edges, potential, float(energy), drive,
             matrices=matrices, linear_tolerance=numerics.linear_tolerance,
-            flux_tolerance=numerics.flux_tolerance, cancelled=cancelled)
+            flux_tolerance=numerics.flux_tolerance, cancelled=cancelled, compute_backend=compute_backend,
+            maximum_working_bytes=numerics.maximum_working_bytes)
         modes.append(SurfaceWaveMode(float(energy), float(weight), _immutable(psi.reshape(z.shape)), flux))
     _cancel(cancelled)
-    if solver_source_identity() != implementation or json_digest(encode_instrument(gun)) != json_digest(encode_instrument(working)):
+    if (solver_source_identity() != implementation or json_digest(encode_instrument(gun)) != original_digest
+            or json_digest(encode_instrument(working)) != working_digest):
         raise RuntimeError("Coherent surface inputs changed during execution; result not published")
     result = SurfaceWaveCheckpoint(_immutable(r), _immutable(z), _immutable(potential.reshape(z.shape)),
         tuple(modes), model.current_na*1e-9, freeze_json({
             "schema": "executed-coherent-tip-near-field-v1", "identity": identity,
             "source": model.to_dict(), "grounded_field": boundary, "implementation": implementation,
+            "wave_boundary_backend": "CuPy CUDA cuDSS reusable LU",
             "numerics": asdict(numerics), "estimated_working_bytes": estimated,
             "equation": "axisymmetric stationary scalar Schrodinger; nonrelativistic vacuum, no space charge",
             "phase": "Per-energy complex fields; different energies are incoherent; no aggregate phase",

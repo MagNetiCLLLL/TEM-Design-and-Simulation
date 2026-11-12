@@ -1,4 +1,5 @@
 """Export a development tip-to-detector calculation from an operating profile.
+Tip-origin coherent execution is retired; use python -m temsim.mixed_wave_cli --help.
 
 This does not enable TEM/STEM admission, fit a downstream source, or change the
 profile. Archives are inspectable numeric evidence; they are not live sources.
@@ -18,7 +19,7 @@ from temsim.assembly_catalog import AssemblyCatalog
 from temsim.immutable_json import thaw_json
 from temsim.calculation_manifest import solver_source_identity
 from temsim.optics.column import default_state
-from temsim.optics.electron_gun.tip_coherence import TipWaveNumerics, generate_tip_emission
+from temsim.optics.electron_gun.tip_coherence import TipWaveNumerics, describe_physical_tip_source
 from temsim.physics.tip_gun_wave import GunWaveNumerics
 from temsim.physics.tip_wave_pipeline import TipWaveRequest, simulate_tip_wave
 from temsim.physics.surface_wave import SurfaceWaveNumerics
@@ -117,7 +118,7 @@ def export_calculation(calculation, output, state, selection, elapsed_s):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--profile", type=Path, required=True, help="Operating profile with explicit FEG tip coherence")
+    parser.add_argument("--profile", type=Path, required=True, help="Historical input inspection only; new calculations use python -m temsim.mixed_wave_cli --help")
     parser.add_argument("--output", type=Path, help="New directory for computed complex arrays and evidence")
     parser.add_argument("--describe", action="store_true", help="Inspect tip inputs without propagating or writing results")
     parser.add_argument("--grid", type=int, default=128)
@@ -168,6 +169,9 @@ def main(argv=None):
     parser.add_argument("--scan-frame", type=int, default=0)
     add_gun_wave_arguments(parser)
     args = parser.parse_args(argv)
+    if not args.describe:
+        from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+        reject_retired_tip_coherent_workflow()
     if args.scan and args.stop == "tip_near_field":
         parser.error("A near-tip segment cannot produce scan images")
     if not args.describe and args.output is None:
@@ -182,6 +186,10 @@ def main(argv=None):
     selection, values = read_profile(args.profile)
     catalog.apply(state, selection)
     apply_profile_values(state, values)
+    if not args.describe:
+        from temsim.physics.compute_backend import validate_coherent_cuda_policy
+        validate_coherent_cuda_policy(state.acceleration_backend,
+            acceleration_enabled=state.acceleration_enabled)
     source_numerics = TipWaveNumerics(grid_pixels=args.grid, energy_samples=args.energy_samples,
         mode_tail_tolerance=args.mode_tail, maximum_modes=args.maximum_modes).validate()
     numerics = GunWaveNumerics(field_step_mm=args.field_step_mm, bore_step_mm=args.bore_step_mm,
@@ -217,9 +225,9 @@ def main(argv=None):
             if surface is not None and surface.coherence is not None:
                 source = {"tip": surface.to_dict(), "source_status": "CONFIGURED_NOT_PROPAGATED"}
             else:
-                emission = generate_tip_emission(state.electron_gun, source_numerics)
-                source = {"tip": thaw_json(emission.parameters), "source_record": thaw_json(emission.record),
-                          "source_status": "DOMAIN_CHECK_PASSED_NOT_PROPAGATED"}
+                definition = describe_physical_tip_source(state.electron_gun.emitter)
+                source = {"tip": thaw_json(definition),
+                          "source_status": "CONFIGURATION_ONLY_TIP_EXECUTION_RETIRED"}
         except ValueError as error:
             source = {"source_status": "UNAVAILABLE", "error": str(error),
                       "source_domain": thaw_json(getattr(error, "report", None))}
@@ -227,7 +235,7 @@ def main(argv=None):
             "source_numerics": asdict(source_numerics),
             "gun_numerics": asdict(numerics), "request": asdict(request),
             "scan_numerics": None if scan_numerics is None else asdict(scan_numerics),
-            "full_tem_stem": "NOT_VALIDATED; arrival-time scans and conditional material-model waves"}, indent=2))
+            "tip_wave_execution": "RETIRED; use python -m temsim.mixed_wave_cli --help"}, indent=2))
         return 0
 
     last_progress = None

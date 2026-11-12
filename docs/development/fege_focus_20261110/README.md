@@ -33,13 +33,15 @@ The C2/C3 pair controls the convergence-angle branch. The hexapole changes act t
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | C2/C3 zoom with archived corrector | 473 / 1024 | 4.61914 | 32.56307 | 21.65107 | 2230.738 | 488.754 | +5800 |
 | HP1/HP2 and HPC correction with joint focus drives | 473 / 1024 | 4.61914 | 31.2469 | 21.2125 | 628.112 | 143.108 | +500 |
-| HPC, HP1/HP2 and HPol correction with revised zoom and joint focus drives | 459 / 1024 | 4.48242 | 29.19233 | 20.08001 | 518.027 | 115.140 | +400 |
+| HPC, HP1/HP2 and HPol correction with revised zoom and joint focus drives (`trial-00`) | 459 / 1024 | 4.48242 | 29.19233 | 20.08001 | 518.027 | 115.140 | +400 |
 | Historical main-field axes and auxiliary field components | 473 / 1024 | 4.61914 | 30.19816 | 21.03660 | 2.05733 | 0.51322 | −4.25 |
 | Historical main-field axes with native D95 focus correction | 473 / 1024 | 4.61914 | 30.19815 | 21.03660 | 1.86009 | 0.51503 | 0.00 |
 
 At these checkpoints the effective sample count equals the surviving count. The full-column losses are at C2 and the original-current balance closes. For the three-drive correction the RMS minimum is 580 nm upstream, while the D95 minimum is 500 nm downstream. The peripheral population drives this separation and the broad D95. In the initial zoom case several dozen surviving particles lie outside a 1 µm centroid radius. Their original IDs cluster near the C2 opening edge, and the axial checkpoints show continuous local position and direction.
 
 The three checked zoom cases each show a finite 2D region between C2 and C3, no C3-to-ADL crossover, one region in TL22–TL21 and one between the AC coils. Each also shows a broad, shallow finite 2D waist near 1300 mm in TL21–TL12, absent in the archived 7.85 mrad comparison. The resolved final Mini-to-specimen region is the only region in that interval. The near-surface RMS waist and the native D95 minimum are separate measurements of this region.
+
+The HPol row above and the HPol curve in the comparison figure represent separate executions. The figure uses the `trial-01` values identified in [its source data](focus-comparison.json).
 
 ## Historical main-hexapole field axes
 
@@ -65,6 +67,8 @@ Reducing the shared Objective drive to 29.3264011126% places the native D95 mini
 | 0.05 | 1.8385570 | 0.5192683 | 30.0655230 | 20.8610187 | 0.5078125 | [−0.250, +0.200] |
 
 Both retain 937 effective positive-current particles and 4.575195 µA at the specimen. C2 absorbs the other 1111 particles and 5.424805 µA. D95 changes by +0.0271% when halving the step. The RMS waist is +6.50 nm on both meshes. At the smaller step, the next local D95 minima at +0.50 and +1.50 nm are 0.212% and 0.911% above the observed global minimum. The focus claim is bounded by the sampled axial and source populations.
+
+Reanalysis of the 69 saved phase-space planes in each trial finds the same fixed-axis 50 pm disk-current maximum of 0.5175781 µA at −1.00 and −0.25 nm. The specimen entrance attains the observed D95 minimum on both meshes. Its disk current is 2.83% below the maximum at 0.10 mm and 1.89% below at 0.05 mm. Both deficits exceed the 1% allowance in the [joint calibration criteria](../../OPTICAL_CONTROL_ROLES.md#joint-central-current-and-d95-calibration). These observations establish the D95 placement within the reported sampling bracket. Joint core-current and D95 placement remains unqualified.
 
 ### Observed Normal branch at 0.05 mm maximum step
 

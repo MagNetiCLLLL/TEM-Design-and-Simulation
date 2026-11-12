@@ -137,6 +137,13 @@ def physical_scan_samples(state, numerics=ScanWaveNumerics()):
 
 def simulate_tip_scan(state, request=TipWaveRequest(), numerics=ScanWaveNumerics(), *,
                       cancelled=lambda: False, progress_callback=None, use_cache=True):
+    """Reject the retired Tip-origin scan before constructing an iterator."""
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
+
+
+def _retired_simulate_tip_scan(state, request=TipWaveRequest(), numerics=ScanWaveNumerics(), *,
+                      cancelled=lambda: False, progress_callback=None, use_cache=True):
     """Yield one result at a time; consumers save/reduce it before advancing.
 
 Times come from the installed raster, not a shifted specimen-plane pupil.
@@ -147,7 +154,7 @@ per-position errors cannot be combined as independent scan noise.
 """
     if cancelled():
         raise InterruptedError("Physical wave scan cancelled")
-    request = require_tip_wave_cuda(request)
+    request = require_tip_wave_cuda(request, state=state)
     snapshot = capture_instrument_snapshot(state)
     working = snapshot.restore()
     from temsim.simulation_modes import is_unified

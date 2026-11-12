@@ -74,6 +74,7 @@ class SampleGeometrySnapshot:
     # calculation. Full physical extent remains centre_nm / size_nm.
     local_material_bounds_nm: tuple[float, float, float, float, float, float] | None = None
     atom_display_capped: bool = False
+    lattice_translation_z_nm: float = 0.
 
 
 def _finite_vector(name: str, values, length: int) -> np.ndarray:
@@ -344,6 +345,7 @@ def read_cif_preview(
     specimen_centre_xy_nm: tuple[float, float],
     maximum_atoms: int = 2_500,
     specimen_envelope_shape: str = "rectangle",
+    lattice_translation_z_angstrom: float = 0.,
 ) -> tuple:
     """Reuse exact bounded display data without caching any physical solver state."""
     from .display_cache import cached_cif_display, cif_display_fingerprint
@@ -367,6 +369,7 @@ def read_cif_preview(
         specimen_centre_xy_nm=tuple(specimen_centre_xy_nm),
         maximum_atoms=int(maximum_atoms),
         specimen_envelope_shape=str(specimen_envelope_shape),
+        lattice_translation_z_angstrom=float(lattice_translation_z_angstrom),
     )
     key = (str(path), fingerprint, rotation.shape, rotation.tobytes(), *options.values())
 
@@ -389,6 +392,7 @@ def _read_cif_preview_uncached(
     specimen_centre_xy_nm: tuple[float, float],
     maximum_atoms: int = 2_500,
     specimen_envelope_shape: str = "rectangle",
+    lattice_translation_z_angstrom: float = 0.,
 ) -> tuple[
     np.ndarray,
     np.ndarray,
@@ -498,6 +502,7 @@ def _read_cif_preview_uncached(
         calculation_roi_centre_xy_angstrom=tuple(
             requested_centre[:2] * 10.0
         ),
+        lattice_translation_z_angstrom=lattice_translation_z_angstrom,
     )
     positions_nm = np.asarray(repeated.positions, dtype=float) * 0.1
     positions_nm -= 0.5 * display_size
@@ -551,6 +556,7 @@ def build_sample_geometry_snapshot(
     maximum_display_atoms: int = 2_500,
     calculation_roi_bounds_nm_override: tuple[float, float, float, float] | None = None,
 ) -> SampleGeometrySnapshot:
+    from temsim.specimen.lattice_reference import lattice_translation_z_angstrom, lattice_translation_z_nm
     mode = str(getattr(sample, "specimen_mode", "atomic")).strip().lower()
     if mode not in {"atomic", "vacuum"}:
         raise ValueError("Sample mode must be atomic or vacuum.")
@@ -664,6 +670,7 @@ def build_sample_geometry_snapshot(
                     specimen_centre_xy_nm=centre[:2],
                     maximum_atoms=maximum_display_atoms,
                     specimen_envelope_shape=envelope_shape,
+                    lattice_translation_z_angstrom=lattice_translation_z_angstrom(sample),
                 )
             except ValueError as exc:
                 if "contains no atomic sites" not in str(exc):
@@ -729,4 +736,5 @@ def build_sample_geometry_snapshot(
         warnings=tuple(warnings),
         local_material_bounds_nm=local_material_bounds,
         atom_display_capped=atom_display_capped,
+        lattice_translation_z_nm=lattice_translation_z_nm(sample),
     )

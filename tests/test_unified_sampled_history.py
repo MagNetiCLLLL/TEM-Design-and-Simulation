@@ -101,8 +101,17 @@ def test_production_budget_fallback_preserves_exact_receiver_and_reports_policy(
     with pytest.raises(ValueError, match="history requires"):
         particle.execute_unified_plan(state, plan, *phase, initial_time_s=clock)
     monkeypatch.setattr(particle, "MAX_UNIFIED_HISTORY_BYTES", budget-1)
-    with pytest.raises(ValueError, match="sampled history"):
-        execute_propagation_plan(state, plan, *phase, initial_time_s=clock)
+    receipts = []
+    with backend_receipts(receipts):
+        batched = execute_propagation_plan(state, plan, *phase, initial_time_s=clock,
+            return_flight_times=True)
+    for actual, expected in zip(batched[:-1], bounded[:-1]):
+        np.testing.assert_array_equal(actual, expected)
+    assert receipts[-1]["source_batch_count"] == 2
+    assert receipts[-1]["maximum_source_batch_particles"] == 1
+    assert receipts[-1]["source_particles"] == 2
+    assert receipts[-1]["history_memory_bytes"] <= budget-1
+    assert receipts[-1]["assembled_history_bytes"] >= sum(values.nbytes for values in batched[:-1])
 
 
 def test_section_fallback_and_resume_keep_source_axis_weights_and_stops(monkeypatch):
@@ -136,7 +145,13 @@ def test_section_fallback_and_resume_keep_source_axis_weights_and_stops(monkeypa
     assert len(bounded.branch.z) < len(full.branch.z)
     resumed, start, reused = section(bounded, boundary=450.8)
     assert reused and start == 450.5
-    for candidate in (bounded, resumed):
+    two_particle_budget = particle.unified_history_memory_bytes(state, full.plan, 2,
+        history_policy="sampled")
+    monkeypatch.setattr(particle, "MAX_UNIFIED_HISTORY_BYTES", two_particle_budget)
+    batched, _, _ = section()
+    batched_resume, batch_start, batch_reused = section(batched, boundary=450.8)
+    assert batch_reused and batch_start == 450.5
+    for candidate in (bounded, resumed, batched, batched_resume):
         rows = np.searchsorted(full.branch.z, candidate.branch.z)
         for key in ("x", "y", "tx", "ty", "flight_time_s", "kinetic_energy_ev"):
             np.testing.assert_array_equal(getattr(candidate.branch, key), getattr(full.branch, key)[rows])
@@ -145,3 +160,86 @@ def test_section_fallback_and_resume_keep_source_axis_weights_and_stops(monkeypa
     np.testing.assert_array_equal(bounded.branch.source_ray_id, identity[0])
     np.testing.assert_array_equal(bounded.branch.ray_weight, weight)
     assert bounded.branch.blocked_key == ["", "", "iris"]
+
+
+def test_batched_dynamic_resume_preserves_induction_energy_clocks_and_bounds(monkeypatch):
+    from dataclasses import replace
+    from temsim.physics.dynamic_potential import DynamicPotentialSnapshot
+    from temsim.physics.electric_potential_snapshot import ElectricPotentialSnapshot
+    from temsim.physics.planar_gun_field import PlanarGunField
+    from temsim.physics.potential_snapshot import PotentialContribution
+    from temsim.physics.unified_particle_restart import validate_unified_checkpoint
+    from test_dynamic_potential import coil
+    from test_unified_field_particle import controlled
+    from test_unified_field_runtime import parked_state
+    from test_unified_particle_prefix import execute, plan_for
+
+    state = parked_state()
+    state.simulation_time_s = .21e-9
+    radial, axial = np.array([0., .02]), np.array([.449, .453])
+    voltage = np.broadcast_to(200000.+2e6*(axial-.45), (2, 2)).copy()
+    electric = ElectricPotentialSnapshot.from_provider(PlanarGunField({}, radial, axial, voltage))
+    runtime = controlled(state, (PotentialContribution("electric", ("electric",), electric, "electric"),))
+    runtime = replace(runtime, snapshot=DynamicPotentialSnapshot(runtime.snapshot, (coil(),)),
+                      metadata={"emission_time_s": state.simulation_time_s})
+    plan = plan_for(state, runtime, monkeypatch)
+    full, full_energy = execute(state, plan)
+    cap = particle.unified_history_memory_bytes(state, plan, 1, history_policy="sampled")
+    monkeypatch.setattr(particle, "MAX_UNIFIED_HISTORY_BYTES", cap)
+    batched, batched_energy = execute(state, plan)
+    selected = np.searchsorted(full[0], batched[0])
+    for actual, expected in zip(batched[1:6], full[1:6]):
+        np.testing.assert_array_equal(actual, expected[selected])
+    np.testing.assert_array_equal(batched_energy, full_energy[selected])
+    for name in ("x_m", "tx_rad", "y_m", "ty_rad", "kinetic_energy_ev", "flight_time_s"):
+        np.testing.assert_array_equal(getattr(batched[-1], name), getattr(full[-1], name))
+    actual, expected = validate_unified_checkpoint(batched[-1]), validate_unified_checkpoint(full[-1])
+    for name in ("reference_energy_ev", "reference_phi_v", "induction_work_ev", "active",
+                 "blocked_z_mm", "swept_bounds_m", "spatial_dependency_identities"):
+        np.testing.assert_array_equal(getattr(actual, name), getattr(expected, name))
+    resumed, resumed_energy = execute(state, plan, previous=batched[-1], row=2)
+    start = np.searchsorted(batched[0], resumed[0][0])
+    for actual, expected in zip(resumed[1:6], batched[1:6]):
+        np.testing.assert_array_equal(actual, expected[start:])
+    np.testing.assert_array_equal(resumed_energy, batched_energy[start:])
+
+
+@pytest.mark.parametrize("failure", ["memory", "cancel", "execution"])
+def test_batch_failure_never_publishes_partial_energy_history(monkeypatch, failure):
+    from temsim.physics.unified_particle_batches import execute_unified_batches
+    from temsim.physics import wave_execution
+
+    state = SimpleNamespace(history_step_mm=.3, recording_planes=(),
+                            _tuning_cancelled=lambda: failure == "cancel")
+    plan = SimpleNamespace(z_mm=np.linspace(0., 1., 11),
+        checkpoint_index=np.array([0, 10]), save_index=np.array([0, 10]))
+    cap = particle.unified_history_memory_bytes(state, plan, 1, history_policy="sampled")
+    monkeypatch.setattr(particle, "MAX_UNIFIED_HISTORY_BYTES", cap)
+    admitted = []
+
+    def admit(additional_bytes):
+        admitted.append(additional_bytes)
+        if failure == "memory":
+            raise MemoryError("Insufficient output and bounded execution memory")
+
+    monkeypatch.setattr(wave_execution, "check_available_memory", admit)
+    calls = []
+
+    def execute(*args, **kwargs):
+        calls.append(1)
+        raise RuntimeError("Execution failed")
+
+    monkeypatch.setattr(particle, "execute_unified_plan", execute)
+    output = []
+    expected = MemoryError if failure == "memory" else RuntimeError
+    with pytest.raises(expected):
+        execute_unified_batches(state, plan, (np.zeros(3),)*4, None,
+            start_index=0, include_initial_plane_kicks=True,
+            defer_nonfinite_until_clipping=False, initial_time_s=None,
+            return_flight_times=False, initial_kinetic_energy_ev=None,
+            energy_output=output, unified_resume=None, history_policy="sampled")
+    assert output == []
+    assert bool(admitted) == (failure != "cancel")
+    assert bool(calls) == (failure == "execution")
+    if admitted:
+        assert admitted[0] > cap

@@ -94,13 +94,16 @@ def main(argv=None) -> int:
     parser.add_argument("--step-mm", type=float, default=0.1)
     parser.add_argument("--describe", action="store_true", help="Inspect without computing or writing")
     parser.add_argument("--gun-wave-only", action="store_true",
-                        help="Request a complete tip-to-specimen wave checkpoint (currently unavailable)")
+                        help="Retired execution; use python -m temsim.mixed_wave_cli --help (historical inspection remains available)")
     parser.add_argument("--verify-existing", action="store_true",
                         help="Verify a saved request's disk seed without repeating any physics")
     parser.add_argument("--cache-root", type=Path, help="Explicit cache store; default: application user cache")
     parser.add_argument("--output", type=Path,
                         help="New directory for the request profile, manifest and verification report")
     args = parser.parse_args(argv)
+    if args.gun_wave_only and not args.describe and not args.verify_existing:
+        from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+        reject_retired_tip_coherent_workflow()
     if not args.describe and args.output is None:
         parser.error("--output is required for a reproducible calculation")
     if args.verify_existing and (args.describe or args.profile or args.startup_defaults):

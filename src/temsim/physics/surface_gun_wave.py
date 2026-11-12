@@ -12,7 +12,6 @@ import numpy as np
 from scipy.constants import hbar
 from scipy.linalg import eigh
 from scipy.sparse import coo_matrix
-from scipy.sparse.linalg import splu
 
 from temsim.immutable_json import freeze_json, json_digest
 from temsim.physics.radial_gun_wave import (REST_EV, RadialGunNumerics,
@@ -40,7 +39,8 @@ def validate_joint_radial_domain(gun, surface, radial):
 
 def solve_joint_boundary(problem, energy, load, frame, *, cancelled=lambda: False,
                          linear_tolerance=1e-9, flux_tolerance=1e-8, factor_radial_phase=True,
-                         condensation_cache=None, assembly_cache=None, maximum_working_bytes=8*1024**3):
+                         condensation_cache=None, assembly_cache=None, maximum_working_bytes=8*1024**3,
+                         compute_backend="CPU"):
     """Galerkin continuity of the complex trace and normal derivative.
 
     The top trace is constrained to the retained radial basis. It is solved
@@ -64,21 +64,26 @@ def solve_joint_boundary(problem, energy, load, frame, *, cancelled=lambda: Fals
     ids = len(rhs)-count+np.arange(count)
     boundary = coo_matrix((load.input_admittance.ravel(),
         (np.repeat(ids, count), np.tile(ids, count))), shape=reduced.shape).tocsc()
-    linear_record = {"method": "direct-coupled-sparse-solve"}
+    linear_record = {"method": "direct-coupled-sparse-solve",
+        "sparse_backend": "SciPy SuperLU" if compute_backend == "CPU" else "CuPy CUDA cuDSS reusable LU"}
     if condensation_cache is None:
         reduced -= boundary
-        solved = splu(reduced).solve(rhs)
+        from temsim.physics.sparse_wave_device import sparse_wave_solver
+        with sparse_wave_solver(reduced, compute_backend=compute_backend,
+                                maximum_working_bytes=maximum_working_bytes) as solve:
+            solved = solve(rhs)
         residual = float(np.linalg.norm(reduced@solved-rhs)/np.linalg.norm(rhs))
     else:
         from temsim.physics.condensed_wave_boundary import solve_cached_boundary
         solved, linear_record = solve_cached_boundary(reduced, rhs, load.input_admittance, condensation_cache,
-            tolerance=linear_tolerance, maximum_working_bytes=maximum_working_bytes-assembled["retained_bytes"], cancelled=cancelled)
+            tolerance=linear_tolerance, maximum_working_bytes=maximum_working_bytes-assembled["retained_bytes"],
+            cancelled=cancelled, compute_backend=compute_backend)
         residual = linear_record["linear_residual"]
     linear_record = {**linear_record, "assembly_cache_hit": assembly_hit,
         "assembly_inputs_digest": assembled["matrix_inputs_digest"], "assembly_retained_bytes": assembled["retained_bytes"]}
     if cancelled():
         raise InterruptedError("Joint tip/gun boundary cancelled")
-    if not np.all(np.isfinite(solved)) or residual > linear_tolerance:
+    if not np.all(np.isfinite(solved)) or not math.isfinite(residual) or residual > linear_tolerance:
         raise ValueError(f"Joint tip/gun linear residual {residual:.3g} exceeds {linear_tolerance:.3g}")
     psi = transform@solved
     coefficients = solved[-count:]
@@ -98,14 +103,22 @@ def solve_joint_boundary(problem, energy, load, frame, *, cancelled=lambda: Fals
 def build_surface_gun_checkpoint(gun, *, surface=SurfaceWaveNumerics.joint_gun(),
         radial=RadialGunNumerics(), grid_pixels=256, column_state=None,
         cancelled=lambda: False, progress_callback=None, _mode_completed=None, _energy_cache=None,
-        _reuse_energy_cache=True):
+        _reuse_energy_cache=True, compute_backend="Auto"):
     """Execute a physical tip-origin gun and retain its jointly solved near field.
 
     Disabling reuse does not disable mandatory history writes to the supplied
     execution store. Direct diagnostics may instead consume _mode_completed.
     """
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     if type(_reuse_energy_cache) is not bool:
         raise ValueError("Energy-cache reuse must be a boolean")
+    if cancelled():
+        raise InterruptedError("Joint coherent gun cancelled before preparation")
+    from temsim.physics.compute_backend import require_coherent_cuda, validate_coherent_cuda_policy
+    validate_coherent_cuda_policy(getattr(column_state, "acceleration_backend", "Auto"),
+        acceleration_enabled=getattr(column_state, "acceleration_enabled", True))
+    compute_backend = require_coherent_cuda(compute_backend)
     from temsim.calculation_manifest import solver_source_identity
     from temsim.instrument_snapshot import encode_instrument
     from temsim.optics.electron_gun.source_policy import require_physical_gun_source
@@ -116,18 +129,23 @@ def build_surface_gun_checkpoint(gun, *, surface=SurfaceWaveNumerics.joint_gun()
     from temsim.physics.wave_reference import AxialWaveReference
     from copy import deepcopy
     require_physical_gun_source(gun)
+    original_digest = json_digest(encode_instrument(gun))
     working = deepcopy(gun)
+    working.validate()
     validate_joint_radial_domain(working, surface, radial)
     graph = encode_instrument(working)
+    working_digest = json_digest(graph)
     implementation = solver_source_identity()
     column_snapshot = None
     column_guard = None
     if column_state is not None:
         from temsim.instrument_snapshot import capture_instrument_snapshot
-        if json_digest(encode_instrument(column_state.electron_gun)) != json_digest(graph):
+        if json_digest(encode_instrument(column_state.electron_gun)) != original_digest:
             raise ValueError("The joint column and gun must consume the same physical tip and gun inputs")
         column_snapshot = capture_instrument_snapshot(column_state)
         column_state = column_snapshot.restore()
+        if json_digest(encode_instrument(column_state.electron_gun)) != working_digest:
+            raise ValueError("The joint column and gun resolved different physical tip and gun inputs")
         from temsim.physics.surface_wave import guard_surface_column
         column_guard = guard_surface_column(column_state, surface)
     problem = prepare_surface_problem(working, surface, cancelled=cancelled)
@@ -140,7 +158,8 @@ def build_surface_gun_checkpoint(gun, *, surface=SurfaceWaveNumerics.joint_gun()
     def verify_inputs():
         if cancelled():
             raise InterruptedError("Joint coherent gun cancelled before publication")
-        if solver_source_identity() != implementation or json_digest(encode_instrument(gun)) != json_digest(graph):
+        if (solver_source_identity() != implementation or json_digest(encode_instrument(gun)) != original_digest
+                or json_digest(encode_instrument(working)) != working_digest):
             raise RuntimeError("Gun/source implementation changed during the joint wave calculation")
         if column_snapshot is not None:
             column_snapshot.restore()
@@ -149,6 +168,7 @@ def build_surface_gun_checkpoint(gun, *, surface=SurfaceWaveNumerics.joint_gun()
         identity = {"schema": "executed-surface-gun-mode-v1", "implementation": implementation,
             "gun_inputs": graph, "column_snapshot": None if column_snapshot is None else column_snapshot.digest,
             "surface_numerics": asdict(surface), "radial_numerics": asdict(radial),
+            "compute_backend": compute_backend,
             "grid_pixels": grid_pixels, "mode_index": index,
             "energy_ev": float(energy), "mixture_weight": float(weight)}
         identity = freeze_json({**identity, "dependency_digest": json_digest(identity)})
@@ -193,7 +213,7 @@ def build_surface_gun_checkpoint(gun, *, surface=SurfaceWaveNumerics.joint_gun()
                     cancelled=cancelled, linear_tolerance=surface.linear_tolerance, flux_tolerance=surface.flux_tolerance,
                     factor_radial_phase=surface.joint_radial_phase,
                     condensation_cache=boundary_cache, assembly_cache=assembly_cache,
-                    maximum_working_bytes=surface.maximum_working_bytes)
+                    maximum_working_bytes=surface.maximum_working_bytes, compute_backend=compute_backend)
             if refinement_plan is None:
                 psi, coefficients, flux = boundary_solver(load)
             else:

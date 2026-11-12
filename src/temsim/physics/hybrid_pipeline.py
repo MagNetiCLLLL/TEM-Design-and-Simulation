@@ -101,7 +101,10 @@ def _source_count(trace):
     if (ids.ndim != 1 or ids.dtype.kind not in "iu" or np.any(ids < 0)
             or ids.shape != weights.shape or len(np.unique(ids)) != len(ids)):
         raise ValueError("Original source identities cannot be replaced by duplicate rays")
-    positive = int(np.count_nonzero(weights > 0))
+    current = trace.emitted_current_a
+    if not math.isfinite(current) or current < 0:
+        raise ValueError("Original source current must be finite and nonnegative")
+    positive = int(np.count_nonzero(weights > 0)) if current > 0 else 0
     if positive < 1000:
         raise ValueError(f"Hybrid physical trial emitted only {positive} original positive-current particles; require >=1000")
     surviving = np.asarray(trace.exit_bundle.alive, dtype=bool)
@@ -296,19 +299,21 @@ def _downstream(state, runtime, particles, stop_mm, request, *, start_z_mm=None)
 
 def simulate_hybrid(state, request: HybridRequest, *, cancelled=lambda: False, progress_callback=None):
     """Public CUDA-gated workflow. No arbitrary source arrays or phase guesses."""
-    from temsim.physics.compute_backend import require_coherent_cuda
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     from temsim.physics.tip_wave_pipeline import require_tip_wave_cuda, simulate_tip_wave
 
     wave_request = replace(request.wave, stop="gun_exit" if request.coherent_start_z_mm is None else "plane",
         observation_z_mm=request.coherent_start_z_mm)
-    request = replace(request, wave=require_tip_wave_cuda(wave_request))
-    require_coherent_cuda(getattr(state, "acceleration_backend", "Auto"),
-        acceleration_enabled=getattr(state, "acceleration_enabled", True))
+    request = replace(request, wave=require_tip_wave_cuda(wave_request, state=state))
     request.validate()
-    import cupy as cp
     from temsim.simulation_modes import is_unified
     if not is_unified(state):
         raise ValueError("Hybrid calculation requires the explicitly selected Finite-Field Optics mode")
+    current = state.electron_gun.emitted_current_a
+    if not math.isfinite(current) or current <= 0:
+        raise ValueError("Hybrid physical trials require a finite positive source current")
+    import cupy as cp
     from temsim.instrument_snapshot import capture_instrument_snapshot
     # The full resolved assembly contains immutable mapping proxies. Restore
     # the supported input graph instead of relying on Python pickle copying.

@@ -1,0 +1,20 @@
+{
+  "scope": "Read-only saved acquisition and actual Qt image rendering; no particle or wave rerun",
+  "checksums_before": {
+    "scan-and-diffraction.npz": "0de0f86327578c5183d4ae12bb65fac25319726ef52d321394487616e292ed3a",
+    "entrance-source-arrays.npz": "9d9a3528b04c23dd69d2039124e9de6704b6113189408bf4d2a3a42dc0ead396",
+    "original-gun.npz": "9d883484e1f26f6e5f2bf3c6062e3775a7b6fd9d48047d82f121167b9e9bc9c4",
+    "inputs.json": "1d3715e5b315c1c8c7acce8a084c8f4b4f6b6acb5d55fbde3eb072ec31058a31",
+    "report.json": "3de743ab3d6f001484cf6dfd26617c6866fe8ebd398e1aa241cdf0e367ebe86b",
+    "source-checkpoint.json": "87fb8aeff2c44481dec3df2162b61bff9acfa8e29ecb7659ed5e8d8df95d22d4"
+  },
+  "checksums_after": {
+    "scan-and-diffraction.npz": "0de0f86327578c5183d4ae12bb65fac25319726ef52d321394487616e292ed3a",
+    "entrance-source-arrays.npz": "9d9a3528b04c23dd69d2039124e9de6704b6113189408bf4d2a3a42dc0ead396",
+    "original-gun.npz": "9d883484e1f26f6e5f2bf3c6062e3775a7b6fd9d48047d82f121167b9e9bc9c4",
+    "inputs.json": "1d3715e5b315c1c8c7acce8a084c8f4b4f6b6acb5d55fbde3eb072ec31058a31",
+    "report.json": "3de743ab3d6f001484cf6dfd26617c6866fe8ebd398e1aa241cdf0e367ebe86b",
+    "source-checkpoint.json": "87fb8aeff2c44481dec3df2162b61bff9acfa8e29ecb7659ed5e8d8df95d22d4"
+  },
+  "unchanged": true
+}

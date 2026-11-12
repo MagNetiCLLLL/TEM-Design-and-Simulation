@@ -9,6 +9,7 @@ from temsim.optics.electron_gun.tip_surface import SurfaceCoherence, load_tip_su
 from temsim.optics.electron_gun.field_emission import FieldEmissionGun
 from temsim.physics.surface_wave import (SurfaceWaveNumerics, structured_mesh, solve_driven_wave,
                                         compute_surface_wave, KINETIC_NM2_PER_EV)
+from test_tip_wave_pipeline import coherent_cuda, mock_coherent_admission
 
 
 def reference_gun():
@@ -69,10 +70,14 @@ def test_source_model_serialises_coherence_and_rejects_fake_classical_samples():
         gun.emit(49)
 
 
-def test_actual_tip_near_field_preserves_complex_fields_flux_and_exact_cache():
+def test_actual_tip_near_field_preserves_complex_fields_flux_and_exact_cache(coherent_cuda):
+    from temsim.instrument_snapshot import encode_instrument
     gun = reference_gun()
+    original = encode_instrument(gun)
     numerical = SurfaceWaveNumerics(radial_nodes=33, axial_nodes=65, energy_samples=1)
     result = compute_surface_wave(gun, numerical)
+    assert result.record["wave_boundary_backend"] == "CuPy CUDA cuDSS reusable LU"
+    assert encode_instrument(gun) == original
     assert result.modes[0].amplitude.shape == (33, 65)
     assert np.iscomplexobj(result.modes[0].amplitude)
     assert not result.modes[0].amplitude.flags.writeable
@@ -92,7 +97,7 @@ def test_actual_tip_near_field_preserves_complex_fields_flux_and_exact_cache():
     assert phased.digest != result.digest
 
 
-def test_budget_and_cancellation_fail_before_field_allocation():
+def test_budget_and_cancellation_fail_before_field_allocation(mock_coherent_admission):
     gun = reference_gun()
     with pytest.raises(MemoryError, match="needs"):
         compute_surface_wave(gun, SurfaceWaveNumerics(maximum_working_bytes=1024))
@@ -100,13 +105,13 @@ def test_budget_and_cancellation_fail_before_field_allocation():
         compute_surface_wave(gun, cancelled=lambda: True)
 
 
-def test_domain_cannot_jump_over_existing_electrodes():
+def test_domain_cannot_jump_over_existing_electrodes(mock_coherent_admission):
     gun = reference_gun()
     with pytest.raises(ValueError, match="reaches an electrode"):
         compute_surface_wave(gun, SurfaceWaveNumerics(exit_height_nm=1e7))
 
 
-def test_magnetic_fields_cannot_be_silently_discarded(monkeypatch):
+def test_magnetic_fields_cannot_be_silently_discarded(monkeypatch, mock_coherent_admission):
     gun = reference_gun()
     monkeypatch.setattr(type(gun), "magnetic_field", property(lambda self: SimpleNamespace(
         field_at_global_positions_t=lambda p: np.ones_like(p)*.001)))
@@ -121,3 +126,20 @@ def test_complex_drive_linearity_keeps_the_phase_reference():
     a, _ = solve_driven_wave(points, triangles, edges, np.zeros(len(points)), .5, drive)
     b, _ = solve_driven_wave(points, triangles, edges, np.zeros(len(points)), .5, drive*np.exp(.7j))
     np.testing.assert_allclose(b, a*np.exp(.7j), atol=1e-12)
+
+
+def test_cuda_driven_boundary_matches_cpu_reference(coherent_cuda, monkeypatch):
+    from temsim.physics import sparse_wave_device
+    points, triangles, edges, _ = structured_mesh(np.linspace(0, 1, 5), np.zeros(5), 1., 41)
+    drive = np.zeros(len(points), complex)
+    drive[np.arange(5)*41] = 1.+.2j
+    inputs = points, triangles, edges, np.zeros(len(points)), .5, drive
+    reference, reference_flux = solve_driven_wave(*inputs)
+    monkeypatch.setattr(sparse_wave_device, "splu",
+        lambda *_args: pytest.fail("Strict CUDA must not call SuperLU"))
+    actual, flux = solve_driven_wave(*inputs, compute_backend="Require GPU")
+    np.testing.assert_allclose(actual, reference, atol=1e-11, rtol=1e-11)
+    assert flux["reflected"] == pytest.approx(reference_flux["reflected"], abs=1e-11)
+    assert flux["top"] == pytest.approx(reference_flux["top"], abs=1e-11)
+    assert flux["side"] == pytest.approx(reference_flux["side"], abs=1e-11)
+    assert flux["linear_residual"] < 1e-9

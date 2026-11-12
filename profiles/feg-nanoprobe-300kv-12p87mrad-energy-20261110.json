@@ -1,0 +1,263 @@
+{
+  "definition": "Offsets from nominal accelerating energy; original current weights; RMS about the weighted mean; percentiles from the inverse weighted empirical CDF.",
+  "scope": "Executed static finite-source particle transport in vacuum up to the physical specimen upper surface.",
+  "source_count_checks": {
+    "8192": {
+      "input_digest": "e838170f207f3a156b9f246c1d759997fc6461d30178ff0610c02c93c6821feb",
+      "checkpoint_sha256": "8c21a538e892aedd0c755982f88ee01803eebf888b72d56dc98415ce674a41e0",
+      "original_source_sha256": "53cf43fe3deb07e249d811c23bd11a2de25c3f54f7eb07d2b909bac5d9bf24e9",
+      "original_positive_particles": 8192,
+      "nominal_beam_energy_ev": 300000.0,
+      "gun_reference_energy_ev": 300000.0,
+      "specimen_upper_surface_z_mm": 1599.1999998000001,
+      "emitted_current_a": 1e-05,
+      "gun_model": "cold_feg",
+      "monochromator_installed": false,
+      "configured_emission_mean_ev": 0.3,
+      "configured_emission_fwhm_ev": 0.3,
+      "gun_exit": {
+        "positive_particles": 8192,
+        "effective_particles": 8192.0,
+        "current_a": 1e-05,
+        "mean_offset_ev": 0.3000000279948054,
+        "rms_spread_ev": 0.1273982723980277,
+        "gaussian_equivalent_fwhm_ev": 0.30000000554518874,
+        "empirical_offsets_ev_q025_q50_q975": [
+          0.05947912979172543,
+          0.3030118806636892,
+          0.5476797344745137
+        ],
+        "observed_offset_range_ev": [
+          0.01112843124428764,
+          0.7951479831826873
+        ]
+      },
+      "gun_exit_restricted_to_sample_survivors": {
+        "positive_particles": 2557,
+        "effective_particles": 2557.000000000003,
+        "current_a": 3.1213378906250003e-06,
+        "mean_offset_ev": 0.2999560235396778,
+        "rms_spread_ev": 0.12823358171326257,
+        "gaussian_equivalent_fwhm_ev": 0.3019670086645049,
+        "empirical_offsets_ev_q025_q50_q975": [
+          0.05806551477871835,
+          0.3019225390162319,
+          0.5546669686445966
+        ],
+        "observed_offset_range_ev": [
+          0.011878894234541804,
+          0.7951479831826873
+        ]
+      },
+      "specimen_upper_surface": {
+        "positive_particles": 2557,
+        "effective_particles": 2557.000000000003,
+        "current_a": 3.1213378906250003e-06,
+        "mean_offset_ev": 0.2999562649855788,
+        "rms_spread_ev": 0.1282335817134865,
+        "gaussian_equivalent_fwhm_ev": 0.30196700866503223,
+        "empirical_offsets_ev_q025_q50_q975": [
+          0.05806575622409582,
+          0.30192278046160936,
+          0.5546672100899741
+        ],
+        "observed_offset_range_ev": [
+          0.011879135621711612,
+          0.7951482245698571
+        ]
+      },
+      "c2_aperture_lost_particles": 5635,
+      "c2_aperture_lost_current_a": 6.8786621093750005e-06,
+      "same_particle_transit_max_abs_energy_change_ev": 2.4150358512997627e-07,
+      "same_particle_transit_mean_energy_change_ev": 2.4144590104207847e-07,
+      "same_particle_transit_tolerance_ev": 1e-06
+    },
+    "16384": {
+      "input_digest": "21e9f91bf501bfa22f9166eab28b1da7bdc15fa40c6778bc841d23e13289fb0a",
+      "checkpoint_sha256": "57158811ee38a6572f9ef19bcf4a4e9dded91e83a6dee9f07fc614c8ae3fc7cb",
+      "original_source_sha256": "4750dbdcc705274cd017951a0beaf011c2b3386aa5da3d188cbf8b457e51edf0",
+      "original_positive_particles": 16384,
+      "nominal_beam_energy_ev": 300000.0,
+      "gun_reference_energy_ev": 300000.0,
+      "specimen_upper_surface_z_mm": 1599.1999998000001,
+      "emitted_current_a": 1e-05,
+      "gun_model": "cold_feg",
+      "monochromator_installed": false,
+      "configured_emission_mean_ev": 0.3,
+      "configured_emission_fwhm_ev": 0.3,
+      "gun_exit": {
+        "positive_particles": 16384,
+        "effective_particles": 16384.0,
+        "current_a": 1e-05,
+        "mean_offset_ev": 0.30000002731841136,
+        "rms_spread_ev": 0.12739827182974747,
+        "gaussian_equivalent_fwhm_ev": 0.3000000042069911,
+        "empirical_offsets_ev_q025_q50_q975": [
+          0.059488670667633414,
+          0.3032978147966787,
+          0.5482615658547729
+        ],
+        "observed_offset_range_ev": [
+          0.011022375721950084,
+          0.8538772914325818
+        ]
+      },
+      "gun_exit_restricted_to_sample_survivors": {
+        "positive_particles": 5127,
+        "effective_particles": 5126.999999999993,
+        "current_a": 3.1292724609375e-06,
+        "mean_offset_ev": 0.30019872511215445,
+        "rms_spread_ev": 0.1277529191442367,
+        "gaussian_equivalent_fwhm_ev": 0.3008351348120667,
+        "empirical_offsets_ev_q025_q50_q975": [
+          0.05807378044119105,
+          0.3030451510567218,
+          0.5492655644775368
+        ],
+        "observed_offset_range_ev": [
+          0.011022375721950084,
+          0.8538772914325818
+        ]
+      },
+      "specimen_upper_surface": {
+        "positive_particles": 5127,
+        "effective_particles": 5126.999999999993,
+        "current_a": 3.1292724609375e-06,
+        "mean_offset_ev": 0.30019896655603334,
+        "rms_spread_ev": 0.1277529191441597,
+        "gaussian_equivalent_fwhm_ev": 0.3008351348118854,
+        "empirical_offsets_ev_q025_q50_q975": [
+          0.05807402194477618,
+          0.3030453925020993,
+          0.5492658058647066
+        ],
+        "observed_offset_range_ev": [
+          0.011022617109119892,
+          0.8538775328779593
+        ]
+      },
+      "c2_aperture_lost_particles": 11257,
+      "c2_aperture_lost_current_a": 6.8707275390625e-06,
+      "same_particle_transit_max_abs_energy_change_ev": 2.4150358512997627e-07,
+      "same_particle_transit_mean_energy_change_ev": 2.414438788516958e-07,
+      "same_particle_transit_tolerance_ev": 1e-06
+    }
+  },
+  "histogram_16384": {
+    "edges_offset_ev": [
+      0.0,
+      0.025,
+      0.05,
+      0.07500000000000001,
+      0.1,
+      0.125,
+      0.15000000000000002,
+      0.17500000000000002,
+      0.2,
+      0.225,
+      0.25,
+      0.275,
+      0.30000000000000004,
+      0.325,
+      0.35000000000000003,
+      0.375,
+      0.4,
+      0.42500000000000004,
+      0.45,
+      0.47500000000000003,
+      0.5,
+      0.525,
+      0.55,
+      0.5750000000000001,
+      0.6000000000000001,
+      0.625,
+      0.65,
+      0.675,
+      0.7000000000000001,
+      0.7250000000000001,
+      0.75,
+      0.775,
+      0.8,
+      0.8250000000000001,
+      0.8500000000000001,
+      0.875,
+      0.9
+    ],
+    "gun_exit_current_a": [
+      4.2724609375000006e-08,
+      1.3427734375e-07,
+      2.0935058593750002e-07,
+      2.606201171875e-07,
+      3.2531738281250003e-07,
+      3.8452148437500006e-07,
+      4.425048828125e-07,
+      5.133056640625e-07,
+      5.596923828125001e-07,
+      6.26220703125e-07,
+      6.793212890625001e-07,
+      7.269287109375e-07,
+      7.458496093750001e-07,
+      7.62939453125e-07,
+      7.366943359375e-07,
+      6.536865234375e-07,
+      5.749511718750001e-07,
+      4.6813964843750004e-07,
+      3.5400390625000003e-07,
+      2.5512695312500003e-07,
+      1.8066406250000002e-07,
+      1.220703125e-07,
+      8.60595703125e-08,
+      5.126953125e-08,
+      3.7841796875e-08,
+      2.1362304687500003e-08,
+      1.7089843750000002e-08,
+      1.03759765625e-08,
+      6.103515625e-09,
+      4.8828125e-09,
+      1.8310546875000003e-09,
+      3.0517578125e-09,
+      0.0,
+      6.103515625e-10,
+      6.103515625e-10,
+      0.0
+    ],
+    "specimen_upper_surface_current_a": [
+      1.5869140625000002e-08,
+      4.150390625e-08,
+      6.7138671875e-08,
+      7.934570312500001e-08,
+      9.82666015625e-08,
+      1.2634277343750001e-07,
+      1.3732910156250002e-07,
+      1.6052246093750002e-07,
+      1.6052246093750002e-07,
+      2.032470703125e-07,
+      2.25830078125e-07,
+      2.1484375e-07,
+      2.239990234375e-07,
+      2.42919921875e-07,
+      2.40478515625e-07,
+      1.934814453125e-07,
+      1.9226074218750003e-07,
+      1.4038085937500002e-07,
+      1.0864257812500001e-07,
+      8.7890625e-08,
+      5.2490234375000005e-08,
+      3.84521484375e-08,
+      2.685546875e-08,
+      1.40380859375e-08,
+      1.5869140625000002e-08,
+      6.7138671875e-09,
+      6.7138671875e-09,
+      3.0517578125e-09,
+      1.8310546875000003e-09,
+      0.0,
+      6.103515625e-10,
+      1.220703125e-09,
+      0.0,
+      0.0,
+      6.103515625e-10,
+      0.0
+    ]
+  }
+}

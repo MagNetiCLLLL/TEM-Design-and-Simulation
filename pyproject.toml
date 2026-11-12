@@ -47,7 +47,10 @@ dev = [
     "pytest-qt",
 ]
 gpu = [
-    "cupy-cuda12x>=14,<15",
+    "cupy-cuda12x[ctk]>=14.2,<15",
+    "nvmath-python>=1.0,<1.1",
+    "nvidia-cudss-cu12>=0.8,<0.9",
+    "cuda-bindings>=12.9.2,<13",
 ]
 atomistic = []
 benchmark = ["psutil>=7,<8"]
@@ -77,6 +80,7 @@ bdist_wheel = "temsim._build.FreshWheel"
 
 [tool.setuptools.data-files]
 "." = ["requirements-cad.txt"]
+"profiles" = ["profiles/default-nanoprobe.temwp"]
 "configs/environments" = ["configs/environments/*.toml"]
 "configs/sources" = ["configs/sources/*.toml"]
 "configs/subassemblies" = ["configs/subassemblies/*.toml"]
@@ -89,7 +93,7 @@ bdist_wheel = "temsim._build.FreshWheel"
 ]
 "configs/detectors/eds" = ["configs/detectors/eds/*.toml"]
 "configs/physics/eds" = ["configs/physics/eds/*.json"]
-"configs/specimens" = ["configs/specimens/*.toml"]
+"configs/specimens" = ["configs/specimens/*.toml", "configs/specimens/*.cif"]
 "configs/specimen_supports" = ["configs/specimen_supports/*.toml"]
 "configs/operating_modes" = ["configs/operating_modes/*.toml"]
 "configs/materials" = ["configs/materials/lens_defaults.toml"]

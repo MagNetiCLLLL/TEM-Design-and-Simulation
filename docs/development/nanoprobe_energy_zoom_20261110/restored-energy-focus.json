@@ -1,0 +1,426 @@
+{
+  "selection": "13.30 mrad with wider nearest-lens crossover margin",
+  "step_mm": 0.025,
+  "sample_entrance_z_mm": 1599.1999998000001,
+  "controls": {
+    "condenser_lens_2": 10.193692365017407,
+    "condenser_lens_3": 45.51131654683806,
+    "objective_lens": 29.326307554978257,
+    "probe_hp1_hexapole": {
+      "strength_m3": 4764379.568563034
+    },
+    "probe_hp2_hexapole": {
+      "strength_m3": 5447181.677407998
+    },
+    "probe_hpc_hexapole": {
+      "skew_strength_m3": 7653.325778651225,
+      "strength_m3": -163525.5528304305
+    },
+    "probe_hpol_hexapole": {
+      "skew_strength_m3": 314341.9078645202,
+      "strength_m3": 548863.4060639841
+    },
+    "probe_qpol_quadrupole": {
+      "skew_strength_m2": -0.006023953818089738,
+      "strength_m2": -0.04515835858702988
+    }
+  },
+  "restored_baseline_n8192": {
+    "source_count": 8192,
+    "positive_at_gun_exit": 8192,
+    "sample_population": {
+      "current_ua": 3.121337890625,
+      "effective": 2557.0,
+      "positive": 2557
+    },
+    "particle_D95_nm": 0.22671518269975519,
+    "particle_alpha95_mrad": 12.85108871178849,
+    "particle_D95_waist_offset_nm": -1.1249999261053745,
+    "particle_rms_waist_offset_nm": -0.12500004231696948,
+    "coherent_D95_nm": 0.19765114784240723,
+    "coherent_waist_offset_nm": -0.25,
+    "coherent_waist_bracket_nm": [
+      -0.3125,
+      -0.1875
+    ],
+    "coherent_alpha95_mrad": 15.522950124901863,
+    "coherent_mode_count": 76,
+    "coherent_focus_status": "CUDA_FOCUS_GRID_REVIEW",
+    "coherent_grid_refinement": {
+      "grid_pair": [
+        1152,
+        1536
+      ],
+      "entrance_D95_relative": 5.5487938007914295e-05,
+      "entrance_D95_relative_budget": 0.001,
+      "waist_difference_nm": 0.0,
+      "waist_difference_budget_nm": 0.125,
+      "grid_converged": true,
+      "within_0p25_nm_of_surface": false
+    },
+    "source_energy": {
+      "configured_FWHM_eV": 0.3,
+      "weighted_sample_mean_eV": 300000.29995626496,
+      "weighted_sample_RMS_eV": 0.12823358171348653,
+      "sample_peak_to_peak_eV": 0.7832690889481455,
+      "maximum_relative_wavelength_change_about_mean": 1.0126070743021742e-06,
+      "model": "The original energy-dependent Lorentz trajectories are retained. The reconstructed wave uses one current-weighted mean wavelength and does not resolve wave chromatic coherence."
+    },
+    "geometric_pupil_A2_nm": 56.1464106213048,
+    "geometric_pupil_signed_C3_um": -40.15857692757005,
+    "geometric_pupil_A1_nm": 4.627006288058142e-05,
+    "pupil_holdout_rms_pm": 0.004397220308916258,
+    "executed_input_digest": "485b6f0d684552710871c50fbeabd9ad448122acc96523511dde701046acffce",
+    "executed_field_digest": "846a192c7410c03ed5c1e1a1484468be2977432e9fc09f8c23bebf367515d932",
+    "source_archive_sha256": "53cf43fe3deb07e249d811c23bd11a2de25c3f54f7eb07d2b909bac5d9bf24e9",
+    "report_sha256": "fa9db8b4146165cf383b263c446b142b6d18ca3fe0369feea1567b7eff637a6f",
+    "coherent_report_sha256": "f372fbf265c66c4afe9353231543cb9301ef9e9f4f5aa2271b9e9a311b72e664",
+    "matched_pupil_sha256": "503fef7f338e3a27c2510b59254ae2ca7448be45d88c739256970348489d631f"
+  },
+  "selected_n8192": {
+    "source_count": 8192,
+    "positive_at_gun_exit": 8192,
+    "sample_population": {
+      "current_ua": 3.167724609375,
+      "effective": 2595.0,
+      "positive": 2595
+    },
+    "particle_D95_nm": 0.23365231152462515,
+    "particle_alpha95_mrad": 13.300902636670534,
+    "particle_D95_waist_offset_nm": -1.0000001111620804,
+    "particle_rms_waist_offset_nm": -0.12500004231696948,
+    "coherent_D95_nm": 0.20557398796081544,
+    "coherent_waist_offset_nm": -0.1875,
+    "coherent_waist_bracket_nm": [
+      -0.25,
+      -0.125
+    ],
+    "coherent_alpha95_mrad": 15.977996589260448,
+    "coherent_mode_count": 90,
+    "coherent_focus_status": "CUDA_FOCUS_GRID_AND_SURFACE_PASS",
+    "coherent_grid_refinement": {
+      "grid_pair": [
+        1152,
+        1536
+      ],
+      "entrance_D95_relative": 6.030804887457997e-05,
+      "entrance_D95_relative_budget": 0.001,
+      "waist_difference_nm": 0.0,
+      "waist_difference_budget_nm": 0.125,
+      "grid_converged": true,
+      "within_0p25_nm_of_surface": true
+    },
+    "source_energy": {
+      "configured_FWHM_eV": 0.3,
+      "weighted_sample_mean_eV": 300000.2995523507,
+      "weighted_sample_RMS_eV": 0.12841367308975726,
+      "sample_peak_to_peak_eV": 0.7832690889481455,
+      "maximum_relative_wavelength_change_about_mean": 1.0134330297173477e-06,
+      "model": "The original energy-dependent Lorentz trajectories are retained. The reconstructed wave uses one current-weighted mean wavelength and does not resolve wave chromatic coherence."
+    },
+    "geometric_pupil_A2_nm": 7.308038305009039,
+    "geometric_pupil_signed_C3_um": -33.8413006736132,
+    "geometric_pupil_A1_nm": 0.004368570475897509,
+    "pupil_holdout_rms_pm": 0.004959800100561674,
+    "executed_input_digest": "c1e0b93fd5e7c9745c27bf92cc111f027434ce037d68adbf217ca2c1ba604fc9",
+    "executed_field_digest": "93232123bdea0951f8229a6074bb04bfc45f6d5e4d08688658b2b05c4009511a",
+    "source_archive_sha256": "53cf43fe3deb07e249d811c23bd11a2de25c3f54f7eb07d2b909bac5d9bf24e9",
+    "report_sha256": "4aefd26fdfc4cf6d156f82a6cb38904a78174564d1cc3a9370cf61e700fee758",
+    "coherent_report_sha256": "499bd57bd04e9131e7f6051d02d06e4a0dafae027a73b22b6aac6394f7c0f939",
+    "matched_pupil_sha256": "dac8c4459362c89220ac6fa8d60eff2b04bfecf52adbeb856ed993a5e75b9be1"
+  },
+  "selected_n16384": {
+    "source_count": 16384,
+    "positive_at_gun_exit": 16384,
+    "sample_population": {
+      "current_ua": 3.1689453125,
+      "effective": 5192.0,
+      "positive": 5192
+    },
+    "particle_D95_nm": 0.22935624024328127,
+    "particle_alpha95_mrad": 13.304719310485215,
+    "particle_D95_waist_offset_nm": -1.0000001111620804,
+    "particle_rms_waist_offset_nm": 0.0,
+    "coherent_D95_nm": 0.20223050117492677,
+    "coherent_waist_offset_nm": -0.125,
+    "coherent_waist_bracket_nm": [
+      -0.1875,
+      -0.0625
+    ],
+    "coherent_alpha95_mrad": 15.994997111638911,
+    "coherent_mode_count": 87,
+    "coherent_focus_status": "CUDA_FOCUS_GRID_AND_SURFACE_PASS",
+    "coherent_grid_refinement": {
+      "grid_pair": [
+        1152,
+        1536
+      ],
+      "entrance_D95_relative": 8.252612954096072e-05,
+      "entrance_D95_relative_budget": 0.001,
+      "waist_difference_nm": 0.0,
+      "waist_difference_budget_nm": 0.125,
+      "grid_converged": true,
+      "within_0p25_nm_of_surface": true
+    },
+    "source_energy": {
+      "configured_FWHM_eV": 0.3,
+      "weighted_sample_mean_eV": 300000.29990980425,
+      "weighted_sample_RMS_eV": 0.12775579256679895,
+      "sample_peak_to_peak_eV": 0.8428549157688394,
+      "maximum_relative_wavelength_change_about_mean": 1.1327961798590636e-06,
+      "model": "The original energy-dependent Lorentz trajectories are retained. The reconstructed wave uses one current-weighted mean wavelength and does not resolve wave chromatic coherence."
+    },
+    "geometric_pupil_A2_nm": 7.310954897760031,
+    "geometric_pupil_signed_C3_um": -33.84125915839433,
+    "geometric_pupil_A1_nm": 0.004368523812011183,
+    "pupil_holdout_rms_pm": 0.004959704499374037,
+    "executed_input_digest": "5344c01bd06a81b6d1635d4680d3e2ce2a7d0831fd94b1076d1520e74c7ed259",
+    "executed_field_digest": "3bd559276e652b87eb28baef399ae8ff8c3c6a29c4321075cd5a15f931a528c0",
+    "source_archive_sha256": "4750dbdcc705274cd017951a0beaf011c2b3386aa5da3d188cbf8b457e51edf0",
+    "report_sha256": "a77931a254f26d6ffd0c963941443c0ef6460cca686472be0832badc27cfb0df",
+    "coherent_report_sha256": "85c8ef906846283ff6d1f66a85e84092f0fed7e324ba1f059683293b6f993968",
+    "matched_pupil_sha256": "76012edb752523605e362c1aa942381419e7960014f575fcb2d93dbc8c3e5cf4"
+  },
+  "alternative_n16384": {
+    "source_count": 16384,
+    "positive_at_gun_exit": 16384,
+    "sample_population": {
+      "current_ua": 3.1689453125,
+      "effective": 5192.0,
+      "positive": 5192
+    },
+    "particle_D95_nm": 0.22894609471062624,
+    "particle_alpha95_mrad": 13.30363370752602,
+    "particle_D95_waist_offset_nm": -0.374999899577233,
+    "particle_rms_waist_offset_nm": 0.0,
+    "coherent_D95_nm": 0.20217719078063967,
+    "coherent_waist_offset_nm": -0.125,
+    "coherent_waist_bracket_nm": [
+      -0.1875,
+      -0.0625
+    ],
+    "coherent_alpha95_mrad": 15.994879222179796,
+    "coherent_mode_count": 87,
+    "coherent_focus_status": "CUDA_FOCUS_GRID_AND_SURFACE_PASS",
+    "coherent_grid_refinement": {
+      "grid_pair": [
+        1152,
+        1536
+      ],
+      "entrance_D95_relative": 8.49064013057621e-05,
+      "entrance_D95_relative_budget": 0.001,
+      "waist_difference_nm": 0.0,
+      "waist_difference_budget_nm": 0.125,
+      "grid_converged": true,
+      "within_0p25_nm_of_surface": true
+    },
+    "source_energy": {
+      "configured_FWHM_eV": 0.3,
+      "weighted_sample_mean_eV": 300000.29990980425,
+      "weighted_sample_RMS_eV": 0.12775579256679895,
+      "sample_peak_to_peak_eV": 0.8428549157688394,
+      "maximum_relative_wavelength_change_about_mean": 1.1327961798590636e-06,
+      "model": "The original energy-dependent Lorentz trajectories are retained. The reconstructed wave uses one current-weighted mean wavelength and does not resolve wave chromatic coherence."
+    },
+    "geometric_pupil_A2_nm": 3.2117667843471374,
+    "geometric_pupil_signed_C3_um": -33.858628720208664,
+    "geometric_pupil_A1_nm": 0.004431203304449946,
+    "pupil_holdout_rms_pm": 0.004961004857433632,
+    "executed_input_digest": "9e094cd63bfc4bf0dd342f1e72be52e85b5a45fa0e7ce11cabf39cae506964df",
+    "executed_field_digest": "ef8eb1e1fc8297fa73b624929ce79a335e5c93ad8d40190f40e71eb824625cdc",
+    "source_archive_sha256": "4750dbdcc705274cd017951a0beaf011c2b3386aa5da3d188cbf8b457e51edf0",
+    "report_sha256": "34ac6b16601638d327d478bbe408eaf0de7f5b0bef22359d0e6b7088fe843b03",
+    "coherent_report_sha256": "7c414713e2f22a8ad68294efebbf8a33459e86ce149bc0ebabdd22cacf0f1259",
+    "matched_pupil_sha256": "db74ab38a75c788dada8766b08da09ee5f9cfee1b2f0ddd9cbbc2ef65b2100f7"
+  },
+  "selected_count_convergence": {
+    "relative_particle_D95_change": 0.01873099801769935,
+    "relative_coherent_D95_change": 0.016533049003308327,
+    "coherent_waist_change_nm": 0.0625
+  },
+  "column_topology": {
+    "status": "PRESERVED_AT_BOUNDED_SAMPLING",
+    "zero_energy_reference": [
+      {
+        "z_mm": 503.2578404307703,
+        "bracket_mm": [
+          502.9926882144265,
+          503.9925502562081
+        ],
+        "nearest_lens": [
+          "condenser_lens_1"
+        ],
+        "lens_side": "downstream"
+      },
+      {
+        "z_mm": 858.856000576986,
+        "bracket_mm": [
+          857.9437130469057,
+          858.9435750886873
+        ],
+        "nearest_lens": [
+          "condenser_lens_3"
+        ],
+        "lens_side": "upstream"
+      },
+      {
+        "z_mm": 1211.8877730372503,
+        "bracket_mm": [
+          1210.8950137958218,
+          1211.8948758376034
+        ],
+        "nearest_lens": [
+          "probe_tl21_lens"
+        ],
+        "lens_side": "upstream"
+      },
+      {
+        "z_mm": 1307.2700010826654,
+        "bracket_mm": [
+          1306.8817698068583,
+          1307.8816318486402
+        ],
+        "nearest_lens": [
+          "probe_tl21_lens"
+        ],
+        "lens_side": "downstream"
+      },
+      {
+        "z_mm": 1408.35924470152,
+        "bracket_mm": [
+          1408.3,
+          1408.4
+        ],
+        "nearest_lens": [
+          "probe_tl12_lens"
+        ],
+        "lens_side": "downstream"
+      },
+      {
+        "z_mm": 1599.199999774032,
+        "bracket_mm": [
+          1599.199999675,
+          1599.1999998000001
+        ],
+        "nearest_lens": [
+          "objective_lens"
+        ],
+        "lens_side": "upstream"
+      },
+      {
+        "z_mm": 1944.8981114027872,
+        "bracket_mm": [
+          1944.7937524635395,
+          1945.793614505321
+        ],
+        "nearest_lens": [
+          "diffraction_lens"
+        ],
+        "lens_side": "downstream"
+      },
+      {
+        "z_mm": 2327.6633071624265,
+        "bracket_mm": [
+          2326.7410524241227,
+          2327.740914465904
+        ],
+        "nearest_lens": [
+          "projector_lens_1"
+        ],
+        "lens_side": "downstream"
+      }
+    ],
+    "restored_energy_selected": [
+      {
+        "z_mm": 503.25780730702627,
+        "bracket_mm": [
+          502.9926882144265,
+          503.9925502562081
+        ],
+        "nearest_lens": [
+          "condenser_lens_1"
+        ],
+        "lens_side": "downstream"
+      },
+      {
+        "z_mm": 857.7354346726604,
+        "bracket_mm": [
+          857.5,
+          857.9437130469057
+        ],
+        "nearest_lens": [
+          "condenser_lens_3"
+        ],
+        "lens_side": "upstream"
+      },
+      {
+        "z_mm": 1211.8644853403596,
+        "bracket_mm": [
+          1211.6333333333332,
+          1211.8948758376034
+        ],
+        "nearest_lens": [
+          "probe_tl21_lens"
+        ],
+        "lens_side": "upstream"
+      },
+      {
+        "z_mm": 1307.8190265887554,
+        "bracket_mm": [
+          1306.8817698068583,
+          1307.8816318486402
+        ],
+        "nearest_lens": [
+          "probe_tl21_lens"
+        ],
+        "lens_side": "downstream"
+      },
+      {
+        "z_mm": 1408.3601162048103,
+        "bracket_mm": [
+          1408.3,
+          1408.4
+        ],
+        "nearest_lens": [
+          "probe_tl12_lens"
+        ],
+        "lens_side": "downstream"
+      },
+      {
+        "z_mm": 1599.199999743514,
+        "bracket_mm": [
+          1599.199999675,
+          1599.1999998000001
+        ],
+        "nearest_lens": [
+          "objective_lens"
+        ],
+        "lens_side": "upstream"
+      },
+      {
+        "z_mm": 1944.8973434725872,
+        "bracket_mm": [
+          1944.7937524635395,
+          1945.793614505321
+        ],
+        "nearest_lens": [
+          "diffraction_lens"
+        ],
+        "lens_side": "downstream"
+      },
+      {
+        "z_mm": 2327.6628463072993,
+        "bracket_mm": [
+          2326.7410524241227,
+          2327.740914465904
+        ],
+        "nearest_lens": [
+          "projector_lens_1"
+        ],
+        "lens_side": "downstream"
+      }
+    ],
+    "TL21_TL12_equal_distance_z_mm": 1308.125,
+    "selected_margin_mm": 0.3059734112446222
+  }
+}

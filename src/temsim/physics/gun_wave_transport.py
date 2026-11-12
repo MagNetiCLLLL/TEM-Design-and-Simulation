@@ -58,7 +58,7 @@ def specimen_entrance_z_mm(state):
     centre = float(state.sample.z_mm)
     if not math.isfinite(thickness) or thickness < 0 or not math.isfinite(centre):
         raise ValueError("The specimen entrance needs a finite centre and non-negative thickness")
-    return centre-thickness*0.5e-6
+    return float(getattr(state.sample, "upper_surface_z_mm", centre-thickness*0.5e-6))
 
 
 def upstream_component_events(state):

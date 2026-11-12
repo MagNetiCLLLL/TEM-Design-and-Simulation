@@ -1,0 +1,24 @@
+{
+  "status": "PASS_BITWISE_CUDA_OPERATOR_PARITY",
+  "scope": "Pure synthetic 8x8 operator arrays; no finite-source physical trial",
+  "compute_backend": "Require GPU",
+  "device": "NVIDIA GeForce RTX 5090",
+  "primitive_storage_bytes": 192,
+  "logical_volume_bytes": 768,
+  "byte_hashes": {
+    "dense": {
+      "detectors": "df319ef19ad13f8a84c46465338fb1256528859d84e437da436f593ab0ce017c",
+      "loss": "6a4f413755995e6d1ecb016df467e00caf9d05781a29adbf37a4cb139d754eb1",
+      "diffraction": "4af0950f63d849e849f7f55516165811a493a07d2457f3f533fe626445c8bcd4",
+      "bloch": "1f48cfeb0f30290a9fd092e9e7ac5bd73998539ffa09c2ebe3c01944fae09450"
+    },
+    "compact": {
+      "detectors": "df319ef19ad13f8a84c46465338fb1256528859d84e437da436f593ab0ce017c",
+      "loss": "6a4f413755995e6d1ecb016df467e00caf9d05781a29adbf37a4cb139d754eb1",
+      "diffraction": "4af0950f63d849e849f7f55516165811a493a07d2457f3f533fe626445c8bcd4",
+      "bloch": "1f48cfeb0f30290a9fd092e9e7ac5bd73998539ffa09c2ebe3c01944fae09450"
+    }
+  },
+  "physical_inputs_changed": false,
+  "tolerances_changed": false
+}

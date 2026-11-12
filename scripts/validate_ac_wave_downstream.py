@@ -1,4 +1,5 @@
 """Conditional downstream refinement of an already executed 765 mm wave.
+Tip-origin checkpoint continuation is retired; use python -m temsim.mixed_wave_cli --help.
 
 This diagnostic consumes one committed complete receiving-aperture checkpoint.
 It does not execute or re-qualify the source, gun or upstream column. The
@@ -265,6 +266,9 @@ def main(argv=None):
     parser.add_argument('--supplement-focus',action='store_true',help='Also observe centre at sample +/-40 nm, separately from the original protocol')
     parser.add_argument('--prepare-only',action='store_true',help='Validate committed metadata and save a plan; no propagation or GPU execution')
     args = parser.parse_args(argv)
+    if not args.prepare_only:
+        from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+        reject_retired_tip_coherent_workflow()
     output, baseline_folder = args.output.resolve(), args.baseline.resolve()
     if output == baseline_folder or baseline_folder in output.parents or output in baseline_folder.parents:
         parser.error('--output must be separate from the baseline and its ancestors')

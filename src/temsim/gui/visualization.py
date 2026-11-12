@@ -1044,7 +1044,7 @@ class VisualizationWorkspace(QWidget):
         self.energy_filter_page.setStretchFactor(0, 0)
         self.energy_filter_page.setStretchFactor(1, 1)
         self.energy_filter_page.setSizes((420, 1000))
-        self.transverse_beam = TransverseBeamView()
+        self.transverse_beam = TransverseBeamView(coherent_switch=True)
         from temsim.gui.ray_flight_time_colours import RayFlightTimeColours
         self._ray_flight_time_colours = RayFlightTimeColours(self)
         self.transverse_beam.setMinimumWidth(340)
@@ -1175,6 +1175,14 @@ class VisualizationWorkspace(QWidget):
         self.hardware_tuning = HardwareTuningPanel()
         from temsim.gui.coherent_beam import CoherentBeamPage, CoherentBeamMirror
         self.coherent_beam = CoherentBeamPage()
+        self.coherent_beam.particle_result_provider = lambda: (
+            self._last_result if not self.transverse_beam._inputs_stale else None)
+        self.transverse_beam.coherent_wave_requested.connect(
+            lambda z_mm: self.coherent_beam.request_transverse_wave(self._last_result, z_mm)
+        )
+        self.transverse_beam.coherent_wave_disabled.connect(self.coherent_beam.release_transverse_wave)
+        self.coherent_beam.transverse_wave_ready.connect(self._accept_transverse_wave)
+        self.coherent_beam.transverse_wave_failed.connect(self.transverse_beam.set_coherent_wave_failed)
         self.coherent_ray_view = CoherentBeamMirror(self.coherent_beam)
         self.ray_beam_tabs.addTab(self.coherent_ray_view, "Beam observation")
         self.tabs = CurrentPageHeightTabs()
@@ -1420,6 +1428,13 @@ class VisualizationWorkspace(QWidget):
             self.transverse_beam.focus_component(value)
         else:
             self.transverse_beam.focus_z(value)
+
+    def _accept_transverse_wave(self, checkpoint, axial_bz_t, magnetic_gauge) -> None:
+        if self.transverse_beam._result is self._last_result:
+            self.transverse_beam.accept_coherent_wave(
+                checkpoint, axial_bz_t=axial_bz_t, magnetic_gauge=magnetic_gauge,
+                maximum_working_bytes=self.coherent_beam.transverse_wave_readout_budget,
+            )
 
     def show_sample_page(self) -> None:
         """Activate the central owner of all specimen parameters."""
@@ -2254,6 +2269,25 @@ class VisualizationWorkspace(QWidget):
         if not preserve_playback:
             self._scan_playback_active = False
             self._scan_playback_time_s = None
+
+    def publish_mixed_stem(self, acquisition, frame, diffraction):
+        """Publish an explicitly captured mixed frame outside particle image caches."""
+        from temsim.gui.mixed_stem_adapter import wrap_mixed_stem_result
+        wrapper = wrap_mixed_stem_result(acquisition, frame)
+        self._mixed_stem_acquisition = acquisition
+        self._mixed_stem_display_result = wrapper
+        self.display_result(wrapper, "Mixed coherent CUDA", calculation_scope="stem")
+        self.scan_control.display_mixed_diffraction(diffraction)
+        self.scan_control.export_mixed_scan.setEnabled(True)
+        return wrapper
+
+    def publish_saved_mixed_stem(self, acquisition, frame, diffraction, *, directory):
+        """Display a checked saved scan without publishing a particle result."""
+        if getattr(acquisition, "particle_result", None) is not None:
+            raise ValueError("Use normal publication for an acquisition with executed ray history")
+        self.scan_control.display_saved_mixed(frame, diffraction,
+            state_snapshot=acquisition.state_snapshot, directory=directory)
+        self._saved_mixed_acquisition = acquisition
 
     def _publish_scan_control_result(
         self, result, *, complete=False, explicit_calculation=False
@@ -4351,6 +4385,7 @@ class VisualizationWorkspace(QWidget):
         self._pending_ray_focus.clear()
         self._presented_ray_panels.clear()
         self._last_result = self._preview_result = self._high_accuracy_result = None
+        self._saved_mixed_acquisition = None
         self.selected_plane_readout.clear()
         self.conjugate_planes.clear()
         self._last_quality = ""
@@ -4390,9 +4425,7 @@ class VisualizationWorkspace(QWidget):
         self.result_readout._stale.clear()
         self.result_readout._refresh()
         self._refresh_ray_calculation_extent()
-        self.transverse_beam._result = None
-        self.transverse_beam.analysis.invalidate()
-        self.transverse_beam._redraw()
+        self.transverse_beam.display_result(None)
         self.magnetic_field.display_result(None)
         # Physical Layout keeps the live assembly, but not the failed result.
         self.physical_layout._result = None
@@ -4419,6 +4452,8 @@ class VisualizationWorkspace(QWidget):
         self._ray_display_cache.clear()
         self._ray_emission_data = None
         self._ray_flight_time_colours.invalidate()
+        self.transverse_beam.invalidate_coherent_wave()
+        self.coherent_beam.particle_result_published(result)
         self.transverse_beam.analysis.tof.invalidate()
         self._ray_display_cache_bytes = 0
         self._ray_display_cache_result = result

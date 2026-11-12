@@ -71,6 +71,7 @@ class SpecimenScene:
     support_rotation_deg: float
     sample_material: Any | None = None
     support_material: Any | None = None
+    lattice_reference_thickness_nm: float | None = None
 
     @classmethod
     def from_state(
@@ -167,6 +168,7 @@ class SpecimenScene:
             support_rotation_deg=support_rotation_deg,
             sample_material=sample_material if inserted else None,
             support_material=support_material if inserted else None,
+            lattice_reference_thickness_nm=getattr(sample, "lattice_reference_thickness_nm", None),
         )
 
     @property

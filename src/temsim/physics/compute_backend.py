@@ -244,18 +244,25 @@ def coherent_cuda_capability() -> BackendCapability:
             f"CuPy CUDA execution check failed ({type(error).__name__}): {error}")
 
 
-def require_coherent_cuda(requested=BACKEND_AUTO, *, acceleration_enabled=True):
-    """Admit new user wave jobs with an execution policy that forbids fallback."""
-    message = ("Coherent calculations currently require a working CuPy CUDA backend. "
-               "CPU execution and automatic CPU fallback are disabled for these jobs. ")
+_COHERENT_CUDA_REQUIRED = ("Coherent calculations currently require a working CuPy CUDA backend. "
+                           "CPU execution and automatic CPU fallback are disabled for these jobs. ")
+
+
+def validate_coherent_cuda_policy(requested=BACKEND_AUTO, *, acceleration_enabled=True):
+    """Reject explicit CPU settings without probing the CUDA device."""
     if not acceleration_enabled or str(requested).strip().lower() in {
         "cpu", "numba", "numba cpu", "numpy", "numpy cpu",
     }:
-        raise GPUExecutionError("required", message +
+        raise GPUExecutionError("required", _COHERENT_CUDA_REQUIRED +
             "Enable acceleration and select Auto, CUDA GPU, Prefer GPU or Require GPU.")
+
+
+def require_coherent_cuda(requested=BACKEND_AUTO, *, acceleration_enabled=True):
+    """Admit new user wave jobs with an execution policy that forbids fallback."""
+    validate_coherent_cuda_policy(requested, acceleration_enabled=acceleration_enabled)
     status = coherent_cuda_capability()
     if not status.available:
-        raise GPUExecutionError("unavailable", message + status.detail)
+        raise GPUExecutionError("unavailable", _COHERENT_CUDA_REQUIRED + status.detail)
     return BACKEND_REQUIRE_GPU
 
 

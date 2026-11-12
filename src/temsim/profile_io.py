@@ -8,6 +8,7 @@ from pathlib import Path
 import tempfile
 import tomllib
 from copy import copy, deepcopy
+from dataclasses import replace
 from functools import lru_cache
 from types import UnionType
 from typing import Union, get_args, get_origin, get_type_hints
@@ -77,6 +78,7 @@ def _atomic_write_profile(path: Path, document: dict) -> None:
 
 def save_profile(path: str | Path, state, selection: AssemblySelection) -> None:
     from dataclasses import asdict
+    state.sample.ensure_upper_surface_reference()
     from temsim.simulation_modes import capture_mode_settings, mode_key
     _validate_profile_assembly(state, selection)
     from temsim.optics.electron_gun.profile_controls import capture_gun_profile_controls
@@ -155,6 +157,8 @@ def save_profile(path: str | Path, state, selection: AssemblySelection) -> None:
                          if key != "lens_excitation"},
         },
         "sample_model": {
+            "upper_surface_reference_z_mm": state.sample.upper_surface_reference_z_mm,
+            "lattice_reference_thickness_nm": state.sample.lattice_reference_thickness_nm,
             "wave_illumination": deepcopy(state.sample.wave_illumination),
             "orientation_quaternion_wxyz": list(
                 normalise_quaternion_wxyz(
@@ -329,7 +333,8 @@ def _apply_sample_model(sample, model: dict) -> None:
     if not isinstance(model, dict):
         raise ValueError("Operating profile sample_model must be a table")
     unknown = set(model) - {"wave_illumination", "orientation_quaternion_wxyz",
-        "zone_axis_uvw", "in_plane_axis_uvw", "frozen_phonon_sigma_by_element_angstrom"}
+        "zone_axis_uvw", "in_plane_axis_uvw", "frozen_phonon_sigma_by_element_angstrom",
+        "upper_surface_reference_z_mm", "lattice_reference_thickness_nm"}
     if unknown:
         raise ValueError(f"Unknown sample-model fields: {', '.join(sorted(unknown))}")
     illumination = validate_illumination_config(model.get("wave_illumination", sample.wave_illumination))
@@ -368,6 +373,16 @@ def _apply_sample_model(sample, model: dict) -> None:
     sample.virtual_regions = []
     sample.wave_frozen_phonon_sigma_by_element_angstrom = converted_sigma
     sample.wave_illumination = illumination
+    for name in ("upper_surface_reference_z_mm", "lattice_reference_thickness_nm"):
+        if name in model:
+            value = model[name]
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+                raise ValueError("The specimen axial reference must be a finite number")
+            if name == "lattice_reference_thickness_nm" and value < 0:
+                raise ValueError("The specimen lattice reference thickness must be nonnegative")
+            setattr(sample, name, float(value))
+    if sample.upper_surface_reference_z_mm is not None:
+        object.__setattr__(sample, "z_mm", sample.upper_surface_reference_z_mm+sample.thickness_nm*.5e-6)
 
 
 def _validated_image_initialized_keys(value):
@@ -581,11 +596,39 @@ def apply_profile_values(state, values: dict) -> None:
             candidate_emitter.cdf_quadrature = prepared_gun_controls.tip_cdf_quadrature
     if candidate_emitter is not None:
         candidate_emitter.validate()
+        gun = state.electron_gun
+        electrodes = (gun.extractor, gun.electrostatic_lens, gun.accelerator)
+        voltage_updates = [(obj, name, value) for obj, name, value in pending
+                           if any(obj is electrode for electrode in electrodes)]
+        if voltage_updates:
+            from temsim.optics.electron_gun.electrostatic import validate_feg_electrode_voltages
+            candidates = {id(electrode): copy(electrode) for electrode in electrodes}
+            for obj, name, value in voltage_updates:
+                setattr(candidates[id(obj)], name, value)
+            extractor, lens, accelerator = (candidates[id(electrode)] for electrode in electrodes)
+            if prepared_gun_controls is not None:
+                accelerator.stages = [replace(stage, voltage_fraction=fraction, soft_edge_mm=edge)
+                                      for stage, (fraction, edge) in zip(accelerator.stages,
+                                          prepared_gun_controls.stage_values, strict=True)]
+            validate_feg_electrode_voltages(extractor, lens, accelerator)
     for obj, name, value in pending:
         if obj is state.sample:
-            setattr(candidate_sample, name, value)
+            if (name == "thickness_nm" and (sample_model is None
+                    or "upper_surface_reference_z_mm" not in sample_model)):
+                # A legacy operating profile described a centred foil. Load
+                # that recorded thickness at the existing physical centre;
+                # do not inherit the Sample class's unrelated 5 nm reference.
+                object.__setattr__(candidate_sample, "thickness_nm", float(value))
+                object.__setattr__(candidate_sample, "upper_surface_reference_z_mm", None)
+                object.__setattr__(candidate_sample, "lattice_reference_thickness_nm", None)
+                candidate_sample.ensure_upper_surface_reference()
+            else:
+                setattr(candidate_sample, name, value)
     if sample_model is not None:
         _apply_sample_model(candidate_sample, sample_model)
+    if getattr(state, "_resolved_assembly", None) is not None:
+        from temsim.specimen.axial_geometry import _validate_faces
+        _validate_faces(candidate_sample, state._resolved_assembly)
     # Scan and wobble are a coupled constraint: checking individual fields
     # against the old object would permit an invalid simultaneous enable.
     from temsim.optics.hexapole import HexapoleComponent

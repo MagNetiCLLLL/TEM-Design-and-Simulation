@@ -177,6 +177,7 @@ def test_tip_editor_coherence_length_is_explicit_and_preserves_current(state, qt
     qtbot.addWidget(dialog)
     before = capture_instrument_snapshot(state).digest
     dialog.coherence_enabled.setChecked(True)
+    dialog.coherence_inputs["incoherent_angle_rms_mrad"].clear()
     dialog.coherence_length_enabled.setChecked(True)
     dialog.coherence_length.setText("20")
     assert not dialog.coherence_inputs["incoherent_angle_rms_mrad"].isEnabled()
@@ -185,6 +186,18 @@ def test_tip_editor_coherence_length_is_explicit_and_preserves_current(state, qt
     assert dialog.value()["coherence"].transverse_coherence_length_nm == 20.
     assert dialog.value()["emission_current_na"] == state.electron_gun.emitter.emission_current_na
     assert capture_instrument_snapshot(state).digest == before
+
+
+def test_tip_editor_can_disable_phase_with_an_incomplete_draft(state, qtbot):
+    dialog = GunSourceDialog(state.electron_gun, instrument_state=state)
+    qtbot.addWidget(dialog)
+    dialog.coherence_enabled.setChecked(True)
+    dialog.coherence_inputs["incoherent_angle_rms_mrad"].clear()
+    dialog.coherence_enabled.setChecked(False)
+
+    dialog.accept()
+    assert dialog.result() == dialog.DialogCode.Accepted, dialog.error.text()
+    assert dialog.value()["coherence"] is None
 
 
 def test_existing_shared_gaussian_source_edits_use_the_same_domain_guard(state, qtbot):

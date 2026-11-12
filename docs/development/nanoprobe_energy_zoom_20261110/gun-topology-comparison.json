@@ -1,0 +1,234 @@
+{
+  "schema": "nanoprobe-crossover-topology-v1",
+  "status": "UNRESOLVED",
+  "same_reference_geometry": true,
+  "same_resolved_relations": true,
+  "cohorts": {
+    "actual": {
+      "status": "UNRESOLVED",
+      "same_resolved_relations": true,
+      "reference": [
+        {
+          "component_interval": [
+            "between",
+            [
+              "feg_dpa_aperture"
+            ],
+            [
+              "feg_accelerator"
+            ]
+          ],
+          "lens_keys": [
+            "feg_electrostatic_lens"
+          ],
+          "side": "downstream"
+        }
+      ],
+      "candidate": [
+        {
+          "component_interval": [
+            "between",
+            [
+              "feg_dpa_aperture"
+            ],
+            [
+              "feg_accelerator"
+            ]
+          ],
+          "lens_keys": [
+            "feg_electrostatic_lens"
+          ],
+          "side": "downstream"
+        }
+      ],
+      "reference_unresolved": [
+        {
+          "basin_directional_sign_transitions": [
+            {
+              "converging_to_diverging": 1,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 0,
+              "transition_brackets_mm": [
+                [
+                  0.0,
+                  1e-05
+                ]
+              ]
+            },
+            {
+              "converging_to_diverging": 0,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 1,
+              "transition_brackets_mm": []
+            }
+          ],
+          "radial_bracket_mm": [
+            0.0,
+            1e-05
+          ],
+          "radial_root_interpolated_mm": 6.610529521267836e-08,
+          "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+          "reason": "no_bounded_all_direction_covariance_growth_bracket",
+          "representative_z_mm": 0.0,
+          "search_basin_mm": [
+            0.0,
+            23.5
+          ]
+        }
+      ],
+      "candidate_unresolved": [
+        {
+          "basin_directional_sign_transitions": [
+            {
+              "converging_to_diverging": 1,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 0,
+              "transition_brackets_mm": [
+                [
+                  0.0,
+                  1e-05
+                ]
+              ]
+            },
+            {
+              "converging_to_diverging": 1,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 1,
+              "transition_brackets_mm": [
+                [
+                  0.0,
+                  1e-05
+                ]
+              ]
+            }
+          ],
+          "radial_bracket_mm": [
+            0.0,
+            1e-05
+          ],
+          "radial_root_interpolated_mm": 1.6830894790129205e-07,
+          "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+          "reason": "no_bounded_all_direction_covariance_growth_bracket",
+          "representative_z_mm": 0.0,
+          "search_basin_mm": [
+            0.0,
+            23.5
+          ]
+        }
+      ]
+    },
+    "gun_exit": {
+      "status": "UNRESOLVED",
+      "same_resolved_relations": true,
+      "reference": [
+        {
+          "component_interval": [
+            "between",
+            [
+              "feg_dpa_aperture"
+            ],
+            [
+              "feg_accelerator"
+            ]
+          ],
+          "lens_keys": [
+            "feg_electrostatic_lens"
+          ],
+          "side": "downstream"
+        }
+      ],
+      "candidate": [
+        {
+          "component_interval": [
+            "between",
+            [
+              "feg_dpa_aperture"
+            ],
+            [
+              "feg_accelerator"
+            ]
+          ],
+          "lens_keys": [
+            "feg_electrostatic_lens"
+          ],
+          "side": "downstream"
+        }
+      ],
+      "reference_unresolved": [
+        {
+          "basin_directional_sign_transitions": [
+            {
+              "converging_to_diverging": 1,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 0,
+              "transition_brackets_mm": [
+                [
+                  0.0,
+                  1e-05
+                ]
+              ]
+            },
+            {
+              "converging_to_diverging": 0,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 1,
+              "transition_brackets_mm": []
+            }
+          ],
+          "radial_bracket_mm": [
+            0.0,
+            1e-05
+          ],
+          "radial_root_interpolated_mm": 6.610529521267836e-08,
+          "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+          "reason": "no_bounded_all_direction_covariance_growth_bracket",
+          "representative_z_mm": 0.0,
+          "search_basin_mm": [
+            0.0,
+            23.5
+          ]
+        }
+      ],
+      "candidate_unresolved": [
+        {
+          "basin_directional_sign_transitions": [
+            {
+              "converging_to_diverging": 1,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 0,
+              "transition_brackets_mm": [
+                [
+                  0.0,
+                  1e-05
+                ]
+              ]
+            },
+            {
+              "converging_to_diverging": 1,
+              "diverging_to_converging": 0,
+              "eigenvalue_order": 1,
+              "transition_brackets_mm": [
+                [
+                  0.0,
+                  1e-05
+                ]
+              ]
+            }
+          ],
+          "radial_bracket_mm": [
+            0.0,
+            1e-05
+          ],
+          "radial_root_interpolated_mm": 1.6830894790129205e-07,
+          "radial_root_role": "Diagnostic interpolation, not an executed point focus",
+          "reason": "no_bounded_all_direction_covariance_growth_bracket",
+          "representative_z_mm": 0.0,
+          "search_basin_mm": [
+            0.0,
+            23.5
+          ]
+        }
+      ]
+    }
+  }
+}

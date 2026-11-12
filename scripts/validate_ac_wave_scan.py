@@ -1,4 +1,5 @@
 """Execute the saved AC optics with a declared Tip boundary and a real raster.
+Tip-origin coherent execution is retired; use python -m temsim.mixed_wave_cli --help.
 
 Historical ray inputs lack phase. Keep their nominal emission and optics, add
 the documented driven boundary, and capture new inputs for BOTH representations.
@@ -191,6 +192,9 @@ def main(argv=None):
     parser.add_argument('--positions',nargs='*',default=None)
     parser.add_argument('--prepare-only',action='store_true')
     args=parser.parse_args(argv)
+    if not args.prepare_only:
+        from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+        reject_retired_tip_coherent_workflow()
     if args.column_step is not None and (not np.isfinite(args.column_step) or args.column_step <= 0):
         parser.error('--column-step must be finite and positive')
     if args.segment_steps is not None and args.segment_steps <= 0:

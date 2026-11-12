@@ -217,3 +217,66 @@ def test_standard_fallback_prepares_default_mode_and_schedules_one_initial_previ
     assert lenses["condenser_lens_2"].percent == 13.899040164772698
     assert lenses["objective_lens"].percent == 68.97810600833917
     assert "starting a fresh calculation" in window.status_label.text()
+
+
+def test_explicit_input_startup_preserves_automatic_saves_and_named_priority(
+    gui_environment, monkeypatch, qtbot,
+):
+    from PySide6.QtCore import QSettings
+    from PySide6.QtWidgets import QLabel, QWidget
+    from temsim import app
+    from temsim.gui.calculation_controller import CalculationController
+    from temsim.gui.result_files import ResultFiles
+    from temsim.paths import project_root
+    from temsim.working_point import WorkingPointCheckpoint
+
+    _, errors, root = gui_environment
+    point_path = (project_root() / "profiles" /
+                  "feg-nanoprobe-300kv-12p87mrad-initial-20261110.temwp")
+    point = WorkingPointCheckpoint.read_package(point_path)
+    expected = capture_instrument_snapshot(point.compatible_state())
+    automatic = AutomaticResult(root / "saved_results")
+    result_file = root / "previous.temresult"
+    result_file.write_bytes(b"Startup metadata fixture")
+    info = dict(path=result_file, identity="a" * 64, _package_digest="b" * 64,
+                quality="High accuracy", target_z_mm=1599.2, resumable_through_z_mm=1599.2,
+                saved_at_utc="2026-11-10T00:00:00Z")
+    assert automatic.commit_save(automatic.begin_save(info["identity"]), info)
+    original_entry = automatic.entry()
+
+    def forbidden(*_args, **_kwargs):
+        pytest.fail("Explicit input startup submitted transport")
+
+    def result_startup():
+        parent = QWidget()
+        qtbot.addWidget(parent)
+        parent.status_label = QLabel(parent)
+        settings = QSettings(str(root / "workspace.ini"), QSettings.IniFormat)
+        return ResultFiles(parent, startup_settings=settings)
+
+    monkeypatch.setattr(CalculationController, "submit_background", forbidden)
+    startup = result_startup()
+    assert not startup.automatic_startup
+    startup.set_automatic_startup()
+
+    startup = result_startup()
+    assert startup.automatic_startup
+    startup.set_startup(None)
+    assert automatic.enabled() and automatic.entry() == original_entry
+
+    window = app.MainWindow(startup_working_point=point_path)
+    qtbot.addWidget(window)
+    actual = capture_instrument_snapshot(window.state)
+    assert actual.graph == expected.graph and actual.external_inputs == expected.external_inputs
+    assert window._active_working_checkpoint.digest == point.digest
+    assert window.high_rays.value() == 16384 and window.high_step.value() == 0.025
+    assert window.state.electron_gun.emitter.energy_spread_fwhm_ev == 0.3
+    assert not window.preview_timer.isActive() and window.workspace._last_result is None
+    assert not errors
+    window.close()
+
+    library = ResultLibrary(root / "saved_results")
+    named = library.remember("Explicit startup", info)
+    library.set_startup(named["id"])
+    startup = result_startup()
+    assert startup.startup_entry == named and not startup.automatic_startup

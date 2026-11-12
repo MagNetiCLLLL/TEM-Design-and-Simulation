@@ -1,4 +1,5 @@
 """CUDA ideal-single-mode development benchmark; NOT a physical FEG solution.
+Tip-origin coherent execution is retired; use python -m temsim.mixed_wave_cli --help.
 
 The deliberately prescribed Gaussian entrance has 0.4 electron probability per
 reference electron. 1024 or more original positive-current particles sample
@@ -56,6 +57,8 @@ def main():
     parser.add_argument("--exit-window-nm", type=float, default=.5)
     parser.add_argument("--seed", type=int, default=11)
     args = parser.parse_args()
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     settings = {key: str(value) if isinstance(value, Path) else value for key, value in vars(args).items()}
     if args.source_particles < 1000:
         raise ValueError("At least 1000 original positive-current particles are required")

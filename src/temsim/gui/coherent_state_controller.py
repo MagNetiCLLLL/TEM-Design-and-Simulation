@@ -202,64 +202,12 @@ class CoherentStateController(QObject):
 
     @Slot()
     def calculate(self):
-        if self.closed:
-            return
-        if not self.viewing_states():
-            self.controls.mode.setCurrentIndex(self.controls.mode.findData("overlay"))
-        self.page._cancel_request()
-        self.page.invalidate_pair("Saved emission states. No matching classical ensemble is claimed. Apply selected state, choose Current tip parameters, then enable Compare classical rays and Calculate beam for a same-state comparison.")
+        """Keep historical state records readable without restarting Tip waves."""
+        message = ("Saved Tip-state wave execution has been retired. Calculate particles, "
+                   "then use the near-specimen mixed-wave workflow.")
         self.cancel()
-        entries = self._entries()
-        if not entries:
-            self._message("Choose a state, or check states with positive weights, before Calculate beam.")
-            self._rejected_progress("Choose a state or states with positive weights")
-            return
-        try:
-            state = self._state()
-            from temsim.physics.tip_wave_pipeline import require_tip_wave_cuda
-            request = require_tip_wave_cuda(self.page._make_request())
-            request_key = json_digest(asdict(replace(request, observation_z_mm=0.)))
-            prepared = {}
-            for entry in entries:
-                captured = rebase_tip_state(self.snapshots[entry.id], state)
-                snapshot = capture_instrument_snapshot(captured)
-                key = (snapshot.physical_digest, request_key)
-                if key not in self.runs:
-                    summary = wave_input_summary(captured, request)
-                    if summary["status"] != "SOURCE_READY":
-                        raise ValueError(f"{entry.name}: {summary.get('reason', 'Source is not ready')}")
-                    if (summary.get("minimum_initial_wave_bytes") or 0) > request.wave_grid.maximum_working_bytes:
-                        raise MemoryError(f"{entry.name}: complete source modes exceed the working budget")
-                prepared[entry.id] = (key, captured, snapshot.digest)
-            # Admit the entire selection before submitting any job. A rejected
-            # member is never silently removed from the requested population.
-            from temsim.gui.coherent_beam import TipWaveObservationSession
-            for identity, (key, captured, instrument_identity) in prepared.items():
-                if key not in self.runs:
-                    run = _Run(captured, request, TipWaveObservationSession(captured, request), instrument_identity)
-                    # A completed current-tip session is the same calculation
-                    # when both physical and numerical identities match.
-                    page = self.page
-                    if page._captured is not None and page._request is not None and page._observation_session is not None:
-                        single_key = (capture_instrument_snapshot(page._captured).physical_digest,
-                                      json_digest(asdict(replace(page._request, observation_z_mm=0.))))
-                        if key == single_key:
-                            run = _Run(page._captured, request, page._observation_session,
-                                       capture_instrument_snapshot(page._captured).digest,
-                                       OrderedDict(page._cache))
-                    self.runs[key] = run
-                self.row_keys[identity] = key
-                self.controls.set_status(identity, "Queued")
-        except Exception as error:
-            self._message(f"State calculation not started: {error}. Previous complete image retained.")
-            self._rejected_progress(str(error))
-            return
-        self.failed.clear()
-        self.admitted_ids = {entry.id for entry in entries}
-        self.active = True
-        self._drop_unused_runs()
-        self._begin_progress(force=True)
-        self._advance()
+        self._message(message)
+        self._rejected_progress(message)
 
     def _drop_unused_runs(self):
         used = set(self.row_keys.values())

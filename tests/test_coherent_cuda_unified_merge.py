@@ -27,8 +27,9 @@ def test_admission_preserves_preview_and_rechecks_strict_capture(monkeypatch):
         probes.append(True) or backend.BackendCapability(True, "mock CUDA"))
     original = preview_request()
     admitted = pipeline.require_tip_wave_cuda(original)
-    assert replace(admitted, wave_grid=original.wave_grid) == original
+    assert replace(admitted, wave_grid=original.wave_grid, gun=original.gun) == original
     assert admitted.wave_grid == replace(original.wave_grid, compute_backend="Require GPU")
+    assert admitted.gun == replace(original.gun, compute_backend="Require GPU")
     assert pipeline.require_tip_wave_cuda(admitted) is admitted
     assert probes == [True, True]
     assert original.wave_grid.compute_backend == "Prefer GPU"
@@ -77,13 +78,19 @@ def test_strict_unified_residual_never_retries_on_cpu(monkeypatch):
 
 
 def gui_owner(request):
+    from temsim.gui import coherent_beam as gui
     messages, progress = [], []
-    owner = SimpleNamespace(_closed=False, _settings=lambda: object(),
-        state_provider=None, _state=SimpleNamespace(simulation_mode="unified", simulation_time_s=.25),
-        _make_request=lambda *_: request, result=object(),
-        _show_source_check=lambda *args: None,
+    state = SimpleNamespace(simulation_mode="unified", simulation_time_s=.25,
+        sample=SimpleNamespace(z_mm=99., thickness_nm=0.))
+    particle_result = SimpleNamespace(state_snapshot=state)
+    owner = SimpleNamespace(_closed=False, _state=state, _target_z_mm=100.,
+        particle_result_provider=lambda: particle_result, _particle_result=particle_result,
+        _make_request=lambda *_a, **_k: request, result=object(),
+        _cancel_request=lambda: None,
         status=SimpleNamespace(setStyleSheet=lambda *_: None, setText=messages.append),
         progress_detail=SimpleNamespace(emit=progress.append))
+    owner._capture_particle_inputs = lambda *a, **k: gui.CoherentBeamPage._capture_particle_inputs(owner, *a, **k)
+    owner.capture_calculation_inputs = lambda **k: gui.CoherentBeamPage.capture_calculation_inputs(owner, **k)
     return owner, messages, progress
 
 
@@ -92,36 +99,36 @@ def test_gui_admission_precedes_preparation_and_settings_remain_inspectable(monk
     monkeypatch.setattr(backend, "coherent_cuda_capability", lambda:
         backend.BackendCapability(False, "mock missing CUDA"))
     captures = []
-    monkeypatch.setattr(gui, "prepare_coherent_state", lambda state, settings:
-        captures.append(state) or state)
-    monkeypatch.setattr(gui, "wave_input_summary", lambda *_: {"status": "SOURCE_READY"})
-    request = preview_request()
+    monkeypatch.setattr(gui, "capture_instrument_snapshot", lambda state:
+        captures.append(state) or SimpleNamespace(restore=lambda: state))
+    request = gui.MixedWaveRequest(observation_z_mm=100.)
     owner, messages, progress = gui_owner(request)
     previous = owner.result
     with pytest.raises(backend.GPUExecutionError, match="mock missing CUDA"):
         gui.CoherentBeamPage.capture_calculation_inputs(owner)
     assert not captures
+    gui.CoherentBeamPage.calculate(owner)
     assert progress[-1].status == "failed"
     assert owner.result is previous
-    assert "Previous result remains displayed" in messages[-1]
-    state, captured_request, _ = gui.CoherentBeamPage.capture_calculation_inputs(owner, for_execution=False)
+    assert "Mixed wave not started" in messages[-1]
+    state, captured_request, summary = gui.CoherentBeamPage.capture_calculation_inputs(owner, for_execution=False)
     assert captures == [state]
     assert captured_request is request
-    assert captured_request.source_nominal_energy_preview
-    assert captured_request.tip_time_s == .25
+    assert captured_request.observation_z_mm == 100.
+    assert summary["status"] == "PARTICLE_SNAPSHOT_READY"
 
 
-def test_captured_gui_rejection_preserves_session_and_reports_terminal_progress(monkeypatch):
+def test_captured_gui_rejection_preserves_session_before_start(monkeypatch):
     from temsim.gui import coherent_beam as gui
     monkeypatch.setattr(backend, "coherent_cuda_capability", lambda:
         backend.BackendCapability(False, "mock missing CUDA"))
-    request = preview_request()
+    request = gui.MixedWaveRequest(observation_z_mm=100.)
     owner, messages, progress = gui_owner(request)
     previous, session = owner.result, object()
     owner._observation_session = session
-    owner.state_set = SimpleNamespace(cancel=lambda: pytest.fail("Rejected work must retain the session"))
-    gui.CoherentBeamPage.start_captured_calculation(owner, owner._state, request, {})
+    owner._cancel_request = lambda: pytest.fail("Rejected work must retain the session")
+    with pytest.raises(backend.GPUExecutionError, match="mock missing CUDA"):
+        gui.CoherentBeamPage.start_captured_calculation(owner, owner._state, request, {})
     assert owner._observation_session is session
     assert owner.result is previous
-    assert progress[-1].status == "failed"
-    assert "Previous result retained" in messages[-1]
+    assert not progress and not messages

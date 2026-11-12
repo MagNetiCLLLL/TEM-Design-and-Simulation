@@ -1,0 +1,41 @@
+{
+  "scope": "Static CIF registration only; no particle or coherent propagation",
+  "source_digest": "d3b65fd9ced99db9cec14f5cd3fde47be2f9deebef69bea629f531be99adfe6d",
+  "input_digest": "6c25a765596b7f56ba855061af2667ce5642ca9eae0a90db5061ba5ab4199d17",
+  "original_positive_count": 16384,
+  "proof": {
+    "proof": "Integer CIF lattice translations along all laboratory axes; exact tiled potential checked separately",
+    "rectangular_repeat_angstrom_xyz": [
+      7.698557721176563,
+      5.4437023700000005,
+      7.698557721176562
+    ],
+    "rectangular_basis_atoms": 16,
+    "original_cell_atoms": 8,
+    "original_cell_volume_angstrom3": 161.3181071283582,
+    "basis_common_offset_angstrom_xyz": [
+      5.329070518200751e-15,
+      2.0872192862952943e-14,
+      2.692109424273781e-09
+    ],
+    "basis_rounding_error_bound_angstrom_xyz": [
+      2.695382401394551e-13,
+      2.708705077690053e-13,
+      2.7753184591675623e-13
+    ],
+    "basis_original_rounding_displacement_max_angstrom_xyz": [
+      1.4210854715202004e-14,
+      3.108624468950438e-14,
+      2.6921260776191502e-09
+    ],
+    "basis_registration_floating_floor_angstrom": 2.6065645594245385e-13,
+    "basis_registration_raw_site_count": 5832,
+    "basis_registration_scope": "Measured periodic signed differences from original unrounded CIF sites; common numerical offset restored by the analytic builder, remaining per-site error charged",
+    "orientation_quaternion_wxyz": [
+      0.27059805007309856,
+      -0.27059805007309856,
+      -0.6532814824381884,
+      -0.6532814824381883
+    ]
+  }
+}

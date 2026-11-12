@@ -1,0 +1,81 @@
+{
+  "status": "COMPLETED",
+  "wave_implementation": "1e125facd649eaccaa657e5b0696acbbba27e7b1027220da668169243d845a5a",
+  "source_generation_implementation": "1e4ca761c78affa80d90f24fa3d2fe2a69d202a6d7779f6d2e73a66ccb7ca9e8",
+  "source_digest": "d3b65fd9ced99db9cec14f5cd3fde47be2f9deebef69bea629f531be99adfe6d",
+  "source_input_digest": "6c25a765596b7f56ba855061af2667ce5642ca9eae0a90db5061ba5ab4199d17",
+  "original_particles": 16384,
+  "source_transport_restarted": false,
+  "request": {
+    "source": {
+      "pixels": 512,
+      "width_nm": 4.0,
+      "maximum_modes": 96,
+      "maximum_mode_loss_fraction": 1e-05,
+      "maximum_working_bytes": 25769803776,
+      "source_image_rms_pm": 10.0,
+      "spatial_quadrature_order": 5,
+      "frequency_support_inv_angstrom": 1.9
+    },
+    "pixels": 64,
+    "pitch_nm": 0.02,
+    "detectors": [
+      {
+        "key": "bf",
+        "inner_mrad": 0.0,
+        "outer_mrad": 15.0
+      },
+      {
+        "key": "adf",
+        "inner_mrad": 50.0,
+        "outer_mrad": 150.0
+      }
+    ],
+    "batch_size": 8,
+    "maximum_working_bytes": 25769803776,
+    "maximum_host_working_bytes": 51539607552,
+    "material_levels": [
+      [
+        1760,
+        400
+      ],
+      [
+        1920,
+        800
+      ],
+      [
+        2080,
+        1600
+      ]
+    ],
+    "maximum_modulation_error": 0.05,
+    "bandwidth_fraction": 0.6666666666666666,
+    "save_diffraction": true
+  },
+  "elapsed_s": 4484.954344500002,
+  "gui": {
+    "status": "VERIFIED_RENDERED_ACTUAL_MIXED_STEM",
+    "physical_recalculation": false,
+    "input_digest": "be97bb92dd1d871fc307ee11509cecfec9f1d25168723d93b8b9310f937fde07",
+    "display_input_digest": "be97bb92dd1d871fc307ee11509cecfec9f1d25168723d93b8b9310f937fde07",
+    "display_input_compatibility": {},
+    "model": "near_specimen_mixed_coherent_cuda",
+    "shape": [
+      64,
+      64
+    ],
+    "detector_reference": "Ideal specimen-exit windows; no installed station claim",
+    "original_positive_particles": 16384,
+    "mean_bf_source_fraction": 0.27067094843247175,
+    "mean_adf_source_fraction": 0.0014366583694047322,
+    "diffraction_position_nm": [
+      -0.010000000000000002,
+      -0.010000000000000002
+    ],
+    "software_result": null,
+    "read_only_saved_acquisition": false,
+    "loaded_saved_directory": null,
+    "display_input_graph_digest": "3260fc7e293e8e7ed4c2e07d432993aad6413f55218928efd2c548467b1a98a7",
+    "input_compatibility": null
+  }
+}

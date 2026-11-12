@@ -846,6 +846,9 @@ def apply_column_manifest_geometry(
         assembly = getattr(configuration, "resolved_assembly", None)
     if assembly is None:
         assembly = resolve_module_assembly(configuration, root=root)
+    from temsim.specimen.axial_geometry import anchored_sample_assembly
+    assembly = anchored_sample_assembly(state, assembly, configuration,
+        preserve_operating_parameters=preserve_operating_parameters)
     parts = {
         part.key: part
         for part in assembly.parts
@@ -1664,10 +1667,12 @@ def _apply_manifest_runtime_geometry(state, parts, assembly):
             reference = _absolute_part_value(
                 part, "optical_reference_local_z_mm"
             )
-            _set_single_position(
-                item,
-                reference,
-            )
+            if key == "sample":
+                # This is synchronization of a prevalidated fixed reference,
+                # not an intentional user Place operation. Preserve its bits.
+                object.__setattr__(item, "z_mm", reference)
+            else:
+                _set_single_position(item, reference)
             anchor_key = getattr(item, "anchor_key", None)
             if (
                 anchor_key in parts
@@ -1680,7 +1685,7 @@ def _apply_manifest_runtime_geometry(state, parts, assembly):
                     reference - float(parts[anchor_key].center_z_mm)
                 )
     if "sample" in parts:
-        state.sample.z_mm = float(parts["sample"].center_z_mm)
+        object.__setattr__(state.sample, "z_mm", float(parts["sample"].center_z_mm))
     _apply_objective_manifest_geometry(state, parts)
     objective_aperture = getattr(state, "objective_aperture", None)
     objective_lens = getattr(state, "objective_lens", None)

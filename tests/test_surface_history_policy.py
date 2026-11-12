@@ -20,6 +20,7 @@ def test_surface_history_write_store_is_present_independently_of_reuse(tmp_path,
     request = TipWaveRequest(stop="gun_exit", execution=WaveExecutionOptions(
         segmented=segmented, cache_directory=str(tmp_path/"executed")))
     def inspect_policy(gun, **kwargs):
+        assert kwargs["compute_backend"] == "Require GPU"
         assert kwargs["_energy_cache"] is not None
         assert kwargs["_energy_cache"].root.is_dir()
         assert kwargs["_reuse_energy_cache"] is reuse

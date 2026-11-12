@@ -92,6 +92,8 @@ TOML_OWNED_FIELDS = frozenset({
     "nominal_focal_length_mm",
     "nominal_voltage_kv",
     "sample_axial_offset_mm",
+    "upper_surface_reference_z_mm",
+    "lattice_reference_thickness_nm",
     "upper_a_mm",
     "upper_b0_t",
     "upper_objective_lens_axial_length_mm",

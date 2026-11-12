@@ -1,5 +1,11 @@
 # Electron beam and continuous Z observation
 
+> **Retired Tip-origin execution.** The Tip-to-observation calculation described below
+> is retained as historical documentation and evidence, not an executable workflow.
+> New work uses [particle transport and near-specimen mixed coherence](MIXED_COHERENCE.md).
+> Existing inputs, numeric results and archives remain unchanged and readable;
+> Tip-origin propagation and continuation are rejected before CUDA or cache reuse.
+
 The **Electron beam** page has its own **Calculate beam** button. It captures
 the applied instrument Tip, electrodes, lenses, apertures, specimen
 and detectors for the development wave pipeline. Intensity, electron arrivals,
@@ -202,6 +208,13 @@ acceleration are rejected for these jobs. There is no CPU fallback after an
 unavailable-device, allocation or execution failure. Existing CPU-only
 preparation stages remain on CPU; requiring CUDA does not claim every stage
 has a GPU implementation. Classical particle backend selection is unchanged.
+
+The GPU extra supplies CuPy 14.2 or later and the CUDA 12 runtime components,
+including the sparse and dense linear-algebra libraries needed on Windows.
+It includes nvmath-python and NVIDIA cuDSS for sparse tip boundary
+operators. Each operator is factored once on CUDA and reused for the source
+vector and boundary response columns. Planned native workspace and owned
+buffers must fit the selected working-memory budget before factorization.
 
 **Advanced calculation options → GPU working limit** defaults to **24 GiB**.
 It is separate from **Working limit per stage** and the RAM/disk cache limits;
@@ -515,6 +528,23 @@ the record cannot convert it into a new particle source.
    starting propagation. The full page and Ray sidebar retain separate views.
 5. After changing source, hardware, specimen or numerical settings, press
    **Calculate beam** again to establish a new captured session.
+
+### Coherent wave in Transverse Beam
+
+After a particle **Preview** or **High accuracy** run, open **Ray Diagram →
+Beam analysis → Classical rays** to show Transverse Beam. Select a Z plane and
+enable **Coherent wave**. The CUDA wave
+calculation uses the applied tip, optics and specimen captured by the displayed
+particle run, with the wave numerical controls from **Electron beam**. The
+particle count applies to the particle run. Moving the cursor requests the new
+exact plane. The particle view remains available while the wave is pending or
+when the selected plane cannot be calculated. Disable **Coherent wave** to
+return to the particle view.
+
+Editing the wave numerical controls retires the previous inline calculation
+and restores the particle view with an inputs-changed message. Select another
+plane or switch **Coherent wave** off and on to capture the updated numerical
+settings from the applied particle snapshot.
 
 ### Observations of the same calculated beam
 

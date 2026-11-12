@@ -1,0 +1,27 @@
+{
+  "scope": "Read-only rendering of saved arrays; no simulation or normalization",
+  "synthetic_plot_fixture": false,
+  "raw_files_sha256": {
+    "scan-and-diffraction.npz": "0de0f86327578c5183d4ae12bb65fac25319726ef52d321394487616e292ed3a",
+    "report.json": "3de743ab3d6f001484cf6dfd26617c6866fe8ebd398e1aa241cdf0e367ebe86b"
+  },
+  "raw_files_unchanged": true,
+  "diffraction_position_nm": [
+    -0.010000000000000002,
+    -0.010000000000000002
+  ],
+  "diffraction_integrated_probability": 0.31612210676187125,
+  "bf_current_range_a": [
+    2.666571300365781e-06,
+    2.752812318667925e-06
+  ],
+  "adf_current_range_a": [
+    7.038983069842412e-10,
+    5.031641689575391e-08
+  ],
+  "display_only_diffraction_log_floor_relative_to_peak": 1e-07,
+  "outputs": [
+    "bf-adf-current.png",
+    "exit-diffraction.png"
+  ]
+}

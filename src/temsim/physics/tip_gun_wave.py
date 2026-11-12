@@ -78,63 +78,8 @@ class GunWaveNumerics:
         return self
 
 
-@dataclass(frozen=True)
-class TipGunCheckpoint:
-    beam: BeamState
-    plane_z_mm: float
-    reference_current_a: float
-    record: object
-    auxiliary_arrays: object = field(default_factory=dict)
-
-    def __post_init__(self):
-        if self.beam.reference_plane != TIP_REFERENCE:
-            raise ValueError("A physical gun checkpoint must retain its tip electron reference")
-        if not math.isfinite(self.plane_z_mm) or self.plane_z_mm <= 0:
-            raise ValueError("A gun checkpoint must be downstream of the tip")
-        if not math.isfinite(self.reference_current_a) or self.reference_current_a < 0:
-            raise ValueError("Invalid tip reference current")
-        if self.beam.total_weight > 1+1e-10:
-            raise ValueError("Gun propagation created electron probability")
-        object.__setattr__(self, "record", freeze_json(self.record))
-        # Committed disk checkpoints expose a checksum-checked immutable lazy
-        # mapping. Their manifest already binds every auxiliary payload; do
-        # not read all near-tip arrays during an unrelated Z browse.
-        if hasattr(self.beam, "content_identity"):
-            return
-        auxiliary = {}
-        for name, value in self.auxiliary_arrays.items():
-            if (not isinstance(name, str) or not name or len(name) > 80
-                    or any(c not in "abcdefghijklmnopqrstuvwxyz0123456789_" for c in name)):
-                raise ValueError("Checkpoint auxiliary state needs a plain array name")
-            array = np.asarray(value)
-            if array.dtype.hasobject:
-                raise ValueError("Checkpoint auxiliary state cannot contain Python objects")
-            auxiliary[name] = np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
-        object.__setattr__(self, "auxiliary_arrays", MappingProxyType(auxiliary))
-
-    @property
-    def digest(self):
-        if hasattr(self.beam, "content_identity"):
-            return json_digest({"record": self.record, "stored_payload": self.beam.content_identity,
-                                "plane_z_mm": self.plane_z_mm, "current_a": self.reference_current_a})
-        digest = sha256()
-        for name, array in sorted(self.auxiliary_arrays.items()):
-            digest.update(name.encode())
-            digest.update(str((array.dtype.str, array.shape)).encode())
-            digest.update(array.tobytes())
-        for mode in self.beam.modes:
-            for name in ("amplitude", "basis_m", "origin_m", "curvature_m1", "tilt_rad"):
-                value = getattr(mode.plane, name)
-                digest.update(b"none" if value is None else np.ascontiguousarray(value).tobytes())
-            digest.update(json_digest((mode.mode_id, mode.energy_kev, mode.weight_per_reference_electron,
-                                       None if mode.axial_reference is None else asdict(mode.axial_reference),
-                                       mode.scattering_history)).encode())
-        return json_digest({"record": self.record, "payload": digest.hexdigest(),
-                            "plane_z_mm": self.plane_z_mm, "current_a": self.reference_current_a})
-
-    @property
-    def transmitted_current_a(self):
-        return self.reference_current_a*self.beam.total_weight
+# Compatibility import for existing archives and downstream type checks.
+from temsim.physics.wave_checkpoint import WaveCheckpoint as TipGunCheckpoint
 
 
 def _momentum_velocity(energy_ev):
@@ -569,6 +514,8 @@ def build_tip_gun_checkpoint(gun, *, source_numerics=TipWaveNumerics(),
     There is deliberately no intermediate-wave argument. Preparation consumes
     actual fields before cache lookup; a configuration label is not transport.
     """
+    from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+    reject_retired_tip_coherent_workflow()
     from temsim.calculation_manifest import solver_source_identity
     from temsim.instrument_snapshot import encode_instrument, decode_instrument
     from temsim.optics.electron_gun.source_policy import require_physical_gun_source

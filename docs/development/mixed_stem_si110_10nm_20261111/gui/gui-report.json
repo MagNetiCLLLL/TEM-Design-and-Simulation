@@ -1,0 +1,33 @@
+{
+  "status": "VERIFIED_RENDERED_ACTUAL_MIXED_STEM",
+  "physical_recalculation": false,
+  "input_digest": "be97bb92dd1d871fc307ee11509cecfec9f1d25168723d93b8b9310f937fde07",
+  "display_input_digest": "be97bb92dd1d871fc307ee11509cecfec9f1d25168723d93b8b9310f937fde07",
+  "display_input_compatibility": {
+    "metadata_migrations": [],
+    "physical_inputs_unchanged": true,
+    "schema": "wave-input-graph-compatibility-v1"
+  },
+  "model": "near_specimen_mixed_coherent_cuda",
+  "shape": [
+    64,
+    64
+  ],
+  "detector_reference": "Ideal specimen-exit windows; no installed station claim",
+  "original_positive_particles": 16384,
+  "mean_bf_source_fraction": 0.27067094843247175,
+  "mean_adf_source_fraction": 0.0014366583694047322,
+  "diffraction_position_nm": [
+    -0.010000000000000002,
+    -0.010000000000000002
+  ],
+  "software_result": null,
+  "read_only_saved_acquisition": true,
+  "loaded_saved_directory": "F:\\tem_simulator_v2\\outputs\\mixed-stem-si110-10nm-20261111\\cuda-exact-lobato-16384",
+  "display_input_graph_digest": "3260fc7e293e8e7ed4c2e07d432993aad6413f55218928efd2c548467b1a98a7",
+  "input_compatibility": {
+    "metadata_migrations": [],
+    "physical_inputs_unchanged": true,
+    "schema": "wave-input-graph-compatibility-v1"
+  }
+}

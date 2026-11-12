@@ -12,6 +12,7 @@ from temsim.gui.input_policy import (
 from pathlib import Path
 from dataclasses import replace
 from copy import copy
+from zipfile import BadZipFile
 from temsim import input_io
 
 import numpy as np
@@ -24,6 +25,7 @@ from PySide6.QtWidgets import (
     QDialog,
     QDialogButtonBox,
     QFileDialog,
+    QCheckBox,
     QLabel,
     QMainWindow,
     QMessageBox,
@@ -76,6 +78,7 @@ from temsim.operating_modes import (
     compatible_modes,
     condenser_mode_key,
     direct_alignment_by_key,
+    has_two_condenser_hardware,
 )
 from temsim.profile_io import apply_profile_values, read_profile, save_profile
 from temsim.physics.compute_backend import (
@@ -199,8 +202,9 @@ class MainWindow(QMainWindow):
     PREVIEW_DEBOUNCE_MS = 250
     DESIGN_EXPLORER_DEBOUNCE_MS = 200
 
-    def __init__(self, parent: QWidget | None = None) -> None:
+    def __init__(self, parent: QWidget | None = None, *, startup_working_point: Path | None = None) -> None:
         super().__init__(parent)
+        self._startup_working_point = startup_working_point
         install_numeric_input_policy()
         self.setObjectName("mainWindow")
         self.setWindowTitle(WINDOW_TITLE)
@@ -208,7 +212,8 @@ class MainWindow(QMainWindow):
         self.setDockNestingEnabled(True)
 
         from temsim.gui.result_files import ResultFiles
-        self.result_files = ResultFiles(self)
+        startup_settings = QSettings() if startup_working_point is not None else None
+        self.result_files = ResultFiles(self, startup_settings=startup_settings)
 
         self.catalog = AssemblyCatalog()
         self.selection = self.catalog.default_selection()
@@ -335,6 +340,19 @@ class MainWindow(QMainWindow):
         self.workspace.receiver_imaging.set_state(self.state)
         self.paired_beams = PairedBeamController(lambda: self.state, self,
             artifact_store=self.calculations.artifact_store)
+        from temsim.gui.mixed_stem_controller import MixedStemScanController
+        self.mixed_stem = MixedStemScanController(lambda: self.state,
+            self._mixed_stem_request, self)
+        self.mixed_stem.started.connect(self._mixed_stem_started)
+        self.mixed_stem.ready.connect(self._mixed_stem_ready)
+        self.mixed_stem.failed.connect(self._mixed_stem_failed)
+        self.mixed_stem.finished.connect(self._mixed_stem_finished)
+        self.workspace.scan_control.mixed_method_changed.connect(self.mixed_stem.cancel)
+        self.workspace.scan_control.export_mixed_scan_requested.connect(self._export_mixed_stem)
+        self.workspace.scan_control.load_mixed_scan_requested.connect(self._load_mixed_stem)
+        for control in self.workspace.coherent_beam._source_controls.values():
+            signal = control.toggled if isinstance(control, QCheckBox) else control.valueChanged
+            signal.connect(self._mixed_stem_source_changed)
         coherent_page = self.workspace.coherent_beam
         coherent_page.live_refresh_enabled = True
         coherent_page.paired_busy_provider = lambda: (
@@ -524,14 +542,34 @@ class MainWindow(QMainWindow):
         self.result_files.refresh_actions()
         if self.result_files.hold_automatic_preview:
             QTimer.singleShot(0, self.result_files.start)
-        else:
+        elif not self._install_startup_working_point():
             self.preview_timer.start(self.INITIAL_PREVIEW_DELAY_MS)
+
+    def _install_startup_working_point(self) -> bool:
+        if self._startup_working_point is None:
+            return False
+        from temsim.working_point import WorkingPointCheckpoint
+
+        try:
+            point = WorkingPointCheckpoint.read_package(
+                self._startup_working_point, maximum_unpacked_bytes=16 * 1024**2
+            )
+            if not point.is_input_design:
+                raise ValueError("The startup working point must contain inputs only")
+            self._install_working_point(point.compatible_state(), point)
+        except (BadZipFile, KeyError, OSError, TypeError, ValueError, RuntimeError) as exc:
+            self.log_output.appendPlainText(f"Default working point unavailable: {exc}")
+            return False
+        self.status_label.setText("Default Nanoprobe working point loaded. Ready to calculate.")
+        return True
 
     def _resume_default_startup(self, reason: str) -> None:
         """Recover an unavailable automatic snapshot using ordinary startup inputs."""
         if self.result_files._closed:
             return
         self.log_output.appendPlainText("Automatic result could not be restored: " + str(reason))
+        if self._install_startup_working_point():
+            return
         try:
             state = default_state()
             selection = self.catalog.default_selection()
@@ -676,6 +714,8 @@ class MainWindow(QMainWindow):
         return (getattr(self, "state", None), getattr(points, "_points", None),
                 getattr(workspace, "_last_result", None), getattr(workspace, "_high_accuracy_result", None),
                 getattr(workspace, "_ray_display_cache", None), getattr(sweeps, "_cache", None),
+                getattr(workspace, "_saved_mixed_acquisition", None),
+                getattr(getattr(workspace, "scan_control", None), "_stem_frame", None),
                 getattr(getattr(interactive, "controller", None), "bank", None))
 
     def _show_cache_settings(self) -> None:
@@ -886,6 +926,7 @@ class MainWindow(QMainWindow):
     def _cancel_calculations(self):
         self.live_beam_refresh.cancel()
         self.workspace.coherent_beam.cancel()
+        self.mixed_stem.cancel()
         self.workspace.hardware_tuning.steering.cancel()
         self.workspace.hardware_tuning.corrector_channels.cancel()
         self.workspace.hardware_tuning.assembly_error_study.cancel()
@@ -936,6 +977,7 @@ class MainWindow(QMainWindow):
         self.calculation_progress = CalculationProgressWidget(self)
         self.statusBar().addPermanentWidget(self.calculation_progress)
         self.calculations.progress_detail.connect(self.calculation_progress.set_progress)
+        self.mixed_stem.progress_detail.connect(self.calculation_progress.set_progress)
         self.workspace.coherent_beam.progress_detail.connect(self.calculation_progress.set_progress)
         self.workspace.coherent_beam.progress_detail.connect(self.paired_beams.accept_wave_progress)
         self.paired_beams.progress_detail.connect(self.calculation_progress.set_progress)
@@ -1371,6 +1413,7 @@ class MainWindow(QMainWindow):
             fields,
             self._anchors_by_key.get(selection.key),
             geometry_parent=geometry_parent,
+            state=self.state,
         )
         if not selection.is_module:
             try:
@@ -1636,35 +1679,14 @@ class MainWindow(QMainWindow):
             "Previous results retain their captured source; recalculate each view."
         )
         self.status_label.setText(
-            "Tip applied. Calculate beam to observe the new source; enable the advanced classical comparison when needed."
+            "Source applied. Run Preview or High accuracy, then observe the mixed beam near the specimen."
         )
         return self.state
 
     def _calculate_paired_beams(self):
-        """One explicit action freezes both computations before either starts."""
-        if self.result_files.loading:
-            return
-        page = self.workspace.coherent_beam
-        try:
-            ray_count, step_mm = self._particle_ray_count(), self._particle_step_mm()
-            captured, request, summary = page.capture_calculation_inputs()
-            surface = getattr(captured.electron_gun.emitter, "surface_model", None)
-            if surface is not None and surface.coherence is not None and not surface.shared_boundary:
-                raise ValueError("The historical surface reservoir has no shared particle representation. "
-                                 "Explicitly replace it in Tip parameters before calculating a pair.")
-            if bool(getattr(getattr(captured, "vacuum_map", None), "enabled", False)):
-                raise ValueError("Paired beams currently require ideal vacuum for both methods. Disable vacuum scattering explicitly before calculating a pair; no settings were changed.")
-            self.preview_timer.stop()
-            self._interactive_preview_pending = False
-            self._interactive_preview_generation = None
-            self.calculations.invalidate_pending(include_explicit=True)
-            self.result_files.hold_automatic_preview = False
-            page.mark_inputs_stale()
-            self.paired_beams.start(captured, request, summary,
-                ray_count, step_mm)
-            page.cancel_button.setEnabled(True)
-        except Exception as error:
-            self._paired_beams_failed(str(error))
+        """Continue the accepted particle snapshot without starting a Tip wave."""
+        if not self.result_files.loading:
+            self.workspace.coherent_beam.calculate()
 
     def _paired_particles_ready(self, captured, request, summary, context, duration):
         if context.token != self.paired_beams.token or not self.paired_beams.is_current():
@@ -1724,7 +1746,8 @@ class MainWindow(QMainWindow):
         gun._trace_cache = gun._trace_cache_key = None
         self._refresh_assembly_views()
         self._select_physical_component("feg_tip")
-        next_action = ("Matching C1/C2/C3 with current geometry and gun voltages."
+        condensers = "C1/C2" if has_two_condenser_hardware(self.state) else "C1/C2/C3"
+        next_action = (f"Matching {condensers} with current geometry and gun voltages."
                        if dialog.match_transport_requested else
                        "Lens settings retained; fresh gun/column preview requested.")
         self.log_output.appendPlainText(f"Tip model: {previous} → {tip_model_label(gun)}. {next_action}")
@@ -2317,6 +2340,8 @@ class MainWindow(QMainWindow):
                 and self._interactive_preview_generation == self.calculations.generation)
 
     def schedule_preview(self, _parameter: str = "", *, automatic: bool = True) -> None:
+        if hasattr(self, "mixed_stem"):
+            self.mixed_stem.cancel()
         if self.result_files.loading:
             return
         self.result_files.hold_automatic_preview = False
@@ -2373,6 +2398,16 @@ class MainWindow(QMainWindow):
         self._runtime_parameter_changed(parameter, request_preview=False)
 
     def _runtime_parameter_changed(self, parameter: str = "", *, request_preview=True) -> None:
+        thickness_changed = parameter == "sample.thickness_nm" or (
+            parameter == "thickness_nm" and getattr(
+                getattr(self.parameter_panel, "_runtime_target", None), "key", None) == "sample")
+        if thickness_changed:
+            self.assembly = self.state._resolved_assembly
+            with input_io.input_scope(self.state):
+                anchors = self.manifest_editor.anchor_records(self.assembly)
+            self._anchors_by_key = {record.part_key: record for record in anchors}
+            self.workspace.sample_page.set_state(self.state)
+            self.parameter_panel.refresh_live_values({"sample"})
         self.workspace.physical_layout.set_cell_state(self.state)
         # A background coupled solution was calculated for the pre-edit state.
         # Its generation must not be allowed to overwrite a newer manual edit.
@@ -2383,6 +2418,8 @@ class MainWindow(QMainWindow):
         for key, values in energy_filter_render_values(self.state).items():
             geometry_runtime.setdefault(key, {}).update(values)
         self._add_tip_render_values(geometry_runtime)
+        if thickness_changed:
+            self.workspace.physical_layout.set_assembly(self.assembly, geometry_runtime)
         self.workspace.physical_layout.model_editor.set_runtime_values(geometry_runtime)
         self.workspace.physical_layout.set_runtime_values(geometry_runtime)
         if request_preview:
@@ -2580,6 +2617,9 @@ class MainWindow(QMainWindow):
         from temsim.calculation_workflow import validate_workflow
         try:
             validate_workflow(workflow)
+            if workflow == "stem" and self.workspace.scan_control.mixed_coherent_selected():
+                self._run_mixed_stem()
+                return
             if workflow in {"rays", "full"}:
                 raise ValueError("Use the Ray Diagram or Live tuning calculation button for this request")
             seed = self.workspace._high_accuracy_result
@@ -2589,6 +2629,92 @@ class MainWindow(QMainWindow):
         except ValueError as exc:
             self.calculations.report_rejected_request("High accuracy", str(exc))
             self._show_error(str(exc))
+
+    def _mixed_stem_request(self):
+        from dataclasses import replace
+        from temsim.physics.mixed_stem_scan import MixedStemScanRequest
+        source = self.workspace.coherent_beam._make_request(self.state).source
+        return replace(MixedStemScanRequest(), source=source,
+            pixels=int(self.state.ac_deflector.scan_pixels_x),
+            pitch_nm=float(self.state.ac_deflector.scan_pixel_size_nm)).validate()
+
+    def _run_mixed_stem(self):
+        if self.result_files.loading:
+            return
+        self.result_files.hold_automatic_preview = False
+        self._particle_ray_count()
+        self._particle_step_mm()
+        request = self._mixed_stem_request()
+        self.preview_timer.stop()
+        self._interactive_preview_pending = False
+        self._interactive_preview_generation = None
+        self.live_beam_refresh.cancel()
+        self.calculations.invalidate_pending(include_explicit=False)
+        seed = self.workspace._last_result
+        self.mixed_stem.start(self.state, request, existing_result=seed)
+
+    def _mixed_stem_source_changed(self, *_args):
+        self.mixed_stem.cancel()
+        frame = self.workspace.scan_control._stem_frame
+        if (getattr(frame, "metrics", None) or {}).get("model") == "near_specimen_mixed_coherent_cuda":
+            self.workspace.scan_control.mark_stem_frame_stale()
+
+    def _mixed_stem_started(self):
+        self._set_progress_active("mixed_stem", True)
+        self.workspace.scan_control.calculation_bar.status.setText(
+            f"Preparing {self.state.electron_gun.emitter.ray_count:,} original particles and CUDA mixed scanning…")
+        self.status_label.setText("Mixed coherent CUDA acquisition submitted with captured inputs.")
+
+    def _mixed_stem_ready(self, acquisition, frame, diffraction, seconds):
+        if self.result_files.loading or self.result_files.hold_automatic_preview:
+            return
+        self.workspace.publish_mixed_stem(acquisition, frame, diffraction)
+        self.result_files.refresh_actions()
+        self.workspace.scan_control.calculation_bar.status.setText(
+            f"Mixed coherent CUDA completed in {seconds:.3f} s. Ideal exit-angle BF/ADF; source settings retained.")
+        self.status_label.setText(f"Mixed coherent CUDA completed in {seconds:.3f} s.")
+        self.log_output.appendPlainText(
+            f"Mixed STEM: {frame.metrics['original_positive_particles']:,} original particles; "
+            "BF 0–15 mrad / ADF 50–150 mrad are ideal specimen-exit windows.")
+
+    def _mixed_stem_failed(self, message):
+        self.workspace.scan_control.calculation_bar.status.setText(
+            "Mixed coherent CUDA failed; the previous complete frame is retained.")
+        self._show_error("Mixed coherent CUDA acquisition failed: " + message)
+
+    def _mixed_stem_finished(self):
+        self._set_progress_active("mixed_stem", self.mixed_stem.busy)
+
+    def _export_mixed_stem(self):
+        acquisition = getattr(self.workspace, "_mixed_stem_acquisition", None)
+        if acquisition is None:
+            self._show_error("No retained mixed acquisition is available for export.")
+            return
+        path, _selected = QFileDialog.getSaveFileName(self,
+            "Export mixed scan to a new directory", "mixed-stem-scan", "New output directory (*)")
+        if not path:
+            return
+        try:
+            from temsim.mixed_stem_cli import save_acquisition
+            save_acquisition(acquisition, path)
+            self.status_label.setText("Mixed scan exported to " + path)
+        except Exception as error:
+            self._show_error("Mixed scan export failed: " + str(error))
+
+    def _load_mixed_stem(self):
+        path = QFileDialog.getExistingDirectory(self, "Load a mixed scan export directory")
+        if not path:
+            return
+        try:
+            from temsim.mixed_stem_artifact import load_saved_acquisition
+            from temsim.gui.mixed_stem_adapter import adapt_mixed_stem
+            acquisition = load_saved_acquisition(path)
+            frame, diffraction = adapt_mixed_stem(acquisition)
+            self.mixed_stem.cancel()
+            self.workspace.publish_saved_mixed_stem(acquisition, frame, diffraction, directory=path)
+            self.status_label.setText("Loaded saved mixed scan for read-only inspection: " + path)
+        except Exception as error:
+            self._show_error("Mixed scan was not loaded; previous results retained: " + str(error))
 
     def _submit_high_accuracy(self, *, workflow="full", section_request=None, existing_result=None) -> None:
         if self.result_files.loading:
@@ -3100,6 +3226,7 @@ class MainWindow(QMainWindow):
             )
             try:
                 candidate_state = self._copy_state_for_assembly()
+                self._apply_sample_placement_intent(candidate_state, target, updates)
                 candidate_assembly = self.catalog.apply(
                     candidate_state,
                     self.selection,
@@ -3133,6 +3260,23 @@ class MainWindow(QMainWindow):
                 raise
             self._show_error(f"TOML was not saved: {exc}")
             return False
+
+    def _apply_sample_placement_intent(self, candidate_state, target, updates):
+        """A saved explicit foil placement may choose a new entrance reference."""
+        key = ("parts", "sample", "local_center_z_mm")
+        if key not in updates:
+            return
+        sample = self.assembly.part("sample")
+        if ((self.manifest_editor.root/target.module_path).resolve()
+                != (self.manifest_editor.root/sample.source_file).resolve()):
+            return
+        previous = float(sample.data["local_center_z_mm"])
+        requested = float(updates[key])
+        if requested != previous:
+            module_origin = float(sample.center_z_mm)-previous
+            # Only the detached candidate changes. Validation and file rollback
+            # still finish before this state is published to the workspace.
+            candidate_state.sample.z_mm = module_origin+requested
 
     def save_profile(self) -> None:
         path, _ = QFileDialog.getSaveFileName(
@@ -3287,6 +3431,7 @@ class MainWindow(QMainWindow):
         from temsim.gui.aberration_view import AberrationComparisonView
         probe_diagnostics_done = all([view.shutdown() for view in self.findChildren(AberrationComparisonView)])
         coherent_done = self.workspace.coherent_beam.shutdown()
+        mixed_stem_done = self.mixed_stem.shutdown()
         paired_done = self.paired_beams.shutdown()
         settings = QSettings()
         settings.setValue(self.SETTINGS_GEOMETRY, self.saveGeometry())
@@ -3301,7 +3446,7 @@ class MainWindow(QMainWindow):
         presets_done = self.operating_presets.pool.waitForDone(3_000)
         self.direct_alignments.invalidate_pending()
         alignments_done = self.direct_alignments.pool.waitForDone(3_000)
-        if not all((calculations_done, archives_done, sweeps_done, presets_done, alignments_done, interactive_done, magnetic_done, experiment_files_done, selected_plane_done, scan_calibration_done, conjugate_planes_done, steering_done, probe_diagnostics_done, coherent_done, paired_done)):
+        if not all((calculations_done, archives_done, sweeps_done, presets_done, alignments_done, interactive_done, magnetic_done, experiment_files_done, selected_plane_done, scan_calibration_done, conjugate_planes_done, steering_done, probe_diagnostics_done, coherent_done, mixed_stem_done, paired_done)):
             self.status_label.setText("Waiting for owned calculations to reach their cancellation boundary; close again when they finish")
             event.ignore()
             return

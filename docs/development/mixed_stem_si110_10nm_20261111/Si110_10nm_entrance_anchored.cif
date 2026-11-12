@@ -1,0 +1,31 @@
+# Detached translated Si structure; the original CIF is unchanged.
+# Translation preserves the thin-specimen lattice termination at the fixed upper surface.
+# Original CIF: F:\tem_simulator_v2\configs\specimens\Si.cif
+# Original SHA256: 944c5c81df5d813d051f96102eb9be37fac4b7647c2a9d1492d6333122be42c7
+# Original crystal Cartesian translation (angstrom): [-33.94112549695429, -33.941125496954285, 2.1316282072803006e-14]
+# Preserved crystal-to-laboratory rotation: [[-0.7071067811865479, 0.7071067811865478, -1.1102230246251565e-16], [1.1102230246251565e-16, -2.220446049250313e-16, 1.0000000000000002], [0.7071067811865478, 0.7071067811865477, -4.440892098500626e-16]]
+# Symmetry-expanded P1 representation; original cell and full site occupancies retained.
+data_Si110_10nm_entrance_anchored
+_space_group_name_H-M_alt 'P 1'
+_space_group_IT_number 1
+_cell_length_a 5.4437023699999996
+_cell_length_b 5.4437023699999996
+_cell_length_c 5.4437023699999996
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_occupancy
+Si1 Si 0.7650659073496896 0.76506590734969049 3.9157691997041601e-15 1
+Si2 Si 0.015065907349689578 0.015065907349691356 0.25000000000000394 1
+Si3 Si 0.7650659073496896 0.26506590734969049 0.50000000000000389 1
+Si4 Si 0.5150659073496896 0.015065907349691356 0.75000000000000389 1
+Si5 Si 0.015065907349689578 0.51506590734969138 0.75000000000000389 1
+Si6 Si 0.5150659073496896 0.51506590734969138 0.25000000000000394 1
+Si7 Si 0.2650659073496896 0.76506590734969049 0.50000000000000389 1
+Si8 Si 0.2650659073496896 0.26506590734969049 3.9157691997041601e-15 1

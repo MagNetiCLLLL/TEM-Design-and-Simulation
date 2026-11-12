@@ -521,8 +521,8 @@ def test_toolbar_owns_device_policy_for_ray_wave_and_page_requests(window, monke
     assert not {"acceleration_backend", "acceleration_enabled"}.intersection(names)
     assert not hasattr(window.workspace.scan_control, "stem_execution_policy")
     wave = window.workspace.coherent_beam._make_request().wave_grid
-    assert wave.compute_backend == policy
-    assert wave.acceleration_enabled is (policy != "CPU")
+    assert wave.compute_backend == "Require GPU"
+    assert wave.acceleration_enabled
     calls = []
     monkeypatch.setattr(window.calculations, "submit_background",
                         lambda *args, **kwargs: calls.append((args, kwargs)))

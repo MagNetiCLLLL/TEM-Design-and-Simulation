@@ -45,6 +45,7 @@ from temsim.specimen.envelope import sample_envelope_shape
 from temsim.specimen.geometry import quaternion_to_matrix, sample_orientation_quaternion
 from temsim.specimen.rutherford import composition_from_atoms, finite_sample_gaussian_overlap
 from temsim.specimen.source import active_cif_path
+from temsim.specimen.lattice_reference import lattice_phase_for_sample, lattice_translation_z_nm
 
 MODEL = "cif_independent_atom_projected_elastic_gaussian_probe_v1"
 GAUSSIAN_RADIUS_SIGMA = 8.0
@@ -141,7 +142,9 @@ def _projected_sites(contents, geometry, roi, chief_slopes):
     lab ROI. No orthogonalization, cell deformation, display atom limit, or
     hidden replacement by bulk material density is performed.
     """
-    sx, sy, thickness, cx, cy, shape, quaternion = geometry
+    sx, sy, thickness, cx, cy, shape, quaternion = geometry[:7]
+    phase_z_nm = 0. if len(geometry) == 7 else float(geometry[7])
+    phase = np.array((0., 0., phase_z_nm))
     cell, basis, numbers, occupations = _unit_cell(contents)
     rotation = quaternion_to_matrix(quaternion)
     lattice = cell @ rotation.T
@@ -157,7 +160,7 @@ def _projected_sites(contents, geometry, roi, chief_slopes):
         return _readonly(np.empty((0, 2))), _readonly([], np.int16), _readonly([]), 0
     corners = np.array([[x, y, z] for x in (lower[0], upper[0])
                         for y in (lower[1], upper[1]) for z in (lower[2], upper[2])])
-    inverse_corners = corners @ np.linalg.inv(lattice)
+    inverse_corners = (corners if phase_z_nm == 0. else corners-phase) @ np.linalg.inv(lattice)
     parts_xy, parts_z, parts_w = [], [], []
     examined = retained = 0
     for frac, number, occupancy in zip(basis, numbers, occupations, strict=True):
@@ -179,6 +182,8 @@ def _projected_sites(contents, geometry, roi, chief_slopes):
             cells = np.column_stack((index // (counts[1] * counts[2]),
                                       index // counts[2] % counts[1], index % counts[2])) + lo
             position = (cells + frac) @ lattice
+            if phase_z_nm != 0.:
+                position += phase
             # Half-open faces assign a boundary lattice plane to exactly one
             # slab rather than double counting both periodic end faces.
             keep = np.all((position >= -half) & (position < half), axis=1)
@@ -461,7 +466,7 @@ def _projected_optical_depth(state, simulation, scan_x_um, scan_y_um):
             or min(sizes) <= 0 or thickness < 0):
         raise ValueError("Projected specimen sizes must be finite and positive; thickness may be zero.")
     geometry = (*sizes, thickness, *centres, sample_envelope_shape(sample),
-                sample_orientation_quaternion(sample))
+                sample_orientation_quaternion(sample), lattice_translation_z_nm(sample))
     points = np.column_stack((x.ravel(), y.ravel())) * 1e3
     padding = GAUSSIAN_RADIUS_SIGMA * np.sqrt(np.diag(covariance))
     roi = tuple(np.r_[points.min(axis=0) - padding, points.max(axis=0) + padding])
@@ -510,6 +515,7 @@ def _projected_optical_depth(state, simulation, scan_x_um, scan_y_um):
                       cross_section, _readonly(energy_ev), _readonly(scattering_weights))
                      for z, tau, cross_section, scattering_weights in pending)
     metrics = freeze_json({
+        "lattice_phase": lattice_phase_for_sample(sample),
         "model": MODEL, "elastic_cross_section_model": RUTHERFORD_MODEL_NAME,
         "elastic_cross_section_reference": RUTHERFORD_REFERENCE_URL,
         "probe_model": "normalized Gaussian with executed sample-plane XY covariance; no fitted sharpening",

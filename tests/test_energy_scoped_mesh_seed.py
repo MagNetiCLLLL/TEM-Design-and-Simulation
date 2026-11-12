@@ -53,6 +53,7 @@ def test_energy_scope_without_mesh_is_not_a_source_parameter():
 @pytest.mark.parametrize("scope,message", [(None, "explicit emission energy"), (.5, "not one of")])
 def test_multi_energy_source_rejects_ambiguous_or_unconsumed_hint(monkeypatch, scope, message):
     import temsim.physics.surface_gun_wave as module
+    monkeypatch.setattr("temsim.physics.compute_backend.require_coherent_cuda", lambda *_: "Require GPU")
     gun = default_state().electron_gun
     gun.emitter.surface_model = replace(load_tip_surface_reference(), coherence=SurfaceCoherence())
     # Input-wiring fixture only. No solved field is supplied or admitted.
