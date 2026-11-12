@@ -81,6 +81,10 @@ This policy applies throughout the repository.
 
 - Communicate with this user in Chinese in the conversation, including progress
   updates, clarification questions, explanations and final responses.
+- Identify condenser lenses explicitly as `C1 lens`, `C2 lens` and `C3 lens`
+  in user communication. Identify apertures as `C1 aperture`, `C2 aperture`
+  and `C3 aperture`. Do not use bare `C1`, `C2` or `C3` ambiguously for these
+  different components. Preserve existing machine-readable component keys.
 - Accept and follow instructions written in Chinese.
 - Keep project file content in English even when the corresponding discussion
   takes place in Chinese. Retain exact identifiers and paths when mentioning them
