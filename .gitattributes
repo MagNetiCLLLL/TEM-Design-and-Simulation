@@ -1,5 +1,9 @@
 # Preserve the original scientific reference CIF bytes.
 configs/reference_samples/*.cif -text
+configs/specimens/Si.cif -text
+
+# Preserve exported mixed-scan checksums across Git and platform checkouts.
+docs/development/mixed_stem_si110_10nm_20261111/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
 
 # Preserve the accepted probe inputs, original particle weights and evidence hashes.
 docs/development/probe_stage12_20261101/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
