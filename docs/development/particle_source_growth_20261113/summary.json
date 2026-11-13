@@ -1,0 +1,200 @@
+{
+  "scope": "Historical legacy-source diagnostics; not validation of the new nested source transport",
+  "trials": {
+    "legacy-8192": {
+      "d95_nm": 2.9942334917762525,
+      "rms_radius_nm": 1.2235632086243269,
+      "alpha95_mrad": 10.168966887441925,
+      "sample_current_a": 9.468994140625e-06,
+      "surviving_positive_count": 7757,
+      "effective_count": 7757.0,
+      "elapsed_s": 540.736946,
+      "direct_surface_focus": {
+        "passed": false,
+        "status": "UNRESOLVED_OR_NOT_AT_SURFACE",
+        "native_d95_surface_gate": false,
+        "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "observed_final_field_2d_waists": 1,
+        "final_2d_waist_inside_surface_observation_window": true,
+        "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support"
+      },
+      "d95_waist": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 2.9920740249909854,
+        "observed_minimum_planes_mm": [
+          1025.1999995
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.1999995,
+            1025.1999995
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1025.19999925,
+          1025.1999997500002
+        ],
+        "neighbour_bracket_offset_nm": [
+          1.7499999103165464,
+          2.2500000795844244
+        ],
+        "representative_offset_nm": 1.9999999949504854,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "rms_waist": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 1.1421075576452764,
+        "observed_minimum_planes_mm": [
+          1025.2000715000001
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.2000715000001,
+            1025.2000715000001
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1025.2000695000002,
+          1025.2000735000001
+        ],
+        "neighbour_bracket_offset_nm": [
+          72.00000004559115,
+          76.00000003549212
+        ],
+        "representative_offset_nm": 74.00000004054164,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "producer_implementation": "b2900cf7e79501458a6c463558ef134002bce351694617833ca8d65a111871e8"
+    },
+    "legacy-16384": {
+      "d95_nm": 2.992877891873578,
+      "rms_radius_nm": 1.2216985243243677,
+      "alpha95_mrad": 10.16245276736791,
+      "sample_current_a": 9.468994140625e-06,
+      "surviving_positive_count": 15514,
+      "effective_count": 15514.0,
+      "elapsed_s": 814.6028345,
+      "direct_surface_focus": {
+        "passed": true,
+        "status": "BOUNDED_DIRECT_SURFACE_FOCUS",
+        "native_d95_surface_gate": true,
+        "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "observed_final_field_2d_waists": 1,
+        "final_2d_waist_inside_surface_observation_window": true,
+        "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support"
+      },
+      "d95_waist": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 2.992877891873578,
+        "observed_minimum_planes_mm": [
+          1025.1999975
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.1999975,
+            1025.1999975
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1025.19999725,
+          1025.1999977500002
+        ],
+        "neighbour_bracket_offset_nm": [
+          -0.25000008463393897,
+          0.25000008463393897
+        ],
+        "representative_offset_nm": 0.0,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "rms_waist": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 1.1388491598848185,
+        "observed_minimum_planes_mm": [
+          1025.2000715000001
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.2000715000001,
+            1025.2000715000001
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1025.2000695000002,
+          1025.2000735000001
+        ],
+        "neighbour_bracket_offset_nm": [
+          72.00000004559115,
+          76.00000003549212
+        ],
+        "representative_offset_nm": 74.00000004054164,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "producer_implementation": "b2900cf7e79501458a6c463558ef134002bce351694617833ca8d65a111871e8"
+    },
+    "legacy-16384-half-step": {
+      "d95_nm": 2.992869742286175,
+      "rms_radius_nm": 1.2216968383918785,
+      "alpha95_mrad": 10.162452767936808,
+      "sample_current_a": 9.468994140625e-06,
+      "surviving_positive_count": 15514,
+      "effective_count": 15514.0,
+      "elapsed_s": 818.7800760000005,
+      "direct_surface_focus": {
+        "passed": true,
+        "status": "BOUNDED_DIRECT_SURFACE_FOCUS",
+        "native_d95_surface_gate": true,
+        "final_field_topology_status": "RESOLVED_AT_BOUNDED_SAMPLING",
+        "observed_final_field_2d_waists": 1,
+        "final_2d_waist_inside_surface_observation_window": true,
+        "scope": "Bounded native D95 placement and one final 2D waist across complete Mini/Objective support"
+      },
+      "d95_waist": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 2.992869742286175,
+        "observed_minimum_planes_mm": [
+          1025.1999975
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.1999975,
+            1025.1999975
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1025.19999725,
+          1025.1999977500002
+        ],
+        "neighbour_bracket_offset_nm": [
+          -0.25000008463393897,
+          0.25000008463393897
+        ],
+        "representative_offset_nm": 0.0,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "rms_waist": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 1.1388491364178253,
+        "observed_minimum_planes_mm": [
+          1025.2000715000001
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.2000715000001,
+            1025.2000715000001
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1025.2000695000002,
+          1025.2000735000001
+        ],
+        "neighbour_bracket_offset_nm": [
+          72.00000004559115,
+          76.00000003549212
+        ],
+        "representative_offset_nm": 74.00000004054164,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "producer_implementation": "b2900cf7e79501458a6c463558ef134002bce351694617833ca8d65a111871e8"
+    }
+  }
+}

@@ -41,6 +41,29 @@ This policy applies throughout the repository.
   may remain small because they do not measure a finite source. They must not
   replace the required finite-source physical tests or qualify a working point.
 
+## Nested source growth and reuse
+
+- For fixed emission parameters, increasing the original particle count must
+  append particles without changing existing particle IDs, initial positions,
+  directions, energies, emission times or source boundaries. Particle count is
+  a numerical sampling input, not a change to the physical source distribution.
+- Generate added source samples by interpolation of a fixed, monotone source
+  distribution or inverse-CDF representation. Its calibration and boundaries
+  must depend only on the declared emission parameters and sampling schema,
+  never on the requested batch size. Do not recenter, rescale or refit existing
+  particle energies when adding samples.
+- Reuse compatible completed low-count particle transport when increasing the
+  count. Validate the source prefix, physical fields, boundaries, solver and
+  other transport dependencies explicitly. Preserve the old trajectories,
+  clocks, energies, clipping and provenance; propagate the added particles.
+  Source interpolation must not substitute for transporting new particles.
+- Preserve earlier raw results. Publish the larger population with explicit
+  source-current normalization and an unchanged physical loss ledger; do not
+  restore intercepted current or silently rewrite historical particle weights.
+- Version source-sampling changes. Historical non-nested sampling must remain
+  identifiable and reproducible; do not relabel it as the new nested source or
+  reuse incompatible results after a source, field or boundary change.
+
 ## Temporary CUDA requirement for coherent calculations
 
 - Until the user explicitly lifts this restriction, new coherent wave

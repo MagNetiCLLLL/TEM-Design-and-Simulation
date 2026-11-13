@@ -147,6 +147,10 @@ def gun_planes_coordinates(trace, planes_mm):
     Output shapes are (planes, 4, rays) and (planes, rays).
     """
     z = np.asarray(planes_mm, float)
+    if getattr(trace, "transport_partitions", ()):
+        observed = [gun_planes_coordinates(part, planes_mm) for part in trace.transport_partitions]
+        return (np.concatenate([item[0] for item in observed], axis=2),
+                np.concatenate([item[1] for item in observed], axis=1))
     history = trace.equal_time_history
     if history is None or z.ndim != 1 or not np.all(np.isfinite(z)):
         raise ValueError("Finite gun plane and executed time histories are required")

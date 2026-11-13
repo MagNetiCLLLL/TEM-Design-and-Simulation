@@ -1,0 +1,50 @@
+{
+  "scope": "Static linked true pole-body geometry only; no particle/wave/FEM calculation",
+  "input_digest": "75a0da1549697847e79746b79eb22e30b124ab2aa7303a80fc9ecc236452878e",
+  "implementation": "b2900cf7e79501458a6c463558ef134002bce351694617833ca8d65a111871e8",
+  "trials": [
+    {
+      "label": "shared-interface-pole-plus25",
+      "geometry_changes": [
+        [
+          "column",
+          "condenser_lens_1_lower_pole",
+          "mechanical_bore_diameter_mm",
+          24.0
+        ],
+        [
+          "column",
+          "condenser_lens_2_upper_pole",
+          "mechanical_bore_diameter_mm",
+          24.0
+        ]
+      ],
+      "coupling_scope": "One common C1/C2 interface-pole bore value; existing paired-match constraint respected; all other geometry fields and operating controls fixed",
+      "status": "REJECTED_BY_EXISTING_GEOMETRY_VALIDATION",
+      "error_type": "ValueError",
+      "error": "C1/C2 internal poles must fit the shared cartridge and surround the continuous vacuum tube"
+    },
+    {
+      "label": "shared-interface-pole-minus25",
+      "geometry_changes": [
+        [
+          "column",
+          "condenser_lens_1_lower_pole",
+          "mechanical_bore_diameter_mm",
+          14.4
+        ],
+        [
+          "column",
+          "condenser_lens_2_upper_pole",
+          "mechanical_bore_diameter_mm",
+          14.4
+        ]
+      ],
+      "coupling_scope": "One common C1/C2 interface-pole bore value; existing paired-match constraint respected; all other geometry fields and operating controls fixed",
+      "status": "REJECTED_BY_EXISTING_GEOMETRY_VALIDATION",
+      "error_type": "ValueError",
+      "error": "C1/C2 internal poles must fit the shared cartridge and surround the continuous vacuum tube"
+    }
+  ],
+  "original_snapshot_unchanged": true
+}

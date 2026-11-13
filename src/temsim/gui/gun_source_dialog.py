@@ -45,6 +45,7 @@ class GunSourceDialog(QDialog):
         self._curvature_model = gun.emitter.curvature_model
         self._instrument_state = instrument_state
         self._value = None
+        self._replace_sampling = False
         self.edit_dimensions_requested = False
         self.setWindowTitle("Physical Layout · Tip parameters")
         self.resize(680, 760)
@@ -239,6 +240,17 @@ class GunSourceDialog(QDialog):
         self.analytic_tip_form = form
         form.setRowWrapPolicy(QFormLayout.RowWrapPolicy.WrapLongRows)
         form.addRow(QLabel("Tip emission · projected size and local emission law"))
+        self.source_sampling_status = QLabel()
+        self.source_sampling_status.setWordWrap(True)
+        self.source_sampling_status.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        form.addRow("Source sampling", self.source_sampling_status)
+        self.nested_sampling_button = QPushButton("Use nested source sampling (new calculation)")
+        self.nested_sampling_button.setToolTip(
+            "Explicitly replace the saved sampling law with fixed-CDF Halton prefixes when Apply is pressed. "
+            "Source widths, current, boundaries, energy inputs and lenses are retained. "
+            "This starts a new source calculation; previous results and any saved sampling table remain historical records.")
+        self.nested_sampling_button.clicked.connect(self._use_nested_sampling)
+        form.addRow(self.nested_sampling_button)
         panel_layout.addWidget(self.analytic_tip_panel)
         scroll.setWidget(panel)
         self.inputs = {}
@@ -336,6 +348,22 @@ class GunSourceDialog(QDialog):
                                        and not self._historical_reservoir
                                        and not self.surface_coherent.isChecked())
         enabled = self.coherence_enabled.isChecked()
+        from temsim.optics.electron_gun.emitter import HALTON_PREFIX_SAMPLING_SCHEMA
+        saved = self._gun.emitter.sampling
+        nested = saved is not None and saved.schema == HALTON_PREFIX_SAMPLING_SCHEMA
+        if self._replace_sampling:
+            sampling_text = "Nested source sampling selected. Apply starts a new calculation and keeps previous results unchanged."
+        elif nested:
+            sampling_text = "Nested source sampling active. Increasing the particle count appends samples from the same fixed source distribution."
+        elif self._gun.emitter.cdf_quadrature is not None or self._gun.emitter.quadrature is not None:
+            sampling_text = "Saved fixed sampling table. Keep it unchanged, or explicitly select a new source calculation."
+        elif saved is not None:
+            sampling_text = "Saved explicit sampling plan. Keep it unchanged, or explicitly select a new source calculation."
+        else:
+            sampling_text = "Historical batch-dependent source. Select nested sampling before increasing its particle count."
+        self.source_sampling_status.setText(sampling_text)
+        self.nested_sampling_button.setEnabled(not enabled and not self.surface_enabled.isChecked()
+                                              and not nested and not self._replace_sampling)
         for edit in self.coherence_inputs.values():
             edit.setEnabled(enabled)
             self.analytic_tip_form.setRowVisible(edit, enabled)
@@ -465,6 +493,13 @@ class GunSourceDialog(QDialog):
         self._select_shared_boundary(self._surface_draft.mean_energy_ev,
                                      self._surface_draft.energy_sigma_ev)
         self.surface_coherent.setChecked(True)
+        self._sync_fields()
+
+    def _use_nested_sampling(self):
+        """Choose a new sampler in the draft without editing physical inputs."""
+        if self.surface_enabled.isChecked() or self.coherence_enabled.isChecked():
+            return
+        self._replace_sampling = True
         self._sync_fields()
 
     def _use_particles(self):
@@ -622,7 +657,6 @@ class GunSourceDialog(QDialog):
                 candidate.coherence = None
                 candidate.curvature_nm_inv = 0.0
                 candidate.surface_model = model
-                candidate.validate()
                 self._value = {"coherence": None, "surface_model": model, "curvature_nm_inv": 0.0}
                 from temsim.optics.electron_gun.tip_edit import candidate_tip_edit
                 candidate_tip_edit(self._gun, self._value)
@@ -644,9 +678,12 @@ class GunSourceDialog(QDialog):
                 if use_length:
                     phase["transverse_coherence_length_nm"] = float(self.coherence_length.text())
                 candidate.coherence = TipCoherence(boundary_model=self.tip_boundary.currentData(), **phase)
-            candidate.validate()
             values["coherence"] = candidate.coherence
             values["surface_model"] = None
+            if self._replace_sampling and candidate.coherence is None:
+                from temsim.optics.electron_gun.emitter import EmissionSampling, HALTON_PREFIX_SAMPLING_SCHEMA
+                values.update(sampling=EmissionSampling(schema=HALTON_PREFIX_SAMPLING_SCHEMA, seed=0),
+                              quadrature=None, cdf_quadrature=None)
             from temsim.optics.electron_gun.tip_edit import candidate_tip_edit
             candidate_tip_edit(self._gun, values)
         except (TypeError, ValueError) as error:

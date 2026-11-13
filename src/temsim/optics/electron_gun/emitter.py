@@ -16,6 +16,9 @@ from temsim.physics.chromatic import cold_feg_energy_offsets
 from temsim.optics.electron_gun.tip_coherence import TipCoherence
 
 
+HALTON_PREFIX_SAMPLING_SCHEMA = "tip-halton-prefix-cdf512-v1"
+
+
 def _radical_inverse(indices: np.ndarray, base: int) -> np.ndarray:
     values = np.zeros(indices.size, dtype=float)
     fraction = 1.0 / float(base)
@@ -50,11 +53,20 @@ class EmissionSampling:
     schema: str = "tip-sobol-antithetic-v1"
 
     def validate(self):
+        if self.schema == HALTON_PREFIX_SAMPLING_SCHEMA:
+            if type(self.seed) is not int or self.seed != 0:
+                raise ValueError("The fixed Halton prefix rule requires seed zero")
+            return self
         if self.schema != "tip-sobol-antithetic-v1" or type(self.seed) is not int or not 0 <= self.seed < 2**32:
             raise ValueError("Tip sampling requires the versioned Sobol rule and an unsigned 32-bit seed")
         return self
 
     def validate_count(self, count):
+        self.validate()
+        if self.schema == HALTON_PREFIX_SAMPLING_SCHEMA:
+            if type(count) is not int or not 9 <= count <= 1048576:
+                raise ValueError("Halton prefix sampling requires an integer ray count from 9 to 1048576")
+            return count
         if type(count) is not int or not 16 <= count <= 1048576 or count & (count-1):
             raise ValueError("Sobol tip sampling requires a complete power-of-two ray count from 16 to 1048576")
         return count
@@ -323,12 +335,13 @@ class ColdFieldEmitter:
                 raise ValueError("Explicit tip CDF tables cannot be repartitioned for tuning probes")
         if self.sampling is not None:
             self.sampling.validate().validate_count(self.ray_count)
+            rule = "Halton prefix" if self.sampling.schema == HALTON_PREFIX_SAMPLING_SCHEMA else "Sobol"
             if not np.isfinite(self.energy_half_range_ev) or self.energy_half_range_ev <= 0:
-                raise ValueError("Sobol tip sampling requires a finite positive energy half range")
+                raise ValueError(f"{rule} tip sampling requires a finite positive energy half range")
             if self.quadrature is not None or self.surface_model is not None or self.coherence is not None:
-                raise ValueError("Sobol tip sampling cannot be combined with product, surface, or coherent source models")
+                raise ValueError(f"{rule} tip sampling cannot be combined with product, surface, or coherent source models")
             if getattr(self, "_tuning_boundary_probes", 0) or getattr(self, "_tuning_surface_probes", 0):
-                raise ValueError("Sobol tip sampling cannot be repartitioned for tuning probes; use High accuracy")
+                raise ValueError(f"{rule} tip sampling cannot be repartitioned for tuning probes; use High accuracy")
         if self.quadrature is not None:
             self.quadrature.validate()
             if self.coherence is not None or (self.surface_model is not None
@@ -395,6 +408,9 @@ class ColdFieldEmitter:
         if n < 9:
             raise ValueError("Cold FEG emission requires at least 9 rays.")
         if self.sampling is not None:
+            if self.sampling.schema == HALTON_PREFIX_SAMPLING_SCHEMA:
+                from temsim.optics.electron_gun.stable_halton_sampling import halton_prefix_bundle
+                return halton_prefix_bundle(self, n)
             from temsim.optics.electron_gun.tip_joint_sampling import joint_bundle
             return joint_bundle(self, n)
         if self.quadrature is not None:

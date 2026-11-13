@@ -1,0 +1,315 @@
+{
+  "producer_implementation": "b2900cf7e79501458a6c463558ef134002bce351694617833ca8d65a111871e8",
+  "producer_commit_with_matching_python": "a5cdebe",
+  "copies": {
+    "legacy-8192\\report.json.gz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\verification-8192-s005\\report.json",
+      "original_sha256": "937e4f88234e57a8803c125e2f0e095da5c5fa2bedee0ce86e62ad692d29e8c5",
+      "sha256": "39e8d90e2bff887732c22cfea920c288228f823be25d824bfa7343ebe24ed706"
+    },
+    "legacy-8192\\inputs.json.gz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\verification-8192-s005\\inputs.json",
+      "original_sha256": "6468b63309f860ad50d95b4ff59e8185a463c0c24e14c4a57da9d9d0fea95167",
+      "sha256": "da72119a9476980be8800ce7b07972e162e9185f805af850f4172abe5035ffd0"
+    },
+    "legacy-8192\\independent-focus-audit.json.gz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\verification-8192-s005\\independent-focus-audit.json",
+      "original_sha256": "62e94394cc0cf72855c380c4face9f835d5e1d5d023d37c69e654743c27d4cd3",
+      "sha256": "a0104ad197af1a787fa4fb19d14e8bc84226354c92a8d73a582ffe6681871c2f"
+    },
+    "legacy-8192\\request.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\verification-8192-s005\\request.json",
+      "sha256": "608cb8f62fb1158f43a2ab331861ab9d71be17e8277d69b11bcbda5a6f002d95"
+    },
+    "legacy-8192\\input.toml": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\verification-8192-s005\\input.toml",
+      "sha256": "db563698f270ec8ea8f6a9a8cae81a1d360136d54922f1b31a3ed5ca78847865"
+    },
+    "legacy-8192\\independent-topology-audit.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\verification-8192-s005\\independent-topology-audit.json",
+      "sha256": "59de78d092fbfd6ae10fe1516a0fcf6ab900cda77c998225987060d0076bb2d9"
+    },
+    "legacy-8192\\independent-topology-moments.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\verification-8192-s005\\independent-topology-moments.npz",
+      "sha256": "44998108abb14e0859e2bd33c219776be4edf43d070ec2fb3c61341d591638f8"
+    },
+    "legacy-8192\\selected-native-phase.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\verification-8192-s005\\observations.npz",
+      "original_sha256": "2c8c29abcf2ec6c3b99a724fd59a2a2d207d45a83d3e9682fc50cc841cf0b384",
+      "sha256": "e663b65a59d6351eec5c4a8c8ffac628b447e3356b0f2885100e01426a2677d6",
+      "scope": "Selected exact executed rows and all original IDs/weights; diagnostic arrays, not a full restart checkpoint",
+      "omitted_full_phase_retained_at_original_path": true
+    },
+    "legacy-16384\\report.json.gz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\baseline-16384\\report.json",
+      "original_sha256": "dcfaf5354cff1ba6ada51adc0e80d4fcaade59ff378d07001c3d2c4ac4edcf33",
+      "sha256": "ec9bb31cf4128fa6cf6caa2cadfe791fa17b85ff6fa9fe516ee2ba009d36e264"
+    },
+    "legacy-16384\\inputs.json.gz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\baseline-16384\\inputs.json",
+      "original_sha256": "6ad67b0bfd4229efc1071abc8a9dc22236058bcf9d818e9555aac5a3f35c9c65",
+      "sha256": "c9f6b726bbaac2ced9e9631fb0dc264ac05e043534e4d52fa9eecba284f416c7"
+    },
+    "legacy-16384\\independent-focus-audit.json.gz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\baseline-16384\\independent-focus-audit.json",
+      "original_sha256": "e4d00ed983a356c2af5534ae66302df0380efc722c33137a7a9c48a93655e1d6",
+      "sha256": "79ca37c98a01f08ce45458a30028e67a8ae30fd7fa57258dcad87ac6cad770d7"
+    },
+    "legacy-16384\\request.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\baseline-16384\\request.json",
+      "sha256": "1f9f6f4bcbff7e7843d5c2d855da1146cf46890cb2a0a1fa7452cfe4e208c868"
+    },
+    "legacy-16384\\input.toml": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\baseline-16384\\input.toml",
+      "sha256": "0374761a3bcd30e45a9a098f56cb5722d9d62221974723c626742d9a39499afb"
+    },
+    "legacy-16384\\independent-topology-audit.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\baseline-16384\\independent-topology-audit.json",
+      "sha256": "98ac38a3e37b0964c601b817ae1b45a04d60d294f00182e1c2811baed0052644"
+    },
+    "legacy-16384\\independent-topology-moments.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\baseline-16384\\independent-topology-moments.npz",
+      "sha256": "94641b28638fe98b1e84dc8924d0a99c3003624626ba13c4ad82ca72577fc658"
+    },
+    "legacy-16384\\selected-native-phase.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\baseline-16384\\observations.npz",
+      "original_sha256": "783ff77e15fddfa82f94a41d8e2d94031f3dc414cb37183b0cf1839c30457064",
+      "sha256": "14076aa044ef6b65343906d23db4eed81553bcaa7957d4e246cae4969f8bb7ef",
+      "scope": "Selected exact executed rows and all original IDs/weights; diagnostic arrays, not a full restart checkpoint",
+      "omitted_full_phase_retained_at_original_path": true
+    },
+    "legacy-16384-half-step\\report.json.gz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\verification-16384-s0025\\report.json",
+      "original_sha256": "87b0c268b286ed0a01367c726bdbc4985273c470d834dd4ad922bb17bd5b1ef5",
+      "sha256": "f365a2481582e95734fdf9d190e6cc58b6ccf27067156f7b1dbb9633228ff894"
+    },
+    "legacy-16384-half-step\\inputs.json.gz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\verification-16384-s0025\\inputs.json",
+      "original_sha256": "15ccc078fd10eb3f6ebefbf0a3579283005db2cb38981f055fdbab411d03c083",
+      "sha256": "17fec864c3cd85cf1af47b52e029b80f89cb7385f27ab4c777f27636857a1bd4"
+    },
+    "legacy-16384-half-step\\independent-focus-audit.json.gz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\verification-16384-s0025\\independent-focus-audit.json",
+      "original_sha256": "d2c535e88192e3ec9748c979fb15c6bd6cffa59ed826ec98d979a35e56b70cb3",
+      "sha256": "c8abb6d185059fdbf812cd93ee9ac41d79b03c765bcd1b144e5acf6cadb2846a"
+    },
+    "legacy-16384-half-step\\request.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\verification-16384-s0025\\request.json",
+      "sha256": "4e9b188a5c840d99dc1b61d3a3b7ccb4dbb31663949ed917c38e22bf825fab33"
+    },
+    "legacy-16384-half-step\\input.toml": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\verification-16384-s0025\\input.toml",
+      "sha256": "938e97abba96dbdc6a301a2e9572ed0ff0e151bab2accecb788d305f07d961b4"
+    },
+    "legacy-16384-half-step\\independent-topology-audit.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\verification-16384-s0025\\independent-topology-audit.json",
+      "sha256": "eec918cf63ddcd116ec8bda3acd0fa624831f80a64cbe4483c5faa325110e40f"
+    },
+    "legacy-16384-half-step\\independent-topology-moments.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\verification-16384-s0025\\independent-topology-moments.npz",
+      "sha256": "6f12264e0e4a1e5eb9468327dbd7e6bba5b6cc11a78f9d0b3f29d62b03ef6030"
+    },
+    "focus-prefix-counterfactual-diagnosis\\curves.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-prefix-counterfactual-diagnosis\\curves.npz",
+      "sha256": "6b5c97f991b66d17813a339f2a010ac2f19748db656ec84b6261249b69fb30e9"
+    },
+    "focus-prefix-counterfactual-diagnosis\\native-d95-ABC.png": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-prefix-counterfactual-diagnosis\\native-d95-ABC.png",
+      "sha256": "29c42a68c4a5cbcc935be8718a40ea37f8101c420c5c310e6f067c2ecf44cc08"
+    },
+    "focus-prefix-counterfactual-diagnosis\\report.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-prefix-counterfactual-diagnosis\\report.json",
+      "sha256": "2ceb507b023dd22814386c56effc1bf194b1fa64384113d5858983a1496be088"
+    },
+    "focus-order-statistic-diagnosis\\native-quantile-diagnostics.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-order-statistic-diagnosis\\native-quantile-diagnostics.npz",
+      "sha256": "a9b5aee05ea462a6fe46ae4acc15c2967d0580dae62a4070a31f2e0cad2ca8eb"
+    },
+    "focus-order-statistic-diagnosis\\report.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-order-statistic-diagnosis\\report.json",
+      "sha256": "826c490ca81a19ea9ba713816d0d65ab0552c4afb47d684635311273d4b3297c"
+    },
+    "sampling-diagnosis-static-fields\\checksums.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\sampling-diagnosis-static-fields\\checksums.json",
+      "sha256": "849ab503edcca703484eb0546e30e38ad1f23a81745f45b84ed730e729977e1f"
+    },
+    "sampling-diagnosis-static-fields\\report.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\sampling-diagnosis-static-fields\\report.json",
+      "sha256": "01bc45a59132b1908f42156b6ce92998f25bb77c4ffebbbc383c8d11b2b549bd"
+    },
+    "sampling-diagnosis-static-fields\\sampled-static-fields.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\sampling-diagnosis-static-fields\\sampled-static-fields.npz",
+      "sha256": "bc28a502433748787bebc5a19e52926edaab930fa84d192ef1cfc141f923f4d8"
+    },
+    "static-lens-diameter-comparison\\field-samples.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\static-lens-diameter-comparison\\field-samples.npz",
+      "sha256": "f24eca3c6638ba6713c99463f5e46e291bfbf77c108b516d6058df007f80ea62"
+    },
+    "static-lens-diameter-comparison\\report.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\static-lens-diameter-comparison\\report.json",
+      "sha256": "cb4a414dfb1ead28062a0bbff48e7c8290437a75a7c246404b595d4855083efd"
+    },
+    "static-lens-diameter-comparison-actual-pole\\field-samples.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\static-lens-diameter-comparison-actual-pole\\field-samples.npz",
+      "sha256": "2b020233af0810265705eee818f7f0b8b45536bee69d4d6ae1362c25ef4efdc3"
+    },
+    "static-lens-diameter-comparison-actual-pole\\report.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\static-lens-diameter-comparison-actual-pole\\report.json",
+      "sha256": "22e7007028790029fe3e82605bc36d9647f672fdfca34102b4fc0401ba31ef35"
+    },
+    "static-lens-diameter-comparison-actual-objective-pole\\field-samples.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\static-lens-diameter-comparison-actual-objective-pole\\field-samples.npz",
+      "sha256": "7a7269201059bc7e1b5567c06e58ccabf59c8133ec75329ca7bf09048ddf0ac3"
+    },
+    "static-lens-diameter-comparison-actual-objective-pole\\report.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\static-lens-diameter-comparison-actual-objective-pole\\report.json",
+      "sha256": "d0a18499c01248612fedd4f937e6475d1551dc03af1e57056b323d33a0c72bdc"
+    },
+    "static-lens-diameter-comparison-shared-interface-pole\\field-samples.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\static-lens-diameter-comparison-shared-interface-pole\\field-samples.npz",
+      "sha256": "4e0aa50f51bd5b432da4761e56bf2529897b6717ecceebff76609bcdac5212d4"
+    },
+    "static-lens-diameter-comparison-shared-interface-pole\\report.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\static-lens-diameter-comparison-shared-interface-pole\\report.json",
+      "sha256": "ee3b241cf29f48e0d18b3893818d564f5172b96db24bfc6d12180d45bdf99e61"
+    },
+    "installed-lens-static-inventory.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\installed-lens-static-inventory.json",
+      "sha256": "c19a959305ee952dc5573384a7f258454358229840204d3fc905f7e80ac74573"
+    },
+    "installed-lens-model-audit.md": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\installed-lens-model-audit.md",
+      "sha256": "5777b1b61b34c8bb868efc231be12140a50a0309e076af942e565ada76015757"
+    },
+    "installed-lens-fields.png": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\installed-lens-fields.png",
+      "sha256": "75fbfa976fc26b18a8841ea12ed1cc9f51026cb6cfb0709fccfff77ea6b416a2"
+    },
+    "installed-lens-fields.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\installed-lens-fields.npz",
+      "sha256": "fff2c8d38feaf7bd0208a5d7c2db163b61c92c43bccdbab83a05353697a88675"
+    },
+    "installed-lens-fields.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\installed-lens-fields.json",
+      "sha256": "3f820538e488ca634e110811a2b951e0dde1fb0cb32e32cb9818da4011181f6a"
+    },
+    "stable-source-array-certificate.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\stable-source-array-certificate.json",
+      "sha256": "88dbe6b5a041cff99acc8ffabe1935895d146c11f3aebe7bdcdc57f6893844b2"
+    },
+    "stable-halton-final-module-tests.xml": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\stable-halton-final-module-tests.xml",
+      "sha256": "3d23f810b6187552518eba51e35040ad97f1b9967b3f3f1bce82e952014a8a1d"
+    },
+    "stable-halton-source-final-tests.xml": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\stable-halton-source-final-tests.xml",
+      "sha256": "1c39513ebfe676fd8bd13eac37861c154750881bd9e76c82c9564be2a414854e"
+    },
+    "nested-factory-persistence-tests.xml": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\nested-factory-persistence-tests.xml",
+      "sha256": "ff266a4feda15d4705522a3c9f2680d490817657a1bbf37f6a59bfcf6ab3c351"
+    },
+    "focus-trials\\original-guns\\40581b1ed10c6888e0b13bc5bbcc0abdfa6849b9a1d6c453647bb1fe19ab33a9\\emission-reference.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\original-guns\\40581b1ed10c6888e0b13bc5bbcc0abdfa6849b9a1d6c453647bb1fe19ab33a9\\emission-reference.npz",
+      "sha256": "2d8856e809e0fa7bb2ac4ca56644106a467136fcd10e6f049e483198bec329a0"
+    },
+    "focus-trials\\original-guns\\40581b1ed10c6888e0b13bc5bbcc0abdfa6849b9a1d6c453647bb1fe19ab33a9\\original-gun.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\original-guns\\40581b1ed10c6888e0b13bc5bbcc0abdfa6849b9a1d6c453647bb1fe19ab33a9\\original-gun.npz",
+      "sha256": "19451d259b8006c0087448a5f2da84033105e0b9b72cf77d570066df0a49ef1f"
+    },
+    "focus-trials\\original-guns\\40581b1ed10c6888e0b13bc5bbcc0abdfa6849b9a1d6c453647bb1fe19ab33a9\\receipt.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\original-guns\\40581b1ed10c6888e0b13bc5bbcc0abdfa6849b9a1d6c453647bb1fe19ab33a9\\receipt.json",
+      "sha256": "5a7d5e3830fedb1c605a86a4d3b7b03202db50653a085f3ae3aa2d2f1bf4f702"
+    },
+    "focus-source-convergence\\original-guns\\a4fdf07cd8529e560fab471da892b0ba845c52383eabf886f3dad95333510f64\\emission-reference.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\original-guns\\a4fdf07cd8529e560fab471da892b0ba845c52383eabf886f3dad95333510f64\\emission-reference.npz",
+      "sha256": "513a31a7427196f79f2724a4f6a17096454f31ac8d9e603923de0464f1f4ede6"
+    },
+    "focus-source-convergence\\original-guns\\a4fdf07cd8529e560fab471da892b0ba845c52383eabf886f3dad95333510f64\\original-gun.npz": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\original-guns\\a4fdf07cd8529e560fab471da892b0ba845c52383eabf886f3dad95333510f64\\original-gun.npz",
+      "sha256": "37f987811a453b8bed5ba956831b9ebe49543af310e27b956a3296c2fcc4b390"
+    },
+    "focus-source-convergence\\original-guns\\a4fdf07cd8529e560fab471da892b0ba845c52383eabf886f3dad95333510f64\\receipt.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\original-guns\\a4fdf07cd8529e560fab471da892b0ba845c52383eabf886f3dad95333510f64\\receipt.json",
+      "sha256": "4c0b94b3bebfde79b720f26679a1396656b0cf10ee80b90ff306a2a881717b8f"
+    },
+    "user-interrupted-32768\\interruption.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence-32768\\verification-32768-s005\\interruption.json",
+      "sha256": "cca1c529d7b1f47ea18a6370f1485b7d669521fec80f58404053e93fd2e77b68"
+    },
+    "user-interrupted-32768\\failed.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence-32768\\verification-32768-s005\\failed.json",
+      "sha256": "09f54ba3de6a27071a4c7fa7d483b0a0d5887f1db8e46af41705d521821a9ee6"
+    },
+    "user-interrupted-32768\\request.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence-32768\\verification-32768-s005\\request.json",
+      "sha256": "aaee39d19c78894a2f21f1d26020123c10df8bb36394c202728778041674c658"
+    },
+    "independent-fixed-source-step-comparison.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\independent-fixed-source-step-comparison.json",
+      "sha256": "35a1f8e0c8a55abeaacf1af38b0c127a5d589e5220ca3d4e93efbab3966e4456"
+    },
+    "checkpoint-budget-16384-vs-32768-static.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\checkpoint-budget-16384-vs-32768-static.json",
+      "sha256": "3788f75b4169ed60f7bcb7d5558434f924b02e40250fc3cb71d0ca907c4a0ac4"
+    },
+    "source-population-uniqueness.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\source-population-uniqueness.json",
+      "sha256": "9ffca980cdaadf70a9cd8eb783697e0481e2ae3a1ab81d1c568245a92341b495"
+    },
+    "summary.json": {
+      "sha256": "f4d84344039ce20ec53896e23b203d86282120d06c48bef7a1408045932e2f0c"
+    },
+    "validation/core-tests.xml": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\final-source-growth-core-tests.xml",
+      "sha256": "ee78fdfb30c8be156fac91c59b1193494812e8ba3de3493dfe96faa9ad59976b"
+    },
+    "validation/gui-tests.xml": {
+      "original": "F:\\tem_simulator_v2\\outputs\\nested-source-gui-final-frozen.xml",
+      "sha256": "b1915e22bbfb5f440feaed6bb8537c49d37fb1e232a84aee67aefcd788341880"
+    },
+    "validation/factory-packaging-tests.xml": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\final-factory-packaging-tests.xml",
+      "sha256": "678ae7fb4a414391b1f6aae97082d0c468987a25b75edad8c3e9f3da472220b0"
+    },
+    "validation/final-validation.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\final-validation.json",
+      "sha256": "f4d9d08e336f49f235266bef960bf725c92269895cdd98913c56d8bd5da2fb12"
+    },
+    "validation/incremental-static-cache-identity.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\incremental-static-cache-identity.json",
+      "sha256": "7fe016467d56e8ea2eed1405c8d2f46d5f7c14e8fe87b7f9c1cb43be1f3fd08c"
+    },
+    "validation/incremental-transport-tests.xml": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\incremental-transport-static-final-tests.xml",
+      "sha256": "e5f7fc3197199e5657e0bd9db8dff72255e8244258c353218b06bf87ef08345e"
+    },
+    "validation/assembly-transition-tests.xml": {
+      "original": "F:\\tem_simulator_v2\\outputs\\assembly-gun-transition-regression.xml",
+      "sha256": "01ccc254ed06c8d8c6a75b9435d3b28efe85f7fc01ebfb17b81b275d6e157a53"
+    },
+    "validation/installed-wheel-verification.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\installed-wheel-verification.json",
+      "sha256": "333a11214ed5941b1c4774389a7699b805bf8d3ed80b8bc854f25837e716bd8d"
+    },
+    "validation/wheel-build.log": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\wheel-build.log",
+      "sha256": "020b5cb37a3986f977dc02c7d70b21f09540d46572ba736d80b1a464a9f6e1a9"
+    },
+    "README.md": {
+      "sha256": "af42f7107f6ac3e1e1e2cddcb6611133072c6fe19e18143cc18d011b58140a0b"
+    },
+    "verify_evidence.py": {
+      "sha256": "8498c08aec65c1b233cfd3a962b57e17180f67191114db56c75db6b053a84828"
+    },
+    "validation/idle-worker-stop-receipt.json": {
+      "original": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\idle-worker-stop-receipt.json",
+      "sha256": "c8a23cb5eb4a89ffeb25bec58de164a94b3dd52673bf4809740c88f215f39598"
+    }
+  },
+  "originals_modified": false,
+  "partial_32768_is_not_a_result": true,
+  "no_new_physical_or_coherent_calculation_in_curation": true,
+  "new_implementation_software_checks": "96833cd5c1ad552f857c2ec356a8fcc132ff9a9b676bed80ff928cca4fc49b35",
+  "unique_software_test_cases": 343
+}

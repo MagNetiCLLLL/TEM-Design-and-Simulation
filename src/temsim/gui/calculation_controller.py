@@ -808,6 +808,7 @@ class CalculationController(QObject):
         ),
         persistent_cache_enabled: bool = True,
         startup_result_store=None,
+        displayed_particle_results=None,
     ) -> None:
         super().__init__(parent)
         from temsim.gui.job_coordinator import CoordinatedPool
@@ -815,6 +816,7 @@ class CalculationController(QObject):
         self.pool.setMaxThreadCount(1)
         self.section_file_pool = CoordinatedPool(self)
         self.startup_result_store = startup_result_store
+        self._displayed_particle_results = displayed_particle_results
         self._section_file_jobs = {}
         self._section_file_pending = {}
         self._section_archive_records = OrderedDict()
@@ -1467,6 +1469,69 @@ class CalculationController(QObject):
             return None
         return key, result
 
+    def _particle_seed_candidates(self, existing_result=None):
+        """Visit each still-retained result once, without adding cache roots."""
+        displayed = (() if self._displayed_particle_results is None else
+                     tuple(self._displayed_particle_results()))
+        candidates = (existing_result, *displayed, *reversed(tuple(self._high_cache.values())),
+                      *reversed(tuple(self._tuning_cache.values())),
+                      *reversed(tuple(self._loaded_section_seeds.values())),
+                      *reversed(tuple(self._loaded_tuning_sections.values())))
+        seen = set()
+        for candidate in candidates:
+            if candidate is not None and id(candidate) not in seen:
+                seen.add(id(candidate))
+                yield candidate
+
+    def _validate_particle_growth(self, state, existing_result=None, *, displayed_only=False):
+        from temsim.physics.incremental_particles import validate_particle_count_growth
+
+        if displayed_only:
+            candidates = (existing_result, *(() if self._displayed_particle_results is None
+                                           else self._displayed_particle_results()))
+        else:
+            candidates = self._particle_seed_candidates(existing_result)
+        for candidate in candidates:
+            if candidate is not None:
+                validate_particle_count_growth(candidate, state)
+
+    def _incremental_particle_seed(self, state, signatures, existing_result=None, *, target_z_mm=None,
+                                   maximum_seed_bytes=None):
+        """Route retained source-growth candidates to the validating worker.
+
+        This metadata check never admits a trajectory or a whole-product cache
+        hit. The worker must prove the source prefix and native field/solver
+        dependencies before it can transport only the added original IDs.
+        """
+        from temsim.physics.incremental_particles import can_extend_particle_result
+
+        compatible = []
+        fallback = existing_result
+        for candidate in self._particle_seed_candidates(existing_result):
+            if can_extend_particle_result(candidate, state, target_z_mm=target_z_mm):
+                if (maximum_seed_bytes is not None
+                        and sum(retained_memory_inventory(candidate).values()) > maximum_seed_bytes):
+                    if candidate is existing_result:
+                        fallback = None
+                    continue
+                compatible.append(candidate)
+        if not compatible:
+            return fallback
+        # Preserve the existing preference for exact completed products. For
+        # equally useful candidates, the largest valid source prefix saves the
+        # most transport. Candidates belong to bounded caches or the existing
+        # displayed result; no additional history cache is created. The normal
+        # MemoryCoordinator still admits the complete worker and retained set.
+        def rank(candidate):
+            return (self._seed_reuse_score(candidate, signatures) // 2,
+                    len(candidate.simulation.gun_trace.exit_bundle.ray_id))
+
+        candidate = max(compatible, key=rank)
+        if (fallback is not None
+                and self._seed_reuse_score(fallback, signatures) // 2 > rank(candidate)[0]):
+            return fallback
+        return candidate
+
     @staticmethod
     def _requested_design_stage_keys(
         state,
@@ -1935,14 +2000,19 @@ class CalculationController(QObject):
         self._requests[generation]["particle_tuning"] = bool(particle_tuning)
         self._requests[generation]["workflow"] = workflow
         self._requests[generation]["seed_result"] = existing_result
-        self._dispatch_prepared(
-            snapshot, quality, ray_count, step_mm,
-            model_signature=model_signature, request_signatures=request_signatures,
-            generation=generation, estimate=estimate,
-            external_inputs=external_inputs,
-            calculation_manifest=calculation_manifest,
-            numerical_preparation=numerical_preparation,
-        )
+        try:
+            self._dispatch_prepared(
+                snapshot, quality, ray_count, step_mm,
+                model_signature=model_signature, request_signatures=request_signatures,
+                generation=generation, estimate=estimate,
+                external_inputs=external_inputs,
+                calculation_manifest=calculation_manifest,
+                numerical_preparation=numerical_preparation,
+            )
+        except Exception as exc:
+            self._accept_error(generation, quality, str(exc))
+            self._accept_finished(generation, quality)
+            raise
 
     def _dispatch_prepared(
         self, snapshot, quality, ray_count, step_mm, *, model_signature,
@@ -1974,6 +2044,11 @@ class CalculationController(QObject):
             request_signatures = section_request_signatures(request_signatures, section_request)
         self._request_input_guard = (generation, snapshot, external_inputs)
         self._requests[generation]["guard"] = self._request_input_guard
+        if workflow in {"full", "rays"}:
+            # A cache hit must not silently replace a displayed historical
+            # low-count source with different launch energies at the new N.
+            self._validate_particle_growth(snapshot, self._requests[generation].get("seed_result"),
+                                           displayed_only=True)
         request_key = request_signatures["request"]
         if quality == "High accuracy":
             self._high_requests[request_key] = generation
@@ -2087,12 +2162,21 @@ class CalculationController(QObject):
             self._running_high_key = request_key
             self._running_high_generation = generation
         explicit_seed = self._requests[generation].get("seed_result")
+        if workflow in {"full", "rays"}:
+            self._validate_particle_growth(snapshot, explicit_seed or existing_result)
         if explicit_seed is not None:
             existing_result = explicit_seed
         elif workflow not in {"full", "rays"}:
             # A page continues the user's displayed beam, not an arbitrary
             # historical result selected by the general cache heuristic.
             existing_result = None
+        else:
+            existing_result = self._incremental_particle_seed(
+                snapshot, request_signatures, existing_result,
+                target_z_mm=None if section_request is None else section_request["target_z_mm"],
+                maximum_seed_bytes=min(
+                    self._high_cache_budget_bytes if quality == "High accuracy" else self._tuning_cache_budget_bytes,
+                    max(0, min(HIGH_ACCURACY_MEMORY_BUDGET_BYTES, self.pool.coordinator.ram_budget_bytes) - int(estimate))))
         worker = CalculationWorker(
             generation,
             quality,

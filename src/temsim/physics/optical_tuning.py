@@ -66,6 +66,9 @@ def resolve_tuning_ray_count(state, quality, requested):
     if sampling is not None:
         sampling.validate()
         count = max(int(requested), DEFAULT_TUNING_SOURCE_PARTICLES)
+        from temsim.optics.electron_gun.emitter import HALTON_PREFIX_SAMPLING_SCHEMA
+        if sampling.schema == HALTON_PREFIX_SAMPLING_SCHEMA:
+            return sampling.validate_count(count)
         return sampling.validate_count(1 << (count - 1).bit_length())
     probes = sum(_tuning_support_probes(emitter, TUNING_PROFILES[quality]))
     return max(int(requested), DEFAULT_TUNING_SOURCE_PARTICLES + probes)

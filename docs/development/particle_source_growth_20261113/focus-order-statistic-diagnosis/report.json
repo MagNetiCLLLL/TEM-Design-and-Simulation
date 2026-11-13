@@ -1,0 +1,1331 @@
+{
+  "scope": "Offline analysis of already executed finite-source arrays only; no new source, field solve, particle propagation, coherent calculation, lens adjustment, or changed tolerance",
+  "cases": [
+    {
+      "trial": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\verification-8192-s005",
+      "original_positive_count": 8192,
+      "positive_survivor_count": 7757,
+      "q95_minimum": {
+        "value_nm": 2.9920740249909854,
+        "offsets_nm": [
+          1.9999999949504854
+        ],
+        "neighbour_bracket_nm": [
+          1.7499999103165464,
+          2.2500000795844244
+        ]
+      },
+      "fixed_upper_centroid_q95_minimum": {
+        "value_nm": 2.992111517323747,
+        "offsets_nm": [
+          1.9999999949504854
+        ],
+        "neighbour_bracket_nm": [
+          1.7499999103165464,
+          2.2500000795844244
+        ]
+      },
+      "maximum_centroid_shift_over_focus_nm": 0.0014499900576495776,
+      "maximum_d95_current_minus_fixed_centroid_nm": 0.0015803556281470676,
+      "critical_planes": [
+        {
+          "offset_nm": 0.0,
+          "z_mm": 1025.1999975,
+          "centroid_xy_nm": [
+            0.00216299934174468,
+            0.0009865131308638912
+          ],
+          "d95_nm": 2.9942334917762525,
+          "q95_boundary_source_id": 1616,
+          "q95_one_based_rank": 7370,
+          "neighbouring_ranked_rays": [
+            {
+              "one_based_rank": 7367,
+              "source_id": 1488,
+              "radius_nm": 1.495437144978398,
+              "centered_xy_nm": [
+                0.5719401517220375,
+                1.3817440853607137
+              ],
+              "relative_radial_derivative_mrad": -4.931881659339774,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7368,
+              "source_id": 2763,
+              "radius_nm": 1.4960826733444526,
+              "centered_xy_nm": [
+                -0.6148150610894784,
+                1.363915615475908
+              ],
+              "relative_radial_derivative_mrad": -4.78176786401872,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7369,
+              "source_id": 2268,
+              "radius_nm": 1.4965624795923282,
+              "centered_xy_nm": [
+                -1.1675619869689824,
+                -0.9362148588377458
+              ],
+              "relative_radial_derivative_mrad": -4.976449610542102,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7370,
+              "source_id": 1616,
+              "radius_nm": 1.4971167458881263,
+              "centered_xy_nm": [
+                1.3307835136053223,
+                -0.6858380207708852
+              ],
+              "relative_radial_derivative_mrad": 10.200125019375461,
+              "boundary_ray": true
+            },
+            {
+              "one_based_rank": 7371,
+              "source_id": 1461,
+              "radius_nm": 1.497266209556733,
+              "centered_xy_nm": [
+                -0.042985983996363296,
+                -1.4966490261448244
+              ],
+              "relative_radial_derivative_mrad": 10.204009771894409,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7372,
+              "source_id": 6468,
+              "radius_nm": 1.497473186085,
+              "centered_xy_nm": [
+                -1.3762649281144723,
+                -0.5901870810900783
+              ],
+              "relative_radial_derivative_mrad": -5.222220996925231,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7373,
+              "source_id": 1861,
+              "radius_nm": 1.4998760045101622,
+              "centered_xy_nm": [
+                1.3211270522087515,
+                -0.7101065700495828
+              ],
+              "relative_radial_derivative_mrad": 10.208765577521786,
+              "boundary_ray": false
+            }
+          ],
+          "d95_neighbours": [
+            {
+              "offset_nm": -0.25000008463393897,
+              "d95_nm": 2.9945562308333935,
+              "boundary_source_id": 2763
+            },
+            {
+              "offset_nm": 0.0,
+              "d95_nm": 2.9942334917762525,
+              "boundary_source_id": 1616
+            },
+            {
+              "offset_nm": 0.25000008463393897,
+              "d95_nm": 2.9923352614557293,
+              "boundary_source_id": 6468
+            }
+          ]
+        },
+        {
+          "offset_nm": 0.25000008463393897,
+          "z_mm": 1025.1999977500002,
+          "centroid_xy_nm": [
+            0.0021650696772104053,
+            0.0009877596900139459
+          ],
+          "d95_nm": 2.9923352614557293,
+          "q95_boundary_source_id": 6468,
+          "q95_one_based_rank": 7370,
+          "neighbouring_ranked_rays": [
+            {
+              "one_based_rank": 7367,
+              "source_id": 2763,
+              "radius_nm": 1.4948872312868766,
+              "centered_xy_nm": [
+                -0.6143281035047927,
+                1.3628238387659455
+              ],
+              "relative_radial_derivative_mrad": -4.781767805275024,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7368,
+              "source_id": 2268,
+              "radius_nm": 1.4953183670870964,
+              "centered_xy_nm": [
+                -1.166591983579784,
+                -0.9354358143643021
+              ],
+              "relative_radial_derivative_mrad": -4.9764496078075675,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7369,
+              "source_id": 2726,
+              "radius_nm": 1.4954229695358388,
+              "centered_xy_nm": [
+                -1.3794498975341678,
+                0.5774147885258571
+              ],
+              "relative_radial_derivative_mrad": 10.162010662315893,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7370,
+              "source_id": 6468,
+              "radius_nm": 1.4961676307278646,
+              "centered_xy_nm": [
+                -1.375064795257308,
+                -0.5896731196873476
+              ],
+              "relative_radial_derivative_mrad": -5.2222209959792565,
+              "boundary_ray": true
+            },
+            {
+              "one_based_rank": 7371,
+              "source_id": 7118,
+              "radius_nm": 1.4992941409202802,
+              "centered_xy_nm": [
+                -1.4639299808074957,
+                0.3237158202665531
+              ],
+              "relative_radial_derivative_mrad": -5.111618432635093,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7372,
+              "source_id": 1616,
+              "radius_nm": 1.4996667773541048,
+              "centered_xy_nm": [
+                1.3330505516872497,
+                -0.6870055820340654
+              ],
+              "relative_radial_derivative_mrad": 10.200125020527683,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7373,
+              "source_id": 1461,
+              "radius_nm": 1.4998172122129627,
+              "centered_xy_nm": [
+                -0.043056620647882,
+                -1.499199051983641
+              ],
+              "relative_radial_derivative_mrad": 10.204009789361246,
+              "boundary_ray": false
+            }
+          ],
+          "d95_neighbours": [
+            {
+              "offset_nm": 0.0,
+              "d95_nm": 2.9942334917762525,
+              "boundary_source_id": 1616
+            },
+            {
+              "offset_nm": 0.25000008463393897,
+              "d95_nm": 2.9923352614557293,
+              "boundary_source_id": 6468
+            },
+            {
+              "offset_nm": 0.4999999418942025,
+              "d95_nm": 2.995926944823818,
+              "boundary_source_id": 2726
+            }
+          ]
+        },
+        {
+          "offset_nm": 1.9999999949504854,
+          "z_mm": 1025.1999995,
+          "centroid_xy_nm": [
+            0.002179562021666684,
+            0.0009964856062206348
+          ],
+          "d95_nm": 2.9920740249909854,
+          "q95_boundary_source_id": 6338,
+          "q95_one_based_rank": 7370,
+          "neighbouring_ranked_rays": [
+            {
+              "one_based_rank": 7367,
+              "source_id": 7361,
+              "radius_nm": 1.4945407826731263,
+              "centered_xy_nm": [
+                -0.7584330173076157,
+                -1.2878010363914398
+              ],
+              "relative_radial_derivative_mrad": 10.209955293766141,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7368,
+              "source_id": 1463,
+              "radius_nm": 1.4947789080515355,
+              "centered_xy_nm": [
+                -1.4380043214573495,
+                -0.40805337325615665
+              ],
+              "relative_radial_derivative_mrad": -5.151322143422989,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7369,
+              "source_id": 813,
+              "radius_nm": 1.4953722887615222,
+              "centered_xy_nm": [
+                0.4108479562059245,
+                -1.4378255244908151
+              ],
+              "relative_radial_derivative_mrad": -4.911481340159299,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7370,
+              "source_id": 6338,
+              "radius_nm": 1.4960370124954927,
+              "centered_xy_nm": [
+                1.4314523315187906,
+                0.434822912627494
+              ],
+              "relative_radial_derivative_mrad": -5.204252631498115,
+              "boundary_ray": true
+            },
+            {
+              "one_based_rank": 7371,
+              "source_id": 2113,
+              "radius_nm": 1.4961475477217423,
+              "centered_xy_nm": [
+                -1.3933534135563321,
+                0.544998852737049
+              ],
+              "relative_radial_derivative_mrad": -5.090997220699212,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7372,
+              "source_id": 7966,
+              "radius_nm": 1.4996298608472813,
+              "centered_xy_nm": [
+                1.0016180922371458,
+                1.116087324920437
+              ],
+              "relative_radial_derivative_mrad": 10.169406494689934,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 7373,
+              "source_id": 5038,
+              "radius_nm": 1.501142867037939,
+              "centered_xy_nm": [
+                -0.08278023872159562,
+                1.498858678907414
+              ],
+              "relative_radial_derivative_mrad": -5.2087220822190154,
+              "boundary_ray": false
+            }
+          ],
+          "d95_neighbours": [
+            {
+              "offset_nm": 1.7499999103165464,
+              "d95_nm": 2.9941750180268385,
+              "boundary_source_id": 7966
+            },
+            {
+              "offset_nm": 1.9999999949504854,
+              "d95_nm": 2.9920740249909854,
+              "boundary_source_id": 6338
+            },
+            {
+              "offset_nm": 2.2500000795844244,
+              "d95_nm": 2.993057222932773,
+              "boundary_source_id": 1630
+            }
+          ]
+        }
+      ],
+      "percentile_sensitivity": [
+        {
+          "containment_percent": 90.0,
+          "one_based_rank": 6982,
+          "surface_diameter_nm": 2.911858325348903,
+          "minimum": {
+            "value_nm": 2.234845295603713,
+            "offsets_nm": [
+              78.0000000304426
+            ],
+            "neighbour_bracket_nm": [
+              76.00000003549212,
+              80.00000002539309
+            ]
+          }
+        },
+        {
+          "containment_percent": 90.5,
+          "one_based_rank": 7021,
+          "surface_diameter_nm": 2.9162018251415143,
+          "minimum": {
+            "value_nm": 2.2943443754264936,
+            "offsets_nm": [
+              72.00000004559115
+            ],
+            "neighbour_bracket_nm": [
+              70.00000005064066,
+              74.00000004054164
+            ]
+          }
+        },
+        {
+          "containment_percent": 91.0,
+          "one_based_rank": 7059,
+          "surface_diameter_nm": 2.920235313693536,
+          "minimum": {
+            "value_nm": 2.389037585551891,
+            "offsets_nm": [
+              64.00000006578921
+            ],
+            "neighbour_bracket_nm": [
+              62.00000007083872,
+              66.0000000607397
+            ]
+          }
+        },
+        {
+          "containment_percent": 91.5,
+          "one_based_rank": 7098,
+          "surface_diameter_nm": 2.925172400225226,
+          "minimum": {
+            "value_nm": 2.4605911546060097,
+            "offsets_nm": [
+              56.00000008598727
+            ],
+            "neighbour_bracket_nm": [
+              54.00000009103678,
+              58.00000008093775
+            ]
+          }
+        },
+        {
+          "containment_percent": 92.0,
+          "one_based_rank": 7137,
+          "surface_diameter_nm": 2.929830601454852,
+          "minimum": {
+            "value_nm": 2.5334272258940604,
+            "offsets_nm": [
+              46.00000011123484
+            ],
+            "neighbour_bracket_nm": [
+              43.99999988891068,
+              48.000000106185325
+            ]
+          }
+        },
+        {
+          "containment_percent": 92.5,
+          "one_based_rank": 7176,
+          "surface_diameter_nm": 2.936213732720492,
+          "minimum": {
+            "value_nm": 2.5909682772029146,
+            "offsets_nm": [
+              41.999999893960194
+            ],
+            "neighbour_bracket_nm": [
+              39.99999989900971,
+              43.99999988891068
+            ]
+          }
+        },
+        {
+          "containment_percent": 93.0,
+          "one_based_rank": 7215,
+          "surface_diameter_nm": 2.9408378501084482,
+          "minimum": {
+            "value_nm": 2.679090255474451,
+            "offsets_nm": [
+              33.99999991415825
+            ],
+            "neighbour_bracket_nm": [
+              31.999999919207767,
+              35.99999990910874
+            ]
+          }
+        },
+        {
+          "containment_percent": 93.5,
+          "one_based_rank": 7253,
+          "surface_diameter_nm": 2.946318027286452,
+          "minimum": {
+            "value_nm": 2.747874220845614,
+            "offsets_nm": [
+              25.99999993435631
+            ],
+            "neighbour_bracket_nm": [
+              23.999999939405825,
+              27.999999929306796
+            ]
+          }
+        },
+        {
+          "containment_percent": 94.0,
+          "one_based_rank": 7292,
+          "surface_diameter_nm": 2.9549018237936577,
+          "minimum": {
+            "value_nm": 2.824715508331254,
+            "offsets_nm": [
+              17.99999995455437
+            ],
+            "neighbour_bracket_nm": [
+              15.999999959603883,
+              19.999999949504854
+            ]
+          }
+        },
+        {
+          "containment_percent": 94.5,
+          "one_based_rank": 7331,
+          "surface_diameter_nm": 2.969544893619275,
+          "minimum": {
+            "value_nm": 2.8981113108039267,
+            "offsets_nm": [
+              11.999999969702912
+            ],
+            "neighbour_bracket_nm": [
+              9.999999974752427,
+              13.999999964653398
+            ]
+          }
+        },
+        {
+          "containment_percent": 95.0,
+          "one_based_rank": 7370,
+          "surface_diameter_nm": 2.9942334917762525,
+          "minimum": {
+            "value_nm": 2.9920740249909854,
+            "offsets_nm": [
+              1.9999999949504854
+            ],
+            "neighbour_bracket_nm": [
+              1.7499999103165464,
+              2.2500000795844244
+            ]
+          }
+        },
+        {
+          "containment_percent": 95.5,
+          "one_based_rank": 7408,
+          "surface_diameter_nm": 3.202930476991665,
+          "minimum": {
+            "value_nm": 3.0805463182101303,
+            "offsets_nm": [
+              -6.499999926745659
+            ],
+            "neighbour_bracket_nm": [
+              -6.750000011379598,
+              -6.250000069485395
+            ]
+          }
+        },
+        {
+          "containment_percent": 96.0,
+          "one_based_rank": 7447,
+          "surface_diameter_nm": 3.5121224104492152,
+          "minimum": {
+            "value_nm": 3.1947440465156554,
+            "offsets_nm": [
+              -17.99999995455437
+            ],
+            "neighbour_bracket_nm": [
+              -19.999999949504854,
+              -15.999999959603883
+            ]
+          }
+        },
+        {
+          "containment_percent": 96.5,
+          "one_based_rank": 7486,
+          "surface_diameter_nm": 3.9264651269634454,
+          "minimum": {
+            "value_nm": 3.325645282478106,
+            "offsets_nm": [
+              -29.99999992425728
+            ],
+            "neighbour_bracket_nm": [
+              -31.999999919207767,
+              -27.999999929306796
+            ]
+          }
+        },
+        {
+          "containment_percent": 97.0,
+          "one_based_rank": 7525,
+          "surface_diameter_nm": 4.410011589025292,
+          "minimum": {
+            "value_nm": 3.4776309327038137,
+            "offsets_nm": [
+              -46.00000011123484
+            ],
+            "neighbour_bracket_nm": [
+              -48.000000106185325,
+              -43.99999988891068
+            ]
+          }
+        },
+        {
+          "containment_percent": 97.5,
+          "one_based_rank": 7564,
+          "surface_diameter_nm": 4.678014638289433,
+          "minimum": {
+            "value_nm": 3.566396755805194,
+            "offsets_nm": [
+              -52.000000096086296
+            ],
+            "neighbour_bracket_nm": [
+              -54.00000009103678,
+              -50.00000010113581
+            ]
+          }
+        },
+        {
+          "containment_percent": 98.0,
+          "one_based_rank": 7602,
+          "surface_diameter_nm": 5.144353164274673,
+          "minimum": {
+            "value_nm": 3.7256878417360317,
+            "offsets_nm": [
+              -66.0000000607397
+            ],
+            "neighbour_bracket_nm": [
+              -68.00000005569018,
+              -64.00000006578921
+            ]
+          }
+        },
+        {
+          "containment_percent": 98.5,
+          "one_based_rank": 7641,
+          "surface_diameter_nm": 5.6193152575845975,
+          "minimum": {
+            "value_nm": 3.8816251684145286,
+            "offsets_nm": [
+              -82.00000002034358
+            ],
+            "neighbour_bracket_nm": [
+              -84.00000001529406,
+              -80.00000002539309
+            ]
+          }
+        },
+        {
+          "containment_percent": 99.0,
+          "one_based_rank": 7680,
+          "surface_diameter_nm": 6.280399210115004,
+          "minimum": {
+            "value_nm": 4.078166996609874,
+            "offsets_nm": [
+              -99.99999997489795
+            ],
+            "neighbour_bracket_nm": [
+              -101.99999996984843,
+              -97.99999997994746
+            ]
+          }
+        }
+      ],
+      "rms_native_minimum": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 1.1421075576452764,
+        "observed_minimum_planes_mm": [
+          1025.2000715000001
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.2000715000001,
+            1025.2000715000001
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1025.2000695000002,
+          1025.2000735000001
+        ],
+        "neighbour_bracket_offset_nm": [
+          72.00000004559115,
+          76.00000003549212
+        ],
+        "representative_offset_nm": 74.00000004054164,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "q95_boundary_unique_source_ids_near_10nm": 41,
+      "native_d95_reproduction_max_absolute_error_nm": 4.440892098500626e-16,
+      "interpretation": "Percentiles and fixed-centroid curves are diagnostic comparisons; native current-centred D95 and its original placement gate remain unchanged"
+    },
+    {
+      "trial": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\baseline-16384",
+      "original_positive_count": 16384,
+      "positive_survivor_count": 15514,
+      "q95_minimum": {
+        "value_nm": 2.992877891873578,
+        "offsets_nm": [
+          0.0
+        ],
+        "neighbour_bracket_nm": [
+          -0.25000008463393897,
+          0.25000008463393897
+        ]
+      },
+      "fixed_upper_centroid_q95_minimum": {
+        "value_nm": 2.992877891873578,
+        "offsets_nm": [
+          0.0
+        ],
+        "neighbour_bracket_nm": [
+          -0.25000008463393897,
+          0.25000008463393897
+        ]
+      },
+      "maximum_centroid_shift_over_focus_nm": 0.0010217845914582064,
+      "maximum_d95_current_minus_fixed_centroid_nm": 0.0013479191200049812,
+      "critical_planes": [
+        {
+          "offset_nm": 0.0,
+          "z_mm": 1025.1999975,
+          "centroid_xy_nm": [
+            0.0016289431218618224,
+            0.0011671376188600374
+          ],
+          "d95_nm": 2.992877891873578,
+          "q95_boundary_source_id": 9418,
+          "q95_one_based_rank": 14739,
+          "neighbouring_ranked_rays": [
+            {
+              "one_based_rank": 14736,
+              "source_id": 2763,
+              "radius_nm": 1.4953651672255397,
+              "centered_xy_nm": [
+                -0.6140968314099419,
+                1.363452259891682
+              ],
+              "relative_radial_derivative_mrad": -4.781751520996141,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14737,
+              "source_id": 1861,
+              "radius_nm": 1.4956813105677174,
+              "centered_xy_nm": [
+                1.3174838161458686,
+                -0.7080247008228485
+              ],
+              "relative_radial_derivative_mrad": 10.210506593764812,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14738,
+              "source_id": 2268,
+              "radius_nm": 1.4960768852265838,
+              "centered_xy_nm": [
+                -1.1668725842111436,
+                -0.9362982530826832
+              ],
+              "relative_radial_derivative_mrad": -4.9769104178774795,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14739,
+              "source_id": 9418,
+              "radius_nm": 1.496438945936789,
+              "centered_xy_nm": [
+                1.4663417645270838,
+                0.29861572048371304
+              ],
+              "relative_radial_derivative_mrad": -5.154873315473814,
+              "boundary_ray": true
+            },
+            {
+              "one_based_rank": 14740,
+              "source_id": 6468,
+              "radius_nm": 1.4969915554621618,
+              "centered_xy_nm": [
+                -1.375683241357638,
+                -0.5903213841398302
+              ],
+              "relative_radial_derivative_mrad": -5.223328441738358,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14741,
+              "source_id": 13618,
+              "radius_nm": 1.4987735343176973,
+              "centered_xy_nm": [
+                1.4985146182499602,
+                -0.027857603312876685
+              ],
+              "relative_radial_derivative_mrad": -5.237223071141782,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14742,
+              "source_id": 8743,
+              "radius_nm": 1.498884581346116,
+              "centered_xy_nm": [
+                -1.1378454297158092,
+                -0.9756857928001038
+              ],
+              "relative_radial_derivative_mrad": -5.176104830497498,
+              "boundary_ray": false
+            }
+          ],
+          "d95_neighbours": [
+            {
+              "offset_nm": -0.25000008463393897,
+              "d95_nm": 2.9952410367062297,
+              "boundary_source_id": 9676
+            },
+            {
+              "offset_nm": 0.0,
+              "d95_nm": 2.992877891873578,
+              "boundary_source_id": 9418
+            },
+            {
+              "offset_nm": 0.25000008463393897,
+              "d95_nm": 2.995181110063541,
+              "boundary_source_id": 8743
+            }
+          ]
+        },
+        {
+          "offset_nm": 0.25000008463393897,
+          "z_mm": 1025.1999977500002,
+          "centroid_xy_nm": [
+            0.001629629186837807,
+            0.0011686962839491362
+          ],
+          "d95_nm": 2.995181110063541,
+          "q95_boundary_source_id": 8743,
+          "q95_one_based_rank": 14739,
+          "neighbouring_ranked_rays": [
+            {
+              "one_based_rank": 14736,
+              "source_id": 2255,
+              "radius_nm": 1.4956167213224232,
+              "centered_xy_nm": [
+                0.40462360942758135,
+                1.4398434330832746
+              ],
+              "relative_radial_derivative_mrad": 10.216619805380443,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14737,
+              "source_id": 6468,
+              "radius_nm": 1.4956857232447132,
+              "centered_xy_nm": [
+                -1.3744825174784614,
+                -0.5898080974894565
+              ],
+              "relative_radial_derivative_mrad": -5.223328433484235,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14738,
+              "source_id": 13618,
+              "radius_nm": 1.4974642284441897,
+              "centered_xy_nm": [
+                1.497205487368519,
+                -0.027836020971884586
+              ],
+              "relative_radial_derivative_mrad": -5.2372230502511625,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14739,
+              "source_id": 8743,
+              "radius_nm": 1.4975905550317705,
+              "centered_xy_nm": [
+                -1.1368624061902444,
+                -0.9748442644400661
+              ],
+              "relative_radial_derivative_mrad": -5.176104827719109,
+              "boundary_ray": true
+            },
+            {
+              "one_based_rank": 14740,
+              "source_id": 14596,
+              "radius_nm": 1.497783283584601,
+              "centered_xy_nm": [
+                0.6324234506492473,
+                1.3577169600672918
+              ],
+              "relative_radial_derivative_mrad": 10.168938787213907,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14741,
+              "source_id": 10277,
+              "radius_nm": 1.4978141932446412,
+              "centered_xy_nm": [
+                -0.7568711566685135,
+                -1.2925143750412842
+              ],
+              "relative_radial_derivative_mrad": -4.570031915511701,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14742,
+              "source_id": 13871,
+              "radius_nm": 1.4978979989253487,
+              "centered_xy_nm": [
+                -0.8666653244038239,
+                -1.2217158551236773
+              ],
+              "relative_radial_derivative_mrad": 10.197581653719066,
+              "boundary_ray": false
+            }
+          ],
+          "d95_neighbours": [
+            {
+              "offset_nm": 0.0,
+              "d95_nm": 2.992877891873578,
+              "boundary_source_id": 9418
+            },
+            {
+              "offset_nm": 0.25000008463393897,
+              "d95_nm": 2.995181110063541,
+              "boundary_source_id": 8743
+            },
+            {
+              "offset_nm": 0.4999999418942025,
+              "d95_nm": 2.99464848403257,
+              "boundary_source_id": 7118
+            }
+          ]
+        },
+        {
+          "offset_nm": 1.9999999949504854,
+          "z_mm": 1025.1999995,
+          "centroid_xy_nm": [
+            0.0016344316386034444,
+            0.0011796069392699838
+          ],
+          "d95_nm": 2.996345101130393,
+          "q95_boundary_source_id": 7966,
+          "q95_one_based_rank": 14739,
+          "neighbouring_ranked_rays": [
+            {
+              "one_based_rank": 14736,
+              "source_id": 11561,
+              "radius_nm": 1.495822314415342,
+              "centered_xy_nm": [
+                -1.0130800766722472,
+                -1.1005240363357014
+              ],
+              "relative_radial_derivative_mrad": 10.199932650741431,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14737,
+              "source_id": 6338,
+              "radius_nm": 1.4963969143226672,
+              "centered_xy_nm": [
+                1.4318983756747559,
+                0.4345926448231671
+              ],
+              "relative_radial_derivative_mrad": -5.195625590277204,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14738,
+              "source_id": 13163,
+              "radius_nm": 1.4968886160450137,
+              "centered_xy_nm": [
+                1.3842894688681735,
+                -0.5695772074318166
+              ],
+              "relative_radial_derivative_mrad": -5.576459625371987,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14739,
+              "source_id": 7966,
+              "radius_nm": 1.4981725505651966,
+              "centered_xy_nm": [
+                1.0010387956920455,
+                1.1146489675168798
+              ],
+              "relative_radial_derivative_mrad": 10.170842297088452,
+              "boundary_ray": true
+            },
+            {
+              "one_based_rank": 14740,
+              "source_id": 4671,
+              "radius_nm": 1.4982341894535216,
+              "centered_xy_nm": [
+                -1.1723587455913071,
+                0.9328883417017426
+              ],
+              "relative_radial_derivative_mrad": 10.162798795214663,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14741,
+              "source_id": 9263,
+              "radius_nm": 1.4985807302583731,
+              "centered_xy_nm": [
+                0.7358558526286918,
+                -1.3054732357477958
+              ],
+              "relative_radial_derivative_mrad": -5.421652950725978,
+              "boundary_ray": false
+            },
+            {
+              "one_based_rank": 14742,
+              "source_id": 14396,
+              "radius_nm": 1.499714596655537,
+              "centered_xy_nm": [
+                -1.2297605453304454,
+                -0.8583896973812334
+              ],
+              "relative_radial_derivative_mrad": 10.177805493962255,
+              "boundary_ray": false
+            }
+          ],
+          "d95_neighbours": [
+            {
+              "offset_nm": 1.7499999103165464,
+              "d95_nm": 2.994340290144606,
+              "boundary_source_id": 14396
+            },
+            {
+              "offset_nm": 1.9999999949504854,
+              "d95_nm": 2.996345101130393,
+              "boundary_source_id": 7966
+            },
+            {
+              "offset_nm": 2.2500000795844244,
+              "d95_nm": 2.9967446001117235,
+              "boundary_source_id": 11561
+            }
+          ]
+        }
+      ],
+      "percentile_sensitivity": [
+        {
+          "containment_percent": 90.0,
+          "one_based_rank": 13963,
+          "surface_diameter_nm": 2.910780844719254,
+          "minimum": {
+            "value_nm": 2.222275836874666,
+            "offsets_nm": [
+              80.00000002539309
+            ],
+            "neighbour_bracket_nm": [
+              78.0000000304426,
+              82.00000002034358
+            ]
+          }
+        },
+        {
+          "containment_percent": 90.5,
+          "one_based_rank": 14041,
+          "surface_diameter_nm": 2.9146635461737347,
+          "minimum": {
+            "value_nm": 2.2807059225096467,
+            "offsets_nm": [
+              74.00000004054164
+            ],
+            "neighbour_bracket_nm": [
+              72.00000004559115,
+              76.00000003549212
+            ]
+          }
+        },
+        {
+          "containment_percent": 91.0,
+          "one_based_rank": 14118,
+          "surface_diameter_nm": 2.91844596868369,
+          "minimum": {
+            "value_nm": 2.352333145174797,
+            "offsets_nm": [
+              68.00000005569018
+            ],
+            "neighbour_bracket_nm": [
+              66.0000000607397,
+              70.00000005064066
+            ]
+          }
+        },
+        {
+          "containment_percent": 91.5,
+          "one_based_rank": 14196,
+          "surface_diameter_nm": 2.923823533105428,
+          "minimum": {
+            "value_nm": 2.417676371697235,
+            "offsets_nm": [
+              60.00000007588824
+            ],
+            "neighbour_bracket_nm": [
+              58.00000008093775,
+              62.00000007083872
+            ]
+          }
+        },
+        {
+          "containment_percent": 92.0,
+          "one_based_rank": 14273,
+          "surface_diameter_nm": 2.928497145243435,
+          "minimum": {
+            "value_nm": 2.4954794107539304,
+            "offsets_nm": [
+              52.000000096086296
+            ],
+            "neighbour_bracket_nm": [
+              50.00000010113581,
+              54.00000009103678
+            ]
+          }
+        },
+        {
+          "containment_percent": 92.5,
+          "one_based_rank": 14351,
+          "surface_diameter_nm": 2.9335962000238935,
+          "minimum": {
+            "value_nm": 2.559180126255409,
+            "offsets_nm": [
+              46.00000011123484
+            ],
+            "neighbour_bracket_nm": [
+              43.99999988891068,
+              48.000000106185325
+            ]
+          }
+        },
+        {
+          "containment_percent": 93.0,
+          "one_based_rank": 14429,
+          "surface_diameter_nm": 2.939813716579374,
+          "minimum": {
+            "value_nm": 2.641750586150058,
+            "offsets_nm": [
+              35.99999990910874
+            ],
+            "neighbour_bracket_nm": [
+              33.99999991415825,
+              37.99999990405922
+            ]
+          }
+        },
+        {
+          "containment_percent": 93.5,
+          "one_based_rank": 14506,
+          "surface_diameter_nm": 2.946612033567806,
+          "minimum": {
+            "value_nm": 2.7204329650294237,
+            "offsets_nm": [
+              27.999999929306796
+            ],
+            "neighbour_bracket_nm": [
+              25.99999993435631,
+              29.99999992425728
+            ]
+          }
+        },
+        {
+          "containment_percent": 94.0,
+          "one_based_rank": 14584,
+          "surface_diameter_nm": 2.9561623974467888,
+          "minimum": {
+            "value_nm": 2.8014765129987365,
+            "offsets_nm": [
+              19.999999949504854
+            ],
+            "neighbour_bracket_nm": [
+              17.99999995455437,
+              21.99999994445534
+            ]
+          }
+        },
+        {
+          "containment_percent": 94.5,
+          "one_based_rank": 14661,
+          "surface_diameter_nm": 2.9693651340987492,
+          "minimum": {
+            "value_nm": 2.892714906693657,
+            "offsets_nm": [
+              11.999999969702912
+            ],
+            "neighbour_bracket_nm": [
+              9.999999974752427,
+              13.999999964653398
+            ]
+          }
+        },
+        {
+          "containment_percent": 95.0,
+          "one_based_rank": 14739,
+          "surface_diameter_nm": 2.992877891873578,
+          "minimum": {
+            "value_nm": 2.992877891873578,
+            "offsets_nm": [
+              0.0
+            ],
+            "neighbour_bracket_nm": [
+              -0.25000008463393897,
+              0.25000008463393897
+            ]
+          }
+        },
+        {
+          "containment_percent": 95.5,
+          "one_based_rank": 14816,
+          "surface_diameter_nm": 3.2112523212310315,
+          "minimum": {
+            "value_nm": 3.0965587917131203,
+            "offsets_nm": [
+              -7.000000096013537
+            ],
+            "neighbour_bracket_nm": [
+              -7.2499999532738,
+              -6.750000011379598
+            ]
+          }
+        },
+        {
+          "containment_percent": 96.0,
+          "one_based_rank": 14894,
+          "surface_diameter_nm": 3.544849130154767,
+          "minimum": {
+            "value_nm": 3.2006188629431755,
+            "offsets_nm": [
+              -17.99999995455437
+            ],
+            "neighbour_bracket_nm": [
+              -19.999999949504854,
+              -15.999999959603883
+            ]
+          }
+        },
+        {
+          "containment_percent": 96.5,
+          "one_based_rank": 14972,
+          "surface_diameter_nm": 3.895535735322555,
+          "minimum": {
+            "value_nm": 3.318392600198406,
+            "offsets_nm": [
+              -29.99999992425728
+            ],
+            "neighbour_bracket_nm": [
+              -31.999999919207767,
+              -27.999999929306796
+            ]
+          }
+        },
+        {
+          "containment_percent": 97.0,
+          "one_based_rank": 15049,
+          "surface_diameter_nm": 4.3739638874921365,
+          "minimum": {
+            "value_nm": 3.4768344707018985,
+            "offsets_nm": [
+              -43.99999988891068
+            ],
+            "neighbour_bracket_nm": [
+              -46.00000011123484,
+              -41.999999893960194
+            ]
+          }
+        },
+        {
+          "containment_percent": 97.5,
+          "one_based_rank": 15127,
+          "surface_diameter_nm": 4.682218450187987,
+          "minimum": {
+            "value_nm": 3.576977879398759,
+            "offsets_nm": [
+              -52.000000096086296
+            ],
+            "neighbour_bracket_nm": [
+              -54.00000009103678,
+              -50.00000010113581
+            ]
+          }
+        },
+        {
+          "containment_percent": 98.0,
+          "one_based_rank": 15204,
+          "surface_diameter_nm": 5.204462628014847,
+          "minimum": {
+            "value_nm": 3.739615945601584,
+            "offsets_nm": [
+              -68.00000005569018
+            ],
+            "neighbour_bracket_nm": [
+              -70.00000005064066,
+              -66.0000000607397
+            ]
+          }
+        },
+        {
+          "containment_percent": 98.5,
+          "one_based_rank": 15282,
+          "surface_diameter_nm": 5.6133056720011,
+          "minimum": {
+            "value_nm": 3.883945096496706,
+            "offsets_nm": [
+              -82.00000002034358
+            ],
+            "neighbour_bracket_nm": [
+              -84.00000001529406,
+              -80.00000002539309
+            ]
+          }
+        },
+        {
+          "containment_percent": 99.0,
+          "one_based_rank": 15359,
+          "surface_diameter_nm": 6.196137867965558,
+          "minimum": {
+            "value_nm": 4.06402597521703,
+            "offsets_nm": [
+              -95.99999998499698
+            ],
+            "neighbour_bracket_nm": [
+              -97.99999997994746,
+              -93.99999999004649
+            ]
+          }
+        }
+      ],
+      "rms_native_minimum": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 1.1388491598848185,
+        "observed_minimum_planes_mm": [
+          1025.2000715000001
+        ],
+        "plateau_intervals_mm": [
+          [
+            1025.2000715000001,
+            1025.2000715000001
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1025.2000695000002,
+          1025.2000735000001
+        ],
+        "neighbour_bracket_offset_nm": [
+          72.00000004559115,
+          76.00000003549212
+        ],
+        "representative_offset_nm": 74.00000004054164,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "q95_boundary_unique_source_ids_near_10nm": 51,
+      "native_d95_reproduction_max_absolute_error_nm": 8.881784197001252e-16,
+      "interpretation": "Percentiles and fixed-centroid curves are diagnostic comparisons; native current-centred D95 and its original placement gate remain unchanged"
+    }
+  ]
+}

@@ -148,6 +148,18 @@ mixed-scan experiment, explicitly select 16,384 original particles, retain the
 edits keep the upper surface fixed and extend downstream. Do not reload another
 assembly or apply a C3 preset after loading the accepted C2 inputs.
 
+New planar FEG inputs use a nested Halton source with a fixed interpolated
+energy distribution. Increasing the original count keeps existing launch
+positions, directions, energies and boundaries unchanged. Compatible saved
+particle transport can retain the original trajectories and calculate only
+the added particles; numerical settings and physical dependencies are checked
+before reuse. Historical batch-calibrated sources retain their old schema.
+To start the nested source from such inputs, open **Physical Layout > Tip
+parameters**, choose **Use nested source sampling (new calculation)**, then
+apply and calculate. This is an explicit source-version change and preserves
+lens excitations and source parameters. See the
+[source-count diagnosis and reuse contract](docs/development/particle_source_growth_20261113/README.md).
+
 For CIF-dependent HAADF/BF/DF projected image workflows, **Finite-Field Optics**
 uses the shared finite-field particle executor. First run **Run high-accuracy once**
 with the current instrument settings. Then choose **Projected atoms (fast

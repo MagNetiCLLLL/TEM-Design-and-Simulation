@@ -1,0 +1,32 @@
+{
+  "schema": "completed-focus-worker-shutdown-v1",
+  "status": "PASS_NORMAL_EXIT",
+  "observed_utc": "2026-11-13T00:36:14.4137753Z",
+  "scope": "Stopped already idle completed-source workers using their documented JSON stop command. No new particle, field, or wave computation was started. Existing outputs and frozen workers were not edited.",
+  "command": {
+    "stop": true
+  },
+  "workers": [
+    {
+      "verified_program": "focus_runner.py",
+      "output_root": "outputs/two-condenser-mixed-stem-20261112/focus-trials",
+      "process_id": 18816,
+      "launcher_process_id": 53084,
+      "response": "CLOSED_GUN_CACHE_RELEASED",
+      "session_id": 16966,
+      "exit_code": 0
+    },
+    {
+      "verified_program": "focus_runner.py",
+      "output_root": "outputs/two-condenser-mixed-stem-20261112/focus-source-convergence",
+      "process_id": 55868,
+      "launcher_process_id": 46612,
+      "response": "CLOSED_GUN_CACHE_RELEASED",
+      "session_id": 57562,
+      "exit_code": 0
+    }
+  ],
+  "remaining_requested_processes": [],
+  "previous_32768_status": "USER_INTERRUPTED_NO_RESULT; stopped previously and not restarted",
+  "native_history_scope": "Original saved phase and displayed axial Gun histories remain on disk. Unsaved native accepted-time histories were not exported or reconstructed; idle Gun caches have now been released normally."
+}

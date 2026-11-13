@@ -58,6 +58,7 @@ def test_install_resets_to_flat_but_geometry_refresh_preserves_user_choice(gun_n
     assert_flat(gun)
     planar_key = gun._cache_key(49)
     curved = model_from_part(assembly.part("feg_tip").data)
+    gun.emitter.sampling = None
     gun.emitter.surface_model = curved
     assert gun._cache_key(49) != planar_key
     catalog.apply(state, selection, preserve_operating_parameters=True)
@@ -70,6 +71,7 @@ def test_install_resets_to_flat_but_geometry_refresh_preserves_user_choice(gun_n
 def test_saved_source_choice_is_not_replaced_by_new_defaults(curved):
     gun = FieldEmissionGun()
     if curved:
+        gun.emitter.sampling = None
         gun.emitter.surface_model = model_from_part(tip_part())
     payload = gun.to_dict()
     restored = field_emission_gun_from_dict(payload)
@@ -130,6 +132,7 @@ def test_main_window_uses_same_default_and_does_not_reset_it_on_reload(qtbot, tm
     window.preview_timer.stop()
     assert_flat(window.state.electron_gun)
     curved = model_from_part(window.state._resolved_assembly.part("feg_tip").data)
+    window.state.electron_gun.emitter.sampling = None
     window.state.electron_gun.emitter.surface_model = curved
     window.reload_toml_catalog()
     assert window.state.electron_gun.emitter.surface_model == curved

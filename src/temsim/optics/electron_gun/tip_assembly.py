@@ -4,6 +4,7 @@ Flat scalar fields are editable by the existing assembly/3D editor. The
 shared source definition is resolved before geometry and emission are applied.
 """
 import math
+from copy import copy
 from dataclasses import fields, replace
 from numbers import Real
 
@@ -113,10 +114,13 @@ def apply_tip_part(emitter, part, *, reset_source=False):
                         and emitter.coherence is None and emitter.curvature_nm_inv == 0):
         # Defaults apply on construction / explicit assembly reset only, not
         # during a geometry refresh or restoration of a saved source choice.
+        previous_source = copy(emitter)
         emitter.surface_model = model if default_tip_emission(part) == MODEL else None
         if reset_source:
             emitter.curvature_nm_inv = 0.0
         emitter.coherence = None
+        from .tip_edit import prepare_tip_model_sampling
+        prepare_tip_model_sampling(emitter, previous_source, reset_default=reset_source)
         emitter.tip_radius_nm = model.geometry.apex_radius_nm
         emitter.tip_cone_half_angle_deg = model.geometry.cone_half_angle_deg
         emitter.emitter_material = model.geometry.material

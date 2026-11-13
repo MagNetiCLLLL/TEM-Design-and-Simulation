@@ -523,6 +523,8 @@ def _unpack(value, arrays, types, depth=0, _records=None, _definitions=None):
             optional_legacy = {"unified_state"}
         if cls is types.get("FrozenIntrinsicAberrationKick"):
             optional_legacy = {"chromatic_reference_energy_ev"}
+        if cls is types.get("GunTraceResult"):
+            optional_legacy = {"emission_phase", "incremental_source", "transport_partitions"}
         if (not isinstance(value["fields"], dict)
                 or set(value["fields"]) - allowed
                 or allowed - set(value["fields"]) - optional_legacy):

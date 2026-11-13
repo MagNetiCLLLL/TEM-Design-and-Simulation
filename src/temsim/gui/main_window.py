@@ -315,7 +315,7 @@ class MainWindow(QMainWindow):
             Qt.DockWidgetArea.BottomDockWidgetArea,
         )
 
-        self.calculations = CalculationController(self)
+        self.calculations = CalculationController(self, displayed_particle_results=self._displayed_particle_results)
         self.calculations.startup_result_store = self.result_files.automatic_store
         self.calculations.pool.coordinator.register_retained(self, "_retained_job_roots")
         self._cache_settings = QSettings()
@@ -705,6 +705,10 @@ class MainWindow(QMainWindow):
         configure_sample_display_cache(budget_bytes=preferences.sample_display_cache_budget_bytes)
         INPUT_ASSETS.configure(preferences.input_asset_cache_budget_bytes)
         self.calculations.pool.coordinator.configure(ram_budget_bytes=preferences.job_ram_budget_bytes)
+
+    def _displayed_particle_results(self):
+        """Expose existing display references for guarded source-count growth."""
+        return (self.workspace._last_result, self.workspace._high_accuracy_result)
 
     def _retained_job_roots(self):
         workspace = getattr(self, "workspace", None)

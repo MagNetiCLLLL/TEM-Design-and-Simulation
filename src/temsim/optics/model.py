@@ -733,10 +733,32 @@ class State:
             return
         from temsim.column.module_assembly import apply_column_manifest_geometry
         from temsim.column.state_layout import layout_configuration_from_state
-        apply_column_manifest_geometry(
-            self,
-            layout_configuration_from_state(self),
-        )
+        # Reuse captured geometry for an unchanged gun, including archived
+        # definitions that differ from newer live catalog bytes. Only a real
+        # family/monochromator change may resolve a different gun module.
+        selected_assembly = getattr(self, "_resolved_assembly", None)
+        catalog_root = None
+        if selected_assembly is not None:
+            installed = {part.key for part in selected_assembly.parts}
+            required = {component.key for component in self.electron_gun.components}
+            captured_monochromator = "feg_monochromator_wien" in installed
+            if not required <= installed or captured_monochromator != self.monochromator_installed:
+                catalog_root = selected_assembly.root
+                # The downstream module chain is rigidly attached to the gun
+                # exit port. Preserve the foil's placement within that chain
+                # when explicit replacement hardware changes its origin;
+                # fixed-entrance thickness edits still retain their own anchor.
+                captured_gun = next(module for module in selected_assembly.modules if module.type == "gun")
+                old_exit = float(captured_gun.exit_z_mm-captured_gun.entrance_z_mm)
+                delta = float(self.electron_gun.exit_plane_z_mm)-old_exit
+                if delta != 0.:
+                    self.sample.z_mm = float(self.sample.z_mm)+delta
+        from temsim import input_io
+        with input_io.input_scope(self):
+            apply_column_manifest_geometry(
+                self,
+                layout_configuration_from_state(self, assembly_root=catalog_root),
+            )
 
     @staticmethod
     def _translate_component_from_tip(component, delta_mm):

@@ -1,0 +1,69 @@
+{
+  "scope": "Read-only fixed-source integration-step comparison; no new physics",
+  "source_and_emission_arrays_bitwise_equal": {
+    "weights": true,
+    "source_id": true,
+    "source_azimuth_rad": true,
+    "gun_exit_alive": true,
+    "gun_exit_x_m": true,
+    "gun_exit_y_m": true,
+    "gun_exit_tx_rad": true,
+    "gun_exit_ty_rad": true,
+    "gun_exit_flight_time_s": true,
+    "emission_ray_id": true,
+    "emission_position_m": true,
+    "emission_direction": true,
+    "emission_normal": true
+  },
+  "gun_signature_equal": true,
+  "all_original_source_sha256_equal": true,
+  "controls_equal": true,
+  "same_upper_surface": true,
+  "checkpoint_population_budget": [
+    16384,
+    16384
+  ],
+  "saved_checkpoint_rows": [
+    2212,
+    2212
+  ],
+  "all_saved_checkpoint_planes_bitwise_equal": true,
+  "actual_integration_nodes": [
+    13730,
+    25234
+  ],
+  "actual_maximum_step_mm": [
+    0.04999566688411505,
+    0.024998919879180903
+  ],
+  "integration_mesh_bitwise_equal": false,
+  "surface_d95_difference_nm": -8.14958740313898e-06,
+  "surface_d95_relative_change_percent": -0.00027229936193640114,
+  "surface_rms_difference_nm": -1.685932489170483e-06,
+  "surface_alpha95_difference_mrad": 5.688978177431636e-10,
+  "toml_value_differences": [
+    {
+      "path": [
+        "devices",
+        "simulation",
+        "step_mm"
+      ],
+      "before": 0.05,
+      "after": 0.025
+    }
+  ],
+  "snapshot_graph_differences": [
+    {
+      "path": [
+        "nodes",
+        0,
+        "attributes",
+        "step_mm"
+      ],
+      "before": 0.05,
+      "after": 0.025
+    }
+  ],
+  "all_source_arrays_equal": true,
+  "native_d95_max_abs_step_difference_nm": 1.6325598995337032e-05
+}

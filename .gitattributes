@@ -21,6 +21,9 @@ docs/development/two_condenser_nanoprobe_20261112/** -text whitespace=-blank-at-
 docs/development/two_condenser_nanoprobe_20261112/*.svg -whitespace
 docs/development/two_condenser_10mrad_20261112/** -text whitespace=-blank-at-eof,blank-at-eol,space-before-tab,cr-at-eol
 docs/development/two_condenser_10mrad_20261112/*.svg -whitespace
+
+# Preserve source-growth diagnosis arrays, original input bytes and receipts.
+docs/development/particle_source_growth_20261113/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
 scripts/optimize_joint_probe.py -text
 scripts/report_joint_probe.py -text
 tests/test_joint_probe_search.py -text

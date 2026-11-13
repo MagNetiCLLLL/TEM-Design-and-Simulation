@@ -9,6 +9,7 @@ from temsim.gui.calculation_request import CapturedCalculationRequest, apply_req
 from temsim.optics.column import default_state
 from temsim.optics.electron_gun.emitter import (
     ColdFieldEmitter, EmissionCDFQuadrature, EmissionQuadrature, EmissionSampling,
+    HALTON_PREFIX_SAMPLING_SCHEMA,
 )
 from temsim.optics.electron_gun.tip_coherence import DRIVEN_GAUSSIAN_SCHELL, TipCoherence
 from temsim.physics.optical_tuning import (
@@ -141,6 +142,17 @@ def test_sobol_preview_uses_complete_population_without_support_probes(quality):
 
 
 @pytest.mark.parametrize("quality", ("Preview", "Medium"))
+def test_nested_halton_keeps_an_explicit_non_power_of_two_budget(quality):
+    emitter = ColdFieldEmitter(0., 1., 1., ray_count=1500)
+    emitter.sampling = EmissionSampling(schema=HALTON_PREFIX_SAMPLING_SCHEMA)
+    state = source_state(emitter)
+    assert resolve_tuning_ray_count(state, quality, 1500) == 1500
+    assert resolve_tuning_ray_count(state, quality, 1000) == DEFAULT_TUNING_SOURCE_PARTICLES
+    prepare_tuning_snapshot(state, quality, particle_signals=True)
+    assert emitter.ray_count == 1500
+
+
+@pytest.mark.parametrize("quality", ("Preview", "Medium"))
 def test_worker_preparation_enforces_budget_without_a_request_wrapper(quality):
     emitter = ColdFieldEmitter(0., 1., 1., ray_count=49)
     state = source_state(emitter)
@@ -154,6 +166,7 @@ def test_captured_gui_request_preserves_the_complete_cdf_and_live_source(quality
     state.acceleration_backend = "CPU"
     state.acceleration_enabled = False
     emitter = state.electron_gun.emitter
+    emitter.sampling = None  # This fixture explicitly selects a captured CDF source.
     emitter.cdf_quadrature = explicit_source().cdf_quadrature
     emitter.ray_count = emitter.cdf_quadrature.total
     original = emitter.cdf_quadrature

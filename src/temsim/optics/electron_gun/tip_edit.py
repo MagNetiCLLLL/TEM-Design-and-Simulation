@@ -2,6 +2,27 @@
 from copy import copy
 
 
+def prepare_tip_model_sampling(emitter, previous, *, explicit_sampling=False, reset_default=False):
+    """Switch only the default sampling plan during an explicit model edit.
+
+    Historical planar records retain their sampling on ordinary edits. Explicit
+    tables and Sobol plans remain subject to the normal mutual-exclusion checks.
+    """
+    from .emitter import EmissionSampling, HALTON_PREFIX_SAMPLING_SCHEMA
+
+    if explicit_sampling:
+        return
+    plan = emitter.sampling
+    other_model = emitter.surface_model is not None or emitter.coherence is not None
+    previous_other_model = previous.surface_model is not None or previous.coherence is not None
+    if other_model and (reset_default or not previous_other_model):
+        if plan is not None and plan.schema == HALTON_PREFIX_SAMPLING_SCHEMA:
+            emitter.sampling = None
+    elif not other_model and (reset_default or previous_other_model):
+        if plan is None and emitter.quadrature is None and emitter.cdf_quadrature is None:
+            emitter.sampling = EmissionSampling(schema=HALTON_PREFIX_SAMPLING_SCHEMA, seed=0)
+
+
 def candidate_tip_edit(gun, values):
     """Validate the entire gun before publishing a source/model change."""
     if gun.type_key != "cold_feg":
@@ -9,11 +30,14 @@ def candidate_tip_edit(gun, values):
     candidate = copy(gun)
     candidate.emitter = copy(gun.emitter)
     candidate.c1_aperture = copy(gun.c1_aperture)
-    allowed = set(gun.emitter.__dataclass_fields__) | {"coherence", "surface_model", "curvature_nm_inv", "curvature_model"}
+    allowed = set(gun.emitter.__dataclass_fields__) | {
+        "coherence", "surface_model", "curvature_nm_inv", "curvature_model",
+        "sampling", "quadrature", "cdf_quadrature"}
     if set(values) - allowed:
         raise ValueError("Only tip emission inputs may be edited here")
     for name, value in values.items():
         setattr(candidate.emitter, name, value)
+    prepare_tip_model_sampling(candidate.emitter, gun.emitter, explicit_sampling="sampling" in values)
     candidate.source_representation = "classical_particles"
     candidate._trace_cache = candidate._trace_cache_key = None
     candidate.validate()

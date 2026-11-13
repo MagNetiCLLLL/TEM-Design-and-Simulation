@@ -1,0 +1,36 @@
+{
+  "scope": "Static true Objective pole-body geometry only; no particle/wave/FEM calculation",
+  "input_digest": "75a0da1549697847e79746b79eb22e30b124ab2aa7303a80fc9ecc236452878e",
+  "implementation": "b2900cf7e79501458a6c463558ef134002bce351694617833ca8d65a111871e8",
+  "trials": [
+    {
+      "label": "upper-only-plus25",
+      "geometry_changes": [
+        [
+          "column",
+          "objective_upper_pole",
+          "mechanical_bore_diameter_mm",
+          7.2
+        ]
+      ],
+      "status": "REJECTED_BY_EXISTING_GEOMETRY_VALIDATION",
+      "error_type": "ValueError",
+      "error": "The symmetric objective pole pieces must match in mechanical_bore_diameter_mm"
+    },
+    {
+      "label": "lower-only-plus25",
+      "geometry_changes": [
+        [
+          "column",
+          "objective_lower_pole",
+          "mechanical_bore_diameter_mm",
+          7.2
+        ]
+      ],
+      "status": "REJECTED_BY_EXISTING_GEOMETRY_VALIDATION",
+      "error_type": "ValueError",
+      "error": "The symmetric objective pole pieces must match in mechanical_bore_diameter_mm"
+    }
+  ],
+  "original_snapshot_unchanged": true
+}

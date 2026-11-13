@@ -17,6 +17,7 @@ from temsim.physics.grounded_tip_field import field_request
 
 def surface_gun(reference="extractor", monochromator=False):
     gun = FieldEmissionGun()
+    gun.emitter.sampling = None  # Explicit alternative family, not the flat default.
     if monochromator:
         gun.install_monochromator()
     gun.emitter.surface_model = model_from_part(module_manifest.part_data("gun/FEG.toml", "feg_tip"))

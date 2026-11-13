@@ -1,0 +1,187 @@
+{
+  "scope": "Independent read-only covariance calculation on every saved native Z row and the fixed actual upper-surface survivor cohort; no propagation or interpolation",
+  "original_positive_count": 16384,
+  "surface_survivor_count": 15514,
+  "source_ids_sha256": "b016ba77308506a239e6647b6bf1a617abc5940fa08d2e2691b52b156ebc7a69",
+  "intervals": {
+    "gun exit to C1": {
+      "original_surface_survivor_cohort_stable": true,
+      "maximum_actual_gap_mm": 1.0,
+      "spacing_within_original_bound": true,
+      "radial_trace_transitions": [
+        {
+          "left_mm": 488.0,
+          "right_mm": 489.0,
+          "before": 1,
+          "after": -1
+        }
+      ],
+      "negative_to_positive_radial_count": 0,
+      "reported_region_count": 0,
+      "reported_region_independent_matrix_checks": [],
+      "original_report_status": "RESOLVED_AT_BOUNDED_SAMPLING"
+    },
+    "C1 to C2": {
+      "original_surface_survivor_cohort_stable": true,
+      "maximum_actual_gap_mm": 0.5,
+      "spacing_within_original_bound": true,
+      "radial_trace_transitions": [
+        {
+          "left_mm": 503.0,
+          "right_mm": 503.5,
+          "before": -1,
+          "after": 1
+        },
+        {
+          "left_mm": 645.0,
+          "right_mm": 645.5,
+          "before": 1,
+          "after": -1
+        }
+      ],
+      "negative_to_positive_radial_count": 1,
+      "reported_region_count": 1,
+      "reported_region_independent_matrix_checks": [
+        {
+          "representative_z_mm": 503.0,
+          "bracket_mm": [
+            502.5,
+            503.5
+          ],
+          "position_covariance_max_abs_difference_m2": 5.32481111024183e-30,
+          "symmetric_position_slope_covariance_max_abs_difference_m_rad": 4.8467614016778965e-27,
+          "left_negative_definite": true,
+          "right_positive_definite": true,
+          "all_direction_growth_eigenvalues_m2": [
+            [
+              9.079971780672108e-16,
+              9.091625857799329e-16
+            ],
+            [
+              2.7646992517540283e-16,
+              2.76824397709985e-16
+            ]
+          ],
+          "exactly_one_converging_to_diverging_transition_per_direction": true,
+          "passed": true
+        }
+      ],
+      "original_report_status": "RESOLVED_AT_BOUNDED_SAMPLING"
+    },
+    "C2 to Mini": {
+      "original_surface_survivor_cohort_stable": true,
+      "maximum_actual_gap_mm": 0.9983277591974229,
+      "spacing_within_original_bound": true,
+      "radial_trace_transitions": [
+        {
+          "left_mm": 687.9364548494983,
+          "right_mm": 688.9347826086956,
+          "before": -1,
+          "after": 1
+        }
+      ],
+      "negative_to_positive_radial_count": 1,
+      "reported_region_count": 1,
+      "reported_region_independent_matrix_checks": [
+        {
+          "representative_z_mm": 687.9364548494983,
+          "bracket_mm": [
+            686.938127090301,
+            688.9347826086956
+          ],
+          "position_covariance_max_abs_difference_m2": 3.155443620884047e-28,
+          "symmetric_position_slope_covariance_max_abs_difference_m_rad": 1.4217166778255163e-25,
+          "left_negative_definite": true,
+          "right_positive_definite": true,
+          "all_direction_growth_eigenvalues_m2": [
+            [
+              4.795878827773823e-14,
+              4.802025564512774e-14
+            ],
+            [
+              5.533357537573202e-15,
+              5.5404557122575764e-15
+            ]
+          ],
+          "exactly_one_converging_to_diverging_transition_per_direction": true,
+          "passed": true
+        }
+      ],
+      "original_report_status": "RESOLVED_AT_BOUNDED_SAMPLING"
+    },
+    "Mini to surface": {
+      "original_surface_survivor_cohort_stable": true,
+      "maximum_actual_gap_mm": 0.19958957682274558,
+      "spacing_within_original_bound": true,
+      "radial_trace_transitions": [
+        {
+          "left_mm": 995.6385401302084,
+          "right_mm": 995.8084468403173,
+          "before": 1,
+          "after": -1
+        }
+      ],
+      "negative_to_positive_radial_count": 0,
+      "reported_region_count": 0,
+      "reported_region_independent_matrix_checks": [],
+      "original_report_status": "RESOLVED_AT_BOUNDED_SAMPLING"
+    },
+    "Final combined field through focus": {
+      "original_surface_survivor_cohort_stable": true,
+      "maximum_actual_gap_mm": 0.19994354190271224,
+      "spacing_within_original_bound": true,
+      "radial_trace_transitions": [
+        {
+          "left_mm": 995.6385401302084,
+          "right_mm": 995.8084468403173,
+          "before": 1,
+          "after": -1
+        },
+        {
+          "left_mm": 1025.2000715000001,
+          "right_mm": 1025.2000735000001,
+          "before": -1,
+          "after": 1
+        }
+      ],
+      "negative_to_positive_radial_count": 1,
+      "reported_region_count": 1,
+      "reported_region_independent_matrix_checks": [
+        {
+          "representative_z_mm": 1025.2000715000001,
+          "bracket_mm": [
+            1025.2000695000002,
+            1025.2000755000001
+          ],
+          "position_covariance_max_abs_difference_m2": 2.9851914138002156e-33,
+          "symmetric_position_slope_covariance_max_abs_difference_m_rad": 1.262177448353619e-28,
+          "left_negative_definite": true,
+          "right_positive_definite": true,
+          "all_direction_growth_eigenvalues_m2": [
+            [
+              1.0131895364127751e-22,
+              1.764995536144983e-22
+            ],
+            [
+              6.40723180075292e-23,
+              2.1493301560744653e-22
+            ]
+          ],
+          "exactly_one_converging_to_diverging_transition_per_direction": true,
+          "passed": true
+        }
+      ],
+      "original_report_status": "RESOLVED_AT_BOUNDED_SAMPLING"
+    }
+  },
+  "all_cohort_C2_to_Mini_unresolved_population_change": [
+    {
+      "reason": "insufficient_stable_segment",
+      "bounds_mm": [
+        765.0,
+        765.0
+      ]
+    }
+  ],
+  "passed": true
+}

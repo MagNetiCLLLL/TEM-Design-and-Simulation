@@ -1,0 +1,118 @@
+{
+  "status": "PASS",
+  "created_utc": "2026-11-13T00:38:13.359683+00:00",
+  "implementation": "96833cd5c1ad552f857c2ec356a8fcc132ff9a9b676bed80ff928cca4fc49b35",
+  "unique_software_test_cases": 343,
+  "suites": [
+    {
+      "file": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\final-source-growth-core-tests.xml",
+      "tests": 231,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "elapsed_s": 71.725
+    },
+    {
+      "file": "F:\\tem_simulator_v2\\outputs\\nested-source-gui-final-frozen.xml",
+      "tests": 111,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "elapsed_s": 132.933
+    },
+    {
+      "file": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\final-factory-packaging-tests.xml",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "elapsed_s": 1.793
+    }
+  ],
+  "installed_package": {
+    "scope": "Installed configuration, data and source-map diagnostics only; no emission, Gun, column or wave calculation",
+    "working_directory": "C:\\Users\\54019\\AppData\\Local\\Temp\\temsim-source-growth-wheel-e1gfoy7h\\foreign-cwd",
+    "installed_root": "C:\\Users\\54019\\AppData\\Local\\Temp\\temsim-source-growth-wheel-e1gfoy7h\\installed",
+    "module": "C:\\Users\\54019\\AppData\\Local\\Temp\\temsim-source-growth-wheel-e1gfoy7h\\installed\\Lib\\site-packages\\temsim\\__init__.py",
+    "Si_CIF": "C:\\Users\\54019\\AppData\\Local\\Temp\\temsim-source-growth-wheel-e1gfoy7h\\installed\\configs\\specimens\\Si.cif",
+    "Si_atoms": 8,
+    "source_sampling": "tip-halton-prefix-cdf512-v1",
+    "source_parameters_energy_width_ev": 0.3,
+    "source_diagnostics": {
+      "seed": 0,
+      "schema": "tip-halton-prefix-cdf512-v1",
+      "dimensions": 6,
+      "halton_bases": [
+        2,
+        3,
+        5,
+        7,
+        11,
+        13
+      ],
+      "halton_first_index": 18,
+      "particle_id_to_halton_index": "ray_id + 18",
+      "antithetic_pair_size": 1,
+      "weights": "Original quadrature probability 1/N; no transmitted-current restoration",
+      "refinement": "Append CDF samples using the same inverse marginal maps; no propagated-trajectory interpolation",
+      "prefix_invariants": [
+        "local position",
+        "local direction",
+        "energy",
+        "source-surface position and normal",
+        "common emission epoch"
+      ],
+      "energy_calibration": {
+        "schema": "legacy-continuous-young-logistic-cdf512-v1",
+        "mean_ev": 0.3,
+        "lower_ev": 0.01,
+        "upper_ev": 1.3,
+        "target_std_ev": 0.12739827004487725,
+        "decay_ev": 0.2,
+        "boersch_ev": 0.1,
+        "half_range_ev": 1.0,
+        "shape_mean_ev": 7.362747588661456e-06,
+        "shape_std_ev": 0.12733334239422656,
+        "location": -1.3689189242945765,
+        "scale": 0.7321666793613337,
+        "cdf_order": 512,
+        "integral_mean_residual_ev": -6.938893903907228e-18,
+        "integral_std_residual_ev": 0.0
+      },
+      "energy_interpolation": {
+        "schema": "fixed-young-logistic-energy-linear-table-v1",
+        "method": "np.interp piecewise linear monotone shape-to-kinetic-energy map",
+        "table_inputs": "Physical energy parameters only; independent of ray count, sampled extrema, seed, or transmitted particles",
+        "shape_interval_ev": [
+          -1.0,
+          1.0
+        ],
+        "kinetic_energy_bounds_ev": [
+          0.01,
+          1.3
+        ],
+        "table_nodes": 262145,
+        "table_sha256": "0bd104a9386624f8b8b6fb9aab74f7266fee7bc7b2cd2cd079f7e4a1179ccd37",
+        "maximum_requested_interpolation_error_ev": 1e-10,
+        "analytic_piecewise_linear_error_bound_ev": 2.986095105282536e-11,
+        "binary64_evaluation_roundoff_allowance_ev": 1.8474111129762605e-14,
+        "analytic_bound_plus_roundoff_allowance_ev": 2.987942516395512e-11,
+        "independent_midpoint_maximum_error_ev": 2.9861224604132985e-11,
+        "bound_scope": "Exact logistic second-derivative interpolation bound; separate binary64 evaluation roundoff is checked at table midpoints",
+        "cdf_tail_policy": "Retain the existing fixed Young 1e-15 and logistic 1e-12 endpoint clipping, followed by fixed symmetric shape bounds; no sample-dependent tail fitting"
+      },
+      "energy_width_definition": "Configured FWHM is the existing RMS-equivalent width, 2.354820045 times continuous-law standard deviation",
+      "energy_moment_scope": "The fixed continuous CDF law is calibrated once per physical parameter set; finite-N moments are observed and are never fitted or renormalized",
+      "legacy_scope": "An absent sampling record retains legacy batch-dependent energy calibration; it is not relabelled as this schema"
+    },
+    "implementation": "96833cd5c1ad552f857c2ec356a8fcc132ff9a9b676bed80ff928cca4fc49b35",
+    "wheel": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\wheel\\tem_design_simulation-0.1.0-py3-none-any.whl",
+    "wheel_sha256": "54205c8e2e3214bf5f853dce01fa22aaf047e83d74417b6b44f398d26af5c476",
+    "exit_code": 0
+  },
+  "optical_configuration_files_changed": false,
+  "new_physical_source_or_column_validation": "NOT_RUN; user stopped source-count growth",
+  "new_CUDA_coherent_scan": "NOT_RUN; focus/field/source work took priority",
+  "historical_32768": "USER_INTERRUPTED_NO_RESULT",
+  "scope": "Source arrays, mocked transport, static geometry/configuration, Qt state transitions, numeric persistence and installed-data checks; no new probe qualification"
+}

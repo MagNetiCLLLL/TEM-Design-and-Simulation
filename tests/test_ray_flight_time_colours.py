@@ -95,6 +95,48 @@ def test_turning_tip_prefix_uses_temporal_order_including_repeated_z(workspace):
     assert np.all(np.isnan(path_times(workspace, downstream, 0, z[:4])))
 
 
+def test_incremental_gun_partitions_keep_native_prefix_geometry_and_clocks(workspace):
+    result = timed_result()
+    branch = result.simulation.incident
+    branch.flight_time_s = None
+    result.simulation.branches = {}
+
+    def native(z, times, count):
+        return SimpleNamespace(
+            z_mm=np.tile(np.asarray(z)[:, None], (1, count)),
+            x_m=np.arange(len(z)*count, dtype=float).reshape(len(z), count)*1e-6,
+            y_m=np.arange(len(z)*count, dtype=float).reshape(len(z), count)*2e-6,
+            time_s=np.asarray(times), alive=np.ones((len(z), count), dtype=bool),
+            completed=np.zeros((len(z), count), dtype=bool))
+
+    old = native([-.3, -.1, .1], [0., 1e-10, 2e-10], 1)
+    added = native([-.4, -.25, -.3, -.05, .1], [0., 2e-10, 3e-10, 4e-10, 5e-10], 2)
+    original_arrays = [(array, array.copy()) for history in (old, added)
+                       for array in vars(history).values()]
+    result.simulation.gun_trace = SimpleNamespace(equal_time_history=None,
+        exit_bundle=SimpleNamespace(ray_id=np.arange(3)), transport_partitions=(
+        SimpleNamespace(equal_time_history=old, exit_bundle=SimpleNamespace(ray_id=np.arange(1))),
+        SimpleNamespace(equal_time_history=added, exit_bundle=SimpleNamespace(ray_id=np.arange(1, 3)))))
+    workspace._last_result = result
+
+    for index, expected_z, expected_t, history, local in (
+            (0, [-.3, -.1], [0., 1e-10], old, 0),
+            (1, [-.4, -.25, -.3, -.05], [0., 2e-10, 3e-10, 4e-10], added, 0),
+            (2, [-.4, -.25, -.3, -.05], [0., 2e-10, 3e-10, 4e-10], added, 1)):
+        z, projected = workspace._display_bundle_lines(branch, np.array([index]))
+        np.testing.assert_array_equal(z[:len(expected_z)], expected_z)
+        np.testing.assert_array_equal(path_times(workspace, branch, index, z)[:len(expected_t)], expected_t)
+        expected_geometry = workspace._project_transverse(
+            history.x_m[:len(expected_z), local], history.y_m[:len(expected_z), local])*1e3
+        np.testing.assert_array_equal(projected[:len(expected_z)], expected_geometry)
+    hits = workspace.ray_display_cache_info()["hits"]
+    workspace._display_bundle_lines(branch, np.array([2]))
+    assert workspace.ray_display_cache_info()["hits"] == hits + 1
+    assert FlightTimeColourScale.from_result(result).maximum_s == 5e-10
+    for original, before in original_arrays:
+        np.testing.assert_array_equal(original, before)
+
+
 def test_scale_includes_full_population_but_excludes_uncalculated_stopped_tail():
     result = timed_result()
     branch = result.simulation.incident

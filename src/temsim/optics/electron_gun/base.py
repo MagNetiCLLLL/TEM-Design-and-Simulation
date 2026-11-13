@@ -160,6 +160,13 @@ class GunTraceResult:
     flight_time_s: np.ndarray | None = None
     # Executed electrode geometry, numerical scope and energy verification.
     electrostatic_model_report: dict | None = None
+    # Exact pre-field arrays and explicit append-only transport provenance.
+    # Historical traces omit these and cannot seed count extension.
+    emission_phase: dict | None = None
+    incremental_source: dict | None = None
+    # Native histories retain their own adaptive time meshes. Never resample
+    # completed histories onto a new population's equal-time integration grid.
+    transport_partitions: tuple[GunTraceResult, ...] = ()
 
     def equal_time_front_at_plane(self, key: str) -> GunEqualTimeFront:
         """Sample the beam when the median ray reaches an important plane."""
@@ -170,13 +177,46 @@ class GunTraceResult:
         )
         if plane is None:
             raise KeyError(f"Unknown gun timing plane: {key}")
-        if self.equal_time_history is None:
+        if self.equal_time_history is None and not self.transport_partitions:
             raise ValueError("Electron-gun equal-time history is unavailable")
         valid = plane.reached & np.isfinite(plane.time_s)
         if not np.any(valid):
             raise ValueError(f"No rays reached gun timing plane: {key}")
         reference_time = float(np.median(plane.time_s[valid]))
-        return self.equal_time_history.sample(reference_time)
+        return self.equal_time_front_at_time(reference_time)
+
+    def equal_time_front_at_time(self, time_s: float) -> GunEqualTimeFront:
+        """Observe native partitions at one time without replacing histories."""
+        if not self.transport_partitions:
+            if self.equal_time_history is None:
+                raise ValueError("Electron-gun equal-time history is unavailable")
+            return self.equal_time_history.sample(time_s)
+        fronts = tuple(part.equal_time_front_at_time(time_s)
+                       for part in self.transport_partitions)
+        return GunEqualTimeFront(float(time_s), **{
+            name: np.concatenate([getattr(front, name) for front in fronts])
+            for name in ("z_mm", "x_m", "y_m", "tx_rad", "ty_rad", "alive", "completed")})
+
+
+def iter_native_histories(trace):
+    """Yield native (history, first ray index) without synthesizing a mesh."""
+    offset = 0
+    for part in getattr(trace, "transport_partitions", ()):
+        for history, local_offset in iter_native_histories(part):
+            yield history, offset + local_offset
+        offset += len(part.exit_bundle.ray_id)
+    if not getattr(trace, "transport_partitions", ()):
+        history = getattr(trace, "equal_time_history", None)
+        if history is not None:
+            yield history, 0
+
+
+def native_history_for_ray(trace, index):
+    """Return the original history and local column for one original ray."""
+    for history, offset in iter_native_histories(trace):
+        if offset <= index < offset + history.x_m.shape[1]:
+            return history, index - offset
+    return None, index
 
 
 @runtime_checkable

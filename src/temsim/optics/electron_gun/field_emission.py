@@ -116,6 +116,15 @@ def _create_emitter():
     emitter._tip_reference_file = str(part.get("tip_surface_reference_file", "sources/cold_feg_tip.toml"))
     from temsim.optics.electron_gun.tip_assembly import apply_tip_part
     apply_tip_part(emitter, part)
+    if (emitter.surface_model is None and emitter.coherence is None
+            and emitter.quadrature is None and emitter.cdf_quadrature is None):
+        from temsim.optics.electron_gun.emitter import (
+            EmissionSampling, HALTON_PREFIX_SAMPLING_SCHEMA,
+        )
+        # New planar sources use a count-independent interpolated energy law.
+        # Explicit historical component records restore their own sampling
+        # value, including None for the original batch-calibrated law.
+        emitter.sampling = EmissionSampling(schema=HALTON_PREFIX_SAMPLING_SCHEMA, seed=0)
     return emitter
 
 

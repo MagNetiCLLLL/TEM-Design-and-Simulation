@@ -835,6 +835,8 @@ class ArtifactStore:
             value = getattr(incident, field, None)
             if value is not None:
                 arrays[f"incident.{field}"] = value
+        from temsim.gun_trace_extensions_io import pack_gun_extensions
+        gun_incremental_state = pack_gun_extensions(gun_trace, arrays)
         return self.put_array_bundle(
             manifest,
             product_key="incident",
@@ -848,6 +850,7 @@ class ArtifactStore:
                 "flight_time_reference": "laboratory seconds since simultaneous tip emission",
                 "gun_plane_arrivals": arrivals,
                 "gun_electrostatic_model_report": gun_trace.electrostatic_model_report,
+                "gun_incremental_state": gun_incremental_state,
                 "plan_solver_signature": str(plan.solver_signature),
                 "plan_reference_momentum_kg_m_s": plan.reference_momentum_kg_m_s,
                 "plan_electric_field_identity": plan.electric_field_identity,
@@ -1031,6 +1034,8 @@ class ArtifactStore:
                 flight_time_s=arrays.get("gun_exit.flight_time_s"),
             )
             gun_scalars = dict(metadata["gun_scalars"])
+            from temsim.gun_trace_extensions_io import unpack_gun_extensions
+            gun_extensions = unpack_gun_extensions(metadata.get("gun_incremental_state"), arrays)
             gun_trace = GunTraceResult(
                 **fields("gun", _GUN_TRACE_ARRAY_FIELDS),
                 exit_bundle=exit_bundle,
@@ -1045,6 +1050,7 @@ class ArtifactStore:
                                     if "gun_time_history.time_s" in arrays else None),
                 emission_reference=(fields("emission", ("ray_id", "position_m", "direction", "normal"))
                                     if "emission.ray_id" in arrays else None),
+                **gun_extensions,
             )
             incident_arrays = fields(
                 "incident",

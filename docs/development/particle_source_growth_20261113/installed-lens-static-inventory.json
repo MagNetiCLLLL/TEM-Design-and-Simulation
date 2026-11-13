@@ -1,0 +1,967 @@
+{
+  "scope": "Read-only installed C2 lenses from frozen focus preparation, no source or propagation",
+  "source_directory": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-preparation-frozen",
+  "installed_lens_count": 8,
+  "records": [
+    {
+      "key": "condenser_lens_1",
+      "z_mm": 500.0,
+      "mechanical_interval_mm": [
+        450.0,
+        550.0
+      ],
+      "excitation_percent": 52.5,
+      "polarity": 1,
+      "nominal_bore_mm": {
+        "bore_diameter_mm": 20.0,
+        "vacuum_inner_diameter_mm": 20
+      },
+      "field": {
+        "single": {
+          "center_mm": 500.0,
+          "b0_coefficient_t": 1.7748239349298847,
+          "a_mm": 7.142857142857143,
+          "terms": [
+            {
+              "amplitude": 0.09,
+              "offset": -1.0,
+              "sigma": 0.9
+            },
+            {
+              "amplitude": 0.82,
+              "offset": 0.0,
+              "sigma": 0.55
+            },
+            {
+              "amplitude": 0.09,
+              "offset": 1.0,
+              "sigma": 0.9
+            }
+          ],
+          "normalise_profile_peak": true,
+          "profile_divisor": 0.9170933513027727,
+          "native_support_mm": [
+            447.85714285714283,
+            552.1428571428571
+          ],
+          "excited_coefficient_t": 0.9317825658381895,
+          "individual_on_axis_peak_T": 0.9317825658381895,
+          "static_axial_display_ranges": {
+            "on_axis_absolute_peak_t": 0.9317825658381895,
+            "peak_z_mm": 500.0,
+            "one_percent_peak_interval_mm": [
+              479.1157260588605,
+              520.8842739411396
+            ],
+            "half_maximum_interval_mm": [
+              494.94465690646496,
+              505.05534309353504
+            ],
+            "fwhm_mm": 10.110686187070087
+          }
+        }
+      },
+      "pole_geometry": {
+        "condenser_lens_1_lower_pole": {
+          "interval_mm": [
+            490.0,
+            540.0
+          ],
+          "center_mm": 515.0,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 5.76,
+            "mechanical_outer_diameter_mm": 60.0,
+            "mechanical_tip_diameter_mm": 40,
+            "mechanical_bore_diameter_mm": 19.2,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        }
+      },
+      "actual_on_axis_peak_T": 0.9317825658381895,
+      "actual_on_axis_peak_z_mm": 500.0,
+      "native_support_mm": [
+        447.85714285714283,
+        552.1428571428571
+      ],
+      "static_axial_display_ranges": {
+        "on_axis_absolute_peak_t": 0.9317825658381895,
+        "peak_z_mm": 500.0,
+        "one_percent_peak_interval_mm": [
+          479.1157260588605,
+          520.8842739411396
+        ],
+        "half_maximum_interval_mm": [
+          494.94465690646496,
+          505.05534309353504
+        ],
+        "fwhm_mm": 10.110686187070087
+      },
+      "coil_geometry": {
+        "condenser_lens_1_excitation_coil": {
+          "center_mm": 500.0,
+          "inner_diameter_mm": 96.0,
+          "outer_diameter_mm": 156.0
+        }
+      }
+    },
+    {
+      "key": "condenser_lens_2",
+      "z_mm": 650.0,
+      "mechanical_interval_mm": [
+        550.0,
+        750.0
+      ],
+      "excitation_percent": 17.75,
+      "polarity": 1,
+      "nominal_bore_mm": {
+        "bore_diameter_mm": 20,
+        "vacuum_inner_diameter_mm": 20
+      },
+      "field": {
+        "single": {
+          "center_mm": 650.0,
+          "b0_coefficient_t": 1.3416407864998738,
+          "a_mm": 12.5,
+          "terms": [
+            {
+              "amplitude": 0.09,
+              "offset": -1.0,
+              "sigma": 0.9
+            },
+            {
+              "amplitude": 0.82,
+              "offset": 0.0,
+              "sigma": 0.55
+            },
+            {
+              "amplitude": 0.09,
+              "offset": 1.0,
+              "sigma": 0.9
+            }
+          ],
+          "normalise_profile_peak": false,
+          "profile_divisor": 1.0,
+          "native_support_mm": [
+            558.75,
+            741.25
+          ],
+          "excited_coefficient_t": 0.2381412396037276,
+          "individual_on_axis_peak_T": 0.21839774751157912,
+          "static_axial_display_ranges": {
+            "on_axis_absolute_peak_t": 0.21839774751157912,
+            "peak_z_mm": 650.0,
+            "one_percent_peak_interval_mm": [
+              613.4525206030058,
+              686.5474793969942
+            ],
+            "half_maximum_interval_mm": [
+              641.1531495863137,
+              658.8468504136863
+            ],
+            "fwhm_mm": 17.693700827372595
+          }
+        }
+      },
+      "pole_geometry": {
+        "condenser_lens_2_upper_pole": {
+          "interval_mm": [
+            560.0,
+            620.0
+          ],
+          "center_mm": 590.0,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 5.76,
+            "mechanical_outer_diameter_mm": 60.0,
+            "mechanical_tip_diameter_mm": 40,
+            "mechanical_bore_diameter_mm": 19.2,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        }
+      },
+      "actual_on_axis_peak_T": 0.21839774751157912,
+      "actual_on_axis_peak_z_mm": 650.0,
+      "native_support_mm": [
+        558.75,
+        741.25
+      ],
+      "static_axial_display_ranges": {
+        "on_axis_absolute_peak_t": 0.21839774751157912,
+        "peak_z_mm": 650.0,
+        "one_percent_peak_interval_mm": [
+          613.4525206030058,
+          686.5474793969942
+        ],
+        "half_maximum_interval_mm": [
+          641.1531495863137,
+          658.8468504136863
+        ],
+        "fwhm_mm": 17.693700827372595
+      },
+      "coil_geometry": {
+        "condenser_lens_2_excitation_coil": {
+          "center_mm": 650.0,
+          "inner_diameter_mm": 96.0,
+          "outer_diameter_mm": 156.0
+        }
+      }
+    },
+    {
+      "key": "mini_condenser",
+      "z_mm": 948.5,
+      "mechanical_interval_mm": [
+        938.5,
+        958.5
+      ],
+      "excitation_percent": 10.0,
+      "polarity": -1,
+      "nominal_bore_mm": {
+        "bore_diameter_mm": 20.0,
+        "vacuum_inner_diameter_mm": 20
+      },
+      "field": {
+        "single": {
+          "center_mm": 948.5,
+          "b0_coefficient_t": 0.45,
+          "a_mm": 8.0,
+          "terms": [
+            {
+              "amplitude": 0.09,
+              "offset": -1.0,
+              "sigma": 0.9
+            },
+            {
+              "amplitude": 0.82,
+              "offset": 0.0,
+              "sigma": 0.55
+            },
+            {
+              "amplitude": 0.09,
+              "offset": 1.0,
+              "sigma": 0.9
+            }
+          ],
+          "normalise_profile_peak": false,
+          "profile_divisor": 1.0,
+          "native_support_mm": [
+            890.1,
+            1006.9
+          ],
+          "excited_coefficient_t": -0.045,
+          "individual_on_axis_peak_T": 0.04126920080862477,
+          "static_axial_display_ranges": {
+            "on_axis_absolute_peak_t": 0.04126920080862477,
+            "peak_z_mm": 948.5,
+            "one_percent_peak_interval_mm": [
+              925.1096131859238,
+              971.8903868140762
+            ],
+            "half_maximum_interval_mm": [
+              942.8380157352408,
+              954.1619842647592
+            ],
+            "fwhm_mm": 11.323968529518424
+          }
+        }
+      },
+      "pole_geometry": {
+        "mini_condenser_upper_pole": {
+          "interval_mm": [
+            938.5,
+            942.5
+          ],
+          "center_mm": 940.5,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 20,
+            "mechanical_outer_diameter_mm": 32.0,
+            "mechanical_tip_diameter_mm": 26.0,
+            "mechanical_bore_diameter_mm": 20,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        },
+        "mini_condenser_lower_pole": {
+          "interval_mm": [
+            954.5,
+            958.5
+          ],
+          "center_mm": 956.5,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 20,
+            "mechanical_outer_diameter_mm": 32.0,
+            "mechanical_tip_diameter_mm": 26.0,
+            "mechanical_bore_diameter_mm": 20,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        }
+      },
+      "actual_on_axis_peak_T": 0.04126920080862477,
+      "actual_on_axis_peak_z_mm": 948.5,
+      "native_support_mm": [
+        890.1,
+        1006.9
+      ],
+      "static_axial_display_ranges": {
+        "on_axis_absolute_peak_t": 0.04126920080862477,
+        "peak_z_mm": 948.5,
+        "one_percent_peak_interval_mm": [
+          925.1096131859238,
+          971.8903868140762
+        ],
+        "half_maximum_interval_mm": [
+          942.8380157352408,
+          954.1619842647592
+        ],
+        "fwhm_mm": 11.323968529518424
+      },
+      "coil_geometry": {
+        "mini_condenser_excitation_coil": {
+          "center_mm": 948.5,
+          "inner_diameter_mm": 34.0,
+          "outer_diameter_mm": 51.0
+        }
+      }
+    },
+    {
+      "key": "objective_lens",
+      "z_mm": 1025.2,
+      "mechanical_interval_mm": [
+        815.0,
+        1235.4
+      ],
+      "excitation_percent": 29.292665862003528,
+      "polarity": 1,
+      "nominal_bore_mm": {
+        "pole_piece_bore_diameter_mm": 5.76,
+        "vacuum_inner_diameter_mm": 5.76
+      },
+      "field": {
+        "upper": {
+          "center_mm": 1023.8500000000001,
+          "b0_coefficient_t": 0.884453999912932,
+          "a_mm": 24.0,
+          "terms": [
+            {
+              "amplitude": 0.09,
+              "offset": -1.0,
+              "sigma": 0.9
+            },
+            {
+              "amplitude": 0.82,
+              "offset": 0.0,
+              "sigma": 0.55
+            },
+            {
+              "amplitude": 0.09,
+              "offset": 1.0,
+              "sigma": 0.9
+            }
+          ],
+          "native_support_mm": [
+            848.6500000000001,
+            1199.0500000000002
+          ],
+          "excited_coefficient_t": 0.25908015489762015,
+          "individual_on_axis_peak_T": 0.23760068751109992,
+          "static_axial_display_ranges": {
+            "on_axis_absolute_peak_t": 0.23760068751109992,
+            "peak_z_mm": 1023.8500000000001,
+            "one_percent_peak_interval_mm": [
+              953.6788395577714,
+              1094.0211604422288
+            ],
+            "half_maximum_interval_mm": [
+              1006.8640472057224,
+              1040.8359527942778
+            ],
+            "fwhm_mm": 33.97190558855539
+          }
+        },
+        "lower": {
+          "center_mm": 1026.55,
+          "b0_coefficient_t": 0.884453999912932,
+          "a_mm": 24.0,
+          "terms": [
+            {
+              "amplitude": 0.09,
+              "offset": -1.0,
+              "sigma": 0.9
+            },
+            {
+              "amplitude": 0.82,
+              "offset": 0.0,
+              "sigma": 0.55
+            },
+            {
+              "amplitude": 0.09,
+              "offset": 1.0,
+              "sigma": 0.9
+            }
+          ],
+          "native_support_mm": [
+            851.3499999999999,
+            1201.75
+          ],
+          "excited_coefficient_t": 0.25908015489762015,
+          "individual_on_axis_peak_T": 0.23760068751109992,
+          "static_axial_display_ranges": {
+            "on_axis_absolute_peak_t": 0.23760068751109992,
+            "peak_z_mm": 1026.55,
+            "one_percent_peak_interval_mm": [
+              956.3788395577712,
+              1096.7211604422287
+            ],
+            "half_maximum_interval_mm": [
+              1009.5640472057222,
+              1043.5359527942776
+            ],
+            "fwhm_mm": 33.97190558855539
+          }
+        }
+      },
+      "pole_geometry": {
+        "objective_upper_pole": {
+          "interval_mm": [
+            960.5,
+            1022.5
+          ],
+          "center_mm": 991.5,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 5.76,
+            "mechanical_outer_diameter_mm": 96.0,
+            "mechanical_tip_diameter_mm": 8.0,
+            "mechanical_bore_diameter_mm": 5.76,
+            "pole_nose_axial_length_mm": 27.5584,
+            "pole_cone_angle_to_axis_deg": 57.94,
+            "mechanical_profile": "magnetic_pole_piece",
+            "pole_stem_outer_diameter_mm": 60.0,
+            "pole_mounting_shank_inner_diameter_mm": 5.76,
+            "pole_vacuum_connector_outer_diameter_mm": 19.2
+          }
+        },
+        "objective_lower_pole": {
+          "interval_mm": [
+            1027.9,
+            1089.9
+          ],
+          "center_mm": 1058.9,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 5.76,
+            "mechanical_outer_diameter_mm": 96.0,
+            "mechanical_tip_diameter_mm": 8.0,
+            "mechanical_bore_diameter_mm": 5.76,
+            "pole_nose_axial_length_mm": 27.5584,
+            "pole_cone_angle_to_axis_deg": 57.94,
+            "mechanical_profile": "magnetic_pole_piece",
+            "pole_stem_outer_diameter_mm": 60.0,
+            "pole_mounting_shank_inner_diameter_mm": 5.76,
+            "pole_vacuum_connector_outer_diameter_mm": 19.2
+          }
+        }
+      },
+      "actual_on_axis_peak_T": 0.47300801160401595,
+      "actual_on_axis_peak_z_mm": 1025.2,
+      "native_support_mm": [
+        848.6500000000001,
+        1201.75
+      ],
+      "static_axial_display_ranges": {
+        "on_axis_absolute_peak_t": 0.47300801160401595,
+        "peak_z_mm": 1025.2,
+        "one_percent_peak_interval_mm": [
+          954.9114264133261,
+          1095.488573586674
+        ],
+        "half_maximum_interval_mm": [
+          1008.1198349763442,
+          1042.2801650236559
+        ],
+        "fwhm_mm": 34.16033004731162
+      },
+      "coil_geometry": {
+        "objective_lens_excitation_coil": {
+          "center_mm": 1025.2,
+          "inner_diameter_mm": 60.0,
+          "outer_diameter_mm": 132.0
+        }
+      }
+    },
+    {
+      "key": "diffraction_lens",
+      "z_mm": 1322.9,
+      "mechanical_interval_mm": [
+        1272.9,
+        1372.9
+      ],
+      "excitation_percent": 13.59281212137673,
+      "polarity": 1,
+      "nominal_bore_mm": {
+        "mechanical_clear_bore_diameter_mm": 20.0,
+        "vacuum_inner_diameter_mm": 20.0
+      },
+      "field": {
+        "single": {
+          "center_mm": 1322.9,
+          "b0_coefficient_t": 0.75,
+          "a_mm": 12.0,
+          "terms": [
+            {
+              "amplitude": 0.09,
+              "offset": -1.0,
+              "sigma": 0.9
+            },
+            {
+              "amplitude": 0.82,
+              "offset": 0.0,
+              "sigma": 0.55
+            },
+            {
+              "amplitude": 0.09,
+              "offset": 1.0,
+              "sigma": 0.9
+            }
+          ],
+          "normalise_profile_peak": false,
+          "profile_divisor": 1.0,
+          "native_support_mm": [
+            1235.3000000000002,
+            1410.5
+          ],
+          "excited_coefficient_t": 0.10194609091032547,
+          "individual_on_axis_peak_T": 0.09349408216516752,
+          "static_axial_display_ranges": {
+            "on_axis_absolute_peak_t": 0.09349408216516752,
+            "peak_z_mm": 1322.9,
+            "one_percent_peak_interval_mm": [
+              1287.8144197788856,
+              1357.9855802211146
+            ],
+            "half_maximum_interval_mm": [
+              1314.4070236028613,
+              1331.392976397139
+            ],
+            "fwhm_mm": 16.985952794277637
+          }
+        }
+      },
+      "pole_geometry": {
+        "diffraction_lens_upper_pole": {
+          "interval_mm": [
+            1288.9,
+            1320.9
+          ],
+          "center_mm": 1304.9,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 20.0,
+            "mechanical_outer_diameter_mm": 52.0,
+            "mechanical_tip_diameter_mm": 40.0,
+            "mechanical_bore_diameter_mm": 21.5,
+            "pole_nose_axial_length_mm": 12.0,
+            "pole_cone_angle_to_axis_deg": 63.0,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        },
+        "diffraction_lens_lower_pole": {
+          "interval_mm": [
+            1324.9,
+            1356.9
+          ],
+          "center_mm": 1340.9,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 20.0,
+            "mechanical_outer_diameter_mm": 52.0,
+            "mechanical_tip_diameter_mm": 40.0,
+            "mechanical_bore_diameter_mm": 21.5,
+            "pole_nose_axial_length_mm": 12.0,
+            "pole_cone_angle_to_axis_deg": 63.0,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        }
+      },
+      "actual_on_axis_peak_T": 0.09349408216516752,
+      "actual_on_axis_peak_z_mm": 1322.9,
+      "native_support_mm": [
+        1235.3000000000002,
+        1410.5
+      ],
+      "static_axial_display_ranges": {
+        "on_axis_absolute_peak_t": 0.09349408216516752,
+        "peak_z_mm": 1322.9,
+        "one_percent_peak_interval_mm": [
+          1287.8144197788856,
+          1357.9855802211146
+        ],
+        "half_maximum_interval_mm": [
+          1314.4070236028613,
+          1331.392976397139
+        ],
+        "fwhm_mm": 16.985952794277637
+      },
+      "coil_geometry": {
+        "diffraction_lens_excitation_coil": {
+          "center_mm": 1322.9,
+          "inner_diameter_mm": 60.0,
+          "outer_diameter_mm": 132.0
+        }
+      }
+    },
+    {
+      "key": "intermediate_lens",
+      "z_mm": 1492.9,
+      "mechanical_interval_mm": [
+        1377.9,
+        1607.9
+      ],
+      "excitation_percent": 8.51783304453163,
+      "polarity": 1,
+      "nominal_bore_mm": {
+        "mechanical_clear_bore_diameter_mm": 20.0,
+        "vacuum_inner_diameter_mm": 20.0
+      },
+      "field": {
+        "single": {
+          "center_mm": 1492.9,
+          "b0_coefficient_t": 0.830537725,
+          "a_mm": 15.0,
+          "terms": [
+            {
+              "amplitude": 0.09,
+              "offset": -1.0,
+              "sigma": 0.9
+            },
+            {
+              "amplitude": 0.82,
+              "offset": 0.0,
+              "sigma": 0.55
+            },
+            {
+              "amplitude": 0.09,
+              "offset": 1.0,
+              "sigma": 0.9
+            }
+          ],
+          "normalise_profile_peak": false,
+          "profile_divisor": 1.0,
+          "native_support_mm": [
+            1383.4,
+            1602.4
+          ],
+          "excited_coefficient_t": 0.07074381678735123,
+          "individual_on_axis_peak_T": 0.06487868402146128,
+          "static_axial_display_ranges": {
+            "on_axis_absolute_peak_t": 0.06487868402146128,
+            "peak_z_mm": 1492.9,
+            "one_percent_peak_interval_mm": [
+              1449.0430247236072,
+              1536.756975276393
+            ],
+            "half_maximum_interval_mm": [
+              1482.2837795035766,
+              1503.5162204964236
+            ],
+            "fwhm_mm": 21.232440992846932
+          }
+        }
+      },
+      "pole_geometry": {
+        "intermediate_lens_upper_pole": {
+          "interval_mm": [
+            1462.9,
+            1489.9
+          ],
+          "center_mm": 1476.4,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 20.0,
+            "mechanical_outer_diameter_mm": 52.0,
+            "mechanical_tip_diameter_mm": 40.0,
+            "mechanical_bore_diameter_mm": 21.5,
+            "pole_nose_axial_length_mm": 12.0,
+            "pole_cone_angle_to_axis_deg": 63.0,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        },
+        "intermediate_lens_lower_pole": {
+          "interval_mm": [
+            1495.9,
+            1522.9
+          ],
+          "center_mm": 1509.4,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 20.0,
+            "mechanical_outer_diameter_mm": 52.0,
+            "mechanical_tip_diameter_mm": 40.0,
+            "mechanical_bore_diameter_mm": 21.5,
+            "pole_nose_axial_length_mm": 12.0,
+            "pole_cone_angle_to_axis_deg": 63.0,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        }
+      },
+      "actual_on_axis_peak_T": 0.06487868402146128,
+      "actual_on_axis_peak_z_mm": 1492.9,
+      "native_support_mm": [
+        1383.4,
+        1602.4
+      ],
+      "static_axial_display_ranges": {
+        "on_axis_absolute_peak_t": 0.06487868402146128,
+        "peak_z_mm": 1492.9,
+        "one_percent_peak_interval_mm": [
+          1449.0430247236072,
+          1536.756975276393
+        ],
+        "half_maximum_interval_mm": [
+          1482.2837795035766,
+          1503.5162204964236
+        ],
+        "fwhm_mm": 21.232440992846932
+      },
+      "coil_geometry": {
+        "intermediate_lens_excitation_coil": {
+          "center_mm": 1492.9,
+          "inner_diameter_mm": 60.0,
+          "outer_diameter_mm": 132.0
+        }
+      }
+    },
+    {
+      "key": "projector_lens_1",
+      "z_mm": 1672.9,
+      "mechanical_interval_mm": [
+        1612.9,
+        1732.9
+      ],
+      "excitation_percent": 32.1132572718703,
+      "polarity": 1,
+      "nominal_bore_mm": {
+        "mechanical_clear_bore_diameter_mm": 20.0,
+        "vacuum_inner_diameter_mm": 20.0
+      },
+      "field": {
+        "single": {
+          "center_mm": 1672.9,
+          "b0_coefficient_t": 0.42,
+          "a_mm": 18.0,
+          "terms": [
+            {
+              "amplitude": 0.09,
+              "offset": -1.0,
+              "sigma": 0.9
+            },
+            {
+              "amplitude": 0.82,
+              "offset": 0.0,
+              "sigma": 0.55
+            },
+            {
+              "amplitude": 0.09,
+              "offset": 1.0,
+              "sigma": 0.9
+            }
+          ],
+          "normalise_profile_peak": false,
+          "profile_divisor": 1.0,
+          "native_support_mm": [
+            1541.5,
+            1804.3000000000002
+          ],
+          "excited_coefficient_t": 0.13487568054185528,
+          "individual_on_axis_peak_T": 0.12369358987737222,
+          "static_axial_display_ranges": {
+            "on_axis_absolute_peak_t": 0.12369358987737222,
+            "peak_z_mm": 1672.9,
+            "one_percent_peak_interval_mm": [
+              1620.2716296683286,
+              1725.5283703316716
+            ],
+            "half_maximum_interval_mm": [
+              1660.1605354042917,
+              1685.6394645957084
+            ],
+            "fwhm_mm": 25.478929191416682
+          }
+        }
+      },
+      "pole_geometry": {
+        "projector_lens_1_upper_pole": {
+          "interval_mm": [
+            1641.9,
+            1670.4
+          ],
+          "center_mm": 1656.15,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 20.0,
+            "mechanical_outer_diameter_mm": 52.0,
+            "mechanical_tip_diameter_mm": 40.0,
+            "mechanical_bore_diameter_mm": 21.5,
+            "pole_nose_axial_length_mm": 13.0,
+            "pole_cone_angle_to_axis_deg": 63.0,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        },
+        "projector_lens_1_lower_pole": {
+          "interval_mm": [
+            1675.4,
+            1703.9
+          ],
+          "center_mm": 1689.65,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 20.0,
+            "mechanical_outer_diameter_mm": 52.0,
+            "mechanical_tip_diameter_mm": 40.0,
+            "mechanical_bore_diameter_mm": 21.5,
+            "pole_nose_axial_length_mm": 13.0,
+            "pole_cone_angle_to_axis_deg": 63.0,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        }
+      },
+      "actual_on_axis_peak_T": 0.12369358987737222,
+      "actual_on_axis_peak_z_mm": 1672.9,
+      "native_support_mm": [
+        1541.5,
+        1804.3000000000002
+      ],
+      "static_axial_display_ranges": {
+        "on_axis_absolute_peak_t": 0.12369358987737222,
+        "peak_z_mm": 1672.9,
+        "one_percent_peak_interval_mm": [
+          1620.2716296683286,
+          1725.5283703316716
+        ],
+        "half_maximum_interval_mm": [
+          1660.1605354042917,
+          1685.6394645957084
+        ],
+        "fwhm_mm": 25.478929191416682
+      },
+      "coil_geometry": {
+        "projector_lens_1_excitation_coil": {
+          "center_mm": 1672.9,
+          "inner_diameter_mm": 60.0,
+          "outer_diameter_mm": 132.0
+        }
+      }
+    },
+    {
+      "key": "projector_lens_2",
+      "z_mm": 1875.4,
+      "mechanical_interval_mm": [
+        1737.9,
+        2012.9
+      ],
+      "excitation_percent": 9.826874422815507,
+      "polarity": 1,
+      "nominal_bore_mm": {
+        "mechanical_clear_bore_diameter_mm": 20.0,
+        "vacuum_inner_diameter_mm": 20.0
+      },
+      "field": {
+        "single": {
+          "center_mm": 1875.4,
+          "b0_coefficient_t": 0.36,
+          "a_mm": 20.0,
+          "terms": [
+            {
+              "amplitude": 0.09,
+              "offset": -1.0,
+              "sigma": 0.9
+            },
+            {
+              "amplitude": 0.82,
+              "offset": 0.0,
+              "sigma": 0.55
+            },
+            {
+              "amplitude": 0.09,
+              "offset": 1.0,
+              "sigma": 0.9
+            }
+          ],
+          "normalise_profile_peak": false,
+          "profile_divisor": 1.0,
+          "native_support_mm": [
+            1729.4,
+            2021.4
+          ],
+          "excited_coefficient_t": 0.035376747922135826,
+          "individual_on_axis_peak_T": 0.03244378031010495,
+          "static_axial_display_ranges": {
+            "on_axis_absolute_peak_t": 0.03244378031010495,
+            "peak_z_mm": 1875.4,
+            "one_percent_peak_interval_mm": [
+              1816.9240329648094,
+              1933.8759670351908
+            ],
+            "half_maximum_interval_mm": [
+              1861.245039338102,
+              1889.5549606618981
+            ],
+            "fwhm_mm": 28.30992132379606
+          }
+        }
+      },
+      "pole_geometry": {
+        "projector_lens_2_upper_pole": {
+          "interval_mm": [
+            1840.4,
+            1871.9
+          ],
+          "center_mm": 1856.15,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 20.0,
+            "mechanical_outer_diameter_mm": 52.0,
+            "mechanical_tip_diameter_mm": 40.0,
+            "mechanical_bore_diameter_mm": 21.5,
+            "pole_nose_axial_length_mm": 14.0,
+            "pole_cone_angle_to_axis_deg": 63.0,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        },
+        "projector_lens_2_lower_pole": {
+          "interval_mm": [
+            1878.9,
+            1910.4
+          ],
+          "center_mm": 1894.65,
+          "dimensions": {
+            "vacuum_inner_diameter_mm": 20.0,
+            "mechanical_outer_diameter_mm": 52.0,
+            "mechanical_tip_diameter_mm": 40.0,
+            "mechanical_bore_diameter_mm": 21.5,
+            "pole_nose_axial_length_mm": 14.0,
+            "pole_cone_angle_to_axis_deg": 63.0,
+            "mechanical_profile": "magnetic_pole_piece"
+          }
+        }
+      },
+      "actual_on_axis_peak_T": 0.03244378031010495,
+      "actual_on_axis_peak_z_mm": 1875.4,
+      "native_support_mm": [
+        1729.4,
+        2021.4
+      ],
+      "static_axial_display_ranges": {
+        "on_axis_absolute_peak_t": 0.03244378031010495,
+        "peak_z_mm": 1875.4,
+        "one_percent_peak_interval_mm": [
+          1816.9240329648094,
+          1933.8759670351908
+        ],
+        "half_maximum_interval_mm": [
+          1861.245039338102,
+          1889.5549606618981
+        ],
+        "fwhm_mm": 28.30992132379606
+      },
+      "coil_geometry": {
+        "projector_lens_2_excitation_coil": {
+          "center_mm": 1875.4,
+          "inner_diameter_mm": 60.0,
+          "outer_diameter_mm": 132.0
+        }
+      }
+    }
+  ],
+  "range_scope": "All supports are native seven-sigma planning/identity ranges. Actual unified Gaussian all-z evaluates analytical tails, with only certified binary64 underflow outside the radial validity domain; these are not hard field cutoffs.",
+  "peak_scope": "Pure static maximum of current on-axis Gaussian sum at frozen controls, not a new particle trial, material FEM, saturation measurement, or OEM calibration.",
+  "display_range_definition": "Closed interval where the absolute on-axis field magnitude is at least one percent of that individual lens/lobe peak; display definition only, never a truncation of Gaussian all-z fields."
+}

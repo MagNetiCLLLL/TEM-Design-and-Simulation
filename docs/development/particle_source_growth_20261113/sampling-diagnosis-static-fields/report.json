@@ -1,0 +1,933 @@
+{
+  "status": "PASS_STATIC_FIELD_EQUIVALENCE_DIAGNOSIS",
+  "scope": "Only old inputs, old numeric histories and static potential evaluations; no new emission, transport or coherent calculation",
+  "implementation": "b2900cf7e79501458a6c463558ef134002bce351694617833ca8d65a111871e8",
+  "trials": [
+    "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\verification-8192-s005",
+    "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\baseline-16384"
+  ],
+  "source_count_state_difference": [
+    {
+      "path": [
+        "electron_gun",
+        "components",
+        "feg_tip",
+        "ray_count"
+      ],
+      "before": 8192,
+      "after": 16384
+    }
+  ],
+  "all_actual_lens_parameters_identical": true,
+  "all_physical_part_geometry_identical": true,
+  "sample_positions_count": 60,
+  "sample_positions_description": "Identical laboratory positions from extraction to specimen, at radius zero and two small off-axis offsets",
+  "aggregate_identity": [
+    {
+      "source_identity": "8858f76823c6dc223956612925b8d976ce15188a7c54ab44e716acba06a112ff",
+      "runtime_digest": "20be84d56828f2f5100ff5bc8e9a0665adaec92d74cdc4b85b8efe5c209f827d",
+      "scene_digest": "31d7a619772d923fb49cdb633a31093799005bc7458a1a2434499eb9d4bed1a4",
+      "potential_numerical_digest": "74e2d189cd801e7bab48ba5002970b551f9643c3fd62aad71e8809daf3b6fff0"
+    },
+    {
+      "source_identity": "d6a0af2c726250b65bf3047db499191b45bf2452e97e5b878fca9cf77a8365fd",
+      "runtime_digest": "1a48630cca5be69d797c5f3a65ffae49567c22ec6220ac26878c329e2d052d0e",
+      "scene_digest": "31431a8e6b324dc3316c1bb1970d6d98eab7c528c2af357beb5f0f13fb850fe7",
+      "potential_numerical_digest": "432fd1ed22c0f0a22a7b64002f86a17f05a958bc70a6ffe58382bfc3972b3b8f"
+    }
+  ],
+  "aggregate_identity_is_not_field_equivalence": true,
+  "sampled_total_fields": {
+    "phi_v": {
+      "shape_equal": true,
+      "shape": [
+        60
+      ],
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0,
+      "rms_difference": 0.0,
+      "finite_count": 60,
+      "sha256_8192": "17f99b5a93e7f8f3d0683e3e5b1c442644e0dda3a7e754c4652305a0d05f8d0f",
+      "sha256_16384": "17f99b5a93e7f8f3d0683e3e5b1c442644e0dda3a7e754c4652305a0d05f8d0f"
+    },
+    "E_v_per_m": {
+      "shape_equal": true,
+      "shape": [
+        60,
+        3
+      ],
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0,
+      "rms_difference": 0.0,
+      "finite_count": 180,
+      "sha256_8192": "a102c848b19059c2eaf6ee757255fbcc01f6894528a6e10e3f558a1a871d8648",
+      "sha256_16384": "a102c848b19059c2eaf6ee757255fbcc01f6894528a6e10e3f558a1a871d8648"
+    },
+    "A_t_m": {
+      "shape_equal": true,
+      "shape": [
+        60,
+        3
+      ],
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0,
+      "rms_difference": 0.0,
+      "finite_count": 180,
+      "sha256_8192": "f43a0070aae5e1074cedf840c672fa4cfd5e1103ec9e7b90f30f5fe80e7f6b2b",
+      "sha256_16384": "f43a0070aae5e1074cedf840c672fa4cfd5e1103ec9e7b90f30f5fe80e7f6b2b"
+    },
+    "B_t": {
+      "shape_equal": true,
+      "shape": [
+        60,
+        3
+      ],
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0,
+      "rms_difference": 0.0,
+      "finite_count": 180,
+      "sha256_8192": "b3341efba0f4632d73cbd3ea486b319967dc5a6392f645fe94059e4f6935e542",
+      "sha256_16384": "b3341efba0f4632d73cbd3ea486b319967dc5a6392f645fe94059e4f6935e542"
+    }
+  },
+  "individual_potential_sources": [
+    {
+      "source_id": "condenser_lens_1",
+      "owner_ids": [
+        "condenser_lens_1"
+      ],
+      "kind": "magnetic",
+      "potential_type": "HighOrderRoundLensPotential",
+      "potential_digest_8192": "535ce68d21152f1906b990adf4595f57660b744fd3603ac6bdccb79ffcb0032e",
+      "potential_digest_16384": "535ce68d21152f1906b990adf4595f57660b744fd3603ac6bdccb79ffcb0032e",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "63331f62beaff39fd82e35c96eeb4d92979c496d5347d15e0cd99fc8e15a8785",
+          "sha256_16384": "63331f62beaff39fd82e35c96eeb4d92979c496d5347d15e0cd99fc8e15a8785"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "ccb699a72341d989de9b6dfbcbbc28caad67b72d58b82daa047ae7337b04efc3",
+          "sha256_16384": "ccb699a72341d989de9b6dfbcbbc28caad67b72d58b82daa047ae7337b04efc3"
+        }
+      }
+    },
+    {
+      "source_id": "condenser_lens_2",
+      "owner_ids": [
+        "condenser_lens_2"
+      ],
+      "kind": "magnetic",
+      "potential_type": "HighOrderRoundLensPotential",
+      "potential_digest_8192": "19f0d656437077d681f854fa49fcbc6c8d3c8f8eae37e27dc29e548f183f5a61",
+      "potential_digest_16384": "19f0d656437077d681f854fa49fcbc6c8d3c8f8eae37e27dc29e548f183f5a61",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "87d63ad1e2d1a0685edba7ab439b7f3a453281ab2dfd3dc85ead52f656552629",
+          "sha256_16384": "87d63ad1e2d1a0685edba7ab439b7f3a453281ab2dfd3dc85ead52f656552629"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "46fb7d23fd757f518444a4685112b34d9dba404e04b6d4dc7ddb516af322aaaa",
+          "sha256_16384": "46fb7d23fd757f518444a4685112b34d9dba404e04b6d4dc7ddb516af322aaaa"
+        }
+      }
+    },
+    {
+      "source_id": "mini_condenser",
+      "owner_ids": [
+        "mini_condenser"
+      ],
+      "kind": "magnetic",
+      "potential_type": "HighOrderRoundLensPotential",
+      "potential_digest_8192": "282fa2be9b397097dc7eaf2e743d35c6141c0d5cedc13552fcd8364af87e28de",
+      "potential_digest_16384": "282fa2be9b397097dc7eaf2e743d35c6141c0d5cedc13552fcd8364af87e28de",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "943c8785dda23e16d8c8d096c93c337e3171bde4277b4d0fc4cca70a1de68562",
+          "sha256_16384": "943c8785dda23e16d8c8d096c93c337e3171bde4277b4d0fc4cca70a1de68562"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "1e610a07553276ac8b5cc4d6eedad152c757de837f5ca07721e2ddbac8c155a6",
+          "sha256_16384": "1e610a07553276ac8b5cc4d6eedad152c757de837f5ca07721e2ddbac8c155a6"
+        }
+      }
+    },
+    {
+      "source_id": "objective_lens",
+      "owner_ids": [
+        "objective_lens"
+      ],
+      "kind": "magnetic",
+      "potential_type": "HighOrderRoundLensPotential",
+      "potential_digest_8192": "5c80d98aa9df338d14425f6a181f3bd3a9d22676f5d428e16658ea0e5ea672a4",
+      "potential_digest_16384": "5c80d98aa9df338d14425f6a181f3bd3a9d22676f5d428e16658ea0e5ea672a4",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "a988544af354f735adf3b2bc91a628e2e0581c6f20c6bb9f214bf149c202678c",
+          "sha256_16384": "a988544af354f735adf3b2bc91a628e2e0581c6f20c6bb9f214bf149c202678c"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "c286ac6e6f871e83af3e3b39a3f01d8f95049941a2cae73942ee4479295cc62b",
+          "sha256_16384": "c286ac6e6f871e83af3e3b39a3f01d8f95049941a2cae73942ee4479295cc62b"
+        }
+      }
+    },
+    {
+      "source_id": "diffraction_lens",
+      "owner_ids": [
+        "diffraction_lens"
+      ],
+      "kind": "magnetic",
+      "potential_type": "HighOrderRoundLensPotential",
+      "potential_digest_8192": "2713da33d3017672aaf3d1ade249be17dc098a48b2a07686fb476f0f9014bd79",
+      "potential_digest_16384": "2713da33d3017672aaf3d1ade249be17dc098a48b2a07686fb476f0f9014bd79",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "93bda49a8fda6ae0e5fa8ddf50767d4734f605a7afdfb8cd19407f283eb37e2d",
+          "sha256_16384": "93bda49a8fda6ae0e5fa8ddf50767d4734f605a7afdfb8cd19407f283eb37e2d"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "1c26e2599e64018fc9337dcc73ddf86bde907eb8fba993716f99a50c1b458190",
+          "sha256_16384": "1c26e2599e64018fc9337dcc73ddf86bde907eb8fba993716f99a50c1b458190"
+        }
+      }
+    },
+    {
+      "source_id": "intermediate_lens",
+      "owner_ids": [
+        "intermediate_lens"
+      ],
+      "kind": "magnetic",
+      "potential_type": "HighOrderRoundLensPotential",
+      "potential_digest_8192": "ecc110ef62efebc90e35012044f83cd21a5a29691a8e6361292e4809f680e4b9",
+      "potential_digest_16384": "ecc110ef62efebc90e35012044f83cd21a5a29691a8e6361292e4809f680e4b9",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "8f5b48508fd0f6e49f2bf855b7108e2b474f9dd37caf21df44c65e25eda8a19d",
+          "sha256_16384": "8f5b48508fd0f6e49f2bf855b7108e2b474f9dd37caf21df44c65e25eda8a19d"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "cc8d2dd2fe38fe4f9bc3e37f8d33aa7bb5ed4c30029f21d58fe1b6879c2f7d22",
+          "sha256_16384": "cc8d2dd2fe38fe4f9bc3e37f8d33aa7bb5ed4c30029f21d58fe1b6879c2f7d22"
+        }
+      }
+    },
+    {
+      "source_id": "projector_lens_1",
+      "owner_ids": [
+        "projector_lens_1"
+      ],
+      "kind": "magnetic",
+      "potential_type": "HighOrderRoundLensPotential",
+      "potential_digest_8192": "e8726d5d849564d3ac315b4cd4ca22cbd28b5be8428d0062514dc254c3245692",
+      "potential_digest_16384": "e8726d5d849564d3ac315b4cd4ca22cbd28b5be8428d0062514dc254c3245692",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "projector_lens_2",
+      "owner_ids": [
+        "projector_lens_2"
+      ],
+      "kind": "magnetic",
+      "potential_type": "HighOrderRoundLensPotential",
+      "potential_digest_8192": "8ead81464f0bfa4a24210329875a0739c6c45ef3a79c4aec339ed129727d52ff",
+      "potential_digest_16384": "8ead81464f0bfa4a24210329875a0739c6c45ef3a79c4aec339ed129727d52ff",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "condenser_stigmator",
+      "owner_ids": [
+        "condenser_stigmator"
+      ],
+      "kind": "magnetic",
+      "potential_type": "AnalyticPotentialDomain",
+      "potential_digest_8192": "a05ef2e8d53f181c9da81bfb102eefc2ca5a0cc65edef13c80b1f3677b83e60f",
+      "potential_digest_16384": "a05ef2e8d53f181c9da81bfb102eefc2ca5a0cc65edef13c80b1f3677b83e60f",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "objective_stigmator",
+      "owner_ids": [
+        "objective_stigmator"
+      ],
+      "kind": "magnetic",
+      "potential_type": "AnalyticPotentialDomain",
+      "potential_digest_8192": "c348ec06106fbfbcf7abcd8756964c30f20cd7f880dd48185771fcde00026a08",
+      "potential_digest_16384": "c348ec06106fbfbcf7abcd8756964c30f20cd7f880dd48185771fcde00026a08",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "diffraction_stigmator",
+      "owner_ids": [
+        "diffraction_stigmator"
+      ],
+      "kind": "magnetic",
+      "potential_type": "AnalyticPotentialDomain",
+      "potential_digest_8192": "750b337acce242a6a2e84a7302b6cda11ef4f75c9571822e7670a9ba5ef0b6f0",
+      "potential_digest_16384": "750b337acce242a6a2e84a7302b6cda11ef4f75c9571822e7670a9ba5ef0b6f0",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "ac_deflector:0",
+      "owner_ids": [
+        "ac_deflector:0"
+      ],
+      "kind": "magnetic",
+      "potential_type": "AnalyticPotentialDomain",
+      "potential_digest_8192": "536ae4c079ede9d972e3db3483984f1c64cde256531e21ed8c66714bf6ad2441",
+      "potential_digest_16384": "536ae4c079ede9d972e3db3483984f1c64cde256531e21ed8c66714bf6ad2441",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "ac_deflector:1",
+      "owner_ids": [
+        "ac_deflector:1"
+      ],
+      "kind": "magnetic",
+      "potential_type": "AnalyticPotentialDomain",
+      "potential_digest_8192": "723ada3a45eb2478e7a699372f356f5a500f415c176f2ea1f8d3569935bedf9a",
+      "potential_digest_16384": "723ada3a45eb2478e7a699372f356f5a500f415c176f2ea1f8d3569935bedf9a",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "beam_deflector:0",
+      "owner_ids": [
+        "beam_deflector:0"
+      ],
+      "kind": "magnetic",
+      "potential_type": "AnalyticPotentialDomain",
+      "potential_digest_8192": "02bd131e3a0a9c403903be5539d649a237b86f70f9cac3092b12a6b8a102d653",
+      "potential_digest_16384": "02bd131e3a0a9c403903be5539d649a237b86f70f9cac3092b12a6b8a102d653",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "beam_deflector:1",
+      "owner_ids": [
+        "beam_deflector:1"
+      ],
+      "kind": "magnetic",
+      "potential_type": "AnalyticPotentialDomain",
+      "potential_digest_8192": "4a7ccea5a7317db11b124ba6731e7c53c0778f1ca419a5898fd0acf3c450f20e",
+      "potential_digest_16384": "4a7ccea5a7317db11b124ba6731e7c53c0778f1ca419a5898fd0acf3c450f20e",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "image_diffraction_deflector:0",
+      "owner_ids": [
+        "image_diffraction_deflector:0"
+      ],
+      "kind": "magnetic",
+      "potential_type": "AnalyticPotentialDomain",
+      "potential_digest_8192": "e60b8780079a8f34d0b12673d2a7ec1327ea7a2c1bb76c7d058c658d6f84ed76",
+      "potential_digest_16384": "e60b8780079a8f34d0b12673d2a7ec1327ea7a2c1bb76c7d058c658d6f84ed76",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "image_diffraction_deflector:1",
+      "owner_ids": [
+        "image_diffraction_deflector:1"
+      ],
+      "kind": "magnetic",
+      "potential_type": "AnalyticPotentialDomain",
+      "potential_digest_8192": "4ef6d9d4d70af54c0c48d70d2d838b6dce85750a8603198feae2eb8dd5acd8c6",
+      "potential_digest_16384": "4ef6d9d4d70af54c0c48d70d2d838b6dce85750a8603198feae2eb8dd5acd8c6",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "instrument_electric",
+      "owner_ids": [
+        "instrument_electric"
+      ],
+      "kind": "electric",
+      "potential_type": "ElectricPotentialSnapshot",
+      "potential_digest_8192": "f13b77ce543d3c3c8e1efd2bacf4709fb048b450afe3ae802d923e1e354b1b82",
+      "potential_digest_16384": "f13b77ce543d3c3c8e1efd2bacf4709fb048b450afe3ae802d923e1e354b1b82",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "phi_v": {
+          "shape_equal": true,
+          "shape": [
+            60
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 60,
+          "sha256_8192": "17f99b5a93e7f8f3d0683e3e5b1c442644e0dda3a7e754c4652305a0d05f8d0f",
+          "sha256_16384": "17f99b5a93e7f8f3d0683e3e5b1c442644e0dda3a7e754c4652305a0d05f8d0f"
+        },
+        "E_v_per_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "88fcace8000c385f18df268254211375534a29dc8e3ff05a68fe9c392c9fd709",
+          "sha256_16384": "88fcace8000c385f18df268254211375534a29dc8e3ff05a68fe9c392c9fd709"
+        }
+      }
+    },
+    {
+      "source_id": "feg_deflector",
+      "owner_ids": [
+        "feg_deflector"
+      ],
+      "kind": "magnetic",
+      "potential_type": "GunMagneticPotential",
+      "potential_digest_8192": "5b0b406a386a34271a8c920f6ff67ff32103f7b6456a834ab24df85f8df80e7c",
+      "potential_digest_16384": "5b0b406a386a34271a8c920f6ff67ff32103f7b6456a834ab24df85f8df80e7c",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    },
+    {
+      "source_id": "feg_stigmator",
+      "owner_ids": [
+        "feg_stigmator"
+      ],
+      "kind": "magnetic",
+      "potential_type": "GunMagneticPotential",
+      "potential_digest_8192": "08ed3409f01d559379d06b444d3ad8a735a73837f666317cdfb6c3c4bcbf3806",
+      "potential_digest_16384": "08ed3409f01d559379d06b444d3ad8a735a73837f666317cdfb6c3c4bcbf3806",
+      "potential_digest_equal": true,
+      "sampled_values": {
+        "A_t_m": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        },
+        "B_t": {
+          "shape_equal": true,
+          "shape": [
+            60,
+            3
+          ],
+          "bitwise_equal": true,
+          "maximum_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "finite_count": 180,
+          "sha256_8192": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807",
+          "sha256_16384": "98c9c1cd693135825f3100259a10ef05424ffcf7bf9d1f6858c0c00406b93807"
+        }
+      }
+    }
+  ],
+  "gun_saved_history_comparison": {
+    "stored_common_axial_display_grid": {
+      "shape_equal": true,
+      "shape": [
+        227
+      ],
+      "bitwise_equal": true,
+      "maximum_absolute_difference": 0.0,
+      "rms_difference": 0.0,
+      "finite_count": 227,
+      "sha256_8192": "8b077d562069c75856683d5f8df56158c988183a0bf22fd3f275b944d4d65012",
+      "sha256_16384": "8b077d562069c75856683d5f8df56158c988183a0bf22fd3f275b944d4d65012"
+    },
+    "same_ID_prefix_flight_times_on_stored_axial_grid": {
+      "shape_equal": true,
+      "shape": [
+        227,
+        8192
+      ],
+      "bitwise_equal": false,
+      "maximum_absolute_difference": 7.237173459447864e-14,
+      "rms_difference": 1.0332321316828724e-14,
+      "finite_count": 1859584,
+      "sha256_8192": "bd24e0b5ec654967c3d70f7f43f5d67f5cfb346fab878ff4f3c4435061540acb",
+      "sha256_16384": "41f858f7dc1969a5915c33b9d6279822eb68e4dc2232b1fcc0ac59b5f9b3b1f5"
+    },
+    "same_ID_prefix_gun_exit_flight_times": {
+      "shape_equal": true,
+      "shape": [
+        8192
+      ],
+      "bitwise_equal": false,
+      "maximum_absolute_difference": 5.42347301101572e-16,
+      "rms_difference": 1.648374121870993e-16,
+      "finite_count": 8192,
+      "sha256_8192": "eabf35bfadfb1525084a67269334a18d10ce84eca942895556199249ab24e340",
+      "sha256_16384": "61e9b3e3ed3e89109594f5e78c50696fd443b35480bf3b6e084d24ab75ea8ac1"
+    },
+    "same_ID_prefix_exit_energy_offsets": {
+      "shape_equal": true,
+      "shape": [
+        8192
+      ],
+      "bitwise_equal": false,
+      "maximum_absolute_difference": 0.0012845313758589327,
+      "rms_difference": 0.00030560279605819064,
+      "finite_count": 8192,
+      "sha256_8192": "a1c639319f99cb8ea602682019680c0135ab0ad0fbb38a6c5ca0db1103755edd",
+      "sha256_16384": "d3004cf34b53b4de78357c3f4fb39af1879de1c147eaae0aff396a925a615112"
+    },
+    "scope": "The saved GunTrace axial display grid is interpolated after adaptive equal-time integration; it is not the accepted integration-time mesh. Equal-time histories remain only in the idle workers' GunTrace caches."
+  },
+  "gun_algorithm_count_dependency": {
+    "common_dt": "Selected by active-population max longitudinal velocity and minimum local electric-impulse bound",
+    "retry_acceptance": "Common step-doubling dt is accepted only when all active rays meet the original budgets; adding rays can therefore change the accepted shared time sequence",
+    "physical_field_changes_required": false,
+    "actual_accepted_time_mesh_saved_in_this_trial_export": false,
+    "causality_limit": "Static fields agree. Existing data cannot isolate how much of the final 2 nm argmin shift comes from energy remapping, collective adaptive steps, or changed finite-sample order statistics without a separately authorized controlled transport."
+  }
+}

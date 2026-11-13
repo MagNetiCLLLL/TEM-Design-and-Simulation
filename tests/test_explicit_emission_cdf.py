@@ -143,6 +143,7 @@ def test_payload_snapshot_profile_and_cache_identity_include_the_entire_table(tm
     selection = catalog.default_selection()
     catalog.apply(state, selection)
     emitter = state.electron_gun.emitter
+    emitter.sampling = None  # Explicit table source, not the new flat Halton default.
     emitter.cdf_quadrature = table()
     emitter.ray_count = 16
     before = calculation_signatures(state)
@@ -181,6 +182,7 @@ def test_damaged_incoming_table_rolls_back_whole_profile_transaction():
     from temsim.optics.electron_gun.profile_controls import capture_gun_profile_controls
     from temsim.profile_io import apply_profile_values
     state = default_state()
+    state.electron_gun.emitter.sampling = None
     state.electron_gun.emitter.cdf_quadrature = table()
     state.electron_gun.emitter.ray_count = 16
     before = deepcopy(state.to_dict())

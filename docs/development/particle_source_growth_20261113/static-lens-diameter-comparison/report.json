@@ -1,0 +1,267 @@
+{
+  "scope": "Static analytical field sampling only; no particle emission, Lorentz integration, Cs measurement, coherent calculation or retuning",
+  "input_snapshot": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-preparation-frozen\\experiment-inputs.json",
+  "input_digest": "75a0da1549697847e79746b79eb22e30b124ab2aa7303a80fc9ecc236452878e",
+  "implementation": "b2900cf7e79501458a6c463558ef134002bce351694617833ca8d65a111871e8",
+  "point_units": "metres",
+  "points_xyz_m": [
+    [
+      0.0,
+      0.0,
+      0.625
+    ],
+    [
+      1e-06,
+      2e-06,
+      0.625
+    ],
+    [
+      0.0001,
+      -0.0002,
+      0.625
+    ],
+    [
+      0.001,
+      0.0,
+      0.625
+    ],
+    [
+      0.0,
+      0.0,
+      0.6375000000000001
+    ],
+    [
+      1e-06,
+      2e-06,
+      0.6375000000000001
+    ],
+    [
+      0.0001,
+      -0.0002,
+      0.6375000000000001
+    ],
+    [
+      0.001,
+      0.0,
+      0.6375000000000001
+    ],
+    [
+      0.0,
+      0.0,
+      0.65
+    ],
+    [
+      1e-06,
+      2e-06,
+      0.65
+    ],
+    [
+      0.0001,
+      -0.0002,
+      0.65
+    ],
+    [
+      0.001,
+      0.0,
+      0.65
+    ],
+    [
+      0.0,
+      0.0,
+      0.6625
+    ],
+    [
+      1e-06,
+      2e-06,
+      0.6625
+    ],
+    [
+      0.0001,
+      -0.0002,
+      0.6625
+    ],
+    [
+      0.001,
+      0.0,
+      0.6625
+    ],
+    [
+      0.0,
+      0.0,
+      0.675
+    ],
+    [
+      1e-06,
+      2e-06,
+      0.675
+    ],
+    [
+      0.0001,
+      -0.0002,
+      0.675
+    ],
+    [
+      0.001,
+      0.0,
+      0.675
+    ]
+  ],
+  "reference": {
+    "geometry_fingerprint": "34ad6e9b561910ce5df811846ccfea36865125cce1b847c466b6211727f2d450",
+    "provider_type": "GeometryAwareAnalyticFieldProvider",
+    "model_status": "provisional_geometry_bound_analytic_not_fem",
+    "capture_potential_digest": "6795f092f01d64ea1ab3e689d45ac4ebf58268ad9988b12f3a545367b8bedca7",
+    "frozen_analytic_field_fingerprint": "9524fe875ae65ddb984fee1c6823a5a091dcbedbffb73d81932696589d910de9",
+    "production_round_potential_digest": "e900d44024e68e394bb7815b64f037812f9533510d1c65ea593e5e4cc2fbb55f",
+    "gaussian_terms_t_m": [
+      [
+        0.021432711564335485,
+        0.6375000000000001,
+        0.01125
+      ],
+      [
+        0.19527581647505662,
+        0.65,
+        0.006875000000000001
+      ],
+      [
+        0.021432711564335485,
+        0.6625,
+        0.01125
+      ]
+    ],
+    "radial_support_m": 0.01,
+    "native_support_mm": [
+      558.75,
+      741.25
+    ]
+  },
+  "reference_B_sha256": "cb58fab1ca09e3f6fd46b62ada658cb3dd5d3fe854c9c8f198bcda63703e518b",
+  "reference_A_sha256": "61c76d4fce68d4f7d052887b8490368f23bc30c31cf14d889478a7e52242cd7e",
+  "trials": [
+    {
+      "label": "main-bore-minus25",
+      "part": "condenser_lens_2",
+      "dimension": "bore_diameter_mm",
+      "before_mm": 20.0,
+      "requested_mm": 15.0,
+      "status": "REJECTED_BY_EXISTING_GEOMETRY_VALIDATION",
+      "error_type": "ValueError",
+      "error": "C2 Lens effective aperture must fit inside its bore."
+    },
+    {
+      "label": "main-bore-plus25",
+      "part": "condenser_lens_2",
+      "dimension": "bore_diameter_mm",
+      "before_mm": 20.0,
+      "requested_mm": 25.0,
+      "status": "ACCEPTED_DETACHED_GEOMETRY",
+      "candidate_input_digest": "54262c5322b86b43c9078f42fd0ad25a54b41b82a9c89098d600f4b5ead55a78",
+      "geometry_fingerprint_changed": true,
+      "capture_potential_digest_changed": true,
+      "production_round_potential_digest_changed": true,
+      "gaussian_terms_bitwise_equal": true,
+      "radial_support_m": 0.0125,
+      "parameters": {
+        "geometry_fingerprint": "dae737a6741e4f88fa2a3c157d0080d2e68059ea0a7d0f4233a52002c25113c1",
+        "provider_type": "GeometryAwareAnalyticFieldProvider",
+        "model_status": "provisional_geometry_bound_analytic_not_fem",
+        "capture_potential_digest": "786fd28892634f64c77f1ff3af0a275e72c5b99d63c51211bb5a54d8273f0ac5",
+        "frozen_analytic_field_fingerprint": "b7d57da9819c74ab793464990e42ed05a9e55b31cea30d9fd9e1ecf3893d8057",
+        "production_round_potential_digest": "0d8fa10ef868a6479073220864be6fcb364a37b516e5ebc9371f6b2c34593b1d",
+        "gaussian_terms_t_m": [
+          [
+            0.021432711564335485,
+            0.6375000000000001,
+            0.01125
+          ],
+          [
+            0.19527581647505662,
+            0.65,
+            0.006875000000000001
+          ],
+          [
+            0.021432711564335485,
+            0.6625,
+            0.01125
+          ]
+        ],
+        "radial_support_m": 0.0125,
+        "native_support_mm": [
+          558.75,
+          741.25
+        ]
+      },
+      "A_t_m_bitwise_equal": true,
+      "A_t_m_max_absolute_difference": 0.0,
+      "A_t_m_sha256": "61c76d4fce68d4f7d052887b8490368f23bc30c31cf14d889478a7e52242cd7e",
+      "B_t_bitwise_equal": true,
+      "B_t_max_absolute_difference": 0.0,
+      "B_t_sha256": "cb58fab1ca09e3f6fd46b62ada658cb3dd5d3fe854c9c8f198bcda63703e518b",
+      "all_installed_lens_percent_polarity_positions_unchanged": true
+    },
+    {
+      "label": "coil-inner-minus25",
+      "part": "condenser_lens_2_excitation_coil",
+      "dimension": "mechanical_inner_diameter_mm",
+      "before_mm": 96.0,
+      "requested_mm": 72.0,
+      "status": "REJECTED_BY_EXISTING_GEOMETRY_VALIDATION",
+      "error_type": "ValueError",
+      "error": "Excitation-coil material overlap between condenser_lens_1_excitation_coil and c1_c2_pole_piece_cartridge"
+    },
+    {
+      "label": "coil-inner-plus25",
+      "part": "condenser_lens_2_excitation_coil",
+      "dimension": "mechanical_inner_diameter_mm",
+      "before_mm": 96.0,
+      "requested_mm": 120.0,
+      "status": "ACCEPTED_DETACHED_GEOMETRY",
+      "candidate_input_digest": "a192f01da618a45666785c186f65a3155116ce730ebb9af6abcedb81b9306096",
+      "geometry_fingerprint_changed": true,
+      "capture_potential_digest_changed": true,
+      "production_round_potential_digest_changed": false,
+      "gaussian_terms_bitwise_equal": true,
+      "radial_support_m": 0.01,
+      "parameters": {
+        "geometry_fingerprint": "69576f7e22ca81403c288835a6ebcfaf16b3c0cf328acdf85a163cb19d476090",
+        "provider_type": "GeometryAwareAnalyticFieldProvider",
+        "model_status": "provisional_geometry_bound_analytic_not_fem",
+        "capture_potential_digest": "170eee0a80f778cbafc0c071cc374d840593c72cf158cc680fa8f76f54092122",
+        "frozen_analytic_field_fingerprint": "9524fe875ae65ddb984fee1c6823a5a091dcbedbffb73d81932696589d910de9",
+        "production_round_potential_digest": "e900d44024e68e394bb7815b64f037812f9533510d1c65ea593e5e4cc2fbb55f",
+        "gaussian_terms_t_m": [
+          [
+            0.021432711564335485,
+            0.6375000000000001,
+            0.01125
+          ],
+          [
+            0.19527581647505662,
+            0.65,
+            0.006875000000000001
+          ],
+          [
+            0.021432711564335485,
+            0.6625,
+            0.01125
+          ]
+        ],
+        "radial_support_m": 0.01,
+        "native_support_mm": [
+          558.75,
+          741.25
+        ]
+      },
+      "A_t_m_bitwise_equal": true,
+      "A_t_m_max_absolute_difference": 0.0,
+      "A_t_m_sha256": "61c76d4fce68d4f7d052887b8490368f23bc30c31cf14d889478a7e52242cd7e",
+      "B_t_bitwise_equal": true,
+      "B_t_max_absolute_difference": 0.0,
+      "B_t_sha256": "cb58fab1ca09e3f6fd46b62ada658cb3dd5d3fe854c9c8f198bcda63703e518b",
+      "all_installed_lens_percent_polarity_positions_unchanged": true
+    }
+  ],
+  "original_snapshot_unchanged": true,
+  "field_arrays_sha256": "f24eca3c6638ba6713c99463f5e46e291bfbf77c108b516d6058df007f80ea62"
+}

@@ -1,0 +1,8 @@
+{
+  "scope": "Static analytical profiles only; no source, trajectory, FEM solve or coherent calculation",
+  "input": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\installed-lens-static-inventory.json",
+  "input_sha256": "c19a959305ee952dc5573384a7f258454358229840204d3fc905f7e80ac74573",
+  "display_threshold_fraction": 0.01,
+  "threshold_is_not_a_cutoff": true,
+  "axisymmetric_radial_expansion_order_Aphi": 3
+}

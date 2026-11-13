@@ -154,6 +154,10 @@ def sampling_diagnostics(emitter):
     if plan is None:
         return {"schema": "legacy-joint-halton-batch-moments", "seed": None}
     plan.validate()
+    from .emitter import HALTON_PREFIX_SAMPLING_SCHEMA
+    if plan.schema == HALTON_PREFIX_SAMPLING_SCHEMA:
+        from .stable_halton_sampling import halton_prefix_diagnostics
+        return halton_prefix_diagnostics(emitter)
     return {**asdict(plan), "dimensions": 6, "antithetic_pair_size": 2,
             "pair_operation": "local x,y,tx,ty simultaneous inversion; same energy",
             "weights": "1/N; never renormalized after loss",

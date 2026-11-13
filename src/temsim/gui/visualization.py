@@ -1613,7 +1613,18 @@ class VisualizationWorkspace(QWidget):
             return np.array([], dtype=float), np.array([], dtype=float)
         sources = (branch.z, branch.x, branch.y, branch.blocked_z)
         simulation = getattr(self._last_result, "simulation", None)
-        history = getattr(getattr(simulation, "gun_trace", None), "equal_time_history", None)
+        gun_trace = getattr(simulation, "gun_trace", None)
+        partitioned = (branch is getattr(simulation, "incident", None)
+                       and bool(getattr(gun_trace, "transport_partitions", ()))
+                       and len(getattr(getattr(gun_trace, "exit_bundle", None), "ray_id", ())) == branch.x.shape[1])
+        native = ()
+        if partitioned:
+            from temsim.optics.electron_gun.base import native_history_for_ray
+            native = tuple(native_history_for_ray(gun_trace, int(index)) for index in indices)
+            for original, _local_index in native:
+                if original is not None:
+                    sources += (original.z_mm, original.x_m, original.y_m, original.completed)
+        history = getattr(gun_trace, "equal_time_history", None)
         if (branch is not getattr(simulation, "incident", None)
                 or history is None
                 or history.z_mm.shape[1] != branch.x.shape[1]
@@ -1626,7 +1637,34 @@ class VisualizationWorkspace(QWidget):
         if basis is None:
             blocked_z = np.asarray(branch.blocked_z, dtype=float)[indices]
             prefix_z = prefix_x = prefix_y = None
-            if history is not None:
+            if partitioned:
+                # An append-only Gun result retains independent native time
+                # meshes. Draw each selected ray from its original partition;
+                # padding or interpolating a common mesh would invent history.
+                pieces = []
+                for column, (original, local_index) in enumerate(native):
+                    prefix_z = prefix_x = prefix_y = None
+                    if original is not None and original.z_mm[0, local_index] < branch.z[0]:
+                        end = 0
+                        while (end < len(original.z_mm)
+                               and original.z_mm[end, local_index] < branch.z[0]
+                               and not original.completed[end, local_index]):
+                            end += 1
+                        selected = slice(local_index, local_index + 1)
+                        prefix_z = original.z_mm[:end + 1, selected]
+                        prefix_x = original.x_m[:end + 1, selected]
+                        prefix_y = original.y_m[:end + 1, selected]
+                    index = indices[column:column + 1]
+                    stops = blocked_z[column:column + 1]
+                    z_piece, x_piece = self._bundle_lines(
+                        branch.z, np.asarray(branch.x)[:, index], 1, stops,
+                        launch_z=prefix_z, launch_values=prefix_x)
+                    _, y_piece = self._bundle_lines(
+                        branch.z, np.asarray(branch.y)[:, index], 1, stops,
+                        launch_z=prefix_z, launch_values=prefix_y)
+                    pieces.append((z_piece, x_piece, y_piece))
+                basis = tuple(np.concatenate([piece[axis] for piece in pieces]) for axis in range(3))
+            elif history is not None:
                 # Copy only the short launch prefix for the drawn subset, not
                 # entire equal-time gun histories on every colour-group miss.
                 end = 0
@@ -1638,15 +1676,16 @@ class VisualizationWorkspace(QWidget):
                 prefix_z = history.z_mm[:end + 1, indices]
                 prefix_x = history.x_m[:end + 1, indices]
                 prefix_y = history.y_m[:end + 1, indices]
-            z, x_values = self._bundle_lines(
-                branch.z, np.asarray(branch.x)[:, indices], len(indices), blocked_z,
-                launch_z=prefix_z, launch_values=prefix_x,
-            )
-            _, y_values = self._bundle_lines(
-                branch.z, np.asarray(branch.y)[:, indices], len(indices), blocked_z,
-                launch_z=prefix_z, launch_values=prefix_y,
-            )
-            basis = (z, x_values, y_values)
+            if not partitioned:
+                z, x_values = self._bundle_lines(
+                    branch.z, np.asarray(branch.x)[:, indices], len(indices), blocked_z,
+                    launch_z=prefix_z, launch_values=prefix_x,
+                )
+                _, y_values = self._bundle_lines(
+                    branch.z, np.asarray(branch.y)[:, indices], len(indices), blocked_z,
+                    launch_z=prefix_z, launch_values=prefix_y,
+                )
+                basis = (z, x_values, y_values)
             self._ray_display_cache_put(key, sources, basis)
         z, x_values, y_values = basis
         projected = self._project_transverse(x_values, y_values)

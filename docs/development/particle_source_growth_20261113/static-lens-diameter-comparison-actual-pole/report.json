@@ -1,0 +1,29 @@
+{
+  "scope": "Static true pole-body geometry edit only; no particle, wave or FEM calculation",
+  "input_digest": "75a0da1549697847e79746b79eb22e30b124ab2aa7303a80fc9ecc236452878e",
+  "implementation": "b2900cf7e79501458a6c463558ef134002bce351694617833ca8d65a111871e8",
+  "trials": [
+    {
+      "label": "c2-pole-plus25",
+      "part": "condenser_lens_2_upper_pole",
+      "dimension": "mechanical_bore_diameter_mm",
+      "before_mm": 19.2,
+      "requested_mm": 24.0,
+      "status": "REJECTED_BY_EXISTING_GEOMETRY_VALIDATION",
+      "error_type": "ValueError",
+      "error": "condenser_c1_c2_shared_housing C1/C2 interface poles must match in mechanical_bore_diameter_mm"
+    },
+    {
+      "label": "c2-pole-minus25",
+      "part": "condenser_lens_2_upper_pole",
+      "dimension": "mechanical_bore_diameter_mm",
+      "before_mm": 19.2,
+      "requested_mm": 14.4,
+      "status": "REJECTED_BY_EXISTING_GEOMETRY_VALIDATION",
+      "error_type": "ValueError",
+      "error": "condenser_c1_c2_shared_housing C1/C2 interface poles must match in mechanical_bore_diameter_mm"
+    }
+  ],
+  "original_snapshot_unchanged": true,
+  "field_arrays_sha256": "2b020233af0810265705eee818f7f0b8b45536bee69d4d6ae1362c25ef4efdc3"
+}

@@ -1,0 +1,12 @@
+{
+  "directory": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\original-guns\\a4fdf07cd8529e560fab471da892b0ba845c52383eabf886f3dad95333510f64",
+  "checksums": {
+    "emission-reference.npz": "513a31a7427196f79f2724a4f6a17096454f31ac8d9e603923de0464f1f4ede6",
+    "gun-history.npz": "41c85569371334e3c21363c2ae4bbdfb748cdfac48e391eed225cd6de17675be",
+    "original-gun.npz": "37f987811a453b8bed5ba956831b9ebe49543af310e27b956a3296c2fcc4b390"
+  },
+  "source_generation_implementation": "b2900cf7e79501458a6c463558ef134002bce351694617833ca8d65a111871e8",
+  "original_positive_count": 8192,
+  "reference_current_a": 1e-05,
+  "scope": "Original classical arrays and complete in-process GunTrace retained; not a standalone Lorentz-restart relabelling"
+}

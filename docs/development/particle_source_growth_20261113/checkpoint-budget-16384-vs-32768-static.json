@@ -1,0 +1,11 @@
+{
+  "scope": "Pure checkpoint-plane arithmetic only; no field capture/emission/transport",
+  "start_mm": 450.0,
+  "stop_mm": 1025.2001475000002,
+  "checkpoint_16384_count": 116,
+  "checkpoint_32768_count": 116,
+  "bitwise_equal": true,
+  "all_new_checkpoint_planes_already_in_old_requested_planes": false,
+  "maximum_checkpoint_16384_under_512MiB": 682,
+  "maximum_checkpoint_32768_under_512MiB": 341
+}

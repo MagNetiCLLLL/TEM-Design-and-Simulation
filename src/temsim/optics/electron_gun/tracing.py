@@ -723,6 +723,7 @@ def _trace_feg_to_exit(gun, count=None, *, cancelled=None, emitted_bundle=None, 
         energy_offset[passed_exit],
         emitted.weight[passed_exit],
     )
+    from temsim.physics.incremental_particles import capture_emission_phase
     result = GunTraceResult(
         z_mm=common_z,
         x_m=path_x,
@@ -758,6 +759,7 @@ def _trace_feg_to_exit(gun, count=None, *, cancelled=None, emitted_bundle=None, 
         plane_arrivals=tuple(plane_arrivals),
         vacuum_report=medium.report() if medium.regions else None,
         emission_reference=launch_reference,
+        emission_phase=capture_emission_phase(gun, emitted),
         flight_time_s=flight_time_s,
     )
     if geometry_field:

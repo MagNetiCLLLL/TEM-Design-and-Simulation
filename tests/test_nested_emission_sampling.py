@@ -216,6 +216,7 @@ def test_source_payload_snapshot_signatures_and_seed_identity_round_trip():
     from temsim.optics.electron_gun.field_emission import _component_payload, _restore_component_settings
     state = default_state()
     emitter = state.electron_gun.emitter
+    emitter.sampling = None  # Explicit historical record, independent of new factory defaults.
     legacy = _component_payload(emitter)
     old = calculation_signatures(state)
     emitter.ray_count = 4096
@@ -262,7 +263,9 @@ def test_profile_round_trip_and_explicit_legacy_clear_are_transactional(tmp_path
     assert restored.to_dict() == before
     apply_profile_values(restored, {"objective_lens": {"percent": 12.}})
     assert restored.electron_gun.emitter.sampling == EmissionSampling(seed=11)
-    legacy_controls = capture_gun_profile_controls(default_state().electron_gun)
+    legacy_gun = default_state().electron_gun
+    legacy_gun.emitter.sampling = None
+    legacy_controls = capture_gun_profile_controls(legacy_gun)
     apply_profile_values(restored, {"__gun_controls__": legacy_controls})
     assert restored.electron_gun.emitter.sampling is None
 

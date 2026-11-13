@@ -66,8 +66,8 @@ class FlightTimeColourScale:
         branches, _ = downstream_display_branches(result)
         maximum = max((_branch_maximum(b) for b in (incident, *branches) if b is not None), default=0.)
         gun = getattr(simulation, "gun_trace", None)
-        history = getattr(gun, "equal_time_history", None)
-        if history is not None:
+        from temsim.optics.electron_gun.base import iter_native_histories
+        for history, _offset in iter_native_histories(gun):
             active = np.asarray(history.alive) & ~np.asarray(history.completed)
             rows = np.any(active, axis=1)
             maximum = max(maximum, _maximum(history.time_s, rows))

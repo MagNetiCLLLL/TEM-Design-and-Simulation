@@ -311,7 +311,8 @@ def _prefix_matches(old, new, old_index, new_index, *, checkpoints=None, checkpo
 def _trace_segment(state, name, start, stop, initial, energy, weights, identity,
                    survival, events, previous, boundary, *, initial_kicks,
                    save_z_mm=(), dependency_context="", initial_kinetic_energy_ev=None,
-                   preserve_existing_mesh=False, checkpoint_ray_count=None):
+                   preserve_existing_mesh=False, checkpoint_ray_count=None,
+                   population_previous=None):
     from temsim.physics.simulation import Branch, _column_checkpoint_planes, _merge_checkpoints
     from temsim.physics.aperture_clipping import clip_segment
     from temsim.physics.recording_clipping import clip_recording_planes
@@ -362,6 +363,16 @@ def _trace_segment(state, name, start, stop, initial, energy, weights, identity,
         medium_energy_ev=kinetic0)
     if preserve_existing_mesh and not np.array_equal(plan.z_mm, original.z_mm):
         raise ValueError("Checkpoint capture must not change the executed optical mesh")
+    if population_previous is not None:
+        from temsim.physics.incremental_particles import extend_column_segment
+        appended = extend_column_segment(state, population_previous, plan,
+            name=name, start=start, stop=stop, initial=initial, energy=energy, weights=weights,
+            identity=identity, survival=survival, events=events, boundary=boundary,
+            initial_kicks=initial_kicks, save_z_mm=save_z_mm,
+            dependency_context=dependency_context, kinetic0=kinetic0,
+            preserve_existing_mesh=preserve_existing_mesh, dependency=dependency)
+        if appended is not None:
+            return appended, float(stop), True
     if plan.unified_runtime is not None and start == stop:
         # The gun already owns this boundary. Observe its exact output without
         # querying the column field, reapplying a contact or converting stopped
@@ -514,7 +525,11 @@ def run_particle_section(state, *, observation_stop_z_mm, tuning_component_keys=
             reuse_reason = "invalid_saved_state"
     gun_started = perf_counter()
     if gun is None:
-        gun = trace_source_to_exit(state)
+        previous_gun = getattr(existing_simulation, "gun_trace", None)
+        from temsim.physics.incremental_particles import validate_particle_count_growth
+        validate_particle_count_growth(existing_simulation, state)
+        gun = (trace_source_to_exit(state, previous_trace=previous_gun)
+               if getattr(previous_gun, "incremental_source", None) is not None else trace_source_to_exit(state))
         _validate_gun_flight_times(gun)
         gun_reused = False
     else:
@@ -528,12 +543,17 @@ def run_particle_section(state, *, observation_stop_z_mm, tuning_component_keys=
                     ("x_m", "tx_rad", "y_m", "ty_rad", "flight_time_s"))
     survival = (np.asarray(emitted.alive), np.asarray(gun.blocked_z_mm), gun.blocked_key)
     previous = {segment.name: segment for segment in old.segments} if reusable else {}
+    from temsim.physics.incremental_particles import column_growth_prefix
+    growth_count = column_growth_prefix(getattr(existing_simulation, "gun_trace", None), gun)
+    growth_segments = ({segment.name: segment for segment in old.segments}
+                       if growth_count and isinstance(old, ParticleSectionCheckpoint) else {})
     sample_z = float(state.sample.z_mm)
     events = _events(state)
     incident, resume_z, hit = _trace_segment(state, "incident", start, min(target, sample_z),
         initial, energy, weights, identity, survival,
         events,
-        previous.get("incident"), boundary, initial_kicks=True)
+        previous.get("incident"), boundary, initial_kicks=True,
+        population_previous=growth_segments.get("incident"))
     segments = [incident]
     branch = incident.branch
     # Keep the original gun history for rendering, but not in the segment's
@@ -554,7 +574,8 @@ def run_particle_section(state, *, observation_stop_z_mm, tuning_component_keys=
         post, post_resume, post_hit = _trace_segment(state, "000", sample_z, target,
             outgoing, energy, weights, identity, (branch.alive, branch.blocked_z, branch.blocked_key),
             events, previous.get("000"),
-            boundary, initial_kicks=False, initial_kinetic_energy_ev=sample_energy)
+            boundary, initial_kicks=False, initial_kinetic_energy_ev=sample_energy,
+            population_previous=growth_segments.get("000") if hit else None)
         segments.append(post)
         branches["000"] = post.branch
         if post_hit:
@@ -579,6 +600,9 @@ def run_particle_section(state, *, observation_stop_z_mm, tuning_component_keys=
                    section_reused_prefix=bool(hit), section_gun_reused=gun_reused,
                    section_resumable_through_z_mm=target,
                    section_gun_seconds=gun_seconds,
+                   incremental_transport={"gun_reused_original_count": int((gun.incremental_source or {}).get("reused_original_count", 0)),
+                       "column_reused_original_count": growth_count if growth_count and hit else 0,
+                       "column_scope": "same-mesh static optical sections" if growth_count and hit else "recomputed; original Gun lineage retained when compatible"},
                    section_reuse_reason=("vacuum_restart_required" if state.vacuum_map.enabled else
                        "compatible_executed_prefix" if hit else
                        "no_compatible_column_prefix" if gun_reused else reuse_reason),

@@ -1,0 +1,58 @@
+{
+  "scope": "Read-only exact array uniqueness on completed original sources; no new emission or propagation",
+  "trials": [
+    {
+      "trial": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-trials\\baseline-16384",
+      "original_positive_count": 16384,
+      "emission_position_direction_fields": [
+        "emission_position_m XYZ metres",
+        "emission_direction XYZ unit vector"
+      ],
+      "emission_position_direction_unique_rows": 16384,
+      "emission_unique_ratio": 1.0,
+      "emission_rows_all_finite": true,
+      "gun_exit_positive_alive_count": 16384,
+      "gun_exit_phase_fields": [
+        "x_m",
+        "y_m",
+        "tx_rad",
+        "ty_rad",
+        "actual_flight_time_s",
+        "actual_kinetic_energy_ev at exact 450 mm checkpoint"
+      ],
+      "gun_exit_phase_unique_rows": 16384,
+      "gun_exit_phase_unique_ratio": 1.0,
+      "gun_exit_rows_all_finite": true,
+      "source_ids_unique_count": 16384,
+      "emission_distinct_position_count": 16384,
+      "scope": "Full phase rows exclude ray IDs when testing duplication; repeated emitter positions across distinct angular directions are valid source quadrature, not duplicated phase"
+    },
+    {
+      "trial": "F:\\tem_simulator_v2\\outputs\\two-condenser-mixed-stem-20261112\\focus-source-convergence\\verification-8192-s005",
+      "original_positive_count": 8192,
+      "emission_position_direction_fields": [
+        "emission_position_m XYZ metres",
+        "emission_direction XYZ unit vector"
+      ],
+      "emission_position_direction_unique_rows": 8192,
+      "emission_unique_ratio": 1.0,
+      "emission_rows_all_finite": true,
+      "gun_exit_positive_alive_count": 8192,
+      "gun_exit_phase_fields": [
+        "x_m",
+        "y_m",
+        "tx_rad",
+        "ty_rad",
+        "actual_flight_time_s",
+        "actual_kinetic_energy_ev at exact 450 mm checkpoint"
+      ],
+      "gun_exit_phase_unique_rows": 8192,
+      "gun_exit_phase_unique_ratio": 1.0,
+      "gun_exit_rows_all_finite": true,
+      "source_ids_unique_count": 8192,
+      "emission_distinct_position_count": 8192,
+      "scope": "Full phase rows exclude ray IDs when testing duplication; repeated emitter positions across distinct angular directions are valid source quadrature, not duplicated phase"
+    }
+  ],
+  "passed": true
+}

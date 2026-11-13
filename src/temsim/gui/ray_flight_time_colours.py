@@ -29,25 +29,31 @@ def path_times(workspace, branch, index, z):
         clock = np.asarray(raw)[:, index]
         values = np.interp(z, branch.z, clock, left=np.nan, right=np.nan)
     simulation = getattr(workspace._last_result, "simulation", None)
-    history = getattr(getattr(simulation, "gun_trace", None), "equal_time_history", None)
+    from temsim.optics.electron_gun.base import native_history_for_ray
+    trace = getattr(simulation, "gun_trace", None)
+    history, local_index = native_history_for_ray(trace, index)
+    if history is not None:
+        count = (len(getattr(getattr(trace, "exit_bundle", None), "ray_id", ()))
+                 if getattr(trace, "transport_partitions", ()) else history.x_m.shape[1])
+        if count != branch.x.shape[1]:
+            history = None  # A compacted/reordered history has no proved column mapping.
     if (branch is getattr(simulation, "incident", None) and history is not None
-            and history.z_mm.shape[1] == branch.x.shape[1]
-            and np.any(history.z_mm[0] < branch.z[0])):
+            and history.z_mm[0, local_index] < branch.z[0]):
         end = 0
-        while (end < len(history.z_mm) and history.z_mm[end, index] < branch.z[0]
-               and not history.completed[end, index]):
+        while (end < len(history.z_mm) and history.z_mm[end, local_index] < branch.z[0]
+               and not history.completed[end, local_index]):
             end += 1
-        hz = history.z_mm[:end + 1, index]
+        hz = history.z_mm[:end + 1, local_index]
         crossings = np.flatnonzero(hz >= branch.z[0])
         end = int(crossings[0]) if crossings.size else len(hz)
         hz = hz[:end]
-        valid = (np.isfinite(hz) & np.isfinite(history.x_m[:end, index])
-                 & np.isfinite(history.y_m[:end, index]))
+        valid = (np.isfinite(hz) & np.isfinite(history.x_m[:end, local_index])
+                 & np.isfinite(history.y_m[:end, local_index]))
         if np.isfinite(branch.blocked_z[index]):
             valid &= hz <= branch.blocked_z[index]
         prefix_z = hz[valid]
         if len(prefix_z) <= len(z) and np.array_equal(prefix_z, z[:len(prefix_z)]):
-            active = np.asarray(history.alive)[:end, index] & ~np.asarray(history.completed)[:end, index]
+            active = np.asarray(history.alive)[:end, local_index] & ~np.asarray(history.completed)[:end, local_index]
             # A retained inactive row can already be frozen at a boundary or
             # overshoot its event. Its global snapshot time is not an arrival
             # clock. Keep geometry readable, with timing explicitly unknown.

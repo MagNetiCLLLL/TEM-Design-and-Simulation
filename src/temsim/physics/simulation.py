@@ -221,6 +221,14 @@ def _validate_gun_flight_times(trace):
                for name in ("x_m", "y_m", "reached", "transmitted")):
             raise ValueError("Gun crossing geometry does not align with its flight times")
     equal_time = getattr(trace, "equal_time_history", None)
+    partitions = getattr(trace, "transport_partitions", ())
+    if partitions:
+        if equal_time is not None or sum(len(part.exit_bundle.ray_id) for part in partitions) != shape[0]:
+            raise ValueError("Partitioned Gun histories have an inconsistent population")
+        if any(part is trace or not _validate_gun_flight_times(part) for part in partitions):
+            raise ValueError("Partitioned Gun histories lack complete original clocks")
+        if not np.array_equal(np.concatenate([part.exit_bundle.ray_id for part in partitions]), trace.exit_bundle.ray_id):
+            raise ValueError("Partitioned Gun history IDs differ from the merged source")
     if equal_time is not None:
         history_shape = np.shape(equal_time.x_m)
         if (len(history_shape) != 2 or history_shape[1:] != shape
@@ -408,6 +416,7 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
     from temsim.optics.electron_gun.source import trace_source_to_exit
     gun_trace = None
     saved_section = getattr(existing_simulation, "section_checkpoint", None)
+    growth_section = saved_section
     if saved_section is not None:
         from temsim.physics.particle_sections import (
             gun_dependency_signature, validate_section_checkpoint,
@@ -420,7 +429,11 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
             saved_section = None
     if gun_trace is None:
         saved_section = None
-        gun_trace = trace_source_to_exit(s)
+        previous_gun = getattr(existing_simulation, "gun_trace", None)
+        from temsim.physics.incremental_particles import validate_particle_count_growth
+        validate_particle_count_growth(existing_simulation, s)
+        gun_trace = (trace_source_to_exit(s, previous_trace=previous_gun)
+                     if getattr(previous_gun, "incremental_source", None) is not None else trace_source_to_exit(s))
     else:
         report_transport_progress("Reusing the executed electron-gun checkpoint")
     _validate_gun_flight_times(gun_trace)
@@ -500,7 +513,44 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
     if not clocks_reusable or not energies_reusable:
         source_matches = False
 
-    if (
+    from temsim.physics.incremental_particles import column_growth_prefix, extend_column_segment
+    growth_count = column_growth_prefix(getattr(existing_simulation, "gun_trace", None), gun_trace)
+    incremental_incident = None
+    if growth_count and unified_plan and growth_section is not None:
+        from temsim.physics.particle_sections import validate_section_checkpoint, _digest_arrays
+        from temsim.physics.ray_identity import emitted_source_identity
+        try:
+            validate_section_checkpoint(growth_section)
+            old_incident = next(item for item in growth_section.segments if item.name == "incident")
+        except (ValueError, TypeError, AttributeError, StopIteration):
+            old_incident = None
+        if old_incident is not None:
+            initial = (x, tx, y, ty, emitted.flight_time_s)
+            identity = emitted_source_identity(gun_trace)
+            survival = (emitted.alive, gun_trace.blocked_z_mm, gun_trace.blocked_key)
+            dependency = _digest_arrays(*initial, dE, gun_exit_energy, emitted.weight,
+                *survival[:2], *identity, np.asarray(survival[2], dtype=str), np.asarray(""))
+            incremental_incident = extend_column_segment(s, old_incident, incident_plan,
+                name="incident", start=float(gun.exit_plane_z_mm), stop=float(s.sample.z_mm),
+                initial=initial, energy=dE, weights=emitted.weight, identity=identity,
+                survival=survival, events=pre_events, boundary=math.inf,
+                initial_kicks=True, save_z_mm=(), dependency_context="",
+                kinetic0=gun_exit_energy, preserve_existing_mesh=False, dependency=dependency)
+    if incremental_incident is not None:
+        column = incremental_incident.branch
+        incident_plan = incremental_incident.plan
+        incident_checkpoints = incremental_incident.checkpoints
+        keep = np.asarray(gun_trace.z_mm) < gun.exit_plane_z_mm
+        z = np.r_[gun_trace.z_mm[keep], column.z]
+        X, TX, Y, TY, TIMES = (np.vstack((getattr(gun_trace, source)[keep], getattr(column, target)))
+            for source, target in (("x_m", "x"), ("tx_rad", "tx"), ("y_m", "y"),
+                                   ("ty_rad", "ty"), ("flight_time_s", "flight_time_s")))
+        ENERGIES = np.vstack((np.full(np.shape(gun_trace.x_m), np.nan)[keep], column.kinetic_energy_ev))
+        cache_mode = "appended_population"
+        resume_z_mm = float(s.sample.z_mm)
+        reused_prefix_rows = len(z)
+        reused_plan_nodes = len(incident_plan.z_mm)
+    elif (
         source_matches
         and previous_plan is not None
         and previous_checkpoints is not None
@@ -649,7 +699,11 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
     keys=list(gun_trace.blocked_key)
     if incident_medium is not None:
         alive, blocked, keys = incident_medium.merge_stops(alive, blocked, keys)
-    if getattr(incident_plan, "unified_runtime", None) is not None:
+    if incremental_incident is not None:
+        alive = incremental_incident.branch.alive.copy()
+        blocked = incremental_incident.branch.blocked_z.copy()
+        keys = list(incremental_incident.branch.blocked_key)
+    elif getattr(incident_plan, "unified_runtime", None) is not None:
         from temsim.physics.unified_field_particle import merge_unified_stops
         alive,blocked,keys=merge_unified_stops(z_column,alive,blocked,keys)
     else:
@@ -712,6 +766,9 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
             INCIDENT_CHECKPOINT_MEMORY_BUDGET_BYTES
         ),
         "field_sigma_cutoff": FIELD_SIGMA_CUTOFF,
+        "incremental_gun_reused_original_count": int((gun_trace.incremental_source or {}).get("reused_original_count", 0)),
+        "incremental_column_reused_original_count": growth_count if incremental_incident is not None else 0,
+        "incremental_column_transported_original_count": n-growth_count if incremental_incident is not None else n,
     }
 
     gun_field_end,gun_diagnostic_end=gun.diagnostic_waist_region_mm
@@ -787,7 +844,8 @@ def run(s, *, resolved_layout=None, existing_simulation=None, optical_only=False
             (alive, blocked, keys), post_events, previous_post, math.inf, initial_kicks=False,
             initial_kinetic_energy_ev=ENERGIES[-1],
             dependency_context="unified-optical-reference-v1" if optical_only else "",
-            preserve_existing_mesh=bool(optical_only))
+            preserve_existing_mesh=bool(optical_only),
+            population_previous=previous_post if incremental_incident is not None else None)
         post.branch.interaction_kind = "optical_reference" if optical_only else "vacuum"
         post.branch.colour = _interaction_colour(post.branch.interaction_kind)
         if optical_only:
