@@ -31,6 +31,8 @@ _PROVIDERS = {
     "analytic_magnetic": ("magnetic", "temsim.physics.analytic_potential", "AnalyticMagneticPotential"),
     "analytic_domain": ("magnetic", "temsim.physics.analytic_potential_domain", "AnalyticPotentialDomain"),
     "high_order_round": ("magnetic", "temsim.physics.high_order_round_lens", "HighOrderRoundLensPotential"),
+    "annular_coil": ("magnetic", "temsim.physics.annular_coil_potential", "AnnularCoilPotential"),
+    "copper_coil_assembly": ("magnetic", "temsim.physics.copper_coil_field_provider", "CopperCoilAssemblyPotential"),
     "regular_axisymmetric": ("magnetic", "temsim.physics.regular_axisymmetric_magnetic_potential", "RegularAxisymmetricMagneticPotential"),
     "electric_snapshot": ("electric", "temsim.physics.electric_potential_snapshot", "ElectricPotentialSnapshot"),
 }

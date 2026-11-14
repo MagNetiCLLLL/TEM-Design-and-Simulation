@@ -17,7 +17,22 @@ class ModelInspectorPage(QWidget):
         self._state = None
         self._completed_diagnostics = {}
         self._completed_mode = None
+        self._completed_round_lens_choice = None
         self._completed_aberrations = {}
+        from temsim.round_lens_models import ROUND_LENS_FIELD_MODELS, GAUSSIAN_GEOMETRY_COUPLINGS
+        self.round_lens_model = QComboBox()
+        self.round_lens_model.setObjectName("roundLensFieldModel")
+        for key, label in ROUND_LENS_FIELD_MODELS.items():
+            self.round_lens_model.addItem(label, key)
+        self.gaussian_geometry_coupling = QComboBox()
+        self.gaussian_geometry_coupling.setObjectName("gaussianGeometryCoupling")
+        for key, label in GAUSSIAN_GEOMETRY_COUPLINGS.items():
+            self.gaussian_geometry_coupling.addItem(label, key)
+        self.round_lens_model.currentIndexChanged.connect(self._round_lens_model_changed)
+        self.gaussian_geometry_coupling.currentIndexChanged.connect(self._gaussian_geometry_changed)
+        self.round_lens_hint = QLabel()
+        self.round_lens_hint.setWordWrap(True)
+        self.round_lens_hint.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         self.gun_source_button = QPushButton("FEG tip in Physical Layout…")
         self.gun_source_button.setToolTip("Open tip geometry and emission in the shared Physical Layout editor")
         self.gun_source_button.clicked.connect(self._edit_gun_source)
@@ -53,6 +68,8 @@ class ModelInspectorPage(QWidget):
         self.padding.setToolTip("Finite boundary padding factor (1.5–10). Increase it and compare results to check domain convergence.")
         generate = QPushButton("Use geometry field")
         reset = QPushButton("Use analytic field")
+        self.geometry_field_button = generate
+        self.analytic_field_button = reset
         generate.clicked.connect(self._apply_field)
         reset.clicked.connect(self._reset_field)
         controls = QHBoxLayout()
@@ -162,6 +179,12 @@ class ModelInspectorPage(QWidget):
         fit_evidence_layout.addWidget(self.export_fit)
         tables.addTab(fit_evidence_page, "Aberration evidence")
         layout = QVBoxLayout(self)
+        round_controls = QHBoxLayout()
+        round_controls.addWidget(QLabel("Round-lens field"))
+        round_controls.addWidget(self.round_lens_model)
+        round_controls.addWidget(self.gaussian_geometry_coupling)
+        layout.addLayout(round_controls)
+        layout.addWidget(self.round_lens_hint)
         layout.addLayout(controls)
         layout.addLayout(material_controls)
         layout.addWidget(self.material_hint)
@@ -201,6 +224,48 @@ class ModelInspectorPage(QWidget):
         self._load_field()
         self._load_mode()
         self.refresh()
+
+    def _refresh_round_lens_controls(self):
+        if self._state is None:
+            return
+        from temsim.simulation_modes import mode_key
+        from temsim.round_lens_models import round_lens_model_description
+        shared = mode_key(self._state) == "unified"
+        model = getattr(self._state, "round_lens_field_model", "gaussian")
+        coupling = getattr(self._state, "gaussian_geometry_coupling", "fixed_calibration")
+        for widget, key in ((self.round_lens_model, model), (self.gaussian_geometry_coupling, coupling)):
+            widget.blockSignals(True)
+            widget.setCurrentIndex(widget.findData(key))
+            widget.blockSignals(False)
+        self.round_lens_model.model().item(self.round_lens_model.findData("copper_coil")).setEnabled(shared)
+        self.gaussian_geometry_coupling.model().item(self.gaussian_geometry_coupling.findData("axial_length")).setEnabled(shared and model == "gaussian")
+        self.round_lens_hint.setText(round_lens_model_description(self._state))
+        self.geometry_field_button.setEnabled(model != "copper_coil")
+        self.analytic_field_button.setEnabled(model != "copper_coil")
+        self.round_lens_model.setToolTip("Copper windings require shared Finite-Field Optics; current lens drives are retained.")
+        self.gaussian_geometry_coupling.setToolTip("Optional engineering scaling of Gaussian a by actual/reference current-bearing coil length. Fixed calibration is the historical default.")
+
+    def _change_round_option(self, widget, setter, parameter):
+        if self._state is None:
+            return
+        try:
+            changed = setter(self._state, widget.currentData())
+        except ValueError as exc:
+            self._refresh_round_lens_controls()
+            self.error.emit(str(exc))
+            return
+        self._load_field()
+        self.refresh()
+        if changed:
+            self.changed.emit(parameter)
+
+    def _round_lens_model_changed(self, _index):
+        from temsim.round_lens_models import set_round_lens_field_model
+        self._change_round_option(self.round_lens_model, set_round_lens_field_model, "round_lens_field_model")
+
+    def _gaussian_geometry_changed(self, _index):
+        from temsim.round_lens_models import set_gaussian_geometry_coupling
+        self._change_round_option(self.gaussian_geometry_coupling, set_gaussian_geometry_coupling, "gaussian_geometry_coupling")
 
     def _edit_gun_source(self):
         if self._state is None:
@@ -338,6 +403,8 @@ class ModelInspectorPage(QWidget):
         if self._state is None:
             return
         try:
+            if getattr(self._state, "round_lens_field_model", "gaussian") == "copper_coil":
+                raise ValueError("Select Gaussian / saved lens models before applying a per-lens geometry recipe")
             nonlinear = self.field_solver.currentData() == "axisymmetric_nonlinear_fem"
             if not self.ampere_turns.text().strip():
                 raise ValueError("Enter ampere-turns at 100%; the material default does not define coil excitation")
@@ -383,6 +450,9 @@ class ModelInspectorPage(QWidget):
 
     def _reset_field(self):
         if self._state is None:
+            return
+        if getattr(self._state, "round_lens_field_model", "gaussian") == "copper_coil":
+            self.error.emit("Select Gaussian / saved lens models before changing a per-lens recipe")
             return
         key = self.lens.currentData()
         from temsim.simulation_modes import promote_custom_mode
@@ -431,6 +501,16 @@ class ModelInspectorPage(QWidget):
     def refresh(self):
         if self._state is None:
             return
+        self._refresh_round_lens_controls()
+        if getattr(self._state, "round_lens_field_model", "gaussian") == "copper_coil":
+            try:
+                lens = next(item for item in self._state.lenses if item.key == self.lens.currentData())
+                part = self._state._resolved_assembly.part(lens.key)
+                reference_ni = float(part.data["air_core_reference_ampere_turns"])
+                actual_ni = reference_ni*lens.percent*.01*getattr(lens, "polarity", 1) if lens.enabled else 0.
+                self.current_summary.setText(f"Air-core NI {actual_ni:.6g} A-turn | reference {reference_ni:.6g} at 100% | electrical current unavailable: winding turns unspecified")
+            except (AttributeError, KeyError, StopIteration, TypeError, ValueError):
+                self.current_summary.setText("Air-core reference ampere-turns require a valid physical lens definition")
         self._refresh_stigmators()
         self._update_aberration_mode_availability()
         self.validation_page.set_context(self._state, self.lens.currentData())
@@ -454,7 +534,10 @@ class ModelInspectorPage(QWidget):
         installed = self._installed_lenses(self._state)
         for lens in installed:
             descriptor = self._state.lens_field_map_descriptors.get(lens.key, {})
-            if selected_mode in {"ideal", "analytical"}:
+            if getattr(self._state, "round_lens_field_model", "gaussian") == "copper_coil":
+                evidence = "Copper-coil field requested"
+                detail = "Declared winding dimensions and ampere-turns in vacuum. Pole pieces, iron and saturation are ignored; native non-round sources remain active. This stored optical working point is not automatically recalibrated."
+            elif selected_mode in {"ideal", "analytical"}:
                 evidence = "Parameterized analytic field"
                 detail = "Saved field recipes are retained but inactive in this global model. Pole/material geometry does not solve the field boundary-value problem."
             elif descriptor.get("solver") == "axisymmetric_linear_fem":
@@ -479,7 +562,9 @@ class ModelInspectorPage(QWidget):
         for system in ("probe", "image"):
             mode = getattr(self._state, f"{system}_aberrations").get("mode", "manual")
             rows.append((f"{system.title()} aberrations", "Approximate", mode.replace("_", " ").title(), "Manual and field-derived coefficients are mutually exclusive. Field fits report finite-pupil residuals and unmapped round lenses; first-order focus is not applied twice."))
-        diagnostics = self._completed_diagnostics if selected_mode == self._completed_mode else {}
+        round_choice = (getattr(self._state, "round_lens_field_model", "gaussian"),
+                        getattr(self._state, "gaussian_geometry_coupling", "fixed_calibration"))
+        diagnostics = self._completed_diagnostics if selected_mode == self._completed_mode and round_choice == self._completed_round_lens_choice else {}
         from temsim.physics.lens_field_provider import lens_geometry_binding, _fingerprint
         for key, diagnostic in diagnostics.items():
             if key not in {lens.key for lens in installed}:
@@ -561,6 +646,8 @@ class ModelInspectorPage(QWidget):
         snapshot = getattr(result, "state_snapshot", None)
         from temsim.simulation_modes import mode_key
         self._completed_mode = mode_key(snapshot)
+        self._completed_round_lens_choice = (getattr(snapshot, "round_lens_field_model", "gaussian"),
+                                             getattr(snapshot, "gaussian_geometry_coupling", "fixed_calibration"))
         self._completed_diagnostics = dict(getattr(snapshot, "_field_provider_diagnostics", {}))
         self._completed_aberrations = {
             system: {"system": system, "signature": signature, "coefficients": asdict(values[1]),

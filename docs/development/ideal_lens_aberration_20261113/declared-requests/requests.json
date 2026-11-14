@@ -1,0 +1,174 @@
+[
+  {
+    "name": "fixed-b0.15-s3",
+    "family": "fixed_source",
+    "peak_t": 0.15,
+    "sigma_mm": 3.0,
+    "source_radius_mm": 0.95,
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "fixed-b0.15-s6",
+    "family": "fixed_source",
+    "peak_t": 0.15,
+    "sigma_mm": 6.0,
+    "source_radius_mm": 0.95,
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "fixed-b0.15-s12",
+    "family": "fixed_source",
+    "peak_t": 0.15,
+    "sigma_mm": 12.0,
+    "source_radius_mm": 0.95,
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "fixed-b0.3-s3",
+    "family": "fixed_source",
+    "peak_t": 0.3,
+    "sigma_mm": 3.0,
+    "source_radius_mm": 0.95,
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "fixed-b0.3-s6",
+    "family": "fixed_source",
+    "peak_t": 0.3,
+    "sigma_mm": 6.0,
+    "source_radius_mm": 0.95,
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "fixed-b0.3-s12",
+    "family": "fixed_source",
+    "peak_t": 0.3,
+    "sigma_mm": 12.0,
+    "source_radius_mm": 0.95,
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "fixed-b0.6-s3",
+    "family": "fixed_source",
+    "peak_t": 0.6,
+    "sigma_mm": 3.0,
+    "source_radius_mm": 0.95,
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "fixed-b0.6-s6",
+    "family": "fixed_source",
+    "peak_t": 0.6,
+    "sigma_mm": 6.0,
+    "source_radius_mm": 0.95,
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "fixed-b0.6-s12",
+    "family": "fixed_source",
+    "peak_t": 0.6,
+    "sigma_mm": 12.0,
+    "source_radius_mm": 0.95,
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "matched-b0.15-s6",
+    "family": "matched_paraxial_edge",
+    "peak_t": 0.15,
+    "sigma_mm": 6.0,
+    "paraxial_edge_mrad": 10.0,
+    "tube_diameters_mm": [
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "matched-b0.3-s6",
+    "family": "matched_paraxial_edge",
+    "peak_t": 0.3,
+    "sigma_mm": 6.0,
+    "paraxial_edge_mrad": 10.0,
+    "tube_diameters_mm": [
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "matched-b0.6-s6",
+    "family": "matched_paraxial_edge",
+    "peak_t": 0.6,
+    "sigma_mm": 6.0,
+    "paraxial_edge_mrad": 10.0,
+    "tube_diameters_mm": [
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "filled-tube1.5",
+    "family": "matched_tube_filling",
+    "peak_t": 0.3,
+    "sigma_mm": 6.0,
+    "source_radius_mm": 0.7124999999999999,
+    "tube_diameters_mm": [
+      1.5
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  },
+  {
+    "name": "filled-tube5.76",
+    "family": "matched_tube_filling",
+    "peak_t": 0.3,
+    "sigma_mm": 6.0,
+    "source_radius_mm": 2.7359999999999998,
+    "tube_diameters_mm": [
+      5.76
+    ],
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+  }
+]

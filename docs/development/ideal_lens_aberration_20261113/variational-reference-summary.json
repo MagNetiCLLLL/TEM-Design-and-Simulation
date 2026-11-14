@@ -1,0 +1,138 @@
+{
+  "scope": "Zero-current independent Gaussian lens variational ODE reference only; no finite source or clipped fit",
+  "reference_report_sha256": "97c1d7b2e1e70fd56a9aaf287571a1cdcd372d493fb929426def49f091ebad40",
+  "driver_sha256_as_executed": "8b2ca70792499848af1e38fb2fe316dbc0d220926be6807db04119e2cd52c945",
+  "rows": [
+    {
+      "case": "peak0.15T-sigma3mm",
+      "peak_t": 0.15,
+      "sigma_mm": 3.0,
+      "kappa": 0.10710930740000732,
+      "cs_mm": 92190.3377712653,
+      "cc_mm": 181.02469310398385,
+      "first_focus_z_mm": 148.7218528595379,
+      "image_radial_slope_per_m": -6.723269165547918,
+      "input_radius_mm_per_pupil_mrad": 0.14873716571163104,
+      "cs_over_sigma": 30730.112590421766,
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "case": "peak0.15T-sigma6mm",
+      "peak_t": 0.15,
+      "sigma_mm": 6.0,
+      "kappa": 0.21421861480001464,
+      "cs_mm": 3196.7937762263396,
+      "cc_mm": 90.59649707487603,
+      "first_focus_z_mm": 76.08863239287642,
+      "image_radial_slope_per_m": -13.12118099545154,
+      "input_radius_mm_per_pupil_mrad": 0.07621265192109233,
+      "cs_over_sigma": 532.79896270439,
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "case": "peak0.15T-sigma12mm",
+      "peak_t": 0.15,
+      "sigma_mm": 12.0,
+      "kappa": 0.4284372296000293,
+      "cs_mm": 157.24134176167215,
+      "cc_mm": 46.0397556249485,
+      "first_focus_z_mm": 41.0678728467853,
+      "image_radial_slope_per_m": -23.74626712655052,
+      "input_radius_mm_per_pupil_mrad": 0.04211188203479391,
+      "cs_over_sigma": 13.103445146806012,
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "case": "peak0.3T-sigma3mm",
+      "peak_t": 0.3,
+      "sigma_mm": 3.0,
+      "kappa": 0.21421861480001464,
+      "cs_mm": 1598.3968881131698,
+      "cc_mm": 45.29824853743801,
+      "first_focus_z_mm": 38.04431619643821,
+      "image_radial_slope_per_m": -26.24236199090308,
+      "input_radius_mm_per_pupil_mrad": 0.03810632596054617,
+      "cs_over_sigma": 532.79896270439,
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "case": "peak0.3T-sigma6mm",
+      "peak_t": 0.3,
+      "sigma_mm": 6.0,
+      "kappa": 0.4284372296000293,
+      "cs_mm": 78.62067088083683,
+      "cc_mm": 23.019877812474423,
+      "first_focus_z_mm": 20.533936423392795,
+      "image_radial_slope_per_m": -47.492534253101,
+      "input_radius_mm_per_pupil_mrad": 0.02105594101739697,
+      "cs_over_sigma": 13.103445146806138,
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "case": "peak0.3T-sigma12mm",
+      "peak_t": 0.3,
+      "sigma_mm": 12.0,
+      "kappa": 0.8568744592000586,
+      "cs_mm": 12.987322632391942,
+      "cc_mm": 14.633538959283642,
+      "first_focus_z_mm": 11.29625069515171,
+      "image_radial_slope_per_m": -63.775163337845285,
+      "input_radius_mm_per_pupil_mrad": 0.015680085281829185,
+      "cs_over_sigma": 1.082276886032662,
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "case": "peak0.6T-sigma3mm",
+      "peak_t": 0.6,
+      "sigma_mm": 3.0,
+      "kappa": 0.4284372296000293,
+      "cs_mm": 39.31033544041841,
+      "cc_mm": 11.509938906237211,
+      "first_focus_z_mm": 10.266968211696398,
+      "image_radial_slope_per_m": -94.985068506202,
+      "input_radius_mm_per_pupil_mrad": 0.010527970508698485,
+      "cs_over_sigma": 13.103445146806138,
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "case": "peak0.6T-sigma6mm",
+      "peak_t": 0.6,
+      "sigma_mm": 6.0,
+      "kappa": 0.8568744592000586,
+      "cs_mm": 6.493661316195832,
+      "cc_mm": 7.316769479641707,
+      "first_focus_z_mm": 5.648125347575672,
+      "image_radial_slope_per_m": -127.55032667569058,
+      "input_radius_mm_per_pupil_mrad": 0.00784004264091459,
+      "cs_over_sigma": 1.0822768860326386,
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "case": "peak0.6T-sigma12mm",
+      "peak_t": 0.6,
+      "sigma_mm": 12.0,
+      "kappa": 1.7137489184001171,
+      "cs_mm": 4.553414256842428,
+      "cc_mm": 7.836473726133728,
+      "first_focus_z_mm": -0.5837201535904044,
+      "image_radial_slope_per_m": -109.12408936136667,
+      "input_radius_mm_per_pupil_mrad": 0.009163879450012905,
+      "cs_over_sigma": 0.37945118807020234,
+      "passed_numerical_reference_checks": true
+    }
+  ],
+  "worst_step_repeatability": {
+    "relative_cs": 1.892059493191279e-14,
+    "relative_cc": 4.062525411502694e-11,
+    "absolute_focus_over_sigma": 1.6375789613221059e-12,
+    "relative_pupil_conversion": 5.679003588292614e-16
+  },
+  "worst_tail_repeatability": {
+    "relative_cs": 2.3525509069498756e-14,
+    "relative_cc": 1.2481237637461702e-11,
+    "absolute_focus_over_sigma": 3.1080462277917796e-14,
+    "relative_pupil_conversion": 1.3181826256397922e-15
+  },
+  "worst_equal_kappa_dimensionless_scaling_relative_error": 3.231526462611398e-14,
+  "all_numerical_reference_checks_pass": true
+}

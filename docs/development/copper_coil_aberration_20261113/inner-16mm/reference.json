@@ -1,0 +1,141 @@
+{
+  "checks": {
+    "image_quadrature_difference_m": 6.938893903907228e-18,
+    "image_step_difference_m": 4.454769886308441e-15,
+    "qualification": "Numerical sensitivity of the prescribed copper-coil model; not a measured-lens calibration",
+    "relative_cs_quadrature_change": 5.551115123125783e-16,
+    "relative_cs_step_change": 3.8902214782865485e-13
+  },
+  "primary": {
+    "coefficients": {
+      "cc_mm": 50.995210572704835,
+      "cs_mm": 434.01813397440463,
+      "energy_relative_step": 0.0005,
+      "field_digest": "1d2d15faa7482e414bd29af60b45c0d22fb5ea06c9a3885b680f003b9d9b921f",
+      "image_z_m": 0.044178909884546855,
+      "linear_focus_residual_per_initial_height": [
+        -5.709018327526572e-14,
+        -7.437410062816063e-14
+      ],
+      "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+    },
+    "field_digest": "1d2d15faa7482e414bd29af60b45c0d22fb5ea06c9a3885b680f003b9d9b921f",
+    "focus": {
+      "field_digest": "1d2d15faa7482e414bd29af60b45c0d22fb5ea06c9a3885b680f003b9d9b921f",
+      "image_slopes_per_initial_position_m1": [
+        [
+          -14.1547658978928,
+          17.393181672038885
+        ],
+        [
+          -17.393181672038885,
+          -14.1547658978928
+        ]
+      ],
+      "image_z_m": 0.044178909884546855,
+      "initial_condition": "h=1,h_prime=0; mechanical slope matrix fixed at reference energy",
+      "initial_slopes_per_position_m1": [
+        [
+          0.0,
+          -0.004552921119575996
+        ],
+        [
+          0.004552921119575996,
+          0.0
+        ]
+      ],
+      "larmor_angle_rad": 0.8876904786172655,
+      "radial_slope_per_m": -22.42498977258849
+    },
+    "maximum_step_m": 0.001,
+    "quadrature_order": 12
+  },
+  "quadrature_refined": {
+    "coefficients": {
+      "cc_mm": 50.99521057279348,
+      "cs_mm": 434.01813397440486,
+      "energy_relative_step": 0.0005,
+      "field_digest": "90cc5014b2df3446872b7270417de95c9fabbf14ba2612aa3b6ac4e56b317517",
+      "image_z_m": 0.04417890988454685,
+      "linear_focus_residual_per_initial_height": [
+        -5.702599850665457e-14,
+        -7.432162524301233e-14
+      ],
+      "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+    },
+    "field_digest": "90cc5014b2df3446872b7270417de95c9fabbf14ba2612aa3b6ac4e56b317517",
+    "focus": {
+      "field_digest": "90cc5014b2df3446872b7270417de95c9fabbf14ba2612aa3b6ac4e56b317517",
+      "image_slopes_per_initial_position_m1": [
+        [
+          -14.1547658978928,
+          17.393181672038892
+        ],
+        [
+          -17.393181672038892,
+          -14.1547658978928
+        ]
+      ],
+      "image_z_m": 0.04417890988454685,
+      "initial_condition": "h=1,h_prime=0; mechanical slope matrix fixed at reference energy",
+      "initial_slopes_per_position_m1": [
+        [
+          0.0,
+          -0.004552921119575996
+        ],
+        [
+          0.004552921119575996,
+          0.0
+        ]
+      ],
+      "larmor_angle_rad": 0.8876904786172657,
+      "radial_slope_per_m": -22.424989772588493
+    },
+    "maximum_step_m": 0.001,
+    "quadrature_order": 24
+  },
+  "step_refined": {
+    "coefficients": {
+      "cc_mm": 50.99521057274692,
+      "cs_mm": 434.01813397423604,
+      "energy_relative_step": 0.0005,
+      "field_digest": "90cc5014b2df3446872b7270417de95c9fabbf14ba2612aa3b6ac4e56b317517",
+      "image_z_m": 0.04417890988454239,
+      "linear_focus_residual_per_initial_height": [
+        -1.2299189444675562e-15,
+        1.1041514924592377e-15
+      ],
+      "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+    },
+    "field_digest": "90cc5014b2df3446872b7270417de95c9fabbf14ba2612aa3b6ac4e56b317517",
+    "focus": {
+      "field_digest": "90cc5014b2df3446872b7270417de95c9fabbf14ba2612aa3b6ac4e56b317517",
+      "image_slopes_per_initial_position_m1": [
+        [
+          -14.154765897894242,
+          17.39318167204065
+        ],
+        [
+          -17.39318167204065,
+          -14.154765897894242
+        ]
+      ],
+      "image_z_m": 0.04417890988454239,
+      "initial_condition": "h=1,h_prime=0; mechanical slope matrix fixed at reference energy",
+      "initial_slopes_per_position_m1": [
+        [
+          0.0,
+          -0.004552921119575996
+        ],
+        [
+          0.004552921119575996,
+          0.0
+        ]
+      ],
+      "larmor_angle_rad": 0.8876904786172654,
+      "radial_slope_per_m": -22.42498977259077
+    },
+    "maximum_step_m": 0.0005,
+    "quadrature_order": 24
+  }
+}

@@ -573,6 +573,8 @@ class State:
     # ideal key) without changing operating values. ideal_thin is a separate mode.
     simulation_mode: str = "custom"
     simulation_mode_profiles: dict = field(default_factory=dict, repr=False)
+    round_lens_field_model: str = field(default="gaussian", kw_only=True)
+    gaussian_geometry_coupling: str = field(default="fixed_calibration", kw_only=True)
 
     illumination_mode: str = "STEM"
 
@@ -672,6 +674,9 @@ class State:
         self.image_corrector_initialized_keys = tuple(sorted(self.image_corrector_initialized_keys))
         from temsim.simulation_modes import validate_mode, normalise_profiles, validate_model_recipes
         self.simulation_mode = validate_mode(self.simulation_mode)
+        from temsim.round_lens_models import validate_round_lens_selection
+        validate_round_lens_selection(self.round_lens_field_model,
+                                      self.gaussian_geometry_coupling, self.simulation_mode)
         self.simulation_mode_profiles = normalise_profiles(self.simulation_mode_profiles)
         validate_model_recipes(self.lens_field_map_descriptors)
         self.column_current_limit_percent = float(
@@ -1802,6 +1807,12 @@ class State:
 
             "simulation_mode": self.simulation_mode,
             "simulation_mode_profiles": deepcopy(self.simulation_mode_profiles),
+            # Omit historical defaults so old snapshot payload identities remain
+            # reproducible; explicit alternative laws travel to every worker.
+            **({"round_lens_field_model": self.round_lens_field_model}
+               if self.round_lens_field_model != "gaussian" else {}),
+            **({"gaussian_geometry_coupling": self.gaussian_geometry_coupling}
+               if self.gaussian_geometry_coupling != "fixed_calibration" else {}),
 
             "projector_mode":self.projector_mode,
             "column_current_limit_percent":float(
@@ -2492,6 +2503,8 @@ class State:
             component_placements=component_placements,
             simulation_mode=d.get("simulation_mode", "custom"),
             simulation_mode_profiles=d.get("simulation_mode_profiles", {}),
+            round_lens_field_model=d.get("round_lens_field_model", "gaussian"),
+            gaussian_geometry_coupling=d.get("gaussian_geometry_coupling", "fixed_calibration"),
             lens_field_map_descriptors={
                 str(key): dict(value)
                 for key, value in d.get(

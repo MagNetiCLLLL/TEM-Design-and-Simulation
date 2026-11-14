@@ -1,0 +1,93 @@
+[
+  {
+    "inner_diameter_mm": 12.0,
+    "outer_diameter_mm": 20.0,
+    "length_mm": 10.0,
+    "ampere_turns": 3000.0,
+    "quadrature_order": 12,
+    "edge_angle_mrad": 10.0,
+    "tube_diameter_mm": 5.76,
+    "start_m": -0.2,
+    "focus_search_end_m": 5.0,
+    "step_over_scale": 0.125,
+    "name": "baseline"
+  },
+  {
+    "inner_diameter_mm": 8.0,
+    "outer_diameter_mm": 20.0,
+    "length_mm": 10.0,
+    "ampere_turns": 3000.0,
+    "quadrature_order": 12,
+    "edge_angle_mrad": 10.0,
+    "tube_diameter_mm": 5.76,
+    "start_m": -0.2,
+    "focus_search_end_m": 5.0,
+    "step_over_scale": 0.125,
+    "name": "inner-8mm"
+  },
+  {
+    "inner_diameter_mm": 16.0,
+    "outer_diameter_mm": 20.0,
+    "length_mm": 10.0,
+    "ampere_turns": 3000.0,
+    "quadrature_order": 12,
+    "edge_angle_mrad": 10.0,
+    "tube_diameter_mm": 5.76,
+    "start_m": -0.2,
+    "focus_search_end_m": 5.0,
+    "step_over_scale": 0.125,
+    "name": "inner-16mm"
+  },
+  {
+    "inner_diameter_mm": 12.0,
+    "outer_diameter_mm": 20.0,
+    "length_mm": 10.0,
+    "ampere_turns": 1500.0,
+    "quadrature_order": 12,
+    "edge_angle_mrad": 10.0,
+    "tube_diameter_mm": 5.76,
+    "start_m": -0.2,
+    "focus_search_end_m": 5.0,
+    "step_over_scale": 0.125,
+    "name": "ni-1500"
+  },
+  {
+    "inner_diameter_mm": 12.0,
+    "outer_diameter_mm": 20.0,
+    "length_mm": 10.0,
+    "ampere_turns": 6000.0,
+    "quadrature_order": 12,
+    "edge_angle_mrad": 10.0,
+    "tube_diameter_mm": 5.76,
+    "start_m": -0.2,
+    "focus_search_end_m": 5.0,
+    "step_over_scale": 0.125,
+    "name": "ni-6000"
+  },
+  {
+    "inner_diameter_mm": 12.0,
+    "outer_diameter_mm": 20.0,
+    "length_mm": 5.0,
+    "ampere_turns": 3000.0,
+    "quadrature_order": 12,
+    "edge_angle_mrad": 10.0,
+    "tube_diameter_mm": 5.76,
+    "start_m": -0.2,
+    "focus_search_end_m": 5.0,
+    "step_over_scale": 0.125,
+    "name": "length-5mm"
+  },
+  {
+    "inner_diameter_mm": 12.0,
+    "outer_diameter_mm": 20.0,
+    "length_mm": 20.0,
+    "ampere_turns": 3000.0,
+    "quadrature_order": 12,
+    "edge_angle_mrad": 10.0,
+    "tube_diameter_mm": 5.76,
+    "start_m": -0.2,
+    "focus_search_end_m": 5.0,
+    "step_over_scale": 0.125,
+    "name": "length-20mm"
+  }
+]

@@ -1,0 +1,55 @@
+{
+  "digest": "d95c2c507fdb653087c0813ca18c50a5da90c5af7e362db547492ba8525367c0",
+  "metadata": {
+    "ampere_turns": 3000.0,
+    "axial_domain": "all_z",
+    "center_z_m": 0.0,
+    "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+    "derivative_order": 2,
+    "domain": "Finite vacuum XYZ excluding closed winding volume",
+    "empirical_aberrations_applied": false,
+    "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+    "inner_radius_m": 0.006,
+    "length_m": 0.005,
+    "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+    "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification",
+    "outer_radius_m": 0.01,
+    "permeability_h_per_m": 1.25663706127e-06,
+    "pole_piece_magnetism": false,
+    "quadrature_order": 12,
+    "registration": {
+      "origin_global_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_local_to_global": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "relative_permeability": 1.0,
+    "schema": "air-core-annular-coil-potential-v1",
+    "source_id": "ideal-copper-coil",
+    "units": {
+      "A": "T m",
+      "B": "T",
+      "ampere_turns": "A turn",
+      "position": "m"
+    },
+    "wave_admission": false
+  }
+}

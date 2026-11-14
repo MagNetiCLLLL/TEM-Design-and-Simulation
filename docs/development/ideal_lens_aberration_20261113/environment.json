@@ -1,0 +1,17 @@
+{
+  "captured_at": "Final validation after the finite-source runs; no dependency installation occurred during the study",
+  "coherent_execution": "NONE",
+  "libraries": {
+    "matplotlib": "3.11.1",
+    "numba": "0.66.0",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "threadpoolctl": "3.6.0"
+  },
+  "numerical_threads": "One thread; main driver encloses execution in threadpool_limits(1)",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.4 | packaged by Anaconda, Inc. | (main, Jun 18 2024, 15:03:56) [MSC v.1929 64 bit (AMD64)]",
+  "python_executable": "E:\\tem_simulator_v2\\.venv\\Scripts\\python.exe",
+  "schema": "ideal-lens-final-environment-record-v1",
+  "scipy_rk_source_sha256": "54fb9365032395cd9c087df03b386972c6084108e1371b803d658ae97e171540"
+}

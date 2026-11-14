@@ -51,7 +51,8 @@ _UNITS = ("mrad", "keV", "eV", "kV", "MHz", "kHz", "Hz", "nm", "um", "mm", "deg"
 # a magnetic gradient is T/m, not m). Inverse powers below are field strengths,
 # not a blanket interpretation of every name ending in m2 or m3.
 _FIELD_UNITS = {"maximum_strength_m2": "m⁻²", "max_strength_m2": "m⁻²", "strength_m2": "m⁻²",
-                "maximum_strength_m3": "m⁻³", "max_strength_m3": "m⁻³", "strength_m3": "m⁻³"}
+                "maximum_strength_m3": "m⁻³", "max_strength_m3": "m⁻³", "strength_m3": "m⁻³",
+                "air_core_reference_ampere_turns": "A·turn", "coil_ampere_turn_fraction": "1"}
 _DETECTOR_UNITS = {"pixels": "pixels", "stem_fourdstem_charge_spread_sigma_px": "pixels",
     "stem_fourdstem_dark_electrons_per_pixel": "electrons/pixel/exposure",
     "stem_fourdstem_read_noise_electrons_rms": "electrons RMS",
@@ -64,6 +65,9 @@ _COMPOSITE_UNITS = (("electrons_per_nm2_s", "electrons/(nm² s)"),
                     ("na", "nA"), ("pa", "Pa"), ("mt", "mT"),
                     ("t", "T"), ("a", "A"))
 _FRIENDLY = {
+    "air_core_reference_ampere_turns": "Reference ampere-turns at 100% excitation",
+    "coil_ampere_turn_fraction": "Fraction of the owner's ampere-turns",
+    "gaussian_reference_coil_length_mm": "Reference winding length for Gaussian scaling",
     "rear_gun_role": "Rear gun component role",
     "rear_voltage_reference": "Rear electrode voltage reference",
     "rear_bias_kv": "Rear electrode voltage relative to reference",
@@ -141,6 +145,19 @@ def _meaning(part, path, by_key):
     field = str(relative[0]) if relative else ""
     label = _label(field, ("parts", "", *relative))
     profile = part.get("mechanical_profile", "")
+    if field == "air_core_reference_ampere_turns":
+        return label, "operating", (
+            "Total turns times conductor current at 100% excitation for this round-lens owner. "
+            "The copper-coil model multiplies this reference by excitation and polarity, then distributes it among "
+            "the owned windings. It does not specify turns and amperes separately or establish a thermal rating.")
+    if field == "coil_ampere_turn_fraction":
+        return label, "operating", (
+            "Positive share of the independently driven owner's total ampere-turns. Owned winding shares sum to one; "
+            "separate axial segments divide that same share by occupied cross-section, without duplicating current.")
+    if field == "gaussian_reference_coil_length_mm":
+        return label, "operating", (
+            "Frozen denominator of the optional actual/reference current-bearing winding-length rule for Gaussian a. "
+            "It is a model reference, not the current coil dimension or an independently measured field width.")
     if field in {"rear_voltage_reference", "rear_bias_kv"}:
         return label, "operating", (
             "Explicit rear-electrode connection: tip, extractor, gun_lens or ground, plus bias in kV. "
@@ -379,6 +396,14 @@ def _source(part, path, category):
     relative = _relative_path(path)
     field = str(relative[0]) if relative else ""
     metadata = part.get("parameter_metadata", {})
+    declared_field = metadata.get(field) if isinstance(metadata, Mapping) else None
+    if field == "air_core_reference_ampere_turns" and not isinstance(declared_field, Mapping):
+        status, note = part.get("air_core_reference_status", ""), part.get("air_core_reference_source", "")
+        if str(status).startswith("engineering_"):
+            return "estimated", str(note) or "Explicit engineering reference; not an OEM or measured current calibration."
+        return _source_from_text(status, note, explicit_field=True)
+    if field == "gaussian_reference_coil_length_mm" and not isinstance(declared_field, Mapping):
+        return "estimated", "Frozen engineering winding-length reference for an optional scaling rule; not a measured magnetic-field extent."
     if isinstance(metadata, Mapping):
         candidates = [".".join(map(str, relative)), field]
         for key in dict.fromkeys(candidates):

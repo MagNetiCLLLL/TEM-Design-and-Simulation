@@ -38,8 +38,9 @@ def _positive(value, name):
 
 
 def _field(field):
-    if type(field) is not HighOrderRoundLensPotential:
-        raise ValueError("Round-lens benchmark requires an immutable high-order potential")
+    from .annular_coil_potential import AnnularCoilPotential
+    if type(field) not in (HighOrderRoundLensPotential, AnnularCoilPotential):
+        raise ValueError("Round-lens benchmark requires an immutable high-order or annular-coil potential")
     if (field.registration.origin_global_m[:2] != (0., 0.)
             or not np.array_equal(field.registration.rotation_array, np.eye(3))):
         raise ValueError("Round-lens aberration reference requires a centred axis-aligned field")
@@ -156,7 +157,7 @@ def _linear_cubic_reference(field, energy_ev, start, stop, step, initial_slopes)
     def rhs(z, state):
         x, y, u, v, x3, y3, u3, v3 = state
         b, d, dd, ddd = field.axial_derivatives(z-origin, 3)
-        if field.radial_order == 1:
+        if getattr(field, "radial_order", 3) == 1:
             dd = ddd = 0.
         r2, s2 = x*x+y*y, u*u+v*v
         du = k*(v*b+.5*y*d)

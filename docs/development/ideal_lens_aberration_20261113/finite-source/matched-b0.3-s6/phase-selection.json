@@ -1,0 +1,133 @@
+{
+  "combined_2048_weights": "Explicit new population normalization of 1/2048; complete original IDs, no restoration of blocked current",
+  "historical_1024_weights_preserved": true,
+  "original_checkpoint_count": 193,
+  "original_directory": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.3-s6",
+  "phase_order": "x_m,y_m,dx_dz,dy_dz,flight_time_s; kinetic energy is stored separately",
+  "physical_scope": "Raw and selected characteristics after first tube contact are counterfactual vacuum continuation. Only the prefix before each original wall-ledger contact is physical.",
+  "raw_partition_byte_checks": [
+    {
+      "bytes": 7258349,
+      "checked_original_arrays": [
+        "z_m",
+        "phase",
+        "integration_z_m",
+        "source_id",
+        "kinetic_energy_ev",
+        "historical_population_weights"
+      ],
+      "original": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.3-s6\\characteristics-0.npz",
+      "partition": 0,
+      "selected_original_rows": [
+        0,
+        24,
+        48,
+        63,
+        72,
+        80,
+        96,
+        112,
+        120,
+        126,
+        127,
+        128,
+        144,
+        160,
+        168,
+        176,
+        192
+      ],
+      "sha256": "09e549fdf03fb58121eed85c96360e2033860f81a9eec57b40622e973e925e52"
+    },
+    {
+      "bytes": 7258406,
+      "checked_original_arrays": [
+        "z_m",
+        "phase",
+        "integration_z_m",
+        "source_id",
+        "kinetic_energy_ev",
+        "historical_population_weights"
+      ],
+      "original": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.3-s6\\characteristics-1.npz",
+      "partition": 1,
+      "selected_original_rows": [
+        0,
+        24,
+        48,
+        63,
+        72,
+        80,
+        96,
+        112,
+        120,
+        126,
+        127,
+        128,
+        144,
+        160,
+        168,
+        176,
+        192
+      ],
+      "sha256": "4325c0b3b6dcd3302f681b8f681f3fcab419c47eb71c5c2ef5e71d6848bf39d2"
+    }
+  ],
+  "scalar_checks": [
+    {
+      "absolute_current_and_interception_reproduced": true,
+      "all_original_focus_scalar_statistics_reproduced": true,
+      "population": 1024,
+      "tube_diameter_mm": 5.76
+    },
+    {
+      "absolute_current_and_interception_reproduced": true,
+      "all_original_focus_scalar_statistics_reproduced": true,
+      "population": 2048,
+      "tube_diameter_mm": 5.76
+    }
+  ],
+  "scalar_reproduction_relative_tolerance": 2e-13,
+  "schema": "ideal-lens-complete-population-phase-selection-v1",
+  "selected_checkpoint_count": 17,
+  "selected_original_rows": [
+    0,
+    24,
+    48,
+    63,
+    72,
+    80,
+    96,
+    112,
+    120,
+    126,
+    127,
+    128,
+    144,
+    160,
+    168,
+    176,
+    192
+  ],
+  "selected_z_m": [
+    -0.048,
+    -0.0220747738412277,
+    0.003850452317544599,
+    0.0199339364233928,
+    0.0200183114233928,
+    0.0200839364233928,
+    0.020233936423392797,
+    0.0203839364233928,
+    0.0204589364233928,
+    0.020515186423392798,
+    0.0205245614233928,
+    0.0205339364233928,
+    0.0206839364233928,
+    0.0208339364233928,
+    0.0209089364233928,
+    0.020983936423392798,
+    0.0211339364233928
+  ],
+  "selection_is_complete_trajectory": false,
+  "selection_scope": "All original particles at selected native D95/RMS minimum/neighbour, image, representative focus and whole-path rows. Complete source and wall ledgers are copied byte for byte; full focus scalars and all-checkpoint moments are retained."
+}

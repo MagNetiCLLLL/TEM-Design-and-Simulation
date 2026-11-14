@@ -1,9 +1,20 @@
 # Field-derived round-lens benchmark
 
-`HighOrderRoundLensPotential` is an opt-in near-axis vacuum expansion of the
-existing captured Gaussian axial field. It retains the original B0 and does
-not change lens excitation, dimensions or any production preset. No empirical
-Cs/Cc kick is evaluated inside the benchmark.
+The additional [copper-coil field model](development/air_core_copper_coil_20261113/README.md)
+uses winding geometry and ampere-turns rather than a Gaussian fit. Its
+[300 keV intrinsic-aberration study](development/copper_coil_aberration_20261113/README.md)
+retains seven controlled geometry/current cases and a finite-source half-step
+repeat, with 1024 original particles plus a transported 1024-ID append in
+each case. The independent perturbation benchmark below also accepts the
+immutable annular-coil potential. These results do not retune an installed
+Gaussian operating preset.
+
+`HighOrderRoundLensPotential` is a near-axis vacuum expansion of the existing
+captured Gaussian axial field. The single-lens benchmark is opt-in; the current
+unified runtime also uses this representation at radial order 3 with the
+explicit all-Z Gaussian domain. The expansion retains the original B0 and
+does not change lens excitation, dimensions or any production preset. No
+empirical Cs/Cc kick is evaluated inside the benchmark.
 
 ## Field and domain
 
@@ -67,12 +78,25 @@ first/third-order perturbation ODE checks the natural Cs/Cc fit.
 For the synthetic 300 keV, 0.3 T, 6 mm Gaussian-width case, the converged fit
 gives approximately Cs=78.620661 mm and Cc=23.019878 mm. These numbers describe
 that synthetic benchmark and its stated reference planes; they are not a
-calibration for a TEMForge preset or a commercial microscope.
+calibration for a TEM Design & Simulation preset or a commercial microscope.
 
 The analytical evidence does not replace a resolved FEM lens's own field-mesh,
-boundary and aberration convergence checks. The full C3/Probe Corrector pilot,
-coherent production admission and retirement of empirical screens are separate
-acceptance gates. Existing production propagation remains unchanged.
+boundary and aberration convergence checks. The current unified particle
+runtime derives nonlinear motion directly from its captured fields, without
+empirical aberration actions. Qualification at higher field orders or in a
+synthetic single-lens benchmark does not automatically qualify the default
+order-3 field, a full corrector column, a finite source or coherent propagation.
+
+## Ideal-field strength, width and passive-tube study
+
+The [2026-11-13 ideal magnetic-lens study](development/ideal_lens_aberration_20261113/README.md)
+compares prescribed Gaussian peak fields and axial widths at 300 keV. It
+retains an independent third-order reference, nested 1024/2048-particle
+transport, passive absorbing-tube ledgers, matched-pupil comparisons, field
+order and integration-step checks. The tube does not change the prescribed
+field: reduced transmitted spot size through clipping is not a reduction of
+its intrinsic Cs. Discrete through-focus minima remain separate from the
+fixed paraxial reference plane used to define the spherical coefficient.
 
 ## Resolved FEM qualification
 

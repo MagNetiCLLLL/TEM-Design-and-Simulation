@@ -1,0 +1,38 @@
+{
+  "end_m": 0.0006162798464095927,
+  "energy_ev": 300000.0,
+  "family": "fixed_source",
+  "field_order": 5,
+  "focus_window_m": 0.0012000000000000001,
+  "implementation": "60a3e4991d49bfda8a332ded15d17301f0dc32569cb85293f72c40c002099b2c",
+  "input_slopes": "Fixed paraxial zero-Larmor entrance matrix; not reinitialized from each nonlinear potential",
+  "name": "fixed-b0.6-s12-order5",
+  "observer_sha256": {
+    "scripts\\ideal_lens_beam.py": "de2800c0f357103ff03bac22998e45a93d6fbe5240507fcc417ea85ba05f6258",
+    "scripts\\ideal_lens_wall.py": "125b9d596cccc92462dc508c926c0aa5581877adca70e009d0e3a2c23eac0365",
+    "scripts\\study_ideal_lens_aberrations.py": "2b4ef3f2a8ff5e6cafbac060a40845a6b547e9af6d0641b240379174023f1091"
+  },
+  "paraxial_image_m": -0.0005837201535904075,
+  "peak_t": 0.6,
+  "qualification": "Synthetic monochromatic zero-emittance source, not an FEG or specimen-wave qualification",
+  "reference_sha256": "97c1d7b2e1e70fd56a9aaf287571a1cdcd372d493fb929426def49f091ebad40",
+  "refinement": "order5",
+  "refinement_parent": "fixed-b0.6-s12",
+  "sigma_mm": 12.0,
+  "source_boundary": "Uniform area disk; inverse CDF r=R sqrt(Halton2), azimuth=2pi Halton3; training=Halton5<0.5",
+  "source_counts": [
+    1024,
+    2048
+  ],
+  "source_current_a": 1e-06,
+  "source_radius_mm": 0.95,
+  "source_schema": "ideal-uniform-disk-halton235-v1",
+  "start_m": -0.096,
+  "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+  "tube_diameters_mm": [
+    1.5,
+    2.0,
+    5.76
+  ],
+  "tube_role": "Passive absorbing cylinder; prescribed magnetic field is unchanged by its diameter"
+}

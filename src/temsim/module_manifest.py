@@ -981,6 +981,8 @@ def validate_document(document):
     # Independent CAD copies keep their legacy shape fields, not the original
     # optical role. Built-in assemblies retain every existing physics check.
     physical_parts = tuple(part for part in parts if not is_custom_mechanical_part(part))
+    from temsim.coil_reference_metadata import validate_coil_references
+    validate_coil_references(physical_parts)
     _validate_alignment_structure(physical_parts)
     _validate_aperture_mechanism_metadata(physical_parts)
     _validate_simple_magnetic_layer_geometry(physical_parts)

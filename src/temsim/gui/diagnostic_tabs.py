@@ -3990,10 +3990,11 @@ class PhysicalLayoutView(QWidget):
         elif hasattr(result, "state_snapshot") and getattr(result.state_snapshot, "vacuum_map", None) is not None:
             self.set_cell_state(result.state_snapshot)
 
-    def set_parameter_semantics_context(self, mode=None, descriptors=None, by_key=None):
+    def set_parameter_semantics_context(self, mode=None, descriptors=None, by_key=None, *, round_lens_settings=None):
         """Update selected-parameter explanations without changing the plot."""
         self._parameter_semantics_mode = mode
         self._parameter_semantics_descriptors = descriptors
+        self._round_lens_settings = round_lens_settings
         self._parameter_semantics_by_key = dict(by_key or {})
         self._refresh_selected_parameter_semantics()
 
@@ -4027,7 +4028,8 @@ class PhysicalLayoutView(QWidget):
             path = ("parts", key, field)
             meaning = describe_parameter(data, path, by_key=self._parameter_semantics_by_key)
             impact = describe_parameter_impact(data, path, by_key=self._parameter_semantics_by_key,
-                simulation_mode=self._parameter_semantics_mode, descriptors=self._parameter_semantics_descriptors)
+                simulation_mode=self._parameter_semantics_mode, descriptors=self._parameter_semantics_descriptors,
+                round_lens_settings=getattr(self, "_round_lens_settings", None))
             compact.append(f"{meaning.label}: {meaning.category_label}")
             details.append(f"{meaning.label}: {data[field]:g} {meaning.unit}\n"
                            f"Category: {meaning.category_label}\n"

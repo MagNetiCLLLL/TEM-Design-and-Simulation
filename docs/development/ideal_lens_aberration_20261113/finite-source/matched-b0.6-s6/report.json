@@ -1,0 +1,5215 @@
+{
+  "dense_characteristic_radius_upper_bound_mm": 0.07838128334296564,
+  "elapsed_s": 4.053392599977087,
+  "field_order_evidence": {
+    "grid_shape": [
+      33,
+      257
+    ],
+    "order7_vs9_relative_B": 2.312964634635743e-17,
+    "order9_normalized_curl": 7.116622496533113e-21,
+    "orders": [
+      {
+        "normalized_curl_residual": 4.1831438098174004e-07,
+        "order": 3,
+        "relative_B_difference_to_order9": 1.366533367945048e-09
+      },
+      {
+        "normalized_curl_residual": 1.4879759320265047e-11,
+        "order": 5,
+        "relative_B_difference_to_order9": 3.23815048849004e-14
+      },
+      {
+        "normalized_curl_residual": 3.704990152061624e-16,
+        "order": 7,
+        "relative_B_difference_to_order9": 2.312964634635743e-17
+      },
+      {
+        "normalized_curl_residual": 7.116622496533113e-21,
+        "order": 9,
+        "relative_B_difference_to_order9": 0.0
+      }
+    ],
+    "sampled_field_gates_passed": true,
+    "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+    "tested_radius_m": 7.840042640914589e-05
+  },
+  "image_field_fraction": 0.6420597647703548,
+  "intrinsic_cs_mm": 6.493661316195818,
+  "maximum_observed_characteristic_radius_mm": 0.07838128334295671,
+  "observations": {
+    "focus_indices": [
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      151,
+      152,
+      153,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192
+    ],
+    "image_index": 128,
+    "z_m": [
+      -0.048,
+      -0.04715237304144413,
+      -0.04630474608288826,
+      -0.04545711912433239,
+      -0.04460949216577652,
+      -0.043761865207220654,
+      -0.042914238248664784,
+      -0.04206661129010891,
+      -0.04121898433155304,
+      -0.04037135737299717,
+      -0.0395237304144413,
+      -0.03867610345588543,
+      -0.037828476497329566,
+      -0.03698084953877369,
+      -0.036133222580217825,
+      -0.035285595621661954,
+      -0.03443796866310608,
+      -0.03359034170455021,
+      -0.03274271474599434,
+      -0.03189508778743848,
+      -0.031047460828882604,
+      -0.030199833870326733,
+      -0.029352206911770866,
+      -0.028504579953214995,
+      -0.027656952994659124,
+      -0.026809326036103254,
+      -0.025961699077547383,
+      -0.025114072118991516,
+      -0.024266445160435645,
+      -0.023418818201879774,
+      -0.022571191243323907,
+      -0.021723564284768036,
+      -0.020875937326212166,
+      -0.020028310367656295,
+      -0.019180683409100424,
+      -0.018333056450544557,
+      -0.017485429491988686,
+      -0.01663780253343282,
+      -0.015790175574876948,
+      -0.014942548616321077,
+      -0.014094921657765207,
+      -0.013247294699209336,
+      -0.012399667740653465,
+      -0.011552040782097595,
+      -0.01070441382354173,
+      -0.00985678686498586,
+      -0.00900915990642999,
+      -0.008161532947874119,
+      -0.007313905989318248,
+      -0.006466279030762377,
+      -0.005618652072206506,
+      -0.004771025113650636,
+      -0.003923398155094765,
+      -0.003075771196538901,
+      -0.0022281442379830305,
+      -0.0013805172794271597,
+      -0.000532890320871289,
+      0.0003147366376845817,
+      0.0011623635962404524,
+      0.002009990554796323,
+      0.002857617513352187,
+      0.0037052444719080577,
+      0.004552871430463928,
+      0.005048125347575668,
+      0.005057500347575668,
+      0.005066875347575668,
+      0.005076250347575668,
+      0.005085625347575668,
+      0.0050950003475756685,
+      0.005104375347575668,
+      0.005113750347575668,
+      0.005123125347575668,
+      0.005132500347575668,
+      0.0051418753475756685,
+      0.005151250347575668,
+      0.005160625347575668,
+      0.005170000347575668,
+      0.005179375347575668,
+      0.0051887503475756686,
+      0.005198125347575668,
+      0.005207500347575668,
+      0.005216875347575668,
+      0.005226250347575668,
+      0.005235625347575669,
+      0.005245000347575668,
+      0.005254375347575668,
+      0.005263750347575668,
+      0.005273125347575668,
+      0.005282500347575669,
+      0.0052918753475756685,
+      0.005301250347575668,
+      0.005310625347575668,
+      0.005320000347575668,
+      0.005329375347575669,
+      0.0053387503475756685,
+      0.005348125347575668,
+      0.005357500347575668,
+      0.005366875347575668,
+      0.005376250347575668,
+      0.0053856253475756686,
+      0.005395000347575668,
+      0.005400498389019799,
+      0.005404375347575668,
+      0.005413750347575668,
+      0.005423125347575668,
+      0.005432500347575669,
+      0.005441875347575668,
+      0.005451250347575668,
+      0.005460625347575668,
+      0.005470000347575668,
+      0.005479375347575669,
+      0.0054887503475756685,
+      0.005498125347575668,
+      0.005507500347575668,
+      0.005516875347575668,
+      0.005526250347575668,
+      0.0055356253475756685,
+      0.005545000347575668,
+      0.005554375347575668,
+      0.005563750347575668,
+      0.005573125347575668,
+      0.0055825003475756686,
+      0.005591875347575668,
+      0.005601250347575668,
+      0.005610625347575668,
+      0.005620000347575668,
+      0.005629375347575669,
+      0.005638750347575668,
+      0.005648125347575668,
+      0.005657500347575668,
+      0.005666875347575668,
+      0.005676250347575669,
+      0.0056856253475756685,
+      0.005695000347575668,
+      0.005704375347575668,
+      0.005713750347575668,
+      0.005723125347575669,
+      0.0057325003475756685,
+      0.005741875347575668,
+      0.005751250347575668,
+      0.005760625347575668,
+      0.005770000347575669,
+      0.0057793753475756686,
+      0.005788750347575668,
+      0.005798125347575668,
+      0.005807500347575668,
+      0.005816875347575669,
+      0.005826250347575669,
+      0.0058356253475756684,
+      0.005845000347575668,
+      0.005854375347575668,
+      0.005863750347575668,
+      0.005873125347575669,
+      0.0058825003475756685,
+      0.005891875347575668,
+      0.005901250347575668,
+      0.005910625347575668,
+      0.005920000347575668,
+      0.0059293753475756685,
+      0.005938750347575668,
+      0.005948125347575668,
+      0.005957500347575668,
+      0.005966875347575668,
+      0.0059762503475756686,
+      0.005985625347575668,
+      0.005995000347575668,
+      0.006004375347575668,
+      0.006013750347575668,
+      0.006023125347575669,
+      0.0060325003475756684,
+      0.006041875347575668,
+      0.006051250347575668,
+      0.006060625347575668,
+      0.006070000347575669,
+      0.0060793753475756685,
+      0.006088750347575668,
+      0.006098125347575668,
+      0.006107500347575668,
+      0.006116875347575669,
+      0.0061262503475756685,
+      0.006135625347575668,
+      0.006145000347575668,
+      0.006154375347575668,
+      0.006163750347575669,
+      0.0061731253475756686,
+      0.006182500347575668,
+      0.006191875347575668,
+      0.006201250347575668,
+      0.006210625347575669,
+      0.006220000347575669,
+      0.0062293753475756684,
+      0.006238750347575668,
+      0.006248125347575668
+    ]
+  },
+  "paraxial_edge_slope_mrad": 10.0,
+  "paraxial_image_z_m": 0.005648125347575668,
+  "partitions": [
+    {
+      "initial_phase_sha256": "c4b571e891151be5b09acf702272327879799384c98e4ec83f52082a885c732f",
+      "newly_transported_positive_count": 1024,
+      "original_id_interval": [
+        0,
+        1024
+      ],
+      "retained_phase_sha256": "3ce9e2cbd886ca3e060e2bbd0ea831b6455e7717a3e3218dbed9d348acec8e2f",
+      "source_prefix_reused": false,
+      "transport": {
+        "atol_phase": [
+          1e-14,
+          1e-14,
+          1e-13,
+          1e-13,
+          1e-21
+        ],
+        "constant_speed_m_per_s": 232796486.2808797,
+        "counterfactual_after_contact": true,
+        "empirical_aberrations_applied": false,
+        "energy_ev": 300000.0,
+        "field_digest": "58c95b45a507657271a1aafd56e4943686ea6668aa6ec675ebd1a2d30fae2dbd",
+        "method": "DOP853",
+        "rtol": 2e-11,
+        "segments": [
+          {
+            "end_m": 0.006248125347575668,
+            "evaluations": 2177,
+            "far_tail": false,
+            "intervals": 145,
+            "max_step_m": 0.000375,
+            "start_m": -0.048
+          }
+        ]
+      },
+      "wall_receipts": {
+        "5.76": {
+          "bound_scope": "Floating-point Bernstein convex-hull bound over all retained counterfactual dense intervals, including extensions after contact; not an RK-stage bound",
+          "classification_complete": true,
+          "dense_intervals": 145,
+          "polynomial_root_candidates": 0,
+          "qualification": "Numerical contact classification only; independently refine transport and wall tolerance. Unresolved cases must be rejected, not counted as physical losses.",
+          "radius_m": 0.0028799999999999997,
+          "schema": "ideal-lens-continuous-wall-v1",
+          "scope": "First contact of numerical DOP853 dense polynomials with an absorbing coaxial cylinder; no field feedback or current renormalization",
+          "state_width": 5,
+          "wall_tolerance_m": 1e-12
+        }
+      }
+    },
+    {
+      "initial_phase_sha256": "0f96e0f9df4d98f66f3a70de0666ba1aab1e5c93a65c48e20e5defa5caf06264",
+      "newly_transported_positive_count": 1024,
+      "original_id_interval": [
+        1024,
+        2048
+      ],
+      "retained_phase_sha256": "2195f415994213adf76fa4b579d0aa57a3221e45daf97221bf2f0c4ffd1de028",
+      "source_prefix_reused": true,
+      "transport": {
+        "atol_phase": [
+          1e-14,
+          1e-14,
+          1e-13,
+          1e-13,
+          1e-21
+        ],
+        "constant_speed_m_per_s": 232796486.2808797,
+        "counterfactual_after_contact": true,
+        "empirical_aberrations_applied": false,
+        "energy_ev": 300000.0,
+        "field_digest": "58c95b45a507657271a1aafd56e4943686ea6668aa6ec675ebd1a2d30fae2dbd",
+        "method": "DOP853",
+        "rtol": 2e-11,
+        "segments": [
+          {
+            "end_m": 0.006248125347575668,
+            "evaluations": 2177,
+            "far_tail": false,
+            "intervals": 145,
+            "max_step_m": 0.000375,
+            "start_m": -0.048
+          }
+        ]
+      },
+      "wall_receipts": {
+        "5.76": {
+          "bound_scope": "Floating-point Bernstein convex-hull bound over all retained counterfactual dense intervals, including extensions after contact; not an RK-stage bound",
+          "classification_complete": true,
+          "dense_intervals": 145,
+          "polynomial_root_candidates": 0,
+          "qualification": "Numerical contact classification only; independently refine transport and wall tolerance. Unresolved cases must be rejected, not counted as physical losses.",
+          "radius_m": 0.0028799999999999997,
+          "schema": "ideal-lens-continuous-wall-v1",
+          "scope": "First contact of numerical DOP853 dense polynomials with an absorbing coaxial cylinder; no field feedback or current renormalization",
+          "state_width": 5,
+          "wall_tolerance_m": 1e-12
+        }
+      }
+    }
+  ],
+  "populations": [
+    {
+      "original_positive_count": 1024,
+      "positive_weight_count": 1024,
+      "source_phase_hash": "c4b571e891151be5b09acf702272327879799384c98e4ec83f52082a885c732f",
+      "tube_views": [
+        {
+          "absolute_current_balance_residual_a": 0.0,
+          "at_paraxial_image": {
+            "alpha95_mrad": 9.743358380706008,
+            "angular_rms_mrad": 7.067815740181669,
+            "centroid_m": [
+              -2.36092540281318e-13,
+              4.696139475263587e-12
+            ],
+            "current_a": 1e-06,
+            "d95_nm": 12.018815514360268,
+            "effective": 1024.0,
+            "rms_radius_nm": 3.2439313590099426,
+            "status": "MEASURED",
+            "surviving_positive": 1024,
+            "transmission": 1.0
+          },
+          "downstream_wall_contacts": 0,
+          "emitted_positive_count": 1024,
+          "entrance_intercepted": 0,
+          "focus_planes": [
+            {
+              "alpha95_mrad": 9.744329610505192,
+              "angular_rms_mrad": 7.068520891566949,
+              "centroid_m": [
+                -9.138526966431424e-10,
+                -5.915283798114253e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11673.914765477211,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -599999.9999999999,
+              "rms_radius_nm": 4235.385198881206,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005048125347575668
+            },
+            {
+              "alpha95_mrad": 9.74428415534744,
+              "angular_rms_mrad": 7.068487899207285,
+              "centroid_m": [
+                -8.941201097407898e-10,
+                -5.823730516491644e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11491.527362836538,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -590625.0,
+              "rms_radius_nm": 4169.234136964215,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005057500347575668
+            },
+            {
+              "alpha95_mrad": 9.744240154597696,
+              "angular_rms_mrad": 7.068455962170102,
+              "centroid_m": [
+                -8.745666165248557e-10,
+                -5.732139257693162e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11309.129836866177,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -581250.0000000001,
+              "rms_radius_nm": 4103.079402376119,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005066875347575668
+            },
+            {
+              "alpha95_mrad": 9.744197583956451,
+              "angular_rms_mrad": 7.068425062828992,
+              "centroid_m": [
+                -8.551919519117224e-10,
+                -5.64051042938065e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11126.722374477311,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -571875.0000000003,
+              "rms_radius_nm": 4036.9210629135882,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005076250347575668
+            },
+            {
+              "alpha95_mrad": 9.74415641913758,
+              "angular_rms_mrad": 7.068395183567237,
+              "centroid_m": [
+                -8.359958495424834e-10,
+                -5.5488444376691655e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10944.30516172334,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -562500.0000000005,
+              "rms_radius_nm": 3970.7591860624207,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005085625347575668
+            },
+            {
+              "alpha95_mrad": 9.744116635869684,
+              "angular_rms_mrad": 7.0683663067787865,
+              "centroid_m": [
+                -8.169780417924997e-10,
+                -5.457141687124989e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10761.878383800433,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -553124.9999999998,
+              "rms_radius_nm": 3904.5938389977514,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0050950003475756685
+            },
+            {
+              "alpha95_mrad": 9.744078209897431,
+              "angular_rms_mrad": 7.068338414869249,
+              "centroid_m": [
+                -7.981382597806191e-10,
+                -5.365402580764042e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10579.442225048178,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -543750.0,
+              "rms_radius_nm": 3838.42508858432,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005104375347575668
+            },
+            {
+              "alpha95_mrad": 9.744041116982912,
+              "angular_rms_mrad": 7.068311490256849,
+              "centroid_m": [
+                -7.794762333786441e-10,
+                -5.273627520050139e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10396.996868950102,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -534375.0000000001,
+              "rms_radius_nm": 3772.2530013766727,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005113750347575668
+            },
+            {
+              "alpha95_mrad": 9.744005332906962,
+              "angular_rms_mrad": 7.068285515373404,
+              "centroid_m": [
+                -7.609916912206057e-10,
+                -5.1818169048932606e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10214.542498134353,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -525000.0000000003,
+              "rms_radius_nm": 3706.077643619442,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005123125347575668
+            },
+            {
+              "alpha95_mrad": 9.743970833470495,
+              "angular_rms_mrad": 7.068260472665283,
+              "centroid_m": [
+                -7.426843607122159e-10,
+                -5.089971133648191e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10032.079294374318,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -515625.00000000047,
+              "rms_radius_nm": 3639.8990812476027,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005132500347575668
+            },
+            {
+              "alpha95_mrad": 9.743937594495815,
+              "angular_rms_mrad": 7.06823634459436,
+              "centroid_m": [
+                -7.245539680400725e-10,
+                -4.998090603112674e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9849.607438589277,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -506249.99999999977,
+              "rms_radius_nm": 3573.7173798867334,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0051418753475756685
+            },
+            {
+              "alpha95_mrad": 9.743905591827918,
+              "angular_rms_mrad": 7.068213113638966,
+              "centroid_m": [
+                -7.066002381811505e-10,
+                -4.906175708526215e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9667.127110845131,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -496874.99999999994,
+              "rms_radius_nm": 3507.532604853326,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005151250347575668
+            },
+            {
+              "alpha95_mrad": 9.743874801335812,
+              "angular_rms_mrad": 7.068190762294829,
+              "centroid_m": [
+                -6.888228949119862e-10,
+                -4.8142268435684975e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9484.638490354995,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -487500.00000000006,
+              "rms_radius_nm": 3441.344821155038,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005160625347575668
+            },
+            {
+              "alpha95_mrad": 9.743845198913785,
+              "angular_rms_mrad": 7.0681692730760135,
+              "centroid_m": [
+                -6.712216608180529e-10,
+                -4.722244400358003e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9302.14175548,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -478125.00000000023,
+              "rms_radius_nm": 3375.1540934910217,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005170000347575668
+            },
+            {
+              "alpha95_mrad": 9.743816760482717,
+              "angular_rms_mrad": 7.068148628515861,
+              "centroid_m": [
+                -6.537962573030267e-10,
+                -4.630228769450696e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9119.637083729953,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -468750.0000000004,
+              "rms_radius_nm": 3308.960486252231,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005179375347575668
+            },
+            {
+              "alpha95_mrad": 9.743789461991339,
+              "angular_rms_mrad": 7.0681288111679015,
+              "centroid_m": [
+                -6.365464045981077e-10,
+                -4.538180339838804e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8937.124651764112,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -459374.9999999997,
+              "rms_radius_nm": 3242.764063521745,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0051887503475756686
+            },
+            {
+              "alpha95_mrad": 9.743763279417504,
+              "angular_rms_mrad": 7.068109803606789,
+              "centroid_m": [
+                -6.194718217712627e-10,
+                -4.446099498949548e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8754.604635391997,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -449999.9999999999,
+              "rms_radius_nm": 3176.5648890751286,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005198125347575668
+            },
+            {
+              "alpha95_mrad": 9.743738188769456,
+              "angular_rms_mrad": 7.068091588429208,
+              "centroid_m": [
+                -6.025722267364922e-10,
+                -4.353986632643947e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8572.077209574063,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -440625.00000000006,
+              "rms_radius_nm": 3110.3630263807577,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005207500347575668
+            },
+            {
+              "alpha95_mrad": 9.743714166087086,
+              "angular_rms_mrad": 7.068074148254786,
+              "centroid_m": [
+                -5.858473362631013e-10,
+                -4.2618421252156874e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8389.542548422576,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -431250.00000000023,
+              "rms_radius_nm": 3044.158538600209,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005216875347575668
+            },
+            {
+              "alpha95_mrad": 9.743691187443165,
+              "angular_rms_mrad": 7.068057465726996,
+              "centroid_m": [
+                -5.692968659849166e-10,
+                -4.169666359390143e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8207.000825202405,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -421875.00000000035,
+              "rms_radius_nm": 2977.9514885886483,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005226250347575668
+            },
+            {
+              "alpha95_mrad": 9.743669228944597,
+              "angular_rms_mrad": 7.068041523514058,
+              "centroid_m": [
+                -5.529205304095062e-10,
+                -4.0774597163232505e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8024.45221233185,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -412499.99999999965,
+              "rms_radius_nm": 2911.741938895229,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005235625347575669
+            },
+            {
+              "alpha95_mrad": 9.743648266733633,
+              "angular_rms_mrad": 7.068026304309827,
+              "centroid_m": [
+                -5.367180429274283e-10,
+                -3.985222575600553e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7841.896881383549,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -403124.9999999998,
+              "rms_radius_nm": 2845.5299517635485,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005245000347575668
+            },
+            {
+              "alpha95_mrad": 9.743628276989094,
+              "angular_rms_mrad": 7.068011790834668,
+              "centroid_m": [
+                -5.20689115821407e-10,
+                -3.892955315236296e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7659.335003085091,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -393750.0,
+              "rms_radius_nm": 2779.315589132003,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005254375347575668
+            },
+            {
+              "alpha95_mrad": 9.74360923592743,
+              "angular_rms_mrad": 7.0679979658362395,
+              "centroid_m": [
+                -5.048334602760987e-10,
+                -3.800658311671735e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7476.766747318869,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -384375.0000000002,
+              "rms_radius_nm": 2713.0989126338977,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005263750347575668
+            },
+            {
+              "alpha95_mrad": 9.743591119804117,
+              "angular_rms_mrad": 7.067984812090502,
+              "centroid_m": [
+                -4.891507863864734e-10,
+                -3.7083319397754305e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7294.192283124576,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -375000.00000000035,
+              "rms_radius_nm": 2646.8799835985246,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005273125347575668
+            },
+            {
+              "alpha95_mrad": 9.74357390491484,
+              "angular_rms_mrad": 7.067972312402553,
+              "centroid_m": [
+                -4.736408031672136e-10,
+                -3.615976572842083e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7111.611778699649,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -365624.99999999965,
+              "rms_radius_nm": 2580.658863051547,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005282500347575669
+            },
+            {
+              "alpha95_mrad": 9.743557567596588,
+              "angular_rms_mrad": 7.067960449607472,
+              "centroid_m": [
+                -4.5830321856195274e-10,
+                -3.5235925825918023e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6929.025401400091,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -356249.99999999977,
+              "rms_radius_nm": 2514.4356117155244,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0052918753475756685
+            },
+            {
+              "alpha95_mrad": 9.743542084228896,
+              "angular_rms_mrad": 7.067949206571171,
+              "centroid_m": [
+                -4.431377394524127e-10,
+                -3.431180339169314e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6746.433317741265,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -346874.99999999994,
+              "rms_radius_nm": 2448.210290010496,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005301250347575668
+            },
+            {
+              "alpha95_mrad": 9.743527431234977,
+              "angular_rms_mrad": 7.0679385661912395,
+              "centroid_m": [
+                -4.2814407166753766e-10,
+                -3.3387402111433426e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6563.835693398911,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -337500.0000000001,
+              "rms_radius_nm": 2381.982958054671,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005310625347575668
+            },
+            {
+              "alpha95_mrad": 9.743513585082885,
+              "angular_rms_mrad": 7.067928511397791,
+              "centroid_m": [
+                -4.1332191999256473e-10,
+                -3.2462725655060757e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6381.232693210072,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -328125.0000000003,
+              "rms_radius_nm": 2315.7536756651575,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005320000347575668
+            },
+            {
+              "alpha95_mrad": 9.743500522286684,
+              "angular_rms_mrad": 7.067919025154292,
+              "centroid_m": [
+                -3.986709881781834e-10,
+                -3.1537777676725607e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6198.624481174054,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -318749.9999999996,
+              "rms_radius_nm": 2249.522502358754,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005329375347575669
+            },
+            {
+              "alpha95_mrad": 9.743488219407558,
+              "angular_rms_mrad": 7.067910090458395,
+              "centroid_m": [
+                -3.841909789495796e-10,
+                -3.0612561814802386e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6016.011220453454,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -309374.99999999977,
+              "rms_radius_nm": 2183.2894973528682,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0053387503475756685
+            },
+            {
+              "alpha95_mrad": 9.74347665305497,
+              "angular_rms_mrad": 7.0679016903427545,
+              "centroid_m": [
+                -3.698815940155053e-10,
+                -2.968708169188406e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5833.393073375053,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -299999.99999999994,
+              "rms_radius_nm": 2117.054719566479,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005348125347575668
+            },
+            {
+              "alpha95_mrad": 9.743465799887773,
+              "angular_rms_mrad": 7.067893807875849,
+              "centroid_m": [
+                -3.5574253407736344e-10,
+                -2.876134091477919e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5650.770201430894,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -290625.00000000006,
+              "rms_radius_nm": 2050.8182276212797,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005357500347575668
+            },
+            {
+              "alpha95_mrad": 9.743455636615339,
+              "angular_rms_mrad": 7.067886426162782,
+              "centroid_m": [
+                -3.417734988382503e-10,
+                -2.783534307450754e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5468.142765279274,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -281250.00000000023,
+              "rms_radius_nm": 1984.5800798429607,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005366875347575668
+            },
+            {
+              "alpha95_mrad": 9.743446139998634,
+              "angular_rms_mrad": 7.0678795283460945,
+              "centroid_m": [
+                -3.279741870119181e-10,
+                -2.690909174629725e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5285.510924745779,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -271875.0000000004,
+              "rms_radius_nm": 1918.3403342626834,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005376250347575668
+            },
+            {
+              "alpha95_mrad": 9.743437286851366,
+              "angular_rms_mrad": 7.067873097606551,
+              "centroid_m": [
+                -3.143442963318651e-10,
+                -2.5982590489581666e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5102.874838824308,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -262499.9999999997,
+              "rms_radius_nm": 1852.0990486187916,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0053856253475756686
+            },
+            {
+              "alpha95_mrad": 9.743429054041016,
+              "angular_rms_mrad": 7.067867117163937,
+              "centroid_m": [
+                -3.008835235603131e-10,
+                -2.5055842847997862e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4920.234665678195,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -253124.99999999988,
+              "rms_radius_nm": 1785.856280358858,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005395000347575668
+            },
+            {
+              "alpha95_mrad": 9.743421418489975,
+              "angular_rms_mrad": 7.067861570277837,
+              "centroid_m": [
+                -2.875915644971394e-10,
+                -2.4128852349384e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4737.590562641184,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -243750.00000000003,
+              "rms_radius_nm": 1719.6120866420533,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005404375347575668
+            },
+            {
+              "alpha95_mrad": 9.743414357176553,
+              "angular_rms_mrad": 7.067856440248415,
+              "centroid_m": [
+                -2.744681139889226e-10,
+                -2.3201622505778467e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4554.942686218579,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -234375.0000000002,
+              "rms_radius_nm": 1653.3665243420635,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005413750347575668
+            },
+            {
+              "alpha95_mrad": 9.743407847136108,
+              "angular_rms_mrad": 7.0678517104171865,
+              "centroid_m": [
+                -2.6151286593780775e-10,
+                -2.2274156813418622e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4372.291192088314,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -225000.00000000038,
+              "rms_radius_nm": 1587.1196500506119,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005423125347575668
+            },
+            {
+              "alpha95_mrad": 9.743401865462044,
+              "angular_rms_mrad": 7.067847364167774,
+              "centroid_m": [
+                -2.4872551331050356e-10,
+                -2.1346458752740803e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4189.636235102065,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -215624.99999999968,
+              "rms_radius_nm": 1520.8715200817987,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005432500347575669
+            },
+            {
+              "alpha95_mrad": 9.743396389306886,
+              "angular_rms_mrad": 7.067843384926672,
+              "centroid_m": [
+                -2.361057481471682e-10,
+                -2.04185317883801e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4006.977969286423,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -206249.99999999983,
+              "rms_radius_nm": 1454.6221904775612,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005441875347575668
+            },
+            {
+              "alpha95_mrad": 9.743391395883297,
+              "angular_rms_mrad": 7.067839756163999,
+              "centroid_m": [
+                -2.2365326157030157e-10,
+                -1.9490379369170644e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3824.3165478439414,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -196875.0,
+              "rms_radius_nm": 1388.371717014508,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005451250347575668
+            },
+            {
+              "alpha95_mrad": 9.743386862465126,
+              "angular_rms_mrad": 7.067836461394237,
+              "centroid_m": [
+                -2.113677437936416e-10,
+                -1.8562004928146406e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3641.6521231543484,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -187500.00000000017,
+              "rms_radius_nm": 1322.1201552127718,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005460625347575668
+            },
+            {
+              "alpha95_mrad": 9.743382766388411,
+              "angular_rms_mrad": 7.067833484176972,
+              "centroid_m": [
+                -1.9924888413102754e-10,
+                -1.7633411882543068e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3458.9848467756965,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -178125.00000000032,
+              "rms_radius_nm": 1255.8675603474894,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005470000347575668
+            },
+            {
+              "alpha95_mrad": 9.743379085052375,
+              "angular_rms_mrad": 7.067830808117627,
+              "centroid_m": [
+                -1.8729637100522082e-10,
+                -1.6704603633799059e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3276.3148694455217,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -168749.99999999962,
+              "rms_radius_nm": 1189.6139874639898,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005479375347575669
+            },
+            {
+              "alpha95_mrad": 9.74337579592046,
+              "angular_rms_mrad": 7.067828416868183,
+              "centroid_m": [
+                -1.7550989195677626e-10,
+                -1.577558356755842e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3093.642341082105,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -159374.9999999998,
+              "rms_radius_nm": 1123.3594913982433,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0054887503475756685
+            },
+            {
+              "alpha95_mrad": 9.743372876521283,
+              "angular_rms_mrad": 7.067826294127905,
+              "centroid_m": [
+                -1.6388913365279814e-10,
+                -1.484635505367286e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2910.967410785567,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -149999.99999999997,
+              "rms_radius_nm": 1057.104126804771,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005498125347575668
+            },
+            {
+              "alpha95_mrad": 9.743370304449646,
+              "angular_rms_mrad": 7.067824423644046,
+              "centroid_m": [
+                -1.5243378189577745e-10,
+                -1.391692144620562e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2728.290226839165,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -140625.00000000012,
+              "rms_radius_nm": 990.8479481956609,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005507500347575668
+            },
+            {
+              "alpha95_mrad": 9.743368057367492,
+              "angular_rms_mrad": 7.067822789212562,
+              "centroid_m": [
+                -1.4114352163233212e-10,
+                -1.2987286083433739e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2545.6109367104978,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -131250.0000000003,
+              "rms_radius_nm": 924.5910099961322,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005516875347575668
+            },
+            {
+              "alpha95_mrad": 9.743366113004866,
+              "angular_rms_mrad": 7.0678213746787995,
+              "centroid_m": [
+                -1.300180369619662e-10,
+                -1.2057452287853133e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2362.929687052753,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -121875.00000000045,
+              "rms_radius_nm": 858.3333666256431,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005526250347575668
+            },
+            {
+              "alpha95_mrad": 9.74336444916089,
+              "angular_rms_mrad": 7.067820163938203,
+              "centroid_m": [
+                -1.1905701114581608e-10,
+                -1.1127423366182715e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2180.2466237059534,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -112499.99999999975,
+              "rms_radius_nm": 792.0750726194832,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0055356253475756685
+            },
+            {
+              "alpha95_mrad": 9.743363043704695,
+              "angular_rms_mrad": 7.067819140936993,
+              "centroid_m": [
+                -1.0826012661534098e-10,
+                -1.019720260936868e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1997.5618916982864,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -103124.99999999991,
+              "rms_radius_nm": 725.816182816755,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005545000347575668
+            },
+            {
+              "alpha95_mrad": 9.74336187457636,
+              "angular_rms_mrad": 7.067818289672845,
+              "centroid_m": [
+                -9.76270649810403e-11,
+                -9.266793292590259e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1814.8756352472979,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -93750.00000000009,
+              "rms_radius_nm": 659.55675266132,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005554375347575668
+            },
+            {
+              "alpha95_mrad": 9.743360919787843,
+              "angular_rms_mrad": 7.067817594195569,
+              "centroid_m": [
+                -8.7157507041082e-11,
+                -8.336198675265234e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1632.1879977612573,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -84375.00000000025,
+              "rms_radius_nm": 593.2968387041843,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005563750347575668
+            },
+            {
+              "alpha95_mrad": 9.743360157423908,
+              "angular_rms_mrad": 7.067817038607778,
+              "centroid_m": [
+                -7.685113279002356e-11,
+                -7.405422001055864e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1449.4991218404475,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -75000.00000000041,
+              "rms_radius_nm": 527.03649948446,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005573125347575668
+            },
+            {
+              "alpha95_mrad": 9.743359565643027,
+              "angular_rms_mrad": 7.0678166070655415,
+              "centroid_m": [
+                -6.670762142737435e-11,
+                -6.474466497875622e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1266.8091492784877,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -65624.99999999971,
+              "rms_radius_nm": 460.7757971700451,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0055825003475756686
+            },
+            {
+              "alpha95_mrad": 9.743359122678282,
+              "angular_rms_mrad": 7.067816283779048,
+              "centroid_m": [
+                -5.672665136623926e-11,
+                -5.543335377895866e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1084.1182210637312,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -56249.999999999876,
+              "rms_radius_nm": 394.5148008512379,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005591875347575668
+            },
+            {
+              "alpha95_mrad": 9.743358806838271,
+              "angular_rms_mrad": 7.067816053013253,
+              "centroid_m": [
+                -4.690790024191264e-11,
+                -4.6120318375533274e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 901.4264773805367,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -46875.000000000044,
+              "rms_radius_nm": 328.25359382279555,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005601250347575668
+            },
+            {
+              "alpha95_mrad": 9.743358596507994,
+              "angular_rms_mrad": 7.067815899088518,
+              "centroid_m": [
+                -3.725104492041636e-11,
+                -3.680559057558006e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 718.7340576107208,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -37500.000000000204,
+              "rms_radius_nm": 261.9922919157597,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005610625347575668
+            },
+            {
+              "alpha95_mrad": 9.74335847014971,
+              "angular_rms_mrad": 7.067815806381251,
+              "centroid_m": [
+                -2.77557615070657e-11,
+                -2.7489202029008177e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 536.0411003349737,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -28125.00000000037,
+              "rms_radius_nm": 195.73109906362419,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005620000347575668
+            },
+            {
+              "alpha95_mrad": 9.743358406303802,
+              "angular_rms_mrad": 7.067815759324521,
+              "centroid_m": [
+                -1.8421725355074264e-11,
+                -1.8171184228620452e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 353.34774333439645,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -18749.99999999967,
+              "rms_radius_nm": 129.47053349328615,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005629375347575669
+            },
+            {
+              "alpha95_mrad": 9.743358383589527,
+              "angular_rms_mrad": 7.067815742408593,
+              "centroid_m": [
+                -9.248611074568684e-12,
+                -8.851568510163069e-11
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 170.65412359309056,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": -9374.999999999834,
+              "rms_radius_nm": 63.21307646574683,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005638750347575668
+            },
+            {
+              "alpha95_mrad": 9.743358380706008,
+              "angular_rms_mrad": 7.067815740181669,
+              "centroid_m": [
+                -2.36092540281318e-13,
+                4.696139475263587e-12
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 12.018815514360268,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 0.0,
+              "rms_radius_nm": 3.2439313590099426,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005648125347575668
+            },
+            {
+              "alpha95_mrad": 9.743358376433061,
+              "angular_rms_mrad": 7.067815737250469,
+              "centroid_m": [
+                8.616157099752e-12,
+                9.792332122432665e-11
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 194.7333602089226,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 9374.999999999834,
+              "rms_radius_nm": 69.32907782740645,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005657500347575668
+            },
+            {
+              "alpha95_mrad": 9.743358349631988,
+              "angular_rms_mrad": 7.06781571828082,
+              "centroid_m": [
+                1.7308465415657303e-11,
+                1.9116555149270346e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 377.4269542576963,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 18749.99999999967,
+              "rms_radius_nm": 135.58714074184448,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005666875347575668
+            },
+            {
+              "alpha95_mrad": 9.743358279246394,
+              "angular_rms_mrad": 7.067815667998244,
+              "centroid_m": [
+                2.5841160687291765e-11,
+                2.844225231937937e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 560.1202710835923,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 28125.00000000037,
+              "rms_radius_nm": 201.84780976717892,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005676250347575669
+            },
+            {
+              "alpha95_mrad": 9.743358144303025,
+              "angular_rms_mrad": 7.067815571188549,
+              "centroid_m": [
+                3.421457189584512e-11,
+                3.7769393080614065e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 742.8131776741868,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 37500.000000000204,
+              "rms_radius_nm": 268.10903060289365,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0056856253475756685
+            },
+            {
+              "alpha95_mrad": 9.743357923912518,
+              "angular_rms_mrad": 7.067815412698418,
+              "centroid_m": [
+                4.242902871545026e-11,
+                4.709794703723481e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 925.5055418087005,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 46875.000000000044,
+              "rms_radius_nm": 334.3703393547079,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005695000347575668
+            },
+            {
+              "alpha95_mrad": 9.743357597270254,
+              "angular_rms_mrad": 7.067815177435971,
+              "centroid_m": [
+                5.048486150482367e-11,
+                5.642788394978938e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1108.1972320551254,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 56249.999999999876,
+              "rms_radius_nm": 400.63154758454715,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005704375347575668
+            },
+            {
+              "alpha95_mrad": 9.743357143657102,
+              "angular_rms_mrad": 7.067814850371348,
+              "centroid_m": [
+                5.838240129891892e-11,
+                6.57591737349928e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1290.8881177685619,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 65624.99999999971,
+              "rms_radius_nm": 466.89254705025735,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005713750347575668
+            },
+            {
+              "alpha95_mrad": 9.743356542440203,
+              "angular_rms_mrad": 7.067814416537257,
+              "centroid_m": [
+                6.612197980061412e-11,
+                7.509178646560639e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1473.5780690896945,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 75000.00000000041,
+              "rms_radius_nm": 533.1532600480216,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005723125347575669
+            },
+            {
+              "alpha95_mrad": 9.743355773073752,
+              "angular_rms_mrad": 7.067813861029545,
+              "centroid_m": [
+                7.37039293724039e-11,
+                8.442569237030468e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1656.2669569432067,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 84375.00000000025,
+              "rms_radius_nm": 599.4136226902133,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0057325003475756685
+            },
+            {
+              "alpha95_mrad": 9.743354815099725,
+              "angular_rms_mrad": 7.0678131690077315,
+              "centroid_m": [
+                8.112858302813585e-11,
+                9.376086183355038e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1838.9546530363632,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 93750.00000000009,
+              "rms_radius_nm": 665.6735781700859,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005741875347575668
+            },
+            {
+              "alpha95_mrad": 9.743353648148648,
+              "angular_rms_mrad": 7.067812325695562,
+              "centroid_m": [
+                8.839627442474683e-11,
+                1.0309726539545692e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2021.6410298574235,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 103124.99999999991,
+              "rms_radius_nm": 731.9330736845553,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005751250347575668
+            },
+            {
+              "alpha95_mrad": 9.743352251940342,
+              "angular_rms_mrad": 7.0678113163815395,
+              "centroid_m": [
+                9.550733785402709e-11,
+                1.1243487375165001e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2204.3259606741194,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 112499.99999999975,
+              "rms_radius_nm": 798.1920588894284,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005760625347575668
+            },
+            {
+              "alpha95_mrad": 9.743350606284626,
+              "angular_rms_mrad": 7.067810126419453,
+              "centroid_m": [
+                1.0246210823442369e-10,
+                1.2177365775312539e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2387.009319532137,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 121875.00000000045,
+              "rms_radius_nm": 864.4504850648201,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005770000347575669
+            },
+            {
+              "alpha95_mrad": 9.743348691082057,
+              "angular_rms_mrad": 7.067808741228902,
+              "centroid_m": [
+                1.0926092110284533e-10,
+                1.311135884061017e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2569.690981253495,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 131250.0000000003,
+              "rms_radius_nm": 930.7083046368059,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0057793753475756686
+            },
+            {
+              "alpha95_mrad": 9.743346486324642,
+              "angular_rms_mrad": 7.067807146295811,
+              "centroid_m": [
+                1.1590411260650359e-10,
+                1.404546368718755e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2752.37082143508,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 140625.00000000012,
+              "rms_radius_nm": 996.9654708896448,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005788750347575668
+            },
+            {
+              "alpha95_mrad": 9.743343972096527,
+              "angular_rms_mrad": 7.067805327172942,
+              "centroid_m": [
+                1.223920194947636e-10,
+                1.497967744666647e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2935.048716447015,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 149999.99999999997,
+              "rms_radius_nm": 1063.2219377853487,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005798125347575668
+            },
+            {
+              "alpha95_mrad": 9.743341128574704,
+              "angular_rms_mrad": 7.067803269480397,
+              "centroid_m": [
+                1.2872497911104213e-10,
+                1.591399726614508e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3117.724543431093,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 159374.9999999998,
+              "rms_radius_nm": 1129.477659846577,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005807500347575668
+            },
+            {
+              "alpha95_mrad": 9.743337936029695,
+              "angular_rms_mrad": 7.067800958906106,
+              "centroid_m": [
+                1.3490332938470125e-10,
+                1.684842030818252e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3300.3981802991975,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 168750.0000000005,
+              "rms_radius_nm": 1195.7325920782723,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005816875347575669
+            },
+            {
+              "alpha95_mrad": 9.743334374826219,
+              "angular_rms_mrad": 7.067798381206332,
+              "centroid_m": [
+                1.409274088229744e-10,
+                1.7782943750781618e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3483.0695057316398,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 178125.00000000032,
+              "rms_radius_nm": 1261.9866899137737,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005826250347575669
+            },
+            {
+              "alpha95_mrad": 9.743330425423853,
+              "angular_rms_mrad": 7.067795522206146,
+              "centroid_m": [
+                1.467975565029507e-10,
+                1.8717564787372987e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3665.7383991756483,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 187500.00000000017,
+              "rms_radius_nm": 1328.2399091769296,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0058356253475756684
+            },
+            {
+              "alpha95_mrad": 9.743326068377717,
+              "angular_rms_mrad": 7.067792367799902,
+              "centroid_m": [
+                1.5251411206350195e-10,
+                1.9652280626797727e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3848.4047408436727,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 196875.0,
+              "rms_radius_nm": 1394.492206054794,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005845000347575668
+            },
+            {
+              "alpha95_mrad": 9.743321284339094,
+              "angular_rms_mrad": 7.067788903951712,
+              "centroid_m": [
+                1.5807741569733848e-10,
+                2.058708849328985e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4031.068411711784,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 206249.99999999983,
+              "rms_radius_nm": 1460.7435370776145,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005854375347575668
+            },
+            {
+              "alpha95_mrad": 9.74331605405609,
+              "angular_rms_mrad": 7.067785116695913,
+              "centroid_m": [
+                1.6348780814300888e-10,
+                2.152198562645873e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4213.7292935180185,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 215624.99999999968,
+              "rms_radius_nm": 1526.993859103865,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005863750347575668
+            },
+            {
+              "alpha95_mrad": 9.743310358374243,
+              "angular_rms_mrad": 7.067780992137518,
+              "centroid_m": [
+                1.687456306769361e-10,
+                2.2456969281271005e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4396.38726876076,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 225000.00000000038,
+              "rms_radius_nm": 1593.2431293088714,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005873125347575669
+            },
+            {
+              "alpha95_mrad": 9.743304178237176,
+              "angular_rms_mrad": 7.067776516452669,
+              "centroid_m": [
+                1.738512251055453e-10,
+                2.339203672803177e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4579.042220696994,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 234375.0000000002,
+              "rms_radius_nm": 1659.491305175983,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0058825003475756685
+            },
+            {
+              "alpha95_mrad": 9.74329749468718,
+              "angular_rms_mrad": 7.067771675889089,
+              "centroid_m": [
+                1.7880493375731065e-10,
+                2.432718525236658e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4761.6940333407565,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 243750.00000000003,
+              "rms_radius_nm": 1725.7383444896907,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005891875347575668
+            },
+            {
+              "alpha95_mrad": 9.743290288865845,
+              "angular_rms_mrad": 7.067766456766516,
+              "centroid_m": [
+                1.8360709947490084e-10,
+                2.526241215520164e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4944.342591461377,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 253124.99999999988,
+              "rms_radius_nm": 1791.9842053300858,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005901250347575668
+            },
+            {
+              "alpha95_mrad": 9.743282542014638,
+              "angular_rms_mrad": 7.067760845477131,
+              "centroid_m": [
+                1.8825806560738062e-10,
+                2.619771475274466e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5126.987780581807,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 262499.9999999997,
+              "rms_radius_nm": 1858.2288460683874,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005910625347575668
+            },
+            {
+              "alpha95_mrad": 9.743274235475498,
+              "angular_rms_mrad": 7.067754828485995,
+              "centroid_m": [
+                1.9275817600228886e-10,
+                2.7133090376465238e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5309.629486976924,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 271874.99999999953,
+              "rms_radius_nm": 1924.4722253632679,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005920000347575668
+            },
+            {
+              "alpha95_mrad": 9.743265350691422,
+              "angular_rms_mrad": 7.067748392331462,
+              "centroid_m": [
+                1.9710777499793956e-10,
+                2.8068536373074586e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5492.267597671842,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 281250.00000000023,
+              "rms_radius_nm": 1990.7143021577842,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0059293753475756685
+            },
+            {
+              "alpha95_mrad": 9.743255869207019,
+              "angular_rms_mrad": 7.0677415236255925,
+              "centroid_m": [
+                2.0130720741561374e-10,
+                2.9004050104504592e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5674.9020004401145,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 290625.00000000006,
+              "rms_radius_nm": 2056.955035676754,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005938750347575668
+            },
+            {
+              "alpha95_mrad": 9.74324577266908,
+              "angular_rms_mrad": 7.067734209054567,
+              "centroid_m": [
+                2.0535681855177622e-10,
+                2.9939628947888295e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5857.532583802123,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 299999.99999999994,
+              "rms_radius_nm": 2123.1943854245596,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005948125347575668
+            },
+            {
+              "alpha95_mrad": 9.74323504282715,
+              "angular_rms_mrad": 7.067726435379083,
+              "centroid_m": [
+                2.0925695417044635e-10,
+                3.0875270295537933e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6040.159237023264,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 309374.99999999977,
+              "rms_radius_nm": 2189.432311183176,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005957500347575668
+            },
+            {
+              "alpha95_mrad": 9.743223661534053,
+              "angular_rms_mrad": 7.067718189434753,
+              "centroid_m": [
+                2.1300796049543702e-10,
+                3.1810971554923374e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6222.781850112221,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 318749.9999999996,
+              "rms_radius_nm": 2255.66877301046,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005966875347575668
+            },
+            {
+              "alpha95_mrad": 9.743211610746405,
+              "angular_rms_mrad": 7.067709458132491,
+              "centroid_m": [
+                2.166101842027189e-10,
+                3.2746730148651337e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6405.400313819223,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 328125.0000000003,
+              "rms_radius_nm": 2321.9037312386217,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0059762503475756686
+            },
+            {
+              "alpha95_mrad": 9.743198872525209,
+              "angular_rms_mrad": 7.067700228458902,
+              "centroid_m": [
+                2.20063972412791e-10,
+                3.3682543514442416e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6588.014519634214,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 337500.0000000001,
+              "rms_radius_nm": 2388.1371464728104,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005985625347575668
+            },
+            {
+              "alpha95_mrad": 9.743185429036323,
+              "angular_rms_mrad": 7.067690487476653,
+              "centroid_m": [
+                2.2336967268302546e-10,
+                3.4618409105109336e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6770.624359785181,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 346874.99999999994,
+              "rms_radius_nm": 2454.3689795898817,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.005995000347575668
+            },
+            {
+              "alpha95_mrad": 9.743171262550968,
+              "angular_rms_mrad": 7.067680222324838,
+              "centroid_m": [
+                2.265276330001167e-10,
+                3.5554324388534223e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6953.229727236355,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 356249.99999999977,
+              "rms_radius_nm": 2520.5991917372157,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006004375347575668
+            },
+            {
+              "alpha95_mrad": 9.743156355446132,
+              "angular_rms_mrad": 7.067669420219267,
+              "centroid_m": [
+                2.2953820177188918e-10,
+                3.64902868476483e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7135.830515686816,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 365624.99999999965,
+              "rms_radius_nm": 2586.8277443317643,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006013750347575668
+            },
+            {
+              "alpha95_mrad": 9.743140690205205,
+              "angular_rms_mrad": 7.067658068452922,
+              "centroid_m": [
+                2.324017278205503e-10,
+                3.742629398040535e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7318.4266195681785,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 375000.00000000035,
+              "rms_radius_nm": 2653.054599058833,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006023125347575669
+            },
+            {
+              "alpha95_mrad": 9.74312424941843,
+              "angular_rms_mrad": 7.0676461543962965,
+              "centroid_m": [
+                2.351185603750376e-10,
+                3.836234329975865e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7501.0179340428385,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 384375.0000000002,
+              "rms_radius_nm": 2719.2797178711153,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0060325003475756684
+            },
+            {
+              "alpha95_mrad": 9.743107015783377,
+              "angular_rms_mrad": 7.067633665497722,
+              "centroid_m": [
+                2.3768904906336906e-10,
+                3.929843233363763e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7683.604355002321,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 393750.0,
+              "rms_radius_nm": 2785.503062987822,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006041875347575668
+            },
+            {
+              "alpha95_mrad": 9.743088972105383,
+              "angular_rms_mrad": 7.067620589283703,
+              "centroid_m": [
+                2.401135439052679e-10,
+                4.023455862492403e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7866.185779065406,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 403124.9999999998,
+              "rms_radius_nm": 2851.724596893757,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006051250347575668
+            },
+            {
+              "alpha95_mrad": 9.743070101298036,
+              "angular_rms_mrad": 7.0676069133592625,
+              "centroid_m": [
+                2.423923953047094e-10,
+                4.117071973142732e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8048.7621035763195,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 412499.99999999965,
+              "rms_radius_nm": 2917.9442823384575,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006060625347575668
+            },
+            {
+              "alpha95_mrad": 9.743050386383604,
+              "angular_rms_mrad": 7.067592625408252,
+              "centroid_m": [
+                2.445259540424107e-10,
+                4.210691322586017e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8231.333226602923,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 421875.00000000035,
+              "rms_radius_nm": 2984.162082335353,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006070000347575669
+            },
+            {
+              "alpha95_mrad": 9.74302981049348,
+              "angular_rms_mrad": 7.067577713193679,
+              "centroid_m": [
+                2.465145712685734e-10,
+                4.304313669581298e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8413.899046934806,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 431250.00000000023,
+              "rms_radius_nm": 3050.377960160922,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0060793753475756685
+            },
+            {
+              "alpha95_mrad": 9.743008356868637,
+              "angular_rms_mrad": 7.067562164558022,
+              "centroid_m": [
+                2.4835859849549756e-10,
+                4.397938774372949e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8596.459464081536,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 440625.00000000006,
+              "rms_radius_nm": 3116.5918793539236,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006088750347575668
+            },
+            {
+              "alpha95_mrad": 9.742986008860013,
+              "angular_rms_mrad": 7.067545967423533,
+              "centroid_m": [
+                2.5005838759018416e-10,
+                4.491566398688034e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8779.014378270753,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 449999.9999999999,
+              "rms_radius_nm": 3182.803803714579,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006098125347575668
+            },
+            {
+              "alpha95_mrad": 9.742962749928962,
+              "angular_rms_mrad": 7.067529109792548,
+              "centroid_m": [
+                2.5161429076707147e-10,
+                4.585196305733838e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8961.563690446314,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 459374.9999999997,
+              "rms_radius_nm": 3249.0136973037993,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006107500347575668
+            },
+            {
+              "alpha95_mrad": 9.74293856364763,
+              "angular_rms_mrad": 7.067511579747769,
+              "centroid_m": [
+                2.53026660580799e-10,
+                4.678828260195164e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9144.107302266446,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 468750.0000000004,
+              "rms_radius_nm": 3315.221524442426,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006116875347575669
+            },
+            {
+              "alpha95_mrad": 9.742913433699385,
+              "angular_rms_mrad": 7.067493365452563,
+              "centroid_m": [
+                2.542958499188802e-10,
+                4.772462028231641e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9326.645116101805,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 478125.00000000023,
+              "rms_radius_nm": 3381.4272497104403,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0061262503475756685
+            },
+            {
+              "alpha95_mrad": 9.742887343879188,
+              "angular_rms_mrad": 7.067474455151247,
+              "centroid_m": [
+                2.554222119945426e-10,
+                4.866097377475317e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9509.177035033697,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 487500.00000000006,
+              "rms_radius_nm": 3447.6308379462507,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006135625347575668
+            },
+            {
+              "alpha95_mrad": 9.742860278093975,
+              "angular_rms_mrad": 7.0674548371693575,
+              "centroid_m": [
+                2.5640610033950423e-10,
+                4.95973407702768e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9691.702962852123,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 496874.99999999994,
+              "rms_radius_nm": 3513.8322542459146,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006145000347575668
+            },
+            {
+              "alpha95_mrad": 9.742832220363036,
+              "angular_rms_mrad": 7.067434499913925,
+              "centroid_m": [
+                2.572478687967574e-10,
+                5.053371897457078e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9874.222804053892,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 506249.99999999977,
+              "rms_radius_nm": 3580.0314639624044,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006154375347575668
+            },
+            {
+              "alpha95_mrad": 9.742803154818388,
+              "angular_rms_mrad": 7.067413431873743,
+              "centroid_m": [
+                2.579478715135256e-10,
+                5.1470106107959955e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10056.73646384075,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 515625.00000000047,
+              "rms_radius_nm": 3646.2284327048715,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006163750347575669
+            },
+            {
+              "alpha95_mrad": 9.742773065705116,
+              "angular_rms_mrad": 7.067391621619623,
+              "centroid_m": [
+                2.585064629340776e-10,
+                5.2406499905382264e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10239.243848117385,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 525000.0000000003,
+              "rms_radius_nm": 3712.423126337884,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0061731253475756686
+            },
+            {
+              "alpha95_mrad": 9.742741937381743,
+              "angular_rms_mrad": 7.06736905780465,
+              "centroid_m": [
+                2.5892399779264393e-10,
+                5.3342898116360975e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10421.744863489626,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 534375.0000000001,
+              "rms_radius_nm": 3778.615510980729,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006182500347575668
+            },
+            {
+              "alpha95_mrad": 9.742709754320543,
+              "angular_rms_mrad": 7.067345729164431,
+              "centroid_m": [
+                2.5920083110641887e-10,
+                5.427929850497639e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10604.23941726245,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 543750.0,
+              "rms_radius_nm": 3844.8055530066554,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006191875347575668
+            },
+            {
+              "alpha95_mrad": 9.742676501107912,
+              "angular_rms_mrad": 7.067321624517333,
+              "centroid_m": [
+                2.593373181684055e-10,
+                5.5215698849837825e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10786.727417438064,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 553124.9999999998,
+              "rms_radius_nm": 3910.9932190421446,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006201250347575668
+            },
+            {
+              "alpha95_mrad": 9.742642162444655,
+              "angular_rms_mrad": 7.0672967327647225,
+              "centroid_m": [
+                2.593338145405747e-10,
+                5.61520969440544e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10969.208772713991,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 562500.0000000005,
+              "rms_radius_nm": 3977.178475966188,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006210625347575669
+            },
+            {
+              "alpha95_mrad": 9.742606723146338,
+              "angular_rms_mrad": 7.0672710428912,
+              "centroid_m": [
+                2.5919067604673587e-10,
+                5.708849059520586e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11151.683392481067,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 571875.0000000003,
+              "rms_radius_nm": 4043.3612909095314,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006220000347575669
+            },
+            {
+              "alpha95_mrad": 9.742570168143555,
+              "angular_rms_mrad": 7.067244543964813,
+              "centroid_m": [
+                2.5890825876569514e-10,
+                5.802487762531431e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11334.15118682157,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 581250.0000000001,
+              "rms_radius_nm": 4109.541631253981,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.0062293753475756684
+            },
+            {
+              "alpha95_mrad": 9.742532482482288,
+              "angular_rms_mrad": 7.067217225137285,
+              "centroid_m": [
+                2.584869190243077e-10,
+                5.896125587081332e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11516.612066507227,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 590625.0,
+              "rms_radius_nm": 4175.719464631646,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006238750347575668
+            },
+            {
+              "alpha95_mrad": 9.742493651324144,
+              "angular_rms_mrad": 7.067189075644227,
+              "centroid_m": [
+                2.5792701339054744e-10,
+                5.989762318251971e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11699.065942997244,
+              "effective": 1024.0,
+              "offset_from_paraxial_nm": 599999.9999999999,
+              "rms_radius_nm": 4241.894758924217,
+              "status": "MEASURED",
+              "surviving_positive": 1024,
+              "transmission": 1.0,
+              "z_m": 0.006248125347575668
+            }
+          ],
+          "full_declared_pupil_physically_admitted": true,
+          "intercepted_before_image": 0,
+          "intercepted_current_a": 0.0,
+          "intrinsic_cs_reference_mm": 6.493661316195818,
+          "native_d95_minimum": {
+            "alpha95_mrad": 9.743358380706008,
+            "angular_rms_mrad": 7.067815740181669,
+            "centroid_m": [
+              -2.36092540281318e-13,
+              4.696139475263587e-12
+            ],
+            "current_a": 1e-06,
+            "d95_nm": 12.018815514360268,
+            "effective": 1024.0,
+            "offset_from_paraxial_nm": 0.0,
+            "rms_radius_nm": 3.2439313590099426,
+            "status": "MEASURED",
+            "surviving_positive": 1024,
+            "transmission": 1.0,
+            "z_m": 0.005648125347575668
+          },
+          "native_minimum_bounded": true,
+          "neighbour_offset_bracket_nm": [
+            -9374.999999999834,
+            9374.999999999834
+          ],
+          "original_packet_current_a": 9.765625e-10,
+          "sphere_fit_from_clipped_population": false,
+          "tube_diameter_mm": 5.76
+        }
+      ],
+      "vacuum_fit": {
+        "c5_fit_mm": 6.881559366295072,
+        "coefficient_names": [
+          "C1",
+          "A1_x",
+          "A1_y",
+          "B2_x",
+          "B2_y",
+          "A2_x",
+          "A2_y",
+          "C3",
+          "S3_x",
+          "S3_y",
+          "A3_x",
+          "A3_y",
+          "C5",
+          "A5_x",
+          "A5_y"
+        ],
+        "coefficients_mm": [
+          -4.06742079050751e-12,
+          5.243188782993792e-10,
+          -3.30871030617684e-10,
+          -9.37636456398004e-09,
+          -1.557557659611031e-08,
+          -1.004126945709195e-08,
+          -4.831243842921202e-08,
+          6.493661252587059,
+          -3.566709979173419e-06,
+          -2.6077633827087936e-06,
+          1.4289318898801576e-05,
+          -2.5396359283199805e-07,
+          6.881559366295072,
+          0.026947770529950222,
+          -0.013362522361311767
+        ],
+        "condition_number": 36.85050620340272,
+        "cs_fit_mm": 6.493661252587059,
+        "cs_reference_agreement": true,
+        "cs_reference_mm": 6.493661316195818,
+        "cubic_edge_transverse_error_nm": 6.493661316195819,
+        "fit_rms_m": 1.3185622091130146e-13,
+        "higher_order_coefficient_scope": "Finite-pupil diagnostics; C5 is not independently qualified by a converged third-order reference",
+        "higher_order_departure_max_nm": 0.0008233415587978455,
+        "holdout_count": 510,
+        "holdout_max_m": 4.692362747604276e-13,
+        "holdout_rms_m": 1.3112722517937759e-13,
+        "maximum_actual_axis_radius_nm": 6.484837884746058,
+        "paraxial_edge_angle_mrad": 9.999666686665238,
+        "paraxial_edge_slope_rad": 0.01,
+        "population": "Complete declared counterfactual vacuum source; no intercepted-ray deletion",
+        "radial_geometric_fits": [
+          {
+            "coefficients_mm": [
+              4.158886846385621e-13,
+              6.493661270713191,
+              6.8814777233576825
+            ],
+            "condition_number": 36.74846529009112,
+            "cs_mm": 6.493661270713191,
+            "holdout_rms_m": 5.334232145015172e-19,
+            "powers": [
+              1,
+              3,
+              5
+            ],
+            "relative_cs_difference": 7.004157587253701e-09
+          },
+          {
+            "coefficients_mm": [
+              -1.8887711009876592e-13,
+              6.49366131607215,
+              6.8805710472596,
+              5.2853852124994996
+            ],
+            "condition_number": 215.1329182089349,
+            "cs_mm": 6.49366131607215,
+            "holdout_rms_m": 2.089659280422861e-20,
+            "powers": [
+              1,
+              3,
+              5,
+              7
+            ],
+            "relative_cs_difference": 1.9044432697512548e-11
+          }
+        ],
+        "relative_cs_difference": 9.795515398813848e-09,
+        "training_count": 514
+      },
+      "weights_sum": 1.0
+    },
+    {
+      "original_positive_count": 2048,
+      "positive_weight_count": 2048,
+      "source_phase_hash": "824a479dafbe4bfdfca7b0efc1fd0f9e2c483e2c6d0ed2b79f044aa71a06a67b",
+      "tube_views": [
+        {
+          "absolute_current_balance_residual_a": 0.0,
+          "at_paraxial_image": {
+            "alpha95_mrad": 9.745223582369132,
+            "angular_rms_mrad": 7.069546411330238,
+            "centroid_m": [
+              -7.189158785362201e-13,
+              2.3133750639283345e-12
+            ],
+            "current_a": 1e-06,
+            "d95_nm": 12.01696110957911,
+            "effective": 2048.0,
+            "rms_radius_nm": 3.245519430829609,
+            "status": "MEASURED",
+            "surviving_positive": 2048,
+            "transmission": 1.0
+          },
+          "downstream_wall_contacts": 0,
+          "emitted_positive_count": 2048,
+          "entrance_intercepted": 0,
+          "focus_planes": [
+            {
+              "alpha95_mrad": 9.746195005112321,
+              "angular_rms_mrad": 7.070251735027022,
+              "centroid_m": [
+                -4.973132753619658e-10,
+                -2.1085767323674313e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11676.174489187692,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -599999.9999999999,
+              "rms_radius_nm": 4236.421577416846,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005048125347575668
+            },
+            {
+              "alpha95_mrad": 9.74614954103016,
+              "angular_rms_mrad": 7.070218734599656,
+              "centroid_m": [
+                -4.876109986548154e-10,
+                -2.0760894625638613e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11493.752184425104,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -590625.0,
+              "rms_radius_nm": 4170.2543169265,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005057500347575668
+            },
+            {
+              "alpha95_mrad": 9.746105531638023,
+              "angular_rms_mrad": 7.070186789753015,
+              "centroid_m": [
+                -4.779722903187405e-10,
+                -2.0435834383929607e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11311.319754379341,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -581250.0000000001,
+              "rms_radius_nm": 4104.083382866353,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005066875347575668
+            },
+            {
+              "alpha95_mrad": 9.74606295263176,
+              "angular_rms_mrad": 7.070155882856373,
+              "centroid_m": [
+                -4.683970661653951e-10,
+                -2.0110588144590347e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11128.877385997372,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -571875.0000000003,
+              "rms_radius_nm": 4037.9088430496777,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005076250347575668
+            },
+            {
+              "alpha95_mrad": 9.746021779720586,
+              "angular_rms_mrad": 7.070125996288697,
+              "centroid_m": [
+                -4.5888524150258035e-10,
+                -1.978515744844088e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10946.425265368214,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -562500.0000000005,
+              "rms_radius_nm": 3971.730764978799,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005085625347575668
+            },
+            {
+              "alpha95_mrad": 9.745981988628456,
+              "angular_rms_mrad": 7.07009711243963,
+              "centroid_m": [
+                -4.4943673113764317e-10,
+                -1.9459543831067683e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10763.963577723503,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -553124.9999999998,
+              "rms_radius_nm": 3905.549215845305,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0050950003475756685
+            },
+            {
+              "alpha95_mrad": 9.745943555095401,
+              "angular_rms_mrad": 7.0700692137104655,
+              "centroid_m": [
+                -4.400514493807061e-10,
+                -1.9133748822815885e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10581.492507438115,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -543750.0,
+              "rms_radius_nm": 3839.3642625303055,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005104375347575668
+            },
+            {
+              "alpha95_mrad": 9.745906454878872,
+              "angular_rms_mrad": 7.070042282515128,
+              "centroid_m": [
+                -4.307293100481092e-10,
+                -1.8807773948779944e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10399.01223803071,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -534375.0000000001,
+              "rms_radius_nm": 3773.1759716046495,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005113750347575668
+            },
+            {
+              "alpha95_mrad": 9.745870663755072,
+              "angular_rms_mrad": 7.070016301281131,
+              "centroid_m": [
+                -4.2147022646564127e-10,
+                -1.8481620728794954e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10216.5229521644,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -525000.0000000003,
+              "rms_radius_nm": 3706.98440932919,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005123125347575668
+            },
+            {
+              "alpha95_mrad": 9.745836157520277,
+              "angular_rms_mrad": 7.069991252450544,
+              "centroid_m": [
+                -4.1227411147198565e-10,
+                -1.8155290677429182e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10034.024831647377,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -515625.00000000047,
+              "rms_radius_nm": 3640.7896416550498,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005132500347575668
+            },
+            {
+              "alpha95_mrad": 9.745802911992165,
+              "angular_rms_mrad": 7.069967118480948,
+              "centroid_m": [
+                -4.031408774219085e-10,
+                -1.7828785303974746e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9851.51805743356,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -506249.99999999977,
+              "rms_radius_nm": 3574.5917342238804,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0051418753475756685
+            },
+            {
+              "alpha95_mrad": 9.745770903011111,
+              "angular_rms_mrad": 7.069943881846381,
+              "centroid_m": [
+                -3.9407043618969897e-10,
+                -1.7502106112440345e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9669.002809623329,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -496874.99999999994,
+              "rms_radius_nm": 3508.390752368168,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005151250347575668
+            },
+            {
+              "alpha95_mrad": 9.7457401064415,
+              "angular_rms_mrad": 7.0699215250382865,
+              "centroid_m": [
+                -3.850626991724531e-10,
+                -1.7175254601543234e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9486.479267464116,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -487500.00000000006,
+              "rms_radius_nm": 3442.1867611114926,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005160625347575668
+            },
+            {
+              "alpha95_mrad": 9.745710498173011,
+              "angular_rms_mrad": 7.0699000305664494,
+              "centroid_m": [
+                -3.7611757729335855e-10,
+                -1.6848232264701805e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9303.94760935119,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -478125.00000000023,
+              "rms_radius_nm": 3375.9798251688517,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005170000347575668
+            },
+            {
+              "alpha95_mrad": 9.74568205412191,
+              "angular_rms_mrad": 7.069879380959929,
+              "centroid_m": [
+                -3.672349810050834e-10,
+                -1.6521040590027585e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9121.408012828355,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -468750.0000000004,
+              "rms_radius_nm": 3309.77000894697,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005179375347575668
+            },
+            {
+              "alpha95_mrad": 9.745654750232319,
+              "angular_rms_mrad": 7.0698595587679876,
+              "centroid_m": [
+                -3.584148202930323e-10,
+                -1.6193681060318992e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8938.860654588698,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -459374.9999999997,
+              "rms_radius_nm": 3243.55737654462,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0051887503475756686
+            },
+            {
+              "alpha95_mrad": 9.745628562477501,
+              "angular_rms_mrad": 7.069840546561008,
+              "centroid_m": [
+                -3.49657004678676e-10,
+                -1.5866155153053161e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8756.30571047539,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -449999.9999999999,
+              "rms_radius_nm": 3177.3419917529895,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005198125347575668
+            },
+            {
+              "alpha95_mrad": 9.745603466861107,
+              "angular_rms_mrad": 7.0698223269314155,
+              "centroid_m": [
+                -3.4096144322288947e-10,
+                -1.5538464340380364e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8573.743355482395,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -440625.00000000006,
+              "rms_radius_nm": 3111.1239180559983,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005207500347575668
+            },
+            {
+              "alpha95_mrad": 9.745579439418437,
+              "angular_rms_mrad": 7.069804882494582,
+              "centroid_m": [
+                -3.3232804452920406e-10,
+                -1.5210610089115857e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8391.173763755312,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -431250.00000000023,
+              "rms_radius_nm": 3044.9032186306945,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005216875347575668
+            },
+            {
+              "alpha95_mrad": 9.745556456217683,
+              "angular_rms_mrad": 7.069788195889728,
+              "centroid_m": [
+                -3.237567167471752e-10,
+                -1.488259386073506e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8208.59710859219,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -421875.00000000035,
+              "rms_radius_nm": 2978.67995634764,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005226250347575668
+            },
+            {
+              "alpha95_mrad": 9.74553449336117,
+              "angular_rms_mrad": 7.069772249780832,
+              "centroid_m": [
+                -3.1524736757563526e-10,
+                -1.4554417111365698e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8026.013562444339,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -412499.99999999965,
+              "rms_radius_nm": 2912.45419377131,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005235625347575669
+            },
+            {
+              "alpha95_mrad": 9.745513526986592,
+              "angular_rms_mrad": 7.06975702685751,
+              "centroid_m": [
+                -3.067999042659981e-10,
+                -1.4226081291782776e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7843.423296917247,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -403124.9999999998,
+              "rms_radius_nm": 2846.2259931605495,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005245000347575668
+            },
+            {
+              "alpha95_mrad": 9.745493533268197,
+              "angular_rms_mrad": 7.069742509835896,
+              "centroid_m": [
+                -2.984142336255704e-10,
+                -1.3897587847402194e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7660.826482771198,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -393750.0,
+              "rms_radius_nm": 2779.9954164689275,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005254375347575668
+            },
+            {
+              "alpha95_mrad": 9.74547448841789,
+              "angular_rms_mrad": 7.069728681459424,
+              "centroid_m": [
+                -2.9009026202103974e-10,
+                -1.3568938218271749e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7478.223289921114,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -384375.0000000002,
+              "rms_radius_nm": 2713.762525344849,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005263750347575668
+            },
+            {
+              "alpha95_mrad": 9.745456368686602,
+              "angular_rms_mrad": 7.069715524499835,
+              "centroid_m": [
+                -2.818278953814575e-10,
+                -1.3240133839070441e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7295.613887439049,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -375000.00000000035,
+              "rms_radius_nm": 2647.5273811326324,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005273125347575668
+            },
+            {
+              "alpha95_mrad": 9.745439150365467,
+              "angular_rms_mrad": 7.069703021758019,
+              "centroid_m": [
+                -2.7362703920165187e-10,
+                -1.29111761391008e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7112.998443554654,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -365624.99999999965,
+              "rms_radius_nm": 2581.2900448728915,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005282500347575669
+            },
+            {
+              "alpha95_mrad": 9.745422809786957,
+              "angular_rms_mrad": 7.0696911560648505,
+              "centroid_m": [
+                -2.6548759854550127e-10,
+                -1.2582066542284512e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6930.37712565597,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -356249.99999999977,
+              "rms_radius_nm": 2515.050577303067,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0052918753475756685
+            },
+            {
+              "alpha95_mrad": 9.745407323326077,
+              "angular_rms_mrad": 7.069679910282045,
+              "centroid_m": [
+                -2.5740947804925355e-10,
+                -1.2252806467156295e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6747.750100290246,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -346874.99999999994,
+              "rms_radius_nm": 2448.809038858002,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005301250347575668
+            },
+            {
+              "alpha95_mrad": 9.745392667401529,
+              "angular_rms_mrad": 7.069669267303005,
+              "centroid_m": [
+                -2.493925819247514e-10,
+                -1.1923397326859544e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6565.117533164947,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -337500.0000000001,
+              "rms_radius_nm": 2382.565489670641,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005310625347575668
+            },
+            {
+              "alpha95_mrad": 9.74537881847686,
+              "angular_rms_mrad": 7.069659210053665,
+              "centroid_m": [
+                -2.4143681396273477e-10,
+                -1.1593840529141555e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6382.479589148684,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -328125.0000000003,
+              "rms_radius_nm": 2316.3199895727525,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005320000347575668
+            },
+            {
+              "alpha95_mrad": 9.745365753061632,
+              "angular_rms_mrad": 7.069649721493319,
+              "centroid_m": [
+                -2.3354207753611274e-10,
+                -1.126413747634884e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6199.836432272157,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -318749.9999999996,
+              "rms_radius_nm": 2250.072598095724,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005329375347575669
+            },
+            {
+              "alpha95_mrad": 9.745353447712548,
+              "angular_rms_mrad": 7.069640784615454,
+              "centroid_m": [
+                -2.257082756032071e-10,
+                -1.093428956542301e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6017.188225729209,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -309374.99999999977,
+              "rms_radius_nm": 2183.8233744714835,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0053387503475756685
+            },
+            {
+              "alpha95_mrad": 9.745341879034585,
+              "angular_rms_mrad": 7.0696323824485745,
+              "centroid_m": [
+                -2.1793531071102395e-10,
+                -1.0604298187896088e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5834.535131877707,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -299999.99999999994,
+              "rms_radius_nm": 2117.572377633454,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005348125347575668
+            },
+            {
+              "alpha95_mrad": 9.745331023682132,
+              "angular_rms_mrad": 7.069624498057008,
+              "centroid_m": [
+                -2.102230849985327e-10,
+                -1.0274164729887286e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5651.877312240613,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -290625.00000000006,
+              "rms_radius_nm": 2051.3196662177083,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005357500347575668
+            },
+            {
+              "alpha95_mrad": 9.745320858360097,
+              "angular_rms_mrad": 7.069617114541726,
+              "centroid_m": [
+                -2.0257150019988046e-10,
+                -9.94389057209814e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5469.214927506992,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -281250.00000000023,
+              "rms_radius_nm": 1985.0652985642446,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005366875347575668
+            },
+            {
+              "alpha95_mrad": 9.745311359825,
+              "angular_rms_mrad": 7.069610215041137,
+              "centroid_m": [
+                -1.949804576476567e-10,
+                -9.613477089809786e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5286.548137533031,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -271875.0000000004,
+              "rms_radius_nm": 1918.809332718462,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005376250347575668
+            },
+            {
+              "alpha95_mrad": 9.745302504886102,
+              "angular_rms_mrad": 7.069603782731888,
+              "centroid_m": [
+                -1.8744985827615225e-10,
+                -9.282925652878657e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5103.877101343074,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -262499.9999999997,
+              "rms_radius_nm": 1852.551826432877,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0053856253475756686
+            },
+            {
+              "alpha95_mrad": 9.745294270406461,
+              "angular_rms_mrad": 7.069597800829658,
+              "centroid_m": [
+                -1.7997960262458448e-10,
+                -8.952237625733592e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4921.201977130745,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -253124.99999999988,
+              "rms_radius_nm": 1786.2928371691685,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005395000347575668
+            },
+            {
+              "alpha95_mrad": 9.745286633304035,
+              "angular_rms_mrad": 7.069592252589929,
+              "centroid_m": [
+                -1.7256959084032243e-10,
+                -8.62141436737259e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4738.522922259913,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -243750.00000000003,
+              "rms_radius_nm": 1720.0324221005474,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005404375347575668
+            },
+            {
+              "alpha95_mrad": 9.745279570552748,
+              "angular_rms_mrad": 7.069587121308778,
+              "centroid_m": [
+                -1.6521972268217426e-10,
+                -8.290457231359603e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4555.840093265849,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -234375.0000000002,
+              "rms_radius_nm": 1653.7706381146793,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005413750347575668
+            },
+            {
+              "alpha95_mrad": 9.745273059183539,
+              "angular_rms_mrad": 7.069582390323641,
+              "centroid_m": [
+                -1.5792989752352207e-10,
+                -7.959367565821907e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4373.153645856304,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -225000.00000000038,
+              "rms_radius_nm": 1587.5075418172046,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005423125347575668
+            },
+            {
+              "alpha95_mrad": 9.74526707628543,
+              "angular_rms_mrad": 7.0695780430140704,
+              "centroid_m": [
+                -1.5070001435563263e-10,
+                -7.628146713447251e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4190.463734912601,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -215624.99999999968,
+              "rms_radius_nm": 1521.2431895360855,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005432500347575669
+            },
+            {
+              "alpha95_mrad": 9.745261599006577,
+              "angular_rms_mrad": 7.069574062802506,
+              "centroid_m": [
+                -1.435299717908273e-10,
+                -7.296796011481438e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4007.770514490828,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -206249.99999999983,
+              "rms_radius_nm": 1454.977637327066,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005441875347575668
+            },
+            {
+              "alpha95_mrad": 9.74525660455527,
+              "angular_rms_mrad": 7.069570433155015,
+              "centroid_m": [
+                -1.364196680657067e-10,
+                -6.965316791726108e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3825.0741378228754,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -196875.0,
+              "rms_radius_nm": 1388.7109409805144,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005451250347575668
+            },
+            {
+              "alpha95_mrad": 9.74525207020101,
+              "angular_rms_mrad": 7.069567137582043,
+              "centroid_m": [
+                -1.2936900104435097e-10,
+                -6.633710380536073e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3642.37475731765,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -187500.00000000017,
+              "rms_radius_nm": 1322.443156030278,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005460625347575668
+            },
+            {
+              "alpha95_mrad": 9.745247973275484,
+              "angular_rms_mrad": 7.069564159639151,
+              "centroid_m": [
+                -1.2237786822154252e-10,
+                -6.301978098817936e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3459.6725245622292,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -178125.00000000032,
+              "rms_radius_nm": 1256.1743377651776,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005470000347575668
+            },
+            {
+              "alpha95_mrad": 9.745244291173604,
+              "angular_rms_mrad": 7.069561482927748,
+              "centroid_m": [
+                -1.154461667259328e-10,
+                -5.970121262027711e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3276.9675903230122,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -168749.99999999962,
+              "rms_radius_nm": 1189.9045412441994,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005479375347575669
+            },
+            {
+              "alpha95_mrad": 9.745241001354476,
+              "angular_rms_mrad": 7.069559091095811,
+              "centroid_m": [
+                -1.0857379332327105e-10,
+                -5.638141180169474e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3094.2601045469883,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -159374.9999999998,
+              "rms_radius_nm": 1123.633821316965,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0054887503475756685
+            },
+            {
+              "alpha95_mrad": 9.745238081342427,
+              "angular_rms_mrad": 7.069556967838615,
+              "centroid_m": [
+                -1.0176064441955242e-10,
+                -5.306039157793478e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2911.5502163628325,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -149999.99999999997,
+              "rms_radius_nm": 1057.3622326516563,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005498125347575668
+            },
+            {
+              "alpha95_mrad": 9.74523550872796,
+              "angular_rms_mrad": 7.069555096899432,
+              "centroid_m": [
+                -9.500661606423546e-11,
+                -4.973816493995454e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2728.838074082195,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -140625.00000000012,
+              "rms_radius_nm": 991.0898297740633,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005507500347575668
+            },
+            {
+              "alpha95_mrad": 9.745233261168737,
+              "angular_rms_mrad": 7.069553462070249,
+              "centroid_m": [
+                -8.831160395338439e-11,
+                -4.6414744824143667e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2546.123825200916,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -131250.0000000003,
+              "rms_radius_nm": 924.8166671231871,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005516875347575668
+            },
+            {
+              "alpha95_mrad": 9.745231316390539,
+              "angular_rms_mrad": 7.06955204719246,
+              "centroid_m": [
+                -8.167550343286301e-11,
+                -4.3090144112323645e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2363.4076164002663,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -121875.00000000045,
+              "rms_radius_nm": 858.5427991324069,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005526250347575668
+            },
+            {
+              "alpha95_mrad": 9.74522965218824,
+              "angular_rms_mrad": 7.069550836157564,
+              "centroid_m": [
+                -7.509820950149414e-11,
+                -3.9764375631733927e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2180.689593548195,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -112499.99999999975,
+              "rms_radius_nm": 792.2682803511625,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0055356253475756685
+            },
+            {
+              "alpha95_mrad": 9.745228246426725,
+              "angular_rms_mrad": 7.069549812907851,
+              "centroid_m": [
+                -6.857961681420718e-11,
+                -3.643745215502505e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1997.969901700662,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -103124.99999999991,
+              "rms_radius_nm": 725.9931656330721,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005545000347575668
+            },
+            {
+              "alpha95_mrad": 9.745227077041847,
+              "angular_rms_mrad": 7.069548961437078,
+              "centroid_m": [
+                -6.211961968519887e-11,
+                -3.310938640025425e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1815.248685102832,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -93750.00000000009,
+              "rms_radius_nm": 659.7175104370986,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005554375347575668
+            },
+            {
+              "alpha95_mrad": 9.745226122041359,
+              "angular_rms_mrad": 7.06954826579115,
+              "centroid_m": [
+                -5.5718112091079447e-11,
+                -2.978019103088112e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1632.5260871904322,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -84375.00000000025,
+              "rms_radius_nm": 593.4413713303046,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005563750347575668
+            },
+            {
+              "alpha95_mrad": 9.745225359505817,
+              "angular_rms_mrad": 7.069547710068786,
+              "centroid_m": [
+                -4.9374987674007e-11,
+                -2.64498786557631e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1449.8022505910528,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -75000.00000000041,
+              "rms_radius_nm": 527.1648068694601,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005573125347575668
+            },
+            {
+              "alpha95_mrad": 9.745224767589507,
+              "angular_rms_mrad": 7.069547278422177,
+              "centroid_m": [
+                -4.3090139744819776e-11,
+                -2.3118461829158886e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1267.0773171254616,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -65624.99999999971,
+              "rms_radius_nm": 460.8878792429276,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0055825003475756686
+            },
+            {
+              "alpha95_mrad": 9.745224324521349,
+              "angular_rms_mrad": 7.069546955057644,
+              "centroid_m": [
+                -3.68634612861754e-11,
+                -1.978595305072453e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1084.3514278090022,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -56249.999999999876,
+              "rms_radius_nm": 394.61065756670087,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005591875347575668
+            },
+            {
+              "alpha95_mrad": 9.745224008605783,
+              "angular_rms_mrad": 7.069546724236291,
+              "centroid_m": [
+                -3.0694844955668365e-11,
+                -1.6452364765519217e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 901.624722852866,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -46875.000000000044,
+              "rms_radius_nm": 328.33322517183115,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005601250347575668
+            },
+            {
+              "alpha95_mrad": 9.745223798223659,
+              "angular_rms_mrad": 7.06954657027464,
+              "centroid_m": [
+                -2.4584183088924797e-11,
+                -1.3117709364006768e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 718.8973416655278,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -37500.000000000204,
+              "rms_radius_nm": 262.0556979497995,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005610625347575668
+            },
+            {
+              "alpha95_mrad": 9.745223671833118,
+              "angular_rms_mrad": 7.069546477545272,
+              "centroid_m": [
+                -1.8531367702712704e-11,
+                -9.781999182061309e-11
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 536.169422854146,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -28125.00000000037,
+              "rms_radius_nm": 195.77827995988594,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005620000347575668
+            },
+            {
+              "alpha95_mrad": 9.745223607970432,
+              "angular_rms_mrad": 7.069546430477447,
+              "centroid_m": [
+                -1.2536290498109166e-11,
+                -6.4452465009738e-11
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 353.4411042259726,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -18749.99999999967,
+              "rms_radius_nm": 129.50148978882473,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005629375347575669
+            },
+            {
+              "alpha95_mrad": 9.745223585250756,
+              "angular_rms_mrad": 7.069546413557629,
+              "centroid_m": [
+                -6.598842863723402e-12,
+                -3.1074635474428053e-11
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 170.71252279011998,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": -9374.999999999834,
+              "rms_radius_nm": 63.22781053796357,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005638750347575668
+            },
+            {
+              "alpha95_mrad": 9.745223582369132,
+              "angular_rms_mrad": 7.069546411330238,
+              "centroid_m": [
+                -7.189158785362201e-13,
+                2.3133750639283345e-12
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 12.01696110957911,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 0.0,
+              "rms_radius_nm": 3.245519430829609,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005648125347575668
+            },
+            {
+              "alpha95_mrad": 9.74522357810131,
+              "angular_rms_mrad": 7.069546408398227,
+              "centroid_m": [
+                5.103599684939924e-12,
+                3.5711445429473e-11
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 194.74488447959916,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 9374.999999999834,
+              "rms_radius_nm": 69.3468081604817,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005657500347575668
+            },
+            {
+              "alpha95_mrad": 9.745223551304544,
+              "angular_rms_mrad": 7.069546389423664,
+              "centroid_m": [
+                1.0868813357555628e-11,
+                6.911945499178551e-11
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 377.47344026265563,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 18749.99999999967,
+              "rms_radius_nm": 135.6210938913948,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005666875347575668
+            },
+            {
+              "alpha95_mrad": 9.745223480918403,
+              "angular_rms_mrad": 7.069546339128332,
+              "centroid_m": [
+                1.657683497045105e-11,
+                1.0253728366574402e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 560.2017187835089,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 28125.00000000037,
+              "rms_radius_nm": 201.89798762245195,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005676250347575669
+            },
+            {
+              "alpha95_mrad": 9.745223345965604,
+              "angular_rms_mrad": 7.069546242294318,
+              "centroid_m": [
+                2.2227774651992927e-11,
+                1.3596481191136344e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 742.9295870051908,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 37500.000000000204,
+              "rms_radius_nm": 268.1754336277517,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0056856253475756685
+            },
+            {
+              "alpha95_mrad": 9.745223125552796,
+              "angular_rms_mrad": 7.069546083764589,
+              "centroid_m": [
+                2.7821742824717797e-11,
+                1.6940192073363584e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 925.6569126817953,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 46875.000000000044,
+              "rms_radius_nm": 334.45296770459106,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005695000347575668
+            },
+            {
+              "alpha95_mrad": 9.745222798871366,
+              "angular_rms_mrad": 7.069545848443573,
+              "centroid_m": [
+                3.335885020228296e-11,
+                2.028484916823439e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1108.3835643562093,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 56249.999999999876,
+              "rms_radius_nm": 400.73040130230004,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005704375347575668
+            },
+            {
+              "alpha95_mrad": 9.745222345198208,
+              "angular_rms_mrad": 7.069545521297727,
+              "centroid_m": [
+                3.8839207786412945e-11,
+                2.3630440685185683e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1291.1094113585411,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 65624.99999999971,
+              "rms_radius_nm": 467.0076261233616,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005713750347575668
+            },
+            {
+              "alpha95_mrad": 9.745221743896519,
+              "angular_rms_mrad": 7.069545087356099,
+              "centroid_m": [
+                4.426292686387378e-11,
+                2.697695488809306e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1473.834323804619,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 75000.00000000041,
+              "rms_radius_nm": 533.284564430378,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005723125347575669
+            },
+            {
+              "alpha95_mrad": 9.745220974416545,
+              "angular_rms_mrad": 7.06954453171088,
+              "centroid_m": [
+                4.963011900343263e-11,
+                3.032438009524635e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1656.5581725944148,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 84375.00000000025,
+              "rms_radius_nm": 599.5611523119431,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0057325003475756685
+            },
+            {
+              "alpha95_mrad": 9.745220016296344,
+              "angular_rms_mrad": 7.069543839517962,
+              "centroid_m": [
+                5.4940896052840214e-11,
+                3.36727046793275e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 1839.280829410626,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 93750.00000000009,
+              "rms_radius_nm": 665.8373329424969,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005741875347575668
+            },
+            {
+              "alpha95_mrad": 9.745218849162546,
+              "angular_rms_mrad": 7.06954299599747,
+              "centroid_m": [
+                6.019537013581001e-11,
+                3.702191706738444e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2022.0021667170943,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 103124.99999999991,
+              "rms_radius_nm": 732.113053502894,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005751250347575668
+            },
+            {
+              "alpha95_mrad": 9.745217452731072,
+              "angular_rms_mrad": 7.069541986434301,
+              "centroid_m": [
+                6.539365364900806e-11,
+                4.037200574080378e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2204.722057757282,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 112499.99999999975,
+              "rms_radius_nm": 798.3882636345198,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005760625347575668
+            },
+            {
+              "alpha95_mrad": 9.745215806807877,
+              "angular_rms_mrad": 7.069540796178664,
+              "centroid_m": [
+                7.0535859259052e-11,
+                4.3722959235283913e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2387.4403765527527,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 121875.00000000045,
+              "rms_radius_nm": 864.6629146041072,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005770000347575669
+            },
+            {
+              "alpha95_mrad": 9.745213891289668,
+              "angular_rms_mrad": 7.069539410646585,
+              "centroid_m": [
+                7.562209989951254e-11,
+                4.707476614080282e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2570.15699790155,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 131250.0000000003,
+              "rms_radius_nm": 930.9369588250428,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0057793753475756686
+            },
+            {
+              "alpha95_mrad": 9.74521168616461,
+              "angular_rms_mrad": 7.0695378153204365,
+              "centroid_m": [
+                8.065248876793118e-11,
+                5.042741510159118e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2752.8717973767366,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 140625.00000000012,
+              "rms_radius_nm": 997.2103495693829,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005788750347575668
+            },
+            {
+              "alpha95_mrad": 9.745209171513041,
+              "angular_rms_mrad": 7.069535995749442,
+              "centroid_m": [
+                8.56271393228311e-11,
+                5.378089481609754e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 2935.584651324758,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 149999.99999999997,
+              "rms_radius_nm": 1063.483040787293,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005798125347575668
+            },
+            {
+              "alpha95_mrad": 9.74520632750815,
+              "angular_rms_mrad": 7.06953393755018,
+              "centroid_m": [
+                9.054616528074561e-11,
+                5.713519403695313e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3118.2954368638743,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 159374.9999999998,
+              "rms_radius_nm": 1129.7549869898576,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005807500347575668
+            },
+            {
+              "alpha95_mrad": 9.745203134416668,
+              "angular_rms_mrad": 7.06953162640708,
+              "centroid_m": [
+                9.540968061326111e-11,
+                6.049030157094186e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3301.0040318825863,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 168750.0000000005,
+              "rms_radius_nm": 1196.0261431706608,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005816875347575669
+            },
+            {
+              "alpha95_mrad": 9.745199572599555,
+              "angular_rms_mrad": 7.0695290480729165,
+              "centroid_m": [
+                1.0021779954403531e-10,
+                6.384620627895876e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3483.7103150379703,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 178125.00000000032,
+              "rms_radius_nm": 1262.2964647518584,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005826250347575669
+            },
+            {
+              "alpha95_mrad": 9.745195622512647,
+              "angular_rms_mrad": 7.06952618836929,
+              "centroid_m": [
+                1.0497063654587808e-10,
+                6.720289707597524e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3666.4141657541627,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 187500.00000000017,
+              "rms_radius_nm": 1328.5659075462659,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0058356253475756684
+            },
+            {
+              "alpha95_mrad": 9.745191264707334,
+              "angular_rms_mrad": 7.069523033187098,
+              "centroid_m": [
+                1.0966830633778813e-10,
+                7.056036293100031e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 3849.1154642206734,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 196875.0,
+              "rms_radius_nm": 1394.834427730034,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005845000347575668
+            },
+            {
+              "alpha95_mrad": 9.745186479831183,
+              "angular_rms_mrad": 7.06951956848702,
+              "centroid_m": [
+                1.1431092388201373e-10,
+                7.391859286703784e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4031.814091390774,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 206249.99999999983,
+              "rms_radius_nm": 1461.1019818226234,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005854375347575668
+            },
+            {
+              "alpha95_mrad": 9.745181248628612,
+              "angular_rms_mrad": 7.069515780299968,
+              "centroid_m": [
+                1.1889860438113165e-10,
+                7.727757596104962e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4214.50992897985,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 215624.99999999968,
+              "rms_radius_nm": 1527.3685266718253,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005863750347575668
+            },
+            {
+              "alpha95_mrad": 9.745175551941491,
+              "angular_rms_mrad": 7.069511654727558,
+              "centroid_m": [
+                1.2343146327514155e-10,
+                8.063730134390625e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4397.202859463778,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 225000.00000000038,
+              "rms_radius_nm": 1593.6340194423822,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005873125347575669
+            },
+            {
+              "alpha95_mrad": 9.745169370709784,
+              "angular_rms_mrad": 7.069507177942544,
+              "centroid_m": [
+                1.2790961623852416e-10,
+                8.399775820034703e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4579.892766077185,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 234375.0000000002,
+              "rms_radius_nm": 1659.8984176071488,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0058825003475756685
+            },
+            {
+              "alpha95_mrad": 9.745162685972156,
+              "angular_rms_mrad": 7.069502336189285,
+              "centroid_m": [
+                1.3233317917738077e-10,
+                8.735893576893546e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4762.57953281189,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 243750.00000000003,
+              "rms_radius_nm": 1726.1616789402096,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005891875347575668
+            },
+            {
+              "alpha95_mrad": 9.745155478866568,
+              "angular_rms_mrad": 7.0694971157841655,
+              "centroid_m": [
+                1.3670226822647486e-10,
+                9.072082334200965e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 4945.26304441515,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 253124.99999999988,
+              "rms_radius_nm": 1792.4237615113311,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005901250347575668
+            },
+            {
+              "alpha95_mrad": 9.745147730630896,
+              "angular_rms_mrad": 7.069491503116037,
+              "centroid_m": [
+                1.4101699974642176e-10,
+                9.40834102656336e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5127.943186387991,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 262499.9999999997,
+              "rms_radius_nm": 1858.684623681489,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005910625347575668
+            },
+            {
+              "alpha95_mrad": 9.745139422603504,
+              "angular_rms_mrad": 7.069485484646646,
+              "centroid_m": [
+                1.4527749032073838e-10,
+                9.744668593955362e-10
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5310.619844983507,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 271874.99999999953,
+              "rms_radius_nm": 1924.944224099188,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005920000347575668
+            },
+            {
+              "alpha95_mrad": 9.745130536223826,
+              "angular_rms_mrad": 7.0694790469110504,
+              "centroid_m": [
+                1.4948385675302898e-10,
+                1.0081063981714122e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5493.292907205172,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 281250.00000000023,
+              "rms_radius_nm": 1991.2025216973939,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0059293753475756685
+            },
+            {
+              "alpha95_mrad": 9.745121053032934,
+              "angular_rms_mrad": 7.069472176518033,
+              "centroid_m": [
+                1.5363621606408782e-10,
+                1.0417526140534213e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5675.962260805042,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 290625.00000000006,
+              "rms_radius_nm": 2057.4594756909073,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005938750347575668
+            },
+            {
+              "alpha95_mrad": 9.745110954674104,
+              "angular_rms_mrad": 7.069464860150514,
+              "centroid_m": [
+                1.5773468548905236e-10,
+                1.0754054026462927e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 5858.627794282147,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 299999.99999999994,
+              "rms_radius_nm": 2123.7150455741657,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005948125347575668
+            },
+            {
+              "alpha95_mrad": 9.745100222893374,
+              "angular_rms_mrad": 7.06945708456595,
+              "centroid_m": [
+                1.6177938247458717e-10,
+                1.1090646600894085e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6041.289396880671,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 309374.99999999977,
+              "rms_radius_nm": 2189.9691911192704,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005957500347575668
+            },
+            {
+              "alpha95_mrad": 9.74508883954008,
+              "angular_rms_mrad": 7.069448836596728,
+              "centroid_m": [
+                1.6577042467600438e-10,
+                1.1427302830563017e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6223.94695858823,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 318749.9999999996,
+              "rms_radius_nm": 2256.2218723742762,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005966875347575668
+            },
+            {
+              "alpha95_mrad": 9.7450767865674,
+              "angular_rms_mrad": 7.069440103150561,
+              "centroid_m": [
+                1.6970792995446496e-10,
+                1.1764021687540536e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6406.600370134124,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 328125.0000000003,
+              "rms_radius_nm": 2322.47304966166,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0059762503475756686
+            },
+            {
+              "alpha95_mrad": 9.74506404603288,
+              "angular_rms_mrad": 7.069430871210864,
+              "centroid_m": [
+                1.7359201637415607e-10,
+                1.2100802149227445e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6589.249522987514,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 337500.0000000001,
+              "rms_radius_nm": 2388.722683576908,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005985625347575668
+            },
+            {
+              "alpha95_mrad": 9.745050600098962,
+              "angular_rms_mrad": 7.069421127837138,
+              "centroid_m": [
+                1.7742280219946855e-10,
+                1.243764319834837e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6771.894309355744,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 346874.99999999994,
+              "rms_radius_nm": 2454.9707349872792,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.005995000347575668
+            },
+            {
+              "alpha95_mrad": 9.745036431033464,
+              "angular_rms_mrad": 7.06941086016533,
+              "centroid_m": [
+                1.8120040589221024e-10,
+                1.2774543822945951e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 6954.534622182536,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 356249.99999999977,
+              "rms_radius_nm": 2521.2171650306273,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006004375347575668
+            },
+            {
+              "alpha95_mrad": 9.745021521209996,
+              "angular_rms_mrad": 7.0694000554081144,
+              "centroid_m": [
+                1.8492494610857755e-10,
+                1.311150301637572e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7137.170355146614,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 365624.99999999965,
+              "rms_radius_nm": 2587.4619351144443,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006013750347575668
+            },
+            {
+              "alpha95_mrad": 9.745005853108587,
+              "angular_rms_mrad": 7.069388700855368,
+              "centroid_m": [
+                1.8859654169666608e-10,
+                1.34485197772984e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7319.801402659368,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 375000.00000000035,
+              "rms_radius_nm": 2653.705006914642,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006023125347575669
+            },
+            {
+              "alpha95_mrad": 9.744989409316146,
+              "angular_rms_mrad": 7.069376783874489,
+              "centroid_m": [
+                1.922153116936256e-10,
+                1.3785593109673835e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7502.427659863109,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 384375.0000000002,
+              "rms_radius_nm": 2719.9463423745888,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0060325003475756684
+            },
+            {
+              "alpha95_mrad": 9.744972172526916,
+              "angular_rms_mrad": 7.069364291910735,
+              "centroid_m": [
+                1.9578137532284864e-10,
+                1.412272202275458e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7685.049022629421,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 393750.0,
+              "rms_radius_nm": 2786.185903704234,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006041875347575668
+            },
+            {
+              "alpha95_mrad": 9.744954125542941,
+              "angular_rms_mrad": 7.06935121248756,
+              "centroid_m": [
+                1.992948519912317e-10,
+                1.4459905531079513e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 7867.665387557283,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 403124.9999999998,
+              "rms_radius_nm": 2852.423653379189,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006051250347575668
+            },
+            {
+              "alpha95_mrad": 9.744935251274525,
+              "angular_rms_mrad": 7.06933753320695,
+              "centroid_m": [
+                2.0275586128641091e-10,
+                1.4797142654467023e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8050.276651971252,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 412499.99999999965,
+              "rms_radius_nm": 2918.6595541398606,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006060625347575668
+            },
+            {
+              "alpha95_mrad": 9.744915532740684,
+              "angular_rms_mrad": 7.069323241749737,
+              "centroid_m": [
+                2.0616452297399246e-10,
+                1.5134432418008268e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8232.882713919664,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 421875.00000000035,
+              "rms_radius_nm": 2984.8935689906166,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006070000347575669
+            },
+            {
+              "alpha95_mrad": 9.74489495306958,
+              "angular_rms_mrad": 7.069308325875939,
+              "centroid_m": [
+                2.0952095699486716e-10,
+                1.547177385205998e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8415.483472172717,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 431250.00000000023,
+              "rms_radius_nm": 3051.1256611989375,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0060793753475756685
+            },
+            {
+              "alpha95_mrad": 9.744873495498958,
+              "angular_rms_mrad": 7.069292773425055,
+              "centroid_m": [
+                2.12825283462454e-10,
+                1.5809165992237689e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8598.078826220735,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 440625.00000000006,
+              "rms_radius_nm": 3117.3557942946472,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006088750347575668
+            },
+            {
+              "alpha95_mrad": 9.744851143376572,
+              "angular_rms_mrad": 7.06927657231638,
+              "centroid_m": [
+                2.1607762265998257e-10,
+                1.6146607879408587e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8780.66867627224,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 449999.9999999999,
+              "rms_radius_nm": 3183.5839320690984,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006098125347575668
+            },
+            {
+              "alpha95_mrad": 9.74482788016059,
+              "angular_rms_mrad": 7.069259710549311,
+              "centroid_m": [
+                2.1927809503778208e-10,
+                1.6484098559684122e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 8963.252923252112,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 459374.9999999997,
+              "rms_radius_nm": 3249.8100385744,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006107500347575668
+            },
+            {
+              "alpha95_mrad": 9.744803689420026,
+              "angular_rms_mrad": 7.069242176203634,
+              "centroid_m": [
+                2.2242682121058537e-10,
+                1.6821637084412945e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9145.831468799739,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 468750.0000000004,
+              "rms_radius_nm": 3316.03407812265,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006116875347575669
+            },
+            {
+              "alpha95_mrad": 9.7447785548351,
+              "angular_rms_mrad": 7.069223957439819,
+              "centroid_m": [
+                2.2552392195484963e-10,
+                1.7159222510172633e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9328.404215267079,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 478125.00000000023,
+              "rms_radius_nm": 3382.256015285155,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0061262503475756685
+            },
+            {
+              "alpha95_mrad": 9.744752460197672,
+              "angular_rms_mrad": 7.069205042499302,
+              "centroid_m": [
+                2.2856951820606538e-10,
+                1.7496853898763401e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9510.971065716865,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 487500.00000000006,
+              "rms_radius_nm": 3448.4758148917085,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006135625347575668
+            },
+            {
+              "alpha95_mrad": 9.744725389411586,
+              "angular_rms_mrad": 7.069185419704762,
+              "centroid_m": [
+                2.315637310560787e-10,
+                1.783453031719922e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9693.53192392067,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 496874.99999999994,
+              "rms_radius_nm": 3514.6934420298194,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006145000347575668
+            },
+            {
+              "alpha95_mrad": 9.744697326493068,
+              "angular_rms_mrad": 7.069165077460392,
+              "centroid_m": [
+                2.3450668175040056e-10,
+                1.8172250837700741e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 9876.086694357004,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 506249.99999999977,
+              "rms_radius_nm": 3580.908862043973,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006154375347575668
+            },
+            {
+              "alpha95_mrad": 9.744668255571087,
+              "angular_rms_mrad": 7.069144004252166,
+              "centroid_m": [
+                2.373984916856114e-10,
+                1.8510014537687068e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10058.63528220945,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 515625.00000000047,
+              "rms_radius_nm": 3647.122040534897,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006163750347575669
+            },
+            {
+              "alpha95_mrad": 9.744638160887709,
+              "angular_rms_mrad": 7.069122188648099,
+              "centroid_m": [
+                2.402392824066982e-10,
+                1.8847820499768013e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10241.177593364671,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 525000.0000000003,
+              "rms_radius_nm": 3713.332943358799,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0061731253475756686
+            },
+            {
+              "alpha95_mrad": 9.744607026798452,
+              "angular_rms_mrad": 7.069099619298497,
+              "centroid_m": [
+                2.43029175604356e-10,
+                1.918566781173578e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10423.713534410612,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 534375.0000000001,
+              "rms_radius_nm": 3779.5415366266684,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006182500347575668
+            },
+            {
+              "alpha95_mrad": 9.744574837772612,
+              "angular_rms_mrad": 7.069076284936208,
+              "centroid_m": [
+                2.457682931124655e-10,
+                1.952355556655684e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10606.243012634475,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 543750.0,
+              "rms_radius_nm": 3845.7477867035163,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006191875347575668
+            },
+            {
+              "alpha95_mrad": 9.74454157839362,
+              "angular_rms_mrad": 7.069052174376862,
+              "centroid_m": [
+                2.4845675690533435e-10,
+                1.986148286236388e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10788.765936020854,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 553124.9999999998,
+              "rms_radius_nm": 3911.9516602076524,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006201250347575668
+            },
+            {
+              "alpha95_mrad": 9.744507233359352,
+              "angular_rms_mrad": 7.069027276519109,
+              "centroid_m": [
+                2.5109468909528797e-10,
+                2.0199448802446864e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 10971.282213249777,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 562500.0000000005,
+              "rms_radius_nm": 3978.153124009956,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006210625347575669
+            },
+            {
+              "alpha95_mrad": 9.74447178748245,
+              "angular_rms_mrad": 7.069001580344851,
+              "centroid_m": [
+                2.53682211929843e-10,
+                2.053745249524524e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11153.791753694715,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 571875.0000000003,
+              "rms_radius_nm": 4044.3521452331224,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006220000347575669
+            },
+            {
+              "alpha95_mrad": 9.744435225690632,
+              "angular_rms_mrad": 7.068975074919461,
+              "centroid_m": [
+                2.5621944778929736e-10,
+                2.0875493054338624e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11336.294467420728,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 581250.0000000001,
+              "rms_radius_nm": 4110.548691250969,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.0062293753475756684
+            },
+            {
+              "alpha95_mrad": 9.74439753302699,
+              "angular_rms_mrad": 7.068947749392006,
+              "centroid_m": [
+                2.5870651918406743e-10,
+                2.1213569598438617e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11518.790265182435,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 590625.0,
+              "rms_radius_nm": 4176.742729687679,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006238750347575668
+            },
+            {
+              "alpha95_mrad": 9.744358694650298,
+              "angular_rms_mrad": 7.068919592995458,
+              "centroid_m": [
+                2.611435487521245e-10,
+                2.155168125137996e-09
+              ],
+              "current_a": 1e-06,
+              "d95_nm": 11701.279058422091,
+              "effective": 2048.0,
+              "offset_from_paraxial_nm": 599999.9999999999,
+              "rms_radius_nm": 4242.934228417075,
+              "status": "MEASURED",
+              "surviving_positive": 2048,
+              "transmission": 1.0,
+              "z_m": 0.006248125347575668
+            }
+          ],
+          "full_declared_pupil_physically_admitted": true,
+          "intercepted_before_image": 0,
+          "intercepted_current_a": 0.0,
+          "intrinsic_cs_reference_mm": 6.493661316195818,
+          "native_d95_minimum": {
+            "alpha95_mrad": 9.745223582369132,
+            "angular_rms_mrad": 7.069546411330238,
+            "centroid_m": [
+              -7.189158785362201e-13,
+              2.3133750639283345e-12
+            ],
+            "current_a": 1e-06,
+            "d95_nm": 12.01696110957911,
+            "effective": 2048.0,
+            "offset_from_paraxial_nm": 0.0,
+            "rms_radius_nm": 3.245519430829609,
+            "status": "MEASURED",
+            "surviving_positive": 2048,
+            "transmission": 1.0,
+            "z_m": 0.005648125347575668
+          },
+          "native_minimum_bounded": true,
+          "neighbour_offset_bracket_nm": [
+            -9374.999999999834,
+            9374.999999999834
+          ],
+          "original_packet_current_a": 4.8828125e-10,
+          "sphere_fit_from_clipped_population": false,
+          "tube_diameter_mm": 5.76
+        }
+      ],
+      "vacuum_fit": {
+        "c5_fit_mm": 6.869146853132585,
+        "coefficient_names": [
+          "C1",
+          "A1_x",
+          "A1_y",
+          "B2_x",
+          "B2_y",
+          "A2_x",
+          "A2_y",
+          "C3",
+          "S3_x",
+          "S3_y",
+          "A3_x",
+          "A3_y",
+          "C5",
+          "A5_x",
+          "A5_y"
+        ],
+        "coefficients_mm": [
+          -2.929346370273758e-11,
+          -2.1625651736294205e-11,
+          1.1687658105528867e-10,
+          -9.0693189300286e-09,
+          -1.4737657428086594e-08,
+          2.388451408587575e-09,
+          2.481474475589452e-09,
+          6.493662669330898,
+          3.9825034519599293e-07,
+          -5.76416887054749e-06,
+          7.633191799454108e-06,
+          1.6966401507519318e-06,
+          6.869146853132585,
+          0.02373214021695223,
+          -0.05400187988637813
+        ],
+        "condition_number": 36.81373331309223,
+        "cs_fit_mm": 6.493662669330898,
+        "cs_reference_agreement": true,
+        "cs_reference_mm": 6.493661316195818,
+        "cubic_edge_transverse_error_nm": 6.493661316195819,
+        "fit_rms_m": 1.3143040837204044e-13,
+        "higher_order_coefficient_scope": "Finite-pupil diagnostics; C5 is not independently qualified by a converged third-order reference",
+        "higher_order_departure_max_nm": 0.000824348017827961,
+        "holdout_count": 1021,
+        "holdout_max_m": 4.63713561109428e-13,
+        "holdout_rms_m": 1.315931796174412e-13,
+        "maximum_actual_axis_radius_nm": 6.489593081466087,
+        "paraxial_edge_angle_mrad": 9.999666686665238,
+        "paraxial_edge_slope_rad": 0.01,
+        "population": "Complete declared counterfactual vacuum source; no intercepted-ray deletion",
+        "radial_geometric_fits": [
+          {
+            "coefficients_mm": [
+              4.152969850419922e-13,
+              6.493661270762035,
+              6.881477154149888
+            ],
+            "condition_number": 36.76818810706939,
+            "cs_mm": 6.493661270762035,
+            "holdout_rms_m": 5.336330606337119e-19,
+            "powers": [
+              1,
+              3,
+              5
+            ],
+            "relative_cs_difference": 6.996635715239563e-09
+          },
+          {
+            "coefficients_mm": [
+              -1.8899523908976193e-13,
+              6.493661316116555,
+              6.880569791632517,
+              5.2938918552009335
+            ],
+            "condition_number": 214.41079093023058,
+            "cs_mm": 6.493661316116555,
+            "holdout_rms_m": 2.1105400914165925e-20,
+            "powers": [
+              1,
+              3,
+              5,
+              7
+            ],
+            "relative_cs_difference": 1.2206347044241284e-11
+          }
+        ],
+        "relative_cs_difference": 2.0837783387683828e-07,
+        "training_count": 1027
+      },
+      "weights_sum": 1.0
+    }
+  ],
+  "reference_cc_mm": 7.316769479639512,
+  "request": {
+    "end_m": 0.006248125347575668,
+    "energy_ev": 300000.0,
+    "family": "matched_paraxial_edge",
+    "focus_window_m": 0.0006000000000000001,
+    "implementation": "60a3e4991d49bfda8a332ded15d17301f0dc32569cb85293f72c40c002099b2c",
+    "input_slopes": "Fixed paraxial zero-Larmor entrance matrix; not reinitialized from each nonlinear potential",
+    "name": "matched-b0.6-s6",
+    "observer_sha256": {
+      "scripts\\ideal_lens_beam.py": "de2800c0f357103ff03bac22998e45a93d6fbe5240507fcc417ea85ba05f6258",
+      "scripts\\ideal_lens_wall.py": "125b9d596cccc92462dc508c926c0aa5581877adca70e009d0e3a2c23eac0365",
+      "scripts\\study_ideal_lens_aberrations.py": "2b4ef3f2a8ff5e6cafbac060a40845a6b547e9af6d0641b240379174023f1091"
+    },
+    "paraxial_edge_mrad": 10.0,
+    "paraxial_image_m": 0.005648125347575668,
+    "peak_t": 0.6,
+    "qualification": "Synthetic monochromatic zero-emittance source, not an FEG or specimen-wave qualification",
+    "reference_sha256": "97c1d7b2e1e70fd56a9aaf287571a1cdcd372d493fb929426def49f091ebad40",
+    "sigma_mm": 6.0,
+    "source_boundary": "Uniform area disk; inverse CDF r=R sqrt(Halton2), azimuth=2pi Halton3; training=Halton5<0.5",
+    "source_counts": [
+      1024,
+      2048
+    ],
+    "source_current_a": 1e-06,
+    "source_radius_mm": 0.07840042640914589,
+    "source_schema": "ideal-uniform-disk-halton235-v1",
+    "start_m": -0.048,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      5.76
+    ],
+    "tube_role": "Passive absorbing cylinder; prescribed magnetic field is unchanged by its diameter"
+  },
+  "schema": "ideal-lens-finite-source-study-v1",
+  "source_and_characteristics_scope": "Retained vacuum characteristics after wall contact are counterfactual. Physical views use only pre-contact prefixes.",
+  "source_count_comparison": {
+    "added_original_positive_count": 1024,
+    "cs_fit_count_gate_passed": true,
+    "historical_prefix_raw_rewritten": false,
+    "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+    "relative_cs_fit_change": 2.1817335138507588e-07,
+    "source_prefix_phase_reused_exactly": true,
+    "source_prefix_size": 1024,
+    "tube_checks": [
+      {
+        "d95_count_gate_passed": true,
+        "relative_d95_change": -0.00015429180845172308,
+        "tube_diameter_mm": 5.76
+      }
+    ]
+  },
+  "source_radius_mm": 0.07840042640914589
+}

@@ -42,6 +42,9 @@ def capture_round_lens_potential(state, key):
         raise ValueError(f"Unknown or disabled round lens: {key}")
     native = state.condenser_system[key] if key in CONDENSER_LENS_KEYS else lenses[key]
     provider = resolve_runtime_lens_field_provider(state, key, native)
+    from temsim.physics.copper_coil_field_provider import CopperCoilFieldProvider
+    if type(provider) is CopperCoilFieldProvider:
+        return PotentialContribution(key, (key,), provider.potential, "magnetic")
     if type(provider) is GeometryAwareAnalyticFieldProvider:
         from temsim.test_electron_compiled_laws import magnetic_provider_is_supported, lens_family, _LENSES
         admitted_native = lens_family(native) is not None

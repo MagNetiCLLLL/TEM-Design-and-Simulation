@@ -1,0 +1,3157 @@
+{
+  "derived_figure_QA": "Before final sealing only: shortened tube tick labels and rotated them 35 degrees, labelled the lowest sampled D95, included explicit high-angle exploration markers; raw scientific observations unchanged.",
+  "files": {
+    "README.md": {
+      "bytes": 16695,
+      "sha256": "1fbf743086f8a19f07b800319d32acea7b4b8805d20580dba16ab615c8490d0a"
+    },
+    "audit-summary.json": {
+      "bytes": 668527,
+      "sha256": "f012de011e49428464faaf70630ed82a8da5e61d77688bcc20eb1eb3b6bafa77"
+    },
+    "case-inventory.json": {
+      "bytes": 9356,
+      "sha256": "1d850b0af4e95f70637b0706ba7e4a847aa6c685f1ad8352d06ed034ea412418"
+    },
+    "curation-preparation.json": {
+      "bytes": 151236,
+      "sha256": "cc60ad4362e13c8d36a4ae86ba8706d412b31658184b462565679ac88f276dbc"
+    },
+    "declared-requests/requests-refinement.json": {
+      "bytes": 5037,
+      "sha256": "17380cbc83670fc94c3a2b9aa300fc21c5118f7b20bf8cef5aae98fd8e7a4013"
+    },
+    "declared-requests/requests.json": {
+      "bytes": 4324,
+      "sha256": "cd1bb12a3079cffa81d5fd256ec008d02b65e80b74bfe7fc150ae3fd9bffe72b"
+    },
+    "drivers/audit_study.py": {
+      "bytes": 35885,
+      "sha256": "82c26064cf41dc37eaf6db6c963611aa1e60b8d0686eb95600dd4fccd9e803f6"
+    },
+    "drivers/capture_vacuum_inventory.py": {
+      "bytes": 3356,
+      "sha256": "fca89578191e2b9c7b3c7d48ae2b6d3dbb2fe57819736beb9911cad3f0fd94a5"
+    },
+    "drivers/curate_study.py": {
+      "bytes": 20691,
+      "sha256": "774b44c4c59cc4ddffc88b1757a02f231b841bb4cf414a23da2b2c6be170bad7"
+    },
+    "drivers/ideal_lens_beam.py": {
+      "bytes": 11005,
+      "sha256": "de2800c0f357103ff03bac22998e45a93d6fbe5240507fcc417ea85ba05f6258"
+    },
+    "drivers/ideal_lens_reference.py": {
+      "bytes": 11523,
+      "sha256": "8b2ca70792499848af1e38fb2fe316dbc0d220926be6807db04119e2cd52c945"
+    },
+    "drivers/ideal_lens_wall.py": {
+      "bytes": 14288,
+      "sha256": "125b9d596cccc92462dc508c926c0aa5581877adca70e009d0e3a2c23eac0365"
+    },
+    "drivers/make_figures.py": {
+      "bytes": 12328,
+      "sha256": "9a812f55447e11bc1e7ae5f180fb201db5e7126bd5e3e8a6d49a0a98f6942938"
+    },
+    "drivers/study_ideal_lens_aberrations.py": {
+      "bytes": 12172,
+      "sha256": "2b4ef3f2a8ff5e6cafbac060a40845a6b547e9af6d0641b240379174023f1091"
+    },
+    "drivers/test_ideal_lens_beam.py": {
+      "bytes": 10721,
+      "sha256": "e97496240aefd0c67c564ec84057ea1555f284a82d678918ef64491b454c8340"
+    },
+    "drivers/test_ideal_lens_wall.py": {
+      "bytes": 7757,
+      "sha256": "237cecef2d10fd54f705444c1d4e66d2e3474eab5fa72b0a248e1efa9532cce4"
+    },
+    "drivers/test_round_lens_aberration_benchmark.py": {
+      "bytes": 8689,
+      "sha256": "67b892ecb7aed25496484f1c67581c3fa820bb4b5ebe7ac92b0f43b4583c757b"
+    },
+    "drivers/write_readme.py": {
+      "bytes": 18087,
+      "sha256": "f88212bd261eecdd5e0e0f015190dc3ba0e72e2c37e402d92d5fb28119db470d"
+    },
+    "environment.json": {
+      "bytes": 791,
+      "sha256": "e050e5508b16af84e2b936a27e63eef7ee26520872671b9fd46c2a72dfd94757"
+    },
+    "filled-pupil-sensitivity.pdf": {
+      "bytes": 21749,
+      "sha256": "6dd8b8ca672ae7514b0eff2d414627f59b0eafed1b7b9398beb10fd5041e2f2d"
+    },
+    "filled-pupil-sensitivity.png": {
+      "bytes": 91729,
+      "sha256": "20115231f18fc79c72143809b547c54371bc560d0eda9c0aa746519ec558445c"
+    },
+    "filled-pupil-sensitivity.svg": {
+      "bytes": 23737,
+      "sha256": "7e53b208cb3077dcb459d6574cd3224f7f4e6d42a66eed79c3d941f33947d6c6"
+    },
+    "finite-source/filled-tube1.5/all-checkpoint-moments.npz": {
+      "bytes": 50199,
+      "sha256": "21dc5d79acccd3a3e8358b15177ba78500c3daa508d57d1587b30aac310764ea"
+    },
+    "finite-source/filled-tube1.5/characteristics-0-selected.npz": {
+      "bytes": 694684,
+      "sha256": "ef1113805fac147b021e29f7d480bf9803ae1ed80e455646750146c68cb60060"
+    },
+    "finite-source/filled-tube1.5/characteristics-1-selected.npz": {
+      "bytes": 694740,
+      "sha256": "b1d4225ea4e4f1dff8ffaadee520b377ad7b9228a0fc7c1722aa205bf9498146"
+    },
+    "finite-source/filled-tube1.5/field.json": {
+      "bytes": 1738,
+      "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+    },
+    "finite-source/filled-tube1.5/files.json": {
+      "bytes": 730,
+      "sha256": "246f40081e76b62ad7bc21e98e82664fe0e7030d2e86e4e7edbbd18e25f07810"
+    },
+    "finite-source/filled-tube1.5/phase-selection.json": {
+      "bytes": 3715,
+      "sha256": "58272fba23e3717fe5ade507b34a8a1a4ed851971c3d6c27b374e210cd4d7df3"
+    },
+    "finite-source/filled-tube1.5/report.json": {
+      "bytes": 193541,
+      "sha256": "c3a28a7662380b61d7648371ac1250e2b88299ffba54406833afebfb51133242"
+    },
+    "finite-source/filled-tube1.5/request.json": {
+      "bytes": 1565,
+      "sha256": "7946afc120c620118374b5e68a2c13e781d0e5020bcee448d9202e02bbe1cb0e"
+    },
+    "finite-source/filled-tube1.5/source.npz": {
+      "bytes": 103643,
+      "sha256": "281218de4d8f99f53a0349d9c0bc7d0bb400bdf96889c1497e45bb1396c211b8"
+    },
+    "finite-source/filled-tube1.5/wall-1.5mm-part0.npz": {
+      "bytes": 28074,
+      "sha256": "5b9764de3a837f96f3a08803a8d264014fd52b98be353ab58d1b0da780024978"
+    },
+    "finite-source/filled-tube1.5/wall-1.5mm-part1.npz": {
+      "bytes": 29670,
+      "sha256": "38b37615a4b4f77036949ebdf0441b0228aac92163b204db69c72ab382260300"
+    },
+    "finite-source/filled-tube5.76-half-step/all-checkpoint-moments.npz": {
+      "bytes": 50199,
+      "sha256": "1f4280cc6668510c8dfe1a129e3f2e92c9f6bdae84292845bc2079133a6f5335"
+    },
+    "finite-source/filled-tube5.76-half-step/characteristics-0-selected.npz": {
+      "bytes": 819400,
+      "sha256": "6a4ff671636088a90b53ab714be36ca85335f9e472eef7b8b3c16b7a7a8f8f95"
+    },
+    "finite-source/filled-tube5.76-half-step/characteristics-1-selected.npz": {
+      "bytes": 819257,
+      "sha256": "d28d3d6b823d6267df30f29a38ec1de40840ce9baea9415af55b947622fd81a4"
+    },
+    "finite-source/filled-tube5.76-half-step/field.json": {
+      "bytes": 1738,
+      "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+    },
+    "finite-source/filled-tube5.76-half-step/files.json": {
+      "bytes": 732,
+      "sha256": "9add670ddc459e393d1677d0f30864af6709f9408ba985b7858462b84a63e41f"
+    },
+    "finite-source/filled-tube5.76-half-step/phase-selection.json": {
+      "bytes": 3963,
+      "sha256": "d7bd92abaee7593c53b6a66ad548f821a7c9231852157f4a2902786be82f9ee2"
+    },
+    "finite-source/filled-tube5.76-half-step/report.json": {
+      "bytes": 193942,
+      "sha256": "783266f9887f74522834e88a693094ce61b4f6bf0d092d175a25939d47ac3982"
+    },
+    "finite-source/filled-tube5.76-half-step/request.json": {
+      "bytes": 1683,
+      "sha256": "04f1469eb3250198a5559859561c61d5792795f608df2aaea7ade8786235bd1d"
+    },
+    "finite-source/filled-tube5.76-half-step/source.npz": {
+      "bytes": 103617,
+      "sha256": "75bc074978706cbfd655dcbce25c0114d7e83e182af7451b97be8b5c94f04f8a"
+    },
+    "finite-source/filled-tube5.76-half-step/wall-5.76mm-part0.npz": {
+      "bytes": 28468,
+      "sha256": "4df928a33ca8a5e6b2b13db0681731303b1b9e0cbf975d94e91cdab0c653be39"
+    },
+    "finite-source/filled-tube5.76-half-step/wall-5.76mm-part1.npz": {
+      "bytes": 29675,
+      "sha256": "5c46fe1acc1e378c040b92e87d5872be7869fe1fd8a2bcea9d856e74d22f1827"
+    },
+    "finite-source/filled-tube5.76-order5/all-checkpoint-moments.npz": {
+      "bytes": 50206,
+      "sha256": "fe048b85ab423f7101522348071f82d8de318c5547a28da9ddc2cbba92d1a343"
+    },
+    "finite-source/filled-tube5.76-order5/characteristics-0-selected.npz": {
+      "bytes": 818524,
+      "sha256": "f6ba5e1abb75fe21a8b85bc9963814c6aad20086c136cf03079e3b51a35b0750"
+    },
+    "finite-source/filled-tube5.76-order5/characteristics-1-selected.npz": {
+      "bytes": 818488,
+      "sha256": "7ae60c94c69c74b3135aa9cb7d392fa4672147fe3734d562f503fb040cde8c97"
+    },
+    "finite-source/filled-tube5.76-order5/field.json": {
+      "bytes": 1738,
+      "sha256": "e1a476a18f8cae1f2fe54b6a2ad3c197720a1e7469e8328b17668c39f6d009b9"
+    },
+    "finite-source/filled-tube5.76-order5/files.json": {
+      "bytes": 732,
+      "sha256": "8a67cc305500aff2ab6fa5f24d71764211fab5e2984aa221d04a51f438c61b0b"
+    },
+    "finite-source/filled-tube5.76-order5/phase-selection.json": {
+      "bytes": 3954,
+      "sha256": "5a9cf908b3f0ef1035917c759d6e016553ec282c3a91a1ff4b8dbf839f8d8835"
+    },
+    "finite-source/filled-tube5.76-order5/report.json": {
+      "bytes": 193901,
+      "sha256": "d87b75ad15eda3feaf3a3219743fc21c20ea2b62e91099b877a97ea252ba97a0"
+    },
+    "finite-source/filled-tube5.76-order5/request.json": {
+      "bytes": 1667,
+      "sha256": "c30b91eb037d22871617a55dd6b8b16b67315fd93c611fc794b60fed720e3844"
+    },
+    "finite-source/filled-tube5.76-order5/source.npz": {
+      "bytes": 103617,
+      "sha256": "75bc074978706cbfd655dcbce25c0114d7e83e182af7451b97be8b5c94f04f8a"
+    },
+    "finite-source/filled-tube5.76-order5/wall-5.76mm-part0.npz": {
+      "bytes": 28375,
+      "sha256": "519a98a442253cf24cb5b4709fd4ae9533bb2792696c6ee7e834aa0b378d3737"
+    },
+    "finite-source/filled-tube5.76-order5/wall-5.76mm-part1.npz": {
+      "bytes": 29691,
+      "sha256": "f0fb5418f2ae40225c505740706dcde0cd32f12965708a760b42801adb436eb9"
+    },
+    "finite-source/filled-tube5.76-order7/all-checkpoint-moments.npz": {
+      "bytes": 50182,
+      "sha256": "de5bbeec80a5fb62bc170995c8bc7c169dfd3c8b74805899aae117427841009c"
+    },
+    "finite-source/filled-tube5.76-order7/characteristics-0-selected.npz": {
+      "bytes": 818592,
+      "sha256": "9d573d221c607453ef15a91bb577b2eb81572612db75a0063ed635a4527cc1a7"
+    },
+    "finite-source/filled-tube5.76-order7/characteristics-1-selected.npz": {
+      "bytes": 818506,
+      "sha256": "1ea3db9ab7bce61f87a13175bd81f9fe35c355ee647f3d241dcd64a67addec9d"
+    },
+    "finite-source/filled-tube5.76-order7/field.json": {
+      "bytes": 1738,
+      "sha256": "b390eb9ab87ad154392fab42c8d03a0a0d59c9fa60caecccda869e72e098fec3"
+    },
+    "finite-source/filled-tube5.76-order7/files.json": {
+      "bytes": 732,
+      "sha256": "77709fba9143310a274ee1dbf99da3ee1122279a3e27f1c69224fcf955a0f584"
+    },
+    "finite-source/filled-tube5.76-order7/phase-selection.json": {
+      "bytes": 3954,
+      "sha256": "0e0b0084ee26f03a5cbabdae1f09261dc81a962b6979411398a358b719b2fd53"
+    },
+    "finite-source/filled-tube5.76-order7/report.json": {
+      "bytes": 193885,
+      "sha256": "a1bf3e62fc2642db0d99b5715e255ef29412c87e13cc30bf4715d74d4b462a70"
+    },
+    "finite-source/filled-tube5.76-order7/request.json": {
+      "bytes": 1667,
+      "sha256": "c0e6368e86f972771c922dfd573dcc2cbae04d66a46dbc9779b70d1daad4d00d"
+    },
+    "finite-source/filled-tube5.76-order7/source.npz": {
+      "bytes": 103617,
+      "sha256": "75bc074978706cbfd655dcbce25c0114d7e83e182af7451b97be8b5c94f04f8a"
+    },
+    "finite-source/filled-tube5.76-order7/wall-5.76mm-part0.npz": {
+      "bytes": 28418,
+      "sha256": "3ce099005c070c87199c635a7d26008888894b7587ee81052886c016be312dfb"
+    },
+    "finite-source/filled-tube5.76-order7/wall-5.76mm-part1.npz": {
+      "bytes": 29694,
+      "sha256": "aadf3daf495a3923d1179bdb0b1a38b792f41226f8ff2df70269eb7cea421e22"
+    },
+    "finite-source/filled-tube5.76/all-checkpoint-moments.npz": {
+      "bytes": 50184,
+      "sha256": "b5653459cab4eec6acd4e8778f80363c9407b52c35acd90e9422b999bdc07f29"
+    },
+    "finite-source/filled-tube5.76/characteristics-0-selected.npz": {
+      "bytes": 818595,
+      "sha256": "42876f7682c30dd22f0a6df7498256d282825a75816761bad6ee8c650bc97570"
+    },
+    "finite-source/filled-tube5.76/characteristics-1-selected.npz": {
+      "bytes": 818454,
+      "sha256": "805fbcb42201d4a5d62d634b459cd536cb781c297d2ec35181191009c38bb9b8"
+    },
+    "finite-source/filled-tube5.76/field.json": {
+      "bytes": 1738,
+      "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+    },
+    "finite-source/filled-tube5.76/files.json": {
+      "bytes": 732,
+      "sha256": "def0c66f871bc2a262939e9582ef45258c54fbdead215080b5e8abe7a2b7e539"
+    },
+    "finite-source/filled-tube5.76/phase-selection.json": {
+      "bytes": 3933,
+      "sha256": "90ea448596c2b61ac3ba18d61b9c3b45e57ddffb1909dde7d50640ab782d4db7"
+    },
+    "finite-source/filled-tube5.76/report.json": {
+      "bytes": 193762,
+      "sha256": "894c4e6835e679127e22433abc529cc0d162ca6acd39d190c98dfda50ad923ad"
+    },
+    "finite-source/filled-tube5.76/request.json": {
+      "bytes": 1569,
+      "sha256": "7403efca84259a9d01612ef9406a9e944bd2acd2f2aa050ae489ac45369812da"
+    },
+    "finite-source/filled-tube5.76/source.npz": {
+      "bytes": 103617,
+      "sha256": "75bc074978706cbfd655dcbce25c0114d7e83e182af7451b97be8b5c94f04f8a"
+    },
+    "finite-source/filled-tube5.76/wall-5.76mm-part0.npz": {
+      "bytes": 28434,
+      "sha256": "45819f5b24c6d6296272587b3103a8ac4ea0c7af1d703c2aba6af970aeecc44e"
+    },
+    "finite-source/filled-tube5.76/wall-5.76mm-part1.npz": {
+      "bytes": 29682,
+      "sha256": "056b5762e0524f04ffb6e7bdac660b7c925afe037da275d47b56d39bc10345e2"
+    },
+    "finite-source/fixed-b0.15-s12/all-checkpoint-moments.npz": {
+      "bytes": 141536,
+      "sha256": "889c601480aa87be35bbc3d261ed4f339879b088fe4ae575f5c9a69fdf906579"
+    },
+    "finite-source/fixed-b0.15-s12/characteristics-0-selected.npz": {
+      "bytes": 729563,
+      "sha256": "51eb3f06a956fa657f55f4d8d6b3a275c3b9663e0f96dc089b6d1a1d8de0813f"
+    },
+    "finite-source/fixed-b0.15-s12/characteristics-1-selected.npz": {
+      "bytes": 729627,
+      "sha256": "e8e9f048c0ff8700e2d6b7aed78ab7371106aecc87321081e1c338e2725ea816"
+    },
+    "finite-source/fixed-b0.15-s12/field.json": {
+      "bytes": 1739,
+      "sha256": "3e3c6c7d83e198cccaa28f8b014994457170470b41ba6799b092edbc7b0adf25"
+    },
+    "finite-source/fixed-b0.15-s12/files.json": {
+      "bytes": 1108,
+      "sha256": "b280fe11718b57b466181dbd553ff9bec57455fe111755b2aabe265ff2717e54"
+    },
+    "finite-source/fixed-b0.15-s12/phase-selection.json": {
+      "bytes": 4597,
+      "sha256": "5694a311ffef262da0aa58d2a3c2babbdf469e60573df7b0036fb5186ededc56"
+    },
+    "finite-source/fixed-b0.15-s12/report.json": {
+      "bytes": 548142,
+      "sha256": "f67cc7e0cc2949e8005d6dab98093b6e9da3f274bee7b5fe2d90a87724d5d7ed"
+    },
+    "finite-source/fixed-b0.15-s12/request.json": {
+      "bytes": 1569,
+      "sha256": "e087edea96b5f89d46d12213ef67b568a3094e644bfec4e74ee0f66012c8ffca"
+    },
+    "finite-source/fixed-b0.15-s12/source.npz": {
+      "bytes": 103636,
+      "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+    },
+    "finite-source/fixed-b0.15-s12/wall-1.5mm-part0.npz": {
+      "bytes": 51348,
+      "sha256": "78fc1bf350b29251611285f63d41f4d3b8a32ba3140708f14f65d664bd046b68"
+    },
+    "finite-source/fixed-b0.15-s12/wall-1.5mm-part1.npz": {
+      "bytes": 53003,
+      "sha256": "dbe85d5cd28b0b7ea2da04dbb9b93055ea888309fd5fd939cb61f68689ca93ff"
+    },
+    "finite-source/fixed-b0.15-s12/wall-2mm-part0.npz": {
+      "bytes": 28070,
+      "sha256": "1d73f9a2968ee4bafeebc2b1384169e5e8c0ec336866a01a001ba1c90093c8b1"
+    },
+    "finite-source/fixed-b0.15-s12/wall-2mm-part1.npz": {
+      "bytes": 29664,
+      "sha256": "9ceabb3d8c5fa993950247aca0fe563be199e4d5a98df3a02e99434c0cff518d"
+    },
+    "finite-source/fixed-b0.15-s12/wall-5.76mm-part0.npz": {
+      "bytes": 27946,
+      "sha256": "2c792be94e9d9cbe4fba87928268715dc5de8e9292ea9d612fb74d636a33dba5"
+    },
+    "finite-source/fixed-b0.15-s12/wall-5.76mm-part1.npz": {
+      "bytes": 29547,
+      "sha256": "7a754f8d613fa5349989d85147db696ffbba134d42da05475e85e34697bc9e62"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/all-checkpoint-moments.npz": {
+      "bytes": 110827,
+      "sha256": "036fa7b6ff83661a938b847370986bc7f74ed77833f418578a752baa356b3d14"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/characteristics-0-selected.npz": {
+      "bytes": 999754,
+      "sha256": "aaf8762aeeecb97414b92a3778df62e3427544cee63da44325e3faa203f2fef2"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/characteristics-1-selected.npz": {
+      "bytes": 999882,
+      "sha256": "9729b97916c29e8a3796c05a4e10a685f98c537753b07a5c15e8d83f8a31ce18"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/field.json": {
+      "bytes": 1739,
+      "sha256": "3551a78ebdcc65eae72a1bcf3dcedca46cbfc6785fb31896947a3da3709d8f43"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/files.json": {
+      "bytes": 1108,
+      "sha256": "e619a02adca9816599f9c046b4b0233edf169663638ea3267a2cee29ff6d5048"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/phase-selection.json": {
+      "bytes": 5050,
+      "sha256": "1eab51cab3fa5221ca6ea9f75a848a3d071ed55cd01374b009a717d01f9aa5b2"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/report.json": {
+      "bytes": 546660,
+      "sha256": "cd9a543a8fa37d21a5adce3f0c6c3f6ee1180eb7fa1cc915d13f31ff1bb32fe0"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/request.json": {
+      "bytes": 1679,
+      "sha256": "032ece387fb3aebc31f7fa8a81f37df6006dd44ca4f7829be787b0b6bb87859f"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/source.npz": {
+      "bytes": 103636,
+      "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/wall-1.5mm-part0.npz": {
+      "bytes": 51395,
+      "sha256": "be1173b2a700ab93aadcae17e3d50e1de005e5260edb4fdd0436611fb108a8f3"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/wall-1.5mm-part1.npz": {
+      "bytes": 52997,
+      "sha256": "19a5976e708380c3fe0a2b48af027d35b736f176c502ab171da06e914cca2781"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/wall-2mm-part0.npz": {
+      "bytes": 28125,
+      "sha256": "e1282aac5b5759e91c46f65f261a4ee223d50211b95793f12f626d0079fc6393"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/wall-2mm-part1.npz": {
+      "bytes": 29656,
+      "sha256": "7f85a06fa22c1dee933d31852ef9130f72d9a352e4a801b0e7b68d7eccedd0f4"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/wall-5.76mm-part0.npz": {
+      "bytes": 27998,
+      "sha256": "5e6c869efc404cec69fc8b22b59ea88aa9f59e42a041e7d656d527318c288792"
+    },
+    "finite-source/fixed-b0.15-s3-half-step/wall-5.76mm-part1.npz": {
+      "bytes": 29541,
+      "sha256": "3cd5cc2d7663bea32d48d4af82638c078cff027bda1bb7e46b5569af57e3f064"
+    },
+    "finite-source/fixed-b0.15-s3-order5/all-checkpoint-moments.npz": {
+      "bytes": 110786,
+      "sha256": "8062782abf0e65cebf5b4db6237057a77a7b5351d0496dcc068aed342d9db7e9"
+    },
+    "finite-source/fixed-b0.15-s3-order5/characteristics-0-selected.npz": {
+      "bytes": 998553,
+      "sha256": "669e4573a6a300b83bae4ba483ec08f4be0b04e45920bec997771272934c56fb"
+    },
+    "finite-source/fixed-b0.15-s3-order5/characteristics-1-selected.npz": {
+      "bytes": 998471,
+      "sha256": "0aaab848ca67b3ea6606acabb8b8fa23ee2a0995cab42d5bde0e7932e76981e2"
+    },
+    "finite-source/fixed-b0.15-s3-order5/field.json": {
+      "bytes": 1739,
+      "sha256": "37d0a6eed04f11dda06e4e506239a02d763725efd4b0c084a0b330070d6de77a"
+    },
+    "finite-source/fixed-b0.15-s3-order5/files.json": {
+      "bytes": 1108,
+      "sha256": "eccd8ba8995d1084f9bf8775e220a1cedd886dbe71d09af9b661593a5c9ff764"
+    },
+    "finite-source/fixed-b0.15-s3-order5/phase-selection.json": {
+      "bytes": 5041,
+      "sha256": "6292e75f2d1a4d704728ef1ac9e3c33a874128686573292aed10f964e57d6305"
+    },
+    "finite-source/fixed-b0.15-s3-order5/report.json": {
+      "bytes": 546729,
+      "sha256": "10620a1e2a69a5f3da9fe1760799edf06c6d35ab16ce2d5164a0648f633ef483"
+    },
+    "finite-source/fixed-b0.15-s3-order5/request.json": {
+      "bytes": 1663,
+      "sha256": "aebc0da0f1a9d00628f31b8965c1a4d11276249094fc965fef86b49c8fe8be3f"
+    },
+    "finite-source/fixed-b0.15-s3-order5/source.npz": {
+      "bytes": 103636,
+      "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+    },
+    "finite-source/fixed-b0.15-s3-order5/wall-1.5mm-part0.npz": {
+      "bytes": 51357,
+      "sha256": "8d441d310e2133f549354f389e748c5ae50677422667adb2aa6117a2be493e84"
+    },
+    "finite-source/fixed-b0.15-s3-order5/wall-1.5mm-part1.npz": {
+      "bytes": 52995,
+      "sha256": "efe71c08f90ccd820a591474908a2e2e8b82d2f7a63a047f77b21e3062935e79"
+    },
+    "finite-source/fixed-b0.15-s3-order5/wall-2mm-part0.npz": {
+      "bytes": 28075,
+      "sha256": "6c8607d302abc931d0a2832a7d127216217a7ed6c8d4029db55998759dd829a0"
+    },
+    "finite-source/fixed-b0.15-s3-order5/wall-2mm-part1.npz": {
+      "bytes": 29654,
+      "sha256": "02cd726fbaf23933726ade4e5cefb41d6d4ab48679c97bf5a0dcc97d24eaad82"
+    },
+    "finite-source/fixed-b0.15-s3-order5/wall-5.76mm-part0.npz": {
+      "bytes": 27953,
+      "sha256": "1aefde55f9e6b595a0012115d0330831cbc0fd1109a718c12c6f9ccfc8ed14fa"
+    },
+    "finite-source/fixed-b0.15-s3-order5/wall-5.76mm-part1.npz": {
+      "bytes": 29544,
+      "sha256": "ef970128d0cd60afb5fc03608921050eecd0ab6e9d9f4ae122d224aff84fd6bd"
+    },
+    "finite-source/fixed-b0.15-s3-order7/all-checkpoint-moments.npz": {
+      "bytes": 110793,
+      "sha256": "5b60a45311a9f82d3cafa350d3fb62d7ecedd1558dad0dd349037af94e8a5048"
+    },
+    "finite-source/fixed-b0.15-s3-order7/characteristics-0-selected.npz": {
+      "bytes": 998494,
+      "sha256": "58eada7383eb2a0ec9cb21b2acebcead1a51002fade1f80ed306c5b9587813bf"
+    },
+    "finite-source/fixed-b0.15-s3-order7/characteristics-1-selected.npz": {
+      "bytes": 998487,
+      "sha256": "161445480ff0534d43c8f776ddcf540728a1a93f2fd2cfdb906b1269c72270dc"
+    },
+    "finite-source/fixed-b0.15-s3-order7/field.json": {
+      "bytes": 1739,
+      "sha256": "6fcff6d9c49f359d2e0f4eed5f296565caa376abaa438a15e92e35cb08e14738"
+    },
+    "finite-source/fixed-b0.15-s3-order7/files.json": {
+      "bytes": 1108,
+      "sha256": "f09dd27dec70e69b699cc77e7b37605435bdbc85bde9f820640410ea33288a87"
+    },
+    "finite-source/fixed-b0.15-s3-order7/phase-selection.json": {
+      "bytes": 5041,
+      "sha256": "077bb9e14084c8acc08a7e098c6039800a66f8782169faf31e2ff9c5b3ed4f5e"
+    },
+    "finite-source/fixed-b0.15-s3-order7/report.json": {
+      "bytes": 546874,
+      "sha256": "a8e9e7812ff12cbaf032bcba8e4616c3725574ede0b72e836f4d79eed08d3207"
+    },
+    "finite-source/fixed-b0.15-s3-order7/request.json": {
+      "bytes": 1663,
+      "sha256": "e9f000708671e9f2d9503882cf8e2e796e052919def69fd73f65cf6cd677f62a"
+    },
+    "finite-source/fixed-b0.15-s3-order7/source.npz": {
+      "bytes": 103636,
+      "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+    },
+    "finite-source/fixed-b0.15-s3-order7/wall-1.5mm-part0.npz": {
+      "bytes": 51359,
+      "sha256": "4a441b7d10749e502922c3302e590dee705b85344c0eb4117f1706f17985ea2a"
+    },
+    "finite-source/fixed-b0.15-s3-order7/wall-1.5mm-part1.npz": {
+      "bytes": 52994,
+      "sha256": "14e252752f3d371f7298505b763ee2ef2ae99833989edd700ece700ef0f9d2f4"
+    },
+    "finite-source/fixed-b0.15-s3-order7/wall-2mm-part0.npz": {
+      "bytes": 28078,
+      "sha256": "65aace8d80167459b2154a416451171d197f074f106d53cdb3532f749726c132"
+    },
+    "finite-source/fixed-b0.15-s3-order7/wall-2mm-part1.npz": {
+      "bytes": 29656,
+      "sha256": "825d96c8a8221a00624e364c20572f49277bb217d87d9be01424c7d9766dfe70"
+    },
+    "finite-source/fixed-b0.15-s3-order7/wall-5.76mm-part0.npz": {
+      "bytes": 27955,
+      "sha256": "ad3fa81190d710d0f5b80ac46a92ea13364a00ead7b689a9a4d4fb4121ccb21a"
+    },
+    "finite-source/fixed-b0.15-s3-order7/wall-5.76mm-part1.npz": {
+      "bytes": 29533,
+      "sha256": "c98b872960041914e14548c34996881dd0dd36685919c38f3f10fad4f0df9235"
+    },
+    "finite-source/fixed-b0.15-s3/all-checkpoint-moments.npz": {
+      "bytes": 110751,
+      "sha256": "4433fac9ae22fb6ab7eb596d52e7f95079e6a419ac7b8ed17a0016c11a1295ab"
+    },
+    "finite-source/fixed-b0.15-s3/characteristics-0-selected.npz": {
+      "bytes": 998665,
+      "sha256": "80fb5e248e732b8cc64d601990253fbbd35511587042a6aa57eb08b2b81053e6"
+    },
+    "finite-source/fixed-b0.15-s3/characteristics-1-selected.npz": {
+      "bytes": 998482,
+      "sha256": "1672df780cbbab7f7ad4196d46b9120fbce702ecff6ba185ebe3cfdd9096f54d"
+    },
+    "finite-source/fixed-b0.15-s3/field.json": {
+      "bytes": 1739,
+      "sha256": "3551a78ebdcc65eae72a1bcf3dcedca46cbfc6785fb31896947a3da3709d8f43"
+    },
+    "finite-source/fixed-b0.15-s3/files.json": {
+      "bytes": 1108,
+      "sha256": "b3fa68d267d1cbf6fc4e5924874e0cfead837d6b6afe5e670ac5f46fdc6bae6d"
+    },
+    "finite-source/fixed-b0.15-s3/phase-selection.json": {
+      "bytes": 5020,
+      "sha256": "6dc9693b72e373cc1b337c2044a4e803cedb2aa64d3ff3d9f0dde840148fcfc1"
+    },
+    "finite-source/fixed-b0.15-s3/report.json": {
+      "bytes": 546413,
+      "sha256": "dca43085be4b26c3a349f0314a656e88630b2fcb22329c33d40981ba4af0b7ed"
+    },
+    "finite-source/fixed-b0.15-s3/request.json": {
+      "bytes": 1566,
+      "sha256": "ffb6217851993ccdfa330f40a85c1e095b65c1b30f6ea412341b25d40d42ec62"
+    },
+    "finite-source/fixed-b0.15-s3/source.npz": {
+      "bytes": 103636,
+      "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+    },
+    "finite-source/fixed-b0.15-s3/wall-1.5mm-part0.npz": {
+      "bytes": 51364,
+      "sha256": "ef3235e3ae4fde10077bbe8fdbd3bf759f5239fe80dee4face05647a3755ff45"
+    },
+    "finite-source/fixed-b0.15-s3/wall-1.5mm-part1.npz": {
+      "bytes": 52994,
+      "sha256": "56d9df09bf2c2ac5d15874b53bf1dd972d5e1d8f55508a9b968814dc787346bc"
+    },
+    "finite-source/fixed-b0.15-s3/wall-2mm-part0.npz": {
+      "bytes": 28080,
+      "sha256": "178a304f8fc2514c0343ba431902a89de352f7fa668506f08bd0e9b98e95059a"
+    },
+    "finite-source/fixed-b0.15-s3/wall-2mm-part1.npz": {
+      "bytes": 29658,
+      "sha256": "0876626da3737c05191f83bafd8d4580f24a14b8e6627489042bceea61fe9368"
+    },
+    "finite-source/fixed-b0.15-s3/wall-5.76mm-part0.npz": {
+      "bytes": 27954,
+      "sha256": "bc677325dc867bcf9bd23dbab167c48e839d8ac794341da3eaa22d3a18c2ac80"
+    },
+    "finite-source/fixed-b0.15-s3/wall-5.76mm-part1.npz": {
+      "bytes": 29537,
+      "sha256": "0c62a0e9f114afb2ec0ccfa1a9035a5e7f1136f3932df0c047206c8ee7907e91"
+    },
+    "finite-source/fixed-b0.15-s6/all-checkpoint-moments.npz": {
+      "bytes": 117052,
+      "sha256": "9484046e3c7c26c8db4c0f0e89590497623852726938f29eec8a95ec6d787bd9"
+    },
+    "finite-source/fixed-b0.15-s6/characteristics-0-selected.npz": {
+      "bytes": 917374,
+      "sha256": "facbd6248b0e305a87c734928c2913b061ada9e6d9beb1cd747cdf6a8d3e5857"
+    },
+    "finite-source/fixed-b0.15-s6/characteristics-1-selected.npz": {
+      "bytes": 916968,
+      "sha256": "83738fdafee3ef436a20aa77cf55edc097c4548d4727f6e970fdd9fb7431a457"
+    },
+    "finite-source/fixed-b0.15-s6/field.json": {
+      "bytes": 1739,
+      "sha256": "79b45c724246db0a3ba9443b877a13a3d34beeb0e5fd71963d7d2f16d1d658e2"
+    },
+    "finite-source/fixed-b0.15-s6/files.json": {
+      "bytes": 1108,
+      "sha256": "a702a8cf3f564b2bb0477782e3ee6b1ca8d04f519370c9d0820d844f59d97d25"
+    },
+    "finite-source/fixed-b0.15-s6/phase-selection.json": {
+      "bytes": 4903,
+      "sha256": "5621565e67264c6ff1162d122d1b4d6cef87827db3328cf66496434d20b9db75"
+    },
+    "finite-source/fixed-b0.15-s6/report.json": {
+      "bytes": 547022,
+      "sha256": "673f7551d5f58a3d7a795894c364e919895e8460d211b67f3c390b929decc448"
+    },
+    "finite-source/fixed-b0.15-s6/request.json": {
+      "bytes": 1566,
+      "sha256": "e31e36605db3761b354554c7d28b8d56329cc9c3ffbad58f4ab62d4d21a013ae"
+    },
+    "finite-source/fixed-b0.15-s6/source.npz": {
+      "bytes": 103636,
+      "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+    },
+    "finite-source/fixed-b0.15-s6/wall-1.5mm-part0.npz": {
+      "bytes": 51378,
+      "sha256": "24dd661e712233aff703d1f9d10fd25fda1177f05ab299ce2d10d717a4ee6548"
+    },
+    "finite-source/fixed-b0.15-s6/wall-1.5mm-part1.npz": {
+      "bytes": 52995,
+      "sha256": "1b657d71d856f5824b1eb91ca8650fca10ec9c0c0450920c1fa48176cdf72215"
+    },
+    "finite-source/fixed-b0.15-s6/wall-2mm-part0.npz": {
+      "bytes": 28103,
+      "sha256": "32818f709698fd574456644926edd00b729391916807b0517ef42e5169b74d2b"
+    },
+    "finite-source/fixed-b0.15-s6/wall-2mm-part1.npz": {
+      "bytes": 29664,
+      "sha256": "e0c332dbd21adb2b91fe42051e0e879676dc7c5979f1ad5595062c3047f6c820"
+    },
+    "finite-source/fixed-b0.15-s6/wall-5.76mm-part0.npz": {
+      "bytes": 27980,
+      "sha256": "6b343078d2994ff99e6bb1a94cb9369bba038957e3ade040844c3927af75aae5"
+    },
+    "finite-source/fixed-b0.15-s6/wall-5.76mm-part1.npz": {
+      "bytes": 29541,
+      "sha256": "5d49240886125de7c27a4456b04d266413d71609209077fa0696fd29d814b18a"
+    },
+    "finite-source/fixed-b0.3-s12/all-checkpoint-moments.npz": {
+      "bytes": 144914,
+      "sha256": "5fcfe9107a86d8abda050856c1af7802d004ef824fb62bd0875abe71ae70d410"
+    },
+    "finite-source/fixed-b0.3-s12/characteristics-0-selected.npz": {
+      "bytes": 733578,
+      "sha256": "1cd1f7dddca3fadba6806464923e20c1d95bbecb35835301765e9b45749946eb"
+    },
+    "finite-source/fixed-b0.3-s12/characteristics-1-selected.npz": {
+      "bytes": 733467,
+      "sha256": "f77042d8b9042505936f590e1cf944bd1abbc1a072df0203e55f19839cb59c41"
+    },
+    "finite-source/fixed-b0.3-s12/field.json": {
+      "bytes": 1738,
+      "sha256": "1076474cfef5202fab783f68a23bfec00d3578cc43ba592286fe66ce3e37449b"
+    },
+    "finite-source/fixed-b0.3-s12/files.json": {
+      "bytes": 1108,
+      "sha256": "ccf4d73b6e1314993f60cf5a723cc94af5b755b9267a7535c3333819a3a2fa79"
+    },
+    "finite-source/fixed-b0.3-s12/phase-selection.json": {
+      "bytes": 4599,
+      "sha256": "be2f51bab2dc89be1e18548bd6b5052bc4f1dc3f04e3a9ebc66b70304302e5c2"
+    },
+    "finite-source/fixed-b0.3-s12/report.json": {
+      "bytes": 547613,
+      "sha256": "a4999a729a1b4dba63d720f97956133931822bac26655de597e7c9fb927e45c8"
+    },
+    "finite-source/fixed-b0.3-s12/request.json": {
+      "bytes": 1569,
+      "sha256": "40f7263a7009c019c1fd93d8e451871973d81946610031fdda02a75e5ecd9698"
+    },
+    "finite-source/fixed-b0.3-s12/source.npz": {
+      "bytes": 103618,
+      "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+    },
+    "finite-source/fixed-b0.3-s12/wall-1.5mm-part0.npz": {
+      "bytes": 51372,
+      "sha256": "90ec18e030177914d1cebd48db675d80b5fe0d29ae5d18edfd4bdda2343cfcb0"
+    },
+    "finite-source/fixed-b0.3-s12/wall-1.5mm-part1.npz": {
+      "bytes": 52997,
+      "sha256": "c10dc6dc9232391f6e3558edab1f5bf30fffa0da8162dc62150cb117b058c2ac"
+    },
+    "finite-source/fixed-b0.3-s12/wall-2mm-part0.npz": {
+      "bytes": 28086,
+      "sha256": "9de0e35ccd7084a91e6e7be0fbf14a709ad931b9338c22b78bafd2a0f6e4d900"
+    },
+    "finite-source/fixed-b0.3-s12/wall-2mm-part1.npz": {
+      "bytes": 29661,
+      "sha256": "ee15dbae0c90220d803991a14e7c697e1e7ee7a5cb7d3134e123c883109f0ca5"
+    },
+    "finite-source/fixed-b0.3-s12/wall-5.76mm-part0.npz": {
+      "bytes": 27960,
+      "sha256": "30e69c93fd7d29780fa2d4b1e60f580a4a3c58d50ba9b75a4755aa8de844bc6a"
+    },
+    "finite-source/fixed-b0.3-s12/wall-5.76mm-part1.npz": {
+      "bytes": 29541,
+      "sha256": "c461e301d9027a4e9ce003c491318ee165e75805628d0f70cd3c448497b7cc18"
+    },
+    "finite-source/fixed-b0.3-s3/all-checkpoint-moments.npz": {
+      "bytes": 116883,
+      "sha256": "6c01c99752e3cefc78b37caf9c124f1d91f2fe8450b4c02f96fb25d2bc9deabc"
+    },
+    "finite-source/fixed-b0.3-s3/characteristics-0-selected.npz": {
+      "bytes": 1008448,
+      "sha256": "4ec44298de1b0138ef7db0251686075969392e1d8c454d43dd90acd5d0e5d591"
+    },
+    "finite-source/fixed-b0.3-s3/characteristics-1-selected.npz": {
+      "bytes": 1008600,
+      "sha256": "f78db25da7613b2425055f45151e161e3fb64fdda764bee7709f04f99e6fe95f"
+    },
+    "finite-source/fixed-b0.3-s3/field.json": {
+      "bytes": 1738,
+      "sha256": "9f2fd46273b1559dffd6163009fd84d3c05fb7ef2fe5be9d4e1bfe758dc78a4d"
+    },
+    "finite-source/fixed-b0.3-s3/files.json": {
+      "bytes": 1108,
+      "sha256": "67e74ef58931d56b8da54556ea497318971bbce952dc1b6b634fd9f75332eb59"
+    },
+    "finite-source/fixed-b0.3-s3/phase-selection.json": {
+      "bytes": 5030,
+      "sha256": "d63ab585a222daa930971bb1aa1170fc52fc499d004ef417c0a0bdc92a02401f"
+    },
+    "finite-source/fixed-b0.3-s3/report.json": {
+      "bytes": 547479,
+      "sha256": "16781e1bc53a0956aabcbbfb47010b2291d786f14f6933d0c0ff27edd34f3b98"
+    },
+    "finite-source/fixed-b0.3-s3/request.json": {
+      "bytes": 1562,
+      "sha256": "38691cf523073be77bcc14522e2f2191d45b0682b7b805ab1f1fa36c1c2c7968"
+    },
+    "finite-source/fixed-b0.3-s3/source.npz": {
+      "bytes": 103618,
+      "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+    },
+    "finite-source/fixed-b0.3-s3/wall-1.5mm-part0.npz": {
+      "bytes": 51357,
+      "sha256": "a378c539bb424253ba0a3eb7a1fa97dcc9af81da4f243cabab8af4e1890831e6"
+    },
+    "finite-source/fixed-b0.3-s3/wall-1.5mm-part1.npz": {
+      "bytes": 52990,
+      "sha256": "7e9b162b029fe9fad5f9f3609c9fe95dd632c59a9a09c255ad288030bbe04a6b"
+    },
+    "finite-source/fixed-b0.3-s3/wall-2mm-part0.npz": {
+      "bytes": 28082,
+      "sha256": "7b7f74ae6d508fdcace7d29a550370e0700aaaf027d52b8a5511bdb7224d9338"
+    },
+    "finite-source/fixed-b0.3-s3/wall-2mm-part1.npz": {
+      "bytes": 29657,
+      "sha256": "afbcf7433f6e4c82e3aaad24d198c114c5f9114da6df271697b1492a96265bfa"
+    },
+    "finite-source/fixed-b0.3-s3/wall-5.76mm-part0.npz": {
+      "bytes": 27956,
+      "sha256": "cf8df1eff915fbc00e4c4970087afd85148c05154ea93df6113ab6b75a8db0f5"
+    },
+    "finite-source/fixed-b0.3-s3/wall-5.76mm-part1.npz": {
+      "bytes": 29533,
+      "sha256": "323c8393195da9ff0dc2665ee74488e042ceb2d8510f67c80420039452b0f7f9"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/all-checkpoint-moments.npz": {
+      "bytes": 141784,
+      "sha256": "364900fe903cfdc9d6220719555ab13d8e05c8460f0cd9e74cdde494f6a541d5"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/characteristics-0-selected.npz": {
+      "bytes": 854131,
+      "sha256": "e566fc3af13d69ceaa7a57fd6f951d241bfe12e202ddee97fe61ecc977ad12d5"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/characteristics-1-selected.npz": {
+      "bytes": 854170,
+      "sha256": "e65178cc7e5acf75c36e1d54d81673ce2207d437a015736cfd0e3f8ece8699b7"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/field.json": {
+      "bytes": 1738,
+      "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/files.json": {
+      "bytes": 1108,
+      "sha256": "a323c20978be351680386e55d60563bce4e575446e9a0029d17885558c3530c3"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/phase-selection.json": {
+      "bytes": 4792,
+      "sha256": "f6169a6c0af64957e86cba08681efb3f603d441f82f62f61f326a49f75fc9266"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/report.json": {
+      "bytes": 546827,
+      "sha256": "0506d2404d13dd9b7db171f43e5c9014141a61b2519ea357d80980d474f1ab82"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/request.json": {
+      "bytes": 1675,
+      "sha256": "3ef1590b5881e3e36caab7d25473adaa411eeb1ee3afbf487be264608fe0fca3"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/source.npz": {
+      "bytes": 103618,
+      "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/wall-1.5mm-part0.npz": {
+      "bytes": 51400,
+      "sha256": "c557852acfbc23ce35f76b239865ee2e32fb1adbe923225b573c6e369a9b13ce"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/wall-1.5mm-part1.npz": {
+      "bytes": 52996,
+      "sha256": "2d3bf657a2aad05b27f5ba506f333dd8cdc4ff0908d457993fc729fc8a9a8378"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/wall-2mm-part0.npz": {
+      "bytes": 28117,
+      "sha256": "38e38f4eadae32689d5923292b8d7b749c766819d9435d9860a391bbbe425533"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/wall-2mm-part1.npz": {
+      "bytes": 29656,
+      "sha256": "392bd7fa51751ff6dc949ae4d09dbc7bc80b140a44368932c0fcfd5f1a0dfb4f"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/wall-5.76mm-part0.npz": {
+      "bytes": 27990,
+      "sha256": "b7e5f6f2af8de41636f36eaaa0b308d9caa75ea5c250be79827eb3f5b5b10bb3"
+    },
+    "finite-source/fixed-b0.3-s6-half-step/wall-5.76mm-part1.npz": {
+      "bytes": 29538,
+      "sha256": "e0fb28ee509011896db4cd3f00525e5b7cd4e5c1b22d87651cb03682a577a1da"
+    },
+    "finite-source/fixed-b0.3-s6-order5/all-checkpoint-moments.npz": {
+      "bytes": 141724,
+      "sha256": "971987de749a1ed9e74ad40b406fb39a80ddffd53380ffddc0f6472796e6678b"
+    },
+    "finite-source/fixed-b0.3-s6-order5/characteristics-0-selected.npz": {
+      "bytes": 852427,
+      "sha256": "e74986c42c309768f8f75b458fc42c2f6df2e3ee71193e12af07cd913426455d"
+    },
+    "finite-source/fixed-b0.3-s6-order5/characteristics-1-selected.npz": {
+      "bytes": 852542,
+      "sha256": "1252411642904f2afe9d9396793118d7a3c4358aa12fec28bfb603025e8d9058"
+    },
+    "finite-source/fixed-b0.3-s6-order5/field.json": {
+      "bytes": 1738,
+      "sha256": "e1a476a18f8cae1f2fe54b6a2ad3c197720a1e7469e8328b17668c39f6d009b9"
+    },
+    "finite-source/fixed-b0.3-s6-order5/files.json": {
+      "bytes": 1108,
+      "sha256": "101cf1940f33b2b8e8f6bc461b798e3c4efe8122ea59c6b4c1a314a48d5b4083"
+    },
+    "finite-source/fixed-b0.3-s6-order5/phase-selection.json": {
+      "bytes": 4783,
+      "sha256": "0ca5410b71039a6e7df8f742c8838493a20b19b559cf728ff216d9ffd12bf1ef"
+    },
+    "finite-source/fixed-b0.3-s6-order5/report.json": {
+      "bytes": 546728,
+      "sha256": "8f7049970a4439598e9f47ee593b27cf07d749c1e3473dd5d01cea146e54a904"
+    },
+    "finite-source/fixed-b0.3-s6-order5/request.json": {
+      "bytes": 1659,
+      "sha256": "293c53d69f1751d70c409351307ffee6654e5c6987fb5efe551d3e2b981526cc"
+    },
+    "finite-source/fixed-b0.3-s6-order5/source.npz": {
+      "bytes": 103618,
+      "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+    },
+    "finite-source/fixed-b0.3-s6-order5/wall-1.5mm-part0.npz": {
+      "bytes": 51341,
+      "sha256": "aa84c36c1723b939c93fe994afb38eb422f13019c68e02d402970a90557e8c5c"
+    },
+    "finite-source/fixed-b0.3-s6-order5/wall-1.5mm-part1.npz": {
+      "bytes": 53001,
+      "sha256": "47f0832767994dddee8f907c5d1a152c4a8974a8935597c43d380f8b956d0dd6"
+    },
+    "finite-source/fixed-b0.3-s6-order5/wall-2mm-part0.npz": {
+      "bytes": 28064,
+      "sha256": "c43f1e31ac1cc406bc02ac0e1a0407cfb7179218d8fd1ceefe68b69ec0393da2"
+    },
+    "finite-source/fixed-b0.3-s6-order5/wall-2mm-part1.npz": {
+      "bytes": 29663,
+      "sha256": "d2df5b52c10d7495c737ac835075a1a1936f7cd2023b959a586fb2dd296d8450"
+    },
+    "finite-source/fixed-b0.3-s6-order5/wall-5.76mm-part0.npz": {
+      "bytes": 27938,
+      "sha256": "b254709c8e850f430ef204974900c6cdaefbd561a148082cafcfe9829ca6dad6"
+    },
+    "finite-source/fixed-b0.3-s6-order5/wall-5.76mm-part1.npz": {
+      "bytes": 29544,
+      "sha256": "33a1f4642a0ef0bf5c5bc006f4e3b4e3a6823a2d60d3aad31d9b1f77bda748b2"
+    },
+    "finite-source/fixed-b0.3-s6-order7/all-checkpoint-moments.npz": {
+      "bytes": 141756,
+      "sha256": "367ff782dda1f1ed0b220619d8c22befc7a199d0aea42b2b27c84d312b5fe4b6"
+    },
+    "finite-source/fixed-b0.3-s6-order7/characteristics-0-selected.npz": {
+      "bytes": 852477,
+      "sha256": "5e10a290c081a1ba833ef92ec40e49fdf3b583453d9d2a99985c0ef5dad403f4"
+    },
+    "finite-source/fixed-b0.3-s6-order7/characteristics-1-selected.npz": {
+      "bytes": 852417,
+      "sha256": "741699df67e539fa52934d56c323fa0a493878ee015ecce4dc0b6eb54182caea"
+    },
+    "finite-source/fixed-b0.3-s6-order7/field.json": {
+      "bytes": 1738,
+      "sha256": "b390eb9ab87ad154392fab42c8d03a0a0d59c9fa60caecccda869e72e098fec3"
+    },
+    "finite-source/fixed-b0.3-s6-order7/files.json": {
+      "bytes": 1108,
+      "sha256": "011efc095624eaef9b93c932d6c92b4e30f2d094c0413a66091c1f9dede5e989"
+    },
+    "finite-source/fixed-b0.3-s6-order7/phase-selection.json": {
+      "bytes": 4783,
+      "sha256": "197387af40a7b7458f6e94a9748a24065cb19ef16f38832623cf9860db2fc830"
+    },
+    "finite-source/fixed-b0.3-s6-order7/report.json": {
+      "bytes": 546784,
+      "sha256": "ef55bd3b5bda8897a72230603012e09b00243a22507527eeb57f490096a27b24"
+    },
+    "finite-source/fixed-b0.3-s6-order7/request.json": {
+      "bytes": 1659,
+      "sha256": "7a0e6ae74670d6ccd074062740a5984a92d0ead953fb5b52d2ee608031e3927f"
+    },
+    "finite-source/fixed-b0.3-s6-order7/source.npz": {
+      "bytes": 103618,
+      "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+    },
+    "finite-source/fixed-b0.3-s6-order7/wall-1.5mm-part0.npz": {
+      "bytes": 51346,
+      "sha256": "e830898ec479a10049036fd6ba06c7931367e00d3dbf9ac86aeaf56f822900f5"
+    },
+    "finite-source/fixed-b0.3-s6-order7/wall-1.5mm-part1.npz": {
+      "bytes": 53004,
+      "sha256": "b22b4a6f09a22e4eaa78d8963e48f4be83fb02fe2742d5f69729f58866e61394"
+    },
+    "finite-source/fixed-b0.3-s6-order7/wall-2mm-part0.npz": {
+      "bytes": 28070,
+      "sha256": "6da4d5c8f60a98ae1da00190fa658ee203e9aadb85def541de46310252cb81d1"
+    },
+    "finite-source/fixed-b0.3-s6-order7/wall-2mm-part1.npz": {
+      "bytes": 29667,
+      "sha256": "1d2606f157d440b1b16e3180bf0b9d3728ac6d9614aa0cd3f7161d4131af4229"
+    },
+    "finite-source/fixed-b0.3-s6-order7/wall-5.76mm-part0.npz": {
+      "bytes": 27943,
+      "sha256": "a6a252b2ced0b7af849c29083c152d54c88fe9245e680adf733ffcbafe42747d"
+    },
+    "finite-source/fixed-b0.3-s6-order7/wall-5.76mm-part1.npz": {
+      "bytes": 29549,
+      "sha256": "0458ec03a2ded3df117e123a0eca677712ffd5192cbec14dc36d4e8b4634363f"
+    },
+    "finite-source/fixed-b0.3-s6/all-checkpoint-moments.npz": {
+      "bytes": 141787,
+      "sha256": "13d29f97dd6b74cf8aa2b6c50c3a11b933d1a6739a7a401fefeb606491140a83"
+    },
+    "finite-source/fixed-b0.3-s6/characteristics-0-selected.npz": {
+      "bytes": 852426,
+      "sha256": "360cbb7b4ee9c28e2c77e0cdd1a02803da7b82f4db744f42a140e9891bea09dc"
+    },
+    "finite-source/fixed-b0.3-s6/characteristics-1-selected.npz": {
+      "bytes": 852399,
+      "sha256": "4bc4dbb385dac3677e23485b90a8993e273be67c41452c4ea2ff5a5a8d70dbc3"
+    },
+    "finite-source/fixed-b0.3-s6/field.json": {
+      "bytes": 1738,
+      "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+    },
+    "finite-source/fixed-b0.3-s6/files.json": {
+      "bytes": 1108,
+      "sha256": "d2d2d7b8b89ecea99f24aa466658167226ea46540017fc1bfb7bb89a2f624b42"
+    },
+    "finite-source/fixed-b0.3-s6/phase-selection.json": {
+      "bytes": 4762,
+      "sha256": "d25d0f9d6c1a8890ca0010b3e276cfa885a64be92d514acd88636d6bc2c3edcf"
+    },
+    "finite-source/fixed-b0.3-s6/report.json": {
+      "bytes": 546645,
+      "sha256": "1271d4b3a3ee87eebf1cbb336130b43bb4fbf3f8755f1447874066b6b93b248d"
+    },
+    "finite-source/fixed-b0.3-s6/request.json": {
+      "bytes": 1563,
+      "sha256": "437e27e7256f8ccd46d087f34f3039d16af20e3f34e7bf8d82e2f29b1a8ec8df"
+    },
+    "finite-source/fixed-b0.3-s6/source.npz": {
+      "bytes": 103618,
+      "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+    },
+    "finite-source/fixed-b0.3-s6/wall-1.5mm-part0.npz": {
+      "bytes": 51351,
+      "sha256": "14b058cef2d8c157237f85f36df947507dbcc9bd11b03ddc5980e9fee1face7b"
+    },
+    "finite-source/fixed-b0.3-s6/wall-1.5mm-part1.npz": {
+      "bytes": 53000,
+      "sha256": "65e9b045345f6902b46ef304bf17e8822b27168e2b469932e145381e9e403a6a"
+    },
+    "finite-source/fixed-b0.3-s6/wall-2mm-part0.npz": {
+      "bytes": 28072,
+      "sha256": "e43e6a97733a568258f162214af09e3c4e2bb6f12fa63916bdce142eb9d6f592"
+    },
+    "finite-source/fixed-b0.3-s6/wall-2mm-part1.npz": {
+      "bytes": 29663,
+      "sha256": "637982ec183281ef2cd58354b53e06ed728c230452b61634d8966fc0b88367e2"
+    },
+    "finite-source/fixed-b0.3-s6/wall-5.76mm-part0.npz": {
+      "bytes": 27944,
+      "sha256": "c65c545a965e74fbf6a4569b95a098eca6040e6d441d5911278a58651768468a"
+    },
+    "finite-source/fixed-b0.3-s6/wall-5.76mm-part1.npz": {
+      "bytes": 29541,
+      "sha256": "d58080e392161b6cf29b682ca277abb7d1781f5dfa2241e9a745d1bd4906b300"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/all-checkpoint-moments.npz": {
+      "bytes": 144712,
+      "sha256": "600564d85e758ee3f724077e7d959c4495614acdd065f6002f931c23b877c943"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/characteristics-0-selected.npz": {
+      "bytes": 733307,
+      "sha256": "0fcde35e8787cfe3296432bb753e8ca5f3afc44d1c2b49c9227262e330e7fdf9"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/characteristics-1-selected.npz": {
+      "bytes": 733237,
+      "sha256": "4e91b5b23aa1d7474245cb10c3364cfd306f6f621470a507a2b6dd583853a655"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/field.json": {
+      "bytes": 1738,
+      "sha256": "2a7859c2b42b3821611803ba29780e79cac00187a6efebc9890c2b0ec9a550f1"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/files.json": {
+      "bytes": 1108,
+      "sha256": "7ba06d6dff195df65b1f50e4e99e8b9e9429bf9279cad2ab6f8a3b0a202bdccb"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/phase-selection.json": {
+      "bytes": 4658,
+      "sha256": "f6741378e77ea49f785dabe3570f909e90f75e701ec9da72321d6ca9b12ad10d"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/report.json": {
+      "bytes": 547488,
+      "sha256": "a526e3bf10c85aee6d5abd43b7f315f20cb5e23f5e41029bbdc34a13cb78c3d1"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/request.json": {
+      "bytes": 1685,
+      "sha256": "bfc23a5af5035e03f77f2bba4ea8eebdeab1ccc391dd9f0790f6d550fb4fa96b"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/source.npz": {
+      "bytes": 103628,
+      "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/wall-1.5mm-part0.npz": {
+      "bytes": 51390,
+      "sha256": "287eeabea462f57f07fcb0c756b3242654165502be80e082bd76ba87cfc9ae4c"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/wall-1.5mm-part1.npz": {
+      "bytes": 52989,
+      "sha256": "f9d64aba439ebf783a49ce077b133c09fead9166e76a6467bec06aa1da539053"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/wall-2mm-part0.npz": {
+      "bytes": 28110,
+      "sha256": "90e476768de1d44673cabb27dd4d2ff0f9939be2e70b353513f664164c896750"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/wall-2mm-part1.npz": {
+      "bytes": 29655,
+      "sha256": "cb2e282fbafc15a49088e39d3efb7e48393b956619ddc099f7df99b0b4a7203a"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/wall-5.76mm-part0.npz": {
+      "bytes": 27984,
+      "sha256": "3a98d847bcd473aefd821bda4da6f5b4f3927a50bfbfd16f89cd4fd226c4e5a6"
+    },
+    "finite-source/fixed-b0.6-s12-half-step/wall-5.76mm-part1.npz": {
+      "bytes": 29540,
+      "sha256": "0bf8d2994f70b39ec405933eef64a611d9464f7ea75d07054e63d0f89e0081cd"
+    },
+    "finite-source/fixed-b0.6-s12-order5/all-checkpoint-moments.npz": {
+      "bytes": 144679,
+      "sha256": "fe71fdc62f5841a49a316d6e2f84232f3befdadd7c724bcf38f4ececf0b19d1c"
+    },
+    "finite-source/fixed-b0.6-s12-order5/characteristics-0-selected.npz": {
+      "bytes": 732721,
+      "sha256": "b4368ccfec65cc0d40efbb26ed4d96a24d52771a680696998d611a6d1ed19277"
+    },
+    "finite-source/fixed-b0.6-s12-order5/characteristics-1-selected.npz": {
+      "bytes": 732617,
+      "sha256": "41f92fba02a19206274c9438d2ee39b80ece8e12791483c6419fcadaf11409b8"
+    },
+    "finite-source/fixed-b0.6-s12-order5/field.json": {
+      "bytes": 1738,
+      "sha256": "ff7d2763654278e2ffdc01b5f384285c172086645d5601b5add4e68775b28b03"
+    },
+    "finite-source/fixed-b0.6-s12-order5/files.json": {
+      "bytes": 1108,
+      "sha256": "c303ad4dbf4d724d1fa369f3e191dff034ad33595186b035cc7f9a11c671f958"
+    },
+    "finite-source/fixed-b0.6-s12-order5/phase-selection.json": {
+      "bytes": 4649,
+      "sha256": "6e8266d9cad9e7ab575e30235b1b121e62a5951f51d1e96c6198a11d81bcf24e"
+    },
+    "finite-source/fixed-b0.6-s12-order5/report.json": {
+      "bytes": 547466,
+      "sha256": "659f45952a59b25ec58acdb110be218c72766e6e2923b610673b80c13138eb69"
+    },
+    "finite-source/fixed-b0.6-s12-order5/request.json": {
+      "bytes": 1669,
+      "sha256": "b4f4f6791ff042f9ff7ffc06fc457888826632d94383cc093ff523b8773522b4"
+    },
+    "finite-source/fixed-b0.6-s12-order5/source.npz": {
+      "bytes": 103628,
+      "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+    },
+    "finite-source/fixed-b0.6-s12-order5/wall-1.5mm-part0.npz": {
+      "bytes": 51345,
+      "sha256": "54d78b824ed85cd65d0b320ed5939a3f78ba9d4af5c71978df984f68fa8fa0b6"
+    },
+    "finite-source/fixed-b0.6-s12-order5/wall-1.5mm-part1.npz": {
+      "bytes": 53001,
+      "sha256": "21072f08ceff76082724693041917143a1ca6958f369b2f83f78f3351e08460f"
+    },
+    "finite-source/fixed-b0.6-s12-order5/wall-2mm-part0.npz": {
+      "bytes": 28061,
+      "sha256": "f1b093322c0c3cb910bae1a0024607376984e06748dd6b1abda72d9a58785583"
+    },
+    "finite-source/fixed-b0.6-s12-order5/wall-2mm-part1.npz": {
+      "bytes": 29658,
+      "sha256": "726fe5a3a90851cc13f37f5e55302ba6d445411388b796f8e2d0ea7d30962cb2"
+    },
+    "finite-source/fixed-b0.6-s12-order5/wall-5.76mm-part0.npz": {
+      "bytes": 27933,
+      "sha256": "9816ab3d4b388e77c9faf5b5676a7354ddd3375b26db10ae1dd2acf7ee5246f6"
+    },
+    "finite-source/fixed-b0.6-s12-order5/wall-5.76mm-part1.npz": {
+      "bytes": 29544,
+      "sha256": "7693b6b2d6a794eaaa79983e00482b1ed3bcb1647201512f925a6df7ffb447fe"
+    },
+    "finite-source/fixed-b0.6-s12-order7/all-checkpoint-moments.npz": {
+      "bytes": 144720,
+      "sha256": "9269d9911bab5a3cc3d4e91c54f8461f0025e0b923a087d28e35ef89fe02ff0b"
+    },
+    "finite-source/fixed-b0.6-s12-order7/characteristics-0-selected.npz": {
+      "bytes": 732707,
+      "sha256": "5c2d795ab2e45330e91dd1d40dc48e275b4239bced2ea89d3f0701acf6d6dd4a"
+    },
+    "finite-source/fixed-b0.6-s12-order7/characteristics-1-selected.npz": {
+      "bytes": 732583,
+      "sha256": "5a6f5b98b98c15158e6261486a3be5d67f0cbc773fc161c1ba059f1246d3cfd7"
+    },
+    "finite-source/fixed-b0.6-s12-order7/field.json": {
+      "bytes": 1738,
+      "sha256": "ed7cf7bb9b4abfc28f0e8b381119939fa037d574522006972e6500bbc0bd03aa"
+    },
+    "finite-source/fixed-b0.6-s12-order7/files.json": {
+      "bytes": 1108,
+      "sha256": "6d73252d828a552634e0969e83ed24ffdd3d33e2cefa12e15a5e95edb34036e8"
+    },
+    "finite-source/fixed-b0.6-s12-order7/phase-selection.json": {
+      "bytes": 4649,
+      "sha256": "a94586d2bf6c75b38d94c29cdb043fb1b7c45e2bfd96ab9a05b07366be34d7b0"
+    },
+    "finite-source/fixed-b0.6-s12-order7/report.json": {
+      "bytes": 547534,
+      "sha256": "994930dfa712dad1ce54aaebf84bf798ddddb7fd996da6031781cddf498af982"
+    },
+    "finite-source/fixed-b0.6-s12-order7/request.json": {
+      "bytes": 1669,
+      "sha256": "819a7646ea7a5b45e1c1d0688616388cc9b710627297b2da6e29532efa6aa7e3"
+    },
+    "finite-source/fixed-b0.6-s12-order7/source.npz": {
+      "bytes": 103628,
+      "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+    },
+    "finite-source/fixed-b0.6-s12-order7/wall-1.5mm-part0.npz": {
+      "bytes": 51358,
+      "sha256": "b271343062009d666de16966e94d851fdf47e8bf02f8160a06f9f592e23dffcb"
+    },
+    "finite-source/fixed-b0.6-s12-order7/wall-1.5mm-part1.npz": {
+      "bytes": 52997,
+      "sha256": "d2db4773ffe70b425212e05b62a8964f107a47235852fdac44ffb001b22fd456"
+    },
+    "finite-source/fixed-b0.6-s12-order7/wall-2mm-part0.npz": {
+      "bytes": 28069,
+      "sha256": "796d3b552e19d1158b967d9eda4e7818be034170be73ebc01605fa6bfa05320f"
+    },
+    "finite-source/fixed-b0.6-s12-order7/wall-2mm-part1.npz": {
+      "bytes": 29658,
+      "sha256": "ee75061312d068c1a7086da435228e546bfe9686ac5765a57589406082b243c0"
+    },
+    "finite-source/fixed-b0.6-s12-order7/wall-5.76mm-part0.npz": {
+      "bytes": 27944,
+      "sha256": "7a3f752b6450a556f3c0d617918e7bb26e8cde2b78a52e1c7292989da72aa688"
+    },
+    "finite-source/fixed-b0.6-s12-order7/wall-5.76mm-part1.npz": {
+      "bytes": 29547,
+      "sha256": "c3263bcdc6d3387eda6d033c9b8571909f5382f347d1cac2dfe6f84c6339e112"
+    },
+    "finite-source/fixed-b0.6-s12/all-checkpoint-moments.npz": {
+      "bytes": 144730,
+      "sha256": "3b854062b063e2facdcb5503845008a5eef6c803a9d143d8ca4cd7d2e92cefe4"
+    },
+    "finite-source/fixed-b0.6-s12/characteristics-0-selected.npz": {
+      "bytes": 732722,
+      "sha256": "7d199e21148b71eff79fae7832bb5aff493510f61ca971fde037c32b764a2b3f"
+    },
+    "finite-source/fixed-b0.6-s12/characteristics-1-selected.npz": {
+      "bytes": 732622,
+      "sha256": "ed43de07e85a15b4cbbf9848985aa7085b7a848c84052f8c704bba68f96de211"
+    },
+    "finite-source/fixed-b0.6-s12/field.json": {
+      "bytes": 1738,
+      "sha256": "2a7859c2b42b3821611803ba29780e79cac00187a6efebc9890c2b0ec9a550f1"
+    },
+    "finite-source/fixed-b0.6-s12/files.json": {
+      "bytes": 1108,
+      "sha256": "1d2a5999182e1d640790c21d05ea2727fb34a29eb2fbb50eaa532fba541b0b7b"
+    },
+    "finite-source/fixed-b0.6-s12/phase-selection.json": {
+      "bytes": 4628,
+      "sha256": "567b4ff5d582dc0d990bfee246862550aec055d6082ac2568f90b3bcc269c2a8"
+    },
+    "finite-source/fixed-b0.6-s12/report.json": {
+      "bytes": 547336,
+      "sha256": "6d991edf929320fd9984b1a62c7a7b7a3adcc8b97e042252cb20d5fb7cbb8ed7"
+    },
+    "finite-source/fixed-b0.6-s12/request.json": {
+      "bytes": 1572,
+      "sha256": "e3e04fbf1f71215bc09cdc37d09db9e33b56c0cd64abe1707e236bcfb43a0cec"
+    },
+    "finite-source/fixed-b0.6-s12/source.npz": {
+      "bytes": 103628,
+      "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+    },
+    "finite-source/fixed-b0.6-s12/wall-1.5mm-part0.npz": {
+      "bytes": 51358,
+      "sha256": "5daf4dba602d6b6512d29eb2e50ec6171d5e5f98a0c415144e26fbca568f6e8a"
+    },
+    "finite-source/fixed-b0.6-s12/wall-1.5mm-part1.npz": {
+      "bytes": 52996,
+      "sha256": "282e5c0bbd397ccea10d698dae5784e8ced11c9669c5d352f8d598ae2c7f8e37"
+    },
+    "finite-source/fixed-b0.6-s12/wall-2mm-part0.npz": {
+      "bytes": 28068,
+      "sha256": "b33c024448a2d834f90eb24233b7f13279e057996de5f9d51139ae94b2f085ed"
+    },
+    "finite-source/fixed-b0.6-s12/wall-2mm-part1.npz": {
+      "bytes": 29659,
+      "sha256": "18e85d2ede2bbf4bab9f6fd55d5bb9fa498802c163ff5aeb383df2bfcab0288a"
+    },
+    "finite-source/fixed-b0.6-s12/wall-5.76mm-part0.npz": {
+      "bytes": 27944,
+      "sha256": "d19cd4756a4dd582003439cc1bfb4142db293550c7005224b18a387a75f63bc7"
+    },
+    "finite-source/fixed-b0.6-s12/wall-5.76mm-part1.npz": {
+      "bytes": 29547,
+      "sha256": "e1de7870c4a02720d52348665042e2431f5375112ae684dba6c0d468333d4cd0"
+    },
+    "finite-source/fixed-b0.6-s3/all-checkpoint-moments.npz": {
+      "bytes": 141727,
+      "sha256": "28aa18ffc1e169bd1aae6b1dc4f5b0eee7f8bddaf6f91cfff24a94c08d995dda"
+    },
+    "finite-source/fixed-b0.6-s3/characteristics-0-selected.npz": {
+      "bytes": 975585,
+      "sha256": "dd8ebed3cd53feac57d7f6475f74a759474ff736d377770ba227a9d3d971d2ac"
+    },
+    "finite-source/fixed-b0.6-s3/characteristics-1-selected.npz": {
+      "bytes": 975482,
+      "sha256": "3f30d2e8c07dbaf617667ba2cb573cb73ce2ff19e2ec43fa1e33690a49f52002"
+    },
+    "finite-source/fixed-b0.6-s3/field.json": {
+      "bytes": 1738,
+      "sha256": "7cce8b252c3dc69578d66233b6f13de71f6c26634a76a7952243c111b96e0e32"
+    },
+    "finite-source/fixed-b0.6-s3/files.json": {
+      "bytes": 1108,
+      "sha256": "5647a69c4ad7564060ef1a951ff71b65af50bd18b888306a01bbf9d2a22235b1"
+    },
+    "finite-source/fixed-b0.6-s3/phase-selection.json": {
+      "bytes": 4980,
+      "sha256": "10a946af9eee0c967d2bc978e29980c9e4d9c97b45b9f8384cca3007d24c1249"
+    },
+    "finite-source/fixed-b0.6-s3/report.json": {
+      "bytes": 547099,
+      "sha256": "d9e6e675c68dd5dca579bb10e9f9a4735f8573244c4c6019ebceb0466a8e8333"
+    },
+    "finite-source/fixed-b0.6-s3/request.json": {
+      "bytes": 1565,
+      "sha256": "31abc544e94377fdb152f7e6549debf8ee5ffc63bda15d22b0fe712a4b8d5a29"
+    },
+    "finite-source/fixed-b0.6-s3/source.npz": {
+      "bytes": 103628,
+      "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+    },
+    "finite-source/fixed-b0.6-s3/wall-1.5mm-part0.npz": {
+      "bytes": 51353,
+      "sha256": "383ff19f56c2158f45895de836e8399bb744dfeeb7ae17a10ee10efc3cfed5e6"
+    },
+    "finite-source/fixed-b0.6-s3/wall-1.5mm-part1.npz": {
+      "bytes": 53004,
+      "sha256": "a0f15572812ee285d2a1a32d3b950f90cd1328465a34e0a2c3e4088b95d357b7"
+    },
+    "finite-source/fixed-b0.6-s3/wall-2mm-part0.npz": {
+      "bytes": 28074,
+      "sha256": "45bd9449682f10393830ffefc615b40ab95b396be7a71a993a4d6ba922514b43"
+    },
+    "finite-source/fixed-b0.6-s3/wall-2mm-part1.npz": {
+      "bytes": 29666,
+      "sha256": "a6569ca4c6edded5dcdb166b2d1c5d38e499a57705f585e201f2d0761b585831"
+    },
+    "finite-source/fixed-b0.6-s3/wall-5.76mm-part0.npz": {
+      "bytes": 27953,
+      "sha256": "cc8c87b837fdc4570267b37862f14e8736f1dc220c5181690a9816c5d01f2644"
+    },
+    "finite-source/fixed-b0.6-s3/wall-5.76mm-part1.npz": {
+      "bytes": 29548,
+      "sha256": "49614ebd4d54a29307d68de766f2480e8310ba1acee1f23903c7d2b290fa4ced"
+    },
+    "finite-source/fixed-b0.6-s6/all-checkpoint-moments.npz": {
+      "bytes": 144891,
+      "sha256": "72a260476c5ca1b06140b73520aabd29a2d9147d0b03f19de829f11d74307614"
+    },
+    "finite-source/fixed-b0.6-s6/characteristics-0-selected.npz": {
+      "bytes": 814018,
+      "sha256": "ad4ebc65085f31b1450da886ff802c307be3018b4f5cd3c62370e6ea10e9262a"
+    },
+    "finite-source/fixed-b0.6-s6/characteristics-1-selected.npz": {
+      "bytes": 814054,
+      "sha256": "1aaa74d5213ad23c6ed66f09563ccac32593493452892042cbecd445c7e5a03b"
+    },
+    "finite-source/fixed-b0.6-s6/field.json": {
+      "bytes": 1738,
+      "sha256": "05a386dff6c4bedb5ed245764855ec7d4e5a4220a7cac3cce6c201eade1ca8fd"
+    },
+    "finite-source/fixed-b0.6-s6/files.json": {
+      "bytes": 1108,
+      "sha256": "6a3f59ab27e3995706e16908b0389c0a6430a974bafef0ca01b8246af534bd6a"
+    },
+    "finite-source/fixed-b0.6-s6/phase-selection.json": {
+      "bytes": 4728,
+      "sha256": "e43769c10d82eb84d743a252644b354454a4f8da963e5f6b5b8037b5ab6263c3"
+    },
+    "finite-source/fixed-b0.6-s6/report.json": {
+      "bytes": 547723,
+      "sha256": "dfdc68b3c733618a30c22678c4152b2d38f67fb753485096449f26c3e92c92cf"
+    },
+    "finite-source/fixed-b0.6-s6/request.json": {
+      "bytes": 1567,
+      "sha256": "9eddaded1b0b8489ed24d135d7a761797ac9bfe37d6c87cd4fa63b808d48f924"
+    },
+    "finite-source/fixed-b0.6-s6/source.npz": {
+      "bytes": 103628,
+      "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+    },
+    "finite-source/fixed-b0.6-s6/wall-1.5mm-part0.npz": {
+      "bytes": 51376,
+      "sha256": "3b80f5a147de4e0ea78aeb5c7945215205b1ba30df52911e29e01cbc5c756db0"
+    },
+    "finite-source/fixed-b0.6-s6/wall-1.5mm-part1.npz": {
+      "bytes": 53005,
+      "sha256": "4cad849964d93c16b5db5a23db1a62e52850b7428b7e38065d176e0a0934fc74"
+    },
+    "finite-source/fixed-b0.6-s6/wall-2mm-part0.npz": {
+      "bytes": 28096,
+      "sha256": "292b308667b5a2f8f0f858ce51e1a793f13fd2022d6891c3e038f7e1229e9846"
+    },
+    "finite-source/fixed-b0.6-s6/wall-2mm-part1.npz": {
+      "bytes": 29659,
+      "sha256": "4f5c8b761458be91685790cad84fea4f32f130d0503fd355f30eb8776a787b0d"
+    },
+    "finite-source/fixed-b0.6-s6/wall-5.76mm-part0.npz": {
+      "bytes": 27971,
+      "sha256": "d499d69e7d611879e089b32b4aad9027ea679e7319ff094c384e67730ce4ac10"
+    },
+    "finite-source/fixed-b0.6-s6/wall-5.76mm-part1.npz": {
+      "bytes": 29545,
+      "sha256": "f27f211d75ec6b53053c40768cc2c374c5beab3fa70f28f50936199fc38a8604"
+    },
+    "finite-source/matched-b0.15-s6/all-checkpoint-moments.npz": {
+      "bytes": 42227,
+      "sha256": "5c7d9da7dc25df2df42cd3a95cad981e2c259b832fb96ec0eccc12475339a046"
+    },
+    "finite-source/matched-b0.15-s6/characteristics-0-selected.npz": {
+      "bytes": 761119,
+      "sha256": "805a102999f515cea2cddc3dd7996db00b904368b663e55bf0e4dc1aa1500036"
+    },
+    "finite-source/matched-b0.15-s6/characteristics-1-selected.npz": {
+      "bytes": 760921,
+      "sha256": "ff7ae1ec54126379ee1918d445019113c35caaffcc92d9d6b82db0bcd44cdbce"
+    },
+    "finite-source/matched-b0.15-s6/field.json": {
+      "bytes": 1739,
+      "sha256": "79b45c724246db0a3ba9443b877a13a3d34beeb0e5fd71963d7d2f16d1d658e2"
+    },
+    "finite-source/matched-b0.15-s6/files.json": {
+      "bytes": 732,
+      "sha256": "be530ac2c0e87b36396e4dec0ad44ddd3f7f007d82c80ff4f2ca9cf59c383784"
+    },
+    "finite-source/matched-b0.15-s6/phase-selection.json": {
+      "bytes": 3863,
+      "sha256": "ce150851ca7398c8da96c313ad573ae1b971c66932354cd5c0394902cc140d2b"
+    },
+    "finite-source/matched-b0.15-s6/report.json": {
+      "bytes": 193563,
+      "sha256": "83c3c1d5c55dd45eb3d5e6765f84c2c20327c6baabee4be1218f187e54701a95"
+    },
+    "finite-source/matched-b0.15-s6/request.json": {
+      "bytes": 1602,
+      "sha256": "5a34b5c7592b9caf8c7c4052527790c9d100e6d3248801826dfd4e5cf2236d80"
+    },
+    "finite-source/matched-b0.15-s6/source.npz": {
+      "bytes": 103648,
+      "sha256": "96ac9ed2f5b607571b6da95a05d8160db9348d0e94762d011b5568c9d82ddb15"
+    },
+    "finite-source/matched-b0.15-s6/wall-5.76mm-part0.npz": {
+      "bytes": 27954,
+      "sha256": "4f4b32a48fc57299c38e65e352332e4d8f5b018aa58350fae74edc01d2ac1f5a"
+    },
+    "finite-source/matched-b0.15-s6/wall-5.76mm-part1.npz": {
+      "bytes": 29511,
+      "sha256": "0a9b99a9e4d114814ea1a29f94bfc8df2a89198524dec4f41f87109494af592b"
+    },
+    "finite-source/matched-b0.3-s6/all-checkpoint-moments.npz": {
+      "bytes": 50304,
+      "sha256": "785b7e20c19d87f9e7620a548d8d4dc6d3a28b173ff13c65b130bb79e986b927"
+    },
+    "finite-source/matched-b0.3-s6/characteristics-0-selected.npz": {
+      "bytes": 646834,
+      "sha256": "bb72fdeb296ac48632b2160c7f5201abf36b1457f3c91931c6a2718d8f2ed08a"
+    },
+    "finite-source/matched-b0.3-s6/characteristics-1-selected.npz": {
+      "bytes": 646853,
+      "sha256": "4b1c19db0766ed1fd161d7b693e552cb73d5c029970ee676b3c6f204454a3040"
+    },
+    "finite-source/matched-b0.3-s6/field.json": {
+      "bytes": 1738,
+      "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+    },
+    "finite-source/matched-b0.3-s6/files.json": {
+      "bytes": 732,
+      "sha256": "ff8aa87af3e7ac58c4b8a4083401f215824e7e769efce344bfbef8259972c2f6"
+    },
+    "finite-source/matched-b0.3-s6/phase-selection.json": {
+      "bytes": 3659,
+      "sha256": "0cb70ec6d21bb7f3ca501eea467cda9c33e2bc24a43b5b3dfcc43579afa54fec"
+    },
+    "finite-source/matched-b0.3-s6/report.json": {
+      "bytes": 193285,
+      "sha256": "2fe88706bd8f84c334bc27e35e3ee57ec57cd86f4bf162cf4868953c159d3c91"
+    },
+    "finite-source/matched-b0.3-s6/request.json": {
+      "bytes": 1599,
+      "sha256": "160cf80aad888088956f2a3b114a695cfd6e1137fe606fc19ea07fcc5f6a8f2e"
+    },
+    "finite-source/matched-b0.3-s6/source.npz": {
+      "bytes": 103883,
+      "sha256": "dd49d34254f843790cd16296434db7e7a86e04f16137b12f7c4ecfd8a8fee532"
+    },
+    "finite-source/matched-b0.3-s6/wall-5.76mm-part0.npz": {
+      "bytes": 27800,
+      "sha256": "638e904302cc49ff5a6a430148ce0c1ffe22d9a6dabafe6a65622021afaf68b5"
+    },
+    "finite-source/matched-b0.3-s6/wall-5.76mm-part1.npz": {
+      "bytes": 29372,
+      "sha256": "45e1bc32dd63f3c674523dc5d6d68d5f1e89bb6dae7676de7913a6682ccd48fb"
+    },
+    "finite-source/matched-b0.6-s6/all-checkpoint-moments.npz": {
+      "bytes": 51449,
+      "sha256": "92fd9efde7a9e7389b595a8ef495568c01cebdcde875e348fea7c00d6267fc5e"
+    },
+    "finite-source/matched-b0.6-s6/characteristics-0-selected.npz": {
+      "bytes": 682365,
+      "sha256": "fe3c3e471b875031545cc96823706821fabd2bfee7f169d1a9203047569c7b19"
+    },
+    "finite-source/matched-b0.6-s6/characteristics-1-selected.npz": {
+      "bytes": 682407,
+      "sha256": "25b5c21cae365ca2b196ce4b9584410e5d72e780f03e2b7b9c65a4f1433e2410"
+    },
+    "finite-source/matched-b0.6-s6/field.json": {
+      "bytes": 1738,
+      "sha256": "05a386dff6c4bedb5ed245764855ec7d4e5a4220a7cac3cce6c201eade1ca8fd"
+    },
+    "finite-source/matched-b0.6-s6/files.json": {
+      "bytes": 732,
+      "sha256": "131ddb22e1a55669df7b29bb3bbd0179a8d9956c64c920cb4148fc8fa1859181"
+    },
+    "finite-source/matched-b0.6-s6/phase-selection.json": {
+      "bytes": 3746,
+      "sha256": "85bb40e379b5287e6bd773507a3f9bfd6de6eecc5a446721432b39714a37310a"
+    },
+    "finite-source/matched-b0.6-s6/report.json": {
+      "bytes": 193846,
+      "sha256": "7f58ab9773272ac75243582f203b32925ac8e4b88619466f6c1c194a77b01426"
+    },
+    "finite-source/matched-b0.6-s6/request.json": {
+      "bytes": 1604,
+      "sha256": "11fa989c90cb2f3da4991a99adc459f6f64793749f2fc0102c53c195211b6531"
+    },
+    "finite-source/matched-b0.6-s6/source.npz": {
+      "bytes": 104010,
+      "sha256": "cdb275ff5f34a307d31a47bc9de2d8d9ba95112249587c4d96762a198c36c681"
+    },
+    "finite-source/matched-b0.6-s6/wall-5.76mm-part0.npz": {
+      "bytes": 27687,
+      "sha256": "608b601635d046b4129af29b92688f020c3ad889abbcc06b8ad9795f48505fb8"
+    },
+    "finite-source/matched-b0.6-s6/wall-5.76mm-part1.npz": {
+      "bytes": 29272,
+      "sha256": "e7da0407816001962f69e4e6c1e4728dc4b111c5bf95504ff73648137221760c"
+    },
+    "fixed-source-grid.pdf": {
+      "bytes": 23376,
+      "sha256": "43198ac98001b3514a1d83d7eb1f440ce4ef6e305d3413b1424d229cb5f9406b"
+    },
+    "fixed-source-grid.png": {
+      "bytes": 104931,
+      "sha256": "c0a02d3d9709794c269af417ddfba80e4ae4791f4dffbc6587e1a70644e2ba6f"
+    },
+    "fixed-source-grid.svg": {
+      "bytes": 27269,
+      "sha256": "4c39c66db79d0fa439c38b9221861c6e5977cdfe7d8e7e6db8f1a10b6c8f9516"
+    },
+    "implementation-reference/high_order_round_lens.py": {
+      "bytes": 14913,
+      "sha256": "1061d760edaf45a83f33d2a91f764eb3a5db423efcbbecc1eb75ed2e16d1c440"
+    },
+    "implementation-reference/round_lens_aberration_benchmark.py": {
+      "bytes": 14844,
+      "sha256": "a22f40b0251a219c4c1a984706ac20d360e109a4ceffdc2ab8be2eec770fe7c0"
+    },
+    "intrinsic-coefficients.pdf": {
+      "bytes": 24296,
+      "sha256": "2fde15a966f2b37549a26b94fe00dfd67fe2cf8cf8d385720d67624892ee8187"
+    },
+    "intrinsic-coefficients.png": {
+      "bytes": 88796,
+      "sha256": "855757ba758c56140132f2838bc827ffa7dacb17bdcc5c52f024fb76a76c8fcd"
+    },
+    "intrinsic-coefficients.svg": {
+      "bytes": 32831,
+      "sha256": "f949b05b6b01e0600af78ef6ea228ab68aa26598f81a8e5f78c6d997c022359a"
+    },
+    "matched-paraxial-edge.pdf": {
+      "bytes": 19896,
+      "sha256": "4bc5b480c69d0385dd7c6114c5a3f5edf8a4df745fbe515eee18b6066ff22631"
+    },
+    "matched-paraxial-edge.png": {
+      "bytes": 96706,
+      "sha256": "8cbd9a9c818ca26b1cfc9d9485ed7b72b8f0db89b248d1873624dc02508fa802"
+    },
+    "matched-paraxial-edge.svg": {
+      "bytes": 31312,
+      "sha256": "a240b20d25404df6ee48955b8d30422f58728c7d83a07e6c8d086b802db43e83"
+    },
+    "native-focus.pdf": {
+      "bytes": 20370,
+      "sha256": "d2dd665204c699f591f70e1d146bcf8b51eb002b2edfc59b8ce846b36f041862"
+    },
+    "native-focus.png": {
+      "bytes": 142551,
+      "sha256": "45a12e7e445321338350f475021802271087b71968ecbaa65a1d9fd471053d22"
+    },
+    "native-focus.svg": {
+      "bytes": 27767,
+      "sha256": "cb7f5ee575b5c9899367d359f7f2f6c7d166bfa112308f51af90fb901abc3717"
+    },
+    "numerical-refinements.pdf": {
+      "bytes": 20855,
+      "sha256": "f495d427703914f639edf55d4f53e35b8c360189668649baffae56a1947d572b"
+    },
+    "numerical-refinements.png": {
+      "bytes": 158866,
+      "sha256": "13a09fd92b67352964942c223c4e408583cc06fa9c9e924e3f1ab0c716521b03"
+    },
+    "numerical-refinements.svg": {
+      "bytes": 47479,
+      "sha256": "b237d7d367c40c2d098e3447d964d36e7da2a7d9a2d6959a5a7d81468a8a6ff3"
+    },
+    "preflight-tests.xml": {
+      "bytes": 5962,
+      "sha256": "8832c8306cf91ffd0d32d10d31ff9085842e25bd939e8a4dec4d02a2975c410c"
+    },
+    "results.json": {
+      "bytes": 64811,
+      "sha256": "dd4e784149800a9c1b4d0aae789cce1a064ebd1766d226a022af1f833c11d447"
+    },
+    "selected-phase-verification.json": {
+      "bytes": 135586,
+      "sha256": "ad680cb1bdd0e6ce315d105b5c14425f4da8b6c1d134f3764bc832d7a241cdcf"
+    },
+    "study-plan.md": {
+      "bytes": 14590,
+      "sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+    },
+    "tube-current-size-intrinsic.pdf": {
+      "bytes": 21329,
+      "sha256": "8512757ba8aba084dbfcd0581e6821f56e03bcea7be0a5a26b113a3723225a3e"
+    },
+    "tube-current-size-intrinsic.png": {
+      "bytes": 78700,
+      "sha256": "0068c677ffe14ec6b93498cb491ef04920a30f1677e55409d7092cc79a5fa271"
+    },
+    "tube-current-size-intrinsic.svg": {
+      "bytes": 27459,
+      "sha256": "7625a727ad50218572795ddcfa32cdd146b0d4434892e9947a748ff06b56a891"
+    },
+    "vacuum-tube-inventory.json": {
+      "bytes": 10694,
+      "sha256": "b862c6fad97e36893342b5bd167d08ce1f72a321f659c1bc7625065ca34e2e3d"
+    },
+    "validation-summary.json": {
+      "bytes": 2983,
+      "sha256": "77d7876f10efd965a50400d8af8e643b036b897eb6cc8fd0d41ae5832db80c89"
+    },
+    "variational-reference-summary.json": {
+      "bytes": 5103,
+      "sha256": "66d84a5821449000d25d310f20415f6194d7d77df2dacdd566b8e774fc7a5ce9"
+    },
+    "variational-reference-summary.md": {
+      "bytes": 1747,
+      "sha256": "8322573a5f6ddb487d1c77f2962879e25907186835dc7a535d8b700b21f6cb9b"
+    },
+    "variational-reference/report.json": {
+      "bytes": 155022,
+      "sha256": "97c1d7b2e1e70fd56a9aaf287571a1cdcd372d493fb929426def49f091ebad40"
+    }
+  },
+  "original_full_files": {
+    "filled-tube1.5": {
+      "characteristics-0.npz": {
+        "bytes": 7338710,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube1.5\\characteristics-0.npz",
+        "sha256": "c64d14fda02746a45f2abda50d53250888fcd39ccdfe8256fb53fc576d65b6f9"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7339328,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube1.5\\characteristics-1.npz",
+        "sha256": "36a67bcc8441072da673f6076adec20adf7de871e282756d5cb068b0d1a0636a"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube1.5\\field.json",
+        "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+      },
+      "report.json": {
+        "bytes": 193541,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube1.5\\report.json",
+        "sha256": "c3a28a7662380b61d7648371ac1250e2b88299ffba54406833afebfb51133242"
+      },
+      "request.json": {
+        "bytes": 1565,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube1.5\\request.json",
+        "sha256": "7946afc120c620118374b5e68a2c13e781d0e5020bcee448d9202e02bbe1cb0e"
+      },
+      "source.npz": {
+        "bytes": 103643,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube1.5\\source.npz",
+        "sha256": "281218de4d8f99f53a0349d9c0bc7d0bb400bdf96889c1497e45bb1396c211b8"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 28074,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube1.5\\wall-1.5mm-part0.npz",
+        "sha256": "5b9764de3a837f96f3a08803a8d264014fd52b98be353ab58d1b0da780024978"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 29670,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube1.5\\wall-1.5mm-part1.npz",
+        "sha256": "38b37615a4b4f77036949ebdf0441b0228aac92163b204db69c72ab382260300"
+      }
+    },
+    "filled-tube5.76": {
+      "characteristics-0.npz": {
+        "bytes": 7404483,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76\\characteristics-0.npz",
+        "sha256": "bd1b4d7974af4ace0e2fba2e3b06200489d6375cf3d6be077e8c990fa85dc6b9"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7403828,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76\\characteristics-1.npz",
+        "sha256": "b7fbaaa68902b79e4ae5833b7aafa7ea42b8ad14cdf81c2c3d13c11f0f8fa04c"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76\\field.json",
+        "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+      },
+      "report.json": {
+        "bytes": 193762,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76\\report.json",
+        "sha256": "894c4e6835e679127e22433abc529cc0d162ca6acd39d190c98dfda50ad923ad"
+      },
+      "request.json": {
+        "bytes": 1569,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76\\request.json",
+        "sha256": "7403efca84259a9d01612ef9406a9e944bd2acd2f2aa050ae489ac45369812da"
+      },
+      "source.npz": {
+        "bytes": 103617,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76\\source.npz",
+        "sha256": "75bc074978706cbfd655dcbce25c0114d7e83e182af7451b97be8b5c94f04f8a"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 28434,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76\\wall-5.76mm-part0.npz",
+        "sha256": "45819f5b24c6d6296272587b3103a8ac4ea0c7af1d703c2aba6af970aeecc44e"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29682,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76\\wall-5.76mm-part1.npz",
+        "sha256": "056b5762e0524f04ffb6e7bdac660b7c925afe037da275d47b56d39bc10345e2"
+      }
+    },
+    "filled-tube5.76-half-step": {
+      "characteristics-0.npz": {
+        "bytes": 7405383,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-half-step\\characteristics-0.npz",
+        "sha256": "1c1066ab806992a44fde7f4a77f1afcef8937c9d5ed14ee5bb39b207857a6a46"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7404450,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-half-step\\characteristics-1.npz",
+        "sha256": "46288ecff71a4d6ac4fd5015b4789055c70765def8d552de4c4844a1a732a92e"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-half-step\\field.json",
+        "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+      },
+      "report.json": {
+        "bytes": 193942,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-half-step\\report.json",
+        "sha256": "783266f9887f74522834e88a693094ce61b4f6bf0d092d175a25939d47ac3982"
+      },
+      "request.json": {
+        "bytes": 1683,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-half-step\\request.json",
+        "sha256": "04f1469eb3250198a5559859561c61d5792795f608df2aaea7ade8786235bd1d"
+      },
+      "source.npz": {
+        "bytes": 103617,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-half-step\\source.npz",
+        "sha256": "75bc074978706cbfd655dcbce25c0114d7e83e182af7451b97be8b5c94f04f8a"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 28468,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-half-step\\wall-5.76mm-part0.npz",
+        "sha256": "4df928a33ca8a5e6b2b13db0681731303b1b9e0cbf975d94e91cdab0c653be39"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29675,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-half-step\\wall-5.76mm-part1.npz",
+        "sha256": "5c46fe1acc1e378c040b92e87d5872be7869fe1fd8a2bcea9d856e74d22f1827"
+      }
+    },
+    "filled-tube5.76-order5": {
+      "characteristics-0.npz": {
+        "bytes": 7404282,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order5\\characteristics-0.npz",
+        "sha256": "9b4c51ea147fa86b6858e94ef17b9830e7b1e354df1ff1861dfe08003f27c191"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7403625,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order5\\characteristics-1.npz",
+        "sha256": "7455a79abbb59e14b419e53124900e824fe2a09960de72c4210925f8b658428e"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order5\\field.json",
+        "sha256": "e1a476a18f8cae1f2fe54b6a2ad3c197720a1e7469e8328b17668c39f6d009b9"
+      },
+      "report.json": {
+        "bytes": 193901,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order5\\report.json",
+        "sha256": "d87b75ad15eda3feaf3a3219743fc21c20ea2b62e91099b877a97ea252ba97a0"
+      },
+      "request.json": {
+        "bytes": 1667,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order5\\request.json",
+        "sha256": "c30b91eb037d22871617a55dd6b8b16b67315fd93c611fc794b60fed720e3844"
+      },
+      "source.npz": {
+        "bytes": 103617,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order5\\source.npz",
+        "sha256": "75bc074978706cbfd655dcbce25c0114d7e83e182af7451b97be8b5c94f04f8a"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 28375,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order5\\wall-5.76mm-part0.npz",
+        "sha256": "519a98a442253cf24cb5b4709fd4ae9533bb2792696c6ee7e834aa0b378d3737"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29691,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order5\\wall-5.76mm-part1.npz",
+        "sha256": "f0fb5418f2ae40225c505740706dcde0cd32f12965708a760b42801adb436eb9"
+      }
+    },
+    "filled-tube5.76-order7": {
+      "characteristics-0.npz": {
+        "bytes": 7404515,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order7\\characteristics-0.npz",
+        "sha256": "48452547dbdc4a9c9f4a9153ec2ed92ed34591cdd2e021c8c4fd06517c0415cf"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7404049,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order7\\characteristics-1.npz",
+        "sha256": "ebe3c7f526157e9f2551fddfd642ab97729cc4b6e215403d5cdd8a039f4df7be"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order7\\field.json",
+        "sha256": "b390eb9ab87ad154392fab42c8d03a0a0d59c9fa60caecccda869e72e098fec3"
+      },
+      "report.json": {
+        "bytes": 193885,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order7\\report.json",
+        "sha256": "a1bf3e62fc2642db0d99b5715e255ef29412c87e13cc30bf4715d74d4b462a70"
+      },
+      "request.json": {
+        "bytes": 1667,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order7\\request.json",
+        "sha256": "c0e6368e86f972771c922dfd573dcc2cbae04d66a46dbc9779b70d1daad4d00d"
+      },
+      "source.npz": {
+        "bytes": 103617,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order7\\source.npz",
+        "sha256": "75bc074978706cbfd655dcbce25c0114d7e83e182af7451b97be8b5c94f04f8a"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 28418,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order7\\wall-5.76mm-part0.npz",
+        "sha256": "3ce099005c070c87199c635a7d26008888894b7587ee81052886c016be312dfb"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29694,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\filled-tube5.76-order7\\wall-5.76mm-part1.npz",
+        "sha256": "aadf3daf495a3923d1179bdb0b1a38b792f41226f8ff2df70269eb7cea421e22"
+      }
+    },
+    "fixed-b0.15-s12": {
+      "characteristics-0.npz": {
+        "bytes": 7307427,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\characteristics-0.npz",
+        "sha256": "812d18a8cd47626ec8aabe940880e23ccf449a34adb8218725b4610ac4171ce9"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7308269,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\characteristics-1.npz",
+        "sha256": "95cf28fca2780ef0ad50d37afbd205eaf5d4e84e559909a260bf6b57a651d49a"
+      },
+      "field.json": {
+        "bytes": 1739,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\field.json",
+        "sha256": "3e3c6c7d83e198cccaa28f8b014994457170470b41ba6799b092edbc7b0adf25"
+      },
+      "report.json": {
+        "bytes": 548142,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\report.json",
+        "sha256": "f67cc7e0cc2949e8005d6dab98093b6e9da3f274bee7b5fe2d90a87724d5d7ed"
+      },
+      "request.json": {
+        "bytes": 1569,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\request.json",
+        "sha256": "e087edea96b5f89d46d12213ef67b568a3094e644bfec4e74ee0f66012c8ffca"
+      },
+      "source.npz": {
+        "bytes": 103636,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\source.npz",
+        "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51348,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\wall-1.5mm-part0.npz",
+        "sha256": "78fc1bf350b29251611285f63d41f4d3b8a32ba3140708f14f65d664bd046b68"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 53003,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\wall-1.5mm-part1.npz",
+        "sha256": "dbe85d5cd28b0b7ea2da04dbb9b93055ea888309fd5fd939cb61f68689ca93ff"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28070,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\wall-2mm-part0.npz",
+        "sha256": "1d73f9a2968ee4bafeebc2b1384169e5e8c0ec336866a01a001ba1c90093c8b1"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29664,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\wall-2mm-part1.npz",
+        "sha256": "9ceabb3d8c5fa993950247aca0fe563be199e4d5a98df3a02e99434c0cff518d"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27946,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\wall-5.76mm-part0.npz",
+        "sha256": "2c792be94e9d9cbe4fba87928268715dc5de8e9292ea9d612fb74d636a33dba5"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29547,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s12\\wall-5.76mm-part1.npz",
+        "sha256": "7a754f8d613fa5349989d85147db696ffbba134d42da05475e85e34697bc9e62"
+      }
+    },
+    "fixed-b0.15-s3": {
+      "characteristics-0.npz": {
+        "bytes": 7387891,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\characteristics-0.npz",
+        "sha256": "383fcdfb10df9ff551b555193fecd7097655bd6a4727d47f0100eec3eb0892ef"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7386251,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\characteristics-1.npz",
+        "sha256": "fb5cb4199d1ffa17fc0dd40dba8b1e7164622bacd338e31cdfaa5fb3eb0aa4af"
+      },
+      "field.json": {
+        "bytes": 1739,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\field.json",
+        "sha256": "3551a78ebdcc65eae72a1bcf3dcedca46cbfc6785fb31896947a3da3709d8f43"
+      },
+      "report.json": {
+        "bytes": 546413,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\report.json",
+        "sha256": "dca43085be4b26c3a349f0314a656e88630b2fcb22329c33d40981ba4af0b7ed"
+      },
+      "request.json": {
+        "bytes": 1566,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\request.json",
+        "sha256": "ffb6217851993ccdfa330f40a85c1e095b65c1b30f6ea412341b25d40d42ec62"
+      },
+      "source.npz": {
+        "bytes": 103636,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\source.npz",
+        "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51364,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\wall-1.5mm-part0.npz",
+        "sha256": "ef3235e3ae4fde10077bbe8fdbd3bf759f5239fe80dee4face05647a3755ff45"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 52994,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\wall-1.5mm-part1.npz",
+        "sha256": "56d9df09bf2c2ac5d15874b53bf1dd972d5e1d8f55508a9b968814dc787346bc"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28080,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\wall-2mm-part0.npz",
+        "sha256": "178a304f8fc2514c0343ba431902a89de352f7fa668506f08bd0e9b98e95059a"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29658,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\wall-2mm-part1.npz",
+        "sha256": "0876626da3737c05191f83bafd8d4580f24a14b8e6627489042bceea61fe9368"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27954,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\wall-5.76mm-part0.npz",
+        "sha256": "bc677325dc867bcf9bd23dbab167c48e839d8ac794341da3eaa22d3a18c2ac80"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29537,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3\\wall-5.76mm-part1.npz",
+        "sha256": "0c62a0e9f114afb2ec0ccfa1a9035a5e7f1136f3932df0c047206c8ee7907e91"
+      }
+    },
+    "fixed-b0.15-s3-half-step": {
+      "characteristics-0.npz": {
+        "bytes": 7389044,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\characteristics-0.npz",
+        "sha256": "d7a3b72321f75c31d1d08ac0ef355229425245f11cf02b47e86fd527a16bd025"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7389217,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\characteristics-1.npz",
+        "sha256": "0dda0fb4d4330334c2667e7798f59cbe060c8f536686463f16a76d0756cf2865"
+      },
+      "field.json": {
+        "bytes": 1739,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\field.json",
+        "sha256": "3551a78ebdcc65eae72a1bcf3dcedca46cbfc6785fb31896947a3da3709d8f43"
+      },
+      "report.json": {
+        "bytes": 546660,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\report.json",
+        "sha256": "cd9a543a8fa37d21a5adce3f0c6c3f6ee1180eb7fa1cc915d13f31ff1bb32fe0"
+      },
+      "request.json": {
+        "bytes": 1679,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\request.json",
+        "sha256": "032ece387fb3aebc31f7fa8a81f37df6006dd44ca4f7829be787b0b6bb87859f"
+      },
+      "source.npz": {
+        "bytes": 103636,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\source.npz",
+        "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51395,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\wall-1.5mm-part0.npz",
+        "sha256": "be1173b2a700ab93aadcae17e3d50e1de005e5260edb4fdd0436611fb108a8f3"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 52997,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\wall-1.5mm-part1.npz",
+        "sha256": "19a5976e708380c3fe0a2b48af027d35b736f176c502ab171da06e914cca2781"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28125,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\wall-2mm-part0.npz",
+        "sha256": "e1282aac5b5759e91c46f65f261a4ee223d50211b95793f12f626d0079fc6393"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29656,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\wall-2mm-part1.npz",
+        "sha256": "7f85a06fa22c1dee933d31852ef9130f72d9a352e4a801b0e7b68d7eccedd0f4"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27998,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\wall-5.76mm-part0.npz",
+        "sha256": "5e6c869efc404cec69fc8b22b59ea88aa9f59e42a041e7d656d527318c288792"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29541,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-half-step\\wall-5.76mm-part1.npz",
+        "sha256": "3cd5cc2d7663bea32d48d4af82638c078cff027bda1bb7e46b5569af57e3f064"
+      }
+    },
+    "fixed-b0.15-s3-order5": {
+      "characteristics-0.npz": {
+        "bytes": 7386821,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\characteristics-0.npz",
+        "sha256": "b74643c371d24ac940afd3d51762c3c50006b2115be98f963c7bca2790aaf7fd"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7386511,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\characteristics-1.npz",
+        "sha256": "ecdc3066dc4b7d6ad1acde02ee54540c0e95b93c495de6a7c2ed8e68cf9aa362"
+      },
+      "field.json": {
+        "bytes": 1739,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\field.json",
+        "sha256": "37d0a6eed04f11dda06e4e506239a02d763725efd4b0c084a0b330070d6de77a"
+      },
+      "report.json": {
+        "bytes": 546729,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\report.json",
+        "sha256": "10620a1e2a69a5f3da9fe1760799edf06c6d35ab16ce2d5164a0648f633ef483"
+      },
+      "request.json": {
+        "bytes": 1663,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\request.json",
+        "sha256": "aebc0da0f1a9d00628f31b8965c1a4d11276249094fc965fef86b49c8fe8be3f"
+      },
+      "source.npz": {
+        "bytes": 103636,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\source.npz",
+        "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51357,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\wall-1.5mm-part0.npz",
+        "sha256": "8d441d310e2133f549354f389e748c5ae50677422667adb2aa6117a2be493e84"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 52995,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\wall-1.5mm-part1.npz",
+        "sha256": "efe71c08f90ccd820a591474908a2e2e8b82d2f7a63a047f77b21e3062935e79"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28075,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\wall-2mm-part0.npz",
+        "sha256": "6c8607d302abc931d0a2832a7d127216217a7ed6c8d4029db55998759dd829a0"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29654,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\wall-2mm-part1.npz",
+        "sha256": "02cd726fbaf23933726ade4e5cefb41d6d4ab48679c97bf5a0dcc97d24eaad82"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27953,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\wall-5.76mm-part0.npz",
+        "sha256": "1aefde55f9e6b595a0012115d0330831cbc0fd1109a718c12c6f9ccfc8ed14fa"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29544,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order5\\wall-5.76mm-part1.npz",
+        "sha256": "ef970128d0cd60afb5fc03608921050eecd0ab6e9d9f4ae122d224aff84fd6bd"
+      }
+    },
+    "fixed-b0.15-s3-order7": {
+      "characteristics-0.npz": {
+        "bytes": 7386622,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\characteristics-0.npz",
+        "sha256": "2ab1f9dca16ac85ff521c789b4bfa14887b8bcd185dd8fbfc8f3bd8ec2df0baf"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7385887,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\characteristics-1.npz",
+        "sha256": "f52bf29e569f6630037e1f43c4db6f9b9be65ec47a372b3f10acd15385732753"
+      },
+      "field.json": {
+        "bytes": 1739,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\field.json",
+        "sha256": "6fcff6d9c49f359d2e0f4eed5f296565caa376abaa438a15e92e35cb08e14738"
+      },
+      "report.json": {
+        "bytes": 546874,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\report.json",
+        "sha256": "a8e9e7812ff12cbaf032bcba8e4616c3725574ede0b72e836f4d79eed08d3207"
+      },
+      "request.json": {
+        "bytes": 1663,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\request.json",
+        "sha256": "e9f000708671e9f2d9503882cf8e2e796e052919def69fd73f65cf6cd677f62a"
+      },
+      "source.npz": {
+        "bytes": 103636,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\source.npz",
+        "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51359,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\wall-1.5mm-part0.npz",
+        "sha256": "4a441b7d10749e502922c3302e590dee705b85344c0eb4117f1706f17985ea2a"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 52994,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\wall-1.5mm-part1.npz",
+        "sha256": "14e252752f3d371f7298505b763ee2ef2ae99833989edd700ece700ef0f9d2f4"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28078,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\wall-2mm-part0.npz",
+        "sha256": "65aace8d80167459b2154a416451171d197f074f106d53cdb3532f749726c132"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29656,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\wall-2mm-part1.npz",
+        "sha256": "825d96c8a8221a00624e364c20572f49277bb217d87d9be01424c7d9766dfe70"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27955,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\wall-5.76mm-part0.npz",
+        "sha256": "ad3fa81190d710d0f5b80ac46a92ea13364a00ead7b689a9a4d4fb4121ccb21a"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29533,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s3-order7\\wall-5.76mm-part1.npz",
+        "sha256": "c98b872960041914e14548c34996881dd0dd36685919c38f3f10fad4f0df9235"
+      }
+    },
+    "fixed-b0.15-s6": {
+      "characteristics-0.npz": {
+        "bytes": 7330296,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\characteristics-0.npz",
+        "sha256": "16bd3e8410cfa2b8e09a78614ff462a5aa1e606498eddbe8265dc38756e39644"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7327723,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\characteristics-1.npz",
+        "sha256": "c17978dc51049336d80bc32d5517f1ceb4dee56e040aa336cb2a6a7c71f1dc1b"
+      },
+      "field.json": {
+        "bytes": 1739,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\field.json",
+        "sha256": "79b45c724246db0a3ba9443b877a13a3d34beeb0e5fd71963d7d2f16d1d658e2"
+      },
+      "report.json": {
+        "bytes": 547022,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\report.json",
+        "sha256": "673f7551d5f58a3d7a795894c364e919895e8460d211b67f3c390b929decc448"
+      },
+      "request.json": {
+        "bytes": 1566,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\request.json",
+        "sha256": "e31e36605db3761b354554c7d28b8d56329cc9c3ffbad58f4ab62d4d21a013ae"
+      },
+      "source.npz": {
+        "bytes": 103636,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\source.npz",
+        "sha256": "e8298147e8e673d7460b6dc42c978829c44924b5a667a906aa0e2f4f339cefeb"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51378,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\wall-1.5mm-part0.npz",
+        "sha256": "24dd661e712233aff703d1f9d10fd25fda1177f05ab299ce2d10d717a4ee6548"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 52995,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\wall-1.5mm-part1.npz",
+        "sha256": "1b657d71d856f5824b1eb91ca8650fca10ec9c0c0450920c1fa48176cdf72215"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28103,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\wall-2mm-part0.npz",
+        "sha256": "32818f709698fd574456644926edd00b729391916807b0517ef42e5169b74d2b"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29664,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\wall-2mm-part1.npz",
+        "sha256": "e0c332dbd21adb2b91fe42051e0e879676dc7c5979f1ad5595062c3047f6c820"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27980,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\wall-5.76mm-part0.npz",
+        "sha256": "6b343078d2994ff99e6bb1a94cb9369bba038957e3ade040844c3927af75aae5"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29541,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.15-s6\\wall-5.76mm-part1.npz",
+        "sha256": "5d49240886125de7c27a4456b04d266413d71609209077fa0696fd29d814b18a"
+      }
+    },
+    "fixed-b0.3-s12": {
+      "characteristics-0.npz": {
+        "bytes": 7325123,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\characteristics-0.npz",
+        "sha256": "4fede6debd05c1eb5d594de2b25936fda0c91eca4f0009a4ea7b6a8c690c39e7"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7324865,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\characteristics-1.npz",
+        "sha256": "14fd4c031164d4a0c620312aaabe1747c17e594959f5e3db6b36a61cc281e5ce"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\field.json",
+        "sha256": "1076474cfef5202fab783f68a23bfec00d3578cc43ba592286fe66ce3e37449b"
+      },
+      "report.json": {
+        "bytes": 547613,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\report.json",
+        "sha256": "a4999a729a1b4dba63d720f97956133931822bac26655de597e7c9fb927e45c8"
+      },
+      "request.json": {
+        "bytes": 1569,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\request.json",
+        "sha256": "40f7263a7009c019c1fd93d8e451871973d81946610031fdda02a75e5ecd9698"
+      },
+      "source.npz": {
+        "bytes": 103618,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\source.npz",
+        "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51372,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\wall-1.5mm-part0.npz",
+        "sha256": "90ec18e030177914d1cebd48db675d80b5fe0d29ae5d18edfd4bdda2343cfcb0"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 52997,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\wall-1.5mm-part1.npz",
+        "sha256": "c10dc6dc9232391f6e3558edab1f5bf30fffa0da8162dc62150cb117b058c2ac"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28086,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\wall-2mm-part0.npz",
+        "sha256": "9de0e35ccd7084a91e6e7be0fbf14a709ad931b9338c22b78bafd2a0f6e4d900"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29661,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\wall-2mm-part1.npz",
+        "sha256": "ee15dbae0c90220d803991a14e7c697e1e7ee7a5cb7d3134e123c883109f0ca5"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27960,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\wall-5.76mm-part0.npz",
+        "sha256": "30e69c93fd7d29780fa2d4b1e60f580a4a3c58d50ba9b75a4755aa8de844bc6a"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29541,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s12\\wall-5.76mm-part1.npz",
+        "sha256": "c461e301d9027a4e9ce003c491318ee165e75805628d0f70cd3c448497b7cc18"
+      }
+    },
+    "fixed-b0.3-s3": {
+      "characteristics-0.npz": {
+        "bytes": 7416145,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\characteristics-0.npz",
+        "sha256": "5b2baafb62d887791718b9cb769f94815799bcf2935fcd477e1565f28b1a42be"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7416304,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\characteristics-1.npz",
+        "sha256": "02d5b1d4c57013b40c33bd4abbf02d1baf8d946a79ab8e90756d92870f0ed6bb"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\field.json",
+        "sha256": "9f2fd46273b1559dffd6163009fd84d3c05fb7ef2fe5be9d4e1bfe758dc78a4d"
+      },
+      "report.json": {
+        "bytes": 547479,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\report.json",
+        "sha256": "16781e1bc53a0956aabcbbfb47010b2291d786f14f6933d0c0ff27edd34f3b98"
+      },
+      "request.json": {
+        "bytes": 1562,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\request.json",
+        "sha256": "38691cf523073be77bcc14522e2f2191d45b0682b7b805ab1f1fa36c1c2c7968"
+      },
+      "source.npz": {
+        "bytes": 103618,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\source.npz",
+        "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51357,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\wall-1.5mm-part0.npz",
+        "sha256": "a378c539bb424253ba0a3eb7a1fa97dcc9af81da4f243cabab8af4e1890831e6"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 52990,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\wall-1.5mm-part1.npz",
+        "sha256": "7e9b162b029fe9fad5f9f3609c9fe95dd632c59a9a09c255ad288030bbe04a6b"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28082,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\wall-2mm-part0.npz",
+        "sha256": "7b7f74ae6d508fdcace7d29a550370e0700aaaf027d52b8a5511bdb7224d9338"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29657,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\wall-2mm-part1.npz",
+        "sha256": "afbcf7433f6e4c82e3aaad24d198c114c5f9114da6df271697b1492a96265bfa"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27956,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\wall-5.76mm-part0.npz",
+        "sha256": "cf8df1eff915fbc00e4c4970087afd85148c05154ea93df6113ab6b75a8db0f5"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29533,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s3\\wall-5.76mm-part1.npz",
+        "sha256": "323c8393195da9ff0dc2665ee74488e042ceb2d8510f67c80420039452b0f7f9"
+      }
+    },
+    "fixed-b0.3-s6": {
+      "characteristics-0.npz": {
+        "bytes": 7362708,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\characteristics-0.npz",
+        "sha256": "67df71454a5e64e26f40b66cc3cf75c11736117d5d3ebd6057c9b026238d9272"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7362431,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\characteristics-1.npz",
+        "sha256": "96ac5daf02246a969719c14d5f9080fddf8d1e274aea45f746ba6e2e7492cb65"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\field.json",
+        "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+      },
+      "report.json": {
+        "bytes": 546645,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\report.json",
+        "sha256": "1271d4b3a3ee87eebf1cbb336130b43bb4fbf3f8755f1447874066b6b93b248d"
+      },
+      "request.json": {
+        "bytes": 1563,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\request.json",
+        "sha256": "437e27e7256f8ccd46d087f34f3039d16af20e3f34e7bf8d82e2f29b1a8ec8df"
+      },
+      "source.npz": {
+        "bytes": 103618,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\source.npz",
+        "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51351,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\wall-1.5mm-part0.npz",
+        "sha256": "14b058cef2d8c157237f85f36df947507dbcc9bd11b03ddc5980e9fee1face7b"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 53000,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\wall-1.5mm-part1.npz",
+        "sha256": "65e9b045345f6902b46ef304bf17e8822b27168e2b469932e145381e9e403a6a"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28072,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\wall-2mm-part0.npz",
+        "sha256": "e43e6a97733a568258f162214af09e3c4e2bb6f12fa63916bdce142eb9d6f592"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29663,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\wall-2mm-part1.npz",
+        "sha256": "637982ec183281ef2cd58354b53e06ed728c230452b61634d8966fc0b88367e2"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27944,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\wall-5.76mm-part0.npz",
+        "sha256": "c65c545a965e74fbf6a4569b95a098eca6040e6d441d5911278a58651768468a"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29541,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6\\wall-5.76mm-part1.npz",
+        "sha256": "d58080e392161b6cf29b682ca277abb7d1781f5dfa2241e9a745d1bd4906b300"
+      }
+    },
+    "fixed-b0.3-s6-half-step": {
+      "characteristics-0.npz": {
+        "bytes": 7365698,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\characteristics-0.npz",
+        "sha256": "2419860b4928bb6fa7ed57f5a7a6a5d3b43de670b6e186d9b5c0ae05246c9805"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7365730,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\characteristics-1.npz",
+        "sha256": "2c31906da85e5fb04408eef69406a8b33ce4d748b53aa5fc6a31fb8b8ea0cafe"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\field.json",
+        "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+      },
+      "report.json": {
+        "bytes": 546827,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\report.json",
+        "sha256": "0506d2404d13dd9b7db171f43e5c9014141a61b2519ea357d80980d474f1ab82"
+      },
+      "request.json": {
+        "bytes": 1675,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\request.json",
+        "sha256": "3ef1590b5881e3e36caab7d25473adaa411eeb1ee3afbf487be264608fe0fca3"
+      },
+      "source.npz": {
+        "bytes": 103618,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\source.npz",
+        "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51400,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\wall-1.5mm-part0.npz",
+        "sha256": "c557852acfbc23ce35f76b239865ee2e32fb1adbe923225b573c6e369a9b13ce"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 52996,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\wall-1.5mm-part1.npz",
+        "sha256": "2d3bf657a2aad05b27f5ba506f333dd8cdc4ff0908d457993fc729fc8a9a8378"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28117,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\wall-2mm-part0.npz",
+        "sha256": "38e38f4eadae32689d5923292b8d7b749c766819d9435d9860a391bbbe425533"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29656,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\wall-2mm-part1.npz",
+        "sha256": "392bd7fa51751ff6dc949ae4d09dbc7bc80b140a44368932c0fcfd5f1a0dfb4f"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27990,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\wall-5.76mm-part0.npz",
+        "sha256": "b7e5f6f2af8de41636f36eaaa0b308d9caa75ea5c250be79827eb3f5b5b10bb3"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29538,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-half-step\\wall-5.76mm-part1.npz",
+        "sha256": "e0fb28ee509011896db4cd3f00525e5b7cd4e5c1b22d87651cb03682a577a1da"
+      }
+    },
+    "fixed-b0.3-s6-order5": {
+      "characteristics-0.npz": {
+        "bytes": 7362786,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\characteristics-0.npz",
+        "sha256": "c6eab1b4886fa73487b505b39716c8b4aaae74b3ce854982022bd744d9ec1b81"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7362867,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\characteristics-1.npz",
+        "sha256": "6a0efa0826b0d487e0b0315c0f7cf66586c9f4ef076505072fb1486c3fe1d695"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\field.json",
+        "sha256": "e1a476a18f8cae1f2fe54b6a2ad3c197720a1e7469e8328b17668c39f6d009b9"
+      },
+      "report.json": {
+        "bytes": 546728,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\report.json",
+        "sha256": "8f7049970a4439598e9f47ee593b27cf07d749c1e3473dd5d01cea146e54a904"
+      },
+      "request.json": {
+        "bytes": 1659,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\request.json",
+        "sha256": "293c53d69f1751d70c409351307ffee6654e5c6987fb5efe551d3e2b981526cc"
+      },
+      "source.npz": {
+        "bytes": 103618,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\source.npz",
+        "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51341,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\wall-1.5mm-part0.npz",
+        "sha256": "aa84c36c1723b939c93fe994afb38eb422f13019c68e02d402970a90557e8c5c"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 53001,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\wall-1.5mm-part1.npz",
+        "sha256": "47f0832767994dddee8f907c5d1a152c4a8974a8935597c43d380f8b956d0dd6"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28064,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\wall-2mm-part0.npz",
+        "sha256": "c43f1e31ac1cc406bc02ac0e1a0407cfb7179218d8fd1ceefe68b69ec0393da2"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29663,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\wall-2mm-part1.npz",
+        "sha256": "d2df5b52c10d7495c737ac835075a1a1936f7cd2023b959a586fb2dd296d8450"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27938,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\wall-5.76mm-part0.npz",
+        "sha256": "b254709c8e850f430ef204974900c6cdaefbd561a148082cafcfe9829ca6dad6"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29544,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order5\\wall-5.76mm-part1.npz",
+        "sha256": "33a1f4642a0ef0bf5c5bc006f4e3b4e3a6823a2d60d3aad31d9b1f77bda748b2"
+      }
+    },
+    "fixed-b0.3-s6-order7": {
+      "characteristics-0.npz": {
+        "bytes": 7362706,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\characteristics-0.npz",
+        "sha256": "d5c957294dfc27336b8b1fddb34f4eeb3bcb7f5284ce330bde6fe4adc7f218ce"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7362620,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\characteristics-1.npz",
+        "sha256": "d6310311d11ac1627864a9383fb791835acbaa6e8cae5dc6199e64fa8c0ae5a3"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\field.json",
+        "sha256": "b390eb9ab87ad154392fab42c8d03a0a0d59c9fa60caecccda869e72e098fec3"
+      },
+      "report.json": {
+        "bytes": 546784,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\report.json",
+        "sha256": "ef55bd3b5bda8897a72230603012e09b00243a22507527eeb57f490096a27b24"
+      },
+      "request.json": {
+        "bytes": 1659,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\request.json",
+        "sha256": "7a0e6ae74670d6ccd074062740a5984a92d0ead953fb5b52d2ee608031e3927f"
+      },
+      "source.npz": {
+        "bytes": 103618,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\source.npz",
+        "sha256": "c48a95795313f9ecd26e84f54bcab53cc1b13c12bd9ad5d1371b9cc83ace5f5e"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51346,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\wall-1.5mm-part0.npz",
+        "sha256": "e830898ec479a10049036fd6ba06c7931367e00d3dbf9ac86aeaf56f822900f5"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 53004,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\wall-1.5mm-part1.npz",
+        "sha256": "b22b4a6f09a22e4eaa78d8963e48f4be83fb02fe2742d5f69729f58866e61394"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28070,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\wall-2mm-part0.npz",
+        "sha256": "6da4d5c8f60a98ae1da00190fa658ee203e9aadb85def541de46310252cb81d1"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29667,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\wall-2mm-part1.npz",
+        "sha256": "1d2606f157d440b1b16e3180bf0b9d3728ac6d9614aa0cd3f7161d4131af4229"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27943,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\wall-5.76mm-part0.npz",
+        "sha256": "a6a252b2ced0b7af849c29083c152d54c88fe9245e680adf733ffcbafe42747d"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29549,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.3-s6-order7\\wall-5.76mm-part1.npz",
+        "sha256": "0458ec03a2ded3df117e123a0eca677712ffd5192cbec14dc36d4e8b4634363f"
+      }
+    },
+    "fixed-b0.6-s12": {
+      "characteristics-0.npz": {
+        "bytes": 7316867,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\characteristics-0.npz",
+        "sha256": "5416abfea88b557c2840cd3d02ea859cb64f698bb84dfadcd53bc7ddbcfba493"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7316907,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\characteristics-1.npz",
+        "sha256": "7289813b4e6b2eaa1d58112b6061ad38e2760728eb2372b50685d367002891fe"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\field.json",
+        "sha256": "2a7859c2b42b3821611803ba29780e79cac00187a6efebc9890c2b0ec9a550f1"
+      },
+      "report.json": {
+        "bytes": 547336,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\report.json",
+        "sha256": "6d991edf929320fd9984b1a62c7a7b7a3adcc8b97e042252cb20d5fb7cbb8ed7"
+      },
+      "request.json": {
+        "bytes": 1572,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\request.json",
+        "sha256": "e3e04fbf1f71215bc09cdc37d09db9e33b56c0cd64abe1707e236bcfb43a0cec"
+      },
+      "source.npz": {
+        "bytes": 103628,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\source.npz",
+        "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51358,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\wall-1.5mm-part0.npz",
+        "sha256": "5daf4dba602d6b6512d29eb2e50ec6171d5e5f98a0c415144e26fbca568f6e8a"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 52996,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\wall-1.5mm-part1.npz",
+        "sha256": "282e5c0bbd397ccea10d698dae5784e8ced11c9669c5d352f8d598ae2c7f8e37"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28068,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\wall-2mm-part0.npz",
+        "sha256": "b33c024448a2d834f90eb24233b7f13279e057996de5f9d51139ae94b2f085ed"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29659,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\wall-2mm-part1.npz",
+        "sha256": "18e85d2ede2bbf4bab9f6fd55d5bb9fa498802c163ff5aeb383df2bfcab0288a"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27944,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\wall-5.76mm-part0.npz",
+        "sha256": "d19cd4756a4dd582003439cc1bfb4142db293550c7005224b18a387a75f63bc7"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29547,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12\\wall-5.76mm-part1.npz",
+        "sha256": "e1de7870c4a02720d52348665042e2431f5375112ae684dba6c0d468333d4cd0"
+      }
+    },
+    "fixed-b0.6-s12-half-step": {
+      "characteristics-0.npz": {
+        "bytes": 7318482,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\characteristics-0.npz",
+        "sha256": "824ee73cfc3fdbd9dce6b9e0f2fb0891a67b15a4280515b260bb5e75a7686dfc"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7318748,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\characteristics-1.npz",
+        "sha256": "a647ef8a28b01170511a4987c83b04b1181adffc123c15c24e2647b74feee149"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\field.json",
+        "sha256": "2a7859c2b42b3821611803ba29780e79cac00187a6efebc9890c2b0ec9a550f1"
+      },
+      "report.json": {
+        "bytes": 547488,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\report.json",
+        "sha256": "a526e3bf10c85aee6d5abd43b7f315f20cb5e23f5e41029bbdc34a13cb78c3d1"
+      },
+      "request.json": {
+        "bytes": 1685,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\request.json",
+        "sha256": "bfc23a5af5035e03f77f2bba4ea8eebdeab1ccc391dd9f0790f6d550fb4fa96b"
+      },
+      "source.npz": {
+        "bytes": 103628,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\source.npz",
+        "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51390,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\wall-1.5mm-part0.npz",
+        "sha256": "287eeabea462f57f07fcb0c756b3242654165502be80e082bd76ba87cfc9ae4c"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 52989,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\wall-1.5mm-part1.npz",
+        "sha256": "f9d64aba439ebf783a49ce077b133c09fead9166e76a6467bec06aa1da539053"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28110,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\wall-2mm-part0.npz",
+        "sha256": "90e476768de1d44673cabb27dd4d2ff0f9939be2e70b353513f664164c896750"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29655,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\wall-2mm-part1.npz",
+        "sha256": "cb2e282fbafc15a49088e39d3efb7e48393b956619ddc099f7df99b0b4a7203a"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27984,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\wall-5.76mm-part0.npz",
+        "sha256": "3a98d847bcd473aefd821bda4da6f5b4f3927a50bfbfd16f89cd4fd226c4e5a6"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29540,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-half-step\\wall-5.76mm-part1.npz",
+        "sha256": "0bf8d2994f70b39ec405933eef64a611d9464f7ea75d07054e63d0f89e0081cd"
+      }
+    },
+    "fixed-b0.6-s12-order5": {
+      "characteristics-0.npz": {
+        "bytes": 7316990,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\characteristics-0.npz",
+        "sha256": "f1300753ddf278decc5be5d97725209e3232f53210e7f1631d6b55c138038474"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7316875,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\characteristics-1.npz",
+        "sha256": "777d09dbec76303d3a6344faed9e97401849895a181531656e6d5faa59643be6"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\field.json",
+        "sha256": "ff7d2763654278e2ffdc01b5f384285c172086645d5601b5add4e68775b28b03"
+      },
+      "report.json": {
+        "bytes": 547466,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\report.json",
+        "sha256": "659f45952a59b25ec58acdb110be218c72766e6e2923b610673b80c13138eb69"
+      },
+      "request.json": {
+        "bytes": 1669,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\request.json",
+        "sha256": "b4f4f6791ff042f9ff7ffc06fc457888826632d94383cc093ff523b8773522b4"
+      },
+      "source.npz": {
+        "bytes": 103628,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\source.npz",
+        "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51345,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\wall-1.5mm-part0.npz",
+        "sha256": "54d78b824ed85cd65d0b320ed5939a3f78ba9d4af5c71978df984f68fa8fa0b6"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 53001,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\wall-1.5mm-part1.npz",
+        "sha256": "21072f08ceff76082724693041917143a1ca6958f369b2f83f78f3351e08460f"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28061,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\wall-2mm-part0.npz",
+        "sha256": "f1b093322c0c3cb910bae1a0024607376984e06748dd6b1abda72d9a58785583"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29658,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\wall-2mm-part1.npz",
+        "sha256": "726fe5a3a90851cc13f37f5e55302ba6d445411388b796f8e2d0ea7d30962cb2"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27933,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\wall-5.76mm-part0.npz",
+        "sha256": "9816ab3d4b388e77c9faf5b5676a7354ddd3375b26db10ae1dd2acf7ee5246f6"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29544,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order5\\wall-5.76mm-part1.npz",
+        "sha256": "7693b6b2d6a794eaaa79983e00482b1ed3bcb1647201512f925a6df7ffb447fe"
+      }
+    },
+    "fixed-b0.6-s12-order7": {
+      "characteristics-0.npz": {
+        "bytes": 7316742,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\characteristics-0.npz",
+        "sha256": "14b79f43c8903354888e0f4d99239ac5ce2ae85c7cf716c2888e2c23e710cce6"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7316766,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\characteristics-1.npz",
+        "sha256": "ceb2dc535d075575f3469200fb8ac820ef1c99ce0d3349758b348a236b83b0da"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\field.json",
+        "sha256": "ed7cf7bb9b4abfc28f0e8b381119939fa037d574522006972e6500bbc0bd03aa"
+      },
+      "report.json": {
+        "bytes": 547534,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\report.json",
+        "sha256": "994930dfa712dad1ce54aaebf84bf798ddddb7fd996da6031781cddf498af982"
+      },
+      "request.json": {
+        "bytes": 1669,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\request.json",
+        "sha256": "819a7646ea7a5b45e1c1d0688616388cc9b710627297b2da6e29532efa6aa7e3"
+      },
+      "source.npz": {
+        "bytes": 103628,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\source.npz",
+        "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51358,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\wall-1.5mm-part0.npz",
+        "sha256": "b271343062009d666de16966e94d851fdf47e8bf02f8160a06f9f592e23dffcb"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 52997,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\wall-1.5mm-part1.npz",
+        "sha256": "d2db4773ffe70b425212e05b62a8964f107a47235852fdac44ffb001b22fd456"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28069,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\wall-2mm-part0.npz",
+        "sha256": "796d3b552e19d1158b967d9eda4e7818be034170be73ebc01605fa6bfa05320f"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29658,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\wall-2mm-part1.npz",
+        "sha256": "ee75061312d068c1a7086da435228e546bfe9686ac5765a57589406082b243c0"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27944,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\wall-5.76mm-part0.npz",
+        "sha256": "7a3f752b6450a556f3c0d617918e7bb26e8cde2b78a52e1c7292989da72aa688"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29547,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s12-order7\\wall-5.76mm-part1.npz",
+        "sha256": "c3263bcdc6d3387eda6d033c9b8571909f5382f347d1cac2dfe6f84c6339e112"
+      }
+    },
+    "fixed-b0.6-s3": {
+      "characteristics-0.npz": {
+        "bytes": 7405114,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\characteristics-0.npz",
+        "sha256": "c9e130286aa3291ef8163ff74c406d41e5cd62111a3a0865d3afc5b3a1a0859b"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7404780,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\characteristics-1.npz",
+        "sha256": "1e0a59bf4fa52d811223f632218a31072da47177ec2953faf611fbd7f61cf944"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\field.json",
+        "sha256": "7cce8b252c3dc69578d66233b6f13de71f6c26634a76a7952243c111b96e0e32"
+      },
+      "report.json": {
+        "bytes": 547099,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\report.json",
+        "sha256": "d9e6e675c68dd5dca579bb10e9f9a4735f8573244c4c6019ebceb0466a8e8333"
+      },
+      "request.json": {
+        "bytes": 1565,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\request.json",
+        "sha256": "31abc544e94377fdb152f7e6549debf8ee5ffc63bda15d22b0fe712a4b8d5a29"
+      },
+      "source.npz": {
+        "bytes": 103628,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\source.npz",
+        "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51353,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\wall-1.5mm-part0.npz",
+        "sha256": "383ff19f56c2158f45895de836e8399bb744dfeeb7ae17a10ee10efc3cfed5e6"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 53004,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\wall-1.5mm-part1.npz",
+        "sha256": "a0f15572812ee285d2a1a32d3b950f90cd1328465a34e0a2c3e4088b95d357b7"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28074,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\wall-2mm-part0.npz",
+        "sha256": "45bd9449682f10393830ffefc615b40ab95b396be7a71a993a4d6ba922514b43"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29666,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\wall-2mm-part1.npz",
+        "sha256": "a6569ca4c6edded5dcdb166b2d1c5d38e499a57705f585e201f2d0761b585831"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27953,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\wall-5.76mm-part0.npz",
+        "sha256": "cc8c87b837fdc4570267b37862f14e8736f1dc220c5181690a9816c5d01f2644"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29548,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s3\\wall-5.76mm-part1.npz",
+        "sha256": "49614ebd4d54a29307d68de766f2480e8310ba1acee1f23903c7d2b290fa4ced"
+      }
+    },
+    "fixed-b0.6-s6": {
+      "characteristics-0.npz": {
+        "bytes": 7359043,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\characteristics-0.npz",
+        "sha256": "78ae5d7253aa9f7e69ba60e6100e407058692c4f18cfbeeca5301cd2b43a0fe2"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7359020,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\characteristics-1.npz",
+        "sha256": "4fa54981ea77e3fba44be9c7bb620df42e1c419899ad3dd4ec68f0fc07bcc65a"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\field.json",
+        "sha256": "05a386dff6c4bedb5ed245764855ec7d4e5a4220a7cac3cce6c201eade1ca8fd"
+      },
+      "report.json": {
+        "bytes": 547723,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\report.json",
+        "sha256": "dfdc68b3c733618a30c22678c4152b2d38f67fb753485096449f26c3e92c92cf"
+      },
+      "request.json": {
+        "bytes": 1567,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\request.json",
+        "sha256": "9eddaded1b0b8489ed24d135d7a761797ac9bfe37d6c87cd4fa63b808d48f924"
+      },
+      "source.npz": {
+        "bytes": 103628,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\source.npz",
+        "sha256": "e1dbd211a6463ab46457d94f07e81f131cb54209e625dea3a794d04748882e8a"
+      },
+      "wall-1.5mm-part0.npz": {
+        "bytes": 51376,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\wall-1.5mm-part0.npz",
+        "sha256": "3b80f5a147de4e0ea78aeb5c7945215205b1ba30df52911e29e01cbc5c756db0"
+      },
+      "wall-1.5mm-part1.npz": {
+        "bytes": 53005,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\wall-1.5mm-part1.npz",
+        "sha256": "4cad849964d93c16b5db5a23db1a62e52850b7428b7e38065d176e0a0934fc74"
+      },
+      "wall-2mm-part0.npz": {
+        "bytes": 28096,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\wall-2mm-part0.npz",
+        "sha256": "292b308667b5a2f8f0f858ce51e1a793f13fd2022d6891c3e038f7e1229e9846"
+      },
+      "wall-2mm-part1.npz": {
+        "bytes": 29659,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\wall-2mm-part1.npz",
+        "sha256": "4f5c8b761458be91685790cad84fea4f32f130d0503fd355f30eb8776a787b0d"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27971,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\wall-5.76mm-part0.npz",
+        "sha256": "d499d69e7d611879e089b32b4aad9027ea679e7319ff094c384e67730ce4ac10"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29545,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\fixed-b0.6-s6\\wall-5.76mm-part1.npz",
+        "sha256": "f27f211d75ec6b53053c40768cc2c374c5beab3fa70f28f50936199fc38a8604"
+      }
+    },
+    "matched-b0.15-s6": {
+      "characteristics-0.npz": {
+        "bytes": 7298387,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.15-s6\\characteristics-0.npz",
+        "sha256": "1b41d6b049afaf0c977f38cf7d4bf5efea9465ff7cd4f5c1c20f9129f5095c50"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7297224,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.15-s6\\characteristics-1.npz",
+        "sha256": "3669fd8a54eb043706528dceeb2fa43028a2cc792297fe90ce716ddca4ec4762"
+      },
+      "field.json": {
+        "bytes": 1739,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.15-s6\\field.json",
+        "sha256": "79b45c724246db0a3ba9443b877a13a3d34beeb0e5fd71963d7d2f16d1d658e2"
+      },
+      "report.json": {
+        "bytes": 193563,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.15-s6\\report.json",
+        "sha256": "83c3c1d5c55dd45eb3d5e6765f84c2c20327c6baabee4be1218f187e54701a95"
+      },
+      "request.json": {
+        "bytes": 1602,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.15-s6\\request.json",
+        "sha256": "5a34b5c7592b9caf8c7c4052527790c9d100e6d3248801826dfd4e5cf2236d80"
+      },
+      "source.npz": {
+        "bytes": 103648,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.15-s6\\source.npz",
+        "sha256": "96ac9ed2f5b607571b6da95a05d8160db9348d0e94762d011b5568c9d82ddb15"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27954,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.15-s6\\wall-5.76mm-part0.npz",
+        "sha256": "4f4b32a48fc57299c38e65e352332e4d8f5b018aa58350fae74edc01d2ac1f5a"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29511,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.15-s6\\wall-5.76mm-part1.npz",
+        "sha256": "0a9b99a9e4d114814ea1a29f94bfc8df2a89198524dec4f41f87109494af592b"
+      }
+    },
+    "matched-b0.3-s6": {
+      "characteristics-0.npz": {
+        "bytes": 7258349,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.3-s6\\characteristics-0.npz",
+        "sha256": "09e549fdf03fb58121eed85c96360e2033860f81a9eec57b40622e973e925e52"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7258406,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.3-s6\\characteristics-1.npz",
+        "sha256": "4325c0b3b6dcd3302f681b8f681f3fcab419c47eb71c5c2ef5e71d6848bf39d2"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.3-s6\\field.json",
+        "sha256": "8f61a2232d2a5bf176b1e3d47b3a8c7b904b85bad0db5845e3692844e216d873"
+      },
+      "report.json": {
+        "bytes": 193285,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.3-s6\\report.json",
+        "sha256": "2fe88706bd8f84c334bc27e35e3ee57ec57cd86f4bf162cf4868953c159d3c91"
+      },
+      "request.json": {
+        "bytes": 1599,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.3-s6\\request.json",
+        "sha256": "160cf80aad888088956f2a3b114a695cfd6e1137fe606fc19ea07fcc5f6a8f2e"
+      },
+      "source.npz": {
+        "bytes": 103883,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.3-s6\\source.npz",
+        "sha256": "dd49d34254f843790cd16296434db7e7a86e04f16137b12f7c4ecfd8a8fee532"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27800,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.3-s6\\wall-5.76mm-part0.npz",
+        "sha256": "638e904302cc49ff5a6a430148ce0c1ffe22d9a6dabafe6a65622021afaf68b5"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29372,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.3-s6\\wall-5.76mm-part1.npz",
+        "sha256": "45e1bc32dd63f3c674523dc5d6d68d5f1e89bb6dae7676de7913a6682ccd48fb"
+      }
+    },
+    "matched-b0.6-s6": {
+      "characteristics-0.npz": {
+        "bytes": 7212570,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.6-s6\\characteristics-0.npz",
+        "sha256": "65a5a47e0ee9b7298b134ad6094cb91cbae348d3f1548f643c85661b91ba2359"
+      },
+      "characteristics-1.npz": {
+        "bytes": 7212806,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.6-s6\\characteristics-1.npz",
+        "sha256": "e29e8d77ee5718f6eb1e1410530f19233376394fa08361529cb329eae0ad071f"
+      },
+      "field.json": {
+        "bytes": 1738,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.6-s6\\field.json",
+        "sha256": "05a386dff6c4bedb5ed245764855ec7d4e5a4220a7cac3cce6c201eade1ca8fd"
+      },
+      "report.json": {
+        "bytes": 193846,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.6-s6\\report.json",
+        "sha256": "7f58ab9773272ac75243582f203b32925ac8e4b88619466f6c1c194a77b01426"
+      },
+      "request.json": {
+        "bytes": 1604,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.6-s6\\request.json",
+        "sha256": "11fa989c90cb2f3da4991a99adc459f6f64793749f2fc0102c53c195211b6531"
+      },
+      "source.npz": {
+        "bytes": 104010,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.6-s6\\source.npz",
+        "sha256": "cdb275ff5f34a307d31a47bc9de2d8d9ba95112249587c4d96762a198c36c681"
+      },
+      "wall-5.76mm-part0.npz": {
+        "bytes": 27687,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.6-s6\\wall-5.76mm-part0.npz",
+        "sha256": "608b601635d046b4129af29b92688f020c3ad889abbcc06b8ad9795f48505fb8"
+      },
+      "wall-5.76mm-part1.npz": {
+        "bytes": 29272,
+        "original_path": "outputs\\ideal-lens-aberration-20261113\\finite-source\\matched-b0.6-s6\\wall-5.76mm-part1.npz",
+        "sha256": "e7da0407816001962f69e4e6c1e4728dc4b111c5bf95504ff73648137221760c"
+      }
+    }
+  },
+  "original_reference": {
+    "bytes": 155022,
+    "path": "E:\\tem_simulator_v2\\outputs\\ideal-lens-aberration-20261113\\variational-reference\\report.json",
+    "sha256": "97c1d7b2e1e70fd56a9aaf287571a1cdcd372d493fb929426def49f091ebad40"
+  },
+  "original_supplements": {
+    "audit-summary.json": {
+      "bytes": 668527,
+      "original_path": "E:\\tem_simulator_v2\\outputs\\ideal-lens-aberration-20261113\\audit-summary.json",
+      "sha256": "f012de011e49428464faaf70630ed82a8da5e61d77688bcc20eb1eb3b6bafa77"
+    },
+    "environment.json": {
+      "bytes": 791,
+      "original_path": "E:\\tem_simulator_v2\\outputs\\ideal-lens-aberration-20261113\\environment.json",
+      "sha256": "e050e5508b16af84e2b936a27e63eef7ee26520872671b9fd46c2a72dfd94757"
+    },
+    "implementation-reference/high_order_round_lens.py": {
+      "bytes": 14913,
+      "original_path": "E:\\tem_simulator_v2\\src\\temsim\\physics\\high_order_round_lens.py",
+      "sha256": "1061d760edaf45a83f33d2a91f764eb3a5db423efcbbecc1eb75ed2e16d1c440"
+    },
+    "implementation-reference/round_lens_aberration_benchmark.py": {
+      "bytes": 14844,
+      "original_path": "E:\\tem_simulator_v2\\src\\temsim\\physics\\round_lens_aberration_benchmark.py",
+      "sha256": "a22f40b0251a219c4c1a984706ac20d360e109a4ceffdc2ab8be2eec770fe7c0"
+    },
+    "preflight-tests.xml": {
+      "bytes": 5962,
+      "original_path": "E:\\tem_simulator_v2\\outputs\\ideal-lens-aberration-20261113\\preflight-tests.xml",
+      "sha256": "8832c8306cf91ffd0d32d10d31ff9085842e25bd939e8a4dec4d02a2975c410c"
+    },
+    "study-plan.md": {
+      "bytes": 14590,
+      "original_path": "E:\\tem_simulator_v2\\outputs\\ideal-lens-aberration-20261113\\study-plan.md",
+      "sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da"
+    },
+    "vacuum-tube-inventory.json": {
+      "bytes": 10694,
+      "original_path": "E:\\tem_simulator_v2\\outputs\\ideal-lens-aberration-20261113\\vacuum-tube-inventory.json",
+      "sha256": "b862c6fad97e36893342b5bd167d08ce1f72a321f659c1bc7625065ca34e2e3d"
+    },
+    "validation-summary.json": {
+      "bytes": 2983,
+      "original_path": "E:\\tem_simulator_v2\\outputs\\ideal-lens-aberration-20261113\\validation-summary.json",
+      "sha256": "77d7876f10efd965a50400d8af8e643b036b897eb6cc8fd0d41ae5832db80c89"
+    },
+    "variational-reference-summary.json": {
+      "bytes": 5103,
+      "original_path": "E:\\tem_simulator_v2\\outputs\\ideal-lens-aberration-20261113\\variational-reference-summary.json",
+      "sha256": "66d84a5821449000d25d310f20415f6194d7d77df2dacdd566b8e774fc7a5ce9"
+    },
+    "variational-reference-summary.md": {
+      "bytes": 1747,
+      "original_path": "E:\\tem_simulator_v2\\outputs\\ideal-lens-aberration-20261113\\variational-reference-summary.md",
+      "sha256": "8322573a5f6ddb487d1c77f2962879e25907186835dc7a535d8b700b21f6cb9b"
+    }
+  },
+  "preparation_receipt": "curation-preparation.json",
+  "qualification": "Read each original numerical/field/pupil/source gate. High-angle exploration and retained fit failures are not promoted to PASS by archiving.",
+  "schema": "ideal-lens-scientific-artifact-manifest-v1",
+  "selection_is_complete_trajectory": false,
+  "verification": "Original raw file SHA256, complete source/partition IDs, historical weights, selected raw-array bytes, physical wall ledgers, all focus scalar statistics and absolute loss/current balances checked before sealing"
+}

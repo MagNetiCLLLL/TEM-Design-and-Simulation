@@ -487,6 +487,7 @@ def apply_profile_values(state, values: dict) -> None:
         except TypeError as error:
             raise ValueError("Operating profile has invalid tip coherence fields") from error
     from temsim.simulation_modes import validate_mode, normalise_profiles, MODEL_SETTINGS
+    explicit_model = _SIMULATION_MODEL_KEY in values
     model = values.pop(_SIMULATION_MODEL_KEY, {"mode": state.simulation_mode,
         "profiles": state.simulation_mode_profiles, "settings": {}})
     if not isinstance(model, dict):
@@ -495,7 +496,13 @@ def apply_profile_values(state, values: dict) -> None:
         raise ValueError("Unknown simulation-model fields")
     selected_mode = validate_mode(model.get("mode", "custom"))
     model_profiles = normalise_profiles(model.get("profiles", {}))
-    model_settings = normalise_profiles({selected_mode: model.get("settings", {})})[selected_mode]
+    raw_settings = model.get("settings", {})
+    if not isinstance(raw_settings, dict):
+        raise ValueError("Operating profile simulation-model settings must be a table")
+    raw_settings = deepcopy(raw_settings)
+    for name, historical in (("round_lens_field_model", "gaussian"), ("gaussian_geometry_coupling", "fixed_calibration")):
+        raw_settings.setdefault(name, historical if explicit_model else getattr(state, name, historical))
+    model_settings = normalise_profiles({selected_mode: raw_settings})[selected_mode]
     if "lens_excitation" in model_settings:
         raise ValueError("Active lens excitation belongs only in profile devices, not simulation_model.settings")
     targets = runtime_targets(state)

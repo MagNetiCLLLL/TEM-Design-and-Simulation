@@ -297,6 +297,7 @@ def _part_geometry_data(part) -> dict[str, object]:
             continue
         if (
             name in _PART_GEOMETRY_FIELDS
+            or name in {"air_core_reference_ampere_turns", "gaussian_reference_coil_length_mm"}
             # Explicit carrier partitions must stale a map of the old shared
             # body, even though native analytic fields do not solve this
             # engineering material split. Provenance is excluded above.
@@ -1416,6 +1417,7 @@ class GeometryAwareAnalyticFieldProvider:
     fallback_reason: str
     model_status: str = "provisional_geometry_bound_analytic_not_fem"
     registration: CoordinateRegistration = CoordinateRegistration()
+    gaussian_width_scale: float = 1.0
 
     def field_support_mm(self, *args) -> tuple[float, float]:
         return _posed_axial_support(self.native_field_support_mm(*args), self.registration,
@@ -1441,6 +1443,10 @@ class GeometryAwareAnalyticFieldProvider:
         """
 
         sigma_cutoff = float(args[0]) if args else 7.0
+        if self.gaussian_width_scale != 1.:
+            terms = _analytic_gaussian_terms(self.native_provider, self.gaussian_width_scale)
+            return (min((centre-sigma_cutoff*sigma)*1e3 for _, centre, sigma in terms),
+                    max((centre+sigma_cutoff*sigma)*1e3 for _, centre, sigma in terms))
         support_method = getattr(self.native_provider, "field_support_mm", None)
         if callable(support_method):
             try:
@@ -1499,6 +1505,9 @@ class GeometryAwareAnalyticFieldProvider:
         return self.field_at_global_positions_t(positions)[..., 2]
 
     def _native_magnetic_field_t(self, z_mm) -> np.ndarray:
+        if self.gaussian_width_scale != 1.:
+            return _gaussian_axial_field(_analytic_gaussian_terms(self.native_provider, self.gaussian_width_scale),
+                                        np.asarray(z_mm, dtype=float)*1e-3)[0]
         method = getattr(self.native_provider, "magnetic_field_t", None)
         if callable(method):
             return np.asarray(method(z_mm), dtype=float)
@@ -1619,7 +1628,14 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
     key = str(lens_key)
     from temsim.simulation_modes import mode_key, uses_field_maps
     selected_mode = mode_key(state)
+    from temsim.round_lens_models import validate_round_lens_selection, gaussian_geometry_scale
+    model, _ = validate_round_lens_selection(getattr(state, "round_lens_field_model", "gaussian"),
+        getattr(state, "gaussian_geometry_coupling", "fixed_calibration"), selected_mode)
     current = lens_geometry_binding(state, key, native_provider)
+    if model == "copper_coil":
+        from temsim.lens_pose import lens_pose_registration
+        from temsim.physics.copper_coil_field_provider import resolve_copper_coil_provider
+        return resolve_copper_coil_provider(state, key, native_provider, current, lens_pose_registration(state, key))
     descriptor = getattr(state, "lens_field_map_descriptors", {}).get(key, {})
     from temsim.excitation_calibration import validate_excitation_recipe
     validate_excitation_recipe(descriptor)
@@ -1667,7 +1683,12 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
     if isinstance(cached, tuple) and len(cached) == 2 and cached[0] == token:
         if isinstance(cached[1], MappedLensFieldProvider):
             cached[1].excitation_scale()
-        return cached[1]
+            return cached[1]
+        # Only a native analytic provider consumes the optional Gaussian rule.
+        # Map/FEM documents need no unrelated Gaussian calibration metadata.
+        if (isinstance(cached[1], GeometryAwareAnalyticFieldProvider)
+                and cached[1].gaussian_width_scale == gaussian_geometry_scale(state, key)):
+            return cached[1]
     registry = getattr(state, "_lens_field_map_bindings", None)
     imported = registry.get(key) if isinstance(registry, dict) else None
     diagnostics = getattr(state, "_field_provider_diagnostics", None)
@@ -1682,6 +1703,7 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
             key, native_provider, current, f"selected_{selected_mode}_model",
             model_status="parameterized_analytic",
             registration=registration,
+            gaussian_width_scale=gaussian_geometry_scale(state, key),
         )
         diagnostics[key] = {"mode": selected_mode, "model_status": provider.model_status,
                             "geometry_fingerprint": current.geometry_fingerprint}
@@ -1741,7 +1763,8 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
         else "no_matching_measured_or_fem_map"
     )
     provider = GeometryAwareAnalyticFieldProvider(
-        key, native_provider, current, reason, registration=registration
+        key, native_provider, current, reason, registration=registration,
+        gaussian_width_scale=gaussian_geometry_scale(state, key),
     )
     diagnostics[key] = {
         "mode": "provisional_analytic_fallback",
@@ -1754,12 +1777,7 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
         ),
         "descriptor_error": descriptor_error,
     }
-    provider_cache[key] = (
-        _provider_geometry_token(
-            state, key, native_provider, binding=current
-        ),
-        provider,
-    )
+    provider_cache[key] = (token, provider)
     return provider
 
 
@@ -1824,7 +1842,7 @@ def active_vector_providers(state) -> tuple:
     return tuple(result)
 
 
-def _analytic_gaussian_terms(native_provider):
+def _analytic_gaussian_terms(native_provider, width_scale=1.):
     """Freeze the existing analytic axial law as (T, centre m, sigma m)."""
     source = _runtime_lens_state(native_provider)
     enabled, percent, polarity = _runtime_excitation(native_provider)
@@ -1843,8 +1861,10 @@ def _analytic_gaussian_terms(native_provider):
         groups.append((source.gaussian, float(source.z_mm), float(source.a_mm), scale * float(source.b0_t)))
     else:
         raise FieldMapError("Rigid analytic lens transport requires an explicit Gaussian field profile")
-    terms = tuple((factor*float(term.amplitude), (centre+float(term.offset)*width)*1e-3,
-                   max(abs(float(term.sigma)*width), 1e-12)*1e-3)
+    if not math.isfinite(width_scale) or width_scale <= 0:
+        raise FieldMapError("Gaussian width scale must be finite and positive")
+    terms = tuple((factor*float(term.amplitude), (centre+float(term.offset)*width*width_scale)*1e-3,
+                   max(abs(float(term.sigma)*width*width_scale), 1e-12)*1e-3)
                   for gaussian, centre, width, factor in groups for term in gaussian)
     if not terms or not np.isfinite(terms).all():
         raise FieldMapError("Rigid analytic lens field has no finite Gaussian terms")
@@ -1891,7 +1911,7 @@ class FrozenAnalyticField:
 
     @classmethod
     def from_provider(cls, provider: GeometryAwareAnalyticFieldProvider):
-        return cls(provider.lens_key, _analytic_gaussian_terms(provider.native_provider),
+        return cls(provider.lens_key, _analytic_gaussian_terms(provider.native_provider, provider.gaussian_width_scale),
                    provider.registration, provider.native_field_support_mm(), provider.radial_support_m)
 
     @property

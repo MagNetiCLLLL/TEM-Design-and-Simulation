@@ -350,10 +350,11 @@ class ParameterPanel(QWidget):
         layout.addWidget(self.scroll_area)
         self._refresh_parameter_details()
 
-    def set_simulation_context(self, mode=None, descriptors=None, by_key=None):
+    def set_simulation_context(self, mode=None, descriptors=None, by_key=None, *, round_lens_settings=None):
         """Refresh explanations without rebuilding editors or touching drafts."""
         self._simulation_mode = mode
         self._simulation_descriptors = descriptors
+        self._round_lens_settings = round_lens_settings
         self._semantic_by_key = dict(by_key or {})
         self._refresh_parameter_details()
 
@@ -398,7 +399,8 @@ class ParameterPanel(QWidget):
         part = self._semantic_part(path)
         meaning = meaning or describe_parameter(part, path, by_key=self._semantic_by_key)
         impact = describe_parameter_impact(part, path, by_key=self._semantic_by_key,
-            simulation_mode=self._simulation_mode, descriptors=self._simulation_descriptors)
+            simulation_mode=self._simulation_mode, descriptors=self._simulation_descriptors,
+            round_lens_settings=getattr(self, "_round_lens_settings", None))
         mode = getattr(self._simulation_mode, "value", self._simulation_mode)
         mode_text = str(mode) if mode is not None else "not connected"
         details = [meaning.label + (f" ({meaning.unit})" if meaning.unit else ""),

@@ -72,6 +72,11 @@ local_datum_mm = 0.0
 [[parts]]
 order = 1
 key = "condenser_lens_1"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 90.0
 name = "C1 Lens"
 branch = "common"
 local_start_z_mm = 0.0
@@ -134,6 +139,11 @@ pole_piece_geometry_style = "embedded_hourglass_bore"
 [[parts]]
 order = 3
 key = "condenser_lens_2"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 162.0
 name = "C2 Lens"
 branch = "common"
 local_start_z_mm = 100.0
@@ -232,6 +242,11 @@ mechanical_inter_coil_gap_mm = 20.0
 [[parts]]
 order = 7
 key = "condenser_lens_3"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 153.0
 name = "C3 Lens"
 branch = "common"
 local_start_z_mm = 380.0
@@ -339,6 +354,11 @@ mechanical_inter_coil_gap_mm = 10.0
 [[parts]]
 order = 12
 key = "objective_lens"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 290.0000000000001
 name = "Objective Lens Assembly"
 branch = "common"
 local_start_z_mm = 615.0
@@ -454,6 +474,11 @@ parent_key = "objective_lens"
 [[parts]]
 order = 15
 key = "mini_condenser"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 18.0
 name = "Mini Condenser Lens"
 branch = "illumination"
 local_start_z_mm = 738.5
@@ -739,6 +764,11 @@ bcor_geometry_source = "B-COR topology follows CEOS Poster-internet.pdf and EP19
 [[parts]]
 order = 26
 key = "image_tl11_lens"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 40.5
 # Parameterized field; numerical conjugacy at 300 kV, not an OEM winding calibration.
 maximum_peak_field_t = 0.5609032
 field_half_width_mm = 12.338709677419354
@@ -808,6 +838,11 @@ bcor_geometry_source = "B-COR topology follows CEOS Poster-internet.pdf and EP19
 [[parts]]
 order = 28
 key = "image_tl12_lens"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 41.40000000000009
 # Parameterized field; numerical conjugacy at 300 kV, not an OEM winding calibration.
 maximum_peak_field_t = 0.3299537833333333
 field_half_width_mm = 12.61290322580645
@@ -898,6 +933,11 @@ bcor_geometry_source = "B-COR topology follows CEOS Poster-internet.pdf and EP19
 [[parts]]
 order = 31
 key = "image_tl21_lens"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 32.40000000000009
 # Parameterized field; numerical conjugacy at 300 kV, not an OEM winding calibration.
 maximum_peak_field_t = 2.1599302
 field_half_width_mm = 9.870967741935484
@@ -988,6 +1028,11 @@ bcor_geometry_source = "B-COR topology follows CEOS Poster-internet.pdf and EP19
 [[parts]]
 order = 34
 key = "image_tl22_lens"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 32.40000000000009
 # Parameterized field; numerical conjugacy at 300 kV, not an OEM winding calibration.
 maximum_peak_field_t = 2.1261313
 field_half_width_mm = 9.870967741935484
@@ -1076,6 +1121,11 @@ bcor_geometry_source = "B-COR topology follows CEOS Poster-internet.pdf and EP19
 [[parts]]
 order = 37
 key = "image_tl31_lens"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 32.399999999999864
 # Parameterized field; numerical conjugacy at 300 kV, not an OEM winding calibration.
 maximum_peak_field_t = 2.1599302
 field_half_width_mm = 9.870967741935484
@@ -1118,6 +1168,11 @@ bcor_geometry_source = "B-COR topology follows CEOS Poster-internet.pdf and EP19
 [[parts]]
 order = 38
 key = "image_tl32_lens"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 32.399999999999864
 # Parameterized field; numerical conjugacy at 300 kV, not an OEM winding calibration.
 maximum_peak_field_t = 2.1261313
 field_half_width_mm = 9.870967741935484
@@ -1182,6 +1237,11 @@ maximum_strength_m3 = 1000000000.0
 [[parts]]
 order = 40
 key = "image_adapter_lens"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 32.399999999999864
 # Parameterized field; numerical conjugacy at 300 kV, not an OEM winding calibration.
 maximum_peak_field_t = 0.41919165
 field_half_width_mm = 9.870967741935484
@@ -1618,6 +1678,7 @@ parent_key = "condenser_lens_1"
 [[parts]]
 order = 59
 key = "condenser_lens_1_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "C1 Lens Excitation Coil"
 branch = "common"
 local_start_z_mm = 5.0
@@ -1684,6 +1745,7 @@ parent_key = "condenser_lens_2"
 [[parts]]
 order = 62
 key = "condenser_lens_2_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "C2 Lens Excitation Coil"
 branch = "common"
 local_start_z_mm = 119.0
@@ -1761,6 +1823,7 @@ parent_key = "condenser_lens_3"
 [[parts]]
 order = 65
 key = "condenser_lens_3_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "C3 Lens Excitation Coil"
 branch = "common"
 local_start_z_mm = 388.5
@@ -1825,6 +1888,7 @@ parent_key = "image_adapter_lens"
 [[parts]]
 order = 68
 key = "image_adapter_lens_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "Image Corrector ADL Excitation Coil"
 branch = "image"
 local_start_z_mm = 1514.2
@@ -1893,6 +1957,7 @@ mechanical_geometry_source = "CEOS Linck MC2025 p26 and Lu2025 optical topology 
 [[parts]]
 order = 71
 key = "image_tl11_lens_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "Image Corrector TL11 Lens Excitation Coil"
 branch = "image"
 local_start_z_mm = 1042.65
@@ -1963,6 +2028,7 @@ mechanical_geometry_source = "CEOS Linck MC2025 p26 and Lu2025 optical topology 
 [[parts]]
 order = 74
 key = "image_tl12_lens_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "Image Corrector TL12 Excitation Coil"
 branch = "image"
 local_start_z_mm = 1116.2
@@ -2029,6 +2095,7 @@ parent_key = "image_tl21_lens"
 [[parts]]
 order = 77
 key = "image_tl21_lens_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "Image Corrector TL21 Excitation Coil"
 branch = "image"
 local_start_z_mm = 1240.2
@@ -2093,6 +2160,7 @@ parent_key = "image_tl22_lens"
 [[parts]]
 order = 80
 key = "image_tl22_lens_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "Image Corrector TL22 Excitation Coil"
 branch = "image"
 local_start_z_mm = 1290.2
@@ -2157,6 +2225,7 @@ parent_key = "mini_condenser"
 [[parts]]
 order = 83
 key = "mini_condenser_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "Mini Condenser Lens Excitation Coil"
 branch = "illumination"
 local_start_z_mm = 739.5
@@ -2221,6 +2290,7 @@ parent_key = "objective_lens"
 [[parts]]
 order = 86
 key = "objective_lens_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "Objective Lens Excitation Coil"
 branch = "common"
 local_start_z_mm = 744.2
@@ -2672,6 +2742,7 @@ parent_key = "image_tl31_lens"
 [[parts]]
 order = 103
 key = "image_tl31_lens_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "Image Corrector TL31 Excitation Coil"
 branch = "image"
 local_start_z_mm = 1384.2
@@ -2736,6 +2807,7 @@ parent_key = "image_tl32_lens"
 [[parts]]
 order = 106
 key = "image_tl32_lens_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "Image Corrector TL32 Excitation Coil"
 branch = "image"
 local_start_z_mm = 1434.2

@@ -1,0 +1,67 @@
+{
+  "axial_domain": "gaussian_all_z",
+  "digest": "f9803a4d6ce1d48a1ff21d50472e1208b86e8ec2b0c4db9760bcefb39e1f6717",
+  "native": {
+    "digest": "27f8fd33830db8ae8e153515453aebcd486499c6b59545ba1ea8578ffda98065",
+    "field": {
+      "lens_key": "ideal-gaussian-round",
+      "native_support_mm": [
+        -96.0,
+        96.0
+      ],
+      "radial_support_m": 0.004,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "terms_t_m": [
+        [
+          0.3,
+          0.0,
+          0.012
+        ]
+      ]
+    },
+    "metadata": {
+      "derivative_domain": "strict interior of axial support",
+      "derivative_order": 2,
+      "field_fingerprint": "8c979e47e613882ed20c0b5499dc93fd26cc357d2a00ab1f26ac9e3d8bb6e4c8",
+      "gauge": "local A=(-y*B0/2,x*B0/2,0)",
+      "kind": "FrozenAnalyticField",
+      "outside_domain": "reject; no extrapolation or automatic zero fill",
+      "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+      "provenance": {},
+      "schema": "native-analytical-potential-v1",
+      "source_id": "ideal-gaussian-round",
+      "units": {
+        "A": "T m",
+        "B": "T",
+        "position": "m"
+      },
+      "wave_admission": false
+    }
+  },
+  "radial_order": 9,
+  "schema": "high-order-round-lens-potential-v1",
+  "valid_radius_m": 0.004
+}

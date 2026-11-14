@@ -637,9 +637,10 @@ class PartModelEditorPage(QWidget):
             # Operating annotations can change without changing any CAD mesh.
             self._load_all_parameters()
 
-    def set_simulation_context(self, mode=None, descriptors=None, by_key=None):
+    def set_simulation_context(self, mode=None, descriptors=None, by_key=None, *, round_lens_settings=None):
         self._simulation_mode = mode
         self._field_descriptors = descriptors or {}
+        self._round_lens_settings = round_lens_settings
         self._assembly_parts = by_key or {}
         if self.session is not None:
             self._refresh_parameter_annotations()
@@ -681,7 +682,8 @@ class PartModelEditorPage(QWidget):
                 else self.session.document if self.session is not None else {})
         meaning = describe_parameter(part, tuple(path), by_key=parts)
         impact = describe_parameter_impact(part, tuple(path), by_key=parts,
-                                           simulation_mode=mode, descriptors=descriptors)
+                                           simulation_mode=mode, descriptors=descriptors,
+                                           round_lens_settings=getattr(self, "_round_lens_settings", None))
         if part.get("tip_particle_model"):
             from temsim.tip_emission_view import emission_parameter_information
             meaning, impact = emission_parameter_information(part, path,
@@ -782,7 +784,8 @@ class PartModelEditorPage(QWidget):
         if self.session is not None and self._selected_key in parts:
             from temsim.parameter_impact import component_impact_summary, describe_parameter_impact
             summary = component_impact_summary(parts[self._selected_key], by_key=parts,
-                                               simulation_mode=mode, descriptors=descriptors)
+                                               simulation_mode=mode, descriptors=descriptors,
+                                               round_lens_settings=getattr(self, "_round_lens_settings", None))
             details.append(summary.detail)
             if summary.status == "configuration_required":
                 lines.append("Field setup required · inspect parameter usage")
@@ -795,7 +798,8 @@ class PartModelEditorPage(QWidget):
                 affected = set()
                 for path in self.session.updates():
                     impact = describe_parameter_impact(parts[path[1]], path, by_key=parts,
-                                                       simulation_mode=mode, descriptors=descriptors)
+                                                       simulation_mode=mode, descriptors=descriptors,
+                                                       round_lens_settings=getattr(self, "_round_lens_settings", None))
                     affected.update(impact.affected_results)
                 if affected:
                     details.append("After Save, review: " + ", ".join(sorted(affected)))

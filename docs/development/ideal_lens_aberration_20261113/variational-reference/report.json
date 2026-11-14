@@ -1,0 +1,3709 @@
+{
+  "schema": "ideal-gaussian-variational-reference-v1",
+  "scope": "Independent zero-current Gaussian-lens variational reference sweep.\n\nThis helper emits and transports no finite source. It uses the existing\nparaxial first-focus and independent first/third-order Lorentz ODE helpers.\nCoefficients describe the prescribed ideal field and reference conjugacy,\nnot an installed microscope, material model, fitted clipped beam or preset.\n",
+  "status": "COMPLETED_ZERO_CURRENT_REFERENCE",
+  "new_emitted_physical_particles": 0,
+  "new_finite_source_trajectories": 0,
+  "new_coherent_propagations": 0,
+  "implementation": "60a3e4991d49bfda8a332ded15d17301f0dc32569cb85293f72c40c002099b2c",
+  "git_head": "bcc80910bacb2453e8ee301eced0c96beed1b359",
+  "driver_sha256": "8b2ca70792499848af1e38fb2fe316dbc0d220926be6807db04119e2cd52c945",
+  "code_sha256": {
+    "src/temsim/physics/round_lens_aberration_benchmark.py": "a22f40b0251a219c4c1a984706ac20d360e109a4ceffdc2ab8be2eec770fe7c0",
+    "src/temsim/physics/high_order_round_lens.py": "1061d760edaf45a83f33d2a91f764eb3a5db423efcbbecc1eb75ed2e16d1c440",
+    "src/temsim/physics/lens_field_provider.py": "45a435667ad0b774a0d421bd522ae23f916b9b06c72bd8a7007d97de124cab71"
+  },
+  "units": {
+    "length": "m unless suffixed _mm",
+    "peak_field": "T",
+    "energy": "eV",
+    "coefficients": "mm",
+    "pupil": "paraxial slopes in rad"
+  },
+  "source_conjugacy": "Parallel pencil in the Larmor frame at declared negative input plane; first paraxial focus event only",
+  "sign_convention": "Outward pupil; delta_r=-Cs*theta*|theta|^2+Cc*theta*(delta_E/E0)",
+  "gates": {
+    "relative_cs": 1e-07,
+    "relative_cc": 1e-06,
+    "absolute_focus_over_sigma": 1e-09,
+    "relative_pupil_conversion": 1e-08,
+    "linear_focus_residual": 1e-09
+  },
+  "cases": [
+    {
+      "name": "peak0.15T-sigma3mm",
+      "peak_t": 0.15,
+      "sigma_mm": 3.0,
+      "field": {
+        "schema": "high-order-round-lens-potential-v1",
+        "native": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ideal-gaussian-round",
+            "kind": "FrozenAnalyticField",
+            "field_fingerprint": "d4643542525f0ccb2469af93b6d0f5b5b983aa52b493ec260d241fd2e516c140",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(-y*B0/2,x*B0/2,0)",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {}
+          },
+          "field": {
+            "lens_key": "ideal-gaussian-round",
+            "terms_t_m": [
+              [
+                0.15,
+                0.0,
+                0.003
+              ]
+            ],
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "native_support_mm": [
+              -21.0,
+              21.0
+            ],
+            "radial_support_m": 0.0015
+          },
+          "digest": "2b7b49f725c5d779dee478ed34088778cf7aa18c444175169d34a5a6a1f23750"
+        },
+        "radial_order": 3,
+        "valid_radius_m": 0.0015,
+        "axial_domain": "gaussian_all_z",
+        "digest": "ad1487b075caf8e2c65a3f1e50478433ef07141b23e6128a04006961c3e06898"
+      },
+      "field_digest": "ad1487b075caf8e2c65a3f1e50478433ef07141b23e6128a04006961c3e06898",
+      "field_dict_sha256": "f5dc3cc5f5bc20f388a6bd85e2f959d04b209d61cc8d0559d6ec623b1a668128",
+      "valid_radius_m": 0.0015,
+      "variants": {
+        "coarse8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.024,
+            "focus_search_end_m": 0.6261356996232887,
+            "maximum_step_m": 9.375e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.10710930740000732,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.03125,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.14753392490582218,
+          "coefficients": {
+            "cs_mm": 92190.33777126204,
+            "cc_mm": 181.0246930988891,
+            "image_z_m": 0.14872185285953296,
+            "linear_focus_residual_per_initial_height": [
+              -3.4973109477864917e-14,
+              1.9280773809124407e-15
+            ],
+            "field_digest": "ad1487b075caf8e2c65a3f1e50478433ef07141b23e6128a04006961c3e06898",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -6.723269165547919,
+            "initial_radius_m_per_pupil_slope_rad": 0.148737165711631,
+            "initial_radius_mm_per_pupil_mrad": 0.148737165711631,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                6.482403750894974,
+                -1.7834769083983613
+              ],
+              [
+                1.7834769083983613,
+                6.482403750894974
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -4.521500002541702e-13
+              ],
+              [
+                4.521500002541702e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 0.2684832184050017,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.00504245187416094,
+                "paraxial_edge_mechanical_angle_mrad": 5.042409137813084,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.006387105707270523,
+                "paraxial_edge_mechanical_angle_mrad": 6.387018855149929,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.006387105707270523,
+                "paraxial_edge_mechanical_angle_mrad": 6.387018855149929,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 30730.112590420682,
+            "cc_over_sigma": 60.34156436629636,
+            "focus_z_over_sigma": 49.57395095317765,
+            "pupil_slope_times_sigma": -0.020169807496643755
+          },
+          "elapsed_s": 3.6976817999966443,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 3.502621688018149e-14,
+          "field_digest_before": "ad1487b075caf8e2c65a3f1e50478433ef07141b23e6128a04006961c3e06898",
+          "field_digest_after": "ad1487b075caf8e2c65a3f1e50478433ef07141b23e6128a04006961c3e06898",
+          "passed_numerical_checks": true
+        },
+        "refined8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.024,
+            "focus_search_end_m": 0.6261356996232887,
+            "maximum_step_m": 4.6875e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.10710930740000732,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.14753392490582218,
+          "coefficients": {
+            "cs_mm": 92190.33777126313,
+            "cc_mm": 181.02469310624326,
+            "image_z_m": 0.14872185285953787,
+            "linear_focus_residual_per_initial_height": [
+              1.1139093120116073e-15,
+              -1.2870862145172857e-14
+            ],
+            "field_digest": "ad1487b075caf8e2c65a3f1e50478433ef07141b23e6128a04006961c3e06898",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -6.723269165547922,
+            "initial_radius_m_per_pupil_slope_rad": 0.14873716571163095,
+            "initial_radius_mm_per_pupil_mrad": 0.14873716571163095,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                6.482403750894978,
+                -1.7834769083983626
+              ],
+              [
+                1.7834769083983626,
+                6.482403750894978
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -4.521500002541702e-13
+              ],
+              [
+                4.521500002541702e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 0.2684832184050018,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.005042451874160941,
+                "paraxial_edge_mechanical_angle_mrad": 5.0424091378130855,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.006387105707270526,
+                "paraxial_edge_mechanical_angle_mrad": 6.387018855149932,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.006387105707270526,
+                "paraxial_edge_mechanical_angle_mrad": 6.387018855149932,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 30730.112590421046,
+            "cc_over_sigma": 60.341564368747754,
+            "focus_z_over_sigma": 49.57395095317929,
+            "pupil_slope_times_sigma": -0.020169807496643766
+          },
+          "elapsed_s": 7.500251299992669,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 1.2918973887868564e-14,
+          "field_digest_before": "ad1487b075caf8e2c65a3f1e50478433ef07141b23e6128a04006961c3e06898",
+          "field_digest_after": "ad1487b075caf8e2c65a3f1e50478433ef07141b23e6128a04006961c3e06898",
+          "passed_numerical_checks": true
+        },
+        "refined10": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.03,
+            "focus_search_end_m": 0.6261356996232887,
+            "maximum_step_m": 4.6875e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.10710930740000732,
+          "input_tail_sigma": 10.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.9287498479639178e-22,
+          "thin_lens_focal_estimate_m": 0.14753392490582218,
+          "coefficients": {
+            "cs_mm": 92190.3377712653,
+            "cc_mm": 181.02469310398385,
+            "image_z_m": 0.1487218528595379,
+            "linear_focus_residual_per_initial_height": [
+              1.4930006016211639e-15,
+              -1.6215625847290638e-14
+            ],
+            "field_digest": "ad1487b075caf8e2c65a3f1e50478433ef07141b23e6128a04006961c3e06898",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -6.723269165547918,
+            "initial_radius_m_per_pupil_slope_rad": 0.14873716571163104,
+            "initial_radius_mm_per_pupil_mrad": 0.14873716571163104,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                6.482403750894973,
+                -1.783476908398363
+              ],
+              [
+                1.783476908398363,
+                6.482403750894973
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -6.886235345442822e-21
+              ],
+              [
+                6.886235345442822e-21,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 0.268483218405002,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.005042451874160939,
+                "paraxial_edge_mechanical_angle_mrad": 5.042409137813083,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.006387105707270522,
+                "paraxial_edge_mechanical_angle_mrad": 6.387018855149928,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.006387105707270522,
+                "paraxial_edge_mechanical_angle_mrad": 6.387018855149928,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 30730.112590421766,
+            "cc_over_sigma": 60.341564367994614,
+            "focus_z_over_sigma": 49.5739509531793,
+            "pupil_slope_times_sigma": -0.020169807496643755
+          },
+          "elapsed_s": 7.786675500014098,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 1.6284212367067724e-14,
+          "field_digest_before": "ad1487b075caf8e2c65a3f1e50478433ef07141b23e6128a04006961c3e06898",
+          "field_digest_after": "ad1487b075caf8e2c65a3f1e50478433ef07141b23e6128a04006961c3e06898",
+          "passed_numerical_checks": true
+        }
+      },
+      "step_repeatability": {
+        "metrics": {
+          "relative_cs": 1.1838481868191123e-14,
+          "relative_cc": 4.062525411502694e-11,
+          "absolute_focus_over_sigma": 1.6375789613221059e-12,
+          "relative_pupil_conversion": 3.732164114171833e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "input_tail_repeatability": {
+        "metrics": {
+          "relative_cs": 2.3519117311472478e-14,
+          "relative_cc": 1.2481237637461702e-11,
+          "absolute_focus_over_sigma": 9.25185853854297e-15,
+          "relative_pupil_conversion": 5.598246171257746e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "name": "peak0.15T-sigma6mm",
+      "peak_t": 0.15,
+      "sigma_mm": 6.0,
+      "field": {
+        "schema": "high-order-round-lens-potential-v1",
+        "native": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ideal-gaussian-round",
+            "kind": "FrozenAnalyticField",
+            "field_fingerprint": "5ce19c918073e422cd3852419f91a2d47b81ffb4e266a4b40d6682ddbcfd57cb",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(-y*B0/2,x*B0/2,0)",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {}
+          },
+          "field": {
+            "lens_key": "ideal-gaussian-round",
+            "terms_t_m": [
+              [
+                0.15,
+                0.0,
+                0.006
+              ]
+            ],
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "native_support_mm": [
+              -42.0,
+              42.0
+            ],
+            "radial_support_m": 0.003
+          },
+          "digest": "eaa75441e2c3366be815251a8c1abf9e674d953be04e66ea0b06cb0caae4dc50"
+        },
+        "radial_order": 3,
+        "valid_radius_m": 0.003,
+        "axial_domain": "gaussian_all_z",
+        "digest": "55678fba5f75a1fd36652aaa6d0985af1e3b7c75a93feb0f24991390facc5a4a"
+      },
+      "field_digest": "55678fba5f75a1fd36652aaa6d0985af1e3b7c75a93feb0f24991390facc5a4a",
+      "field_dict_sha256": "41abc9301b8365d9a532233a9234bd850ae7308123171a58022b1d64ebb111e1",
+      "valid_radius_m": 0.003,
+      "variants": {
+        "coarse8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.048,
+            "focus_search_end_m": 0.36706784981164436,
+            "maximum_step_m": 0.0001875
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.21421861480001464,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.03125,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.07376696245291109,
+          "coefficients": {
+            "cs_mm": 3196.7937762263305,
+            "cc_mm": 90.59649707472556,
+            "image_z_m": 0.07608863239287636,
+            "linear_focus_residual_per_initial_height": [
+              -2.340575649961707e-15,
+              -3.2395960913866872e-16
+            ],
+            "field_digest": "55678fba5f75a1fd36652aaa6d0985af1e3b7c75a93feb0f24991390facc5a4a",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -13.121180995451539,
+            "initial_radius_m_per_pupil_slope_rad": 0.07621265192109233,
+            "initial_radius_mm_per_pupil_mrad": 0.07621265192109233,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                11.27456366888811,
+                -6.711900237010896
+              ],
+              [
+                6.711900237010896,
+                11.27456366888811
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -4.521500002541702e-13
+              ],
+              [
+                4.521500002541702e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 0.5369664368100034,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.009840885746588654,
+                "paraxial_edge_mechanical_angle_mrad": 9.840568091307405,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.012465121945678963,
+                "paraxial_edge_mechanical_angle_mrad": 12.464476398698144,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.012465121945678963,
+                "paraxial_edge_mechanical_angle_mrad": 12.464476398698144,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 532.7989627043884,
+            "cc_over_sigma": 15.099416179120928,
+            "focus_z_over_sigma": 12.68143873214606,
+            "pupil_slope_times_sigma": -0.07872708597270923
+          },
+          "elapsed_s": 1.3252236999978777,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 2.3628889524366026e-15,
+          "field_digest_before": "55678fba5f75a1fd36652aaa6d0985af1e3b7c75a93feb0f24991390facc5a4a",
+          "field_digest_after": "55678fba5f75a1fd36652aaa6d0985af1e3b7c75a93feb0f24991390facc5a4a",
+          "passed_numerical_checks": true
+        },
+        "refined8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.048,
+            "focus_search_end_m": 0.36706784981164436,
+            "maximum_step_m": 9.375e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.21421861480001464,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.07376696245291109,
+          "coefficients": {
+            "cs_mm": 3196.7937762263364,
+            "cc_mm": 90.59649707491069,
+            "image_z_m": 0.07608863239287635,
+            "linear_focus_residual_per_initial_height": [
+              -3.285999944369067e-15,
+              -2.3269147025883896e-15
+            ],
+            "field_digest": "55678fba5f75a1fd36652aaa6d0985af1e3b7c75a93feb0f24991390facc5a4a",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -13.121180995451546,
+            "initial_radius_m_per_pupil_slope_rad": 0.07621265192109229,
+            "initial_radius_mm_per_pupil_mrad": 0.07621265192109229,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                11.274563668888115,
+                -6.711900237010901
+              ],
+              [
+                6.711900237010901,
+                11.274563668888115
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -4.521500002541702e-13
+              ],
+              [
+                4.521500002541702e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 0.5369664368100036,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.00984088574658866,
+                "paraxial_edge_mechanical_angle_mrad": 9.84056809130741,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.01246512194567897,
+                "paraxial_edge_mechanical_angle_mrad": 12.464476398698151,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.01246512194567897,
+                "paraxial_edge_mechanical_angle_mrad": 12.464476398698151,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 532.7989627043894,
+            "cc_over_sigma": 15.099416179151781,
+            "focus_z_over_sigma": 12.681438732146058,
+            "pupil_slope_times_sigma": -0.07872708597270928
+          },
+          "elapsed_s": 2.6799364000034984,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 4.026453485080329e-15,
+          "field_digest_before": "55678fba5f75a1fd36652aaa6d0985af1e3b7c75a93feb0f24991390facc5a4a",
+          "field_digest_after": "55678fba5f75a1fd36652aaa6d0985af1e3b7c75a93feb0f24991390facc5a4a",
+          "passed_numerical_checks": true
+        },
+        "refined10": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.06,
+            "focus_search_end_m": 0.36706784981164436,
+            "maximum_step_m": 9.375e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.21421861480001464,
+          "input_tail_sigma": 10.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.9287498479639178e-22,
+          "thin_lens_focal_estimate_m": 0.07376696245291109,
+          "coefficients": {
+            "cs_mm": 3196.7937762263396,
+            "cc_mm": 90.59649707487603,
+            "image_z_m": 0.07608863239287642,
+            "linear_focus_residual_per_initial_height": [
+              -4.382345181186409e-15,
+              -2.0038224551877093e-15
+            ],
+            "field_digest": "55678fba5f75a1fd36652aaa6d0985af1e3b7c75a93feb0f24991390facc5a4a",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -13.12118099545154,
+            "initial_radius_m_per_pupil_slope_rad": 0.07621265192109233,
+            "initial_radius_mm_per_pupil_mrad": 0.07621265192109233,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                11.274563668888106,
+                -6.711900237010904
+              ],
+              [
+                6.711900237010904,
+                11.274563668888106
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -6.886235345442822e-21
+              ],
+              [
+                6.886235345442822e-21,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 0.536966436810004,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.009840885746588654,
+                "paraxial_edge_mechanical_angle_mrad": 9.840568091307405,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.012465121945678963,
+                "paraxial_edge_mechanical_angle_mrad": 12.464476398698144,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.012465121945678963,
+                "paraxial_edge_mechanical_angle_mrad": 12.464476398698144,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 532.79896270439,
+            "cc_over_sigma": 15.099416179146004,
+            "focus_z_over_sigma": 12.681438732146068,
+            "pupil_slope_times_sigma": -0.07872708597270925
+          },
+          "elapsed_s": 2.9438526000012644,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 4.818739847613921e-15,
+          "field_digest_before": "55678fba5f75a1fd36652aaa6d0985af1e3b7c75a93feb0f24991390facc5a4a",
+          "field_digest_after": "55678fba5f75a1fd36652aaa6d0985af1e3b7c75a93feb0f24991390facc5a4a",
+          "passed_numerical_checks": true
+        }
+      },
+      "step_repeatability": {
+        "metrics": {
+          "relative_cs": 1.849263973637528e-15,
+          "relative_cc": 2.0433991418218308e-12,
+          "absolute_focus_over_sigma": 2.3129646346357427e-15,
+          "relative_pupil_conversion": 5.462788969284127e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "input_tail_repeatability": {
+        "metrics": {
+          "relative_cs": 9.957575242663602e-16,
+          "relative_cc": 3.825785297386468e-13,
+          "absolute_focus_over_sigma": 1.1564823173178714e-14,
+          "relative_pupil_conversion": 5.462788969284124e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "name": "peak0.15T-sigma12mm",
+      "peak_t": 0.15,
+      "sigma_mm": 12.0,
+      "field": {
+        "schema": "high-order-round-lens-potential-v1",
+        "native": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ideal-gaussian-round",
+            "kind": "FrozenAnalyticField",
+            "field_fingerprint": "ec5ea5fb97f0689b3e3ff9d02dd2589f9de923b4d82ba21a5f3d4ebcc2632452",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(-y*B0/2,x*B0/2,0)",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {}
+          },
+          "field": {
+            "lens_key": "ideal-gaussian-round",
+            "terms_t_m": [
+              [
+                0.15,
+                0.0,
+                0.012
+              ]
+            ],
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "native_support_mm": [
+              -84.0,
+              84.0
+            ],
+            "radial_support_m": 0.004
+          },
+          "digest": "42eed97ed33a631e840ba9e4637bb3b0911bbc7d51593b055563216f36650c8f"
+        },
+        "radial_order": 3,
+        "valid_radius_m": 0.004,
+        "axial_domain": "gaussian_all_z",
+        "digest": "d40393519538206b079850fd4f476668b8b4c80d42e03d44a252cdb0ed29de12"
+      },
+      "field_digest": "d40393519538206b079850fd4f476668b8b4c80d42e03d44a252cdb0ed29de12",
+      "field_dict_sha256": "82c9049476e01dcbfb046e6f97d8de8d2a080a5bb36b18537a5c060cc397bb59",
+      "valid_radius_m": 0.004,
+      "variants": {
+        "coarse8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.096,
+            "focus_search_end_m": 0.2915339249058222,
+            "maximum_step_m": 0.000375
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.4284372296000293,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.03125,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.036883481226455544,
+          "coefficients": {
+            "cs_mm": 157.24134176167283,
+            "cc_mm": 46.03975562497682,
+            "image_z_m": 0.04106787284678533,
+            "linear_focus_residual_per_initial_height": [
+              -1.726049858596923e-16,
+              -1.700029006457271e-16
+            ],
+            "field_digest": "d40393519538206b079850fd4f476668b8b4c80d42e03d44a252cdb0ed29de12",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -23.746267126550478,
+            "initial_radius_m_per_pupil_slope_rad": 0.04211188203479398,
+            "initial_radius_mm_per_pupil_mrad": 0.04211188203479398,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                11.326106501006482,
+                -20.87114069650604
+              ],
+              [
+                20.87114069650604,
+                11.326106501006482
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -4.521500002541702e-13
+              ],
+              [
+                4.521500002541702e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.0735994788494354,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.01780970034491286,
+                "paraxial_edge_mechanical_angle_mrad": 17.80781771072051,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.022558953770222955,
+                "paraxial_edge_mechanical_angle_mrad": 22.55512813967346,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.022558953770222955,
+                "paraxial_edge_mechanical_angle_mrad": 22.55512813967346,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 13.103445146806068,
+            "cc_over_sigma": 3.8366463020814017,
+            "focus_z_over_sigma": 3.422322737232111,
+            "pupil_slope_times_sigma": -0.28495520551860576
+          },
+          "elapsed_s": 0.7426540000014938,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 2.422673468950893e-16,
+          "field_digest_before": "d40393519538206b079850fd4f476668b8b4c80d42e03d44a252cdb0ed29de12",
+          "field_digest_after": "d40393519538206b079850fd4f476668b8b4c80d42e03d44a252cdb0ed29de12",
+          "passed_numerical_checks": true
+        },
+        "refined8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.096,
+            "focus_search_end_m": 0.2915339249058222,
+            "maximum_step_m": 0.0001875
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.4284372296000293,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.036883481226455544,
+          "coefficients": {
+            "cs_mm": 157.241341761672,
+            "cc_mm": 46.039755624880726,
+            "image_z_m": 0.04106787284678513,
+            "linear_focus_residual_per_initial_height": [
+              1.4582451457294254e-15,
+              4.381992815480351e-15
+            ],
+            "field_digest": "d40393519538206b079850fd4f476668b8b4c80d42e03d44a252cdb0ed29de12",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -23.74626712655049,
+            "initial_radius_m_per_pupil_slope_rad": 0.04211188203479396,
+            "initial_radius_mm_per_pupil_mrad": 0.04211188203479396,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                11.326106501006505,
+                -20.87114069650604
+              ],
+              [
+                20.87114069650604,
+                11.326106501006505
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -4.521500002541702e-13
+              ],
+              [
+                4.521500002541702e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.0735994788494345,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.017809700344912867,
+                "paraxial_edge_mechanical_angle_mrad": 17.807817710720517,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.022558953770222965,
+                "paraxial_edge_mechanical_angle_mrad": 22.55512813967347,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.022558953770222965,
+                "paraxial_edge_mechanical_angle_mrad": 22.55512813967347,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 13.103445146806001,
+            "cc_over_sigma": 3.836646302073394,
+            "focus_z_over_sigma": 3.4223227372320943,
+            "pupil_slope_times_sigma": -0.28495520551860587
+          },
+          "elapsed_s": 1.48909280000953,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 4.6182615711937374e-15,
+          "field_digest_before": "d40393519538206b079850fd4f476668b8b4c80d42e03d44a252cdb0ed29de12",
+          "field_digest_after": "d40393519538206b079850fd4f476668b8b4c80d42e03d44a252cdb0ed29de12",
+          "passed_numerical_checks": true
+        },
+        "refined10": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.12,
+            "focus_search_end_m": 0.2915339249058222,
+            "maximum_step_m": 0.0001875
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.4284372296000293,
+          "input_tail_sigma": 10.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.9287498479639178e-22,
+          "thin_lens_focal_estimate_m": 0.036883481226455544,
+          "coefficients": {
+            "cs_mm": 157.24134176167215,
+            "cc_mm": 46.0397556249485,
+            "image_z_m": 0.0410678728467853,
+            "linear_focus_residual_per_initial_height": [
+              -8.779327091701372e-16,
+              1.1378159699149126e-15
+            ],
+            "field_digest": "d40393519538206b079850fd4f476668b8b4c80d42e03d44a252cdb0ed29de12",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -23.74626712655052,
+            "initial_radius_m_per_pupil_slope_rad": 0.04211188203479391,
+            "initial_radius_mm_per_pupil_mrad": 0.04211188203479391,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                11.326106501006484,
+                -20.871140696506085
+              ],
+              [
+                20.871140696506085,
+                11.326106501006484
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -6.886235345442822e-21
+              ],
+              [
+                6.886235345442822e-21,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.0735994788494363,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.01780970034491289,
+                "paraxial_edge_mechanical_angle_mrad": 17.807817710720542,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.022558953770222996,
+                "paraxial_edge_mechanical_angle_mrad": 22.555128139673503,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.022558953770222996,
+                "paraxial_edge_mechanical_angle_mrad": 22.555128139673503,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 13.103445146806012,
+            "cc_over_sigma": 3.8366463020790413,
+            "focus_z_over_sigma": 3.422322737232108,
+            "pupil_slope_times_sigma": -0.28495520551860626
+          },
+          "elapsed_s": 1.7131972000061069,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 1.43714683426024e-15,
+          "field_digest_before": "d40393519538206b079850fd4f476668b8b4c80d42e03d44a252cdb0ed29de12",
+          "field_digest_after": "d40393519538206b079850fd4f476668b8b4c80d42e03d44a252cdb0ed29de12",
+          "passed_numerical_checks": true
+        }
+      },
+      "step_repeatability": {
+        "metrics": {
+          "relative_cs": 5.241812135710383e-15,
+          "relative_cc": 2.0871917819708214e-12,
+          "absolute_focus_over_sigma": 1.61907524424502e-14,
+          "relative_pupil_conversion": 4.943184846149214e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "input_tail_repeatability": {
+        "metrics": {
+          "relative_cs": 9.037607130535135e-16,
+          "relative_cc": 1.4720227163863051e-12,
+          "absolute_focus_over_sigma": 1.3877787807814457e-14,
+          "relative_pupil_conversion": 1.3181826256397922e-15
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "name": "peak0.3T-sigma3mm",
+      "peak_t": 0.3,
+      "sigma_mm": 3.0,
+      "field": {
+        "schema": "high-order-round-lens-potential-v1",
+        "native": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ideal-gaussian-round",
+            "kind": "FrozenAnalyticField",
+            "field_fingerprint": "73a3b1a99bdde3ed73714ad46dd50413f2a8c36ba2ee343a21f47bb51a0d5967",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(-y*B0/2,x*B0/2,0)",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {}
+          },
+          "field": {
+            "lens_key": "ideal-gaussian-round",
+            "terms_t_m": [
+              [
+                0.3,
+                0.0,
+                0.003
+              ]
+            ],
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "native_support_mm": [
+              -21.0,
+              21.0
+            ],
+            "radial_support_m": 0.0015
+          },
+          "digest": "e9711122f0d6c13c7f35367cdc014c08d63576659e00304c59532aeebf485900"
+        },
+        "radial_order": 3,
+        "valid_radius_m": 0.0015,
+        "axial_domain": "gaussian_all_z",
+        "digest": "b4d0a4ebeb7e3c830b4d6376c679e972c29fbed894b5f88a5e641644a5142bdc"
+      },
+      "field_digest": "b4d0a4ebeb7e3c830b4d6376c679e972c29fbed894b5f88a5e641644a5142bdc",
+      "field_dict_sha256": "1f3b98d1c454e9ec8c8f45e12771beba5627ae7f4f5a418d3e3366c2fe582e68",
+      "valid_radius_m": 0.0015,
+      "variants": {
+        "coarse8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.024,
+            "focus_search_end_m": 0.18353392490582218,
+            "maximum_step_m": 9.375e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.21421861480001464,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.03125,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.036883481226455544,
+          "coefficients": {
+            "cs_mm": 1598.3968881131652,
+            "cc_mm": 45.29824853736278,
+            "image_z_m": 0.03804431619643818,
+            "linear_focus_residual_per_initial_height": [
+              -2.340575649961707e-15,
+              -3.2395960913866872e-16
+            ],
+            "field_digest": "b4d0a4ebeb7e3c830b4d6376c679e972c29fbed894b5f88a5e641644a5142bdc",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -26.242361990903078,
+            "initial_radius_m_per_pupil_slope_rad": 0.03810632596054617,
+            "initial_radius_mm_per_pupil_mrad": 0.03810632596054617,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                22.54912733777622,
+                -13.423800474021792
+              ],
+              [
+                13.423800474021792,
+                22.54912733777622
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -9.043000005083404e-13
+              ],
+              [
+                9.043000005083404e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 0.5369664368100034,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.01968177149317731,
+                "paraxial_edge_mechanical_angle_mrad": 19.679230693782774,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.024930243891357926,
+                "paraxial_edge_mechanical_angle_mrad": 24.9250809592313,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.024930243891357926,
+                "paraxial_edge_mechanical_angle_mrad": 24.9250809592313,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 532.7989627043884,
+            "cc_over_sigma": 15.099416179120928,
+            "focus_z_over_sigma": 12.68143873214606,
+            "pupil_slope_times_sigma": -0.07872708597270923
+          },
+          "elapsed_s": 1.3809312999946997,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 2.3628889524366026e-15,
+          "field_digest_before": "b4d0a4ebeb7e3c830b4d6376c679e972c29fbed894b5f88a5e641644a5142bdc",
+          "field_digest_after": "b4d0a4ebeb7e3c830b4d6376c679e972c29fbed894b5f88a5e641644a5142bdc",
+          "passed_numerical_checks": true
+        },
+        "refined8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.024,
+            "focus_search_end_m": 0.18353392490582218,
+            "maximum_step_m": 4.6875e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.21421861480001464,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.036883481226455544,
+          "coefficients": {
+            "cs_mm": 1598.3968881131682,
+            "cc_mm": 45.29824853745534,
+            "image_z_m": 0.03804431619643817,
+            "linear_focus_residual_per_initial_height": [
+              -3.285999944369067e-15,
+              -2.3269147025883896e-15
+            ],
+            "field_digest": "b4d0a4ebeb7e3c830b4d6376c679e972c29fbed894b5f88a5e641644a5142bdc",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -26.242361990903092,
+            "initial_radius_m_per_pupil_slope_rad": 0.038106325960546146,
+            "initial_radius_mm_per_pupil_mrad": 0.038106325960546146,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                22.54912733777623,
+                -13.423800474021801
+              ],
+              [
+                13.423800474021801,
+                22.54912733777623
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -9.043000005083404e-13
+              ],
+              [
+                9.043000005083404e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 0.5369664368100036,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.01968177149317732,
+                "paraxial_edge_mechanical_angle_mrad": 19.679230693782785,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.02493024389135794,
+                "paraxial_edge_mechanical_angle_mrad": 24.925080959231313,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.02493024389135794,
+                "paraxial_edge_mechanical_angle_mrad": 24.925080959231313,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 532.7989627043894,
+            "cc_over_sigma": 15.099416179151781,
+            "focus_z_over_sigma": 12.681438732146058,
+            "pupil_slope_times_sigma": -0.07872708597270928
+          },
+          "elapsed_s": 2.683717300009448,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 4.026453485080329e-15,
+          "field_digest_before": "b4d0a4ebeb7e3c830b4d6376c679e972c29fbed894b5f88a5e641644a5142bdc",
+          "field_digest_after": "b4d0a4ebeb7e3c830b4d6376c679e972c29fbed894b5f88a5e641644a5142bdc",
+          "passed_numerical_checks": true
+        },
+        "refined10": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.03,
+            "focus_search_end_m": 0.18353392490582218,
+            "maximum_step_m": 4.6875e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.21421861480001464,
+          "input_tail_sigma": 10.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.9287498479639178e-22,
+          "thin_lens_focal_estimate_m": 0.036883481226455544,
+          "coefficients": {
+            "cs_mm": 1598.3968881131698,
+            "cc_mm": 45.29824853743801,
+            "image_z_m": 0.03804431619643821,
+            "linear_focus_residual_per_initial_height": [
+              -4.382345181186409e-15,
+              -2.0038224551877093e-15
+            ],
+            "field_digest": "b4d0a4ebeb7e3c830b4d6376c679e972c29fbed894b5f88a5e641644a5142bdc",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -26.24236199090308,
+            "initial_radius_m_per_pupil_slope_rad": 0.03810632596054617,
+            "initial_radius_mm_per_pupil_mrad": 0.03810632596054617,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                22.549127337776213,
+                -13.423800474021808
+              ],
+              [
+                13.423800474021808,
+                22.549127337776213
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -1.3772470690885644e-20
+              ],
+              [
+                1.3772470690885644e-20,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 0.536966436810004,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.01968177149317731,
+                "paraxial_edge_mechanical_angle_mrad": 19.679230693782774,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.024930243891357926,
+                "paraxial_edge_mechanical_angle_mrad": 24.9250809592313,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.024930243891357926,
+                "paraxial_edge_mechanical_angle_mrad": 24.9250809592313,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 532.79896270439,
+            "cc_over_sigma": 15.099416179146004,
+            "focus_z_over_sigma": 12.681438732146068,
+            "pupil_slope_times_sigma": -0.07872708597270925
+          },
+          "elapsed_s": 2.899497700011125,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 4.818739847613921e-15,
+          "field_digest_before": "b4d0a4ebeb7e3c830b4d6376c679e972c29fbed894b5f88a5e641644a5142bdc",
+          "field_digest_after": "b4d0a4ebeb7e3c830b4d6376c679e972c29fbed894b5f88a5e641644a5142bdc",
+          "passed_numerical_checks": true
+        }
+      },
+      "step_repeatability": {
+        "metrics": {
+          "relative_cs": 1.849263973637528e-15,
+          "relative_cc": 2.0433991418218308e-12,
+          "absolute_focus_over_sigma": 2.3129646346357427e-15,
+          "relative_pupil_conversion": 5.462788969284127e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "input_tail_repeatability": {
+        "metrics": {
+          "relative_cs": 9.957575242663602e-16,
+          "relative_cc": 3.825785297386468e-13,
+          "absolute_focus_over_sigma": 1.1564823173178714e-14,
+          "relative_pupil_conversion": 5.462788969284124e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "name": "peak0.3T-sigma6mm",
+      "peak_t": 0.3,
+      "sigma_mm": 6.0,
+      "field": {
+        "schema": "high-order-round-lens-potential-v1",
+        "native": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ideal-gaussian-round",
+            "kind": "FrozenAnalyticField",
+            "field_fingerprint": "8a0d778dab1a4983953f5814253c8afa1c9a73a7cb72c14c85b33bf9a89ec59a",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(-y*B0/2,x*B0/2,0)",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {}
+          },
+          "field": {
+            "lens_key": "ideal-gaussian-round",
+            "terms_t_m": [
+              [
+                0.3,
+                0.0,
+                0.006
+              ]
+            ],
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "native_support_mm": [
+              -42.0,
+              42.0
+            ],
+            "radial_support_m": 0.003
+          },
+          "digest": "3f2f9fe1e98063f7aad3bb62bbf117aa268ebb3fa0a940597111f23c54ade2b5"
+        },
+        "radial_order": 3,
+        "valid_radius_m": 0.003,
+        "axial_domain": "gaussian_all_z",
+        "digest": "5a30ce7cc496d9f4ef89380a25238113279661ccfd96564a782161f173869034"
+      },
+      "field_digest": "5a30ce7cc496d9f4ef89380a25238113279661ccfd96564a782161f173869034",
+      "field_dict_sha256": "97f54dfb7b445b170b4e6a70232c9b774bc34ba9caa8e86e0f5baf1b02a1b3e0",
+      "valid_radius_m": 0.003,
+      "variants": {
+        "coarse8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.048,
+            "focus_search_end_m": 0.1457669624529111,
+            "maximum_step_m": 0.0001875
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.4284372296000293,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.03125,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.018441740613227772,
+          "coefficients": {
+            "cs_mm": 78.62067088083641,
+            "cc_mm": 23.01987781248841,
+            "image_z_m": 0.020533936423392664,
+            "linear_focus_residual_per_initial_height": [
+              -1.726049858596923e-16,
+              -1.700029006457271e-16
+            ],
+            "field_digest": "5a30ce7cc496d9f4ef89380a25238113279661ccfd96564a782161f173869034",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -47.492534253100956,
+            "initial_radius_m_per_pupil_slope_rad": 0.02105594101739699,
+            "initial_radius_mm_per_pupil_mrad": 0.02105594101739699,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                22.652213002012964,
+                -41.74228139301208
+              ],
+              [
+                41.74228139301208,
+                22.652213002012964
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -9.043000005083404e-13
+              ],
+              [
+                9.043000005083404e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.0735994788494354,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.03561940068982572,
+                "paraxial_edge_mechanical_angle_mrad": 35.604348207066174,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.04511790754044591,
+                "paraxial_edge_mechanical_angle_mrad": 45.08733048890936,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.04511790754044591,
+                "paraxial_edge_mechanical_angle_mrad": 45.08733048890936,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 13.103445146806068,
+            "cc_over_sigma": 3.8366463020814017,
+            "focus_z_over_sigma": 3.422322737232111,
+            "pupil_slope_times_sigma": -0.28495520551860576
+          },
+          "elapsed_s": 0.7326632000040263,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 2.422673468950893e-16,
+          "field_digest_before": "5a30ce7cc496d9f4ef89380a25238113279661ccfd96564a782161f173869034",
+          "field_digest_after": "5a30ce7cc496d9f4ef89380a25238113279661ccfd96564a782161f173869034",
+          "passed_numerical_checks": true
+        },
+        "refined8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.048,
+            "focus_search_end_m": 0.1457669624529111,
+            "maximum_step_m": 9.375e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.4284372296000293,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.018441740613227772,
+          "coefficients": {
+            "cs_mm": 78.62067088083685,
+            "cc_mm": 23.019877812440605,
+            "image_z_m": 0.0205339364233928,
+            "linear_focus_residual_per_initial_height": [
+              -3.807331782745144e-15,
+              -5.321115184760139e-15
+            ],
+            "field_digest": "5a30ce7cc496d9f4ef89380a25238113279661ccfd96564a782161f173869034",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -47.49253425310098,
+            "initial_radius_m_per_pupil_slope_rad": 0.02105594101739698,
+            "initial_radius_mm_per_pupil_mrad": 0.02105594101739698,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                22.65221300201301,
+                -41.74228139301208
+              ],
+              [
+                41.74228139301208,
+                22.65221300201301
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -9.043000005083404e-13
+              ],
+              [
+                9.043000005083404e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.0735994788494345,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.035619400689825734,
+                "paraxial_edge_mechanical_angle_mrad": 35.60434820706619,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.04511790754044593,
+                "paraxial_edge_mechanical_angle_mrad": 45.08733048890938,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.04511790754044593,
+                "paraxial_edge_mechanical_angle_mrad": 45.08733048890938,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 13.103445146806143,
+            "cc_over_sigma": 3.8366463020734343,
+            "focus_z_over_sigma": 3.422322737232133,
+            "pupil_slope_times_sigma": -0.28495520551860587
+          },
+          "elapsed_s": 1.4577226999972481,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 6.5429383394149635e-15,
+          "field_digest_before": "5a30ce7cc496d9f4ef89380a25238113279661ccfd96564a782161f173869034",
+          "field_digest_after": "5a30ce7cc496d9f4ef89380a25238113279661ccfd96564a782161f173869034",
+          "passed_numerical_checks": true
+        },
+        "refined10": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.06,
+            "focus_search_end_m": 0.1457669624529111,
+            "maximum_step_m": 9.375e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.4284372296000293,
+          "input_tail_sigma": 10.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.9287498479639178e-22,
+          "thin_lens_focal_estimate_m": 0.018441740613227772,
+          "coefficients": {
+            "cs_mm": 78.62067088083683,
+            "cc_mm": 23.019877812474423,
+            "image_z_m": 0.020533936423392796,
+            "linear_focus_residual_per_initial_height": [
+              -4.178738789457209e-15,
+              -4.944734400581796e-15
+            ],
+            "field_digest": "5a30ce7cc496d9f4ef89380a25238113279661ccfd96564a782161f173869034",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -47.492534253101,
+            "initial_radius_m_per_pupil_slope_rad": 0.02105594101739697,
+            "initial_radius_mm_per_pupil_mrad": 0.02105594101739697,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                22.652213002012996,
+                -41.74228139301211
+              ],
+              [
+                41.74228139301211,
+                22.652213002012996
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -1.3772470690885644e-20
+              ],
+              [
+                1.3772470690885644e-20,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.0735994788494352,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.035619400689825755,
+                "paraxial_edge_mechanical_angle_mrad": 35.6043482070662,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.04511790754044595,
+                "paraxial_edge_mechanical_angle_mrad": 45.0873304889094,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.04511790754044595,
+                "paraxial_edge_mechanical_angle_mrad": 45.0873304889094,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 13.103445146806138,
+            "cc_over_sigma": 3.8366463020790706,
+            "focus_z_over_sigma": 3.4223227372321325,
+            "pupil_slope_times_sigma": -0.284955205518606
+          },
+          "elapsed_s": 1.7677582000032999,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 6.4739675750509685e-15,
+          "field_digest_before": "5a30ce7cc496d9f4ef89380a25238113279661ccfd96564a782161f173869034",
+          "field_digest_after": "5a30ce7cc496d9f4ef89380a25238113279661ccfd96564a782161f173869034",
+          "passed_numerical_checks": true
+        }
+      },
+      "step_repeatability": {
+        "metrics": {
+          "relative_cs": 5.603316420931728e-15,
+          "relative_cc": 2.0766971767375836e-12,
+          "absolute_focus_over_sigma": 2.2551405187698492e-14,
+          "relative_pupil_conversion": 4.943184846149214e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "input_tail_repeatability": {
+        "metrics": {
+          "relative_cs": 3.6150428522140197e-16,
+          "relative_cc": 1.4690904002181937e-12,
+          "absolute_focus_over_sigma": 5.782411586589357e-16,
+          "relative_pupil_conversion": 4.943184846149217e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "name": "peak0.3T-sigma12mm",
+      "peak_t": 0.3,
+      "sigma_mm": 12.0,
+      "field": {
+        "schema": "high-order-round-lens-potential-v1",
+        "native": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ideal-gaussian-round",
+            "kind": "FrozenAnalyticField",
+            "field_fingerprint": "e6f69655d2e8557932d9d7e664859fe17d63c4a0f0a8f16607f9d8770d336c38",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(-y*B0/2,x*B0/2,0)",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {}
+          },
+          "field": {
+            "lens_key": "ideal-gaussian-round",
+            "terms_t_m": [
+              [
+                0.3,
+                0.0,
+                0.012
+              ]
+            ],
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "native_support_mm": [
+              -84.0,
+              84.0
+            ],
+            "radial_support_m": 0.004
+          },
+          "digest": "b085a74a4fa7c4a31c39b3298ea14d6dab10bc504356f27d9d332f6daeee9820"
+        },
+        "radial_order": 3,
+        "valid_radius_m": 0.004,
+        "axial_domain": "gaussian_all_z",
+        "digest": "061d419e3bc1df7c663af0b5e55ea93a36f58a5609a31959573faf85afcbc144"
+      },
+      "field_digest": "061d419e3bc1df7c663af0b5e55ea93a36f58a5609a31959573faf85afcbc144",
+      "field_dict_sha256": "12656048544f220cd2557d88d4f751fb4f61c3771e6937ad0c9dcfb8bff3b74a",
+      "valid_radius_m": 0.004,
+      "variants": {
+        "coarse8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.096,
+            "focus_search_end_m": 0.18088348122645556,
+            "maximum_step_m": 0.000375
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.8568744592000586,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.03125,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.009220870306613886,
+          "coefficients": {
+            "cs_mm": 12.987322632391754,
+            "cc_mm": 14.633538959295276,
+            "image_z_m": 0.01129625069515151,
+            "linear_focus_residual_per_initial_height": [
+              -1.0256552551712872e-16,
+              -4.38451358553138e-16
+            ],
+            "field_digest": "061d419e3bc1df7c663af0b5e55ea93a36f58a5609a31959573faf85afcbc144",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -63.77516333784529,
+            "initial_radius_m_per_pupil_slope_rad": 0.01568008528182918,
+            "initial_radius_mm_per_pupil_mrad": 0.01568008528182918,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                -12.977945075389501,
+                -62.44072709689582
+              ],
+              [
+                62.44072709689582,
+                -12.977945075389501
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -9.043000005083404e-13
+              ],
+              [
+                9.043000005083404e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.775722915850688,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.04783137250338397,
+                "paraxial_edge_mechanical_angle_mrad": 47.79494564807862,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.06058640517095303,
+                "paraxial_edge_mechanical_angle_mrad": 60.51243625581774,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.06058640517095303,
+                "paraxial_edge_mechanical_angle_mrad": 60.51243625581774,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 1.0822768860326462,
+            "cc_over_sigma": 1.219461579941273,
+            "focus_z_over_sigma": 0.9413542245959592,
+            "pupil_slope_times_sigma": -0.7653019600541435
+          },
+          "elapsed_s": 0.5785232000052929,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 4.50287997665602e-16,
+          "field_digest_before": "061d419e3bc1df7c663af0b5e55ea93a36f58a5609a31959573faf85afcbc144",
+          "field_digest_after": "061d419e3bc1df7c663af0b5e55ea93a36f58a5609a31959573faf85afcbc144",
+          "passed_numerical_checks": true
+        },
+        "refined8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.096,
+            "focus_search_end_m": 0.18088348122645556,
+            "maximum_step_m": 0.0001875
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.8568744592000586,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.009220870306613886,
+          "coefficients": {
+            "cs_mm": 12.987322632391637,
+            "cc_mm": 14.633538959279024,
+            "image_z_m": 0.011296250695151337,
+            "linear_focus_residual_per_initial_height": [
+              -1.8679719229752756e-15,
+              9.628582653409268e-15
+            ],
+            "field_digest": "061d419e3bc1df7c663af0b5e55ea93a36f58a5609a31959573faf85afcbc144",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -63.77516333784531,
+            "initial_radius_m_per_pupil_slope_rad": 0.015680085281829178,
+            "initial_radius_mm_per_pupil_mrad": 0.015680085281829178,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                -12.977945075388993,
+                -62.44072709689595
+              ],
+              [
+                62.44072709689595,
+                -12.977945075388993
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -9.043000005083404e-13
+              ],
+              [
+                9.043000005083404e-13,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.7757229158506798,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.047831372503383984,
+                "paraxial_edge_mechanical_angle_mrad": 47.79494564807863,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.06058640517095304,
+                "paraxial_edge_mechanical_angle_mrad": 60.51243625581775,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.06058640517095304,
+                "paraxial_edge_mechanical_angle_mrad": 60.51243625581775,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 1.0822768860326364,
+            "cc_over_sigma": 1.2194615799399187,
+            "focus_z_over_sigma": 0.9413542245959446,
+            "pupil_slope_times_sigma": -0.7653019600541437
+          },
+          "elapsed_s": 1.164205300010508,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 9.808104965718801e-15,
+          "field_digest_before": "061d419e3bc1df7c663af0b5e55ea93a36f58a5609a31959573faf85afcbc144",
+          "field_digest_after": "061d419e3bc1df7c663af0b5e55ea93a36f58a5609a31959573faf85afcbc144",
+          "passed_numerical_checks": true
+        },
+        "refined10": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.12,
+            "focus_search_end_m": 0.18088348122645556,
+            "maximum_step_m": 0.0001875
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.8568744592000586,
+          "input_tail_sigma": 10.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.9287498479639178e-22,
+          "thin_lens_focal_estimate_m": 0.009220870306613886,
+          "coefficients": {
+            "cs_mm": 12.987322632391942,
+            "cc_mm": 14.633538959283642,
+            "image_z_m": 0.01129625069515171,
+            "linear_focus_residual_per_initial_height": [
+              2.1952925588486494e-15,
+              -1.3039482688048665e-14
+            ],
+            "field_digest": "061d419e3bc1df7c663af0b5e55ea93a36f58a5609a31959573faf85afcbc144",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -63.775163337845285,
+            "initial_radius_m_per_pupil_slope_rad": 0.015680085281829185,
+            "initial_radius_mm_per_pupil_mrad": 0.015680085281829185,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                -12.977945075390124,
+                -62.440727096895685
+              ],
+              [
+                62.440727096895685,
+                -12.977945075390124
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -1.3772470690885644e-20
+              ],
+              [
+                1.3772470690885644e-20,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.775722915850698,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.04783137250338396,
+                "paraxial_edge_mechanical_angle_mrad": 47.79494564807861,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.06058640517095302,
+                "paraxial_edge_mechanical_angle_mrad": 60.512436255817725,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.06058640517095302,
+                "paraxial_edge_mechanical_angle_mrad": 60.512436255817725,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 1.082276886032662,
+            "cc_over_sigma": 1.2194615799403035,
+            "focus_z_over_sigma": 0.9413542245959757,
+            "pupil_slope_times_sigma": -0.7653019600541434
+          },
+          "elapsed_s": 1.4094952000014018,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 1.322298824739919e-14,
+          "field_digest_before": "061d419e3bc1df7c663af0b5e55ea93a36f58a5609a31959573faf85afcbc144",
+          "field_digest_after": "061d419e3bc1df7c663af0b5e55ea93a36f58a5609a31959573faf85afcbc144",
+          "passed_numerical_checks": true
+        }
+      },
+      "step_repeatability": {
+        "metrics": {
+          "relative_cs": 9.027230224342757e-15,
+          "relative_cc": 1.1105918239529942e-12,
+          "absolute_focus_over_sigma": 1.4456028966473394e-14,
+          "relative_pupil_conversion": 2.2126454605283128e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "input_tail_repeatability": {
+        "metrics": {
+          "relative_cs": 2.3525509069498756e-14,
+          "relative_cc": 3.156124977895807e-13,
+          "absolute_focus_over_sigma": 3.1080462277917796e-14,
+          "relative_pupil_conversion": 4.4252909210566237e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "name": "peak0.6T-sigma3mm",
+      "peak_t": 0.6,
+      "sigma_mm": 3.0,
+      "field": {
+        "schema": "high-order-round-lens-potential-v1",
+        "native": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ideal-gaussian-round",
+            "kind": "FrozenAnalyticField",
+            "field_fingerprint": "9f3f5e9c24527bc5f8afe57432096d83dc625b11b2c9bc917214d0f792c88d5c",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(-y*B0/2,x*B0/2,0)",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {}
+          },
+          "field": {
+            "lens_key": "ideal-gaussian-round",
+            "terms_t_m": [
+              [
+                0.6,
+                0.0,
+                0.003
+              ]
+            ],
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "native_support_mm": [
+              -21.0,
+              21.0
+            ],
+            "radial_support_m": 0.0015
+          },
+          "digest": "cffec863fbd33ab7142fd46686e3b000e8a781c5a9855fa603b8bd1d95da6351"
+        },
+        "radial_order": 3,
+        "valid_radius_m": 0.0015,
+        "axial_domain": "gaussian_all_z",
+        "digest": "7a2071b61b8f6613bd40b4827af2f083c9f746dd23f023efc915dd0b0f16652c"
+      },
+      "field_digest": "7a2071b61b8f6613bd40b4827af2f083c9f746dd23f023efc915dd0b0f16652c",
+      "field_dict_sha256": "2976885305470f397da0e2914cbb05e46e1c6976c0c9b5145614e37668742151",
+      "valid_radius_m": 0.0015,
+      "variants": {
+        "coarse8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.024,
+            "focus_search_end_m": 0.07288348122645555,
+            "maximum_step_m": 9.375e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.4284372296000293,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.03125,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.009220870306613886,
+          "coefficients": {
+            "cs_mm": 39.3103354404187,
+            "cc_mm": 11.509938906244301,
+            "image_z_m": 0.010266968211696464,
+            "linear_focus_residual_per_initial_height": [
+              -6.143089509302868e-15,
+              -1.117595599398058e-14
+            ],
+            "field_digest": "7a2071b61b8f6613bd40b4827af2f083c9f746dd23f023efc915dd0b0f16652c",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -94.98506850620191,
+            "initial_radius_m_per_pupil_slope_rad": 0.010527970508698496,
+            "initial_radius_mm_per_pupil_mrad": 0.010527970508698496,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                45.30442600402593,
+                -83.48456278602416
+              ],
+              [
+                83.48456278602416,
+                45.30442600402593
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -1.8086000010166809e-12
+              ],
+              [
+                1.8086000010166809e-12,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.0735994788494354,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.07123880137965144,
+                "paraxial_edge_mechanical_angle_mrad": 71.11865549203543,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.09023581508089182,
+                "paraxial_edge_mechanical_angle_mrad": 89.99208958735234,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.09023581508089182,
+                "paraxial_edge_mechanical_angle_mrad": 89.99208958735234,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 13.103445146806232,
+            "cc_over_sigma": 3.8366463020814336,
+            "focus_z_over_sigma": 3.4223227372321543,
+            "pupil_slope_times_sigma": -0.28495520551860576
+          },
+          "elapsed_s": 0.7403962000098545,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 1.2753020861689885e-14,
+          "field_digest_before": "7a2071b61b8f6613bd40b4827af2f083c9f746dd23f023efc915dd0b0f16652c",
+          "field_digest_after": "7a2071b61b8f6613bd40b4827af2f083c9f746dd23f023efc915dd0b0f16652c",
+          "passed_numerical_checks": true
+        },
+        "refined8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.024,
+            "focus_search_end_m": 0.07288348122645555,
+            "maximum_step_m": 4.6875e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.4284372296000293,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.009220870306613886,
+          "coefficients": {
+            "cs_mm": 39.31033544041843,
+            "cc_mm": 11.509938906220302,
+            "image_z_m": 0.0102669682116964,
+            "linear_focus_residual_per_initial_height": [
+              -3.807331782745144e-15,
+              -5.321115184760139e-15
+            ],
+            "field_digest": "7a2071b61b8f6613bd40b4827af2f083c9f746dd23f023efc915dd0b0f16652c",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -94.98506850620196,
+            "initial_radius_m_per_pupil_slope_rad": 0.01052797050869849,
+            "initial_radius_mm_per_pupil_mrad": 0.01052797050869849,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                45.30442600402602,
+                -83.48456278602416
+              ],
+              [
+                83.48456278602416,
+                45.30442600402602
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -1.8086000010166809e-12
+              ],
+              [
+                1.8086000010166809e-12,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.0735994788494345,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.07123880137965147,
+                "paraxial_edge_mechanical_angle_mrad": 71.11865549203546,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.09023581508089186,
+                "paraxial_edge_mechanical_angle_mrad": 89.99208958735238,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.09023581508089186,
+                "paraxial_edge_mechanical_angle_mrad": 89.99208958735238,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 13.103445146806143,
+            "cc_over_sigma": 3.8366463020734343,
+            "focus_z_over_sigma": 3.422322737232133,
+            "pupil_slope_times_sigma": -0.28495520551860587
+          },
+          "elapsed_s": 2.011243899993133,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 6.5429383394149635e-15,
+          "field_digest_before": "7a2071b61b8f6613bd40b4827af2f083c9f746dd23f023efc915dd0b0f16652c",
+          "field_digest_after": "7a2071b61b8f6613bd40b4827af2f083c9f746dd23f023efc915dd0b0f16652c",
+          "passed_numerical_checks": true
+        },
+        "refined10": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.03,
+            "focus_search_end_m": 0.07288348122645555,
+            "maximum_step_m": 4.6875e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.4284372296000293,
+          "input_tail_sigma": 10.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.9287498479639178e-22,
+          "thin_lens_focal_estimate_m": 0.009220870306613886,
+          "coefficients": {
+            "cs_mm": 39.31033544041841,
+            "cc_mm": 11.509938906237211,
+            "image_z_m": 0.010266968211696398,
+            "linear_focus_residual_per_initial_height": [
+              -4.178738789457209e-15,
+              -4.944734400581796e-15
+            ],
+            "field_digest": "7a2071b61b8f6613bd40b4827af2f083c9f746dd23f023efc915dd0b0f16652c",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -94.985068506202,
+            "initial_radius_m_per_pupil_slope_rad": 0.010527970508698485,
+            "initial_radius_mm_per_pupil_mrad": 0.010527970508698485,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                45.30442600402599,
+                -83.48456278602421
+              ],
+              [
+                83.48456278602421,
+                45.30442600402599
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -2.754494138177129e-20
+              ],
+              [
+                2.754494138177129e-20,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.0735994788494352,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.07123880137965151,
+                "paraxial_edge_mechanical_angle_mrad": 71.1186554920355,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.0902358150808919,
+                "paraxial_edge_mechanical_angle_mrad": 89.99208958735242,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.0902358150808919,
+                "paraxial_edge_mechanical_angle_mrad": 89.99208958735242,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 13.103445146806138,
+            "cc_over_sigma": 3.8366463020790706,
+            "focus_z_over_sigma": 3.4223227372321325,
+            "pupil_slope_times_sigma": -0.284955205518606
+          },
+          "elapsed_s": 1.7657911999849603,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 6.4739675750509685e-15,
+          "field_digest_before": "7a2071b61b8f6613bd40b4827af2f083c9f746dd23f023efc915dd0b0f16652c",
+          "field_digest_after": "7a2071b61b8f6613bd40b4827af2f083c9f746dd23f023efc915dd0b0f16652c",
+          "passed_numerical_checks": true
+        }
+      },
+      "step_repeatability": {
+        "metrics": {
+          "relative_cs": 6.8685814192066345e-15,
+          "relative_cc": 2.085031127952196e-12,
+          "absolute_focus_over_sigma": 2.1394922870380622e-14,
+          "relative_pupil_conversion": 4.943184846149214e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "input_tail_repeatability": {
+        "metrics": {
+          "relative_cs": 3.6150428522140197e-16,
+          "relative_cc": 1.4690904002181937e-12,
+          "absolute_focus_over_sigma": 5.782411586589357e-16,
+          "relative_pupil_conversion": 4.943184846149217e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "name": "peak0.6T-sigma6mm",
+      "peak_t": 0.6,
+      "sigma_mm": 6.0,
+      "field": {
+        "schema": "high-order-round-lens-potential-v1",
+        "native": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ideal-gaussian-round",
+            "kind": "FrozenAnalyticField",
+            "field_fingerprint": "785c285686ea393544c7c7cf136e7d02181c765159c511a29fc447d8cd9ddbe3",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(-y*B0/2,x*B0/2,0)",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {}
+          },
+          "field": {
+            "lens_key": "ideal-gaussian-round",
+            "terms_t_m": [
+              [
+                0.6,
+                0.0,
+                0.006
+              ]
+            ],
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "native_support_mm": [
+              -42.0,
+              42.0
+            ],
+            "radial_support_m": 0.003
+          },
+          "digest": "9c171a47b348d041e7f8cbbc9ec0e29daf43a2bcc53755fd980a0a1e32e74977"
+        },
+        "radial_order": 3,
+        "valid_radius_m": 0.003,
+        "axial_domain": "gaussian_all_z",
+        "digest": "9854359b7cdf1c15dc4415e2aeb6593a7a2789190307d1e05b5debe97bc544aa"
+      },
+      "field_digest": "9854359b7cdf1c15dc4415e2aeb6593a7a2789190307d1e05b5debe97bc544aa",
+      "field_dict_sha256": "3ee2c760d20a22be0f60179904d61cb7270d3ca03c79036bc31945f426fae7e4",
+      "valid_radius_m": 0.003,
+      "variants": {
+        "coarse8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.048,
+            "focus_search_end_m": 0.09044174061322778,
+            "maximum_step_m": 0.0001875
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.8568744592000586,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.03125,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.004610435153306943,
+          "coefficients": {
+            "cs_mm": 6.493661316195877,
+            "cc_mm": 7.316769479647638,
+            "image_z_m": 0.005648125347575755,
+            "linear_focus_residual_per_initial_height": [
+              -1.0256552551712872e-16,
+              -4.38451358553138e-16
+            ],
+            "field_digest": "9854359b7cdf1c15dc4415e2aeb6593a7a2789190307d1e05b5debe97bc544aa",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -127.55032667569058,
+            "initial_radius_m_per_pupil_slope_rad": 0.00784004264091459,
+            "initial_radius_mm_per_pupil_mrad": 0.00784004264091459,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                -25.955890150779002,
+                -124.88145419379164
+              ],
+              [
+                124.88145419379164,
+                -25.955890150779002
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -1.8086000010166809e-12
+              ],
+              [
+                1.8086000010166809e-12,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.775722915850688,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.09566274500676794,
+                "paraxial_edge_mechanical_angle_mrad": 95.37252214401107,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.12117281034190606,
+                "paraxial_edge_mechanical_angle_mrad": 120.58492673514736,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.12117281034190606,
+                "paraxial_edge_mechanical_angle_mrad": 120.58492673514736,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 1.0822768860326462,
+            "cc_over_sigma": 1.219461579941273,
+            "focus_z_over_sigma": 0.9413542245959592,
+            "pupil_slope_times_sigma": -0.7653019600541435
+          },
+          "elapsed_s": 0.5674922000034712,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 4.50287997665602e-16,
+          "field_digest_before": "9854359b7cdf1c15dc4415e2aeb6593a7a2789190307d1e05b5debe97bc544aa",
+          "field_digest_after": "9854359b7cdf1c15dc4415e2aeb6593a7a2789190307d1e05b5debe97bc544aa",
+          "passed_numerical_checks": true
+        },
+        "refined8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.048,
+            "focus_search_end_m": 0.09044174061322778,
+            "maximum_step_m": 9.375e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.8568744592000586,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.004610435153306943,
+          "coefficients": {
+            "cs_mm": 6.493661316195818,
+            "cc_mm": 7.316769479639512,
+            "image_z_m": 0.005648125347575668,
+            "linear_focus_residual_per_initial_height": [
+              -1.8679719229752756e-15,
+              9.628582653409268e-15
+            ],
+            "field_digest": "9854359b7cdf1c15dc4415e2aeb6593a7a2789190307d1e05b5debe97bc544aa",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -127.55032667569063,
+            "initial_radius_m_per_pupil_slope_rad": 0.007840042640914589,
+            "initial_radius_mm_per_pupil_mrad": 0.007840042640914589,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                -25.955890150777986,
+                -124.8814541937919
+              ],
+              [
+                124.8814541937919,
+                -25.955890150777986
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -1.8086000010166809e-12
+              ],
+              [
+                1.8086000010166809e-12,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.7757229158506798,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.09566274500676797,
+                "paraxial_edge_mechanical_angle_mrad": 95.3725221440111,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.12117281034190608,
+                "paraxial_edge_mechanical_angle_mrad": 120.58492673514738,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.12117281034190608,
+                "paraxial_edge_mechanical_angle_mrad": 120.58492673514738,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 1.0822768860326364,
+            "cc_over_sigma": 1.2194615799399187,
+            "focus_z_over_sigma": 0.9413542245959446,
+            "pupil_slope_times_sigma": -0.7653019600541437
+          },
+          "elapsed_s": 1.1399167999916244,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 9.808104965718801e-15,
+          "field_digest_before": "9854359b7cdf1c15dc4415e2aeb6593a7a2789190307d1e05b5debe97bc544aa",
+          "field_digest_after": "9854359b7cdf1c15dc4415e2aeb6593a7a2789190307d1e05b5debe97bc544aa",
+          "passed_numerical_checks": true
+        },
+        "refined10": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.06,
+            "focus_search_end_m": 0.09044174061322778,
+            "maximum_step_m": 9.375e-05
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 0.8568744592000586,
+          "input_tail_sigma": 10.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.9287498479639178e-22,
+          "thin_lens_focal_estimate_m": 0.004610435153306943,
+          "coefficients": {
+            "cs_mm": 6.493661316195832,
+            "cc_mm": 7.316769479641707,
+            "image_z_m": 0.005648125347575672,
+            "linear_focus_residual_per_initial_height": [
+              -2.5548139992448426e-15,
+              9.81463174620778e-15
+            ],
+            "field_digest": "9854359b7cdf1c15dc4415e2aeb6593a7a2789190307d1e05b5debe97bc544aa",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -127.55032667569058,
+            "initial_radius_m_per_pupil_slope_rad": 0.00784004264091459,
+            "initial_radius_mm_per_pupil_mrad": 0.00784004264091459,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                -25.955890150778256,
+                -124.8814541937918
+              ],
+              [
+                124.8814541937918,
+                -25.955890150778256
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -2.754494138177129e-20
+              ],
+              [
+                2.754494138177129e-20,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 1.775722915850682,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.09566274500676794,
+                "paraxial_edge_mechanical_angle_mrad": 95.37252214401107,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.12117281034190606,
+                "paraxial_edge_mechanical_angle_mrad": 120.58492673514736,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.12117281034190606,
+                "paraxial_edge_mechanical_angle_mrad": 120.58492673514736,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 1.0822768860326386,
+            "cc_over_sigma": 1.2194615799402844,
+            "focus_z_over_sigma": 0.9413542245959453,
+            "pupil_slope_times_sigma": -0.7653019600541435
+          },
+          "elapsed_s": 1.3884600000164937,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 1.0141699605313057e-14,
+          "field_digest_before": "9854359b7cdf1c15dc4415e2aeb6593a7a2789190307d1e05b5debe97bc544aa",
+          "field_digest_after": "9854359b7cdf1c15dc4415e2aeb6593a7a2789190307d1e05b5debe97bc544aa",
+          "passed_numerical_checks": true
+        }
+      },
+      "step_repeatability": {
+        "metrics": {
+          "relative_cs": 9.027230224342757e-15,
+          "relative_cc": 1.1105918239529942e-12,
+          "absolute_focus_over_sigma": 1.4456028966473394e-14,
+          "relative_pupil_conversion": 2.2126454605283128e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "input_tail_repeatability": {
+        "metrics": {
+          "relative_cs": 2.051643232805168e-15,
+          "relative_cc": 2.999532623223331e-13,
+          "absolute_focus_over_sigma": 5.782411586589357e-16,
+          "relative_pupil_conversion": 2.2126454605283123e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "passed_numerical_reference_checks": true
+    },
+    {
+      "name": "peak0.6T-sigma12mm",
+      "peak_t": 0.6,
+      "sigma_mm": 12.0,
+      "field": {
+        "schema": "high-order-round-lens-potential-v1",
+        "native": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ideal-gaussian-round",
+            "kind": "FrozenAnalyticField",
+            "field_fingerprint": "eb08ff1bb9d9833a057d2cc45a0745d189ff6934fdab9a5b1a700a02a6fb9c2b",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(-y*B0/2,x*B0/2,0)",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {}
+          },
+          "field": {
+            "lens_key": "ideal-gaussian-round",
+            "terms_t_m": [
+              [
+                0.6,
+                0.0,
+                0.012
+              ]
+            ],
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "native_support_mm": [
+              -84.0,
+              84.0
+            ],
+            "radial_support_m": 0.004
+          },
+          "digest": "6a8b9ae5e800d3856366c75c8eb3e6f23c045efab289688360111b3d4b7a2c75"
+        },
+        "radial_order": 3,
+        "valid_radius_m": 0.004,
+        "axial_domain": "gaussian_all_z",
+        "digest": "f9fad81ce4c0edbef40152ee86c1163f2ce69e09d9252c9c4c97be41cc819860"
+      },
+      "field_digest": "f9fad81ce4c0edbef40152ee86c1163f2ce69e09d9252c9c4c97be41cc819860",
+      "field_dict_sha256": "a763637afeed3b48f59a76cd28c81aefbdb2390f59e7898543e0506bb0922eb9",
+      "valid_radius_m": 0.004,
+      "variants": {
+        "coarse8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.096,
+            "focus_search_end_m": 0.1532208703066139,
+            "maximum_step_m": 0.000375
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 1.7137489184001171,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.03125,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.0023052175766534715,
+          "coefficients": {
+            "cs_mm": 4.553414256842334,
+            "cc_mm": 7.836473726134788,
+            "image_z_m": -0.0005837201535903924,
+            "linear_focus_residual_per_initial_height": [
+              5.499073418846478e-16,
+              1.717376241217039e-15
+            ],
+            "field_digest": "f9fad81ce4c0edbef40152ee86c1163f2ce69e09d9252c9c4c97be41cc819860",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -109.1240893613668,
+            "initial_radius_m_per_pupil_slope_rad": 0.009163879450012895,
+            "initial_radius_mm_per_pupil_mrad": 0.009163879450012895,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                -51.71634373191696,
+                -96.09103324426155
+              ],
+              [
+                96.09103324426155,
+                -51.71634373191696
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -1.8086000010166809e-12
+              ],
+              [
+                1.8086000010166809e-12,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 2.0645361287915387,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.0818430670210251,
+                "paraxial_edge_mechanical_angle_mrad": 81.66106180277005,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.10366788489329846,
+                "paraxial_edge_mechanical_angle_mrad": 103.29888739450088,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.10366788489329846,
+                "paraxial_edge_mechanical_angle_mrad": 103.29888739450088,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 0.3794511880701945,
+            "cc_over_sigma": 0.653039477177899,
+            "focus_z_over_sigma": -0.0486433461325327,
+            "pupil_slope_times_sigma": -1.3094890723364017
+          },
+          "elapsed_s": 0.5287110999925062,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 1.803269042199584e-15,
+          "field_digest_before": "f9fad81ce4c0edbef40152ee86c1163f2ce69e09d9252c9c4c97be41cc819860",
+          "field_digest_after": "f9fad81ce4c0edbef40152ee86c1163f2ce69e09d9252c9c4c97be41cc819860",
+          "passed_numerical_checks": true
+        },
+        "refined8": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.096,
+            "focus_search_end_m": 0.1532208703066139,
+            "maximum_step_m": 0.0001875
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 1.7137489184001171,
+          "input_tail_sigma": 8.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.2664165549094176e-14,
+          "thin_lens_focal_estimate_m": 0.0023052175766534715,
+          "coefficients": {
+            "cs_mm": 4.55341425684242,
+            "cc_mm": 7.836473726133921,
+            "image_z_m": -0.0005837201535904075,
+            "linear_focus_residual_per_initial_height": [
+              -6.140921104957897e-16,
+              2.6020852139652106e-16
+            ],
+            "field_digest": "f9fad81ce4c0edbef40152ee86c1163f2ce69e09d9252c9c4c97be41cc819860",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -109.12408936136674,
+            "initial_radius_m_per_pupil_slope_rad": 0.0091638794500129,
+            "initial_radius_mm_per_pupil_mrad": 0.0091638794500129,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                -51.71634373191689,
+                -96.09103324426152
+              ],
+              [
+                96.09103324426152,
+                -51.71634373191689
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -1.8086000010166809e-12
+              ],
+              [
+                1.8086000010166809e-12,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 2.0645361287915382,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.08184306702102506,
+                "paraxial_edge_mechanical_angle_mrad": 81.66106180277,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.10366788489329841,
+                "paraxial_edge_mechanical_angle_mrad": 103.29888739450082,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.10366788489329841,
+                "paraxial_edge_mechanical_angle_mrad": 103.29888739450082,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 0.3794511880702017,
+            "cc_over_sigma": 0.6530394771778267,
+            "focus_z_over_sigma": -0.04864334613253395,
+            "pupil_slope_times_sigma": -1.309489072336401
+          },
+          "elapsed_s": 1.023892600002,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 6.669464707010128e-16,
+          "field_digest_before": "f9fad81ce4c0edbef40152ee86c1163f2ce69e09d9252c9c4c97be41cc819860",
+          "field_digest_after": "f9fad81ce4c0edbef40152ee86c1163f2ce69e09d9252c9c4c97be41cc819860",
+          "passed_numerical_checks": true
+        },
+        "refined10": {
+          "request": {
+            "energy_ev": 300000.0,
+            "z_start_m": -0.12,
+            "focus_search_end_m": 0.1532208703066139,
+            "maximum_step_m": 0.0001875
+          },
+          "energy_relative_step": 0.0005,
+          "dimensionless_kappa": 1.7137489184001171,
+          "input_tail_sigma": 10.0,
+          "maximum_step_over_sigma": 0.015625,
+          "b0_at_input_over_peak": 1.9287498479639178e-22,
+          "thin_lens_focal_estimate_m": 0.0023052175766534715,
+          "coefficients": {
+            "cs_mm": 4.553414256842428,
+            "cc_mm": 7.836473726133728,
+            "image_z_m": -0.0005837201535904044,
+            "linear_focus_residual_per_initial_height": [
+              -3.365363543395006e-16,
+              -9.367506770274758e-17
+            ],
+            "field_digest": "f9fad81ce4c0edbef40152ee86c1163f2ce69e09d9252c9c4c97be41cc819860",
+            "energy_relative_step": 0.0005,
+            "method": "independent first/third-order Lorentz perturbation ODE; no finite-pupil fit"
+          },
+          "pupil": {
+            "radial_slope_per_m": -109.12408936136667,
+            "initial_radius_m_per_pupil_slope_rad": 0.009163879450012905,
+            "initial_radius_mm_per_pupil_mrad": 0.009163879450012905,
+            "outward_pupil_slopes_per_initial_position_m1": [
+              [
+                -51.716343731917114,
+                -96.09103324426134
+              ],
+              [
+                96.09103324426134,
+                -51.716343731917114
+              ]
+            ],
+            "initial_mechanical_slopes_per_position_m1": [
+              [
+                0.0,
+                -2.754494138177129e-20
+              ],
+              [
+                2.754494138177129e-20,
+                0.0
+              ]
+            ],
+            "larmor_angle_rad": 2.064536128791541,
+            "tube_reference": [
+              {
+                "tube_diameter_mm": 1.5,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00075,
+                "paraxial_edge_pupil_slope_rad": 0.081843067021025,
+                "paraxial_edge_mechanical_angle_mrad": 81.66106180276995,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 2.0,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.10366788489329834,
+                "paraxial_edge_mechanical_angle_mrad": 103.29888739450075,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              },
+              {
+                "tube_diameter_mm": 5.76,
+                "declared_input_disk_radius_m": 0.00095,
+                "paraxial_admitted_input_radius_m": 0.00095,
+                "paraxial_edge_pupil_slope_rad": 0.10366788489329834,
+                "paraxial_edge_mechanical_angle_mrad": 103.29888739450075,
+                "scope": "First-order geometric admission only; no source emitted and no current measured"
+              }
+            ]
+          },
+          "dimensionless_result": {
+            "cs_over_sigma": 0.37945118807020234,
+            "cc_over_sigma": 0.6530394771778106,
+            "focus_z_over_sigma": -0.0486433461325337,
+            "pupil_slope_times_sigma": -1.3094890723364
+          },
+          "elapsed_s": 1.2805950999900233,
+          "checks": {
+            "finite_coefficients": true,
+            "positive_cs": true,
+            "positive_cc": true,
+            "first_focus_inside_search": true,
+            "paraxial_and_third_order_image_plane_exact": true,
+            "bounded_linear_focus_residual": true
+          },
+          "linear_focus_residual_per_initial_height_norm": 3.4933041107415233e-16,
+          "field_digest_before": "f9fad81ce4c0edbef40152ee86c1163f2ce69e09d9252c9c4c97be41cc819860",
+          "field_digest_after": "f9fad81ce4c0edbef40152ee86c1163f2ce69e09d9252c9c4c97be41cc819860",
+          "passed_numerical_checks": true
+        }
+      },
+      "step_repeatability": {
+        "metrics": {
+          "relative_cs": 1.892059493191279e-14,
+          "relative_cc": 1.1061890435954842e-13,
+          "absolute_focus_over_sigma": 1.255867516462376e-15,
+          "relative_pupil_conversion": 5.679003588292614e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "input_tail_repeatability": {
+        "metrics": {
+          "relative_cs": 1.7555191173939672e-15,
+          "relative_cc": 2.459457197338381e-14,
+          "absolute_focus_over_sigma": 2.529805069132844e-16,
+          "relative_pupil_conversion": 5.679003588292611e-16
+        },
+        "gates": {
+          "relative_cs": true,
+          "relative_cc": true,
+          "absolute_focus_over_sigma": true,
+          "relative_pupil_conversion": true
+        },
+        "passed": true,
+        "scope": "Numerical repeatability of this zero-current ODE reference only; not finite-source or material-field acceptance"
+      },
+      "passed_numerical_reference_checks": true
+    }
+  ],
+  "dimensionless_scaling_checks": [
+    {
+      "equal_peak_times_sigma_t_mm": 0.9,
+      "reference": "peak0.15T-sigma6mm",
+      "comparisons": [
+        {
+          "case": "peak0.3T-sigma3mm",
+          "relative_errors": {
+            "cs_over_sigma": 0.0,
+            "cc_over_sigma": 0.0,
+            "focus_z_over_sigma": 0.0,
+            "pupil_slope_times_sigma": 0.0
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "equal_peak_times_sigma_t_mm": 1.8,
+      "reference": "peak0.15T-sigma12mm",
+      "comparisons": [
+        {
+          "case": "peak0.3T-sigma6mm",
+          "relative_errors": {
+            "cs_over_sigma": 9.62505159401992e-15,
+            "cc_over_sigma": 7.639455280050545e-15,
+            "focus_z_over_sigma": 7.136938394509139e-15,
+            "pupil_slope_times_sigma": 9.740329384443058e-16
+          },
+          "passed": true
+        },
+        {
+          "case": "peak0.6T-sigma3mm",
+          "relative_errors": {
+            "cs_over_sigma": 9.62505159401992e-15,
+            "cc_over_sigma": 7.639455280050545e-15,
+            "focus_z_over_sigma": 7.136938394509139e-15,
+            "pupil_slope_times_sigma": 9.740329384443058e-16
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "equal_peak_times_sigma_t_mm": 3.6,
+      "reference": "peak0.3T-sigma12mm",
+      "comparisons": [
+        {
+          "case": "peak0.6T-sigma6mm",
+          "relative_errors": {
+            "cs_over_sigma": 2.1542253944453802e-14,
+            "cc_over_sigma": 1.565923546725227e-14,
+            "focus_z_over_sigma": 3.231526462611398e-14,
+            "pupil_slope_times_sigma": 1.4506993089977332e-16
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "passed_numerical_reference_checks": true,
+  "elapsed_s": 54.813217199989595,
+  "qualification": "Prescribed ideal field third-order reference only; no finite-source, clipped-beam, field-order, material/OEM or coherent qualification"
+}

@@ -54,6 +54,65 @@ def _write_axisymmetric_map(path, state, lens, *, field_t=0.37):
     return binding
 
 
+def test_imported_map_with_no_gaussian_reference_ignores_length_link(tmp_path, monkeypatch):
+    """An older mapped document must not need an unused native calibration."""
+    state = default_state()
+    state.simulation_mode = "unified"
+    lens = _objective(state)
+    assembly = state._resolved_assembly
+    state._resolved_assembly = replace(assembly, parts=tuple(
+        replace(part, data={key: value for key, value in part.data.items()
+                            if key != "gaussian_reference_coil_length_mm"})
+        if part.key == lens.key else part for part in assembly.parts))
+    path = tmp_path/"old_mapped_document.npz"
+    binding = _write_axisymmetric_map(path, state, lens)
+    field_map = load_magnetic_field_map(path, geometry_binding=binding, provenance_kind="fem", reference_excitation_percent=100.)
+    bind_imported_lens_field_map(state, lens.key, field_map, native_provider=lens)
+    first = resolve_runtime_lens_field_provider(state, lens.key, lens)
+    state.gaussian_geometry_coupling = "axial_length"
+
+    def forbidden(*args):
+        pytest.fail("A mapped provider must not read Gaussian length calibration")
+    monkeypatch.setattr("temsim.round_lens_models.gaussian_geometry_scale", forbidden)
+    linked = resolve_runtime_lens_field_provider(state, lens.key, lens)
+    assert linked is first
+    np.testing.assert_array_equal(linked.magnetic_field_t([lens.z_mm]), first.magnetic_field_t([lens.z_mm]))
+    state._runtime_lens_field_provider_cache = {}
+    fresh = resolve_runtime_lens_field_provider(state, lens.key, lens)
+    assert fresh.field_map.content_fingerprint == first.field_map.content_fingerprint
+
+
+def test_explicit_fem_recipe_with_no_gaussian_reference_ignores_length_link(monkeypatch):
+    from test_magnetic_circuits import _shared_rows, _state
+    from temsim.physics.lens_field_provider import MappedLensFieldProvider
+    state = _state(_shared_rows())
+    state.simulation_mode = "unified"
+    state.gaussian_geometry_coupling = "axial_length"
+
+    def forbidden(*args):
+        pytest.fail("An explicit FEM solve must not read Gaussian length calibration")
+    monkeypatch.setattr("temsim.round_lens_models.gaussian_geometry_scale", forbidden)
+    provider = resolve_runtime_lens_field_provider(state, "a", state.lenses[0])
+    assert type(provider) is MappedLensFieldProvider
+    assert np.isfinite(provider.field_at_global_positions_t([[0., 0., -.005]])).all()
+    assert resolve_runtime_lens_field_provider(state, "a", state.lenses[0]) is provider
+
+
+def test_cached_analytic_fallback_still_requires_its_gaussian_length_reference():
+    state = default_state()
+    state.simulation_mode = "unified"
+    lens = _objective(state)
+    state._resolved_assembly = replace(state._resolved_assembly, parts=tuple(
+        replace(part, data={key: value for key, value in part.data.items()
+                            if key != "gaussian_reference_coil_length_mm"})
+        if part.key == lens.key else part for part in state._resolved_assembly.parts))
+    first = resolve_runtime_lens_field_provider(state, lens.key, lens)
+    assert first.gaussian_width_scale == 1.
+    state.gaussian_geometry_coupling = "axial_length"
+    with pytest.raises(ValueError, match="gaussian_reference_coil_length_mm"):
+        resolve_runtime_lens_field_provider(state, lens.key, lens)
+
+
 def test_fields_reuses_provider_and_rejects_map_after_pole_geometry_change(
     tmp_path,
 ):

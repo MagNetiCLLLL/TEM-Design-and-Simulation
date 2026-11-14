@@ -18,7 +18,7 @@ from temsim.gui.diagnostic_tabs import _selectable_key_at_scene_position
 from temsim.gui.part_model_editor import PartModelEditorPage
 from temsim.manifest_editor import ManifestEditor
 from temsim.paths import INSTRUMENT_CONFIG_ROOT
-from temsim.physics.simulation import run
+from temsim.physics.simulation import Branch, Simulation
 from temsim.simulation_pipeline import CalculationResult
 
 
@@ -66,13 +66,33 @@ def window(qtbot, root, tmp_path, monkeypatch):
 
 
 @pytest.fixture
-def navigation_window(window, qtbot):
-    """A small real preview supplies both geometry and linked axial markers."""
+def navigation_window(window, qtbot, monkeypatch):
+    """Synthetic display lines and real layout; no emitted particles or solve.
+
+    Navigation only needs retained Z coordinates to link cursors across tabs.
+    These three graphical lines are not a finite-source physical calculation.
+    """
+    def forbidden_calculation(*args, **kwargs):
+        pytest.fail("The navigation fixture must not launch physical propagation")
+
+    monkeypatch.setattr("temsim.physics.simulation.run", forbidden_calculation)
     state = window.state
-    state.electron_gun.emitter.ray_count = 9
-    state.step_mm = 12.0
     resolved = apply_physical_layout_to_state(state)
-    result = CalculationResult(simulation=run(state, resolved_layout=resolved),
+    sample_z = float(state.sample.z_mm)
+    last_z = max(float(part.end_z_mm) for part in window.assembly.parts)
+
+    def display_lines(name, z):
+        x = np.tile(np.array([-1e-6, 0., 1e-6]), (len(z), 1))
+        return Branch(name, (.5, .7, .9), np.asarray(z), x, np.zeros_like(x),
+                      np.zeros_like(x), np.zeros_like(x), np.ones(3, bool),
+                      np.full(3, np.nan), [None]*3, 1., np.zeros(3),
+                      ray_weight=np.full(3, 1/3), interaction_kind="optical_reference")
+
+    simulation = Simulation(display_lines("incident", [float(state.electron_gun.exit_plane_z_mm), sample_z]),
+                            {"000": display_lines("000", [sample_z, last_z])},
+                            {"gui_fixture": "Synthetic navigation lines; no physical source or transport",
+                             "effective_source_current_pa": 0.})
+    result = CalculationResult(simulation=simulation,
                                energy_filter=None, state_snapshot=state,
                                layout=resolved, assembly=window.assembly)
     window.resize(1700, 1050)

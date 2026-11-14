@@ -258,6 +258,8 @@ def _include_wall_impact(impact, row, field):
         return replace(impact, active=True, status="active", label="Vacuum active; magnetic geometry inactive",
                        effects=effects, detail=detail, affected_results=results)
     label = "Vacuum and magnetic geometry active" if impact.status == "active" else impact.label
+    if impact.status == "active" and impact.label in {"Copper-coil field input", "Gaussian coil-length rule active"}:
+        label = impact.label + "; vacuum clearance active"
     return replace(impact, label=label, effects=effects, detail=detail, affected_results=results)
 
 
@@ -534,20 +536,84 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
                    f"{semantics.label}: saved/display semantics are known, but this field's scientific consumer has not been verified.")
 
 
-def describe_parameter_impact(part, path, *, by_key=None, simulation_mode="ideal", descriptors=None):
+def _round_source_impact(row, index, path, kind, field, mode, settings, descriptors):
+    """Explain the explicitly selected source, without querying a field."""
+    if mode != "unified" or not isinstance(settings, Mapping) or kind not in {"parts", "derived"}:
+        return None
+    model = settings.get("round_lens_field_model", "gaussian")
+    linked = settings.get("gaussian_geometry_coupling", "fixed_calibration") == "axial_length"
+    if model != "copper_coil" and not linked:
+        return None
+    profile = row.get("mechanical_profile")
+    owner_key = (row.get("key") if profile in {_LENS, "integrated_magnetic_lens_channel"}
+                 else row.get("field_source_key", optical_owner(row, index)))
+    owner = index.get(str(owner_key), {})
+    if not owner or owner.get("mechanical_profile") not in {_LENS, "integrated_magnetic_lens_channel"}:
+        return None
+    is_coil = profile == _COIL
+    split = profile == _LENS and field in _SPLIT_FIELDS | {"mechanical_coil_axial_inset_mm"}
+    semantics = describe_parameter(row, path, by_key=index)
+    split_intervals = _SPLIT_FIELDS.issubset(owner)
+    explicit_intervals = "material_intervals_mm" in row
+    axial = (is_coil and field in _AXIAL_EXTENTS | {"material_intervals_mm"}
+             and semantics.category != "envelope" and not split_intervals
+             and not (explicit_intervals and field in _AXIAL_EXTENTS))
+    radial = is_coil and (field in {"mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm"}
+                         or kind == "derived" and field == "radial_thickness_mm")
+    if model == "copper_coil":
+        if axial or radial or split or (is_coil and field == "coil_ampere_turn_fraction") or (
+                row is owner and field in {"air_core_reference_ampere_turns", "mechanical_coil_radial_thickness_mm"}):
+            return _include_wall_impact(_impact("active", "Copper-coil field input",
+                "The selected air-core field integrates the declared circular current source. Winding inner/outer diameters, "
+                "physical axial intervals and total ampere-turns set the field, including its fringe tails. "
+                "Coil shares divide the owner's current; pole magnetism and Gaussian calibration are inactive. "
+                "A saved edit invalidates the captured field; it does not refocus the beam or restore intercepted current.",
+                effects=("display", "geometry", "magnetic_field"),
+                results=("magnetic_field", "ray_transport", "optical_transfer")), row, field)
+        gaussian = (field in {"maximum_peak_field_t", "field_half_width_mm", "field_profile_terms", "normalise_field_profile_peak",
+                              "gaussian_reference_coil_length_mm"}
+                    or field.startswith(("upper_peak_field", "lower_peak_field", "upper_field_half_width", "lower_field_half_width",
+                                         "upper_field_profile", "lower_field_profile")))
+        if gaussian:
+            return _impact("inactive", "Saved Gaussian calibration inactive",
+                "Copper-coil execution uses current-bearing geometry and ampere-turns. These Gaussian parameters remain saved "
+                "for the other source selection and do not define this coil field.", effects=("display",))
+        if field in _MATERIAL_FIELDS or (profile in MATERIAL_PROFILES and field in _FEM_FIELDS):
+            return _include_wall_impact(_impact("inactive", "Pole/material magnetism excluded",
+                "This copper-coil model fixes relative permeability to one and does not solve pole pieces, yokes or "
+                "assigned magnetic material response. Mechanical clearance remains a separate input."), row, field)
+    elif linked and (axial or split or row is owner and field == "gaussian_reference_coil_length_mm"):
+        recipe = (descriptors or {}).get(str(owner_key), {})
+        if recipe and (recipe.get("solver") in {_LINEAR, _NONLINEAR}
+                       or any(name in recipe for name in ("source_path", "geometry_fingerprint", "map_type"))):
+            return None
+        return _include_wall_impact(_impact("active", "Gaussian coil-length rule active",
+            "Gaussian a, including internal component widths and axial offsets, scales with actual/reference total "
+            "current-bearing coil length. Optical field centres, term amplitudes, excitation and polarity remain fixed. "
+            "This is an engineering length rule; it does not solve a coil field or preserve focus or integral B squared.",
+            effects=("display", "geometry", "magnetic_field"),
+            results=("magnetic_field", "ray_transport", "optical_transfer")), row, field)
+    return None
+
+
+def describe_parameter_impact(part, path, *, by_key=None, simulation_mode="ideal", descriptors=None,
+                              round_lens_settings=None):
     """Inspect an existing input route; incomplete or invalid drafts stay unknown.
 
     This is an explanation for editors, not a substitute for save validation.
     No map file is read, field solved, runtime state changed or cache updated.
     """
     try:
-        row, _, _, _, field = _context(part, path, by_key)
+        row, index, resolved_path, kind, field = _context(part, path, by_key)
         if is_custom_mechanical_part(row):
             return _impact("inactive", "Independent mechanical geometry only",
                            "This custom mechanical component is excluded from optical controls, magnetic circuits/FEM and axial vacuum cutoffs. "
                            "Its geometry and saved material definition affect the mechanical preview only; no new field or scattering model is created.",
                            effects=("display", "geometry"),
                            results=("3d_preview", "physical_layout", "material_definition") if field in _MATERIAL_FIELDS else ("3d_preview", "physical_layout"))
+        selected = _round_source_impact(row, index, resolved_path, kind, field, simulation_mode, round_lens_settings, descriptors)
+        if selected is not None:
+            return selected
         return _describe_parameter_impact(part, path, by_key=by_key,
                     simulation_mode=simulation_mode, descriptors=descriptors)
     except (KeyError, TypeError, ValueError, AttributeError, OverflowError) as exc:
@@ -573,12 +639,14 @@ def _ignored_cad_paths(part, prefix="model_3d"):
     return paths
 
 
-def component_impact_summary(part, *, by_key=None, simulation_mode="ideal", descriptors=None):
+def component_impact_summary(part, *, by_key=None, simulation_mode="ideal", descriptors=None,
+                             round_lens_settings=None):
     """Compact component report, including every CAD field ignored by physics."""
     row = _row(part)
     impacts = tuple((("parts", row.get("key", ""), field), describe_parameter_impact(
                         row, ("parts", row.get("key", ""), field), by_key=by_key,
-                        simulation_mode=simulation_mode, descriptors=descriptors))
+                        simulation_mode=simulation_mode, descriptors=descriptors,
+                        round_lens_settings=round_lens_settings))
                     for field in row if field not in {"key", "name", "parent_key", "order", "branch"})
     ignored = _ignored_cad_paths(row)
     index = {str(key): _row(value) for key, value in (by_key or {}).items()}

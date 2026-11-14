@@ -129,7 +129,7 @@ def unified_runtime_preflight(state):
     for item in (*state.stigmators, *state.corrector_elements, *state.deflectors):
         if time_dependent_drive(item) and type(item) not in (AcDeflectorComponent, DescanDeflectorComponent):
             issues.append(f"{item.key}: no retained native time-dependent potential law")
-    for key in lenses:
+    for key in lenses if getattr(state, "round_lens_field_model", "gaussian") != "copper_coil" else ():
         recipe = getattr(state, "lens_field_map_descriptors", {}).get(key, {})
         if recipe and recipe.get("solver") not in {"axisymmetric_linear_fem", "axisymmetric_nonlinear_fem"}:
             issues.append(f"{key}: B-only map has no retained magnetic potential")

@@ -1,0 +1,353 @@
+{
+  "schema": "ideal-lens-real-vacuum-context-v1",
+  "scope": "Assembly metadata only; no field solution, source emission or transport",
+  "assembly_selection": "FEG / physical C1+C2 / No Energy Filter",
+  "authoritative_column_path": "configs/instruments/column/C2.toml",
+  "authoritative_column_sha256": "5ff87f939f47433263e2116c30c52ae4b2b2bcdb43439f03ebe9a4967ff91cce",
+  "parts": [
+    {
+      "key": "condenser_lens_1",
+      "source_file": "column/C2.toml",
+      "global_interval_mm": [
+        450.0,
+        550.0
+      ],
+      "global_center_mm": 500.0,
+      "dimensions": {
+        "vacuum_inner_diameter_mm": 20,
+        "bore_diameter_mm": 20.0
+      }
+    },
+    {
+      "key": "condenser_lens_2",
+      "source_file": "column/C2.toml",
+      "global_interval_mm": [
+        550.0,
+        750.0
+      ],
+      "global_center_mm": 650.0,
+      "dimensions": {
+        "bore_diameter_mm": 20,
+        "vacuum_inner_diameter_mm": 20
+      }
+    },
+    {
+      "key": "mini_condenser",
+      "source_file": "column/C2.toml",
+      "global_interval_mm": [
+        938.5,
+        958.5
+      ],
+      "global_center_mm": 948.5,
+      "dimensions": {
+        "vacuum_inner_diameter_mm": 20,
+        "bore_diameter_mm": 20.0
+      }
+    },
+    {
+      "key": "objective_lens",
+      "source_file": "column/C2.toml",
+      "global_interval_mm": [
+        815.0,
+        1235.4
+      ],
+      "global_center_mm": 1025.2,
+      "dimensions": {
+        "vacuum_inner_diameter_mm": 5.76
+      }
+    },
+    {
+      "key": "objective_upper_pole",
+      "source_file": "column/C2.toml",
+      "global_interval_mm": [
+        960.5,
+        1022.5
+      ],
+      "global_center_mm": 991.5,
+      "dimensions": {
+        "vacuum_inner_diameter_mm": 5.76,
+        "mechanical_bore_diameter_mm": 5.76
+      }
+    },
+    {
+      "key": "objective_lower_pole",
+      "source_file": "column/C2.toml",
+      "global_interval_mm": [
+        1027.9,
+        1089.9
+      ],
+      "global_center_mm": 1058.9,
+      "dimensions": {
+        "vacuum_inner_diameter_mm": 5.76,
+        "mechanical_bore_diameter_mm": 5.76
+      }
+    }
+  ],
+  "liners": [
+    {
+      "key": "@vacuum_liner:@vacuum_drift:gun:feg",
+      "name": "gun:feg vacuum drift vacuum liner",
+      "start_z_mm": 439.0,
+      "end_z_mm": 444.0,
+      "inner_diameter_mm": 5.0,
+      "outer_diameter_mm": 5.5,
+      "wall_thickness_mm": 0.25
+    },
+    {
+      "key": "@vacuum_liner:feg_c1_aperture",
+      "name": "C1 Aperture vacuum liner",
+      "start_z_mm": 444.0,
+      "end_z_mm": 446.0,
+      "inner_diameter_mm": 6.0,
+      "outer_diameter_mm": 6.5,
+      "wall_thickness_mm": 0.25
+    },
+    {
+      "key": "@vacuum_liner:@vacuum_drift:gun:feg",
+      "name": "gun:feg vacuum drift vacuum liner",
+      "start_z_mm": 446.0,
+      "end_z_mm": 450.0,
+      "inner_diameter_mm": 5.0,
+      "outer_diameter_mm": 5.5,
+      "wall_thickness_mm": 0.25
+    },
+    {
+      "key": "@vacuum_liner:c1_c2_to_upper_objective",
+      "name": "C1/C2 to upper objective continuous vacuum tube",
+      "start_z_mm": 450.0,
+      "end_z_mm": 960.5,
+      "inner_diameter_mm": 5.76,
+      "outer_diameter_mm": 19.2,
+      "wall_thickness_mm": 6.72
+    },
+    {
+      "key": "@vacuum_liner:objective_upper_pole",
+      "name": "Upper Objective vacuum liner",
+      "start_z_mm": 960.5,
+      "end_z_mm": 1022.5,
+      "inner_diameter_mm": 5.76,
+      "outer_diameter_mm": 6.26,
+      "wall_thickness_mm": 0.25
+    },
+    {
+      "key": "@vacuum_liner:sample_stage",
+      "name": "Sample Stage / Goniometer vacuum liner",
+      "start_z_mm": 1022.5,
+      "end_z_mm": 1025.1999500000002,
+      "inner_diameter_mm": 5.0,
+      "outer_diameter_mm": 5.5,
+      "wall_thickness_mm": 0.25
+    },
+    {
+      "key": "@vacuum_liner:sample",
+      "name": "Sample vacuum liner",
+      "start_z_mm": 1025.1999500000002,
+      "end_z_mm": 1025.20005,
+      "inner_diameter_mm": 5.0,
+      "outer_diameter_mm": 5.5,
+      "wall_thickness_mm": 0.25
+    },
+    {
+      "key": "@vacuum_liner:sample_stage",
+      "name": "Sample Stage / Goniometer vacuum liner",
+      "start_z_mm": 1025.20005,
+      "end_z_mm": 1025.7,
+      "inner_diameter_mm": 5.0,
+      "outer_diameter_mm": 5.5,
+      "wall_thickness_mm": 0.25
+    },
+    {
+      "key": "@vacuum_liner:objective_aperture",
+      "name": "Objective Aperture vacuum liner",
+      "start_z_mm": 1025.7,
+      "end_z_mm": 1027.7,
+      "inner_diameter_mm": 5.0,
+      "outer_diameter_mm": 5.5,
+      "wall_thickness_mm": 0.25
+    },
+    {
+      "key": "@vacuum_liner:sample_stage",
+      "name": "Sample Stage / Goniometer vacuum liner",
+      "start_z_mm": 1027.7,
+      "end_z_mm": 1027.9,
+      "inner_diameter_mm": 5.0,
+      "outer_diameter_mm": 5.5,
+      "wall_thickness_mm": 0.25
+    },
+    {
+      "key": "@vacuum_liner:objective_lower_pole",
+      "name": "Lower Objective vacuum liner",
+      "start_z_mm": 1027.9,
+      "end_z_mm": 1089.9,
+      "inner_diameter_mm": 5.76,
+      "outer_diameter_mm": 6.26,
+      "wall_thickness_mm": 0.25
+    },
+    {
+      "key": "@vacuum_liner:objective_lens_excitation_coil",
+      "name": "Objective Lens Excitation Coil vacuum liner",
+      "start_z_mm": 1089.9,
+      "end_z_mm": 1106.2,
+      "inner_diameter_mm": 5.76,
+      "outer_diameter_mm": 6.26,
+      "wall_thickness_mm": 0.25
+    }
+  ],
+  "effective_bore_segments": [
+    {
+      "key": "@vacuum_drift:gun:feg",
+      "name": "gun:feg vacuum drift",
+      "start_z_mm": 439.0,
+      "end_z_mm": 444.0,
+      "inner_diameter_mm": 5.0
+    },
+    {
+      "key": "feg_c1_aperture",
+      "name": "C1 Aperture",
+      "start_z_mm": 444.0,
+      "end_z_mm": 446.0,
+      "inner_diameter_mm": 6.0
+    },
+    {
+      "key": "@vacuum_drift:gun:feg",
+      "name": "gun:feg vacuum drift",
+      "start_z_mm": 446.0,
+      "end_z_mm": 450.0,
+      "inner_diameter_mm": 5.0
+    },
+    {
+      "key": "c1_c2_pole_piece_cartridge",
+      "name": "Integrated C1/C2 Pole-Piece Cartridge",
+      "start_z_mm": 450.0,
+      "end_z_mm": 490.0,
+      "inner_diameter_mm": 5.76
+    },
+    {
+      "key": "condenser_lens_1_lower_pole",
+      "name": "C1 Lower Pole Piece",
+      "start_z_mm": 490.0,
+      "end_z_mm": 540.0,
+      "inner_diameter_mm": 5.76
+    },
+    {
+      "key": "c1_c2_pole_piece_cartridge",
+      "name": "Integrated C1/C2 Pole-Piece Cartridge",
+      "start_z_mm": 540.0,
+      "end_z_mm": 560.0,
+      "inner_diameter_mm": 5.76
+    },
+    {
+      "key": "condenser_lens_2_upper_pole",
+      "name": "C2 Upper Pole Piece",
+      "start_z_mm": 560.0,
+      "end_z_mm": 620.0,
+      "inner_diameter_mm": 5.76
+    },
+    {
+      "key": "c1_c2_pole_piece_cartridge",
+      "name": "Integrated C1/C2 Pole-Piece Cartridge",
+      "start_z_mm": 620.0,
+      "end_z_mm": 750.0,
+      "inner_diameter_mm": 5.76
+    },
+    {
+      "key": "@vacuum_drift:column:c2",
+      "name": "column:c2 vacuum drift",
+      "start_z_mm": 750.0,
+      "end_z_mm": 755.0,
+      "inner_diameter_mm": 5.76
+    },
+    {
+      "key": "condenser_aperture_2",
+      "name": "C2 Aperture",
+      "start_z_mm": 755.0,
+      "end_z_mm": 775.0,
+      "inner_diameter_mm": 5.0
+    },
+    {
+      "key": "beam_deflector",
+      "name": "BSh/BTlt Beam Shift/Tilt Deflector",
+      "start_z_mm": 775.0,
+      "end_z_mm": 815.0,
+      "inner_diameter_mm": 5.0
+    },
+    {
+      "key": "objective_lens",
+      "name": "Objective Lens Assembly",
+      "start_z_mm": 815.0,
+      "end_z_mm": 944.2,
+      "inner_diameter_mm": 5.76
+    },
+    {
+      "key": "objective_lens_excitation_coil",
+      "name": "Objective Lens Excitation Coil",
+      "start_z_mm": 944.2,
+      "end_z_mm": 960.5,
+      "inner_diameter_mm": 5.76
+    },
+    {
+      "key": "objective_upper_pole",
+      "name": "Upper Objective",
+      "start_z_mm": 960.5,
+      "end_z_mm": 1022.5,
+      "inner_diameter_mm": 5.76
+    },
+    {
+      "key": "sample_stage",
+      "name": "Sample Stage / Goniometer",
+      "start_z_mm": 1022.5,
+      "end_z_mm": 1025.1999500000002,
+      "inner_diameter_mm": 5.0
+    },
+    {
+      "key": "sample",
+      "name": "Sample",
+      "start_z_mm": 1025.1999500000002,
+      "end_z_mm": 1025.20005,
+      "inner_diameter_mm": 5.0
+    },
+    {
+      "key": "sample_stage",
+      "name": "Sample Stage / Goniometer",
+      "start_z_mm": 1025.20005,
+      "end_z_mm": 1025.7,
+      "inner_diameter_mm": 5.0
+    },
+    {
+      "key": "objective_aperture",
+      "name": "Objective Aperture",
+      "start_z_mm": 1025.7,
+      "end_z_mm": 1027.7,
+      "inner_diameter_mm": 5.0
+    },
+    {
+      "key": "sample_stage",
+      "name": "Sample Stage / Goniometer",
+      "start_z_mm": 1027.7,
+      "end_z_mm": 1027.9,
+      "inner_diameter_mm": 5.0
+    },
+    {
+      "key": "objective_lower_pole",
+      "name": "Lower Objective",
+      "start_z_mm": 1027.9,
+      "end_z_mm": 1089.9,
+      "inner_diameter_mm": 5.76
+    },
+    {
+      "key": "objective_lens_excitation_coil",
+      "name": "Objective Lens Excitation Coil",
+      "start_z_mm": 1089.9,
+      "end_z_mm": 1106.2,
+      "inner_diameter_mm": 5.76
+    }
+  ],
+  "interpretation": {
+    "continuous_tube": "Global Z 450 to 960.5 mm, ID 5.76 mm and radius 2.88 mm; this caps the larger 20 mm main lens bores for C1 lens, C2 lens and Mini Condenser lens.",
+    "narrower_hardware": "The C2 aperture carrier and beam deflector at Z 755 to 815 mm, and the specimen/goniometer gap at 1022.5 to 1027.9 mm, have 5 mm mechanical passages. A separately inserted 70 um C2 optical stop is not the lens bore or a uniform tube.",
+    "ideal_study": "The ideal tube IDs 1.5, 2 and 5.76 mm are deliberately declared passive cylinders. Only 5.76 mm matches the reconstructed continuous-tube ID; they do not reproduce the full actual column or an OEM lens bore. The prescribed Gaussian does not respond to tube diameter.",
+    "fixed_source": "Radius 0.95 mm means entrance filling 126.67%, 95% and 32.99% of those tube radii respectively; physical clipping must remain in current and finite-source statistics.",
+    "matched_filling": "Source radii 0.7125, 0.95 and 2.736 mm are each 95% of tube radii 0.75, 1 and 2.88 mm. They are different prepared source boundaries, not a fixed-source tube experiment.",
+    "authority": "Engineering reconstruction from the repository, not OEM measurements or a magnetic material boundary solution."
+  }
+}

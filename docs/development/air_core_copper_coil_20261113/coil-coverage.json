@@ -1,0 +1,2308 @@
+{
+  "complete": true,
+  "distinct_round_owner_keys": [
+    "adapter_lens",
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "diffraction_lens",
+    "image_adapter_lens",
+    "image_tl11_lens",
+    "image_tl12_lens",
+    "image_tl21_lens",
+    "image_tl22_lens",
+    "image_tl31_lens",
+    "image_tl32_lens",
+    "intermediate_lens",
+    "mini_condenser",
+    "objective_lens",
+    "probe_tl12_lens",
+    "probe_tl21_lens",
+    "probe_tl22_lens",
+    "projector_lens_1",
+    "projector_lens_2"
+  ],
+  "nonround_scope": "Multipoles, stigmators, scan/alignment deflectors, magnetic prisms and electrostatic devices retain their native non-round field models; no circular solenoid is fabricated for them",
+  "records": [
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 90.0,
+          "current_intervals_local_z_mm": [
+            [
+              5.0,
+              95.0
+            ]
+          ],
+          "display_envelope_end_mm": 95.0,
+          "display_envelope_start_mm": 5.0,
+          "field_source_key": "condenser_lens_1",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_1_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_1"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 90.0,
+      "key": "condenser_lens_1",
+      "path": "configs/instruments/column/C2.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 290.0,
+          "current_intervals_local_z_mm": [
+            [
+              372.5,
+              517.5
+            ],
+            [
+              632.9,
+              777.9
+            ]
+          ],
+          "display_envelope_end_mm": 656.2,
+          "display_envelope_start_mm": 494.20000000000005,
+          "field_source_key": "objective_lens",
+          "inner_diameter_mm": 60.0,
+          "key": "objective_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "objective_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 290.0,
+      "key": "objective_lens",
+      "path": "configs/instruments/column/C2.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 18.0,
+          "current_intervals_local_z_mm": [
+            [
+              489.5,
+              507.5
+            ]
+          ],
+          "display_envelope_end_mm": 507.5,
+          "display_envelope_start_mm": 489.5,
+          "field_source_key": "mini_condenser",
+          "inner_diameter_mm": 34.0,
+          "key": "mini_condenser_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 51.0,
+          "parent_key": "mini_condenser"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 18.0,
+      "key": "mini_condenser",
+      "path": "configs/instruments/column/C2.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 162.0,
+          "current_intervals_local_z_mm": [
+            [
+              119.0,
+              281.0
+            ]
+          ],
+          "display_envelope_end_mm": 281.0,
+          "display_envelope_start_mm": 119.0,
+          "field_source_key": "condenser_lens_2",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_2_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_2"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 162.0,
+      "key": "condenser_lens_2",
+      "path": "configs/instruments/column/C2.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 90.0,
+          "current_intervals_local_z_mm": [
+            [
+              5.0,
+              95.0
+            ]
+          ],
+          "display_envelope_end_mm": 95.0,
+          "display_envelope_start_mm": 5.0,
+          "field_source_key": "condenser_lens_1",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_1_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_1"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 90.0,
+      "key": "condenser_lens_1",
+      "path": "configs/instruments/column/C3.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 290.0000000000001,
+          "current_intervals_local_z_mm": [
+            [
+              622.5,
+              767.5
+            ],
+            [
+              882.9,
+              1027.9
+            ]
+          ],
+          "display_envelope_end_mm": 906.2,
+          "display_envelope_start_mm": 744.2,
+          "field_source_key": "objective_lens",
+          "inner_diameter_mm": 60.0,
+          "key": "objective_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "objective_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 290.0000000000001,
+      "key": "objective_lens",
+      "path": "configs/instruments/column/C3.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 162.0,
+          "current_intervals_local_z_mm": [
+            [
+              119.0,
+              281.0
+            ]
+          ],
+          "display_envelope_end_mm": 281.0,
+          "display_envelope_start_mm": 119.0,
+          "field_source_key": "condenser_lens_2",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_2_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_2"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 162.0,
+      "key": "condenser_lens_2",
+      "path": "configs/instruments/column/C3.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 18.0,
+          "current_intervals_local_z_mm": [
+            [
+              739.5,
+              757.5
+            ]
+          ],
+          "display_envelope_end_mm": 757.5,
+          "display_envelope_start_mm": 739.5,
+          "field_source_key": "mini_condenser",
+          "inner_diameter_mm": 34.0,
+          "key": "mini_condenser_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 51.0,
+          "parent_key": "mini_condenser"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 18.0,
+      "key": "mini_condenser",
+      "path": "configs/instruments/column/C3.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 153.0,
+          "current_intervals_local_z_mm": [
+            [
+              388.5,
+              541.5
+            ]
+          ],
+          "display_envelope_end_mm": 541.5,
+          "display_envelope_start_mm": 388.5,
+          "field_source_key": "condenser_lens_3",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_3_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_3"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 153.0,
+      "key": "condenser_lens_3",
+      "path": "configs/instruments/column/C3.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 90.0,
+          "current_intervals_local_z_mm": [
+            [
+              5.0,
+              95.0
+            ]
+          ],
+          "display_envelope_end_mm": 95.0,
+          "display_envelope_start_mm": 5.0,
+          "field_source_key": "condenser_lens_1",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_1_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_1"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 90.0,
+      "key": "condenser_lens_1",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 162.0,
+          "current_intervals_local_z_mm": [
+            [
+              119.0,
+              281.0
+            ]
+          ],
+          "display_envelope_end_mm": 281.0,
+          "display_envelope_start_mm": 119.0,
+          "field_source_key": "condenser_lens_2",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_2_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_2"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 162.0,
+      "key": "condenser_lens_2",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 153.0,
+          "current_intervals_local_z_mm": [
+            [
+              388.5,
+              541.5
+            ]
+          ],
+          "display_envelope_end_mm": 541.5,
+          "display_envelope_start_mm": 388.5,
+          "field_source_key": "condenser_lens_3",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_3_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_3"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 153.0,
+      "key": "condenser_lens_3",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 290.0000000000001,
+          "current_intervals_local_z_mm": [
+            [
+              622.5,
+              767.5
+            ],
+            [
+              882.9,
+              1027.9
+            ]
+          ],
+          "display_envelope_end_mm": 906.2,
+          "display_envelope_start_mm": 744.2,
+          "field_source_key": "objective_lens",
+          "inner_diameter_mm": 60.0,
+          "key": "objective_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "objective_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 290.0000000000001,
+      "key": "objective_lens",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 18.0,
+          "current_intervals_local_z_mm": [
+            [
+              739.5,
+              757.5
+            ]
+          ],
+          "display_envelope_end_mm": 757.5,
+          "display_envelope_start_mm": 739.5,
+          "field_source_key": "mini_condenser",
+          "inner_diameter_mm": 34.0,
+          "key": "mini_condenser_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 51.0,
+          "parent_key": "mini_condenser"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 18.0,
+      "key": "mini_condenser",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 40.5,
+          "current_intervals_local_z_mm": [
+            [
+              1042.65,
+              1083.15
+            ]
+          ],
+          "display_envelope_end_mm": 1083.15,
+          "display_envelope_start_mm": 1042.65,
+          "field_source_key": "image_tl11_lens",
+          "inner_diameter_mm": 115.18,
+          "key": "image_tl11_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 145.39845150000002,
+          "parent_key": "image_tl11_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 40.5,
+      "key": "image_tl11_lens",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 41.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1116.2,
+              1157.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1157.6000000000001,
+          "display_envelope_start_mm": 1116.2,
+          "field_source_key": "image_tl12_lens",
+          "inner_diameter_mm": 85.7,
+          "key": "image_tl12_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 101.06541920000001,
+          "parent_key": "image_tl12_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 41.40000000000009,
+      "key": "image_tl12_lens",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1240.2,
+              1272.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1272.6000000000001,
+          "display_envelope_start_mm": 1240.2,
+          "field_source_key": "image_tl21_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl21_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.9595812,
+          "parent_key": "image_tl21_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.40000000000009,
+      "key": "image_tl21_lens",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1290.2,
+              1322.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1322.6000000000001,
+          "display_envelope_start_mm": 1290.2,
+          "field_source_key": "image_tl22_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl22_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.7567878,
+          "parent_key": "image_tl22_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.40000000000009,
+      "key": "image_tl22_lens",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.399999999999864,
+          "current_intervals_local_z_mm": [
+            [
+              1384.2,
+              1416.6
+            ]
+          ],
+          "display_envelope_end_mm": 1416.6,
+          "display_envelope_start_mm": 1384.2,
+          "field_source_key": "image_tl31_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl31_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.9595812,
+          "parent_key": "image_tl31_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.399999999999864,
+      "key": "image_tl31_lens",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.399999999999864,
+          "current_intervals_local_z_mm": [
+            [
+              1434.2,
+              1466.6
+            ]
+          ],
+          "display_envelope_end_mm": 1466.6,
+          "display_envelope_start_mm": 1434.2,
+          "field_source_key": "image_tl32_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl32_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.7567878,
+          "parent_key": "image_tl32_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.399999999999864,
+      "key": "image_tl32_lens",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.399999999999864,
+          "current_intervals_local_z_mm": [
+            [
+              1514.2,
+              1546.6
+            ]
+          ],
+          "display_envelope_end_mm": 1546.6,
+          "display_envelope_start_mm": 1514.2,
+          "field_source_key": "image_adapter_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_adapter_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 89.5151499,
+          "parent_key": "image_adapter_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.399999999999864,
+      "key": "image_adapter_lens",
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 90.0,
+          "current_intervals_local_z_mm": [
+            [
+              5.0,
+              95.0
+            ]
+          ],
+          "display_envelope_end_mm": 95.0,
+          "display_envelope_start_mm": 5.0,
+          "field_source_key": "condenser_lens_1",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_1_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_1"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 90.0,
+      "key": "condenser_lens_1",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 290.0000000000001,
+          "current_intervals_local_z_mm": [
+            [
+              622.5,
+              767.5
+            ],
+            [
+              882.9,
+              1027.9
+            ]
+          ],
+          "display_envelope_end_mm": 906.2,
+          "display_envelope_start_mm": 744.2,
+          "field_source_key": "objective_lens",
+          "inner_diameter_mm": 60.0,
+          "key": "objective_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "objective_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 290.0000000000001,
+      "key": "objective_lens",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 162.0,
+          "current_intervals_local_z_mm": [
+            [
+              119.0,
+              281.0
+            ]
+          ],
+          "display_envelope_end_mm": 281.0,
+          "display_envelope_start_mm": 119.0,
+          "field_source_key": "condenser_lens_2",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_2_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_2"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 162.0,
+      "key": "condenser_lens_2",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 18.0,
+          "current_intervals_local_z_mm": [
+            [
+              739.5,
+              757.5
+            ]
+          ],
+          "display_envelope_end_mm": 757.5,
+          "display_envelope_start_mm": 739.5,
+          "field_source_key": "mini_condenser",
+          "inner_diameter_mm": 34.0,
+          "key": "mini_condenser_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 51.0,
+          "parent_key": "mini_condenser"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 18.0,
+      "key": "mini_condenser",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 153.0,
+          "current_intervals_local_z_mm": [
+            [
+              388.5,
+              541.5
+            ]
+          ],
+          "display_envelope_end_mm": 541.5,
+          "display_envelope_start_mm": 388.5,
+          "field_source_key": "condenser_lens_3",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_3_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_3"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 153.0,
+      "key": "condenser_lens_3",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 40.5,
+          "current_intervals_local_z_mm": [
+            [
+              1042.65,
+              1083.15
+            ]
+          ],
+          "display_envelope_end_mm": 1083.15,
+          "display_envelope_start_mm": 1042.65,
+          "field_source_key": "image_tl11_lens",
+          "inner_diameter_mm": 115.18,
+          "key": "image_tl11_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 145.39845150000002,
+          "parent_key": "image_tl11_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 40.5,
+      "key": "image_tl11_lens",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 41.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1116.2,
+              1157.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1157.6000000000001,
+          "display_envelope_start_mm": 1116.2,
+          "field_source_key": "image_tl12_lens",
+          "inner_diameter_mm": 85.7,
+          "key": "image_tl12_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 101.06541920000001,
+          "parent_key": "image_tl12_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 41.40000000000009,
+      "key": "image_tl12_lens",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1240.2,
+              1272.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1272.6000000000001,
+          "display_envelope_start_mm": 1240.2,
+          "field_source_key": "image_tl21_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl21_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.9595812,
+          "parent_key": "image_tl21_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.40000000000009,
+      "key": "image_tl21_lens",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1290.2,
+              1322.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1322.6000000000001,
+          "display_envelope_start_mm": 1290.2,
+          "field_source_key": "image_tl22_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl22_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.7567878,
+          "parent_key": "image_tl22_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.40000000000009,
+      "key": "image_tl22_lens",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1370.2,
+              1402.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1402.6000000000001,
+          "display_envelope_start_mm": 1370.2,
+          "field_source_key": "image_adapter_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_adapter_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 89.5151499,
+          "parent_key": "image_adapter_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.40000000000009,
+      "key": "image_adapter_lens",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 90.0,
+          "current_intervals_local_z_mm": [
+            [
+              5.0,
+              95.0
+            ]
+          ],
+          "display_envelope_end_mm": 95.0,
+          "display_envelope_start_mm": 5.0,
+          "field_source_key": "condenser_lens_1",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_1_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_1"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 90.0,
+      "key": "condenser_lens_1",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.75999999999999,
+          "current_intervals_local_z_mm": [
+            [
+              621.82,
+              654.58
+            ]
+          ],
+          "display_envelope_end_mm": 654.58,
+          "display_envelope_start_mm": 621.82,
+          "field_source_key": "adapter_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "adapter_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 91.05,
+          "parent_key": "adapter_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.75999999999999,
+      "key": "adapter_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 162.0,
+          "current_intervals_local_z_mm": [
+            [
+              119.0,
+              281.0
+            ]
+          ],
+          "display_envelope_end_mm": 281.0,
+          "display_envelope_start_mm": 119.0,
+          "field_source_key": "condenser_lens_2",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_2_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_2"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 162.0,
+      "key": "condenser_lens_2",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 22.950000000000045,
+          "current_intervals_local_z_mm": [
+            [
+              704.875,
+              727.825
+            ]
+          ],
+          "display_envelope_end_mm": 727.825,
+          "display_envelope_start_mm": 704.875,
+          "field_source_key": "probe_tl22_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "probe_tl22_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 93.5109425,
+          "parent_key": "probe_tl22_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 22.950000000000045,
+      "key": "probe_tl22_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 22.950000000000045,
+          "current_intervals_local_z_mm": [
+            [
+              788.475,
+              811.4250000000001
+            ]
+          ],
+          "display_envelope_end_mm": 811.4250000000001,
+          "display_envelope_start_mm": 788.475,
+          "field_source_key": "probe_tl21_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "probe_tl21_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 93.3164759,
+          "parent_key": "probe_tl21_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 22.950000000000045,
+      "key": "probe_tl21_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 22.8599999999999,
+          "current_intervals_local_z_mm": [
+            [
+              904.87,
+              927.7299999999999
+            ]
+          ],
+          "display_envelope_end_mm": 927.7299999999999,
+          "display_envelope_start_mm": 904.87,
+          "field_source_key": "probe_tl12_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "probe_tl12_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 93.63,
+          "parent_key": "probe_tl12_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 22.8599999999999,
+      "key": "probe_tl12_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 290.0,
+          "current_intervals_local_z_mm": [
+            [
+              946.5,
+              1091.5
+            ],
+            [
+              1206.9,
+              1351.9
+            ]
+          ],
+          "display_envelope_end_mm": 1230.2,
+          "display_envelope_start_mm": 1068.2,
+          "field_source_key": "objective_lens",
+          "inner_diameter_mm": 60.0,
+          "key": "objective_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "objective_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 290.0,
+      "key": "objective_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 18.0,
+          "current_intervals_local_z_mm": [
+            [
+              1063.5,
+              1081.5
+            ]
+          ],
+          "display_envelope_end_mm": 1081.5,
+          "display_envelope_start_mm": 1063.5,
+          "field_source_key": "mini_condenser",
+          "inner_diameter_mm": 34.0,
+          "key": "mini_condenser_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 51.0,
+          "parent_key": "mini_condenser"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 18.0,
+      "key": "mini_condenser",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 153.0,
+          "current_intervals_local_z_mm": [
+            [
+              388.5,
+              541.5
+            ]
+          ],
+          "display_envelope_end_mm": 541.5,
+          "display_envelope_start_mm": 388.5,
+          "field_source_key": "condenser_lens_3",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_3_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_3"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 153.0,
+      "key": "condenser_lens_3",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 90.0,
+          "current_intervals_local_z_mm": [
+            [
+              5.0,
+              95.0
+            ]
+          ],
+          "display_envelope_end_mm": 95.0,
+          "display_envelope_start_mm": 5.0,
+          "field_source_key": "condenser_lens_1",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_1_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_1"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 90.0,
+      "key": "condenser_lens_1",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 162.0,
+          "current_intervals_local_z_mm": [
+            [
+              119.0,
+              281.0
+            ]
+          ],
+          "display_envelope_end_mm": 281.0,
+          "display_envelope_start_mm": 119.0,
+          "field_source_key": "condenser_lens_2",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_2_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_2"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 162.0,
+      "key": "condenser_lens_2",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 153.0,
+          "current_intervals_local_z_mm": [
+            [
+              388.5,
+              541.5
+            ]
+          ],
+          "display_envelope_end_mm": 541.5,
+          "display_envelope_start_mm": 388.5,
+          "field_source_key": "condenser_lens_3",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_3_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_3"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 153.0,
+      "key": "condenser_lens_3",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.75999999999999,
+          "current_intervals_local_z_mm": [
+            [
+              621.82,
+              654.58
+            ]
+          ],
+          "display_envelope_end_mm": 654.58,
+          "display_envelope_start_mm": 621.82,
+          "field_source_key": "adapter_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "adapter_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 91.05,
+          "parent_key": "adapter_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.75999999999999,
+      "key": "adapter_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 22.950000000000045,
+          "current_intervals_local_z_mm": [
+            [
+              704.875,
+              727.825
+            ]
+          ],
+          "display_envelope_end_mm": 727.825,
+          "display_envelope_start_mm": 704.875,
+          "field_source_key": "probe_tl22_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "probe_tl22_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 93.5109425,
+          "parent_key": "probe_tl22_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 22.950000000000045,
+      "key": "probe_tl22_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 22.950000000000045,
+          "current_intervals_local_z_mm": [
+            [
+              788.475,
+              811.4250000000001
+            ]
+          ],
+          "display_envelope_end_mm": 811.4250000000001,
+          "display_envelope_start_mm": 788.475,
+          "field_source_key": "probe_tl21_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "probe_tl21_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 93.3164759,
+          "parent_key": "probe_tl21_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 22.950000000000045,
+      "key": "probe_tl21_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 22.8599999999999,
+          "current_intervals_local_z_mm": [
+            [
+              904.87,
+              927.7299999999999
+            ]
+          ],
+          "display_envelope_end_mm": 927.7299999999999,
+          "display_envelope_start_mm": 904.87,
+          "field_source_key": "probe_tl12_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "probe_tl12_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 93.63,
+          "parent_key": "probe_tl12_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 22.8599999999999,
+      "key": "probe_tl12_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 290.0,
+          "current_intervals_local_z_mm": [
+            [
+              946.5,
+              1091.5
+            ],
+            [
+              1206.9,
+              1351.9
+            ]
+          ],
+          "display_envelope_end_mm": 1230.2,
+          "display_envelope_start_mm": 1068.2,
+          "field_source_key": "objective_lens",
+          "inner_diameter_mm": 60.0,
+          "key": "objective_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "objective_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 290.0,
+      "key": "objective_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 18.0,
+          "current_intervals_local_z_mm": [
+            [
+              1063.5,
+              1081.5
+            ]
+          ],
+          "display_envelope_end_mm": 1081.5,
+          "display_envelope_start_mm": 1063.5,
+          "field_source_key": "mini_condenser",
+          "inner_diameter_mm": 34.0,
+          "key": "mini_condenser_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 51.0,
+          "parent_key": "mini_condenser"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 18.0,
+      "key": "mini_condenser",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 40.5,
+          "current_intervals_local_z_mm": [
+            [
+              1366.65,
+              1407.15
+            ]
+          ],
+          "display_envelope_end_mm": 1407.15,
+          "display_envelope_start_mm": 1366.65,
+          "field_source_key": "image_tl11_lens",
+          "inner_diameter_mm": 115.18,
+          "key": "image_tl11_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 145.39845150000002,
+          "parent_key": "image_tl11_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 40.5,
+      "key": "image_tl11_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 41.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1440.2,
+              1481.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1481.6000000000001,
+          "display_envelope_start_mm": 1440.2,
+          "field_source_key": "image_tl12_lens",
+          "inner_diameter_mm": 85.7,
+          "key": "image_tl12_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 101.06541920000001,
+          "parent_key": "image_tl12_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 41.40000000000009,
+      "key": "image_tl12_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1564.2,
+              1596.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1596.6000000000001,
+          "display_envelope_start_mm": 1564.2,
+          "field_source_key": "image_tl21_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl21_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.9595812,
+          "parent_key": "image_tl21_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.40000000000009,
+      "key": "image_tl21_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1614.2,
+              1646.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1646.6000000000001,
+          "display_envelope_start_mm": 1614.2,
+          "field_source_key": "image_tl22_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl22_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.7567878,
+          "parent_key": "image_tl22_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.40000000000009,
+      "key": "image_tl22_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.399999999999864,
+          "current_intervals_local_z_mm": [
+            [
+              1708.2,
+              1740.6
+            ]
+          ],
+          "display_envelope_end_mm": 1740.6,
+          "display_envelope_start_mm": 1708.2,
+          "field_source_key": "image_tl31_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl31_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.9595812,
+          "parent_key": "image_tl31_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.399999999999864,
+      "key": "image_tl31_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.399999999999864,
+          "current_intervals_local_z_mm": [
+            [
+              1758.2,
+              1790.6
+            ]
+          ],
+          "display_envelope_end_mm": 1790.6,
+          "display_envelope_start_mm": 1758.2,
+          "field_source_key": "image_tl32_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl32_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.7567878,
+          "parent_key": "image_tl32_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.399999999999864,
+      "key": "image_tl32_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.399999999999864,
+          "current_intervals_local_z_mm": [
+            [
+              1838.2,
+              1870.6
+            ]
+          ],
+          "display_envelope_end_mm": 1870.6,
+          "display_envelope_start_mm": 1838.2,
+          "field_source_key": "image_adapter_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_adapter_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 89.5151499,
+          "parent_key": "image_adapter_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.399999999999864,
+      "key": "image_adapter_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 90.0,
+          "current_intervals_local_z_mm": [
+            [
+              5.0,
+              95.0
+            ]
+          ],
+          "display_envelope_end_mm": 95.0,
+          "display_envelope_start_mm": 5.0,
+          "field_source_key": "condenser_lens_1",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_1_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_1"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 90.0,
+      "key": "condenser_lens_1",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.75999999999999,
+          "current_intervals_local_z_mm": [
+            [
+              621.82,
+              654.58
+            ]
+          ],
+          "display_envelope_end_mm": 654.58,
+          "display_envelope_start_mm": 621.82,
+          "field_source_key": "adapter_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "adapter_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 91.05,
+          "parent_key": "adapter_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.75999999999999,
+      "key": "adapter_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 162.0,
+          "current_intervals_local_z_mm": [
+            [
+              119.0,
+              281.0
+            ]
+          ],
+          "display_envelope_end_mm": 281.0,
+          "display_envelope_start_mm": 119.0,
+          "field_source_key": "condenser_lens_2",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_2_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_2"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 162.0,
+      "key": "condenser_lens_2",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 22.950000000000045,
+          "current_intervals_local_z_mm": [
+            [
+              704.875,
+              727.825
+            ]
+          ],
+          "display_envelope_end_mm": 727.825,
+          "display_envelope_start_mm": 704.875,
+          "field_source_key": "probe_tl22_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "probe_tl22_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 93.5109425,
+          "parent_key": "probe_tl22_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 22.950000000000045,
+      "key": "probe_tl22_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 22.950000000000045,
+          "current_intervals_local_z_mm": [
+            [
+              788.475,
+              811.4250000000001
+            ]
+          ],
+          "display_envelope_end_mm": 811.4250000000001,
+          "display_envelope_start_mm": 788.475,
+          "field_source_key": "probe_tl21_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "probe_tl21_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 93.3164759,
+          "parent_key": "probe_tl21_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 22.950000000000045,
+      "key": "probe_tl21_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 22.8599999999999,
+          "current_intervals_local_z_mm": [
+            [
+              904.87,
+              927.7299999999999
+            ]
+          ],
+          "display_envelope_end_mm": 927.7299999999999,
+          "display_envelope_start_mm": 904.87,
+          "field_source_key": "probe_tl12_lens",
+          "inner_diameter_mm": 78.33,
+          "key": "probe_tl12_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 93.63,
+          "parent_key": "probe_tl12_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 22.8599999999999,
+      "key": "probe_tl12_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 290.0,
+          "current_intervals_local_z_mm": [
+            [
+              946.5,
+              1091.5
+            ],
+            [
+              1206.9,
+              1351.9
+            ]
+          ],
+          "display_envelope_end_mm": 1230.2,
+          "display_envelope_start_mm": 1068.2,
+          "field_source_key": "objective_lens",
+          "inner_diameter_mm": 60.0,
+          "key": "objective_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "objective_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 290.0,
+      "key": "objective_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 18.0,
+          "current_intervals_local_z_mm": [
+            [
+              1063.5,
+              1081.5
+            ]
+          ],
+          "display_envelope_end_mm": 1081.5,
+          "display_envelope_start_mm": 1063.5,
+          "field_source_key": "mini_condenser",
+          "inner_diameter_mm": 34.0,
+          "key": "mini_condenser_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 51.0,
+          "parent_key": "mini_condenser"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 18.0,
+      "key": "mini_condenser",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 153.0,
+          "current_intervals_local_z_mm": [
+            [
+              388.5,
+              541.5
+            ]
+          ],
+          "display_envelope_end_mm": 541.5,
+          "display_envelope_start_mm": 388.5,
+          "field_source_key": "condenser_lens_3",
+          "inner_diameter_mm": 96.0,
+          "key": "condenser_lens_3_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 156.0,
+          "parent_key": "condenser_lens_3"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 153.0,
+      "key": "condenser_lens_3",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 40.5,
+          "current_intervals_local_z_mm": [
+            [
+              1366.65,
+              1407.15
+            ]
+          ],
+          "display_envelope_end_mm": 1407.15,
+          "display_envelope_start_mm": 1366.65,
+          "field_source_key": "image_tl11_lens",
+          "inner_diameter_mm": 115.18,
+          "key": "image_tl11_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 145.39845150000002,
+          "parent_key": "image_tl11_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 40.5,
+      "key": "image_tl11_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 41.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1440.2,
+              1481.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1481.6000000000001,
+          "display_envelope_start_mm": 1440.2,
+          "field_source_key": "image_tl12_lens",
+          "inner_diameter_mm": 85.7,
+          "key": "image_tl12_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 101.06541920000001,
+          "parent_key": "image_tl12_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 41.40000000000009,
+      "key": "image_tl12_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1564.2,
+              1596.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1596.6000000000001,
+          "display_envelope_start_mm": 1564.2,
+          "field_source_key": "image_tl21_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl21_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.9595812,
+          "parent_key": "image_tl21_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.40000000000009,
+      "key": "image_tl21_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1614.2,
+              1646.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1646.6000000000001,
+          "display_envelope_start_mm": 1614.2,
+          "field_source_key": "image_tl22_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_tl22_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 99.7567878,
+          "parent_key": "image_tl22_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.40000000000009,
+      "key": "image_tl22_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 32.40000000000009,
+          "current_intervals_local_z_mm": [
+            [
+              1694.2,
+              1726.6000000000001
+            ]
+          ],
+          "display_envelope_end_mm": 1726.6000000000001,
+          "display_envelope_start_mm": 1694.2,
+          "field_source_key": "image_adapter_lens",
+          "inner_diameter_mm": 75.0,
+          "key": "image_adapter_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 89.5151499,
+          "parent_key": "image_adapter_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 32.40000000000009,
+      "key": "image_adapter_lens",
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 90.0,
+          "current_intervals_local_z_mm": [
+            [
+              37.5,
+              127.5
+            ]
+          ],
+          "display_envelope_end_mm": 127.5,
+          "display_envelope_start_mm": 37.5,
+          "field_source_key": "diffraction_lens",
+          "inner_diameter_mm": 60.0,
+          "key": "diffraction_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "diffraction_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 90.0,
+      "key": "diffraction_lens",
+      "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 162.0,
+          "current_intervals_local_z_mm": [
+            [
+              171.5,
+              333.5
+            ]
+          ],
+          "display_envelope_end_mm": 333.5,
+          "display_envelope_start_mm": 171.5,
+          "field_source_key": "intermediate_lens",
+          "inner_diameter_mm": 60.0,
+          "key": "intermediate_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "intermediate_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 162.0,
+      "key": "intermediate_lens",
+      "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 108.0,
+          "current_intervals_local_z_mm": [
+            [
+              378.5,
+              486.5
+            ]
+          ],
+          "display_envelope_end_mm": 486.5,
+          "display_envelope_start_mm": 378.5,
+          "field_source_key": "projector_lens_1",
+          "inner_diameter_mm": 60.0,
+          "key": "projector_lens_1_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "projector_lens_1"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 108.0,
+      "key": "projector_lens_1",
+      "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 162.0,
+          "current_intervals_local_z_mm": [
+            [
+              554.0,
+              716.0
+            ]
+          ],
+          "display_envelope_end_mm": 716.0,
+          "display_envelope_start_mm": 554.0,
+          "field_source_key": "projector_lens_2",
+          "inner_diameter_mm": 60.0,
+          "key": "projector_lens_2_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "projector_lens_2"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 162.0,
+      "key": "projector_lens_2",
+      "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 90.0,
+          "current_intervals_local_z_mm": [
+            [
+              37.5,
+              127.5
+            ]
+          ],
+          "display_envelope_end_mm": 127.5,
+          "display_envelope_start_mm": 37.5,
+          "field_source_key": "diffraction_lens",
+          "inner_diameter_mm": 60.0,
+          "key": "diffraction_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "diffraction_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 90.0,
+      "key": "diffraction_lens",
+      "path": "configs/subassemblies/projector_stack.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 180.0,
+          "current_intervals_local_z_mm": [
+            [
+              162.5,
+              342.5
+            ]
+          ],
+          "display_envelope_end_mm": 342.5,
+          "display_envelope_start_mm": 162.5,
+          "field_source_key": "intermediate_lens",
+          "inner_diameter_mm": 60.0,
+          "key": "intermediate_lens_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "intermediate_lens"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 180.0,
+      "key": "intermediate_lens",
+      "path": "configs/subassemblies/projector_stack.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 108.0,
+          "current_intervals_local_z_mm": [
+            [
+              378.5,
+              486.5
+            ]
+          ],
+          "display_envelope_end_mm": 486.5,
+          "display_envelope_start_mm": 378.5,
+          "field_source_key": "projector_lens_1",
+          "inner_diameter_mm": 60.0,
+          "key": "projector_lens_1_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "projector_lens_1"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 108.0,
+      "key": "projector_lens_1",
+      "path": "configs/subassemblies/projector_stack.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    },
+    {
+      "coils": [
+        {
+          "ampere_turn_fraction": 1.0,
+          "current_bearing_total_length_mm": 162.0,
+          "current_intervals_local_z_mm": [
+            [
+              554.0,
+              716.0
+            ]
+          ],
+          "display_envelope_end_mm": 716.0,
+          "display_envelope_start_mm": 554.0,
+          "field_source_key": "projector_lens_2",
+          "inner_diameter_mm": 60.0,
+          "key": "projector_lens_2_excitation_coil",
+          "material_class": "insulated_copper_winding",
+          "outer_diameter_mm": 132.0,
+          "parent_key": "projector_lens_2"
+        }
+      ],
+      "coverage_complete": true,
+      "gaussian_reference_coil_length_mm": 162.0,
+      "key": "projector_lens_2",
+      "path": "configs/subassemblies/projector_stack.toml",
+      "reference_ampere_turns": 3000.0,
+      "reference_status": "engineering_reference_not_oem_not_particle_qualified"
+    }
+  ],
+  "schema": "round-coil-reference-coverage-v1",
+  "scope": "Static stored geometry/current-reference audit; no field solve, finite-source trial, operating-preset or thermal qualification",
+  "source_files": [
+    {
+      "missing_references": [],
+      "path": "configs/instruments/column/C2.toml",
+      "round_coil_count": 4,
+      "round_owner_count": 4,
+      "sha256": "1d2c298d658d49fbe5063b2a026e646b38173a988417f68ebcc2c9daf6aeea79"
+    },
+    {
+      "missing_references": [],
+      "path": "configs/instruments/column/C3.toml",
+      "round_coil_count": 5,
+      "round_owner_count": 5,
+      "sha256": "723bdf00df99c99fcea135b9b7f1b1fd41f37ea898b015ebb09f0228eedfddfc"
+    },
+    {
+      "missing_references": [],
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "round_coil_count": 12,
+      "round_owner_count": 12,
+      "sha256": "b47b6ae6896fc0395b18f5a95b02efeba12207163a9537ae3a0cb34b118ba042"
+    },
+    {
+      "missing_references": [],
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "round_coil_count": 10,
+      "round_owner_count": 10,
+      "sha256": "2690d35b2c2c39076fcf65845797552bef35c0034e5dda419dfad3b909fa4a77"
+    },
+    {
+      "missing_references": [],
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "round_coil_count": 9,
+      "round_owner_count": 9,
+      "sha256": "9819a304e96df1b881206c22e0d4b713924dbd4d7a8d656d60f832f218c1ab33"
+    },
+    {
+      "missing_references": [],
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "round_coil_count": 16,
+      "round_owner_count": 16,
+      "sha256": "691a562bef0cb53982521eb14ee67742410555c4c75ee708186ffdbe81f5a067"
+    },
+    {
+      "missing_references": [],
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "round_coil_count": 14,
+      "round_owner_count": 14,
+      "sha256": "429e8f56240559ece941556c532dc9f9fc955b47166f4835de8b214796cf374d"
+    },
+    {
+      "missing_references": [],
+      "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "round_coil_count": 4,
+      "round_owner_count": 4,
+      "sha256": "27dabe9b2a7214855762f3123ce2e9d08ef7e5e306e47117381b90a4d5914d5e"
+    },
+    {
+      "missing_references": [],
+      "path": "configs/subassemblies/projector_stack.toml",
+      "round_coil_count": 4,
+      "round_owner_count": 4,
+      "sha256": "611be85d36f8dedaf42ee058bb3df0f9d5486387009396a696b506aab1a3bcd9"
+    }
+  ],
+  "stored_owner_records": 78
+}

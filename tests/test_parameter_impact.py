@@ -36,6 +36,58 @@ def _impact(parts, key, field, mode="ideal", descriptors=None):
                                      simulation_mode=mode, descriptors=descriptors)
 
 
+@pytest.mark.parametrize("field", ["length_mm", "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm", "coil_ampere_turn_fraction"])
+def test_copper_selection_explains_actual_winding_inputs(parts, field):
+    key = "intermediate_lens_excitation_coil"
+    impact = describe_parameter_impact(parts[key], ("parts", key, field), by_key=parts,
+        simulation_mode="unified", round_lens_settings={"round_lens_field_model": "copper_coil"})
+    assert impact.active and "magnetic_field" in impact.effects
+    assert "Copper-coil" in impact.label
+    assert "does not refocus" in impact.detail
+
+
+def test_copper_selection_marks_old_gaussian_calibration_inactive(parts):
+    key = "intermediate_lens"
+    for field in ("maximum_peak_field_t", "field_half_width_mm", "field_profile_terms"):
+        impact = describe_parameter_impact(parts[key], ("parts", key, field), by_key=parts,
+            simulation_mode="unified", round_lens_settings={"round_lens_field_model": "copper_coil"})
+        assert impact.active is False and "Gaussian" in impact.label
+    current = describe_parameter_impact(parts[key], ("parts", key, "air_core_reference_ampere_turns"), by_key=parts,
+        simulation_mode="unified", round_lens_settings={"round_lens_field_model": "copper_coil"})
+    assert current.active and "magnetic_field" in current.effects
+
+
+def test_gaussian_length_link_explains_only_the_axial_geometry_route(parts):
+    key = "intermediate_lens_excitation_coil"
+    settings = {"gaussian_geometry_coupling": "axial_length"}
+    axial = describe_parameter_impact(parts[key], ("parts", key, "length_mm"), by_key=parts,
+        simulation_mode="unified", round_lens_settings=settings)
+    assert axial.active and "magnetic_field" in axial.effects
+    assert "Gaussian coil-length" in axial.label
+    radial = describe_parameter_impact(parts[key], ("parts", key, "mechanical_inner_diameter_mm"), by_key=parts,
+        simulation_mode="unified", round_lens_settings=settings)
+    assert "magnetic_field" not in radial.effects
+
+
+@pytest.mark.parametrize("settings", [{"round_lens_field_model": "copper_coil"}, {"gaussian_geometry_coupling": "axial_length"}])
+@pytest.mark.parametrize("field", ["length_mm", "local_start_z_mm", "local_end_z_mm"])
+def test_objective_child_envelope_does_not_replace_parent_current_intervals(parts, settings, field):
+    key = "objective_lens_excitation_coil"
+    impact = describe_parameter_impact(parts[key], ("parts", key, field), by_key=parts,
+        simulation_mode="unified", round_lens_settings=settings)
+    assert "magnetic_field" not in impact.effects
+    assert "beam_clearance" in impact.effects
+
+
+def test_gaussian_length_link_does_not_claim_to_resize_an_explicit_fem(parts):
+    key = "intermediate_lens"
+    impact = describe_parameter_impact(parts[key], ("parts", key, "gaussian_reference_coil_length_mm"), by_key=parts,
+        simulation_mode="unified", descriptors={key: _linear()},
+        round_lens_settings={"gaussian_geometry_coupling": "axial_length"})
+    assert "magnetic_field" not in impact.effects
+    assert "Gaussian coil-length" not in impact.label
+
+
 def test_c2_plate_envelope_carrier_and_operating_opening_are_different_routes(parts):
     key = "condenser_aperture_2"
     for field in ("mechanical_outer_diameter_mm", "mechanical_bore_diameter_mm", "plate_thickness_mm"):

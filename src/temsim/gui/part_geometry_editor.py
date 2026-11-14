@@ -231,9 +231,10 @@ class GeometryEditorDialog(QDialog):
         self._refresh_parameter_semantics()
         QTimer.singleShot(0, self.fit_view)
 
-    def set_simulation_context(self, mode=None, descriptors=None, by_key=None):
+    def set_simulation_context(self, mode=None, descriptors=None, by_key=None, *, round_lens_settings=None):
         self._simulation_mode = mode
         self._simulation_descriptors = descriptors
+        self._round_lens_settings = round_lens_settings
         self._semantic_by_key = dict(by_key or {})
         self._refresh_parameter_semantics()
 
@@ -278,7 +279,8 @@ class GeometryEditorDialog(QDialog):
         self.dimension_source.setText("Source: " + meaning.source_label)
         self.dimension_source.setToolTip(meaning.source_note)
         impact = describe_parameter_impact(self._source_part, path, by_key=self._semantic_by_key,
-            simulation_mode=self._simulation_mode, descriptors=self._simulation_descriptors)
+            simulation_mode=self._simulation_mode, descriptors=self._simulation_descriptors,
+            round_lens_settings=getattr(self, "_round_lens_settings", None))
         mode = getattr(self._simulation_mode, "value", self._simulation_mode)
         details = [meaning.label, "Category: " + meaning.category_label,
                    "Source: " + meaning.source_label + ". " + meaning.source_note, meaning.description,

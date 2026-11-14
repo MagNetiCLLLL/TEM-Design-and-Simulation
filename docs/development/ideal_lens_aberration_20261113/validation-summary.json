@@ -1,0 +1,72 @@
+{
+  "all_primary_count_cs_gates_passed": true,
+  "all_primary_count_d95_gates_passed": true,
+  "all_primary_sampled_field_gates_passed": true,
+  "audit_sha256": "f012de011e49428464faaf70630ed82a8da5e61d77688bcc20eb1eb3b6bafa77",
+  "failed_complete_vacuum_cs_reference_gates": [
+    {
+      "cartesian_relative_difference": 0.0042097403072618444,
+      "case": "filled-tube5.76",
+      "original_positive_count": 1024,
+      "radial7_relative_difference": 0.0001493029520793776
+    },
+    {
+      "cartesian_relative_difference": 0.004148404958788654,
+      "case": "filled-tube5.76",
+      "original_positive_count": 2048,
+      "radial7_relative_difference": 0.00014924223603274278
+    }
+  ],
+  "finite_source_cases": 26,
+  "git_diff_check": "PASS",
+  "half_step_representatives_passed": true,
+  "high_angle_scope": [
+    {
+      "benchmark_maximum_declared_pupil_mrad": 100.0,
+      "case": "filled-tube5.76",
+      "declared_paraxial_edge_angle_mrad": 129.21558153832578,
+      "declared_paraxial_edge_slope_mrad": 129.93957371648426,
+      "declared_pupil_exceeds_100mrad": true,
+      "interpretation": "New exploratory extension; no inherited historical <=100 mrad qualification",
+      "maximum_observed_current_alpha95_mrad": 133.81951237481243,
+      "observed_alpha95_exceeds_100mrad": true
+    },
+    {
+      "benchmark_maximum_declared_pupil_mrad": 100.0,
+      "case": "fixed-b0.6-s12",
+      "declared_paraxial_edge_angle_mrad": 103.29888739450082,
+      "declared_paraxial_edge_slope_mrad": 103.6678848932984,
+      "declared_pupil_exceeds_100mrad": true,
+      "interpretation": "New exploratory extension; no inherited historical <=100 mrad qualification",
+      "maximum_observed_current_alpha95_mrad": 101.17090080457268,
+      "observed_alpha95_exceeds_100mrad": true
+    },
+    {
+      "benchmark_maximum_declared_pupil_mrad": 100.0,
+      "case": "fixed-b0.6-s6",
+      "declared_paraxial_edge_angle_mrad": 120.58492673514739,
+      "declared_paraxial_edge_slope_mrad": 121.17281034190609,
+      "declared_pupil_exceeds_100mrad": true,
+      "interpretation": "New exploratory extension; no inherited historical <=100 mrad qualification",
+      "maximum_observed_current_alpha95_mrad": 118.80181052017463,
+      "observed_alpha95_exceeds_100mrad": true
+    }
+  ],
+  "independent_audit_integrity": true,
+  "minimum_new_positive_count_per_partition": 1024,
+  "population_counts": [
+    1024,
+    2048
+  ],
+  "pure_array_and_mocked_tests": {
+    "failed": 0,
+    "passed": 45,
+    "skipped": 0
+  },
+  "schema": "ideal-lens-validation-summary-v1",
+  "scope": "Independent original-source arrays and declared numerical checks, not continuous-source, experimental or coherent-wave qualification",
+  "script_compile": "PASS",
+  "solver_implementation": "60a3e4991d49bfda8a332ded15d17301f0dc32569cb85293f72c40c002099b2c",
+  "transported_original_positive_count": 53248,
+  "wave_calculations": 0
+}

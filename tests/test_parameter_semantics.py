@@ -13,6 +13,17 @@ from temsim.parameter_semantics import CATEGORY_LABELS, SOURCE_LABELS, describe_
 CONFIGS = Path(__file__).resolve().parents[1] / "configs" / "instruments"
 
 
+def test_air_core_current_reference_has_units_and_declared_engineering_provenance():
+    part = dict(key="lens", mechanical_profile="magnetic_lens_assembly",
+        air_core_reference_ampere_turns=3000.,
+        air_core_reference_status="engineering_reference_not_oem_not_particle_qualified",
+        air_core_reference_source="Chosen common design input, not a measured current calibration.")
+    meaning = describe_parameter(part, ("parts", "lens", "air_core_reference_ampere_turns"))
+    assert meaning.unit == "A·turn" and meaning.category == "operating"
+    assert meaning.source_kind == "estimated"
+    assert "100%" in meaning.label and "thermal rating" in meaning.description
+
+
 def _document(path):
     return tomllib.loads((CONFIGS / path).read_text(encoding="utf-8-sig"))
 

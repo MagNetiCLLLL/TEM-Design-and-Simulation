@@ -1,0 +1,33 @@
+{
+  "additional_navigation_check": "Nine pure GUI navigation tests passed after replacing the old nine-particle solver fixture with explicit synthetic zero-current display lines; no physical solve is permitted by that fixture.",
+  "all_reported_checks_passed": true,
+  "distinct_test_ids": 304,
+  "implementation_identity_at_validation": "e7c0757395dc514e5c01d257c298267f064724c4184a41273e77259869016d44",
+  "physical_study": "../copper_coil_aberration_20261113/README.md",
+  "schema": "copper-round-lens-software-validation-v1",
+  "scopes": [
+    {
+      "cases": 140,
+      "file": "copper-field-and-impact-regressions.xml",
+      "sha256": "116489f1b817916b60febc85e0f8abbca4ef17ddb3f7c4ca4acf86e66bc63ef3"
+    },
+    {
+      "cases": 37,
+      "file": "copper-nonphysical-editor-regressions.xml",
+      "sha256": "738e4ac6a1e3f7d91e78749ef037d3953b71fb8808e8e0a648352be681d83b80"
+    },
+    {
+      "cases": 13,
+      "file": "copper-round-lens-mode-regressions.xml",
+      "sha256": "4bd8ffbc63445dca21a605f81bd9f05b36cb195a846758ca35887c3639a27f68"
+    },
+    {
+      "cases": 114,
+      "file": "copper-round-lens-state-regressions.xml",
+      "sha256": "f36748bf1dd280634f08bc2bc9e5fcc2b051a13bb6b393144fd7563be14cc874"
+    }
+  ],
+  "source_policy": "Eight finite-source copper-coil study trials each emitted 2048 original positive-current particles in two preserved nested partitions. GUI, state, potential and field-array checks are not source trials. No new coherent calculation.",
+  "total_test_executions": 304,
+  "validation_scope": "Targeted source model, current/geometry ownership, potential serialization, mapped-field independence, UI/profile persistence, parameter explanation, legacy source-schema fixtures and editor checks; not the entire repository suite."
+}

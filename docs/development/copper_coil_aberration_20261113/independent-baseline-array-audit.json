@@ -1,0 +1,171 @@
+{
+  "archived_field_source_sha256": "6da63ccaf59cb0d7dad92a7b221b31d730b930336868ff0fc060b0fe23e5d3c2",
+  "audit_formula_helper_sha256": "82c26064cf41dc37eaf6db6c963611aa1e60b8d0686eb95600dd4fccd9e803f6",
+  "checks": {
+    "all_clocks_monotone": true,
+    "archived_core_field_matches_current": true,
+    "combined_absolute_weights_exact": true,
+    "emission_clock_and_times_zero": true,
+    "ideal_lens_beam_unchanged": true,
+    "ideal_lens_wall_unchanged": true,
+    "ids_unique_exact_0_to_2047": true,
+    "monochromatic_300keV": true,
+    "n1024_absolute_current_balance": true,
+    "n1024_complete_vacuum_fit": true,
+    "n1024_independent_statistics_agree": true,
+    "n2048_absolute_current_balance": true,
+    "n2048_complete_vacuum_fit": true,
+    "n2048_independent_statistics_agree": true,
+    "new_population_weights_explicit": true,
+    "observed_planes_exact": true,
+    "original_observer_hash_matches_request": true,
+    "part0_phase_hash": true,
+    "part0_source_hash": true,
+    "part1_phase_hash": true,
+    "part1_source_hash": true,
+    "partition_ids_exact": true,
+    "raw_source_initial_phase_exact": true,
+    "raw_survivor_NaN_preserved": true,
+    "source_positions_unique": true,
+    "source_radius_boundary": true,
+    "training_halton5_exact": true,
+    "wall_ids_exact": true,
+    "wall_no_unresolved": true,
+    "weights_original_1024_immutable": true
+  },
+  "inputs_sha256": {
+    "characteristics-0.npz": "f83521f5cccfb58c7acbe7843efbda14c0f25f4b4e0ecf4fd3ad21b3abe21299",
+    "characteristics-1.npz": "4d0ff6a8d64907cd60d1fa1b80374594aed5f078f3aea582a642d48c25b8cfbc",
+    "field.json": "41790cf3430a9fb048dec6a3b9424112bc3e571179bcd5362f3f78aff932a1fb",
+    "partition-0-receipt.json": "a7e6240db92084c3651c7019245fa5a8eff244cf4266a28433fdc11780331ea6",
+    "partition-1-receipt.json": "430ffc197e264f0450b887cfa677c5695d47d3db7d7ab3225864e156931c422e",
+    "reference.json": "97727a9632a53186382223ff7d03bb0cb69943938b9e9d4a36c62ce5da934d4f",
+    "report.json": "d06812caa270b5abd5cdc88ecee7eddc17196acbfc48d2b2b751f450a5b6d9ad",
+    "request.json": "d16ff34ad8646df151dcf026d14991cc9bfce8db8c45a3564c6374958c5855a2",
+    "source.npz": "7151403c3853ade0b03393d210c5093985edb153f1dac1fd1283db4aaeba51a8",
+    "wall-0.npz": "4c68b294109331f274068c587cfaac4f3aac231976c59bd6b7c9ea563e8e8d27",
+    "wall-1.npz": "b7d42cadf895a3f7417eb521a7e3d4c22594802302f29e979acacc6a51a6dcb1"
+  },
+  "limits": [
+    "Only a finite 1024/2048 count comparison and stored reference/quadrature checks exist; no new finite-ray step refinement was executed by this audit.",
+    "The independent variational reference is a first-order/cubic calculation, not a finite-source detector image.",
+    "65 native focus planes report sampled minima and cannot establish finer focus precision.",
+    "Raw 1024 trajectories are the exact same retained part0 arrays in the 2048 view; current manifests do not independently prove historical chronology.",
+    "Resume entry point should explicitly validate core physics source hashes before generic future reuse; this baseline has manual archived/current equality evidence.",
+    "All observations are synthetic image-plane optics with no specimen or coherent wave."
+  ],
+  "observer_initial_sha256": "72924f0e441285582be4db1a84bb70c6176df604e78a0cf5ea722e973c21ccda",
+  "observer_statistics_sha256": "bc981f07893894a4cf79997fae5e7debe6b28b1469551e44624529f34a8de91b",
+  "partitions_original_count": [
+    1024,
+    1024
+  ],
+  "passed": true,
+  "populations": [
+    {
+      "disagreements": {},
+      "independent_full_vacuum_refit": {
+        "cartesian_cs_mm": 386.7387016130318,
+        "cartesian_holdout_report_agrees": true,
+        "cartesian_holdout_rms_m": 1.3023774929949456e-11,
+        "cartesian_rank": 15,
+        "cartesian_reported_cs_agrees": true,
+        "fit_population": "All retained original vacuum rays in declared training mask; no wall mask is applied",
+        "radial_geometric": [
+          {
+            "cs_mm": 386.73870271430235,
+            "powers": [
+              1,
+              3,
+              5
+            ],
+            "rank": 3,
+            "reported_cs_agrees": true
+          },
+          {
+            "cs_mm": 386.7391855595702,
+            "powers": [
+              1,
+              3,
+              5,
+              7
+            ],
+            "rank": 4,
+            "reported_cs_agrees": true
+          }
+        ]
+      },
+      "independent_statistics": {
+        "alpha95_mrad": 9.751923699233934,
+        "angular_rms_mrad": 7.072237208337353,
+        "centroid_m": [
+          2.0828156558507642e-10,
+          1.8762544765639983e-10
+        ],
+        "current_a": 1e-06,
+        "d95_nm": 716.6295333020075,
+        "effective": 1024.0,
+        "rms_radius_nm": 193.3891179649351,
+        "status": "MEASURED",
+        "surviving_positive": 1024,
+        "transmission": 1.0
+      },
+      "intercepted_current_a": 0.0,
+      "original_positive_count": 1024
+    },
+    {
+      "disagreements": {},
+      "independent_full_vacuum_refit": {
+        "cartesian_cs_mm": 386.73884309973334,
+        "cartesian_holdout_report_agrees": true,
+        "cartesian_holdout_rms_m": 1.3070273746522429e-11,
+        "cartesian_rank": 15,
+        "cartesian_reported_cs_agrees": true,
+        "fit_population": "All retained original vacuum rays in declared training mask; no wall mask is applied",
+        "radial_geometric": [
+          {
+            "cs_mm": 386.7387035372759,
+            "powers": [
+              1,
+              3,
+              5
+            ],
+            "rank": 3,
+            "reported_cs_agrees": true
+          },
+          {
+            "cs_mm": 386.73918555836485,
+            "powers": [
+              1,
+              3,
+              5,
+              7
+            ],
+            "rank": 4,
+            "reported_cs_agrees": true
+          }
+        ]
+      },
+      "independent_statistics": {
+        "alpha95_mrad": 9.753772889634956,
+        "angular_rms_mrad": 7.073969989006209,
+        "centroid_m": [
+          7.994852417848399e-11,
+          1.203286373622811e-10
+        ],
+        "current_a": 1e-06,
+        "d95_nm": 716.5193575877585,
+        "effective": 2048.0,
+        "rms_radius_nm": 193.48383423227352,
+        "status": "MEASURED",
+        "surviving_positive": 2048,
+        "transmission": 1.0
+      },
+      "intercepted_current_a": 0.0,
+      "original_positive_count": 2048
+    }
+  ],
+  "relative_source_d95_change": -0.00015374152072888947,
+  "schema": "copper-coil-independent-baseline-array-audit-v1",
+  "source_positive_original_count": 2048
+}

@@ -1,0 +1,360 @@
+[
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.15-s3",
+    "peak_t": 0.15,
+    "sigma_mm": 3.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.15-s6",
+    "peak_t": 0.15,
+    "sigma_mm": 6.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.15-s12",
+    "peak_t": 0.15,
+    "sigma_mm": 12.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.3-s3",
+    "peak_t": 0.3,
+    "sigma_mm": 3.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.3-s6",
+    "peak_t": 0.3,
+    "sigma_mm": 6.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.3-s12",
+    "peak_t": 0.3,
+    "sigma_mm": 12.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.6-s3",
+    "peak_t": 0.6,
+    "sigma_mm": 3.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.6-s6",
+    "peak_t": 0.6,
+    "sigma_mm": 6.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.6-s12",
+    "peak_t": 0.6,
+    "sigma_mm": 12.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "matched_paraxial_edge",
+    "name": "matched-b0.15-s6",
+    "paraxial_edge_mrad": 10.0,
+    "peak_t": 0.15,
+    "sigma_mm": 6.0,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      5.76
+    ]
+  },
+  {
+    "family": "matched_paraxial_edge",
+    "name": "matched-b0.3-s6",
+    "paraxial_edge_mrad": 10.0,
+    "peak_t": 0.3,
+    "sigma_mm": 6.0,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      5.76
+    ]
+  },
+  {
+    "family": "matched_paraxial_edge",
+    "name": "matched-b0.6-s6",
+    "paraxial_edge_mrad": 10.0,
+    "peak_t": 0.6,
+    "sigma_mm": 6.0,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      5.76
+    ]
+  },
+  {
+    "family": "matched_tube_filling",
+    "name": "filled-tube1.5",
+    "peak_t": 0.3,
+    "sigma_mm": 6.0,
+    "source_radius_mm": 0.7124999999999999,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5
+    ]
+  },
+  {
+    "family": "matched_tube_filling",
+    "name": "filled-tube5.76",
+    "peak_t": 0.3,
+    "sigma_mm": 6.0,
+    "source_radius_mm": 2.7359999999999998,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "field_order": 5,
+    "name": "fixed-b0.3-s6-order5",
+    "peak_t": 0.3,
+    "refinement": "order5",
+    "refinement_parent": "fixed-b0.3-s6",
+    "sigma_mm": 6.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "field_order": 7,
+    "name": "fixed-b0.3-s6-order7",
+    "peak_t": 0.3,
+    "refinement": "order7",
+    "refinement_parent": "fixed-b0.3-s6",
+    "sigma_mm": 6.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.3-s6-half-step",
+    "peak_t": 0.3,
+    "refinement": "half-step",
+    "refinement_parent": "fixed-b0.3-s6",
+    "sigma_mm": 6.0,
+    "source_radius_mm": 0.95,
+    "step_over_sigma": 0.03125,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "field_order": 5,
+    "name": "fixed-b0.15-s3-order5",
+    "peak_t": 0.15,
+    "refinement": "order5",
+    "refinement_parent": "fixed-b0.15-s3",
+    "sigma_mm": 3.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "field_order": 7,
+    "name": "fixed-b0.15-s3-order7",
+    "peak_t": 0.15,
+    "refinement": "order7",
+    "refinement_parent": "fixed-b0.15-s3",
+    "sigma_mm": 3.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.15-s3-half-step",
+    "peak_t": 0.15,
+    "refinement": "half-step",
+    "refinement_parent": "fixed-b0.15-s3",
+    "sigma_mm": 3.0,
+    "source_radius_mm": 0.95,
+    "step_over_sigma": 0.03125,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "field_order": 5,
+    "name": "fixed-b0.6-s12-order5",
+    "peak_t": 0.6,
+    "refinement": "order5",
+    "refinement_parent": "fixed-b0.6-s12",
+    "sigma_mm": 12.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "field_order": 7,
+    "name": "fixed-b0.6-s12-order7",
+    "peak_t": 0.6,
+    "refinement": "order7",
+    "refinement_parent": "fixed-b0.6-s12",
+    "sigma_mm": 12.0,
+    "source_radius_mm": 0.95,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "fixed_source",
+    "name": "fixed-b0.6-s12-half-step",
+    "peak_t": 0.6,
+    "refinement": "half-step",
+    "refinement_parent": "fixed-b0.6-s12",
+    "sigma_mm": 12.0,
+    "source_radius_mm": 0.95,
+    "step_over_sigma": 0.03125,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      1.5,
+      2.0,
+      5.76
+    ]
+  },
+  {
+    "family": "matched_tube_filling",
+    "field_order": 5,
+    "name": "filled-tube5.76-order5",
+    "peak_t": 0.3,
+    "refinement": "order5",
+    "refinement_parent": "filled-tube5.76",
+    "sigma_mm": 6.0,
+    "source_radius_mm": 2.7359999999999998,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      5.76
+    ]
+  },
+  {
+    "family": "matched_tube_filling",
+    "field_order": 7,
+    "name": "filled-tube5.76-order7",
+    "peak_t": 0.3,
+    "refinement": "order7",
+    "refinement_parent": "filled-tube5.76",
+    "sigma_mm": 6.0,
+    "source_radius_mm": 2.7359999999999998,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      5.76
+    ]
+  },
+  {
+    "family": "matched_tube_filling",
+    "name": "filled-tube5.76-half-step",
+    "peak_t": 0.3,
+    "refinement": "half-step",
+    "refinement_parent": "filled-tube5.76",
+    "sigma_mm": 6.0,
+    "source_radius_mm": 2.7359999999999998,
+    "step_over_sigma": 0.03125,
+    "study_plan_sha256": "da3221b5f6553a873509db53b57d4aa1fc8496fdb5aab13fe25a9af7d6bc45da",
+    "tube_diameters_mm": [
+      5.76
+    ]
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "ampere_turns": 3000.0,
+  "current_rule": "Each original in the N-particle population has 1 microampere/N. Intercepted current is never restored.",
+  "drivers": {
+    "scripts\\ideal_lens_beam.py": "de2800c0f357103ff03bac22998e45a93d6fbe5240507fcc417ea85ba05f6258",
+    "scripts\\ideal_lens_wall.py": "125b9d596cccc92462dc508c926c0aa5581877adca70e009d0e3a2c23eac0365",
+    "scripts\\study_copper_coil_aberrations.py": "72924f0e441285582be4db1a84bb70c6176df604e78a0cf5ea722e973c21ccda"
+  },
+  "edge_angle_mrad": 10.0,
+  "end_m": 0.04000781885102908,
+  "energy_ev": 300000.0,
+  "field_digest": "059ece5bb1f9970c05e004c137939118d13b837b966bab5f759d52dae43c914e",
+  "focus_search_end_m": 5.0,
+  "focus_window_m": 0.0001,
+  "implementation": "8240962390c698d1c761c2953dd7a1b137c135f50421ed767c3ae0e99c7b001e",
+  "inner_diameter_mm": 12.0,
+  "integration_length_scale_m": 0.01,
+  "integration_note": "Legacy helper argument sigma_m is only a step/split scale here; no Gaussian field is used",
+  "length_mm": 10.0,
+  "name": "baseline",
+  "outer_diameter_mm": 20.0,
+  "paraxial_image_m": 0.03990781885102908,
+  "pupil_rule": "Same declared 10 mrad paraxial edge angle across cases, with separately recorded source radii",
+  "quadrature_order": 12,
+  "qualification": "Ideal monochromatic zero-emittance source; not an installed instrument or coherent probe",
+  "source_counts": [
+    1024,
+    2048
+  ],
+  "source_current_a": 1e-06,
+  "source_radius_m": 0.0004028512073691227,
+  "source_schema": "ideal-uniform-disk-halton235-v1",
+  "start_m": -0.2,
+  "step_over_scale": 0.125,
+  "tube_diameter_mm": 5.76
+}

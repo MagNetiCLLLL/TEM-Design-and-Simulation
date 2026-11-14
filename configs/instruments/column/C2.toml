@@ -70,6 +70,11 @@ local_datum_mm = 0.0
 [[parts]]
 order = 1
 key = "condenser_lens_1"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 90.0
 name = "C1 Lens"
 branch = "common"
 local_start_z_mm = 0.0
@@ -132,6 +137,11 @@ maximum_radius_mm = 2.0
 [[parts]]
 order = 9
 key = "objective_lens"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 290.0
 name = "Objective Lens Assembly"
 branch = "common"
 local_start_z_mm = 365.0
@@ -264,6 +274,11 @@ parent_key = "objective_lens"
 [[parts]]
 order = 13
 key = "mini_condenser"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 18.0
 name = "Mini Condenser Lens"
 branch = "illumination"
 local_start_z_mm = 488.5
@@ -421,6 +436,11 @@ parent_key = "objective_lens"
 [[parts]]
 order = 4
 key = "condenser_lens_2"
+air_core_reference_ampere_turns = 3000.0
+air_core_reference_status = "engineering_reference_not_oem_not_particle_qualified"
+air_core_reference_source = "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified."
+air_core_reference_source_urls = ["https://web.mit.edu/6.013_book/www/chapter8/8.2.html", "https://patents.google.com/patent/US20150021476A1/en"]
+gaussian_reference_coil_length_mm = 162.0
 name = "C2 Lens"
 branch = "common"
 local_start_z_mm = 100.0
@@ -668,6 +688,7 @@ parent_key = "condenser_lens_1"
 [[parts]]
 order = 25
 key = "condenser_lens_1_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "C1 Lens Excitation Coil"
 branch = "common"
 local_start_z_mm = 5.0
@@ -734,6 +755,7 @@ parent_key = "condenser_lens_2"
 [[parts]]
 order = 28
 key = "condenser_lens_2_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "C2 Lens Excitation Coil"
 branch = "common"
 local_start_z_mm = 119.0
@@ -798,6 +820,7 @@ parent_key = "mini_condenser"
 [[parts]]
 order = 31
 key = "mini_condenser_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "Mini Condenser Lens Excitation Coil"
 branch = "illumination"
 local_start_z_mm = 489.5
@@ -862,6 +885,7 @@ parent_key = "objective_lens"
 [[parts]]
 order = 34
 key = "objective_lens_excitation_coil"
+coil_ampere_turn_fraction = 1.0
 name = "Objective Lens Excitation Coil"
 branch = "common"
 local_start_z_mm = 494.20000000000005

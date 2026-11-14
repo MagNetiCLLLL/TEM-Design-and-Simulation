@@ -1,0 +1,55 @@
+{
+  "newly_transported_original_positive_count": 1024,
+  "original_id_interval": [
+    0,
+    1024
+  ],
+  "retained_phase_sha256": "fcf22458ff38ed1e614aa139730253d8d94ce18595ffb4e1505fa2d1d8912630",
+  "source_phase_sha256": "1d4f09f257c468599f8c09f08345a5aa27c01bf5b6d819b03c2d9159c89723b3",
+  "transport": {
+    "atol_phase": [
+      1e-14,
+      1e-14,
+      1e-13,
+      1e-13,
+      1e-21
+    ],
+    "constant_speed_m_per_s": 232796486.2808797,
+    "counterfactual_after_contact": true,
+    "empirical_aberrations_applied": false,
+    "energy_ev": 300000.0,
+    "field_digest": "ef10bf47b458c36b3cd88263b38c6bd7f3157daf957c22cc87924eb4b7dcb779",
+    "method": "DOP853",
+    "rtol": 2e-11,
+    "segments": [
+      {
+        "end_m": -0.08,
+        "evaluations": 167,
+        "far_tail": true,
+        "intervals": 7,
+        "max_step_m": 0.04,
+        "start_m": -0.2
+      },
+      {
+        "end_m": 0.04971863045482958,
+        "evaluations": 1640,
+        "far_tail": false,
+        "intervals": 106,
+        "max_step_m": 0.00125,
+        "start_m": -0.08
+      }
+    ]
+  },
+  "wall": {
+    "bound_scope": "Floating-point Bernstein convex-hull bound over all retained counterfactual dense intervals, including extensions after contact; not an RK-stage bound",
+    "classification_complete": true,
+    "dense_intervals": 113,
+    "polynomial_root_candidates": 0,
+    "qualification": "Numerical contact classification only; independently refine transport and wall tolerance. Unresolved cases must be rejected, not counted as physical losses.",
+    "radius_m": 0.0028799999999999997,
+    "schema": "ideal-lens-continuous-wall-v1",
+    "scope": "First contact of numerical DOP853 dense polynomials with an absorbing coaxial cylinder; no field feedback or current renormalization",
+    "state_width": 5,
+    "wall_tolerance_m": 1e-12
+  }
+}

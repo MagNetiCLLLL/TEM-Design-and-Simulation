@@ -637,6 +637,8 @@ class MainWindow(QMainWindow):
         self.simulation_menu = SimulationMenu(self)
         self.menuBar().addMenu(self.simulation_menu)
         self.simulation_menu.mode_requested.connect(self.set_simulation_mode)
+        self.simulation_menu.round_lens_model_requested.connect(self.set_round_lens_field_model)
+        self.simulation_menu.gaussian_geometry_coupling_requested.connect(self.set_gaussian_geometry_coupling)
         self.simulation_menu.particle_settings_requested.connect(self._show_particle_numerics)
         self.simulation_menu.coherent_settings_requested.connect(self._show_coherent_numerics)
         self.simulation_menu.configure_requested.connect(
@@ -777,13 +779,16 @@ class MainWindow(QMainWindow):
                  for part in getattr(getattr(self, "assembly", None), "parts", ())}
         mode = mode_key(self.state)
         descriptors = self.state.lens_field_map_descriptors
+        round_settings = {"round_lens_field_model": self.state.round_lens_field_model,
+                          "gaussian_geometry_coupling": self.state.gaussian_geometry_coupling}
         for panel in (self.parameter_panel, self.workspace.energy_filter_parameters,
                       self.workspace.physical_layout.model_editor):
-            panel.set_simulation_context(mode, descriptors, parts)
-        self.workspace.physical_layout.set_parameter_semantics_context(mode, descriptors, parts)
+            panel.set_simulation_context(mode, descriptors, parts, round_lens_settings=round_settings)
+        self.workspace.physical_layout.set_parameter_semantics_context(mode, descriptors, parts,
+                                                                       round_lens_settings=round_settings)
         dialog = getattr(self, "_part_geometry_dialog", None)
         if dialog is not None:
-            dialog.set_simulation_context(mode, descriptors, parts)
+            dialog.set_simulation_context(mode, descriptors, parts, round_lens_settings=round_settings)
 
     def _show_dimension_audit(self):
         layout = self.workspace.physical_layout
@@ -813,6 +818,29 @@ class MainWindow(QMainWindow):
         self.log_output.appendPlainText(f"Column lens model: {selected.label}. No preset recalculation; other model caches retained.")
         self.status_label.setText(f"{selected.label} selected; previous plots remain until the next result")
         self.schedule_preview("simulation_mode")
+
+    def _set_round_lens_option(self, value, setter, parameter):
+        try:
+            changed = setter(self.state, value)
+        except ValueError as exc:
+            self._refresh_simulation_mode()
+            self._show_error(str(exc))
+            return
+        self._refresh_simulation_mode()
+        if not changed:
+            return
+        self.workspace.model_inspector.set_state(self.state)
+        self._runtime_parameter_changed(parameter)
+        from temsim.round_lens_models import round_lens_model_description
+        self.status_label.setText(round_lens_model_description(self.state))
+
+    def set_round_lens_field_model(self, value):
+        from temsim.round_lens_models import set_round_lens_field_model
+        self._set_round_lens_option(value, set_round_lens_field_model, "round_lens_field_model")
+
+    def set_gaussian_geometry_coupling(self, value):
+        from temsim.round_lens_models import set_gaussian_geometry_coupling
+        self._set_round_lens_option(value, set_gaussian_geometry_coupling, "gaussian_geometry_coupling")
 
     def _create_toolbar(self) -> None:
         toolbar = QToolBar("Calculation", self)
@@ -3199,7 +3227,9 @@ class MainWindow(QMainWindow):
             dialog = GeometryEditorDialog(
                 part, apply_changes, parent=self.workspace.physical_layout, neighbours=neighbours
             )
-            dialog.set_simulation_context(mode_key(self.state), self.state.lens_field_map_descriptors, by_key)
+            dialog.set_simulation_context(mode_key(self.state), self.state.lens_field_map_descriptors, by_key,
+                round_lens_settings={"round_lens_field_model": self.state.round_lens_field_model,
+                                     "gaussian_geometry_coupling": self.state.gaussian_geometry_coupling})
         except Exception as exc:
             self._show_error(f"Unable to edit dimensions: {exc}")
             return None

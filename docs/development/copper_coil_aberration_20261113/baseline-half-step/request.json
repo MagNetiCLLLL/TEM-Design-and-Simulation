@@ -1,0 +1,48 @@
+{
+  "ampere_turns": 3000.0,
+  "current_rule": "Each original in the N-particle population has 1 microampere/N. Intercepted current is never restored.",
+  "drivers": {
+    "scripts/ideal_lens_beam.py": "de2800c0f357103ff03bac22998e45a93d6fbe5240507fcc417ea85ba05f6258",
+    "scripts/ideal_lens_wall.py": "125b9d596cccc92462dc508c926c0aa5581877adca70e009d0e3a2c23eac0365",
+    "scripts/study_copper_coil_aberrations.py": "4a168d8791d1edf4469b1debb51458af5180d56f438ae346f7abc5d2c322b0a5"
+  },
+  "edge_angle_mrad": 10.0,
+  "end_m": 0.04000781885102908,
+  "energy_ev": 300000.0,
+  "field_digest": "059ece5bb1f9970c05e004c137939118d13b837b966bab5f759d52dae43c914e",
+  "focus_search_end_m": 5.0,
+  "focus_window_m": 0.0001,
+  "implementation": "5372383a7dd463daecc5f0d9290e9b8b075307f6aac3b2ca1e6eb73ef892b873",
+  "inner_diameter_mm": 12.0,
+  "integration_length_scale_m": 0.01,
+  "integration_note": "Legacy helper argument sigma_m is only a step/split scale here; no Gaussian field is used",
+  "length_mm": 10.0,
+  "name": "baseline-half-step",
+  "outer_diameter_mm": 20.0,
+  "paraxial_image_m": 0.03990781885102908,
+  "pupil_rule": "Same declared 10 mrad paraxial edge angle across cases, with separately recorded source radii",
+  "quadrature_order": 12,
+  "qualification": "Ideal monochromatic zero-emittance source; not an installed instrument or coherent probe",
+  "source_counts": [
+    1024,
+    2048
+  ],
+  "source_current_a": 1e-06,
+  "source_radius_m": 0.0004028512073691227,
+  "source_schema": "ideal-uniform-disk-halton235-v1",
+  "start_m": -0.2,
+  "step_over_scale": 0.0625,
+  "transport_implementation": {
+    "files": {
+      "scripts/ideal_lens_beam.py": "de2800c0f357103ff03bac22998e45a93d6fbe5240507fcc417ea85ba05f6258",
+      "scripts/ideal_lens_wall.py": "125b9d596cccc92462dc508c926c0aa5581877adca70e009d0e3a2c23eac0365",
+      "src/temsim/physics/annular_coil_potential.py": "6da63ccaf59cb0d7dad92a7b221b31d730b930336868ff0fc060b0fe23e5d3c2",
+      "src/temsim/physics/lens_field_provider.py": "c27fd23a68e8f30a641102c4cdc236f3dc421b96c15e9c6423d28c66965ae8b9",
+      "src/temsim/physics/relativistic_lorentz.py": "80de42ca4a0aee23e8b2478eaf1805500973b6d42cd205e684f69c22253de95a",
+      "src/temsim/physics/vector_field_transport.py": "10d0c9ded7388e181f2a4ca470ec02e6ed5952b075342622762c06ba0e16f36e"
+    },
+    "numpy": "2.4.6",
+    "scipy": "1.18.0"
+  },
+  "tube_diameter_mm": 5.76
+}

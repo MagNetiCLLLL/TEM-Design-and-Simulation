@@ -95,10 +95,16 @@ def _source_markers(row):
     from temsim.physics.dynamic_potential import DynamicDipolePotential
     from temsim.physics.gun_magnetic_potential import GunMagneticPotential
     from temsim.physics.high_order_round_lens import HighOrderRoundLensPotential
+    from temsim.physics.annular_coil_potential import AnnularCoilPotential
+    from temsim.physics.copper_coil_field_provider import CopperCoilAssemblyPotential
     from temsim.physics.lens_field_provider import FrozenAnalyticField
     from temsim.physics.regular_axisymmetric_magnetic_potential import RegularAxisymmetricMagneticPotential
 
     provider = row.potential
+    if type(provider) in (AnnularCoilPotential, CopperCoilAssemblyPotential):
+        coils = provider.coils if type(provider) is CopperCoilAssemblyPotential else (provider,)
+        return tuple(marker for coil in coils for marker in _registered_markers(row.source_id, coil.registration,
+            (coil.center_z_m-coil.length_m/2, coil.center_z_m+coil.length_m/2), "winding_material"))
     if type(provider) is GunMagneticPotential:
         # The native soft window is exactly zero beyond centre +/- half +/-
         # edge. Keep the same operation ordering as its domain predicate.

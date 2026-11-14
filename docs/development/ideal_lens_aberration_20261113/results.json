@@ -1,0 +1,1691 @@
+{
+  "case_inventory": [
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 7.200218143932346e-08,
+        "order9_normalized_curl": 2.052062173396453e-08,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.005953993055555555,
+            "order": 3,
+            "relative_B_difference_to_order9": 0.00047799460672866745
+          },
+          {
+            "normalized_curl_residual": 0.00012438608177404837,
+            "order": 5,
+            "relative_B_difference_to_order9": 6.636823163819194e-06
+          },
+          {
+            "normalized_curl_residual": 1.819002480573033e-06,
+            "order": 7,
+            "relative_B_difference_to_order9": 7.200218143932346e-08
+          },
+          {
+            "normalized_curl_residual": 2.052062173396453e-08,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 92190.33777126313,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.15-s3",
+      "paraxial_edge_slope_mrad": 6.387105707270526,
+      "report": "finite-source/fixed-b0.15-s3/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 8.995518909760136e-07,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00018687864071886828,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.0001425071509780773,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.0001425071509780773,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 2.8125853498058484e-10,
+        "order9_normalized_curl": 4.0079339324149475e-11,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.0007442491319444444,
+            "order": 3,
+            "relative_B_difference_to_order9": 2.956271805909516e-05
+          },
+          {
+            "normalized_curl_residual": 3.887065055439012e-06,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.0285658621119373e-07
+          },
+          {
+            "normalized_curl_residual": 1.421095687947682e-08,
+            "order": 7,
+            "relative_B_difference_to_order9": 2.8125853498058484e-10
+          },
+          {
+            "normalized_curl_residual": 4.0079339324149475e-11,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 3196.7937762263364,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.15-s6",
+      "paraxial_edge_slope_mrad": 12.465121945678968,
+      "report": "finite-source/fixed-b0.15-s6/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 8.509451099314447e-07,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00019669857852522288,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015125513083125153,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015125513083125153,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 1.0987507200373634e-12,
+        "order9_normalized_curl": 7.827995961747944e-14,
+        "orders": [
+          {
+            "normalized_curl_residual": 9.303114149305555e-05,
+            "order": 3,
+            "relative_B_difference_to_order9": 1.842845180344277e-06
+          },
+          {
+            "normalized_curl_residual": 1.2147078298246911e-07,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.6038381733807228e-09
+          },
+          {
+            "normalized_curl_residual": 1.1102310062091266e-10,
+            "order": 7,
+            "relative_B_difference_to_order9": 1.0987507200373634e-12
+          },
+          {
+            "normalized_curl_residual": 7.827995961747944e-14,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 157.241341761672,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.15-s12",
+      "paraxial_edge_slope_mrad": 22.558953770222963,
+      "report": "finite-source/fixed-b0.15-s12/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 1.4989518022368031e-06,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00019897429526405386,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015331206676749698,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015331206676749698,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 7.200218143932346e-08,
+        "order9_normalized_curl": 2.052062173396453e-08,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.005953993055555555,
+            "order": 3,
+            "relative_B_difference_to_order9": 0.00047799460672866745
+          },
+          {
+            "normalized_curl_residual": 0.00012438608177404837,
+            "order": 5,
+            "relative_B_difference_to_order9": 6.636823163819194e-06
+          },
+          {
+            "normalized_curl_residual": 1.819002480573033e-06,
+            "order": 7,
+            "relative_B_difference_to_order9": 7.200218143932346e-08
+          },
+          {
+            "normalized_curl_residual": 2.052062173396453e-08,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 1598.3968881131682,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.3-s3",
+      "paraxial_edge_slope_mrad": 24.930243891357936,
+      "report": "finite-source/fixed-b0.3-s3/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 3.9375373346306475e-06,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00018587626735799834,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00014182126651063331,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00014182126651063331,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 2.8125853498058484e-10,
+        "order9_normalized_curl": 4.0079339324149475e-11,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.0007442491319444444,
+            "order": 3,
+            "relative_B_difference_to_order9": 2.956271805909516e-05
+          },
+          {
+            "normalized_curl_residual": 3.887065055439012e-06,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.0285658621119373e-07
+          },
+          {
+            "normalized_curl_residual": 1.421095687947682e-08,
+            "order": 7,
+            "relative_B_difference_to_order9": 2.8125853498058484e-10
+          },
+          {
+            "normalized_curl_residual": 4.0079339324149475e-11,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 78.62067088083685,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.3-s6",
+      "paraxial_edge_slope_mrad": 45.11790754044593,
+      "report": "finite-source/fixed-b0.3-s6/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 6.114961757619497e-06,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00019506510595213022,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015018555454227034,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015018555454227034,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 1.0987507200373634e-12,
+        "order9_normalized_curl": 7.827995961747944e-14,
+        "orders": [
+          {
+            "normalized_curl_residual": 9.303114149305555e-05,
+            "order": 3,
+            "relative_B_difference_to_order9": 1.842845180344277e-06
+          },
+          {
+            "normalized_curl_residual": 1.2147078298246911e-07,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.6038381733807228e-09
+          },
+          {
+            "normalized_curl_residual": 1.1102310062091266e-10,
+            "order": 7,
+            "relative_B_difference_to_order9": 1.0987507200373634e-12
+          },
+          {
+            "normalized_curl_residual": 7.827995961747944e-14,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 12.987322632391637,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.3-s12",
+      "paraxial_edge_slope_mrad": 60.58640517095304,
+      "report": "finite-source/fixed-b0.3-s12/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 8.074143048819593e-06,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.0001973188253772129,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015232600605075142,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015232600605075142,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 7.200218143932346e-08,
+        "order9_normalized_curl": 2.052062173396453e-08,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.005953993055555555,
+            "order": 3,
+            "relative_B_difference_to_order9": 0.00047799460672866745
+          },
+          {
+            "normalized_curl_residual": 0.00012438608177404837,
+            "order": 5,
+            "relative_B_difference_to_order9": 6.636823163819194e-06
+          },
+          {
+            "normalized_curl_residual": 1.819002480573033e-06,
+            "order": 7,
+            "relative_B_difference_to_order9": 7.200218143932346e-08
+          },
+          {
+            "normalized_curl_residual": 2.052062173396453e-08,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 39.31033544041843,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.6-s3",
+      "paraxial_edge_slope_mrad": 90.23581508089185,
+      "report": "finite-source/fixed-b0.6-s3/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 2.6475765720679334e-05,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.000179157729476076,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00013733088717438058,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00013733088717438058,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 2.8125853498058484e-10,
+        "order9_normalized_curl": 4.0079339324149475e-11,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.0007442491319444444,
+            "order": 3,
+            "relative_B_difference_to_order9": 2.956271805909516e-05
+          },
+          {
+            "normalized_curl_residual": 3.887065055439012e-06,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.0285658621119373e-07
+          },
+          {
+            "normalized_curl_residual": 1.421095687947682e-08,
+            "order": 7,
+            "relative_B_difference_to_order9": 2.8125853498058484e-10
+          },
+          {
+            "normalized_curl_residual": 4.0079339324149475e-11,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 6.493661316195818,
+      "legacy_100_mrad_edge_scope_exceeded": true,
+      "name": "fixed-b0.6-s6",
+      "paraxial_edge_slope_mrad": 121.17281034190609,
+      "report": "finite-source/fixed-b0.6-s6/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 3.3122593505741094e-05,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00018838145893818048,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00014619056262243912,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00014619056262243912,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 1.0987507200373634e-12,
+        "order9_normalized_curl": 7.827995961747944e-14,
+        "orders": [
+          {
+            "normalized_curl_residual": 9.303114149305555e-05,
+            "order": 3,
+            "relative_B_difference_to_order9": 1.842845180344277e-06
+          },
+          {
+            "normalized_curl_residual": 1.2147078298246911e-07,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.6038381733807228e-09
+          },
+          {
+            "normalized_curl_residual": 1.1102310062091266e-10,
+            "order": 7,
+            "relative_B_difference_to_order9": 1.0987507200373634e-12
+          },
+          {
+            "normalized_curl_residual": 7.827995961747944e-14,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 4.55341425684242,
+      "legacy_100_mrad_edge_scope_exceeded": true,
+      "name": "fixed-b0.6-s12",
+      "paraxial_edge_slope_mrad": 103.6678848932984,
+      "report": "finite-source/fixed-b0.6-s12/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 2.1854356365924588e-05,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00019407480608868433,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015045467774810195,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015045467774810195,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "matched_paraxial_edge",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 4.8253993393624725e-11,
+        "order9_normalized_curl": 5.516349449431782e-12,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.0003842631531739598,
+            "order": 3,
+            "relative_B_difference_to_order9": 1.222977316768977e-05
+          },
+          {
+            "normalized_curl_residual": 1.2916330571121258e-06,
+            "order": 5,
+            "relative_B_difference_to_order9": 2.739235967682182e-08
+          },
+          {
+            "normalized_curl_residual": 3.0391182665091134e-09,
+            "order": 7,
+            "relative_B_difference_to_order9": 4.8253993393624725e-11
+          },
+          {
+            "normalized_curl_residual": 5.516349449431782e-12,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.000762126519210923
+      },
+      "intrinsic_cs_mm": 3196.7937762263364,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "matched-b0.15-s6",
+      "paraxial_edge_slope_mrad": 10.0,
+      "report": "finite-source/matched-b0.15-s6/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 5.377811336249039e-07,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015236002533025594,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "matched_paraxial_edge",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 1.6653458698862917e-15,
+        "order9_normalized_curl": 5.1734470051964795e-17,
+        "orders": [
+          {
+            "normalized_curl_residual": 8.103478553051917e-06,
+            "order": 3,
+            "relative_B_difference_to_order9": 7.110648162870585e-08
+          },
+          {
+            "normalized_curl_residual": 2.0791080485872405e-09,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.2162123160427049e-11
+          },
+          {
+            "normalized_curl_residual": 3.7340546711887913e-13,
+            "order": 7,
+            "relative_B_difference_to_order9": 1.6653458698862917e-15
+          },
+          {
+            "normalized_curl_residual": 5.1734470051964795e-17,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00021055941017396982
+      },
+      "intrinsic_cs_mm": 78.62067088083685,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "matched-b0.3-s6",
+      "paraxial_edge_slope_mrad": 10.0,
+      "report": "finite-source/matched-b0.3-s6/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 2.92997829332009e-07,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015414369748634194,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "matched_paraxial_edge",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 2.312964634635743e-17,
+        "order9_normalized_curl": 7.116622496533113e-21,
+        "orders": [
+          {
+            "normalized_curl_residual": 4.1831438098174004e-07,
+            "order": 3,
+            "relative_B_difference_to_order9": 1.366533367945048e-09
+          },
+          {
+            "normalized_curl_residual": 1.4879759320265047e-11,
+            "order": 5,
+            "relative_B_difference_to_order9": 3.23815048849004e-14
+          },
+          {
+            "normalized_curl_residual": 3.704990152061624e-16,
+            "order": 7,
+            "relative_B_difference_to_order9": 2.312964634635743e-17
+          },
+          {
+            "normalized_curl_residual": 7.116622496533113e-21,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 7.840042640914589e-05
+      },
+      "intrinsic_cs_mm": 6.493661316195818,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "matched-b0.6-s6",
+      "paraxial_edge_slope_mrad": 10.0,
+      "report": "finite-source/matched-b0.6-s6/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 2.1817335138507588e-07,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015429180845172308,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "matched_tube_filling",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 2.8157661387713993e-11,
+        "order9_normalized_curl": 3.0093446194352475e-12,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.00031398010253906236,
+            "order": 3,
+            "relative_B_difference_to_order9": 9.33956865641535e-06
+          },
+          {
+            "normalized_curl_residual": 9.224187582731244e-07,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.8284362357512407e-08
+          },
+          {
+            "normalized_curl_residual": 1.896933758265124e-09,
+            "order": 7,
+            "relative_B_difference_to_order9": 2.8157661387713993e-11
+          },
+          {
+            "normalized_curl_residual": 3.0093446194352475e-12,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.0007124999999999999
+      },
+      "intrinsic_cs_mm": 78.62067088083685,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "filled-tube1.5",
+      "paraxial_edge_slope_mrad": 33.83843065533444,
+      "report": "finite-source/filled-tube1.5/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 3.4003900326595726e-06,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.0001520134846908494,
+            "tube_diameter_mm": 1.5
+          }
+        ]
+      }
+    },
+    {
+      "family": "matched_tube_filling",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 1.331206997227478e-06,
+        "order9_normalized_curl": 5.463273515543143e-07,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.01777852799999999,
+            "order": 3,
+            "relative_B_difference_to_order9": 0.0020866160023019775
+          },
+          {
+            "normalized_curl_residual": 0.0007701658329599996,
+            "order": 5,
+            "relative_B_difference_to_order9": 5.9863810302207554e-05
+          },
+          {
+            "normalized_curl_residual": 2.3354508718679016e-05,
+            "order": 7,
+            "relative_B_difference_to_order9": 1.331206997227478e-06
+          },
+          {
+            "normalized_curl_residual": 5.463273515543143e-07,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.0027359999999999997
+      },
+      "intrinsic_cs_mm": 78.62067088083685,
+      "legacy_100_mrad_edge_scope_exceeded": true,
+      "name": "filled-tube5.76",
+      "paraxial_edge_slope_mrad": 129.93957371648426,
+      "report": "finite-source/filled-tube5.76/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 6.159464593702424e-05,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00011789932626948829,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 2.8125853498058484e-10,
+        "order9_normalized_curl": 4.0079339324149475e-11,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.0007442491319444444,
+            "order": 3,
+            "relative_B_difference_to_order9": 2.956271805909516e-05
+          },
+          {
+            "normalized_curl_residual": 3.887065055439012e-06,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.0285658621119373e-07
+          },
+          {
+            "normalized_curl_residual": 1.421095687947682e-08,
+            "order": 7,
+            "relative_B_difference_to_order9": 2.8125853498058484e-10
+          },
+          {
+            "normalized_curl_residual": 4.0079339324149475e-11,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 78.62067088083685,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.3-s6-order5",
+      "paraxial_edge_slope_mrad": 45.11790754044593,
+      "report": "finite-source/fixed-b0.3-s6-order5/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 6.1132714563871815e-06,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00019506615390441073,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.0001501871454294701,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.0001501871454294701,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 2.8125853498058484e-10,
+        "order9_normalized_curl": 4.0079339324149475e-11,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.0007442491319444444,
+            "order": 3,
+            "relative_B_difference_to_order9": 2.956271805909516e-05
+          },
+          {
+            "normalized_curl_residual": 3.887065055439012e-06,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.0285658621119373e-07
+          },
+          {
+            "normalized_curl_residual": 1.421095687947682e-08,
+            "order": 7,
+            "relative_B_difference_to_order9": 2.8125853498058484e-10
+          },
+          {
+            "normalized_curl_residual": 4.0079339324149475e-11,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 78.62067088083685,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.3-s6-order7",
+      "paraxial_edge_slope_mrad": 45.11790754044593,
+      "report": "finite-source/fixed-b0.3-s6-order7/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 6.1149610148802935e-06,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00019506510632616436,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015018555479373585,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015018555479373585,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 2.8125853498058484e-10,
+        "order9_normalized_curl": 4.0079339324149475e-11,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.0007442491319444444,
+            "order": 3,
+            "relative_B_difference_to_order9": 2.956271805909516e-05
+          },
+          {
+            "normalized_curl_residual": 3.887065055439012e-06,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.0285658621119373e-07
+          },
+          {
+            "normalized_curl_residual": 1.421095687947682e-08,
+            "order": 7,
+            "relative_B_difference_to_order9": 2.8125853498058484e-10
+          },
+          {
+            "normalized_curl_residual": 4.0079339324149475e-11,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 78.62067088083685,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.3-s6-half-step",
+      "paraxial_edge_slope_mrad": 45.11790754044593,
+      "report": "finite-source/fixed-b0.3-s6-half-step/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 6.114961808023622e-06,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00019506510593536586,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015018555452250837,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015018555452250837,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 7.200218143932346e-08,
+        "order9_normalized_curl": 2.052062173396453e-08,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.005953993055555555,
+            "order": 3,
+            "relative_B_difference_to_order9": 0.00047799460672866745
+          },
+          {
+            "normalized_curl_residual": 0.00012438608177404837,
+            "order": 5,
+            "relative_B_difference_to_order9": 6.636823163819194e-06
+          },
+          {
+            "normalized_curl_residual": 1.819002480573033e-06,
+            "order": 7,
+            "relative_B_difference_to_order9": 7.200218143932346e-08
+          },
+          {
+            "normalized_curl_residual": 2.052062173396453e-08,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 92190.33777126313,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.15-s3-order5",
+      "paraxial_edge_slope_mrad": 6.387105707270526,
+      "report": "finite-source/fixed-b0.15-s3-order5/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 8.26023286659705e-07,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00018692265035158417,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.0001425744862771916,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.0001425744862771916,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 7.200218143932346e-08,
+        "order9_normalized_curl": 2.052062173396453e-08,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.005953993055555555,
+            "order": 3,
+            "relative_B_difference_to_order9": 0.00047799460672866745
+          },
+          {
+            "normalized_curl_residual": 0.00012438608177404837,
+            "order": 5,
+            "relative_B_difference_to_order9": 6.636823163819194e-06
+          },
+          {
+            "normalized_curl_residual": 1.819002480573033e-06,
+            "order": 7,
+            "relative_B_difference_to_order9": 7.200218143932346e-08
+          },
+          {
+            "normalized_curl_residual": 2.052062173396453e-08,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 92190.33777126313,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.15-s3-order7",
+      "paraxial_edge_slope_mrad": 6.387105707270526,
+      "report": "finite-source/fixed-b0.15-s3-order7/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 8.987207666955044e-07,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.0001868788625140061,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00014250771239299187,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00014250771239299187,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 7.200218143932346e-08,
+        "order9_normalized_curl": 2.052062173396453e-08,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.005953993055555555,
+            "order": 3,
+            "relative_B_difference_to_order9": 0.00047799460672866745
+          },
+          {
+            "normalized_curl_residual": 0.00012438608177404837,
+            "order": 5,
+            "relative_B_difference_to_order9": 6.636823163819194e-06
+          },
+          {
+            "normalized_curl_residual": 1.819002480573033e-06,
+            "order": 7,
+            "relative_B_difference_to_order9": 7.200218143932346e-08
+          },
+          {
+            "normalized_curl_residual": 2.052062173396453e-08,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 92190.33777126313,
+      "legacy_100_mrad_edge_scope_exceeded": false,
+      "name": "fixed-b0.15-s3-half-step",
+      "paraxial_edge_slope_mrad": 6.387105707270526,
+      "report": "finite-source/fixed-b0.15-s3-half-step/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 8.995519877874614e-07,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00018687864068644977,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00014250715093111488,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00014250715093111488,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 1.0987507200373634e-12,
+        "order9_normalized_curl": 7.827995961747944e-14,
+        "orders": [
+          {
+            "normalized_curl_residual": 9.303114149305555e-05,
+            "order": 3,
+            "relative_B_difference_to_order9": 1.842845180344277e-06
+          },
+          {
+            "normalized_curl_residual": 1.2147078298246911e-07,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.6038381733807228e-09
+          },
+          {
+            "normalized_curl_residual": 1.1102310062091266e-10,
+            "order": 7,
+            "relative_B_difference_to_order9": 1.0987507200373634e-12
+          },
+          {
+            "normalized_curl_residual": 7.827995961747944e-14,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 4.55341425684242,
+      "legacy_100_mrad_edge_scope_exceeded": true,
+      "name": "fixed-b0.6-s12-order5",
+      "paraxial_edge_slope_mrad": 103.6678848932984,
+      "report": "finite-source/fixed-b0.6-s12-order5/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 2.185451276703887e-05,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00019407470857624176,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015045453206152803,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015045453206152803,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 1.0987507200373634e-12,
+        "order9_normalized_curl": 7.827995961747944e-14,
+        "orders": [
+          {
+            "normalized_curl_residual": 9.303114149305555e-05,
+            "order": 3,
+            "relative_B_difference_to_order9": 1.842845180344277e-06
+          },
+          {
+            "normalized_curl_residual": 1.2147078298246911e-07,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.6038381733807228e-09
+          },
+          {
+            "normalized_curl_residual": 1.1102310062091266e-10,
+            "order": 7,
+            "relative_B_difference_to_order9": 1.0987507200373634e-12
+          },
+          {
+            "normalized_curl_residual": 7.827995961747944e-14,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 4.55341425684242,
+      "legacy_100_mrad_edge_scope_exceeded": true,
+      "name": "fixed-b0.6-s12-order7",
+      "paraxial_edge_slope_mrad": 103.6678848932984,
+      "report": "finite-source/fixed-b0.6-s12-order7/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 2.1854356551553877e-05,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00019407480598787608,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015045467761953812,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015045467761953812,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "fixed_source",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 1.0987507200373634e-12,
+        "order9_normalized_curl": 7.827995961747944e-14,
+        "orders": [
+          {
+            "normalized_curl_residual": 9.303114149305555e-05,
+            "order": 3,
+            "relative_B_difference_to_order9": 1.842845180344277e-06
+          },
+          {
+            "normalized_curl_residual": 1.2147078298246911e-07,
+            "order": 5,
+            "relative_B_difference_to_order9": 1.6038381733807228e-09
+          },
+          {
+            "normalized_curl_residual": 1.1102310062091266e-10,
+            "order": 7,
+            "relative_B_difference_to_order9": 1.0987507200373634e-12
+          },
+          {
+            "normalized_curl_residual": 7.827995961747944e-14,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.00095
+      },
+      "intrinsic_cs_mm": 4.55341425684242,
+      "legacy_100_mrad_edge_scope_exceeded": true,
+      "name": "fixed-b0.6-s12-half-step",
+      "paraxial_edge_slope_mrad": 103.6678848932984,
+      "report": "finite-source/fixed-b0.6-s12-half-step/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 2.185435619916909e-05,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00019407480611310923,
+            "tube_diameter_mm": 1.5
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015045467776009236,
+            "tube_diameter_mm": 2.0
+          },
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00015045467776009236,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "matched_tube_filling",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 1.331206997227478e-06,
+        "order9_normalized_curl": 5.463273515543143e-07,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.01777852799999999,
+            "order": 3,
+            "relative_B_difference_to_order9": 0.0020866160023019775
+          },
+          {
+            "normalized_curl_residual": 0.0007701658329599996,
+            "order": 5,
+            "relative_B_difference_to_order9": 5.9863810302207554e-05
+          },
+          {
+            "normalized_curl_residual": 2.3354508718679016e-05,
+            "order": 7,
+            "relative_B_difference_to_order9": 1.331206997227478e-06
+          },
+          {
+            "normalized_curl_residual": 5.463273515543143e-07,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.0027359999999999997
+      },
+      "intrinsic_cs_mm": 78.62067088083685,
+      "legacy_100_mrad_edge_scope_exceeded": true,
+      "name": "filled-tube5.76-order5",
+      "paraxial_edge_slope_mrad": 129.93957371648426,
+      "report": "finite-source/filled-tube5.76-order5/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 6.140177083668874e-05,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.0001180377670327859,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "matched_tube_filling",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 1.331206997227478e-06,
+        "order9_normalized_curl": 5.463273515543143e-07,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.01777852799999999,
+            "order": 3,
+            "relative_B_difference_to_order9": 0.0020866160023019775
+          },
+          {
+            "normalized_curl_residual": 0.0007701658329599996,
+            "order": 5,
+            "relative_B_difference_to_order9": 5.9863810302207554e-05
+          },
+          {
+            "normalized_curl_residual": 2.3354508718679016e-05,
+            "order": 7,
+            "relative_B_difference_to_order9": 1.331206997227478e-06
+          },
+          {
+            "normalized_curl_residual": 5.463273515543143e-07,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.0027359999999999997
+      },
+      "intrinsic_cs_mm": 78.62067088083685,
+      "legacy_100_mrad_edge_scope_exceeded": true,
+      "name": "filled-tube5.76-order7",
+      "paraxial_edge_slope_mrad": 129.93957371648426,
+      "report": "finite-source/filled-tube5.76-order7/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 6.159317603682268e-05,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00011790015897183981,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    },
+    {
+      "family": "matched_tube_filling",
+      "field_order_evidence": {
+        "grid_shape": [
+          33,
+          257
+        ],
+        "order7_vs9_relative_B": 1.331206997227478e-06,
+        "order9_normalized_curl": 5.463273515543143e-07,
+        "orders": [
+          {
+            "normalized_curl_residual": 0.01777852799999999,
+            "order": 3,
+            "relative_B_difference_to_order9": 0.0020866160023019775
+          },
+          {
+            "normalized_curl_residual": 0.0007701658329599996,
+            "order": 5,
+            "relative_B_difference_to_order9": 5.9863810302207554e-05
+          },
+          {
+            "normalized_curl_residual": 2.3354508718679016e-05,
+            "order": 7,
+            "relative_B_difference_to_order9": 1.331206997227478e-06
+          },
+          {
+            "normalized_curl_residual": 5.463273515543143e-07,
+            "order": 9,
+            "relative_B_difference_to_order9": 0.0
+          }
+        ],
+        "sampled_field_gates_passed": true,
+        "scope": "Fixed cylindrical sample grid within the represented beam radius; sampled estimates, not a rigorous global error bound",
+        "tested_radius_m": 0.0027359999999999997
+      },
+      "intrinsic_cs_mm": 78.62067088083685,
+      "legacy_100_mrad_edge_scope_exceeded": true,
+      "name": "filled-tube5.76-half-step",
+      "paraxial_edge_slope_mrad": 129.93957371648426,
+      "report": "finite-source/filled-tube5.76-half-step/report.json",
+      "source_count_comparison": {
+        "added_original_positive_count": 1024,
+        "cs_fit_count_gate_passed": true,
+        "historical_prefix_raw_rewritten": false,
+        "normalization": "Original 1024 record retains weight 1/1024. New combined 2048 source has weight 1/2048 per original ID; blocked current is not restored.",
+        "relative_cs_fit_change": 6.159464593991082e-05,
+        "source_prefix_phase_reused_exactly": true,
+        "source_prefix_size": 1024,
+        "tube_checks": [
+          {
+            "d95_count_gate_passed": true,
+            "relative_d95_change": -0.00011789932627770394,
+            "tube_diameter_mm": 5.76
+          }
+        ]
+      }
+    }
+  ],
+  "figures": [
+    "intrinsic-coefficients.png",
+    "intrinsic-coefficients.pdf",
+    "intrinsic-coefficients.svg",
+    "fixed-source-grid.png",
+    "fixed-source-grid.pdf",
+    "fixed-source-grid.svg",
+    "tube-current-size-intrinsic.png",
+    "tube-current-size-intrinsic.pdf",
+    "tube-current-size-intrinsic.svg",
+    "native-focus.png",
+    "native-focus.pdf",
+    "native-focus.svg",
+    "matched-paraxial-edge.png",
+    "matched-paraxial-edge.pdf",
+    "matched-paraxial-edge.svg",
+    "filled-pupil-sensitivity.png",
+    "filled-pupil-sensitivity.pdf",
+    "filled-pupil-sensitivity.svg",
+    "numerical-refinements.png",
+    "numerical-refinements.pdf",
+    "numerical-refinements.svg"
+  ],
+  "schema": "ideal-lens-aberration-archive-results-v1",
+  "scope": "Synthetic single Gaussian magnetic lens; separate intrinsic reference and finite-source/tube observations, not a microscope preset or FEM material design"
+}

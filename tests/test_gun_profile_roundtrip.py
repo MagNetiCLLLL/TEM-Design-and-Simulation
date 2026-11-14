@@ -22,6 +22,9 @@ def configured(gun_name="FEG"):
         stage.voltage_fraction *= .85 + .15 * index / (len(stages) - 1)
         stage.soft_edge_mm += .125 * (index + 1)
     if state.electron_gun.type_key == "cold_feg":
+        # These controls tests deliberately exercise the retained product
+        # quadrature schema, independently of the new default prefix source.
+        state.electron_gun.emitter.sampling = None
         state.electron_gun.emitter.quadrature = EmissionQuadrature(3, 5, 7)
         state.electron_gun.emitter.ray_count = 105
     return state, selection
@@ -43,6 +46,7 @@ def test_profile_restores_quadrature_and_all_accelerator_controls(tmp_path, gun_
     centers = [stage.center_from_tip_mm for stage in gun.accelerator.stages]
     if gun.type_key == "cold_feg":
         # The incoming ray budget and incoming product must be checked together.
+        gun.emitter.sampling = None
         gun.emitter.quadrature = EmissionQuadrature(3, 3, 3)
         gun.emitter.ray_count = 27
     apply_profile_values(restored, values)

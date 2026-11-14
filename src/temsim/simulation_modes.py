@@ -32,7 +32,9 @@ MODES = (
 MODE_BY_KEY = {item.key: item for item in MODES}
 FINITE_FIELD_KEYS = ("unified", "ideal", "linear_geometry", "nonlinear_material", "custom", "analytical")
 MODEL_SETTINGS = ("lens_field_map_descriptors", "probe_aberrations", "image_aberrations",
-                  "chromatic_aberration_enabled", "equivalent_image_lenses_enabled")
+                  "chromatic_aberration_enabled", "equivalent_image_lenses_enabled",
+                  "round_lens_field_model", "gaussian_geometry_coupling")
+_ROUND_LENS_DEFAULTS = {"round_lens_field_model": "gaussian", "gaussian_geometry_coupling": "fixed_calibration"}
 
 
 def validate_mode(value):
@@ -66,6 +68,9 @@ def coherent_mode_issue(state):
     if is_thin(state):
         return ("Coherent propagation is unavailable in Ideal Optics (thin elements). "
                 "Select Finite-Field Optics in Simulation; the mode was not changed automatically.")
+    if getattr(state, "round_lens_field_model", "gaussian") == "copper_coil":
+        return ("Copper-coil round-lens fields currently support classical particles only. "
+                "Coherent propagation is not qualified for this source model; select Gaussian calibration to use coherent optics.")
     return None
 
 
@@ -78,7 +83,12 @@ def require_coherent_mode(state):
 def mode_display_label(state):
     key = mode_key(state)
     label = MODE_BY_KEY[key].label
-    return f"Finite-Field Optics / {label}" if key in FINITE_FIELD_KEYS and key != "unified" else label
+    label = f"Finite-Field Optics / {label}" if key in FINITE_FIELD_KEYS and key != "unified" else label
+    if getattr(state, "round_lens_field_model", "gaussian") == "copper_coil":
+        label += " / Copper coils in vacuum"
+    elif getattr(state, "gaussian_geometry_coupling", "fixed_calibration") == "axial_length":
+        label += " / Gaussian coil-length linking"
+    return label
 
 
 def uses_field_maps(state):
@@ -94,6 +104,9 @@ def normalise_profiles(profiles):
         if not isinstance(row, dict) or set(row) - {*MODEL_SETTINGS, "lens_excitation"}:
             raise ValueError("Simulation mode profile contains unsupported settings")
         row = deepcopy(row)
+        from temsim.round_lens_models import validate_round_lens_selection
+        validate_round_lens_selection(row.get("round_lens_field_model", "gaussian"),
+                                      row.get("gaussian_geometry_coupling", "fixed_calibration"), key)
         for name in ("lens_field_map_descriptors", "probe_aberrations", "image_aberrations", "lens_excitation"):
             if name in row and not isinstance(row[name], dict):
                 raise ValueError(f"Simulation profile {name} must be a table")
@@ -125,7 +138,9 @@ def validate_model_recipes(descriptors):
 
 
 def capture_mode_settings(state):
-    settings = {name: deepcopy(getattr(state, name)) for name in MODEL_SETTINGS}
+    settings = {name: deepcopy(getattr(state, name, _ROUND_LENS_DEFAULTS[name])
+                              if name in _ROUND_LENS_DEFAULTS else getattr(state, name))
+                for name in MODEL_SETTINGS}
     settings["lens_excitation"] = {
         lens.key: {"percent": float(lens.percent), "polarity": int(lens.polarity)}
         for lens in state.lenses
@@ -163,6 +178,9 @@ def switch_mode(state, target):
     profiles = normalise_profiles(getattr(state, "simulation_mode_profiles", {}))
     outgoing = capture_mode_settings(state)
     incoming = deepcopy(profiles.get(target, outgoing))
+    from temsim.round_lens_models import validate_round_lens_selection
+    validate_round_lens_selection(incoming.get("round_lens_field_model", getattr(state, "round_lens_field_model", "gaussian")),
+                                  incoming.get("gaussian_geometry_coupling", getattr(state, "gaussian_geometry_coupling", "fixed_calibration")), target)
     if target == "linear_geometry":
         issues = linear_mode_issues(state, incoming.get("lens_field_map_descriptors", {}))
         if issues:
