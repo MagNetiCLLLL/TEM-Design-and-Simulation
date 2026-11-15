@@ -88,6 +88,10 @@ def round_lens_solids(part, by_key) -> tuple[SolidSpec, ...] | None:
     if profile not in SUPPORTED_PROFILES:
         return None
     if profile == MAGNETIC_EXCITATION_COIL:
+        from temsim.cad_round_winding import round_winding_solids
+        winding = round_winding_solids(part, by_key)
+        if winding is not None:
+            return winding
         from temsim.cad_objective_upper_hardware import objective_upper_hardware_solids
         detailed = objective_upper_hardware_solids(part, by_key)
         if detailed is not None:

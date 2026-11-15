@@ -573,8 +573,8 @@ class State:
     # ideal key) without changing operating values. ideal_thin is a separate mode.
     simulation_mode: str = "custom"
     simulation_mode_profiles: dict = field(default_factory=dict, repr=False)
-    round_lens_field_model: str = field(default="gaussian", kw_only=True)
-    gaussian_geometry_coupling: str = field(default="fixed_calibration", kw_only=True)
+    round_lens_field_model: str = field(default="gaussian", kw_only=True, metadata={"omit_default": True})
+    gaussian_geometry_coupling: str = field(default="fixed_calibration", kw_only=True, metadata={"omit_default": True})
 
     illumination_mode: str = "STEM"
 

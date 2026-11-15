@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 
 from temsim.optics.column import default_state
+from temsim.coil_winding import OWNER_CURRENT_FIELD
 from temsim.physics.copper_coil_field_provider import CopperCoilAssemblyPotential
 from temsim.physics.lens_field_provider import FrozenAnalyticField, resolve_runtime_lens_field_provider
 from temsim.physics.potential_capture import capture_round_lens_potential, capture_selected_column_potentials
@@ -34,6 +35,14 @@ def _change_part(state, key, **changes):
         for part in state._resolved_assembly.parts))
 
 
+def _use_legacy_objective_reference(state):
+    state._resolved_assembly = replace(state._resolved_assembly, parts=tuple(
+        replace(part, data={name: value for name, value in part.data.items()
+                            if name != OWNER_CURRENT_FIELD})
+        if part.key == "objective_lens" else part
+        for part in state._resolved_assembly.parts))
+
+
 def test_every_installed_round_lens_captures_owned_windings_without_gaussians(installed):
     lenses = tuple(lens.key for lens in installed.lenses if lens.enabled)
     snapshot = capture_selected_column_potentials(installed, round_lens_keys=lenses)
@@ -41,8 +50,13 @@ def test_every_installed_round_lens_captures_owned_windings_without_gaussians(in
     for row in snapshot.contributions:
         assert type(row.potential) is CopperCoilAssemblyPotential
         assert row.owner_ids == (row.source_id,)
-        assert row.potential.provenance["reference_ampere_turns_at_100_percent"] == 3000.
-        assert row.potential.provenance["reference_status"] == "engineering_reference_not_oem_not_particle_qualified"
+        provenance = row.potential.provenance
+        current = installed._resolved_assembly.part(row.source_id).data[OWNER_CURRENT_FIELD]
+        turns = provenance["winding_current_definition"]["total_turn_count"]
+        assert provenance["reference_ampere_turns_at_100_percent"] == turns*current
+        assert provenance["reference_status"] == "user_defined_winding_current_not_oem_not_particle_qualified"
+        assert provenance["legacy_reference_record"]["ampere_turns_at_100_percent"] == 3000.
+        assert provenance["legacy_reference_record"]["active"] is False
         assert "optical tilt does not imply a mechanically tilted copper winding" in row.potential.provenance["source_registration_policy"]
         assert not row.potential.to_metadata()["pole_piece_magnetism"]
     clone = ElectromagneticPotentialSnapshot.from_dict(snapshot.to_dict())
@@ -69,8 +83,21 @@ def test_objective_winding_uses_split_material_intervals_and_conserves_ampere_tu
     row.potential.sample([[coils[0].inner_radius_m+.001, 0., gap]])
 
 
+def test_default_objective_580_per_region_preserves_the_historical_reference_ampere_turns(installed):
+    row=capture_round_lens_potential(installed,'objective_lens')
+    definition=row.potential.provenance['winding_current_definition']
+    winding,=definition['windings']
+    assert definition['total_turn_count']==1160
+    assert winding['interval_turn_counts']==(580,580)
+    np.testing.assert_allclose(row.potential.provenance['reference_ampere_turns_at_100_percent'],
+                               1172*1575.2330285262728,rtol=2e-15,atol=0)
+    assert winding['wire_diameter_mm'] is None
+    assert winding['conductor_cross_section_mm2'] is None
+
+
 def test_current_and_explicit_reference_changes_invalidate_frozen_source(installed):
     state = _copy_state(installed)
+    _use_legacy_objective_reference(state)
     key = "objective_lens"
     lens = next(lens for lens in state.lenses if lens.key == key)
     original = capture_round_lens_potential(state, key).potential
@@ -85,8 +112,22 @@ def test_current_and_explicit_reference_changes_invalidate_frozen_source(install
     np.testing.assert_allclose(changed.sample(point)["B_t"], original.sample(point)["B_t"], rtol=2e-15)
 
 
+def test_prescribed_current_ignores_inactive_legacy_reference(installed):
+    state = _copy_state(installed)
+    key = "objective_lens"
+    original = capture_round_lens_potential(state, key).potential
+    _change_part(state, key, air_core_reference_ampere_turns=6000.)
+    changed = capture_round_lens_potential(state, key).potential
+    assert changed.provenance["legacy_reference_record"]["ampere_turns_at_100_percent"] == 6000.
+    assert changed.provenance["legacy_reference_record"]["active"] is False
+    assert [coil.to_metadata() for coil in changed.coils] == [coil.to_metadata() for coil in original.coils]
+    np.testing.assert_array_equal(changed.sample([[0., 0., 1.7]])["B_t"],
+                                  original.sample([[0., 0., 1.7]])["B_t"])
+
+
 def test_missing_reference_or_winding_does_not_fall_back_to_gaussian(installed):
     state = _copy_state(installed)
+    _use_legacy_objective_reference(state)
     key = "objective_lens"
     _change_part(state, key, air_core_reference_ampere_turns=None)
     with pytest.raises(ValueError, match="reference_ampere_turns"):

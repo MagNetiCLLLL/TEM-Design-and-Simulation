@@ -1,0 +1,294 @@
+{
+  "status": "passed",
+  "selection": {
+    "gun": "FEG",
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "beam_blanker": "None"
+  },
+  "operating_modes": [
+    "nano_probe",
+    "diffraction"
+  ],
+  "field_model": "copper_coil",
+  "time_s": 0.0,
+  "scope": "Detached current readback only; no particle, field-grid or coherent calculation",
+  "optical_state_unchanged": true,
+  "sources": [
+    {
+      "source_id": "feg_deflector:0",
+      "component_key": "feg_deflector",
+      "material_host": "feg_deflector",
+      "turns_per_coil": 90,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "feg_deflector:1",
+      "component_key": "feg_deflector",
+      "material_host": "feg_deflector",
+      "turns_per_coil": 90,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "feg_stigmator",
+      "component_key": "feg_stigmator",
+      "material_host": "feg_stigmator",
+      "turns_per_coil": 784,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "condenser_deflector:0",
+      "component_key": "condenser_deflector",
+      "material_host": "condenser_deflector",
+      "turns_per_coil": 135,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [
+        "condenser_deflector"
+      ],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "condenser_deflector:1",
+      "component_key": "condenser_deflector",
+      "material_host": "condenser_deflector",
+      "turns_per_coil": 135,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [
+        "condenser_deflector"
+      ],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "beam_deflector:0",
+      "component_key": "beam_deflector",
+      "material_host": "beam_deflector",
+      "turns_per_coil": 216,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [
+        "beam_deflector"
+      ],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "beam_deflector:1",
+      "component_key": "beam_deflector",
+      "material_host": "beam_deflector",
+      "turns_per_coil": 216,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [
+        "beam_deflector"
+      ],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "condenser_stigmator",
+      "component_key": "condenser_stigmator",
+      "material_host": "condenser_stigmator",
+      "turns_per_coil": 400,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "ac_deflector:0",
+      "component_key": "ac_deflector",
+      "material_host": "ac_deflector",
+      "turns_per_coil": 104,
+      "channel_currents_a": [
+        0.0013619054791644716,
+        -0.001997599113361339
+      ],
+      "dynamic": true,
+      "drive_keys": [
+        "ac_deflector"
+      ],
+      "captured_time_s": 0.0
+    },
+    {
+      "source_id": "ac_deflector:1",
+      "component_key": "ac_deflector",
+      "material_host": "ac_deflector",
+      "turns_per_coil": 104,
+      "channel_currents_a": [
+        -0.0013619054791644714,
+        0.0019975991133613395
+      ],
+      "dynamic": true,
+      "drive_keys": [
+        "ac_deflector"
+      ],
+      "captured_time_s": 0.0
+    },
+    {
+      "source_id": "objective_stigmator",
+      "component_key": "objective_stigmator",
+      "material_host": "objective_stigmator",
+      "turns_per_coil": 400,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "image_diffraction_deflector:0",
+      "component_key": "image_diffraction_deflector",
+      "material_host": "image_diffraction_deflector",
+      "turns_per_coil": 104,
+      "channel_currents_a": [
+        -0.0014178369164529478,
+        0.00202929412536487
+      ],
+      "dynamic": true,
+      "drive_keys": [
+        "image_diffraction_deflector",
+        "descan_deflector"
+      ],
+      "captured_time_s": 0.0
+    },
+    {
+      "source_id": "image_diffraction_deflector:1",
+      "component_key": "image_diffraction_deflector",
+      "material_host": "image_diffraction_deflector",
+      "turns_per_coil": 104,
+      "channel_currents_a": [
+        -0.0014178369164529476,
+        0.0020292941253648705
+      ],
+      "dynamic": true,
+      "drive_keys": [
+        "image_diffraction_deflector",
+        "descan_deflector"
+      ],
+      "captured_time_s": 0.0
+    },
+    {
+      "source_id": "probe_dph2_deflector:0",
+      "component_key": "probe_dph2_deflector",
+      "material_host": "probe_dph2_coils",
+      "turns_per_coil": 16,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [
+        "probe_dph2_deflector"
+      ],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "probe_dph1_deflector:0",
+      "component_key": "probe_dph1_deflector",
+      "material_host": "probe_dph1_coils",
+      "turns_per_coil": 16,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [
+        "probe_dph1_deflector"
+      ],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "probe_dp22_deflector:0",
+      "component_key": "probe_dp22_deflector",
+      "material_host": "probe_dp22_coils",
+      "turns_per_coil": 16,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [
+        "probe_dp22_deflector"
+      ],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "probe_dp21_deflector:0",
+      "component_key": "probe_dp21_deflector",
+      "material_host": "probe_dp21_coils",
+      "turns_per_coil": 16,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [
+        "probe_dp21_deflector"
+      ],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "probe_dp11_deflector:0",
+      "component_key": "probe_dp11_deflector",
+      "material_host": "probe_dp11_coils",
+      "turns_per_coil": 16,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [
+        "probe_dp11_deflector"
+      ],
+      "captured_time_s": null
+    },
+    {
+      "source_id": "diffraction_stigmator",
+      "component_key": "diffraction_stigmator",
+      "material_host": "diffraction_stigmator",
+      "turns_per_coil": 672,
+      "channel_currents_a": [
+        0.0,
+        0.0
+      ],
+      "dynamic": false,
+      "drive_keys": [],
+      "captured_time_s": null
+    }
+  ]
+}

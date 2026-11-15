@@ -1,0 +1,2096 @@
+{
+  "status": "passed",
+  "source_files": 5,
+  "hosts": 40,
+  "peak_normalized_error_limit": 1e-08,
+  "maximum_peak_normalized_error": 5.0580258178211354e-14,
+  "unique_exact_centered_circuit_responses": 12,
+  "reference_orders": [
+    24,
+    48
+  ],
+  "installed_orders": [
+    12,
+    24
+  ],
+  "native_target_method": "Analytic derivatives of unchanged legacy executor Az unit polynomials",
+  "source_particle_or_wave_execution": false,
+  "records": [
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hpol_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 63,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809314616,
+          4.189986019004054e-19
+        ],
+        [
+          5.72717677024906e-19,
+          -0.002100657780931456
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -1.112556105540503e-17,
+          0.4926315791363933
+        ],
+        [
+          -0.49263157913639344,
+          -2.3601355226272505e-16
+        ]
+      ],
+      "maximum_absolute_error": 4.8138576458356397e-17,
+      "peak_normalized_error": 2.291595370523045e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_qpol_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 63,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809314477,
+          -2.2154154724602573e-19
+        ],
+        [
+          4.088387096967816e-20,
+          -0.0021006577809313896
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.4711699312032645e-18,
+          0.016034210362215306
+        ],
+        [
+          -0.016034210362214994,
+          -3.62232770141968e-18
+        ]
+      ],
+      "maximum_absolute_error": 3.426078865054194e-17,
+      "peak_normalized_error": 1.6309552637055905e-14,
+      "native_reference_basis": "Legacy normal native polynomial plus explicit 45-degree electrical extension",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hp1_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 19,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          0.0
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809313826
+        ],
+        [
+          -1.6981663729161218e-18
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.29862626494082956
+        ],
+        [
+          2.414087081653126e-16
+        ]
+      ],
+      "maximum_absolute_error": 3.0791341698588326e-17,
+      "peak_normalized_error": 1.465795237001227e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hp2_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 19,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0020192072278594443
+        ],
+        [
+          -0.0005792799699177146
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002019207227859424
+        ],
+        [
+          -0.0005792799699177239
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.2870473801448182
+        ],
+        [
+          0.0823495456241642
+        ]
+      ],
+      "maximum_absolute_error": 2.0383000842727483e-17,
+      "peak_normalized_error": 1.0094556200819192e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hpol_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 63,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809314616,
+          4.189986019004054e-19
+        ],
+        [
+          5.72717677024906e-19,
+          -0.002100657780931456
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -1.112556105540503e-17,
+          0.4926315791363933
+        ],
+        [
+          -0.49263157913639344,
+          -2.3601355226272505e-16
+        ]
+      ],
+      "maximum_absolute_error": 4.8138576458356397e-17,
+      "peak_normalized_error": 2.291595370523045e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_qpol_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 63,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809314477,
+          -2.2154154724602573e-19
+        ],
+        [
+          4.088387096967816e-20,
+          -0.0021006577809313896
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.4711699312032645e-18,
+          0.016034210362215306
+        ],
+        [
+          -0.016034210362214994,
+          -3.62232770141968e-18
+        ]
+      ],
+      "maximum_absolute_error": 3.426078865054194e-17,
+      "peak_normalized_error": 1.6309552637055905e-14,
+      "native_reference_basis": "Legacy normal native polynomial plus explicit 45-degree electrical extension",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hp1_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 19,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          0.0
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809313826
+        ],
+        [
+          -1.6981663729161218e-18
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.29862626494082956
+        ],
+        [
+          2.414087081653126e-16
+        ]
+      ],
+      "maximum_absolute_error": 3.0791341698588326e-17,
+      "peak_normalized_error": 1.465795237001227e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hp2_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 19,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0020192072278594443
+        ],
+        [
+          -0.0005792799699177146
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002019207227859424
+        ],
+        [
+          -0.0005792799699177239
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.2870473801448182
+        ],
+        [
+          0.0823495456241642
+        ]
+      ],
+      "maximum_absolute_error": 2.0383000842727483e-17,
+      "peak_normalized_error": 1.0094556200819192e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qph2_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931365,
+          -2.2335030825949384e-19
+        ],
+        [
+          8.986086600371672e-20,
+          -0.0021006577809314078
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.957455057054359e-17,
+          0.18208063671349548
+        ],
+        [
+          -0.1820806367134995,
+          -4.537950603845812e-17
+        ]
+      ],
+      "maximum_absolute_error": 4.85722573273506e-17,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hp2_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 2,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          0.0
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931424
+        ],
+        [
+          1.2503821908775733e-18
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.06825468742799495
+        ],
+        [
+          -4.062748648475188e-17
+        ]
+      ],
+      "maximum_absolute_error": 1.0408340855860843e-17,
+      "peak_normalized_error": 4.954800801130908e-15,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hpc_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809313622,
+          1.3040280169677028e-18
+        ],
+        [
+          1.4118012089996688e-18,
+          -0.002100657780931307
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          1.0806546674201257e-15,
+          13.299655055158937
+        ],
+        [
+          -13.2996550551586,
+          -1.1684090226687943e-14
+        ]
+      ],
+      "maximum_absolute_error": 1.0625181290357943e-16,
+      "peak_normalized_error": 5.0580258178211354e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qpc_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931365,
+          -2.2335030825949384e-19
+        ],
+        [
+          8.986086600371672e-20,
+          -0.0021006577809314078
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.957455057054359e-17,
+          0.18208063671349548
+        ],
+        [
+          -0.1820806367134995,
+          -4.537950603845812e-17
+        ]
+      ],
+      "maximum_absolute_error": 4.85722573273506e-17,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qph1_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809313935,
+          -6.921387157290721e-21
+        ],
+        [
+          -5.517415787997659e-20,
+          -0.0021006577809314403
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -4.128425095734244e-17,
+          0.18320914076089778
+        ],
+        [
+          -0.1832091407609004,
+          -3.301151189163465e-17
+        ]
+      ],
+      "maximum_absolute_error": 2.688821387764051e-17,
+      "peak_normalized_error": 1.2799902069588178e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hp1_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 2,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0020839949919957646
+        ],
+        [
+          0.00026406057245310634
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002083994991995791
+        ],
+        [
+          0.0002640605724531102
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.06739758704757311
+        ],
+        [
+          -0.008539869570750112
+        ]
+      ],
+      "maximum_absolute_error": 2.6454533008646308e-17,
+      "peak_normalized_error": 1.2694144232713239e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hpol_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931421,
+          4.6360507097904255e-18
+        ],
+        [
+          4.361400027042327e-18,
+          -0.0021006577809314494
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          1.9338615736946158e-14,
+          13.379510590451687
+        ],
+        [
+          -13.379510590451893,
+          -3.3303032052730925e-14
+        ]
+      ],
+      "maximum_absolute_error": 3.599551212651875e-17,
+      "peak_normalized_error": 1.7135352770577723e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qpol_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931365,
+          -2.2335030825949384e-19
+        ],
+        [
+          8.986086600371672e-20,
+          -0.0021006577809314078
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.957455057054359e-17,
+          0.18208063671349548
+        ],
+        [
+          -0.1820806367134995,
+          -4.537950603845812e-17
+        ]
+      ],
+      "maximum_absolute_error": 4.85722573273506e-17,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qph2_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931365,
+          -2.2335030825949384e-19
+        ],
+        [
+          8.986086600371672e-20,
+          -0.0021006577809314078
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.957455057054359e-17,
+          0.18208063671349548
+        ],
+        [
+          -0.1820806367134995,
+          -4.537950603845812e-17
+        ]
+      ],
+      "maximum_absolute_error": 4.85722573273506e-17,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hp2_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 2,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          0.0
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809314186
+        ],
+        [
+          1.4215775214576686e-18
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.06825468742799506
+        ],
+        [
+          -4.618997452252071e-17
+        ]
+      ],
+      "maximum_absolute_error": 5.204170427930421e-18,
+      "peak_normalized_error": 2.477400400565454e-15,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hpc_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809313622,
+          1.3040280169677028e-18
+        ],
+        [
+          1.4118012089996688e-18,
+          -0.002100657780931307
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          1.0806546674201257e-15,
+          13.299655055158937
+        ],
+        [
+          -13.2996550551586,
+          -1.1684090226687943e-14
+        ]
+      ],
+      "maximum_absolute_error": 1.0625181290357943e-16,
+      "peak_normalized_error": 5.0580258178211354e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qpc_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931365,
+          -2.2335030825949384e-19
+        ],
+        [
+          8.986086600371672e-20,
+          -0.0021006577809314078
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.957455057054359e-17,
+          0.18208063671349548
+        ],
+        [
+          -0.1820806367134995,
+          -4.537950603845812e-17
+        ]
+      ],
+      "maximum_absolute_error": 4.85722573273506e-17,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qph1_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809313935,
+          -6.921387157290721e-21
+        ],
+        [
+          -5.517415787997659e-20,
+          -0.0021006577809314403
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -4.128425095734244e-17,
+          0.18320914076089778
+        ],
+        [
+          -0.1832091407609004,
+          -3.301151189163465e-17
+        ]
+      ],
+      "maximum_absolute_error": 2.688821387764051e-17,
+      "peak_normalized_error": 1.2799902069588178e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hp1_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 2,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.002083732777539542
+        ],
+        [
+          0.00026612182247052986
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002083732777539564
+        ],
+        [
+          0.0002661218224705362
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.06738910688245461
+        ],
+        [
+          -0.008606531572343165
+        ]
+      ],
+      "maximum_absolute_error": 2.211772431870429e-17,
+      "peak_normalized_error": 1.0614472525992875e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hpol_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931421,
+          4.6360507097904255e-18
+        ],
+        [
+          4.361400027042327e-18,
+          -0.0021006577809314494
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          1.9338615736946158e-14,
+          13.379510590451687
+        ],
+        [
+          -13.379510590451893,
+          -3.3303032052730925e-14
+        ]
+      ],
+      "maximum_absolute_error": 3.599551212651875e-17,
+      "peak_normalized_error": 1.7135352770577723e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qpol_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931365,
+          -2.2335030825949384e-19
+        ],
+        [
+          8.986086600371672e-20,
+          -0.0021006577809314078
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.957455057054359e-17,
+          0.18208063671349548
+        ],
+        [
+          -0.1820806367134995,
+          -4.537950603845812e-17
+        ]
+      ],
+      "maximum_absolute_error": 4.85722573273506e-17,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hpol_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 63,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809314616,
+          4.189986019004054e-19
+        ],
+        [
+          5.72717677024906e-19,
+          -0.002100657780931456
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -1.112556105540503e-17,
+          0.4926315791363933
+        ],
+        [
+          -0.49263157913639344,
+          -2.3601355226272505e-16
+        ]
+      ],
+      "maximum_absolute_error": 4.8138576458356397e-17,
+      "peak_normalized_error": 2.291595370523045e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_qpol_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 63,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809314477,
+          -2.2154154724602573e-19
+        ],
+        [
+          4.088387096967816e-20,
+          -0.0021006577809313896
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.4711699312032645e-18,
+          0.016034210362215306
+        ],
+        [
+          -0.016034210362214994,
+          -3.62232770141968e-18
+        ]
+      ],
+      "maximum_absolute_error": 3.426078865054194e-17,
+      "peak_normalized_error": 1.6309552637055905e-14,
+      "native_reference_basis": "Legacy normal native polynomial plus explicit 45-degree electrical extension",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hp1_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 19,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          0.0
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809313826
+        ],
+        [
+          -1.6981663729161218e-18
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.29862626494082956
+        ],
+        [
+          2.414087081653126e-16
+        ]
+      ],
+      "maximum_absolute_error": 3.0791341698588326e-17,
+      "peak_normalized_error": 1.465795237001227e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hp2_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 19,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0020192072278594443
+        ],
+        [
+          -0.0005792799699177146
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0020192072278594282
+        ],
+        [
+          -0.0005792799699177252
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.2870473801448182
+        ],
+        [
+          0.0823495456241642
+        ]
+      ],
+      "maximum_absolute_error": 1.6046192152785466e-17,
+      "peak_normalized_error": 7.946778285751278e-15,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qph2_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931365,
+          -2.2335030825949384e-19
+        ],
+        [
+          8.986086600371672e-20,
+          -0.0021006577809314078
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.957455057054359e-17,
+          0.18208063671349548
+        ],
+        [
+          -0.1820806367134995,
+          -4.537950603845812e-17
+        ]
+      ],
+      "maximum_absolute_error": 4.85722573273506e-17,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hp2_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 2,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          0.0
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809314186
+        ],
+        [
+          1.4215775214576686e-18
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.06825468742799506
+        ],
+        [
+          -4.618997452252071e-17
+        ]
+      ],
+      "maximum_absolute_error": 5.204170427930421e-18,
+      "peak_normalized_error": 2.477400400565454e-15,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hpc_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809313622,
+          1.3040280169677028e-18
+        ],
+        [
+          1.4118012089996688e-18,
+          -0.002100657780931307
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          1.0806546674201257e-15,
+          13.299655055158937
+        ],
+        [
+          -13.2996550551586,
+          -1.1684090226687943e-14
+        ]
+      ],
+      "maximum_absolute_error": 1.0625181290357943e-16,
+      "peak_normalized_error": 5.0580258178211354e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qpc_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931365,
+          -2.2335030825949384e-19
+        ],
+        [
+          8.986086600371672e-20,
+          -0.0021006577809314078
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.957455057054359e-17,
+          0.18208063671349548
+        ],
+        [
+          -0.1820806367134995,
+          -4.537950603845812e-17
+        ]
+      ],
+      "maximum_absolute_error": 4.85722573273506e-17,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qph1_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809313935,
+          -6.921387157290721e-21
+        ],
+        [
+          -5.517415787997659e-20,
+          -0.0021006577809314403
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -4.128425095734244e-17,
+          0.18320914076089778
+        ],
+        [
+          -0.1832091407609004,
+          -3.301151189163465e-17
+        ]
+      ],
+      "maximum_absolute_error": 2.688821387764051e-17,
+      "peak_normalized_error": 1.2799902069588178e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hp1_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 2,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.002083732777539542
+        ],
+        [
+          0.00026612182247052986
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002083732777539564
+        ],
+        [
+          0.0002661218224705362
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.06738910688245461
+        ],
+        [
+          -0.008606531572343165
+        ]
+      ],
+      "maximum_absolute_error": 2.211772431870429e-17,
+      "peak_normalized_error": 1.0614472525992875e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_hpol_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931421,
+          4.6360507097904255e-18
+        ],
+        [
+          4.361400027042327e-18,
+          -0.0021006577809314494
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          1.9338615736946158e-14,
+          13.379510590451687
+        ],
+        [
+          -13.379510590451893,
+          -3.3303032052730925e-14
+        ]
+      ],
+      "maximum_absolute_error": 3.599551212651875e-17,
+      "peak_normalized_error": 1.7135352770577723e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "probe_qpol_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 384,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.002100657780931365,
+          -2.2335030825949384e-19
+        ],
+        [
+          8.986086600371672e-20,
+          -0.0021006577809314078
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.957455057054359e-17,
+          0.18208063671349548
+        ],
+        [
+          -0.1820806367134995,
+          -4.537950603845812e-17
+        ]
+      ],
+      "maximum_absolute_error": 4.85722573273506e-17,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hpol_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 63,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809314616,
+          4.189986019004054e-19
+        ],
+        [
+          5.72717677024906e-19,
+          -0.002100657780931456
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -1.112556105540503e-17,
+          0.4926315791363933
+        ],
+        [
+          -0.49263157913639344,
+          -2.3601355226272505e-16
+        ]
+      ],
+      "maximum_absolute_error": 4.8138576458356397e-17,
+      "peak_normalized_error": 2.291595370523045e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_qpol_quadrupole",
+      "multipole_order": 2,
+      "turn_count_per_coil": 63,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809314477,
+          -2.2154154724602573e-19
+        ],
+        [
+          4.088387096967816e-20,
+          -0.0021006577809313896
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          -3.4711699312032645e-18,
+          0.016034210362215306
+        ],
+        [
+          -0.016034210362214994,
+          -3.62232770141968e-18
+        ]
+      ],
+      "maximum_absolute_error": 3.426078865054194e-17,
+      "peak_normalized_error": 1.6309552637055905e-14,
+      "native_reference_basis": "Legacy normal native polynomial plus explicit 45-degree electrical extension",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hp1_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 19,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          0.0
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0021006577809313826
+        ],
+        [
+          -1.6981663729161218e-18
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.29862626494082956
+        ],
+        [
+          2.414087081653126e-16
+        ]
+      ],
+      "maximum_absolute_error": 3.0791341698588326e-17,
+      "peak_normalized_error": 1.465795237001227e-14,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "key": "image_hp2_hexapole",
+      "multipole_order": 3,
+      "turn_count_per_coil": 19,
+      "reference_orders": [
+        24,
+        48
+      ],
+      "installed_orders": [
+        12,
+        24
+      ],
+      "native_A_polynomial_target_per_unit": [
+        [
+          -0.0020192072278594443
+        ],
+        [
+          -0.0005792799699177146
+        ]
+      ],
+      "observed_field_per_unit": [
+        [
+          -0.0020192072278594282
+        ],
+        [
+          -0.0005792799699177252
+        ]
+      ],
+      "independent_unit_current_response": [
+        [
+          0.2870473801448182
+        ],
+        [
+          0.0823495456241642
+        ]
+      ],
+      "maximum_absolute_error": 1.6046192152785466e-17,
+      "peak_normalized_error": 7.946778285751278e-15,
+      "native_reference_basis": "Existing native normal/skew polynomial basis",
+      "native_controls_restored": true
+    }
+  ]
+}

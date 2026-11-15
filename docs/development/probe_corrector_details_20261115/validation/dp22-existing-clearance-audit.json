@@ -1,0 +1,190 @@
+{
+  "scope": "Read-only diagnosis of pre-existing DP22/TL22 material gap; no source, field, transport or coherent calculation",
+  "before_file": "outputs\\probe-corrector-details-20261115\\before\\configs\\instruments\\column\\C3_ProbeCorrector.toml",
+  "current_file": "configs\\instruments\\column\\C3_ProbeCorrector.toml",
+  "shared_reference_resolution": "Both raw documents resolved at the original logical source path using unchanged live shared dependencies; relevant DP22 and pole raw records are exactly equal",
+  "before_sha256": "626f52c87df2a77fc78a35ae64cb55002d36468cd0b9df174af0c7f60cd580c6",
+  "current_sha256": "af57565a438739c5e623f80408d433aa33988a369539e5a36a71332144e7cabb",
+  "dp22_raw_pose_and_material_shapes_exactly_unchanged": true,
+  "tl22_lower_pole_raw_and_shape_exactly_unchanged": true,
+  "documented_contract": "2026-10-21 contact-isolation reconstruction: 0.10 mm full stack clearance, 0.14 mm copper clearance; not a measured manufacturing tolerance",
+  "checks": [
+    {
+      "angular_segments": 32,
+      "before": {
+        "regions": [
+          "x_winding_1",
+          "x_winding_2",
+          "y_winding_1",
+          "y_winding_2",
+          "x_carrier",
+          "x_radial_cover",
+          "interlayer_bond",
+          "y_carrier",
+          "y_radial_cover",
+          "upstream_end_cover",
+          "downstream_end_cover",
+          "x_conductor_gap_insulation",
+          "y_conductor_gap_insulation"
+        ],
+        "full_gap_mm": 0.10000000000002274,
+        "copper_gap_mm": 0.13999999999998636,
+        "full_z_bounds_mm": [
+          729.2,
+          743.5
+        ],
+        "copper_z_bounds_mm": [
+          729.24,
+          743.46
+        ],
+        "intersection_mm3": 0.0
+      },
+      "current": {
+        "regions": [
+          "x_winding_1",
+          "x_winding_2",
+          "y_winding_1",
+          "y_winding_2",
+          "x_carrier",
+          "x_radial_cover",
+          "interlayer_bond",
+          "y_carrier",
+          "y_radial_cover",
+          "upstream_end_cover",
+          "downstream_end_cover",
+          "x_conductor_gap_insulation",
+          "y_conductor_gap_insulation"
+        ],
+        "full_gap_mm": 0.10000000000002274,
+        "copper_gap_mm": 0.13999999999998636,
+        "full_z_bounds_mm": [
+          729.2,
+          743.5
+        ],
+        "copper_z_bounds_mm": [
+          729.24,
+          743.46
+        ],
+        "intersection_mm3": 0.0
+      }
+    },
+    {
+      "angular_segments": 64,
+      "before": {
+        "regions": [
+          "x_winding_1",
+          "x_winding_2",
+          "y_winding_1",
+          "y_winding_2",
+          "x_carrier",
+          "x_radial_cover",
+          "interlayer_bond",
+          "y_carrier",
+          "y_radial_cover",
+          "upstream_end_cover",
+          "downstream_end_cover",
+          "x_conductor_gap_insulation",
+          "y_conductor_gap_insulation"
+        ],
+        "full_gap_mm": 0.10000000000002274,
+        "copper_gap_mm": 0.13999999999998636,
+        "full_z_bounds_mm": [
+          729.2,
+          743.5
+        ],
+        "copper_z_bounds_mm": [
+          729.24,
+          743.46
+        ],
+        "intersection_mm3": 0.0
+      },
+      "current": {
+        "regions": [
+          "x_winding_1",
+          "x_winding_2",
+          "y_winding_1",
+          "y_winding_2",
+          "x_carrier",
+          "x_radial_cover",
+          "interlayer_bond",
+          "y_carrier",
+          "y_radial_cover",
+          "upstream_end_cover",
+          "downstream_end_cover",
+          "x_conductor_gap_insulation",
+          "y_conductor_gap_insulation"
+        ],
+        "full_gap_mm": 0.10000000000002274,
+        "copper_gap_mm": 0.13999999999998636,
+        "full_z_bounds_mm": [
+          729.2,
+          743.5
+        ],
+        "copper_z_bounds_mm": [
+          729.24,
+          743.46
+        ],
+        "intersection_mm3": 0.0
+      }
+    },
+    {
+      "angular_segments": 128,
+      "before": {
+        "regions": [
+          "x_winding_1",
+          "x_winding_2",
+          "y_winding_1",
+          "y_winding_2",
+          "x_carrier",
+          "x_radial_cover",
+          "interlayer_bond",
+          "y_carrier",
+          "y_radial_cover",
+          "upstream_end_cover",
+          "downstream_end_cover",
+          "x_conductor_gap_insulation",
+          "y_conductor_gap_insulation"
+        ],
+        "full_gap_mm": 0.10000000000002274,
+        "copper_gap_mm": 0.13999999999998636,
+        "full_z_bounds_mm": [
+          729.2,
+          743.5
+        ],
+        "copper_z_bounds_mm": [
+          729.24,
+          743.46
+        ],
+        "intersection_mm3": 0.0
+      },
+      "current": {
+        "regions": [
+          "x_winding_1",
+          "x_winding_2",
+          "y_winding_1",
+          "y_winding_2",
+          "x_carrier",
+          "x_radial_cover",
+          "interlayer_bond",
+          "y_carrier",
+          "y_radial_cover",
+          "upstream_end_cover",
+          "downstream_end_cover",
+          "x_conductor_gap_insulation",
+          "y_conductor_gap_insulation"
+        ],
+        "full_gap_mm": 0.10000000000002274,
+        "copper_gap_mm": 0.13999999999998636,
+        "full_z_bounds_mm": [
+          729.2,
+          743.5
+        ],
+        "copper_z_bounds_mm": [
+          729.24,
+          743.46
+        ],
+        "intersection_mm3": 0.0
+      }
+    }
+  ]
+}

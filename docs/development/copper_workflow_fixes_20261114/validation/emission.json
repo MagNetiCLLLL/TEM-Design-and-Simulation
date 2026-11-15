@@ -1,0 +1,14 @@
+{
+  "scope": "Independent deterministic emission-only check, no force evaluation or particle transport; does not qualify Preview or High accuracy",
+  "original_positive_count": 1024,
+  "unique_ids": 1024,
+  "source_weight_sum": 1.0,
+  "configured_energy_fwhm_ev": 0.3,
+  "kinetic_energy_reference_ev": 0.3,
+  "energy_convention": "launch kinetic energy = declared mean + retained energy_offset_ev",
+  "finite_sample_mean_ev": 0.2982540757418952,
+  "finite_sample_rms_equivalent_fwhm_ev": 0.29689411902037804,
+  "actual_energy_min_ev": 0.015094567656436075,
+  "actual_energy_max_ev": 0.7013491466779715,
+  "schema": "tip-halton-prefix-cdf512-v1"
+}

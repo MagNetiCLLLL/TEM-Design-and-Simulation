@@ -1,0 +1,274 @@
+[
+  {
+    "segment": "incident",
+    "field": "z",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2804
+    ],
+    "sha256": "9f9a9ab6049ecc6d3d02ce6bcb0c15ff0ef60d0e853f856601a84bfa0a0e9608"
+  },
+  {
+    "segment": "incident",
+    "field": "x",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2804,
+      1024
+    ],
+    "sha256": "40b2255d77b30ea77adb15a039706b5d20a9fdaec05e45e29109e7fee8b3312d"
+  },
+  {
+    "segment": "incident",
+    "field": "y",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2804,
+      1024
+    ],
+    "sha256": "de86237616f449adcee0e81183972be0166d3654d69170fcc3121e3e2aab9603"
+  },
+  {
+    "segment": "incident",
+    "field": "tx",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2804,
+      1024
+    ],
+    "sha256": "e74910490256046eef5ccf8c0ba990a849640787c8a34160b893864c28402ea6"
+  },
+  {
+    "segment": "incident",
+    "field": "ty",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2804,
+      1024
+    ],
+    "sha256": "cf453011fd568e119bfa14b87590dc7c2a2dd3aaf826b2d761630cf4ad1fc1cb"
+  },
+  {
+    "segment": "incident",
+    "field": "flight_time_s",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2804,
+      1024
+    ],
+    "sha256": "51c88c3edc54f24eaa825fe378857443627d792dd91cf19d9eb253a7cf8a81c8"
+  },
+  {
+    "segment": "incident",
+    "field": "kinetic_energy_ev",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2804,
+      1024
+    ],
+    "sha256": "072f96470559ba25d3d03f0f931b1a52ff55a64c504fee0a0615463ca12ecb69"
+  },
+  {
+    "segment": "incident",
+    "field": "alive",
+    "exact_bytes_equal": true,
+    "dtype": "|b1",
+    "shape": [
+      1024
+    ],
+    "sha256": "5a648d8015900d89664e00e125df179636301a2d8fa191c1aa2bd9358ea53a69"
+  },
+  {
+    "segment": "incident",
+    "field": "blocked_z",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      1024
+    ],
+    "sha256": "1637315420acac40c3544a6ceee357d4702d4828d5edb35de5d843638bc9a6d2"
+  },
+  {
+    "segment": "incident",
+    "field": "energy_offset_ev",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      1024
+    ],
+    "sha256": "08cbb4286d7e0d0eca2de44b1b6e3cebffe3d1e84874988ed52a25622c64ed51"
+  },
+  {
+    "segment": "incident",
+    "field": "ray_weight",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      1024
+    ],
+    "sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705"
+  },
+  {
+    "segment": "incident",
+    "field": "source_ray_id",
+    "exact_bytes_equal": true,
+    "dtype": "<i8",
+    "shape": [
+      1024
+    ],
+    "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+  },
+  {
+    "segment": "incident",
+    "field": "source_azimuth_rad",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      1024
+    ],
+    "sha256": "91d07bd43bfa3bc2cf1895420e75e52d62abc7e8b16144fb6bf6fd81b614d863"
+  },
+  {
+    "segment": "branch:000",
+    "field": "z",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2839
+    ],
+    "sha256": "8f36ff6b60712dec4689281851aa7c83dc99b83dc3eb226edbebe2b17151c09a"
+  },
+  {
+    "segment": "branch:000",
+    "field": "x",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2839,
+      1024
+    ],
+    "sha256": "c63efec24b846b76353ebf98d91c3bfa1df08ca0afd638816036ff5e92cc47a0"
+  },
+  {
+    "segment": "branch:000",
+    "field": "y",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2839,
+      1024
+    ],
+    "sha256": "c8109e2fd7d539fc8c36bf52512a4e2f10baa63e1b259c111dd5041f4d18bc74"
+  },
+  {
+    "segment": "branch:000",
+    "field": "tx",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2839,
+      1024
+    ],
+    "sha256": "e8fce4eb808977341b6121705d5c9872ad007801268e28d39691977ebf2649c6"
+  },
+  {
+    "segment": "branch:000",
+    "field": "ty",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2839,
+      1024
+    ],
+    "sha256": "9cc53343255563b97d9cd50c8b4953e9da822e3964b693bce95bec61236a02d6"
+  },
+  {
+    "segment": "branch:000",
+    "field": "flight_time_s",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2839,
+      1024
+    ],
+    "sha256": "73f75b55d96eafde5c964e8ebbbaea713e58cbde3b373bf7ddd8c1ebe7f54e43"
+  },
+  {
+    "segment": "branch:000",
+    "field": "kinetic_energy_ev",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      2839,
+      1024
+    ],
+    "sha256": "37c558f1a6c96301d55316e3ccd0d62d63441973d47daf8849739a9558f9c885"
+  },
+  {
+    "segment": "branch:000",
+    "field": "alive",
+    "exact_bytes_equal": true,
+    "dtype": "|b1",
+    "shape": [
+      1024
+    ],
+    "sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+  },
+  {
+    "segment": "branch:000",
+    "field": "blocked_z",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      1024
+    ],
+    "sha256": "50fc15b20012d0ed1ddbdfebfedd489d17d2c8a7a95cfabc2d3d26fc43c7763e"
+  },
+  {
+    "segment": "branch:000",
+    "field": "energy_offset_ev",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      1024
+    ],
+    "sha256": "e2547d7787ac8f145945c10ca3d8dcf36cbc2a8a20e55e57982ed0ea21e01c2e"
+  },
+  {
+    "segment": "branch:000",
+    "field": "ray_weight",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      1024
+    ],
+    "sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705"
+  },
+  {
+    "segment": "branch:000",
+    "field": "source_ray_id",
+    "exact_bytes_equal": true,
+    "dtype": "<i8",
+    "shape": [
+      1024
+    ],
+    "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+  },
+  {
+    "segment": "branch:000",
+    "field": "source_azimuth_rad",
+    "exact_bytes_equal": true,
+    "dtype": "<f8",
+    "shape": [
+      1024
+    ],
+    "sha256": "91d07bd43bfa3bc2cf1895420e75e52d62abc7e8b16144fb6bf6fd81b614d863"
+  }
+]

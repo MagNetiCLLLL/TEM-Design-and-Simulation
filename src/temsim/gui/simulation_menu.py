@@ -39,11 +39,13 @@ class SimulationMenu(QMenu):
             action.setData(mode.key)
             action.setEnabled(mode.available)
             action.setToolTip(mode.detail)
+            action.setStatusTip(mode.detail)
+            action.setWhatsThis(mode.detail)
             action.triggered.connect(lambda checked, key=mode.key: self.mode_requested.emit(key) if checked else None)
             self.mode_group.addAction(action)
             menu.addAction(action)
             self.mode_actions[mode.key] = action
-        add_mode("ideal_thin", self)
+        add_mode("ideal_thin", self, "Ideal Optics (thin-lens approximation)")
         self.finite_field_menu = self.addMenu("Finite-Field Optics")
         self.finite_field_menu.setObjectName("finiteFieldSourcesMenu")
         self.finite_field_menu.setToolTipsVisible(True)
@@ -70,7 +72,7 @@ class SimulationMenu(QMenu):
             self.round_lens_model_group.addAction(action)
             self.round_lens_model_actions[key] = action
         self.round_lens_model_actions["copper_coil"].setToolTip(
-            "Shared Finite-Field Optics, classical particles only. Use declared copper coil dimensions and ampere-turns in vacuum, without pole pieces, iron or saturation. Corrector multipoles, stigmators and deflectors retain their native fields. Coherent propagation is not qualified.")
+            "Shared Finite-Field Optics, classical particles only. Compute the magnetic field from declared winding geometry and prescribed ampere-turns in vacuum. Calibrated deflector, stigmator, quadrupole and hexapole windings use their closed current circuits; unconfigured legacy sources retain native fields. Electrical resistance, heating, circuit dynamics, pole-piece magnetism and saturation are not included. Coherent propagation is not qualified.")
         self.round_lens_model_actions["gaussian"].setToolTip("Retain the existing Gaussian calibration and saved per-lens models; no automatic operating-point adjustment.")
         self.gaussian_geometry_menu = self.addMenu("Gaussian geometry relation")
         self.gaussian_geometry_group = QActionGroup(self)
@@ -135,4 +137,4 @@ class SimulationMenu(QMenu):
             for key, action in self.mode_actions.items():
                 if key != "unified":
                     action.setEnabled(False)
-                    action.setToolTip("Select Gaussian with fixed calibration before leaving shared Finite-Field Optics.")
+                    action.setToolTip(MODE_BY_KEY[key].detail + "\n\nSelect Gaussian with fixed calibration before leaving shared Finite-Field Optics.")

@@ -5,6 +5,7 @@ import tomllib
 
 import numpy as np
 import pytest
+from legacy_transverse_helpers import legacy_transverse_document
 
 from temsim.cad_multipoles import deflector_insert_solids, multipole_solids
 from temsim.corrector_model_3d import winding_dimensions
@@ -206,7 +207,7 @@ def test_stigmator_geometry_rejects_dependent_or_nonfinite_structural_bases(angl
 
 @pytest.mark.parametrize("key", ["image_hp1_hexapole", "image_hp2_hexapole"])
 def test_cetcor_hp_is_explicit_family_inference_preserving_saved_envelope(key):
-    document = tomllib.loads(Path("configs/instruments/column/C3_ImageCorrector.toml").read_text(encoding="utf-8"))
+    document = legacy_transverse_document(tomllib.loads(Path("configs/instruments/column/C3_ImageCorrector.toml").read_text(encoding="utf-8")))
     row = next(p for p in document["parts"] if p["key"] == key)
     before = deepcopy(row)
     solids = multipole_solids(row, {})
@@ -266,7 +267,7 @@ def test_native_insert_retains_exact_layers_band_windows_and_driver_identity(leg
 
 
 def test_actual_toml_scan_and_shift_tilt_coils_use_saved_finite_positions():
-    document = tomllib.loads(Path("configs/instruments/column/C3_ProbeCorrector.toml").read_text(encoding="utf-8"))
+    document = legacy_transverse_document(tomllib.loads(Path("configs/instruments/column/C3_ProbeCorrector.toml").read_text(encoding="utf-8")))
     by_key = {row["key"]: row for row in document["parts"]}
     for key in ("beam_deflector", "ac_deflector", "condenser_deflector", "image_diffraction_deflector"):
         row = by_key[key]
@@ -314,7 +315,7 @@ def test_optical_deflector_centre_alone_does_not_invent_a_physical_coil_pair():
 
 def test_gun_dimension_aliases_and_filter_branch_ownership():
     for path in Path("configs/instruments/gun").glob("*.toml"):
-        document = tomllib.loads(path.read_text(encoding="utf-8"))
+        document = legacy_transverse_document(tomllib.loads(path.read_text(encoding="utf-8")))
         for row in document["parts"]:
             if row["key"].endswith(("deflector", "stigmator")):
                 before = deepcopy(row)

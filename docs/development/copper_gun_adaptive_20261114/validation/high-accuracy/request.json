@@ -1,0 +1,21 @@
+{
+  "original_inputs": {
+    "schema": "wave-input-graph-compatibility-v1",
+    "physical_inputs_unchanged": true,
+    "metadata_migrations": []
+  },
+  "numerical_preparation": {
+    "schema": "gui-request-numerical-preparation-v1",
+    "quality": "High accuracy",
+    "requested_step_mm": 0.5,
+    "applied_step_mm": 0.05,
+    "high_accuracy_maximum_step_mm": 0.05,
+    "changed": true,
+    "qualification": "Execution resolution only; working-point convergence requires independent refinement"
+  },
+  "history_step_mm": 0.5,
+  "original_snapshot_id": "216a8096f6dda87ac1e2ff720de6ea3901be884fc30d5ac3f9ec969704f6ef66",
+  "execution_snapshot_id": "ab1a92f656044a017bf602443df04cd4bf5454da982a2764e3cc19da0fb063e4",
+  "original_implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+  "execution_implementation": "6169010971ca2aeb082c8f0936b043f2ad4eb886cdfd07991c69bdda32a7ffca"
+}

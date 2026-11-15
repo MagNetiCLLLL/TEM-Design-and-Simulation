@@ -1,0 +1,155 @@
+{
+  "scope": "Probe Corrector internal CAD detail; unchanged native optical state and fields; undefined default electrical winding data retained",
+  "current_test_cases": {
+    "passed": 442,
+    "failed": 0,
+    "skipped": 0
+  },
+  "native_field_records_exact": 78,
+  "validation_files": {
+    "before/configs/instruments/column/C3_ProbeCorrector.toml": {
+      "bytes": 132018,
+      "sha256": "626f52c87df2a77fc78a35ae64cb55002d36468cd0b9df174af0c7f60cd580c6"
+    },
+    "before/configs/instruments/column/C3_ProbeCorrector_BCOR.toml": {
+      "bytes": 225273,
+      "sha256": "fb0a0d030049f04c4bdd823e17dd193c307abb3d2c9e46e7c96e5a12b9a1f2af"
+    },
+    "before/configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml": {
+      "bytes": 189256,
+      "sha256": "5bb786a31e49ca2d4f3d7db9a3ec0865a1909b6c31c2d2011b91670a0d6084df"
+    },
+    "before/inputs.json": {
+      "bytes": 397,
+      "sha256": "9ad408314e235a141b883dbf713bd79aa1653dd44179ef0f911962978f1f95d2"
+    },
+    "before/state-fields.json": {
+      "bytes": 1383219,
+      "sha256": "66e96ee26cd4607e69fbad7fd7f502cba3a6b9309b79961eaae7a0cab36d2556"
+    },
+    "check_radial_step.py": {
+      "bytes": 2259,
+      "sha256": "cfe1325b10d9651b6573e122c78a64a34f0559eff8e26750ce657b0ee0a20543"
+    },
+    "dp22-existing-clearance-audit.json": {
+      "bytes": 5579,
+      "sha256": "a71488204c81a45bca49b312ca71ebfb7a6919698c6ee0214464f9d34df4d21d"
+    },
+    "illustrative-cad-inputs.json": {
+      "bytes": 1487206,
+      "sha256": "2a935a7b317c6b8f73232bff262cf3826de7e6f81d4e38d132d6180522a17e66"
+    },
+    "independent-jacket-clearances.json": {
+      "bytes": 3495,
+      "sha256": "a34229af55d33910c7edda3bac3442b9b63bfc8bcdd06e555ead50278ee4fb82"
+    },
+    "installed/configs/instruments/column/C3_ProbeCorrector.toml": {
+      "bytes": 133096,
+      "sha256": "af57565a438739c5e623f80408d433aa33988a369539e5a36a71332144e7cabb"
+    },
+    "installed/configs/instruments/column/C3_ProbeCorrector_BCOR.toml": {
+      "bytes": 226351,
+      "sha256": "0119ad22ac7dd721b1ef477c6af6bb84bd2efd195a2974bd0d063edd4bf433fc"
+    },
+    "installed/configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml": {
+      "bytes": 190334,
+      "sha256": "b082be1c59140792973960d387d8dbea1fa88aa6a766e3f29c1d0afd49180939"
+    },
+    "original-output-check_radial_step.py": {
+      "bytes": 2108,
+      "sha256": "40ccceb404fb6703c1ad877db98ec1116a72e781d7a2ec53d7509af231f4982f"
+    },
+    "probe-internal-comparison.png": {
+      "bytes": 367780,
+      "sha256": "29534ebcc49bbc13e8fe0a051059aa98d6e87e6554296a205b07021195d0adf5"
+    },
+    "probe-winding-dialog.png": {
+      "bytes": 38787,
+      "sha256": "4805e23d965295f1334b18a17e6a4c674a5753cd1032c37bd3f699e19dcdb8df"
+    },
+    "radial-step-input.json": {
+      "bytes": 63421,
+      "sha256": "88966e174d637fe073dd7901b4d2f2ad2d19a1d17bee7a35f61ed730ef479f2d"
+    },
+    "radial-step-receipt.json": {
+      "bytes": 82970,
+      "sha256": "2448d22f00f7ead57517d63f7cc6b4e63d47fb117c5bf9c351e876ae622594ff"
+    },
+    "state-fields.json": {
+      "bytes": 1532085,
+      "sha256": "fe7e80ad486f16a4f34526acec10bcba3482f780ca7bcf934cae79eef50f03de"
+    },
+    "summary.json": {
+      "bytes": 541,
+      "sha256": "add4aabc8083c8e9db4c3bb17bf268f81d68a35eda0c3b8cbbc017fc45ebbbd3"
+    },
+    "test-summary.json": {
+      "bytes": 108714,
+      "sha256": "35cbc01ec833931f044df6276c4156b601341e7fda922581bc517975681ca766"
+    },
+    "tests/integration-tests.xml": {
+      "bytes": 38453,
+      "sha256": "c7c1048db29ac740f1b79978c442fa08f5b6e549f3802838330bc0fa9fabde92"
+    },
+    "tests/outer-insulation-post-config-tests.xml": {
+      "bytes": 11694,
+      "sha256": "6367d40176e897c060ba6b6c7080bde303fd027f2634d38e69d1e02c7fc9af61"
+    },
+    "tests/probe-winding-input-post-default-tests.xml": {
+      "bytes": 2849,
+      "sha256": "cddd21549200d5977df385cdd430c00291f94e5b9ac0db094a14baa0034ef8a8"
+    },
+    "tests/probe-winding-ui-regressions.xml": {
+      "bytes": 20756,
+      "sha256": "c36862ed33d9de046ad7a1f415eb6e8e24c8f4d9796d72ecbfe75240d1caf62c"
+    },
+    "tests/radial-core-final-tests.xml": {
+      "bytes": 7936,
+      "sha256": "d0cb9c92f0f1a1f616ef433f7da50849f8a26e8c4cbbbc6be7d970f8de12bcad"
+    },
+    "tests/tl22-saved-clearance-final-tests.xml": {
+      "bytes": 3923,
+      "sha256": "28e6cdf3471c5ea12e6182063cb65c942b185f081d1ba0889155b75d8bd598a9"
+    }
+  },
+  "installed_inputs": {
+    "configs/instruments/column/C3_ProbeCorrector.toml": "af57565a438739c5e623f80408d433aa33988a369539e5a36a71332144e7cabb",
+    "configs/instruments/column/C3_ProbeCorrector_BCOR.toml": "0119ad22ac7dd721b1ef477c6af6bb84bd2efd195a2974bd0d063edd4bf433fc",
+    "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml": "b082be1c59140792973960d387d8dbea1fa88aa6a766e3f29c1d0afd49180939"
+  },
+  "implementation_sha256": {
+    "src/temsim/cad_probe_winding.py": "c0eb8f8ec999a2478faf6097675855566bcb65d279adcc2607f4d104cb7c4c10",
+    "src/temsim/cad_probe_hexapole_support.py": "476172858c8de61e05f62c6ec0d925c4125c452cb34d81d46a060e1d0cf949dc",
+    "src/temsim/cad_multipoles.py": "1b8c98a48e03f0ac40ce16bbab8104965639a1bca6e36484c17848a4d69f32d0",
+    "src/temsim/cad_mesh.py": "3ce0ae73fd5714e400317d7312598cc7be1755c7283be3fd200b0079cddfca59",
+    "src/temsim/cad_step.py": "a3731aa6c748c7c54bead1833206158b62441ce8ec75a5d8dccabdf56c47f0a2",
+    "src/temsim/cad_catalog.py": "6cafbb7a5c9c1d08d07bcae5a974a8be480302c094b9bd6fda34090f101bc7df",
+    "src/temsim/gui/probe_winding_dialog.py": "0cbd70f1df8caff2483f33032d2b6224a1b1db0689b645dd4358012f159d160a",
+    "src/temsim/gui/part_model_editor.py": "d815a6e90ed5fa6c9d051f000a9eb503da9dcc0c420825a3c5380d9032d20a3d",
+    "src/temsim/part_model_document.py": "4765f867edc6dc7ac276a0d7ab46130fce9dd51bb0a109cf6f88d32e326c6ba9",
+    "src/temsim/module_manifest.py": "2acd4e37df87be71d9a56d608e398e9d2e1d100af646f1cab3b69a72deb36faf",
+    "src/temsim/part_model_3d.py": "3c2f727e0f0c2a65613ca60f3f4b52f0a113deee1fb8058b4d892d53a271fb15",
+    "src/temsim/parameter_semantics.py": "e7dd3814e8b6fd96a04fa7cb19e1b9955c16f35b613e14350489c5d9dbed58a1",
+    "src/temsim/parameter_impact.py": "4c3da2170dd075c10d21945ff27d047e13ae8d732fcff7b185be9c557f27379a",
+    "src/temsim/physics/posed_column_fields.py": "994efccf46e8226d4566053b528a97d73add4a99b43e650a3dee0aedeefd5ff1",
+    "docs/development/probe_corrector_details_20261115/validate_details.py": "a5e7ce814f8b264093d2779c9c8d98f4f82f460e82b9a51f7c3283e64e4e76fe",
+    "docs/development/probe_corrector_details_20261115/render_details.py": "53a6d5cd61bfee1e0dd0e255c9577dee1fe0819ec7263e5ea9924c97eeccf49e",
+    "tests/test_cad_multipoles.py": "09b94912fdc0a3ed21425311d8f48ff26d924afcdae4508952d47085fe8992ab",
+    "tests/test_cad_probe_transfer_lens_hardware.py": "40624b9f3eaa18e2fa3c5752acf32326d5446433a17b4e3d124c205baa1fd78a",
+    "tests/test_cad_probe_winding.py": "a807db997303f947906ef30796033c6f61cbd4f083816aebe9186169da0a075f",
+    "tests/test_cad_round_winding.py": "1f9f5f2b6068556fd61682f2cb7c95fdec7588e6877c85dbd72273c67de20162",
+    "tests/test_cad_tl22_lens_hardware.py": "a706f10319f53dbca118d7850c7f3da4d342cc78acc29afa18a8b1a063c4e946",
+    "tests/test_catalog_ideal_coils.py": "f63c969c5d8c3ff14f6bdb1f1274f90002ea2e9f201d7942d87e53d13aa61b24",
+    "tests/test_coil_winding_dialog.py": "3ae8d20a82ba490c5d02a98b63375e0dbddecd97e3819eb0a1804beedafec76c",
+    "tests/test_copper_coil_capture.py": "7eb1bafb49b8f543e61d9f10a91aa78074ef68246c17cf7ce30ba198d945d08f",
+    "tests/test_fixed_winding_currents.py": "271cd3f42143070bd99f7c2d12c9b89802181effdfb95c6b697dd564b5d76fed",
+    "tests/test_part_model_document.py": "a55f4dff75151bb7d8415ada9c83713bc43853d64ab0b937cc51b39b1f296aca",
+    "tests/test_probe_hexapole_document_validation.py": "56d56a784e2e9eb5f654ce3712593464996ae4ad4ffc01aea92836d5b221132e",
+    "tests/test_probe_hexapole_geometry.py": "dcae70c90eba1dcbf854adcbfe64652bba967f84a372c9280f2637cfe5d22dd9",
+    "tests/test_probe_hexapole_support.py": "c7a2628d92966aef124c8dfc08c9cb671e31916fc4cec547c4d43253ff2b6a83",
+    "tests/test_probe_winding_inputs.py": "da03a970969a341f3a400bb9877a650521acc897308ef650a88d10493a91f24a",
+    "tests/test_probe_winding_region_identity.py": "d12b1f68df9ef60182b3c7037a6d2da18ecac7bf69c587ddbf2a7aea2c84aad9",
+    "tests/test_winding_parameter_information.py": "871e478b0b7fb31ec1d6f04cd747209d56de154253fc263ece7cd9913bdac201"
+  },
+  "portable_step_replay_metrics_exact": true
+}

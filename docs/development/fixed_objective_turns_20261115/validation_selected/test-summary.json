@@ -1,0 +1,20 @@
+{
+  "total_tests": 150,
+  "reports": [
+    {
+      "file": "capture-tests.xml",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "current-regressions.xml",
+      "tests": 141,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "scope": "Field and component checks; no source, transport, focusing or coherent calculation"
+}

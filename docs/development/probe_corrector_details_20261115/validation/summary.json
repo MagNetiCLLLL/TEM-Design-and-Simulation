@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "default_source_files": 3,
+  "probe_hosts": 6,
+  "assembly_cases": 6,
+  "original_regions_per_hp": 25,
+  "new_regions_per_hp": 31,
+  "outer_insulation_thickness_mm": 0.15,
+  "native_field_records_exact": 78,
+  "nonzero_native_field_records": 12,
+  "full_optical_source_state_exact": true,
+  "original_25_solids_exact": true,
+  "only_authorized_passive_fields_added": true,
+  "default_hp_turns_area_or_current_inferred": false,
+  "source_transport_focus_material_solve_or_coherent_executed": false
+}

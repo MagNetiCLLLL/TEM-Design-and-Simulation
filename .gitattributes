@@ -73,3 +73,29 @@ docs/references/**/*.docx binary export-ignore
 docs/references/**/*.zip binary export-ignore
 docs/references/local-only export-ignore
 output/references export-ignore
+
+# Keep the curated numerical validation bytes stable across checkouts.
+docs/development/copper_workflow_fixes_20261114/validation/** -text
+docs/development/copper_gun_speed_20261114/validation/** -text
+
+docs/development/copper_gun_adaptive_20261114/validation/** -text
+
+docs/development/ideal_winding_20261115/validation/** -text
+
+docs/development/coil_inventory_20261115/validation/** -text
+
+docs/development/ideal_coil_fields_20261115/validation/** -text
+
+docs/development/fixed_objective_turns_20261115/validation/** -text
+docs/development/fixed_objective_turns_20261115/validation_selected/** -text
+docs/development/all_lens_current_20261115/validation/** -text
+docs/development/wire_area_20261115/validation/** -text
+docs/development/probe_corrector_details_20261115/validation/** -text
+docs/development/corrector_windings_20261115/validation/** -text
+docs/development/transverse_current_coils_20261115/validation/** -text
+docs/development/multipole_current_coils_20261115/validation/** -text
+
+# Raw scientific logs and test receipts retain emitted whitespace.
+docs/development/**/validation/**/*.xml -whitespace
+docs/development/**/validation/**/*.log -whitespace
+docs/development/**/validation/**/*.txt -whitespace

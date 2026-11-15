@@ -1,0 +1,146 @@
+[
+  {
+    "path": "configs/design_candidates/nanoprobe_large_angle_descan_position_angle_20261018.toml",
+    "sha256": "8721bc80190551e4cda629b7db21b70a400e696af9d52673df00417d412a4d9e"
+  },
+  {
+    "path": "configs/design_candidates/nanoprobe_normal_descan_position_angle_20261018.toml",
+    "sha256": "1b346ee00c9d3a9355e818c791f446c1363e2e165a2fb3f5f99b326c6637ec07"
+  },
+  {
+    "path": "configs/detectors/eds/EDS.toml",
+    "sha256": "e6a856f4b527d05804b67ca9127cf17832174ac3dc64229e899b88e2f99d67e6"
+  },
+  {
+    "path": "configs/environments/cell_window_materials.toml",
+    "sha256": "09b6ce21f5f838300616ff5fc4ed4fc5331ff8a35bcd9ca1c605a5823528c5d1"
+  },
+  {
+    "path": "configs/environments/vacuum_map.toml",
+    "sha256": "90cd6db4862a97eee77d118a2f21e3002c204d9d32296daba2fb004689eafa6f"
+  },
+  {
+    "path": "configs/instruments/beam_blanker/ElectrostaticBeamBlanker.toml",
+    "sha256": "72a244f0ce78a87f426f4b4b2e45997d397bcb3e603fa140d998afcbc3c55e61"
+  },
+  {
+    "path": "configs/instruments/catalog.toml",
+    "sha256": "6d3c70fc2661508940aaa4150719fa790c8a88583187bcb170eb5187f9d1d870"
+  },
+  {
+    "path": "configs/instruments/column/C2.toml",
+    "sha256": "914f2938ae623cb49e2e2b3782c956013135b14496bac1e84ac1cf5de82cf220"
+  },
+  {
+    "path": "configs/instruments/column/C3.toml",
+    "sha256": "7311ce636a3473bb37a8cfa22a9537f329bba1ab87781313584f520309af3afb"
+  },
+  {
+    "path": "configs/instruments/column/C3_BCOR.toml",
+    "sha256": "105570551b959038b59493940e4b2e7130591b5ad9e8c6e033198d7df82f67d3"
+  },
+  {
+    "path": "configs/instruments/column/C3_ImageCorrector.toml",
+    "sha256": "2ed82f596f363a3ac4be2f143988dbb03b46224b7eddee9e93d70844bf463ce8"
+  },
+  {
+    "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "sha256": "06618c52d4edec02d8dec8eadde49449d3030cecde5f4db3d324b1f9ac15e133"
+  },
+  {
+    "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "sha256": "98915ceb63a30d30f3dd56c7bd726f113163adde442f8ee7324f386577f8a200"
+  },
+  {
+    "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "sha256": "08ffd0e577701dba59b4a0801d94f2c7c288fbc2b406e16c9f578eff82f97654"
+  },
+  {
+    "path": "configs/instruments/gun/FEG.toml",
+    "sha256": "184b20f5dd3e05a691bf9ea1a99dfb0adb000e7696895dfbde213b4b47e202e2"
+  },
+  {
+    "path": "configs/instruments/gun/FEG_Mono.toml",
+    "sha256": "87b42723d58fd2a118ac6103fb9bf3163e78498c5d5380caa6a13183985add39"
+  },
+  {
+    "path": "configs/instruments/gun/Thermionic.toml",
+    "sha256": "854381a5b0a64597ef6f89a6799f6504b4389767fa38f5ccdc2f9b111640c7fc"
+  },
+  {
+    "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+    "sha256": "f4f4654e4e07bc9d47d42692280dbb335951c673c91481368f3e79d63752504b"
+  },
+  {
+    "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "sha256": "8f0cd87ebef013b8d61aaa30317eb2c14dd0b4b357f246712d69aed4c510460c"
+  },
+  {
+    "path": "configs/materials/lens_defaults.toml",
+    "sha256": "6936f5d65e95aa8417ea0545732bb5f77817caca946e9f736fd1f3f2a8dec0d6"
+  },
+  {
+    "path": "configs/materials/magnetic/femm_pure_iron.toml",
+    "sha256": "6c6de87c80cde03270ba68674df2586516eb4fbe8801387d1738f01d6958cd3c"
+  },
+  {
+    "path": "configs/operating_modes/catalog.toml",
+    "sha256": "d8f3e2ecf7d653de9f3f92f2d340e4c7e44915b9b0137604bd126e5c88639c42"
+  },
+  {
+    "path": "configs/operating_modes/illumination_targets.toml",
+    "sha256": "cdc180643b91d8917fef613ff8ff6da0021667c7f808360e0de1f102c39f97ac"
+  },
+  {
+    "path": "configs/operating_modes/topology_references.toml",
+    "sha256": "1b9ae7e550a078cdee3695ffd0b51cd821fdbc5791b576c65c5ee08cf6bc2b91"
+  },
+  {
+    "path": "configs/physics/coil_winding_estimates.toml",
+    "sha256": "91e68cc40d4bb76d8c62dcc793e84cd5766bb6b3bbcbc0a72cc816eb026e0d28"
+  },
+  {
+    "path": "configs/sources/cold_feg_tip.toml",
+    "sha256": "5371a17b938378cffaeed8cabf19f5111640356d1c98274eedda06dcacc4f4d3"
+  },
+  {
+    "path": "configs/sources/FEG_tip.toml",
+    "sha256": "4ef5eec86c6e79dc988357b2aca97888d86b36cc8d8efa176594182bf4267e8a"
+  },
+  {
+    "path": "configs/specimen_supports/catalog.toml",
+    "sha256": "06f46562df27dcd4331c0e754b8905f0a7ddc3867efd2688b31febffb08915fd"
+  },
+  {
+    "path": "configs/specimens/00_vacuum.toml",
+    "sha256": "7d6b6a85d271fe6a275bf7ed2daf5e9dc7f113f474916ffdcf1c5f584ed4e6a2"
+  },
+  {
+    "path": "configs/specimens/10_si_110.toml",
+    "sha256": "6fc39ec0296e10d631a209ec4f0b2c2e87ef854cfe752d8eb3def5725763e4c6"
+  },
+  {
+    "path": "configs/specimens/20_au_001.toml",
+    "sha256": "0ed046a99fd54571a4bed93c15481fd4034b549d4f67bdf09f935a9003547ce0"
+  },
+  {
+    "path": "configs/specimens/30_amorphous_carbon.toml",
+    "sha256": "493c1139b85be93fabe0ee6f75fd167dd3c54d6542f61192b740a8fa246ba6e1"
+  },
+  {
+    "path": "configs/subassemblies/detector_chamber.toml",
+    "sha256": "de25fcd1215f264535547bdd0b10ad0d69a28d9c9a8b79ad7dc3a07919b7dd20"
+  },
+  {
+    "path": "configs/subassemblies/energy_filter.toml",
+    "sha256": "008250a4d2f665aa01efc2506b291f6efbcfb231b21a506a0ab6ad1db90a4366"
+  },
+  {
+    "path": "configs/subassemblies/projector_stack.toml",
+    "sha256": "00c38a75a5f3b67c6c7c02ff22035c6e1d0d52f5ff0a5eb9670c5f492c57b983"
+  },
+  {
+    "path": "configs/subassemblies/sample_stage.toml",
+    "sha256": "d51da99a8956d4f5ef884999b6ce29b56cf28e0d60b4fe83fb525cbe65210e5e"
+  }
+]

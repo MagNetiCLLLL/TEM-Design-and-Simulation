@@ -1,0 +1,71 @@
+{
+  "model": "closed-classical-gun-electrostatics-v1",
+  "surface_mesh_displacement_m": null,
+  "potential_reference": "work_relative_to_executed_emission_positions",
+  "exit_energy_status": "verified",
+  "transmitted_particle_count": 1024,
+  "minimum_exit_kinetic_energy_ev": 300000.01509460155,
+  "maximum_exit_kinetic_energy_ev": 300000.70134922117,
+  "minimum_expected_exit_kinetic_energy_ev": 300000.0150945949,
+  "maximum_expected_exit_kinetic_energy_ev": 300000.7013491739,
+  "maximum_exit_energy_error_ev": 9.097857400774956e-08,
+  "exit_energy_error_budget_ev": 0.001,
+  "accelerating_voltage_kv": 300.0,
+  "extraction_voltage_kv": 4.0,
+  "electrostatic_field": {
+    "boundary_conditions": {
+      "axis": "axisymmetric_regular",
+      "cathode": {
+        "extent": "entire_radial_domain_at_z_zero",
+        "material_extension": "z_below_zero_is_constant_potential_conductor_for_interception",
+        "rise_v": 0.0,
+        "type": "planar_equipotential"
+      },
+      "exit": {
+        "location": "numerical_cut_inside_continuing_grounded_liner",
+        "rise_v": 300000.0,
+        "type": "uniform_dirichlet"
+      },
+      "grounded_liner": "physical_shells_and_radial_step_faces_at_ground",
+      "metal": "annular_dirichlet",
+      "radial_outer": "natural_zero_normal_derivative"
+    },
+    "cache_bytes": 5349662,
+    "cache_hit": true,
+    "cache_path": "C:\\Users\\54019\\AppData\\Local\\TEMSimulator\\cache\\gun-fields\\e2e09c17b63548a07267cca80b85a3ed36e9d142222917a8e50bec19f23b1fd4.npz",
+    "cpu_resources": {
+      "available_cpus": 32,
+      "blas_threads": 1,
+      "numba_threads": 1,
+      "numerical_jobs": 1,
+      "numerical_thread_budget": 1
+    },
+    "elements": 1815840,
+    "grid_shape": [
+      313,
+      2911
+    ],
+    "limitations": [
+      "The flat source uses an idealised full-domain planar cathode, not a nanometre emission patch.",
+      "Annular electrode contours use current mechanical bore, thickness and outer dimensions.",
+      "Grounding the downstream liner is an explicit simulator electrical design, not measured wiring.",
+      "Radial joints between stepped liner shells are idealised zero-thickness grounded faces.",
+      "No space charge, image charge, dielectric polarization or tunnelling-current prediction.",
+      "Magnetic controls, aperture absorption and any installed monochromator remain separate required operations.",
+      "Field evaluation is strict inside the solved domain; no analytic fallback or energy reset."
+    ],
+    "linear_residual": 1.6492170592149098e-15,
+    "load_seconds": 0.027761800000007497,
+    "maximum_axial_cell_m": 0.10302791397559308,
+    "minimum_axial_cell_m": 1.0000000005838672e-07,
+    "minimum_radial_cell_m": 1.4705882352940985e-05,
+    "model_status": "classical_planar_cathode_with_explicit_grounded_outlet",
+    "potential_reference": "rise_relative_to_original_tip_v",
+    "request_sha256": "e2e09c17b63548a07267cca80b85a3ed36e9d142222917a8e50bec19f23b1fd4",
+    "schema": "closed-classical-gun-electrostatics-v1",
+    "solve_seconds": 3.8689997999999832,
+    "vertices": 911143
+  },
+  "launch_boundary": null,
+  "scope": "classical prescribed outgoing flux; no coherent phase or tunnelling prediction"
+}

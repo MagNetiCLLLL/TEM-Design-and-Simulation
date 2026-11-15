@@ -1,0 +1,2917 @@
+{
+  "schema": "multipole-native-peak-current-calibration-v1",
+  "source_files": 5,
+  "hosts": 40,
+  "records": [
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hpol_hexapole",
+      "component_key": "image_hpol_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1487.9
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -8.927305040056406e-16,
+          1.9357807160735403
+        ],
+        [
+          -1.9357807160735354,
+          -5.442730226489388e-16
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          4.480681777571002e-19,
+          0.0010851734204648492
+        ],
+        [
+          -0.0010851734204648464,
+          4.819138068445234e-19
+        ]
+      ],
+      "response_condition_number": 1.0000000000000027,
+      "maximum_abs_match_error": 2.767311203337138e-19,
+      "maximum_relative_match_error": 1.317354605998763e-16,
+      "turn_count_per_coil": 156,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            4.480681777571002e-19,
+            0.0010851734204648492
+          ],
+          [
+            -0.0010851734204648464,
+            4.819138068445234e-19
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_qpol_quadrupole",
+      "component_key": "image_qpol_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1487.9
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -6.8263431602698944e-18,
+          0.027443754414269578
+        ],
+        [
+          -0.02744375441426955,
+          -8.024213028713621e-18
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          1.5802534246870638e-17,
+          0.07654411088299067
+        ],
+        [
+          -0.0765441108829906,
+          4.129684453739778e-17
+        ]
+      ],
+      "response_condition_number": 1.000000000000001,
+      "maximum_abs_match_error": 6.108240917835711e-19,
+      "maximum_relative_match_error": 2.907775351741191e-16,
+      "turn_count_per_coil": 156,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            1.5802534246870638e-17,
+            0.07654411088299067
+          ],
+          [
+            -0.0765441108829906,
+            4.129684453739778e-17
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hp1_hexapole",
+      "component_key": "image_hp1_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1652.4
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          0.2986262649408339
+        ],
+        [
+          -4.4364358532020376e-16
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          -0.0
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.0070344039609095054
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 3.1207681938085353e-18,
+      "maximum_relative_match_error": 1.4856147546435735e-15,
+      "turn_count_per_coil": 19,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.0070344039609095054
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hp2_hexapole",
+      "component_key": "image_hp2_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1796.4
+      ],
+      "reference_orientation_rad": -2.00126792,
+      "unit_current_response": [
+        [
+          0.2870473801448208
+        ],
+        [
+          0.08234954562416377
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0020192072278594443
+        ],
+        [
+          -0.0005792799699177146
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.007034403960909569
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 6.288372600415926e-18,
+      "maximum_relative_match_error": 3.114277976848474e-15,
+      "turn_count_per_coil": 19,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.007034403960909569
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": -2.00126792,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hpol_hexapole",
+      "component_key": "image_hpol_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1487.9
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -8.927305040056406e-16,
+          1.9357807160735403
+        ],
+        [
+          -1.9357807160735354,
+          -5.442730226489388e-16
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          4.480681777571002e-19,
+          0.0010851734204648492
+        ],
+        [
+          -0.0010851734204648464,
+          4.819138068445234e-19
+        ]
+      ],
+      "response_condition_number": 1.0000000000000027,
+      "maximum_abs_match_error": 2.767311203337138e-19,
+      "maximum_relative_match_error": 1.317354605998763e-16,
+      "turn_count_per_coil": 156,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            4.480681777571002e-19,
+            0.0010851734204648492
+          ],
+          [
+            -0.0010851734204648464,
+            4.819138068445234e-19
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_qpol_quadrupole",
+      "component_key": "image_qpol_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1487.9
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -6.8263431602698944e-18,
+          0.027443754414269578
+        ],
+        [
+          -0.02744375441426955,
+          -8.024213028713621e-18
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          1.5802534246870638e-17,
+          0.07654411088299067
+        ],
+        [
+          -0.0765441108829906,
+          4.129684453739778e-17
+        ]
+      ],
+      "response_condition_number": 1.000000000000001,
+      "maximum_abs_match_error": 6.108240917835711e-19,
+      "maximum_relative_match_error": 2.907775351741191e-16,
+      "turn_count_per_coil": 156,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            1.5802534246870638e-17,
+            0.07654411088299067
+          ],
+          [
+            -0.0765441108829906,
+            4.129684453739778e-17
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hp1_hexapole",
+      "component_key": "image_hp1_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1652.4
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          0.2986262649408339
+        ],
+        [
+          -4.4364358532020376e-16
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          -0.0
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.0070344039609095054
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 3.1207681938085353e-18,
+      "maximum_relative_match_error": 1.4856147546435735e-15,
+      "turn_count_per_coil": 19,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.0070344039609095054
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hp2_hexapole",
+      "component_key": "image_hp2_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1796.4
+      ],
+      "reference_orientation_rad": -2.00126792,
+      "unit_current_response": [
+        [
+          0.2870473801448208
+        ],
+        [
+          0.08234954562416377
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0020192072278594443
+        ],
+        [
+          -0.0005792799699177146
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.007034403960909569
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 6.288372600415926e-18,
+      "maximum_relative_match_error": 3.114277976848474e-15,
+      "turn_count_per_coil": 19,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.007034403960909569
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": -2.00126792,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qph2_quadrupole",
+      "component_key": "probe_qph2_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1128.15
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.8656460546849e-17,
+          0.18208063671349972
+        ],
+        [
+          -0.1820806367135,
+          -4.918338994443335e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.3818066370044026e-18,
+          0.011536964165150376
+        ],
+        [
+          -0.011536964165150395,
+          1.2808603250425316e-18
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.3818066370044026e-18,
+            0.011536964165150376
+          ],
+          [
+            -0.011536964165150395,
+            1.2808603250425316e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hp2_hexapole",
+      "component_key": "probe_hp2_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1144.5
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          0.06825468742799462
+        ],
+        [
+          -1.5978179501664977e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          -0.0
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.030776754829439448
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 4.91756513143518e-19,
+      "maximum_relative_match_error": 2.340964423655325e-16,
+      "turn_count_per_coil": 2,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.030776754829439448
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hpc_hexapole",
+      "component_key": "probe_hpc_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1200.85
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -4.40318862715403e-15,
+          13.29965505515926
+        ],
+        [
+          -13.29965505515927,
+          -6.978576173258786e-15
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          3.2608429857431985e-20,
+          0.00015794829055483774
+        ],
+        [
+          -0.00015794829055483788,
+          8.521577851968157e-20
+        ]
+      ],
+      "response_condition_number": 1.0000000000000009,
+      "maximum_abs_match_error": 6.685733080787455e-19,
+      "maximum_relative_match_error": 3.182685509975385e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            3.2608429857431985e-20,
+            0.00015794829055483774
+          ],
+          [
+            -0.00015794829055483788,
+            8.521577851968157e-20
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qpc_quadrupole",
+      "component_key": "probe_qpc_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1215.35
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.8656460546849e-17,
+          0.18208063671349972
+        ],
+        [
+          -0.1820806367135,
+          -4.918338994443335e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.3818066370044026e-18,
+          0.011536964165150376
+        ],
+        [
+          -0.011536964165150395,
+          1.2808603250425316e-18
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.3818066370044026e-18,
+            0.011536964165150376
+          ],
+          [
+            -0.011536964165150395,
+            1.2808603250425316e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qph1_quadrupole",
+      "component_key": "probe_qph1_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1284.5
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.927878409043898e-17,
+          0.18320914076089956
+        ],
+        [
+          -0.18320914076089806,
+          -4.548995240876773e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.367135543527211e-18,
+          0.011465900512425483
+        ],
+        [
+          -0.011465900512425391,
+          2.54594134939121e-18
+        ]
+      ],
+      "response_condition_number": 1.000000000000008,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.367135543527211e-18,
+            0.011465900512425483
+          ],
+          [
+            -0.011465900512425391,
+            2.54594134939121e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hp1_hexapole",
+      "component_key": "probe_hp1_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1300.85
+      ],
+      "reference_orientation_rad": -0.042012393991127016,
+      "unit_current_response": [
+        [
+          0.06739758704757222
+        ],
+        [
+          -0.008539869570750164
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0020839949919957646
+        ],
+        [
+          0.00026406057245310634
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.030920913986502027
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 5.4752209710517974e-18,
+      "maximum_relative_match_error": 2.6272716547213876e-15,
+      "turn_count_per_coil": 2,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.030920913986502027
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": -0.042012393991127016,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hpol_hexapole",
+      "component_key": "probe_hpol_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1317.2
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -7.58500271168254e-15,
+          13.379510590451645
+        ],
+        [
+          -13.37951059045166,
+          -6.420052077698283e-15
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          6.482761324673562e-20,
+          0.00015700557705231426
+        ],
+        [
+          -0.00015700557705231453,
+          1.195694099423872e-19
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            6.482761324673562e-20,
+            0.00015700557705231426
+          ],
+          [
+            -0.00015700557705231453,
+            1.195694099423872e-19
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qpol_quadrupole",
+      "component_key": "probe_qpol_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1331.75
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.8656460546849e-17,
+          0.18208063671349972
+        ],
+        [
+          -0.1820806367135,
+          -4.918338994443335e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.3818066370044026e-18,
+          0.011536964165150376
+        ],
+        [
+          -0.011536964165150395,
+          1.2808603250425316e-18
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.3818066370044026e-18,
+            0.011536964165150376
+          ],
+          [
+            -0.011536964165150395,
+            1.2808603250425316e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qph2_quadrupole",
+      "component_key": "probe_qph2_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1128.15
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.8656460546849e-17,
+          0.18208063671349972
+        ],
+        [
+          -0.1820806367135,
+          -4.918338994443335e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.3818066370044026e-18,
+          0.011536964165150376
+        ],
+        [
+          -0.011536964165150395,
+          1.2808603250425316e-18
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.3818066370044026e-18,
+            0.011536964165150376
+          ],
+          [
+            -0.011536964165150395,
+            1.2808603250425316e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hp2_hexapole",
+      "component_key": "probe_hp2_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1144.5
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          0.0682546874279949
+        ],
+        [
+          -1.7590051819125422e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          -0.0
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.030776754829439323
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 5.413647122743563e-19,
+      "maximum_relative_match_error": 2.5771199725560245e-16,
+      "turn_count_per_coil": 2,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.030776754829439323
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hpc_hexapole",
+      "component_key": "probe_hpc_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1200.85
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -4.40318862715403e-15,
+          13.29965505515926
+        ],
+        [
+          -13.29965505515927,
+          -6.978576173258786e-15
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          3.2608429857431985e-20,
+          0.00015794829055483774
+        ],
+        [
+          -0.00015794829055483788,
+          8.521577851968157e-20
+        ]
+      ],
+      "response_condition_number": 1.0000000000000009,
+      "maximum_abs_match_error": 6.685733080787455e-19,
+      "maximum_relative_match_error": 3.182685509975385e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            3.2608429857431985e-20,
+            0.00015794829055483774
+          ],
+          [
+            -0.00015794829055483788,
+            8.521577851968157e-20
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qpc_quadrupole",
+      "component_key": "probe_qpc_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1215.35
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.8656460546849e-17,
+          0.18208063671349972
+        ],
+        [
+          -0.1820806367135,
+          -4.918338994443335e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.3818066370044026e-18,
+          0.011536964165150376
+        ],
+        [
+          -0.011536964165150395,
+          1.2808603250425316e-18
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.3818066370044026e-18,
+            0.011536964165150376
+          ],
+          [
+            -0.011536964165150395,
+            1.2808603250425316e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qph1_quadrupole",
+      "component_key": "probe_qph1_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1284.5
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.927878409043898e-17,
+          0.18320914076089956
+        ],
+        [
+          -0.18320914076089806,
+          -4.548995240876773e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.367135543527211e-18,
+          0.011465900512425483
+        ],
+        [
+          -0.011465900512425391,
+          2.54594134939121e-18
+        ]
+      ],
+      "response_condition_number": 1.000000000000008,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.367135543527211e-18,
+            0.011465900512425483
+          ],
+          [
+            -0.011465900512425391,
+            2.54594134939121e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hp1_hexapole",
+      "component_key": "probe_hp1_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1300.85
+      ],
+      "reference_orientation_rad": -0.04234211,
+      "unit_current_response": [
+        [
+          0.06738910688245386
+        ],
+        [
+          -0.008606531572343111
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.002083732777539542
+        ],
+        [
+          0.00026612182247052986
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.030920913986501927
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 4.662069341687669e-18,
+      "maximum_relative_match_error": 2.2373643069494786e-15,
+      "turn_count_per_coil": 2,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.030920913986501927
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": -0.04234211,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hpol_hexapole",
+      "component_key": "probe_hpol_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1317.2
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -7.58500271168254e-15,
+          13.379510590451645
+        ],
+        [
+          -13.37951059045166,
+          -6.420052077698283e-15
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          6.482761324673562e-20,
+          0.00015700557705231426
+        ],
+        [
+          -0.00015700557705231453,
+          1.195694099423872e-19
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            6.482761324673562e-20,
+            0.00015700557705231426
+          ],
+          [
+            -0.00015700557705231453,
+            1.195694099423872e-19
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qpol_quadrupole",
+      "component_key": "probe_qpol_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1331.75
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.8656460546849e-17,
+          0.18208063671349972
+        ],
+        [
+          -0.1820806367135,
+          -4.918338994443335e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.3818066370044026e-18,
+          0.011536964165150376
+        ],
+        [
+          -0.011536964165150395,
+          1.2808603250425316e-18
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.3818066370044026e-18,
+            0.011536964165150376
+          ],
+          [
+            -0.011536964165150395,
+            1.2808603250425316e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hpol_hexapole",
+      "component_key": "image_hpol_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1811.9
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -8.927305040056406e-16,
+          1.9357807160735403
+        ],
+        [
+          -1.9357807160735354,
+          -5.442730226489388e-16
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          4.480681777571002e-19,
+          0.0010851734204648492
+        ],
+        [
+          -0.0010851734204648464,
+          4.819138068445234e-19
+        ]
+      ],
+      "response_condition_number": 1.0000000000000027,
+      "maximum_abs_match_error": 2.767311203337138e-19,
+      "maximum_relative_match_error": 1.317354605998763e-16,
+      "turn_count_per_coil": 156,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            4.480681777571002e-19,
+            0.0010851734204648492
+          ],
+          [
+            -0.0010851734204648464,
+            4.819138068445234e-19
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_qpol_quadrupole",
+      "component_key": "image_qpol_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1811.9
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -6.8263431602698944e-18,
+          0.027443754414269578
+        ],
+        [
+          -0.02744375441426955,
+          -8.024213028713621e-18
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          1.5802534246870638e-17,
+          0.07654411088299067
+        ],
+        [
+          -0.0765441108829906,
+          4.129684453739778e-17
+        ]
+      ],
+      "response_condition_number": 1.000000000000001,
+      "maximum_abs_match_error": 6.108240917835711e-19,
+      "maximum_relative_match_error": 2.907775351741191e-16,
+      "turn_count_per_coil": 156,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            1.5802534246870638e-17,
+            0.07654411088299067
+          ],
+          [
+            -0.0765441108829906,
+            4.129684453739778e-17
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hp1_hexapole",
+      "component_key": "image_hp1_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1976.4
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          0.2986262649408339
+        ],
+        [
+          -4.435318166758356e-16
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          -0.0
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.0070344039609095054
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 3.1199819680138865e-18,
+      "maximum_relative_match_error": 1.4852404786421297e-15,
+      "turn_count_per_coil": 19,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.0070344039609095054
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + B-COR",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hp2_hexapole",
+      "component_key": "image_hp2_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        2120.4
+      ],
+      "reference_orientation_rad": -2.00126792,
+      "unit_current_response": [
+        [
+          0.2870473801448201
+        ],
+        [
+          0.08234954562416381
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0020192072278594443
+        ],
+        [
+          -0.0005792799699177146
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.007034403960909584
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 7.806255641895632e-18,
+      "maximum_relative_match_error": 3.866000247122243e-15,
+      "turn_count_per_coil": 19,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.007034403960909584
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": -2.00126792,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qph2_quadrupole",
+      "component_key": "probe_qph2_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1128.15
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.8656460546849e-17,
+          0.18208063671349972
+        ],
+        [
+          -0.1820806367135,
+          -4.918338994443335e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.3818066370044026e-18,
+          0.011536964165150376
+        ],
+        [
+          -0.011536964165150395,
+          1.2808603250425316e-18
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.3818066370044026e-18,
+            0.011536964165150376
+          ],
+          [
+            -0.011536964165150395,
+            1.2808603250425316e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hp2_hexapole",
+      "component_key": "probe_hp2_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1144.5
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          0.0682546874279949
+        ],
+        [
+          -1.7590051819125422e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          -0.0
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.030776754829439323
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 5.413647122743563e-19,
+      "maximum_relative_match_error": 2.5771199725560245e-16,
+      "turn_count_per_coil": 2,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.030776754829439323
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hpc_hexapole",
+      "component_key": "probe_hpc_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1200.85
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -4.40318862715403e-15,
+          13.29965505515926
+        ],
+        [
+          -13.29965505515927,
+          -6.978576173258786e-15
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          3.2608429857431985e-20,
+          0.00015794829055483774
+        ],
+        [
+          -0.00015794829055483788,
+          8.521577851968157e-20
+        ]
+      ],
+      "response_condition_number": 1.0000000000000009,
+      "maximum_abs_match_error": 6.685733080787455e-19,
+      "maximum_relative_match_error": 3.182685509975385e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            3.2608429857431985e-20,
+            0.00015794829055483774
+          ],
+          [
+            -0.00015794829055483788,
+            8.521577851968157e-20
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qpc_quadrupole",
+      "component_key": "probe_qpc_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1215.35
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.8656460546849e-17,
+          0.18208063671349972
+        ],
+        [
+          -0.1820806367135,
+          -4.918338994443335e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.3818066370044026e-18,
+          0.011536964165150376
+        ],
+        [
+          -0.011536964165150395,
+          1.2808603250425316e-18
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.3818066370044026e-18,
+            0.011536964165150376
+          ],
+          [
+            -0.011536964165150395,
+            1.2808603250425316e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qph1_quadrupole",
+      "component_key": "probe_qph1_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1284.5
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.927878409043898e-17,
+          0.18320914076089956
+        ],
+        [
+          -0.18320914076089806,
+          -4.548995240876773e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.367135543527211e-18,
+          0.011465900512425483
+        ],
+        [
+          -0.011465900512425391,
+          2.54594134939121e-18
+        ]
+      ],
+      "response_condition_number": 1.000000000000008,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.367135543527211e-18,
+            0.011465900512425483
+          ],
+          [
+            -0.011465900512425391,
+            2.54594134939121e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hp1_hexapole",
+      "component_key": "probe_hp1_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1300.85
+      ],
+      "reference_orientation_rad": -0.04234211,
+      "unit_current_response": [
+        [
+          0.06738910688245386
+        ],
+        [
+          -0.008606531572343111
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.002083732777539542
+        ],
+        [
+          0.00026612182247052986
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.030920913986501927
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 4.662069341687669e-18,
+      "maximum_relative_match_error": 2.2373643069494786e-15,
+      "turn_count_per_coil": 2,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.030920913986501927
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": -0.04234211,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_hpol_hexapole",
+      "component_key": "probe_hpol_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1317.2
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -7.58500271168254e-15,
+          13.379510590451645
+        ],
+        [
+          -13.37951059045166,
+          -6.420052077698283e-15
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          6.482761324673562e-20,
+          0.00015700557705231426
+        ],
+        [
+          -0.00015700557705231453,
+          1.195694099423872e-19
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            6.482761324673562e-20,
+            0.00015700557705231426
+          ],
+          [
+            -0.00015700557705231453,
+            1.195694099423872e-19
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "probe_qpol_quadrupole",
+      "component_key": "probe_qpol_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1331.75
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -3.8656460546849e-17,
+          0.18208063671349972
+        ],
+        [
+          -0.1820806367135,
+          -4.918338994443335e-17
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          2.3818066370044026e-18,
+          0.011536964165150376
+        ],
+        [
+          -0.011536964165150395,
+          1.2808603250425316e-18
+        ]
+      ],
+      "response_condition_number": 1.0000000000000016,
+      "maximum_abs_match_error": 4.336808689942018e-19,
+      "maximum_relative_match_error": 2.064500333804545e-16,
+      "turn_count_per_coil": 384,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            2.3818066370044026e-18,
+            0.011536964165150376
+          ],
+          [
+            -0.011536964165150395,
+            1.2808603250425316e-18
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hpol_hexapole",
+      "component_key": "image_hpol_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1811.9
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -8.927305040056406e-16,
+          1.9357807160735403
+        ],
+        [
+          -1.9357807160735354,
+          -5.442730226489388e-16
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          4.480681777571002e-19,
+          0.0010851734204648492
+        ],
+        [
+          -0.0010851734204648464,
+          4.819138068445234e-19
+        ]
+      ],
+      "response_condition_number": 1.0000000000000027,
+      "maximum_abs_match_error": 2.767311203337138e-19,
+      "maximum_relative_match_error": 1.317354605998763e-16,
+      "turn_count_per_coil": 156,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            4.480681777571002e-19,
+            0.0010851734204648492
+          ],
+          [
+            -0.0010851734204648464,
+            4.819138068445234e-19
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_qpol_quadrupole",
+      "component_key": "image_qpol_quadrupole",
+      "multipole_order": 2,
+      "command_unit": "m^-2",
+      "field_coefficient_unit": "T/m^1",
+      "reference_planes_z_mm": [
+        1811.9
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          -6.8263431602698944e-18,
+          0.027443754414269578
+        ],
+        [
+          -0.02744375441426955,
+          -8.024213028713621e-18
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134,
+          0.0
+        ],
+        [
+          -0.0,
+          -0.0021006577809314134
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          1.5802534246870638e-17,
+          0.07654411088299067
+        ],
+        [
+          -0.0765441108829906,
+          4.129684453739778e-17
+        ]
+      ],
+      "response_condition_number": 1.000000000000001,
+      "maximum_abs_match_error": 6.108240917835711e-19,
+      "maximum_relative_match_error": 2.907775351741191e-16,
+      "turn_count_per_coil": 156,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            1.5802534246870638e-17,
+            0.07654411088299067
+          ],
+          [
+            -0.0765441108829906,
+            4.129684453739778e-17
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0,
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-2 current calibration at the original native reference plane; native strength in m^-2, matrix in A/(m^-2), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hp1_hexapole",
+      "component_key": "image_hp1_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        1976.4
+      ],
+      "reference_orientation_rad": 0.0,
+      "unit_current_response": [
+        [
+          0.2986262649408339
+        ],
+        [
+          -4.435318166758356e-16
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0021006577809314134
+        ],
+        [
+          -0.0
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.0070344039609095054
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 3.1199819680138865e-18,
+      "maximum_relative_match_error": 1.4852404786421297e-15,
+      "turn_count_per_coil": 19,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.0070344039609095054
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": 0.0,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "host_key": "image_hp2_hexapole",
+      "component_key": "image_hp2_hexapole",
+      "multipole_order": 3,
+      "command_unit": "m^-3",
+      "field_coefficient_unit": "T/m^2",
+      "reference_planes_z_mm": [
+        2120.4
+      ],
+      "reference_orientation_rad": -2.00126792,
+      "unit_current_response": [
+        [
+          0.2870473801448201
+        ],
+        [
+          0.08234954562416381
+        ]
+      ],
+      "native_target_per_unit": [
+        [
+          -0.0020192072278594443
+        ],
+        [
+          -0.0005792799699177146
+        ]
+      ],
+      "matrix_a_per_unit": [
+        [
+          -0.007034403960909584
+        ]
+      ],
+      "response_condition_number": 1.0,
+      "maximum_abs_match_error": 7.806255641895632e-18,
+      "maximum_relative_match_error": 3.866000247122243e-15,
+      "turn_count_per_coil": 19,
+      "pack_order": 12,
+      "path_order": 24,
+      "fields": {
+        "ideal_multipole_current_matrix_a_per_unit": [
+          [
+            -0.007034403960909584
+          ]
+        ],
+        "ideal_multipole_current_bias_a": [
+          0.0
+        ],
+        "ideal_multipole_calibration_reference_energy_ev": 300000.0,
+        "ideal_multipole_calibration_reference_orientation_rad": -2.00126792,
+        "ideal_multipole_calibration_kind": "native_peak_multipole_coefficient_at_reference_plane_v1",
+        "ideal_multipole_calibration_status": "calibrated_native_peak",
+        "ideal_multipole_calibration_source_note": "Ideal vacuum closed-coil order-3 current calibration at the original native reference plane; native strength in m^-3, matrix in A/(m^-3), reference energy 300000 eV. Fixed physical N, pack bounds and saved winding angular datum retained. Signed normal/skew on-axis Taylor coefficients use analytic Biot-Savart derivatives. No magnetic core, pole response, field-integral/profile equivalence, focus adjustment, thermal rating or experimental calibration is inferred. The numerical current reference stays fixed after energy or geometry edits; re-calibration is explicit."
+      },
+      "source_model": "homogenized_closed_multipole_pack_in_vacuum",
+      "native_controls_unchanged": true,
+      "focus_or_source_calculation_executed": false
+    }
+  ]
+}

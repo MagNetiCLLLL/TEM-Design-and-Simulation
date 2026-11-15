@@ -1,0 +1,47 @@
+{
+  "original_count": 1024,
+  "original_positive_count": 1024,
+  "gun_exit_surviving": 1024,
+  "incident_surviving_positive": 1024,
+  "incident_effective_count": 1024.0,
+  "gun_emitted_current_a": 1e-05,
+  "incident_source_weight_sum": 1.0,
+  "incident_surviving_source_fraction": 1.0,
+  "incident_z_range_mm": [
+    0.0,
+    1599.2
+  ],
+  "equal_time_history_saved": true,
+  "equal_time_frames": 353,
+  "performance": {
+    "workflow": "rays",
+    "recovery": true,
+    "post_only_seconds": 1108.1023425000021,
+    "scope": "Original High incident/Gun retained; sample-to-end optical reference was newly executed"
+  },
+  "scope": "Original High full job numerically completed, but its guard failed before post arrays were retained. This separate run reuses the formal actual incident checkpoint and newly reruns only sample-to-end optical reference. No source/Gun/pre-sample transport, material scattering, coherent or scan qualification. Preview and High dynamic fields are different; no fixed-field convergence claim.",
+  "status": "COMPLETE_HIGH_POST_RECOVERY",
+  "quality": "High accuracy",
+  "source": {
+    "original_high_directory": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\high-accuracy",
+    "original_request_sha256": "e73f4c91e2e0eeb88b8dfc1f7a41cb8eb039113c5a667b10fb098fae1ea1a7e7",
+    "original_input_sha256": "584f00d54b5c662589a9e7d6830b4d43edd2ee7828de05aa468913593f0e25e6",
+    "original_manifest_digest": "b7d549a6f2a03048d50ad53ae38ac63558afdde778ab08ddaa89e74e96bf7ff7",
+    "original_full_worker_seconds": 2909.128643,
+    "original_failure_preserved": "f1fde91d7706c8380314c7a7ecfb5ed6307f0f80acb927e041f36001977ad825",
+    "original_source_implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+    "original_incident_store_identity": "9b2656906a7443ad8abe009ecb5a04442b2f175904ecd57d2cdb8c00741f6b3e",
+    "original_count": 1024,
+    "original_positive_count": 1024,
+    "unique_original_ids": 1024
+  },
+  "post_only_seconds": 1108.1023425000021,
+  "original_high_failure_preserved": true,
+  "original_incident_and_gun_reused": true,
+  "new_finite_source_particles": 0,
+  "forbidden_upstream_attempts": [],
+  "independent_controls_unchanged": true,
+  "recovered_actual_field_exactly_matches_original_high": true,
+  "formal_archive_roundtrip_exact": true,
+  "validate_incident_flight_times": true
+}

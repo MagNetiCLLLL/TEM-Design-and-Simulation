@@ -361,7 +361,8 @@ class DynamicPotentialSnapshot:
         if type(self.static_snapshot) is not ElectromagneticPotentialSnapshot:
             raise ValueError("Dynamic potentials require the exact retained static snapshot")
         coils = tuple(self.dynamic_coils)
-        if not coils or any(type(coil) is not DynamicDipolePotential for coil in coils):
+        from temsim.physics.dynamic_transverse_coil import DynamicTransverseCoilPotential
+        if not coils or any(type(coil) not in (DynamicDipolePotential,DynamicTransverseCoilPotential) for coil in coils):
             raise ValueError("Dynamic snapshot requires exact immutable native coils")
         object.__setattr__(self, "dynamic_coils", coils)
         ids, ownership = set(), set()
@@ -440,8 +441,10 @@ class DynamicPotentialSnapshot:
     def from_dict(cls, record):
         if not isinstance(record, Mapping) or set(record) != {"schema", "static_snapshot", "dynamic_coils", "numerical_digest"} or record["schema"] != SCHEMA:
             raise ValueError("Invalid dynamic potential snapshot record")
+        from temsim.physics.dynamic_transverse_coil import DynamicTransverseCoilPotential,SCHEMA as CURRENT_SCHEMA
         result = cls(ElectromagneticPotentialSnapshot.from_dict(record["static_snapshot"]),
-                     tuple(DynamicDipolePotential.from_dict(value) for value in record["dynamic_coils"]))
+                     tuple((DynamicTransverseCoilPotential if value.get('schema')==CURRENT_SCHEMA else DynamicDipolePotential).from_dict(value)
+                           for value in record["dynamic_coils"]))
         if result.numerical_digest != record["numerical_digest"]:
             raise ValueError("Dynamic potential snapshot identity mismatch")
         return result

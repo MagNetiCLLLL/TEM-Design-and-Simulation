@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "nominal_allocated_area_per_turn_mm2": 9.0,
+  "source_definitions": 9,
+  "source_owner_instances": 78,
+  "assemblies": 14,
+  "field_checks": 196,
+  "pointwise_rtol": 2e-14,
+  "pointwise_atol_t": 1e-20,
+  "maximum_peak_normalized_field_change": 2.9151930279053834e-16,
+  "changed_estimated_counts": 49,
+  "original_objective_photo_reference_preserved": true,
+  "current_objective_interval_turns": [
+    580,
+    580
+  ],
+  "authorized_turn_adjustment_fraction": 0.2,
+  "all_turn_adjustments_within_20_percent": true,
+  "envelopes_and_optical_source_numerics_unchanged": true,
+  "all_ideal_cache_identities_changed": true,
+  "default_metal_area_inferred": false,
+  "source_transport_focus_or_coherent_executed": false
+}

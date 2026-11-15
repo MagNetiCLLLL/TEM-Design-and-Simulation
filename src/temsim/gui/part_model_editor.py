@@ -43,6 +43,7 @@ class PartModelEditorPage(QWidget):
         self._module_origins = {}
         self._coordinate_source_bytes = {}
         self._component_dialog = None
+        self._winding_dialog = None
         self._removed_selection_key = None
         self._project_save = None
         self._pending_part = None
@@ -101,6 +102,14 @@ class PartModelEditorPage(QWidget):
         self.tip_detail_button = QPushButton("Fit emitting surface")
         self.tip_detail_button.setVisible(False)
         self.tip_detail_button.clicked.connect(self._fit_tip_emission)
+        self.configure_winding_button = QPushButton("Configure winding...")
+        self.configure_winding_button.setObjectName("configureWindingButton")
+        self.configure_winding_button.setVisible(False)
+        self.configure_winding_button.setToolTip(
+            "Stage explicit turns and conductor metal area inside the existing winding envelope. "
+            "Transverse coils include signed current biases and their fixed calibration reference. "
+            "Round lenses retain their separate owner-current input; probe hexapole inputs are CAD only. Save remains separate.")
+        self.configure_winding_button.clicked.connect(self.configure_winding)
         self.tip_display = QComboBox()
         for label, key in (("Active emitting surface", "emission"),
                            ("Reference body", "reference"), ("Surface + reference outline", "both")):
@@ -269,6 +278,7 @@ class PartModelEditorPage(QWidget):
         component_row.addWidget(self.tip_emission_button)
         component_row.addWidget(self.tip_detail_button)
         component_row.addWidget(self.tip_display)
+        component_row.addWidget(self.configure_winding_button)
         component_row.addStretch(1)
         layout.addLayout(component_row)
         view_row = QHBoxLayout()
@@ -545,6 +555,114 @@ class PartModelEditorPage(QWidget):
         previous_parameters = self._selected_runtime_values()
         self._runtime_values = deepcopy(values or {})
         self._refresh_runtime_dependencies(previous_mesh, previous_parameters, previous_assembly_mesh)
+        if self._winding_dialog is not None:
+            key = self._winding_dialog.owner["key"]
+            self._winding_dialog.set_runtime_values(self._model_runtime_values().get(key, {}))
+
+    def _winding_context(self):
+        """Return an explicitly identified native material winding and drive."""
+        if self.session is None or self._selected_key is None:
+            return None
+        from temsim.cad_round_winding import round_winding_envelope
+        from temsim.coil_reference_metadata import ROUND_LENS_PROFILES
+
+        parts = {part["key"]: part for part in self.session.document["parts"]}
+        part = parts.get(self._selected_key, {})
+        from temsim.multipole_winding import supported_multipole_winding, multipole_winding_owner_key
+        if (supported_multipole_winding(part)
+                and part.get('model_3d',{}).get('base',{}).get('kind','existing')=='existing'):
+            return part,parts.get(multipole_winding_owner_key(part),part),parts
+        from temsim.probe_hexapole_geometry import is_probe_hexapole
+        if (is_probe_hexapole(part)
+                and part.get('model_3d', {}).get('base', {}).get('kind', 'existing') == 'existing'):
+            return part, part, parts
+        from temsim.transverse_winding import supported_transverse_winding
+        if supported_transverse_winding(part):
+            owner=next((row for row in parts.values()
+                if row.get('physical_host_key')==part.get('key') and row.get('layout_role')=='control_channel'),part)
+            return part,owner,parts
+        owner = parts.get(part.get("field_source_key"), {})
+        if (part.get("mechanical_profile") != "magnetic_excitation_coil"
+                or owner.get("mechanical_profile") not in ROUND_LENS_PROFILES
+                or part.get("mechanical_part_role") in {"custom_mechanical", "custom_mechanical_copy"}):
+            return None
+        try:
+            round_winding_envelope(part, parts)
+        except (ValueError, TypeError, OverflowError):
+            return None
+        return part, owner, parts
+
+    def configure_winding(self):
+        """Open an explicit winding editor; apply is one validated draft operation."""
+        if self._winding_dialog is not None:
+            self._winding_dialog.raise_()
+            self._winding_dialog.activateWindow()
+            return self._winding_dialog
+        context = self._winding_context()
+        if context is None or self._invalid_inputs:
+            return None
+        from temsim.gui.coil_winding_dialog import WindingConfigurationDialog
+
+        part, owner, parts = context
+        from temsim.probe_hexapole_geometry import is_probe_hexapole
+        from temsim.transverse_winding import supported_transverse_winding
+        from temsim.multipole_winding import supported_multipole_winding
+        multipole=supported_multipole_winding(part)
+        probe = is_probe_hexapole(part) and not multipole
+        transverse=supported_transverse_winding(part)
+        session = self.session
+        original = deepcopy(session.document)
+        key = part["key"]
+
+        def commit(values):
+            if self.session is not session or self.session.document != original:
+                raise ValueError("The draft changed while this dialog was open. Reopen Configure winding to review it.")
+            if multipole:
+                session.configure_multipole_winding(key,**values)
+            elif probe:
+                session.configure_probe_winding(key, **values)
+            elif transverse:
+                session.configure_transverse_winding(key, **values)
+            else:
+                session.configure_winding(key, **values)
+            self._load_parameters()
+            rendered = self._render(preserve_view=True)
+            preview_notice = self.status.text() if rendered is False else ""
+            self._queue_overlap_check()
+            self._update_buttons()
+            self._message(("Multipole winding and signed current biases staged as one undoable change. "
+                           if multipole else "Radial winding CAD staged as one undoable change; native optical strength is unchanged. "
+                           if probe else "Transverse winding and signed current biases staged as one undoable change. "
+                           if transverse else "Winding and owner current staged as one undoable change. ")
+                + "Save writes the draft; the live instrument is unchanged."
+                + (" " + preview_notice if preview_notice else ""), error=bool(preview_notice))
+
+        if multipole:
+            from temsim.gui.multipole_winding_dialog import MultipoleWindingConfigurationDialog
+            dialog=MultipoleWindingConfigurationDialog(part,owner,parts,
+                runtime_values=self._model_runtime_values().get(owner['key'],{}),commit=commit,parent=self)
+        elif probe:
+            from temsim.gui.probe_winding_dialog import ProbeWindingConfigurationDialog
+            dialog = ProbeWindingConfigurationDialog(part,
+                runtime_values=self._model_runtime_values().get(owner['key'], {}), commit=commit, parent=self)
+        elif transverse:
+            from temsim.gui.transverse_winding_dialog import TransverseWindingConfigurationDialog
+            dialog=TransverseWindingConfigurationDialog(part,owner,parts,
+                runtime_values=self._model_runtime_values().get(owner['key'],{}),commit=commit,parent=self)
+        else:
+            dialog = WindingConfigurationDialog(part, owner, parts,
+                runtime_values=self._model_runtime_values().get(owner["key"], {}),
+                commit=commit, parent=self)
+        self._winding_dialog = dialog
+
+        def finished(_result):
+            if self._winding_dialog is dialog:
+                self._winding_dialog = None
+            dialog.deleteLater()
+
+        dialog.finished.connect(finished)
+        dialog.open()
+        return dialog
 
     def _selected_runtime_values(self):
         if self.session is None or self._selected_key is None:
@@ -561,6 +679,7 @@ class PartModelEditorPage(QWidget):
             return ()
         from temsim.part_model_apertures import _opening, is_strip_aperture
         from temsim.energy_filter_model_3d import slit_render_dependency, supports_energy_filter_part
+        from temsim.multipole_winding import is_primary_multipole
 
         parts = {part["key"]: part for part in self.session.document["parts"]}
         if whole_assembly:
@@ -587,6 +706,11 @@ class PartModelEditorPage(QWidget):
         runtime = self._runtime_values if whole_assembly else self._model_runtime_values()
         dependencies = []
         for key, part in parts.items():
+            if (key in keys and is_primary_multipole(part)
+                    and 'multipole_winding_geometry_status' in part
+                    and part.get('model_3d',{}).get('base',{}).get('kind','existing')=='existing'):
+                dependencies.append((key,'multipole_orientation_rad',
+                    deepcopy(runtime.get(key,{}).get('orientation_rad'))))
             if key in keys and part.get("mechanical_profile") == "electrostatic_parallel_plates":
                 dependencies.append((key, "azimuth_deg", deepcopy(runtime.get(key, {}).get("azimuth_deg", 0.))))
             if key in keys and part.get("tip_particle_model"):
@@ -2214,6 +2338,9 @@ class PartModelEditorPage(QWidget):
     def _update_buttons(self):
         loaded = self.session is not None
         running_geometry = self._cad_geometry_job is not None and self._cad_geometry_job.busy
+        winding = self._winding_context() is not None
+        self.configure_winding_button.setVisible(winding)
+        self.configure_winding_button.setEnabled(winding and not self._invalid_inputs and not running_geometry)
         self.import_step_button.setEnabled(not self._invalid_inputs and not running_geometry)
         self.geometry_check_button.setEnabled(loaded and not self._invalid_inputs and not running_geometry)
         self.subassembly_button.setEnabled(loaded and bool(self.session.document.get("subassemblies")) and not self._invalid_inputs)

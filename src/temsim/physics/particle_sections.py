@@ -95,6 +95,8 @@ def _selection_boundary(state, keys):
     bounds = []
     from temsim.physics.instrument_magnetic import column_dipole_fields
     dipoles = column_dipole_fields(state)
+    from temsim.physics.transverse_coil_field import capture_transverse_coil_fields
+    current_owners={field.component_key for field in capture_transverse_coil_fields(state)}
     for key in keys:
         if key in gun_keys:
             bounds.append(start)
@@ -102,6 +104,12 @@ def _selection_boundary(state, keys):
         if key not in components:
             raise ValueError(f"Unknown section tuning component: {key}")
         component = components[key]
+        if key in current_owners:
+            # A finite winding allocation is not an axial field cutoff. Its
+            # changed current can affect every post-gun checkpoint through
+            # physical tails; the independent gun dependency guards its exit.
+            bounds.append(start)
+            continue
         dipole_support = [coil.field_support_mm[0] for coil in dipoles
                           if key in coil.drive_keys or coil.key.rsplit(":", 1)[0] == key]
         if dipole_support:

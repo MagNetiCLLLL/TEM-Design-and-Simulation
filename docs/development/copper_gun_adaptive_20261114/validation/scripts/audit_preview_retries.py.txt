@@ -1,0 +1,287 @@
+"""Audit saved Preview observers and plot them; never execute physical models.
+
+Run with the repository Python environment. All new audit products are written
+beside this file and existing evidence is never overwritten.
+"""
+from __future__ import annotations
+
+from collections import Counter, defaultdict
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+
+import numpy as np
+
+
+CASE = Path(__file__).resolve().parent
+ROOT = CASE.parents[2]
+OLD = ROOT / "outputs/copper-gun-speed-20261114/optimized-preview-high-1024/preview"
+NEW = CASE / "preview"
+GATES = ("total_momentum", "xyz_position", "transverse_momentum", "xy_position")
+BANDS = ((0., .5), (.5, 1.1), (1.1, 14.), (14., 25.), (25., 450.1))
+EXPECTED_OLD = "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35"
+EXPECTED_NEW = "6169010971ca2aeb082c8f0936b043f2ad4eb886cdfd07991c69bdda32a7ffca"
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def distribution(values):
+    values = np.asarray(values, dtype=float)
+    if not values.size:
+        return None
+    return dict(minimum=float(np.min(values)), median=float(np.median(values)),
+        p90=float(np.quantile(values, .9)), p99=float(np.quantile(values, .99)), maximum=float(np.max(values)))
+
+
+def zmid(record):
+    return (record["z_min_m"]+record["z_max_m"])*500.
+
+
+def dominant(record):
+    return max(GATES, key=lambda name: record["gates"][name]["maximum_ratio"])
+
+
+def region(rows):
+    accepted = [row for row in rows if row["accepted"]]
+    rejected = [row for row in rows if not row["accepted"]]
+    return dict(accepted_steps=len(accepted), attempts=len(rows), rejected_trials=len(rejected),
+        attempt_seconds=sum(row["seconds"] for row in rows),
+        rejected_attempt_seconds=sum(row["seconds"] for row in rejected),
+        failures_nonexclusive={name: sum(row["gates"][name]["maximum_ratio"] > 1 for row in rejected) for name in GATES},
+        dominant_failure_exclusive=dict(Counter(dominant(row) for row in rejected)),
+        retry_depth_histogram=dict(sorted(Counter(row["attempt"] for row in accepted).items())),
+        accepted_dt_s=distribution([row["dt_s"] for row in accepted]))
+
+
+def dataset(path, expected_identity):
+    observer = json.loads((path / "observer.json").read_text())
+    receipt = json.loads((path / "execution-receipt.json").read_text())
+    summary = json.loads((path / "summary.json").read_text())
+    assert receipt["execution_implementation"] == expected_identity and receipt["implementation_unchanged"]
+    assert receipt["errors"] == receipt["persistence_errors"] == []
+    assert receipt["cancellation_reason"] is None and receipt["completed_result_count"] == 1
+    assert observer["attempt_records_dropped"] == 0
+    rows = observer["attempts"]
+    accepted = [row for row in rows if row["accepted"]]
+    rejected = [row for row in rows if not row["accepted"]]
+    assert len(rows) == observer["counts"]["attempts"]
+    assert len(accepted) == observer["counts"]["accepted_steps"]
+    assert len(rejected) == observer["counts"]["gate_rejections"]
+    assert observer["traces"] == [dict(trace=1, original_count=1024, original_positive_count=1024,
+        source_fraction=1., initial_phase_time_s=0.)]
+    assert all(row["finite"] and "retryable_implicit_failure" not in row for row in rows)
+    assert all(gate["all_finite"] and gate["maximum_ratio"] <= 1. for row in accepted for gate in row["gates"].values())
+    grouped = defaultdict(list)
+    for row in rows:
+        grouped[row["surface_step"]].append(row)
+    steps = [grouped[key] for key in sorted(grouped)]
+    assert len(steps) == len(accepted)
+    for step in steps:
+        assert step[-1]["accepted"] and sum(row["accepted"] for row in step) == 1
+        assert [row["attempt"] for row in step] == list(range(len(step)))
+        assert all(row["dt_s"] == step[0]["dt_s"]*.5**index for index, row in enumerate(step))
+        assert all(row["cached_full"] == (index > 0) for index, row in enumerate(step))
+    assert observer["counts"]["static_step_calls"] == 3*len(accepted)+2*len(rejected)
+    bands = [dict(start_z_mm=lo, stop_z_mm=hi,
+        **region([row for row in rows if lo <= zmid(row) < hi])) for lo, hi in BANDS]
+    assert sum(row["attempts"] for row in bands) == len(rows)
+    assert all(steps[index+1][0]["phase_time_s"] == step[-1]["phase_time_s"]+step[-1]["dt_s"]
+        for index, step in enumerate(steps[:-1]))
+    return dict(directory=str(path), implementation=expected_identity,
+        evidence_sha256={name: sha(path/name) for name in ("observer.json", "observer-arrays.npz", "summary.json", "execution-receipt.json", "input.json")},
+        total=region(rows), counts=observer["counts"], records_dropped=0,
+        summary_worker_callback_seconds=summary["worker_elapsed_seconds"],
+        execution_receipt_seconds=receipt["elapsed_seconds"], observer_elapsed_seconds=observer["elapsed_seconds"],
+        static_step_seconds=observer["static_step_seconds"],
+        initial_first_full_call_seconds=rows[0]["static_calls"][0]["seconds"],
+        bands=bands,
+        accepted_gate_maximum_ratios={name: distribution([row["gates"][name]["maximum_ratio"] for row in accepted]) for name in GATES},
+        rejected_gate_maximum_ratios={name: distribution([row["gates"][name]["maximum_ratio"] for row in rejected]) for name in GATES},
+        following_initial_over_previous_accepted=distribution([steps[index+1][0]["dt_s"]/step[-1]["dt_s"] for index, step in enumerate(steps[:-1])]),
+        following_initial_over_previous_retried_accepted=distribution([steps[index+1][0]["dt_s"]/step[-1]["dt_s"] for index, step in enumerate(steps[:-1]) if len(step)>1]),
+        source_surviving_at_gun_exit=summary["gun_exit_surviving"],
+        status=summary["status"]), rows, steps
+
+
+def main():
+    output = CASE / "independent-preview-rejection-audit.json"
+    brief_output = CASE / "independent-preview-rejection-brief.md"
+    figure_output = CASE / "preview-rejection-comparison.png"
+    assert not any(path.exists() for path in (output, brief_output, figure_output))
+    old, old_rows, _ = dataset(OLD, EXPECTED_OLD)
+    new, new_rows, new_steps = dataset(NEW, EXPECTED_NEW)
+    assert (old["total"]["accepted_steps"], old["total"]["attempts"], old["total"]["rejected_trials"]) == (3502, 9444, 5942)
+    assert (new["total"]["accepted_steps"], new["total"]["attempts"], new["total"]["rejected_trials"]) == (3801, 3984, 183)
+    source_checks = []
+    with np.load(OLD/"observer-arrays.npz", allow_pickle=False) as left, np.load(NEW/"observer-arrays.npz", allow_pickle=False) as right:
+        for name in ("ray_id", "weight", "launch_position_m", "launch_momentum_kg_m_per_s", "launch_energy_ev"):
+            a, b = left["trace_0001_"+name], right["trace_0001_"+name]
+            assert a.dtype == b.dtype and a.shape == b.shape and a.tobytes() == b.tobytes()
+            source_checks.append(dict(field=name, exact_dtype_shape_bytes=True,
+                sha256=hashlib.sha256(a.tobytes()).hexdigest()))
+    first_trials = [step[0] for step in new_steps]
+    assert all(row["trial_proposal"]["schema"] == "surface-dg-bounded-feedback-proposal-v2" for row in first_trials)
+    assert all(row["trial_proposal"]["trial_dt_s"] == row["dt_s"] <= row["trial_proposal"]["physics_cap_s"] for row in first_trials)
+    assert new["following_initial_over_previous_accepted"]["maximum"] <= 1.25+8*np.finfo(float).eps
+    assert new["following_initial_over_previous_retried_accepted"]["maximum"] <= 1.+8*np.finfo(float).eps
+    rejected = [row for row in new_rows if not row["accepted"]]
+    detailed_ranges = ((0., .15), (.15, .3), (.3, .5), (.5, .65), (.65, .75), (.75, .85),
+        (.85, 1.), (1., 1.3), (1.3, 2.3), (2.3, 10.), (10., 14.), (14., 19.), (19., 20.),
+        (20., 21.), (21., 22.), (22., 25.), (25., 40.), (40., 100.), (100., 450.1))
+    remaining = [dict(start_z_mm=lo, stop_z_mm=hi,
+        **region([row for row in new_rows if lo <= zmid(row) < hi])) for lo, hi in detailed_ranges]
+    examples = []
+    for step in sorted(new_steps, key=lambda group: (len(group), sum(row["seconds"] for row in group)), reverse=True)[:12]:
+        if len(step) <= 1:
+            continue
+        examples.append(dict(surface_step=step[0]["surface_step"], start_midpoint_z_mm=zmid(step[0]),
+            retry_depth=step[-1]["attempt"], initial_dt_s=step[0]["dt_s"], accepted_dt_s=step[-1]["dt_s"],
+            physical_cap_s=step[0]["trial_proposal"]["physics_cap_s"],
+            trial_sequence=[dict(dt_s=row["dt_s"], accepted=row["accepted"],
+                gate_maximum_ratios={name: row["gates"][name]["maximum_ratio"] for name in GATES}) for row in step]))
+    comparison = dict(rejection_reduction_fraction=1-new["total"]["rejected_trials"]/old["total"]["rejected_trials"],
+        attempts_reduction_fraction=1-new["total"]["attempts"]/old["total"]["attempts"],
+        accepted_steps_change_fraction=new["total"]["accepted_steps"]/old["total"]["accepted_steps"]-1,
+        static_calls_reduction_fraction=1-new["counts"]["static_step_calls"]/old["counts"]["static_step_calls"],
+        observed_worker_callback_time_ratio_old_over_new=old["summary_worker_callback_seconds"]/new["summary_worker_callback_seconds"],
+        observed_execution_receipt_time_ratio_old_over_new=old["execution_receipt_seconds"]/new["execution_receipt_seconds"],
+        observed_attempt_time_ratio_old_over_new=old["total"]["attempt_seconds"]/new["total"]["attempt_seconds"],
+        rejected_time_fraction_of_attempts_old=old["total"]["rejected_attempt_seconds"]/old["total"]["attempt_seconds"],
+        rejected_time_fraction_of_attempts_new=new["total"]["rejected_attempt_seconds"]/new["total"]["attempt_seconds"])
+    report = dict(status="INDEPENDENT_NEW_PREVIEW_REJECTION_COMPARISON_PASSED",
+        created_utc=datetime.now(timezone.utc).isoformat(), audit_script_sha256=sha(__file__),
+        scope="Existing completed Preview observers and saved source arrays only. No source emission, field query/solve, transport, High interaction or frozen source/runner edits.",
+        original_positive_source_count=1024, configured_source_fwhm_ev=.3,
+        call_count_definition="Observed full/half/fine DG calls inside _surface_step only; plane-root and other static DG calls are outside this counter. Exact accounting is 3*accepted_steps + 2*rejected_trials.",
+        exact_original_source_comparison=source_checks, old=old, new=new, comparison=comparison,
+        timing_definitions=dict(summary_worker_callback_seconds="Native worker time up to result signal; excludes result callback persistence.",
+            execution_receipt_seconds="Outer worker invocation including its result callback, archive/store persistence and observer writing.",
+            attempt_seconds="Sum of timed full/half/fine/gate trial blocks; excludes plane-root, outer-loop, preparation, persistence and downstream column work.",
+            limitation="Single recorded old/new executions; compilation state, timing variation and changed accepted meshes prevent a pure controller speedup guarantee. Initial full-call times are retained explicitly."),
+        spatial_definition="Each trial belongs to a disjoint band using the midpoint of the active population's start-Z extrema. This is not an individual particle common-Z plane.",
+        remaining_rejections=dict(total=183, affected_accepted_steps=sum(len(step)>1 for step in new_steps),
+            start_midpoint_z_mm_range=[min(zmid(row) for row in rejected), max(zmid(row) for row in rejected)],
+            detailed_spatial_bands=remaining, largest_retry_examples=examples,
+            failure_combinations=[dict(gates=list(names), count=count) for names, count in Counter(tuple(name for name in GATES if row["gates"][name]["maximum_ratio"]>1) for row in rejected).most_common()]),
+        controller_evidence=dict(all_first_trials_bounded_by_original_physics_cap=True,
+            proposal_context_changes=dict(Counter(reason for row in first_trials for reason in row["trial_proposal"]["context_change_reasons"])),
+            after_retried_step_next_initial_never_grows=True, maximum_other_growth=1.25,
+            all_actual_gate_budgets_passed_on_acceptance=True, every_retry_exact_half=True,
+            cached_full_uses_exactly_rejected_trials=True, single_population_clock_exactly_continuous=True,
+            implicit_failure_trials=0, nonfinite_gate_trials=0),
+        interpretation=[
+            "Repeated reset-and-halve work was removed: rejected trials fall by 96.92 percent even though the accepted-step count rises by 8.54 percent.",
+            "The former 0.5-1.1 mm hotspot falls from 4875 to 19 rejects. The largest remaining reject band is 14-25 mm (98), followed by 1.1-14 mm (38). There are no rejects beyond start-midpoint Z=42.710 mm.",
+            "All new accepted trials satisfy all four unchanged normalized error gates. Remaining failures are genuine gate rejections, dominated by transverse momentum, with eight XYZ-dominated trials.",
+            "The new accepted phase mesh differs from the baseline. This audit compares work and logged decisions, not bitwise trajectory equality or an independent physical accuracy certificate.",
+            "Normal Preview automatic scan calibration is preserved as executed. The running High result is outside this audit; no Preview/High field-convergence claim is made."
+        ])
+    # Standard static scientific plot; no interactive or simulation operator.
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    labels = ["0–0.5", "0.5–1.1", "1.1–14", "14–25", "25–450.1", "Total"]
+    old_regions, new_regions = old["bands"]+[old["total"]], new["bands"]+[new["total"]]
+    figure, axes = plt.subplots(1, 2, figsize=(11.6, 4.6), constrained_layout=False)
+    colors = ("#667A8B", "#008C95")
+    indices = np.arange(len(labels))
+    for axis, field, title, ylabel in ((axes[0], "rejected_trials", "Rejected DG trials", "Rejected trial count (log scale)"),
+            (axes[1], "attempt_seconds", "Recorded DG trial time", "Sum of attempt time (s, log scale)")):
+        for offset, rows, label, color in ((-.19, old_regions, "Baseline 50af", colors[0]),
+                (.19, new_regions, "Adaptive 6169", colors[1])):
+            values = [row[field] for row in rows]
+            bars = axis.bar(indices+offset, values, width=.36, color=color, label=label)
+            for bar, value in zip(bars, values):
+                axis.text(bar.get_x()+bar.get_width()/2, value*1.055,
+                    f"{int(value):,}" if field=="rejected_trials" else f"{value:,.0f}",
+                    ha="center", va="bottom", fontsize=8)
+        axis.set_yscale("log")
+        axis.set_xticks(indices, labels)
+        axis.set_xlabel("Active start-Z midpoint band (mm)")
+        axis.set_ylabel(ylabel)
+        axis.set_title(title, fontsize=12)
+        axis.set_ylim(bottom=8 if field=="rejected_trials" else 50,
+            top=11000 if field=="rejected_trials" else 4500)
+        axis.grid(axis="y", which="major", alpha=.2)
+        axis.set_axisbelow(True)
+        axis.axvline(4.5, color=".7", linewidth=.8)
+        axis.spines[["top", "right"]].set_visible(False)
+    handles, legend_labels = axes[0].get_legend_handles_labels()
+    figure.legend(handles, legend_labels, frameon=False, loc="upper center",
+        bbox_to_anchor=(.5, .915), ncol=2, fontsize=9)
+    figure.suptitle("Complete 1024-particle Preview: adaptive trial-step feedback", fontsize=14, y=.98)
+    figure.text(.5, .035, "Complete observer records • disjoint start-midpoint bands • recorded runs, not a repeatability benchmark", ha="center", fontsize=9, color="#46525C")
+    figure.subplots_adjust(left=.075, right=.985, bottom=.18, top=.83, wspace=.27)
+    figure.savefig(figure_output, dpi=180)
+    plt.close(figure)
+    report["comparison_figure"] = dict(path=str(figure_output), sha256=sha(figure_output),
+        source_script=str(Path(__file__).resolve()), labels="English", source="Complete recorded counts and timed attempts; no extrapolated data")
+    with output.open("x", encoding="utf-8") as stream:
+        json.dump(report, stream, indent=2, allow_nan=False)
+    brief = f"""# Existing complete Preview: independent rejection comparison
+
+Both records contain one actual 1024-original-particle positive-current source,
+and the five saved initial-source arrays match exactly. This audit only reads
+saved data; it does not run physics or touch the running High calculation.
+
+| Metric | Baseline 50af | Adaptive 6169 |
+|---|---:|---:|
+| Accepted steps | 3,502 | 3,801 |
+| Trial attempts | 9,444 | 3,984 |
+| Rejected trials | 5,942 | 183 |
+| Observed surface-step DG calls | 22,390 | 11,769 |
+| Recorded attempt time | 2,961.117 s | 1,255.557 s |
+| Rejected-attempt time | 1,998.585 s | 62.292 s |
+| Worker time to result callback | {old['summary_worker_callback_seconds']:.3f} s | {new['summary_worker_callback_seconds']:.3f} s |
+| Outer invocation including callback persistence | {old['execution_receipt_seconds']:.3f} s | {new['execution_receipt_seconds']:.3f} s |
+
+Rejections fall by {comparison['rejection_reduction_fraction']:.2%}; observed surface-step DG
+calls fall by {comparison['static_calls_reduction_fraction']:.2%}. The accepted
+step count increases by {comparison['accepted_steps_change_fraction']:.2%}.
+Observed worker-to-callback time improves by a factor of
+{comparison['observed_worker_callback_time_ratio_old_over_new']:.3f}. These are
+two recorded executions, not a repeatability benchmark or a controller-only
+runtime guarantee. The first full call took {old['initial_first_full_call_seconds']:.3f} s
+and {new['initial_first_full_call_seconds']:.3f} s respectively, including cold-start work.
+
+The old 0.5-1.1 mm hotspot drops from 4,875 rejects to 19. Remaining rejects
+are: 12 at 0-0.5 mm, 19 at 0.5-1.1 mm, 38 at 1.1-14 mm, 98 at 14-25 mm,
+and 16 at 25-450.1 mm. The actual last rejection starts at midpoint
+Z={max(zmid(row) for row in rejected):.6f} mm; none occur afterward. Of 134
+accepted steps needing retries, 102 halve once, 18 twice, 11 three times and
+three four times. No implicit failure or nonfinite trial occurred.
+
+Every new accepted trial passes all four normalized gate budgets. Their
+largest accepted ratios are: total momentum 0.053813, XYZ position 0.985363,
+transverse momentum 0.997578 and XY position 0.478462. Remaining failed-gate
+counts (overlapping) are 177 transverse, 44 XYZ, one XY and zero total momentum.
+The exclusive dominant counts are 175 transverse and eight XYZ. The largest
+rejected transverse ratio is 25.817682; it was rejected, not accepted.
+
+The new next-step initial proposal is always at most 1.25 times the previous
+accepted dt, and never grows immediately after a retried step. Every trial
+also respects the original physics cap, while the original four gates and
+exact halving remain active. Recorded group clocks are exactly continuous.
+This directly confirms removal of the old reset-and-halve sawtooth.
+
+The accepted meshes differ. This is a work/decision audit, not a new
+trajectory-accuracy or particle-count convergence certificate. Normal Preview
+automatic scan calibration remains as executed; no Preview/High field-matched
+convergence or material/coherent imaging claim is made here.
+
+![Recorded counts and timing](preview-rejection-comparison.png)
+
+Reproduce this audit by running `audit_preview_retries.py` with the repository
+Python environment after placing its new products aside; output files are
+new-only. Original evidence and frozen source/runner files are never edited.
+"""
+    with brief_output.open("x", encoding="utf-8") as stream:
+        stream.write(brief)
+    print(json.dumps(dict(status=report["status"], report=str(output), brief=str(brief_output), figure=str(figure_output), comparison=comparison), indent=2), flush=True)
+
+
+if __name__ == "__main__":
+    main()

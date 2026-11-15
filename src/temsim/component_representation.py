@@ -92,6 +92,13 @@ In particular, a detector plane is not virtual merely because it is thin.
 
 
 def representation_note(part_data, *, profile=None) -> str:
+    from temsim.multipole_winding import FIELDS as MULTIPOLE_FIELDS
+    if MULTIPOLE_FIELDS.intersection(part_data) and non_material_role(part_data,profile=profile):
+        return ('Explicit engineering winding-only CAD at the existing control reference. '
+            'It is not verified OEM winding geometry or an additional opaque cartridge. '
+            'The original transport boundary ownership and clear bore remain unchanged. '
+            'Saved turns and pack geometry define the winding. Where explicitly calibrated, '
+            'prescribed currents define its ideal vacuum field source.')
     role = non_material_role(part_data, profile=profile)
     if role == "control_channel":
         reference_host = str(part_data.get("optical_reference_host_key", ""))

@@ -1,0 +1,101 @@
+{
+  "scope": "Independent arithmetic from saved host records and documented legacy reconstruction ratios; no field, beam or coherent calculation",
+  "rows": [
+    {
+      "file": "C3_ProbeCorrector.toml",
+      "host": "probe_hp2_hexapole",
+      "thickness_mm": 0.15,
+      "radial_start_mm": 22.71,
+      "radial_end_mm": 29.595,
+      "outer_z_mm": [
+        687.98,
+        701.02
+      ],
+      "maximum_outer_radius_mm": 30.251891263192125,
+      "return_yoke_radial_clearance_mm": 1.638108736807876,
+      "axial_envelope_clearance_mm": 2.580000000000041,
+      "sixty_degree_cell_clearance_mm": 6.841624613296401,
+      "beam_clear_bore_diameter_mm": 20.0
+    },
+    {
+      "file": "C3_ProbeCorrector.toml",
+      "host": "probe_hp1_hexapole",
+      "thickness_mm": 0.15,
+      "radial_start_mm": 22.71,
+      "radial_end_mm": 29.595,
+      "outer_z_mm": [
+        844.3649999999999,
+        857.3349999999999
+      ],
+      "maximum_outer_radius_mm": 30.251891263192125,
+      "return_yoke_radial_clearance_mm": 1.638108736807876,
+      "axial_envelope_clearance_mm": 2.564999999999941,
+      "sixty_degree_cell_clearance_mm": 6.841624613296401,
+      "beam_clear_bore_diameter_mm": 20.0
+    },
+    {
+      "file": "C3_ProbeCorrector_BCOR.toml",
+      "host": "probe_hp2_hexapole",
+      "thickness_mm": 0.15,
+      "radial_start_mm": 22.71,
+      "radial_end_mm": 29.595000000000002,
+      "outer_z_mm": [
+        687.98,
+        701.02
+      ],
+      "maximum_outer_radius_mm": 30.251891263192128,
+      "return_yoke_radial_clearance_mm": 1.6381087368078724,
+      "axial_envelope_clearance_mm": 2.580000000000041,
+      "sixty_degree_cell_clearance_mm": 6.841624613296401,
+      "beam_clear_bore_diameter_mm": 20.0
+    },
+    {
+      "file": "C3_ProbeCorrector_BCOR.toml",
+      "host": "probe_hp1_hexapole",
+      "thickness_mm": 0.15,
+      "radial_start_mm": 22.71,
+      "radial_end_mm": 29.595000000000002,
+      "outer_z_mm": [
+        844.3649999999999,
+        857.3349999999999
+      ],
+      "maximum_outer_radius_mm": 30.251891263192128,
+      "return_yoke_radial_clearance_mm": 1.6381087368078724,
+      "axial_envelope_clearance_mm": 2.564999999999941,
+      "sixty_degree_cell_clearance_mm": 6.841624613296401,
+      "beam_clear_bore_diameter_mm": 20.0
+    },
+    {
+      "file": "C3_ProbeCorrector_ImageCorrector.toml",
+      "host": "probe_hp2_hexapole",
+      "thickness_mm": 0.15,
+      "radial_start_mm": 22.71,
+      "radial_end_mm": 29.595000000000002,
+      "outer_z_mm": [
+        687.98,
+        701.02
+      ],
+      "maximum_outer_radius_mm": 30.251891263192128,
+      "return_yoke_radial_clearance_mm": 1.6381087368078724,
+      "axial_envelope_clearance_mm": 2.580000000000041,
+      "sixty_degree_cell_clearance_mm": 6.841624613296401,
+      "beam_clear_bore_diameter_mm": 20.0
+    },
+    {
+      "file": "C3_ProbeCorrector_ImageCorrector.toml",
+      "host": "probe_hp1_hexapole",
+      "thickness_mm": 0.15,
+      "radial_start_mm": 22.71,
+      "radial_end_mm": 29.595000000000002,
+      "outer_z_mm": [
+        844.3649999999999,
+        857.3349999999999
+      ],
+      "maximum_outer_radius_mm": 30.251891263192128,
+      "return_yoke_radial_clearance_mm": 1.6381087368078724,
+      "axial_envelope_clearance_mm": 2.564999999999941,
+      "sixty_degree_cell_clearance_mm": 6.841624613296401,
+      "beam_clear_bore_diameter_mm": 20.0
+    }
+  ]
+}

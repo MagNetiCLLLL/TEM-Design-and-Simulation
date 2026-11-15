@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "checked_utc": "2026-11-15T23:37:02.251864+00:00",
+  "scope": "Post-regression UI description strings only; no numeric/control AST changes",
+  "optical_state_unchanged": true,
+  "source_records": [
+    {
+      "path": "src/temsim/round_lens_models.py",
+      "before_sha256": "56edde6d64731de4ae40a251eadf6be48f1a26ed439436d01414e09567f062e9",
+      "after_sha256": "2abd504401cd5a10581a7e88ea0d692825a457063387b6d43994f8802d5a8aca",
+      "original_mtime": 1794775983.6802945,
+      "normalized_non_string_AST_equal": true,
+      "changed_string_literals": [
+        {
+          "before": "Ideal prescribed-current coils use the declared winding dimensions and ampere-turns in vacuum. Pole pieces, iron and saturation are ignored. Calibrated material deflector and stigmator windings use their declared closed current circuits; unconfigured legacy sources and corrector multipoles retain their native models. Electrical resistance, heating and circuit dynamics are not solved. This source currently supports classical particles; coherent propagation is unavailable.",
+          "after": "Ideal prescribed-current coils use the declared winding dimensions and ampere-turns in vacuum. Pole pieces, iron and saturation are ignored. Calibrated deflector, stigmator, quadrupole and hexapole windings use their declared closed current circuits; unconfigured legacy sources retain their native models. Electrical resistance, heating and circuit dynamics are not solved. This source currently supports classical particles; coherent propagation is unavailable."
+        }
+      ]
+    },
+    {
+      "path": "src/temsim/gui/simulation_menu.py",
+      "before_sha256": "f62fb2b43ff4d7a5d2a68b14e5a900e278b496e421ce20cabbe991f460a34b9f",
+      "after_sha256": "20299786f065086d40accc616bd364cc026b01d93a461accfd32d99e0824f841",
+      "original_mtime": 1794775983.681293,
+      "normalized_non_string_AST_equal": true,
+      "changed_string_literals": [
+        {
+          "before": "Shared Finite-Field Optics, classical particles only. Compute the magnetic field from declared winding geometry and prescribed ampere-turns in vacuum. Calibrated deflector and stigmator windings use their closed current circuits; unconfigured legacy sources retain native fields. Electrical resistance, heating, circuit dynamics, pole-piece magnetism and saturation are not included. Coherent propagation is not qualified.",
+          "after": "Shared Finite-Field Optics, classical particles only. Compute the magnetic field from declared winding geometry and prescribed ampere-turns in vacuum. Calibrated deflector, stigmator, quadrupole and hexapole windings use their closed current circuits; unconfigured legacy sources retain native fields. Electrical resistance, heating, circuit dynamics, pole-piece magnetism and saturation are not included. Coherent propagation is not qualified."
+        }
+      ]
+    }
+  ],
+  "actual_description": "Ideal prescribed-current coils use the declared winding dimensions and ampere-turns in vacuum. Pole pieces, iron and saturation are ignored. Calibrated deflector, stigmator, quadrupole and hexapole windings use their declared closed current circuits; unconfigured legacy sources retain their native models. Electrical resistance, heating and circuit dynamics are not solved. This source currently supports classical particles; coherent propagation is unavailable.",
+  "actual_menu_tooltip": "Shared Finite-Field Optics, classical particles only. Compute the magnetic field from declared winding geometry and prescribed ampere-turns in vacuum. Calibrated deflector, stigmator, quadrupole and hexapole windings use their closed current circuits; unconfigured legacy sources retain native fields. Electrical resistance, heating, circuit dynamics, pole-piece magnetism and saturation are not included. Coherent propagation is not qualified."
+}

@@ -1,0 +1,377 @@
+{
+  "scope": "Read-only on-axis operator/analytic checks, no source emission or coherent propagation",
+  "geometry": "Original complete uniform annular envelopes; no material/yoke/pole response",
+  "production_inputs_or_tolerances_changed": false,
+  "reference_method": "Analytic axial and radial integration using scipy.constants.mu_0",
+  "lenses": [
+    {
+      "lens": "C1 lens",
+      "key": "condenser_lens_1",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.012656128326201612,
+      "absolute_error_t": {
+        "12": 1.7958291104180901e-12,
+        "24": 1.3986208025063007e-17,
+        "32": 1.3986208025063007e-17
+      },
+      "peak_normalized_max_error": {
+        "12": 1.4189403458403925e-10,
+        "24": 1.1050937272900252e-15,
+        "32": 1.1050937272900252e-15
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 437.04862470809377,
+          "end_mm": 562.9513752919063,
+          "width_mm": 125.90275058381256
+        }
+      ]
+    },
+    {
+      "lens": "C2 lens",
+      "key": "condenser_lens_2",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.00255421535797963,
+      "absolute_error_t": {
+        "12": 3.023208473059563e-09,
+        "24": 2.880074650990494e-15,
+        "32": 3.0357660829594124e-18
+      },
+      "peak_normalized_max_error": {
+        "12": 1.1836153375300758e-06,
+        "24": 1.1275770627534778e-12,
+        "32": 1.1885317631793923e-15
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 559.7375954594175,
+          "end_mm": 740.2624045405825,
+          "width_mm": 180.52480908116485
+        }
+      ]
+    },
+    {
+      "lens": "C3 lens",
+      "key": "condenser_lens_3",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.0029862389468828946,
+      "absolute_error_t": {
+        "12": 1.6777840054771342e-09,
+        "24": 7.836613302725226e-16,
+        "32": 4.336808689942018e-18
+      },
+      "peak_normalized_max_error": {
+        "12": 5.618384982984848e-07,
+        "24": 2.6242418782010946e-13,
+        "32": 1.4522644594361343e-15
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 828.5070517265773,
+          "end_mm": 1001.4929482734227,
+          "width_mm": 172.98589654684548
+        }
+      ]
+    },
+    {
+      "lens": "Probe Adapter lens",
+      "key": "adapter_lens",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.004157111224395392,
+      "absolute_error_t": {
+        "12": 2.2415879916137804e-17,
+        "24": 2.2442984970449942e-17,
+        "32": 2.2442984970449942e-17
+      },
+      "peak_normalized_max_error": {
+        "12": 5.3921770927353426e-15,
+        "24": 5.3986972585064856e-15,
+        "32": 5.3986972585064856e-15
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 1052.5728469988135,
+          "end_mm": 1123.8271530011868,
+          "width_mm": 71.25430600237337
+        }
+      ]
+    },
+    {
+      "lens": "Probe TL22 lens",
+      "key": "probe_tl22_lens",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.025461043614280487,
+      "absolute_error_t": {
+        "12": 1.5439038936193583e-16,
+        "24": 1.5395670849294163e-16,
+        "32": 1.5352302762394743e-16
+      },
+      "peak_normalized_max_error": {
+        "12": 6.063788731556234e-15,
+        "24": 6.046755617141751e-15,
+        "32": 6.0297225027272665e-15
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 1131.9458650258277,
+          "end_mm": 1200.754134974172,
+          "width_mm": 68.80826994834433
+        }
+      ]
+    },
+    {
+      "lens": "Probe TL21 lens",
+      "key": "probe_tl21_lens",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.02549674541881145,
+      "absolute_error_t": {
+        "12": 1.5178830414797062e-16,
+        "24": 1.5265566588595902e-16,
+        "32": 1.5265566588595902e-16
+      },
+      "peak_normalized_max_error": {
+        "12": 5.953242331704874e-15,
+        "24": 5.9872608593146156e-15,
+        "32": 5.9872608593146156e-15
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 1215.5784257022024,
+          "end_mm": 1284.3215742977977,
+          "width_mm": 68.74314859559539
+        }
+      ]
+    },
+    {
+      "lens": "Probe TL12 lens",
+      "key": "probe_tl12_lens",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.015290647197946705,
+      "absolute_error_t": {
+        "12": 1.1302807648161384e-16,
+        "24": 1.1302807648161384e-16,
+        "32": 1.1302807648161384e-16
+      },
+      "peak_normalized_max_error": {
+        "12": 7.391974650804299e-15,
+        "24": 7.391974650804299e-15,
+        "32": 7.391974650804299e-15
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 1331.8883777981484,
+          "end_mm": 1400.7116222018517,
+          "width_mm": 68.82324440370313
+        }
+      ]
+    },
+    {
+      "lens": "Mini Condenser lens",
+      "key": "mini_condenser",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.036162063940233954,
+      "absolute_error_t": {
+        "12": 1.0408340855860843e-16,
+        "24": 7.632783294297951e-17,
+        "32": 7.806255641895632e-17
+      },
+      "peak_normalized_max_error": {
+        "12": 2.8782485626547746e-15,
+        "24": 2.110715612613501e-15,
+        "32": 2.158686421991081e-15
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 1504.5295230538484,
+          "end_mm": 1540.4704769461514,
+          "width_mm": 35.94095389230301
+        }
+      ]
+    },
+    {
+      "lens": "Objective lens",
+      "key": "objective_lens",
+      "source_intervals": 2,
+      "original_quadrature_order": [
+        12,
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.007568703456325178,
+      "absolute_error_t": {
+        "12": 2.7688827764719287e-07,
+        "24": 1.1843206970674203e-11,
+        "32": 1.5985476831126277e-14
+      },
+      "peak_normalized_max_error": {
+        "12": 3.6583316976938355e-05,
+        "24": 1.5647603369605947e-09,
+        "32": 2.112049563491246e-12
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 1391.1330044647402,
+          "end_mm": 1549.8685070019371,
+          "width_mm": 158.73550253719682
+        },
+        {
+          "start_mm": 1648.5314929980632,
+          "end_mm": 1807.2669955352599,
+          "width_mm": 158.7355025371966
+        }
+      ],
+      "exact_lobe_peaks": [
+        {
+          "z_mm": 1470.3996636891593,
+          "magnitude_t": 0.007568746213303648
+        },
+        {
+          "z_mm": 1728.0003359327748,
+          "magnitude_t": 0.0075687462133036485
+        }
+      ],
+      "exact_central_gap_field_t": 0.0018099630052575055,
+      "fwhm_warning": "Report each above-half-height interval separately; outer bounding span is not a single-lobe FWHM."
+    },
+    {
+      "lens": "Diffraction lens",
+      "key": "diffraction_lens",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.004205568595210635,
+      "absolute_error_t": {
+        "12": 5.922021579715664e-10,
+        "24": 1.2923689896027213e-16,
+        "32": 7.806255641895632e-18
+      },
+      "peak_normalized_max_error": {
+        "12": 1.4081381496094847e-07,
+        "24": 3.072994674428782e-14,
+        "32": 1.856171279856311e-15
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 1842.015697684237,
+          "end_mm": 1951.784302315763,
+          "width_mm": 109.76860463152605
+        }
+      ]
+    },
+    {
+      "lens": "Intermediate lens",
+      "key": "intermediate_lens",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 7.01353005355932e-06,
+      "absolute_error_t": {
+        "12": 7.364838463851185e-10,
+        "24": 8.42397288399908e-14,
+        "32": 2.1931885290076697e-16
+      },
+      "peak_normalized_max_error": {
+        "12": 0.00010500900983683071,
+        "24": 1.2011031277643089e-08,
+        "32": 3.1270822428352483e-11
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 1981.2829755692153,
+          "end_mm": 2152.5170244307847,
+          "width_mm": 171.23404886156914
+        }
+      ]
+    },
+    {
+      "lens": "P1 lens",
+      "key": "projector_lens_1",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.008403523269382573,
+      "absolute_error_t": {
+        "12": 1.2530026531967775e-08,
+        "24": 2.5738092213067887e-14,
+        "32": 6.938893903907228e-18
+      },
+      "peak_normalized_max_error": {
+        "12": 1.491044426284832e-06,
+        "24": 3.062773956590582e-12,
+        "32": 8.257124638648196e-16
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 2184.880144988606,
+          "end_mm": 2308.9198550113947,
+          "width_mm": 124.0397100227888
+        }
+      ]
+    },
+    {
+      "lens": "P2 lens",
+      "key": "projector_lens_2",
+      "source_intervals": 1,
+      "original_quadrature_order": [
+        12
+      ],
+      "sample_points": 4001,
+      "peak_reference_t": 0.001964534173890394,
+      "absolute_error_t": {
+        "12": 2.0629378839117501e-07,
+        "24": 2.3596081252102996e-11,
+        "32": 6.143262981650466e-14
+      },
+      "peak_normalized_max_error": {
+        "12": 0.00010500900983699795,
+        "24": 1.2011031197983874e-08,
+        "32": 3.127083795892885e-11
+      },
+      "exact_half_max_regions": [
+        {
+          "start_mm": 2363.7829755692155,
+          "end_mm": 2535.0170244307847,
+          "width_mm": 171.23404886156914
+        }
+      ]
+    }
+  ]
+}

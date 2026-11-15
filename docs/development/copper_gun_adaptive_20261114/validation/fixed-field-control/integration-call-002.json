@@ -1,0 +1,17 @@
+{
+  "scope": "post",
+  "plan_signature": "c16cce39a4bf71f0779825ca6d32a9e84448d027309713ec8f42a1509775d76e",
+  "start_z_mm": 1599.2,
+  "stop_z_mm": 2987.1499999999996,
+  "actual_resume_z_mm": 1599.2,
+  "start_index": 0,
+  "integration_nodes": 2839,
+  "z_mm": {
+    "dtype": "<f8",
+    "shape": [
+      2839
+    ],
+    "sha256": "8f36ff6b60712dec4689281851aa7c83dc99b83dc3eb226edbebe2b17151c09a"
+  },
+  "actual_operator_witness_digest": "1146c2766ad13b8fdc73808642ff19776f80eb691e3b1853251c4bc260954d7f"
+}

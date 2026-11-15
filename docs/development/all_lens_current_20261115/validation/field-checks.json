@@ -1,0 +1,3936 @@
+[
+  {
+    "column": "C2",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C2.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "545026256683182eb6cce56e76b6394a9c377ba567437e69b381ed8363907db1"
+  },
+  {
+    "column": "C2",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C2.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "1938b424c2afcf945c22688fd551ce19c93d8e407436bf54eb3c62829b1f948d"
+  },
+  {
+    "column": "C2",
+    "recording": "No Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C2.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -88.3844358634679,
+    "current_at_100_percent_a": 883.8443586346789,
+    "excitation_percent": 10.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 948.5,
+    "reference_target_bz_t": -0.41269200808624773,
+    "selected_reference_bz_t": -0.41269200808624773,
+    "relative_error": -0.0,
+    "potential_digest": "98c922f434cb748e408ff1f73a5a0e63bdfb19e137c827a5cda85e4f0d2bceea"
+  },
+  {
+    "column": "C2",
+    "recording": "No Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C2.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.2791317174538,
+    "current_at_100_percent_a": 1575.233028526278,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1025.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589162,
+    "relative_error": 1.3750884253467483e-16,
+    "potential_digest": "9d1dae5723b571f22819526548ac37d04f3f84312c5b6d786e2eb9414f4b4178"
+  },
+  {
+    "column": "C2",
+    "recording": "No Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1322.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770796,
+    "relative_error": 0.0,
+    "potential_digest": "48da1b59f1b1c6faea2aa19b6594cecd9fc124d9400e4f5d35fbcbdcbd42bfbc"
+  },
+  {
+    "column": "C2",
+    "recording": "No Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 69.80946029686298,
+    "current_at_100_percent_a": 174.52365074215746,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1492.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036301,
+    "relative_error": -4.3727895418580726e-16,
+    "potential_digest": "ae724f7250caf0d9f596e5630b1f52edcbd571909a158d7deb729f5a1d3cc626"
+  },
+  {
+    "column": "C2",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1672.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.385179207547165,
+    "relative_error": 1.2970595278566414e-15,
+    "potential_digest": "dc3e7748a2c27e0011f152beefbf67f19421e7adfefd6b33742c190ae4ce13d4"
+  },
+  {
+    "column": "C2",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1875.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.33015360646899805,
+    "relative_error": -3.3627469240727737e-16,
+    "potential_digest": "7fb87ce924b4cdbe0ff536f928b0447173d098a5aca8b5e3666d69dd55613ffe"
+  },
+  {
+    "column": "C2",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C2.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "545026256683182eb6cce56e76b6394a9c377ba567437e69b381ed8363907db1"
+  },
+  {
+    "column": "C2",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C2.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "1938b424c2afcf945c22688fd551ce19c93d8e407436bf54eb3c62829b1f948d"
+  },
+  {
+    "column": "C2",
+    "recording": "Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C2.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -88.3844358634679,
+    "current_at_100_percent_a": 883.8443586346789,
+    "excitation_percent": 10.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 948.5,
+    "reference_target_bz_t": -0.41269200808624773,
+    "selected_reference_bz_t": -0.41269200808624773,
+    "relative_error": -0.0,
+    "potential_digest": "98c922f434cb748e408ff1f73a5a0e63bdfb19e137c827a5cda85e4f0d2bceea"
+  },
+  {
+    "column": "C2",
+    "recording": "Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C2.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.2791317174538,
+    "current_at_100_percent_a": 1575.233028526278,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1025.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589162,
+    "relative_error": 1.3750884253467483e-16,
+    "potential_digest": "9d1dae5723b571f22819526548ac37d04f3f84312c5b6d786e2eb9414f4b4178"
+  },
+  {
+    "column": "C2",
+    "recording": "Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1322.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770796,
+    "relative_error": 0.0,
+    "potential_digest": "15020b26281e084525b3f038ba7ca0b3e38acab54f51448e2330c3db44e0bb9f"
+  },
+  {
+    "column": "C2",
+    "recording": "Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 727,
+    "interval_turns": [
+      727
+    ],
+    "current_a": 68.1723523090753,
+    "current_at_100_percent_a": 170.43088077268823,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1492.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036297,
+    "relative_error": -1.0203175597668837e-15,
+    "potential_digest": "eb0e8a0b5f5b08aeee7f33e01d96bcaa9f27996ad4d42e7267221b650d7a4db2"
+  },
+  {
+    "column": "C2",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1672.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.385179207547165,
+    "relative_error": 1.2970595278566414e-15,
+    "potential_digest": "7af3fba716c4af3109601a9afb2eb4e8992de2c8ec20d529556b557b316ab02e"
+  },
+  {
+    "column": "C2",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1875.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.33015360646899805,
+    "relative_error": -3.3627469240727737e-16,
+    "potential_digest": "29fcf76fa19a0ccf829339c6ac07eaf34f7f35db3b1d0e1649ae7933cd1f9a8f"
+  },
+  {
+    "column": "C3",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "2ca8983dca6aa8bce57b983ae17d01347ecff8b06633ade3df9e47f1a741efd5"
+  },
+  {
+    "column": "C3",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "b97f0667c038a13b7a3163c75e2ac82ce3d255c3d798b15725a5f1ab414426ca"
+  },
+  {
+    "column": "C3",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 58.65751789397609,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 55.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "826b50de183913e78204263338d45de5d5f84a16d636994ec6742ccab73fc037"
+  },
+  {
+    "column": "C3",
+    "recording": "No Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -88.38443586346796,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 10.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1198.5000000000002,
+    "reference_target_bz_t": -0.4126920080862478,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 1.3450987696291092e-16,
+    "potential_digest": "c99304a0d85f730ea593b2ceed0f62367c54fb0af9c47c0ad39434a888c5fa3f"
+  },
+  {
+    "column": "C3",
+    "recording": "No Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.27913171745365,
+    "current_at_100_percent_a": 1575.2330285262774,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1275.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589162,
+    "relative_error": 1.3750884253467483e-16,
+    "potential_digest": "24c5c94da6fc391209a0ea3803dffd5f71adcfc61883a215ee1aab100cd88d98"
+  },
+  {
+    "column": "C3",
+    "recording": "No Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1572.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770796,
+    "relative_error": 0.0,
+    "potential_digest": "022b59a1b08011d6de6093f96107f134343d93b78f6b5c19d245f609ee366da2"
+  },
+  {
+    "column": "C3",
+    "recording": "No Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 69.80946029686298,
+    "current_at_100_percent_a": 174.52365074215746,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1742.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036301,
+    "relative_error": -4.3727895418580726e-16,
+    "potential_digest": "990687feae353c4428fae33996e5c351931bef6b53fa4f6d1704c47a2ef9b2b9"
+  },
+  {
+    "column": "C3",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1922.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.385179207547165,
+    "relative_error": 1.2970595278566414e-15,
+    "potential_digest": "68b5db464aebaa1459efdf8f60f4ddc6d3d4bb2e5b27aa17adcf318d2a3c7340"
+  },
+  {
+    "column": "C3",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2125.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "6c3479c90fdbc9bae268f9226835c326333d8a6e41e167471f6443090924dce6"
+  },
+  {
+    "column": "C3",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "2ca8983dca6aa8bce57b983ae17d01347ecff8b06633ade3df9e47f1a741efd5"
+  },
+  {
+    "column": "C3",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "b97f0667c038a13b7a3163c75e2ac82ce3d255c3d798b15725a5f1ab414426ca"
+  },
+  {
+    "column": "C3",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 58.65751789397609,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 55.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "826b50de183913e78204263338d45de5d5f84a16d636994ec6742ccab73fc037"
+  },
+  {
+    "column": "C3",
+    "recording": "Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -88.38443586346796,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 10.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1198.5000000000002,
+    "reference_target_bz_t": -0.4126920080862478,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 1.3450987696291092e-16,
+    "potential_digest": "c99304a0d85f730ea593b2ceed0f62367c54fb0af9c47c0ad39434a888c5fa3f"
+  },
+  {
+    "column": "C3",
+    "recording": "Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.27913171745365,
+    "current_at_100_percent_a": 1575.2330285262774,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1275.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589162,
+    "relative_error": 1.3750884253467483e-16,
+    "potential_digest": "24c5c94da6fc391209a0ea3803dffd5f71adcfc61883a215ee1aab100cd88d98"
+  },
+  {
+    "column": "C3",
+    "recording": "Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1572.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770796,
+    "relative_error": 0.0,
+    "potential_digest": "9810086b1a2816109e38433787d8cbd1edb29b6ef463da8d9a8257a775da07c8"
+  },
+  {
+    "column": "C3",
+    "recording": "Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 727,
+    "interval_turns": [
+      727
+    ],
+    "current_a": 68.1723523090753,
+    "current_at_100_percent_a": 170.43088077268823,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1742.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036297,
+    "relative_error": -1.0203175597668837e-15,
+    "potential_digest": "65cf4029ea0654ed3c692149940e0623bc5ca2371deec42e9da09deb98b44d1a"
+  },
+  {
+    "column": "C3",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1922.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.385179207547165,
+    "relative_error": 1.2970595278566414e-15,
+    "potential_digest": "e5abb9b5d065dc22a818847e1f75f3d1e2eac3df8758cb651ee7d55b5bebc062"
+  },
+  {
+    "column": "C3",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2125.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "7ee844aa05fff37e21c8998935e096542ab6b45616ed264b54bdddffa13d05eb"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 370.64139382139564,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 51.666666666666664,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "8faad62b40d937bf2bf94d2e6da5096cbd71118bbf27af5a5a0cfeaa2b6eb959"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 51.13179410990447,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 13.899040164772698,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "51160a563b0a07d5a92cf946a8cf40f99cc35f1d24d3a94e04a2ccf0a2800e55"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 16.731509663897196,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 15.68823681182136,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "4a30a9cbbf63ef0305432e4bfd2eed3bd20b881fbdba28347ee316faaafe8c0c"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "adapter_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 23,
+    "interval_turns": [
+      23
+    ],
+    "current_a": 34.52999896863375,
+    "current_at_100_percent_a": 345.2999896863375,
+    "excitation_percent": 10.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1088.2,
+    "reference_target_bz_t": 0.11005120215633273,
+    "selected_reference_bz_t": 0.11005120215633273,
+    "relative_error": 0.0,
+    "potential_digest": "7085e50f52ad9967279c86aafa49e0edb835f870f122c9dd1d1976b0484c0056"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "probe_tl22_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": -1028.8304975154654,
+    "current_at_100_percent_a": 1716.6766520633623,
+    "excitation_percent": 59.93152503582202,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1166.35,
+    "reference_target_bz_t": -0.4862035362710701,
+    "selected_reference_bz_t": -0.48620353627107005,
+    "relative_error": -1.1417266039856409e-16,
+    "potential_digest": "e0f94381bbe470299cdb434ba6780e1c173d4ae7e3e392da799c656af5c5043d"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "probe_tl21_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 19,
+    "interval_turns": [
+      19
+    ],
+    "current_a": 1016.1529276495789,
+    "current_at_100_percent_a": 1694.851468358554,
+    "excitation_percent": 59.95527906841963,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1249.95,
+    "reference_target_bz_t": 0.4564795319526607,
+    "selected_reference_bz_t": 0.4564795319526607,
+    "relative_error": 0.0,
+    "potential_digest": "4deac62d0202c9e198337bcba3956bca662c60ed5804a9f7b03b4b4ad5629792"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "probe_tl12_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": 641.4408438514412,
+    "current_at_100_percent_a": 1781.554522137791,
+    "excitation_percent": 36.004558708747176,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1366.3,
+    "reference_target_bz_t": 0.5044013432165251,
+    "selected_reference_bz_t": 0.5044013432165251,
+    "relative_error": 0.0,
+    "potential_digest": "0eb49d252bf954709b60b89a6aff41a11a00b2957ef04ca7d4b515b7b3e78b0f"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -387.8880554673398,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 43.88646617222637,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1522.5,
+    "reference_target_bz_t": -0.41269200808624773,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 2.690197539258219e-16,
+    "potential_digest": "49921bc10e7ea0a256335f53c7575ee672525b4690e41e020aa5ead28b1823ed"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 1086.565908295224,
+    "current_at_100_percent_a": 1575.2330285262728,
+    "excitation_percent": 68.97810600833917,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1599.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589158,
+    "relative_error": -1.3750884253467483e-16,
+    "potential_digest": "8689d163e4548b84d19a83e0f7bfcf2c49a6c8001cde3bad9d3df6cfff2f7fc8"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 28.644622478842408,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 14.577617197168571,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1896.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770796,
+    "relative_error": 0.0,
+    "potential_digest": "94695301d78329b4d703b267edacdea1cf4ccbb9a974764cdc594e3286fe520a"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 0.06122753422645874,
+    "current_at_100_percent_a": 174.52365074215746,
+    "excitation_percent": 0.035082657259397326,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2066.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036305,
+    "relative_error": 0.0,
+    "potential_digest": "008e2a7ab1c0de5ed19a1c7fae8a2a3c5a189ecacb1533a3b00a493f3ea87ca6"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 32.52412028757759,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 32.1132572718703,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2246.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.38517920754716445,
+    "relative_error": -1.441177253174046e-16,
+    "potential_digest": "4ffc50f27f0dab4b7a343030061ef3eaab27f938a572401acb827903340dfbc2"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 7.4338335429088165,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 9.826874422815507,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2449.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "7e56babd663ffe7c39c47a3f126ca4acbf158f55bb2d4a5cc98318ca43401509"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "8faad62b40d937bf2bf94d2e6da5096cbd71118bbf27af5a5a0cfeaa2b6eb959"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "51160a563b0a07d5a92cf946a8cf40f99cc35f1d24d3a94e04a2ccf0a2800e55"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 58.65751789397609,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 55.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "4a30a9cbbf63ef0305432e4bfd2eed3bd20b881fbdba28347ee316faaafe8c0c"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "adapter_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 23,
+    "interval_turns": [
+      23
+    ],
+    "current_a": 145.02599566826174,
+    "current_at_100_percent_a": 345.2999896863375,
+    "excitation_percent": 42.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1088.2,
+    "reference_target_bz_t": 0.11005120215633273,
+    "selected_reference_bz_t": 0.11005120215633273,
+    "relative_error": 0.0,
+    "potential_digest": "7085e50f52ad9967279c86aafa49e0edb835f870f122c9dd1d1976b0484c0056"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "probe_tl22_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": -1030.0059912380173,
+    "current_at_100_percent_a": 1716.6766520633623,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1166.35,
+    "reference_target_bz_t": -0.4862035362710701,
+    "selected_reference_bz_t": -0.48620353627107005,
+    "relative_error": -1.1417266039856409e-16,
+    "potential_digest": "e0f94381bbe470299cdb434ba6780e1c173d4ae7e3e392da799c656af5c5043d"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "probe_tl21_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 19,
+    "interval_turns": [
+      19
+    ],
+    "current_a": 1016.9108810151324,
+    "current_at_100_percent_a": 1694.851468358554,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1249.95,
+    "reference_target_bz_t": 0.4564795319526607,
+    "selected_reference_bz_t": 0.4564795319526607,
+    "relative_error": 0.0,
+    "potential_digest": "4deac62d0202c9e198337bcba3956bca662c60ed5804a9f7b03b4b4ad5629792"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "probe_tl12_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": 1068.9327132826745,
+    "current_at_100_percent_a": 1781.554522137791,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1366.3,
+    "reference_target_bz_t": 0.5044013432165251,
+    "selected_reference_bz_t": 0.5044013432165251,
+    "relative_error": 0.0,
+    "potential_digest": "0eb49d252bf954709b60b89a6aff41a11a00b2957ef04ca7d4b515b7b3e78b0f"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -387.8880554673398,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 43.88646617222637,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1522.5,
+    "reference_target_bz_t": -0.41269200808624773,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 2.690197539258219e-16,
+    "potential_digest": "49921bc10e7ea0a256335f53c7575ee672525b4690e41e020aa5ead28b1823ed"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.27913171745223,
+    "current_at_100_percent_a": 1575.2330285262728,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1599.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589158,
+    "relative_error": -1.3750884253467483e-16,
+    "potential_digest": "8689d163e4548b84d19a83e0f7bfcf2c49a6c8001cde3bad9d3df6cfff2f7fc8"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1896.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770796,
+    "relative_error": 0.0,
+    "potential_digest": "ec7d3b1657b74d9f18fdaec59c3e3b9807f86bb35d62a6497685f63daae9f2ad"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 727,
+    "interval_turns": [
+      727
+    ],
+    "current_a": 68.1723523090753,
+    "current_at_100_percent_a": 170.43088077268823,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2066.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036305,
+    "relative_error": 0.0,
+    "potential_digest": "8b1badfb892526105abf751f93252fa89b29a4415add9a7de53128b538073158"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2246.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.38517920754716445,
+    "relative_error": -1.441177253174046e-16,
+    "potential_digest": "1d3d1ac8286d40923f7b703a66d2519a0974eeefde47440e0fb01dd0a54eae8a"
+  },
+  {
+    "column": "C3 + Probe Corrector",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2449.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "2e09a30fc7ed1e40e4ff386cdf053c647888296d6f6b2e53d6ea506a7cc20372"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "ca3d1783041478b14185957a630dd83bd36e64917e4ba848292981accf88d143"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "c50fb0af7074dfc1e5b10b6cbd53ebb332df4739b4d3daad5c6d950b7773aa6e"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 58.65751789397609,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 55.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "30cc128bd4a116131649f9b600b82c1d4b60ddf65ac2d996db5aca5c7627d136"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -88.38443586346796,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 10.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1198.5000000000002,
+    "reference_target_bz_t": -0.4126920080862478,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 1.3450987696291092e-16,
+    "potential_digest": "74bb9a5fc389a01bf7c92ab20142977d3c6e14c6177ab9a17026f2ba014e43d7"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.27913171745365,
+    "current_at_100_percent_a": 1575.2330285262774,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1275.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589162,
+    "relative_error": 1.3750884253467483e-16,
+    "potential_digest": "4598014751eeb234cc72629a69715b09eb2c6f64fea2eb8c521739d980410eba"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "image_tl11_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 69,
+    "interval_turns": [
+      69
+    ],
+    "current_a": -380.87696690575706,
+    "current_at_100_percent_a": 806.5560417722379,
+    "excitation_percent": 47.222628953204506,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1512.9,
+    "reference_target_bz_t": -0.5144005954444499,
+    "selected_reference_bz_t": -0.5144005954444499,
+    "relative_error": -0.0,
+    "potential_digest": "439759cc4411ba5bfb240aece4ba0b74c563f6223536362e19c0783d753b88f3"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "image_tl12_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 36,
+    "interval_turns": [
+      36
+    ],
+    "current_a": 492.927442324183,
+    "current_at_100_percent_a": 682.2888026641002,
+    "excitation_percent": 72.246157404236,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1586.8999999999999,
+    "reference_target_bz_t": 0.30259842093219586,
+    "selected_reference_bz_t": 0.3025984209321959,
+    "relative_error": 1.8344825151515375e-16,
+    "potential_digest": "c026e712f88026e5378a170a73090d78e76325cf76e309c07afe32a4e1eedb6a"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "image_tl21_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789836903352,
+    "current_at_100_percent_a": 3251.7910019496453,
+    "excitation_percent": 60.00013477251599,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1706.4,
+    "reference_target_bz_t": 1.9808576256980708,
+    "selected_reference_bz_t": 1.980857625698071,
+    "relative_error": 1.120951864709514e-16,
+    "potential_digest": "b8c430d9eb671203a6fd63bd71787fdf7aadd744cabf435d85f36ae985b363b4"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "image_tl22_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.7300835560104,
+    "current_at_100_percent_a": 3197.874314618057,
+    "excitation_percent": 60.00017182617688,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1756.4,
+    "reference_target_bz_t": -1.9498608792267236,
+    "selected_reference_bz_t": -1.949860879226724,
+    "relative_error": 2.277543052333968e-16,
+    "potential_digest": "90b1c56068966e2298c254c179c167579c53e9c707faba73dd04939d9fd0e75c"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "image_adapter_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 26,
+    "interval_turns": [
+      26
+    ],
+    "current_a": 508.57216443304594,
+    "current_at_100_percent_a": 1038.3821264463336,
+    "excitation_percent": 48.97736117372686,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1836.4,
+    "reference_target_bz_t": 0.38443787513663946,
+    "selected_reference_bz_t": 0.3844378751366394,
+    "relative_error": -1.4439563534557485e-16,
+    "potential_digest": "9eecc59b686395d0900c31aa2053771ca41851a373768cd939dc4ac29ef43e7f"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1998.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.687820013477079,
+    "relative_error": -8.070592617774656e-16,
+    "potential_digest": "bddd9886ea1a8a1d9757505fb3f4afb3a109370dbc6fefb59d1590adbb95efd9"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 69.80946029686298,
+    "current_at_100_percent_a": 174.52365074215746,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2168.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036306,
+    "relative_error": 1.457596513952691e-16,
+    "potential_digest": "0ac25b2f894a9a1eed863e1708dfe49f753bdb3bf317ac488d8ec06cc9d2b14b"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2348.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.38517920754716445,
+    "relative_error": -1.441177253174046e-16,
+    "potential_digest": "3da77bf7029be518319d4c71b75e9593b2aab89b3d1524f0f5b38efa362bd988"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2551.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "a903d65dc9af51abfb710e60557eaa2473d708da71fcd1a1a948336c24fc326d"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "ca3d1783041478b14185957a630dd83bd36e64917e4ba848292981accf88d143"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "c50fb0af7074dfc1e5b10b6cbd53ebb332df4739b4d3daad5c6d950b7773aa6e"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 58.65751789397609,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 55.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "30cc128bd4a116131649f9b600b82c1d4b60ddf65ac2d996db5aca5c7627d136"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -88.38443586346796,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 10.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1198.5000000000002,
+    "reference_target_bz_t": -0.4126920080862478,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 1.3450987696291092e-16,
+    "potential_digest": "74bb9a5fc389a01bf7c92ab20142977d3c6e14c6177ab9a17026f2ba014e43d7"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.27913171745365,
+    "current_at_100_percent_a": 1575.2330285262774,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1275.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589162,
+    "relative_error": 1.3750884253467483e-16,
+    "potential_digest": "4598014751eeb234cc72629a69715b09eb2c6f64fea2eb8c521739d980410eba"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "image_tl11_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 69,
+    "interval_turns": [
+      69
+    ],
+    "current_a": -380.87696690575706,
+    "current_at_100_percent_a": 806.5560417722379,
+    "excitation_percent": 47.222628953204506,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1512.9,
+    "reference_target_bz_t": -0.5144005954444499,
+    "selected_reference_bz_t": -0.5144005954444499,
+    "relative_error": -0.0,
+    "potential_digest": "439759cc4411ba5bfb240aece4ba0b74c563f6223536362e19c0783d753b88f3"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "image_tl12_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 36,
+    "interval_turns": [
+      36
+    ],
+    "current_a": 492.927442324183,
+    "current_at_100_percent_a": 682.2888026641002,
+    "excitation_percent": 72.246157404236,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1586.8999999999999,
+    "reference_target_bz_t": 0.30259842093219586,
+    "selected_reference_bz_t": 0.3025984209321959,
+    "relative_error": 1.8344825151515375e-16,
+    "potential_digest": "c026e712f88026e5378a170a73090d78e76325cf76e309c07afe32a4e1eedb6a"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "image_tl21_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789836903352,
+    "current_at_100_percent_a": 3251.7910019496453,
+    "excitation_percent": 60.00013477251599,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1706.4,
+    "reference_target_bz_t": 1.9808576256980708,
+    "selected_reference_bz_t": 1.980857625698071,
+    "relative_error": 1.120951864709514e-16,
+    "potential_digest": "b8c430d9eb671203a6fd63bd71787fdf7aadd744cabf435d85f36ae985b363b4"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "image_tl22_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.7300835560104,
+    "current_at_100_percent_a": 3197.874314618057,
+    "excitation_percent": 60.00017182617688,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1756.4,
+    "reference_target_bz_t": -1.9498608792267236,
+    "selected_reference_bz_t": -1.949860879226724,
+    "relative_error": 2.277543052333968e-16,
+    "potential_digest": "90b1c56068966e2298c254c179c167579c53e9c707faba73dd04939d9fd0e75c"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "image_adapter_lens",
+    "file": "configs/instruments/column/C3_ImageCorrector.toml",
+    "turns": 26,
+    "interval_turns": [
+      26
+    ],
+    "current_a": 508.57216443304594,
+    "current_at_100_percent_a": 1038.3821264463336,
+    "excitation_percent": 48.97736117372686,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1836.4,
+    "reference_target_bz_t": 0.38443787513663946,
+    "selected_reference_bz_t": 0.3844378751366394,
+    "relative_error": -1.4439563534557485e-16,
+    "potential_digest": "9eecc59b686395d0900c31aa2053771ca41851a373768cd939dc4ac29ef43e7f"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1998.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.687820013477079,
+    "relative_error": -8.070592617774656e-16,
+    "potential_digest": "9c967f2540891b407adfa710b347a91074d0db0fd24acdf76b1dc8b1e421f219"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 727,
+    "interval_turns": [
+      727
+    ],
+    "current_a": 68.1723523090753,
+    "current_at_100_percent_a": 170.43088077268823,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2168.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036305,
+    "relative_error": 0.0,
+    "potential_digest": "fdc5484472ee5047a4ba53e5aa99adace01266ee24dd445c28bc5903fc993a74"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2348.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.38517920754716445,
+    "relative_error": -1.441177253174046e-16,
+    "potential_digest": "ed4c0d5e2abbe670855e3ef99ab6b780ba809359307dedd8a56626ef86672eb3"
+  },
+  {
+    "column": "C3 + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2551.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "116454f8c40245744fd2e7a769acedb61718946bcfa68d14bce902fba0f7bb61"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "f905b7695777b708b474e0352edac4a9f135330c8f6df40bf3379444041537f5"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "0c29ff0f6150f780ea592c8cf31991a710721e51553e753022d44be7c0091f47"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 58.65751789397609,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 55.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "4c35ff31f30425078c6cebf0d917591ebc54fdb68dd8cb62afd3603db34d91e4"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "adapter_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 23,
+    "interval_turns": [
+      23
+    ],
+    "current_a": 145.02599566826174,
+    "current_at_100_percent_a": 345.2999896863375,
+    "excitation_percent": 42.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1088.2,
+    "reference_target_bz_t": 0.11005120215633273,
+    "selected_reference_bz_t": 0.11005120215633273,
+    "relative_error": 0.0,
+    "potential_digest": "f3c783fb233bc37c69d995665dc80e4e2a90ba10433cead231cb66b175e7777e"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "probe_tl22_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": -1030.0059912380173,
+    "current_at_100_percent_a": 1716.6766520633623,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1166.35,
+    "reference_target_bz_t": -0.4862035362710701,
+    "selected_reference_bz_t": -0.48620353627107005,
+    "relative_error": -1.1417266039856409e-16,
+    "potential_digest": "383f60005bf996d4b1467edcc26ffe029aec7d58595c651ff244569f929482b5"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "probe_tl21_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 19,
+    "interval_turns": [
+      19
+    ],
+    "current_a": 1016.9108810151324,
+    "current_at_100_percent_a": 1694.851468358554,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1249.95,
+    "reference_target_bz_t": 0.4564795319526607,
+    "selected_reference_bz_t": 0.4564795319526607,
+    "relative_error": 0.0,
+    "potential_digest": "3a678946daa6ff0672a96382dc8cd31879a411b9b1d2aa5dbbbcc22a06389090"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "probe_tl12_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": 1068.9327132826745,
+    "current_at_100_percent_a": 1781.554522137791,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1366.3,
+    "reference_target_bz_t": 0.5044013432165251,
+    "selected_reference_bz_t": 0.5044013432165251,
+    "relative_error": 0.0,
+    "potential_digest": "4fe7dc05a1ba0085921e60d79ec080c3c25954fa345d6e0cb2961c9c45ff6890"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -88.38443586346796,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 10.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1522.5,
+    "reference_target_bz_t": -0.41269200808624773,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 2.690197539258219e-16,
+    "potential_digest": "5a5e8fa4f6b8638d99f8aa961253b06198a251d633c36bb01338fed13c8dc80b"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.2791317174523,
+    "current_at_100_percent_a": 1575.233028526273,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1599.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589158,
+    "relative_error": -1.3750884253467483e-16,
+    "potential_digest": "3facffe15c5cc0ee02174fe48dc0ad0d1a59ec04933b9365c9f00b54815c7b08"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "image_tl11_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 69,
+    "interval_turns": [
+      69
+    ],
+    "current_a": -380.87696690575706,
+    "current_at_100_percent_a": 806.5560417722379,
+    "excitation_percent": 47.222628953204506,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1836.9,
+    "reference_target_bz_t": -0.5144005954444499,
+    "selected_reference_bz_t": -0.5144005954444499,
+    "relative_error": -0.0,
+    "potential_digest": "468baf656edf42d36c49918726ad1fdabe44852f36aeb2a10737b2fb8671809f"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "image_tl12_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 36,
+    "interval_turns": [
+      36
+    ],
+    "current_a": 492.927442324183,
+    "current_at_100_percent_a": 682.2888026641002,
+    "excitation_percent": 72.246157404236,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1910.8999999999999,
+    "reference_target_bz_t": 0.30259842093219586,
+    "selected_reference_bz_t": 0.3025984209321959,
+    "relative_error": 1.8344825151515375e-16,
+    "potential_digest": "49f8713dbafbf2358b07ce79c48c1df08dd658735985855843120704b6764185"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "image_tl21_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789836903352,
+    "current_at_100_percent_a": 3251.7910019496453,
+    "excitation_percent": 60.00013477251599,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2030.4,
+    "reference_target_bz_t": 1.9808576256980708,
+    "selected_reference_bz_t": 1.980857625698071,
+    "relative_error": 1.120951864709514e-16,
+    "potential_digest": "82bbe141e6a334589b67fa6e985bd5a1214ebc8097e33b4b0f2121eafed16af3"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "image_tl22_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.7300835560077,
+    "current_at_100_percent_a": 3197.8743146180523,
+    "excitation_percent": 60.00017182617688,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 2080.4,
+    "reference_target_bz_t": -1.949860879226718,
+    "selected_reference_bz_t": -1.9498608792267182,
+    "relative_error": 1.1387715261669872e-16,
+    "potential_digest": "39330fb250a665161549449e961c877b5eebf4fe8c762b498b6c3dc0da3087ee"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "image_adapter_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 26,
+    "interval_turns": [
+      26
+    ],
+    "current_a": 508.5721644330452,
+    "current_at_100_percent_a": 1038.382126446332,
+    "excitation_percent": 48.97736117372686,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2160.4,
+    "reference_target_bz_t": 0.38443787513663835,
+    "selected_reference_bz_t": 0.38443787513663835,
+    "relative_error": 0.0,
+    "potential_digest": "262d7a2820d1c9221bd05d63a17a0c18b952a5c8ba3f8452d42bbd2cb685eb98"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2322.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770807,
+    "relative_error": 1.6141185235549312e-15,
+    "potential_digest": "d066fe2ec62a8849591a6269df64381b05f75a3c03fb0ea3cdbd1dd63c8446f4"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 69.80946029686298,
+    "current_at_100_percent_a": 174.52365074215746,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2492.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036306,
+    "relative_error": 1.457596513952691e-16,
+    "potential_digest": "65b78d27bf2f3c7bca1ec3da54ddc3dc1d01de4fb17fcd86f1bc8bc08a233091"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2672.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.38517920754716445,
+    "relative_error": -1.441177253174046e-16,
+    "potential_digest": "bfe178f071522758014a367ad063398ea5c9dcf1063df6c7b45c59df60411ad5"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2875.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "21079b98644e4ff263c32029da94fba9297456bb8bc7a6418bddcc8351362571"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "f905b7695777b708b474e0352edac4a9f135330c8f6df40bf3379444041537f5"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "0c29ff0f6150f780ea592c8cf31991a710721e51553e753022d44be7c0091f47"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 58.65751789397609,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 55.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "4c35ff31f30425078c6cebf0d917591ebc54fdb68dd8cb62afd3603db34d91e4"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "adapter_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 23,
+    "interval_turns": [
+      23
+    ],
+    "current_a": 145.02599566826174,
+    "current_at_100_percent_a": 345.2999896863375,
+    "excitation_percent": 42.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1088.2,
+    "reference_target_bz_t": 0.11005120215633273,
+    "selected_reference_bz_t": 0.11005120215633273,
+    "relative_error": 0.0,
+    "potential_digest": "f3c783fb233bc37c69d995665dc80e4e2a90ba10433cead231cb66b175e7777e"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "probe_tl22_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": -1030.0059912380173,
+    "current_at_100_percent_a": 1716.6766520633623,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1166.35,
+    "reference_target_bz_t": -0.4862035362710701,
+    "selected_reference_bz_t": -0.48620353627107005,
+    "relative_error": -1.1417266039856409e-16,
+    "potential_digest": "383f60005bf996d4b1467edcc26ffe029aec7d58595c651ff244569f929482b5"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "probe_tl21_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 19,
+    "interval_turns": [
+      19
+    ],
+    "current_a": 1016.9108810151324,
+    "current_at_100_percent_a": 1694.851468358554,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1249.95,
+    "reference_target_bz_t": 0.4564795319526607,
+    "selected_reference_bz_t": 0.4564795319526607,
+    "relative_error": 0.0,
+    "potential_digest": "3a678946daa6ff0672a96382dc8cd31879a411b9b1d2aa5dbbbcc22a06389090"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "probe_tl12_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": 1068.9327132826745,
+    "current_at_100_percent_a": 1781.554522137791,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1366.3,
+    "reference_target_bz_t": 0.5044013432165251,
+    "selected_reference_bz_t": 0.5044013432165251,
+    "relative_error": 0.0,
+    "potential_digest": "4fe7dc05a1ba0085921e60d79ec080c3c25954fa345d6e0cb2961c9c45ff6890"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -88.38443586346796,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 10.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1522.5,
+    "reference_target_bz_t": -0.41269200808624773,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 2.690197539258219e-16,
+    "potential_digest": "5a5e8fa4f6b8638d99f8aa961253b06198a251d633c36bb01338fed13c8dc80b"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.2791317174523,
+    "current_at_100_percent_a": 1575.233028526273,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1599.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589158,
+    "relative_error": -1.3750884253467483e-16,
+    "potential_digest": "3facffe15c5cc0ee02174fe48dc0ad0d1a59ec04933b9365c9f00b54815c7b08"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "image_tl11_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 69,
+    "interval_turns": [
+      69
+    ],
+    "current_a": -380.87696690575706,
+    "current_at_100_percent_a": 806.5560417722379,
+    "excitation_percent": 47.222628953204506,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1836.9,
+    "reference_target_bz_t": -0.5144005954444499,
+    "selected_reference_bz_t": -0.5144005954444499,
+    "relative_error": -0.0,
+    "potential_digest": "468baf656edf42d36c49918726ad1fdabe44852f36aeb2a10737b2fb8671809f"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "image_tl12_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 36,
+    "interval_turns": [
+      36
+    ],
+    "current_a": 492.927442324183,
+    "current_at_100_percent_a": 682.2888026641002,
+    "excitation_percent": 72.246157404236,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1910.8999999999999,
+    "reference_target_bz_t": 0.30259842093219586,
+    "selected_reference_bz_t": 0.3025984209321959,
+    "relative_error": 1.8344825151515375e-16,
+    "potential_digest": "49f8713dbafbf2358b07ce79c48c1df08dd658735985855843120704b6764185"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "image_tl21_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789836903352,
+    "current_at_100_percent_a": 3251.7910019496453,
+    "excitation_percent": 60.00013477251599,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2030.4,
+    "reference_target_bz_t": 1.9808576256980708,
+    "selected_reference_bz_t": 1.980857625698071,
+    "relative_error": 1.120951864709514e-16,
+    "potential_digest": "82bbe141e6a334589b67fa6e985bd5a1214ebc8097e33b4b0f2121eafed16af3"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "image_tl22_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.7300835560077,
+    "current_at_100_percent_a": 3197.8743146180523,
+    "excitation_percent": 60.00017182617688,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 2080.4,
+    "reference_target_bz_t": -1.949860879226718,
+    "selected_reference_bz_t": -1.9498608792267182,
+    "relative_error": 1.1387715261669872e-16,
+    "potential_digest": "39330fb250a665161549449e961c877b5eebf4fe8c762b498b6c3dc0da3087ee"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "image_adapter_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "turns": 26,
+    "interval_turns": [
+      26
+    ],
+    "current_a": 508.5721644330452,
+    "current_at_100_percent_a": 1038.382126446332,
+    "excitation_percent": 48.97736117372686,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2160.4,
+    "reference_target_bz_t": 0.38443787513663835,
+    "selected_reference_bz_t": 0.38443787513663835,
+    "relative_error": 0.0,
+    "potential_digest": "262d7a2820d1c9221bd05d63a17a0c18b952a5c8ba3f8452d42bbd2cb685eb98"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2322.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770807,
+    "relative_error": 1.6141185235549312e-15,
+    "potential_digest": "ab91b6e2115f8e6c10ec6397827c30128d168da98d2cb669f0180383b72a0ccb"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 727,
+    "interval_turns": [
+      727
+    ],
+    "current_a": 68.1723523090753,
+    "current_at_100_percent_a": 170.43088077268823,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2492.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036305,
+    "relative_error": 0.0,
+    "potential_digest": "08c1cef97feed791ebf1567ff82ae7c306fc4aef09f3ab2569b0ab49ba289cd5"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2672.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.38517920754716445,
+    "relative_error": -1.441177253174046e-16,
+    "potential_digest": "c66757e5e69bfdacc6fef715c63bb9c95d3d723e0a22d1d91a2dfe553d9e45bd"
+  },
+  {
+    "column": "C3 + Probe Corrector + Image Corrector",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2875.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "dec630d5a1b872b02207995de39e5d2c93156171f8de5a2574f8d0c8d9d47d12"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "772146cd3b0588de99907b408c265c6dd6ace9db779dce019956019561c406ca"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "9e152b2d731909ab82ada51059ab52cb7894ea12fc7120ecca2680c5a926ab79"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 58.65751789397609,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 55.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "3653110cbc78d6ca3af0bb6fa47a370e7a25f220a38f9f8698d2be462eb87066"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -88.38443586346796,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 10.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1198.5000000000002,
+    "reference_target_bz_t": -0.4126920080862478,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 1.3450987696291092e-16,
+    "potential_digest": "f94632826fb856c4c1d9f78f919db550f8214ef81377a3dd272bba492eb26efb"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.27913171745365,
+    "current_at_100_percent_a": 1575.2330285262774,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1275.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589162,
+    "relative_error": 1.3750884253467483e-16,
+    "potential_digest": "61c96e1defb3ca2a5226b0032d080978db7492251288286ea23266a56018a53a"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl11_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 69,
+    "interval_turns": [
+      69
+    ],
+    "current_a": -380.87696690575393,
+    "current_at_100_percent_a": 806.5560417722379,
+    "excitation_percent": 47.22262895320412,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1512.9,
+    "reference_target_bz_t": -0.5144005954444499,
+    "selected_reference_bz_t": -0.5144005954444499,
+    "relative_error": -0.0,
+    "potential_digest": "92b1bd2d1cf3b78ea839db939086564df251b8ceb332333d20784a28d7a5b3f3"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl12_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 36,
+    "interval_turns": [
+      36
+    ],
+    "current_a": 492.92744131654575,
+    "current_at_100_percent_a": 682.2888026641002,
+    "excitation_percent": 72.24615725655114,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1586.8999999999999,
+    "reference_target_bz_t": 0.30259842093219586,
+    "selected_reference_bz_t": 0.3025984209321959,
+    "relative_error": 1.8344825151515375e-16,
+    "potential_digest": "8b8bf1fac0c6ae3bd76972dfeaedfbf8ca4fb145eaa4f166eb3510913b665d32"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl21_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789883886905,
+    "current_at_100_percent_a": 3251.7910019496453,
+    "excitation_percent": 60.00013491700115,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1706.4,
+    "reference_target_bz_t": 1.9808576256980708,
+    "selected_reference_bz_t": 1.980857625698071,
+    "relative_error": 1.120951864709514e-16,
+    "potential_digest": "749051727013ff306bf4dd03e6c7cd62d7fc3abc2432338ccd26894068772428"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl22_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.7300723509177,
+    "current_at_100_percent_a": 3197.874314618057,
+    "excitation_percent": 60.00017147578498,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1756.4,
+    "reference_target_bz_t": -1.9498608792267236,
+    "selected_reference_bz_t": -1.949860879226724,
+    "relative_error": 2.277543052333968e-16,
+    "potential_digest": "33350624a1d853c4320f2fd93a2a22e2d5ec2fb56a86612a32f24d82100912fe"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl31_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789825569361,
+    "current_at_100_percent_a": 3251.791001949644,
+    "excitation_percent": 60.0001347376614,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1850.4,
+    "reference_target_bz_t": 1.9808576256980708,
+    "selected_reference_bz_t": 1.9808576256980708,
+    "relative_error": 0.0,
+    "potential_digest": "7689e7e21285e3ab460d318f81d2509f1656fb2f7b885bc6e08a679f76451dcc"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl32_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.7300861385154,
+    "current_at_100_percent_a": 3197.874314618055,
+    "excitation_percent": 60.00017190693384,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1900.4,
+    "reference_target_bz_t": -1.9498608792267236,
+    "selected_reference_bz_t": -1.9498608792267236,
+    "relative_error": -0.0,
+    "potential_digest": "163acc5254985e392ee2244dc00a3c44bcdd5a170b32084b1bb0e773783a1899"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_adapter_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 26,
+    "interval_turns": [
+      26
+    ],
+    "current_a": 584.4475130110894,
+    "current_at_100_percent_a": 1038.3821264463331,
+    "excitation_percent": 56.28443499997931,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1980.4,
+    "reference_target_bz_t": 0.38443787513663946,
+    "selected_reference_bz_t": 0.38443787513663946,
+    "relative_error": 0.0,
+    "potential_digest": "62944a05d71ed8cedcc508f89ce0d611142d98223988ebd25b21be73e50535a1"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2142.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770807,
+    "relative_error": 1.6141185235549312e-15,
+    "potential_digest": "2018b4bfdcb7496ae6c6b16561072897b4d93448f604e5bdbe48bedfa39b4c80"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 69.80946029686298,
+    "current_at_100_percent_a": 174.52365074215746,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2312.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036306,
+    "relative_error": 1.457596513952691e-16,
+    "potential_digest": "1a6efb604d38a0c3ec86a1b683d3803ce636bb47933466ea60ed08eb5e3c5458"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2492.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.38517920754716445,
+    "relative_error": -1.441177253174046e-16,
+    "potential_digest": "4f409b78d34328152beecbe5055fb2d31906f0bca14d0e08d72a49af5591b2d6"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2695.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "1abebe3ba8e2d9a984d98a219e5807bae3e5da3276283f417bed918775fc49c9"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "772146cd3b0588de99907b408c265c6dd6ace9db779dce019956019561c406ca"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "9e152b2d731909ab82ada51059ab52cb7894ea12fc7120ecca2680c5a926ab79"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 58.65751789397609,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 55.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "3653110cbc78d6ca3af0bb6fa47a370e7a25f220a38f9f8698d2be462eb87066"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -88.38443586346796,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 10.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1198.5000000000002,
+    "reference_target_bz_t": -0.4126920080862478,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 1.3450987696291092e-16,
+    "potential_digest": "f94632826fb856c4c1d9f78f919db550f8214ef81377a3dd272bba492eb26efb"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.27913171745365,
+    "current_at_100_percent_a": 1575.2330285262774,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1275.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589162,
+    "relative_error": 1.3750884253467483e-16,
+    "potential_digest": "61c96e1defb3ca2a5226b0032d080978db7492251288286ea23266a56018a53a"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl11_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 69,
+    "interval_turns": [
+      69
+    ],
+    "current_a": -380.87696690575393,
+    "current_at_100_percent_a": 806.5560417722379,
+    "excitation_percent": 47.22262895320412,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1512.9,
+    "reference_target_bz_t": -0.5144005954444499,
+    "selected_reference_bz_t": -0.5144005954444499,
+    "relative_error": -0.0,
+    "potential_digest": "92b1bd2d1cf3b78ea839db939086564df251b8ceb332333d20784a28d7a5b3f3"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl12_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 36,
+    "interval_turns": [
+      36
+    ],
+    "current_a": 492.92744131654575,
+    "current_at_100_percent_a": 682.2888026641002,
+    "excitation_percent": 72.24615725655114,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1586.8999999999999,
+    "reference_target_bz_t": 0.30259842093219586,
+    "selected_reference_bz_t": 0.3025984209321959,
+    "relative_error": 1.8344825151515375e-16,
+    "potential_digest": "8b8bf1fac0c6ae3bd76972dfeaedfbf8ca4fb145eaa4f166eb3510913b665d32"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl21_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789883886905,
+    "current_at_100_percent_a": 3251.7910019496453,
+    "excitation_percent": 60.00013491700115,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1706.4,
+    "reference_target_bz_t": 1.9808576256980708,
+    "selected_reference_bz_t": 1.980857625698071,
+    "relative_error": 1.120951864709514e-16,
+    "potential_digest": "749051727013ff306bf4dd03e6c7cd62d7fc3abc2432338ccd26894068772428"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl22_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.7300723509177,
+    "current_at_100_percent_a": 3197.874314618057,
+    "excitation_percent": 60.00017147578498,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1756.4,
+    "reference_target_bz_t": -1.9498608792267236,
+    "selected_reference_bz_t": -1.949860879226724,
+    "relative_error": 2.277543052333968e-16,
+    "potential_digest": "33350624a1d853c4320f2fd93a2a22e2d5ec2fb56a86612a32f24d82100912fe"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl31_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789825569361,
+    "current_at_100_percent_a": 3251.791001949644,
+    "excitation_percent": 60.0001347376614,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1850.4,
+    "reference_target_bz_t": 1.9808576256980708,
+    "selected_reference_bz_t": 1.9808576256980708,
+    "relative_error": 0.0,
+    "potential_digest": "7689e7e21285e3ab460d318f81d2509f1656fb2f7b885bc6e08a679f76451dcc"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl32_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.7300861385154,
+    "current_at_100_percent_a": 3197.874314618055,
+    "excitation_percent": 60.00017190693384,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1900.4,
+    "reference_target_bz_t": -1.9498608792267236,
+    "selected_reference_bz_t": -1.9498608792267236,
+    "relative_error": -0.0,
+    "potential_digest": "163acc5254985e392ee2244dc00a3c44bcdd5a170b32084b1bb0e773783a1899"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_adapter_lens",
+    "file": "configs/instruments/column/C3_BCOR.toml",
+    "turns": 26,
+    "interval_turns": [
+      26
+    ],
+    "current_a": 584.4475130110894,
+    "current_at_100_percent_a": 1038.3821264463331,
+    "excitation_percent": 56.28443499997931,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1980.4,
+    "reference_target_bz_t": 0.38443787513663946,
+    "selected_reference_bz_t": 0.38443787513663946,
+    "relative_error": 0.0,
+    "potential_digest": "62944a05d71ed8cedcc508f89ce0d611142d98223988ebd25b21be73e50535a1"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2142.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770807,
+    "relative_error": 1.6141185235549312e-15,
+    "potential_digest": "beb4a45f738deeb83c5eba5cfe9da83ed831f58abae0343ca9e85c17da3e5434"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 727,
+    "interval_turns": [
+      727
+    ],
+    "current_a": 68.1723523090753,
+    "current_at_100_percent_a": 170.43088077268823,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2312.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036305,
+    "relative_error": 0.0,
+    "potential_digest": "e9bcf2fff6fbede166055daa5712a8cd3c216a33faf64d7d72c61afc321f2115"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2492.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.38517920754716445,
+    "relative_error": -1.441177253174046e-16,
+    "potential_digest": "809fdb53c300391d66217f671cf67989e6fc1a6e16194b0d9da3f4926e572179"
+  },
+  {
+    "column": "C3 + B-COR",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2695.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "25f9c8a1072d910293e1373ee9f042f107f262debd97a52f5598119143312f12"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "8729c859bb37ad989c503147b0c70e62dd8af92156e7445b2166273193569535"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "535bfe4379892cd40dd6190136548c70dd47a870832ec5fb1841838a38c7e9b4"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 58.65751789397609,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 55.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "c1e46b0580dd36ff1f7a4ea6b5c9f6876552e362bac55a82cd75074955ea6e00"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "adapter_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 23,
+    "interval_turns": [
+      23
+    ],
+    "current_a": 145.02599566826174,
+    "current_at_100_percent_a": 345.2999896863375,
+    "excitation_percent": 42.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1088.2,
+    "reference_target_bz_t": 0.11005120215633273,
+    "selected_reference_bz_t": 0.11005120215633273,
+    "relative_error": 0.0,
+    "potential_digest": "21201000e6e223e74b9e0263bb29aeb59ea1be668cb8d56bfb83deca93cd1268"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "probe_tl22_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": -1030.0059912380173,
+    "current_at_100_percent_a": 1716.6766520633623,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1166.35,
+    "reference_target_bz_t": -0.4862035362710701,
+    "selected_reference_bz_t": -0.48620353627107005,
+    "relative_error": -1.1417266039856409e-16,
+    "potential_digest": "07d9baa377fa3d3e7d05c69a91562c05e7a6926cdb2fbae18a27aaf83c88fdaa"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "probe_tl21_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 19,
+    "interval_turns": [
+      19
+    ],
+    "current_a": 1016.9108810151324,
+    "current_at_100_percent_a": 1694.851468358554,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1249.95,
+    "reference_target_bz_t": 0.4564795319526607,
+    "selected_reference_bz_t": 0.4564795319526607,
+    "relative_error": 0.0,
+    "potential_digest": "67a6bd3ba86bf81af99f430470f39c12db4247c21f406ea7372e79195da5a21c"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "probe_tl12_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": 1068.9327132826745,
+    "current_at_100_percent_a": 1781.554522137791,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1366.3,
+    "reference_target_bz_t": 0.5044013432165251,
+    "selected_reference_bz_t": 0.5044013432165251,
+    "relative_error": 0.0,
+    "potential_digest": "b51cab967c50bec2270f3c7e32acba7d640cecccff762b305037af6fe45961bd"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -387.8880554673398,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 43.88646617222637,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1522.5,
+    "reference_target_bz_t": -0.41269200808624773,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 2.690197539258219e-16,
+    "potential_digest": "d97a0ee5b60ab15459cf2e2c3173c5648564b22c94f4b0efa244069893d6007e"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.2791317174523,
+    "current_at_100_percent_a": 1575.233028526273,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1599.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589158,
+    "relative_error": -1.3750884253467483e-16,
+    "potential_digest": "a32f0258727198059e077e5084bc9ea23406fb7bd79cf300246be54963b1afca"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl11_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 69,
+    "interval_turns": [
+      69
+    ],
+    "current_a": -380.87696690575393,
+    "current_at_100_percent_a": 806.5560417722379,
+    "excitation_percent": 47.22262895320412,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1836.9,
+    "reference_target_bz_t": -0.5144005954444499,
+    "selected_reference_bz_t": -0.5144005954444499,
+    "relative_error": -0.0,
+    "potential_digest": "cc59315bec3f5b7e78c10779578991db6df99034006f81bd1833e25ee41cfc7d"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl12_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 36,
+    "interval_turns": [
+      36
+    ],
+    "current_a": 492.92744131654575,
+    "current_at_100_percent_a": 682.2888026641002,
+    "excitation_percent": 72.24615725655114,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1910.8999999999999,
+    "reference_target_bz_t": 0.30259842093219586,
+    "selected_reference_bz_t": 0.3025984209321959,
+    "relative_error": 1.8344825151515375e-16,
+    "potential_digest": "44850d892489422d36e577fdee55ed222546747b1f4a947cdb427c54fda6500a"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl21_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789883886905,
+    "current_at_100_percent_a": 3251.7910019496453,
+    "excitation_percent": 60.00013491700115,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2030.4,
+    "reference_target_bz_t": 1.9808576256980708,
+    "selected_reference_bz_t": 1.980857625698071,
+    "relative_error": 1.120951864709514e-16,
+    "potential_digest": "879c16a29c6ad789e2caf429cb9b03953a08e700be53663d41893429fb441156"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl22_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.730072350915,
+    "current_at_100_percent_a": 3197.8743146180523,
+    "excitation_percent": 60.00017147578498,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 2080.4,
+    "reference_target_bz_t": -1.949860879226718,
+    "selected_reference_bz_t": -1.9498608792267182,
+    "relative_error": 1.1387715261669872e-16,
+    "potential_digest": "54c9774cd0a377c02eebe81db34774878901e069dd4cbf103d41fee578d7e16d"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl31_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789825569311,
+    "current_at_100_percent_a": 3251.7910019496358,
+    "excitation_percent": 60.0001347376614,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2174.4,
+    "reference_target_bz_t": 1.980857625698065,
+    "selected_reference_bz_t": 1.9808576256980648,
+    "relative_error": -1.1209518647095172e-16,
+    "potential_digest": "d692eee3ea102e03972c7128728518c0f1a77b660e2f92396db3f3aa45f95476"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_tl32_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.7300861385106,
+    "current_at_100_percent_a": 3197.8743146180473,
+    "excitation_percent": 60.00017190693384,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 2224.4,
+    "reference_target_bz_t": -1.949860879226718,
+    "selected_reference_bz_t": -1.949860879226718,
+    "relative_error": -0.0,
+    "potential_digest": "bba4cb40453820a77897f7257e37fd86a9e8d250dbc549ee90fb0407610c68e1"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "image_adapter_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 26,
+    "interval_turns": [
+      26
+    ],
+    "current_a": 584.447513011088,
+    "current_at_100_percent_a": 1038.3821264463306,
+    "excitation_percent": 56.28443499997931,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2304.4,
+    "reference_target_bz_t": 0.38443787513663835,
+    "selected_reference_bz_t": 0.38443787513663835,
+    "relative_error": 0.0,
+    "potential_digest": "585c82d4a7eca00b34226f09b84efc44967c0d8ae5091b4fb66da32b38e49ffe"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2466.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770807,
+    "relative_error": 1.6141185235549312e-15,
+    "potential_digest": "38459330d31770818961af5e4be414262dc19b7c29d0443813d1d0abde5aafaa"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 69.80946029686298,
+    "current_at_100_percent_a": 174.52365074215746,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2636.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036306,
+    "relative_error": 1.457596513952691e-16,
+    "potential_digest": "d4dbc31e20b2dfe46ec9d3cfcc4b35c1cbbc2ba9c9d8a8b7f5d532d7533e840d"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2816.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.38517920754716445,
+    "relative_error": -1.441177253174046e-16,
+    "potential_digest": "e12bb7dfaab0687d1d2fa4a3e0f491cb4853e91e5f1624baf258ca386981b1d6"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "No Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 3019.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "de31b1145bc983157f4c40df7088e7aeb83020d505030908959011a4e5d1031c"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_1",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 303,
+    "interval_turns": [
+      303
+    ],
+    "current_a": 645.6333956888827,
+    "current_at_100_percent_a": 717.3704396543142,
+    "excitation_percent": 90.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 500.0,
+    "reference_target_bz_t": 1.774823934929884,
+    "selected_reference_bz_t": 1.7748239349298838,
+    "relative_error": -1.2510796172793522e-16,
+    "potential_digest": "8729c859bb37ad989c503147b0c70e62dd8af92156e7445b2166273193569535"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_2",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 546,
+    "interval_turns": [
+      546
+    ],
+    "current_a": 128.75801297289965,
+    "current_at_100_percent_a": 367.88003706542753,
+    "excitation_percent": 35.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 650.0,
+    "reference_target_bz_t": 1.230409845135657,
+    "selected_reference_bz_t": 1.230409845135657,
+    "relative_error": 0.0,
+    "potential_digest": "535bfe4379892cd40dd6190136548c70dd47a870832ec5fb1841838a38c7e9b4"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "condenser_lens_3",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 515,
+    "interval_turns": [
+      515
+    ],
+    "current_a": 58.65751789397609,
+    "current_at_100_percent_a": 106.65003253450197,
+    "excitation_percent": 55.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 915.0,
+    "reference_target_bz_t": 0.3484954734950536,
+    "selected_reference_bz_t": 0.3484954734950536,
+    "relative_error": 0.0,
+    "potential_digest": "c1e46b0580dd36ff1f7a4ea6b5c9f6876552e362bac55a82cd75074955ea6e00"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "adapter_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 23,
+    "interval_turns": [
+      23
+    ],
+    "current_a": 145.02599566826174,
+    "current_at_100_percent_a": 345.2999896863375,
+    "excitation_percent": 42.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1088.2,
+    "reference_target_bz_t": 0.11005120215633273,
+    "selected_reference_bz_t": 0.11005120215633273,
+    "relative_error": 0.0,
+    "potential_digest": "21201000e6e223e74b9e0263bb29aeb59ea1be668cb8d56bfb83deca93cd1268"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "probe_tl22_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": -1030.0059912380173,
+    "current_at_100_percent_a": 1716.6766520633623,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1166.35,
+    "reference_target_bz_t": -0.4862035362710701,
+    "selected_reference_bz_t": -0.48620353627107005,
+    "relative_error": -1.1417266039856409e-16,
+    "potential_digest": "07d9baa377fa3d3e7d05c69a91562c05e7a6926cdb2fbae18a27aaf83c88fdaa"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "probe_tl21_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 19,
+    "interval_turns": [
+      19
+    ],
+    "current_a": 1016.9108810151324,
+    "current_at_100_percent_a": 1694.851468358554,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1249.95,
+    "reference_target_bz_t": 0.4564795319526607,
+    "selected_reference_bz_t": 0.4564795319526607,
+    "relative_error": 0.0,
+    "potential_digest": "67a6bd3ba86bf81af99f430470f39c12db4247c21f406ea7372e79195da5a21c"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "probe_tl12_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 20,
+    "interval_turns": [
+      20
+    ],
+    "current_a": 1068.9327132826745,
+    "current_at_100_percent_a": 1781.554522137791,
+    "excitation_percent": 60.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1366.3,
+    "reference_target_bz_t": 0.5044013432165251,
+    "selected_reference_bz_t": 0.5044013432165251,
+    "relative_error": 0.0,
+    "potential_digest": "b51cab967c50bec2270f3c7e32acba7d640cecccff762b305037af6fe45961bd"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "mini_condenser",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 17,
+    "interval_turns": [
+      17
+    ],
+    "current_a": -387.8880554673398,
+    "current_at_100_percent_a": 883.8443586346796,
+    "excitation_percent": 43.88646617222637,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1522.5,
+    "reference_target_bz_t": -0.41269200808624773,
+    "selected_reference_bz_t": -0.41269200808624784,
+    "relative_error": 2.690197539258219e-16,
+    "potential_digest": "d97a0ee5b60ab15459cf2e2c3173c5648564b22c94f4b0efa244069893d6007e"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "objective_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 1172,
+    "interval_turns": [
+      586,
+      586
+    ],
+    "current_a": 479.2791317174523,
+    "current_at_100_percent_a": 1575.233028526273,
+    "excitation_percent": 30.42591940608605,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1599.1999975,
+    "reference_target_bz_t": 1.614766009458916,
+    "selected_reference_bz_t": 1.6147660094589158,
+    "relative_error": -1.3750884253467483e-16,
+    "potential_digest": "a32f0258727198059e077e5084bc9ea23406fb7bd79cf300246be54963b1afca"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl11_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 69,
+    "interval_turns": [
+      69
+    ],
+    "current_a": -380.87696690575393,
+    "current_at_100_percent_a": 806.5560417722379,
+    "excitation_percent": 47.22262895320412,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 1836.9,
+    "reference_target_bz_t": -0.5144005954444499,
+    "selected_reference_bz_t": -0.5144005954444499,
+    "relative_error": -0.0,
+    "potential_digest": "cc59315bec3f5b7e78c10779578991db6df99034006f81bd1833e25ee41cfc7d"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl12_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 36,
+    "interval_turns": [
+      36
+    ],
+    "current_a": 492.92744131654575,
+    "current_at_100_percent_a": 682.2888026641002,
+    "excitation_percent": 72.24615725655114,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 1910.8999999999999,
+    "reference_target_bz_t": 0.30259842093219586,
+    "selected_reference_bz_t": 0.3025984209321959,
+    "relative_error": 1.8344825151515375e-16,
+    "potential_digest": "44850d892489422d36e577fdee55ed222546747b1f4a947cdb427c54fda6500a"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl21_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789883886905,
+    "current_at_100_percent_a": 3251.7910019496453,
+    "excitation_percent": 60.00013491700115,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2030.4,
+    "reference_target_bz_t": 1.9808576256980708,
+    "selected_reference_bz_t": 1.980857625698071,
+    "relative_error": 1.120951864709514e-16,
+    "potential_digest": "879c16a29c6ad789e2caf429cb9b03953a08e700be53663d41893429fb441156"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl22_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.730072350915,
+    "current_at_100_percent_a": 3197.8743146180523,
+    "excitation_percent": 60.00017147578498,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 2080.4,
+    "reference_target_bz_t": -1.949860879226718,
+    "selected_reference_bz_t": -1.9498608792267182,
+    "relative_error": 1.1387715261669872e-16,
+    "potential_digest": "54c9774cd0a377c02eebe81db34774878901e069dd4cbf103d41fee578d7e16d"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl31_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": 1951.0789825569311,
+    "current_at_100_percent_a": 3251.7910019496358,
+    "excitation_percent": 60.0001347376614,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2174.4,
+    "reference_target_bz_t": 1.980857625698065,
+    "selected_reference_bz_t": 1.9808576256980648,
+    "relative_error": -1.1209518647095172e-16,
+    "potential_digest": "d692eee3ea102e03972c7128728518c0f1a77b660e2f92396db3f3aa45f95476"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_tl32_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 45,
+    "interval_turns": [
+      45
+    ],
+    "current_a": -1918.7300861385106,
+    "current_at_100_percent_a": 3197.8743146180473,
+    "excitation_percent": 60.00017190693384,
+    "enabled": true,
+    "polarity": -1,
+    "matching_plane_z_mm": 2224.4,
+    "reference_target_bz_t": -1.949860879226718,
+    "selected_reference_bz_t": -1.949860879226718,
+    "relative_error": -0.0,
+    "potential_digest": "bba4cb40453820a77897f7257e37fd86a9e8d250dbc549ee90fb0407610c68e1"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "image_adapter_lens",
+    "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "turns": 26,
+    "interval_turns": [
+      26
+    ],
+    "current_a": 584.447513011088,
+    "current_at_100_percent_a": 1038.3821264463306,
+    "excitation_percent": 56.28443499997931,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2304.4,
+    "reference_target_bz_t": 0.38443787513663835,
+    "selected_reference_bz_t": 0.38443787513663835,
+    "relative_error": 0.0,
+    "potential_digest": "585c82d4a7eca00b34226f09b84efc44967c0d8ae5091b4fb66da32b38e49ffe"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "diffraction_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 364,
+    "interval_turns": [
+      364
+    ],
+    "current_a": 52.061956512641814,
+    "current_at_100_percent_a": 196.49728821529274,
+    "excitation_percent": 26.495,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2466.9,
+    "reference_target_bz_t": 0.6878200134770796,
+    "selected_reference_bz_t": 0.6878200134770807,
+    "relative_error": 1.6141185235549312e-15,
+    "potential_digest": "b65cccf48adca606d75b7cebdff9b3b5414d61f1359074860b7c21b3ab4e71bd"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "intermediate_lens",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 727,
+    "interval_turns": [
+      727
+    ],
+    "current_a": 68.1723523090753,
+    "current_at_100_percent_a": 170.43088077268823,
+    "excitation_percent": 40.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2636.9,
+    "reference_target_bz_t": 0.7616806256036305,
+    "selected_reference_bz_t": 0.7616806256036305,
+    "relative_error": 0.0,
+    "potential_digest": "2aaa236d6a2906720cc466620301bf7c4de18db66115dc8ee79fb6b4114ef2d9"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_1",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 436,
+    "interval_turns": [
+      436
+    ],
+    "current_a": 30.383825607189817,
+    "current_at_100_percent_a": 101.27941869063272,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 2816.9,
+    "reference_target_bz_t": 0.3851792075471645,
+    "selected_reference_bz_t": 0.38517920754716445,
+    "relative_error": -1.441177253174046e-16,
+    "potential_digest": "9f749082c2e2320da75abc309745b17c26ad31b09ec6e4e05f84c4ff4b0bd4b8"
+  },
+  {
+    "column": "C3 + Probe Corrector + B-COR",
+    "recording": "Energy Filter",
+    "owner": "projector_lens_2",
+    "file": "configs/subassemblies/projector_stack.toml",
+    "turns": 655,
+    "interval_turns": [
+      655
+    ],
+    "current_a": 22.694398716389443,
+    "current_at_100_percent_a": 75.64799572129814,
+    "excitation_percent": 30.0,
+    "enabled": true,
+    "polarity": 1,
+    "matching_plane_z_mm": 3019.4,
+    "reference_target_bz_t": 0.33015360646899816,
+    "selected_reference_bz_t": 0.3301536064689982,
+    "relative_error": 1.6813734620363869e-16,
+    "potential_digest": "d9a52d5c844e69822cfc996a0cdc3a8ee6cb7b1d9f614ceb96f1d5cc4a3d59b0"
+  }
+]

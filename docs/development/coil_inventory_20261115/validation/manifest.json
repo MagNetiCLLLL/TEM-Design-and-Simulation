@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-15",
+  "scope": "Read-only installed winding inventory and component field comparison; no beam or waves",
+  "controlled_same_segment_ni": "39/39 cases bitwise identical",
+  "unmodified_nominal_ni_adapter": "30/39 pass; C1 lens, C3 lens and Diffraction lens have rounding failures in 9 cases",
+  "existing_comparison_criterion": {
+    "rtol": 4e-14,
+    "atol_b_t": 1e-20
+  },
+  "source_input_files_verified_unchanged": 834,
+  "audit_script_sha256": "ce286de79cfdaa4b18862a08b86e75b47948b2cbac252f3fc243c74927aec5b1",
+  "files": {
+    "attempt-1-audit.py": {
+      "bytes": 13878,
+      "sha256": "eefbf92ea5a2a2bcedbf7aa5507065396a73d4c33f8ac1ec793570acfbd90160"
+    },
+    "attempt-2-audit.py": {
+      "bytes": 14850,
+      "sha256": "57af62587544abc5fa990d67dbeff96ab3c67ae2c310dcdda46643842bab883f"
+    },
+    "audit-complete.log": {
+      "bytes": 20511,
+      "sha256": "dd291f18655c5ba41aa48a679e58eda14f0ea18ea17b1b1222545fa1cdfa6240"
+    },
+    "audit-matched-ni.log": {
+      "bytes": 1987,
+      "sha256": "dfa1a5d81d9598427a99ee7da789675f6028e2f1a60af5c5898bc0f1360523d0"
+    },
+    "audit.log": {
+      "bytes": 1949,
+      "sha256": "6e9b18ded034443858b3b4a41d43aba60a98c41b4f62f6cdabf0726463a37865"
+    },
+    "equivalence-review.json": {
+      "bytes": 6361,
+      "sha256": "4cad9f68c4d2f447a50349931d1bf877e47d53411f7e025e47a34c61648949c3"
+    },
+    "equivalence.json": {
+      "bytes": 304377,
+      "sha256": "bc991fff896faee503886eada38888b4d28d591361fdb34d2b549ddb41282b20"
+    },
+    "field-samples.npz": {
+      "bytes": 1156640,
+      "sha256": "c6d3805d8f3f0c069728d8dd5cee6eb525ebf998fc4e5b8328c72dc8550e1c45"
+    },
+    "inactive_optional_round.json": {
+      "bytes": 3207,
+      "sha256": "0862e4fd9499a81e3f27c756a5dc2de1b8db43ae2654657a5ab439f9141e9894"
+    },
+    "inventory.csv": {
+      "bytes": 5684,
+      "sha256": "015707e2fde5d0f19a62877d591f7482a1ac34a85ebbb2dcac8c3f36efd5d773"
+    },
+    "inventory.json": {
+      "bytes": 69099,
+      "sha256": "75a1159b8fafb7c7c147be5bb139744e0710a89552569c545f3ab023c52d12f3"
+    },
+    "nominal-ni-roundoff-review.json": {
+      "bytes": 23839,
+      "sha256": "26c86bd1efe61ba0099da996fcec3b782633bb45cc4579a9db7b9c7d31af9621"
+    },
+    "nonround_classification.json": {
+      "bytes": 9275,
+      "sha256": "9e658615e7331d1680f3d3ee13f261a9d7e687a830a4e4120054830b03bd9cb9"
+    },
+    "protected-files.json": {
+      "bytes": 94333,
+      "sha256": "bc597b0f7b2340a324386a00fc3eb5ed7dc8016bd2579491e44fc9672df87d49"
+    },
+    "run_nominal_ni_review.py": {
+      "bytes": 6312,
+      "sha256": "2f1b4ec5d2e219f47b7d19d310920e87cfc427462318d4c7fd5e0053dcbc8b60"
+    },
+    "standard-startup-state.json": {
+      "bytes": 64241,
+      "sha256": "e8d75b4fb668d3c2e33d1a6c6ef602dd005cd79795b9236a8c0823846b81fed2"
+    },
+    "summary.json": {
+      "bytes": 24235,
+      "sha256": "518f34832a71ec4cc9086a32b3c0ffa4859bab74ecaec477b0dcdffd3729e00f"
+    }
+  }
+}

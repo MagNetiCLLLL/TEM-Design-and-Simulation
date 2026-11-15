@@ -1,7 +1,7 @@
 """Fixed entrance plane and validated downstream-only specimen thickness edits."""
 from __future__ import annotations
 
-from dataclasses import is_dataclass
+from dataclasses import is_dataclass, replace
 from hashlib import sha256
 import math
 from pathlib import Path
@@ -70,6 +70,21 @@ def anchored_sample_assembly(state, assembly, configuration, *, preserve_operati
     with input_io.input_scope(state):
         result = resolve_module_assembly(configuration, root=assembly.root)
     old = {item.key: item for item in assembly.parts}
+    if (getattr(state, "round_lens_field_model", "gaussian") == "gaussian"
+            and getattr(state, "gaussian_geometry_coupling", "fixed_calibration") == "fixed_calibration"):
+        from temsim.input_design_compatibility import additive_coil_parts_metadata_only
+        # A historical Gaussian design retains its exact old part records.
+        # New, inactive coil references from a catalog refresh cannot turn a
+        # foil-only edit into a change of the other captured physical parts.
+        before = [thaw_json(item.data) for item in assembly.parts if item.key != "sample"]
+        after = [thaw_json(item.data) for item in result.parts if item.key != "sample"]
+        coordinates_match = (set(old) == {item.key for item in result.parts}
+            and all((item.start_z_mm, item.center_z_mm, item.end_z_mm) ==
+                    (old[item.key].start_z_mm, old[item.key].center_z_mm, old[item.key].end_z_mm)
+                    for item in result.parts if item.key != "sample"))
+        if coordinates_match and additive_coil_parts_metadata_only(before, after):
+            result = replace(result, parts=tuple(item if item.key == "sample" else old[item.key]
+                                                 for item in result.parts))
     for item in result.parts:
         if item.key == "sample":
             continue

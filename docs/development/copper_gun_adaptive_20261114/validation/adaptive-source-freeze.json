@@ -1,0 +1,18 @@
+{
+  "implementation": "6169010971ca2aeb082c8f0936b043f2ad4eb886cdfd07991c69bdda32a7ffca",
+  "numerical_criteria": {
+    "schema": "geometry-dg-transverse-step-doubled-v3-trace-local-proposal",
+    "proposal_schema": "surface-dg-bounded-feedback-proposal-v2",
+    "implicit_tolerance": 1e-13,
+    "total_relative_momentum": 1e-06,
+    "transverse_relative_momentum": 1e-05,
+    "transverse_momentum_floor_fraction": 1e-05,
+    "momentum_norm_floor": 1e-30,
+    "xy_absolute_position_m": 1e-13,
+    "xy_relative_position": 1e-06,
+    "xyz_absolute_position_m": 1e-13,
+    "xyz_relative_step": 1e-05,
+    "maximum_retries": 32
+  },
+  "scope": "Frozen before new 1024 original positive-current Preview/High physical runs; optical/source/geometry inputs unchanged"
+}

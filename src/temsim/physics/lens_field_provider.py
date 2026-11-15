@@ -224,6 +224,11 @@ _PART_GEOMETRY_FIELDS = frozenset({
     "magnetic_lens_keys",
     "field_source_key",
     "coil_ampere_turn_fraction",
+    "winding_turn_count",
+    "winding_interval_turn_counts",
+    "winding_wire_diameter_mm",
+    "winding_wire_cross_section_mm2",
+    "ideal_coil_current_a_at_100_percent",
     "magnetic_part_role",
     "upper_yoke_start_local_z_mm", "upper_yoke_end_local_z_mm",
     "lower_yoke_start_local_z_mm", "lower_yoke_end_local_z_mm",
@@ -1984,6 +1989,10 @@ class FrozenAnalyticField:
 
 
 def freeze_vector_provider(provider):
+    from temsim.physics.copper_coil_field_provider import CopperCoilFieldProvider
+    from temsim.physics.frozen_copper_coil_field import FrozenCopperCoilField
+    if type(provider) is CopperCoilFieldProvider:
+        return FrozenCopperCoilField.from_provider(provider)
     if isinstance(provider, MappedLensFieldProvider):
         return FrozenMappedField.from_provider(provider)
     if isinstance(provider, GeometryAwareAnalyticFieldProvider):

@@ -1,0 +1,170 @@
+[
+  {
+    "path": "configs/instruments/column/C2.toml",
+    "sha256": "00bb4db5dc5a8b08f43a35334146651b5c5f7ff764bb56781aa7be36ef5a9bf5",
+    "hosts": [
+      "condenser_stigmator",
+      "beam_deflector",
+      "ac_deflector",
+      "objective_stigmator",
+      "image_diffraction_deflector"
+    ]
+  },
+  {
+    "path": "configs/instruments/column/C3.toml",
+    "sha256": "8eeb15e397312339fc8bfed4c9d9ca78cb7f099922327dfbb9dbc7be76769520",
+    "hosts": [
+      "condenser_stigmator",
+      "beam_deflector",
+      "ac_deflector",
+      "objective_stigmator",
+      "image_diffraction_deflector",
+      "condenser_deflector"
+    ]
+  },
+  {
+    "path": "configs/instruments/column/C3_BCOR.toml",
+    "sha256": "1f2778d2f8805f4d0528db38209f19ed0866d77377a94271303b16f03c5d6cc8",
+    "hosts": [
+      "condenser_deflector",
+      "beam_deflector",
+      "condenser_stigmator",
+      "ac_deflector",
+      "objective_stigmator",
+      "image_diffraction_deflector",
+      "image_dp11_coils",
+      "image_dp12_coils",
+      "image_dph1_coils",
+      "image_dp21_coils",
+      "image_dp22_coils",
+      "image_dph2_coils",
+      "image_ish_coils",
+      "image_dsh_coils"
+    ]
+  },
+  {
+    "path": "configs/instruments/column/C3_ImageCorrector.toml",
+    "sha256": "27efe0f3816813a93b12f86b6d6b172bb745c83f280d29374bdb3cc7e5c030b5",
+    "hosts": [
+      "condenser_stigmator",
+      "beam_deflector",
+      "ac_deflector",
+      "objective_stigmator",
+      "image_diffraction_deflector",
+      "condenser_deflector",
+      "image_dp11_coils",
+      "image_dp12_coils",
+      "image_dph1_coils",
+      "image_dp21_coils",
+      "image_dp22_coils",
+      "image_dph2_coils",
+      "image_ish_coils",
+      "image_dsh_coils"
+    ]
+  },
+  {
+    "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "sha256": "0ab7ab450649f716a33a8eb48d976e428d6a22a56380191546c28be6be5b871b",
+    "hosts": [
+      "condenser_deflector",
+      "condenser_stigmator",
+      "beam_deflector",
+      "ac_deflector",
+      "objective_stigmator",
+      "image_diffraction_deflector",
+      "probe_dph2_coils",
+      "probe_dph1_coils",
+      "probe_dp22_coils",
+      "probe_dp21_coils",
+      "probe_dp11_coils"
+    ]
+  },
+  {
+    "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "sha256": "386aaca29aa1100b86b75d99bc4df58b59af32c576a3f4b387749becc0ce0129",
+    "hosts": [
+      "condenser_deflector",
+      "beam_deflector",
+      "condenser_stigmator",
+      "ac_deflector",
+      "objective_stigmator",
+      "image_diffraction_deflector",
+      "probe_dph2_coils",
+      "probe_dph1_coils",
+      "probe_dp22_coils",
+      "probe_dp21_coils",
+      "probe_dp11_coils",
+      "image_dp11_coils",
+      "image_dp12_coils",
+      "image_dph1_coils",
+      "image_dp21_coils",
+      "image_dp22_coils",
+      "image_dph2_coils",
+      "image_ish_coils",
+      "image_dsh_coils"
+    ]
+  },
+  {
+    "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "sha256": "89998f99aa24373ae49045b813efd24edbe44f936888e05845274b70b7a736da",
+    "hosts": [
+      "condenser_deflector",
+      "condenser_stigmator",
+      "beam_deflector",
+      "ac_deflector",
+      "objective_stigmator",
+      "image_diffraction_deflector",
+      "probe_dph2_coils",
+      "probe_dph1_coils",
+      "probe_dp22_coils",
+      "probe_dp21_coils",
+      "probe_dp11_coils",
+      "image_dp11_coils",
+      "image_dp12_coils",
+      "image_dph1_coils",
+      "image_dp21_coils",
+      "image_dp22_coils",
+      "image_dph2_coils",
+      "image_ish_coils",
+      "image_dsh_coils"
+    ]
+  },
+  {
+    "path": "configs/instruments/gun/FEG.toml",
+    "sha256": "8b78ce0df787d81610e2a974c1ca4c49de4273f011e3297ee11b1edaf09b663d",
+    "hosts": [
+      "feg_deflector",
+      "feg_stigmator"
+    ]
+  },
+  {
+    "path": "configs/instruments/gun/FEG_Mono.toml",
+    "sha256": "f1e050923ede9a568d46180d4d953d7fee144dcdf16be4de340bc799d4c76aa3",
+    "hosts": [
+      "feg_deflector",
+      "feg_stigmator"
+    ]
+  },
+  {
+    "path": "configs/instruments/gun/Thermionic.toml",
+    "sha256": "85ed5fa29ac7d719f107098a302dc100c849188c769f179363c45746648cc8a1",
+    "hosts": [
+      "thermionic_deflector",
+      "thermionic_stigmator"
+    ]
+  },
+  {
+    "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+    "sha256": "429c59c7afda91d97a9d86d374dc8099d4582f3c421c867629ea82c36944c3f8",
+    "hosts": [
+      "diffraction_stigmator"
+    ]
+  },
+  {
+    "path": "configs/subassemblies/projector_stack.toml",
+    "sha256": "930b3597f26ae09387b53bdf1d57885351fe277deb3be51c98576ac31e4d5b10",
+    "hosts": [
+      "diffraction_stigmator"
+    ]
+  }
+]

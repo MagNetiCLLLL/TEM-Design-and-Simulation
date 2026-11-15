@@ -168,6 +168,13 @@ def capture_unified_field_runtime(state, start_z_m=None, stop_z_m=None):
     drive_components={item.key:item for item in (*state.stigmators,*state.corrector_elements,*state.deflectors)}
     for row in native.contributions:
         potential = row.potential
+        from temsim.physics.transverse_coil_field import TransverseCoilPotential
+        if type(potential) is TransverseCoilPotential and potential.provenance.get('dynamic_drive_frozen',False):
+            from temsim.physics.dynamic_transverse_coil import capture_dynamic_transverse_coil
+            dynamic=capture_dynamic_transverse_coil(row,drive_components)
+            if dynamic is not None:
+                dynamic_coils.append(dynamic)
+                continue
         if type(potential) is AnalyticMagneticPotential:
             field=potential.field
             if getattr(field,"dynamic",False):

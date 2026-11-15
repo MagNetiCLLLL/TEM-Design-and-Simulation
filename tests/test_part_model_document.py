@@ -17,14 +17,363 @@ MODULE = "project_and_recording_system/EnergyFilter.toml"
 
 
 @pytest.fixture
-def document(tmp_path):
+def document(tmp_path, request):
     source = INSTRUMENT_CONFIG_ROOT / MODULE
     original = source.read_bytes()
     path = tmp_path / "model.toml"
     # A standalone copy must materialize the composed module and detach links.
     PartModelDocument(source).save_copy(path)
+    if "model_3d" in request.fixturenames:
+        # These legacy CAD tests deliberately replace the annular coil by a
+        # box. They do not describe a configured native round winding source.
+        _legacy_winding_inputs(path)
     yield PartModelDocument(path)
     assert source.read_bytes() == original
+
+
+def _legacy_winding_inputs(path):
+    import tomli_w
+    data = tomllib.loads(path.read_text(encoding="utf-8"))
+    parts = {part["key"]: part for part in data["parts"]}
+    coil = parts[KEY]
+    for field in ("winding_turn_count", "winding_interval_turn_counts", "winding_wire_diameter_mm", "winding_wire_cross_section_mm2"):
+        coil.pop(field, None)
+        coil.get("parameter_metadata", {}).pop(field, None)
+    owner = parts[coil["field_source_key"]]
+    owner.pop("ideal_coil_current_a_at_100_percent", None)
+    owner.get("parameter_metadata", {}).pop("ideal_coil_current_a_at_100_percent", None)
+    path.write_text(tomli_w.dumps(data), encoding="utf-8")
+
+
+def test_declared_winding_rejects_nonannular_replacement_without_mutating_draft(document):
+    if "winding_turn_count" not in document.part(KEY):
+        pytest.fail("The installed default winding must retain its declared physical turns")
+    before = deepcopy(document.document)
+    history = deepcopy(document._history)
+    with pytest.raises(ValueError, match="native annular"):
+        document.set_model_3d(KEY, {"schema_version": 1,
+            "base": {"kind": "box", "width_mm": 40., "height_mm": 30., "length_mm": 50.}})
+    assert document.document == before and document._history == history
+
+
+def test_turns_current_and_unknown_wire_size_form_one_atomic_reversible_draft(document):
+    original = deepcopy(document.document)
+    saved_bytes = document.path.read_bytes()
+    document.configure_winding(KEY, winding_turn_count=1172,
+        winding_interval_turn_counts=[1172], ideal_coil_current_a_at_100_percent=1575.233)
+    coil = document.part(KEY)
+    assert coil["winding_turn_count"] == 1172
+    assert coil["winding_interval_turn_counts"] == [1172]
+    assert "winding_wire_diameter_mm" not in coil
+    assert document.part("intermediate_lens")["ideal_coil_current_a_at_100_percent"] == 1575.233
+    assert document.path.read_bytes() == saved_bytes
+    document.undo()
+    assert document.document == original
+    document.redo()
+    document.save()
+    restored = PartModelDocument(document.path)
+    assert restored.part(KEY)["winding_interval_turn_counts"] == [1172]
+    assert "winding_wire_diameter_mm" not in restored.part(KEY)
+
+
+def test_single_interval_turn_count_follows_total_without_a_duplicate_input(document):
+    document.configure_winding(KEY, winding_turn_count=12, winding_wire_diameter_mm=.2,
+        winding_interval_turn_counts=[12], ideal_coil_current_a_at_100_percent=2.5)
+    before = deepcopy(document.document)
+    history = deepcopy(document._history)
+    document.configure_winding(KEY, winding_turn_count=13,
+        ideal_coil_current_a_at_100_percent=1000.)
+    assert document.part(KEY)["winding_interval_turn_counts"] == [13]
+    assert document.part(KEY)["winding_wire_diameter_mm"] == .2
+    document.undo()
+    assert document.document == before
+
+
+def test_split_physical_counts_are_not_redistributed_by_a_total_turn_edit():
+    document=PartModelDocument(INSTRUMENT_CONFIG_ROOT/'column/C3_ProbeCorrector.toml')
+    before=deepcopy(document.document)
+    with pytest.raises(ValueError,match='sum'):
+        document.configure_winding('objective_lens_excitation_coil',winding_turn_count=1173,
+            ideal_coil_current_a_at_100_percent=1575.2330285262728)
+    assert document.document==before
+
+
+def test_area_only_input_rebuilds_insulation_and_roundtrips_without_a_diameter_alias(document):
+    from temsim.coil_winding import WIRE_AREA_FIELD
+    from temsim.cad_round_winding import resolve_round_winding_geometry
+    original=deepcopy(document.document)
+    document.configure_winding(KEY,winding_turn_count=12,winding_wire_cross_section_mm2=.5,
+        ideal_coil_current_a_at_100_percent=2.5)
+    coil=document.part(KEY)
+    assert coil[WIRE_AREA_FIELD]==.5 and 'winding_wire_diameter_mm' not in coil
+    by_key={p['key']:p for p in document.document['parts']}
+    first=resolve_round_winding_geometry(coil,by_key)
+    document.configure_winding(KEY,winding_turn_count=20,winding_wire_cross_section_mm2=1.,
+        ideal_coil_current_a_at_100_percent=2.5)
+    by_key={p['key']:p for p in document.document['parts']}
+    second=resolve_round_winding_geometry(document.part(KEY),by_key)
+    assert second.field_envelope==first.field_envelope
+    assert second.layout.area.insulation_volume_mm3 < first.layout.area.insulation_volume_mm3
+    document.undo();document.undo()
+    assert document.document==original
+    document.redo();document.redo()
+    document.save()
+    restored=PartModelDocument(document.path)
+    assert restored.part(KEY)[WIRE_AREA_FIELD]==1.
+    assert 'winding_wire_diameter_mm' not in restored.part(KEY)
+
+
+def test_area_only_noop_preserves_exact_area_metadata_and_undo_history(document):
+    area=.12345678901234567
+    document.configure_winding(KEY,winding_turn_count=12,winding_wire_cross_section_mm2=area,
+        ideal_coil_current_a_at_100_percent=2.5)
+    document.save()
+    before=deepcopy(document.document);history=deepcopy(document._history)
+    document.configure_winding(KEY,winding_turn_count=12,winding_wire_cross_section_mm2=area,
+        ideal_coil_current_a_at_100_percent=2.5)
+    assert document.document==before and document._history==history
+    assert not document.dirty
+
+
+def test_turn_only_api_edit_retains_metal_area_and_current_without_double_entry(document):
+    document.configure_winding(KEY,winding_turn_count=12,winding_wire_cross_section_mm2=.25,
+        ideal_coil_current_a_at_100_percent=2.5)
+    document.configure_winding(KEY,winding_turn_count=20,
+        ideal_coil_current_a_at_100_percent=2.5)
+    coil=document.part(KEY)
+    assert coil['winding_wire_cross_section_mm2']==.25
+    assert coil['winding_interval_turn_counts']==[20]
+    assert document.part('intermediate_lens')['ideal_coil_current_a_at_100_percent']==2.5
+
+
+def test_same_area_dimension_value_preserves_source_alias_and_history(document):
+    document.configure_winding(KEY,winding_turn_count=12,winding_wire_cross_section_mm2=.25,
+        ideal_coil_current_a_at_100_percent=2.5)
+    document.save()
+    before=deepcopy(document.document);history=deepcopy(document._history)
+    document.set_dimension(('parts',KEY,'winding_wire_cross_section_mm2'),.25)
+    assert document.document==before and document._history==history
+
+
+def test_turn_dimension_edit_retains_envelope_area_and_current_and_updates_insulation(document):
+    from temsim.cad_round_winding import resolve_round_winding_geometry
+    document.configure_winding(KEY,winding_turn_count=12,winding_wire_cross_section_mm2=.25,
+        ideal_coil_current_a_at_100_percent=2.5)
+    before=deepcopy(document.document)
+    first=resolve_round_winding_geometry(document.part(KEY),{p['key']:p for p in document.document['parts']})
+    document.set_dimension(('parts',KEY,'winding_turn_count'),20.)
+    coil=document.part(KEY)
+    assert coil['winding_turn_count']==20 and type(coil['winding_turn_count']) is int
+    assert coil['winding_interval_turn_counts']==[20]
+    assert coil['winding_wire_cross_section_mm2']==.25
+    second=resolve_round_winding_geometry(coil,{p['key']:p for p in document.document['parts']})
+    assert second.field_envelope==first.field_envelope
+    assert second.layout.area.insulation_volume_mm3 < first.layout.area.insulation_volume_mm3
+    owner=document.part('intermediate_lens')
+    assert owner['ideal_coil_current_a_at_100_percent']==2.5
+    assert owner['parameter_metadata']['ideal_coil_current_a_at_100_percent'][
+        'calibration_status']=='invalidated_by_manual_turn_edit'
+    document.undo();assert document.document==before
+
+
+@pytest.mark.parametrize('turns',[0.,1.5,-1.])
+def test_invalid_turn_dimension_edit_is_atomic(document,turns):
+    before=deepcopy(document.document);history=deepcopy(document._history)
+    with pytest.raises(ValueError):
+        document.set_dimension(('parts',KEY,'winding_turn_count'),turns)
+    assert document.document==before and document._history==history
+
+
+def test_split_turn_dimension_edit_keeps_regional_counts_and_rejects_inconsistent_total():
+    document=PartModelDocument(INSTRUMENT_CONFIG_ROOT/'column/C3_ProbeCorrector.toml')
+    before=deepcopy(document.document);history=deepcopy(document._history)
+    with pytest.raises(ValueError,match='sum'):
+        document.set_dimension(('parts','objective_lens_excitation_coil','winding_turn_count'),1173.)
+    assert document.document==before and document._history==history
+
+
+def test_actual_area_edit_replaces_legacy_alias_and_old_size_source(document):
+    _saved_estimated_winding(document)
+    document.configure_winding(KEY,winding_turn_count=12,winding_wire_cross_section_mm2=.25,
+        ideal_coil_current_a_at_100_percent=2.5)
+    coil=document.part(KEY)
+    assert coil['winding_wire_cross_section_mm2']==.25
+    assert 'winding_wire_diameter_mm' not in coil
+    assert 'winding_wire_diameter_mm' not in coil['parameter_metadata']
+    assert coil['parameter_metadata']['winding_wire_cross_section_mm2']['source_kind']=='user_defined'
+    document.save()
+    assert PartModelDocument(document.path).part(KEY)==coil
+
+
+def test_area_can_be_cleared_from_a_batch_and_absence_survives_save(document):
+    document.configure_winding(KEY,winding_turn_count=12,winding_wire_cross_section_mm2=.25,
+        ideal_coil_current_a_at_100_percent=2.5)
+    document.configure_windings('intermediate_lens',{KEY:dict(winding_turn_count=12,
+        winding_wire_cross_section_mm2=None)},ideal_coil_current_a_at_100_percent=2.5)
+    document.save()
+    coil=PartModelDocument(document.path).part(KEY)
+    assert 'winding_wire_cross_section_mm2' not in coil
+    assert 'winding_wire_diameter_mm' not in coil
+
+
+def test_area_dimension_edit_rebuilds_cad_clears_alias_and_keeps_optical_controls(document):
+    import math
+    document.configure_winding(KEY,winding_turn_count=12,winding_wire_cross_section_mm2=.25,
+        ideal_coil_current_a_at_100_percent=2.5)
+    # A compatible old dual declaration must not block the canonical area edit.
+    document.part(KEY)['winding_wire_diameter_mm']=math.sqrt(1/math.pi)
+    document.part(KEY)['parameter_metadata']['winding_wire_diameter_mm']=dict(
+        source_kind='measured',source_note='Legacy diameter fixture.')
+    document.save()
+    before=deepcopy(document.document)
+    document.set_dimension(('parts',KEY,'winding_wire_cross_section_mm2'),.5)
+    coil=document.part(KEY)
+    assert coil['winding_wire_cross_section_mm2']==.5
+    assert 'winding_wire_diameter_mm' not in coil
+    assert 'winding_wire_diameter_mm' not in coil['parameter_metadata']
+    assert coil['parameter_metadata']['winding_wire_cross_section_mm2']['source_kind']=='user_defined'
+    assert document.part('intermediate_lens')==next(p for p in before['parts'] if p['key']=='intermediate_lens')
+    changed=deepcopy(document.document)
+    document.undo();assert document.document==before
+    document.redo();assert document.document==changed
+    document.save();assert PartModelDocument(document.path).document==changed
+
+
+@pytest.mark.parametrize('size',[
+    dict(winding_wire_cross_section_mm2=1000000.),
+    dict(winding_wire_cross_section_mm2=.1,winding_wire_diameter_mm=2.),
+])
+def test_unfit_area_and_conflicting_size_aliases_reject_atomically(document,size):
+    before=deepcopy(document.document);history=deepcopy(document._history)
+    with pytest.raises(ValueError):
+        document.configure_winding(KEY,winding_turn_count=12,
+            ideal_coil_current_a_at_100_percent=2.5,**size)
+    assert document.document==before and document._history==history
+
+
+def test_fixed_interval_counts_can_be_cleared_only_by_explicit_input(document):
+    document.configure_winding(KEY, winding_turn_count=12, winding_interval_turn_counts=[12],
+        ideal_coil_current_a_at_100_percent=2.5)
+    document.configure_winding(KEY, winding_turn_count=13, winding_interval_turn_counts=None,
+        ideal_coil_current_a_at_100_percent=2.5)
+    assert document.part(KEY)["winding_turn_count"] == 13
+    assert "winding_interval_turn_counts" not in document.part(KEY)
+    document.undo()
+    assert document.part(KEY)["winding_interval_turn_counts"] == [12]
+
+
+def _saved_estimated_winding(document):
+    document.configure_winding(KEY, winding_turn_count=12, winding_wire_diameter_mm=.2,
+        winding_interval_turn_counts=[12], ideal_coil_current_a_at_100_percent=2.5)
+    coil = document.part(KEY)
+    coil["parameter_metadata"] = {
+        "winding_turn_count": dict(source_kind="estimated", source_note="Area-ratio estimate."),
+        "winding_interval_turn_counts": dict(source_kind="estimated", source_note="Saved fixed allocation."),
+        "winding_wire_diameter_mm": dict(source_kind="measured", source_note="Fixture conductor measurement."),
+    }
+    document.part("intermediate_lens")["parameter_metadata"] = {
+        "ideal_coil_current_a_at_100_percent": dict(source_kind="estimated", source_note="Fixture field calibration."),
+        "air_core_reference_ampere_turns": dict(source_kind="estimated", source_note="Unrelated retained reference."),
+    }
+    document.save()
+
+
+def test_winding_noop_preserves_exact_inputs_provenance_and_history(document):
+    _saved_estimated_winding(document)
+    before = deepcopy(document.document)
+    history = deepcopy(document._history)
+    document.configure_winding(KEY, winding_turn_count=12, winding_wire_diameter_mm=.2,
+        winding_interval_turn_counts=[12], ideal_coil_current_a_at_100_percent=2.5)
+    assert document.document == before
+    assert document._history == history
+    assert not document.dirty
+
+
+def test_manual_current_updates_only_its_source_and_remains_atomic_after_save(document):
+    _saved_estimated_winding(document)
+    before = deepcopy(document.document)
+    document.configure_windings("intermediate_lens", {KEY: dict(winding_turn_count=12)},
+        ideal_coil_current_a_at_100_percent=1575.2330285262728)
+    source = document.part("intermediate_lens")["parameter_metadata"]
+    assert source["ideal_coil_current_a_at_100_percent"]["source_kind"] == "user_defined"
+    assert "calibrations are not asserted" in source["ideal_coil_current_a_at_100_percent"]["source_note"]
+    previous_owner = next(p for p in before["parts"] if p["key"] == "intermediate_lens")
+    assert source["air_core_reference_ampere_turns"] == previous_owner["parameter_metadata"]["air_core_reference_ampere_turns"]
+    assert document.part(KEY) == next(p for p in before["parts"] if p["key"] == KEY)
+    changed = deepcopy(document.document)
+    document.undo()
+    assert document.document == before
+    document.redo()
+    assert document.document == changed
+    document.save()
+    restored = PartModelDocument(document.path)
+    assert restored.document == changed
+    assert restored.part("intermediate_lens")["ideal_coil_current_a_at_100_percent"] == 1575.2330285262728
+
+
+def test_manual_turn_change_marks_affected_sources_without_recalibrating_current(document):
+    _saved_estimated_winding(document)
+    previous_owner = deepcopy(document.part("intermediate_lens"))
+    previous_wire = deepcopy(document.part(KEY)["parameter_metadata"]["winding_wire_diameter_mm"])
+    document.configure_winding(KEY, winding_turn_count=13, winding_wire_diameter_mm=.2,
+        winding_interval_turn_counts=[13], ideal_coil_current_a_at_100_percent=2.5)
+    source = document.part(KEY)["parameter_metadata"]
+    assert all(source[field]["source_kind"] == "user_defined" for field in
+               ("winding_turn_count", "winding_interval_turn_counts"))
+    assert "calibrations are not asserted" in source["winding_turn_count"]["source_note"]
+    assert source["winding_wire_diameter_mm"] == previous_wire
+    owner = document.part("intermediate_lens")
+    current_field = "ideal_coil_current_a_at_100_percent"
+    assert owner[current_field] == previous_owner[current_field]
+    original_source = previous_owner["parameter_metadata"][current_field]
+    current_source = owner["parameter_metadata"][current_field]
+    assert current_source["source_kind"] == original_source["source_kind"]
+    assert original_source["source_note"] in current_source["source_note"]
+    assert "no field match is asserted" in current_source["source_note"]
+    assert current_source["calibration_status"] == "invalidated_by_manual_turn_edit"
+    assert owner["parameter_metadata"]["air_core_reference_ampere_turns"] == previous_owner["parameter_metadata"]["air_core_reference_ampere_turns"]
+    document.save()
+    assert PartModelDocument(document.path).part(KEY)["parameter_metadata"] == source
+
+
+def test_cleared_optional_winding_inputs_and_their_sources_survive_save_reload(document):
+    _saved_estimated_winding(document)
+    document.configure_winding(KEY, winding_turn_count=13, winding_wire_diameter_mm=None,
+        winding_interval_turn_counts=None, ideal_coil_current_a_at_100_percent=2.5)
+    document.save()
+    restored = PartModelDocument(document.path).part(KEY)
+    for field in ("winding_wire_diameter_mm", "winding_interval_turn_counts"):
+        assert field not in restored
+        assert field not in restored["parameter_metadata"]
+    assert restored["winding_turn_count"] == 13
+
+
+def test_invalid_batch_preserves_every_value_source_and_undo_state(document):
+    _saved_estimated_winding(document)
+    before = deepcopy(document.document)
+    history = deepcopy(document._history)
+    with pytest.raises(ValueError, match="must belong"):
+        document.configure_windings("intermediate_lens", {
+            KEY: dict(winding_turn_count=13, winding_interval_turn_counts=[13]),
+            "diffraction_lens_excitation_coil": dict(winding_turn_count=14),
+        }, ideal_coil_current_a_at_100_percent=1000.)
+    assert document.document == before
+    assert document._history == history
+
+
+def test_manual_input_source_can_replace_expanded_metadata_tables(document):
+    import tomli_w
+    _saved_estimated_winding(document)
+    document.path.write_text(tomli_w.dumps(document.document), encoding="utf-8")
+    assert "[parts.parameter_metadata." in document.path.read_text(encoding="utf-8")
+    document.reload()
+    document.configure_winding(KEY, winding_turn_count=12, winding_wire_diameter_mm=.2,
+        winding_interval_turn_counts=[12], ideal_coil_current_a_at_100_percent=3.)
+    document.save()
+    restored = PartModelDocument(document.path)
+    assert restored.part("intermediate_lens")["parameter_metadata"][
+        "ideal_coil_current_a_at_100_percent"]["source_kind"] == "user_defined"
+    assert restored.part(KEY)["parameter_metadata"]["winding_turn_count"]["source_kind"] == "estimated"
 
 
 def test_dimensions_are_staged_across_parts_then_saved_with_comments_retained(document):
@@ -522,6 +871,7 @@ def test_model_configuration_uses_real_manifest_editor_save_and_validation(tmp_p
     source_bytes = (INSTRUMENT_CONFIG_ROOT / MODULE).read_bytes()
     from temsim.shared_tip import copy_catalog_tree
     copy_catalog_tree(INSTRUMENT_CONFIG_ROOT, root)
+    _legacy_winding_inputs(root.parent / "subassemblies/projector_stack.toml")
     editor, target = ManifestEditor(root), ManifestTarget(MODULE, KEY)
     configuration = layout_configuration_from_state(default_state())
     draft = PartModelDocument(root / MODULE)

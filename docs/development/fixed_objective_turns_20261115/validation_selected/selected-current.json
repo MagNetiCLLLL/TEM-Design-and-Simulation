@@ -1,0 +1,62 @@
+{
+  "status": "selected_current_saved_and_field_verified",
+  "scope": "Objective contribution only; no source, particle, focus or coherent calculation",
+  "matching_condition": "original_specimen_upper_surface_bz",
+  "fixed_interval_turns": [
+    586,
+    586
+  ],
+  "total_series_turns": 1172,
+  "upper_turn_source": "Adopted photographic estimate586; approximate image count580-590; user statesonecircleoneturn",
+  "lower_turn_source": "User-authorized symmetric586 assumption, not independently measured",
+  "source_photo_sha256": "436e220ede550dad56406054f9e12a73ee0600bae0e0c5c2982edae511102cd1",
+  "current_at_100_percent_a": 1575.2330285262728,
+  "excitation_percent": 68.97810600833917,
+  "current_a": 1086.565908295224,
+  "interval_ampere_turns": [
+    636727.6222610013,
+    636727.6222610013
+  ],
+  "specimen_upper_surface_z_mm": 1599.1999975,
+  "target_original_gaussian_bz_t": 1.113835009791199,
+  "selected_ideal_bz_t": 1.1138350097911989,
+  "relative_matching_error": -1.9935143263871376e-16,
+  "matching_check_rtol": 2e-14,
+  "matching_check_atol_t": 0.0,
+  "quadrature_order": 12,
+  "ideal_peaks": [
+    {
+      "z_mm": 1470.4466173765995,
+      "bz_t": 4.657584457374018
+    },
+    {
+      "z_mm": 1727.953374152611,
+      "bz_t": 4.657584457374002
+    }
+  ],
+  "wire_diameter_mm": null,
+  "pole_piece_magnetism": false,
+  "thermal_or_current_rating_enforced": false,
+  "startup_field_model": "gaussian",
+  "validation_field_model": "copper_coil",
+  "other_ideal_sources_unchanged": [
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "adapter_lens",
+    "probe_tl22_lens",
+    "probe_tl21_lens",
+    "probe_tl12_lens",
+    "mini_condenser",
+    "diffraction_lens",
+    "intermediate_lens",
+    "projector_lens_1",
+    "projector_lens_2"
+  ],
+  "full_optical_source_numerical_state_unchanged": true,
+  "cache_identity_changed": true,
+  "previous_selected_coefficients_exactly_preserved": true,
+  "potential_roundtrip_exact": true,
+  "config_sha256": "955338238e0a625c91a7c571d09c92fa796b66d0d8787720a3b80735de46f372",
+  "potential_digest": "de55b717ae504c272a09b9ae9302f660671d7e620e4c45f98b5b82b703fb82c1"
+}

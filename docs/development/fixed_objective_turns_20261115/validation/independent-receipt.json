@@ -1,0 +1,121 @@
+{
+  "scope": "Independent ideal-coil component arithmetic; no particles, waves, material solve or persisted input edit",
+  "photo_turn_count": {
+    "region": "upper only",
+    "value": 586,
+    "estimated_range": [
+      580,
+      590
+    ],
+    "one_circle_is_one_turn": true
+  },
+  "original_optical_percent": 68.97810600833917,
+  "original_polarity": 1,
+  "upper_gaussian_peak_t": 0.5594999611166815,
+  "upper_gaussian_peak_z_mm": 1597.8500000013255,
+  "upper_ideal_at_1a_peak_t": 0.00423127027501825,
+  "upper_ideal_peak_z_mm": 1469.0000001357112,
+  "whole_gaussian_peak_t": 1.1138350097912164,
+  "whole_gaussian_peak_z_mm": 1599.2000002867965,
+  "specimen_upper_surface_z_mm": 1599.1999975,
+  "lower_original_ni_a_turn": 1034.6715901250875,
+  "upper_original_ni_a_turn": 1034.6715901250875,
+  "retained_lower_ideal_bz_at_specimen_t": 0.0009049814467229853,
+  "lower_turn_count": null,
+  "wire_diameter_status": "Not inferred from unscaled photo",
+  "cases": [
+    {
+      "name": "upper_component_global_peak",
+      "target_field_t": 0.5594999611166815,
+      "upper_field_per_actual_ampere_t": 0.00423127027501825,
+      "z_mm": null,
+      "upper_turns": 586,
+      "current_a": 132.22978556109095,
+      "i100_a": 191.69819702661147,
+      "current_range_for_580_to_590_turns_a": [
+        131.33331243864288,
+        133.59767989448156
+      ],
+      "definition": "Match upper component peak magnitudes at their separate peak positions; does not match location or sample field"
+    },
+    {
+      "name": "upper_component_at_original_upper_field_centre",
+      "target_field_t": 0.5594999611166815,
+      "upper_field_per_actual_ampere_t": 0.0005300094537399095,
+      "z_mm": 1597.8500000000001,
+      "upper_turns": 586,
+      "current_a": 1055.6414742580118,
+      "i100_a": 1530.4007827213886,
+      "current_range_for_580_to_590_turns_a": [
+        1048.48458290711,
+        1066.5619033020603
+      ],
+      "definition": "Match only upper Gaussian contribution at the same original upper-field centre plane"
+    },
+    {
+      "name": "upper_component_at_specimen_upper_surface",
+      "target_field_t": 0.5569175144354028,
+      "upper_field_per_actual_ampere_t": 0.0005125483277614753,
+      "z_mm": 1599.1999975,
+      "upper_turns": 586,
+      "current_a": 1086.565859784788,
+      "i100_a": 1575.232958198978,
+      "current_range_for_580_to_590_turns_a": [
+        1079.1993115828573,
+        1097.8061962653203
+      ],
+      "definition": "Match only upper Gaussian contribution at the same specimen entrance; lower winding remains separately unspecified"
+    },
+    {
+      "name": "whole_objective_at_specimen_surface_lower_legacy_NI_held",
+      "target_field_t": 1.112930028344476,
+      "upper_field_per_actual_ampere_t": 0.0005125483277614753,
+      "z_mm": 1599.1999975,
+      "upper_turns": 586,
+      "current_a": 2171.366031385045,
+      "i100_a": 3147.9061357853693,
+      "current_range_for_580_to_590_turns_a": [
+        2156.6449057485365,
+        2193.8284386062696
+      ],
+      "definition": "Match whole Objective field at specimen entrance by upper current alone, holding original lower ideal NI, not lower turn count"
+    }
+  ],
+  "recommendation": "User now explicitly authorizes upper586 plus lower586. Store combined total1172 if using the existing two-region winding record, with per-region586 provenance. Wire diameter remains unknown; do not fabricate it.",
+  "later_user_authorized_symmetric_scenario": {
+    "upper_turns": 586,
+    "lower_turns": 586,
+    "total_series_turns": 1172,
+    "provenance": "Upper count from user photograph estimate; lower count explicitly authorized by user as a symmetry assumption",
+    "current_definition": "Same actual conductor current through both series winding regions; each region has586I ampere-turns",
+    "global_peak_matching": {
+      "target_t": 1.1138350097912164,
+      "current_a": 259.84609837588727,
+      "i100_a": 376.7080794367896,
+      "ideal_peak_z_mm": 1727.9533824837815,
+      "field_at_old_gaussian_peak_plane_t": 0.266367349940886,
+      "field_at_specimen_upper_surface_t": 0.2663673499408866,
+      "current_interval_if_both_counts_580_to590_a": [
+        258.0844299123219,
+        262.53416146253437
+      ]
+    },
+    "same_old_gaussian_peak_plane_matching": {
+      "z_mm": 1599.2000002867965,
+      "target_t": 1.1138350097912164,
+      "current_a": 1086.5659082952436,
+      "i100_a": 1575.2330285263013,
+      "resulting_global_peak_t": 4.657584457374103
+    },
+    "same_specimen_upper_surface_matching": {
+      "z_mm": 1599.1999975,
+      "target_t": 1.113835009791199,
+      "current_a": 1086.565908295224,
+      "i100_a": 1575.2330285262728,
+      "resulting_global_peak_t": 4.6575844573740195
+    },
+    "source_shape_unchanged": true,
+    "wire_diameter_defined": false,
+    "note": "Scalar current matching does not match both peak amplitude and its axial position or restore the original focused working point"
+  }
+}

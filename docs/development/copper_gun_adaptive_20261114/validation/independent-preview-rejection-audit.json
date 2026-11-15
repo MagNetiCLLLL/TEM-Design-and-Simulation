@@ -1,0 +1,1918 @@
+{
+  "status": "INDEPENDENT_NEW_PREVIEW_REJECTION_COMPARISON_PASSED",
+  "created_utc": "2026-11-14T20:42:55.603058+00:00",
+  "audit_script_sha256": "e8ab55d845da06a0df00696a34c34c889da8cc85c0e4d01de0ac6b9b71bd3322",
+  "scope": "Existing completed Preview observers and saved source arrays only. No source emission, field query/solve, transport, High interaction or frozen source/runner edits.",
+  "original_positive_source_count": 1024,
+  "configured_source_fwhm_ev": 0.3,
+  "exact_original_source_comparison": [
+    {
+      "field": "ray_id",
+      "exact_dtype_shape_bytes": true,
+      "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+    },
+    {
+      "field": "weight",
+      "exact_dtype_shape_bytes": true,
+      "sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705"
+    },
+    {
+      "field": "launch_position_m",
+      "exact_dtype_shape_bytes": true,
+      "sha256": "8dabc2e6139998ca4f33c75956f358ad052ef6313c6c9862e09e04acf33ac235"
+    },
+    {
+      "field": "launch_momentum_kg_m_per_s",
+      "exact_dtype_shape_bytes": true,
+      "sha256": "fce799a9a10b54bf00565a26dbe38835640249ac3b056a1cac1706f659d9ce2a"
+    },
+    {
+      "field": "launch_energy_ev",
+      "exact_dtype_shape_bytes": true,
+      "sha256": "d59af7f30ab42028caf01b9a7cf4bc36de0806db955f4165e0bcbfcc9f445725"
+    }
+  ],
+  "old": {
+    "directory": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview",
+    "implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+    "evidence_sha256": {
+      "observer.json": "13f98516384499e9d75f7a8d5ca31399308013b024c301adc0374497ce390739",
+      "observer-arrays.npz": "7a09360c0815590ce20f93e92508a45996eb420978b1b39315782a5677cef7d5",
+      "summary.json": "78bd7c8c75a7b634816a645c4249a5b5509272a6b25b44553dba0efcc6a3a3b9",
+      "execution-receipt.json": "9fc0e59a792df990179251eb3d348c48e2e4ba6f91cd0a4af601864cb9217ba2",
+      "input.json": "7acfb1b0efa506a0eff93b666984cc1e738aec6869ab3b185212bf1ef48884d0"
+    },
+    "total": {
+      "accepted_steps": 3502,
+      "attempts": 9444,
+      "rejected_trials": 5942,
+      "attempt_seconds": 2961.117100000014,
+      "rejected_attempt_seconds": 1998.5853613000309,
+      "failures_nonexclusive": {
+        "total_momentum": 1071,
+        "xyz_position": 3923,
+        "transverse_momentum": 5775,
+        "xy_position": 1874
+      },
+      "dominant_failure_exclusive": {
+        "transverse_momentum": 5663,
+        "xy_position": 107,
+        "xyz_position": 172
+      },
+      "retry_depth_histogram": {
+        "0": 2399,
+        "1": 116,
+        "2": 84,
+        "3": 53,
+        "4": 60,
+        "5": 109,
+        "6": 222,
+        "7": 290,
+        "8": 169
+      },
+      "accepted_dt_s": {
+        "minimum": 1.9607432576914946e-15,
+        "median": 8.754935089207717e-13,
+        "p90": 1.5285153527977245e-12,
+        "p99": 4.7423220450411305e-12,
+        "maximum": 5.361923299343984e-12
+      }
+    },
+    "counts": {
+      "traces": 1,
+      "surface_step_calls": 3502,
+      "attempts": 9444,
+      "cached_full_uses": 5942,
+      "static_step_calls": 22390,
+      "static_step_full": 3502,
+      "static_step_half": 9444,
+      "static_step_fine": 9444,
+      "accepted_steps": 3502,
+      "gate_rejections": 5942,
+      "failed_gate_transverse_momentum": 5775,
+      "failed_gate_xyz_position": 3923,
+      "failed_gate_xy_position": 1874,
+      "failed_gate_total_momentum": 1071
+    },
+    "records_dropped": 0,
+    "summary_worker_callback_seconds": 3210.5337728999984,
+    "execution_receipt_seconds": 3213.8323622999997,
+    "observer_elapsed_seconds": 3213.005567100001,
+    "static_step_seconds": {
+      "full": 475.75114380003106,
+      "half": 1255.3462999000385,
+      "fine": 1226.9678733999535
+    },
+    "initial_first_full_call_seconds": 5.4563372999982676,
+    "bands": [
+      {
+        "start_z_mm": 0.0,
+        "stop_z_mm": 0.5,
+        "accepted_steps": 321,
+        "attempts": 581,
+        "rejected_trials": 260,
+        "attempt_seconds": 125.12842610001462,
+        "rejected_attempt_seconds": 59.985768300020936,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 86,
+          "transverse_momentum": 260,
+          "xy_position": 14
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 260
+        },
+        "retry_depth_histogram": {
+          "0": 224,
+          "1": 16,
+          "2": 27,
+          "3": 26,
+          "4": 28
+        },
+        "accepted_dt_s": {
+          "minimum": 1.9607432576914946e-15,
+          "median": 5.412048026906864e-14,
+          "p90": 2.718221237751294e-13,
+          "p99": 4.4743700093035786e-13,
+          "maximum": 4.909302518080116e-13
+        }
+      },
+      {
+        "start_z_mm": 0.5,
+        "stop_z_mm": 1.1,
+        "accepted_steps": 728,
+        "attempts": 5603,
+        "rejected_trials": 4875,
+        "attempt_seconds": 1853.8352669000433,
+        "rejected_attempt_seconds": 1669.8044241000334,
+        "failures_nonexclusive": {
+          "total_momentum": 1071,
+          "xyz_position": 3375,
+          "transverse_momentum": 4875,
+          "xy_position": 1710
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 4789,
+          "xy_position": 86
+        },
+        "retry_depth_histogram": {
+          "3": 1,
+          "4": 18,
+          "5": 82,
+          "6": 168,
+          "7": 290,
+          "8": 169
+        },
+        "accepted_dt_s": {
+          "minimum": 1.0963981461759607e-14,
+          "median": 1.7848458775129258e-14,
+          "p90": 4.2181458605807505e-14,
+          "p99": 8.41070606651983e-14,
+          "maximum": 1.6792089226491458e-13
+        }
+      },
+      {
+        "start_z_mm": 1.1,
+        "stop_z_mm": 14.0,
+        "accepted_steps": 133,
+        "attempts": 338,
+        "rejected_trials": 205,
+        "attempt_seconds": 108.54054470001938,
+        "rejected_attempt_seconds": 72.64593059999243,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 60,
+          "transverse_momentum": 205,
+          "xy_position": 66
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 205
+        },
+        "retry_depth_histogram": {
+          "0": 31,
+          "1": 53,
+          "2": 26,
+          "3": 4,
+          "4": 7,
+          "5": 12
+        },
+        "accepted_dt_s": {
+          "minimum": 1.677365481984817e-13,
+          "median": 2.632154928868765e-12,
+          "p90": 5.026157521509459e-12,
+          "p99": 5.361038078344209e-12,
+          "maximum": 5.361923299343984e-12
+        }
+      },
+      {
+        "start_z_mm": 14.0,
+        "stop_z_mm": 25.0,
+        "accepted_steps": 180,
+        "attempts": 748,
+        "rejected_trials": 568,
+        "attempt_seconds": 230.16371979997712,
+        "rejected_attempt_seconds": 184.1274313999911,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 398,
+          "transverse_momentum": 401,
+          "xy_position": 84
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 375,
+          "xyz_position": 172,
+          "xy_position": 21
+        },
+        "retry_depth_histogram": {
+          "0": 30,
+          "1": 29,
+          "2": 23,
+          "3": 22,
+          "4": 7,
+          "5": 15,
+          "6": 54
+        },
+        "accepted_dt_s": {
+          "minimum": 6.292990051915982e-14,
+          "median": 5.150230419738748e-13,
+          "p90": 4.030970639254067e-12,
+          "p99": 4.763321716292718e-12,
+          "maximum": 4.782070287687122e-12
+        }
+      },
+      {
+        "start_z_mm": 25.0,
+        "stop_z_mm": 450.1,
+        "accepted_steps": 2140,
+        "attempts": 2174,
+        "rejected_trials": 34,
+        "attempt_seconds": 643.4491424999596,
+        "rejected_attempt_seconds": 12.021806899992953,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 4,
+          "transverse_momentum": 34,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 34
+        },
+        "retry_depth_histogram": {
+          "0": 2114,
+          "1": 18,
+          "2": 8
+        },
+        "accepted_dt_s": {
+          "minimum": 5.16163376125267e-13,
+          "median": 9.630719668219106e-13,
+          "p90": 1.5156068759111173e-12,
+          "p99": 2.6066752260023e-12,
+          "maximum": 3.3330337511991378e-12
+        }
+      }
+    ],
+    "accepted_gate_maximum_ratios": {
+      "total_momentum": {
+        "minimum": 5.721362037517359e-10,
+        "median": 2.7710272407619855e-05,
+        "p90": 0.001259782794633358,
+        "p99": 0.02898351802163927,
+        "maximum": 0.11905178431327676
+      },
+      "xyz_position": {
+        "minimum": 5.5970952436947704e-11,
+        "median": 0.004587059414009271,
+        "p90": 0.18879906081149092,
+        "p99": 0.6119047813794463,
+        "maximum": 0.9681705625643812
+      },
+      "transverse_momentum": {
+        "minimum": 1.6364934075187215e-09,
+        "median": 0.0018164272725686658,
+        "p90": 0.7275460398810212,
+        "p99": 0.9666074742329512,
+        "maximum": 0.9999423466802473
+      },
+      "xy_position": {
+        "minimum": 5.351891923549343e-11,
+        "median": 0.0004956729339050908,
+        "p90": 0.00971610338669359,
+        "p99": 0.2141690345473617,
+        "maximum": 0.947388592800252
+      }
+    },
+    "rejected_gate_maximum_ratios": {
+      "total_momentum": {
+        "minimum": 0.0003277958447638132,
+        "median": 0.05973557241388658,
+        "p90": 2.427505941713819,
+        "p99": 9.22750825244508,
+        "maximum": 10.429172236092338
+      },
+      "xyz_position": {
+        "minimum": 0.1654104411293139,
+        "median": 1.9520327852822392,
+        "p90": 31.212124850438787,
+        "p99": 111.29927548827378,
+        "maximum": 127.395100291965
+      },
+      "transverse_momentum": {
+        "minimum": 0.010849340384406419,
+        "median": 7.833549331388463,
+        "p90": 80.16756465231963,
+        "p99": 334.62263305829043,
+        "maximum": 441.22267005009877
+      },
+      "xy_position": {
+        "minimum": 0.0003423911122845031,
+        "median": 0.14724920754750714,
+        "p90": 13.594658229661137,
+        "p99": 306.2264830235901,
+        "maximum": 413.25991357564
+      }
+    },
+    "following_initial_over_previous_accepted": {
+      "minimum": 0.9868509952381035,
+      "median": 0.9999843950693059,
+      "p90": 128.0249999999746,
+      "p99": 256.0250000005829,
+      "maximum": 290.3033827061016
+    },
+    "following_initial_over_previous_retried_accepted": {
+      "minimum": 1.9888630430823084,
+      "median": 64.02499999998486,
+      "p90": 256.0250000002024,
+      "p99": 256.0250000007812,
+      "maximum": 290.3033827061016
+    },
+    "source_surviving_at_gun_exit": 1024,
+    "status": "COMPLETE_RAY_WORKFLOW"
+  },
+  "new": {
+    "directory": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\adaptive-preview-high-1024\\preview",
+    "implementation": "6169010971ca2aeb082c8f0936b043f2ad4eb886cdfd07991c69bdda32a7ffca",
+    "evidence_sha256": {
+      "observer.json": "2f8c71c87c5206161531829c7e455fae06689de158a3dc72b867f1b0d226f14b",
+      "observer-arrays.npz": "33ab3f9ce9f613fb35cdcd37f0ebe8401559ecac58845004c6ac44e63c220829",
+      "summary.json": "2a120906271da13d47b606f5f78592dd3efa861ae0d6a93a948b4f17e47e608d",
+      "execution-receipt.json": "cec5a3697cf428c148edf0abe5091c23dd49425cd7f51f75665b0f84fd07a88a",
+      "input.json": "1dc69ddc3d2dccf145769874045885d66bfee1c9275e103f806ae8fdad3f40b3"
+    },
+    "total": {
+      "accepted_steps": 3801,
+      "attempts": 3984,
+      "rejected_trials": 183,
+      "attempt_seconds": 1255.556784799719,
+      "rejected_attempt_seconds": 62.29215819999445,
+      "failures_nonexclusive": {
+        "total_momentum": 0,
+        "xyz_position": 44,
+        "transverse_momentum": 177,
+        "xy_position": 1
+      },
+      "dominant_failure_exclusive": {
+        "transverse_momentum": 175,
+        "xyz_position": 8
+      },
+      "retry_depth_histogram": {
+        "0": 3667,
+        "1": 102,
+        "2": 18,
+        "3": 11,
+        "4": 3
+      },
+      "accepted_dt_s": {
+        "minimum": 1.9607432576914946e-15,
+        "median": 8.688303101879886e-13,
+        "p90": 1.4515571790187226e-12,
+        "p99": 2.609253771544485e-12,
+        "maximum": 5.360125031852215e-12
+      }
+    },
+    "counts": {
+      "traces": 1,
+      "surface_step_calls": 3801,
+      "attempts": 3984,
+      "cached_full_uses": 183,
+      "static_step_calls": 11769,
+      "static_step_full": 3801,
+      "static_step_half": 3984,
+      "static_step_fine": 3984,
+      "accepted_steps": 3801,
+      "gate_rejections": 183,
+      "failed_gate_transverse_momentum": 177,
+      "failed_gate_xyz_position": 44,
+      "failed_gate_xy_position": 1
+    },
+    "records_dropped": 0,
+    "summary_worker_callback_seconds": 1512.9215753000026,
+    "execution_receipt_seconds": 1526.4327212999997,
+    "observer_elapsed_seconds": 1526.0545802999986,
+    "static_step_seconds": {
+      "full": 432.3215102000795,
+      "half": 410.94954059994416,
+      "fine": 410.6517490001388
+    },
+    "initial_first_full_call_seconds": 18.656039699999383,
+    "bands": [
+      {
+        "start_z_mm": 0.0,
+        "stop_z_mm": 0.5,
+        "accepted_steps": 325,
+        "attempts": 337,
+        "rejected_trials": 12,
+        "attempt_seconds": 125.30442249996122,
+        "rejected_attempt_seconds": 4.727161000009801,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 12,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 12
+        },
+        "retry_depth_histogram": {
+          "0": 313,
+          "1": 12
+        },
+        "accepted_dt_s": {
+          "minimum": 1.9607432576914946e-15,
+          "median": 6.028901849920534e-14,
+          "p90": 2.644615149371681e-13,
+          "p99": 4.3398081633472193e-13,
+          "maximum": 4.606768681052557e-13
+        }
+      },
+      {
+        "start_z_mm": 0.5,
+        "stop_z_mm": 1.1,
+        "accepted_steps": 676,
+        "attempts": 695,
+        "rejected_trials": 19,
+        "attempt_seconds": 274.0776295999967,
+        "rejected_attempt_seconds": 7.618056700001034,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 19,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 19
+        },
+        "retry_depth_histogram": {
+          "0": 657,
+          "1": 19
+        },
+        "accepted_dt_s": {
+          "minimum": 9.488933912886693e-15,
+          "median": 1.9071823926020814e-14,
+          "p90": 4.275330043232741e-14,
+          "p99": 9.465640913906987e-14,
+          "maximum": 1.1771824364301085e-13
+        }
+      },
+      {
+        "start_z_mm": 1.1,
+        "stop_z_mm": 14.0,
+        "accepted_steps": 218,
+        "attempts": 256,
+        "rejected_trials": 38,
+        "attempt_seconds": 83.42911879995154,
+        "rejected_attempt_seconds": 13.591370999984065,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 38,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 38
+        },
+        "retry_depth_histogram": {
+          "0": 182,
+          "1": 34,
+          "2": 2
+        },
+        "accepted_dt_s": {
+          "minimum": 1.2133345084380306e-13,
+          "median": 1.4100887250365833e-12,
+          "p90": 2.6168030430790663e-12,
+          "p99": 4.93573191880288e-12,
+          "maximum": 5.360125031852215e-12
+        }
+      },
+      {
+        "start_z_mm": 14.0,
+        "stop_z_mm": 25.0,
+        "accepted_steps": 416,
+        "attempts": 514,
+        "rejected_trials": 98,
+        "attempt_seconds": 144.55292929993448,
+        "rejected_attempt_seconds": 30.58306839999932,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 44,
+          "transverse_momentum": 92,
+          "xy_position": 1
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 90,
+          "xyz_position": 8
+        },
+        "retry_depth_histogram": {
+          "0": 363,
+          "1": 25,
+          "2": 14,
+          "3": 11,
+          "4": 3
+        },
+        "accepted_dt_s": {
+          "minimum": 5.518962774209498e-14,
+          "median": 3.683479410284136e-13,
+          "p90": 1.1898531000985722e-12,
+          "p99": 3.3228668948182415e-12,
+          "maximum": 4.708623532685514e-12
+        }
+      },
+      {
+        "start_z_mm": 25.0,
+        "stop_z_mm": 450.1,
+        "accepted_steps": 2166,
+        "attempts": 2182,
+        "rejected_trials": 16,
+        "attempt_seconds": 628.1926845998751,
+        "rejected_attempt_seconds": 5.772501100000227,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 16,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 16
+        },
+        "retry_depth_histogram": {
+          "0": 2152,
+          "1": 12,
+          "2": 2
+        },
+        "accepted_dt_s": {
+          "minimum": 3.9074784755217965e-13,
+          "median": 9.62375943112094e-13,
+          "p90": 1.4948101255354632e-12,
+          "p99": 2.336336975820661e-12,
+          "maximum": 2.8430647766230666e-12
+        }
+      }
+    ],
+    "accepted_gate_maximum_ratios": {
+      "total_momentum": {
+        "minimum": 5.721362037517359e-10,
+        "median": 1.5426645405972614e-05,
+        "p90": 0.001091497904603265,
+        "p99": 0.017876887118769568,
+        "maximum": 0.05381287967860124
+      },
+      "xyz_position": {
+        "minimum": 5.5970952436947704e-11,
+        "median": 0.0025777623635077672,
+        "p90": 0.18345203963064935,
+        "p99": 0.3595449937664431,
+        "maximum": 0.9853625661320873
+      },
+      "transverse_momentum": {
+        "minimum": 1.6364934075187215e-09,
+        "median": 0.0010820341118052638,
+        "p90": 0.7289492723703335,
+        "p99": 0.9397322101399852,
+        "maximum": 0.9975776344330164
+      },
+      "xy_position": {
+        "minimum": 5.351891923549343e-11,
+        "median": 0.0005519524483305654,
+        "p90": 0.008967951777969106,
+        "p99": 0.0650735962714137,
+        "maximum": 0.47846207828454806
+      }
+    },
+    "rejected_gate_maximum_ratios": {
+      "total_momentum": {
+        "minimum": 0.0004135608188257403,
+        "median": 0.004984656191732921,
+        "p90": 0.05165069066789509,
+        "p99": 0.10081197939361865,
+        "maximum": 0.14707588155597545
+      },
+      "xyz_position": {
+        "minimum": 0.1522889235497229,
+        "median": 0.39637346209781726,
+        "p90": 1.5791659004635428,
+        "p99": 3.0530346788750102,
+        "maximum": 3.6039974617031123
+      },
+      "transverse_momentum": {
+        "minimum": 0.09650353307803533,
+        "median": 1.5142513575208085,
+        "p90": 6.049436167060059,
+        "p99": 16.642389588858613,
+        "maximum": 25.817681580090102
+      },
+      "xy_position": {
+        "minimum": 0.00035539879317349665,
+        "median": 0.024857101580876086,
+        "p90": 0.12878092199823093,
+        "p99": 0.6221019631277183,
+        "maximum": 1.2379261508939483
+      }
+    },
+    "following_initial_over_previous_accepted": {
+      "minimum": 0.9916574121767409,
+      "median": 1.0,
+      "p90": 1.25,
+      "p99": 1.25,
+      "maximum": 1.2500000000000002
+    },
+    "following_initial_over_previous_retried_accepted": {
+      "minimum": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "maximum": 1.0
+    },
+    "source_surviving_at_gun_exit": 1024,
+    "status": "COMPLETE_RAY_WORKFLOW"
+  },
+  "comparison": {
+    "rejection_reduction_fraction": 0.9692022887916526,
+    "attempts_reduction_fraction": 0.5781448538754765,
+    "accepted_steps_change_fraction": 0.08537978298115356,
+    "static_calls_reduction_fraction": 0.4743635551585529,
+    "observed_worker_callback_time_ratio_old_over_new": 2.1220754765582415,
+    "observed_execution_receipt_time_ratio_old_over_new": 2.1054530065124073,
+    "observed_attempt_time_ratio_old_over_new": 2.3584095405707663,
+    "rejected_time_fraction_of_attempts_old": 0.6749430346067777,
+    "rejected_time_fraction_of_attempts_new": 0.04961317477164605
+  },
+  "timing_definitions": {
+    "summary_worker_callback_seconds": "Native worker time up to result signal; excludes result callback persistence.",
+    "execution_receipt_seconds": "Outer worker invocation including its result callback, archive/store persistence and observer writing.",
+    "attempt_seconds": "Sum of timed full/half/fine/gate trial blocks; excludes plane-root, outer-loop, preparation, persistence and downstream column work.",
+    "limitation": "Single recorded old/new executions; compilation state, timing variation and changed accepted meshes prevent a pure controller speedup guarantee. Initial full-call times are retained explicitly."
+  },
+  "spatial_definition": "Each trial belongs to a disjoint band using the midpoint of the active population's start-Z extrema. This is not an individual particle common-Z plane.",
+  "remaining_rejections": {
+    "total": 183,
+    "affected_accepted_steps": 134,
+    "start_midpoint_z_mm_range": [
+      0.1768578194807655,
+      42.70978189950271
+    ],
+    "detailed_spatial_bands": [
+      {
+        "start_z_mm": 0.0,
+        "stop_z_mm": 0.15,
+        "accepted_steps": 220,
+        "attempts": 220,
+        "rejected_trials": 0,
+        "attempt_seconds": 80.92052029994738,
+        "rejected_attempt_seconds": 0,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 0,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {},
+        "retry_depth_histogram": {
+          "0": 220
+        },
+        "accepted_dt_s": {
+          "minimum": 1.9607432576914946e-15,
+          "median": 2.928983904802406e-14,
+          "p90": 2.5483375583302583e-13,
+          "p99": 4.15353304862443e-13,
+          "maximum": 4.3845956400848565e-13
+        }
+      },
+      {
+        "start_z_mm": 0.15,
+        "stop_z_mm": 0.3,
+        "accepted_steps": 26,
+        "attempts": 29,
+        "rejected_trials": 3,
+        "attempt_seconds": 10.844672500003071,
+        "rejected_attempt_seconds": 1.162731199998234,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 3,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 3
+        },
+        "retry_depth_histogram": {
+          "0": 23,
+          "1": 3
+        },
+        "accepted_dt_s": {
+          "minimum": 1.5572112949929552e-13,
+          "median": 2.491538071988728e-13,
+          "p90": 3.9234368578630415e-13,
+          "p99": 4.606768681052557e-13,
+          "maximum": 4.606768681052557e-13
+        }
+      },
+      {
+        "start_z_mm": 0.3,
+        "stop_z_mm": 0.5,
+        "accepted_steps": 79,
+        "attempts": 88,
+        "rejected_trials": 9,
+        "attempt_seconds": 33.539229700010765,
+        "rejected_attempt_seconds": 3.564429800011567,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 9,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 9
+        },
+        "retry_depth_histogram": {
+          "0": 70,
+          "1": 9
+        },
+        "accepted_dt_s": {
+          "minimum": 3.5811866891161214e-14,
+          "median": 8.017116362183507e-14,
+          "p90": 1.5418494014537013e-13,
+          "p99": 2.1591120099823635e-13,
+          "maximum": 2.1591120099823635e-13
+        }
+      },
+      {
+        "start_z_mm": 0.5,
+        "stop_z_mm": 0.65,
+        "accepted_steps": 154,
+        "attempts": 163,
+        "rejected_trials": 9,
+        "attempt_seconds": 63.76788659997692,
+        "rejected_attempt_seconds": 3.617261999999755,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 9,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 9
+        },
+        "retry_depth_histogram": {
+          "0": 145,
+          "1": 9
+        },
+        "accepted_dt_s": {
+          "minimum": 1.577793867814882e-14,
+          "median": 2.726278309733851e-14,
+          "p90": 4.7025000331667234e-14,
+          "p99": 6.139093196273458e-14,
+          "maximum": 6.66678630801974e-14
+        }
+      },
+      {
+        "start_z_mm": 0.65,
+        "stop_z_mm": 0.75,
+        "accepted_steps": 179,
+        "attempts": 185,
+        "rejected_trials": 6,
+        "attempt_seconds": 72.96481280001535,
+        "rejected_attempt_seconds": 2.4018613000043842,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 6,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 6
+        },
+        "retry_depth_histogram": {
+          "0": 173,
+          "1": 6
+        },
+        "accepted_dt_s": {
+          "minimum": 1.062702889707157e-14,
+          "median": 1.6379772535466175e-14,
+          "p90": 1.8132617210206393e-14,
+          "p99": 2.1152895063440607e-14,
+          "maximum": 2.4871786439833158e-14
+        }
+      },
+      {
+        "start_z_mm": 0.75,
+        "stop_z_mm": 0.85,
+        "accepted_steps": 175,
+        "attempts": 179,
+        "rejected_trials": 4,
+        "attempt_seconds": 71.13118450001275,
+        "rejected_attempt_seconds": 1.5989333999968949,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 4,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 4
+        },
+        "retry_depth_histogram": {
+          "0": 171,
+          "1": 4
+        },
+        "accepted_dt_s": {
+          "minimum": 9.488933912886693e-15,
+          "median": 1.5612384132501684e-14,
+          "p90": 1.9071823926020814e-14,
+          "p99": 2.1809626644130518e-14,
+          "maximum": 2.4035386527117925e-14
+        }
+      },
+      {
+        "start_z_mm": 0.85,
+        "stop_z_mm": 1.0,
+        "accepted_steps": 132,
+        "attempts": 132,
+        "rejected_trials": 0,
+        "attempt_seconds": 51.98402569998507,
+        "rejected_attempt_seconds": 0,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 0,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {},
+        "retry_depth_histogram": {
+          "0": 132
+        },
+        "accepted_dt_s": {
+          "minimum": 2.4035386527117925e-14,
+          "median": 2.858875595562691e-14,
+          "p90": 4.3571561807377604e-14,
+          "p99": 5.036751145790966e-14,
+          "maximum": 5.0571383887263714e-14
+        }
+      },
+      {
+        "start_z_mm": 1.0,
+        "stop_z_mm": 1.3,
+        "accepted_steps": 59,
+        "attempts": 59,
+        "rejected_trials": 0,
+        "attempt_seconds": 23.180882999993628,
+        "rejected_attempt_seconds": 0,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 0,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {},
+        "retry_depth_histogram": {
+          "0": 59
+        },
+        "accepted_dt_s": {
+          "minimum": 5.083764587722436e-14,
+          "median": 9.56258742381659e-14,
+          "p90": 2.8091631050966907e-13,
+          "p99": 4.684277256217541e-13,
+          "maximum": 5.041166736316974e-13
+        }
+      },
+      {
+        "start_z_mm": 1.3,
+        "stop_z_mm": 2.3,
+        "accepted_steps": 13,
+        "attempts": 13,
+        "rejected_trials": 0,
+        "attempt_seconds": 8.050346000003628,
+        "rejected_attempt_seconds": 0,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 0,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {},
+        "retry_depth_histogram": {
+          "0": 13
+        },
+        "accepted_dt_s": {
+          "minimum": 5.564579715946834e-13,
+          "median": 1.528009662683018e-12,
+          "p90": 4.4765908086416545e-12,
+          "p99": 5.276483879110155e-12,
+          "maximum": 5.360125031852215e-12
+        }
+      },
+      {
+        "start_z_mm": 2.3,
+        "stop_z_mm": 10.0,
+        "accepted_steps": 127,
+        "attempts": 154,
+        "rejected_trials": 27,
+        "attempt_seconds": 47.18136209996737,
+        "rejected_attempt_seconds": 9.69932029998381,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 27,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 27
+        },
+        "retry_depth_histogram": {
+          "0": 101,
+          "1": 25,
+          "2": 1
+        },
+        "accepted_dt_s": {
+          "minimum": 8.977633919794328e-13,
+          "median": 1.5056335897664878e-12,
+          "p90": 2.274746881203623e-12,
+          "p99": 3.937049502049373e-12,
+          "maximum": 4.186884868926506e-12
+        }
+      },
+      {
+        "start_z_mm": 10.0,
+        "stop_z_mm": 14.0,
+        "accepted_steps": 55,
+        "attempts": 66,
+        "rejected_trials": 11,
+        "attempt_seconds": 19.246247699993546,
+        "rejected_attempt_seconds": 3.8920507000002544,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 11,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 11
+        },
+        "retry_depth_histogram": {
+          "0": 45,
+          "1": 9,
+          "2": 1
+        },
+        "accepted_dt_s": {
+          "minimum": 5.372099813833062e-13,
+          "median": 1.4657886618434898e-12,
+          "p90": 2.9611717254224035e-12,
+          "p99": 4.961351562755072e-12,
+          "maximum": 4.968870935104376e-12
+        }
+      },
+      {
+        "start_z_mm": 14.0,
+        "stop_z_mm": 19.0,
+        "accepted_steps": 96,
+        "attempts": 122,
+        "rejected_trials": 26,
+        "attempt_seconds": 36.10305249997691,
+        "rejected_attempt_seconds": 8.57366070000353,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 5,
+          "transverse_momentum": 26,
+          "xy_position": 1
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 26
+        },
+        "retry_depth_histogram": {
+          "0": 80,
+          "1": 9,
+          "2": 5,
+          "3": 1,
+          "4": 1
+        },
+        "accepted_dt_s": {
+          "minimum": 9.262350518052359e-14,
+          "median": 1.055279324361976e-12,
+          "p90": 2.3460046294666858e-12,
+          "p99": 4.6621901000380705e-12,
+          "maximum": 4.708623532685514e-12
+        }
+      },
+      {
+        "start_z_mm": 19.0,
+        "stop_z_mm": 20.0,
+        "accepted_steps": 71,
+        "attempts": 87,
+        "rejected_trials": 16,
+        "attempt_seconds": 26.301215299998148,
+        "rejected_attempt_seconds": 5.4299740999995265,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 7,
+          "transverse_momentum": 16,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 16
+        },
+        "retry_depth_histogram": {
+          "0": 62,
+          "1": 5,
+          "2": 2,
+          "3": 1,
+          "4": 1
+        },
+        "accepted_dt_s": {
+          "minimum": 7.354359116811707e-14,
+          "median": 1.88748401699996e-13,
+          "p90": 7.530863735615188e-13,
+          "p99": 1.0795211307175763e-12,
+          "maximum": 1.1250281435250998e-12
+        }
+      },
+      {
+        "start_z_mm": 20.0,
+        "stop_z_mm": 21.0,
+        "accepted_steps": 74,
+        "attempts": 90,
+        "rejected_trials": 16,
+        "attempt_seconds": 27.170231499985675,
+        "rejected_attempt_seconds": 5.39633220000178,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 8,
+          "transverse_momentum": 16,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 16
+        },
+        "retry_depth_histogram": {
+          "0": 65,
+          "1": 4,
+          "2": 3,
+          "3": 2
+        },
+        "accepted_dt_s": {
+          "minimum": 7.019932937365007e-14,
+          "median": 1.7890391699846933e-13,
+          "p90": 6.970150229046687e-13,
+          "p99": 9.88544173368137e-13,
+          "maximum": 1.0095116143455457e-12
+        }
+      },
+      {
+        "start_z_mm": 21.0,
+        "stop_z_mm": 22.0,
+        "accepted_steps": 76,
+        "attempts": 94,
+        "rejected_trials": 18,
+        "attempt_seconds": 25.65812769999684,
+        "rejected_attempt_seconds": 5.119102799995744,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 7,
+          "transverse_momentum": 18,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 18
+        },
+        "retry_depth_histogram": {
+          "0": 69,
+          "1": 2,
+          "3": 4,
+          "4": 1
+        },
+        "accepted_dt_s": {
+          "minimum": 5.518962774209498e-14,
+          "median": 1.8273664861342628e-13,
+          "p90": 6.064303670446211e-13,
+          "p99": 9.467966419938512e-13,
+          "maximum": 9.49049061533959e-13
+        }
+      },
+      {
+        "start_z_mm": 22.0,
+        "stop_z_mm": 25.0,
+        "accepted_steps": 99,
+        "attempts": 121,
+        "rejected_trials": 22,
+        "attempt_seconds": 29.320302299976902,
+        "rejected_attempt_seconds": 6.06399859999874,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 17,
+          "transverse_momentum": 16,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 14,
+          "xyz_position": 8
+        },
+        "retry_depth_histogram": {
+          "0": 87,
+          "1": 5,
+          "2": 4,
+          "3": 3
+        },
+        "accepted_dt_s": {
+          "minimum": 7.042989017328293e-14,
+          "median": 5.497215544701567e-13,
+          "p90": 1.0332219952254934e-12,
+          "p99": 1.7209438525273061e-12,
+          "maximum": 1.7591089743045016e-12
+        }
+      },
+      {
+        "start_z_mm": 25.0,
+        "stop_z_mm": 40.0,
+        "accepted_steps": 110,
+        "attempts": 123,
+        "rejected_trials": 13,
+        "attempt_seconds": 39.77545449999161,
+        "rejected_attempt_seconds": 4.676207500000601,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 13,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 13
+        },
+        "retry_depth_histogram": {
+          "0": 99,
+          "1": 9,
+          "2": 2
+        },
+        "accepted_dt_s": {
+          "minimum": 3.9074784755217965e-13,
+          "median": 1.8116441001234406e-12,
+          "p90": 2.5127899233166788e-12,
+          "p99": 2.7463823480991026e-12,
+          "maximum": 2.8430647766230666e-12
+        }
+      },
+      {
+        "start_z_mm": 40.0,
+        "stop_z_mm": 100.0,
+        "accepted_steps": 305,
+        "attempts": 308,
+        "rejected_trials": 3,
+        "attempt_seconds": 91.69946169998366,
+        "rejected_attempt_seconds": 1.0962935999996262,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 3,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {
+          "transverse_momentum": 3
+        },
+        "retry_depth_histogram": {
+          "0": 302,
+          "1": 3
+        },
+        "accepted_dt_s": {
+          "minimum": 9.514238314280316e-13,
+          "median": 1.5009694553725065e-12,
+          "p90": 1.7951101777395324e-12,
+          "p99": 1.9413625191587974e-12,
+          "maximum": 1.980091952931257e-12
+        }
+      },
+      {
+        "start_z_mm": 100.0,
+        "stop_z_mm": 450.1,
+        "accepted_steps": 1751,
+        "attempts": 1751,
+        "rejected_trials": 0,
+        "attempt_seconds": 496.7177683998998,
+        "rejected_attempt_seconds": 0,
+        "failures_nonexclusive": {
+          "total_momentum": 0,
+          "xyz_position": 0,
+          "transverse_momentum": 0,
+          "xy_position": 0
+        },
+        "dominant_failure_exclusive": {},
+        "retry_depth_histogram": {
+          "0": 1751
+        },
+        "accepted_dt_s": {
+          "minimum": 8.591190069903501e-13,
+          "median": 9.235230972802324e-13,
+          "p90": 1.166539751023637e-12,
+          "p99": 1.291008059780536e-12,
+          "maximum": 1.3091342458431936e-12
+        }
+      }
+    ],
+    "largest_retry_examples": [
+      {
+        "surface_step": 1329,
+        "start_midpoint_z_mm": 19.236284813122804,
+        "retry_depth": 4,
+        "initial_dt_s": 1.4062851794063747e-12,
+        "accepted_dt_s": 8.789282371289842e-14,
+        "physical_cap_s": 4.543569520302572e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 1.4062851794063747e-12,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.02368810087097969,
+              "xyz_position": 1.6573394124209113,
+              "transverse_momentum": 8.618382424876884,
+              "xy_position": 0.1468157781540665
+            }
+          },
+          {
+            "dt_s": 7.031425897031873e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.00751462145591906,
+              "xyz_position": 1.0484865384942608,
+              "transverse_momentum": 4.347129865795935,
+              "xy_position": 0.034349064412172524
+            }
+          },
+          {
+            "dt_s": 3.5157129485159367e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0019640090263139008,
+              "xyz_position": 0.5230671798377646,
+              "transverse_momentum": 2.158587082226622,
+              "xy_position": 0.007621058774500026
+            }
+          },
+          {
+            "dt_s": 1.7578564742579683e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0005161227722822788,
+              "xyz_position": 0.260581652267185,
+              "transverse_momentum": 1.0756944119312435,
+              "xy_position": 0.001735690355911632
+            }
+          },
+          {
+            "dt_s": 8.789282371289842e-14,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 5.3498906558385423e-05,
+              "xyz_position": 0.0598376124245671,
+              "transverse_momentum": 4.3801709710367836e-05,
+              "xy_position": 7.323010522127359e-05
+            }
+          }
+        ]
+      },
+      {
+        "surface_step": 1314,
+        "start_midpoint_z_mm": 18.992799288443255,
+        "retry_depth": 4,
+        "initial_dt_s": 1.4819760828883775e-12,
+        "accepted_dt_s": 9.262350518052359e-14,
+        "physical_cap_s": 4.565757312398648e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 1.4819760828883775e-12,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.014347767925786663,
+              "xyz_position": 1.076882357782615,
+              "transverse_momentum": 4.078858841382974,
+              "xy_position": 0.101733798840481
+            }
+          },
+          {
+            "dt_s": 7.409880414441887e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.006515871749139977,
+              "xyz_position": 0.9771137452598019,
+              "transverse_momentum": 4.005299732093759,
+              "xy_position": 0.03299862516366866
+            }
+          },
+          {
+            "dt_s": 3.7049402072209437e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.001652895927770848,
+              "xyz_position": 0.4872111927014914,
+              "transverse_momentum": 2.0150096280214673,
+              "xy_position": 0.007939681877467557
+            }
+          },
+          {
+            "dt_s": 1.8524701036104719e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0004805760489630157,
+              "xyz_position": 0.24444764940049502,
+              "transverse_momentum": 1.003391464979238,
+              "xy_position": 0.0019281517969332996
+            }
+          },
+          {
+            "dt_s": 9.262350518052359e-14,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.00018547190881022308,
+              "xyz_position": 0.12216018935891587,
+              "transverse_momentum": 0.5006719099866757,
+              "xy_position": 0.00044972130112019284
+            }
+          }
+        ]
+      },
+      {
+        "surface_step": 1533,
+        "start_midpoint_z_mm": 21.98975021158015,
+        "retry_depth": 4,
+        "initial_dt_s": 8.830340438735197e-13,
+        "accepted_dt_s": 5.518962774209498e-14,
+        "physical_cap_s": 4.086940922071566e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 8.830340438735197e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.05123153377338153,
+              "xyz_position": 1.9680868918347538,
+              "transverse_momentum": 4.74194314946717,
+              "xy_position": 0.027123892216155947
+            }
+          },
+          {
+            "dt_s": 4.415170219367598e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.012865177959618588,
+              "xyz_position": 0.987809647557679,
+              "transverse_momentum": 3.770566523641041,
+              "xy_position": 0.006990818484700629
+            }
+          },
+          {
+            "dt_s": 2.207585109683799e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.003217886543245572,
+              "xyz_position": 0.4939068590533885,
+              "transverse_momentum": 2.2088272988242514,
+              "xy_position": 0.0015653393825821517
+            }
+          },
+          {
+            "dt_s": 1.1037925548418996e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0008068704160669273,
+              "xyz_position": 0.24682988204458178,
+              "transverse_momentum": 1.0937677329167281,
+              "xy_position": 0.000382411247630811
+            }
+          },
+          {
+            "dt_s": 5.518962774209498e-14,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0002062320190757043,
+              "xyz_position": 0.12307215643070298,
+              "transverse_momentum": 0.5222566564001475,
+              "xy_position": 9.09126871809082e-05
+            }
+          }
+        ]
+      },
+      {
+        "surface_step": 1494,
+        "start_midpoint_z_mm": 21.495167550577456,
+        "retry_depth": 3,
+        "initial_dt_s": 5.912786471753012e-13,
+        "accepted_dt_s": 7.390983089691265e-14,
+        "physical_cap_s": 4.196819972526212e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 5.912786471753012e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.020125063215957445,
+              "xyz_position": 1.340391578267257,
+              "transverse_momentum": 5.385419375787432,
+              "xy_position": 0.01657040094515457
+            }
+          },
+          {
+            "dt_s": 2.956393235876506e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.005048827699360445,
+              "xyz_position": 0.6715619848209556,
+              "transverse_momentum": 3.394094693753271,
+              "xy_position": 0.0038627331777893997
+            }
+          },
+          {
+            "dt_s": 1.478196617938253e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0012628688650496245,
+              "xyz_position": 0.33577988808760134,
+              "transverse_momentum": 1.6019117051653566,
+              "xy_position": 0.0008830645866603853
+            }
+          },
+          {
+            "dt_s": 7.390983089691265e-14,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.00032154270701741756,
+              "xyz_position": 0.167705995747543,
+              "transverse_momentum": 0.7416593302288278,
+              "xy_position": 0.00022769182676167746
+            }
+          }
+        ]
+      },
+      {
+        "surface_step": 1439,
+        "start_midpoint_z_mm": 20.74050521271656,
+        "retry_depth": 3,
+        "initial_dt_s": 5.968293413887671e-13,
+        "accepted_dt_s": 7.460366767359589e-14,
+        "physical_cap_s": 4.342966128535356e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 5.968293413887671e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.017882469595048286,
+              "xyz_position": 1.506019322027464,
+              "transverse_momentum": 6.324083660326795,
+              "xy_position": 0.026188031949557697
+            }
+          },
+          {
+            "dt_s": 2.9841467069438356e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.004496004419197895,
+              "xyz_position": 0.7531547051260088,
+              "transverse_momentum": 3.1239202967739597,
+              "xy_position": 0.006300882031704411
+            }
+          },
+          {
+            "dt_s": 1.4920733534719178e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0011546411032233512,
+              "xyz_position": 0.3765107639210862,
+              "transverse_momentum": 1.552526491723002,
+              "xy_position": 0.0015555056035367915
+            }
+          },
+          {
+            "dt_s": 7.460366767359589e-14,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0003146578105877277,
+              "xyz_position": 0.18531722217413263,
+              "transverse_momentum": 0.773834697411573,
+              "xy_position": 0.0003555402138167443
+            }
+          }
+        ]
+      },
+      {
+        "surface_step": 1422,
+        "start_midpoint_z_mm": 20.495397739354082,
+        "retry_depth": 3,
+        "initial_dt_s": 6.129931827866778e-13,
+        "accepted_dt_s": 7.662414784833473e-14,
+        "physical_cap_s": 4.383845343920761e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 6.129931827866778e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.016050833649425226,
+              "xyz_position": 1.4543624357992693,
+              "transverse_momentum": 6.03284079383019,
+              "xy_position": 0.027806987629347624
+            }
+          },
+          {
+            "dt_s": 3.064965913933389e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.004042097869359062,
+              "xyz_position": 0.7294464676668438,
+              "transverse_momentum": 3.0128895714535884,
+              "xy_position": 0.006782150084515269
+            }
+          },
+          {
+            "dt_s": 1.5324829569666946e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0010228369075086104,
+              "xyz_position": 0.3644053917771773,
+              "transverse_momentum": 1.5002608631085403,
+              "xy_position": 0.001619053513929836
+            }
+          },
+          {
+            "dt_s": 7.662414784833473e-14,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0002752576804250632,
+              "xyz_position": 0.1822505981638018,
+              "transverse_momentum": 0.7486264021486204,
+              "xy_position": 0.00040179574613736433
+            }
+          }
+        ]
+      },
+      {
+        "surface_step": 1477,
+        "start_midpoint_z_mm": 21.244613315028914,
+        "retry_depth": 3,
+        "initial_dt_s": 5.931556634587243e-13,
+        "accepted_dt_s": 7.414445793234054e-14,
+        "physical_cap_s": 4.248517114119875e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 5.931556634587243e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.022645734734864097,
+              "xyz_position": 1.6025717597295115,
+              "transverse_momentum": 6.629566840366509,
+              "xy_position": 0.023765069253277468
+            }
+          },
+          {
+            "dt_s": 2.9657783172936217e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.005682184497540257,
+              "xyz_position": 0.8038698706352055,
+              "transverse_momentum": 3.532254466383546,
+              "xy_position": 0.0055866659447799255
+            }
+          },
+          {
+            "dt_s": 1.4828891586468108e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.001434905103373225,
+              "xyz_position": 0.4022058709936504,
+              "transverse_momentum": 1.7125329702447643,
+              "xy_position": 0.0013126747931223376
+            }
+          },
+          {
+            "dt_s": 7.414445793234054e-14,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.00036291212974050714,
+              "xyz_position": 0.2000190907278912,
+              "transverse_momentum": 0.8399973173559844,
+              "xy_position": 0.0003161762453214224
+            }
+          }
+        ]
+      },
+      {
+        "surface_step": 1508,
+        "start_midpoint_z_mm": 21.658429652628616,
+        "retry_depth": 3,
+        "initial_dt_s": 8.716139271555409e-13,
+        "accepted_dt_s": 1.0895174089444261e-13,
+        "physical_cap_s": 4.161626320944491e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 8.716139271555409e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.03555839132239809,
+              "xyz_position": 1.5302825644039026,
+              "transverse_momentum": 5.309540967282499,
+              "xy_position": 0.02292207313714296
+            }
+          },
+          {
+            "dt_s": 4.3580696357777045e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.00928946514433974,
+              "xyz_position": 0.7989581190793358,
+              "transverse_momentum": 3.5591060578996583,
+              "xy_position": 0.0064687676914819085
+            }
+          },
+          {
+            "dt_s": 2.1790348178888522e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.002325337470173554,
+              "xyz_position": 0.3998313936277775,
+              "transverse_momentum": 1.892655176519003,
+              "xy_position": 0.001486425146815624
+            }
+          },
+          {
+            "dt_s": 1.0895174089444261e-13,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0005826866713534495,
+              "xyz_position": 0.19926162435351602,
+              "transverse_momentum": 0.8833134809447921,
+              "xy_position": 0.00037561380660693647
+            }
+          }
+        ]
+      },
+      {
+        "surface_step": 1287,
+        "start_midpoint_z_mm": 18.485268944181946,
+        "retry_depth": 3,
+        "initial_dt_s": 1.3413166084433858e-12,
+        "accepted_dt_s": 1.6766457605542322e-13,
+        "physical_cap_s": 4.604834591132108e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 1.3413166084433858e-12,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.011058432370097541,
+              "xyz_position": 1.1718448500882321,
+              "transverse_momentum": 5.525425102352383,
+              "xy_position": 0.10093284797420399
+            }
+          },
+          {
+            "dt_s": 6.706583042216929e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.003254586305158277,
+              "xyz_position": 0.6744823992494284,
+              "transverse_momentum": 2.8060373796597493,
+              "xy_position": 0.023785610921955795
+            }
+          },
+          {
+            "dt_s": 3.3532915211084644e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.00094429990550672,
+              "xyz_position": 0.336664448291688,
+              "transverse_momentum": 1.3905858083358422,
+              "xy_position": 0.005370383419347093
+            }
+          },
+          {
+            "dt_s": 1.6766457605542322e-13,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0003120284017909191,
+              "xyz_position": 0.1442935015705907,
+              "transverse_momentum": 0.6912987764712697,
+              "xy_position": 0.0008822963652975711
+            }
+          }
+        ]
+      },
+      {
+        "surface_step": 1382,
+        "start_midpoint_z_mm": 19.97887835675046,
+        "retry_depth": 3,
+        "initial_dt_s": 1.3250226565357972e-12,
+        "accepted_dt_s": 1.6562783206697465e-13,
+        "physical_cap_s": 4.45922314292885e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 1.3250226565357972e-12,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.05175547989152348,
+              "xyz_position": 2.6965699071907805,
+              "transverse_momentum": 11.147507165125988,
+              "xy_position": 0.15784144069750114
+            }
+          },
+          {
+            "dt_s": 6.625113282678986e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.01297524331345854,
+              "xyz_position": 1.3481688224356658,
+              "transverse_momentum": 5.551230663485986,
+              "xy_position": 0.033150802135211765
+            }
+          },
+          {
+            "dt_s": 3.312556641339493e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0022047264953688264,
+              "xyz_position": 0.42660551906040106,
+              "transverse_momentum": 2.7676151980314816,
+              "xy_position": 0.004380170000338775
+            }
+          },
+          {
+            "dt_s": 1.6562783206697465e-13,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 1.7032390001970992e-09,
+              "xyz_position": 1.0178437800047957e-06,
+              "transverse_momentum": 5.463232754846596e-06,
+              "xy_position": 7.262619650059832e-05
+            }
+          }
+        ]
+      },
+      {
+        "surface_step": 1520,
+        "start_midpoint_z_mm": 21.81970794227451,
+        "retry_depth": 3,
+        "initial_dt_s": 8.710985573322435e-13,
+        "accepted_dt_s": 1.0888731966653044e-13,
+        "physical_cap_s": 4.125780081625459e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 8.710985573322435e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.03851493864192728,
+              "xyz_position": 1.5845999419418264,
+              "transverse_momentum": 7.539134099423324,
+              "xy_position": 0.020684628492058727
+            }
+          },
+          {
+            "dt_s": 4.3554927866612176e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.009624066915114372,
+              "xyz_position": 0.7913108742059541,
+              "transverse_momentum": 4.360764330493096,
+              "xy_position": 0.005137115297109416
+            }
+          },
+          {
+            "dt_s": 2.1777463933306088e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.002412209380154419,
+              "xyz_position": 0.39637346209781726,
+              "transverse_momentum": 1.948322628688634,
+              "xy_position": 0.001208733801821501
+            }
+          },
+          {
+            "dt_s": 1.0888731966653044e-13,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0005795860254703333,
+              "xyz_position": 0.18996716193051927,
+              "transverse_momentum": 0.8415876288301299,
+              "xy_position": 0.00030440483160624506
+            }
+          }
+        ]
+      },
+      {
+        "surface_step": 1577,
+        "start_midpoint_z_mm": 22.72883458539106,
+        "retry_depth": 3,
+        "initial_dt_s": 1.2570016811724288e-12,
+        "accepted_dt_s": 1.571252101465536e-13,
+        "physical_cap_s": 3.909366329001819e-12,
+        "trial_sequence": [
+          {
+            "dt_s": 1.2570016811724288e-12,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0841033844397719,
+              "xyz_position": 1.9700440380963598,
+              "transverse_momentum": 2.2710418284729013,
+              "xy_position": 0.028935779121097467
+            }
+          },
+          {
+            "dt_s": 6.285008405862144e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.030459180720753366,
+              "xyz_position": 1.4235900633748628,
+              "transverse_momentum": 2.4216742341550628,
+              "xy_position": 0.006189657102722557
+            }
+          },
+          {
+            "dt_s": 3.142504202931072e-13,
+            "accepted": false,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.007630276540903577,
+              "xyz_position": 0.7128313324264663,
+              "transverse_momentum": 1.2944511980915723,
+              "xy_position": 0.001443635174683544
+            }
+          },
+          {
+            "dt_s": 1.571252101465536e-13,
+            "accepted": true,
+            "gate_maximum_ratios": {
+              "total_momentum": 0.0019060055722295328,
+              "xyz_position": 0.35604965698612795,
+              "transverse_momentum": 0.7589621430322652,
+              "xy_position": 0.0003283275509040442
+            }
+          }
+        ]
+      }
+    ],
+    "failure_combinations": [
+      {
+        "gates": [
+          "transverse_momentum"
+        ],
+        "count": 139
+      },
+      {
+        "gates": [
+          "xyz_position",
+          "transverse_momentum"
+        ],
+        "count": 37
+      },
+      {
+        "gates": [
+          "xyz_position"
+        ],
+        "count": 6
+      },
+      {
+        "gates": [
+          "xyz_position",
+          "transverse_momentum",
+          "xy_position"
+        ],
+        "count": 1
+      }
+    ]
+  },
+  "controller_evidence": {
+    "all_first_trials_bounded_by_original_physics_cap": true,
+    "proposal_context_changes": {
+      "new_trace": 1,
+      "active_set_changed": 1
+    },
+    "after_retried_step_next_initial_never_grows": true,
+    "maximum_other_growth": 1.25,
+    "all_actual_gate_budgets_passed_on_acceptance": true,
+    "every_retry_exact_half": true,
+    "cached_full_uses_exactly_rejected_trials": true,
+    "single_population_clock_exactly_continuous": true,
+    "implicit_failure_trials": 0,
+    "nonfinite_gate_trials": 0
+  },
+  "interpretation": [
+    "Repeated reset-and-halve work was removed: rejected trials fall by 96.92 percent even though the accepted-step count rises by 8.54 percent.",
+    "The former 0.5-1.1 mm hotspot falls from 4875 to 19 rejects. The largest remaining reject band is 14-25 mm (98), followed by 1.1-14 mm (38). There are no rejects beyond start-midpoint Z=42.710 mm.",
+    "All new accepted trials satisfy all four unchanged normalized error gates. Remaining failures are genuine gate rejections, dominated by transverse momentum, with eight XYZ-dominated trials.",
+    "The new accepted phase mesh differs from the baseline. This audit compares work and logged decisions, not bitwise trajectory equality or an independent physical accuracy certificate.",
+    "Normal Preview automatic scan calibration is preserved as executed. The running High result is outside this audit; no Preview/High field-convergence claim is made."
+  ],
+  "comparison_figure": {
+    "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\adaptive-preview-high-1024\\preview-rejection-comparison.png",
+    "sha256": "52ca9b91cddbcb40d26f39c1209a63c08c202e559e8034cbf6b17b73f789a12f",
+    "source_script": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\adaptive-preview-high-1024\\audit_preview_retries.py",
+    "labels": "English",
+    "source": "Complete recorded counts and timed attempts; no extrapolated data"
+  },
+  "call_count_definition": "Observed full/half/fine DG calls inside _surface_step only; plane-root and other static DG calls are outside this counter. Exact accounting is 3*accepted_steps + 2*rejected_trials."
+}

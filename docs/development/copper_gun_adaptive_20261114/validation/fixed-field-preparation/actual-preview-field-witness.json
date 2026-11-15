@@ -1,0 +1,4565 @@
+{
+  "providers_in_original_order": [
+    {
+      "source_id": "condenser_lens_1",
+      "owner_ids": [
+        "condenser_lens_1"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "2cd275774888aa8d558671f75184ee3bd1496ea34e4e038965d79d1d57159f10",
+      "exact_payload_digest": "9456b3cff33346f6d8a097594f7e15663499bd227a38704ab620520a19d4e3ea"
+    },
+    {
+      "source_id": "condenser_lens_2",
+      "owner_ids": [
+        "condenser_lens_2"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "5f0014dccd2b4023c7bf7eee94d6405b60ffa91cfcc8f82014f7288087fba2fe",
+      "exact_payload_digest": "1949119f93119ae1255965697ccaa19c506ddd23388b04b6a7a989d100b3b61c"
+    },
+    {
+      "source_id": "condenser_lens_3",
+      "owner_ids": [
+        "condenser_lens_3"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "96fcd04b812df66df8edffefe882df67c5cb06e45dd5eaac6666a02c1e0a075a",
+      "exact_payload_digest": "885a650f3b82c578079ef4a4e7b9f5cc472310a5a25290327abb830a1af4ff4c"
+    },
+    {
+      "source_id": "adapter_lens",
+      "owner_ids": [
+        "adapter_lens"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "e3317bf335bfc696ab6a0ab19eb0f498a71d5a2db9859b0a82125fd9cef18fb3",
+      "exact_payload_digest": "9dde14bf3ef39676d545b5d029048faaa9f2c6e613779ff21d36c41c4bffe97d"
+    },
+    {
+      "source_id": "probe_tl22_lens",
+      "owner_ids": [
+        "probe_tl22_lens"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "4652e783173fa78c9b133da7ca1014c45cd6774e81d981259bdea4450a737e00",
+      "exact_payload_digest": "e1c1d75859fae2779ddfec841b6ab99ad78b1289c4d4495e46778a5fcc0abc8a"
+    },
+    {
+      "source_id": "probe_tl21_lens",
+      "owner_ids": [
+        "probe_tl21_lens"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "70d432136a1c8912874b9d037aff7393a84ac1488ef15972f28194da78eb5dc1",
+      "exact_payload_digest": "64179dbe6ec8e8aba4e18d2821f01f54987e29113c0c3c4400c457ef4a121798"
+    },
+    {
+      "source_id": "probe_tl12_lens",
+      "owner_ids": [
+        "probe_tl12_lens"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "544113c4dc7731fcc9777e4898cc86c0f00716d87a517955f70c1603434d8fba",
+      "exact_payload_digest": "dc55c9d2868120143aa9ce86fe6e088698f87faa4ba492c84b6618823c25239c"
+    },
+    {
+      "source_id": "mini_condenser",
+      "owner_ids": [
+        "mini_condenser"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "d81fff9bb3d93cfb9b8f27d29628029571738cd2ce690b9df1692c31e013e76c",
+      "exact_payload_digest": "52014307789c023717baf6e25483d2b7c212723c0ff5d360b68ea9b11508732c"
+    },
+    {
+      "source_id": "objective_lens",
+      "owner_ids": [
+        "objective_lens"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "560c80e518aa582caa5d68a0fb5f2cb02744f5edf315b6ceee1be9934ce02ff7",
+      "exact_payload_digest": "e1b355f716b756536c0624e985c1023872112ef7ab25892b19fee55d10c0e7a4"
+    },
+    {
+      "source_id": "diffraction_lens",
+      "owner_ids": [
+        "diffraction_lens"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "59c9ac9042eeb3045b097069bca4f25949d8adf74b720b4a79a344a86001fdee",
+      "exact_payload_digest": "f3a0d31ef2889d19e8c06a47c12c32b0c8a19d724bd1f2a9df019b47088db524"
+    },
+    {
+      "source_id": "intermediate_lens",
+      "owner_ids": [
+        "intermediate_lens"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "f0abf963c7ad1bcfef67f723f8a15e2f3028768b2cce49a52a1acd00f72fd70c",
+      "exact_payload_digest": "d0960ca90cf1781928dfa5c0641e52138a910d5548b5c3f23bb3fe39228272a1"
+    },
+    {
+      "source_id": "projector_lens_1",
+      "owner_ids": [
+        "projector_lens_1"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "8635d596f3b11ba0216d3d99f03875b1ce79ef5bea5257a360b5b31072ed6585",
+      "exact_payload_digest": "7d4763519afd82aeb0c82b59e0fa7ec80ea4f200b9848bd87cfb5b4b18defd80"
+    },
+    {
+      "source_id": "projector_lens_2",
+      "owner_ids": [
+        "projector_lens_2"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.copper_coil_field_provider:CopperCoilAssemblyPotential",
+      "provider_digest": "c53c5404c9487a38b15882215d6899781e35bd7c71aa67e3792455ba84aa4086",
+      "exact_payload_digest": "6da478de5a5a3b70732458ad677c6661f1a4e50add946511fc5a07cb81f4aede"
+    },
+    {
+      "source_id": "condenser_stigmator",
+      "owner_ids": [
+        "condenser_stigmator"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "210ef9028350b4466e559513ebceaa2bb86e64384b41c42ea127672a33728791",
+      "exact_payload_digest": "60272f76a329612fc07341c17d2891c3d8c77a43470a0b333797b720d9f1fa97"
+    },
+    {
+      "source_id": "objective_stigmator",
+      "owner_ids": [
+        "objective_stigmator"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "2d08f8cc23b6d39cd356961365f349511f8e26cedb7fe0ca17b49896df5da676",
+      "exact_payload_digest": "45c6698339919df478e5f84d3b68b110c0e18b92577001a34372055fc7389ea8"
+    },
+    {
+      "source_id": "diffraction_stigmator",
+      "owner_ids": [
+        "diffraction_stigmator"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "dea5eb76d8ac6cc1eb3b911a7c40e82eb87653feb3723dde135c32b42337c8cc",
+      "exact_payload_digest": "a05cdd21d98e7b7c049d24d913631a471ce6be074e695d73d619c9af3c9e9fe8"
+    },
+    {
+      "source_id": "probe_qph2_quadrupole",
+      "owner_ids": [
+        "probe_qph2_quadrupole"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "eee396c331b40578985ef86d347a014f7332307d290db9a5210dc0193388f22a",
+      "exact_payload_digest": "1c2bc2a936522a209551f95d2ff29a9ff89ce4f1184cf3d5dfb5639eddc6a346"
+    },
+    {
+      "source_id": "probe_hp2_hexapole",
+      "owner_ids": [
+        "probe_hp2_hexapole"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "8de436c5c2909046808884f598964e4a5ae31f799caeb7d424cfdc3072bec92d",
+      "exact_payload_digest": "2af042818c2053000ef5577c9a353fd396b7e91af94f3eb4fe788081f0c75848"
+    },
+    {
+      "source_id": "probe_hpc_hexapole",
+      "owner_ids": [
+        "probe_hpc_hexapole"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "3f98875d77827d22941a24f3227be1ec44addc3e48a0eb9c504a6c89aaf39747",
+      "exact_payload_digest": "c5455a1d8d51e57f2c4dcf7571269531b103c769a25ed881d06d013c31145073"
+    },
+    {
+      "source_id": "probe_qpc_quadrupole",
+      "owner_ids": [
+        "probe_qpc_quadrupole"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "62f56a25402e50d9e9d6c229d58d874070a610cf569891e3bf97667b02e5a8b7",
+      "exact_payload_digest": "f5e3b2a7b6e0133160518ceeb640305a4b6851a7df001c3af2373d6606efc59d"
+    },
+    {
+      "source_id": "probe_qph1_quadrupole",
+      "owner_ids": [
+        "probe_qph1_quadrupole"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "b2fc828ef7e0779816b9c66bc36b61410cc953f910fe56befb168b5e296c66c1",
+      "exact_payload_digest": "15b7c7395e4c6f920ee2b3a3958862332eaa3f619cd7d97cec1912df4845efbe"
+    },
+    {
+      "source_id": "probe_hp1_hexapole",
+      "owner_ids": [
+        "probe_hp1_hexapole"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "191c9d450c2762866f02f0c480a8cb8b62564161fee1eb38b58f8654eb12a8da",
+      "exact_payload_digest": "6a3787fbf5e320b882cf650513a49ed535a0b2343be2ed3c491b3d979fdbf6b7"
+    },
+    {
+      "source_id": "probe_hpol_hexapole",
+      "owner_ids": [
+        "probe_hpol_hexapole"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "abe4491c6c0315c2edb34fc6fb63e11f0f8e358f8df35a84aeb31c11094b9f1c",
+      "exact_payload_digest": "62e60986180012e15e73fefd9f87e33ee68ebbf4a369a13e1414e63d1e11fd34"
+    },
+    {
+      "source_id": "probe_qpol_quadrupole",
+      "owner_ids": [
+        "probe_qpol_quadrupole"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "b81d09f67243d04ee2858afa0c63ffb772b6c87eeedfbe5a7beb523b2d4b7e63",
+      "exact_payload_digest": "2a5001f501b52bbcb6ebe87c4c265491aa66e7fc47c7bb0e9505f09d9a489212"
+    },
+    {
+      "source_id": "probe_dph2_deflector:0",
+      "owner_ids": [
+        "probe_dph2_deflector:0"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "d8d743920187c1d18af3f7cc4d77ce9002ed49c20fd40d82428802197d1f2174",
+      "exact_payload_digest": "9e39323b7a7b7a5a381974e4c373347dec3392e630f652dacbb65b8f93391f43"
+    },
+    {
+      "source_id": "probe_dp22_deflector:0",
+      "owner_ids": [
+        "probe_dp22_deflector:0"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "ed100a996d68fddb1f31a7f3bd25b1975616a711e2534b5e5d4ebe5fe2baa2a4",
+      "exact_payload_digest": "30567160aa707c01b42b70a3526f7437c38a67d4e1e66be0a5a131b4b8a79334"
+    },
+    {
+      "source_id": "probe_dp21_deflector:0",
+      "owner_ids": [
+        "probe_dp21_deflector:0"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "fae67a2bf3e8dc1f81a6c43df4f5bd0a5d28149a7208bb529b68300ea052bc12",
+      "exact_payload_digest": "65b7fd81e2b1067077f1ecc90cdcd1cdf9f8c5caa13ec47ae5ae47f3f593a85b"
+    },
+    {
+      "source_id": "probe_dph1_deflector:0",
+      "owner_ids": [
+        "probe_dph1_deflector:0"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "0cb9b9a74e7f718d553e19724ba154fdaa3a2a3ee991fb20a19fe70039410b3b",
+      "exact_payload_digest": "3633654a3159a780be6cddd26a8fac03b66534cc38816f8143f778b39f616521"
+    },
+    {
+      "source_id": "probe_dp11_deflector:0",
+      "owner_ids": [
+        "probe_dp11_deflector:0"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "da4b886aa9d5e3c37eeef0b17c64a62361745a0126a5b5a1d0b4fa1f6986c008",
+      "exact_payload_digest": "31ec98a20e5609c580195206c1abfea4861999692ee992ef41bbd979c4a038cd"
+    },
+    {
+      "source_id": "condenser_deflector:0",
+      "owner_ids": [
+        "condenser_deflector:0"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "dc087baaafd82231d539b388f1f1539f68d564473bf0dd04efcbd1c1bfb629c9",
+      "exact_payload_digest": "037ead853e5836892c83232b111a078ada45c71a780b08db51887439d9de9330"
+    },
+    {
+      "source_id": "condenser_deflector:1",
+      "owner_ids": [
+        "condenser_deflector:1"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "ea7555dab8d804765304c651b42dc492749ebeefb3d3bde11fa076578bff7e23",
+      "exact_payload_digest": "dea04c396e101d855b54c5f00ad6cae659a9fa24fb5493f6b45b1d2034203840"
+    },
+    {
+      "source_id": "beam_deflector:0",
+      "owner_ids": [
+        "beam_deflector:0"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "cea6a1931b38fec39655f807d5471e6cd84f84cf87bdb1b78512a2ae14f35154",
+      "exact_payload_digest": "cb3bbc3af7dd14d6a87ce8f15d2996d490e9e299cbcb3c1bec108c832e496e95"
+    },
+    {
+      "source_id": "beam_deflector:1",
+      "owner_ids": [
+        "beam_deflector:1"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.analytic_potential_domain:AnalyticPotentialDomain",
+      "provider_digest": "cac65b6bc04db0fb12d409ac0eb4d3f8619a4800e3ef489a1fb14779b54620fe",
+      "exact_payload_digest": "dc34d881159762e45e0e707bbda4bc0bd760ad20f1586b526b31bd7cbe827a64"
+    },
+    {
+      "source_id": "instrument_electric",
+      "owner_ids": [
+        "instrument_electric"
+      ],
+      "kind": "electric",
+      "provider_type": "temsim.physics.electric_potential_snapshot:ElectricPotentialSnapshot",
+      "provider_digest": "ec22229003a79a3956030f845c3de9620e3538956f0cfb9f3dc06e39823a9c90",
+      "exact_payload_digest": "73f7cebeeba16f30be60a74b070645f7a65acfee8d70c998c50ae7e5c7fffdb1"
+    },
+    {
+      "source_id": "feg_deflector",
+      "owner_ids": [
+        "feg_deflector"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.gun_magnetic_potential:GunMagneticPotential",
+      "provider_digest": "5b0b406a386a34271a8c920f6ff67ff32103f7b6456a834ab24df85f8df80e7c",
+      "exact_payload_digest": "3654e8fe3ff9cc06791178ab3d38bafe62c84f42067c520583875533f5013d6f"
+    },
+    {
+      "source_id": "feg_stigmator",
+      "owner_ids": [
+        "feg_stigmator"
+      ],
+      "kind": "magnetic",
+      "provider_type": "temsim.physics.gun_magnetic_potential:GunMagneticPotential",
+      "provider_digest": "08ed3409f01d559379d06b444d3ad8a735a73837f666317cdfb6c3c4bcbf3806",
+      "exact_payload_digest": "d6fa26a00d17658e240723d5d8b5fae4dd28c8262a0c5589b37ead56aaa6f6db"
+    }
+  ],
+  "dynamic_coils": [
+    {
+      "base": {
+        "metadata": {
+          "schema": "native-analytical-potential-domain-v1",
+          "source_id": "ac_deflector:0",
+          "base_digest": "4e514eecf8b9a64e03aded2dc10a09ab8c498d4c0595c8adcd8866c00cd14d46",
+          "base_metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ac_deflector:0",
+            "kind": "FrozenPosedMultipole",
+            "field_fingerprint": "f67a47eab2d5c50f09ae84e2ba36535c558fd9289cedb5d464237aca451bd99a",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(0,0,polynomial(x,y)*envelope(z))",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {
+              "captured_time_s": 0.0,
+              "component_key": "ac_deflector",
+              "dynamic_drive_frozen": true,
+              "induced_electric_field_modelled": false
+            }
+          },
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T"
+          },
+          "axial_policy": "native_compact_Az_zero_exterior",
+          "radial_policy": "strict local radius in the closed active slab",
+          "local_radius_m": 0.01,
+          "native_support_m": [
+            1.3800000000000003,
+            1.395
+          ],
+          "known_zero_exterior": true,
+          "edge_value": "native inside value on the axial face",
+          "derivative_order": 2,
+          "derivative_domain": "each open support side; axial faces excluded",
+          "static": false,
+          "dynamic_drive_frozen": true,
+          "wave_admission": false,
+          "legacy_default_changed": false,
+          "limitations": [
+            "Native analytical approximation; no new Maxwell qualification",
+            "No unknown map or FEM exterior is filled",
+            "No automatic near-axis or phase-error qualification",
+            "Original hard axial envelope retained; physical fringe structure is not added"
+          ]
+        },
+        "base": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ac_deflector:0",
+            "kind": "FrozenPosedMultipole",
+            "field_fingerprint": "f67a47eab2d5c50f09ae84e2ba36535c558fd9289cedb5d464237aca451bd99a",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(0,0,polynomial(x,y)*envelope(z))",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {
+              "captured_time_s": 0.0,
+              "component_key": "ac_deflector",
+              "dynamic_drive_frozen": true,
+              "induced_electric_field_modelled": false
+            }
+          },
+          "field": {
+            "lens_key": "ac_deflector:0",
+            "component_key": "ac_deflector",
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "polynomial_terms": [
+              [
+                0,
+                1,
+                3.2118253621023727e-09
+              ],
+              [
+                1,
+                0,
+                2.6632679918630746e-09
+              ]
+            ],
+            "envelope_kind": "uniform",
+            "center_z_m": 1.3875,
+            "sigma_m": 0.014999999999999902,
+            "native_support_mm": [
+              1380.0000000000002,
+              1395.0
+            ],
+            "radial_support_m": 0.01,
+            "reference_momentum": 3.365624812638601e-22,
+            "event_z_mm": 1387.5,
+            "event_dx_rad": -1.9017386001937483e-08,
+            "event_dy_rad": -2.2934426001637525e-08,
+            "captured_time_s": 0.0,
+            "drive_keys": [
+              "ac_deflector"
+            ],
+            "dynamic": true
+          },
+          "digest": "4e514eecf8b9a64e03aded2dc10a09ab8c498d4c0595c8adcd8866c00cd14d46"
+        },
+        "digest": "8da8f263325cb2f9a464803de12c5fed78c1e762e1ec76c48703c12f7cb31e3b"
+      },
+      "owner_ids": [
+        "ac_deflector:0"
+      ],
+      "drives": [
+        {
+          "key": "ac_deflector",
+          "kind": "raster",
+          "matrix_mrad": [
+            [
+              2.1124218066030805e-05,
+              -2.1402738428884535e-06
+            ],
+            [
+              2.1402738428884535e-06,
+              2.1124218066030805e-05
+            ]
+          ],
+          "period_s": 1.0,
+          "lines": 64,
+          "phase_rad": 0.0,
+          "time_policy": "rounded-line-interval-v1"
+        }
+      ],
+      "reference_time_s": 0.0,
+      "digest": "b177eda4ee6552d2d4d95c2e1bce7f50b6ea84604637ca12422172c2f2d2044d"
+    },
+    {
+      "base": {
+        "metadata": {
+          "schema": "native-analytical-potential-domain-v1",
+          "source_id": "ac_deflector:1",
+          "base_digest": "2ce241b2ac98f30c69854b0821357aa85ca4172f8876f9450f91d445d5d04da2",
+          "base_metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ac_deflector:1",
+            "kind": "FrozenPosedMultipole",
+            "field_fingerprint": "8a1f5f4d2a42d6400fadf28f97dc8ef97e940486f59955bd9fe10f5bd3fb6a81",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(0,0,polynomial(x,y)*envelope(z))",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {
+              "captured_time_s": 0.0,
+              "component_key": "ac_deflector",
+              "dynamic_drive_frozen": true,
+              "induced_electric_field_modelled": false
+            }
+          },
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T"
+          },
+          "axial_policy": "native_compact_Az_zero_exterior",
+          "radial_policy": "strict local radius in the closed active slab",
+          "local_radius_m": 0.01,
+          "native_support_m": [
+            1.405,
+            1.42
+          ],
+          "known_zero_exterior": true,
+          "edge_value": "native inside value on the axial face",
+          "derivative_order": 2,
+          "derivative_domain": "each open support side; axial faces excluded",
+          "static": false,
+          "dynamic_drive_frozen": true,
+          "wave_admission": false,
+          "legacy_default_changed": false,
+          "limitations": [
+            "Native analytical approximation; no new Maxwell qualification",
+            "No unknown map or FEM exterior is filled",
+            "No automatic near-axis or phase-error qualification",
+            "Original hard axial envelope retained; physical fringe structure is not added"
+          ]
+        },
+        "base": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "ac_deflector:1",
+            "kind": "FrozenPosedMultipole",
+            "field_fingerprint": "8a1f5f4d2a42d6400fadf28f97dc8ef97e940486f59955bd9fe10f5bd3fb6a81",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(0,0,polynomial(x,y)*envelope(z))",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {
+              "captured_time_s": 0.0,
+              "component_key": "ac_deflector",
+              "dynamic_drive_frozen": true,
+              "induced_electric_field_modelled": false
+            }
+          },
+          "field": {
+            "lens_key": "ac_deflector:1",
+            "component_key": "ac_deflector",
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "polynomial_terms": [
+              [
+                0,
+                1,
+                -3.260106364021957e-09
+              ],
+              [
+                1,
+                0,
+                -2.2253729444022763e-09
+              ]
+            ],
+            "envelope_kind": "uniform",
+            "center_z_m": 1.4125,
+            "sigma_m": 0.014999999999999902,
+            "native_support_mm": [
+              1405.0,
+              1420.0
+            ],
+            "radial_support_m": 0.01,
+            "reference_momentum": 3.365624812638601e-22,
+            "event_z_mm": 1412.5,
+            "event_dx_rad": 1.589054365210952e-08,
+            "event_dy_rad": 2.3279182313383196e-08,
+            "captured_time_s": 0.0,
+            "drive_keys": [
+              "ac_deflector"
+            ],
+            "dynamic": true
+          },
+          "digest": "2ce241b2ac98f30c69854b0821357aa85ca4172f8876f9450f91d445d5d04da2"
+        },
+        "digest": "a53ab125d939137a01f23392ff9422f0ec979fa0c57ac02faf914bdfcde68213"
+      },
+      "owner_ids": [
+        "ac_deflector:1"
+      ],
+      "drives": [
+        {
+          "key": "ac_deflector",
+          "kind": "raster",
+          "matrix_mrad": [
+            [
+              -1.970853439387497e-05,
+              3.878593769412524e-06
+            ],
+            [
+              -3.878593769412524e-06,
+              -1.970853439387497e-05
+            ]
+          ],
+          "period_s": 1.0,
+          "lines": 64,
+          "phase_rad": 0.0,
+          "time_policy": "rounded-line-interval-v1"
+        }
+      ],
+      "reference_time_s": 0.0,
+      "digest": "eef25b1e1acb5c2833b93757216a096212c1b93d55bb7f2d7e5d23f6d2e9af36"
+    },
+    {
+      "base": {
+        "metadata": {
+          "schema": "native-analytical-potential-domain-v1",
+          "source_id": "image_diffraction_deflector:0",
+          "base_digest": "794dbaaced85f5f8569f353b0c664a3a1523af542515f53b3b3c342e6c22eaab",
+          "base_metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "image_diffraction_deflector:0",
+            "kind": "FrozenPosedMultipole",
+            "field_fingerprint": "22f50a6a8ebb9780d82085305215858d814447455dcfe7c9a44675cffa68ace2",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(0,0,polynomial(x,y)*envelope(z))",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {
+              "captured_time_s": 0.0,
+              "component_key": "image_diffraction_deflector",
+              "dynamic_drive_frozen": true,
+              "induced_electric_field_modelled": false
+            }
+          },
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T"
+          },
+          "axial_policy": "native_compact_Az_zero_exterior",
+          "radial_policy": "strict local radius in the closed active slab",
+          "local_radius_m": 0.01,
+          "native_support_m": [
+            1.6669,
+            1.6819000000000002
+          ],
+          "known_zero_exterior": true,
+          "edge_value": "native inside value on the axial face",
+          "derivative_order": 2,
+          "derivative_domain": "each open support side; axial faces excluded",
+          "static": false,
+          "dynamic_drive_frozen": true,
+          "wave_admission": false,
+          "legacy_default_changed": false,
+          "limitations": [
+            "Native analytical approximation; no new Maxwell qualification",
+            "No unknown map or FEM exterior is filled",
+            "No automatic near-axis or phase-error qualification",
+            "Original hard axial envelope retained; physical fringe structure is not added"
+          ]
+        },
+        "base": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "image_diffraction_deflector:0",
+            "kind": "FrozenPosedMultipole",
+            "field_fingerprint": "22f50a6a8ebb9780d82085305215858d814447455dcfe7c9a44675cffa68ace2",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(0,0,polynomial(x,y)*envelope(z))",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {
+              "captured_time_s": 0.0,
+              "component_key": "image_diffraction_deflector",
+              "dynamic_drive_frozen": true,
+              "induced_electric_field_modelled": false
+            }
+          },
+          "field": {
+            "lens_key": "image_diffraction_deflector:0",
+            "component_key": "image_diffraction_deflector",
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "polynomial_terms": [
+              [
+                0,
+                1,
+                -3.2118253621023727e-09
+              ],
+              [
+                1,
+                0,
+                -2.6632679918630746e-09
+              ]
+            ],
+            "envelope_kind": "uniform",
+            "center_z_m": 1.6744,
+            "sigma_m": 0.015000000000000124,
+            "native_support_mm": [
+              1666.9,
+              1681.9
+            ],
+            "radial_support_m": 0.01,
+            "reference_momentum": 3.365624812638601e-22,
+            "event_z_mm": 1674.4,
+            "event_dx_rad": 1.9017386001937483e-08,
+            "event_dy_rad": 2.2934426001637525e-08,
+            "captured_time_s": 0.0,
+            "drive_keys": [
+              "image_diffraction_deflector",
+              "descan_deflector"
+            ],
+            "dynamic": true
+          },
+          "digest": "794dbaaced85f5f8569f353b0c664a3a1523af542515f53b3b3c342e6c22eaab"
+        },
+        "digest": "e2562fcc462ba53cf3f58b7bebcb4b06b7e3694403b30c5ba36f3cf77e85bba0"
+      },
+      "owner_ids": [
+        "image_diffraction_deflector:0"
+      ],
+      "drives": [
+        {
+          "key": "descan_deflector",
+          "kind": "raster",
+          "matrix_mrad": [
+            [
+              -2.1124218066030805e-05,
+              2.1402738428884535e-06
+            ],
+            [
+              -2.1402738428884535e-06,
+              -2.1124218066030805e-05
+            ]
+          ],
+          "period_s": 1.0,
+          "lines": 64,
+          "phase_rad": 0.0,
+          "time_policy": "rounded-line-interval-v1"
+        }
+      ],
+      "reference_time_s": 0.0,
+      "digest": "5c07ce76d17502aa69fc011b855f71253188483610d035e8be7c1ac2133db115"
+    },
+    {
+      "base": {
+        "metadata": {
+          "schema": "native-analytical-potential-domain-v1",
+          "source_id": "image_diffraction_deflector:1",
+          "base_digest": "ffc053db35c83a7997c8b8966def2e7628efc5aac49f98725ce3c6c3ec8a46bf",
+          "base_metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "image_diffraction_deflector:1",
+            "kind": "FrozenPosedMultipole",
+            "field_fingerprint": "af1b74684ad361c6509dbb34d63e4a546916b3324bc00fb8c40f7cd8362d3c12",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(0,0,polynomial(x,y)*envelope(z))",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {
+              "captured_time_s": 0.0,
+              "component_key": "image_diffraction_deflector",
+              "dynamic_drive_frozen": true,
+              "induced_electric_field_modelled": false
+            }
+          },
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T"
+          },
+          "axial_policy": "native_compact_Az_zero_exterior",
+          "radial_policy": "strict local radius in the closed active slab",
+          "local_radius_m": 0.01,
+          "native_support_m": [
+            1.6919000000000002,
+            1.7069
+          ],
+          "known_zero_exterior": true,
+          "edge_value": "native inside value on the axial face",
+          "derivative_order": 2,
+          "derivative_domain": "each open support side; axial faces excluded",
+          "static": false,
+          "dynamic_drive_frozen": true,
+          "wave_admission": false,
+          "legacy_default_changed": false,
+          "limitations": [
+            "Native analytical approximation; no new Maxwell qualification",
+            "No unknown map or FEM exterior is filled",
+            "No automatic near-axis or phase-error qualification",
+            "Original hard axial envelope retained; physical fringe structure is not added"
+          ]
+        },
+        "base": {
+          "metadata": {
+            "schema": "native-analytical-potential-v1",
+            "source_id": "image_diffraction_deflector:1",
+            "kind": "FrozenPosedMultipole",
+            "field_fingerprint": "af1b74684ad361c6509dbb34d63e4a546916b3324bc00fb8c40f7cd8362d3c12",
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T"
+            },
+            "gauge": "local A=(0,0,polynomial(x,y)*envelope(z))",
+            "derivative_order": 2,
+            "derivative_domain": "strict interior of axial support",
+            "outside_domain": "reject; no extrapolation or automatic zero fill",
+            "physical_model": "existing finite analytical law; no new Maxwell or propagation qualification",
+            "wave_admission": false,
+            "provenance": {
+              "captured_time_s": 0.0,
+              "component_key": "image_diffraction_deflector",
+              "dynamic_drive_frozen": true,
+              "induced_electric_field_modelled": false
+            }
+          },
+          "field": {
+            "lens_key": "image_diffraction_deflector:1",
+            "component_key": "image_diffraction_deflector",
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "polynomial_terms": [
+              [
+                0,
+                1,
+                3.1787702520740895e-09
+              ],
+              [
+                1,
+                0,
+                2.441020520302865e-09
+              ]
+            ],
+            "envelope_kind": "uniform",
+            "center_z_m": 1.6994,
+            "sigma_m": 0.014999999999999902,
+            "native_support_mm": [
+              1691.9,
+              1706.9
+            ],
+            "radial_support_m": 0.01,
+            "reference_momentum": 3.365624812638601e-22,
+            "event_z_mm": 1699.4,
+            "event_dx_rad": -1.7430401151923022e-08,
+            "event_dy_rad": -2.269839200556016e-08,
+            "captured_time_s": 0.0,
+            "drive_keys": [
+              "image_diffraction_deflector",
+              "descan_deflector"
+            ],
+            "dynamic": true
+          },
+          "digest": "ffc053db35c83a7997c8b8966def2e7628efc5aac49f98725ce3c6c3ec8a46bf"
+        },
+        "digest": "60293174543170d6cd326c51b21c5e7ce6831d859e059f7d0c12a1676336d2a9"
+      },
+      "owner_ids": [
+        "image_diffraction_deflector:1"
+      ],
+      "drives": [
+        {
+          "key": "descan_deflector",
+          "kind": "raster",
+          "matrix_mrad": [
+            [
+              2.0200228107215777e-05,
+              -2.813792462519627e-06
+            ],
+            [
+              2.813792462519627e-06,
+              2.020022810721578e-05
+            ]
+          ],
+          "period_s": 1.0,
+          "lines": 64,
+          "phase_rad": 0.0,
+          "time_policy": "rounded-line-interval-v1"
+        }
+      ],
+      "reference_time_s": 0.0,
+      "digest": "28a42d8c611ea06f8ad65967a7909869ec8eeb8521efd48b3fc2ef2b98f1fc2c"
+    }
+  ],
+  "gauge": {
+    "schema": "static-polynomial-gauge-v1",
+    "coordinates": "global_xyz_m",
+    "constant_t_m2": 0.0,
+    "gradient_t_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "hessian_t": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "charge_convention": "electron q=-e"
+  },
+  "geometry": {
+    "aperture_inventory": [
+      {
+        "enabled": true,
+        "inserted": true,
+        "installed": true,
+        "key": "condenser_aperture_2"
+      },
+      {
+        "enabled": true,
+        "inserted": true,
+        "installed": true,
+        "key": "condenser_aperture_3"
+      },
+      {
+        "enabled": false,
+        "inserted": true,
+        "installed": true,
+        "key": "objective_aperture"
+      },
+      {
+        "enabled": false,
+        "inserted": true,
+        "installed": true,
+        "key": "selected_area_aperture"
+      },
+      {
+        "enabled": true,
+        "inserted": true,
+        "installed": true,
+        "key": "projection_chamber_dpa_aperture"
+      },
+      {
+        "enabled": true,
+        "inserted": true,
+        "installed": false,
+        "key": "energy_filter_entrance_aperture"
+      }
+    ],
+    "boundaries": [
+      {
+        "host_key": "feg_rear_insulator",
+        "pieces": [
+          {
+            "key": "feg_rear_insulator",
+            "kind": "bore",
+            "local_end_z_mm": -5.0,
+            "local_start_z_mm": -6.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 1.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "feg_rear_insulator"
+        ]
+      },
+      {
+        "host_key": "feg_cathode_holder",
+        "pieces": [
+          {
+            "key": "feg_cathode_holder",
+            "kind": "bore",
+            "local_end_z_mm": -4.0,
+            "local_start_z_mm": -5.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 0.3,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "feg_cathode_holder"
+        ]
+      },
+      {
+        "host_key": "feg_tip",
+        "pieces": [
+          {
+            "key": "feg_tip",
+            "kind": "bore",
+            "local_end_z_mm": -1.8,
+            "local_start_z_mm": -4.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "feg_tip",
+            "kind": "bore",
+            "local_end_z_mm": 0.0,
+            "local_start_z_mm": -1.5,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "feg_tip"
+        ]
+      },
+      {
+        "host_key": "feg_emitter_enclosure",
+        "pieces": [
+          {
+            "key": "feg_emitter_enclosure",
+            "kind": "bore",
+            "local_end_z_mm": -1.5,
+            "local_start_z_mm": -1.8,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 0.3,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "feg_emitter_enclosure"
+        ]
+      },
+      {
+        "host_key": "@vacuum_drift:gun:feg",
+        "pieces": [
+          {
+            "key": "@vacuum_drift:gun:feg",
+            "kind": "bore",
+            "local_end_z_mm": 0.3,
+            "local_start_z_mm": 0.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:gun:feg",
+            "kind": "bore",
+            "local_end_z_mm": 14.0,
+            "local_start_z_mm": 1.3,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:gun:feg",
+            "kind": "bore",
+            "local_end_z_mm": 23.0,
+            "local_start_z_mm": 22.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:gun:feg",
+            "kind": "bore",
+            "local_end_z_mm": 30.0,
+            "local_start_z_mm": 25.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:gun:feg",
+            "kind": "bore",
+            "local_end_z_mm": 398.0,
+            "local_start_z_mm": 370.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:gun:feg",
+            "kind": "bore",
+            "local_end_z_mm": 427.0,
+            "local_start_z_mm": 422.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:gun:feg",
+            "kind": "bore",
+            "local_end_z_mm": 444.0,
+            "local_start_z_mm": 439.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:gun:feg",
+            "kind": "bore",
+            "local_end_z_mm": 450.0,
+            "local_start_z_mm": 446.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "@vacuum_drift:gun:feg"
+        ]
+      },
+      {
+        "host_key": "feg_extractor",
+        "pieces": [
+          {
+            "key": "feg_extractor",
+            "kind": "bore",
+            "local_end_z_mm": 0.75,
+            "local_start_z_mm": 0.3,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "feg_extractor",
+            "kind": "bore",
+            "local_end_z_mm": 1.3,
+            "local_start_z_mm": 0.75,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 0.25,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "feg_extractor"
+        ]
+      },
+      {
+        "host_key": "feg_electrostatic_lens",
+        "pieces": [
+          {
+            "key": "feg_electrostatic_lens",
+            "kind": "bore",
+            "local_end_z_mm": 22.0,
+            "local_start_z_mm": 14.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 4.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "feg_electrostatic_lens"
+        ]
+      },
+      {
+        "host_key": "feg_dpa_aperture",
+        "pieces": [
+          {
+            "key": "feg_dpa_aperture",
+            "kind": "bore",
+            "local_end_z_mm": 25.0,
+            "local_start_z_mm": 23.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 3.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "feg_dpa_aperture"
+        ]
+      },
+      {
+        "host_key": "feg_accelerator",
+        "pieces": [
+          {
+            "key": "feg_accelerator",
+            "kind": "bore",
+            "local_end_z_mm": 370.0,
+            "local_start_z_mm": 30.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 5.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "feg_accelerator"
+        ]
+      },
+      {
+        "host_key": "feg_deflector",
+        "pieces": [
+          {
+            "key": "feg_deflector",
+            "kind": "bore",
+            "local_end_z_mm": 422.0,
+            "local_start_z_mm": 398.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 5.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "feg_deflector"
+        ]
+      },
+      {
+        "host_key": "feg_stigmator",
+        "pieces": [
+          {
+            "key": "feg_stigmator",
+            "kind": "bore",
+            "local_end_z_mm": 439.0,
+            "local_start_z_mm": 427.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 5.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "feg_stigmator"
+        ]
+      },
+      {
+        "host_key": "feg_c1_aperture",
+        "pieces": [
+          {
+            "key": "feg_c1_aperture",
+            "kind": "bore",
+            "local_end_z_mm": 446.0,
+            "local_start_z_mm": 444.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 3.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "feg_c1_aperture"
+        ]
+      },
+      {
+        "host_key": "c1_c2_pole_piece_cartridge",
+        "pieces": [
+          {
+            "key": "c1_c2_pole_piece_cartridge",
+            "kind": "bore",
+            "local_end_z_mm": 490.0,
+            "local_start_z_mm": 450.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "c1_c2_pole_piece_cartridge",
+            "kind": "bore",
+            "local_end_z_mm": 560.0,
+            "local_start_z_mm": 540.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "c1_c2_pole_piece_cartridge",
+            "kind": "bore",
+            "local_end_z_mm": 750.0,
+            "local_start_z_mm": 620.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "c1_c2_pole_piece_cartridge"
+        ]
+      },
+      {
+        "host_key": "condenser_lens_1_lower_pole",
+        "pieces": [
+          {
+            "key": "condenser_lens_1_lower_pole",
+            "kind": "bore",
+            "local_end_z_mm": 540.0,
+            "local_start_z_mm": 490.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "condenser_lens_1_lower_pole"
+        ]
+      },
+      {
+        "host_key": "condenser_lens_2_upper_pole",
+        "pieces": [
+          {
+            "key": "condenser_lens_2_upper_pole",
+            "kind": "bore",
+            "local_end_z_mm": 620.0,
+            "local_start_z_mm": 560.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "condenser_lens_2_upper_pole"
+        ]
+      },
+      {
+        "host_key": "@vacuum_drift:column:c3_probecorrector",
+        "pieces": [
+          {
+            "key": "@vacuum_drift:column:c3_probecorrector",
+            "kind": "bore",
+            "local_end_z_mm": 755.0,
+            "local_start_z_mm": 750.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:column:c3_probecorrector",
+            "kind": "bore",
+            "local_end_z_mm": 790.0,
+            "local_start_z_mm": 775.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:column:c3_probecorrector",
+            "kind": "bore",
+            "local_end_z_mm": 1070.0,
+            "local_start_z_mm": 1060.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:column:c3_probecorrector",
+            "kind": "bore",
+            "local_end_z_mm": 1135.4,
+            "local_start_z_mm": 1106.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:column:c3_probecorrector",
+            "kind": "bore",
+            "local_end_z_mm": 1222.6,
+            "local_start_z_mm": 1193.6,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:column:c3_probecorrector",
+            "kind": "bore",
+            "local_end_z_mm": 1291.8,
+            "local_start_z_mm": 1262.7,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:column:c3_probecorrector",
+            "kind": "bore",
+            "local_end_z_mm": 1339.0,
+            "local_start_z_mm": 1309.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:column:c3_probecorrector",
+            "kind": "bore",
+            "local_end_z_mm": 1380.0,
+            "local_start_z_mm": 1379.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:column:c3_probecorrector",
+            "kind": "bore",
+            "local_end_z_mm": 1814.4,
+            "local_start_z_mm": 1809.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "@vacuum_drift:column:c3_probecorrector"
+        ]
+      },
+      {
+        "host_key": "condenser_aperture_2",
+        "pieces": [
+          {
+            "key": "condenser_aperture_2",
+            "kind": "bore",
+            "local_end_z_mm": 775.0,
+            "local_start_z_mm": 755.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "condenser_aperture_2",
+            "kind": "aperture",
+            "local_end_z_mm": 765.1,
+            "local_start_z_mm": 764.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 0.05,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "condenser_aperture_2"
+        ]
+      },
+      {
+        "host_key": "condenser_deflector",
+        "pieces": [
+          {
+            "key": "condenser_deflector",
+            "kind": "bore",
+            "local_end_z_mm": 830.0,
+            "local_start_z_mm": 790.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "condenser_deflector"
+        ]
+      },
+      {
+        "host_key": "@vacuum_tube:c1_c2_to_upper_objective",
+        "pieces": [
+          {
+            "key": "@vacuum_tube:c1_c2_to_upper_objective",
+            "kind": "bore",
+            "local_end_z_mm": 1000.0,
+            "local_start_z_mm": 830.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_tube:c1_c2_to_upper_objective",
+            "kind": "bore",
+            "local_end_z_mm": 1106.4,
+            "local_start_z_mm": 1070.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_tube:c1_c2_to_upper_objective",
+            "kind": "bore",
+            "local_end_z_mm": 1193.6,
+            "local_start_z_mm": 1135.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_tube:c1_c2_to_upper_objective",
+            "kind": "bore",
+            "local_end_z_mm": 1262.7,
+            "local_start_z_mm": 1222.6,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_tube:c1_c2_to_upper_objective",
+            "kind": "bore",
+            "local_end_z_mm": 1309.9,
+            "local_start_z_mm": 1291.8,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_tube:c1_c2_to_upper_objective",
+            "kind": "bore",
+            "local_end_z_mm": 1379.0,
+            "local_start_z_mm": 1339.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_tube:c1_c2_to_upper_objective",
+            "kind": "bore",
+            "local_end_z_mm": 1389.0,
+            "local_start_z_mm": 1380.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "@vacuum_tube:c1_c2_to_upper_objective"
+        ]
+      },
+      {
+        "host_key": "condenser_aperture_3",
+        "pieces": [
+          {
+            "key": "condenser_aperture_3",
+            "kind": "bore",
+            "local_end_z_mm": 1020.0,
+            "local_start_z_mm": 1000.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "condenser_aperture_3",
+            "kind": "aperture",
+            "local_end_z_mm": 1010.1,
+            "local_start_z_mm": 1009.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "condenser_aperture_3"
+        ]
+      },
+      {
+        "host_key": "beam_deflector",
+        "pieces": [
+          {
+            "key": "beam_deflector",
+            "kind": "bore",
+            "local_end_z_mm": 1060.0,
+            "local_start_z_mm": 1020.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "beam_deflector"
+        ]
+      },
+      {
+        "host_key": "objective_lens",
+        "pieces": [
+          {
+            "key": "objective_lens",
+            "kind": "bore",
+            "local_end_z_mm": 1518.2,
+            "local_start_z_mm": 1389.0,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "objective_lens",
+            "kind": "bore",
+            "local_end_z_mm": 1809.4,
+            "local_start_z_mm": 1680.2,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "objective_lens"
+        ]
+      },
+      {
+        "host_key": "objective_lens_excitation_coil",
+        "pieces": [
+          {
+            "key": "objective_lens_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 1534.5,
+            "local_start_z_mm": 1518.2,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "objective_lens_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 1680.2,
+            "local_start_z_mm": 1663.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "objective_lens_excitation_coil"
+        ]
+      },
+      {
+        "host_key": "objective_upper_pole",
+        "pieces": [
+          {
+            "key": "objective_upper_pole",
+            "kind": "bore",
+            "local_end_z_mm": 1596.5,
+            "local_start_z_mm": 1534.5,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "objective_upper_pole"
+        ]
+      },
+      {
+        "host_key": "sample_stage",
+        "pieces": [
+          {
+            "key": "sample_stage",
+            "kind": "bore",
+            "local_end_z_mm": 1599.19995,
+            "local_start_z_mm": 1596.5,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "sample_stage",
+            "kind": "bore",
+            "local_end_z_mm": 1599.7,
+            "local_start_z_mm": 1599.2000500000001,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "sample_stage",
+            "kind": "bore",
+            "local_end_z_mm": 1601.9,
+            "local_start_z_mm": 1601.7,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "sample_stage"
+        ]
+      },
+      {
+        "host_key": "sample",
+        "pieces": [
+          {
+            "key": "sample",
+            "kind": "bore",
+            "local_end_z_mm": 1599.2000500000001,
+            "local_start_z_mm": 1599.19995,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "sample"
+        ]
+      },
+      {
+        "host_key": "objective_aperture",
+        "pieces": [
+          {
+            "key": "objective_aperture",
+            "kind": "bore",
+            "local_end_z_mm": 1601.7,
+            "local_start_z_mm": 1599.7,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.5,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "objective_aperture"
+        ]
+      },
+      {
+        "host_key": "objective_lower_pole",
+        "pieces": [
+          {
+            "key": "objective_lower_pole",
+            "kind": "bore",
+            "local_end_z_mm": 1663.9,
+            "local_start_z_mm": 1601.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 2.88,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "objective_lower_pole"
+        ]
+      },
+      {
+        "host_key": "selected_area_aperture",
+        "pieces": [
+          {
+            "key": "selected_area_aperture",
+            "kind": "bore",
+            "local_end_z_mm": 1834.4,
+            "local_start_z_mm": 1814.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "selected_area_aperture"
+        ]
+      },
+      {
+        "host_key": "diffraction_stigmator",
+        "pieces": [
+          {
+            "key": "diffraction_stigmator",
+            "kind": "bore",
+            "local_end_z_mm": 1844.4,
+            "local_start_z_mm": 1834.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "diffraction_stigmator"
+        ]
+      },
+      {
+        "host_key": "@vacuum_drift:project_and_recording_system:noenergyfilter",
+        "pieces": [
+          {
+            "key": "@vacuum_drift:project_and_recording_system:noenergyfilter",
+            "kind": "bore",
+            "local_end_z_mm": 1846.9,
+            "local_start_z_mm": 1844.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:project_and_recording_system:noenergyfilter",
+            "kind": "bore",
+            "local_end_z_mm": 1951.9,
+            "local_start_z_mm": 1946.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:project_and_recording_system:noenergyfilter",
+            "kind": "bore",
+            "local_end_z_mm": 2186.9,
+            "local_start_z_mm": 2181.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:project_and_recording_system:noenergyfilter",
+            "kind": "bore",
+            "local_end_z_mm": 2311.9,
+            "local_start_z_mm": 2306.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:project_and_recording_system:noenergyfilter",
+            "kind": "bore",
+            "local_end_z_mm": 2594.15,
+            "local_start_z_mm": 2586.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:project_and_recording_system:noenergyfilter",
+            "kind": "bore",
+            "local_end_z_mm": 2714.15,
+            "local_start_z_mm": 2594.65,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:project_and_recording_system:noenergyfilter",
+            "kind": "bore",
+            "local_end_z_mm": 2804.15,
+            "local_start_z_mm": 2714.65,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:project_and_recording_system:noenergyfilter",
+            "kind": "bore",
+            "local_end_z_mm": 2874.15,
+            "local_start_z_mm": 2804.65,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "@vacuum_drift:project_and_recording_system:noenergyfilter",
+            "kind": "bore",
+            "local_end_z_mm": 2986.65,
+            "local_start_z_mm": 2874.65,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "@vacuum_drift:project_and_recording_system:noenergyfilter"
+        ]
+      },
+      {
+        "host_key": "diffraction_lens",
+        "pieces": [
+          {
+            "key": "diffraction_lens",
+            "kind": "bore",
+            "local_end_z_mm": 1851.9,
+            "local_start_z_mm": 1846.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "diffraction_lens",
+            "kind": "bore",
+            "local_end_z_mm": 1946.9,
+            "local_start_z_mm": 1941.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "diffraction_lens"
+        ]
+      },
+      {
+        "host_key": "diffraction_lens_excitation_coil",
+        "pieces": [
+          {
+            "key": "diffraction_lens_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 1862.9,
+            "local_start_z_mm": 1851.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "diffraction_lens_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 1898.9,
+            "local_start_z_mm": 1894.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "diffraction_lens_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 1941.9,
+            "local_start_z_mm": 1930.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "diffraction_lens_excitation_coil"
+        ]
+      },
+      {
+        "host_key": "diffraction_lens_upper_pole",
+        "pieces": [
+          {
+            "key": "diffraction_lens_upper_pole",
+            "kind": "bore",
+            "local_end_z_mm": 1894.9,
+            "local_start_z_mm": 1862.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "diffraction_lens_upper_pole"
+        ]
+      },
+      {
+        "host_key": "diffraction_lens_lower_pole",
+        "pieces": [
+          {
+            "key": "diffraction_lens_lower_pole",
+            "kind": "bore",
+            "local_end_z_mm": 1930.9,
+            "local_start_z_mm": 1898.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "diffraction_lens_lower_pole"
+        ]
+      },
+      {
+        "host_key": "intermediate_lens",
+        "pieces": [
+          {
+            "key": "intermediate_lens",
+            "kind": "bore",
+            "local_end_z_mm": 1985.9,
+            "local_start_z_mm": 1951.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "intermediate_lens",
+            "kind": "bore",
+            "local_end_z_mm": 2181.9,
+            "local_start_z_mm": 2147.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "intermediate_lens"
+        ]
+      },
+      {
+        "host_key": "intermediate_lens_excitation_coil",
+        "pieces": [
+          {
+            "key": "intermediate_lens_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 2036.9,
+            "local_start_z_mm": 1985.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "intermediate_lens_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 2069.9,
+            "local_start_z_mm": 2063.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "intermediate_lens_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 2147.9,
+            "local_start_z_mm": 2096.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "intermediate_lens_excitation_coil"
+        ]
+      },
+      {
+        "host_key": "intermediate_lens_upper_pole",
+        "pieces": [
+          {
+            "key": "intermediate_lens_upper_pole",
+            "kind": "bore",
+            "local_end_z_mm": 2063.9,
+            "local_start_z_mm": 2036.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "intermediate_lens_upper_pole"
+        ]
+      },
+      {
+        "host_key": "intermediate_lens_lower_pole",
+        "pieces": [
+          {
+            "key": "intermediate_lens_lower_pole",
+            "kind": "bore",
+            "local_end_z_mm": 2096.9,
+            "local_start_z_mm": 2069.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "intermediate_lens_lower_pole"
+        ]
+      },
+      {
+        "host_key": "projector_lens_1",
+        "pieces": [
+          {
+            "key": "projector_lens_1",
+            "kind": "bore",
+            "local_end_z_mm": 2192.9,
+            "local_start_z_mm": 2186.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "projector_lens_1",
+            "kind": "bore",
+            "local_end_z_mm": 2306.9,
+            "local_start_z_mm": 2300.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "projector_lens_1"
+        ]
+      },
+      {
+        "host_key": "projector_lens_1_excitation_coil",
+        "pieces": [
+          {
+            "key": "projector_lens_1_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 2215.9,
+            "local_start_z_mm": 2192.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "projector_lens_1_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 2249.4,
+            "local_start_z_mm": 2244.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "projector_lens_1_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 2300.9,
+            "local_start_z_mm": 2277.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "projector_lens_1_excitation_coil"
+        ]
+      },
+      {
+        "host_key": "projector_lens_1_upper_pole",
+        "pieces": [
+          {
+            "key": "projector_lens_1_upper_pole",
+            "kind": "bore",
+            "local_end_z_mm": 2244.4,
+            "local_start_z_mm": 2215.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "projector_lens_1_upper_pole"
+        ]
+      },
+      {
+        "host_key": "projector_lens_1_lower_pole",
+        "pieces": [
+          {
+            "key": "projector_lens_1_lower_pole",
+            "kind": "bore",
+            "local_end_z_mm": 2277.9,
+            "local_start_z_mm": 2249.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "projector_lens_1_lower_pole"
+        ]
+      },
+      {
+        "host_key": "projector_lens_2",
+        "pieces": [
+          {
+            "key": "projector_lens_2",
+            "kind": "bore",
+            "local_end_z_mm": 2368.4,
+            "local_start_z_mm": 2311.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "projector_lens_2",
+            "kind": "bore",
+            "local_end_z_mm": 2586.9,
+            "local_start_z_mm": 2530.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "projector_lens_2"
+        ]
+      },
+      {
+        "host_key": "projector_lens_2_excitation_coil",
+        "pieces": [
+          {
+            "key": "projector_lens_2_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 2414.4,
+            "local_start_z_mm": 2368.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "projector_lens_2_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 2452.9,
+            "local_start_z_mm": 2445.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "key": "projector_lens_2_excitation_coil",
+            "kind": "bore",
+            "local_end_z_mm": 2530.4,
+            "local_start_z_mm": 2484.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "projector_lens_2_excitation_coil"
+        ]
+      },
+      {
+        "host_key": "projector_lens_2_upper_pole",
+        "pieces": [
+          {
+            "key": "projector_lens_2_upper_pole",
+            "kind": "bore",
+            "local_end_z_mm": 2445.9,
+            "local_start_z_mm": 2414.4,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "projector_lens_2_upper_pole"
+        ]
+      },
+      {
+        "host_key": "projector_lens_2_lower_pole",
+        "pieces": [
+          {
+            "key": "projector_lens_2_lower_pole",
+            "kind": "bore",
+            "local_end_z_mm": 2484.4,
+            "local_start_z_mm": 2452.9,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "projector_lens_2_lower_pole"
+        ]
+      },
+      {
+        "host_key": "haadf",
+        "pieces": [
+          {
+            "key": "haadf",
+            "kind": "bore",
+            "local_end_z_mm": 2594.65,
+            "local_start_z_mm": 2594.15,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "haadf"
+        ]
+      },
+      {
+        "host_key": "flu_screen",
+        "pieces": [
+          {
+            "key": "flu_screen",
+            "kind": "bore",
+            "local_end_z_mm": 2714.65,
+            "local_start_z_mm": 2714.15,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "flu_screen"
+        ]
+      },
+      {
+        "host_key": "df",
+        "pieces": [
+          {
+            "key": "df",
+            "kind": "bore",
+            "local_end_z_mm": 2804.65,
+            "local_start_z_mm": 2804.15,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "df"
+        ]
+      },
+      {
+        "host_key": "bf",
+        "pieces": [
+          {
+            "key": "bf",
+            "kind": "bore",
+            "local_end_z_mm": 2874.65,
+            "local_start_z_mm": 2874.15,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "bf"
+        ]
+      },
+      {
+        "host_key": "camera",
+        "pieces": [
+          {
+            "key": "camera",
+            "kind": "bore",
+            "local_end_z_mm": 2987.15,
+            "local_start_z_mm": 2986.65,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 10.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "camera"
+        ]
+      },
+      {
+        "host_key": "projection_chamber_dpa_aperture",
+        "pieces": [
+          {
+            "key": "projection_chamber_dpa_aperture",
+            "kind": "aperture",
+            "local_end_z_mm": 2587.0,
+            "local_start_z_mm": 2586.8,
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius_mm": 6.0,
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "source_keys": [
+          "projection_chamber_dpa_aperture"
+        ]
+      }
+    ],
+    "digest": "6cdf5c6fa84d354aa7937f9e135c550ab476ad719176300287d4712ba89699df",
+    "schema": "potential-absorbing-geometry-v1",
+    "scope": "finite opaque slabs outside declared circular openings; swept global-Z absorbing boundary; no wall atomistics or inferred CAD solid",
+    "source_scene_geometry_digest": "f12e9c8dcf0310f70ad16ed5719dce175efbe4e3e9e90eb00d855d9863943b68",
+    "start_z_m": 0.45,
+    "stop_z_m": 2.9871499999999997
+  },
+  "runtime_policies": {
+    "electric_policy": "retained native phi and E plus -partial_t(A); no tolerance-based tail deletion",
+    "emission_time_s": 0.0,
+    "empirical_aberrations_applied": false,
+    "equivalent_image_maps_applied": false,
+    "geometry_owner": "unified captured finite boundaries",
+    "qualification": "native engineering fields with explicit domains; not OEM field calibration",
+    "round_radial_order": 3,
+    "round_remote_domain_policy": "gaussian-binary64-remote-roundoff-v1",
+    "saved_legacy_terms": "preserved in instrument input identity; inactive in this field-owned interval",
+    "source_contract": "executed physical gun exit; no synthetic source substitution",
+    "time_policy": "actual emission epoch plus flight time; native raster flyback requires explicit temporal admission"
+  }
+}

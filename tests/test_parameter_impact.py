@@ -36,13 +36,13 @@ def _impact(parts, key, field, mode="ideal", descriptors=None):
                                      simulation_mode=mode, descriptors=descriptors)
 
 
-@pytest.mark.parametrize("field", ["length_mm", "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm", "coil_ampere_turn_fraction"])
+@pytest.mark.parametrize("field", ["length_mm", "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm"])
 def test_copper_selection_explains_actual_winding_inputs(parts, field):
     key = "intermediate_lens_excitation_coil"
     impact = describe_parameter_impact(parts[key], ("parts", key, field), by_key=parts,
         simulation_mode="unified", round_lens_settings={"round_lens_field_model": "copper_coil"})
     assert impact.active and "magnetic_field" in impact.effects
-    assert "Copper-coil" in impact.label
+    assert "Ideal prescribed-current coil" in impact.label
     assert "does not refocus" in impact.detail
 
 
@@ -54,7 +54,26 @@ def test_copper_selection_marks_old_gaussian_calibration_inactive(parts):
         assert impact.active is False and "Gaussian" in impact.label
     current = describe_parameter_impact(parts[key], ("parts", key, "air_core_reference_ampere_turns"), by_key=parts,
         simulation_mode="unified", round_lens_settings={"round_lens_field_model": "copper_coil"})
-    assert current.active and "magnetic_field" in current.effects
+    assert current.active is False and "magnetic_field" not in current.effects
+    assert current.label == "Legacy ampere-turn fallback inactive"
+    explicit = describe_parameter_impact(parts[key], ("parts",key,"ideal_coil_current_a_at_100_percent"),by_key=parts,
+        simulation_mode="unified",round_lens_settings={"round_lens_field_model":"copper_coil"})
+    assert explicit.active and "magnetic_field" in explicit.effects
+
+
+@pytest.mark.parametrize(('key','field'),[
+    ('intermediate_lens','air_core_reference_ampere_turns'),
+    ('intermediate_lens_excitation_coil','coil_ampere_turn_fraction'),
+])
+def test_legacy_ampere_turn_inputs_remain_active_only_without_explicit_owner_current(parts,key,field):
+    options=dict(simulation_mode='unified',round_lens_settings={'round_lens_field_model':'copper_coil'})
+    explicit=describe_parameter_impact(parts[key],('parts',key,field),by_key=parts,**options)
+    assert explicit.active is False and 'magnetic_field' not in explicit.effects
+    assert 'not added again' in explicit.detail
+    legacy=deepcopy(parts)
+    legacy['intermediate_lens'].pop('ideal_coil_current_a_at_100_percent')
+    restored=describe_parameter_impact(legacy[key],('parts',key,field),by_key=legacy,**options)
+    assert restored.active and 'magnetic_field' in restored.effects
 
 
 def test_gaussian_length_link_explains_only_the_axial_geometry_route(parts):

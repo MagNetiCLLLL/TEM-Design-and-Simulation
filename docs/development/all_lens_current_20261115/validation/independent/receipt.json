@@ -1,0 +1,1879 @@
+{
+  "scope": "Independent raw-input, NI and continuous field audit; no source or propagation",
+  "source_files": 9,
+  "raw_owner_checks": 78,
+  "distinct_lens_keys": 20,
+  "distinct_key_geometry_curves": 21,
+  "exact_decimal_area_rounding_passed": true,
+  "nonelectrical_inputs_unchanged": true,
+  "all_reference_NI_and_geometries_passed": true,
+  "wire_diameter_inferred": false,
+  "maximum_curve_peak_normalized_q12_error": 0.0002591021610880601,
+  "maximum_matching_plane_q12_error": 0.00025910216108804285,
+  "error_scope": "Diagnostics of unchanged q12 quadrature against continuous ideal coils; not a tolerance change",
+  "rows": [
+    {
+      "file": "configs/instruments/column/C2.toml",
+      "owner": "condenser_lens_1",
+      "estimated_turns": 303,
+      "cross_section_mm2": 2700.0,
+      "interval_turns": [
+        303
+      ],
+      "I100_a": 717.3704396543142,
+      "interval_reference_NI": [
+        217363.2432152572
+      ],
+      "matching_plane_z_mm": 500.0,
+      "captured_reference_bz_t": 1.7748239349298838,
+      "independent_reference_bz_t": 1.7748239351817194,
+      "potential_digest": "545026256683182eb6cce56e76b6394a9c377ba567437e69b381ed8363907db1",
+      "input_sha256": "38b6468e10e24780a231cb4b2eb203d05649ff10766f97627d5e3c28e9923745"
+    },
+    {
+      "file": "configs/instruments/column/C2.toml",
+      "owner": "objective_lens",
+      "estimated_turns": 1172,
+      "cross_section_mm2": 10440.0,
+      "interval_turns": [
+        586,
+        586
+      ],
+      "I100_a": 1575.233028526278,
+      "interval_reference_NI": [
+        923086.5547163989,
+        923086.5547163989
+      ],
+      "matching_plane_z_mm": 1025.1999975,
+      "captured_reference_bz_t": 1.6147660094589162,
+      "independent_reference_bz_t": 1.6147660094593927,
+      "potential_digest": "9d1dae5723b571f22819526548ac37d04f3f84312c5b6d786e2eb9414f4b4178",
+      "input_sha256": "38b6468e10e24780a231cb4b2eb203d05649ff10766f97627d5e3c28e9923745"
+    },
+    {
+      "file": "configs/instruments/column/C2.toml",
+      "owner": "mini_condenser",
+      "estimated_turns": 17,
+      "cross_section_mm2": 153.0,
+      "interval_turns": [
+        17
+      ],
+      "I100_a": 883.8443586346789,
+      "interval_reference_NI": [
+        -15025.35409678954
+      ],
+      "matching_plane_z_mm": 948.5,
+      "captured_reference_bz_t": -0.41269200808624773,
+      "independent_reference_bz_t": -0.4126920080862485,
+      "potential_digest": "98c922f434cb748e408ff1f73a5a0e63bdfb19e137c827a5cda85e4f0d2bceea",
+      "input_sha256": "38b6468e10e24780a231cb4b2eb203d05649ff10766f97627d5e3c28e9923745"
+    },
+    {
+      "file": "configs/instruments/column/C2.toml",
+      "owner": "condenser_lens_2",
+      "estimated_turns": 546,
+      "cross_section_mm2": 4860.0,
+      "interval_turns": [
+        546
+      ],
+      "I100_a": 367.88003706542753,
+      "interval_reference_NI": [
+        200862.50023772343
+      ],
+      "matching_plane_z_mm": 650.0,
+      "captured_reference_bz_t": 1.230409845135657,
+      "independent_reference_bz_t": 1.230411301469345,
+      "potential_digest": "1938b424c2afcf945c22688fd551ce19c93d8e407436bf54eb3c62829b1f948d",
+      "input_sha256": "38b6468e10e24780a231cb4b2eb203d05649ff10766f97627d5e3c28e9923745"
+    },
+    {
+      "file": "configs/instruments/column/C3.toml",
+      "owner": "condenser_lens_1",
+      "estimated_turns": 303,
+      "cross_section_mm2": 2700.0,
+      "interval_turns": [
+        303
+      ],
+      "I100_a": 717.3704396543142,
+      "interval_reference_NI": [
+        217363.2432152572
+      ],
+      "matching_plane_z_mm": 500.0,
+      "captured_reference_bz_t": 1.7748239349298838,
+      "independent_reference_bz_t": 1.7748239351817194,
+      "potential_digest": "2ca8983dca6aa8bce57b983ae17d01347ecff8b06633ade3df9e47f1a741efd5",
+      "input_sha256": "2d1887b2bff53b64cabbaa1c0a9319eab5b8a9557dfeee63d720498861b40043"
+    },
+    {
+      "file": "configs/instruments/column/C3.toml",
+      "owner": "objective_lens",
+      "estimated_turns": 1172,
+      "cross_section_mm2": 10440.0,
+      "interval_turns": [
+        586,
+        586
+      ],
+      "I100_a": 1575.2330285262774,
+      "interval_reference_NI": [
+        923086.5547163986,
+        923086.5547163986
+      ],
+      "matching_plane_z_mm": 1275.1999975,
+      "captured_reference_bz_t": 1.6147660094589162,
+      "independent_reference_bz_t": 1.6147660094593923,
+      "potential_digest": "24c5c94da6fc391209a0ea3803dffd5f71adcfc61883a215ee1aab100cd88d98",
+      "input_sha256": "2d1887b2bff53b64cabbaa1c0a9319eab5b8a9557dfeee63d720498861b40043"
+    },
+    {
+      "file": "configs/instruments/column/C3.toml",
+      "owner": "condenser_lens_2",
+      "estimated_turns": 546,
+      "cross_section_mm2": 4860.0,
+      "interval_turns": [
+        546
+      ],
+      "I100_a": 367.88003706542753,
+      "interval_reference_NI": [
+        200862.50023772343
+      ],
+      "matching_plane_z_mm": 650.0,
+      "captured_reference_bz_t": 1.230409845135657,
+      "independent_reference_bz_t": 1.230411301469345,
+      "potential_digest": "b97f0667c038a13b7a3163c75e2ac82ce3d255c3d798b15725a5f1ab414426ca",
+      "input_sha256": "2d1887b2bff53b64cabbaa1c0a9319eab5b8a9557dfeee63d720498861b40043"
+    },
+    {
+      "file": "configs/instruments/column/C3.toml",
+      "owner": "mini_condenser",
+      "estimated_turns": 17,
+      "cross_section_mm2": 153.0,
+      "interval_turns": [
+        17
+      ],
+      "I100_a": 883.8443586346796,
+      "interval_reference_NI": [
+        -15025.354096789553
+      ],
+      "matching_plane_z_mm": 1198.5000000000002,
+      "captured_reference_bz_t": -0.41269200808624784,
+      "independent_reference_bz_t": -0.4126920080862488,
+      "potential_digest": "c99304a0d85f730ea593b2ceed0f62367c54fb0af9c47c0ad39434a888c5fa3f",
+      "input_sha256": "2d1887b2bff53b64cabbaa1c0a9319eab5b8a9557dfeee63d720498861b40043"
+    },
+    {
+      "file": "configs/instruments/column/C3.toml",
+      "owner": "condenser_lens_3",
+      "estimated_turns": 515,
+      "cross_section_mm2": 4590.0,
+      "interval_turns": [
+        515
+      ],
+      "I100_a": 106.65003253450197,
+      "interval_reference_NI": [
+        54924.766755268516
+      ],
+      "matching_plane_z_mm": 915.0,
+      "captured_reference_bz_t": 0.3484954734950536,
+      "independent_reference_bz_t": 0.3484956692933373,
+      "potential_digest": "826b50de183913e78204263338d45de5d5f84a16d636994ec6742ccab73fc037",
+      "input_sha256": "2d1887b2bff53b64cabbaa1c0a9319eab5b8a9557dfeee63d720498861b40043"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "condenser_lens_1",
+      "estimated_turns": 303,
+      "cross_section_mm2": 2700.0,
+      "interval_turns": [
+        303
+      ],
+      "I100_a": 717.3704396543142,
+      "interval_reference_NI": [
+        217363.2432152572
+      ],
+      "matching_plane_z_mm": 500.0,
+      "captured_reference_bz_t": 1.7748239349298838,
+      "independent_reference_bz_t": 1.7748239351817194,
+      "potential_digest": "772146cd3b0588de99907b408c265c6dd6ace9db779dce019956019561c406ca",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "condenser_lens_2",
+      "estimated_turns": 546,
+      "cross_section_mm2": 4860.0,
+      "interval_turns": [
+        546
+      ],
+      "I100_a": 367.88003706542753,
+      "interval_reference_NI": [
+        200862.50023772343
+      ],
+      "matching_plane_z_mm": 650.0,
+      "captured_reference_bz_t": 1.230409845135657,
+      "independent_reference_bz_t": 1.230411301469345,
+      "potential_digest": "9e152b2d731909ab82ada51059ab52cb7894ea12fc7120ecca2680c5a926ab79",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "condenser_lens_3",
+      "estimated_turns": 515,
+      "cross_section_mm2": 4590.0,
+      "interval_turns": [
+        515
+      ],
+      "I100_a": 106.65003253450197,
+      "interval_reference_NI": [
+        54924.766755268516
+      ],
+      "matching_plane_z_mm": 915.0,
+      "captured_reference_bz_t": 0.3484954734950536,
+      "independent_reference_bz_t": 0.3484956692933373,
+      "potential_digest": "3653110cbc78d6ca3af0bb6fa47a370e7a25f220a38f9f8698d2be462eb87066",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "objective_lens",
+      "estimated_turns": 1172,
+      "cross_section_mm2": 10440.0,
+      "interval_turns": [
+        586,
+        586
+      ],
+      "I100_a": 1575.2330285262774,
+      "interval_reference_NI": [
+        923086.5547163986,
+        923086.5547163986
+      ],
+      "matching_plane_z_mm": 1275.1999975,
+      "captured_reference_bz_t": 1.6147660094589162,
+      "independent_reference_bz_t": 1.6147660094593923,
+      "potential_digest": "61c96e1defb3ca2a5226b0032d080978db7492251288286ea23266a56018a53a",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "mini_condenser",
+      "estimated_turns": 17,
+      "cross_section_mm2": 153.0,
+      "interval_turns": [
+        17
+      ],
+      "I100_a": 883.8443586346796,
+      "interval_reference_NI": [
+        -15025.354096789553
+      ],
+      "matching_plane_z_mm": 1198.5000000000002,
+      "captured_reference_bz_t": -0.41269200808624784,
+      "independent_reference_bz_t": -0.4126920080862488,
+      "potential_digest": "f94632826fb856c4c1d9f78f919db550f8214ef81377a3dd272bba492eb26efb",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl11_lens",
+      "estimated_turns": 69,
+      "cross_section_mm2": 611.9236428750004,
+      "interval_turns": [
+        69
+      ],
+      "I100_a": 806.5560417722379,
+      "interval_reference_NI": [
+        -55652.36688228441
+      ],
+      "matching_plane_z_mm": 1512.9,
+      "captured_reference_bz_t": -0.5144005954444499,
+      "independent_reference_bz_t": -0.5144005954444502,
+      "potential_digest": "92b1bd2d1cf3b78ea839db939086564df251b8ceb332333d20784a28d7a5b3f3",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl12_lens",
+      "estimated_turns": 36,
+      "cross_section_mm2": 318.064177440001,
+      "interval_turns": [
+        36
+      ],
+      "I100_a": 682.2888026641002,
+      "interval_reference_NI": [
+        24562.39689590761
+      ],
+      "matching_plane_z_mm": 1586.8999999999999,
+      "captured_reference_bz_t": 0.3025984209321959,
+      "independent_reference_bz_t": 0.30259842093219624,
+      "potential_digest": "8b8bf1fac0c6ae3bd76972dfeaedfbf8ca4fb145eaa4f166eb3510913b665d32",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl21_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 404.34521544000125,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3251.7910019496453,
+      "interval_reference_NI": [
+        146330.59508773405
+      ],
+      "matching_plane_z_mm": 1706.4,
+      "captured_reference_bz_t": 1.980857625698071,
+      "independent_reference_bz_t": 1.9808576256980717,
+      "potential_digest": "749051727013ff306bf4dd03e6c7cd62d7fc3abc2432338ccd26894068772428",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl22_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 401.05996236000124,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3197.874314618057,
+      "interval_reference_NI": [
+        -143904.34415781256
+      ],
+      "matching_plane_z_mm": 1756.4,
+      "captured_reference_bz_t": -1.949860879226724,
+      "independent_reference_bz_t": -1.9498608792267245,
+      "potential_digest": "33350624a1d853c4320f2fd93a2a22e2d5ec2fb56a86612a32f24d82100912fe",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl31_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 404.34521544,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3251.791001949644,
+      "interval_reference_NI": [
+        146330.59508773396
+      ],
+      "matching_plane_z_mm": 1850.4,
+      "captured_reference_bz_t": 1.9808576256980708,
+      "independent_reference_bz_t": 1.9808576256980706,
+      "potential_digest": "7689e7e21285e3ab460d318f81d2509f1656fb2f7b885bc6e08a679f76451dcc",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl32_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 401.05996236,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3197.874314618055,
+      "interval_reference_NI": [
+        -143904.34415781248
+      ],
+      "matching_plane_z_mm": 1900.4,
+      "captured_reference_bz_t": -1.9498608792267236,
+      "independent_reference_bz_t": -1.9498608792267251,
+      "potential_digest": "163acc5254985e392ee2244dc00a3c44bcdd5a170b32084b1bb0e773783a1899",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_adapter_lens",
+      "estimated_turns": 26,
+      "cross_section_mm2": 235.14542838,
+      "interval_turns": [
+        26
+      ],
+      "I100_a": 1038.3821264463331,
+      "interval_reference_NI": [
+        26997.93528760466
+      ],
+      "matching_plane_z_mm": 1980.4,
+      "captured_reference_bz_t": 0.38443787513663946,
+      "independent_reference_bz_t": 0.38443787513663985,
+      "potential_digest": "62944a05d71ed8cedcc508f89ce0d611142d98223988ebd25b21be73e50535a1",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    {
+      "file": "configs/instruments/column/C3_ImageCorrector.toml",
+      "owner": "condenser_lens_1",
+      "estimated_turns": 303,
+      "cross_section_mm2": 2700.0,
+      "interval_turns": [
+        303
+      ],
+      "I100_a": 717.3704396543142,
+      "interval_reference_NI": [
+        217363.2432152572
+      ],
+      "matching_plane_z_mm": 500.0,
+      "captured_reference_bz_t": 1.7748239349298838,
+      "independent_reference_bz_t": 1.7748239351817194,
+      "potential_digest": "ca3d1783041478b14185957a630dd83bd36e64917e4ba848292981accf88d143",
+      "input_sha256": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40"
+    },
+    {
+      "file": "configs/instruments/column/C3_ImageCorrector.toml",
+      "owner": "objective_lens",
+      "estimated_turns": 1172,
+      "cross_section_mm2": 10440.0,
+      "interval_turns": [
+        586,
+        586
+      ],
+      "I100_a": 1575.2330285262774,
+      "interval_reference_NI": [
+        923086.5547163986,
+        923086.5547163986
+      ],
+      "matching_plane_z_mm": 1275.1999975,
+      "captured_reference_bz_t": 1.6147660094589162,
+      "independent_reference_bz_t": 1.6147660094593923,
+      "potential_digest": "4598014751eeb234cc72629a69715b09eb2c6f64fea2eb8c521739d980410eba",
+      "input_sha256": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40"
+    },
+    {
+      "file": "configs/instruments/column/C3_ImageCorrector.toml",
+      "owner": "condenser_lens_2",
+      "estimated_turns": 546,
+      "cross_section_mm2": 4860.0,
+      "interval_turns": [
+        546
+      ],
+      "I100_a": 367.88003706542753,
+      "interval_reference_NI": [
+        200862.50023772343
+      ],
+      "matching_plane_z_mm": 650.0,
+      "captured_reference_bz_t": 1.230409845135657,
+      "independent_reference_bz_t": 1.230411301469345,
+      "potential_digest": "c50fb0af7074dfc1e5b10b6cbd53ebb332df4739b4d3daad5c6d950b7773aa6e",
+      "input_sha256": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40"
+    },
+    {
+      "file": "configs/instruments/column/C3_ImageCorrector.toml",
+      "owner": "mini_condenser",
+      "estimated_turns": 17,
+      "cross_section_mm2": 153.0,
+      "interval_turns": [
+        17
+      ],
+      "I100_a": 883.8443586346796,
+      "interval_reference_NI": [
+        -15025.354096789553
+      ],
+      "matching_plane_z_mm": 1198.5000000000002,
+      "captured_reference_bz_t": -0.41269200808624784,
+      "independent_reference_bz_t": -0.4126920080862488,
+      "potential_digest": "74bb9a5fc389a01bf7c92ab20142977d3c6e14c6177ab9a17026f2ba014e43d7",
+      "input_sha256": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40"
+    },
+    {
+      "file": "configs/instruments/column/C3_ImageCorrector.toml",
+      "owner": "condenser_lens_3",
+      "estimated_turns": 515,
+      "cross_section_mm2": 4590.0,
+      "interval_turns": [
+        515
+      ],
+      "I100_a": 106.65003253450197,
+      "interval_reference_NI": [
+        54924.766755268516
+      ],
+      "matching_plane_z_mm": 915.0,
+      "captured_reference_bz_t": 0.3484954734950536,
+      "independent_reference_bz_t": 0.3484956692933373,
+      "potential_digest": "30cc128bd4a116131649f9b600b82c1d4b60ddf65ac2d996db5aca5c7627d136",
+      "input_sha256": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40"
+    },
+    {
+      "file": "configs/instruments/column/C3_ImageCorrector.toml",
+      "owner": "image_tl11_lens",
+      "estimated_turns": 69,
+      "cross_section_mm2": 611.9236428750004,
+      "interval_turns": [
+        69
+      ],
+      "I100_a": 806.5560417722379,
+      "interval_reference_NI": [
+        -55652.36688228441
+      ],
+      "matching_plane_z_mm": 1512.9,
+      "captured_reference_bz_t": -0.5144005954444499,
+      "independent_reference_bz_t": -0.5144005954444502,
+      "potential_digest": "439759cc4411ba5bfb240aece4ba0b74c563f6223536362e19c0783d753b88f3",
+      "input_sha256": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40"
+    },
+    {
+      "file": "configs/instruments/column/C3_ImageCorrector.toml",
+      "owner": "image_tl12_lens",
+      "estimated_turns": 36,
+      "cross_section_mm2": 318.064177440001,
+      "interval_turns": [
+        36
+      ],
+      "I100_a": 682.2888026641002,
+      "interval_reference_NI": [
+        24562.39689590761
+      ],
+      "matching_plane_z_mm": 1586.8999999999999,
+      "captured_reference_bz_t": 0.3025984209321959,
+      "independent_reference_bz_t": 0.30259842093219624,
+      "potential_digest": "c026e712f88026e5378a170a73090d78e76325cf76e309c07afe32a4e1eedb6a",
+      "input_sha256": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40"
+    },
+    {
+      "file": "configs/instruments/column/C3_ImageCorrector.toml",
+      "owner": "image_tl21_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 404.34521544000125,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3251.7910019496453,
+      "interval_reference_NI": [
+        146330.59508773405
+      ],
+      "matching_plane_z_mm": 1706.4,
+      "captured_reference_bz_t": 1.980857625698071,
+      "independent_reference_bz_t": 1.9808576256980717,
+      "potential_digest": "b8c430d9eb671203a6fd63bd71787fdf7aadd744cabf435d85f36ae985b363b4",
+      "input_sha256": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40"
+    },
+    {
+      "file": "configs/instruments/column/C3_ImageCorrector.toml",
+      "owner": "image_tl22_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 401.05996236000124,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3197.874314618057,
+      "interval_reference_NI": [
+        -143904.34415781256
+      ],
+      "matching_plane_z_mm": 1756.4,
+      "captured_reference_bz_t": -1.949860879226724,
+      "independent_reference_bz_t": -1.9498608792267245,
+      "potential_digest": "90b1c56068966e2298c254c179c167579c53e9c707faba73dd04939d9fd0e75c",
+      "input_sha256": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40"
+    },
+    {
+      "file": "configs/instruments/column/C3_ImageCorrector.toml",
+      "owner": "image_adapter_lens",
+      "estimated_turns": 26,
+      "cross_section_mm2": 235.14542838000074,
+      "interval_turns": [
+        26
+      ],
+      "I100_a": 1038.3821264463336,
+      "interval_reference_NI": [
+        26997.935287604672
+      ],
+      "matching_plane_z_mm": 1836.4,
+      "captured_reference_bz_t": 0.3844378751366394,
+      "independent_reference_bz_t": 0.3844378751366392,
+      "potential_digest": "9eecc59b686395d0900c31aa2053771ca41851a373768cd939dc4ac29ef43e7f",
+      "input_sha256": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "condenser_lens_1",
+      "estimated_turns": 303,
+      "cross_section_mm2": 2700.0,
+      "interval_turns": [
+        303
+      ],
+      "I100_a": 717.3704396543142,
+      "interval_reference_NI": [
+        217363.2432152572
+      ],
+      "matching_plane_z_mm": 500.0,
+      "captured_reference_bz_t": 1.7748239349298838,
+      "independent_reference_bz_t": 1.7748239351817194,
+      "potential_digest": "8faad62b40d937bf2bf94d2e6da5096cbd71118bbf27af5a5a0cfeaa2b6eb959",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "adapter_lens",
+      "estimated_turns": 23,
+      "cross_section_mm2": 208.3536,
+      "interval_turns": [
+        23
+      ],
+      "I100_a": 345.2999896863375,
+      "interval_reference_NI": [
+        7941.8997627857625
+      ],
+      "matching_plane_z_mm": 1088.2,
+      "captured_reference_bz_t": 0.11005120215633273,
+      "independent_reference_bz_t": 0.11005120215633278,
+      "potential_digest": "7085e50f52ad9967279c86aafa49e0edb835f870f122c9dd1d1976b0484c0056",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "condenser_lens_2",
+      "estimated_turns": 546,
+      "cross_section_mm2": 4860.0,
+      "interval_turns": [
+        546
+      ],
+      "I100_a": 367.88003706542753,
+      "interval_reference_NI": [
+        200862.50023772343
+      ],
+      "matching_plane_z_mm": 650.0,
+      "captured_reference_bz_t": 1.230409845135657,
+      "independent_reference_bz_t": 1.230411301469345,
+      "potential_digest": "51160a563b0a07d5a92cf946a8cf40f99cc35f1d24d3a94e04a2ccf0a2800e55",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "probe_tl22_lens",
+      "estimated_turns": 20,
+      "cross_section_mm2": 174.2013151875,
+      "interval_turns": [
+        20
+      ],
+      "I100_a": 1716.6766520633623,
+      "interval_reference_NI": [
+        -34333.53304126725
+      ],
+      "matching_plane_z_mm": 1166.35,
+      "captured_reference_bz_t": -0.48620353627107005,
+      "independent_reference_bz_t": -0.4862035362710705,
+      "potential_digest": "e0f94381bbe470299cdb434ba6780e1c173d4ae7e3e392da799c656af5c5043d",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "probe_tl21_lens",
+      "estimated_turns": 19,
+      "cross_section_mm2": 171.96981095250075,
+      "interval_turns": [
+        19
+      ],
+      "I100_a": 1694.851468358554,
+      "interval_reference_NI": [
+        32202.177898812526
+      ],
+      "matching_plane_z_mm": 1249.95,
+      "captured_reference_bz_t": 0.4564795319526607,
+      "independent_reference_bz_t": 0.4564795319526608,
+      "potential_digest": "4deac62d0202c9e198337bcba3956bca662c60ed5804a9f7b03b4b4ad5629792",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "probe_tl12_lens",
+      "estimated_turns": 20,
+      "cross_section_mm2": 174.87899999999922,
+      "interval_turns": [
+        20
+      ],
+      "I100_a": 1781.554522137791,
+      "interval_reference_NI": [
+        35631.09044275582
+      ],
+      "matching_plane_z_mm": 1366.3,
+      "captured_reference_bz_t": 0.5044013432165251,
+      "independent_reference_bz_t": 0.5044013432165252,
+      "potential_digest": "0eb49d252bf954709b60b89a6aff41a11a00b2957ef04ca7d4b515b7b3e78b0f",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "objective_lens",
+      "estimated_turns": 1172,
+      "cross_section_mm2": 10440.0,
+      "interval_turns": [
+        586,
+        586
+      ],
+      "I100_a": 1575.2330285262728,
+      "interval_reference_NI": [
+        923086.5547163959,
+        923086.5547163959
+      ],
+      "matching_plane_z_mm": 1599.1999975,
+      "captured_reference_bz_t": 1.6147660094589158,
+      "independent_reference_bz_t": 1.6147660094593923,
+      "potential_digest": "8689d163e4548b84d19a83e0f7bfcf2c49a6c8001cde3bad9d3df6cfff2f7fc8",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "mini_condenser",
+      "estimated_turns": 17,
+      "cross_section_mm2": 153.0,
+      "interval_turns": [
+        17
+      ],
+      "I100_a": 883.8443586346796,
+      "interval_reference_NI": [
+        -15025.354096789553
+      ],
+      "matching_plane_z_mm": 1522.5,
+      "captured_reference_bz_t": -0.41269200808624784,
+      "independent_reference_bz_t": -0.4126920080862489,
+      "potential_digest": "49921bc10e7ea0a256335f53c7575ee672525b4690e41e020aa5ead28b1823ed",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "condenser_lens_3",
+      "estimated_turns": 515,
+      "cross_section_mm2": 4590.0,
+      "interval_turns": [
+        515
+      ],
+      "I100_a": 106.65003253450197,
+      "interval_reference_NI": [
+        54924.766755268516
+      ],
+      "matching_plane_z_mm": 915.0,
+      "captured_reference_bz_t": 0.3484954734950536,
+      "independent_reference_bz_t": 0.3484956692933373,
+      "potential_digest": "4a30a9cbbf63ef0305432e4bfd2eed3bd20b881fbdba28347ee316faaafe8c0c",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "condenser_lens_1",
+      "estimated_turns": 303,
+      "cross_section_mm2": 2700.0,
+      "interval_turns": [
+        303
+      ],
+      "I100_a": 717.3704396543142,
+      "interval_reference_NI": [
+        217363.2432152572
+      ],
+      "matching_plane_z_mm": 500.0,
+      "captured_reference_bz_t": 1.7748239349298838,
+      "independent_reference_bz_t": 1.7748239351817194,
+      "potential_digest": "8729c859bb37ad989c503147b0c70e62dd8af92156e7445b2166273193569535",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "condenser_lens_2",
+      "estimated_turns": 546,
+      "cross_section_mm2": 4860.0,
+      "interval_turns": [
+        546
+      ],
+      "I100_a": 367.88003706542753,
+      "interval_reference_NI": [
+        200862.50023772343
+      ],
+      "matching_plane_z_mm": 650.0,
+      "captured_reference_bz_t": 1.230409845135657,
+      "independent_reference_bz_t": 1.230411301469345,
+      "potential_digest": "535bfe4379892cd40dd6190136548c70dd47a870832ec5fb1841838a38c7e9b4",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "condenser_lens_3",
+      "estimated_turns": 515,
+      "cross_section_mm2": 4590.0,
+      "interval_turns": [
+        515
+      ],
+      "I100_a": 106.65003253450197,
+      "interval_reference_NI": [
+        54924.766755268516
+      ],
+      "matching_plane_z_mm": 915.0,
+      "captured_reference_bz_t": 0.3484954734950536,
+      "independent_reference_bz_t": 0.3484956692933373,
+      "potential_digest": "c1e46b0580dd36ff1f7a4ea6b5c9f6876552e362bac55a82cd75074955ea6e00",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "adapter_lens",
+      "estimated_turns": 23,
+      "cross_section_mm2": 208.3536,
+      "interval_turns": [
+        23
+      ],
+      "I100_a": 345.2999896863375,
+      "interval_reference_NI": [
+        7941.8997627857625
+      ],
+      "matching_plane_z_mm": 1088.2,
+      "captured_reference_bz_t": 0.11005120215633273,
+      "independent_reference_bz_t": 0.11005120215633278,
+      "potential_digest": "21201000e6e223e74b9e0263bb29aeb59ea1be668cb8d56bfb83deca93cd1268",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "probe_tl22_lens",
+      "estimated_turns": 20,
+      "cross_section_mm2": 174.2013151875,
+      "interval_turns": [
+        20
+      ],
+      "I100_a": 1716.6766520633623,
+      "interval_reference_NI": [
+        -34333.53304126725
+      ],
+      "matching_plane_z_mm": 1166.35,
+      "captured_reference_bz_t": -0.48620353627107005,
+      "independent_reference_bz_t": -0.4862035362710705,
+      "potential_digest": "07d9baa377fa3d3e7d05c69a91562c05e7a6926cdb2fbae18a27aaf83c88fdaa",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "probe_tl21_lens",
+      "estimated_turns": 19,
+      "cross_section_mm2": 171.96981095250075,
+      "interval_turns": [
+        19
+      ],
+      "I100_a": 1694.851468358554,
+      "interval_reference_NI": [
+        32202.177898812526
+      ],
+      "matching_plane_z_mm": 1249.95,
+      "captured_reference_bz_t": 0.4564795319526607,
+      "independent_reference_bz_t": 0.4564795319526608,
+      "potential_digest": "67a6bd3ba86bf81af99f430470f39c12db4247c21f406ea7372e79195da5a21c",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "probe_tl12_lens",
+      "estimated_turns": 20,
+      "cross_section_mm2": 174.87899999999922,
+      "interval_turns": [
+        20
+      ],
+      "I100_a": 1781.554522137791,
+      "interval_reference_NI": [
+        35631.09044275582
+      ],
+      "matching_plane_z_mm": 1366.3,
+      "captured_reference_bz_t": 0.5044013432165251,
+      "independent_reference_bz_t": 0.5044013432165252,
+      "potential_digest": "b51cab967c50bec2270f3c7e32acba7d640cecccff762b305037af6fe45961bd",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "objective_lens",
+      "estimated_turns": 1172,
+      "cross_section_mm2": 10440.0,
+      "interval_turns": [
+        586,
+        586
+      ],
+      "I100_a": 1575.233028526273,
+      "interval_reference_NI": [
+        923086.554716396,
+        923086.554716396
+      ],
+      "matching_plane_z_mm": 1599.1999975,
+      "captured_reference_bz_t": 1.6147660094589158,
+      "independent_reference_bz_t": 1.6147660094593923,
+      "potential_digest": "a32f0258727198059e077e5084bc9ea23406fb7bd79cf300246be54963b1afca",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "mini_condenser",
+      "estimated_turns": 17,
+      "cross_section_mm2": 153.0,
+      "interval_turns": [
+        17
+      ],
+      "I100_a": 883.8443586346796,
+      "interval_reference_NI": [
+        -15025.354096789553
+      ],
+      "matching_plane_z_mm": 1522.5,
+      "captured_reference_bz_t": -0.41269200808624784,
+      "independent_reference_bz_t": -0.4126920080862489,
+      "potential_digest": "d97a0ee5b60ab15459cf2e2c3173c5648564b22c94f4b0efa244069893d6007e",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "image_tl11_lens",
+      "estimated_turns": 69,
+      "cross_section_mm2": 611.9236428750004,
+      "interval_turns": [
+        69
+      ],
+      "I100_a": 806.5560417722379,
+      "interval_reference_NI": [
+        -55652.36688228441
+      ],
+      "matching_plane_z_mm": 1836.9,
+      "captured_reference_bz_t": -0.5144005954444499,
+      "independent_reference_bz_t": -0.5144005954444502,
+      "potential_digest": "cc59315bec3f5b7e78c10779578991db6df99034006f81bd1833e25ee41cfc7d",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "image_tl12_lens",
+      "estimated_turns": 36,
+      "cross_section_mm2": 318.064177440001,
+      "interval_turns": [
+        36
+      ],
+      "I100_a": 682.2888026641002,
+      "interval_reference_NI": [
+        24562.39689590761
+      ],
+      "matching_plane_z_mm": 1910.8999999999999,
+      "captured_reference_bz_t": 0.3025984209321959,
+      "independent_reference_bz_t": 0.30259842093219624,
+      "potential_digest": "44850d892489422d36e577fdee55ed222546747b1f4a947cdb427c54fda6500a",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "image_tl21_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 404.34521544000125,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3251.7910019496453,
+      "interval_reference_NI": [
+        146330.59508773405
+      ],
+      "matching_plane_z_mm": 2030.4,
+      "captured_reference_bz_t": 1.980857625698071,
+      "independent_reference_bz_t": 1.9808576256980717,
+      "potential_digest": "879c16a29c6ad789e2caf429cb9b03953a08e700be53663d41893429fb441156",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "image_tl22_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 401.05996236000124,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3197.8743146180523,
+      "interval_reference_NI": [
+        -143904.34415781236
+      ],
+      "matching_plane_z_mm": 2080.4,
+      "captured_reference_bz_t": -1.9498608792267182,
+      "independent_reference_bz_t": -1.9498608792267191,
+      "potential_digest": "54c9774cd0a377c02eebe81db34774878901e069dd4cbf103d41fee578d7e16d",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "image_tl31_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 404.34521544,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3251.7910019496358,
+      "interval_reference_NI": [
+        146330.5950877336
+      ],
+      "matching_plane_z_mm": 2174.4,
+      "captured_reference_bz_t": 1.9808576256980648,
+      "independent_reference_bz_t": 1.980857625698066,
+      "potential_digest": "d692eee3ea102e03972c7128728518c0f1a77b660e2f92396db3f3aa45f95476",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "image_tl32_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 401.05996236,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3197.8743146180473,
+      "interval_reference_NI": [
+        -143904.34415781213
+      ],
+      "matching_plane_z_mm": 2224.4,
+      "captured_reference_bz_t": -1.949860879226718,
+      "independent_reference_bz_t": -1.9498608792267156,
+      "potential_digest": "bba4cb40453820a77897f7257e37fd86a9e8d250dbc549ee90fb0407610c68e1",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "owner": "image_adapter_lens",
+      "estimated_turns": 26,
+      "cross_section_mm2": 235.14542838,
+      "interval_turns": [
+        26
+      ],
+      "I100_a": 1038.3821264463306,
+      "interval_reference_NI": [
+        26997.935287604596
+      ],
+      "matching_plane_z_mm": 2304.4,
+      "captured_reference_bz_t": 0.38443787513663835,
+      "independent_reference_bz_t": 0.3844378751366386,
+      "potential_digest": "585c82d4a7eca00b34226f09b84efc44967c0d8ae5091b4fb66da32b38e49ffe",
+      "input_sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "condenser_lens_1",
+      "estimated_turns": 303,
+      "cross_section_mm2": 2700.0,
+      "interval_turns": [
+        303
+      ],
+      "I100_a": 717.3704396543142,
+      "interval_reference_NI": [
+        217363.2432152572
+      ],
+      "matching_plane_z_mm": 500.0,
+      "captured_reference_bz_t": 1.7748239349298838,
+      "independent_reference_bz_t": 1.7748239351817194,
+      "potential_digest": "f905b7695777b708b474e0352edac4a9f135330c8f6df40bf3379444041537f5",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "adapter_lens",
+      "estimated_turns": 23,
+      "cross_section_mm2": 208.3536,
+      "interval_turns": [
+        23
+      ],
+      "I100_a": 345.2999896863375,
+      "interval_reference_NI": [
+        7941.8997627857625
+      ],
+      "matching_plane_z_mm": 1088.2,
+      "captured_reference_bz_t": 0.11005120215633273,
+      "independent_reference_bz_t": 0.11005120215633278,
+      "potential_digest": "f3c783fb233bc37c69d995665dc80e4e2a90ba10433cead231cb66b175e7777e",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "condenser_lens_2",
+      "estimated_turns": 546,
+      "cross_section_mm2": 4860.0,
+      "interval_turns": [
+        546
+      ],
+      "I100_a": 367.88003706542753,
+      "interval_reference_NI": [
+        200862.50023772343
+      ],
+      "matching_plane_z_mm": 650.0,
+      "captured_reference_bz_t": 1.230409845135657,
+      "independent_reference_bz_t": 1.230411301469345,
+      "potential_digest": "0c29ff0f6150f780ea592c8cf31991a710721e51553e753022d44be7c0091f47",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "probe_tl22_lens",
+      "estimated_turns": 20,
+      "cross_section_mm2": 174.2013151875,
+      "interval_turns": [
+        20
+      ],
+      "I100_a": 1716.6766520633623,
+      "interval_reference_NI": [
+        -34333.53304126725
+      ],
+      "matching_plane_z_mm": 1166.35,
+      "captured_reference_bz_t": -0.48620353627107005,
+      "independent_reference_bz_t": -0.4862035362710705,
+      "potential_digest": "383f60005bf996d4b1467edcc26ffe029aec7d58595c651ff244569f929482b5",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "probe_tl21_lens",
+      "estimated_turns": 19,
+      "cross_section_mm2": 171.96981095250075,
+      "interval_turns": [
+        19
+      ],
+      "I100_a": 1694.851468358554,
+      "interval_reference_NI": [
+        32202.177898812526
+      ],
+      "matching_plane_z_mm": 1249.95,
+      "captured_reference_bz_t": 0.4564795319526607,
+      "independent_reference_bz_t": 0.4564795319526608,
+      "potential_digest": "3a678946daa6ff0672a96382dc8cd31879a411b9b1d2aa5dbbbcc22a06389090",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "probe_tl12_lens",
+      "estimated_turns": 20,
+      "cross_section_mm2": 174.87899999999922,
+      "interval_turns": [
+        20
+      ],
+      "I100_a": 1781.554522137791,
+      "interval_reference_NI": [
+        35631.09044275582
+      ],
+      "matching_plane_z_mm": 1366.3,
+      "captured_reference_bz_t": 0.5044013432165251,
+      "independent_reference_bz_t": 0.5044013432165252,
+      "potential_digest": "4fe7dc05a1ba0085921e60d79ec080c3c25954fa345d6e0cb2961c9c45ff6890",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "objective_lens",
+      "estimated_turns": 1172,
+      "cross_section_mm2": 10440.0,
+      "interval_turns": [
+        586,
+        586
+      ],
+      "I100_a": 1575.233028526273,
+      "interval_reference_NI": [
+        923086.554716396,
+        923086.554716396
+      ],
+      "matching_plane_z_mm": 1599.1999975,
+      "captured_reference_bz_t": 1.6147660094589158,
+      "independent_reference_bz_t": 1.6147660094593923,
+      "potential_digest": "3facffe15c5cc0ee02174fe48dc0ad0d1a59ec04933b9365c9f00b54815c7b08",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "mini_condenser",
+      "estimated_turns": 17,
+      "cross_section_mm2": 153.0,
+      "interval_turns": [
+        17
+      ],
+      "I100_a": 883.8443586346796,
+      "interval_reference_NI": [
+        -15025.354096789553
+      ],
+      "matching_plane_z_mm": 1522.5,
+      "captured_reference_bz_t": -0.41269200808624784,
+      "independent_reference_bz_t": -0.4126920080862489,
+      "potential_digest": "5a5e8fa4f6b8638d99f8aa961253b06198a251d633c36bb01338fed13c8dc80b",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "condenser_lens_3",
+      "estimated_turns": 515,
+      "cross_section_mm2": 4590.0,
+      "interval_turns": [
+        515
+      ],
+      "I100_a": 106.65003253450197,
+      "interval_reference_NI": [
+        54924.766755268516
+      ],
+      "matching_plane_z_mm": 915.0,
+      "captured_reference_bz_t": 0.3484954734950536,
+      "independent_reference_bz_t": 0.3484956692933373,
+      "potential_digest": "4c35ff31f30425078c6cebf0d917591ebc54fdb68dd8cb62afd3603db34d91e4",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "image_tl11_lens",
+      "estimated_turns": 69,
+      "cross_section_mm2": 611.9236428750004,
+      "interval_turns": [
+        69
+      ],
+      "I100_a": 806.5560417722379,
+      "interval_reference_NI": [
+        -55652.36688228441
+      ],
+      "matching_plane_z_mm": 1836.9,
+      "captured_reference_bz_t": -0.5144005954444499,
+      "independent_reference_bz_t": -0.5144005954444502,
+      "potential_digest": "468baf656edf42d36c49918726ad1fdabe44852f36aeb2a10737b2fb8671809f",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "image_tl12_lens",
+      "estimated_turns": 36,
+      "cross_section_mm2": 318.064177440001,
+      "interval_turns": [
+        36
+      ],
+      "I100_a": 682.2888026641002,
+      "interval_reference_NI": [
+        24562.39689590761
+      ],
+      "matching_plane_z_mm": 1910.8999999999999,
+      "captured_reference_bz_t": 0.3025984209321959,
+      "independent_reference_bz_t": 0.30259842093219624,
+      "potential_digest": "49f8713dbafbf2358b07ce79c48c1df08dd658735985855843120704b6764185",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "image_tl21_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 404.34521544000125,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3251.7910019496453,
+      "interval_reference_NI": [
+        146330.59508773405
+      ],
+      "matching_plane_z_mm": 2030.4,
+      "captured_reference_bz_t": 1.980857625698071,
+      "independent_reference_bz_t": 1.9808576256980717,
+      "potential_digest": "82bbe141e6a334589b67fa6e985bd5a1214ebc8097e33b4b0f2121eafed16af3",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "image_tl22_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 401.05996236000124,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3197.8743146180523,
+      "interval_reference_NI": [
+        -143904.34415781236
+      ],
+      "matching_plane_z_mm": 2080.4,
+      "captured_reference_bz_t": -1.9498608792267182,
+      "independent_reference_bz_t": -1.9498608792267191,
+      "potential_digest": "39330fb250a665161549449e961c877b5eebf4fe8c762b498b6c3dc0da3087ee",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "owner": "image_adapter_lens",
+      "estimated_turns": 26,
+      "cross_section_mm2": 235.14542838000074,
+      "interval_turns": [
+        26
+      ],
+      "I100_a": 1038.382126446332,
+      "interval_reference_NI": [
+        26997.935287604632
+      ],
+      "matching_plane_z_mm": 2160.4,
+      "captured_reference_bz_t": 0.38443787513663835,
+      "independent_reference_bz_t": 0.3844378751366377,
+      "potential_digest": "262d7a2820d1c9221bd05d63a17a0c18b952a5c8ba3f8452d42bbd2cb685eb98",
+      "input_sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    {
+      "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "owner": "diffraction_lens",
+      "estimated_turns": 364,
+      "cross_section_mm2": 3240.0,
+      "interval_turns": [
+        364
+      ],
+      "I100_a": 196.49728821529274,
+      "interval_reference_NI": [
+        71525.01291036655
+      ],
+      "matching_plane_z_mm": 1322.9,
+      "captured_reference_bz_t": 0.6878200134770796,
+      "independent_reference_bz_t": 0.6878201103316528,
+      "potential_digest": "48da1b59f1b1c6faea2aa19b6594cecd9fc124d9400e4f5d35fbcbdcbd42bfbc",
+      "input_sha256": "f25123e7fa5045f8d03dcac9c64b40b548aea743dc95f2b443fdf4a11349155f"
+    },
+    {
+      "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "owner": "intermediate_lens",
+      "estimated_turns": 655,
+      "cross_section_mm2": 5832.0,
+      "interval_turns": [
+        655
+      ],
+      "I100_a": 174.52365074215746,
+      "interval_reference_NI": [
+        114312.99123611313
+      ],
+      "matching_plane_z_mm": 1492.9,
+      "captured_reference_bz_t": 0.7616806256036301,
+      "independent_reference_bz_t": 0.7617606173317892,
+      "potential_digest": "ae724f7250caf0d9f596e5630b1f52edcbd571909a158d7deb729f5a1d3cc626",
+      "input_sha256": "f25123e7fa5045f8d03dcac9c64b40b548aea743dc95f2b443fdf4a11349155f"
+    },
+    {
+      "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "owner": "projector_lens_1",
+      "estimated_turns": 436,
+      "cross_section_mm2": 3888.0,
+      "interval_turns": [
+        436
+      ],
+      "I100_a": 101.27941869063272,
+      "interval_reference_NI": [
+        44157.82654911587
+      ],
+      "matching_plane_z_mm": 1672.9,
+      "captured_reference_bz_t": 0.385179207547165,
+      "independent_reference_bz_t": 0.3851797818673316,
+      "potential_digest": "dc3e7748a2c27e0011f152beefbf67f19421e7adfefd6b33742c190ae4ce13d4",
+      "input_sha256": "f25123e7fa5045f8d03dcac9c64b40b548aea743dc95f2b443fdf4a11349155f"
+    },
+    {
+      "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "owner": "projector_lens_2",
+      "estimated_turns": 655,
+      "cross_section_mm2": 5832.0,
+      "interval_turns": [
+        655
+      ],
+      "I100_a": 75.64799572129814,
+      "interval_reference_NI": [
+        49549.43719745029
+      ],
+      "matching_plane_z_mm": 1875.4,
+      "captured_reference_bz_t": 0.33015360646899805,
+      "independent_reference_bz_t": 0.33018827921325816,
+      "potential_digest": "7fb87ce924b4cdbe0ff536f928b0447173d098a5aca8b5e3666d69dd55613ffe",
+      "input_sha256": "f25123e7fa5045f8d03dcac9c64b40b548aea743dc95f2b443fdf4a11349155f"
+    },
+    {
+      "file": "configs/subassemblies/projector_stack.toml",
+      "owner": "diffraction_lens",
+      "estimated_turns": 364,
+      "cross_section_mm2": 3240.0,
+      "interval_turns": [
+        364
+      ],
+      "I100_a": 196.49728821529274,
+      "interval_reference_NI": [
+        71525.01291036655
+      ],
+      "matching_plane_z_mm": 1322.9,
+      "captured_reference_bz_t": 0.6878200134770796,
+      "independent_reference_bz_t": 0.6878201103316528,
+      "potential_digest": "15020b26281e084525b3f038ba7ca0b3e38acab54f51448e2330c3db44e0bb9f",
+      "input_sha256": "5b394e92b69b3391e2c835acf9ead8448bd0abcd206c1c980428360b98aa8729"
+    },
+    {
+      "file": "configs/subassemblies/projector_stack.toml",
+      "owner": "intermediate_lens",
+      "estimated_turns": 727,
+      "cross_section_mm2": 6480.0,
+      "interval_turns": [
+        727
+      ],
+      "I100_a": 170.43088077268823,
+      "interval_reference_NI": [
+        123903.25032174434
+      ],
+      "matching_plane_z_mm": 1492.9,
+      "captured_reference_bz_t": 0.7616806256036297,
+      "independent_reference_bz_t": 0.7618780298476487,
+      "potential_digest": "eb0e8a0b5f5b08aeee7f33e01d96bcaa9f27996ad4d42e7267221b650d7a4db2",
+      "input_sha256": "5b394e92b69b3391e2c835acf9ead8448bd0abcd206c1c980428360b98aa8729"
+    },
+    {
+      "file": "configs/subassemblies/projector_stack.toml",
+      "owner": "projector_lens_1",
+      "estimated_turns": 436,
+      "cross_section_mm2": 3888.0,
+      "interval_turns": [
+        436
+      ],
+      "I100_a": 101.27941869063272,
+      "interval_reference_NI": [
+        44157.82654911587
+      ],
+      "matching_plane_z_mm": 1672.9,
+      "captured_reference_bz_t": 0.385179207547165,
+      "independent_reference_bz_t": 0.3851797818673316,
+      "potential_digest": "7af3fba716c4af3109601a9afb2eb4e8992de2c8ec20d529556b557b316ab02e",
+      "input_sha256": "5b394e92b69b3391e2c835acf9ead8448bd0abcd206c1c980428360b98aa8729"
+    },
+    {
+      "file": "configs/subassemblies/projector_stack.toml",
+      "owner": "projector_lens_2",
+      "estimated_turns": 655,
+      "cross_section_mm2": 5832.0,
+      "interval_turns": [
+        655
+      ],
+      "I100_a": 75.64799572129814,
+      "interval_reference_NI": [
+        49549.43719745029
+      ],
+      "matching_plane_z_mm": 1875.4,
+      "captured_reference_bz_t": 0.33015360646899805,
+      "independent_reference_bz_t": 0.33018827921325816,
+      "potential_digest": "29fcf76fa19a0ccf829339c6ac07eaf34f7f35db3b1d0e1649ae7933cd1f9a8f",
+      "input_sha256": "5b394e92b69b3391e2c835acf9ead8448bd0abcd206c1c980428360b98aa8729"
+    }
+  ],
+  "distinct_curve_results": {
+    "condenser_lens_1_303": {
+      "file": "configs/instruments/column/C2.toml",
+      "owner": "condenser_lens_1",
+      "estimated_turns": 303,
+      "cross_section_mm2": 2700.0,
+      "interval_turns": [
+        303
+      ],
+      "I100_a": 717.3704396543142,
+      "interval_reference_NI": [
+        217363.2432152572
+      ],
+      "matching_plane_z_mm": 500.0,
+      "captured_reference_bz_t": 1.7748239349298838,
+      "independent_reference_bz_t": 1.7748239351817194,
+      "potential_digest": "545026256683182eb6cce56e76b6394a9c377ba567437e69b381ed8363907db1",
+      "input_sha256": "38b6468e10e24780a231cb4b2eb203d05649ff10766f97627d5e3c28e9923745",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 1.418933216089534e-10,
+      "relative_matching_plane_q12_error": -1.4189327490754522e-10
+    },
+    "objective_lens_1172": {
+      "file": "configs/instruments/column/C2.toml",
+      "owner": "objective_lens",
+      "estimated_turns": 1172,
+      "cross_section_mm2": 10440.0,
+      "interval_turns": [
+        586,
+        586
+      ],
+      "I100_a": 1575.233028526278,
+      "interval_reference_NI": [
+        923086.5547163989,
+        923086.5547163989
+      ],
+      "matching_plane_z_mm": 1025.1999975,
+      "captured_reference_bz_t": 1.6147660094589162,
+      "independent_reference_bz_t": 1.6147660094593927,
+      "potential_digest": "9d1dae5723b571f22819526548ac37d04f3f84312c5b6d786e2eb9414f4b4178",
+      "input_sha256": "38b6468e10e24780a231cb4b2eb203d05649ff10766f97627d5e3c28e9923745",
+      "sampled_curve_points": 122,
+      "sampled_peak_normalized_q12_error": 3.506795607379891e-05,
+      "relative_matching_plane_q12_error": -2.950972799453666e-13
+    },
+    "mini_condenser_17": {
+      "file": "configs/instruments/column/C2.toml",
+      "owner": "mini_condenser",
+      "estimated_turns": 17,
+      "cross_section_mm2": 153.0,
+      "interval_turns": [
+        17
+      ],
+      "I100_a": 883.8443586346789,
+      "interval_reference_NI": [
+        -15025.35409678954
+      ],
+      "matching_plane_z_mm": 948.5,
+      "captured_reference_bz_t": -0.41269200808624773,
+      "independent_reference_bz_t": -0.4126920080862485,
+      "potential_digest": "98c922f434cb748e408ff1f73a5a0e63bdfb19e137c827a5cda85e4f0d2bceea",
+      "input_sha256": "38b6468e10e24780a231cb4b2eb203d05649ff10766f97627d5e3c28e9923745",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 1.8831382774807494e-15,
+      "relative_matching_plane_q12_error": -1.887379141862766e-15
+    },
+    "condenser_lens_2_546": {
+      "file": "configs/instruments/column/C2.toml",
+      "owner": "condenser_lens_2",
+      "estimated_turns": 546,
+      "cross_section_mm2": 4860.0,
+      "interval_turns": [
+        546
+      ],
+      "I100_a": 367.88003706542753,
+      "interval_reference_NI": [
+        200862.50023772343
+      ],
+      "matching_plane_z_mm": 650.0,
+      "captured_reference_bz_t": 1.230409845135657,
+      "independent_reference_bz_t": 1.230411301469345,
+      "potential_digest": "1938b424c2afcf945c22688fd551ce19c93d8e407436bf54eb3c62829b1f948d",
+      "input_sha256": "38b6468e10e24780a231cb4b2eb203d05649ff10766f97627d5e3c28e9923745",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 1.1836153375109348e-06,
+      "relative_matching_plane_q12_error": -1.183615337518873e-06
+    },
+    "condenser_lens_3_515": {
+      "file": "configs/instruments/column/C3.toml",
+      "owner": "condenser_lens_3",
+      "estimated_turns": 515,
+      "cross_section_mm2": 4590.0,
+      "interval_turns": [
+        515
+      ],
+      "I100_a": 106.65003253450197,
+      "interval_reference_NI": [
+        54924.766755268516
+      ],
+      "matching_plane_z_mm": 915.0,
+      "captured_reference_bz_t": 0.3484954734950536,
+      "independent_reference_bz_t": 0.3484956692933373,
+      "potential_digest": "826b50de183913e78204263338d45de5d5f84a16d636994ec6742ccab73fc037",
+      "input_sha256": "2d1887b2bff53b64cabbaa1c0a9319eab5b8a9557dfeee63d720498861b40043",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 5.618384988673317e-07,
+      "relative_matching_plane_q12_error": -5.618384988359537e-07
+    },
+    "image_tl11_lens_69": {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl11_lens",
+      "estimated_turns": 69,
+      "cross_section_mm2": 611.9236428750004,
+      "interval_turns": [
+        69
+      ],
+      "I100_a": 806.5560417722379,
+      "interval_reference_NI": [
+        -55652.36688228441
+      ],
+      "matching_plane_z_mm": 1512.9,
+      "captured_reference_bz_t": -0.5144005954444499,
+      "independent_reference_bz_t": -0.5144005954444502,
+      "potential_digest": "92b1bd2d1cf3b78ea839db939086564df251b8ceb332333d20784a28d7a5b3f3",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 1.7266278996678166e-15,
+      "relative_matching_plane_q12_error": -4.440892098500626e-16
+    },
+    "image_tl12_lens_36": {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl12_lens",
+      "estimated_turns": 36,
+      "cross_section_mm2": 318.064177440001,
+      "interval_turns": [
+        36
+      ],
+      "I100_a": 682.2888026641002,
+      "interval_reference_NI": [
+        24562.39689590761
+      ],
+      "matching_plane_z_mm": 1586.8999999999999,
+      "captured_reference_bz_t": 0.3025984209321959,
+      "independent_reference_bz_t": 0.30259842093219624,
+      "potential_digest": "8b8bf1fac0c6ae3bd76972dfeaedfbf8ca4fb145eaa4f166eb3510913b665d32",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19",
+      "sampled_curve_points": 122,
+      "sampled_peak_normalized_q12_error": 2.0179307666666887e-15,
+      "relative_matching_plane_q12_error": -1.1102230246251565e-15
+    },
+    "image_tl21_lens_45": {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl21_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 404.34521544000125,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3251.7910019496453,
+      "interval_reference_NI": [
+        146330.59508773405
+      ],
+      "matching_plane_z_mm": 1706.4,
+      "captured_reference_bz_t": 1.980857625698071,
+      "independent_reference_bz_t": 1.9808576256980717,
+      "potential_digest": "749051727013ff306bf4dd03e6c7cd62d7fc3abc2432338ccd26894068772428",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 4.483807458838054e-16,
+      "relative_matching_plane_q12_error": -3.3306690738754696e-16
+    },
+    "image_tl22_lens_45": {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl22_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 401.05996236000124,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3197.874314618057,
+      "interval_reference_NI": [
+        -143904.34415781256
+      ],
+      "matching_plane_z_mm": 1756.4,
+      "captured_reference_bz_t": -1.949860879226724,
+      "independent_reference_bz_t": -1.9498608792267245,
+      "potential_digest": "33350624a1d853c4320f2fd93a2a22e2d5ec2fb56a86612a32f24d82100912fe",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 4.555086104667934e-16,
+      "relative_matching_plane_q12_error": -2.220446049250313e-16
+    },
+    "image_tl31_lens_45": {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl31_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 404.34521544,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3251.791001949644,
+      "interval_reference_NI": [
+        146330.59508773396
+      ],
+      "matching_plane_z_mm": 1850.4,
+      "captured_reference_bz_t": 1.9808576256980708,
+      "independent_reference_bz_t": 1.9808576256980706,
+      "potential_digest": "7689e7e21285e3ab460d318f81d2509f1656fb2f7b885bc6e08a679f76451dcc",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 2.2419037294190285e-16,
+      "relative_matching_plane_q12_error": 2.220446049250313e-16
+    },
+    "image_tl32_lens_45": {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_tl32_lens",
+      "estimated_turns": 45,
+      "cross_section_mm2": 401.05996236,
+      "interval_turns": [
+        45
+      ],
+      "I100_a": 3197.874314618055,
+      "interval_reference_NI": [
+        -143904.34415781248
+      ],
+      "matching_plane_z_mm": 1900.4,
+      "captured_reference_bz_t": -1.9498608792267236,
+      "independent_reference_bz_t": -1.9498608792267251,
+      "potential_digest": "163acc5254985e392ee2244dc00a3c44bcdd5a170b32084b1bb0e773783a1899",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 2.3914202049506643e-15,
+      "relative_matching_plane_q12_error": -7.771561172376096e-16
+    },
+    "image_adapter_lens_26": {
+      "file": "configs/instruments/column/C3_BCOR.toml",
+      "owner": "image_adapter_lens",
+      "estimated_turns": 26,
+      "cross_section_mm2": 235.14542838,
+      "interval_turns": [
+        26
+      ],
+      "I100_a": 1038.3821264463331,
+      "interval_reference_NI": [
+        26997.93528760466
+      ],
+      "matching_plane_z_mm": 1980.4,
+      "captured_reference_bz_t": 0.38443787513663946,
+      "independent_reference_bz_t": 0.38443787513663985,
+      "potential_digest": "62944a05d71ed8cedcc508f89ce0d611142d98223988ebd25b21be73e50535a1",
+      "input_sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 2.4547258008747698e-15,
+      "relative_matching_plane_q12_error": -9.992007221626409e-16
+    },
+    "adapter_lens_23": {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "adapter_lens",
+      "estimated_turns": 23,
+      "cross_section_mm2": 208.3536,
+      "interval_turns": [
+        23
+      ],
+      "I100_a": 345.2999896863375,
+      "interval_reference_NI": [
+        7941.8997627857625
+      ],
+      "matching_plane_z_mm": 1088.2,
+      "captured_reference_bz_t": 0.11005120215633273,
+      "independent_reference_bz_t": 0.11005120215633278,
+      "potential_digest": "7085e50f52ad9967279c86aafa49e0edb835f870f122c9dd1d1976b0484c0056",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 7.566180579163736e-16,
+      "relative_matching_plane_q12_error": -5.551115123125783e-16
+    },
+    "probe_tl22_lens_20": {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "probe_tl22_lens",
+      "estimated_turns": 20,
+      "cross_section_mm2": 174.2013151875,
+      "interval_turns": [
+        20
+      ],
+      "I100_a": 1716.6766520633623,
+      "interval_reference_NI": [
+        -34333.53304126725
+      ],
+      "matching_plane_z_mm": 1166.35,
+      "captured_reference_bz_t": -0.48620353627107005,
+      "independent_reference_bz_t": -0.4862035362710705,
+      "potential_digest": "e0f94381bbe470299cdb434ba6780e1c173d4ae7e3e392da799c656af5c5043d",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 9.133812831885121e-16,
+      "relative_matching_plane_q12_error": -8.881784197001252e-16
+    },
+    "probe_tl21_lens_19": {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "probe_tl21_lens",
+      "estimated_turns": 19,
+      "cross_section_mm2": 171.96981095250075,
+      "interval_turns": [
+        19
+      ],
+      "I100_a": 1694.851468358554,
+      "interval_reference_NI": [
+        32202.177898812526
+      ],
+      "matching_plane_z_mm": 1249.95,
+      "captured_reference_bz_t": 0.4564795319526607,
+      "independent_reference_bz_t": 0.4564795319526608,
+      "potential_digest": "4deac62d0202c9e198337bcba3956bca662c60ed5804a9f7b03b4b4ad5629792",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 4.86428392474032e-16,
+      "relative_matching_plane_q12_error": -1.1102230246251565e-16
+    },
+    "probe_tl12_lens_20": {
+      "file": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "owner": "probe_tl12_lens",
+      "estimated_turns": 20,
+      "cross_section_mm2": 174.87899999999922,
+      "interval_turns": [
+        20
+      ],
+      "I100_a": 1781.554522137791,
+      "interval_reference_NI": [
+        35631.09044275582
+      ],
+      "matching_plane_z_mm": 1366.3,
+      "captured_reference_bz_t": 0.5044013432165251,
+      "independent_reference_bz_t": 0.5044013432165252,
+      "potential_digest": "0eb49d252bf954709b60b89a6aff41a11a00b2957ef04ca7d4b515b7b3e78b0f",
+      "input_sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 2.421177785332396e-15,
+      "relative_matching_plane_q12_error": -2.220446049250313e-16
+    },
+    "diffraction_lens_364": {
+      "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "owner": "diffraction_lens",
+      "estimated_turns": 364,
+      "cross_section_mm2": 3240.0,
+      "interval_turns": [
+        364
+      ],
+      "I100_a": 196.49728821529274,
+      "interval_reference_NI": [
+        71525.01291036655
+      ],
+      "matching_plane_z_mm": 1322.9,
+      "captured_reference_bz_t": 0.6878200134770796,
+      "independent_reference_bz_t": 0.6878201103316528,
+      "potential_digest": "48da1b59f1b1c6faea2aa19b6594cecd9fc124d9400e4f5d35fbcbdcbd42bfbc",
+      "input_sha256": "f25123e7fa5045f8d03dcac9c64b40b548aea743dc95f2b443fdf4a11349155f",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 1.408138142453859e-07,
+      "relative_matching_plane_q12_error": -1.4081381427555328e-07
+    },
+    "intermediate_lens_655": {
+      "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "owner": "intermediate_lens",
+      "estimated_turns": 655,
+      "cross_section_mm2": 5832.0,
+      "interval_turns": [
+        655
+      ],
+      "I100_a": 174.52365074215746,
+      "interval_reference_NI": [
+        114312.99123611313
+      ],
+      "matching_plane_z_mm": 1492.9,
+      "captured_reference_bz_t": 0.7616806256036301,
+      "independent_reference_bz_t": 0.7617606173317892,
+      "potential_digest": "ae724f7250caf0d9f596e5630b1f52edcbd571909a158d7deb729f5a1d3cc626",
+      "input_sha256": "f25123e7fa5045f8d03dcac9c64b40b548aea743dc95f2b443fdf4a11349155f",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 0.00010500900983733739,
+      "relative_matching_plane_q12_error": -0.0001050090098373424
+    },
+    "projector_lens_1_436": {
+      "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "owner": "projector_lens_1",
+      "estimated_turns": 436,
+      "cross_section_mm2": 3888.0,
+      "interval_turns": [
+        436
+      ],
+      "I100_a": 101.27941869063272,
+      "interval_reference_NI": [
+        44157.82654911587
+      ],
+      "matching_plane_z_mm": 1672.9,
+      "captured_reference_bz_t": 0.385179207547165,
+      "independent_reference_bz_t": 0.3851797818673316,
+      "potential_digest": "dc3e7748a2c27e0011f152beefbf67f19421e7adfefd6b33742c190ae4ce13d4",
+      "input_sha256": "f25123e7fa5045f8d03dcac9c64b40b548aea743dc95f2b443fdf4a11349155f",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 1.4910444255578393e-06,
+      "relative_matching_plane_q12_error": -1.4910444255944455e-06
+    },
+    "projector_lens_2_655": {
+      "file": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "owner": "projector_lens_2",
+      "estimated_turns": 655,
+      "cross_section_mm2": 5832.0,
+      "interval_turns": [
+        655
+      ],
+      "I100_a": 75.64799572129814,
+      "interval_reference_NI": [
+        49549.43719745029
+      ],
+      "matching_plane_z_mm": 1875.4,
+      "captured_reference_bz_t": 0.33015360646899805,
+      "independent_reference_bz_t": 0.33018827921325816,
+      "potential_digest": "7fb87ce924b4cdbe0ff536f928b0447173d098a5aca8b5e3666d69dd55613ffe",
+      "input_sha256": "f25123e7fa5045f8d03dcac9c64b40b548aea743dc95f2b443fdf4a11349155f",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 0.0001050090098374368,
+      "relative_matching_plane_q12_error": -0.00010500900983745343
+    },
+    "intermediate_lens_727": {
+      "file": "configs/subassemblies/projector_stack.toml",
+      "owner": "intermediate_lens",
+      "estimated_turns": 727,
+      "cross_section_mm2": 6480.0,
+      "interval_turns": [
+        727
+      ],
+      "I100_a": 170.43088077268823,
+      "interval_reference_NI": [
+        123903.25032174434
+      ],
+      "matching_plane_z_mm": 1492.9,
+      "captured_reference_bz_t": 0.7616806256036297,
+      "independent_reference_bz_t": 0.7618780298476487,
+      "potential_digest": "eb0e8a0b5f5b08aeee7f33e01d96bcaa9f27996ad4d42e7267221b650d7a4db2",
+      "input_sha256": "5b394e92b69b3391e2c835acf9ead8448bd0abcd206c1c980428360b98aa8729",
+      "sampled_curve_points": 121,
+      "sampled_peak_normalized_q12_error": 0.0002591021610880601,
+      "relative_matching_plane_q12_error": -0.00025910216108804285
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "scope": "Independent read-only Preview raw-array audit; no emission, transport, benchmark, field solve or source edits. Optical-reference rays only; no material/wave/scan qualification.",
+  "status": "COMPLETE_PREVIEW_RAW_CHECKS_PASSED",
+  "implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+  "initial_source_count": 1024,
+  "initial_source_bytes_equal_to_baseline": true,
+  "input_graph_equal_to_matched_profile": true,
+  "physical_controls_unchanged": true,
+  "source_energy_min_max_ev": [
+    0.015094567656436075,
+    0.7013491466779715
+  ],
+  "source_weight_sum": 1.0,
+  "gun_exit_positive_survivors": 1024,
+  "gun_equal_time_frames": 353,
+  "gun_equal_time_clock_strictly_increasing": true,
+  "gun_exit_to_incident_clock_exact": true,
+  "sample_to_post_sample_clock_exact": true,
+  "branches": [
+    {
+      "key": "incident",
+      "survivors": 1024,
+      "effective_count": 1024.0,
+      "source_weight_sum": 1.0,
+      "surviving_fraction": 1.0,
+      "lost_fraction": 0.0,
+      "transmitted_current_a": 1e-05,
+      "absorbed_current_a": 0.0,
+      "ledger_residual_a": 0.0,
+      "required_points": 2639872,
+      "unknown_gun_prefix_energy_preserved_nan": 231424,
+      "energy_range_ev": [
+        300000.01509454974,
+        300000.7013494626
+      ],
+      "maximum_energy_minus_300kev_plus_launch_ev": 3.597233444452286e-07,
+      "column_clocks_nondecreasing": true,
+      "minimum_column_clock_increment_s": 8.271806125530277e-25,
+      "physical_stop_planes_mm": []
+    },
+    {
+      "key": "000",
+      "survivors": 0,
+      "effective_count": 0.0,
+      "source_weight_sum": 1.0,
+      "surviving_fraction": 0.0,
+      "lost_fraction": 1.0,
+      "transmitted_current_a": 0.0,
+      "absorbed_current_a": 1e-05,
+      "ledger_residual_a": 0.0,
+      "required_points": 2338816,
+      "unknown_gun_prefix_energy_preserved_nan": 0,
+      "energy_range_ev": [
+        300000.015094541,
+        300000.7013494626
+      ],
+      "maximum_energy_minus_300kev_plus_launch_ev": 3.597233444452286e-07,
+      "column_clocks_nondecreasing": true,
+      "minimum_column_clock_increment_s": 7.737022775294536e-17,
+      "physical_stop_planes_mm": [
+        2714.15
+      ]
+    }
+  ],
+  "gun_exit_energy_model_report_error_ev": 9.097857400774956e-08,
+  "unchanged_gun_exit_energy_budget_ev": 0.001,
+  "worker_seconds": 3210.5337728999984,
+  "gun_last_reported_seconds": 2979.9,
+  "gun_last_reported_step": 3501,
+  "counts": {
+    "traces": 1,
+    "surface_step_calls": 3502,
+    "attempts": 9444,
+    "cached_full_uses": 5942,
+    "static_step_calls": 22390,
+    "static_step_full": 3502,
+    "static_step_half": 9444,
+    "static_step_fine": 9444,
+    "accepted_steps": 3502,
+    "gate_rejections": 5942,
+    "failed_gate_transverse_momentum": 5775,
+    "failed_gate_xyz_position": 3923,
+    "failed_gate_xy_position": 1874,
+    "failed_gate_total_momentum": 1071
+  },
+  "surface_static_dg_seconds": 2958.065317100023,
+  "accepted_attempt_seconds": 962.5317386999832,
+  "rejected_attempt_seconds": 1998.5853613000309,
+  "failed_gate_counts_overlap": {
+    "transverse_momentum": 5775,
+    "xyz_position": 3923,
+    "xy_position": 1874,
+    "total_momentum": 1071
+  },
+  "dominant_rejected_gate_counts": {
+    "transverse_momentum": 5663,
+    "xy_position": 107,
+    "xyz_position": 172
+  },
+  "dominant_rejected_gate_seconds": {
+    "transverse_momentum": 1860.3174730000246,
+    "xy_position": 72.60991860000104,
+    "xyz_position": 65.6579697000052
+  },
+  "grounded_copper_dispatch_success": 48622,
+  "grounded_copper_dispatch_native_miss": 512,
+  "all_gun_dg_dispatches": 49134,
+  "all_gun_compiled_hit_fraction": 0.9895795172385721,
+  "surface_trial_static_calls": 22390,
+  "extra_event_dg_dispatches": 26744,
+  "extra_nonzero_event_fraction_evaluations": 13372,
+  "event_call_scope": "Tracing static_energy_step call sites outside observed full/half/fine trials are _surface_plane_crossing: two half DG calls per nonzero brentq/final fraction for physical aperture and Gun exit events. ExactGunPlaneObserver is not used by this worker.",
+  "native_miss_reason_scope": "Recorded reason combines trial-domain or implicit comparison roundoff guard; retained dispatch does not separate these causes.",
+  "gun_first_crossing_clock_shape": [
+    227,
+    1024
+  ],
+  "high_accuracy_scope": "Not audited here; High remains a separate completion and reuse check."
+}

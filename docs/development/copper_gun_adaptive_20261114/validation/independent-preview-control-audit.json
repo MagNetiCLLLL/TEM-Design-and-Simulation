@@ -1,0 +1,88 @@
+{
+  "status": "VERIFIED_PREVIEW_GUARD_AND_ARCHIVE_INDEX",
+  "physical_execution": false,
+  "implementation": "6169010971ca2aeb082c8f0936b043f2ad4eb886cdfd07991c69bdda32a7ffca",
+  "archive_sha256": "60aba2fa2753d66d26ab2e5d7ef41e7a44938dd06216df59ce6ff1b7dd6e344a",
+  "package_digest": "044c5868d42e78c1239c5265d54a4b2f563fc1612b71e4d5822fc91fee72a960",
+  "archive_bytes": 378791168,
+  "checks": {
+    "physical-controls": {
+      "exact_file_bytes_equal": true,
+      "sha256": "2de96ddec76bfb2833bcdf271dbdee6f347dd3c3c5edfce07f92afd2d29e6b40"
+    },
+    "independent-input-graph": {
+      "exact_file_bytes_equal": true,
+      "sha256": "3249b1328a204a8b9fc679022af0be28e30c5b3c90268e83273d0c88644aa86d"
+    },
+    "scan-resolution": {
+      "exact_file_bytes_equal": true,
+      "sha256": "0a03c2a84a6f5d1c7ea20dcdebf9dd7aef770ee24ebb6cd46b10cbb49f2195fc"
+    }
+  },
+  "unchanged_error_budgets": {
+    "implicit_tolerance": {
+      "reference": 1e-13,
+      "current": 1e-13,
+      "exact_equal": true
+    },
+    "total_relative_momentum": {
+      "reference": 1e-06,
+      "current": 1e-06,
+      "exact_equal": true
+    },
+    "transverse_relative_momentum": {
+      "reference": 1e-05,
+      "current": 1e-05,
+      "exact_equal": true
+    },
+    "transverse_momentum_floor_fraction": {
+      "reference": 1e-05,
+      "current": 1e-05,
+      "exact_equal": true
+    },
+    "momentum_norm_floor": {
+      "reference": 1e-30,
+      "current": 1e-30,
+      "exact_equal": true
+    },
+    "xy_absolute_position_m": {
+      "reference": 1e-13,
+      "current": 1e-13,
+      "exact_equal": true
+    },
+    "xy_relative_position": {
+      "reference": 1e-06,
+      "current": 1e-06,
+      "exact_equal": true
+    },
+    "xyz_absolute_position_m": {
+      "reference": 1e-13,
+      "current": 1e-13,
+      "exact_equal": true
+    },
+    "xyz_relative_step": {
+      "reference": 1e-05,
+      "current": 1e-05,
+      "exact_equal": true
+    },
+    "maximum_retries": {
+      "reference": 32,
+      "current": 32,
+      "exact_equal": true
+    }
+  },
+  "accepted_steps": 3801,
+  "gate_rejections": 183,
+  "maximum_accepted_gate_ratios": {
+    "total_momentum": 0.05381287967860124,
+    "xyz_position": 0.9853625661320873,
+    "transverse_momentum": 0.9975776344330164,
+    "xy_position": 0.47846207828454806
+  },
+  "complete_observer_attempts_retained": true,
+  "actual_original_launch_matches_baseline_bytes": true,
+  "retained_original_source_fields_exact": 12,
+  "numeric_readback_scope": "Formal archive index/checksum and all saved guard proofs independently checked here. Full native numeric archive readback and old/new raw endpoint comparison delegated to audit_coil_physics; do not interpret index verification as an additional full numeric load.",
+  "scientific_scope": "Normal Preview optical reference with 1024 original particles; not specimen scattering/coherent/scan qualification. Native energies/clocks/current loss are retained in existing raw readouts. Post terminal flu_screen absorption is an explicit physical stop.",
+  "pending": "High full completion and its formal archive. Fixed actual High field coarse-Preview control remains unrun."
+}

@@ -75,7 +75,9 @@ def deflector_insert_solids(part, by_key=None):
         return ()
     from temsim.deflector_support_geometry import deflector_support_solids
     windings = deflector_insert_winding_solids(part, by_key)
-    return windings + deflector_support_solids(part, windings)
+    from temsim.cad_transverse_winding import transverse_winding_solids
+    detailed = transverse_winding_solids(part, by_key)
+    return (detailed if detailed is not None else windings) + deflector_support_solids(part, windings)
 
 
 def deflector_insert_winding_solids(part, by_key=None):
@@ -246,11 +248,17 @@ def _probe_hexapole_solids(part):
     evidence = (CESCOR_SOURCE, "docs/references/cad-probe-corrector.md")
     result = [_solid(part, 'return_yoke', 'soft_magnetic',
                      annulus(start, end, yoke_inner, outer), params, evidence)]
+    from temsim.cad_probe_winding import probe_winding_solids
+    detailed_windings = probe_winding_solids(part)
     for index in range(6):
-        for region, material, shape in ((f'pole_pin_{index+1}', 'soft_magnetic', pin),
-                                       (f'coil_{index+1}', 'copper_winding', coil)):
+        original = ((f'pole_pin_{index+1}', 'soft_magnetic', pin),)
+        if detailed_windings is None:
+            original += ((f'coil_{index+1}', 'copper_winding', coil),)
+        for region, material, shape in original:
             result.append(_solid(part, region, material,
                 transformed(shape, rotation=_rotation(60*index)), params, evidence))
+    if detailed_windings is not None:
+        result.extend(detailed_windings)
     from temsim.cad_probe_hexapole_support import hexapole_support_solids
     result.extend(hexapole_support_solids(part))
     return tuple(result)
@@ -338,11 +346,19 @@ def _deflector_solids(part):
             for side in range(2):
                 result.append(_solid(part, f"coil_{index+1}_{'xy'[axis]}_winding_{side+1}", "copper_winding",
                     _loop(a, b, low, high, 90*axis+180*side, span, band), params, (COIL_SOURCE,)))
-    return tuple(result) + ordinary_deflector_support_solids(part, result)
+    from temsim.cad_transverse_winding import transverse_winding_solids
+    detailed = transverse_winding_solids(part)
+    return (detailed if detailed is not None else tuple(result)) + ordinary_deflector_support_solids(part, result)
 
 
-def multipole_solids(part, by_key=None) -> tuple[SolidSpec, ...] | None:
-    """Resolve material hosts only; return None for a different part family."""
+def multipole_solids(part, by_key=None, *, runtime=None) -> tuple[SolidSpec, ...] | None:
+    """Resolve material hosts and explicit winding-only reconstructions."""
+    from temsim.multipole_winding import is_primary_multipole
+    from temsim.cad_multipole_winding import multipole_winding_solids, replace_primary_windings
+    if not is_primary_multipole(part):
+        windings=multipole_winding_solids(part,by_key)
+        if windings is not None:
+            return windings
     if non_material_role(part):
         return ()
     # Energy-filter parts are placed in their bent branch frame by the filter
@@ -356,7 +372,7 @@ def multipole_solids(part, by_key=None) -> tuple[SolidSpec, ...] | None:
     if profile.startswith("electrostatic_"):
         return None
     if key in {"probe_hp1_hexapole", "probe_hp2_hexapole"}:
-        return _cescor_hexapole_solids(part)
+        return replace_primary_windings(part,_cescor_hexapole_solids(part),by_key,runtime=runtime)
     if key in {"image_hp1_hexapole", "image_hp2_hexapole", "image_hp3_hexapole"}:
         values = _cescor_hexapole_solids(part, image_family=True)
         if part.get("bcor_geometry_status"):
@@ -372,9 +388,11 @@ def multipole_solids(part, by_key=None) -> tuple[SolidSpec, ...] | None:
                     "topology_status": "bcor_optical_topology_generic_six_pole_reconstruction",
                     "bcor_geometry_source": part.get("bcor_geometry_source", "")})
                 for value in values)
-        return values
+        return replace_primary_windings(part,values,by_key,runtime=runtime)
     if key.endswith("stigmator") or profile == "magnetic_stigmator":
-        return _stigmator_windings(part)
+        from temsim.cad_transverse_winding import transverse_winding_solids
+        detailed = transverse_winding_solids(part, by_key)
+        return detailed if detailed is not None else _stigmator_windings(part)
     if key.endswith("quadrupole") or profile == "magnetic_quadrupole":
         return _configured_envelope(part)
     if key.endswith("hexapole") or profile == "magnetic_hexapole":

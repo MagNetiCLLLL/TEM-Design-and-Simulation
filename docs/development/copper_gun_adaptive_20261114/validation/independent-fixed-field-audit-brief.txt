@@ -1,0 +1,13 @@
+Saved fixed-actual-High-field Preview control independently verified.
+All 1024 original source IDs/weights/launch fields and the genuine Gun exit remain byte-exact.
+Actual providers, drive time laws, gauge, boundaries and independent inputs/tolerances match.
+Compared 1024 actual common sample rays at Z=1599.2 mm.
+Raw differences (coarse minus High; max absolute / RMS):
+x_m: 1.36058537e-15 / 3.7461748e-16 m
+y_m: 1.37035367e-15 / 3.75975565e-16 m
+tx_rad: 1.00244748e-14 / 2.73291534e-15 rad
+ty_rad: 9.95432315e-15 / 2.74217116e-15 rad
+flight_time_s: 3.04237029e-21 / 1.14377402e-21 s
+kinetic_energy_ev: 0 / 0 eV
+No centroid removal, refocusing, source-current restoration or trajectory interpolation was applied.
+Raw exact sample checkpoints compared by original source ID. New coarse integration reused only the genuine High Gun. This is a step-size sensitivity control at one fixed actual field, not a multi-grid convergence certificate, refocus, material scattering or coherent/scan qualification.

@@ -1,0 +1,98 @@
+{
+  "status": "passed",
+  "scope": "Exact source-byte reconstruction and unchanged complete CAD recipes; no mesh rerender",
+  "reused_mesh_receipts_are_original": true,
+  "records": [
+    {
+      "component": "probe_dp22_coils",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "original_receipt": "default-native-cad.json",
+      "tested_source_sha256": "cc1f2ee1d6d77313b5205895b64a114ef20393c0f630b0b5cb9e41ff6ce562fd",
+      "current_source_sha256": "06618c52d4edec02d8dec8eadde49449d3030cecde5f4db3d324b1f9ac15e133",
+      "reconstructed_calibration_table": "current-calibration-refined.json",
+      "complete_solid_recipes_exact": true,
+      "solid_recipe_sha256": "a07f5a757f5d27518755a7cdd217823a8baf0d88d69dbffa2effa87d51896646",
+      "solid_regions": 77,
+      "physical_turns": 64,
+      "tested_actual_triangles": 126224
+    },
+    {
+      "component": "beam_deflector",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "original_receipt": "default-native-cad.json",
+      "tested_source_sha256": "cc1f2ee1d6d77313b5205895b64a114ef20393c0f630b0b5cb9e41ff6ce562fd",
+      "current_source_sha256": "06618c52d4edec02d8dec8eadde49449d3030cecde5f4db3d324b1f9ac15e133",
+      "reconstructed_calibration_table": "current-calibration-refined.json",
+      "complete_solid_recipes_exact": true,
+      "solid_recipe_sha256": "ba09fc96890d5acc702c4a63d2e49cbb985bc93cb2b91ebd69d7b97e8f6ec8e3",
+      "solid_regions": 1748,
+      "physical_turns": 1728,
+      "tested_actual_triangles": 1845400
+    },
+    {
+      "component": "condenser_stigmator",
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "original_receipt": "default-native-cad.json",
+      "tested_source_sha256": "cc1f2ee1d6d77313b5205895b64a114ef20393c0f630b0b5cb9e41ff6ce562fd",
+      "current_source_sha256": "06618c52d4edec02d8dec8eadde49449d3030cecde5f4db3d324b1f9ac15e133",
+      "reconstructed_calibration_table": "current-calibration-refined.json",
+      "complete_solid_recipes_exact": true,
+      "solid_recipe_sha256": "5ff8878693bb15daf63e0167787600112fd8d67ec3f12e1f180075b1bca4a989",
+      "solid_regions": 3233,
+      "physical_turns": 3200,
+      "tested_actual_triangles": 2049632
+    },
+    {
+      "component": "diffraction_stigmator",
+      "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "original_receipt": "default-native-cad.json",
+      "tested_source_sha256": "48af2414e240e2290fb2c25f216ad34b5d059ed8665c2a2d46648daa75f87ef4",
+      "current_source_sha256": "8f0cd87ebef013b8d61aaa30317eb2c14dd0b4b357f246712d69aed4c510460c",
+      "reconstructed_calibration_table": "current-calibration-refined.json",
+      "complete_solid_recipes_exact": true,
+      "solid_recipe_sha256": "a5b43883b3386a0a37953a93d8ae343a0a4219d04126c973626630b19a7e9851",
+      "solid_regions": 5384,
+      "physical_turns": 5376,
+      "tested_actual_triangles": 2064640
+    },
+    {
+      "component": "feg_deflector",
+      "path": "configs/instruments/gun/FEG.toml",
+      "original_receipt": "default-native-cad.json",
+      "tested_source_sha256": "184b20f5dd3e05a691bf9ea1a99dfb0adb000e7696895dfbde213b4b47e202e2",
+      "current_source_sha256": "184b20f5dd3e05a691bf9ea1a99dfb0adb000e7696895dfbde213b4b47e202e2",
+      "reconstructed_calibration_table": "unchanged_source_bytes",
+      "complete_solid_recipes_exact": true,
+      "solid_recipe_sha256": "9baf8bf578df31b7944656263556a152980f170d53bc57ec0f489cb24c275946",
+      "solid_regions": 728,
+      "physical_turns": 720,
+      "tested_actual_triangles": 493840
+    },
+    {
+      "component": "feg_stigmator",
+      "path": "configs/instruments/gun/FEG.toml",
+      "original_receipt": "default-native-cad.json",
+      "tested_source_sha256": "184b20f5dd3e05a691bf9ea1a99dfb0adb000e7696895dfbde213b4b47e202e2",
+      "current_source_sha256": "184b20f5dd3e05a691bf9ea1a99dfb0adb000e7696895dfbde213b4b47e202e2",
+      "reconstructed_calibration_table": "unchanged_source_bytes",
+      "complete_solid_recipes_exact": true,
+      "solid_recipe_sha256": "410d20aad0814cdc7441a1659c08c2f2081b68b67c7181ca038271f7ea6a43cd",
+      "solid_regions": 6305,
+      "physical_turns": 6272,
+      "tested_actual_triangles": 2410016
+    },
+    {
+      "component": "image_dph1_coils",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "original_receipt": "default-native-cad-image_dph1_coils.json",
+      "tested_source_sha256": "da6a74dd389a9c7ebc566208b015f3e91ad7380ddf5fbf187726d02cd3c2c5af",
+      "current_source_sha256": "2ed82f596f363a3ac4be2f143988dbb03b46224b7eddee9e93d70844bf463ce8",
+      "reconstructed_calibration_table": "current-calibration-refined.json",
+      "complete_solid_recipes_exact": true,
+      "solid_recipe_sha256": "e17f4340fe3b4451ad8d740165929c984beb2401448f3da79c276829488d1845",
+      "solid_regions": 16,
+      "physical_turns": 12,
+      "tested_actual_triangles": 80032
+    }
+  ]
+}

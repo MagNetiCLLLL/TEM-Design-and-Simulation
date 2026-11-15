@@ -1081,7 +1081,12 @@ def simulate_mixed_stem_scan(state, source, request=MixedStemScanRequest(), *,
     request.validate()
     cancelled = (lambda: False) if cancelled is None else cancelled
     _cancelled_check(cancelled)
+    # This entry has an explicit CUDA-only wave contract. A checked historical
+    # boundary may retain a CPU policy for its completed classical transport;
+    # it does not request CPU execution for this new wave calculation.
     require_coherent_cuda()
+    from temsim.simulation_modes import require_coherent_mode
+    require_coherent_mode(state)
     if not isinstance(source, ParticleWaveSource):
         raise TypeError("Mixed STEM requires its executed immutable ParticleWaveSource")
     inputs = capture_instrument_snapshot(state)

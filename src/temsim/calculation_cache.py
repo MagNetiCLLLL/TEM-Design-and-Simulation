@@ -629,6 +629,118 @@ def _state_payload(state) -> dict[str, object]:
     return payload
 
 
+def _all_z_transverse_dependencies(state):
+    """Inventory saved current sources without constructing or sampling fields.
+
+    Closed transverse coils have axial tails on both sides of every winding.
+    A recording-module source therefore remains an incident dependency even
+    when the assembly-geometry cache scope omits that downstream module.
+    """
+    if getattr(state,'round_lens_field_model','gaussian')!='copper_coil':
+        return None
+    assembly=getattr(state,'_resolved_assembly',None)
+    if assembly is None:
+        return None
+    from dataclasses import asdict
+    from pathlib import Path
+    from temsim.component_representation import SHARED_DEFLECTOR_HOSTS
+    from temsim.immutable_json import json_digest
+    from temsim.instrument_snapshot import encode_instrument
+    from temsim.lens_pose import lens_pose_registration
+    from temsim import transverse_current,transverse_winding
+    from temsim.physics import dynamic_potential,dynamic_transverse_coil,transverse_coil_field
+
+    components={component.key:component for collection in ('stigmators','corrector_elements','deflectors')
+        for component in getattr(state,collection,())}
+    gun=getattr(state,'electron_gun',None)
+    for name in ('deflector','stigmator'):
+        component=getattr(gun,name,None)
+        if component is not None:
+            components[component.key]=component
+    rows=[]
+    fields=transverse_winding.FIELDS|transverse_current.FIELDS
+    for record in assembly.parts:
+        part=dict(record.data)
+        if transverse_current.MATRIX_FIELD not in part:
+            continue
+        electrical=transverse_current.validate_transverse_current_inputs(part)
+        if electrical is None:
+            continue # Replaced CAD retains an inactive native recipe.
+        coils=transverse_winding.transverse_winding_envelopes(part)
+        owner=transverse_winding.transverse_winding_owner_key(part)
+        component=components.get(owner)
+        if component is None:
+            raise ValueError(f'{record.key}: prescribed-current source has no installed optical owner {owner}')
+        aliases={key:json_digest(encode_instrument(components[key])) for key,host in SHARED_DEFLECTOR_HOSTS.items()
+                 if host==owner and key in components}
+        if owner=='ac_deflector' and 'probe_dp12_scan_deflector' in components:
+            # The service alignment bias is summed on the AC host separately
+            # from SHARED_DEFLECTOR_HOSTS; it is not another physical winding.
+            aliases['probe_dp12_scan_deflector']=json_digest(encode_instrument(components['probe_dp12_scan_deflector']))
+        rows.append(dict(host_key=str(record.key),owner_key=owner,
+            module_key=str(record.module_key),assembled_center_z_mm=float(record.center_z_mm),
+            local_center_z_mm=float(part['local_center_z_mm']),
+            source_inputs={field:_json_value(part[field]) for field in sorted(fields) if field in part},
+            closed_circuits=_json_value(coils),
+            live_owner_digest=json_digest(encode_instrument(component)),shared_logical_drives=aliases,
+            registration=asdict(lens_pose_registration(state,owner))))
+    if not rows:
+        return None # Preserve historical native-source signatures.
+    implementation={Path(module.__file__).name:sha256(Path(module.__file__).read_bytes()).hexdigest()
+        for module in (transverse_winding,transverse_current,transverse_coil_field,
+                       dynamic_transverse_coil,dynamic_potential)}
+    return dict(schema='all-z-transverse-current-dependencies-v1',
+        source_schema=transverse_coil_field.SCHEMA,
+        pack_order=transverse_coil_field.DEFAULT_PACK_ORDER,
+        path_order=transverse_coil_field.DEFAULT_PATH_ORDER,
+        implementation=json_digest(implementation),
+        simulation_time_s=float(getattr(state,'simulation_time_s',0.)),
+        probe_corrector_installed=bool(getattr(state,'probe_corrector_installed',False)),rows=rows)
+
+
+def _all_z_multipole_dependencies(state):
+    """Bind every configured multipole tail without capturing or solving B."""
+    if getattr(state,'round_lens_field_model','gaussian')!='copper_coil':return None
+    assembly=getattr(state,'_resolved_assembly',None)
+    if assembly is None:return None
+    from dataclasses import asdict
+    from temsim import multipole_current,multipole_winding
+    from temsim.cad_probe_winding import FIELDS as LEGACY_HP_FIELDS
+    from temsim.immutable_json import json_digest
+    from temsim.instrument_snapshot import encode_instrument
+    from temsim.lens_pose import lens_pose_registration
+    from temsim.physics import multipole_coil_field,transverse_coil_field
+    components={item.key:item for name in ('stigmators','corrector_elements','deflectors')
+        for item in getattr(state,name,())}
+    by_key={part.key:dict(part.data) for part in assembly.parts}
+    fields=multipole_current.FIELDS|multipole_winding.FIELDS|LEGACY_HP_FIELDS
+    rows=[]
+    for record in assembly.parts:
+        part=by_key[record.key]
+        if multipole_current.MATRIX_FIELD not in part:continue
+        electrical=multipole_current.validate_multipole_current_inputs(part,by_key)
+        if electrical is None:continue
+        owner=multipole_winding.multipole_winding_owner_key(part)
+        component=components.get(owner)
+        if component is None:
+            raise ValueError(f'{record.key}: multipole current source has no installed optical owner {owner}')
+        rows.append(dict(host_key=str(record.key),owner_key=owner,module_key=str(record.module_key),
+            assembled_center_z_mm=float(record.center_z_mm),local_center_z_mm=float(part['local_center_z_mm']),
+            source_inputs={field:_json_value(part[field]) for field in sorted(fields) if field in part},
+            closed_circuits=_json_value(multipole_winding.multipole_winding_envelopes(part,by_key)),
+            live_owner_digest=json_digest(encode_instrument(component)),
+            registration=asdict(lens_pose_registration(state,owner))))
+    if not rows:return None
+    implementation={Path(module.__file__).name:sha256(Path(module.__file__).read_bytes()).hexdigest()
+        for module in (multipole_current,multipole_winding,multipole_coil_field,transverse_coil_field)}
+    return dict(schema='all-z-multipole-current-dependencies-v1',
+        source_schema=multipole_coil_field.SCHEMA,
+        pack_order=transverse_coil_field.DEFAULT_PACK_ORDER,path_order=transverse_coil_field.DEFAULT_PATH_ORDER,
+        implementation=json_digest(implementation),
+        probe_corrector_installed=bool(getattr(state,'probe_corrector_installed',False)),
+        image_corrector_installed=bool(getattr(state,'image_corrector_installed',False)),rows=rows)
+
+
 def incident_field_dependencies(state):
     """Field-support dependency inventory; never solve a field to hash it.
 
@@ -638,6 +750,10 @@ def incident_field_dependencies(state):
     from temsim.instrument_snapshot import encode_instrument
     from temsim.immutable_json import json_digest
     from temsim.lens_pose import has_lens_pose, lens_pose_registration
+    from temsim.round_lens_models import round_lens_cache_identity
+    round_source = round_lens_cache_identity(state, _POST_SAMPLE_PROJECTION_LENS_KEYS)
+    all_z_round_source = (round_source["model"] == "copper_coil"
+                          or round_source["gaussian_geometry_coupling"] == "axial_length")
     sample_z = float(state.sample.z_mm)
     recipes = getattr(state, "lens_field_map_descriptors", {})
     conservative = bool(recipes) and str(getattr(state, "simulation_mode", "custom")) not in {"ideal", "analytical", "ideal_thin"}
@@ -659,10 +775,14 @@ def incident_field_dependencies(state):
                 support = tuple(float(v) for v in support_method())
             except (ValueError, TypeError):
                 pass
-        if posed or conservative or support is None or support[0] <= sample_z:
+        if all_z_round_source or posed or conservative or support is None or support[0] <= sample_z:
             row = {"key": lens.key, "model_digest": json_digest(encode_instrument(lens)),
-                   "support_mm": support, "reason": "posed spatial field" if posed else
+                   "support_mm": support, "reason": "selected all-Z round-lens source" if all_z_round_source else
+                   "posed spatial field" if posed else
                    "mapped/shared/unknown support" if conservative or support is None else "field overlaps incident region"}
+            if all_z_round_source:
+                row["round_lens_source"] = {**round_source, "sources": [source for source
+                    in round_source["sources"] if source["key"] == lens.key]}
             if registration is not None:
                 # A lens pose can bring the spatial field across the specimen
                 # even when its original mechanical centre remains downstream.
@@ -670,8 +790,15 @@ def incident_field_dependencies(state):
                 row["physical_pose"] = {"origin_global_m": registration.origin_global_m,
                                         "rotation_local_to_global": registration.rotation_local_to_global}
             rows.append(row)
-    return {"schema": "incident-field-support-v1", "plane_z_mm": sample_z, "rows": rows,
+    result={"schema": "incident-field-support-v1", "plane_z_mm": sample_z, "rows": rows,
             "coupled_recipes": recipes if conservative else {}}
+    transverse=_all_z_transverse_dependencies(state)
+    if transverse is not None:
+        result['all_z_transverse_sources']=transverse
+    multipoles=_all_z_multipole_dependencies(state)
+    if multipoles is not None:
+        result['all_z_multipole_sources']=multipoles
+    return result
 
 
 def explain_product_reuse(previous, current):

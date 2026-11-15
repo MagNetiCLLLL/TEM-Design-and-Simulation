@@ -1,0 +1,9 @@
+# Explicit engineering authoring policy, not a runtime geometry constraint.
+# This includes the per-turn allocation of insulation and residual pack space.
+# Conductor metal area is a separate user input and is never inferred here.
+format_version = 1
+nominal_allocated_cross_section_mm2_per_turn = 9.0
+rounding = "nearest_half_up"
+preserve_original_photo_reference = true
+maximum_turn_adjustment_fraction = 0.20
+automatic_geometry_reestimation = false

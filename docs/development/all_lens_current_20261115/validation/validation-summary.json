@@ -1,0 +1,20 @@
+{
+  "status": "field_only_validation_passed",
+  "source_definitions": 9,
+  "source_owner_instances": 78,
+  "unique_round_lens_keys": 20,
+  "assembly_variants": 14,
+  "field_checks": 196,
+  "maximum_relative_matching_error": 1.6141185235549312e-15,
+  "rtol": 2e-14,
+  "atol_t": 0,
+  "quadrature_order": 12,
+  "complete_controls_unchanged": true,
+  "nonelectrical_parameters_unchanged": true,
+  "wire_diameters_inferred": false,
+  "ideal_cache_identities_changed_for_all_assemblies": true,
+  "source_or_transport_executed": false,
+  "coherent_executed": false,
+  "focus_adjusted": false,
+  "startup_field_model": "gaussian"
+}

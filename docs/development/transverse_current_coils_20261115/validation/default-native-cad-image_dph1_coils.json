@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "scope": "Complete default fine-wire CAD only; no physical source or wave calculation",
+  "display_triangle_budget": 4000000,
+  "every_physical_turn_retained": true,
+  "records": [
+    {
+      "module": "column/C3_ImageCorrector.toml",
+      "component": "image_dph1_coils",
+      "source_sha256": "da6a74dd389a9c7ebc566208b015f3e91ad7380ddf5fbf187726d02cd3c2c5af",
+      "turns_per_coil": 3,
+      "physical_coil_count": 4,
+      "total_wire_turns": 12,
+      "wire_metal_area_mm2": 0.0003,
+      "material_regions": 16,
+      "mesh_regions": 16,
+      "actual_triangles": 80032,
+      "original_passive_regions_exact": 0,
+      "seconds": 0.251470999995945,
+      "display_resolution_reduced": false
+    }
+  ]
+}

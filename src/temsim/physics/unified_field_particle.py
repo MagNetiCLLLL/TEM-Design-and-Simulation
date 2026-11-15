@@ -496,13 +496,45 @@ def merge_unified_stops(z, alive, blocked, labels, selection=slice(None)):
     return alive,blocked,labels
 
 
+def _ideal_current_diagnostic_increment(potential,normalized):
+    """Apply a native angle-command increment through the full saved matrix.
+
+    Changing one command can change both physical station currents. Every
+    source row therefore receives its own matrix rows; no fringe contribution
+    or cross-station compensation is dropped from the derivative experiment.
+    """
+    from dataclasses import replace
+    from temsim.immutable_json import thaw_json
+    data=potential.provenance
+    component=data['component_key']
+    selected={key:value for key,value in normalized.items() if key.rsplit(':',1)[0]==component}
+    if not selected:return None
+    if data.get('command_unit')!='mrad' or potential.coils[0]['family']!='saddle':
+        raise ValueError(f'{component}: angle-command increments require a calibrated physical column dipole')
+    matrix=np.asarray(data['electrical']['matrix_a_per_unit'])
+    command=np.zeros(matrix.shape[1])
+    for key,value in selected.items():
+        try:stage=int(key.rsplit(':',1)[1])
+        except (ValueError,IndexError) as error:
+            raise ValueError('Physical current increment requires an explicit station key') from error
+        if stage<0 or stage*2+2>len(command):
+            raise ValueError(f'{key}: current increment station is not installed')
+        command[stage*2:stage*2+2]+=np.asarray(value)*1000
+    stage=int(data['station_index'])
+    currents=np.asarray(potential.currents_a)+matrix[stage*2:stage*2+2]@command
+    return (replace(potential,currents_a=tuple(currents),provenance={**thaw_json(data),
+        'diagnostic_native_command_increment_rad':selected,
+        'diagnostic_scope':'DC prescribed-current finite-coil response; saved matrix/N/envelope and hardware unchanged'}),
+        set(selected))
+
+
 def trace_unified_response(state, phase_space_xy_slopes, z0_m, observation_z_m, *,
         energy_ev, flight_time_s, maximum_step_m, coil_perturbations_rad=None):
     """Measure explicit finite-coil responses without replacing a beam source.
 
     Input columns are x, y, dx/dz, dy/dz in SI. Diagnostic increments change
-    the retained uniform Az coefficients of an existing physical coil, never
-    a zero-thickness kick. The state, its cache, and mechanical geometry are
+    the retained native uniform Az or the saved current-matrix commands of
+    existing physical coils, never a zero-thickness kick. The state, its cache, and mechanical geometry are
     unchanged. Observations contain actual A for canonical momentum analysis.
     """
     from collections.abc import Mapping
@@ -535,7 +567,13 @@ def trace_unified_response(state, phase_space_xy_slopes, z0_m, observation_z_m, 
         rows, found = [], set()
         for row in runtime.snapshot.contributions:
             potential = row.potential
-            if row.source_id in normalized:
+            from temsim.physics.transverse_coil_field import TransverseCoilPotential
+            current_changes=(_ideal_current_diagnostic_increment(potential,normalized)
+                             if type(potential) is TransverseCoilPotential else None)
+            if current_changes is not None:
+                potential,covered=current_changes
+                found.update(covered)
+            elif row.source_id in normalized:
                 if (type(potential) is not AnalyticPotentialDomain
                         or type(potential.base.field) is not FrozenPosedMultipole
                         or potential.base.field.envelope_kind != "uniform"

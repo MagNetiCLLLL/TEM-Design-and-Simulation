@@ -3,6 +3,7 @@ from copy import deepcopy
 
 import numpy as np
 import pytest
+from legacy_transverse_helpers import legacy_transverse_document,legacy_transverse_draft
 
 from temsim.cad_catalog import part_solids
 from temsim.cad_geometry import annulus, box, transformed
@@ -22,7 +23,7 @@ KEY = 'condenser_stigmator'
 
 @pytest.fixture
 def document():
-    return read_document(INSTRUMENT_CONFIG_ROOT/MODULE)
+    return legacy_transverse_document(read_document(INSTRUMENT_CONFIG_ROOT/MODULE))
 
 
 def _row(document):
@@ -122,7 +123,7 @@ def test_support_edit_is_atomic_undoable_and_does_not_change_copper_or_field_inp
 
     root = tmp_path/'instruments'
     copy_catalog_inputs(INSTRUMENT_CONFIG_ROOT, root, (MODULE,))
-    draft = PartModelDocument(root/MODULE)
+    draft = legacy_transverse_draft(root/MODULE,persist=True)
     before, raw = deepcopy(draft.document), draft.path.read_bytes()
     old = stigmator_support_solids(draft.part(KEY))
     field = PREFIX+'former_wall_thickness_mm'
@@ -162,7 +163,7 @@ def test_rotated_channel_bases_rotate_their_own_supports_at_the_same_station(doc
 def test_independent_copy_replacement_owns_geometry_and_restore_is_atomic():
     from temsim.cad_catalog import posed_solids
 
-    draft = PartModelDocument(INSTRUMENT_CONFIG_ROOT/MODULE)
+    draft = legacy_transverse_draft(INSTRUMENT_CONFIG_ROOT/MODULE)
     original = deepcopy(draft.part(KEY))
     copied = draft.copy_component_from(draft.document, KEY, 'replaced_condenser_stigmator',
                                        2500., include_children=False)
@@ -219,11 +220,11 @@ def test_installed_material_uses_real_profiled_tube_and_retains_positive_clearan
     tube_material = _manifold(tube.shape, 72)
     profile = np.asarray(tube_row[TUBE_PROFILE])
     assert tube_row['mechanical_inner_diameter_mm'] == 5.76
-    rows = {p.key: p.data for p in assembly.parts}
+    rows = {p['key']:p for p in legacy_transverse_document({'parts':[dict(p.data) for p in assembly.parts]})['parts']}
     for key, expected_gap, expected_z in (('condenser_deflector', 2.9, (790., 830.)),
                                          (KEY, .4, (1436.5, 1466.5))):
         part = assembly.part(key)
-        before = deepcopy(dict(part.data))
+        before = dict(part.data)
         assert (part.start_z_mm, part.end_z_mm) == expected_z
         offset = part.center_z_mm-part.data['local_center_z_mm']
         d = support_dimensions(part.data) if key.endswith('deflector') else stigmator_support_dimensions(part.data)
@@ -234,7 +235,7 @@ def test_installed_material_uses_real_profiled_tube_and_retains_positive_clearan
             & (profile[:, 0] < part.end_z_mm), 0], part.end_z_mm]
         max_od = np.interp(sample_z, profile[:, 0], profile[:, 1]).max()
         assert inner-max_od/2 == pytest.approx(expected_gap)
-        for spec in posed_solids(part.data, rows):
+        for spec in posed_solids(rows[key], rows):
             placed = transformed(spec.shape, offset=(0., 0., offset))
             assert (_manifold(placed, 72) ^ tube_material).volume() < 1e-8
         assert dict(part.data) == before

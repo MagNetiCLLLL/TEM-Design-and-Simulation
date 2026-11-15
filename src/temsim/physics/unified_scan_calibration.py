@@ -98,11 +98,18 @@ def measure_scan_responses(state, observation_z_mm, *, perturbation_rad=1e-6,
     if len(ac_coils) != 2:
         raise ValueError("Shared-potential calibration requires two installed AC coils")
     source = min(row.field_support_mm[0] for row in ac_coils)
+    from temsim.physics.transverse_coil_field import FrozenTransverseCoilField
+    if any(type(row) is FrozenTransverseCoilField for row in ac_coils):
+        from temsim.physics.particle_sections import section_limits
+        # Closed winding fields extend upstream of their material packs. A
+        # local DC diagnostic starts at the post-gun boundary, not an invented
+        # zero-field plane at the AC winding entrance.
+        source=float(section_limits(private)[0])
     if targets[0] <= source:
         raise ValueError("Scan calibration observations must follow the AC entrance")
     host = str(getattr(private.descan_deflector, "_physical_host_key", private.descan_deflector.key))
     selected = tuple(row for row in coils if row.key.startswith(("ac_deflector:", host+":"))
-                     and row.field_support_mm[0] < targets[-1])
+                     and (type(row) is FrozenTransverseCoilField or row.field_support_mm[0] < targets[-1]))
     energy = float(state.beam_voltage_kv)*1000
     from temsim.physics.unified_field_runtime import get_unified_field_runtime
     from temsim.physics.optical_tuning import check_tuning_cancelled

@@ -11,6 +11,15 @@ from temsim import module_manifest
 def _storage_text(original, document):
     """Preserve part-file comments while the expanded catalog is validated later."""
     from temsim.component_operations import PartChangeSet
+    from temsim.coil_winding import WINDING_FIELDS
+    from temsim.cad_probe_winding import FIELDS as PROBE_WINDING_FIELDS
+    from temsim.transverse_winding import FIELDS as TRANSVERSE_WINDING_FIELDS
+    from temsim.transverse_current import FIELDS as TRANSVERSE_CURRENT_FIELDS
+    from temsim.multipole_winding import FIELDS as MULTIPOLE_WINDING_FIELDS
+    from temsim.multipole_current import FIELDS as MULTIPOLE_CURRENT_FIELDS
+    removable_winding_fields = ((WINDING_FIELDS - {"winding_turn_count"})
+        | PROBE_WINDING_FIELDS | TRANSVERSE_WINDING_FIELDS | TRANSVERSE_CURRENT_FIELDS
+        | MULTIPOLE_WINDING_FIELDS | MULTIPOLE_CURRENT_FIELDS)
     before = tomllib.loads(original)
     old = {part["key"]: part for part in before.get("parts", ())}
     new = {part["key"]: part for part in document.get("parts", ())}
@@ -18,8 +27,8 @@ def _storage_text(original, document):
               for field, value in part.items() if old[key].get(field) != value}
     for key in old.keys() & new.keys():
         for field in old[key].keys() - new[key].keys():
-            if field in {"model_3d", "material_regions"}:
-                fields[("parts", key, field)] = None if field == "model_3d" else {}
+            if field in {"model_3d", "material_regions", "parameter_metadata"} | removable_winding_fields:
+                fields[("parts", key, field)] = {} if field == "material_regions" else None
     old_placements = {entry["key"]: entry["placement"] for entry in before.get("subassemblies", ())}
     placements = {entry["key"]: entry["placement"] for entry in document.get("subassemblies", ())
                   if old_placements.get(entry["key"]) != entry["placement"]}

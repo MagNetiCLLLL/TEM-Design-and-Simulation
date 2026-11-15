@@ -331,7 +331,7 @@ def _aberration_cache_signature(state, system: str) -> str:
             "stigmators", "deflectors", "electron_gun", "component_placements",
             "lens_field_map_descriptors", "_lens_field_map_bindings",
             "lens_intrinsic_aberrations",
-            "simulation_mode",
+            "simulation_mode", "round_lens_field_model", "gaussian_geometry_coupling",
         )
     }
     snapshot.update(
@@ -350,6 +350,8 @@ def _aberration_cache_signature(state, system: str) -> str:
         key: value.content_fingerprint
         for key, value in getattr(state, "_lens_field_map_bindings", {}).items()
     }
+    from temsim.round_lens_models import round_lens_cache_identity
+    snapshot["round_lens_sources"] = round_lens_cache_identity(state)
     snapshot["aberration_schema"] = ABERRATION_SCHEMA
     return hashlib.sha256(repr(_public_optical_value(snapshot)).encode("utf-8")).hexdigest()
 

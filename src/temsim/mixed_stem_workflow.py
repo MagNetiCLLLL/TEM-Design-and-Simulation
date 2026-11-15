@@ -135,6 +135,8 @@ def calculate_mixed_stem_boundary(boundary, *, request=None, cancelled=lambda: F
         raise TypeError("A mixed STEM boundary acquisition requires a validated immutable particle boundary")
     request = (MixedStemScanRequest() if request is None else request).validate()
     state = boundary.restore_inputs_for_wave()
+    from temsim.simulation_modes import require_coherent_mode
+    require_coherent_mode(state)
     positions = specimen_scan_positions(state)
     scan = simulate_mixed_stem_scan(state, boundary.source, request,
         validated_boundary=boundary, positions_nm=positions, cancelled=cancelled,

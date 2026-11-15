@@ -31,10 +31,16 @@ def instrument_gun_field_context(state):
         from temsim.physics.gun_transport_domain import gun_magnetic_query_upper_m
         upper = gun_magnetic_query_upper_m(gun)
         identity = _gun_magnetic_dependency_identity(gun, provider)
+        from temsim.physics.frozen_copper_coil_field import is_all_z_copper_field
+        # Infinite intervals declare an all-Z step-scheduling contributor, not
+        # a serialised mechanical/display bound. Unsupported packed laws use
+        # the strict native evaluator; no finite face deletes a copper tail.
         supports = tuple(
-            (float(source.bounds_m[0, 2])*1000., float(source.bounds_m[1, 2])*1000.)
+            ((-float("inf"), float("inf")) if is_all_z_copper_field(source.provider) else
+             (float(source.bounds_m[0, 2])*1000., float(source.bounds_m[1, 2])*1000.))
             for source in provider._sources
-            if not source.known_zero and float(source.bounds_m[0, 2]) <= upper)
+            if not source.known_zero and (is_all_z_copper_field(source.provider)
+                                         or float(source.bounds_m[0, 2]) <= upper))
         gun._instrument_magnetic_field = provider
         gun._instrument_magnetic_identity = identity
         gun._instrument_magnetic_supports_mm = supports
@@ -54,8 +60,10 @@ def _gun_magnetic_dependency_identity(gun, provider):
 
     The scalar and compiled gun loops cap dt by the light-cone distance to
     this upper bound. The full provider is still evaluated, with all overlap
-    tails intact. Include every upstream source; below their minimum support
-    the same finite-support model is identically zero. No electric solve or
+    tails intact. Include every upstream finite-support source and every
+    all-Z copper contributor. Below a finite source's minimum support its
+    existing model is identically zero; copper tails are never excluded.
+    No electric solve or
     change to its full-instrument boundary is needed for this dependency.
     """
     from temsim.physics.gun_transport_domain import gun_magnetic_query_upper_m

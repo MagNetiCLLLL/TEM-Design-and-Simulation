@@ -1,0 +1,339 @@
+{
+  "standalone_deflection_hardware": [
+    {
+      "key": "feg_deflector",
+      "role": "",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "gun/FEG.toml"
+    },
+    {
+      "key": "condenser_deflector",
+      "role": "",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "beam_deflector",
+      "role": "",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "ac_deflector",
+      "role": "",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "image_diffraction_deflector",
+      "role": "",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    }
+  ],
+  "probe_steering_inserts": [
+    {
+      "key": "probe_dph2_coils",
+      "role": "",
+      "mechanical_profile": "deflector_coil_insert",
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_dph1_coils",
+      "role": "",
+      "mechanical_profile": "deflector_coil_insert",
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_dp22_coils",
+      "role": "",
+      "mechanical_profile": "deflector_coil_insert",
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_dp21_coils",
+      "role": "",
+      "mechanical_profile": "deflector_coil_insert",
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_dp11_coils",
+      "role": "",
+      "mechanical_profile": "deflector_coil_insert",
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    }
+  ],
+  "probe_main_hexapoles": [
+    {
+      "key": "probe_hp2_hexapole",
+      "role": "",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_hp1_hexapole",
+      "role": "",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    }
+  ],
+  "stigmator_assemblies": [
+    {
+      "key": "feg_stigmator",
+      "role": "",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": 8,
+      "source": "gun/FEG.toml"
+    },
+    {
+      "key": "condenser_stigmator",
+      "role": "",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": 8,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "objective_stigmator",
+      "role": "",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": 8,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "diffraction_stigmator",
+      "role": "",
+      "mechanical_profile": "magnetic_stigmator",
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": 8,
+      "source": "project_and_recording_system/NoEnergyFilter.toml"
+    }
+  ],
+  "probe_quadrupole_channels": [
+    {
+      "key": "probe_qph2_quadrupole",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_qpc_quadrupole",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_qph1_quadrupole",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_qpol_quadrupole",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    }
+  ],
+  "probe_auxiliary_hexapole_channels": [
+    {
+      "key": "probe_hpc_hexapole",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_hpol_hexapole",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    }
+  ],
+  "probe_steering_control_channels": [
+    {
+      "key": "probe_dph2_deflector",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": "probe_dph2_coils",
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_dph1_deflector",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": "probe_dph1_coils",
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_dp22_deflector",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": "probe_dp22_coils",
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_dp21_deflector",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": "probe_dp21_coils",
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    },
+    {
+      "key": "probe_dp11_deflector",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": "probe_dp11_coils",
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    }
+  ],
+  "shared_descan_control_channel": [
+    {
+      "key": "descan_deflector",
+      "role": "control_channel",
+      "mechanical_profile": null,
+      "physical_host": "image_diffraction_deflector",
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    }
+  ],
+  "virtual_scan_reference": [
+    {
+      "key": "probe_dp12_scan_deflector",
+      "role": "virtual_reference",
+      "mechanical_profile": null,
+      "physical_host": null,
+      "N": null,
+      "wire_diameter_mm": null,
+      "I100_a": null,
+      "material_coil_count": null,
+      "source": "column/C3_ProbeCorrector.toml"
+    }
+  ]
+}

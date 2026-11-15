@@ -1,0 +1,26 @@
+{
+  "solver_source_identity": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+  "axis_execution": {
+    "schema": "annular-axis-common-factor-v1",
+    "compiled_available": true,
+    "numba_version": "0.66.0",
+    "fastmath": false,
+    "reduction": "NumPy float64 eight-lane pairwise tree",
+    "accelerator_admission": {
+      "radius_m": [
+        1e-06,
+        10.0
+      ],
+      "abs_nonzero_loop_prefactor_t": [
+        1e-100,
+        1e+100
+      ],
+      "max_abs_normalized_z": 10000.0,
+      "subnormal_terms": "Original NumPy fallback"
+    },
+    "fallback": "Original direct-power NumPy for unavailable backend or unsafe numerical range"
+  },
+  "composed_jit_persistent_cache": false,
+  "supersedes_pre_physical_inventory": "optimized-source-freeze.json",
+  "scope": "Final freeze before any optimized physical run. Same optics source energies boundaries tolerances; 1024 original positive-current particles"
+}

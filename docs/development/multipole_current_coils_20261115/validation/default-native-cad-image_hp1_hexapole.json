@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "scope": "Complete native CAD only; no particle or coherent execution",
+  "every_physical_turn_retained": true,
+  "display_triangle_budget": 4000000,
+  "records": [
+    {
+      "component": "image_hp1_hexapole",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "source_snapshot_sha256": "f84f3c65332d9d92cc2597bea15e7de3a374827f3f246e90988bbf62cab4fb75",
+      "turns_per_coil": 19,
+      "coil_count": 6,
+      "total_wire_turns": 114,
+      "wire_metal_area_mm2": 0.02,
+      "angular_datum_deg": 30.0,
+      "material_regions": 127,
+      "mesh_regions": 127,
+      "actual_triangles": 132184,
+      "requested_angular_segments": 32,
+      "display_resolution_reduced": false,
+      "transport_role": "existing_material_host",
+      "seconds": 0.27773159999924246
+    }
+  ]
+}

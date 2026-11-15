@@ -83,7 +83,9 @@ def build_shape(spec, *, allow_empty=False):
     if not isinstance(spec, dict):
         raise ValueError("Shape specification must be a JSON object")
     kind = spec.get("kind")
-    if kind == "brep":
+    if kind == 'closed_wire_loop':
+        shape=build_shape(spec['analytic_shape'],allow_empty=allow_empty)
+    elif kind == "brep":
         try:
             data = base64.b64decode(spec["brep_base64"], validate=True)
         except (ValueError, TypeError) as exc:
@@ -99,6 +101,47 @@ def build_shape(spec, *, allow_empty=False):
             section.pop()
         wire = cq.Wire.makePolygon([cq.Vector(radius, 0., z) for z, radius in section], close=True)
         shape = cq.Solid.revolve(wire, [], 360., (0., 0., 0.), (0., 0., 1.))
+    elif kind == 'torus_arc':
+        major,minor,centre,start,end=(_number(spec[name],name) for name in (
+            'major_radius_mm','minor_radius_mm','center_z_mm','start_angle_deg','end_angle_deg'))
+        if not 0<minor<major or not 0<end-start<360:
+            raise ValueError('Round-wire arc requires positive radii and a span below 360 degrees')
+        wire=cq.Wire.makeCircle(minor,cq.Vector(major,0.,centre),cq.Vector(0.,1.,0.))
+        shape=cq.Solid.revolve(wire,[],end-start,(0.,0.,0.),(0.,0.,1.))
+        shape=shape.rotate((0.,0.,0.),(0.,0.,1.),start)
+    elif kind == "torus":
+        major = _number(spec["major_radius_mm"], "Torus major radius")
+        minor = _number(spec["minor_radius_mm"], "Torus wire radius")
+        centre = _number(spec["center_z_mm"], "Torus centre Z")
+        if not 0 < minor < major:
+            raise ValueError("A round wire torus requires major radius > wire radius > 0")
+        shape = cq.Solid.makeTorus(major, minor, cq.Vector(0., 0., centre))
+    elif kind == "round_winding_insulation":
+        start, end, inner, outer, radius = (_number(spec[name], name) for name in (
+            "start_mm", "end_mm", "inner_mm", "outer_mm", "wire_radius_mm"))
+        turns = [_vector(point, 2, "Winding turn radius/Z") for point in spec["turns_rz_mm"]]
+        if not start < end or not 0 < inner < outer or radius <= 0:
+            raise ValueError("Winding insulation requires a positive annular pack and wire radius")
+        if len(turns) > 8192:
+            raise ValueError("Exact winding STEP construction exceeds the 8192-turn per-pack resource limit; "
+                             "no turns were omitted")
+        rounding = 16*math.ulp(max(abs(start), abs(end), outer, radius))
+        if any(r-radius < inner-rounding or r+radius > outer+rounding
+               or z-radius < start-rounding or z+radius > end+rounding for r, z in turns):
+            raise ValueError("A winding wire lies outside its declared insulation envelope")
+        boundary = cq.Wire.makePolygon([cq.Vector(r, 0., z) for z, r in (
+            (start, inner), (start, outer), (end, outer), (end, inner))], close=True)
+        circles = [cq.Face.makeFromWires(cq.Wire.makeCircle(radius, cq.Vector(r, 0., z), cq.Vector(0., 1., 0.)))
+                   for r, z in turns]
+        # A planar Boolean also handles circles tangent to the envelope or
+        # adjacent turns; directly declaring tangent inner wires is invalid.
+        # The resulting circular edges stay analytic on revolution. No N
+        # sequential 3D torus cuts or polygonal STEP approximation is used.
+        section = cq.Face.makeFromWires(boundary)
+        section = section.cut(*circles) if circles else section
+        children = [cq.Solid.revolve(face.outerWire(), face.innerWires(), 360.,
+                    (0., 0., 0.), (0., 0., 1.)) for face in section.Faces()]
+        shape = children[0] if len(children) == 1 else cq.Compound.makeCompound(children)
     elif kind == "round_tip":
         radius = _number(spec["radius_mm"], "Tip radius")
         length = _number(spec["length_mm"], "Tip length")
@@ -209,6 +252,27 @@ def solid_identity(row):
 
 def build_solid_rows(specs):
     """Validate part-wide cuts before allowing deletion of an individual leaf."""
+    specs = tuple(specs)
+    def winding_turns(shape):
+        if shape.get("kind") == "round_winding_insulation":
+            return len(shape["turns_rz_mm"])
+        count = winding_turns(shape["shape"]) if "shape" in shape else 0
+        count += winding_turns(shape["base"]) if "base" in shape else 0
+        return count + sum(winding_turns(item) for name in ("shapes", "tools") for item in shape.get(name, ()))
+    total_turns = 0
+    for row in specs:
+        count=winding_turns(row["shape"])
+        if str(row.get("region","")).startswith("winding_insulation_"):
+            declared=row.get("parameters",{}).get("winding_turn_count",0)
+            if isinstance(declared,bool) or not isinstance(declared,int) or declared<0:
+                raise ValueError("Exact winding STEP turn count must be a nonnegative integer")
+            # Radial rounded-rectangle packs use ordinary CSG insulation.
+            # Count each physical wire once, not its eight analytic segments.
+            count=max(count,declared)
+        total_turns+=count
+    if total_turns > 8192:
+        raise ValueError(f"Exact winding STEP construction requests {total_turns:,} turns, exceeding the "
+                         "8192-turn resource limit. No turns were omitted.")
     groups, shapes, removed, edits = {}, {}, [], []
     for row in specs:
         groups.setdefault(str(row["key"]), []).append(row)

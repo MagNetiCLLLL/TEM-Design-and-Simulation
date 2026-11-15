@@ -1,0 +1,60 @@
+{
+  "status": "passed",
+  "source_files": 12,
+  "physical_winding_hosts": 96,
+  "assembly_states_exact": 14,
+  "legacy_native_field_records_exact": 336,
+  "other_source_values_exact": true,
+  "source_distribution_boundaries_and_tolerances_unchanged": true,
+  "particle_or_coherent_calculation_executed": false,
+  "installed_inputs": [
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "sha256": "914f2938ae623cb49e2e2b3782c956013135b14496bac1e84ac1cf5de82cf220"
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "sha256": "7311ce636a3473bb37a8cfa22a9537f329bba1ab87781313584f520309af3afb"
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "sha256": "105570551b959038b59493940e4b2e7130591b5ad9e8c6e033198d7df82f67d3"
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "sha256": "2ed82f596f363a3ac4be2f143988dbb03b46224b7eddee9e93d70844bf463ce8"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "sha256": "06618c52d4edec02d8dec8eadde49449d3030cecde5f4db3d324b1f9ac15e133"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "sha256": "98915ceb63a30d30f3dd56c7bd726f113163adde442f8ee7324f386577f8a200"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "sha256": "08ffd0e577701dba59b4a0801d94f2c7c288fbc2b406e16c9f578eff82f97654"
+    },
+    {
+      "path": "configs/instruments/gun/FEG.toml",
+      "sha256": "184b20f5dd3e05a691bf9ea1a99dfb0adb000e7696895dfbde213b4b47e202e2"
+    },
+    {
+      "path": "configs/instruments/gun/FEG_Mono.toml",
+      "sha256": "87b42723d58fd2a118ac6103fb9bf3163e78498c5d5380caa6a13183985add39"
+    },
+    {
+      "path": "configs/instruments/gun/Thermionic.toml",
+      "sha256": "854381a5b0a64597ef6f89a6799f6504b4389767fa38f5ccdc2f9b111640c7fc"
+    },
+    {
+      "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "sha256": "8f0cd87ebef013b8d61aaa30317eb2c14dd0b4b357f246712d69aed4c510460c"
+    },
+    {
+      "path": "configs/subassemblies/projector_stack.toml",
+      "sha256": "00c38a75a5f3b67c6c7c02ff22035c6e1d0d52f5ff0a5eb9670c5f492c57b983"
+    }
+  ]
+}

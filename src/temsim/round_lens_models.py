@@ -11,7 +11,7 @@ from numbers import Real
 
 ROUND_LENS_FIELD_MODELS = {
     "gaussian": "Gaussian calibration / saved lens models",
-    "copper_coil": "Copper coils in vacuum (ignore pole pieces)",
+    "copper_coil": "Ideal prescribed-current coils in vacuum",
 }
 GAUSSIAN_GEOMETRY_COUPLINGS = {
     "fixed_calibration": "Fixed Gaussian calibration",
@@ -23,8 +23,10 @@ def round_lens_model_description(state):
     model = validate_round_lens_field_model(getattr(state, "round_lens_field_model", "gaussian"))
     coupling = validate_gaussian_geometry_coupling(getattr(state, "gaussian_geometry_coupling", "fixed_calibration"))
     if model == "copper_coil":
-        return ("Round lenses use the declared copper coil dimensions and ampere-turns in vacuum. "
-                "Pole pieces, iron and saturation are ignored. Native corrector multipoles, stigmators and deflectors are retained. "
+        return ("Ideal prescribed-current coils use the declared winding dimensions and ampere-turns in vacuum. "
+                "Pole pieces, iron and saturation are ignored. Calibrated deflector, stigmator, quadrupole and hexapole windings "
+                "use their declared closed current circuits; unconfigured legacy sources retain their native models. "
+                "Electrical resistance, heating and circuit dynamics are not solved. "
                 "This source currently supports classical particles; coherent propagation is unavailable.")
     if coupling == "axial_length":
         return ("Gaussian profile widths and internal offsets follow actual/reference current-bearing coil length. "
@@ -50,7 +52,7 @@ def validate_round_lens_selection(model, coupling, simulation_mode):
     model = validate_round_lens_field_model(model)
     coupling = validate_gaussian_geometry_coupling(coupling)
     if simulation_mode != "unified" and (model == "copper_coil" or coupling == "axial_length"):
-        raise ValueError("Copper coils and Gaussian length linking require shared Finite-Field Optics. Select Gaussian with fixed calibration before changing the execution model.")
+        raise ValueError("Ideal prescribed-current coils and Gaussian length linking require shared Finite-Field Optics. Select Gaussian with fixed calibration before changing the execution model.")
     return model, coupling
 
 
@@ -130,8 +132,41 @@ def gaussian_geometry_scale(state, lens_key):
     return gaussian_geometry_metadata(state, lens_key)["width_scale"]
 
 
+def round_lens_cache_identity(state, lens_keys=None):
+    """Describe the selected source without solving or sampling any field.
+
+    Alternative round-lens laws consume resolved winding geometry as well as
+    optical controls. Keep that geometry in cache identities even for lenses
+    whose mechanical envelopes lie downstream of the requested plane: their
+    fields retain all-Z tails. Fixed historical Gaussian calibration needs no
+    new geometry lookup.
+    """
+    model = validate_round_lens_field_model(getattr(state, "round_lens_field_model", "gaussian"))
+    coupling = validate_gaussian_geometry_coupling(getattr(state, "gaussian_geometry_coupling", "fixed_calibration"))
+    identity = {"schema": "round-lens-source-cache-v1", "model": model,
+                "gaussian_geometry_coupling": coupling}
+    if model == "gaussian" and coupling == "fixed_calibration":
+        return identity
+    from temsim.physics.lens_field_provider import lens_geometry_binding
+    from temsim.lens_pose import lens_pose_registration
+    selected = None if lens_keys is None else frozenset(lens_keys)
+    sources = []
+    for lens in getattr(state, "lenses", ()):
+        if selected is not None and lens.key not in selected:
+            continue
+        registration = lens_pose_registration(state, lens.key)
+        sources.append({"key": lens.key,
+            "geometry_fingerprint": lens_geometry_binding(state, lens.key).geometry_fingerprint,
+            "physical_pose": {"origin_global_m": registration.origin_global_m,
+                              "rotation_local_to_global": registration.rotation_local_to_global}})
+    identity["sources"] = sources
+    return identity
+
+
 def _clear_live_providers(state):
     state._runtime_lens_field_provider_cache = {}
+    vars(state).pop("_effective_aberration_cache", None)
+    vars(state).pop("_multiplane_transfer_cache", None)
 
 
 def _preflight_native_gaussian_lengths(state):

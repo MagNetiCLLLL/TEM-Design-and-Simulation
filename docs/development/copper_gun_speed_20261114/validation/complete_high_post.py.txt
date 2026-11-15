@@ -1,0 +1,398 @@
+"""Recover a verified High incident seed, then explicitly rerun only its post path.
+
+Default preparation permits only a disk-cached normal scan calibration. It
+forbids every new chief/source/transport call. --execute requires the completed
+preparation proof and authorizes only the production sample-to-end rebuild.
+Old inputs, failures, results and artifact references remain unchanged.
+"""
+from __future__ import annotations
+
+import argparse
+from contextlib import ExitStack, contextmanager
+from dataclasses import replace
+from datetime import datetime, timezone
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import shutil
+import sys
+from time import perf_counter
+import traceback
+from unittest.mock import patch
+from zipfile import ZIP_DEFLATED
+
+
+CASE = Path(__file__).resolve().parent
+ROOT = CASE.parents[1]
+DEFAULT_HIGH = CASE / "optimized-preview-high-1024" / "high-accuracy"
+
+
+def log(message):
+    print(f"{datetime.now(timezone.utc).isoformat(timespec='seconds')} {message}", flush=True)
+
+
+def sha(path):
+    h = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        for block in iter(lambda: stream.read(8*1024**2), b""):
+            h.update(block)
+    return h.hexdigest()
+
+
+def serial(value):
+    from collections.abc import Mapping
+    import numpy as np
+    if isinstance(value, np.ndarray):
+        return value.tolist()
+    if isinstance(value, np.generic):
+        return value.item()
+    if isinstance(value, Mapping):
+        return {str(key): serial(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [serial(item) for item in value]
+    if isinstance(value, Path):
+        return str(value)
+    return value
+
+
+def write_json(path, data):
+    with Path(path).open("x", encoding="utf-8") as stream:
+        json.dump(serial(data), stream, indent=2, allow_nan=False)
+
+
+def helper_module():
+    spec = importlib.util.spec_from_file_location("original_validation_helpers", CASE / "run_particle_validation.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def independent_controls(state, helper):
+    value = helper.physical_controls(state)
+    # The project's existing operating serializers and cache policy both
+    # declare exactly these two lower gains to be derived readbacks. Retain
+    # all other public fields, including source, geometry, strength and FOV.
+    for component in value["corrector_elements"]:
+        if component["key"] in {"ac_deflector", "descan_deflector"}:
+            component.pop("lower_coil_gain")
+    return value
+
+
+def derived_records(state):
+    from temsim.physics.scan_preparation import _resolved_values
+    ac, descan = state.ac_deflector, state.descan_deflector
+    return dict(official_resolved_values=_resolved_values(state),
+        ac_lower_coil_gain=ac.lower_coil_gain, descan_lower_coil_gain=descan.lower_coil_gain,
+        ac_ratio=ac.pure_shift_lower_ratio_matrix,
+        descan_ratio=descan.image_plane_lower_ratio_matrix,
+        ac_command_matrix_mrad=ac.scan_command_matrix_mrad,
+        descan_command_matrix_mrad=descan.scan_command_matrix_mrad,
+        ac_coil_maps=ac.coil_kick_matrices(), descan_coil_maps=descan.coil_kick_matrices(),
+        execution_receipt=getattr(ac, "_scan_execution_receipt", None))
+
+
+def graph_without_derived(state):
+    """Retain every snapshot input except existing calibration output slots."""
+    from copy import deepcopy
+    from temsim.instrument_snapshot import encode_instrument
+    from temsim.immutable_json import thaw_json
+    from temsim.physics.scan_preparation import _resolved_values
+    outputs = _resolved_values(state)
+    graph = deepcopy(thaw_json(encode_instrument(state)))
+    names = dict(zip(("ac_deflector", "descan_deflector"), outputs))
+    for node in graph["nodes"]:
+        attributes = node.get("attributes", {})
+        key = attributes.get("key")
+        if key not in names:
+            continue
+        # Public angular amplitudes/raster fields are asserted separately by
+        # independent_controls. Only private resolved calibration slots and
+        # the two compatibility gain readbacks are removed from this graph.
+        remove = {name for name in names[key] if name.startswith("_")}
+        remove.add("lower_coil_gain")
+        for name in remove:
+            attributes.pop(name, None)
+        node["fields"] = [name for name in node["fields"] if name not in remove]
+    return graph
+
+
+@contextmanager
+def forbidden_upstream(*, calibration_cache_only):
+    """Fail closed on a forbidden source/Gun/full-column or new-chief call."""
+    from temsim.optics.electron_gun.field_emission import FieldEmissionGun
+    from temsim.optics.electron_gun.emitter import ColdFieldEmitter
+    from temsim.optics.electron_gun import source, tracing
+    from temsim.physics import simulation, unified_scan_calibration, unified_field_particle
+    attempts = []
+
+    def reject(name):
+        def refused(*args, **kwargs):
+            attempts.append(name)
+            raise RuntimeError(f"Forbidden recovery entry point: {name}")
+        return refused
+
+    with ExitStack() as stack:
+        for owner, name in ((FieldEmissionGun, "emit"), (FieldEmissionGun, "trace_to_exit"),
+                (ColdFieldEmitter, "emit"), (source, "trace_source_to_exit"),
+                (tracing, "trace_feg_to_exit"), (tracing, "_trace_feg_to_exit"),
+                (simulation, "run")):
+            label = owner.__name__+"."+name
+            stack.enter_context(patch.object(owner, name, reject(label)))
+        if calibration_cache_only:
+            stack.enter_context(patch.object(unified_scan_calibration, "_trace_scan_responses",
+                reject("new 17-chief scan response")))
+            stack.enter_context(patch.object(unified_field_particle, "trace_unified_response",
+                reject("new chief response transport")))
+        yield attempts
+
+
+def load_seed(args, helper):
+    """Use current formal captures/codecs, never a hand-built source or manifest."""
+    from temsim.instrument_snapshot import InstrumentSnapshot
+    from temsim.calculation_manifest import capture_calculation_manifest, solver_source_identity
+    from temsim.calculation_workflow import workflow_signatures
+    from temsim.artifact_store import ArtifactStore
+    from temsim.immutable_json import canonical_json_bytes
+    import numpy as np
+
+    directory = args.high.resolve()
+    raw_manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))
+    snapshot = InstrumentSnapshot.from_dict(json.loads((directory / "input.json").read_text(encoding="utf-8")))
+    state = snapshot.restore()
+    original = capture_calculation_manifest(state,
+        created_at_utc=raw_manifest["created_at_utc"], selection=raw_manifest["selection"] or None)
+    original = replace(original, calculation_signatures=workflow_signatures(original.calculation_signatures, "rays"))
+    if canonical_json_bytes(original.to_dict()) != canonical_json_bytes(raw_manifest):
+        raise ValueError("Formal manifest recapture does not exactly match the saved original High request")
+    if solver_source_identity() != snapshot.implementation:
+        raise ValueError("Source implementation changed; historical seed cannot be recalculated")
+    receipt = json.loads((directory / "recoverable-seed.json").read_text(encoding="utf-8"))
+    if receipt["manifest_digest"] != original.digest:
+        raise ValueError("Original persistence receipt names another input manifest")
+    store_source = directory / "incident-checkpoint"
+    target = args.output / "copied-incident-checkpoint"
+    log("Copying official incident seed; original artifact references remain untouched")
+    shutil.copytree(store_source, target)
+    store = ArtifactStore(target, quota_bytes=args.archive_gib*1024**3)
+    seed = store.get_incident_simulation_seed(original)
+    if seed is None:
+        raise ValueError("The formal complete Gun/incident seed did not restore")
+    phase = seed.gun_trace.emission_phase
+    ids, weights = np.asarray(phase["ray_id"]), np.asarray(phase["weight"])
+    if len(ids) != 1024 or np.unique(ids).size != 1024 or np.count_nonzero(weights > 0) != 1024:
+        raise ValueError("Restored source is not exactly 1024 original positive-current unique particles")
+    source_checks = helper.verify_completed_source(type("SavedSeedView", (), {"simulation": seed})(),
+        directory.parent / "frozen-input" / "independent-expected-emission.npz")
+    write_json(args.output / "restored-original-source-verification.json", source_checks)
+    write_json(args.output / "original-input.json", snapshot.to_dict())
+    write_json(args.output / "original-manifest.json", original.to_dict())
+    # This is the existing High worker execution marker, not an optical or
+    # source change. The exact saved source, fields and boundaries remain.
+    state._tuning_quality = "High accuracy"
+    # The executed Gun stage legitimately bound this same environment before
+    # the original column capture. Restore it through its production resolver,
+    # not by fabricating attributes or dropping scene metadata from the hash.
+    from temsim.vacuum import bind_gun_environment
+    bind_gun_environment(state)
+    return state, seed, original, dict(original_high_directory=str(directory),
+        original_request_sha256=sha(directory / "manifest.json"),
+        original_input_sha256=sha(directory / "input.json"), original_manifest_digest=original.digest,
+        original_full_worker_seconds=json.loads((directory / "execution-receipt.json").read_text())["elapsed_seconds"],
+        original_failure_preserved=sha(directory.parent / "failure.json"),
+        original_source_implementation=snapshot.implementation,
+        original_incident_store_identity=receipt["identity"],
+        original_count=1024, original_positive_count=1024, unique_original_ids=1024)
+
+
+def prepare(args, helper):
+    from temsim.immutable_json import canonical_json_bytes, json_digest
+    from temsim.instrument_snapshot import capture_instrument_snapshot
+    from temsim.physics.unified_scan_calibration import calibrate_unified_scan
+    from temsim.physics.unified_field_runtime import get_unified_field_runtime
+    from temsim.physics.transport_progress import transport_progress
+
+    state, seed, original_manifest, provenance = load_seed(args, helper)
+    controls_before = independent_controls(state, helper)
+    graph_before = graph_without_derived(state)
+    derived_before = derived_records(state)
+    with forbidden_upstream(calibration_cache_only=True) as calls:
+        log("Resolving normal High scan calibration from existing cached response only")
+        with transport_progress(log):
+            calibrate_unified_scan(state, maximum_step_mm=min(.2, float(state.step_mm)))
+        actual_runtime = get_unified_field_runtime(state)
+    if calls:
+        raise RuntimeError("A forbidden preparation entry point was attempted")
+    controls_after = independent_controls(state, helper)
+    graph_after = graph_without_derived(state)
+    if canonical_json_bytes(controls_before) != canonical_json_bytes(controls_after):
+        raise ValueError("An independent source, optical or geometric control changed during normal calibration")
+    if canonical_json_bytes(graph_before) != canonical_json_bytes(graph_after):
+        raise ValueError("A non-calibration instrument input or numerical tolerance changed")
+    saved_runtime = seed.incident_plan.unified_runtime
+    expected, actual = saved_runtime.to_dict(), actual_runtime.to_dict()
+    compare = dict(
+        snapshot_numerical_digest_equal=actual_runtime.snapshot.numerical_digest==saved_runtime.snapshot.numerical_digest,
+        complete_snapshot_canonical_bytes_equal=canonical_json_bytes(actual["snapshot"])==canonical_json_bytes(expected["snapshot"]),
+        dynamic_coils_canonical_bytes_equal=canonical_json_bytes(actual["snapshot"].get("dynamic_coils"))==canonical_json_bytes(expected["snapshot"].get("dynamic_coils")),
+        geometry_canonical_bytes_equal=canonical_json_bytes(actual["geometry"])==canonical_json_bytes(expected["geometry"]),
+        independent_controls_equal=True, all_noncalibration_inputs_equal=True,
+        original_snapshot_numerical_digest=saved_runtime.snapshot.numerical_digest,
+        recovered_snapshot_numerical_digest=actual_runtime.snapshot.numerical_digest,
+        original_runtime_digest=saved_runtime.digest, recovered_runtime_digest=actual_runtime.digest)
+    write_json(args.output / "saved-high-runtime.json", expected)
+    write_json(args.output / "recovered-runtime.json", actual)
+    write_json(args.output / "derived-before.json", derived_before)
+    write_json(args.output / "derived-after.json", derived_records(state))
+    write_json(args.output / "independent-controls-before.json", controls_before)
+    write_json(args.output / "independent-controls-after.json", controls_after)
+    write_json(args.output / "runtime-comparison.json", compare)
+    if not all(compare[key] for key in ("snapshot_numerical_digest_equal", "complete_snapshot_canonical_bytes_equal",
+            "dynamic_coils_canonical_bytes_equal", "geometry_canonical_bytes_equal")):
+        raise ValueError("Recovered runtime differs from the actual original High field or geometry")
+    prepared_snapshot = capture_instrument_snapshot(state)
+    write_json(args.output / "prepared-state.json", prepared_snapshot.to_dict())
+    plan = dict(status="PREPARED_NO_PHYSICAL_EXECUTION", source=provenance,
+        runner_sha256=sha(__file__), prepared_snapshot_id=prepared_snapshot.digest,
+        field_numerical_digest=actual_runtime.snapshot.numerical_digest,
+        controls_digest=json_digest(controls_after), input_graph_digest=json_digest(graph_after),
+        comparison=compare, forbidden_upstream_attempts=calls,
+        permitted_rerun=dict(start_z_mm=float(seed.incident_checkpoints.z_mm[-1]),
+            boundary_type="Actual full-precision sample-plane checkpoint", scope="Optical reference; no specimen scattering or coherent calculation"),
+        derived_control_policy="Only AC/Descan lower_coil_gain are excluded from independent public control comparison, as existing to_dict/cache require. All resolved ratios/commands and actual fields are retained and compared separately.",
+        quality_scope="Original High and Preview use different resolved dynamic scan fields; this is not a fixed-field quality convergence claim.")
+    write_json(args.output / "preparation.json", plan)
+    return state, seed, plan
+
+
+def verify_prepared_authority(args, plan):
+    from temsim.immutable_json import canonical_json_bytes
+    if args.prepared is None:
+        raise ValueError("--execute requires --prepared pointing to an observed successful preparation")
+    original = json.loads((args.prepared / "preparation.json").read_text(encoding="utf-8"))
+    if original["status"] != "PREPARED_NO_PHYSICAL_EXECUTION":
+        raise ValueError("The preparation receipt is not a successful nonphysical preparation")
+    for key in ("source", "runner_sha256", "prepared_snapshot_id", "field_numerical_digest", "controls_digest", "input_graph_digest"):
+        if canonical_json_bytes(original[key]) != canonical_json_bytes(plan[key]):
+            raise ValueError(f"Execution differs from the reviewed preparation: {key}")
+
+
+def execute_post(args, helper, state, seed, plan):
+    import numpy as np
+    from temsim.calculation_cache import calculation_signatures, state_model_signature
+    from temsim.calculation_manifest import capture_calculation_manifest, capture_external_input_identities, solver_source_identity
+    from temsim.calculation_workflow import workflow_signatures
+    from temsim.simulation_pipeline import CalculationResult
+    from temsim.simulation_workflow import rebuild_optical_downstream
+    from temsim.physics.completed_particle_section import capture_completed_particle_section
+    from temsim.physics.transport_progress import transport_progress
+    from temsim.particle_section_io import save_section_result, load_section_result
+    from temsim.immutable_json import json_digest
+
+    verify_prepared_authority(args, plan)
+    implementation = solver_source_identity()
+    manifest = capture_calculation_manifest(state)
+    manifest = replace(manifest, calculation_signatures=workflow_signatures(manifest.calculation_signatures, "rays"))
+    write_json(args.output / "execution-manifest.json", manifest.to_dict())
+    log("Starting only the sample-to-end optical reference from the original native checkpoint")
+    started = perf_counter()
+    with forbidden_upstream(calibration_cache_only=True) as calls:
+        with transport_progress(log):
+            simulation = rebuild_optical_downstream(state, seed)
+    post_seconds = perf_counter()-started
+    result = CalculationResult(simulation=simulation, energy_filter=None, state_snapshot=state,
+        assembly=state._resolved_assembly, signatures=workflow_signatures(calculation_signatures(state), "rays"),
+        model_signature=state_model_signature(state), external_inputs=capture_external_input_identities(state),
+        workflow="rays", calculation_manifest=manifest,
+        performance=dict(workflow="rays", recovery=True, post_only_seconds=post_seconds,
+            scope="Original High incident/Gun retained; sample-to-end optical reference was newly executed"))
+    if not capture_completed_particle_section(result):
+        raise RuntimeError("Production completed-section capture rejected the real recovered result")
+    archive = args.output / "high-post-recovered.temsim"
+    log("Saving the complete real result through the formal numeric archive before statistical guards")
+    try:
+        save_section_result(result, archive, maximum_unpacked_bytes=args.archive_gib*1024**3,
+            compression=ZIP_DEFLATED, compresslevel=1)
+    except Exception:
+        # Preserve actual post arrays even if the formal archive writer fails;
+        # this is raw failure evidence, never an admitted restart substitute.
+        emergency = {}
+        for index, branch in enumerate(result.simulation.branches.values()):
+            for key in ("z", "x", "y", "tx", "ty", "flight_time_s", "kinetic_energy_ev", "alive", "blocked_z", "ray_weight", "source_ray_id"):
+                value = getattr(branch, key, None)
+                if value is not None:
+                    emergency[f"branch_{index}_{key}"] = value
+        np.savez_compressed(args.output / "failed-formal-save-real-post-arrays.npz", **emergency)
+        raise
+    write_json(args.output / "formal-archive-receipt.json", dict(path=str(archive.resolve()),
+        sha256=sha(archive), bytes=archive.stat().st_size, post_only_seconds=post_seconds,
+        actual_post_branches_saved=True,
+        restart_scope="Gun and incident checkpoint; rebuild API does not retain internal post-section checkpoints"))
+    # All remaining guards are read-only. A failed analysis cannot lose the
+    # newly completed downstream native arrays now safely in the formal file.
+    if solver_source_identity() != implementation:
+        raise RuntimeError("Source implementation changed during the post rebuild")
+    if json_digest(independent_controls(state, helper)) != plan["controls_digest"]:
+        raise RuntimeError("Independent physical controls changed during post transport")
+    if json_digest(graph_without_derived(state)) != plan["input_graph_digest"]:
+        raise RuntimeError("An instrument input or tolerance changed during post transport")
+    source = helper.verify_completed_source(result,
+        args.high.parent / "frozen-input" / "independent-expected-emission.npz")
+    write_json(args.output / "completed-source-verification.json", source)
+    physical = helper.verify_native_outputs(result, args.output)
+    summary = helper.completed_summary(result)
+    log("Reading the formal result archive back and comparing real saved post energy/clock/geometry arrays")
+    loaded = load_section_result(archive, maximum_unpacked_bytes=args.archive_gib*1024**3)
+    if set(loaded.simulation.branches) != set(simulation.branches):
+        raise RuntimeError("Formal archive omitted an executed post branch")
+    for key, original in simulation.branches.items():
+        restored = loaded.simulation.branches[key]
+        for field in ("z", "x", "y", "tx", "ty", "flight_time_s", "kinetic_energy_ev", "alive", "blocked_z", "ray_weight", "source_ray_id"):
+            np.testing.assert_array_equal(getattr(original, field), getattr(restored, field))
+    summary.update(status="COMPLETE_HIGH_POST_RECOVERY", quality="High accuracy", source=plan["source"],
+        post_only_seconds=post_seconds, original_high_failure_preserved=True,
+        original_incident_and_gun_reused=True, new_finite_source_particles=0,
+        forbidden_upstream_attempts=calls, independent_controls_unchanged=True,
+        recovered_actual_field_exactly_matches_original_high=True,
+        formal_archive_roundtrip_exact=True, validate_incident_flight_times=physical["validate_incident_flight_times"],
+        scope="Original High full job numerically completed, but its guard failed before post arrays were retained. This separate run reuses the formal actual incident checkpoint and newly reruns only sample-to-end optical reference. No source/Gun/pre-sample transport, material scattering, coherent or scan qualification. Preview and High dynamic fields are different; no fixed-field convergence claim.")
+    write_json(args.output / "summary.json", summary)
+    log("Completed and archived the independently verified High post recovery")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--high", type=Path, default=DEFAULT_HIGH)
+    parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--prepared", type=Path)
+    parser.add_argument("--archive-gib", type=int, default=16)
+    parser.add_argument("--execute", action="store_true")
+    args = parser.parse_args()
+    args.high = args.high.resolve()
+    args.output = args.output.resolve()
+    if args.archive_gib < 1:
+        parser.error("Archive capacity must be positive")
+    args.output.mkdir(parents=True, exist_ok=False)
+    try:
+        os.environ["TEMSIM_PROJECT_ROOT"] = str(ROOT)
+        os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+        sys.path.insert(0, str(ROOT / "src"))
+        helper = helper_module()
+        state, seed, plan = prepare(args, helper)
+        if args.execute:
+            execute_post(args, helper, state, seed, plan)
+        else:
+            log("Prepared exact High runtime and original 1024-source boundary; no new chief, source or transport executed")
+        return 0
+    except Exception:
+        error = traceback.format_exc()
+        write_json(args.output / "failure.json", dict(status="FAILED", error=error,
+            physical_post_requested=args.execute,
+            scope="Original High failure and raw evidence unchanged; no completion claim beyond saved verified products"))
+        print(error, file=sys.stderr, flush=True)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

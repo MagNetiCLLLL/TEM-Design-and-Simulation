@@ -1,0 +1,328 @@
+{
+  "status": "READ_ONLY_MESH_CHARACTERIZATION",
+  "created_utc": "2026-11-14T15:29:51.653594+00:00",
+  "scope": "Read cached metadata and r/z arrays only. No voltage decompression, new field solve, emission, force query, propagation, benchmark or running-worker interaction.",
+  "field_request_sha256": "e2e09c17b63548a07267cca80b85a3ed36e9d142222917a8e50bec19f23b1fd4",
+  "metadata_path": "C:\\Users\\54019\\AppData\\Local\\TEMSimulator\\cache\\gun-fields\\e2e09c17b63548a07267cca80b85a3ed36e9d142222917a8e50bec19f23b1fd4.json",
+  "metadata_sha256": "dbb28b540f03354952c38ef801071bd9d2bc420494e8608629f2de82bc444e2b",
+  "archive_path": "C:\\Users\\54019\\AppData\\Local\\TEMSimulator\\cache\\gun-fields\\e2e09c17b63548a07267cca80b85a3ed36e9d142222917a8e50bec19f23b1fd4.npz",
+  "archive_bytes": 5324677,
+  "axes": {
+    "radial_nodes": 313,
+    "axial_nodes": 2911,
+    "z_min_mm": 0.0,
+    "z_max_mm": 2987.15,
+    "r_min_mm": 0.0,
+    "r_max_mm": 300.0
+  },
+  "request_domain": {
+    "entrance_m": 0.0,
+    "exit_m": 2.98715,
+    "gun_exit_m": 0.45,
+    "outer_radius_m": 0.3
+  },
+  "request_numerics": {
+    "cells_per_bore": 16,
+    "exit_extension_mm": 2537.15,
+    "grounded_liner_axial_cells_per_bore": 8.0,
+    "grounded_liner_face_refinement_bores": 2.0,
+    "interpolation": "bilinear-radius-squared-and-z-v1",
+    "linear_residual_tolerance": 1e-09,
+    "maximum_vertices": 1500000,
+    "mesh": "electrode-local-and-grounded-liner-face-graded-v2",
+    "outer_radius_factor": 2.0
+  },
+  "electrodes_before_grounded_liner": [
+    {
+      "inner_m": 0.002,
+      "key": "extractor",
+      "outer_m": 0.01,
+      "potential_rise_v": 4000.0,
+      "start_m": 0.00030000000000000003,
+      "stop_m": 0.00075
+    },
+    {
+      "inner_m": 0.00025,
+      "key": "extractor",
+      "outer_m": 0.01,
+      "potential_rise_v": 4000.0,
+      "start_m": 0.00075,
+      "stop_m": 0.0013000000000000002
+    },
+    {
+      "inner_m": 0.004,
+      "key": "electrostatic_lens",
+      "outer_m": 0.03,
+      "potential_rise_v": 5200.0,
+      "start_m": 0.014000000000000002,
+      "stop_m": 0.022000000000000002
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:0",
+      "outer_m": 0.15,
+      "potential_rise_v": 34680.0,
+      "start_m": 0.0415,
+      "stop_m": 0.0425
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:1",
+      "outer_m": 0.15,
+      "potential_rise_v": 64160.0,
+      "start_m": 0.07705555555555556,
+      "stop_m": 0.07805555555555556
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:2",
+      "outer_m": 0.15,
+      "potential_rise_v": 93640.0,
+      "start_m": 0.11261111111111112,
+      "stop_m": 0.11361111111111112
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:3",
+      "outer_m": 0.15,
+      "potential_rise_v": 123120.0,
+      "start_m": 0.1481666666666667,
+      "stop_m": 0.1491666666666667
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:4",
+      "outer_m": 0.15,
+      "potential_rise_v": 152600.0,
+      "start_m": 0.18372222222222223,
+      "stop_m": 0.18472222222222223
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:5",
+      "outer_m": 0.15,
+      "potential_rise_v": 182080.0,
+      "start_m": 0.21927777777777777,
+      "stop_m": 0.22027777777777777
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:6",
+      "outer_m": 0.15,
+      "potential_rise_v": 211560.0,
+      "start_m": 0.25483333333333336,
+      "stop_m": 0.25583333333333336
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:7",
+      "outer_m": 0.15,
+      "potential_rise_v": 241040.0,
+      "start_m": 0.2903888888888889,
+      "stop_m": 0.2913888888888889
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:8",
+      "outer_m": 0.15,
+      "potential_rise_v": 270520.0,
+      "start_m": 0.3259444444444445,
+      "stop_m": 0.3269444444444445
+    },
+    {
+      "inner_m": 0.005,
+      "key": "accelerator:9",
+      "outer_m": 0.15,
+      "potential_rise_v": 300000.0,
+      "start_m": 0.3615,
+      "stop_m": 0.3625
+    }
+  ],
+  "initial_contiguous_axial_cells_at_most_20um": {
+    "start_mm": 0.0,
+    "stop_mm": 2.3,
+    "cells": 149,
+    "dz_min_mm": 0.014999999999999958,
+    "dz_max_mm": 0.015625000000000222
+  },
+  "axial_bands": [
+    {
+      "start_mm": 0,
+      "stop_mm": 0.1,
+      "cells": 7,
+      "dz_min_mm": 0.015,
+      "dz_median_mm": 0.015000000000000003,
+      "dz_max_mm": 0.015000000000000013
+    },
+    {
+      "start_mm": 0.1,
+      "stop_mm": 1,
+      "cells": 58,
+      "dz_min_mm": 0.014999999999999958,
+      "dz_median_mm": 0.015397509578544077,
+      "dz_max_mm": 0.015517241379310542
+    },
+    {
+      "start_mm": 1,
+      "stop_mm": 2,
+      "cells": 65,
+      "dz_min_mm": 0.015277777777777501,
+      "dz_median_mm": 0.015625,
+      "dz_max_mm": 0.015625000000000222
+    },
+    {
+      "start_mm": 2,
+      "stop_mm": 5,
+      "cells": 41,
+      "dz_min_mm": 0.015624999999999556,
+      "dz_median_mm": 0.12403846153846132,
+      "dz_max_mm": 0.12403846153846221
+    },
+    {
+      "start_mm": 5,
+      "stop_mm": 10,
+      "cells": 35,
+      "dz_min_mm": 0.12403846153845954,
+      "dz_median_mm": 0.12403846153846221,
+      "dz_max_mm": 0.2386363636363651
+    },
+    {
+      "start_mm": 10,
+      "stop_mm": 20,
+      "cells": 41,
+      "dz_min_mm": 0.23863636363636154,
+      "dz_median_mm": 0.25,
+      "dz_max_mm": 0.25000000000000355
+    },
+    {
+      "start_mm": 20,
+      "stop_mm": 50,
+      "cells": 114,
+      "dz_min_mm": 0.16666666666666785,
+      "dz_median_mm": 0.24615384615384883,
+      "dz_max_mm": 0.3096926713948065
+    },
+    {
+      "start_mm": 50,
+      "stop_mm": 100,
+      "cells": 163,
+      "dz_min_mm": 0.25,
+      "dz_median_mm": 0.3096926713947994,
+      "dz_max_mm": 0.3096926713948136
+    },
+    {
+      "start_mm": 100,
+      "stop_mm": 200,
+      "cells": 326,
+      "dz_min_mm": 0.25,
+      "dz_median_mm": 0.3096926713947994,
+      "dz_max_mm": 0.3096926713948278
+    },
+    {
+      "start_mm": 200,
+      "stop_mm": 450,
+      "cells": 785,
+      "dz_min_mm": 0.2400000000000091,
+      "dz_median_mm": 0.30969267139477097,
+      "dz_max_mm": 1.079999999999984
+    },
+    {
+      "start_mm": 450,
+      "stop_mm": 2987.15,
+      "cells": 1275,
+      "dz_min_mm": 9.999999997489795e-05,
+      "dz_median_mm": 1.1764705882351336,
+      "dz_max_mm": 103.02791397559315
+    }
+  ],
+  "ten_smallest_global_axial_cells": [
+    {
+      "start_mm": 1604.19995,
+      "stop_mm": 1604.20005,
+      "dz_mm": 9.999999997489795e-05
+    },
+    {
+      "start_mm": 1594.1999500000002,
+      "stop_mm": 1594.2000500000001,
+      "dz_mm": 9.999999997489795e-05
+    },
+    {
+      "start_mm": 1599.19995,
+      "stop_mm": 1599.2000500000001,
+      "dz_mm": 0.00010000000020227162
+    },
+    {
+      "start_mm": 0.24000000000000005,
+      "stop_mm": 0.255,
+      "dz_mm": 0.014999999999999958
+    },
+    {
+      "start_mm": 0.2700000000000001,
+      "stop_mm": 0.28500000000000003,
+      "dz_mm": 0.014999999999999958
+    },
+    {
+      "start_mm": 0.21000000000000005,
+      "stop_mm": 0.22500000000000003,
+      "dz_mm": 0.014999999999999986
+    },
+    {
+      "start_mm": 0.18000000000000005,
+      "stop_mm": 0.19500000000000003,
+      "dz_mm": 0.014999999999999986
+    },
+    {
+      "start_mm": 0.13500000000000004,
+      "stop_mm": 0.15000000000000002,
+      "dz_mm": 0.014999999999999986
+    },
+    {
+      "start_mm": 0.10500000000000002,
+      "stop_mm": 0.12000000000000002,
+      "dz_mm": 0.015
+    },
+    {
+      "start_mm": 0.09000000000000002,
+      "stop_mm": 0.10500000000000002,
+      "dz_mm": 0.015
+    }
+  ],
+  "last_read_progress": {
+    "z_min_mm": 0.716932,
+    "z_max_mm": 0.732836,
+    "gun_exit_mm": 450.0,
+    "steps": 618,
+    "elapsed_s": 687.7
+  },
+  "local_mesh_cell_at_progress_midpoint": {
+    "start_mm": 0.7189655172413792,
+    "stop_mm": 0.7344827586206898,
+    "width_mm": 0.015517241379310542
+  },
+  "recent_logged_maximum_z_advance_per_step": {
+    "median_mm": 0.00041399999999996995,
+    "min_mm": 0.0003870000000000262,
+    "max_mm": 0.0008310000000000262,
+    "note": "Extremal Z changes per logged accepted-step count, not a retained per-ID trajectory or timestep."
+  },
+  "unchanged_control_policy": {
+    "integration_step_mm_at": "Solved electric geometry keeps trace_step_mm=0.2 as a ceiling, without rebuilding field requests or assigning drift gaps. It does not directly use the FEM axial mesh size.",
+    "initial_dt": "trace_step / maximum active axial velocity; then cached-field light-cone bound",
+    "extraction_impulse_cap": "minimum over active particles of 0.025*|p|/(e*|E|)",
+    "adaptive_gate": "Full/half/fine implicit DG updates; each particle must meet total momentum, XYZ displacement, transverse momentum and XY displacement gates; halve dt on rejection or implicit failure, at most32 attempts",
+    "implicit_tolerance": 1e-13,
+    "relative_total_momentum": 1e-06,
+    "relative_transverse_momentum": 1e-05,
+    "xy_absolute_position_m": 1e-13,
+    "xy_relative_position": 1e-06,
+    "xyz_absolute_position_m": 1e-13,
+    "xyz_relative_step": 1e-05
+  },
+  "interpretation": [
+    "The run is still inside the graded extractor neighborhood; its fine-cell band does not end at the current sub-mm position.",
+    "The observed accepted progress per step is much smaller than its local axial cell: mesh cells are not accepted-step lengths.",
+    "Both the original extraction impulse cap and the original adaptive accuracy gates may force smaller durations than the 0.2 mm ceiling.",
+    "The actual dominant gate at the current step cannot be determined from Z-only live progress; retained observer gate ratios are needed.",
+    "Crossing the initial fine band is not a runtime forecast: later lens/electrode neighborhoods and the full active population remain relevant."
+  ]
+}

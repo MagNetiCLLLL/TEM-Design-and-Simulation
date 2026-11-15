@@ -1,0 +1,1519 @@
+{
+  "scope": "Ideal prescribed-current coils only; no magnetic material, yoke or pole response",
+  "fixed_defaults": true,
+  "fixed_solver_tolerances": true,
+  "protected_files_unchanged": 834,
+  "source_particles_emitted": 0,
+  "coherent_runs": 0,
+  "material_fem_runs": 0,
+  "quadrature_order": 12,
+  "design_assumptions": {
+    "j_a_per_mm2": 3.0,
+    "metal_fill": 0.6,
+    "current_density_sensitivity": [
+      2,
+      5
+    ],
+    "fill_sensitivity": [
+      0.5,
+      0.7
+    ]
+  },
+  "note": "Conditional electrical and packing budgets at the original envelope. No physical geometry or working point is updated. Altered envelope requires a new field solution.",
+  "lenses": [
+    {
+      "key": "condenser_lens_1",
+      "lens": "C1 lens",
+      "excitation_percent": 51.666666666666664,
+      "polarity": 1,
+      "gaussian": {
+        "peak_magnitude_t": 0.91699236638044,
+        "peak_z_mm": 499.999999936241,
+        "signed_peak_t": 0.91699236638044,
+        "half_max_regions": [
+          {
+            "start_mm": 494.94465690661065,
+            "end_mm": 505.05534309338935,
+            "width_mm": 10.110686186778707
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 10.110686186778707,
+        "half_max_bounding_span_mm": 10.110686186778707,
+        "peak_search_candidates": [
+          {
+            "z_mm": 499.999999936241,
+            "magnitude_t": 0.91699236638044
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.012656128324405783,
+        "peak_z_mm": 499.99999876610326,
+        "signed_peak_t": 0.012656128324405783,
+        "half_max_regions": [
+          {
+            "start_mm": 437.04865744540547,
+            "end_mm": 562.9513425545946,
+            "width_mm": 125.90268510918912
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 125.90268510918912,
+        "half_max_bounding_span_mm": 125.90268510918912,
+        "peak_search_candidates": [
+          {
+            "z_mm": 491.12142857086667,
+            "magnitude_t": 0.01249125911219974
+          },
+          {
+            "z_mm": 494.6571428567489,
+            "magnitude_t": 0.012596324954456322
+          },
+          {
+            "z_mm": 495.3642857138918,
+            "magnitude_t": 0.012611097374999672
+          },
+          {
+            "z_mm": 497.4857142853587,
+            "magnitude_t": 0.012642875199935956
+          },
+          {
+            "z_mm": 497.5642857139268,
+            "magnitude_t": 0.01264369042367297
+          },
+          {
+            "z_mm": 498.27142857106963,
+            "magnitude_t": 0.012649863488176722
+          },
+          {
+            "z_mm": 498.89999999937055,
+            "magnitude_t": 0.012653591181495177
+          },
+          {
+            "z_mm": 498.9785714282125,
+            "magnitude_t": 0.01265394067431791
+          },
+          {
+            "z_mm": 499.6071428567489,
+            "magnitude_t": 0.012655804698413337
+          },
+          {
+            "z_mm": 499.6857142853554,
+            "magnitude_t": 0.012655921203406107
+          },
+          {
+            "z_mm": 499.99999876610326,
+            "magnitude_t": 0.012656128324405783
+          },
+          {
+            "z_mm": 500.39285714325104,
+            "magnitude_t": 0.012655804698413337
+          },
+          {
+            "z_mm": 501.0214285717875,
+            "magnitude_t": 0.012653940674317908
+          },
+          {
+            "z_mm": 501.1000000006294,
+            "magnitude_t": 0.012653591181495177
+          },
+          {
+            "z_mm": 502.4357142860732,
+            "magnitude_t": 0.01264369042367297
+          },
+          {
+            "z_mm": 503.22142857182246,
+            "magnitude_t": 0.01263437478995713
+          },
+          {
+            "z_mm": 509.50714285750183,
+            "magnitude_t": 0.012467162907277191
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": 1550.0,
+      "peak_matched_required_ni_magnitude_a_turn": 112304.3423278829,
+      "peak_matched_scale": 72.45441440508574,
+      "peak_matched_field_at_old_peak_t": 0.9169923663804401,
+      "gaussian_integral_b2_t2_m": 0.0065014320911175845,
+      "ideal_reference_integral_b2_t2_m": 1.5594328399048996e-05,
+      "integral_quadrature_error_estimate": 3.1464744171788993e-17,
+      "peak_matched_integral_to_gaussian_ratio": 12.5917863601419,
+      "integral_matched_required_ni_magnitude_a_turn": 31648.48137483744,
+      "gaussian_effective_b2_length_mm": 7.731746206175224,
+      "ideal_effective_b2_length_mm": 97.35649641899606,
+      "existing_envelope_cross_section_mm2": 2700.0,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 112305,
+        "actual_current_a": 0.9999941438750092,
+        "i100_setting_a": 1.935472536532276,
+        "bare_wire_area_mm2": 0.3333313812916697,
+        "bare_wire_diameter_mm": 0.6514681083228469,
+        "pack_area_mm2": 62391.30129326828,
+        "sensitivity_pack_area_mm2": [
+          32086.954950823685,
+          112304.3423278829
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 217364,
+        "actual_i100_a": 0.9999965183528885,
+        "workpoint_current_a": 0.516664867815659,
+        "wire_area_at_i100_mm2": 0.33333217278429617,
+        "pack_area_at_i100_mm2": 120757.35734180959
+      }
+    },
+    {
+      "key": "condenser_lens_2",
+      "lens": "C2 lens",
+      "excitation_percent": 13.899040164772698,
+      "polarity": 1,
+      "gaussian": {
+        "peak_magnitude_t": 0.17101515856672256,
+        "peak_z_mm": 649.9999999439393,
+        "signed_peak_t": 0.17101515856672256,
+        "half_max_regions": [
+          {
+            "start_mm": 641.1531495862412,
+            "end_mm": 658.8468504137588,
+            "width_mm": 17.69370082751766
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 17.69370082751766,
+        "half_max_bounding_span_mm": 17.69370082751766,
+        "peak_search_candidates": [
+          {
+            "z_mm": 649.9999999439393,
+            "magnitude_t": 0.17101515856672256
+          },
+          {
+            "z_mm": 650.0000000643698,
+            "magnitude_t": 0.17101515856672256
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.002554212334771157,
+        "peak_z_mm": 649.9999992177004,
+        "signed_peak_t": 0.002554212334771157,
+        "half_max_regions": [
+          {
+            "start_mm": 559.7376013286951,
+            "end_mm": 740.2623986713048,
+            "width_mm": 180.52479734260976
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 180.52479734260976,
+        "half_max_bounding_span_mm": 180.52479734260976,
+        "peak_search_candidates": [
+          {
+            "z_mm": 630.8874999995845,
+            "magnitude_t": 0.0025043022138855203
+          },
+          {
+            "z_mm": 638.1749999995468,
+            "magnitude_t": 0.002535344436353242
+          },
+          {
+            "z_mm": 640.6499999996356,
+            "magnitude_t": 0.0025424518127724564
+          },
+          {
+            "z_mm": 640.7874999995845,
+            "magnitude_t": 0.0025427968729417657
+          },
+          {
+            "z_mm": 643.2624999995845,
+            "magnitude_t": 0.002548120852949572
+          },
+          {
+            "z_mm": 644.3624999995468,
+            "magnitude_t": 0.002549951008650575
+          },
+          {
+            "z_mm": 646.8374999995468,
+            "magnitude_t": 0.002552873084883956
+          },
+          {
+            "z_mm": 646.9749999995845,
+            "magnitude_t": 0.002552987073052948
+          },
+          {
+            "z_mm": 649.4499999995845,
+            "magnitude_t": 0.0025541718520727505
+          },
+          {
+            "z_mm": 649.9999992177004,
+            "magnitude_t": 0.002554212334771157
+          },
+          {
+            "z_mm": 650.0000004841639,
+            "magnitude_t": 0.002554212334771157
+          },
+          {
+            "z_mm": 650.5500000004155,
+            "magnitude_t": 0.0025541718520727505
+          },
+          {
+            "z_mm": 653.0250000004155,
+            "magnitude_t": 0.002552987073052948
+          },
+          {
+            "z_mm": 655.6375000004532,
+            "magnitude_t": 0.002549951008650575
+          },
+          {
+            "z_mm": 656.7375000004155,
+            "magnitude_t": 0.002548120852949572
+          },
+          {
+            "z_mm": 659.2125000004155,
+            "magnitude_t": 0.0025427968729417657
+          },
+          {
+            "z_mm": 659.3500000003644,
+            "magnitude_t": 0.0025424518127724564
+          },
+          {
+            "z_mm": 661.8250000004532,
+            "magnitude_t": 0.002535344436353242
+          },
+          {
+            "z_mm": 669.1125000004155,
+            "magnitude_t": 0.0025043022138855208
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": 416.971204943181,
+      "peak_matched_required_ni_magnitude_a_turn": 27917.959584007844,
+      "peak_matched_scale": 66.95416674590781,
+      "peak_matched_field_at_old_peak_t": 0.17101515856672256,
+      "gaussian_integral_b2_t2_m": 0.00039571713254609077,
+      "ideal_reference_integral_b2_t2_m": 9.273180544650985e-07,
+      "integral_quadrature_error_estimate": 5.0608671504324556e-18,
+      "peak_matched_integral_to_gaussian_ratio": 10.505073154690459,
+      "integral_matched_required_ni_magnitude_a_turn": 8613.588766729543,
+      "gaussian_effective_b2_length_mm": 13.530555860806668,
+      "ideal_effective_b2_length_mm": 142.1394791413998,
+      "existing_envelope_cross_section_mm2": 4860.0,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 27918,
+        "actual_current_a": 0.9999985523321099,
+        "i100_setting_a": 7.194731006437548,
+        "bare_wire_area_mm2": 0.33333285077736996,
+        "bare_wire_diameter_mm": 0.6514695443142776,
+        "pack_area_mm2": 15509.977546671025,
+        "sensitivity_pack_area_mm2": [
+          7976.559881145098,
+          27917.959584007844
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 200863,
+        "actual_i100_a": 0.9999975119246625,
+        "workpoint_current_a": 0.1389900558291365,
+        "wire_area_at_i100_mm2": 0.3333325039748875,
+        "pack_area_at_i100_mm2": 111590.2779098464
+      }
+    },
+    {
+      "key": "condenser_lens_3",
+      "lens": "C3 lens",
+      "excitation_percent": 15.68823681182136,
+      "polarity": 1,
+      "gaussian": {
+        "peak_magnitude_t": 0.05467279516038216,
+        "peak_z_mm": 914.9999999327031,
+        "signed_peak_t": 0.05467279516038216,
+        "half_max_regions": [
+          {
+            "start_mm": 908.6302677023294,
+            "end_mm": 921.3697322976706,
+            "width_mm": 12.739464595341133
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 12.739464595341133,
+        "half_max_bounding_span_mm": 12.739464595341133,
+        "peak_search_candidates": [
+          {
+            "z_mm": 914.9999999327031,
+            "magnitude_t": 0.05467279516038216
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.0029862372690988887,
+        "peak_z_mm": 915.0000009684995,
+        "signed_peak_t": 0.0029862372690988887,
+        "half_max_regions": [
+          {
+            "start_mm": 828.507032020517,
+            "end_mm": 1001.4929679794828,
+            "width_mm": 172.9859359589658
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 172.9859359589658,
+        "half_max_bounding_span_mm": 172.9859359589658,
+        "peak_search_candidates": [
+          {
+            "z_mm": 902.1299999994611,
+            "magnitude_t": 0.002956163026982697
+          },
+          {
+            "z_mm": 903.8129999994337,
+            "magnitude_t": 0.002963562618552831
+          },
+          {
+            "z_mm": 904.8029999994611,
+            "magnitude_t": 0.0029674193999039977
+          },
+          {
+            "z_mm": 907.3769999994337,
+            "magnitude_t": 0.0029757464544468985
+          },
+          {
+            "z_mm": 908.3669999994611,
+            "magnitude_t": 0.0029783004722791296
+          },
+          {
+            "z_mm": 911.0399999994611,
+            "magnitude_t": 0.0029834127530019997
+          },
+          {
+            "z_mm": 911.8319999995003,
+            "magnitude_t": 0.002984430139742194
+          },
+          {
+            "z_mm": 911.9309999994612,
+            "magnitude_t": 0.002984541378193534
+          },
+          {
+            "z_mm": 912.7229999994337,
+            "magnitude_t": 0.002985303952739984
+          },
+          {
+            "z_mm": 912.8219999994611,
+            "magnitude_t": 0.0029853833671520686
+          },
+          {
+            "z_mm": 913.7129999994611,
+            "magnitude_t": 0.0029859391599220955
+          },
+          {
+            "z_mm": 914.5049999994337,
+            "magnitude_t": 0.002986193173546317
+          },
+          {
+            "z_mm": 915.0000009684995,
+            "magnitude_t": 0.0029862372690988887
+          },
+          {
+            "z_mm": 915.396000000539,
+            "magnitude_t": 0.002986209048082793
+          },
+          {
+            "z_mm": 915.4950000005664,
+            "magnitude_t": 0.002986193173546317
+          },
+          {
+            "z_mm": 916.3860000005664,
+            "magnitude_t": 0.0029858915279596526
+          },
+          {
+            "z_mm": 917.2770000005664,
+            "magnitude_t": 0.002985303952739984
+          },
+          {
+            "z_mm": 918.069000000539,
+            "magnitude_t": 0.0029845413781935345
+          },
+          {
+            "z_mm": 918.1680000004998,
+            "magnitude_t": 0.002984430139742194
+          },
+          {
+            "z_mm": 919.0590000005664,
+            "magnitude_t": 0.002983269632523856
+          },
+          {
+            "z_mm": 920.8410000005664,
+            "magnitude_t": 0.002980085979403799
+          },
+          {
+            "z_mm": 921.7320000004081,
+            "magnitude_t": 0.0029780611974250296
+          },
+          {
+            "z_mm": 922.6230000005664,
+            "magnitude_t": 0.002975746454446899
+          },
+          {
+            "z_mm": 924.4050000005664,
+            "magnitude_t": 0.002970242297480789
+          },
+          {
+            "z_mm": 925.2960000005664,
+            "magnitude_t": 0.0029670501596298533
+          },
+          {
+            "z_mm": 926.1870000005664,
+            "magnitude_t": 0.0029635626185528304
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": 470.6471043546408,
+      "peak_matched_required_ni_magnitude_a_turn": 8616.727476907055,
+      "peak_matched_scale": 18.308255585089505,
+      "peak_matched_field_at_old_peak_t": 0.05467279516038215,
+      "gaussian_integral_b2_t2_m": 2.9119954414533543e-05,
+      "ideal_reference_integral_b2_t2_m": 1.2112434171131215e-06,
+      "integral_quadrature_error_estimate": 3.9904663110453766e-17,
+      "peak_matched_integral_to_gaussian_ratio": 13.94230798835108,
+      "integral_matched_required_ni_magnitude_a_turn": 2307.676999870937,
+      "gaussian_effective_b2_length_mm": 9.742000219780786,
+      "ideal_effective_b2_length_mm": 135.82596748676764,
+      "existing_envelope_cross_section_mm2": 4590.0,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 8617,
+        "actual_current_a": 0.9999683737851985,
+        "i100_setting_a": 6.374001016046016,
+        "bare_wire_area_mm2": 0.33332279126173286,
+        "bare_wire_diameter_mm": 0.6514597140237778,
+        "pack_area_mm2": 4787.07082050392,
+        "sensitivity_pack_area_mm2": [
+          2461.922136259159,
+          8616.727476907055
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 54925,
+        "actual_i100_a": 0.9999957533958764,
+        "workpoint_current_a": 0.15688170190090223,
+        "wire_area_at_i100_mm2": 0.3333319177986255,
+        "pack_area_at_i100_mm2": 30513.759308482506
+      }
+    },
+    {
+      "key": "adapter_lens",
+      "lens": "Probe Adapter lens",
+      "excitation_percent": 10.0,
+      "polarity": 1,
+      "gaussian": {
+        "peak_magnitude_t": 0.011005120215633274,
+        "peak_z_mm": 1088.2000000003327,
+        "signed_peak_t": 0.011005120215633274,
+        "half_max_regions": [
+          {
+            "start_mm": 1083.2457637681218,
+            "end_mm": 1093.1542362318783,
+            "width_mm": 9.908472463756425
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 9.908472463756425,
+        "half_max_bounding_span_mm": 9.908472463756425,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1088.2000000003327,
+            "magnitude_t": 0.011005120215633274
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.004157111224395395,
+        "peak_z_mm": 1088.1999999996667,
+        "signed_peak_t": 0.004157111224395395,
+        "half_max_regions": [
+          {
+            "start_mm": 1052.5728554674306,
+            "end_mm": 1123.8271445325695,
+            "width_mm": 71.25428906513889
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 71.25428906513889,
+        "half_max_bounding_span_mm": 71.25428906513889,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1088.1999999996667,
+            "magnitude_t": 0.004157111224395395
+          },
+          {
+            "z_mm": 1088.5080000003452,
+            "magnitude_t": 0.004156860370310045
+          },
+          {
+            "z_mm": 1088.5850000003795,
+            "magnitude_t": 0.004156719273753887
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": 300.0,
+      "peak_matched_required_ni_magnitude_a_turn": 794.1899762785762,
+      "peak_matched_scale": 2.6472999209285875,
+      "peak_matched_field_at_old_peak_t": 0.011005120215633272,
+      "gaussian_integral_b2_t2_m": 9.176841855345272e-07,
+      "ideal_reference_integral_b2_t2_m": 9.465518913544893e-07,
+      "integral_quadrature_error_estimate": 5.748521147489709e-19,
+      "peak_matched_integral_to_gaussian_ratio": 7.228654593950129,
+      "integral_matched_required_ni_magnitude_a_turn": 295.3899155804084,
+      "gaussian_effective_b2_length_mm": 7.577111282051725,
+      "ideal_effective_b2_length_mm": 54.772320277874556,
+      "existing_envelope_cross_section_mm2": 208.35359999999991,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 795,
+        "actual_current_a": 0.9989811022372027,
+        "i100_setting_a": 9.989811022372027,
+        "bare_wire_area_mm2": 0.33299370074573426,
+        "bare_wire_diameter_mm": 0.6511380406159478,
+        "pack_area_mm2": 441.2166534880979,
+        "sensitivity_pack_area_mm2": [
+          226.9114217938789,
+          794.1899762785762
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 7942,
+        "actual_i100_a": 0.9999873788448453,
+        "workpoint_current_a": 0.09999873788448455,
+        "wire_area_at_i100_mm2": 0.3333291262816151,
+        "pack_area_at_i100_mm2": 4412.166534880978
+      }
+    },
+    {
+      "key": "probe_tl22_lens",
+      "lens": "Probe TL22 lens",
+      "excitation_percent": 59.93152503582202,
+      "polarity": -1,
+      "gaussian": {
+        "peak_magnitude_t": 0.29138919406534836,
+        "peak_z_mm": 1166.350000035669,
+        "signed_peak_t": -0.29138919406534836,
+        "half_max_regions": [
+          {
+            "start_mm": 1162.103511801553,
+            "end_mm": 1170.5964881984469,
+            "width_mm": 8.492976396893937
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 8.492976396893937,
+        "half_max_bounding_span_mm": 8.492976396893937,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1166.350000035669,
+            "magnitude_t": 0.29138919406534836
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.025461043614280476,
+        "peak_z_mm": 1166.3499998482241,
+        "signed_peak_t": -0.025461043614280476,
+        "half_max_regions": [
+          {
+            "start_mm": 1131.9458823628127,
+            "end_mm": 1200.7541176371874,
+            "width_mm": 68.80823527437474
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 68.80823527437474,
+        "half_max_bounding_span_mm": 68.80823527437474,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1166.3499998482241,
+            "magnitude_t": 0.025461043614280476
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": -1797.9457510746606,
+      "peak_matched_required_ni_magnitude_a_turn": 20576.609950309303,
+      "peak_matched_scale": 11.444511013755747,
+      "peak_matched_field_at_old_peak_t": -0.29138919406534836,
+      "gaussian_integral_b2_t2_m": 0.0005514469772918321,
+      "ideal_reference_integral_b2_t2_m": 3.428202236632812e-05,
+      "integral_quadrature_error_estimate": 8.831874727525319e-18,
+      "peak_matched_integral_to_gaussian_ratio": 8.142488545205634,
+      "integral_matched_required_ni_magnitude_a_turn": 7210.995873634475,
+      "gaussian_effective_b2_length_mm": 6.494666813187197,
+      "ideal_effective_b2_length_mm": 52.882750131303915,
+      "existing_envelope_cross_section_mm2": 174.20131518750034,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 20577,
+        "actual_current_a": 0.999981044384959,
+        "i100_setting_a": 1.6685392934474044,
+        "bare_wire_area_mm2": 0.33332701479498633,
+        "bare_wire_diameter_mm": 0.6514638413338835,
+        "pack_area_mm2": 11431.449972394059,
+        "sensitivity_pack_area_mm2": [
+          5879.031414374086,
+          20576.609950309303
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 34334,
+        "actual_i100_a": 0.9999863995242979,
+        "workpoint_current_a": 0.5993070993857198,
+        "wire_area_at_i100_mm2": 0.33332879984143265,
+        "pack_area_at_i100_mm2": 19074.185022926245
+      }
+    },
+    {
+      "key": "probe_tl21_lens",
+      "lens": "Probe TL21 lens",
+      "excitation_percent": 59.95527906841963,
+      "polarity": 1,
+      "gaussian": {
+        "peak_magnitude_t": 0.27368357727243353,
+        "peak_z_mm": 1249.950000011897,
+        "signed_peak_t": 0.27368357727243353,
+        "half_max_regions": [
+          {
+            "start_mm": 1245.7035118015053,
+            "end_mm": 1254.1964881984948,
+            "width_mm": 8.492976396989434
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 8.492976396989434,
+        "half_max_bounding_span_mm": 8.492976396989434,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1249.950000011897,
+            "magnitude_t": 0.27368357727243353
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.025496745418811473,
+        "peak_z_mm": 1249.9500003972578,
+        "signed_peak_t": 0.025496745418811473,
+        "half_max_regions": [
+          {
+            "start_mm": 1215.5784319199988,
+            "end_mm": 1284.3215680800013,
+            "width_mm": 68.74313616000245
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 68.74313616000245,
+        "half_max_bounding_span_mm": 68.74313616000245,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1249.9500003972578,
+            "magnitude_t": 0.025496745418811473
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": 1798.658372052589,
+      "peak_matched_required_ni_magnitude_a_turn": 19306.905625342002,
+      "peak_matched_scale": 10.734059299604178,
+      "peak_matched_field_at_old_peak_t": 0.27368357727243353,
+      "gaussian_integral_b2_t2_m": 0.00048646808295175174,
+      "ideal_reference_integral_b2_t2_m": 3.434561925002521e-05,
+      "integral_quadrature_error_estimate": 8.483482228393076e-18,
+      "peak_matched_integral_to_gaussian_ratio": 8.134764409676562,
+      "integral_matched_required_ni_magnitude_a_turn": 6769.244234854821,
+      "gaussian_effective_b2_length_mm": 6.4946668131871945,
+      "ideal_effective_b2_length_mm": 52.8325844446227,
+      "existing_envelope_cross_section_mm2": 171.96981095250035,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 19307,
+        "actual_current_a": 0.9999951118942354,
+        "i100_setting_a": 1.6679016884452547,
+        "bare_wire_area_mm2": 0.33333170396474515,
+        "bare_wire_diameter_mm": 0.6514684236414441,
+        "pack_area_mm2": 10726.058680745558,
+        "sensitivity_pack_area_mm2": [
+          5516.258750097715,
+          19306.905625342002
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 32203,
+        "actual_i100_a": 0.9999744712856732,
+        "workpoint_current_a": 0.5995374848722791,
+        "wire_area_at_i100_mm2": 0.33332482376189104,
+        "pack_area_at_i100_mm2": 17890.09883267363
+      }
+    },
+    {
+      "key": "probe_tl12_lens",
+      "lens": "Probe TL12 lens",
+      "excitation_percent": 36.004558708747176,
+      "polarity": 1,
+      "gaussian": {
+        "peak_magnitude_t": 0.1816074777461031,
+        "peak_z_mm": 1366.3000000011014,
+        "signed_peak_t": 0.1816074777461031,
+        "half_max_regions": [
+          {
+            "start_mm": 1361.3457637683798,
+            "end_mm": 1371.25423623162,
+            "width_mm": 9.908472463240287
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 9.908472463240287,
+        "half_max_bounding_span_mm": 9.908472463240287,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1366.3000000011014,
+            "magnitude_t": 0.1816074777461031
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.01529064719794669,
+        "peak_z_mm": 1366.300000162888,
+        "signed_peak_t": 0.01529064719794669,
+        "half_max_regions": [
+          {
+            "start_mm": 1331.8883870724035,
+            "end_mm": 1400.7116129275967,
+            "width_mm": 68.82322585519319
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 68.82322585519319,
+        "half_max_bounding_span_mm": 68.82322585519319,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1366.300000162888,
+            "magnitude_t": 0.01529064719794669
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": 1080.1367612624153,
+      "peak_matched_required_ni_magnitude_a_turn": 12828.816877028825,
+      "peak_matched_scale": 11.877030147585273,
+      "peak_matched_field_at_old_peak_t": 0.18160747774610309,
+      "gaussian_integral_b2_t2_m": 0.000249902798273763,
+      "ideal_reference_integral_b2_t2_m": 1.2366897992627916e-05,
+      "integral_quadrature_error_estimate": 3.2732125035565452e-18,
+      "peak_matched_integral_to_gaussian_ratio": 6.980802916892714,
+      "integral_matched_required_ni_magnitude_a_turn": 4855.499540449771,
+      "gaussian_effective_b2_length_mm": 7.577111282051722,
+      "ideal_effective_b2_length_mm": 52.89432053936737,
+      "existing_envelope_cross_section_mm2": 174.8789999999992,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 12829,
+        "actual_current_a": 0.9999857258577305,
+        "i100_setting_a": 2.7773864247217883,
+        "bare_wire_area_mm2": 0.33332857528591014,
+        "bare_wire_diameter_mm": 0.6514653662661222,
+        "pack_area_mm2": 7127.120487238237,
+        "sensitivity_pack_area_mm2": [
+          3665.3762505796644,
+          12828.816877028825
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 35632,
+        "actual_i100_a": 0.9999744735843014,
+        "workpoint_current_a": 0.3600363964141453,
+        "wire_area_at_i100_mm2": 0.33332482452810047,
+        "pack_area_at_i100_mm2": 19795.05024597546
+      }
+    },
+    {
+      "key": "mini_condenser",
+      "lens": "Mini Condenser lens",
+      "excitation_percent": 43.88646617222637,
+      "polarity": -1,
+      "gaussian": {
+        "peak_magnitude_t": 0.18111593852425287,
+        "peak_z_mm": 1522.5000000171422,
+        "signed_peak_t": -0.18111593852425287,
+        "half_max_regions": [
+          {
+            "start_mm": 1516.8380157352408,
+            "end_mm": 1528.1619842647592,
+            "width_mm": 11.323968529518424
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 11.323968529518424,
+        "half_max_bounding_span_mm": 11.323968529518424,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1522.5000000171422,
+            "magnitude_t": 0.18111593852425287
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.036162063940233864,
+        "peak_z_mm": 1522.500000203299,
+        "signed_peak_t": -0.036162063940233864,
+        "half_max_regions": [
+          {
+            "start_mm": 1504.5295327500128,
+            "end_mm": 1540.4704672499872,
+            "width_mm": 35.940934499974446
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 35.940934499974446,
+        "half_max_bounding_span_mm": 35.940934499974446,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1522.500000203299,
+            "magnitude_t": 0.036162063940233864
+          },
+          {
+            "z_mm": 1522.6320000004878,
+            "magnitude_t": 0.03616051241629567
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": -1316.5939851667913,
+      "peak_matched_required_ni_magnitude_a_turn": 6594.096942944777,
+      "peak_matched_scale": 5.0084513655965175,
+      "peak_matched_field_at_old_peak_t": -0.18111593852425287,
+      "gaussian_integral_b2_t2_m": 0.00028405926170870627,
+      "ideal_reference_integral_b2_t2_m": 3.616889496713289e-05,
+      "integral_quadrature_error_estimate": 1.7917423647032327e-16,
+      "peak_matched_integral_to_gaussian_ratio": 3.193987471666813,
+      "integral_matched_required_ni_magnitude_a_turn": 3689.680181324369,
+      "gaussian_effective_b2_length_mm": 8.659555750916258,
+      "ideal_effective_b2_length_mm": 27.65851257862682,
+      "existing_envelope_cross_section_mm2": 153.0,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 6595,
+        "actual_current_a": 0.9998630694381769,
+        "i100_setting_a": 2.2782947834404172,
+        "bare_wire_area_mm2": 0.33328768981272566,
+        "bare_wire_diameter_mm": 0.6514254112659322,
+        "pack_area_mm2": 3663.3871905248766,
+        "sensitivity_pack_area_mm2": [
+          1884.027697984222,
+          6594.096942944777
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 15026,
+        "actual_i100_a": 0.9999570142945263,
+        "workpoint_current_a": 0.43884579681517216,
+        "wire_area_at_i100_mm2": 0.3333190047648421,
+        "pack_area_at_i100_mm2": 8347.418942660865
+      }
+    },
+    {
+      "key": "objective_lens",
+      "lens": "Objective lens",
+      "excitation_percent": 68.97810600833917,
+      "polarity": 1,
+      "gaussian": {
+        "peak_magnitude_t": 1.1138350097912169,
+        "peak_z_mm": 1599.200000028162,
+        "signed_peak_t": 1.1138350097912169,
+        "half_max_regions": [
+          {
+            "start_mm": 1582.1198349763474,
+            "end_mm": 1616.2801650236527,
+            "width_mm": 34.16033004730525
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 34.16033004730525,
+        "half_max_bounding_span_mm": 34.16033004730525,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1599.200000028162,
+            "magnitude_t": 1.1138350097912169
+          },
+          {
+            "z_mm": 1599.230000000549,
+            "magnitude_t": 1.113832492305948
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.007568495771458272,
+        "peak_z_mm": 1470.4466175998637,
+        "signed_peak_t": 0.007568495771458272,
+        "half_max_regions": [
+          {
+            "start_mm": 1391.1323370283528,
+            "end_mm": 1549.8687530653006,
+            "width_mm": 158.73641603694773
+          },
+          {
+            "start_mm": 1648.5312469346995,
+            "end_mm": 1807.2676629716473,
+            "width_mm": 158.73641603694773
+          }
+        ],
+        "half_max_region_count": 2,
+        "main_lobe_fwhm_mm": 158.73641603694773,
+        "half_max_bounding_span_mm": 416.13532594329445,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1466.1139999994512,
+            "magnitude_t": 0.0075608851863513266
+          },
+          {
+            "z_mm": 1467.0379999996471,
+            "magnitude_t": 0.007563789328103662
+          },
+          {
+            "z_mm": 1469.677999999451,
+            "magnitude_t": 0.007568256143399533
+          },
+          {
+            "z_mm": 1470.0019999994513,
+            "magnitude_t": 0.0075684155422997565
+          },
+          {
+            "z_mm": 1470.4466175998637,
+            "magnitude_t": 0.007568495771458272
+          },
+          {
+            "z_mm": 1470.8660000003533,
+            "magnitude_t": 0.0075684242565048606
+          },
+          {
+            "z_mm": 1472.054000000353,
+            "magnitude_t": 0.007567441576269509
+          },
+          {
+            "z_mm": 1473.2420000003533,
+            "magnitude_t": 0.007565293522898548
+          },
+          {
+            "z_mm": 1474.166000000549,
+            "magnitude_t": 0.007562804617068219
+          },
+          {
+            "z_mm": 1474.430000000557,
+            "magnitude_t": 0.00756196035996321
+          },
+          {
+            "z_mm": 1599.2299999994445,
+            "magnitude_t": 0.0018099636288199158
+          },
+          {
+            "z_mm": 1600.093999999544,
+            "magnitude_t": 0.0018105167974871179
+          },
+          {
+            "z_mm": 1722.4579999996472,
+            "magnitude_t": 0.007555968173139686
+          },
+          {
+            "z_mm": 1724.8339999996472,
+            "magnitude_t": 0.007564502931012372
+          },
+          {
+            "z_mm": 1725.0979999994513,
+            "magnitude_t": 0.0075651537793409475
+          },
+          {
+            "z_mm": 1725.1579999996468,
+            "magnitude_t": 0.00756529352289855
+          },
+          {
+            "z_mm": 1725.421999999451,
+            "magnitude_t": 0.007565872527255386
+          },
+          {
+            "z_mm": 1726.2859999994512,
+            "magnitude_t": 0.007567361179011821
+          },
+          {
+            "z_mm": 1726.609999999451,
+            "magnitude_t": 0.007567760053129202
+          },
+          {
+            "z_mm": 1727.2099999996474,
+            "magnitude_t": 0.007568270881624263
+          },
+          {
+            "z_mm": 1727.5339999996468,
+            "magnitude_t": 0.0075684242565048606
+          },
+          {
+            "z_mm": 1727.797999999488,
+            "magnitude_t": 0.00756848596066664
+          },
+          {
+            "z_mm": 1727.9533825993278,
+            "magnitude_t": 0.007568495771458272
+          },
+          {
+            "z_mm": 1728.6620000003531,
+            "magnitude_t": 0.007568292075246779
+          },
+          {
+            "z_mm": 1728.7220000005489,
+            "magnitude_t": 0.007568256143399533
+          },
+          {
+            "z_mm": 1728.986000000469,
+            "magnitude_t": 0.00756806343096142
+          },
+          {
+            "z_mm": 1730.1740000003529,
+            "magnitude_t": 0.007566498507651648
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": 2069.343180250175,
+      "peak_matched_required_ni_magnitude_a_turn": 304539.6272965401,
+      "peak_matched_scale": 147.16728969997257,
+      "peak_matched_field_at_old_peak_t": 0.2663673499408861,
+      "gaussian_integral_b2_t2_m": 0.03240427674651315,
+      "ideal_reference_integral_b2_t2_m": 1.4559875888220112e-05,
+      "integral_quadrature_error_estimate": 2.6927642899271254e-15,
+      "peak_matched_integral_to_gaussian_ratio": 9.731458254193907,
+      "integral_matched_required_ni_magnitude_a_turn": 97623.60699513869,
+      "gaussian_effective_b2_length_mm": 26.11924407671073,
+      "ideal_effective_b2_length_mm": 254.1783333636119,
+      "existing_envelope_cross_section_mm2": 10440.0,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 3.0,
+        "total_turns": 101514,
+        "actual_current_a": 2.999976626835117,
+        "i100_setting_a": 4.349172223534859,
+        "bare_wire_area_mm2": 0.9999922089450389,
+        "bare_wire_diameter_mm": 1.128374771454897,
+        "pack_area_mm2": 169188.68183141117,
+        "sensitivity_pack_area_mm2": [
+          87011.32208472573,
+          304539.6272965401
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 3.0,
+        "total_turns": 147168,
+        "actual_i100_a": 2.9999855206289254,
+        "workpoint_current_a": 2.0693331926542458,
+        "wire_area_at_i100_mm2": 0.9999951735429752,
+        "pack_area_at_i100_mm2": 245278.81616662096
+      }
+    },
+    {
+      "key": "diffraction_lens",
+      "lens": "Diffraction lens",
+      "excitation_percent": 14.577617197168571,
+      "polarity": 1,
+      "gaussian": {
+        "peak_magnitude_t": 0.10026776857020193,
+        "peak_z_mm": 1896.9000000307315,
+        "signed_peak_t": 0.10026776857020193,
+        "half_max_regions": [
+          {
+            "start_mm": 1888.407023602941,
+            "end_mm": 1905.392976397059,
+            "width_mm": 16.98595279411802
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 16.98595279411802,
+        "half_max_bounding_span_mm": 16.98595279411802,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1896.9000000307315,
+            "magnitude_t": 0.10026776857020193
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.004205568003008477,
+        "peak_z_mm": 1896.9000011620376,
+        "signed_peak_t": 0.004205568003008477,
+        "half_max_regions": [
+          {
+            "start_mm": 1842.0157375314384,
+            "end_mm": 1951.7842624685616,
+            "width_mm": 109.76852493712317
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 109.76852493712317,
+        "half_max_bounding_span_mm": 109.76852493712317,
+        "peak_search_candidates": [
+          {
+            "z_mm": 1896.3719999996144,
+            "magnitude_t": 0.004205361347892877
+          },
+          {
+            "z_mm": 1896.9000011620376,
+            "magnitude_t": 0.004205568003008477
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": 437.3285159150572,
+      "peak_matched_required_ni_magnitude_a_turn": 10426.642582298637,
+      "peak_matched_scale": 23.841670970122184,
+      "peak_matched_field_at_old_peak_t": 0.10026776857020193,
+      "gaussian_integral_b2_t2_m": 0.0001305898946576603,
+      "ideal_reference_integral_b2_t2_m": 1.5178632622978662e-06,
+      "integral_quadrature_error_estimate": 3.055791550351949e-18,
+      "peak_matched_integral_to_gaussian_ratio": 6.606880601373589,
+      "integral_matched_required_ni_magnitude_a_turn": 4056.451215187045,
+      "gaussian_effective_b2_length_mm": 12.98933362637439,
+      "ideal_effective_b2_length_mm": 85.81897636086262,
+      "existing_envelope_cross_section_mm2": 3240.0,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 10427,
+        "actual_current_a": 0.9999657219045398,
+        "i100_setting_a": 6.859596519647699,
+        "bare_wire_area_mm2": 0.3333219073015133,
+        "bare_wire_diameter_mm": 0.6514588501991778,
+        "pack_area_mm2": 5792.579212388132,
+        "sensitivity_pack_area_mm2": [
+          2979.0407377996103,
+          10426.642582298637
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 71526,
+        "actual_i100_a": 0.9999861995689199,
+        "workpoint_current_a": 0.14577416019767128,
+        "wire_area_at_i100_mm2": 0.33332873318963996,
+        "pack_area_at_i100_mm2": 39736.11828353698
+      }
+    },
+    {
+      "key": "intermediate_lens",
+      "lens": "Intermediate lens",
+      "excitation_percent": 0.035082657259397326,
+      "polarity": 1,
+      "gaussian": {
+        "peak_magnitude_t": 0.00026721780329175515,
+        "peak_z_mm": 2066.9000000003334,
+        "signed_peak_t": 0.00026721780329175515,
+        "half_max_regions": [
+          {
+            "start_mm": 2056.2837795033815,
+            "end_mm": 2077.5162204966186,
+            "width_mm": 21.232440993237105
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 21.232440993237105,
+        "half_max_bounding_span_mm": 21.232440993237105,
+        "peak_search_candidates": [
+          {
+            "z_mm": 2066.9000000003334,
+            "magnitude_t": 0.00026721780329175515
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 7.012793569712935e-06,
+        "peak_z_mm": 2066.9000000003334,
+        "signed_peak_t": 7.012793569712935e-06,
+        "half_max_regions": [
+          {
+            "start_mm": 1981.2786965660105,
+            "end_mm": 2152.521303433989,
+            "width_mm": 171.24260686797857
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 171.24260686797857,
+        "half_max_bounding_span_mm": 171.24260686797857,
+        "peak_search_candidates": [
+          {
+            "z_mm": 2000.8999999994446,
+            "magnitude_t": 5.139262954924764e-06
+          },
+          {
+            "z_mm": 2003.8699999994446,
+            "magnitude_t": 5.347455102058494e-06
+          },
+          {
+            "z_mm": 2011.2949999994755,
+            "magnitude_t": 5.800961212631203e-06
+          },
+          {
+            "z_mm": 2012.7799999994447,
+            "magnitude_t": 5.880228679082697e-06
+          },
+          {
+            "z_mm": 2014.2649999994446,
+            "magnitude_t": 5.955803030668378e-06
+          },
+          {
+            "z_mm": 2021.6899999994446,
+            "magnitude_t": 6.281446426224657e-06
+          },
+          {
+            "z_mm": 2023.1749999994447,
+            "magnitude_t": 6.3369182859709145e-06
+          },
+          {
+            "z_mm": 2024.6599999994446,
+            "magnitude_t": 6.3894661571492586e-06
+          },
+          {
+            "z_mm": 2033.5699999995807,
+            "magnitude_t": 6.649439636909172e-06
+          },
+          {
+            "z_mm": 2036.5399999994447,
+            "magnitude_t": 6.716968728390177e-06
+          },
+          {
+            "z_mm": 2040.9949999994446,
+            "magnitude_t": 6.802430394255165e-06
+          },
+          {
+            "z_mm": 2043.96499999948,
+            "magnitude_t": 6.850029844431788e-06
+          },
+          {
+            "z_mm": 2066.0749999995696,
+            "magnitude_t": 7.012614182886161e-06
+          },
+          {
+            "z_mm": 2066.9000000003334,
+            "magnitude_t": 7.012793569712935e-06
+          },
+          {
+            "z_mm": 2069.0450000005553,
+            "magnitude_t": 7.011576374863516e-06
+          },
+          {
+            "z_mm": 2070.5300000005554,
+            "magnitude_t": 7.009280139967694e-06
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": 1.0524797177819198,
+      "peak_matched_required_ni_magnitude_a_turn": 40.104034918330484,
+      "peak_matched_scale": 38.10433041203772,
+      "peak_matched_field_at_old_peak_t": 0.00026721780329175515,
+      "gaussian_integral_b2_t2_m": 1.1593849637000857e-09,
+      "ideal_reference_integral_b2_t2_m": 6.77262792274436e-12,
+      "integral_quadrature_error_estimate": 1.4707042037077586e-19,
+      "peak_matched_integral_to_gaussian_ratio": 8.481608497569614,
+      "integral_matched_required_ni_magnitude_a_turn": 13.770476193393387,
+      "gaussian_effective_b2_length_mm": 16.23666703296801,
+      "ideal_effective_b2_length_mm": 137.71305307902986,
+      "existing_envelope_cross_section_mm2": 5832.0,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 41,
+        "actual_current_a": 0.9781471931300119,
+        "i100_setting_a": 2788.121737466175,
+        "bare_wire_area_mm2": 0.32604906437667064,
+        "bare_wire_diameter_mm": 0.644312472553712,
+        "pack_area_mm2": 22.280019399072494,
+        "sensitivity_pack_area_mm2": [
+          11.458295690951568,
+          40.104034918330484
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 114313,
+        "actual_i100_a": 0.9999999233342942,
+        "workpoint_current_a": 0.00035082654569760645,
+        "wire_area_at_i100_mm2": 0.33333330777809805,
+        "pack_area_at_i100_mm2": 63507.21735339621
+      }
+    },
+    {
+      "key": "projector_lens_1",
+      "lens": "P1 lens",
+      "excitation_percent": 32.1132572718703,
+      "polarity": 1,
+      "gaussian": {
+        "peak_magnitude_t": 0.12369358987737224,
+        "peak_z_mm": 2246.900000065128,
+        "signed_peak_t": 0.12369358987737224,
+        "half_max_regions": [
+          {
+            "start_mm": 2234.1605354044127,
+            "end_mm": 2259.6394645955875,
+            "width_mm": 25.478929191174757
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 25.478929191174757,
+        "half_max_bounding_span_mm": 25.478929191174757,
+        "peak_search_candidates": [
+          {
+            "z_mm": 2246.900000065128,
+            "magnitude_t": 0.12369358987737224
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.008403510739356043,
+        "peak_z_mm": 2246.899999986434,
+        "signed_peak_t": 0.008403510739356043,
+        "half_max_regions": [
+          {
+            "start_mm": 2184.8801156192976,
+            "end_mm": 2308.9198843807026,
+            "width_mm": 124.03976876140496
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 124.03976876140496,
+        "half_max_bounding_span_mm": 124.03976876140496,
+        "peak_search_candidates": [
+          {
+            "z_mm": 2246.899999986434,
+            "magnitude_t": 0.008403510739356043
+          },
+          {
+            "z_mm": 2246.90000069699,
+            "magnitude_t": 0.008403510739356041
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": 963.397718156109,
+      "peak_matched_required_ni_magnitude_a_turn": 14180.516445383832,
+      "peak_matched_scale": 14.719275516371962,
+      "peak_matched_field_at_old_peak_t": 0.12369358987737224,
+      "gaussian_integral_b2_t2_m": 0.00029810723650516537,
+      "ideal_reference_integral_b2_t2_m": 6.8911958671858455e-06,
+      "integral_quadrature_error_estimate": 3.602629253052753e-17,
+      "peak_matched_integral_to_gaussian_ratio": 5.008353150980633,
+      "integral_matched_required_ni_magnitude_a_turn": 6336.429039523064,
+      "gaussian_effective_b2_length_mm": 19.484000439561576,
+      "ideal_effective_b2_length_mm": 97.58275499518625,
+      "existing_envelope_cross_section_mm2": 3888.0,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 14181,
+        "actual_current_a": 0.9999659012329054,
+        "i100_setting_a": 3.1138725441870023,
+        "bare_wire_area_mm2": 0.3333219670776351,
+        "bare_wire_diameter_mm": 0.651458908613703,
+        "pack_area_mm2": 7878.0646918799075,
+        "sensitivity_pack_area_mm2": [
+          4051.5761272525233,
+          14180.516445383832
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 44158,
+        "actual_i100_a": 0.9999960720394013,
+        "workpoint_current_a": 0.32113131132261047,
+        "wire_area_at_i100_mm2": 0.3333320240131338,
+        "pack_area_at_i100_mm2": 24532.125860619934
+      }
+    },
+    {
+      "key": "projector_lens_2",
+      "lens": "P2 lens",
+      "excitation_percent": 9.826874422815507,
+      "polarity": 1,
+      "gaussian": {
+        "peak_magnitude_t": 0.03244378031010495,
+        "peak_z_mm": 2449.400000194617,
+        "signed_peak_t": 0.03244378031010495,
+        "half_max_regions": [
+          {
+            "start_mm": 2435.2450393382,
+            "end_mm": 2463.5549606618,
+            "width_mm": 28.309921323600065
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 28.309921323600065,
+        "half_max_bounding_span_mm": 28.309921323600065,
+        "peak_search_candidates": [
+          {
+            "z_mm": 2449.3999996961315,
+            "magnitude_t": 0.03244378031010494
+          },
+          {
+            "z_mm": 2449.400000194617,
+            "magnitude_t": 0.03244378031010495
+          }
+        ]
+      },
+      "ideal_at_original_reference_ni": {
+        "peak_magnitude_t": 0.0019643278801020026,
+        "peak_z_mm": 2449.3999979043438,
+        "signed_peak_t": 0.0019643278801020026,
+        "half_max_regions": [
+          {
+            "start_mm": 2363.778696565839,
+            "end_mm": 2535.0213034341614,
+            "width_mm": 171.24260686832258
+          }
+        ],
+        "half_max_region_count": 1,
+        "main_lobe_fwhm_mm": 171.24260686832258,
+        "half_max_bounding_span_mm": 171.24260686832258,
+        "peak_search_candidates": [
+          {
+            "z_mm": 2449.3999979043438,
+            "magnitude_t": 0.0019643278801020026
+          },
+          {
+            "z_mm": 2449.4000019729324,
+            "magnitude_t": 0.0019643278801020026
+          }
+        ]
+      },
+      "original_signed_ni_a_turn": 294.8062326844652,
+      "peak_matched_required_ni_magnitude_a_turn": 4869.160970605276,
+      "peak_matched_scale": 16.516479065816764,
+      "peak_matched_field_at_old_peak_t": 0.032443780310104954,
+      "gaussian_integral_b2_t2_m": 2.2787596729323273e-05,
+      "ideal_reference_integral_b2_t2_m": 5.313773860313498e-07,
+      "integral_quadrature_error_estimate": 2.017065112329772e-17,
+      "peak_matched_integral_to_gaussian_ratio": 6.361206373177201,
+      "integral_matched_required_ni_magnitude_a_turn": 1930.5648270697166,
+      "gaussian_effective_b2_length_mm": 21.648889377290633,
+      "ideal_effective_b2_length_mm": 137.7130530790294,
+      "existing_envelope_cross_section_mm2": 5832.0,
+      "workpoint_actual_current_design": {
+        "current_limit_a": 1.0,
+        "total_turns": 4870,
+        "actual_current_a": 0.9998277147033421,
+        "i100_setting_a": 10.174422422474393,
+        "bare_wire_area_mm2": 0.33327590490111403,
+        "bare_wire_diameter_mm": 0.6514138941007428,
+        "pack_area_mm2": 2705.089428114042,
+        "sensitivity_pack_area_mm2": [
+          1391.1888487443646,
+          4869.160970605276
+        ]
+      },
+      "full_excitation_current_design": {
+        "i100_limit_a": 1.0,
+        "total_turns": 49550,
+        "actual_i100_a": 0.9999886417245267,
+        "workpoint_current_a": 0.09826762806468771,
+        "wire_area_at_i100_mm2": 0.33332954724150893,
+        "pack_area_at_i100_mm2": 27527.465109694607
+      }
+    }
+  ]
+}

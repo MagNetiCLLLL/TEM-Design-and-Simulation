@@ -1,0 +1,107 @@
+{
+  "original_count": 1024,
+  "original_positive_count": 1024,
+  "gun_exit_surviving": 1024,
+  "incident_surviving_positive": 1024,
+  "incident_effective_count": 1024.0,
+  "gun_emitted_current_a": 1e-05,
+  "incident_source_weight_sum": 1.0,
+  "incident_surviving_source_fraction": 1.0,
+  "incident_z_range_mm": [
+    0.0,
+    1599.2
+  ],
+  "equal_time_history_saved": true,
+  "equal_time_frames": 382,
+  "performance": {
+    "workflow": "rays",
+    "pipeline_seconds": 2625.9245763000035,
+    "stages": [
+      {
+        "stage": "Optical column transport",
+        "seconds": 2620.9894234999992
+      },
+      {
+        "stage": "Specimen interactions and downstream transport",
+        "seconds": 0.00024120000307448208
+      },
+      {
+        "stage": "Requested optional readouts",
+        "seconds": 6.900000153109431e-05
+      },
+      {
+        "stage": "Assembled energy filter and detector readout",
+        "seconds": 2.9599999834317714e-05
+      },
+      {
+        "stage": "Diagnostics and continuation checkpoint",
+        "seconds": 4.934641899999406
+      }
+    ],
+    "timing_scope": "Explicit requested workflow; retained products are not recalculated",
+    "backend_stages": [
+      {
+        "stage": "column",
+        "requested": "Auto",
+        "actual": "CPU",
+        "outcome": "returned",
+        "reason": "Shared-potential Lorentz RK4 with captured mechanical boundaries",
+        "monotonic_s": 34184.39,
+        "retried": false,
+        "history_policy": "full",
+        "requested_history_policy": "auto",
+        "integration_nodes": 23013,
+        "retained_history_nodes": 23013,
+        "history_memory_bytes": 1163618248,
+        "history_budget_bytes": 2147483648,
+        "retained_history_maximum_gap_mm": 0.0500000000001819,
+        "history_scope": "Exact retained integration nodes; plot-node waist markers remain sampling dependent",
+        "display_history_step_mm": null
+      },
+      {
+        "stage": "column",
+        "requested": "Auto",
+        "actual": "CPU",
+        "outcome": "returned",
+        "reason": "Shared-potential Lorentz RK4 with captured mechanical boundaries",
+        "monotonic_s": 35162.312,
+        "retried": false,
+        "history_policy": "full",
+        "requested_history_policy": "auto",
+        "integration_nodes": 27809,
+        "retained_history_nodes": 27809,
+        "history_memory_bytes": 1405883688,
+        "history_budget_bytes": 2147483648,
+        "retained_history_maximum_gap_mm": 0.0500000000001819,
+        "history_scope": "Exact retained integration nodes; plot-node waist markers remain sampling dependent",
+        "display_history_step_mm": null
+      }
+    ],
+    "backend_scope": "Last 256 stage calls in this worker, including exact internal reuse; not hardware qualification",
+    "numerical_preparation": {
+      "schema": "gui-request-numerical-preparation-v1",
+      "quality": "High accuracy",
+      "requested_step_mm": 0.5,
+      "applied_step_mm": 0.05,
+      "high_accuracy_maximum_step_mm": 0.05,
+      "changed": true,
+      "qualification": "Execution resolution only; working-point convergence requires independent refinement"
+    }
+  },
+  "scope": "Complete optical-reference ray workflow; not material scattering, coherent or scan qualification",
+  "status": "COMPLETE_RAY_WORKFLOW",
+  "quality": "High accuracy",
+  "worker_elapsed_seconds": 2629.5471180999994,
+  "official_incident_roundtrip": true,
+  "formal_complete_archive_roundtrip_exact": true,
+  "actual_runtime_digest": "6663f991c55e6bb953d90e9f38a238e984f5f476a36869fefda9149629eec7ff",
+  "actual_field_numerical_digest": "0d893312694840ecd630e0ac962f376dba01e76d943c9f56400c640739f9422e",
+  "only_current_process_new_solver_results_reused": true,
+  "source_count_growth": false,
+  "quality_field_scope": "Normal Preview and High accuracy resolve automatic scan drives differently; this is not fixed-field quality convergence. Full actual drive matrices/runtime are saved.",
+  "independent_energy_clock_loss_verification": "executed-energy-clock-loss-verification.json",
+  "validate_incident_flight_times": true,
+  "gun_and_optical_controls_unchanged": true,
+  "original_source_exact_bytes_unchanged": true,
+  "reused_previous_gun": true
+}

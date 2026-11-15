@@ -1,0 +1,467 @@
+{
+  "status": "INDEPENDENT_ADAPTIVE_PREVIEW_AUDIT_PASSED",
+  "scope": "Read-only current formal archive and original historical NPY comparison. No new emission, field solve, particle or coherent propagation.",
+  "new_implementation": "6169010971ca2aeb082c8f0936b043f2ad4eb886cdfd07991c69bdda32a7ffca",
+  "old_implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+  "formal_archive": {
+    "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\adaptive-preview-high-1024\\preview\\complete-result.temsim",
+    "sha256": "60aba2fa2753d66d26ab2e5d7ef41e7a44938dd06216df59ce6ff1b7dd6e344a",
+    "bytes": 378791168,
+    "package_digest": "044c5868d42e78c1239c5265d54a4b2f563fc1612b71e4d5822fc91fee72a960",
+    "scope": "Formal typed result graph, including all actual Gun, incident and post branches, saved before diagnostics"
+  },
+  "formal_typed_load_and_package_digest_passed": true,
+  "new_native_disk_to_formal_roundtrip": {
+    "native_array_count": 63,
+    "exact_dtype_shape_and_bytes": true,
+    "checked_fields": [
+      "incident.z",
+      "incident.x",
+      "incident.y",
+      "incident.tx",
+      "incident.ty",
+      "incident.alive",
+      "incident.blocked_z",
+      "incident.energy_offset_ev",
+      "incident.ray_weight",
+      "incident.source_ray_id",
+      "incident.source_azimuth_rad",
+      "incident.flight_time_s",
+      "incident.kinetic_energy_ev",
+      "gun.z_mm",
+      "gun.x_m",
+      "gun.y_m",
+      "gun.tx_rad",
+      "gun.ty_rad",
+      "gun.blocked_z_mm",
+      "gun.flight_time_s",
+      "gun_exit.x_m",
+      "gun_exit.y_m",
+      "gun_exit.tx_rad",
+      "gun_exit.ty_rad",
+      "gun_exit.energy_offset_ev",
+      "gun_exit.weight",
+      "gun_exit.ray_id",
+      "gun_exit.alive",
+      "gun_exit.flight_time_s",
+      "gun_time_history.time_s",
+      "gun_time_history.z_mm",
+      "gun_time_history.x_m",
+      "gun_time_history.y_m",
+      "gun_time_history.tx_rad",
+      "gun_time_history.ty_rad",
+      "gun_time_history.alive",
+      "gun_time_history.completed",
+      "checkpoint.z_mm",
+      "checkpoint.x_m",
+      "checkpoint.y_m",
+      "checkpoint.tx_rad",
+      "checkpoint.ty_rad",
+      "checkpoint.kinetic_energy_ev",
+      "checkpoint.flight_time_s",
+      "arrival0.time_s",
+      "arrival0.x_m",
+      "arrival0.y_m",
+      "arrival0.reached",
+      "arrival0.transmitted",
+      "arrival1.time_s",
+      "arrival1.x_m",
+      "arrival1.y_m",
+      "arrival1.reached",
+      "arrival1.transmitted",
+      "arrival2.time_s",
+      "arrival2.x_m",
+      "arrival2.y_m",
+      "arrival2.reached",
+      "arrival2.transmitted",
+      "emission.ray_id",
+      "emission.position_m",
+      "emission.direction",
+      "emission.normal"
+    ],
+    "codec_validation": "Official loader additionally verifies every numeric checksum and logical content digest"
+  },
+  "historical_raw_array_checksums_verified": {
+    "gun_exit.ray_id": "27e2935cb98e5eb3fb0264594106564a3e83ce74e1ed36de78fe986cbd63fb9c",
+    "gun_exit.weight": "1542bacde23500971056ebc5504176bea826c5d7466fd3714ae6787774976931",
+    "gun_exit.alive": "c3c4f9533e9f7439609a811a896aed55278594c2075c283691fe9025b2b16ea0",
+    "gun_exit.x_m": "67360b9960bad48bc6ae31ec6f2e7e28c7fb4d87cdde1f30e9a44af1e4e8cc09",
+    "gun_exit.y_m": "b217a66299629444dbf4a9948001ee55eb46f4dbb712ff144d246209c9624ded",
+    "gun_exit.tx_rad": "7113ab79585ae1303451e4c95a1610e2cf0647d8fc56a5dc83efb3100f61e0ca",
+    "gun_exit.ty_rad": "c09e319f60afa2722fb420ffa1a9b32ad010806e8beacc18af191891924ef3d9",
+    "gun_exit.energy_offset_ev": "51ca8ca2db1c57b48463949f7c94c729e49a1e20f9f0c2b7539ab9ac6299fadc",
+    "gun_exit.flight_time_s": "b115268fa5eb87541c282eaecaf61d2cab400557b3d39e0550a5176066bde0fa",
+    "arrival0.reached": "c3c4f9533e9f7439609a811a896aed55278594c2075c283691fe9025b2b16ea0",
+    "arrival0.transmitted": "c3c4f9533e9f7439609a811a896aed55278594c2075c283691fe9025b2b16ea0",
+    "arrival0.x_m": "37ba6c0b5c1a6ce3cc24db38bba1f4c17cd181d593f5a565854042313ec75bb8",
+    "arrival0.y_m": "078df558bdf8f7553abfd75a90dbe8abe769df7439620b77a2ca24f237ba3c81",
+    "arrival0.time_s": "44d19ac92d6879886d6f729905f6ebf12661a6c1c71a1af70d208a72ed83ad4f",
+    "arrival1.reached": "c3c4f9533e9f7439609a811a896aed55278594c2075c283691fe9025b2b16ea0",
+    "arrival1.transmitted": "c3c4f9533e9f7439609a811a896aed55278594c2075c283691fe9025b2b16ea0",
+    "arrival1.x_m": "dc86eed79bfecf6ea60e8fc53259de4636649bb842513d4d0043c8a4f94a3811",
+    "arrival1.y_m": "e22c48ec4c72780f0978a046db53160c29bb82f53b461711fc396a171f191324",
+    "arrival1.time_s": "6eff9c6154f4b103a12157ba5ba8f32da23547932e541d41ce70c2bfe3efd03c",
+    "arrival2.reached": "c3c4f9533e9f7439609a811a896aed55278594c2075c283691fe9025b2b16ea0",
+    "arrival2.transmitted": "c3c4f9533e9f7439609a811a896aed55278594c2075c283691fe9025b2b16ea0",
+    "arrival2.x_m": "67360b9960bad48bc6ae31ec6f2e7e28c7fb4d87cdde1f30e9a44af1e4e8cc09",
+    "arrival2.y_m": "b217a66299629444dbf4a9948001ee55eb46f4dbb712ff144d246209c9624ded",
+    "arrival2.time_s": "b115268fa5eb87541c282eaecaf61d2cab400557b3d39e0550a5176066bde0fa",
+    "incident.source_ray_id": "27e2935cb98e5eb3fb0264594106564a3e83ce74e1ed36de78fe986cbd63fb9c",
+    "incident.x": "5504e46726a49ea2e20460e13bd40fd0a24ea09807209b58c8d7e08c0f9f6e02",
+    "incident.y": "ba6183553bc9a2f1c1f5aeee2d3dca678e793fb1925b7ab0406b0d1d6e9fe57c",
+    "incident.tx": "e22c710089676e8a627bac42b2833c2500d1c8e6ade72af25144b6857c7b9266",
+    "incident.ty": "77150eaba6500fb61db5e70e80129df38b0f0b846ccb5582a5450cc5e9693d3d",
+    "incident.kinetic_energy_ev": "a8dcd6b78e4e7250a2c2c7793ec3df3b70879352f9b1aef2324a2c8631f31a1d",
+    "incident.flight_time_s": "95d4a900129c18b22d68f2b6d9dcb3fae5e9f1125d004c41eb2c015e59d9ff9f",
+    "incident.ray_weight": "1542bacde23500971056ebc5504176bea826c5d7466fd3714ae6787774976931"
+  },
+  "source": {
+    "original_positive_count": 1024,
+    "unique_ids": 1024,
+    "source_weight_sum": 1.0,
+    "current_a": 1e-05,
+    "fwhm_setting_ev": 0.3,
+    "declared_energy_bounds_ev": [
+      0.01,
+      1.3
+    ],
+    "actual_launch_energy_range_ev": [
+      0.015094567656436075,
+      0.7013491466779715
+    ],
+    "all_phase_reference_fields_exact_to_original_source": true,
+    "launch_observer_fields_exact_between_implementations": [
+      "trace_0001_ray_id",
+      "trace_0001_weight",
+      "trace_0001_launch_position_m",
+      "trace_0001_launch_momentum_kg_m_per_s",
+      "trace_0001_launch_energy_ev"
+    ]
+  },
+  "controls_and_geometry": {
+    "current_controls_and_independent_graph_before_after_exact": true,
+    "independent_hardware_controls_equal_to_old_normal_preview": true,
+    "derived_gain_serialization_policy": "New readout omits the two derived AC/Descan lower_coil_gain fields. Full actual scan fields are compared separately.",
+    "explicit_empty_vacuum_binding_differences": [
+      {
+        "path": ".nodes[1010].attributes._vacuum_max_step_tau",
+        "before": null,
+        "after": 0.02
+      },
+      {
+        "path": ".nodes[1010].attributes._vacuum_regions",
+        "before": null,
+        "after": {
+          "tuple": []
+        }
+      },
+      {
+        "path": ".nodes[1010].attributes._vacuum_seed",
+        "before": null,
+        "after": 914
+      }
+    ],
+    "full_actual_field_snapshot_and_dynamic_drives_equal_to_old_normal_preview": true,
+    "full_mechanical_geometry_equal_to_old_normal_preview": true,
+    "field_numerical_digest": "d8445e49015d1a956974b90fc51bffb7eade4123d6ac7d996d81177836862837"
+  },
+  "gun_exit_differences_new_minus_old_by_original_id": {
+    "x_m": {
+      "maximum_absolute_difference": 2.6228898741163004e-10,
+      "rms_difference": 3.7814794449146695e-11,
+      "mean_signed_difference": -1.6380632308618723e-13
+    },
+    "y_m": {
+      "maximum_absolute_difference": 1.9913168506292267e-10,
+      "rms_difference": 3.89572431667131e-11,
+      "mean_signed_difference": 1.1026367529529033e-13
+    },
+    "tx_rad": {
+      "maximum_absolute_difference": 7.691063855741746e-10,
+      "rms_difference": 1.51724792579329e-10,
+      "mean_signed_difference": -7.980853738939012e-13
+    },
+    "ty_rad": {
+      "maximum_absolute_difference": 1.0631639613023207e-09,
+      "rms_difference": 1.473437973509494e-10,
+      "mean_signed_difference": -4.2222817138561297e-13
+    },
+    "energy_offset_ev": {
+      "maximum_absolute_difference": 2.6426278054714203e-08,
+      "rms_difference": 8.818154456541988e-09,
+      "mean_signed_difference": -2.1327650756575167e-09
+    },
+    "flight_time_s": {
+      "maximum_absolute_difference": 5.665436161486975e-16,
+      "rms_difference": 1.6452117235083564e-16,
+      "mean_signed_difference": 1.492545222522734e-16
+    }
+  },
+  "gun_native_event_plane_differences": [
+    {
+      "key": "feg_dpa_aperture",
+      "z_mm": 24.0,
+      "differences": {
+        "x_m": {
+          "maximum_absolute_difference": 4.2665682294222245e-11,
+          "rms_difference": 8.130357108468516e-12,
+          "mean_signed_difference": 5.6481050352355846e-14
+        },
+        "y_m": {
+          "maximum_absolute_difference": 4.534960962535519e-11,
+          "rms_difference": 7.93556530051349e-12,
+          "mean_signed_difference": -1.4814690908391675e-14
+        },
+        "time_s": {
+          "maximum_absolute_difference": 4.568854699671071e-16,
+          "rms_difference": 1.2595073599672553e-16,
+          "mean_signed_difference": 1.1268180177573434e-16
+        }
+      }
+    },
+    {
+      "key": "feg_c1_aperture",
+      "z_mm": 445.0,
+      "differences": {
+        "x_m": {
+          "maximum_absolute_difference": 2.612409148767148e-10,
+          "rms_difference": 3.7478197410997084e-11,
+          "mean_signed_difference": -1.5986725457552839e-13
+        },
+        "y_m": {
+          "maximum_absolute_difference": 1.9764144685851217e-10,
+          "rms_difference": 3.862281889102459e-11,
+          "mean_signed_difference": 1.1218370421919905e-13
+        },
+        "time_s": {
+          "maximum_absolute_difference": 5.665436161486975e-16,
+          "rms_difference": 1.645211722275862e-16,
+          "mean_signed_difference": 1.4925452211696798e-16
+        }
+      }
+    },
+    {
+      "key": "feg_c1_aperture:exit",
+      "z_mm": 450.0,
+      "differences": {
+        "x_m": {
+          "maximum_absolute_difference": 2.6228898741163004e-10,
+          "rms_difference": 3.7814794449146695e-11,
+          "mean_signed_difference": -1.6380632308618723e-13
+        },
+        "y_m": {
+          "maximum_absolute_difference": 1.9913168506292267e-10,
+          "rms_difference": 3.89572431667131e-11,
+          "mean_signed_difference": 1.1026367529529033e-13
+        },
+        "time_s": {
+          "maximum_absolute_difference": 5.665436161486975e-16,
+          "rms_difference": 1.6452117235083564e-16,
+          "mean_signed_difference": 1.492545222522734e-16
+        }
+      }
+    }
+  ],
+  "gun_equal_time_history": {
+    "old_frames": 353,
+    "new_frames": 382,
+    "new_common_clock_strictly_increasing": true,
+    "scope": "Accepted temporal meshes differ. No interpolation of native histories was used to claim byte-identical trajectories."
+  },
+  "gun_exit_energy": {
+    "old_maximum_error_ev": 9.097857400774956e-08,
+    "new_maximum_error_ev": 8.079223334789276e-08,
+    "unchanged_budget_ev": 0.001,
+    "same_electrostatic_request": "e2e09c17b63548a07267cca80b85a3ed36e9d142222917a8e50bec19f23b1fd4"
+  },
+  "sample_same_normal_preview_field_differences_new_minus_old_by_original_id": {
+    "x": {
+      "maximum_absolute_difference": 1.212222223381179e-10,
+      "rms_difference": 2.0973888818961292e-11,
+      "mean_signed_difference": -2.9074159343078497e-15
+    },
+    "y": {
+      "maximum_absolute_difference": 1.1245914745339336e-10,
+      "rms_difference": 2.0887569399855196e-11,
+      "mean_signed_difference": 1.1721705880590923e-13
+    },
+    "tx": {
+      "maximum_absolute_difference": 1.2740041691520858e-10,
+      "rms_difference": 2.674522483549341e-11,
+      "mean_signed_difference": -1.953451467727609e-13
+    },
+    "ty": {
+      "maximum_absolute_difference": 1.7534225291655677e-10,
+      "rms_difference": 2.651185095245176e-11,
+      "mean_signed_difference": 9.0390733153676e-14
+    },
+    "kinetic_energy_ev": {
+      "maximum_absolute_difference": 2.6426278054714203e-08,
+      "rms_difference": 8.816384755061505e-09,
+      "mean_signed_difference": -2.1314008336048573e-09
+    },
+    "flight_time_s": {
+      "maximum_absolute_difference": 5.665435967099531e-16,
+      "rms_difference": 1.6452117705035243e-16,
+      "mean_signed_difference": 1.4925452995660455e-16
+    }
+  },
+  "sample_spot_defined_readouts": {
+    "old_normal_preview": {
+      "weighted_centroid_xy_m": [
+        -4.689947506040829e-07,
+        -1.8324010591538641e-06
+      ],
+      "weighted_rms_radius_about_centroid_m": 1.6055961890991166e-07
+    },
+    "new_normal_preview": {
+      "weighted_centroid_xy_m": [
+        -4.6899475351149885e-07,
+        -1.8324009419368053e-06
+      ],
+      "weighted_rms_radius_about_centroid_m": 1.605710928103479e-07
+    }
+  },
+  "original_gates_and_proposals": {
+    "counts": {
+      "traces": 1,
+      "surface_step_calls": 3801,
+      "attempts": 3984,
+      "cached_full_uses": 183,
+      "static_step_calls": 11769,
+      "static_step_full": 3801,
+      "static_step_half": 3984,
+      "static_step_fine": 3984,
+      "accepted_steps": 3801,
+      "gate_rejections": 183,
+      "failed_gate_transverse_momentum": 177,
+      "failed_gate_xyz_position": 44,
+      "failed_gate_xy_position": 1
+    },
+    "accepted_maximum_normalized_ratios": {
+      "total_momentum": 0.05381287967860124,
+      "xyz_position": 0.9853625661320873,
+      "transverse_momentum": 0.9975776344330164,
+      "xy_position": 0.47846207828454806
+    },
+    "all_accepted_original_four_gates_passed": true,
+    "all_proposals_respected_existing_caps": true,
+    "complete_attempt_records": true,
+    "timed_main_dg_seconds": 1253.9227998001625,
+    "copper_dispatch_used": 30721,
+    "copper_dispatch_total": 30847,
+    "copper_dispatch_fraction": 0.9959153240185431,
+    "dispatch_scope": "Main population and event-plane reintegration combined; generic and copper counters are overlapping labels, not additive."
+  },
+  "branches": [
+    {
+      "name": "incident",
+      "shape": [
+        2804,
+        1024
+      ],
+      "coordinate_dtype": "<f8",
+      "raw_npz_exact_fields": [
+        "z",
+        "kinetic_energy_ev",
+        "flight_time_s",
+        "alive",
+        "blocked_z",
+        "ray_weight",
+        "source_ray_id"
+      ],
+      "required_pre_stop_energy_clock_points": 2639872,
+      "finite_positive_energy_before_stops": true,
+      "finite_nondecreasing_clocks_before_stops": true,
+      "minimum_adjacent_clock_increment_s": 8.271806125530277e-25,
+      "energy_range_ev": [
+        300000.01509456336,
+        300000.70134947053
+      ],
+      "maximum_energy_minus_nominal_plus_launch_ev": 3.4942058846354485e-07,
+      "original_source_count": 1024,
+      "unique_source_ids": 1024,
+      "positive_final_survivors": 1024,
+      "source_weight_sum": 1.0,
+      "transmitted_source_fraction": 1.0,
+      "absorbed_source_fraction": 0.0,
+      "source_weight_ledger_residual": 0.0,
+      "physical_path_multiplier": 1.0,
+      "transmitted_current_a": 1e-05,
+      "absorbed_current_a": 0.0,
+      "physical_stops": {},
+      "retained_z_range_mm": [
+        0.0,
+        1599.2
+      ]
+    },
+    {
+      "name": "000",
+      "shape": [
+        2839,
+        1024
+      ],
+      "coordinate_dtype": "<f8",
+      "raw_npz_exact_fields": [
+        "z",
+        "kinetic_energy_ev",
+        "flight_time_s",
+        "alive",
+        "blocked_z",
+        "ray_weight",
+        "source_ray_id"
+      ],
+      "required_pre_stop_energy_clock_points": 2338816,
+      "finite_positive_energy_before_stops": true,
+      "finite_nondecreasing_clocks_before_stops": true,
+      "minimum_adjacent_clock_increment_s": 7.737022775294536e-17,
+      "energy_range_ev": [
+        300000.01509455475,
+        300000.70134947053
+      ],
+      "maximum_energy_minus_nominal_plus_launch_ev": 3.4942058846354485e-07,
+      "original_source_count": 1024,
+      "unique_source_ids": 1024,
+      "positive_final_survivors": 0,
+      "source_weight_sum": 1.0,
+      "transmitted_source_fraction": 0.0,
+      "absorbed_source_fraction": 1.0,
+      "source_weight_ledger_residual": 0.0,
+      "physical_path_multiplier": 1.0,
+      "transmitted_current_a": 0.0,
+      "absorbed_current_a": 1e-05,
+      "physical_stops": {
+        "flu_screen": {
+          "count": 1024,
+          "source_fraction": 1.0,
+          "current_a": 1e-05,
+          "z_mm": [
+            2714.15
+          ]
+        }
+      },
+      "retained_z_range_mm": [
+        1599.2,
+        2987.1499999999996
+      ]
+    }
+  ],
+  "observed_performance": {
+    "old_worker_seconds": 3210.5337728999984,
+    "new_worker_seconds": 1512.9215753000026,
+    "observed_worker_speed_ratio": 2.1220754765582415,
+    "old_accepted_steps": 3502,
+    "new_accepted_steps": 3801,
+    "old_gate_rejections": 5942,
+    "new_gate_rejections": 183,
+    "gate_rejection_reduction_fraction": 0.9692022887916526,
+    "old_main_dg_calls": 22390,
+    "new_main_dg_calls": 11769,
+    "old_timed_main_dg_seconds": 2958.065317100023,
+    "new_timed_main_dg_seconds": 1253.9227998001625,
+    "scope": "Observed complete single-run timings including cold compilation, not a repeated hardware benchmark or fixed-step bitwise trajectory comparison."
+  },
+  "original_and_current_saved_evidence_unmodified": true,
+  "qualification_limits": "Original four local error gates and exit-energy budget pass. Endpoint changes are measured, not certified against an invented cumulative tolerance or as source-sampling convergence. Optical reference omits specimen material, coherent and scan-image qualification. Normal High has different scan calibration and is excluded from the sample-plane comparison.",
+  "audit_elapsed_seconds": 7.869868399997358
+}

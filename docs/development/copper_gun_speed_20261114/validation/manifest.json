@@ -1,0 +1,439 @@
+{
+  "schema": "copper-gun-speed-evidence-v1",
+  "created_utc": "2026-11-14T17:55:32.664648+00:00",
+  "implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+  "files": [
+    {
+      "file": "implementation.json",
+      "source": "outputs\\copper-gun-speed-20261114\\final-optimized-source-freeze.json",
+      "bytes": 970,
+      "sha256": "2d41f735934f639c99e2ba247e9b2a91faa359f405cfdd69eaa2ac30bf223bc9"
+    },
+    {
+      "file": "regressions.xml",
+      "source": "outputs\\copper-gun-speed-20261114\\final-cache-safe-regressions.xml",
+      "bytes": 35247,
+      "sha256": "69a28f3ee34afdf274984164842ef6ecee202a8a82348188ad6f5f9aefec4a68"
+    },
+    {
+      "file": "input-boundary-review.json",
+      "source": "outputs\\copper-gun-speed-20261114\\independent-input-boundary-review-1dfa08d4.json",
+      "bytes": 12775,
+      "sha256": "5bea0514196d3d40678372a1dccbb9c9986848adcc8867be2d95dae4e9122764"
+    },
+    {
+      "file": "gun-mesh-review.json",
+      "source": "outputs\\copper-gun-speed-20261114\\closed-gun-mesh-readonly-review-f99a39bf.json",
+      "bytes": 10150,
+      "sha256": "c2fcda0d39ccb87e3d852168003e33999309927d7ba2327baa1bf10471f7bf95"
+    },
+    {
+      "file": "source-input-manifest.json",
+      "source": "outputs\\copper-gun-speed-20261114\\baseline-input\\manifest.json",
+      "bytes": 1792,
+      "sha256": "efe85a3ddb11d026ef67f70fcdf5259898923c703c7ff952735bfbc7ad3933ee"
+    },
+    {
+      "file": "original-source.npz",
+      "source": "outputs\\copper-gun-speed-20261114\\baseline-input\\independent-expected-emission.npz",
+      "bytes": 81987,
+      "sha256": "8516551a173faef0cc3b3d0a489ccfa2ce5919fc3ed33231e86658969f4db5c4"
+    },
+    {
+      "file": "source-distribution.json",
+      "source": "outputs\\copper-gun-speed-20261114\\baseline-input\\independent-emission-report.json",
+      "bytes": 661,
+      "sha256": "22da3fe9e8cc2b86d7446b8984c53a74b0b9301c0f7254e8ec97907a581280ed"
+    },
+    {
+      "file": "original-request.json",
+      "source": "outputs\\copper-gun-speed-20261114\\baseline-input\\request.json",
+      "bytes": 4219,
+      "sha256": "763e9d1e866be8a1361bd477f49ed985606b9ae9519fca7c50ed6c8c5c309407"
+    },
+    {
+      "file": "original-bounded-interruption.json",
+      "source": "outputs\\copper-gun-speed-20261114\\baseline-input\\bounded-interruption-receipt.json",
+      "bytes": 809,
+      "sha256": "873a2078d7f27d28811b3c2a57bb9cfb6357828ca6a264bb119272eb7a06d2a4"
+    },
+    {
+      "file": "matched64-independent-audit.json",
+      "source": "outputs\\copper-gun-speed-20261114\\baseline-vs-optimized-64\\independent-raw-audit.json",
+      "bytes": 3185,
+      "sha256": "5a651dbe4b192015d211d6acc20b9f486b892bc559555c598f366d91d0789545"
+    },
+    {
+      "file": "matched64-verification.json",
+      "source": "outputs\\copper-gun-speed-20261114\\baseline-vs-optimized-64\\verification.json",
+      "bytes": 94152,
+      "sha256": "c6c31aed48582d914d2c15ae8a663b1fc8f988bf5647a4f801e17966a67eafe8"
+    },
+    {
+      "file": "baseline-cprofile.txt",
+      "source": "outputs\\copper-gun-speed-20261114\\baseline-native-64\\preview\\cprofile.txt",
+      "bytes": 9150,
+      "sha256": "7f4c3580ded95a745242b7b729f99493b5e21a73775f83f98ba668c3895a7130"
+    },
+    {
+      "file": "optimized-cprofile.txt",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-native-64\\preview\\cprofile.txt",
+      "bytes": 8201,
+      "sha256": "d881f66a59f5a566c834283e2e81f51d3d5f8a4e0f3525815b7b2943aa3a20ca"
+    },
+    {
+      "file": "reference-package-preparation.json",
+      "source": "outputs\\copper-gun-speed-20261114\\baseline-package\\preparation.json",
+      "bytes": 1078,
+      "sha256": "fa79e1ce56c8b65635738dea4feb522ad7be009f4b3f0126ab15187c9d818814"
+    },
+    {
+      "file": "run_particle_validation.py.txt",
+      "source": "outputs\\copper-gun-speed-20261114\\run_particle_validation.py",
+      "bytes": 30679,
+      "sha256": "70e948522d8412b09776633a9ff4288c63886d59110dab47932c25b55170b220"
+    },
+    {
+      "file": "inspect_particle_profile.py.txt",
+      "source": "outputs\\copper-gun-speed-20261114\\inspect_particle_profile.py",
+      "bytes": 5882,
+      "sha256": "1d4097c6295b85b9d657161876cab73cd3e87fec272b291ee94d89b925933cde"
+    },
+    {
+      "file": "prepare_baseline.py.txt",
+      "source": "outputs\\copper-gun-speed-20261114\\prepare_baseline.py",
+      "bytes": 6168,
+      "sha256": "2ec3275944192cdc1037e21859d3f8040a3d03cf1553e9f9c7d32c68ad8b4795"
+    },
+    {
+      "file": "complete-plan.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\plan.json",
+      "bytes": 2971,
+      "sha256": "969a51b3f950002e517b88efc3f9bb96488a2a5b9734cf7f146d046227534921"
+    },
+    {
+      "file": "complete-launch-verification.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\source-initialization-0001.json",
+      "bytes": 1765,
+      "sha256": "482f1a97e9ceb0e3dcfbd472f03cfb432b28e7e044ffad539eeaade9eb6bb0d3"
+    },
+    {
+      "file": "preview-independent-raw-audit.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\independent-preview-raw-audit.json",
+      "bytes": 4533,
+      "sha256": "d6cc1ebd3d42eeb1ad17f3fe6385df4f1e4986d6826017a86f47fa3a9c0af9f3"
+    },
+    {
+      "file": "original-high-validation-failure.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\failure.json",
+      "bytes": 775,
+      "sha256": "f1fde91d7706c8380314c7a7ecfb5ed6307f0f80acb927e041f36001977ad825"
+    },
+    {
+      "file": "original-high-incident-audit.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\independent-complete-audit.json",
+      "bytes": 33035,
+      "sha256": "c3e75d807737a0979919746db1558e5b0facabb1f6c88643ffba76e01e528613"
+    },
+    {
+      "file": "complete_high_post.py.txt",
+      "source": "outputs\\copper-gun-speed-20261114\\complete_high_post.py",
+      "bytes": 23155,
+      "sha256": "8602f32a93707cfab3d4b9c2c64e8a0b019fbcde111a55f7dceb0394f1ca86fd"
+    },
+    {
+      "file": "high-recovery-preparation.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-preparation-2\\preparation.json",
+      "bytes": 2802,
+      "sha256": "af06b2fffbb75ba798821965c77541d04ec2c7582e2c73eeb07a66fec7211b52"
+    },
+    {
+      "file": "high-recovery-preparation-runtime.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-preparation-2\\runtime-comparison.json",
+      "bytes": 689,
+      "sha256": "58265f2356b6ae9b5457864e570e6f02db5ebb7cd164fb6abe906200f5f6272c"
+    },
+    {
+      "file": "independent-final-high-audit.json",
+      "source": "outputs\\copper-gun-speed-20261114\\independent-final-high-audit.json",
+      "bytes": 7545,
+      "sha256": "081cd820edb74fbc39978c89207067985f4c499bef490c3dfa8432df5966ecbf"
+    },
+    {
+      "file": "fixed_field_preview.py.txt",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed_field_preview.py",
+      "bytes": 31712,
+      "sha256": "630078de83453be796aa0e6e88b9af8850bd985c4eda8485be6fe58326013725"
+    },
+    {
+      "file": "independent-fixed-field-preview-audit.json",
+      "source": "outputs\\copper-gun-speed-20261114\\independent-fixed-field-preview-audit.json",
+      "bytes": 13065,
+      "sha256": "77972d75be5f087ee6b3e71959b23b583054febb8be288cdf8cfe28ccce68509"
+    },
+    {
+      "file": "preview-summary.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\summary.json",
+      "bytes": 3235,
+      "sha256": "78bd7c8c75a7b634816a645c4249a5b5509272a6b25b44553dba0efcc6a3a3b9"
+    },
+    {
+      "file": "preview-execution-receipt.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\execution-receipt.json",
+      "bytes": 316,
+      "sha256": "9fc0e59a792df990179251eb3d348c48e2e4ba6f91cd0a4af601864cb9217ba2"
+    },
+    {
+      "file": "preview-recoverable-seed.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\recoverable-seed.json",
+      "bytes": 400,
+      "sha256": "d995989d2112bb6833da035af93eb5c1d6f04c167b9d0257999c0743f35898c1"
+    },
+    {
+      "file": "preview-completed-source-verification.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\completed-source-verification.json",
+      "bytes": 1851,
+      "sha256": "eb640450bb894ad36ca0004803a4a28ca63f3e406e16e79beba6063b19d94c3c"
+    },
+    {
+      "file": "preview-gun-electrostatic-model-report.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\gun-electrostatic-model-report.json",
+      "bytes": 3294,
+      "sha256": "391364b52fd4ffc63f8e328bc887c86e53ad3f68e7423846370a27981ef5a25e"
+    },
+    {
+      "file": "preview-executed-energy-clock-loss-verification.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\executed-energy-clock-loss-verification.json",
+      "bytes": 2774,
+      "sha256": "397ea526869a794fa30436c510f94595815ccefe0940a8762cfef4bfbe0ad841"
+    },
+    {
+      "file": "preview-request.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\request.json",
+      "bytes": 925,
+      "sha256": "ca0b93640792b0eac0d1dba044ad957c8d211152497260e7a15e3aed19776b73"
+    },
+    {
+      "file": "preview-physical-controls-before.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\physical-controls-before.json",
+      "bytes": 45714,
+      "sha256": "6984baf33d918f545d43c495bbbb428d7262712f13ad46f076b569c3c06593e9"
+    },
+    {
+      "file": "preview-physical-controls-after.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\physical-controls-after.json",
+      "bytes": 45714,
+      "sha256": "6984baf33d918f545d43c495bbbb428d7262712f13ad46f076b569c3c06593e9"
+    },
+    {
+      "file": "original-high-execution-receipt.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\high-accuracy\\execution-receipt.json",
+      "bytes": 315,
+      "sha256": "e8348f3ac9a01d8bdc1383d80a20c74a6661132e6fef12b335ad0a246c7167de"
+    },
+    {
+      "file": "original-high-recoverable-seed.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\high-accuracy\\recoverable-seed.json",
+      "bytes": 406,
+      "sha256": "56223934a9a0c26e4ad14896f8a6e73fc69aeea1c1b3fa32a20dd67943c536f1"
+    },
+    {
+      "file": "original-high-request.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\high-accuracy\\request.json",
+      "bytes": 931,
+      "sha256": "f65b711d66b07c7e68c5c92179ab05200ef5c024ddf9756452c7ce7c679e0008"
+    },
+    {
+      "file": "original-high-physical-controls-before.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\high-accuracy\\physical-controls-before.json",
+      "bytes": 45714,
+      "sha256": "6984baf33d918f545d43c495bbbb428d7262712f13ad46f076b569c3c06593e9"
+    },
+    {
+      "file": "original-high-physical-controls-after.json",
+      "source": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\high-accuracy\\physical-controls-after.json",
+      "bytes": 45744,
+      "sha256": "10442834f42b8e4677b2579cf74a1e2f6e6996a84cbf1ab804b373c80f549d79"
+    },
+    {
+      "file": "high-recovery-summary.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\summary.json",
+      "bytes": 2447,
+      "sha256": "3c8e00ba211be32232d36c52e2262cf0d3e750cc9b25e9b8ee3aba7e09180ab8"
+    },
+    {
+      "file": "high-recovery-formal-archive-receipt.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\formal-archive-receipt.json",
+      "bytes": 425,
+      "sha256": "d84072254acda216d68fc7913f1745e69f4bb6ec575c318bbe4eebd8dbd90e9d"
+    },
+    {
+      "file": "high-recovery-preparation.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\preparation.json",
+      "bytes": 2802,
+      "sha256": "af06b2fffbb75ba798821965c77541d04ec2c7582e2c73eeb07a66fec7211b52"
+    },
+    {
+      "file": "high-recovery-runtime-comparison.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\runtime-comparison.json",
+      "bytes": 689,
+      "sha256": "58265f2356b6ae9b5457864e570e6f02db5ebb7cd164fb6abe906200f5f6272c"
+    },
+    {
+      "file": "high-recovery-completed-source-verification.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\completed-source-verification.json",
+      "bytes": 1851,
+      "sha256": "eb640450bb894ad36ca0004803a4a28ca63f3e406e16e79beba6063b19d94c3c"
+    },
+    {
+      "file": "high-recovery-gun-electrostatic-model-report.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\gun-electrostatic-model-report.json",
+      "bytes": 3294,
+      "sha256": "51973d4ce3f574c3fd3753a7c241a1b17a05e157a31d93d19e9106be7debb631"
+    },
+    {
+      "file": "high-recovery-executed-energy-clock-loss-verification.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\executed-energy-clock-loss-verification.json",
+      "bytes": 2763,
+      "sha256": "163c8424320e8f65d6ab16de8804c73d11c400a39682cdb7858e34edfdb0e5fb"
+    },
+    {
+      "file": "high-recovery-independent-controls-before.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\independent-controls-before.json",
+      "bytes": 45651,
+      "sha256": "2de96ddec76bfb2833bcdf271dbdee6f347dd3c3c5edfce07f92afd2d29e6b40"
+    },
+    {
+      "file": "high-recovery-independent-controls-after.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\independent-controls-after.json",
+      "bytes": 45651,
+      "sha256": "2de96ddec76bfb2833bcdf271dbdee6f347dd3c3c5edfce07f92afd2d29e6b40"
+    },
+    {
+      "file": "high-recovery-derived-before.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\derived-before.json",
+      "bytes": 2442,
+      "sha256": "7cc7fd1b684ea52203b6fbe96ca939e275d0974af89f511eb30c86e64993ff60"
+    },
+    {
+      "file": "high-recovery-derived-after.json",
+      "source": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\derived-after.json",
+      "bytes": 46751,
+      "sha256": "8da50d4c2e2aec403054d96fc73846cd3a75bda798ce54ffb6d77e34adb51103"
+    },
+    {
+      "file": "fixed-field-preview-summary.json",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\summary.json",
+      "bytes": 4948,
+      "sha256": "b79b3350e47252aed9e04f22a05ed4c192f309d62160152095d45a3fedfd37b9"
+    },
+    {
+      "file": "fixed-field-preview-execution-receipt.json",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\execution-receipt.json",
+      "bytes": 1466,
+      "sha256": "275adb7fde2c7d9fc6f65222c8fa451b204b5f7fe0543b552d642132ab270b84"
+    },
+    {
+      "file": "fixed-field-preview-preparation.json",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\preparation.json",
+      "bytes": 2964,
+      "sha256": "4e889e9e2c6c353ee904982ee5ff5e1b457cfc9acdc4686956251b411f8bd8cd"
+    },
+    {
+      "file": "fixed-field-preview-formal-archive-receipt.json",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\formal-archive-receipt.json",
+      "bytes": 406,
+      "sha256": "dcd8ebc584bf587a8fa04acdeb87692cad492451e66bca39c81473f97126747f"
+    },
+    {
+      "file": "fixed-field-preview-actual-high-field-witness.json",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\actual-high-field-witness.json",
+      "bytes": 122303,
+      "sha256": "000c1999c45ec76f10c74d237513537791fd9b45df29566fdfed37f7137d93d0"
+    },
+    {
+      "file": "fixed-field-preview-actual-preview-field-witness.json",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\actual-preview-field-witness.json",
+      "bytes": 122303,
+      "sha256": "000c1999c45ec76f10c74d237513537791fd9b45df29566fdfed37f7137d93d0"
+    },
+    {
+      "file": "fixed-field-preview-completed-source-verification.json",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\completed-source-verification.json",
+      "bytes": 1851,
+      "sha256": "eb640450bb894ad36ca0004803a4a28ca63f3e406e16e79beba6063b19d94c3c"
+    },
+    {
+      "file": "fixed-field-preview-executed-energy-clock-loss-verification.json",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\executed-energy-clock-loss-verification.json",
+      "bytes": 2775,
+      "sha256": "3543d5f32498ea0d82e493077e2093f858f75035e7808dfe2bb21248750ae9bd"
+    },
+    {
+      "file": "fixed-field-preview-gun-electrostatic-model-report.json",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\gun-electrostatic-model-report.json",
+      "bytes": 3294,
+      "sha256": "51973d4ce3f574c3fd3753a7c241a1b17a05e157a31d93d19e9106be7debb631"
+    },
+    {
+      "file": "fixed-field-preview-integration-call-001.json",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\integration-call-001.json",
+      "bytes": 510,
+      "sha256": "8b0871d59196a6aff4a8275e9bf22abd1e144df9e9e1a42d2315627743cb645a"
+    },
+    {
+      "file": "fixed-field-preview-integration-call-002.json",
+      "source": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\integration-call-002.json",
+      "bytes": 520,
+      "sha256": "8f8f1f0f58f9c7574e7257887a2eebafb3d1250a93e2e39eab6cdfbc3c25e157"
+    },
+    {
+      "file": "original-input.json.gz",
+      "sha256": "7ac41cad5c22fe49151b3b3d31678e5fc46487f5cd977453ba1a02e4f762a4c6",
+      "uncompressed_sha256": "a4d6e96ca7a91ff1f116f5205c8daf959c9706e396f3a0fafcfb226017372eaa",
+      "uncompressed_bytes": 2185198
+    },
+    {
+      "file": "reference-package.zip",
+      "bytes": 3639815,
+      "sha256": "d38763f28c2bbc30c64874f9265b4bdc4ce7753dcf4355e86b9ffb4104e6ab6f",
+      "files": 779,
+      "scope": "Instrumented original Python package, without generated native/bytecode caches"
+    }
+  ],
+  "raw_arrays": [
+    {
+      "file": "outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\preview\\executed-energy-clock-loss-arrays.npz",
+      "bytes": 49247668,
+      "sha256": "32a9aba70c7b9823885215e31e2aea64e0921e80e6779c232397445d746ecc55",
+      "retained_locally": true
+    },
+    {
+      "file": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\executed-energy-clock-loss-arrays.npz",
+      "bytes": 398403179,
+      "sha256": "edf9b01e01f222314cf5343f07c9851c75e9a857f3169964d2d2641d0a043958",
+      "retained_locally": true
+    },
+    {
+      "file": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\executed-energy-clock-loss-arrays.npz",
+      "bytes": 49261770,
+      "sha256": "00ddc962f63f190f3de3c9a083037e84ab18900861c74b9daf7e19b0dc392422",
+      "retained_locally": true
+    },
+    {
+      "file": "outputs\\copper-gun-speed-20261114\\high-post-recovered\\high-post-recovered.temsim",
+      "bytes": 2924108230,
+      "sha256": "fd408971df86d07edb491021f348cdd92e9a4e9dea70f368a8d25a30b2a42b87",
+      "retained_locally": true,
+      "scope": "Complete formal native result archive"
+    },
+    {
+      "file": "outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\fixed-high-field-preview.temsim",
+      "bytes": 386284201,
+      "sha256": "ad19f534ea4d8b3a51b132f9f7dcd1cc4f42b88406f28805556b1ba7b3cdee2c",
+      "retained_locally": true,
+      "scope": "Complete formal native result archive"
+    }
+  ],
+  "scope": "Completed optical-reference classical Preview and High accuracy; no material or wave propagation"
+}

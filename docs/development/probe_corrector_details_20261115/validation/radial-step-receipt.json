@@ -1,0 +1,2328 @@
+{
+  "scope": "Two-turn one-coil exact CAD and STEP only; no magnetic/source/particle/coherent calculation",
+  "records": [
+    {
+      "region": "winding_turn_coil_1_000001",
+      "validation": {
+        "valid": true,
+        "solid_count": 1,
+        "volume_mm3": 1.8700455486648646,
+        "bounds_mm": [
+          25.03084327389899,
+          -4.564156626101008,
+          845.3843432738989,
+          25.28315672610101,
+          4.564156726101008,
+          856.3156566261009
+        ]
+      },
+      "volume_mm3": 1.8700455486648646
+    },
+    {
+      "region": "winding_turn_coil_1_000002",
+      "validation": {
+        "valid": true,
+        "solid_count": 1,
+        "volume_mm3": 1.8700455486648646,
+        "bounds_mm": [
+          27.02184327389899,
+          -4.564156626101008,
+          845.3843432738989,
+          27.27415672610101,
+          4.564156726101008,
+          856.3156566261009
+        ]
+      },
+      "volume_mm3": 1.8700455486648646
+    },
+    {
+      "region": "winding_insulation_coil_1",
+      "validation": {
+        "valid": true,
+        "solid_count": 1,
+        "volume_mm3": 652.1519981026673,
+        "bounds_mm": [
+          22.71,
+          -6.12,
+          844.5149999999999,
+          29.595,
+          6.12,
+          857.1849999999998
+        ]
+      },
+      "volume_mm3": 652.1519981026673
+    }
+  ],
+  "total_volume_mm3": 655.892089199997,
+  "expected_bulk_volume_mm3": 655.8920892000001,
+  "metal_volume_mm3": 3.740091097329729,
+  "expected_analytic_metal_volume_mm3": 3.740091097329728,
+  "step_report": {
+    "schema": "temsim-analytic-step-v1",
+    "cadquery_version": "2.6.1",
+    "units": "mm",
+    "status": "passed",
+    "geometry": "Analytic B-rep from canonical SolidSpec; no triangle-to-STEP conversion",
+    "scope": "Geometric validity and STEP metadata/volume/bounds round-trip; not OEM dimensions or manufacturing qualification",
+    "catalog_sha256": "06509cdf017ee8dfe0a1ffbc5d2d0dd9752ea9b25ab0691673beb4f80aebf91c",
+    "modules": [
+      {
+        "key": "bounded_radial_probe",
+        "name": "Bounded radial probe winding",
+        "solid_count": 3,
+        "units": [
+          {
+            "key": "probe_hp1_hexapole",
+            "name": "One radial coil",
+            "solid_ids": [
+              "probe_hp1_hexapole/winding_turn_coil_1_000001",
+              "probe_hp1_hexapole/winding_turn_coil_1_000002",
+              "probe_hp1_hexapole/winding_insulation_coil_1"
+            ]
+          }
+        ],
+        "solids": [
+          {
+            "key": "probe_hp1_hexapole",
+            "region": "winding_turn_coil_1_000001",
+            "material": "copper_winding",
+            "shape": {
+              "kind": "transform",
+              "shape": {
+                "kind": "transform",
+                "shape": {
+                  "kind": "union",
+                  "shapes": [
+                    {
+                      "kind": "transform",
+                      "shape": {
+                        "kind": "revolve",
+                        "section_zr_mm": [
+                          [
+                            -3.4425,
+                            0.0
+                          ],
+                          [
+                            -3.4425,
+                            0.126156626101008
+                          ],
+                          [
+                            3.4425,
+                            0.126156626101008
+                          ],
+                          [
+                            3.4425,
+                            0.0
+                          ]
+                        ]
+                      },
+                      "rotation": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ],
+                        [
+                          0.0,
+                          -1.0,
+                          0.0
+                        ]
+                      ],
+                      "offset_mm": [
+                        25.157,
+                        0.0,
+                        -5.3395
+                      ]
+                    },
+                    {
+                      "kind": "transform",
+                      "shape": {
+                        "kind": "revolve",
+                        "section_zr_mm": [
+                          [
+                            -4.344,
+                            0.0
+                          ],
+                          [
+                            -4.344,
+                            0.126156626101008
+                          ],
+                          [
+                            4.344,
+                            0.126156626101008
+                          ],
+                          [
+                            4.344,
+                            0.0
+                          ]
+                        ]
+                      },
+                      "rotation": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          1.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ],
+                      "offset_mm": [
+                        25.157,
+                        -4.438,
+                        0.0
+                      ]
+                    },
+                    {
+                      "kind": "transform",
+                      "shape": {
+                        "kind": "revolve",
+                        "section_zr_mm": [
+                          [
+                            -3.4425,
+                            0.0
+                          ],
+                          [
+                            -3.4425,
+                            0.126156626101008
+                          ],
+                          [
+                            3.4425,
+                            0.126156626101008
+                          ],
+                          [
+                            3.4425,
+                            0.0
+                          ]
+                        ]
+                      },
+                      "rotation": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ],
+                        [
+                          0.0,
+                          -1.0,
+                          0.0
+                        ]
+                      ],
+                      "offset_mm": [
+                        25.157,
+                        0.0,
+                        5.3395
+                      ]
+                    },
+                    {
+                      "kind": "transform",
+                      "shape": {
+                        "kind": "revolve",
+                        "section_zr_mm": [
+                          [
+                            -4.344,
+                            0.0
+                          ],
+                          [
+                            -4.344,
+                            0.126156626101008
+                          ],
+                          [
+                            4.344,
+                            0.126156626101008
+                          ],
+                          [
+                            4.344,
+                            0.0
+                          ]
+                        ]
+                      },
+                      "rotation": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          1.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ],
+                      "offset_mm": [
+                        25.157,
+                        4.438,
+                        0.0
+                      ]
+                    },
+                    {
+                      "kind": "difference",
+                      "base": {
+                        "kind": "transform",
+                        "shape": {
+                          "kind": "torus",
+                          "major_radius_mm": 0.9954999999999998,
+                          "minor_radius_mm": 0.126156626101008,
+                          "center_z_mm": 0.0
+                        },
+                        "rotation": [
+                          [
+                            0.0,
+                            0.0,
+                            1.0
+                          ],
+                          [
+                            0.0,
+                            1.0,
+                            0.0
+                          ],
+                          [
+                            -1.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "offset_mm": [
+                          25.157,
+                          -3.4425,
+                          -4.344
+                        ]
+                      },
+                      "tools": [
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            25.157,
+                            -1.199186747797984,
+                            -4.344
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            4.486626504404032,
+                            8.973253008808063
+                          ]
+                        },
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            25.157,
+                            -3.4425,
+                            -2.1006867477979845
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            8.973253008808063,
+                            4.486626504404032
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "difference",
+                      "base": {
+                        "kind": "transform",
+                        "shape": {
+                          "kind": "torus",
+                          "major_radius_mm": 0.9954999999999998,
+                          "minor_radius_mm": 0.126156626101008,
+                          "center_z_mm": 0.0
+                        },
+                        "rotation": [
+                          [
+                            0.0,
+                            0.0,
+                            1.0
+                          ],
+                          [
+                            0.0,
+                            1.0,
+                            0.0
+                          ],
+                          [
+                            -1.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "offset_mm": [
+                          25.157,
+                          -3.4425,
+                          4.344
+                        ]
+                      },
+                      "tools": [
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            25.157,
+                            -1.199186747797984,
+                            4.344
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            4.486626504404032,
+                            8.973253008808063
+                          ]
+                        },
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            25.157,
+                            -3.4425,
+                            2.1006867477979845
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            8.973253008808063,
+                            4.486626504404032
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "difference",
+                      "base": {
+                        "kind": "transform",
+                        "shape": {
+                          "kind": "torus",
+                          "major_radius_mm": 0.9954999999999998,
+                          "minor_radius_mm": 0.126156626101008,
+                          "center_z_mm": 0.0
+                        },
+                        "rotation": [
+                          [
+                            0.0,
+                            0.0,
+                            1.0
+                          ],
+                          [
+                            0.0,
+                            1.0,
+                            0.0
+                          ],
+                          [
+                            -1.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "offset_mm": [
+                          25.157,
+                          3.4425,
+                          -4.344
+                        ]
+                      },
+                      "tools": [
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            25.157,
+                            1.199186747797984,
+                            -4.344
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            4.486626504404032,
+                            8.973253008808063
+                          ]
+                        },
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            25.157,
+                            3.4425,
+                            -2.1006867477979845
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            8.973253008808063,
+                            4.486626504404032
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "difference",
+                      "base": {
+                        "kind": "transform",
+                        "shape": {
+                          "kind": "torus",
+                          "major_radius_mm": 0.9954999999999998,
+                          "minor_radius_mm": 0.126156626101008,
+                          "center_z_mm": 0.0
+                        },
+                        "rotation": [
+                          [
+                            0.0,
+                            0.0,
+                            1.0
+                          ],
+                          [
+                            0.0,
+                            1.0,
+                            0.0
+                          ],
+                          [
+                            -1.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "offset_mm": [
+                          25.157,
+                          3.4425,
+                          4.344
+                        ]
+                      },
+                      "tools": [
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            25.157,
+                            1.199186747797984,
+                            4.344
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            4.486626504404032,
+                            8.973253008808063
+                          ]
+                        },
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            25.157,
+                            3.4425,
+                            2.1006867477979845
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            8.973253008808063,
+                            4.486626504404032
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "rotation": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "offset_mm": [
+                  0.0,
+                  0.0,
+                  850.8499999999999
+                ]
+              },
+              "rotation": [
+                [
+                  1.0,
+                  -0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "offset_mm": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "evidence": [],
+            "status": "configured_geometry",
+            "note": "Explicit user-sized radial-axis rounded rectangular round-wire CAD. Remaining original winding-frame volume is insulation. Original pole/core, winding envelope and multipole strength are unchanged; no electrical current or magnetic calibration is inferred. Not OEM winding data.",
+            "parameters": {
+              "winding_turn_index": 1,
+              "coil_index": 1,
+              "wire_cross_section_mm2": 0.05,
+              "wire_diameter_mm": 0.252313252202016,
+              "coil_axis": "radial",
+              "coil_azimuth_deg": 0,
+              "passive_geometry_only": true,
+              "optical_field_unchanged": true
+            },
+            "color": [
+              0.83,
+              0.43,
+              0.2,
+              1.0
+            ]
+          },
+          {
+            "key": "probe_hp1_hexapole",
+            "region": "winding_turn_coil_1_000002",
+            "material": "copper_winding",
+            "shape": {
+              "kind": "transform",
+              "shape": {
+                "kind": "transform",
+                "shape": {
+                  "kind": "union",
+                  "shapes": [
+                    {
+                      "kind": "transform",
+                      "shape": {
+                        "kind": "revolve",
+                        "section_zr_mm": [
+                          [
+                            -3.4425,
+                            0.0
+                          ],
+                          [
+                            -3.4425,
+                            0.126156626101008
+                          ],
+                          [
+                            3.4425,
+                            0.126156626101008
+                          ],
+                          [
+                            3.4425,
+                            0.0
+                          ]
+                        ]
+                      },
+                      "rotation": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ],
+                        [
+                          0.0,
+                          -1.0,
+                          0.0
+                        ]
+                      ],
+                      "offset_mm": [
+                        27.148,
+                        0.0,
+                        -5.3395
+                      ]
+                    },
+                    {
+                      "kind": "transform",
+                      "shape": {
+                        "kind": "revolve",
+                        "section_zr_mm": [
+                          [
+                            -4.344,
+                            0.0
+                          ],
+                          [
+                            -4.344,
+                            0.126156626101008
+                          ],
+                          [
+                            4.344,
+                            0.126156626101008
+                          ],
+                          [
+                            4.344,
+                            0.0
+                          ]
+                        ]
+                      },
+                      "rotation": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          1.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ],
+                      "offset_mm": [
+                        27.148,
+                        -4.438,
+                        0.0
+                      ]
+                    },
+                    {
+                      "kind": "transform",
+                      "shape": {
+                        "kind": "revolve",
+                        "section_zr_mm": [
+                          [
+                            -3.4425,
+                            0.0
+                          ],
+                          [
+                            -3.4425,
+                            0.126156626101008
+                          ],
+                          [
+                            3.4425,
+                            0.126156626101008
+                          ],
+                          [
+                            3.4425,
+                            0.0
+                          ]
+                        ]
+                      },
+                      "rotation": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ],
+                        [
+                          0.0,
+                          -1.0,
+                          0.0
+                        ]
+                      ],
+                      "offset_mm": [
+                        27.148,
+                        0.0,
+                        5.3395
+                      ]
+                    },
+                    {
+                      "kind": "transform",
+                      "shape": {
+                        "kind": "revolve",
+                        "section_zr_mm": [
+                          [
+                            -4.344,
+                            0.0
+                          ],
+                          [
+                            -4.344,
+                            0.126156626101008
+                          ],
+                          [
+                            4.344,
+                            0.126156626101008
+                          ],
+                          [
+                            4.344,
+                            0.0
+                          ]
+                        ]
+                      },
+                      "rotation": [
+                        [
+                          1.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          1.0,
+                          0.0
+                        ],
+                        [
+                          0.0,
+                          0.0,
+                          1.0
+                        ]
+                      ],
+                      "offset_mm": [
+                        27.148,
+                        4.438,
+                        0.0
+                      ]
+                    },
+                    {
+                      "kind": "difference",
+                      "base": {
+                        "kind": "transform",
+                        "shape": {
+                          "kind": "torus",
+                          "major_radius_mm": 0.9954999999999998,
+                          "minor_radius_mm": 0.126156626101008,
+                          "center_z_mm": 0.0
+                        },
+                        "rotation": [
+                          [
+                            0.0,
+                            0.0,
+                            1.0
+                          ],
+                          [
+                            0.0,
+                            1.0,
+                            0.0
+                          ],
+                          [
+                            -1.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "offset_mm": [
+                          27.148,
+                          -3.4425,
+                          -4.344
+                        ]
+                      },
+                      "tools": [
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            27.148,
+                            -1.199186747797984,
+                            -4.344
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            4.486626504404032,
+                            8.973253008808063
+                          ]
+                        },
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            27.148,
+                            -3.4425,
+                            -2.1006867477979845
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            8.973253008808063,
+                            4.486626504404032
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "difference",
+                      "base": {
+                        "kind": "transform",
+                        "shape": {
+                          "kind": "torus",
+                          "major_radius_mm": 0.9954999999999998,
+                          "minor_radius_mm": 0.126156626101008,
+                          "center_z_mm": 0.0
+                        },
+                        "rotation": [
+                          [
+                            0.0,
+                            0.0,
+                            1.0
+                          ],
+                          [
+                            0.0,
+                            1.0,
+                            0.0
+                          ],
+                          [
+                            -1.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "offset_mm": [
+                          27.148,
+                          -3.4425,
+                          4.344
+                        ]
+                      },
+                      "tools": [
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            27.148,
+                            -1.199186747797984,
+                            4.344
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            4.486626504404032,
+                            8.973253008808063
+                          ]
+                        },
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            27.148,
+                            -3.4425,
+                            2.1006867477979845
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            8.973253008808063,
+                            4.486626504404032
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "difference",
+                      "base": {
+                        "kind": "transform",
+                        "shape": {
+                          "kind": "torus",
+                          "major_radius_mm": 0.9954999999999998,
+                          "minor_radius_mm": 0.126156626101008,
+                          "center_z_mm": 0.0
+                        },
+                        "rotation": [
+                          [
+                            0.0,
+                            0.0,
+                            1.0
+                          ],
+                          [
+                            0.0,
+                            1.0,
+                            0.0
+                          ],
+                          [
+                            -1.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "offset_mm": [
+                          27.148,
+                          3.4425,
+                          -4.344
+                        ]
+                      },
+                      "tools": [
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            27.148,
+                            1.199186747797984,
+                            -4.344
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            4.486626504404032,
+                            8.973253008808063
+                          ]
+                        },
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            27.148,
+                            3.4425,
+                            -2.1006867477979845
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            8.973253008808063,
+                            4.486626504404032
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "difference",
+                      "base": {
+                        "kind": "transform",
+                        "shape": {
+                          "kind": "torus",
+                          "major_radius_mm": 0.9954999999999998,
+                          "minor_radius_mm": 0.126156626101008,
+                          "center_z_mm": 0.0
+                        },
+                        "rotation": [
+                          [
+                            0.0,
+                            0.0,
+                            1.0
+                          ],
+                          [
+                            0.0,
+                            1.0,
+                            0.0
+                          ],
+                          [
+                            -1.0,
+                            0.0,
+                            0.0
+                          ]
+                        ],
+                        "offset_mm": [
+                          27.148,
+                          3.4425,
+                          4.344
+                        ]
+                      },
+                      "tools": [
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            27.148,
+                            1.199186747797984,
+                            4.344
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            4.486626504404032,
+                            8.973253008808063
+                          ]
+                        },
+                        {
+                          "kind": "box",
+                          "center_mm": [
+                            27.148,
+                            3.4425,
+                            2.1006867477979845
+                          ],
+                          "size_mm": [
+                            4.486626504404032,
+                            8.973253008808063,
+                            4.486626504404032
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "rotation": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ],
+                "offset_mm": [
+                  0.0,
+                  0.0,
+                  850.8499999999999
+                ]
+              },
+              "rotation": [
+                [
+                  1.0,
+                  -0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "offset_mm": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "evidence": [],
+            "status": "configured_geometry",
+            "note": "Explicit user-sized radial-axis rounded rectangular round-wire CAD. Remaining original winding-frame volume is insulation. Original pole/core, winding envelope and multipole strength are unchanged; no electrical current or magnetic calibration is inferred. Not OEM winding data.",
+            "parameters": {
+              "winding_turn_index": 2,
+              "coil_index": 1,
+              "wire_cross_section_mm2": 0.05,
+              "wire_diameter_mm": 0.252313252202016,
+              "coil_axis": "radial",
+              "coil_azimuth_deg": 0,
+              "passive_geometry_only": true,
+              "optical_field_unchanged": true
+            },
+            "color": [
+              0.83,
+              0.43,
+              0.2,
+              1.0
+            ]
+          },
+          {
+            "key": "probe_hp1_hexapole",
+            "region": "winding_insulation_coil_1",
+            "material": "insulator",
+            "shape": {
+              "kind": "transform",
+              "shape": {
+                "kind": "difference",
+                "base": {
+                  "kind": "difference",
+                  "base": {
+                    "kind": "box",
+                    "center_mm": [
+                      26.1525,
+                      0.0,
+                      850.8499999999999
+                    ],
+                    "size_mm": [
+                      6.884999999999998,
+                      12.24,
+                      12.67
+                    ]
+                  },
+                  "tools": [
+                    {
+                      "kind": "box",
+                      "center_mm": [
+                        26.1525,
+                        0.0,
+                        850.8499999999999
+                      ],
+                      "size_mm": [
+                        59.19,
+                        6.885,
+                        8.688
+                      ]
+                    }
+                  ]
+                },
+                "tools": [
+                  {
+                    "kind": "transform",
+                    "shape": {
+                      "kind": "union",
+                      "shapes": [
+                        {
+                          "kind": "transform",
+                          "shape": {
+                            "kind": "revolve",
+                            "section_zr_mm": [
+                              [
+                                -3.4425,
+                                0.0
+                              ],
+                              [
+                                -3.4425,
+                                0.126156626101008
+                              ],
+                              [
+                                3.4425,
+                                0.126156626101008
+                              ],
+                              [
+                                3.4425,
+                                0.0
+                              ]
+                            ]
+                          },
+                          "rotation": [
+                            [
+                              1.0,
+                              0.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              0.0,
+                              1.0
+                            ],
+                            [
+                              0.0,
+                              -1.0,
+                              0.0
+                            ]
+                          ],
+                          "offset_mm": [
+                            25.157,
+                            0.0,
+                            -5.3395
+                          ]
+                        },
+                        {
+                          "kind": "transform",
+                          "shape": {
+                            "kind": "revolve",
+                            "section_zr_mm": [
+                              [
+                                -4.344,
+                                0.0
+                              ],
+                              [
+                                -4.344,
+                                0.126156626101008
+                              ],
+                              [
+                                4.344,
+                                0.126156626101008
+                              ],
+                              [
+                                4.344,
+                                0.0
+                              ]
+                            ]
+                          },
+                          "rotation": [
+                            [
+                              1.0,
+                              0.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              1.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              0.0,
+                              1.0
+                            ]
+                          ],
+                          "offset_mm": [
+                            25.157,
+                            -4.438,
+                            0.0
+                          ]
+                        },
+                        {
+                          "kind": "transform",
+                          "shape": {
+                            "kind": "revolve",
+                            "section_zr_mm": [
+                              [
+                                -3.4425,
+                                0.0
+                              ],
+                              [
+                                -3.4425,
+                                0.126156626101008
+                              ],
+                              [
+                                3.4425,
+                                0.126156626101008
+                              ],
+                              [
+                                3.4425,
+                                0.0
+                              ]
+                            ]
+                          },
+                          "rotation": [
+                            [
+                              1.0,
+                              0.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              0.0,
+                              1.0
+                            ],
+                            [
+                              0.0,
+                              -1.0,
+                              0.0
+                            ]
+                          ],
+                          "offset_mm": [
+                            25.157,
+                            0.0,
+                            5.3395
+                          ]
+                        },
+                        {
+                          "kind": "transform",
+                          "shape": {
+                            "kind": "revolve",
+                            "section_zr_mm": [
+                              [
+                                -4.344,
+                                0.0
+                              ],
+                              [
+                                -4.344,
+                                0.126156626101008
+                              ],
+                              [
+                                4.344,
+                                0.126156626101008
+                              ],
+                              [
+                                4.344,
+                                0.0
+                              ]
+                            ]
+                          },
+                          "rotation": [
+                            [
+                              1.0,
+                              0.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              1.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              0.0,
+                              1.0
+                            ]
+                          ],
+                          "offset_mm": [
+                            25.157,
+                            4.438,
+                            0.0
+                          ]
+                        },
+                        {
+                          "kind": "difference",
+                          "base": {
+                            "kind": "transform",
+                            "shape": {
+                              "kind": "torus",
+                              "major_radius_mm": 0.9954999999999998,
+                              "minor_radius_mm": 0.126156626101008,
+                              "center_z_mm": 0.0
+                            },
+                            "rotation": [
+                              [
+                                0.0,
+                                0.0,
+                                1.0
+                              ],
+                              [
+                                0.0,
+                                1.0,
+                                0.0
+                              ],
+                              [
+                                -1.0,
+                                0.0,
+                                0.0
+                              ]
+                            ],
+                            "offset_mm": [
+                              25.157,
+                              -3.4425,
+                              -4.344
+                            ]
+                          },
+                          "tools": [
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                25.157,
+                                -1.199186747797984,
+                                -4.344
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                4.486626504404032,
+                                8.973253008808063
+                              ]
+                            },
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                25.157,
+                                -3.4425,
+                                -2.1006867477979845
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                8.973253008808063,
+                                4.486626504404032
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "kind": "difference",
+                          "base": {
+                            "kind": "transform",
+                            "shape": {
+                              "kind": "torus",
+                              "major_radius_mm": 0.9954999999999998,
+                              "minor_radius_mm": 0.126156626101008,
+                              "center_z_mm": 0.0
+                            },
+                            "rotation": [
+                              [
+                                0.0,
+                                0.0,
+                                1.0
+                              ],
+                              [
+                                0.0,
+                                1.0,
+                                0.0
+                              ],
+                              [
+                                -1.0,
+                                0.0,
+                                0.0
+                              ]
+                            ],
+                            "offset_mm": [
+                              25.157,
+                              -3.4425,
+                              4.344
+                            ]
+                          },
+                          "tools": [
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                25.157,
+                                -1.199186747797984,
+                                4.344
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                4.486626504404032,
+                                8.973253008808063
+                              ]
+                            },
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                25.157,
+                                -3.4425,
+                                2.1006867477979845
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                8.973253008808063,
+                                4.486626504404032
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "kind": "difference",
+                          "base": {
+                            "kind": "transform",
+                            "shape": {
+                              "kind": "torus",
+                              "major_radius_mm": 0.9954999999999998,
+                              "minor_radius_mm": 0.126156626101008,
+                              "center_z_mm": 0.0
+                            },
+                            "rotation": [
+                              [
+                                0.0,
+                                0.0,
+                                1.0
+                              ],
+                              [
+                                0.0,
+                                1.0,
+                                0.0
+                              ],
+                              [
+                                -1.0,
+                                0.0,
+                                0.0
+                              ]
+                            ],
+                            "offset_mm": [
+                              25.157,
+                              3.4425,
+                              -4.344
+                            ]
+                          },
+                          "tools": [
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                25.157,
+                                1.199186747797984,
+                                -4.344
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                4.486626504404032,
+                                8.973253008808063
+                              ]
+                            },
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                25.157,
+                                3.4425,
+                                -2.1006867477979845
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                8.973253008808063,
+                                4.486626504404032
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "kind": "difference",
+                          "base": {
+                            "kind": "transform",
+                            "shape": {
+                              "kind": "torus",
+                              "major_radius_mm": 0.9954999999999998,
+                              "minor_radius_mm": 0.126156626101008,
+                              "center_z_mm": 0.0
+                            },
+                            "rotation": [
+                              [
+                                0.0,
+                                0.0,
+                                1.0
+                              ],
+                              [
+                                0.0,
+                                1.0,
+                                0.0
+                              ],
+                              [
+                                -1.0,
+                                0.0,
+                                0.0
+                              ]
+                            ],
+                            "offset_mm": [
+                              25.157,
+                              3.4425,
+                              4.344
+                            ]
+                          },
+                          "tools": [
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                25.157,
+                                1.199186747797984,
+                                4.344
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                4.486626504404032,
+                                8.973253008808063
+                              ]
+                            },
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                25.157,
+                                3.4425,
+                                2.1006867477979845
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                8.973253008808063,
+                                4.486626504404032
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "rotation": [
+                      [
+                        1.0,
+                        0.0,
+                        0.0
+                      ],
+                      [
+                        0.0,
+                        1.0,
+                        0.0
+                      ],
+                      [
+                        0.0,
+                        0.0,
+                        1.0
+                      ]
+                    ],
+                    "offset_mm": [
+                      0.0,
+                      0.0,
+                      850.8499999999999
+                    ]
+                  },
+                  {
+                    "kind": "transform",
+                    "shape": {
+                      "kind": "union",
+                      "shapes": [
+                        {
+                          "kind": "transform",
+                          "shape": {
+                            "kind": "revolve",
+                            "section_zr_mm": [
+                              [
+                                -3.4425,
+                                0.0
+                              ],
+                              [
+                                -3.4425,
+                                0.126156626101008
+                              ],
+                              [
+                                3.4425,
+                                0.126156626101008
+                              ],
+                              [
+                                3.4425,
+                                0.0
+                              ]
+                            ]
+                          },
+                          "rotation": [
+                            [
+                              1.0,
+                              0.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              0.0,
+                              1.0
+                            ],
+                            [
+                              0.0,
+                              -1.0,
+                              0.0
+                            ]
+                          ],
+                          "offset_mm": [
+                            27.148,
+                            0.0,
+                            -5.3395
+                          ]
+                        },
+                        {
+                          "kind": "transform",
+                          "shape": {
+                            "kind": "revolve",
+                            "section_zr_mm": [
+                              [
+                                -4.344,
+                                0.0
+                              ],
+                              [
+                                -4.344,
+                                0.126156626101008
+                              ],
+                              [
+                                4.344,
+                                0.126156626101008
+                              ],
+                              [
+                                4.344,
+                                0.0
+                              ]
+                            ]
+                          },
+                          "rotation": [
+                            [
+                              1.0,
+                              0.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              1.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              0.0,
+                              1.0
+                            ]
+                          ],
+                          "offset_mm": [
+                            27.148,
+                            -4.438,
+                            0.0
+                          ]
+                        },
+                        {
+                          "kind": "transform",
+                          "shape": {
+                            "kind": "revolve",
+                            "section_zr_mm": [
+                              [
+                                -3.4425,
+                                0.0
+                              ],
+                              [
+                                -3.4425,
+                                0.126156626101008
+                              ],
+                              [
+                                3.4425,
+                                0.126156626101008
+                              ],
+                              [
+                                3.4425,
+                                0.0
+                              ]
+                            ]
+                          },
+                          "rotation": [
+                            [
+                              1.0,
+                              0.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              0.0,
+                              1.0
+                            ],
+                            [
+                              0.0,
+                              -1.0,
+                              0.0
+                            ]
+                          ],
+                          "offset_mm": [
+                            27.148,
+                            0.0,
+                            5.3395
+                          ]
+                        },
+                        {
+                          "kind": "transform",
+                          "shape": {
+                            "kind": "revolve",
+                            "section_zr_mm": [
+                              [
+                                -4.344,
+                                0.0
+                              ],
+                              [
+                                -4.344,
+                                0.126156626101008
+                              ],
+                              [
+                                4.344,
+                                0.126156626101008
+                              ],
+                              [
+                                4.344,
+                                0.0
+                              ]
+                            ]
+                          },
+                          "rotation": [
+                            [
+                              1.0,
+                              0.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              1.0,
+                              0.0
+                            ],
+                            [
+                              0.0,
+                              0.0,
+                              1.0
+                            ]
+                          ],
+                          "offset_mm": [
+                            27.148,
+                            4.438,
+                            0.0
+                          ]
+                        },
+                        {
+                          "kind": "difference",
+                          "base": {
+                            "kind": "transform",
+                            "shape": {
+                              "kind": "torus",
+                              "major_radius_mm": 0.9954999999999998,
+                              "minor_radius_mm": 0.126156626101008,
+                              "center_z_mm": 0.0
+                            },
+                            "rotation": [
+                              [
+                                0.0,
+                                0.0,
+                                1.0
+                              ],
+                              [
+                                0.0,
+                                1.0,
+                                0.0
+                              ],
+                              [
+                                -1.0,
+                                0.0,
+                                0.0
+                              ]
+                            ],
+                            "offset_mm": [
+                              27.148,
+                              -3.4425,
+                              -4.344
+                            ]
+                          },
+                          "tools": [
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                27.148,
+                                -1.199186747797984,
+                                -4.344
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                4.486626504404032,
+                                8.973253008808063
+                              ]
+                            },
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                27.148,
+                                -3.4425,
+                                -2.1006867477979845
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                8.973253008808063,
+                                4.486626504404032
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "kind": "difference",
+                          "base": {
+                            "kind": "transform",
+                            "shape": {
+                              "kind": "torus",
+                              "major_radius_mm": 0.9954999999999998,
+                              "minor_radius_mm": 0.126156626101008,
+                              "center_z_mm": 0.0
+                            },
+                            "rotation": [
+                              [
+                                0.0,
+                                0.0,
+                                1.0
+                              ],
+                              [
+                                0.0,
+                                1.0,
+                                0.0
+                              ],
+                              [
+                                -1.0,
+                                0.0,
+                                0.0
+                              ]
+                            ],
+                            "offset_mm": [
+                              27.148,
+                              -3.4425,
+                              4.344
+                            ]
+                          },
+                          "tools": [
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                27.148,
+                                -1.199186747797984,
+                                4.344
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                4.486626504404032,
+                                8.973253008808063
+                              ]
+                            },
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                27.148,
+                                -3.4425,
+                                2.1006867477979845
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                8.973253008808063,
+                                4.486626504404032
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "kind": "difference",
+                          "base": {
+                            "kind": "transform",
+                            "shape": {
+                              "kind": "torus",
+                              "major_radius_mm": 0.9954999999999998,
+                              "minor_radius_mm": 0.126156626101008,
+                              "center_z_mm": 0.0
+                            },
+                            "rotation": [
+                              [
+                                0.0,
+                                0.0,
+                                1.0
+                              ],
+                              [
+                                0.0,
+                                1.0,
+                                0.0
+                              ],
+                              [
+                                -1.0,
+                                0.0,
+                                0.0
+                              ]
+                            ],
+                            "offset_mm": [
+                              27.148,
+                              3.4425,
+                              -4.344
+                            ]
+                          },
+                          "tools": [
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                27.148,
+                                1.199186747797984,
+                                -4.344
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                4.486626504404032,
+                                8.973253008808063
+                              ]
+                            },
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                27.148,
+                                3.4425,
+                                -2.1006867477979845
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                8.973253008808063,
+                                4.486626504404032
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "kind": "difference",
+                          "base": {
+                            "kind": "transform",
+                            "shape": {
+                              "kind": "torus",
+                              "major_radius_mm": 0.9954999999999998,
+                              "minor_radius_mm": 0.126156626101008,
+                              "center_z_mm": 0.0
+                            },
+                            "rotation": [
+                              [
+                                0.0,
+                                0.0,
+                                1.0
+                              ],
+                              [
+                                0.0,
+                                1.0,
+                                0.0
+                              ],
+                              [
+                                -1.0,
+                                0.0,
+                                0.0
+                              ]
+                            ],
+                            "offset_mm": [
+                              27.148,
+                              3.4425,
+                              4.344
+                            ]
+                          },
+                          "tools": [
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                27.148,
+                                1.199186747797984,
+                                4.344
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                4.486626504404032,
+                                8.973253008808063
+                              ]
+                            },
+                            {
+                              "kind": "box",
+                              "center_mm": [
+                                27.148,
+                                3.4425,
+                                2.1006867477979845
+                              ],
+                              "size_mm": [
+                                4.486626504404032,
+                                8.973253008808063,
+                                4.486626504404032
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "rotation": [
+                      [
+                        1.0,
+                        0.0,
+                        0.0
+                      ],
+                      [
+                        0.0,
+                        1.0,
+                        0.0
+                      ],
+                      [
+                        0.0,
+                        0.0,
+                        1.0
+                      ]
+                    ],
+                    "offset_mm": [
+                      0.0,
+                      0.0,
+                      850.8499999999999
+                    ]
+                  }
+                ]
+              },
+              "rotation": [
+                [
+                  1.0,
+                  -0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "offset_mm": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "evidence": [],
+            "status": "configured_geometry",
+            "note": "Explicit user-sized radial-axis rounded rectangular round-wire CAD. Remaining original winding-frame volume is insulation. Original pole/core, winding envelope and multipole strength are unchanged; no electrical current or magnetic calibration is inferred. Not OEM winding data.",
+            "parameters": {
+              "winding_geometry": {
+                "schema": "radial-rounded-rectangle-winding-v1",
+                "turn_count_per_coil": 2,
+                "total_turn_count": 12,
+                "wire_cross_section_mm2": 0.05,
+                "wire_diameter_mm": 0.252313252202016,
+                "radial_layers": 2,
+                "offset_rings": 1,
+                "centre_pitch_mm": 1.9909999999999997,
+                "interwire_gap_mm": 1.7386867477979837,
+                "radial_start_mm": 22.71,
+                "radial_end_mm": 29.595,
+                "window_width_mm": 6.885,
+                "window_height_mm": 8.688,
+                "coil_width_mm": 12.24,
+                "coil_height_mm": 12.67,
+                "minimum_band_mm": 1.9909999999999997,
+                "axial_centre_mm": 850.8499999999999,
+                "turn_positions": [
+                  {
+                    "radial_x_mm": 25.157,
+                    "corner_offset_mm": 0.9954999999999998
+                  },
+                  {
+                    "radial_x_mm": 27.148,
+                    "corner_offset_mm": 0.9954999999999998
+                  }
+                ],
+                "path_lengths_mm": [
+                  37.40091097329728,
+                  37.40091097329728
+                ],
+                "bulk_coil_volume_mm3": 655.8920892000001,
+                "conductor_volume_per_coil_mm3": 3.740091097329728,
+                "remaining_insulation_volume_per_coil_mm3": 652.1519981026704,
+                "coil_axis": "radial",
+                "pole_pitch_deg": 60.0,
+                "geometry_status": "engineering_reconstruction_not_oem",
+                "field_or_current_calibration": false,
+                "optical_field_unchanged": true,
+                "source_note": "Explicit bounded CAD verification, not a default winding prescription."
+              },
+              "winding_turn_count": 2,
+              "display_complexity_factor": 4,
+              "coil_index": 1,
+              "coil_axis": "radial",
+              "coil_azimuth_deg": 0,
+              "passive_geometry_only": true,
+              "optical_field_unchanged": true
+            },
+            "color": [
+              0.87,
+              0.83,
+              0.68,
+              0.22
+            ]
+          }
+        ],
+        "edit_report": {
+          "removed_leaf_ids": [],
+          "parts": []
+        }
+      }
+    ],
+    "exports": [
+      {
+        "path": "C:\\Users\\54019\\AppData\\Local\\Temp\\tmpjbwoliv1\\bounded_radial_probe__probe_hp1_hexapole.step",
+        "sha256": "1cf4db22b512bacdd6068d4df78df94a128baef4739c22a04ac0b2863ccd6fa3",
+        "bytes": 166640,
+        "units": "mm",
+        "leaf_count": 3,
+        "records": [
+          {
+            "path": "probe_hp1_hexapole/probe_hp1_hexapole__winding_turn_coil_1_000001",
+            "material": "copper_winding",
+            "color_rgba": [
+              0.8300000085287765,
+              0.4300000078368356,
+              0.19999999868206275,
+              1.0
+            ],
+            "valid": true,
+            "solid_count": 1,
+            "volume_mm3": 1.8700455486655234,
+            "bounds_mm": [
+              25.030843273899,
+              -4.564156726101,
+              845.384343273899,
+              25.283156726101,
+              4.564156626101,
+              856.3156567261009
+            ],
+            "volume_difference_mm3": 6.588063428125679e-13,
+            "maximum_bound_difference_mm": 1.000000082740371e-07
+          },
+          {
+            "path": "probe_hp1_hexapole/probe_hp1_hexapole__winding_turn_coil_1_000002",
+            "material": "copper_winding",
+            "color_rgba": [
+              0.8300000085287765,
+              0.4300000078368356,
+              0.19999999868206275,
+              1.0
+            ],
+            "valid": true,
+            "solid_count": 1,
+            "volume_mm3": 1.8700455486655236,
+            "bounds_mm": [
+              27.021843273898998,
+              -4.564156726101,
+              845.384343273899,
+              27.274156726101,
+              4.564156626101,
+              856.3156567261009
+            ],
+            "volume_difference_mm3": 6.590283874174929e-13,
+            "maximum_bound_difference_mm": 1.000000082740371e-07
+          },
+          {
+            "path": "probe_hp1_hexapole/probe_hp1_hexapole__winding_insulation_coil_1",
+            "material": "insulator",
+            "color_rgba": [
+              0.8700000096288311,
+              0.8300000085287765,
+              0.6799999908109459,
+              0.2199999988079071
+            ],
+            "valid": true,
+            "solid_count": 1,
+            "volume_mm3": 652.1519981026656,
+            "bounds_mm": [
+              22.71,
+              -6.12,
+              844.515,
+              29.595000000000002,
+              6.12,
+              857.185
+            ],
+            "volume_difference_mm3": 1.7053025658242404e-12,
+            "maximum_bound_difference_mm": 1.1368683772161603e-13
+          }
+        ],
+        "volume_mm3": 655.8920891999967,
+        "material_semantics": "Classification layers; density and electromagnetic material constants are unspecified"
+      },
+      {
+        "path": "C:\\Users\\54019\\AppData\\Local\\Temp\\tmpjbwoliv1\\bounded_radial_probe.step",
+        "sha256": "fe94e3672c0f6cedc2f3f181c3d40d318432b833f188252da2f609657d116582",
+        "bytes": 168263,
+        "units": "mm",
+        "leaf_count": 3,
+        "records": [
+          {
+            "path": "bounded_radial_probe/probe_hp1_hexapole/probe_hp1_hexapole__winding_turn_coil_1_000001",
+            "material": "copper_winding",
+            "color_rgba": [
+              0.8300000085287765,
+              0.4300000078368356,
+              0.19999999868206275,
+              1.0
+            ],
+            "valid": true,
+            "solid_count": 1,
+            "volume_mm3": 1.8700455486655234,
+            "bounds_mm": [
+              25.030843273899,
+              -4.564156726101,
+              845.384343273899,
+              25.283156726101,
+              4.564156626101,
+              856.3156567261009
+            ],
+            "volume_difference_mm3": 6.588063428125679e-13,
+            "maximum_bound_difference_mm": 1.000000082740371e-07
+          },
+          {
+            "path": "bounded_radial_probe/probe_hp1_hexapole/probe_hp1_hexapole__winding_turn_coil_1_000002",
+            "material": "copper_winding",
+            "color_rgba": [
+              0.8300000085287765,
+              0.4300000078368356,
+              0.19999999868206275,
+              1.0
+            ],
+            "valid": true,
+            "solid_count": 1,
+            "volume_mm3": 1.8700455486655236,
+            "bounds_mm": [
+              27.021843273898998,
+              -4.564156726101,
+              845.384343273899,
+              27.274156726101,
+              4.564156626101,
+              856.3156567261009
+            ],
+            "volume_difference_mm3": 6.590283874174929e-13,
+            "maximum_bound_difference_mm": 1.000000082740371e-07
+          },
+          {
+            "path": "bounded_radial_probe/probe_hp1_hexapole/probe_hp1_hexapole__winding_insulation_coil_1",
+            "material": "insulator",
+            "color_rgba": [
+              0.8700000096288311,
+              0.8300000085287765,
+              0.6799999908109459,
+              0.2199999988079071
+            ],
+            "valid": true,
+            "solid_count": 1,
+            "volume_mm3": 652.1519981026656,
+            "bounds_mm": [
+              22.71,
+              -6.12,
+              844.515,
+              29.595000000000002,
+              6.12,
+              857.185
+            ],
+            "volume_difference_mm3": 1.7053025658242404e-12,
+            "maximum_bound_difference_mm": 1.1368683772161603e-13
+          }
+        ],
+        "volume_mm3": 655.8920891999967,
+        "material_semantics": "Classification layers; density and electromagnetic material constants are unspecified"
+      }
+    ],
+    "elapsed_s": 2.949417400002858
+  }
+}

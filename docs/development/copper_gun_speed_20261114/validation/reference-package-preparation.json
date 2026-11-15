@@ -1,0 +1,14 @@
+{
+  "status": "PREPARED_NO_PHYSICAL_EXECUTION",
+  "original_source_identity": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+  "instrumented_source_identity": "c197071873ef1b00b06cf320c28c29fd4e578e0003d5a2bf6304a32b06c426f5",
+  "reference_directory": "C:\\Users\\54019\\AppData\\Local\\Temp\\temsim-source-growth-wheel-v0hij8i_\\installed\\Lib\\site-packages\\temsim",
+  "package_root": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package",
+  "original_tracing_sha256": "f8c91f1d9a53b676db6f412e1c567c3018cc53f2b3e0572278cb3a23ddfa1762",
+  "complete_default_tracing_numerical_ast_equal": true,
+  "changed_observer_files": {
+    "physics/gun_step_diagnostics.py": "1bc3bf762281351df19d7cd5b0248309414ea3e0e88c7f7fe3a6e3876cd726d0",
+    "optics/electron_gun/tracing.py": "f784288d5261b76dd6460a1901026dd135efbe7dc6dd72f21c08bedda39db9c7"
+  },
+  "scope": "Exact old algorithm/providers plus optional pure observer hooks. Not the optimized working tree. No emission, field evaluation or propagation during preparation."
+}

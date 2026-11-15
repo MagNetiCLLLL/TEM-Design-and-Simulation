@@ -1,0 +1,4845 @@
+{
+  "status": "passed",
+  "physical_hosts": 96,
+  "source_files": 12,
+  "peak_normalized_error_limit": 1e-08,
+  "maximum_peak_normalized_error": 8.851545181186989e-14,
+  "independently_evaluated_centered_circuits": 17,
+  "reference_orders": [
+    24,
+    48
+  ],
+  "records": [
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "host_key": "condenser_stigmator",
+      "reference_planes_z_mm": [
+        877.5
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794229,
+          -4.2688519056067807e-19
+        ],
+        [
+          -6.97372515892828e-21,
+          -0.0063019733427941505
+        ]
+      ],
+      "maximum_absolute_error": 8.933825901280557e-17,
+      "peak_normalized_error": 1.4176235625457876e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "host_key": "beam_deflector",
+      "reference_planes_z_mm": [
+        782.5,
+        807.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          2.375779465772956e-22,
+          -0.00014004385206209044,
+          5.629630996584379e-22,
+          6.901274340020057e-20
+        ],
+        [
+          0.00014004385206209545,
+          -8.2658865465701e-22,
+          -1.8277559086428653e-19,
+          2.9053557752684413e-22
+        ],
+        [
+          5.21575468668094e-22,
+          7.521260831653389e-20,
+          3.1394992657326864e-22,
+          -0.00014004385206209044
+        ],
+        [
+          -1.9183935851616718e-19,
+          -1.765116052179319e-22,
+          0.00014004385206209545,
+          -9.038054971664246e-22
+        ]
+      ],
+      "maximum_absolute_error": 3.7947076036992655e-18,
+      "peak_normalized_error": 2.709656688118465e-14,
+      "response_condition": 1.976135933503922,
+      "centered_circuit_digest": "fcd385fc3950535ea1a10b301a0d2247d5edfa1603d9251604b643668e3b3ce7",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "beam_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "host_key": "ac_deflector",
+      "reference_planes_z_mm": [
+        905.0,
+        930.0
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -1.6570449461270987e-21,
+          -0.00014004385206209822,
+          -2.640227647693841e-22,
+          -8.417844723210636e-20
+        ],
+        [
+          0.00014004385206209494,
+          6.181757060275381e-22,
+          1.568069766123571e-20,
+          9.939372595933164e-23
+        ],
+        [
+          -4.330984998378462e-22,
+          -8.448106609766445e-20,
+          -1.663305240590382e-21,
+          -0.00014004385206209822
+        ],
+        [
+          1.8002700177084256e-20,
+          -5.157737448860103e-24,
+          0.00014004385206209497,
+          6.769662333571782e-22
+        ]
+      ],
+      "maximum_absolute_error": 3.984442983884229e-18,
+      "peak_normalized_error": 2.8451395225243886e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "host_key": "objective_stigmator",
+      "reference_planes_z_mm": [
+        1172.9
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.620699435136265e-19
+        ],
+        [
+          2.3308976977809517e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "host_key": "image_diffraction_deflector",
+      "reference_planes_z_mm": [
+        1200.4,
+        1225.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.413433333194953e-21,
+          -0.00014004385206209911,
+          -2.7850292277007566e-22,
+          -8.218501487773601e-20
+        ],
+        [
+          0.00014004385206209586,
+          4.488155627502287e-22,
+          -3.2384807441842116e-20,
+          1.0906146109411025e-22
+        ],
+        [
+          -5.688901190558251e-22,
+          -8.186912528368189e-20,
+          -2.379613466466477e-21,
+          -0.00014004385206209911
+        ],
+        [
+          -3.239572178885203e-20,
+          5.048072355584935e-23,
+          0.0001400438520620959,
+          4.958292099494064e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "host_key": "condenser_stigmator",
+      "reference_planes_z_mm": [
+        1127.5
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.504721563349914e-19
+        ],
+        [
+          2.3892903464144363e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "host_key": "beam_deflector",
+      "reference_planes_z_mm": [
+        1027.5,
+        1052.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.98714805553216e-22,
+          -0.00014004385206209115,
+          1.3059127061873245e-21,
+          9.332757452853367e-20
+        ],
+        [
+          0.00014004385206209635,
+          -1.538045922549186e-21,
+          -2.9750300336872123e-19,
+          9.265491257333007e-22
+        ],
+        [
+          -5.572660026467586e-22,
+          9.862361165799027e-20,
+          -2.265798506913128e-22,
+          -0.00014004385206209115
+        ],
+        [
+          -3.0014442572656416e-19,
+          -1.1275193912147971e-21,
+          0.00014004385206209632,
+          -1.6336331673852943e-21
+        ]
+      ],
+      "maximum_absolute_error": 3.0899761915836876e-18,
+      "peak_normalized_error": 2.2064347317536074e-14,
+      "response_condition": 1.976135933503922,
+      "centered_circuit_digest": "fcd385fc3950535ea1a10b301a0d2247d5edfa1603d9251604b643668e3b3ce7",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "beam_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "host_key": "ac_deflector",
+      "reference_planes_z_mm": [
+        1155.0,
+        1180.0
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.560648918700499e-21,
+          -0.00014004385206209911,
+          5.175894791402479e-22,
+          -8.218501487773601e-20
+        ],
+        [
+          0.00014004385206209586,
+          4.0751087589825927e-22,
+          -3.302008215228284e-20,
+          7.298743907222817e-22
+        ],
+        [
+          -1.3162350569907518e-21,
+          -8.186912528368189e-20,
+          -2.5389771925143813e-21,
+          -0.00014004385206209911
+        ],
+        [
+          -3.390403349683312e-20,
+          -5.724979555658366e-22,
+          0.0001400438520620959,
+          4.294980845057127e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "host_key": "objective_stigmator",
+      "reference_planes_z_mm": [
+        1422.9
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.620699435136265e-19
+        ],
+        [
+          2.3308976977809517e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "host_key": "image_diffraction_deflector",
+      "reference_planes_z_mm": [
+        1450.4,
+        1475.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.413433333194953e-21,
+          -0.00014004385206209911,
+          -2.7850292277007566e-22,
+          -8.218501487773601e-20
+        ],
+        [
+          0.00014004385206209586,
+          4.488155627502287e-22,
+          -3.2384807441842116e-20,
+          1.0906146109411025e-22
+        ],
+        [
+          -5.688901190558251e-22,
+          -8.186912528368189e-20,
+          -2.379613466466477e-21,
+          -0.00014004385206209911
+        ],
+        [
+          -3.239572178885203e-20,
+          5.048072355584935e-23,
+          0.0001400438520620959,
+          4.958292099494064e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "host_key": "condenser_deflector",
+      "reference_planes_z_mm": [
+        800.0,
+        820.0
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00021006577809314133,
+          0.0,
+          0.0
+        ],
+        [
+          0.00021006577809314133,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00021006577809314133
+        ],
+        [
+          0.0,
+          0.0,
+          0.00021006577809314133,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -7.384372325958703e-22,
+          -0.00021006577809314097,
+          8.419676546494894e-23,
+          -5.796773425549113e-20
+        ],
+        [
+          0.00021006577809314187,
+          -1.286636360024422e-21,
+          3.7820912299856307e-19,
+          3.8951005673330453e-22
+        ],
+        [
+          -1.3950797929100214e-21,
+          -4.593628451250247e-20,
+          -5.592009832574094e-22,
+          -0.00021006577809314095
+        ],
+        [
+          3.427115186652577e-19,
+          -6.907565211075383e-22,
+          0.0002100657780931419,
+          -1.2738168300109239e-21
+        ]
+      ],
+      "maximum_absolute_error": 5.692061405548898e-19,
+      "peak_normalized_error": 2.7096566881184655e-15,
+      "response_condition": 2.256170448808728,
+      "centered_circuit_digest": "9294c14d9c2558f784488b941bc38f21ad20120be3f68f6fc36b9b06143bcd12",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3.toml",
+        "host_key": "condenser_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "condenser_deflector",
+      "reference_planes_z_mm": [
+        800.0,
+        820.0
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00021006577809314133,
+          0.0,
+          0.0
+        ],
+        [
+          0.00021006577809314133,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00021006577809314133
+        ],
+        [
+          0.0,
+          0.0,
+          0.00021006577809314133,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -7.384372325958703e-22,
+          -0.00021006577809314097,
+          8.419676546494894e-23,
+          -5.796773425549113e-20
+        ],
+        [
+          0.00021006577809314187,
+          -1.286636360024422e-21,
+          3.7820912299856307e-19,
+          3.8951005673330453e-22
+        ],
+        [
+          -1.3950797929100214e-21,
+          -4.593628451250247e-20,
+          -5.592009832574094e-22,
+          -0.00021006577809314095
+        ],
+        [
+          3.427115186652577e-19,
+          -6.907565211075383e-22,
+          0.0002100657780931419,
+          -1.2738168300109239e-21
+        ]
+      ],
+      "maximum_absolute_error": 5.692061405548898e-19,
+      "peak_normalized_error": 2.7096566881184655e-15,
+      "response_condition": 2.256170448808728,
+      "centered_circuit_digest": "9294c14d9c2558f784488b941bc38f21ad20120be3f68f6fc36b9b06143bcd12",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3.toml",
+        "host_key": "condenser_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "beam_deflector",
+      "reference_planes_z_mm": [
+        1027.5,
+        1052.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.98714805553216e-22,
+          -0.00014004385206209115,
+          1.3059127061873245e-21,
+          9.332757452853367e-20
+        ],
+        [
+          0.00014004385206209635,
+          -1.538045922549186e-21,
+          -2.9750300336872123e-19,
+          9.265491257333007e-22
+        ],
+        [
+          -5.572660026467586e-22,
+          9.862361165799027e-20,
+          -2.265798506913128e-22,
+          -0.00014004385206209115
+        ],
+        [
+          -3.0014442572656416e-19,
+          -1.1275193912147971e-21,
+          0.00014004385206209632,
+          -1.6336331673852943e-21
+        ]
+      ],
+      "maximum_absolute_error": 3.0899761915836876e-18,
+      "peak_normalized_error": 2.2064347317536074e-14,
+      "response_condition": 1.976135933503922,
+      "centered_circuit_digest": "fcd385fc3950535ea1a10b301a0d2247d5edfa1603d9251604b643668e3b3ce7",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "beam_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "condenser_stigmator",
+      "reference_planes_z_mm": [
+        1127.5
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.504721563349914e-19
+        ],
+        [
+          2.3892903464144363e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "ac_deflector",
+      "reference_planes_z_mm": [
+        1155.0,
+        1180.0
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.560648918700499e-21,
+          -0.00014004385206209911,
+          5.175894791402479e-22,
+          -8.218501487773601e-20
+        ],
+        [
+          0.00014004385206209586,
+          4.0751087589825927e-22,
+          -3.302008215228284e-20,
+          7.298743907222817e-22
+        ],
+        [
+          -1.3162350569907518e-21,
+          -8.186912528368189e-20,
+          -2.5389771925143813e-21,
+          -0.00014004385206209911
+        ],
+        [
+          -3.390403349683312e-20,
+          -5.724979555658366e-22,
+          0.0001400438520620959,
+          4.294980845057127e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "objective_stigmator",
+      "reference_planes_z_mm": [
+        1422.9
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.620699435136265e-19
+        ],
+        [
+          2.3308976977809517e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "image_diffraction_deflector",
+      "reference_planes_z_mm": [
+        1450.4,
+        1475.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.413433333194953e-21,
+          -0.00014004385206209911,
+          -2.7850292277007566e-22,
+          -8.218501487773601e-20
+        ],
+        [
+          0.00014004385206209586,
+          4.488155627502287e-22,
+          -3.2384807441842116e-20,
+          1.0906146109411025e-22
+        ],
+        [
+          -5.688901190558251e-22,
+          -8.186912528368189e-20,
+          -2.379613466466477e-21,
+          -0.00014004385206209911
+        ],
+        [
+          -3.239572178885203e-20,
+          5.048072355584935e-23,
+          0.0001400438520620959,
+          4.958292099494064e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "image_dp11_coils",
+      "reference_planes_z_mm": [
+        1487.9
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00035010963015523553
+        ],
+        [
+          0.00035010963015523553,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          8.980689210588354e-21,
+          -0.00035010963015523944
+        ],
+        [
+          0.0003501096301552231,
+          -1.0441882865726243e-20
+        ]
+      ],
+      "maximum_absolute_error": 1.2414114874959026e-17,
+      "peak_normalized_error": 3.545779323309306e-14,
+      "response_condition": 1.0844603531759764,
+      "centered_circuit_digest": "2234b8a6e203982aa605ec519936901ec6e4a45d492357fda5d97cc00b841339",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp11_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "image_dp12_coils",
+      "reference_planes_z_mm": [
+        1549.65
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          4.2672823341672264e-21,
+          -0.0001400438520620955
+        ],
+        [
+          0.00014004385206209844,
+          -4.520831854302809e-21
+        ]
+      ],
+      "maximum_absolute_error": 4.20128341838133e-18,
+      "peak_normalized_error": 2.9999770475597293e-14,
+      "response_condition": 1.0628150005955417,
+      "centered_circuit_digest": "57b555b79f26eb06c2f302d577f5a221818949fc95e007cfea6b784746cb2c84",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp12_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "image_dph1_coils",
+      "reference_planes_z_mm": [
+        1652.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -7.002192603104712e-05
+        ],
+        [
+          7.002192603104712e-05,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -1.534715496962978e-21,
+          -7.00219260310474e-05
+        ],
+        [
+          7.002192603104653e-05,
+          -7.941396416650706e-22
+        ]
+      ],
+      "maximum_absolute_error": 5.827586677109586e-19,
+      "peak_normalized_error": 8.322516970649571e-15,
+      "response_condition": 1.0529687835733477,
+      "centered_circuit_digest": "5b46c1b665062ae99ee021c7c666fca80c31779c01696fd0a4fb2601aadd6493",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dph1_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "image_dp21_coils",
+      "reference_planes_z_mm": [
+        1727.9
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          4.407623038067749e-21,
+          -0.0001500469843522487
+        ],
+        [
+          0.00015004698435224076,
+          -4.3023868234031516e-21
+        ]
+      ],
+      "maximum_absolute_error": 4.9060148304969076e-18,
+      "peak_normalized_error": 3.2696524036629484e-14,
+      "response_condition": 1.0855359441108665,
+      "centered_circuit_digest": "102c395fce70d0dd6c5de694baf86b70458b7b5833e57ce56a5181e5b31aeb79",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp21_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "image_dp22_coils",
+      "reference_planes_z_mm": [
+        1731.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          4.407623038067749e-21,
+          -0.0001500469843522487
+        ],
+        [
+          0.00015004698435224076,
+          -4.3023868234031516e-21
+        ]
+      ],
+      "maximum_absolute_error": 4.9060148304969076e-18,
+      "peak_normalized_error": 3.2696524036629484e-14,
+      "response_condition": 1.0855359441108665,
+      "centered_circuit_digest": "102c395fce70d0dd6c5de694baf86b70458b7b5833e57ce56a5181e5b31aeb79",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp21_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "image_dph2_coils",
+      "reference_planes_z_mm": [
+        1796.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -7.002192603104712e-05
+        ],
+        [
+          7.002192603104712e-05,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -1.534715496962978e-21,
+          -7.00219260310474e-05
+        ],
+        [
+          7.002192603104653e-05,
+          -7.941396416650706e-22
+        ]
+      ],
+      "maximum_absolute_error": 5.827586677109586e-19,
+      "peak_normalized_error": 8.322516970649571e-15,
+      "response_condition": 1.0529687835733477,
+      "centered_circuit_digest": "5b46c1b665062ae99ee021c7c666fca80c31779c01696fd0a4fb2601aadd6493",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dph1_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "image_ish_coils",
+      "reference_planes_z_mm": [
+        2014.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          5.105525197104056e-21,
+          -0.00015004698435224406
+        ],
+        [
+          0.00015004698435224233,
+          -4.850882431476315e-21
+        ]
+      ],
+      "maximum_absolute_error": 1.463672932855431e-18,
+      "peak_normalized_error": 9.754764077226477e-15,
+      "response_condition": 1.0648749098549481,
+      "centered_circuit_digest": "95c1555350cf8b0dd4320266d51206ff3de61c71f417f9c73cab4180c3d05c4d",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_ish_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "host_key": "image_dsh_coils",
+      "reference_planes_z_mm": [
+        2038.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0002625822226164267
+        ],
+        [
+          0.0002625822226164267,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          7.115065460646909e-21,
+          -0.0002625822226164206
+        ],
+        [
+          0.0002625822226164296,
+          -8.322538295496056e-21
+        ]
+      ],
+      "maximum_absolute_error": 6.071532165918825e-18,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "response_condition": 1.0777768268720893,
+      "centered_circuit_digest": "528fe1fb6b92732eb69a031b108f8654c02e48b6abd42f8d7aeb7caa997f4601",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dsh_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "condenser_stigmator",
+      "reference_planes_z_mm": [
+        1127.5
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.504721563349914e-19
+        ],
+        [
+          2.3892903464144363e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "beam_deflector",
+      "reference_planes_z_mm": [
+        1027.5,
+        1052.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.98714805553216e-22,
+          -0.00014004385206209115,
+          1.3059127061873245e-21,
+          9.332757452853367e-20
+        ],
+        [
+          0.00014004385206209635,
+          -1.538045922549186e-21,
+          -2.9750300336872123e-19,
+          9.265491257333007e-22
+        ],
+        [
+          -5.572660026467586e-22,
+          9.862361165799027e-20,
+          -2.265798506913128e-22,
+          -0.00014004385206209115
+        ],
+        [
+          -3.0014442572656416e-19,
+          -1.1275193912147971e-21,
+          0.00014004385206209632,
+          -1.6336331673852943e-21
+        ]
+      ],
+      "maximum_absolute_error": 3.0899761915836876e-18,
+      "peak_normalized_error": 2.2064347317536074e-14,
+      "response_condition": 1.976135933503922,
+      "centered_circuit_digest": "fcd385fc3950535ea1a10b301a0d2247d5edfa1603d9251604b643668e3b3ce7",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "beam_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "ac_deflector",
+      "reference_planes_z_mm": [
+        1155.0,
+        1180.0
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.560648918700499e-21,
+          -0.00014004385206209911,
+          5.175894791402479e-22,
+          -8.218501487773601e-20
+        ],
+        [
+          0.00014004385206209586,
+          4.0751087589825927e-22,
+          -3.302008215228284e-20,
+          7.298743907222817e-22
+        ],
+        [
+          -1.3162350569907518e-21,
+          -8.186912528368189e-20,
+          -2.5389771925143813e-21,
+          -0.00014004385206209911
+        ],
+        [
+          -3.390403349683312e-20,
+          -5.724979555658366e-22,
+          0.0001400438520620959,
+          4.294980845057127e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "objective_stigmator",
+      "reference_planes_z_mm": [
+        1422.9
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.620699435136265e-19
+        ],
+        [
+          2.3308976977809517e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "image_diffraction_deflector",
+      "reference_planes_z_mm": [
+        1450.4,
+        1475.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.413433333194953e-21,
+          -0.00014004385206209911,
+          -2.7850292277007566e-22,
+          -8.218501487773601e-20
+        ],
+        [
+          0.00014004385206209586,
+          4.488155627502287e-22,
+          -3.2384807441842116e-20,
+          1.0906146109411025e-22
+        ],
+        [
+          -5.688901190558251e-22,
+          -8.186912528368189e-20,
+          -2.379613466466477e-21,
+          -0.00014004385206209911
+        ],
+        [
+          -3.239572178885203e-20,
+          5.048072355584935e-23,
+          0.0001400438520620959,
+          4.958292099494064e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "condenser_deflector",
+      "reference_planes_z_mm": [
+        800.0,
+        820.0
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00021006577809314133,
+          0.0,
+          0.0
+        ],
+        [
+          0.00021006577809314133,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00021006577809314133
+        ],
+        [
+          0.0,
+          0.0,
+          0.00021006577809314133,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -7.384372325958703e-22,
+          -0.00021006577809314097,
+          8.419676546494894e-23,
+          -5.796773425549113e-20
+        ],
+        [
+          0.00021006577809314187,
+          -1.286636360024422e-21,
+          3.7820912299856307e-19,
+          3.8951005673330453e-22
+        ],
+        [
+          -1.3950797929100214e-21,
+          -4.593628451250247e-20,
+          -5.592009832574094e-22,
+          -0.00021006577809314095
+        ],
+        [
+          3.427115186652577e-19,
+          -6.907565211075383e-22,
+          0.0002100657780931419,
+          -1.2738168300109239e-21
+        ]
+      ],
+      "maximum_absolute_error": 5.692061405548898e-19,
+      "peak_normalized_error": 2.7096566881184655e-15,
+      "response_condition": 2.256170448808728,
+      "centered_circuit_digest": "9294c14d9c2558f784488b941bc38f21ad20120be3f68f6fc36b9b06143bcd12",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3.toml",
+        "host_key": "condenser_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "image_dp11_coils",
+      "reference_planes_z_mm": [
+        1487.9
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00035010963015523553
+        ],
+        [
+          0.00035010963015523553,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          8.980689210588354e-21,
+          -0.00035010963015523944
+        ],
+        [
+          0.0003501096301552231,
+          -1.0441882865726243e-20
+        ]
+      ],
+      "maximum_absolute_error": 1.2414114874959026e-17,
+      "peak_normalized_error": 3.545779323309306e-14,
+      "response_condition": 1.0844603531759764,
+      "centered_circuit_digest": "2234b8a6e203982aa605ec519936901ec6e4a45d492357fda5d97cc00b841339",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp11_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "image_dp12_coils",
+      "reference_planes_z_mm": [
+        1549.65
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          4.2672823341672264e-21,
+          -0.0001400438520620955
+        ],
+        [
+          0.00014004385206209844,
+          -4.520831854302809e-21
+        ]
+      ],
+      "maximum_absolute_error": 4.20128341838133e-18,
+      "peak_normalized_error": 2.9999770475597293e-14,
+      "response_condition": 1.0628150005955417,
+      "centered_circuit_digest": "57b555b79f26eb06c2f302d577f5a221818949fc95e007cfea6b784746cb2c84",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp12_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "image_dph1_coils",
+      "reference_planes_z_mm": [
+        1652.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -7.002192603104712e-05
+        ],
+        [
+          7.002192603104712e-05,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -1.534715496962978e-21,
+          -7.00219260310474e-05
+        ],
+        [
+          7.002192603104653e-05,
+          -7.941396416650706e-22
+        ]
+      ],
+      "maximum_absolute_error": 5.827586677109586e-19,
+      "peak_normalized_error": 8.322516970649571e-15,
+      "response_condition": 1.0529687835733477,
+      "centered_circuit_digest": "5b46c1b665062ae99ee021c7c666fca80c31779c01696fd0a4fb2601aadd6493",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dph1_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "image_dp21_coils",
+      "reference_planes_z_mm": [
+        1727.9
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          4.407623038067749e-21,
+          -0.0001500469843522487
+        ],
+        [
+          0.00015004698435224076,
+          -4.3023868234031516e-21
+        ]
+      ],
+      "maximum_absolute_error": 4.9060148304969076e-18,
+      "peak_normalized_error": 3.2696524036629484e-14,
+      "response_condition": 1.0855359441108665,
+      "centered_circuit_digest": "102c395fce70d0dd6c5de694baf86b70458b7b5833e57ce56a5181e5b31aeb79",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp21_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "image_dp22_coils",
+      "reference_planes_z_mm": [
+        1731.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          4.407623038067749e-21,
+          -0.0001500469843522487
+        ],
+        [
+          0.00015004698435224076,
+          -4.3023868234031516e-21
+        ]
+      ],
+      "maximum_absolute_error": 4.9060148304969076e-18,
+      "peak_normalized_error": 3.2696524036629484e-14,
+      "response_condition": 1.0855359441108665,
+      "centered_circuit_digest": "102c395fce70d0dd6c5de694baf86b70458b7b5833e57ce56a5181e5b31aeb79",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp21_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "image_dph2_coils",
+      "reference_planes_z_mm": [
+        1796.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -7.002192603104712e-05
+        ],
+        [
+          7.002192603104712e-05,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -1.534715496962978e-21,
+          -7.00219260310474e-05
+        ],
+        [
+          7.002192603104653e-05,
+          -7.941396416650706e-22
+        ]
+      ],
+      "maximum_absolute_error": 5.827586677109586e-19,
+      "peak_normalized_error": 8.322516970649571e-15,
+      "response_condition": 1.0529687835733477,
+      "centered_circuit_digest": "5b46c1b665062ae99ee021c7c666fca80c31779c01696fd0a4fb2601aadd6493",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dph1_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "image_ish_coils",
+      "reference_planes_z_mm": [
+        1870.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          5.970790421108554e-21,
+          -0.00015004698435224474
+        ],
+        [
+          0.00015004698435224295,
+          -4.2256703219447054e-21
+        ]
+      ],
+      "maximum_absolute_error": 9.486769009248164e-19,
+      "peak_normalized_error": 6.32253227227642e-15,
+      "response_condition": 1.0648749098549481,
+      "centered_circuit_digest": "95c1555350cf8b0dd4320266d51206ff3de61c71f417f9c73cab4180c3d05c4d",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_ish_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "host_key": "image_dsh_coils",
+      "reference_planes_z_mm": [
+        1894.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0002625822226164267
+        ],
+        [
+          0.0002625822226164267,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          7.174475764939087e-21,
+          -0.00026258222261642006
+        ],
+        [
+          0.0002625822226164296,
+          -7.552963785978503e-21
+        ]
+      ],
+      "maximum_absolute_error": 6.613633252161577e-18,
+      "peak_normalized_error": 2.518690407241545e-14,
+      "response_condition": 1.0777768268720893,
+      "centered_circuit_digest": "528fe1fb6b92732eb69a031b108f8654c02e48b6abd42f8d7aeb7caa997f4601",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dsh_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "host_key": "condenser_deflector",
+      "reference_planes_z_mm": [
+        800.0,
+        820.0
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00021006577809314133,
+          0.0,
+          0.0
+        ],
+        [
+          0.00021006577809314133,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00021006577809314133
+        ],
+        [
+          0.0,
+          0.0,
+          0.00021006577809314133,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -7.384372325958703e-22,
+          -0.00021006577809314097,
+          8.419676546494894e-23,
+          -5.796773425549113e-20
+        ],
+        [
+          0.00021006577809314187,
+          -1.286636360024422e-21,
+          3.7820912299856307e-19,
+          3.8951005673330453e-22
+        ],
+        [
+          -1.3950797929100214e-21,
+          -4.593628451250247e-20,
+          -5.592009832574094e-22,
+          -0.00021006577809314095
+        ],
+        [
+          3.427115186652577e-19,
+          -6.907565211075383e-22,
+          0.0002100657780931419,
+          -1.2738168300109239e-21
+        ]
+      ],
+      "maximum_absolute_error": 5.692061405548898e-19,
+      "peak_normalized_error": 2.7096566881184655e-15,
+      "response_condition": 2.256170448808728,
+      "centered_circuit_digest": "9294c14d9c2558f784488b941bc38f21ad20120be3f68f6fc36b9b06143bcd12",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3.toml",
+        "host_key": "condenser_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "host_key": "condenser_stigmator",
+      "reference_planes_z_mm": [
+        1451.5
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.620699435136265e-19
+        ],
+        [
+          2.3308976977809517e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "host_key": "beam_deflector",
+      "reference_planes_z_mm": [
+        1027.5,
+        1052.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.98714805553216e-22,
+          -0.00014004385206209115,
+          1.3059127061873245e-21,
+          9.332757452853367e-20
+        ],
+        [
+          0.00014004385206209635,
+          -1.538045922549186e-21,
+          -2.9750300336872123e-19,
+          9.265491257333007e-22
+        ],
+        [
+          -5.572660026467586e-22,
+          9.862361165799027e-20,
+          -2.265798506913128e-22,
+          -0.00014004385206209115
+        ],
+        [
+          -3.0014442572656416e-19,
+          -1.1275193912147971e-21,
+          0.00014004385206209632,
+          -1.6336331673852943e-21
+        ]
+      ],
+      "maximum_absolute_error": 3.0899761915836876e-18,
+      "peak_normalized_error": 2.2064347317536074e-14,
+      "response_condition": 1.976135933503922,
+      "centered_circuit_digest": "fcd385fc3950535ea1a10b301a0d2247d5edfa1603d9251604b643668e3b3ce7",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "beam_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "host_key": "ac_deflector",
+      "reference_planes_z_mm": [
+        1387.5,
+        1412.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.568179502153289e-21,
+          -0.00014004385206209911,
+          -4.391811189054482e-22,
+          -1.1606633276790802e-19
+        ],
+        [
+          0.00014004385206209586,
+          3.985433194016763e-22,
+          1.0610507943423599e-19,
+          2.8419485543555473e-22
+        ],
+        [
+          -1.5512716974337363e-21,
+          -1.1683300083123423e-19,
+          -2.3873456297181117e-21,
+          -0.00014004385206209911
+        ],
+        [
+          1.0825434498038491e-19,
+          -5.79894204053315e-22,
+          0.0001400438520620959,
+          4.8314538148120125e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "host_key": "objective_stigmator",
+      "reference_planes_z_mm": [
+        1746.9
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.504721563349914e-19
+        ],
+        [
+          2.3892903464144363e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "host_key": "image_diffraction_deflector",
+      "reference_planes_z_mm": [
+        1674.4,
+        1699.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.560648918700499e-21,
+          -0.00014004385206209911,
+          5.175894791402479e-22,
+          -8.218501487773601e-20
+        ],
+        [
+          0.00014004385206209586,
+          4.0751087589825927e-22,
+          -3.302008215228284e-20,
+          7.298743907222817e-22
+        ],
+        [
+          -1.3162350569907518e-21,
+          -8.186912528368189e-20,
+          -2.5389771925143813e-21,
+          -0.00014004385206209911
+        ],
+        [
+          -3.390403349683312e-20,
+          -5.724979555658366e-22,
+          0.0001400438520620959,
+          4.294980845057127e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "host_key": "probe_dph2_coils",
+      "reference_planes_z_mm": [
+        1144.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.6040737346388325e-21,
+          -0.0005251644452328704
+        ],
+        [
+          0.0005251644452328615,
+          -1.3319844374136582e-22
+        ]
+      ],
+      "maximum_absolute_error": 1.702197410802242e-17,
+      "peak_normalized_error": 3.2412655240731355e-14,
+      "response_condition": 1.064559726506584,
+      "centered_circuit_digest": "3bd92a642ed93640605232d0dd5c75870b89afd7e75d93ca387b92c7b23b4661",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dph2_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "host_key": "probe_dph1_coils",
+      "reference_planes_z_mm": [
+        1300.85
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.6040737346388325e-21,
+          -0.0005251644452328704
+        ],
+        [
+          0.0005251644452328615,
+          -1.3319844374136582e-22
+        ]
+      ],
+      "maximum_absolute_error": 1.702197410802242e-17,
+      "peak_normalized_error": 3.2412655240731355e-14,
+      "response_condition": 1.064559726506584,
+      "centered_circuit_digest": "3bd92a642ed93640605232d0dd5c75870b89afd7e75d93ca387b92c7b23b4661",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dph2_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "host_key": "probe_dp22_coils",
+      "reference_planes_z_mm": [
+        1186.35
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.9030737020455226e-21,
+          -0.0005251644452328545
+        ],
+        [
+          0.0005251644452328522,
+          -1.5888961610823514e-21
+        ]
+      ],
+      "maximum_absolute_error": 1.1926223897340549e-18,
+      "peak_normalized_error": 2.2709503671849994e-15,
+      "response_condition": 1.0651540676909084,
+      "centered_circuit_digest": "de761f39ca0646ffba6eefa7627d4de140b34efe811ffe44325d3e40adc87aff",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dp22_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "host_key": "probe_dp21_coils",
+      "reference_planes_z_mm": [
+        1229.9
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          2.7052090589987216e-21,
+          -0.0005251644452328379
+        ],
+        [
+          0.00052516444523285,
+          1.72157352433429e-20
+        ]
+      ],
+      "maximum_absolute_error": 1.5504091066542713e-17,
+      "peak_normalized_error": 2.9522354773404996e-14,
+      "response_condition": 1.0649462856047278,
+      "centered_circuit_digest": "701b80d1c6419057dc75d0adfe05cd85f6f899634a769fbbf6853346d4907bf0",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dp21_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "host_key": "probe_dp11_coils",
+      "reference_planes_z_mm": [
+        1346.3
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          1.47384056829186e-21,
+          -0.0005251644452328373
+        ],
+        [
+          0.0005251644452328498,
+          1.580315007841902e-20
+        ]
+      ],
+      "maximum_absolute_error": 1.6046192152785466e-17,
+      "peak_normalized_error": 3.0554604940307265e-14,
+      "response_condition": 1.0649462856047265,
+      "centered_circuit_digest": "57c0ac5c4c6d7b4fe57ba5aa1917fb6c2b546a7fb53970f719dbd2446682e97a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dp11_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "condenser_deflector",
+      "reference_planes_z_mm": [
+        800.0,
+        820.0
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00021006577809314133,
+          0.0,
+          0.0
+        ],
+        [
+          0.00021006577809314133,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00021006577809314133
+        ],
+        [
+          0.0,
+          0.0,
+          0.00021006577809314133,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -7.384372325958703e-22,
+          -0.00021006577809314097,
+          8.419676546494894e-23,
+          -5.796773425549113e-20
+        ],
+        [
+          0.00021006577809314187,
+          -1.286636360024422e-21,
+          3.7820912299856307e-19,
+          3.8951005673330453e-22
+        ],
+        [
+          -1.3950797929100214e-21,
+          -4.593628451250247e-20,
+          -5.592009832574094e-22,
+          -0.00021006577809314095
+        ],
+        [
+          3.427115186652577e-19,
+          -6.907565211075383e-22,
+          0.0002100657780931419,
+          -1.2738168300109239e-21
+        ]
+      ],
+      "maximum_absolute_error": 5.692061405548898e-19,
+      "peak_normalized_error": 2.7096566881184655e-15,
+      "response_condition": 2.256170448808728,
+      "centered_circuit_digest": "9294c14d9c2558f784488b941bc38f21ad20120be3f68f6fc36b9b06143bcd12",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3.toml",
+        "host_key": "condenser_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "beam_deflector",
+      "reference_planes_z_mm": [
+        1027.5,
+        1052.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.98714805553216e-22,
+          -0.00014004385206209115,
+          1.3059127061873245e-21,
+          9.332757452853367e-20
+        ],
+        [
+          0.00014004385206209635,
+          -1.538045922549186e-21,
+          -2.9750300336872123e-19,
+          9.265491257333007e-22
+        ],
+        [
+          -5.572660026467586e-22,
+          9.862361165799027e-20,
+          -2.265798506913128e-22,
+          -0.00014004385206209115
+        ],
+        [
+          -3.0014442572656416e-19,
+          -1.1275193912147971e-21,
+          0.00014004385206209632,
+          -1.6336331673852943e-21
+        ]
+      ],
+      "maximum_absolute_error": 3.0899761915836876e-18,
+      "peak_normalized_error": 2.2064347317536074e-14,
+      "response_condition": 1.976135933503922,
+      "centered_circuit_digest": "fcd385fc3950535ea1a10b301a0d2247d5edfa1603d9251604b643668e3b3ce7",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "beam_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "condenser_stigmator",
+      "reference_planes_z_mm": [
+        1451.5
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.620699435136265e-19
+        ],
+        [
+          2.3308976977809517e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "ac_deflector",
+      "reference_planes_z_mm": [
+        1387.5,
+        1412.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.568179502153289e-21,
+          -0.00014004385206209911,
+          -4.391811189054482e-22,
+          -1.1606633276790802e-19
+        ],
+        [
+          0.00014004385206209586,
+          3.985433194016763e-22,
+          1.0610507943423599e-19,
+          2.8419485543555473e-22
+        ],
+        [
+          -1.5512716974337363e-21,
+          -1.1683300083123423e-19,
+          -2.3873456297181117e-21,
+          -0.00014004385206209911
+        ],
+        [
+          1.0825434498038491e-19,
+          -5.79894204053315e-22,
+          0.0001400438520620959,
+          4.8314538148120125e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "objective_stigmator",
+      "reference_planes_z_mm": [
+        1746.9
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.504721563349914e-19
+        ],
+        [
+          2.3892903464144363e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "image_diffraction_deflector",
+      "reference_planes_z_mm": [
+        1774.4,
+        1799.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.560648918700499e-21,
+          -0.00014004385206209911,
+          5.175894791402479e-22,
+          -8.218501487773601e-20
+        ],
+        [
+          0.00014004385206209586,
+          4.0751087589825927e-22,
+          -3.302008215228284e-20,
+          7.298743907222817e-22
+        ],
+        [
+          -1.3162350569907518e-21,
+          -8.186912528368189e-20,
+          -2.5389771925143813e-21,
+          -0.00014004385206209911
+        ],
+        [
+          -3.390403349683312e-20,
+          -5.724979555658366e-22,
+          0.0001400438520620959,
+          4.294980845057127e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "probe_dph2_coils",
+      "reference_planes_z_mm": [
+        1144.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.6040737346388325e-21,
+          -0.0005251644452328704
+        ],
+        [
+          0.0005251644452328615,
+          -1.3319844374136582e-22
+        ]
+      ],
+      "maximum_absolute_error": 1.702197410802242e-17,
+      "peak_normalized_error": 3.2412655240731355e-14,
+      "response_condition": 1.064559726506584,
+      "centered_circuit_digest": "3bd92a642ed93640605232d0dd5c75870b89afd7e75d93ca387b92c7b23b4661",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dph2_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "probe_dph1_coils",
+      "reference_planes_z_mm": [
+        1300.85
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.6040737346388325e-21,
+          -0.0005251644452328704
+        ],
+        [
+          0.0005251644452328615,
+          -1.3319844374136582e-22
+        ]
+      ],
+      "maximum_absolute_error": 1.702197410802242e-17,
+      "peak_normalized_error": 3.2412655240731355e-14,
+      "response_condition": 1.064559726506584,
+      "centered_circuit_digest": "3bd92a642ed93640605232d0dd5c75870b89afd7e75d93ca387b92c7b23b4661",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dph2_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "probe_dp22_coils",
+      "reference_planes_z_mm": [
+        1186.35
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.9030737020455226e-21,
+          -0.0005251644452328545
+        ],
+        [
+          0.0005251644452328522,
+          -1.5888961610823514e-21
+        ]
+      ],
+      "maximum_absolute_error": 1.1926223897340549e-18,
+      "peak_normalized_error": 2.2709503671849994e-15,
+      "response_condition": 1.0651540676909084,
+      "centered_circuit_digest": "de761f39ca0646ffba6eefa7627d4de140b34efe811ffe44325d3e40adc87aff",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dp22_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "probe_dp21_coils",
+      "reference_planes_z_mm": [
+        1229.9
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          2.7052090589987216e-21,
+          -0.0005251644452328379
+        ],
+        [
+          0.00052516444523285,
+          1.72157352433429e-20
+        ]
+      ],
+      "maximum_absolute_error": 1.5504091066542713e-17,
+      "peak_normalized_error": 2.9522354773404996e-14,
+      "response_condition": 1.0649462856047278,
+      "centered_circuit_digest": "701b80d1c6419057dc75d0adfe05cd85f6f899634a769fbbf6853346d4907bf0",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dp21_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "probe_dp11_coils",
+      "reference_planes_z_mm": [
+        1346.3
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          1.47384056829186e-21,
+          -0.0005251644452328373
+        ],
+        [
+          0.0005251644452328498,
+          1.580315007841902e-20
+        ]
+      ],
+      "maximum_absolute_error": 1.6046192152785466e-17,
+      "peak_normalized_error": 3.0554604940307265e-14,
+      "response_condition": 1.0649462856047265,
+      "centered_circuit_digest": "57c0ac5c4c6d7b4fe57ba5aa1917fb6c2b546a7fb53970f719dbd2446682e97a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dp11_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "image_dp11_coils",
+      "reference_planes_z_mm": [
+        1811.9
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00035010963015523553
+        ],
+        [
+          0.00035010963015523553,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          8.980689210588354e-21,
+          -0.00035010963015523944
+        ],
+        [
+          0.0003501096301552231,
+          -1.0441882865726243e-20
+        ]
+      ],
+      "maximum_absolute_error": 1.2414114874959026e-17,
+      "peak_normalized_error": 3.545779323309306e-14,
+      "response_condition": 1.0844603531759764,
+      "centered_circuit_digest": "2234b8a6e203982aa605ec519936901ec6e4a45d492357fda5d97cc00b841339",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp11_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "image_dp12_coils",
+      "reference_planes_z_mm": [
+        1873.65
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          4.2672823341672264e-21,
+          -0.0001400438520620955
+        ],
+        [
+          0.00014004385206209844,
+          -4.520831854302809e-21
+        ]
+      ],
+      "maximum_absolute_error": 4.20128341838133e-18,
+      "peak_normalized_error": 2.9999770475597293e-14,
+      "response_condition": 1.0628150005955417,
+      "centered_circuit_digest": "57b555b79f26eb06c2f302d577f5a221818949fc95e007cfea6b784746cb2c84",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp12_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "image_dph1_coils",
+      "reference_planes_z_mm": [
+        1976.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -7.002192603104712e-05
+        ],
+        [
+          7.002192603104712e-05,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -1.5020196516006146e-21,
+          -7.00219260310474e-05
+        ],
+        [
+          7.002192603104653e-05,
+          -7.941396416650706e-22
+        ]
+      ],
+      "maximum_absolute_error": 5.827586677109586e-19,
+      "peak_normalized_error": 8.322516970649571e-15,
+      "response_condition": 1.0529687835733477,
+      "centered_circuit_digest": "5b46c1b665062ae99ee021c7c666fca80c31779c01696fd0a4fb2601aadd6493",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dph1_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "image_dp21_coils",
+      "reference_planes_z_mm": [
+        2051.9
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          3.7954456873756766e-21,
+          -0.00015004698435223894
+        ],
+        [
+          0.0001500469843522305,
+          -4.241336417101302e-21
+        ]
+      ],
+      "maximum_absolute_error": 1.328147661294743e-17,
+      "peak_normalized_error": 8.851545181186989e-14,
+      "response_condition": 1.0855359441108665,
+      "centered_circuit_digest": "102c395fce70d0dd6c5de694baf86b70458b7b5833e57ce56a5181e5b31aeb79",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp21_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "image_dp22_coils",
+      "reference_planes_z_mm": [
+        2055.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          3.7954456873756766e-21,
+          -0.00015004698435223894
+        ],
+        [
+          0.0001500469843522305,
+          -4.241336417101302e-21
+        ]
+      ],
+      "maximum_absolute_error": 1.328147661294743e-17,
+      "peak_normalized_error": 8.851545181186989e-14,
+      "response_condition": 1.0855359441108665,
+      "centered_circuit_digest": "102c395fce70d0dd6c5de694baf86b70458b7b5833e57ce56a5181e5b31aeb79",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp21_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "image_dph2_coils",
+      "reference_planes_z_mm": [
+        2120.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -7.002192603104712e-05
+        ],
+        [
+          7.002192603104712e-05,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -1.1972841553717018e-21,
+          -7.002192603104725e-05
+        ],
+        [
+          7.002192603104644e-05,
+          -1.350148509309723e-21
+        ]
+      ],
+      "maximum_absolute_error": 6.776263578034403e-19,
+      "peak_normalized_error": 9.677345314708805e-15,
+      "response_condition": 1.0529687835733477,
+      "centered_circuit_digest": "5b46c1b665062ae99ee021c7c666fca80c31779c01696fd0a4fb2601aadd6493",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dph1_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "image_ish_coils",
+      "reference_planes_z_mm": [
+        2338.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          5.105525197104056e-21,
+          -0.00015004698435224406
+        ],
+        [
+          0.00015004698435224233,
+          -4.850882431476315e-21
+        ]
+      ],
+      "maximum_absolute_error": 1.463672932855431e-18,
+      "peak_normalized_error": 9.754764077226477e-15,
+      "response_condition": 1.0648749098549481,
+      "centered_circuit_digest": "95c1555350cf8b0dd4320266d51206ff3de61c71f417f9c73cab4180c3d05c4d",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_ish_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "host_key": "image_dsh_coils",
+      "reference_planes_z_mm": [
+        2362.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0002625822226164267
+        ],
+        [
+          0.0002625822226164267,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          7.115065460646909e-21,
+          -0.0002625822226164206
+        ],
+        [
+          0.0002625822226164296,
+          -8.322538295496056e-21
+        ]
+      ],
+      "maximum_absolute_error": 6.071532165918825e-18,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "response_condition": 1.0777768268720893,
+      "centered_circuit_digest": "528fe1fb6b92732eb69a031b108f8654c02e48b6abd42f8d7aeb7caa997f4601",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dsh_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "condenser_deflector",
+      "reference_planes_z_mm": [
+        800.0,
+        820.0
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00021006577809314133,
+          0.0,
+          0.0
+        ],
+        [
+          0.00021006577809314133,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00021006577809314133
+        ],
+        [
+          0.0,
+          0.0,
+          0.00021006577809314133,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -7.384372325958703e-22,
+          -0.00021006577809314097,
+          8.419676546494894e-23,
+          -5.796773425549113e-20
+        ],
+        [
+          0.00021006577809314187,
+          -1.286636360024422e-21,
+          3.7820912299856307e-19,
+          3.8951005673330453e-22
+        ],
+        [
+          -1.3950797929100214e-21,
+          -4.593628451250247e-20,
+          -5.592009832574094e-22,
+          -0.00021006577809314095
+        ],
+        [
+          3.427115186652577e-19,
+          -6.907565211075383e-22,
+          0.0002100657780931419,
+          -1.2738168300109239e-21
+        ]
+      ],
+      "maximum_absolute_error": 5.692061405548898e-19,
+      "peak_normalized_error": 2.7096566881184655e-15,
+      "response_condition": 2.256170448808728,
+      "centered_circuit_digest": "9294c14d9c2558f784488b941bc38f21ad20120be3f68f6fc36b9b06143bcd12",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3.toml",
+        "host_key": "condenser_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "condenser_stigmator",
+      "reference_planes_z_mm": [
+        1451.5
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.620699435136265e-19
+        ],
+        [
+          2.3308976977809517e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "beam_deflector",
+      "reference_planes_z_mm": [
+        1027.5,
+        1052.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.98714805553216e-22,
+          -0.00014004385206209115,
+          1.3059127061873245e-21,
+          9.332757452853367e-20
+        ],
+        [
+          0.00014004385206209635,
+          -1.538045922549186e-21,
+          -2.9750300336872123e-19,
+          9.265491257333007e-22
+        ],
+        [
+          -5.572660026467586e-22,
+          9.862361165799027e-20,
+          -2.265798506913128e-22,
+          -0.00014004385206209115
+        ],
+        [
+          -3.0014442572656416e-19,
+          -1.1275193912147971e-21,
+          0.00014004385206209632,
+          -1.6336331673852943e-21
+        ]
+      ],
+      "maximum_absolute_error": 3.0899761915836876e-18,
+      "peak_normalized_error": 2.2064347317536074e-14,
+      "response_condition": 1.976135933503922,
+      "centered_circuit_digest": "fcd385fc3950535ea1a10b301a0d2247d5edfa1603d9251604b643668e3b3ce7",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "beam_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "ac_deflector",
+      "reference_planes_z_mm": [
+        1479.0,
+        1504.0
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.413433333194953e-21,
+          -0.00014004385206209911,
+          -2.7850292277007566e-22,
+          -8.218501487773601e-20
+        ],
+        [
+          0.00014004385206209586,
+          4.488155627502287e-22,
+          -3.2384807441842116e-20,
+          1.0906146109411025e-22
+        ],
+        [
+          -5.688901190558251e-22,
+          -8.186912528368189e-20,
+          -2.379613466466477e-21,
+          -0.00014004385206209911
+        ],
+        [
+          -3.239572178885203e-20,
+          5.048072355584935e-23,
+          0.0001400438520620959,
+          4.958292099494064e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "objective_stigmator",
+      "reference_planes_z_mm": [
+        1746.9
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794248,
+          -5.504721563349914e-19
+        ],
+        [
+          2.3892903464144363e-19,
+          -0.006301973342794157
+        ]
+      ],
+      "maximum_absolute_error": 8.239936510889834e-17,
+      "peak_normalized_error": 1.3075168780762119e-14,
+      "response_condition": 1.0000000000000158,
+      "centered_circuit_digest": "0deddd5bac59d6dc1e89297c1860f3011f6138eb79020ccc4202801d426da2de",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "condenser_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "image_diffraction_deflector",
+      "reference_planes_z_mm": [
+        1774.4,
+        1799.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424,
+          0.0,
+          0.0
+        ],
+        [
+          0.00014004385206209424,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.0,
+          0.0,
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.560648918700499e-21,
+          -0.00014004385206209911,
+          5.175894791402479e-22,
+          -8.218501487773601e-20
+        ],
+        [
+          0.00014004385206209586,
+          4.0751087589825927e-22,
+          -3.302008215228284e-20,
+          7.298743907222817e-22
+        ],
+        [
+          -1.3162350569907518e-21,
+          -8.186912528368189e-20,
+          -2.5389771925143813e-21,
+          -0.00014004385206209911
+        ],
+        [
+          -3.390403349683312e-20,
+          -5.724979555658366e-22,
+          0.0001400438520620959,
+          4.294980845057127e-22
+        ]
+      ],
+      "maximum_absolute_error": 4.87890977618477e-18,
+      "peak_normalized_error": 3.48384431329517e-14,
+      "response_condition": 1.4667584756921659,
+      "centered_circuit_digest": "0ae5eacc79f61e05bdda011f1a81c13dbdf1a4ddf7ad68e12aae01b9b9eb291a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C2.toml",
+        "host_key": "ac_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "probe_dph2_coils",
+      "reference_planes_z_mm": [
+        1144.5
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.6040737346388325e-21,
+          -0.0005251644452328704
+        ],
+        [
+          0.0005251644452328615,
+          -1.3319844374136582e-22
+        ]
+      ],
+      "maximum_absolute_error": 1.702197410802242e-17,
+      "peak_normalized_error": 3.2412655240731355e-14,
+      "response_condition": 1.064559726506584,
+      "centered_circuit_digest": "3bd92a642ed93640605232d0dd5c75870b89afd7e75d93ca387b92c7b23b4661",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dph2_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "probe_dph1_coils",
+      "reference_planes_z_mm": [
+        1300.85
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -3.6040737346388325e-21,
+          -0.0005251644452328704
+        ],
+        [
+          0.0005251644452328615,
+          -1.3319844374136582e-22
+        ]
+      ],
+      "maximum_absolute_error": 1.702197410802242e-17,
+      "peak_normalized_error": 3.2412655240731355e-14,
+      "response_condition": 1.064559726506584,
+      "centered_circuit_digest": "3bd92a642ed93640605232d0dd5c75870b89afd7e75d93ca387b92c7b23b4661",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dph2_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "probe_dp22_coils",
+      "reference_planes_z_mm": [
+        1186.35
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -2.9030737020455226e-21,
+          -0.0005251644452328545
+        ],
+        [
+          0.0005251644452328522,
+          -1.5888961610823514e-21
+        ]
+      ],
+      "maximum_absolute_error": 1.1926223897340549e-18,
+      "peak_normalized_error": 2.2709503671849994e-15,
+      "response_condition": 1.0651540676909084,
+      "centered_circuit_digest": "de761f39ca0646ffba6eefa7627d4de140b34efe811ffe44325d3e40adc87aff",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dp22_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "probe_dp21_coils",
+      "reference_planes_z_mm": [
+        1229.9
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          2.7052090589987216e-21,
+          -0.0005251644452328379
+        ],
+        [
+          0.00052516444523285,
+          1.72157352433429e-20
+        ]
+      ],
+      "maximum_absolute_error": 1.5504091066542713e-17,
+      "peak_normalized_error": 2.9522354773404996e-14,
+      "response_condition": 1.0649462856047278,
+      "centered_circuit_digest": "701b80d1c6419057dc75d0adfe05cd85f6f899634a769fbbf6853346d4907bf0",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dp21_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "probe_dp11_coils",
+      "reference_planes_z_mm": [
+        1346.3
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0005251644452328534
+        ],
+        [
+          0.0005251644452328534,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          1.47384056829186e-21,
+          -0.0005251644452328373
+        ],
+        [
+          0.0005251644452328498,
+          1.580315007841902e-20
+        ]
+      ],
+      "maximum_absolute_error": 1.6046192152785466e-17,
+      "peak_normalized_error": 3.0554604940307265e-14,
+      "response_condition": 1.0649462856047265,
+      "centered_circuit_digest": "57c0ac5c4c6d7b4fe57ba5aa1917fb6c2b546a7fb53970f719dbd2446682e97a",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+        "host_key": "probe_dp11_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "image_dp11_coils",
+      "reference_planes_z_mm": [
+        1811.9
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00035010963015523553
+        ],
+        [
+          0.00035010963015523553,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          8.980689210588354e-21,
+          -0.00035010963015523944
+        ],
+        [
+          0.0003501096301552231,
+          -1.0441882865726243e-20
+        ]
+      ],
+      "maximum_absolute_error": 1.2414114874959026e-17,
+      "peak_normalized_error": 3.545779323309306e-14,
+      "response_condition": 1.0844603531759764,
+      "centered_circuit_digest": "2234b8a6e203982aa605ec519936901ec6e4a45d492357fda5d97cc00b841339",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp11_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "image_dp12_coils",
+      "reference_planes_z_mm": [
+        1873.65
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.00014004385206209424
+        ],
+        [
+          0.00014004385206209424,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          4.2672823341672264e-21,
+          -0.0001400438520620955
+        ],
+        [
+          0.00014004385206209844,
+          -4.520831854302809e-21
+        ]
+      ],
+      "maximum_absolute_error": 4.20128341838133e-18,
+      "peak_normalized_error": 2.9999770475597293e-14,
+      "response_condition": 1.0628150005955417,
+      "centered_circuit_digest": "57b555b79f26eb06c2f302d577f5a221818949fc95e007cfea6b784746cb2c84",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp12_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "image_dph1_coils",
+      "reference_planes_z_mm": [
+        1976.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -7.002192603104712e-05
+        ],
+        [
+          7.002192603104712e-05,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -1.5020196516006146e-21,
+          -7.00219260310474e-05
+        ],
+        [
+          7.002192603104653e-05,
+          -7.941396416650706e-22
+        ]
+      ],
+      "maximum_absolute_error": 5.827586677109586e-19,
+      "peak_normalized_error": 8.322516970649571e-15,
+      "response_condition": 1.0529687835733477,
+      "centered_circuit_digest": "5b46c1b665062ae99ee021c7c666fca80c31779c01696fd0a4fb2601aadd6493",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dph1_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "image_dp21_coils",
+      "reference_planes_z_mm": [
+        2051.9
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          3.7954456873756766e-21,
+          -0.00015004698435223894
+        ],
+        [
+          0.0001500469843522305,
+          -4.241336417101302e-21
+        ]
+      ],
+      "maximum_absolute_error": 1.328147661294743e-17,
+      "peak_normalized_error": 8.851545181186989e-14,
+      "response_condition": 1.0855359441108665,
+      "centered_circuit_digest": "102c395fce70d0dd6c5de694baf86b70458b7b5833e57ce56a5181e5b31aeb79",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp21_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "image_dp22_coils",
+      "reference_planes_z_mm": [
+        2055.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          3.7954456873756766e-21,
+          -0.00015004698435223894
+        ],
+        [
+          0.0001500469843522305,
+          -4.241336417101302e-21
+        ]
+      ],
+      "maximum_absolute_error": 1.328147661294743e-17,
+      "peak_normalized_error": 8.851545181186989e-14,
+      "response_condition": 1.0855359441108665,
+      "centered_circuit_digest": "102c395fce70d0dd6c5de694baf86b70458b7b5833e57ce56a5181e5b31aeb79",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dp21_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "image_dph2_coils",
+      "reference_planes_z_mm": [
+        2120.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -7.002192603104712e-05
+        ],
+        [
+          7.002192603104712e-05,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -1.1972841553717018e-21,
+          -7.002192603104725e-05
+        ],
+        [
+          7.002192603104644e-05,
+          -1.350148509309723e-21
+        ]
+      ],
+      "maximum_absolute_error": 6.776263578034403e-19,
+      "peak_normalized_error": 9.677345314708805e-15,
+      "response_condition": 1.0529687835733477,
+      "centered_circuit_digest": "5b46c1b665062ae99ee021c7c666fca80c31779c01696fd0a4fb2601aadd6493",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dph1_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "image_ish_coils",
+      "reference_planes_z_mm": [
+        2194.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0001500469843522438
+        ],
+        [
+          0.0001500469843522438,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          5.105525197104056e-21,
+          -0.00015004698435224406
+        ],
+        [
+          0.00015004698435224233,
+          -4.850882431476315e-21
+        ]
+      ],
+      "maximum_absolute_error": 1.463672932855431e-18,
+      "peak_normalized_error": 9.754764077226477e-15,
+      "response_condition": 1.0648749098549481,
+      "centered_circuit_digest": "95c1555350cf8b0dd4320266d51206ff3de61c71f417f9c73cab4180c3d05c4d",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_ish_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "host_key": "image_dsh_coils",
+      "reference_planes_z_mm": [
+        2218.4
+      ],
+      "command_unit": "mrad",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.0,
+          -0.0002625822226164267
+        ],
+        [
+          0.0002625822226164267,
+          0.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          7.115065460646909e-21,
+          -0.0002625822226164206
+        ],
+        [
+          0.0002625822226164296,
+          -8.322538295496056e-21
+        ]
+      ],
+      "maximum_absolute_error": 6.071532165918825e-18,
+      "peak_normalized_error": 2.3122403738610904e-14,
+      "response_condition": 1.0777768268720893,
+      "centered_circuit_digest": "528fe1fb6b92732eb69a031b108f8654c02e48b6abd42f8d7aeb7caa997f4601",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/column/C3_BCOR.toml",
+        "host_key": "image_dsh_coils"
+      }
+    },
+    {
+      "path": "configs/instruments/gun/FEG.toml",
+      "host_key": "feg_deflector",
+      "reference_planes_z_mm": [
+        402.0,
+        418.0
+      ],
+      "command_unit": "mT",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.001,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.001,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.001,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.001
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          0.0009999999999999688,
+          -1.619576714765295e-20,
+          -4.348799842101212e-20,
+          2.9178337935277765e-22
+        ],
+        [
+          1.9069973782326674e-20,
+          0.0010000000000000215,
+          5.376736170868179e-21,
+          -3.64848553235574e-18
+        ],
+        [
+          -6.304501912300122e-20,
+          -2.686760895930959e-21,
+          0.000999999999999969,
+          -1.6839045946739945e-20
+        ],
+        [
+          4.586891765819076e-21,
+          -3.831155920032896e-18,
+          2.0425543614920706e-20,
+          0.0010000000000000217
+        ]
+      ],
+      "maximum_absolute_error": 3.122502256758253e-17,
+      "peak_normalized_error": 3.122502256758253e-14,
+      "response_condition": 3.1758719372579662,
+      "centered_circuit_digest": "bd29253563a934e4d9e9c9dca0bd000a2bbf8f71c5e85ba2a482cc6cb47cf978",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/gun/FEG.toml",
+        "host_key": "feg_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/gun/FEG.toml",
+      "host_key": "feg_stigmator",
+      "reference_planes_z_mm": [
+        433.0
+      ],
+      "command_unit": "normal_skew_T_per_m",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          1.0000000000000044,
+          -1.105360648379579e-17
+        ],
+        [
+          1.5934964624620238e-16,
+          1.0
+        ]
+      ],
+      "maximum_absolute_error": 4.440892098500626e-15,
+      "peak_normalized_error": 4.440892098500626e-15,
+      "response_condition": 1.0000000000000009,
+      "centered_circuit_digest": "331e7e0fccbfdf649ea9c470f5c899f1eda74508068155a7bed82a344a19a975",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/gun/FEG.toml",
+        "host_key": "feg_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/gun/FEG_Mono.toml",
+      "host_key": "feg_deflector",
+      "reference_planes_z_mm": [
+        452.0,
+        468.0
+      ],
+      "command_unit": "mT",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.001,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.001,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.001,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.001
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          0.0009999999999999688,
+          -1.7314258187615006e-20,
+          2.817726533246392e-19,
+          -1.5602279510305383e-21
+        ],
+        [
+          2.0157979674946513e-20,
+          0.0010000000000000215,
+          5.81123882175942e-21,
+          -2.1164555063435953e-18
+        ],
+        [
+          2.513349767422659e-19,
+          -5.36431073291294e-22,
+          0.000999999999999969,
+          -1.7137530144578043e-20
+        ],
+        [
+          5.36887792098534e-21,
+          -2.1715863507812275e-18,
+          2.0430112279846794e-20,
+          0.0010000000000000215
+        ]
+      ],
+      "maximum_absolute_error": 3.122502256758253e-17,
+      "peak_normalized_error": 3.122502256758253e-14,
+      "response_condition": 3.1758719372579662,
+      "centered_circuit_digest": "bd29253563a934e4d9e9c9dca0bd000a2bbf8f71c5e85ba2a482cc6cb47cf978",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/gun/FEG.toml",
+        "host_key": "feg_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/gun/FEG_Mono.toml",
+      "host_key": "feg_stigmator",
+      "reference_planes_z_mm": [
+        483.0
+      ],
+      "command_unit": "normal_skew_T_per_m",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          1.0000000000000044,
+          -1.4304212089493744e-17
+        ],
+        [
+          1.5767533268238726e-16,
+          1.0
+        ]
+      ],
+      "maximum_absolute_error": 4.440892098500626e-15,
+      "peak_normalized_error": 4.440892098500626e-15,
+      "response_condition": 1.0000000000000009,
+      "centered_circuit_digest": "331e7e0fccbfdf649ea9c470f5c899f1eda74508068155a7bed82a344a19a975",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/gun/FEG.toml",
+        "host_key": "feg_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/gun/Thermionic.toml",
+      "host_key": "thermionic_deflector",
+      "reference_planes_z_mm": [
+        402.0,
+        418.0
+      ],
+      "command_unit": "mT",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          0.001,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.001,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.001,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.001
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          0.0009999999999999688,
+          -1.619576714765295e-20,
+          -4.348799842101212e-20,
+          2.9178337935277765e-22
+        ],
+        [
+          1.9069973782326674e-20,
+          0.0010000000000000215,
+          5.376736170868179e-21,
+          -3.64848553235574e-18
+        ],
+        [
+          -6.304501912300122e-20,
+          -2.686760895930959e-21,
+          0.000999999999999969,
+          -1.6839045946739945e-20
+        ],
+        [
+          4.586891765819076e-21,
+          -3.831155920032896e-18,
+          2.0425543614920706e-20,
+          0.0010000000000000217
+        ]
+      ],
+      "maximum_absolute_error": 3.122502256758253e-17,
+      "peak_normalized_error": 3.122502256758253e-14,
+      "response_condition": 3.1758719372579662,
+      "centered_circuit_digest": "bd29253563a934e4d9e9c9dca0bd000a2bbf8f71c5e85ba2a482cc6cb47cf978",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/gun/FEG.toml",
+        "host_key": "feg_deflector"
+      }
+    },
+    {
+      "path": "configs/instruments/gun/Thermionic.toml",
+      "host_key": "thermionic_stigmator",
+      "reference_planes_z_mm": [
+        433.0
+      ],
+      "command_unit": "normal_skew_T_per_m",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          1.0000000000000044,
+          -1.105360648379579e-17
+        ],
+        [
+          1.5934964624620238e-16,
+          1.0
+        ]
+      ],
+      "maximum_absolute_error": 4.440892098500626e-15,
+      "peak_normalized_error": 4.440892098500626e-15,
+      "response_condition": 1.0000000000000009,
+      "centered_circuit_digest": "331e7e0fccbfdf649ea9c470f5c899f1eda74508068155a7bed82a344a19a975",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/gun/FEG.toml",
+        "host_key": "feg_stigmator"
+      }
+    },
+    {
+      "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "host_key": "diffraction_stigmator",
+      "reference_planes_z_mm": [
+        1839.4
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794339,
+          -2.5181245495158113e-19
+        ],
+        [
+          1.3598710877535841e-19,
+          -0.006301973342794071
+        ]
+      ],
+      "maximum_absolute_error": 1.691355389077387e-16,
+      "peak_normalized_error": 2.6838504339459088e-14,
+      "response_condition": 1.0000000000000506,
+      "centered_circuit_digest": "50b03c9efc954c619c8010b033231545b252fd65c3a582dcfc9c2bc039d998f9",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+        "host_key": "diffraction_stigmator"
+      }
+    },
+    {
+      "path": "configs/subassemblies/projector_stack.toml",
+      "host_key": "diffraction_stigmator",
+      "reference_planes_z_mm": [
+        1839.4
+      ],
+      "command_unit": "percent",
+      "installed_pack_order": 12,
+      "installed_path_order": 24,
+      "reference_pack_order": 24,
+      "reference_path_order": 48,
+      "native_target_per_unit": [
+        [
+          -0.00630197334279424,
+          -3.8588457412824556e-19
+        ],
+        [
+          -0.0,
+          -0.00630197334279424
+        ]
+      ],
+      "independent_observed_per_unit": [
+        [
+          -0.006301973342794339,
+          -2.5181245495158113e-19
+        ],
+        [
+          1.3598710877535841e-19,
+          -0.006301973342794071
+        ]
+      ],
+      "maximum_absolute_error": 1.691355389077387e-16,
+      "peak_normalized_error": 2.6838504339459088e-14,
+      "response_condition": 1.0000000000000506,
+      "centered_circuit_digest": "50b03c9efc954c619c8010b033231545b252fd65c3a582dcfc9c2bc039d998f9",
+      "unit_current_response_origin": {
+        "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+        "host_key": "diffraction_stigmator"
+      }
+    }
+  ],
+  "source_or_particle_transport_or_wave_executed": false
+}

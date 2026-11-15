@@ -170,3 +170,21 @@ Individual changes, tube clearances, three unresolved copper–pole-shoe zero-cl
 ## 2026-10-21: follow-up on three DP copper end contacts
 
 DP22, DP21 and DP11 use explicit `winding_axial_length_mm`: fixed-centre copper retracts 0.14 mm per end, with 0.04 mm insulation at both ends, leaving 0.10 mm nominal assembly clearance to adjacent pole shoes. Optical allocations/effective thicknesses, all pole shoes, magnetic gaps and vacuum tubes are retained. Dimensions are engineering reconstructions; public sources support the insulation family but not this instrument's manufacturing dimensions or voltage ratings. Copper shapes are intentionally shortened, so the previous “all copper shapes unchanged” conclusion no longer applies. See the [end-insulation and clearance repair record](probe-contact-isolation-2026-10-21.md).
+
+## 2026-11-15 radial winding and outer-insulation extension
+
+Default HP1/HP2 now add six 0.15 mm exterior winding jackets per host, explicitly engineered rather than OEM data. The previous 25 material records remain unchanged, giving 31 regions per host. Optional explicit per-coil turns and conductor metal area generate radial-axis rounded rectangular round-wire loops plus remaining insulation, without inferring electrical current or changing native multipole strength. Actual default N/area/current remain undefined as confirmed by the user. Earlier material-count and bulk-winding receipts above remain historical evidence. See [the current internal CAD guide](../PROBE_CORRECTOR_INTERNAL_CAD.md) and [implementation report](../development/probe_corrector_details_20261115/README.md).
+
+## 2026-11-15 ideal-current multipole extension superseding the CAD-only stage
+
+The subsequent explicit user request preserves Probe HP1/HP2 at two turns per
+radial coil and adds declared fine-wire metal area, insulation and fixed
+current-to-field gains. The named Probe/Image QPol/QPC/QPH1/QPH2 and HPol/HPC
+channels have engineering winding-only CAD at their existing reference planes;
+this does not infer OEM cartridges or add opaque transport boundaries. Main
+HP native installation-angle changes rotate the whole cartridge/source relative
+to its saved angular reference, retaining numerical currents. Thus the earlier
+undefined-area/current and CAD-only statements above describe historical
+checkpoints, not the current calibrated recipe. See the
+[multipole winding/current guide](../MULTIPOLE_CURRENT_WINDINGS.md) and
+[executed current-calibration report](../development/multipole_current_coils_20261115/README.md).

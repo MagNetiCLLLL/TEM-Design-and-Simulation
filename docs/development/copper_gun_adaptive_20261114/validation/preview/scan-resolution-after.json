@@ -1,0 +1,157 @@
+{
+  "resolved_values": [
+    {
+      "_pure_shift_angular_residual": 0.0,
+      "_pure_shift_calibrated": false,
+      "_pure_shift_lower_ratio_matrix": [
+        [
+          -1.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0
+        ]
+      ],
+      "_scan_command_matrix_mrad": [
+        [
+          0.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.1
+        ]
+      ],
+      "_scan_scale_calibrated": false,
+      "_scan_scale_residual": 0.0,
+      "lower_coil_gain": -0.5,
+      "scan_amplitude_x_mrad": 0.1,
+      "scan_amplitude_y_mrad": 0.1
+    },
+    {
+      "_image_plane_calibrated": false,
+      "_image_plane_lower_ratio_matrix": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "_image_plane_residual": 0.0,
+      "_image_plane_target_key": "",
+      "_image_plane_target_z_mm": null,
+      "_scan_command_matrix_mrad": [
+        [
+          -0.1,
+          0.0
+        ],
+        [
+          0.0,
+          -0.1
+        ]
+      ],
+      "_scan_scale_calibrated": false,
+      "_scan_scale_residual": 0.0,
+      "lower_coil_gain": 0.5,
+      "scan_amplitude_x_mrad": -0.1,
+      "scan_amplitude_y_mrad": -0.1,
+      "scan_frame_period_s": 1.0,
+      "scan_pixels_x": 64,
+      "scan_lines": 64,
+      "scan_pixel_size_nm": 0.02
+    }
+  ],
+  "lower_gain_readbacks": [
+    -0.5,
+    0.5
+  ],
+  "ac_ratio": [
+    [
+      -1.0,
+      0.0
+    ],
+    [
+      0.0,
+      -1.0
+    ]
+  ],
+  "descan_ratio": [
+    [
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0
+    ]
+  ],
+  "ac_commands_mrad": [
+    [
+      0.1,
+      0.0
+    ],
+    [
+      0.0,
+      0.1
+    ]
+  ],
+  "descan_commands_mrad": [
+    [
+      -0.1,
+      0.0
+    ],
+    [
+      0.0,
+      -0.1
+    ]
+  ],
+  "ac_coil_maps": [
+    [
+      [
+        0.5,
+        0.0
+      ],
+      [
+        0.0,
+        0.5
+      ]
+    ],
+    [
+      [
+        -0.5,
+        0.0
+      ],
+      [
+        0.0,
+        -0.5
+      ]
+    ]
+  ],
+  "descan_coil_maps": [
+    [
+      [
+        0.5,
+        0.0
+      ],
+      [
+        0.0,
+        0.5
+      ]
+    ],
+    [
+      [
+        0.5,
+        0.0
+      ],
+      [
+        0.0,
+        0.5
+      ]
+    ]
+  ],
+  "field_receipt": null
+}

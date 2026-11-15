@@ -110,10 +110,9 @@ def _magnetic_sample(sources, points, valid):
     for source in sources:
         if source.known_zero:
             continue
-        active = ((points[:, 2] >= source.bounds_m[0, 2])
-                  & (points[:, 2] <= source.bounds_m[1, 2]))
-        if source.field_map is None:
-            active &= source.analytic_axial_mask(points)
+        active = (source.analytic_axial_mask(points) if source.field_map is None else
+                  ((points[:, 2] >= source.bounds_m[0, 2])
+                   & (points[:, 2] <= source.bounds_m[1, 2])))
         domain = source.contains(points)
         # A map's zero fill is an interpolation contract, not evidence of zero
         # field beyond its native domain. Never use a partial overlapping sum.
@@ -260,7 +259,12 @@ def _source_groups(state, magnetic):
         models = tuple(dict.fromkeys(getattr(identity, "model", "unknown") for identity in identities))
         notes.extend(getattr(identity, "limitation", "Unknown provider model identity") for identity in identities)
         for source in sources:
-            notes.append(f"{source.key}: native valid radial limit {source.radius_m*1e3:.6g} mm; global axial support {source.bounds_m[0, 2]*1e3:.6g} to {source.bounds_m[1, 2]*1e3:.6g} mm. Registered map/pose boundaries are checked point by point.")
+            from temsim.physics.frozen_copper_coil_field import is_all_z_copper_field
+            if is_all_z_copper_field(source.provider):
+                notes.append(f"{source.key}: full axial field tails; finite winding bounds seed the display only. "
+                             "Display positions remain inside every registered winding bore.")
+            else:
+                notes.append(f"{source.key}: native valid radial limit {source.radius_m*1e3:.6g} mm; global axial support {source.bounds_m[0, 2]*1e3:.6g} to {source.bounds_m[1, 2]*1e3:.6g} mm. Registered map/pose boundaries are checked point by point.")
         label = sources[0].label
         if joint:
             label += " — joint circuit: " + ", ".join(sorted(channels))

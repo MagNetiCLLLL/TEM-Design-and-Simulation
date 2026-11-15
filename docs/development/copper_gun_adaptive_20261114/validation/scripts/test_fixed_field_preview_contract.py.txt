@@ -1,0 +1,123 @@
+"""Pure-record checks for the output-only controlled-Preview runner.
+
+No field is solved or sampled, and no finite source, chief ray or propagation
+operator is executed by these tests.
+"""
+from copy import deepcopy
+import importlib.util
+import json
+from pathlib import Path
+from types import SimpleNamespace
+
+import numpy as np
+import pytest
+
+
+CASE = Path(__file__).resolve().parent
+SPEC = importlib.util.spec_from_file_location("fixed_field_preview_contract_subject", CASE / "fixed_field_preview.py")
+SUBJECT = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(SUBJECT)
+
+
+class Record:
+    def __init__(self, payload, digest="original-provider"):
+        self.payload = deepcopy(payload)
+        self.digest = digest
+
+    def to_dict(self):
+        return deepcopy(self.payload)
+
+
+def runtime():
+    row = SimpleNamespace(source_id="coil", owner_ids=("host:0",), kind="magnetic",
+        potential=Record(dict(NI=1., geometry=[.01, .02], pose=[0., 0., 0.])))
+    snapshot = SimpleNamespace(contributions=(row,), gauge=Record(dict(gradient=[0., 0., 0.])),
+        dynamic_coils=(Record(dict(matrix=[[.1, 0.], [0., .1]], period_s=1., lines=1)),))
+    return SimpleNamespace(snapshot=snapshot, geometry=Record(dict(start_z_m=.45, stop_z_m=5.,
+        boundaries=[dict(radius_m=.01)], source_scene_geometry_digest="fixed-geometry", digest="geometry")),
+        metadata=dict(emission_time_s=0., electric_policy="retained", dynamic_snapshot_digest="derived-one"),
+        digest="runtime-one", source_identity="source-one")
+
+
+def test_runtime_identity_markers_do_not_replace_operator_comparison():
+    first, second = runtime(), runtime()
+    second.digest, second.source_identity = "runtime-two", "source-two"
+    second.metadata["dynamic_snapshot_digest"] = "derived-two"
+    assert SUBJECT.operator_witness(first) == SUBJECT.operator_witness(second)
+    assert second.digest == "runtime-two" and second.source_identity == "source-two"
+
+
+@pytest.mark.parametrize("change", ("NI", "geometry", "pose", "drive", "boundary", "gauge", "epoch", "provider_order"))
+def test_every_actual_field_or_boundary_edit_is_detected(change):
+    from temsim.immutable_json import json_digest
+    first, second = runtime(), runtime()
+    if change in {"NI", "geometry", "pose"}:
+        second.snapshot.contributions[0].potential.payload[change] = 2.
+    elif change == "drive":
+        second.snapshot.dynamic_coils[0].payload["period_s"] = 2.
+    elif change == "boundary":
+        second.geometry.payload["boundaries"][0]["radius_m"] = .02
+    elif change == "gauge":
+        second.snapshot.gauge.payload["gradient"][0] = 1.
+    elif change == "epoch":
+        second.metadata["emission_time_s"] = 1.
+    else:
+        another = deepcopy(second.snapshot.contributions[0])
+        another.source_id = "different-coil"
+        first.snapshot.contributions = (*first.snapshot.contributions, another)
+        second.snapshot.contributions = (another, *second.snapshot.contributions)
+    assert json_digest(SUBJECT.operator_witness(first)) != json_digest(SUBJECT.operator_witness(second))
+
+
+def test_quality_comparison_omits_only_declared_markers_without_mutation():
+    original = dict(root=dict(ref=0), nodes=[
+        dict(type="temsim.optics.model:State", fields=["step_mm", "history_step_mm", "energy_tolerance_ev"],
+             attributes=dict(step_mm=.05, history_step_mm=.5, energy_tolerance_ev=1e-7, _tuning_quality="High accuracy")),
+        dict(type="temsim.optics.electron_gun.emitter:ColdFieldEmitter", fields=["ray_count"],
+             attributes=dict(ray_count=1024, _tuning_boundary_probes=0))])
+    recovery = SimpleNamespace(graph_without_derived=lambda state: deepcopy(original))
+    result = SUBJECT.comparable_graph(object(), recovery)
+    assert result["nodes"][0]["attributes"] == dict(energy_tolerance_ev=1e-7)
+    assert result["nodes"][1]["attributes"] == dict(ray_count=1024)
+    assert original["nodes"][0]["attributes"]["step_mm"] == .05
+    assert original["nodes"][1]["attributes"]["_tuning_boundary_probes"] == 0
+
+
+def test_nonzero_source_support_probes_cannot_be_hidden():
+    graph = dict(root=dict(ref=0), nodes=[dict(type="temsim.optics.model:State", fields=[], attributes={}),
+        dict(type="temsim.optics.electron_gun.emitter:ColdFieldEmitter", fields=[],
+            attributes=dict(_tuning_boundary_probes=33))])
+    recovery = SimpleNamespace(graph_without_derived=lambda state: deepcopy(graph))
+    with pytest.raises(ValueError, match="nonzero"):
+        SUBJECT.comparable_graph(object(), recovery)
+
+
+def branch():
+    values = {name: np.array([[0., 1.]]) for name in ("z", "x", "y", "tx", "ty", "flight_time_s",
+        "kinetic_energy_ev", "alive", "blocked_z", "energy_offset_ev", "ray_weight", "source_ray_id", "source_azimuth_rad")}
+    values["blocked_key"] = [None, "aperture"]
+    return SimpleNamespace(**values)
+
+
+def test_formal_roundtrip_requires_real_array_bytes_not_rounded_values():
+    actual = SimpleNamespace(incident=branch(), branches={"000": branch()})
+    restored = deepcopy(actual)
+    assert len(SUBJECT.compare_saved_arrays(actual, restored)) == 26
+    restored.incident.x[0, 0] = np.nextafter(0., 1.)
+    with pytest.raises(ValueError, match="incident.x"):
+        SUBJECT.compare_saved_arrays(actual, restored)
+
+
+def test_prepared_authority_rejects_changed_original_archive_or_field(tmp_path):
+    plan = dict(status="PREPARED_NO_PHYSICAL_EXECUTION", label=SUBJECT.LABEL)
+    for key in ("source", "runner_sha256", "recovery_helper_sha256", "validation_helper_sha256",
+                "prepared_snapshot_id", "controls_digest", "invariant_input_graph_digest", "actual_field_identity",
+                "official_gun_signature", "preview_step_mm", "preview_history_step_mm", "maximum_wall_seconds"):
+        plan[key] = key
+    (tmp_path / "preparation.json").write_text(json.dumps(plan), encoding="utf-8")
+    args = SimpleNamespace(prepared=tmp_path)
+    SUBJECT.verify_prepared_authority(args, plan)
+    changed = deepcopy(plan)
+    changed["actual_field_identity"] = "other-field"
+    with pytest.raises(ValueError, match="actual_field_identity"):
+        SUBJECT.verify_prepared_authority(args, changed)

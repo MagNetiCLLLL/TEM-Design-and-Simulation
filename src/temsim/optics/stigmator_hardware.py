@@ -97,8 +97,9 @@ def inspect_stigmator_hardware(state) -> StigmatorHardwareReport:
     """Describe installed column stigmators without mutating their state.
 
     Assembly-parent membership is reported separately from an explicitly
-    declared physical host. In particular A1 fine's use of the condenser
-    stigmator does not identify a corrector-internal coil or relocate its field.
+    declared physical host. Probe A1 fine uses the existing QPol normal/skew
+    controls, while Image A1 fine uses Objective stigmator controls. These
+    aliases do not create another field or move its declared physical owner.
     Disabled but installed hardware is retained; absent hardware is omitted.
     """
     assembly = getattr(state, "_resolved_assembly", None)
@@ -138,14 +139,24 @@ def inspect_stigmator_hardware(state) -> StigmatorHardwareReport:
     records.sort(key=lambda record: (record.field_reference_z_mm, record.key))
     installed = {record.key for record in records}
     aliases = []
-    # These are the existing corrector_channels.channel_control_specs bindings.
-    # They are operating aliases; no inferred mechanical owner is attached.
-    for system, key in (("probe", "condenser_stigmator"), ("image", "objective_stigmator")):
+    # Resolve the actual service output definitions without invoking the
+    # calibration helper, which intentionally rejects disabled hardware.
+    # These aliases do not infer an OEM mechanical host or another source.
+    from temsim.optics.probe_service import OUTPUTS
+    probe_outputs=tuple(OUTPUTS[name] for name in ('QPolx','QPoly'))
+    probe_keys={output.component for output in probe_outputs}
+    if len(probe_keys)!=1:
+        raise ValueError('Probe A1 fine requires one shared normal/skew QPol owner')
+    probe_key=next(iter(probe_keys))
+    bindings=(('probe',probe_key,tuple(output.fields[0][0] for output in probe_outputs)),
+              ('image','objective_stigmator',('strength_x_percent','strength_y_percent')))
+    for system,key,fields in bindings:
         if bool(getattr(state, f"{system}_corrector_installed", False)):
-            if key not in installed:
+            available=(key in installed if system=='image' else key in parts and key in components
+                and bool(getattr(components[key],'_layout_installed',True)))
+            if not available:
                 raise ValueError(f"{system} A1 fine requires installed {key}")
-            aliases.append(StigmatorControlAlias(f"{system}.a1_fine", key,
-                ("strength_x_percent", "strength_y_percent")))
+            aliases.append(StigmatorControlAlias(f"{system}.a1_fine",key,fields))
     shared = []
     for channel_key, host_key in SHARED_DEFLECTOR_HOSTS.items():
         channel = components.get(channel_key)

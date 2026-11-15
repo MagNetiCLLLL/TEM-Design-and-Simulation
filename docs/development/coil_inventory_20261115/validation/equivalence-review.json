@@ -1,0 +1,164 @@
+{
+  "review_date": "2026-11-15",
+  "scope": "Read-only component/operator review, bounded tests, detached stored startup preset assignments and archive manifest inspection. No source emission, particle transport, coherent propagation, optical solve, source/configuration/tolerance edits, or startup index updates.",
+  "tests": {
+    "command": ".venv/Scripts/python.exe -m pytest -o addopts= -q tests/test_explicit_round_winding_field.py tests/test_copper_coil_capture.py tests/test_annular_coil_potential.py",
+    "passed": 30,
+    "warnings": 16,
+    "duration_s": 14.87,
+    "exit_code": 0,
+    "warning_kind": "Existing Pydantic json_encoders deprecation warnings"
+  },
+  "equivalence": {
+    "legacy_law": "NI100 * percent * 0.01 * polarity * winding_fraction; zero if disabled",
+    "explicit_law": "N * I100 * percent * 0.01 * polarity; zero if disabled",
+    "same_kernel": "AnnularCoilPotential, tensor Gauss-Legendre circular loops and complete elliptic integrals",
+    "existing_B_comparison_tolerance": {
+      "rtol": 4e-14,
+      "atol_T": 1e-20
+    },
+    "same_envelope_required": [
+      "inner_radius_m",
+      "outer_radius_m",
+      "length_m",
+      "center_z_m",
+      "registration",
+      "quadrature_order",
+      "per_interval_ampere_turns"
+    ],
+    "Objective": "Two current-bearing intervals, 290 mm total occupied axial length; NI apportioned by interval length, with central gap excluded. Child display envelope is not the source support.",
+    "scope_limit": "Numerical equivalence of new and legacy homogenized ideal-current sources does not qualify discrete winding or magnetic material accuracy."
+  },
+  "standard_gui_startup": {
+    "entry_point": "main.py -> temsim.app.run() -> MainWindow() without startup_working_point",
+    "selection": {
+      "gun": "FEG",
+      "column": "C3 + Probe Corrector",
+      "recording": "No Energy Filter"
+    },
+    "construction": "default_state(); AssemblyCatalog.apply(default_selection); switch_mode(unified); apply_operating_mode_pair(nano_probe,diffraction); apply_physical_layout_to_state; step_mm=0.05",
+    "simulation_mode": "unified",
+    "round_lens_field_model": "gaussian",
+    "step_mm": 0.05,
+    "lenses": [
+      {
+        "key": "condenser_lens_1",
+        "enabled": true,
+        "percent": 51.666666666666664,
+        "polarity": 1
+      },
+      {
+        "key": "condenser_lens_2",
+        "enabled": true,
+        "percent": 13.899040164772698,
+        "polarity": 1
+      },
+      {
+        "key": "condenser_lens_3",
+        "enabled": true,
+        "percent": 15.68823681182136,
+        "polarity": 1
+      },
+      {
+        "key": "adapter_lens",
+        "enabled": true,
+        "percent": 10.0,
+        "polarity": 1
+      },
+      {
+        "key": "probe_tl22_lens",
+        "enabled": true,
+        "percent": 59.93152503582202,
+        "polarity": -1
+      },
+      {
+        "key": "probe_tl21_lens",
+        "enabled": true,
+        "percent": 59.95527906841963,
+        "polarity": 1
+      },
+      {
+        "key": "probe_tl12_lens",
+        "enabled": true,
+        "percent": 36.004558708747176,
+        "polarity": 1
+      },
+      {
+        "key": "mini_condenser",
+        "enabled": true,
+        "percent": 43.88646617222637,
+        "polarity": -1
+      },
+      {
+        "key": "objective_lens",
+        "enabled": true,
+        "percent": 68.97810600833917,
+        "polarity": 1
+      },
+      {
+        "key": "diffraction_lens",
+        "enabled": true,
+        "percent": 14.577617197168571,
+        "polarity": 1
+      },
+      {
+        "key": "intermediate_lens",
+        "enabled": true,
+        "percent": 0.035082657259397326,
+        "polarity": 1
+      },
+      {
+        "key": "projector_lens_1",
+        "enabled": true,
+        "percent": 32.1132572718703,
+        "polarity": 1
+      },
+      {
+        "key": "projector_lens_2",
+        "enabled": true,
+        "percent": 9.826874422815507,
+        "polarity": 1
+      }
+    ],
+    "excluded_uninstalled_lenses": [
+      "image_tl11_lens",
+      "image_tl12_lens",
+      "image_tl21_lens",
+      "image_tl22_lens",
+      "image_adapter_lens"
+    ],
+    "factory_default_warning": "default_state() alone is custom mode with different component percentages; it is not the ordinary GUI startup preset."
+  },
+  "local_startup_index": {
+    "root": "C:\\Users\\54019\\AppData\\Local\\TEM Design & Simulation\\saved_results",
+    "named_startup_entry_id": null,
+    "automatic_enabled": true,
+    "archive_path": "C:\\Users\\54019\\AppData\\Local\\TEM Simulator v2\\high_accuracy_artifacts\\particle_sections\\section-preview-3b6f0b5a4f2da09d928f135a96ad19aad1e191acc7df277845a030443e7f5cb0.temsection",
+    "saved_at_utc": "2026-11-07T12:03:46.976208+00:00",
+    "archive_exists": true,
+    "manifest_reader": "WorkingPointArchiveIndex.read(path); no full array payload loaded",
+    "snapshot_schema": "complete-working-point-v1",
+    "package_kind": "optical-particle-section-package-v3-kinetic-energy",
+    "saved_implementation": "91c2ac880fb944cd38f90c093f8d2abdde6a79b36c66f3975f9c9fe98502755c",
+    "current_implementation": "a8ada5d2abaff887661e5e19fb78b10e9ceb56899c9c8736d0c2bd945aa3b200",
+    "implementation_match": false,
+    "restore_gate": "Solver implementation changed; historical viewing only",
+    "startup_consequence": "Automatic restore rejects the historical implementation. ResultFiles._load_failed invokes MainWindow._resume_default_startup, which prepares ordinary standard stored preset inputs. Actual GUI load/fallback was not executed in this review."
+  },
+  "source_references": [
+    "src/temsim/gui/main_window.py:220",
+    "src/temsim/gui/main_window.py:548",
+    "src/temsim/gui/main_window.py:566",
+    "src/temsim/gui/main_window.py:1386",
+    "src/temsim/gui/result_files.py:39",
+    "src/temsim/gui/result_files.py:513",
+    "src/temsim/instrument_snapshot.py:446",
+    "src/temsim/working_point_archive.py:160",
+    "configs/operating_modes/catalog.toml:86",
+    "README.md:132",
+    "profiles/README.md:5",
+    "src/temsim/physics/copper_coil_field_provider.py:122",
+    "tests/test_explicit_round_winding_field.py:103",
+    "tests/test_copper_coil_capture.py:58"
+  ]
+}

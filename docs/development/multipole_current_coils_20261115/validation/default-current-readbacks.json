@@ -1,0 +1,283 @@
+{
+  "status": "passed",
+  "scope": "Detached existing controls to physical amperes; no particle or field propagation",
+  "source_particle_or_coherent_execution": false,
+  "states": [
+    {
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Probe Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "sources": [
+        {
+          "component_key": "probe_qph2_quadrupole",
+          "multipole_order": 2,
+          "turns_per_coil": 384,
+          "currents_a": [
+            0.0,
+            0.0
+          ],
+          "physical_coil_count": 8,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            0.0,
+            90.0,
+            180.0,
+            270.0,
+            45.0,
+            135.0,
+            225.0,
+            315.0
+          ]
+        },
+        {
+          "component_key": "probe_hp2_hexapole",
+          "multipole_order": 3,
+          "turns_per_coil": 2,
+          "currents_a": [
+            -134526.0709363228,
+            0.0
+          ],
+          "physical_coil_count": 6,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            30.0,
+            90.0,
+            150.0,
+            210.0,
+            270.0,
+            330.0
+          ]
+        },
+        {
+          "component_key": "probe_hpc_hexapole",
+          "multipole_order": 3,
+          "turns_per_coil": 384,
+          "currents_a": [
+            0.0,
+            0.0
+          ],
+          "physical_coil_count": 12,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            0.0,
+            60.0,
+            120.0,
+            180.0,
+            240.0,
+            300.0,
+            30.0,
+            90.0,
+            150.0,
+            210.0,
+            270.0,
+            330.0
+          ]
+        },
+        {
+          "component_key": "probe_qpc_quadrupole",
+          "multipole_order": 2,
+          "turns_per_coil": 384,
+          "currents_a": [
+            0.0,
+            0.0
+          ],
+          "physical_coil_count": 8,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            0.0,
+            90.0,
+            180.0,
+            270.0,
+            45.0,
+            135.0,
+            225.0,
+            315.0
+          ]
+        },
+        {
+          "component_key": "probe_qph1_quadrupole",
+          "multipole_order": 2,
+          "turns_per_coil": 384,
+          "currents_a": [
+            0.0,
+            0.0
+          ],
+          "physical_coil_count": 8,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            0.0,
+            90.0,
+            180.0,
+            270.0,
+            45.0,
+            135.0,
+            225.0,
+            315.0
+          ]
+        },
+        {
+          "component_key": "probe_hp1_hexapole",
+          "multipole_order": 3,
+          "turns_per_coil": 2,
+          "currents_a": [
+            -80899.01855180685,
+            0.0
+          ],
+          "physical_coil_count": 6,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            27.592867137067643,
+            87.59286713706764,
+            147.59286713706763,
+            207.59286713706763,
+            267.5928671370676,
+            327.5928671370676
+          ]
+        },
+        {
+          "component_key": "probe_hpol_hexapole",
+          "multipole_order": 3,
+          "turns_per_coil": 384,
+          "currents_a": [
+            0.0,
+            0.0
+          ],
+          "physical_coil_count": 12,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            0.0,
+            60.0,
+            120.0,
+            180.0,
+            240.0,
+            300.0,
+            30.0,
+            90.0,
+            150.0,
+            210.0,
+            270.0,
+            330.0
+          ]
+        },
+        {
+          "component_key": "probe_qpol_quadrupole",
+          "multipole_order": 2,
+          "turns_per_coil": 384,
+          "currents_a": [
+            0.0,
+            0.0
+          ],
+          "physical_coil_count": 8,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            0.0,
+            90.0,
+            180.0,
+            270.0,
+            45.0,
+            135.0,
+            225.0,
+            315.0
+          ]
+        }
+      ]
+    },
+    {
+      "selection": {
+        "gun": "FEG",
+        "column": "C3 + Image Corrector",
+        "recording": "No Energy Filter",
+        "beam_blanker": "None"
+      },
+      "sources": [
+        {
+          "component_key": "image_hpol_hexapole",
+          "multipole_order": 3,
+          "turns_per_coil": 63,
+          "currents_a": [
+            0.0,
+            0.0
+          ],
+          "physical_coil_count": 12,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            0.0,
+            60.0,
+            120.0,
+            180.0,
+            240.0,
+            300.0,
+            30.0,
+            90.0,
+            150.0,
+            210.0,
+            270.0,
+            330.0
+          ]
+        },
+        {
+          "component_key": "image_qpol_quadrupole",
+          "multipole_order": 2,
+          "turns_per_coil": 63,
+          "currents_a": [
+            0.0,
+            0.0
+          ],
+          "physical_coil_count": 8,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            0.0,
+            90.0,
+            180.0,
+            270.0,
+            45.0,
+            135.0,
+            225.0,
+            315.0
+          ]
+        },
+        {
+          "component_key": "image_hp1_hexapole",
+          "multipole_order": 3,
+          "turns_per_coil": 19,
+          "currents_a": [
+            -175192.00228590786,
+            0.0
+          ],
+          "physical_coil_count": 6,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            30.0,
+            90.0,
+            150.0,
+            210.0,
+            270.0,
+            330.0
+          ]
+        },
+        {
+          "component_key": "image_hp2_hexapole",
+          "multipole_order": 3,
+          "turns_per_coil": 19,
+          "currents_a": [
+            -105021.99221864948,
+            0.0
+          ],
+          "physical_coil_count": 6,
+          "native_orientation_rad": null,
+          "coil_azimuths_deg": [
+            -84.66420549092487,
+            -24.66420549092487,
+            35.33579450907513,
+            95.33579450907513,
+            155.33579450907513,
+            215.33579450907513
+          ]
+        }
+      ]
+    }
+  ]
+}

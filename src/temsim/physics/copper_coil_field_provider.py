@@ -24,14 +24,14 @@ class CopperCoilAssemblyPotential:
 
     def __post_init__(self):
         if not isinstance(self.source_id, str) or not self.source_id or self.source_id.strip() != self.source_id:
-            raise ValueError("Copper coil owner must be a nonempty identifier")
+            raise ValueError("Ideal-current coil owner must be a nonempty identifier")
         coils = tuple(self.coils)
         if not coils or any(type(coil) is not AnnularCoilPotential for coil in coils):
-            raise ValueError("Copper coil assembly requires explicit immutable annular windings")
+            raise ValueError("Ideal-current coil assembly requires explicit immutable annular windings")
         if len({coil.source_id for coil in coils}) != len(coils):
-            raise ValueError("Copper coil winding identities must be unique")
+            raise ValueError("Ideal-current coil winding identities must be unique")
         if not isinstance(self.provenance, Mapping):
-            raise ValueError("Copper coil provenance must be a mapping")
+            raise ValueError("Ideal-current coil provenance must be a mapping")
         object.__setattr__(self, "coils", coils)
         object.__setattr__(self, "provenance", freeze_json(self.provenance))
         object.__setattr__(self, "digest", json_digest(self.to_metadata()))
@@ -56,16 +56,16 @@ class CopperCoilAssemblyPotential:
     @classmethod
     def from_dict(cls, record):
         if not isinstance(record, Mapping) or set(record) != {"metadata", "digest"}:
-            raise ValueError("Invalid copper coil assembly snapshot")
+            raise ValueError("Invalid ideal-current coil assembly snapshot")
         m = record["metadata"]
         if not isinstance(m, Mapping) or m.get("schema") != "installed-copper-coil-potential-v1":
-            raise ValueError("Unknown copper coil assembly schema")
+            raise ValueError("Unknown ideal-current coil assembly schema")
         try:
             result = cls(m["source_id"], tuple(AnnularCoilPotential.from_dict(row) for row in m["coils"]), m["provenance"])
         except (TypeError, KeyError) as error:
-            raise ValueError("Invalid copper coil assembly coefficients") from error
+            raise ValueError("Invalid ideal-current coil assembly coefficients") from error
         if result.digest != record["digest"] or json_digest(m) != result.digest:
-            raise ValueError("Copper coil assembly snapshot identity mismatch")
+            raise ValueError("Ideal-current coil assembly snapshot identity mismatch")
         return result
 
     def _sum(self, method, positions_m):
@@ -125,31 +125,43 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
     parts = json.loads(binding.canonical_geometry_json)["lens_assembly"]["parts"]
     owner = next((part for part in parts if part["key"] == key), None)
     if owner is None:
-        raise ValueError(f"{key}: Copper Coil requires resolved installed owner geometry")
+        raise ValueError(f"{key}: Ideal prescribed-current coils require resolved installed owner geometry")
+    from temsim.coil_reference_metadata import OWNER_CURRENT_FIELD, round_coil_operating_point
+    from temsim.coil_winding import (
+        resolve_wire_cross_section_mm2, resolve_wire_diameter_mm,
+        validate_interval_turn_counts,
+    )
+    explicit_current = OWNER_CURRENT_FIELD in owner["data"]
     reference = owner["data"].get("air_core_reference_ampere_turns")
-    if isinstance(reference, bool) or not isinstance(reference, (int, float)) or not math.isfinite(reference) or reference <= 0:
-        raise ValueError(f"{key}: Copper Coil requires explicit positive air_core_reference_ampere_turns")
+    if not explicit_current and (isinstance(reference, bool) or not isinstance(reference, (int, float)) or not math.isfinite(reference) or reference <= 0):
+        raise ValueError(f"{key}: Ideal prescribed-current coils require explicit positive air_core_reference_ampere_turns or defined turns and current")
     enabled, percent, polarity = _runtime_excitation(native)
     if not math.isfinite(percent) or not 0 <= percent <= 100 or polarity not in (-1, 1):
-        raise ValueError(f"{key}: Copper Coil excitation must be 0..100 percent with polarity +/-1")
-    total = reference*percent*.01*polarity if enabled else 0.
+        raise ValueError(f"{key}: Ideal-current coil excitation must be 0..100 percent with polarity +/-1")
+    total = None if explicit_current else reference*percent*.01*polarity if enabled else 0.
     windings = [part for part in parts if part["data"].get("mechanical_profile") == "magnetic_excitation_coil"
                 and part["data"].get("field_source_key") == key]
     if not windings:
-        raise ValueError(f"{key}: Copper Coil has no explicitly owned winding; Gaussian fallback is disabled")
+        raise ValueError(f"{key}: Ideal-current coils have no explicitly owned winding; Gaussian fallback is disabled")
+    operating = (round_coil_operating_point(owner, windings, percent=percent,
+                 polarity=polarity, enabled=enabled) if explicit_current else None)
+    if operating is not None:
+        reference = operating["reference_ampere_turns"]
+        total = operating["ampere_turns"]
     from temsim.lens_pose import has_nonrigid_lens_cad
     participating = {key, *(part["key"] for part in windings)}
     unsupported = [part.key for part in getattr(getattr(state, "_resolved_assembly", None), "parts", ())
                    if part.key in participating and has_nonrigid_lens_cad(part.data)]
     if unsupported:
-        raise ValueError("Annular copper windings cannot represent non-rigid CAD shape edits on "
+        raise ValueError("Ideal annular windings cannot represent non-rigid CAD shape edits on "
                          + ", ".join(unsupported))
     fractions, coils = [], []
     for part in windings:
         data = part["data"]
-        fraction = data.get("coil_ampere_turn_fraction")
+        fraction = (int(data["winding_turn_count"])/operating["total_turn_count"]
+                    if operating is not None else data.get("coil_ampere_turn_fraction"))
         if isinstance(fraction, bool) or not isinstance(fraction, (int, float)) or not math.isfinite(fraction) or fraction <= 0:
-            raise ValueError(f"{part['key']}: Copper Coil requires an explicit positive ampere-turn fraction")
+            raise ValueError(f"{part['key']}: Ideal-current coils require an explicit positive ampere-turn fraction")
         fractions.append(fraction)
         intervals = data.get("material_intervals_mm", ((part["start_z_mm"], part["end_z_mm"]),))
         previous, length = -math.inf, 0.
@@ -159,6 +171,7 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
             previous, length = stop, length+stop-start
         if not intervals or length <= 0:
             raise ValueError(f"{part['key']}: Empty current-bearing winding")
+        interval_turns = validate_interval_turn_counts(data, interval_count=len(intervals))
         try:
             diameters = [data[name] for name in ("mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm")]
         except (KeyError, TypeError) as error:
@@ -168,8 +181,20 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
             raise ValueError(f"{part['key']}: Winding diameters must be finite positive lengths")
         inner, outer = (value*.0005 for value in diameters)
         for index, (start, stop) in enumerate(intervals):
+            if interval_turns is not None and operating is not None:
+                segment_ni = interval_turns[index]*operating["current_a"]
+            elif interval_turns is not None and any(
+                    count*length != sum(interval_turns)*(b-a)
+                    for count, (a,b) in zip(interval_turns, intervals)):
+                segment_ni = total*fraction*(interval_turns[index]/sum(interval_turns))
+            else:
+                # Retain legacy arithmetic when fixed counts already match the
+                # original uniform density; recording turn evidence alone must
+                # not perturb a historical field's floating-point coefficients.
+                segment_ni = (int(data["winding_turn_count"])*operating["current_a"]
+                    if operating is not None else total*fraction)*(stop-start)/length
             coils.append(AnnularCoilPotential(f"{key}:{part['key']}:{index}", inner, outer,
-                (stop-start)*.001, total*fraction*(stop-start)/length,
+                (stop-start)*.001, segment_ni,
                 (start+stop)*.0005, registration))
     if not math.isclose(math.fsum(fractions), 1., rel_tol=0., abs_tol=1e-12):
         raise ValueError(f"{key}: Winding ampere-turn fractions must sum to one")
@@ -183,8 +208,51 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
         reference_source=owner_metadata.get("air_core_reference_source", ""),
         reference_source_urls=owner_metadata.get("air_core_reference_source_urls", ()),
         source_registration_policy="Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
-        current_distribution="Coil fractions per owner; within each coil, uniform radial-axial current density and NI proportional to interval length",
+        current_distribution="Coil fractions per owner; fixed interval turns when declared, otherwise NI proportional to interval length; uniform current density inside each interval",
         winding_material="Copper, relative permeability one; pole pieces ignored magnetically")
+    if operating is not None:
+        # CAD wire/insulation detail never shrinks the homogenized source.
+        # Each winding's NI remains uniformly distributed over its original
+        # radial-axial envelope, including any insulation allocation.
+        provenance["legacy_reference_record"] = {
+            "ampere_turns_at_100_percent": owner_metadata.get("air_core_reference_ampere_turns"),
+            "status": provenance["reference_status"],
+            "source": provenance["reference_source"],
+            "source_urls": provenance["reference_source_urls"],
+            "active": False,
+        }
+        provenance["reference_status"] = "user_defined_winding_current_not_oem_not_particle_qualified"
+        provenance["reference_source"] = "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration"
+        provenance["reference_source_urls"] = ()
+        provenance["current_distribution"] = "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval"
+        winding_records = []
+        for part in windings:
+            data = part["data"]
+            inner, outer = (float(data[name]) for name in
+                            ("mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm"))
+            intervals = data.get("material_intervals_mm", ((part["start_z_mm"], part["end_z_mm"]),))
+            area = (outer-inner)/2*math.fsum(float(b)-float(a) for a,b in intervals)
+            turns = int(data["winding_turn_count"])
+            wire = resolve_wire_diameter_mm(data)
+            wire_area = resolve_wire_cross_section_mm2(data)
+            fixed_intervals = validate_interval_turn_counts(data, interval_count=len(intervals))
+            equivalent_current = turns*operating["current_a"]
+            winding_records.append(dict(key=part["key"], turn_count=turns,
+                interval_turn_counts=fixed_intervals,
+                wire_diameter_mm=wire, wire_cross_section_mm2=wire_area,
+                mean_diameter_mm=(inner+outer)/2,
+                equivalent_current_a=equivalent_current,
+                homogenized_cross_section_mm2=area,
+                homogenized_current_density_a_per_mm2=equivalent_current/area,
+                interval_homogenized_current_density_a_per_mm2=(
+                    [count*operating["current_a"]/((outer-inner)/2*(b-a))
+                     for count,(a,b) in zip(fixed_intervals,intervals)]
+                    if fixed_intervals is not None else [equivalent_current/area]*len(intervals)),
+                conductor_cross_section_mm2=(turns*wire_area if wire_area is not None else None)))
+        provenance["winding_current_definition"] = {
+            **operating, "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "windings": winding_records,
+        }
     potential = CopperCoilAssemblyPotential(key, tuple(coils), provenance)
     cache = getattr(state, "_runtime_copper_coil_provider_cache", {})
     prior = cache.get(key)

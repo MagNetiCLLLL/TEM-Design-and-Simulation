@@ -258,7 +258,7 @@ def _include_wall_impact(impact, row, field):
         return replace(impact, active=True, status="active", label="Vacuum active; magnetic geometry inactive",
                        effects=effects, detail=detail, affected_results=results)
     label = "Vacuum and magnetic geometry active" if impact.status == "active" else impact.label
-    if impact.status == "active" and impact.label in {"Copper-coil field input", "Gaussian coil-length rule active"}:
+    if impact.status == "active" and impact.label in {"Ideal prescribed-current coil field input", "Gaussian coil-length rule active"}:
         label = impact.label + "; vacuum clearance active"
     return replace(impact, label=label, effects=effects, detail=detail, affected_results=results)
 
@@ -536,6 +536,63 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
                    f"{semantics.label}: saved/display semantics are known, but this field's scientific consumer has not been verified.")
 
 
+def _winding_parameter_impact(row, index, kind, field, mode, settings):
+    """Separate declared turns/current from conductor-only display geometry."""
+    if kind != "parts" or field not in {"winding_turn_count", "winding_interval_turn_counts", "winding_wire_diameter_mm",
+            "winding_wire_cross_section_mm2",
+            "ideal_coil_current_a_at_100_percent", "air_core_reference_ampere_turns", "coil_ampere_turn_fraction"}:
+        return None
+    profile = row.get("mechanical_profile")
+    owner_key = (row.get("key") if profile in {_LENS, "integrated_magnetic_lens_channel"}
+                 else row.get("field_source_key", optical_owner(row, index)))
+    owner = index.get(str(owner_key), {})
+    if owner.get("mechanical_profile") not in {_LENS, "integrated_magnetic_lens_channel"}:
+        return None
+    if field in {"winding_turn_count", "winding_interval_turn_counts", "winding_wire_diameter_mm",
+                 "winding_wire_cross_section_mm2"} and profile != _COIL:
+        return None
+    explicit_current = "ideal_coil_current_a_at_100_percent" in owner
+    ideal_current = (mode == "unified" and isinstance(settings, Mapping)
+                     and settings.get("round_lens_field_model", "gaussian") == "copper_coil")
+    if field in {"air_core_reference_ampere_turns", "coil_ampere_turn_fraction"}:
+        if not explicit_current or not ideal_current:
+            return None
+        return _impact("inactive", "Legacy ampere-turn fallback inactive",
+            "The explicit turn/current configuration owns this winding's ampere-turns. "
+            "The earlier total-ampere-turn reference remains saved for compatibility and is not added again.",
+            effects=("display",), results=("input_validation",))
+    if field in {"winding_wire_diameter_mm", "winding_wire_cross_section_mm2"}:
+        return _impact("inactive", "Conductor and insulation geometry",
+            "Conductor metal area and its derived wire diameter change the uniform turn-grid geometry, "
+            "packing validity and automatically filled remaining insulation. "
+            "It does not compress or resize the existing ideal current-bearing envelope and does not change field "
+            "strength at fixed turns and current. No resistance, heating or current rating is inferred.",
+            effects=("display", "geometry"),
+            results=("3d_preview", "physical_layout", "input_validation"))
+    if ideal_current and field == "winding_interval_turn_counts":
+        return _impact("active", "Fixed regional winding counts",
+            "Each original axial interval retains its declared physical turn count. "
+            "The ideal source uses that regional turn/current allocation instead of redistributing turns with interval length. "
+            "The legacy total NI remains unchanged when no explicit owner current is supplied. "
+            "Unknown wire diameter retains envelope CAD; it does not block the electrical source.",
+            effects=("display", "geometry", "magnetic_field"),
+            results=("3d_preview", "physical_layout", "magnetic_field", "ray_transport", "optical_transfer"))
+    if ideal_current and (field == "ideal_coil_current_a_at_100_percent" or explicit_current):
+        return _impact("active", "Explicit turns times conductor current",
+            "Ideal prescribed-current coils in vacuum use the declared turns and owner current at 100% excitation. "
+            "The existing strength percentage and polarity scale the actual current and ampere-turns. "
+            "Each declared winding interval remains a homogeneous current source; conductor fill is not a "
+            "smaller field cross-section. A saved edit invalidates the field without refocusing or restoring lost current.",
+            effects=("display", "geometry", "magnetic_field"),
+            results=("3d_preview", "physical_layout", "magnetic_field", "ray_transport", "optical_transfer"))
+    return _impact("inactive", "Stored winding configuration",
+        ("The current field selection does not infer its calibration from these turns/current inputs. "
+         if not ideal_current else
+         "No explicit owner current is declared; the legacy total-ampere-turn calibration remains in use. ")
+        + "Detailed conductor CAD and packing validation require a known wire diameter; otherwise the original envelope is displayed.",
+        results=("3d_preview", "physical_layout", "input_validation"))
+
+
 def _round_source_impact(row, index, path, kind, field, mode, settings, descriptors):
     """Explain the explicitly selected source, without querying a field."""
     if mode != "unified" or not isinstance(settings, Mapping) or kind not in {"parts", "derived"}:
@@ -563,7 +620,7 @@ def _round_source_impact(row, index, path, kind, field, mode, settings, descript
     if model == "copper_coil":
         if axial or radial or split or (is_coil and field == "coil_ampere_turn_fraction") or (
                 row is owner and field in {"air_core_reference_ampere_turns", "mechanical_coil_radial_thickness_mm"}):
-            return _include_wall_impact(_impact("active", "Copper-coil field input",
+            return _include_wall_impact(_impact("active", "Ideal prescribed-current coil field input",
                 "The selected air-core field integrates the declared circular current source. Winding inner/outer diameters, "
                 "physical axial intervals and total ampere-turns set the field, including its fringe tails. "
                 "Coil shares divide the owner's current; pole magnetism and Gaussian calibration are inactive. "
@@ -576,11 +633,11 @@ def _round_source_impact(row, index, path, kind, field, mode, settings, descript
                                          "upper_field_profile", "lower_field_profile")))
         if gaussian:
             return _impact("inactive", "Saved Gaussian calibration inactive",
-                "Copper-coil execution uses current-bearing geometry and ampere-turns. These Gaussian parameters remain saved "
+                "Ideal prescribed-current coil execution uses current-bearing geometry and ampere-turns. These Gaussian parameters remain saved "
                 "for the other source selection and do not define this coil field.", effects=("display",))
         if field in _MATERIAL_FIELDS or (profile in MATERIAL_PROFILES and field in _FEM_FIELDS):
             return _include_wall_impact(_impact("inactive", "Pole/material magnetism excluded",
-                "This copper-coil model fixes relative permeability to one and does not solve pole pieces, yokes or "
+                "This ideal prescribed-current coil model fixes relative permeability to one and does not solve pole pieces, yokes or "
                 "assigned magnetic material response. Mechanical clearance remains a separate input."), row, field)
     elif linked and (axial or split or row is owner and field == "gaussian_reference_coil_length_mm"):
         recipe = (descriptors or {}).get(str(owner_key), {})
@@ -605,12 +662,80 @@ def describe_parameter_impact(part, path, *, by_key=None, simulation_mode="ideal
     """
     try:
         row, index, resolved_path, kind, field = _context(part, path, by_key)
+        if (field.startswith(('multipole_winding_','ideal_multipole_'))
+                or field.startswith('hexapole_winding_') and 'multipole_winding_geometry_status' in row):
+            selected=(simulation_mode=='unified' and isinstance(round_lens_settings,Mapping)
+                and round_lens_settings.get('round_lens_field_model','gaussian')=='copper_coil'
+                and 'ideal_multipole_current_matrix_a_per_unit' in row)
+            cad_only=field in {'multipole_winding_wire_cross_section_mm2',
+                'multipole_winding_insulation_thickness_mm','multipole_winding_wire_diameter_mm',
+                'hexapole_winding_wire_cross_section_mm2','hexapole_winding_wire_diameter_mm'}
+            electrical=field in {'multipole_winding_turn_count_per_coil','hexapole_winding_turn_count_per_coil',
+                'multipole_winding_basis_angle_deg','ideal_multipole_current_matrix_a_per_unit','ideal_multipole_current_bias_a'}
+            if cad_only:
+                return _impact('inactive','Multipole conductor and automatically filled insulation',
+                    'Metal area and radial insulation repack every requested closed turn inside fixed '
+                    'bounds. They do not compress the homogenized source or alter the field at fixed '
+                    'turns, currents and envelope. Existing clear bores and transport boundaries remain unchanged.',
+                    effects=('display','geometry'),results=('3d_preview','physical_layout','input_validation'))
+            if selected and electrical:
+                return _impact('active','Ideal multipole turns, winding angle and signed currents',
+                    'The selected ideal vacuum source uses saved physical turns and its fixed native-coefficient '
+                    'to-ampere matrix plus signed biases. Magnetic materials are excluded. Turns or winding '
+                    'angle edits retain numerical currents and make the original fit stale; no automatic '
+                    'calibration, focus adjustment or native-command change occurs.',
+                    effects=('display','geometry','magnetic_field'),
+                    results=('3d_preview','physical_layout','magnetic_field','ray_transport','optical_transfer'))
+            return _impact('inactive','Stored multipole winding/current definition',
+                'Engineering CAD and electrical references remain saved. The ideal current source is '
+                'active only in the selected prescribed-current vacuum mode with a complete calibration. '
+                'Other field models retain native multipole coefficients. Reference energy and '
+                'orientation never silently rescale current or refit the original field strength.',
+                effects=('display','geometry'),results=('3d_preview','physical_layout','input_validation'))
+        if field.startswith(('transverse_winding_','ideal_transverse_')):
+            selected=(simulation_mode=='unified' and isinstance(round_lens_settings,Mapping)
+                and round_lens_settings.get('round_lens_field_model','gaussian')=='copper_coil'
+                and 'ideal_transverse_current_matrix_a_per_unit' in row)
+            cad_only=field in {'transverse_winding_wire_cross_section_mm2',
+                'transverse_winding_insulation_thickness_mm','transverse_winding_wire_diameter_mm'}
+            electrical=field in {'transverse_winding_turn_count_per_coil',
+                'ideal_transverse_current_matrix_a_per_unit','ideal_transverse_current_bias_a'}
+            if cad_only:
+                return _impact('inactive','Conductor and automatically filled insulation',
+                    'Metal area and radial insulation thickness repack every closed turn inside fixed '
+                    'bounds. They do not compress the homogenized current-bearing envelope or alter '
+                    'the ideal field at fixed turns, currents and envelope. Impossible layouts fail.',
+                    effects=('display','geometry'),results=('3d_preview','physical_layout','input_validation'))
+            if selected and electrical:
+                return _impact('active','Ideal transverse turns and signed currents',
+                    'The selected ideal vacuum source uses the fixed physical turns and the saved '
+                    'current matrix plus signed ampere biases. Fields exclude magnetic cores and '
+                    'pole pieces and are independent of particle energy. The previous peak-field '
+                    'match can become stale; edits never automatically fit current or refocus a beam.',
+                    effects=('display','geometry','magnetic_field'),
+                    results=('3d_preview','physical_layout','magnetic_field','ray_transport','optical_transfer'))
+            return _impact('inactive','Stored transverse winding/current definition',
+                'These engineering inputs remain saved with their provenance. The native field '
+                'provider remains active outside the ideal prescribed-current mode, or while the '
+                'electrical calibration is undefined. Reference energy and status document the '
+                'original fit; they never silently rescale the saved currents.',
+                effects=('display','geometry'),results=('3d_preview','physical_layout','input_validation'))
+        if field.startswith('hexapole_winding_'):
+            return _impact('inactive','Radial winding CAD only',
+                'A known per-coil turn count retains bulk CAD until metal area is supplied. Both inputs '
+                'repack six radial closed windings and their remaining '
+                'insulation inside fixed bounds. Native multipole strength is independent; these inputs do not '
+                'infer conductor current, NI calibration or a new magnetic field. Invalid layouts are rejected.',
+                effects=('display','geometry'),results=('3d_preview','physical_layout','input_validation'))
         if is_custom_mechanical_part(row):
             return _impact("inactive", "Independent mechanical geometry only",
                            "This custom mechanical component is excluded from optical controls, magnetic circuits/FEM and axial vacuum cutoffs. "
                            "Its geometry and saved material definition affect the mechanical preview only; no new field or scattering model is created.",
                            effects=("display", "geometry"),
                            results=("3d_preview", "physical_layout", "material_definition") if field in _MATERIAL_FIELDS else ("3d_preview", "physical_layout"))
+        winding = _winding_parameter_impact(row, index, kind, field, simulation_mode, round_lens_settings)
+        if winding is not None:
+            return winding
         selected = _round_source_impact(row, index, resolved_path, kind, field, simulation_mode, round_lens_settings, descriptors)
         if selected is not None:
             return selected

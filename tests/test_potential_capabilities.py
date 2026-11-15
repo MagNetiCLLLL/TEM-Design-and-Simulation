@@ -1,5 +1,6 @@
 """No field solve or implicit source admission in a coverage report."""
 from copy import deepcopy
+from dataclasses import replace
 
 import pytest
 
@@ -60,4 +61,26 @@ def test_electric_tail_and_native_timed_coils_are_inventory_capabilities_not_bla
     assert all("flyback" in row["detail"] and "dynamic material" in row["detail"] for row in timed)
     assert not any(row["production_admission"] for row in rows.values())
     assert state.to_dict() == before
+
+
+@pytest.mark.parametrize('host,owner',(
+    ('probe_hp1_hexapole','probe_hp1_hexapole'),
+    ('probe_qpol_quadrupole','probe_qpol_quadrupole'),
+    ('probe_dph2_coils','probe_dph2_deflector'),
+    ('condenser_stigmator','condenser_stigmator'),
+))
+def test_retained_inactive_current_recipes_do_not_claim_an_executed_current_source(host,owner):
+    state=default_state();catalog=AssemblyCatalog();catalog.apply(state,catalog.default_selection())
+    state.round_lens_field_model='copper_coil'
+    before={row['key']:row for row in potential_capability_inventory(state)['components']}
+    assert before[owner]['family'] in {'multipole_coil','transverse_coil'}
+    assembly=state._resolved_assembly
+    # A CAD replacement keeps its original winding/electrical record inert.
+    # This metadata inventory must agree with actual current-source admission.
+    state._resolved_assembly=replace(assembly,parts=tuple(replace(part,data={
+        **part.data,'model_3d':{'base':{'kind':'imported_step'}}}) if part.key==host else part
+        for part in assembly.parts))
+    after={row['key']:row for row in potential_capability_inventory(state)['components']}
+    assert after[owner]['family']=='multipole'
+    assert after[owner]['representation']=='native polynomial A_z'
 

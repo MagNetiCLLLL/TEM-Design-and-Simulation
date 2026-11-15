@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "scope": "Complete native CAD only; no particle or coherent execution",
+  "every_physical_turn_retained": true,
+  "display_triangle_budget": 4000000,
+  "records": [
+    {
+      "component": "image_qpol_quadrupole",
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "source_snapshot_sha256": "f84f3c65332d9d92cc2597bea15e7de3a374827f3f246e90988bbf62cab4fb75",
+      "turns_per_coil": 63,
+      "coil_count": 8,
+      "total_wire_turns": 504,
+      "wire_metal_area_mm2": 0.02,
+      "angular_datum_deg": 0.0,
+      "material_regions": 512,
+      "mesh_regions": 512,
+      "actual_triangles": 580864,
+      "requested_angular_segments": 32,
+      "display_resolution_reduced": false,
+      "transport_role": "control_channel",
+      "seconds": 1.1818218999978853
+    }
+  ]
+}

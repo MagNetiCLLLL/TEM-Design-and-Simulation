@@ -1,0 +1,115 @@
+"""Read-only recovery and optional comparison of saved real Gun profiles.
+
+No emission, transport, wave calculation or modification of the old evidence.
+"""
+import argparse
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import pstats
+import sys
+
+import numpy as np
+
+
+CASE = Path(__file__).resolve().parent
+ROOT = CASE.parents[1]
+
+
+def load_runner():
+    path = CASE / "run_particle_validation.py"
+    spec = importlib.util.spec_from_file_location("saved_profile_validation", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def profile_report(path, runner):
+    from temsim.physics.gun_step_diagnostics import GunStepDiagnostics
+
+    path = path.resolve()
+    report = json.loads((path / "observer.json").read_text(encoding="utf-8"))
+    with np.load(path / "observer-arrays.npz", allow_pickle=False) as stored:
+        arrays = {key: stored[key] for key in stored.files}
+    observer = GunStepDiagnostics()
+    observer.traces = report["traces"]
+    observer.source_arrays = {key: value for key, value in arrays.items() if key.startswith("trace_")}
+    source = runner.verify_observed_source(observer,
+        path.parent / "frozen-input" / "independent-expected-emission.npz")
+    for check in source:
+        if check["field"] == "launch_position_m" and not check["matches_declared_surface_coordinates"]:
+            raise ValueError("Captured flat-source start positions changed")
+    acceptance = [row for row in report["attempts"] if row["accepted"]]
+    gates = {}
+    for name in ("total_momentum", "xyz_position", "transverse_momentum", "xy_position"):
+        rows = [row["gates"][name] for row in acceptance if "gates" in row]
+        gates[name] = dict(maximum_accepted_ratio=max(row["maximum_ratio"] for row in rows),
+            every_accepted_gate_finite=all(row["all_finite"] for row in rows))
+    stats = pstats.Stats(str(path / "cprofile.prof"))
+    top = sorted(stats.stats.items(), key=lambda item: item[1][3], reverse=True)[:35]
+    functions = [dict(file=key[0], line=key[1], name=key[2], calls=value[1],
+        internal_seconds=value[2], cumulative_seconds=value[3]) for key, value in top]
+    result = dict(path=str(path), status="BOUNDED_GUN_PROFILE_ONLY",
+        original_receipt=json.loads((path / "execution-receipt.json").read_text(encoding="utf-8")),
+        original_failure_preserved=(path.parent / "failure.json").exists(),
+        counts=report["counts"], actual_source_verification=source,
+        accepted_gate_summary=gates, static_step_seconds=report["static_step_seconds"],
+        dispatch=report["dispatch"], profiler_total_seconds=stats.total_tt,
+        cumulative_profile_functions=functions,
+        raw_files={name: dict(bytes=(path / name).stat().st_size,
+            sha256=hashlib.sha256((path / name).read_bytes()).hexdigest())
+            for name in ("observer.json", "observer-arrays.npz", "cprofile.prof", "execution-receipt.json")},
+        limitation="64 accepted pre-boundary Gun steps; no complete Gun, Preview, High accuracy or restart checkpoint")
+    return result, arrays, report
+
+
+def compare_profiles(left, right, left_report, right_report):
+    same_keys = set(left) == set(right)
+    comparison = dict(same_array_keys=same_keys, arrays={})
+    for name in sorted(set(left) & set(right)):
+        a, b = left[name], right[name]
+        shape = a.shape == b.shape and a.dtype == b.dtype
+        row = dict(same_dtype_shape=shape,
+            exact_bytes_equal=shape and a.tobytes() == b.tobytes())
+        if shape and a.dtype.kind == "f":
+            row["maximum_absolute_difference"] = float(np.max(np.abs(a-b)))
+            if a.ndim == 2 and a.shape[-1] == 3 and "momentum" in name:
+                row["maximum_relative_vector_difference"] = float(np.max(
+                    np.linalg.norm(a-b, axis=-1) / np.maximum(np.linalg.norm(a, axis=-1), 1e-300)))
+        comparison["arrays"][name] = row
+    comparison["all_initial_source_arrays_exact"] = all(
+        row["exact_bytes_equal"] for name, row in comparison["arrays"].items() if name.startswith("trace_"))
+    comparison["accepted_snapshot_metadata_equal"] = left_report["snapshots"] == right_report["snapshots"]
+    comparison["scope"] = "Actual saved starts/endpoints and decisions; no interpolation, refocusing or tolerance admission inferred"
+    return comparison
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--profile", required=True, type=Path, help="Saved run quality directory, e.g. baseline-native-64/preview")
+    parser.add_argument("--compare", type=Path)
+    parser.add_argument("--package-root", type=Path, default=CASE / "baseline-package")
+    parser.add_argument("--output", required=True, type=Path)
+    args = parser.parse_args()
+    args.output.mkdir(parents=True, exist_ok=False)
+    sys.path.insert(0, str(args.package_root.resolve()))
+    runner = load_runner()
+    try:
+        first, left, left_report = profile_report(args.profile, runner)
+        result = dict(schema="gun-profile-readonly-verification-v1", physical_execution=False, baseline=first)
+        if args.compare:
+            second, right, right_report = profile_report(args.compare, runner)
+            result.update(candidate=second, comparison=compare_profiles(left, right, left_report, right_report))
+        runner.write_json(args.output / "verification.json", result)
+        print(json.dumps(dict(status="VERIFIED_SAVED_BOUNDED_PROFILE", physical_execution=False,
+            counts=first["counts"], output=str(args.output.resolve())), indent=2), flush=True)
+        return 0
+    except Exception:
+        import traceback
+        runner.write_json(args.output / "failure.json", dict(error=traceback.format_exc(), physical_execution=False))
+        raise
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

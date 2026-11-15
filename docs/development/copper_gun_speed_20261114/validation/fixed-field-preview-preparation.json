@@ -1,0 +1,40 @@
+{
+  "label": "FixedHighCalibrationFieldPreviewControl",
+  "status": "PREPARED_NO_PHYSICAL_EXECUTION",
+  "source": {
+    "high_archive": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\high-post-recovered\\high-post-recovered.temsim",
+    "high_archive_sha256": "fd408971df86d07edb491021f348cdd92e9a4e9dea70f368a8d25a30b2a42b87",
+    "high_package_digest": "0f00c274b9120c3621d969945e4822fa591aa2116e4c48e07eb32714ade15d84",
+    "source_reference": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-input\\independent-expected-emission.npz",
+    "source_reference_sha256": "8516551a173faef0cc3b3d0a489ccfa2ce5919fc3ed33231e86658969f4db5c4",
+    "implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+    "original_count": 1024,
+    "original_positive_count": 1024,
+    "source_fwhm_ev": 0.3,
+    "high_step_mm": 0.05,
+    "high_history_step_mm": 0.5
+  },
+  "runner_sha256": "630078de83453be796aa0e6e88b9af8850bd985c4eda8485be6fe58326013725",
+  "recovery_helper_sha256": "8602f32a93707cfab3d4b9c2c64e8a0b019fbcde111a55f7dceb0394f1ca86fd",
+  "validation_helper_sha256": "70e948522d8412b09776633a9ff4288c63886d59110dab47932c25b55170b220",
+  "prepared_snapshot_id": "b75715204d81c3fac307bbde169c56b3618b8735bfbf08f8b262b01b3e1eeaa1",
+  "controls_digest": "9346843e627d6957837aba409e41f2cda54f8b6538f2ba4c01dba94ca9eaeb78",
+  "invariant_input_graph_digest": "67d0fca37488145d7125b6981c94577dac09f90bd5deb59d7904b8fac5ee34c4",
+  "actual_field_identity": {
+    "high_runtime_digest": "50c1d6995691954e597bfc8c58ad0c9e65f343aeeffeb596426f0bae7be579a2",
+    "high_runtime_source_identity": "4458779fc4e8857f5f5d273d68867538f88dbc7e0ecc1ad351e612a22fd97da2",
+    "preview_runtime_digest": "af2990c1c270d51b43c74df0583c86b2b42f95735c259574f03c21dcc7325a95",
+    "preview_runtime_source_identity": "b75715204d81c3fac307bbde169c56b3618b8735bfbf08f8b262b01b3e1eeaa1",
+    "high_snapshot_numerical_digest": "0d893312694840ecd630e0ac962f376dba01e76d943c9f56400c640739f9422e",
+    "preview_snapshot_numerical_digest": "99e72c6f47f2b96aa3968400e2cf239aff52a46ff75af69146c3be40090ac598",
+    "runtime_identities_preserved_without_rewriting": true,
+    "exact_actual_operator_witness_digest": "1146c2766ad13b8fdc73808642ff19776f80eb691e3b1853251c4bc260954d7f"
+  },
+  "official_gun_signature": "a7a065f65b45ace0edacfc9b56746d362f90aea75e482715944989cdbe19af8a",
+  "preview_step_mm": 0.5,
+  "preview_history_step_mm": 2.0,
+  "calibration_restored_from_existing_cache": false,
+  "forbidden_preparation_attempts": [],
+  "permitted_execution": "Reuse the legitimate completed Gun only; newly integrate the full Preview column from the Gun exit and newly integrate its complete optical-reference post path.",
+  "scope": "Separate fixed-High-calibration-field Preview control. Not a fresh/default Preview automatic-calibration result, not a material Si scan, and not a coherent calculation."
+}

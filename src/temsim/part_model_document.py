@@ -19,6 +19,152 @@ from temsim.component_operations import (
 )
 
 
+_WINDING_INPUT_UNSET = object()
+PROBE_WINDING_SOURCE_NOTE = (
+    "Explicit user-authored engineering radial-winding CAD. Per-coil turns and conductor metal area "
+    "are not measured or OEM data. The six radial coils use rounded rectangular closed turns and "
+    "automatic remaining insulation inside the existing winding envelope. Native multipole strength "
+    "is retained; no conductor-current or NI-to-field calibration is inferred.")
+TRANSVERSE_WINDING_SOURCE_NOTE = (
+    "Explicit engineering transverse-winding input based on public saddle-coil or radial stigmator "
+    "construction families; not measured or OEM winding data. Conductor metal area and insulation "
+    "repack turns within the unchanged winding envelope. The ideal vacuum source excludes magnetic "
+    "cores and pole pieces. Manual changes do not automatically recalibrate current or refocus a beam.")
+MULTIPOLE_WINDING_SOURCE_NOTE = (
+    "Explicit engineering multipole winding reconstruction, not measured or OEM hardware data. "
+    "Integer per-coil turns, conductor metal area and radial insulation fit the existing fixed "
+    "winding allocation. Auxiliary winding-only CAD does not add a cartridge or alter the existing "
+    "transport boundaries. Ideal prescribed currents exclude magnetic cores and pole pieces. "
+    "Manual edits never refit current, change native optical commands or refocus a beam.")
+
+
+def _invalidate_multipole_geometry_calibrations(previous, candidate):
+    """Keep electrical gains fixed and label a changed multipole fit stale."""
+    from temsim.multipole_current import MATRIX_FIELD, NOTE_FIELD, STATUS_FIELD
+    from temsim.multipole_winding import (
+        multipole_winding_envelopes, multipole_winding_owner_key, turn_field,
+    )
+    old_parts={part['key']:part for part in previous.get('parts',())}
+    new_parts={part['key']:part for part in candidate.get('parts',())}
+    reference_fields=('effective_length_mm','max_strength_m2','maximum_strength_m2',
+        'maximum_strength_m3','optical_reference_local_z_mm',
+        'channel_x_angle_deg','channel_y_angle_deg')
+
+    def reference(part):
+        model=part.get('model',{})
+        params=model.get('params',{}) if isinstance(model,Mapping) else {}
+        if not isinstance(params,Mapping):params={}
+        return (tuple((field,part.get(field)) for field in reference_fields),
+                tuple((field,params.get(field)) for field in reference_fields))
+
+    for part in candidate.get('parts',()):
+        old=old_parts.get(part['key'],{})
+        if MATRIX_FIELD not in old or part.get(MATRIX_FIELD)!=old[MATRIX_FIELD]:continue
+        owner=multipole_winding_owner_key(part)
+        old_owner=multipole_winding_owner_key(old)
+        changed=(part.get(turn_field(part))!=old.get(turn_field(old))
+            or multipole_winding_envelopes(part,new_parts)!=multipole_winding_envelopes(old,old_parts)
+            or reference(part)!=reference(old) or owner!=old_owner
+            or reference(new_parts.get(owner,{}))!=reference(old_parts.get(old_owner,{})))
+        if not changed:continue
+        part[STATUS_FIELD]='stale_geometry_or_turn_edit'
+        warning=('The original multipole field-strength match is stale after a manual turn, '
+            'envelope or reference-field edit. Numerical current matrix and biases are retained; '
+            'no automatic current fit or optical retuning was performed.')
+        prior=str(part.get(NOTE_FIELD,''))
+        if warning not in prior:part[NOTE_FIELD]=prior+('\n' if prior else '')+warning
+        metadata=deepcopy(part.get('parameter_metadata',{}))
+        entry=deepcopy(metadata.get(MATRIX_FIELD,{}))
+        entry.update(calibration_status='stale_geometry_or_turn_edit',source_note=part[NOTE_FIELD])
+        entry.setdefault('source_kind','user_defined')
+        metadata[MATRIX_FIELD]=entry
+        part['parameter_metadata']=metadata
+
+
+def _invalidate_transverse_geometry_calibrations(previous, candidate):
+    """Retain fixed currents while making an edited geometry's old fit explicit."""
+    from temsim.transverse_current import MATRIX_FIELD, NOTE_FIELD, STATUS_FIELD
+    from temsim.transverse_winding import (
+        TURN_FIELD, transverse_winding_envelopes, transverse_winding_owner_key,
+    )
+    old_parts={part['key']:part for part in previous.get('parts',())}
+    new_parts={part['key']:part for part in candidate.get('parts',())}
+    reference_fields=('effective_thickness_mm','effective_length_mm','max_strength_m2',
+        'maximum_strength_m2','channel_x_angle_deg','channel_y_angle_deg',
+        'optical_reference_local_z_mm','interaction_centers_local_z_mm',
+        'active_length_mm','coil_length_mm','soft_edge_mm')
+
+    def reference(part):
+        # Native commands are normal operating inputs to the fixed matrix.
+        # Only its original field-strength/plane definition invalidates a fit.
+        model=part.get('model',{})
+        params=model.get('params',{}) if isinstance(model,Mapping) else {}
+        if not isinstance(params,Mapping):
+            params={}
+        return (tuple((field,part.get(field)) for field in reference_fields),
+                tuple((field,params.get(field)) for field in reference_fields))
+
+    for part in candidate.get('parts',()):
+        old=old_parts.get(part['key'],{})
+        if MATRIX_FIELD not in old or part.get(MATRIX_FIELD)!=old[MATRIX_FIELD]:
+            continue
+        owner_key=transverse_winding_owner_key(part)
+        old_owner_key=transverse_winding_owner_key(old)
+        changed=(part.get(TURN_FIELD)!=old.get(TURN_FIELD)
+            or transverse_winding_envelopes(part)!=transverse_winding_envelopes(old)
+            or reference(part)!=reference(old)
+            or owner_key!=old_owner_key
+            or reference(new_parts.get(owner_key,{}))!=reference(old_parts.get(old_owner_key,{})))
+        if not changed:
+            continue
+        part[STATUS_FIELD]='stale_geometry_or_turn_edit'
+        warning=('The original field-strength match is stale after a manual turn, envelope or '
+                 'reference-field geometry edit. Numerical current matrix and biases are retained; '
+                 'no automatic current fit or optical retuning was performed.')
+        prior=str(part.get(NOTE_FIELD,''))
+        if warning not in prior:
+            part[NOTE_FIELD]=prior+('\n' if prior else '')+warning
+        metadata=deepcopy(part.get('parameter_metadata',{}))
+        entry=deepcopy(metadata.get(MATRIX_FIELD,{}))
+        entry['calibration_status']='stale_geometry_or_turn_edit'
+        entry['source_note']=part[NOTE_FIELD]
+        entry.setdefault('source_kind','user_defined')
+        metadata[MATRIX_FIELD]=entry
+        part['parameter_metadata']=metadata
+
+
+def _manual_winding_source(part, field):
+    """Replace only the edited input's provenance inside an atomic candidate."""
+    metadata = deepcopy(part.get("parameter_metadata", {}))
+    if field not in part:
+        metadata.pop(field, None)
+    else:
+        note = ("Explicit manual winding input. Previous estimates or field-strength "
+                "calibrations are not asserted by this edit; no automatic turn estimation, "
+                "current calibration or geometry resizing was performed.")
+        if field in {"winding_wire_diameter_mm", "winding_wire_cross_section_mm2"}:
+            note = ("Explicit manual bare-conductor size. This input changes detailed "
+                    "CAD packing only; the ideal current source retains its original envelope.")
+        metadata[field] = dict(source_kind="user_defined", source_note=note)
+    part["parameter_metadata"] = metadata
+
+
+def _invalidate_current_calibration(owner, field):
+    """Retain current provenance while making a changed-turn fit obsolete."""
+    metadata = deepcopy(owner.get("parameter_metadata", {}))
+    entry = deepcopy(metadata.get(field, {}))
+    if entry.get("calibration_status") != "invalidated_by_manual_turn_edit":
+        previous = entry.get("source_note", "")
+        warning = ("Field-strength calibration invalidated by a subsequent manual turn-count "
+                   "or interval-allocation edit. The prescribed current is retained unchanged; "
+                   "no field match is asserted and no current recalibration was performed.")
+        entry["source_note"] = previous + ("\n" if previous else "") + warning
+    entry.setdefault("source_kind", "user_defined")
+    entry["calibration_status"] = "invalidated_by_manual_turn_edit"
+    metadata[field] = entry
+    owner["parameter_metadata"] = metadata
+
+
 def _validate_internal_details(parts, geometry=None):
     """Validate the final material draft before publishing it or its history."""
     from temsim.cad_auxiliary import validate_gun_electrode_geometry
@@ -35,9 +181,16 @@ def _validate_internal_details(parts, geometry=None):
     from temsim.cad_tl22_lens_hardware import validate_tl22_lens_hardware
     from temsim.cad_objective_upper_hardware import validate_objective_upper_hardware
     from temsim.cad_probe_hexapole_support import validate_hexapole_support
+    from temsim.cad_probe_winding import validate_probe_winding
+    from temsim.transverse_winding import validate_transverse_winding
+    from temsim.transverse_current import validate_transverse_current_inputs
+    from temsim.multipole_winding import validate_multipole_winding
+    from temsim.multipole_current import validate_multipole_current_inputs
     from temsim.gun_rear_geometry import rear_part_dimensions
     by_key = {part["key"]: part for part in parts}
+    from temsim.cad_round_winding import resolve_round_winding_geometry
     for part in parts:
+        resolve_round_winding_geometry(part, by_key)
         rear_part_dimensions(part)
         validate_gun_electrode_geometry(part)
         validate_pole_face_land_geometry(part)
@@ -53,6 +206,11 @@ def _validate_internal_details(parts, geometry=None):
         validate_objective_upper_hardware(part, by_key)
         validate_probe_transfer_lens_hardware(part, by_key)
         validate_hexapole_support(part)
+        validate_probe_winding(part)
+        validate_transverse_winding(part,by_key)
+        validate_transverse_current_inputs(part,by_key)
+        validate_multipole_winding(part,by_key)
+        validate_multipole_current_inputs(part,by_key)
 
 
 class PartModelDocument:
@@ -246,6 +404,8 @@ class PartModelDocument:
                 from temsim.subassemblies import reflow
                 candidate_document = reflow(self.document, updated, self.path, owners=self._subassembly_owners)
                 candidate_document = resolve_field_hardware_parts(candidate_document)
+                _invalidate_transverse_geometry_calibrations(self.document,candidate_document)
+                _invalidate_multipole_geometry_calibrations(self.document,candidate_document)
                 _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
                 from temsim.gun_rear_geometry import validate_rear_gun_document
                 validate_rear_gun_document(candidate_document)
@@ -259,10 +419,289 @@ class PartModelDocument:
         # current draft; validation failure preserves both draft and history.
         from temsim.subassemblies import reflow
         candidate = reflow(self.document, candidate, self.path, owners=self._subassembly_owners)
+        _invalidate_transverse_geometry_calibrations(self.document,candidate)
+        _invalidate_multipole_geometry_calibrations(self.document,candidate)
         validate_component_graph(candidate)
         module_manifest.validate_document(candidate)
         self.document = resolve_field_hardware_parts(candidate)
         self._remember()
+
+    def configure_winding(self, coil_key, *, winding_turn_count,
+                          winding_wire_diameter_mm=_WINDING_INPUT_UNSET, winding_interval_turn_counts=_WINDING_INPUT_UNSET,
+                          winding_wire_cross_section_mm2=_WINDING_INPUT_UNSET,
+                          ideal_coil_current_a_at_100_percent):
+        """Stage fixed physical turns and the owner's current atomically.
+
+        The existing ID/OD/axial envelope and optical controls are retained.
+        Omitted conductor size retains its current definition. Explicit None
+        clears both area and legacy diameter. Omitted counts preserve a split;
+        A single interval follows its identical total turn count; explicit None
+        removes the split. Invalid inputs leave history unchanged.
+        """
+        values = dict(winding_turn_count=winding_turn_count)
+        if winding_wire_cross_section_mm2 is not _WINDING_INPUT_UNSET:
+            values["winding_wire_cross_section_mm2"] = winding_wire_cross_section_mm2
+        if winding_wire_diameter_mm is not _WINDING_INPUT_UNSET:
+            values["winding_wire_diameter_mm"] = winding_wire_diameter_mm
+        if winding_interval_turn_counts is not _WINDING_INPUT_UNSET:
+            values["winding_interval_turn_counts"] = winding_interval_turn_counts
+        return self.configure_windings(
+            self.part(coil_key).get("field_source_key"),
+            {coil_key: values},
+            ideal_coil_current_a_at_100_percent=ideal_coil_current_a_at_100_percent)
+
+    def configure_probe_winding(self, key, *, turn_count_per_coil, wire_cross_section_mm2):
+        """Stage radial HP1/HP2 CAD inputs without defining a field current."""
+        from temsim.multipole_current import MATRIX_FIELD as MULTIPOLE_MATRIX
+        from temsim.multipole_winding import FIELDS as MULTIPOLE_FIELDS, INSULATION_FIELD
+        existing=self.part(key)
+        if MULTIPOLE_MATRIX in existing or MULTIPOLE_FIELDS.intersection(existing):
+            return self.configure_multipole_winding(key,turn_count_per_coil=turn_count_per_coil,
+                wire_cross_section_mm2=wire_cross_section_mm2,
+                insulation_thickness_mm=existing.get(INSULATION_FIELD) if turn_count_per_coil is not None else None)
+        from temsim.cad_probe_winding import AREA_FIELD, FIELDS, NOTE_FIELD, STATUS_FIELD, TURN_FIELD
+        from temsim.probe_hexapole_geometry import is_probe_hexapole
+        candidate = deepcopy(self.document)
+        part = next((p for p in candidate['parts'] if p['key'] == key), None)
+        if (part is None or not is_probe_hexapole(part)
+                or part.get('model_3d', {}).get('base', {}).get('kind', 'existing') != 'existing'):
+            raise ValueError('Select a native material HP1 or HP2 hexapole')
+        if turn_count_per_coil is None and wire_cross_section_mm2 is not None:
+            raise ValueError('Conductor metal area requires a known per-coil turn count')
+        metadata = deepcopy(part.get('parameter_metadata', {}))
+        if turn_count_per_coil is None:
+            for field in FIELDS:
+                part.pop(field, None)
+                metadata.pop(field, None)
+        else:
+            from temsim.cad_probe_winding import validate_probe_winding
+            proposed = {**part, TURN_FIELD: turn_count_per_coil,
+                STATUS_FIELD: 'engineering_reconstruction_not_oem', NOTE_FIELD: PROBE_WINDING_SOURCE_NOTE}
+            if wire_cross_section_mm2 is None:
+                proposed.pop(AREA_FIELD, None)
+            else:
+                proposed[AREA_FIELD] = wire_cross_section_mm2
+            validate_probe_winding(proposed)
+            if part.get(TURN_FIELD) == turn_count_per_coil and part.get(AREA_FIELD) == wire_cross_section_mm2:
+                return  # Preserve an unchanged saved recipe and its original provenance.
+            previous = deepcopy(part)
+            part.update(proposed)
+            if wire_cross_section_mm2 is None:
+                part.pop(AREA_FIELD, None)
+                metadata.pop(AREA_FIELD, None)
+            for field in (TURN_FIELD, AREA_FIELD):
+                if field in part and previous.get(field) != part[field]:
+                    metadata[field] = dict(source_kind='user_defined', source_note=PROBE_WINDING_SOURCE_NOTE)
+        if metadata or 'parameter_metadata' in part:
+            part['parameter_metadata'] = metadata
+        self._commit_component_operation(candidate)
+
+    def configure_transverse_winding(self, key, *, turn_count_per_coil,
+            wire_cross_section_mm2=None, insulation_thickness_mm=None,
+            current_bias_a=_WINDING_INPUT_UNSET):
+        """Stage a physical transverse winding and signed current biases atomically.
+
+        The calibrated current matrix is retained read-only. Known N without
+        metal area keeps bulk CAD. Clearing N and size also removes its ideal
+        electrical definition, restoring legacy field admission. No current
+        fitting, optical command edit or geometry enlargement is performed.
+        """
+        from temsim.transverse_winding import (
+            AREA_FIELD, FIELDS, INSULATION_FIELD, NOTE_FIELD, STATUS_FIELD, TURN_FIELD,
+            supported_transverse_winding, validate_transverse_winding,
+        )
+        from temsim.transverse_current import (
+            BIAS_FIELD, FIELDS as CURRENT_FIELDS, MATRIX_FIELD,
+            NOTE_FIELD as CURRENT_NOTE, STATUS_FIELD as CURRENT_STATUS,
+            electrical_channel_count, validate_transverse_current_inputs,
+        )
+        candidate=deepcopy(self.document)
+        by_key={part['key']:part for part in candidate['parts']}
+        part=by_key.get(key)
+        if (part is None or not supported_transverse_winding(part)
+                or part.get('model_3d',{}).get('base',{}).get('kind','existing')!='existing'):
+            raise ValueError('Select a native physical deflector or material stigmator winding')
+        if turn_count_per_coil is None and (wire_cross_section_mm2 is not None or insulation_thickness_mm is not None):
+            raise ValueError('Conductor and insulation size require a known per-coil turn count')
+        if turn_count_per_coil is None and current_bias_a is not _WINDING_INPUT_UNSET:
+            raise ValueError('Clearing a winding cannot also assign current biases')
+        previous=deepcopy(part)
+        metadata=deepcopy(part.get('parameter_metadata',{}))
+        if turn_count_per_coil is None:
+            for field in FIELDS | CURRENT_FIELDS:
+                part.pop(field,None)
+                metadata.pop(field,None)
+        else:
+            part[TURN_FIELD]=turn_count_per_coil
+            part[STATUS_FIELD]='engineering_reconstruction_not_oem'
+            part[NOTE_FIELD]=TRANSVERSE_WINDING_SOURCE_NOTE
+            for field,value in ((AREA_FIELD,wire_cross_section_mm2),(INSULATION_FIELD,insulation_thickness_mm)):
+                if value is None:
+                    part.pop(field,None)
+                    metadata.pop(field,None)
+                else:
+                    part[field]=value
+            for field in (TURN_FIELD,AREA_FIELD,INSULATION_FIELD):
+                if field in part and previous.get(field)!=part[field]:
+                    metadata[field]=dict(source_kind='user_defined',source_note=TRANSVERSE_WINDING_SOURCE_NOTE)
+            if current_bias_a is not _WINDING_INPUT_UNSET:
+                if MATRIX_FIELD not in part:
+                    raise ValueError('Current biases require a saved calibrated current matrix')
+                old_bias=previous.get(BIAS_FIELD,[0.]*electrical_channel_count(part))
+                if BIAS_FIELD in previous or current_bias_a!=old_bias:
+                    part[BIAS_FIELD]=deepcopy(current_bias_a)
+                if current_bias_a!=old_bias:
+                    part[CURRENT_STATUS]='manual_current_edit'
+                    part[CURRENT_NOTE]=('Explicit user current-bias edit in amperes. The saved current matrix '
+                        'and native optical commands are retained; the previous field match is not re-fitted.')
+                    metadata[BIAS_FIELD]=dict(source_kind='user_defined',source_note=part[CURRENT_NOTE])
+        if metadata or 'parameter_metadata' in part:
+            part['parameter_metadata']=metadata
+        validate_transverse_winding(part,by_key)
+        validate_transverse_current_inputs(part,by_key)
+        # Applying unchanged values preserves source notes and history exactly.
+        changed_fields=(FIELDS | CURRENT_FIELDS)-{NOTE_FIELD,STATUS_FIELD}
+        if all(part.get(field)==previous.get(field) for field in changed_fields):
+            return
+        self._commit_component_operation(candidate)
+
+    def configure_multipole_winding(self, key, *, turn_count_per_coil,
+            wire_cross_section_mm2=None, insulation_thickness_mm=None,
+            current_bias_a=_WINDING_INPUT_UNSET):
+        """Edit fixed multipole winding inputs and signed ampere biases atomically.
+
+        HP1/HP2 retain their existing canonical hexapole N/area fields. Auxiliary
+        inputs describe an engineering winding-only reconstruction at an existing
+        optical owner, preserving physical transport boundaries and commands.
+        """
+        from temsim.multipole_winding import (
+            FIELDS, INSULATION_FIELD, NOTE_FIELD, STATUS_FIELD, area_field, turn_field,
+            supported_multipole_winding, validate_multipole_winding,
+        )
+        from temsim.multipole_current import (
+            FIELDS as CURRENT_FIELDS, MATRIX_FIELD, BIAS_FIELD,
+            NOTE_FIELD as CURRENT_NOTE, STATUS_FIELD as CURRENT_STATUS,
+            electrical_channel_count, validate_multipole_current_inputs,
+        )
+        from temsim.cad_probe_winding import (
+            FIELDS as LEGACY_FIELDS, STATUS_FIELD as LEGACY_STATUS, NOTE_FIELD as LEGACY_NOTE,
+        )
+        from temsim.probe_hexapole_geometry import is_probe_hexapole
+        candidate=deepcopy(self.document)
+        by_key={part['key']:part for part in candidate['parts']}
+        part=by_key.get(key)
+        if (part is None or not supported_multipole_winding(part)
+                or part.get('model_3d',{}).get('base',{}).get('kind','existing')!='existing'):
+            raise ValueError('Select an identified native multipole winding model')
+        if turn_count_per_coil is None and (wire_cross_section_mm2 is not None or insulation_thickness_mm is not None):
+            raise ValueError('Conductor and insulation size require a known per-coil turn count')
+        if turn_count_per_coil is None and current_bias_a is not _WINDING_INPUT_UNSET:
+            raise ValueError('Clearing a winding cannot also assign current biases')
+        previous=deepcopy(part)
+        metadata=deepcopy(part.get('parameter_metadata',{}))
+        hp=is_probe_hexapole(part)
+        winding_fields=FIELDS | (LEGACY_FIELDS if hp else frozenset())
+        nfield,afield=turn_field(part),area_field(part)
+        if turn_count_per_coil is None:
+            for field in winding_fields | CURRENT_FIELDS:
+                part.pop(field,None);metadata.pop(field,None)
+        else:
+            part[nfield]=turn_count_per_coil
+            part[STATUS_FIELD]='engineering_reconstruction_not_oem'
+            part[NOTE_FIELD]=MULTIPOLE_WINDING_SOURCE_NOTE
+            if hp:
+                part[LEGACY_STATUS]='engineering_reconstruction_not_oem'
+                part[LEGACY_NOTE]=MULTIPOLE_WINDING_SOURCE_NOTE
+            for field,value in ((afield,wire_cross_section_mm2),(INSULATION_FIELD,insulation_thickness_mm)):
+                if value is None:
+                    part.pop(field,None);metadata.pop(field,None)
+                else:part[field]=value
+            for field in (nfield,afield,INSULATION_FIELD):
+                if field in part and previous.get(field)!=part[field]:
+                    metadata[field]=dict(source_kind='user_defined',source_note=MULTIPOLE_WINDING_SOURCE_NOTE)
+            if current_bias_a is not _WINDING_INPUT_UNSET:
+                if MATRIX_FIELD not in part:
+                    raise ValueError('Current biases require a saved calibrated current matrix')
+                old_bias=previous.get(BIAS_FIELD,[0.]*electrical_channel_count(part))
+                if BIAS_FIELD in previous or current_bias_a!=old_bias:
+                    part[BIAS_FIELD]=deepcopy(current_bias_a)
+                if current_bias_a!=old_bias:
+                    part[CURRENT_STATUS]='manual_current_edit'
+                    part[CURRENT_NOTE]=('Explicit user multipole current-bias edit in amperes. The saved '
+                        'matrix and native optical commands are retained; the original match is not re-fitted.')
+                    metadata[BIAS_FIELD]=dict(source_kind='user_defined',source_note=part[CURRENT_NOTE])
+        if metadata or 'parameter_metadata' in part:part['parameter_metadata']=metadata
+        validate_multipole_winding(part,by_key)
+        validate_multipole_current_inputs(part,by_key)
+        notes={NOTE_FIELD,STATUS_FIELD,LEGACY_NOTE,LEGACY_STATUS}
+        activating=turn_count_per_coil is not None and not FIELDS.intersection(previous)
+        if not activating and all(part.get(field)==previous.get(field) for field in (winding_fields|CURRENT_FIELDS)-notes):return
+        self._commit_component_operation(candidate)
+
+    def configure_windings(self, owner_key, windings, *, ideal_coil_current_a_at_100_percent):
+        """Stage a common current and one or more owned winding definitions."""
+        from temsim.coil_reference_metadata import ROUND_LENS_PROFILES, OWNER_CURRENT_FIELD
+        from temsim.coil_winding import WINDING_FIELDS, WIRE_AREA_FIELD, validate_winding_definition
+        candidate = deepcopy(self.document)
+        by_key = {part["key"]: part for part in candidate["parts"]}
+        owner = by_key.get(owner_key)
+        if owner is None or owner.get("mechanical_profile") not in ROUND_LENS_PROFILES:
+            raise ValueError("Select an explicitly owned round-lens excitation winding")
+        if not isinstance(windings, Mapping) or not windings:
+            raise ValueError("Configure at least one owned winding")
+        changed_turns = False
+        for key, values in windings.items():
+            part = by_key.get(key)
+            if (part is None or part.get("mechanical_profile") != "magnetic_excitation_coil"
+                    or part.get("field_source_key") != owner_key):
+                raise ValueError(f"{key}: winding must belong to the selected round-lens owner")
+            if (not isinstance(values, Mapping) or "winding_turn_count" not in values
+                    or not set(values).issubset(WINDING_FIELDS)):
+                raise ValueError(f"{key}: provide a turn count and only supported winding inputs")
+            values = deepcopy(dict(values))
+            if ("winding_interval_turn_counts" not in values
+                    and len(part.get("winding_interval_turn_counts", ())) == 1):
+                from temsim.cad_round_winding import round_winding_envelope
+                if len(round_winding_envelope(part,by_key)["intervals_mm"]) == 1:
+                    # One occupied interval is identical to total N, not a
+                    # redistribution between independent physical windings.
+                    values["winding_interval_turn_counts"] = [values["winding_turn_count"]]
+            diameter_field = "winding_wire_diameter_mm"
+            size_fields = {WIRE_AREA_FIELD, diameter_field}
+            if size_fields.issubset(values) and all(values[name] is not None for name in size_fields):
+                # Reject contradictory aliases before canonicalizing the new
+                # area input. An unchanged historical dual record stays exact.
+                validate_winding_definition({"winding_turn_count":values["winding_turn_count"],
+                                             **{name:values[name] for name in size_fields}})
+                if any(part.get(name,_WINDING_INPUT_UNSET) != values[name] for name in size_fields):
+                    values[diameter_field] = None
+            elif size_fields.intersection(values):
+                supplied = next(name for name in size_fields if name in values and values[name] is not None) if any(
+                    name in values and values[name] is not None for name in size_fields) else None
+                if supplied is None:
+                    values.update({name:None for name in size_fields})
+                else:
+                    values[next(iter(size_fields-{supplied}))] = None
+            # A definition can explicitly clear optional CAD/split inputs. In
+            # particular, unknown conductor size is absent rather than zero.
+            for field, value in values.items():
+                previous = part.get(field, _WINDING_INPUT_UNSET)
+                if value is None and field != "winding_turn_count":
+                    part.pop(field, None)
+                else:
+                    part[field] = deepcopy(value)
+                if previous != part.get(field, _WINDING_INPUT_UNSET):
+                    _manual_winding_source(part, field)
+                    changed_turns |= field in {"winding_turn_count", "winding_interval_turn_counts"}
+            validate_winding_definition(part)
+        previous_current = owner.get(OWNER_CURRENT_FIELD, _WINDING_INPUT_UNSET)
+        owner[OWNER_CURRENT_FIELD] = ideal_coil_current_a_at_100_percent
+        if previous_current != ideal_coil_current_a_at_100_percent:
+            _manual_winding_source(owner, OWNER_CURRENT_FIELD)
+        elif changed_turns:
+            _invalidate_current_calibration(owner, OWNER_CURRENT_FIELD)
+        self._commit_component_operation(candidate)
+        return owner_key
 
     def place_subassembly(self, key, placement):
         """Save a fixed origin or a persistent component anchor in the draft."""
@@ -387,6 +826,103 @@ class PartModelDocument:
             raise ValueError(f"{path[1]} uses shared hardware; edit {host} to change its structure")
         part = deepcopy(self.part(path[1]))
         field = path[2]
+        from temsim.multipole_winding import (
+            FIELDS as MULTIPOLE_FIELDS, INSULATION_FIELD as MULTIPOLE_INSULATION,
+            area_field,turn_field,
+        )
+        from temsim.multipole_current import BIAS_FIELD as MULTIPOLE_BIAS, MATRIX_FIELD as MULTIPOLE_MATRIX
+        if field==MULTIPOLE_MATRIX or field.startswith('ideal_multipole_calibration_reference_'):
+            raise ValueError('The saved multipole calibration reference is read-only; edit signed current biases in Configure winding')
+        multipole_inputs={turn_field(part),area_field(part),MULTIPOLE_INSULATION,MULTIPOLE_BIAS}
+        if field in multipole_inputs and (MULTIPOLE_MATRIX in part or MULTIPOLE_FIELDS.intersection(part)):
+            if field not in part:
+                raise ValueError('Configure this multipole winding input before editing its dimension')
+            nfield,afield=turn_field(part),area_field(part)
+            if field==nfield and (value<=0 or not value.is_integer()):
+                raise ValueError('Per-coil turn count must be a positive integer')
+            biases=_WINDING_INPUT_UNSET
+            if field==MULTIPOLE_BIAS:
+                if len(path)!=4 or not isinstance(path[3],int):
+                    raise ValueError('Select one existing multipole current-bias channel')
+                biases=deepcopy(part[field]);biases[path[3]]=value
+            elif len(path)!=3:
+                raise ValueError('Select one multipole winding scalar input')
+            self.configure_multipole_winding(path[1],
+                turn_count_per_coil=int(value) if field==nfield else part[nfield],
+                wire_cross_section_mm2=value if field==afield else part.get(afield),
+                insulation_thickness_mm=value if field==MULTIPOLE_INSULATION else part.get(MULTIPOLE_INSULATION),
+                current_bias_a=biases)
+            return
+        from temsim.transverse_winding import (
+            AREA_FIELD as TRANSVERSE_AREA, INSULATION_FIELD as TRANSVERSE_INSULATION,
+            TURN_FIELD as TRANSVERSE_TURNS,
+        )
+        from temsim.transverse_current import BIAS_FIELD as TRANSVERSE_BIAS
+        from temsim.transverse_current import MATRIX_FIELD as TRANSVERSE_MATRIX, REFERENCE_ENERGY_FIELD as TRANSVERSE_REFERENCE
+        if field in {TRANSVERSE_MATRIX,TRANSVERSE_REFERENCE}:
+            raise ValueError('The saved current calibration reference is read-only; edit signed current biases in Configure winding')
+        if field in {TRANSVERSE_AREA,TRANSVERSE_INSULATION,TRANSVERSE_TURNS,TRANSVERSE_BIAS}:
+            if field not in part:
+                raise ValueError('Configure this transverse winding input before editing its dimension')
+            if field==TRANSVERSE_TURNS and (value<=0 or not value.is_integer()):
+                raise ValueError('Per-coil turn count must be a positive integer')
+            biases=_WINDING_INPUT_UNSET
+            if field==TRANSVERSE_BIAS:
+                if len(path)!=4 or not isinstance(path[3],int):
+                    raise ValueError('Select one existing current-bias channel')
+                biases=deepcopy(part[field])
+                biases[path[3]]=value
+            elif len(path)!=3:
+                raise ValueError('Select one transverse winding scalar input')
+            self.configure_transverse_winding(path[1],
+                turn_count_per_coil=int(value) if field==TRANSVERSE_TURNS else part[TRANSVERSE_TURNS],
+                wire_cross_section_mm2=value if field==TRANSVERSE_AREA else part.get(TRANSVERSE_AREA),
+                insulation_thickness_mm=value if field==TRANSVERSE_INSULATION else part.get(TRANSVERSE_INSULATION),
+                current_bias_a=biases)
+            return
+        from temsim.cad_probe_winding import AREA_FIELD, TURN_FIELD
+        if len(path) == 3 and field in {AREA_FIELD, TURN_FIELD}:
+            if field not in part:
+                raise ValueError('Configure this radial winding input before editing its dimensions')
+            if field == TURN_FIELD and (value <= 0 or not value.is_integer()):
+                raise ValueError('Per-coil turn count must be a positive integer')
+            self.configure_probe_winding(path[1],
+                turn_count_per_coil=int(value) if field == TURN_FIELD else part[TURN_FIELD],
+                wire_cross_section_mm2=value if field == AREA_FIELD else part.get(AREA_FIELD))
+            return
+        if len(path) == 3 and field == "winding_turn_count":
+            if field not in part or value <= 0 or not value.is_integer():
+                raise ValueError("Choose an existing positive integer conductor turn count")
+            turns = int(value)
+            if part[field] == turns:
+                return
+            candidate = deepcopy(self.document)
+            by_key = {p['key']:p for p in candidate['parts']}
+            coil = by_key[path[1]]
+            coil[field] = turns
+            _manual_winding_source(coil,field)
+            if len(coil.get('winding_interval_turn_counts',())) == 1:
+                from temsim.cad_round_winding import round_winding_envelope
+                if len(round_winding_envelope(coil,by_key)['intervals_mm']) == 1:
+                    coil['winding_interval_turn_counts'] = [turns]
+                    _manual_winding_source(coil,'winding_interval_turn_counts')
+            owner = by_key.get(coil.get('field_source_key'),{})
+            current_field = 'ideal_coil_current_a_at_100_percent'
+            if current_field in owner:
+                _invalidate_current_calibration(owner,current_field)
+            self._commit_component_operation(candidate)
+            return
+        if len(path) == 3 and field == "winding_wire_cross_section_mm2":
+            if field not in part:
+                raise ValueError("Configure a conductor metal cross-section before editing its dimension")
+            if part[field] == value:
+                return
+            part[field] = value
+            part.pop("winding_wire_diameter_mm",None)
+            _manual_winding_source(part,field)
+            _manual_winding_source(part,"winding_wire_diameter_mm")
+            self._commit_part(path[1],part)
+            return
         from temsim.dimension_edit_policy import dimension_reference_reason
         if reason := dimension_reference_reason(part, field):
             raise ValueError(reason)
@@ -532,6 +1068,12 @@ class PartModelDocument:
         self._history_index = 0
 
     def updates(self):
+        from temsim.coil_winding import WINDING_FIELDS
+        from temsim.cad_probe_winding import FIELDS as PROBE_WINDING_FIELDS
+        from temsim.transverse_winding import FIELDS as TRANSVERSE_WINDING_FIELDS
+        from temsim.transverse_current import FIELDS as TRANSVERSE_CURRENT_FIELDS
+        from temsim.multipole_winding import FIELDS as MULTIPOLE_WINDING_FIELDS
+        from temsim.multipole_current import FIELDS as MULTIPOLE_CURRENT_FIELDS
         originals = {part["key"]: part for part in self._baseline["parts"]}
         updates = {}
         additions = []
@@ -552,6 +1094,11 @@ class PartModelDocument:
                 updates[("parts", part["key"], "material_regions")] = {}
             if "model_3d" in original and "model_3d" not in part:
                 updates[("parts", part["key"], "model_3d")] = None
+            for field in ((WINDING_FIELDS - {"winding_turn_count"}) | PROBE_WINDING_FIELDS
+                    | TRANSVERSE_WINDING_FIELDS | TRANSVERSE_CURRENT_FIELDS
+                    | MULTIPOLE_WINDING_FIELDS | MULTIPOLE_CURRENT_FIELDS):
+                if field in original and field not in part:
+                    updates[("parts", part["key"], field)] = None
         current_keys = {part["key"] for part in self.document["parts"]}
         removed = tuple(key for key in originals if key not in current_keys)
         previous = {entry["key"]: entry["placement"] for entry in self._baseline.get("subassemblies", ())}

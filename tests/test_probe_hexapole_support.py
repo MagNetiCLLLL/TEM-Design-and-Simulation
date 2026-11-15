@@ -11,16 +11,22 @@ from temsim.cad_geometry import annulus
 from temsim.cad_mesh import _manifold
 from temsim.cad_multipoles import multipole_solids
 from temsim.cad_probe_hexapole_support import (
-    PREFIX, FIELDS, DIMENSIONS, hexapole_support_dimensions,
+    PREFIX, FIELDS, BASE_FIELDS, DIMENSIONS, OUTER_INSULATION_FIELD, hexapole_support_dimensions,
     hexapole_support_solids, validate_hexapole_support,
 )
-from temsim.module_manifest import read_document
+from temsim.module_manifest import read_document as _read_document
+from legacy_transverse_helpers import legacy_transverse_document, legacy_transverse_draft
 from temsim.part_model_3d import part_model_from_document
 from temsim.part_model_document import PartModelDocument
 from temsim.paths import INSTRUMENT_CONFIG_ROOT
 
 KEY = 'probe_hp2_hexapole'
 PATH = INSTRUMENT_CONFIG_ROOT / 'column/C3_ProbeCorrector.toml'
+
+
+def read_document(path):
+    """These assertions retain the documented pre-current bulk support CAD."""
+    return legacy_transverse_document(_read_document(path))
 
 
 @pytest.mark.parametrize('filename', [
@@ -33,7 +39,8 @@ def test_probe_corrector_variants_share_supports_and_preserve_copper_and_iron(fi
     before = deepcopy(document)
     by_key = {p['key']: p for p in document['parts']}
     for key, prefix, count, original_count in (
-        (KEY, PREFIX, 25, 13), ('probe_dph2_coils', 'winding_support_', 13, 4),
+        (KEY, PREFIX, 31 if OUTER_INSULATION_FIELD in by_key[KEY] else 25, 13),
+        ('probe_dph2_coils', 'winding_support_', 13, 4),
     ):
         part = by_key[key]
         source = _part(main, key)
@@ -52,6 +59,26 @@ def test_probe_corrector_variants_share_supports_and_preserve_copper_and_iron(fi
     assert document == before
 
 
+@pytest.mark.parametrize('filename',[
+    'C3_ProbeCorrector.toml','C3_ProbeCorrector_BCOR.toml','C3_ProbeCorrector_ImageCorrector.toml',
+])
+@pytest.mark.parametrize('key',['probe_hp1_hexapole','probe_hp2_hexapole'])
+def test_all_six_catalog_hosts_explicitly_install_bounded_outer_insulation(filename,key):
+    document=read_document(INSTRUMENT_CONFIG_ROOT/'column'/filename)
+    part=_part(document,key)
+    assert part[OUTER_INSULATION_FIELD]==.15
+    assert part['parameter_metadata'][OUTER_INSULATION_FIELD]['source_kind']=='estimated'
+    current=multipole_solids(part,{})
+    old=multipole_solids({k:v for k,v in part.items() if k!=OUTER_INSULATION_FIELD},{})
+    assert len(current)==31 and len(old)==25
+    assert current[:25]==old
+    d=hexapole_support_dimensions(part)
+    assert d['start_mm']<=d['outer_insulation_start_mm']<d['outer_insulation_end_mm']<=d['end_mm']
+    assert d['coil_start_radius_mm']>d['inner_radius_mm']
+    assert part['mechanical_clear_bore_diameter_mm']==20.
+    assert all(s.parameters['original_copper_envelope_unchanged'] for s in current[25:])
+
+
 def _part(document, key=KEY):
     return next(p for p in document['parts'] if p['key'] == key)
 
@@ -67,15 +94,19 @@ def _body(spec):
 @pytest.fixture(scope='module')
 def host():
     document = read_document(PATH)
+    # Retain the exact historical 25-region support contract independently of
+    # the optional outer jackets installed in newer catalog defaults.
+    for part in document['parts']:
+        part.pop(OUTER_INSULATION_FIELD,None)
     part = _part(document)
     specs = multipole_solids(part, {})
     return document, part, specs, {s.region: _body(s) for s in specs}
 
 
-def test_default_support_preserves_all_original_thirteen_material_shapes_and_optics(host):
+def test_legacy_support_preserves_all_original_thirteen_material_shapes_and_optics(host):
     document, p, specs, _ = host
     before = deepcopy(document)
-    assert {k for k in p if k.startswith(PREFIX)} == FIELDS
+    assert {k for k in p if k.startswith(PREFIX)} == BASE_FIELDS
     assert len(specs) == 25
     assert specs[:13] == multipole_solids(_legacy(p), {})
     assert len(hexapole_support_solids(p)) == 12
@@ -87,6 +118,79 @@ def test_default_support_preserves_all_original_thirteen_material_shapes_and_opt
     assert len(hexapole_support_solids(_part(document, 'probe_hp1_hexapole'))) == 12
     assert hexapole_support_solids(_legacy(p)) == ()
     assert document == before
+
+
+@pytest.mark.parametrize('key',['probe_hp1_hexapole','probe_hp2_hexapole'])
+def test_optional_outer_jackets_preserve_every_existing_material_record_and_envelope(host,key):
+    document,_,_,_=host
+    part=_part(document,key)
+    original=deepcopy(part)
+    before=multipole_solids(part,{})
+    current=multipole_solids({**part,OUTER_INSULATION_FIELD:.15},{})
+    assert len(before)==25 and len(current)==31
+    assert current[:25]==before
+    d=hexapole_support_dimensions({**part,OUTER_INSULATION_FIELD:.15})
+    expected=d['coil_radial_length_mm']*(d['outer_insulation_width_mm']*d['outer_insulation_height_mm']
+              -d['coil_width_mm']*d['coil_height_mm'])
+    for index,spec in enumerate(current[25:],1):
+        assert spec.region==f'coil_{index}_outer_insulation'
+        assert spec.material=='insulator' and spec.color[-1]==.22
+        assert spec.parameters['passive_geometry_only']
+        assert spec.parameters['optical_field_unchanged']
+        assert spec.parameters['original_copper_envelope_unchanged']
+        assert _body(spec).volume()==pytest.approx(expected,rel=1e-10)
+    assert part==original
+    assert current[:13]==multipole_solids(_legacy(part),{})
+
+
+@pytest.mark.parametrize('key',['probe_hp1_hexapole','probe_hp2_hexapole'])
+def test_outer_jackets_are_closed_sixfold_and_clear_every_original_material_and_bore(host,key):
+    document,_,_,_=host
+    part={**_part(document,key),OUTER_INSULATION_FIELD:.15}
+    specs=multipole_solids(part,{})
+    bodies={s.region:_body(s) for s in specs}
+    model=part_model_from_document({'parts':[part]},key,include_children=False,angular_segments=96)
+    assert len(model.meshes)==31
+    d=hexapole_support_dimensions(part)
+    bore=_manifold(annulus(d['start_mm'],d['end_mm'],0.,d['inner_radius_mm']),96)
+    for spec,mesh in zip(specs[25:],model.meshes[25:],strict=True):
+        body=bodies[spec.region]
+        assert body.volume()>0 and len(body.decompose())==1
+        counts=Counter(tuple(sorted((int(a),int(b)))) for face in mesh.faces
+                       for a,b in zip(face,np.roll(face,-1)))
+        assert set(counts.values())=={2}
+        assert body.bounding_box()[2]>=d['start_mm'] and body.bounding_box()[5]<=d['end_mm']
+        radius=np.linalg.norm(mesh.vertices[:,:2],axis=1)
+        assert radius.min()>d['inner_radius_mm'] and radius.max()<d['outer_radius_mm']
+        assert (body^bore).volume()==pytest.approx(0.,abs=1e-7)
+        for original in specs[:25]:
+            assert (body^bodies[original.region]).volume()==pytest.approx(0.,abs=1e-7),(key,spec.region,original.region)
+    for index in range(2,7):
+        rotated=bodies['coil_1_outer_insulation'].rotate((0.,0.,60.*(index-1)))
+        actual=bodies[f'coil_{index}_outer_insulation']
+        assert (rotated-actual).volume()==pytest.approx(0.,abs=1e-7)
+        assert (actual-rotated).volume()==pytest.approx(0.,abs=1e-7)
+    for a,b in combinations(specs[25:],2):
+        assert (bodies[a.region]^bodies[b.region]).volume()==pytest.approx(0.,abs=1e-7)
+
+
+def test_outer_wall_edits_change_only_jackets_and_preserve_radial_end_planes(host):
+    _,part,legacy,_=host
+    thin=multipole_solids({**part,OUTER_INSULATION_FIELD:.15},{})
+    thick=multipole_solids({**part,OUTER_INSULATION_FIELD:.25},{})
+    assert thin[:25]==thick[:25]==legacy
+    d=hexapole_support_dimensions(part)
+    for before,after in zip(thin[25:],thick[25:],strict=True):
+        assert _body(after).volume()>_body(before).volume()
+    assert _body(thin[25]).bounding_box()[0]==pytest.approx(d['coil_start_radius_mm'])
+    assert _body(thin[25]).bounding_box()[3]==pytest.approx(d['coil_end_radius_mm'])
+
+
+@pytest.mark.parametrize('value',[1e-100,3.,20.,1e308])
+def test_outer_jacket_must_have_representable_wall_and_fit_existing_axial_radial_cell(value,host):
+    _,part,_,_=host
+    with pytest.raises(ValueError):
+        hexapole_support_solids({**part,OUTER_INSULATION_FIELD:value})
 
 
 def test_supports_are_connected_closed_sixfold_and_materials_never_interpenetrate(host):
@@ -185,7 +289,7 @@ def test_bad_profiles_or_support_collisions_fail_before_building(changes, host):
 
 def test_parameters_edit_copy_move_transform_save_and_reopen(tmp_path, host):
     _, p, _, _ = host
-    draft = PartModelDocument(PATH)
+    draft = legacy_transverse_draft(PATH)
     before = multipole_solids(draft.part(KEY), {})
     draft.set_dimension(('parts', KEY, DIMENSIONS[0]), .3)
     after = multipole_solids(draft.part(KEY), {})
@@ -216,7 +320,7 @@ def test_parameters_edit_copy_move_transform_save_and_reopen(tmp_path, host):
 
 
 def test_invalid_editor_edit_is_atomic_and_replacement_keeps_inactive_recipe(host):
-    draft = PartModelDocument(PATH)
+    draft = legacy_transverse_draft(PATH)
     before = deepcopy(draft.document)
     history = (draft.dirty, draft.can_undo, draft.can_redo)
     with pytest.raises(ValueError, match='core bedding'):

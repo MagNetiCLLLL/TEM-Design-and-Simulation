@@ -1,0 +1,269 @@
+{
+  "scope": "Independent illustrative mechanical CAD only; no default wire area, field or particle calculation",
+  "default_definition": "configs\\instruments\\column\\C3_ProbeCorrector.toml",
+  "default_file_sha256_at_read": "626f52c87df2a77fc78a35ae64cb55002d36468cd0b9df174af0c7f60cd580c6",
+  "actual_default_objective_unchanged": true,
+  "default_wire_area_assigned": false,
+  "original_interval_turn_counts": [
+    580,
+    580
+  ],
+  "all_envelopes_allocations_passives_unchanged": true,
+  "impossible_9_mm2_input_rejected": true,
+  "impossible_input_message": "Winding needs 1160 turns but orthogonal packing capacity is 840",
+  "cases": [
+    {
+      "declared_metal_area_per_turn_mm2": 1.0,
+      "derived_wire_diameter_mm": 1.1283791670955126,
+      "total_turns": 1160,
+      "fixed_interval_counts": [
+        580,
+        580
+      ],
+      "field_envelope": {
+        "inner_diameter_mm": 60.0,
+        "outer_diameter_mm": 132.0,
+        "intervals_mm": [
+          [
+            946.5,
+            1091.5
+          ],
+          [
+            1206.9,
+            1351.9
+          ]
+        ]
+      },
+      "conductor_allocations": [
+        {
+          "region": "upper",
+          "start_mm": 946.5,
+          "end_mm": 1091.5,
+          "inner_mm": 30.2,
+          "outer_mm": 66.0
+        },
+        {
+          "region": "lower",
+          "start_mm": 1206.9,
+          "end_mm": 1351.9,
+          "inner_mm": 30.0,
+          "outer_mm": 66.0
+        }
+      ],
+      "passive_regions": [
+        "upper_winding_inner_insulation",
+        "upper_cooling_plate",
+        "upper_end_insulation",
+        "lower_end_insulation",
+        "lower_cooling_plate"
+      ],
+      "total_allocated_area_mm2": 10411.0,
+      "total_allocated_volume_mm3": 3143145.228679197,
+      "total_conductor_area_mm2": 1159.9999999999998,
+      "total_conductor_volume_mm3": 350212.1826515757,
+      "remaining_insulation_area_mm2": 9251.0,
+      "remaining_insulation_volume_mm3": 2792933.0460276213,
+      "original_field_envelope_area_mm2": 10440.0,
+      "original_field_envelope_volume_mm3": 3148629.8211338343,
+      "retained_passive_area_inside_field_pack_mm2": 28.999999999999897,
+      "retained_passive_volume_inside_field_pack_mm3": 5484.592454637044,
+      "complete_field_pack_partition_closure": true,
+      "minimum_interwire_gap_mm": 1.868946266923136,
+      "minimum_radial_boundary_clearance_mm": 0.8505205293485751,
+      "minimum_axial_boundary_clearance_mm": -1.1368683772161603e-13,
+      "boundary_clearance_guard_mm": 2.4004546091597455e-12,
+      "boundary_policy": "Nonnegative within binary64 coordinate guard; tangency to retained end insulation is allowed",
+      "independent_circle_no_overlap": true,
+      "independent_area_volume_closure": true,
+      "regions": [
+        {
+          "index": 0,
+          "turn_count": 580,
+          "conductor_area_mm2": 579.9999999999999,
+          "remaining_insulation_area_mm2": 4611.0,
+          "conductor_volume_mm3": 175288.30369969606,
+          "remaining_insulation_volume_mm3": 1393542.014412584,
+          "minimum_interwire_gap_mm": 1.868946266923136
+        },
+        {
+          "index": 1,
+          "turn_count": 580,
+          "conductor_area_mm2": 579.9999999999999,
+          "remaining_insulation_area_mm2": 4640.0,
+          "conductor_volume_mm3": 174923.87895187965,
+          "remaining_insulation_volume_mm3": 1399391.0316150375,
+          "minimum_interwire_gap_mm": 1.868946266923136
+        }
+      ]
+    },
+    {
+      "declared_metal_area_per_turn_mm2": 2.0,
+      "derived_wire_diameter_mm": 1.5957691216057308,
+      "total_turns": 1160,
+      "fixed_interval_counts": [
+        580,
+        580
+      ],
+      "field_envelope": {
+        "inner_diameter_mm": 60.0,
+        "outer_diameter_mm": 132.0,
+        "intervals_mm": [
+          [
+            946.5,
+            1091.5
+          ],
+          [
+            1206.9,
+            1351.9
+          ]
+        ]
+      },
+      "conductor_allocations": [
+        {
+          "region": "upper",
+          "start_mm": 946.5,
+          "end_mm": 1091.5,
+          "inner_mm": 30.2,
+          "outer_mm": 66.0
+        },
+        {
+          "region": "lower",
+          "start_mm": 1206.9,
+          "end_mm": 1351.9,
+          "inner_mm": 30.0,
+          "outer_mm": 66.0
+        }
+      ],
+      "passive_regions": [
+        "upper_winding_inner_insulation",
+        "upper_cooling_plate",
+        "upper_end_insulation",
+        "lower_end_insulation",
+        "lower_cooling_plate"
+      ],
+      "total_allocated_area_mm2": 10411.0,
+      "total_allocated_volume_mm3": 3143145.228679197,
+      "total_conductor_area_mm2": 2320.0000000000005,
+      "total_conductor_volume_mm3": 700424.3653031517,
+      "remaining_insulation_area_mm2": 8091.0,
+      "remaining_insulation_volume_mm3": 2442720.863376045,
+      "original_field_envelope_area_mm2": 10440.0,
+      "original_field_envelope_volume_mm3": 3148629.8211338343,
+      "retained_passive_area_inside_field_pack_mm2": 28.999999999999897,
+      "retained_passive_volume_inside_field_pack_mm3": 5484.592454637044,
+      "complete_field_pack_partition_closure": true,
+      "minimum_interwire_gap_mm": 1.3918190216939867,
+      "minimum_radial_boundary_clearance_mm": 0.6703806510477577,
+      "minimum_axial_boundary_clearance_mm": -2.2737367544323206e-13,
+      "boundary_clearance_guard_mm": 2.400039483488565e-12,
+      "boundary_policy": "Nonnegative within binary64 coordinate guard; tangency to retained end insulation is allowed",
+      "independent_circle_no_overlap": true,
+      "independent_area_volume_closure": true,
+      "regions": [
+        {
+          "index": 0,
+          "turn_count": 580,
+          "conductor_area_mm2": 1160.0000000000002,
+          "remaining_insulation_area_mm2": 4031.0,
+          "conductor_volume_mm3": 350576.60739939223,
+          "remaining_insulation_volume_mm3": 1218253.7107128878,
+          "minimum_interwire_gap_mm": 1.3918190216939867
+        },
+        {
+          "index": 1,
+          "turn_count": 580,
+          "conductor_area_mm2": 1160.0000000000002,
+          "remaining_insulation_area_mm2": 4060.0,
+          "conductor_volume_mm3": 349847.7579037594,
+          "remaining_insulation_volume_mm3": 1224467.1526631578,
+          "minimum_interwire_gap_mm": 1.3918190216939867
+        }
+      ]
+    },
+    {
+      "declared_metal_area_per_turn_mm2": 2.0,
+      "derived_wire_diameter_mm": 1.5957691216057308,
+      "total_turns": 1000,
+      "fixed_interval_counts": [
+        500,
+        500
+      ],
+      "field_envelope": {
+        "inner_diameter_mm": 60.0,
+        "outer_diameter_mm": 132.0,
+        "intervals_mm": [
+          [
+            946.5,
+            1091.5
+          ],
+          [
+            1206.9,
+            1351.9
+          ]
+        ]
+      },
+      "conductor_allocations": [
+        {
+          "region": "upper",
+          "start_mm": 946.5,
+          "end_mm": 1091.5,
+          "inner_mm": 30.2,
+          "outer_mm": 66.0
+        },
+        {
+          "region": "lower",
+          "start_mm": 1206.9,
+          "end_mm": 1351.9,
+          "inner_mm": 30.0,
+          "outer_mm": 66.0
+        }
+      ],
+      "passive_regions": [
+        "upper_winding_inner_insulation",
+        "upper_cooling_plate",
+        "upper_end_insulation",
+        "lower_end_insulation",
+        "lower_cooling_plate"
+      ],
+      "total_allocated_area_mm2": 10411.0,
+      "total_allocated_volume_mm3": 3143145.228679197,
+      "total_conductor_area_mm2": 2000.0000000000005,
+      "total_conductor_volume_mm3": 603814.1080199584,
+      "remaining_insulation_area_mm2": 8411.0,
+      "remaining_insulation_volume_mm3": 2539331.1206592387,
+      "original_field_envelope_area_mm2": 10440.0,
+      "original_field_envelope_volume_mm3": 3148629.8211338343,
+      "retained_passive_area_inside_field_pack_mm2": 28.999999999999897,
+      "retained_passive_volume_inside_field_pack_mm3": 5484.592454637044,
+      "complete_field_pack_partition_closure": true,
+      "minimum_interwire_gap_mm": 1.5909915645807862,
+      "minimum_radial_boundary_clearance_mm": 1.168312008264401,
+      "minimum_axial_boundary_clearance_mm": -2.2737367544323206e-13,
+      "boundary_clearance_guard_mm": 2.400039483488565e-12,
+      "boundary_policy": "Nonnegative within binary64 coordinate guard; tangency to retained end insulation is allowed",
+      "independent_circle_no_overlap": true,
+      "independent_area_volume_closure": true,
+      "regions": [
+        {
+          "index": 0,
+          "turn_count": 500,
+          "conductor_area_mm2": 1000.0000000000002,
+          "remaining_insulation_area_mm2": 4191.0,
+          "conductor_volume_mm3": 302221.2132753381,
+          "remaining_insulation_volume_mm3": 1266609.104836942,
+          "minimum_interwire_gap_mm": 1.5909915645807862
+        },
+        {
+          "index": 1,
+          "turn_count": 500,
+          "conductor_area_mm2": 1000.0000000000002,
+          "remaining_insulation_area_mm2": 4220.0,
+          "conductor_volume_mm3": 301592.8947446202,
+          "remaining_insulation_volume_mm3": 1272722.015822297,
+          "minimum_interwire_gap_mm": 1.5909915645807862
+        }
+      ]
+    }
+  ],
+  "figure": "objective-upper-metal-area-comparison.png"
+}

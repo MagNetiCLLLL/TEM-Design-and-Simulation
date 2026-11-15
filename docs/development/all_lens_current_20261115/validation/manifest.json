@@ -1,0 +1,166 @@
+{
+  "scope": "Fixed estimated winding turns and current-only ideal scalar field calibration",
+  "source_definitions": 9,
+  "raw_owner_instances": 78,
+  "unique_round_lens_keys": 20,
+  "assembly_variants": 14,
+  "field_checks": 196,
+  "unique_final_tests": {
+    "passed": 355,
+    "failed": 0,
+    "skipped": 6
+  },
+  "validation_files": {
+    "all-field-curves.npz": {
+      "bytes": 343659,
+      "sha256": "1a3d49c5557fa79d10d7f559779178ba93d0e944967b693a1b813912f4c13e52"
+    },
+    "all-lens-field-comparison.png": {
+      "bytes": 798350,
+      "sha256": "cffdf8be649c9ba5ab3c9201baf514a245bdaa6a8316cb7f9d977855bcb67b2a"
+    },
+    "before/baseline.json": {
+      "bytes": 1125316,
+      "sha256": "7fae4b942281ec965882552a6371d2bad356ec52432b648c895b7dc23ac0f644"
+    },
+    "before/configs/instruments/column/C2.toml": {
+      "bytes": 43452,
+      "sha256": "0be41a83d6f4a696d256c75a1a8ed86556541ca481d9e1f55d159d4a5c0575be"
+    },
+    "before/configs/instruments/column/C3.toml": {
+      "bytes": 51544,
+      "sha256": "0831d296a95435352f0958334492d3a1e19600addceb6b2e0b99fbb9de2a825a"
+    },
+    "before/configs/instruments/column/C3_BCOR.toml": {
+      "bytes": 143286,
+      "sha256": "340fb04df9618d664b4b9e8a7b2155f96fcb31c0fb494b32baa3d946871325c9"
+    },
+    "before/configs/instruments/column/C3_ImageCorrector.toml": {
+      "bytes": 110911,
+      "sha256": "0141006924db693904dfe4e3b49dfd1331fd3d0e2c402eaab3cd14d4a9932510"
+    },
+    "before/configs/instruments/column/C3_ProbeCorrector.toml": {
+      "bytes": 115686,
+      "sha256": "955338238e0a625c91a7c571d09c92fa796b66d0d8787720a3b80735de46f372"
+    },
+    "before/configs/instruments/column/C3_ProbeCorrector_BCOR.toml": {
+      "bytes": 194656,
+      "sha256": "f6bd832bd08763b3aaae2b5a3c87e66634bf5e6d663fbc852936c882f168d1cf"
+    },
+    "before/configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml": {
+      "bytes": 162073,
+      "sha256": "a2b8bc183f8ed12fd66411b0a332032f6601c199a28829e1eb7bf3654336ce22"
+    },
+    "before/configs/instruments/project_and_recording_system/NoEnergyFilter.toml": {
+      "bytes": 43715,
+      "sha256": "3759067bc9fdb3b350747244536430cce39bd086245998d8987715619e704e01"
+    },
+    "before/configs/subassemblies/projector_stack.toml": {
+      "bytes": 30893,
+      "sha256": "73b0f95f991c44f520ed52395e4f7c088ddd809b1ed60a76677e2ddd7a714129"
+    },
+    "default-working-currents.csv": {
+      "bytes": 1731,
+      "sha256": "4713b66fbc1d4ead946ca8c165797648a9e0bbf15b5afb77c899db97a8ef3cc3"
+    },
+    "field-checks.json": {
+      "bytes": 135843,
+      "sha256": "564855b09750824a6f1ca4fde0a4d482047370a414102af620bd698fe6cb8fb5"
+    },
+    "independent/check.py": {
+      "bytes": 11079,
+      "sha256": "1059efcef97d02a6e6d0f0b85bf9087104f818ec5a5a38de406e98cf9766db46"
+    },
+    "independent/independent-curves.npz": {
+      "bytes": 55687,
+      "sha256": "ac48c7e24a3c6cb7bcad1f8e2da7a56572ab03add5571fc162e490b1565726bd"
+    },
+    "independent/original-output-check.py": {
+      "bytes": 10704,
+      "sha256": "88397edad5cdf8ae5fc09c3ba949fa2b06981369806b48240548d90400ff32e8"
+    },
+    "independent/receipt.json": {
+      "bytes": 72715,
+      "sha256": "c002da1f4b23f6a83ed462cde7bd67b8cd233e7ab98af4e6c3f7ecd0bfd45dc4"
+    },
+    "migration-plan.json": {
+      "bytes": 230175,
+      "sha256": "129a7362220b6b7d09ee5599e8adb799dfb0bdf5b13253768350c08c2c587a29"
+    },
+    "plot-index.json": {
+      "bytes": 15522,
+      "sha256": "a0ac7bb276119211c2b03b0e6235db17d807936dd2111f871cbbe250982dac98"
+    },
+    "test-summary.json": {
+      "bytes": 90473,
+      "sha256": "81e7d5a4d332ab2b1b8b6651c888348b508407b9eb02d3521ccce1cc8e612208"
+    },
+    "tests/catalog-tests.xml": {
+      "bytes": 1904,
+      "sha256": "91886ae281aef74dd5922485118664a00909b303ef53a531a847bbde086ab090"
+    },
+    "tests/current-calibration-final-tests.xml": {
+      "bytes": 4641,
+      "sha256": "524bad2e832803d9fef79071e9351bcff728ca7e60d6b0c2fbfd4e0150485292"
+    },
+    "tests/earlier-fixtures/gui-document-post-migration-final-tests.xml": {
+      "bytes": 15798,
+      "sha256": "d7bfdd0ce0ddb866ac86216f60c164d9f1d54b4c50123222ce4544d4a292f702"
+    },
+    "tests/earlier-fixtures/gui-document-post-migration-tests.xml": {
+      "bytes": 86467,
+      "sha256": "6da91ef075d2da2cb072b40eef330c067df8d318733bf61b791b90b65fcae67e"
+    },
+    "tests/explicit-current-final-tests.xml": {
+      "bytes": 2403,
+      "sha256": "e54887ce25a7d666f9e678b1e0ab43e414445c37ae51507ca9356348a2280f4a"
+    },
+    "tests/gui-document-post-migration-final2-tests.xml": {
+      "bytes": 13084,
+      "sha256": "c2e63aeaba6575f05fa3b5afd78a3dce2f54e8664306133930ca7fdd6d409f6e"
+    },
+    "tests/integration-tests.xml": {
+      "bytes": 51959,
+      "sha256": "92e5ab936bcb7b5dcf60ad9ff3276f2b9847ceab64a0d330b8d6466bf850fea8"
+    },
+    "validation-summary.json": {
+      "bytes": 644,
+      "sha256": "e195539dd1dd519f3701851b022ea28a95c36f1515b1803fd9d0e1002f05fb10"
+    }
+  },
+  "installed_inputs": {
+    "configs/instruments/column/C2.toml": "38b6468e10e24780a231cb4b2eb203d05649ff10766f97627d5e3c28e9923745",
+    "configs/instruments/column/C3.toml": "2d1887b2bff53b64cabbaa1c0a9319eab5b8a9557dfeee63d720498861b40043",
+    "configs/instruments/column/C3_BCOR.toml": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19",
+    "configs/instruments/column/C3_ImageCorrector.toml": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40",
+    "configs/instruments/column/C3_ProbeCorrector.toml": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255",
+    "configs/instruments/column/C3_ProbeCorrector_BCOR.toml": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28",
+    "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af",
+    "configs/instruments/project_and_recording_system/NoEnergyFilter.toml": "f25123e7fa5045f8d03dcac9c64b40b548aea743dc95f2b443fdf4a11349155f",
+    "configs/subassemblies/projector_stack.toml": "5b394e92b69b3391e2c835acf9ead8448bd0abcd206c1c980428360b98aa8729"
+  },
+  "implementation_sha256": {
+    "src/temsim/coil_turn_estimation.py": "8fb314a82fd7d404b956a70d8e8170669fc6be54b0a4133b04f48be4774a5497",
+    "src/temsim/coil_current_calibration.py": "fbf65ae5876f810c9f903c8bfddf84c55c8d65785134d6f6d0938f72ada24d5a",
+    "src/temsim/coil_winding.py": "71ba2681b2f402201fa0ebdc2d6bd2e6a04910b6721c8745466e4f720a6dd4ae",
+    "src/temsim/coil_reference_metadata.py": "8f49eb7757a49919769819f5b9a825d14ec5f40ba17a4c50369c5c245dc188ad",
+    "src/temsim/gui/coil_winding_dialog.py": "b30917186ea21dfa0799c2aafc13d2be89b6175a82955fc20032846dd3df1bc3",
+    "src/temsim/gui/model_inspector.py": "c670a630b20bac6bf5a960b314972cbc77bce1bff481b3e9b6c9cf57574e938c",
+    "src/temsim/part_model_document.py": "558ea1040759aecd98188f9d8fd9344f00e16cd92f8271cedd99c4353fc70b99",
+    "src/temsim/module_manifest.py": "109226a54b3039f6022a11eabded024a1c21066dabac508c5a1cb27764085137",
+    "src/temsim/physics/copper_coil_field_provider.py": "8c51d343e18b1c86c92e6d3836dfc592f77036f3b1fb0c02e3434870cb9a67da",
+    "src/temsim/physics/annular_coil_potential.py": "62d4b150dfc6bec68a03d60ef5b6f0d845cf555fd2e6696bebb4b7e8892bc68a",
+    "src/temsim/physics/lens_field_provider.py": "3ddf29c0ce09277cf7a43e25dad988dcd2229b32e04f8407ad4534e1594a8364",
+    "src/temsim/round_lens_models.py": "b9ee0c32352c3494ae0b2a60d2a88eeafc3d0fe490e7224654e7ecefe5104d23",
+    "docs/development/all_lens_current_20261115/update_and_validate.py": "eeb32d6e8a0694e87799a455b9b1cb063831493399d1649b152a170128d4e290",
+    "tests/test_catalog_ideal_coils.py": "82f220db4ee248f6d5fddf1e0d48210c8169bec72ec13bfa44cae02132314b2c",
+    "tests/test_coil_current_calibration.py": "1d72836bae8f1992767e65113a15c3fe11ddf2f090e51b41b3f71125d7b3ed58",
+    "tests/test_coil_turn_estimation.py": "d59a7df32468edc52cd49c5feff25e40048b50f793a5fafc54df801901d39c23",
+    "tests/test_copper_coil_capture.py": "b7c03117aa258871e7ee8295983140466dc69c2b1c7f2b3b5bf8e2d2d5b462ae",
+    "tests/test_explicit_round_winding_field.py": "0395681b9af70e1a6be66f86e1c81ea23906d136e2c8f1f910b23980e4a513c8",
+    "tests/test_round_lens_models.py": "d1f5bfc497411def5aa2905422aea090c0cb304d999f459a2cfde498269e951f",
+    "tests/test_coil_winding_dialog.py": "81f040e7e400708bec07adae40e188af7602f61a1102d53f528b7ee69cb0c7c2",
+    "tests/test_part_model_document.py": "3ccec47e9bcfa799ef8766f967fc51754f7e0e3591f2b23ca508372c2adeae9f"
+  },
+  "portable_independent_replay_exact": true
+}

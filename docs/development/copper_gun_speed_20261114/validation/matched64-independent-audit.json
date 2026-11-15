@@ -1,0 +1,80 @@
+{
+  "scope": "Independent read-only audit of retained 64-step arrays. No emission, field solve or transport. Bounded pre-boundary profile only; no complete Gun/Preview/High/probe qualification.",
+  "raw_checksums_verified": 8,
+  "original_positive_count": 1024,
+  "source_bytes_exact": true,
+  "source_hashes": {
+    "trace_0001_ray_id": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217",
+    "trace_0001_weight": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705",
+    "trace_0001_launch_position_m": "8dabc2e6139998ca4f33c75956f358ad052ef6313c6c9862e09e04acf33ac235",
+    "trace_0001_launch_momentum_kg_m_per_s": "fce799a9a10b54bf00565a26dbe38835640249ac3b056a1cac1706f659d9ce2a",
+    "trace_0001_launch_energy_ev": "d59af7f30ab42028caf01b9a7cf4bc36de0806db955f4165e0bcbfcc9f445725"
+  },
+  "energy_min_ev": 0.015094567656436075,
+  "energy_max_ev": 0.7013491466779715,
+  "input_graphs_exact": true,
+  "candidate_controls_unchanged": true,
+  "literal_geometry_acceptance_constants_exact": true,
+  "accepted_steps_each": 64,
+  "all_active_masks_exact": true,
+  "all_four_gate_classifications_equal": true,
+  "accepted_gate_max_ratios_old_new": {
+    "total_momentum": [
+      1.794493614535666e-09,
+      1.7722073238926248e-09
+    ],
+    "xyz_position": [
+      5.9450839035831925e-09,
+      5.9450839035831925e-09
+    ],
+    "transverse_momentum": [
+      1.7852884301444645e-07,
+      1.7855475113762803e-07
+    ],
+    "xy_position": [
+      5.686494801729329e-09,
+      5.686494801729329e-09
+    ]
+  },
+  "maximum_accepted_dt_absolute_difference_s": 7.888609052210118e-30,
+  "maximum_accepted_dt_relative_difference": 8.897479545247954e-16,
+  "maximum_clock_absolute_difference_s": 2.524354896707238e-29,
+  "maximum_clock_relative_difference": 3.3454279917686254e-16,
+  "maximum_position_component_difference_m": 3.705769144237564e-22,
+  "maximum_relative_momentum_vector_difference": 3.318554142227378e-15,
+  "cross_run_difference_as_fraction_of_original_local_budgets": {
+    "total_momentum": 3.318554142227378e-09,
+    "xyz_position": 3.705769144237564e-09,
+    "transverse_momentum": 4.252564726960381e-10,
+    "xy_position": 8.19832680991724e-12
+  },
+  "compiled_copper_successful_static_calls": 192,
+  "total_static_calls": 192,
+  "compiled_copper_hit_fraction": 1.0,
+  "warm_definition": "Median of the sum of full/half/fine static DG call times per accepted step, excluding first accepted step in both profiles",
+  "warm_median_dg_seconds_old_new": [
+    2.156638700002077,
+    0.18469469999945431
+  ],
+  "warm_median_speedup": 11.676776323351177,
+  "elapsed_seconds_old_new": [
+    137.27484230000118,
+    26.902766000001066
+  ],
+  "candidate_implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+  "dominant_gate_classifications_equal_count": 64,
+  "dominant_gate_counts_old_new": [
+    {
+      "transverse_momentum": 64
+    },
+    {
+      "transverse_momentum": 64
+    }
+  ],
+  "limiting_original_id_equal_counts": {
+    "total_momentum": 21,
+    "xyz_position": 64,
+    "transverse_momentum": 64,
+    "xy_position": 64
+  }
+}

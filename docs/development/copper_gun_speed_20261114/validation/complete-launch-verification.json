@@ -1,0 +1,39 @@
+{
+  "trace": 1,
+  "source_arrays": [
+    {
+      "field": "ray_id",
+      "exact_bytes_equal": true,
+      "baseline_sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217",
+      "actual_sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+    },
+    {
+      "field": "weight",
+      "exact_bytes_equal": true,
+      "baseline_sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705",
+      "actual_sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705"
+    },
+    {
+      "field": "launch_position_m",
+      "exact_bytes_equal": true,
+      "baseline_sha256": "8dabc2e6139998ca4f33c75956f358ad052ef6313c6c9862e09e04acf33ac235",
+      "actual_sha256": "8dabc2e6139998ca4f33c75956f358ad052ef6313c6c9862e09e04acf33ac235"
+    },
+    {
+      "field": "launch_momentum_kg_m_per_s",
+      "exact_bytes_equal": true,
+      "baseline_sha256": "fce799a9a10b54bf00565a26dbe38835640249ac3b056a1cac1706f659d9ce2a",
+      "actual_sha256": "fce799a9a10b54bf00565a26dbe38835640249ac3b056a1cac1706f659d9ce2a"
+    },
+    {
+      "field": "launch_energy_ev",
+      "exact_bytes_equal": true,
+      "baseline_sha256": "d59af7f30ab42028caf01b9a7cf4bc36de0806db955f4165e0bcbfcc9f445725",
+      "actual_sha256": "d59af7f30ab42028caf01b9a7cf4bc36de0806db955f4165e0bcbfcc9f445725"
+    }
+  ],
+  "baseline": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-native-64\\preview\\observer-arrays.npz",
+  "baseline_file_sha256": "43917065fefbd3a19d20d8337f2516d5cf2b9b0b54487ded35d355f440887057",
+  "all_actual_launch_bytes_equal": true,
+  "scope": "Executed original IDs, weights, launch coordinates, momentum and energy compared before first DG step"
+}

@@ -1,0 +1,90 @@
+{
+  "original_count": 1024,
+  "original_positive_count": 1024,
+  "gun_exit_surviving": 1024,
+  "incident_surviving_positive": 1024,
+  "incident_effective_count": 1024.0,
+  "gun_emitted_current_a": 1e-05,
+  "incident_source_weight_sum": 1.0,
+  "incident_surviving_source_fraction": 1.0,
+  "incident_z_range_mm": [
+    0.0,
+    1599.2
+  ],
+  "equal_time_history_saved": true,
+  "equal_time_frames": 382,
+  "performance": {
+    "backend_stages": [
+      {
+        "stage": "gun",
+        "requested": "Auto",
+        "actual": "CPU",
+        "outcome": "returned",
+        "reason": "CPU implementation; may reuse exact upstream data",
+        "monotonic_s": 32285.437
+      },
+      {
+        "stage": "column",
+        "requested": "Auto",
+        "actual": "CPU",
+        "outcome": "returned",
+        "reason": "Shared-potential Lorentz RK4 with captured mechanical boundaries",
+        "monotonic_s": 32408.843,
+        "retried": false,
+        "history_policy": "full",
+        "requested_history_policy": "auto",
+        "integration_nodes": 2578,
+        "retained_history_nodes": 2578,
+        "history_memory_bytes": 158379728,
+        "history_budget_bytes": 2147483648,
+        "retained_history_maximum_gap_mm": 0.49986950848210654,
+        "history_scope": "Exact retained integration nodes; plot-node waist markers remain sampling dependent",
+        "display_history_step_mm": null
+      },
+      {
+        "stage": "column",
+        "requested": "Auto",
+        "actual": "CPU",
+        "outcome": "returned",
+        "reason": "Shared-potential Lorentz RK4 with captured mechanical boundaries",
+        "monotonic_s": 32517.5,
+        "retried": false,
+        "history_policy": "full",
+        "requested_history_policy": "auto",
+        "integration_nodes": 2839,
+        "retained_history_nodes": 2839,
+        "history_memory_bytes": 177559448,
+        "history_budget_bytes": 2147483648,
+        "retained_history_maximum_gap_mm": 0.4999819884728822,
+        "history_scope": "Exact retained integration nodes; plot-node waist markers remain sampling dependent",
+        "display_history_step_mm": null
+      }
+    ],
+    "backend_scope": "Last 256 stage calls in this worker, including exact internal reuse; not hardware qualification",
+    "numerical_preparation": {
+      "schema": "gui-request-numerical-preparation-v1",
+      "quality": "Preview",
+      "requested_step_mm": 0.5,
+      "applied_step_mm": 0.5,
+      "high_accuracy_maximum_step_mm": null,
+      "changed": false,
+      "qualification": "Execution resolution only; working-point convergence requires independent refinement"
+    }
+  },
+  "scope": "Complete optical-reference ray workflow; not material scattering, coherent or scan qualification",
+  "status": "COMPLETE_RAY_WORKFLOW",
+  "quality": "Preview",
+  "worker_elapsed_seconds": 1512.9215753000026,
+  "official_incident_roundtrip": true,
+  "formal_complete_archive_roundtrip_exact": true,
+  "actual_runtime_digest": "3fb48ec2b9feed0e6b4d766129f62727f0db9252d59187b16f95029c581cc50d",
+  "actual_field_numerical_digest": "d8445e49015d1a956974b90fc51bffb7eade4123d6ac7d996d81177836862837",
+  "only_current_process_new_solver_results_reused": true,
+  "source_count_growth": false,
+  "quality_field_scope": "Normal Preview and High accuracy resolve automatic scan drives differently; this is not fixed-field quality convergence. Full actual drive matrices/runtime are saved.",
+  "independent_energy_clock_loss_verification": "executed-energy-clock-loss-verification.json",
+  "validate_incident_flight_times": true,
+  "gun_and_optical_controls_unchanged": true,
+  "original_source_exact_bytes_unchanged": true,
+  "reused_previous_gun": false
+}

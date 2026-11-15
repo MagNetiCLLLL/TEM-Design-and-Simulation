@@ -1,0 +1,62 @@
+[
+  {
+    "field": "x_m",
+    "exact_bytes_equal": true,
+    "sha256": "d73d2d3d9d9127384e7cfc4e13e8da0d592ae2fe096e5dd6fab1af21902106b7"
+  },
+  {
+    "field": "y_m",
+    "exact_bytes_equal": true,
+    "sha256": "0f5030effdd57397d1d44dbf4ca7e5b74a22eba6262534f97ad4bb3415246571"
+  },
+  {
+    "field": "tx_rad",
+    "exact_bytes_equal": true,
+    "sha256": "58becb544628706118015032551947efe49f5e9f9f1b10e7a515e5c2389f9190"
+  },
+  {
+    "field": "ty_rad",
+    "exact_bytes_equal": true,
+    "sha256": "60c563def2d91d949522f8e1000d6e5502dcac57da46782c079b4d771897b601"
+  },
+  {
+    "field": "energy_offset_ev",
+    "exact_bytes_equal": true,
+    "sha256": "c29241bf27ac78049bcb3ce9f66f5d4af371febff6d38657603f694aabb07777"
+  },
+  {
+    "field": "ray_id",
+    "exact_bytes_equal": true,
+    "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+  },
+  {
+    "field": "weight",
+    "exact_bytes_equal": true,
+    "sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705"
+  },
+  {
+    "field": "emission_time_s",
+    "exact_bytes_equal": true,
+    "sha256": "9f1dcbc35c350d6027f98be0f5c8b43b42ca52b7604459c0c42be3aa88913d47"
+  },
+  {
+    "reference_field": "ray_id",
+    "exact_bytes_equal": true,
+    "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+  },
+  {
+    "reference_field": "position_m",
+    "exact_bytes_equal": true,
+    "sha256": "8dabc2e6139998ca4f33c75956f358ad052ef6313c6c9862e09e04acf33ac235"
+  },
+  {
+    "reference_field": "direction",
+    "exact_bytes_equal": true,
+    "sha256": "b891753e21b4c1dd26210d497e7837d86f81aba7bf50637bb772eac24c65e4c1"
+  },
+  {
+    "reference_field": "normal",
+    "exact_bytes_equal": true,
+    "sha256": "bfe9ad68d70dea35d2d7518fde148979c730047d0feeb7648c0534faacab4f92"
+  }
+]

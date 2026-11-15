@@ -124,9 +124,11 @@ def capture_selected_column_potentials(state, *, round_lens_keys=(), auxiliary_k
             raise ValueError("Unknown, disabled or unsupported auxiliary potential (select shared physical host): "
                              +", ".join(sorted(missing)))
         for field in selected:
-            potential = AnalyticMagneticPotential(field, {"component_key": field.component_key,
+            from temsim.physics.transverse_coil_field import FrozenTransverseCoilField
+            potential = (field.potential if type(field) is FrozenTransverseCoilField else
+                AnalyticMagneticPotential(field, {"component_key": field.component_key,
                 "captured_time_s": field.captured_time_s, "dynamic_drive_frozen": field.dynamic,
-                "induced_electric_field_modelled": False})
+                "induced_electric_field_modelled": False}))
             rows.append(PotentialContribution(field.lens_key, (field.lens_key,), potential, "magnetic"))
     if include_electric:
         from temsim.physics.instrument_electric import capture_instrument_electric_field
@@ -138,7 +140,15 @@ def capture_selected_column_potentials(state, *, round_lens_keys=(), auxiliary_k
         gun = getattr(state, "electron_gun", None)
         if gun is None or any(getattr(gun, name, None) is None for name in ("deflector", "stigmator")):
             raise ValueError("This gun has no native alignment pair and stigmator to capture")
+        from temsim.physics.transverse_coil_field import capture_transverse_coil_fields
+        gun_keys={getattr(gun,name).key for name in ('deflector','stigmator')}
+        prescribed=capture_transverse_coil_fields(state,include_gun=True,component_keys=gun_keys)
         for name in ("deflector", "stigmator"):
+            selected=tuple(field for field in prescribed if field.component_key==getattr(gun,name).key)
+            if selected:
+                for field in selected:
+                    rows.append(PotentialContribution(field.lens_key,(field.lens_key,),field.potential,'magnetic'))
+                continue
             potential = GunMagneticPotential.from_provider(getattr(gun, name))
             rows.append(PotentialContribution(potential.source_id, (potential.source_id,), potential, "magnetic"))
     return ElectromagneticPotentialSnapshot(capture_physical_scene(state), tuple(rows))

@@ -3,6 +3,7 @@ from copy import deepcopy
 
 import numpy as np
 import pytest
+from legacy_transverse_helpers import legacy_transverse_draft
 
 from temsim.cad_catalog import posed_solids
 from temsim.part_model_3d import part_dimension_specs, part_model_from_document
@@ -13,7 +14,7 @@ from temsim.parameter_impact import describe_parameter_impact
 
 @pytest.mark.parametrize("module", ("column/C3_BCOR.toml", "column/C3_ImageCorrector.toml"))
 def test_all_explicit_image_windings_edit_copper_not_field_allocation(tmp_path, module):
-    draft = PartModelDocument(INSTRUMENT_CONFIG_ROOT/module)
+    draft = legacy_transverse_draft(INSTRUMENT_CONFIG_ROOT/module)
     original = deepcopy(draft.document)
     expected = deepcopy(original)
     rows = {part["key"]: part for part in draft.document["parts"]}
@@ -46,7 +47,7 @@ def test_all_explicit_image_windings_edit_copper_not_field_allocation(tmp_path, 
 
 
 def test_legacy_probe_without_explicit_copper_length_uses_its_saved_length():
-    draft = PartModelDocument(INSTRUMENT_CONFIG_ROOT/"column/C3_ProbeCorrector.toml")
+    draft = legacy_transverse_draft(INSTRUMENT_CONFIG_ROOT/"column/C3_ProbeCorrector.toml")
     key = "probe_dph2_coils"
     original = deepcopy(draft.part(key))
     assert "winding_axial_length_mm" not in original
@@ -64,7 +65,7 @@ def test_legacy_probe_without_explicit_copper_length_uses_its_saved_length():
 @pytest.mark.parametrize("module", (
     "column/C3_ProbeCorrector.toml", "column/C3_BCOR.toml", "column/C3_ImageCorrector.toml"))
 def test_explicit_winding_cap_edits_target_material_length_not_installation(module):
-    draft = PartModelDocument(INSTRUMENT_CONFIG_ROOT/module)
+    draft = legacy_transverse_draft(INSTRUMENT_CONFIG_ROOT/module)
     selected = [row for row in draft.document["parts"] if "winding_axial_length_mm" in row]
     assert selected
     for row in selected:
@@ -83,7 +84,7 @@ def test_explicit_winding_cap_edits_target_material_length_not_installation(modu
 
 
 def test_legacy_winding_caps_keep_the_existing_material_length_path():
-    draft = PartModelDocument(INSTRUMENT_CONFIG_ROOT/"column/C3_ProbeCorrector.toml")
+    draft = legacy_transverse_draft(INSTRUMENT_CONFIG_ROOT/"column/C3_ProbeCorrector.toml")
     key = "probe_dph2_coils"
     model = part_model_from_document(draft.document, key, include_children=False)
     for mesh in model.meshes:
@@ -100,7 +101,7 @@ def test_legacy_winding_caps_keep_the_existing_material_length_path():
     "column/C3_ProbeCorrector.toml", "column/C3_BCOR.toml", "column/C3_ImageCorrector.toml"))
 @pytest.mark.parametrize("mode", ("ideal", "analytical", "linear_geometry", "nonlinear_material", "custom"))
 def test_explicit_winding_length_impact_reports_only_the_existing_geometry_route(module, mode):
-    draft = PartModelDocument(INSTRUMENT_CONFIG_ROOT/module)
+    draft = legacy_transverse_draft(INSTRUMENT_CONFIG_ROOT/module)
     rows = {row["key"]: row for row in draft.document["parts"]}
     for row in rows.values():
         if "winding_axial_length_mm" not in row:
@@ -116,7 +117,7 @@ def test_explicit_winding_length_impact_reports_only_the_existing_geometry_route
 
 @pytest.mark.parametrize("module", ("column/C3_ProbeCorrector.toml", "column/C3_ImageCorrector.toml"))
 def test_replacement_base_keeps_explicit_native_copper_length_inactive(module):
-    draft = PartModelDocument(INSTRUMENT_CONFIG_ROOT/module)
+    draft = legacy_transverse_draft(INSTRUMENT_CONFIG_ROOT/module)
     row = next(row for row in draft.document["parts"] if "winding_axial_length_mm" in row)
     row["model_3d"] = {"schema_version": 1, "base": {
         "kind": "box", "width_mm": 2., "height_mm": 3., "length_mm": 4.}}

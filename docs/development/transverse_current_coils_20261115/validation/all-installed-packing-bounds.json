@@ -1,0 +1,678 @@
+{
+  "status": "passed",
+  "scope": "Pure fixed-pack coordinate and insulated-wire section bounds; not full mesh or field execution",
+  "records": [
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "component": "beam_deflector",
+      "per_coil_N": 216,
+      "total_N": 1728,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "component": "condenser_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "component": "ac_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "component": "objective_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C2.toml",
+      "component": "image_diffraction_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "component": "condenser_deflector",
+      "per_coil_N": 135,
+      "total_N": 1080,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "component": "beam_deflector",
+      "per_coil_N": 216,
+      "total_N": 1728,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "component": "condenser_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "component": "ac_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "component": "objective_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3.toml",
+      "component": "image_diffraction_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "condenser_deflector",
+      "per_coil_N": 135,
+      "total_N": 1080,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "beam_deflector",
+      "per_coil_N": 216,
+      "total_N": 1728,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "condenser_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "ac_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "objective_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_diffraction_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_dp11_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_dp12_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_dph1_coils",
+      "per_coil_N": 3,
+      "total_N": 12,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_dp21_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_dp22_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_dph2_coils",
+      "per_coil_N": 3,
+      "total_N": 12,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_ish_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_dsh_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "condenser_deflector",
+      "per_coil_N": 135,
+      "total_N": 1080,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "beam_deflector",
+      "per_coil_N": 216,
+      "total_N": 1728,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "condenser_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "ac_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "objective_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_diffraction_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_dp11_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_dp12_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_dph1_coils",
+      "per_coil_N": 3,
+      "total_N": 12,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_dp21_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_dp22_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_dph2_coils",
+      "per_coil_N": 3,
+      "total_N": 12,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_ish_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_dsh_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "condenser_deflector",
+      "per_coil_N": 135,
+      "total_N": 1080,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "beam_deflector",
+      "per_coil_N": 216,
+      "total_N": 1728,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "condenser_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "ac_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "objective_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "image_diffraction_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_dph2_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_dph1_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_dp22_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_dp21_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_dp11_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "condenser_deflector",
+      "per_coil_N": 135,
+      "total_N": 1080,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "beam_deflector",
+      "per_coil_N": 216,
+      "total_N": 1728,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "condenser_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "ac_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "objective_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_diffraction_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_dph2_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_dph1_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_dp22_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_dp21_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_dp11_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_dp11_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_dp12_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_dph1_coils",
+      "per_coil_N": 3,
+      "total_N": 12,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_dp21_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_dp22_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_dph2_coils",
+      "per_coil_N": 3,
+      "total_N": 12,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_ish_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_dsh_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "condenser_deflector",
+      "per_coil_N": 135,
+      "total_N": 1080,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "beam_deflector",
+      "per_coil_N": 216,
+      "total_N": 1728,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "condenser_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "ac_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "objective_stigmator",
+      "per_coil_N": 400,
+      "total_N": 3200,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_diffraction_deflector",
+      "per_coil_N": 104,
+      "total_N": 832,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_dph2_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_dph1_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_dp22_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_dp21_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_dp11_coils",
+      "per_coil_N": 16,
+      "total_N": 64,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_dp11_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_dp12_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_dph1_coils",
+      "per_coil_N": 3,
+      "total_N": 12,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_dp21_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_dp22_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_dph2_coils",
+      "per_coil_N": 3,
+      "total_N": 12,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_ish_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_dsh_coils",
+      "per_coil_N": 2,
+      "total_N": 8,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/gun/FEG.toml",
+      "component": "feg_deflector",
+      "per_coil_N": 90,
+      "total_N": 720,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/gun/FEG.toml",
+      "component": "feg_stigmator",
+      "per_coil_N": 784,
+      "total_N": 6272,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/gun/FEG_Mono.toml",
+      "component": "feg_deflector",
+      "per_coil_N": 90,
+      "total_N": 720,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/gun/FEG_Mono.toml",
+      "component": "feg_stigmator",
+      "per_coil_N": 784,
+      "total_N": 6272,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/gun/Thermionic.toml",
+      "component": "thermionic_deflector",
+      "per_coil_N": 90,
+      "total_N": 720,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/gun/Thermionic.toml",
+      "component": "thermionic_stigmator",
+      "per_coil_N": 784,
+      "total_N": 6272,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+      "component": "diffraction_stigmator",
+      "per_coil_N": 672,
+      "total_N": 5376,
+      "all_insulated_sections_contained": true
+    },
+    {
+      "path": "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "component": "diffraction_stigmator",
+      "per_coil_N": 672,
+      "total_N": 5376,
+      "all_insulated_sections_contained": true
+    }
+  ]
+}

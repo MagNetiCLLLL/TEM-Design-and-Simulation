@@ -1,0 +1,18 @@
+{
+  "implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+  "cuda": {
+    "available": true,
+    "detail": "CuPy 14.2.0; NVIDIA GeForce RTX 5090; 30.3 GiB free / 31.8 GiB; CUDA allocation and FFT verified"
+  },
+  "original_selected_count": 1024,
+  "entries": {
+    "mixed_stem": {
+      "status": "REJECTED_AS_REQUIRED",
+      "message": "Copper-coil round-lens fields currently support classical particles only. Coherent propagation is not qualified for this source model; select Gaussian calibration to use coherent optics."
+    },
+    "mixed_observation": {
+      "status": "REJECTED_AS_REQUIRED",
+      "message": "Copper-coil round-lens fields currently support classical particles only. Coherent propagation is not qualified for this source model; select Gaussian calibration to use coherent optics."
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "validate_incident_flight_times": true,
+  "original_source_weight_sum": 1.0,
+  "gun_emitted_current_a": 1e-05,
+  "gun_exit_surviving_fraction": 1.0,
+  "gun_exit_surviving_current_a": 1e-05,
+  "gun_equal_time_common_clock_strictly_increasing": true,
+  "branches": [
+    {
+      "key": "incident",
+      "name": "incident",
+      "shape": [
+        23239,
+        1024
+      ],
+      "executed_start_z_mm": 450.0,
+      "required_executed_physical_points": 23565312,
+      "retained_unknown_gun_prefix_energy_points": 231424,
+      "executed_energy_finite_before_stop": true,
+      "energy_range_ev": [
+        300000.01509454974,
+        300000.7013494626
+      ],
+      "clock_range_s": [
+        2.9681990287138944e-09,
+        7.905200333940334e-09
+      ],
+      "clock_adjacent_monotonic": true,
+      "negative_clock_increment_count": 0,
+      "minimum_clock_increment_s": 8.271806125530277e-25,
+      "source_weight_sum": 1.0,
+      "surviving_source_fraction": 1.0,
+      "lost_source_fraction": 0.0,
+      "loss_by_first_block_key": {},
+      "source_weight_ledger_residual": 0.0,
+      "physical_path_multiplier": 1.0,
+      "transmitted_current_a": 1e-05,
+      "z_range_mm": [
+        0.0,
+        1599.2
+      ]
+    },
+    {
+      "key": "000",
+      "name": "000",
+      "shape": [
+        27847,
+        1024
+      ],
+      "executed_start_z_mm": 1599.2,
+      "required_executed_physical_points": 22916096,
+      "retained_unknown_gun_prefix_energy_points": 0,
+      "executed_energy_finite_before_stop": true,
+      "energy_range_ev": [
+        300000.01509454125,
+        300000.7013494626
+      ],
+      "clock_range_s": [
+        7.904696844536595e-09,
+        1.2694361908145731e-08
+      ],
+      "clock_adjacent_monotonic": true,
+      "negative_clock_increment_count": 0,
+      "minimum_clock_increment_s": 0.0,
+      "source_weight_sum": 1.0,
+      "surviving_source_fraction": 0.0,
+      "lost_source_fraction": 1.0,
+      "loss_by_first_block_key": {
+        "flu_screen": 1.0
+      },
+      "source_weight_ledger_residual": 0.0,
+      "physical_path_multiplier": 1.0,
+      "transmitted_current_a": 0.0,
+      "z_range_mm": [
+        1599.2,
+        2987.1499999999996
+      ]
+    }
+  ],
+  "scope": "Executed positive column energies/clocks only before physical stops. Unknown Gun-prefix plotting energies remain NaN. Gun exit energy uses its native electrostatic report. Native Gun first-crossing times may be non-monotonic for turning trajectories; the common-time Gun clock and downstream column clocks are checked separately. Branch readouts are separate paths and must not be added as independent source currents. No source-current restoration."
+}

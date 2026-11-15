@@ -26,9 +26,10 @@ from temsim.physics.relativistic_lorentz import (
     velocity_from_momentum_m_per_s,
 )
 from temsim.physics.gun_transport_domain import bounded_gun_time_step
+from temsim.physics.gun_step_diagnostics import current_gun_step_diagnostics
 
 
-GEOMETRY_STEP_SCHEMA = "geometry-dg-transverse-step-doubled-retry-reuse-v2-inner-tolerance"
+GEOMETRY_STEP_SCHEMA = "geometry-dg-transverse-step-doubled-v3-trace-local-proposal"
 GEOMETRY_IMPLICIT_TOLERANCE = 1e-13
 GEOMETRY_TOTAL_RELATIVE_MOMENTUM = 1e-6
 GEOMETRY_TRANSVERSE_RELATIVE_MOMENTUM = 1e-5
@@ -43,7 +44,9 @@ GEOMETRY_STEP_MAXIMUM_RETRIES = 32
 
 def geometry_step_criteria():
     """Cache the same numerical criteria used by geometry DG acceptance."""
+    from temsim.physics.gun_step_control import SURFACE_STEP_PROPOSAL_SCHEMA
     return dict(schema=GEOMETRY_STEP_SCHEMA,
+        proposal_schema=SURFACE_STEP_PROPOSAL_SCHEMA,
         implicit_tolerance=GEOMETRY_IMPLICIT_TOLERANCE,
         total_relative_momentum=GEOMETRY_TOTAL_RELATIVE_MOMENTUM,
         transverse_relative_momentum=GEOMETRY_TRANSVERSE_RELATIVE_MOMENTUM,
@@ -221,6 +224,9 @@ def _trace_feg_to_exit(gun, count=None, *, cancelled=None, emitted_bundle=None, 
                               if hasattr(electric_base, "launch_boundary_report") else None)
     momentum = momentum_from_kinetic_energy_ev(launch_energy, direction)
     phase = RelativisticPhaseSpace(position, momentum)
+    step_diagnostics = current_gun_step_diagnostics()
+    if step_diagnostics is not None:
+        step_diagnostics.begin_trace(emitted.ray_id, emitted.weight, phase, launch_energy)
     if observer is not None:
         observer.initialize(phase)
     alive = np.ones(n, dtype=bool)
@@ -275,6 +281,10 @@ def _trace_feg_to_exit(gun, count=None, *, cancelled=None, emitted_bundle=None, 
 
     from temsim.physics.analytic_particle_batch import prepare_analytic_batch
     analytic_batch = prepare_analytic_batch(gun, analytic_execution, cancelled)
+    # Trial-step feedback belongs to this trace, never persisted Gun controls.
+    # Stochastic medium interactions keep their established selection path.
+    from temsim.physics.gun_step_control import SurfaceStepPredictor
+    surface_predictor = SurfaceStepPredictor() if geometry_field and not medium.regions else None
     step_index = 0
     while step_index < maximum_steps:
         if cancelled is not None and cancelled():
@@ -365,7 +375,8 @@ def _trace_feg_to_exit(gun, count=None, *, cancelled=None, emitted_bundle=None, 
                 momentum_size = np.linalg.norm(phase.momentum_kg_m_per_s[active], axis=1)
                 if np.any(field_strength > 0):
                     dt = min(dt, float(np.min(.025*momentum_size[field_strength>0]/(ELEMENTARY_CHARGE_C*field_strength[field_strength>0]))))
-                advanced, dt = _surface_step(phase, dt, active, magnetic_provider, electric_provider)
+                advanced, dt = _surface_step(phase, dt, active, magnetic_provider, electric_provider,
+                    predictor=surface_predictor)
             else:
                 # A spatial cap alone is unsafe at emission: a sub-eV electron can
                 # gain keV within that step. Resolve the local Lorentz impulse
@@ -839,7 +850,7 @@ def _analytic_step(gun, phase, dt, active, magnetic, electric, invariant_energy,
     raise ValueError("Analytic gun integration did not meet the transverse error budget")
 
 
-def _surface_step(phase, dt, active, magnetic, electric):
+def _surface_step(phase, dt, active, magnetic, electric, *, predictor=None):
     """Step-doubled DG update with active-ray transverse accuracy controls.
 
     The existing total momentum and 3D displacement gates remain in force.
@@ -850,14 +861,36 @@ def _surface_step(phase, dt, active, magnetic, electric):
     # Evaluate only live trajectories: stopped rays must not constrain later
     # time steps or sample fields outside the physical domain.
     local = RelativisticPhaseSpace(phase.position_m[active], phase.momentum_kg_m_per_s[active], phase.time_s)
+    if predictor is not None:
+        # Every spatial, impulse, medium and captured-field scope cap has
+        # already been computed. Feedback can only lower this first trial.
+        dt = predictor.propose(dt, phase_time_s=float(phase.time_s), active=active,
+            magnetic=magnetic, electric=electric)
+    diagnostics = current_gun_step_diagnostics()
+    if diagnostics is not None:
+        diagnostics.begin_step(phase, dt, active)
+        if predictor is not None:
+            diagnostics.record_step_proposal(predictor.last_proposal)
     cached_full = None
-    for _ in range(GEOMETRY_STEP_MAXIMUM_RETRIES):
+    for attempt in range(GEOMETRY_STEP_MAXIMUM_RETRIES):
+        if diagnostics is not None:
+            diagnostics.begin_attempt(attempt, dt, cached_full is not None)
         try:
-            full = (cached_full if cached_full is not None else
-                    static_energy_step(local, dt, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE))
-            half = static_energy_step(local, .5*dt, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
-            fine = static_energy_step(half, .5*dt, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
+            if diagnostics is None:
+                full = (cached_full if cached_full is not None else
+                        static_energy_step(local, dt, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE))
+                half = static_energy_step(local, .5*dt, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
+                fine = static_energy_step(half, .5*dt, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
+            else:
+                full = (cached_full if cached_full is not None else diagnostics.time_static_step(
+                    "full", static_energy_step, local, dt, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE))
+                half = diagnostics.time_static_step("half", static_energy_step, local, .5*dt,
+                    magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
+                fine = diagnostics.time_static_step("fine", static_energy_step, half, .5*dt,
+                    magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
         except ValueError as error:
+            if diagnostics is not None:
+                diagnostics.record_exception(error)
             if "iteration did not converge" not in str(error):
                 raise
             cached_full = None
@@ -880,6 +913,11 @@ def _surface_step(phase, dt, active, magnetic, electric):
         finite = (all(np.isfinite(value).all() for value in
             (pscale, momentum_error, xyz_error, transverse_scale, transverse_error, xy_error, xy_budget))
             and np.isfinite(xyz_budget))
+        if diagnostics is not None:
+            diagnostics.record_gates(momentum_error=momentum_error, momentum_limit=GEOMETRY_TOTAL_RELATIVE_MOMENTUM,
+                xyz_error=xyz_error, xyz_budget=xyz_budget, transverse_error=transverse_error,
+                transverse_limit=GEOMETRY_TRANSVERSE_RELATIVE_MOMENTUM, xy_error=xy_error, xy_budget=xy_budget,
+                finite=finite)
         if (finite
                 and np.all(momentum_error <= GEOMETRY_TOTAL_RELATIVE_MOMENTUM)
                 and np.all(xyz_error <= xyz_budget)
@@ -887,9 +925,23 @@ def _surface_step(phase, dt, active, magnetic, electric):
                 and np.all(xy_error <= xy_budget)):
             positions, momenta = phase.position_m.copy(), phase.momentum_kg_m_per_s.copy()
             positions[active], momenta[active] = fine.position_m, p
+            if diagnostics is not None:
+                diagnostics.accepted(phase, positions, momenta, active, dt)
+            if predictor is not None:
+                # The original four inequalities above are the sole decision.
+                # These scalar ratios only guide the following trial step;
+                # their observed FEM behaviour need not follow a cubic law.
+                ratio = max(float(np.max(momentum_error)/GEOMETRY_TOTAL_RELATIVE_MOMENTUM),
+                    float(np.max(xyz_error)/xyz_budget),
+                    float(np.max(transverse_error)/GEOMETRY_TRANSVERSE_RELATIVE_MOMENTUM),
+                    float(np.max(xy_error/xy_budget)))
+                predictor.accepted(dt, ratio, phase_time_s=float(phase.time_s), active=active,
+                    magnetic=magnetic, electric=electric, retried=attempt > 0)
             return RelativisticPhaseSpace(positions, momenta, phase.time_s+dt), dt
         # At dt/2 this deterministic half update is exactly the next full
         # update from local. Implicit failures invalidate it before retrying.
+        if diagnostics is not None:
+            diagnostics.rejected()
         cached_full = half
         dt *= .5
     raise ValueError("Surface extraction integration did not meet the transverse/local error budget")
@@ -901,15 +953,58 @@ def _surface_plane_crossing(plane_z_m, position, momentum, previous_time_s,
     from scipy.optimize import brentq
     from temsim.physics.static_energy_lorentz import static_energy_step
     start = RelativisticPhaseSpace(position[None, :], momentum[None, :], previous_time_s)
+    evaluations = {} if _static_surface_root_cache_supported(electric, magnetic) else None
     def at_fraction(fraction):
+        if evaluations is not None and fraction in evaluations:
+            return evaluations[fraction]
         if fraction == 0:
             return start
         half = static_energy_step(start, .5*duration*fraction, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
-        return static_energy_step(half, .5*duration*fraction, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
+        result = static_energy_step(half, .5*duration*fraction, magnetic, electric, tolerance=GEOMETRY_IMPLICIT_TOLERANCE)
+        if evaluations is not None:
+            evaluations[fraction] = result
+        return result
     def residual(fraction):
         return float(at_fraction(fraction).position_m[0, 2]-plane_z_m)
     fraction = brentq(residual, 0., 1., xtol=1e-12)
     return at_fraction(fraction)
+
+
+def _static_surface_root_cache_supported(electric, magnetic):
+    """Only memoize identical fractions of captured, static native providers.
+
+    A batch endpoint is never substituted: each stored result was executed
+    with this single ray, start, time, duration, field and original tolerance.
+    Unknown classes and instance callback overrides retain repeated evaluation.
+    """
+    from temsim.physics.closed_gun_field import ClosedGunField
+    from temsim.physics.continuous_gun_field import ContinuousGunField
+    from temsim.physics.grounded_tip_field import GroundedTipField
+    from temsim.physics.instrument_magnetic import InstrumentMagneticField
+    if type(electric) not in (ClosedGunField, ContinuousGunField, GroundedTipField):
+        return False
+    if type(magnetic) is not InstrumentMagneticField:
+        return False
+    if (any(name in electric.__dict__ for name in (
+        "field_at_global_positions_v_per_m", "potential_v_at_global_positions",
+        "potential_rise_v_at_global_positions", "_interpolate", "interpolate"))
+        or "field_at_global_positions_t" in magnetic.__dict__):
+        return False
+    # Check the complete source graph, not just its native outer wrapper.
+    # Use fresh admission: a previously packed wrapper is not authority for
+    # a leaf callback that has since changed. No field is sampled here.
+    from temsim.physics.compiled_magnetic_field import prepare_compiled_magnetic_sources
+    from temsim.physics.compiled_copper_instrument import pack_copper_instrument_sources
+    from temsim.physics.grounded_particle_step import _INSTRUMENT_FIELD_METHOD
+    if getattr(magnetic.field_at_global_positions_t, "__func__", None) is not _INSTRUMENT_FIELD_METHOD:
+        return False
+    try:
+        return (prepare_compiled_magnetic_sources(magnetic._sources) is not None
+            or pack_copper_instrument_sources(magnetic._sources) is not None)
+    except Exception:
+        # An unsupported source record/backend is a cache miss. Let the
+        # unchanged native root evaluation decide its own field validity.
+        return False
 
 
 def _resolve_surface_exit_crossing(exit_z_m, previous_position, previous_momentum,

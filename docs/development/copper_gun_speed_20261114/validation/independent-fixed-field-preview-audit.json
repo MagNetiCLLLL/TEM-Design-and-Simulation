@@ -1,0 +1,309 @@
+{
+  "status": "INDEPENDENT_FIXED_HIGH_FIELD_PREVIEW_AUDIT_PASSED",
+  "created_at_utc": "2026-11-14T17:52:46.815896+00:00",
+  "scope": "Read-only existing formal-archive, input and array audit; no new emission, chief rays, field sampling/solve, transport or coherent work.",
+  "source_implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+  "high_archive": {
+    "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\high-post-recovered\\high-post-recovered.temsim",
+    "bytes": 2924108230,
+    "sha256": "fd408971df86d07edb491021f348cdd92e9a4e9dea70f368a8d25a30b2a42b87",
+    "package_digest": "0f00c274b9120c3621d969945e4822fa591aa2116e4c48e07eb32714ade15d84"
+  },
+  "preview_archive": {
+    "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\fixed-high-field-preview-execution-1\\fixed-high-field-preview.temsim",
+    "bytes": 386284201,
+    "sha256": "ad19f534ea4d8b3a51b132f9f7dcd1cc4f42b88406f28805556b1ba7b3cdee2c",
+    "package_digest": "b1355eee0f942b514de7af895b4f860545dcbcaaa39abbf8f5c0b02efbcd6d1f",
+    "numeric_arrays_independently_checksum_verified": 102,
+    "total_numeric_arrays": 102,
+    "unpacked_bytes": 483406020,
+    "official_manifest_headers_and_snapshot_valid": true
+  },
+  "full_gun_numeric_and_metadata_exact_between_formal_archives": true,
+  "source_original_fields_exact_to_independent_reference": [
+    "x_m",
+    "y_m",
+    "tx_rad",
+    "ty_rad",
+    "energy_offset_ev",
+    "ray_id",
+    "weight",
+    "emission_time_s",
+    "ray_id",
+    "position_m",
+    "direction",
+    "normal"
+  ],
+  "actual_original_positive_unique_count": 1024,
+  "source_fwhm_ev": 0.3,
+  "new_source_particles": 0,
+  "upstream_operation_attempts": {
+    "rejected": [],
+    "reuse_validation": []
+  },
+  "no_new_gun_evidence": "Same complete Gun typed record and all numeric fingerprints; no source gateway, emit or integration entry was called under active rejecting gates.",
+  "exact_actual_operator_witness_digest": "1146c2766ad13b8fdc73808642ff19776f80eb691e3b1853251c4bc260954d7f",
+  "exact_provider_payloads_and_order": true,
+  "exact_native_dynamic_laws_gauge_geometry_and_policies": true,
+  "provider_count": 36,
+  "dynamic_coil_count": 4,
+  "distinct_runtime_and_source_identities_preserved": true,
+  "high_runtime_digest": "50c1d6995691954e597bfc8c58ad0c9e65f343aeeffeb596426f0bae7be579a2",
+  "preview_runtime_digest": "af2990c1c270d51b43c74df0583c86b2b42f95735c259574f03c21dcc7325a95",
+  "independent_inputs_source_bounds_and_tolerances_equal": true,
+  "permitted_input_differences": "Official quality step/history and execution markers only. Existing two derived lower-gain readbacks are excluded from independent-input comparison while their full actual dynamic laws are compared exactly.",
+  "numerical_request": {
+    "high_step_mm": 0.05,
+    "high_history_step_mm": 0.5,
+    "preview_step_mm": 0.5,
+    "preview_history_step_mm": 2.0
+  },
+  "true_new_coarse_column": {
+    "incident_nodes": 2578,
+    "post_nodes": 2839,
+    "incident_maximum_axial_gap_mm": 0.49986950848210654,
+    "post_maximum_axial_gap_mm": 0.4999819884728822,
+    "integration_calls": [
+      {
+        "scope": "incident",
+        "plan_signature": "4412e8cce37e25262d6e14c900d48b3676f5797ac994913b642f5d96a677fbe5",
+        "start_z_mm": 450.0,
+        "stop_z_mm": 1599.2,
+        "actual_resume_z_mm": 450.0,
+        "start_index": 0,
+        "integration_nodes": 2578,
+        "z_mm": {
+          "dtype": "<f8",
+          "shape": [
+            2578
+          ],
+          "sha256": "25253c49c70558c21db14ec41ec1bfc248b3601823a23235ba809fb87758bea2"
+        },
+        "actual_operator_witness_digest": "1146c2766ad13b8fdc73808642ff19776f80eb691e3b1853251c4bc260954d7f"
+      },
+      {
+        "scope": "post",
+        "plan_signature": "b56a67d7b7ebc011d0b97759e0c36690e0f46b884fb5ef27e770416bea0bb7d8",
+        "start_z_mm": 1599.2,
+        "stop_z_mm": 2987.1499999999996,
+        "actual_resume_z_mm": 1599.2,
+        "start_index": 0,
+        "integration_nodes": 2839,
+        "z_mm": {
+          "dtype": "<f8",
+          "shape": [
+            2839
+          ],
+          "sha256": "8f36ff6b60712dec4689281851aa7c83dc99b83dc3eb226edbebe2b17151c09a"
+        },
+        "actual_operator_witness_digest": "1146c2766ad13b8fdc73808642ff19776f80eb691e3b1853251c4bc260954d7f"
+      }
+    ],
+    "cache": {
+      "mode": "checkpoint",
+      "hit": true,
+      "resume_z_mm": 450.0,
+      "reused_prefix_rows": 226,
+      "recomputed_history_rows": 2578,
+      "reused_integration_nodes": 1,
+      "recomputed_integration_nodes": 2577,
+      "checkpoint_spacing_mm": 0.0,
+      "checkpoint_count": 231,
+      "checkpoint_retained_bytes": 13520520,
+      "checkpoint_internal_state_bytes": 2164560,
+      "checkpoint_memory_budget_bytes": 536870912,
+      "field_sigma_cutoff": 7.0,
+      "incremental_gun_reused_original_count": 0,
+      "incremental_column_reused_original_count": 0,
+      "incremental_column_transported_original_count": 1024,
+      "downstream": {
+        "hit": false,
+        "resume_z_mm": 1599.2,
+        "completed_z_mm": 2987.1499999999996,
+        "scope": "optical_reference"
+      }
+    },
+    "interpretation": "The one reused integration node is the genuine Gun-exit boundary; 226 prefix history rows are upstream Gun display history, not reused High column transport."
+  },
+  "full_formal_roundtrip": {
+    "exact_array_fields": 26,
+    "all_array_hashes_match_formal_archive": true,
+    "producer_archive_saved_before_guards": true
+  },
+  "incident_clocks_energy": {
+    "complete_column_clocks_finite_nondecreasing": true,
+    "energies_finite_positive": true,
+    "minimum_adjacent_clock_increment_s": 8.271806125530277e-25,
+    "maximum_energy_minus_nominal_plus_launch_ev": 3.597233444452286e-07,
+    "producer_full_incident_post_energy_clock_report": {
+      "validate_incident_flight_times": true,
+      "original_source_weight_sum": 1.0,
+      "gun_emitted_current_a": 1e-05,
+      "gun_exit_surviving_fraction": 1.0,
+      "gun_exit_surviving_current_a": 1e-05,
+      "gun_equal_time_common_clock_strictly_increasing": true,
+      "branches": [
+        {
+          "key": "incident",
+          "name": "incident",
+          "shape": [
+            2804,
+            1024
+          ],
+          "executed_start_z_mm": 450.0,
+          "required_executed_physical_points": 2639872,
+          "retained_unknown_gun_prefix_energy_points": 231424,
+          "executed_energy_finite_before_stop": true,
+          "energy_range_ev": [
+            300000.01509454974,
+            300000.7013494626
+          ],
+          "clock_range_s": [
+            2.9681990287138944e-09,
+            7.905200333942234e-09
+          ],
+          "clock_adjacent_monotonic": true,
+          "negative_clock_increment_count": 0,
+          "minimum_clock_increment_s": 8.271806125530277e-25,
+          "source_weight_sum": 1.0,
+          "surviving_source_fraction": 1.0,
+          "lost_source_fraction": 0.0,
+          "loss_by_first_block_key": {},
+          "source_weight_ledger_residual": 0.0,
+          "physical_path_multiplier": 1.0,
+          "transmitted_current_a": 1e-05,
+          "z_range_mm": [
+            0.0,
+            1599.2
+          ]
+        },
+        {
+          "key": "000",
+          "name": "000",
+          "shape": [
+            2839,
+            1024
+          ],
+          "executed_start_z_mm": 1599.2,
+          "required_executed_physical_points": 2338816,
+          "retained_unknown_gun_prefix_energy_points": 0,
+          "executed_energy_finite_before_stop": true,
+          "energy_range_ev": [
+            300000.015094541,
+            300000.7013494626
+          ],
+          "clock_range_s": [
+            7.904696844536795e-09,
+            1.2692471210846685e-08
+          ],
+          "clock_adjacent_monotonic": true,
+          "negative_clock_increment_count": 0,
+          "minimum_clock_increment_s": 7.737022775294536e-17,
+          "source_weight_sum": 1.0,
+          "surviving_source_fraction": 0.0,
+          "lost_source_fraction": 1.0,
+          "loss_by_first_block_key": {
+            "flu_screen": 1.0
+          },
+          "source_weight_ledger_residual": 0.0,
+          "physical_path_multiplier": 1.0,
+          "transmitted_current_a": 0.0,
+          "z_range_mm": [
+            1599.2,
+            2987.1499999999996
+          ]
+        }
+      ],
+      "scope": "Executed positive column energies/clocks only before physical stops. Unknown Gun-prefix plotting energies remain NaN. Gun exit energy uses its native electrostatic report. Native Gun first-crossing times may be non-monotonic for turning trajectories; the common-time Gun clock and downstream column clocks are checked separately. Branch readouts are separate paths and must not be added as independent source currents. No source-current restoration."
+    }
+  },
+  "sample_plane_comparison": {
+    "z_mm": 1599.2,
+    "matched_original_ids": 1024,
+    "high_and_preview_all_positive_survive": true,
+    "high_and_preview_absolute_weights_exact": true,
+    "difference_direction": "Preview minus High",
+    "units": "SI m, rad, s, eV as field suffixes specify",
+    "endpoint_differences": {
+      "x_m": {
+        "maximum_absolute": 1.3604310515299197e-15,
+        "rms": 3.7461027217979222e-16,
+        "mean": 3.1116137138686624e-18,
+        "minimum_signed": -1.2038344060381824e-15,
+        "maximum_signed": 1.3604310515299197e-15,
+        "exact_bytes_equal": false
+      },
+      "y_m": {
+        "maximum_absolute": 1.3704192640439424e-15,
+        "rms": 3.7596803004197355e-16,
+        "mean": -8.237216069727751e-19,
+        "minimum_signed": -1.3704192640439424e-15,
+        "maximum_signed": 1.3112778884194303e-15,
+        "exact_bytes_equal": false
+      },
+      "tx_rad": {
+        "maximum_absolute": 1.0022790516511998e-14,
+        "rms": 2.732804111638921e-15,
+        "mean": 2.5871176982439354e-17,
+        "minimum_signed": -8.718960324099979e-15,
+        "maximum_signed": 1.0022790516511998e-14,
+        "exact_bytes_equal": false
+      },
+      "ty_rad": {
+        "maximum_absolute": 9.954683561838595e-15,
+        "rms": 2.7420548360550486e-15,
+        "mean": 6.793047674469311e-19,
+        "minimum_signed": -9.954683561838595e-15,
+        "maximum_signed": 9.695475386352782e-15,
+        "exact_bytes_equal": false
+      },
+      "flight_time_s": {
+        "maximum_absolute": 3.2673634195844593e-21,
+        "rms": 1.1417976871828191e-21,
+        "mean": -1.9858797049808235e-23,
+        "minimum_signed": -2.9447629806887785e-21,
+        "maximum_signed": 3.2673634195844593e-21,
+        "exact_bytes_equal": false
+      },
+      "kinetic_energy_ev": {
+        "maximum_absolute": 0.0,
+        "rms": 0.0,
+        "mean": 0.0,
+        "minimum_signed": 0.0,
+        "maximum_signed": 0.0,
+        "exact_bytes_equal": true
+      }
+    },
+    "high_project_statistics": {
+      "project_function": "temsim.physics.beam_statistics.transverse_beam_statistics",
+      "d95_m": 5.709544656813339e-07,
+      "radius_rms_m": 1.6055961126119205e-07,
+      "rms_diameter_m": 3.211192225223841e-07,
+      "centroid_x_m": -1.2787951909497525e-09,
+      "centroid_y_m": -2.5597329258941345e-10,
+      "convergence95_rad": 1.5510479371401558e-06,
+      "surviving": 1024,
+      "transmitted_source_fraction": 1.0,
+      "scope": "Sample-plane statistics of this existing 1024-particle optical reference; no particle-count convergence or focus qualification."
+    },
+    "preview_project_statistics": {
+      "project_function": "temsim.physics.beam_statistics.transverse_beam_statistics",
+      "d95_m": 5.709544637981767e-07,
+      "radius_rms_m": 1.6055961073053335e-07,
+      "rms_diameter_m": 3.211192214610667e-07,
+      "centroid_x_m": -1.2787951878381375e-09,
+      "centroid_y_m": -2.559732934131355e-10,
+      "convergence95_rad": 1.5510479440242723e-06,
+      "surviving": 1024,
+      "transmitted_source_fraction": 1.0,
+      "scope": "Sample-plane statistics of this existing 1024-particle optical reference; no particle-count convergence or focus qualification."
+    },
+    "qualification": "A matched fixed-field step-size comparison at fixed N=1024. It does not prove N convergence, sub-Angstrom probe focus, dual-condenser performance or material/coherent imaging."
+  },
+  "normal_preview_preserved": "The earlier normal Preview used a different resolved automatic scan field. This separate fixed-High-field control does not replace or relabel it.",
+  "originals_unchanged": true,
+  "retained_prior_high_audit": {
+    "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\independent-final-high-audit.json",
+    "sha256": "081cd820edb74fbc39978c89207067985f4c499bef490c3dfa8432df5966ecbf"
+  }
+}

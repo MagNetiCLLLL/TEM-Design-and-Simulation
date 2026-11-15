@@ -1,0 +1,1042 @@
+{
+  "scope": "Read-only independent verification of actual completed arrays; display processing only. Historical Gaussian three-condenser source, not a copper-coil coherent calculation, new particle execution or a new two-condenser qualification.",
+  "checks": {
+    "acquisition_checksums": true,
+    "original_boundary_files_unchanged": true,
+    "historical_gaussian_three_condenser": true,
+    "original_source_identity": true,
+    "frozen_wave_implementation": true,
+    "original_particle_parameters": true,
+    "unchanged_float64_source_phase_energy_weights_ids": true,
+    "unchanged_original_gun_ledger": true,
+    "explicit_old_particle_new_wave_handoff": true,
+    "complete_wave_input_identity": true,
+    "cuda_actual_backend_without_fallback": true,
+    "declared_detector_windows": true,
+    "declared_material_levels": true,
+    "unchanged_grid_slice_field_qualification": true,
+    "raw_diffraction_qualification": true,
+    "source_compression_and_boundaries_within_original_budgets": true,
+    "selected_periodic_resident_check": true,
+    "all_scan_diffraction_arrays_finite_nonobject": true,
+    "scan_diffraction_float64_preserved": true,
+    "bf_adf_shapes": true,
+    "diffraction_shape": true,
+    "nonnegative_physical_readouts": true,
+    "absolute_current_loss_ledger_1e9": true,
+    "absolute_current_scaling": true,
+    "counts_and_reference_current": true,
+    "coherence_settings_unchanged": true,
+    "fwhm_thickness_and_upper_surface_unchanged": true
+  },
+  "details": {
+    "original_boundary_file_hashes": {
+      "checksums.json": "426d9c0f54c27df78094d7292bc6d07ea82e7c6780e1da8c9f5c8d7dfb63b52e",
+      "emission-reference.npz": "6912a277ca43fdc11659c1e74762a327711ce4ef97b3b2fe98e015c7f0fda85d",
+      "inputs.json": "b8ad2d6fbcfea628a86226a17d935a0b5f0f0f19ea8481e85b2cbba36e0dd1d0",
+      "original-gun.npz": "9d883484e1f26f6e5f2bf3c6062e3775a7b6fd9d48047d82f121167b9e9bc9c4",
+      "source-phase.npz": "e81ad4d0da7156ddac53463b46ff362a209a043ae69f1bc88566ea3e4fa3cdb8",
+      "source.json": "9814aab869ba462c55bc0ac7632f23320b5f5b194ec7e4f67451c131510f2527"
+    },
+    "source_array_checks": {
+      "x_m": true,
+      "y_m": true,
+      "tx_rad": true,
+      "ty_rad": true,
+      "ray_id": true,
+      "weight": true,
+      "kinetic_energy_ev": true,
+      "flight_time_s": true,
+      "canonical_frequency_shift_inv_angstrom": true
+    },
+    "original_gun_array_checks": {
+      "x_m": true,
+      "y_m": true,
+      "tx_rad": true,
+      "ty_rad": true,
+      "energy_offset_ev": true,
+      "weight": true,
+      "ray_id": true,
+      "alive": true,
+      "flight_time_s": true,
+      "blocked_z_mm": true,
+      "blocked_key": true
+    },
+    "executed_backend": {
+      "scan": "CUDA complex128",
+      "lift": {
+        "compute_backend": "cupy",
+        "fallback_reason": null,
+        "numeric_precision": "complex128 / float64"
+      },
+      "kernel_scope": "Local exact free angular-spectrum multislice with qualified static near-uniform axial-field symmetric overlap split; not the general complete column kernel",
+      "material_algorithm": "periodic-bloch",
+      "particle_backend_retained": "Numba CPU",
+      "scope": "Historical classical CPU settings are not the new wave backend. The fixed mixed-STEM executor uses CuPy; field/potential preparation can use CPU without wave fallback."
+    },
+    "accepted_sampling_qualification": [
+      {
+        "base": [
+          1760,
+          400
+        ],
+        "refined": [
+          1920,
+          800
+        ],
+        "combined_error_over_reference_modulation": {
+          "adf": 0.01801999179448502,
+          "bf": 0.028610984610523253
+        },
+        "field_split_refinement_executed": true
+      }
+    ],
+    "selected_material_grid_yx": [
+      1760,
+      1760
+    ],
+    "selected_material_slices": 400,
+    "selected_material_plan": {
+      "atomic_face_membership_guard": "Reject when basis rounding plus four floating-point ULPs can alter finite-slab inclusion",
+      "atomic_planar_pattern_count": 4,
+      "axial_boundary": "Only actual atoms in the original finite slab; finite slice bounds integrated analytically",
+      "bandwidth_fraction": 0.6666666666666666,
+      "basis_common_offset_angstrom_xyz": [
+        5.329070518200751e-15,
+        2.0872192862952943e-14,
+        2.692109424273781e-09
+      ],
+      "basis_original_rounding_displacement_max_angstrom_xyz": [
+        1.4210854715202004e-14,
+        3.108624468950438e-14,
+        2.6921260776191502e-09
+      ],
+      "basis_registration_floating_floor_angstrom": 2.6065645594245385e-13,
+      "basis_registration_raw_site_count": 5832,
+      "basis_registration_scope": "Measured periodic signed differences from original unrounded CIF sites; common numerical offset restored by the analytic builder, remaining per-site error charged",
+      "basis_rounding_error_bound_angstrom_xyz": [
+        2.695382401394551e-13,
+        2.708705077690053e-13,
+        2.7753184591675623e-13
+      ],
+      "coefficient_precision": "float64 / complex128",
+      "common_basis_offset_restored": true,
+      "effective_basis_scope": "Original stored basis plus measured common CIF rounding offset, wrapped by the proven repeat; source CIF and stored basis arrays are unchanged",
+      "estimated_builder_slice_scratch_bytes": 29736960,
+      "estimated_working_bytes": 5937731264,
+      "finite_axial_padding_angstrom": 0.0,
+      "grid_yx": [
+        1760,
+        1760
+      ],
+      "infinite_z_projection": false,
+      "kinetic": "exact positive-branch square root, complex128",
+      "lattice_phase": {
+        "origin_depth_below_upper_nm": 5.0,
+        "reference_thickness_nm": 10.0,
+        "scope": "Original CIF phase fixed relative to the specimen entrance; original CIF unchanged",
+        "translation_from_current_center_angstrom": 0.0,
+        "translation_from_current_center_nm": 0.0
+      },
+      "material_storage": {
+        "expanded_slice_bytes": 12390400,
+        "full_shape_zyx": [
+          400,
+          1760,
+          1760
+        ],
+        "full_volume_expanded": false,
+        "primitive_sha256": "3da409aaf11dce4d1ee3e81c7c01db6b8d4b67e3a9e7ed39d634d955bcc249c4",
+        "primitive_shape_zyx": [
+          400,
+          176,
+          220
+        ],
+        "proof": "Literal np.tile repetition of immutable primitive values by construction",
+        "stored_bytes": 61952000,
+        "tiles_xy": [
+          8,
+          10
+        ]
+      },
+      "maximum_admitted_angle_mrad": 188.65192374584376,
+      "maximum_atomic_face_floating_tolerance_angstrom": 5.684341886080802e-14,
+      "maximum_chain_registration_residual_angstrom": 2.842170943040401e-14,
+      "maximum_ifft_imaginary_v_angstrom": 1.747597859040358e-13,
+      "memory_admission": {
+        "device_potential_policy": "Primitive-period transmissions for Bloch; one streamed full-grid slice for resident",
+        "device_working_bytes": 5937731264,
+        "host_expanded_slice_bytes": 12390400,
+        "host_full_volume_tile_allocated": false,
+        "host_potential_stage_peak_bytes": 123904000,
+        "host_potential_storage_bytes": 61952000,
+        "host_primitive_builder_peak_bytes": 123904000,
+        "host_stage_peak_bytes": 551240224,
+        "periodic_builder_device_peak_bytes": 29736960,
+        "periodic_translation_policy": "Analytic primitive Fourier phase; no full-grid host FFT"
+      },
+      "minimum_atomic_distance_to_slab_faces_angstrom": 0.07536056970583616,
+      "nuclear_core_clamp": null,
+      "numerical_potential_error": {
+        "detector_absolute_error_bound_per_incident_weight": 2.3485631989506687e-06,
+        "periodic_image_phase_bound_rad": 0.0,
+        "registration_phase_bound_rad": 3.385821185283881e-08,
+        "rounding_phase_bound_rad": 1.1404226981546677e-06,
+        "scope": "Potential storage, geometric registration and padded XY images; additional discretization is qualified by the unchanged scan comparisons",
+        "total_phase_bound_rad": 1.1742809100075065e-06
+      },
+      "orientation_quaternion_wxyz": [
+        0.27059805007309856,
+        -0.27059805007309856,
+        -0.6532814824381884,
+        -0.6532814824381883
+      ],
+      "original_cell_atoms": 8,
+      "original_cell_volume_angstrom3": 161.3181071283582,
+      "potential_method": "Continuous analytic finite-z Lobato Fourier projection",
+      "potential_storage_dtype": "float32",
+      "primitive_grid_yx": [
+        176,
+        220
+      ],
+      "proof": "Integer CIF lattice translations along all laboratory axes; exact tiled potential checked separately",
+      "real_fourier_projection": "Hermitian average, including even-grid Nyquist hyperplanes",
+      "rectangular_basis_atoms": 16,
+      "rectangular_basis_rounding_error_bound_angstrom_xyz": [
+        2.695382401394551e-13,
+        2.708705077690053e-13,
+        2.7753184591675623e-13
+      ],
+      "rectangular_repeat_angstrom_xyz": [
+        7.698557721176563,
+        5.4437023700000005,
+        7.698557721176562
+      ],
+      "slice_thicknesses_angstrom": [
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "slices": 400,
+      "supercell_angstrom_xy": [
+        61.588461769412504,
+        54.437023700000005
+      ],
+      "tiles_xy": [
+        8,
+        10
+      ],
+      "transmission_precision": "complex128"
+    },
+    "raw_diffraction_comparison": {
+      "combined_l1_fraction_of_emitted": 0.0005294487811284152,
+      "combined_relative_l1": 0.0016739136332518403,
+      "domain_common_grid": "Actual base complex exit field zero embedded at unchanged real-space pitch into enlarged physical FOV before orthonormal FFT",
+      "domain_l1_fraction": 1.10714369465193e-06,
+      "field_remainder_absolute_fraction_bound": 4.1423270485650906e-05,
+      "field_split_l1_fraction": 2.6368259836443687e-08,
+      "grid_slice_l1_fraction": 0.0004837702884071689,
+      "maximum_relative_l1": 0.05,
+      "normalization": "Absolute probabilities remain unchanged; only the error metric is divided by one reference total",
+      "potential_remainder_absolute_fraction_bound": 3.1217102811069866e-06,
+      "qualified": true,
+      "reference_total_fraction_of_emitted": 0.3162939655971842
+    },
+    "wave_energy_approximation": {
+      "actual_energy_limits_ev": [
+        300000.01102260174,
+        300000.8538775167
+      ],
+      "actual_energy_span_ev": 0.8428549149539322,
+      "actual_mean_energy_ev": 300000.29990978737,
+      "energy_mode_integration_executed": false,
+      "maximum_angular_axis_change_mrad_at_outer_detector": 0.00017120539569370763,
+      "maximum_free_phase_change_rad_at_outer_detector": 0.0004105668563170184,
+      "mean_wavelength_angstrom": 0.019687476922552523,
+      "method": "One current-weighted stationary mean wavelength; actual per-particle energies retained in source ancestry",
+      "scope": "Free propagation and angular-coordinate sensitivity only; not a full material energy-mode error certificate",
+      "source_configured_fwhm_ev": 0.3
+    },
+    "field_model": {
+      "additional_periodic_field_factorization_phase_bound_rad": 2.5350234787266576e-09,
+      "angular_axis_scope": "qx/qy are canonical cycles/angstrom in the captured native gauge; the stated local mechanical-angle uncertainty is not removed by relabeling the axes",
+      "axial_B_t": 0.4735512462271785,
+      "canonical_readout_scope": "Ideal annular Fourier diagnostic in native zero-axis gauge; not a downstream physical recording detector",
+      "canonical_to_mechanical_angular_uncertainty_bound_mrad": 0.000463247639343666,
+      "detector_absolute_error_bound_per_incident_weight": 0.00010016504179597625,
+      "entrance_phi_v": 300000.00000025186,
+      "final_diamagnetic_omission_phase_bound_rad": 1.7122069073337424e-09,
+      "finite_field_absolute_fraction_bound": 3.174143819918678e-05,
+      "finite_model_phase_remainder_bound_rad": 5.00799858745094e-05,
+      "independent_periodic_resident_max_fraction_difference": 6.52010043178386e-11,
+      "initial_diamagnetic_translation_commutator_phase_bound_rad": 8.228165713929153e-10,
+      "maximum_split_change_fraction": {
+        "adf": 1.4729052885123148e-09,
+        "bf": 3.620187360997562e-08
+      },
+      "method": "Symmetric material / axial-Larmor-plus-diamagnetic overlap split",
+      "native_axis_A_t_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "omitted_field_terms": "Nonuniform magnetic/electric and nonparaxial magnetic remainders bounded above; exact free kinetic retained",
+      "phase_bound_maximum_scan_shift_m": 8.909545442950499e-10,
+      "phase_bound_radius_m": 4.1099051608391006e-09,
+      "runtime_digest": "fc2fdb0d872a2243ef42451be0d29cf08e4491a5d6eabb4f90f7f7b750a320df",
+      "sampling_refinement": [
+        {
+          "axial_samples": 5,
+          "lateral_samples": 17,
+          "magnetic_nonparaxial_phase_bound_rad": 5.007998586639545e-05,
+          "maximum_nonuniform_A_t_m": 2.2422548231821894e-22,
+          "maximum_phi_change_v": 0.0,
+          "maximum_transverse_B_t": 3.5889426828617824e-14,
+          "nonuniform_phase_bound_rad": 4.056977629952723e-15
+        },
+        {
+          "axial_samples": 9,
+          "lateral_samples": 33,
+          "magnetic_nonparaxial_phase_bound_rad": 5.007998586639545e-05,
+          "maximum_nonuniform_A_t_m": 2.2422548231821894e-22,
+          "maximum_phi_change_v": 0.0,
+          "maximum_transverse_B_t": 3.5889426828617824e-14,
+          "nonuniform_phase_bound_rad": 4.056977629952723e-15
+        }
+      ],
+      "scope": "Finite sampled static-field model; spatial and axial remainder preflight is refined, not a continuum interval certificate",
+      "selected_periodic_resident_max_fraction_difference": 6.52010043178386e-11,
+      "snapshot_digest": "3b2fb38105ee1c45761433456e1a298a7b8ba8fd98bd6097251567f7765179a1",
+      "split_block_refinements": [
+        1,
+        2,
+        4
+      ],
+      "split_validation_positions_nm": [
+        [
+          -0.49,
+          -0.57
+        ],
+        [
+          -0.17,
+          0.19
+        ],
+        [
+          0.01,
+          0.01
+        ]
+      ],
+      "total_larmor_rotation_rad": 1.127149219299958e-06
+    },
+    "critical_values_and_existing_thresholds": {
+      "bf_adf_combined_error_over_modulation_limit": 0.05,
+      "raw_diffraction_relative_l1_limit": 0.05,
+      "original_current_closure_limit": 1e-09,
+      "periodic_resident_absolute_fraction_limit": 5e-07,
+      "selected_periodic_resident_absolute_fraction": 6.52010043178386e-11,
+      "combined_source_mode_loss_fraction_limit": 1e-05,
+      "allowed_absolute_source_mode_loss": 3.1689453125e-06,
+      "actual_absolute_source_mode_loss": 3.1524786386905035e-06,
+      "actual_source_boundary_probability": 5.2962794324267254e-12,
+      "unit_mode_boundary_fraction_limit": 1e-09,
+      "actual_maximum_unit_mode_boundary_fraction": 4.23710978767275e-12,
+      "maximum_energy_span_ev": 2.0,
+      "actual_energy_span_ev": 0.8428549149539322
+    },
+    "array_hashes": {
+      "scan_x_nm": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "0dde71f4af6db5b0d7c6a2e29e5c207567a8ae822abbdaaa83d32fc0c3aa1a16"
+      },
+      "scan_y_nm": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "7ea8270dd049661b4bf2cbdc5d40eadb3978edbb233962d66712f053961bf436"
+      },
+      "qx_inv_angstrom": {
+        "dtype": "<f8",
+        "shape": [
+          1760
+        ],
+        "sha256_raw_bytes": "ec692b38ee364423bb91c5badab52f00df969a18c0245568d8079b53304cad3e"
+      },
+      "qy_inv_angstrom": {
+        "dtype": "<f8",
+        "shape": [
+          1760
+        ],
+        "sha256_raw_bytes": "652fcefd2d8f0fd53070c46aff19c5812fa3ee3cfc7cc63740f9b4bfcc3255a9"
+      },
+      "diffraction_probability": {
+        "dtype": "<f8",
+        "shape": [
+          1760,
+          1760
+        ],
+        "sha256_raw_bytes": "385f8f5a4df0f0ede24fbd81b49ed7fc74c2fbe31ba85e2196583ceec6eb61cc"
+      },
+      "fraction_bf": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "797355f8f2f355a37c8103bd1903127ae5844686d1a7f9e63e88f0c6d26560ec"
+      },
+      "fraction_adf": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "38a7914a577c3215533eda53dad35381eddd755a8d494f57fe2982d6cb80172a"
+      },
+      "fraction_other": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "bef924f17fbaf404804f1103aa271e6d9b946f577a23019d95099dc48ef5a21e"
+      },
+      "fraction_numerical_band_loss": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "98e1bd270443ec7bc078aa9ef48b0901a7066e8420e8b7f02830ceab2cdc6c79"
+      },
+      "fraction_source_mode_loss": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "36d2a5d424fac8d1bd371668dfd53cfeab78c0d97cdd70fcab72bea8c5b2b91e"
+      },
+      "fraction_source_representation_loss": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "50fa9caf64c5d7779eab6a34c2a5202916fc6ebe3cae915ffb1677e09c186d0c"
+      },
+      "fraction_upstream_physical_loss": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "be46745af4ac119b63072628e9f9035ede3fb6e5ece567208a775ab4d7228f86"
+      },
+      "current_a_bf": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "e415a03110dc4d02cf9a7c92ac75a277d2a34d21364521b86b36b91fd56cc8fd"
+      },
+      "current_a_adf": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "636b29bc2c87cd9a13ab9f1080e33ab77abf9b9117ac38e6874724b4998d0346"
+      },
+      "current_a_other": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "0261f620f13f4ea85564e2d11919055ef95766862d340ded924ff76326fb7379"
+      },
+      "current_a_numerical_band_loss": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "e19f4a986b753254728a5717ec1e10ed4918e6e7adad14d3f8e32c57fdf28896"
+      },
+      "current_a_source_mode_loss": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "a1a69e5da49017e5cdc5d8f567d5b5ca214eccff6cdbfa6328bdf46833bb5146"
+      },
+      "current_a_source_representation_loss": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "742a486b2425c94d0980117aa23427e2eb1997190eb59ccb2842ed981d66a2d5"
+      },
+      "current_a_upstream_physical_loss": {
+        "dtype": "<f8",
+        "shape": [
+          64,
+          64
+        ],
+        "sha256_raw_bytes": "2994f59fbd4b399a9ff16af157a59bcddca714a5ed1fffa360f460bc4debcd88"
+      }
+    },
+    "population_current_and_loss": {
+      "original_positive_count": 16384,
+      "surviving_positive_count": 5192,
+      "effective_surviving_count": 5192.0,
+      "reference_current_a": 1e-05,
+      "source_fraction": 0.31689453125,
+      "retained_source_fraction": 0.31689137877136125,
+      "recomputed_maximum_ledger_residual": 7.771561172376096e-16,
+      "reported_maximum_ledger_residual": 7.771561172376096e-16,
+      "ledger": {
+        "bf": {
+          "minimum": 0.26665713003657804,
+          "maximum": 0.27528123186679243,
+          "mean": 0.27067094843247164,
+          "shape": [
+            64,
+            64
+          ],
+          "dtype": "<f8"
+        },
+        "adf": {
+          "minimum": 7.038983069842339e-05,
+          "maximum": 0.00503164168957539,
+          "mean": 0.0014366583694047322,
+          "shape": [
+            64,
+            64
+          ],
+          "dtype": "<f8"
+        },
+        "other": {
+          "minimum": 0.03582118222028707,
+          "maximum": 0.04947115227476384,
+          "mean": 0.04455082778995665,
+          "shape": [
+            64,
+            64
+          ],
+          "dtype": "<f8"
+        },
+        "numerical_band_loss": {
+          "minimum": 1.0080049732519303e-05,
+          "maximum": 0.0008365303969500304,
+          "mean": 0.00023294417721967569,
+          "shape": [
+            64,
+            64
+          ],
+          "dtype": "<f8"
+        },
+        "source_mode_loss": {
+          "minimum": 3.1524786387460146e-06,
+          "maximum": 3.1524786387460146e-06,
+          "mean": 3.1524786387460146e-06,
+          "shape": [
+            64,
+            64
+          ],
+          "dtype": "<f8"
+        },
+        "source_representation_loss": {
+          "minimum": 2.3077650901370816e-12,
+          "maximum": 2.3077650901370816e-12,
+          "mean": 2.3077650901370816e-12,
+          "shape": [
+            64,
+            64
+          ],
+          "dtype": "<f8"
+        },
+        "upstream_physical_loss": {
+          "minimum": 0.68310546875,
+          "maximum": 0.68310546875,
+          "mean": 0.68310546875,
+          "shape": [
+            64,
+            64
+          ],
+          "dtype": "<f8"
+        }
+      }
+    },
+    "bf_current_a": {
+      "minimum": 2.6665713003657807e-06,
+      "maximum": 2.7528123186679246e-06,
+      "mean": 2.706709484324717e-06,
+      "shape": [
+        64,
+        64
+      ],
+      "dtype": "<f8"
+    },
+    "adf_current_a": {
+      "minimum": 7.038983069842339e-10,
+      "maximum": 5.0316416895753904e-08,
+      "mean": 1.4366583694047322e-08,
+      "shape": [
+        64,
+        64
+      ],
+      "dtype": "<f8"
+    },
+    "diffraction": {
+      "minimum": 2.5970463201257788e-33,
+      "maximum": 9.902310501336585e-05,
+      "mean": 1.0205388260649252e-07,
+      "shape": [
+        1760,
+        1760
+      ],
+      "dtype": "<f8",
+      "total_fraction": 0.31612210676187125,
+      "position_nm": [
+        -0.010000000000000002,
+        -0.010000000000000002
+      ],
+      "scope": "One actual selected scan position; full unscaled probability per reciprocal pixel, not a scan average or 4D-STEM cube"
+    },
+    "preserved_inputs": {
+      "source_digest": "d3b65fd9ced99db9cec14f5cd3fde47be2f9deebef69bea629f531be99adfe6d",
+      "source_input_digest": "6c25a765596b7f56ba855061af2667ce5642ca9eae0a90db5061ba5ab4199d17",
+      "source_producer_implementation": "1e4ca761c78affa80d90f24fa3d2fe2a69d202a6d7779f6d2e73a66ccb7ca9e8",
+      "wave_implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+      "energy_fwhm_ev": 0.3,
+      "thickness_nm": 10.0,
+      "upper_surface_z_mm": 1599.1999998000001,
+      "source_particle_transport_restarted": false,
+      "optical_controls_changed": false
+    },
+    "qualified_scan_seconds": 5022.5297572,
+    "historical_array_comparison_diagnostic_only": {
+      "fraction_bf": {
+        "same_shape": true,
+        "maximum_absolute_difference": 1.1102230246251565e-16
+      },
+      "fraction_adf": {
+        "same_shape": true,
+        "maximum_absolute_difference": 3.469446951953614e-18
+      },
+      "diffraction_probability": {
+        "same_shape": true,
+        "maximum_absolute_difference": 0.0
+      }
+    }
+  },
+  "status": "VERIFIED_COMPLETED_CUDA_MIXED_SCAN",
+  "overview_sha256": "dadb1d0b0736625631d093fc1e5051a7502256fa60c758aac1619a6fdbf870b8"
+}

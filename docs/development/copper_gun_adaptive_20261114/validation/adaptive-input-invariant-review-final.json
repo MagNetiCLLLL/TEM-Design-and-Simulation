@@ -1,0 +1,176 @@
+{
+  "status": "INDEPENDENT_ADAPTIVE_INPUT_AND_ROOT_ADMISSION_REVIEW_PASSED",
+  "created_utc": "2026-11-14T20:07:53.676950+00:00",
+  "scope": "Read-only final source/AST/config review plus six pure-array/mocked-root tests. No source emission, field solve, finite-source propagation, coherent work or source edits.",
+  "reference": {
+    "source_identity": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+    "capture_sha256": "ac9294bfc72bfe3b22cb27cd407ff6cd3d44948d5888a4f86298271b6f88e976",
+    "all_reference_files_verified": 781,
+    "tracing_sha256": "f784288d5261b76dd6460a1901026dd135efbe7dc6dd72f21c08bedda39db9c7"
+  },
+  "reviewed_current": {
+    "tracing_sha256": "de122d2ffba3ff9f5192ff3890d1d60a3d09f8d343c25102bc5db58a2686328a",
+    "predictor_sha256": "8b1c84e1d3225ba8b3368c5dff632b26d39039ea324286d22f4f0f51d649165e",
+    "compiled_magnetic_field_sha256": "5f0fd5d99e952c29b4ea686ab93018dc3ad48f9271b8d909c593e887350efcb1",
+    "compiled_copper_instrument_sha256": "ee8ea5d4e2b481fbcd11bb3976c5f18ef91cd711a43b3f5cfe0580e54ed8dbc1",
+    "frozen_copper_leaf_contract_sha256": "1474f9f59b72b5a9149777ab6d5da1161b404819aedfa0d99cac27879ca015c1",
+    "native_law_contract_sha256": "cd176880a9b2461168776e2fe9b1ce39bc9f0725671126768f122d6f258af0b4"
+  },
+  "prior_finding": {
+    "report": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\adaptive-input-invariant-review.json",
+    "report_sha256": "fa107143044ca5315cb6e6030ce959f1fe4f3af6534f97ac059745e030455b0e",
+    "preserved_unchanged": true,
+    "title": "Native magnetic wrapper admits unknown or overridden inner field providers to root memoization",
+    "resolution": "RESOLVED",
+    "evidence": [
+      "Root admission checks the current native InstrumentMagneticField method identity and fresh whole-source preparation instead of trusting an old packed-cache entry.",
+      "Non-copper source preparation requires exact supported provider/lens/multipole method contracts, including per-instance callback rejection. Copper preparation validates the exact frozen adapter, assembly/coil/registration method graph and supported original loop geometry.",
+      "Unknown inner source records, native inner callback overrides and unsupported preparation errors now return no-memo admission. The original repeated single-ray root calculation remains the fallback.",
+      "Independent pure tests confirm both the original unknown-inner reproducer and the native-inner callback reproducer are rejected, while the exact native root memo still matches the original mocked executed phase."
+    ]
+  },
+  "numeric_invariants": {
+    "total_numeric_assignments": 11,
+    "geometry_constants": 10,
+    "analytic_impulse_constants": 1,
+    "constants": [
+      {
+        "name": "ANALYTIC_MAXIMUM_RELATIVE_IMPULSE",
+        "value": 0.025,
+        "value_AST_exact_to_reference": true
+      },
+      {
+        "name": "GEOMETRY_IMPLICIT_TOLERANCE",
+        "value": 1e-13,
+        "value_AST_exact_to_reference": true
+      },
+      {
+        "name": "GEOMETRY_TOTAL_RELATIVE_MOMENTUM",
+        "value": 1e-06,
+        "value_AST_exact_to_reference": true
+      },
+      {
+        "name": "GEOMETRY_TRANSVERSE_RELATIVE_MOMENTUM",
+        "value": 1e-05,
+        "value_AST_exact_to_reference": true
+      },
+      {
+        "name": "GEOMETRY_TRANSVERSE_MOMENTUM_FLOOR_FRACTION",
+        "value": 1e-05,
+        "value_AST_exact_to_reference": true
+      },
+      {
+        "name": "GEOMETRY_MOMENTUM_NORM_FLOOR",
+        "value": 1e-30,
+        "value_AST_exact_to_reference": true
+      },
+      {
+        "name": "GEOMETRY_XY_ABSOLUTE_POSITION_M",
+        "value": 1e-13,
+        "value_AST_exact_to_reference": true
+      },
+      {
+        "name": "GEOMETRY_XY_RELATIVE_POSITION",
+        "value": 1e-06,
+        "value_AST_exact_to_reference": true
+      },
+      {
+        "name": "GEOMETRY_XYZ_ABSOLUTE_POSITION_M",
+        "value": 1e-13,
+        "value_AST_exact_to_reference": true
+      },
+      {
+        "name": "GEOMETRY_XYZ_RELATIVE_STEP",
+        "value": 1e-05,
+        "value_AST_exact_to_reference": true
+      },
+      {
+        "name": "GEOMETRY_STEP_MAXIMUM_RETRIES",
+        "value": 32,
+        "value_AST_exact_to_reference": true
+      }
+    ],
+    "all_AST_exact": true,
+    "analytic_step_and_energy_schemas_unchanged": true
+  },
+  "algorithm_versions": {
+    "geometry_reference": "geometry-dg-transverse-step-doubled-retry-reuse-v2-inner-tolerance",
+    "geometry_current": "geometry-dg-transverse-step-doubled-v3-trace-local-proposal",
+    "proposal_current": "surface-dg-bounded-feedback-proposal-v2",
+    "meaning": "Explicit numerical scheduling identities changed; none of the physical inputs or original error budgets changed."
+  },
+  "structural_invariants": {
+    "surface_step_without_only_proposal_hooks_AST_exact": true,
+    "complete_trace_without_only_trace_local_constructor_and_keyword_AST_exact": true,
+    "unchanged_functions_AST_exact": [
+      "_analytic_step",
+      "_resolve_surface_exit_crossing",
+      "_clip_body_bores",
+      "_enforce_static_field_energy"
+    ],
+    "all_four_error_formulas_budgets_and_active_ray_acceptance_gates_exact": true,
+    "original_dt_halving_and_cached_half_reuse_exact": true,
+    "geometry_energy_projection_still_absent": true,
+    "original_caps_and_boundary_handlers_exact": true,
+    "predictor_only_geometry_vacuum_trace_local": true,
+    "original_medium_path_exact": true,
+    "one_global_active_population_clock_preserved": true
+  },
+  "root_memo_invariants": {
+    "same_single_ray_start_clock_duration_fields": true,
+    "original_two_half_step_calls_AST_exact": true,
+    "original_inner_tolerance_unchanged": true,
+    "original_brentq_and_xtol_1e_minus_12_AST_exact": true,
+    "exact_fraction_keys_only": true,
+    "no_batch_endpoint_substitution": true,
+    "fresh_all_leaf_support_admission": true,
+    "unsupported_preparation_exception_returns_original_no_memo_path": true
+  },
+  "predictor_progress": {
+    "proposal_schema": "surface-dg-bounded-feedback-proposal-v2",
+    "accepted_step_suggestion_gain_bounds": [
+      1.0,
+      1.25
+    ],
+    "retry_or_active_change_gain": 1.0,
+    "physical_cap_can_still_lower_trial": true,
+    "real_gate_or_implicit_failure_still_halves": true,
+    "near_limit_ratio_0p99_four_hundred_steps_preserve_dt_and_clock": true,
+    "qualification": "The cube-root expression is only bounded growth feedback; no cubic convergence assumption or extra acceptance gate is introduced."
+  },
+  "default_files": {
+    "tracked_configs_profiles_count": 50,
+    "tracked_existing_docs_count": 2391,
+    "diff_to_HEAD": []
+  },
+  "independent_verification": {
+    "junit": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\independent-final-admission-pure-tests.xml",
+    "junit_sha256": "a8e06a1059c2ba1dc078acb86d555c47d676fb7effac6339278f7bec62cfd86b",
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "junit_seconds": 3.346,
+    "test_names": [
+      "test_root_unknown_inner_provider_keeps_the_original_repeated_evaluation",
+      "test_root_native_inner_callback_override_is_not_statically_admitted",
+      "test_root_repeated_evaluations_retained_for_unknown_or_overridden_provider",
+      "test_root_exact_fraction_memoization_preserves_executed_phase",
+      "test_near_limit_accepted_error_plateau_never_shrinks_or_stalls_the_clock",
+      "test_zero_error_growth_remains_bounded_and_later_physical_cap_can_reduce_it"
+    ]
+  },
+  "parent_verification_receipt": {
+    "junit": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\adaptive-progress-static-admission-tests.xml",
+    "junit_sha256": "a4b71fe21eb83a077c05cd84b71fd260f1a3a06f4b9a058c7a056e2e068fe0cf",
+    "tests": 73,
+    "failures": 0,
+    "errors": 0,
+    "junit_seconds": 4.588,
+    "scope": "Read existing parent-produced JUnit; this final review did not rerun the 73-test suite."
+  },
+  "findings": [],
+  "limitations": [
+    "No new full finite-source physical calculation was run by this reviewer. The requested 1024 Preview/High physics checks remain the parent execution task.",
+    "Passing input/algorithm invariants does not claim the new accepted-step sequence is bitwise identical to the old sequence or establish particle-count convergence."
+  ]
+}

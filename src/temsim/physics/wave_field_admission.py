@@ -84,6 +84,8 @@ def require_supported_column_wave_fields(state, start_z_mm, stop_z_mm, plan):
     separate capable entry point prevents an admission change from silently
     enabling omitted forces in another caller.
     """
+    from temsim.simulation_modes import require_coherent_mode
+    require_coherent_mode(state)
     from temsim.physics.instrument_magnetic import column_dipole_fields
     field = getattr(plan, "electric_field", None)
     if field is not None:
@@ -102,6 +104,8 @@ def require_supported_wave_dipoles(state, start_z_mm, stop_z_mm, plan):
     wave event builders use centre-plane clipping and can omit a coil whose
     finite field still overlaps the requested segment.
     """
+    from temsim.simulation_modes import require_coherent_mode
+    require_coherent_mode(state)
     from temsim.physics.instrument_magnetic import column_dipole_fields
     from temsim.physics.electrostatic_column_transport import active_electric_field
     if active_electric_field(plan) is not None:
