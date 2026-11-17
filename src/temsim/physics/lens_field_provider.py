@@ -1556,6 +1556,14 @@ class GeometryAwareAnalyticFieldProvider:
         return field.reshape(positions.shape)
 
 
+def field_map_recipe(descriptor):
+    """Read a map recipe without activating a dormant ideal-current profile."""
+    if not isinstance(descriptor, Mapping):
+        return descriptor
+    from temsim.ideal_coil_segments import CURRENT_RECIPE_FIELDS
+    return {key: value for key, value in descriptor.items() if key not in CURRENT_RECIPE_FIELDS} or None
+
+
 def bind_imported_lens_field_map(
     state,
     lens_key: str,
@@ -1579,7 +1587,14 @@ def bind_imported_lens_field_map(
     if not isinstance(descriptors, dict):
         descriptors = {}
         setattr(state, "lens_field_map_descriptors", descriptors)
-    descriptors[str(lens_key)] = field_map_descriptor(field_map, binding)
+    from copy import deepcopy
+    from temsim.ideal_coil_segments import CURRENT_RECIPE_FIELDS
+    previous = descriptors.get(str(lens_key), {})
+    descriptor = field_map_descriptor(field_map, binding)
+    for field in CURRENT_RECIPE_FIELDS:
+        if field in previous:
+            descriptor[field] = deepcopy(previous[field])
+    descriptors[str(lens_key)] = descriptor
     cache = getattr(state, "_runtime_lens_field_provider_cache", None)
     if isinstance(cache, dict):
         cache.pop(str(lens_key), None)
@@ -1592,7 +1607,14 @@ def clear_imported_lens_field_map(state, lens_key: str) -> None:
         registry.pop(str(lens_key), None)
     descriptors = getattr(state, "lens_field_map_descriptors", None)
     if isinstance(descriptors, dict):
-        descriptors.pop(str(lens_key), None)
+        from copy import deepcopy
+        from temsim.ideal_coil_segments import CURRENT_RECIPE_FIELDS
+        previous = descriptors.get(str(lens_key), {})
+        retained = {field: deepcopy(previous[field]) for field in CURRENT_RECIPE_FIELDS if field in previous}
+        if retained:
+            descriptors[str(lens_key)] = retained
+        else:
+            descriptors.pop(str(lens_key), None)
     cache = getattr(state, "_runtime_lens_field_provider_cache", None)
     if isinstance(cache, dict):
         cache.pop(str(lens_key), None)
@@ -1641,7 +1663,7 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
         from temsim.lens_pose import lens_pose_registration
         from temsim.physics.copper_coil_field_provider import resolve_copper_coil_provider
         return resolve_copper_coil_provider(state, key, native_provider, current, lens_pose_registration(state, key))
-    descriptor = getattr(state, "lens_field_map_descriptors", {}).get(key, {})
+    descriptor = field_map_recipe(getattr(state, "lens_field_map_descriptors", {}).get(key, {})) or {}
     from temsim.excitation_calibration import validate_excitation_recipe
     validate_excitation_recipe(descriptor)
     if uses_field_maps(state) and descriptor.get("solver") in {"axisymmetric_linear_fem", "axisymmetric_nonlinear_fem"}:
@@ -1700,9 +1722,7 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
     if not isinstance(diagnostics, dict):
         diagnostics = {}
         setattr(state, "_field_provider_diagnostics", diagnostics)
-    descriptor = getattr(state, "lens_field_map_descriptors", {}).get(
-        key, None
-    )
+    descriptor = field_map_recipe(getattr(state, "lens_field_map_descriptors", {}).get(key))
     if not uses_field_maps(state):
         provider = GeometryAwareAnalyticFieldProvider(
             key, native_provider, current, f"selected_{selected_mode}_model",
@@ -1747,7 +1767,7 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
             "geometry_fingerprint": current.geometry_fingerprint,
             "assembly_fingerprint": current.assembly_fingerprint,
             "source_sha256": imported.provenance.source_sha256,
-            "descriptor_fingerprint": _fingerprint(descriptor),
+            "descriptor_fingerprint": _fingerprint(getattr(state, "lens_field_map_descriptors", {}).get(key)),
             "excitation_scaling": scaling,
             "divergence_within_tolerance": (
                 imported.validation.divergence_within_tolerance

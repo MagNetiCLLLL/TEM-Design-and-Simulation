@@ -224,7 +224,7 @@ def test_fixed_fraction_constant_remains_uniform_at_its_actual_brightness(view):
 def test_retired_actions_are_hidden_and_preserve_setting_and_retained_image(view, qtbot):
     view._state.sample.stem_wave_enabled = False
     view.set_state(view._state)
-    assert "Particles or Mixed coherent CUDA" in view.image_model_notice.text()
+    assert "Particles or Mixed particles + waves (CUDA)" in view.image_model_notice.text()
     assert "Electron beam" in view.wave_image_action_note.text()
     frame = _frame()
     view._set_stem_frame(frame)

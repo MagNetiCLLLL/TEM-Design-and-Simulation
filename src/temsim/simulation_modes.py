@@ -69,8 +69,9 @@ def coherent_mode_issue(state):
         return ("Coherent propagation is unavailable in Ideal Optics (thin elements). "
                 "Select Finite-Field Optics in Simulation; the mode was not changed automatically.")
     if getattr(state, "round_lens_field_model", "gaussian") == "copper_coil":
-        return ("Ideal prescribed-current coil fields currently support classical particles only. "
-                "Coherent propagation is not qualified for this source model; select Gaussian calibration to use coherent optics.")
+        return ("General/downstream coherent propagation is not qualified for ideal prescribed-current coil fields. "
+                "Local stationary mixed particle-wave STEM uses separate admission on Scanning Image; "
+                "the field model was not changed automatically.")
     return None
 
 
@@ -129,6 +130,13 @@ def validate_model_recipes(descriptors):
     for row in descriptors.values():
         from temsim.excitation_calibration import validate_excitation_recipe
         validate_excitation_recipe(row)
+        from temsim.ideal_coil_segments import FIELD, normalize_recipe
+        if isinstance(row, dict) and FIELD in row:
+            normalize_recipe(row[FIELD])
+        if isinstance(row, dict) and "ideal_transverse_current_segments" in row:
+            from temsim.ideal_transverse_segments import FIELD as TRANSVERSE_FIELD
+            from temsim.ideal_transverse_segments import normalize_recipe as normalize_transverse_recipe
+            normalize_transverse_recipe(row[TRANSVERSE_FIELD])
         if isinstance(row, dict) and row.get("solver") == "axisymmetric_nonlinear_fem":
             from temsim.physics.nonlinear_circuits import operator_settings
             operator_settings(row)

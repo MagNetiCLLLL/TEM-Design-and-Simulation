@@ -143,9 +143,36 @@ electrical inputs.
 
 Validation distinguishes metadata/CAD/field-array checks from finite-source
 transport, focus, manufacturing and CUDA coherent qualification. The ideal
-prescribed-current model remains classical-only until its coherent operator
-is separately qualified; no native multipole may be substituted to bypass
-that boundary.
+prescribed-current model admits local stationary mixed particle-wave STEM
+subject to actual per-request field and numerical qualification. The general
+column wave kernel and arbitrary downstream mixed observations remain
+unqualified and rejected. No native multipole may be substituted, live drive
+frozen or winding tail truncated to bypass a boundary. See the
+[local mixed STEM admission](MIXED_STEM_SCAN.md#ideal-prescribed-current-coils-in-vacuum).
 
 The [executed multipole current report](development/multipole_current_coils_20261115/README.md)
 binds installed input values, reference fits and independent validation evidence.
+
+## Internal opposing currents in fixed winding envelopes
+
+Ideal vacuum coils can additionally retain signed internal closed-current
+groups without changing their master current, geometry, physical turns or
+normal/skew commands. Round lenses use the Model Inspector's **Internal coil
+currents...** editor and `temsim.ideal_coil_segments.set_current_segments`.
+Probe HP1/HP2 use the distinct
+`temsim.ideal_transverse_segments.set_transverse_current_segments` API.
+Their radial/nested pack fractions represent complete closed subwindings,
+not independently driven sides of an open wire or additional normal/skew axes.
+The parent physical turn count and full occupied winding domain remain intact.
+
+These recipes run only in the ideal prescribed-current vacuum-coil mode.
+They remain dormant in other modes. Saved inputs and runtime, Gun and scan
+dependencies retain their identity; edited currents cannot reuse stale
+transport. Equal ratios of one recover the original uniform source exactly.
+Opposing regions are not deleted when their total signed NI is zero.
+No resistance or constant-power constraint is imposed.
+
+The [fixed-envelope current-fit report](development/ideal_current_fit_20261116/README.md)
+records the failed bounded reconstruction and its numerical conditioning.
+No fitted candidate was installed and no focused-probe or scanning-image
+qualification follows from this electrical input feature.

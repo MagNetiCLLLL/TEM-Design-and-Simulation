@@ -347,7 +347,10 @@ def _field_model(state, source, fov_xy, max_frequency):
     runtime = capture_unified_field_runtime(state, start, start+length)
     if type(runtime.snapshot) is DynamicPotentialSnapshot:
         raise ValueError("A stationary mixed STEM scan cannot infer dynamic coherence from particle clocks")
-    sample0 = runtime.snapshot.sample(np.array([[0., 0., start]]))
+    from .unified_potential_sampler import compile_unified_potential_sampler
+    backend = getattr(state, "acceleration_backend", "Auto") if getattr(state, "acceleration_enabled", True) else "CPU"
+    sampler = compile_unified_potential_sampler(runtime.snapshot, execution_backend=backend)
+    sample0 = sampler.sample(np.array([[0., 0., start]]))
     a0 = sample0["A_t_m"][0]
     if np.linalg.norm(a0) > 1e-20 or np.any(runtime.snapshot.gauge.gradient_t_m) or np.any(runtime.snapshot.gauge.hessian_t):
         raise ValueError("Mixed STEM split currently requires the native zero-axis magnetic gauge; a canonical spectrum is not a mechanical angle chart")
@@ -364,7 +367,7 @@ def _field_model(state, source, fov_xy, max_frequency):
         xy = np.c_[xx.ravel(), yy.ravel()]
         residual_a, residual_phi, max_a, max_b = 0., 0., 0., 0.
         for z in np.linspace(start, start+length, nz):
-            field = runtime.snapshot.sample(np.c_[xy, np.full(len(xy), z)])
+            field = sampler.sample(np.c_[xy, np.full(len(xy), z)])
             ideal = np.c_[-bz*xy[:, 1]/2, bz*xy[:, 0]/2, np.zeros(len(xy))]
             residual_a = max(residual_a, float(np.max(np.linalg.norm(field["A_t_m"]-ideal, axis=1))))
             residual_phi = max(residual_phi, float(np.max(abs(field["phi_v"]-phi0))))
@@ -400,6 +403,7 @@ def _field_model(state, source, fov_xy, max_frequency):
     return apply, {"method": "Symmetric material / axial-Larmor-plus-diamagnetic overlap split",
         "scope": "Finite sampled static-field model; spatial and axial remainder preflight is refined, not a continuum interval certificate",
         "runtime_digest": runtime.digest, "snapshot_digest": runtime.snapshot.numerical_digest,
+        "field_execution": sampler.execution_receipt(),
         "axial_B_t": bz, "entrance_phi_v": phi0, "native_axis_A_t_m": a0.tolist(),
         "sampling_refinement": levels, "finite_model_phase_remainder_bound_rad": error_phase,
         "detector_absolute_error_bound_per_incident_weight": 2*error_phase,
@@ -1085,8 +1089,8 @@ def simulate_mixed_stem_scan(state, source, request=MixedStemScanRequest(), *,
     # boundary may retain a CPU policy for its completed classical transport;
     # it does not request CPU execution for this new wave calculation.
     require_coherent_cuda()
-    from temsim.simulation_modes import require_coherent_mode
-    require_coherent_mode(state)
+    from temsim.physics.mixed_stem_admission import require_local_mixed_stem_mode
+    require_local_mixed_stem_mode(state)
     if not isinstance(source, ParticleWaveSource):
         raise TypeError("Mixed STEM requires its executed immutable ParticleWaveSource")
     inputs = capture_instrument_snapshot(state)

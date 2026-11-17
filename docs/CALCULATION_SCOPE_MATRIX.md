@@ -1,6 +1,6 @@
 # Calculation modes: physical scope and numerical cost
 
-Reviewed against the executable entry points on 15 November 2026. This is a
+Reviewed against the executable entry points on 16 November 2026. This is a
 source-level capability inventory, not a new simulation, mesh-convergence
 study or real-instrument qualification. Historical operators and archived
 results do not establish an available public calculation route.
@@ -15,7 +15,7 @@ from Preview to a complete physical microscope:
 | Column execution model | Thin optical actions, compatibility ray equations, or shared electromagnetic potentials and finite geometry |
 | Round-lens field source | Gaussian/saved maps, Ideal prescribed-current coils in vacuum, or explicitly configured geometry/material field recipes |
 | Gun and source | Physical emission law, source distribution, extraction/acceleration field and particle transport |
-| Requested product | Optical reference, material particle paths, projected raster, local mixed wave, mixed coherent raster, receiver or spectroscopy |
+| Requested product | Optical reference, material particle paths, particle raster, local mixed wave, mixed particle-wave raster, receiver or spectroscopy |
 | Numerical quality | Original source population, integration mesh, retained history, wave grid/modes/slices and acceptance budgets |
 | Execution backend | Supported CPU, Numba or CUDA operations; a device choice does not add physics |
 | Optical operating point / assembly | STEM/TEM illumination, projector settings and installed condenser/corrector topology; these specify hardware/operation rather than model fidelity |
@@ -57,12 +57,14 @@ corrector's mechanical pole count is not an inventory of executed harmonics.
 | --- | --- | --- |
 | Gaussian calibration / saved lens models, fixed calibration | Existing Gaussian amplitudes, widths and positions, or the explicitly selected saved map/recipe; native non-round sources remain | Mechanical pole/bore edits do not automatically reconstruct Gaussian B or Cs. A bore can still change interception and valid geometry. |
 | Link Gaussian widths to coil length / `axial_length` | Explicit actual/reference current-bearing coil-length ratio scales native Gaussian widths and internal offsets; optical centres, amplitudes, excitation and polarity remain | An engineering scaling rule, not a winding/material solve; no focus or B-squared-integral normalization. Saved mapped recipes retain their own rules. |
-| Ideal prescribed-current coils in vacuum | Declared owned winding envelopes, fixed turns, signed currents and rigid pose; axisymmetric annular windings and calibrated closed saddle/radial stigmator, quadrupole and hexapole winding packs; mu_r=1 | Pole pieces, iron, B-H saturation and discrete winding leads are not magnetic sources. Existing mechanical/clipping ownership remains active. Only unconfigured legacy sources retain native fields. Coherent propagation remains unqualified. |
+| Ideal prescribed-current coils in vacuum | Declared owned winding envelopes, fixed turns, signed currents and rigid pose; axisymmetric annular windings and calibrated closed saddle/radial stigmator, quadrupole and hexapole winding packs; mu_r=1 | Pole pieces, iron, B-H saturation and discrete winding leads are not magnetic sources. Existing mechanical/clipping ownership remains active. Only unconfigured legacy sources retain native fields. General column-wave propagation remains unqualified; local stationary mixed STEM has separate per-request admission and qualification. |
 
 Ideal prescribed-current coils in vacuum and Gaussian length linking require
-`unified`. The prescribed-current model currently admits **classical particles
-only**; public coherent entry points reject it. The program does not switch to
-Gaussian automatically to obtain a wave result.
+`unified`. The prescribed-current model admits classical particles and the
+local stationary mixed particle-wave STEM entry, subject to actual per-request
+field and numerical qualification. General/downstream wave entry points still
+reject it. The program does not switch to Gaussian automatically to obtain a
+wave result, freeze live drives or truncate winding tails.
 
 The **Ideal prescribed-current coils in vacuum** model computes the field
 from the declared ampere-turns and winding geometry with permeability mu_0. No resistance,
@@ -207,7 +209,7 @@ Plot-node waist markers remain sampling dependent.
 | Other ordinary particle STEM choices | Selected compatibility particle/material response and readouts | Shared `unified` gate rejects finite-volume material-path raster, legacy coherent STEM, 4D-STEM and dispersive filter STEM |
 | Camera / screen image / `receiver` | Executed particle arrival/interception and requested receiver response | A particle intensity image does not contain quantum interference; physical inserted recording devices can absorb current independently of whether a readout is selected |
 | Mixed coherent plane observation / Electron beam or Transverse beam | Exact particle handoff at specimen upper surface; local mixed-state construction; admitted specimen and shared static downstream potentials to the selected plane; actual downstream recording absorption | Usable CUDA required. Propagation requires `unified` and admitted potentials; Ideal prescribed-current coils in vacuum and thin-lens optics rejected. Static downstream fields only; no arbitrary energy-filter continuation. The mixed beam has no single phase. |
-| Mixed coherent CUDA Scanning Image | Same executed entrance source; finite-thickness static elastic multislice, admitted local axial field split, translated raster, BF/ADF exit-angle integration and one actual exit diffraction pattern | Separate local specimen kernel, not complete post-column wave propagation. Requires usable CUDA and supported finite-CIF geometry; no frozen phonons or configured finite inelastic/absorption channels. See below. |
+| Mixed particles + waves (CUDA) Scanning Image | Same executed entrance source; finite-thickness static elastic multislice, admitted local axial field split, translated raster, BF/ADF exit-angle integration and one actual exit diffraction pattern | Separate local specimen kernel, not complete post-column wave propagation. Requires usable CUDA and supported finite-CIF geometry; no frozen phonons or configured finite inelastic/absorption channels. Static ideal-current sources have purpose-specific admission subject to actual per-request field and numerical qualification; dynamic current-coil inputs must be made stationary explicitly before particle generation. See below. |
 | Illuminating Image / `imaging`, historical wave STEM / old wave flags | Historical Tip-wave-dependent products | New Tip-origin coherent production is retired. Retained code/settings/archive readers do not enable these old public wave routes. Use the separately admitted mixed-wave products. |
 | Energy Filter / `energy_filter` | Dedicated admitted dispersive compatibility transport and detector model | Not automatically included in straight-column optics; shared-potential product gate rejects the unmigrated dispersive route |
 | Complete calculation / `full` | Explicitly requested set of enabled products and their dependencies | Not permission to bypass any product gate; may reject a combination that `rays` alone supports |

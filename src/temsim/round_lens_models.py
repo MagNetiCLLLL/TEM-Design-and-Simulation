@@ -183,7 +183,8 @@ def _preflight_native_gaussian_lengths(state):
     for lens in state.lenses:
         if not lens.enabled:
             continue
-        recipe = descriptors.get(lens.key, {})
+        from temsim.physics.lens_field_provider import field_map_recipe
+        recipe = field_map_recipe(descriptors.get(lens.key, {}))
         if (recipe and recipe.get("solver") not in {"analytic", "analytical"}) or lens.key in bindings:
             continue
         gaussian_geometry_metadata(candidate, lens.key)

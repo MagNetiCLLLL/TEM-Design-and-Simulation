@@ -59,14 +59,14 @@ def calculate_mixed_stem(state, *, request=None, existing_result=None,
         MixedStemScanRequest, simulate_mixed_stem_scan, preflight_mixed_stem_material,
     )
     from temsim.physics.mixed_wave_particles import particle_source_from_result
-    from temsim.simulation_modes import require_coherent_mode
+    from temsim.physics.mixed_stem_admission import require_local_mixed_stem_mode
     from temsim.simulation_pipeline import calculate
     from temsim.specimen.source import validate_sample_source, specimen_is_vacuum
 
     _check(cancelled)
     require_coherent_cuda("Require GPU")
     request = (MixedStemScanRequest() if request is None else request).validate()
-    require_coherent_mode(state)
+    require_local_mixed_stem_mode(state)
     inputs = capture_instrument_snapshot(state)
     captured = inputs.restore()
     count = int(captured.electron_gun.emitter.ray_count)
@@ -135,8 +135,8 @@ def calculate_mixed_stem_boundary(boundary, *, request=None, cancelled=lambda: F
         raise TypeError("A mixed STEM boundary acquisition requires a validated immutable particle boundary")
     request = (MixedStemScanRequest() if request is None else request).validate()
     state = boundary.restore_inputs_for_wave()
-    from temsim.simulation_modes import require_coherent_mode
-    require_coherent_mode(state)
+    from temsim.physics.mixed_stem_admission import require_local_mixed_stem_mode
+    require_local_mixed_stem_mode(state)
     positions = specimen_scan_positions(state)
     scan = simulate_mixed_stem_scan(state, boundary.source, request,
         validated_boundary=boundary, positions_nm=positions, cancelled=cancelled,

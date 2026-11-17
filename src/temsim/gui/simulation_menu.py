@@ -72,7 +72,7 @@ class SimulationMenu(QMenu):
             self.round_lens_model_group.addAction(action)
             self.round_lens_model_actions[key] = action
         self.round_lens_model_actions["copper_coil"].setToolTip(
-            "Shared Finite-Field Optics, classical particles only. Compute the magnetic field from declared winding geometry and prescribed ampere-turns in vacuum. Calibrated deflector, stigmator, quadrupole and hexapole windings use their closed current circuits; unconfigured legacy sources retain native fields. Electrical resistance, heating, circuit dynamics, pole-piece magnetism and saturation are not included. Coherent propagation is not qualified.")
+            "Shared Finite-Field Optics with particle transport and separately qualified local static mixed particle-wave STEM. Compute the magnetic field from declared winding geometry and prescribed ampere-turns in vacuum. Calibrated deflector, stigmator, quadrupole and hexapole windings use their closed current circuits; unconfigured legacy sources retain native fields. Electrical resistance, heating, circuit dynamics, pole-piece magnetism and saturation are not included. General downstream wave propagation remains unavailable.")
         self.round_lens_model_actions["gaussian"].setToolTip("Retain the existing Gaussian calibration and saved per-lens models; no automatic operating-point adjustment.")
         self.gaussian_geometry_menu = self.addMenu("Gaussian geometry relation")
         self.gaussian_geometry_group = QActionGroup(self)

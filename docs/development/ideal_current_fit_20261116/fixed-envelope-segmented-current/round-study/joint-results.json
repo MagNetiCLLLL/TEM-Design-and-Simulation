@@ -1,0 +1,151 @@
+{
+  "schema": "fixed-envelope-joint-current-field-fit-v1",
+  "status": "FIXED_WORKING_POINT_FIELD_ONLY_NOT_FOCUS_OR_RUNTIME_QUALIFIED",
+  "source_library_sha256": "caf58e42be31348b2e846a6aa2da33b5c6e6217af87d2a7feea7728909a152b3",
+  "constraints": "All original physical winding rectangles and turn counts remain unchanged; only internal segment currents differ. No resistance, heat or constant power constraint.",
+  "control_scope": "Joint fixed operating-point field fit. It does not preserve independent Gaussian response of every logical lens control; a lens-current edit must be re-evaluated.",
+  "numerical_scope": "SVD cutoffs explore conditioning; no original project tolerance is relaxed or declared passed.",
+  "cell_count": 545,
+  "owners": {
+    "condenser_lens_1": [
+      0,
+      32
+    ],
+    "condenser_lens_2": [
+      32,
+      64
+    ],
+    "condenser_lens_3": [
+      64,
+      96
+    ],
+    "adapter_lens": [
+      96,
+      119
+    ],
+    "probe_tl22_lens": [
+      119,
+      138
+    ],
+    "probe_tl21_lens": [
+      138,
+      157
+    ],
+    "probe_tl12_lens": [
+      157,
+      176
+    ],
+    "mini_condenser": [
+      176,
+      193
+    ],
+    "objective_lens": [
+      193,
+      321
+    ],
+    "diffraction_lens": [
+      321,
+      385
+    ],
+    "intermediate_lens": [
+      385,
+      417
+    ],
+    "projector_lens_1": [
+      417,
+      481
+    ],
+    "projector_lens_2": [
+      481,
+      545
+    ]
+  },
+  "regularizations": [
+    {
+      "rcond": 1e-06,
+      "retained_rank": 200,
+      "normalized_matrix_condition": 3.329383891607157e+16,
+      "retained_condition": 986253.8553153453,
+      "relative_l2_error": 0.1406768568294557,
+      "maximum_absolute_current_a": 14363269.840635583,
+      "independent_fractional_current_error_gain_upper_bound": 50506.60404006356,
+      "estimated_binary64_reduction_error_scale": 1.1214718940180904e-11,
+      "forward_current_segments": 266,
+      "reverse_current_segments": 279,
+      "holdout_q12_relative_l2": 0.14067685682942926,
+      "holdout_q24_relative_l2": 0.14067685682953227,
+      "q12_to_q24_field_relative_l2": 3.033057523498102e-12,
+      "q24_total_integral_b2_t2_m": 0.04050307183630861,
+      "reference_total_integral_b2_t2_m": 0.04132080975423304
+    },
+    {
+      "rcond": 1e-08,
+      "retained_rank": 267,
+      "normalized_matrix_condition": 3.329383891607157e+16,
+      "retained_condition": 88015757.15872608,
+      "relative_l2_error": 0.08259107084614976,
+      "maximum_absolute_current_a": 1146041512.4326835,
+      "independent_fractional_current_error_gain_upper_bound": 2644511.573134133,
+      "estimated_binary64_reduction_error_scale": 5.871995274762416e-10,
+      "forward_current_segments": 263,
+      "reverse_current_segments": 282,
+      "holdout_q12_relative_l2": 0.08259107083513975,
+      "holdout_q24_relative_l2": 0.08259107083047264,
+      "q12_to_q24_field_relative_l2": 2.352150054585712e-10,
+      "q24_total_integral_b2_t2_m": 0.04103894873830169,
+      "reference_total_integral_b2_t2_m": 0.04132080975423304
+    },
+    {
+      "rcond": 1e-10,
+      "retained_rank": 320,
+      "normalized_matrix_condition": 3.329383891607157e+16,
+      "retained_condition": 8439822973.56104,
+      "relative_l2_error": 0.04602676146989763,
+      "maximum_absolute_current_a": 92230592764.25102,
+      "independent_fractional_current_error_gain_upper_bound": 218851154.6566376,
+      "estimated_binary64_reduction_error_scale": 4.8594718173120024e-08,
+      "forward_current_segments": 272,
+      "reverse_current_segments": 273,
+      "holdout_q12_relative_l2": 0.04602676134275776,
+      "holdout_q24_relative_l2": 0.04602676136757917,
+      "q12_to_q24_field_relative_l2": 1.9240604913061858e-08,
+      "q24_total_integral_b2_t2_m": 0.04123327357631128,
+      "reference_total_integral_b2_t2_m": 0.04132080975423304
+    },
+    {
+      "rcond": 1e-12,
+      "retained_rank": 373,
+      "normalized_matrix_condition": 3.329383891607157e+16,
+      "retained_condition": 784030787710.9526,
+      "relative_l2_error": 0.02504479618935076,
+      "maximum_absolute_current_a": 8585232774580.727,
+      "independent_fractional_current_error_gain_upper_bound": 9635049007.765999,
+      "estimated_binary64_reduction_error_scale": 2.139410650362716e-06,
+      "forward_current_segments": 285,
+      "reverse_current_segments": 260,
+      "holdout_q12_relative_l2": 0.02504478276771859,
+      "holdout_q24_relative_l2": 0.02504481646212536,
+      "q12_to_q24_field_relative_l2": 9.46084643838272e-07,
+      "q24_total_integral_b2_t2_m": 0.04129488476682852,
+      "reference_total_integral_b2_t2_m": 0.04132080975423304
+    },
+    {
+      "rcond": 1e-14,
+      "retained_rank": 417,
+      "normalized_matrix_condition": 3.329383891607157e+16,
+      "retained_condition": 98826374160016.08,
+      "relative_l2_error": 0.012007390248597913,
+      "maximum_absolute_current_a": 812091642420675.8,
+      "independent_fractional_current_error_gain_upper_bound": 432233702871.05884,
+      "estimated_binary64_reduction_error_scale": 9.597516178928763e-05,
+      "forward_current_segments": 257,
+      "reverse_current_segments": 288,
+      "holdout_q12_relative_l2": 0.012008397768973583,
+      "holdout_q24_relative_l2": 0.012007478820765319,
+      "q12_to_q24_field_relative_l2": 4.017555553000791e-05,
+      "q24_total_integral_b2_t2_m": 0.041315918049234714,
+      "reference_total_integral_b2_t2_m": 0.04132080975423304
+    }
+  ],
+  "elapsed_s": 46.381768100000045
+}

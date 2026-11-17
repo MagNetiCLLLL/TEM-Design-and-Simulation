@@ -15,6 +15,7 @@ from .compiled_magnetic_field import (
 )
 from .frozen_copper_coil_field import FrozenCopperCoilField
 from .lens_field_provider import _identity_registration
+from .compiled_transverse_coil import pack_transverse_source, transverse_b_one
 
 
 def _readonly(array, dtype=float):
@@ -36,6 +37,8 @@ def pack_copper_instrument_sources(source_records):
     radii, centers, prefactors = [], [], []
     polynomials = lengths = None
     copper_count = 0
+    transverse_nodes, transverse_weights, transverse_geometry, transverse_layout = [], [], [], []
+    transverse_node_count = 0
     for source in source_records:
         if source.known_zero:
             continue
@@ -63,6 +66,21 @@ def pack_copper_instrument_sources(source_records):
             layout.append((1, start, len(coil_geometry)))
             copper_count += 1
         else:
+            from .transverse_coil_field import FrozenTransverseCoilField
+            if type(provider) is FrozenTransverseCoilField:
+                packed = pack_transverse_source(provider)
+                if packed is None:
+                    return None
+                nodes, weighted, geometry, axis_zero = packed
+                first_coil = len(transverse_geometry)
+                transverse_geometry.extend(geometry.tolist())
+                transverse_layout.append((transverse_node_count, transverse_node_count+len(nodes),
+                                          first_coil, len(transverse_geometry), int(axis_zero)))
+                transverse_node_count += len(nodes)
+                transverse_nodes.extend(nodes.tolist())
+                transverse_weights.extend(weighted.tolist())
+                layout.append((2, len(transverse_layout)-1, len(transverse_layout)))
+                continue
             packed = prepare_compiled_magnetic_sources((source,))
             if packed is None:
                 return None
@@ -75,13 +93,17 @@ def pack_copper_instrument_sources(source_records):
                 sources.append(adjusted)
             terms.extend(native_terms.tolist())
             layout.append((0, start, len(sources)))
-    if copper_count == 0:
+    if copper_count == 0 and not transverse_layout:
         return None
+    if polynomials is None:
+        polynomials, lengths = np.empty((0, 0)), np.empty(0, dtype=np.int64)
     return (_readonly(sources).reshape(-1, 11), _readonly(terms).reshape(-1, 9),
             _readonly(layout, np.int64).reshape(-1, 3),
             _readonly(coil_geometry).reshape(-1, 3), _readonly(coil_offsets, np.int64),
             _readonly(radii), _readonly(centers), _readonly(prefactors),
-            _readonly(polynomials), _readonly(lengths, np.int64))
+            _readonly(polynomials), _readonly(lengths, np.int64),
+            _readonly(transverse_nodes).reshape(-1, 3), _readonly(transverse_weights).reshape(-1, 3),
+            _readonly(transverse_geometry).reshape(-1, 11), _readonly(transverse_layout, np.int64).reshape(-1, 5))
 
 
 def _jit(function=None, *, cache=True):
@@ -120,7 +142,8 @@ def copper_instrument_batch(points, packed):
     scalar range/admission rules cannot be hidden in an older cached caller.
     The resulting native function remains resident throughout the process.
     """
-    sources, terms, layout, geometry, offsets, radii, centers, factors, polynomials, lengths = packed
+    (sources, terms, layout, geometry, offsets, radii, centers, factors, polynomials, lengths,
+     transverse_nodes, transverse_weights, transverse_geometry, transverse_layout) = packed
     result = np.zeros_like(points)
     if not copper_near_axis_domain(points, geometry):
         return False, result
@@ -130,7 +153,7 @@ def copper_instrument_batch(points, packed):
             contribution = np.zeros(3)
             if kind == 0:
                 _, contribution = compiled_magnetic_field(point, sources[first:stop], terms, False)
-            else:
+            elif kind == 1:
                 for coil in range(first, stop):
                     begin, end = offsets[coil], offsets[coil+1]
                     admitted, value = annular_near_axis_b_one(
@@ -139,6 +162,12 @@ def copper_instrument_batch(points, packed):
                     if not admitted:
                         return False, result
                     contribution += value
+            else:
+                row = transverse_layout[first]
+                admitted, contribution = transverse_b_one(point, transverse_nodes, transverse_weights,
+                    transverse_geometry, row[0], row[1], row[2], row[3], row[4] != 0)
+                if not admitted:
+                    return False, result
             result[index] += contribution
         if not np.isfinite(result[index]).all():
             return False, result

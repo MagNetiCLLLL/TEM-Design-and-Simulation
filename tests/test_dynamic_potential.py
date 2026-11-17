@@ -213,7 +213,7 @@ def test_dynamic_epoch_and_energy_clock_resume_keep_absolute_time_once(monkeypat
     state=parked_state();state.simulation_time_s=.21e-9
     runtime=controlled(state)
     runtime=replace(runtime,snapshot=DynamicPotentialSnapshot(runtime.snapshot,(coil(),)),
-                    metadata={"emission_time_s":state.simulation_time_s})
+                    metadata={**runtime.metadata,"emission_time_s":state.simulation_time_s})
     runtime=UnifiedFieldRuntime.from_dict(json.loads(json.dumps(runtime.to_dict())))
     monkeypatch.setattr(module,"get_unified_field_runtime",lambda _:runtime)
     initial=np.array([[1e-5,-2e-5,.002,.001]])
@@ -229,12 +229,12 @@ def test_dynamic_epoch_and_energy_clock_resume_keep_absolute_time_once(monkeypat
     resumed=advance(451.,452.,*prefix)
     for expected,actual in zip(whole,resumed):
         np.testing.assert_allclose(actual,expected,rtol=2e-14,atol=1e-18)
-    zero_epoch=replace(runtime,metadata={"emission_time_s":0.})
+    zero_epoch=replace(runtime,metadata={**runtime.metadata,"emission_time_s":0.})
     monkeypatch.setattr(module,"get_unified_field_runtime",lambda _:zero_epoch)
     with pytest.raises(ValueError,match="emission epoch"):
         advance(450.,452.,initial,300000.,np.array([2e-9]))
     with pytest.raises(ValueError,match="finite real"):
-        replace(runtime,metadata={"emission_time_s":False})
+        replace(runtime,metadata={**runtime.metadata,"emission_time_s":False})
 
 
 @pytest.mark.parametrize("electric_gradient",(0.,2e6))

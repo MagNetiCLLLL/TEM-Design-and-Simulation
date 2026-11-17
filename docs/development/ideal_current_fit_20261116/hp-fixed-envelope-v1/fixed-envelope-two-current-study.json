@@ -1,0 +1,1104 @@
+{
+  "schema": "fixed-original-hp-two-current-group-study-v1",
+  "baseline": "Original mixed-run-v3 validated particle inputs; resized inverse candidates excluded",
+  "source_input_digest": "c50156444ca56e8b8fdadbccd87d4cec27badd8906f5625315e62edf1a81aed4",
+  "source_digest": "0cbc76931bac46f5e1d59e533fbfdbf1c13aab127e1f1f80d3a8013356b46e47",
+  "script_sha256": "cbd0a09c1c9e3d81fbd427f0f0121af6b292676603f8ffd011ab6c5c1b88dda9",
+  "source_emission_executed": false,
+  "particle_transport_executed": false,
+  "wave_calculation_executed": false,
+  "production_sources_or_defaults_changed": false,
+  "resistance_or_power_model_used": false,
+  "invariant": "Original ID/OD, full winding radial and axial envelope/window, N=2 per radial coil, sixfold signs/poses, metal .02 mm2 and enamel .005 mm unchanged",
+  "current_model": "Two independent signed prescribed DC currents, each applied to one entire closed N1 turn group; never different currents along the sides of one unbranched turn",
+  "approximation": "Pack coordinate partitions retain the existing homogenized field model. Actual unchanged CAD turn fields are a separate, explicitly labeled spatial-resolution model.",
+  "sources": [
+    {
+      "key": "probe_hp2_hexapole",
+      "original_coil_descriptors": [
+        {
+          "azimuth_deg": 30.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 1,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 90.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 2,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 150.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 3,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 210.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 4,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 270.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 5,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 330.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 6,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        }
+      ],
+      "original_current_a": -134526.0709363228,
+      "native_reference": {
+        "lens_key": "probe_hp2_hexapole",
+        "component_key": "probe_hp2_hexapole",
+        "registration": {
+          "origin_global_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_local_to_global": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "polynomial_terms": [
+          [
+            0,
+            3,
+            0.0
+          ],
+          [
+            1,
+            2,
+            -9182.034922674944
+          ],
+          [
+            2,
+            1,
+            0.0
+          ],
+          [
+            3,
+            0,
+            3060.678307558315
+          ]
+        ],
+        "envelope_kind": "gaussian",
+        "center_z_m": 1.1445,
+        "sigma_m": 0.0025477707006369425,
+        "native_support_mm": [
+          1126.6656050955414,
+          1162.3343949044586
+        ],
+        "radial_support_m": 0.01,
+        "reference_momentum": 3.365624812638601e-22,
+        "event_z_mm": null,
+        "event_dx_rad": 0.0,
+        "event_dy_rad": 0.0,
+        "captured_time_s": null,
+        "drive_keys": [],
+        "dynamic": false
+      },
+      "cad_turn_geometry": {
+        "schema": "radial-rounded-rectangle-winding-v1",
+        "turn_count_per_coil": 2,
+        "total_turn_count": 12,
+        "wire_cross_section_mm2": 0.02,
+        "wire_diameter_mm": 0.15957691216057307,
+        "radial_layers": 2,
+        "offset_rings": 1,
+        "centre_pitch_mm": 2.002,
+        "interwire_gap_mm": 1.8424230878394268,
+        "radial_start_mm": 22.71,
+        "radial_end_mm": 29.595,
+        "window_width_mm": 6.885,
+        "window_height_mm": 8.736,
+        "coil_width_mm": 12.24,
+        "coil_height_mm": 12.74,
+        "minimum_band_mm": 2.002,
+        "axial_centre_mm": 694.5,
+        "turn_positions": [
+          {
+            "radial_x_mm": 25.1515,
+            "corner_offset_mm": 1.001
+          },
+          {
+            "radial_x_mm": 27.1535,
+            "corner_offset_mm": 1.001
+          }
+        ],
+        "path_lengths_mm": [
+          37.531468492486766,
+          37.531468492486766
+        ],
+        "bulk_coil_volume_mm3": 659.5158024,
+        "conductor_volume_per_coil_mm3": 1.5012587396994708,
+        "remaining_insulation_volume_per_coil_mm3": 658.0145436603005,
+        "coil_axis": "radial",
+        "pole_pitch_deg": 60.0,
+        "geometry_status": "engineering_reconstruction_not_oem",
+        "field_or_current_calibration": false,
+        "optical_field_unchanged": true,
+        "source_note": "User-authorized initial engineering estimate on 2026-11-15, not measured/OEM winding data: N=round_half_up(13.78377 mm2 / 9 mm2)=2 per radial coil, 12 total across six coils. The limiting straight-side pack section is radial length 6.885 mm times minimum side band 2.002 mm. The nominal 9 mm2 includes insulation and unused space; actual allocated area per turn is 6.891885 mm2 after integer rounding. Conductor metal area, diameter and physical current remain undefined. Keep bulk winding CAD until metal area is supplied. This is fixed input after authoring, not automatic geometry re-estimation. Native multipole strength and optical defaults are unchanged; no current-to-field calibration or magnetic-material response is inferred."
+      },
+      "actual_turn_membership_radial_cut_bounds_fraction": [
+        0.36692642789837104,
+        0.633073572101629
+      ],
+      "original_homogenized_peak_match_scope": "Original current was peak-coefficient calibrated, not profile/integral matched",
+      "partitions": [
+        {
+          "kind": "radial",
+          "constraint_case": "fixed_actual_turn_membership",
+          "choice": "half_partition",
+          "cut_fraction": 0.5,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -654286.228726816,
+              997792.2660412886
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.19697273632439338,
+              0.006838276666303217
+            ],
+            "condition_number": 28.80444093392863,
+            "column_normalized_condition_number": 24.82945169725827,
+            "normalized_column_correlation": 0.9967611423708996,
+            "relative_l2": 0.5329091367836867,
+            "cancellation_amplification_l2": 12.695938641831777,
+            "reference_weighted_norm": 19512.21523089227
+          },
+          "old_uniform_restoration_currents_a": [
+            -134526.0709363228,
+            -134526.0709363228
+          ],
+          "original_pack_reconstruction_relative_l2": 7.446938497358739e-15,
+          "refined_pack24_path48_change_relative_reference": 1.0751588662742977e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 23,
+            "message": "Solution found."
+          },
+          "interpretation": "Radial cut separates the two unchanged CAD wire tubes, but subgroup fields remain homogenized",
+          "peak_relative_vector_error": 0.44849870466040215,
+          "integrated_candidate_coefficient": [
+            -45.03566739530108,
+            2.6447970905707093e-15
+          ],
+          "integrated_target_coefficient": [
+            -58.63935886821592,
+            0.0
+          ],
+          "integral_relative_vector_error": 0.2319890895036439,
+          "minimum_signed_coefficient_over_reference_peak": -0.09890022414771266
+        },
+        {
+          "kind": "radial",
+          "constraint_case": "fixed_actual_turn_membership",
+          "choice": "bounded_best_cut",
+          "cut_fraction": 0.3669298095009042,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -629703.0519996512,
+              956437.6269279404
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.21192890541933318,
+              0.007090442231579487
+            ],
+            "condition_number": 29.88937762942937,
+            "column_normalized_condition_number": 25.86762429652383,
+            "normalized_column_correlation": 0.9970155222096541,
+            "relative_l2": 0.5286906439026094,
+            "cancellation_amplification_l2": 13.102987194907355,
+            "reference_weighted_norm": 19512.21523089227
+          },
+          "old_uniform_restoration_currents_a": [
+            -98723.2511631401,
+            -170328.8907095055
+          ],
+          "original_pack_reconstruction_relative_l2": 6.945702433318922e-15,
+          "refined_pack24_path48_change_relative_reference": 1.027445059715184e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 23,
+            "message": "Solution found."
+          },
+          "interpretation": "Radial cut separates the two unchanged CAD wire tubes, but subgroup fields remain homogenized",
+          "peak_relative_vector_error": 0.4442850704124092,
+          "integrated_candidate_coefficient": [
+            -45.12992208993892,
+            2.5057140970853872e-15
+          ],
+          "integrated_target_coefficient": [
+            -58.63935886821592,
+            0.0
+          ],
+          "integral_relative_vector_error": 0.23038172720540215,
+          "minimum_signed_coefficient_over_reference_peak": -0.09936624793483165
+        },
+        {
+          "kind": "radial",
+          "constraint_case": "relaxed_homogenized_partition_only",
+          "choice": "half_partition",
+          "cut_fraction": 0.5,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -654286.228726816,
+              997792.2660412886
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.19697273632439338,
+              0.006838276666303217
+            ],
+            "condition_number": 28.80444093392863,
+            "column_normalized_condition_number": 24.82945169725827,
+            "normalized_column_correlation": 0.9967611423708996,
+            "relative_l2": 0.5329091367836867,
+            "cancellation_amplification_l2": 12.695938641831777,
+            "reference_weighted_norm": 19512.21523089227
+          },
+          "old_uniform_restoration_currents_a": [
+            -134526.0709363228,
+            -134526.0709363228
+          ],
+          "original_pack_reconstruction_relative_l2": 7.446938497358739e-15,
+          "refined_pack24_path48_change_relative_reference": 1.0751588662742977e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 25,
+            "message": "Solution found."
+          },
+          "interpretation": "A homogenized current-density partition; not a certified assignment of the unchanged actual CAD turns",
+          "peak_relative_vector_error": 0.44849870466040215,
+          "integrated_candidate_coefficient": [
+            -45.03566739530108,
+            2.6447970905707093e-15
+          ],
+          "integrated_target_coefficient": [
+            -58.63935886821592,
+            0.0
+          ],
+          "integral_relative_vector_error": 0.2319890895036439,
+          "minimum_signed_coefficient_over_reference_peak": -0.09890022414771266
+        },
+        {
+          "kind": "radial",
+          "constraint_case": "relaxed_homogenized_partition_only",
+          "choice": "bounded_best_cut",
+          "cut_fraction": 0.030005603209327356,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -568646.8653360849,
+              854445.7755203182
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.2591880609951361,
+              0.007783440976354765
+            ],
+            "condition_number": 33.29993273958405,
+            "column_normalized_condition_number": 29.122100359674373,
+            "normalized_column_correlation": 0.9976445557604366,
+            "relative_l2": 0.5165500265347245,
+            "cancellation_amplification_l2": 14.336120741644145,
+            "reference_weighted_norm": 19512.21523089227
+          },
+          "old_uniform_restoration_currents_a": [
+            -8073.071811650254,
+            -260979.07006099535
+          ],
+          "original_pack_reconstruction_relative_l2": 7.301327319864928e-15,
+          "refined_pack24_path48_change_relative_reference": 1.3992149766956118e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 25,
+            "message": "Solution found."
+          },
+          "interpretation": "A homogenized current-density partition; not a certified assignment of the unchanged actual CAD turns",
+          "peak_relative_vector_error": 0.4322322626021694,
+          "integrated_candidate_coefficient": [
+            -45.4044169893509,
+            2.22330588871149e-15
+          ],
+          "integrated_target_coefficient": [
+            -58.63935886821592,
+            0.0
+          ],
+          "integral_relative_vector_error": 0.22570065795925184,
+          "minimum_signed_coefficient_over_reference_peak": -0.10044130205713962
+        },
+        {
+          "kind": "nested",
+          "constraint_case": "nested_pack_partition_no_certified_CAD_membership",
+          "choice": "half_partition",
+          "cut_fraction": 0.5,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -5251859.663025819,
+              3457699.9767318293
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.19358196651191095,
+              0.001574696898457377
+            ],
+            "condition_number": 122.9328429499988,
+            "column_normalized_condition_number": 114.03335008564447,
+            "normalized_column_correlation": 0.9998462083230902,
+            "relative_l2": 0.45578884608749876,
+            "cancellation_amplification_l2": 64.70300751319243,
+            "reference_weighted_norm": 19512.21523089227
+          },
+          "old_uniform_restoration_currents_a": [
+            -134526.0709363228,
+            -134526.0709363228
+          ],
+          "original_pack_reconstruction_relative_l2": 6.510624635500329e-15,
+          "refined_pack24_path48_change_relative_reference": 6.589486544833315e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 25,
+            "message": "Solution found."
+          },
+          "interpretation": "A homogenized current-density partition; not a certified assignment of the unchanged actual CAD turns",
+          "peak_relative_vector_error": 0.3729266644449757,
+          "integrated_candidate_coefficient": [
+            -48.20312428836712,
+            3.292346689146311e-15
+          ],
+          "integrated_target_coefficient": [
+            -58.63935886821592,
+            0.0
+          ],
+          "integral_relative_vector_error": 0.17797320402671585,
+          "minimum_signed_coefficient_over_reference_peak": -0.1031599641221973
+        },
+        {
+          "kind": "nested",
+          "constraint_case": "nested_pack_partition_no_certified_CAD_membership",
+          "choice": "bounded_best_cut",
+          "cut_fraction": 0.030005603209327356,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -6155845.6617688965,
+              3750286.9513365994
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.16036321168663042,
+              0.0013696189788536225
+            ],
+            "condition_number": 117.08600286837087,
+            "column_normalized_condition_number": 105.34754221938859,
+            "normalized_column_correlation": 0.9998198052849514,
+            "relative_l2": 0.4520699356687297,
+            "cancellation_amplification_l2": 59.395592557479006,
+            "reference_weighted_norm": 19512.21523089227
+          },
+          "old_uniform_restoration_currents_a": [
+            -8073.071811650254,
+            -260979.07006099535
+          ],
+          "original_pack_reconstruction_relative_l2": 9.114860066266884e-15,
+          "refined_pack24_path48_change_relative_reference": 6.184075174567941e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 25,
+            "message": "Solution found."
+          },
+          "interpretation": "A homogenized current-density partition; not a certified assignment of the unchanged actual CAD turns",
+          "peak_relative_vector_error": 0.369271645384465,
+          "integrated_candidate_coefficient": [
+            -48.032810883540016,
+            7.284070781182432e-15
+          ],
+          "integrated_target_coefficient": [
+            -58.63935886821592,
+            0.0
+          ],
+          "integral_relative_vector_error": 0.18087762535932048,
+          "minimum_signed_coefficient_over_reference_peak": -0.10292002803487978
+        }
+      ],
+      "fixed_actual_CAD_turn_current_fit": {
+        "fit": {
+          "currents_a": [
+            -1353432.7523138404,
+            1734326.1783830654
+          ],
+          "rank": 2,
+          "singular_values": [
+            0.17148994536572132,
+            0.0037923170227262006
+          ],
+          "condition_number": 45.22036115072509,
+          "column_normalized_condition_number": 42.91368017988675,
+          "normalized_column_correlation": 0.9989145677711396,
+          "relative_l2": 0.5342221053996631,
+          "cancellation_amplification_l2": 21.96739584245803,
+          "reference_weighted_norm": 19512.21523089227
+        },
+        "metal_cross_section_mm2": 0.02,
+        "radial_enamel_mm": 0.005,
+        "physical_geometry_changed": false,
+        "closed_round_wire_with_native_corner_offsets": true,
+        "independent_current_count": 2,
+        "numerical_refinement_change_relative_reference": 6.193262799653353e-14,
+        "scope": "Exactly the two unchanged rounded CAD turns, finite circular conductor section; a resolved spatial model, not the old uniform pack"
+      }
+    },
+    {
+      "key": "probe_hp1_hexapole",
+      "original_coil_descriptors": [
+        {
+          "azimuth_deg": 27.592867137067643,
+          "center_z_mm": 1300.85,
+          "coil_index": 1,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 87.59286713706764,
+          "center_z_mm": 1300.85,
+          "coil_index": 2,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 147.59286713706763,
+          "center_z_mm": 1300.85,
+          "coil_index": 3,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 207.59286713706763,
+          "center_z_mm": 1300.85,
+          "coil_index": 4,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 267.5928671370676,
+          "center_z_mm": 1300.85,
+          "coil_index": 5,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 327.5928671370676,
+          "center_z_mm": 1300.85,
+          "coil_index": 6,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        }
+      ],
+      "original_current_a": -80899.01855180685,
+      "native_reference": {
+        "lens_key": "probe_hp1_hexapole",
+        "component_key": "probe_hp1_hexapole",
+        "registration": {
+          "origin_global_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_local_to_global": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "polynomial_terms": [
+          [
+            0,
+            3,
+            230.289022278038
+          ],
+          [
+            1,
+            2,
+            -5452.398644908565
+          ],
+          [
+            2,
+            1,
+            -690.867066834114
+          ],
+          [
+            3,
+            0,
+            1817.4662149695216
+          ]
+        ],
+        "envelope_kind": "gaussian",
+        "center_z_m": 1.3008499999999998,
+        "sigma_m": 0.004246284501061571,
+        "native_support_mm": [
+          1271.1260084925689,
+          1330.573991507431
+        ],
+        "radial_support_m": 0.01,
+        "reference_momentum": 3.365624812638601e-22,
+        "event_z_mm": null,
+        "event_dx_rad": 0.0,
+        "event_dy_rad": 0.0,
+        "captured_time_s": null,
+        "drive_keys": [],
+        "dynamic": false
+      },
+      "cad_turn_geometry": {
+        "schema": "radial-rounded-rectangle-winding-v1",
+        "turn_count_per_coil": 2,
+        "total_turn_count": 12,
+        "wire_cross_section_mm2": 0.02,
+        "wire_diameter_mm": 0.15957691216057307,
+        "radial_layers": 2,
+        "offset_rings": 1,
+        "centre_pitch_mm": 1.9909999999999997,
+        "interwire_gap_mm": 1.8314230878394266,
+        "radial_start_mm": 22.71,
+        "radial_end_mm": 29.595,
+        "window_width_mm": 6.885,
+        "window_height_mm": 8.688,
+        "coil_width_mm": 12.24,
+        "coil_height_mm": 12.67,
+        "minimum_band_mm": 1.9909999999999997,
+        "axial_centre_mm": 850.8499999999999,
+        "turn_positions": [
+          {
+            "radial_x_mm": 25.157,
+            "corner_offset_mm": 0.9954999999999998
+          },
+          {
+            "radial_x_mm": 27.148,
+            "corner_offset_mm": 0.9954999999999998
+          }
+        ],
+        "path_lengths_mm": [
+          37.40091097329728,
+          37.40091097329728
+        ],
+        "bulk_coil_volume_mm3": 655.8920892000001,
+        "conductor_volume_per_coil_mm3": 1.4960364389318912,
+        "remaining_insulation_volume_per_coil_mm3": 654.3960527610682,
+        "coil_axis": "radial",
+        "pole_pitch_deg": 60.0,
+        "geometry_status": "engineering_reconstruction_not_oem",
+        "field_or_current_calibration": false,
+        "optical_field_unchanged": true,
+        "source_note": "User-authorized initial engineering estimate on 2026-11-15, not measured/OEM winding data: N=round_half_up(13.708035 mm2 / 9 mm2)=2 per radial coil, 12 total across six coils. The limiting straight-side pack section is radial length 6.885 mm times minimum side band 1.991 mm. The nominal 9 mm2 includes insulation and unused space; actual allocated area per turn is 6.8540175 mm2 after integer rounding. Conductor metal area, diameter and physical current remain undefined. Keep bulk winding CAD until metal area is supplied. This is fixed input after authoring, not automatic geometry re-estimation. Native multipole strength and optical defaults are unchanged; no current-to-field calibration or magnetic-material response is inferred."
+      },
+      "actual_turn_membership_radial_cut_bounds_fraction": [
+        0.36772526595211125,
+        0.6322747340478887
+      ],
+      "original_homogenized_peak_match_scope": "Original current was peak-coefficient calibrated, not profile/integral matched",
+      "partitions": [
+        {
+          "kind": "radial",
+          "constraint_case": "fixed_actual_turn_membership",
+          "choice": "half_partition",
+          "cut_fraction": 0.5,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -468192.7209112955,
+              681406.9384132749
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.1959653516266569,
+              0.006812765100951699
+            ],
+            "condition_number": 28.764436865624766,
+            "column_normalized_condition_number": 24.79385524288083,
+            "normalized_column_correlation": 0.9967518507757213,
+            "relative_l2": 0.2674475461191151,
+            "cancellation_amplification_l2": 10.052886090581413,
+            "reference_weighted_norm": 15077.809422856468
+          },
+          "old_uniform_restoration_currents_a": [
+            -80899.01855180685,
+            -80899.01855180685
+          ],
+          "original_pack_reconstruction_relative_l2": 5.199669267707511e-15,
+          "refined_pack24_path48_change_relative_reference": 1.0030850271738936e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 23,
+            "message": "Solution found."
+          },
+          "interpretation": "Radial cut separates the two unchanged CAD wire tubes, but subgroup fields remain homogenized",
+          "peak_relative_vector_error": 0.2016638420569555,
+          "integrated_candidate_coefficient": [
+            -50.00096227411282,
+            6.335563555584203
+          ],
+          "integrated_target_coefficient": [
+            -58.034550351790024,
+            7.3534901220067
+          ],
+          "integral_relative_vector_error": 0.13842767849461618,
+          "minimum_signed_coefficient_over_reference_peak": -0.09452472619911613
+        },
+        {
+          "kind": "radial",
+          "constraint_case": "fixed_actual_turn_membership",
+          "choice": "bounded_best_cut",
+          "cut_fraction": 0.36772860720049627,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -446546.7959194914,
+              647260.8153985583
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.21075266814996568,
+              0.007062701464641538
+            ],
+            "condition_number": 29.840234534203447,
+            "column_normalized_condition_number": 25.823336464147,
+            "normalized_column_correlation": 0.9970052918266613,
+            "relative_l2": 0.2623304822453318,
+            "cancellation_amplification_l2": 10.293656221508558,
+            "reference_weighted_norm": 15077.809422856468
+          },
+          "old_uniform_restoration_currents_a": [
+            -59497.76683188608,
+            -102300.27027172761
+          ],
+          "original_pack_reconstruction_relative_l2": 5.885030370730528e-15,
+          "refined_pack24_path48_change_relative_reference": 1.0001857317766656e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 23,
+            "message": "Solution found."
+          },
+          "interpretation": "Radial cut separates the two unchanged CAD wire tubes, but subgroup fields remain homogenized",
+          "peak_relative_vector_error": 0.19734971627352466,
+          "integrated_candidate_coefficient": [
+            -50.135581013334544,
+            6.352620938868907
+          ],
+          "integrated_target_coefficient": [
+            -58.034550351790024,
+            7.3534901220067
+          ],
+          "integral_relative_vector_error": 0.1361080475436447,
+          "minimum_signed_coefficient_over_reference_peak": -0.09381728805215918
+        },
+        {
+          "kind": "radial",
+          "constraint_case": "relaxed_homogenized_partition_only",
+          "choice": "half_partition",
+          "cut_fraction": 0.5,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -468192.7209112955,
+              681406.9384132749
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.1959653516266569,
+              0.006812765100951699
+            ],
+            "condition_number": 28.764436865624766,
+            "column_normalized_condition_number": 24.79385524288083,
+            "normalized_column_correlation": 0.9967518507757213,
+            "relative_l2": 0.2674475461191151,
+            "cancellation_amplification_l2": 10.052886090581413,
+            "reference_weighted_norm": 15077.809422856468
+          },
+          "old_uniform_restoration_currents_a": [
+            -80899.01855180685,
+            -80899.01855180685
+          ],
+          "original_pack_reconstruction_relative_l2": 5.199669267707511e-15,
+          "refined_pack24_path48_change_relative_reference": 1.0030850271738936e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 25,
+            "message": "Solution found."
+          },
+          "interpretation": "A homogenized current-density partition; not a certified assignment of the unchanged actual CAD turns",
+          "peak_relative_vector_error": 0.2016638420569555,
+          "integrated_candidate_coefficient": [
+            -50.00096227411282,
+            6.335563555584203
+          ],
+          "integrated_target_coefficient": [
+            -58.034550351790024,
+            7.3534901220067
+          ],
+          "integral_relative_vector_error": 0.13842767849461618,
+          "minimum_signed_coefficient_over_reference_peak": -0.09452472619911613
+        },
+        {
+          "kind": "radial",
+          "constraint_case": "relaxed_homogenized_partition_only",
+          "choice": "bounded_best_cut",
+          "cut_fraction": 0.030005603209327356,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -391894.79822267,
+              561784.579845696
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.25787429916265275,
+              0.007755482520271376
+            ],
+            "condition_number": 33.2505809262825,
+            "column_normalized_condition_number": 29.077746467257654,
+            "normalized_column_correlation": 0.9976373729967951,
+            "relative_l2": 0.24763033781070057,
+            "cancellation_amplification_l2": 10.99964822737283,
+            "reference_weighted_norm": 15077.809422856468
+          },
+          "old_uniform_restoration_currents_a": [
+            -4854.847701379058,
+            -156943.18940223465
+          ],
+          "original_pack_reconstruction_relative_l2": 8.363497659786067e-15,
+          "refined_pack24_path48_change_relative_reference": 1.3946136417816995e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 25,
+            "message": "Solution found."
+          },
+          "interpretation": "A homogenized current-density partition; not a certified assignment of the unchanged actual CAD turns",
+          "peak_relative_vector_error": 0.18506734690512774,
+          "integrated_candidate_coefficient": [
+            -50.52579017260751,
+            6.402063885886424
+          ],
+          "integrated_target_coefficient": [
+            -58.034550351790024,
+            7.3534901220067
+          ],
+          "integral_relative_vector_error": 0.1293843087206915,
+          "minimum_signed_coefficient_over_reference_peak": -0.09151142471721394
+        },
+        {
+          "kind": "nested",
+          "constraint_case": "nested_pack_partition_no_certified_CAD_membership",
+          "choice": "half_partition",
+          "cut_fraction": 0.5,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -3512981.432654458,
+              2288526.831120646
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.1925919133229156,
+              0.0015502505970519497
+            ],
+            "condition_number": 124.23276190904878,
+            "column_normalized_condition_number": 115.2341221231524,
+            "normalized_column_correlation": 0.9998493964892037,
+            "relative_l2": 0.17850614548898452,
+            "cancellation_amplification_l2": 50.14429128709564,
+            "reference_weighted_norm": 15077.809422856468
+          },
+          "old_uniform_restoration_currents_a": [
+            -80899.01855180685,
+            -80899.01855180685
+          ],
+          "original_pack_reconstruction_relative_l2": 7.434450349761655e-15,
+          "refined_pack24_path48_change_relative_reference": 5.125659087691887e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 25,
+            "message": "Solution found."
+          },
+          "interpretation": "A homogenized current-density partition; not a certified assignment of the unchanged actual CAD turns",
+          "peak_relative_vector_error": 0.12867634450956755,
+          "integrated_candidate_coefficient": [
+            -53.3746251087328,
+            6.76303643473947
+          ],
+          "integrated_target_coefficient": [
+            -58.034550351790024,
+            7.3534901220067
+          ],
+          "integral_relative_vector_error": 0.08029570686444529,
+          "minimum_signed_coefficient_over_reference_peak": -0.07604622582714696
+        },
+        {
+          "kind": "nested",
+          "constraint_case": "nested_pack_partition_no_certified_CAD_membership",
+          "choice": "bounded_best_cut",
+          "cut_fraction": 0.030005603209327356,
+          "physical_turns_per_group": [
+            1,
+            1
+          ],
+          "independent_prescribed_current_count": 2,
+          "fit": {
+            "currents_a": [
+              -4089415.250067516,
+              2462160.7151844646
+            ],
+            "rank": 2,
+            "singular_values": [
+              0.15953607210542384,
+              0.001348289240051017
+            ],
+            "condition_number": 118.32481293063442,
+            "column_normalized_condition_number": 106.45619110341909,
+            "normalized_column_correlation": 0.9998235385559597,
+            "relative_l2": 0.17479810658151404,
+            "cancellation_amplification_l2": 45.752415743732804,
+            "reference_weighted_norm": 15077.809422856468
+          },
+          "old_uniform_restoration_currents_a": [
+            -4854.847701379058,
+            -156943.18940223465
+          ],
+          "original_pack_reconstruction_relative_l2": 6.766947650835129e-15,
+          "refined_pack24_path48_change_relative_reference": 5.598633649241966e-13,
+          "optimizer": {
+            "success": true,
+            "nfev": 25,
+            "message": "Solution found."
+          },
+          "interpretation": "A homogenized current-density partition; not a certified assignment of the unchanged actual CAD turns",
+          "peak_relative_vector_error": 0.1254754084205555,
+          "integrated_candidate_coefficient": [
+            -53.32175493662652,
+            6.756337316955738
+          ],
+          "integrated_target_coefficient": [
+            -58.034550351790024,
+            7.3534901220067
+          ],
+          "integral_relative_vector_error": 0.08120671886997986,
+          "minimum_signed_coefficient_over_reference_peak": -0.07484239636567645
+        }
+      ],
+      "fixed_actual_CAD_turn_current_fit": {
+        "fit": {
+          "currents_a": [
+            -968746.6629126817,
+            1207229.7991862544
+          ],
+          "rank": 2,
+          "singular_values": [
+            0.17038578223922027,
+            0.0037541430831686978
+          ],
+          "condition_number": 45.386065065854005,
+          "column_normalized_condition_number": 43.09421504476733,
+          "normalized_column_correlation": 0.9989236382533678,
+          "relative_l2": 0.2692959534650442,
+          "cancellation_amplification_l2": 17.51520317092091,
+          "reference_weighted_norm": 15077.809422856468
+        },
+        "metal_cross_section_mm2": 0.02,
+        "radial_enamel_mm": 0.005,
+        "physical_geometry_changed": false,
+        "closed_round_wire_with_native_corner_offsets": true,
+        "independent_current_count": 2,
+        "numerical_refinement_change_relative_reference": 6.61506924491164e-14,
+        "scope": "Exactly the two unchanged rounded CAD turns, finite circular conductor section; a resolved spatial model, not the old uniform pack"
+      }
+    }
+  ],
+  "elapsed_s": 12.739188600000489,
+  "status": "COMPLETED_SOURCE_FREE_REACHABILITY_STUDY_NO_INPUTS_APPLIED",
+  "limitations": "Best results in explicitly enumerated two-group partition families, not an unconstrained global field-realizability theorem. More Gauss nodes are quadrature, not new physical turns, current drivers, source particles or new optical evidence."
+}

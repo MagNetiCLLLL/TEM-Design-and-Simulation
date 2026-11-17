@@ -173,7 +173,12 @@ def test_mixed_native_and_copper_sources_keep_exact_uncompiled_contribution(inst
     from temsim.physics.analytic_potential import AnalyticMagneticPotential
     from temsim.physics.analytic_potential_domain import AnalyticPotentialDomain
     key = next(item.key for item in installed.stigmators if item.enabled)
-    snapshot = capture_selected_column_potentials(installed, round_lens_keys=("objective_lens",), auxiliary_keys=(key,))
+    # Deliberately mix a native analytic fixture with an installed current coil.
+    native_state = _copy_state(installed)
+    native_state.round_lens_field_model = "gaussian"
+    native = capture_selected_column_potentials(native_state, auxiliary_keys=(key,))
+    coils = capture_selected_column_potentials(installed, round_lens_keys=("objective_lens",))
+    snapshot = ElectromagneticPotentialSnapshot(coils.scene, coils.contributions+native.contributions)
     # Production capture adds the compact-domain adapter before compilation.
     snapshot = ElectromagneticPotentialSnapshot(snapshot.scene, tuple(
         replace(row, potential=AnalyticPotentialDomain(row.potential))

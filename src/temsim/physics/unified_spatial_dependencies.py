@@ -11,7 +11,7 @@ from threading import RLock
 from temsim.immutable_json import json_digest
 
 
-SCHEMA = "unified-executed-spatial-dependencies-v1"
+SCHEMA = "unified-executed-spatial-dependencies-v2"
 _ZERO_BOXES = OrderedDict()
 _ZERO_LOCK = RLock()
 
@@ -126,6 +126,7 @@ def spatial_runtime_payload(runtime, bounds_m):
             geometry.append((host.host_key, tuple(host.source_keys), tuple(_piece_dict(piece) for piece in pieces)))
     return {"schema": SCHEMA, "fields": fields, "geometry": geometry,
             "gauge": runtime.snapshot.gauge.digest,
+            "field_execution_identity": runtime.metadata.get("field_execution_identity"),
             "emission_time_s": runtime.metadata.get("emission_time_s", 0.)}
 
 

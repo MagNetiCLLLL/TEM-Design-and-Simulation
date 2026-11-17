@@ -93,9 +93,13 @@ class ModelInspectorPage(QWidget):
         self.current_summary.setWordWrap(True)
         calibration_button = QPushButton("Coil calibration / current…")
         calibration_button.clicked.connect(self._edit_excitation)
+        self.current_segments_button = QPushButton("Internal coil currents…")
+        self.current_segments_button.setObjectName("editIdealCurrentSegments")
+        self.current_segments_button.clicked.connect(self._edit_current_segments)
         electrical_controls = QHBoxLayout()
         electrical_controls.addWidget(self.current_summary, 1)
         electrical_controls.addWidget(calibration_button)
+        electrical_controls.addWidget(self.current_segments_button)
         hint = QLabel("Axisymmetric field · explicit material and coil inputs · calculated on next run")
         hint.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         hint.setWordWrap(True)
@@ -242,6 +246,7 @@ class ModelInspectorPage(QWidget):
         self.round_lens_hint.setText(round_lens_model_description(self._state))
         self.geometry_field_button.setEnabled(model != "copper_coil")
         self.analytic_field_button.setEnabled(model != "copper_coil")
+        self.current_segments_button.setEnabled(shared and model == "copper_coil")
         self.round_lens_model.setToolTip("Ideal prescribed-current coils require shared Finite-Field Optics; current lens drives are retained.")
         self.gaussian_geometry_coupling.setToolTip("Optional engineering scaling of Gaussian a by actual/reference current-bearing coil length. Fixed calibration is the historical default.")
 
@@ -314,7 +319,14 @@ class ModelInspectorPage(QWidget):
                     turn_note = f"N {sum(counts)} fixed turns | " if known else ""
                     self.current_summary.setText(f"Air-core NI {actual_ni:.6g} A-turn | reference {reference_ni:.6g} at 100% | {turn_note}prescribed current unavailable; legacy NI active")
                 else:
-                    self.current_summary.setText(f"Air-core NI {actual_ni:.6g} A-turn | N {operating['total_turn_count']} turns | I {current:.6g} A | reference I {operating['reference_current_a']:.6g} A at 100% | original envelope homogenized")
+                    from temsim.ideal_coil_segments import FIELD, normalize_recipe
+                    recipe = self._state.lens_field_map_descriptors.get(lens.key, {}).get(FIELD)
+                    if recipe is not None:
+                        recipe = normalize_recipe(recipe)
+                        count = sum(len(cells) for cells in recipe["windings"].values())
+                        self.current_summary.setText(f"N {operating['total_turn_count']} fixed turns | master I {current:.6g} A | {count} internal signed current groups | winding geometry unchanged")
+                    else:
+                        self.current_summary.setText(f"Air-core NI {actual_ni:.6g} A-turn | N {operating['total_turn_count']} turns | I {current:.6g} A | reference I {operating['reference_current_a']:.6g} A at 100% | original envelope homogenized")
             except (AttributeError, KeyError, StopIteration, TypeError, ValueError):
                 self.current_summary.setText("Air-core reference ampere-turns require a valid physical lens definition")
             return
@@ -453,6 +465,10 @@ class ModelInspectorPage(QWidget):
                 "geometry_policy": "authoritative_dimensions" if self.dimension_approximation.isChecked() else "require_full_geometry",
             }
             previous = self._state.lens_field_map_descriptors.get(key, {})
+            from temsim.ideal_coil_segments import CURRENT_RECIPE_FIELDS
+            for field in CURRENT_RECIPE_FIELDS:
+                if field in previous:
+                    recipe[field] = deepcopy(previous[field])
             if "excitation_calibration" in previous:
                 recipe["excitation_calibration"] = deepcopy(previous["excitation_calibration"])
             if nonlinear:
@@ -487,7 +503,13 @@ class ModelInspectorPage(QWidget):
         key = self.lens.currentData()
         from temsim.simulation_modes import promote_custom_mode
         promote_custom_mode(self._state)
-        self._state.lens_field_map_descriptors.pop(key, None)
+        from temsim.ideal_coil_segments import CURRENT_RECIPE_FIELDS
+        previous = self._state.lens_field_map_descriptors.get(key, {})
+        retained = {field: deepcopy(previous[field]) for field in CURRENT_RECIPE_FIELDS if field in previous}
+        if retained:
+            self._state.lens_field_map_descriptors[key] = retained
+        else:
+            self._state.lens_field_map_descriptors.pop(key, None)
         getattr(self._state, "_lens_field_map_bindings", {}).pop(key, None)
         self.changed.emit("lens_field_map_descriptors")
         self.refresh()
@@ -555,7 +577,8 @@ class ModelInspectorPage(QWidget):
                 self.circuit_table.setItem(row, column, item)
         installed = self._installed_lenses(self._state)
         for lens in installed:
-            descriptor = self._state.lens_field_map_descriptors.get(lens.key, {})
+            from temsim.physics.lens_field_provider import field_map_recipe
+            descriptor = field_map_recipe(self._state.lens_field_map_descriptors.get(lens.key, {})) or {}
             if getattr(self._state, "round_lens_field_model", "gaussian") == "copper_coil":
                 evidence = "Ideal prescribed-current coil field requested"
                 detail = "Declared winding dimensions and ampere-turns in vacuum. Pole pieces, iron and saturation are ignored; native non-round sources remain active. This stored optical working point is not automatically recalibrated."
@@ -683,6 +706,22 @@ class ModelInspectorPage(QWidget):
         }
         self._show_fit_evidence()
         self.refresh()
+
+    def _edit_current_segments(self):
+        if self._state is None or self.lens.currentData() is None:
+            return
+        from temsim.gui.ideal_current_segments_dialog import IdealCurrentSegmentsDialog
+        from temsim.ideal_coil_segments import set_current_segments
+        key = self.lens.currentData()
+        try:
+            dialog = IdealCurrentSegmentsDialog(self._state, key, self)
+            if dialog.exec() == dialog.DialogCode.Accepted:
+                set_current_segments(self._state, key, dialog.recipe)
+                self.changed.emit("lens_field_map_descriptors")
+                self._load_field()
+                self.refresh()
+        except (AttributeError, StopIteration, TypeError, ValueError) as error:
+            self.error.emit(str(error))
 
     def _edit_excitation(self):
         if self._state is None:

@@ -2695,7 +2695,7 @@ class MainWindow(QMainWindow):
         self._set_progress_active("mixed_stem", True)
         self.workspace.scan_control.calculation_bar.status.setText(
             f"Preparing {self.state.electron_gun.emitter.ray_count:,} original particles and CUDA mixed scanning…")
-        self.status_label.setText("Mixed coherent CUDA acquisition submitted with captured inputs.")
+        self.status_label.setText("Mixed particles + waves (CUDA) acquisition submitted with captured inputs.")
 
     def _mixed_stem_ready(self, acquisition, frame, diffraction, seconds):
         if self.result_files.loading or self.result_files.hold_automatic_preview:
@@ -2703,16 +2703,16 @@ class MainWindow(QMainWindow):
         self.workspace.publish_mixed_stem(acquisition, frame, diffraction)
         self.result_files.refresh_actions()
         self.workspace.scan_control.calculation_bar.status.setText(
-            f"Mixed coherent CUDA completed in {seconds:.3f} s. Ideal exit-angle BF/ADF; source settings retained.")
-        self.status_label.setText(f"Mixed coherent CUDA completed in {seconds:.3f} s.")
+            f"Mixed particles + waves (CUDA) completed in {seconds:.3f} s. Ideal exit-angle BF/ADF; source settings retained.")
+        self.status_label.setText(f"Mixed particles + waves (CUDA) completed in {seconds:.3f} s.")
         self.log_output.appendPlainText(
             f"Mixed STEM: {frame.metrics['original_positive_particles']:,} original particles; "
             "BF 0–15 mrad / ADF 50–150 mrad are ideal specimen-exit windows.")
 
     def _mixed_stem_failed(self, message):
         self.workspace.scan_control.calculation_bar.status.setText(
-            "Mixed coherent CUDA failed; the previous complete frame is retained.")
-        self._show_error("Mixed coherent CUDA acquisition failed: " + message)
+            "Mixed particles + waves (CUDA) failed; the previous complete frame is retained.")
+        self._show_error("Mixed particles + waves (CUDA) acquisition failed: " + message)
 
     def _mixed_stem_finished(self):
         self._set_progress_active("mixed_stem", self.mixed_stem.busy)

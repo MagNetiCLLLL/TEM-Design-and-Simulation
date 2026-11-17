@@ -1,0 +1,94 @@
+{
+  "schema": "cuda-coil-validation-exclusions-v1",
+  "created_utc": "2026-11-16T20:27:17.684266+00:00",
+  "reason": "An existing dynamic test module was mistakenly selected without inspecting its actual-source test bodies first.",
+  "stopped_process_status": "All mistakenly selected pytest processes have exited; no such process remains running.",
+  "original_xml_preserved": [
+    "F:\\tem_simulator_v2\\outputs\\ideal-coil-si110-scan-20261116\\cuda-coil-focused.xml",
+    "F:\\tem_simulator_v2\\outputs\\ideal-coil-si110-scan-20261116\\cuda-coil-integration-final.xml",
+    "F:\\tem_simulator_v2\\outputs\\ideal-coil-si110-scan-20261116\\cuda-coil-integration.xml"
+  ],
+  "excluded_actual_source_cases": [
+    {
+      "testcase": "tests.test_dynamic_potential::test_actual_normal_dynamic_source_reaches_specimen_with_unchanged_optical_inputs",
+      "configured_original_particle_count": 9,
+      "actual_finite_source_emission_confirmed": true,
+      "actual_gun_transport_confirmed": true,
+      "confirmation": "The completed XML testcase passed and records an actual native FEG source property",
+      "actual_post_gun_live_transport_confirmed": true,
+      "recorded_surviving_count": 9,
+      "recorded_properties": {
+        "actual_normal_dynamic_source": {
+          "source": {
+            "virtual_source_fwhm_nm": 5.0,
+            "emission_energy_ev": 0.3,
+            "energy_spread_fwhm_ev": 0.3,
+            "angular_rms_mrad": 1.0,
+            "angular_cutoff_mrad": 3.0
+          },
+          "numerical_particle_count": 9,
+          "surviving_count": 9,
+          "absolute_incident_weight": 1.0,
+          "absolute_surviving_weight": 1.0,
+          "field_digest": "37ab986011be830f535819812e997c71e81d70e5557741460b7b640c4e28f7c3",
+          "geometry_digest": "d4ca8dc5bad90e1c3ef45b70ed5cf6cb9a592eb2abb63fd5eaaf3cae276298f8",
+          "scope": "Actual default FEG distribution and current Normal preset; dynamic native coils and retained static gun electric tail; no material transport"
+        }
+      },
+      "qualification": "EXCLUDED from this round physical trial, minimum-count, convergence and scan evidence"
+    },
+    {
+      "testcase": "tests.test_dynamic_potential::test_actual_gun_absorption_keeps_zero_or_partial_absolute_source_weight[0.0]",
+      "configured_original_particle_count": 9,
+      "actual_finite_source_emission_confirmed": true,
+      "actual_gun_transport_confirmed": true,
+      "confirmation": "The completed XML testcase passed and records an actual native FEG source property",
+      "actual_post_gun_live_transport_confirmed": false,
+      "recorded_surviving_count": 0,
+      "recorded_properties": {
+        "physical_gun_aperture": {
+          "radius_mm": 0.0,
+          "emitted_weight": 1.0,
+          "transmitted_weight": 0.0,
+          "alive": 0,
+          "source_model": "Actual native FEG; only the physical aperture opening changed"
+        }
+      },
+      "qualification": "EXCLUDED from this round physical trial, minimum-count, convergence and scan evidence"
+    },
+    {
+      "testcase": "tests.test_dynamic_potential::test_actual_gun_absorption_keeps_zero_or_partial_absolute_source_weight[0.0002]",
+      "configured_original_particle_count": 9,
+      "actual_finite_source_emission_confirmed": true,
+      "actual_gun_transport_confirmed": true,
+      "confirmation": "The completed XML testcase passed and records an actual native FEG source property",
+      "actual_post_gun_live_transport_confirmed": true,
+      "recorded_surviving_count": 4,
+      "recorded_properties": {
+        "physical_gun_aperture": {
+          "radius_mm": 0.0002,
+          "emitted_weight": 1.0,
+          "transmitted_weight": 0.4444444444444444,
+          "alive": 4,
+          "source_model": "Actual native FEG; only the physical aperture opening changed"
+        }
+      },
+      "qualification": "EXCLUDED from this round physical trial, minimum-count, convergence and scan evidence"
+    }
+  ],
+  "original_count_policy": "At least 1000 original positive-current emitted source particles for every new finite-source physical trial; these nine-particle legacy cases do not meet it.",
+  "scope": "Legacy dynamic native/default test setups, not the formal current ideal-current static Si[110] scan input.",
+  "formal_trial_policy": "The root uses a separate fresh process with 3000 original source particles; no low-count trajectory/cache result is reused.",
+  "other_failed_fixture_checks": [
+    {
+      "testcase": "test_copper_coil_capture.py::test_mixed_native_and_copper_sources_keep_exact_uncompiled_contribution",
+      "reason": "Legacy fixture expects a compiled native stigmator, but the current winding recipe is a retained TransverseCoilPotential."
+    },
+    {
+      "testcase": "test_dynamic_potential.py::test_dynamic_epoch_and_energy_clock_resume_keep_absolute_time_once",
+      "reason": "Fixture replaces complete runtime metadata with emission time only, removing the required execution identity."
+    }
+  ],
+  "future_selection_rule": "Inspect every selected test function and its fixtures/call chain for actual emission or transport before execution. Names and module-level comments are insufficient.",
+  "accepted_followup": "Only reviewed source-free field/operator tests; actual finite-source qualification remains the separate 3000-particle scan worker."
+}

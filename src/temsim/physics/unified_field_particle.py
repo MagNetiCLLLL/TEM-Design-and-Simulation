@@ -20,10 +20,12 @@ _STOPS = {}
 MAX_UNIFIED_HISTORY_BYTES = 2*1024**3
 
 
-def _sampler(snapshot):
+def _sampler(snapshot, state=None):
     """Reuse exact-Z field coefficients, with strict native posed fallback."""
     from temsim.physics.unified_potential_sampler import compile_unified_potential_sampler
-    return compile_unified_potential_sampler(snapshot, prefer_plane=True)
+    backend = (getattr(state, "acceleration_backend", "Auto")
+               if state is not None and getattr(state, "acceleration_enabled", True) else "CPU")
+    return compile_unified_potential_sampler(snapshot, prefer_plane=True, execution_backend=backend)
 
 
 def _positive_step_mm(value, label):
@@ -314,7 +316,8 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
         raise ValueError(f"Unified particle history requires {required_bytes:,} bytes, exceeding the "
                          f"{MAX_UNIFIED_HISTORY_BYTES:,}-byte numerical budget with {history_policy} history; "
                          "use exact-checkpoint history or bounded source batches")
-    raw_sample = _sampler(runtime.snapshot)
+    field_sampler = _sampler(runtime.snapshot, state)
+    raw_sample = field_sampler.sample_fields
     contacts = compile_contact_geometry(runtime.geometry)
     swept_bounds = np.array(((0., 0., z[0]*.001), (0., 0., z[0]*.001))) if retained is None else retained["swept_bounds_m"]
     def include_points(points):
@@ -469,6 +472,8 @@ def execute_unified_plan(state, plan, x, tx, y, ty, energy_offset_ev=None, *, st
     from temsim.physics.backend_execution import record_backend
     record_backend("column",getattr(state,"acceleration_backend","Auto"),"CPU",
                    reason="Shared-potential Lorentz RK4 with captured mechanical boundaries",retried=False,
+                   field_execution=field_sampler.execution_receipt(),
+                   requested_field_products="B, E, phi and retained dynamic time derivatives; full A remains available for canonical handoffs",
                    history_policy=history_policy, requested_history_policy=requested_history_policy,
                    integration_nodes=len(z), retained_history_nodes=len(history_index),
                    history_memory_bytes=required_bytes, history_budget_bytes=MAX_UNIFIED_HISTORY_BYTES,
@@ -611,7 +616,7 @@ def trace_unified_response(state, phase_space_xy_slopes, z0_m, observation_z_m, 
         np.full(len(initial),np.nan),[""]*len(initial))
     phase = np.stack((result[1][indexes],result[3][indexes],result[2][indexes],result[4][indexes]),axis=-1)
     vector = np.full((*phase.shape[:-1],3),np.nan)
-    sampler = _sampler(runtime.snapshot)
+    sampler = _sampler(runtime.snapshot, state)
     for index, plane in enumerate(targets):
         valid = ~np.isfinite(blocked) | (blocked > target_mm[index])
         if valid.any():

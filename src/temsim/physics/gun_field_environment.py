@@ -31,6 +31,20 @@ def instrument_gun_field_context(state):
         from temsim.physics.gun_transport_domain import gun_magnetic_query_upper_m
         upper = gun_magnetic_query_upper_m(gun)
         identity = _gun_magnetic_dependency_identity(gun, provider)
+        from temsim.physics.cuda_gun_step import (
+            prepare_cuda_gun_binding, gun_field_execution_identity, cuda_gun_execution,
+        )
+        from temsim.physics.compute_backend import BACKEND_CPU
+        policy = (getattr(state, "acceleration_backend", "Auto")
+                  if bool(getattr(state, "acceleration_enabled", True)) else BACKEND_CPU)
+        binding = prepare_cuda_gun_binding(provider, execution_backend=policy,
+            cancelled=getattr(state, "_tuning_cancelled", None))
+        execution = gun_field_execution_identity(policy, binding)
+        if identity is not None:
+            from temsim.diagnostic_field_identity import identity_digest
+            from temsim.immutable_json import thaw_json
+            identity = identity_digest("gun-magnetic-executed-backend-v1", {
+                "physical_source_dependency": identity, "field_execution": thaw_json(execution)})
         from temsim.physics.frozen_copper_coil_field import is_all_z_copper_field
         # Infinite intervals declare an all-Z step-scheduling contributor, not
         # a serialised mechanical/display bound. Unsupported packed laws use
@@ -41,11 +55,13 @@ def instrument_gun_field_context(state):
             for source in provider._sources
             if not source.known_zero and (is_all_z_copper_field(source.provider)
                                          or float(source.bounds_m[0, 2]) <= upper))
-        gun._instrument_magnetic_field = provider
+        selected_provider = provider if binding is None else binding.sampler
+        gun._instrument_magnetic_field = selected_provider
         gun._instrument_magnetic_identity = identity
         gun._instrument_magnetic_supports_mm = supports
         gun._instrument_magnetic_query_upper_m = upper
-        yield provider
+        with cuda_gun_execution(binding):
+            yield selected_provider
     finally:
         for name, value in previous.items():
             if value is missing:

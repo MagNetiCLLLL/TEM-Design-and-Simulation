@@ -25,7 +25,10 @@ previous mixed models are not silently replaced.
 
 The independent **Column round-lens field** selector offers Gaussian/saved
 models and **Ideal prescribed-current coils in vacuum**. This model requires
-shared `unified` execution and currently supports classical particles only.
+shared `unified` execution. It supports classical particles and purpose-specific
+local stationary mixed particle-wave STEM admission, subject to actual
+per-request field and numerical qualification. General/downstream coherent
+propagation with these sources remains unqualified and rejected.
 It uses declared ideal vacuum winding geometry and ampere-turns; it does not
 solve the iron/pole material field. **Gaussian geometry relation** separately
 selects fixed calibration or an explicit coil-length width rule. The latter

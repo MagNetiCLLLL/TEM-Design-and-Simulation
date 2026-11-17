@@ -1801,7 +1801,7 @@ class State:
             },
 
             "lens_field_map_descriptors":{
-                str(key): dict(value)
+                str(key): deepcopy(value)
                 for key, value in self.lens_field_map_descriptors.items()
             },
 
@@ -2506,7 +2506,7 @@ class State:
             round_lens_field_model=d.get("round_lens_field_model", "gaussian"),
             gaussian_geometry_coupling=d.get("gaussian_geometry_coupling", "fixed_calibration"),
             lens_field_map_descriptors={
-                str(key): dict(value)
+                str(key): deepcopy(value)
                 for key, value in d.get(
                     "lens_field_map_descriptors", {}
                 ).items()

@@ -161,6 +161,48 @@ def square_root(a, *, inverse=False):
     return (vectors * values**(-.5 if inverse else .5)) @ vectors.T
 
 
+def _require_positive_gaussian_residual(covariance, vacuum_uncertainty):
+    """Reject a covariance that cannot contain the declared pure packet.
+
+    If C=L L.T, the singular values of L.T J L are its symplectic
+    eigenemittances. The existing pure-packet construction has C-P positive
+    definite exactly when each eigenemittance exceeds 1/(4*pi). Reciprocal
+    position/frequency scaling preserves J while avoiding the severe unit
+    imbalance of angstrom and cycles/angstrom coordinates. It neither clips
+    eigenvalues nor adds quantum variance to the measured particle source.
+    """
+    covariance = np.asarray(covariance, dtype=float)
+    if covariance.shape != (4, 4) or not np.isfinite(covariance).all():
+        raise ValueError("The measured source covariance must be a finite 4 by 4 matrix")
+    position_variance = float(np.trace(covariance[:2, :2]))
+    frequency_variance = float(np.trace(covariance[2:, 2:]))
+    if position_variance <= 0 or frequency_variance <= 0:
+        raise ValueError("The measured source covariance does not admit the declared Gaussian lift")
+    # Logarithms avoid an unnecessary overflow in the ratio of valid scales.
+    scale = np.exp(.25*(np.log(position_variance)-np.log(frequency_variance)))
+    reciprocal_scale = np.array((1./scale, 1./scale, scale, scale))
+    balanced = covariance*reciprocal_scale[:, None]*reciprocal_scale[None, :]
+    zero, identity = np.zeros((2, 2)), np.eye(2)
+    symplectic = np.block([[zero, identity], [-identity, zero]])
+    try:
+        factor = np.linalg.cholesky((balanced+balanced.T)*.5)
+        singular_values = np.linalg.svd(factor.T @ symplectic @ factor, compute_uv=False)
+    except np.linalg.LinAlgError as error:
+        raise ValueError("The measured source covariance does not admit the declared Gaussian lift") from error
+    if not np.isfinite(singular_values).all() or np.any(singular_values <= vacuum_uncertainty):
+        # The exact skew-symmetric singular values occur in pairs. Use each
+        # pair's smaller value for diagnostic output and the strict admission.
+        emittances = singular_values[1::2]
+        rendered = ", ".join(f"{value:.12g}" for value in emittances)
+        raise ValueError(
+            "The measured source covariance has symplectic eigenemittances "
+            f"[{rendered}] in (angstrom, cycles/angstrom) coordinates; each must "
+            f"exceed {vacuum_uncertainty:.12g} for the declared covariance-matched "
+            "minimum-uncertainty Gaussian lift. Its residual covariance would "
+            "not be positive definite. A different quantum-broadening/coherence "
+            "model must be declared; particle data and tolerances were not modified.")
+
+
 def threefold_basis(u, degree):
     """Value and gradient of the A2 (degree 3) or D4 (degree 5) phase basis."""
     x, y = u.T
@@ -266,12 +308,13 @@ def lifted_centers(phase, wavelength, probability):
     center = np.average(values, weights=weights, axis=0)
     centered = values-center
     covariance = (centered.T * weights) @ centered
+    vacuum_uncertainty = 1./(4.*np.pi)
+    _require_positive_gaussian_residual(covariance, vacuum_uncertainty)
     sqrt_covariance = square_root(covariance)
     zero, identity = np.zeros((2, 2)), np.eye(2)
     symplectic = np.block([[zero, identity], [-identity, zero]])
     skew = sqrt_covariance @ symplectic @ sqrt_covariance
     modulus = square_root(-skew @ skew)
-    vacuum_uncertainty = 1./(4.*np.pi)
     packet = vacuum_uncertainty*sqrt_covariance @ np.linalg.inv(modulus) @ sqrt_covariance
     np.testing.assert_allclose(packet @ symplectic @ packet, vacuum_uncertainty**2*symplectic, rtol=0, atol=1e-12)
     centers = centered @ (square_root(covariance-packet) @ np.linalg.inv(sqrt_covariance)).T+center

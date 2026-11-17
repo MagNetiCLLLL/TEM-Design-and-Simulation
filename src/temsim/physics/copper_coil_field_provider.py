@@ -143,6 +143,13 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
                 and part["data"].get("field_source_key") == key]
     if not windings:
         raise ValueError(f"{key}: Ideal-current coils have no explicitly owned winding; Gaussian fallback is disabled")
+    from temsim.ideal_coil_segments import FIELD, normalize_recipe, bind_segments
+    raw_segments = getattr(state, "lens_field_map_descriptors", {}).get(key, {}).get(FIELD)
+    segment_recipe = normalize_recipe(raw_segments) if raw_segments is not None else None
+    if segment_recipe is not None:
+        unknown = set(segment_recipe["windings"])-{part["key"] for part in windings}
+        if unknown:
+            raise ValueError(f"{key}: Internal currents refer to absent winding(s): "+", ".join(sorted(unknown)))
     operating = (round_coil_operating_point(owner, windings, percent=percent,
                  polarity=polarity, enabled=enabled) if explicit_current else None)
     if operating is not None:
@@ -155,7 +162,7 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
     if unsupported:
         raise ValueError("Ideal annular windings cannot represent non-rigid CAD shape edits on "
                          + ", ".join(unsupported))
-    fractions, coils = [], []
+    fractions, coils, segment_records = [], [], []
     for part in windings:
         data = part["data"]
         fraction = (int(data["winding_turn_count"])/operating["total_turn_count"]
@@ -180,6 +187,14 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
                or not math.isfinite(value) or value <= 0 for value in diameters):
             raise ValueError(f"{part['key']}: Winding diameters must be finite positive lengths")
         inner, outer = (value*.0005 for value in diameters)
+        cells = None
+        if segment_recipe is not None and part["key"] in segment_recipe["windings"]:
+            counts = interval_turns
+            if counts is None:
+                if len(intervals) != 1 or "winding_turn_count" not in data:
+                    raise ValueError(f"{part['key']}: Internal currents need fixed turns in every original interval")
+                counts = (int(data["winding_turn_count"]),)
+            cells = bind_segments(segment_recipe, part["key"], counts)
         for index, (start, stop) in enumerate(intervals):
             if interval_turns is not None and operating is not None:
                 segment_ni = interval_turns[index]*operating["current_a"]
@@ -193,9 +208,39 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
                 # not perturb a historical field's floating-point coefficients.
                 segment_ni = (int(data["winding_turn_count"])*operating["current_a"]
                     if operating is not None else total*fraction)*(stop-start)/length
-            coils.append(AnnularCoilPotential(f"{key}:{part['key']}:{index}", inner, outer,
-                (stop-start)*.001, segment_ni,
-                (start+stop)*.0005, registration))
+            selected = tuple(cell for cell in cells or () if cell.interval_index == index)
+            if not selected:
+                coils.append(AnnularCoilPotential(f"{key}:{part['key']}:{index}", inner, outer,
+                    (stop-start)*.001, segment_ni,
+                    (start+stop)*.0005, registration))
+                continue
+            physical_count = sum(cell.turn_count for cell in selected)
+            master_current = (operating["current_a"] if operating is not None
+                              else segment_ni/physical_count)
+            uniform = all(cell.current_ratio == selected[0].current_ratio for cell in selected)
+            if uniform:
+                # Retain the original quadrature and arithmetic for an
+                # electrically uniform interval, including exact ratio=1.
+                coils.append(AnnularCoilPotential(f"{key}:{part['key']}:{index}", inner, outer,
+                    (stop-start)*.001, segment_ni*selected[0].current_ratio,
+                    (start+stop)*.0005, registration))
+            for segment_index, cell in enumerate(selected):
+                r0 = inner+(outer-inner)*cell.radial_fraction[0]
+                r1 = inner+(outer-inner)*cell.radial_fraction[1]
+                z0 = start+(stop-start)*cell.axial_fraction[0]
+                z1 = start+(stop-start)*cell.axial_fraction[1]
+                current = master_current*cell.current_ratio
+                ni = cell.turn_count*current
+                if not all(math.isfinite(value) for value in (current, ni)):
+                    raise ValueError(f"{part['key']}: Internal prescribed current exceeds the finite numerical range")
+                if not uniform:
+                    coils.append(AnnularCoilPotential(
+                        f"{key}:{part['key']}:{index}:current_segment:{segment_index}",
+                        r0, r1, (z1-z0)*.001, ni, (z0+z1)*.0005, registration))
+                segment_records.append(dict(winding_key=part["key"],
+                    **cell.to_dict(), inner_radius_m=r0, outer_radius_m=r1,
+                    start_z_mm=z0, end_z_mm=z1, current_a=current, ampere_turns=ni,
+                    uniform_interval_collapsed=uniform))
     if not math.isclose(math.fsum(fractions), 1., rel_tol=0., abs_tol=1e-12):
         raise ValueError(f"{key}: Winding ampere-turn fractions must sum to one")
     resolved_owner = next((part for part in getattr(getattr(state, "_resolved_assembly", None), "parts", ())
@@ -210,6 +255,19 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
         source_registration_policy="Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
         current_distribution="Coil fractions per owner; fixed interval turns when declared, otherwise NI proportional to interval length; uniform current density inside each interval",
         winding_material="Copper, relative permeability one; pole pieces ignored magnetically")
+    if segment_recipe is not None:
+        provenance[FIELD] = segment_recipe
+        provenance["internal_current_distribution"] = dict(
+            model="Closed azimuthal current groups inside each unchanged original allocation",
+            cells=segment_records,
+            segmented_physical_turn_count=sum(row["turn_count"] for row in segment_records),
+            signed_segment_ampere_turns=math.fsum(row["ampere_turns"] for row in segment_records),
+            absolute_segment_ampere_turns=math.fsum(abs(row["ampere_turns"]) for row in segment_records),
+            geometry_changed=False, conductor_area_changed=False,
+            resistance_model=False, constant_power_constraint=False,
+            current_rule="I_segment = current_ratio * original winding master current at the active control",
+            scope="Ideal prescribed-current coils in vacuum only; numerical cells are not additional physical turns")
+        provenance["current_distribution"] = "Signed current groups inside original winding intervals; each group's physical turns and full closed loops retained"
     if operating is not None:
         # CAD wire/insulation detail never shrinks the homogenized source.
         # Each winding's NI remains uniformly distributed over its original
@@ -253,6 +311,10 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
             **operating, "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
             "windings": winding_records,
         }
+        if segment_recipe is not None:
+            provenance["winding_current_definition"]["internal_current_distribution"] = provenance["internal_current_distribution"]
+            provenance["winding_current_definition"]["homogenization"] = "Original envelope tiled by closed signed-current cells; unsegmented intervals retain their original uniform master current"
+            provenance["current_distribution"] = "Signed current groups inside unchanged original winding intervals; each cell retains its assigned physical turns and closed azimuthal loops"
     potential = CopperCoilAssemblyPotential(key, tuple(coils), provenance)
     cache = getattr(state, "_runtime_copper_coil_provider_cache", {})
     prior = cache.get(key)

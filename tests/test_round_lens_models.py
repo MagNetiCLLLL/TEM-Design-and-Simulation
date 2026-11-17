@@ -195,8 +195,8 @@ def test_copper_coherent_entry_is_rejected_without_running_a_wave(state):
     switch_mode(state, "unified")
     assert coherent_mode_issue(state) is None
     set_round_lens_field_model(state, "copper_coil")
-    assert "classical particles only" in coherent_mode_issue(state)
-    with pytest.raises(ValueError, match="classical particles only"):
+    assert "General/downstream coherent propagation" in coherent_mode_issue(state)
+    with pytest.raises(ValueError, match="General/downstream coherent propagation"):
         require_coherent_mode(state)
 
 

@@ -40,12 +40,12 @@ mixture has no single phase. Specimen propagation, diffraction and BF/ADF
 readout keep the mode weights and physical losses; lost current is not restored
 by normalization.
 
-For raster acquisition, choose **Mixed coherent CUDA** on **Scanning Image**.
+For raster acquisition, choose **Mixed particles + waves (CUDA)** on **Scanning Image**.
 It consumes the same local-source coherence settings and the selected original
 particle population. The independent scan worker can prepare compatible
 particles without enabling the retired Tip-wave STEM flag. Its qualified local
 material/field split, ideal BF/ADF windows, single-position exit diffraction and
-raw export are documented in [mixed coherent STEM](MIXED_STEM_SCAN.md). These
+raw export are documented in [mixed particle-wave STEM](MIXED_STEM_SCAN.md). These
 ideal angular windows do not establish downstream detector conjugacy.
 
 For propagation, the retained density factors are expressed in an equivalent

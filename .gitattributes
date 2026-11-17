@@ -95,6 +95,9 @@ docs/development/corrector_windings_20261115/validation/** -text
 docs/development/transverse_current_coils_20261115/validation/** -text
 docs/development/multipole_current_coils_20261115/validation/** -text
 
+# Preserve frozen field inputs, scripts and evidence checksums byte for byte.
+docs/development/ideal_current_fit_20261116/** -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+
 # Raw scientific logs and test receipts retain emitted whitespace.
 docs/development/**/validation/**/*.xml -whitespace
 docs/development/**/validation/**/*.log -whitespace

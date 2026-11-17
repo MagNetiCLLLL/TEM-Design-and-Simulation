@@ -29,6 +29,7 @@ from temsim.transverse_current import (
 
 
 SCHEMA='ideal-vacuum-transverse-coil-potential-v1'
+SEGMENTED_SCHEMA='ideal-vacuum-transverse-coil-potential-v2-segments'
 DEFAULT_PACK_ORDER=12
 DEFAULT_PATH_ORDER=24
 _MAXIMUM_PAIR_VALUES=262144
@@ -139,6 +140,38 @@ def _positions(points):
     return np.asarray(a,dtype=float)
 
 
+def potential_weighted_nodes(potential):
+    """Integrate closed current layers without redefining physical drive channels."""
+    if potential.current_segments is None:
+        layers=(potential,)
+    else:
+        from temsim.ideal_transverse_segments import closed_layers
+        layers=closed_layers(potential)
+    requested=len(layers)*len(potential.coils)*potential.pack_order**2*4*potential.path_order
+    if requested>MAXIMUM_QUADRATURE_NODES:
+        raise ValueError('Transverse closed current groups exceed the unchanged total quadrature-node budget')
+    nodes_out=[];weights_out=[]
+    for layer in layers:
+        coils_json=json.dumps(thaw_json(layer.coils),sort_keys=True,separators=(',',':'),allow_nan=False)
+        nodes,dl,groups=_unit_nodes(coils_json,int(layer.turn_count_per_coil),int(layer.pack_order),int(layer.path_order))
+        nodes_out.append(nodes)
+        weights_out.append(dl*np.asarray(layer.currents_a)[groups,None])
+    if len(layers)==1:return nodes_out[0],weights_out[0]
+    return _readonly(np.concatenate(nodes_out)),_readonly(np.concatenate(weights_out))
+
+
+def complete_current_layer_axis_symmetry(potential):
+    """Prove every closed current layer, independent of its signed current."""
+    from .radial_multipole_symmetry import complete_radial_multipole_axis_symmetry
+    if potential.current_segments is None:
+        layers=(potential,)
+    else:
+        from temsim.ideal_transverse_segments import closed_layers
+        layers=closed_layers(potential)
+    return all(complete_radial_multipole_axis_symmetry(
+        layer.coils,layer.provenance.get('multipole_order')) for layer in layers)
+
+
 def _inside_pack(points,coils):
     inside=np.zeros(points.shape[:-1],dtype=bool)
     for coil in coils:
@@ -168,6 +201,7 @@ class TransverseCoilPotential:
     pack_order: int=DEFAULT_PACK_ORDER
     path_order: int=DEFAULT_PATH_ORDER
     provenance: Mapping=field(default_factory=dict)
+    current_segments: Mapping | None=None
 
     def __post_init__(self):
         if not isinstance(self.source_id,str) or not self.source_id.strip() or self.source_id!=self.source_id.strip():
@@ -239,6 +273,18 @@ class TransverseCoilPotential:
         object.__setattr__(self,'coils',coils)
         object.__setattr__(self,'currents_a',currents)
         object.__setattr__(self,'provenance',freeze_json(thaw_json(self.provenance)))
+        if self.current_segments is not None:
+            from temsim.ideal_transverse_segments import SUPPORTED_STATIONS, normalize_recipe, bind_recipe
+            if (self.source_id not in SUPPORTED_STATIONS
+                    or any(c['family']!='radial_rectangle' for c in coils)
+                    or self.provenance.get('multipole_order')!=3
+                    or any(sum(c['group']==group for c in coils)!=6 for group in {c['group'] for c in coils})):
+                raise ValueError('Internal transverse currents require complete closed HP1/HP2 winding groups')
+            canonical=normalize_recipe(self.current_segments);bind_recipe(canonical,self.turn_count_per_coil)
+            for row in canonical['segments']:
+                if not all(math.isfinite(v*row['current_ratio']*row['turn_count']) for v in currents):
+                    raise ValueError('Transverse segment ampere-turns exceed the finite numerical range')
+            object.__setattr__(self,'current_segments',freeze_json(canonical))
         json_digest(self._payload())
 
     @property
@@ -246,17 +292,28 @@ class TransverseCoilPotential:
         return json_digest(self._payload())
 
     def _payload(self):
-        return dict(schema=SCHEMA,source_id=self.source_id,coils=thaw_json(self.coils),
+        result=dict(schema=SCHEMA,source_id=self.source_id,coils=thaw_json(self.coils),
             turn_count_per_coil=int(self.turn_count_per_coil),currents_a=list(self.currents_a),
             registration=asdict(self.registration),pack_order=int(self.pack_order),path_order=int(self.path_order),
             provenance=thaw_json(self.provenance),mu_0_h_per_m=mu_0,implementation_sha256=_implementation_identity())
+        if self.current_segments is not None:
+            from temsim.ideal_transverse_segments import implementation_identity
+            result.update(schema=SEGMENTED_SCHEMA,current_segments=thaw_json(self.current_segments),
+                          current_segments_implementation_sha256=implementation_identity())
+        return result
 
     def to_metadata(self):
-        return {**self._payload(), 'units':dict(position='m',current='A',A='T m',B='T'),
+        result={**self._payload(), 'units':dict(position='m',current='A',A='T m',B='T'),
             'gauge':'Coulomb line-current potential; closed-loop pack quadrature',
             'axial_domain':'all_z','outside_domain':'reject winding-pack material; no axial cutoff',
             'source_model':'uniform radial and normalized nested-loop pack coordinates; preserves full allocated bounds and NI',
             'magnetic_materials':False,'wire_turn_resolved_field':False,'wave_admission':False}
+        if self.current_segments is not None:
+            result.update(segmented_physical_turn_count_per_radial_coil=int(self.turn_count_per_coil),
+                segment_current_scope='Each closed layer ratio multiplies both original physical normal/skew drives; user drives are not layer channels',
+                segment_domain='Original complete parent winding material and allocation retained',
+                source_model='Closed internal radial/nested pack current groups in the unchanged original allocation')
+        return result
 
     def to_dict(self):
         return dict(payload=self._payload(),digest=self.digest)
@@ -266,8 +323,16 @@ class TransverseCoilPotential:
         if not isinstance(record,Mapping) or set(record)!= {'payload','digest'}:
             raise ValueError('Invalid transverse coil potential record')
         data=dict(record['payload'])
-        if data.pop('schema',None)!=SCHEMA or data.pop('mu_0_h_per_m',None)!=mu_0 or data.pop('implementation_sha256',None)!=_implementation_identity():
+        schema=data.pop('schema',None)
+        if schema==SEGMENTED_SCHEMA:
+            from temsim.ideal_transverse_segments import implementation_identity
+            if data.pop('current_segments_implementation_sha256',None)!=implementation_identity():
+                raise ValueError('Transverse current-segment implementation changed')
+            if data.get('current_segments') is None:raise ValueError('Segmented source requires its current recipe')
+        if schema not in (SCHEMA,SEGMENTED_SCHEMA) or data.pop('mu_0_h_per_m',None)!=mu_0 or data.pop('implementation_sha256',None)!=_implementation_identity():
             raise ValueError('Transverse coil source implementation or constant changed')
+        if schema==SCHEMA and 'current_segments' in data:
+            raise ValueError('Legacy transverse source cannot carry a hidden current recipe')
         data['registration']=CoordinateRegistration(**data['registration'])
         result=cls(**data)
         if result.digest!=record['digest']:
@@ -290,6 +355,7 @@ class TransverseCoilPotential:
     def _sample(self,positions_m,*,derivatives):
         points=_positions(positions_m)
         local=self.registration.positions_global_to_local_m(points)
+        axis_zero=complete_current_layer_axis_symmetry(self)
         if np.any(_inside_pack(local,self.coils)):
             raise ValueError('Transverse ideal-current source excludes its occupied winding pack from vacuum queries')
         flat=local.reshape(-1,3)
@@ -299,9 +365,7 @@ class TransverseCoilPotential:
         else:
             arrays.append(np.zeros((len(flat),3)))
         if any(self.currents_a) and len(flat):
-            coils_json=json.dumps(thaw_json(self.coils),sort_keys=True,separators=(',',':'),allow_nan=False)
-            nodes,dl,groups=_unit_nodes(coils_json,int(self.turn_count_per_coil),int(self.pack_order),int(self.path_order))
-            weighted=dl*np.asarray(self.currents_a)[groups,None]
+            nodes,weighted=potential_weighted_nodes(self)
             active=np.any(weighted!=0.,axis=1)
             nodes,weighted=nodes[active],weighted[active]
             block=max(1,_MAXIMUM_PAIR_VALUES//max(1,len(nodes)))
@@ -320,6 +384,11 @@ class TransverseCoilPotential:
                     arrays[2][start:stop]-=np.einsum('ni,jk,pn->pijk',weighted,np.eye(3),inv3)
                 else:
                     arrays[1][start:stop]=np.sum(np.cross(weighted[None,:,:],delta)*inv3[:,:,None],axis=1)
+        if axis_zero:
+            axis=(flat[:,0]==0.)&(flat[:,1]==0.)
+            arrays[0][axis]=0.
+            if not derivatives:
+                arrays[1][axis]=0.
         rotation=self.registration.rotation_array
         if any(not np.isfinite(array).all() for array in arrays):
             raise ValueError('Transverse winding field exceeds the finite numerical range')
@@ -408,7 +477,10 @@ class FrozenTransverseCoilField:
     def display_contains(self,positions):
         p=self.registration.positions_global_to_local_m(positions)
         return np.hypot(p[...,0],p[...,1])<=self.radial_support_m
-    def field_at_global_positions_t(self,positions): return self.potential.field_at_global_positions_t(positions)
+    def field_at_global_positions_t(self,positions):
+        from .compiled_transverse_coil import compiled_transverse_field
+        result=compiled_transverse_field(self,positions)
+        return self.potential.field_at_global_positions_t(positions) if result is None else result
     @property
     def bx_t(self):
         z=self.event_z_mm if self.event_z_mm is not None else sum(self.native_support_mm)/2
@@ -425,7 +497,8 @@ class FrozenTransverseCoilField:
         return min(float(requested_step_mm),self.radial_support_m*100.)
 
     def implementation_is_supported(self):
-        return all(getattr(TransverseCoilPotential,name,None) is original for name,original in _POTENTIAL_METHODS.items())
+        return (transverse_potential_implementation_is_supported(self.potential)
+            and all(getattr(FrozenTransverseCoilField,name,None) is original for name,original in _FROZEN_FIELD_METHODS.items()))
 
 
 def _momentum(energy_ev):
@@ -651,3 +724,19 @@ def calibrate_transverse_current_matrix(state,host_key, *, pack_order=DEFAULT_PA
 
 _POTENTIAL_METHODS={name:getattr(TransverseCoilPotential,name) for name in
     ('sample','sample_jet','field_at_global_positions_t','_sample','to_dict','to_metadata')}
+_TRANSVERSE_PRIMITIVES={name:globals()[name] for name in
+    ('_unit_nodes','_positions','_inside_pack','_rotation','_straight','_saddle','_rectangle','_quadrature','potential_weighted_nodes','complete_current_layer_axis_symmetry')}
+_FROZEN_FIELD_METHODS={name:getattr(FrozenTransverseCoilField,name) for name in
+    ('field_at_global_positions_t','implementation_is_supported')}
+_REGISTRATION_METHODS={name:getattr(CoordinateRegistration,name) for name in
+    ('positions_global_to_local_m','vectors_local_to_global')}
+
+
+def transverse_potential_implementation_is_supported(potential):
+    """Prove the captured pure field law without event/momentum metadata."""
+    from temsim.ideal_transverse_segments import implementation_is_supported
+    return (type(potential) is TransverseCoilPotential
+        and (potential.current_segments is None or implementation_is_supported())
+        and all(getattr(TransverseCoilPotential,name,None) is original for name,original in _POTENTIAL_METHODS.items())
+        and all(globals().get(name) is original for name,original in _TRANSVERSE_PRIMITIVES.items())
+        and all(getattr(CoordinateRegistration,name,None) is original for name,original in _REGISTRATION_METHODS.items()))

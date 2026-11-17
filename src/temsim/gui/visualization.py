@@ -2315,7 +2315,7 @@ class VisualizationWorkspace(QWidget):
         wrapper = wrap_mixed_stem_result(acquisition, frame)
         self._mixed_stem_acquisition = acquisition
         self._mixed_stem_display_result = wrapper
-        self.display_result(wrapper, "Mixed coherent CUDA", calculation_scope="stem")
+        self.display_result(wrapper, "Mixed particles + waves (CUDA)", calculation_scope="stem")
         self.scan_control.display_mixed_diffraction(diffraction)
         self.scan_control.export_mixed_scan.setEnabled(True)
         return wrapper

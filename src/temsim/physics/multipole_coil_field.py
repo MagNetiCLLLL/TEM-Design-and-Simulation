@@ -21,7 +21,7 @@ from temsim.multipole_current import (
 from temsim.physics.transverse_coil_field import (
     TransverseCoilPotential, FrozenTransverseCoilField, _unit_nodes, _positions,
     _components, _momentum, DEFAULT_PACK_ORDER, DEFAULT_PATH_ORDER,
-    quadrupole_gradient_t_per_m,
+    quadrupole_gradient_t_per_m, potential_weighted_nodes,
 )
 
 
@@ -60,9 +60,7 @@ def magnetic_field_hessian_t_per_m2(potential, positions_m):
     flat = local.reshape(-1,3)
     result = np.zeros((len(flat),3,3,3))
     if any(potential.currents_a) and len(flat):
-        key=json.dumps(thaw_json(potential.coils),sort_keys=True,separators=(',',':'),allow_nan=False)
-        nodes,dl,groups=_unit_nodes(key,potential.turn_count_per_coil,potential.pack_order,potential.path_order)
-        weighted=dl*np.asarray(potential.currents_a)[groups,None]
+        nodes,weighted=potential_weighted_nodes(potential)
         active=np.any(weighted!=0.,axis=1)
         nodes,weighted=nodes[active],weighted[active]
         basis=np.eye(3)
@@ -200,6 +198,8 @@ def capture_multipole_coil_fields(state, *, component_keys=None, include_hexapol
                 runtime_basis_delta_rad=definition['runtime_basis_delta_rad'],
                 native_installation_orientation_rad=float(getattr(component,'orientation_rad',0.)),
                 clear_bore_radius_m=float(getattr(component,'mechanical_clear_bore_diameter_mm'))*.0005))
+        from temsim.ideal_transverse_segments import apply_to_potential
+        potential=apply_to_potential(state,potential)
         result.append(FrozenTransverseCoilField(potential,component.key,
             _momentum(electrical['reference_energy_ev'])))
     return tuple(result)

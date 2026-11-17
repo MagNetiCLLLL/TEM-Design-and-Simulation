@@ -32,6 +32,16 @@ class UnifiedPotentialSampler:
     def snapshot_digest(self):
         return self.snapshot.numerical_digest
 
+    @property
+    def execution_identity(self):
+        from temsim.immutable_json import freeze_json
+        return getattr(self.compiled, "execution_identity", freeze_json({
+            "schema": "canonical-unified-potential-execution-v1", "backend": self.backend}))
+
+    def execution_receipt(self):
+        method = getattr(self.compiled, "execution_receipt", None)
+        return method() if callable(method) else {"backend": self.backend, "execution": "canonical CPU sampler"}
+
     def sample(self, positions_m, time_s=None):
         dynamic = type(self.snapshot) is DynamicPotentialSnapshot
         if dynamic and time_s is None:
@@ -57,10 +67,27 @@ class UnifiedPotentialSampler:
             raise ValueError("Combined unified potential exceeds the finite numerical range")
         return result
 
+    def sample_fields(self, positions_m, time_s=None):
+        """Return Lorentz-force inputs without requesting a static vector potential.
+
+        The full potential remains available through sample(), including for
+        canonical momentum handoffs. Dynamic providers retain their complete
+        original sampling and time derivatives; this does not freeze a drive.
+        """
+        dynamic = type(self.snapshot) is DynamicPotentialSnapshot
+        method = getattr(self.compiled, "sample_fields", None)
+        if not dynamic and not self.remaining and callable(method):
+            if time_s is not None:
+                np.broadcast_to(_times(time_s), np.shape(positions_m)[:-1])
+            result = method(positions_m)
+        else:
+            result = self.sample(positions_m, time_s)
+        return {key: value for key, value in result.items() if key != "A_t_m"}
+
     __call__ = sample
 
 
-def compile_unified_potential_sampler(snapshot, *, prefer_plane=False):
+def compile_unified_potential_sampler(snapshot, *, prefer_plane=False, execution_backend="CPU"):
     """Compile only known native magnetic terms; preserve E, domains and gauge.
 
     Plane aggregation is optional and retains the existing strict native
@@ -71,19 +98,26 @@ def compile_unified_potential_sampler(snapshot, *, prefer_plane=False):
         raise ValueError("Unified potential sampling requires an exact immutable snapshot")
     if type(prefer_plane) is not bool:
         raise ValueError("Plane sampling preference must be Boolean")
-    key = (snapshot.numerical_digest,prefer_plane)
-    with _LOCK:
-        previous = _CACHE.get(key)
-        if previous is not None:
-            _CACHE.move_to_end(key)
-            return previous
+    from .cuda_coil_potential import explicit_cuda_coil_policy, prepare_cuda_coil_potential
     static = snapshot.static_snapshot if type(snapshot) is DynamicPotentialSnapshot else snapshot
+    cuda = (prepare_cuda_coil_potential(static, execution_backend=execution_backend)
+            if explicit_cuda_coil_policy(execution_backend) else None)
+    from temsim.immutable_json import json_digest
+    execution_key = None if cuda is None else (json_digest(cuda.execution_identity), cuda.cache_token)
+    request_key = (snapshot.numerical_digest,prefer_plane,execution_key)
+    with _LOCK:
+        previous = _CACHE.get(request_key)
+        if previous is not None:
+            _CACHE.move_to_end(request_key)
+            return previous
     selected = tuple(row for row in static.contributions
         if type(row.potential) is HighOrderRoundLensPotential
         or (type(row.potential) is AnalyticPotentialDomain and not row.potential._round))
-    compiled = None
+    compiled = cuda
     remaining = tuple(row for row in static.contributions if row not in selected)
-    if selected:
+    if cuda is not None:
+        remaining = ()
+    elif selected:
         native = ElectromagneticPotentialSnapshot(static.scene,selected,static.gauge)
         if prefer_plane:
             from temsim.physics.potential_plane_sampler import compile_plane_sampler
@@ -95,7 +129,7 @@ def compile_unified_potential_sampler(snapshot, *, prefer_plane=False):
     for key,value in (("snapshot",snapshot),("static_snapshot",static),("compiled",compiled),
                       ("remaining",remaining),("backend","retained-providers" if compiled is None else compiled.backend)):
         object.__setattr__(result,key,value)
-    cache_key = (snapshot.numerical_digest,prefer_plane)
+    cache_key = request_key
     with _LOCK:
         result = _CACHE.setdefault(cache_key,result)
         _CACHE.move_to_end(cache_key)
