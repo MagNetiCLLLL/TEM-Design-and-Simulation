@@ -8,6 +8,41 @@ import math
 import numpy as np
 
 
+def original_source_population(trace):
+    """Count positive-current original particles in an executed gun trace."""
+    reference = trace.emission_reference
+    if reference is None or "ray_id" not in reference:
+        raise ValueError("Physical trials require actual original emission identity")
+    ids = np.asarray(reference["ray_id"])
+    weights = np.asarray(trace.exit_bundle.weight)
+    if not np.isfinite(weights).all() or np.any(weights < 0):
+        raise ValueError("Original source weights must be finite and nonnegative")
+    if (ids.ndim != 1 or ids.dtype.kind not in "iu" or np.any(ids < 0)
+            or ids.shape != weights.shape or len(np.unique(ids)) != len(ids)):
+        raise ValueError("Original source identities cannot be replaced by duplicate rays")
+    exit_ids = np.asarray(trace.exit_bundle.ray_id)
+    if exit_ids.dtype.kind not in "iu" or not np.array_equal(np.sort(exit_ids), np.sort(ids)):
+        raise ValueError("Gun exit IDs differ from the original emission identities")
+    current = trace.emitted_current_a
+    if not np.isfinite(current) or current < 0:
+        raise ValueError("Original source current must be finite and nonnegative")
+    positive = int(np.count_nonzero(weights > 0)) if current > 0 else 0
+    if positive < 1000:
+        raise ValueError(f"Physical trial emitted only {positive} original positive-current particles; require >=1000")
+    surviving = np.asarray(trace.exit_bundle.alive, dtype=bool)
+    if surviving.shape != weights.shape:
+        raise ValueError("Gun survival mask must align with the original population")
+    transmitted = weights[surviving]
+    return {"emitted_count": len(ids), "positive_current_count": positive,
+        "gun_exit_surviving_count": int(np.count_nonzero(trace.exit_bundle.alive & (weights > 0))),
+        "effective_emitted_count": float(weights.sum()**2/np.dot(weights, weights)),
+        "emitted_weight": float(weights.sum()),
+        "gun_exit_weight": float(transmitted.sum()),
+        "effective_gun_exit_count": (float(transmitted.sum()**2/np.dot(transmitted, transmitted))
+            if np.any(transmitted > 0) else 0.),
+        "scope": "Executed classical gun reference; coherent quadrature packets and exit samples are separate populations"}
+
+
 @dataclass(frozen=True, slots=True)
 class TransverseBeamStatistics:
     surviving_rays: int

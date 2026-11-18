@@ -15,6 +15,7 @@ import numpy as np
 from temsim.immutable_json import thaw_json
 from temsim.physics.hybrid_semiclassical import SemiclassicalNumerics, propagate_mode
 from temsim.physics.hybrid_exit import sample_exit
+from temsim.physics.beam_statistics import original_source_population as _source_count
 from temsim.physics.multiplane_wave import PlaneWave
 from temsim.physics.tip_gun_wave import TipGunCheckpoint
 from temsim.physics.tip_wave_pipeline import TipWaveRequest
@@ -88,35 +89,6 @@ class HybridResult:
     downstream: dict
     report: dict
     original_source: dict
-
-
-def _source_count(trace):
-    reference = trace.emission_reference
-    if reference is None or "ray_id" not in reference:
-        raise ValueError("Hybrid trials require actual original emission identity")
-    ids = np.asarray(reference["ray_id"])
-    weights = np.asarray(trace.exit_bundle.weight)
-    if not np.isfinite(weights).all() or np.any(weights < 0):
-        raise ValueError("Original source weights must be finite and nonnegative")
-    if (ids.ndim != 1 or ids.dtype.kind not in "iu" or np.any(ids < 0)
-            or ids.shape != weights.shape or len(np.unique(ids)) != len(ids)):
-        raise ValueError("Original source identities cannot be replaced by duplicate rays")
-    current = trace.emitted_current_a
-    if not math.isfinite(current) or current < 0:
-        raise ValueError("Original source current must be finite and nonnegative")
-    positive = int(np.count_nonzero(weights > 0)) if current > 0 else 0
-    if positive < 1000:
-        raise ValueError(f"Hybrid physical trial emitted only {positive} original positive-current particles; require >=1000")
-    surviving = np.asarray(trace.exit_bundle.alive, dtype=bool)
-    transmitted = weights[surviving]
-    return {"emitted_count": len(ids), "positive_current_count": positive,
-        "gun_exit_surviving_count": int(np.count_nonzero(trace.exit_bundle.alive & (weights > 0))),
-        "effective_emitted_count": float(weights.sum()**2/np.dot(weights, weights)),
-        "emitted_weight": float(weights.sum()),
-        "gun_exit_weight": float(transmitted.sum()),
-        "effective_gun_exit_count": (float(transmitted.sum()**2/np.dot(transmitted, transmitted))
-            if np.any(transmitted > 0) else 0.),
-        "scope": "Executed classical gun reference; coherent quadrature packets and exit samples are separate populations"}
 
 
 def _grid_schedule(checkpoint, request, geometry):
