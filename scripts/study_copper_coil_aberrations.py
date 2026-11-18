@@ -10,8 +10,10 @@ from __future__ import annotations
 import argparse
 from hashlib import sha256
 import json
+import os
 from pathlib import Path
 import sys
+from tempfile import NamedTemporaryFile
 from time import perf_counter
 
 import numpy as np
@@ -82,7 +84,8 @@ def reference_for(request):
 
 def run_case(request, reference, output, *, resume_transport=False):
     started = perf_counter()
-    output.mkdir(parents=True, exist_ok=resume_transport)
+    if not resume_transport:
+        output.mkdir(parents=True)
     field = make_field(request)
     focus = reference["primary"]["focus"]
     coeff = reference["step_refined"]["coefficients"]
@@ -123,9 +126,11 @@ def run_case(request, reference, output, *, resume_transport=False):
         if (output / "report.json").exists():
             raise ValueError("Completed results are immutable; use another output directory")
         original = json.loads((output / "request.json").read_text(encoding="utf-8"))
+        if "requested_inputs" not in original:
+            raise ValueError("Older request lacks the frozen inputs required to verify retained transport")
         if original.get("transport_implementation") != transport_implementation():
             raise ValueError("Retained transport physics or environment changed, or the older record lacks explicit implementation binding")
-        if any(original.get(key) != value for key, value in request.items()):
+        if original.get("requested_inputs") != request:
             raise ValueError("Retained transport belongs to different requested inputs")
         if (original["field_digest"] != field.digest
                 or json.loads((output / "field.json").read_text()) != json.loads(json.dumps(field.to_dict()))):
@@ -134,31 +139,51 @@ def run_case(request, reference, output, *, resume_transport=False):
             retained_hash = original["drivers"].get(driver, original["drivers"].get(str(Path(driver))))
             if retained_hash != sha256((ROOT / driver).read_bytes()).hexdigest():
                 raise ValueError("Transport or continuous-wall implementation changed")
-        saved_source = np.load(output / "source.npz")
-        if any(not np.array_equal(saved_source[key], value) for key, value in source.items()):
-            raise ValueError("Retained source IDs, positions, directions, energies or times changed")
+        expected_source = dict(source, combined_population_weights=np.full(2048, 1 / 2048))
+        with np.load(output / "source.npz", allow_pickle=False) as saved_source:
+            if any(not np.array_equal(saved_source[key], value) for key, value in expected_source.items()):
+                raise ValueError("Retained source population or absolute current weights changed")
+        retained_reference = (output / "reference.json").read_bytes()
+        if (sha256(retained_reference).hexdigest() != original.get("reference_sha256")
+                or json.loads(retained_reference) != reference):
+            raise ValueError("Retained focus reference changed")
         recorded = original
     else:
+        recorded["requested_inputs"] = request
+        write_json(output / "reference.json", reference)
+        recorded["reference_sha256"] = sha256((output / "reference.json").read_bytes()).hexdigest()
         write_json(output / "request.json", recorded)
         write_json(output / "field.json", field.to_dict())
-        write_json(output / "reference.json", reference)
         np.savez_compressed(output / "source.npz", **source,
                             combined_population_weights=np.full(2048, 1 / 2048))
+    request_sha256 = sha256((output / "request.json").read_bytes()).hexdigest()
     phases, walls, receipts = [], [], []
     for part in range(2):
         lo, hi = 1024 * part, 1024 * (part + 1)
         print(f"TRACE {request['name']} original IDs {lo}..{hi-1}", flush=True)
+        characteristics_path = output / f"characteristics-{part}.npz"
+        wall_path = output / f"wall-{part}.npz"
+        receipt_path = output / f"partition-{part}-receipt.json"
+        ids = source["source_id"][lo:hi]
+        source_hash = array_hash(source["initial_phase"][lo:hi])
         if resume_transport:
-            saved = np.load(output / f"characteristics-{part}.npz")
-            if not np.array_equal(saved["z_m"], planes) or not np.array_equal(saved["source_id"], source["source_id"][lo:hi]):
-                raise ValueError("Retained planes or source partition changed")
-            phase = saved["phase"]
-            wall = dict(np.load(output / f"wall-{part}.npz"))
-            wall["classification_complete"] = not bool(wall["unresolved_mask"].any())
-            receipt = dict(reused_completed_transport=True, integration_z_m=saved["integration_z_m"],
-                observer_recovery="Completed arrays recovered after a statistics-only failure; no transport rerun",
-                original_driver_sha256=original["drivers"].get("scripts/study_copper_coil_aberrations.py",
-                    original["drivers"].get(str(Path("scripts/study_copper_coil_aberrations.py")))))
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            if (receipt.get("request_sha256") != request_sha256 or receipt["original_id_interval"] != [lo, hi]
+                    or receipt["source_phase_sha256"] != source_hash):
+                raise ValueError("Retained receipt belongs to a different source partition")
+            with characteristics_path.open("rb") as trajectory, wall_path.open("rb") as contacts:
+                for stream, name in ((trajectory, "characteristics_sha256"), (contacts, "wall_sha256")):
+                    if sha256(stream.read()).hexdigest() != receipt.get(name):
+                        raise ValueError(f"Missing or mismatched retained partition checksum: {name}")
+                    stream.seek(0)
+                with np.load(trajectory, allow_pickle=False) as saved, np.load(contacts, allow_pickle=False) as saved_wall:
+                    if (not np.array_equal(saved["z_m"], planes) or not np.array_equal(saved["source_id"], ids)
+                            or not np.array_equal(saved_wall["source_ids"], ids)):
+                        raise ValueError("Retained planes, trajectory IDs or wall IDs changed")
+                    phase, wall = saved["phase"], dict(saved_wall)
+            if array_hash(phase) != receipt["retained_phase_sha256"]:
+                raise ValueError("Retained phase disagrees with the original transport receipt")
+            wall["classification_complete"] = receipt["wall"]["classification_complete"] and not wall["unresolved_mask"].any()
         else:
             solution, receipt = propagate(field, source["initial_phase"][lo:hi], energy_ev=300000.,
                 start_m=start, end_m=end, sigma_m=scale,
@@ -168,21 +193,22 @@ def run_case(request, reference, output, *, resume_transport=False):
         if not wall["classification_complete"]:
             raise ValueError("Unresolved continuous wall contact; no physical current result claimed")
         if not resume_transport:
-            np.savez_compressed(output / f"characteristics-{part}.npz", z_m=planes, phase=phase,
+            np.savez_compressed(characteristics_path, z_m=planes, phase=phase,
                 integration_z_m=solution.ts, source_id=source["source_id"][lo:hi],
                 historical_population_weights=np.full(1024, 1 / 1024 if part == 0 else 1 / 2048))
-            np.savez_compressed(output / f"wall-{part}.npz",
+            np.savez_compressed(wall_path,
                 **{key: value for key, value in wall.items() if isinstance(value, np.ndarray)})
-        receipts.append(dict(original_id_interval=[lo, hi], transport=receipt,
-            newly_transported_original_positive_count=1024,
-            source_phase_sha256=array_hash(source["initial_phase"][lo:hi]),
-            retained_phase_sha256=array_hash(phase),
-            wall={key: value for key, value in wall.items() if not isinstance(value, np.ndarray)}))
+            receipt = dict(original_id_interval=[lo, hi], transport=receipt, request_sha256=request_sha256,
+                newly_transported_original_positive_count=1024, source_phase_sha256=source_hash,
+                retained_phase_sha256=array_hash(phase),
+                characteristics_sha256=sha256(characteristics_path.read_bytes()).hexdigest(),
+                wall_sha256=sha256(wall_path.read_bytes()).hexdigest(),
+                wall={key: value for key, value in wall.items() if not isinstance(value, np.ndarray)})
+            write_json(receipt_path, receipt)
+            del solution
+        receipts.append(receipt)
         phases.append(phase)
         walls.append(wall)
-        write_json(output / f"partition-{part}-receipt.json", receipts[-1])
-        if not resume_transport:
-            del solution
     phase = np.concatenate(phases, axis=1)
     # The wall classifier deliberately retains NaN for a ray that never hit.
     # Convert only the observer's comparison coordinate; preserve raw arrays.
@@ -240,7 +266,14 @@ def run_case(request, reference, output, *, resume_transport=False):
             "D95": "Diameter containing 95% of the current actually surviving at that plane",
             "alpha95": "95% current angular radius about the mean direction, arctan converted",
             "intrinsic_Cs": "Independent third-order perturbation coefficient of the unblocked lens; wall clipping does not redefine it"})
-    write_json(output / "report.json", report)
+    # Publish only complete statistics, including when two observers resume together.
+    with NamedTemporaryFile(dir=output, prefix=".report-", delete=False) as pending:
+        pending_path = Path(pending.name)
+    try:
+        write_json(pending_path, report)
+        os.link(pending_path, output / "report.json")
+    finally:
+        pending_path.unlink(missing_ok=True)
     print(f"DONE {request['name']} Cs={coeff['cs_mm']:.9g} mm D95={q['at_paraxial_image'].get('d95_nm', 'NO_TRANSMISSION')} nm", flush=True)
     return report
 
@@ -254,7 +287,8 @@ def main():
     parser.add_argument("--resume-transport", action="store_true",
                         help="Reanalyse complete retained partitions without rewriting or rerunning transport")
     args = parser.parse_args()
-    args.output.mkdir(parents=True, exist_ok=True)
+    if not args.resume_transport:
+        args.output.mkdir(parents=True, exist_ok=True)
     for request in json.loads(args.requests.read_text(encoding="utf-8")):
         name = request["name"]
         if args.name and name not in args.name:
@@ -267,6 +301,8 @@ def main():
             if record["request"] != request:
                 raise ValueError("Existing reference belongs to different frozen inputs")
             reference = record["reference"]
+        elif args.resume_transport:
+            reference = json.loads((args.output / name / "reference.json").read_text(encoding="utf-8"))
         else:
             reference = reference_for(request)
             write_json(reference_path, dict(request=request, reference=reference))

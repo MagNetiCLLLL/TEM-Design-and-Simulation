@@ -16,10 +16,11 @@ def prepare_compiled_magnetic_sources(source_records):
     if njit is None:
         return None
     from temsim.test_electron_compiled_laws import lens_family, magnetic_provider_is_supported, multipole_is_supported
-    from temsim.physics.lens_field_provider import GeometryAwareAnalyticFieldProvider, _identity_registration
+    from temsim.physics.lens_field_provider import (
+        GeometryAwareAnalyticFieldProvider, _analytic_gaussian_terms, _identity_registration,
+    )
     from temsim.magnetic_field_scene import _MultipoleField
     from temsim.physics.instrument_magnetic import ColumnDipoleField
-    from temsim.optics.lens_focal_length import raw_unit_field_peak
     from temsim.optics.electron_gun.alignment import GunDeflector, GunStigmator
     sources, terms = [], []
     for source in source_records:
@@ -44,23 +45,8 @@ def prepare_compiled_magnetic_sources(source_records):
                 return None
             support = provider.field_support_mm()
             derivative_step = max(abs(support[1]-support[0]), 1.)*1e-6
-            if family == 'objective':
-                for prefix in ('upper', 'lower'):
-                    scale = float(native.percent)/100.*float(native.polarity)*getattr(native, prefix+'_b0_t')
-                    width, center = getattr(native, prefix+'_a_mm'), getattr(native, prefix+'_field_center_z_mm')
-                    for term in getattr(native, prefix+'_gaussian'):
-                        terms.append([0., center+term.offset*width, max(abs(term.sigma*width),1e-12), term.amplitude*scale, 0.,0.,0.,0.,0.])
-            elif family in ('condenser', 'round', 'normalized_round'):
-                lens = getattr(native, 'lens', native)
-                scale = float(lens.polarity)*lens.scale()
-                if bool(getattr(lens, 'normalise_profile_peak', False)):
-                    scale /= max(raw_unit_field_peak(lens), 1e-15)
-                for term in lens.gaussian:
-                    terms.append([0., lens.z_mm+term.offset*lens.a_mm, max(abs(term.sigma*lens.a_mm),1e-12),term.amplitude,scale,0.,0.,0.,0.])
-                for row in terms[start:]:
-                    row[3] *= scale
-            else:
-                return None
+            for amplitude, centre_m, sigma_m in _analytic_gaussian_terms(native, provider.gaussian_width_scale):
+                terms.append([0., centre_m*1000., sigma_m*1000., amplitude, 0., 0., 0., 0., 0.])
         elif type(provider) is ColumnDipoleField:
             kind = 2.
             terms.append([0.,0.,0.,provider.bx_t,provider.by_t,0.,0.,0.,0.])

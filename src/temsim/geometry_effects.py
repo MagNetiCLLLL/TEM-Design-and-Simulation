@@ -48,20 +48,28 @@ def field_geometry_admission(state, binding, descriptor):
 
 
 def admit_state_geometry(state):
-    """Check new strict CAD edits before any whole-calculation cache reuse."""
+    """Check relative FEM placements and strict CAD edits before result reuse."""
     from temsim.simulation_modes import uses_field_maps
-    if not uses_field_maps(state) or not any(p.data.get("model_3d") for p in getattr(getattr(state,"_resolved_assembly",None),"parts",())):
+    if not uses_field_maps(state) or getattr(state, "round_lens_field_model", "gaussian") == "copper_coil":
+        return
+    descriptors = getattr(state, "lens_field_map_descriptors", {})
+    if not descriptors:
         return
     from temsim.physics.lens_field_provider import lens_geometry_binding
     from temsim.physics.nonlinear_circuits import resolve_nonlinear_provider
+    has_cad = any(p.data.get("model_3d") for p in getattr(getattr(state, "_resolved_assembly", None), "parts", ()))
     for lens in state.lenses:
-        recipe = state.lens_field_map_descriptors.get(lens.key,{})
-        if recipe.get("geometry_policy", "require_full_geometry") not in GEOMETRY_POLICIES:
+        recipe = descriptors.get(lens.key, {})
+        solver = recipe.get("solver")
+        policy = recipe.get("geometry_policy", "require_full_geometry")
+        if (has_cad or solver == "axisymmetric_linear_fem") and policy not in GEOMETRY_POLICIES:
             raise ValueError("Unknown field geometry policy")
-        if recipe.get("geometry_policy", "require_full_geometry") != "require_full_geometry":
+        if solver != "axisymmetric_linear_fem" and not (solver == "axisymmetric_nonlinear_fem" and has_cad):
             continue
-        binding = lens_geometry_binding(state,lens.key,lens)
-        if recipe.get("solver") == "axisymmetric_nonlinear_fem":
-            resolve_nonlinear_provider(state,lens.key,lens,binding,prepare_only=True)
-        elif recipe.get("solver") == "axisymmetric_linear_fem":
-            field_geometry_admission(state,binding,recipe)
+        binding = lens_geometry_binding(state, lens.key, lens, map_compatibility=False)
+        if not has_cad or policy != "require_full_geometry":
+            continue
+        if solver == "axisymmetric_nonlinear_fem":
+            resolve_nonlinear_provider(state, lens.key, lens, binding, prepare_only=True)
+        else:
+            field_geometry_admission(state, binding, recipe)

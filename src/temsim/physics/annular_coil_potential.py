@@ -168,12 +168,14 @@ class AnnularCoilPotential:
         if points.dtype.kind not in "iuf" or points.shape[-1:] != (3,) or not np.isfinite(points).all():
             raise ValueError("Annular coil positions must be finite real XYZ metres")
         local = self.registration.positions_global_to_local_m(np.asarray(points, float))
-        radius = np.hypot(local[..., 0], local[..., 1])
-        inside = ((radius >= self.inner_radius_m) & (radius <= self.outer_radius_m)
-                  & (np.abs(local[..., 2]-self.center_z_m) <= self.length_m/2))
-        if inside.any():
+        if self.contains_winding_local(local).any():
             raise ValueError("Vacuum field query intersects the excluded copper winding volume")
         return local
+
+    def contains_winding_local(self, local):
+        radius = np.hypot(local[..., 0], local[..., 1])
+        return ((radius >= self.inner_radius_m) & (radius <= self.outer_radius_m)
+                & (np.abs(local[..., 2]-self.center_z_m) <= self.length_m/2))
 
     def require_global_box(self, positions_m):
         """Conservatively reject a local enclosing box intersecting copper."""

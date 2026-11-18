@@ -24,6 +24,26 @@ LENS_KEYS = (CONDENSER_LENS_1, MINI_CONDENSER, DIFFRACTION_LENS,
              INTERMEDIATE_LENS, PROJECTOR_LENS_1, PROJECTOR_LENS_2)
 
 
+@pytest.mark.parametrize("key", [CONDENSER_LENS_1, "objective_lens"])
+@pytest.mark.skipif(njit is None, reason="Numba optional")
+def test_packed_length_link_uses_the_captured_gaussians(key):
+    state = default_state()
+    state.simulation_mode = "unified"
+    state.gaussian_geometry_coupling = "axial_length"
+    assembly = state._resolved_assembly
+    state._resolved_assembly = replace(assembly, parts=tuple(
+        replace(p, data={**p.data, "gaussian_reference_coil_length_mm": p.data["gaussian_reference_coil_length_mm"]/2})
+        if p.key == key else p for p in assembly.parts))
+    field = capture_instrument_magnetic_field(state)
+    source = next(s for s in field._sources if s.key == key)
+    assert source.provider.gaussian_width_scale == pytest.approx(2.)
+    centre = next(lens.z_mm for lens in state.lenses if lens.key == key)
+    points = np.array([[1e-6, -2e-6, (centre + dz)*.001] for dz in (-12., 7., 20.)])
+    packed = prepare_compiled_magnetic_sources((source,))
+    np.testing.assert_allclose(compiled_magnetic_batch(points, *packed),
+                               source.provider.field_at_global_positions_t(points), rtol=2e-7, atol=1e-12)
+
+
 def _lens_fixture(key):
     state = default_state()
     lens = next(lens for lens in state.lenses if lens.key == key)

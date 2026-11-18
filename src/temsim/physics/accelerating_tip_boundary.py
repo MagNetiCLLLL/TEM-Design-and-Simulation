@@ -191,7 +191,8 @@ def _near_field_domain(state, electric, magnetic, end_m, radius_m):
             raise ValueError("A transverse electric element overlaps the near-tip domain; a coupled solve is required")
     hardware = _guard_hardware(state, end_m*1e3, math.sqrt(2)*radius_m*1e3)
     for source in magnetic._sources:
-        if not source.known_zero and source.bounds_m[0, 2] <= end_m and source.bounds_m[1, 2] >= 0:
+        low, high = source.axial_bounds_m
+        if not source.known_zero and low <= end_m and high >= 0:
             raise ValueError("An installed magnetic field overlaps the near-tip domain; its vector-potential operator is required")
     return hardware
 

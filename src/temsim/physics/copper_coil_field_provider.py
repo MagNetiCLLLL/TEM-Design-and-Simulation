@@ -93,6 +93,13 @@ class CopperCoilAssemblyPotential:
         for coil in self.coils:
             coil.require_global_box(positions_m)
 
+    def vacuum_mask(self, positions_m):
+        valid = np.ones(np.shape(positions_m)[:-1], dtype=bool)
+        for coil in self.coils:
+            local = coil.registration.positions_global_to_local_m(positions_m)
+            valid &= ~coil.contains_winding_local(local)
+        return valid
+
 
 @dataclass(frozen=True, slots=True)
 class CopperCoilFieldProvider:
@@ -111,12 +118,7 @@ class CopperCoilFieldProvider:
         return self.potential.field_at_global_positions_t(positions_m)
 
     def field_support_mm(self, *_args):
-        # Scheduling envelope only; no field sampler truncates at these faces.
-        from temsim.physics.lens_field_provider import _posed_axial_support
-        bounds = [_posed_axial_support(((coil.center_z_m-coil.length_m/2)*1e3,
-            (coil.center_z_m+coil.length_m/2)*1e3), coil.registration, coil.outer_radius_m)
-            for coil in self.potential.coils]
-        return min(row[0] for row in bounds), max(row[1] for row in bounds)
+        return -math.inf, math.inf
 
 
 def resolve_copper_coil_provider(state, key, native, binding, registration):
@@ -126,7 +128,9 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
     owner = next((part for part in parts if part["key"] == key), None)
     if owner is None:
         raise ValueError(f"{key}: Copper Coil requires resolved installed owner geometry")
-    reference = owner["data"].get("air_core_reference_ampere_turns")
+    resolved_owner = next(part for part in state._resolved_assembly.parts if part.key == key)
+    owner_metadata = resolved_owner.data
+    reference = owner_metadata.get("air_core_reference_ampere_turns")
     if isinstance(reference, bool) or not isinstance(reference, (int, float)) or not math.isfinite(reference) or reference <= 0:
         raise ValueError(f"{key}: Copper Coil requires explicit positive air_core_reference_ampere_turns")
     enabled, percent, polarity = _runtime_excitation(native)
@@ -173,9 +177,6 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
                 (start+stop)*.0005, registration))
     if not math.isclose(math.fsum(fractions), 1., rel_tol=0., abs_tol=1e-12):
         raise ValueError(f"{key}: Winding ampere-turn fractions must sum to one")
-    resolved_owner = next((part for part in getattr(getattr(state, "_resolved_assembly", None), "parts", ())
-                           if part.key == key), None)
-    owner_metadata = {} if resolved_owner is None else resolved_owner.data
     provenance = dict(geometry_fingerprint=binding.geometry_fingerprint,
         reference_ampere_turns_at_100_percent=reference, enabled=enabled,
         excitation_percent=percent, polarity=polarity,
@@ -186,11 +187,6 @@ def resolve_copper_coil_provider(state, key, native, binding, registration):
         current_distribution="Coil fractions per owner; within each coil, uniform radial-axial current density and NI proportional to interval length",
         winding_material="Copper, relative permeability one; pole pieces ignored magnetically")
     potential = CopperCoilAssemblyPotential(key, tuple(coils), provenance)
-    cache = getattr(state, "_runtime_copper_coil_provider_cache", {})
-    prior = cache.get(key)
-    if prior is not None and prior.potential.digest == potential.digest:
-        return prior
-    provider = CopperCoilFieldProvider(key, potential, binding)
-    cache[key] = provider
-    state._runtime_copper_coil_provider_cache = cache
-    return provider
+    # The unified runtime caches the complete frozen graph. Storing these
+    # derived providers on State would pollute snapshots and worker copies.
+    return CopperCoilFieldProvider(key, potential, binding)

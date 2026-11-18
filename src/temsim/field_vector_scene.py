@@ -110,8 +110,8 @@ def _magnetic_sample(sources, points, valid):
     for source in sources:
         if source.known_zero:
             continue
-        active = ((points[:, 2] >= source.bounds_m[0, 2])
-                  & (points[:, 2] <= source.bounds_m[1, 2]))
+        low, high = source.axial_bounds_m
+        active = (points[:, 2] >= low) & (points[:, 2] <= high)
         if source.field_map is None:
             active &= source.analytic_axial_mask(points)
         domain = source.contains(points)
@@ -232,7 +232,8 @@ def _component_bounds(component, fallback):
 
 
 def _source_groups(state, magnetic):
-    diagnostics = getattr(state, "_field_provider_diagnostics", {}) or {}
+    diagnostics = ({} if getattr(state, "round_lens_field_model", "gaussian") == "copper_coil"
+                   else getattr(state, "_field_provider_diagnostics", {}) or {})
     groups = {}
     for source in magnetic._sources:
         provider = source.provider
@@ -260,7 +261,10 @@ def _source_groups(state, magnetic):
         models = tuple(dict.fromkeys(getattr(identity, "model", "unknown") for identity in identities))
         notes.extend(getattr(identity, "limitation", "Unknown provider model identity") for identity in identities)
         for source in sources:
-            notes.append(f"{source.key}: native valid radial limit {source.radius_m*1e3:.6g} mm; global axial support {source.bounds_m[0, 2]*1e3:.6g} to {source.bounds_m[1, 2]*1e3:.6g} mm. Registered map/pose boundaries are checked point by point.")
+            if np.isneginf(source.axial_bounds_m[0]):
+                notes.append(f"{source.key}: winding geometry sets the display extent. Vacuum field tails extend to all axial positions.")
+            else:
+                notes.append(f"{source.key}: native valid radial limit {source.radius_m*1e3:.6g} mm; global axial support {source.bounds_m[0, 2]*1e3:.6g} to {source.bounds_m[1, 2]*1e3:.6g} mm. Registered map/pose boundaries are checked point by point.")
         label = sources[0].label
         if joint:
             label += " — joint circuit: " + ", ".join(sorted(channels))

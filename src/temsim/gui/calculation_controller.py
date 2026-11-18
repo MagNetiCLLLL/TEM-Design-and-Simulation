@@ -169,10 +169,13 @@ def estimate_calculation_memory_bytes(
     from temsim.physics.core import electron
     from temsim.physics.lens_field_provider import active_vector_providers, freeze_vector_provider
 
-    mapped_fields = tuple(freeze_vector_provider(provider)
-                          for provider in active_vector_providers(state))
+    # The shared copper executor samples the frozen windings directly on its
+    # axial mesh. Moving a lens does not create a mapped-field refinement grid.
+    copper = getattr(state, "round_lens_field_model", "gaussian") == "copper_coil"
+    mapped_fields = () if copper else tuple(freeze_vector_provider(provider)
+                                            for provider in active_vector_providers(state))
     map_storage = 0
-    history_itemsize = 8 if mapped_fields else 4
+    history_itemsize = 8 if copper or mapped_fields else 4
     for item in mapped_fields:
         # Bound extra exact-grid intervals using the solver's own step rule.
         # Counting base nodes as well is intentionally conservative here.

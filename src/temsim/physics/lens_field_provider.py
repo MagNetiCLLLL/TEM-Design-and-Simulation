@@ -174,6 +174,15 @@ class LensGeometryBinding:
     geometry_fingerprint: str
     assembly_fingerprint: str
     canonical_geometry_json: str
+    legacy_map_fingerprints: tuple | None = field(default=None, compare=False, repr=False,
+                                                 metadata={"omit_none": True})
+
+    def matches_map(self, geometry, assembly=None):
+        for geom, asm in ((self.geometry_fingerprint, self.assembly_fingerprint),
+                          *(self.legacy_map_fingerprints or ())):
+            if geometry == geom and (assembly is None or assembly == asm):
+                return True
+        return False
 
 
 _GEOMETRY_ATTRIBUTES = (
@@ -297,7 +306,6 @@ def _part_geometry_data(part) -> dict[str, object]:
             continue
         if (
             name in _PART_GEOMETRY_FIELDS
-            or name in {"air_core_reference_ampere_turns", "gaussian_reference_coil_length_mm"}
             # Explicit carrier partitions must stale a map of the old shared
             # body, even though native analytic fields do not solve this
             # engineering material split. Provenance is excluded above.
@@ -516,7 +524,7 @@ def _lens_assembly_payload(
 def lens_geometry_binding(
     state,
     lens_key: str,
-    native_provider=None,
+    native_provider=None, *, map_compatibility=True,
 ) -> LensGeometryBinding:
     """Fingerprint all geometry that makes a field map physically applicable.
 
@@ -555,27 +563,42 @@ def lens_geometry_binding(
     assembly = getattr(state, "_resolved_assembly", None)
     lens_assembly = _lens_assembly_payload(assembly, key, support)
     descriptor = getattr(state, "lens_field_map_descriptors", {}).get(key, {})
-    if descriptor.get("solver") in {"axisymmetric_linear_fem", "axisymmetric_nonlinear_fem"} and assembly is not None:
+    if (getattr(state, "round_lens_field_model", "gaussian") != "copper_coil" and assembly is not None
+            and descriptor.get("solver") in {"axisymmetric_linear_fem", "axisymmetric_nonlinear_fem"}):
         own_parts = lens_assembly["parts"]
         from temsim.part_materials import is_magnetostatic_body
         field_parts = [part for part in own_parts if is_magnetostatic_body(part["data"])
                        or part["data"].get("mechanical_profile") == "magnetic_excitation_coil"]
         neighbours = []
         parts_by_key = {part.key: part for part in assembly.parts}
+        from temsim.simulation_modes import uses_field_maps
+        check_placement = descriptor["solver"] == "axisymmetric_linear_fem" and uses_field_maps(state)
         if field_parts:
             lower = min(part["start_z_mm"] for part in field_parts)
             upper = max(part["end_z_mm"] for part in field_parts)
             centre, half = .5*(lower+upper), .5*(upper-lower)*float(descriptor.get("padding_factor", 2))
             own_keys = {part["key"] for part in own_parts}
+            if check_placement:
+                from temsim.lens_pose import mechanical_pose_registration
+                origin_z = mechanical_pose_registration(state, key).origin_global_m[2]
             for part in assembly.parts:
-                if (part.key not in own_keys and part.start_z_mm < centre+half and part.end_z_mm > centre-half
-                        and is_magnetostatic_body(part.data)):
+                if part.key in own_keys or not is_magnetostatic_body(part.data):
+                    continue
+                overlaps = part.start_z_mm < centre+half and part.end_z_mm > centre-half
+                if check_placement and not overlaps:
+                    # Also catch a neighbouring body newly moved into the RZ solve.
+                    dz = (mechanical_pose_registration(state, part.key).origin_global_m[2] - origin_z)*1000.
+                    overlaps = part.start_z_mm+dz < centre+half and part.end_z_mm+dz > centre-half
+                if overlaps:
                     data = _global_part_geometry_data(part, parts_by_key)
                     neighbours.append({"key": part.key, "start_z_mm": part.start_z_mm, "end_z_mm": part.end_z_mm,
                                        "data": data})
         # Nearby passive magnetic material affects the selected coil response.
         # Include its geometry in the identity, not only the owning lens shell.
         lens_assembly["magnetostatic_neighbours"] = tuple(neighbours)
+        if check_placement:
+            _check_linear_fem_placement(state, key, lens_assembly["magnetic_circuit_channels"],
+                                        field_parts + neighbours)
     assembly_fingerprint = _fingerprint(lens_assembly)
     geometry = {
         "lens_key": key,
@@ -596,7 +619,55 @@ def lens_geometry_binding(
         geometry_fingerprint=sha256(canonical_json.encode("utf-8")).hexdigest(),
         assembly_fingerprint=assembly_fingerprint,
         canonical_geometry_json=canonical_json,
+        legacy_map_fingerprints=(_legacy_map_fingerprints(geometry, assembly)
+                                 if map_compatibility and assembly is not None else None),
     )
+
+
+def _legacy_map_fingerprints(geometry, assembly):
+    """Verify pre-separation maps against the same physical geometry.
+
+    Those map files included two unrelated calibration values in their hash.
+    Reconstruct that exact hash using retained live or module-definition values.
+    Never infer a match from geometry names or from the map's claimed hash.
+    """
+    names = ("air_core_reference_ampere_turns", "gaussian_reference_coil_length_mm")
+    physical = geometry["lens_assembly"]
+    versions = []
+    definitions = (p for module in getattr(assembly, "modules", ()) for p in getattr(module, "parts", ()))
+    for parts in (assembly.parts, definitions):
+        calibration = {p.key: {k: p.data[k] for k in names if k in p.data} for p in parts}
+        candidate = dict(physical)
+        for group in ("parts", "magnetostatic_neighbours"):
+            if group in physical:
+                candidate[group] = [dict(p, data={**p["data"], **calibration.get(p["key"], {})})
+                                    for p in physical[group]]
+        assembly_hash = _fingerprint(candidate)
+        if assembly_hash != geometry["assembly_fingerprint"] and all(a != assembly_hash for _, a in versions):
+            previous = dict(geometry, lens_assembly=candidate, assembly_fingerprint=assembly_hash)
+            versions.append((_fingerprint(previous), assembly_hash))
+    return tuple(versions) or None
+
+
+def _check_linear_fem_placement(state, key, channels, material_parts):
+    """A single RZ basis may follow a common pose, including its passive iron."""
+    from temsim.lens_pose import lens_pose_registration, mechanical_pose_registration
+
+    def same_axis_and_origin(left, right):
+        # A rotation around the symmetry axis leaves an annular body unchanged.
+        return (np.allclose(left.origin_array_m, right.origin_array_m, rtol=0., atol=1e-15)
+                and np.allclose(left.rotation_array[:, 2], right.rotation_array[:, 2], rtol=0., atol=1e-14))
+
+    field_frame = lens_pose_registration(state, key)
+    material_frame = mechanical_pose_registration(state, key)
+    for channel in channels:
+        if not same_axis_and_origin(lens_pose_registration(state, channel), field_frame):
+            raise FieldMapError(f"{key}: relative placement of shared FEM channel {channel} "
+                                "cannot be represented by one axisymmetric basis")
+    for part in material_parts:
+        if not same_axis_and_origin(mechanical_pose_registration(state, part["key"]), material_frame):
+            raise FieldMapError(f"{key}: relative placement of magnetic body {part['key']} "
+                                "cannot be represented by the captured axisymmetric geometry")
 
 
 @dataclass(frozen=True, slots=True)
@@ -1149,9 +1220,7 @@ def load_magnetic_field_map(
         raise FieldMapError("Magnetic field maps must be .npz or tidy .csv")
 
     embedded_fingerprint = str(metadata.get("geometry_fingerprint", "")).strip()
-    if embedded_fingerprint and embedded_fingerprint != (
-        geometry_binding.geometry_fingerprint
-    ):
+    if embedded_fingerprint and not geometry_binding.matches_map(embedded_fingerprint):
         raise FieldMapGeometryMismatch(
             "Imported field map metadata targets a different lens geometry"
         )
@@ -1253,11 +1322,9 @@ def _load_descriptor_map(
     descriptor: Mapping,
     binding: LensGeometryBinding,
 ) -> MagneticFieldMap:
-    if str(descriptor.get("geometry_fingerprint", "")) != (
-        binding.geometry_fingerprint
-    ) or str(descriptor.get("assembly_fingerprint", "")) != (
-        binding.assembly_fingerprint
-    ):
+    saved_geometry = descriptor.get("geometry_fingerprint", "")
+    saved_assembly = descriptor.get("assembly_fingerprint")
+    if not isinstance(saved_assembly, str) or not binding.matches_map(saved_geometry, saved_assembly):
         raise FieldMapGeometryMismatch(
             "Saved field-map descriptor targets an earlier lens assembly"
         )
@@ -1304,7 +1371,10 @@ def _load_descriptor_map(
     )
     expected = descriptor.get("content_fingerprint")
     if expected is not None and result.content_fingerprint != expected:
-        raise FieldMapError("Saved field-map numeric content or registration changed")
+        # Earlier content hashes bind the original geometry ID as well as every field value.
+        if (saved_geometry == binding.geometry_fingerprint or
+                replace(result, geometry_fingerprint=saved_geometry).content_fingerprint != expected):
+            raise FieldMapError("Saved field-map numeric content or registration changed")
     return result
 
 
@@ -1561,10 +1631,12 @@ def bind_imported_lens_field_map(
     """Install one imported map only after exact geometry validation."""
 
     binding = lens_geometry_binding(state, lens_key, native_provider)
-    if field_map.geometry_fingerprint != binding.geometry_fingerprint:
+    if not binding.matches_map(field_map.geometry_fingerprint):
         raise FieldMapGeometryMismatch(
             "Field map is not bound to the current pole-piece/lens assembly"
         )
+    if field_map.geometry_fingerprint != binding.geometry_fingerprint:
+        field_map = replace(field_map, geometry_fingerprint=binding.geometry_fingerprint)
     registry = getattr(state, "_lens_field_map_bindings", None)
     if not isinstance(registry, dict):
         registry = {}
@@ -1631,12 +1703,14 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
     from temsim.round_lens_models import validate_round_lens_selection, gaussian_geometry_scale
     model, _ = validate_round_lens_selection(getattr(state, "round_lens_field_model", "gaussian"),
         getattr(state, "gaussian_geometry_coupling", "fixed_calibration"), selected_mode)
-    current = lens_geometry_binding(state, key, native_provider)
+    descriptor = getattr(state, "lens_field_map_descriptors", {}).get(key, {})
+    needs_legacy = model != "copper_coil" and ("source_path" in descriptor or
+        key in (getattr(state, "_lens_field_map_bindings", {}) or {}))
+    current = lens_geometry_binding(state, key, native_provider, map_compatibility=needs_legacy)
     if model == "copper_coil":
         from temsim.lens_pose import lens_pose_registration
         from temsim.physics.copper_coil_field_provider import resolve_copper_coil_provider
         return resolve_copper_coil_provider(state, key, native_provider, current, lens_pose_registration(state, key))
-    descriptor = getattr(state, "lens_field_map_descriptors", {}).get(key, {})
     from temsim.excitation_calibration import validate_excitation_recipe
     validate_excitation_recipe(descriptor)
     if uses_field_maps(state) and descriptor.get("solver") in {"axisymmetric_linear_fem", "axisymmetric_nonlinear_fem"}:
@@ -1728,9 +1802,7 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
             registry[key] = imported
         except (FieldMapError, OSError, KeyError, TypeError, ValueError) as exc:
             descriptor_error = str(exc)
-    if imported is not None and (
-        imported.geometry_fingerprint == current.geometry_fingerprint
-    ):
+    if imported is not None and current.matches_map(imported.geometry_fingerprint):
         topology = json.loads(current.canonical_geometry_json)["lens_assembly"].get("magnetic_circuit_topology")
         scaling = "fixed_operating_point" if topology == "monolithic_saturated_insert" else "linear_assumption"
         provider = MappedLensFieldProvider(key, _posed_field_map(imported, registration), native_provider,

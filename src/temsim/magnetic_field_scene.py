@@ -28,6 +28,7 @@ from scipy._lib._array_api import array_namespace
 from temsim import input_io
 from temsim.component_keys import CONDENSER_LENS_KEYS
 from temsim.physics.instrument_magnetic import ColumnDipoleField, column_dipole_fields
+from temsim.physics.copper_coil_field_provider import CopperCoilAssemblyPotential, CopperCoilFieldProvider
 from temsim.physics.lens_field_provider import (
     CoordinateRegistration,
     FrozenMappedField,
@@ -181,7 +182,15 @@ class _Source:
     known_zero: bool = False
     identity: MagneticFieldSupport | None = None
 
+    @property
+    def axial_bounds_m(self):
+        if isinstance(self.provider, CopperCoilAssemblyPotential):
+            return -np.inf, np.inf
+        return self.bounds_m[:, 2]
+
     def contains(self, points):
+        if isinstance(self.provider, CopperCoilAssemblyPotential):
+            return self.provider.vacuum_mask(points)
         valid = np.all((points >= self.bounds_m[0]) & (points <= self.bounds_m[1]), axis=1)
         if self.field_map is None:
             local = self.analytic_local_points(points)
@@ -208,7 +217,8 @@ class _Source:
             local = self.analytic_local_points(points)
             lo, hi = np.asarray(self.provider.native_field_support_mm())*1e-3
             return (local[:, 2] >= lo) & (local[:, 2] <= hi)
-        return (points[:, 2] >= self.bounds_m[0, 2]) & (points[:, 2] <= self.bounds_m[1, 2])
+        low, high = self.axial_bounds_m
+        return (points[:, 2] >= low) & (points[:, 2] <= high)
 
 
 @dataclass(frozen=True)
@@ -252,7 +262,8 @@ class MagneticSceneField:
             return None
         active = []
         for source in self._sources:
-            if source.known_zero or not source.bounds_m[0, 2] <= point[2] <= source.bounds_m[1, 2]:
+            low, high = source.axial_bounds_m
+            if source.known_zero or not low <= point[2] <= high:
                 continue
             if source.field_map is None:
                 if not source.analytic_axial_mask(point[None, :])[0]:
@@ -331,12 +342,14 @@ class MagneticSceneField:
         # Otherwise terminate the line instead of bending it with a partial
         # sum. Finite imported maps retain their native zero-outside contract.
         for source in self._sources:
-            if source.field_map is None and not source.known_zero:
+            if isinstance(source.provider, CopperCoilAssemblyPotential):
+                valid &= source.contains(points)
+            elif source.field_map is None and not source.known_zero:
                 local = source.analytic_local_points(points)
                 radius = np.hypot(local[:, 0], local[:, 1])
                 active_z = source.analytic_axial_mask(points)
                 valid &= ~(active_z & (radius > source.radius_m))
-        return valid
+        return valid & np.all((points >= self.bounds_m[0]) & (points <= self.bounds_m[1]), axis=1)
 
     def field_at_global_positions_t(self, points):
         points = _points(points)
@@ -358,6 +371,8 @@ def _resolved_provider(state, lens):
     """Generated fields must already exist in this calculation snapshot."""
     key = str(lens.key)
     native = state.condenser_system[key] if key in CONDENSER_LENS_KEYS else lens
+    if getattr(state, "round_lens_field_model", "gaussian") == "copper_coil":
+        return resolve_runtime_lens_field_provider(state, key, native)
     from temsim.simulation_modes import uses_field_maps
     recipe = (getattr(state, "lens_field_map_descriptors", {}) or {}).get(key, {})
     solver = recipe.get("solver") if uses_field_maps(state) else None
@@ -397,7 +412,7 @@ def _near_axis_radius_m(provider):
     widths = []
     for scale_name, terms_name in (("a_mm", "gaussian"), ("upper_a_mm", "upper_gaussian"),
                                    ("lower_a_mm", "lower_gaussian")):
-        scale = float(getattr(source, scale_name, 0.0))
+        scale = float(getattr(source, scale_name, 0.0)) * getattr(provider, "gaussian_width_scale", 1.)
         for term in getattr(source, terms_name, ()):
             value = abs(float(getattr(term, "sigma", 0.0)) * scale)
             if np.isfinite(value) and value > 0:
@@ -532,6 +547,12 @@ def _source_field_inputs(source, original_provider, reference):
 
     provider = source.provider
     from temsim.physics.posed_column_fields import FrozenPosedMultipole
+    if type(provider) is CopperCoilAssemblyPotential:
+        coils = [coil.to_metadata() for coil in provider.coils]
+        physical = [{key: row[key] for key in ("inner_radius_m", "outer_radius_m", "length_m",
+                    "ampere_turns", "center_z_m", "registration", "permeability_h_per_m")} for row in coils]
+        return ("air_core_copper_windings", physical, {"potential": provider.digest},
+                "Biot-Savart field throughout vacuum, including axial tails. Copper winding volumes are excluded.")
     if type(provider) is FrozenPosedMultipole:
         return ("posed_native_multipole", asdict(provider), {},
                 "Rigid native transverse multipole; original axial envelope and finite support; local paraxial model.")
@@ -580,6 +601,7 @@ def _source_field_inputs(source, original_provider, reference):
             physical["gaussian"] = _gaussian_inputs(lens.gaussian)
         physical["geometry_binding"] = provider.binding.geometry_fingerprint
         physical["family"] = family
+        physical["gaussian_width_scale"] = provider.gaussian_width_scale
         physical["origin_global_m"] = provider.registration.origin_global_m
         physical["rotation_local_to_global"] = provider.registration.rotation_local_to_global
         support = provider.native_field_support_mm()
@@ -648,7 +670,9 @@ def _bind_source_identity(source, *, original_provider=None, reference=None):
         implementation = _implementation_inputs(type(provider), type(native) if native is not None else None,
                                                   type(components[0]) if components else None)
         libraries = {"numpy": np.__version__}
-        if source.field_map is not None:
+        if isinstance(provider, CopperCoilAssemblyPotential):
+            implementation = {**implementation, **_implementation_inputs(type(provider.coils[0]))}
+        if source.field_map is not None or isinstance(provider, CopperCoilAssemblyPotential):
             import scipy
             libraries["scipy"] = scipy.__version__
         physical_id = identity_digest("magnetic-source-physical-v1", {"key": source.key, "model": model, "inputs": physical})
@@ -835,6 +859,7 @@ def prepare_magnetic_scene(state, *, z_limits_mm=None):
         z_clip = tuple(limits * 1e-3)
     lenses = {str(lens.key): lens for lens in getattr(state, "lenses", ())}
     sources, notes, included = [], ["Total captured magnetic field; +Z downstream, right-handed XYZ metres, B in tesla."], set()
+    winding_regions = {}
     for key in lenses:
         lens = lenses[key]
         if not bool(getattr(lens, "enabled", True)):
@@ -850,7 +875,27 @@ def prepare_magnetic_scene(state, *, z_limits_mm=None):
         if key in included:
             continue
         included.add(key)
-        if isinstance(provider, MappedLensFieldProvider):
+        if isinstance(provider, CopperCoilFieldProvider):
+            frozen_provider, field_map = provider.potential, None
+            coils = frozen_provider.coils
+            radius = min(coil.inner_radius_m for coil in coils)
+            corners = []
+            for coil in coils:
+                r = coil.outer_radius_m
+                faces = (coil.center_z_m - coil.length_m/2, coil.center_z_m + coil.length_m/2)
+                local = np.array(tuple(product((-r, r), (-r, r), faces)))
+                corners.extend(local @ coil.registration.rotation_array.T + coil.registration.origin_array_m)
+            bounds = np.array([np.min(corners, axis=0), np.max(corners, axis=0)])
+            winding_regions[key] = _frozen_array(bounds)
+            # The viewing window can extend well beyond either winding face.
+            if np.isfinite(z_clip).all():
+                bounds[:, 2] = z_clip
+            else:
+                parts = state._resolved_assembly.parts
+                bounds[0, 2] = min(bounds[0, 2], min(p.start_z_mm for p in parts)*.001)
+                bounds[1, 2] = max(bounds[1, 2], max(p.end_z_mm for p in parts)*.001)
+            notes.append(f"{key}: air-core winding field, including tails throughout the display.")
+        elif isinstance(provider, MappedLensFieldProvider):
             field_map = provider.field_map
             bounds, radius = _mapped_bounds(field_map)
             frozen_provider = FrozenMappedField.from_provider(provider)
@@ -899,8 +944,13 @@ def prepare_magnetic_scene(state, *, z_limits_mm=None):
             "sources": tuple(sorted((item.key, item.physical_identity) for item in support_metadata)),
             "coordinates": "right-handed global XYZ m; downstream +Z; B tesla",
         })
+    seed_regions = tuple(winding_regions.get(source.key, source.bounds_m) for source in sources)
+    # A window containing only winding tails still needs a seed plane.
+    if winding_regions and not any(region[0, 2] < bounds[1, 2] and region[1, 2] > bounds[0, 2]
+                                   for region in seed_regions):
+        seed_regions = (_frozen_array(bounds),)
     scene = MagneticSceneField(_frozen_array(bounds), float(radius), tuple(source.key for source in sources),
-                               tuple(notes), tuple(source.bounds_m for source in sources), tuple(sources),
+                               tuple(notes), seed_regions, tuple(sources),
                                _frozen_array(diagnostic_bounds), physical_identity, None, support_metadata)
     return replace(scene, numerical_identity=_scene_numerical_identity(scene))
 

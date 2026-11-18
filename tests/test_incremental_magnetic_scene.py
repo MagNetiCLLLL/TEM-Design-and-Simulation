@@ -110,6 +110,15 @@ def publish(view, qtbot, latest):
     assert view._profile is not None, view.details.toPlainText()
 
 
+def test_unified_profile_publishes_without_a_canonical_image_transfer(view, qtbot):
+    latest = result()
+    latest.state_snapshot.simulation_mode = "unified"
+    publish(view, qtbot, latest)
+    assert view._scene is not None
+    assert not view._plane_records
+    assert not any(operation == "planes" for operation, _ in view.test_provider_calls)
+
+
 def test_vector_view_receives_same_latest_captured_scene_and_stale_lifecycle(view, qtbot, monkeypatch):
     publications, obsolete = [], []
     monkeypatch.setattr(view.field_vectors, "update_snapshot",

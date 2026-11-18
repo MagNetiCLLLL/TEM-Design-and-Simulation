@@ -372,6 +372,7 @@ def _lens_provider(state, lens):
 
 
 FIELD_FORMULAS = {
+    "copper_winding": ("Air-core copper winding", "Biot-Savart integral over the annular winding", "#b87333"),
     "three_gaussian": (
         "Three-Gaussian axial field",
         "Bz(z) = P B100 sum_i a_i exp[-(z-z_i)^2/(2 sigma_i^2)]",
@@ -413,7 +414,9 @@ FIELD_FORMULAS = {
 def _field_formula(lens, provider):
     formula_provider = getattr(provider, "native_provider", provider)
     status = getattr(provider, "model_status", "")
-    if status == "joint_nonlinear_field":
+    if status == "air_core_uniform_copper_windings_no_pole_magnetism":
+        key = "copper_winding"
+    elif status == "joint_nonlinear_field":
         key = "joint_nonlinear"
     elif status == "included_in_joint_nonlinear_field":
         key = "joint_nonlinear_member"
@@ -444,6 +447,9 @@ def _field_model_semantics(
     formula_key: str, provider=None
 ) -> tuple[str, str, str]:
     provider_status = str(getattr(provider, "model_status", ""))
+    if formula_key == "copper_winding":
+        return ("all axial positions in vacuum", "air-core copper winding",
+                "Resolved winding geometry, registration and ampere-turns determine the field.")
     if provider_status in {"joint_nonlinear_field", "included_in_joint_nonlinear_field"}:
         return (
             "finite joint FEM grid support",
@@ -497,7 +503,11 @@ def lens_field_records(
     total = fields(z_mm, state)[0]
     records = []
     charge_c, momentum, _ = electron(state)
+    installed_keys = ({p.key for p in state._resolved_assembly.parts}
+                      if getattr(state, "round_lens_field_model", "gaussian") == "copper_coil" else None)
     for lens in state.lenses:
+        if installed_keys is not None and not lens.enabled and lens.key not in installed_keys:
+            continue  # Inactive placeholders for an uninstalled corrector have no windings.
         provider = _lens_provider(state, lens)
         formula_key, formula_label, formula_expression, formula_colour = (
             _field_formula(lens, provider)
@@ -517,16 +527,22 @@ def lens_field_records(
                 (float(z_mm[nonzero[0]]), float(z_mm[nonzero[-1]]))
                 if nonzero.size else (float(lens.z_mm), float(lens.z_mm))
             )
-        try:
-            focal = float(focal_length_mm(lens, state.beam_voltage_kv))
-        except Exception:
-            focal = math.nan
+        focal = math.nan
+        if formula_key != "copper_winding":
+            try:
+                focal = float(focal_length_mm(lens, state.beam_voltage_kv))
+            except Exception:
+                pass
         integral = (
             float(np.trapezoid(field_t, z_mm * 1.0e-3))
             if field_t.size > 1 else 0.0
         )
         rotation_rad = -charge_c * integral / (2.0 * momentum)
-        cs_value = spherical_aberration_mm(lens, state.beam_voltage_kv)
+        if formula_key == "copper_winding":
+            # These two legacy estimates use the native Gaussian calibration.
+            cs_value = None
+        else:
+            cs_value = spherical_aberration_mm(lens, state.beam_voltage_kv)
         sample_z_mm = float(state.sample.z_mm)
         field_at_sample_t = (
             float(np.asarray(provider.magnetic_field_t((sample_z_mm,)))[0])

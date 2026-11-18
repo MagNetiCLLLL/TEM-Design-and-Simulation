@@ -6366,7 +6366,10 @@ class MagneticFieldView(QWidget):
                         _unused, records = lens_field_records(state, z_mm)
                         if not worker.cancelled.is_set():
                             profile = sample_magnetic_diagnostic(scene, z_mm)
-                            planes = image_plane_rotation_records(state)
+                            from temsim.simulation_modes import is_unified
+                            # Canonical image transfers are unavailable for unified optics.
+                            # Magnetic profiles and field lines only require the captured B.
+                            planes = () if is_unified(state) else image_plane_rotation_records(state)
                             payload = (scene, profile, records, planes)
                 except Exception as exc:
                     error = str(exc)
@@ -6537,6 +6540,8 @@ class MagneticFieldView(QWidget):
             f"{record.spherical_aberration_mm:.6g} mm"
             if record.spherical_aberration_mm is not None else "off"
         )
+        if record.formula_key == "copper_winding":
+            focal = cs_text = "not calculated"
         return (
             f"Selected: {record.name} | excitation {record.excitation_percent:.6g}% | "
             f"formula {record.formula_label} [{record.formula_expression}] | "

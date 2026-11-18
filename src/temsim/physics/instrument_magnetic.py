@@ -192,7 +192,7 @@ class InstrumentMagneticField:
         if not np.isfinite((lower_m, upper_m)).all() or upper_m <= lower_m:
             raise ValueError("Magnetic dependency range must be finite and increasing")
         sources = tuple(source for source in self._sources
-                        if source.bounds_m[0, 2] <= upper_m and source.bounds_m[1, 2] >= lower_m)
+                        if source.axial_bounds_m[0] <= upper_m and source.axial_bounds_m[1] >= lower_m)
         identities = tuple(getattr(source.identity, "numerical_identity", None) for source in sources)
         if any(value is None for value in identities):
             return None
@@ -211,8 +211,8 @@ class InstrumentMagneticField:
         for source in self._sources:
             if source.known_zero:
                 continue
-            active = ((flat[:, 2] >= source.bounds_m[0, 2])
-                      & (flat[:, 2] <= source.bounds_m[1, 2]))
+            low, high = source.axial_bounds_m
+            active = (flat[:, 2] >= low) & (flat[:, 2] <= high)
             if not active.any():
                 continue
             values = np.asarray(source.provider.field_at_global_positions_t(flat[active]), dtype=float)

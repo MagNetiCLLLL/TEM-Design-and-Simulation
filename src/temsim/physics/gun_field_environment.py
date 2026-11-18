@@ -31,13 +31,17 @@ def instrument_gun_field_context(state):
         from temsim.physics.gun_transport_domain import gun_magnetic_query_upper_m
         upper = gun_magnetic_query_upper_m(gun)
         identity = _gun_magnetic_dependency_identity(gun, provider)
-        supports = tuple(
-            (float(source.bounds_m[0, 2])*1000., float(source.bounds_m[1, 2])*1000.)
-            for source in provider._sources
-            if not source.known_zero and float(source.bounds_m[0, 2]) <= upper)
+        supports = []
+        for source in provider._sources:
+            low, high = source.axial_bounds_m
+            if not source.known_zero and low <= upper:
+                if low == -float("inf"):
+                    # Scheduling window only; evaluation retains the full tail.
+                    low, high = min(0., source.bounds_m[0, 2]), upper
+                supports.append((float(low)*1000., float(high)*1000.))
         gun._instrument_magnetic_field = provider
         gun._instrument_magnetic_identity = identity
-        gun._instrument_magnetic_supports_mm = supports
+        gun._instrument_magnetic_supports_mm = tuple(supports)
         gun._instrument_magnetic_query_upper_m = upper
         yield provider
     finally:
@@ -54,8 +58,8 @@ def _gun_magnetic_dependency_identity(gun, provider):
 
     The scalar and compiled gun loops cap dt by the light-cone distance to
     this upper bound. The full provider is still evaluated, with all overlap
-    tails intact. Include every upstream source; below their minimum support
-    the same finite-support model is identically zero. No electric solve or
+    tails intact. All-z windings enter every interval fingerprint, even when
+    their display bounds are downstream. No electric solve or
     change to its full-instrument boundary is needed for this dependency.
     """
     from temsim.physics.gun_transport_domain import gun_magnetic_query_upper_m

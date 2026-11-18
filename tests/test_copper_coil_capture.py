@@ -23,7 +23,6 @@ def installed():
 def _copy_state(state):
     result = copy(state)
     result.lenses = deepcopy(state.lenses)
-    result._runtime_copper_coil_provider_cache = {}
     result._runtime_lens_field_provider_cache = {}
     return result
 
@@ -53,6 +52,69 @@ def test_every_installed_round_lens_captures_owned_windings_without_gaussians(in
     from temsim.physics.unified_potential_sampler import compile_unified_potential_sampler
     sampled = compile_unified_potential_sampler(snapshot, prefer_plane=True).sample(point)
     np.testing.assert_array_equal(sampled["B_t"], snapshot.sample(point)["B_t"])
+
+
+def test_installed_copper_runtime_starts_and_survives_worker_restore():
+    from temsim.instrument_snapshot import capture_instrument_snapshot
+    from temsim.physics.unified_field_runtime import capture_unified_field_runtime, get_unified_field_runtime
+    from temsim.physics.unified_field_particle import build_unified_plan
+    from temsim.gui.calculation_request import CapturedCalculationRequest
+    from temsim.round_lens_models import set_round_lens_field_model
+    from temsim.simulation_modes import switch_mode
+    from threading import Event
+
+    state = default_state()
+    switch_mode(state, "unified")
+    set_round_lens_field_model(state, "copper_coil")
+    _change_part(state, "objective_lens", offset_x_mm=.1)
+    capture = capture_instrument_snapshot(state)
+    runtime = get_unified_field_runtime(state)
+    assert runtime.source_identity == capture.digest == capture_instrument_snapshot(state).digest
+    worker = capture.restore()
+    assert capture_unified_field_runtime(worker).digest == runtime.digest
+    start = float(worker.electron_gun.exit_plane_z_mm)
+    assert build_unified_plan(worker, start, start + 1.).unified_runtime.digest == runtime.digest
+    request = CapturedCalculationRequest.capture(worker, "High accuracy", 1024, .5, workflow="rays")
+    try:
+        assert request.prepare(Event()).memory_estimate > 0
+    finally:
+        request._input_assets.close()
+
+
+def test_copper_scene_records_tail_and_excludes_posed_winding(installed):
+    from temsim.diagnostics import lens_field_records
+    from temsim.magnetic_field_lines import build_field_lines
+    from temsim.magnetic_field_scene import prepare_magnetic_scene, sample_magnetic_diagnostic
+    from temsim.physics.instrument_magnetic import capture_instrument_magnetic_field
+
+    state = _copy_state(installed)
+    key = "objective_lens"
+    _change_part(state, key, offset_x_mm=.1)
+    # A dormant FEM recipe must not be loaded by the field views.
+    state.lens_field_map_descriptors = {key: {"solver": "axisymmetric_linear_fem"}}
+    scene = prepare_magnetic_scene(state, z_limits_mm=(1., 2.))
+    field = capture_instrument_magnetic_field(state)
+    points = np.array([[0., 0., .0015]])
+    expected = sum(source.provider.field_at_global_positions_t(points) for source in field._sources
+                   if isinstance(source.provider, CopperCoilAssemblyPotential))
+    assert np.linalg.norm(expected) > 0.
+    lines = build_field_lines(scene, reference_t=1e-4, max_lines=4, max_steps=2)
+    assert lines.line_count > 0 and np.isfinite(lines.segments_m).all()
+    np.testing.assert_allclose(sample_magnetic_diagnostic(scene, [1.5]).on_axis_t,
+                               field.field_at_global_positions_t(points))
+    # The instrument field still includes lenses upstream of the display window and beyond it.
+    upstream = np.array([[0., 0., -1.]])
+    direct = sum(source.provider.field_at_global_positions_t(upstream) for source in field._sources
+                 if isinstance(source.provider, CopperCoilAssemblyPotential))
+    assert np.linalg.norm(direct) > 0.
+    np.testing.assert_allclose(field.field_at_global_positions_t(upstream), direct)
+    source = next(s for s in scene._sources if s.key == key)
+    coil = source.provider.coils[0]
+    local = np.array([[(coil.inner_radius_m + coil.outer_radius_m)/2, 0., coil.center_z_m]])
+    assert not source.contains(local @ coil.registration.rotation_array.T + coil.registration.origin_array_m)[0]
+    _, records = lens_field_records(state, np.array([1.5, 2.]))
+    assert all(r.formula_key == "copper_winding" for r in records)
+    assert next(r for r in records if r.key == key).sample_inside_numerical_support
 
 
 def test_objective_winding_uses_split_material_intervals_and_conserves_ampere_turns(installed):

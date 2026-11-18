@@ -16,7 +16,7 @@ def uniform_window(u=(-.1, .1), z=(0., 3.), count=15, angle=0.):
 
 def source(key, centre, half=.0002, radius=.0001, offset=0.):
     bounds = np.array([[offset-radius, -radius, centre-half], [offset+radius, radius, centre+half]])
-    native = SimpleNamespace(bounds_m=bounds, known_zero=False, field_map=None,
+    native = SimpleNamespace(bounds_m=bounds, axial_bounds_m=bounds[:, 2], known_zero=False, field_map=None,
                              analytic_axial_mask=lambda p: np.ones(len(p), bool),
                              contains=lambda p: np.all((p >= bounds[0]) & (p <= bounds[1]), axis=1),
                              provider=SimpleNamespace(field_at_global_positions_t=lambda p:

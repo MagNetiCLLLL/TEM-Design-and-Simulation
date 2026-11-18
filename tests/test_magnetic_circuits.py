@@ -66,6 +66,30 @@ def test_shared_circuit_has_two_controls_but_only_three_poles():
     assert circuits[0].coil_keys == ("coil_a", "coil_b")
 
 
+def test_cached_shared_basis_rejects_relative_pose_and_accepts_joint_translation():
+    from temsim.geometry_effects import admit_state_geometry
+
+    state = _state(_shared_rows())
+    lens = state.lenses[0]
+    original = resolve_runtime_lens_field_provider(state, lens.key, lens)
+
+    def move(key):
+        assembly = state._resolved_assembly
+        assembly.parts = tuple(replace(p, data={**p.data, "offset_x_mm": .2}) if p.key == key
+                               else p for p in assembly.parts)
+
+    move("b")
+    with pytest.raises(FieldMapError, match="relative placement"):
+        admit_state_geometry(state)
+    with pytest.raises(FieldMapError, match="relative placement"):
+        resolve_runtime_lens_field_provider(state, lens.key, lens)
+    move("a")
+    admit_state_geometry(state)
+    posed = resolve_runtime_lens_field_provider(state, lens.key, lens)
+    np.testing.assert_allclose(posed.field_at_global_positions_t([.0002, 0., -.005]),
+                               original.field_at_global_positions_t([0., 0., -.005]))
+
+
 def test_shared_linear_bases_sum_to_combined_solve_without_duplicate_coils():
     state = _state(_shared_rows())
     providers = [resolve_runtime_lens_field_provider(state, lens.key, lens) for lens in state.lenses]

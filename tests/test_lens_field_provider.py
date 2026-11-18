@@ -113,6 +113,40 @@ def test_cached_analytic_fallback_still_requires_its_gaussian_length_reference()
         resolve_runtime_lens_field_provider(state, lens.key, lens)
 
 
+@pytest.mark.parametrize("old_file", [False, True])
+def test_imported_map_survives_edits_to_inactive_calibrations(tmp_path, old_file):
+    from temsim.physics.lens_field_provider import field_map_descriptor, MappedLensFieldProvider
+    state = default_state()
+    lens = _objective(state)
+    path = tmp_path / "objective.npz"
+    binding = _write_axisymmetric_map(path, state, lens)
+    if old_file:
+        geometry, assembly = binding.legacy_map_fingerprints[0]
+        binding = replace(binding, geometry_fingerprint=geometry, assembly_fingerprint=assembly)
+        with np.load(path) as source:
+            data = dict(source)
+        metadata = json.loads(str(data["metadata_json"]))
+        data["metadata_json"] = json.dumps(dict(metadata, geometry_fingerprint=geometry))
+        np.savez(path, **data)
+    field = load_magnetic_field_map(path, geometry_binding=binding)
+    state.lens_field_map_descriptors[lens.key] = field_map_descriptor(field, binding)
+    provider = resolve_runtime_lens_field_provider(state, lens.key, lens)
+    assert isinstance(provider, MappedLensFieldProvider)
+    expected = provider.magnetic_field_t([lens.z_mm])
+    assembly = state._resolved_assembly
+    state._resolved_assembly = replace(assembly, parts=tuple(
+        replace(p, data={**p.data, "air_core_reference_ampere_turns": 6000.,
+                         "gaussian_reference_coil_length_mm": 100.}) if p.key == lens.key else p
+        for p in assembly.parts))
+    for fresh in (False, True):
+        if fresh:
+            state._lens_field_map_bindings.clear()
+            state._runtime_lens_field_provider_cache.clear()
+        resolved = resolve_runtime_lens_field_provider(state, lens.key, lens)
+        assert isinstance(resolved, MappedLensFieldProvider)
+        np.testing.assert_array_equal(resolved.magnetic_field_t([lens.z_mm]), expected)
+
+
 def test_fields_reuses_provider_and_rejects_map_after_pole_geometry_change(
     tmp_path,
 ):
