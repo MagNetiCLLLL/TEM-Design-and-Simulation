@@ -145,7 +145,10 @@ def test_filter_structure_is_available_in_configuration_review(qtbot, tmp_path, 
     state.energy_filter.energy_slit.centre_m = 0.0002
     dialog._show_preview(state)
     assert review.assembly_3d._runtime_values["energy_filter_slit"] == {"gap_m": 0.0013, "centre_m": 0.0002}
-    assert review.assembly_3d._runtime_values["objective_aperture"] == {"radius": 0.25}
+    objective = review.assembly_3d._runtime_values["objective_aperture"]
+    assert objective["radius"] == .25
+    assert objective["radius_mm"] == state.objective_aperture.radius_mm
+    assert review.assembly_3d._runtime_values["feg_dpa_aperture"]["radius_mm"] == state.electron_gun.dpa_aperture.radius_mm
     assert review.rotating_section._runtime_values == review.assembly_3d._runtime_values
 
 
@@ -156,20 +159,18 @@ def test_physical_snapshot_fills_slit_geometry_without_overwriting_live_runtime(
     result = _result(state, assembly)
     view = PhysicalLayoutView()
     qtbot.addWidget(view)
-    aperture = {"radius": 0.25, "x_shift": 0.01}
+    aperture = {"radius_mm": 0.25, "offset_x_mm": 0.01, "enabled": True}
     view.assembly_3d.set_assembly(assembly, {"objective_aperture": aperture})
     view.display_result(result)
-    assert view.assembly_3d._runtime_values == {
-        "objective_aperture": aperture,
-        "energy_filter_slit": {"gap_m": 0.0013, "centre_m": 0.0002},
-    }
+    runtime = view.assembly_3d._runtime_values
+    assert runtime["objective_aperture"] == {**aperture, "offset_y_mm": state.objective_aperture.offset_y_mm}
+    assert runtime["energy_filter_slit"] == {"gap_m": 0.0013, "centre_m": 0.0002}
+    assert runtime["df"]["inserted"] == state.dark_field_detector.inserted
     live_slit = {"gap_m": 0.002, "centre_m": -0.0003}
     view.assembly_3d.set_runtime_values({"objective_aperture": aperture, "energy_filter_slit": live_slit})
     view.display_result(result)
     assert view.assembly_3d._assembly is assembly
-    assert view.assembly_3d._runtime_values == {
-        "objective_aperture": aperture, "energy_filter_slit": live_slit,
-    }
+    assert view.assembly_3d._runtime_values == {**runtime, "energy_filter_slit": live_slit}
     assert view.rotating_section._assembly is assembly
     assert view.rotating_section._runtime_values == view.assembly_3d._runtime_values
     assert state.energy_filter.energy_slit.gap_m == 0.0013
@@ -182,6 +183,22 @@ def test_physical_snapshot_fills_slit_geometry_without_overwriting_live_runtime(
     assert view.assembly_3d._assembly is newer
     assert view.rotating_section._runtime_values["energy_filter_slit"] == live_slit
     assert state.energy_filter.energy_slit.centre_m == 0.0002
+
+
+def test_standalone_layout_switches_to_the_new_snapshot_apertures_and_receivers(qtbot, filter_context):
+    _, state, assembly = filter_context
+    view = PhysicalLayoutView()
+    qtbot.addWidget(view)
+    state.dark_field_detector.inserted = True
+    view.display_result(_result(state, assembly))
+    first = view.assembly_3d._runtime_values
+    state.dark_field_detector.inserted = False
+    state.electron_gun.c1_aperture.radius_mm = .35
+    view.display_result(_result(state, assembly))
+    second = view.assembly_3d._runtime_values
+    assert first["df"]["inserted"] is True and second["df"]["inserted"] is False
+    assert second["feg_c1_aperture"]["radius_mm"] == .35
+    assert view.rotating_section._runtime_values == second
 
 
 def test_branch_mirrors_show_uninstalled_state_without_scientific_outputs(qtbot):

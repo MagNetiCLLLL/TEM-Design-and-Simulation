@@ -6,7 +6,7 @@ Axial parts use their resolved module-local to global Z translation. Energy
 Filter parts additionally share a proper rigid mount of the existing bent path.
 """
 from collections.abc import Mapping
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 from hashlib import sha256
 import json
 import math
@@ -15,11 +15,12 @@ from types import MappingProxyType
 import numpy as np
 
 from temsim.component_representation import non_material_role, representation_note
+from temsim.component_keys import FIXED_APERTURE_KEYS
 from temsim.part_model_3d import TriangleMesh, _extent, _segments, part_model_from_document
 from temsim.part_model_apertures import _opening, is_strip_aperture
 from temsim.part_materials import configured_region_colour
 from temsim.energy_filter_model_3d import (
-    energy_filter_origin_mm, mount_energy_filter_mesh, slit_render_dependency,
+    energy_filter_origin_mm, energy_filter_render_values, mount_energy_filter_mesh, slit_render_dependency,
     supports_energy_filter_part,
 )
 
@@ -30,6 +31,52 @@ class AssemblyModel3D:
     notes: tuple[str, ...] = ()
     omitted_keys: tuple[str, ...] = ()
     errors: tuple[str, ...] = ()
+    insertion_states: Mapping[str, bool] = field(default_factory=lambda: MappingProxyType({}))
+
+    def component_label(self, key, name):
+        if key not in self.insertion_states:
+            return name
+        return f"{name} [{'inserted' if self.insertion_states[key] else 'retracted'}]"
+
+
+def assembly_render_values(state):
+    """Capture only the operating values used to display this instrument's geometry."""
+    from temsim.optics.nanopulser import nanopulser_render_values
+
+    gun = getattr(state, "electron_gun", None)
+    values = {}
+    for aperture in (*getattr(state, "apertures", ()), getattr(gun, "dpa_aperture", None),
+                     getattr(gun, "c1_aperture", None)):
+        if aperture is not None:
+            values[aperture.key] = {
+                name: getattr(aperture, name) for name in ("radius_mm", "offset_x_mm", "offset_y_mm", "enabled")
+                if hasattr(aperture, name)
+            }
+    for plane in getattr(state, "recording_planes", ()):
+        if hasattr(plane, "inserted"):
+            values[plane.key] = {"inserted": plane.inserted}
+    values.update(energy_filter_render_values(state))
+    values.update(nanopulser_render_values(state))
+    if getattr(gun, "type_key", None) == "cold_feg":
+        from temsim.tip_emission_view import emission_view_values
+        emitter = gun.emitter
+        surface = emitter.surface_model
+        values["feg_tip"] = {
+            "tip_surface_model": surface.to_dict() if surface is not None else None,
+            "tip_analytic_emission": emission_view_values(emitter),
+        }
+    return values
+
+
+def _insertion_state(part, runtime):
+    if part.get("mechanical_profile") == "retractable_detector_plane":
+        value = runtime.get("inserted")
+    elif (is_strip_aperture(part) and part["key"] not in FIXED_APERTURE_KEYS
+          and part.get("mechanical_overlap_role") != "container"):
+        value = runtime.get("enabled")
+    else:
+        return None
+    return bool(value) if isinstance(value, (bool, np.bool_)) else None
 
 
 def _document_value(value):
@@ -76,6 +123,9 @@ def _runtime_dependencies(parts, runtime_values):
     dependencies = []
     for part in parts:
         row = part.data
+        insertion = _insertion_state(row, values.get(part.key, {}))
+        if insertion is not None:
+            dependencies.append((part.key, "inserted", insertion))
         if row.get("mechanical_profile") == "electrostatic_parallel_plates":
             dependencies.append((part.key, "azimuth_deg", _document_value(
                 values.get(part.key, {}).get("azimuth_deg", 0.))))
@@ -194,16 +244,19 @@ def _omission_reason(part, physical_parent_keys):
     return None
 
 
-def assembly_model_from_assembly(assembly, *, runtime_values=None, angular_segments=16) -> AssemblyModel3D:
+def assembly_model_from_assembly(assembly, *, runtime_values=None, angular_segments=16,
+                                 include_retracted=False) -> AssemblyModel3D:
     """Build each active physical part once, preserving partial-model errors.
 
     Supported runtime strip apertures use their current opening and XY offset.
-    Insertion/retraction mechanisms and runtime detector positions are not
-    inferred; all axial placement comes from the supplied ResolvedAssembly.
+    A withdrawn device with no configured parking pose clears its working
+    position. A hardware inventory can request all parts at their nominal pose.
     """
     count = _segments(angular_segments)
     parts, documents = _contexts(assembly)
     meshes, notes, omitted, errors = [], [], [], []
+    insertion_states = {}
+    values = runtime_values or {}
     physical_parent_keys = set()
     for part in parts:
         if (part.data.get("mechanical_profile") and not part.data.get("branch_path_only")
@@ -214,6 +267,13 @@ def assembly_model_from_assembly(assembly, *, runtime_values=None, angular_segme
             physical_parent_keys.update(part.data.get("magnetic_lens_keys", ()))
     for part in parts:
         try:
+            inserted = _insertion_state(part.data, values.get(part.key, {}))
+            if inserted is not None:
+                insertion_states[part.key] = inserted
+            if inserted is False and not include_retracted:
+                omitted.append(part.key)
+                notes.append(f"{part.key}: retracted. The parking position is unspecified.")
+                continue
             reason = _omission_reason(part, physical_parent_keys)
             if reason:
                 omitted.append(part.key)
@@ -280,4 +340,4 @@ def assembly_model_from_assembly(assembly, *, runtime_values=None, angular_segme
                         "Incoming +X becomes downward column +Z; a configured 90-degree bend exits along column +X. "
                         "Reference-path and gap outlines are not material or vacuum-tube walls.")
     return AssemblyModel3D(tuple(meshes), tuple(dict.fromkeys(notes)),
-                           tuple(dict.fromkeys(omitted)), tuple(errors))
+                           tuple(dict.fromkeys(omitted)), tuple(errors), MappingProxyType(insertion_states))

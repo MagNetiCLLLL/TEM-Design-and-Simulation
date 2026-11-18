@@ -68,7 +68,6 @@ def test_planar_reference_is_exempt_only_when_explicitly_a_wireframe(audit, clos
 def test_summary_includes_synthesized_mesh_issues_and_cad_failures(audit, closed_box, monkeypatch, cad_failure):
     import temsim.assembly_model_3d as assembly_models
     import temsim.cad_catalog as catalog
-    import temsim.field_vector_geometry as field_geometry
 
     source = dict(key="fixture", local_start_z_mm=0., local_center_z_mm=1., local_end_z_mm=2.)
     part = SimpleNamespace(key="fixture", name="Fixture", data=source, parent_key=None,
@@ -80,7 +79,6 @@ def test_summary_includes_synthesized_mesh_issues_and_cad_failures(audit, closed
     monkeypatch.setattr(assembly_models, "assembly_model_fingerprint", lambda *args: "unchanged")
     monkeypatch.setattr(assembly_models, "assembly_model_from_assembly", lambda *args, **kwargs:
                         SimpleNamespace(meshes=(closed_box, synthesized), errors=()))
-    monkeypatch.setattr(field_geometry, "_runtime_geometry", lambda _: {})
     def cad_specs(*args, **kwargs):
         if cad_failure:
             raise ValueError("Deliberate CAD construction failure")
@@ -113,7 +111,6 @@ def test_diagnostic_lighting_uses_face_normals_without_changing_geometry_or_mate
 def test_optical_reference_does_not_hide_declared_material_omission(audit, monkeypatch):
     import temsim.assembly_model_3d as assembly_models
     import temsim.cad_catalog as catalog
-    import temsim.field_vector_geometry as field_geometry
 
     source = dict(key="transverse_detector", local_start_z_mm=0.,
                   local_center_z_mm=0., local_end_z_mm=0.)
@@ -125,7 +122,6 @@ def test_optical_reference_does_not_hide_declared_material_omission(audit, monke
     monkeypatch.setattr(assembly_models, "assembly_model_fingerprint", lambda *args: "unchanged")
     monkeypatch.setattr(assembly_models, "assembly_model_from_assembly", lambda *args, **kwargs:
                         SimpleNamespace(meshes=(), errors=()))
-    monkeypatch.setattr(field_geometry, "_runtime_geometry", lambda _: {})
     material = SolidSpec(part.key, "sensor", "silicon", box((2., 0., 0.), (1., 1., 1.)))
     monkeypatch.setattr(catalog, "part_solids", lambda *args, **kwargs: (material,))
     report, _ = audit.inspect(SimpleNamespace(_resolved_assembly=assembly))

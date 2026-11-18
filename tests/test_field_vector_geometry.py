@@ -46,6 +46,25 @@ def _source(key, *components):
     return SimpleNamespace(key=key, component_keys=components or (key,))
 
 
+@pytest.mark.parametrize("gun_keys", [("feg_dpa_aperture", "feg_c1_aperture"),
+                                      ("thermionic_anode_aperture", "thermionic_c1_aperture")])
+def test_field_overlay_uses_both_captured_gun_aperture_openings_and_offsets(gun_keys):
+    rows = [_part(key, mechanical_profile="circular_aperture", aperture_plate_form="perforated_strip",
+                  plate_thickness_mm=.2, vacuum_inner_diameter_mm=6.) for key in gun_keys]
+    state = _state(rows)
+    apertures = [SimpleNamespace(key=k, radius_mm=r, offset_x_mm=x, offset_y_mm=-.1, enabled=True)
+                 for k, r, x in zip(gun_keys, (2., .35), (0., .2), strict=True)]
+    state.electron_gun = SimpleNamespace(dpa_aperture=apertures[0], c1_aperture=apertures[1])
+    live = {a.key: vars(a) for a in apertures}
+    layout = assembly_model_from_assembly(state._resolved_assembly, runtime_values=live, angular_segments=24)
+    overlay = build_field_vector_geometry(state, (), angular_segments=24)
+    for keyed, aperture in zip(layout.meshes, apertures, strict=True):
+        shown, = overlay.select_component(aperture.key)
+        np.testing.assert_array_equal(shown.faces, keyed.faces)
+        np.testing.assert_array_equal(shown.vertices, keyed.vertices * .001)
+        assert "working_opening" in shown.surfaces
+
+
 def test_global_xyz_metres_matches_physical_layout_and_converts_edges_once():
     state = _state([_part()], shift=987.)
     original = assembly_model_from_assembly(state._resolved_assembly, angular_segments=8).meshes[0]

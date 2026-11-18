@@ -14,6 +14,14 @@ No high-accuracy calculation is required for 3D or Rotating section. A view chan
 presets, propagate electrons, invalidate physics caches or replace images.
 The assembly page does not display unsaved 3D Parts drafts; Save them first.
 
+The assembled 3D view, rotating section and field-vector overlay use the same
+captured gun and column aperture openings and offsets. The assembled views label
+movable aperture plates and receivers as inserted or retracted whenever the
+operating state is available. Retraction clears their working position. The
+present modules give no measured parking pose. Open **3D Parts** to inspect
+the installed component at its nominal position. The fixed camera body and
+differential-pumping stops stay in place when operating controls change.
+
 ## Optical-only 3D display and rendering speed
 
 In **Physical Layout → 3D**, enable **Optical parts only** to retain the existing

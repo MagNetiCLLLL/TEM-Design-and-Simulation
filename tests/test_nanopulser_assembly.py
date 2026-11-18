@@ -12,7 +12,7 @@ import pytest
 from temsim import module_manifest
 from temsim.assembly_catalog import AssemblyCatalog, AssemblySelection
 from temsim.column.layout import build_optics_layout
-from temsim.column.state_layout import layout_configuration_from_state
+from temsim.column.state_layout import apply_physical_layout_to_state, layout_configuration_from_state
 from temsim.component_keys import NANOPULSER_APERTURE, NANOPULSER_DEFLECTOR
 from temsim.manifest_editor import ManifestEditor, ManifestTarget
 from temsim.optics.column import default_state
@@ -102,6 +102,8 @@ def test_current_blanker_selection_rejects_retired_names_and_paths():
 
 def test_physical_layout_exposes_installed_electrostatic_blanker():
     state = default_state()
+    original_upper = state.sample.upper_surface_z_mm
+    original_assembly = state._resolved_assembly
     state.nanopulser.installed = True
     configuration = layout_configuration_from_state(state)
     layout = build_optics_layout(configuration)
@@ -109,6 +111,16 @@ def test_physical_layout_exposes_installed_electrostatic_blanker():
     assert by_key[NANOPULSER_DEFLECTOR].field_model.kind == "electrostatic_field"
     assert by_key[NANOPULSER_APERTURE].field_model.kind == "hard_aperture"
     assert by_key[NANOPULSER_APERTURE].effective_aperture_radius_mm == 0.1
+    assert state.sample.upper_surface_z_mm == pytest.approx(original_upper + 80., abs=1e-10)
+    state.nanopulser.installed = False
+    apply_physical_layout_to_state(state)
+    assert NANOPULSER_DEFLECTOR not in {item.key for item in state._resolved_optics_layout}
+    assert state.sample.upper_surface_z_mm == pytest.approx(original_upper, abs=1e-10)
+    state.nanopulser.installed = True
+    captured = layout_configuration_from_state(state, assembly=original_assembly)
+    assert captured.resolved_assembly is original_assembly
+    assert not captured.nanopulser_installed
+    assert NANOPULSER_DEFLECTOR not in {item.key for item in build_optics_layout(captured)}
 
 
 def test_blanker_toml_geometry_rebuild_preserves_operating_settings(tmp_path: Path):

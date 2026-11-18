@@ -12,7 +12,7 @@ from temsim import input_io
 from temsim.immutable_json import thaw_json, json_digest
 
 
-def _validate_faces(sample, assembly):
+def _validate_faces(sample, assembly, *, upper_face=None):
     parts = {part.key: part for part in assembly.parts}
     lower = max(parts[key].start_z_mm for key in ("sample_stage",))
     upper = min(parts[key].end_z_mm for key in ("sample_stage",))
@@ -27,7 +27,10 @@ def _validate_faces(sample, assembly):
     # Retain the module's existing mechanical-coordinate tolerance. The
     # actual slab faces are checked in addition to its mechanical marker.
     tolerance = 1e-9
-    if sample.upper_surface_z_mm < lower-tolerance or sample.lower_surface_z_mm > upper+tolerance:
+    if upper_face is None:
+        upper_face = sample.upper_surface_z_mm
+    lower_face = upper_face + sample.thickness_nm*1e-6
+    if upper_face < lower-tolerance or lower_face > upper+tolerance:
         raise ValueError("The complete specimen thickness must remain inside the fixed holder, stage and Objective pole gap")
 
 
@@ -40,13 +43,21 @@ def anchored_sample_assembly(state, assembly, configuration, *, preserve_operati
     # An explicit hardware installation chooses its new reference. Ordinary
     # catalog reloads must not be mistaken for user foil placement; an
     # intentional Place action first assigns sample.z_mm explicitly.
-    if not preserve_operating_parameters:
-        object.__setattr__(sample, "z_mm", float(part.center_z_mm))
-        object.__setattr__(sample, "upper_surface_reference_z_mm", float(part.center_z_mm)-sample.thickness_nm*.5e-6)
-    upper = sample.ensure_upper_surface_reference()
-    target = upper+float(sample.thickness_nm)*.5e-6
+    thickness_mm = float(sample.thickness_nm)*1e-6
+    if preserve_operating_parameters:
+        upper = sample.ensure_upper_surface_reference()
+        previous = getattr(state, "_resolved_assembly", None)
+        if previous is not None and previous.selected_module_paths != assembly.selected_module_paths:
+            # A hardware replacement carries the mounted foil with the stage.
+            # The displacement includes the gun, blanker and selected column.
+            upper += assembly.part("sample_stage").center_z_mm - previous.part("sample_stage").center_z_mm
+    else:
+        upper = float(part.center_z_mm)-thickness_mm*.5
+    _validate_faces(sample, assembly, upper_face=upper)
+    target = upper+thickness_mm*.5
+    object.__setattr__(sample, "upper_surface_reference_z_mm", upper)
     object.__setattr__(sample, "z_mm", target)
-    _validate_faces(sample, assembly)
+    sample.ensure_upper_surface_reference()
     tolerance = 4*abs(float(np.spacing(target)))
     if math.isclose(target, part.center_z_mm, rel_tol=0, abs_tol=tolerance):
         return assembly

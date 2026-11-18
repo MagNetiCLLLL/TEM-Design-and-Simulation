@@ -45,6 +45,44 @@ def _show(page, qtbot):
     qtbot.waitUntil(lambda: page.mesh_builds > 0)
 
 
+def test_live_detector_and_aperture_insertion_reaches_both_assembly_views(qtbot):
+    from temsim.assembly_model_3d import assembly_render_values
+    from temsim.gui.assembly_geometry_cache import AssemblyGeometryCache
+    from temsim.gui.assembly_section_page import AssemblySectionPage
+    from temsim.optics.column import default_state
+
+    state = default_state()
+    keys = {"df", "objective_aperture"}
+    assembly = SimpleNamespace(parts=tuple(state._resolved_assembly.part(k) for k in sorted(keys)),
+                               modules=(), vacuum_liner_segments=())
+    cache = AssemblyGeometryCache(angular_segments=8)
+    page = gui.AssemblyModelPage(geometry_cache=cache)
+    section = AssemblySectionPage(geometry_cache=cache)
+    for view in (page, section):
+        qtbot.addWidget(view)
+        view.show()
+    for inserted in (True, False, True):
+        state.dark_field_detector.inserted = state.objective_aperture.enabled = inserted
+        values = assembly_render_values(state)
+        for view in (page, section):
+            view.set_assembly(assembly, values)
+        qtbot.waitUntil(lambda: all(view._model is not None and
+                                    view._model.insertion_states.get("df") is inserted for view in (page, section)))
+        expected = keys if inserted else set()
+        assert {m.key for m in page._model.meshes} == expected
+        assert {m.key for m, _ in section._curves} == expected
+        for key in keys:
+            label = "[inserted]" if inserted else "[retracted]"
+            assert label in page._tree_items[key].text(0)
+            assert label in section.component_combo.itemText(section.component_combo.findData(key))
+            for view in (page, section):
+                view.focus_component(key)
+                assert label in view.selection_label.text()
+                if not inserted:
+                    assert not view.fit_current_selection()
+                    assert "Parking position unspecified" in view.selection_label.text()
+
+
 def _camera(view):
     return (view.camera_rotation, view._center.copy(), view._pan.copy(), view.zoom_factor)
 

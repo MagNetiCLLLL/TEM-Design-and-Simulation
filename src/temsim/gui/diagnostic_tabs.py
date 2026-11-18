@@ -1149,6 +1149,7 @@ class PhysicalLayoutView(QWidget):
         super().__init__(parent)
         self._result = None
         self._defer_filter_structure = not include_editor
+        self._assembly_from_result = False
         self._filter_structure_pending = False
         self._label_layout_paused = False
         self._records = ()
@@ -1355,10 +1356,12 @@ class PhysicalLayoutView(QWidget):
 
     def set_assembly(self, assembly, runtime_values=None):
         """Keep both geometry-only views on the current saved assembly."""
+        self._assembly_from_result = False
         self.assembly_3d.set_assembly(assembly, runtime_values)
         self.rotating_section.set_assembly(assembly, runtime_values)
 
     def set_runtime_values(self, runtime_values):
+        self._assembly_from_result = False
         self.assembly_3d.set_runtime_values(runtime_values)
         self.rotating_section.set_assembly(self.assembly_3d._assembly, runtime_values)
 
@@ -3645,27 +3648,22 @@ class PhysicalLayoutView(QWidget):
         else:
             self.energy_filter_structure.display_result(result)
             self._filter_structure_pending = False
-        from temsim.energy_filter_model_3d import energy_filter_render_values
-        from temsim.optics.nanopulser import nanopulser_render_values
+        from temsim.assembly_model_3d import assembly_render_values
         snapshot = getattr(result, "state_snapshot", None)
-        branch_values = {**energy_filter_render_values(snapshot), **nanopulser_render_values(snapshot)}
-        if branch_values:
+        geometry_values = assembly_render_values(snapshot)
+        assembly = self.assembly_3d._assembly
+        if self._assembly_from_result or assembly is None:
+            self.set_assembly(result.assembly, geometry_values)
+            self._assembly_from_result = True
+        elif geometry_values and assembly is result.assembly:
             runtime = dict(self.assembly_3d._runtime_values)
-            for key, values in branch_values.items():
+            for key, values in geometry_values.items():
                 # A retained calculation can be older than the live editor.
                 # Its snapshot supplies missing geometry inputs only.
                 runtime[key] = {**values, **runtime.get(key, {})}
-            assembly = self.assembly_3d._assembly
-            self.set_assembly(
-                assembly if assembly is not None else result.assembly, runtime)
+            self.set_assembly(assembly, runtime)
         elif self.rotating_section._assembly is None:
-            # Standalone read-only assembly reviews can receive a captured
-            # result without a MainWindow context. Never replace live geometry
-            # with an older calculation snapshot once a context is installed.
-            assembly = self.assembly_3d._assembly
-            self.rotating_section.set_assembly(
-                assembly if assembly is not None else result.assembly,
-                self.assembly_3d._runtime_values)
+            self.rotating_section.set_assembly(assembly, self.assembly_3d._runtime_values)
         self._records = physical_layout_records(result)
         self._record_by_key = {item.key: item for item in self._records}
         self._part_by_key = {

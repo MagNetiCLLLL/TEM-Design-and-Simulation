@@ -823,6 +823,9 @@ class FieldVectorPage(QWidget):
         self.fit_models.setEnabled(self.show_models.isChecked() and bool(meshes) and self._sample is not None)
         if self._geometry_error:
             self.model_status.setText(f"Physical models unavailable: {self._geometry_error}")
+        elif (self._geometry is not None and
+              getattr(self._geometry, "insertion_states", {}).get(self._selected_component) is False):
+            self.model_status.setText("Retracted from the beam in this snapshot. Parking position unspecified.")
         elif self._geometry is not None:
             missing = sum(not self._geometry.source_mesh_keys.get(key) for key in self.selected_source_keys)
             parts = len({mesh.key for mesh in meshes})

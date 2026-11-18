@@ -185,6 +185,29 @@ def _strip():
                   plate_thickness_mm=.1, mechanical_bore_diameter_mm=4.)
 
 
+def test_withdrawn_components_clear_working_positions_and_keep_nominal_parts_available():
+    pytest.importorskip("manifold3d")
+    detector = _part("df", mechanical_profile="retractable_detector_plane",
+                     mechanical_footprint_shape="annulus", outer_width_mm=14., inner_diameter_mm=2.)
+    camera = _part("camera", mechanical_profile="camera_sensor_plane", mechanical_footprint_shape="square",
+                   outer_width_mm=14., inner_diameter_mm=0.)
+    assembly = _assembly([dict(_strip(), key="objective_aperture"), detector, camera,
+                          dict(_strip(), key="feg_dpa_aperture")])
+    on = {"df": {"inserted": True}, "objective_aperture": {"enabled": True, "radius_mm": .1}}
+    off = {"df": {"inserted": False}, "objective_aperture": {"enabled": False, "radius_mm": .1},
+           "feg_dpa_aperture": {"enabled": False}, "camera": {"inserted": False}}
+    assert assembly_model_fingerprint(assembly, on) != assembly_model_fingerprint(assembly, off)
+    inserted = assembly_model_from_assembly(assembly, runtime_values=on, angular_segments=8)
+    retracted = assembly_model_from_assembly(assembly, runtime_values=off, angular_segments=8)
+    static = assembly_model_from_assembly(assembly, runtime_values=off, angular_segments=8, include_retracted=True)
+    assert not (inserted.errors or retracted.errors or static.errors)
+    assert {m.key for m in inserted.meshes} == {m.key for m in static.meshes} == set(off)
+    assert {m.key for m in retracted.meshes} == {"feg_dpa_aperture", "camera"}
+    assert retracted.insertion_states == {"df": False, "objective_aperture": False}
+    assert inserted.insertion_states == {"df": True, "objective_aperture": True}
+    assert retracted.component_label("df", "DF") == "DF [retracted]"
+
+
 def test_aperture_runtime_opening_and_offsets_match_renderer_and_fingerprint():
     pytest.importorskip("manifold3d")
     assembly = _assembly([_strip()])

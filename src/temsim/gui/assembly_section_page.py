@@ -263,7 +263,7 @@ class AssemblySectionPage(QWidget):
             self.component_combo.clear()
             self.component_combo.addItem("Select a component…", None)
             for part in sorted(self._parts.values(), key=lambda p: (p.center_z_mm, p.key)):
-                self.component_combo.addItem(part.name, part.key)
+                self.component_combo.addItem(self._model.component_label(part.key, part.name), part.key)
                 self.component_combo.setItemData(self.component_combo.count() - 1,
                                                 f"{part.key} | Z {part.center_z_mm:g} mm",
                                                 Qt.ItemDataRole.ToolTipRole)
@@ -336,7 +336,7 @@ class AssemblySectionPage(QWidget):
         self.edit_part.setEnabled(self._selected_key in self._editable_keys)
         self.edit_part.setText("Edit cell / windows" if selected and selected.data.get("cell_context")
                                else "Open in 3D Parts")
-        self.selection_label.setText(f"{selected.name} | Z {selected.center_z_mm:g} mm"
+        self.selection_label.setText(f"{self._model.component_label(selected.key, selected.name)} | Z {selected.center_z_mm:g} mm"
                                      if selected else "Select a component")
         self._style_selection()
 
@@ -371,6 +371,8 @@ class AssemblySectionPage(QWidget):
         self._flush()
         keys = self._related_keys(self._selected_key)
         fitted = self._fit_curves([(mesh, curve) for mesh, curve in self._curves if mesh.key in keys])
-        if not fitted:
+        if not fitted and self._model is not None and self._model.insertion_states.get(self._selected_key) is False:
+            self.selection_label.setText("Retracted from the beam. Parking position unspecified.")
+        elif not fitted:
             self.selection_label.setText("No visible intersection for this component at the current angle.")
         return fitted

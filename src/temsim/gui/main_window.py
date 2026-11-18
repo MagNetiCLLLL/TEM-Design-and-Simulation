@@ -45,7 +45,7 @@ from temsim.column.state_layout import (
     layout_configuration_from_state,
 )
 from temsim.component_keys import ENERGY_FILTER_INTERNAL_KEYS
-from temsim.energy_filter_model_3d import energy_filter_render_values
+from temsim.assembly_model_3d import assembly_render_values
 from temsim.calculation_cache import external_model_signature
 from temsim.cache_preferences import load_cache_preferences
 from temsim.design_explorer import (
@@ -1036,13 +1036,7 @@ class MainWindow(QMainWindow):
         self._refresh_simulation_mode()
         self.workspace.model_inspector.set_state(self.state)
         self._runtime_targets = runtime_targets(self.state)
-        geometry_runtime = {
-            key: {parameter.name: parameter.value for parameter in editable_parameters(target)}
-            for key, target in self._runtime_targets.items()
-        }
-        for key, values in energy_filter_render_values(self.state).items():
-            geometry_runtime.setdefault(key, {}).update(values)
-        self._add_tip_render_values(geometry_runtime)
+        geometry_runtime = self._geometry_runtime_values()
         self.workspace.physical_layout.model_editor.set_project_context(
             self.manifest_editor.root, self.assembly, self._save_model_document,
             geometry_runtime,
@@ -1680,13 +1674,12 @@ class MainWindow(QMainWindow):
         finally:
             dialog.deleteLater()
 
-    def _add_tip_render_values(self, values):
-        gun = self.state.electron_gun
-        if gun.type_key == "cold_feg":
-            model = gun.emitter.surface_model
-            values.setdefault("feg_tip", {})["tip_surface_model"] = model.to_dict() if model is not None else None
-            from temsim.tip_emission_view import emission_view_values
-            values["feg_tip"]["tip_analytic_emission"] = emission_view_values(gun.emitter)
+    def _geometry_runtime_values(self):
+        values = {key: {item.name: item.value for item in editable_parameters(target)}
+                  for key, target in self._runtime_targets.items()}
+        for key, geometry in assembly_render_values(self.state).items():
+            values.setdefault(key, {}).update(geometry)
+        return values
 
     def _apply_tip_emission(self, settings):
         """Publish one validated tip boundary and invalidate both readouts.
@@ -2445,11 +2438,7 @@ class MainWindow(QMainWindow):
         # Its generation must not be allowed to overwrite a newer manual edit.
         self._invalidate_direct_alignment()
         self._refresh_simulation_mode()
-        geometry_runtime = {key: {item.name: item.value for item in editable_parameters(target)}
-                            for key, target in self._runtime_targets.items()}
-        for key, values in energy_filter_render_values(self.state).items():
-            geometry_runtime.setdefault(key, {}).update(values)
-        self._add_tip_render_values(geometry_runtime)
+        geometry_runtime = self._geometry_runtime_values()
         if thickness_changed:
             self.workspace.physical_layout.set_assembly(self.assembly, geometry_runtime)
         self.workspace.physical_layout.model_editor.set_runtime_values(geometry_runtime)

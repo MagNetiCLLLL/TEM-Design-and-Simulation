@@ -13,7 +13,7 @@ from types import MappingProxyType
 
 import numpy as np
 
-from temsim.assembly_model_3d import assembly_model_from_assembly
+from temsim.assembly_model_3d import assembly_model_from_assembly, assembly_render_values
 from temsim.component_representation import SHARED_DEFLECTOR_HOSTS, non_material_role, representation_note
 from temsim.part_model_3d import TriangleMesh, _segments
 
@@ -40,6 +40,7 @@ class FieldVectorGeometry:
     source_notes: Mapping[str, tuple[str, ...]] = field(default_factory=lambda: MappingProxyType({}))
     all_meshes: tuple[TriangleMesh, ...] = ()
     component_mesh_keys: Mapping[str, tuple[str, ...]] = field(default_factory=lambda: MappingProxyType({}))
+    insertion_states: Mapping[str, bool] = field(default_factory=lambda: MappingProxyType({}))
 
     def select(self, source_keys=None):
         """Return the union once, without rebuilding geometry or fields."""
@@ -54,29 +55,6 @@ class FieldVectorGeometry:
         """A passive selected part remains visible without acquiring a field."""
         keys = set(self.component_mesh_keys.get(str(component_key), ()))
         return tuple(mesh for mesh in self.all_meshes if mesh.key in keys)
-
-
-def _runtime_geometry(state):
-    """Only geometry consumed by the existing builders, from this snapshot."""
-    from temsim.energy_filter_model_3d import energy_filter_render_values
-
-    values = {}
-    for aperture in getattr(state, "apertures", ()):
-        values[str(aperture.key)] = {
-            name: getattr(aperture, name) for name in ("radius_mm", "offset_x_mm", "offset_y_mm")
-            if hasattr(aperture, name)
-        }
-    values.update(energy_filter_render_values(state))
-    gun = getattr(state, "electron_gun", None)
-    if getattr(gun, "type_key", None) == "cold_feg":
-        from temsim.tip_emission_view import emission_view_values
-        emitter = gun.emitter
-        surface = emitter.surface_model
-        values["feg_tip"] = {
-            "tip_surface_model": surface.to_dict() if surface is not None else None,
-            "tip_analytic_emission": emission_view_values(emitter),
-        }
-    return values
 
 
 def _physical_keys(component_keys, parts):
@@ -130,7 +108,7 @@ def build_field_vector_geometry(state, sources, *, angular_segments=16):
         return FieldVectorGeometry(source_mesh_keys=empty, notes=(note,),
                                    source_notes=MappingProxyType({key: (note,) for key in empty}))
     parts = {part.key: part for part in assembly.parts}
-    model = assembly_model_from_assembly(assembly, runtime_values=_runtime_geometry(state), angular_segments=count)
+    model = assembly_model_from_assembly(assembly, runtime_values=assembly_render_values(state), angular_segments=count)
     available = {mesh.key for mesh in model.meshes}
     mapping, source_notes = {}, {}
     for source in sources:
@@ -160,4 +138,5 @@ def build_field_vector_geometry(state, sources, *, angular_segments=16):
         "Configured / reconstructed geometry is not measured OEM CAD. Approximation labels are retained; model surfaces do not imply valid fields inside materials or outside the field provider domain.",
     )
     return FieldVectorGeometry(meshes, MappingProxyType(mapping), notes, model.errors,
-                               MappingProxyType(source_notes), all_meshes, MappingProxyType(component_mapping))
+                               MappingProxyType(source_notes), all_meshes, MappingProxyType(component_mapping),
+                               model.insertion_states)

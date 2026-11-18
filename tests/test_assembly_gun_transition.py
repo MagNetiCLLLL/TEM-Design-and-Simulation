@@ -60,6 +60,36 @@ def test_direct_monochromator_round_trip_translates_foil_with_port_without_chang
     assert {lens.key: (lens.percent, lens.polarity) for lens in state.lenses} == drives
 
 
+def test_combined_hardware_change_preserves_foil_in_holder_on_check_and_restore():
+    from temsim.instrument_configuration import InstrumentUnits, check_instrument_configuration
+    from temsim.specimen.axial_geometry import set_sample_thickness
+
+    state = default_state()
+    catalog = AssemblyCatalog()
+    original = catalog.selection_for_resolved(state._resolved_assembly)
+    combined = replace(original, gun="FEG + Mono", beam_blanker="Electrostatic beam blanker",
+                       column="C3", recording="Energy Filter")
+    state.objective_lens.percent = 29.123456
+    state.sample.z_mm += .01
+    set_sample_thickness(state, 10.)
+    initial_offset = state.sample.upper_surface_z_mm - state._resolved_assembly.part("sample_stage").center_z_mm
+    for selection in (combined, original):
+        units = InstrumentUnits.from_selection(catalog, selection)
+        before = capture_instrument_snapshot(state).digest
+        checked = check_instrument_configuration(state, catalog, units)
+        assert capture_instrument_snapshot(state).digest == before
+        state = checked.candidate.restore()
+        assembly = state._resolved_assembly
+        assert catalog.selection_for_resolved(assembly) == selection
+        assert state.sample.upper_surface_z_mm - assembly.part("sample_stage").center_z_mm == pytest.approx(initial_offset, abs=1e-10)
+        assert state.sample.z_mm == pytest.approx(assembly.part("sample").center_z_mm, abs=1e-10)
+        assert state.sample.thickness_nm == 10. and state.objective_lens.percent == 29.123456
+    last_upper = state.sample.upper_surface_z_mm
+    with pytest.raises(ValueError, match="complete specimen thickness"):
+        set_sample_thickness(state, 1e9)
+    assert state.sample.upper_surface_z_mm == last_upper and state.sample.thickness_nm == 10.
+
+
 def test_matching_gun_keeps_archived_calibration_and_captured_assembly_when_live_bytes_differ():
     state = default_state()
     catalog, selection = selected(state, "FEG")

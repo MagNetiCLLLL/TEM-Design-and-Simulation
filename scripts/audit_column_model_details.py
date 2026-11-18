@@ -57,17 +57,15 @@ def mesh_health(mesh):
 
 def inspect(state, *, angular_segments=24):
     from temsim.assembly_model_3d import (
-        _contexts, _omission_reason, assembly_model_fingerprint, assembly_model_from_assembly,
+        _contexts, _omission_reason, assembly_model_fingerprint, assembly_model_from_assembly, assembly_render_values,
     )
     from temsim.cad_catalog import part_solids
     from temsim.component_representation import non_material_role
-    from temsim.field_vector_geometry import _runtime_geometry
-
-    assembly, runtime = state._resolved_assembly, _runtime_geometry(state)
+    assembly, runtime = state._resolved_assembly, assembly_render_values(state)
     parts, documents = _contexts(assembly)
     fingerprint = assembly_model_fingerprint(assembly, runtime)
     model = assembly_model_from_assembly(assembly, runtime_values=runtime,
-                                         angular_segments=angular_segments)
+                                         angular_segments=angular_segments, include_retracted=True)
     meshes = defaultdict(list)
     for mesh in model.meshes:
         meshes[mesh.key].append(mesh)

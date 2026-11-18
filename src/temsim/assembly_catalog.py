@@ -274,9 +274,6 @@ class AssemblyCatalog:
         recording = self._by_name(self.recording_systems, selection.recording)
         retained_component_keys = set(getattr(state, "image_corrector_initialized_keys", ()))
         retained_component_keys.update(getattr(state, "_module_manifest_parts", {}))
-        from temsim.optics.nanopulser import ensure_nanopulser
-        ensure_nanopulser(state).installed = selection.beam_blanker != "None"
-
         gun_type = (
             "thermionic"
             if gun.properties["electron_gun"] == "Thermionic"
@@ -289,6 +286,11 @@ class AssemblyCatalog:
             # The setter reloads the global catalog. An unchanged selection
             # must keep this catalog's resolved defaults and live overrides.
             state.monochromator_installed = installed
+
+        # Switching gun family can refresh the previously installed column.
+        # Set the requested blanker after that refresh, before the final build.
+        from temsim.optics.nanopulser import ensure_nanopulser
+        ensure_nanopulser(state).installed = selection.beam_blanker != "None"
 
         has_c3 = bool(column.properties["c3_lens"])
         has_probe = bool(column.properties["probe_corrector"])

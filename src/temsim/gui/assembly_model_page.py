@@ -218,13 +218,15 @@ class AssemblyModelPage(QWidget):
             modeled = {mesh.key for mesh in model.meshes}
             approximate = {mesh.key for mesh in model.meshes if not mesh.is_exact}
             for part in sorted(self._parts.values(), key=lambda p: (p.center_z_mm, p.key)):
-                item = QTreeWidgetItem((part.name,))
+                item = QTreeWidgetItem((model.component_label(part.key, part.name),))
                 item.setData(0, Qt.ItemDataRole.UserRole, part.key)
                 if part.key in modeled:
                     item.setFlags(item.flags() | Qt.ItemFlag.ItemIsUserCheckable)
                     item.setCheckState(0, Qt.CheckState.Unchecked if part.key in self._hidden_keys else Qt.CheckState.Checked)
                 kind = "Schematic envelope" if part.key in approximate else "Configured geometry"
-                if part.key not in modeled:
+                if model.insertion_states.get(part.key) is False:
+                    kind = "Retracted from the beam. Parking position unspecified."
+                elif part.key not in modeled:
                     kind = "No solid surface (reference / assembly parent / unavailable)"
                 if part.data.get("cell_context"):
                     kind = "Applied cell geometry; material/size in Physical Layout, medium in Vacuum map"
@@ -244,6 +246,7 @@ class AssemblyModelPage(QWidget):
         self.cell_only.setEnabled(has_cell)
         optical_only = self.optical_only.isChecked()
         optical_keys = {self._model.meshes[index].key for index in self._optical_mesh_indices}
+        optical_keys.update(self._model.insertion_states)
         for key, item in self._tree_items.items():
             item.setHidden((has_cell and self.cell_only.isChecked() and key not in cell_keys)
                            or (optical_only and key not in optical_keys))
@@ -305,7 +308,7 @@ class AssemblyModelPage(QWidget):
         self.edit_part.setEnabled(key in self._editable_keys)
         self.edit_part.setText("Edit cell / windows" if selected and selected.data.get("cell_context") else "Open in 3D Parts")
         self.selection_label.setText(
-            f"{selected.name} | Z {selected.center_z_mm:.6g} mm"
+            f"{self._model.component_label(key, selected.name)} | Z {selected.center_z_mm:.6g} mm"
             if selected is not None else "Select a component"
         )
 
@@ -326,6 +329,8 @@ class AssemblyModelPage(QWidget):
     def fit_current_selection(self):
         self._flush()
         fitted = self.view.fit_selection()
-        if not fitted:
+        if not fitted and self._model is not None and self._model.insertion_states.get(self._selected_key) is False:
+            self.selection_label.setText("Retracted from the beam. Parking position unspecified.")
+        elif not fitted:
             self.selection_label.setText("No visible solid for this selection; enable its surfaces or open 3D Parts.")
         return fitted
