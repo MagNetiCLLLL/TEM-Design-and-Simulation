@@ -1,0 +1,30 @@
+{
+  "population": {
+    "emitted_count": 32768,
+    "positive_current_count": 32768,
+    "gun_exit_surviving_count": 32768,
+    "effective_emitted_count": 32768.0,
+    "emitted_weight": 1.0,
+    "gun_exit_weight": 1.0,
+    "effective_gun_exit_count": 32768.0,
+    "scope": "Executed classical gun reference; coherent quadrature packets and exit samples are separate populations"
+  },
+  "seconds": 628.7030000000013,
+  "input_digest": "692399fd0a7e859577c1d23866f9ee494c7787429513ada930fed79c918bfbeb",
+  "sha256": "45018646e7543ebc7dfa0f0cbac4cde782f3444e83c8d185abcbb5922146ad02",
+  "magnetic_table": {
+    "schema": "study-magnetic-gun-table-v1",
+    "coefficient_sha256": "dc79c3485377397764fdb3f83aca8541dc4263b66a3745b3783ca1d1c643154f",
+    "z_bounds_m": [
+      -0.001,
+      0.453
+    ],
+    "spacing_mm": 0.5,
+    "xy_halfwidth_m": 5e-05,
+    "check_points": 2048,
+    "max_check_error_t": 7.393261521488192e-14,
+    "evaluation_calls": 1624762,
+    "native_fallback_points": 0,
+    "maximum_executed_radius_m": 1.2132161112896463e-06
+  }
+}

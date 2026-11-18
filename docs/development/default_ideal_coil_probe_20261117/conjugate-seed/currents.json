@@ -1,0 +1,353 @@
+{
+  "status": "Source-free electrical seed for a stationary nonlinear trial",
+  "recipes": {
+    "condenser_lens_1": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "condenser_lens_1_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 100,
+            "axial_fraction": [
+              0.0,
+              0.3333333333333333
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 0.012709808064926354
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 100,
+            "axial_fraction": [
+              0.3333333333333333,
+              0.6666666666666666
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": -0.10515495105413046
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 100,
+            "axial_fraction": [
+              0.6666666666666666,
+              1.0
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 0.26383070566410255
+          }
+        ]
+      }
+    },
+    "condenser_lens_2": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "condenser_lens_2_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 270,
+            "axial_fraction": [
+              0.0,
+              0.5
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": -1.5211217913580581
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 270,
+            "axial_fraction": [
+              0.5,
+              1.0
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 1.1187023932623765
+          }
+        ]
+      }
+    },
+    "condenser_lens_3": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "condenser_lens_3_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 510,
+            "axial_fraction": [
+              0.0,
+              1.0
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 0.08838074938775453
+          }
+        ]
+      }
+    },
+    "adapter_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "adapter_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 23,
+            "axial_fraction": [
+              0.0,
+              1.0
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 0.701905204128561
+          }
+        ]
+      }
+    },
+    "probe_tl22_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "probe_tl22_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 19,
+            "axial_fraction": [
+              0.0,
+              1.0
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 1.0935218009047527
+          }
+        ]
+      }
+    },
+    "probe_tl21_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "probe_tl21_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 19,
+            "axial_fraction": [
+              0.0,
+              1.0
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 0.002574949726318093
+          }
+        ]
+      }
+    },
+    "probe_tl12_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "probe_tl12_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 19,
+            "axial_fraction": [
+              0.0,
+              1.0
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 1.9006217838305182
+          }
+        ]
+      }
+    },
+    "mini_condenser": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "mini_condenser_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 9,
+            "axial_fraction": [
+              0.0,
+              0.5294117647058824
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 0.6390037863589422
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 8,
+            "axial_fraction": [
+              0.5294117647058824,
+              1.0
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 0.24880361228189826
+          }
+        ]
+      }
+    },
+    "objective_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "objective_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 290,
+            "axial_fraction": [
+              0.0,
+              0.5
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": -0.0231113198199017
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 290,
+            "axial_fraction": [
+              0.5,
+              1.0
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 0.01647036371585325
+          },
+          {
+            "interval_index": 1,
+            "turn_count": 290,
+            "axial_fraction": [
+              0.0,
+              0.5
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 0.5157832990737473
+          },
+          {
+            "interval_index": 1,
+            "turn_count": 290,
+            "axial_fraction": [
+              0.5,
+              1.0
+            ],
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "current_ratio": 0.17961609503744683
+          }
+        ]
+      }
+    }
+  },
+  "current_a": [
+    4.757888786150586,
+    -39.364525402182785,
+    98.7644462850276,
+    -78.64188276571828,
+    57.83683000302199,
+    1.4932408464296096,
+    24.236785974637872,
+    -1184.261661546152,
+    2.616542702948612,
+    1283.301516697557,
+    -247.86193612703752,
+    -96.50794936127546,
+    -25.371751234895797,
+    18.081268149257085,
+    566.230126933038,
+    197.18367088448198,
+    28.962896061940654,
+    0.06188894277520134,
+    32.8252695494996,
+    7.514137300316783
+  ],
+  "owner_per_group": [
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "adapter_lens",
+    "probe_tl22_lens",
+    "probe_tl21_lens",
+    "probe_tl12_lens",
+    "mini_condenser",
+    "mini_condenser",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "diffraction_lens",
+    "intermediate_lens",
+    "projector_lens_1",
+    "projector_lens_2"
+  ],
+  "target_gain_per_m": 2495.0974953498976,
+  "source_free_gain_per_m": 2495.0973834615047,
+  "peak_sampled_gun_field_t": 5.570690476741986e-05,
+  "planes_m": [
+    0.45,
+    0.8275,
+    1.211633,
+    1.40875,
+    1.5991999975
+  ],
+  "final_verification_step_mm": 0.0125,
+  "interval_maps": [
+    [
+      3.164420340671069e-08,
+      20.3392014114247,
+      2.000000009904679
+    ],
+    [
+      -1.5846725332730534e-08,
+      8.334413676778944,
+      1.999999987895563
+    ],
+    [
+      -5.425735377030303e-09,
+      3.216043664479232,
+      1.9999999892596905
+    ],
+    [
+      3.5802675914703474e-09,
+      -4.5767439323736046,
+      0.9999999950198893
+    ]
+  ]
+}

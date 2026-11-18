@@ -1,0 +1,66 @@
+{
+  "input_digest": "76321191c2bfe91e4a3d00235f788f5527d3436dd0c48e9827af9f2b649dac21",
+  "matched_survivors": 1024,
+  "full_gun_originals": 8192,
+  "native_surface": {
+    "z_mm": 1599.1999975,
+    "surviving": 1024,
+    "effective": 1024.0,
+    "current_a": 1.25e-06,
+    "rms_radius_nm": 9.21939471140265,
+    "D95_nm": 2.639265152318502,
+    "D90_nm": 2.371410379525564,
+    "D50_nm": 1.333485822965388,
+    "alpha95_mrad": 29.924054027058094,
+    "angular_rms_mrad": 16.21449709283459,
+    "core_50pm_current_a": 3.6621093750000005e-09,
+    "radial_covariance_m_rad": -3.6945689483003715e-12
+  },
+  "expansion_surface": {
+    "D95_nm": 2.639501906667281,
+    "D90_nm": 2.371668604283896,
+    "D50_nm": 1.333803972581693,
+    "rms_radius_nm": 9.219388374361253,
+    "alpha95_mrad": 29.924054093563363,
+    "angular_rms_mrad": 16.214497122484406,
+    "core_50pm_current_a": 3.6621093750000005e-09
+  },
+  "max_absolute_difference": {
+    "x_m": 8.185419997692184e-13,
+    "y_m": 6.700030858553419e-13,
+    "tx_rad": 1.4255070734936481e-10,
+    "ty_rad": 2.2549374173452819e-10,
+    "flight_time_s": 1.6179652781537221e-21,
+    "kinetic_energy_ev": 5.820766091346741e-10
+  },
+  "native_D95_focus": {
+    "status": "BOUNDED_OBSERVED_MINIMUM",
+    "minimum": 2.601458092159206,
+    "observed_minimum_planes_mm": [
+      1599.1999951995454
+    ],
+    "plateau_intervals_mm": [
+      [
+        1599.1999951995454,
+        1599.1999951995454
+      ]
+    ],
+    "neighbour_bracket_mm": [
+      1599.1999951865687,
+      1599.1999952125218
+    ],
+    "neighbour_bracket_offset_nm": [
+      -2.3134314233175246,
+      -2.2874783098814078
+    ],
+    "representative_offset_nm": -2.3004547529126285,
+    "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+  },
+  "field_comparison": {
+    "sample_count": 4500,
+    "max_B_error_t": 1.7108155239631977e-14,
+    "rms_B_error_t": 1.112208845750205e-15,
+    "max_E_v_per_m": 0.00012998306330644084,
+    "max_E_error_v_per_m": 0.0
+  }
+}

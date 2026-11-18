@@ -1,0 +1,64 @@
+{
+  "input_digest": "dffa316b183311a9c935a3d7362a7f03f30a9af8d83a3d7060ef8b0e46cd4590",
+  "matched_survivors": 1024,
+  "full_gun_originals": 1024,
+  "native_surface": {
+    "z_mm": 1599.1999975,
+    "surviving": 1024,
+    "effective": 1024.0,
+    "current_a": 1e-05,
+    "rms_radius_nm": 111.66956456024157,
+    "D95_nm": 521.1293379874037,
+    "alpha95_mrad": 29.85437340032956,
+    "angular_rms_mrad": 16.924082736352133,
+    "core_50pm_current_a": 9.765625e-09,
+    "radial_covariance_m_rad": 1.0675552181444494e-09
+  },
+  "expansion_surface": {
+    "D95_nm": 521.1298856741942,
+    "D90_nm": 332.28649882070664,
+    "D50_nm": 62.26264770723492,
+    "rms_radius_nm": 111.66966885924573,
+    "alpha95_mrad": 29.854373433333933,
+    "angular_rms_mrad": 16.924082748956167,
+    "core_50pm_current_a": 9.765625e-09
+  },
+  "max_absolute_difference": {
+    "x_m": 4.585376745652658e-13,
+    "y_m": 4.596118177715164e-13,
+    "tx_rad": 1.613045114146061e-10,
+    "ty_rad": 1.5269233794024117e-10,
+    "flight_time_s": 1.9885421925774785e-21,
+    "kinetic_energy_ev": 8.149072527885437e-10
+  },
+  "native_D95_focus": {
+    "status": "BOUNDED_OBSERVED_MINIMUM",
+    "minimum": 330.6138761508907,
+    "observed_minimum_planes_mm": [
+      1599.1946097073928
+    ],
+    "plateau_intervals_mm": [
+      [
+        1599.1946097073928,
+        1599.1946097073928
+      ]
+    ],
+    "neighbour_bracket_mm": [
+      1599.1946085058207,
+      1599.194610908965
+    ],
+    "neighbour_bracket_offset_nm": [
+      -5388.994179384099,
+      -5386.591035176025
+    ],
+    "representative_offset_nm": -5387.792607280062,
+    "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+  },
+  "field_comparison": {
+    "sample_count": 4500,
+    "max_B_error_t": 2.2270870003742555e-15,
+    "rms_B_error_t": 1.8526927723328577e-16,
+    "max_E_v_per_m": 0.0001348224249180751,
+    "max_E_error_v_per_m": 0.0
+  }
+}

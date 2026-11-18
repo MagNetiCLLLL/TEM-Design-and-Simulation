@@ -1,0 +1,621 @@
+{
+  "owner_per_group": [
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "adapter_lens",
+    "adapter_lens",
+    "adapter_lens",
+    "probe_tl22_lens",
+    "probe_tl22_lens",
+    "probe_tl22_lens",
+    "probe_tl21_lens",
+    "probe_tl21_lens",
+    "probe_tl21_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "mini_condenser",
+    "mini_condenser",
+    "mini_condenser",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "diffraction_lens",
+    "intermediate_lens",
+    "projector_lens_1",
+    "projector_lens_2"
+  ],
+  "current_a": [
+    8.19528976933976,
+    35.01504503079619,
+    -234.12495430502366,
+    422.6378474310777,
+    -429.572863694349,
+    410.3144999725605,
+    -340.53123179771563,
+    250.72169090104035,
+    -32.2433384300137,
+    32.14324896747503,
+    -22.513798263679607,
+    10.440660983287486,
+    -215.20313101473064,
+    79.14353655370847,
+    702.3376924114854,
+    155.83188334986158,
+    -2551.2276515500334,
+    -2906.952388692392,
+    6586.781241259091,
+    -1073.3180747596216,
+    -6131.26348875288,
+    -3059.685107841416,
+    1392.3909815101397,
+    5323.93554334752,
+    2840.8163676424256,
+    -3538.9156521413965,
+    3838.3462951607426,
+    -169.85356913565363,
+    96.0406619036189,
+    62.90164769906273,
+    -281.04184183554196,
+    1235.3035793561278,
+    1189.81345338327,
+    101.12531504341817,
+    310.3456739088865,
+    28.962896061940654,
+    0.06188894277520134,
+    32.8252695494996,
+    7.514137300316783
+  ],
+  "recipes": {
+    "condenser_lens_1": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "condenser_lens_1_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 75,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.25
+            ],
+            "current_ratio": 0.021892180478862138
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 75,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.25,
+              0.5
+            ],
+            "current_ratio": 0.09353612951643454
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 75,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              0.75
+            ],
+            "current_ratio": -0.625420930621207
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 75,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.75,
+              1.0
+            ],
+            "current_ratio": 1.128997789409997
+          }
+        ]
+      }
+    },
+    "condenser_lens_2": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "condenser_lens_2_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 135,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.25
+            ],
+            "current_ratio": -8.308964904721286
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 135,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.25,
+              0.5
+            ],
+            "current_ratio": 7.936462165813289
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 135,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              0.75
+            ],
+            "current_ratio": -6.586687132970198
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 135,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.75,
+              1.0
+            ],
+            "current_ratio": 4.849556167568804
+          }
+        ]
+      }
+    },
+    "condenser_lens_3": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "condenser_lens_3_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 128,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.25098039215686274
+            ],
+            "current_ratio": -1.9083930231491484
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 128,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.25098039215686274,
+              0.5019607843137255
+            ],
+            "current_ratio": 1.9024690077927933
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 127,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5019607843137255,
+              0.7509803921568627
+            ],
+            "current_ratio": -1.3325287523887246
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 127,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.7509803921568627,
+              1.0
+            ],
+            "current_ratio": 0.6179535230453771
+          }
+        ]
+      }
+    },
+    "adapter_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "adapter_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 8,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.34782608695652173
+            ],
+            "current_ratio": -6.232352662686615
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 8,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.34782608695652173,
+              0.6956521739130435
+            ],
+            "current_ratio": 2.292022557707014
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 7,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.6956521739130435,
+              1.0
+            ],
+            "current_ratio": 20.339927986950496
+          }
+        ]
+      }
+    },
+    "probe_tl22_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "probe_tl22_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 7,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.3684210526315789
+            ],
+            "current_ratio": -0.1438918165235894
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 6,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.3684210526315789,
+              0.6842105263157895
+            ],
+            "current_ratio": 2.3557488573924195
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 6,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.6842105263157895,
+              1.0
+            ],
+            "current_ratio": 2.684217444882129
+          }
+        ]
+      }
+    },
+    "probe_tl21_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "probe_tl21_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 7,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.3684210526315789
+            ],
+            "current_ratio": 6.4820767249027185
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 6,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.3684210526315789,
+              0.6842105263157895
+            ],
+            "current_ratio": -1.0562564408905153
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 6,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.6842105263157895,
+              1.0
+            ],
+            "current_ratio": -6.03379995463365
+          }
+        ]
+      }
+    },
+    "probe_tl12_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "probe_tl12_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 7,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.3684210526315789
+            ],
+            "current_ratio": -4.531518191134306
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 6,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.3684210526315789,
+              0.6842105263157895
+            ],
+            "current_ratio": 2.062187721773746
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 6,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.6842105263157895,
+              1.0
+            ],
+            "current_ratio": 7.884965253867628
+          }
+        ]
+      }
+    },
+    "mini_condenser": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "mini_condenser_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 6,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.35294117647058826
+            ],
+            "current_ratio": -7.323804710149479
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 6,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.35294117647058826,
+              0.7058823529411765
+            ],
+            "current_ratio": 9.123548926706698
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 5,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.7058823529411765,
+              1.0
+            ],
+            "current_ratio": -9.89550010901001
+          }
+        ]
+      }
+    },
+    "objective_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "objective_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 145,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.25
+            ],
+            "current_ratio": -0.15472089894397067
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 145,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.25,
+              0.5
+            ],
+            "current_ratio": 0.08748416427466607
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 145,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              0.75
+            ],
+            "current_ratio": 0.057297585953482694
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 145,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.75,
+              1.0
+            ],
+            "current_ratio": -0.25600313629521976
+          },
+          {
+            "interval_index": 1,
+            "turn_count": 145,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.25
+            ],
+            "current_ratio": 1.1252473600601283
+          },
+          {
+            "interval_index": 1,
+            "turn_count": 145,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.25,
+              0.5
+            ],
+            "current_ratio": 1.0838100607474834
+          },
+          {
+            "interval_index": 1,
+            "turn_count": 145,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              0.75
+            ],
+            "current_ratio": 0.0921158132215288
+          },
+          {
+            "interval_index": 1,
+            "turn_count": 145,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.75,
+              1.0
+            ],
+            "current_ratio": 0.2826962182478871
+          }
+        ]
+      }
+    }
+  },
+  "multipole_commands": {
+    "probe_hp2_hexapole": {
+      "strength_m3": 30837418.635056626
+    },
+    "probe_hp1_hexapole": {
+      "strength_m3": 5350354.234761008
+    },
+    "probe_hpc_hexapole": {
+      "strength_m3": -53439598.32369835,
+      "skew_strength_m3": 87577925.78127764
+    },
+    "probe_hpol_hexapole": {
+      "strength_m3": 11925619.430415858,
+      "skew_strength_m3": -17363365.60220857
+    }
+  },
+  "status": "Executed parked ideal-coil controls at the specimen upper surface"
+}

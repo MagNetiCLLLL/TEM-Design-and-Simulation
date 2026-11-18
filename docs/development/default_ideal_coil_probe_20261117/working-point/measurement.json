@@ -1,0 +1,602 @@
+{
+  "specimen_upper_surface_mm": 1599.1999975,
+  "model": "copper_coil",
+  "integration_step_mm": 0.025,
+  "focus_spacing_nm": 0.125,
+  "emitted": {
+    "emitted_count": 32768,
+    "positive_current_count": 32768,
+    "gun_exit_surviving_count": 32768,
+    "effective_emitted_count": 32768.0,
+    "emitted_weight": 1.0,
+    "gun_exit_weight": 1.0,
+    "effective_gun_exit_count": 32768.0,
+    "scope": "Executed classical gun reference; coherent quadrature packets and exit samples are separate populations"
+  },
+  "surviving": 32768,
+  "effective": 32768.0,
+  "current_a": 1e-05,
+  "full": {
+    "surface": {
+      "D95_nm": 1.835747601973372,
+      "D90_nm": 1.6253088941972085,
+      "D50_nm": 1.0373228977955764,
+      "rms_radius_nm": 9.073943183629588,
+      "alpha95_mrad": 29.84603901375439,
+      "angular_rms_mrad": 16.365276259802844,
+      "core_50pm_current_a": 5.7678222656250006e-08
+    },
+    "original_cohort": 32768,
+    "D95": {
+      "status": "BOUNDED_OBSERVED_MINIMUM",
+      "minimum": 1.8357476019733718,
+      "observed_minimum_planes_mm": [
+        1599.1999975
+      ],
+      "plateau_intervals_mm": [
+        [
+          1599.1999975,
+          1599.1999975
+        ]
+      ],
+      "neighbour_bracket_mm": [
+        1599.199997375,
+        1599.1999976250002
+      ],
+      "neighbour_bracket_offset_nm": [
+        -0.12500004231696948,
+        0.12500004231696948
+      ],
+      "representative_offset_nm": 0.0,
+      "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+    },
+    "RMS": {
+      "status": "BOUNDED_OBSERVED_MINIMUM",
+      "minimum": 9.066175384146076,
+      "observed_minimum_planes_mm": [
+        1599.2000203750001
+      ],
+      "plateau_intervals_mm": [
+        [
+          1599.2000203750001,
+          1599.2000203750001
+        ]
+      ],
+      "neighbour_bracket_mm": [
+        1599.20002025,
+        1599.2000205000002
+      ],
+      "neighbour_bracket_offset_nm": [
+        22.74999997098348,
+        23.00000005561742
+      ],
+      "representative_offset_nm": 22.87500001330045,
+      "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+    },
+    "core_50pm": {
+      "maximum_current_a": 9.658813476562501e-07,
+      "observed_maximum_planes_mm": [
+        1599.1998850000002
+      ],
+      "surface_attains_maximum": false,
+      "surface_fractional_loss": 0.9402843601895735
+    }
+  },
+  "nested": {
+    "1024": {
+      "surface": {
+        "D95_nm": 2.1907195191341033,
+        "D90_nm": 1.813615855236097,
+        "D50_nm": 1.1056736294763037,
+        "rms_radius_nm": 7.893937226781683,
+        "alpha95_mrad": 29.584127585024135,
+        "angular_rms_mrad": 16.249187717968177,
+        "core_50pm_current_a": 1.52587890625e-09
+      },
+      "original_cohort": 1024,
+      "D95": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 2.103866780127716,
+        "observed_minimum_planes_mm": [
+          1599.1999903750002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.1999903750002,
+            1599.1999903750002
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1599.1999902500002,
+          1599.1999905
+        ],
+        "neighbour_bracket_offset_nm": [
+          -7.2499999532738,
+          -7.000000096013537
+        ],
+        "representative_offset_nm": -7.124999910956831,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "RMS": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 7.891620999257536,
+        "observed_minimum_planes_mm": [
+          1599.2000092500002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.2000092500002,
+            1599.2000092500002
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1599.2000091250002,
+          1599.200009375
+        ],
+        "neighbour_bracket_offset_nm": [
+          11.62500007012568,
+          11.874999927385943
+        ],
+        "representative_offset_nm": 11.750000112442649,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "core_50pm": {
+        "maximum_current_a": 3.35693359375e-08,
+        "observed_maximum_planes_mm": [
+          1599.1998848750002,
+          1599.1998850000002,
+          1599.199885125
+        ],
+        "surface_attains_maximum": false,
+        "surface_fractional_loss": 0.9545454545454546
+      },
+      "absolute_current_in_full_run_a": 3.125e-07
+    },
+    "2048": {
+      "surface": {
+        "D95_nm": 1.8025502179056356,
+        "D90_nm": 1.6082927074852296,
+        "D50_nm": 1.0277261498525632,
+        "rms_radius_nm": 7.30093174058905,
+        "alpha95_mrad": 29.73804986141714,
+        "angular_rms_mrad": 16.330702045330618,
+        "core_50pm_current_a": 3.35693359375e-09
+      },
+      "original_cohort": 2048,
+      "D95": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 1.7921001505009626,
+        "observed_minimum_planes_mm": [
+          1599.199996125
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.199996125,
+            1599.199996125
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1599.199996,
+          1599.1999962500001
+        ],
+        "neighbour_bracket_offset_nm": [
+          -1.500000053056283,
+          -1.249999968422344
+        ],
+        "representative_offset_nm": -1.3750000107393134,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "RMS": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 7.287453399713031,
+        "observed_minimum_planes_mm": [
+          1599.2000246250002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.2000246250002,
+            1599.2000246250002
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1599.2000245000002,
+          1599.20002475
+        ],
+        "neighbour_bracket_offset_nm": [
+          27.00000004551839,
+          27.249999902778654
+        ],
+        "representative_offset_nm": 27.12500008783536,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "core_50pm": {
+        "maximum_current_a": 6.347656250000001e-08,
+        "observed_maximum_planes_mm": [
+          1599.19988375,
+          1599.1998842500002,
+          1599.1998848750002
+        ],
+        "surface_attains_maximum": false,
+        "surface_fractional_loss": 0.9471153846153846
+      },
+      "absolute_current_in_full_run_a": 6.25e-07
+    },
+    "4096": {
+      "surface": {
+        "D95_nm": 1.8160890260105291,
+        "D90_nm": 1.6152829873759598,
+        "D50_nm": 1.0342105141965738,
+        "rms_radius_nm": 5.8222320669378735,
+        "alpha95_mrad": 29.45133106629201,
+        "angular_rms_mrad": 16.33394954424529,
+        "core_50pm_current_a": 6.7138671875e-09
+      },
+      "original_cohort": 4096,
+      "D95": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 1.8108265302676259,
+        "observed_minimum_planes_mm": [
+          1599.19999725
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.19999725,
+            1599.19999725
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1599.1999971250002,
+          1599.199997375
+        ],
+        "neighbour_bracket_offset_nm": [
+          -0.374999899577233,
+          -0.12500004231696948
+        ],
+        "representative_offset_nm": -0.25000008463393897,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "RMS": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 5.81503922023559,
+        "observed_minimum_planes_mm": [
+          1599.2000152500002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.2000152500002,
+            1599.2000152500002
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1599.2000151250002,
+          1599.200015375
+        ],
+        "neighbour_bracket_offset_nm": [
+          17.625000054977136,
+          17.8749999122374
+        ],
+        "representative_offset_nm": 17.750000097294105,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "core_50pm": {
+        "maximum_current_a": 1.2451171875e-07,
+        "observed_maximum_planes_mm": [
+          1599.1998833750001,
+          1599.1998836250002,
+          1599.19988375,
+          1599.199883875,
+          1599.199884,
+          1599.1998841250002,
+          1599.1998842500002
+        ],
+        "surface_attains_maximum": false,
+        "surface_fractional_loss": 0.946078431372549
+      },
+      "absolute_current_in_full_run_a": 1.25e-06
+    },
+    "8192": {
+      "surface": {
+        "D95_nm": 1.8215012366591858,
+        "D90_nm": 1.6200621240168125,
+        "D50_nm": 1.0371453782576774,
+        "rms_radius_nm": 5.489219070845025,
+        "alpha95_mrad": 29.719963374489677,
+        "angular_rms_mrad": 16.347694959846233,
+        "core_50pm_current_a": 1.5869140625000002e-08
+      },
+      "original_cohort": 8192,
+      "D95": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 1.818533075508169,
+        "observed_minimum_planes_mm": [
+          1599.1999976250002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.1999976250002,
+            1599.1999976250002
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1599.1999975,
+          1599.1999977500002
+        ],
+        "neighbour_bracket_offset_nm": [
+          0.0,
+          0.25000008463393897
+        ],
+        "representative_offset_nm": 0.12500004231696948,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "RMS": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 5.48380306266042,
+        "observed_minimum_planes_mm": [
+          1599.2000123750001
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.2000123750001,
+            1599.2000123750001
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1599.20001225,
+          1599.2000125000002
+        ],
+        "neighbour_bracket_offset_nm": [
+          14.74999999118154,
+          15.000000075815478
+        ],
+        "representative_offset_nm": 14.875000033498509,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "core_50pm": {
+        "maximum_current_a": 2.4353027343750003e-07,
+        "observed_maximum_planes_mm": [
+          1599.1998836250002,
+          1599.199884375,
+          1599.1998845
+        ],
+        "surface_attains_maximum": false,
+        "surface_fractional_loss": 0.9348370927318296
+      },
+      "absolute_current_in_full_run_a": 2.5e-06
+    },
+    "16384": {
+      "surface": {
+        "D95_nm": 1.859765674476896,
+        "D90_nm": 1.6348820692936996,
+        "D50_nm": 1.0358520893752894,
+        "rms_radius_nm": 10.45393537758127,
+        "alpha95_mrad": 29.89618091764141,
+        "angular_rms_mrad": 16.362441416998866,
+        "core_50pm_current_a": 2.8991699218750003e-08
+      },
+      "original_cohort": 16384,
+      "D95": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 1.8546226037419122,
+        "observed_minimum_planes_mm": [
+          1599.1999968750001
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.1999968750001,
+            1599.1999968750001
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1599.19999675,
+          1599.1999970000002
+        ],
+        "neighbour_bracket_offset_nm": [
+          -0.7500000265281415,
+          -0.4999999418942025
+        ],
+        "representative_offset_nm": -0.624999984211172,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "RMS": {
+        "status": "BOUNDED_OBSERVED_MINIMUM",
+        "minimum": 10.447128217075383,
+        "observed_minimum_planes_mm": [
+          1599.2000205000002
+        ],
+        "plateau_intervals_mm": [
+          [
+            1599.2000205000002,
+            1599.2000205000002
+          ]
+        ],
+        "neighbour_bracket_mm": [
+          1599.2000203750001,
+          1599.2000206250002
+        ],
+        "neighbour_bracket_offset_nm": [
+          22.87500001330045,
+          23.12500009793439
+        ],
+        "representative_offset_nm": 23.00000005561742,
+        "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+      },
+      "core_50pm": {
+        "maximum_current_a": 4.8065185546875e-07,
+        "observed_maximum_planes_mm": [
+          1599.1998842500002
+        ],
+        "surface_attains_maximum": false,
+        "surface_fractional_loss": 0.9396825396825397
+      },
+      "absolute_current_in_full_run_a": 5e-06
+    }
+  },
+  "acceptance": {
+    "alpha95_within_29p7_to_30p3": true,
+    "D95_focus_within_1_nm": true,
+    "condensers": true,
+    "corrector": true,
+    "no_extra_waist": true
+  },
+  "condenser": {
+    "c2_to_c3": {
+      "observed": 1,
+      "required": 1,
+      "passed": true,
+      "regions": [
+        {
+          "z_mm": 753.5,
+          "bracket_mm": [
+            753.0,
+            754.0
+          ]
+        }
+      ]
+    },
+    "c3_to_adl": {
+      "observed": 0,
+      "required": 0,
+      "passed": true,
+      "regions": []
+    }
+  },
+  "corrector": {
+    "corrector_internal": [
+      {
+        "z_mm": 1195.0,
+        "bracket_mm": [
+          1194.5,
+          1195.2119047619046
+        ]
+      }
+    ],
+    "ac_pair": [
+      {
+        "z_mm": 1406.2,
+        "bracket_mm": [
+          1406.1,
+          1406.3
+        ]
+      }
+    ]
+  },
+  "final_interval_mm": [
+    1512.5,
+    1599.1999975
+  ],
+  "closest_aperture": {
+    "key": "condenser_aperture_2",
+    "radius_mm": 0.05,
+    "clearance_mm": 0.04775902835005404
+  },
+  "column_field_comparison": {
+    "sample_count": 5500,
+    "outermost_particles": 1000,
+    "max_outermost_B_error_t": 1.1801132942671817e-12,
+    "max_B_error_t": 1.1801132942671817e-12,
+    "rms_B_error_t": 5.877091384889608e-14,
+    "max_E_v_per_m": 0.00013249388562760748,
+    "max_E_error_v_per_m": 0.0
+  },
+  "gun_field_comparison": {
+    "schema": "study-magnetic-gun-table-v1",
+    "coefficient_sha256": "dc79c3485377397764fdb3f83aca8541dc4263b66a3745b3783ca1d1c643154f",
+    "z_bounds_m": [
+      -0.001,
+      0.453
+    ],
+    "spacing_mm": 0.5,
+    "xy_halfwidth_m": 5e-05,
+    "check_points": 2048,
+    "max_check_error_t": 7.393261521488192e-14,
+    "evaluation_calls": 1624762,
+    "native_fallback_points": 0,
+    "maximum_executed_radius_m": 1.2132161112896463e-06
+  },
+  "full_field_local_focus": {
+    "start_mm": 1599.1899975000001,
+    "end_mm": 1599.2049975000002,
+    "source": "Same field-specific high-order column checkpoint 10 um before the surface",
+    "surface": {
+      "z_mm": 1599.1999975,
+      "surviving": 32768,
+      "effective": 32768.0,
+      "current_a": 1e-05,
+      "rms_radius_nm": 9.073943183623506,
+      "D95_nm": 1.835747601977189,
+      "D90_nm": 1.6253088941978409,
+      "D50_nm": 1.0373228978094455,
+      "alpha95_mrad": 29.846039013754382,
+      "angular_rms_mrad": 16.365276259802844,
+      "core_50pm_current_a": 5.7678222656250006e-08,
+      "radial_covariance_m_rad": -6.144554257460447e-12
+    },
+    "D95": {
+      "status": "BOUNDED_OBSERVED_MINIMUM",
+      "minimum": 1.835747601977189,
+      "observed_minimum_planes_mm": [
+        1599.1999975
+      ],
+      "plateau_intervals_mm": [
+        [
+          1599.1999975,
+          1599.1999975
+        ]
+      ],
+      "neighbour_bracket_mm": [
+        1599.199997375,
+        1599.1999976250002
+      ],
+      "neighbour_bracket_offset_nm": [
+        -0.12500004231696948,
+        0.12500004231696948
+      ],
+      "representative_offset_nm": 0.0,
+      "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+    },
+    "RMS": {
+      "status": "BOUNDED_OBSERVED_MINIMUM",
+      "minimum": 9.066175384139909,
+      "observed_minimum_planes_mm": [
+        1599.2000203750001
+      ],
+      "plateau_intervals_mm": [
+        [
+          1599.2000203750001,
+          1599.2000203750001
+        ]
+      ],
+      "neighbour_bracket_mm": [
+        1599.20002025,
+        1599.2000205000002
+      ],
+      "neighbour_bracket_offset_nm": [
+        22.74999997098348,
+        23.00000005561742
+      ],
+      "representative_offset_nm": 22.87500001330045,
+      "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+    },
+    "max_surface_difference_xyz_slopes_time": [
+      3.63800650845722e-19,
+      3.6523001894421363e-19,
+      7.264328028000477e-14,
+      7.354360176403674e-14,
+      5.591740940858467e-22
+    ]
+  },
+  "input_digest": "692399fd0a7e859577c1d23866f9ee494c7787429513ada930fed79c918bfbeb",
+  "physical_input_digest": "0470581218ee9427a6695fbf51e1c127bea4b16eb89bbb4c69533403807f36bb",
+  "solver_source_identity": "4e61f72f920750b82f385c153e2d6a51e2f8bb90b59536920bd9853e30273caf",
+  "portable_input_digest": "daf71b3eb0068a8b1f99bb491a0b49c5efad5e3ef0e05a91126d0686323e951a",
+  "ordered_round_winding_groups": 39,
+  "sha256": {
+    "currents.json": "0e68e2b4e51ce11e0a42f21a76d519ed9a5a69aa11c717fd22ae2ddaca4e83ec",
+    "gun.json": "9d5b93e888ad8d545dc53b25b66b1b7a33ea953ea4dfffae94d8cd555657bcd4",
+    "gun.npz": "45018646e7543ebc7dfa0f0cbac4cde782f3444e83c8d185abcbb5922146ad02",
+    "inputs.json.gz": "8cdce21bbed9070484aa4f0d90692dc10ddbd464a93eaaa9ea88a5999240212e",
+    "optics.json.gz": "3287e8bf9f711f8146c9bbe80900b345771092f5149a6ec88539210210506230",
+    "portable-input.temwp": "f7bbe1e51308a2731fb0ec37298979d857fefce1081c11d501771b35985bd2d3",
+    "surface.npz": "10c086cb62e555aac8e427bfd7acf250c9c1fefbc5e952b54b7d4bdb9233886f"
+  }
+}

@@ -1,5 +1,14 @@
 # Operating working points
 
+## Stationary 30 mrad ideal-coil Nanoprobe
+
+Open the [parked 300 kV ideal-coil profile](ideal-coil-nanoprobe-30mrad-parked.toml)
+with **File > Open profile**. It contains the prescribed-current winding
+groups and probe-corrector drives for the Normal Nanoprobe range and 100 µm
+C2 aperture. The specimen is retracted and the raster and descan are parked
+for a static probe measurement. The [study](../docs/development/default_ideal_coil_probe_20261117/RESUMED_TUNING.md)
+records the measured current, angular containment, probe diameters and focus.
+
 ## Startup and explicit working points
 
 Without a saved startup result, the desktop starts from the ordinary

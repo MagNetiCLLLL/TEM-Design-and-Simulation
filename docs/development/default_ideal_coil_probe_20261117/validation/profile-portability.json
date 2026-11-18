@@ -1,0 +1,85 @@
+{
+  "reference": "Published clean-checkout desktop TOML",
+  "sample_count": 3500,
+  "scope": "Exact geometry, numerical provider payloads, gauge and emitted phase geometry; only explicit catalog paths and implementation or derived fingerprints may differ",
+  "rows": [
+    {
+      "checkout": "published",
+      "format": "desktop",
+      "provider_count": 41,
+      "equal_optical_coefficients": true,
+      "original_emission_IDs_positions_directions_normals_and_weights_match": true,
+      "field_identity": "6109df975bfe0183ea0b3732110fef41b79d5db2a7a4f8bb1c4d0dde313ff1e0",
+      "sampled_maximum_absolute_errors": {
+        "B_t": 0.0,
+        "E_v_per_m": 0.0,
+        "phi_v": 0.0
+      },
+      "differing_provider_identity_fields": {}
+    },
+    {
+      "checkout": "published",
+      "format": "portable",
+      "provider_count": 41,
+      "equal_optical_coefficients": true,
+      "original_emission_IDs_positions_directions_normals_and_weights_match": true,
+      "field_identity": "6109df975bfe0183ea0b3732110fef41b79d5db2a7a4f8bb1c4d0dde313ff1e0",
+      "sampled_maximum_absolute_errors": {
+        "B_t": 0.0,
+        "E_v_per_m": 0.0,
+        "phi_v": 0.0
+      },
+      "differing_provider_identity_fields": {}
+    },
+    {
+      "checkout": "user",
+      "format": "desktop",
+      "provider_count": 41,
+      "equal_optical_coefficients": true,
+      "original_emission_IDs_positions_directions_normals_and_weights_match": true,
+      "field_identity": "ee69f92d9c3633b7fe88aaef0904cda95a5cff917c9084667f6e4666ee59f380",
+      "sampled_maximum_absolute_errors": {
+        "B_t": 0.0,
+        "E_v_per_m": 0.0,
+        "phi_v": 0.0
+      },
+      "differing_provider_identity_fields": {
+        "digest": 28,
+        "metadata.request.implementation_sha256.axisymmetric_cut_field.py": 1,
+        "metadata.request.implementation_sha256.cpu_resources.py": 1,
+        "metadata.request.implementation_sha256.electrode_mesh.py": 1,
+        "metadata.request.implementation_sha256.grounded_tip_field.py": 1,
+        "metadata.request.implementation_sha256.planar_gun_field.py": 1,
+        "metadata.source_identities.numerical": 1,
+        "metadata.source_identities.request": 1,
+        "payload.implementation_sha256": 27,
+        "payload.provenance.capture_implementation_sha256": 8
+      }
+    },
+    {
+      "checkout": "user",
+      "format": "portable",
+      "provider_count": 41,
+      "equal_optical_coefficients": true,
+      "original_emission_IDs_positions_directions_normals_and_weights_match": true,
+      "field_identity": "1a8dd8a6a0682f5027700e839d6a4a82d73b735f5c0a1a0abe6c1c1f111f4777",
+      "sampled_maximum_absolute_errors": {
+        "B_t": 0.0,
+        "E_v_per_m": 0.0,
+        "phi_v": 0.0
+      },
+      "differing_provider_identity_fields": {
+        "digest": 28,
+        "metadata.request.implementation_sha256.axisymmetric_cut_field.py": 1,
+        "metadata.request.implementation_sha256.cpu_resources.py": 1,
+        "metadata.request.implementation_sha256.electrode_mesh.py": 1,
+        "metadata.request.implementation_sha256.grounded_tip_field.py": 1,
+        "metadata.request.implementation_sha256.planar_gun_field.py": 1,
+        "metadata.source_identities.numerical": 1,
+        "metadata.source_identities.request": 1,
+        "payload.implementation_sha256": 27,
+        "payload.provenance.capture_implementation_sha256": 8
+      }
+    }
+  ]
+}

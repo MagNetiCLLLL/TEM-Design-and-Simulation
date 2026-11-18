@@ -1,0 +1,120 @@
+{
+  "profile": "ideal-coil-nanoprobe-30mrad-parked.toml",
+  "input_digest": "692399fd0a7e859577c1d23866f9ee494c7787429513ada930fed79c918bfbeb",
+  "profile_utf8_lf_sha256": "708f5193e9e3e0a78004b06a315f2cf2df0e63e09028938f2972035d3c848888",
+  "matched_fields": [
+    "apertures",
+    "condenser_mode",
+    "descan",
+    "emitted_current_a",
+    "energy_ev",
+    "energy_fwhm_ev",
+    "entrance_z_mm",
+    "field_digest",
+    "gun_controls",
+    "lens_drives",
+    "multipole_electrical_a",
+    "raster",
+    "round_groups",
+    "round_model",
+    "source_count",
+    "specimen_inserted",
+    "step_mm"
+  ],
+  "matched_emission_arrays": [
+    "direction",
+    "emission_time_s",
+    "energy_offset_ev",
+    "normal",
+    "position_m",
+    "ray_id",
+    "tx_rad",
+    "ty_rad",
+    "weight",
+    "x_m",
+    "y_m"
+  ],
+  "numerical_field_digest": "6109df975bfe0183ea0b3732110fef41b79d5db2a7a4f8bb1c4d0dde313ff1e0",
+  "condenser_mode": "nano_probe",
+  "source_count": 32768,
+  "current_a": 1e-05,
+  "FWHM_eV": 0.3,
+  "apertures": {
+    "condenser_aperture_2": [
+      true,
+      765.0,
+      0.05,
+      0.0,
+      0.0
+    ],
+    "condenser_aperture_3": [
+      true,
+      1010.0,
+      2.0,
+      0.0,
+      0.0
+    ],
+    "objective_aperture": [
+      false,
+      1600.7,
+      0.05,
+      0.0,
+      0.0
+    ],
+    "selected_area_aperture": [
+      false,
+      1824.4,
+      0.1,
+      0.0,
+      0.0
+    ],
+    "projection_chamber_dpa_aperture": [
+      true,
+      2586.9,
+      6.0,
+      0.0,
+      0.0
+    ],
+    "energy_filter_entrance_aperture": [
+      true,
+      3025.9,
+      2.5,
+      0.0,
+      0.0
+    ]
+  },
+  "multipole_electrical_a": {
+    "probe_qph2_quadrupole": [
+      0.0,
+      0.0
+    ],
+    "probe_hp2_hexapole": [
+      -949075.6729039251,
+      0.0
+    ],
+    "probe_hpc_hexapole": [
+      13832.783667491254,
+      8440.693203165341
+    ],
+    "probe_qpc_quadrupole": [
+      0.0,
+      0.0
+    ],
+    "probe_qph1_quadrupole": [
+      0.0,
+      0.0
+    ],
+    "probe_hp1_hexapole": [
+      -165437.843090362,
+      0.0
+    ],
+    "probe_hpol_hexapole": [
+      -2726.1452359450595,
+      -1872.3887603787384
+    ],
+    "probe_qpol_quadrupole": [
+      0.0,
+      0.0
+    ]
+  }
+}
