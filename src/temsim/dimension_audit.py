@@ -19,6 +19,7 @@ import tomllib
 
 from temsim.parameter_semantics import ParameterSemantics, describe_parameter
 from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
+from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE
 
 
 @dataclass(frozen=True, slots=True)
@@ -116,7 +117,8 @@ _DIMENSION_SUFFIX = re.compile(r"_(?:mm|um|nm|m|deg|rad|mrad|px)$")
 _SKIP_CONTAINERS = {"parameter_metadata", "provenance", "evidence", "source", "metadata"}
 _ANNULAR = {"magnetic_excitation_coil", "magnetic_lens_housing", "magnetic_lens_yoke"}
 _BODY_PROFILES = _ANNULAR | DEFLECTOR_COIL_PROFILES | {"magnetic_pole_piece", "circular_aperture", "vacuum_liner", "electrostatic_bias_tube"}
-_POLE_STYLES = {"", "embedded_hourglass_bore", "tapered_bore_pole", "objective_vertical_back_inserted_shank_tapered_nose"}
+_POLE_STYLES = {"", "embedded_hourglass_bore", "tapered_bore_pole",
+                "objective_vertical_back_inserted_shank_tapered_nose", RECESSED_OBJECTIVE_STYLE}
 _OUTER_FIELDS = {"mechanical_outer_diameter_mm", "mechanical_outer_radius_mm", "outer_diameter_mm", "outer_width_mm"}
 _INNER_FIELDS = {"mechanical_inner_diameter_mm", "mechanical_bore_diameter_mm", "mechanical_clear_bore_diameter_mm",
                  "mechanical_bore_radius_mm", "bore_diameter_mm", "clear_bore_diameter_mm", "inner_diameter_mm"}

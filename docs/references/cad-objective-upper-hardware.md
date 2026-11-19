@@ -7,6 +7,8 @@ engineering reconstruction, not an OEM drawing or a magnetic/thermal solution.
 
 ## Evidence and limits
 
+The winding study below used the October 2026 pole contour. The photo-based upper insert introduced on 19 November has a narrower stem and a recessed flange. In the default Probe Corrector column the new pole clears the copper pack by 5.0 mm and its downstream cooling plate by 3.8 mm. [Current upper pole section](objective-pole-piece-dimensions.md)
+
 [Hitachi JP2967966B2](https://patents.google.com/patent/JP2967966B2/en), conventional
 Figs. 6–8 and paragraphs 0004–0005, identifies the magnetic yoke, winding,
 pole pieces and cooling assembly. Its conventional Fig. 8 describes upper and

@@ -15,6 +15,7 @@ import json
 import math
 
 import numpy as np
+from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE, recessed_objective_section, section_radial_bands
 
 MU0 = 4e-7 * math.pi
 SOLVER_VERSION = "axisymmetric-aphi-bh-material-regions-pole-orientation-v6"
@@ -55,6 +56,16 @@ def _part_mask(part, r, z):
         inner = np.interp(offset, profile[:, 0], profile[:, 1])*1e-3
         outer = np.interp(offset, profile[:, 0], profile[:, 2])*1e-3
         return (z >= start) & (z <= end) & (r >= inner) & (r <= outer)
+    if data.get("pole_piece_geometry_style") == RECESSED_OBJECTIVE_STYLE:
+        section = recessed_objective_section(data, part["start_z_mm"], part["end_z_mm"], key=part["key"])
+        mask = np.zeros(np.broadcast_shapes(np.shape(r), np.shape(z)), dtype=bool)
+        for band in section_radial_bands(section):
+            z0, z1 = band.z0 * 1e-3, band.z1 * 1e-3
+            t = (z - z0) / (z1 - z0)
+            inner = (band.inner0 + t * (band.inner1 - band.inner0)) * 1e-3
+            outer = (band.outer0 + t * (band.outer1 - band.outer0)) * 1e-3
+            mask |= (z >= z0) & (z <= z1) & (r >= inner) & (r <= outer)
+        return mask
     inner = float(data.get("mechanical_inner_diameter_mm", data.get("mechanical_bore_diameter_mm", 0))) * 0.5e-3
     outer = float(data["mechanical_outer_diameter_mm"]) * 0.5e-3
     outer_radius = np.full_like(r, outer)
@@ -155,6 +166,10 @@ def _solve_bound_geometry(geometry_json, settings_json):
         if profile is not None:
             axial_edges.extend((profile[:, 0]+p["start_z_mm"])*1e-3)
             radial_edges.extend(profile[:, 1:].ravel()*1e-3)
+        elif p["data"].get("pole_piece_geometry_style") == RECESSED_OBJECTIVE_STYLE:
+            section = recessed_objective_section(p["data"], p["start_z_mm"], p["end_z_mm"], key=p["key"])
+            axial_edges.extend(z_mm * 1e-3 for z_mm, _ in section)
+            radial_edges.extend(r_mm * 1e-3 for _, r_mm in section)
         elif (p["data"].get("mechanical_profile") == "magnetic_pole_piece"
               and "pole_face_land_axial_thickness_mm" in p["data"]):
             # Preserve the saved taper-to-land boundary on the FEM grid, just

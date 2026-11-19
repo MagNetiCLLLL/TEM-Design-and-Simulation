@@ -182,7 +182,8 @@ def validate_objective_upper_hardware(part, by_key=None):
     yokes = objective_layer_intervals_mm(parent, parent["local_start_z_mm"], "magnetic_lens_yoke")
     if not (yokes[0][0] <= a - axial - plate and b + axial + plate <= yokes[0][1]):
         raise ValueError(f"{row['key']}: Upper Objective winding details exceed the upper yoke end spaces")
-    # The lower plate is alongside the OD60 shank, not the OD96 shoulder.
+    # The lower plate runs beside the upper pole stem. Use the native contour
+    # so both the recessed and the older straight-shank inserts are supported.
     # Saved radial profiles take precedence over both pole style and yoke ID.
     for raw in by_key.values():
         other = part_data(raw)

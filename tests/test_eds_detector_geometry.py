@@ -153,6 +153,7 @@ def test_eds_angular_summaries_do_not_infer_a_detector_size():
 
 
 def test_eds_reference_ray_clears_constraint_derived_pole_profile():
+    from temsim.part_model_3d import _pole_section
     for path in sorted(COLUMN_ROOT.glob("*.toml")):
         document = validate_document(_column_document(path.name))
         detector = _part(document, EDS_DETECTOR_SYSTEM)
@@ -165,8 +166,10 @@ def test_eds_reference_ray_clears_constraint_derived_pole_profile():
         for pole in (upper, lower):
             assert pole["mechanical_outer_diameter_mm"] == pytest.approx(96.0)
             assert pole["mechanical_tip_diameter_mm"] == pytest.approx(8.0)
-            assert pole["pole_nose_axial_length_mm"] == pytest.approx(27.5584)
-            assert pole["pole_cone_angle_to_axis_deg"] == pytest.approx(57.94)
+        assert upper["pole_nose_axial_length_mm"] == pytest.approx(24.)
+        assert lower["pole_nose_axial_length_mm"] == pytest.approx(27.5584)
+        assert lower["pole_cone_angle_to_axis_deg"] == pytest.approx(57.94)
+        section = _pole_section(upper, -upper["length_mm"], 0.)
 
         assessment = assess_axisymmetric_pole_centerline(
             takeoff_angle_deg=geometry.takeoff_angle_deg,
@@ -175,6 +178,7 @@ def test_eds_reference_ray_clears_constraint_derived_pole_profile():
             pole_tip_diameter_mm=upper["mechanical_tip_diameter_mm"],
             pole_outer_diameter_mm=upper["mechanical_outer_diameter_mm"],
             pole_nose_axial_length_mm=upper["pole_nose_axial_length_mm"],
+            section_from_face_zr_mm=[(-z, r) for z, r in section],
         )
         assert assessment.clears_requested_margin is True
         assert assessment.ray_radius_at_face_mm == pytest.approx(4.310851)
@@ -185,7 +189,7 @@ def test_eds_reference_ray_clears_constraint_derived_pole_profile():
             8.621703, abs=1.0e-5
         )
         assert assessment.minimum_nose_axial_length_mm_for_margin == (
-            pytest.approx(27.363667, abs=1.0e-5)
+            pytest.approx(42 * math.tan(math.radians(32.06)) - 2.7)
         )
 
 
@@ -284,7 +288,7 @@ def test_physical_layout_draws_two_eds_azimuthal_projections(qtbot):
     assert "not an electron recording plane" in tooltip
     assert "six such circular cones overlap" in tooltip
     assert "minimum radial clearance 0.3109 mm" in tooltip
-    assert "does not change these intersections" in tooltip
+    assert "at the shoulder" in tooltip
 
     pole_radius = max(
         0.5 * view._record_by_key[key].outer_diameter_mm

@@ -337,6 +337,14 @@ def _extent(part):
 
 
 def _pole_section(part, start, end):
+    from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE, recessed_objective_section
+
+    profile = radial_profile_mm(part, end - start)
+    if profile is not None:
+        return ([(start + z, outer) for z, _, outer in profile]
+                + [(start + z, inner) for z, inner, _ in reversed(profile)])
+    if part.get("pole_piece_geometry_style") == RECESSED_OBJECTIVE_STYLE:
+        return recessed_objective_section(part, start, end)
     get = lambda field: _number(part[field], field)
     length = end - start
     bore, outer, tip = (get(field) / 2 for field in

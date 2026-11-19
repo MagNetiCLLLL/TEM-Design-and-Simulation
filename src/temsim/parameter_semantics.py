@@ -12,6 +12,7 @@ import re
 
 from temsim.component_keys import CAMERA, FLUORESCENT_SCREEN, STEM_DETECTOR_KEYS
 from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
+from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE
 
 
 CATEGORY_LABELS = {
@@ -41,7 +42,7 @@ class ParameterSemantics:
 
 _ANNULAR = {"magnetic_excitation_coil", "magnetic_lens_housing", "magnetic_lens_yoke"}
 _POLE_STYLES = {"", "embedded_hourglass_bore", "tapered_bore_pole",
-                "objective_vertical_back_inserted_shank_tapered_nose"}
+                "objective_vertical_back_inserted_shank_tapered_nose", RECESSED_OBJECTIVE_STYLE}
 _ENVELOPE_FIELDS = {"length_mm", "mechanical_outer_diameter_mm", "mechanical_outer_radius_mm",
                     "outer_diameter_mm", "outer_width_mm", "housing_length_mm", "electrode_length_mm"}
 _DIMENSION_WORDS = ("diameter", "radius", "length", "width", "height", "thickness", "gap", "inset", "angle")
@@ -461,6 +462,8 @@ def _meaning(part, path, by_key):
             return label, "physical", (explanations.get(field, "Dimension of the configured winding material envelope.") +
                 " This changes the reconstructed solid, not the linked analytical field strength; it is not an OEM winding measurement.")
     if profile == "magnetic_pole_piece" and part.get("pole_piece_geometry_style", "") in _POLE_STYLES:
+        if field == "pole_rear_recess_depth_mm":
+            return label, "physical", "Axial depth of the annular well from the rear flange face to its floor around the tubular stem."
         if field == "pole_root_fillet_radius_range_mm":
             return label, "unknown", "Reference range only. The current pole solid has sharp shoulders; this metadata does not generate a fillet or select a physical fillet radius."
         if field == "magnetic_radial_profile_mm" or any(word in field for word in _DIMENSION_WORDS):

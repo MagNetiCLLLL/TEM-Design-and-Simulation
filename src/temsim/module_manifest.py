@@ -35,6 +35,7 @@ from temsim.mechanical_profiles import (
     lens_mechanical_part_keys,
 )
 from temsim.paths import INSTRUMENT_CONFIG_ROOT
+from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE
 
 MODULE_ROOT = INSTRUMENT_CONFIG_ROOT
 
@@ -3048,9 +3049,9 @@ def _validate_column_mechanical_overlaps(parts):
             from temsim.deflector_support_geometry import full_material_radial_extent
             inner, outer = full_material_radial_extent(part)
             return 2.0 * inner, 2.0 * outer
-        if part.get("pole_piece_geometry_style") == (
-            "objective_vertical_back_inserted_shank_tapered_nose"
-        ):
+        if part.get("pole_piece_geometry_style") in {
+            "objective_vertical_back_inserted_shank_tapered_nose", RECESSED_OBJECTIVE_STYLE,
+        }:
             start = float(part["local_start_z_mm"])
             end = float(part["local_end_z_mm"])
             length = float(part["pole_mounting_shank_axial_length_mm"])
@@ -3062,10 +3063,10 @@ def _validate_column_mechanical_overlaps(parts):
                 overlap_start >= shank_start - tolerance
                 and overlap_end <= shank_end + tolerance
             ):
-                return (
-                    float(part["pole_mounting_shank_inner_diameter_mm"]),
-                    float(part["pole_stem_outer_diameter_mm"]),
-                )
+                inner = float(part["pole_mounting_shank_inner_diameter_mm"])
+                if part["pole_piece_geometry_style"] == RECESSED_OBJECTIVE_STYLE:
+                    inner = float(part["mechanical_bore_diameter_mm"])
+                return inner, float(part["pole_stem_outer_diameter_mm"])
         if (
             "mechanical_inner_diameter_mm" in part
             and "mechanical_outer_diameter_mm" in part
@@ -3928,7 +3929,9 @@ def _validate_magnetic_lens_mechanical_parts(parts, geometry):
             else "tapered_bore_pole"
         )
         for pole in poles:
-            if pole.get("pole_piece_geometry_style") != expected_style:
+            recessed = (pole["key"] == "objective_upper_pole"
+                        and pole.get("pole_piece_geometry_style") == RECESSED_OBJECTIVE_STYLE)
+            if not recessed and pole.get("pole_piece_geometry_style") != expected_style:
                 raise ValueError(
                     f"{pole['key']} must use pole-piece style "
                     f"{expected_style}"
@@ -3946,18 +3949,17 @@ def _validate_magnetic_lens_mechanical_parts(parts, geometry):
                     pole.get("pole_mounting_shank_axial_length_mm", 0.0)
                 )
                 root_clearance = 0.5 * (coil_inner - stem)
+                if recessed and root_clearance <= 0.0:
+                    raise ValueError(f"{pole['key']} mounting-shank OD must be smaller than the excitation-coil ID")
+                if not recessed and abs(root_clearance) > tolerance:
+                    raise ValueError(f"{pole['key']} objective mounting-shank OD must equal the excitation-coil ID")
                 if (
                     not bore < stem <= outer
                     or not bore <= shank_inner < stem
                     or not 0.0 < shank_length < longest_pole
                     or not tip < outer
-                    or abs(root_clearance) > tolerance
                 ):
-                    raise ValueError(
-                        f"{pole['key']} objective mounting-shank OD must "
-                        "equal the excitation-coil ID and its head/bore "
-                        "geometry must remain valid"
-                    )
+                    raise ValueError(f"{pole['key']} requires a positive shank length and an open bore inside the stem and tip")
                 objective_pole_diameters.append(outer)
             elif (
                 lens_key.startswith("condenser_lens_")
@@ -4331,14 +4333,16 @@ def _validate_c1_c2_cartridge_and_vacuum_tube(parts, geometry):
         connector_length = float(
             pole["pole_vacuum_connector_axial_length_mm"]
         )
+        mouth = float(pole["pole_mounting_shank_inner_diameter_mm"])
+        recessed = pole.get("pole_piece_geometry_style") == RECESSED_OBJECTIVE_STYLE
+        # A flared entrance can meet the smaller tube bore on an annular face.
+        mouth_fits = (tube_inner <= mouth < tube_outer if recessed
+                      else abs(mouth - tube_inner) <= tolerance)
         if (
             abs(connector_outer - tube_outer) > tolerance
             or abs(float(pole["mechanical_bore_diameter_mm"]) - tube_inner)
             > tolerance
-            or abs(
-                float(pole["pole_mounting_shank_inner_diameter_mm"])
-                - tube_inner
-            ) > tolerance
+            or not mouth_fits
             or not 0.0 < connector_length < float(
                 pole["pole_mounting_shank_axial_length_mm"]
             )

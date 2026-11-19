@@ -14,6 +14,7 @@ from temsim.component_keys import APERTURE_KEYS, FIXED_APERTURE_KEYS
 from temsim.magnetic_circuits import circuit_channels, is_custom_mechanical_part, optical_owner, part_data
 from temsim.part_materials import MATERIAL_PROFILES, is_magnetostatic_body
 from temsim.parameter_semantics import describe_parameter
+from temsim.pole_geometry import RECESSED_FIELDS
 from temsim.simulation_modes import MODE_BY_KEY
 
 
@@ -46,6 +47,7 @@ _NONLINEAR = "axisymmetric_nonlinear_fem"
 _AXIAL_EXTENTS = {"length_mm", "local_start_z_mm", "local_end_z_mm"}
 _SPLIT_FIELDS = {f"{side}_yoke_{edge}_local_z_mm" for side in ("upper", "lower") for edge in ("start", "end")}
 _FEM_FIELDS = _AXIAL_EXTENTS | {
+    *RECESSED_FIELDS,
     "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm",
     "mechanical_bore_diameter_mm", "mechanical_tip_diameter_mm",
     "magnetic_radial_profile_mm", "material_intervals_mm",

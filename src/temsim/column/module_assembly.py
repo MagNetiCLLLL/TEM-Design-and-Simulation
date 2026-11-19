@@ -156,7 +156,7 @@ class VacuumBoreSegment:
 
 @dataclass(frozen=True)
 class VacuumLinerSegment:
-    """One non-magnetic tube surrounding an electron-accessible bore."""
+    """A passive tube surrounding the electron-accessible bore in the column model."""
 
     key: str
     name: str

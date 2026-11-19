@@ -147,6 +147,11 @@ def test_actual_objective_pole_has_connector_shank_shoulder_nose_and_open_bore(s
                   outside + direction * part["pole_vacuum_connector_axial_length_mm"],
                   outside + direction * part["pole_mounting_shank_axial_length_mm"],
                   face - direction * part["pole_nose_axial_length_mm"]}
+    if side == "upper":
+        rear = outside + part["pole_mounting_shank_axial_length_mm"]
+        expected_z.update((rear + part["pole_rear_flange_thickness_mm"], rear + part["pole_rear_recess_depth_mm"],
+                           face - part["pole_nose_axial_length_mm"] - part["pole_barrel_bevel_axial_length_mm"],
+                           face - part["pole_nose_knee_axial_length_mm"]))
     assert set(mesh.vertices[:, 2]) == expected_z
 
 

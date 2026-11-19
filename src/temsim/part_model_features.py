@@ -13,6 +13,7 @@ import math
 from numbers import Integral, Real
 
 import numpy as np
+from temsim.pole_geometry import RECESSED_AXIAL_FIELDS, RECESSED_OUTER_DIAMETERS
 
 
 def _number(value, label, *, positive=False):
@@ -160,16 +161,17 @@ def annotate_legacy_mesh(mesh, part, by_key=None):
     axial_field = ("winding_axial_length_mm" if copper_length else
                    "mechanical_coil_length_mm" if station_length else "length_mm")
     axial = _paths(part, (axial_field, "pole_nose_axial_length_mm", "pole_face_land_axial_thickness_mm", "pole_mounting_shank_axial_length_mm",
-                          "pole_vacuum_connector_axial_length_mm", "plate_thickness_mm"))
+                          "pole_vacuum_connector_axial_length_mm", "plate_thickness_mm", *RECESSED_AXIAL_FIELDS))
     if station_length:
         axial += tuple(("parts", part["key"], "interaction_centers_local_z_mm", i)
                        for i in range(len(part.get("interaction_centers_local_z_mm", ()))))
     outer = _paths(part, ("mechanical_outer_diameter_mm", "mechanical_outer_radius_mm", "outer_diameter_mm",
                           "outer_width_mm", "mechanical_tip_diameter_mm", "pole_stem_outer_diameter_mm",
-                          "pole_vacuum_connector_outer_diameter_mm", "pole_nose_axial_length_mm", "pole_face_land_axial_thickness_mm"))
+                          "pole_vacuum_connector_outer_diameter_mm", "pole_nose_axial_length_mm", "pole_face_land_axial_thickness_mm",
+                          *RECESSED_OUTER_DIAMETERS))
     inner = _paths(part, ("mechanical_inner_diameter_mm", "mechanical_bore_diameter_mm", "bore_diameter_mm",
                           "mechanical_clear_bore_diameter_mm", "mechanical_bore_radius_mm", "clear_bore_diameter_mm",
-                          "inner_diameter_mm", "pole_mounting_shank_inner_diameter_mm"))
+                          "inner_diameter_mm", "pole_mounting_shank_inner_diameter_mm", "pole_rear_recess_diameter_mm"))
     from temsim.optics.electron_gun.tip_assembly import is_tip_part
     if is_tip_part(part):
         outer = _paths(part, ("tip_radius_nm", "tip_cone_half_angle_deg", "length_mm"))

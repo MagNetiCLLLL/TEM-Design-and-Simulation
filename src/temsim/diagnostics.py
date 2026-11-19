@@ -9,6 +9,7 @@ import numpy as np
 
 from temsim.component_keys import CONDENSER_LENS_KEYS
 from temsim.component_representation import non_material_role, representation_note
+from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE, installed_objective_section
 from temsim.optics.lens_focal_length import focal_length_mm
 from temsim.optics.magnetic_lens_aberration import spherical_aberration_mm
 from temsim.physics.core import electron, fields
@@ -60,6 +61,7 @@ class PhysicalLayoutRecord:
     excitation_enabled: bool | None
     layout_role: str = ""
     representation_note: str = ""
+    pole_section_zr_mm: tuple[tuple[float, float], ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -259,6 +261,10 @@ def physical_layout_records(result) -> tuple[PhysicalLayoutRecord, ...]:
                 "mechanical_tip_diameter_mm",
                 part.data.get("pole_piece_tip_diameter_mm", 0.0),
             )), 0.0),
+            pole_section_zr_mm=(installed_objective_section(part)
+                                if part.data.get("pole_piece_geometry_style") in {
+                                    RECESSED_OBJECTIVE_STYLE, "objective_vertical_back_inserted_shank_tapered_nose"
+                                } else ()),
             pole_piece_geometry_style=str(part.data.get(
                 "pole_piece_geometry_style", "",
             )),

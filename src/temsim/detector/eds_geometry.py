@@ -287,8 +287,12 @@ def assess_axisymmetric_pole_centerline(
     pole_outer_diameter_mm: float,
     pole_nose_axial_length_mm: float,
     requested_radial_margin_mm: float = 0.0,
+    section_from_face_zr_mm=(),
 ) -> AxisymmetricPoleCenterlineAssessment:
-    """Assess one straight EDS centre ray against a truncated-cone pole.
+    """Assess the outer clearance of a centre ray against a meridional section.
+
+    Section vertices use axial distance behind the specimen-side face and
+    radius in mm. Omitting the section selects the legacy single cone.
 
     The sample is assumed to lie at the centre of a symmetric pole gap.  The
     ray elevation is measured from the sample plane.  Because translating a
@@ -319,20 +323,31 @@ def assess_axisymmetric_pole_centerline(
     half_gap = 0.5 * gap
     ray_at_face = half_gap / tangent
     ray_at_shoulder = (half_gap + nose) / tangent
-    face_clearance = ray_at_face - 0.5 * tip - margin
-    shoulder_clearance = ray_at_shoulder - 0.5 * outer - margin
+    face_radius, shoulder_radius = 0.5 * tip, 0.5 * outer
+    if len(section_from_face_zr_mm):
+        from temsim.pole_geometry import section_radial_bands
+        bands = section_radial_bands(section_from_face_zr_mm)
+        face_radius = max(band.outer0 for band in bands if band.z0 == 0)
+        shoulder_radius = max(
+            band.outer0 + (band.outer1 - band.outer0) * (nose - band.z0) / (band.z1 - band.z0)
+            for band in bands if band.z0 <= nose <= band.z1
+        )
+        # Both the ray and each face are linear between successive vertices.
+        minimum = min((half_gap + z) / tangent - r - margin for z, r in section_from_face_zr_mm)
+    else:
+        minimum = min(ray_at_face - face_radius, ray_at_shoulder - shoulder_radius) - margin
+    face_clearance = ray_at_face - face_radius - margin
+    shoulder_clearance = ray_at_shoulder - shoulder_radius - margin
     return AxisymmetricPoleCenterlineAssessment(
         ray_radius_at_face_mm=ray_at_face,
         ray_radius_at_shoulder_mm=ray_at_shoulder,
         face_radial_clearance_mm=face_clearance,
         shoulder_radial_clearance_mm=shoulder_clearance,
-        minimum_radial_clearance_mm=min(
-            face_clearance, shoulder_clearance
-        ),
+        minimum_radial_clearance_mm=minimum,
         maximum_tip_diameter_mm_for_margin=2.0 * (
             ray_at_face - margin
         ),
         minimum_nose_axial_length_mm_for_margin=(
-            (0.5 * outer + margin) * tangent - half_gap
+            (shoulder_radius + margin) * tangent - half_gap
         ),
     )

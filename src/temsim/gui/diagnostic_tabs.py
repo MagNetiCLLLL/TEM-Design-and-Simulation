@@ -58,6 +58,7 @@ from temsim.diagnostics import (
     vacuum_bore_plot_points,
 )
 from temsim.detector.plane_image import detector_response_image
+from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE
 from temsim.gui.beam_display_source import downstream_display_branches
 from temsim.gui.beam_tracking_modes import branch_interaction_style
 from temsim.physics.ray_identity import branch_identity
@@ -1553,7 +1554,9 @@ class PhysicalLayoutView(QWidget):
             shoulder_z = start + taper_length
             face_z = start
         style = str(record.pole_piece_geometry_style)
-        if style == "objective_vertical_back_inserted_shank_tapered_nose":
+        if style == RECESSED_OBJECTIVE_STYLE:
+            shape_name = "Upper objective pole with a hollow stem, recessed flange and two-stage nose"
+        elif style == "objective_vertical_back_inserted_shank_tapered_nose":
             shape_name = (
                 "Objective pole piece: inserted mounting shank / shoulder / "
                 "tapered nose"
@@ -1569,12 +1572,17 @@ class PhysicalLayoutView(QWidget):
             f"Z {start:.6g}–{end:.6g} mm\n"
             f"beam-path bore ID {record.bore_diameter_mm:.6g} mm | "
             f"tip OD {2.0 * tip:.6g} mm"
-            "\nThe bore is open vacuum space; a separately drawn thin "
-            "sleeve is the non-magnetic vacuum liner tube."
+            "\nThe bore is open vacuum space."
         )
         if configured_nose > 0.0:
             tooltip += f"\nNose axial length {configured_nose:.6g} mm"
-        if record.pole_mounting_shank_axial_length_mm > 0.0:
+        if style == RECESSED_OBJECTIVE_STYLE:
+            tooltip += (
+                f"\nStem OD {record.pole_stem_outer_diameter_mm:g} mm, "
+                f"projection above rear flange {record.pole_mounting_shank_axial_length_mm:g} mm"
+                "\nThe separate vacuum tube meets the tail. Its magnetic response is unverified."
+            )
+        elif record.pole_mounting_shank_axial_length_mm > 0.0:
             tooltip += (
                 "\nMounting shank "
                 f"ID {record.pole_mounting_shank_inner_diameter_mm:.6g} mm | "
@@ -1585,7 +1593,7 @@ class PhysicalLayoutView(QWidget):
         if record.pole_vacuum_connector_axial_length_mm > 0.0:
             tooltip += (
                 "\nVacuum connector tail "
-                f"ID {record.bore_diameter_mm:.6g} mm | "
+                f"entrance ID {record.pole_mounting_shank_inner_diameter_mm:.6g} mm | "
                 f"OD {record.pole_vacuum_connector_outer_diameter_mm:.6g} "
                 "mm | axial length "
                 f"{record.pole_vacuum_connector_axial_length_mm:.6g} mm"
@@ -1602,47 +1610,8 @@ class PhysicalLayoutView(QWidget):
             )
         rgb = pg.mkColor(colour)
         for sign in (-1.0, 1.0):
-            if style == "objective_vertical_back_inserted_shank_tapered_nose":
-                shank_outer = 0.5 * float(
-                    record.pole_stem_outer_diameter_mm
-                )
-                shank_inner = 0.5 * float(
-                    record.pole_mounting_shank_inner_diameter_mm
-                )
-                insertion = min(
-                    float(record.pole_mounting_shank_axial_length_mm),
-                    max(length - taper_length - 0.001, 0.0),
-                )
-                direction = 1.0 if face_at_end else -1.0
-                mounting_end_z = outside_z + direction * insertion
-                connector_outer = min(
-                    0.5 * float(
-                        record.pole_vacuum_connector_outer_diameter_mm
-                    ),
-                    shank_outer,
-                )
-                connector_length = min(
-                    float(record.pole_vacuum_connector_axial_length_mm),
-                    max(insertion - 0.001, 0.0),
-                )
-                connector_end_z = outside_z + direction * connector_length
-                if connector_outer <= shank_inner or connector_length <= 0.0:
-                    connector_outer = shank_outer
-                    connector_end_z = outside_z
-                points = QPolygonF([
-                    QPointF(outside_z, sign * shank_inner),
-                    QPointF(outside_z, sign * connector_outer),
-                    QPointF(connector_end_z, sign * connector_outer),
-                    QPointF(connector_end_z, sign * shank_outer),
-                    QPointF(mounting_end_z, sign * shank_outer),
-                    QPointF(mounting_end_z, sign * outer),
-                    QPointF(shoulder_z, sign * outer),
-                    QPointF(face_z, sign * tip),
-                    QPointF(face_z, sign * bore),
-                    QPointF(mounting_end_z, sign * bore),
-                    QPointF(mounting_end_z, sign * shank_inner),
-                    QPointF(connector_end_z, sign * shank_inner),
-                ])
+            if record.pole_section_zr_mm:
+                points = QPolygonF([QPointF(z, sign * r) for z, r in record.pole_section_zr_mm])
             elif style == "objective_mushroom_bore_stem":
                 stem = 0.5 * float(record.pole_stem_outer_diameter_mm)
                 stem = min(max(stem, bore), outer)
@@ -2237,30 +2206,16 @@ class PhysicalLayoutView(QWidget):
         lower = self._record_by_key.get("objective_lower_pole")
         if upper is None or lower is None:
             return None
-        noses = []
-        for pole in (upper, lower):
-            configured = float(pole.pole_nose_axial_length_mm)
-            noses.append(
-                configured
-                if configured > 0.0
-                else 0.38 * max(float(pole.end_z_mm - pole.start_z_mm), 0.0)
-            )
+        # Positive take-off is towards the gun, so this ray sees the upper pole.
+        nose = upper.pole_nose_axial_length_mm or 0.38 * (upper.end_z_mm - upper.start_z_mm)
         return assess_axisymmetric_pole_centerline(
             takeoff_angle_deg=geometry.takeoff_angle_deg,
             pole_gap_mm=float(lower.start_z_mm - upper.end_z_mm),
-            pole_bore_diameter_mm=max(
-                float(upper.bore_diameter_mm),
-                float(lower.bore_diameter_mm),
-            ),
-            pole_tip_diameter_mm=max(
-                float(upper.pole_tip_diameter_mm),
-                float(lower.pole_tip_diameter_mm),
-            ),
-            pole_outer_diameter_mm=max(
-                float(upper.outer_diameter_mm),
-                float(lower.outer_diameter_mm),
-            ),
-            pole_nose_axial_length_mm=min(noses),
+            pole_bore_diameter_mm=upper.mechanical_bore_diameter_mm,
+            pole_tip_diameter_mm=upper.pole_tip_diameter_mm,
+            pole_outer_diameter_mm=upper.outer_diameter_mm,
+            pole_nose_axial_length_mm=nose,
+            section_from_face_zr_mm=[(upper.end_z_mm - z, r) for z, r in upper.pole_section_zr_mm],
         )
 
     def _add_eds_detector_array_schematic(self) -> None:
@@ -2306,15 +2261,9 @@ class PhysicalLayoutView(QWidget):
                 f"minimum radial clearance {pole_assessment.minimum_radial_clearance_mm:.4g} "
                 "mm in the axisymmetric meridional model ("
                 f"{pole_assessment.face_radial_clearance_mm:.4g} mm at the "
-                "flat face; "
+                "flat face and "
                 f"{pole_assessment.shoulder_radial_clearance_mm:.4g} mm at "
-                "the cone shoulder). At the retained gap and pole OD, zero "
-                "clearance requires tip OD <= "
-                f"{pole_assessment.maximum_tip_diameter_mm_for_margin:.4g} "
-                "mm and nose length >= "
-                f"{pole_assessment.minimum_nose_axial_length_mm_for_margin:.4g} "
-                "mm. Translating a detector along the same take-off ray "
-                "does not change these intersections.\n"
+                "the shoulder).\n"
             )
         tooltip = (
             "EDS detector array\n"
@@ -3925,14 +3874,10 @@ class PhysicalLayoutView(QWidget):
         layout_detail = (
             "External magnetic-lens housings use the provisional "
             f"{column_od_text} column OD; the Mini Condenser is an explicit "
-            "radially nested internal-lens exception. Objective pole pieces "
-            "use a thin straight mounting shank whose outer boundary "
-            "coincides with the Objective coil bore, followed by a wider "
-            "shoulder and tapered nose; condenser pole pieces form an embedded "
-            "hourglass around the beam-path bore. The white bore boundary is "
-            "open vacuum space; the thin grey sleeve is the separate "
-            "non-magnetic vacuum liner tube. Objective mechanics are split "
-            "into upper/lower lenses at the pole gap. The transverse stage "
+            "radially nested internal-lens exception. The objective pole "
+            "sections show the installed contours on each side of the specimen. "
+            "The vacuum tube meets the rear of the upper pole. The white "
+            "boundary marks the clear beam passage. The transverse stage "
             "and nested sample holder are "
             "schematic; the holder tip marks the current sample plane. "
             "Apertures separate the silver Pt perforated strip, white screw "

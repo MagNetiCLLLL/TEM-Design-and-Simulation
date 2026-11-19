@@ -27,6 +27,7 @@ from typing import Mapping
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
 from scipy.optimize import minimize_scalar
+from temsim.pole_geometry import RECESSED_FIELDS
 
 
 class FieldMapError(ValueError):
@@ -200,6 +201,7 @@ _GEOMETRY_ATTRIBUTES = (
 )
 
 _PART_GEOMETRY_FIELDS = frozenset({
+    *RECESSED_FIELDS,
     "local_start_z_mm",
     "local_center_z_mm",
     "local_end_z_mm",
