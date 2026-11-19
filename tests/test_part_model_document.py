@@ -512,12 +512,13 @@ def test_manifest_editor_exposes_zero_pose_and_preserves_legacy_when_one_angle_c
 
 
 def test_existing_array_dimensions_are_updated_by_index(document):
-    key = "intermediate_lens_upper_pole"
-    field = "pole_root_fillet_radius_range_mm"
-    original = list(document.part(key)[field])
-    document.set_dimension(("parts", key, field, 0), 2.5)
-    assert document.part(key)[field] == [2.5, original[1]]
-    assert document.updates() == {("parts", key, field): [2.5, original[1]]}
+    key = "projector_lens_1_upper_pole"
+    field = "magnetic_radial_profile_mm"
+    expected = deepcopy(document.part(key)[field])
+    expected[0][1] = 20.5
+    document.set_dimension(("parts", key, field, 0, 1), 20.5)
+    assert document.part(key)[field] == expected
+    assert document.updates() == {("parts", key, field): expected}
 
 
 def test_source_change_is_detected_but_save_copy_can_preserve_draft(document, tmp_path):

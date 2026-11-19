@@ -58,7 +58,8 @@ def test_legacy_nonzero_channel_envelopes_remain_inspectable_without_solids(key)
     assert all(field.meaning.category_label == "Channel / reference metadata"
                for field in stored_fields)
     if column_pose_kind(document["parts"][0]) == "field":
-        assert {field.name for field in pose_fields} == set(PHYSICAL_POSE_FIELDS)
+        # A zero legacy Z rotation is hidden alongside the current azimuth controls.
+        assert {field.name for field in pose_fields} == set(PHYSICAL_POSE_FIELDS) - {"rotation_z_mrad"}
         assert all(field.editable and field.label.startswith("Field ")
                    and field.meaning.category == "placement" for field in pose_fields)
         assert all(field.value == 0.0 for field in pose_fields)

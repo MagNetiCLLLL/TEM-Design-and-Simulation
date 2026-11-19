@@ -14,7 +14,7 @@ from types import MappingProxyType
 
 import numpy as np
 
-from temsim.component_representation import non_material_role, representation_note
+from temsim.component_representation import is_reference_without_material, representation_note
 from temsim.part_model_3d import TriangleMesh, _extent, _segments, part_model_from_document
 from temsim.part_model_apertures import _opening, is_strip_aperture
 from temsim.part_materials import configured_region_colour
@@ -164,7 +164,7 @@ def _global_mesh(mesh, shift):
 
 def _omission_reason(part, physical_parent_keys):
     row = part.data
-    if non_material_role(row):
+    if is_reference_without_material(row):
         return representation_note(row)
     if supports_energy_filter_part(row):
         return None
@@ -207,7 +207,7 @@ def assembly_model_from_assembly(assembly, *, runtime_values=None, angular_segme
     physical_parent_keys = set()
     for part in parts:
         if (part.data.get("mechanical_profile") and not part.data.get("branch_path_only")
-                and not non_material_role(part.data)
+                and not is_reference_without_material(part.data)
                 and "reference_plane" not in str(part.data.get("mechanical_profile"))):
             if part.parent_key:
                 physical_parent_keys.add(part.parent_key)

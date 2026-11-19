@@ -112,6 +112,83 @@ def _rotation(angle_deg):
     return [[c, -s, 0.], [s, c, 0.], [0., 0., 1.]]
 
 
+def _image_pin_dimensions(inner, outer):
+    width = outer - inner
+    winding_start, winding_end = inner + .28*width, inner + .69*width
+    available = min(2*winding_start*math.tan(math.pi/6), .6*width)
+    return inner + .78*width, winding_start, winding_end, available
+
+
+def pole_root_sleeve_solids(part):
+    """Six individually seated ferrules at the circular yoke, outside the coil ends."""
+    fields = ("pole_root_sleeve_depth_mm", "pole_root_sleeve_wall_mm", "pole_root_sleeve_geometry_source")
+    if not any(name in part for name in fields):
+        return ()
+    if part.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+        return ()
+    key = part.get("geometry_template_key", part["key"])
+    depth, wall = (_number(part, name) for name in fields[:2])
+    note = part.get(fields[2])
+    if not isinstance(note, str) or not note.strip() or min(depth, wall) <= 0:
+        raise ValueError(f"{key}: pole root sleeves require positive dimensions and a construction source")
+    start, end, inner, outer = _envelope(part)
+    if key in {"probe_hp1_hexapole", "probe_hp2_hexapole"}:
+        from temsim.probe_hexapole_geometry import probe_hexapole_dimensions
+        d = probe_hexapole_dimensions(part)
+        yoke = outer - d["yoke_thickness_mm"]
+        width, height = d["root_width_mm"], d["stem_height_mm"]
+        winding_end = inner + d["coil_radial_inset_mm"] + d["coil_radial_length_mm"]
+        winding_end += float(part.get("hexapole_support_flange_thickness_mm", 0.))
+    elif key in {"image_hp1_hexapole", "image_hp2_hexapole", "image_hp3_hexapole"}:
+        yoke, _, winding_end, available = _image_pin_dimensions(inner, outer)
+        width, height = .25*available, .40*(end-start)
+    else:
+        raise ValueError(f"{key}: pole root sleeves require a principal corrector hexapole")
+    seat = yoke - depth
+    half_width = width/2 + wall
+    if (seat <= winding_end or math.hypot(seat, half_width) >= yoke
+            or height + 2*wall > end-start or half_width >= seat*math.tan(math.pi/6)):
+        raise ValueError(f"{key}: pole root sleeves must seat on the yoke and clear the winding, former and adjacent poles")
+    centre = ((seat+yoke)/2, 0., (start+end)/2)
+    sleeve = difference(box(centre, (depth, width+2*wall, height+2*wall)),
+                        box(centre, (2*depth, width, height)),
+                        annulus(start, end, yoke, outer+width))
+    return tuple(SolidSpec(str(part["key"]), f"pole_root_sleeve_{index+1}", "soft_magnetic",
+                           transformed(sleeve, rotation=_rotation(60*index)),
+                           ("docs/references/column-magnetic-hardware/README.md",),
+                           status="engineering_reconstruction", note=note,
+                           parameters={"seat_start_radius_mm": seat, "yoke_inner_radius_mm": yoke,
+                                       "wall_mm": wall, "pin_width_mm": width, "pin_height_mm": height})
+                 for index in range(6))
+
+
+def validate_auxiliary_return_sleeve(part, by_key):
+    if part.get("mechanical_part_role") != "auxiliary_return_sleeve":
+        return
+    if part.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+        return
+    from temsim.multipole_winding import multipole_winding_envelopes
+
+    hosts = part.get("mechanical_shared_winding_keys")
+    if (not isinstance(hosts, (tuple, list)) or not hosts or any(not isinstance(k, str) for k in hosts)
+            or len(set(hosts)) != len(hosts) or part.get("parent_key") not in hosts):
+        raise ValueError(f"{part['key']}: an auxiliary sleeve needs distinct winding hosts including its parent")
+    start, end, inner, outer = _envelope(part)
+    for key in hosts:
+        host = by_key.get(key)
+        if host and host.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+            continue
+        packs = multipole_winding_envelopes(host, by_key) if host else ()
+        if not packs or outer > float(host["mechanical_outer_diameter_mm"])/2:
+            raise ValueError(f"{part['key']}: auxiliary return sleeve requires an enclosing station for {key}")
+        for pack in packs:
+            z = pack["center_z_mm"]
+            half = pack["outer_height_mm"]/2
+            corner = math.hypot(pack["radial_end_mm"], pack["outer_width_mm"]/2)
+            if inner <= corner or not max(start, z-half) < min(end, z+half):
+                raise ValueError(f"{part['key']}: auxiliary return sleeve must surround and clear the winding pack of {key}")
+
+
 def _configured_envelope(part):
     """Retain the saved component extent without inventing its internals."""
     start, end, inner, outer = _envelope(part)
@@ -139,10 +216,8 @@ def _cescor_hexapole_solids(part, *, image_family=False):
     pole_length = (_number(part, "effective_length_mm") if image_family else .8*length)
     if not 0.0 < pole_length <= length:
         raise ValueError(f"{part['key']}: hexapole pole allocation must fit its saved envelope")
-    yoke_inner = inner+.78*width
+    yoke_inner, coil_start, coil_end, available = _image_pin_dimensions(inner, outer)
     shoe_outer, stem_start = inner+.20*width, inner+.16*width
-    coil_start, coil_end = inner+.28*width, inner+.69*width
-    available = min(2*coil_start*math.tan(math.pi/6), .6*width)
     params = dict(physical_pole_count=6, coil_count=6,
         topology_source="Mueller et al. 2006, p.443; p.444 Fig.3 real hexapole photograph",
         dimension_status="Internal proportions are model reconstruction; published 152 mm OD and pole dimensions are not used",
@@ -191,7 +266,7 @@ def _cescor_hexapole_solids(part, *, image_family=False):
             note=(NOTE + " CETCOR pin/coil/yoke structure uses a documented CEOS family inference. "
                   "The CETCOR2008 mechanical figure was unavailable; this is not a verified OEM cross-section. "
                   "No DPH winding, QPH, mirror plate or optional support is inferred.")) for s in result]
-    return tuple(result)
+    return tuple(result) + pole_root_sleeve_solids(part)
 
 
 def _probe_hexapole_solids(part):
@@ -261,7 +336,7 @@ def _probe_hexapole_solids(part):
         result.extend(detailed_windings)
     from temsim.cad_probe_hexapole_support import hexapole_support_solids
     result.extend(hexapole_support_solids(part))
-    return tuple(result)
+    return tuple(result) + pole_root_sleeve_solids(part)
 
 
 def _stigmator_windings(part):
@@ -381,7 +456,7 @@ def multipole_solids(part, by_key=None, *, runtime=None) -> tuple[SolidSpec, ...
             # the existing family reconstruction without inventing extra coils.
             values = tuple(replace(value,
                 evidence=(*value.evidence, BCOR_SOURCE, BCOR_PATENT_SOURCE),
-                note=(NOTE + " B-COR optical topology; six-pin internal construction "
+                note=(value.note + " B-COR optical topology; six-pin internal construction "
                       "uses the existing CEOS family reconstruction, not verified "
                       "B-COR manufacturing geometry. No extra DPH winding is inferred."),
                 parameters={**value.parameters,

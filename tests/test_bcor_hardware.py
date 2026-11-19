@@ -32,16 +32,23 @@ def test_bcor_is_valid_separate_module_and_keeps_upstream_parameters(baseline, f
     assert document["module"]["image_corrector_design"] == "bcor"
     assert "not_aberration_qualified" in document["module"]["corrector_qualification"]
     old, new = ({row["key"]: row for row in doc["parts"]} for doc in (original, document))
+    probe = {row["key"]: row for row in raw("C3_ProbeCorrector.toml")["parts"]}
     for key, part in old.items():
         if key.startswith("image_"):
             continue
-        if filename == "C3_ProbeCorrector_BCOR.toml" and key == "ac_deflector":
-            # The calibrated Probe Corrector scan pair moved in 0b346eb;
-            # the older CETCOR combination retained its previous location.
-            part = next(row for row in raw("C3_ProbeCorrector.toml")["parts"]
-                        if row["key"] == key)
         before, after = deepcopy(part), deepcopy(new[key])
-        before.pop("order"); after.pop("order")
+        if filename == "C3_ProbeCorrector_BCOR.toml":
+            # Its calibrated scan station and carrier follow the probe-only axial layout.
+            # Both combined columns use the same remaining mechanical components.
+            scan_fields = ("local_start_z_mm", "local_center_z_mm", "local_end_z_mm",
+                           "optical_reference_local_z_mm", "interaction_centers_local_z_mm",
+                           "ideal_transverse_current_matrix_a_per_unit", "mechanical_overlap_reason")
+            carrier_fields = ("local_start_z_mm", "local_center_z_mm", "length_mm")
+            for field in {"ac_deflector": scan_fields,
+                          "objective_upper_electronics_sleeve": carrier_fields}.get(key, ()):
+                before[field] = probe[key][field]
+        before.pop("order")
+        after.pop("order")
         assert before == after, key
     assert document["ports"]["exit"]["local_z_mm"] == pytest.approx(
         original["ports"]["exit"]["local_z_mm"] + 144.)
@@ -60,7 +67,8 @@ def test_new_relay_keeps_complete_lens_material_and_explicit_hp_field(filename, 
         part = rows[key]
         children = {row["key"] for row in rows.values() if row.get("parent_key") == key}
         assert children == {key + suffix for suffix in
-            ("_upper_pole", "_lower_pole", "_housing", "_yoke", "_excitation_coil")}
+            ("_upper_pole", "_lower_pole", "_housing", "_yoke", "_excitation_coil",
+             "_pole_sleeves", "_return_plates")}
         for child in children:
             assert posed_solids(rows[child], rows)
         assert part["mechanical_outer_diameter_mm"] == 180.
@@ -70,7 +78,8 @@ def test_new_relay_keeps_complete_lens_material_and_explicit_hp_field(filename, 
     assert 0 < abs(hp["default_strength_m3"]) <= hp["maximum_strength_m3"]
     assert np.isfinite(hp["orientation_rad"])
     specs = posed_solids(hp, rows)
-    assert len(specs) == 13
+    assert len(specs) == 19
+    assert len([s for s in specs if s.region.startswith("pole_root_sleeve_")]) == 6
     assert len([s for s in specs if s.region.startswith("pole_pin_")]) == 6
     assert len([s for s in specs if s.region.startswith("coil_")]) == 6
     assert all("B-COR" in s.note and "not verified" in s.note for s in specs)

@@ -14,7 +14,9 @@ from types import MappingProxyType
 import numpy as np
 
 from temsim.assembly_model_3d import assembly_model_from_assembly
-from temsim.component_representation import SHARED_DEFLECTOR_HOSTS, non_material_role, representation_note
+from temsim.component_representation import (
+    SHARED_DEFLECTOR_HOSTS, belongs_to_material_selection, is_reference_without_material, representation_note,
+)
 from temsim.part_model_3d import TriangleMesh, _segments
 
 
@@ -81,17 +83,17 @@ def _runtime_geometry(state):
 
 def _physical_keys(component_keys, parts):
     selected, notes = set(), []
+    component_keys = tuple(map(str, component_keys))
+    requested = set(component_keys)
     for key in component_keys:
-        key = str(key)
         row = parts.get(key)
         if row is None:
             continue
-        role = non_material_role(row.data)
-        if role:
+        if is_reference_without_material(row.data):
             host = SHARED_DEFLECTOR_HOSTS.get(key)
             if not host and row.data.get("physical_host_status") == "modelled":
                 host = row.data.get("physical_host_key")
-            if host and host in parts and not non_material_role(parts[host].data):
+            if host and host in parts and not is_reference_without_material(parts[host].data):
                 selected.add(str(host))
                 notes.append(f"{key}: shared material host {host}; no duplicate channel body.")
             else:
@@ -102,9 +104,10 @@ def _physical_keys(component_keys, parts):
     # part_model_from_document(include_children=True), restricted to active
     # resolved parts. Optical-reference bindings alone are not material hosts.
     while True:
-        descendants = {key for key, part in parts.items() if (
-            part.parent_key in selected or selected.intersection(part.data.get("magnetic_lens_keys", ())))
-            and not non_material_role(part.data)}
+        descendants = {key for key, part in parts.items()
+                       if (belongs_to_material_selection(part.data, selected)
+                           or requested.intersection(part.data.get("mechanical_shared_winding_keys", ())))
+                       and not is_reference_without_material(part.data)}
         if descendants <= selected:
             break
         selected.update(descendants)

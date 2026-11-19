@@ -28,6 +28,11 @@ copies outside the repository; pulling the removal can delete those copies.
 
 ## Research checkpoints
 
+- Locate the round poles, beam-side sleeves, corrector pole pins and shared
+  returns in two installed assemblies. The atlas includes axial and transverse
+  sections, selectable 3D solids and the evidence for each reconstruction.
+  [Column magnetic hardware](column-magnetic-hardware/README.md)
+
 - [Ronchigram methods and TEM simulator integration](ronchigram-method-integration-2026-11-09.md):
   source-checked method review, executed-wave integration, pupil and detector
   ownership, probe-quality definitions, and preservation of intrinsic versus

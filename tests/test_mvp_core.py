@@ -24,11 +24,12 @@ PROJECTOR_RECONSTRUCTION = {
         "coil_id": 60.0,
         "coil_od": 132.0,
         "coil_length": 90.0,
-        "pole_bore": 21.5,
+        "pole_bores": (66., 40.),
         "clear_bore": 20.0,
         "pole_gap": 4.0,
-        "pole_shoulder_od": 52.0,
-        "pole_nose": 12.0,
+        "material_opening": 23.5,
+        "pole_ods": (140., 52.),
+        "pole_nose": None,
     },
     "intermediate_lens": {
         "center": 252.5,
@@ -40,11 +41,12 @@ PROJECTOR_RECONSTRUCTION = {
         "coil_id": 60.0,
         "coil_od": 132.0,
         "coil_length": 162.0,
-        "pole_bore": 21.5,
+        "pole_bores": (21.5, 21.5),
         "clear_bore": 20.0,
         "pole_gap": 6.0,
-        "pole_shoulder_od": 52.0,
-        "pole_nose": 12.0,
+        "material_opening": 6.,
+        "pole_ods": (52., 52.),
+        "pole_nose": 18.,
     },
     "projector_lens_1": {
         "center": 432.5,
@@ -56,11 +58,12 @@ PROJECTOR_RECONSTRUCTION = {
         "coil_id": 60.0,
         "coil_od": 132.0,
         "coil_length": 108.0,
-        "pole_bore": 21.5,
+        "pole_bores": (40., 40.),
         "clear_bore": 20.0,
         "pole_gap": 5.0,
-        "pole_shoulder_od": 52.0,
-        "pole_nose": 13.0,
+        "material_opening": 40.,
+        "pole_ods": (52., 52.),
+        "pole_nose": None,
     },
     "projector_lens_2": {
         "center": 635.0,
@@ -72,11 +75,12 @@ PROJECTOR_RECONSTRUCTION = {
         "coil_id": 60.0,
         "coil_od": 132.0,
         "coil_length": 162.0,
-        "pole_bore": 21.5,
+        "pole_bores": (21.5, 21.5),
         "clear_bore": 20.0,
         "pole_gap": 7.0,
-        "pole_shoulder_od": 52.0,
-        "pole_nose": 14.0,
+        "material_opening": 7.,
+        "pole_ods": (52., 52.),
+        "pole_nose": 22.,
     },
 }
 
@@ -698,7 +702,7 @@ def test_energy_filter_uses_a_colocated_curvilinear_branch_interface():
     assert interface.data["path_coordinate"] == "curvilinear_s_mm"
 
 
-def test_projector_lenses_form_a_compact_uniform_gap_stack():
+def test_projector_housings_and_beam_side_material_openings():
     catalog = AssemblyCatalog()
     state = default_state()
     assembly = catalog.apply(
@@ -730,7 +734,7 @@ def test_projector_lenses_form_a_compact_uniform_gap_stack():
         assert housing.start_z_mm <= part.start_z_mm
         assert part.end_z_mm <= housing.end_z_mm
         assert lower.start_z_mm - upper.end_z_mm == pytest.approx(
-            PROJECTOR_RECONSTRUCTION[part.key]["pole_gap"]
+            PROJECTOR_RECONSTRUCTION[part.key]["material_opening"]
         )
 
 
@@ -845,26 +849,18 @@ def test_projector_manifests_use_compact_user_defined_envelopes(
         assert housing["local_start_z_mm"] <= coil["local_start_z_mm"]
         assert coil["local_end_z_mm"] <= housing["local_end_z_mm"]
 
-        for pole in poles:
-            assert pole["mechanical_outer_diameter_mm"] == pytest.approx(
-                expected["pole_shoulder_od"]
-            )
-            assert pole["mechanical_bore_diameter_mm"] == pytest.approx(
-                expected["pole_bore"]
-            )
+        for pole, od, bore in zip(poles, expected["pole_ods"], expected["pole_bores"]):
+            assert pole["mechanical_outer_diameter_mm"] == pytest.approx(od)
+            assert pole["mechanical_bore_diameter_mm"] == pytest.approx(bore)
             assert pole["vacuum_inner_diameter_mm"] == pytest.approx(
                 expected["clear_bore"]
             )
-            assert pole["pole_nose_axial_length_mm"] == pytest.approx(
-                expected["pole_nose"]
-            )
-            assert pole["pole_cone_angle_to_axis_deg"] == pytest.approx(63.0)
-            assert pole["pole_face_land_axial_thickness_mm"] == pytest.approx(
-                3.0
-            )
-            assert pole["pole_root_fillet_radius_range_mm"] == pytest.approx(
-                (2.0, 4.0)
-            )
+            if expected["pole_nose"] is None:
+                assert len(pole["magnetic_radial_profile_mm"]) == 2
+                assert lens["pole_gap_role"] == "optical_reference"
+            else:
+                assert pole["pole_nose_axial_length_mm"] == pytest.approx(expected["pole_nose"])
+                assert pole["pole_face_land_axial_thickness_mm"] == pytest.approx(3.)
 
 
 def test_recording_manifest_accepts_nonuniform_nonoverlapping_projector_lens_gap():

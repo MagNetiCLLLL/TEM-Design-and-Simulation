@@ -117,11 +117,14 @@ def test_upstream_deflector_copper_and_seal_keep_positive_gap_at_all_mesh_resolu
     for segments in (32, 64, 128):
         pole = _manifold(pole_spec.shape, segments)
         copper = [s for s in specs if s.material == "copper_winding"]
-        assert len(copper) == 4
+        assert len(copper) == 4 * rows[deflector]["transverse_winding_turn_count_per_coil"]
+        pole_start = rows[lens + "_upper_pole"]["local_start_z_mm"]
         for spec in copper:
             other = _manifold(spec.shape, segments)
             assert (pole ^ other).volume() < 1e-9
-            assert pole.min_gap(other, .3) == pytest.approx(.14, abs=1e-9)
+            clearance = pole_start - (spec.shape["upper_z_mm"] + spec.shape["wire_radius_mm"])
+            assert clearance > .14
+            assert pole.min_gap(other, .3) == pytest.approx(min(.3, clearance), abs=1e-7)
         cap = _manifold(next(s.shape for s in specs if s.region == "downstream_end_cover"), segments)
         assert (pole ^ cap).volume() < 1e-9
         assert pole.min_gap(cap, .3) == pytest.approx(.10, abs=1e-9)

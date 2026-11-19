@@ -31,6 +31,21 @@ def _nonlinear():
                 bh_material=lens_material_defaults()["bh_material"], radial_nodes=16, axial_nodes=24)
 
 
+def _projector_recipes(factory):
+    return {key: factory() for key in ("diffraction_lens", "intermediate_lens", "projector_lens_1", "projector_lens_2")}
+
+
+@pytest.mark.parametrize('key,field', [
+    ('intermediate_lens', 'pole_gap_center_offset_mm'),
+    ('projector_lens_2', 'pole_gap_mm'),
+    ('projector_lens_2_lower_pole', 'pole_back_bore_diameter_mm'),
+])
+def test_shared_projector_face_dimensions_report_their_selected_field_route(parts, key, field):
+    active = _impact(parts, key, field, 'linear_geometry', _projector_recipes(_linear))
+    assert active.active and 'magnetic_field' in active.effects
+    assert 'magnetic_field' not in _impact(parts, key, field, 'analytical').effects
+
+
 def _impact(parts, key, field, mode="ideal", descriptors=None):
     return describe_parameter_impact(parts[key], ("parts", key, field), by_key=parts,
                                      simulation_mode=mode, descriptors=descriptors)
@@ -165,7 +180,7 @@ def test_physical_lens_pose_is_active_but_coil_shape_remains_independent(parts):
 @pytest.mark.parametrize("field", ["length_mm", "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm"])
 def test_original_il_dimensions_enter_configured_fem(parts, mode, recipe, field):
     result = _impact(parts, "intermediate_lens_excitation_coil", field, mode,
-                     {"intermediate_lens": recipe()})
+                     _projector_recipes(recipe))
     assert result.active and result.status == "active"
     assert "magnetic_field" in result.effects
     assert "intermediate_lens" in result.detail
@@ -325,7 +340,7 @@ def test_shared_operator_disagreement_and_missing_nonlinear_members_are_explaine
 
 
 def test_material_assignments_participate_without_inventing_conductivity_or_changing_ni(parts):
-    descriptors = {"intermediate_lens": _linear()}
+    descriptors = _projector_recipes(_linear)
     yoke = _impact(parts, "intermediate_lens_yoke", "material_regions", "linear_geometry", descriptors)
     assert yoke.active and "magnetic_field" in yoke.effects
     ideal = _impact(parts, "intermediate_lens_yoke", "material_regions", "ideal", descriptors)
@@ -344,7 +359,7 @@ def test_material_assignments_participate_without_inventing_conductivity_or_chan
 
 def test_housing_dimensions_enter_fem_only_with_a_magnetic_assignment(parts):
     key = "intermediate_lens_housing"
-    descriptors = {"intermediate_lens": _linear()}
+    descriptors = _projector_recipes(_linear)
     assert _impact(parts, key, "mechanical_outer_diameter_mm", "linear_geometry", descriptors).status == "inactive"
     updated = deepcopy(parts[key])
     updated["material_regions"] = next(iter(part_material_updates(updated, "femm_pure_iron").values()))
@@ -370,10 +385,10 @@ def test_vacuum_context_and_stop_specific_bores_do_not_get_conflated(parts):
 def test_derived_thickness_and_lens_operating_control_have_separate_meanings(parts):
     key = "intermediate_lens_excitation_coil"
     thickness = describe_parameter_impact(parts[key], ("derived", key, "radial_thickness_mm"), by_key=parts,
-                simulation_mode="linear_geometry", descriptors={"intermediate_lens": _linear()})
+                simulation_mode="linear_geometry", descriptors=_projector_recipes(_linear))
     assert thickness.active and "chosen diameter boundary" in thickness.detail
     for mode in ("ideal", "analytical", "linear_geometry", "nonlinear_material", "custom"):
-        descriptors = {"intermediate_lens": _nonlinear() if mode == "nonlinear_material" else _linear()}
+        descriptors = _projector_recipes(_nonlinear if mode == "nonlinear_material" else _linear)
         operating = describe_parameter_impact(parts["intermediate_lens"], ("runtime", "intermediate_lens", "percent"),
                                               by_key=parts, simulation_mode=mode, descriptors=descriptors)
         assert operating.active and "operating" in operating.effects

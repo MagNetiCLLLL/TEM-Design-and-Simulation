@@ -70,7 +70,9 @@ def test_layer_dimensions_must_be_finite(recording_document, role, field, value)
 def test_all_layers_require_ordered_positive_wall_dimensions(recording_document, role, inner, outer):
     _part(recording_document, role).update(
         mechanical_inner_diameter_mm=inner, mechanical_outer_diameter_mm=outer)
-    with pytest.raises(ValueError, match="mechanical diameters require 0 <= ID < OD"):
+    error = (r"mechanical diameters require 0 <= ID < OD" if role != "excitation_coil"
+             else r"winding outer diameter must exceed inner diameter|mechanical_inner_diameter_mm must be a finite positive number")
+    with pytest.raises(ValueError, match=error):
         validate_document(recording_document)
 
 
@@ -177,7 +179,7 @@ def test_objective_split_material_intervals_leave_the_central_gap_empty():
 
 def test_legacy_coil_thickness_recipe_remains_enforced():
     document = read_document(CONFIG_ROOT / "column" / "C3.toml")
-    coil = next(part for part in document["parts"] if part["key"] == "condenser_lens_3_excitation_coil")
-    coil["mechanical_inner_diameter_mm"] = 97.0
+    lens = next(part for part in document["parts"] if part["key"] == "condenser_lens_3")
+    lens["mechanical_coil_radial_thickness_mm"] += .5
     with pytest.raises(ValueError, match="radial thickness must follow"):
         validate_document(document)

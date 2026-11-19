@@ -40,13 +40,17 @@ def test_migration_keeps_all_instance_ids_and_physical_positions(catalog):
     assert new_rows.keys() - old_rows.keys() == {
         "sample_holder", "probe_dph1_coils", "probe_dph2_coils",
         "probe_dp11_coils", "probe_dp21_coils", "probe_dp22_coils",
+        "feg_emitter_enclosure", "feg_rear_insulator", "feg_cathode_holder",
+        "objective_upper_electronics_sleeve", "objective_lower_electronics_sleeve",
+        "dl_il_return_yoke", "il_p1_return_yoke", "p1_p2_return_yoke", "p2_exit_return_yoke",
     }
-    # The historical receipt predates reviewed physical relocations of the gun
-    # DPA, HP alignment deflectors and scan/descan coils. It remains immutable;
-    # it is still authoritative for identities, not the present lens layout.
+    # The archived identities predate the gun tip, extractor and DPA updates,
+    # deflector-package relocations and CM12-style projector iron.
     relocated_since_receipt = {
         "feg_dpa_aperture", "probe_dph1_deflector", "probe_dph2_deflector",
-        "ac_deflector", "descan_deflector",
+        "feg_tip", "feg_extractor", "ac_deflector", "descan_deflector", "image_diffraction_deflector",
+        *(f"{lens}_{side}_pole" for lens in ("diffraction_lens", "intermediate_lens", "projector_lens_1", "projector_lens_2")
+          for side in ("upper", "lower")),
     }
     for key, old in old_rows.items():
         new = new_rows[key]
@@ -83,8 +87,8 @@ def test_composed_module_has_no_duplicate_physical_storage():
     assert len(raw["subassemblies"]) == 3
     assert len(dependencies(path)) == 3
     result = module_manifest.read_document(path)
-    assert len(result["parts"]) == 53
-    assert len({part["key"] for part in result["parts"]}) == 53
+    assert len(result["parts"]) == 57
+    assert len({part["key"] for part in result["parts"]}) == 57
     assert resolved_origins(result) == {"projector_stack": 0, "detector_chamber": 772.5, "iliad_filter": 1211.5}
     restored = storage_documents(raw, result, path)
     for source, document in restored.items():
@@ -224,13 +228,14 @@ def test_independent_save_copy_is_flat_and_detached(catalog, tmp_path):
 
 def test_new_parts_remain_independent_root_additions(catalog):
     draft = PartModelDocument(catalog / MODULE)
+    previous_count = len(draft.document["parts"])
     source_bytes = dependencies(draft.path)
     draft.add_component(make_component(key="test_bracket", center_z_mm=500, length_mm=2))
     draft.save()
     raw = tomllib.loads(draft.path.read_text())
     assert [part["key"] for part in raw["parts"]] == ["test_bracket"]
     assert all(path.read_bytes() == data for path, data in source_bytes.items())
-    assert len(PartModelDocument(draft.path).document["parts"]) == 54
+    assert len(PartModelDocument(draft.path).document["parts"]) == previous_count + 1
 
 
 def test_subassembly_edit_changes_consumed_input_identity(catalog):

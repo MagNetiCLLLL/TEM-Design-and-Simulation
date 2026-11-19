@@ -78,8 +78,9 @@ def test_explicit_material_intervals_preserve_split_envelope_meaning_for_generic
     assert describe_parameter(part, ("parts", "coil", "material_intervals_mm", 0, 1)).category == "physical"
 
 
-def test_actual_pole_fillet_range_is_metadata_not_a_constructed_fillet():
-    poles = [part for path in CONFIGS.rglob("*.toml")
+def test_legacy_pole_fillet_range_is_metadata_not_a_constructed_fillet():
+    baseline = Path(__file__).resolve().parents[1]/"docs/development/wire_area_20261115/validation/installed/configs/subassemblies/projector_stack.toml"
+    poles = [part for path in (*CONFIGS.rglob("*.toml"), baseline)
              for part in tomllib.loads(path.read_text(encoding="utf-8-sig")).get("parts", ())
              if "pole_root_fillet_radius_range_mm" in part]
     assert poles

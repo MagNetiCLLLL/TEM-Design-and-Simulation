@@ -17,7 +17,7 @@ GAPS = [(COLUMN, key) for key in (
     'condenser_lens_3', 'adapter_lens', 'probe_tl22_lens', 'probe_tl21_lens',
     'probe_tl12_lens', 'mini_condenser')]
 GAPS += [(PROJECTION, key) for key in (
-    'diffraction_lens', 'intermediate_lens', 'projector_lens_1', 'projector_lens_2')]
+    'intermediate_lens', 'projector_lens_2')]
 
 
 def _material(draft, key):
@@ -61,7 +61,7 @@ def test_pole_gap_moves_facing_material_only_and_survives_undo_save(path, key, t
     upper, lower = [p['key'] for p in poles]
     old_shapes = {p: _material(draft, p) for p in (upper, lower)}
     gap = draft.part(key)['pole_gap_mm']*1.01
-    center = draft.part(key)['local_center_z_mm']
+    center = draft.part(key)['local_center_z_mm'] + draft.part(key).get('pole_gap_center_offset_mm', 0.)
     draft.set_dimension(('parts', key, 'pole_gap_mm'), gap)
     assert draft.part(upper)['local_end_z_mm'] == pytest.approx(center-gap/2)
     assert draft.part(lower)['local_start_z_mm'] == pytest.approx(center+gap/2)

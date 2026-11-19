@@ -381,6 +381,8 @@ def copied_component_document(document, source, key, new_key, center_z_mm, *, pa
             # Never retain a live field/HP anchor to the original corrector.
             row.pop(binding, None)
         source_parent = source_by_key.get(original.get("parent_key"), {})
+        # A detached sleeve keeps its geometry and has no active winding hosts.
+        row.pop("mechanical_shared_winding_keys", None)
         if row.get("mechanical_cartridge_structure"):
             # The detailed carrier is a self-contained mechanical solid. Its
             # C1/C2 links identify the original shared field assembly, not a

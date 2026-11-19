@@ -128,11 +128,14 @@ def validate_lens_end_hardware(row, by_key=None, *, prefix, label):
         if profile not in {"magnetic_pole_piece", "magnetic_lens_yoke"}:
             continue
         lo, hi = _number(other, "local_start_z_mm"), _number(other, "local_end_z_mm")
-        if not any(max(lo, a) < min(hi, b) for a, b in spans):
+        sections = other.get("material_intervals_mm", ((lo, hi),))
+        if not any(max(start, a) < min(end, b) for start, end in sections for a, b in spans):
             continue
         if profile == "magnetic_pole_piece" and _number(other, "mechanical_outer_diameter_mm") >= inner:
             raise ValueError(f"{row['key']}: {label} end hardware lacks clearance from pole {other['key']}")
-        if profile == "magnetic_lens_yoke" and _number(other, "mechanical_inner_diameter_mm") <= outer:
+        if (profile == "magnetic_lens_yoke"
+                and _number(other, "mechanical_inner_diameter_mm") <= outer
+                and _number(other, "mechanical_outer_diameter_mm") >= inner):
             raise ValueError(f"{row['key']}: {label} end hardware lacks clearance from yoke {other['key']}")
 
 

@@ -1,5 +1,7 @@
 # Internal structure review of TL21 and downstream TL12
 
+The current default correctors include separate magnetic shoulder sleeves and radial end plates on TL21 and TL12. Their contact with the outer yoke is now explicit in CAD. The sections and fit measurements are in the [column magnetic hardware atlas](column-magnetic-hardware/README.md#magnetic-parts-inside-the-spherical-aberration-correctors).
+
 > Follow-up update: this document retains the inspection baseline and validation records from before the three copper-end contact fixes. TL22–DP22, DP21–TL21, and DP11–TL12 were subsequently addressed with explicit copper winding lengths, insulation at both ends, and positive assembly gaps; see the [end-insulation and clearance fix record](probe-contact-isolation-2026-10-21.md) for the current structure and evidence from that work. References below to unresolved contacts and retained copper describe the earlier stage only.
 
 The scope is TL21 and TL12 below TL22 (saved key `probe_tl12_lens`, abbreviated TL1 in earlier material). All lengths are in module-local mm, with +Z downstream. Add 450 mm to convert the default assembly to global coordinates. This work only adds passive mechanical structure, without changing lens positions, pole gaps, excitation directions, strengths, or propagation formulas.

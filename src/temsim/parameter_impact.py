@@ -49,7 +49,7 @@ _SPLIT_FIELDS = {f"{side}_yoke_{edge}_local_z_mm" for side in ("upper", "lower")
 _FEM_FIELDS = _AXIAL_EXTENTS | {
     *RECESSED_FIELDS,
     "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm",
-    "mechanical_bore_diameter_mm", "mechanical_tip_diameter_mm",
+    "mechanical_bore_diameter_mm", "mechanical_tip_diameter_mm", "pole_back_bore_diameter_mm",
     "magnetic_radial_profile_mm", "material_intervals_mm",
     "pole_nose_axial_length_mm", "pole_face_land_axial_thickness_mm", "pole_mounting_shank_axial_length_mm",
     "pole_vacuum_connector_axial_length_mm", "pole_stem_outer_diameter_mm",
@@ -311,7 +311,7 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
                        "effective field thickness and prescribed field calibration do not change. "
                        "The current field model does not solve this winding geometry; this does not establish unchanged real fields.")
     if (kind == "parts" and field in row
-            and field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
+            and field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_", "deflector_support_", "hexapole_support_", "pole_root_sleeve_", "winding_support_"))
             and field.endswith(("_mm", "_deg"))):
         if field.startswith(("mechanical_cartridge_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_")):
             recipes = descriptors or {}
@@ -506,7 +506,9 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
                            "The plate thickness or carrier bore is displayed as saved geometry. Current beam clipping uses the separate "
                            "runtime opening at a hard-edge plane; no finite-thickness plate propagation is modeled.")
     split_parent = profile == _LENS and field in _SPLIT_FIELDS | {"mechanical_coil_axial_inset_mm"}
-    magnetic_geometry = split_parent or (semantics.category != "envelope" and field in _FEM_FIELDS and profile in MATERIAL_PROFILES)
+    bound_gap = (profile == _LENS and 'pole_gap_center_offset_mm' in row
+                 and field in {'pole_gap_mm', 'pole_gap_center_offset_mm'})
+    magnetic_geometry = bound_gap or split_parent or (semantics.category != "envelope" and field in _FEM_FIELDS and profile in MATERIAL_PROFILES)
     if _wall_effect(row, field) and not magnetic_geometry:
         detail = ("The part's vacuum ID and axial extent enter the resolved column-wall clearance profile in every mode. "
                   "Overlapping parts and the continuous tube use the narrower bore, so an edit may be masked. "

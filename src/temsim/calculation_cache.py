@@ -750,18 +750,18 @@ def incident_field_dependencies(state):
     from temsim.instrument_snapshot import encode_instrument
     from temsim.immutable_json import json_digest
     from temsim.lens_pose import has_lens_pose, lens_pose_registration
+    from temsim.physics.lens_field_provider import field_map_recipe, lens_geometry_binding
     from temsim.round_lens_models import round_lens_cache_identity
     round_source = round_lens_cache_identity(state, _POST_SAMPLE_PROJECTION_LENS_KEYS)
     all_z_round_source = (round_source["model"] == "copper_coil"
                           or round_source["gaussian_geometry_coupling"] == "axial_length")
     sample_z = float(state.sample.z_mm)
-    recipes = getattr(state, "lens_field_map_descriptors", {})
-    conservative = bool(recipes) and str(getattr(state, "simulation_mode", "custom")) not in {"ideal", "analytical", "ideal_thin"}
-    assembly = getattr(state, "_resolved_assembly", None)
-    if assembly is not None:
-        from temsim.magnetic_circuits import circuit_channels
-        parts = {p.key: p for p in assembly.parts}
-        conservative = conservative or any(len(circuit_channels(parts, lens.key)) > 1 for lens in state.lenses)
+    # Passive shared iron affects generated or imported geometry-bound fields.
+    # With fixed Gaussian calibration each channel retains its own support.
+    recipes = {key: recipe for key, descriptor in getattr(state, "lens_field_map_descriptors", {}).items()
+               if (recipe := field_map_recipe(descriptor))}
+    conservative = (bool(recipes) and round_source["model"] != "copper_coil"
+                    and str(getattr(state, "simulation_mode", "custom")) not in {"ideal", "analytical", "ideal_thin"})
     rows = []
     for lens in state.lenses:
         if lens.key not in _POST_SAMPLE_PROJECTION_LENS_KEYS:
@@ -783,6 +783,8 @@ def incident_field_dependencies(state):
             if all_z_round_source:
                 row["round_lens_source"] = {**round_source, "sources": [source for source
                     in round_source["sources"] if source["key"] == lens.key]}
+            if conservative and isinstance(recipes.get(lens.key), Mapping) and getattr(state, "_resolved_assembly", None) is not None:
+                row["field_geometry"] = lens_geometry_binding(state, lens.key, lens).geometry_fingerprint
             if registration is not None:
                 # A lens pose can bring the spatial field across the specimen
                 # even when its original mechanical centre remains downstream.

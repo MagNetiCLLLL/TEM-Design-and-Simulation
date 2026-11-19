@@ -19,6 +19,10 @@ def dimension_reference_reason(part, field):
         return ("Retained reference marker. The extraction aperture entrance is derived from "
                 "local_start_z_mm + counterbore_depth_mm in layout and transport; edit those physical dimensions.")
     if native:
+        from temsim.magnetic_geometry import CORRECTOR_SPLIT_RETURNS
+        if (part.get("mechanical_part_role") in CORRECTOR_SPLIT_RETURNS
+                and field in {"length_mm", "local_start_z_mm", "local_center_z_mm", "local_end_z_mm"}):
+            return "Derived axial envelope. Edit the endpoints of the upper and lower material intervals."
         if field == "length_mm" and "stage_centers_z_mm" in part and "electrode_thickness_mm" in part:
             return ("Accelerator installation allocation only. The material is defined by "
                     "stage_centers_z_mm and electrode_thickness_mm, with insulation between stages. "
@@ -61,10 +65,16 @@ def dimension_reference_reason(part, field):
         return ("Installation/field allocation length only. Explicit winding_axial_length_mm "
                 "defines the copper extent about its saved centre; edit Winding axial length "
                 "to resize the material without changing the optical allocation.")
+    if (native and profile == "magnetic_pole_piece" and part.get("magnetic_radial_profile_mm") is not None
+            and field == "mechanical_bore_diameter_mm"):
+        return "Reference bore diameter. Edit the inner radii in magnetic_radial_profile_mm to change this material surface."
     if field == "pole_cone_angle_to_axis_deg" and part.get("mechanical_profile") == "magnetic_pole_piece":
         return ("Reference cone angle only. The material contour is defined by its saved "
                 "bore, outer/tip diameters, nose length and face land; this legacy angle "
                 "does not define a second, potentially inconsistent contour.")
+    if field == "pole_gap_mm" and part.get("pole_gap_role") == "optical_reference":
+        return ("Optical reference length for this channel. The explicit shared iron sections "
+                "define the beam-side openings and working gaps.")
     if field == "pole_gap_mm" and template in {"condenser_lens_1", "condenser_lens_2"}:
         return ("Reference pole gap only: this C1/C2 model declares one pole face, "
                 "not a complete two-pole gap. Edit the explicitly modelled pole dimensions; "

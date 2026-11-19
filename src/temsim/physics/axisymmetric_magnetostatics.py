@@ -50,7 +50,7 @@ def _part_mask(part, r, z):
     data = part["data"]
     start, end = float(part["start_z_mm"]) * 1e-3, float(part["end_z_mm"]) * 1e-3
     from temsim.magnetic_circuits import radial_profile_mm
-    profile = radial_profile_mm(data, (end-start)*1e3)
+    profile = radial_profile_mm(data, (end-start)*1e3, key=part.get("key"))
     if profile is not None:
         offset = (z-start)*1e3
         inner = np.interp(offset, profile[:, 0], profile[:, 1])*1e-3
@@ -162,7 +162,7 @@ def _solve_bound_geometry(geometry_json, settings_json):
         axial_edges.extend(value*1e-3 for interval in intervals for value in interval)
         radial_edges.extend(float(v) * .5e-3 for k, v in p["data"].items()
                             if k in {"mechanical_bore_diameter_mm", "mechanical_tip_diameter_mm", "mechanical_inner_diameter_mm", "mechanical_outer_diameter_mm"})
-        profile = radial_profile_mm(p["data"], p["end_z_mm"]-p["start_z_mm"])
+        profile = radial_profile_mm(p["data"], p["end_z_mm"]-p["start_z_mm"], key=p["key"])
         if profile is not None:
             axial_edges.extend((profile[:, 0]+p["start_z_mm"])*1e-3)
             radial_edges.extend(profile[:, 1:].ravel()*1e-3)

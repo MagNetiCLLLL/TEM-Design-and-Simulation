@@ -7,6 +7,7 @@ import tomllib
 
 import numpy as np
 import pytest
+from legacy_transverse_helpers import legacy_transverse_document
 
 from temsim.cad_mesh import _manifold
 from temsim.cad_multipoles import multipole_solids
@@ -18,10 +19,9 @@ CONFIG = Path(__file__).resolve().parents[1] / "configs/instruments/column/C3_Pr
 
 
 def _row(key):
-    document = tomllib.loads(CONFIG.read_text(encoding="utf-8"))
+    document = legacy_transverse_document(tomllib.loads(CONFIG.read_text(encoding="utf-8")))
     row = next(row for row in document["parts"] if row["key"] == key)
-    # Keep this baseline suite independent of the opt-in HP2 passive supports;
-    # the default supported assembly is covered in test_probe_hexapole_support.
+    # Exercise the bulk-coil geometry independently of later hardware recipes.
     return {name: value for name, value in row.items() if not name.startswith("hexapole_support_")}
 
 

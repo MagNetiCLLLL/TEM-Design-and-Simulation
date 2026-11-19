@@ -124,7 +124,8 @@ def geometry_from_part(part: Mapping, *, parent: Mapping | None = None):
     parent = parent or {}
     if any(
         data.get("magnetic_lens_keys") or data.get("shared_housing_key")
-        or data.get("magnetic_circuit_topology") == "shared_pole_multi_gap"
+        or (data.get("magnetic_circuit_topology") == "shared_pole_multi_gap"
+            and data.get("mechanical_layer_geometry") != "independent_annuli")
         for data in (part, parent)
     ):
         raise ValueError("This part belongs to a shared magnetic structure; edit its assembly in TOML")

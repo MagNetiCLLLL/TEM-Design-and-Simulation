@@ -5,6 +5,7 @@ from itertools import combinations
 
 import numpy as np
 import pytest
+from legacy_transverse_helpers import legacy_transverse_document
 
 from temsim.cad_catalog import posed_solids
 from temsim.cad_geometry import annulus
@@ -31,9 +32,11 @@ def _legacy(part):
 
 @pytest.fixture(scope='module')
 def host():
-    document = read_document(PATH)
+    # Historical bulk-coil support tests predate the jackets and pole-root sleeves.
+    document = legacy_transverse_document(read_document(PATH))
     rows = {part['key']: part for part in document['parts']}
     part = rows[KEY]
+    part.pop('hexapole_support_outer_insulation_thickness_mm', None)
     specs = multipole_solids(part, rows)
     return document, rows, part, specs, {s.region: _manifold(s.shape, 96) for s in specs}
 
@@ -42,8 +45,8 @@ def host():
     'C3_ProbeCorrector.toml', 'C3_ProbeCorrector_BCOR.toml',
     'C3_ProbeCorrector_ImageCorrector.toml',
 ])
-def test_hp1_support_is_saved_for_probe_variants_with_its_own_window(filename, host):
-    _, _, main, _, _ = host
+def test_hp1_support_is_saved_for_probe_variants_with_its_own_window(filename):
+    main = next(part for part in read_document(PATH)['parts'] if part['key'] == KEY)
     document = read_document(INSTRUMENT_CONFIG_ROOT/'column'/filename)
     validate_document(document)
     rows = {p['key']: p for p in document['parts']}
@@ -141,6 +144,7 @@ def test_hp1_open_bore_dph1_and_neighbor_clearances_are_preserved(host):
 def test_hp1_support_follows_each_edit_and_does_not_change_optical_settings(field, value, host):
     _, _, original, specs, _ = host
     draft = PartModelDocument(PATH)
+    draft._commit_component_operation(deepcopy(host[0]))
     draft.set_dimension(('parts', KEY, field), value)
     p = draft.part(KEY)
     new_specs = multipole_solids(p, {})

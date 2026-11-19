@@ -415,6 +415,8 @@ def part_requires_optical_reference(part):
         from temsim.magnetic_circuits import is_custom_mechanical_part
         if is_custom_mechanical_part(part):
             return False
+        if part.get("mechanical_only") and part.get("mechanical_profile") == MAGNETIC_LENS_YOKE:
+            return False
         if bool(part.get("branch_path_only", False)):
             return False
         key = str(part["key"])
@@ -793,6 +795,8 @@ def validate_document(document):
     from temsim.transverse_winding import validate_transverse_winding
     from temsim.transverse_current import validate_transverse_current_inputs
     from temsim.multipole_winding import validate_multipole_winding
+    from temsim.cad_multipoles import pole_root_sleeve_solids, validate_auxiliary_return_sleeve
+    from temsim.magnetic_geometry import validate_corrector_return_extent
     from temsim.multipole_current import validate_multipole_current_inputs
     document = dict(resolve_field_hardware_parts(resolve_shared_deflector_parts(document)))
     document["parts"] = [
@@ -844,6 +848,9 @@ def validate_document(document):
         validate_objective_upper_hardware(part, detail_context)
         validate_probe_transfer_lens_hardware(part, detail_context)
         validate_hexapole_support(part)
+        pole_root_sleeve_solids(part)
+        validate_auxiliary_return_sleeve(part, detail_context)
+        validate_corrector_return_extent(part)
         validate_probe_winding(part)
         validate_transverse_winding(part,detail_context)
         validate_transverse_current_inputs(part,detail_context)
@@ -1065,6 +1072,8 @@ def validate_document(document):
         _validate_magnetic_lens_mechanical_parts(
             physical_parts, document["geometry"]
         )
+        from temsim.projector_iron import validate_projector_iron
+        validate_projector_iron(physical_parts, document['geometry'])
         _validate_recording_plane_geometry(physical_parts)
         _validate_post_projector_detector_chamber(physical_parts)
         _validate_energy_filter_geometry(physical_parts)
@@ -3131,7 +3140,7 @@ def _validate_column_mechanical_overlaps(parts):
     def material_axial_intervals(part, overlap_start, overlap_end):
         active_intervals = objective_coil_active_intervals(part)
         if active_intervals is None:
-            return ((overlap_start, overlap_end),)
+            active_intervals = part.get("material_intervals_mm", ((overlap_start, overlap_end),))
         return tuple(
             (start, end)
             for active_start, active_end in active_intervals
@@ -3248,12 +3257,7 @@ def _validate_column_mechanical_overlaps(parts):
                     "Excitation-coil material overlap between "
                     f"{first['key']} and {second['key']}"
                 )
-            if (
-                (first_is_coil or second_is_coil)
-                and not materials_intersect_axially(
-                    first, second, overlap_start, overlap_end
-                )
-            ):
+            if not materials_intersect_axially(first, second, overlap_start, overlap_end):
                 continue
             if (
                 is_ancestor(str(first["key"]), second)
@@ -3625,7 +3629,8 @@ def _validate_simple_magnetic_layer_geometry(parts):
             or part.get("magnetic_lens_keys")
             or part.get("shared_housing_key")
             or owner.get("shared_housing_key")
-            or owner.get("magnetic_circuit_topology") == "shared_pole_multi_gap"
+            or (owner.get("magnetic_circuit_topology") == "shared_pole_multi_gap"
+                and owner.get("mechanical_layer_geometry") != "independent_annuli")
         ):
             continue
         intervals = ()
